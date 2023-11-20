@@ -1,9 +1,10 @@
 import { observer } from 'mobx-react-lite'
-import { Popover, SelectPicker, Toggle, Tooltip, Whisper } from 'rsuite'
 import { Widget_enum, Widget_enumOpt } from 'src/controls/Widget'
+import { SelectUI } from 'src/rsuite/SelectUI'
+import { Popover, Whisper } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
-import type { EnumName, EnumValue } from '../../models/Schema'
 import { CleanedEnumResult } from 'src/types/EnumUtils'
+import type { EnumName, EnumValue } from '../../models/Schema'
 
 type T = {
     label: EnumValue
@@ -16,10 +17,10 @@ export const WidgetEnumUI = observer(function WidgetEnumUI_<K extends KnownEnumN
     const req = p.req
     const enumName = req.input.enumName
     const isOptional = req instanceof Widget_enumOpt
-    const value = req.state.val as any
+    const value = req.status
     return (
         <EnumSelectorUI
-            value={req.status}
+            value={value}
             disabled={!req.state.active}
             isOptional={isOptional}
             enumName={enumName}
@@ -38,6 +39,7 @@ export const WidgetEnumUI = observer(function WidgetEnumUI_<K extends KnownEnumN
 export const EnumSelectorUI = observer(function EnumSelectorUI_(p: {
     isOptional: boolean
     value: CleanedEnumResult<any>
+    displayValue?: boolean
     // substituteValue?: EnumValue | null
     onChange: (v: EnumValue | null) => void
     disabled?: boolean
@@ -45,34 +47,25 @@ export const EnumSelectorUI = observer(function EnumSelectorUI_(p: {
 }) {
     const project = useSt().getProject()
     const schema = project.schema
-    const options = schema.getEnumOptionsForSelectPicker(p.enumName)
+    const options: EnumValue[] = schema.knownEnumsByName.get(p.enumName)?.values ?? [] // schema.getEnumOptionsForSelectPicker(p.enumName)
     // const valueIsValid = (p.value != null || p.isOptional) && options.some((x) => x.value === p.value)
     const hasError = Boolean(p.value.isSubstitute || p.value.ENUM_HAS_NO_VALUES)
     return (
-        <div>
-            <div>
-                <SelectPicker //
-                    tw={[{ ['rsx-field-error']: hasError }]}
-                    size='sm'
-                    disabled={p.disabled}
-                    cleanable={p.isOptional}
-                    data={options}
-                    value={p.value.candidateValue}
-                    renderValue={(v) => {
-                        if (v === true) return '🟢 true'
-                        if (v === false) return '❌ false'
-                        return v
-                    }}
-                    renderMenuItem={(v) => {
-                        if (v === true) return '🟢 true'
-                        if (v === false) return '❌ false'
-                        return v
-                    }}
-                    onChange={(e) => {
-                        p.onChange(e)
-                    }}
-                />
-            </div>
+        <div tw='flex-1'>
+            <SelectUI //
+                tw={[{ ['rsx-field-error']: hasError }]}
+                size='sm'
+                disabled={p.disabled}
+                cleanable={p.isOptional}
+                options={options}
+                getLabelText={(v) => v.toString()}
+                value={() => p.value.candidateValue}
+                hideValue={p.displayValue}
+                onChange={(option) => {
+                    if (option == null) return
+                    p.onChange(option)
+                }}
+            />
             <div tw='flex flex-wrap gap-2'>
                 {p.value.isSubstitute ? ( //
                     <Whisper

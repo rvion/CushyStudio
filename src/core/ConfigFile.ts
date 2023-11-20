@@ -1,4 +1,4 @@
-import type { Theme } from 'src/theme/layoutTheme'
+import type { ThemeName } from 'src/theme/ThemeManager'
 import type { IJsonModel } from 'flexlayout-react'
 
 import { JsonFile } from './JsonFile'
@@ -39,6 +39,7 @@ export type ConfigFile = {
 
     /** prefer dense form */
     preferedFormLayout?: PreferedFormLayout
+    ['draft.mockup-mobile']?: boolean
 
     favoriteCards?: CardPath[]
     /** list of all comfyUI setup available */
@@ -60,7 +61,7 @@ export type ConfigFile = {
         localPath?: string
     }[]
     /** 'light' or 'dark'; default to dark */
-    theme?: Theme
+    theme?: ThemeName
     /** defaults to 48px */
     galleryImageSize?: number
     /** defaults to 50 */
@@ -88,6 +89,7 @@ export type ConfigFile = {
      * base size
      */
     showPreviewInFullScreen?: boolean
+    showPreviewInPanel?: boolean
 
     /** named perspectives */
     layouts_2?: { [perspectiveName: string]: IJsonModel }

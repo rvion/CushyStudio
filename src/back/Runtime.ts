@@ -1,6 +1,5 @@
 import type { Printable } from '../core/Printable'
 
-// import FormData from 'form-data'
 import * as path from 'pathe'
 // import { Cyto } from '../graph/cyto' 🔴🔴
 import { execSync } from 'child_process'
@@ -35,14 +34,72 @@ export type ImageAndMask = HasSingle_IMAGE & HasSingle_MASK
 /** script exeuction instance */
 export class Runtime {
     st: STATE
+
+    constructor(public step: StepL) {
+        this.st = step.st
+        this.folder = step.st.outputFolderPath
+        this.upload_FileAtAbsolutePath = this.st.uploader.upload_FileAtAbsolutePath.bind(this.st.uploader)
+        this.upload_ImageAtURL = this.st.uploader.upload_ImageAtURL.bind(this.st.uploader)
+        this.upload_dataURL = this.st.uploader.upload_dataURL.bind(this.st.uploader)
+        this.upload_Asset = this.st.uploader.upload_Asset.bind(this.st.uploader)
+        this.upload_Blob = this.st.uploader.upload_Blob.bind(this.st.uploader)
+    }
+
+    /**
+     * filesystem library.
+     * your app can do IO.
+     * with great power comes great responsibility.
+     */
     fs = fs
+
+    /**
+     * path manifulation library;
+     * avoid concateing paths yourself if you want your app
+     */
     path = path
 
+    /**
+     * get the configured trigger words for the given lora
+     * (those are user defined; hover your lora in any rich text prompt to edit them)
+     */
+    getLoraAssociatedTriggerWords = (loraName: string): Maybe<string> => {
+        return this.st.configFile.value?.loraPrompts?.[loraName]?.text
+    }
+
+    /**
+     * get yoru configured lora metada
+     * (those are user defined; hover your lora in any rich text prompt to edit them)
+     */
+    getLoraAssociatedMetadata = (
+        loraName: string,
+    ): Maybe<{
+        text?: string | undefined
+        url?: string | undefined
+    }> => {
+        return this.st.configFile.value?.loraPrompts?.[loraName]
+    }
+
+    /** retrieve the global schema */
+    get schema() { return this.st.schema } // prettier-ignore
+
+    /** legacy way to access the global app runtime */
+    get flow() { return this } // prettier-ignore
+
+    /** the default app's ComfyUI graph we're manipulating */
     get graph(): GraphL {
         return this.step.outputGraph.item
     }
 
+    /** the graph buider */
+    get nodes(): GraphBuilder {
+        return this.graph.builder
+    }
+
+    // ====================================================================
     // miscs subgraphs until there is a better place to place them
+
+    /** a built-in prefab to quickly
+     * add PreviewImage & JoinImageWithAlpha node to your ComfyUI graph */
     add_previewImageWithAlpha = (image: HasSingle_IMAGE & HasSingle_MASK) => {
         return this.nodes.PreviewImage({
             images: this.nodes.JoinImageWithAlpha({
@@ -51,13 +108,21 @@ export class Runtime {
             }),
         })
     }
+
+    /** a built-in prefab to quickly
+     * add a PreviewImage node to your ComfyUI graph */
     add_previewImage = (image: HasSingle_IMAGE) => {
         return this.nodes.PreviewImage({ images: image })
     }
 
+    /** a built-in prefab to quickly
+     * add a PreviewImage node to your ComfyUI graph */
     add_saveImage = (image: HasSingle_IMAGE, prefix?: string) => {
         return this.nodes.SaveImage({ images: image, filename_prefix: prefix })
     }
+
+    // ====================================================================
+    /** output a 3d scene from an image and its displacement and depth maps */
     out_3dImage = (p: { image: string; depth: string; normal: string }) => {
         const image = this.generatedImages //
             .find((i) => i.data.imageInfos?.filename.startsWith(p.image))
@@ -77,23 +142,13 @@ export class Runtime {
         })
     }
 
-    get nodes(): GraphBuilder {
-        return this.graph.builder
-    }
-
-    constructor(public step: StepL) {
-        this.st = step.st
-        this.folder = step.st.outputFolderPath
-        this.upload_FileAtAbsolutePath = this.st.uploader.upload_FileAtAbsolutePath.bind(this.st.uploader)
-        this.upload_ImageAtURL = this.st.uploader.upload_ImageAtURL.bind(this.st.uploader)
-        this.upload_dataURL = this.st.uploader.upload_dataURL.bind(this.st.uploader)
-        this.upload_Asset = this.st.uploader.upload_Asset.bind(this.st.uploader)
-        this.upload_Blob = this.st.uploader.upload_Blob.bind(this.st.uploader)
-    }
-
+    /** helper to auto-find an output slot and link use it for this input */
     AUTO = auto
 
-    pick = <T>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)]
+    /** helper to chose radomly any item from a list */
+    chooseRandomly = <T>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)]
+
+    /** execute the ComfyUI  */
     run = async (): Promise<Status> => {
         // return Status.Success
         const start = Date.now()
@@ -128,8 +183,11 @@ export class Runtime {
         }
     }
 
-    hasLora = (loraName: string): boolean => this.st.schema.hasLora(loraName)
-    hasCheckpoint = (loraName: string): boolean => this.st.schema.hasLora(loraName)
+    /** check if the current connected ComfyUI backend has a lora */
+    hasLora = (loraName: string): boolean => this.schema.hasLora(loraName)
+
+    /** check if the current connected ComfyUI backend has a given checkpoint */
+    hasCheckpoint = (loraName: string): boolean => this.schema.hasLora(loraName)
 
     /** run an imagemagick convert action */
     imagemagicConvert = (img: ImageL, partialCmd: string, suffix: string): string => {
@@ -141,7 +199,7 @@ export class Runtime {
         return pathB
     }
 
-    /** graph engine instance for smooth and clever auto-layout algorithms */
+    // graph engine instance for smooth and clever auto-layout algorithms
     // cyto: Cyto 🔴🔴
 
     /** list of all images produed over the whole script execution */

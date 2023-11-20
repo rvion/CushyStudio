@@ -1,34 +1,28 @@
 import { observer } from 'mobx-react-lite'
 import React, { ReactNode } from 'react'
-import { Dropdown } from 'rsuite'
-import { TypeAttributes } from 'rsuite/esm/@types/common'
+import { MenuItem } from 'src/rsuite/Dropdown'
 
 export const MainNavEntryUI = observer(function UI_(p: {
-    onClick: (ev: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
+    onClick: (ev: React.MouseEvent<HTMLElement, MouseEvent>) => void
     className?: string
-    color?: TypeAttributes.Color
-    size?: TypeAttributes.Size
-    appearance?: TypeAttributes.Appearance
-    ix: string
-    icon: React.ReactElement
-    soon?: boolean
-    label: string
-    tooltip?: ReactNode
+    icon?: React.ReactElement
+    label?: ReactNode
+    children?: ReactNode
+
+    // size?: TypeAttributes['Size']
+    // appearance?: TypeAttributes['Appearance']
+    // soon?: boolean
+    // tooltip?: ReactNode
 }) {
-    const btn = (
-        <Dropdown.Item //
+    return (
+        <MenuItem //
             className={p.className}
-            color={p.color}
-            // appearance={p.appearance ?? 'subtle'}
-            // size={p.size ?? 'sm'}
-            // startIcon={p.icon}
             onClick={p.onClick}
+            icon={p.icon}
         >
-            <div className='flex items-center gap-2'>
-                {p.icon}
-                {p.label}
-            </div>
-        </Dropdown.Item>
+            {p.label}
+            {p.children}
+        </MenuItem>
     )
     // if (p.tooltip)
     //     return (
@@ -36,5 +30,5 @@ export const MainNavEntryUI = observer(function UI_(p: {
     //             {btn}
     //         </Whisper>
     //     )
-    return btn
+    // return btn
 })

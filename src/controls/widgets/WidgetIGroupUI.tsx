@@ -15,24 +15,29 @@ export const WidgetGroupUI = observer(function WidgetItemsUI_(p: {
     const showAsCard = groupFields.length > 0 && !isTopLevel
     return (
         <div
-            tw={['flex items-start w-full', showAsCard ? 'mb-2' : undefined]}
+            tw={[
+                //
+                'flex rounded-box bg-opacity-95 items-start w-full text-base-content',
+                showAsCard ? 'mb-2' : undefined,
+                showAsCard ? 'bg-base-300 bg-opacity-30' : undefined,
+                showAsCard ? 'virtualBorder' : undefined,
+            ]}
             style={{
                 position: 'relative',
-                borderRadius: '0.5rem',
-                border: showAsCard ? '1px solid #484848' : undefined,
+                // borderRadius: '0.5rem',
+                // border: showAsCard ? 'solid' : undefined,
                 paddingLeft: showAsCard ? '.2rem' : undefined,
-                backgroundColor: showAsCard ? '#35353568' : undefined,
             }}
         >
             {req.state.collapsed ? null : (
                 <div
                     // style={isTopLevel ? undefined : { border: '1px solid #262626' }}
-                    tw={['_WidgetGroupUI w-full', req.input.layout === 'H' ? 'flex gap-2' : null]}
+                    tw={['_WidgetGroupUI w-full', req.input.layout === 'H' ? 'flex flex-wrap gap-2' : null]}
                     className={req.input.className}
                 >
                     {groupFields.map(([rootKey, sub], ix) => (
                         <WidgetWithLabelUI //
-                            isTopLevel
+                            isTopLevel={isTopLevel}
                             vertical={req.state.vertical}
                             key={rootKey}
                             labelPos={sub.input.labelPos}

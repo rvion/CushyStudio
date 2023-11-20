@@ -1,7 +1,7 @@
 // import type { StepL } from 'src/models/Step'
 
 // import { observer } from 'mobx-react-lite'
-// import { Nav } from 'rsuite'
+// import { Nav } from 'src/rsuite/shims'
 // import { renderStatus } from '../../../back/Status'
 
 // export const StepTabBtnUI = observer(function StepTabBtnUI_(p: { step: StepL }) {
@@ -12,7 +12,7 @@
 //     const isFocused = step.id === focusedBranch?.id
 //     const status = step.data.status
 //     return (
-//         <Nav.Item
+//         <NavItem
 //             // icon={renderStatus(status)}
 //             active={isFocused}
 //             id={`button-to-focus-step-${step.id}`}
@@ -72,6 +72,6 @@
 //                     {step.tool.item?.data.name}({step.outputGraph.item.childSteps.items.length})
 //                 </div>
 //             </div>
-//         </Nav.Item>
+//         </NavItem>
 //     )
 // })

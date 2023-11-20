@@ -104,6 +104,7 @@ export const WidgetPromptUI = observer((p: { req: Widget_prompt | Widget_promptO
         <LexicalComposer initialConfig={initialConfig}>
             <CopyPastePlugin />
             <CushyShortcutPlugin />
+            {/* <div>{req.state.tokens.map((t) => t.type)}</div> */}
             <PlainTextPlugin
                 contentEditable={
                     <ContentEditable
@@ -129,19 +130,8 @@ export const WidgetPromptUI = observer((p: { req: Widget_prompt | Widget_promptO
                             background: 'var(--rs-input-bg)',
                             borderRadius: '0.5rem',
                             paddingLeft: '.2rem',
-                            //------------------
-                            border: '1px dashed #356c93',
-                            // borderWidth: '1px',
-                            // borderImage:
-                            //     'linear-gradient(to bottom right, #b827fc 0%, #2c90fc 25%, #b8fd33 50%, #fec837 75%, #fd1892 100%)',
-                            // background-color: #302244;
-                            // border: '1px solid transparent',
-                            // borderImage:
-                            //     'linear-gradient(to bottom right, #b827fc 0%, #2c90fc 25%, #b8fd33 50%, #fec837 75%, #fd1892 100%)',
-                            // borderImageSlice: '1',
-                            // margin: '20px auto',
                         }}
-                        className='_WidgetPromptUI p-0.5 mr-0.5 mb-2 rounded flex flex-grow border-gray-500 [min-width:8rem]'
+                        className='_WidgetPromptUI virtualBorder p-0.5  rounded flex flex-grow border-gray-500 [min-width:8rem]'
                     />
                 }
                 placeholder={null}

@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite'
-import { IconButton, Tooltip, Whisper } from 'rsuite'
+import { Button, Tooltip, Whisper } from 'src/rsuite/shims'
 import type { GraphID, GraphL } from 'src/models/Graph'
 import { useSt } from '../../state/stateContext'
 
@@ -18,7 +18,7 @@ export const ButtonOpenInComfyUI = observer(function ButtonOpenInComfyUI_(p: { g
             placement='autoVerticalEnd'
             speaker={<Tooltip>Open in ComfyUI</Tooltip>}
         >
-            <IconButton
+            <Button
                 icon={<span className='material-symbols-outlined'>open_in_new</span>}
                 appearance='link'
                 size='xs'
@@ -36,7 +36,7 @@ export const ButtonOpenInComfyUI = observer(function ButtonOpenInComfyUI_(p: { g
                     // window.require('electron').shell.openExternal(`file://${path}/..`)
                     // writeFileSync(path, JSON.stringify(jsonWorkflow, null, 3))
                 }}
-            ></IconButton>
+            ></Button>
         </Whisper>
     )
 })

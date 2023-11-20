@@ -1,9 +1,9 @@
 import react from '@vitejs/plugin-react'
-import { readFileSync } from 'fs'
-import { defineConfig } from 'vite'
 import { resolve } from 'path'
-// import { viteSingleFile } from 'vite-plugin-singlefile'
-// import { dynamicModulePlugin } from './viteplugin'
+import { cwd } from 'process'
+import { defineConfig } from 'vite'
+
+const installDir = cwd()
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -11,7 +11,6 @@ export default defineConfig({
         exclude: [
             //
             'fsevents',
-            // 'fs',
         ],
     },
     publicDir: 'library',
@@ -35,65 +34,28 @@ export default defineConfig({
     resolve: {
         alias: {
             src: resolve(__dirname, './src'),
-
             // injected node modules
             // check the `src/syms/_.cjs`
-            buffer: './src/syms/buffer',
-            child_process: './src/syms/child_process',
-            fs: './src/syms/fs',
-            os: './src/syms/os',
-            path: './src/syms/path',
-            process: './src/syms/process',
-            stream: './src/syms/stream',
-            util: './src/syms/util',
-            zlib: './src/syms/zlib',
-            events: './src/syms/events',
-            //
-            'node:buffer': './src/syms/buffer',
-            'node:child_process': './src/syms/child_process',
-            'node:fs': './src/syms/fs',
-            'node:os': './src/syms/os',
-            'node:path': './src/syms/path',
-            'node:process': './src/syms/process',
-            'node:stream': './src/syms/stream',
-            'node:util': './src/syms/util',
-            'node:zlib': './src/syms/zlib',
-            'node:events': './src/syms/events',
+            /* */ buffer: `${installDir}/src/syms/buffer.js`,
+            'node:buffer': `${installDir}/src/syms/buffer.js`,
+            /* */ child_process: `${installDir}/src/syms/child_process.js`,
+            'node:child_process': `${installDir}/src/syms/child_process.js`,
+            /* */ fs: `${installDir}/src/syms/fs.js`,
+            'node:fs': `${installDir}/src/syms/fs.js`,
+            /* */ os: `${installDir}/src/syms/os.js`,
+            'node:os': `${installDir}/src/syms/os.js`,
+            /* */ path: `${installDir}/src/syms/path.js`,
+            'node:path': `${installDir}/src/syms/path.js`,
+            /* */ process: `${installDir}/src/syms/process.js`,
+            'node:process': `${installDir}/src/syms/process.js`,
+            /* */ stream: `${installDir}/src/syms/stream.js`,
+            'node:stream': `${installDir}/src/syms/stream.js`,
+            /* */ util: `${installDir}/src/syms/util.js`,
+            'node:util': `${installDir}/src/syms/util.js`,
+            /* */ zlib: `${installDir}/src/syms/zlib.js`,
+            'node:zlib': `${installDir}/src/syms/zlib.js`,
+            /* */ events: `${installDir}/src/syms/events.js`,
+            'node:events': `${installDir}/src/syms/events.js`,
         },
     },
 })
-
-// function dynamicModulePlugin() {
-//     return {
-//         name: 'dynamic-module-plugin',
-//         load(id: any) {
-//             console.log(`2| ${id}`)
-//             if (id.startsWith('__window__')) {
-//                 const final = id.replace('__window__', '')
-//                 return readFileSync(`src/syms/${final}.js`, 'utf-8')
-//                 //                 const exists = existsSync(`syms/${final}.txt`)
-//                 //                 if (!exists) throw new Error(`no syms for ${final}`)
-//                 //                 const syms = JSON.parse(readFileSync(`syms/${final}.txt`, 'utf-8'))
-//                 //                 console.log(`3| ${final}`)
-//                 //                 const output = `const _ = window.require('${final}')
-//                 // export default _
-//                 // ${syms.map((x: string) => `export const ${x} = _.${x}`).join('\n')}
-//                 //                 `
-//                 //                 writeFileSync(id, output)
-//                 //                 return output
-//                 //             }
-//             }
-//             return null
-//         },
-//     }
-// }
-
-// /*
-// // run this in node
-// const modulesToCache = [ 'process', 'path', 'fs', 'os', 'stream', 'zlib', 'util']
-// for (const x of modulesToCache){
-
-//     const out1  = JSON.stringify(Object.keys(require(x)))
-//     require('fs').writeFileSync(`syms/${x}.txt`, out1 )
-// }
-// */

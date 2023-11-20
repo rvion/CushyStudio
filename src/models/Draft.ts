@@ -56,7 +56,7 @@ export class DraftL {
 
     start = (): StepL => {
         // 1. ensure req valid (TODO: validate)
-        const req = this.form.value
+        const req = this.gui.value
         if (req == null) throw new Error('invalid req')
 
         // 2. ensure graph valid
@@ -85,14 +85,14 @@ export class DraftL {
         return step
     }
 
-    form: Result<Widget> = __FAIL('not loaded yet')
+    gui: Result<Widget> = __FAIL('not loaded yet')
 
-    get card(): CardFile | undefined {
+    get app(): CardFile | undefined {
         return this.st.library.cardsByPath.get(this.data.actionPath)
     }
 
     get action() {
-        return this.card?.action
+        return this.app?.action
     }
 
     onHydrate = () => {
@@ -119,12 +119,12 @@ export class DraftL {
                             : formBuilder.group({ topLevel: true, items: () => uiFn(formBuilder) }, this.data.actionParams)
                     /** 👇 HACK; see the comment near the ROOT property definition */
                     formBuilder.ROOT = req
-                    this.form = __OK(req)
+                    this.gui = __OK(req)
                     console.log(`🦊 form setup`)
                     // subState.unsync()
                 } catch (e) {
                     console.error(e)
-                    this.form = __FAIL('ui function crashed', e)
+                    this.gui = __FAIL('ui function crashed', e)
                     return
                 }
             },
@@ -133,7 +133,7 @@ export class DraftL {
 
         // 🔴 dangerous
         const _2 = autorun(() => {
-            const formValue = this.form.value
+            const formValue = this.gui.value
             if (formValue == null) return null
             const count = formValue.builder._cache.count // manual mobx invalidation
             const _ = JSON.stringify(formValue.serial)
@@ -149,7 +149,7 @@ export class DraftL {
             _1()
             _2()
             this.isInitialized = false
-            this.form = __FAIL('not loaded yet')
+            this.gui = __FAIL('not loaded yet')
         }
     }
 }

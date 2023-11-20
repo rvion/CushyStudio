@@ -1,2 +1,1 @@
-set -eux
-npm start
+node start.cjs

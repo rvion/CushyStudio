@@ -1,9 +1,9 @@
-import * as I from '@rsuite/icons'
 import { observer } from 'mobx-react-lite'
-import { IconButton, Input, MultiCascader } from 'rsuite'
+import { Button, Input, MultiCascader } from 'src/rsuite/shims'
 import { Widget_loras } from 'src/controls/Widget'
 import { useSt } from '../../state/stateContext'
 import { parseFloatNoRoundingErr } from 'src/utils/misc/parseFloatNoRoundingErr'
+import { InputNumberUI } from 'src/rsuite/InputNumberUI'
 // ----------------------------------------------------------------------
 
 export const WidgetLorasUI = observer(function LoraWidgetUI_(p: { req: Widget_loras }) {
@@ -64,25 +64,27 @@ export const WidgetLorasUI = observer(function LoraWidgetUI_(p: { req: Widget_lo
                     <div key={loraName} className='flex items-start'>
                         <div className='shrink-0'>{loraName.replace('.safetensors', '')}</div>
                         <div className='flex-grow'></div>
-                        <Input
-                            size='xs'
-                            type='number'
+                        <InputNumberUI
                             value={sld.strength_clip}
                             step={0.1}
-                            onChange={(v) => (sld.strength_clip = parseFloatNoRoundingErr(v, 2))}
-                            style={{ width: '3.5rem' }}
+                            onValueChange={(v) => (sld.strength_clip = parseFloatNoRoundingErr(v, 2))}
+                            mode='float'
+                            // style={{ width: '3.5rem' }}
+                            // type='number'
+                            // size='xs'
                         />
-                        <Input
-                            size='xs'
-                            type='number'
+                        <InputNumberUI
                             value={sld.strength_model}
                             step={0.1}
-                            onChange={(v) => (sld.strength_model = parseFloatNoRoundingErr(v, 2))}
-                            style={{ width: '3.5rem' }}
+                            onValueChange={(v) => (sld.strength_model = parseFloatNoRoundingErr(v, 2))}
+                            mode='float'
+                            // style={{ width: '3.5rem' }}
+                            // type='number'
+                            // size='xs'
                         />
-                        <IconButton
+                        <Button
                             size='xs'
-                            icon={<I.Trash />}
+                            icon={<span className='material-symbols-outlined'>delete</span>}
                             onClick={() => {
                                 const next = values.filter((x) => x.name !== loraName)
                                 req.selectedLoras.delete(loraName)

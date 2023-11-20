@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
-import { Button, Input, InputGroup } from 'rsuite'
 import { CardFile } from 'src/cards/CardFile'
+import { Button, Input } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
 
 export const ActionDraftListUI = observer(function ActionDraftListUI_(p: { card: CardFile }) {
@@ -19,7 +19,7 @@ export const ActionDraftListUI = observer(function ActionDraftListUI_(p: { card:
                     borderBottomLeftRadius: 0,
                 }}
                 color='green'
-                startIcon={<span className='material-symbols-outlined'>add</span>}
+                icon={<span className='material-symbols-outlined'>add</span>}
                 onClick={() => void card.createDraft()}
             >
                 New Draft
@@ -29,22 +29,24 @@ export const ActionDraftListUI = observer(function ActionDraftListUI_(p: { card:
                 const active = st.layout.currentTab?.getId() === `/draft/${draft.data.id}`
                 return (
                     <div key={draft.id} tw='cursor-pointer row'>
-                        <InputGroup style={{ borderBottom: 'none', borderBottomRightRadius: 0, borderBottomLeftRadius: 0 }}>
+                        <div tw='join' style={{ borderBottom: 'none', borderBottomRightRadius: 0, borderBottomLeftRadius: 0 }}>
                             <Input
+                                value={title}
                                 onClick={() => st.layout.addDraft({ draftID: draft.id })}
-                                tw={[active ? 'bg-gray-700' : null, 'font-mono']}
-                                onChange={(next) => draft.update({ title: next })}
-                                size='xs'
+                                tw={[active ? 'bg-gray-700' : null, 'font-mono', 'join-item input-xs']}
                                 style={{
                                     width: `${title.length + 4}ch`,
                                     borderBottom: 'none',
                                     borderBottomRightRadius: 0,
                                     borderBottomLeftRadius: 0,
                                 }}
-                                value={title}
+                                onChange={(ev) => {
+                                    const next = ev.target.value
+                                    draft.update({ title: next })
+                                }}
                             />
-                            <InputGroup.Button
-                                tw='p-0 '
+                            <Button
+                                tw='p-0 join-item'
                                 color='red'
                                 appearance='primary'
                                 onClick={(ev) => {
@@ -55,9 +57,9 @@ export const ActionDraftListUI = observer(function ActionDraftListUI_(p: { card:
                                     // if (st.layout.currentTabID)
                                 }}
                                 size='xs'
-                                startIcon={<span className='text-red-500 material-symbols-outlined'>close</span>}
-                            ></InputGroup.Button>
-                        </InputGroup>
+                                icon={<span className='text-red-500 material-symbols-outlined'>close</span>}
+                            ></Button>
+                        </div>
                     </div>
                 )
             })}

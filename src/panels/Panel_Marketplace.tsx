@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 import { ErrorBoundary } from 'react-error-boundary'
-import { Button } from 'rsuite'
+import { Button } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
 import { GithubUserUI } from 'src/cards/GithubAvatarUI'
 import { ErrorBoundaryFallback } from 'src/widgets/misc/ErrorBoundary'
@@ -34,7 +34,7 @@ export const ActionPackUI = observer(function ActionPackUI_(p: { actionPack: Dec
                 <div tw='flex-grow'>
                     <div tw='text-lg font-bold'>{pack.name}</div>
                     <GithubUserUI size='1.5rem' username={pack.githubUserName} showName />
-                    <div tw='text-gray-400'>{pack.description}</div>
+                    <div tw='text-neutral-content'>{pack.description}</div>
                 </div>
                 {pack.BUILT_IN ? null : <ActionPackStarsUI pack={pack} />}
             </div>

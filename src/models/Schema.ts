@@ -78,9 +78,9 @@ export class SchemaL {
     }
 
     // ENUM --------------------------------------------------------------
-    getEnumOptionsForSelectPicker = (enumName: string): { label: EnumValue; value: EnumValue }[] => {
+    getEnumOptionsForSelectPicker = (enumName: string): { asOptionLabel: string; value: EnumValue }[] => {
         const candidates = this.knownEnumsByName.get(enumName)?.values ?? []
-        return candidates.map((x) => ({ label: x, value: x }))
+        return candidates.map((x) => ({ asOptionLabel: x.toString(), value: x }))
     }
 
     knownTypes = new Set<string>()

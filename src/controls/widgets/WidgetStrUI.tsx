@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite'
-import { Input } from 'rsuite'
+import { Input } from 'src/rsuite/shims'
 import { Widget_str, Widget_strOpt } from 'src/controls/Widget'
 
 export const WidgetStrUI = observer(function WidgetStrUI_(p: { req: Widget_str | Widget_strOpt }) {
@@ -7,23 +7,25 @@ export const WidgetStrUI = observer(function WidgetStrUI_(p: { req: Widget_str |
     const val = req.state.val
     if (req.input.textarea) {
         return (
-            <Input
+            <textarea
+                tw='textarea textarea-bordered textarea-sm'
                 placeholder={req.input.placeHolder}
-                as='textarea'
                 rows={2}
                 value={val}
-                onChange={(next) => {
+                onChange={(ev) => {
+                    const next = ev.target.value
                     req.state.val = next
                 }}
             />
         )
     }
     return (
-        <Input
+        <input
+            tw='input input-bordered input-sm w-full'
             placeholder={req.input.placeHolder}
-            size='sm'
             value={val}
-            onChange={(next) => {
+            onChange={(ev) => {
+                const next = ev.target.value
                 req.state.val = next
             }}
         />

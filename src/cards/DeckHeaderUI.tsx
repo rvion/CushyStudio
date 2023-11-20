@@ -1,7 +1,7 @@
 import type { Deck } from './Deck'
 
 import { observer } from 'mobx-react-lite'
-import { Popover, Whisper } from 'rsuite'
+import { Popover, Whisper } from 'src/rsuite/shims'
 import { FolderKind } from 'src/cards/updater'
 import { stringifyUnknown } from 'src/utils/formatters/stringifyUnknown'
 import { ManifestError } from './DeckManifest'
@@ -13,8 +13,7 @@ export const DeckHeaderUI = observer(function ActionPackHeaderUI_(p: { deck: Dec
     return (
         <>
             <div
-                style={{ borderTop: '1px solid #1d1d1d' }}
-                tw='cursor-pointer flex gap-1 hover:bg-gray-800 bg-gray-800 p-0.5'
+                tw='cursor-pointer flex gap-1 hover:bg-base-300 bg-base-200 p-0.5 border-t border-t-base-300'
                 onClick={() => (deck.folded = !deck.folded)}
             >
                 <img //
@@ -22,22 +21,10 @@ export const DeckHeaderUI = observer(function ActionPackHeaderUI_(p: { deck: Dec
                     src={deck.logo}
                     alt='logo'
                 />
-
                 <div tw='flex flex-grow'>
                     <div tw='flex-grow'>
-                        {/* manifest */}
-                        <div>
-                            <div tw='flex gap-2 items-baseline'>
-                                <div tw='font-bold'>{deck.name}</div>
-                                {/* by <div tw='text-gray-400 flex justify-between w-full'>{deck.githubUserName}</div> */}
-                            </div>
-                        </div>
-                        {/* <GithubUserUI prefix='by' size='1rem' showName username={deck.githubUserName} /> */}
-                        {/* <div className='flex-grow self-start italic text-gray-500'>
-                            {deck.description}
-                        </div> */}
+                        <div tw='text-base-content font-bold'>{deck.name}</div>
                     </div>
-                    {/* manifest */}
                     <div>
                         <div className='flex gap-1'>
                             {deck.manifestError && (
@@ -48,7 +35,7 @@ export const DeckHeaderUI = observer(function ActionPackHeaderUI_(p: { deck: Dec
                                         </Popover>
                                     }
                                 >
-                                    <span className='text-red-500 material-symbols-outlined'>error</span>
+                                    <span className='text-error-content material-symbols-outlined'>error</span>
                                 </Whisper>
                             )}
                             <ActionPackStatusUI pack={deck} />
@@ -58,9 +45,9 @@ export const DeckHeaderUI = observer(function ActionPackHeaderUI_(p: { deck: Dec
                         ) : null}
                     </div>
                     {/* <Message showIcon type={deck.manifestError.}>
-                    {deck.manifestType === 'implicit' ? 'No Manifest found' : 'Manifest found'}
-                    <pre>{stringifyUnknown(deck.manifestError)}</pre>
-                </Message> */}
+                        {deck.manifestType === 'implicit' ? 'No Manifest found' : 'Manifest found'}
+                        <pre>{stringifyUnknown(deck.manifestError)}</pre>
+                    </Message> */}
                 </div>
             </div>
         </>
@@ -72,14 +59,14 @@ export const DeckManifestErrorUI = observer(function DeckManifestErrorUI_(p: { e
     if (err == null) return null
     if (err.type === 'crash')
         return (
-            <div tw='text-red-500'>
+            <div tw='text-error-content'>
                 <div>crash</div>
                 <pre>{stringifyUnknown(err)}</pre>
             </div>
         )
     if (err.type === 'no manifest')
         return (
-            <div tw='text-red-500 [width:fit-content]'>
+            <div tw='text-error-content [width:fit-content]'>
                 <div>manifest missing</div>
                 {/* <pre>{stringifyUnknown(err)}</pre> */}
             </div>
@@ -87,7 +74,7 @@ export const DeckManifestErrorUI = observer(function DeckManifestErrorUI_(p: { e
 
     if (err.type === 'invalid manifest')
         return (
-            <div tw='[width:fit-content] text-red-500'>
+            <div tw='[width:fit-content] text-error-content'>
                 <div>INVALID manifest</div>
                 <ul>
                     {err.errors.map((e, ix) => (

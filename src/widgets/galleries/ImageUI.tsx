@@ -1,11 +1,12 @@
 import type { STATE } from 'src/state/state'
 
 import { observer } from 'mobx-react-lite'
-import { Dropdown, Popover, Whisper } from 'rsuite'
-import { PositionChildProps } from 'rsuite/esm/Picker'
 import { ImageL } from 'src/models/Image'
+import { Button, DropdownMenu, Popover, PositionChildProps, Whisper } from 'src/rsuite/shims'
+import { MenuItem } from 'src/rsuite/Dropdown'
 import { useSt } from '../../state/stateContext'
 import { useImageDrag } from './dnd'
+import { RevealUI } from 'src/rsuite/RevealUI'
 
 export const ImageUI = observer(function ImageUI_(p: { img: ImageL }) {
     const image = p.img
@@ -30,7 +31,6 @@ export const ImageUI = observer(function ImageUI_(p: { img: ImageL }) {
             ></video>
         ) : (
             <img
-                // className='scale-in-center'
                 src={image.url}
                 ref={dragRef}
                 loading='lazy'
@@ -60,14 +60,30 @@ export const ImageUI = observer(function ImageUI_(p: { img: ImageL }) {
     return (
         <>
             {/* right click logic 👇 */}
-            <Whisper
-                placement='auto'
-                trigger='contextMenu'
-                speaker={(...props) => renderSpeaker(st, image, ...props)}
+            <RevealUI
+                enableRightClick
                 //
             >
                 <div>{IMG}</div>
-            </Whisper>
+                <div>
+                    <Button
+                        icon={<span className='material-symbols-outlined'>edit</span>}
+                        onClick={() => st.layout.addPaint(image.id)}
+                    >
+                        Paint
+                    </Button>
+                    {/* <MenuItem onClick={() => st.layout.addPaint(image.id)}>Mask</MenuItem> */}
+                    {/* <DropdownMenu title='Edit'>
+                    <DropdownItem eventKey={1}>New File</DropdownItem>
+                    <DropdownItem eventKey={2}>New File with Current Profile</DropdownItem>
+                    </DropdownMenu> */}
+                    {/* <DropdownItem eventKey={3}>Start Flow from this</DropdownItem> */}
+                    {/* <DropdownItem eventKey={4}>Export PDF</DropdownItem>
+                    <DropdownItem eventKey={5}>Export HTML</DropdownItem>
+                    <DropdownItem eventKey={6}>Settings</DropdownItem>
+                    <DropdownItem eventKey={7}>About</DropdownItem> */}
+                </div>
+            </RevealUI>
             {/* {IMG} */}
         </>
     )
@@ -89,51 +105,3 @@ export const PlaceholderImageUI = observer(function PlaceholderImageUI_(p: {}) {
         />
     )
 })
-
-type SpeakerProps = { onClose: (delay?: number) => NodeJS.Timeout | void } & PositionChildProps
-
-const renderSpeaker = (
-    //
-    st: STATE,
-    img: ImageL,
-    { onClose, left, top, className, ...rest }: SpeakerProps,
-    ref: React.RefCallback<HTMLElement>,
-) => {
-    const handleSelect = (eventKey: number | string | undefined) => {
-        onClose()
-        if (eventKey === 4) {
-            st.layout.addPaint(img.id)
-            // st.setAction({ type: 'paint', imageID: img.id })
-        }
-        // ⏸️ if (eventKey === 3) {
-        // ⏸️     console.log('🔴')
-        // ⏸️     const db = img.st.db
-        // ⏸️     const pj: ProjectL = db.projects.firstOrCrash()
-        // ⏸️     const root: GraphL = pj.rootGraph.item
-        // ⏸️     const ia: ImageAnswer = { type: 'CushyImage', imageID: img.id }
-        // ⏸️     const step = root.createStep({
-        // ⏸️         toolID: db.tools.findOrCrash((t) => t.name.endsWith('start from image')).id,
-        // ⏸️         params: { image: ia },
-        // ⏸️     })
-        // ⏸️     return
-        // ⏸️ }
-        console.log(eventKey)
-    }
-    return (
-        <Popover ref={ref} className={className} style={{ left, top }} full>
-            <Dropdown.Menu onSelect={handleSelect}>
-                <Dropdown.Item eventKey={4}>Paint</Dropdown.Item>
-                <Dropdown.Item eventKey={4}>Mask</Dropdown.Item>
-                {/* <Dropdown.Menu title='Edit'>
-                    <Dropdown.Item eventKey={1}>New File</Dropdown.Item>
-                    <Dropdown.Item eventKey={2}>New File with Current Profile</Dropdown.Item>
-                </Dropdown.Menu> */}
-                {/* <Dropdown.Item eventKey={3}>Start Flow from this</Dropdown.Item> */}
-                {/* <Dropdown.Item eventKey={4}>Export PDF</Dropdown.Item>
-                <Dropdown.Item eventKey={5}>Export HTML</Dropdown.Item>
-                <Dropdown.Item eventKey={6}>Settings</Dropdown.Item>
-                <Dropdown.Item eventKey={7}>About</Dropdown.Item> */}
-            </Dropdown.Menu>
-        </Popover>
-    )
-}

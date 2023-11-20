@@ -1,7 +1,7 @@
-import { wildcards } from './wildcards'
-import { WildcardNode } from './WildcardNode'
 import { observer } from 'mobx-react-lite'
-import { Tooltip, Whisper } from 'rsuite'
+import { RevealUI } from 'src/rsuite/RevealUI'
+import { WildcardNode } from './WildcardNode'
+import { wildcards } from './wildcards'
 
 export const WildcardNodeUI = observer(function WildcardNodeUI_(p: { node: WildcardNode }) {
     const node = p.node
@@ -11,12 +11,10 @@ export const WildcardNodeUI = observer(function WildcardNodeUI_(p: { node: Wildc
             style={{ border: '1px solid #b2ad54' }}
             className='text-yellow-500 rv-tooltip-container p-0.5'
         >
-            <Whisper
-                placement='bottomStart'
-                speaker={<Tooltip>{((wildcards as any)[node.wildcardName] ?? []).slice(0, 20).join(', ') + '...'}</Tooltip>}
-            >
+            <RevealUI>
                 <span>{node.wildcardName} 🎲</span>
-            </Whisper>
+                <div tw='w-96'>{((wildcards as any)[node.wildcardName] ?? []).slice(0, 20).join(', ') + '...'}</div>
+            </RevealUI>
         </span>
     )
 })

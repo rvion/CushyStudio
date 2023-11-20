@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite'
-import { Message } from 'rsuite'
+import { Message } from 'src/rsuite/shims'
 import { Result } from 'src/types/Either'
 
 export const ResultWrapperUI = observer(function ResultWrapperUI_<T>(p: {

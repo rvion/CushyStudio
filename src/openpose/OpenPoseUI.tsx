@@ -1,4 +1,3 @@
-import * as I from '@rsuite/icons'
 import { observer } from 'mobx-react-lite'
 
 const CANVAS_WIDTH = 640
@@ -8,7 +7,7 @@ const CANVAS_HEIGHT = 480
 const canvas = document.getElementById('canvas')
 
 import { useMemo } from 'react'
-import { IconButton } from 'rsuite'
+import { Button } from 'src/rsuite/shims'
 import { OpenPoseAnimV0 } from './OpenPoseAnimV0'
 import { useSt } from 'src/state/stateContext'
 
@@ -19,11 +18,14 @@ export const OpenPoseViewerUI = observer(function OpenPoseViewerUI_(p: {}) {
     return (
         <div>
             <div>
-                <IconButton onClick={() => OPAnim.start()} icon={<I.PlayOutline />} />
-                <IconButton onClick={() => OPAnim.stop()} icon={<I.PauseOutline />} />
-                <IconButton onClick={() => OPAnim.drawAllToPngAndSaveLocally()} icon={<I.Scatter />}>
+                <Button onClick={() => OPAnim.start()} icon={<span className='material-symbols-outlined'>play_arrow</span>} />
+                <Button onClick={() => OPAnim.stop()} icon={<span className='material-symbols-outlined'>pause</span>} />
+                <Button
+                    onClick={() => OPAnim.drawAllToPngAndSaveLocally()}
+                    icon={<span className='material-symbols-outlined'>save_alt</span>}
+                >
                     Draw all to png and save locally
-                </IconButton>
+                </Button>
             </div>
             <canvas
                 id='test'

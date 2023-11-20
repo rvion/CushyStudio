@@ -1,12 +1,12 @@
 import type { STATE } from 'src/state/state'
 import type { AbsolutePath, RelativePath } from '../utils/fs/BrandedPaths'
+import type { ItemDataType } from 'src/rsuite/shims'
 
 import path, { join } from 'pathe'
 import Watcher from 'watcher'
 
 import { existsSync, mkdirSync, readFileSync, readdirSync, statSync, writeFileSync } from 'fs'
 import { makeAutoObservable } from 'mobx'
-import { ItemDataType } from 'rsuite/esm/@types/common'
 import { CardPath, asCardPath } from 'src/cards/CardPath'
 import { Deck, DeckFolder } from 'src/cards/Deck'
 import { hasValidActionExtension } from '../back/ActionExtensions'
@@ -340,13 +340,13 @@ export class Library {
         }
     }
 
-    debug = (at: ItemDataType = { children: this.fileTree, label: 'root' }, level = 0) => {
-        const indent = ' '.repeat(level * 2)
-        console.log(`|| ${indent}${at.label}`)
-        if (at.children) {
-            for (const child of at?.children ?? []) {
-                this.debug(child, level + 1)
-            }
-        }
-    }
+    // debug = (at: ItemDataType = { children: this.fileTree, label: 'root' }, level = 0) => {
+    //     const indent = ' '.repeat(level * 2)
+    //     console.log(`|| ${indent}${at.label}`)
+    //     if (at.children) {
+    //         for (const child of at?.children ?? []) {
+    //             this.debug(child, level + 1)
+    //         }
+    //     }
+    // }
 }

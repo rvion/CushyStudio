@@ -19,7 +19,7 @@ import { DraftL } from 'src/models/Draft'
 import { ProjectL } from 'src/models/Project'
 import { ShortcutWatcher } from 'src/app/shortcuts/ShortcutManager'
 import { shortcutsDef } from 'src/app/shortcuts/shortcuts'
-import { ThemeManager } from 'src/theme/layoutTheme'
+import { ThemeManager } from 'src/theme/ThemeManager'
 import { UserTags } from 'src/widgets/prompter/nodes/usertags/UserLoader'
 import { CushyLayoutManager, Widget } from '../panels/router/Layout'
 import { ResilientWebSocketClient } from '../back/ResilientWebsocket'
@@ -55,7 +55,7 @@ export class STATE {
     //file utils that need to be setup first because
     resolveFromRoot = (relativePath: RelativePath): AbsolutePath => asAbsolutePath(join(this.rootPath, relativePath))
     resolve = (from: AbsolutePath, relativePath: RelativePath): AbsolutePath => asAbsolutePath(join(from, relativePath))
-    theme: ThemeManager
+    themeMgr: ThemeManager
     layout: CushyLayoutManager
     uid = nanoid() // front uid to fix hot reload
     db: LiveDB // core data
@@ -139,6 +139,10 @@ export class STATE {
         return this.configFile.value.favoriteCards ?? []
     }
 
+    getConfigValue = <K extends keyof ConfigFile>(k: K) => this.configFile.value[k]
+    setConfigValue = <K extends keyof ConfigFile>(k: K, v: ConfigFile[K]) => this.configFile.update({ [k]: v })
+    isConfigValueEq = <K extends keyof ConfigFile>(k: K, val: ConfigFile[K]) => this.configFile.value[k] === val
+
     droppedFiles: File[] = []
 
     // showCardPicker: boolean = false
@@ -183,7 +187,7 @@ export class STATE {
         return this._currentDraft
     }
     set currentDraft(draft: DraftL) {
-        const card = draft.card
+        const card = draft.app
         card?.load()
         this.closeCardPicker()
         this._currentDraft = draft
@@ -267,7 +271,7 @@ export class STATE {
         this.shortcuts = new ShortcutWatcher(shortcutsDef, this, { log: true, name: nanoid() })
         this.uploader = new Uploader(this)
         this.layout = new CushyLayoutManager(this)
-        this.theme = new ThemeManager(this)
+        this.themeMgr = new ThemeManager(this)
         this.updater = new GitManagedFolder(this, {
             absFolderPath: this.rootPath,
             shouldAutoUpdate: true,

@@ -12,12 +12,12 @@ export const GalleryHoveredPreviewUI = observer(function GalleryHoveredPreviewUI
     if (cccP) return null
     const hovered = st.hovered
     if (hovered == null) return null
-
+    if (st.getConfigValue('showPreviewInPanel')) return null
     const extraProps: CSSProperties = st.showPreviewInFullScreen
         ? {
-              maxHeight: st.showPreviewInFullScreen ? '100vh' : undefined,
-              maxWidth: st.showPreviewInFullScreen ? '100vw' : undefined,
-              width: '100%',
+              maxHeight: st.showPreviewInFullScreen ? '95vh' : undefined,
+              maxWidth: st.showPreviewInFullScreen ? '95vw' : undefined,
+              width: '95%',
           }
         : {}
 

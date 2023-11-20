@@ -1,9 +1,10 @@
-import type { STATE } from 'src/state/state'
 import type { ImageID, ImageL } from 'src/models/Image'
+import type { STATE } from 'src/state/state'
 
-import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch'
 import { observer } from 'mobx-react-lite'
-import { Button, Rate, Toggle } from 'rsuite'
+import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch'
+import { Dropdown, MenuItem } from 'src/rsuite/Dropdown'
+import { Rate, Toggle } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
 import { openExternal, showItemInFolder } from '../app/layout/openExternal'
 
@@ -17,55 +18,73 @@ export const Panel_ViewImage = observer(function Panel_ViewImage_(p: { imageID?:
     // if (img == null) return null
     return (
         <div
-            tw='w-full h-full flex flex-col'
+            tw='w-full h-full flex flex-col bg-base-100'
             style={{
                 background: st.configFile.value.galleryBgColor,
             }}
         >
-            <div tw='flex items-center gap-2 p-0.5'>
+            {/* {url} */}
+            <div tw='flex items-center gap-2 bg-base-200'>
                 {/* 1. RATER */}
-                {img && <Rate size='xs' onChange={(next) => img.update({ star: next })} value={img.data.star} />}
+
+                {/* <FieldAndLabelUI label='Rating'> */}
+                <Rate
+                    name={img?.id ?? 'latent'}
+                    value={img?.data.star ?? 0}
+                    disabled={img == null}
+                    onChange={(next) => {
+                        if (img == null) return
+                        // const next = ev.target.value
+                        img.update({ star: next })
+                    }}
+                />
+                {/* </FieldAndLabelUI> */}
 
                 {/* 2. LATENT PREVIEW TOOGLE */}
                 {/* (only on "last-image" mode; when p.imageID is null )  */}
                 {p.imageID == null ? (
-                    <div tw='flex gap-1 items-center'>
+                    <div tw='flex items-center'>
+                        Sampler
                         <Toggle
-                            size='sm'
                             checked={st.showLatentPreviewInLastImagePanel}
-                            onChange={(next) => (st.showLatentPreviewInLastImagePanel = next)}
+                            onChange={(ev) => (st.showLatentPreviewInLastImagePanel = ev.target.checked)}
                         />
-                        <span tw='text-light'>include sampler preview</span>
                     </div>
                 ) : null}
 
-                <div tw='text-gray-500 text-sm'>
-                    W={img?.data.width ?? '?'} x H={img?.data.height ?? '?'}
-                </div>
+                {/* <FieldAndLabelUI label='Size'> */}
+                {/* </FieldAndLabelUI> */}
                 {/* 3. OPEN OUTPUT FOLDER */}
-                {img?.localAbsolutePath && (
-                    <Button
-                        startIcon={<span className='material-symbols-outlined'>folder</span>}
-                        size='xs'
-                        appearance='link'
-                        onClick={() => showItemInFolder(img.localAbsolutePath)}
+                <Dropdown title='Actions' startIcon={<span className='material-symbols-outlined'>menu</span>}>
+                    <MenuItem
+                        icon={<span className='material-symbols-outlined'>folder</span>}
+                        size='sm'
+                        // appearance='subtle'
+                        disabled={!img?.localAbsolutePath}
+                        onClick={() => {
+                            if (!img?.localAbsolutePath) return
+                            showItemInFolder(img.localAbsolutePath)
+                        }}
                     >
                         open folder
-                    </Button>
-                )}
-
-                {/* 3. OPEN FILE ITSELF */}
-                {imgPathWithFileProtocol && (
-                    <Button
-                        startIcon={<span className='material-symbols-outlined'>folder</span>}
+                    </MenuItem>
+                    {/* 3. OPEN FILE ITSELF */}
+                    <MenuItem
+                        icon={<span className='material-symbols-outlined'>folder</span>}
                         size='xs'
-                        appearance='link'
-                        onClick={() => openExternal(imgPathWithFileProtocol)}
+                        // appearance='subtle'
+                        disabled={!img?.localAbsolutePath}
+                        onClick={() => {
+                            if (imgPathWithFileProtocol == null) return
+                            openExternal(imgPathWithFileProtocol)
+                        }}
                     >
                         open
-                    </Button>
-                )}
+                    </MenuItem>
+                </Dropdown>
+                <div tw='virtualBorder p-1'>{`${img?.data.width ?? '?'} x ${img?.data.height ?? '?'}`}</div>
             </div>
+
             <TransformWrapper centerZoomedOut centerOnInit>
                 <TransformComponent
                     wrapperStyle={{ /* border: '5px solid #b53737', */ height: '100%', width: '100%' }}
@@ -103,6 +122,9 @@ const getPreviewType = (
         return { url: img?.url ?? errorURL, img }
     }
     if (imageID == null) {
+        if (st.getConfigValue('showPreviewInPanel')) {
+            if (st.hovered) return { url: st.hovered.url }
+        }
         if (st.showLatentPreviewInLastImagePanel) {
             const lastImage = st.db.images.last()
             const latent = st.preview

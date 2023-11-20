@@ -1,1 +1,1 @@
-npm start
+node.exe start.cjs

@@ -6,7 +6,7 @@ import { observer } from 'mobx-react-lite'
 import { useMemo, useState } from 'react'
 import { getPngMetadataFromFile } from './getPngMetadata'
 import { usePromise } from './usePromise'
-import { Button, Panel } from 'rsuite'
+import { Button, Panel } from 'src/rsuite/shims'
 import { useSt } from '../state/stateContext'
 import { TypescriptHighlightedCodeUI } from '../widgets/misc/TypescriptHighlightedCodeUI'
 import { convertLiteGraphToPrompt } from '../core/litegraphToPrompt'
@@ -66,8 +66,7 @@ export const ImportedFileUI = observer(function ImportedFileUI_(p: { file: File 
     // const hasWorkflow = json?.workflow
 
     return (
-        <Panel tw='bg-gray-800' bordered shaded>
-            {/* <div className='text-gray-400 text-xs italic'>{label(file)}</div> */}
+        <Panel tw='bg-base-300' bordered shaded>
             <Field k='name' v={file.name} />
             <Field k='size' v={file.size} />
             <Field k='name' v={file.type} />
@@ -101,7 +100,7 @@ export const ImportedFileUI = observer(function ImportedFileUI_(p: { file: File 
 const Field = observer(function Field_(p: { k: string; v: string | number | object }) {
     return (
         <div className='flex items-start gap-1'>
-            <div className='text-gray-400 italic'>{p.k}:</div>
+            <div className='text-neutral-content italic'>{p.k}:</div>
             <div>{typeof p.v === 'object' ? <pre>{JSON.stringify(p.v)}</pre> : p.v}</div>
         </div>
     )

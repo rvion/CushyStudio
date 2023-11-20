@@ -1,7 +1,11 @@
 Todo before release
 
 Misc:
+    ☐ show different from current preset in color
     ☐ surrounded by card for ju and tu
+    ☐ better marketplace without fetching stars and repo infos by adding some gen-marketplace-data
+    ☐ tree library menu by default
+    ☐ drafts
     ✔ break node in rich prompt @done(23-11-11 09:57)
     ☐ click on rich prompt should
     ✔ properly re-focus root on any blur (find some code I previously wrote for that) @done(23-11-11 11:20)
@@ -10,7 +14,7 @@ Misc:
     ☐ primitive to show that a custom node is required
     ✔ fix remaining errors in the codebase @done(23-11-11 11:18)
     ☐ proper model picker action
-    ☐ proper size picker action
+    ✔ proper size picker action @done(23-11-20 03:18)
     ☐ cache action compilation
     ☐ lists (re-ordering, ...)
     ☐ image loader (local files by path)
@@ -23,9 +27,9 @@ Misc:
     ✔ no git init when creating actions @done(23-11-10 20:21)
     ✔ faster clone @done(23-11-10 20:21)
     ☐ optimize all images
-    ☐ add squoosh images
+    ✔ add squoosh images @done(23-11-20 03:18)
     ☐ make the run button red if cushy is not running
-    ☐ error messages
+    ✔ error messages @done(23-11-20 03:18)
     ☐ option to reduce image size
 
 ✔ center preview @done(23-11-08 20:55)

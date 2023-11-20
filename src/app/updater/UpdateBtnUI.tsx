@@ -1,16 +1,15 @@
 import { observer } from 'mobx-react-lite'
-import { Button, Loader, Message, Popover, Whisper } from 'rsuite'
 import { FolderKind, GitManagedFolder } from 'src/cards/updater'
-import { _formatPreviewDate } from 'src/utils/formatters/_formatPreviewDate'
+import { Button, Loader, Message } from 'src/rsuite/shims'
 import { ReleaseChannelUI } from '../layout/ReleaseChannelUI'
+import { RevealUI } from 'src/rsuite/RevealUI'
 
 export const GitInitBtnUI = observer(function GitInitBtnUI_(p: { updater: GitManagedFolder }) {
     const updater = p.updater
-
     return (
         <Button
             disabled={updater.currentAction != null}
-            startIcon={<span className='material-symbols-outlined'>track_changes</span>}
+            icon={<span className='material-symbols-outlined'>track_changes</span>}
             onClick={async () => {
                 await updater._gitInit()
             }}
@@ -29,7 +28,7 @@ export const GitInstallUI = observer(function GitInstallUI_(p: { udpater: GitMan
             loading={updater.currentAction != null}
             appearance='primary'
             size='xs'
-            startIcon={<span className='text-gray-700 material-symbols-outlined'>cloud_download</span>}
+            icon={<span className='text-gray-700 material-symbols-outlined'>cloud_download</span>}
             onClick={(ev) => {
                 ev.stopPropagation()
                 ev.preventDefault()
@@ -49,60 +48,13 @@ export const UpdateBtnUI = observer(function UpdateBtnUI_(p: { updater: GitManag
     if (updater.status === FolderKind.NotADirectory) return <div>❓ unespected file</div>
     if (updater.status === FolderKind.FolderWithoutGit) return <GitInitBtnUI updater={updater} />
     return (
-        <Whisper
-            placement='bottomStart'
-            enterable
-            speaker={
-                <Popover>
-                    <div>
-                        {updater.config.betaBranch ? <ReleaseChannelUI onChange={(e) => console.log(e)} /> : null}
-                        <UpdaterErrorUI updater={updater} />
-                        <div tw='flex items-center'>
-                            <span className='material-symbols-outlined'>folder</span> <div>{updater.relPath || 'root'}</div>
-                        </div>
-                        <div>
-                            {updater.lastFetchAt ? (
-                                <div>
-                                    <div>
-                                        <span className='material-symbols-outlined'>history</span> prev update :{' '}
-                                        {getRelativeTimeString(updater.lastFetchAt)}
-                                    </div>
-                                    <div>
-                                        <span className='material-symbols-outlined'>schedule</span> next update :{' '}
-                                        {getRelativeTimeString(updater.nextFetchAt)}
-                                    </div>
-                                </div>
-                            ) : (
-                                <>no update done</>
-                            )}
-                        </div>
-                        <div>
-                            <Button
-                                size='sm'
-                                color='orange'
-                                appearance='ghost'
-                                onClick={() => updater.checkForUpdates()}
-                                startIcon={<span className='material-symbols-outlined'>refresh</span>}
-                            >
-                                FORCE REFRESH
-                            </Button>
-                        </div>
-                        <div>
-                            {updater.config.canBeUninstalled ? ( //
-                                <UninstallUI updater={updater} />
-                            ) : null}
-                        </div>
-                    </div>
-                </Popover>
-            }
-        >
+        <RevealUI>
             <div tw={['flex gap-1 cursor-help']}>
-                {/* // hasErrors ? 'bg-red-900' : 'bg-green-900 ', */}
                 <div tw='flex gap-1'>
                     {
                         hasErrors ? (
                             <>
-                                <span className='text-orange-500 material-symbols-outlined'>error</span>
+                                <span className='text-error-content material-symbols-outlined'>error</span>
                                 version
                             </>
                         ) : updater.updateAvailable ? (
@@ -111,7 +63,7 @@ export const UpdateBtnUI = observer(function UpdateBtnUI_(p: { updater: GitManag
                                 color='red'
                                 size='xs'
                                 appearance='primary'
-                                startIcon={<span className='material-symbols-outlined'>update</span>}
+                                icon={<span className='material-symbols-outlined'>update</span>}
                                 onClick={async (ev) => {
                                     ev.stopPropagation()
                                     ev.preventDefault()
@@ -126,16 +78,58 @@ export const UpdateBtnUI = observer(function UpdateBtnUI_(p: { updater: GitManag
                         // <span className='text-green-400 material-symbols-outlined'>check_circle</span>
                     }
 
-                    <div
-                        tw='text-sm whitespace-nowrap'
-                        className={updater.updateAvailable ? 'text-orange-400' : 'text-green-300 '}
-                    >
+                    <Button tw={[updater.updateAvailable ? 'btn-warning' : 'btn-ghost', 'btn-xs']}>
                         {updater.currentVersion} - {updater.mainBranchName}
                         {/* {updater.headCommitsCount ? `v${updater.currentVersion}` : <Loader />} */}
-                    </div>
+                    </Button>
                 </div>
             </div>
-        </Whisper>
+            {/* // placement='bottomStart' */}
+            {/* // enterable */}
+            {/* // speaker={ */}
+            {/* <Popover> */}
+            <div>
+                {updater.config.betaBranch ? <ReleaseChannelUI onChange={(e) => console.log(e)} /> : null}
+                <UpdaterErrorUI updater={updater} />
+                <div tw='flex items-center'>
+                    <span className='material-symbols-outlined'>folder</span> <div>{updater.relPath || 'root'}</div>
+                </div>
+                <div>
+                    {updater.lastFetchAt ? (
+                        <div>
+                            <div>
+                                <span className='material-symbols-outlined'>history</span> prev update :{' '}
+                                {getRelativeTimeString(updater.lastFetchAt)}
+                            </div>
+                            <div>
+                                <span className='material-symbols-outlined'>schedule</span> next update :{' '}
+                                {getRelativeTimeString(updater.nextFetchAt)}
+                            </div>
+                        </div>
+                    ) : (
+                        <>no update done</>
+                    )}
+                </div>
+                <div>
+                    <Button
+                        size='sm'
+                        color='orange'
+                        appearance='ghost'
+                        onClick={() => updater.checkForUpdates()}
+                        icon={<span className='material-symbols-outlined'>refresh</span>}
+                    >
+                        FORCE REFRESH
+                    </Button>
+                </div>
+                <div>
+                    {updater.config.canBeUninstalled ? ( //
+                        <UninstallUI updater={updater} />
+                    ) : null}
+                </div>
+            </div>
+            {/* </Popover> */}
+            {/* // } */}
+        </RevealUI>
     )
 })
 
@@ -171,7 +165,7 @@ export const UninstallUI = observer(function UninstallUI_(p: { updater: GitManag
             color='red'
             size='sm'
             appearance='ghost'
-            startIcon={<span className='material-symbols-outlined'>highlight_off</span>}
+            icon={<span className='material-symbols-outlined'>highlight_off</span>}
             onClick={(ev) => {
                 ev.stopPropagation()
                 ev.preventDefault()

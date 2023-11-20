@@ -1,12 +1,16 @@
 import React, { useRef, useState, useEffect, useMemo, CSSProperties } from 'react'
-import debounce from 'lodash/debounce'
-import { Button, Input, Slider } from 'rsuite'
+// @ts-ignore
+import debounce from 'lodash.debounce'
+import { Button, Input, Slider } from 'src/rsuite/shims'
+import { FieldAndLabelUI } from './FieldAndLabelUI'
+import { parseFloatNoRoundingErr } from 'src/utils/misc/parseFloatNoRoundingErr'
 
 export const ScribbleCanvas = (p: {
-    style: CSSProperties
     fillStyle: string
     strokeStyle: string
     onChange: (base64: string) => void
+    style?: CSSProperties
+    className?: string
 }) => {
     const canvasRef = useRef<HTMLCanvasElement | null>(null)
     const [drawing, setDrawing] = useState(false)
@@ -65,9 +69,10 @@ export const ScribbleCanvas = (p: {
         debouncedOnChange()
     }
     return (
-        <div style={p.style}>
+        <div style={p.style} className={p.className}>
             <div tw='flex gap-2 items-start'>
                 <Button
+                    size='sm'
                     onClick={() => {
                         const ctx = canvasRef.current?.getContext('2d')
                         if (ctx) {
@@ -78,43 +83,40 @@ export const ScribbleCanvas = (p: {
                 >
                     reset
                 </Button>
-                <div>
-                    Weight
+                <FieldAndLabelUI label='Weight'>
                     <Input
-                        size='xs'
+                        tw='input-xs'
                         style={{
                             fontFamily: 'monospace',
                             width: canvasWidth.toString().length + 7 + 'ch',
                         }}
                         type='number'
                         value={canvasWidth}
-                        onChange={(e) => setCanvasWidth(Number(e))}
+                        onChange={(ev) => setCanvasWidth(parseFloatNoRoundingErr(ev.target.value))}
                     />
-                </div>
-                <div>
-                    Height
+                </FieldAndLabelUI>
+                <FieldAndLabelUI label='Height'>
                     <Input
-                        size='xs'
+                        tw='input-xs'
                         style={{
                             fontFamily: 'monospace',
                             width: canvasHeight.toString().length + 7 + 'ch',
                         }}
                         type='number'
                         value={canvasHeight}
-                        onChange={(e) => setCanvasHeight(Number(e))}
+                        onChange={(ev) => setCanvasHeight(parseFloatNoRoundingErr(ev.target.value))}
                     />
-                </div>
-                <div>
-                    Scale
+                </FieldAndLabelUI>
+                <FieldAndLabelUI label='Scale'>
                     <Slider
                         step={0.1}
                         min={0.5}
                         max={2}
-                        style={{ width: '3rem' }}
+                        style={{ width: '8rem' }}
                         value={canvasScale}
-                        onChange={(e) => setCanvasScale(Number(e))}
+                        onChange={(ev) => setCanvasScale(parseFloatNoRoundingErr(ev.target.value))}
                     />
-                </div>
+                </FieldAndLabelUI>
             </div>
             <div style={{ height: `${canvasScale * canvasHeight}px` }}>
                 <canvas

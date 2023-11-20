@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 import { useEffect, useRef } from 'react'
 import { useSt } from 'src/state/stateContext'
-import { AppBarUI } from './AppBarUI'
+import { AppBarUI } from '../appbar/AppBarUI'
 import { ProjectUI } from './ProjectUI'
 import { Trigger } from '../shortcuts/Trigger'
 import { RenderFullPagePanelUI } from 'src/panels/router/RenderFullPagePanelUI'
@@ -44,7 +44,15 @@ export const CushyUI = observer(function CushyUI_() {
     }, [appRef.current, st])
 
     return (
-        <div id='CushyStudio' tabIndex={-1} ref={appRef} tw={['col grow h100', st.theme.theme]}>
+        <div
+            //
+            data-theme={st.themeMgr.theme}
+            id='CushyStudio'
+            tabIndex={-1}
+            ref={appRef}
+            tw={['col grow h100 text-base-content']}
+        >
+            <div id='tooltip-root' tw='pointer-events-none absolute inset-0 w-full h-full'></div>
             <AppBarUI />
             <RenderFullPagePanelUI />
             <div className='flex flex-grow relative'>

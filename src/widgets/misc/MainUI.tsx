@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite'
 import { useMemo } from 'react'
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
-import { CustomProvider } from 'rsuite'
+// import { CustomProvider } from 'src/rsuite/shims'
 import { asAbsolutePath } from '../../utils/fs/pathUtils'
 import { stContext, useSt } from '../../state/stateContext'
 import { STATE } from '../../state/state'
@@ -24,12 +24,12 @@ export const Main = observer(() => {
 const MainUI = observer(function MainUI_(p: {}) {
     const st = useSt()
     return (
-        <CustomProvider theme={st.theme.theme}>
-            <DndProvider backend={HTML5Backend}>
-                <TargetBox>
-                    <CushyUI />
-                </TargetBox>
-            </DndProvider>
-        </CustomProvider>
+        // <CustomProvider theme={st.theme.theme}>
+        <DndProvider backend={HTML5Backend}>
+            <TargetBox>
+                <CushyUI />
+            </TargetBox>
+        </DndProvider>
+        // </CustomProvider>
     )
 })

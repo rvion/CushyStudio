@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 import { EmbeddingNode } from './EmbeddingNode'
-import { Tooltip, Whisper } from 'rsuite'
+import { RevealUI } from 'src/rsuite/RevealUI'
 
 export const EmbeddingNodeUI = observer(function EmbeddingNodeUI_(p: { node: EmbeddingNode }) {
     const node = p.node as EmbeddingNode
@@ -10,9 +10,10 @@ export const EmbeddingNodeUI = observer(function EmbeddingNodeUI_(p: { node: Emb
             style={{ border: '1px solid #747474' }}
             className='text-red-400 rv-tooltip-container p-1'
         >
-            <Whisper placement='bottomStart' speaker={<Tooltip>embedding</Tooltip>}>
+            <RevealUI>
                 <span>{node.embeddingName} ☎️</span>
-            </Whisper>
+                <span>embedding</span>
+            </RevealUI>
         </span>
     )
 })

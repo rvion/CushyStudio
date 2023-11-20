@@ -1,13 +1,14 @@
-import * as I from '@rsuite/icons'
-import * as R from 'src/controls/Widget'
 import { observer } from 'mobx-react-lite'
+import type { LabelPos } from 'src/controls/IWidget'
+import type * as R from 'src/controls/Widget'
+
 import { ErrorBoundary } from 'react-error-boundary'
-import { Toggle, Tooltip, Whisper } from 'rsuite'
-import { LabelPos } from 'src/controls/IWidget'
+import { Toggle, Tooltip, Whisper } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
 import { ErrorBoundaryFallback } from '../../widgets/misc/ErrorBoundary'
-import { WidgetUI } from './WidgetUI'
+import { WidgetDI } from './WidgetUI.DI'
 
+const KLS = WidgetDI
 export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     req: R.Widget
     labelPos?: LabelPos
@@ -28,12 +29,12 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
         // 🔴 if (p.vertical != null) return p.vertical
         if (st.preferedFormLayout === 'auto') {
             // if (req.isOptional) return true
-            if (req instanceof R.Widget_group) return true
-            if (req instanceof R.Widget_groupOpt) return true
-            if (req instanceof R.Widget_list) return true
-            if (req instanceof R.Widget_str && req.input.textarea) return true
-            if (req instanceof R.Widget_prompt) return true
-            if (req instanceof R.Widget_promptOpt) return true
+            if (req instanceof KLS.Widget_group) return true
+            if (req instanceof KLS.Widget_groupOpt) return true
+            if (req instanceof KLS.Widget_list) return true
+            if (req instanceof KLS.Widget_str && req.input.textarea) return true
+            // if (req instanceof KLS.Widget_prompt) return true
+            // if (req instanceof KLS.Widget_promptOpt) return true
             return false
         }
         if (st.preferedFormLayout === 'mobile') {
@@ -50,14 +51,14 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
         <Toggle //
             color='green'
             checked={req.state.active}
-            onChange={(t) => (req.state.active = t)}
+            onChange={(ev) => (req.state.active = ev.target.checked)}
         />
     )
     const showToogle = req.isOptional || !req.state.active
 
     let WIDGET = v.state.collapsed ? null : !v.state.active ? null : ( //
         <ErrorBoundary FallbackComponent={ErrorBoundaryFallback} onReset={(details) => {}}>
-            <WidgetUI req={req} />
+            <WidgetDI.WidgetUI req={req} />
         </ErrorBoundary>
     )
 
@@ -68,8 +69,9 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                     ? '_WidgetLabel w-full'
                     : '_WidgetLabel ',
                 WIDGET == null ? 'w-full' : null,
-                'min-w-max shrink-0 self-start',
-                'py-0.5 hover:bg-gray-800 cursor-pointer',
+                'min-w-max shrink-0',
+                'flex items-center gap-1',
+                'hover:bg-base-200 cursor-pointer',
             ]}
             onClick={() => {
                 if (v.state.collapsed) {
@@ -80,24 +82,29 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                 v.state.collapsed = !Boolean(v.state.collapsed)
             }}
         >
+            {showToogle ? toogle : null}
             {tooltip && (
                 <Whisper placement='topStart' speaker={<Tooltip>{tooltip}</Tooltip>}>
-                    <I.InfoOutline className='mr-2 cursor-pointer' />
+                    <span className='material-symbols-outlined'>info</span>
                 </Whisper>
             )}
             <span
                 //
-                tw={[p.isTopLevel && vertical ? 'font-bold' : undefined]}
+                tw={[p.isTopLevel /* && vertical */ ? 'font-bold' : undefined]}
                 style={
                     true && !vertical //
-                        ? { minWidth: '5rem', display: 'inline-block', textAlign: 'right', marginRight: '.5rem' }
-                        : {}
+                        ? {
+                              display: 'inline-block',
+                              lineHeight: '2rem',
+                          }
+                        : {
+                              lineHeight: '2rem',
+                          }
                 }
             >
                 {label || '...'}
             </span>{' '}
             {/* {req.constructor.name} */}
-            {showToogle ? toogle : null}
             {/* {req.constructor.name} */}
             <span tw='opacity-30 hover:opacity-100'>{v.state.collapsed ? '▸ {...}' : /*'▿'*/ ''}</span>
         </div>
@@ -110,7 +117,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     if (WIDGET == null) className += ' w-full'
     if (/*st.preferedFormLayout !== 'dense'*/ vertical && WIDGET) {
         WIDGET = (
-            <div tw='w-full' style={{ padding: '0 1rem 0 2rem' }}>
+            <div tw='w-full' style={{ padding: '0 0rem 0 2rem' }}>
                 {/* topLevel: {p.isTopLevel ? 'true' : JSON.stringify(req.input)} */}
                 {WIDGET}
             </div>

@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite'
-import { Message } from 'rsuite'
+import { Message } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
 import { MainNavEntryUI } from '../app/layout/MainNavEntryUI'
 import { ComboUI } from '../app/shortcuts/ComboUI'
@@ -18,23 +18,16 @@ export const Panel_CurrentDraft = observer(function CurrentDraftUI_(p: {}) {
         return (
             <MainNavEntryUI
                 tw='m-2'
-                size='lg'
-                color='green'
-                appearance='primary'
                 onClick={() => st.toggleCardPicker()}
-                ix='1'
                 icon={<span className='material-symbols-outlined'>play_circle</span>}
                 label='Open Card Picker'
-                tooltip={
-                    <>
-                        Open the card picker
-                        <ComboUI combo='meta+1' />
-                    </>
-                }
-            />
+            >
+                Open the card picker
+                <ComboUI combo='meta+1' />
+            </MainNavEntryUI>
         )
     }
-    const card = draft.card
+    const card = draft.app
     if (card == null)
         return (
             <Message type='error' showIcon>

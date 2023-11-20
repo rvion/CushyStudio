@@ -1,7 +1,7 @@
 import * as R from 'src/controls/Widget'
 
 import { observer } from 'mobx-react-lite'
-import { Message } from 'rsuite'
+import { Message } from 'src/rsuite/shims'
 import { exhaust } from '../../utils/misc/ComfyUtils'
 import { WidgetPromptUI } from '../../widgets/prompter/WidgetPromptUI'
 import { WidgetBoolUI } from './WidgetBoolUI'
@@ -21,6 +21,7 @@ import { WidgetSelectImageUI } from './WidgetSelectImageUI'
 import { WidgetSelectOneUI } from './WidgetSelectOneUI'
 import { WigetSizeUI } from './WidgetSizeUI'
 import { WidgetStrUI } from './WidgetStrUI'
+import { WidgetDI } from './WidgetUI.DI'
 
 /**
  * this widget will then dispatch the individual requests to the appropriate sub-widgets
@@ -68,3 +69,5 @@ export const WidgetUI = observer(function WidgetUI_(p: { req: R.Widget; focus?: 
         not supported
      </Message>
 })
+
+WidgetDI.WidgetUI = WidgetUI

@@ -1,53 +1,53 @@
-import { observer } from 'mobx-react-lite'
-import { useState } from 'react'
-import { ComfyPromptJSON } from 'src/types/ComfyPrompt'
-import { useSt } from '../../state/stateContext'
-import { TypescriptHighlightedCodeUI } from '../misc/TypescriptHighlightedCodeUI'
-import { SectionTitleUI } from './SectionTitle'
-import { FileListUI } from '../../cards/FileListUI'
+// import { observer } from 'mobx-react-lite'
+// import { useState } from 'react'
+// import { ComfyPromptJSON } from 'src/types/ComfyPrompt'
+// import { useSt } from '../../state/stateContext'
+// import { TypescriptHighlightedCodeUI } from '../misc/TypescriptHighlightedCodeUI'
+// import { SectionTitleUI } from './SectionTitle'
+// import { FileListUI } from '../../cards/FileListUI'
 
-export const ActionPickerUI = observer(function ToolPickerUI_(p: {}) {
-    const st = useSt()
-    return (
-        <div
-            //
-            className='flex flex-col flex-grow h-full'
-            style={{ borderRight: '1px solid #2d2d2d' }}
-        >
-            <SectionTitleUI label='Cards' className='bg-gray-800 mb-2'>
-                <div onClick={() => st.library.discoverAllCards()} className='cursor-pointer'>
-                    <span className='text-xs material-symbols-outlined'>sync</span>
-                </div>
-            </SectionTitleUI>
-            <FileListUI />
-        </div>
-    )
-})
+// export const ActionPickerUI = observer(function ToolPickerUI_(p: {}) {
+//     const st = useSt()
+//     return (
+//         <div
+//             //
+//             className='flex flex-col flex-grow h-full'
+//             style={{ borderRight: '1px solid #2d2d2d' }}
+//         >
+//             <SectionTitleUI label='Apps' className='bg-gray-800 mb-2'>
+//                 <div onClick={() => st.library.discoverAllCards()} className='cursor-pointer'>
+//                     <span className='text-xs material-symbols-outlined'>sync</span>
+//                 </div>
+//             </SectionTitleUI>
+//             <FileListUI />
+//         </div>
+//     )
+// })
 
-export const FooBarUI = observer(function FooBarUI_(p: {}) {
-    const [a, set] = useState<Maybe<string>>(() => null)
-    const st = useSt()
-    return (
-        <div>
-            <input
-                type='text'
-                defaultValue={''}
-                onChange={(e) => {
-                    const val = e.target.value
-                    const json = JSON.parse(val) as ComfyPromptJSON
-                    const code = st.importer.convertPromptToCode(json, {
-                        title: 'test',
-                        author: 'test',
-                        preserveId: true,
-                        autoUI: true,
-                    })
-                    set(code)
-                }}
-            />
-            {a && <TypescriptHighlightedCodeUI code={a} />}
-        </div>
-    )
-})
+// export const FooBarUI = observer(function FooBarUI_(p: {}) {
+//     const [a, set] = useState<Maybe<string>>(() => null)
+//     const st = useSt()
+//     return (
+//         <div>
+//             <input
+//                 type='text'
+//                 defaultValue={''}
+//                 onChange={(e) => {
+//                     const val = e.target.value
+//                     const json = JSON.parse(val) as ComfyPromptJSON
+//                     const code = st.importer.convertPromptToCode(json, {
+//                         title: 'test',
+//                         author: 'test',
+//                         preserveId: true,
+//                         autoUI: true,
+//                     })
+//                     set(code)
+//                 }}
+//             />
+//             {a && <TypescriptHighlightedCodeUI code={a} />}
+//         </div>
+//     )
+// })
 
 // <div>
 // {db.tools.map((tool) => {

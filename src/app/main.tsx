@@ -1,14 +1,15 @@
 import ReactDOM from 'react-dom/client'
 
 // import 'flexlayout-react/style/dark.css'
-import 'flexlayout-react/style/dark.css'
-import 'highlight.js/styles/stackoverflow-light.css'
-import 'highlight.js/styles/stackoverflow-dark.css'
+// import 'flexlayout-react/style/underline.css'
+// import 'highlight.js/styles/stackoverflow-light.css'
+// import 'highlight.js/styles/stackoverflow-dark.css'
 
-import 'rsuite/dist/rsuite.min.css'
+// import 'rsuite/dist/rsuite.min.css'
 // import 'src/theme/theme-rvion.css'
 
 import './index.css'
+import 'src/theme/flexlayout.css'
 import 'src/theme/theme.css'
 // import 'src/theme/card.css'
 

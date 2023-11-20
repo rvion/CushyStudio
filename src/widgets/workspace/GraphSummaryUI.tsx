@@ -1,7 +1,7 @@
 import type { GraphL } from 'src/models/Graph'
 
 import { observer } from 'mobx-react-lite'
-import { Panel, Popover, Progress, Whisper } from 'rsuite'
+import { Panel, Popover, ProgressLine, Whisper } from 'src/rsuite/shims'
 import { NodeRefUI } from '../misc/NodeRefUI'
 import { JSONHighlightedCodeUI } from '../misc/TypescriptHighlightedCodeUI'
 import { ButtonDownloadFilesUI } from './ButtonDownloadFilesUI'
@@ -11,16 +11,19 @@ export const GraphSummaryUI = observer(function GraphSummaryUI_(p: { graph: Grap
     const graph = p.graph
     return (
         <Panel tw='relative [min-width:2rem]'>
-            <div className='absolute top-2 right-0'>
+            {/* <div */}
+            {/* // */}
+            {/* // style={{ position: 'absolute', top: 0, left: 0, right: 0, zIndex: 1 }} */}
+            {/* > */}
+            <GraphProgressUI graph={p.graph} />
+            <NodeProgressUI graph={p.graph} />
+            {/* </div> */}
+            <div>
                 <ButtonDownloadFilesUI graph={graph} />
                 <ButtonOpenInComfyUI graph={graph} />
             </div>
             <div className='max-h-48 overflow-auto'>
                 {graph.size === 0 && <div>Empty Graph</div>}
-                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, zIndex: 1 }}>
-                    <GraphProgressUI graph={p.graph} />
-                    <NodeProgressUI graph={p.graph} />
-                </div>
                 {graph.pendingNodes.length > 0 && <div>+{graph.pendingNodes.length} nodes remaining</div>}
                 {graph.nodesByUpdatedAt.map((n, ix) => (
                     <div key={n.uid} className='flex items-center gap-0.5'>
@@ -53,7 +56,7 @@ export const NodeProgressUI = observer(function NodeProgressUI_(p: { graph: Grap
     if (node == null) return null
     const percent = node.status === 'done' ? 100 : node.progressRatio * 100
     const isDone = node.status === 'done'
-    return <Progress.Line showInfo={false} strokeWidth={4} status={isDone ? 'success' : 'active'} percent={percent} />
+    return <ProgressLine status={isDone ? 'success' : 'active'} percent={percent} />
 })
 
 export const GraphProgressUI = observer(function NodeProgressUI_(p: { graph: GraphL }) {
@@ -65,5 +68,5 @@ export const GraphProgressUI = observer(function NodeProgressUI_(p: { graph: Gra
     const score = (doneNodes + bonus) / totalNode
     const percent = graph.done ? 100 : score * 100
     const isDone = graph.done
-    return <Progress.Line showInfo={false} strokeWidth={8} status={isDone ? 'success' : 'active'} percent={percent} />
+    return <ProgressLine status={isDone ? 'success' : 'active'} percent={percent} />
 })

@@ -1,7 +1,6 @@
-import { CSSProperties, ReactElement, ReactNode, useState } from 'react'
+import { CSSProperties, ReactElement, ReactNode, useEffect, useState } from 'react'
 
 import { observer } from 'mobx-react-lite'
-import { Nav } from 'rsuite'
 
 type TabBody = () => ReactElement | null
 type Tab = {
@@ -22,15 +21,19 @@ export const TabsUI = observer(function Tabs_(p: {
     disabled?: boolean
 }) {
     const [onIx, setIx] = useState(() => p.current ?? 0)
+    useEffect(() => {
+        if (p.current != null) setIx(p.current)
+    })
     const tabHeader = (
-        <Nav appearance='tabs'>
+        <div style={{ width: 'fit-content' }} tw='tabs tabs-lifted '>
             {p.tabs.map((tab, ix) => {
                 const active = ix === onIx
                 return (
-                    <Nav.Item
+                    <a
+                        tw={['tab tab-sm', active && 'tab-active', p.disabled && 'tab-disabled']}
                         // size='sm'
-                        color={p.disabled ? undefined : 'blue'}
-                        active={active}
+                        // color={p.disabled ? undefined : 'blue'}
+                        // active={active}
                         key={ix}
                         onClick={() => {
                             // if (p.disabled) return
@@ -39,10 +42,10 @@ export const TabsUI = observer(function Tabs_(p: {
                         }}
                     >
                         {tab.title()}
-                    </Nav.Item>
+                    </a>
                 )
             })}
-        </Nav>
+        </div>
     )
     const selectedTab = p.tabs[onIx]
     return (
@@ -52,7 +55,7 @@ export const TabsUI = observer(function Tabs_(p: {
             tw={['_TabsUI', p.className, p.grow && '_grow', 'relative', p.inline && 'flex']}
         >
             {p.bottomTabs ? null : tabHeader}
-            <div className='_tab_body'>
+            <div className='_tab_body bg-base-100 tab-content block'>
                 {selectedTab ? ( //
                     <TabBodyWrapperUI key={onIx} fn={selectedTab.body} />
                 ) : (

@@ -83,7 +83,7 @@ export class CompletionState {
         const key = 'Break'
         if (_providerCache.has(key)) return _providerCache.get(key)!
         const createNode = (_t: string) => $createBreakNode('basic')
-        const menuLabel = <span tw='text-gray-300'>break</span>
+        const menuLabel = <span tw='text-neutral-content'>break</span>
         const provider = new CopmletionProvider({
             getValues: () => [
                 {

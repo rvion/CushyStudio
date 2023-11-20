@@ -10,10 +10,8 @@
  * 🟢 import type {...} from '...'
  * ❌ import {...} from '...'`
  * */
-import type { Runtime } from 'src/back/Runtime'
 import type { FormBuilder } from 'src/controls/FormBuilder'
 import type { ReqResult } from 'src/controls/IWidget'
-import type { Slot } from 'src/core/Slot'
 
 // this should be a default
 export type OutputFor<UIFn extends (form: FormBuilder) => any> = ReqResult<ReturnType<UIFn>>
@@ -25,10 +23,11 @@ export type OutputFor<UIFn extends (form: FormBuilder) => any> = ReqResult<Retur
 
 export const ui_highresfix = (form: FormBuilder) =>
     form.groupOpt({
+        label: 'Second Pass with latent Upscale (a.k.a. High Res Fix)',
         items: () => ({
-            scaleFactor: form.int({ default: 1 }),
+            scaleFactor: form.int({ default: 2, min: 1, max: 8 }),
             steps: form.int({ default: 15 }),
-            denoise: form.float({ min: 0, default: 0.5, max: 1, step: 0.01 }),
+            denoise: form.float({ min: 0, default: 0.6, max: 1, step: 0.01 }),
             saveIntermediaryImage: form.bool({ default: true }),
         }),
     })
@@ -53,59 +52,6 @@ export const ui_themes = (form: FormBuilder) =>
                 }),
             }),
     })
-
-//-----------------------------------------------------------
-// UI PART
-export const ui_latent = (form: FormBuilder) => {
-    return form.group({
-        items: () => ({
-            image: form.imageOpt({ group: 'latent' }),
-            flip: form.bool({ default: false, group: 'latent' }),
-            width: form.int({ default: 512, group: 'latent', step: 128, min: 128, max: 4096 }),
-            height: form.int({ default: 768, group: 'latent', step: 128, min: 128, max: 4096 }),
-            batchSize: form.int({ default: 1, group: 'latent', min: 1, max: 20 }),
-        }),
-    })
-}
-
-// RUN PART
-export const run_latent = async (p: {
-    //
-    flow: Runtime
-    opts: OutputFor<typeof ui_latent>
-    vae: _VAE
-}) => {
-    // init stuff
-    const graph = p.flow.nodes
-    const opts = p.opts
-
-    // misc calculatiosn
-    let width: number | Slot<'INT'>
-    let height: number | Slot<'INT'>
-    let latent: HasSingle_LATENT
-
-    // case 1. start form image
-    if (opts.image) {
-        const image = await p.flow.loadImageAnswer(opts.image)
-        latent = graph.VAEEncode({ pixels: image, vae: p.vae })
-        const size = graph.Image_Size_to_Number({ image: image })
-        width = size.outputs.width_int
-        height = size.outputs.height_int
-    }
-    // case 2. start form empty latent
-    else {
-        width = opts.flip ? opts.height : opts.width
-        height = opts.flip ? opts.width : opts.height
-        latent = graph.EmptyLatentImage({
-            batch_size: opts.batchSize ?? 1,
-            height: height,
-            width: width,
-        })
-    }
-
-    // return everything
-    return { latent, width, height }
-}
 
 // --------------------------------------------------------
 export const util_expandBrances = (str: string): string[] => {
@@ -138,15 +84,15 @@ export const ui_resolutionPicker = (form: FormBuilder) =>
     form.selectOne({
         label: 'Resolution',
         choices: [
-            { type: '1024x1024' },
-            { type: '896x1152' },
-            { type: '832x1216' },
-            { type: '768x1344' },
-            { type: '640x1536' },
-            { type: '1152x862' },
-            { type: '1216x832' },
-            { type: '1344x768' },
-            { type: '1536x640' },
+            { id: '1024x1024' },
+            { id: '896x1152' },
+            { id: '832x1216' },
+            { id: '768x1344' },
+            { id: '640x1536' },
+            { id: '1152x862' },
+            { id: '1216x832' },
+            { id: '1344x768' },
+            { id: '1536x640' },
         ],
         tooltip: 'Width x Height',
     })
@@ -155,7 +101,7 @@ export const ui_resolutionPicker = (form: FormBuilder) =>
 export const ui_shapePickerBasic = (form: FormBuilder) => {
     return form.selectOne({
         label: 'Shape',
-        choices: [{ type: 'round' }, { type: 'square' }],
+        choices: [{ id: 'round' }, { id: 'square' }],
     })
 }
 
@@ -163,6 +109,6 @@ export const ui_shapePickerBasic = (form: FormBuilder) => {
 export const ui_shapePickerExt = <const T extends string>(form: FormBuilder, values: T[]) => {
     return form.selectOne({
         label: 'Shape',
-        choices: values.map((t) => ({ type: t })),
+        choices: values.map((t) => ({ id: t })),
     })
 }

@@ -1,9 +1,9 @@
 import { observer } from 'mobx-react-lite'
-import { Message } from 'rsuite'
+import { Message } from 'src/rsuite/shims'
 import { Panel_DeckList } from 'src/panels/Panel_DeckList'
 import { stringifyUnknown } from 'src/utils/formatters/stringifyUnknown'
 import { Panel_Draft } from '../Panel_Draft'
-import { Panel_FileTree } from '../Panel_FileTree'
+// import { Panel_FileTree } from '../Panel_FileTree'
 import { Panel_Civitai } from '../Panel_Civitai'
 import { Panel_ComfyNodeExplorer } from '../Panel_ComfyNodeExplorer'
 import { Panel_ComfyUI } from '../Panel_ComfyUI'
@@ -21,6 +21,8 @@ import { Panel_3dScene } from 'src/panels/Panel_3dScene'
 import { Panel_ViewLatent } from 'src/panels/Panel_ViewLatent'
 import { Widget, exhaust } from './Layout'
 import { Panel_CardPicker3UI } from '../Panel_FullScreenLibrary'
+import { Panel_DraftJsonResult } from '../Panel_DraftJsonResult'
+import { Panel_DraftJsonSerial } from '../Panel_DraftJsonSerial'
 
 export const RenderPanelUI = observer(function RenderPanelUI_(p: { widget: Widget; widgetProps?: any }) {
     const component = p.widget
@@ -35,7 +37,7 @@ export const RenderPanelUI = observer(function RenderPanelUI_(p: { widget: Widge
         // if (component === Widget.Card)                return <Panel_Card      actionPath={extra.actionPath} />
         if (component === Widget.ComfyUI) return <Panel_ComfyUI litegraphJson={extra.litegraphJson} />;
         if (component === Widget.FileList) return <Panel_DeckList />;
-        if (component === Widget.FileList2) return <Panel_FileTree />;
+        // if (component === Widget.FileList2) return <Panel_FileTree />;
         if (component === Widget.Steps) return <Panel_Steps />;
         if (component === Widget.LastGraph) return <Panel_LastGraph />;
         if (component === Widget.LastImage) return <Panel_ViewImage />;
@@ -48,6 +50,8 @@ export const RenderPanelUI = observer(function RenderPanelUI_(p: { widget: Widge
         if (component === Widget.CardPicker3UI) return <Panel_CardPicker3UI  />;
         if (component === Widget.Config) return <Panel_Config />;
         if (component === Widget.Draft) return <Panel_Draft {...extra} />;
+        if (component === Widget.DraftJsonResult) return <Panel_DraftJsonResult {...extra} />;
+        if (component === Widget.DraftJsonSerial) return <Panel_DraftJsonSerial {...extra} />;
         if (component === Widget.CurrentDraft) return <Panel_CurrentDraft />;
         if (component === Widget.ComfyUINodeExplorer) return <Panel_ComfyNodeExplorer />;
         if (component === Widget.Deck) return <div>🔴 todo: action pack page: show readme</div>;

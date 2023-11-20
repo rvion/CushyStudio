@@ -14,8 +14,9 @@
 import { makeAutoObservable } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { createRef, useEffect, useLayoutEffect, useMemo } from 'react'
-import { Input, Slider } from 'rsuite'
-import { SubtlePanelConfUI } from 'src/widgets/misc/SubtlePanelConf'
+import { Input, Slider } from 'src/rsuite/shims'
+import { parseFloatNoRoundingErr } from 'src/utils/misc/parseFloatNoRoundingErr'
+import { FieldAndLabelUI } from 'src/widgets/misc/FieldAndLabelUI'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 
@@ -38,39 +39,51 @@ export const Panel_3dScene = observer(function SceneViewer_(p: Panel_Displacemen
     return (
         <div>
             <div tw='flex gap-2 px-2'>
-                <SubtlePanelConfUI label='displacement'>
+                <FieldAndLabelUI label='displacement'>
                     <Slider
                         style={{ width: '5rem' }}
                         min={0}
                         max={8}
                         value={state.displacementScale}
-                        onChange={(next) => (state.displacementScale = next)}
+                        onChange={(ev) => {
+                            const next = parseFloatNoRoundingErr(ev.target.value)
+                            state.displacementScale = next
+                        }}
                     />
-                </SubtlePanelConfUI>
-                <SubtlePanelConfUI label='light'>
+                </FieldAndLabelUI>
+                <FieldAndLabelUI label='light'>
                     <Slider
                         style={{ width: '5rem' }}
                         min={0}
                         max={8}
                         value={state.ambientLightIntensity}
-                        onChange={(next) => (state.ambientLightIntensity = next)}
+                        onChange={(ev) => {
+                            const next = parseFloatNoRoundingErr(ev.target.value)
+                            state.ambientLightIntensity = next
+                        }}
                     />
-                </SubtlePanelConfUI>
-                <SubtlePanelConfUI label='light color'>
-                    <Input
-                        //
+                </FieldAndLabelUI>
+                <FieldAndLabelUI label='light color'>
+                    <input
+                        tw='input'
                         style={{ width: '5rem' }}
                         value={state.ambientLightColor}
-                        onChange={(next) => {
+                        onChange={(ev) => {
+                            const next = ev.target.value
                             const hex = typeof next === 'string' ? parseInt(next.replace('#', ''), 16) : next
                             state.ambientLightColor = hex
                         }}
                         type='color'
                     />
-                </SubtlePanelConfUI>
-                <SubtlePanelConfUI label='Symmetric Model'>
-                    <input type='checkbox' checked={state.isSymmetric} onChange={(e) => (state.isSymmetric = e.target.checked)} />
-                </SubtlePanelConfUI>
+                </FieldAndLabelUI>
+                <FieldAndLabelUI label='Symmetric Model'>
+                    <input
+                        //
+                        type='checkbox'
+                        checked={state.isSymmetric}
+                        onChange={(e) => (state.isSymmetric = e.target.checked)}
+                    />
+                </FieldAndLabelUI>
             </div>
             <div ref={state.mountRef} />
         </div>

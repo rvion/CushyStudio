@@ -2,20 +2,22 @@
  * this file is an attempt to centralize core widget definition in a single
  * file so it's easy to add any widget in the future
  */
-import type { ItemDataType } from 'rsuite/esm/@types/common'
+import type { ItemDataType } from 'src/rsuite/shims'
 import type { CELL } from 'src/controls/widgets/WidgetMatrixUI'
 import type { SchemaL } from 'src/models/Schema'
 import type { SimplifiedLoraDef } from 'src/presets/SimplifiedLoraDef'
 import type { WidgetPromptOutput } from 'src/widgets/prompter/WidgetPromptUI'
 import type { PossibleSerializedNodes } from 'src/widgets/prompter/plugins/CushyDebugPlugin'
 import type { AspectRatio, ComfyImageAnswer, CushyImageAnswer, CushySize, CushySizeByRatio, ImageAnswer, ImageAnswerForm, PaintImageAnswer, SDModelType } from './misc/InfoAnswer'
+import type { CleanedEnumResult } from 'src/types/EnumUtils'
+import type { IRequest, IWidget, ReqInput, ReqResult, StateFields } from './IWidget'
+import type { RelativePath } from 'src/utils/fs/BrandedPaths'
 
 import { makeAutoObservable } from 'mobx'
 import { bang } from 'src/utils/misc/bang'
 import { FormBuilder } from './FormBuilder'
-import { IRequest, IWidget, ReqInput, ReqResult, StateFields } from './IWidget'
 import { nanoid } from 'nanoid'
-import { CleanedEnumResult } from 'src/types/EnumUtils'
+import { WidgetDI } from './widgets/WidgetUI.DI'
 
 // Widget is a closed union for added type safety
 export type Widget =
@@ -339,7 +341,7 @@ export type Widget_bool_state  = StateFields<{ type:'bool', active: true; val: b
 export type Widget_bool_output = boolean
 export interface Widget_bool extends IWidget<'bool', Widget_bool_input, Widget_bool_serial, Widget_bool_state, Widget_bool_output> {}
 export class Widget_bool implements IRequest<'bool', Widget_bool_input, Widget_bool_serial, Widget_bool_state, Widget_bool_output> {
-    isOptional = false
+    isOptional = true
     id: string
     type = 'bool' as const
     state: Widget_bool_state
@@ -354,7 +356,7 @@ export class Widget_bool implements IRequest<'bool', Widget_bool_input, Widget_b
         makeAutoObservable(this)
     }
     get serial(): Widget_bool_serial { return this.state }
-    get result(): Widget_bool_output { return this.state.val }
+    get result(): Widget_bool_output { return this.state.active ? this.state.val : false}
 }
 
 // 🅿️ intOpt ==============================================================================
@@ -455,6 +457,7 @@ export class Widget_size implements IRequest<'size', Widget_size_input, Widget_s
                 modelType,
                 height,
                 width,
+                active: true,
             }
         }
         makeAutoObservable(this)
@@ -591,7 +594,7 @@ export class Widget_loras implements IRequest<'loras', Widget_loras_input, Widge
     }
     allLoras: string[]
     selectedLoras = new Map<string, SimplifiedLoraDef>()
-    FOLDER: ItemDataType<any>[] = []
+    FOLDER: ItemDataType[] = []
     private _insertLora = (rawPath: string) => {
         const path = rawPath.replace(/\\/g, '/')
         const segments = path.split('/')
@@ -620,6 +623,7 @@ export type Widget_image_input  = ReqInput<{
     defaultPaint?: PaintImageAnswer,
     scribbleStrokeColor?: string,
     scribbleFillColor?: string
+    assetSuggested?: RelativePath
 }>
 export type Widget_image_serial = Widget_image_state
 export type Widget_image_state  = StateFields<ImageAnswerForm<'image', true>>
@@ -696,18 +700,19 @@ export class Widget_imageOpt implements IRequest<'imageOpt', Widget_imageOpt_inp
 }
 
 // 🅿️ selectOne ==============================================================================
-export type Widget_selectOne_input<T>  = ReqInput<{ default?: T; choices: T[] | ((formRoot:Widget_group<any>) => T[]) }>
-export type Widget_selectOne_serial<T> = Widget_selectOne_state<T>
-export type Widget_selectOne_state<T>  = StateFields<{ type:'selectOne', query: string; val: T }>
-export type Widget_selectOne_output<T> = T
+export type BaseSelectOneEntry = { id: string, label?: string }
+export type Widget_selectOne_input <T extends BaseSelectOneEntry>  = ReqInput<{ default?: T; choices: T[] | ((formRoot:Widget_group<any>) => T[]) }>
+export type Widget_selectOne_serial<T extends BaseSelectOneEntry> = Widget_selectOne_state<T>
+export type Widget_selectOne_state <T extends BaseSelectOneEntry>  = StateFields<{ type:'selectOne', query: string; val: T }>
+export type Widget_selectOne_output<T extends BaseSelectOneEntry> = T
 export interface Widget_selectOne<T>  extends IWidget<'selectOne', Widget_selectOne_input<T>, Widget_selectOne_serial<T>, Widget_selectOne_state<T>, Widget_selectOne_output<T>> {}
-export class Widget_selectOne<T> implements IRequest<'selectOne', Widget_selectOne_input<T>, Widget_selectOne_serial<T>, Widget_selectOne_state<T>, Widget_selectOne_output<T>> {
+export class Widget_selectOne<T extends BaseSelectOneEntry> implements IRequest<'selectOne', Widget_selectOne_input<T>, Widget_selectOne_serial<T>, Widget_selectOne_state<T>, Widget_selectOne_output<T>> {
     isOptional = false
     id: string
     type = 'selectOne' as const
     state: Widget_selectOne_state<T>
 
-    get choices(){
+    get choices():T[]{
         const _choices = this.input.choices
         return typeof _choices === 'function' //
             ? _choices(this.builder.ROOT)
@@ -883,6 +888,17 @@ export class Widget_list<T extends Widget> implements IRequest<'list', Widget_li
             }
         }
         makeAutoObservable(this)
+    }
+    removemAllItems = () => {
+        this.state.items = []
+    }
+    collapseAllItems = () => {
+        for (const item of this.state.items)
+            item.state.collapsed = true
+    }
+    expandAllItems = () => {
+        for (const item of this.state.items)
+            item.state.collapsed = false
     }
     removeItem = (item: T) => {
         const i = this.state.items.indexOf(item)
@@ -1218,3 +1234,34 @@ export class Widget_enumOpt<T extends KnownEnumNames> implements IRequest<'enumO
         return this.status.finalValue
     }
 }
+
+
+
+WidgetDI.Widget_color=Widget_color
+WidgetDI.Widget_str=Widget_str
+WidgetDI.Widget_strOpt=Widget_strOpt
+WidgetDI.Widget_prompt=Widget_prompt
+WidgetDI.Widget_promptOpt=Widget_promptOpt
+WidgetDI.Widget_seed=Widget_seed
+WidgetDI.Widget_int=Widget_int
+WidgetDI.Widget_float=Widget_float
+WidgetDI.Widget_bool=Widget_bool
+WidgetDI.Widget_intOpt=Widget_intOpt
+WidgetDI.Widget_floatOpt=Widget_floatOpt
+WidgetDI.Widget_markdown=Widget_markdown
+WidgetDI.Widget_size=Widget_size
+WidgetDI.Widget_matrix=Widget_matrix
+WidgetDI.Widget_loras=Widget_loras
+WidgetDI.Widget_image=Widget_image
+WidgetDI.Widget_imageOpt=Widget_imageOpt
+WidgetDI.Widget_selectOneOrCustom=Widget_selectOneOrCustom
+WidgetDI.Widget_selectMany=Widget_selectMany
+WidgetDI.Widget_selectManyOrCustom=Widget_selectManyOrCustom
+WidgetDI.Widget_selectOne=Widget_selectOne
+WidgetDI.Widget_list=Widget_list
+WidgetDI.Widget_group=Widget_group
+WidgetDI.Widget_groupOpt=Widget_groupOpt
+WidgetDI.Widget_choice=Widget_choice
+WidgetDI.Widget_choices=Widget_choices
+WidgetDI.Widget_enum=Widget_enum
+WidgetDI.Widget_enumOpt=Widget_enumOpt

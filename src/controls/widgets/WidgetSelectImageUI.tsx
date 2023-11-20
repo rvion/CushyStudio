@@ -1,20 +1,20 @@
+import { runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
-import { Button, Toggle } from 'rsuite'
 import { Widget_image, Widget_imageOpt } from 'src/controls/Widget'
+import { Button } from 'src/rsuite/shims'
 import { useSt } from '../../state/stateContext'
 import { ImageUI } from '../../widgets/galleries/ImageUI'
 import { useImageDrop } from '../../widgets/galleries/dnd'
-import { useDraft } from '../../widgets/misc/useDraft'
-import { TabsUI } from '../../widgets/misc/TabUI'
-import { EnumSelectorUI } from './WidgetEnumUI'
 import { ScribbleCanvas } from '../../widgets/misc/ScribbleUI'
-import { runInAction } from 'mobx'
+import { TabsUI } from '../../widgets/misc/TabUI'
+import { useDraft } from '../../widgets/misc/useDraft'
+import { EnumSelectorUI } from './WidgetEnumUI'
 
 enum Tab {
     Cushy = 0,
-    Comfy,
-    Scribble,
-    Asset,
+    Comfy = 1,
+    Scribble = 2,
+    Asset = 3,
 }
 export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: { req: Widget_image | Widget_imageOpt }) {
     const req = p.req
@@ -32,7 +32,7 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: { r
         {
             title: () => <>Drop</>,
             body: () => (
-                <div className='flex gap-2 bg-yellow-900 rounded p-1 self-center'>
+                <div className='flex gap-2 p-1 bg-base-100 border border-dashed border-neutral self-center'>
                     {req.state.cushy != null ? ( //
                         <div tw='flex items-start'>
                             <ImageUI img={draft.db.images.getOrThrow(req.state.cushy.imageID)} />
@@ -91,7 +91,8 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: { r
             title: () => <>Scribble</>,
             body: () => (
                 <ScribbleCanvas
-                    style={{ border: '1px solid black' }}
+                    tw='p-2'
+                    // style={{ border: '1px solid black' }}
                     fillStyle='black'
                     strokeStyle='white'
                     onChange={(base64: string) => {
@@ -109,21 +110,23 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: { r
     //         body: () => <div>No image</div>,
     //     })
     // }
-    const current = !req.state.active
-        ? Tab.Cushy
-        : req.state.pick === 'comfy'
-        ? Tab.Comfy
-        : req.state.pick === 'paint'
-        ? Tab.Scribble
-        : req.state.pick === 'asset'
-        ? Tab.Asset
-        : Tab.Asset
+    const current =
+        !req.state.active || req.state.pick === 'cushy'
+            ? Tab.Cushy
+            : req.state.pick === 'comfy'
+            ? Tab.Comfy
+            : req.state.pick === 'paint'
+            ? Tab.Scribble
+            : req.state.pick === 'asset'
+            ? Tab.Asset
+            : Tab.Asset
 
     return (
         <div>
-            <div style={dropStyle} ref={dropRef} className='flex gap-2 flex-row items-center'>
+            <div style={dropStyle} ref={dropRef} className='flexflex-row items-center'>
                 <TabsUI
-                    // inline
+                    current={current}
+                    tabs={tabs}
                     disabled={!req.state.active}
                     onClick={(i) => {
                         // if (i === Tab.None && req instanceof Widget_imageOpt) req.state.active = false
@@ -133,8 +136,6 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: { r
                         if (i === Tab.Scribble) req.state.pick = 'paint'
                         if (i === Tab.Asset) req.state.pick = 'asset'
                     }}
-                    current={current}
-                    tabs={tabs}
                 />
             </div>
         </div>

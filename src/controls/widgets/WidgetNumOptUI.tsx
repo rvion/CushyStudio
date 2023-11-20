@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite'
-import { InputNumber, Slider } from 'rsuite'
+import { InputNumberBase, Slider } from 'src/rsuite/shims'
 import { Widget_floatOpt, Widget_intOpt } from 'src/controls/Widget'
 import { parseFloatNoRoundingErr } from 'src/utils/misc/parseFloatNoRoundingErr'
 
@@ -25,7 +25,8 @@ export const WidgetNumOptUI = observer(function WidgetNumOptUI_(p: { req: Widget
                     min={req.input.min}
                     max={req.input.max}
                     step={step}
-                    onChange={(next) => {
+                    onChange={(ev) => {
+                        const next = ev.target.value
                         // parse value
                         let num =
                             typeof next === 'string' //
@@ -44,7 +45,7 @@ export const WidgetNumOptUI = observer(function WidgetNumOptUI_(p: { req: Widget
                     }}
                 />
             )}
-            <InputNumber //
+            <InputNumberBase //
                 disabled={!req.state.active}
                 min={req.input.min}
                 max={req.input.max}
@@ -53,9 +54,10 @@ export const WidgetNumOptUI = observer(function WidgetNumOptUI_(p: { req: Widget
                     fontFamily: 'monospace',
                     width: val.toString().length + 6 + 'ch',
                 }}
-                size='sm'
+                _size='sm'
                 value={val}
-                onChange={(next) => {
+                onChange={(ev) => {
+                    const next = ev.target.value
                     // parse value
                     let num =
                         typeof next === 'string' //
