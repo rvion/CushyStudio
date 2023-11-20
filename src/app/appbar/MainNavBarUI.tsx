@@ -128,7 +128,7 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: { className?: str
                 appearance='subtle'
             >
                 <MenuItem
-                    onClick={() => st.layout.GO_TO('Paint', {})}
+                    onClick={() => st.layout.GO_TO('TypeDoc', {})}
                     icon={<span className='material-symbols-outlined text-pink-400'>help_outline</span>}
                     label='Open doc (panel)'
                 />

@@ -41,6 +41,7 @@ tsconfig.custom.json
 
 library/*
 !library/CushyStudio
+!library/_doc
 
 .cushy/
 src/theme/theme-rvion.css

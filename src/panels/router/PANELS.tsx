@@ -20,6 +20,7 @@ import { Panel_LastStep, Panel_Steps } from '../Panel_Steps'
 import { Panel_ViewImage } from '../Panel_ViewImage'
 import { Panel_ViewLatent } from '../Panel_ViewLatent'
 import { PropsOf } from './Layout'
+import { Panel_TypeDoc } from '../Panel_TypeDoc'
 
 // prettier-ignore
 export const panels = {
@@ -57,6 +58,10 @@ export const panels = {
     // config
     Config:              { name: 'Config',              widget: Panel_Config,            header: (p: PropsOf<typeof Panel_Config           >) => ({title: 'Config',              icon: undefined                               }) },
     Hosts:               { name: 'Hosts',               widget: Panel_MachineManager,    header: (p: PropsOf<typeof Panel_MachineManager   >) => ({title: 'Hosts',               icon: undefined                               }) },
+
+    // doc & help
+    TypeDoc:             { name: 'TypeDoc',             widget: Panel_TypeDoc,           header: (p: PropsOf<typeof Panel_MachineManager   >) => ({title: 'TypeDoc',             icon: assets.public_typescript_512_png        }) },
+
 }
 export type Panels = typeof panels
 export type Panel = keyof Panels
