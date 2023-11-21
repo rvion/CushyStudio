@@ -73,7 +73,7 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                 }}
             >
                 <DraftHeaderUI app={app} draft={draft} />
-                {st.isConfigValueEq('draft.mockup-mobile', false) ? (
+                {!st.isConfigValueEq('draft.mockup-mobile', true) ? (
                     <ScrollablePaneUI className='flex-grow'>
                         <div tw='pb-80 pl-2'>
                             <ResultWrapperUI
