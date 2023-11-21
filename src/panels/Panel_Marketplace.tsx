@@ -4,7 +4,7 @@ import { Button } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
 import { GithubUserUI } from 'src/cards/GithubAvatarUI'
 import { ErrorBoundaryFallback } from 'src/widgets/misc/ErrorBoundary'
-import { Deck } from '../cards/Deck'
+import { Package } from '../cards/Deck'
 import { ActionPackStatusUI } from '../cards/DeckStatusUI'
 import { ActionPackStarsUI } from '../cards/DeckStarsUI'
 
@@ -26,7 +26,7 @@ export const Panel_Marketplace = observer(function Panel_Marketplace_(p: {}) {
     )
 })
 
-export const ActionPackUI = observer(function ActionPackUI_(p: { actionPack: Deck }) {
+export const ActionPackUI = observer(function ActionPackUI_(p: { actionPack: Package }) {
     const pack = p.actionPack
     return (
         <div tw='cursor-pointer hover:bg-gray-700 p-2' key={pack.name} style={{ borderBottom: '1px solid #515151' }}>
@@ -36,7 +36,7 @@ export const ActionPackUI = observer(function ActionPackUI_(p: { actionPack: Dec
                     <GithubUserUI size='1.5rem' username={pack.githubUserName} showName />
                     <div tw='text-neutral-content'>{pack.description}</div>
                 </div>
-                {pack.BUILT_IN ? null : <ActionPackStarsUI pack={pack} />}
+                {pack.isBuiltIn ? null : <ActionPackStarsUI pack={pack} />}
             </div>
             <ActionPackStatusUI pack={pack} />
             {pack.installK.logs.length > 0 && (

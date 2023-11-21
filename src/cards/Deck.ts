@@ -7,70 +7,94 @@ import { join, relative } from 'pathe'
 import { assets } from 'src/utils/assets/assets'
 import { Library } from 'src/cards/Library'
 import { GithubRepo, GithubRepoName, asGithubRepoName } from 'src/cards/githubRepo'
-import { GitManagedFolder } from 'src/cards/updater'
+import { GitManagedFolder } from 'src/updater/updater'
 import { ManualPromise } from 'src/utils/misc/ManualPromise'
 import { AbsolutePath } from 'src/utils/fs/BrandedPaths'
 import { asAbsolutePath, asRelativePath } from 'src/utils/fs/pathUtils'
 import { generateAvatar } from './AvatarGenerator'
 import { CardPath, asCardPath } from './CardPath'
-import { DeckManifest, ManifestError, parseDeckManifest } from './DeckManifest'
+import { PackageManifest, ManifestError, parseDeckManifest } from './DeckManifest'
 import { GithubUser, GithubUserName, asGithubUserName } from './GithubUser'
 
 /** e.g. library/rvion/foo */
-export type DeckFolder = Branded<string, { ActionPackFolder: true; RelativePath: true }>
+export type PackageRelPath = Branded<string, { ActionPackFolder: true; RelativePath: true }>
 
 /** e.g. library/rvion */
 export type AuthorFolder = Branded<string, { ActionAuthorFolder: true; RelativePath: true }>
 
-/** a set of cards created by someone */
-export class Deck {
+/**
+ * Wrapper around a package
+ * can be used to manipulated both installed and uninstalled packages
+ */
+export class Package {
     // "library/rvion/example-deck"
     folderAbs: AbsolutePath
-    folderRel: DeckFolder
+    folderRel: PackageRelPath
 
     // "library/rvion/example-deck"
     authorFolderAbs: AbsolutePath
     authorFolderRel: AuthorFolder
 
-    githubUserName: GithubUserName // "rvion"
+    /** github user name. e.g. "rvion" */
+    githubUserName: GithubUserName
+
+    /** github user proxy */
     githubUser: GithubUser
+
+    /** github repository name without "user/" prefix */
     githubRepositoryName: GithubRepoName // "example-deck"
+
+    /** proxy to the github repository */
     githubRepository: GithubRepo
 
-    // -------------
+    /** ui state */
     folded = true
+
+    /** and upda */
     updater: GitManagedFolder
+
+    /** promise you can await if you need to ensure this package is installed first */
     installK: ManualPromise<true>
 
     /** sorting socre */
     get score() {
-        if (this.BUILT_IN) return 1000
+        if (this.isBuiltIn) return 1000
         // if (this.BUILT_IN && this.githubRepositoryName === 'default') return 1000
         if (this.st.githubUsername === this.githubUserName) return 100
         return 1 + this.stars / 1000
     }
 
+    /** proxy to the application state */
     get st() {
         return this.library.st
     }
+
+    /** package name */
     name: string
+
+    /** package github shortname. e.g. "rvion/CushyStudio" */
     github: string
-    BUILT_IN: boolean
+
+    /** special flag to manage built-in packages */
+    isBuiltIn: boolean
 
     //
     manifestError: Maybe<ManifestError> = null
     manifestPath: AbsolutePath
-    manifest!: DeckManifest
-    cards: CardFile[] = []
+    manifest!: PackageManifest
 
-    get cardsSorted(): CardFile[] {
-        return this.cards.slice().sort((a, b) => {
+    /** list of all apps present in the package */
+    apps: CardFile[] = []
+
+    get appsSorted(): CardFile[] {
+        return this.apps.slice().sort((a, b) => {
             const diff = b.priority - a.priority
             if (diff) return diff
             return a.displayName.localeCompare(b.displayName)
         })
     }
 
+    /** package description */
     get description() {
         return this.manifest.description ?? ''
     }
@@ -79,43 +103,37 @@ export class Deck {
         /** singleton libraray */
         public library: Library,
         /** e.g. "library/rvion/foo" */
-        public folder: DeckFolder,
+        public folder: PackageRelPath,
     ) {
         const parts2 = folder.split('/')
         if (parts2.length !== 3) throw new Error(`❌ Invalid github url: ${this.folder}`)
         this.github = parts2.slice(1).join('/')
         this.name = parts2[2]
-        this.BUILT_IN = parts2[1] === 'CushyStudio'
+        this.isBuiltIn = parts2[1] === 'CushyStudio'
         const parts = parts2.slice(1)
 
         // github
         this.githubUserName = asGithubUserName(parts[0])
-        this.githubUser = GithubUser.get(this.st, this.githubUserName, this.BUILT_IN)
+        this.githubUser = GithubUser.get(this.st, this.githubUserName, this.isBuiltIn)
         this.githubRepositoryName = asGithubRepoName(parts[1])
-        this.githubRepository = GithubRepo.get(this.st, this.githubUser, this.githubRepositoryName, this.BUILT_IN)
+        this.githubRepository = GithubRepo.get(this.st, this.githubUser, this.githubRepositoryName, this.isBuiltIn)
         this.authorFolderAbs = asAbsolutePath(join(this.st.actionsFolderPathAbs, parts[0]))
         this.authorFolderRel = asRelativePath(join(this.st.actionsFolderPathRel, parts[0])) as AuthorFolder
         this.folderAbs = asAbsolutePath(join(this.st.actionsFolderPathAbs, this.github))
-        this.folderRel = asRelativePath(join(this.st.actionsFolderPathRel, this.github)) as DeckFolder
+        this.folderRel = asRelativePath(join(this.st.actionsFolderPathRel, this.github)) as PackageRelPath
         this.manifestPath = asAbsolutePath(join(this.folderAbs, 'cushy-deck.json'))
         this.updater = new GitManagedFolder(this.library.st, {
             absFolderPath: this.folderAbs,
             shouldAutoUpdate: false,
             runNpmInstallAfterUpdate: false,
             canBeUninstalled: this.githubUserName == 'CushyStudio' ? false : true,
-            githubURL: this.githubURL,
+            gitURLToFetchUpdatesFrom: this.githubURL,
             repositoryName: this.githubRepositoryName,
             userName: this.githubUserName,
         })
         this.installK = new ManualPromise<true>()
 
         this.loadManifest()
-
-        if (existsSync(this.folderAbs)) {
-            this.installK.resolve(true)
-            if (!this.BUILT_IN) this.updater.periodicallyFetch()
-        }
-
         makeAutoObservable(this)
     }
 
@@ -141,7 +159,7 @@ export class Deck {
                 this.manifest = parsedManifest.value
                 for (const x of this.manifest.cards ?? []) {
                     const cardAbsPath = asAbsolutePath(join(this.folderAbs, x.deckRelativeFilePath))
-                    this._registerCard(cardAbsPath, 'A')
+                    this._registerApp(cardAbsPath, 'A')
                 }
             } else {
                 // case 3 - invalid ------------------------------------------- ❌
@@ -156,15 +174,20 @@ export class Deck {
             return this._setDefaultManifest({ type: 'crash', error })
         }
     }
-    _registerCard = (cardAbsPath: AbsolutePath, debugReason: string) => {
-        const cardPath: CardPath = asCardPath(relative(this.st.rootPath, cardAbsPath))
+
+    _registerApp = (
+        //
+        appAbsPath: AbsolutePath,
+        debugReason: string,
+    ) => {
+        const cardPath: CardPath = asCardPath(relative(this.st.rootPath, appAbsPath))
         const prev = this.library.getCard(cardPath)
         // console.log(`>> ${debugReason} 🤓👉 prev is `, Boolean(prev), `(${this.library.cardsByPath.size})`)
         if (prev != null) return
         // console.log(`>> ${debugReason} 🤓👉`, cardPath)
-        const card = new CardFile(this.library, this, cardAbsPath, cardPath)
+        const card = new CardFile(this.library, this, appAbsPath, cardPath)
         this.library.cardsByPath.set(cardPath, card)
-        this.cards.push(card)
+        this.apps.push(card)
     }
     private _setDefaultManifest = (reason: ManifestError) => {
         this.manifestError = reason
@@ -176,7 +199,7 @@ export class Deck {
     }
 
     get logo() {
-        if (this.BUILT_IN) return assets.public_CushyLogo_512_png
+        if (this.isBuiltIn) return assets.public_CushyLogo_512_png
         return this.githubUser.localAvatarURL
         return generateAvatar(this.name)
     }

@@ -35,6 +35,7 @@ export class GithubUser {
     }
     fPath: RelativePath
     data: Maybe<GithubUserData> = null
+
     private constructor(
         //
         public st: STATE,
@@ -86,6 +87,7 @@ export class GithubUser {
             console.error(`❌ GithubUser: downloadImage`, error)
         }
     }
+
     // --------------------------------------------------------------------------------
     downloadInfos = async () => {
         const now = Date.now()

@@ -75,7 +75,7 @@ export class JsonFile<T extends object> {
         // 1. ensure config folder exists
         const folderExists = existsSync(this.folderPath)
         if (!folderExists) {
-            console.info('[🛋]', `${this.fileName} creating missing folder [${this.folderPath}]`)
+            console.info('[💾]', `${this.fileName} creating missing folder [${this.folderPath}]`)
             mkdirSync(this.folderPath, { recursive: true })
         }
 
@@ -83,11 +83,11 @@ export class JsonFile<T extends object> {
         this._path = join(this.folderPath, this.fileName)
         const configFileExists = existsSync(this._path)
         if (!configFileExists) {
-            console.info('[🛋]', `${this.fileName} not found, creating default`)
+            console.info('[💾]', `${this.fileName} not found, creating default`)
             this._value = p.init()
             this.save()
         } else {
-            console.info('[🛋]', `${this.fileName} found at ${this._path}`)
+            // console.info('[💾]', `${this.fileName} found at ${this._path}`)
             const configStr = readFileSync(this._path, 'utf-8')
             this._value = JSON5.parse(configStr)
         }

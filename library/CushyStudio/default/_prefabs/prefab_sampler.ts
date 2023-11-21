@@ -9,6 +9,7 @@ export const ui_sampler = (form: FormBuilder) => {
             denoise: form.float({ step: 0.01, min: 0, max: 1, default: 1, label: 'Denoise', group: 'KSampler' }),
             steps: form.int({ default: 20, label: 'Steps', min: 0, group: 'KSampler' }),
             cfg: form.float({ label: 'CFG', min: 3, max: 20, default: 8, group: 'KSampler' }),
+            seed: form.seed({ group: 'KSampler' }),
             sampler_name: form.enum({
                 label: 'Sampler',
                 enumName: 'Enum_KSampler_sampler_name',
@@ -45,7 +46,7 @@ export const run_sampler = (
     const graph = flow.nodes
     const latent = graph.KSampler({
         model: ctx.ckpt,
-        seed: flow.randomSeed(),
+        seed: opts.seed,
         latent_image: ctx.latent,
         cfg: opts.cfg,
         steps: opts.steps,

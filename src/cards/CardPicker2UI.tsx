@@ -1,20 +1,20 @@
 import type { CardFile } from 'src/cards/CardFile'
-import type { Deck } from './Deck'
+import type { Package } from './Deck'
 
 import { observer } from 'mobx-react-lite'
 import { Fragment } from 'react'
 import { useSt } from '../state/stateContext'
 import { DeckHeaderUI } from './DeckHeaderUI'
-import { CardIllustrationUI } from './fancycard/CardIllustrationUI'
+import { CardIllustrationUI } from './fancycard/AppIllustrationUI'
 
-export const ActionPackUI = observer(function ActionPackUI_(p: { deck: Deck }) {
-    const deck: Deck = p.deck
+export const ActionPackUI = observer(function ActionPackUI_(p: { deck: Package }) {
+    const deck: Package = p.deck
     return (
         <div tw='flex-grow' key={deck.folderRel}>
             <DeckHeaderUI deck={deck} />
             {deck.folded ? null : (
                 <div tw='flex flex-col gap-0.5'>
-                    {deck.cards.map((af) => (
+                    {deck.apps.map((af) => (
                         <AppEntryUI key={af.relPath} card={af} />
                     ))}
                 </div>

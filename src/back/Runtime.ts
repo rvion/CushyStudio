@@ -157,10 +157,6 @@ export class Runtime<FIELDS extends WidgetDict = any> {
     /** helper to chose radomly any item from a list */
     chooseRandomly = <T>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)]
 
-    // input: object = {}
-    // inputExt: object = {}
-    // inputInst: object = {}
-
     /** execute the ComfyUI  */
     run = async (): Promise<Status> => {
         // return Status.Success
@@ -199,14 +195,19 @@ export class Runtime<FIELDS extends WidgetDict = any> {
         }
     }
 
-    /** check if the current connected ComfyUI backend has a lora */
+    /** check if the current connected ComfyUI backend has a given lora by name */
     hasLora = (loraName: string): boolean => this.schema.hasLora(loraName)
 
     /** check if the current connected ComfyUI backend has a given checkpoint */
     hasCheckpoint = (loraName: string): boolean => this.schema.hasLora(loraName)
 
     /** run an imagemagick convert action */
-    imagemagicConvert = (img: ImageL, partialCmd: string, suffix: string): string => {
+    imagemagicConvert = (
+        //
+        img: ImageL,
+        partialCmd: string,
+        suffix: string,
+    ): string => {
         const pathA = img.localAbsolutePath
         // 🔴 wait
         const pathB = `${pathA}.${suffix}.png`
@@ -324,22 +325,34 @@ export class Runtime<FIELDS extends WidgetDict = any> {
         // turns a bunch of images into a gif with ffmpeg
     }
 
-    /** ensure a model is present, and download it if needed */
+    /**
+     * ensure a model is present, and download it if needed
+     * @category robustness
+     * @alpha
+     * */
     ensureModel = async (p: { name: string; url: string }): Promise<void> => {
         return
     }
 
-    /** ensure a custom onde is properly setup, and download/clone it if needed */
+    /**
+     *
+     * ensure a custom onde is properly setup,
+     *  attempt to install it if the current ComfyUI does not have it
+     *  and download/clone it if needed
+     *
+     * @category robustness
+     * @alpha
+     *
+     * */
     ensureCustomNodes = async (p: { path: string; url: string }): Promise<void> => {
         return
     }
 
-    // writeFlowSummary = () => {
-    //     const relPath = asRelativePath('flow-summary.md')
-    //     this.saveTextFile(relPath, this.flowSummaryMd)
-    // }
-
-    embedding = (t: Embeddings) => `embedding:${t}`
+    /**
+     * Takes an embedding name and format it for ComfyUI usage
+     * e.g.: "EasyNegative" => "embedding:EasyNegative"
+     * */
+    formatEmbeddingForComfyUI = (t: Embeddings) => `embedding:${t}`
 
     // 🐉 /** ask the user a few informations */
     // 🐉 ask: InfoRequestFn = async <const Req extends { [key: string]: Widget }>(
@@ -355,6 +368,10 @@ export class Runtime<FIELDS extends WidgetDict = any> {
     // 🐉     return ask.finished
     // 🐉 }
 
+    /**
+     * execute a shell command
+     * @beta
+     */
     exec = (comand: string): string => {
         // promisify exec to run the command and collect the output
         this.print('🔥 exec: ' + comand)
@@ -367,7 +384,10 @@ export class Runtime<FIELDS extends WidgetDict = any> {
     /** built-in wildcards */
     wildcards = wildcards
 
-    /** pick a random seed */
+    /**
+     * get a random int seed
+     * between 0 and 99999999
+     */
     randomSeed() {
         const seed = Math.floor(Math.random() * 99999999)
         this.print('seed: ' + seed)

@@ -2,7 +2,7 @@ import type { AbsolutePath, RelativePath } from 'src/utils/fs/BrandedPaths'
 import type { STATE } from '../state/state'
 
 import { exec } from 'child_process'
-import { existsSync, lstatSync, mkdirSync, statSync } from 'fs'
+import { existsSync, lstatSync, mkdirSync, statSync, utimesSync } from 'fs'
 import { makeAutoObservable } from 'mobx'
 import { join, relative } from 'pathe'
 import simpleGit, { SimpleGit } from 'simple-git'
@@ -10,33 +10,30 @@ import { GithubUserName } from 'src/cards/GithubUser'
 import { asRelativePath } from 'src/utils/fs/pathUtils'
 import { deleteDirectoryRecursive } from '../utils/fs/deleteDirectoryRecursive'
 import { GithubRepoName } from 'src/cards/githubRepo'
-
-export enum FolderKind {
-    /** folder is managed by git (has a .git)*/
-    FolderWithGit = 1,
-    /** folder is not managed by git (no .git folder) */
-    FolderWithoutGit,
-    /** we don't know yet if the folder is managed by git */
-    Unknown,
-    /** Does not exists */
-    DoesNotExist,
-    /** is not a directory */
-    NotADirectory,
-}
+import { FolderGitStatus } from '../cards/FolderGitStatus'
+import { LogFifo } from './LogFIFO'
+import { _getRelativeTimeString } from './_getRelativeTimeString'
 
 type ManagedFolderConfig = {
     /** current working directory */
     absFolderPath: AbsolutePath
+
     /** github url */
-    githubURL: string
+    gitURLToFetchUpdatesFrom: string
+
     userName: GithubUserName
+
     repositoryName: GithubRepoName
+
     /** if true, will start checking for update right away */
     shouldAutoUpdate: boolean
+
     /** if true, will perform an `npm install` after succesful update */
     runNpmInstallAfterUpdate: boolean
+
     /** can be uninstalled */
     canBeUninstalled: boolean
+
     /**
      * allow you to specify the name of the beta branch if you have one
      * so early adopters can opt-out for early features
@@ -45,28 +42,6 @@ type ManagedFolderConfig = {
 }
 
 export class GitManagedFolder {
-    /** relative path to the git folder */
-    relPath: RelativePath
-    /** absolute path to the git folder */
-    absPath: AbsolutePath
-    /** status of the folder */
-    status = FolderKind.Unknown
-    // git infos
-    lastFetchAt = 0 as Timestamp
-    nextFetchAt = 0 as Timestamp
-    /** Number of commits in origin/<main branch> */
-    originCommitsCount = 0
-    /** Number of commits in HEAD */
-    headCommitsCount = 0
-    /** main branch name; usually master (previous git default) or main (new git default) */
-    mainBranchName = '#local'
-    /** the simple git  */
-    git: Maybe<SimpleGit> = null
-    /** so we can lock the interface during {fetch/install/uninstall/etc.} */
-    currentAction: Maybe<string> = null
-    /** debug logs go there */
-    logs: string[] = []
-
     constructor(
         //
         public st: STATE,
@@ -75,42 +50,176 @@ export class GitManagedFolder {
         this.relPath = asRelativePath(relative(this.st.rootPath, config.absFolderPath))
         this.absPath = config.absFolderPath
 
-        this.updateInfos()
+        void this.updateInfos()
         makeAutoObservable(this)
     }
 
-    updateInfos = () => {
-        // case 1. folder does not exists
-        if (!existsSync(this.config.absFolderPath)) {
-            // I've noticed this happens when A user has a marketplace addon they have not installed
-            this.status = FolderKind.DoesNotExist
-            this.log(`❌ folder ${this.config.absFolderPath} could not be found`)
-        }
+    /** relative path to the git folder */
+    relPath: RelativePath
 
-        // case 2. folder is not a directory
-        else if (!lstatSync(this.config.absFolderPath).isDirectory()) {
-            // TODO: Figure out why this constructor is even reciving non-directories
-            this.status = FolderKind.NotADirectory
-            this.log(`❌ folder ${this.config.absFolderPath} is not a directory`)
-            return
-        }
+    /** absolute path to the git folder */
+    absPath: AbsolutePath
 
-        // case 3. folder is a directory
-        else {
-            if (this.git == null) this.git = simpleGit(this.config.absFolderPath)
+    /** status of the folder */
+    status = FolderGitStatus.Unknown
 
-            // 1. check if is git folder
-            const isGitFolder = this._isGitFolder()
-            if (isGitFolder) {
-                this.updateGitInfo()
-                this.periodicallyFetch()
-            } else {
-                this.status = FolderKind.FolderWithoutGit
-                this.log('❌ not a git folder')
+    /** timestamp when lsat fetched the repository */
+    lastFetchAt = 0 as Timestamp
+
+    /** timestamp when we should fetch next the repository */
+    nextFetchAt = 0 as Timestamp
+
+    /** Number of commits in origin/<main branch> */
+    originCommitsCount = 0
+
+    /** Number of commits in HEAD */
+    headCommitsCount = 0
+
+    /** main branch name; usually master (previous git default) or main (new git default) */
+    mainBranchName = ''
+
+    /** the simple git  */
+    git: Maybe<SimpleGit> = null
+
+    /** so we can lock the interface during {fetch/install/uninstall/etc.} */
+    currentAction: Maybe<string> = null
+
+    /** debug logs go there */
+    logs: string[] = []
+
+    /** to be called when we notice the folder is not here or no longer git-manged */
+    private resetAllGitInfos = () => {
+        this.mainBranchName = ''
+        this.headCommitsCount = 0
+        this.originCommitsCount = 0
+        this._stopPeriodicUpdateCheck()
+    }
+
+    /**
+     * Main method
+     * - does not fetch anything directly, only look for curent local infos
+     * - is called at Updater instanciation and when fetching for updates
+     * - if current folder is a valid git-managed folder with a remote,
+     *   this function will also start a singleton periodic update check
+     */
+    private updateInfos = async () => {
+        try {
+            this.currentAction = 'updateInfos'
+            console.log('🔴 A ----------', this.absPath)
+            // case 1. folder does not exists
+            if (!existsSync(this.config.absFolderPath)) {
+                this.status = FolderGitStatus.DoesNotExist
+                this.resetAllGitInfos()
+                this.log(`❌ folder ${this.config.absFolderPath} could not be found`)
+                return
             }
+
+            console.log('🔴 B ----------', this.absPath)
+            // case 2. path is not not a directory
+            if (!lstatSync(this.config.absFolderPath).isDirectory()) {
+                // TODO: Figure out why this constructor is even reciving non-directories
+                this.status = FolderGitStatus.NotADirectory
+                this.resetAllGitInfos()
+                this.log(`❌ folder ${this.config.absFolderPath} is not a directory`)
+                return
+            }
+
+            // ensure git is instanciated
+            let git = this.git
+            if (git == null) {
+                this.git = simpleGit(this.config.absFolderPath)
+                git = this.git
+            }
+
+            // case 3. folder is not a git folder
+            const isGitFolder = this._isGitFolder()
+            if (!isGitFolder) {
+                this.status = FolderGitStatus.FolderWithoutGit
+                this.resetAllGitInfos()
+                this.log('❌ not a git folder')
+                return
+            }
+
+            // Get the default remote branch name
+            const remoteInfo = await git.raw(['symbolic-ref', 'HEAD'])
+            console.log({ remoteInfo })
+
+            // const remoteInfo = await git.remote(['show', 'origin'])
+            if (remoteInfo == null) {
+                this.status = FolderGitStatus.FolderWithGitButWithProblems
+                this.resetAllGitInfos()
+                this.log('❌ no remote branch found')
+                return
+            }
+
+            // get head branch
+            const headBranchMatch = remoteInfo.slice(`/refs/heads`.length).trim()
+            if (!headBranchMatch) {
+                this.status = FolderGitStatus.FolderWithGitButWithProblems
+                this.resetAllGitInfos()
+                this.log("❌ Couldn't determine the default branch.")
+                return
+            }
+
+            // update values
+            const defaultBranch = headBranchMatch // headBranchMatch[1]
+            this.mainBranchName = defaultBranch
+
+            try {
+                this.headCommitsCount = await _getHeadCommitsCount('HEAD')
+                this.originCommitsCount = await _getHeadCommitsCount(`origin/${defaultBranch}`)
+            } catch (error) {
+                this.log('❌ updateInfos failed', error)
+                this.status = FolderGitStatus.FolderWithGitButWithProblems
+                this.resetAllGitInfos()
+                return
+            }
+
+            this.status = FolderGitStatus.FolderWithGit
+
+            if (!this._hasPeriodicUpdateCheck()) {
+                this._startPeriodicUpdateCheck()
+            }
+
+            // helpers
+            async function _getHeadCommitsCount(refName: string): Promise<number> {
+                if (git == null) return 0
+                const logs = await git.log([refName])
+                return logs.all.length
+            }
+        } catch (e) {
+            this.log('❌ updateInfos failed', e)
+        } finally {
+            this.currentAction = null
         }
     }
 
+    // ===================================================================================================
+    checkForUpdatesNow = async (): Promise<void> => {
+        if (this.git == null) return
+        this.commandErrors.clear()
+        try {
+            // first update just so we know the current folder is still okay
+            await this.updateInfos()
+            if (this.status !== FolderGitStatus.FolderWithGit) return
+            await this.git.fetch()
+            this._bumpLastFetchAt()
+            await this.updateInfos()
+        } catch (error) {
+            this.error(`updates check failed: ${(error as any).message}`)
+        }
+    }
+
+    private _bumpLastFetchAt = () => {
+        const FETCH_HEAD_path = this.config.absFolderPath + '/.git/FETCH_HEAD'
+        const FETCH_HEAD_path_exists = existsSync(FETCH_HEAD_path)
+        if (FETCH_HEAD_path_exists) {
+            const newTime = new Date()
+            utimesSync(FETCH_HEAD_path, newTime, newTime)
+        }
+    }
+
+    // ===================================================================================================
     install = async (): Promise<void> => {
         if (this.git != null) throw new Error(`install: git is not null`)
         if (existsSync(this.config.absFolderPath)) throw new Error(`install: folder already exists`)
@@ -123,7 +232,7 @@ export class GitManagedFolder {
         mkdirSync(parentFolder, { recursive: true })
 
         // 2. clone
-        const cmd = `git clone ${this.config.githubURL} --depth 1`
+        const cmd = `git clone ${this.config.gitURLToFetchUpdatesFrom} --depth 1`
         console.log('[💝] actionpack: installing with cmd:', cmd)
         const success = await new Promise<boolean>((resolve, reject) => {
             // this.installK.isRunning = true
@@ -147,10 +256,12 @@ export class GitManagedFolder {
 
     /** ask confirmation, then remove the whole folder */
     uninstall = () => {
+        this._stopPeriodicUpdateCheck()
+
         // 1. check if the folder exists
         if (!existsSync(this.config.absFolderPath)) {
             // I've noticed this happens when A user has a marketplace addon they have not installed
-            this.status = FolderKind.DoesNotExist
+            this.status = FolderGitStatus.DoesNotExist
             this.log(`❌ folder ${this.config.absFolderPath} could not be found`)
             return
         }
@@ -163,50 +274,12 @@ export class GitManagedFolder {
         if (confirm) {
             deleteDirectoryRecursive(this.absPath)
             this.git = null
-            this.status = FolderKind.DoesNotExist
+            this.status = FolderGitStatus.DoesNotExist
         }
         this.updateInfos()
     }
 
     // GIT INFOS -------------------------------------------------------------------------
-
-    updateGitInfo = async (): Promise<void> => {
-        // Get the default remote branch name
-        if (this.git == null) return
-        const remoteInfo = await this.git.remote(['show', 'origin'])
-        if (remoteInfo == null) return
-
-        // get head branch
-        const headBranchMatch = remoteInfo.match(/HEAD branch: (\S+)/)
-        if (!headBranchMatch) {
-            console.error("Couldn't determine the default branch.")
-            return
-        }
-        // update values
-        const defaultBranch = headBranchMatch[1]
-        this.mainBranchName = defaultBranch
-        this.headCommitsCount = await this._getHeadCommitsCount('HEAD')
-        this.originCommitsCount = await this._getHeadCommitsCount(`origin/${defaultBranch}`)
-        // console.log(
-        //     //
-        //     `🔴`,
-        //     this.mainBranchName,
-        //     this.headCommitsCount,
-        //     this.originCommitsCount,
-        // )
-
-        // ⏸️ // Hash of commit in HEAD
-        // ⏸️ const headCommitHash = await this.git.revparse(['HEAD'])
-
-        // ⏸️ // Hash of commit in origin/<main branch>
-        // ⏸️ const originCommitHash = await this.git.revparse([`origin/${defaultBranch}`])
-    }
-
-    private _getHeadCommitsCount = async (refName: string): Promise<number> => {
-        if (this.git == null) return 0
-        const logs = await this.git.log([refName])
-        return logs.all.length
-    }
 
     // VERSIONNING -------------------------------------------------------------------------
 
@@ -233,8 +306,8 @@ export class GitManagedFolder {
     /** information regarding how the last pull went */
     lastPullAttempt: Maybe<UpdateTrace> = null
 
-    /** true when more commit on origin */
-    get updateAvailable() {
+    /** true when more commit are present on origin */
+    get hasUpdateAvailable() {
         if (this.originCommitsCount <= this.headCommitsCount) return false
         return true
     }
@@ -277,46 +350,63 @@ export class GitManagedFolder {
         })
     }
 
-    private ensureSingleRunningSetIntervalInstance = (p: Maybe<NodeJS.Timeout> = null) => {
+    // ======================================================================================================
+    private _hasPeriodicUpdateCheck = (): boolean => {
+        const __global__ = globalThis as any
+        const cache = (__global__.__UPDATERCACHE__ ??= {})
+        return cache[this.config.absFolderPath] != null
+    }
+
+    private _stopPeriodicUpdateCheck = () => {
+        const __global__ = globalThis as any
+        const cache = (__global__.__UPDATERCACHE__ ??= {})
+        if (cache[this.config.absFolderPath]) clearInterval(cache[this.config.absFolderPath])
+        cache[this.config.absFolderPath] = null
+    }
+
+    private _registerPeriodicUpdateCheck = (p: NodeJS.Timeout) => {
         const __global__ = globalThis as any
         const cache = (__global__.__UPDATERCACHE__ ??= {})
         if (cache[this.config.absFolderPath]) clearInterval(cache[this.config.absFolderPath])
         cache[this.config.absFolderPath] = p
     }
 
-    periodicallyFetch = async (): Promise<void> => {
+    private _startPeriodicUpdateCheck = async (): Promise<void> => {
         const git = this.git
         if (git == null) return
 
         const MINUTE = 60 * 1000
         const now = Date.now() as Timestamp
-        this.ensureSingleRunningSetIntervalInstance()
 
-        // 1. check if is git folder
-        const isGitFolder = this._isGitFolder()
-        if (!isGitFolder) return
+        this._stopPeriodicUpdateCheck()
 
+        // // 1. check if is git folder
+        // const isGitFolder = this._isGitFolder()
+        // if (!isGitFolder) return
+
+        // -----------------------------------------------------------------------------------
+        // get lst update time
         const FETCH_HEAD_path = this.config.absFolderPath + '/.git/FETCH_HEAD'
         const FETCH_HEAD_path_exists = existsSync(FETCH_HEAD_path)
-
         // 2. get last fetch datetime
         let lastFetchAt: Timestamp
         if (FETCH_HEAD_path_exists) {
             const stats = statSync(FETCH_HEAD_path)
             lastFetchAt = stats.mtime.getTime() as Timestamp
-            this.log('Last fetch was on:', stats.mtime)
+            this.log('Last fetch was on:', _getRelativeTimeString(stats.mtime))
         } else {
             lastFetchAt = 0 as Timestamp
         }
         this.lastFetchAt = lastFetchAt
 
+        // -----------------------------------------------------------------------------------
         // 3. check desired update interval
         const minutesBetweenChecks = this.st.configFile.value.checkUpdateEveryMinutes ?? 5
         this.log(`checking for updates every ${minutesBetweenChecks} minutes`)
         const interval = minutesBetweenChecks * MINUTE
 
         // 4. wait until we should start the interval timer (based on past check)
-        this.log(`last check was ${(now - lastFetchAt) / 1000}s ago`)
+        // this.log(`last check was ${(now - lastFetchAt) / 1000}s ago`)
         const shouldUpdateNow = now - lastFetchAt > minutesBetweenChecks * MINUTE
         const delayBeforeFirstUpdate = shouldUpdateNow
             ? Math.floor(Math.random() * 1000 * 1)
@@ -329,50 +419,50 @@ export class GitManagedFolder {
         const periodicCheck = setInterval(async () => {
             this.nextFetchAt = Date.now() + interval
             await git.fetch()
-            this.checkForUpdates()
+            this.checkForUpdatesNow()
         }, interval)
-        this.ensureSingleRunningSetIntervalInstance(periodicCheck)
+        this._registerPeriodicUpdateCheck(periodicCheck)
     }
 
-    log = (...args: any[]) => console.log(`[🚀] (${this.relPath || 'root'})`, ...args)
-    error = (...args: any[]) => console.error(`[🚀] (${this.relPath || 'root'})`, ...args)
+    lastLogs = new LogFifo(100)
+    log = (...args: any[]) => {
+        this.lastLogs.add(args.join(' '))
+        // console.log(`[🚀] (${this.relPath || 'root'})`, ...args)
+    }
+    error = (...args: any[]) => {
+        console.error(`[🚀] (${this.relPath || 'root'})`, ...args)
+    }
 
+    // ===================================================================================================
     _gitInit = async (): Promise<void> => {
         if (this.currentAction != null) throw new Error(`updater is already already running`)
         try {
+            this.log('starting git init')
             this.currentAction = 'git init'
             const githubUserName: Maybe<GithubUserName> = this.st.githubUsername
-            if (githubUserName == null) return console.log('❌ github username not set when runnign git init')
+
+            // ensure we have a github username
+            if (githubUserName == null) {
+                this.log('❌ github username not set when runnign git init')
+                return
+            }
             const git: SimpleGit = simpleGit(this.config.absFolderPath)
             await git.init()
-            await git.addRemote('origin', `https://github.com/${this.config.userName}/${this.config.repositoryName}`)
-            await git.addRemote('github', `git@github.com:${this.config.userName}/${this.config.repositoryName}.git`)
-            this.status = FolderKind.FolderWithGit
+            // await git.addRemote('origin', `https://github.com/${this.config.userName}/${this.config.repositoryName}`)
+            // await git.addRemote('github', `git@github.com:${this.config.userName}/${this.config.repositoryName}.git`)
+            this.status = FolderGitStatus.FolderWithGit
+        } catch (error) {
+            this.log('❌ git init failed', error)
         } finally {
             this.currentAction = null
         }
     }
 
+    // ===================================================================================================
     private _isGitFolder = (): boolean => {
         const gitFolder = join(this.config.absFolderPath, '.git')
         const isGitFolder = existsSync(gitFolder)
-        if (!isGitFolder) {
-            this.status = FolderKind.FolderWithoutGit
-        } else {
-            this.status = FolderKind.FolderWithGit
-        }
         return isGitFolder
-    }
-
-    checkForUpdates = async (): Promise<void> => {
-        if (this.git == null) return
-        this.commandErrors.clear()
-        try {
-            await this.git.fetch()
-            await this.updateGitInfo()
-        } catch (error) {
-            this.error(`updates check failed: ${(error as any).message}`)
-        }
     }
 
     commandErrors = new Map<string, any>()

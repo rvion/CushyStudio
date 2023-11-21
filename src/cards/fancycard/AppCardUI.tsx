@@ -2,18 +2,18 @@ import { observer } from 'mobx-react-lite'
 
 import { Tag } from 'src/rsuite/shims'
 import { CardFile } from '../CardFile'
-import { Deck } from '../Deck'
+import { Package } from '../Deck'
 
 import { ActionFavoriteBtnUI } from '../CardPicker2UI'
 import { GithubUserUI } from '../GithubAvatarUI'
-import { CardIllustrationUI } from './CardIllustrationUI'
+import { CardIllustrationUI } from './AppIllustrationUI'
 import { useSt } from 'src/state/stateContext'
 
 export type CardStyle = 'A' | 'B' | 'C' | 'D'
 
-export const FancyCardUI = observer(function FancyCardUI_(p: {
+export const AppCardUI = observer(function FancyCardUI_(p: {
     //
-    deck: Deck
+    deck: Package
     style: CardStyle
     card: CardFile
     active?: boolean

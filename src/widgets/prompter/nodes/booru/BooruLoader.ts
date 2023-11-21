@@ -40,7 +40,7 @@ export class DanbooruTags {
         const rows: string[][] = result.data as any
         const refined = rows.map(this.parseRow)
         this.tags = refined
-        console.log('[🏷️] DanBooru: tags parsed', this)
+        console.log(`[🏷️] DanBooru: ${this.tags.length} tags parsed`)
     }
 
     autocomplete() {

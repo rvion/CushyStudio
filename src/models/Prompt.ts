@@ -53,7 +53,7 @@ export class PromptL {
     // get project() { return this.step.item.project } // prettier-ignore
 
     onPromptRelatedMessage = (msg: PromptRelated_WsMsg) => {
-        console.debug(`🐰 ${msg.type} ${JSON.stringify(msg.data)}`)
+        // console.debug(`🐰 ${msg.type} ${JSON.stringify(msg.data)}`)
         const graph = this.graph.item
 
         if (msg.type === 'execution_start') return

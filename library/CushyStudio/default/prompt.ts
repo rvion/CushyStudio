@@ -24,7 +24,7 @@ card({
             },
         }),
         negative: form.prompt({ default: 'nsfw, nude, girl, woman, human' }),
-        seed: form.seed({}),
+        // seed: form.seed({}),
         model: ui_model(form),
         latent: ui_latent(form),
         sampler: ui_sampler(form),
@@ -113,6 +113,7 @@ card({
                 latent = run_sampler(
                     flow,
                     {
+                        seed: p.sampler.seed + i,
                         cfg: p.recursiveImgToImg.cfg,
                         steps: p.recursiveImgToImg.steps,
                         denoise: p.recursiveImgToImg.denoise,
@@ -139,6 +140,7 @@ card({
             latent = latent = run_sampler(
                 flow,
                 {
+                    seed: p.sampler.seed,
                     cfg: p.sampler.cfg,
                     steps: p.highResFix.steps,
                     denoise: p.highResFix.denoise,

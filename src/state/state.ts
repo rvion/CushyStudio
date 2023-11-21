@@ -7,9 +7,12 @@ import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { join } from 'pathe'
 import { createRef } from 'react'
-import { mkConfigFile, type ConfigFile, PreferedFormLayout } from 'src/core/ConfigFile'
+import { PreferedFormLayout, mkConfigFile, type ConfigFile } from 'src/core/ConfigFile'
 import { mkTypescriptConfig, type TsConfigCustom } from '../widgets/TsConfigCustom'
 
+import { closest } from 'fastest-levenshtein'
+import { ShortcutWatcher } from 'src/app/shortcuts/ShortcutManager'
+import { shortcutsDef } from 'src/app/shortcuts/shortcuts'
 import type { ActionTagMethodList } from 'src/cards/Card'
 import { CardPath, asCardPath } from 'src/cards/CardPath'
 import { GithubUserName } from 'src/cards/GithubUser'
@@ -17,32 +20,28 @@ import { Library } from 'src/cards/Library'
 import { GithubRepoName } from 'src/cards/githubRepo'
 import { DraftL } from 'src/models/Draft'
 import { ProjectL } from 'src/models/Project'
-import { ShortcutWatcher } from 'src/app/shortcuts/ShortcutManager'
-import { shortcutsDef } from 'src/app/shortcuts/shortcuts'
 import { ThemeManager } from 'src/theme/ThemeManager'
+import { CleanedEnumResult } from 'src/types/EnumUtils'
 import { UserTags } from 'src/widgets/prompter/nodes/usertags/UserLoader'
-import { CushyLayoutManager } from '../panels/router/Layout'
-import { panels } from 'src/panels/router/PANELS'
 import { ResilientWebSocketClient } from '../back/ResilientWebsocket'
-import { GitManagedFolder } from '../cards/updater'
+import { GitManagedFolder } from '../updater/updater'
 import { JsonFile } from '../core/JsonFile'
 import { LiveDB } from '../db/LiveDB'
 import { ComfyImporter } from '../importers/ComfyImporter'
 import { GraphL } from '../models/Graph'
 import { EmbeddingName, EnumValue, SchemaL } from '../models/Schema'
+import { CushyLayoutManager } from '../panels/router/Layout'
 import { ComfySchemaJSON, ComfySchemaJSON_zod } from '../types/ComfySchemaJSON'
 import { FromExtension_CushyStatus } from '../types/MessageFromExtensionToWebview'
-import { exhaust } from '../utils/misc/ComfyUtils'
-import { ManualPromise } from '../utils/misc/ManualPromise'
 import { ElectronUtils } from '../utils/electron/ElectronUtils'
 import { extractErrorMessage } from '../utils/formatters/extractErrorMessage'
 import { readableStringify } from '../utils/formatters/stringifyReadable'
 import { AbsolutePath, RelativePath } from '../utils/fs/BrandedPaths'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
+import { exhaust } from '../utils/misc/ComfyUtils'
+import { ManualPromise } from '../utils/misc/ManualPromise'
 import { DanbooruTags } from '../widgets/prompter/nodes/booru/BooruLoader'
 import { Uploader } from './Uploader'
-import { closest } from 'fastest-levenshtein'
-import { CleanedEnumResult } from 'src/types/EnumUtils'
 
 // prettier-ignore
 type HoveredAsset =
@@ -249,7 +248,7 @@ export class STATE {
         /** path of the workspace */
         public rootPath: AbsolutePath,
     ) {
-        console.log('[🗳️] starting web app')
+        console.log('[🛋️] starting Cushy')
         this.cacheFolderPath = this.resolve(this.rootPath, asRelativePath('outputs'))
         this.comfyJSONPath = this.resolve(this.rootPath, asRelativePath('schema/nodes.json'))
         this.embeddingsPath = this.resolve(this.rootPath, asRelativePath('schema/embeddings.json'))
@@ -269,7 +268,8 @@ export class STATE {
         this.schema = this.db.schema
 
         this.electronUtils = new ElectronUtils(this)
-        this.shortcuts = new ShortcutWatcher(shortcutsDef, this, { log: true, name: nanoid() })
+        this.shortcuts = new ShortcutWatcher(shortcutsDef, this, { name: nanoid() })
+        console.log(`[🛋️] ${this.shortcuts.shortcuts.length} shortcuts loaded`)
         this.uploader = new Uploader(this)
         this.layout = new CushyLayoutManager(this)
         this.themeMgr = new ThemeManager(this)
@@ -278,7 +278,7 @@ export class STATE {
             shouldAutoUpdate: true,
             runNpmInstallAfterUpdate: true,
             canBeUninstalled: false,
-            githubURL: 'rvion/CushyStudio',
+            gitURLToFetchUpdatesFrom: 'rvion/CushyStudio',
             repositoryName: 'CushyStudio' as GithubRepoName,
             userName: 'rvion' as GithubUserName,
             betaBranch: 'dev',

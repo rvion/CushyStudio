@@ -2,10 +2,10 @@ import { observer } from 'mobx-react-lite'
 import { Button } from 'src/rsuite/shims'
 import { assets } from 'src/utils/assets/assets'
 import { useSt } from '../../state/stateContext'
-import { UpdateBtnUI } from '../updater/UpdateBtnUI'
+import { UpdateBtnUI } from '../../updater/UpdateBtnUI'
 import { MainNavBarUI } from './MainNavBarUI'
-import { SchemaIndicatorUI } from '../layout/SchemaIndicatorUI'
-import { WebsocketIndicatorUI } from '../layout/WebsocketIndicatorUI'
+import { SchemaIndicatorUI } from './SchemaIndicatorUI'
+import { WebsocketIndicatorUI } from './WebsocketIndicatorUI'
 import { openExternal } from '../layout/openExternal'
 
 export const AppBarUI = observer(function AppBarUI_(p: {}) {

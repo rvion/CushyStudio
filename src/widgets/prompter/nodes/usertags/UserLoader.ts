@@ -2,7 +2,7 @@ import { readFileSync } from 'fs'
 import { parse } from 'papaparse'
 
 export type UserTag = {
-    key: string,
+    key: string
     value: string
 }
 
@@ -12,7 +12,7 @@ export class UserTags {
     parseRow = (data: string[]): UserTag => {
         return {
             key: data[0],
-            value: data[1]
+            value: data[1],
         }
     }
     static build = () => {
@@ -30,7 +30,7 @@ export class UserTags {
         const rows: string[][] = result.data as any
         const refined = rows.map(this.parseRow)
         this.tags = refined
-        console.log('[🏷️] UserTags: tags parsed', this)
+        console.log(`[🏷️] UserTags: ${this.tags.length} tags parsed`)
     }
 
     autocomplete() {

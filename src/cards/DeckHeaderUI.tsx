@@ -1,14 +1,14 @@
-import type { Deck } from './Deck'
+import type { Package } from './Deck'
 
 import { observer } from 'mobx-react-lite'
 import { Popover, Whisper } from 'src/rsuite/shims'
-import { FolderKind } from 'src/cards/updater'
+import { FolderGitStatus } from './FolderGitStatus'
 import { stringifyUnknown } from 'src/utils/formatters/stringifyUnknown'
 import { ManifestError } from './DeckManifest'
 import { ActionPackStarsUI } from './DeckStarsUI'
 import { ActionPackStatusUI } from './DeckStatusUI'
 
-export const DeckHeaderUI = observer(function ActionPackHeaderUI_(p: { deck: Deck }) {
+export const DeckHeaderUI = observer(function ActionPackHeaderUI_(p: { deck: Package }) {
     const deck = p.deck
     return (
         <>
@@ -40,7 +40,7 @@ export const DeckHeaderUI = observer(function ActionPackHeaderUI_(p: { deck: Dec
                             )}
                             <ActionPackStatusUI pack={deck} />
                         </div>
-                        {deck.updater.status === FolderKind.FolderWithGit ? ( //
+                        {deck.updater.status === FolderGitStatus.FolderWithGit ? ( //
                             <ActionPackStarsUI tw='float-right' pack={deck} />
                         ) : null}
                     </div>

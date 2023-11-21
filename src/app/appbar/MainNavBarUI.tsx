@@ -94,11 +94,6 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: { className?: str
                     icon={<span className='material-symbols-outlined text-purple-500'>cloud</span>}
                     label='GPUs'
                 />
-                <MenuItem
-                    onClick={() => st.themeMgr.toggle()}
-                    icon={<span className='material-symbols-outlined text-purple-500'>{themeIcon}</span>}
-                    label='Theme'
-                />
             </Dropdown>
             <Dropdown
                 appearance='subtle'

@@ -8,7 +8,7 @@ import { readFileSync } from 'fs'
 import { makeAutoObservable, observable } from 'mobx'
 import path, { join, relative } from 'pathe'
 import { CardPath } from 'src/cards/CardPath'
-import { Deck } from 'src/cards/Deck'
+import { Package } from 'src/cards/Deck'
 import { DraftL } from 'src/models/Draft'
 import { clamp } from 'three/src/math/MathUtils'
 import { transpileCode } from '../back/transpiler'
@@ -17,9 +17,9 @@ import { getPngMetadataFromUint8Array } from '../importers/getPngMetadata'
 import { exhaust } from '../utils/misc/ComfyUtils'
 import { ManualPromise } from '../utils/misc/ManualPromise'
 import { generateAvatar } from './AvatarGenerator'
-import { CardManifest } from './DeckManifest'
+import { AppManifest } from './DeckManifest'
 import { Library } from './Library'
-import { CardStyle } from './fancycard/FancyCard'
+import { CardStyle } from './fancycard/AppCardUI'
 
 // prettier-ignore
 export type LoadStrategy =
@@ -62,7 +62,7 @@ export class CardFile {
     constructor(
         //
         public library: Library,
-        public deck: Deck,
+        public deck: Package,
         public absPath: AbsolutePath,
         public relPath: CardPath,
     ) {
@@ -95,14 +95,14 @@ export class CardFile {
         return this.deck.manifestError?.type ?? ('valid' as const)
     }
 
-    get manifest(): CardManifest {
+    get manifest(): AppManifest {
         return (
             this.authorDefinedManifest ?? //
             this.defaultManifest
         )
     }
 
-    get authorDefinedManifest(): Maybe<CardManifest> {
+    get authorDefinedManifest(): Maybe<AppManifest> {
         const cards = this.deck.manifest.cards ?? []
         const match = cards.find((c) => {
             const absPath = path.join(this.deck.folderAbs, c.deckRelativeFilePath)
@@ -111,8 +111,8 @@ export class CardFile {
         return match
     }
 
-    private defaultManifest: CardManifest
-    private mkDefaultManifest(): CardManifest {
+    private defaultManifest: AppManifest
+    private mkDefaultManifest(): AppManifest {
         const deckRelPath = this.deckRelativeFilePath
         const baseName = path.basename(deckRelPath)
         let cardName = baseName.endsWith('.ts') //

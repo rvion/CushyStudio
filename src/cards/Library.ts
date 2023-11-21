@@ -8,7 +8,7 @@ import Watcher from 'watcher'
 import { existsSync, mkdirSync, readFileSync, readdirSync, statSync, writeFileSync } from 'fs'
 import { makeAutoObservable } from 'mobx'
 import { CardPath, asCardPath } from 'src/cards/CardPath'
-import { Deck, DeckFolder } from 'src/cards/Deck'
+import { Package, PackageRelPath } from 'src/cards/Deck'
 import { hasValidActionExtension } from '../back/ActionExtensions'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { CardFile } from './CardFile'
@@ -16,6 +16,7 @@ import { _FIX_INDENTATION } from 'src/utils/misc/_FIX_INDENTATION'
 import { ActionTagMethodList } from './Card'
 
 export class Library {
+    /** timestamp of last discoverAllApps */
     updatedAt = 0
     fileTree: ItemDataType[] = []
     cardsByPath = new Map<CardPath, CardFile>()
@@ -31,7 +32,7 @@ export class Library {
     imageSize = '11rem'
     selectionCursor = 0
     /** flat list of all decks */
-    decks: Deck[] = []
+    decks: Package[] = []
 
     // 👉 use cardsFilteredSorted
     private get cards(): CardFile[] {
@@ -50,7 +51,7 @@ export class Library {
     }
 
     /** flat list of all decks, sorted by importance */
-    get decksSorted(): Deck[] {
+    get decksSorted(): Package[] {
         return [...this.decks].sort((a, b) => {
             return b.score - a.score
         })
@@ -67,12 +68,12 @@ export class Library {
         return card
     }
 
-    private decksByFolder = new Map<DeckFolder, Deck>()
+    private decksByFolder = new Map<PackageRelPath, Package>()
 
-    getDeck = (deckFolder: DeckFolder): Deck => {
+    getDeck = (deckFolder: PackageRelPath): Package => {
         const prev = this.decksByFolder.get(deckFolder)
         if (prev) return prev
-        const next = new Deck(this, deckFolder)
+        const next = new Package(this, deckFolder)
         this.decksByFolder.set(deckFolder, next)
         this.decks.push(next)
         return next
@@ -80,13 +81,8 @@ export class Library {
 
     favoritesFolded = false
 
-    // // misc (later?)
-    // installedFolded = false
-    // marketplaceFolded = false
-    // builtInFolded = false
-    // unknownFolded = false
-
     watcher: Watcher
+
     constructor(
         //
         public st: STATE,
@@ -108,7 +104,7 @@ export class Library {
         }
 
         this.addKnownPacks()
-        this.discoverAllCards()
+        this.discoverAllApps()
 
         // register watcher to properly reload all cards
         this.watcher = cache.watcher = new Watcher('library', {
@@ -161,17 +157,17 @@ export class Library {
     }
 
     private addKnownPacks = () => {
-        this.getDeck('library/VinsiGit/Cushy_Action' as DeckFolder)
-        this.getDeck('library/noellealarie/cushy-avatar-maker' as DeckFolder)
-        this.getDeck('library/featherice/cushy-actions' as DeckFolder)
-        this.getDeck('library/noellealarie/comfy2cushy-examples' as DeckFolder)
-        this.getDeck('library/CushyStudio/default' as DeckFolder)
+        this.getDeck('library/VinsiGit/Cushy_Action' as PackageRelPath)
+        this.getDeck('library/noellealarie/cushy-avatar-maker' as PackageRelPath)
+        this.getDeck('library/featherice/cushy-actions' as PackageRelPath)
+        this.getDeck('library/noellealarie/comfy2cushy-examples' as PackageRelPath)
+        this.getDeck('library/CushyStudio/default' as PackageRelPath)
         // this.getDeck('library/CushyStudio/tutorial' as DeckFolder)
         // this.getDeck('library/rvion/cushy-example-deck' as DeckFolder)
         // this.getDeck('library/CushyStudio/cards' as DeckFolder)
     }
 
-    createDeck = async (folder: DeckFolder): Promise<Deck> => {
+    createDeck = async (folder: PackageRelPath): Promise<Package> => {
         if (existsSync(folder)) return Promise.reject(`deck already exists: ${folder}`)
         mkdirSync(folder, { recursive: true })
         writeFileSync(join(folder, 'readme.md'), `# ${folder}\n\nThis is a new deck, created by CushyStudio.`)
@@ -253,7 +249,7 @@ export class Library {
     }
     // ---------------------------------------------------------
 
-    discoverAllCards = (): boolean => {
+    discoverAllApps = (): boolean => {
         // this.cardsByPath.clear() // reset
         this.fileTree.splice(0, this.fileTree.length) // reset
         this.folderMap.clear() // reset
@@ -330,10 +326,10 @@ export class Library {
                     console.log(`skipping file ${relPath} cause it's not in a valid action folder`)
                     continue
                 }
-                const apf = asRelativePath(path.join(...parts)) as DeckFolder
+                const apf = asRelativePath(path.join(...parts)) as PackageRelPath
                 const deck = this.getDeck(apf)
                 const cardPath = asCardPath(relPath)
-                deck._registerCard(absPath, 'B')
+                deck._registerApp(absPath, 'B')
                 const treeEntry = { value: cardPath, label: baseName }
                 parentStack.push(treeEntry)
             }

@@ -4,7 +4,7 @@ import { Button } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
 import { CreateDeckModalState } from './CreateDeckModalUI'
 import { GithubUsernameInputUI } from './GithubUsernameInputUI'
-import { DeckFolder } from 'src/cards/Deck'
+import { PackageRelPath } from 'src/cards/Deck'
 
 export const CreateDeckBtnUI = observer(function CreateDeckBtnUI_(p: {}) {
     const st = useSt()
@@ -53,7 +53,7 @@ export const CreateDeckBtnUI = observer(function CreateDeckBtnUI_(p: {}) {
                                 onClick={async () => {
                                     uist.isCreating = true
                                     const res = await st.library.createDeck(
-                                        `library/${st.githubUsername}/${uist.deckName}` as DeckFolder,
+                                        `library/${st.githubUsername}/${uist.deckName}` as PackageRelPath,
                                     )
                                     await new Promise((yes) => setTimeout(yes, 1_000))
                                     uist.isCreating = false

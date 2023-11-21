@@ -1,27 +1,27 @@
-import { Type, Static } from '@sinclair/typebox'
+import { Static, Type } from '@sinclair/typebox'
 import { Value, ValueError } from '@sinclair/typebox/value'
-import { Either, ResultFailure, __FAIL, __OK, resultFailure, resultSuccess } from 'src/types/Either'
+import { Either, resultFailure, resultSuccess } from 'src/types/Either'
 
 // DECK --------------------------------------
-export type DeckManifest = {
-    /** customize your action pack name */
+export type PackageManifest = {
+    /** package name */
     name: string
 
-    /** customize your author name */
+    /** author name */
     authorName: string
 
-    /** short summary of your action pack */
+    /** package summary */
     description: string
 
-    /** deck-relativei local path to an image in your action pack that should be used */
+    /** relative path from package root to an image */
     relativeIconPath?: string
 
-    /** the list of all cards exposed by this deck */
-    cards?: CardManifest[]
+    /** List of all cards exposed by this deck */
+    cards?: AppManifest[]
 }
 
 // DECK --------------------------------------
-export type CardManifest = {
+export type AppManifest = {
     /** relative to the deck root */
     deckRelativeFilePath: string
 
@@ -62,7 +62,7 @@ export type CardManifest = {
     sampleOutput?: string
 }
 
-export const CardSchema = Type.Object(
+export const AppSchema = Type.Object(
     {
         deckRelativeFilePath: Type.String(),
         cardBanner: Type.Optional(Type.String()),
@@ -78,33 +78,35 @@ export const CardSchema = Type.Object(
     { additionalProperties: false },
 )
 
-/* ✅ */ type _CardSchemaT = Static<typeof CardSchema>
-/* ✅ */ const _a2: CardManifest = 0 as any as _CardSchemaT
+/* ✅ */ type _AppSchemaT = Static<typeof AppSchema>
+/* ✅ */ const _a2: AppManifest = 0 as any as _AppSchemaT
 
 const optionalString = (description: string) => Type.Optional(Type.String({ description }))
 const string = (description: string) => Type.String({ description })
 export const DeckSchema = Type.Object(
     {
         $schema: optionalString('the schema version'),
-        name: string('customize your action pack name'),
+        name: string('customize your package name'),
         authorName: string('customize your author name'),
-        description: string('short summary of your action pack'),
-        relativeIconPath: optionalString('local path to an image in your action pack that should be used'),
-        cards: Type.Optional(Type.Array(CardSchema)),
+        description: string('short summary of your package'),
+        relativeIconPath: optionalString('local path to an image in your package that should be used'),
+        cards: Type.Optional(Type.Array(AppSchema)),
     },
     { additionalProperties: false },
 )
 
-export const parseDeckManifest = (manifest: unknown): Either<ValueError[], DeckManifest> => {
+export const parseDeckManifest = (manifest: unknown): Either<ValueError[], PackageManifest> => {
     const errors: ValueError[] = [...Value.Errors(DeckSchema, manifest)]
-    console.log('🦊🦊', errors)
-    if (errors.length > 0) return resultFailure(errors)
-    return resultSuccess(manifest as DeckManifest)
+    if (errors.length > 0) {
+        console.log('[🦊] Invalid Package manifest:', errors)
+        return resultFailure(errors)
+    }
+    return resultSuccess(manifest as PackageManifest)
     // return Value.Decode(DeckSchema, manifest)
 }
 
 /* ✅ */ type _DeckSchemaT = Static<typeof DeckSchema>
-/* ✅ */ const _a1: DeckManifest = 0 as any as _DeckSchemaT
+/* ✅ */ const _a1: PackageManifest = 0 as any as _DeckSchemaT
 
 export type ManifestError =
     | { type: 'no manifest' }

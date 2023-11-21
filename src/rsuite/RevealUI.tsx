@@ -5,6 +5,7 @@ import { createPortal } from 'react-dom'
 
 class TooltipState {
     get visible() {
+        if (this._lock) return true
         return this.inAnchor || this.inTooltip
     }
 
@@ -21,6 +22,11 @@ class TooltipState {
         public hideDelay = 200,
     ) {
         makeAutoObservable(this)
+    }
+
+    _lock = false
+    toggleLock = () => {
+        this._lock = !this._lock
     }
 
     leaveAnchorNow = () => {
@@ -142,6 +148,7 @@ export const RevealUI = observer(function Tooltip_(p: {
             tw='cursor-help'
             className={p.className}
             ref={ref}
+            onContextMenu={uist.toggleLock}
             onMouseEnter={uist.enterAnchor}
             onMouseLeave={uist.leaveAnchor}
             onClick={(ev) => {

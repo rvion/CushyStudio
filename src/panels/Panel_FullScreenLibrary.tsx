@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 import { Button, Input, Joined, Addon, Slider, Toggle } from 'src/rsuite/shims'
 import { CreateDeckBtnUI } from 'src/app/layout/CreateDeckBtnUI'
-import { FancyCardUI } from 'src/cards/fancycard/FancyCard'
+import { AppCardUI } from 'src/cards/fancycard/AppCardUI'
 import { FileBeeingImportedUI } from 'src/importers/FilesBeeingImported'
 import { useSt } from 'src/state/stateContext'
 import { ScrollablePaneUI } from 'src/widgets/misc/scrollableArea'
@@ -92,7 +92,7 @@ export const Panel_CardPicker3UI = observer(function Panel_CardPicker3UI_(p: {})
                         <FileBeeingImportedUI files={st.droppedFiles} />
                         {st.library.cardsFilteredSorted.map((card, ix) => (
                             <div key={card.relPath}>
-                                <FancyCardUI //
+                                <AppCardUI //
                                     active={st.library.selectionCursor === ix}
                                     deck={card.deck}
                                     style={card.style}

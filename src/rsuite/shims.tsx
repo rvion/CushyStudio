@@ -230,6 +230,7 @@ export const Message = observer(function Message_(p: {
     showIcon?: boolean
     children?: ReactNode
 }) {
+    const { showIcon, ...rest } = p
     return (
         <div
             tw={[
@@ -237,7 +238,7 @@ export const Message = observer(function Message_(p: {
                     ? 'bg-error text-error-content'
                     : 'bg-base text-primary-content',
             ]}
-            {...p}
+            {...rest}
         >
             {p.header}
             <div className='flex flex-wrap items-center'>
