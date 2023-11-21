@@ -87,8 +87,14 @@ export type ConfigFile = {
      * if true, hovering any image in the ui will scale the image
      * so it use all screen real estate rather than be limited by its
      * base size
+     * @default false
      */
     showPreviewInFullScreen?: boolean
+
+    /**
+     * show hovered preview in the main output panel
+     * @default true
+     */
     showPreviewInPanel?: boolean
 
     /** named perspectives */

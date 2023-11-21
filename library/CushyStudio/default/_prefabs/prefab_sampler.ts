@@ -44,6 +44,7 @@ export const run_sampler = (
     ctx: Ctx_sampler,
 ): { image: VAEDecode; latent: KSampler } => {
     const graph = flow.nodes
+    flow.print(`run_sampler with seed : ${opts.seed}`)
     const latent = graph.KSampler({
         model: ctx.ckpt,
         seed: opts.seed,

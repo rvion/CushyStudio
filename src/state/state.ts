@@ -141,7 +141,10 @@ export class STATE {
 
     getConfigValue = <K extends keyof ConfigFile>(k: K) => this.configFile.value[k]
     setConfigValue = <K extends keyof ConfigFile>(k: K, v: ConfigFile[K]) => this.configFile.update({ [k]: v })
-    isConfigValueEq = <K extends keyof ConfigFile>(k: K, val: ConfigFile[K]) => this.configFile.value[k] === val
+    // isConfigValueEq = <K extends keyof ConfigFile>(k: K, val: ConfigFile[K]) => this.configFile.value[k] === val
+
+    get showPreviewInPanel() { return this.configFile.value.showPreviewInPanel ?? true } // prettier-ignore
+    set showPreviewInPanel(v: boolean) { this.configFile.update({ showPreviewInPanel: v }) } // prettier-ignore
 
     droppedFiles: File[] = []
 

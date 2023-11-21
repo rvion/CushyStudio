@@ -49,10 +49,7 @@ export const Panel_Gallery = observer(function VerticalGalleryUI_(p: {}) {
                     />
                 </FieldAndLabelUI>
                 <FieldAndLabelUI label='in-panel'>
-                    <Toggle
-                        checked={st.isConfigValueEq('showPreviewInPanel', true)}
-                        onChange={(ev) => st.setConfigValue('showPreviewInPanel', ev.target.checked)}
-                    />
+                    <Toggle checked={st.showPreviewInPanel} onChange={(ev) => (st.showPreviewInPanel = ev.target.checked)} />
                 </FieldAndLabelUI>
                 <FieldAndLabelUI label='hover opacity'>
                     <Slider
