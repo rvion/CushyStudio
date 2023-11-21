@@ -20,7 +20,7 @@ export const Dropdown = (p: {
         className='dropdown'
         tw={[p.className]}
     >
-        <label tabIndex={0} tw={[`flex-nowrap btn btn-${p.size ?? 'sm'}`]}>
+        <label tabIndex={0} tw={[`flex-nowrap btn btn-${p.size ?? 'sm'} px-2`]}>
             <span tw='hidden lg:inline-block'>{p.startIcon}</span>
             {p.title}
         </label>
