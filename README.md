@@ -13,7 +13,7 @@
 <a href="https://discord.gg/GfAN6hF2ad">
     <img height="21" alt="Join our Discord" src="https://dcbadge.vercel.app/api/server/GfAN6hF2ad?style=flat">
 </a>
-<a href="https://twitter.com/_rvion_">
+<a href="https://twitter.com/_rvion">
     <img height="21" alt="Follow _rvion on Twitter" src="https://img.shields.io/badge/%40__rvion-666666?style=flat&logo=twitter&labelColor=555&label=Follow">
 </a>
 
