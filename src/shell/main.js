@@ -64,7 +64,7 @@ async function START() {
         mainWindow.maximize()
 
         // Open DevTools automatically
-        mainWindow.webContents.openDevTools()
+        // mainWindow.webContents.openDevTools()
 
         // check if cushy is running
         let viteStarted = false

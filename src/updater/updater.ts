@@ -105,7 +105,6 @@ export class GitManagedFolder {
     private updateInfos = async () => {
         try {
             this.currentAction = 'updateInfos'
-            console.log('🔴 A ----------', this.absPath)
             // case 1. folder does not exists
             if (!existsSync(this.config.absFolderPath)) {
                 this.status = FolderGitStatus.DoesNotExist
@@ -114,7 +113,6 @@ export class GitManagedFolder {
                 return
             }
 
-            console.log('🔴 B ----------', this.absPath)
             // case 2. path is not not a directory
             if (!lstatSync(this.config.absFolderPath).isDirectory()) {
                 // TODO: Figure out why this constructor is even reciving non-directories
