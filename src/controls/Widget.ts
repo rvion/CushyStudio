@@ -902,7 +902,7 @@ type WithExt <T extends Widget> = { item:  T } & ItemExt
 type WithExt_<T extends Widget> = { item_: T } & ItemExt
 
 export type Widget_listExt_input<T extends Widget>  = ReqInput<{
-    mode?: '2d' | 'timeline',
+    mode?: 'regional' | 'timeline',
     element: () => WithExt<T>,
     min?: number,
     max?:number,

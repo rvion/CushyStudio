@@ -6,7 +6,7 @@ import { InputNumberUI } from 'src/rsuite/InputNumberUI'
 
 export const WidgetListExtUI = observer(function WidgetListExtUI_<T extends Widget>(p: { req: Widget_listExt<T> }) {
     if (p.req.input.mode === 'timeline') return <WidgetListExtUI_timeline req={p.req} />
-    if (p.req.input.mode === '2d') return <WidgetListExtUI_timeline req={p.req} />
+    if (p.req.input.mode === 'regional') return <WidgetListExtUI_timeline req={p.req} />
     return <WidgetListExtUI_timeline req={p.req} />
 })
 

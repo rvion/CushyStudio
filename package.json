@@ -26,7 +26,7 @@
         "gen-assets": "bun src/utils/assets/assets.gen.ts",
         "gen-schema": "bun src/cards/DeckManifestGen.ts",
         "gen-syms": "node src/syms/_.cjs",
-        "gen-doc": "typedoc --out library/_doc src/back/Runtime.ts src/controls/FormBuilder.ts src/controls/Widget.ts",
+        "gen-doc": "typedoc --excludeInternal --out library/_doc src/back/Runtime.ts src/controls/FormBuilder.ts src/controls/Widget.ts",
         "📌 FRONT": "",
         "front:shell": "electron src/shell",
         "front:watch": "vite build --watch",
