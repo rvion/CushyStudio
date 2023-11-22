@@ -29,8 +29,8 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
                 <MenuPanelsUI />
                 <MenuComfyUI />
                 <MenuUtilsUI />
-                <div className='flex flex-grow'></div>
                 <MenuDebugUI />
+                <div className='flex flex-grow'></div>
                 <MenuHelpUI />
                 <MenuConfigUI />
                 <IndicatorWebsocketUI />
