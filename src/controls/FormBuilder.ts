@@ -6,19 +6,22 @@ import { _FIX_INDENTATION } from '../utils/misc/_FIX_INDENTATION'
 
 // prettier-ignore
 export class FormBuilder {
+    // @internal
     _cache :{ count:number } = { count:0 }
 
     /**
      * 🔴 UGLY HACK: this is set in the FormBuilder root at from creation
      * when the root is created.
+     * @internal
      */
     ROOT!: W.Widget_group<any>
 
+    // @internal
     constructor(public schema: SchemaL) {
         makeAutoObservable(this)
     }
 
-    // 🔴 untyped internals there
+    // @internal
     HYDRATE =(type: W.Widget['type'], input: any, serial?: any ): any => {
         if (type === 'bool')               return new W.Widget_bool               (this, this.schema, input, serial)
         if (type === 'str')                return new W.Widget_str                (this, this.schema, input, serial)
