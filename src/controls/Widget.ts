@@ -895,15 +895,31 @@ export class Widget_list<T extends Widget> implements IRequest<'list', Widget_li
 
 
 // 🅿️ listExt ==============================================================================
-type RootExt = { w: number, h: number}
-type ItemExt = { x: number; y: number, w: number, h: number }
+export type RootExt = { w: number, h: number}
+export type ItemExt = {
+    x: number;
+    y: number;
+    w: number;
+    h: number;
+    fill?: string;
+    scaleX?:number;
+    scaleY?:number;
+    isSelected?: boolean;
+    isDragging?: boolean;
+    isResizing?: boolean;
+    rotation?: number;
+}
 
 type WithExt <T extends Widget> = { item:  T } & ItemExt
 type WithExt_<T extends Widget> = { item_: T } & ItemExt
 
 export type Widget_listExt_input<T extends Widget>  = ReqInput<{
     mode?: 'regional' | 'timeline',
-    element: () => WithExt<T>,
+    /** default: 100 */
+    w: number,
+    /** default: 100 */
+    h: number,
+    element: (size: {w:number, h:number}) => WithExt<T>,
     min?: number,
     max?:number,
     defaultLength?:number
@@ -926,7 +942,7 @@ export class Widget_listExt      <T extends Widget> implements IRequest<'listExt
         serial?: Widget_listExt_serial<T>,
     ) {
         this.id = serial?.id ?? nanoid()
-        this._reference = input.element()
+        this._reference = input.element({w:100, h:100})
         if (serial) {
             const items:  WithExt<T>[] = serial.items_.map(({item_, ...ext}) => {
                 const item:T = builder.HYDRATE(item_.type, this._reference.item.input, item_)
@@ -934,18 +950,20 @@ export class Widget_listExt      <T extends Widget> implements IRequest<'listExt
             })
             this.state = { type: 'listExt', id: this.id, active: serial.active, items, w: serial.w, h: serial.h }
         } else {
+            const w = input.w ?? 100
+            const h = input.h ?? 100
             const clamp = (v: number, min: number, max: number) => Math.min(Math.max(v, min), max)
             const defaultLen = clamp(input.defaultLength ?? 0, input.min ?? 0, input.max ?? 10)
             const items = defaultLen
-                ? new Array(defaultLen).fill(0).map(() => input.element())
+                ? new Array(defaultLen).fill(0).map(() => input.element({w, h}))
                 : []
             this.state = {
                 type: 'listExt',
                 id: this.id,
                 active: true,
                 items: items,
-                w: 100,
-                h: 100,
+                w,
+                h,
             }
         }
         makeAutoObservable(this)
@@ -958,11 +976,14 @@ export class Widget_listExt      <T extends Widget> implements IRequest<'listExt
         if (i >= 0) this.state.items.splice(i, 1)
     }
     get serial(): Widget_listExt_serial<T> {
-        const items_ = this.state.items.map((i) => ({item_: i.item.serial, h: i.h, w: i.w, x: i.x, y: i.y }))
+        const items_ = this.state.items.map((i) => {
+            const { item, ...rest } = i
+            return {item_: i.item.serial, ...rest }
+        })
         return { type: 'listExt', id: this.id, active: this.state.active, items_, w: this.state.w, h: this.state.h }
     }
     get result(): Widget_listExt_output<T> {
-        const items = this.state.items.map((i) => ({item: i.item.result, h: i.h, w: i.w, x: i.x, y: i.y }))
+        const items = this.state.items.map((i) => ({...i, item: i.item.result }))
         return {
             items: items,
             w: this.state.w,
@@ -972,7 +993,7 @@ export class Widget_listExt      <T extends Widget> implements IRequest<'listExt
     addItem() {
         // const _ref = this._reference
         // const newItem = this.builder.HYDRATE(_ref.type, _ref.input)
-        this.state.items.push(this.input.element())
+        this.state.items.push(this.input.element({w: this.state.w, h: this.state.h}))
     }
 }
 

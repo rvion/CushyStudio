@@ -1,14 +1,22 @@
 import { observer } from 'mobx-react-lite'
 import { Widget, Widget_listExt } from 'src/controls/Widget'
-import { Button, Joined, Message } from 'src/rsuite/shims'
-import { WidgetDI } from './WidgetUI.DI'
 import { InputNumberUI } from 'src/rsuite/InputNumberUI'
+import { Button, Message } from 'src/rsuite/shims'
+import { ListControlsUI } from '../shared/ListControlsUI'
+import { WidgetRegionalUI } from './WidgetRegionalUI'
+import { WidgetDI } from './WidgetUI.DI'
 
 export const WidgetListExtUI = observer(function WidgetListExtUI_<T extends Widget>(p: { req: Widget_listExt<T> }) {
     if (p.req.input.mode === 'timeline') return <WidgetListExtUI_timeline req={p.req} />
     if (p.req.input.mode === 'regional') return <WidgetListExtUI_timeline req={p.req} />
     return <WidgetListExtUI_timeline req={p.req} />
 })
+
+function replacer(key: string, value: any) {
+    if (key == 'item') return undefined
+    // else if (key=="privateProperty2") return undefined;
+    else return value
+}
 
 export const WidgetListExtUI_timeline = observer(function WidgetListExtUI_timeline_<T extends Widget>(p: {
     req: Widget_listExt<T>
@@ -24,82 +32,38 @@ export const WidgetListExtUI_timeline = observer(function WidgetListExtUI_timeli
     const indexWidth = len < 10 ? 1 : len < 100 ? 2 : 3
     return (
         <div className='_WidgetListExtUI' tw='flex-grow w-full'>
-            <Joined>
-                <Button
-                    tw='btn-sm join-item btn-ghost'
-                    disabled={max ? req.state.items.length >= max : undefined}
-                    icon={<span className='material-symbols-outlined'>add</span>}
-                    onClick={() => req.addItem()}
-                >
-                    Add
-                </Button>
-                <Button
-                    tw='btn-sm join-item btn-ghost'
-                    disabled={max ? req.state.items.length >= max : undefined}
-                    icon={<span className='material-symbols-outlined'>delete_forever</span>}
-                    onClick={() => req.removemAllItems()}
-                >
-                    Clear
-                </Button>
-                <Button
-                    tw='btn-sm join-item btn-ghost'
-                    disabled={max ? req.state.items.length >= max : undefined}
-                    icon={<span className='material-symbols-outlined'>unfold_less</span>}
-                    onClick={() => req.collapseAllItems()}
-                >
-                    Collapse all
-                </Button>
-                <Button
-                    tw='btn-sm join-item btn-ghost'
-                    disabled={max ? req.state.items.length >= max : undefined}
-                    icon={<span className='material-symbols-outlined'>unfold_more</span>}
-                    onClick={() => req.expandAllItems()}
-                >
-                    Expand All
-                </Button>
-                {/* <Button
-                    tw='btn-sm join-item btn-ghost'
-                    disabled={max ? req.state.items.length >= max : undefined}
-                    icon={<span className='material-symbols-outlined'>add</span>}
-                    onClick={() => {
-                        for (let i = 0; i < 100; i++) req.addItem()
-                    }}
-                >
-                    Add 100 more
-                </Button> */}
-            </Joined>
-            <InputNumberUI mode='int' onValueChange={(next) => (req.state.w = next)} />
-            <InputNumberUI mode='int' onValueChange={(next) => (req.state.h = next)} />
+            <ListControlsUI req={p.req} />
+            <InputNumberUI min={64} max={1000} mode='int' value={req.state.w} onValueChange={(next) => (req.state.w = next)} />
+            <InputNumberUI min={64} max={1000} mode='int' value={req.state.h} onValueChange={(next) => (req.state.h = next)} />
+            <WidgetRegionalUI req={p.req} />
             <div tw='flex flex-col gap-1'>
                 {values.map((x, ix) => {
                     const v = x.item
                     return (
-                        <div key={v.id} tw='flex items-start'>
-                            <Button
-                                style={{ width: `${indexWidth}rem` }}
-                                // tw='absolute left-0'
-                                appearance='subtle'
-                                size='sm'
-                                onClick={() => (v.state.collapsed = !Boolean(v.state.collapsed))}
-                            >
-                                {v.state.collapsed ? '▸' : '▿'}
-                                {ix}
-                            </Button>
-                            {v.state.collapsed ? null : (
-                                <div>
-                                    [x={x.x}, y={x.y}, w={x.w}, h={x.h}]
-                                </div>
-                            )}
-                            <WidgetUI req={v} />
-                            <Button
-                                appearance='subtle'
-                                disabled={min ? req.state.items.length <= min : undefined}
-                                tw='self-start'
-                                onClick={() => req.removeItem(x)}
-                                size='sm'
-                            >
-                                X
-                            </Button>
+                        <div>
+                            <div key={v.id} tw='flex items-start'>
+                                <Button
+                                    style={{ width: `${indexWidth}rem` }}
+                                    // tw='absolute left-0'
+                                    appearance='subtle'
+                                    size='sm'
+                                    onClick={() => (v.state.collapsed = !Boolean(v.state.collapsed))}
+                                >
+                                    {v.state.collapsed ? '▸' : '▿'}
+                                    {ix}
+                                </Button>
+                                <WidgetUI req={v} />
+                                <Button
+                                    appearance='subtle'
+                                    disabled={min ? req.state.items.length <= min : undefined}
+                                    tw='self-start'
+                                    onClick={() => req.removeItem(x)}
+                                    size='sm'
+                                >
+                                    X
+                                </Button>
+                            </div>
+                            {v.state.collapsed ? null : <div tw='text-gray-400'>{JSON.stringify(x, replacer)}</div>}
                         </div>
                     )
                 })}
