@@ -1,12 +1,12 @@
 import { observer } from 'mobx-react-lite'
+import { Button } from 'src/rsuite/shims'
 import { assets } from 'src/utils/assets/assets'
 import { useSt } from '../../state/stateContext'
 import { UpdateBtnUI } from '../../updater/UpdateBtnUI'
-import { MainNavBarUI, MenuComfyUI, MenuConfigUI, MenuDebugUI, MenuHelpUI, MenuPanelsUI, MenuUtilsUI } from './MainNavBarUI'
+import { CushyStudioLinkUI } from './CushyStudioLinkUI'
 import { IndicatorSchemaUI } from './IndicatorSchemaUI'
 import { IndicatorWebsocketUI } from './IndicatorWebsocketUI'
-import { CushyStudioLinkUI } from './CushyStudioLinkUI'
-import { Button } from 'src/rsuite/shims'
+import { MenuComfyUI, MenuConfigUI, MenuDebugUI, MenuHelpUI, MenuPanelsUI, MenuUtilsUI } from './MainNavBarUI'
 
 export const AppBarUI = observer(function AppBarUI_(p: {}) {
     const st = useSt()
