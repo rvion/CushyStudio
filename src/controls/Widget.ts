@@ -847,22 +847,6 @@ export class Widget_list<T extends Widget> implements IRequest<'list', Widget_li
     state: Widget_list_state<T>
     private _reference: T
 
-    // moveItemUp(index: number) {
-    //     if (index > 0) {
-    //         const item = this.state.items[index];
-    //         this.state.items.splice(index, 1);   // Remove the item from its current position
-    //         this.state.items.splice(index - 1, 0, item);  // Reinsert at new position
-    //     }
-    // }
-
-    // moveItemDown(index: number) {
-    //     if (index < this.state.items.length - 1) {
-    //         const item = this.state.items[index];
-    //         this.state.items.splice(index, 1);   // Remove the item from its current position
-    //         this.state.items.splice(index + 1, 0, item);  // Reinsert at new position
-    //     }
-    // }
-
     constructor(
         public builder: FormBuilder,
         public schema: SchemaL,
@@ -889,17 +873,9 @@ export class Widget_list<T extends Widget> implements IRequest<'list', Widget_li
         }
         makeAutoObservable(this)
     }
-    removemAllItems = () => {
-        this.state.items = []
-    }
-    collapseAllItems = () => {
-        for (const item of this.state.items)
-            item.state.collapsed = true
-    }
-    expandAllItems = () => {
-        for (const item of this.state.items)
-            item.state.collapsed = false
-    }
+    removemAllItems = () => this.state.items = []
+    collapseAllItems = () => this.state.items.forEach((i) => i.state.collapsed = true)
+    expandAllItems = () => this.state.items.forEach((i) => i.state.collapsed = false)
     removeItem = (item: T) => {
         const i = this.state.items.indexOf(item)
         if (i >= 0) this.state.items.splice(i, 1)
