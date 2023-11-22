@@ -167,7 +167,7 @@ export class Runtime<FIELDS extends WidgetDict = any> {
         this.form = actionResult
         this.formSerial = actionSerial
         // console.log(`🔴 before: size=${this.graph.nodes.length}`)
-        console.log(`FORM RESULT: data=${JSON.stringify(this.step.data.formResult, null, 3)}`)
+        // console.log(`FORM RESULT: data=${JSON.stringify(this.step.data.formResult, null, 3)}`)
         try {
             if (action == null) {
                 console.log(`❌ action not found`)
