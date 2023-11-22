@@ -1,12 +1,9 @@
-import type { STATE } from 'src/state/state'
-
 import { observer } from 'mobx-react-lite'
 import { ImageL } from 'src/models/Image'
-import { Button, DropdownMenu, Popover, PositionChildProps, Whisper } from 'src/rsuite/shims'
-import { MenuItem } from 'src/rsuite/Dropdown'
+import { RevealUI } from 'src/rsuite/RevealUI'
+import { Button } from 'src/rsuite/shims'
 import { useSt } from '../../state/stateContext'
 import { useImageDrag } from './dnd'
-import { RevealUI } from 'src/rsuite/RevealUI'
 
 export const ImageUI = observer(function ImageUI_(p: { img: ImageL }) {
     const image = p.img
