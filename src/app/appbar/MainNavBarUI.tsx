@@ -3,12 +3,11 @@ import { Button } from 'src/rsuite/shims'
 import { Dropdown, MenuItem } from 'src/rsuite/Dropdown'
 import { assets } from 'src/utils/assets/assets'
 import { useSt } from '../../state/stateContext'
-import { DBHealthUI } from './AppBarUI'
+import { IndicatorDBHealthBtnUI } from './IndicatorDBHealthBtnUI'
 import { ThemePreviewUI } from './ThemePreviewUI'
 
 export const MainNavBarUI = observer(function MainNavBarUI_(p: { className?: string }) {
     const st = useSt()
-    const themeIcon = st.themeMgr.theme === 'light' ? 'highlight' : 'nights_stay'
     return (
         <>
             <Button
@@ -45,7 +44,6 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: { className?: str
                     label='Last STEP'
                 />
             </Dropdown>
-
             <Dropdown
                 startIcon={<span className='material-symbols-outlined text-blue-400'>account_tree</span>}
                 title='ComfyUI'
@@ -96,28 +94,6 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: { className?: str
                 />
             </Dropdown>
             <Dropdown
-                appearance='subtle'
-                startIcon={<span className='text-warning material-symbols-outlined'>sync</span>}
-                title='Debug'
-            >
-                <MenuItem
-                    icon={<span className='text-warning material-symbols-outlined'>sync</span>}
-                    onClick={() => window.location.reload()}
-                    label='Reload'
-                />
-                <MenuItem //
-                    icon={<span className='text-warning material-symbols-outlined'>bug_report</span>}
-                    onClick={() => st.electronUtils.toggleDevTools()}
-                    label='console'
-                />
-                <MenuItem
-                    icon={<span className='text-warning material-symbols-outlined'>sync</span>}
-                    onClick={() => st.layout.resetCurrent()}
-                    label='Fix Layout'
-                />
-                <DBHealthUI />
-            </Dropdown>
-            <Dropdown
                 startIcon={<span className='material-symbols-outlined text-pink-400'>help_center</span>}
                 title='Docs'
                 appearance='subtle'
@@ -139,13 +115,37 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: { className?: str
                 title='Theme'
             >
                 {st.themeMgr.themes.map((theme) => (
-                    <MenuItem
+                    <div
+                        tw='cursor-pointer hover:bg-base-300 p-2'
                         key={theme}
                         // icon={<span className='text-orange-400 material-symbols-outlined'>sync</span>}
                         onClick={() => (st.themeMgr.theme = theme)}
-                        label={<ThemePreviewUI theme={theme} />}
-                    />
+                    >
+                        <ThemePreviewUI theme={theme} />
+                    </div>
                 ))}
+            </Dropdown>
+            <Dropdown
+                appearance='subtle'
+                startIcon={<span className='text-warning material-symbols-outlined'>sync</span>}
+                title='Debug'
+            >
+                <MenuItem
+                    icon={<span className='text-warning material-symbols-outlined'>sync</span>}
+                    onClick={() => window.location.reload()}
+                    label='Reload'
+                />
+                <MenuItem //
+                    icon={<span className='text-warning material-symbols-outlined'>bug_report</span>}
+                    onClick={() => st.electronUtils.toggleDevTools()}
+                    label='console'
+                />
+                <MenuItem
+                    icon={<span className='text-warning material-symbols-outlined'>sync</span>}
+                    onClick={() => st.layout.resetCurrent()}
+                    label='Fix Layout'
+                />
+                <IndicatorDBHealthBtnUI />
             </Dropdown>
             {/* <ThemePickerUI /> */}
         </>

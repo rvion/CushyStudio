@@ -1,23 +1,24 @@
 import { observer } from 'mobx-react-lite'
 import { RevealUI } from 'src/rsuite/RevealUI'
-import { Button, Loader, Message } from 'src/rsuite/shims'
+import { Loader, Message } from 'src/rsuite/shims'
 import { useSt } from '../../state/stateContext'
 
-export const SchemaIndicatorUI = observer(function SchemaIndicatorUI_(p: {}) {
+export const IndicatorSchemaUI = observer(function IndicatorSchemaUI_(p: {}) {
     const st = useSt()
     return (
         <RevealUI>
-            {st.schemaReady.done ? (
-                <div className='flex gap-1 px-1 rounded cursor-help'>
-                    {/* <span className='material-symbols-outlined text-green-400'>check_circle</span> */}
-                    <span className='text-success'>Schema</span>
-                </div>
-            ) : (
-                <Button size='xs' appearance='ghost' color='orange' className='flex gap-2'>
-                    <Loader />
-                    <div> schema</div>
-                </Button>
-            )}
+            <div>
+                {st.schemaReady.done ? (
+                    <div className='flex gap-1 px-1 rounded cursor-help'>
+                        <span className='text-success'>Schema</span>
+                    </div>
+                ) : (
+                    <div tw='btn btn-sm btn-outline flex-nowrap'>
+                        <Loader size='xs' />
+                        schema
+                    </div>
+                )}
+            </div>
             <div tw='menu'>
                 {st.schemaReady.done ? null : (
                     <Message showIcon type='warning'>

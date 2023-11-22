@@ -3,7 +3,7 @@ import { RevealUI } from 'src/rsuite/RevealUI'
 import { Button, Loader, Message } from 'src/rsuite/shims'
 import { useSt } from '../../state/stateContext'
 
-export const WebsocketIndicatorUI = observer(function WebsocketIndicatorUI_(p: {}) {
+export const IndicatorWebsocketUI = observer(function IndicatorWebsocketUI_(p: {}) {
     const st = useSt()
     return (
         <RevealUI>
@@ -13,10 +13,10 @@ export const WebsocketIndicatorUI = observer(function WebsocketIndicatorUI_(p: {
                     <span className='text-success'>WS</span>
                 </Button>
             ) : (
-                <Button size='sm' color='orange' appearance='ghost' className='flex gap-2'>
-                    <Loader />
-                    <div>ComfyUI</div>
-                </Button>
+                <div tw='btn btn-sm btn-outline flex-nowrap'>
+                    <Loader size='xs' />
+                    ComfyUI
+                </div>
             )}
             <div tw='menu'>
                 {st.schemaReady.done ? null : (
