@@ -1,7 +1,7 @@
 import { makeAutoObservable } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import React, { useMemo } from 'react'
-import { STATE } from 'src/state/state'
+import type { STATE } from 'src/state/state'
 import { useSt } from 'src/state/stateContext'
 import { searchMatches } from 'src/utils/misc/searchMatches'
 import { RSSize } from './shims'

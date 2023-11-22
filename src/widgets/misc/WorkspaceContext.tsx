@@ -1,5 +1,5 @@
 // import { createContext, useContext } from 'react'
-// import { STATE } from '../state'
+// import type { STATE } from '../state'
 
 // export const stContext = createContext<STATE | null>(null)
 

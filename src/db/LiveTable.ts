@@ -1,9 +1,9 @@
 import type { Indexed, LiveDB } from './LiveDB'
 import type { $BaseInstanceFields, BaseInstanceFields, LiveInstance } from './LiveInstance'
 import type { TableName } from './LiveStore'
+import type { STATE } from 'src/state/state'
 
 import { MERGE_PROTOTYPES } from './LiveHelpers'
-import { STATE } from 'src/state/state'
 import { nanoid } from 'nanoid'
 import { makeAutoObservable, toJS } from 'mobx'
 import { LiveOrdering } from './LiveOrdering'

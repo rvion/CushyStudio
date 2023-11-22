@@ -1,4 +1,4 @@
-import { STATE } from 'src/state/state'
+import type { STATE } from 'src/state/state'
 import { wildcards } from 'src/widgets/prompter/nodes/wildcards/wildcards'
 import { LexicalNode } from 'lexical'
 import { makeAutoObservable } from 'mobx'
