@@ -43,6 +43,7 @@ export type Widget =
     | Widget_selectManyOrCustom
     | Widget_selectOne<any>
     | Widget_list<any>
+    | Widget_listExt<any>
     | Widget_group<any>
     | Widget_groupOpt<any>
     | Widget_choice<any>
@@ -892,6 +893,89 @@ export class Widget_list<T extends Widget> implements IRequest<'list', Widget_li
     }
 }
 
+
+// 🅿️ listExt ==============================================================================
+type RootExt = { w: number, h: number}
+type ItemExt = { x: number; y: number, w: number, h: number }
+
+type WithExt <T extends Widget> = { item:  T } & ItemExt
+type WithExt_<T extends Widget> = { item_: T } & ItemExt
+
+export type Widget_listExt_input<T extends Widget>  = ReqInput<{
+    mode?: '2d' | 'timeline',
+    element: () => WithExt<T>,
+    min?: number,
+    max?:number,
+    defaultLength?:number
+}>
+export type Widget_listExt_serial<T extends Widget> = StateFields<{ type: 'listExt', active: true; items_: ({item_: T['$Serial']} & ItemExt)[] } & RootExt>
+export type Widget_listExt_state <T extends Widget> = StateFields<{ type: 'listExt', active: true; items:  ({item:  T           } & ItemExt)[] } & RootExt>
+export type Widget_listExt_output<T extends Widget> = RootExt & { items: (ItemExt & {item: T['$Output'] })[] }
+export interface Widget_listExt  <T extends Widget> extends     IWidget<'listExt', Widget_listExt_input<T>, Widget_listExt_serial<T>, Widget_listExt_state<T>, Widget_listExt_output<T>> {}
+export class Widget_listExt      <T extends Widget> implements IRequest<'listExt', Widget_listExt_input<T>, Widget_listExt_serial<T>, Widget_listExt_state<T>, Widget_listExt_output<T>> {
+    isOptional = false
+    id: string
+    type = 'listExt' as const
+    state: Widget_listExt_state<T>
+    private _reference: WithExt<T>
+
+    constructor(
+        public builder: FormBuilder,
+        public schema: SchemaL,
+        public input: Widget_listExt_input<T>,
+        serial?: Widget_listExt_serial<T>,
+    ) {
+        this.id = serial?.id ?? nanoid()
+        this._reference = input.element()
+        if (serial) {
+            const items:  WithExt<T>[] = serial.items_.map(({item_, ...ext}) => {
+                const item:T = builder.HYDRATE(item_.type, this._reference.item.input, item_)
+                return {item, ...ext}
+            })
+            this.state = { type: 'listExt', id: this.id, active: serial.active, items, w: serial.w, h: serial.h }
+        } else {
+            const clamp = (v: number, min: number, max: number) => Math.min(Math.max(v, min), max)
+            const defaultLen = clamp(input.defaultLength ?? 0, input.min ?? 0, input.max ?? 10)
+            const items = defaultLen
+                ? new Array(defaultLen).fill(0).map(() => input.element())
+                : []
+            this.state = {
+                type: 'listExt',
+                id: this.id,
+                active: true,
+                items: items,
+                w: 100,
+                h: 100,
+            }
+        }
+        makeAutoObservable(this)
+    }
+    removemAllItems = () => this.state.items = []
+    collapseAllItems = () => this.state.items.forEach((i) => i.item.state.collapsed = true)
+    expandAllItems = () => this.state.items.forEach((i) => i.item.state.collapsed = false)
+    removeItem = (item: WithExt<T>) => {
+        const i = this.state.items.indexOf(item) // 🔴 dangerous, ref equality fast but error prone
+        if (i >= 0) this.state.items.splice(i, 1)
+    }
+    get serial(): Widget_listExt_serial<T> {
+        const items_ = this.state.items.map((i) => ({item_: i.item.serial, h: i.h, w: i.w, x: i.x, y: i.y }))
+        return { type: 'listExt', id: this.id, active: this.state.active, items_, w: this.state.w, h: this.state.h }
+    }
+    get result(): Widget_listExt_output<T> {
+        const items = this.state.items.map((i) => ({item: i.item.result, h: i.h, w: i.w, x: i.x, y: i.y }))
+        return {
+            items: items,
+            w: this.state.w,
+            h: this.state.w,
+        }
+    }
+    addItem() {
+        // const _ref = this._reference
+        // const newItem = this.builder.HYDRATE(_ref.type, _ref.input)
+        this.state.items.push(this.input.element())
+    }
+}
+
 // 🅿️ group ==============================================================================
 export type Widget_group_input <T extends { [key: string]: Widget }> = ReqInput<{ items: () => T, topLevel?: boolean, verticalLabels?: boolean }>
 export type Widget_group_serial<T extends { [key: string]: Widget }> = StateFields<{ type: 'group', active: true; values_: {[k in keyof T]: T[k]['$Serial']}, collapsed?: boolean }>
@@ -1241,3 +1325,4 @@ WidgetDI.Widget_choice=Widget_choice
 WidgetDI.Widget_choices=Widget_choices
 WidgetDI.Widget_enum=Widget_enum
 WidgetDI.Widget_enumOpt=Widget_enumOpt
+WidgetDI.Widget_listExt=Widget_listExt

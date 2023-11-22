@@ -22,6 +22,7 @@ import { WidgetSelectOneUI } from './WidgetSelectOneUI'
 import { WigetSizeUI } from './WidgetSizeUI'
 import { WidgetStrUI } from './WidgetStrUI'
 import { WidgetDI } from './WidgetUI.DI'
+import { WidgetListExtUI } from './WidgetListExtUI'
 
 /**
  * this widget will then dispatch the individual requests to the appropriate sub-widgets
@@ -41,6 +42,7 @@ export const WidgetUI = observer(function WidgetUI_(p: { req: R.Widget; focus?: 
     if (req instanceof R.Widget_image)              return <WidgetSelectImageUI req={req} />
     if (req instanceof R.Widget_imageOpt)           return <WidgetSelectImageUI req={req} />
     if (req instanceof R.Widget_list)               return <WidgetListUI        req={req} />
+    if (req instanceof R.Widget_listExt)            return <WidgetListExtUI     req={req} />
     if (req instanceof R.Widget_group)              return <WidgetGroupUI       req={req} />
     if (req instanceof R.Widget_groupOpt)           return <WidgetGroupUI       req={req} />
     if (req instanceof R.Widget_size)               return <WigetSizeUI         req={req} />
