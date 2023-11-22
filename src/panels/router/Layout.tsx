@@ -151,6 +151,10 @@ export class CushyLayoutManager {
     }
 
     closeCurrentTab = () => {
+        if (this.fullPageComp != null) {
+            this.fullPageComp = null
+            return Trigger.Success
+        }
         // 1. find tabset
         const tabset = this.model.getActiveTabset()
         if (tabset == null) return Trigger.UNMATCHED_CONDITIONS
