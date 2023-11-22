@@ -2,10 +2,11 @@ import { observer } from 'mobx-react-lite'
 import { assets } from 'src/utils/assets/assets'
 import { useSt } from '../../state/stateContext'
 import { UpdateBtnUI } from '../../updater/UpdateBtnUI'
-import { MainNavBarUI } from './MainNavBarUI'
+import { MainNavBarUI, MenuComfyUI, MenuConfigUI, MenuDebugUI, MenuHelpUI, MenuPanelsUI, MenuUtilsUI } from './MainNavBarUI'
 import { IndicatorSchemaUI } from './IndicatorSchemaUI'
 import { IndicatorWebsocketUI } from './IndicatorWebsocketUI'
 import { CushyStudioLinkUI } from './CushyStudioLinkUI'
+import { Button } from 'src/rsuite/shims'
 
 export const AppBarUI = observer(function AppBarUI_(p: {}) {
     const st = useSt()
@@ -17,8 +18,21 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
             >
                 <img style={{ width: '1.6rem' }} src={assets.public_CushyLogo_512_png} alt='' />
                 <UpdateBtnUI updater={st.updater}>CushyStudio - </UpdateBtnUI>
-                <MainNavBarUI />
+                <Button
+                    appearance='subtle'
+                    size='sm'
+                    onClick={() => st.toggleCardPicker()}
+                    icon={<span className='material-symbols-outlined text-success'>view_list</span>}
+                >
+                    Library
+                </Button>
+                <MenuPanelsUI />
+                <MenuComfyUI />
+                <MenuUtilsUI />
                 <div className='flex flex-grow'></div>
+                <MenuDebugUI />
+                <MenuHelpUI />
+                <MenuConfigUI />
                 <IndicatorWebsocketUI />
                 <IndicatorSchemaUI />
                 <CushyStudioLinkUI />
