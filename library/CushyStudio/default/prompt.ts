@@ -28,7 +28,7 @@ card({
         model: ui_model(form),
         latent: ui_latent(form),
         sampler: ui_sampler(form),
-        cnets: form.groupOpt({
+        controlnets: form.groupOpt({
             items: () => ({
                 pose: form.list({
                     //
