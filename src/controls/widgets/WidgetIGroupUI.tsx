@@ -1,7 +1,7 @@
 import type { Widget, Widget_group, Widget_groupOpt } from 'src/controls/Widget'
 
 import { observer } from 'mobx-react-lite'
-import { WidgetWithLabelUI } from './WidgetWithLabelUI'
+import { WidgetWithLabelUI } from '../shared/WidgetWithLabelUI'
 
 export const WidgetGroupUI = observer(function WidgetItemsUI_(p: {
     //

@@ -6,7 +6,7 @@ import { GithubUserUI } from 'src/cards/GithubAvatarUI'
 import { ErrorBoundaryFallback } from 'src/widgets/misc/ErrorBoundary'
 import { Package } from '../cards/Deck'
 import { ActionPackStatusUI } from '../cards/DeckStatusUI'
-import { ActionPackStarsUI } from '../cards/DeckStarsUI'
+// import { ActionPackStarsUI } from '../cards/DeckStarsUI'
 
 export const Panel_Marketplace = observer(function Panel_Marketplace_(p: {}) {
     const st = useSt()
@@ -36,7 +36,7 @@ export const ActionPackUI = observer(function ActionPackUI_(p: { actionPack: Pac
                     <GithubUserUI size='1.5rem' username={pack.githubUserName} showName />
                     <div tw='text-neutral-content'>{pack.description}</div>
                 </div>
-                {pack.isBuiltIn ? null : <ActionPackStarsUI pack={pack} />}
+                {/* {pack.isBuiltIn ? null : <ActionPackStarsUI pack={pack} />} */}
             </div>
             <ActionPackStatusUI pack={pack} />
             {pack.installK.logs.length > 0 && (

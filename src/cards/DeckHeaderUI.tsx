@@ -2,10 +2,10 @@ import type { Package } from './Deck'
 
 import { observer } from 'mobx-react-lite'
 import { Popover, Whisper } from 'src/rsuite/shims'
-import { FolderGitStatus } from './FolderGitStatus'
+// import { FolderGitStatus } from './FolderGitStatus'
 import { stringifyUnknown } from 'src/utils/formatters/stringifyUnknown'
 import { ManifestError } from './DeckManifest'
-import { ActionPackStarsUI } from './DeckStarsUI'
+// import { ActionPackStarsUI } from './DeckStarsUI'
 import { ActionPackStatusUI } from './DeckStatusUI'
 
 export const DeckHeaderUI = observer(function ActionPackHeaderUI_(p: { deck: Package }) {
@@ -40,9 +40,9 @@ export const DeckHeaderUI = observer(function ActionPackHeaderUI_(p: { deck: Pac
                             )}
                             <ActionPackStatusUI pack={deck} />
                         </div>
-                        {deck.updater.status === FolderGitStatus.FolderWithGit ? ( //
+                        {/* {deck.updater.status === FolderGitStatus.FolderWithGit ? ( //
                             <ActionPackStarsUI tw='float-right' pack={deck} />
-                        ) : null}
+                        ) : null} */}
                     </div>
                     {/* <Message showIcon type={deck.manifestError.}>
                         {deck.manifestType === 'implicit' ? 'No Manifest found' : 'Manifest found'}

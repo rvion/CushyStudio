@@ -7,10 +7,11 @@ import { ErrorBoundary } from 'react-error-boundary'
 import { Toggle, Tooltip, Whisper } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
 import { ErrorBoundaryFallback } from '../../widgets/misc/ErrorBoundary'
-import { WidgetDI } from './WidgetUI.DI'
+import { WidgetDI } from '../widgets/WidgetUI.DI'
 import { makeLabelFromFieldName } from '../../utils/misc/makeLabelFromFieldName'
 import { RevealUI } from 'src/rsuite/RevealUI'
 import { ChangeEvent } from 'react'
+import { isWidgetCollapsible } from './isWidgetCollapsible'
 
 export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     req: R.Widget
@@ -39,19 +40,8 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
         if (st.preferedFormLayout === 'dense') return false
     })()
 
-    const isCollapsible = (() => {
-        if (req instanceof KLS.Widget_group) return true
-        if (req instanceof KLS.Widget_groupOpt) return true
-        if (req instanceof KLS.Widget_list) return true
-        if (req instanceof KLS.Widget_listExt) return true
-        if (req instanceof KLS.Widget_str && req.input.textarea) return true
-        if (req instanceof KLS.Widget_prompt) return true
-        if (req instanceof KLS.Widget_promptOpt) return true
-        return false
-    })()
-
+    const isCollapsible = isWidgetCollapsible(req)
     const collapsed = req.state.collapsed && isCollapsible
-
     const v = p.req
     const levelClass = p.isTopLevel ? '_isTopLevel' : '_isNotTopLevel'
 

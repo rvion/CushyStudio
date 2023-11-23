@@ -259,11 +259,11 @@ export class CushyLayoutManager {
                 // LEFT BORDER
                 {
                     type: 'border',
-                    size: 300,
+                    size: 250,
                     location: 'left',
                     selected: 0,
                     show: true,
-                    children: [this._add({ panel: 'FileList', props: {}, canClose: false, width: 300 })],
+                    children: [this._add({ panel: 'FileList', props: {}, canClose: false, width: 250 })],
                 },
                 // RIGHT BORDER
                 {
@@ -284,13 +284,14 @@ export class CushyLayoutManager {
                     {
                         id: 'leftPane',
                         type: 'row',
-                        weight: 100,
+                        width: 100,
                         children: [
                             {
                                 type: 'tabset',
                                 id: 'LEFT_PANE_TABSET',
                                 minWidth: 150,
                                 minHeight: 150,
+                                width: 600,
                                 enableClose: false,
                                 enableDeleteWhenEmpty: false,
                                 children: [this._add({ panel: 'CurrentDraft', canClose: false, props: {} })],
