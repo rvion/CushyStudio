@@ -28,14 +28,11 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
 
     const isVertical = (() => {
         if (st.preferedFormLayout === 'auto') {
-            // if (req.isOptional) return true
             if (req instanceof KLS.Widget_group) return true
             if (req instanceof KLS.Widget_groupOpt) return true
             if (req instanceof KLS.Widget_list) return true
             if (req instanceof KLS.Widget_listExt) return true
             if (req instanceof KLS.Widget_str && req.input.textarea) return true
-            // if (req instanceof KLS.Widget_prompt) return true
-            // if (req instanceof KLS.Widget_promptOpt) return true
             return false
         }
         if (st.preferedFormLayout === 'mobile') return true
