@@ -886,6 +886,11 @@ export class Widget_list<T extends Widget> implements IRequest<'list', Widget_li
         const i = this.state.items.indexOf(item)
         if (i >= 0) this.state.items.splice(i, 1)
     }
+    moveItem = (oldIndex: number, newIndex: number) => {
+        const favs = this.state.items
+        if (favs == null) return
+        favs.splice(newIndex, 0, favs.splice(oldIndex, 1)[0])
+    }
     get serial(): Widget_list_serial<T> {
         const items_ = this.state.items.map((i) => i.serial)
         return { type: 'list', id: this.id, active: this.state.active, items_ }

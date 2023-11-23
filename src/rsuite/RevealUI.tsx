@@ -109,6 +109,7 @@ export const RevealUI = observer(function Tooltip_(p: {
     showDelay?: number
     hideDelay?: number
     enableRightClick?: boolean
+    cursor?: string
 }) {
     const showDelay = p.showDelay ?? 300
     const hideDelay = p.hideDelay ?? 300
@@ -145,7 +146,7 @@ export const RevealUI = observer(function Tooltip_(p: {
 
     return (
         <span //
-            tw='cursor-help'
+            tw={[p.cursor ?? 'cursor-help']}
             className={p.className}
             ref={ref}
             onContextMenu={uist.toggleLock}

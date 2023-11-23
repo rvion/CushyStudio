@@ -225,9 +225,9 @@ export class Library {
     }
     moveFavorite = (oldIndex: number, newIndex: number) => {
         this.st.configFile.update((x) => {
-            const fav = x.favoriteCards
-            if (fav == null) return
-            fav.splice(newIndex, 0, fav.splice(oldIndex, 1)[0])
+            const favs = x.favoriteCards
+            if (favs == null) return
+            favs.splice(newIndex, 0, favs.splice(oldIndex, 1)[0])
         })
     }
     get allFavorites(): { appPath: AppPath; app: Maybe<CardFile> }[] {

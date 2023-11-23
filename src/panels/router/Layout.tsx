@@ -261,7 +261,7 @@ export class CushyLayoutManager {
                     type: 'border',
                     size: 300,
                     location: 'left',
-                    // selected: 0,
+                    selected: 0,
                     show: true,
                     children: [this._add({ panel: 'FileList', props: {}, canClose: false, width: 300 })],
                 },
@@ -270,7 +270,7 @@ export class CushyLayoutManager {
                     type: 'border',
                     location: 'right',
                     show: true,
-                    // selected: 0,
+                    selected: 0,
                     children: [
                         this._add({ panel: 'LastStep', props: {}, canClose: false }),
                         this._add({ panel: 'Steps', props: {}, canClose: false }),
