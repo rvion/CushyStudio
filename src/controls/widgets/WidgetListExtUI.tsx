@@ -55,7 +55,8 @@ export const WidgetListExtUI_timeline = observer(function WidgetListExtUI_timeli
                     return (
                         <div>
                             <div key={v.id} tw='flex items-start'>
-                                <div tw='btn btn-ghost btn-sm'>{ix}</div>
+                                <div style={{ width: `${indexWidth}rem` }}>{ix}</div>
+                                <input value={x.fill} onChange={(ev) => (x.fill = ev.target.value)} type='color' tw='w-7'></input>
                                 <Button
                                     style={{ width: `${indexWidth}rem` }}
                                     appearance='subtle'
