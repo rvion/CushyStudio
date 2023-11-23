@@ -996,7 +996,7 @@ export class Widget_listExt      <T extends Widget> implements IRequest<'listExt
         const newItem: WithExt<T> = { ...itemExtDefaults, ...newItemPartial}
         this.state.items.push(newItem)
     }
-    removemAllItems = () => this.state.items = []
+    removemAllItems = () => this.state.items = this.state.items.slice(0, this.input.min ?? 0)
     collapseAllItems = () => this.state.items.forEach((i) => i.item.state.collapsed = true)
     expandAllItems = () => this.state.items.forEach((i) => i.item.state.collapsed = false)
     removeItem = (item: WithExt<T>) => {
