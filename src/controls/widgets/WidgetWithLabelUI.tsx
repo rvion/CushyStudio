@@ -7,6 +7,7 @@ import { Toggle, Tooltip, Whisper } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
 import { ErrorBoundaryFallback } from '../../widgets/misc/ErrorBoundary'
 import { WidgetDI } from './WidgetUI.DI'
+import { makeLabelFromFieldName } from '../../utils/misc/makeLabelFromFieldName'
 
 const KLS = WidgetDI
 export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
@@ -20,7 +21,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     const { rootKey, req } = p
     let tooltip: Maybe<string>
     let label: Maybe<string>
-    label = req.input.label ?? makeNicer(rootKey)
+    label = req.input.label ?? makeLabelFromFieldName(rootKey)
     tooltip = req.input.tooltip
 
     // const vertical = false // p.vertical
@@ -140,14 +141,3 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
         )
     }
 })
-
-export function makeNicer(s: string): string {
-    if (s == null) return ''
-    if (s.length === 0) return s
-    s = s.replace(/([a-z])([A-Z])/g, '$1 $2')
-    s = s.replace(/([A-Z])([A-Z][a-z])/g, '$1 $2')
-    s = s.replace(/_/g, ' ')
-    s = s.replace(/([a-z])([A-Z])/g, '$1 $2')
-    s = s.replace(/([A-Z])([A-Z][a-z])/g, '$1 $2')
-    return s[0].toUpperCase() + s.slice(1)
-}
