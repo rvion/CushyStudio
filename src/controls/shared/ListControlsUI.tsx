@@ -22,7 +22,7 @@ export const ListControlsUI = observer(function ListControlsUI_(p: {
             </Button>
             <Button
                 tw='btn-sm join-item btn-ghost'
-                disabled={max ? req.state.items.length >= max : undefined}
+                disabled={min ? req.state.items.length <= min : undefined}
                 icon={<span className='material-symbols-outlined'>delete_forever</span>}
                 onClick={() => req.removemAllItems()}
             >
@@ -30,7 +30,6 @@ export const ListControlsUI = observer(function ListControlsUI_(p: {
             </Button>
             <Button
                 tw='btn-sm join-item btn-ghost'
-                disabled={max ? req.state.items.length >= max : undefined}
                 icon={<span className='material-symbols-outlined'>unfold_less</span>}
                 onClick={() => req.collapseAllItems()}
             >
@@ -38,7 +37,6 @@ export const ListControlsUI = observer(function ListControlsUI_(p: {
             </Button>
             <Button
                 tw='btn-sm join-item btn-ghost'
-                disabled={max ? req.state.items.length >= max : undefined}
                 icon={<span className='material-symbols-outlined'>unfold_more</span>}
                 onClick={() => req.expandAllItems()}
             >

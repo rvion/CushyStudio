@@ -874,7 +874,7 @@ export class Widget_list<T extends Widget> implements IRequest<'list', Widget_li
         }
         makeAutoObservable(this)
     }
-    removemAllItems = () => this.state.items = []
+    removemAllItems = () => this.state.items = this.state.items.slice(0, this.input.min ?? 0)
     collapseAllItems = () => this.state.items.forEach((i) => i.state.collapsed = true)
     expandAllItems = () => this.state.items.forEach((i) => i.state.collapsed = false)
     removeItem = (item: T) => {
