@@ -4,7 +4,7 @@ import type { IJsonModel } from 'flexlayout-react'
 import { JsonFile } from './JsonFile'
 import { asAbsolutePath } from 'src/utils/fs/pathUtils'
 import { resolve } from 'pathe'
-import { CardPath } from 'src/cards/CardPath'
+import { AppPath } from 'src/cards/CardPath'
 
 export type PreferedFormLayout = 'mobile' | 'dense' | 'auto'
 
@@ -41,7 +41,7 @@ export type ConfigFile = {
     preferedFormLayout?: PreferedFormLayout
     ['draft.mockup-mobile']?: boolean
 
-    favoriteCards?: CardPath[]
+    favoriteCards?: AppPath[]
     /** list of all comfyUI setup available */
     machines?: {
         /** server name */

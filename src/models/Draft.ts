@@ -4,7 +4,7 @@ import type { StepL } from './Step'
 
 import { autorun, reaction, runInAction, toJS } from 'mobx'
 import { CardFile } from 'src/cards/CardFile'
-import { CardPath } from 'src/cards/CardPath'
+import { AppPath } from 'src/cards/CardPath'
 import { type Widget } from 'src/controls/Widget'
 import { FormBuilder } from 'src/controls/FormBuilder'
 import { __FAIL, __OK, type Result } from 'src/types/Either'
@@ -25,7 +25,7 @@ export type DraftT = {
     title: string
 
     // action
-    actionPath: CardPath
+    actionPath: AppPath
     actionParams: any
 
     // starting graph

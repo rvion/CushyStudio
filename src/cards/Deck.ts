@@ -12,7 +12,7 @@ import { ManualPromise } from 'src/utils/misc/ManualPromise'
 import { AbsolutePath } from 'src/utils/fs/BrandedPaths'
 import { asAbsolutePath, asRelativePath } from 'src/utils/fs/pathUtils'
 import { generateAvatar } from './AvatarGenerator'
-import { CardPath, asCardPath } from './CardPath'
+import { AppPath, asAppPath } from './CardPath'
 import { PackageManifest, ManifestError, parseDeckManifest } from './DeckManifest'
 import { GithubUser, GithubUserName, asGithubUserName } from './GithubUser'
 
@@ -180,7 +180,7 @@ export class Package {
         appAbsPath: AbsolutePath,
         debugReason: string,
     ) => {
-        const cardPath: CardPath = asCardPath(relative(this.st.rootPath, appAbsPath))
+        const cardPath: AppPath = asAppPath(relative(this.st.rootPath, appAbsPath))
         const prev = this.library.getCard(cardPath)
         // console.log(`>> ${debugReason} 🤓👉 prev is `, Boolean(prev), `(${this.library.cardsByPath.size})`)
         if (prev != null) return

@@ -1,5 +1,5 @@
 import type { PromptL } from './Prompt'
-import type { CardPath } from 'src/cards/CardPath'
+import type { AppPath } from 'src/cards/CardPath'
 import type {
     FromExtension_Print,
     FromExtension_Prompt,
@@ -37,7 +37,7 @@ export type StepT = {
 
     // ACTION ------------------------------
     name: string
-    actionPath: CardPath
+    actionPath: AppPath
     formResult: Maybe<any>
     formSerial: Maybe<any>
 

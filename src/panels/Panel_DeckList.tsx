@@ -1,5 +1,6 @@
 import { observer } from 'mobx-react-lite'
-import { AppEntryUI, ActionPackUI } from '../cards/CardPicker2UI'
+import SortableList, { SortableItem } from 'react-easy-sort'
+import { ActionPackUI, AppEntryInvalidUI, AppEntryUI } from '../cards/CardPicker2UI'
 import { useSt } from '../state/stateContext'
 
 export const Panel_DeckList = observer(function ActionPicker2UI_(p: {}) {
@@ -27,7 +28,24 @@ export const Panel_DeckList = observer(function ActionPicker2UI_(p: {}) {
                     <div>{library.favoritesFolded ? '▸' : '▿'}</div>
                 </div>
             ) : null}
-            {library.favoritesFolded ? null : library.allFavorites.map((af) => <AppEntryUI key={af.relPath} card={af} />)}
+            {library.favoritesFolded ? null : ( //
+                <SortableList onSortEnd={library.moveFavorite} className='list' draggedItemClassName='dragged'>
+                    {library.allFavorites.map((fav, ix) => (
+                        //
+                        <SortableItem key={fav.appPath}>
+                            {/* 👇 wrapper div so SortableItem work */}
+                            <div>
+                                {fav.app ? ( //
+                                    <AppEntryUI key={fav?.appPath} app={fav.app} />
+                                ) : (
+                                    <AppEntryInvalidUI appPath={fav.appPath} />
+                                )}
+                            </div>
+                        </SortableItem>
+                    ))}
+                </SortableList>
+            )}
+
             {/* INSTALLED */}
             <div tw='flex flex-col'>
                 {library.decksSorted.map((pack) => (

@@ -7,7 +7,7 @@ import type { AbsolutePath } from '../utils/fs/BrandedPaths'
 import { readFileSync } from 'fs'
 import { makeAutoObservable, observable } from 'mobx'
 import path, { join, relative } from 'pathe'
-import { CardPath } from 'src/cards/CardPath'
+import { AppPath } from 'src/cards/CardPath'
 import { Package } from 'src/cards/Deck'
 import { DraftL } from 'src/models/Draft'
 import { clamp } from 'three/src/math/MathUtils'
@@ -64,7 +64,7 @@ export class CardFile {
         public library: Library,
         public deck: Package,
         public absPath: AbsolutePath,
-        public relPath: CardPath,
+        public relPath: AppPath,
     ) {
         this.st = library.st
         this.defaultManifest = this.mkDefaultManifest()

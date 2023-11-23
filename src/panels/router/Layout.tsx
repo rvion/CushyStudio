@@ -8,7 +8,7 @@ import { observer } from 'mobx-react-lite'
 import { nanoid } from 'nanoid'
 import { FC, createElement, createRef } from 'react'
 import { Trigger } from 'src/app/shortcuts/Trigger'
-import { CardPath } from 'src/cards/CardPath'
+import { AppPath } from 'src/cards/CardPath'
 
 import { Panel_CardPicker3UI } from 'src/panels/Panel_FullScreenLibrary'
 import { Message } from 'src/rsuite/shims'
@@ -116,7 +116,7 @@ export class CushyLayoutManager {
     })
 
     nextPaintIDx = 0
-    addCard = (actionPath: CardPath) => {
+    addCard = (actionPath: AppPath) => {
         const card = this.st.library.getCard(actionPath)
         if (card == null) return null /* 🔴 add popup somewhere */
         const draft = card.getLastDraft()

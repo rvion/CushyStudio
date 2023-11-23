@@ -6,6 +6,7 @@ import { Fragment } from 'react'
 import { useSt } from '../state/stateContext'
 import { DeckHeaderUI } from './DeckHeaderUI'
 import { CardIllustrationUI } from './fancycard/AppIllustrationUI'
+import { AppPath } from './CardPath'
 
 export const ActionPackUI = observer(function ActionPackUI_(p: { deck: Package }) {
     const deck: Package = p.deck
@@ -15,7 +16,7 @@ export const ActionPackUI = observer(function ActionPackUI_(p: { deck: Package }
             {deck.folded ? null : (
                 <div tw='flex flex-col gap-0.5'>
                     {deck.apps.map((af) => (
-                        <AppEntryUI key={af.relPath} card={af} />
+                        <AppEntryUI key={af.relPath} app={af} />
                     ))}
                 </div>
             )}
@@ -23,40 +24,47 @@ export const ActionPackUI = observer(function ActionPackUI_(p: { deck: Package }
     )
 })
 
-export const AppEntryUI = observer(function ActionEntryUI_(p: { card: CardFile }) {
+export const AppEntryInvalidUI = observer(function AppEntryInvalidUI_(p: { appPath: AppPath }) {
+    return (
+        <div tw='hover:bg-base-200 flex gap-2 cursor-pointer'>
+            <div tw='pl-3'>{/* <ActionFavoriteBtnUI app={card} size='1.3rem' /> */}</div>
+            {/* <CardIllustrationUI card={card} size='1.5rem' /> */}
+            <div tw='overflow-hidden text-base-content whitespace-nowrap overflow-ellipsis'>{p.appPath}</div>
+        </div>
+    )
+})
+export const AppEntryUI = observer(function AppEntryUI_(p: { app: CardFile }) {
     const st = useSt()
-    const card = p.card
+    const app = p.app
     return (
         <div
-            //
             tw='hover:bg-base-200 flex gap-2 cursor-pointer'
-            key={card.absPath}
             onClick={(ev) => {
                 ev.preventDefault()
                 ev.stopPropagation()
-                const actionPath = card.relPath
+                const actionPath = app.relPath
                 st.layout.addCard(actionPath)
             }}
         >
             <div tw='pl-3'>
-                <ActionFavoriteBtnUI card={card} size='1.3rem' />
+                <ActionFavoriteBtnUI app={app} size='1.3rem' />
             </div>
-            <CardIllustrationUI card={card} size='1.5rem' />
-            <div tw='overflow-hidden text-base-content whitespace-nowrap overflow-ellipsis'>{card.displayName}</div>
+            <CardIllustrationUI card={app} size='1.5rem' />
+            <div tw='overflow-hidden text-base-content whitespace-nowrap overflow-ellipsis'>{app.displayName}</div>
         </div>
     )
 })
 
-export const ActionFavoriteBtnUI = observer(function ActionFavoriteBtnUI_(p: { size: string; card: CardFile }) {
-    const af = p.card
+export const ActionFavoriteBtnUI = observer(function ActionFavoriteBtnUI_(p: { size: string; app: CardFile }) {
+    const app = p.app
     return (
         <Fragment>
-            {af.isFavorite ? (
+            {app.isFavorite ? (
                 <span
                     onClick={(ev) => {
                         ev.preventDefault()
                         ev.stopPropagation()
-                        af.setFavorite(false)
+                        app.setFavorite(false)
                     }}
                     //
                     style={{ fontSize: p.size }}
@@ -69,7 +77,7 @@ export const ActionFavoriteBtnUI = observer(function ActionFavoriteBtnUI_(p: { s
                     onClick={(ev) => {
                         ev.preventDefault()
                         ev.stopPropagation()
-                        af.setFavorite(true)
+                        app.setFavorite(true)
                     }}
                     style={{ fontSize: p.size }}
                     tw='hover:text-yellow-500 text-gray-500'

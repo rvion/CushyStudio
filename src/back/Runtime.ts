@@ -6,7 +6,7 @@ import * as path from 'pathe'
 import { execSync } from 'child_process'
 import fs, { writeFileSync } from 'fs'
 import { marked } from 'marked'
-import { CardPath } from 'src/cards/CardPath'
+import { AppPath } from 'src/cards/CardPath'
 import { Uploader } from 'src/state/Uploader'
 import type { STATE } from 'src/state/state'
 import { assets } from 'src/utils/assets/assets'
@@ -544,7 +544,7 @@ export class Runtime<FIELDS extends WidgetDict = any> {
     }
 
     /** load a deck asset to ComfyUI */
-    load_Asset = async (asset: CardPath): Promise<ImageAndMask> => {
+    load_Asset = async (asset: AppPath): Promise<ImageAndMask> => {
         const res = await this.st.uploader.upload_Asset(asset)
         return this.loadImageAnswer({ type: 'ComfyImage', imageName: res.name })
     }

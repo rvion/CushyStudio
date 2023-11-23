@@ -7,7 +7,7 @@ import Watcher from 'watcher'
 
 import { existsSync, mkdirSync, readFileSync, readdirSync, statSync, writeFileSync } from 'fs'
 import { makeAutoObservable } from 'mobx'
-import { CardPath, asCardPath } from 'src/cards/CardPath'
+import { AppPath, asAppPath } from 'src/cards/CardPath'
 import { Package, PackageRelPath } from 'src/cards/Deck'
 import { hasValidActionExtension } from '../back/ActionExtensions'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
@@ -19,7 +19,7 @@ export class Library {
     /** timestamp of last discoverAllApps */
     updatedAt = 0
     fileTree: ItemDataType[] = []
-    cardsByPath = new Map<CardPath, CardFile>()
+    cardsByPath = new Map<AppPath, CardFile>()
     folderMap = new Set<RelativePath>()
     rootLibraryFolder: AbsolutePath
 
@@ -57,12 +57,12 @@ export class Library {
         })
     }
 
-    getCard = (cardPath: CardPath): CardFile | undefined => {
+    getCard = (cardPath: AppPath): CardFile | undefined => {
         return this.cardsByPath.get(cardPath)
     }
 
     /** returns the card or throws an error */
-    getCardOrThrow = (cardPath: CardPath): CardFile => {
+    getCardOrThrow = (cardPath: AppPath): CardFile => {
         const card = this.cardsByPath.get(cardPath)
         if (card == null) throw new Error(`card not found: ${cardPath}`)
         return card
@@ -125,7 +125,7 @@ export class Library {
                 const isInLibrary = relPath.startsWith('library/') || relPath.startsWith('library\\')
                 if (isInLibrary && relPath.endsWith('.ts')) {
                     // TODO 🔴 need to reload all cards in tne deck, so `prefabs` properly "hot-reload"
-                    const card = this.cardsByPath.get(asCardPath(relPath))
+                    const card = this.cardsByPath.get(asAppPath(relPath))
                     if (card == null) return console.log('file watcher update aborted: not an action')
 
                     // reload the card if it's already loaded
@@ -217,10 +217,18 @@ export class Library {
         return [...this.cardsByPath.values()]
     }
 
-    get allFavorites(): CardFile[] {
-        return this.st.favoriteActions //
-            .map((ap) => this.getCard(ap)!)
-            .filter(Boolean)
+    moveFavorite = (oldIndex: number, newIndex: number) => {
+        this.st.configFile.update((x) => {
+            const fav = x.favoriteCards
+            if (fav == null) return
+            fav.splice(newIndex, 0, fav.splice(oldIndex, 1)[0])
+        })
+    }
+    get allFavorites(): { appPath: AppPath; app: Maybe<CardFile> }[] {
+        return this.st.favoriteActions.map((ap) => ({
+            appPath: ap,
+            app: this.getCard(ap),
+        }))
     }
 
     // expand mechanism ----------------------------------------
@@ -328,7 +336,7 @@ export class Library {
                 }
                 const apf = asRelativePath(path.join(...parts)) as PackageRelPath
                 const deck = this.getDeck(apf)
-                const cardPath = asCardPath(relPath)
+                const cardPath = asAppPath(relPath)
                 deck._registerApp(absPath, 'B')
                 const treeEntry = { value: cardPath, label: baseName }
                 parentStack.push(treeEntry)

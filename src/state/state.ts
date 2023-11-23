@@ -14,7 +14,7 @@ import { closest } from 'fastest-levenshtein'
 import { ShortcutWatcher } from 'src/app/shortcuts/ShortcutManager'
 import { shortcutsDef } from 'src/app/shortcuts/shortcuts'
 import type { ActionTagMethodList } from 'src/cards/Card'
-import { CardPath, asCardPath } from 'src/cards/CardPath'
+import { AppPath, asAppPath } from 'src/cards/CardPath'
 import { GithubUserName } from 'src/cards/GithubUser'
 import { Library } from 'src/cards/Library'
 import { GithubRepoName } from 'src/cards/githubRepo'
@@ -135,9 +135,7 @@ export class STATE {
 
     //
     get githubUsername(): Maybe<GithubUserName> { return this.configFile.value.githubUsername as Maybe<GithubUserName> } // prettier-ignore
-    get favoriteActions(): CardPath[] {
-        return this.configFile.value.favoriteCards ?? []
-    }
+    get favoriteActions(): AppPath[] { return this.configFile.value.favoriteCards ?? [] } // prettier-ignore
 
     getConfigValue = <K extends keyof ConfigFile>(k: K) => this.configFile.value[k]
     setConfigValue = <K extends keyof ConfigFile>(k: K, v: ConfigFile[K]) => this.configFile.update({ [k]: v })
@@ -288,7 +286,7 @@ export class STATE {
         })
         this.importer = new ComfyImporter(this)
         this.library = new Library(this)
-        const defaultCard = this.library.getCardOrThrow(asCardPath('library/CushyStudio/default/prompt.ts'))
+        const defaultCard = this.library.getCardOrThrow(asAppPath('library/CushyStudio/default/prompt.ts'))
         this._currentDraft = defaultCard.getLastDraft()
         ;(async () => {
             await this.schemaReady
