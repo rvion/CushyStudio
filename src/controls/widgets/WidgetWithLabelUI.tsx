@@ -1,6 +1,7 @@
-import { observer } from 'mobx-react-lite'
 import type { LabelPos } from 'src/controls/IWidget'
 import type * as R from 'src/controls/Widget'
+
+import { observer } from 'mobx-react-lite'
 
 import { ErrorBoundary } from 'react-error-boundary'
 import { Toggle, Tooltip, Whisper } from 'src/rsuite/shims'
@@ -8,8 +9,8 @@ import { useSt } from 'src/state/stateContext'
 import { ErrorBoundaryFallback } from '../../widgets/misc/ErrorBoundary'
 import { WidgetDI } from './WidgetUI.DI'
 import { makeLabelFromFieldName } from '../../utils/misc/makeLabelFromFieldName'
+import { RevealUI } from 'src/rsuite/RevealUI'
 
-const KLS = WidgetDI
 export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     req: R.Widget
     labelPos?: LabelPos
@@ -17,6 +18,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     vertical?: boolean
     isTopLevel?: boolean
 }) {
+    const KLS = WidgetDI
     const st = useSt()
     const { rootKey, req } = p
     let tooltip: Maybe<string>
@@ -49,18 +51,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     })()
     const v = p.req
     const levelClass = p.isTopLevel ? '_isTopLevel' : '_isNotTopLevel'
-    const toogle = (
-        <Toggle //
-            color='green'
-            checked={req.state.active}
-            onClick={(ev) => {
-                // stop propagation, to prevent the widget from collapsing
-                ev.stopPropagation()
-            }}
-            onChange={(ev) => (req.state.active = ev.target.checked)}
-        />
-    )
-    const showToogle = req.isOptional || !req.state.active
+    const showToogle = req.isOptional || !req.state.active || req instanceof KLS.Widget_bool
 
     let WIDGET = v.state.collapsed ? null : !v.state.active ? null : ( //
         <ErrorBoundary FallbackComponent={ErrorBoundaryFallback} onReset={(details) => {}}>
@@ -71,9 +62,8 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     const LABEL = (
         <div
             tw={[
-                vertical //
-                    ? '_WidgetLabel w-full'
-                    : '_WidgetLabel ',
+                '_WidgetLabel',
+                vertical ? 'w-full' : null,
                 WIDGET == null ? 'w-full' : null,
                 'min-w-max shrink-0',
                 'flex items-center gap-1',
@@ -88,30 +78,34 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                 v.state.collapsed = !Boolean(v.state.collapsed)
             }}
         >
-            {showToogle ? toogle : null}
+            {showToogle && (
+                <Toggle
+                    color='green'
+                    checked={req.state.active}
+                    onClick={(ev) => {
+                        // stop propagation, to prevent the widget from collapsing
+                        ev.stopPropagation()
+                    }}
+                    onChange={(ev) => (req.state.active = ev.target.checked)}
+                />
+            )}
             {tooltip && (
-                <Whisper placement='topStart' speaker={<Tooltip>{tooltip}</Tooltip>}>
+                <RevealUI>
                     <span className='material-symbols-outlined'>info</span>
-                </Whisper>
+                    <Tooltip>{tooltip}</Tooltip>
+                </RevealUI>
             )}
             <span
                 //
-                tw={[p.isTopLevel /* && vertical */ ? 'font-bold' : undefined]}
+                tw={[p.isTopLevel ? 'font-bold' : undefined]}
                 style={
                     true && !vertical //
-                        ? {
-                              display: 'inline-block',
-                              lineHeight: '2rem',
-                          }
-                        : {
-                              lineHeight: '2rem',
-                          }
+                        ? { lineHeight: '2rem', display: 'inline-block' }
+                        : { lineHeight: '2rem' }
                 }
             >
                 {label || '...'}
             </span>{' '}
-            {/* {req.constructor.name} */}
-            {/* {req.constructor.name} */}
             <span tw='opacity-30 hover:opacity-100'>{v.state.collapsed ? '▸ {...}' : /*'▿'*/ ''}</span>
         </div>
     )
@@ -121,10 +115,9 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
         : `_WidgetWithLabelUI ${levelClass} flex flex-row items-baseline gap-1`
 
     if (WIDGET == null) className += ' w-full'
-    if (/*st.preferedFormLayout !== 'dense'*/ vertical && WIDGET) {
+    if (vertical && WIDGET) {
         WIDGET = (
             <div tw='w-full' style={{ padding: '0 0rem 0 2rem' }}>
-                {/* topLevel: {p.isTopLevel ? 'true' : JSON.stringify(req.input)} */}
                 {WIDGET}
             </div>
         )
