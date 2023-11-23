@@ -213,10 +213,16 @@ export class Library {
         return deck
     }
 
-    get allActions() {
-        return [...this.cardsByPath.values()]
+    // FAVORITE MANAGEMENT ------------------------------------------------
+    removeFavoriteByPath = (path: AppPath) => {
+        this.st.configFile.update((x) => {
+            const fav = x.favoriteCards
+            if (fav == null) return
+            const index = fav.findIndex((x) => x === path)
+            if (index === -1) return
+            fav.splice(index, 1)
+        })
     }
-
     moveFavorite = (oldIndex: number, newIndex: number) => {
         this.st.configFile.update((x) => {
             const fav = x.favoriteCards
@@ -231,7 +237,7 @@ export class Library {
         }))
     }
 
-    // expand mechanism ----------------------------------------
+    // expand mechanism -------------------------------------------------
     private expanded: Set<string>
     get expandedPaths(): string[] { return [...this.expanded] } // prettier-ignore
 

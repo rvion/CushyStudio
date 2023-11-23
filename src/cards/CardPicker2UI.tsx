@@ -7,6 +7,7 @@ import { useSt } from '../state/stateContext'
 import { DeckHeaderUI } from './DeckHeaderUI'
 import { CardIllustrationUI } from './fancycard/AppIllustrationUI'
 import { AppPath } from './CardPath'
+import { RevealUI } from 'src/rsuite/RevealUI'
 
 export const ActionPackUI = observer(function ActionPackUI_(p: { deck: Package }) {
     const deck: Package = p.deck
@@ -27,9 +28,26 @@ export const ActionPackUI = observer(function ActionPackUI_(p: { deck: Package }
 export const AppEntryInvalidUI = observer(function AppEntryInvalidUI_(p: { appPath: AppPath }) {
     return (
         <div tw='hover:bg-base-200 flex gap-2 cursor-pointer'>
-            <div tw='pl-3'>{/* <ActionFavoriteBtnUI app={card} size='1.3rem' /> */}</div>
-            {/* <CardIllustrationUI card={card} size='1.5rem' /> */}
-            <div tw='overflow-hidden text-base-content whitespace-nowrap overflow-ellipsis'>{p.appPath}</div>
+            <div tw='pl-3'>
+                <span
+                    onClick={(ev) => {
+                        ev.preventDefault()
+                        ev.stopPropagation()
+                        // app.setFavorite(false)
+                    }}
+                    //
+                    // style={{ fontSize: p.size }}
+                    className='material-symbols-outlined text-red-500'
+                >
+                    star
+                </span>
+            </div>
+            <RevealUI>
+                <div tw='overflow-hidden italic opacity-50 hover:opacity-100 text-red-500 whitespace-nowrap overflow-ellipsis'>
+                    {p.appPath}
+                </div>
+                <div>App not found</div>
+            </RevealUI>
         </div>
     )
 })

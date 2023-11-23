@@ -135,6 +135,7 @@ export const MultiCascader = (p: any) => <select multiple {...p}></select>
 export const Tree = (p: any) => <div {...p}></div>
 
 // https://daisyui.com/components/rating/#mask-star-2-with-warning-color
+// TODO: remove that and just use a basic btn
 export const Rate = (p: {
     //
     value?: number
