@@ -1,8 +1,7 @@
 import { observer } from 'mobx-react-lite'
-import { Layer, Rect, Stage, Star, Text, Transformer } from 'react-konva'
-import type { ItemExt, Widget, Widget_listExt } from '../Widget'
 import * as React from 'react'
-import * as T from 'konva/lib/shapes/Rect'
+import { Layer, Rect, Stage, Transformer } from 'react-konva'
+import type { ItemExt, Widget, Widget_listExt } from '../Widget'
 
 export const WidgetRegionalUI = observer(function WidgetRegionalUI_<T extends Widget>(p: { req: Widget_listExt<T> }) {
     const req = p.req
@@ -11,12 +10,18 @@ export const WidgetRegionalUI = observer(function WidgetRegionalUI_<T extends Wi
     return (
         <Stage
             //
-            className='virtualBorder'
-            width={req.state.w}
-            height={req.state.h}
+            width={req.state.width}
+            height={req.state.height}
+            onContextMenu={(e) => {
+                e.evt.preventDefault()
+                console.log('context menu')
+                // get image from stage
+                const dataURL = e.target.toDataURL()
+                console.log(dataURL)
+            }}
         >
             <Layer>
-                <Text text='Try to drag a star' />
+                {/* <Text text='Try to drag a star' /> */}
                 {shapes.map((shape) => (
                     <RectangleUI
                         key={`rect-${shape.item.id}`}
@@ -25,7 +30,7 @@ export const WidgetRegionalUI = observer(function WidgetRegionalUI_<T extends Wi
                         shape={shape}
                     />
                 ))}
-                {shapes.map((star) => (
+                {/* {shapes.map((star) => (
                     <Star
                         key={`star-${star.item.id}`}
                         id={star.item.id}
@@ -52,7 +57,7 @@ export const WidgetRegionalUI = observer(function WidgetRegionalUI_<T extends Wi
                             star.y = e.target.y()
                         }}
                     />
-                ))}
+                ))} */}
             </Layer>
         </Stage>
     )
@@ -81,11 +86,11 @@ export const RectangleUI = observer(function RectangleUI_(p: {
                     p.shape.isSelected = !p.shape.isSelected
                 }}
                 ref={shapeRef}
-                fill={`${p.shape.fill}`}
+                fill={`${p.shape.fill}ee`}
                 x={p.shape.x}
                 y={p.shape.y}
-                width={p.shape.w}
-                height={p.shape.h}
+                width={p.shape.width}
+                height={p.shape.height}
                 scaleX={p.shape.scaleX}
                 scaleY={p.shape.scaleY}
                 rotation={p.shape.rotation}

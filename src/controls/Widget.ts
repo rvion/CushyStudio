@@ -895,31 +895,54 @@ export class Widget_list<T extends Widget> implements IRequest<'list', Widget_li
 
 
 // 🅿️ listExt ==============================================================================
-export type RootExt = { w: number, h: number}
+export type RootExt = {
+    // size
+    width: number,
+    height: number,
+    depth?: number
+
+    // color
+    fill?: string;
+}
+
 export type ItemExt = {
+    // pos
     x: number;
     y: number;
-    w: number;
-    h: number;
-    fill?: string;
+    z: number;
+    // size
+    width: number;
+    height: number;
+    depth: number;
+
+    // scale
     scaleX?:number;
     scaleY?:number;
+    scaleZ?:number;
+
+    // color
+    fill?: string;
+
+    // rotation
+    rotation?: number;
+
+    // interraction
     isSelected?: boolean;
     isDragging?: boolean;
     isResizing?: boolean;
-    rotation?: number;
 }
+const itemExtDefaults : ItemExt = {x: 50, y: 50, z: 0, width: 50, height: 50, depth: 0 }
 
 type WithExt <T extends Widget> = { item:  T } & ItemExt
-type WithExt_<T extends Widget> = { item_: T } & ItemExt
+type WithPartialExt <T extends Widget> = { item:  T } & Partial<ItemExt>
 
 export type Widget_listExt_input<T extends Widget>  = ReqInput<{
     mode?: 'regional' | 'timeline',
     /** default: 100 */
-    w: number,
+    width: number,
     /** default: 100 */
-    h: number,
-    element: (size: {w:number, h:number}) => WithExt<T>,
+    height: number,
+    element: (size: {width:number, height:number}) => WithPartialExt<T>,
     min?: number,
     max?:number,
     defaultLength?:number
@@ -933,8 +956,9 @@ export class Widget_listExt      <T extends Widget> implements IRequest<'listExt
     id: string
     type = 'listExt' as const
     state: Widget_listExt_state<T>
-    private _reference: WithExt<T>
+    private _reference: T
 
+    // INIT -----------------------------------------------------------------------------
     constructor(
         public builder: FormBuilder,
         public schema: SchemaL,
@@ -942,31 +966,35 @@ export class Widget_listExt      <T extends Widget> implements IRequest<'listExt
         serial?: Widget_listExt_serial<T>,
     ) {
         this.id = serial?.id ?? nanoid()
-        this._reference = input.element({w:100, h:100})
+        this._reference = input.element({width:100, height:100}).item
         if (serial) {
             const items:  WithExt<T>[] = serial.items_.map(({item_, ...ext}) => {
-                const item:T = builder.HYDRATE(item_.type, this._reference.item.input, item_)
+                const item:T = builder.HYDRATE(item_.type, this._reference.input, item_)
                 return {item, ...ext}
             })
-            this.state = { type: 'listExt', id: this.id, active: serial.active, items, w: serial.w, h: serial.h }
+            this.state = { type: 'listExt', id: this.id, active: serial.active, items, width: serial.width, height: serial.height }
         } else {
-            const w = input.w ?? 100
-            const h = input.h ?? 100
+            const w = input.width ?? 100
+            const h = input.height ?? 100
             const clamp = (v: number, min: number, max: number) => Math.min(Math.max(v, min), max)
             const defaultLen = clamp(input.defaultLength ?? 0, input.min ?? 0, input.max ?? 10)
-            const items = defaultLen
-                ? new Array(defaultLen).fill(0).map(() => input.element({w, h}))
+            const items: WithExt<T>[] = defaultLen
+                ? new Array(defaultLen).fill(0).map(() => {
+                    const partial: WithPartialExt<T> = input.element({width: w, height: h})
+                    const out : WithExt<T> = Object.assign({}, itemExtDefaults, partial)
+                    return out
+                })
                 : []
-            this.state = {
-                type: 'listExt',
-                id: this.id,
-                active: true,
-                items: items,
-                w,
-                h,
-            }
+            this.state = { type: 'listExt', id: this.id, active: true, items: items, width: w, height: h, }
         }
         makeAutoObservable(this)
+    }
+
+    // METHODS -----------------------------------------------------------------------------
+    addItem() {
+        const newItemPartial = this.input.element({width: this.state.width, height: this.state.height})
+        const newItem: WithExt<T> = { ...itemExtDefaults, ...newItemPartial}
+        this.state.items.push(newItem)
     }
     removemAllItems = () => this.state.items = []
     collapseAllItems = () => this.state.items.forEach((i) => i.item.state.collapsed = true)
@@ -975,25 +1003,22 @@ export class Widget_listExt      <T extends Widget> implements IRequest<'listExt
         const i = this.state.items.indexOf(item) // 🔴 dangerous, ref equality fast but error prone
         if (i >= 0) this.state.items.splice(i, 1)
     }
+
+    // SERIAL & RESULT ----------------------------------------------------------------------
     get serial(): Widget_listExt_serial<T> {
         const items_ = this.state.items.map((i) => {
             const { item, ...rest } = i
             return {item_: i.item.serial, ...rest }
         })
-        return { type: 'listExt', id: this.id, active: this.state.active, items_, w: this.state.w, h: this.state.h }
+        return { type: 'listExt', id: this.id, active: this.state.active, items_, width: this.state.width, height: this.state.height }
     }
     get result(): Widget_listExt_output<T> {
         const items = this.state.items.map((i) => ({...i, item: i.item.result }))
         return {
             items: items,
-            w: this.state.w,
-            h: this.state.w,
+            width: this.state.width,
+            height: this.state.width,
         }
-    }
-    addItem() {
-        // const _ref = this._reference
-        // const newItem = this.builder.HYDRATE(_ref.type, _ref.input)
-        this.state.items.push(this.input.element({w: this.state.w, h: this.state.h}))
     }
 }
 
@@ -1151,7 +1176,7 @@ export class Widget_choice      <T extends { [key: string]: Widget }> implements
         } else {
             const _items = input.items()
             const defaultPick: keyof T & string = (Object.keys(_items)[0]  ?? '_error_')
-            this.state = { type: 'choice', id: this.id, active: (input.default!=null) ?? false, values: _items, pick: defaultPick }
+            this.state = { type: 'choice', id: this.id, active: (input.default != null) ?? false, values: _items, pick: defaultPick }
         }
         makeAutoObservable(this)
     }

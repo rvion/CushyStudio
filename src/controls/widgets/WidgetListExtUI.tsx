@@ -5,6 +5,7 @@ import { Button, Message } from 'src/rsuite/shims'
 import { ListControlsUI } from '../shared/ListControlsUI'
 import { WidgetRegionalUI } from './WidgetRegionalUI'
 import { WidgetDI } from './WidgetUI.DI'
+import { WigetSizeXUI } from './WidgetSizeUI'
 
 export const WidgetListExtUI = observer(function WidgetListExtUI_<T extends Widget>(p: { req: Widget_listExt<T> }) {
     if (p.req.input.mode === 'timeline') return <WidgetListExtUI_timeline req={p.req} />
@@ -23,7 +24,6 @@ export const WidgetListExtUI_timeline = observer(function WidgetListExtUI_timeli
 }) {
     const req = p.req
     const values = req.state.items
-    const max = req.input.max
     const min = req.input.min
     const WidgetUI = WidgetDI.WidgetUI
     if (WidgetUI == null) return <Message type='error'>Internal list failure</Message>
@@ -33,8 +33,21 @@ export const WidgetListExtUI_timeline = observer(function WidgetListExtUI_timeli
     return (
         <div className='_WidgetListExtUI' tw='flex-grow w-full'>
             <ListControlsUI req={p.req} />
-            <InputNumberUI min={64} max={1000} mode='int' value={req.state.w} onValueChange={(next) => (req.state.w = next)} />
-            <InputNumberUI min={64} max={1000} mode='int' value={req.state.h} onValueChange={(next) => (req.state.h = next)} />
+            {/* <InputNumberUI
+                min={64}
+                max={1000}
+                mode='int'
+                value={req.state.width}
+                onValueChange={(next) => (req.state.width = next)}
+            />
+            <InputNumberUI
+                min={64}
+                max={1000}
+                mode='int'
+                value={req.state.height}
+                onValueChange={(next) => (req.state.height = next)}
+            /> */}
+            <WigetSizeXUI size={p.req.state} />
             <WidgetRegionalUI req={p.req} />
             <div tw='flex flex-col gap-1'>
                 {values.map((x, ix) => {
@@ -42,15 +55,14 @@ export const WidgetListExtUI_timeline = observer(function WidgetListExtUI_timeli
                     return (
                         <div>
                             <div key={v.id} tw='flex items-start'>
+                                <div tw='btn btn-ghost btn-sm'>{ix}</div>
                                 <Button
                                     style={{ width: `${indexWidth}rem` }}
-                                    // tw='absolute left-0'
                                     appearance='subtle'
                                     size='sm'
                                     onClick={() => (v.state.collapsed = !Boolean(v.state.collapsed))}
                                 >
                                     {v.state.collapsed ? '▸' : '▿'}
-                                    {ix}
                                 </Button>
                                 <WidgetUI req={v} />
                                 <Button
@@ -63,7 +75,7 @@ export const WidgetListExtUI_timeline = observer(function WidgetListExtUI_timeli
                                     X
                                 </Button>
                             </div>
-                            {v.state.collapsed ? null : <div tw='text-gray-400'>{JSON.stringify(x, replacer)}</div>}
+                            {/* {v.state.collapsed ? null : <div tw='text-gray-400'>{JSON.stringify(x, replacer)}</div>} */}
                         </div>
                     )
                 })}

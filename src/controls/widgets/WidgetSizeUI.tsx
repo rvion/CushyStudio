@@ -9,7 +9,15 @@ type ModelType = 'xl' | '1.5' | 'custom'
 type AspectRatio = '1:1' | '16:9' | '4:3' | '3:2' | 'custom'
 
 export const WigetSizeUI = observer(function WigetSizeUI_(p: { req: Widget_size }) {
-    const uist = useMemo(() => new ResolutionState(p.req), [])
+    return <WigetSizeXUI size={p.req.state} />
+})
+
+type SizeAble = {
+    width: number
+    height: number
+}
+export const WigetSizeXUI = observer(function WigetSizeXUI_(p: { size: SizeAble }) {
+    const uist = useMemo(() => new ResolutionState(p.size), [])
 
     const resoBtn = (ar: AspectRatio) => (
         <button
@@ -127,21 +135,21 @@ class ResolutionState {
         this.height = prevWidth
     }
     get width(): number {
-        return this.req.state.width
+        return this.req.width
     }
     get height(): number {
-        return this.req.state.height
+        return this.req.height
     }
     set width(next: number) {
-        this.req.state.width = next
+        this.req.width = next
     }
     set height(next: number) {
-        this.req.state.height = next
+        this.req.height = next
     }
     desiredModelType: ModelType = 'xl'
     desiredAspectRatio: AspectRatio = '16:9'
 
-    constructor(public req: Widget_size) {
+    constructor(public req: SizeAble) {
         makeAutoObservable(this)
     }
 
