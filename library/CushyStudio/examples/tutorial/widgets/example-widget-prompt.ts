@@ -1,4 +1,4 @@
-card({
+app({
     // name: 'playground-seed-widget',
     ui: (form) => ({
         prompt: form.prompt({}),

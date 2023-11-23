@@ -6,7 +6,7 @@ import { ui_recursive } from './_prefabs/prefab_recursive'
 import { Ctx_sampler, run_sampler, ui_sampler } from './_prefabs/prefab_sampler'
 import { ui_highresfix } from './_prefabs'
 
-card({
+app({
     ui: (form) => ({
         positive: form.prompt({
             default: {

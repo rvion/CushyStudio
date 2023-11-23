@@ -6,7 +6,7 @@
  *
  */
 
-card({
+app({
     ui: (form) => ({
         list: form.list({
             element: () => form.number({}),

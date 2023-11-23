@@ -1,6 +1,6 @@
 import { run_prompt } from 'library/CushyStudio/default/_prefabs/prefab_prompt'
 
-card({
+app({
     ui: (form) => ({
         demo: form.regional({
             height: 512,

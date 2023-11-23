@@ -1,4 +1,4 @@
-card({
+app({
     ui: (form) => ({
         foo: form.choices({
             items: () => ({

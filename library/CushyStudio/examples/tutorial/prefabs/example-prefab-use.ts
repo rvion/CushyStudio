@@ -1,6 +1,6 @@
 import { ui_startImage } from './_prefab'
 
-card({
+app({
     ui: (formBuilder) => {
         return {
             a: ui_startImage(formBuilder),

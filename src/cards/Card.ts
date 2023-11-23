@@ -9,7 +9,7 @@ import type { CSSProperties } from 'react'
 /** quick function to help build actions in a type-safe way */
 
 // export const action = <const F extends WidgetDict>(name: string, t: Omit<Action<F>, 'name'>): Action<F> => ({ name, ...t })
-export type CardType = <const F extends WidgetDict>(t: Action<F>) => Action<F>
+export type GlobalFunctionToDefineAnApp = <const F extends WidgetDict>(t: Action<F>) => Action<F>
 export type ActionTagMethod = (arg0: string) => string
 export type ActionTagMethodList = Array<{ key: string; method: ActionTagMethod }>
 export type ActionTags = (arg0: ActionTagMethodList) => void

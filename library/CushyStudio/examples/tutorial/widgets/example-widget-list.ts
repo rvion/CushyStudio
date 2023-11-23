@@ -1,4 +1,4 @@
-card({
+app({
     ui: (form) => ({
         basicList: form.list({
             element: () => form.int({}),

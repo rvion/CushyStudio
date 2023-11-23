@@ -83,7 +83,7 @@ const ui = (form: FormBuilder) => ({
     symetry: form.bool({ default: false }),
 })
 
-card({
+app({
     ui,
     run: async (flow, p) => {
         // 1. SETUP --------------------------------------------------

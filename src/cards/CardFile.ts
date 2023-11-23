@@ -381,7 +381,7 @@ export class CardFile {
         // 1. DI registering mechanism
         const CARDS_FOUND_IN_FILE: Action<WidgetDict>[] = []
 
-        const registerCardFn = (a1: string, a2: Action<any>): void => {
+        const registerAppFn = (a1: string, a2: Action<any>): void => {
             const action = typeof a1 !== 'string' ? a1 : a2
             console.info(`[💙] found action: "${name}"`, { path: this.absPath })
             CARDS_FOUND_IN_FILE.push(action)
@@ -389,8 +389,8 @@ export class CardFile {
 
         // 2. eval file to extract actions
         try {
-            const ProjectScriptFn = new Function('action', 'card', codeJS)
-            ProjectScriptFn(registerCardFn, registerCardFn)
+            const ProjectScriptFn = new Function('action', 'card', 'app', codeJS)
+            ProjectScriptFn(registerAppFn, registerAppFn, registerAppFn)
             if (CARDS_FOUND_IN_FILE.length === 0) return
             if (CARDS_FOUND_IN_FILE.length > 1) this.addError(`❌4. more than one action found: (${CARDS_FOUND_IN_FILE.length})`)
             return CARDS_FOUND_IN_FILE[0]

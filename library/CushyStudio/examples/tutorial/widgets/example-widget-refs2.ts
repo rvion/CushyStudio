@@ -3,7 +3,7 @@
  * 🔶 don't' copy what is in this file unless you know what you are doing
  * 🔶 and really need this.
  */
-card({
+app({
     ui: (form) => ({
         // first way to do: build the list of choice from the form result
         // 🔶 problem: this needs the referenced items to have some kind of `name` property

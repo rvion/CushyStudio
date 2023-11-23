@@ -1,4 +1,4 @@
-card({
+app({
     ui: (form) => ({
         // load
         model: form.enum({

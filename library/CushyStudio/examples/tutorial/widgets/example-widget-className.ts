@@ -1,4 +1,4 @@
-card({
+app({
     ui: (form) => ({
         steps: form.choices({
             defaultActiveBranches: {

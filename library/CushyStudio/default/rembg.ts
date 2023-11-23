@@ -1,4 +1,4 @@
-card({
+app({
     // prettier-ignore
     ui: (form) => ({
         // startImage

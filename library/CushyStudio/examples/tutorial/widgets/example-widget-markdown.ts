@@ -1,4 +1,4 @@
-card({
+app({
     ui: (form) => ({
         int: form.number({}),
         html: form.markdown({

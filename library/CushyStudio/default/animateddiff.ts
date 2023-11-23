@@ -1,4 +1,4 @@
-card({
+app({
     ui: (form) => ({
         preText: form.str({
             default: ' (Masterpiece, best quality:1.2), closeup, close-up, a girl in a forest',

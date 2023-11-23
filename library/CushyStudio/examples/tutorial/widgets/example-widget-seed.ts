@@ -1,4 +1,4 @@
-card({
+app({
     ui: (form) => ({
         seed1: form.seed({ defaultMode: 'randomize' }),
     }),
