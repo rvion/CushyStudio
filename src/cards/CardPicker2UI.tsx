@@ -26,6 +26,7 @@ export const ActionPackUI = observer(function ActionPackUI_(p: { deck: Package }
 })
 
 export const AppEntryInvalidUI = observer(function AppEntryInvalidUI_(p: { appPath: AppPath }) {
+    const st = useSt()
     return (
         <div tw='hover:bg-base-200 flex gap-2 cursor-pointer'>
             <div tw='pl-3'>
@@ -33,6 +34,7 @@ export const AppEntryInvalidUI = observer(function AppEntryInvalidUI_(p: { appPa
                     onClick={(ev) => {
                         ev.preventDefault()
                         ev.stopPropagation()
+                        st.library.removeFavoriteByPath(p.appPath)
                         // app.setFavorite(false)
                     }}
                     //
