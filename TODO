@@ -1,13 +1,13 @@
 Todo before release
 
-☐ boolean toogles
 ☐ fix all selects
-☐ favorites added at the top
 ☐ re-ordernable lists
 ☐ step on size widget
 ☐ custom size on size widget
 ☐ draft tabs/ files
-☐
+☐ open in correct panels
+✔ favorites added at the top @done(23-11-23 20:53)
+✔ boolean toogles @done(23-11-23 20:51)
 
 Misc:
     ☐ show different from current preset in color
