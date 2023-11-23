@@ -17,6 +17,20 @@ export const StepUI = observer(function StepUI_(p: { step: StepL }) {
         )
 })
 
+export const StepHeaderUI = observer(function StepHeaderUI_(p: { step: StepL; className?: string }) {
+    const step = p.step
+    return (
+        <div
+            tw={['cursor-pointer justify-between text-xs text-gray-400 hover:bg-base-200', p.className]}
+            onClick={() => (step.expanded = !step.expanded)}
+            style={{ borderTop: '1px solid #2d2d2d' }}
+        >
+            <b>{step.name}</b>
+            <div className='text-xs pr-4 opacity-50'>{_formatPreviewDate(new Date(step.createdAt))}</div>
+        </div>
+    )
+})
+
 export const StepBodyUI = observer(function StepBodyUI_(p: { step: StepL }) {
     const step = p.step
     return (
@@ -24,20 +38,6 @@ export const StepBodyUI = observer(function StepBodyUI_(p: { step: StepL }) {
             {step.data.outputs?.map((output, ix) => (
                 <StepOutputUI key={ix} step={step} output={output} />
             ))}
-        </div>
-    )
-})
-
-export const StepHeaderUI = observer(function StepHeaderUI_(p: { step: StepL; className?: string }) {
-    const step = p.step
-    return (
-        <div
-            tw={['cursor-pointer justify-between text-xs text-gray-400 hover:bg-gray-900 flex', p.className]}
-            onClick={() => (step.expanded = !step.expanded)}
-            style={{ borderTop: '1px solid #2d2d2d' }}
-        >
-            <b>{step.name}</b>
-            <div className='text-xs pr-4 text-gray-400'>{_formatPreviewDate(new Date(step.createdAt))}</div>
         </div>
     )
 })
