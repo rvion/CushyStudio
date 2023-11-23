@@ -170,14 +170,16 @@ export class CardFile {
     }
 
     setFavorite = (fav: boolean) => {
-        const favArray = this.st.configFile.value.favoriteCards ?? []
-        if (fav) {
-            if (!favArray.includes(this.relPath)) favArray.push(this.relPath)
-        } else {
-            const index = favArray.indexOf(this.relPath)
-            if (index !== -1) favArray.splice(index, 1)
-        }
-        this.st.configFile.update({ favoriteCards: favArray })
+        const favArray = this.st.configFile.update((f) => {
+            if (f.favoriteCards == null) f.favoriteCards = []
+            const favs = f.favoriteCards
+            if (fav) {
+                if (!favs.includes(this.relPath)) favs.unshift(this.relPath)
+            } else {
+                const index = favs.indexOf(this.relPath)
+                if (index !== -1) favs.splice(index, 1)
+            }
+        })
     }
 
     createDraft = (): DraftL => {
