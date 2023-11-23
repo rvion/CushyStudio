@@ -53,6 +53,10 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
         <Toggle //
             color='green'
             checked={req.state.active}
+            onClick={(ev) => {
+                // stop propagation, to prevent the widget from collapsing
+                ev.stopPropagation()
+            }}
             onChange={(ev) => (req.state.active = ev.target.checked)}
         />
     )
