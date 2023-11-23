@@ -10,6 +10,7 @@ import { ErrorBoundaryFallback } from '../../widgets/misc/ErrorBoundary'
 import { WidgetDI } from './WidgetUI.DI'
 import { makeLabelFromFieldName } from '../../utils/misc/makeLabelFromFieldName'
 import { RevealUI } from 'src/rsuite/RevealUI'
+import { ChangeEvent } from 'react'
 
 export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     req: R.Widget
@@ -18,18 +19,14 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     vertical?: boolean
     isTopLevel?: boolean
 }) {
+    const { rootKey, req } = p
     const KLS = WidgetDI
     const st = useSt()
-    const { rootKey, req } = p
-    let tooltip: Maybe<string>
-    let label: Maybe<string>
-    label = req.input.label ?? makeLabelFromFieldName(rootKey)
-    tooltip = req.input.tooltip
 
-    // const vertical = false // p.vertical
-    const vertical = (() => {
-        // 🔴 (do I want to let this configurable => probably not, or if so, only optionally)
-        // 🔴 if (p.vertical != null) return p.vertical
+    let tooltip: Maybe<string> = req.input.tooltip
+    let label: Maybe<string> = req.input.label ?? makeLabelFromFieldName(rootKey)
+
+    const isVertical = (() => {
         if (st.preferedFormLayout === 'auto') {
             // if (req.isOptional) return true
             if (req instanceof KLS.Widget_group) return true
@@ -41,19 +38,44 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
             // if (req instanceof KLS.Widget_promptOpt) return true
             return false
         }
-        if (st.preferedFormLayout === 'mobile') {
-            return true
-        }
-        if (st.preferedFormLayout === 'dense') {
-            return false
-        }
-        // p.vertical ?? (st.preferedFormLayout ? false : true)
+        if (st.preferedFormLayout === 'mobile') return true
+        if (st.preferedFormLayout === 'dense') return false
     })()
+
+    const isCollapsible = (() => {
+        if (req instanceof KLS.Widget_group) return true
+        if (req instanceof KLS.Widget_groupOpt) return true
+        if (req instanceof KLS.Widget_list) return true
+        if (req instanceof KLS.Widget_listExt) return true
+        if (req instanceof KLS.Widget_str && req.input.textarea) return true
+        if (req instanceof KLS.Widget_prompt) return true
+        if (req instanceof KLS.Widget_promptOpt) return true
+        return false
+    })()
+
+    const collapsed = req.state.collapsed && isCollapsible
+
     const v = p.req
     const levelClass = p.isTopLevel ? '_isTopLevel' : '_isNotTopLevel'
+
+    const toggleInfo =
+        req instanceof KLS.Widget_bool
+            ? {
+                  value: req.state.val,
+                  onChange: (ev: ChangeEvent<HTMLInputElement>) => {
+                      req.state.val = ev.target.checked
+                      req.state.active = true
+                  },
+              }
+            : {
+                  value: req.state.active,
+                  onChange: (ev: ChangeEvent<HTMLInputElement>) => {
+                      req.state.active = ev.target.checked
+                  },
+              }
     const showToogle = req.isOptional || !req.state.active || req instanceof KLS.Widget_bool
 
-    let WIDGET = v.state.collapsed ? null : !v.state.active ? null : ( //
+    let WIDGET = collapsed ? null : !v.state.active ? null : ( //
         <ErrorBoundary FallbackComponent={ErrorBoundaryFallback} onReset={(details) => {}}>
             <WidgetDI.WidgetUI req={req} />
         </ErrorBoundary>
@@ -63,30 +85,25 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
         <div
             tw={[
                 '_WidgetLabel',
-                vertical ? 'w-full' : null,
+                isVertical ? 'w-full' : null,
                 WIDGET == null ? 'w-full' : null,
                 'min-w-max shrink-0',
                 'flex items-center gap-1',
                 'hover:bg-base-200 cursor-pointer',
             ]}
             onClick={() => {
-                if (v.state.collapsed) {
-                    v.state.collapsed = !Boolean(v.state.collapsed)
-                    return
-                }
+                if (v.state.collapsed) return (v.state.collapsed = false)
+                if (!isCollapsible) return
                 if (!v.state.active) return
-                v.state.collapsed = !Boolean(v.state.collapsed)
+                v.state.collapsed = true
             }}
         >
             {showToogle && (
                 <Toggle
                     color='green'
-                    checked={req.state.active}
-                    onClick={(ev) => {
-                        // stop propagation, to prevent the widget from collapsing
-                        ev.stopPropagation()
-                    }}
-                    onChange={(ev) => (req.state.active = ev.target.checked)}
+                    checked={toggleInfo.value}
+                    onChange={toggleInfo.onChange}
+                    onClick={(ev) => ev.stopPropagation()}
                 />
             )}
             {tooltip && (
@@ -99,7 +116,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                 //
                 tw={[p.isTopLevel ? 'font-bold' : undefined]}
                 style={
-                    true && !vertical //
+                    true && !isVertical //
                         ? { lineHeight: '2rem', display: 'inline-block' }
                         : { lineHeight: '2rem' }
                 }
@@ -110,12 +127,12 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
         </div>
     )
 
-    let className = vertical //
+    let className = isVertical //
         ? `_WidgetWithLabelUI ${levelClass} flex flex-col items-baseline`
         : `_WidgetWithLabelUI ${levelClass} flex flex-row items-baseline gap-1`
 
     if (WIDGET == null) className += ' w-full'
-    if (vertical && WIDGET) {
+    if (isVertical && WIDGET) {
         WIDGET = (
             <div tw='w-full' style={{ padding: '0 0rem 0 2rem' }}>
                 {WIDGET}
