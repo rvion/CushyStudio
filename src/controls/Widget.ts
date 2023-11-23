@@ -427,7 +427,12 @@ export class Widget_floatOpt implements IRequest<'floatOpt', Widget_floatOpt_inp
 }
 
 // 🅿️ size ==============================================================================
-export type Widget_size_input  = ReqInput<{ default?: CushySizeByRatio }>
+export type Widget_size_input  = ReqInput<{
+    default?: CushySizeByRatio
+    min?: number
+    max?: number
+    step?: number
+}>
 export type Widget_size_serial = Widget_size_state
 export type Widget_size_state  = StateFields<CushySize>
 export type Widget_size_output = CushySize

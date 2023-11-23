@@ -26,7 +26,6 @@ Misc:
     ☐ proper model picker action
     ✔ proper size picker action @done(23-11-20 03:18)
     ☐ cache action compilation
-    ☐ lists (re-ordering, ...)
     ☐ image loader (local files by path)
     ☐ permutations node (possibly hard, possibly easy with lists)
     ☐ code builder:

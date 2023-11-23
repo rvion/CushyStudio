@@ -4,19 +4,36 @@ import { useMemo } from 'react'
 import { Widget_size } from 'src/controls/Widget'
 import { InputNumberUI } from 'src/rsuite/InputNumberUI'
 import { Joined, Toggle } from 'src/rsuite/shims'
+import { parseFloatNoRoundingErr } from 'src/utils/misc/parseFloatNoRoundingErr'
 
 type ModelType = 'xl' | '1.5' | 'custom'
 type AspectRatio = '1:1' | '16:9' | '4:3' | '3:2' | 'custom'
 
 export const WigetSizeUI = observer(function WigetSizeUI_(p: { req: Widget_size }) {
-    return <WigetSizeXUI size={p.req.state} />
+    return (
+        <WigetSizeXUI //
+            size={p.req.state}
+            bounds={p.req.input}
+        />
+    )
 })
 
 type SizeAble = {
     width: number
     height: number
+    min?: number
+    max?: number
+    step?: number
 }
-export const WigetSizeXUI = observer(function WigetSizeXUI_(p: { size: SizeAble }) {
+export const WigetSizeXUI = observer(function WigetSizeXUI_(p: {
+    //
+    size: SizeAble
+    bounds?: {
+        min?: number
+        max?: number
+        step?: number
+    }
+}) {
     const uist = useMemo(() => new ResolutionState(p.size), [])
 
     const resoBtn = (ar: AspectRatio) => (
@@ -46,8 +63,9 @@ export const WigetSizeXUI = observer(function WigetSizeXUI_(p: { size: SizeAble 
                     <div tw='w-12'>Width</div>
                     <InputNumberUI
                         //
-                        min={128}
-                        max={4096}
+                        min={p.bounds?.min ?? 128}
+                        max={p.bounds?.max ?? 4096}
+                        step={p.bounds?.step ?? 256}
                         mode='int'
                         tw='join-item'
                         value={uist.width}
@@ -60,8 +78,9 @@ export const WigetSizeXUI = observer(function WigetSizeXUI_(p: { size: SizeAble 
                     <InputNumberUI
                         //
                         tw='join-item'
-                        min={128}
-                        max={4096}
+                        min={p.bounds?.min ?? 128}
+                        max={p.bounds?.max ?? 4096}
+                        step={p.bounds?.step ?? 256}
                         mode='int'
                         value={uist.height}
                         onValueChange={(next) => uist.setHeight(next)}
@@ -146,11 +165,22 @@ class ResolutionState {
     set height(next: number) {
         this.req.height = next
     }
-    desiredModelType: ModelType = 'xl'
-    desiredAspectRatio: AspectRatio = '16:9'
+
+    desiredModelType: ModelType = '1.5'
+    desiredAspectRatio: AspectRatio = 'custom'
 
     constructor(public req: SizeAble) {
         makeAutoObservable(this)
+
+        this.desiredAspectRatio = (() => {
+            const ratio = parseFloatNoRoundingErr(this.realAspectRatio, 2)
+            console.log(ratio, parseFloatNoRoundingErr(16 / 9, 2))
+            if (ratio === parseFloatNoRoundingErr(1 / 1, 2)) return '1:1'
+            if (ratio === parseFloatNoRoundingErr(16 / 9, 2)) return '16:9'
+            if (ratio === parseFloatNoRoundingErr(4 / 3, 2)) return '4:3'
+            if (ratio === parseFloatNoRoundingErr(3 / 2, 2)) return '3:2'
+            return 'custom'
+        })()
     }
 
     setWidth(width: number) {
