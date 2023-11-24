@@ -48,7 +48,7 @@ export class Package {
     // githubRepository: GithubRepo
 
     /** ui state */
-    folded = true
+    folded: boolean
 
     /** and upda */
     updater: GitManagedFolder
@@ -121,6 +121,7 @@ export class Package {
         this.authorFolderRel = asRelativePath(join(this.st.actionsFolderPathRel, parts[0])) as AuthorFolder
         this.folderAbs = asAbsolutePath(join(this.st.actionsFolderPathAbs, this.github))
         this.folderRel = asRelativePath(join(this.st.actionsFolderPathRel, this.github)) as PackageRelPath
+        this.folded = this.folderRel === 'library/CushyStudio/default' ? false : true
         this.manifestPath = asAbsolutePath(join(this.folderAbs, 'cushy-deck.json'))
         this.updater = new GitManagedFolder(this.library.st, {
             absFolderPath: this.folderAbs,

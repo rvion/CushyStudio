@@ -11,6 +11,7 @@ import { RevealUI } from 'src/rsuite/RevealUI'
 
 export const ActionPackUI = observer(function ActionPackUI_(p: { deck: Package }) {
     const deck: Package = p.deck
+
     return (
         <div tw='flex-grow' key={deck.folderRel}>
             <DeckHeaderUI pkg={deck} />

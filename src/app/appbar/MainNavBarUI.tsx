@@ -90,7 +90,11 @@ export const MenuConfigUI = observer(function MenuConfigUI_(p: {}) {
                     tw='cursor-pointer hover:bg-base-300 p-2'
                     key={theme}
                     // icon={<span className='text-orange-400 material-symbols-outlined'>sync</span>}
-                    onClick={() => (st.themeMgr.theme = theme)}
+                    onClick={(ev) => {
+                        ev.preventDefault()
+                        ev.stopPropagation()
+                        st.themeMgr.theme = theme
+                    }}
                 >
                     <ThemePreviewUI theme={theme} />
                 </div>
