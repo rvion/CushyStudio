@@ -1,11 +1,12 @@
 app({
     ui: (form) => ({
-        foo: form.choice({
+        examleChoice: form.choice({
             items: () => ({
-                a: form.int({}),
-                b: form.str({}),
-                c: form.group({
+                image: form.image({}),
+                list: form.list({ element: () => form.int({}) }),
+                group: form.group({
                     items: () => ({
+                        x: form.markdown({ markdown: '## Hello world' }),
                         c: form.int({}),
                         d: form.str({}),
                     }),
@@ -17,13 +18,13 @@ app({
     run: async (flow, form) => {
         const graph = flow.nodes
         //   👇 < should be infered as (string | number)
-        form.foo
-        if (typeof form.foo === 'string') {
-            flow.print(`got a string: ${form.foo}`)
+        form.examleChoice
+        if (typeof form.examleChoice === 'string') {
+            flow.print(`got a string: ${form.examleChoice}`)
         } else {
             //   👇 should be infered as number
-            const x = form.foo
-            flow.print(`got a number: ${form.foo}`)
+            const x = form.examleChoice
+            flow.print(`got a number: ${form.examleChoice}`)
         }
     },
 })
