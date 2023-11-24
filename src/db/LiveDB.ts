@@ -106,11 +106,15 @@ export class LiveDB {
 
     // misc ---------------------------------------------------------
     get schema(): SchemaL {
-        return this.schemas.getOrCreate('main-schema', () => ({
-            id: 'main-schema',
-            embeddings: [],
-            spec: {},
-        }))
+        return this.schemas.getOrCreate('main-schema', () => {
+            const objectInfoDefaultPath = this.st.resolve(this.st.rootPath, asRelativePath('schema/object_info.default.json'))
+            const objectInfoDefault = JSON.parse(readFileSync(objectInfoDefaultPath, 'utf8'))
+            return {
+                id: 'main-schema',
+                embeddings: [],
+                spec: objectInfoDefault,
+            }
+        })
     }
 
     /* reset the whole DB (🔴?) */
