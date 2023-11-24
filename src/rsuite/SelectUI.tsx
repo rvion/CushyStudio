@@ -9,7 +9,7 @@ import { searchMatches } from 'src/utils/misc/searchMatches'
 import { createPortal } from 'react-dom'
 
 type PP<T> = {
-    onChange: (next: T, self: AutoCompleteSelectState<T>) => void
+    onChange: null | ((next: T, self: AutoCompleteSelectState<T>) => void)
     getLabelText: (t: T) => string
     getLabelUI?: (t: T) => React.ReactNode
     options?: T[]
@@ -64,10 +64,12 @@ class AutoCompleteSelectState<T> {
         }
     }
 
-    openMenu = (ev: React.FocusEvent<HTMLInputElement, Element>) => {
-        const prevFocusedItem = ev.relatedTarget as HTMLElement | null
-        // this.anchorRef.current?.focus()
-        console.log(prevFocusedItem)
+    onRealWidgetMouseDown = (ev: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+        // ev.preventDefault()
+        // ev.stopPropagation()
+        this.openMenu()
+    }
+    openMenu = () => {
         this.isOpen = true
         this.updatePosition()
     }
@@ -96,7 +98,7 @@ class AutoCompleteSelectState<T> {
     selectOption(index: number) {
         const selectedOption = this.filteredOptions[index]
         if (selectedOption) {
-            this.onChange(selectedOption, this)
+            this.onChange?.(selectedOption, this)
             this.searchQuery = ''
             this.closeMenu()
         }
@@ -126,7 +128,7 @@ class AutoCompleteSelectState<T> {
         else if (ev.key === 'Enter' && !ev.metaKey && !ev.ctrlKey) this.selectOption(this.selectedIndex)
     }
 
-    handleTooltipKeyUp = (ev: React.KeyboardEvent) => {
+    onRealInputKeyUp = (ev: React.KeyboardEvent) => {
         if (ev.key === 'Escape') {
             this.closeMenu()
             this.anchorRef.current?.focus()
@@ -143,6 +145,9 @@ export const SelectUI = observer(function SelectUI_<T>(p: PP<T>) {
     return (
         <div tw='flex flex-1 items-center'>
             <div className='relative flex-1'>
+                <span tw='btn btn-sm absolute right-0' className='material-symbols-outlined'>
+                    search
+                </span>
                 {/* ANCHOR */}
                 <input //
                     tabIndex={-1}
@@ -154,8 +159,12 @@ export const SelectUI = observer(function SelectUI_<T>(p: PP<T>) {
                 <div tw='absolute top-0 left-0 right-0 z-50'>
                     <input
                         ref={s.anchorRef}
-                        onKeyUp={s.handleTooltipKeyUp}
+                        onKeyUp={s.onRealInputKeyUp}
+                        onMouseDown={s.onRealWidgetMouseDown}
+                        onChange={s.handleInputChange}
+                        onKeyDown={s.handleTooltipKeyDown}
                         onFocus={s.openMenu}
+                        onBlur={s.onBlur}
                         style={{ background: s.searchQuery === '' ? 'none' : undefined }}
                         // style={{ opacity: s.searchQuery === '' ? 0 : 1 }}
                         // style={{ background: 'none' }}
@@ -163,9 +172,6 @@ export const SelectUI = observer(function SelectUI_<T>(p: PP<T>) {
                         // placeholder={s.displayValue}
                         type='text'
                         value={s.searchQuery}
-                        onChange={s.handleInputChange}
-                        onKeyDown={s.handleTooltipKeyDown}
-                        onBlur={s.onBlur}
                     />
                 </div>
                 {/* TOOLTIP */}
@@ -193,6 +199,7 @@ export const SelectPopupUI = observer(function SelectPopupUI_<T>(p: { s: AutoCom
             {s.filteredOptions.map((option, index) => (
                 <li
                     key={index}
+                    style={{ minWidth: '10rem' }}
                     className={`p-2 hover:bg-base-300 cursor-pointer ${index === s.selectedIndex ? 'bg-base-300' : ''}`}
                     onMouseDown={(ev) => s.onMenuEntryClick(ev, index)}
                 >
