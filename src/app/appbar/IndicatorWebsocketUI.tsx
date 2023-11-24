@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 import { RevealUI } from 'src/rsuite/RevealUI'
-import { Button, Loader, Message } from 'src/rsuite/shims'
+import { Button, Message } from 'src/rsuite/shims'
 import { useSt } from '../../state/stateContext'
 
 export const IndicatorWebsocketUI = observer(function IndicatorWebsocketUI_(p: {}) {
@@ -13,8 +13,8 @@ export const IndicatorWebsocketUI = observer(function IndicatorWebsocketUI_(p: {
                     <span className='text-success'>WS</span>
                 </Button>
             ) : (
-                <div tw='btn btn-sm btn-outline flex-nowrap'>
-                    <Loader size='xs' />
+                <div tw='btn btn-sm btn-error flex-nowrap'>
+                    <div tw='loading loading-spinner loading-xs' />
                     ComfyUI
                 </div>
             )}

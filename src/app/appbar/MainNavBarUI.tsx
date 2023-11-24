@@ -50,7 +50,7 @@ export const MenuHelpUI = observer(function MenuHelpUI_(p: {}) {
     return (
         <Dropdown
             startIcon={<span className='material-symbols-outlined text-purple-500'>help_center</span>}
-            title=''
+            title='Help'
             appearance='subtle'
         >
             <MenuItem
@@ -128,8 +128,10 @@ export const MenuUtilsUI = observer(function MenuUtilsUI_(p: {}) {
 
 export const MenuComfyUI = observer(function MenuComfyUI_(p: {}) {
     const st = useSt()
+    const isConnected = st.ws.isOpen
     return (
         <Dropdown
+            tw={[isConnected ? null : 'text-error-content bg-error']}
             startIcon={<span className='material-symbols-outlined text-blue-400'>account_tree</span>}
             title='ComfyUI'
             appearance='subtle'
@@ -158,7 +160,10 @@ export const MenuComfyUI = observer(function MenuComfyUI_(p: {}) {
                     <MenuItem
                         //
                         icon={
-                            <span tw={[isMain ? 'text-green-500' : null]} className='material-symbols-outlined'>
+                            <span
+                                tw={[isMain ? (isConnected ? 'text-green-500' : 'text-red-500') : null]}
+                                className='material-symbols-outlined'
+                            >
                                 desktop_mac
                             </span>
                         }
