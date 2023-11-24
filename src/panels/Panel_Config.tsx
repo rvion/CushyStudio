@@ -28,7 +28,10 @@ export const Panel_Config = observer(function Panel_Config_() {
                     <FieldUI label='Your github username'>
                         <FormControl //
                             value={config.value.githubUsername}
-                            onChange={(ev) => config.update({ githubUsername: ev.target.value })}
+                            onChange={(ev) => {
+                                config.update({ githubUsername: ev.target.value })
+                                st.updateTsConfig()
+                            }}
                             name='githubUsername'
                         />
                     </FieldUI>
