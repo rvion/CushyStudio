@@ -174,7 +174,7 @@ class ResolutionState {
 
         this.desiredAspectRatio = (() => {
             const ratio = parseFloatNoRoundingErr(this.realAspectRatio, 2)
-            console.log(ratio, parseFloatNoRoundingErr(16 / 9, 2))
+            // console.log(ratio, parseFloatNoRoundingErr(16 / 9, 2))
             if (ratio === parseFloatNoRoundingErr(1 / 1, 2)) return '1:1'
             if (ratio === parseFloatNoRoundingErr(16 / 9, 2)) return '16:9'
             if (ratio === parseFloatNoRoundingErr(4 / 3, 2)) return '4:3'
