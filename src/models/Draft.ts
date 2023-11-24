@@ -96,8 +96,7 @@ export class DraftL {
     }
 
     onHydrate = () => {
-        let subState = { unsync: () => {} }
-        console.log(`🦊 on hydrate`)
+        console.log(`[🦊] form: hydrating`)
     }
 
     isInitializing = false
@@ -108,7 +107,7 @@ export class DraftL {
         const _1 = reaction(
             () => this.action,
             (action) => {
-                console.log(`🟢 -------- DRAFT LOADING ACTION --------- 🟢 `)
+                console.log(`[🦊] form: awakening app ${this.data.actionPath}`)
                 if (action == null) return
                 try {
                     const formBuilder = new FormBuilder(this.st.schema)
@@ -120,7 +119,7 @@ export class DraftL {
                     /** 👇 HACK; see the comment near the ROOT property definition */
                     formBuilder.ROOT = req
                     this.gui = __OK(req)
-                    console.log(`🦊 form setup`)
+                    console.log(`[🦊] form: setup`)
                     // subState.unsync()
                 } catch (e) {
                     console.error(e)
@@ -138,7 +137,7 @@ export class DraftL {
             const count = formValue.builder._cache.count // manual mobx invalidation
             const _ = JSON.stringify(formValue.serial)
             runInAction(() => {
-                console.log(`🦊 updating the form`)
+                console.log(`[🦊] form: updating`)
                 this.update({ actionParams: formValue.serial })
             })
         })
