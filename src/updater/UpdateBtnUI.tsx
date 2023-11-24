@@ -10,6 +10,7 @@ import { _getRelativeTimeString } from './_getRelativeTimeString'
 import { UninstallUI } from './GitUninstallUI'
 import { UpdaterErrorUI } from './UpdaterErrorUI'
 import { ReactNode } from 'react'
+import { exhaust } from 'src/utils/misc/ComfyUtils'
 
 export const UpdateBtnUI = observer(function UpdateBtnUI_(p: { updater: GitManagedFolder; children?: ReactNode }) {
     const updater = p.updater
