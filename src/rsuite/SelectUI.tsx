@@ -1,10 +1,12 @@
+import type { STATE } from 'src/state/state'
+import type { RSSize } from './shims'
+
 import { makeAutoObservable } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import React, { useMemo } from 'react'
-import type { STATE } from 'src/state/state'
 import { useSt } from 'src/state/stateContext'
 import { searchMatches } from 'src/utils/misc/searchMatches'
-import { RSSize } from './shims'
+import { createPortal } from 'react-dom'
 
 type PP<T> = {
     onChange: (next: T, self: AutoCompleteSelectState<T>) => void
@@ -20,11 +22,7 @@ type PP<T> = {
 }
 
 class AutoCompleteSelectState<T> {
-    constructor(
-        //
-        public st: STATE,
-        public p: PP<T>,
-    ) {
+    constructor(public st: STATE, public p: PP<T>) {
         makeAutoObservable(this)
     }
     onChange = this.p.onChange
@@ -52,14 +50,47 @@ class AutoCompleteSelectState<T> {
         return this.p.getLabelText(sop)
     }
 
+    anchorRef = React.createRef<HTMLInputElement>()
     selectedIndex = 0
-    showMenu = false
+    isOpen = false
+
+    tooltipPosition = { top: 0, left: 0 }
+    updatePosition = () => {
+        const rect = this.anchorRef.current?.getBoundingClientRect()
+        if (rect == null) return
+        this.tooltipPosition = {
+            top: rect.bottom + window.scrollY,
+            left: rect.left + window.scrollX,
+        }
+    }
+
+    openMenu = (ev: React.FocusEvent<HTMLInputElement, Element>) => {
+        const prevFocusedItem = ev.relatedTarget as HTMLElement | null
+        // this.anchorRef.current?.focus()
+        console.log(prevFocusedItem)
+        this.isOpen = true
+        this.updatePosition()
+    }
+
+    closeMenu() {
+        this.isOpen = false
+        this.selectedIndex = 0
+        this.searchQuery = ''
+    }
 
     filterOptions(inputValue: string) {
         this.searchQuery = inputValue
-        this.showMenu = true
+        this.isOpen = true
         // Logic to filter options based on input value
         // Update this.filteredOptions accordingly
+    }
+
+    // click means focus change => means need to refocus the input
+    onMenuEntryClick = (ev: React.MouseEvent<HTMLLIElement, MouseEvent>, index: number) => {
+        ev.preventDefault()
+        ev.stopPropagation()
+        this.selectOption(index)
+        this.anchorRef.current?.focus()
     }
 
     selectOption(index: number) {
@@ -72,6 +103,7 @@ class AutoCompleteSelectState<T> {
     }
 
     navigateSelection(direction: 'up' | 'down') {
+        this.updatePosition() // just in case we scrolled
         if (direction === 'up' && this.selectedIndex > 0) {
             this.selectedIndex--
         } else if (direction === 'down' && this.selectedIndex < this.filteredOptions.length - 1) {
@@ -79,73 +111,97 @@ class AutoCompleteSelectState<T> {
         }
     }
 
+    handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        this.filterOptions(event.target.value)
+        this.updatePosition() // just in case we scrolled
+    }
+
     onBlur = () => {
         this.closeMenu()
     }
 
-    closeMenu() {
-        this.showMenu = false
-        this.selectedIndex = -1
+    handleTooltipKeyDown = (ev: React.KeyboardEvent) => {
+        if (ev.key === 'ArrowDown') this.navigateSelection('down')
+        else if (ev.key === 'ArrowUp') this.navigateSelection('up')
+        else if (ev.key === 'Enter' && !ev.metaKey && !ev.ctrlKey) this.selectOption(this.selectedIndex)
+    }
+
+    handleTooltipKeyUp = (ev: React.KeyboardEvent) => {
+        if (ev.key === 'Escape') {
+            this.closeMenu()
+            this.anchorRef.current?.focus()
+            ev.preventDefault()
+            ev.stopPropagation()
+        }
     }
 }
 
 export const SelectUI = observer(function SelectUI_<T>(p: PP<T>) {
     const st = useSt()
-    const uiSt = useMemo(() => new AutoCompleteSelectState(st, p), [p])
-    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        uiSt.filterOptions(event.target.value)
-    }
-
-    const handleKeyDown = (event: React.KeyboardEvent) => {
-        if (event.key === 'ArrowDown') uiSt.navigateSelection('down')
-        else if (event.key === 'ArrowUp') uiSt.navigateSelection('up')
-        else if (event.key === 'Enter') uiSt.selectOption(uiSt.selectedIndex)
-    }
+    const s = useMemo(() => new AutoCompleteSelectState(st, p), [p])
 
     return (
         <div tw='flex flex-1 items-center'>
             <div className='relative flex-1'>
-                <input
-                    tw='input input-sm input-bordered w-full'
-                    onFocus={() => (uiSt.showMenu = true)}
-                    onBlur={uiSt.onBlur}
-                    value={uiSt.displayValue}
-                ></input>
-                {uiSt.showMenu && (
-                    <div tw='absolute top-0 left-0 right-0 z-50'>
-                        <input
-                            onKeyUp={(ev) => {
-                                if (ev.key === 'Escape') uiSt.closeMenu()
-                            }}
-                            onFocus={() => (uiSt.showMenu = true)}
-                            autoFocus
-                            tw='input input-sm w-full'
-                            placeholder={uiSt.displayValue}
-                            type='text'
-                            value={uiSt.searchQuery}
-                            onChange={handleInputChange}
-                            onKeyDown={handleKeyDown}
-                            onBlur={uiSt.closeMenu}
-                            className={'input input-bordered '} // Tailwind CSS classes
-                        />
-                        <ul className='absolute z-10 bg-base-100 shadow-md max-h-60 overflow-auto'>
-                            {uiSt.filteredOptions.map((option, index) => (
-                                <li
-                                    key={index}
-                                    className={`p-2 hover:bg-base-100 cursor-pointer ${
-                                        index === uiSt.selectedIndex ? 'bg-base-300' : ''
-                                    }`}
-                                    onMouseDown={() => uiSt.selectOption(index)}
-                                >
-                                    {uiSt.p.getLabelUI //
-                                        ? uiSt.p.getLabelUI(option)
-                                        : uiSt.p.getLabelText(option)}
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-                )}
+                {/* ANCHOR */}
+                <input //
+                    tabIndex={-1}
+                    tw='input input-bordered input-sm w-full'
+                    // onFocus={s.openMenu}
+                    // onBlur={s.onBlur}
+                    value={s.displayValue}
+                />
+                <div tw='absolute top-0 left-0 right-0 z-50'>
+                    <input
+                        ref={s.anchorRef}
+                        onKeyUp={s.handleTooltipKeyUp}
+                        onFocus={s.openMenu}
+                        style={{ background: s.searchQuery === '' ? 'none' : undefined }}
+                        // style={{ opacity: s.searchQuery === '' ? 0 : 1 }}
+                        // style={{ background: 'none' }}
+                        tw='input input-bordered input-sm w-full'
+                        // placeholder={s.displayValue}
+                        type='text'
+                        value={s.searchQuery}
+                        onChange={s.handleInputChange}
+                        onKeyDown={s.handleTooltipKeyDown}
+                        onBlur={s.onBlur}
+                    />
+                </div>
+                {/* TOOLTIP */}
+                {s.isOpen && <SelectPopupUI s={s} />}
             </div>
         </div>
+    )
+})
+
+export const SelectPopupUI = observer(function SelectPopupUI_<T>(p: { s: AutoCompleteSelectState<T> }) {
+    const s = p.s
+    return createPortal(
+        <ul
+            style={{
+                pointerEvents: 'initial',
+                position: 'absolute',
+                zIndex: 99999999,
+                top: `${s.tooltipPosition.top}px`,
+                left: `${s.tooltipPosition.left}px`,
+                // Adjust positioning as needed
+            }}
+            className='p-2 bg-base-100 shadow-2xl max-h-60 overflow-auto'
+        >
+            {s.filteredOptions.length === 0 ? <li className='p-2'>No results</li> : null}
+            {s.filteredOptions.map((option, index) => (
+                <li
+                    key={index}
+                    className={`p-2 hover:bg-base-300 cursor-pointer ${index === s.selectedIndex ? 'bg-base-300' : ''}`}
+                    onMouseDown={(ev) => s.onMenuEntryClick(ev, index)}
+                >
+                    {s.p.getLabelUI //
+                        ? s.p.getLabelUI(option)
+                        : s.p.getLabelText(option)}
+                </li>
+            ))}
+        </ul>,
+        document.getElementById('tooltip-root')!,
     )
 })
