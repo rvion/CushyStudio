@@ -26,6 +26,8 @@ outputs/*
 # keep .schema folder
 schema/*
 !schema/.gitkeep
+!schema/object_info.default.json
+!schema/embeddings.default.json
 
 cushy.db
 cushy*.db
