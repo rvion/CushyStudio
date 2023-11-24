@@ -1,6 +1,7 @@
 import { observer } from 'mobx-react-lite'
 import { ReactNode } from 'react'
 import { RevealUI } from './RevealUI'
+import { exhaust } from 'src/utils/misc/ComfyUtils'
 
 export type PositionChildProps = {
     top: number
@@ -41,39 +42,42 @@ export const Button = (
         disabled?: boolean
         appearance?: Maybe<RSAppearance>
     },
-) => (
-    <button
-        {...p}
-        tw={[
-            'btn',
-            p.loading || p.disabled ? 'btn-disabled' : null,
-            p.active ? 'btn-active' : null,
-            p.appearance
-                ? (() => {
-                      if (p.appearance === 'primary') return 'btn-primary'
-                      if (p.appearance === 'ghost') return 'btn-outline'
-                      if (p.appearance === 'link') return 'btn-link'
-                      if (p.appearance === 'default') return null
-                      if (p.appearance === 'subtle') return null
-                      return exhaust(p.appearance)
-                  })()
-                : null,
-            p.size
-                ? (() => {
-                      if (p.size === 'sm') return 'btn-sm'
-                      if (p.size === 'xs') return 'btn-xs'
-                      if (p.size === 'lg') return 'btn-lg'
-                      if (p.size === 'md') return null
-                      return exhaust(p.size)
-                  })()
-                : null,
-            ...(p?.tw ?? []),
-        ]}
-    >
-        {p.icon}
-        {p.children}
-    </button>
-)
+) => {
+    const { icon, active, size, loading, disabled, appearance, ...rest } = p
+    return (
+        <button
+            {...rest}
+            tw={[
+                'btn',
+                p.loading || p.disabled ? 'btn-disabled' : null,
+                p.active ? 'btn-active' : null,
+                appearance
+                    ? (() => {
+                          if (appearance === 'primary') return 'btn-primary'
+                          if (appearance === 'ghost') return 'btn-outline'
+                          if (appearance === 'link') return 'btn-link'
+                          if (appearance === 'default') return null
+                          if (appearance === 'subtle') return null
+                          return exhaust(appearance)
+                      })()
+                    : null,
+                p.size
+                    ? (() => {
+                          if (p.size === 'sm') return 'btn-sm'
+                          if (p.size === 'xs') return 'btn-xs'
+                          if (p.size === 'lg') return 'btn-lg'
+                          if (p.size === 'md') return null
+                          return exhaust(p.size)
+                      })()
+                    : null,
+                ...(p?.tw ?? []),
+            ]}
+        >
+            {p.icon}
+            {p.children}
+        </button>
+    )
+}
 
 export const Input = (p: JSX.IntrinsicElements['input']) => (
     <input
