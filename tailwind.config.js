@@ -1,4 +1,15 @@
 /** @type {import('tailwindcss').Config} */
+
+const notReallyRound = {
+    '--rounded-box': '0.25rem',
+    '--rounded-btn': '.125rem',
+    '--rounded-badge': '.25rem',
+    '--tab-radius': '0.25rem',
+    '--animation-btn': '0',
+    '--animation-input': '0',
+    '--btn-focus-scale': '1',
+}
+
 module.exports = {
     content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}', './library/**/*.{ts,js}'],
     theme: {
@@ -38,13 +49,7 @@ module.exports = {
                     'base-200': '#20252E',
                     'base-300': '#191c23',
                     'base-content': '#B2CCD6',
-                    '--rounded-box': '0.25rem',
-                    '--rounded-btn': '.125rem',
-                    '--rounded-badge': '.25rem',
-                    '--tab-radius': '0.25rem',
-                    '--animation-btn': '0',
-                    '--animation-input': '0',
-                    '--btn-focus-scale': '1',
+                    ...notReallyRound,
                     // 'base-100': '#302f2f',
                     // 'base-200': '#2b2c2d',
                     // 'base-300': '#15191e',
@@ -58,29 +63,22 @@ module.exports = {
             {
                 wireframe: {
                     ...require('daisyui/src/theming/themes')['wireframe'],
-                    '--rounded-box': '0.25rem',
-                    '--rounded-btn': '.125rem',
-                    '--rounded-badge': '.25rem',
-                    '--tab-radius': '0.25rem',
-                    '--animation-btn': '0',
-                    '--animation-input': '0',
-                    '--btn-focus-scale': '1',
+                    ...notReallyRound,
                 },
             },
             {
                 cupcake: {
                     ...require('daisyui/src/theming/themes')['cupcake'],
-                    '--rounded-box': '0.25rem',
-                    '--rounded-btn': '.125rem',
-                    '--rounded-badge': '.25rem',
-                    '--tab-radius': '0.25rem',
-                    '--animation-btn': '0',
-                    '--animation-input': '0',
-                    '--btn-focus-scale': '1',
+                    ...notReallyRound,
                 },
             },
             'aqua',
-            'valentine',
+            {
+                valentine: {
+                    ...require('daisyui/src/theming/themes')['valentine'],
+                    ...notReallyRound,
+                },
+            },
             'sunset',
             'luxury',
             'forest',

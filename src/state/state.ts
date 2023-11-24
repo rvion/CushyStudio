@@ -93,8 +93,8 @@ export class STATE {
 
     fullReset_eraseConfigAndSchemaFilesAndDB = () => {
         this.configFile.erase()
-        this.db.reset()
         this.typecheckingConfig.erase()
+        this.db.erase()
         this.restart()
     }
 

@@ -145,8 +145,14 @@ body {
 /* scrollbar ----------------------- */
 
 /* THEME */
-#CushyStudio.dark *::-webkit-scrollbar-thumb { background-color: #4b4b4b; }
-#CushyStudio.light *::-webkit-scrollbar-thumb { background-color: #c1c1c1; }
+*::-webkit-scrollbar-thumb {
+    background-color:
+        color-mix(
+            in oklch,
+            oklch(var(--n)),
+            transparent 90%
+        )
+}
 
 /*  */
 .noscrollbar::-webkit-scrollbar { display: none; }

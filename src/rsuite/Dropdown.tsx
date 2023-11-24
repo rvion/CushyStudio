@@ -32,7 +32,7 @@ export const Dropdown = (p: {
 )
 
 export const MenuItem = observer(function DropdownItem_(p: {
-    onClick: (ev: React.MouseEvent<HTMLElement, MouseEvent>) => void
+    onClick?: (ev: React.MouseEvent<HTMLElement, MouseEvent>) => void
     size?: RSSize
     icon?: Maybe<ReactNode>
     disabled?: boolean
@@ -41,10 +41,15 @@ export const MenuItem = observer(function DropdownItem_(p: {
     children?: ReactNode
     label?: ReactNode
 }) {
-    const { size, label, disabled, icon, children, active, ...rest } = p
+    const { size, label, disabled, icon, children, active, onClick, ...rest } = p
 
     return (
         <li
+            onClick={(ev) => {
+                ev.preventDefault()
+                ev.stopPropagation()
+                p.onClick?.(ev)
+            }}
             tw={[
                 //
                 active && 'bg-accent text-accent-content',
@@ -54,8 +59,8 @@ export const MenuItem = observer(function DropdownItem_(p: {
         >
             <div className='flex items-center gap-2'>
                 {icon ?? null /*<span className='material-symbols-outlined'>spa</span>*/}
-                {children}
                 {label}
+                {children}
             </div>
         </li>
     )

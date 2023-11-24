@@ -12,7 +12,8 @@ import { useSt } from 'src/state/stateContext'
 export const LabelUI = observer(function LabelUI_(p: { children: React.ReactNode }) {
     return <div tw='whitespace-nowrap'>{p.children}: </div>
 })
-export const Panel_ComfyUIHosts = observer(function Panel_ComfyUIHosts_(p: {}) {
+
+export const Panel_ComfyUIHosts = observer(function Panel_ComfyUIHosts_(p: { hostID?: ComfyHostID }) {
     const st = useSt()
     const config = st.configFile.value
 
@@ -25,7 +26,7 @@ export const Panel_ComfyUIHosts = observer(function Panel_ComfyUIHosts_(p: {}) {
     // const mainComfyPort = config.comfyPort
     // const machines = st.configFile.value.comfyUIHosts
     return (
-        <Panel>
+        <Panel tw='w-full h-full'>
             <div>current machine {mainHostID}</div>
             <Joined>
                 <Button

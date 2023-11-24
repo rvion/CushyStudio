@@ -120,6 +120,7 @@ export class LiveDB {
     /* erase the DB file on disk */
     erase = () => {
         rmSync(this.absPath)
+        if (this.saveTimeout) clearTimeout(this.saveTimeout)
     }
 
     /* reset the whole DB */

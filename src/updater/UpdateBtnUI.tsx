@@ -14,12 +14,17 @@ import { exhaust } from 'src/utils/misc/ComfyUtils'
 
 export const UpdateBtnUI = observer(function UpdateBtnUI_(p: {
     //
+    className?: string
     updater: GitManagedFolder
     children?: ReactNode
 }) {
     const updater = p.updater
     let ANCHOR = (
-        <div tw={['btn-narrow btn btn-sm btn-ghost italic', updater.hasUpdateAvailable && 'btn-warning']}>
+        <div
+            //
+            className={p.className}
+            tw={['btn-narrow btn btn-sm btn-ghost italic', updater.hasUpdateAvailable && 'btn-warning']}
+        >
             {p.children}
             <div tw='text-xs italic opacity-50'>
                 <UpdaterAnchorUI updater={updater} />
@@ -28,7 +33,7 @@ export const UpdateBtnUI = observer(function UpdateBtnUI_(p: {
     )
     if (updater.hasUpdateAvailable)
         ANCHOR = (
-            <div className='indicator'>
+            <div className={p.className} tw='indicator'>
                 <span className='indicator-item badge badge-secondary'></span>
                 {ANCHOR}
             </div>

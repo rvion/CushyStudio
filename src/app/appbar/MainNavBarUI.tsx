@@ -14,14 +14,14 @@ export const MenuDebugUI = observer(function MenuDebugUI_(p: {}) {
             title='Debug'
         >
             <MenuItem
-                icon={<span className='material-symbols-outlined text-orange-500'>sync</span>}
-                onClick={st.restart}
-                label='Reload'
+                icon={<span className='material-symbols-outlined text-orange-500'>panorama_horizontal</span>}
+                onClick={st.layout.resetCurrent}
+                label='Fix Layout'
             />
             <MenuItem
                 icon={<span className='material-symbols-outlined text-orange-500'>sync</span>}
-                onClick={st.layout.resetCurrent}
-                label='Fix Layout'
+                onClick={st.restart}
+                label='Reload'
             />
             <MenuItem
                 //
@@ -38,7 +38,7 @@ export const MenuDebugUI = observer(function MenuDebugUI_(p: {}) {
             />
             <MenuItem
                 icon={<span className='material-symbols-outlined text-orange-500'>sync</span>}
-                onClick={st.partialReset_eraseConfigAndSchemaFiles}
+                onClick={st.fullReset_eraseConfigAndSchemaFilesAndDB}
                 label='Full Reset'
             />
         </Dropdown>
@@ -140,11 +140,41 @@ export const MenuComfyUI = observer(function MenuComfyUI_(p: {}) {
                 icon={<span className='material-symbols-outlined text-cyan-400'>explore</span>}
                 label='Nodes'
             />
-            <MenuItem
-                onClick={() => st.layout.GO_TO('Hosts', {})}
-                icon={<span className='material-symbols-outlined text-cyan-400'>cloud</span>}
-                label='ComfyUI Hosts'
-            />
+            {Boolean(st.configFile.value.comfyUIHosts?.length) ? null : (
+                <MenuItem
+                    onClick={() => st.layout.GO_TO('Hosts', {})}
+                    icon={<span className='material-symbols-outlined text-cyan-400'>settings</span>}
+                    label='ComfyUI Hosts'
+                />
+            )}
+            <div className='divider'>hosts</div>
+            {st.configFile.value.comfyUIHosts?.map((host) => {
+                const isMain = host.id === st.configFile.value.mainComfyHostID
+                return (
+                    <MenuItem
+                        //
+                        icon={
+                            <span tw={[isMain ? 'text-green-500' : null]} className='material-symbols-outlined'>
+                                desktop_mac
+                            </span>
+                        }
+                        onClick={() => st.configFile.update({ mainComfyHostID: host.id })}
+                        key={host.id}
+                    >
+                        <div tw='flex-grow'>{host.name}</div>
+                        <div
+                            className='btn btn-xs'
+                            onClick={(ev) => {
+                                ev.preventDefault()
+                                ev.stopPropagation()
+                                st.layout.GO_TO('Hosts', { hostID: host.id })
+                            }}
+                        >
+                            <span className='material-symbols-outlined'>settings</span>
+                        </div>
+                    </MenuItem>
+                )
+            })}
         </Dropdown>
     )
 })
