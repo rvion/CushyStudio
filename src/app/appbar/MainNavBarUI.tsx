@@ -16,20 +16,25 @@ export const MenuDebugUI = observer(function MenuDebugUI_(p: {}) {
         >
             <MenuItem
                 icon={<span className='material-symbols-outlined text-orange-500'>sync</span>}
-                onClick={() => window.location.reload()}
+                onClick={st.restart}
                 label='Reload'
             />
             <MenuItem //
                 icon={<span className='material-symbols-outlined text-orange-500'>bug_report</span>}
-                onClick={() => st.electronUtils.toggleDevTools()}
+                onClick={st.electronUtils.toggleDevTools}
                 label='console'
             />
             <MenuItem
                 icon={<span className='material-symbols-outlined text-orange-500'>sync</span>}
-                onClick={() => st.layout.resetCurrent()}
+                onClick={st.layout.resetCurrent}
                 label='Fix Layout'
             />
             <IndicatorDBHealthBtnUI />
+            <MenuItem
+                icon={<span className='material-symbols-outlined text-orange-500'>sync</span>}
+                onClick={st.eraseConfigAndSchemaFiles}
+                label='Erase Config Files'
+            />
         </Dropdown>
     )
 })

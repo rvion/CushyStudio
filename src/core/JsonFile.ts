@@ -1,7 +1,7 @@
 import type { AbsolutePath } from 'src/utils/fs/BrandedPaths'
 import JSON5 from 'json5'
 
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs'
+import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'fs'
 import { makeAutoObservable } from 'mobx'
 import { basename, dirname, join } from 'pathe'
 
@@ -39,6 +39,12 @@ export class JsonFile<T extends object> {
         this.init(p)
         p.fixup?.(this)
         makeAutoObservable(this)
+    }
+
+    erase = () => {
+        console.info(`[💾] CONFIG erasing [${this.fileName}]`)
+        rmSync(this._path)
+        this.init(this.p)
     }
 
     get folder() { return bang(this.folderPath); } // prettier-ignore

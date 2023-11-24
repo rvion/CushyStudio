@@ -2,7 +2,7 @@ import type { ImageL } from '../models/Image'
 import type { ComfyStatus, PromptID, PromptRelated_WsMsg, WsMsg } from '../types/ComfyWsApi'
 import type { CSCriticalError } from '../widgets/CSCriticalError'
 
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs'
+import { existsSync, mkdirSync, readFile, readFileSync, writeFileSync } from 'fs'
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { join } from 'pathe'
@@ -83,6 +83,16 @@ export class STATE {
         const globalRef = globalThis as any
         if (globalRef.__hotReloadPersistentCache == null) globalRef.__hotReloadPersistentCache = {}
         return globalRef.__hotReloadPersistentCache
+    }
+
+    restart = () => {
+        window.location.reload()
+    }
+
+    eraseConfigAndSchemaFiles = () => {
+        this.this.configFile.erase()
+        this.typecheckingConfig.erase()
+        this.restart()
     }
 
     // main state api
