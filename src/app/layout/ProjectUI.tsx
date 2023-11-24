@@ -8,15 +8,15 @@ import { ErrorBoundaryFallback } from '../../widgets/misc/ErrorBoundary'
 
 export const ProjectUI = observer(function ProjectUI_(p: {}) {
     const st = useSt()
-    const project = st.db.projects.first()
-    if (project == null)
-        return (
-            <div>
-                <Loader />
-                <div>No project yet, you first need to connect to ComfyUI</div>
-                <Panel_Config />
-            </div>
-        )
+    const project = st.getProject()
+    // if (project == null)
+    //     return (
+    //         <div>
+    //             <Loader />
+    //             <div>No project yet, you first need to connect to ComfyUI</div>
+    //             <Panel_Config />
+    //         </div>
+    //     )
     return (
         <div className='relative flex-grow flex flex-col h-full'>
             <GalleryHoveredPreviewUI />
