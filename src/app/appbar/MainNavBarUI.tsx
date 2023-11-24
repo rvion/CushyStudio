@@ -29,7 +29,7 @@ export const MenuDebugUI = observer(function MenuDebugUI_(p: {}) {
                 onClick={() => st.db.reset()}
                 icon={<span className='text-orange-500 material-symbols-outlined'>sync</span>}
             >
-                Fix DB ({st.db.health.sizeTxt})
+                Reset DB ({st.db.health.sizeTxt})
             </MenuItem>
             <MenuItem //
                 icon={<span className='material-symbols-outlined text-orange-500'>bug_report</span>}
