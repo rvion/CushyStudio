@@ -4,16 +4,16 @@ import { existsSync, readFileSync } from 'fs'
 import JSON5 from 'json5'
 import { makeAutoObservable } from 'mobx'
 import { join, relative } from 'pathe'
-import { assets } from 'src/utils/assets/assets'
 import { Library } from 'src/cards/Library'
-import { GithubRepo, GithubRepoName, asGithubRepoName } from 'src/cards/githubRepo'
+import { GithubRepoName, asGithubRepoName } from 'src/cards/githubRepo'
 import { GitManagedFolder } from 'src/updater/updater'
-import { ManualPromise } from 'src/utils/misc/ManualPromise'
+import { assets } from 'src/utils/assets/assets'
 import { AbsolutePath } from 'src/utils/fs/BrandedPaths'
 import { asAbsolutePath, asRelativePath } from 'src/utils/fs/pathUtils'
+import { ManualPromise } from 'src/utils/misc/ManualPromise'
 import { generateAvatar } from './AvatarGenerator'
 import { AppPath, asAppPath } from './CardPath'
-import { PackageManifest, ManifestError, parseDeckManifest } from './DeckManifest'
+import { ManifestError, PackageManifest, parseDeckManifest } from './DeckManifest'
 import { GithubUser, GithubUserName, asGithubUserName } from './GithubUser'
 
 /** e.g. library/rvion/foo */
@@ -45,7 +45,7 @@ export class Package {
     githubRepositoryName: GithubRepoName // "example-deck"
 
     /** proxy to the github repository */
-    githubRepository: GithubRepo
+    // githubRepository: GithubRepo
 
     /** ui state */
     folded = true
@@ -116,7 +116,7 @@ export class Package {
         this.githubUserName = asGithubUserName(parts[0])
         this.githubUser = GithubUser.get(this.st, this.githubUserName, this.isBuiltIn)
         this.githubRepositoryName = asGithubRepoName(parts[1])
-        this.githubRepository = GithubRepo.get(this.st, this.githubUser, this.githubRepositoryName, this.isBuiltIn)
+        // this.githubRepository = GithubRepo.get(this.st, this.githubUser, this.githubRepositoryName, this.isBuiltIn)
         this.authorFolderAbs = asAbsolutePath(join(this.st.actionsFolderPathAbs, parts[0]))
         this.authorFolderRel = asRelativePath(join(this.st.actionsFolderPathRel, parts[0])) as AuthorFolder
         this.folderAbs = asAbsolutePath(join(this.st.actionsFolderPathAbs, this.github))
