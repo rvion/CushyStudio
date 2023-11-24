@@ -12,7 +12,7 @@ import { Panel_DraftJsonSerial } from '../Panel_DraftJsonSerial'
 import { Panel_CardPicker3UI } from '../Panel_FullScreenLibrary'
 import { Panel_Gallery } from '../Panel_Gallery'
 import { Panel_LastGraph } from '../Panel_LastGraph'
-import { Panel_MachineManager } from '../Panel_MachineManager'
+import { Panel_ComfyUIHosts } from '../Panel_ComfyUIHosts'
 import { Panel_Marketplace } from '../Panel_Marketplace'
 import { Panel_Minipaint } from '../Panel_Minipaint'
 import { Panel_Squoosh } from '../Panel_Squoosh'
@@ -57,10 +57,10 @@ export const panels = {
 
     // config
     Config:              { name: 'Config',              widget: Panel_Config,            header: (p: PropsOf<typeof Panel_Config           >) => ({title: 'Config',              icon: undefined                               }) },
-    Hosts:               { name: 'Hosts',               widget: Panel_MachineManager,    header: (p: PropsOf<typeof Panel_MachineManager   >) => ({title: 'Hosts',               icon: undefined                               }) },
+    Hosts:               { name: 'Hosts',               widget: Panel_ComfyUIHosts,    header: (p: PropsOf<typeof Panel_ComfyUIHosts   >) => ({title: 'Hosts',               icon: undefined                               }) },
 
     // doc & help
-    TypeDoc:             { name: 'TypeDoc',             widget: Panel_TypeDoc,           header: (p: PropsOf<typeof Panel_MachineManager   >) => ({title: 'TypeDoc',             icon: assets.public_typescript_512_png        }) },
+    TypeDoc:             { name: 'TypeDoc',             widget: Panel_TypeDoc,           header: (p: PropsOf<typeof Panel_ComfyUIHosts   >) => ({title: 'TypeDoc',             icon: assets.public_typescript_512_png        }) },
 
 }
 export type Panels = typeof panels

@@ -79,13 +79,7 @@ export const Button = (
     )
 }
 
-export const Input = (p: JSX.IntrinsicElements['input']) => (
-    <input
-        tw='input input-bordered input-sm'
-        //
-        {...p}
-    ></input>
-)
+export const Input = (p: JSX.IntrinsicElements['input']) => <input tw='input input-bordered input-sm' {...p}></input>
 export const InputNumberBase = observer(function InputNumberBase_(
     //
     p: JSX.IntrinsicElements['input'] & { _size?: RSSize },

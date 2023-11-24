@@ -4,12 +4,13 @@ import { FormControl, FormControlLabel, FormHelpText, Panel, Toggle } from 'src/
 import { parseFloatNoRoundingErr } from 'src/utils/misc/parseFloatNoRoundingErr'
 import { SectionTitleUI } from 'src/widgets/workspace/SectionTitle'
 import { useSt } from '../state/stateContext'
+import { Panel_ComfyUIHosts } from './Panel_ComfyUIHosts'
 
 export const Panel_Config = observer(function Panel_Config_() {
     const st = useSt()
     const config = st.configFile
     return (
-        <div className='flex flex-col items-start p-2'>
+        <div className='flex flex-col gap-2 items-start p-2'>
             <Panel
                 //
                 header={<SectionTitleUI label='CONFIG' className='block' />}
@@ -31,44 +32,6 @@ export const Panel_Config = observer(function Panel_Config_() {
                             name='githubUsername'
                         />
                     </FieldUI>
-                    <Panel>
-                        <FieldUI label='use Https?'>
-                            <Toggle //
-                                checked={config.value.useHttps}
-                                onChange={(ev) => config.update({ useHttps: ev.target.checked })}
-                                name='useHttps'
-                            />
-                        </FieldUI>
-                        <FieldUI label='comfy host'>
-                            <FormControl
-                                //
-                                value={config.value.comfyHost}
-                                onChange={(ev) => config.update({ comfyHost: ev.target.value })}
-                                placeholder='localhost'
-                                type='text'
-                                name='comfyHost'
-                            />
-                        </FieldUI>
-                        <FieldUI label='comfy port'>
-                            <FormControl //
-                                value={config.value.comfyPort}
-                                onChange={(ev) => {
-                                    const next = ev.target.value
-                                    config.update({
-                                        comfyPort:
-                                            typeof next === 'string' //
-                                                ? parseInt(next)
-                                                : typeof next === 'number'
-                                                ? Math.abs(next)
-                                                : 8788,
-                                    })
-                                }}
-                                type='number'
-                                placeholder='8188'
-                                name='comfyPort'
-                            />
-                        </FieldUI>
-                    </Panel>
                     <FieldUI label='Gallery Image Size (px)'>
                         <InputNumberUI //
                             placeholder='48'
@@ -100,11 +63,13 @@ export const Panel_Config = observer(function Panel_Config_() {
                         />
                     </FieldUI>
                 </div>
+
                 {/* <Message type='info' showIcon className='self-start'>
                     <JSONHighlightedCodeUI code={JSON.stringify(config.value, null, 3)} />
                 </Message> */}
                 {/* <pre>{JSON.stringify(action)}</pre> */}
             </Panel>
+            <Panel_ComfyUIHosts />
         </div>
     )
 })

@@ -4,7 +4,7 @@ import { makeAutoObservable } from 'mobx'
 import { LiveTable } from './LiveTable'
 
 // models
-import { existsSync, readFileSync, renameSync, stat, writeFileSync } from 'fs'
+import { existsSync, readFileSync, renameSync, rmSync, stat, writeFileSync } from 'fs'
 import { extractErrorMessage } from 'src/utils/formatters/extractErrorMessage'
 import { AbsolutePath, RelativePath } from 'src/utils/fs/BrandedPaths'
 import { bytesToSize } from 'src/utils/fs/bytesToSize'
@@ -117,7 +117,12 @@ export class LiveDB {
         })
     }
 
-    /* reset the whole DB (🔴?) */
+    /* erase the DB file on disk */
+    erase = () => {
+        rmSync(this.absPath)
+    }
+
+    /* reset the whole DB */
     reset = () => {
         for (const table of this._tables) table.clear()
         this.markDirty()
@@ -125,6 +130,12 @@ export class LiveDB {
 
     /** self-updating DB size and health */
     health: { status: 'good' | 'meh' | 'bad'; size: number; sizeTxt: string } = { status: 'meh', size: 0, sizeTxt: '?' }
+
+    get healthColor() {
+        if (this.health.status === 'bad') return `btn-error`
+        if (this.health.status === 'meh') return 'btn-warning'
+        return null
+    }
     private startMonitoring = () => {
         const store = this.st.hotReloadPersistentCache
         if (store.dbSizeWatcherInterval != null) clearInterval(store.dbSizeWatcherInterval)

@@ -1,35 +1,16 @@
 import type { ThemeName } from 'src/theme/ThemeManager'
 import type { IJsonModel } from 'flexlayout-react'
 
-import { JsonFile } from './JsonFile'
-import { asAbsolutePath } from 'src/utils/fs/pathUtils'
-import { resolve } from 'pathe'
 import { AppPath } from 'src/cards/CardPath'
+import { ComfyHostDef, ComfyHostID } from './ComfyHostDef'
 
 export type PreferedFormLayout = 'mobile' | 'dense' | 'auto'
 
 export type ConfigFile = {
     /** this will allow you to enable typechecking for folders you manage */
     githubUsername?: string
-    /** e.g.
-     * - true
-     *   => will use https:// for POST requests
-     *   => will use wss:// for websocket connections
-     * - false
-     *   => will use http:// for POST requests
-     *   => will use ws:// for websocket connections
-     * */
-    useHttps: boolean
-    /** e.g.
-     * @example localhost
-     * @example 192.168.0.19
-     * */
-    comfyHost: string
-    /** e.g.
-     * @example 8188
-     * */
-    comfyPort: number
 
+    /** this is the set of custom trigger owrds associated to your loras */
     loraPrompts?: {
         [loraName: string]: {
             text?: string
@@ -43,23 +24,10 @@ export type ConfigFile = {
 
     favoriteCards?: AppPath[]
     /** list of all comfyUI setup available */
-    machines?: {
-        /** server name */
-        name?: string
-        /** e.g.
-         * @example localhost
-         * @example 192.168.0.19
-         * */
-        comfyHost: string
-        /** e.g.
-         * @example 8188
-         * */
-        comfyPort: number
-        /** true if on the same machine */
-        isLocal?: boolean
-        /** foo */
-        localPath?: string
-    }[]
+    comfyUIHosts?: ComfyHostDef[]
+
+    mainComfyHostID?: Maybe<ComfyHostID>
+
     /** 'light' or 'dark'; default to dark */
     theme?: ThemeName
     /** defaults to 48px */
@@ -102,20 +70,6 @@ export type ConfigFile = {
     // bad place to store that
     stars?: { [actionPackName: string]: { at: Timestamp; stars: number } }
     packs?: { [actionPackName: string]: { installed: boolean } }
-}
-
-export const mkConfigFile = (): JsonFile<ConfigFile> => {
-    return new JsonFile<ConfigFile>({
-        path: asAbsolutePath(resolve('CONFIG.json')),
-        maxLevel: 3,
-        init: (): ConfigFile => ({
-            comfyHost: 'localhost',
-            comfyPort: 8188,
-            useHttps: false,
-            galleryImageSize: 48,
-            theme: 'dark',
-        }),
-    })
 }
 
 export type ReleaseChannels = 'stable' | 'dev'

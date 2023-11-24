@@ -7,6 +7,7 @@ import { Dropdown, MenuItem } from 'src/rsuite/Dropdown'
 import { Rate, Toggle } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
 import { openExternal, showItemInFolder } from '../app/layout/openExternal'
+import { assets } from 'src/utils/assets/assets'
 
 export const Panel_ViewImage = observer(function Panel_ViewImage_(p: { imageID?: ImageID | 'latent' }) {
     const st = useSt()
@@ -97,8 +98,18 @@ export const Panel_ViewImage = observer(function Panel_ViewImage_(p: { imageID?:
                             alt='last generated image'
                         />
                     ) : (
-                        <div tw='w-96 h-96 flex items-center justify-center'>
-                            <div>no image yet</div>
+                        <div tw='w-full h-full relative flex'>
+                            <div
+                                style={{ fontSize: '3rem', textShadow: '0 0 5px #ffffff' }}
+                                tw='animate-pulse absolute self-center w-full text-center text-xl text-black font-bold'
+                            >
+                                no image yet
+                            </div>
+                            <img //
+                                style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                                src={assets.public_illustrations_image_home_transp_webp}
+                                alt='last generated image'
+                            />
                         </div>
                     )}
                     {/* </div> */}

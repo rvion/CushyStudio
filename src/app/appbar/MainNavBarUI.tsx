@@ -2,7 +2,6 @@ import { observer } from 'mobx-react-lite'
 import { Dropdown, MenuItem } from 'src/rsuite/Dropdown'
 import { assets } from 'src/utils/assets/assets'
 import { useSt } from '../../state/stateContext'
-import { IndicatorDBHealthBtnUI } from './IndicatorDBHealthBtnUI'
 import { ThemePreviewUI } from './ThemePreviewUI'
 
 export const MenuDebugUI = observer(function MenuDebugUI_(p: {}) {
@@ -19,6 +18,19 @@ export const MenuDebugUI = observer(function MenuDebugUI_(p: {}) {
                 onClick={st.restart}
                 label='Reload'
             />
+            <MenuItem
+                icon={<span className='material-symbols-outlined text-orange-500'>sync</span>}
+                onClick={st.layout.resetCurrent}
+                label='Fix Layout'
+            />
+            <MenuItem
+                //
+                tw={[st.db.healthColor]}
+                onClick={() => st.db.reset()}
+                icon={<span className='text-orange-500 material-symbols-outlined'>sync</span>}
+            >
+                Fix DB ({st.db.health.sizeTxt})
+            </MenuItem>
             <MenuItem //
                 icon={<span className='material-symbols-outlined text-orange-500'>bug_report</span>}
                 onClick={st.electronUtils.toggleDevTools}
@@ -26,14 +38,8 @@ export const MenuDebugUI = observer(function MenuDebugUI_(p: {}) {
             />
             <MenuItem
                 icon={<span className='material-symbols-outlined text-orange-500'>sync</span>}
-                onClick={st.layout.resetCurrent}
-                label='Fix Layout'
-            />
-            <IndicatorDBHealthBtnUI />
-            <MenuItem
-                icon={<span className='material-symbols-outlined text-orange-500'>sync</span>}
-                onClick={st.eraseConfigAndSchemaFiles}
-                label='Erase Config Files'
+                onClick={st.partialReset_eraseConfigAndSchemaFiles}
+                label='Full Reset'
             />
         </Dropdown>
     )
@@ -77,7 +83,7 @@ export const MenuConfigUI = observer(function MenuConfigUI_(p: {}) {
             <MenuItem
                 onClick={() => st.layout.GO_TO('Hosts', {})}
                 icon={<span className='material-symbols-outlined text-purple-500'>cloud</span>}
-                label='GPUs'
+                label='ComfyUI Hosts'
             />
             {st.themeMgr.themes.map((theme) => (
                 <div
@@ -133,6 +139,11 @@ export const MenuComfyUI = observer(function MenuComfyUI_(p: {}) {
                 onClick={() => st.layout.GO_TO('ComfyUINodeExplorer', {})}
                 icon={<span className='material-symbols-outlined text-cyan-400'>explore</span>}
                 label='Nodes'
+            />
+            <MenuItem
+                onClick={() => st.layout.GO_TO('Hosts', {})}
+                icon={<span className='material-symbols-outlined text-cyan-400'>cloud</span>}
+                label='ComfyUI Hosts'
             />
         </Dropdown>
     )

@@ -20,6 +20,7 @@ class TooltipState {
         //
         public showDelay = 200,
         public hideDelay = 200,
+        public disableHover = false,
     ) {
         makeAutoObservable(this)
     }
@@ -49,6 +50,7 @@ class TooltipState {
 
     // anchor --------------------------------------------
     enterAnchor = () => {
+        if (this.disableHover) return
         // cancel leaave
         if (this.leaveAnchorTimeoutId) {
             clearTimeout(this.leaveAnchorTimeoutId)
@@ -69,8 +71,13 @@ class TooltipState {
         this.leaveAnchorTimeoutId = setTimeout(() => (this.inAnchor = false), this.hideDelay)
     }
 
+    get defaultCursor() {
+        if (this.disableHover) return 'cursor-pointer'
+        return 'cursor-help'
+    }
     // tooltip --------------------------------------------
     enterTooltip = () => {
+        if (this.disableHover) return
         // cancel leave
         if (this.leaveTooltipTimeoutId) {
             clearTimeout(this.leaveTooltipTimeoutId)
@@ -105,6 +112,7 @@ export const RevealUI = observer(function Tooltip_(p: {
     //
     children: [React.ReactNode, React.ReactNode]
     tooltipWrapperClassName?: string[]
+    disableHover?: boolean
     className?: string
     showDelay?: number
     hideDelay?: number
@@ -113,7 +121,8 @@ export const RevealUI = observer(function Tooltip_(p: {
 }) {
     const showDelay = p.showDelay ?? 300
     const hideDelay = p.hideDelay ?? 300
-    const uist = useMemo(() => new TooltipState(showDelay, hideDelay), [showDelay, hideDelay])
+    const disableHover = p.disableHover ?? false
+    const uist = useMemo(() => new TooltipState(showDelay, hideDelay, disableHover), [showDelay, hideDelay, disableHover])
     const ref = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
@@ -146,7 +155,7 @@ export const RevealUI = observer(function Tooltip_(p: {
 
     return (
         <span //
-            tw={[p.cursor ?? 'cursor-help']}
+            tw={[p.cursor ?? uist.defaultCursor]}
             className={p.className}
             ref={ref}
             onContextMenu={uist.toggleLock}

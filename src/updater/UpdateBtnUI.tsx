@@ -29,7 +29,7 @@ export const UpdateBtnUI = observer(function UpdateBtnUI_(p: { updater: GitManag
         )
 
     return (
-        <RevealUI>
+        <RevealUI disableHover>
             {ANCHOR}
             <UpdaterDetailsUI updater={updater} />
         </RevealUI>

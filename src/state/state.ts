@@ -7,7 +7,8 @@ import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { join } from 'pathe'
 import { createRef } from 'react'
-import { PreferedFormLayout, mkConfigFile, type ConfigFile } from 'src/core/ConfigFile'
+import { PreferedFormLayout, type ConfigFile } from 'src/config/ConfigFile'
+import { mkConfigFile } from 'src/config/mkConfigFile'
 import { mkTypescriptConfig, type TsConfigCustom } from '../widgets/TsConfigCustom'
 
 import { closest } from 'fastest-levenshtein'
@@ -42,6 +43,7 @@ import { exhaust } from '../utils/misc/ComfyUtils'
 import { ManualPromise } from '../utils/misc/ManualPromise'
 import { DanbooruTags } from '../widgets/prompter/nodes/booru/BooruLoader'
 import { Uploader } from './Uploader'
+import { ComfyHostDef, ComfyHostID, DEFAULT_COMFYUI_INSTANCE_ID, defaultHost } from 'src/config/ComfyHostDef'
 
 // prettier-ignore
 type HoveredAsset =
@@ -89,7 +91,14 @@ export class STATE {
         window.location.reload()
     }
 
-    eraseConfigAndSchemaFiles = () => {
+    fullReset_eraseConfigAndSchemaFilesAndDB = () => {
+        this.configFile.erase()
+        this.db.reset()
+        this.typecheckingConfig.erase()
+        this.restart()
+    }
+
+    partialReset_eraseConfigAndSchemaFiles = () => {
         this.configFile.erase()
         this.typecheckingConfig.erase()
         this.restart()
@@ -309,21 +318,33 @@ export class STATE {
         makeAutoObservable(this, { comfyUIIframeRef: false })
     }
 
+    get mainComfyHostID(): ComfyHostID {
+        return (
+            this.configFile.value.mainComfyHostID ?? //
+            DEFAULT_COMFYUI_INSTANCE_ID
+        )
+    }
+
+    get mainComfyHost(): ComfyHostDef {
+        const selectedHost = this.configFile.value.comfyUIHosts?.find((h) => h.id === this.mainComfyHostID)
+        return selectedHost ?? defaultHost
+    }
+
     /**
      * will be created only after we've loaded cnfig file
      * so we don't attempt to connect to some default server
      * */
     ws: ResilientWebSocketClient
     getServerHostHTTP(): string {
-        const method = this.configFile.value.useHttps ? 'https' : 'http'
-        const host = this.configFile.value.comfyHost
-        const port = this.configFile.value.comfyPort
+        const method = this.mainComfyHost.useHttps ? 'https' : 'http'
+        const host = this.mainComfyHost.hostname
+        const port = this.mainComfyHost.port
         return `${method}://${host}:${port}`
     }
     getWSUrl = (): string => {
-        const method = this.configFile.value.useHttps ? 'wss' : 'ws'
-        const host = this.configFile.value.comfyHost
-        const port = this.configFile.value.comfyPort
+        const method = this.mainComfyHost.useHttps ? 'wss' : 'ws'
+        const host = this.mainComfyHost.hostname
+        const port = this.mainComfyHost.port
         return `${method}://${host}:${port}/ws`
     }
 

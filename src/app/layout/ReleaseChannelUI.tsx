@@ -1,4 +1,4 @@
-import type { ReleaseChannels } from 'src/core/ConfigFile'
+import type { ReleaseChannels } from 'src/config/ConfigFile'
 
 import { observer } from 'mobx-react-lite'
 import { useSt } from 'src/state/stateContext'
