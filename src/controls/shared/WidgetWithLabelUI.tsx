@@ -116,7 +116,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
 
     let className = isVertical //
         ? `_WidgetWithLabelUI ${levelClass} flex flex-col items-baseline`
-        : `_WidgetWithLabelUI ${levelClass} flex flex-row items-baseline gap-1`
+        : `_WidgetWithLabelUI ${levelClass} flex flex-row ${isCollapsible ? 'items-baseline' : 'items-center'} gap-1`
 
     if (WIDGET == null) className += ' w-full'
     if (isVertical && WIDGET) {
