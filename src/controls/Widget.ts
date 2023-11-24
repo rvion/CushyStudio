@@ -1186,7 +1186,7 @@ export class Widget_choice      <T extends { [key: string]: Widget }> implements
         } else {
             const _items = input.items()
             const defaultPick: keyof T & string = (Object.keys(_items)[0]  ?? '_error_')
-            this.state = { type: 'choice', id: this.id, active: (input.default != null) ?? false, values: _items, pick: defaultPick }
+            this.state = { type: 'choice', id: this.id, active: true, values: _items, pick: defaultPick }
         }
         makeAutoObservable(this)
     }
