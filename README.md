@@ -234,7 +234,7 @@ Ensure you have the following installed:
 Then, to install **CushyStudio**, run these commands in a terminal:
 
 ```sh
-git clone https://github.com/rvion/CushyStudio
+git clone https://github.com/rvion/CushyStudio --depth 1
 cd CushyStudio
 npm install
 ```
