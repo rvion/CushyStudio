@@ -49,6 +49,13 @@ export type EnumInfo = {
 }
 
 export class SchemaL {
+    RUN_BASIC_CHECKS = () => {
+        const numNodesInSource = Object.keys(this.data.spec).length
+        const numNodesInSchema = this.nodes.length
+        if (numNodesInSource !== numNodesInSchema) {
+            console.log(`🔴 ${numNodesInSource} != ${numNodesInSchema}`)
+        }
+    }
     // LORA --------------------------------------------------------------
     hasLora = (loraName: string): boolean => this.getLoras().includes(loraName as Enum_LoraLoader_lora_name)
     getLoras = (): Enum_LoraLoader_lora_name[] => {
