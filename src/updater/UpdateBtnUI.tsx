@@ -12,13 +12,19 @@ import { UpdaterErrorUI } from './UpdaterErrorUI'
 import { ReactNode } from 'react'
 import { exhaust } from 'src/utils/misc/ComfyUtils'
 
-export const UpdateBtnUI = observer(function UpdateBtnUI_(p: { updater: GitManagedFolder; children?: ReactNode }) {
+export const UpdateBtnUI = observer(function UpdateBtnUI_(p: {
+    //
+    updater: GitManagedFolder
+    children?: ReactNode
+}) {
     const updater = p.updater
     let ANCHOR = (
-        <Button tw={[updater.hasUpdateAvailable ? 'btn-warning' : 'btn-ghost', 'btn-sm']}>
+        <div tw={['btn-narrow btn btn-sm btn-ghost italic', updater.hasUpdateAvailable && 'btn-warning']}>
             {p.children}
-            <UpdaterAnchorUI updater={updater} />
-        </Button>
+            <div tw='text-xs italic opacity-50'>
+                <UpdaterAnchorUI updater={updater} />
+            </div>
+        </div>
     )
     if (updater.hasUpdateAvailable)
         ANCHOR = (

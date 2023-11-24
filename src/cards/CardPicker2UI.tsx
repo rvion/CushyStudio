@@ -13,7 +13,7 @@ export const ActionPackUI = observer(function ActionPackUI_(p: { deck: Package }
     const deck: Package = p.deck
     return (
         <div tw='flex-grow' key={deck.folderRel}>
-            <DeckHeaderUI deck={deck} />
+            <DeckHeaderUI pkg={deck} />
             {deck.folded ? null : (
                 <div tw='flex flex-col gap-0.5'>
                     {deck.apps.map((af) => (

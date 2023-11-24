@@ -17,7 +17,7 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
                 tw='flex items-center gap-0.5 px-1 overflow-visible'
             >
                 <img style={{ width: '1.6rem' }} src={assets.public_CushyLogo_512_png} alt='' />
-                <UpdateBtnUI updater={st.updater}>CushyStudio - </UpdateBtnUI>
+                <UpdateBtnUI updater={st.updater}>CushyStudio </UpdateBtnUI>
                 <Button
                     appearance='subtle'
                     size='sm'

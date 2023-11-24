@@ -8,38 +8,34 @@ import { ManifestError } from './DeckManifest'
 // import { ActionPackStarsUI } from './DeckStarsUI'
 import { ActionPackStatusUI } from './DeckStatusUI'
 import { exhaust } from 'src/utils/misc/ComfyUtils'
+import { RevealUI } from 'src/rsuite/RevealUI'
 
-export const DeckHeaderUI = observer(function ActionPackHeaderUI_(p: { deck: Package }) {
-    const deck = p.deck
+export const DeckHeaderUI = observer(function ActionPackHeaderUI_(p: { pkg: Package }) {
+    const pkg = p.pkg
     return (
         <>
             <div
-                tw='cursor-pointer flex gap-1 hover:bg-base-300 bg-base-200 p-0.5 border-t border-t-base-300'
-                onClick={() => (deck.folded = !deck.folded)}
+                tw='cursor-pointer flex gap-1 hover:bg-base-300 bg-base-200 pb-0.5 border-t border-t-base-300'
+                onClick={() => (pkg.folded = !pkg.folded)}
             >
                 <img //
                     style={{ height: `2rem` }}
-                    src={deck.logo}
+                    src={pkg.logo}
                     alt='logo'
                 />
-                <div tw='flex flex-grow'>
-                    <div tw='flex-grow'>
-                        <div tw='text-base-content font-bold'>{deck.name}</div>
-                    </div>
+                <div tw='flex flex-grow items-center'>
+                    <div tw='text-base-content flex-grow whitespace-nowrap'>{pkg.name}</div>
                     <div>
-                        <div className='flex gap-1'>
-                            {deck.manifestError && (
-                                <Whisper
-                                    speaker={
-                                        <Popover>
-                                            <DeckManifestErrorUI err={deck.manifestError} />
-                                        </Popover>
-                                    }
-                                >
-                                    <span className='text-error-content material-symbols-outlined'>error</span>
-                                </Whisper>
+                        <div className='flex'>
+                            {pkg.manifestError && !p.pkg.isBuiltIn && (
+                                <RevealUI>
+                                    <div className='btn btn-sm btn-narrow text-warning-content'>
+                                        <span className='material-symbols-outlined opacity-50'>error</span>
+                                    </div>
+                                    <DeckManifestErrorUI err={pkg.manifestError} />
+                                </RevealUI>
                             )}
-                            <ActionPackStatusUI pack={deck} />
+                            <ActionPackStatusUI pack={pkg} />
                         </div>
                         {/* {deck.updater.status === FolderGitStatus.FolderWithGit ? ( //
                             <ActionPackStarsUI tw='float-right' pack={deck} />

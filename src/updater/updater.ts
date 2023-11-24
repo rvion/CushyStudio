@@ -293,10 +293,11 @@ export class GitManagedFolder {
 
     /** format the version using some naive algo */
     private _renderVersion = (commitCount: number) => {
-        const major = Math.floor(commitCount / 1000)
-        const minor = Math.floor((commitCount % 1000) / 100)
-        const patch = Math.floor(commitCount % 100)
-        return `${major}.${minor}.${patch}`
+        return `v${commitCount.toString()}`
+        // const major = Math.floor(commitCount / 1000)
+        // const minor = Math.floor((commitCount % 1000) / 100)
+        // const patch = Math.floor(commitCount % 100)
+        // return `${major}.${minor}.${patch}`
     }
 
     // UPDATE --------------------------------------------------------------------------------
