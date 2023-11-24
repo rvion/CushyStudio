@@ -111,7 +111,7 @@ export const UpdaterDetailsUI = observer(function UpdaterDetailsUI_(p: { updater
                     {updater.lastLogs.logs.map((log, i) => (
                         <tr key={i}>
                             <td>{_getRelativeTimeString(log.date)}</td>
-                            <td>{log.msg}</td>
+                            <td tw='max-w-sm'>{log.msg}</td>
                         </tr>
                     ))}
                 </tbody>
