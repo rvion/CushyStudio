@@ -176,6 +176,16 @@ export const MenuComfyUI = observer(function MenuComfyUI_(p: {}) {
                         >
                             <span className='material-symbols-outlined'>settings</span>
                         </div>
+                        <div
+                            className='btn btn-xs'
+                            onClick={(ev) => {
+                                ev.preventDefault()
+                                ev.stopPropagation()
+                                st.layout.GO_TO('Hosts', { hostID: host.id })
+                            }}
+                        >
+                            <span className='material-symbols-outlined'>open_in_full</span>
+                        </div>
                     </MenuItem>
                 )
             })}
@@ -188,9 +198,15 @@ export const MenuPanelsUI = observer(function MenuPanelsUI_(p: {}) {
     return (
         <Dropdown
             startIcon={<span className='material-symbols-outlined text-red-400'>image</span>}
-            title='Images'
+            title='Layout'
             appearance='subtle'
         >
+            <MenuItem
+                icon={<span className='material-symbols-outlined text-orange-500'>panorama_horizontal</span>}
+                onClick={st.layout.resetCurrent}
+                label='Fix Layout'
+            />
+            <div className='divider'>Panels</div>
             <MenuItem
                 onClick={() => st.layout.GO_TO('Paint', {})}
                 icon={<span className='material-symbols-outlined text-red-400'>brush</span>}
@@ -210,6 +226,12 @@ export const MenuPanelsUI = observer(function MenuPanelsUI_(p: {}) {
                 onClick={() => st.layout.GO_TO('LastStep', {})}
                 icon={<span className='material-symbols-outlined text-red-400'>history</span>}
                 label='Last STEP'
+            />
+            <div className='divider'>Perspectives</div>
+            <MenuItem
+                // onClick={() => st.layout.GO_TO('LastStep', {})}
+                icon={<span className='material-symbols-outlined text-red-400'>history</span>}
+                label='default'
             />
         </Dropdown>
     )

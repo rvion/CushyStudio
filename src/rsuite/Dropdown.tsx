@@ -25,7 +25,7 @@ export const Dropdown = (p: {
             <span tw='hidden lg:inline-block'>{p.startIcon}</span>
             {p.title}
         </label>
-        <ul tabIndex={0} tw='shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52'>
+        <ul tabIndex={0} tw='shadow menu dropdown-content z-[1] bg-base-100 rounded-box'>
             {p.children}
         </ul>
     </RevealUI>

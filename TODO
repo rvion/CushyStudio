@@ -5,9 +5,9 @@ Todo before release
 ☐ draft tabs/ files
 ☐ open in correct panels
 ☐ background image for config panel
-☐ have official layout show on first launch even if no comfyUI found
-☐ auto-open all default 5/6 built-in apps
 ☐ draft result are too wide by default / should open in bottom panel
+✔ have official layout show on first launch even if no comfyUI found @done(23-11-24 22:39)
+✔ auto-open all default 5/6 built-in apps @done(23-11-24 22:34)
 ✔ re-ordernable lists @done(23-11-24 13:51)
 ✔ step on size widget @done(23-11-24 13:51)
 ✔ favorites added at the top @done(23-11-23 20:53)
