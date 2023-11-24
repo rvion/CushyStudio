@@ -140,7 +140,7 @@ export class GitManagedFolder {
 
             // Get the default remote branch name
             const remoteInfo = await git.raw(['symbolic-ref', 'HEAD'])
-            console.log({ remoteInfo })
+            // console.log({ remoteInfo })
 
             // const remoteInfo = await git.remote(['show', 'origin'])
             if (remoteInfo == null) {
