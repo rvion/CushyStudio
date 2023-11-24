@@ -272,8 +272,8 @@ export class CushyLayoutManager {
                     show: true,
                     selected: 0,
                     children: [
-                        this._add({ panel: 'Steps', props: {}, canClose: false }),
                         this._add({ panel: 'LastStep', props: {}, canClose: false }),
+                        this._add({ panel: 'Steps', props: {}, canClose: false }),
                     ],
                 },
             ],
