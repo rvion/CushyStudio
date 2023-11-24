@@ -136,6 +136,10 @@ export const RevealUI = observer(function Tooltip_(p: {
         ? createPortal(
               <div
                   tw={['card card-bordered bg-base-100 shadow-xl pointer-events-auto', ...(p.tooltipWrapperClassName ?? [])]}
+                  onClick={(ev) => {
+                      ev.stopPropagation()
+                      ev.preventDefault()
+                  }}
                   onMouseEnter={uist.enterTooltip}
                   onMouseLeave={uist.leaveTooltip}
                   onContextMenu={uist.enterAnchorNow}
