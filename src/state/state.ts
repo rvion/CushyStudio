@@ -90,7 +90,7 @@ export class STATE {
     }
 
     eraseConfigAndSchemaFiles = () => {
-        this.this.configFile.erase()
+        this.configFile.erase()
         this.typecheckingConfig.erase()
         this.restart()
     }
@@ -263,7 +263,7 @@ export class STATE {
     ) {
         console.log('[🛋️] starting Cushy')
         this.cacheFolderPath = this.resolve(this.rootPath, asRelativePath('outputs'))
-        this.comfyJSONPath = this.resolve(this.rootPath, asRelativePath('schema/nodes.json'))
+        this.comfyJSONPath = this.resolve(this.rootPath, asRelativePath('schema/object_info.json'))
         this.embeddingsPath = this.resolve(this.rootPath, asRelativePath('schema/embeddings.json'))
         this.nodesTSPath = this.resolve(this.rootPath, asRelativePath('schema/global.d.ts'))
         this.outputFolderPath = this.cacheFolderPath // this.resolve(this.cacheFolderPath, asRelativePath('outputs'))
@@ -453,105 +453,83 @@ export class STATE {
 
     schemaRetrievalLogs: string[] = []
     /** retrieve the comfy spec from the schema*/
-    fetchAndUdpateSchema = async (): Promise<ComfySchemaJSON> => {
+    fetchAndUdpateSchema = async (): Promise<void> => {
         // 1. fetch schema$
-        let schema$: ComfySchemaJSON
+        let object_info_json: ComfySchemaJSON = this.schema.data.spec
+
         this.schemaRetrievalLogs.splice(0, this.schemaRetrievalLogs.length)
-        const progress = (...args: any[]) => {
+        const addLog = (...args: any[]) => {
             this.schemaRetrievalLogs.push(args.join(' '))
             console.info('[🐱] CONFY:', ...args)
         }
         try {
             // 1 ------------------------------------
+            // download object_info
             const headers: HeadersInit = { 'Content-Type': 'application/json' }
-            const debugObjectInfosPath = 'schema/debug.json'
-            const hasDebugObjectInfosJSON = existsSync(debugObjectInfosPath)
-            if (hasDebugObjectInfosJSON) {
-                progress('[.... step 1/4] using debug comfyJSONPath')
-                const debugObjectInfosStr = readFileSync(debugObjectInfosPath, 'utf8')
-                const debugObjectInfosJSON = JSON.parse(debugObjectInfosStr)
-                schema$ = debugObjectInfosJSON
-                progress('[*... step 1/4] schema fetched')
-                const res = ComfySchemaJSON_zod.safeParse(schema$) //{ KSampler: schema$['KSampler'] })
-                if (res.success) {
-                    console.log('🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢 valid schema')
-                } else {
-                    console.log('🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 invalid schema')
-                    const DEBUG_small = JSON.stringify(res.error.flatten(), null, 4)
-                    writeFileSync('schema/debug.errors.json', DEBUG_small, 'utf-8')
-                    const DEBUG_full = JSON.stringify(res.error, null, 4)
-                    writeFileSync('schema/debug.errors-full.json', DEBUG_full, 'utf-8')
-                    console.log(res.error.flatten())
-                }
-            } else {
-                const object_info_url = `${this.getServerHostHTTP()}/object_info`
-                progress(`[.... step 1/4] fetching schema from ${object_info_url} ...`)
-                const object_info_res = await fetch(object_info_url, { method: 'GET', headers })
-                const object_info_json = (await object_info_res.json()) as { [key: string]: any }
-                writeFileSync(this.comfyJSONPath, JSON.stringify(object_info_json), 'utf-8')
-                const knownNodeNames = Object.keys(object_info_json)
-                progress(`[.... step 1/4] found ${knownNodeNames.length} nodes`) // (${JSON.stringify(keys)})
-                schema$ = object_info_json as any
-                progress('[*... step 1/4] schema fetched')
-            }
+            const object_info_url = `${this.getServerHostHTTP()}/object_info`
+            const object_info_res = await fetch(object_info_url, { method: 'GET', headers })
+            const object_info_json = (await object_info_res.json()) as { [key: string]: any }
+            const object_info_str = readableStringify(object_info_json, 4)
+            writeFileSync(this.comfyJSONPath, object_info_str, 'utf-8')
 
-            // 1 ------------------------------------
+            // 2 ------------------------------------
+            // download embeddigns
             const embeddings_url = `${this.getServerHostHTTP()}/embeddings`
-            progress(`[.... step 1/4] fetching embeddings from ${embeddings_url} ...`)
             const embeddings_res = await fetch(embeddings_url, { method: 'GET', headers })
             const embeddings_json = (await embeddings_res.json()) as EmbeddingName[]
             writeFileSync(this.embeddingsPath, JSON.stringify(embeddings_json), 'utf-8')
-            // const keys2 = Object.keys(data2)
-            // console.info(`[.... step 1/4] found ${keys2.length} nodes`) // (${JSON.stringify(keys)})
-            // schema$ = data as any
-            progress(`${embeddings_json.length} embedings found:`, { embeddings_json })
-            progress('[*... step x/4] embeddings fetched')
-
-            // 2 ------------------------------------
-            // http:
-            progress('[*... step 2/4] updating schema...')
-            const comfyJSONStr = readableStringify(schema$, 3)
-            const comfyJSONBuffer = Buffer.from(comfyJSONStr, 'utf8')
-            writeFileSync(this.comfyJSONPath, comfyJSONBuffer, 'utf-8')
-            this.schema.update({ spec: schema$, embeddings: embeddings_json })
-
-            const numNodesInSource = Object.keys(schema$).length
-            const numNodesInSchema = this.schema.nodes.length
-            if (numNodesInSource !== numNodesInSchema) {
-                console.log(`🔴 ${numNodesInSource} != ${numNodesInSchema}`)
-            }
-            progress('[**.. step 2/4] schema updated')
 
             // 3 ------------------------------------
-            progress('[**.. step 3/4] udpatin schema code...')
-            const comfySchemaTs = this.schema.codegenDTS()
-            progress('[***. step 3/4] schema code updated ')
+            // update schema
+            this.schema.update({ spec: object_info_json, embeddings: embeddings_json })
+            this.schema.RUN_BASIC_CHECKS()
 
-            // 4 ------------------------------------
-            progress('[**** step 4/4] saving schema')
-            // const comfySchemaBuff = Buffer.from(comfySchemaTs, 'utf8')
-            const comfySchemaTsFormatted = comfySchemaTs
-            // console.log(this.nodesTSPath, comfySchemaTsFormatted)
-            writeFileSync(this.nodesTSPath, comfySchemaTsFormatted, 'utf-8')
+            // 3 ------------------------------------
+            // regen sdk
+            const comfySchemaTs = this.schema.codegenDTS()
+            writeFileSync(this.nodesTSPath, comfySchemaTs, 'utf-8')
+
+            // debug for rvion
             if (this.githubUsername === 'rvion') {
-                writeFileSync('docs/ex/a.md', '```ts\n' + comfySchemaTsFormatted + '\n```\n', 'utf-8')
-                writeFileSync('docs/ex/b.md', '```json\n' + comfyJSONBuffer + '\n```\n', 'utf-8')
+                writeFileSync('docs/ex/a.md', '```ts\n' + comfySchemaTs + '\n```\n', 'utf-8')
+                writeFileSync('docs/ex/b.md', '```json\n' + object_info_str + '\n```\n', 'utf-8')
             }
-            progress('[**** step 4/4] 🟢 schema updated')
         } catch (error) {
             console.error(error)
             console.error('🔴 FAILURE TO GENERATE nodes.d.ts', extractErrorMessage(error))
-            console.error('🐰', extractErrorMessage(error))
-            console.error('🦊', 'Failed to fetch ObjectInfos from Comfy.')
-            schema$ = {}
+
+            const schemaExists = existsSync(this.nodesTSPath)
+            if (!schemaExists) {
+                const comfySchemaTs = this.schema.codegenDTS()
+                writeFileSync(this.nodesTSPath, comfySchemaTs, 'utf-8')
+            }
         }
+
         this.schemaReady.resolve(true)
 
         // this.objectInfoFile.update(schema$)
         // this.comfySDKFile.updateFromCodegen(comfySdkCode)
         // this.comfySDKFile.syncWithDiskFile()
 
-        return schema$
+        // const debugObjectInfosPath = 'schema/debug.json'
+        // const hasDebugObjectInfosJSON = existsSync(debugObjectInfosPath)
+        // if (hasDebugObjectInfosJSON) {
+        //     const debugObjectInfosStr = readFileSync(debugObjectInfosPath, 'utf8')
+        //     const debugObjectInfosJSON = JSON.parse(debugObjectInfosStr)
+        //     schema$ = debugObjectInfosJSON
+        //     const res = ComfySchemaJSON_zod.safeParse(schema$) //{ KSampler: schema$['KSampler'] })
+        //     if (res.success) {
+        //         console.log('🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢 valid schema')
+        //     } else {
+        //         console.log('🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 invalid schema')
+        //         const DEBUG_small = JSON.stringify(res.error.flatten(), null, 4)
+        //         writeFileSync('schema/debug.errors.json', DEBUG_small, 'utf-8')
+        //         const DEBUG_full = JSON.stringify(res.error, null, 4)
+        //         writeFileSync('schema/debug.errors-full.json', DEBUG_full, 'utf-8')
+        //         console.log(res.error.flatten())
+        //     }
+        // } else {
+        // }
     }
 
     get schemaStatusEmoji() {
