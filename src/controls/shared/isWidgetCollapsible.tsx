@@ -7,6 +7,8 @@ export function isWidgetCollapsible(req: R.Widget): boolean {
     if (req instanceof KLS.Widget_group) return true
     if (req instanceof KLS.Widget_groupOpt) return true
     if (req instanceof KLS.Widget_list) return true
+    if (req instanceof KLS.Widget_choice) return true
+    if (req instanceof KLS.Widget_choices) return true
     if (req instanceof KLS.Widget_listExt) return true
     if (req instanceof KLS.Widget_str && req.input.textarea) return true
     if (req instanceof KLS.Widget_prompt) return true
