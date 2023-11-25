@@ -68,178 +68,26 @@ For all, art awakes.
 
 </div>
 
-<!--
 
-## 1.1. Screenshots
+# 1. Installation
 
-_image 1 - screenshot showcasing the **Framed Avatar Maker** app_
-![](docs/static/img/screenshots/2023-11-14-22-33-15.png)
+1.  Requirements:
+    1.  [NodeJS](https://nodejs.org/en/download) (18 or higher)
+    2.  [ComfyUI](https://github.com/comfyanonymous/ComfyUI) (local, remote, or cloud)
+    3.  [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) (to install via git)
 
-Cushy Apps are
-- Easy to **run**, **create**, **share**.
-- **interactive** and **real-time** by design.
-- made to be used by **everyone**, from non-programmers to advanced users.
+2. run those commands in a terminal (< 10 seconds to complete):
 
-## 1.2. The Cushy library
-
-
-**CushyStudio** comes packaged with core built-in **Cushy Apps** to get you started right away. But you can also create your own apps, or find more apps in the **Cushy Library**.
-
-The **Cushy Library** is a collection of **Cushy Apps** made by the community. It is a place to share and discover new **Cushy Apps**. You can download **Cushy Apps** from the **Cushy Library** and use them in **CushyStudio**. You can also publish your own **Cushy Apps** to the **Cushy Library**.
-
-_image 2 - Built-in **App library**_
-![](docs/static/img/screenshots/2023-11-15-00-16-10.png)
-
-
-## 1.3. Creator tools
-
-while **CushyStudio** can be used with a simple two-pane layout `[App Form | App Outputs]`, it also comes packed with features so you feel right at home for more complex needs. It features a powerful dock system to organize your workspace, and a tab system to organize your content. It also comes with a built-in image editor, tools to compile images, etc. For ComfyUI users, it includes the full ComfyUI interface, extended with custom panels to make it easy to find and use your custom nodes.
-
-_image 2 - showcase multiple kinds of panels to illustrate that CushyStudio comes Battery-inncluded_
-![](docs/static/img/screenshots/2023-11-15-00-41-10.png)
-
-## 1.4. The Cushy WebApp
-
-It doesn't exist yet, but it will be a simple companion web app made to allow you to share with one click any **Cushy Apps** with anyone, so they can run them even on mobile devices using cloud GPU. If you want your app to go viral, just publish your app, post the link on your preferred social platform, and let anyone use cloud GPUs to run your app. No setup needed, no installation, no hassle. Just one click and you're in.
-
--->
-
-
-<!-- <div src='docs/static/img/screenshots/2023-10-18-22-13-26.png' style='width:49%'>
-test</div>  -->
-
-
-<!-- ![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/y/rvion/cushystudio) -->
-<!-- [![CLA assistant](https://cla-assistant.io/readme/badge/rvion/CushyStudio)](https://cla-assistant.io/rvion/CushyStudio) -->
-<!-- [![](https://dcbadge.vercel.app/api/server/GfAN6hF2ad?style=flat)](https://discord.gg/GfAN6hF2ad) -->
-<!-- [![](https://img.shields.io/twitter/follow/_rvion?style=flat&logo=twitter)](https://twitter.com/_rvion) -->
-
-<!--
-# 1. Table of contents
-
-- [1. Table of contents](#1-table-of-contents)
-- [2. Quickstart Guide](#2-quickstart-guide)
-  - [2.1. Installation](#21-installation)
-  - [2.2. Starting](#22-starting)
-  - [2.3. Updating](#23-updating)
-  - [2.4. Core concepts](#24-core-concepts)
-  - [2.5. Moving around](#25-moving-around)
-  - [2.6. Use built-in cards](#26-use-built-in-cards)
-  - [2.7. Install custom cards](#27-install-custom-cards)
-  - [2.8. Create custom cards](#28-create-custom-cards)
-- [3. Features](#3-features)
-  - [3.1. First-class ComfyUI support](#31-first-class-comfyui-support)
-    - [3.1.1. Work with **Local**, **Managed**, **Remote**, and **Cloud** ComfyUI instances](#311-work-with-local-managed-remote-and-cloud-comfyui-instances)
-    - [3.1.2. Parallelize load across multiple ComfyUI instances](#312-parallelize-load-across-multiple-comfyui-instances)
-    - [3.1.3. Support ComfyUI workflow natively](#313-support-comfyui-workflow-natively)
-  - [3.2. Real-time enabled](#32-real-time-enabled)
-  - [3.3. CivitAI integration](#33-civitai-integration)
-  - [3.4. Built-in full-featured Image Editor](#34-built-in-full-featured-image-editor)
-  - [3.5. Easy to extend](#35-easy-to-extend)
-  - [3.6. Create your own Cards to streamline any image or video production](#36-create-your-own-cards-to-streamline-any-image-or-video-production)
-- [4. Quickstart Guide For Action Creators](#4-quickstart-guide-for-action-creators)
-  - [4.1. How does `CushySudio` work ?](#41-how-does-cushysudio-work-)
-  - [4.2. What is an `Action`?](#42-what-is-an-action)
-  - [4.3. What is an `Action`?](#43-what-is-an-action)
-  - [4.4. Create your first deck](#44-create-your-first-deck)
-  - [4.5. `Prefabs` so you don't repeat yourself](#45-prefabs-so-you-dont-repeat-yourself)
-    - [4.5.1. `Prefabs` are just functions.](#451-prefabs-are-just-functions)
-    - [4.5.2. Naming Conventions](#452-naming-conventions)
-    - [4.5.3. Use a UI Prefab](#453-use-a-ui-prefab)
-    - [4.5.4. Execution Prefab](#454-execution-prefab)
-  - [4.6. Various Function notations](#46-various-function-notations)
-    - [4.6.1. The special `() => ({ })` notation to return objects in a single line](#461-the-special-----notation-to-return-objects-in-a-single-line)
-  - [4.7. Publish your Deck](#47-publish-your-deck)
-- [5. Frequently Asked Questions:](#5-frequently-asked-questions)
-  - [5.1. Q: Will **CushyStudio** remain open source and free?](#51-q-will-cushystudio-remain-open-source-and-free)
-  - [5.2. Q: Why the AGPL and not the GPLV3?](#52-q-why-the-agpl-and-not-the-gplv3)
-  - [5.3. Q: Any plans for a paid version of **CushyStudio**?](#53-q-any-plans-for-a-paid-version-of-cushystudio)
-- [6. Theming](#6-theming)
- -->
-
-<!-- ---------------------------------------------- -->
-<!--
-
-## 2.1. **Apps** are simple to use.
-
--   ✅ Non-technical **_Card_** interfaces
-
-    -   Per use-case UI
-    -   Simple widgets
-
--   🚂 Fast previews, real-time feedback
-
-    -   Interactive at its core
-    -   Real-time **Apps** with continuous generations
-
--   🖌️ Built-in commodities
-
-    -   `Image` and `Mask` editors
-    -   Modular Layout to stay organized and focused
-
-
-## 2.2. **Apps** are pleasant to make
-
--   🚀 CushyStudio comes with makes it easy to build actions
-
-    -   Pre-configured ecosystem: NO SETUP NEEDED
-    -   Built-in **_ComfyUI_** to **_Action_** converter
-    -   Graphical Action builder `(soon™️)`
-    -   A full **_TypeScript Action SDK_** + Compiler to go further
-
--   🧑‍💻 Powerful fully-type-safe typescript SDK
-    -   A built-in standard library made to quickly build your dream workflow
-    -   Use lambda to get completion only for the node that produces the value needed
-    -   Every single value/enum is typed
-
--   🧠 **_ComfyUI_** engine At its core
-
-    -   All custom nodes are supported
-    -   Custom interface to explore and play with nodes
-    -   Deep integration with **_ComfyUI Graph_**
-    -   A well-thought interface to explore and play with nodes
-
--   💪 From 0 to 100 in no time
-
-    -   Modularize, reuse, and grow your toolset
-    -   Share your deck/cards with the world
-
-
-## 2.3. **Apps** are easy to share
-
--  📦 One-click create your custom `Deck`
-
-    -   One-click open a fully pre-configured `vscode` workspace ready to go
-    -   No setup needed: injected globals so you can focus on your card logic
-    -   No dependencies
-
- -->
-
-
-<!-- ![](docs/static/img/screenshots/2023-11-01-19-03-12.webp) -->
-
+    ```sh
+    git clone https://github.com/rvion/CushyStudio --depth 1
+    cd CushyStudio
+    npm install
+    npm start
+    ```
 
 # 2. Quickstart Guide
 
-## 2.1. Installation
-
-During `Beta`, **CushyStudio** install is done manually with git.
-
-Ensure you have the following installed:
-
--   [NodeJS](https://nodejs.org/en/download) (18 or higher)
--   [ComfyUI](https://github.com/comfyanonymous/ComfyUI)
--   [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
-
-Then, to install **CushyStudio**, run these commands in a terminal:
-
-```sh
-git clone https://github.com/rvion/CushyStudio --depth 1
-cd CushyStudio
-npm install
-```
-
-## 2.2. Starting
+## 2.1. Starting
 
 You can start **CushyStudio** in two ways:
 
@@ -247,45 +95,32 @@ You can start **CushyStudio** in two ways:
 - By running the `2_run.sh` (Mac, Linux) or `2_run.bat` (Windows)
 
 
-## 2.3. Updating
+## 2.2. Updating
 
-You can update **CushyStudio** in 3 ways:
+You can update **CushyStudio** in two ways:
 
-- 1. Using the update button in the top navbar
-- 2. By running the `1_update.sh` (mac, Linux) or `1_update.sh` (window)
-- 3. By running in a terminal:
-  ```
-  git pull
-  npm install
-  ```
+- 2. Safest: Close Cushy, and run the `1_update.sh` (mac, Linux) or `1_update.bat` (window)
+- 1. Fastest: Click the update button in the top navbar (may not work when dependencies changes)
 
-⚠️ Some updates will require you to close **CushyStudio** first, for `npm install` to work properly.
-If the in-app (1) update fails, try to close Cushy and run other update methods (2, 3)
 
-<!-- ## 2.4. See it in action -->
-
-## 2.4. Core concepts
-
-- `Library`
-
-## 2.5. Moving around
+## 2.3. Moving around
 
 - **CushyStudio** uses a powerful **dock** system to organize your workspace.
 - Every panel can be moved around, and even detached from the main window.
 
 The top bar
 
-## 2.6. Use built-in cards
+## 2.4. Use built-in cards
 
 - Use the `Library` panel to select the `CushyStudio/prompt` card.
 - Pick a model and click `run` to see it in action
 
-## 2.7. Install custom cards
+## 2.5. Install custom cards
 
 - Open the `Library` panel to select the `CushyStudio/prompt` card.
 
 
-## 2.8. Create custom cards
+## 2.6. Create custom cards
 
 # 3. Features
 
