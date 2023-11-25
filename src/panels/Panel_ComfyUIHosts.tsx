@@ -138,6 +138,11 @@ export const HostUI = observer(function MachineUI_(p: { host: ComfyHostDef }) {
                     <input
                         tw='input input-bordered input-sm w-full' //
                         value={host.port}
+                        onChange={(ev) => {
+                            const next = ev.target.value
+                            host.port = parseInt(next, 10)
+                            st.configFile.save()
+                        }}
                     ></input>
                 </div>
 
