@@ -113,6 +113,7 @@ You can update **CushyStudio** in two ways:
 
 - **CushyStudio** uses a powerful **dock** system to organize your workspace.
 - Every panel can be moved around, and even detached from the main window.
+- Use ctrl+w or cmd+w to close the current tab
 
 ### 2.3.1. The top bar
 
