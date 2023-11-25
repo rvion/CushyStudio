@@ -64,7 +64,7 @@ export const AppEntryUI = observer(function AppEntryUI_(p: { app: CardFile }) {
                 ev.preventDefault()
                 ev.stopPropagation()
                 const actionPath = app.relPath
-                st.layout.addCard(actionPath)
+                st.layout.openApp(actionPath)
             }}
         >
             <div tw='pl-3'>

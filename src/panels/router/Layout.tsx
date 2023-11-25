@@ -121,11 +121,11 @@ export class CushyLayoutManager {
     })
 
     nextPaintIDx = 0
-    addCard = (actionPath: AppPath) => {
+    openApp = (actionPath: AppPath) => {
         const card = this.st.library.getCard(actionPath)
         if (card == null) return null /* 🔴 add popup somewhere */
         const draft = card.getLastDraft()
-        this.GO_TO('Draft', { draftID: draft?.id ?? '❌' })
+        this.GO_TO('Draft', { draftID: draft?.id ?? '❌' }, 'LEFT_PANE_TABSET')
         // const icon = af?.illustrationPathWithFileProtocol
         // this._AddWithProps(Widget.Draft, `/action/${actionPath}`, { title: actionPath, actionPath, icon })
     }
