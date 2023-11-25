@@ -9,6 +9,30 @@ Todo before release
 ☐ background image for config panel
 ☐ draft result are too wide by default / should open in bottom panel
 ☐ selectMenu
+
+Misc:
+    ☐ show different from current preset in color
+    ☐ surrounded by card for ju and tu
+    ☐ better marketplace without fetching stars and repo infos by adding some gen-marketplace-data
+    ☐ tree library menu by default
+    ☐ drafts
+    ☐ click on rich prompt should
+    ☐ fix the "run" button not being disabled when it should
+    ☐ finish autorun so it wait for nothing to be running an action change
+    ☐ primitive to show that a custom node is required
+    ☐ proper model picker action
+    ☐ cache action compilation
+    ☐ image loader (local files by path)
+    ☐ permutations node (possibly hard, possibly easy with lists)
+    ☐ code builder:
+    ☐ image drop anywhere in the app
+    ☐ select nodes  => see the corresponding code in realtime
+    ☐ have a better auto-UI generated
+    ☐ new primitive to add all the primitive inputs instead of having super long names,
+    ☐ optimize all images
+    ☐ make the run button red if cushy is not running
+    ☐ option to reduce image size
+
 ✔ open in correct panels @done(23-11-25 14:23)
 ✔ have official layout show on first launch even if no comfyUI found @done(23-11-24 22:39)
 ✔ auto-open all default 5/6 built-in apps @done(23-11-24 22:34)
@@ -19,36 +43,14 @@ Todo before release
 ✔ regional prompt should allow to change color @done(23-11-23 21:11)
 ✔ ensure we don't download github stars anymore @done(23-11-24 12:20)
 
-Misc:
-    ☐ show different from current preset in color
-    ☐ surrounded by card for ju and tu
-    ☐ better marketplace without fetching stars and repo infos by adding some gen-marketplace-data
-    ☐ tree library menu by default
-    ☐ drafts
-    ✔ break node in rich prompt @done(23-11-11 09:57)
-    ☐ click on rich prompt should
-    ✔ properly re-focus root on any blur (find some code I previously wrote for that) @done(23-11-11 11:20)
-    ☐ fix the "run" button not being disabled when it should
-    ☐ finish autorun so it wait for nothing to be running an action change
-    ☐ primitive to show that a custom node is required
-    ✔ fix remaining errors in the codebase @done(23-11-11 11:18)
-    ☐ proper model picker action
-    ✔ proper size picker action @done(23-11-20 03:18)
-    ☐ cache action compilation
-    ☐ image loader (local files by path)
-    ☐ permutations node (possibly hard, possibly easy with lists)
-    ☐ code builder:
-    ☐ image drop anywhere in the app
-    ☐ select nodes  => see the corresponding code in realtime
-    ☐ have a better auto-UI generated
-    ☐ new primitive to add all the primitive inputs instead of having super long names,
-    ✔ no git init when creating actions @done(23-11-10 20:21)
-    ✔ faster clone @done(23-11-10 20:21)
-    ☐ optimize all images
-    ✔ add squoosh images @done(23-11-20 03:18)
-    ☐ make the run button red if cushy is not running
-    ✔ error messages @done(23-11-20 03:18)
-    ☐ option to reduce image size
+✔ break node in rich prompt @done(23-11-11 09:57)
+✔ properly re-focus root on any blur (find some code I previously wrote for that) @done(23-11-11 11:20)
+✔ fix remaining errors in the codebase @done(23-11-11 11:18)
+✔ proper size picker action @done(23-11-20 03:18)
+✔ no git init when creating actions @done(23-11-10 20:21)
+✔ faster clone @done(23-11-10 20:21)
+✔ add squoosh images @done(23-11-20 03:18)
+✔ error messages @done(23-11-20 03:18)
 
 ✔ center preview @done(23-11-08 20:55)
 ✔ better latent preview @done(23-11-01 13:15)

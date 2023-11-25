@@ -9,6 +9,10 @@
 <img height="21"  alt="Activity"     src="https://img.shields.io/github/commit-activity/y/rvion/cushystudio" />
 <!-- <img height="21"  alt="Sponsors"     src="https://img.shields.io/github/sponsors/rvion" /> -->
 
+
+_🔶 NOTICE: CushyStudio is still in development. It updates and breaks often. We are working hard to make a stable version. Current Focus is fixing the lack of variosu error message related to missing custom ComfyUI nodes 🔶_
+
+
 <br />
 <a href="https://discord.gg/GfAN6hF2ad">
     <img height="21" alt="Join our Discord" src="https://dcbadge.vercel.app/api/server/GfAN6hF2ad?style=flat">
