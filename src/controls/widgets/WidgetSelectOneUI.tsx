@@ -10,7 +10,10 @@ export const WidgetSelectOneUI = observer(function WidgetSelectOneUI_<T extends 
     return (
         <SelectUI<T>
             size='sm'
-            getLabelText={(t) => t.label ?? t.id}
+            getLabelText={(t) => {
+                const def = typeof (t as any).type === 'string' ? (t as any).type : '<no label>'
+                return t.label ?? t.id ?? def
+            }}
             options={req.choices}
             value={() => value}
             onChange={(selectOption) => {
