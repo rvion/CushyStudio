@@ -7,20 +7,17 @@ import { CardFile } from 'src/cards/CardFile'
 import { GithubUserUI } from 'src/cards/GithubAvatarUI'
 import { CardIllustrationUI } from 'src/cards/fancycard/AppIllustrationUI'
 import { DraftID, DraftL } from 'src/models/Draft'
-import { Button, Joined, Loader, Message } from 'src/rsuite/shims'
 import { Dropdown, MenuItem } from 'src/rsuite/Dropdown'
+import { PhoneWrapperUI } from 'src/rsuite/PhoneWrapperUI'
+import { Button, Joined, Loader, Message } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
 import { openInVSCode } from 'src/utils/electron/openInVsCode'
 import { stringifyUnknown } from 'src/utils/formatters/stringifyUnknown'
 import { isError } from 'src/utils/misc/isError'
-import { TabUI } from '../app/layout/TabUI'
 import { WidgetUI } from '../controls/widgets/WidgetUI'
 import { ResultWrapperUI } from '../widgets/misc/ResultWrapperUI'
-import { JSONHighlightedCodeUI, TypescriptHighlightedCodeUI } from '../widgets/misc/TypescriptHighlightedCodeUI'
 import { ScrollablePaneUI } from '../widgets/misc/scrollableArea'
 import { draftContext } from '../widgets/misc/useDraft'
-import { JsonViewUI } from 'src/widgets/workspace/JsonViewUI'
-import { PhoneWrapperUI } from 'src/rsuite/PhoneWrapperUI'
 
 export const Panel_Draft = observer(function Panel_Draft_(p: { draftID: DraftID }) {
     // 1. get draft
@@ -121,18 +118,18 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
 export const RunOrAutorunUI = observer(function RunOrAutorunUI_(p: { className?: string; draft: DraftL }) {
     const draft = p.draft
     return (
-        <div tw='flex join' className={p.className}>
+        <div tw='flex join virtualBorder' className={p.className}>
             <Button
                 //
                 tw='btn-sm self-start join-item btn-neutral'
-                icon={draft.shouldAutoStart ? <Loader /> : <span className='material-symbols-outlined'>autorenew</span>}
+                icon={draft.shouldAutoStart ? <Loader /> : <span className='material-symbols-outlined'>repeat</span>}
                 // appearance='primary'
                 active={draft.shouldAutoStart}
                 color={draft.shouldAutoStart ? 'green' : undefined}
                 onClick={() => draft.setAutostart(!draft.shouldAutoStart)}
                 // size={size2}
             >
-                {/* Auto */}
+                Auto
             </Button>
             <Button
                 tw='btn-sm join-item btn-primary'
@@ -158,9 +155,9 @@ export const CardActionsMenuUI = observer(function CardActionsMenuUI_(p: { card:
     const st = useSt()
     return (
         <Dropdown
-            tw={[p.className]}
+            tw={[p.className, 'bg-base-100']}
             startIcon={<span className='material-symbols-outlined'>edit</span>}
-            title='Menu'
+            title=''
             appearance='subtle'
             size={size1}
         >
@@ -202,27 +199,26 @@ export const FormLayoutPrefsUI = observer(function FormLayoutPrefsUI_(p: { class
             // startIcon={<span className='material-symbols-outlined'>format_size</span>}
         >
             <MenuItem
-                icon={<span className='material-symbols-outlined'>photo_size_select_small</span>}
-                onClick={() => (st.preferedFormLayout = 'dense')}
-                active={layout == 'dense'}
-            >
-                Dense
-            </MenuItem>
-
-            <MenuItem
                 icon={<span className='material-symbols-outlined'>photo_size_select_large</span>}
                 onClick={() => (st.preferedFormLayout = 'auto')}
                 active={layout == 'auto'}
             >
-                Auto
+                Auto Layout
+                <div tw='badge badge-neutral'>recommanded</div>
             </MenuItem>
-
+            <MenuItem
+                icon={<span className='material-symbols-outlined'>photo_size_select_small</span>}
+                onClick={() => (st.preferedFormLayout = 'dense')}
+                active={layout == 'dense'}
+            >
+                Dense Layout
+            </MenuItem>
             <MenuItem
                 icon={<span className='material-symbols-outlined'>photo_size_select_actual</span>}
                 onClick={() => (st.preferedFormLayout = 'mobile')}
                 active={layout == 'mobile'}
             >
-                Mobile
+                Mobile Layout
             </MenuItem>
             <hr />
             <MenuItem
@@ -298,33 +294,27 @@ export const DraftHeaderUI = observer(function DraftHeaderUI_(p: { draft: DraftL
     const { app, draft } = p
     return (
         <div tw='flex p-1 bg-base-300 border-b border-b-base-300'>
-            <div tw='flex gap-0.5 flex-grow relative text-base-content'>
-                <CardIllustrationUI card={app} size='4rem' tw='p-1' />
+            <div tw='flex gap-0.5 flex-grow relative text-base-content py-1'>
+                <CardIllustrationUI card={app} size='4rem' />
                 <div tw='px-1 flex-grow'>
-                    <b
+                    <div
                         //
                         tw='font-bold overflow-hidden overflow-ellipsis whitespace-nowrap'
-                        style={{ fontSize: '1.6rem' }}
+                        style={{
+                            height: '2rem',
+                            fontSize: '1.4rem',
+                        }}
                     >
                         {app.displayName}
-                    </b>
-                    <div className='flex items-center gap-0 5'>
-                        {Boolean(app.authorDefinedManifest) ? (
-                            <GithubUserUI //
-                                // showName
-                                tw='text-gray-500'
-                                // prefix='by'
-                                size='1.5rem'
-                                username={app.deck.githubUserName}
-                            />
-                        ) : null}
-                        <div tw='join'>
-                            <FormLayoutPrefsUI tw='join-item' />
+                    </div>
+                    <div style={{ height: '2rem' }} className='flex items-center gap-2 justify-between text-sm'>
+                        <Joined>
                             <CardActionsMenuUI tw='join-item' card={app} />
-                        </div>
+                            <FormLayoutPrefsUI tw='join-item' />
+                        </Joined>
+                        <RunOrAutorunUI draft={draft} />
                     </div>
                 </div>
-                <RunOrAutorunUI tw='right-0 absolute' draft={draft} />
             </div>
         </div>
     )
