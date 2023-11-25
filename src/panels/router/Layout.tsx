@@ -23,6 +23,11 @@ type PerspectiveDataForSelect = {
     value: string
 }
 
+type LEFT_PANE_TABSET_T = 'LEFT_PANE_TABSET'
+const LEFT_PANE_TABSET_ID: LEFT_PANE_TABSET_T = 'LEFT_PANE_TABSET'
+type RIGHT_PANE_TABSET_T = 'RIGHT_PANE_TABSET'
+const RIGHT_PANE_TABSET_ID: RIGHT_PANE_TABSET_T = 'RIGHT_PANE_TABSET'
+
 export const exhaust = (x: never) => x
 const memoryRefByUniqueID = new WeakMap<object, string>()
 export const uniqueIDByMemoryRef = (x: object): string => {
@@ -187,17 +192,32 @@ export class CushyLayoutManager {
     //     )
     // }
 
+    GO_TO_FULL = <const K extends Panel>(component: K, props: PropsOf<Panels[K]['widget']>) => {
+        if (
+            this.fullPageComp == null || //
+            this.fullPageComp.panel !== component
+        ) {
+            this.fullPageComp = { props: props, panel: component }
+        } else {
+            this.fullPageComp = null
+        }
+    }
+
     GO_TO = <const K extends Panel>(
         component: K,
         props: PropsOf<Panels[K]['widget']>,
-        where: 'current' | 'main' = 'main',
+        where: 'full' | 'current' | LEFT_PANE_TABSET_T | RIGHT_PANE_TABSET_T = RIGHT_PANE_TABSET_ID,
     ): Maybe<FL.Node> => {
+        if (where === 'full') {
+            this.GO_TO_FULL(component, props)
+            return null
+        }
+
         // 1. ensure layout is present
         const currentLayout = this.layoutRef.current
         if (currentLayout == null) return void console.log('❌ no currentLayout')
 
         // 2. get previous tab
-        // const tabID = `/${component}/${stableStringify(props)}`
         const tabID = `/${component}/${hashJSONObject(props ?? {})}`
         let prevTab: FL.TabNode | undefined
         prevTab = this.model.getNodeById(tabID) as FL.TabNode // 🔴 UNSAFE ?
@@ -206,7 +226,11 @@ export class CushyLayoutManager {
         // 3. create tab if not prev type
         const { icon, title } = panels[component].header(props as any)
         if (prevTab == null) {
-            currentLayout.addTabToTabSet('LEFT_PANE_TABSET', {
+            const tabsetIDToAddThePanelTo =
+                where === 'current' //
+                    ? this.currentTabSet?.getId() ?? LEFT_PANE_TABSET_ID
+                    : where
+            currentLayout.addTabToTabSet(tabsetIDToAddThePanelTo, {
                 component: component,
                 id: tabID,
                 icon: icon,
@@ -219,6 +243,7 @@ export class CushyLayoutManager {
             this.model.doAction(Actions.updateNodeAttributes(tabID, { config: props }))
             this.model.doAction(Actions.selectTab(tabID))
         }
+
         // 4. merge props
         this.model.doAction(Actions.updateNodeAttributes(tabID, props))
         return prevTab
@@ -288,7 +313,7 @@ export class CushyLayoutManager {
                         children: [
                             {
                                 type: 'tabset',
-                                id: 'LEFT_PANE_TABSET',
+                                id: LEFT_PANE_TABSET_ID,
                                 minWidth: 150,
                                 minHeight: 150,
                                 width: 600,
@@ -316,8 +341,9 @@ export class CushyLayoutManager {
                         children: [
                             {
                                 type: 'tabset',
-                                id: 'RIGHT_PANE_TABSET',
+                                id: RIGHT_PANE_TABSET_ID,
                                 enableClose: false,
+                                enableDeleteWhenEmpty: false,
                                 minWidth: 150,
                                 minHeight: 150,
                                 children: [

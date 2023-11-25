@@ -9,7 +9,7 @@ import { searchMatches } from 'src/utils/misc/searchMatches'
 import { createPortal } from 'react-dom'
 
 type PP<T> = {
-    label: string
+    label?: string
     onChange: null | ((next: T, self: AutoCompleteSelectState<T>) => void)
     getLabelText: (t: T) => string
     getLabelUI?: (t: T) => React.ReactNode

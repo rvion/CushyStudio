@@ -52,6 +52,7 @@ export const MenuItem = observer(function DropdownItem_(p: {
             }}
             tw={[
                 //
+                '_MenuItem',
                 active && 'bg-accent text-accent-content',
                 disabled && 'text-neutral-content',
             ]}
