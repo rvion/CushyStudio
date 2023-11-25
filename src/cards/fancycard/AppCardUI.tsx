@@ -2,7 +2,7 @@ import { observer } from 'mobx-react-lite'
 
 import { Tag } from 'src/rsuite/shims'
 import { CardFile } from '../CardFile'
-import { Package } from '../Deck'
+import { Package } from '../Pkg'
 
 import { ActionFavoriteBtnUI } from '../CardPicker2UI'
 import { GithubUserUI } from '../GithubAvatarUI'

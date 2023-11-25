@@ -1,4 +1,4 @@
-import type { Package } from './Deck'
+import type { Package } from './Pkg'
 
 import { observer } from 'mobx-react-lite'
 import { UpdateBtnUI } from 'src/updater/UpdateBtnUI'

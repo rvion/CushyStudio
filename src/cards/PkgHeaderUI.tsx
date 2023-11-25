@@ -1,4 +1,4 @@
-import type { Package } from './Deck'
+import type { Package } from './Pkg'
 
 import { observer } from 'mobx-react-lite'
 import { stringifyUnknown } from 'src/utils/formatters/stringifyUnknown'
@@ -7,7 +7,7 @@ import { RevealUI } from 'src/rsuite/RevealUI'
 import { exhaust } from 'src/utils/misc/ComfyUtils'
 import { ActionPackStatusUI } from './DeckStatusUI'
 
-export const DeckHeaderUI = observer(function ActionPackHeaderUI_(p: { pkg: Package }) {
+export const PkgHeaderUI = observer(function ActionPackHeaderUI_(p: { pkg: Package }) {
     const pkg = p.pkg
     return (
         <>
@@ -28,7 +28,7 @@ export const DeckHeaderUI = observer(function ActionPackHeaderUI_(p: { pkg: Pack
                             <div className='btn btn-sm btn-narrow text-base-content'>
                                 <span className='material-symbols-outlined opacity-50'>error</span>
                             </div>
-                            <DeckManifestErrorUI err={pkg.manifestError} />
+                            <PkgManifestErrorUI err={pkg.manifestError} />
                         </RevealUI>
                     )}
                     <ActionPackStatusUI tw='shrink-0' pack={pkg} />
@@ -38,7 +38,7 @@ export const DeckHeaderUI = observer(function ActionPackHeaderUI_(p: { pkg: Pack
     )
 })
 
-export const DeckManifestErrorUI = observer(function DeckManifestErrorUI_(p: { err: Maybe<ManifestError> }) {
+export const PkgManifestErrorUI = observer(function PkgManifestErrorUI_(p: { err: Maybe<ManifestError> }) {
     const err = p.err
     if (err == null) return null
     if (err.type === 'crash')

@@ -4,7 +4,7 @@ import { Button } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
 import { GithubUserUI } from 'src/cards/GithubAvatarUI'
 import { ErrorBoundaryFallback } from 'src/widgets/misc/ErrorBoundary'
-import { Package } from '../cards/Deck'
+import { Package } from '../cards/Pkg'
 import { ActionPackStatusUI } from '../cards/DeckStatusUI'
 // import { ActionPackStarsUI } from '../cards/DeckStarsUI'
 

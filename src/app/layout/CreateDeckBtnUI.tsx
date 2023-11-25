@@ -4,7 +4,7 @@ import { Button } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
 import { CreateDeckModalState } from './CreateDeckModalUI'
 import { GithubUsernameInputUI } from './GithubUsernameInputUI'
-import { PackageRelPath } from 'src/cards/Deck'
+import { PackageRelPath } from 'src/cards/Pkg'
 
 export const CreateDeckBtnUI = observer(function CreateDeckBtnUI_(p: {}) {
     const st = useSt()

@@ -1,23 +1,23 @@
 import type { CardFile } from 'src/cards/CardFile'
-import type { Package } from './Deck'
+import type { Package } from './Pkg'
 
 import { observer } from 'mobx-react-lite'
 import { Fragment } from 'react'
 import { useSt } from '../state/stateContext'
-import { DeckHeaderUI } from './DeckHeaderUI'
+import { PkgHeaderUI } from './PkgHeaderUI'
 import { CardIllustrationUI } from './fancycard/AppIllustrationUI'
 import { AppPath } from './CardPath'
 import { RevealUI } from 'src/rsuite/RevealUI'
 
 export const ActionPackUI = observer(function ActionPackUI_(p: { deck: Package }) {
-    const deck: Package = p.deck
+    const pkg: Package = p.deck
 
     return (
-        <div tw='flex-grow' key={deck.folderRel}>
-            <DeckHeaderUI pkg={deck} />
-            {deck.folded ? null : (
+        <div tw='flex-grow' key={pkg.folderRel}>
+            <PkgHeaderUI pkg={pkg} />
+            {pkg.folded ? null : (
                 <div tw='flex flex-col gap-0.5'>
-                    {deck.apps.map((af) => (
+                    {pkg.apps.map((af) => (
                         <AppEntryUI key={af.relPath} app={af} />
                     ))}
                 </div>
