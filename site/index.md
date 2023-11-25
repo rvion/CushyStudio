@@ -46,16 +46,33 @@ _🔶 NOTICE: CushyStudio is still in development. It updates and breaks often. 
 
 
 
----
+
+# Installation
+
+1.  Requirements:
+    1.  [NodeJS](https://nodejs.org/en/download) (18 or higher)
+    2.  [ComfyUI](https://github.com/comfyanonymous/ComfyUI) (local, remote, or cloud)
+    3.  [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) (to install via git)
+
+2. run those commands in a terminal (< 10 seconds to complete):
+
+    ```sh
+    git clone https://github.com/rvion/CushyStudio --depth 1
+    cd CushyStudio
+    npm install
+    npm start
+    ```
+
+# Screenshots
 
 _media 1: CushyStudio_
 
-![](docs/static/img/screenshots/2023-11-20-00-20-41.png)
+![](assets/images/2023-11-20-00-20-41.png)
 
 
 _media 2: CushyStudio gallery_
 
-![](docs/static/img/screenshots/2023-11-20-00-16-19.png)
+![](assets/images/2023-11-20-00-16-19.png)
 
 - a list of apps ready to be used
   - Apps with the `Cushy Action` label are native CushyApps using the CushyStudio SDK.
@@ -64,7 +81,7 @@ _media 2: CushyStudio gallery_
 
 _media 3: ComfyUI on steroids_
 
-![](docs/static/img/screenshots/2023-11-25-comfy-on-steroids.jpg)
+![](assets/images/2023-11-25-comfy-on-steroids.jpg)
 
 -----
 
@@ -84,21 +101,7 @@ For all, art awakes.
 
 _media 4: Sample Video (placeholder until real video)_
 
-https://github.com/rvion/CushyStudio/assets/2150990/776b00f5-687e-4043-8dac-34dfe7bd2184
-
-
-# 1. Installation
-
-1.  Requirements:
-    1.  [NodeJS](https://nodejs.org/en/download) (18 or higher)
-    2.  [ComfyUI](https://github.com/comfyanonymous/ComfyUI) (local, remote, or cloud)
-    3.  [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) (to install via git)
-
-2. run those commands in a terminal (< 10 seconds to complete):
-
-    ```sh
-    git clone https://github.com/rvion/CushyStudio --depth 1
-    cd CushyStudio
-    npm install
-    npm start
-    ```
+<video src="https://github.com/rvion/CushyStudio/assets/2150990/776b00f5-687e-4043-8dac-34dfe7bd2184"
+>
+<source src=''></source>
+</video>
