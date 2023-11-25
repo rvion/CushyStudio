@@ -59,19 +59,10 @@ body {
     --conditioning_style_model: #acdaac;
     --sampling: #ddcdb0;
     --image: pink;
-    /*  */
-    --yarl__carousel_padding_px: 0px;
-    --yarl__thumbnails_container_padding: 0px;
-    --yarl__thumbnails_thumbnail_gap: 0;
-    --yarl__thumbnails_thumbnail_width: 80px;
-    --yarl__thumbnails_thumbnail_height: 80px;
-    /* --yarl__thumbnails_thumbnail_background: white; */
-    /* --yarl__container_background_color: white; */
-    /* --yarl__color_backdrop: white; */
+    --cushy-border: var(--fallback-bc,oklch(var(--bc)/0.2));
+    --cushy-border-2: var(--fallback-bc,oklch(var(--bc)/0.4));
+    --cushy-border-3: var(--fallback-bc,oklch(var(--bc)/0.6));
 
-    /* --yarl__navigation_button_padding: .1rem; */
-    /* --yarl__thumbnails_container_padding: .1rem; */
-    /* --yarl__carousel_padding_px: 0; */
 }
 .yarl__root {min-height: 512px !important;}
 .yarl__slide {padding: 0 !important;}
