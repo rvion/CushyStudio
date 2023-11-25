@@ -8,7 +8,7 @@ export const WidgetStrUI = observer(function WidgetStrUI_(p: { req: Widget_str |
     if (req.input.textarea) {
         return (
             <textarea
-                tw='textarea textarea-bordered textarea-sm'
+                tw='textarea textarea-bordered textarea-sm w-full'
                 placeholder={req.input.placeHolder}
                 rows={2}
                 value={val}
