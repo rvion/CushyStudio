@@ -1,5 +1,8 @@
 Todo before release
 
+☐ warning if custom nodes not installed by default
+☐ proper error message when node not found
+☐ small mention in the readme that dev console can help troubleshoot problems.
 ☐ fix all selects
 ☐ custom size on size widget
 ☐ draft tabs/ files
