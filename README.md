@@ -127,8 +127,15 @@ You can update **CushyStudio** in two ways:
 
 - Open the `Library` panel to select the `CushyStudio/prompt` card.
 
-
 ## 2.6. Create custom Apps
+
+
+## 2.7. Misc Tips
+
+-  Lots of Shorcuts, and way more to come.
+-  Right-clicking any tooltip / menu / dropdown handle make the tooltip persistently visible
+-  left and right borders fold back when tab handle is clicked
+-  click any version number to reveal a update system
 
 # 3. Features
 
@@ -531,3 +538,49 @@ Thank you for your understanding and patience in going through this agreement. T
 Full theming capabilities using **DaisyUI** themes.
 
 TODO: add screenshots here.
+
+
+
+<!--
+
+- [1. Installation](#1-installation)
+- [2. Quickstart Guide](#2-quickstart-guide)
+  - [2.1. Starting](#21-starting)
+  - [2.2. Updating](#22-updating)
+  - [2.3. Moving around](#23-moving-around)
+    - [2.3.1. The top bar](#231-the-top-bar)
+  - [2.4. Use built-in apps](#24-use-built-in-apps)
+  - [2.5. Install custom apps](#25-install-custom-apps)
+  - [2.6. Create custom Apps](#26-create-custom-apps)
+  - [2.7. Misc Tips](#27-misc-tips)
+- [3. Features](#3-features)
+  - [3.1. First-class ComfyUI support](#31-first-class-comfyui-support)
+    - [3.1.1. Work with **Local**, **Managed**, **Remote**, and **Cloud** ComfyUI instances](#311-work-with-local-managed-remote-and-cloud-comfyui-instances)
+    - [3.1.2. Parallelize load across multiple ComfyUI instances](#312-parallelize-load-across-multiple-comfyui-instances)
+    - [3.1.3. Support ComfyUI workflow natively](#313-support-comfyui-workflow-natively)
+  - [3.2. Real-time enabled](#32-real-time-enabled)
+  - [3.3. CivitAI integration](#33-civitai-integration)
+  - [3.4. Built-in full-featured Image Editor](#34-built-in-full-featured-image-editor)
+  - [3.5. Easy to extend](#35-easy-to-extend)
+  - [3.6. Create your own Apps to streamline any image or video production](#36-create-your-own-apps-to-streamline-any-image-or-video-production)
+- [4. Quickstart Guide For Action Creators](#4-quickstart-guide-for-action-creators)
+  - [4.1. How does `CushySudio` work ?](#41-how-does-cushysudio-work-)
+  - [4.2. What is an `Action`?](#42-what-is-an-action)
+  - [4.3. What is an `Action`?](#43-what-is-an-action)
+  - [4.4. Create your first deck](#44-create-your-first-deck)
+  - [4.5. `Prefabs` so you don't repeat yourself](#45-prefabs-so-you-dont-repeat-yourself)
+    - [4.5.1. `Prefabs` are just functions.](#451-prefabs-are-just-functions)
+    - [4.5.2. Naming Conventions](#452-naming-conventions)
+    - [4.5.3. Use a UI Prefab](#453-use-a-ui-prefab)
+    - [4.5.4. Execution Prefab](#454-execution-prefab)
+  - [4.6. Various Function notations](#46-various-function-notations)
+    - [4.6.1. The special `() => ({ })` notation to return objects in a single line](#461-the-special-----notation-to-return-objects-in-a-single-line)
+  - [4.7. Publish your Deck](#47-publish-your-deck)
+- [5. Frequently Asked Questions:](#5-frequently-asked-questions)
+  - [5.1. Q: Will **CushyStudio** remain open source and free?](#51-q-will-cushystudio-remain-open-source-and-free)
+  - [5.2. Q: Why the AGPL and not the GPLV3?](#52-q-why-the-agpl-and-not-the-gplv3)
+  - [5.3. Q: Any plans for a paid version of **CushyStudio**?](#53-q-any-plans-for-a-paid-version-of-cushystudio)
+- [6. Theming](#6-theming)
+
+
+ -->
