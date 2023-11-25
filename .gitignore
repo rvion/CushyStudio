@@ -39,6 +39,7 @@ cushy*.db.backup
 
 CONFIG.json
 global.d.ts
+!src/utils/custom-jsx/global.d.ts
 tsconfig.custom.json
 
 library/*
