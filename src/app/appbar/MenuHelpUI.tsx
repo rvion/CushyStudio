@@ -11,12 +11,12 @@ export const MenuHelpUI = observer(function MenuHelpUI_(p: {}) {
             appearance='subtle'
         >
             <MenuItem
-                onClick={() => st.layout.GO_TO('TypeDoc', {})}
+                onClick={() => st.layout.FOCUS_OR_CREATE('TypeDoc', {})}
                 icon={<span className='material-symbols-outlined text-purple-500'>help_outline</span>}
                 label='Open doc (panel)'
             />
             <MenuItem
-                onClick={() => st.layout.GO_TO('TypeDoc', {})}
+                onClick={() => st.layout.FOCUS_OR_CREATE('TypeDoc', {}, 'full')}
                 icon={<span className='material-symbols-outlined text-purple-500'>help</span>}
                 label='Open doc (full page)'
             />

@@ -125,7 +125,7 @@ export class CushyLayoutManager {
         const card = this.st.library.getCard(actionPath)
         if (card == null) return null /* 🔴 add popup somewhere */
         const draft = card.getLastDraft()
-        this.GO_TO('Draft', { draftID: draft?.id ?? '❌' }, 'LEFT_PANE_TABSET')
+        this.FOCUS_OR_CREATE('Draft', { draftID: draft?.id ?? '❌' }, 'LEFT_PANE_TABSET')
         // const icon = af?.illustrationPathWithFileProtocol
         // this._AddWithProps(Widget.Draft, `/action/${actionPath}`, { title: actionPath, actionPath, icon })
     }
@@ -192,7 +192,7 @@ export class CushyLayoutManager {
     //     )
     // }
 
-    GO_TO_FULL = <const K extends Panel>(component: K, props: PropsOf<Panels[K]['widget']>) => {
+    TOGGLE_FULL = <const K extends Panel>(component: K, props: PropsOf<Panels[K]['widget']>) => {
         if (
             this.fullPageComp == null || //
             this.fullPageComp.panel !== component
@@ -203,13 +203,13 @@ export class CushyLayoutManager {
         }
     }
 
-    GO_TO = <const K extends Panel>(
+    FOCUS_OR_CREATE = <const K extends Panel>(
         component: K,
         props: PropsOf<Panels[K]['widget']>,
         where: 'full' | 'current' | LEFT_PANE_TABSET_T | RIGHT_PANE_TABSET_T = RIGHT_PANE_TABSET_ID,
     ): Maybe<FL.Node> => {
         if (where === 'full') {
-            this.GO_TO_FULL(component, props)
+            this.TOGGLE_FULL(component, props)
             return null
         }
 

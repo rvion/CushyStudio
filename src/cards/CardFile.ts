@@ -191,7 +191,7 @@ export class CardFile {
             graphID: pj.rootGraph.id,
             title: title,
         })
-        pj.st.layout.GO_TO('Draft', { draftID: draft.id })
+        pj.st.layout.FOCUS_OR_CREATE('Draft', { draftID: draft.id })
         return draft
     }
     getLastDraft = (): DraftL => {

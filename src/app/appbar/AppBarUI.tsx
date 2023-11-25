@@ -23,7 +23,7 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
                 <Button
                     appearance='subtle'
                     size='sm'
-                    onClick={() => st.toggleCardPicker()}
+                    onClick={() => st.toggleFullLibrary()}
                     icon={<span className='material-symbols-outlined text-success'>view_list</span>}
                 >
                     Library

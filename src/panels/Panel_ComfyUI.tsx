@@ -5,7 +5,11 @@ import { observer } from 'mobx-react-lite'
 import { useLayoutEffect } from 'react'
 import { useSt } from '../state/stateContext'
 
-export const Panel_ComfyUI = observer(function Panel_ComfyUI_(p: { litegraphJson?: Maybe<LiteGraphJSON> }) {
+export const Panel_ComfyUI = observer(function Panel_ComfyUI_(p: {
+    //
+    autoLoadLast?: boolean
+    litegraphJson?: Maybe<LiteGraphJSON>
+}) {
     const st = useSt()
     const url = st.getServerHostHTTP()
 

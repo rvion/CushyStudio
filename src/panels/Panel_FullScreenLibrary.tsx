@@ -35,7 +35,7 @@ export const Panel_CardPicker3UI = observer(function Panel_CardPicker3UI_(p: {})
                                     const card = library.cardsFilteredSorted[library.selectionCursor]
                                     if (card == null) return
                                     card.openLastDraftAsCurrent()
-                                    st.closeCardPicker()
+                                    st.closeFullLibrary()
                                 } else if (e.key === 'ArrowDown') {
                                     library.selectionCursor++
                                 } else if (e.key === 'ArrowUp') {

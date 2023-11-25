@@ -91,7 +91,7 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                 )}
                 <Joined>
                     <Button
-                        onClick={() => st.layout.GO_TO('DraftJsonResult', { draftID: draft.id })}
+                        onClick={() => st.layout.FOCUS_OR_CREATE('DraftJsonResult', { draftID: draft.id })}
                         size='sm'
                         tw='tab btn-ghost join-item'
                     >
@@ -99,7 +99,7 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                     </Button>
                     <Button
                         //
-                        onClick={() => st.layout.GO_TO('DraftJsonSerial', { draftID: draft.id })}
+                        onClick={() => st.layout.FOCUS_OR_CREATE('DraftJsonSerial', { draftID: draft.id })}
                         size='sm'
                         tw='tab btn-ghost join-item'
                     >
@@ -177,7 +177,7 @@ export const CardActionsMenuUI = observer(function CardActionsMenuUI_(p: { card:
                 Show Item In Folder
             </MenuItem>
             {card.liteGraphJSON && (
-                <MenuItem onClick={() => st.layout.GO_TO('ComfyUI', { litegraphJson: card.liteGraphJSON })}>
+                <MenuItem onClick={() => st.layout.FOCUS_OR_CREATE('ComfyUI', { litegraphJson: card.liteGraphJSON })}>
                     Open in ComfyUI
                 </MenuItem>
             )}

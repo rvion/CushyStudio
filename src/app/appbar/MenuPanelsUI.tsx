@@ -17,22 +17,22 @@ export const MenuPanelsUI = observer(function MenuPanelsUI_(p: {}) {
             />
             <div className='divider'>Panels</div>
             <MenuItem
-                onClick={() => st.layout.GO_TO('Paint', {})}
+                onClick={() => st.layout.FOCUS_OR_CREATE('Paint', {})}
                 icon={<span className='material-symbols-outlined text-red-400'>brush</span>}
                 label='paint - Minipaint'
             />
             <MenuItem
-                onClick={() => st.layout.GO_TO('Gallery', {})}
+                onClick={() => st.layout.FOCUS_OR_CREATE('Gallery', {})}
                 icon={<span className='material-symbols-outlined text-red-400'>image_search</span>}
                 label='Gallery'
             />
             <MenuItem
-                onClick={() => st.layout.GO_TO('LastImage', {})}
+                onClick={() => st.layout.FOCUS_OR_CREATE('LastImage', {})}
                 icon={<span className='material-symbols-outlined text-red-400'>history</span>}
                 label='Last IMAGE'
             />
             <MenuItem
-                onClick={() => st.layout.GO_TO('LastStep', {})}
+                onClick={() => st.layout.FOCUS_OR_CREATE('LastStep', {})}
                 icon={<span className='material-symbols-outlined text-red-400'>history</span>}
                 label='Last STEP'
             />

@@ -12,13 +12,13 @@ export const MenuUtilsUI = observer(function MenuUtilsUI_(p: {}) {
             appearance='subtle'
         >
             <MenuItem
-                onClick={() => st.layout.GO_TO('Civitai', {})}
+                onClick={() => st.layout.FOCUS_OR_CREATE('Civitai', {})}
                 icon={<img style={{ width: '1em', height: '1em' }} src={assets.public_CivitaiLogo_png}></img>}
                 label='Civitai'
             />
 
             <MenuItem
-                onClick={() => st.layout.GO_TO('Squoosh', {})}
+                onClick={() => st.layout.FOCUS_OR_CREATE('Squoosh', {})}
                 icon={<img style={{ width: '1em', height: '1em' }} src={assets.public_logos_squoosh_png}></img>}
                 label='Squoosh'
             />

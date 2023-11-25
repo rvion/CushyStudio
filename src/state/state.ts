@@ -168,9 +168,9 @@ export class STATE {
     droppedFiles: File[] = []
 
     // showCardPicker: boolean = false
-    closeCardPicker = () => (this.layout.fullPageComp = null)
-    openCardPicker = () => (this.layout.fullPageComp = { props: {}, panel: 'CardPicker3UI' })
-    toggleCardPicker = () => {
+    closeFullLibrary = () => (this.layout.fullPageComp = null)
+    openFullLibrary = () => (this.layout.fullPageComp = { props: {}, panel: 'CardPicker3UI' })
+    toggleFullLibrary = () => {
         if (
             this.layout.fullPageComp == null || //
             this.layout.fullPageComp.panel !== 'CardPicker3UI'
@@ -211,7 +211,7 @@ export class STATE {
     set currentDraft(draft: DraftL) {
         const card = draft.app
         card?.load()
-        this.closeCardPicker()
+        this.closeFullLibrary()
         this._currentDraft = draft
     }
     // {

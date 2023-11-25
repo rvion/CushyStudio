@@ -47,7 +47,7 @@ export const ImageUI = observer(function ImageUI_(p: { img: ImageL }) {
                 //     st.hovered = null
                 //     st.currentAction = { type: 'paint', imageID: image.id }
                 // }}
-                onClick={() => st.layout.GO_TO('Image', { imageID: image.id })}
+                onClick={() => st.layout.FOCUS_OR_CREATE('Image', { imageID: image.id })}
             />
         )
     return (
@@ -58,7 +58,7 @@ export const ImageUI = observer(function ImageUI_(p: { img: ImageL }) {
                 <div>
                     <Button
                         icon={<span className='material-symbols-outlined'>edit</span>}
-                        onClick={() => st.layout.GO_TO('Paint', { imgID: image.id })}
+                        onClick={() => st.layout.FOCUS_OR_CREATE('Paint', { imgID: image.id })}
                     >
                         Paint
                     </Button>

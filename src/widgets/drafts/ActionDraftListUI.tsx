@@ -32,7 +32,7 @@ export const ActionDraftListUI = observer(function ActionDraftListUI_(p: { card:
                         <div tw='join' style={{ borderBottom: 'none', borderBottomRightRadius: 0, borderBottomLeftRadius: 0 }}>
                             <Input
                                 value={title}
-                                onClick={() => st.layout.GO_TO('Draft', { draftID: draft.id })}
+                                onClick={() => st.layout.FOCUS_OR_CREATE('Draft', { draftID: draft.id })}
                                 tw={[active ? 'bg-gray-700' : null, 'font-mono', 'join-item input-xs']}
                                 style={{
                                     width: `${title.length + 4}ch`,

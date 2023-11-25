@@ -5,6 +5,7 @@ export function isWidgetCollapsible(req: R.Widget): boolean {
     const KLS = WidgetDI
     if (req instanceof KLS.Widget_markdown) return true
     if (req instanceof KLS.Widget_image) return true
+    if (req instanceof KLS.Widget_size) return true
     if (req instanceof KLS.Widget_group) return true
     if (req instanceof KLS.Widget_groupOpt) return true
     if (req instanceof KLS.Widget_list) return true

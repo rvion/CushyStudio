@@ -13,18 +13,18 @@ export const MenuComfyUI = observer(function MenuComfyUI_(p: {}) {
             appearance='subtle'
         >
             <MenuItem
-                onClick={() => st.layout.GO_TO('ComfyUI', {})}
+                onClick={() => st.layout.FOCUS_OR_CREATE('ComfyUI', {})}
                 label='Comfy'
                 icon={<span className='material-symbols-outlined text-cyan-400'>account_tree</span>}
             />
             <MenuItem
-                onClick={() => st.layout.GO_TO('ComfyUINodeExplorer', {})}
+                onClick={() => st.layout.FOCUS_OR_CREATE('ComfyUINodeExplorer', {})}
                 icon={<span className='material-symbols-outlined text-cyan-400'>explore</span>}
                 label='Nodes'
             />
             {Boolean(st.configFile.value.comfyUIHosts?.length) ? null : (
                 <MenuItem
-                    onClick={() => st.layout.GO_TO('Hosts', {})}
+                    onClick={() => st.layout.FOCUS_OR_CREATE('Hosts', {})}
                     icon={<span className='material-symbols-outlined text-cyan-400'>settings</span>}
                     label='ComfyUI Hosts'
                 />
@@ -52,7 +52,7 @@ export const MenuComfyUI = observer(function MenuComfyUI_(p: {}) {
                             onClick={(ev) => {
                                 ev.preventDefault()
                                 ev.stopPropagation()
-                                st.layout.GO_TO('Hosts', { hostID: host.id })
+                                st.layout.FOCUS_OR_CREATE('Hosts', { hostID: host.id })
                             }}
                         >
                             <span className='material-symbols-outlined'>settings</span>
@@ -62,7 +62,7 @@ export const MenuComfyUI = observer(function MenuComfyUI_(p: {}) {
                             onClick={(ev) => {
                                 ev.preventDefault()
                                 ev.stopPropagation()
-                                st.layout.GO_TO('Hosts', { hostID: host.id })
+                                st.layout.FOCUS_OR_CREATE('Hosts', { hostID: host.id })
                             }}
                         >
                             <span className='material-symbols-outlined'>open_in_full</span>

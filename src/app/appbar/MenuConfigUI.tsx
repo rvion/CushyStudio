@@ -12,12 +12,12 @@ export const MenuConfigUI = observer(function MenuConfigUI_(p: {}) {
             appearance='subtle'
         >
             <MenuItem
-                onClick={() => st.layout.GO_TO('Config', {})}
+                onClick={() => st.layout.FOCUS_OR_CREATE('Config', {})}
                 icon={<span className='material-symbols-outlined text-purple-500'>settings</span>}
                 label='Config'
             />
             <MenuItem
-                onClick={() => st.layout.GO_TO('Hosts', {})}
+                onClick={() => st.layout.FOCUS_OR_CREATE('Hosts', {})}
                 icon={<span className='material-symbols-outlined text-purple-500'>cloud</span>}
                 label='ComfyUI Hosts'
             />

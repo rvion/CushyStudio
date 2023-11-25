@@ -142,7 +142,7 @@ export class Runtime<FIELDS extends WidgetDict = any> {
         if (image == null) throw new Error(`image not found: ${p.image}`)
         if (depth == null) throw new Error(`image not found: ${p.image}`)
         if (normal == null) throw new Error(`image not found: ${p.image}`)
-        this.st.layout.GO_TO('DisplacedImage', {
+        this.st.layout.FOCUS_OR_CREATE('DisplacedImage', {
             width: image.data.width ?? 512,
             height: image.data.height ?? 512,
             image: image.url,
