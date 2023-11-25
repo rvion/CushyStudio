@@ -3,10 +3,10 @@ Todo before release
 ☐ fix all selects
 ☐ custom size on size widget
 ☐ draft tabs/ files
-☐ open in correct panels
 ☐ background image for config panel
 ☐ draft result are too wide by default / should open in bottom panel
 ☐ selectMenu
+✔ open in correct panels @done(23-11-25 14:23)
 ✔ have official layout show on first launch even if no comfyUI found @done(23-11-24 22:39)
 ✔ auto-open all default 5/6 built-in apps @done(23-11-24 22:34)
 ✔ re-ordernable lists @done(23-11-24 13:51)
