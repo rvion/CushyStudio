@@ -49,7 +49,7 @@
         "**/.DS_Store": true,
         "**/Thumbs.db": true
     },
-    "pasteImage.path": "docs/static/img/screenshots/",
+    "pasteImage.path": "site/assets",
     "search.exclude": {
         "out": true, // set this to false to include "out" folder in search results
         "public": true,
