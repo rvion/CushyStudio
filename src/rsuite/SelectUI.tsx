@@ -149,13 +149,12 @@ export const SelectUI = observer(function SelectUI_<T>(p: PP<T>) {
                     search
                 </span>
                 {/* ANCHOR */}
-                <input //
+                <div //
                     tabIndex={-1}
                     tw='input input-bordered input-sm w-full'
-                    // onFocus={s.openMenu}
-                    // onBlur={s.onBlur}
-                    value={s.displayValue}
-                />
+                >
+                    {s.displayValue}
+                </div>
                 <div tw='absolute top-0 left-0 right-0 z-50'>
                     <input
                         ref={s.anchorRef}
