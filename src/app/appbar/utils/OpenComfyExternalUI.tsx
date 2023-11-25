@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 import { Button } from 'src/rsuite/shims'
-import { useSt } from '../../state/stateContext'
-import { openExternal } from '../layout/openExternal'
+import { useSt } from '../../../state/stateContext'
+import { openExternal } from '../../layout/openExternal'
 
 export const OpenComfyExternalUI = observer(function OpenComfyExternalUI_(p: {}) {
     const st = useSt()
