@@ -11,15 +11,20 @@ export const MenuHelpUI = observer(function MenuHelpUI_(p: {}) {
             appearance='subtle'
         >
             <MenuItem
-                onClick={() => st.layout.FOCUS_OR_CREATE('TypeDoc', {})}
+                onClick={() => {
+                    window.require('electron').shell.openExternal('https://CushyStudio.com/documentation')
+                }}
                 icon={<span className='material-symbols-outlined text-purple-500'>help_outline</span>}
-                label='Open doc (panel)'
+                label='Open doc'
             />
             <MenuItem
-                onClick={() => st.layout.FOCUS_OR_CREATE('TypeDoc', {}, 'full')}
-                icon={<span className='material-symbols-outlined text-purple-500'>help</span>}
-                label='Open doc (full page)'
+                onClick={() => {
+                    window.require('electron').shell.openExternal('https://CushyStudio.com/')
+                }}
+                icon={<span className='material-symbols-outlined text-purple-500'>help_outline</span>}
+                label='Open blog'
             />
+
             <MenuItem
                 onClick={() => {
                     window.require('electron').shell.openExternal('https://github.com/rvion/CushyStudio#readme')
