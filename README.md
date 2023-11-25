@@ -42,12 +42,12 @@ _🔶 NOTICE: CushyStudio is still in development. It updates and breaks often. 
 
 _media 1: CushyStudio_
 
-![](site/assets/2023-11-20-00-20-41.png)
+![](site/assets/images/2023-11-20-00-20-41.png)
 
 
 _media 2: CushyStudio gallery_
 
-![](site/assets/2023-11-20-00-16-19.png)
+![](site/assets/images/2023-11-20-00-16-19.png)
 
 - a list of apps ready to be used
   - Apps with the `Cushy Action` label are native CushyApps using the CushyStudio SDK.
@@ -56,7 +56,7 @@ _media 2: CushyStudio gallery_
 
 _media 3: ComfyUI on steroids_
 
-![](site/assets/2023-11-25-comfy-on-steroids.jpg)
+![](site/assets/images/2023-11-25-comfy-on-steroids.jpg)
 
 -----
 
@@ -121,7 +121,7 @@ You can update **CushyStudio** in two ways:
 
 ### 2.3.1. The top bar
 
-![](site/assets/2023-11-25-10-20-36.png)
+![](site/assets/images/2023-11-25-10-20-36.png)
 
 ## 2.4. Use built-in apps
 
@@ -151,7 +151,7 @@ You can update **CushyStudio** in two ways:
 -   ✅ Quickly switch between various ComfyUI setups
 -   ✅ Parallelize work across multiple instances
 
-![](site/assets/2023-11-25-comfy-host-management.jpg)
+![](site/assets/images/2023-11-25-comfy-host-management.jpg)
 
 ### 3.1.2. Parallelize load across multiple ComfyUI instances
 
@@ -159,7 +159,7 @@ You can update **CushyStudio** in two ways:
 -   ✅ Automatically upload missing files
 -   ✅ Powerful image hashing system to avoid duplicate uploads
 
-![](site/assets/2023-11-25-10-56-57.png)
+![](site/assets/images/2023-11-25-10-56-57.png)
 
 
 
@@ -179,14 +179,14 @@ https://github.com/rvion/CushyStudio/assets/2150990/d71d7f9a-b0e9-415d-ab5a-7852
 -   ✅ Civitai custom ComfyUI Nodes support
 -   ✅ Dedicated Civitai widgets to augment your allow your apps to select CivitAI models directly
 
-![](site/assets/2023-10-19-00-31-02.png)
+![](site/assets/images/2023-10-19-00-31-02.png)
 
 
 ## 3.4. Built-in full-featured Image Editor
 
 Layers, effects, masks, blending modes, ...and more. Always one click away
 
-![](site/assets/2023-10-18-22-51-22.png)
+![](site/assets/images/2023-10-18-22-51-22.png)
 
 ## 3.5. Easy to extend
 
@@ -195,18 +195,18 @@ Layers, effects, masks, blending modes, ...and more. Always one click away
 <details>
   <summary> Click here to see how to reveal the debug console</summary>
 
-![](site/assets/2023-10-03-22-36-49.png)
+![](site/assets/images/2023-10-03-22-36-49.png)
 
 </details>
 
 ## 3.6. Create your own Apps to streamline any image or video production
 
-![](site/assets/2023-09-29-22-35-25.png)
+![](site/assets/images/2023-09-29-22-35-25.png)
 
 <p align="center">
-  <img alt="Light" src="./site/assets/2023-09-29-typescript-autocompletion-in-vscode.png" width="45%">
+  <img alt="Light" src="./site/assets/images/2023-09-29-typescript-autocompletion-in-vscode.png" width="45%">
 &nbsp; &nbsp; &nbsp; &nbsp;
-  <img alt="Dark" src="./site/assets/2023-09-30-08-40-13.png" width="45%">
+  <img alt="Dark" src="./site/assets/images/2023-09-30-08-40-13.png" width="45%">
 </p>
 
 1. Define your own UI
@@ -279,7 +279,7 @@ Decks are made to be shared.
    1. 👉 Your `github username` will be your dedicated namespace in the library
    2. 👉 All your decks will live under the `library/<username>/` folder
 
-    ![](./site/assets/2023-11-01-18-58-13.webp)
+    ![](./site/assets/images/2023-11-01-18-58-13.webp)
 
 3. Click `[OK]`
 
@@ -402,7 +402,7 @@ export const ui_startImage = (form: FormBuilder) =>
 
 To use a `prefab` in your card, you can simply import it and use it.
 
-![](./site/assets/2023-11-01-18-27-38.webp)
+![](./site/assets/images/2023-11-01-18-27-38.webp)
 
 - `ui prefabs` are made to be used in the `ui` function of your card.
 - `run prefabs` are made to be used in the `run` function of your card.
@@ -434,7 +434,7 @@ card({
 
 The resulting card looks like this:
 
-![](./site/assets/2023-11-01-18-20-20.webp)
+![](./site/assets/images/2023-11-01-18-20-20.webp)
 
 
 
@@ -482,7 +482,7 @@ Publishing your deck/apps is easy!
 
 2.  Create a GitHub repository. (https://github.com/new)
 
-    ![](site/assets/2023-10-18-23-15-11.png)
+    ![](site/assets/images/2023-10-18-23-15-11.png)
 
 3.  Commit your deck files
     1. You can one-click the `publish` button in your deck entry in the library

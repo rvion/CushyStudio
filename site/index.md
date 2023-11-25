@@ -6,7 +6,7 @@ layout: home
 ---
 
 
-<div align="center">
+<!-- <div align="center"> -->
 
 # 🛋️ CushyStudio
 
@@ -29,7 +29,7 @@ _🔶 NOTICE: CushyStudio is still in development. It updates and breaks often. 
     <img height="21" alt="Follow _rvion on Twitter" src="https://img.shields.io/badge/%40__rvion-666666?style=flat&logo=twitter&labelColor=555&label=Follow">
 </a>
 
-</div>
+<!-- </div> -->
 
 ---
 
