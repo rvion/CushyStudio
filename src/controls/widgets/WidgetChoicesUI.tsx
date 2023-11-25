@@ -1,38 +1,35 @@
 import type { Widget, Widget_choices } from 'src/controls/Widget'
 
-import { runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
-import { TagPicker } from 'src/rsuite/shims'
+import { SelectUI } from 'src/rsuite/SelectUI'
 import { WidgetWithLabelUI } from '../shared/WidgetWithLabelUI'
 
+// 🔴 why "branches" field; why not just use sub wiget active state instead?
 export const WidgetChoicesUI = observer(function WidgetChoicesUI_(p: { req: Widget_choices<{ [key: string]: Widget }> }) {
     const req = p.req
-    const collapsed = req.state.collapsed
+
+    type Entry = { key: string; value?: Maybe<boolean> }
 
     // choices
     const choicesStr: string[] = Object.keys(req.state.values)
-    const choices = choicesStr.map((v) => ({ label: v, value: v }))
+    const choices: Entry[] = choicesStr.map((v) => ({ key: v }))
+
     // values
-    const choiceSubReq = Object.entries(req.state.branches)
-        .map(([k, v]) => ({ label: k, value: k }))
+    const values = Object.entries(req.state.branches)
+        .map(([key, value]) => ({ key, value }))
         .filter((x) => x.value)
-    const values = choiceSubReq.map((i) => i.value)
 
     return (
         <div className='_WidgetChoicesUI' tw='relative'>
             <div tw='flex items-start w-full'>
-                <TagPicker
+                <SelectUI<Entry>
                     tw='flex-grow'
-                    value={values}
-                    data={choices}
-                    style={{ width: 300 }}
-                    onChange={(vs: string[]) => {
-                        runInAction(() => {
-                            req.state.branches = {}
-                            for (const v of vs) {
-                                req.state.branches[v] = true
-                            }
-                        })
+                    value={() => values}
+                    options={choices}
+                    getLabelText={(v) => v.key ?? v.key}
+                    onChange={(v) => {
+                        const prev = Boolean(req.state.branches[v.key])
+                        req.state.branches[v.key] = !prev
                     }}
                 />
                 {/* <Button appearance='subtle' size='xs' onClick={() => (req.state.collapsed = !Boolean(req.state.collapsed))}>
@@ -45,12 +42,12 @@ export const WidgetChoicesUI = observer(function WidgetChoicesUI_(p: { req: Widg
                     tw={[req.input.layout === 'H' ? 'flex' : null]}
                     className={req.input.className}
                 >
-                    {choiceSubReq.map((k) => {
-                        const subReq = req.state.values[k.value]
+                    {values.map((val) => {
+                        const subReq = req.state.values[val.key]
                         return (
                             <WidgetWithLabelUI //
-                                key={k.value}
-                                rootKey={k.value}
+                                key={val.key}
+                                rootKey={val.key}
                                 labelPos={subReq.input.labelPos}
                                 req={subReq}
                             />
