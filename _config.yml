@@ -20,10 +20,10 @@ minima:
 plugins:
     - jekyll-feed
 
-header_pages:
-    - about.md
-    - about
-    - blog.md
+# header_pages:
+# - about.md
+# - about
+# - blog.md
 
 social_links:
     - { platform: github, user_url: 'https://github.com/rvion' }
