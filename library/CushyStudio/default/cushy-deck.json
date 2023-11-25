@@ -15,7 +15,7 @@
         },
         {
             "name": "Illustrated deck of cards",
-            "deckRelativeFilePath": "./pokerCards.ts",
+            "deckRelativeFilePath": "./playing-cards/pokerCards.ts",
             "illustration": "_illustrations/poker-card-generator.jpg",
             "description": "Few Cushy cards are about 'playing cards'. But this one is."
         },

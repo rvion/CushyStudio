@@ -1,12 +1,12 @@
 import type { NodeConfig } from 'konva/lib/Node'
 import type { ImageAndMask, Runtime } from 'src/back/Runtime'
 import type { FormBuilder } from 'src/controls/FormBuilder'
-
-type Value = '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '10' | 'J' | 'Q' | 'K'
-type Suit = 'spades' | 'hearts' | 'clubs' | 'diamonds'
+import { CardSuit, CardSuitPosition, CardValue, getCardLayout } from './_cardLayouts'
 
 const ui = (form: FormBuilder) => ({
     // [UI] MODEL --------------------------------------
+    // generate
+    _1: form.markdown({ markdown: `# Model` }),
     model: form.enum({
         enumName: 'Enum_CheckpointLoaderSimple_ckpt_name',
         default: 'revAnimated_v122.safetensors',
@@ -18,12 +18,26 @@ const ui = (form: FormBuilder) => ({
     // }),
 
     // [UI] CARD ---------------------------------------
+    _2: form.markdown({ markdown: `# Cards` }),
     cards: form.matrix({
         cols: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'],
         rows: ['spades', 'hearts', 'clubs', 'diamonds'],
         default: [],
     }),
 
+    logos: form.group({
+        layout: 'H',
+        // className: 'flex flex-wrap',
+        items: () => ({
+            spades: form.imageOpt({}),
+            hearts: form.imageOpt({}),
+            clubs: form.imageOpt({}),
+            diamonds: form.imageOpt({}),
+        }),
+    }),
+
+    _3: form.markdown({ markdown: `# Prompts` }),
+    generalTheme: form.string({ default: 'fantasy' }),
     // Main cards
     illustrations: form.group({
         layout: 'H',
@@ -36,13 +50,12 @@ const ui = (form: FormBuilder) => ({
     }),
 
     // [UI] THEME --------------------------------------
-    generalTheme: form.string({ default: 'fantasy' }),
     themes: form.group({
         items: () => ({
-            theme1: form.string({ default: 'underwater, sea, fish, tentacles, ocean', group: 'theme' }),
-            theme2: form.string({ default: 'volcanic, lava, rock, fire', group: 'theme' }),
-            theme3: form.string({ default: 'forest, nature, branches, trees', group: 'theme' }),
-            theme4: form.string({ default: 'snow, ice, mountain, transparent winter', group: 'theme' }),
+            spades: form.string({ default: 'underwater, sea, fish, tentacles, ocean', group: 'theme' }),
+            hearts: form.string({ default: 'volcanic, lava, rock, fire', group: 'theme' }),
+            clubs: form.string({ default: 'forest, nature, branches, trees', group: 'theme' }),
+            diamonds: form.string({ default: 'snow, ice, mountain, transparent winter', group: 'theme' }),
         }),
     }),
 
@@ -56,20 +69,12 @@ const ui = (form: FormBuilder) => ({
     }),
 
     // theme5: form.string({ default: 'winter', group: 'theme' }),
-    logos: form.group({
-        // className: 'flex flex-wrap',
-        items: () => ({
-            spades: form.imageOpt({}),
-            hearts: form.imageOpt({}),
-            clubs: form.imageOpt({}),
-            diamonds: form.imageOpt({}),
-        }),
-    }),
 
     // [UI] SIZES --------------------------------------
-    logoSize: form.int({ default: 120 }),
-    W: form.int({ default: 512, group: 'size' }),
-    H: form.int({ default: 726, group: 'size' }),
+    logoSize: form.int({ default: 120, min: 20, max: 1000 }),
+    size: form.size({ default: { modelType: 'SD1.5 512', aspectRatio: '16:9' }, group: 'size' }),
+    // W: form.int({ default: 512, group: 'size' }),
+    // H: form.int({ default: 726, group: 'size' }),
 
     // [UI] BORDERS ------------------------------------
     background: form.group({
@@ -93,8 +98,8 @@ app({
         const ckpt = graph.CheckpointLoaderSimple({ ckpt_name: p.model })
         const suits = Array.from(new Set(p.cards.map((c) => c.row)))
         const values = Array.from(new Set(p.cards.map((c) => c.col)))
-        const W = p.W, W2 = floor(W / 2), W3 = floor(W / 3), W4 = floor(W / 4) // prettier-ignore
-        const H = p.H, H2 = floor(H / 2), H3 = floor(H / 3), H4 = floor(H / 4) // prettier-ignore
+        const W = p.size.width, W2 = floor(W / 2), W3 = floor(W / 3), W4 = floor(W / 4) // prettier-ignore
+        const H = p.size.height, H2 = floor(H / 2), H3 = floor(H / 3), H4 = floor(H / 4) // prettier-ignore
 
         // 3. BACKGROUND --------------------------------------------------
         flow.print('generating backgrounds')
@@ -122,12 +127,6 @@ app({
         }
 
         // 4. CARDS --------------------------------------------------
-        const themeFor = {
-            spades: p.themes.theme1,
-            hearts: p.themes.theme2,
-            clubs: p.themes.theme3,
-            diamonds: p.themes.theme4,
-        }
         const margin = p.margin ?? 50
         // const emptyLatent = graph.EmptyLatentImage({ width: W, height: H })
         // prettier-ignore
@@ -150,7 +149,7 @@ app({
             const { col: value, row: suit } = card
 
             // PROMPT  ----------------------------------------
-            const theme = themeFor[suit as keyof typeof themeFor]
+            const theme = p.themes[suit as keyof typeof p.themes]
             const suitColor = p.colors[suit as keyof typeof p.colors]
             // const suitLogo = suitsImages.get(suit)!
             const illustrations = p.illustrations
@@ -182,7 +181,7 @@ app({
 
             // ADD LOGOS ----------------------------------------
             let pixels: _IMAGE = graph.VAEDecode({ vae: ckpt, samples: sample })
-            const xx = await drawCard(flow, value as Value, suit as Suit)
+            const xx = await drawCard(flow, value as CardValue, suit as CardSuit)
             pixels = graph.AlphaChanelRemove({
                 images: graph.ImageCompositeAbsolute({
                     background: 'images_a',
@@ -238,8 +237,8 @@ app({
 export async function drawCard(
     //
     flow: Runtime,
-    value: Value,
-    suit: Suit,
+    value: CardValue,
+    suit: CardSuit,
 ): Promise<{
     base: ImageAndMask
     mask: ImageAndMask
@@ -271,50 +270,9 @@ export async function drawCard(
     const mask = mkImage()
     mask.layer.add(new I.Rect({ x: 0, y: 0, width: W, height: H, fill: 'white' }))
 
-    type CardConfig = { x: number; y: number; flip?: true; size?: number }
-    const positions: CardConfig[] = (() => {
-        if (value === '1') return [{ x: 0.5, y: 0.5, size: 0.4 }]
-        if (value === '2')
-            return [
-                { x: 0.5, y: 0.3 },
-                { x: 0.5, y: 0.7 },
-            ]
-        if (value === '3')
-            return [
-                { x: 0.5, y: 0.3 },
-                { x: 0.5, y: 0.7 },
-                { x: 0.5, y: 0.5 },
-            ]
-        if (value === '4')
-            return [
-                { x: 0.3, y: 0.2 },
-                { x: 0.3, y: 0.8 },
-                { x: 0.7, y: 0.2 },
-                { x: 0.7, y: 0.8 },
-            ]
-        if (value === '5')
-            return [
-                { x: 0.3, y: 0.2 },
-                { x: 0.3, y: 0.8 },
-                { x: 0.7, y: 0.2 },
-                { x: 0.7, y: 0.8 },
-                { x: 0.5, y: 0.5 },
-            ]
-        if (value === '8')
-            return [
-                { x: 0.2, y: 0.2 },
-                { x: 0.2, y: 0.4 },
-                { x: 0.8, y: 0.2 },
-                { x: 0.8, y: 0.4 },
-                { x: 0.2, y: 0.6, flip: true },
-                { x: 0.2, y: 0.8, flip: true },
-                { x: 0.8, y: 0.6, flip: true },
-                { x: 0.8, y: 0.8, flip: true },
-            ]
-        return []
-    })()
+    const positions: CardSuitPosition[] = getCardLayout(value)
 
-    const normalize = (p: CardConfig, growBy = 1): NodeConfig => {
+    const normalize = (p: CardSuitPosition, growBy = 1): NodeConfig => {
         const width = growBy * (p.size != null ? p.size * base.stage.width() : iconSize)
         return {
             x: p.x * base.stage.width(), //  + 10 * Math.random(),
