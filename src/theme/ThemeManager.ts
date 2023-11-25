@@ -6,12 +6,12 @@ export type ThemeName =
     | 'light'
     | 'dark'
     | 'cupcake'
-    // | 'aqua'
     | 'valentine'
     | 'wireframe'
+    | 'aqua'
+    | 'forest'
 // | 'sunset'
 // | 'luxury'
-// | 'forest'
 // | 'business'
 
 export class ThemeManager {
@@ -20,12 +20,12 @@ export class ThemeManager {
         'light',
         'dark',
         'cupcake',
-        // 'aqua',
         'valentine',
         'wireframe',
+        'aqua',
+        'forest',
         // 'sunset',
         // 'luxury',
-        // 'forest',
         // 'business',
     ]
     toggle() {

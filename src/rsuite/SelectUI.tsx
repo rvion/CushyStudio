@@ -9,6 +9,7 @@ import { searchMatches } from 'src/utils/misc/searchMatches'
 import { createPortal } from 'react-dom'
 
 type PP<T> = {
+    label: string
     onChange: null | ((next: T, self: AutoCompleteSelectState<T>) => void)
     getLabelText: (t: T) => string
     getLabelUI?: (t: T) => React.ReactNode
@@ -46,8 +47,9 @@ class AutoCompleteSelectState<T> {
         if (this.p.hideValue) return ''
         const sop = this.value
         if (sop == null) return 'Select...'
-        if (Array.isArray(sop)) return sop.map(this.p.getLabelText).join(', ')
-        return this.p.getLabelText(sop)
+        const str = Array.isArray(sop) ? sop.map(this.p.getLabelText).join(', ') : this.p.getLabelText(sop)
+        if (this.p.label) return `${this.p.label}: ${str}`
+        return str
     }
 
     anchorRef = React.createRef<HTMLInputElement>()
@@ -145,6 +147,11 @@ export const SelectUI = observer(function SelectUI_<T>(p: PP<T>) {
     return (
         <div tw='flex flex-1 items-center'>
             <div className='relative flex-1'>
+                {/* {p.label && (
+                    <span tw='btn btn-sm absolute right-0' className='material-symbols-outlined'>
+                        search
+                    </span>
+                )} */}
                 <span tw='btn btn-sm absolute right-0' className='material-symbols-outlined'>
                     search
                 </span>

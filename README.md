@@ -136,20 +136,20 @@ You can update **CushyStudio** in two ways:
 
 ### 3.1.1. Work with **Local**, **Managed**, **Remote**, and **Cloud** ComfyUI instances
 
--   Automatically download images in your local outputs folder
--   Automatically upload missing files
--   Powerful image hashing system to avoid duplicate uploads
-
-### 3.1.2. Parallelize load across multiple ComfyUI instances
-
 -   ✅ Quickly switch between various ComfyUI setups
 -   ✅ Parallelize work across multiple instances
 
-Edit the list of ComfyUI setups in `CONFIG.json` or click the `HOSTS` button in the top bar to configure your instances.
+![](docs/static/img/screenshots/2023-11-25-comfy-host-management.jpg)
 
-![](docs/static/img/screenshots/2023-10-18-21-41-49.png)
+### 3.1.2. Parallelize load across multiple ComfyUI instances
 
-https://github.com/rvion/CushyStudio/assets/2150990/2121db07-c246-4523-ac0e-294572450b32
+-   ✅ Automatically download images in your local outputs folder
+-   ✅ Automatically upload missing files
+-   ✅ Powerful image hashing system to avoid duplicate uploads
+
+![](docs/static/img/screenshots/2023-11-25-10-56-57.png)
+
+
 
 ### 3.1.3. Support ComfyUI workflow natively
 
@@ -166,7 +166,7 @@ https://github.com/rvion/CushyStudio/assets/2150990/d71d7f9a-b0e9-415d-ab5a-7852
 -   ✅ Embedded Civitai browser so you can find and copy models refs for download
 -   ✅ Civitai custom ComfyUI Nodes support
 -   ✅ Dedicated Civitai widgets to augment your allow your apps to select CivitAI models directly
--
+
 ![](docs/static/img/screenshots/2023-10-19-00-31-02.png)
 
 

@@ -6,6 +6,7 @@ import {
     mkCloudHostConfig,
     mkLocalNetworkHostConfig,
 } from 'src/config/ComfyHostDef'
+import { SelectUI } from 'src/rsuite/SelectUI'
 import { Button, Input, Joined, Panel, Toggle } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
 
@@ -22,15 +23,18 @@ export const Panel_ComfyUIHosts = observer(function Panel_ComfyUIHosts_(p: { hos
 
     const allHosts = config.comfyUIHosts ?? []
 
-    // const mainComfyHost = config.comfyHost
-    // const mainComfyPort = config.comfyPort
-    // const machines = st.configFile.value.comfyUIHosts
     return (
-        <Panel tw='w-full h-full'>
-            <div>current machine {mainHostID}</div>
-            <Joined>
-                <Button
-                    size='sm'
+        <Panel tw='w-full h-full flex flex-col gap-2 p-2'>
+            <div tw='flex flex-wrap gap-2'>
+                <SelectUI<ComfyHostDef>
+                    label='Current Host'
+                    options={allHosts}
+                    value={() => mainHost}
+                    onChange={null}
+                    getLabelText={(h) => h.name ?? h.id}
+                />
+                <div
+                    tw='btn-sm btn btn-outline'
                     onClick={() => {
                         st.configFile.update(() => {
                             config.comfyUIHosts?.push(mkLocalNetworkHostConfig())
@@ -38,9 +42,9 @@ export const Panel_ComfyUIHosts = observer(function Panel_ComfyUIHosts_(p: { hos
                     }}
                 >
                     Add (local network)
-                </Button>
-                <Button
-                    size='sm'
+                </div>
+                <div
+                    tw='btn-sm btn btn-outline'
                     onClick={() => {
                         st.configFile.update(() => {
                             config.comfyUIHosts?.push(mkCloudHostConfig())
@@ -48,9 +52,9 @@ export const Panel_ComfyUIHosts = observer(function Panel_ComfyUIHosts_(p: { hos
                     }}
                 >
                     Add (cloud)
-                </Button>
-            </Joined>
-            <div tw='flex flex-wrap gap-2 p-2'>
+                </div>
+            </div>
+            <div tw='flex flex-wrap gap-2'>
                 {allHosts?.map((host) => {
                     return <HostUI host={host} />
                 })}
@@ -69,7 +73,8 @@ export const HostUI = observer(function MachineUI_(p: { host: ComfyHostDef }) {
         <div
             tw={[
                 //
-                'p-2 bg-base-100 w-96 shadow-xl',
+                'virtualBorder',
+                'p-2 bg-base-200 w-96 shadow-xl',
                 isMain && 'bg-base-300',
             ]}
         >
@@ -77,13 +82,17 @@ export const HostUI = observer(function MachineUI_(p: { host: ComfyHostDef }) {
                 {/* SELECT BTN */}
                 <Joined tw='flex gap-3'>
                     <div
-                        tw={[`btn btn-md btn-${isMain ? 'primary' : ''} flex-grow font-bold`]}
+                        tw={[
+                            //
+                            isMain ? 'btn-success' : 'btn-info btn-outline',
+                            `btn btn-md flex-grow font-bold`,
+                        ]}
                         onClick={() => st.configFile.update({ mainComfyHostID: host.id })}
                     >
                         {host.name ?? `${host.hostname}:${host.port}`}
                     </div>
                     <div
-                        tw='btn btn-error btn-error'
+                        tw='btn'
                         onClick={() => {
                             st.configFile.update(() => {
                                 if (config.mainComfyHostID === host.id) config.mainComfyHostID = null
@@ -106,20 +115,6 @@ export const HostUI = observer(function MachineUI_(p: { host: ComfyHostDef }) {
                             host.name = next
                         }}
                         value={host.name ?? 'unnamed'}
-                    ></input>
-                </div>
-
-                {/* NAME */}
-                <div tw='flex gap-2'>
-                    <LabelUI>name</LabelUI>
-                    <input
-                        disabled
-                        tw='input input-bordered input-sm w-full'
-                        onChange={(ev) => {
-                            const next = ev.target.value
-                            host.id = next as ComfyHostID
-                        }}
-                        value={host.id ?? 'unnamed'}
                     ></input>
                 </div>
 
@@ -175,6 +170,18 @@ export const HostUI = observer(function MachineUI_(p: { host: ComfyHostDef }) {
                         type='string'
                         disabled={!Boolean(host.isLocal)}
                         value={host.localPath}
+                    ></input>
+                </div>
+                {/* ID */}
+                <div tw='flex gap-2'>
+                    <LabelUI>id</LabelUI>
+                    <input
+                        tw='input input-bordered input-sm w-full'
+                        onChange={(ev) => {
+                            const next = ev.target.value
+                            host.id = next as ComfyHostID
+                        }}
+                        value={host.id ?? 'unnamed'}
                     ></input>
                 </div>
             </div>
