@@ -2,13 +2,8 @@
 # Feel free to add content and custom Front Matter to this file.
 # To modify the layout, see https://jekyllrb.com/docs/themes/#overriding-theme-defaults
 
-layout: home
+layout: page
 ---
-
-
-<!-- <div align="center"> -->
-
-# 🛋️ CushyStudio
 
 ## _The **AI** and **Generative Art** platform for everyone_
 
@@ -29,7 +24,6 @@ _🔶 NOTICE: CushyStudio is still in development. It updates and breaks often. 
     <img height="21" alt="Follow _rvion on Twitter" src="https://img.shields.io/badge/%40__rvion-666666?style=flat&logo=twitter&labelColor=555&label=Follow">
 </a>
 
-<!-- </div> -->
 
 ---
 
@@ -83,25 +77,9 @@ _media 3: ComfyUI on steroids_
 
 ![](assets/images/2023-11-25-comfy-on-steroids.jpg)
 
------
-
-
-
-
-<div align="center">
-
-```
-Art blooms in bytes, vast,
-In Cushy realms, ideas soar,
-For all, art awakes.
-```
-
-
-</div>
 
 _media 4: Sample Video (placeholder until real video)_
 
-<video src="https://github.com/rvion/CushyStudio/assets/2150990/776b00f5-687e-4043-8dac-34dfe7bd2184"
->
-<source src=''></source>
+<video controls style='width:100%;'>
+    <source src="https://github.com/rvion/CushyStudio/assets/2150990/776b00f5-687e-4043-8dac-34dfe7bd2184"></source>
 </video>
