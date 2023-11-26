@@ -163,6 +163,11 @@ export class STATE {
     set historySize(v: number) { this.configFile.update({ historyAppSize: v }) } // prettier-ignore
     get historySize() { return this.configFile.value.historyAppSize ?? 48 } // prettier-ignore
 
+    // latent size pct
+    get latentSizeStr() { return `${this.latentSize}%` } // prettier-ignore
+    set latentSize(v: number) { this.configFile.update({ latentPreviewSize: v }) } // prettier-ignore
+    get latentSize() { return this.configFile.value.latentPreviewSize ?? 25 } // prettier-ignore
+
     //
     get githubUsername(): Maybe<GithubUserName> { return this.configFile.value.githubUsername as Maybe<GithubUserName> } // prettier-ignore
     get favoriteActions(): AppPath[] { return this.configFile.value.favoriteCards ?? [] } // prettier-ignore

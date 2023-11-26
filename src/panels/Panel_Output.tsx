@@ -1,21 +1,19 @@
 import { observer } from 'mobx-react-lite'
 import { AppIllustrationUI } from 'src/cards/fancycard/AppIllustrationUI'
 import { OutputPreviewUI } from 'src/outputs/OutputUI'
-import { Dropdown } from 'src/rsuite/Dropdown'
 import { InputNumberUI } from 'src/rsuite/InputNumberUI'
-import { Slider } from 'src/rsuite/shims'
-import { parseFloatNoRoundingErr } from 'src/utils/misc/parseFloatNoRoundingErr'
+import { RevealUI } from 'src/rsuite/RevealUI'
 import { FieldAndLabelUI } from 'src/widgets/misc/FieldAndLabelUI'
 import { useSt } from '../state/stateContext'
 import { Panel_ViewImage } from './Panel_ViewImage'
-import { RevealUI } from 'src/rsuite/RevealUI'
+
+const mode: 'H' | 'V' = 1 - 1 == 0 ? 'V' : 'H'
+const dir = mode === 'H' ? 'flex-col' : 'flex-row'
 
 export const Panel_Output = observer(function Panel_Output_(p: {}) {
     const st = useSt()
     const steps = st.db.steps.values.slice(-st.__TEMPT__maxStepsToShow).reverse()
     const step = st.db.steps.last()
-    const mode: 'H' | 'V' = 1 - 1 == 0 ? 'V' : 'H'
-    const dir = mode === 'H' ? 'flex-col' : 'flex-row'
     return (
         <div tw={[mode === 'H' ? 'flex-row' : 'flex-col', 'flex flex-grow h-full w-full']}>
             {/* HISTORY */}
@@ -64,8 +62,8 @@ export const Panel_Output = observer(function Panel_Output_(p: {}) {
                     <div tw='btn btn-sm btn-primary'>
                         <span className='material-symbols-outlined'>present_to_all</span>
                     </div>
-                    <div>
-                        <FieldAndLabelUI label='Size'>
+                    <div tw='flex flex-col gap-1'>
+                        <FieldAndLabelUI label='Output Preview Size'>
                             <InputNumberUI
                                 style={{ width: '5rem' }}
                                 mode={'int'}
@@ -73,6 +71,16 @@ export const Panel_Output = observer(function Panel_Output_(p: {}) {
                                 max={200}
                                 onValueChange={(next) => (st.outputPreviewSize = next)}
                                 value={st.outputPreviewSize}
+                            />
+                        </FieldAndLabelUI>
+                        <FieldAndLabelUI label='Latent Size'>
+                            <InputNumberUI
+                                style={{ width: '5rem' }}
+                                mode={'int'}
+                                min={3}
+                                max={100}
+                                onValueChange={(next) => (st.latentSize = next)}
+                                value={st.latentSize}
                             />
                         </FieldAndLabelUI>
                     </div>

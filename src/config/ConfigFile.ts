@@ -33,6 +33,7 @@ export type ConfigFile = {
     /** defaults to 48px */
     outputPreviewSize?: number
     historyAppSize?: number
+    latentPreviewSize?: number
     /** defaults to 48px */
     galleryImageSize?: number
     /** defaults to 50 */
