@@ -367,6 +367,8 @@ export class CushyLayoutManager {
                                     this._add({ panel: 'Outputs', props: {} }),
                                     this._add({ panel: 'Gallery', props: {} }),
                                     this._add({ panel: 'LastLatent', props: {} }),
+                                    this._add({ panel: 'LastStep', props: {}, canClose: false }),
+                                    this._add({ panel: 'Steps', props: {}, canClose: false }),
                                 ],
                             },
                             // {

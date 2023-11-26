@@ -139,7 +139,7 @@ const getPreviewType = (
         return { url: img?.url ?? errorURL, img }
     }
     if (imageID == null) {
-        if (st.getConfigValue('showPreviewInPanel')) {
+        if (st.showPreviewInPanel) {
             if (st.hovered) return { url: st.hovered.url }
         }
         if (st.showLatentPreviewInLastImagePanel) {
