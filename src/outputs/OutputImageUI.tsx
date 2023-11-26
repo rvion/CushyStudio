@@ -2,7 +2,8 @@ import { observer } from 'mobx-react-lite'
 import { StepL } from 'src/models/Step'
 import { StepOutput_Image } from 'src/types/MessageFromExtensionToWebview'
 import { ImageUI } from 'src/widgets/galleries/ImageUI'
-import { OutputPreviewWrapperUI, OutputWrapperUI } from './OutputWrapperUI'
+import { OutputWrapperUI } from './OutputWrapperUI'
+import { OutputPreviewWrapperUI } from './OutputPreviewWrapperUI'
 
 export const OutputImageUI = observer(function OutputImageUI_(p: { step: StepL; output: StepOutput_Image }) {
     return (

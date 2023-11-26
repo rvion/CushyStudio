@@ -31,6 +31,9 @@ export type ConfigFile = {
     /** 'light' or 'dark'; default to dark */
     theme?: ThemeName
     /** defaults to 48px */
+    outputPreviewSize?: number
+    historyAppSize?: number
+    /** defaults to 48px */
     galleryImageSize?: number
     /** defaults to 50 */
     galleryMaxImages?: number

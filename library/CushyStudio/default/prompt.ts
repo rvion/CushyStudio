@@ -83,12 +83,12 @@ app({
         const negPrompt = p.reversePositiveAndNegative ? p.positive : p.negative
 
         // RICH PROMPT ENGINE -------- ---------------------------------------------------------------
-        const x = run_prompt(flow, { richPrompt: posPrompt, clip, ckpt })
+        const x = run_prompt(flow, { richPrompt: posPrompt, clip, ckpt, outputWildcardsPicked: true })
         const clipPos = x.clip
         const ckptPos = x.ckpt
         const positive = x.conditionning
 
-        const y = run_prompt(flow, { richPrompt: negPrompt, clip, ckpt })
+        const y = run_prompt(flow, { richPrompt: negPrompt, clip, ckpt, outputWildcardsPicked: true })
         const negative = y.conditionning
 
         // START IMAGE -------------------------------------------------------------------------------

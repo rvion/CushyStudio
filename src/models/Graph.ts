@@ -209,6 +209,22 @@ export class GraphL {
     /** @internal pointer to the currently executing node */
     currentExecutingNode: ComfyNode<any> | null = null
 
+    get progressCurrentNode(): Maybe<ProgressReport> {
+        const node = this.currentExecutingNode
+        if (node == null) return null
+        const percent = node.status === 'done' ? 100 : node.progressRatio * 100
+        const isDone = node.status === 'done'
+        return { percent, isDone, countDone: node.progressRatio * 100, countTotal: 100 }
+    }
+    get progressGlobal(): ProgressReport {
+        const totalNode = this.nodes.length
+        const doneNodes = this.nodes.filter((n) => n.status === 'done' || n.status === 'cached').length
+        const bonus = this.currentExecutingNode?.progressRatio ?? 0
+        const score = (doneNodes + bonus) / totalNode
+        const percent = this.done ? 100 : score * 100
+        const isDone = this.done
+        return { percent, isDone, countDone: doneNodes + bonus, countTotal: totalNode }
+    }
     /** @internal update the progress value of the currently focused onde */
     onProgress = (msg: WsMsgProgress) => {
         if (this.currentExecutingNode == null) return console.log('❌ no current executing node', msg)
@@ -355,3 +371,10 @@ export class GraphL {
 //         cache[id] = branch.commit({ body: node.$schema.name })
 //     }
 // }
+
+export type ProgressReport = {
+    percent: number
+    isDone: boolean
+    countDone: number
+    countTotal: number
+}

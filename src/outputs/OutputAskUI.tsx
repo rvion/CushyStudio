@@ -1,7 +1,8 @@
 import type { StepL } from 'src/models/Step'
 import { observer } from 'mobx-react-lite'
 import { StepOutput_GUI } from 'src/types/MessageFromExtensionToWebview'
-import { OutputPreviewWrapperUI, OutputWrapperUI } from './OutputWrapperUI'
+import { OutputWrapperUI } from './OutputWrapperUI'
+import { OutputPreviewWrapperUI } from './OutputPreviewWrapperUI'
 
 // -----------------
 

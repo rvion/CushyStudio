@@ -52,21 +52,13 @@ export const GraphSummaryUI = observer(function GraphSummaryUI_(p: { graph: Grap
 export const NodeProgressUI = observer(function NodeProgressUI_(p: { graph: GraphL }) {
     const graph = p.graph
     if (graph == null) return <>no execution yet</>
-    const node = graph.currentExecutingNode
-    if (node == null) return null
-    const percent = node.status === 'done' ? 100 : node.progressRatio * 100
-    const isDone = node.status === 'done'
-    return <ProgressLine status={isDone ? 'success' : 'active'} percent={percent} />
+    const pgr = graph.progressCurrentNode
+    return <ProgressLine status={pgr?.isDone ? 'success' : 'active'} percent={pgr?.percent} />
 })
 
 export const GraphProgressUI = observer(function NodeProgressUI_(p: { graph: GraphL }) {
     const graph = p.graph
     if (graph == null) return null
-    const totalNode = graph.nodes.length
-    const doneNodes = graph.nodes.filter((n) => n.status === 'done' || n.status === 'cached').length
-    const bonus = graph.currentExecutingNode?.progressRatio ?? 0
-    const score = (doneNodes + bonus) / totalNode
-    const percent = graph.done ? 100 : score * 100
-    const isDone = graph.done
-    return <ProgressLine status={isDone ? 'success' : 'active'} percent={percent} />
+    const pgr = graph.progressGlobal
+    return <ProgressLine status={pgr.isDone ? 'success' : 'active'} percent={pgr.percent} />
 })

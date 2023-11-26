@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 import { Panel } from 'src/rsuite/shims'
 import { StepOutput_Html } from 'src/types/MessageFromExtensionToWebview'
-import { OutputPreviewWrapperUI } from './OutputWrapperUI'
+import { OutputPreviewWrapperUI } from './OutputPreviewWrapperUI'
 import { StepL } from 'src/models/Step'
 
 export const OutputHtmlUI = observer(function OutputHtmlUI_(p: { step: StepL; output: StepOutput_Html }) {

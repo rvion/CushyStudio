@@ -153,6 +153,16 @@ export class STATE {
     set gallerySize(v: number) { this.configFile.update({ galleryImageSize: v }) } // prettier-ignore
     get gallerySize() { return this.configFile.value.galleryImageSize ?? 48 } // prettier-ignore
 
+    // output size
+    get outputPreviewSizeStr() { return `${this.outputPreviewSize}px` } // prettier-ignore
+    set outputPreviewSize(v: number) { this.configFile.update({ outputPreviewSize: v }) } // prettier-ignore
+    get outputPreviewSize() { return this.configFile.value.outputPreviewSize ?? 48 } // prettier-ignore
+
+    // history app size
+    get historySizeStr() { return `${this.historySize}px` } // prettier-ignore
+    set historySize(v: number) { this.configFile.update({ historyAppSize: v }) } // prettier-ignore
+    get historySize() { return this.configFile.value.historyAppSize ?? 48 } // prettier-ignore
+
     //
     get githubUsername(): Maybe<GithubUserName> { return this.configFile.value.githubUsername as Maybe<GithubUserName> } // prettier-ignore
     get favoriteActions(): AppPath[] { return this.configFile.value.favoriteCards ?? [] } // prettier-ignore

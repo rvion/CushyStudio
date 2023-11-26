@@ -1,7 +1,8 @@
 import type { StepL } from 'src/models/Step'
 import { observer } from 'mobx-react-lite'
 import { StepOutput_ComfyWorkflow } from 'src/types/MessageFromExtensionToWebview'
-import { OutputPreviewWrapperUI, OutputWrapperUI } from './OutputWrapperUI'
+import { OutputWrapperUI } from './OutputWrapperUI'
+import { OutputPreviewWrapperUI } from './OutputPreviewWrapperUI'
 import { useSt } from 'src/state/stateContext'
 
 export const OutputWorkflowUI = observer(function OutputWorkflowUI_(p: { step: StepL; output: StepOutput_ComfyWorkflow }) {

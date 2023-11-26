@@ -5,25 +5,14 @@ import { Button } from 'src/rsuite/shims'
 import { useSt } from '../../state/stateContext'
 import { useImageDrag } from './dnd'
 
-export const ImageUI = observer(function ImageUI_(p: { img: ImageL | ImageID }) {
+export const ImageUI = observer(function ImageUI_(p: { size?: string; img: ImageL | ImageID }) {
     const st = useSt()
     const image = typeof p.img === 'string' ? st.db.images.get(p.img) : p.img
 
-    const GalleryImageWidth = st.gallerySizeStr
+    const ImageWidth = p.size ?? st.gallerySizeStr
     const [{ opacity }, dragRef] = useImageDrag(image! /* 🔴 */)
 
-    if (image == null)
-        return (
-            <div
-                style={{
-                    //
-                    width: GalleryImageWidth,
-                    height: GalleryImageWidth,
-                }}
-            >
-                ❌
-            </div>
-        )
+    if (image == null) return <div style={{ width: ImageWidth, height: ImageWidth }}>❌</div>
 
     const IMG =
         image.data.type === 'video' ? (
@@ -33,11 +22,7 @@ export const ImageUI = observer(function ImageUI_(p: { img: ImageL | ImageID }) 
                 onMouseLeave={() => {
                     if (st.hovered?.url === image.url) st.hovered = null
                 }}
-                style={{
-                    //
-                    width: GalleryImageWidth,
-                    height: GalleryImageWidth,
-                }}
+                style={{ width: ImageWidth, height: ImageWidth }}
                 src={image.url}
             ></video>
         ) : (
@@ -51,34 +36,27 @@ export const ImageUI = observer(function ImageUI_(p: { img: ImageL | ImageID }) 
                 }}
                 style={{
                     objectFit: 'contain',
-                    width: GalleryImageWidth,
-                    height: GalleryImageWidth,
+                    width: ImageWidth,
+                    height: ImageWidth,
                     opacity,
                     padding: '0.2rem',
                     borderRadius: '.5rem',
                 }}
-                // onAuxClick={(e) => {
-                //     st.hovered = null
-                //     st.currentAction = { type: 'paint', imageID: image.id }
-                // }}
                 onClick={() => st.layout.FOCUS_OR_CREATE('Image', { imageID: image.id })}
             />
         )
     return (
-        <>
-            {/* right click logic 👇 */}
-            <RevealUI enableRightClick>
-                <div>{IMG}</div>
-                <div>
-                    <Button
-                        icon={<span className='material-symbols-outlined'>edit</span>}
-                        onClick={() => st.layout.FOCUS_OR_CREATE('Paint', { imgID: image.id })}
-                    >
-                        Paint
-                    </Button>
-                </div>
-            </RevealUI>
-        </>
+        <RevealUI enableRightClick>
+            <div>{IMG}</div>
+            <div>
+                <Button
+                    icon={<span className='material-symbols-outlined'>edit</span>}
+                    onClick={() => st.layout.FOCUS_OR_CREATE('Paint', { imgID: image.id })}
+                >
+                    Paint
+                </Button>
+            </div>
+        </RevealUI>
     )
 })
 

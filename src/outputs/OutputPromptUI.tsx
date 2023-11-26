@@ -5,7 +5,7 @@ import { GraphSummaryUI } from '../widgets/workspace/GraphSummaryUI'
 import { useSt } from 'src/state/stateContext'
 import { StepOutput_Prompt } from 'src/types/MessageFromExtensionToWebview'
 import { StepL } from 'src/models/Step'
-import { OutputPreviewWrapperUI } from './OutputWrapperUI'
+import { OutputPreviewWrapperUI } from './OutputPreviewWrapperUI'
 
 export const OutputPromptUI = observer(function OutputPromptUI_(p: {
     //
@@ -46,9 +46,31 @@ export const OutputPromptUI = observer(function OutputPromptUI_(p: {
 })
 
 export const OutputPromptPreviewUI = observer(function OutputPromptPreviewUI_(p: { step: StepL; output: StepOutput_Prompt }) {
+    const graph = p.step.outputWorkflow.item
+    if (graph == null)
+        return (
+            <OutputPreviewWrapperUI output={p.output}>
+                <div>❌ ERROR</div>
+                <OutputPromptUI step={p.step} output={p.output} />
+            </OutputPreviewWrapperUI>
+        )
+    const pgr1 = graph.progressGlobal
+    console.log('🟢', pgr1)
+    // const pgr2 = graph.graphProgressCurrentNode
     return (
         <OutputPreviewWrapperUI output={p.output}>
-            <div>Prompt</div>
+            <div>
+                <div
+                    className='radial-progress'
+                    style={{
+                        // @ts-ignore
+                        '--value': pgr1.percent,
+                    }}
+                    role='progressbar'
+                >
+                    {pgr1.percent}%
+                </div>
+            </div>
             <OutputPromptUI step={p.step} output={p.output} />
         </OutputPreviewWrapperUI>
     )

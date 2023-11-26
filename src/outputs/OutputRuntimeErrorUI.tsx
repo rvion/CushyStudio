@@ -3,7 +3,7 @@ import { Panel } from 'src/rsuite/shims'
 import { JsonViewUI } from '../widgets/workspace/JsonViewUI'
 import { StepOutput_RuntimeError } from 'src/types/MessageFromExtensionToWebview'
 import { StepL } from 'src/models/Step'
-import { OutputPreviewWrapperUI } from './OutputWrapperUI'
+import { OutputPreviewWrapperUI } from './OutputPreviewWrapperUI'
 
 export const OutputRuntimeErrorUI = observer(function OutputRuntimeErrorUI_(p: { step: StepL; output: StepOutput_RuntimeError }) {
     const msg = p.output

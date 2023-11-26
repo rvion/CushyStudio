@@ -141,7 +141,7 @@ body {
         color-mix(
             in oklch,
             oklch(var(--n)),
-            transparent 90%
+            transparent 60%
         )
 }
 
