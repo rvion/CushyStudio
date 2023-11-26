@@ -61,3 +61,5 @@ export class ComfyWorkflowBuilder {
         }
     }
 }
+
+export class MissingNode {}

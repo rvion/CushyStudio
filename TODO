@@ -3,7 +3,7 @@ Todo before release
 ☐ warning if custom nodes not installed by default
 ☐ proper error message when node not found
 ☐ small mention in the readme that dev console can help troubleshoot problems.
-☐ fix all selects
+✔ fix all selects @done(23-11-26 11:56)
 ☐ custom size on size widget
 ☐ draft tabs/ files
 ☐ background image for config panel

@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 import { LibraryFile } from '../CardFile'
 
-export const CardIllustrationUI = observer(function CardIllustrationUI_(p: {
+export const AppIllustrationUI = observer(function AppIllustrationUI_(p: {
     className?: string
     onClick?: () => void
     card: LibraryFile

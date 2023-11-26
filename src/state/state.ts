@@ -33,7 +33,6 @@ import { GraphL } from '../models/Graph'
 import { EmbeddingName, EnumValue, SchemaL } from '../models/Schema'
 import { CushyLayoutManager } from '../panels/router/Layout'
 import { ComfySchemaJSON, ComfySchemaJSON_zod } from '../types/ComfySchemaJSON'
-import { FromExtension_CushyStatus } from '../types/MessageFromExtensionToWebview'
 import { ElectronUtils } from '../utils/electron/ElectronUtils'
 import { extractErrorMessage } from '../utils/formatters/extractErrorMessage'
 import { readableStringify } from '../utils/formatters/stringifyReadable'
@@ -44,6 +43,7 @@ import { ManualPromise } from '../utils/misc/ManualPromise'
 import { DanbooruTags } from '../widgets/prompter/nodes/booru/BooruLoader'
 import { Uploader } from './Uploader'
 import { ComfyHostDef, ComfyHostID, DEFAULT_COMFYUI_INSTANCE_ID, defaultHost } from 'src/config/ComfyHostDef'
+import { StepID, StepL } from 'src/models/Step'
 
 // prettier-ignore
 type HoveredAsset =
@@ -54,7 +54,7 @@ export class STATE {
     /** hack to help closing prompt completions */
     currentPromptFocused: Maybe<HTMLDivElement> = null
 
-    __TEMPT__maxStepsToShow = 10
+    __TEMPT__maxStepsToShow = 30
 
     //file utils that need to be setup first because
     resolveFromRoot = (relativePath: RelativePath): AbsolutePath => asAbsolutePath(join(this.rootPath, relativePath))
@@ -120,7 +120,6 @@ export class STATE {
     graphHovered: Maybe<{ graph: GraphL; pctTop: number; pctLeft: number }> = null
     sid: Maybe<string> = null
     comfyStatus: Maybe<ComfyStatus> = null
-    cushyStatus: Maybe<FromExtension_CushyStatus> = null
     configFile: JsonFile<ConfigFile>
     updater: GitManagedFolder
     hovered: Maybe<HoveredAsset> = null
@@ -556,6 +555,12 @@ export class STATE {
     get schemaStatusEmoji() {
         if (this.schema.nodes.length > 10) return '🟢'
         return '🔴'
+    }
+
+    focusedStepID: Maybe<StepID> = null
+    get focusedStepL(): Maybe<StepL> {
+        if (this.focusedStepID) return this.db.steps.get(this.focusedStepID) ?? this.db.steps.last()
+        return this.db.steps.last()
     }
 
     graph: Maybe<GraphL> = null

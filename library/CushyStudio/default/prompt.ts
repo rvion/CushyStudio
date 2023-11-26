@@ -107,6 +107,8 @@ app({
         const firstPass = run_sampler(flow, p.sampler, ctx_sampler)
         latent = firstPass.latent
 
+        // graph.FUIOSUIO({}) as any
+
         // RECURSIVE PASS ----------------------------------------------------------------------------
         if (p.recursiveImgToImg) {
             for (let i = 0; i < p.recursiveImgToImg.loops; i++) {

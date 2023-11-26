@@ -6,7 +6,7 @@ import { Package } from '../Pkg'
 
 import { ActionFavoriteBtnUI } from '../CardPicker2UI'
 import { GithubUserUI } from '../GithubAvatarUI'
-import { CardIllustrationUI } from './AppIllustrationUI'
+import { AppIllustrationUI } from './AppIllustrationUI'
 import { useSt } from 'src/state/stateContext'
 
 export const AppCardUI = observer(function FancyCardUI_(p: {
@@ -50,7 +50,7 @@ export const AppCardUI = observer(function FancyCardUI_(p: {
                 </div>
             </div>
             <div tw='flex'>
-                <CardIllustrationUI card={card} size={st.library.imageSize} />
+                <AppIllustrationUI card={card} size={st.library.imageSize} />
                 {st.library.showDescription ? (
                     <div tw='flex-grow flex flex-col ml-1 w-44'>
                         <div>

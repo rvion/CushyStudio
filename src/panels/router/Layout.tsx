@@ -23,8 +23,12 @@ type PerspectiveDataForSelect = {
     value: string
 }
 
+type MENU_PANE_TABSET_T = 'MENU_PANE_TABSET'
+const MENU_PANE_TABSET_ID: MENU_PANE_TABSET_T = 'MENU_PANE_TABSET'
+
 type LEFT_PANE_TABSET_T = 'LEFT_PANE_TABSET'
 const LEFT_PANE_TABSET_ID: LEFT_PANE_TABSET_T = 'LEFT_PANE_TABSET'
+
 type RIGHT_PANE_TABSET_T = 'RIGHT_PANE_TABSET'
 const RIGHT_PANE_TABSET_ID: RIGHT_PANE_TABSET_T = 'RIGHT_PANE_TABSET'
 
@@ -58,8 +62,8 @@ export class CushyLayoutManager {
     saveCurrentAs = (perspectiveName: string) => {
         const curr: FL.IJsonModel = this.model.toJson()
         this.st.configFile.update((t) => {
-            t.layouts_v5 ??= {}
-            t.layouts_v5[perspectiveName] = curr
+            t.layouts_v6 ??= {}
+            t.layouts_v6[perspectiveName] = curr
         })
     }
 
@@ -67,8 +71,8 @@ export class CushyLayoutManager {
     resetDefault = (): void => this.reset('default')
     reset = (perspectiveName: string): void => {
         this.st.configFile.update((t) => {
-            t.layouts_v5 ??= {}
-            delete t.layouts_v5[perspectiveName]
+            t.layouts_v6 ??= {}
+            delete t.layouts_v6[perspectiveName]
         })
         if (perspectiveName === this.currentPerspectiveName) {
             this.setModel(Model.fromJson(this.build()))
@@ -76,7 +80,7 @@ export class CushyLayoutManager {
     }
 
     constructor(public st: STATE) {
-        const prevLayout = st.configFile.value.layouts_v5?.default
+        const prevLayout = st.configFile.value.layouts_v6?.default
         const json = prevLayout ?? this.build()
         try {
             this.setModel(Model.fromJson(json))
@@ -282,30 +286,51 @@ export class CushyLayoutManager {
             },
             borders: [
                 // LEFT BORDER
-                {
-                    type: 'border',
-                    size: 250,
-                    location: 'left',
-                    selected: 0,
-                    show: true,
-                    children: [this._add({ panel: 'FileList', props: {}, canClose: false, width: 250 })],
-                },
+                // {
+                //     type: 'border',
+                //     size: 250,
+                //     location: 'left',
+                //     selected: 0,
+                //     show: true,
+                //     children: [this._add({ panel: 'FileList', props: {}, canClose: false, width: 250 })],
+                // },
                 // RIGHT BORDER
-                {
-                    type: 'border',
-                    location: 'right',
-                    show: true,
-                    selected: 0,
-                    children: [
-                        this._add({ panel: 'LastStep', props: {}, canClose: false }),
-                        this._add({ panel: 'Steps', props: {}, canClose: false }),
-                    ],
-                },
+                // {
+                //     type: 'border',
+                //     location: 'right',
+                //     show: true,
+                //     // selected: 0,
+                //     children: [
+                //         this._add({ panel: 'LastStep', props: {}, canClose: false }),
+                //         this._add({ panel: 'Steps', props: {}, canClose: false }),
+                //     ],
+                // },
             ],
             layout: {
                 id: 'rootRow',
                 type: 'row',
                 children: [
+                    {
+                        id: 'menuPane',
+                        type: 'row',
+                        width: 100,
+                        children: [
+                            {
+                                type: 'tabset',
+                                id: MENU_PANE_TABSET_ID,
+                                minWidth: 64,
+                                minHeight: 150,
+                                width: 200,
+                                enableClose: false,
+                                enableDeleteWhenEmpty: false,
+                                children: [
+                                    this._add({ panel: 'FileList', props: {}, canClose: false, width: 200 }),
+                                    // this._add({ panel: 'CurrentDraft', canClose: false, props: {}, width: 600 })
+                                ],
+                                enableSingleTabStretch: true,
+                            },
+                        ],
+                    },
                     {
                         id: 'leftPane',
                         type: 'row',
@@ -320,18 +345,8 @@ export class CushyLayoutManager {
                                 enableClose: false,
                                 enableDeleteWhenEmpty: false,
                                 children: [this._add({ panel: 'CurrentDraft', canClose: false, props: {}, width: 600 })],
-                                // enableSingleTabStretch: true,
+                                enableSingleTabStretch: true,
                             },
-                            // {
-                            //     type: 'tabset',
-                            //     height: 200,
-                            //     minWidth: 150,
-                            //     minHeight: 150,
-                            //     children: [
-                            //         this._persistentTab({ name: '⎏ Last step', widget: Widget.LastStep, id: '/LastStep' }),
-                            //         // this._persistentTab('Hosts', Widget.Hosts),
-                            //     ],
-                            // },
                         ],
                     },
                     {
@@ -347,24 +362,26 @@ export class CushyLayoutManager {
                                 minWidth: 150,
                                 minHeight: 150,
                                 children: [
-                                    this._add({
-                                        panel: 'LastImage',
-                                        props: {},
-                                        canClose: false,
-                                    }),
-                                ],
-                            },
-                            {
-                                type: 'tabset',
-                                height: 200,
-                                minWidth: 150,
-                                minHeight: 150,
-                                children: [
+                                    this._add({ panel: 'Output', props: {}, canClose: false }),
+                                    this._add({ panel: 'LastImage', props: {} }),
+                                    this._add({ panel: 'Outputs', props: {} }),
                                     this._add({ panel: 'Gallery', props: {} }),
                                     this._add({ panel: 'LastLatent', props: {} }),
-                                    // this._persistentTab('Hosts', Widget.Hosts),
                                 ],
                             },
+                            // {
+                            //     type: 'tabset',
+                            //     height: 200,
+                            //     minWidth: 150,
+                            //     minHeight: 150,
+                            //     children: [
+                            //         // this._add({ panel: 'Steps', props: {}, canClose: false }),
+                            //         this._add({ panel: 'Outputs', props: {} }),
+                            //         this._add({ panel: 'Gallery', props: {} }),
+                            //         this._add({ panel: 'LastLatent', props: {} }),
+                            //         // this._persistentTab('Hosts', Widget.Hosts),
+                            //     ],
+                            // },
                         ],
                     },
                 ],

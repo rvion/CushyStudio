@@ -14,7 +14,7 @@
 import { makeAutoObservable } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { createRef, useEffect, useLayoutEffect, useMemo } from 'react'
-import { Input, Slider } from 'src/rsuite/shims'
+import { Input, Slider, Toggle } from 'src/rsuite/shims'
 import { parseFloatNoRoundingErr } from 'src/utils/misc/parseFloatNoRoundingErr'
 import { FieldAndLabelUI } from 'src/widgets/misc/FieldAndLabelUI'
 import * as THREE from 'three'
@@ -77,12 +77,7 @@ export const Panel_3dScene = observer(function SceneViewer_(p: Panel_Displacemen
                     />
                 </FieldAndLabelUI>
                 <FieldAndLabelUI label='Symmetric Model'>
-                    <input
-                        //
-                        type='checkbox'
-                        checked={state.isSymmetric}
-                        onChange={(e) => (state.isSymmetric = e.target.checked)}
-                    />
+                    <Toggle checked={state.isSymmetric} onChange={(e) => (state.isSymmetric = e.target.checked)} />
                 </FieldAndLabelUI>
             </div>
             <div ref={state.mountRef} />

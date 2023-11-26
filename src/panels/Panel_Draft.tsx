@@ -5,7 +5,7 @@ import { useEffect } from 'react'
 import { showItemInFolder } from 'src/app/layout/openExternal'
 import { LibraryFile } from 'src/cards/CardFile'
 import { GithubUserUI } from 'src/cards/GithubAvatarUI'
-import { CardIllustrationUI } from 'src/cards/fancycard/AppIllustrationUI'
+import { AppIllustrationUI } from 'src/cards/fancycard/AppIllustrationUI'
 import { DraftID, DraftL } from 'src/models/Draft'
 import { Dropdown, MenuItem } from 'src/rsuite/Dropdown'
 import { PhoneWrapperUI } from 'src/rsuite/PhoneWrapperUI'
@@ -295,7 +295,7 @@ export const DraftHeaderUI = observer(function DraftHeaderUI_(p: { draft: DraftL
     return (
         <div tw='flex p-1 bg-base-300 border-b border-b-base-300'>
             <div tw='flex gap-0.5 flex-grow relative text-base-content py-1'>
-                <CardIllustrationUI card={app} size='4rem' />
+                <AppIllustrationUI card={app} size='4rem' />
                 <div tw='px-1 flex-grow'>
                     <div
                         //

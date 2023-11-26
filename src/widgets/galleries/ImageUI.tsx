@@ -1,15 +1,29 @@
+import type { ImageID, ImageL } from 'src/models/Image'
 import { observer } from 'mobx-react-lite'
-import { ImageL } from 'src/models/Image'
 import { RevealUI } from 'src/rsuite/RevealUI'
 import { Button } from 'src/rsuite/shims'
 import { useSt } from '../../state/stateContext'
 import { useImageDrag } from './dnd'
 
-export const ImageUI = observer(function ImageUI_(p: { img: ImageL }) {
-    const image = p.img
+export const ImageUI = observer(function ImageUI_(p: { img: ImageL | ImageID }) {
     const st = useSt()
+    const image = typeof p.img === 'string' ? st.db.images.get(p.img) : p.img
+
     const GalleryImageWidth = st.gallerySizeStr
-    const [{ opacity }, dragRef] = useImageDrag(image)
+    const [{ opacity }, dragRef] = useImageDrag(image! /* 🔴 */)
+
+    if (image == null)
+        return (
+            <div
+                style={{
+                    //
+                    width: GalleryImageWidth,
+                    height: GalleryImageWidth,
+                }}
+            >
+                ❌
+            </div>
+        )
 
     const IMG =
         image.data.type === 'video' ? (

@@ -91,7 +91,7 @@ export class PromptL {
     private onError = (msg: WsMsgExecutionError) => {
         console.log('>> MARK ERROR')
         this.step.item.update({ status: Status.Failure })
-        this.step.item.addOutput(msg)
+        this.step.item.addOutput({ type: 'executionError', payloadFromComfy: msg })
         this._finish()
     }
 
@@ -107,7 +107,7 @@ export class PromptL {
             const comfyURL = this.st.getServerHostHTTP() + '/view?' + new URLSearchParams(img).toString()
             // const absPath = this.st.resolve(this.st.outputFolderPath, asRelativePath(join(img.subfolder, img.filename)))
             const absPath = this.st.resolve(this.st.outputFolderPath, asRelativePath(img.filename))
-            const images = this.db.images.create({
+            const image = this.db.images.create({
                 id: nanoid(),
                 promptID: this.id,
                 // comfyURL,
@@ -118,6 +118,7 @@ export class PromptL {
                 // localAbsolutePath: img.localAbsolutePath,
             })
             // this.images.push(images)
+            this.step.item.addOutput({ type: 'image', imgID: image.id })
         }
         this.outputs.push(msg) // accumulate in self
         // const node = this._graph.getNodeOrCrash(msg.data.node)

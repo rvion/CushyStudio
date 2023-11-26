@@ -1,33 +1,19 @@
-import type { PromptL } from './Prompt'
 import type { AppPath } from 'src/cards/CardPath'
-import type {
-    StepOutput_Text,
-    StepOutput_Prompt,
-    StepOutput_RuntimeError,
-    StepOutput_Html,
-} from 'src/types/MessageFromExtensionToWebview'
+import type { StepOutput } from 'src/types/MessageFromExtensionToWebview'
 import type { LiveInstance } from '../db/LiveInstance'
 import type { GraphID, GraphL } from '../models/Graph'
-import type { WsMsgExecuted, WsMsgExecutionError } from '../types/ComfyWsApi'
+import type { PromptL } from './Prompt'
 
+import { LibraryFile } from 'src/cards/CardFile'
 import { Runtime } from '../back/Runtime'
 import { Status } from '../back/Status'
 import { LiveCollection } from '../db/LiveCollection'
 import { LiveRef } from '../db/LiveRef'
-import { LibraryFile } from 'src/cards/CardFile'
 
 export type FormPath = (string | number)[]
 
 export type StepID = Branded<string, { StepID: true }>
 export const asStepID = (s: string): StepID => s as any
-
-export type StepOutput =
-    | StepOutput_Text
-    | WsMsgExecuted
-    | WsMsgExecutionError
-    | StepOutput_Prompt
-    | StepOutput_Html
-    | StepOutput_RuntimeError
 
 export type StepT = {
     id: StepID
@@ -61,6 +47,7 @@ export class StepL {
         // this.data.outputGraphID = out.id
         this.runtime = new Runtime(this)
         this.update({ status: Status.Running })
+        this.addOutput({ type: 'comfy-workflow', graphID: this.outputWorkflow.id })
         const scriptExecutionStatus = await this.runtime.run()
 
         if (this.prompts.items.every((p: PromptL) => p.data.executed)) {
@@ -69,8 +56,8 @@ export class StepL {
     }
 
     prompts = new LiveCollection<PromptL>(this, 'stepID', 'prompts')
-    parentGraph = new LiveRef<this, GraphL>(this, 'parentGraphID', 'graphs')
-    outputGraph = new LiveRef<this, GraphL>(this, 'outputGraphID', 'graphs')
+    parentWorkflow = new LiveRef<this, GraphL>(this, 'parentGraphID', 'graphs')
+    outputWorkflow = new LiveRef<this, GraphL>(this, 'outputGraphID', 'graphs')
 
     get appFile(): LibraryFile | undefined { return this.st.library.cardsByPath.get(this.data.actionPath) } // prettier-ignore
     get appCompiled() { return this.appFile?.appCompiled } // prettier-ignore
@@ -78,6 +65,14 @@ export class StepL {
     get generatedImages() { return this.prompts.items.map((p) => p.images.items).flat() } // prettier-ignore
 
     runtime: Maybe<Runtime> = null
+
+    focusedOutput: Maybe<number>
+    get collage() {
+        const imgs = this.generatedImages
+        const last = imgs[imgs.length - 1]
+        if (last == null) return
+        if (this.focusedOutput == null) return this.generatedImages
+    }
 
     addOutput = (output: StepOutput) =>
         this.update({

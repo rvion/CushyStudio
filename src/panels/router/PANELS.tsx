@@ -5,7 +5,7 @@ import { Panel_ComfyNodeExplorer } from '../Panel_ComfyNodeExplorer'
 import { Panel_ComfyUI } from '../Panel_ComfyUI'
 import { Panel_Config } from '../Panel_Config'
 import { Panel_CurrentDraft } from '../Panel_CurrentDraft'
-import { Panel_DeckList } from '../Panel_DeckList'
+import { Panel_AppList } from '../Panel_AppList'
 import { Panel_Draft } from '../Panel_Draft'
 import { Panel_DraftJsonResult } from '../Panel_DraftJsonResult'
 import { Panel_DraftJsonSerial } from '../Panel_DraftJsonSerial'
@@ -21,6 +21,8 @@ import { Panel_ViewImage } from '../Panel_ViewImage'
 import { Panel_ViewLatent } from '../Panel_ViewLatent'
 import { PropsOf } from './Layout'
 import { Panel_TypeDoc } from '../Panel_TypeDoc'
+import { Panel_Outputs } from '../Panel_Outputs'
+import { Panel_Output } from '../Panel_Output'
 
 // prettier-ignore
 export const panels = {
@@ -32,13 +34,15 @@ export const panels = {
     // apps & marketplace
     Marketplace:         { name: 'Marketplace',         widget: Panel_Marketplace,       header: (p: PropsOf<typeof Panel_Marketplace      >) => ({title: 'Marketplace',         icon: assets.public_CushyLogo_512_png         }) },
     Deck:                { name: 'Deck',                widget: Panel_ComfyNodeExplorer, header: (p: PropsOf<typeof Panel_ComfyNodeExplorer>) => ({title: 'Deck',                icon: undefined                               }) },
-    FileList:            { name: 'FileList',            widget: Panel_DeckList,          header: (p: PropsOf<typeof Panel_DeckList         >) => ({title: 'FileList',            icon: undefined                               }) },
+    FileList:            { name: 'FileList',            widget: Panel_AppList,          header: (p: PropsOf<typeof Panel_AppList         >) => ({title: 'FileList',            icon: undefined                               }) },
 
     // ComfyUI
     ComfyUI:             { name: 'ComfyUI',             widget: Panel_ComfyUI,           header: (p: PropsOf<typeof Panel_ComfyUI          >) => ({title: 'ComfyUI',             icon: assets.public_ComfyUILogo_png           }) },
     ComfyUINodeExplorer: { name: 'ComfyUINodeExplorer', widget: Panel_ComfyNodeExplorer, header: (p: PropsOf<typeof Panel_ComfyNodeExplorer>) => ({title: 'ComfyUINodeExplorer', icon: assets.public_ComfyUILogo_png           }) },
 
     // misc
+    Output:              { name: 'Output',              widget: Panel_Output,            header: (p: PropsOf<typeof Panel_Output           >) => ({title: 'Output',              icon: undefined                               }) },
+    Outputs:             { name: 'Outputs',             widget: Panel_Outputs,           header: (p: PropsOf<typeof Panel_Outputs          >) => ({title: 'Outputs',             icon: undefined                               }) },
     Steps:               { name: 'Steps',               widget: Panel_Steps,             header: (p: PropsOf<typeof Panel_Steps            >) => ({title: 'Steps',               icon: undefined                               }) },
     LastGraph:           { name: 'LastGraph',           widget: Panel_LastGraph,         header: (p: PropsOf<typeof Panel_LastGraph        >) => ({title: '⏱️ LastGraph',        icon: undefined                               }) },
     LastImage:           { name: 'LastImage',           widget: Panel_ViewImage,         header: (p: PropsOf<typeof Panel_ViewImage        >) => ({title: '⏱️ LastImage',        icon: undefined                               }) },

@@ -17,13 +17,10 @@ export const Panel_ViewImage = observer(function Panel_ViewImage_(p: { imageID?:
     const { img, url } = getPreviewType(st, p.imageID)
     const imgPathWithFileProtocol = img ? `file://${img.localAbsolutePath}` : null
     // if (img == null) return null
+    const background = st.configFile.value.galleryBgColor
+
     return (
-        <div
-            tw='w-full h-full flex flex-col bg-base-100'
-            style={{
-                background: st.configFile.value.galleryBgColor,
-            }}
-        >
+        <div tw='w-full h-full flex flex-col bg-base-100' style={{ background }}>
             {/* {url} */}
             <div tw='flex items-center gap-2 bg-base-200'>
                 {/* 1. RATER */}

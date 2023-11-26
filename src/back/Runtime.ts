@@ -95,18 +95,13 @@ export class Runtime<FIELDS extends WidgetDict = any> {
     get schema() { return this.st.schema } // prettier-ignore
 
     /** the default app's ComfyUI graph we're manipulating */
-    get mainWorkflow(): GraphL {
-        return this.step.outputGraph.item
-    }
-
-    /** graph buider */
-    get comfyWorkflow(): ComfyWorkflowBuilder {
-        return this.mainWorkflow.builder
+    get workflow(): GraphL {
+        return this.step.outputWorkflow.item
     }
 
     /** graph buider */
     get nodes(): ComfyWorkflowBuilder {
-        return this.mainWorkflow.builder
+        return this.workflow.builder
     }
 
     // ====================================================================
@@ -159,7 +154,7 @@ export class Runtime<FIELDS extends WidgetDict = any> {
                 return Status.Failure
             }
             await app.run(this, appFormInput)
-            console.log(`🔴 after: size=${this.mainWorkflow.nodes.length}`)
+            console.log(`🔴 after: size=${this.workflow.nodes.length}`)
             console.log('[✅] RUN SUCCESS')
             const duration = Date.now() - start
             return Status.Success
@@ -268,6 +263,7 @@ export class Runtime<FIELDS extends WidgetDict = any> {
         this.step.addOutput({ type: 'show-html', content: htmlContent, title: p.title })
         // this.st.broadCastToAllClients({ type: 'show-html', content: htmlContent, title: p.title })
     }
+    // ===================================================================================================
 
     // private
     downloadURI = (uri: string, name: string) => {
@@ -574,7 +570,7 @@ export class Runtime<FIELDS extends WidgetDict = any> {
 
     private _promptCounter = 0
     private sendPromp = async (idMode: IDNaminScheemeInPromptSentToComfyUI): Promise<PromptL> => {
-        const liveGraph = this.mainWorkflow
+        const liveGraph = this.workflow
         if (liveGraph == null) throw new Error('no graph')
         const currentJSON = deepCopyNaive(liveGraph.json_forPrompt(idMode))
         const debugWorkflow = await liveGraph.json_workflow()
@@ -629,6 +625,7 @@ export class Runtime<FIELDS extends WidgetDict = any> {
         })
         const prompmtInfo: PromptInfo = await res.json()
         // console.log('prompt status', res.status, res.statusText, prompmtInfo)
+        this.step.addOutput({ type: 'prompt', promptID: prompmtInfo.prompt_id })
         if (res.status !== 200) {
             const err = new InvalidPromptError('ComfyUI Prompt request failed', graph, prompmtInfo)
             return Promise.reject(err)
@@ -639,7 +636,7 @@ export class Runtime<FIELDS extends WidgetDict = any> {
                 graphID: graph.id,
                 stepID,
             })
-            this.step.addOutput({ type: 'prompt', promptID: prompmtInfo.prompt_id })
+            // this.step.addOutput({ type: 'prompt', promptID: prompmtInfo.prompt_id })
             return prompt
         }
         // await sleep(1000)

@@ -5,7 +5,7 @@ import { observer } from 'mobx-react-lite'
 import { Fragment } from 'react'
 import { useSt } from '../state/stateContext'
 import { PkgHeaderUI } from './PkgHeaderUI'
-import { CardIllustrationUI } from './fancycard/AppIllustrationUI'
+import { AppIllustrationUI } from './fancycard/AppIllustrationUI'
 import { AppPath } from './CardPath'
 import { RevealUI } from 'src/rsuite/RevealUI'
 
@@ -67,10 +67,10 @@ export const AppEntryUI = observer(function AppEntryUI_(p: { app: LibraryFile })
                 st.layout.openApp(actionPath)
             }}
         >
-            <div tw='pl-3'>
+            <div tw='pl'>
                 <ActionFavoriteBtnUI app={app} size='1.3rem' />
             </div>
-            <CardIllustrationUI card={app} size='1.5rem' />
+            <AppIllustrationUI card={app} size='1.5rem' />
             <div tw='overflow-hidden text-base-content whitespace-nowrap overflow-ellipsis'>{app.displayName}</div>
         </div>
     )
@@ -89,7 +89,7 @@ export const ActionFavoriteBtnUI = observer(function ActionFavoriteBtnUI_(p: { s
                     }}
                     //
                     style={{ fontSize: p.size }}
-                    className='material-symbols-outlined text-yellow-500'
+                    className='material-symbols-outlined text-yellow-500 hover:text-red-500'
                 >
                     star
                 </span>

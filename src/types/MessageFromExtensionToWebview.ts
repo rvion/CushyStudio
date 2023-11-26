@@ -1,15 +1,25 @@
 import type { FormResult } from 'src/cards/Card'
 import type { Widget } from 'src/controls/Widget'
-import type { FlowID } from 'src/types/FlowID'
 import type { GraphID } from 'src/models/Graph'
-import type { ImageT } from 'src/models/Image'
-import type { PromptID } from './ComfyWsApi'
+import type { ImageID } from 'src/models/Image'
+import type { FlowID } from 'src/types/FlowID'
+import type { PromptID, WsMsgExecutionError } from './ComfyWsApi'
 
-export type FromExtension_CushyStatus = { type: 'cushy_status'; connected: boolean }
+// prettier-ignore
+export type StepOutput =
+    | StepOutput_Text
+    | StepOutput_Image
+    | StepOutput_ComfyWorkflow
+    | StepOutput_Prompt
+    | StepOutput_Html
+    | StepOutput_RuntimeError
+    | StepOutput_ExecutionError
+    | StepOutput_GUI
 
 export type StepOutput_Text = { type: 'print'; message: string }
+export type StepOutput_Image = { type: 'image'; imgID: ImageID }
+export type StepOutput_ComfyWorkflow = { type: 'comfy-workflow'; graphID: GraphID }
 export type StepOutput_Prompt = { type: 'prompt'; promptID: PromptID }
-export type StepOutput_Images = { type: 'images'; flowID?: Maybe<FlowID>; images: ImageT[] }
 export type StepOutput_Html = { type: 'show-html'; flowID?: FlowID; content: string; title: string }
 export type StepOutput_RuntimeError = {
     type: 'runtimeError'
@@ -24,4 +34,14 @@ export type StepOutput_RuntimeError = {
     graphID?: GraphID
 }
 
-export type FromExtension_ask = { type: 'ask'; flowID: FlowID; form: Widget; result: FormResult<any> }
+export type StepOutput_ExecutionError = {
+    type: 'executionError'
+    payloadFromComfy: WsMsgExecutionError
+}
+
+export type StepOutput_GUI = {
+    type: 'ask'
+    flowID: FlowID
+    form: Widget
+    result: FormResult<any>
+}

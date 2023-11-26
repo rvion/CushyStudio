@@ -12,7 +12,7 @@ import { deleteDirectoryRecursive } from '../utils/fs/deleteDirectoryRecursive'
 import { GithubRepoName } from 'src/cards/githubRepo'
 import { FolderGitStatus } from '../cards/FolderGitStatus'
 import { LogFifo } from './LogFIFO'
-import { _getRelativeTimeString } from './_getRelativeTimeString'
+import { _formatAsRelativeDateTime } from './_getRelativeTimeString'
 
 type ManagedFolderConfig = {
     /** current working directory */
@@ -392,7 +392,7 @@ export class GitManagedFolder {
         if (FETCH_HEAD_path_exists) {
             const stats = statSync(FETCH_HEAD_path)
             lastFetchAt = stats.mtime.getTime() as Timestamp
-            this.log('Last fetch was on:', _getRelativeTimeString(stats.mtime))
+            this.log('Last fetch was on:', _formatAsRelativeDateTime(stats.mtime))
         } else {
             lastFetchAt = 0 as Timestamp
         }

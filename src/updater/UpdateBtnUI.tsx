@@ -6,7 +6,7 @@ import { ReleaseChannelUI } from '../app/layout/ReleaseChannelUI'
 import { RevealUI } from 'src/rsuite/RevealUI'
 import { GitInitBtnUI } from './GitInitBtnUI'
 import { GitInstallUI } from './GitInstallUI'
-import { _getRelativeTimeString } from './_getRelativeTimeString'
+import { _formatAsRelativeDateTime } from './_getRelativeTimeString'
 import { UninstallUI } from './GitUninstallUI'
 import { UpdaterErrorUI } from './UpdaterErrorUI'
 import { ReactNode } from 'react'
@@ -94,11 +94,11 @@ export const UpdaterDetailsUI = observer(function UpdaterDetailsUI_(p: { updater
                     <div>
                         <div>
                             <span className='material-symbols-outlined'>history</span> prev update :{' '}
-                            {_getRelativeTimeString(updater.lastFetchAt)}
+                            {_formatAsRelativeDateTime(updater.lastFetchAt)}
                         </div>
                         <div>
                             <span className='material-symbols-outlined'>schedule</span> next update :{' '}
-                            {_getRelativeTimeString(updater.nextFetchAt)}
+                            {_formatAsRelativeDateTime(updater.nextFetchAt)}
                         </div>
                     </div>
                 ) : (
@@ -122,7 +122,7 @@ export const UpdaterDetailsUI = observer(function UpdaterDetailsUI_(p: { updater
                 <tbody>
                     {updater.lastLogs.logs.map((log, i) => (
                         <tr key={i}>
-                            <td>{_getRelativeTimeString(log.date)}</td>
+                            <td>{_formatAsRelativeDateTime(log.date)}</td>
                             <td tw='max-w-sm'>{log.msg}</td>
                         </tr>
                     ))}

@@ -11,27 +11,33 @@ export const MenuHelpUI = observer(function MenuHelpUI_(p: {}) {
             title='Help'
             appearance='subtle'
         >
-            <MenuItem
+            {/* <MenuItem
                 onClick={() => {
                     window.require('electron').shell.openExternal('https://www.CushyStudio.com/documentation')
                 }}
                 icon={<span className='material-symbols-outlined text-purple-300'>menu_book</span>}
                 label='Open documentation'
-            />
-            <MenuItem
-                onClick={() => {
-                    window.require('electron').shell.openExternal('https://www.CushyStudio.com/')
-                }}
-                icon={<span className='material-symbols-outlined text-purple-300'>web</span>}
-                label='Open blog'
-            />
-
+            /> */}
             <MenuItem
                 onClick={() => {
                     window.require('electron').shell.openExternal('https://github.com/rvion/CushyStudio#readme')
                 }}
                 icon={<img style={{ width: '1rem', height: '1rem' }} src={assets.public_GithubLogo2_png}></img>}
                 label='Open Github'
+            />
+            <MenuItem
+                onClick={() => {
+                    window.require('electron').shell.openExternal('https://www.CushyStudio.com')
+                }}
+                icon={<img style={{ width: '1rem', height: '1rem' }} src={assets.public_GithubLogo2_png}></img>}
+                label='Open Website'
+            />
+            <MenuItem
+                onClick={() => {
+                    window.require('electron').shell.openExternal('https://www.CushyStudio.com/blog')
+                }}
+                icon={<span className='material-symbols-outlined text-purple-300'>web</span>}
+                label='Open blog'
             />
         </Dropdown>
     )

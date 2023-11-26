@@ -16,9 +16,10 @@
         "isolatedModules": true,
         //
         "declaration": true,
-        "sourceMap": true,
+        "emitDeclarationOnly": true,
+        "sourceMap": false,
         "jsx": "react-jsx",
-        "declarationMap": true,
+        "declarationMap": false,
         "types": [],
         "outDir": "lib",
         "paths": {
