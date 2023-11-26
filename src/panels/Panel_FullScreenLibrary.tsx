@@ -95,7 +95,6 @@ export const Panel_CardPicker3UI = observer(function Panel_CardPicker3UI_(p: {})
                                 <AppCardUI //
                                     active={st.library.selectionCursor === ix}
                                     deck={card.deck}
-                                    style={card.style}
                                     card={card}
                                 />
                                 {/* {card.priority} */}

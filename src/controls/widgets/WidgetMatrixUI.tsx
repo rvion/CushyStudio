@@ -1,17 +1,5 @@
-import { makeAutoObservable } from 'mobx'
 import { observer } from 'mobx-react-lite'
-import { useMemo } from 'react'
-import { bang } from '../../utils/misc/bang'
 import { Widget_matrix } from 'src/controls/Widget'
-import { Button } from 'src/rsuite/shims'
-
-export type CELL = {
-    x: number
-    y: number
-    row: string
-    col: string
-    value: boolean
-}
 
 export const WidgetMatrixUI = observer(function WidgetStrUI_(p: { req: Widget_matrix }) {
     const req = p.req

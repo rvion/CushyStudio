@@ -4,13 +4,12 @@ import type { GraphL } from '../models/Graph'
 
 import { configure, extendObservable, makeAutoObservable, toJS } from 'mobx'
 import { ComfyNodeID } from '../types/ComfyNodeID'
-import { exhaust } from '../utils/misc/ComfyUtils'
 import { ComfyNodeSchema, NodeInputExt, NodeOutputExt } from '../models/Schema'
 import { Slot } from './Slot'
 import { comfyColors } from './Colors'
 import { auto_ } from './autoValue'
-import { ReactNode } from 'react'
-import { Loader } from 'src/rsuite/shims'
+import { ReactNode, createElement } from 'react'
+import { NodeStatusEmojiUI } from './NodeStatusEmojiUI'
 
 configure({ enforceActions: 'never' })
 
@@ -36,14 +35,7 @@ export class ComfyNode<
 
     get isExecuting() { return this.status === 'executing' } // prettier-ignore
     get statusEmoji(): ReactNode {
-        const s = this.status
-        if (s === 'executing') return <Loader />
-        if (s === 'cached') return <span className='material-symbols-outlined text-green-600'>bookmark</span>
-        if (s === 'done') return <span className='material-symbols-outlined text-green-600'>done</span>
-        if (s === 'error') return <span className='material-symbols-outlined text-red-600'>error</span>
-        if (s === 'waiting') return <span className='material-symbols-outlined text-blue-600'>next_plan</span>
-        if (s == null) return <span className='material-symbols-outlined text-gray-600'>contact_support</span>
-        return exhaust(s)
+        return createElement(NodeStatusEmojiUI, { node: this })
     }
 
     disabled: boolean = false

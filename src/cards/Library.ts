@@ -1,6 +1,6 @@
 import type { STATE } from 'src/state/state'
 import type { AbsolutePath, RelativePath } from '../utils/fs/BrandedPaths'
-import type { ItemDataType } from 'src/rsuite/shims'
+import type { ItemDataType } from 'src/rsuite/RsuiteTypes'
 
 import path, { join } from 'pathe'
 import Watcher from 'watcher'

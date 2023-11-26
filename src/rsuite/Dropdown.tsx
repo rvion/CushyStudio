@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 import { ReactNode } from 'react'
-import { RSAppearance, RSSize } from './shims'
+import { RSAppearance, RSSize } from './RsuiteTypes'
 import { RevealUI } from './RevealUI'
 
 export const Dropdown = (p: {

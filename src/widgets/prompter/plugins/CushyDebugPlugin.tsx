@@ -1,14 +1,6 @@
-import type { LoraNodeJSON } from '../nodes/lora/LoraNode'
-import type { BooruNodeJSON } from '../nodes/booru/BooruNode'
-import type { WildcardNodeJSON } from '../nodes/wildcards/WildcardNode'
-import type { EmbeddingNodeJSON } from '../nodes/embedding/EmbeddingNode'
-import type { UserNodeJSON } from '../nodes/usertags/UserNode'
-import type { ActionNodeJSON } from '../nodes/actions/ActionNode'
-
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
 import { JSONHighlightedCodeUI } from '../../misc/TypescriptHighlightedCodeUI'
 import { getFinalJSON } from './getFinalJSON'
-import { BreakNodeJSON } from '../nodes/break/BreakNode'
 
 export const CushyDebugPlugin = <T extends any>() => {
     const [editor] = useLexicalComposerContext()
@@ -19,20 +11,3 @@ export const CushyDebugPlugin = <T extends any>() => {
     // return <JSONHighlightedCodeUI code={readableStringify({ items }, 3, 0)} />
     return <JSONHighlightedCodeUI code={debug} />
 }
-
-type TextNodeJSON = { type: 'text'; text: string }
-type ParagraphNodeJSON = { type: 'paragraph'; children: PossibleSerializedNodes[] }
-type LineBreakJSON = { type: 'linebreak' }
-
-// prettier-ignore
-export type PossibleSerializedNodes =
-    | BooruNodeJSON
-    | LoraNodeJSON
-    | WildcardNodeJSON
-    | EmbeddingNodeJSON
-    | BreakNodeJSON
-    | TextNodeJSON
-    | LineBreakJSON
-    | UserNodeJSON
-    | ActionNodeJSON
-// | ParagraphNodeJSON

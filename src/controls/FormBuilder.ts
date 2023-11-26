@@ -6,7 +6,10 @@ import { _FIX_INDENTATION } from '../utils/misc/_FIX_INDENTATION'
 
 // prettier-ignore
 export class FormBuilder {
-    // @internal
+    /**
+     * @hidden
+     * @internal
+     */
     _cache :{ count:number } = { count:0 }
 
     /**

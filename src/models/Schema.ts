@@ -1,4 +1,4 @@
-import type { ComfyEnumDef, ComfyInputOpts, ComfySchemaJSON } from '../types/ComfySchemaJSON'
+import type { ComfyEnumDef, ComfyInputOpts, ComfyNodeSchemaJSON, ComfySchemaJSON } from '../types/ComfySchemaJSON'
 
 import { observable, toJS } from 'mobx'
 import { LiveInstance } from 'src/db/LiveInstance'
@@ -49,6 +49,10 @@ export type EnumInfo = {
 }
 
 export class SchemaL {
+    /**
+     * for now, simply ensure that the number of parsed nodes matches the number of nodes
+     * present in the object_info.json
+     */
     RUN_BASIC_CHECKS = () => {
         const numNodesInSource = Object.keys(this.data.spec).length
         const numNodesInSchema = this.nodes.length
@@ -57,7 +61,10 @@ export class SchemaL {
         }
     }
     // LORA --------------------------------------------------------------
+    /** check if the given lora name is present in the Enum_LoraLoader_lora_name enum */
     hasLora = (loraName: string): boolean => this.getLoras().includes(loraName as Enum_LoraLoader_lora_name)
+
+    /** return the list of all loras available */
     getLoras = (): Enum_LoraLoader_lora_name[] => {
         const candidates = this.knownEnumsByName.get('Enum_LoraLoader_lora_name')?.values ?? []
         return candidates as Enum_LoraLoader_lora_name[]
@@ -115,8 +122,10 @@ export class SchemaL {
         this.enumsAppearingInOutput.clear()
 
         // compile spec
-        const entries = Object.entries(this.data.spec)
-        for (const [nodeNameInComfy, nodeDef] of entries) {
+        const entries: [string, ComfyNodeSchemaJSON][] = Object.entries(this.data.spec)
+        for (const __x of entries) {
+            const nodeNameInComfy = __x[0]
+            const nodeDef = __x[1]
             // console.chanel?.append(`[${nodeNameInComfy}]`)
             // apply prefix
             const normalizedNodeNameInCushy = normalizeJSIdentifier(nodeNameInComfy, ' ')

@@ -2,12 +2,11 @@
  * this file is an attempt to centralize core widget definition in a single
  * file so it's easy to add any widget in the future
  */
-import type { ItemDataType } from 'src/rsuite/shims'
-import type { CELL } from 'src/controls/widgets/WidgetMatrixUI'
+import type { ItemDataType } from 'src/rsuite/RsuiteTypes'
 import type { SchemaL } from 'src/models/Schema'
 import type { SimplifiedLoraDef } from 'src/presets/SimplifiedLoraDef'
 import type { WidgetPromptOutput } from 'src/widgets/prompter/WidgetPromptUI'
-import type { PossibleSerializedNodes } from 'src/widgets/prompter/plugins/CushyDebugPlugin'
+import type { PossibleSerializedNodes } from 'src/widgets/prompter/plugins/PossibleSerializedNodes'
 import type { AspectRatio, ComfyImageAnswer, CushyImageAnswer, CushySize, CushySizeByRatio, ImageAnswer, ImageAnswerForm, PaintImageAnswer, SDModelType } from './misc/InfoAnswer'
 import type { CleanedEnumResult } from 'src/types/EnumUtils'
 import type { IRequest, IWidget, ReqInput, ReqResult, StateFields } from './IWidget'
@@ -60,7 +59,7 @@ export interface Widget_str extends IWidget<'str', Widget_str_input, Widget_str_
 export class Widget_str implements IRequest<'str', Widget_str_input, Widget_str_serial, Widget_str_state, Widget_str_output> {
     isOptional = false
     id: string
-    type = 'str' as const
+    type: 'str' = 'str'
     state: Widget_str_state
     constructor(
         public builder: FormBuilder,
@@ -85,7 +84,7 @@ export interface Widget_markdown extends IWidget<'markdown', Widget_markdown_inp
 export class Widget_markdown implements IRequest<'markdown', Widget_markdown_input, Widget_markdown_serial, Widget_markdown_state, Widget_markdown_output> {
     isOptional = false
     id: string
-    type = 'markdown' as const
+    type: 'markdown' = 'markdown'
     state: Widget_markdown_state
 
     get markdown() :string{
@@ -117,7 +116,7 @@ export interface Widget_color extends IWidget<'color', Widget_color_input, Widge
 export class Widget_color implements IRequest<'color', Widget_color_input, Widget_color_serial, Widget_color_state, Widget_color_output> {
     isOptional = false
     id: string
-    type = 'color' as const
+    type: 'color' = 'color'
     state: Widget_color_state
     constructor(
         public builder: FormBuilder,
@@ -142,7 +141,7 @@ export interface Widget_strOpt extends IWidget<'strOpt', Widget_strOpt_input, Wi
 export class Widget_strOpt implements IRequest<'strOpt', Widget_strOpt_input, Widget_strOpt_serial, Widget_strOpt_state, Widget_strOpt_output> {
     isOptional = true
     id: string
-    type = 'strOpt' as const
+    type: 'strOpt' = 'strOpt'
     state: Widget_strOpt_state
     constructor(
         public builder: FormBuilder,
@@ -175,7 +174,7 @@ export interface Widget_prompt extends IWidget<'prompt', Widget_prompt_input, Wi
 export class Widget_prompt implements IRequest<'prompt', Widget_prompt_input, Widget_prompt_serial, Widget_prompt_state, Widget_prompt_output> {
     isOptional = false
     id: string
-    type = 'prompt' as const
+    type: 'prompt' = 'prompt'
     state: Widget_prompt_state
 
     constructor(
@@ -217,7 +216,7 @@ export interface Widget_promptOpt extends IWidget<'promptOpt', Widget_promptOpt_
 export class Widget_promptOpt implements IRequest<'promptOpt', Widget_promptOpt_input, Widget_promptOpt_serial, Widget_promptOpt_state, Widget_promptOpt_output> {
     isOptional = true
     id: string
-    type = 'promptOpt' as const
+    type: 'promptOpt' = 'promptOpt'
     state: Widget_promptOpt_state
     constructor(
         public builder: FormBuilder,
@@ -258,7 +257,7 @@ export interface Widget_seed extends IWidget<'seed', Widget_seed_input, Widget_s
 export class Widget_seed implements IRequest<'seed', Widget_seed_input, Widget_seed_serial, Widget_seed_state, Widget_seed_output> {
     isOptional = false
     id: string
-    type = 'seed' as const
+    type: 'seed' = 'seed'
     state: Widget_seed_state
     constructor(
         public builder: FormBuilder,
@@ -294,7 +293,7 @@ export interface Widget_int extends IWidget<'int', Widget_int_input, Widget_int_
 export class Widget_int implements IRequest<'int', Widget_int_input, Widget_int_serial, Widget_int_state, Widget_int_output> {
     isOptional = false
     id: string
-    type = 'int' as const
+    type: 'int' = 'int'
     state: Widget_int_state
     constructor(
         public builder: FormBuilder,
@@ -319,7 +318,7 @@ export interface Widget_float extends IWidget<'float', Widget_float_input, Widge
 export class Widget_float implements IRequest<'float', Widget_float_input, Widget_float_serial, Widget_float_state, Widget_float_output> {
     isOptional = false
     id: string
-    type = 'float' as const
+    type: 'float' = 'float'
     state: Widget_float_state
     constructor(
         public builder: FormBuilder,
@@ -344,7 +343,7 @@ export interface Widget_bool extends IWidget<'bool', Widget_bool_input, Widget_b
 export class Widget_bool implements IRequest<'bool', Widget_bool_input, Widget_bool_serial, Widget_bool_state, Widget_bool_output> {
     isOptional = true
     id: string
-    type = 'bool' as const
+    type: 'bool' = 'bool'
     state: Widget_bool_state
     constructor(
         public builder: FormBuilder,
@@ -369,7 +368,7 @@ export interface Widget_intOpt extends IWidget<'intOpt', Widget_intOpt_input, Wi
 export class Widget_intOpt implements IRequest<'intOpt', Widget_intOpt_input, Widget_intOpt_serial, Widget_intOpt_state, Widget_intOpt_output> {
     isOptional = true
     id: string
-    type = 'intOpt' as const
+    type: 'intOpt' = 'intOpt'
     state: Widget_intOpt_state
     constructor(
         public builder: FormBuilder,
@@ -402,7 +401,7 @@ export interface Widget_floatOpt extends IWidget<'floatOpt', Widget_floatOpt_inp
 export class Widget_floatOpt implements IRequest<'floatOpt', Widget_floatOpt_input, Widget_floatOpt_serial, Widget_floatOpt_state, Widget_floatOpt_output> {
     isOptional = true
     id: string
-    type = 'floatOpt' as const
+    type: 'floatOpt' = 'floatOpt'
     state: Widget_floatOpt_state
     constructor(
         public builder: FormBuilder,
@@ -440,7 +439,7 @@ export interface Widget_size extends IWidget<'size', Widget_size_input, Widget_s
 export class Widget_size implements IRequest<'size', Widget_size_input, Widget_size_serial, Widget_size_state, Widget_size_output> {
     isOptional = false
     id: string
-    type = 'size' as const
+    type: 'size' = 'size'
     state: Widget_size_state
     constructor(
         public builder: FormBuilder,
@@ -475,15 +474,22 @@ export class Widget_size implements IRequest<'size', Widget_size_input, Widget_s
 }
 
 // 🅿️ matrix ==============================================================================
+export type Widget_matrix_cell = {
+    x: number
+    y: number
+    row: string
+    col: string
+    value: boolean
+}
 export type Widget_matrix_input  = ReqInput<{ default?: { row: string; col: string }[]; rows: string[]; cols: string[] }>
 export type Widget_matrix_serial = Widget_matrix_state
-export type Widget_matrix_state  = StateFields<{ type: 'matrix', active: true; selected: CELL[] }>
-export type Widget_matrix_output = CELL[]
+export type Widget_matrix_state  = StateFields<{ type: 'matrix', active: true; selected: Widget_matrix_cell[] }>
+export type Widget_matrix_output = Widget_matrix_cell[]
 export interface Widget_matrix extends IWidget<'matrix', Widget_matrix_input, Widget_matrix_serial, Widget_matrix_state, Widget_matrix_output> {}
 export class Widget_matrix implements IRequest<'matrix', Widget_matrix_input, Widget_matrix_serial, Widget_matrix_state, Widget_matrix_output> {
     isOptional = false
     id: string
-    type = 'matrix' as const
+    type: 'matrix' = 'matrix'
     state: Widget_matrix_state
     rows: string[]
     cols: string[]
@@ -522,7 +528,7 @@ export class Widget_matrix implements IRequest<'matrix', Widget_matrix_input, Wi
 
     // (((((((((((((((((((((((((((((
     private sep = ' &&& '
-    private store = new Map<string, CELL>()
+    private store = new Map<string, Widget_matrix_cell>()
     private key = (row: string, col: string) => `${row}${this.sep}${col}`
     get allCells() { return Array.from(this.store.values()) } // prettier-ignore
     UPDATE = () => (this.state.selected = this.RESULT)
@@ -555,7 +561,7 @@ export class Widget_matrix implements IRequest<'matrix', Widget_matrix_input, Wi
         this.UPDATE()
     }
 
-    get = (row: string, col: string): CELL => {
+    get = (row: string, col: string): Widget_matrix_cell => {
         return bang(this.store.get(this.key(row, col)))
     }
 
@@ -576,7 +582,7 @@ export interface Widget_loras extends IWidget<'loras', Widget_loras_input, Widge
 export class Widget_loras implements IRequest<'loras', Widget_loras_input, Widget_loras_serial, Widget_loras_state, Widget_loras_output> {
     isOptional = false
     id: string
-    type = 'loras' as const
+    type: 'loras' = 'loras'
     state: Widget_loras_state
     constructor(
         public builder: FormBuilder,
@@ -638,7 +644,7 @@ export interface Widget_image extends IWidget<'image', Widget_image_input, Widge
 export class Widget_image implements IRequest<'image', Widget_image_input, Widget_image_serial, Widget_image_state, Widget_image_output> {
     isOptional = false
     id: string
-    type = 'image' as const
+    type: 'image' = 'image'
     state: Widget_image_state
     constructor(
         public builder: FormBuilder,
@@ -676,7 +682,7 @@ export interface Widget_imageOpt extends IWidget<'imageOpt', Widget_imageOpt_inp
 export class Widget_imageOpt implements IRequest<'imageOpt', Widget_imageOpt_input, Widget_imageOpt_serial, Widget_imageOpt_state, Widget_imageOpt_output> {
     isOptional = true
     id: string
-    type = 'imageOpt' as const
+    type: 'imageOpt' = 'imageOpt'
     state: Widget_imageOpt_state
     constructor(
         public builder: FormBuilder,
@@ -715,7 +721,7 @@ export interface Widget_selectOne<T>  extends IWidget<'selectOne', Widget_select
 export class Widget_selectOne<T extends BaseSelectOneEntry> implements IRequest<'selectOne', Widget_selectOne_input<T>, Widget_selectOne_serial<T>, Widget_selectOne_state<T>, Widget_selectOne_output<T>> {
     isOptional = false
     id: string
-    type = 'selectOne' as const
+    type: 'selectOne' = 'selectOne'
     state: Widget_selectOne_state<T>
 
     get choices():T[]{
@@ -754,7 +760,7 @@ export interface Widget_selectOneOrCustom extends IWidget<'selectOneOrCustom', W
 export class Widget_selectOneOrCustom implements IRequest<'selectOneOrCustom', Widget_selectOneOrCustom_input, Widget_selectOneOrCustom_serial, Widget_selectOneOrCustom_state, Widget_selectOneOrCustom_output > {
     isOptional = false
     id: string
-    type = 'selectOneOrCustom' as const
+    type: 'selectOneOrCustom' = 'selectOneOrCustom'
     state: Widget_selectOneOrCustom_state
     constructor(
         public builder: FormBuilder,
@@ -784,7 +790,7 @@ export interface Widget_selectMany<T extends { type: string }> extends IWidget<'
 export class Widget_selectMany<T extends { type: string }> implements IRequest<'selectMany', Widget_selectMany_input<T>, Widget_selectMany_serial<T>, Widget_selectMany_state<T>, Widget_selectMany_output<T>> {
     isOptional = false
     id: string
-    type = 'selectMany' as const
+    type: 'selectMany' = 'selectMany'
     state: Widget_selectMany_state<T>
     constructor(
         public builder: FormBuilder,
@@ -819,7 +825,7 @@ export interface Widget_selectManyOrCustom extends IWidget<'selectManyOrCustom',
 export class Widget_selectManyOrCustom implements IRequest<'selectManyOrCustom', Widget_selectManyOrCustom_input, Widget_selectManyOrCustom_serial, Widget_selectManyOrCustom_state, Widget_selectManyOrCustom_output > {
     isOptional = false
     id: string
-    type = 'selectManyOrCustom' as const
+    type: 'selectManyOrCustom' = 'selectManyOrCustom'
     state: Widget_selectManyOrCustom_state
     constructor(
         public builder: FormBuilder,
@@ -849,7 +855,7 @@ export interface Widget_list<T extends Widget> extends IWidget<'list', Widget_li
 export class Widget_list<T extends Widget> implements IRequest<'list', Widget_list_input<T>, Widget_list_serial<T>, Widget_list_state<T>, Widget_list_output<T>> {
     isOptional = false
     id: string
-    type = 'list' as const
+    type: 'list' = 'list'
     state: Widget_list_state<T>
     private _reference: T
 
@@ -964,7 +970,7 @@ export interface Widget_listExt  <T extends Widget> extends     IWidget<'listExt
 export class Widget_listExt      <T extends Widget> implements IRequest<'listExt', Widget_listExt_input<T>, Widget_listExt_serial<T>, Widget_listExt_state<T>, Widget_listExt_output<T>> {
     isOptional = false
     id: string
-    type = 'listExt' as const
+    type: 'listExt' = 'listExt'
     state: Widget_listExt_state<T>
     private _reference: T
 
@@ -1041,7 +1047,7 @@ export interface Widget_group<T extends { [key: string]: Widget }> extends IWidg
 export class Widget_group<T extends { [key: string]: Widget }> implements IRequest<'group', Widget_group_input<T>, Widget_group_serial<T>, Widget_group_state<T>, Widget_group_output<T>> {
     isOptional = false
     id: string
-    type = 'group' as const
+    type: 'group' = 'group'
     state: Widget_group_state<T>
     constructor(
         public builder: FormBuilder,
@@ -1102,7 +1108,7 @@ export interface Widget_groupOpt<T extends { [key: string]: Widget }> extends IW
 export class Widget_groupOpt<T extends { [key: string]: Widget }> implements IRequest<'groupOpt', Widget_groupOpt_input<T>, Widget_groupOpt_serial<T>, Widget_groupOpt_state<T>, Widget_groupOpt_output<T>> {
     isOptional = true
     id: string
-    type = 'groupOpt' as const
+    type: 'groupOpt' = 'groupOpt'
     state: Widget_groupOpt_state<T>
     constructor(
         public builder: FormBuilder,
@@ -1159,7 +1165,7 @@ export interface Widget_choice  <T extends { [key: string]: Widget }> extends   
 export class Widget_choice      <T extends { [key: string]: Widget }> implements IRequest<'choice', Widget_choice_input<T>, Widget_choice_serial<T>, Widget_choice_state<T>, Widget_choice_output<T>> {
     isOptional = false
     id: string
-    type = 'choice' as const
+    type: 'choice' = 'choice'
     state: Widget_choice_state<T>
     constructor(
         public builder: FormBuilder,
@@ -1215,7 +1221,7 @@ export interface Widget_choices<T extends { [key: string]: Widget }> extends IWi
 export class Widget_choices<T extends { [key: string]: Widget }> implements IRequest<'choices', Widget_choices_input<T>, Widget_choices_serial<T>, Widget_choices_state<T>, Widget_choices_output<T>> {
     isOptional = false
     id: string
-    type = 'choices' as const
+    type: 'choices' = 'choices'
     state: Widget_choices_state<T>
     constructor(
         public builder: FormBuilder,
@@ -1293,7 +1299,7 @@ export interface Widget_enum<T extends KnownEnumNames> extends IWidget<'enum', W
 export class Widget_enum<T extends KnownEnumNames> implements IRequest<'enum', Widget_enum_input<T>, Widget_enum_serial<T>, Widget_enum_state<T>, Widget_enum_output<T>> {
     isOptional = false
     id: string
-    type = 'enum' as const
+    type: 'enum' = 'enum'
     state: Widget_enum_state<T>
     constructor(
         public builder: FormBuilder,
@@ -1325,7 +1331,7 @@ export interface Widget_enumOpt<T extends KnownEnumNames> extends IWidget<'enumO
 export class Widget_enumOpt<T extends KnownEnumNames> implements IRequest<'enumOpt', Widget_enumOpt_input<T>, Widget_enumOpt_serial<T>, Widget_enumOpt_state<T>, Widget_enumOpt_output<T>> {
     isOptional = true
     id: string
-    type = 'enumOpt' as const
+    type: 'enumOpt' = 'enumOpt'
     state: Widget_enumOpt_state<T>
     constructor(
         public builder: FormBuilder,

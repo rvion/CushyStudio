@@ -1,3 +1,5 @@
+// import type { MessageEvent, EventListenerOptions, CloseEvent } from 'ws'
+
 import { makeAutoObservable, reaction } from 'mobx'
 
 type Message = string | Buffer

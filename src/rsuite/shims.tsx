@@ -2,26 +2,8 @@ import { observer } from 'mobx-react-lite'
 import { ReactNode } from 'react'
 import { RevealUI } from './RevealUI'
 import { exhaust } from 'src/utils/misc/ComfyUtils'
+import { RSSize, RSAppearance } from './RsuiteTypes'
 
-export type PositionChildProps = {
-    top: number
-    left: number
-    className: string
-}
-export type ItemDataType = {
-    value: string
-    children?: ItemDataType[]
-    label: string
-}
-
-export type RSColor = 'red' | 'orange' | 'yellow' | 'green' | 'blue'
-export type RSSize = 'sm' | 'xs' | 'md' | 'lg'
-export type RSAppearance = 'default' | 'subtle' | 'ghost' | 'link' | 'primary'
-export type TypeAttributes = {
-    Color: RSColor
-    Size: RSSize
-    Appearance: RSAppearance
-}
 // form
 export const FormHelpText = (p: any) => <div {...p}></div>
 export const FormControlLabel = (p: JSX.IntrinsicElements['label']) => <label {...p}></label>

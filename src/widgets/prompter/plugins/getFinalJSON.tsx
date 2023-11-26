@@ -1,5 +1,5 @@
 import type { EditorState } from 'lexical'
-import type { PossibleSerializedNodes } from './CushyDebugPlugin'
+import type { PossibleSerializedNodes } from './PossibleSerializedNodes'
 
 export const getFinalJSON = (
     editorState: EditorState,

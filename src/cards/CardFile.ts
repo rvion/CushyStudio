@@ -19,7 +19,6 @@ import { ManualPromise } from '../utils/misc/ManualPromise'
 import { generateAvatar } from './AvatarGenerator'
 import { AppManifest } from './DeckManifest'
 import { Library } from './Library'
-import { CardStyle } from './fancycard/AppCardUI'
 
 // prettier-ignore
 export type LoadStrategy =
@@ -43,7 +42,6 @@ export class CardFile {
     get actionAuthorFolderRel(): string { return this.deck.authorFolderRel } // prettier-ignore
     get priority(): number { return this.manifest.priority ?? 0 } // prettier-ignore
     get description(): string { return this.manifest.description ?? 'no description' } // prettier-ignore
-    get style(): CardStyle { return this.manifest.style ?? 'A' } // prettier-ignore
 
     openLastDraftAsCurrent = () => {
         this.st.currentDraft = this.getLastDraft()

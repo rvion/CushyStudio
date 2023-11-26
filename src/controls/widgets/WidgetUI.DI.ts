@@ -1,15 +1,13 @@
 import type { WidgetUI } from './WidgetUI'
 import type * as R from '../Widget'
 
-const ERROR = () => <>ERROR</>
-
 /**
  * DI stands for dependency injection
  * this is here to allow for hot reloading of complex widgets
  * regardless of circular dependencies.
  * */
 export let WidgetDI = {
-    WidgetUI: ERROR as typeof WidgetUI,
+    WidgetUI: 0 as any as typeof WidgetUI,
     Widget_color: 0 as any as typeof R.Widget_color,
     Widget_str: 0 as any as typeof R.Widget_str,
     Widget_strOpt: 0 as any as typeof R.Widget_strOpt,

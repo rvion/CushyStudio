@@ -9,12 +9,9 @@ import { GithubUserUI } from '../GithubAvatarUI'
 import { CardIllustrationUI } from './AppIllustrationUI'
 import { useSt } from 'src/state/stateContext'
 
-export type CardStyle = 'A' | 'B' | 'C' | 'D'
-
 export const AppCardUI = observer(function FancyCardUI_(p: {
     //
     deck: Package
-    style: CardStyle
     card: CardFile
     active?: boolean
 }) {
@@ -37,7 +34,7 @@ export const AppCardUI = observer(function FancyCardUI_(p: {
                 //
                 'flex flex-col',
                 'p-0.5 bg-base-300 text-base-content shadow-xl border border-neutral border-opacity-25',
-                `card STYLE_${p.style}`,
+                `card STYLE_A`,
                 p.active ? 'active' : 'not-active',
                 'cursor-pointer',
             ]}
