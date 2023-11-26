@@ -39,5 +39,6 @@ const getPreviewBorderColor = (type: StepOutput['type']) => {
     if (type === 'ask') return 'orange'
     if (type === 'comfy-workflow') return 'blue'
     if (type === 'image') return '#1183ad'
+    if (type === 'displaced-image') return 'purple'
     return exhaust(type)
 }

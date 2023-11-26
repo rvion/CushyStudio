@@ -191,7 +191,7 @@ app({
         await flow.PROMPT()
 
         if (show3d) {
-            flow.out_3dImage({ image: 'base', depth: 'depth', normal: 'normal' })
+            flow.output_3dImage({ image: 'base', depth: 'depth', normal: 'normal' })
         }
 
         // LOOP IF NEED BE -----------------------------------------------------------------------

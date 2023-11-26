@@ -229,7 +229,7 @@ export class Runtime<FIELDS extends WidgetDict = any> {
 
     // ------------------------------------------------------------------------------------
     /** output a 3d scene from an image and its displacement and depth maps */
-    out_3dImage = (p: { image: string; depth: string; normal: string }) => {
+    output_3dImage = (p: { image: string; depth: string; normal: string }) => {
         const image = this.generatedImages //
             .find((i) => i.data.imageInfos?.filename.startsWith(p.image))
         const depth = this.generatedImages //
@@ -239,6 +239,14 @@ export class Runtime<FIELDS extends WidgetDict = any> {
         if (image == null) throw new Error(`image not found: ${p.image}`)
         if (depth == null) throw new Error(`image not found: ${p.image}`)
         if (normal == null) throw new Error(`image not found: ${p.image}`)
+        this.step.addOutput({
+            type: 'displaced-image',
+            width: image.data.width ?? 512,
+            height: image.data.height ?? 512,
+            image: image.url,
+            depthMap: depth.url,
+            normalMap: normal.url,
+        })
         this.st.layout.FOCUS_OR_CREATE('DisplacedImage', {
             width: image.data.width ?? 512,
             height: image.data.height ?? 512,

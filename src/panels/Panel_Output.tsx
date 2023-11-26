@@ -63,7 +63,7 @@ export const Panel_Output = observer(function Panel_Output_(p: {}) {
                         <span className='material-symbols-outlined'>present_to_all</span>
                     </div>
                     <div tw='flex flex-col gap-1'>
-                        <FieldAndLabelUI label='Output Preview Size'>
+                        <div tw='flex items-center'>
                             <InputNumberUI
                                 style={{ width: '5rem' }}
                                 mode={'int'}
@@ -72,8 +72,9 @@ export const Panel_Output = observer(function Panel_Output_(p: {}) {
                                 onValueChange={(next) => (st.outputPreviewSize = next)}
                                 value={st.outputPreviewSize}
                             />
-                        </FieldAndLabelUI>
-                        <FieldAndLabelUI label='Latent Size'>
+                            px Output Preview Size
+                        </div>
+                        <div tw='flex items-center'>
                             <InputNumberUI
                                 style={{ width: '5rem' }}
                                 mode={'int'}
@@ -82,7 +83,8 @@ export const Panel_Output = observer(function Panel_Output_(p: {}) {
                                 onValueChange={(next) => (st.latentSize = next)}
                                 value={st.latentSize}
                             />
-                        </FieldAndLabelUI>
+                            % Latent Size
+                        </div>
                     </div>
                 </RevealUI>
                 <div tw={[dir, 'flex gap-1 overflow-auto']}>

@@ -12,10 +12,19 @@ export type StepOutput =
     | StepOutput_ComfyWorkflow
     | StepOutput_Prompt
     | StepOutput_Html
+    | StepOutput_DisplacedImage
     | StepOutput_RuntimeError
     | StepOutput_ExecutionError
     | StepOutput_GUI
 
+export type StepOutput_DisplacedImage = {
+    type: 'displaced-image'
+    width: number
+    height: number
+    image: string
+    depthMap: string
+    normalMap: string
+}
 export type StepOutput_Text = { type: 'print'; message: string }
 export type StepOutput_Image = { type: 'image'; imgID: ImageID }
 export type StepOutput_ComfyWorkflow = { type: 'comfy-workflow'; graphID: GraphID }

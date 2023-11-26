@@ -1,5 +1,6 @@
 Todo before release
 
+☐ don't autofocus preview images
 ☐ warning if custom nodes not installed by default
 ☐ proper error message when node not found
 ☐ small mention in the readme that dev console can help troubleshoot problems.
