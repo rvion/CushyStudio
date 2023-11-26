@@ -55,6 +55,8 @@ export class DraftL {
     }
 
     start = (): StepL => {
+        this.st.focusedStepID = null
+
         // 1. ensure req valid (TODO: validate)
         const req = this.gui.value
         if (req == null) throw new Error('invalid req')

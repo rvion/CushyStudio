@@ -13,9 +13,15 @@ const dir = mode === 'H' ? 'flex-col' : 'flex-row'
 export const Panel_Output = observer(function Panel_Output_(p: {}) {
     const st = useSt()
     const steps = st.db.steps.values.slice(-st.__TEMPT__maxStepsToShow).reverse()
-    const step = st.db.steps.last()
+    const selectedStep = st.focusedStepL
     return (
-        <div tw={[mode === 'H' ? 'flex-row' : 'flex-col', 'flex flex-grow h-full w-full']}>
+        <div
+            tw={[
+                //
+                mode === 'H' ? 'flex-row' : 'flex-col',
+                'flex flex-grow h-full w-full',
+            ]}
+        >
             {/* HISTORY */}
             <div tw={[dir, 'flex gap-1 overflow-auto flex-shrink-0 bg-base-200']}>
                 <RevealUI disableHover tw='self-start'>
@@ -36,23 +42,28 @@ export const Panel_Output = observer(function Panel_Output_(p: {}) {
                     </div>
                 </RevealUI>
                 <div tw={[dir, 'flex gap-1 overflow-auto']}>
-                    {steps.map((step) => (
-                        <div
-                            tw='cursor-pointer'
-                            onClick={() => (st.focusedStepID = step.id)}
-                            style={{
-                                width: st.historySizeStr,
-                                height: st.historySizeStr,
-                                flexShrink: 0,
-                            }}
-                        >
-                            {step.appFile ? (
-                                <AppIllustrationUI size={st.historySizeStr} card={step.appFile} />
-                            ) : (
-                                <div style={{ width: st.historySizeStr, height: st.historySizeStr }}></div>
-                            )}
-                        </div>
-                    ))}
+                    {steps.map((step) => {
+                        const selected = selectedStep === step
+                        return (
+                            <div
+                                tw={['cursor-pointer', selectedStep === step ? 'border-2 border-primary' : '']}
+                                onClick={() => (st.focusedStepID = step.id)}
+                                style={{
+                                    // 🔴
+                                    border: selected ? '4px solid white' : undefined,
+                                    width: st.historySizeStr,
+                                    height: st.historySizeStr,
+                                    flexShrink: 0,
+                                }}
+                            >
+                                {step.appFile ? (
+                                    <AppIllustrationUI size={st.historySizeStr} card={step.appFile} />
+                                ) : (
+                                    <div style={{ width: st.historySizeStr, height: st.historySizeStr }}></div>
+                                )}
+                            </div>
+                        )
+                    })}
                 </div>
             </div>
 
@@ -88,8 +99,8 @@ export const Panel_Output = observer(function Panel_Output_(p: {}) {
                     </div>
                 </RevealUI>
                 <div tw={[dir, 'flex gap-1 overflow-auto']}>
-                    {step?.data.outputs?.map((output, ix) => (
-                        <OutputPreviewUI key={ix} step={step} output={output} />
+                    {selectedStep?.data.outputs?.map((output, ix) => (
+                        <OutputPreviewUI key={ix} step={selectedStep} output={output} />
                     ))}
                 </div>
             </div>
