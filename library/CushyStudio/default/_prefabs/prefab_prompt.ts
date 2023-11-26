@@ -20,6 +20,7 @@ export const run_prompt = (
     let clip = p.clip
     let ckpt = p.ckpt
     if (richPrompt) {
+        const textToOutput: string[] = []
         for (const tok of richPrompt.tokens) {
             const _lastChar = text[text.length - 1] ?? ''
             const _space = _lastChar === ' ' ? '' : ' '
@@ -31,9 +32,7 @@ export const run_prompt = (
                 if (Array.isArray(options)) {
                     const picked = flow.chooseRandomly(options)
                     text += ` ${picked}`
-                    if (p.outputWildcardsPicked) {
-                        flow.output_text(`${tok.payload}: ${picked}`)
-                    }
+                    if (p.outputWildcardsPicked) textToOutput.push(picked)
                 }
             } else if (tok.type === 'lora') {
                 const next = flow.nodes.LoraLoader({
@@ -51,6 +50,7 @@ export const run_prompt = (
                 ckpt = next._MODEL
             }
         }
+        if (p.outputWildcardsPicked && textToOutput.length > 0) flow.output_text(textToOutput.join(' '))
     }
     const conditionning = flow.nodes.CLIPTextEncode({ clip, text })
     return { text, conditionning, clip, ckpt }
