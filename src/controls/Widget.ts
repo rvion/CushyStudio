@@ -90,7 +90,7 @@ export class Widget_markdown implements IRequest<'markdown', Widget_markdown_inp
     get markdown() :string{
         const md= this.input.markdown
         if (typeof md === 'string') return md
-        return md(this.builder.ROOT)
+        return md(this.builder._ROOT)
     }
 
     constructor(
@@ -727,7 +727,7 @@ export class Widget_selectOne<T extends BaseSelectOneEntry> implements IRequest<
     get choices():T[]{
         const _choices = this.input.choices
         return typeof _choices === 'function' //
-            ? _choices(this.builder.ROOT)
+            ? _choices(this.builder._ROOT)
             : _choices
     }
     constructor(
@@ -868,7 +868,7 @@ export class Widget_list<T extends Widget> implements IRequest<'list', Widget_li
         this.id = serial?.id ?? nanoid()
         this._reference = input.element()
         if (serial) {
-            const items = serial.items_.map((sub_) => builder.HYDRATE(sub_.type, this._reference.input, sub_)) // 🔴 handler filter if wrong type
+            const items = serial.items_.map((sub_) => builder._HYDRATE(sub_.type, this._reference.input, sub_)) // 🔴 handler filter if wrong type
             this.state = { type: 'list', id: this.id, active: serial.active, items }
         } else {
             const clamp = (v: number, min: number, max: number) => Math.min(Math.max(v, min), max)
@@ -985,7 +985,7 @@ export class Widget_listExt      <T extends Widget> implements IRequest<'listExt
         this._reference = input.element({width:100, height:100}).item
         if (serial) {
             const items:  WithExt<T>[] = serial.items_.map(({item_, ...ext}) => {
-                const item:T = builder.HYDRATE(item_.type, this._reference.input, item_)
+                const item:T = builder._HYDRATE(item_.type, this._reference.input, item_)
                 return {item, ...ext}
             })
             this.state = { type: 'listExt', id: this.id, active: serial.active, items, width: serial.width, height: serial.height }
@@ -1074,7 +1074,7 @@ export class Widget_group<T extends { [key: string]: Widget }> implements IReque
                 const newType = newItem.type
                 // console.log(' 👀 >>', key, prev_)
                 if (prevValue_ && newType === prevValue_.type) {
-                    this.state.values[key] = this.builder.HYDRATE(newType, newInput, prevValue_)
+                    this.state.values[key] = this.builder._HYDRATE(newType, newInput, prevValue_)
                 } else {
                     this.state.values[key] = newItem
                 }
@@ -1130,7 +1130,7 @@ export class Widget_groupOpt<T extends { [key: string]: Widget }> implements IRe
                 const newType = newItem.type
                 // console.log(' 👀 >>', key, prev_)
                 if (prevValue_ && newType === prevValue_.type) {
-                    this.state.values[key] = this.builder.HYDRATE(newType, newInput, prevValue_)
+                    this.state.values[key] = this.builder._HYDRATE(newType, newInput, prevValue_)
                 } else {
                     this.state.values[key] = newItem
                 }
@@ -1184,7 +1184,7 @@ export class Widget_choice      <T extends { [key: string]: Widget }> implements
                 const newInput = newItem.input
                 const newType = newItem.type
                 if (prevValue_ && newType === prevValue_.type) {
-                    this.state.values[key] = this.builder.HYDRATE(newType, newInput, prevValue_)
+                    this.state.values[key] = this.builder._HYDRATE(newType, newInput, prevValue_)
                 } else {
                     this.state.values[key] = newItem
                 }
@@ -1253,7 +1253,7 @@ export class Widget_choices<T extends { [key: string]: Widget }> implements IReq
                 const newType = newItem.type
                 // restore branches value
                 if (prevValue_ && newType === prevValue_.type) {
-                    this.state.values[key] = this.builder.HYDRATE(newType, newInput, prevValue_)
+                    this.state.values[key] = this.builder._HYDRATE(newType, newInput, prevValue_)
                 } else {
                     this.state.values[key] = newItem
                 }

@@ -6,26 +6,61 @@ import { _FIX_INDENTATION } from '../utils/misc/_FIX_INDENTATION'
 
 // prettier-ignore
 export class FormBuilder {
-    /**
-     * @hidden
-     * @internal
-     */
-    _cache :{ count:number } = { count:0 }
 
-    /**
-     * 🔴 UGLY HACK: this is set in the FormBuilder root at from creation
-     * when the root is created.
-     * @internal
-     */
-    ROOT!: W.Widget_group<any>
-
-    // @internal
+    /** (@internal) don't call this yourself */
     constructor(public schema: SchemaL) {
         makeAutoObservable(this)
     }
 
-    // @internal
-    HYDRATE =(type: W.Widget['type'], input: any, serial?: any ): any => {
+    // autoUI          =                                                  (p: Widget_str_input                  ) => new Widget_str                   (this, this.schema, p)
+    string             =                                                  (p: W.Widget_str_input                ) => new W.Widget_str                 (this, this.schema, p)
+    color              =                                                  (p: W.Widget_color_input              ) => new W.Widget_color               (this, this.schema, p)
+    size               =                                                  (p: W.Widget_size_input               ) => new W.Widget_size                (this, this.schema, p)
+    stringOpt          =                                                  (p: W.Widget_strOpt_input             ) => new W.Widget_strOpt              (this, this.schema, p)
+    str                =                                                  (p: W.Widget_str_input                ) => new W.Widget_str                 (this, this.schema, p)
+    strOpt             =                                                  (p: W.Widget_strOpt_input             ) => new W.Widget_strOpt              (this, this.schema, p)
+    prompt             =                                                  (p: W.Widget_prompt_input             ) => new W.Widget_prompt              (this, this.schema, p)
+    promptOpt          =                                                  (p: W.Widget_promptOpt_input          ) => new W.Widget_promptOpt           (this, this.schema, p)
+    seed               =                                                  (p: W.Widget_seed_input               ) => new W.Widget_seed                (this, this.schema, p)
+    int                =                                                  (p: W.Widget_int_input                ) => new W.Widget_int                 (this, this.schema, p)
+    intOpt             =                                                  (p: W.Widget_intOpt_input             ) => new W.Widget_intOpt              (this, this.schema, p)
+    float              =                                                  (p: W.Widget_float_input              ) => new W.Widget_float               (this, this.schema, p)
+    floatOpt           =                                                  (p: W.Widget_floatOpt_input           ) => new W.Widget_floatOpt            (this, this.schema, p)
+    number             =                                                  (p: W.Widget_float_input              ) => new W.Widget_float               (this, this.schema, p)
+    numberOpt          =                                                  (p: W.Widget_floatOpt_input           ) => new W.Widget_floatOpt            (this, this.schema, p)
+    matrix             =                                                  (p: W.Widget_matrix_input             ) => new W.Widget_matrix              (this, this.schema, p)
+    boolean            =                                                  (p: W.Widget_bool_input               ) => new W.Widget_bool                (this, this.schema, p)
+    bool               =                                                  (p: W.Widget_bool_input               ) => new W.Widget_bool                (this, this.schema, p)
+    loras              =                                                  (p: W.Widget_loras_input              ) => new W.Widget_loras               (this, this.schema, p)
+    image              =                                                  (p: W.Widget_image_input              ) => new W.Widget_image               (this, this.schema, p)
+    markdown           =                                                  (p: W.Widget_markdown_input           ) => new W.Widget_markdown            (this, this.schema, p)
+    imageOpt           =                                                  (p: W.Widget_imageOpt_input           ) => new W.Widget_imageOpt            (this, this.schema, p)
+    selectOneOrCustom  =                                                  (p: W.Widget_selectOneOrCustom_input  ) => new W.Widget_selectOneOrCustom   (this, this.schema, p)
+    selectManyOrCustom =                                                  (p: W.Widget_selectManyOrCustom_input ) => new W.Widget_selectManyOrCustom  (this, this.schema, p)
+    enum               = <const T extends KnownEnumNames>                 (p: W.Widget_enum_input<T>            ) => new W.Widget_enum                (this, this.schema, p)
+    enumOpt            = <const T extends KnownEnumNames>                 (p: W.Widget_enumOpt_input<T>         ) => new W.Widget_enumOpt             (this, this.schema, p)
+    list               = <const T extends W.Widget>                       (p: W.Widget_list_input<T>            ) => new W.Widget_list                (this, this.schema, p)
+    listExt            = <const T extends W.Widget>                       (p: W.Widget_listExt_input<T>         ) => new W.Widget_listExt             (this, this.schema, p)
+    timeline           = <const T extends W.Widget>                       (p: W.Widget_listExt_input<T>         ) => new W.Widget_listExt             (this, this.schema, { mode: 'timeline', ...p })
+    regional           = <const T extends W.Widget>                       (p: W.Widget_listExt_input<T>         ) => new W.Widget_listExt             (this, this.schema, { mode: 'regional', ...p })
+    groupOpt           = <const T extends { [key: string]: W.Widget }>    (p: W.Widget_groupOpt_input<T>        ) => new W.Widget_groupOpt            (this, this.schema, p)
+    group              = <const T extends { [key: string]: W.Widget }>    (p: W.Widget_group_input<T>           ) => new W.Widget_group               (this, this.schema, p)
+    selectOne          = <const T extends { id: string, label?: string}>  (p: W.Widget_selectOne_input<T>       ) => new W.Widget_selectOne           (this, this.schema, p)
+    selectMany         = <const T extends { type: string}>                (p: W.Widget_selectMany_input<T>      ) => new W.Widget_selectMany          (this, this.schema, p)
+    choice             = <const T extends { [key: string]: W.Widget }>    (p: W.Widget_choice_input<T>          ) => new W.Widget_choice              (this, this.schema, p)
+    choices            = <const T extends { [key: string]: W.Widget }>    (p: W.Widget_choices_input<T>         ) => new W.Widget_choices             (this, this.schema, p)
+
+
+    _FIX_INDENTATION = _FIX_INDENTATION
+
+    /** (@internal); */
+    _cache :{ count:number } = { count:0 }
+
+    /** (@internal) will be set at builer creation, to allow for dyanmic recursive forms */
+    _ROOT!: W.Widget_group<any>
+
+    /** (@internal) advanced way to restore form state. used internally */
+    _HYDRATE =(type: W.Widget['type'], input: any, serial?: any ): any => {
         if (type === 'bool')               return new W.Widget_bool               (this, this.schema, input, serial)
         if (type === 'str')                return new W.Widget_str                (this, this.schema, input, serial)
         if (type === 'strOpt')             return new W.Widget_strOpt             (this, this.schema, input, serial)
@@ -58,46 +93,4 @@ export class FormBuilder {
         console.log(`🔴 unknown type ${type}`)
         exhaust(type)
     }
-
-
-    // autoUI          =                                                  (p: Widget_str_input                  , serial?: Widget_str_serial                  ) => new Widget_str                   (this, this.schema, p, serial)
-    string             =                                                  (p: W.Widget_str_input                , serial?: W.Widget_str_serial                ) => new W.Widget_str                 (this, this.schema, p, serial)
-    color              =                                                  (p: W.Widget_color_input              , serial?: W.Widget_color_serial              ) => new W.Widget_color               (this, this.schema, p, serial)
-    size               =                                                  (p: W.Widget_size_input               , serial?: W.Widget_size_serial               ) => new W.Widget_size                (this, this.schema, p, serial)
-    stringOpt          =                                                  (p: W.Widget_strOpt_input             , serial?: W.Widget_strOpt_serial             ) => new W.Widget_strOpt              (this, this.schema, p, serial)
-    str                =                                                  (p: W.Widget_str_input                , serial?: W.Widget_str_serial                ) => new W.Widget_str                 (this, this.schema, p, serial)
-    strOpt             =                                                  (p: W.Widget_strOpt_input             , serial?: W.Widget_strOpt_serial             ) => new W.Widget_strOpt              (this, this.schema, p, serial)
-    prompt             =                                                  (p: W.Widget_prompt_input             , serial?: W.Widget_prompt_serial             ) => new W.Widget_prompt              (this, this.schema, p, serial)
-    promptOpt          =                                                  (p: W.Widget_promptOpt_input          , serial?: W.Widget_promptOpt_serial          ) => new W.Widget_promptOpt           (this, this.schema, p, serial)
-    seed               =                                                  (p: W.Widget_seed_input               , serial?: W.Widget_seed_serial               ) => new W.Widget_seed                (this, this.schema, p, serial)
-    int                =                                                  (p: W.Widget_int_input                , serial?: W.Widget_int_serial                ) => new W.Widget_int                 (this, this.schema, p, serial)
-    intOpt             =                                                  (p: W.Widget_intOpt_input             , serial?: W.Widget_intOpt_serial             ) => new W.Widget_intOpt              (this, this.schema, p, serial)
-    float              =                                                  (p: W.Widget_float_input              , serial?: W.Widget_float_serial              ) => new W.Widget_float               (this, this.schema, p, serial)
-    floatOpt           =                                                  (p: W.Widget_floatOpt_input           , serial?: W.Widget_floatOpt_serial           ) => new W.Widget_floatOpt            (this, this.schema, p, serial)
-    number             =                                                  (p: W.Widget_float_input              , serial?: W.Widget_float_serial              ) => new W.Widget_float               (this, this.schema, p, serial)
-    numberOpt          =                                                  (p: W.Widget_floatOpt_input           , serial?: W.Widget_floatOpt_serial           ) => new W.Widget_floatOpt            (this, this.schema, p, serial)
-    matrix             =                                                  (p: W.Widget_matrix_input             , serial?: W.Widget_matrix_serial             ) => new W.Widget_matrix              (this, this.schema, p, serial)
-    boolean            =                                                  (p: W.Widget_bool_input               , serial?: W.Widget_bool_serial               ) => new W.Widget_bool                (this, this.schema, p, serial)
-    bool               =                                                  (p: W.Widget_bool_input               , serial?: W.Widget_bool_serial               ) => new W.Widget_bool                (this, this.schema, p, serial)
-    loras              =                                                  (p: W.Widget_loras_input              , serial?: W.Widget_loras_serial              ) => new W.Widget_loras               (this, this.schema, p, serial)
-    image              =                                                  (p: W.Widget_image_input              , serial?: W.Widget_image_serial              ) => new W.Widget_image               (this, this.schema, p, serial)
-    markdown           =                                                  (p: W.Widget_markdown_input           , serial?: W.Widget_markdown_serial           ) => new W.Widget_markdown            (this, this.schema, p, serial)
-    imageOpt           =                                                  (p: W.Widget_imageOpt_input           , serial?: W.Widget_imageOpt_serial           ) => new W.Widget_imageOpt            (this, this.schema, p, serial)
-    selectOneOrCustom  =                                                  (p: W.Widget_selectOneOrCustom_input  , serial?: W.Widget_selectOneOrCustom_serial  ) => new W.Widget_selectOneOrCustom   (this, this.schema, p, serial)
-    selectManyOrCustom =                                                  (p: W.Widget_selectManyOrCustom_input , serial?: W.Widget_selectManyOrCustom_serial ) => new W.Widget_selectManyOrCustom  (this, this.schema, p, serial)
-    enum               = <const T extends KnownEnumNames>                 (p: W.Widget_enum_input<T>            , serial?: W.Widget_enum_serial<T>            ) => new W.Widget_enum                (this, this.schema, p, serial)
-    enumOpt            = <const T extends KnownEnumNames>                 (p: W.Widget_enumOpt_input<T>         , serial?: W.Widget_enumOpt_serial<T>         ) => new W.Widget_enumOpt             (this, this.schema, p, serial)
-    list               = <const T extends W.Widget>                       (p: W.Widget_list_input<T>            , serial?: W.Widget_list_serial<T>            ) => new W.Widget_list                (this, this.schema, p, serial)
-    listExt            = <const T extends W.Widget>                       (p: W.Widget_listExt_input<T>         , serial?: W.Widget_listExt_serial<T>         ) => new W.Widget_listExt             (this, this.schema, p, serial)
-    timeline           = <const T extends W.Widget>                       (p: W.Widget_listExt_input<T>         , serial?: W.Widget_listExt_serial<T>         ) => new W.Widget_listExt             (this, this.schema, { mode: 'timeline', ...p }, serial)
-    regional           = <const T extends W.Widget>                       (p: W.Widget_listExt_input<T>         , serial?: W.Widget_listExt_serial<T>         ) => new W.Widget_listExt             (this, this.schema, { mode: 'regional', ...p }, serial)
-    groupOpt           = <const T extends { [key: string]: W.Widget }>    (p: W.Widget_groupOpt_input<T>        , serial?: W.Widget_groupOpt_serial<T>        ) => new W.Widget_groupOpt            (this, this.schema, p, serial)
-    group              = <const T extends { [key: string]: W.Widget }>    (p: W.Widget_group_input<T>           , serial?: W.Widget_group_serial<T>           ) => new W.Widget_group               (this, this.schema, p, serial)
-    selectOne          = <const T extends { id: string, label?: string}>  (p: W.Widget_selectOne_input<T>       , serial?: W.Widget_selectOne_serial<T>       ) => new W.Widget_selectOne           (this, this.schema, p, serial)
-    selectMany         = <const T extends { type: string}>                (p: W.Widget_selectMany_input<T>      , serial?: W.Widget_selectMany_serial<T>      ) => new W.Widget_selectMany          (this, this.schema, p, serial)
-    choice             = <const T extends { [key: string]: W.Widget }>    (p: W.Widget_choice_input<T>          , serial?: W.Widget_choice_serial<T>          ) => new W.Widget_choice              (this, this.schema, p, serial)
-    choices            = <const T extends { [key: string]: W.Widget }>    (p: W.Widget_choices_input<T>         , serial?: W.Widget_choices_serial<T>         ) => new W.Widget_choices             (this, this.schema, p, serial)
-
-
-    _FIX_INDENTATION = _FIX_INDENTATION
 }

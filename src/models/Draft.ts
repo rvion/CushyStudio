@@ -5,7 +5,7 @@ import type { StepL } from './Step'
 import { autorun, reaction, runInAction, toJS } from 'mobx'
 import { CardFile } from 'src/cards/CardFile'
 import { AppPath } from 'src/cards/CardPath'
-import { type Widget } from 'src/controls/Widget'
+import { Widget_group, type Widget } from 'src/controls/Widget'
 import { FormBuilder } from 'src/controls/FormBuilder'
 import { __FAIL, __OK, type Result } from 'src/types/Either'
 import { LiveRef } from '../db/LiveRef'
@@ -112,12 +112,12 @@ export class DraftL {
                 try {
                     const formBuilder = new FormBuilder(this.st.schema)
                     const uiFn = action.ui
-                    const req: Widget =
+                    const req: Widget_group<any> =
                         uiFn == null //
-                            ? formBuilder.group({ topLevel: true, items: () => ({}) }, this.data.actionParams)
-                            : formBuilder.group({ topLevel: true, items: () => uiFn(formBuilder) }, this.data.actionParams)
+                            ? formBuilder._HYDRATE('group', { topLevel: true, items: () => ({}) }, this.data.actionParams)
+                            : formBuilder._HYDRATE('group', { topLevel: true, items: () => uiFn(formBuilder) }, this.data.actionParams) // prettier-ignore
                     /** 👇 HACK; see the comment near the ROOT property definition */
-                    formBuilder.ROOT = req
+                    formBuilder._ROOT = req
                     this.gui = __OK(req)
                     console.log(`[🦊] form: setup`)
                     // subState.unsync()
