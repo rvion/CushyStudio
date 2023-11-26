@@ -20,7 +20,7 @@ export const Panel_Output = observer(function Panel_Output_(p: {}) {
         <div tw={[mode === 'H' ? 'flex-row' : 'flex-col', 'flex flex-grow h-full w-full']}>
             {/* HISTORY */}
             <div tw={[dir, 'flex gap-1 overflow-auto flex-shrink-0 bg-base-200']}>
-                <RevealUI tw='self-start'>
+                <RevealUI disableHover tw='self-start'>
                     <div tw='btn btn-sm btn-primary'>
                         <span className='material-symbols-outlined'>history</span>
                     </div>
@@ -60,23 +60,23 @@ export const Panel_Output = observer(function Panel_Output_(p: {}) {
 
             {/* OUTPUTS */}
             <div tw={[dir, 'flex gap-1 bg-base-200']}>
-                <Dropdown
-                    //
-                    title=''
-                    startIcon={<span className='material-symbols-outlined'>present_to_all</span>}
-                >
+                <RevealUI tw='self-start' disableHover>
+                    <div tw='btn btn-sm btn-primary'>
+                        <span className='material-symbols-outlined'>present_to_all</span>
+                    </div>
                     <div>
                         <FieldAndLabelUI label='Size'>
-                            <Slider
+                            <InputNumberUI
                                 style={{ width: '5rem' }}
+                                mode={'int'}
                                 min={32}
                                 max={200}
-                                onChange={(ev) => (st.outputPreviewSize = parseFloatNoRoundingErr(ev.target.value))}
+                                onValueChange={(next) => (st.outputPreviewSize = next)}
                                 value={st.outputPreviewSize}
                             />
                         </FieldAndLabelUI>
                     </div>
-                </Dropdown>
+                </RevealUI>
                 <div tw={[dir, 'flex gap-1 overflow-auto']}>
                     {step?.data.outputs?.map((output, ix) => (
                         <OutputPreviewUI key={ix} step={step} output={output} />

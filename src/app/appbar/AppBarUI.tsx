@@ -20,14 +20,6 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
             <div tw='flex items-center px-1 overflow-auto'>
                 <img style={{ width: '1.6rem' }} src={assets.public_CushyLogo_512_png} alt='' />
                 <UpdateBtnUI updater={st.updater}>CushyStudio </UpdateBtnUI>
-                <Button
-                    appearance='subtle'
-                    size='sm'
-                    onClick={() => st.toggleFullLibrary()}
-                    icon={<span className='material-symbols-outlined text-success'>view_list</span>}
-                >
-                    Library
-                </Button>
                 <MenuPanelsUI />
                 <MenuComfyUI />
                 <MenuUtilsUI />

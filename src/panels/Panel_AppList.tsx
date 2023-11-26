@@ -2,12 +2,17 @@ import { observer } from 'mobx-react-lite'
 import SortableList, { SortableItem } from 'react-easy-sort'
 import { ActionPackUI, AppEntryInvalidUI, AppEntryUI } from '../cards/CardPicker2UI'
 import { useSt } from '../state/stateContext'
+import { Button } from 'src/rsuite/shims'
 
 export const Panel_AppList = observer(function Panel_AppList_(p: {}) {
     const st = useSt()
     const library = st.library
     return (
         <>
+            <button tw='btn w-full btn-subtle btn-sm' onClick={() => st.toggleFullLibrary()}>
+                <span className='material-symbols-outlined text-success'>view_list</span>
+                Library
+            </button>
             {/* FAVORITES */}
             {library.allFavorites.length ? (
                 <div

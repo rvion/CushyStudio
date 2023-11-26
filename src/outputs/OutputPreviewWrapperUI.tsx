@@ -20,7 +20,7 @@ export const OutputPreviewWrapperUI = observer(function OutputPreviewWrapperUI_(
                 style={{
                     width: sizeStr,
                     height: sizeStr,
-                    border: `1px solid ${getPreviewBorderColor(type)}`,
+                    border: `2px solid ${getPreviewBorderColor(type)}`,
                 }}
                 className='flex flex-rowcol-info virtualBorder'
             >
