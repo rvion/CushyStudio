@@ -51,12 +51,12 @@ export type Widget =
     | Widget_enumOpt<any>
 
 // 🅿️ str ==============================================================================
-export type Widget_str_input  = ReqInput<{ default?: string; textarea?: boolean, placeHolder?:string }>
+export type Widget_str_opts  = ReqInput<{ default?: string; textarea?: boolean, placeHolder?:string }>
 export type Widget_str_serial = StateFields<{ type: 'str', active: true; val: string }>
 export type Widget_str_state  = StateFields<{ type: 'str', active: true; val: string }>
 export type Widget_str_output = string
-export interface Widget_str extends IWidget<'str', Widget_str_input, Widget_str_serial, Widget_str_state, Widget_str_output> {}
-export class Widget_str implements IRequest<'str', Widget_str_input, Widget_str_serial, Widget_str_state, Widget_str_output> {
+export interface Widget_str extends IWidget<'str', Widget_str_opts, Widget_str_serial, Widget_str_state, Widget_str_output> {}
+export class Widget_str implements IRequest<'str', Widget_str_opts, Widget_str_serial, Widget_str_state, Widget_str_output> {
     isOptional = false
     id: string
     type: 'str' = 'str'
@@ -64,7 +64,7 @@ export class Widget_str implements IRequest<'str', Widget_str_input, Widget_str_
     constructor(
         public builder: FormBuilder,
         public schema: SchemaL,
-        public input: Widget_str_input,
+        public input: Widget_str_opts,
         serial?: Widget_str_serial,
     ) {
         this.id = serial?.id ?? nanoid()
@@ -76,12 +76,12 @@ export class Widget_str implements IRequest<'str', Widget_str_input, Widget_str_
 }
 
 // 🅿️ markdown ==============================================================================
-export type Widget_markdown_input = ReqInput<{ markdown: string | ((formRoot:Widget_group<any>) => string); }>
+export type Widget_markdown_opts = ReqInput<{ markdown: string | ((formRoot:Widget_group<any>) => string); }>
 export type Widget_markdown_serial = StateFields<{ type: 'markdown', active: true }>
 export type Widget_markdown_state  = StateFields<{ type: 'markdown', active: true }>
 export type Widget_markdown_output = { type: 'markdown', active: true }
-export interface Widget_markdown extends IWidget<'markdown', Widget_markdown_input, Widget_markdown_serial, Widget_markdown_state, Widget_markdown_output> {}
-export class Widget_markdown implements IRequest<'markdown', Widget_markdown_input, Widget_markdown_serial, Widget_markdown_state, Widget_markdown_output> {
+export interface Widget_markdown extends IWidget<'markdown', Widget_markdown_opts, Widget_markdown_serial, Widget_markdown_state, Widget_markdown_output> {}
+export class Widget_markdown implements IRequest<'markdown', Widget_markdown_opts, Widget_markdown_serial, Widget_markdown_state, Widget_markdown_output> {
     isOptional = false
     id: string
     type: 'markdown' = 'markdown'
@@ -96,7 +96,7 @@ export class Widget_markdown implements IRequest<'markdown', Widget_markdown_inp
     constructor(
         public builder: FormBuilder,
         public schema: SchemaL,
-        public input: Widget_markdown_input,
+        public input: Widget_markdown_opts,
         serial?: Widget_markdown_serial,
     ) {
         this.id = serial?.id ?? nanoid()
@@ -108,12 +108,12 @@ export class Widget_markdown implements IRequest<'markdown', Widget_markdown_inp
 }
 
 // 🅿️ str ==============================================================================
-export type Widget_color_input = ReqInput<{ default?: string; }>
+export type Widget_color_opts = ReqInput<{ default?: string; }>
 export type Widget_color_serial = StateFields<{ type: 'color', active: true; val: string }>
 export type Widget_color_state  = StateFields<{ type: 'color', active: true; val: string }>
 export type Widget_color_output = string
-export interface Widget_color extends IWidget<'color', Widget_color_input, Widget_color_serial, Widget_color_state, Widget_color_output> {}
-export class Widget_color implements IRequest<'color', Widget_color_input, Widget_color_serial, Widget_color_state, Widget_color_output> {
+export interface Widget_color extends IWidget<'color', Widget_color_opts, Widget_color_serial, Widget_color_state, Widget_color_output> {}
+export class Widget_color implements IRequest<'color', Widget_color_opts, Widget_color_serial, Widget_color_state, Widget_color_output> {
     isOptional = false
     id: string
     type: 'color' = 'color'
@@ -121,7 +121,7 @@ export class Widget_color implements IRequest<'color', Widget_color_input, Widge
     constructor(
         public builder: FormBuilder,
         public schema: SchemaL,
-        public input: Widget_color_input,
+        public input: Widget_color_opts,
         serial?: Widget_color_serial,
     ) {
         this.id = serial?.id ?? nanoid()
@@ -133,12 +133,12 @@ export class Widget_color implements IRequest<'color', Widget_color_input, Widge
 }
 
 // 🅿️ strOpt ==============================================================================
-export type Widget_strOpt_input  = Widget_str_input
+export type Widget_strOpt_opts  = Widget_str_opts
 export type Widget_strOpt_serial = Widget_strOpt_state
 export type Widget_strOpt_state  = StateFields<{ type:'strOpt', active: boolean; val: string }>
 export type Widget_strOpt_output = Maybe<string>
-export interface Widget_strOpt extends IWidget<'strOpt', Widget_strOpt_input, Widget_strOpt_serial, Widget_strOpt_state, Widget_strOpt_output> {}
-export class Widget_strOpt implements IRequest<'strOpt', Widget_strOpt_input, Widget_strOpt_serial, Widget_strOpt_state, Widget_strOpt_output> {
+export interface Widget_strOpt extends IWidget<'strOpt', Widget_strOpt_opts, Widget_strOpt_serial, Widget_strOpt_state, Widget_strOpt_output> {}
+export class Widget_strOpt implements IRequest<'strOpt', Widget_strOpt_opts, Widget_strOpt_serial, Widget_strOpt_state, Widget_strOpt_output> {
     isOptional = true
     id: string
     type: 'strOpt' = 'strOpt'
@@ -146,7 +146,7 @@ export class Widget_strOpt implements IRequest<'strOpt', Widget_strOpt_input, Wi
     constructor(
         public builder: FormBuilder,
         public schema: SchemaL,
-        public input: Widget_strOpt_input,
+        public input: Widget_strOpt_opts,
         serial?: Widget_strOpt_serial,
     ) {
         this.id = serial?.id ?? nanoid()
@@ -166,12 +166,12 @@ export class Widget_strOpt implements IRequest<'strOpt', Widget_strOpt_input, Wi
 }
 
 // 🅿️ prompt ==============================================================================
-export type Widget_prompt_input  = ReqInput<{ default?: string | WidgetPromptOutput }>
+export type Widget_prompt_opts  = ReqInput<{ default?: string | WidgetPromptOutput }>
 export type Widget_prompt_serial = Widget_prompt_state
 export type Widget_prompt_state  = StateFields<{ type: 'prompt'; active: true; /*text: string;*/ tokens: PossibleSerializedNodes[] }>
 export type Widget_prompt_output = { type: 'prompt'; active: true; /*text: string;*/ tokens: PossibleSerializedNodes[] }
-export interface Widget_prompt extends IWidget<'prompt', Widget_prompt_input, Widget_prompt_serial, Widget_prompt_state, Widget_prompt_output> {}
-export class Widget_prompt implements IRequest<'prompt', Widget_prompt_input, Widget_prompt_serial, Widget_prompt_state, Widget_prompt_output> {
+export interface Widget_prompt extends IWidget<'prompt', Widget_prompt_opts, Widget_prompt_serial, Widget_prompt_state, Widget_prompt_output> {}
+export class Widget_prompt implements IRequest<'prompt', Widget_prompt_opts, Widget_prompt_serial, Widget_prompt_state, Widget_prompt_output> {
     isOptional = false
     id: string
     type: 'prompt' = 'prompt'
@@ -180,7 +180,7 @@ export class Widget_prompt implements IRequest<'prompt', Widget_prompt_input, Wi
     constructor(
         public builder: FormBuilder,
         public schema: SchemaL,
-        public input: Widget_prompt_input,
+        public input: Widget_prompt_opts,
         serial?: Widget_prompt_serial,
     ) {
         this.id = serial?.id ?? nanoid()
@@ -208,12 +208,12 @@ export class Widget_prompt implements IRequest<'prompt', Widget_prompt_input, Wi
 }
 
 // 🅿️ promptOpt ==============================================================================
-export type Widget_promptOpt_input  = ReqInput<{ default?: string | WidgetPromptOutput }>
+export type Widget_promptOpt_opts  = ReqInput<{ default?: string | WidgetPromptOutput }>
 export type Widget_promptOpt_serial = Widget_promptOpt_state // { type: 'promptOpt'; active: boolean; /* text: string;*/ tokens: PossibleSerializedNodes[] }
 export type Widget_promptOpt_state  = StateFields<{ type: 'promptOpt'; active: boolean; /* text: string;*/ tokens: PossibleSerializedNodes[] }>
 export type Widget_promptOpt_output = Maybe<WidgetPromptOutput>
-export interface Widget_promptOpt extends IWidget<'promptOpt', Widget_promptOpt_input, Widget_promptOpt_serial, Widget_promptOpt_state, Widget_promptOpt_output> {}
-export class Widget_promptOpt implements IRequest<'promptOpt', Widget_promptOpt_input, Widget_promptOpt_serial, Widget_promptOpt_state, Widget_promptOpt_output> {
+export interface Widget_promptOpt extends IWidget<'promptOpt', Widget_promptOpt_opts, Widget_promptOpt_serial, Widget_promptOpt_state, Widget_promptOpt_output> {}
+export class Widget_promptOpt implements IRequest<'promptOpt', Widget_promptOpt_opts, Widget_promptOpt_serial, Widget_promptOpt_state, Widget_promptOpt_output> {
     isOptional = true
     id: string
     type: 'promptOpt' = 'promptOpt'
@@ -221,7 +221,7 @@ export class Widget_promptOpt implements IRequest<'promptOpt', Widget_promptOpt_
     constructor(
         public builder: FormBuilder,
         public schema: SchemaL,
-        public input: Widget_promptOpt_input,
+        public input: Widget_promptOpt_opts,
         serial?: Widget_promptOpt_serial,
     ) {
         this.id = serial?.id ?? nanoid()
@@ -249,12 +249,12 @@ export class Widget_promptOpt implements IRequest<'promptOpt', Widget_promptOpt_
 }
 
 // 🅿️ seed ==============================================================================
-export type Widget_seed_input  = ReqInput<{ default?: number; defaultMode?: 'randomize' | 'fixed' | 'last', min?: number; max?: number }>
+export type Widget_seed_opts  = ReqInput<{ default?: number; defaultMode?: 'randomize' | 'fixed' | 'last', min?: number; max?: number }>
 export type Widget_seed_serial = Widget_seed_state
 export type Widget_seed_state  = StateFields<{ type:'seed', active: true; val: number, mode: 'randomize' | 'fixed' | 'last' }>
 export type Widget_seed_output = number
-export interface Widget_seed extends IWidget<'seed', Widget_seed_input, Widget_seed_serial, Widget_seed_state, Widget_seed_output> {}
-export class Widget_seed implements IRequest<'seed', Widget_seed_input, Widget_seed_serial, Widget_seed_state, Widget_seed_output> {
+export interface Widget_seed extends IWidget<'seed', Widget_seed_opts, Widget_seed_serial, Widget_seed_state, Widget_seed_output> {}
+export class Widget_seed implements IRequest<'seed', Widget_seed_opts, Widget_seed_serial, Widget_seed_state, Widget_seed_output> {
     isOptional = false
     id: string
     type: 'seed' = 'seed'
@@ -262,7 +262,7 @@ export class Widget_seed implements IRequest<'seed', Widget_seed_input, Widget_s
     constructor(
         public builder: FormBuilder,
         public schema: SchemaL,
-        public input: Widget_seed_input,
+        public input: Widget_seed_opts,
         serial?: Widget_seed_serial,
     ) {
         this.id = serial?.id ?? nanoid()
@@ -285,12 +285,12 @@ export class Widget_seed implements IRequest<'seed', Widget_seed_input, Widget_s
 }
 
 // 🅿️ int ==============================================================================
-export type Widget_int_input  = ReqInput<{ default?: number; min?: number; max?: number, step?: number, hideSlider?: boolean }>
+export type Widget_int_opts  = ReqInput<{ default?: number; min?: number; max?: number, step?: number, hideSlider?: boolean }>
 export type Widget_int_serial = Widget_int_state
 export type Widget_int_state  = StateFields<{ type:'int', active: true; val: number }>
 export type Widget_int_output = number
-export interface Widget_int extends IWidget<'int', Widget_int_input, Widget_int_serial, Widget_int_state, Widget_int_output> {}
-export class Widget_int implements IRequest<'int', Widget_int_input, Widget_int_serial, Widget_int_state, Widget_int_output> {
+export interface Widget_int extends IWidget<'int', Widget_int_opts, Widget_int_serial, Widget_int_state, Widget_int_output> {}
+export class Widget_int implements IRequest<'int', Widget_int_opts, Widget_int_serial, Widget_int_state, Widget_int_output> {
     isOptional = false
     id: string
     type: 'int' = 'int'
@@ -298,7 +298,7 @@ export class Widget_int implements IRequest<'int', Widget_int_input, Widget_int_
     constructor(
         public builder: FormBuilder,
         public schema: SchemaL,
-        public input: Widget_int_input,
+        public input: Widget_int_opts,
         serial?: Widget_int_serial,
     ) {
         this.id = serial?.id ?? nanoid()
@@ -310,12 +310,12 @@ export class Widget_int implements IRequest<'int', Widget_int_input, Widget_int_
 }
 
 // 🅿️ float ==============================================================================
-export type Widget_float_input  = ReqInput<{ default?: number; min?: number; max?: number, step?: number, hideSlider?: boolean }>
+export type Widget_float_opts  = ReqInput<{ default?: number; min?: number; max?: number, step?: number, hideSlider?: boolean }>
 export type Widget_float_serial = Widget_float_state
 export type Widget_float_state  = StateFields<{ type:'float', active: true; val: number }>
 export type Widget_float_output = number
-export interface Widget_float extends IWidget<'float', Widget_float_input, Widget_float_serial, Widget_float_state, Widget_float_output> {}
-export class Widget_float implements IRequest<'float', Widget_float_input, Widget_float_serial, Widget_float_state, Widget_float_output> {
+export interface Widget_float extends IWidget<'float', Widget_float_opts, Widget_float_serial, Widget_float_state, Widget_float_output> {}
+export class Widget_float implements IRequest<'float', Widget_float_opts, Widget_float_serial, Widget_float_state, Widget_float_output> {
     isOptional = false
     id: string
     type: 'float' = 'float'
@@ -323,7 +323,7 @@ export class Widget_float implements IRequest<'float', Widget_float_input, Widge
     constructor(
         public builder: FormBuilder,
         public schema: SchemaL,
-        public input: Widget_float_input,
+        public input: Widget_float_opts,
         serial?: Widget_float_serial,
     ) {
         this.id = serial?.id ?? nanoid()
@@ -335,12 +335,12 @@ export class Widget_float implements IRequest<'float', Widget_float_input, Widge
 }
 
 // 🅿️ bool ==============================================================================
-export type Widget_bool_input  = ReqInput<{ default?: boolean }>
+export type Widget_bool_opts  = ReqInput<{ default?: boolean }>
 export type Widget_bool_serial = Widget_bool_state
 export type Widget_bool_state  = StateFields<{ type:'bool', active: true; val: boolean }>
 export type Widget_bool_output = boolean
-export interface Widget_bool extends IWidget<'bool', Widget_bool_input, Widget_bool_serial, Widget_bool_state, Widget_bool_output> {}
-export class Widget_bool implements IRequest<'bool', Widget_bool_input, Widget_bool_serial, Widget_bool_state, Widget_bool_output> {
+export interface Widget_bool extends IWidget<'bool', Widget_bool_opts, Widget_bool_serial, Widget_bool_state, Widget_bool_output> {}
+export class Widget_bool implements IRequest<'bool', Widget_bool_opts, Widget_bool_serial, Widget_bool_state, Widget_bool_output> {
     isOptional = true
     id: string
     type: 'bool' = 'bool'
@@ -348,7 +348,7 @@ export class Widget_bool implements IRequest<'bool', Widget_bool_input, Widget_b
     constructor(
         public builder: FormBuilder,
         public schema: SchemaL,
-        public input: Widget_bool_input,
+        public input: Widget_bool_opts,
         serial?: Widget_bool_serial,
     ) {
         this.id = serial?.id ?? nanoid()
@@ -360,12 +360,12 @@ export class Widget_bool implements IRequest<'bool', Widget_bool_input, Widget_b
 }
 
 // 🅿️ intOpt ==============================================================================
-export type Widget_intOpt_input  = ReqInput<{ default?: number; min?: number; max?: number; step?: number, hideSlider?: boolean }>
+export type Widget_intOpt_opts  = ReqInput<{ default?: number; min?: number; max?: number; step?: number, hideSlider?: boolean }>
 export type Widget_intOpt_serial = Widget_intOpt_state
 export type Widget_intOpt_state  = StateFields<{ type: 'intOpt', active: boolean; val: number }>
 export type Widget_intOpt_output = Maybe<number>
-export interface Widget_intOpt extends IWidget<'intOpt', Widget_intOpt_input, Widget_intOpt_serial, Widget_intOpt_state, Widget_intOpt_output> {}
-export class Widget_intOpt implements IRequest<'intOpt', Widget_intOpt_input, Widget_intOpt_serial, Widget_intOpt_state, Widget_intOpt_output> {
+export interface Widget_intOpt extends IWidget<'intOpt', Widget_intOpt_opts, Widget_intOpt_serial, Widget_intOpt_state, Widget_intOpt_output> {}
+export class Widget_intOpt implements IRequest<'intOpt', Widget_intOpt_opts, Widget_intOpt_serial, Widget_intOpt_state, Widget_intOpt_output> {
     isOptional = true
     id: string
     type: 'intOpt' = 'intOpt'
@@ -373,7 +373,7 @@ export class Widget_intOpt implements IRequest<'intOpt', Widget_intOpt_input, Wi
     constructor(
         public builder: FormBuilder,
         public schema: SchemaL,
-        public input: Widget_intOpt_input,
+        public input: Widget_intOpt_opts,
         serial?: Widget_intOpt_serial,
     ) {
         this.id = serial?.id ?? nanoid()
@@ -393,12 +393,12 @@ export class Widget_intOpt implements IRequest<'intOpt', Widget_intOpt_input, Wi
 }
 
 // 🅿️ floatOpt ==============================================================================
-export type Widget_floatOpt_input  = ReqInput<{ default?: number; min?: number; max?: number; step?: number, hideSlider?: boolean }>
+export type Widget_floatOpt_opts  = ReqInput<{ default?: number; min?: number; max?: number; step?: number, hideSlider?: boolean }>
 export type Widget_floatOpt_serial = Widget_floatOpt_state
 export type Widget_floatOpt_state  = StateFields<{ type: 'floatOpt', active: boolean; val: number }>
 export type Widget_floatOpt_output = Maybe<number>
-export interface Widget_floatOpt extends IWidget<'floatOpt', Widget_floatOpt_input, Widget_floatOpt_serial, Widget_floatOpt_state, Widget_floatOpt_output> {}
-export class Widget_floatOpt implements IRequest<'floatOpt', Widget_floatOpt_input, Widget_floatOpt_serial, Widget_floatOpt_state, Widget_floatOpt_output> {
+export interface Widget_floatOpt extends IWidget<'floatOpt', Widget_floatOpt_opts, Widget_floatOpt_serial, Widget_floatOpt_state, Widget_floatOpt_output> {}
+export class Widget_floatOpt implements IRequest<'floatOpt', Widget_floatOpt_opts, Widget_floatOpt_serial, Widget_floatOpt_state, Widget_floatOpt_output> {
     isOptional = true
     id: string
     type: 'floatOpt' = 'floatOpt'
@@ -406,7 +406,7 @@ export class Widget_floatOpt implements IRequest<'floatOpt', Widget_floatOpt_inp
     constructor(
         public builder: FormBuilder,
         public schema: SchemaL,
-        public input: Widget_floatOpt_input,
+        public input: Widget_floatOpt_opts,
         serial?: Widget_floatOpt_serial,
     ) {
         this.id = serial?.id ?? nanoid()
@@ -426,7 +426,7 @@ export class Widget_floatOpt implements IRequest<'floatOpt', Widget_floatOpt_inp
 }
 
 // 🅿️ size ==============================================================================
-export type Widget_size_input  = ReqInput<{
+export type Widget_size_opts  = ReqInput<{
     default?: CushySizeByRatio
     min?: number
     max?: number
@@ -435,8 +435,8 @@ export type Widget_size_input  = ReqInput<{
 export type Widget_size_serial = Widget_size_state
 export type Widget_size_state  = StateFields<CushySize>
 export type Widget_size_output = CushySize
-export interface Widget_size extends IWidget<'size', Widget_size_input, Widget_size_serial, Widget_size_state, Widget_size_output> {}
-export class Widget_size implements IRequest<'size', Widget_size_input, Widget_size_serial, Widget_size_state, Widget_size_output> {
+export interface Widget_size extends IWidget<'size', Widget_size_opts, Widget_size_serial, Widget_size_state, Widget_size_output> {}
+export class Widget_size implements IRequest<'size', Widget_size_opts, Widget_size_serial, Widget_size_state, Widget_size_output> {
     isOptional = false
     id: string
     type: 'size' = 'size'
@@ -444,7 +444,7 @@ export class Widget_size implements IRequest<'size', Widget_size_input, Widget_s
     constructor(
         public builder: FormBuilder,
         public schema: SchemaL,
-        public input: Widget_size_input,
+        public input: Widget_size_opts,
         serial?: Widget_size_serial,
     ) {
         this.id = serial?.id ?? nanoid()
@@ -481,12 +481,12 @@ export type Widget_matrix_cell = {
     col: string
     value: boolean
 }
-export type Widget_matrix_input  = ReqInput<{ default?: { row: string; col: string }[]; rows: string[]; cols: string[] }>
+export type Widget_matrix_opts  = ReqInput<{ default?: { row: string; col: string }[]; rows: string[]; cols: string[] }>
 export type Widget_matrix_serial = Widget_matrix_state
 export type Widget_matrix_state  = StateFields<{ type: 'matrix', active: true; selected: Widget_matrix_cell[] }>
 export type Widget_matrix_output = Widget_matrix_cell[]
-export interface Widget_matrix extends IWidget<'matrix', Widget_matrix_input, Widget_matrix_serial, Widget_matrix_state, Widget_matrix_output> {}
-export class Widget_matrix implements IRequest<'matrix', Widget_matrix_input, Widget_matrix_serial, Widget_matrix_state, Widget_matrix_output> {
+export interface Widget_matrix extends IWidget<'matrix', Widget_matrix_opts, Widget_matrix_serial, Widget_matrix_state, Widget_matrix_output> {}
+export class Widget_matrix implements IRequest<'matrix', Widget_matrix_opts, Widget_matrix_serial, Widget_matrix_state, Widget_matrix_output> {
     isOptional = false
     id: string
     type: 'matrix' = 'matrix'
@@ -496,7 +496,7 @@ export class Widget_matrix implements IRequest<'matrix', Widget_matrix_input, Wi
     constructor(
         public builder: FormBuilder,
         public schema: SchemaL,
-        public input: Widget_matrix_input,
+        public input: Widget_matrix_opts,
         serial?: Widget_matrix_serial,
     ) {
         this.id = serial?.id ?? nanoid()
@@ -574,12 +574,12 @@ export class Widget_matrix implements IRequest<'matrix', Widget_matrix_input, Wi
 }
 
 // 🅿️ loras ==============================================================================
-export type Widget_loras_input  = ReqInput<{ default?: SimplifiedLoraDef[] }>
+export type Widget_loras_opts  = ReqInput<{ default?: SimplifiedLoraDef[] }>
 export type Widget_loras_serial = Widget_loras_state
 export type Widget_loras_state  = StateFields<{ type: 'loras', active: true; loras: SimplifiedLoraDef[] }>
 export type Widget_loras_output = SimplifiedLoraDef[]
-export interface Widget_loras extends IWidget<'loras', Widget_loras_input, Widget_loras_serial, Widget_loras_state, Widget_loras_output> {}
-export class Widget_loras implements IRequest<'loras', Widget_loras_input, Widget_loras_serial, Widget_loras_state, Widget_loras_output> {
+export interface Widget_loras extends IWidget<'loras', Widget_loras_opts, Widget_loras_serial, Widget_loras_state, Widget_loras_output> {}
+export class Widget_loras implements IRequest<'loras', Widget_loras_opts, Widget_loras_serial, Widget_loras_state, Widget_loras_output> {
     isOptional = false
     id: string
     type: 'loras' = 'loras'
@@ -587,7 +587,7 @@ export class Widget_loras implements IRequest<'loras', Widget_loras_input, Widge
     constructor(
         public builder: FormBuilder,
         public schema: SchemaL,
-        public input: Widget_loras_input,
+        public input: Widget_loras_opts,
         serial?: Widget_loras_serial,
     ) {
         this.id = serial?.id ?? nanoid()
@@ -628,7 +628,7 @@ export class Widget_loras implements IRequest<'loras', Widget_loras_input, Widge
 }
 
 // 🅿️ image ==============================================================================
-export type Widget_image_input  = ReqInput<{
+export type Widget_image_opts  = ReqInput<{
     default?: 'cushy' | 'comfy' | 'paint',
     defaultComfy?: ComfyImageAnswer,
     defaultCushy?: CushyImageAnswer,
@@ -640,8 +640,8 @@ export type Widget_image_input  = ReqInput<{
 export type Widget_image_serial = Widget_image_state
 export type Widget_image_state  = StateFields<ImageAnswerForm<'image', true>>
 export type Widget_image_output = ImageAnswer
-export interface Widget_image extends IWidget<'image', Widget_image_input, Widget_image_serial, Widget_image_state, Widget_image_output> {}
-export class Widget_image implements IRequest<'image', Widget_image_input, Widget_image_serial, Widget_image_state, Widget_image_output> {
+export interface Widget_image extends IWidget<'image', Widget_image_opts, Widget_image_serial, Widget_image_state, Widget_image_output> {}
+export class Widget_image implements IRequest<'image', Widget_image_opts, Widget_image_serial, Widget_image_state, Widget_image_output> {
     isOptional = false
     id: string
     type: 'image' = 'image'
@@ -649,7 +649,7 @@ export class Widget_image implements IRequest<'image', Widget_image_input, Widge
     constructor(
         public builder: FormBuilder,
         public schema: SchemaL,
-        public input: Widget_image_input,
+        public input: Widget_image_opts,
         serial?: Widget_image_serial,
     ) {
         this.id = serial?.id ?? nanoid()
@@ -674,12 +674,12 @@ export class Widget_image implements IRequest<'image', Widget_image_input, Widge
 }
 
 // 🅿️ imageOpt ==============================================================================
-export type Widget_imageOpt_input  = Widget_image_input // same as image
+export type Widget_imageOpt_opts  = Widget_image_opts // same as image
 export type Widget_imageOpt_serial = Widget_imageOpt_state
 export type Widget_imageOpt_state  = StateFields<ImageAnswerForm<'imageOpt', boolean>>
 export type Widget_imageOpt_output = Maybe<ImageAnswer>
-export interface Widget_imageOpt extends IWidget<'imageOpt', Widget_imageOpt_input, Widget_imageOpt_serial, Widget_imageOpt_state, Widget_imageOpt_output> {}
-export class Widget_imageOpt implements IRequest<'imageOpt', Widget_imageOpt_input, Widget_imageOpt_serial, Widget_imageOpt_state, Widget_imageOpt_output> {
+export interface Widget_imageOpt extends IWidget<'imageOpt', Widget_imageOpt_opts, Widget_imageOpt_serial, Widget_imageOpt_state, Widget_imageOpt_output> {}
+export class Widget_imageOpt implements IRequest<'imageOpt', Widget_imageOpt_opts, Widget_imageOpt_serial, Widget_imageOpt_state, Widget_imageOpt_output> {
     isOptional = true
     id: string
     type: 'imageOpt' = 'imageOpt'
@@ -687,7 +687,7 @@ export class Widget_imageOpt implements IRequest<'imageOpt', Widget_imageOpt_inp
     constructor(
         public builder: FormBuilder,
         public schema: SchemaL,
-        public input: Widget_imageOpt_input,
+        public input: Widget_imageOpt_opts,
         serial?: Widget_imageOpt_serial,
     ) {
         this.id = serial?.id ?? nanoid()
@@ -713,12 +713,12 @@ export class Widget_imageOpt implements IRequest<'imageOpt', Widget_imageOpt_inp
 
 // 🅿️ selectOne ==============================================================================
 export type BaseSelectOneEntry = { id: string, label?: string }
-export type Widget_selectOne_input <T extends BaseSelectOneEntry>  = ReqInput<{ default?: T; choices: T[] | ((formRoot:Widget_group<any>) => T[]) }>
+export type Widget_selectOne_opts <T extends BaseSelectOneEntry>  = ReqInput<{ default?: T; choices: T[] | ((formRoot:Widget_group<any>) => T[]) }>
 export type Widget_selectOne_serial<T extends BaseSelectOneEntry> = Widget_selectOne_state<T>
 export type Widget_selectOne_state <T extends BaseSelectOneEntry>  = StateFields<{ type:'selectOne', query: string; val: T }>
 export type Widget_selectOne_output<T extends BaseSelectOneEntry> = T
-export interface Widget_selectOne<T>  extends IWidget<'selectOne', Widget_selectOne_input<T>, Widget_selectOne_serial<T>, Widget_selectOne_state<T>, Widget_selectOne_output<T>> {}
-export class Widget_selectOne<T extends BaseSelectOneEntry> implements IRequest<'selectOne', Widget_selectOne_input<T>, Widget_selectOne_serial<T>, Widget_selectOne_state<T>, Widget_selectOne_output<T>> {
+export interface Widget_selectOne<T>  extends IWidget<'selectOne', Widget_selectOne_opts<T>, Widget_selectOne_serial<T>, Widget_selectOne_state<T>, Widget_selectOne_output<T>> {}
+export class Widget_selectOne<T extends BaseSelectOneEntry> implements IRequest<'selectOne', Widget_selectOne_opts<T>, Widget_selectOne_serial<T>, Widget_selectOne_state<T>, Widget_selectOne_output<T>> {
     isOptional = false
     id: string
     type: 'selectOne' = 'selectOne'
@@ -733,7 +733,7 @@ export class Widget_selectOne<T extends BaseSelectOneEntry> implements IRequest<
     constructor(
         public builder: FormBuilder,
         public schema: SchemaL,
-        public input: Widget_selectOne_input<T>,
+        public input: Widget_selectOne_opts<T>,
         serial?: Widget_selectOne_serial<T>,
     ) {
         this.id = serial?.id ?? nanoid()
@@ -752,12 +752,12 @@ export class Widget_selectOne<T extends BaseSelectOneEntry> implements IRequest<
 }
 
 // 🅿️ selectOneOrCustom ==============================================================================
-export type Widget_selectOneOrCustom_input  = ReqInput<{ default?: string; choices: string[] }>
+export type Widget_selectOneOrCustom_opts  = ReqInput<{ default?: string; choices: string[] }>
 export type Widget_selectOneOrCustom_serial = Widget_selectOneOrCustom_state
 export type Widget_selectOneOrCustom_state  = StateFields<{ type:'selectOneOrCustom', query: string; val: string }>
 export type Widget_selectOneOrCustom_output = string
-export interface Widget_selectOneOrCustom extends IWidget<'selectOneOrCustom', Widget_selectOneOrCustom_input, Widget_selectOneOrCustom_serial, Widget_selectOneOrCustom_state, Widget_selectOneOrCustom_output > {}
-export class Widget_selectOneOrCustom implements IRequest<'selectOneOrCustom', Widget_selectOneOrCustom_input, Widget_selectOneOrCustom_serial, Widget_selectOneOrCustom_state, Widget_selectOneOrCustom_output > {
+export interface Widget_selectOneOrCustom extends IWidget<'selectOneOrCustom', Widget_selectOneOrCustom_opts, Widget_selectOneOrCustom_serial, Widget_selectOneOrCustom_state, Widget_selectOneOrCustom_output > {}
+export class Widget_selectOneOrCustom implements IRequest<'selectOneOrCustom', Widget_selectOneOrCustom_opts, Widget_selectOneOrCustom_serial, Widget_selectOneOrCustom_state, Widget_selectOneOrCustom_output > {
     isOptional = false
     id: string
     type: 'selectOneOrCustom' = 'selectOneOrCustom'
@@ -765,7 +765,7 @@ export class Widget_selectOneOrCustom implements IRequest<'selectOneOrCustom', W
     constructor(
         public builder: FormBuilder,
         public schema: SchemaL,
-        public input: Widget_selectOneOrCustom_input,
+        public input: Widget_selectOneOrCustom_opts,
         serial?: Widget_selectOneOrCustom_serial,
     ) {
         this.id = serial?.id ?? nanoid()
@@ -782,12 +782,12 @@ export class Widget_selectOneOrCustom implements IRequest<'selectOneOrCustom', W
 }
 
 // 🅿️ selectMany ==============================================================================
-export type Widget_selectMany_input<T extends { type: string }>  = ReqInput<{ default?: T[]; choices: T[] }>
+export type Widget_selectMany_opts<T extends { type: string }>  = ReqInput<{ default?: T[]; choices: T[] }>
 export type Widget_selectMany_serial<T extends { type: string }> = StateFields<{ type: 'selectMany', query: string; values_: string[] }>
 export type Widget_selectMany_state<T extends { type: string }>  = StateFields<{ type: 'selectMany', query: string; values: T[] }>
 export type Widget_selectMany_output<T extends { type: string }> = T[]
-export interface Widget_selectMany<T extends { type: string }> extends IWidget<'selectMany', Widget_selectMany_input<T>, Widget_selectMany_serial<T>, Widget_selectMany_state<T>, Widget_selectMany_output<T>> {}
-export class Widget_selectMany<T extends { type: string }> implements IRequest<'selectMany', Widget_selectMany_input<T>, Widget_selectMany_serial<T>, Widget_selectMany_state<T>, Widget_selectMany_output<T>> {
+export interface Widget_selectMany<T extends { type: string }> extends IWidget<'selectMany', Widget_selectMany_opts<T>, Widget_selectMany_serial<T>, Widget_selectMany_state<T>, Widget_selectMany_output<T>> {}
+export class Widget_selectMany<T extends { type: string }> implements IRequest<'selectMany', Widget_selectMany_opts<T>, Widget_selectMany_serial<T>, Widget_selectMany_state<T>, Widget_selectMany_output<T>> {
     isOptional = false
     id: string
     type: 'selectMany' = 'selectMany'
@@ -795,7 +795,7 @@ export class Widget_selectMany<T extends { type: string }> implements IRequest<'
     constructor(
         public builder: FormBuilder,
         public schema: SchemaL,
-        public input: Widget_selectMany_input<T>,
+        public input: Widget_selectMany_opts<T>,
         serial?: Widget_selectMany_serial<T>,
     ) {
         this.id = serial?.id ?? nanoid()
@@ -817,12 +817,12 @@ export class Widget_selectMany<T extends { type: string }> implements IRequest<'
 }
 
 // 🅿️ selectManyOrCustom ==============================================================================
-export type Widget_selectManyOrCustom_input  = ReqInput<{ default?: string[]; choices: string[] }>
+export type Widget_selectManyOrCustom_opts  = ReqInput<{ default?: string[]; choices: string[] }>
 export type Widget_selectManyOrCustom_serial = Widget_selectManyOrCustom_state
 export type Widget_selectManyOrCustom_state  = StateFields<{ type: 'selectManyOrCustom', query: string; values: string[] }>
 export type Widget_selectManyOrCustom_output = string[]
-export interface Widget_selectManyOrCustom extends IWidget<'selectManyOrCustom',  Widget_selectManyOrCustom_input, Widget_selectManyOrCustom_serial, Widget_selectManyOrCustom_state, Widget_selectManyOrCustom_output > {}
-export class Widget_selectManyOrCustom implements IRequest<'selectManyOrCustom', Widget_selectManyOrCustom_input, Widget_selectManyOrCustom_serial, Widget_selectManyOrCustom_state, Widget_selectManyOrCustom_output > {
+export interface Widget_selectManyOrCustom extends IWidget<'selectManyOrCustom',  Widget_selectManyOrCustom_opts, Widget_selectManyOrCustom_serial, Widget_selectManyOrCustom_state, Widget_selectManyOrCustom_output > {}
+export class Widget_selectManyOrCustom implements IRequest<'selectManyOrCustom', Widget_selectManyOrCustom_opts, Widget_selectManyOrCustom_serial, Widget_selectManyOrCustom_state, Widget_selectManyOrCustom_output > {
     isOptional = false
     id: string
     type: 'selectManyOrCustom' = 'selectManyOrCustom'
@@ -830,7 +830,7 @@ export class Widget_selectManyOrCustom implements IRequest<'selectManyOrCustom',
     constructor(
         public builder: FormBuilder,
         public schema: SchemaL,
-        public input: Widget_selectManyOrCustom_input,
+        public input: Widget_selectManyOrCustom_opts,
         serial?: Widget_selectManyOrCustom_serial,
     ) {
         this.id = serial?.id ?? nanoid()
@@ -842,7 +842,7 @@ export class Widget_selectManyOrCustom implements IRequest<'selectManyOrCustom',
 }
 
 // 🅿️ list ==============================================================================
-export type Widget_list_input<T extends Widget>  = ReqInput<{
+export type Widget_list_opts<T extends Widget>  = ReqInput<{
     element: () => T,
     min?: number,
     max?:number,
@@ -851,8 +851,8 @@ export type Widget_list_input<T extends Widget>  = ReqInput<{
 export type Widget_list_serial<T extends Widget> = StateFields<{ type: 'list', active: true; items_: T['$Serial'][] }>
 export type Widget_list_state<T extends Widget>  = StateFields<{ type: 'list', active: true; items: T[] }>
 export type Widget_list_output<T extends Widget> = T['$Output'][]
-export interface Widget_list<T extends Widget> extends IWidget<'list', Widget_list_input<T>, Widget_list_serial<T>, Widget_list_state<T>, Widget_list_output<T>> {}
-export class Widget_list<T extends Widget> implements IRequest<'list', Widget_list_input<T>, Widget_list_serial<T>, Widget_list_state<T>, Widget_list_output<T>> {
+export interface Widget_list<T extends Widget> extends IWidget<'list', Widget_list_opts<T>, Widget_list_serial<T>, Widget_list_state<T>, Widget_list_output<T>> {}
+export class Widget_list<T extends Widget> implements IRequest<'list', Widget_list_opts<T>, Widget_list_serial<T>, Widget_list_state<T>, Widget_list_output<T>> {
     isOptional = false
     id: string
     type: 'list' = 'list'
@@ -862,7 +862,7 @@ export class Widget_list<T extends Widget> implements IRequest<'list', Widget_li
     constructor(
         public builder: FormBuilder,
         public schema: SchemaL,
-        public input: Widget_list_input<T>,
+        public input: Widget_list_opts<T>,
         serial?: Widget_list_serial<T>,
     ) {
         this.id = serial?.id ?? nanoid()
@@ -952,7 +952,7 @@ const itemExtDefaults : ItemExt = {x: 50, y: 50, z: 0, width: 50, height: 50, de
 type WithExt <T extends Widget> = { item:  T } & ItemExt
 type WithPartialExt <T extends Widget> = { item:  T } & Partial<ItemExt>
 
-export type Widget_listExt_input<T extends Widget>  = ReqInput<{
+export type Widget_listExt_opts<T extends Widget>  = ReqInput<{
     mode?: 'regional' | 'timeline',
     /** default: 100 */
     width: number,
@@ -966,8 +966,8 @@ export type Widget_listExt_input<T extends Widget>  = ReqInput<{
 export type Widget_listExt_serial<T extends Widget> = StateFields<{ type: 'listExt', active: true; items_: ({item_: T['$Serial']} & ItemExt)[] } & RootExt>
 export type Widget_listExt_state <T extends Widget> = StateFields<{ type: 'listExt', active: true; items:  ({item:  T           } & ItemExt)[] } & RootExt>
 export type Widget_listExt_output<T extends Widget> = RootExt & { items: (ItemExt & {item: T['$Output'] })[] }
-export interface Widget_listExt  <T extends Widget> extends     IWidget<'listExt', Widget_listExt_input<T>, Widget_listExt_serial<T>, Widget_listExt_state<T>, Widget_listExt_output<T>> {}
-export class Widget_listExt      <T extends Widget> implements IRequest<'listExt', Widget_listExt_input<T>, Widget_listExt_serial<T>, Widget_listExt_state<T>, Widget_listExt_output<T>> {
+export interface Widget_listExt  <T extends Widget> extends     IWidget<'listExt', Widget_listExt_opts<T>, Widget_listExt_serial<T>, Widget_listExt_state<T>, Widget_listExt_output<T>> {}
+export class Widget_listExt      <T extends Widget> implements IRequest<'listExt', Widget_listExt_opts<T>, Widget_listExt_serial<T>, Widget_listExt_state<T>, Widget_listExt_output<T>> {
     isOptional = false
     id: string
     type: 'listExt' = 'listExt'
@@ -978,7 +978,7 @@ export class Widget_listExt      <T extends Widget> implements IRequest<'listExt
     constructor(
         public builder: FormBuilder,
         public schema: SchemaL,
-        public input: Widget_listExt_input<T>,
+        public input: Widget_listExt_opts<T>,
         serial?: Widget_listExt_serial<T>,
     ) {
         this.id = serial?.id ?? nanoid()
@@ -1039,12 +1039,12 @@ export class Widget_listExt      <T extends Widget> implements IRequest<'listExt
 }
 
 // 🅿️ group ==============================================================================
-export type Widget_group_input <T extends { [key: string]: Widget }> = ReqInput<{ items: () => T, topLevel?: boolean, verticalLabels?: boolean }>
+export type Widget_group_opts <T extends { [key: string]: Widget }> = ReqInput<{ items: () => T, topLevel?: boolean, verticalLabels?: boolean }>
 export type Widget_group_serial<T extends { [key: string]: Widget }> = StateFields<{ type: 'group', active: true; values_: {[k in keyof T]: T[k]['$Serial']}, collapsed?: boolean }>
 export type Widget_group_state <T extends { [key: string]: Widget }> = StateFields<{ type: 'group', active: true; values: T, vertical?: boolean }>
 export type Widget_group_output<T extends { [key: string]: Widget }> = { [k in keyof T]: ReqResult<T[k]> }
-export interface Widget_group<T extends { [key: string]: Widget }> extends IWidget<'group', Widget_group_input<T>, Widget_group_serial<T>, Widget_group_state<T>, Widget_group_output<T>> {}
-export class Widget_group<T extends { [key: string]: Widget }> implements IRequest<'group', Widget_group_input<T>, Widget_group_serial<T>, Widget_group_state<T>, Widget_group_output<T>> {
+export interface Widget_group<T extends { [key: string]: Widget }> extends IWidget<'group', Widget_group_opts<T>, Widget_group_serial<T>, Widget_group_state<T>, Widget_group_output<T>> {}
+export class Widget_group<T extends { [key: string]: Widget }> implements IRequest<'group', Widget_group_opts<T>, Widget_group_serial<T>, Widget_group_state<T>, Widget_group_output<T>> {
     isOptional = false
     id: string
     type: 'group' = 'group'
@@ -1052,7 +1052,7 @@ export class Widget_group<T extends { [key: string]: Widget }> implements IReque
     constructor(
         public builder: FormBuilder,
         public schema: SchemaL,
-        public input: Widget_group_input<T>,
+        public input: Widget_group_opts<T>,
         serial?: Widget_group_serial<T>,
     ) {
         this.id = serial?.id ?? nanoid()
@@ -1100,12 +1100,12 @@ export class Widget_group<T extends { [key: string]: Widget }> implements IReque
 }
 
 // 🅿️ groupOpt ==============================================================================
-export type Widget_groupOpt_input <T extends { [key: string]: Widget }> = ReqInput<{ default?: boolean; items: () => T, topLevel?: false }>
+export type Widget_groupOpt_opts <T extends { [key: string]: Widget }> = ReqInput<{ default?: boolean; items: () => T, topLevel?: false }>
 export type Widget_groupOpt_serial<T extends { [key: string]: Widget }> = StateFields<{ type: 'groupOpt', active: boolean; values_: {[K in keyof T]: T[K]['$Serial']}, }>
 export type Widget_groupOpt_state <T extends { [key: string]: Widget }> = StateFields<{ type: 'groupOpt', active: boolean; values: T, }>
 export type Widget_groupOpt_output<T extends { [key: string]: Widget }> = Maybe<{ [k in keyof T]: ReqResult<T[k]> }>
-export interface Widget_groupOpt<T extends { [key: string]: Widget }> extends IWidget<'groupOpt', Widget_groupOpt_input<T>, Widget_groupOpt_serial<T>, Widget_groupOpt_state<T>, Widget_groupOpt_output<T>> {}
-export class Widget_groupOpt<T extends { [key: string]: Widget }> implements IRequest<'groupOpt', Widget_groupOpt_input<T>, Widget_groupOpt_serial<T>, Widget_groupOpt_state<T>, Widget_groupOpt_output<T>> {
+export interface Widget_groupOpt<T extends { [key: string]: Widget }> extends IWidget<'groupOpt', Widget_groupOpt_opts<T>, Widget_groupOpt_serial<T>, Widget_groupOpt_state<T>, Widget_groupOpt_output<T>> {}
+export class Widget_groupOpt<T extends { [key: string]: Widget }> implements IRequest<'groupOpt', Widget_groupOpt_opts<T>, Widget_groupOpt_serial<T>, Widget_groupOpt_state<T>, Widget_groupOpt_output<T>> {
     isOptional = true
     id: string
     type: 'groupOpt' = 'groupOpt'
@@ -1113,7 +1113,7 @@ export class Widget_groupOpt<T extends { [key: string]: Widget }> implements IRe
     constructor(
         public builder: FormBuilder,
         public schema: SchemaL,
-        public input: Widget_groupOpt_input<T>,
+        public input: Widget_groupOpt_opts<T>,
         serial?: Widget_groupOpt_serial<T>,
     ) {
         this.id = serial?.id ?? nanoid()
@@ -1157,12 +1157,12 @@ export class Widget_groupOpt<T extends { [key: string]: Widget }> implements IRe
 }
 
 // 🅿️ choice ==============================================================================
-export type Widget_choice_input <T extends { [key: string]: Widget }> = ReqInput<{ default?: keyof T; items: () => T }>
+export type Widget_choice_opts <T extends { [key: string]: Widget }> = ReqInput<{ default?: keyof T; items: () => T }>
 export type Widget_choice_serial<T extends { [key: string]: Widget }> = StateFields<{ type: 'choice', active: boolean; pick: keyof T & string, values_: {[K in keyof T]: T[K]['$Serial']} }>
 export type Widget_choice_state <T extends { [key: string]: Widget }> = StateFields<{ type: 'choice', active: boolean; pick: keyof T & string, values: T }>
 export type Widget_choice_output<T extends { [key: string]: Widget }> = ReqResult<T[keyof T]>
-export interface Widget_choice  <T extends { [key: string]: Widget }> extends    IWidget<'choice',  Widget_choice_input<T>, Widget_choice_serial<T>, Widget_choice_state<T>, Widget_choice_output<T>> {}
-export class Widget_choice      <T extends { [key: string]: Widget }> implements IRequest<'choice', Widget_choice_input<T>, Widget_choice_serial<T>, Widget_choice_state<T>, Widget_choice_output<T>> {
+export interface Widget_choice  <T extends { [key: string]: Widget }> extends    IWidget<'choice',  Widget_choice_opts<T>, Widget_choice_serial<T>, Widget_choice_state<T>, Widget_choice_output<T>> {}
+export class Widget_choice      <T extends { [key: string]: Widget }> implements IRequest<'choice', Widget_choice_opts<T>, Widget_choice_serial<T>, Widget_choice_state<T>, Widget_choice_output<T>> {
     isOptional = false
     id: string
     type: 'choice' = 'choice'
@@ -1170,7 +1170,7 @@ export class Widget_choice      <T extends { [key: string]: Widget }> implements
     constructor(
         public builder: FormBuilder,
         public schema: SchemaL,
-        public input: Widget_choice_input<T>,
+        public input: Widget_choice_opts<T>,
         serial?: Widget_choice_serial<T>,
     ) {
         this.id = serial?.id ?? nanoid()
@@ -1213,12 +1213,12 @@ export class Widget_choice      <T extends { [key: string]: Widget }> implements
 
 
 // 🅿️ choices ==============================================================================
-export type Widget_choices_input <T extends { [key: string]: Widget }> = ReqInput<{ items: () => T, defaultActiveBranches?: {[k in keyof T]?: boolean}  }>
+export type Widget_choices_opts <T extends { [key: string]: Widget }> = ReqInput<{ items: () => T, defaultActiveBranches?: {[k in keyof T]?: boolean}  }>
 export type Widget_choices_serial<T extends { [key: string]: Widget }> = StateFields<{ type: 'choices', active: true; branches: {[k in keyof T]?: boolean}, values_: {[k in keyof T]: T[k]['$Serial']} }>
 export type Widget_choices_state <T extends { [key: string]: Widget }> = StateFields<{ type: 'choices', active: true; branches: {[k in keyof T]?: boolean}, values: T }>
 export type Widget_choices_output<T extends { [key: string]: Widget }> = { [k in keyof T]?: ReqResult<T[k]> }
-export interface Widget_choices<T extends { [key: string]: Widget }> extends IWidget<'choices', Widget_choices_input<T>, Widget_choices_serial<T>, Widget_choices_state<T>, Widget_choices_output<T>> {}
-export class Widget_choices<T extends { [key: string]: Widget }> implements IRequest<'choices', Widget_choices_input<T>, Widget_choices_serial<T>, Widget_choices_state<T>, Widget_choices_output<T>> {
+export interface Widget_choices<T extends { [key: string]: Widget }> extends IWidget<'choices', Widget_choices_opts<T>, Widget_choices_serial<T>, Widget_choices_state<T>, Widget_choices_output<T>> {}
+export class Widget_choices<T extends { [key: string]: Widget }> implements IRequest<'choices', Widget_choices_opts<T>, Widget_choices_serial<T>, Widget_choices_state<T>, Widget_choices_output<T>> {
     isOptional = false
     id: string
     type: 'choices' = 'choices'
@@ -1226,7 +1226,7 @@ export class Widget_choices<T extends { [key: string]: Widget }> implements IReq
     constructor(
         public builder: FormBuilder,
         public schema: SchemaL,
-        public input: Widget_choices_input<T>,
+        public input: Widget_choices_opts<T>,
         serial?: Widget_choices_serial<T>,
     ) {
         this.id = serial?.id ?? nanoid()
@@ -1291,12 +1291,12 @@ export class Widget_choices<T extends { [key: string]: Widget }> implements IReq
 }
 
 // 🅿️ enum ==============================================================================
-export type Widget_enum_input<T extends KnownEnumNames>  = ReqInput<{ default?: Requirable[T]; enumName: T }>
+export type Widget_enum_opts<T extends KnownEnumNames>  = ReqInput<{ default?: Requirable[T]; enumName: T }>
 export type Widget_enum_serial<T extends KnownEnumNames> = Widget_enum_state<T>
 export type Widget_enum_state<T extends KnownEnumNames>  = StateFields<{ type: 'enum', active: true; val: Requirable[T] }>
 export type Widget_enum_output<T extends KnownEnumNames> = Requirable[T]
-export interface Widget_enum<T extends KnownEnumNames> extends IWidget<'enum', Widget_enum_input<T>, Widget_enum_serial<T>, Widget_enum_state<T>, Widget_enum_output<T>> {}
-export class Widget_enum<T extends KnownEnumNames> implements IRequest<'enum', Widget_enum_input<T>, Widget_enum_serial<T>, Widget_enum_state<T>, Widget_enum_output<T>> {
+export interface Widget_enum<T extends KnownEnumNames> extends IWidget<'enum', Widget_enum_opts<T>, Widget_enum_serial<T>, Widget_enum_state<T>, Widget_enum_output<T>> {}
+export class Widget_enum<T extends KnownEnumNames> implements IRequest<'enum', Widget_enum_opts<T>, Widget_enum_serial<T>, Widget_enum_state<T>, Widget_enum_output<T>> {
     isOptional = false
     id: string
     type: 'enum' = 'enum'
@@ -1304,7 +1304,7 @@ export class Widget_enum<T extends KnownEnumNames> implements IRequest<'enum', W
     constructor(
         public builder: FormBuilder,
         public schema: SchemaL,
-        public input: Widget_enum_input<T>,
+        public input: Widget_enum_opts<T>,
         serial?: Widget_enum_serial<T>,
     ) {
         this.id = serial?.id ?? nanoid()
@@ -1323,12 +1323,12 @@ export class Widget_enum<T extends KnownEnumNames> implements IRequest<'enum', W
 }
 
 // 🅿️ enumOpt ==============================================================================
-export type Widget_enumOpt_input<T extends KnownEnumNames>  = ReqInput<{ default?: Requirable[T]; enumName: T }>
+export type Widget_enumOpt_opts<T extends KnownEnumNames>  = ReqInput<{ default?: Requirable[T]; enumName: T }>
 export type Widget_enumOpt_serial<T extends KnownEnumNames> = Widget_enumOpt_state<T>
 export type Widget_enumOpt_state<T extends KnownEnumNames>  = StateFields<{ type: 'enumOpt', active: boolean; val: Requirable[T] }>
 export type Widget_enumOpt_output<T extends KnownEnumNames> = Maybe<Requirable[T]>
-export interface Widget_enumOpt<T extends KnownEnumNames> extends IWidget<'enumOpt', Widget_enumOpt_input<T>, Widget_enumOpt_serial<T>, Widget_enumOpt_state<T>, Widget_enumOpt_output<T>> {}
-export class Widget_enumOpt<T extends KnownEnumNames> implements IRequest<'enumOpt', Widget_enumOpt_input<T>, Widget_enumOpt_serial<T>, Widget_enumOpt_state<T>, Widget_enumOpt_output<T>> {
+export interface Widget_enumOpt<T extends KnownEnumNames> extends IWidget<'enumOpt', Widget_enumOpt_opts<T>, Widget_enumOpt_serial<T>, Widget_enumOpt_state<T>, Widget_enumOpt_output<T>> {}
+export class Widget_enumOpt<T extends KnownEnumNames> implements IRequest<'enumOpt', Widget_enumOpt_opts<T>, Widget_enumOpt_serial<T>, Widget_enumOpt_state<T>, Widget_enumOpt_output<T>> {
     isOptional = true
     id: string
     type: 'enumOpt' = 'enumOpt'
@@ -1336,7 +1336,7 @@ export class Widget_enumOpt<T extends KnownEnumNames> implements IRequest<'enumO
     constructor(
         public builder: FormBuilder,
         public schema: SchemaL,
-        public input: Widget_enumOpt_input<T>,
+        public input: Widget_enumOpt_opts<T>,
         serial?: Widget_enumOpt_serial<T>,
     ) {
         this.id = serial?.id ?? nanoid()
