@@ -1,6 +1,6 @@
 import type { ComfyNode } from './Node'
 
-export class Slot<T, Ix extends number = number> {
+export class ComfyNodeOutput<T, Ix extends number = number> {
     constructor(
         //
         public node: ComfyNode<any>,

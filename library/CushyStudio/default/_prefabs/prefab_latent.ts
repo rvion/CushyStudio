@@ -1,6 +1,6 @@
 import type { Runtime } from 'src/back/Runtime'
 import type { FormBuilder } from 'src/controls/FormBuilder'
-import type { Slot } from 'src/core/Slot'
+import type { ComfyNodeOutput } from 'src/core/Slot'
 import type { OutputFor } from '../_prefabs'
 
 export const ui_latent = (form: FormBuilder) => {
@@ -27,8 +27,8 @@ export const run_latent = async (p: {
     const opts = p.opts
 
     // misc calculatiosn
-    let width: number | Slot<'INT'>
-    let height: number | Slot<'INT'>
+    let width: number | ComfyNodeOutput<'INT'>
+    let height: number | ComfyNodeOutput<'INT'>
     let latent: HasSingle_LATENT
 
     // case 1. start form image

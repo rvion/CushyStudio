@@ -91,7 +91,7 @@ export class PromptL {
     private onError = (msg: WsMsgExecutionError) => {
         console.log('>> MARK ERROR')
         this.step.item.update({ status: Status.Failure })
-        this.step.item.append(msg)
+        this.step.item.addOutput(msg)
         this._finish()
     }
 

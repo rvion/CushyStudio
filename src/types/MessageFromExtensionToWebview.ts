@@ -7,12 +7,11 @@ import type { PromptID } from './ComfyWsApi'
 
 export type FromExtension_CushyStatus = { type: 'cushy_status'; connected: boolean }
 
-export type FromExtension_Print = { type: 'print'; message: string }
-export type FromExtension_Prompt = { type: 'prompt'; promptID: PromptID }
-export type FromExtension_Images = { type: 'images'; flowID?: Maybe<FlowID>; images: ImageT[] }
-export type FromExtension_ShowHtml = { type: 'show-html'; flowID?: FlowID; content: string; title: string }
-export type FromExtension_ask = { type: 'ask'; flowID: FlowID; form: Widget; result: FormResult<any> }
-export type FromExtension_RuntimeError = {
+export type StepOutput_Text = { type: 'print'; message: string }
+export type StepOutput_Prompt = { type: 'prompt'; promptID: PromptID }
+export type StepOutput_Images = { type: 'images'; flowID?: Maybe<FlowID>; images: ImageT[] }
+export type StepOutput_Html = { type: 'show-html'; flowID?: FlowID; content: string; title: string }
+export type StepOutput_RuntimeError = {
     type: 'runtimeError'
     message: string
     infos: { [key: string]: any }
@@ -24,3 +23,5 @@ export type FromExtension_RuntimeError = {
      * show the offending graph anyway */
     graphID?: GraphID
 }
+
+export type FromExtension_ask = { type: 'ask'; flowID: FlowID; form: Widget; result: FormResult<any> }

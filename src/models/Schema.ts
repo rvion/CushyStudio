@@ -315,9 +315,10 @@ export class SchemaL {
         // 1️⃣ }
         p('')
         p(`import type { ComfyNode } from '${prefix}core/Node'`)
-        p(`import type { Slot } from '${prefix}core/Slot'`)
-        p(`import type { ComfyNodeSchemaJSON } from '${prefix}types/ComfySchemaJSON'`)
         p(`import type { ComfyNodeID } from '${prefix}types/ComfyNodeID'`)
+        p(`import type { ComfyNodeOutput } from '${prefix}core/Slot'`)
+        p(`import type { ComfyNodeSchemaJSON } from '${prefix}types/ComfySchemaJSON'`)
+        p('')
         p(`import type { GlobalFunctionToDefineAnApp } from '${prefix}cards/Card'`)
         p('')
         p(`// CONTENT IN THIS FILE:`)
@@ -470,7 +471,8 @@ export class SchemaL {
         return b.content
     }
 
-    private toTSType = (t: string) => (ComfyPrimitiveMapping[t] ? `${ComfyPrimitiveMapping[t]} | Slot<'${t}'>` : `Slot<'${t}'>`)
+    private toTSType = (t: string) =>
+        ComfyPrimitiveMapping[t] ? `${ComfyPrimitiveMapping[t]} | ComfyNodeOutput<'${t}'>` : `ComfyNodeOutput<'${t}'>`
 }
 
 export class ComfyNodeSchema {
@@ -508,7 +510,7 @@ export class ComfyNodeSchema {
         p(`export interface ${this.nameInCushy}_output {`)
         // p(`    $schema: ${this.name}_schema`)
         this.outputs.forEach((i, ix) => {
-            p(`    ${escapeJSKey(i.nameInCushy)}: Slot<'${i.typeName}', ${ix}>,`)
+            p(`    ${escapeJSKey(i.nameInCushy)}: ComfyNodeOutput<'${i.typeName}', ${ix}>,`)
         })
         // INTERFACE
         // if (x[i.type] === 1) p(`    get _${i.type}() { return this.${i.name} } // prettier-ignore`)

@@ -5,7 +5,7 @@ import type { GraphL } from '../models/Graph'
 import { configure, extendObservable, makeAutoObservable, toJS } from 'mobx'
 import { ComfyNodeID } from '../types/ComfyNodeID'
 import { ComfyNodeSchema, NodeInputExt, NodeOutputExt } from '../models/Schema'
-import { Slot } from './Slot'
+import { ComfyNodeOutput } from './Slot'
 import { comfyColors } from './Colors'
 import { auto_ } from './autoValue'
 import { ReactNode, createElement } from 'react'
@@ -69,7 +69,7 @@ export class ComfyNode<
 
     // static X: number = 1
     uidNumber: number
-    $outputs: Slot<any>[] = []
+    $outputs: ComfyNodeOutput<any>[] = []
     outputs: ComfyNode_output
     uidPrefixed: string
     constructor(
@@ -99,7 +99,7 @@ export class ComfyNode<
         // dynamically add properties for every outputs
         const outputs: { [key: string]: any } = {}
         for (const x of this.$schema.outputs) {
-            const output = new Slot(this, ix++, x.nameInCushy)
+            const output = new ComfyNodeOutput(this, ix++, x.nameInCushy)
             outputs[x.nameInCushy] = output
             this.$outputs.push(output)
             // console.log(`  - .${x.nameInCushy} as ComfyNodeOutput(${ix})`)
@@ -197,7 +197,7 @@ export class ComfyNode<
             }
             throw new Error(`🔴 [AUTO failed] field "${field}" (of node ${this.$schema.nameInCushy}) value is null`)
         }
-        if (value instanceof Slot) return [value.node.uid, value.slotIx]
+        if (value instanceof ComfyNodeOutput) return [value.node.uid, value.slotIx]
         if (value instanceof ComfyNode) {
             const expectedType = this._getExpecteTypeForField(field)
             const output = value._getOutputForTypeOrCrash(expectedType)
@@ -214,19 +214,19 @@ export class ComfyNode<
         return input.type
     }
 
-    private _getOutputForTypeOrCrash(type: string): Slot<any> {
+    private _getOutputForTypeOrCrash(type: string): ComfyNodeOutput<any> {
         const i: NodeOutputExt = this.$schema.outputs.find((i: NodeOutputExt) => i.typeName === type)!
         const val = (this.outputs as any)[i.nameInCushy]
         // console.log(`this[i.name] = ${this.$schema.name}[${i.name}] = ${val}`)
-        if (val instanceof Slot) return val
+        if (val instanceof ComfyNodeOutput) return val
         throw new Error(`Expected ${i.nameInCushy} to be a NodeOutput`)
     }
-    private _getOutputForTypeOrNull(type: string): Slot<any> | null {
+    private _getOutputForTypeOrNull(type: string): ComfyNodeOutput<any> | null {
         const i: Maybe<NodeOutputExt> = this.$schema.outputs.find((i: NodeOutputExt) => i.typeName === type)
         if (i == null) return null
         const val = (this.outputs as any)[i.nameInCushy]
         if (val == null) return null
-        if (val instanceof Slot) return val
+        if (val instanceof ComfyNodeOutput) return val
         throw new Error(`Expected ${i.nameInCushy} to be a NodeOutput`)
     }
 }

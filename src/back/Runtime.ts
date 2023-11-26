@@ -12,7 +12,7 @@ import type { STATE } from 'src/state/state'
 import { assets } from 'src/utils/assets/assets'
 import { braceExpansion } from 'src/utils/misc/expansion'
 import { ImageAnswer } from '../controls/misc/InfoAnswer'
-import { Slot } from '../core/Slot'
+import { ComfyNodeOutput } from '../core/Slot'
 import { auto } from '../core/autoValue'
 import { GraphL } from '../models/Graph'
 import { ImageL } from '../models/Image'
@@ -26,7 +26,7 @@ import { deepCopyNaive, exhaust } from '../utils/misc/ComfyUtils'
 import { wildcards } from '../widgets/prompter/nodes/wildcards/wildcards'
 import { IDNaminScheemeInPromptSentToComfyUI } from './IDNaminScheemeInPromptSentToComfyUI'
 import { ImageSDK } from './ImageSDK'
-import { GraphBuilder } from './NodeBuilder'
+import { ComfyWorkflowBuilder } from './NodeBuilder'
 import { InvalidPromptError } from './RuntimeError'
 import { Status } from './Status'
 
@@ -94,22 +94,19 @@ export class Runtime<FIELDS extends WidgetDict = any> {
     /** retrieve the global schema */
     get schema() { return this.st.schema } // prettier-ignore
 
-    /** legacy way to access the global app runtime */
-    get flow() { return this } // prettier-ignore
-
     /** the default app's ComfyUI graph we're manipulating */
-    get graph(): GraphL {
+    get mainWorkflow(): GraphL {
         return this.step.outputGraph.item
     }
 
     /** graph buider */
-    get comfyWorkflow(): GraphBuilder {
-        return this.graph.builder
+    get comfyWorkflow(): ComfyWorkflowBuilder {
+        return this.mainWorkflow.builder
     }
 
     /** graph buider */
-    get nodes(): GraphBuilder {
-        return this.graph.builder
+    get nodes(): ComfyWorkflowBuilder {
+        return this.mainWorkflow.builder
     }
 
     // ====================================================================
@@ -139,25 +136,6 @@ export class Runtime<FIELDS extends WidgetDict = any> {
     }
 
     // ====================================================================
-    /** output a 3d scene from an image and its displacement and depth maps */
-    out_3dImage = (p: { image: string; depth: string; normal: string }) => {
-        const image = this.generatedImages //
-            .find((i) => i.data.imageInfos?.filename.startsWith(p.image))
-        const depth = this.generatedImages //
-            .find((i) => i.data.imageInfos?.filename.startsWith(p.depth))
-        const normal = this.generatedImages //
-            .find((i) => i.data.imageInfos?.filename.startsWith(p.normal))
-        if (image == null) throw new Error(`image not found: ${p.image}`)
-        if (depth == null) throw new Error(`image not found: ${p.image}`)
-        if (normal == null) throw new Error(`image not found: ${p.image}`)
-        this.st.layout.FOCUS_OR_CREATE('DisplacedImage', {
-            width: image.data.width ?? 512,
-            height: image.data.height ?? 512,
-            image: image.url,
-            depthMap: depth.url,
-            normalMap: normal.url,
-        })
-    }
 
     /** helper to auto-find an output slot and link use it for this input */
     AUTO = auto
@@ -181,7 +159,7 @@ export class Runtime<FIELDS extends WidgetDict = any> {
                 return Status.Failure
             }
             await app.run(this, appFormInput)
-            console.log(`🔴 after: size=${this.graph.nodes.length}`)
+            console.log(`🔴 after: size=${this.mainWorkflow.nodes.length}`)
             console.log('[✅] RUN SUCCESS')
             const duration = Date.now() - start
             return Status.Success
@@ -192,7 +170,7 @@ export class Runtime<FIELDS extends WidgetDict = any> {
             console.error('🌠', 'RUN FAILURE')
             const graphID = error instanceof InvalidPromptError ? error.graph.id : undefined
             // insert an error into the output
-            this.step.append({
+            this.step.addOutput({
                 type: 'runtimeError',
                 message: error.message,
                 infos: error,
@@ -254,19 +232,40 @@ export class Runtime<FIELDS extends WidgetDict = any> {
         return braceExpansion(string)
     }
 
-    saveTextFile = async (path: RelativePath, content: string): Promise<void> => {
+    // ------------------------------------------------------------------------------------
+    /** output a 3d scene from an image and its displacement and depth maps */
+    out_3dImage = (p: { image: string; depth: string; normal: string }) => {
+        const image = this.generatedImages //
+            .find((i) => i.data.imageInfos?.filename.startsWith(p.image))
+        const depth = this.generatedImages //
+            .find((i) => i.data.imageInfos?.filename.startsWith(p.depth))
+        const normal = this.generatedImages //
+            .find((i) => i.data.imageInfos?.filename.startsWith(p.normal))
+        if (image == null) throw new Error(`image not found: ${p.image}`)
+        if (depth == null) throw new Error(`image not found: ${p.image}`)
+        if (normal == null) throw new Error(`image not found: ${p.image}`)
+        this.st.layout.FOCUS_OR_CREATE('DisplacedImage', {
+            width: image.data.width ?? 512,
+            height: image.data.height ?? 512,
+            image: image.url,
+            depthMap: depth.url,
+            normalMap: normal.url,
+        })
+    }
+
+    output_File = async (path: RelativePath, content: string): Promise<void> => {
         const absPath = this.st.resolve(this.folder, path)
         writeFileSync(absPath, content, 'utf-8')
     }
 
-    showHTMLContent = (p: { htmlContent: string; title: string }) => {
-        this.step.append({ type: 'show-html', content: p.htmlContent, title: p.title })
+    output_HTML = (p: { htmlContent: string; title: string }) => {
+        this.step.addOutput({ type: 'show-html', content: p.htmlContent, title: p.title })
         // this.st.broadCastToAllClients({ type: 'show-html', content: p.htmlContent, title: p.title })
     }
 
-    showMarkdownContent = (p: { title: string; markdownContent: string }) => {
+    output_Markdown = (p: { title: string; markdownContent: string }) => {
         const htmlContent = marked.parse(p.markdownContent)
-        this.step.append({ type: 'show-html', content: htmlContent, title: p.title })
+        this.step.addOutput({ type: 'show-html', content: htmlContent, title: p.title })
         // this.st.broadCastToAllClients({ type: 'show-html', content: htmlContent, title: p.title })
     }
 
@@ -490,7 +489,7 @@ export class Runtime<FIELDS extends WidgetDict = any> {
         if (typeof message === 'string') return message
         if (typeof message === 'number') return message.toString()
         if (typeof message === 'boolean') return message.toString()
-        if (message instanceof Slot) return message.toString() // 🔴
+        if (message instanceof ComfyNodeOutput) return message.toString() // 🔴
         if (typeof message === 'object')
             return `${message.$schema.nameInCushy}_${message.uid}(${JSON.stringify(message.json, null, 2)})`
         return `❌ (impossible to extract string from ${typeof message} / ${(message as any)?.constructor?.name})`
@@ -500,7 +499,7 @@ export class Runtime<FIELDS extends WidgetDict = any> {
     print = (message: Printable) => {
         let msg = this.extractString(message)
         console.info(msg)
-        this.step.append({ type: 'print', message: msg })
+        this.step.addOutput({ type: 'print', message: msg })
     }
 
     /** upload a file from disk to the ComfyUI backend */
@@ -575,7 +574,7 @@ export class Runtime<FIELDS extends WidgetDict = any> {
 
     private _promptCounter = 0
     private sendPromp = async (idMode: IDNaminScheemeInPromptSentToComfyUI): Promise<PromptL> => {
-        const liveGraph = this.graph
+        const liveGraph = this.mainWorkflow
         if (liveGraph == null) throw new Error('no graph')
         const currentJSON = deepCopyNaive(liveGraph.json_forPrompt(idMode))
         const debugWorkflow = await liveGraph.json_workflow()
@@ -640,7 +639,7 @@ export class Runtime<FIELDS extends WidgetDict = any> {
                 graphID: graph.id,
                 stepID,
             })
-            this.step.append({ type: 'prompt', promptID: prompmtInfo.prompt_id })
+            this.step.addOutput({ type: 'prompt', promptID: prompmtInfo.prompt_id })
             return prompt
         }
         // await sleep(1000)

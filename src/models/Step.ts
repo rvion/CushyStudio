@@ -1,10 +1,10 @@
 import type { PromptL } from './Prompt'
 import type { AppPath } from 'src/cards/CardPath'
 import type {
-    FromExtension_Print,
-    FromExtension_Prompt,
-    FromExtension_RuntimeError,
-    FromExtension_ShowHtml,
+    StepOutput_Text,
+    StepOutput_Prompt,
+    StepOutput_RuntimeError,
+    StepOutput_Html,
 } from 'src/types/MessageFromExtensionToWebview'
 import type { LiveInstance } from '../db/LiveInstance'
 import type { GraphID, GraphL } from '../models/Graph'
@@ -22,12 +22,12 @@ export type StepID = Branded<string, { StepID: true }>
 export const asStepID = (s: string): StepID => s as any
 
 export type StepOutput =
-    | FromExtension_Print
+    | StepOutput_Text
     | WsMsgExecuted
     | WsMsgExecutionError
-    | FromExtension_Prompt
-    | FromExtension_ShowHtml
-    | FromExtension_RuntimeError
+    | StepOutput_Prompt
+    | StepOutput_Html
+    | StepOutput_RuntimeError
 
 export type StepT = {
     id: StepID
@@ -78,7 +78,11 @@ export class StepL {
     get generatedImages() { return this.prompts.items.map((p) => p.images.items).flat() } // prettier-ignore
 
     runtime: Maybe<Runtime> = null
-    append = (output: StepOutput) => this.update({ outputs: [...(this.data.outputs ?? []), output] })
+
+    addOutput = (output: StepOutput) =>
+        this.update({
+            outputs: [...(this.data.outputs ?? []), output],
+        })
 
     // UI expand/collapse state
     get defaultExpanded(): boolean{ return this.data.status === Status.Running } // prettier-ignore

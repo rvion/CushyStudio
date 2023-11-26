@@ -1,7 +1,6 @@
 import type { StepL, StepOutput } from 'src/models/Step'
 
 import { observer } from 'mobx-react-lite'
-import { ReactNode } from 'react'
 import { Button, Message, Panel } from 'src/rsuite/shims'
 import { exhaust } from '../../utils/misc/ComfyUtils'
 import { ImageUI } from '../galleries/ImageUI'
@@ -10,21 +9,7 @@ import { ButtonOpenInComfyUI } from './ButtonOpenInComfyUI'
 import { GraphSummaryUI } from './GraphSummaryUI'
 import { useSt } from 'src/state/stateContext'
 import { JsonViewUI } from './JsonViewUI'
-
-export const OutputWrapperUI = observer(function OutputWrapperUI_(p: { label: string; children: ReactNode }) {
-    return (
-        <div className='flex flex-rowcol-info virtualBorder'>
-            {p.label ? (
-                <div className='flex items-baseline'>
-                    <div className='font-bold'>{p.label}</div>
-                    <div>{p.children}</div>
-                </div>
-            ) : (
-                p.children
-            )}
-        </div>
-    )
-})
+import { StepOutputWrapperUI } from './StepOutputWrapperUI'
 
 export const StepOutputUI = observer(function StepOutputUI_(p: { step: StepL; output: StepOutput }) {
     const msg = p.output
@@ -33,9 +18,9 @@ export const StepOutputUI = observer(function StepOutputUI_(p: { step: StepL; ou
     const st = useSt()
     if (msg.type === 'print') {
         return (
-            <OutputWrapperUI label=''>
+            <StepOutputWrapperUI label=''>
                 <div className='text-base'>{msg.message}</div>
-            </OutputWrapperUI>
+            </StepOutputWrapperUI>
         )
     }
 

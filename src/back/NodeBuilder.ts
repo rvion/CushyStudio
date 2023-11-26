@@ -2,9 +2,9 @@ import type { GraphL } from 'src/models/Graph'
 
 import { ComfyNode } from '../core/Node'
 
-export interface GraphBuilder extends ComfySetup {}
+export interface ComfyWorkflowBuilder extends ComfySetup {}
 
-export class GraphBuilder {
+export class ComfyWorkflowBuilder {
     // private nameCache = new Map<string, number>()
 
     constructor(public graph: GraphL) {
@@ -56,6 +56,7 @@ export class GraphBuilder {
                 /* ❌ */ console.log(`current:`, JSON.stringify(node.nameInComfy), JSON.stringify(node.nameInCushy))
                 /* ❌ */ const prev = schema.nodes.find((n) => n.nameInCushy === node.nameInCushy)!
                 /* ❌ */ console.log(`prev`, JSON.stringify(prev.nameInComfy), JSON.stringify(prev.nameInCushy))
+                throw e
             }
         }
     }
