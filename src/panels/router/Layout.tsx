@@ -122,7 +122,7 @@ export class CushyLayoutManager {
 
     nextPaintIDx = 0
     openApp = (actionPath: AppPath) => {
-        const card = this.st.library.getCard(actionPath)
+        const card = this.st.library.getFile(actionPath)
         if (card == null) return null /* 🔴 add popup somewhere */
         const draft = card.getLastDraft()
         this.FOCUS_OR_CREATE('Draft', { draftID: draft?.id ?? '❌' }, 'LEFT_PANE_TABSET')

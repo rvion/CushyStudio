@@ -1,4 +1,4 @@
-import { CardFile } from './CardFile'
+import { LibraryFile } from './CardFile'
 
 import { existsSync, readFileSync } from 'fs'
 import JSON5 from 'json5'
@@ -84,9 +84,9 @@ export class Package {
     manifest!: PackageManifest
 
     /** list of all apps present in the package */
-    apps: CardFile[] = []
+    apps: LibraryFile[] = []
 
-    get appsSorted(): CardFile[] {
+    get appsSorted(): LibraryFile[] {
         return this.apps.slice().sort((a, b) => {
             const diff = b.priority - a.priority
             if (diff) return diff
@@ -182,11 +182,11 @@ export class Package {
         debugReason: string,
     ) => {
         const cardPath: AppPath = asAppPath(relative(this.st.rootPath, appAbsPath))
-        const prev = this.library.getCard(cardPath)
+        const prev = this.library.getFile(cardPath)
         // console.log(`>> ${debugReason} 🤓👉 prev is `, Boolean(prev), `(${this.library.cardsByPath.size})`)
         if (prev != null) return
         // console.log(`>> ${debugReason} 🤓👉`, cardPath)
-        const card = new CardFile(this.library, this, appAbsPath, cardPath)
+        const card = new LibraryFile(this.library, this, appAbsPath, cardPath)
         this.library.cardsByPath.set(cardPath, card)
         this.apps.push(card)
     }

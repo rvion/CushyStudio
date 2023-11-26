@@ -11,10 +11,10 @@ import type { AspectRatio, ComfyImageAnswer, CushyImageAnswer, CushySize, CushyS
 import type { CleanedEnumResult } from 'src/types/EnumUtils'
 import type { IRequest, IWidget, ReqInput, ReqResult, StateFields } from './IWidget'
 import type { RelativePath } from 'src/utils/fs/BrandedPaths'
+import type { FormBuilder } from './FormBuilder'
 
 import { makeAutoObservable } from 'mobx'
 import { bang } from 'src/utils/misc/bang'
-import { FormBuilder } from './FormBuilder'
 import { nanoid } from 'nanoid'
 import { WidgetDI } from './widgets/WidgetUI.DI'
 

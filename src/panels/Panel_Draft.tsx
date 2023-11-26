@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite'
 import { cwd } from 'process'
 import { useEffect } from 'react'
 import { showItemInFolder } from 'src/app/layout/openExternal'
-import { CardFile } from 'src/cards/CardFile'
+import { LibraryFile } from 'src/cards/CardFile'
 import { GithubUserUI } from 'src/cards/GithubAvatarUI'
 import { CardIllustrationUI } from 'src/cards/fancycard/AppIllustrationUI'
 import { DraftID, DraftL } from 'src/models/Draft'
@@ -36,7 +36,7 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
     const app = draft.app
     if (app == null) return <ErrorPanelUI>Action not found</ErrorPanelUI>
     // 3. compiled app
-    const compiledApp = app.getCompiledAction()
+    const compiledApp = app.getCompiledApp()
     if (compiledApp == null) return <AppCompilationErrorUI card={app} />
 
     // 4. get form
@@ -150,7 +150,7 @@ export const RunOrAutorunUI = observer(function RunOrAutorunUI_(p: { className?:
     )
 })
 
-export const CardActionsMenuUI = observer(function CardActionsMenuUI_(p: { card: CardFile; className?: string }) {
+export const CardActionsMenuUI = observer(function CardActionsMenuUI_(p: { card: LibraryFile; className?: string }) {
     const card = p.card
     const st = useSt()
     return (
@@ -249,7 +249,7 @@ const ErrorPanelUI = observer(function ErrorPanelUI_(p: { children: React.ReactN
     )
 })
 
-export const AppCompilationErrorUI = observer(function AppCompilationErrorUI_(p: { card: CardFile }) {
+export const AppCompilationErrorUI = observer(function AppCompilationErrorUI_(p: { card: LibraryFile }) {
     const card = p.card
     return (
         <ErrorPanelUI>
@@ -290,7 +290,7 @@ export const AppCompilationErrorUI = observer(function AppCompilationErrorUI_(p:
     )
 })
 
-export const DraftHeaderUI = observer(function DraftHeaderUI_(p: { draft: DraftL; app: CardFile }) {
+export const DraftHeaderUI = observer(function DraftHeaderUI_(p: { draft: DraftL; app: LibraryFile }) {
     const { app, draft } = p
     return (
         <div tw='flex p-1 bg-base-300 border-b border-b-base-300'>

@@ -1,4 +1,4 @@
-import type { CardFile } from 'src/cards/CardFile'
+import type { LibraryFile } from 'src/cards/CardFile'
 import type { Package } from './Pkg'
 
 import { observer } from 'mobx-react-lite'
@@ -54,7 +54,7 @@ export const AppEntryInvalidUI = observer(function AppEntryInvalidUI_(p: { appPa
         </div>
     )
 })
-export const AppEntryUI = observer(function AppEntryUI_(p: { app: CardFile }) {
+export const AppEntryUI = observer(function AppEntryUI_(p: { app: LibraryFile }) {
     const st = useSt()
     const app = p.app
     return (
@@ -76,7 +76,7 @@ export const AppEntryUI = observer(function AppEntryUI_(p: { app: CardFile }) {
     )
 })
 
-export const ActionFavoriteBtnUI = observer(function ActionFavoriteBtnUI_(p: { size: string; app: CardFile }) {
+export const ActionFavoriteBtnUI = observer(function ActionFavoriteBtnUI_(p: { size: string; app: LibraryFile }) {
     const app = p.app
     return (
         <Fragment>

@@ -1,4 +1,4 @@
-import type { Action, WidgetDict } from 'src/cards/Card'
+import type { App, WidgetDict } from 'src/cards/Card'
 import type { LiteGraphJSON } from 'src/core/LiteGraph'
 import type { STATE } from 'src/state/state'
 import type { ComfyPromptJSON } from '../types/ComfyPrompt'
@@ -33,7 +33,7 @@ enum LoadStatus {
     FAILURE = 0,
 }
 
-export class CardFile {
+export class LibraryFile {
     st: STATE
 
     /** card display name */
@@ -67,7 +67,7 @@ export class CardFile {
         this.st = library.st
         this.defaultManifest = this.mkDefaultManifest()
         this.strategies = this.findLoadStrategies()
-        makeAutoObservable(this, { action: observable.ref })
+        makeAutoObservable(this, { appCompiled: observable.ref })
     }
 
     // --------------------------------------------------------
@@ -202,12 +202,12 @@ export class CardFile {
             .filter((draft) => draft.data.actionPath === this.relPath)
     }
 
-    getCompiledAction() {
+    getCompiledApp() {
         this.load()
-        return this.action
+        return this.appCompiled
     }
     // extracted stuff
-    action?: Maybe<Action<WidgetDict>> = null
+    appCompiled?: Maybe<App<WidgetDict>> = null
     codeJS?: Maybe<string> = null
     codeTS?: Maybe<string> = null
     liteGraphJSON?: Maybe<LiteGraphJSON> = null
@@ -277,8 +277,8 @@ export class CardFile {
         }
 
         // 2. extract tools
-        this.action = this.RUN_ACTION_FILE(codeJS)
-        if (this.action == null) return this.addError('❌ [load_asCushyStudioAction] no actions found', null)
+        this.appCompiled = this.RUN_ACTION_FILE(codeJS)
+        if (this.appCompiled == null) return this.addError('❌ [load_asCushyStudioAction] no actions found', null)
         return LoadStatus.SUCCESS
     }
 
@@ -297,7 +297,7 @@ export class CardFile {
             })
             this.codeTS = this.codeJS
             this.promptJSON = comfyPromptJSON
-            this.action = this.RUN_ACTION_FILE(this.codeJS)
+            this.appCompiled = this.RUN_ACTION_FILE(this.codeJS)
             const graph = this.st.db.graphs.create({ comfyPromptJSON: comfyPromptJSON })
             const workflow = await graph.json_workflow()
             this.liteGraphJSON = workflow
@@ -368,18 +368,18 @@ export class CardFile {
                 autoUI: true,
             })
             this.codeTS = this.codeJS
-            this.action = this.RUN_ACTION_FILE(this.codeJS)
+            this.appCompiled = this.RUN_ACTION_FILE(this.codeJS)
             return LoadStatus.SUCCESS
         } catch (error) {
             return this.addError(`❌ failed to import workflow: cannot convert LiteGraph To Prompt`, error)
         }
     }
 
-    RUN_ACTION_FILE = (codeJS: string): Action<WidgetDict> | undefined => {
+    RUN_ACTION_FILE = (codeJS: string): App<WidgetDict> | undefined => {
         // 1. DI registering mechanism
-        const CARDS_FOUND_IN_FILE: Action<WidgetDict>[] = []
+        const CARDS_FOUND_IN_FILE: App<WidgetDict>[] = []
 
-        const registerAppFn = (a1: string, a2: Action<any>): void => {
+        const registerAppFn = (a1: string, a2: App<any>): void => {
             const action = typeof a1 !== 'string' ? a1 : a2
             console.info(`[💙] found action: "${name}"`, { path: this.absPath })
             CARDS_FOUND_IN_FILE.push(action)

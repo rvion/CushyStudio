@@ -3,7 +3,7 @@ import type { GraphID, GraphL } from './Graph'
 import type { StepL } from './Step'
 
 import { autorun, reaction, runInAction, toJS } from 'mobx'
-import { CardFile } from 'src/cards/CardFile'
+import { LibraryFile } from 'src/cards/CardFile'
 import { AppPath } from 'src/cards/CardPath'
 import { Widget_group, type Widget } from 'src/controls/Widget'
 import { FormBuilder } from 'src/controls/FormBuilder'
@@ -87,12 +87,12 @@ export class DraftL {
 
     gui: Result<Widget> = __FAIL('not loaded yet')
 
-    get app(): CardFile | undefined {
+    get app(): LibraryFile | undefined {
         return this.st.library.cardsByPath.get(this.data.actionPath)
     }
 
     get action() {
-        return this.app?.action
+        return this.app?.appCompiled
     }
 
     onHydrate = () => {

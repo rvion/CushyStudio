@@ -14,7 +14,7 @@ import { Runtime } from '../back/Runtime'
 import { Status } from '../back/Status'
 import { LiveCollection } from '../db/LiveCollection'
 import { LiveRef } from '../db/LiveRef'
-import { CardFile } from 'src/cards/CardFile'
+import { LibraryFile } from 'src/cards/CardFile'
 
 export type FormPath = (string | number)[]
 
@@ -55,7 +55,7 @@ export type StepT = {
 export interface StepL extends LiveInstance<StepT, StepL> {}
 export class StepL {
     start = async () => {
-        const action = this.action
+        const action = this.appCompiled
         if (action == null) return console.log('🔴 no action found')
 
         // this.data.outputGraphID = out.id
@@ -72,9 +72,8 @@ export class StepL {
     parentGraph = new LiveRef<this, GraphL>(this, 'parentGraphID', 'graphs')
     outputGraph = new LiveRef<this, GraphL>(this, 'outputGraphID', 'graphs')
 
-    get actionFile(): CardFile | undefined { return this.st.library.cardsByPath.get(this.data.actionPath) } // prettier-ignore
-    get action() { return this.actionFile?.action } // prettier-ignore
-
+    get appFile(): LibraryFile | undefined { return this.st.library.cardsByPath.get(this.data.actionPath) } // prettier-ignore
+    get appCompiled() { return this.appFile?.appCompiled } // prettier-ignore
     get name() { return this.data.name } // prettier-ignore
     get generatedImages() { return this.prompts.items.map((p) => p.images.items).flat() } // prettier-ignore
 

@@ -81,7 +81,7 @@ export const StepOutputUI = observer(function StepOutputUI_(p: { step: StepL; ou
                     <div>node: {msg.data.node_type}</div>
                     <div>{msg.data.exception_message}</div>
                     <div>{msg.data.exception_type}</div>
-                    <Panel header='Details' collapsible defaultExpanded={false}>
+                    <Panel header='Details'>
                         <pre>{JSON.stringify(msg.data, null, 3)}</pre>
                     </Panel>
                 </Message>
@@ -91,19 +91,16 @@ export const StepOutputUI = observer(function StepOutputUI_(p: { step: StepL; ou
     if (msg.type === 'executed') return <div>✅</div>
     if (msg.type === 'runtimeError')
         return (
-            <Panel
-                header={
-                    <div className='flex items-center bg-red-950'>
-                        <div tw='flex-grow'>❌ Runtime Error: {msg.message}</div>
-                        {msg.graphID ? (
-                            <div tw='shrink-0'>
-                                <ButtonDownloadFilesUI graph={msg.graphID} />
-                                <ButtonOpenInComfyUI graph={outputGraph} />
-                            </div>
-                        ) : null}
-                    </div>
-                }
-            >
+            <Panel>
+                <div className='flex items-center bg-red-950'>
+                    <div tw='flex-grow'>❌ Runtime Error: {msg.message}</div>
+                    {msg.graphID ? (
+                        <div tw='shrink-0'>
+                            <ButtonDownloadFilesUI graph={msg.graphID} />
+                            <ButtonOpenInComfyUI graph={outputGraph} />
+                        </div>
+                    ) : null}
+                </div>
                 <JsonViewUI value={JSON.parse(JSON.stringify(msg.infos))} />
                 {/* <pre>{JSON.stringify(msg.infos?.message, null, 3)}</pre> */}
                 {/* <pre>{JSON.stringify(msg.infos?.message, null, 3)}</pre> */}

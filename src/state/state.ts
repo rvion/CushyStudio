@@ -307,7 +307,7 @@ export class STATE {
         })
         this.importer = new ComfyImporter(this)
         this.library = new Library(this)
-        const defaultCard = this.library.getCardOrThrow(asAppPath('library/CushyStudio/default/prompt.ts'))
+        const defaultCard = this.library.getFileOrThrow(asAppPath('library/CushyStudio/default/prompt.ts'))
         this._currentDraft = defaultCard.getLastDraft()
         ;(async () => {
             await this.schemaReady

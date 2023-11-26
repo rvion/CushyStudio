@@ -1,16 +1,16 @@
 import { observer } from 'mobx-react-lite'
-import { CardFile } from 'src/cards/CardFile'
+import { LibraryFile } from 'src/cards/CardFile'
 import { Button, Input } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
 
-export const ActionDraftListUI = observer(function ActionDraftListUI_(p: { card: CardFile }) {
+export const ActionDraftListUI = observer(function ActionDraftListUI_(p: { card: LibraryFile }) {
     const card = p.card
     const st = useSt()
     const drafts = card.drafts
     return (
         <div className='flex flex-wrap items-center gap-1 mx-2'>
             <Button
-                disabled={card.action == null}
+                disabled={card.appCompiled == null}
                 appearance='ghost'
                 size='xs'
                 style={{

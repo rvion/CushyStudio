@@ -41,16 +41,6 @@ export class Runtime<FIELDS extends WidgetDict = any> {
      * */
     st: STATE
 
-    constructor(public step: StepL) {
-        this.st = step.st
-        this.folder = step.st.outputFolderPath
-        this.upload_FileAtAbsolutePath = this.st.uploader.upload_FileAtAbsolutePath.bind(this.st.uploader)
-        this.upload_ImageAtURL = this.st.uploader.upload_ImageAtURL.bind(this.st.uploader)
-        this.upload_dataURL = this.st.uploader.upload_dataURL.bind(this.st.uploader)
-        this.upload_Asset = this.st.uploader.upload_Asset.bind(this.st.uploader)
-        this.upload_Blob = this.st.uploader.upload_Blob.bind(this.st.uploader)
-    }
-
     /**
      * filesystem library.
      * your app can do IO.
@@ -64,6 +54,16 @@ export class Runtime<FIELDS extends WidgetDict = any> {
      */
     path = path
 
+    constructor(public step: StepL) {
+        this.st = step.st
+        this.folder = step.st.outputFolderPath
+        this.upload_FileAtAbsolutePath = this.st.uploader.upload_FileAtAbsolutePath.bind(this.st.uploader)
+        this.upload_ImageAtURL = this.st.uploader.upload_ImageAtURL.bind(this.st.uploader)
+        this.upload_dataURL = this.st.uploader.upload_dataURL.bind(this.st.uploader)
+        this.upload_Asset = this.st.uploader.upload_Asset.bind(this.st.uploader)
+        this.upload_Blob = this.st.uploader.upload_Blob.bind(this.st.uploader)
+    }
+
     /**
      * get the configured trigger words for the given lora
      * (those are user defined; hover your lora in any rich text prompt to edit them)
@@ -72,7 +72,10 @@ export class Runtime<FIELDS extends WidgetDict = any> {
         return this.st.configFile.value?.loraPrompts?.[loraName]?.text
     }
 
-    form!: { [k in keyof FIELDS]: FIELDS[k]['$Output'] }
+    /** get the current json form result */
+    formResult!: { [k in keyof FIELDS]: FIELDS[k]['$Output'] }
+
+    /** get the extended json form value including internal state */
     formSerial!: { [k in keyof FIELDS]: FIELDS[k]['$Serial'] }
 
     /**
@@ -99,7 +102,12 @@ export class Runtime<FIELDS extends WidgetDict = any> {
         return this.step.outputGraph.item
     }
 
-    /** the graph buider */
+    /** graph buider */
+    get comfyWorkflow(): GraphBuilder {
+        return this.graph.builder
+    }
+
+    /** graph buider */
     get nodes(): GraphBuilder {
         return this.graph.builder
     }
@@ -157,23 +165,22 @@ export class Runtime<FIELDS extends WidgetDict = any> {
     /** helper to chose radomly any item from a list */
     chooseRandomly = <T>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)]
 
-    /** execute the ComfyUI  */
+    /** execute the app */
     run = async (): Promise<Status> => {
-        // return Status.Success
         const start = Date.now()
-        const action = this.step.action
-        const actionResult = this.step.data.formResult
-        const actionSerial = this.step.data.formSerial.values_
-        this.form = actionResult
-        this.formSerial = actionSerial
+        const app = this.step.appCompiled
+        const appFormInput = this.step.data.formResult
+        const appFormSerial = this.step.data.formSerial.values_
+        this.formResult = appFormInput
+        this.formSerial = appFormSerial
         // console.log(`🔴 before: size=${this.graph.nodes.length}`)
         // console.log(`FORM RESULT: data=${JSON.stringify(this.step.data.formResult, null, 3)}`)
         try {
-            if (action == null) {
+            if (app == null) {
                 console.log(`❌ action not found`)
                 return Status.Failure
             }
-            await action.run(this, actionResult)
+            await app.run(this, appFormInput)
             console.log(`🔴 after: size=${this.graph.nodes.length}`)
             console.log('[✅] RUN SUCCESS')
             const duration = Date.now() - start

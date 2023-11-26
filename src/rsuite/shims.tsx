@@ -169,14 +169,25 @@ export const MenuBar = (p: any) => <div {...p} />
 export const DropdownMenu = (p: any) => <div {...p}></div>
 
 // misc
-export const Panel = (p: any) => (
-    <div
-        //
-        // style={{ border: '1px solid #404040' }}
-        tw='p-2 border border-opacity-25 bg-base-200 bg-opacity-50 border-base-content input-bordered rounded-btn'
-        {...p}
-    ></div>
-)
+export const Panel = (p: {
+    //
+    header?: ReactNode
+    className?: string
+    children: ReactNode
+}) => {
+    const { header, children, ...rest } = p
+    return (
+        <div
+            //
+            // style={{ border: '1px solid #404040' }}
+            tw='p-2 border border-opacity-25 bg-base-200 bg-opacity-50 border-base-content input-bordered rounded-btn'
+            {...rest}
+        >
+            {header}
+            {p.children}
+        </div>
+    )
+}
 
 export const ProgressLine = observer(function ProgressLine_(p: {
     //

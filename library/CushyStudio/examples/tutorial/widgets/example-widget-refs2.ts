@@ -58,7 +58,7 @@ app({
         //     },
         // }),    }),
     }),
-    run: async ({ print, form, formSerial }) => {
+    run: async ({ print, formResult: form, formSerial }) => {
         print('A: ' + 'Hello.')
         print('B: ' + JSON.stringify(form.dynamicSelectTwo))
         const itemSelected = formSerial.foos.items_.find((i) => i.id === form.dynamicSelectTwo.id)

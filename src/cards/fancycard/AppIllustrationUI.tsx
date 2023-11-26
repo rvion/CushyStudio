@@ -1,10 +1,10 @@
 import { observer } from 'mobx-react-lite'
-import { CardFile } from '../CardFile'
+import { LibraryFile } from '../CardFile'
 
 export const CardIllustrationUI = observer(function CardIllustrationUI_(p: {
     className?: string
     onClick?: () => void
-    card: CardFile
+    card: LibraryFile
     size: string
 }) {
     const x = p.card.illustrationPathWithFileProtocol

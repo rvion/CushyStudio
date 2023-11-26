@@ -66,7 +66,7 @@ export const ImportedFileUI = observer(function ImportedFileUI_(p: { file: File 
     // const hasWorkflow = json?.workflow
 
     return (
-        <Panel tw='bg-base-300' bordered shaded>
+        <Panel tw='bg-base-300'>
             <Field k='name' v={file.name} />
             <Field k='size' v={file.size} />
             <Field k='name' v={file.type} />

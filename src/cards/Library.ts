@@ -11,7 +11,7 @@ import { AppPath, asAppPath } from 'src/cards/CardPath'
 import { Package, PackageRelPath } from 'src/cards/Pkg'
 import { hasValidActionExtension } from '../back/ActionExtensions'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
-import { CardFile } from './CardFile'
+import { LibraryFile } from './CardFile'
 import { _FIX_INDENTATION } from 'src/utils/misc/_FIX_INDENTATION'
 import { ActionTagMethodList } from './Card'
 
@@ -19,7 +19,7 @@ export class Library {
     /** timestamp of last discoverAllApps */
     updatedAt = 0
     fileTree: ItemDataType[] = []
-    cardsByPath = new Map<AppPath, CardFile>()
+    cardsByPath = new Map<AppPath, LibraryFile>()
     folderMap = new Set<RelativePath>()
     rootLibraryFolder: AbsolutePath
 
@@ -35,17 +35,17 @@ export class Library {
     decks: Package[] = []
 
     // 👉 use cardsFilteredSorted
-    private get cards(): CardFile[] {
+    private get files(): LibraryFile[] {
         return [...this.cardsByPath.values()]
     }
 
     // 👉 use cardsFilteredSorted
-    private get cardsFiltered() {
-        return this.cards.filter((c) => c.matchesSearch(this.query))
+    private get filesFiltered() {
+        return this.files.filter((c) => c.matchesSearch(this.query))
     }
 
-    get cardsFilteredSorted(): CardFile[] {
-        return this.cardsFiltered.slice().sort((a, b) => {
+    get cardsFilteredSorted(): LibraryFile[] {
+        return this.filesFiltered.slice().sort((a, b) => {
             return b.score - a.score
         })
     }
@@ -57,12 +57,12 @@ export class Library {
         })
     }
 
-    getCard = (cardPath: AppPath): CardFile | undefined => {
+    getFile = (cardPath: AppPath): LibraryFile | undefined => {
         return this.cardsByPath.get(cardPath)
     }
 
     /** returns the card or throws an error */
-    getCardOrThrow = (cardPath: AppPath): CardFile => {
+    getFileOrThrow = (cardPath: AppPath): LibraryFile => {
         const card = this.cardsByPath.get(cardPath)
         if (card == null) throw new Error(`card not found: ${cardPath}`)
         return card
@@ -70,7 +70,7 @@ export class Library {
 
     private decksByFolder = new Map<PackageRelPath, Package>()
 
-    getDeck = (deckFolder: PackageRelPath): Package => {
+    getPackage = (deckFolder: PackageRelPath): Package => {
         const prev = this.decksByFolder.get(deckFolder)
         if (prev) return prev
         const next = new Package(this, deckFolder)
@@ -157,11 +157,11 @@ export class Library {
     }
 
     private addKnownPacks = () => {
-        this.getDeck('library/VinsiGit/Cushy_Action' as PackageRelPath)
-        this.getDeck('library/noellealarie/cushy-avatar-maker' as PackageRelPath)
-        this.getDeck('library/featherice/cushy-actions' as PackageRelPath)
-        this.getDeck('library/noellealarie/comfy2cushy-examples' as PackageRelPath)
-        this.getDeck('library/CushyStudio/default' as PackageRelPath)
+        this.getPackage('library/VinsiGit/Cushy_Action' as PackageRelPath)
+        this.getPackage('library/noellealarie/cushy-avatar-maker' as PackageRelPath)
+        this.getPackage('library/featherice/cushy-actions' as PackageRelPath)
+        this.getPackage('library/noellealarie/comfy2cushy-examples' as PackageRelPath)
+        this.getPackage('library/CushyStudio/default' as PackageRelPath)
         // this.getDeck('library/CushyStudio/tutorial' as DeckFolder)
         // this.getDeck('library/rvion/cushy-example-deck' as DeckFolder)
         // this.getDeck('library/CushyStudio/cards' as DeckFolder)
@@ -207,7 +207,7 @@ export class Library {
         // writeFileSync(join(folder, 'cushy-deck.json'), `{}`)
         // copyFileSync(join(this.st.rootPath, 'assets', 'cushy-deck.png'), join(folder, 'cushy-deck.png'))
         // writeFileSync(join(folder, 'cushy-deck.png'), ``)
-        const deck = this.getDeck(folder)
+        const deck = this.getPackage(folder)
         // await deck.updater._gitInit()
         this.recursivelyFindCardsInFolder(this.st.actionsFolderPathAbs, this.fileTree)
         return deck
@@ -230,10 +230,10 @@ export class Library {
             favs.splice(newIndex, 0, favs.splice(oldIndex, 1)[0])
         })
     }
-    get allFavorites(): { appPath: AppPath; app: Maybe<CardFile> }[] {
+    get allFavorites(): { appPath: AppPath; app: Maybe<LibraryFile> }[] {
         return this.st.favoriteActions.map((ap) => ({
             appPath: ap,
-            app: this.getCard(ap),
+            app: this.getFile(ap),
         }))
     }
 
@@ -341,7 +341,7 @@ export class Library {
                     continue
                 }
                 const apf = asRelativePath(path.join(...parts)) as PackageRelPath
-                const deck = this.getDeck(apf)
+                const deck = this.getPackage(apf)
                 const cardPath = asAppPath(relPath)
                 deck._registerApp(absPath, 'B')
                 const treeEntry = { value: cardPath, label: baseName }
