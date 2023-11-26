@@ -35,7 +35,7 @@ export const OutputPreviewWrapperUI = observer(function OutputPreviewWrapperUI_(
         //     </div>
         <RevealUI>
             <div
-                //
+                tw='animate-in zoom-in duration-300'
                 style={{
                     width: GalleryImageWidth,
                     height: GalleryImageWidth,

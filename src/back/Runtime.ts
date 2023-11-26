@@ -376,7 +376,7 @@ export class Runtime<FIELDS extends WidgetDict = any> {
      */
     exec = (comand: string): string => {
         // promisify exec to run the command and collect the output
-        this.print('🔥 exec: ' + comand)
+        this.output_text('🔥 exec: ' + comand)
         const cwd = this.st.rootPath
         console.log('cwd', cwd)
         const res = execSync(comand, { encoding: 'utf-8', cwd })
@@ -392,7 +392,7 @@ export class Runtime<FIELDS extends WidgetDict = any> {
      */
     randomSeed() {
         const seed = Math.floor(Math.random() * 99999999)
-        this.print('seed: ' + seed)
+        // this.print('seed: ' + seed)
         return seed
     }
 
@@ -493,6 +493,9 @@ export class Runtime<FIELDS extends WidgetDict = any> {
 
     /** display something in the console */
     print = (message: Printable) => {
+        this.output_text(message)
+    }
+    output_text = (message: Printable) => {
         let msg = this.extractString(message)
         console.info(msg)
         this.step.addOutput({ type: 'print', message: msg })

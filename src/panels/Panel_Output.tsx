@@ -17,7 +17,7 @@ export const Panel_Output = observer(function Panel_Output_(p: {}) {
     return (
         <div tw='flex flex-grow h-full w-full'>
             {/* HISTORY */}
-            <div tw='flex flex-col col-reverse gap-1 overflow-auto'>
+            <div tw='flex flex-col gap-1 overflow-auto'>
                 <Dropdown
                     //
                     title='H'
@@ -30,30 +30,34 @@ export const Panel_Output = observer(function Panel_Output_(p: {}) {
                         icon={<span className='material-symbols-outlined text-cyan-400'>account_tree</span>}
                     />
                 </Dropdown>
-                {steps.map((step) => (
-                    <div
-                        tw='relative'
-                        onClick={() => (st.focusedStepID = step.id)}
-                        style={{ width: '3rem', height: '3rem', backgroundColor: 'green' }}
-                    >
-                        <div tw='absolute'>{_formatAsRelativeDateTime(step.createdAt)}</div>
-                        {step.appFile ? (
-                            <AppIllustrationUI size='3rem' card={step.appFile} />
-                        ) : (
-                            <div style={{ width: '3rem', height: '3rem', backgroundColor: 'green' }}></div>
-                        )}
-                    </div>
-                ))}
+                <div tw='flex flex-col-reverse gap-1 overflow-auto'>
+                    {steps.map((step) => (
+                        <div
+                            tw='relative'
+                            onClick={() => (st.focusedStepID = step.id)}
+                            style={{ width: '3rem', height: '3rem', backgroundColor: 'green' }}
+                        >
+                            <div tw='absolute'>{_formatAsRelativeDateTime(step.createdAt)}</div>
+                            {step.appFile ? (
+                                <AppIllustrationUI size='3rem' card={step.appFile} />
+                            ) : (
+                                <div style={{ width: '3rem', height: '3rem', backgroundColor: 'green' }}></div>
+                            )}
+                        </div>
+                    ))}
+                </div>
             </div>
 
             {/* OUTPUTS */}
-            <div tw='flex flex-col col-reverse gap-1'>
+            <div tw='flex flex-col gap-1'>
                 <div tw='text-center'>
                     <span className='material-symbols-outlined'>present_to_all</span>
                 </div>
-                {step?.data.outputs?.map((output, ix) => (
-                    <OutputPreviewUI key={ix} step={step} output={output} />
-                ))}
+                <div tw='flex flex-col-reverse gap-1 overflow-auto'>
+                    {step?.data.outputs?.map((output, ix) => (
+                        <OutputPreviewUI key={ix} step={step} output={output} />
+                    ))}
+                </div>
             </div>
             <Panel_ViewImage />
             {/* <div className='flex'>

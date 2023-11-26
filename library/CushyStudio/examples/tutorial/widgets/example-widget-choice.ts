@@ -20,11 +20,11 @@ app({
         //   👇 < should be infered as (string | number)
         form.examleChoice
         if (typeof form.examleChoice === 'string') {
-            flow.print(`got a string: ${form.examleChoice}`)
+            flow.output_text(`got a string: ${form.examleChoice}`)
         } else {
             //   👇 should be infered as number
             const x = form.examleChoice
-            flow.print(`got a number: ${form.examleChoice}`)
+            flow.output_text(`got a number: ${form.examleChoice}`)
         }
     },
 })

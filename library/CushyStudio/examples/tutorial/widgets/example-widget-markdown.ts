@@ -22,6 +22,6 @@ app({
         }),
     }),
     run: async (flow, p) => {
-        flow.print('hello')
+        flow.output_text('hello')
     },
 })

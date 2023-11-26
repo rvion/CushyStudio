@@ -9,7 +9,7 @@ app({
         }
     },
     run: async (flow, p) => {
-        flow.print(`startImage: ${p.a.startImage}`)
-        flow.print(`startImage: ${p.b.startImage}`)
+        flow.output_text(`startImage: ${p.a.startImage}`)
+        flow.output_text(`startImage: ${p.b.startImage}`)
     },
 })

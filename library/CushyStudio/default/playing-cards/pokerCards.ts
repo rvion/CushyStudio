@@ -102,7 +102,7 @@ app({
         const H = p.size.height, H2 = floor(H / 2), H3 = floor(H / 3), H4 = floor(H / 4) // prettier-ignore
 
         // 3. BACKGROUND --------------------------------------------------
-        flow.print('generating backgrounds')
+        flow.output_text('generating backgrounds')
         const suitsBackground = new Map<(typeof suits)[number], _LATENT>()
         const suitsBackgroundLatent = graph.EmptyLatentImage({ width: W, height: H })
         for (const suit of suits) {
@@ -111,7 +111,7 @@ app({
             const suitBGPrompt = p.background.prompt //
                 .replace('{color}', suitColor)
                 .replace('{suit}', suit)
-            flow.print(`generating background for ${suit} with prompt "${suitBGPrompt}"`)
+            flow.output_text(`generating background for ${suit} with prompt "${suitBGPrompt}"`)
             const colorImage = graph.KSampler({
                 seed: p.background.seed,
                 latent_image: suitsBackgroundLatent,
@@ -144,7 +144,7 @@ app({
             const scoreB = 100 * b.x + b.y
             return scoreA - scoreB
         })
-        flow.print(`🔴 ${cardsSorted.map((c) => `${c.col}${c.row}`)}`)
+        flow.output_text(`🔴 ${cardsSorted.map((c) => `${c.col}${c.row}`)}`)
         for (const card of cardsSorted) {
             const { col: value, row: suit } = card
 
@@ -161,7 +161,7 @@ app({
                 }[value] ?? `background`
 
             const positiveText = `masterpiece, rpg, ${basePrompt}, ${suitColor} of ${suit} color, intricate details, theme of ${theme} and ${p.generalTheme}, 4k`
-            flow.print(`👉 ${value}${suit} : ${positiveText}`)
+            flow.output_text(`👉 ${value}${suit} : ${positiveText}`)
             const positive = graph.CLIPTextEncode({ clip: ckpt, text: positiveText })
             // const crop_blending = 0
 

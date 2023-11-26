@@ -16,6 +16,6 @@ app({
 
     run: async (flow, form) => {
         const DEBUG = JSON.stringify(form, null, 3)
-        flow.print(`basicList: ${DEBUG}`)
+        flow.output_text(`basicList: ${DEBUG}`)
     },
 })

@@ -26,7 +26,7 @@ export const WidgetMatrixUI = observer(function WidgetStrUI_(p: { req: Widget_ma
                         {cols.map((col, ix) => (
                             <th
                                 //
-                                className='bg-info'
+                                className='bg-accent text-accent-content'
                                 key={ix}
                                 onClick={() => req.setCol(col, !req.get(rows[0], col).value)}
                             >
@@ -41,7 +41,7 @@ export const WidgetMatrixUI = observer(function WidgetStrUI_(p: { req: Widget_ma
                             <td
                                 //
                                 onClick={() => req.setRow(row, !req.get(row, cols[0]).value)}
-                                className='bg-base-300'
+                                className='bg-base-300 text-secondary-content bg-secondary cursor-pointer'
                             >
                                 {row}
                             </td>

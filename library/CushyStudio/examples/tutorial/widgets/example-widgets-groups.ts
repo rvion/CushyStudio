@@ -28,6 +28,6 @@ app({
     }),
 
     run: async (flow, form) => {
-        flow.print(`form is: ${JSON.stringify(form, null, 4)}`)
+        flow.output_text(`form is: ${JSON.stringify(form, null, 4)}`)
     },
 })
