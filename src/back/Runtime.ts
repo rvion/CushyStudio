@@ -198,7 +198,7 @@ export class Runtime<FIELDS extends WidgetDict = any> {
     /** list of all images produed over the whole script execution */
     // generatedImages: ImageL[] = []
     get generatedImages(): MediaImageL[] {
-        return this.step.generatedImages.map((i) => this.st.db.media_images.getOrThrow(i.imgID))
+        return this.step.generatedImages
     }
     // get firstImage() { return this.generatedImages[0] } // prettier-ignore
     // get lastImage() { return this.generatedImages[this.generatedImages.length - 1] } // prettier-ignore
@@ -276,7 +276,6 @@ export class Runtime<FIELDS extends WidgetDict = any> {
     }
 
     output_HTML = (p: { htmlContent: string; title: string }) => {
-        this.st.db.drafts
         this.step.addOutput({
             type: 'show-html',
             content: p.htmlContent,

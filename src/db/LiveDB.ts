@@ -53,10 +53,35 @@ export class LiveDB {
             throw e
         }
     }
+    prepareAll = <T, R>(sql: string) => {
+        try {
+            const stmt = this.db.prepare(sql)
+            return (args: T) => stmt.all(args) as R[]
+        } catch (e) {
+            console.log(sql)
+            throw e
+        }
+    }
 
     prepareInsert = <T, R>(sql: string) => {
-        const stmt = this.db.prepare(sql)
-        return (args: T) => stmt.run(args) as R
+        try {
+            const stmt = this.db.prepare(sql)
+            return (args: T) => {
+                if (Array.isArray(args)) throw new Error('insert does not support arrays')
+                if (typeof args !== 'object') throw new Error('insert does not support non-objects')
+                const insertPayload = Object.fromEntries(
+                    Object.entries(args as any).map(([k, v]) => {
+                        if (Array.isArray(v)) return [k, JSON.stringify(v)]
+                        if (typeof v === 'object' && v != null) return [k, JSON.stringify(v) ?? 'null']
+                        return [k, v]
+                    }),
+                )
+                stmt.run(insertPayload) as R
+            }
+        } catch (e) {
+            console.log(sql)
+            throw e
+        }
     }
 
     prepareDelete = <T, R>(sql: string) => {
@@ -64,7 +89,7 @@ export class LiveDB {
         return (args: T) => stmt.run(args) as R
     }
 
-    log = (...res: any[]) => console.log('🟢', ix++, ...res)
+    log = (...res: any[]) => console.log(`{${ix++}}`, ...res)
     db: BetterSqlite3.Database
 
     // prettier-ignore

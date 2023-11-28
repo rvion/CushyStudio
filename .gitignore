@@ -33,6 +33,8 @@ cushy.db
 cushy*.db
 cushy*.db.backup
 foobar.db
+*.db-shm
+*.db-wal
 
 *.vsix
 

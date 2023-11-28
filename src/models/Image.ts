@@ -6,6 +6,7 @@ import { exhaust } from 'src/utils/misc/ComfyUtils'
 import { ComfyImageInfo } from '../types/ComfyWsApi'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { _readPngSize } from '../utils/png/_readPngSize'
+import { MediaImageT } from 'src/db2/TYPES.gen'
 
 // ---------------------------------------------------------------------------------------------------
 // 2023-11-27: image model was a mess; at first, I though I could unify all image strings
@@ -40,28 +41,28 @@ type VideoInfos_FFMPEG = {
 }
 
 // ---------------------------------------------------------------------------------------------------
-export interface MediaImageT<T extends ImageInfos = ImageInfos> {
-    /** image ID */
-    id: MediaImageID
+// export interface MediaImageT<T extends ImageInfos = ImageInfos> {
+//     /** image ID */
+//     id: MediaImageID
 
-    /** image creation date */
-    createdAt: number
+//     /** image creation date */
+//     createdAt: number
 
-    /** image update date */
-    updatedAt: number
+//     /** image update date */
+//     updatedAt: number
 
-    /** the main field */
-    infos?: T
+//     /** the main field */
+//     infos?: T
 
-    /** asset rating */
-    star?: number
+//     /** asset rating */
+//     star?: number
 
-    /** asset width, in pixel */
-    width?: number
+//     /** asset width, in pixel */
+//     width?: number
 
-    /** asset height, in pixel */
-    height?: number
-}
+//     /** asset height, in pixel */
+//     height?: number
+// }
 
 const getComfyURLFromImageInfos = (infos: ImageInfos_ComfyGenerated) => {
     return infos.comfyHostHttpURL + '/view?' + new URLSearchParams(infos.comfyImageInfo).toString()

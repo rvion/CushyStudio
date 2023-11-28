@@ -9,6 +9,7 @@ import { Status } from '../back/Status'
 import { LiveCollection } from '../db/LiveCollection'
 import { LiveRef } from '../db/LiveRef'
 import { StepT } from 'src/db2/TYPES.gen'
+import { MediaImageL } from './Image'
 
 export type FormPath = (string | number)[]
 
@@ -65,14 +66,20 @@ export class StepL {
     get appCompiled() { return this.appFile?.appCompiled } // prettier-ignore
     get name() { return this.data.name } // prettier-ignore
 
-    get generatedImages(): StepOutput_Image[] {
-        if (this.outputs == null) return []
-        return this.outputs.filter((t) => t.type === 'image') as StepOutput_Image[]
+    get generatedImages(): MediaImageL[] {
+        return this.images.items
+        // this
+        // return this.outputs.filter((t) => t.type === 'image') as StepOutput_Image[]
     }
 
-    get outputs() {
-        // 🔴
-        return []
+    images = new LiveCollection<MediaImageL>(this, 'stepID', 'media_image')
+    texts = new LiveCollection<MediaImageL>(this, 'stepID', 'media_text')
+    get outputs(): (MediaImageL | MediaImageL)[] {
+        return [
+            //
+            ...this.images.items,
+            ...this.texts.items,
+        ]
     }
 
     runtime: Maybe<Runtime> = null

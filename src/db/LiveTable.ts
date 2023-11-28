@@ -7,6 +7,7 @@ import { makeAutoObservable, toJS } from 'mobx'
 import { nanoid } from 'nanoid'
 import { MERGE_PROTOTYPES } from './LiveHelpers'
 import { LiveOrdering } from './LiveOrdering'
+import { inserts } from 'src/db2/TYPES.gen'
 
 export interface LiveEntityClass<T extends BaseInstanceFields, L> {
     new (...args: any[]): LiveInstance<T, L> & L
@@ -203,8 +204,14 @@ export class LiveTable<T extends BaseInstanceFields, L extends LiveInstance<T, L
     // }
     createdAtDesc = new LiveOrdering(this, 'createdAt', 'desc')
 
+    stmt_lastN = this.db.prepareGet<number, T[]>(`select * from ${this.name} order by createdAt desc limit ?`)
+    // getLastN = (n: number): T[] => {
+    //     return this.stmt_lastN(n)
+    // }
+
     get values(): L[] {
-        return this.ids.map((id) => this.getOrThrow(id))
+        // 🔴
+        // return this.ids.map((id) => this.getOrThrow(id))
     }
 
     // 🔴 meh
@@ -214,6 +221,7 @@ export class LiveTable<T extends BaseInstanceFields, L extends LiveInstance<T, L
 
     stmt_getByID = this.db.prepareGet<string, Maybe<T>>(`select * from ${this.name} where id = ?`)
     get = (id: Maybe<string>): Maybe<L> => {
+        if (id === 'main-schema') debugger
         if (id == null) return null
 
         // 1. check if instance exists in the entity map
@@ -224,9 +232,11 @@ export class LiveTable<T extends BaseInstanceFields, L extends LiveInstance<T, L
         const x = this.stmt_getByID(id)
         if (x == null) return null
 
+        const instance = this._createInstance(x)
+        console.log('❤️', instance)
         // 3. first time fetched => cache it in the entity map
-        this.instances.set(id, this._createInstance(x))
-        return null
+        this.instances.set(id, instance)
+        return instance
     }
 
     getOrThrow = (id: string) => {
@@ -250,10 +260,8 @@ export class LiveTable<T extends BaseInstanceFields, L extends LiveInstance<T, L
         this.instances.delete(id)
     }
 
-    private _getInsertPlaceholders
-    stmt_insert = this.db.prepareInsert<Omit<T, $BaseInstanceFields>, void>(
-        `insert into ${this.name} values (${this.db._getInsertPlaceholders(this.name)})`,
-    )
+    stmt_insert = this.db.prepareInsert<Omit<T, $BaseInstanceFields>, void>(inserts[this.name])
+
     /** only call with brand & never seen new data */
     create = (data: Omit<T, $BaseInstanceFields> & Partial<BaseInstanceFields>): L => {
         // enforce singlettons
@@ -269,13 +277,23 @@ export class LiveTable<T extends BaseInstanceFields, L extends LiveInstance<T, L
         data.updatedAt = now
 
         // ensure no instance exists
-        if (this.instances.has(id)) throw new Error(`ERR: ${this.name}(${id}) already exists`)
+        // if (this.instances.has(id)) throw new Error(`ERR: ${this.name}(${id}) already exists`)
+        // TOCTOU
+        console.log('🟢 A', data)
+        const insertPayload = Object.fromEntries(
+            Object.entries(data).map(([k, v]) => {
+                if (Array.isArray(v)) return [k, JSON.stringify(v)]
+                if (typeof v === 'object' && v != null) return [k, JSON.stringify(v) ?? 'null']
+                return [k, v]
+            }),
+        )
+        console.log('🟢 B', insertPayload)
+        this.stmt_insert(insertPayload as any)
+        console.log('🔴', data)
 
-        this
+        // this._store[id] = data as T
 
-        this._store[id] = data as T
-
-        const instance = this._createInstance(this._store[id])
+        const instance = this._createInstance(data) //this._store[id])
         instance.onCreate?.(data as T)
 
         return instance
