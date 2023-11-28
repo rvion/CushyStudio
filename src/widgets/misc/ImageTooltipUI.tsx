@@ -1,9 +1,9 @@
-import type { ImageL } from 'src/models/Image'
+import type { MediaImageL } from 'src/models/Image'
 
 import { observer } from 'mobx-react-lite'
 import { JsonViewUI } from '../workspace/JsonViewUI'
 
-export const ImageTooltipUI = observer(function ImageTooltipUI_(p: { selectedImage: ImageL }) {
+export const ImageTooltipUI = observer(function ImageTooltipUI_(p: { selectedImage: MediaImageL }) {
     return (
         <div>
             <JsonViewUI value={p.selectedImage.data} />

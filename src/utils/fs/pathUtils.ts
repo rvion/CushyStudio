@@ -1,5 +1,3 @@
-import type { AbsolutePath, RelativePath } from './BrandedPaths'
-
 export * as pathe from 'pathe'
 import * as pathe from 'pathe'
 

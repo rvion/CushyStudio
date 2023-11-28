@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 import { StepL } from 'src/models/Step'
 import { useSt } from 'src/state/stateContext'
-import { StepOutput_Video } from 'src/types/MessageFromExtensionToWebview'
+import { StepOutput_Video } from 'src/types/StepOutput'
 import { OutputPreviewWrapperUI } from './OutputPreviewWrapperUI'
 
 export const OutputVideoUI = observer(function OutputVideoUI_(p: { step: StepL; output: StepOutput_Video }) {

@@ -2,7 +2,7 @@ import { observer } from 'mobx-react-lite'
 import { ReactNode } from 'react'
 import { RevealUI } from 'src/rsuite/RevealUI'
 import { useSt } from 'src/state/stateContext'
-import { StepOutput } from 'src/types/MessageFromExtensionToWebview'
+import { StepOutput } from 'src/types/StepOutput'
 import { exhaust } from 'src/utils/misc/ComfyUtils'
 
 export const OutputPreviewWrapperUI = observer(function OutputPreviewWrapperUI_(p: {
@@ -32,16 +32,17 @@ export const OutputPreviewWrapperUI = observer(function OutputPreviewWrapperUI_(
         </RevealUI>
     )
 })
-const getPreviewBorderColor = (type: StepOutput['type']) => {
-    if (type === 'print') return 'yellow'
-    if (type === 'prompt') return 'cyan'
-    if (type === 'executionError') return 'red'
-    if (type === 'runtimeError') return 'red'
-    if (type === 'show-html') return 'pink'
-    if (type === 'ask') return 'orange'
-    if (type === 'comfy-workflow') return 'blue'
-    if (type === 'image') return '#1183ad'
-    if (type === 'displaced-image') return 'purple'
-    if (type === 'video') return 'purple'
-    return exhaust(type)
-}
+
+// const getPreviewBorderColor = (type: StepOutput['type']) => {
+//     if (type === 'print') return 'yellow'
+//     if (type === 'prompt') return 'cyan'
+//     if (type === 'runtimeError') return 'red'
+//     // if (type === 'executionError') return 'red'
+//     // if (type === 'show-html') return 'pink'
+//     // if (type === 'ask') return 'orange'
+//     if (type === 'comfy-workflow') return 'blue'
+//     if (type === 'image') return '#1183ad'
+//     if (type === 'displaced-image') return 'purple'
+//     if (type === 'video') return 'purple'
+//     return exhaust(type)
+// }

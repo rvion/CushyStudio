@@ -1,7 +1,6 @@
 import type { ThemeName } from 'src/theme/ThemeManager'
 import type { IJsonModel } from 'flexlayout-react'
 
-import { AppPath } from 'src/cards/CardPath'
 import { ComfyHostDef, ComfyHostID } from './ComfyHostDef'
 
 export type PreferedFormLayout = 'mobile' | 'dense' | 'auto'

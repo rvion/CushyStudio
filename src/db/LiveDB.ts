@@ -1,107 +1,94 @@
+import { default as BetterSqlite3, default as SQL } from 'better-sqlite3'
+import { rmSync } from 'fs'
 import type { STATE } from '../state/state'
 
 import { makeAutoObservable } from 'mobx'
 import { LiveTable } from './LiveTable'
-
+import { DraftT, GraphT, MediaImageT, ProjectT, ComfyPromptT, ComfySchemaT, StepT } from 'src/db2/TYPES.gen'
 // models
-import { existsSync, readFileSync, renameSync, rmSync, stat, writeFileSync } from 'fs'
-import { extractErrorMessage } from 'src/utils/formatters/extractErrorMessage'
-import { AbsolutePath, RelativePath } from 'src/utils/fs/BrandedPaths'
-import { bytesToSize } from 'src/utils/fs/bytesToSize'
-import { DraftL, DraftT } from '../models/Draft'
-import { GraphL, GraphT } from '../models/Graph'
-import { ImageL, ImageT } from '../models/Image'
-import { ProjectL, ProjectT } from '../models/Project'
-import { PromptL, PromptT } from '../models/Prompt'
-import { SchemaL, SchemaT } from '../models/Schema'
-import { StepL, StepT } from '../models/Step'
+import { readFileSync } from 'fs'
+import { Store } from 'src/db2/storage'
+import { DraftL } from '../models/Draft'
+import { GraphL } from '../models/Graph'
+import { MediaImageL } from '../models/Image'
+import { ProjectL } from '../models/Project'
+import { PromptL } from '../models/Prompt'
+import { SchemaL } from '../models/Schema'
+import { StepL } from '../models/Step'
 import { asRelativePath } from '../utils/fs/pathUtils'
-import { readableStringify } from '../utils/formatters/stringifyReadable'
-import { LiveStore, schemaVersion } from './LiveStore'
+import { _applyAllMigrations } from 'src/db2/_applyAllMigrations'
+import { _createRootMig } from 'src/db2/_createRootMig'
+import { _checkAllMigrationsHaveDifferentIds } from 'src/db2/migrations'
+import { _listAllTables } from 'src/db2/_listAllTables'
 
 export type Indexed<T> = { [id: string]: T }
 
+let ix = 0
+
 export class LiveDB {
-    // live tables are expected to self register in this array
-    // leave this lien at the top of the file
     _tables: LiveTable<any, any>[] = []
-
-    relPath: RelativePath
-    absPath: AbsolutePath
-
-    // store ---------------------------------------------------------
-    store: LiveStore
-    toJSON = (): LiveStore => this.store
-    mkNewStore = (): LiveStore => ({ schemaVersion: schemaVersion, models: {} })
 
     // tables ---------------------------------------------------------
     projects: LiveTable<ProjectT, ProjectL>
-    schemas: LiveTable<SchemaT, SchemaL>
-    prompts: LiveTable<PromptT, PromptL>
-    images: LiveTable<ImageT, ImageL>
+    schemas: LiveTable<ComfySchemaT, SchemaL>
+    prompts: LiveTable<ComfyPromptT, PromptL>
+    media_images: LiveTable<MediaImageT, MediaImageL>
+    // media_texts: LiveTable<MediaTextT, MediaImageL>
+    // media_video: LiveTable<MediaVideoT, MediaImageL>
     drafts: LiveTable<DraftT, DraftL>
     graphs: LiveTable<GraphT, GraphL>
     steps: LiveTable<StepT, StepL>
 
-    constructor(public st: STATE) {
-        // 1. restore store if  it exists
-        this.relPath = asRelativePath('./cushy3.db')
-        this.absPath = this.st.resolveFromRoot(this.relPath)
+    _getCount = (tabeName: string): number => {
+        const stmt = this.db.prepare(`select count(id) as count from ${tabeName}`)
+        return (stmt.get() as { count: number }).count
+    }
 
+    prepareGet = <T, R>(sql: string) => {
         try {
-            const exists = existsSync(this.absPath)
-            if (exists) console.log(`[💿] DB: found db at "${this.absPath}"`)
-            else console.log(`[💿] DB: creating db at "${this.absPath}"`)
-
-            if (exists) {
-                const prevStore = JSON.parse(readFileSync(this.absPath, 'utf8'))
-                const prevVersion = prevStore.schemaVersion
-                if (prevVersion != schemaVersion) {
-                    const backupName = this.absPath + `${Date.now()}.db.backup`
-                    console.log(`[💿] ❌ DB: schema version mismatch: expected ${schemaVersion}, got ${prevVersion}`)
-                    console.log(`[💿] ❌ DB: backing up prev DB at ${backupName} and resetting the database`)
-                    renameSync(this.absPath, backupName)
-                    this.store = this.mkNewStore()
-                } else {
-                    this.store = prevStore
-                }
-            } else {
-                this.store = this.mkNewStore()
-            }
-        } catch (error) {
-            this.store = this.mkNewStore()
-            console.log(readFileSync(this.absPath, 'utf8'))
-            console.log(error)
+            const stmt = this.db.prepare(sql)
+            return (args: T) => stmt.get(args) as R
+        } catch (e) {
+            console.log(sql)
+            throw e
         }
+    }
 
-        // 2. make it observable
+    prepareInsert = <T, R>(sql: string) => {
+        const stmt = this.db.prepare(sql)
+        return (args: T) => stmt.run(args) as R
+    }
+
+    prepareDelete = <T, R>(sql: string) => {
+        const stmt = this.db.prepare(sql)
+        return (args: T) => stmt.run(args) as R
+    }
+
+    log = (...res: any[]) => console.log('🟢', ix++, ...res)
+    db: BetterSqlite3.Database
+
+    // prettier-ignore
+    constructor(public st: STATE) {
+        // init SQLITE ---------------------------------------------------------
+        const db = SQL('foobar.db', { nativeBinding: 'node_modules/better-sqlite3/build/Release/better_sqlite3.node' })
+        db.pragma('journal_mode = WAL')
+        this.db = db
+        _createRootMig(this)
+        _checkAllMigrationsHaveDifferentIds()
+        _applyAllMigrations(this)
+        _listAllTables(this)
+
+        // ---------------------------------------------------------
         makeAutoObservable(this)
 
         // 3. create tables (after the store has benn made already observable)
-        this.projects = new LiveTable(this, 'projects', '🤠', ProjectL, { singleton: true })
-        this.schemas = new LiveTable(this, 'schemas', '📑', SchemaL, { singleton: true })
-        this.prompts = new LiveTable(this, 'prompts', '❓', PromptL)
-        this.images = new LiveTable(this, 'images', '🖼️', ImageL)
-        this.drafts = new LiveTable(this, 'drafts', '📝', DraftL)
-        this.graphs = new LiveTable(this, 'graphs', '📊', GraphL)
-        this.steps = new LiveTable(this, 'steps', '🚶‍♂️', StepL)
-
-        this.startMonitoring()
-    }
-
-    // TODO: keep a count of dbsize and display on hover
-
-    saveTimeout: Maybe<NodeJS.Timeout> = null
-    markDirty = () => {
-        if (this.saveTimeout != null) return
-
-        this.saveTimeout = setTimeout(() => {
-            console.log('[💿] DB saving...')
-            const data = this.store
-            // console.log('saving', data)
-            writeFileSync(this.absPath, readableStringify(data, 3))
-            this.saveTimeout = null
-        }, 400)
+        this.projects = new     LiveTable(this, 'project', '🤠', ProjectL, { singleton: true })
+        this.schemas = new      LiveTable(this, 'comfy_schema', '📑', SchemaL, { singleton: true })
+        this.prompts = new      LiveTable(this, 'comfy_prompt', '❓', PromptL)
+        this.media_images = new LiveTable(this, 'media_image', '🖼️', MediaImageL)
+        this.drafts = new       LiveTable(this, 'draft', '📝', DraftL)
+        this.graphs = new       LiveTable(this, 'graph', '📊', GraphL)
+        this.steps = new        LiveTable(this, 'step', '🚶‍♂️', StepL)
     }
 
     // misc ---------------------------------------------------------
@@ -118,43 +105,10 @@ export class LiveDB {
     }
 
     /* erase the DB file on disk */
+    reset = () => this.erase()
+    /* erase the DB file on disk */
     erase = () => {
-        rmSync(this.absPath)
-        if (this.saveTimeout) clearTimeout(this.saveTimeout)
-    }
-
-    /* reset the whole DB */
-    reset = () => {
-        for (const table of this._tables) table.clear()
-        this.markDirty()
-    }
-
-    /** self-updating DB size and health */
-    health: {
-        status: 'good' | 'meh' | 'bad'
-        size: number
-        sizeTxt: string
-    } = { status: 'meh', size: 0, sizeTxt: '?' }
-
-    get healthColor() {
-        if (this.health.status === 'bad') return `btn-error`
-        if (this.health.status === 'meh') return 'btn-warning'
-        return null
-    }
-    private startMonitoring = () => {
-        const store = this.st.hotReloadPersistentCache
-        if (store.dbSizeWatcherInterval != null) clearInterval(store.dbSizeWatcherInterval)
-        const updateDBSize = () => {
-            // get file size using fs
-            stat(this.absPath, (err, stats) => {
-                if (err) return console.log(`❌ impossible to update db size: ${extractErrorMessage(err)}`, err)
-                const size = stats.size
-                const status = size > 30_000_000 ? 'bad' : size > 10_000_000 ? 'meh' : 'good'
-                const sizeTxt = bytesToSize(size)
-                this.health = { status, size, sizeTxt }
-            })
-        }
-        store.dbSizeWatcherInterval = setInterval(updateDBSize, 2_000)
-        updateDBSize()
+        this.db.close()
+        rmSync('foobar.db')
     }
 }

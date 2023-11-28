@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 import { StepL } from 'src/models/Step'
 import { useSt } from 'src/state/stateContext'
-import { StepOutput_Image } from 'src/types/MessageFromExtensionToWebview'
+import { StepOutput_Image } from 'src/types/StepOutput'
 import { ImageUI } from 'src/widgets/galleries/ImageUI'
 import { OutputPreviewWrapperUI } from './OutputPreviewWrapperUI'
 

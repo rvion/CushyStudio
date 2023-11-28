@@ -1,26 +1,28 @@
 import type { LiveInstance } from '../db/LiveInstance'
-import type { StepID, StepL } from '../models/Step'
+import type { StepL } from '../models/Step'
 import type { PromptRelated_WsMsg, WsMsgExecuted, WsMsgExecuting, WsMsgExecutionError } from '../types/ComfyWsApi'
-import type { GraphID, GraphL } from './Graph'
+import type { GraphL } from './Graph'
 
 import { nanoid } from 'nanoid'
+import { ComfyPromptT } from 'src/db2/TYPES.gen'
 import { Status } from '../back/Status'
 import { LiveRef } from '../db/LiveRef'
 import { exhaust } from '../utils/misc/ComfyUtils'
 
-export type PromptID = Branded<string, { PromptID: true }>
-export const asPromptID = (s: string): PromptID => s as any
+// export type ComfyPromptID = Branded<string, { PromptID: true }>
+// export const asComfyPromptID = (s: string): ComfyPromptID => s as any
 
-export type PromptT = {
-    id: PromptID
-    createdAt: number
-    updatedAt: number
-    stepID: StepID
-    graphID: GraphID
-    executed: boolean
-}
+// export type ComfyPromptT = {
+//     id: PromptID
+//     createdAt: number
+//     updatedAt: number
+//     stepID: StepID
+//     graphID: GraphID
+//     executed: boolean
+//     error?: Maybe<WsMsgExecutionError>
+// }
 
-export interface PromptL extends LiveInstance<PromptT, PromptL> {}
+export interface PromptL extends LiveInstance<ComfyPromptT, PromptL> {}
 export class PromptL {
     _resolve!: (value: this) => void
     _rejects!: (reason: any) => void
@@ -31,7 +33,7 @@ export class PromptL {
 
     notifyEmptyPrompt = () => console.log('🔶 No work to do')
 
-    onCreate = (data: PromptT) => {
+    onCreate = (data: ComfyPromptT) => {
         const pending = this.st._pendingMsgs.get(data.id)
         if (pending == null) return
         this.log(`🟢 onCreate: ${pending.length} pending messages`)
@@ -43,8 +45,8 @@ export class PromptL {
     //     // if (next)
     // }
 
-    step = new LiveRef<this, StepL>(this, 'stepID', 'steps')
-    graph = new LiveRef<this, GraphL>(this, 'graphID', 'graphs')
+    step = new LiveRef<this, StepL>(this, 'stepID', 'step')
+    graph = new LiveRef<this, GraphL>(this, 'graphID', 'graph')
     // get project() { return this.step.item.project } // prettier-ignore
 
     onPromptRelatedMessage = (msg: PromptRelated_WsMsg) => {
@@ -86,19 +88,20 @@ export class PromptL {
     private onError = (msg: WsMsgExecutionError) => {
         console.log('>> MARK ERROR')
         this.step.item.update({ status: Status.Failure })
-        this.step.item.addOutput({ type: 'executionError', payloadFromComfy: msg })
+        this.update({ error: msg })
         this._finish()
     }
 
     /** udpate execution list */
     private onExecuted = (msg: WsMsgExecuted) => {
         for (const img of msg.data.output.images) {
-            const image = this.db.images.create({
+            const image = this.db.media_images.create({
                 id: nanoid(),
+                stepID: this.step.id,
+                promptID: this.id,
                 infos: {
                     type: 'image-generated-by-comfy',
                     comfyImageInfo: img,
-                    promptID: this.id,
                     comfyHostHttpURL: this.st.getServerHostHTTP(),
                 },
             })

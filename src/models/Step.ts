@@ -1,7 +1,6 @@
-import type { AppPath } from 'src/cards/CardPath'
-import type { StepOutput, StepOutput_Image } from 'src/types/MessageFromExtensionToWebview'
+import type { StepOutput, StepOutput_Image } from 'src/types/StepOutput'
 import type { LiveInstance } from '../db/LiveInstance'
-import type { GraphID, GraphL } from '../models/Graph'
+import type { GraphL } from '../models/Graph'
 import type { PromptL } from './Prompt'
 
 import { LibraryFile } from 'src/cards/CardFile'
@@ -9,33 +8,36 @@ import { Runtime } from '../back/Runtime'
 import { Status } from '../back/Status'
 import { LiveCollection } from '../db/LiveCollection'
 import { LiveRef } from '../db/LiveRef'
+import { StepT } from 'src/db2/TYPES.gen'
 
 export type FormPath = (string | number)[]
 
-export type StepID = Branded<string, { StepID: true }>
-export const asStepID = (s: string): StepID => s as any
+// export type StepID = Branded<string, { StepID: true }>
+// export const asStepID = (s: string): StepID => s as any
 
-export type StepT = {
-    id: StepID
-    createdAt: number
-    updatedAt: number
-    /** form that lead to creating this step */
+// export
 
-    // ACTION ------------------------------
-    name: string
-    actionPath: AppPath
-    formResult: Maybe<any>
-    formSerial: Maybe<any>
+// export type StepT = {
+//     id: StepID
+//     createdAt: number
+//     updatedAt: number
+//     /** form that lead to creating this step */
 
-    // GRAPHS ------------------------------
-    parentGraphID: GraphID
-    outputGraphID: GraphID
+//     // ACTION ------------------------------
+//     name: string
+//     appPath: AppPath
+//     formResult: Maybe<any>
+//     formSerial: Maybe<any>
 
-    // OUTPUTS -----------------------------
-    /** outputs of the evaluated step */
-    outputs?: Maybe<StepOutput[]>
-    status: Status
-}
+//     // GRAPHS ------------------------------
+//     // parentGraphID: GraphID
+//     outputGraphID: GraphID
+
+//     // OUTPUTS -----------------------------
+//     /** outputs of the evaluated step */
+//     outputs?: Maybe<StepOutput[]>
+//     status: Status
+// }
 
 /** a thin wrapper around an app execution */
 export interface StepL extends LiveInstance<StepT, StepL> {}
@@ -55,16 +57,22 @@ export class StepL {
         }
     }
 
-    prompts = new LiveCollection<PromptL>(this, 'stepID', 'prompts')
-    parentWorkflow = new LiveRef<this, GraphL>(this, 'parentGraphID', 'graphs')
-    outputWorkflow = new LiveRef<this, GraphL>(this, 'outputGraphID', 'graphs')
+    prompts = new LiveCollection<PromptL>(this, 'stepID', 'comfy_prompt')
+    // parentWorkflow = new LiveRef<this, GraphL>(this, 'parentGraphID', 'graphs')
+    outputWorkflow = new LiveRef<this, GraphL>(this, 'outputGraphID', 'graph')
 
-    get appFile(): LibraryFile | undefined { return this.st.library.cardsByPath.get(this.data.actionPath) } // prettier-ignore
+    get appFile(): LibraryFile | undefined { return this.st.library.cardsByPath.get(this.data.appPath) } // prettier-ignore
     get appCompiled() { return this.appFile?.appCompiled } // prettier-ignore
     get name() { return this.data.name } // prettier-ignore
+
     get generatedImages(): StepOutput_Image[] {
-        if (this.data.outputs == null) return []
-        return this.data.outputs.filter((t) => t.type === 'image') as StepOutput_Image[]
+        if (this.outputs == null) return []
+        return this.outputs.filter((t) => t.type === 'image') as StepOutput_Image[]
+    }
+
+    get outputs() {
+        // 🔴
+        return []
     }
 
     runtime: Maybe<Runtime> = null
@@ -79,7 +87,7 @@ export class StepL {
 
     addOutput = (output: StepOutput) =>
         this.update({
-            outputs: [...(this.data.outputs ?? []), output],
+            outputs: [...(this.outputs ?? []), output],
         })
 
     // UI expand/collapse state

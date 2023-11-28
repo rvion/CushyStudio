@@ -1,4 +1,3 @@
-import type { RelativePath } from 'src/utils/fs/BrandedPaths'
 import { run_latent, ui_latent } from './_prefabs/prefab_latent'
 import { run_model, ui_model } from './_prefabs/prefab_model'
 import { run_prompt } from './_prefabs/prefab_prompt'

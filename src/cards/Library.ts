@@ -1,5 +1,4 @@
 import type { STATE } from 'src/state/state'
-import type { AbsolutePath, RelativePath } from '../utils/fs/BrandedPaths'
 import type { ItemDataType } from 'src/rsuite/RsuiteTypes'
 
 import path, { join } from 'pathe'
@@ -7,7 +6,7 @@ import Watcher from 'watcher'
 
 import { existsSync, mkdirSync, readFileSync, readdirSync, statSync, writeFileSync } from 'fs'
 import { makeAutoObservable } from 'mobx'
-import { AppPath, asAppPath } from 'src/cards/CardPath'
+import { asAppPath } from 'src/cards/CardPath'
 import { Package, PackageRelPath } from 'src/cards/Pkg'
 import { hasValidActionExtension } from '../back/ActionExtensions'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'

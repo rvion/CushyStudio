@@ -75,7 +75,7 @@ export const MainOutputItemsUI = observer(function MainOutputItemsUI_(p: {}) {
                 </div>
             </RevealUI>
             <div tw={[dir, 'flex flex-grow gap-1 overflow-auto']}>
-                {selectedStep?.data.outputs?.map((output, ix) => (
+                {selectedStep?.outputs?.map((output, ix) => (
                     <OutputPreviewUI key={ix} step={selectedStep} output={output} />
                 ))}
             </div>

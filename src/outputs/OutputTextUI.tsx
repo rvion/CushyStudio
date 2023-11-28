@@ -1,11 +1,17 @@
 import { observer } from 'mobx-react-lite'
 import { StepL } from 'src/models/Step'
-import { StepOutput_Text } from 'src/types/MessageFromExtensionToWebview'
+import { StepOutput_Text } from 'src/types/StepOutput'
 import { OutputWrapperUI } from './OutputWrapperUI'
 import { OutputPreviewWrapperUI } from './OutputPreviewWrapperUI'
 
 export const OutputTextUI = observer(function OutputTextUI_(p: { step: StepL; output: StepOutput_Text }) {
-    return <OutputWrapperUI label=''>{p.output.message}</OutputWrapperUI>
+    // 🔴 handle markdown / html / text
+    return (
+        <OutputWrapperUI label=''>
+            {/*  */}
+            {p.output.message}
+        </OutputWrapperUI>
+    )
 })
 
 export const OutputTextPreviewUI = observer(function OutputTextPreviewUI_(p: { step: StepL; output: StepOutput_Text }) {

@@ -5,10 +5,6 @@
  * TODO: write them down to explain choices
  */
 
-import type { ImageID } from 'src/models/Image'
-
-// prettier-ignore
-
 // 🐉 export type InfoRequestFn = <const Req extends { [key: string]: Widget }>(
 // 🐉     req: (q: FormBuilder) => Req,
 // 🐉 ) => Promise<{ [key in keyof Req]: InfoAnswer<Req[key]> }>
@@ -21,7 +17,7 @@ import type { ImageID } from 'src/models/Image'
 
 // IMAGE ----------------------------------------------------------------------------
 export type ImageAnswer = CushyImageAnswer | ComfyImageAnswer | PaintImageAnswer // | ImageAnswer2 | ImageAnswer3 | ImageAnswer4
-export type CushyImageAnswer = { type: 'CushyImage'; imageID: ImageID }
+export type CushyImageAnswer = { type: 'CushyImage'; imageID: MediaImageID }
 export type ComfyImageAnswer = { type: 'ComfyImage'; imageName: Enum_LoadImage_image }
 export type PaintImageAnswer = { type: 'PaintImage'; base64: string }
 export type ImageAnswerForm<Type extends string, Bool extends boolean> = {

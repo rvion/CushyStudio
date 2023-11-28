@@ -12,7 +12,7 @@ export const StepOutputsV2UI = observer(function StepOutputsV2UI_(p: { step: Ste
     return (
         <div tw='flex'>
             <StepOutputsHeaderV2UI className='py-2' step={step} />
-            {step.data.outputs?.map((output, ix) => (
+            {step.outputs?.map((output, ix) => (
                 <OutputPreviewUI key={ix} step={step} output={output} />
             ))}
         </div>

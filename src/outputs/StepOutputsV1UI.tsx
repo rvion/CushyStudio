@@ -21,7 +21,7 @@ export const StepOutputsBodyV1UI = observer(function StepBodyUI_(p: { step: Step
     const step = p.step
     return (
         <div className='flex flex-col-reverse gap-1'>
-            {step.data.outputs?.map((output, ix) => (
+            {step.outputs?.map((output, ix) => (
                 <OutputUI key={ix} step={step} output={output} />
             ))}
         </div>

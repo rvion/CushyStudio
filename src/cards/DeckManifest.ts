@@ -1,6 +1,7 @@
 import { Static, Type } from '@sinclair/typebox'
 import { Value, ValueError } from '@sinclair/typebox/value'
 import { Either, resultFailure, resultSuccess } from 'src/types/Either'
+import { optionalString, string } from './schema'
 
 // DECK --------------------------------------
 export type PackageManifest = {
@@ -81,8 +82,6 @@ export const AppSchema = Type.Object(
 /* ✅ */ type _AppSchemaT = Static<typeof AppSchema>
 /* ✅ */ const _a2: AppManifest = 0 as any as _AppSchemaT
 
-const optionalString = (description: string) => Type.Optional(Type.String({ description }))
-const string = (description: string) => Type.String({ description })
 export const DeckSchema = Type.Object(
     {
         $schema: optionalString('the schema version'),

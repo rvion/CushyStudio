@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 import { Panel } from 'src/rsuite/shims'
 import { JsonViewUI } from '../widgets/workspace/JsonViewUI'
-import { StepOutput_RuntimeError } from 'src/types/MessageFromExtensionToWebview'
+import { StepOutput_RuntimeError } from 'src/types/StepOutput'
 import { StepL } from 'src/models/Step'
 import { OutputPreviewWrapperUI } from './OutputPreviewWrapperUI'
 

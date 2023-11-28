@@ -24,6 +24,7 @@
     "scripts": {
         "start": "node ./start.cjs",
         "📌 CODEGEN": "",
+        "gen-bins": "electron-builder install-app-deps",
         "gen-assets": "bun src/utils/assets/assets.gen.ts",
         "gen-lib": "tsc -p tsconfig.doc.json",
         "gen-dts": "tsc -p tsconfig.doc.json",
@@ -64,6 +65,7 @@
         "cytoscape-klay": "^3.1.4",
         "daisyui": "^4.4.2",
         "electron": "^27.1.0",
+        "electron-builder": "^24.9.1",
         "esbuild": "^0.19.7",
         "fastest-levenshtein": "^1.0.16",
         "flexlayout-react": "^0.7.15",

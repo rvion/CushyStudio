@@ -1,6 +1,6 @@
+import type { GraphL } from 'src/models/Graph'
 import { observer } from 'mobx-react-lite'
 import { Button, Tooltip, Whisper } from 'src/rsuite/shims'
-import type { GraphID, GraphL } from 'src/models/Graph'
 import { useSt } from '../../state/stateContext'
 
 export const ButtonOpenInComfyUI = observer(function ButtonOpenInComfyUI_(p: { graph: GraphL | GraphID }) {

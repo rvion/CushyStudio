@@ -4,7 +4,7 @@ import type { FC } from 'react'
 
 import { observer } from 'mobx-react-lite'
 import { useMemo, useState } from 'react'
-import { getPngMetadataFromFile } from './getPngMetadata'
+import { getPngMetadataFromFile } from '../utils/png/_getPngMetadata'
 import { usePromise } from './usePromise'
 import { Button, Panel } from 'src/rsuite/shims'
 import { useSt } from '../state/stateContext'

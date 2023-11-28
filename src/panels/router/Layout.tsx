@@ -8,7 +8,6 @@ import { observer } from 'mobx-react-lite'
 import { nanoid } from 'nanoid'
 import { FC, createElement, createRef } from 'react'
 import { Trigger } from 'src/app/shortcuts/Trigger'
-import { AppPath } from 'src/cards/CardPath'
 
 import { Panel_CardPicker3UI } from 'src/panels/Panel_FullScreenLibrary'
 import { Message } from 'src/rsuite/shims'

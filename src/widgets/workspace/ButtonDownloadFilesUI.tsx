@@ -1,4 +1,4 @@
-import type { GraphID, GraphL } from 'src/models/Graph'
+import type { GraphL } from 'src/models/Graph'
 
 import { existsSync, mkdirSync, writeFileSync } from 'fs'
 import { observer } from 'mobx-react-lite'

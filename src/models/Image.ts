@@ -1,14 +1,11 @@
 import type { LiveInstance } from '../db/LiveInstance'
-import type { PromptID } from './Prompt'
 
 import { basename, join } from 'pathe'
 import { assets } from 'src/utils/assets/assets'
-import { ComfyImageInfo, ComfyUploadImageResult } from '../types/ComfyWsApi'
-import { AbsolutePath } from '../utils/fs/BrandedPaths'
-import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { exhaust } from 'src/utils/misc/ComfyUtils'
-
-export type ImageID = Branded<string, { ImageUID: true }>
+import { ComfyImageInfo } from '../types/ComfyWsApi'
+import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
+import { _readPngSize } from '../utils/png/_readPngSize'
 
 // ---------------------------------------------------------------------------------------------------
 // 2023-11-27: image model was a mess; at first, I though I could unify all image strings
@@ -17,7 +14,7 @@ export type ImageID = Branded<string, { ImageUID: true }>
 // this way, we can derive common fields from the infos payload
 
 // prettier-ignore
-type MediaInfos =
+export type ImageInfos =
     | ImageInfos_ComfyGenerated
     | ImageInfos_Local
     | ImageInfos_Base64
@@ -27,7 +24,6 @@ type ImageInfos_ComfyGenerated = {
     type: 'image-generated-by-comfy'
     comfyHostHttpURL: string
     comfyImageInfo: ComfyImageInfo
-    promptID?: Maybe<PromptID> /** prompt from which the image is generated from; */
     absPath?: string /** present if the file has been cached locally */
 }
 type ImageInfos_Local = {
@@ -44,9 +40,9 @@ type VideoInfos_FFMPEG = {
 }
 
 // ---------------------------------------------------------------------------------------------------
-export interface ImageT<T extends MediaInfos = MediaInfos> {
+export interface MediaImageT<T extends ImageInfos = ImageInfos> {
     /** image ID */
-    id: ImageID
+    id: MediaImageID
 
     /** image creation date */
     createdAt: number
@@ -71,8 +67,8 @@ const getComfyURLFromImageInfos = (infos: ImageInfos_ComfyGenerated) => {
     return infos.comfyHostHttpURL + '/view?' + new URLSearchParams(infos.comfyImageInfo).toString()
 }
 
-export interface ImageL extends LiveInstance<ImageT, ImageL> {}
-export class ImageL {
+export interface MediaImageL extends LiveInstance<MediaImageT, MediaImageL> {}
+export class MediaImageL {
     // 🟢
     get filename() {
         const infos = this.data.infos
@@ -134,7 +130,7 @@ export class ImageL {
 
         let size: Maybe<{ width: number; height: number }>
         try {
-            size = readPngSize(binArr)
+            size = _readPngSize(binArr)
             this.update
         } catch (error) {
             console.log(error)
@@ -160,31 +156,4 @@ export class ImageL {
         this._resolve = resolve
         this._rejects = rejects
     })
-}
-
-export function readPngSize(buffer: ArrayBuffer): { width: number; height: number } {
-    const dataView = new DataView(buffer)
-
-    // Check the PNG signature
-    const hasSignature = [0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a].every(
-        (byte, index) => dataView.getUint8(index) === byte,
-    )
-
-    if (!hasSignature) {
-        throw new Error('Not a PNG file.')
-    }
-
-    // The IHDR chunk is located at offset 8 (after the 8-byte signature)
-    const length = dataView.getUint32(8) // Should be 13 for IHDR
-    const type = dataView.getUint32(12) // Should be 'IHDR' (0x49484452)
-
-    if (type === 0x49484452) {
-        // 'IHDR' in hex
-        // IHDR chunk found, read the width and height
-        const width = dataView.getUint32(16) // Width: Offset 16 to 19
-        const height = dataView.getUint32(20) // Height: Offset 20 to 23
-        return { width, height }
-    } else {
-        throw new Error('IHDR chunk not found.')
-    }
 }

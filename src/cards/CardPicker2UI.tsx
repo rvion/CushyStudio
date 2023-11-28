@@ -6,7 +6,6 @@ import { Fragment } from 'react'
 import { useSt } from '../state/stateContext'
 import { PkgHeaderUI } from './PkgHeaderUI'
 import { AppIllustrationUI } from './fancycard/AppIllustrationUI'
-import { AppPath } from './CardPath'
 import { RevealUI } from 'src/rsuite/RevealUI'
 
 export const PkgUI = observer(function ActionPackUI_(p: { deck: Package }) {

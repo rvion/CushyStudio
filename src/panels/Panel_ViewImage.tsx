@@ -1,4 +1,4 @@
-import type { ImageID, ImageL } from 'src/models/Image'
+import type { MediaImageL } from 'src/models/Image'
 import type { STATE } from 'src/state/state'
 
 import { observer } from 'mobx-react-lite'
@@ -9,7 +9,7 @@ import { useSt } from 'src/state/stateContext'
 import { assets } from 'src/utils/assets/assets'
 import { openExternal, showItemInFolder } from '../app/layout/openExternal'
 
-export const Panel_ViewImage = observer(function Panel_ViewImage_(p: { className?: string; imageID?: ImageID | 'latent' }) {
+export const Panel_ViewImage = observer(function Panel_ViewImage_(p: { className?: string; imageID?: MediaImageID | 'latent' }) {
     const st = useSt()
     // const img: Maybe<ImageL> = p.imageID //
     //     ? st.db.images.get(p.imageID)
@@ -128,16 +128,16 @@ export const Panel_ViewImage = observer(function Panel_ViewImage_(p: { className
 
 const getPreviewType = (
     st: STATE,
-    imageID: Maybe<ImageID | 'latent'>,
+    imageID: Maybe<MediaImageID | 'latent'>,
 ): {
     url: string
     latentUrl?: string
-    img?: Maybe<ImageL>
+    img?: Maybe<MediaImageL>
 } => {
     const errorURL = assets.public_illustrations_image_home_jpg
     if (imageID === 'latent') return { url: st.preview?.url ?? errorURL }
     if (imageID != null) {
-        const img = st.db.images.get(imageID)
+        const img = st.db.media_images.get(imageID)
         return { url: img?.url ?? errorURL, img }
     }
     if (imageID == null) {
@@ -145,7 +145,7 @@ const getPreviewType = (
             if (st.hovered) return { url: st.hovered.url }
         }
         if (st.showLatentPreviewInLastImagePanel) {
-            const lastImage = st.db.images.last()
+            const lastImage = st.db.media_images.last()
             const latent = st.preview
             if (latent == null) return { url: lastImage?.url ?? errorURL, img: lastImage }
             if (lastImage == null) return { url: latent.url }
@@ -158,7 +158,7 @@ const getPreviewType = (
                         : undefined,
             }
         } else {
-            const lastImage = st.db.images.last()
+            const lastImage = st.db.media_images.last()
             return { url: lastImage?.url ?? errorURL, img: lastImage }
         }
     }

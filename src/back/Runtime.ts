@@ -6,7 +6,6 @@ import * as path from 'pathe'
 import { execSync } from 'child_process'
 import fs, { writeFileSync } from 'fs'
 import { marked } from 'marked'
-import { AppPath } from 'src/cards/CardPath'
 import { Uploader } from 'src/state/Uploader'
 import type { STATE } from 'src/state/state'
 import { assets } from 'src/utils/assets/assets'
@@ -15,12 +14,11 @@ import { ImageAnswer } from '../controls/misc/InfoAnswer'
 import { ComfyNodeOutput } from '../core/Slot'
 import { auto } from '../core/autoValue'
 import { GraphL } from '../models/Graph'
-import { ImageL } from '../models/Image'
+import { MediaImageL } from '../models/Image'
 import { PromptL } from '../models/Prompt'
 import { StepL } from '../models/Step'
 import { ApiPromptInput, ComfyUploadImageResult, PromptInfo } from '../types/ComfyWsApi'
 import { createMP4FromImages } from '../utils/ffmpeg/ffmpegScripts'
-import { AbsolutePath, RelativePath } from '../utils/fs/BrandedPaths'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { deepCopyNaive, exhaust } from '../utils/misc/ComfyUtils'
 import { wildcards } from '../widgets/prompter/nodes/wildcards/wildcards'
@@ -29,6 +27,7 @@ import { ImageSDK } from './ImageSDK'
 import { ComfyWorkflowBuilder } from './NodeBuilder'
 import { InvalidPromptError } from './RuntimeError'
 import { Status } from './Status'
+import { bang } from 'src/utils/misc/bang'
 
 export type ImageAndMask = HasSingle_IMAGE & HasSingle_MASK
 
@@ -163,13 +162,10 @@ export class Runtime<FIELDS extends WidgetDict = any> {
             console.error('🌠', (error as any as Error).name)
             console.error('🌠', (error as any as Error).message)
             console.error('🌠', 'RUN FAILURE')
-            const graphID = error instanceof InvalidPromptError ? error.graph.id : undefined
-            // insert an error into the output
             this.step.addOutput({
                 type: 'runtimeError',
                 message: error.message,
                 infos: error,
-                graphID,
             })
             return Status.Failure
         }
@@ -184,7 +180,7 @@ export class Runtime<FIELDS extends WidgetDict = any> {
     /** run an imagemagick convert action */
     imagemagicConvert = (
         //
-        img: ImageL,
+        img: MediaImageL,
         partialCmd: string,
         suffix: string,
     ): string => {
@@ -201,8 +197,8 @@ export class Runtime<FIELDS extends WidgetDict = any> {
 
     /** list of all images produed over the whole script execution */
     // generatedImages: ImageL[] = []
-    get generatedImages(): ImageL[] {
-        return this.step.generatedImages.map((i) => this.st.db.images.getOrThrow(i.imgID))
+    get generatedImages(): MediaImageL[] {
+        return this.step.generatedImages.map((i) => this.st.db.media_images.getOrThrow(i.imgID))
     }
     // get firstImage() { return this.generatedImages[0] } // prettier-ignore
     // get lastImage() { return this.generatedImages[this.generatedImages.length - 1] } // prettier-ignore
@@ -280,7 +276,12 @@ export class Runtime<FIELDS extends WidgetDict = any> {
     }
 
     output_HTML = (p: { htmlContent: string; title: string }) => {
-        this.step.addOutput({ type: 'show-html', content: p.htmlContent, title: p.title })
+        this.st.db.drafts
+        this.step.addOutput({
+            type: 'show-html',
+            content: p.htmlContent,
+            title: p.title,
+        })
         // this.st.broadCastToAllClients({ type: 'show-html', content: p.htmlContent, title: p.title })
     }
 
@@ -305,7 +306,7 @@ export class Runtime<FIELDS extends WidgetDict = any> {
     static VideoCounter = 1
     createAnimation = async (
         /** image to incldue (defaults to all images generated in the fun) */
-        source?: ImageL[],
+        source?: MediaImageL[],
         /** FPS (e.g. 60, 30, etc.) default is 30 */
         inputFPS = 30,
         opts: { transparent?: Maybe<boolean> } = {},
@@ -345,7 +346,7 @@ export class Runtime<FIELDS extends WidgetDict = any> {
         console.info(`🎥 cwd: ${cwd}`)
         const allAbsPaths = images.map((i) => i.absPath).filter((p) => p != null) as AbsolutePath[]
         await createMP4FromImages(allAbsPaths, targetVideoAbsPath, inputFPS, cwd, opts)
-        this.st.db.images.create({ infos: { type: 'video-local-ffmpeg', absPath: targetVideoAbsPath } })
+        this.st.db.media_images.create({ infos: { type: 'video-local-ffmpeg', absPath: targetVideoAbsPath } })
     }
 
     /**
@@ -397,7 +398,7 @@ export class Runtime<FIELDS extends WidgetDict = any> {
     loadImageAnswerAsEnum = async (ia: ImageAnswer): Promise<Enum_LoadImage_image> => {
         try {
             if (ia.type === 'CushyImage') {
-                const img = this.st.db.images.getOrThrow(ia.imageID)
+                const img = this.st.db.media_images.getOrThrow(ia.imageID)
                 // this.print(JSON.stringify(img.data, null, 3))
                 if (img.absPath) {
                     const res = await this.upload_FileAtAbsolutePath(img.absPath)
@@ -424,13 +425,32 @@ export class Runtime<FIELDS extends WidgetDict = any> {
         throw new Error('FAILURE to load image answer as enum')
     }
 
+    loadImageAnswer2 = async (
+        ia: ImageAnswer,
+    ): Promise<{
+        img: ImageAndMask
+        width: number
+        height: number
+    }> => {
+        if (ia.type === 'CushyImage') {
+            const mediaImage = this.st.db.media_images.getOrThrow(ia.imageID)
+            // this.print(JSON.stringify(img.data, null, 3))
+            if (mediaImage.absPath) {
+                const res = await this.upload_FileAtAbsolutePath(mediaImage.absPath)
+                const img = this.nodes.LoadImage({ image: res.name as any })
+                return { img, width: bang(mediaImage.data.width), height: bang(mediaImage.data.height) }
+            }
+        }
+        throw new Error('ERROR')
+    }
+
     loadImageAnswer = async (ia: ImageAnswer): Promise<ImageAndMask> => {
         try {
             // if (ia.type === 'imagePath') {
             //     return this.nodes.WASImageLoad({ image_path: ia.absPath, RGBA: 'false' })
             // }
             if (ia.type === 'CushyImage') {
-                const img = this.st.db.images.getOrThrow(ia.imageID)
+                const img = this.st.db.media_images.getOrThrow(ia.imageID)
                 // this.print(JSON.stringify(img.data, null, 3))
                 if (img.absPath) {
                     const res = await this.upload_FileAtAbsolutePath(img.absPath)
@@ -634,7 +654,7 @@ export class Runtime<FIELDS extends WidgetDict = any> {
         } else {
             const prompt = this.st.db.prompts.create({
                 id: prompmtInfo.prompt_id,
-                executed: false,
+                executed: 0,
                 graphID: graph.id,
                 stepID,
             })

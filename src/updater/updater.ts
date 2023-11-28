@@ -1,4 +1,3 @@
-import type { AbsolutePath, RelativePath } from 'src/utils/fs/BrandedPaths'
 import type { STATE } from '../state/state'
 
 import { exec } from 'child_process'

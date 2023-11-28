@@ -1,41 +1,38 @@
 import type { LiveInstance } from '../db/LiveInstance'
-import type { GraphID, GraphL } from './Graph'
 import type { StepL } from './Step'
 
-import { autorun, reaction, runInAction, toJS } from 'mobx'
-import { LibraryFile } from 'src/cards/CardFile'
-import { AppPath } from 'src/cards/CardPath'
-import { Widget_group, type Widget } from 'src/controls/Widget'
-import { FormBuilder } from 'src/controls/FormBuilder'
-import { __FAIL, __OK, type Result } from 'src/types/Either'
-import { LiveRef } from '../db/LiveRef'
+import { autorun, reaction, runInAction } from 'mobx'
 import { Status } from 'src/back/Status'
+import { LibraryFile } from 'src/cards/CardFile'
+import { FormBuilder } from 'src/controls/FormBuilder'
+import { Widget_group, type Widget } from 'src/controls/Widget'
+import { DraftT } from 'src/db2/TYPES.gen'
+import { __FAIL, __OK, type Result } from 'src/types/Either'
 
 export type FormPath = (string | number)[]
 
-export type DraftID = Branded<string, { DraftID: true }>
-export const asDraftID = (s: string): DraftID => s as any
+// export type DraftID = Branded<string, { DraftID: true }>
+// export const asDraftID = (s: string): DraftID => s as any
+// export type DraftT = {
+//     id: DraftID /** form that lead to creating this Draft */
+//     createdAt: number
+//     updatedAt: number
 
-export type DraftT = {
-    id: DraftID /** form that lead to creating this Draft */
-    createdAt: number
-    updatedAt: number
+//     // presentation
+//     title: string
 
-    // presentation
-    title: string
+//     // action
+//     appPath: AppPath
+//     appParams: any
 
-    // action
-    appPath: AppPath
-    appParams: any
-
-    // starting graph
-    graphID: GraphID
-}
+//     // starting graph
+//     // graphID: GraphID
+// }
 
 /** a thin wrapper around a single Draft somewhere in a .ts file */
 export interface DraftL extends LiveInstance<DraftT, DraftL> {}
 export class DraftL {
-    graph = new LiveRef<this, GraphL>(this, 'graphID', 'graphs')
+    // graph = new LiveRef<this, GraphL>(this, 'graphID', 'graphs')
 
     // 🔴 HACKY
     shouldAutoStart = false
@@ -63,7 +60,7 @@ export class DraftL {
         if (req == null) throw new Error('invalid req')
 
         // 2. ensure graph valid
-        const graph = this.graph.item
+        const graph = this.st.getProject().rootGraph.item
         if (graph == null) throw new Error('invalid graph')
 
         // 3. bumpt the builder cache count
@@ -75,11 +72,11 @@ export class DraftL {
         const step = this.db.steps.create({
             name: this.data.title,
             //
-            actionPath: this.data.appPath,
+            appPath: this.data.appPath,
             formResult: req.result,
             formSerial: req.serial,
             //
-            parentGraphID: graph.id,
+            // parentGraphID: graph.id,
             outputGraphID: graph.clone().id,
             //
             status: Status.New,

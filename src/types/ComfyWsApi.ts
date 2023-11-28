@@ -52,7 +52,7 @@ export type ComfyStatus = { exec_info: { queue_remaining: number }; sid: string 
 
 /** payload send back when triggering a promp */
 export type UUID = Tagged<string, 'UUID'>
-export type PromptID = Branded<UUID, { PromptID: true }>
+export type PromptID = Branded<UUID, { ComfyPromptID: true }>
 export type PromptInfo = {
     prompt_id: PromptID /** uuid */
 }

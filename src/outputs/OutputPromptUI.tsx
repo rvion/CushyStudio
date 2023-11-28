@@ -2,7 +2,7 @@ import { observer } from 'mobx-react-lite'
 import { StepL } from 'src/models/Step'
 import { Button } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
-import { StepOutput_Prompt } from 'src/types/MessageFromExtensionToWebview'
+import { StepOutput_Prompt } from 'src/types/StepOutput'
 import { GraphSummaryUI } from '../widgets/workspace/GraphSummaryUI'
 import { OutputPreviewWrapperUI } from './OutputPreviewWrapperUI'
 
@@ -27,6 +27,7 @@ export const OutputPromptUI = observer(function OutputPromptUI_(p: {
                 ))}
             </div> */}
             {/* {currNode && <ComfyNodeUI node={currNode} />} */}
+
             {graph.done ? null : (
                 <Button
                     tw='self-end'

@@ -2,18 +2,16 @@ import type { App, WidgetDict } from 'src/cards/Card'
 import type { LiteGraphJSON } from 'src/core/LiteGraph'
 import type { STATE } from 'src/state/state'
 import type { ComfyPromptJSON } from '../types/ComfyPrompt'
-import type { AbsolutePath } from '../utils/fs/BrandedPaths'
 
 import { readFileSync } from 'fs'
 import { makeAutoObservable, observable } from 'mobx'
 import path, { join, relative } from 'pathe'
-import { AppPath } from 'src/cards/CardPath'
 import { Package } from 'src/cards/Pkg'
 import { DraftL } from 'src/models/Draft'
 import { clamp } from 'three/src/math/MathUtils'
 import { transpileCode } from '../back/transpiler'
 import { convertLiteGraphToPrompt } from '../core/litegraphToPrompt'
-import { getPngMetadataFromUint8Array } from '../importers/getPngMetadata'
+import { getPngMetadataFromUint8Array } from '../utils/png/_getPngMetadata'
 import { exhaust } from '../utils/misc/ComfyUtils'
 import { ManualPromise } from '../utils/misc/ManualPromise'
 import { generateAvatar } from './AvatarGenerator'
@@ -186,7 +184,7 @@ export class LibraryFile {
         const draft = this.st.db.drafts.create({
             appParams: {},
             appPath: this.relPath,
-            graphID: pj.rootGraph.id,
+            // graphID: pj.rootGraph.id,
             title: title,
         })
         // pj.st.layout.FOCUS_OR_CREATE('Draft', { draftID: draft.id })

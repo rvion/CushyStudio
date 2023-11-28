@@ -1,3 +1,8 @@
+// import { Static, Type } from '@sinclair/typebox'
+// import { Value, ValueError } from '@sinclair/typebox/value'
+// import { Either, resultFailure, resultSuccess } from 'src/types/Either'
+// import { optionalString, string } from './schema'
+
 // RAW -----------------------------------------------------------------
 /** type of the file sent by the backend at /object_info */
 
