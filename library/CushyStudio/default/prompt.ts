@@ -28,6 +28,7 @@ app({
         model: ui_model(form),
         latent: ui_latent(form),
         sampler: ui_sampler(form),
+        highResFix: ui_highresfix(form),
         controlnets: form.groupOpt({
             items: () => ({
                 pose: form.list({
@@ -44,7 +45,6 @@ app({
             }),
         }),
         recursiveImgToImg: ui_recursive(form),
-        highResFix: ui_highresfix(form),
         loop: form.groupOpt({
             items: () => ({
                 batchCount: form.int({ default: 1 }),

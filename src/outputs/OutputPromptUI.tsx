@@ -1,10 +1,9 @@
 import { observer } from 'mobx-react-lite'
+import { StepL } from 'src/models/Step'
 import { Button } from 'src/rsuite/shims'
-import { ImageUI } from '../widgets/galleries/ImageUI'
-import { GraphSummaryUI } from '../widgets/workspace/GraphSummaryUI'
 import { useSt } from 'src/state/stateContext'
 import { StepOutput_Prompt } from 'src/types/MessageFromExtensionToWebview'
-import { StepL } from 'src/models/Step'
+import { GraphSummaryUI } from '../widgets/workspace/GraphSummaryUI'
 import { OutputPreviewWrapperUI } from './OutputPreviewWrapperUI'
 
 export const OutputPromptUI = observer(function OutputPromptUI_(p: {
@@ -22,11 +21,11 @@ export const OutputPromptUI = observer(function OutputPromptUI_(p: {
     // const currNode = graph.currentExecutingNode
     return (
         <div className='flex flex-col gap-1'>
-            <div className='flex flex-wrap'>
+            {/* <div className='flex flex-wrap'>
                 {prompt?.images.map((img) => (
                     <ImageUI key={img.id} img={img} />
                 ))}
-            </div>
+            </div> */}
             {/* {currNode && <ComfyNodeUI node={currNode} />} */}
             {graph.done ? null : (
                 <Button

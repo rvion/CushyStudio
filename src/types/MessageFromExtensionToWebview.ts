@@ -9,6 +9,7 @@ import type { PromptID, WsMsgExecutionError } from './ComfyWsApi'
 export type StepOutput =
     | StepOutput_Text
     | StepOutput_Image
+    | StepOutput_Video
     | StepOutput_ComfyWorkflow
     | StepOutput_Prompt
     | StepOutput_Html
@@ -25,7 +26,14 @@ export type StepOutput_DisplacedImage = {
     depthMap: string
     normalMap: string
 }
-export type StepOutput_Text = { type: 'print'; message: string }
+export type StepOutput_Video = {
+    type: 'video'
+    url: string
+}
+export type StepOutput_Text = {
+    type: 'print'
+    message: string
+}
 export type StepOutput_Image = { type: 'image'; imgID: ImageID }
 export type StepOutput_ComfyWorkflow = { type: 'comfy-workflow'; graphID: GraphID }
 export type StepOutput_Prompt = { type: 'prompt'; promptID: PromptID }

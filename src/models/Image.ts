@@ -1,75 +1,130 @@
 import type { LiveInstance } from '../db/LiveInstance'
-import type { PromptID, PromptL } from './Prompt'
+import type { PromptID } from './Prompt'
 
-import { existsSync } from 'fs'
-import { LiveRef } from '../db/LiveRef'
-import { ComfyImageInfo } from '../types/ComfyWsApi'
+import { basename, join } from 'pathe'
+import { assets } from 'src/utils/assets/assets'
+import { ComfyImageInfo, ComfyUploadImageResult } from '../types/ComfyWsApi'
 import { AbsolutePath } from '../utils/fs/BrandedPaths'
-import { asAbsolutePath } from '../utils/fs/pathUtils'
+import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
+import { exhaust } from 'src/utils/misc/ComfyUtils'
 
 export type ImageID = Branded<string, { ImageUID: true }>
 
-export interface ImageT {
+// ---------------------------------------------------------------------------------------------------
+// 2023-11-27: image model was a mess; at first, I though I could unify all image strings
+// into a single type, but it turns out that it's not possible
+// I thing having a discriminated union with the real source semantic is the best way to go
+// this way, we can derive common fields from the infos payload
+
+// prettier-ignore
+type MediaInfos =
+    | ImageInfos_ComfyGenerated
+    | ImageInfos_Local
+    | ImageInfos_Base64
+    | VideoInfos_FFMPEG
+
+type ImageInfos_ComfyGenerated = {
+    type: 'image-generated-by-comfy'
+    comfyHostHttpURL: string
+    comfyImageInfo: ComfyImageInfo
+    promptID?: Maybe<PromptID> /** prompt from which the image is generated from; */
+    absPath?: string /** present if the file has been cached locally */
+}
+type ImageInfos_Local = {
+    type: 'image-local'
+    absPath: AbsolutePath
+}
+type ImageInfos_Base64 = {
+    type: 'image-base64'
+    base64Url: string
+}
+type VideoInfos_FFMPEG = {
+    type: 'video-local-ffmpeg'
+    absPath: AbsolutePath
+}
+
+// ---------------------------------------------------------------------------------------------------
+export interface ImageT<T extends MediaInfos = MediaInfos> {
     /** image ID */
     id: ImageID
+
+    /** image creation date */
     createdAt: number
+
+    /** image update date */
     updatedAt: number
-    /** prompt from which the image is generated from; null if the image is manually uploaded or created via a widget */
-    promptID?: Maybe<PromptID>
-    /** infos returned from ComfyUI; null if the image has another provenence */
-    imageInfos?: ComfyImageInfo
-    /** image ratings */
+
+    /** the main field */
+    infos?: T
+
+    /** asset rating */
     star?: number
-    /** where the file is either located locally / or aimed to be stored */
-    localFilePath: AbsolutePath
-    /** where the file exists locally */
-    downloaded?: boolean
-    /** defaults to image */
-    type?: 'image' | 'video'
+
+    /** asset width, in pixel */
     width?: number
+
+    /** asset height, in pixel */
     height?: number
-    // comfyRelativePath?: string
-    // comfyURL?: string
-    //
-    // localAbsolutePath?: string
-    // localURL?: string
+}
+
+const getComfyURLFromImageInfos = (infos: ImageInfos_ComfyGenerated) => {
+    return infos.comfyHostHttpURL + '/view?' + new URLSearchParams(infos.comfyImageInfo).toString()
 }
 
 export interface ImageL extends LiveInstance<ImageT, ImageL> {}
 export class ImageL {
-    get comfyUrl() {
-        return this.st.getServerHostHTTP() + '/view?' + new URLSearchParams(this.data.imageInfos).toString()
+    // 🟢
+    get filename() {
+        const infos = this.data.infos
+        if (infos == null) return 'null'
+        if (infos.type === 'image-local') return basename(infos.absPath)
+        if (infos.type === 'image-base64') return infos.base64Url
+        if (infos.type === 'image-generated-by-comfy') return basename(infos.comfyImageInfo.filename)
+        // if (infos.type === 'image-uploaded-to-comfy') return basename(infos.comfyUploadImageResult.name)
+        if (infos.type === 'video-local-ffmpeg') return basename(infos.absPath)
+        exhaust(infos)
+        return 'unknown'
     }
 
+    // 🟢
+    /** ready to be used in image fields */
     get url() {
-        if (this.data.downloaded) return `file://${this.localAbsolutePath}`
-        if (this.data.imageInfos == null) return '❌'
-        return this.comfyUrl
+        const infos = this.data.infos
+        if (infos == null) return `file://${assets.public_CushyLogo_png}`
+        if (infos.type === 'image-local') return `file://${infos.absPath}`
+        if (infos.type === 'image-base64') return infos.base64Url
+        if (infos.type === 'video-local-ffmpeg') return `file://${infos.absPath}`
+        if (infos.type === 'image-generated-by-comfy') {
+            return infos.absPath //
+                ? `file://${infos.absPath}`
+                : getComfyURLFromImageInfos(infos)
+        }
+        exhaust(infos)
+        return `file://${assets.public_CushyLogo_png}`
     }
 
+    // 🟢
     /** absolute path on the machine running CushyStudio */
-    get localAbsolutePath(): AbsolutePath {
-        // const fileName = this.data.imageInfos?.filename
-        return this.data.localFilePath //
-            ? this.data.localFilePath
-            : asAbsolutePath('/ERROR.png')
-        // : asAbsolutePath(join(this.st.cacheFolderPath, 'outputs', fileName ?? 'error'))
+    get absPath(): Maybe<AbsolutePath> {
+        const url = this.url
+        if (url.startsWith('file://')) return asAbsolutePath(url.slice('file://'.length))
     }
 
-    onCreate = () => {
-        if (this.data.downloaded) return
+    // 🟢
+    onCreate = (): void => {
         this.downloadImageAndSaveToDisk()
     }
 
-    private downloadImageAndSaveToDisk = async (): Promise<true> => {
-        // error recovery => should never happend
-        const absPath = this.localAbsolutePath
-        const exists = existsSync(absPath)
-        if (exists) {
-            if (!this.data.downloaded) this.update({ downloaded: true })
-            return true
-        }
+    get existsLocally(): boolean {
+        return this.absPath != null
+    }
 
+    private downloadImageAndSaveToDisk = async (): Promise<true> => {
+        const infos = this.data.infos
+        if (infos?.type !== 'image-generated-by-comfy') return true
+        if (infos.absPath != null) return true
+
+        // error recovery => should never happend
         const response = await fetch(this.url, {
             headers: { 'Content-Type': 'image/png' },
             method: 'GET',
@@ -84,14 +139,11 @@ export class ImageL {
         } catch (error) {
             console.log(error)
         }
-        // const binArr = new Uint16Array(numArr)
-
-        this.st.writeBinaryFile(this.localAbsolutePath, Buffer.from(binArr))
-        // const folder = join(absPath, '..')
-        // mkdirSync(folder, { recursive: true })
-        // writeFileSync(absPath, Buffer.from(binArr))
+        const outputRelPath = asRelativePath(join(infos.comfyImageInfo.subfolder, infos.comfyImageInfo.filename))
+        const absPath = this.st.resolve(this.st.outputFolderPath, outputRelPath)
+        this.st.writeBinaryFile(absPath, Buffer.from(binArr))
         this.update({
-            downloaded: true,
+            infos: { ...infos, absPath: absPath },
             width: size?.width,
             height: size?.height,
         })
@@ -100,8 +152,6 @@ export class ImageL {
         this._resolve(this)
         return true
     }
-
-    prompt = new LiveRef<this, PromptL>(this, 'promptID', 'prompts')
 
     // turns this into some clean abstraction
     _resolve!: (value: this) => void

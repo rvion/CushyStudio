@@ -4,27 +4,29 @@ import type { STATE } from 'src/state/state'
 import { observer } from 'mobx-react-lite'
 import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch'
 import { Dropdown, MenuItem } from 'src/rsuite/Dropdown'
-import { Button, Rate, Toggle } from 'src/rsuite/shims'
+import { Rate, Toggle } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
-import { openExternal, showItemInFolder } from '../app/layout/openExternal'
 import { assets } from 'src/utils/assets/assets'
+import { openExternal, showItemInFolder } from '../app/layout/openExternal'
 
-export const Panel_ViewImage = observer(function Panel_ViewImage_(p: { imageID?: ImageID | 'latent' }) {
+export const Panel_ViewImage = observer(function Panel_ViewImage_(p: { className?: string; imageID?: ImageID | 'latent' }) {
     const st = useSt()
     // const img: Maybe<ImageL> = p.imageID //
     //     ? st.db.images.get(p.imageID)
     //     : st.db.images.last()
     const { img, url, latentUrl } = getPreviewType(st, p.imageID)
-    const imgPathWithFileProtocol = img ? `file://${img.localAbsolutePath}` : null
+    const imgPathWithFileProtocol = img ? `file://${img.absPath}` : null
     // if (img == null) return null
     const background = st.configFile.value.galleryBgColor
 
     return (
-        <div tw='w-full h-full flex flex-col bg-base-100' style={{ background }}>
-            {/* {url} */}
+        <div
+            //
+            className={p.className}
+            tw='flex flex-col flex-grow bg-base-100'
+            style={{ background }}
+        >
             <div tw='flex items-center gap-2 bg-base-200'>
-                {/* 1. RATER */}
-
                 {/* <FieldAndLabelUI label='Rating'> */}
                 <Rate
                     name={img?.id ?? 'latent'}
@@ -58,10 +60,10 @@ export const Panel_ViewImage = observer(function Panel_ViewImage_(p: { imageID?:
                         icon={<span className='material-symbols-outlined'>folder</span>}
                         size='sm'
                         // appearance='subtle'
-                        disabled={!img?.localAbsolutePath}
+                        disabled={!img?.absPath}
                         onClick={() => {
-                            if (!img?.localAbsolutePath) return
-                            showItemInFolder(img.localAbsolutePath)
+                            if (!img?.absPath) return
+                            showItemInFolder(img.absPath)
                         }}
                     >
                         open folder
@@ -71,7 +73,7 @@ export const Panel_ViewImage = observer(function Panel_ViewImage_(p: { imageID?:
                         icon={<span className='material-symbols-outlined'>folder</span>}
                         size='xs'
                         // appearance='subtle'
-                        disabled={!img?.localAbsolutePath}
+                        disabled={!img?.absPath}
                         onClick={() => {
                             if (imgPathWithFileProtocol == null) return
                             openExternal(imgPathWithFileProtocol)
@@ -85,12 +87,12 @@ export const Panel_ViewImage = observer(function Panel_ViewImage_(p: { imageID?:
 
             <TransformWrapper centerZoomedOut centerOnInit>
                 <TransformComponent
-                    wrapperStyle={{ /* border: '5px solid #b53737', */ height: '100%', width: '100%' }}
+                    wrapperStyle={{ /* border: '5px solid #b53737', */ height: '100%', width: '100%', display: 'flex' }}
                     contentStyle={{ /* border: '5px solid #38731f', */ height: '100%', width: '100%' }}
                 >
                     {latentUrl && (
                         <img //
-                            tw='absolute top-0 left-0 shadow-xl'
+                            tw='absolute bottom-0 right-0 shadow-xl'
                             style={{ width: st.latentSizeStr, height: st.latentSizeStr, objectFit: 'contain' }}
                             src={latentUrl}
                             alt='last generated image'

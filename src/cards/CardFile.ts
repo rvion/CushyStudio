@@ -184,12 +184,12 @@ export class LibraryFile {
         const title = this.name + ' ' + this.drafts.length + 1
         const pj = this.st.getProject()
         const draft = this.st.db.drafts.create({
-            actionParams: {},
-            actionPath: this.relPath,
+            appParams: {},
+            appPath: this.relPath,
             graphID: pj.rootGraph.id,
             title: title,
         })
-        pj.st.layout.FOCUS_OR_CREATE('Draft', { draftID: draft.id })
+        // pj.st.layout.FOCUS_OR_CREATE('Draft', { draftID: draft.id })
         return draft
     }
     getLastDraft = (): DraftL => {
@@ -199,7 +199,7 @@ export class LibraryFile {
     }
     get drafts(): DraftL[] {
         return this.st.db.drafts //
-            .filter((draft) => draft.data.actionPath === this.relPath)
+            .filter((draft) => draft.data.appPath === this.relPath)
     }
 
     getCompiledApp() {

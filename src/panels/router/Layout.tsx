@@ -125,13 +125,19 @@ export class CushyLayoutManager {
     })
 
     nextPaintIDx = 0
-    openApp = (actionPath: AppPath) => {
+    openAppInMainPanel = (actionPath: AppPath) => {
+        const card = this.st.library.getFile(actionPath)
+        if (card == null) return null /* 🔴 add popup somewhere */
+        const draft = card.getLastDraft()
+        this.st.currentDraft = draft
+        // this.FOCUS_OR_CREATE('Draft', { draftID: draft?.id ?? '❌' }, 'LEFT_PANE_TABSET')
+    }
+
+    openAppInNewPanel = (actionPath: AppPath) => {
         const card = this.st.library.getFile(actionPath)
         if (card == null) return null /* 🔴 add popup somewhere */
         const draft = card.getLastDraft()
         this.FOCUS_OR_CREATE('Draft', { draftID: draft?.id ?? '❌' }, 'LEFT_PANE_TABSET')
-        // const icon = af?.illustrationPathWithFileProtocol
-        // this._AddWithProps(Widget.Draft, `/action/${actionPath}`, { title: actionPath, actionPath, icon })
     }
     // addDraft = (p: PropsOf<typeof Panel_Draft>) => {
     //     const draftID = p.draftID
@@ -212,6 +218,7 @@ export class CushyLayoutManager {
         props: PropsOf<Panels[K]['widget']>,
         where: 'full' | 'current' | LEFT_PANE_TABSET_T | RIGHT_PANE_TABSET_T = RIGHT_PANE_TABSET_ID,
     ): Maybe<FL.Node> => {
+        console.warn('----------🟢---------------')
         if (where === 'full') {
             this.TOGGLE_FULL(component, props)
             return null

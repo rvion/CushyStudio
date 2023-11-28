@@ -21,12 +21,12 @@ export type DraftT = {
     createdAt: number
     updatedAt: number
 
-    // presetntation
+    // presentation
     title: string
 
     // action
-    actionPath: AppPath
-    actionParams: any
+    appPath: AppPath
+    appParams: any
 
     // starting graph
     graphID: GraphID
@@ -39,6 +39,7 @@ export class DraftL {
 
     // 🔴 HACKY
     shouldAutoStart = false
+
     private autoStartTimer: NodeJS.Timeout | null = null
     setAutostart(val: boolean) {
         this.shouldAutoStart = val
@@ -74,7 +75,7 @@ export class DraftL {
         const step = this.db.steps.create({
             name: this.data.title,
             //
-            actionPath: this.data.actionPath,
+            actionPath: this.data.appPath,
             formResult: req.result,
             formSerial: req.serial,
             //
@@ -90,7 +91,7 @@ export class DraftL {
     gui: Result<Widget> = __FAIL('not loaded yet')
 
     get app(): LibraryFile | undefined {
-        return this.st.library.cardsByPath.get(this.data.actionPath)
+        return this.st.library.cardsByPath.get(this.data.appPath)
     }
 
     get action() {
@@ -109,15 +110,15 @@ export class DraftL {
         const _1 = reaction(
             () => this.action,
             (action) => {
-                console.log(`[🦊] form: awakening app ${this.data.actionPath}`)
+                console.log(`[🦊] form: awakening app ${this.data.appPath}`)
                 if (action == null) return
                 try {
                     const formBuilder = new FormBuilder(this.st.schema)
                     const uiFn = action.ui
                     const req: Widget_group<any> =
                         uiFn == null //
-                            ? formBuilder._HYDRATE('group', { topLevel: true, items: () => ({}) }, this.data.actionParams)
-                            : formBuilder._HYDRATE('group', { topLevel: true, items: () => uiFn(formBuilder) }, this.data.actionParams) // prettier-ignore
+                            ? formBuilder._HYDRATE('group', { topLevel: true, items: () => ({}) }, this.data.appParams)
+                            : formBuilder._HYDRATE('group', { topLevel: true, items: () => uiFn(formBuilder) }, this.data.appParams) // prettier-ignore
                     /** 👇 HACK; see the comment near the ROOT property definition */
                     formBuilder._ROOT = req
                     this.gui = __OK(req)
@@ -140,7 +141,7 @@ export class DraftL {
             const _ = JSON.stringify(formValue.serial)
             runInAction(() => {
                 console.log(`[🦊] form: updating`)
-                this.update({ actionParams: formValue.serial })
+                this.update({ appParams: formValue.serial })
             })
         })
 

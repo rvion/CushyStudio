@@ -15,7 +15,7 @@ export const ImageUI = observer(function ImageUI_(p: { size?: string; img: Image
     if (image == null) return <div style={{ width: ImageWidth, height: ImageWidth }}>❌</div>
 
     const IMG =
-        image.data.type === 'video' ? (
+        image.data.infos?.type === 'video-local-ffmpeg' ? (
             <video
                 //
                 onMouseEnter={(ev) => (st.hovered = { type: 'video', url: image.url })}

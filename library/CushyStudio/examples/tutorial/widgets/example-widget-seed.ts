@@ -36,11 +36,5 @@ app({
             //        👇 and re-run the prompt
             await flow.PROMPT()
         }
-
-        // 👇 as a bonus, here is a way to access last image
-        // within the action lifetime so you can do stuff with it
-        const lastImageURL = flow.lastImage.comfyUrl
-        flow.output_text(lastImageURL)
-        // await flow.createAnimation()
     },
 })

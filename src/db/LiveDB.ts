@@ -45,7 +45,7 @@ export class LiveDB {
 
     constructor(public st: STATE) {
         // 1. restore store if  it exists
-        this.relPath = asRelativePath('./cushy2.db')
+        this.relPath = asRelativePath('./cushy3.db')
         this.absPath = this.st.resolveFromRoot(this.relPath)
 
         try {
@@ -130,7 +130,11 @@ export class LiveDB {
     }
 
     /** self-updating DB size and health */
-    health: { status: 'good' | 'meh' | 'bad'; size: number; sizeTxt: string } = { status: 'meh', size: 0, sizeTxt: '?' }
+    health: {
+        status: 'good' | 'meh' | 'bad'
+        size: number
+        sizeTxt: string
+    } = { status: 'meh', size: 0, sizeTxt: '?' }
 
     get healthColor() {
         if (this.health.status === 'bad') return `btn-error`

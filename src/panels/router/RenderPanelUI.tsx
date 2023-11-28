@@ -15,5 +15,5 @@ export const RenderPanelUI = observer(function RenderPanelUI_(p: { panel: Panel;
         )
 
     const Component = panelDef.widget
-    return <Component {...panelProps} />
+    return <Component {...panelProps} className='w-full h-full border-none' />
 })

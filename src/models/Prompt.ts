@@ -5,11 +5,8 @@ import type { GraphID, GraphL } from './Graph'
 
 import { nanoid } from 'nanoid'
 import { Status } from '../back/Status'
-import { LiveCollection } from '../db/LiveCollection'
 import { LiveRef } from '../db/LiveRef'
 import { exhaust } from '../utils/misc/ComfyUtils'
-import { asRelativePath } from '../utils/fs/pathUtils'
-import { ImageL } from './Image'
 
 export type PromptID = Branded<string, { PromptID: true }>
 export const asPromptID = (s: string): PromptID => s as any
@@ -25,8 +22,6 @@ export type PromptT = {
 
 export interface PromptL extends LiveInstance<PromptT, PromptL> {}
 export class PromptL {
-    images = new LiveCollection<ImageL>(this, 'promptID', 'images')
-
     _resolve!: (value: this) => void
     _rejects!: (reason: any) => void
     finished: Promise<this> = new Promise((resolve, rejects) => {
@@ -97,39 +92,24 @@ export class PromptL {
 
     /** udpate execution list */
     private onExecuted = (msg: WsMsgExecuted) => {
-        // const image = this.db.images.create({
-        //     id: nanoid(),
-        // })
-        // const images: ImageL[] = []
         for (const img of msg.data.output.images) {
-            // const comfyFilename = img.filename
-            const comfyRelativePath = `./outputs/${img.filename}`
-            const comfyURL = this.st.getServerHostHTTP() + '/view?' + new URLSearchParams(img).toString()
-            // const absPath = this.st.resolve(this.st.outputFolderPath, asRelativePath(join(img.subfolder, img.filename)))
-            const absPath = this.st.resolve(this.st.outputFolderPath, asRelativePath(img.filename))
             const image = this.db.images.create({
                 id: nanoid(),
-                promptID: this.id,
-                // comfyURL,
-                imageInfos: img,
-                localFilePath: absPath,
-                // comfyRelativePath,
-                // folder: img.subfolder,
-                // localAbsolutePath: img.localAbsolutePath,
+                infos: {
+                    type: 'image-generated-by-comfy',
+                    comfyImageInfo: img,
+                    promptID: this.id,
+                    comfyHostHttpURL: this.st.getServerHostHTTP(),
+                },
             })
             // this.images.push(images)
             this.step.item.addOutput({ type: 'image', imgID: image.id })
         }
-        this.outputs.push(msg) // accumulate in self
-        // const node = this._graph.getNodeOrCrash(msg.data.node)
-        // node.artifacts.push(msg.data) // accumulate in node
-        // this.run.generatedImages.push(...images)
-        // console.log(`🟢 graph(${this._graph.uid}) => node(${node.uid}) => (${node.artifacts.length} images)`)
-        // return images
+        // this.outputs.push(msg) // accumulate in self
     }
 
     /** outputs are both stored in ScriptStep_prompt, and on ScriptExecution */
-    private outputs: WsMsgExecuted[] = []
+    // private outputs: WsMsgExecuted[] = []
     // images: ImageL[] = []
 
     /** finish this step */

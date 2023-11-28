@@ -1,27 +1,26 @@
 import type { LiveInstance } from 'src/db/LiveInstance'
 import type { HTMLContent, MDContent } from 'src/types/markdown'
 import type { Cyto } from '../core/AutolayoutV1'
-import type { VisEdges, VisNodes } from '../widgets/misc/VisUI'
+import type { ComfyNodeID } from '../types/ComfyNodeID'
 import type { ComfyPromptJSON } from '../types/ComfyPrompt'
 import type { WsMsgExecuting, WsMsgExecutionCached, WsMsgProgress } from '../types/ComfyWsApi'
-import type { ComfyNodeID } from '../types/ComfyNodeID'
+import type { VisEdges, VisNodes } from '../widgets/misc/VisUI'
 import type { ComfyNodeSchema, SchemaL } from './Schema'
 
 import { marked } from 'marked'
 import { join } from 'pathe'
-import { ManualPromise } from 'src/utils/misc/ManualPromise'
+import { IDNaminScheemeInPromptSentToComfyUI } from 'src/back/IDNaminScheemeInPromptSentToComfyUI'
 import { ComfyWorkflowBuilder } from '../back/NodeBuilder'
 import { CytoJSON, runAutolayout } from '../core/AutolayoutV2'
 import { comfyColors } from '../core/Colors'
 import { LiteGraphJSON, convertFlowToLiteGraphJSON } from '../core/LiteGraph'
 import { ComfyNode } from '../core/Node'
 import { LiveCollection } from '../db/LiveCollection'
+import { asHTMLContent, asMDContent } from '../types/markdown'
 import { AbsolutePath } from '../utils/fs/BrandedPaths'
 import { asAbsolutePath } from '../utils/fs/pathUtils'
-import { asHTMLContent, asMDContent } from '../types/markdown'
 import { DraftL } from './Draft'
 import { StepL } from './Step'
-import { IDNaminScheemeInPromptSentToComfyUI } from 'src/back/IDNaminScheemeInPromptSentToComfyUI'
 
 export type RunMode = 'fake' | 'real'
 
@@ -158,20 +157,13 @@ export class GraphL {
         return out
     }
 
-    currentCytoK: ManualPromise<CytoJSON> = new ManualPromise()
-    updateCyto = () => this.json_cyto().then((x) => this.currentCytoK.resolve(x))
-    get currentCyto(): CytoJSON {
-        if (this.currentCytoK.value) return this.currentCytoK.value
-        return { elements: { nodes: [] } }
-    }
-    json_cyto = async (): Promise<CytoJSON> => {
-        // const cytoJSONPath = asAbsolutePath(path.join(outputAbsPath, `cyto-${this._promptCounter}.json`))
-        const cytoJSON = await runAutolayout(this)
+    get json_cyto(): CytoJSON {
+        const cytoJSON = runAutolayout(this)
         return cytoJSON
     }
 
-    json_workflow = async (): Promise<LiteGraphJSON> => {
-        const cytoJSON = await this.json_cyto()
+    json_workflow = (): LiteGraphJSON => {
+        const cytoJSON = this.json_cyto
         const liteGraphJSON = convertFlowToLiteGraphJSON(this, cytoJSON)
         return liteGraphJSON
         // this.st.writeTextFile(workflowJSONPath, JSON.stringify(liteGraphJSON, null, 4))

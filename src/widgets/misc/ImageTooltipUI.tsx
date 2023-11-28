@@ -1,33 +1,12 @@
 import type { ImageL } from 'src/models/Image'
 
 import { observer } from 'mobx-react-lite'
+import { JsonViewUI } from '../workspace/JsonViewUI'
 
 export const ImageTooltipUI = observer(function ImageTooltipUI_(p: { selectedImage: ImageL }) {
-    const selectedImg = p.selectedImage
     return (
         <div>
-            <div>
-                <div className='prop row'>
-                    <div className='propName'>uid</div>
-                    <div className='propValue'>{selectedImg?.id}</div>
-                </div>
-                {/* <div className='prop row'>
-                    <div className='propName'>comfy path</div>
-                    <div className='propValue'>{selectedImg?.comfyRelativePath}</div>
-                </div> */}
-                <div className='prop row'>
-                    <div className='propName'>comfy URL</div>
-                    <div className='propValue'>
-                        <a href='{selectedImg?.comfyURL}'>{selectedImg?.comfyUrl}</a>
-                    </div>
-                </div>
-
-                <div className='flex row items-center gap-2'>
-                    <div className='propName'>local path</div>
-                    <div className='propValue'>{selectedImg?.localAbsolutePath}</div>
-                </div>
-                {/* <pre>{JSON.stringify(msg.images[0], null, 4)}</pre> */}
-            </div>
+            <JsonViewUI value={p.selectedImage.data} />
         </div>
     )
 })

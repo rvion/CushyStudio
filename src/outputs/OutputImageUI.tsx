@@ -6,11 +6,12 @@ import { ImageUI } from 'src/widgets/galleries/ImageUI'
 import { OutputPreviewWrapperUI } from './OutputPreviewWrapperUI'
 
 export const OutputImageUI = observer(function OutputImageUI_(p: { step: StepL; output: StepOutput_Image }) {
-    return (
-        // <OutputWrapperUI label='image'>
-        <ImageUI img={p.output.imgID} />
-        // </OutputWrapperUI>
-    )
+    return null
+    // return (
+    //     // <OutputWrapperUI label='image'>
+    //     <ImageUI img={p.output.imgID} />
+    //     // </OutputWrapperUI>
+    // )
 })
 
 export const OutputImagePreviewUI = observer(function OutputImagePreviewUI_(p: { step: StepL; output: StepOutput_Image }) {

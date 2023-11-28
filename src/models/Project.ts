@@ -15,10 +15,8 @@ export type ProjectT = {
     updatedAt: number
     name: string
     rootGraphID: GraphID
-    currentCard?: Maybe<AppPath>
+    currentApp?: Maybe<AppPath>
     currentDraftID?: Maybe<DraftID>
-    // currentToolID
-    // rootStepID: StepID
 }
 
 /** a thin wrapper around a single Project somewhere in a .ts file */

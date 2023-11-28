@@ -4,12 +4,16 @@ import { StepOutput_ComfyWorkflow } from 'src/types/MessageFromExtensionToWebvie
 import { OutputWrapperUI } from './OutputWrapperUI'
 import { OutputPreviewWrapperUI } from './OutputPreviewWrapperUI'
 import { useSt } from 'src/state/stateContext'
+import { Panel_ComfyUI } from 'src/panels/Panel_ComfyUI'
 
 export const OutputWorkflowUI = observer(function OutputWorkflowUI_(p: { step: StepL; output: StepOutput_ComfyWorkflow }) {
+    const graphID = p.output.graphID
+    const graph = useSt().db.graphs.get(graphID)
+
     return (
-        <OutputWrapperUI label='Ask'>
-            <div>Workflow</div>
-        </OutputWrapperUI>
+        // <OutputWrapperUI label='Workflow'>
+        <Panel_ComfyUI tw='w-full h-full' litegraphJson={graph?.json_workflow()} />
+        // </OutputWrapperUI>
     )
 })
 

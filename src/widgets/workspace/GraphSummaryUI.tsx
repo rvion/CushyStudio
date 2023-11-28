@@ -6,15 +6,12 @@ import { NodeRefUI } from '../misc/NodeRefUI'
 import { JSONHighlightedCodeUI } from '../misc/TypescriptHighlightedCodeUI'
 import { ButtonDownloadFilesUI } from './ButtonDownloadFilesUI'
 import { ButtonOpenInComfyUI } from './ButtonOpenInComfyUI'
+import { RevealUI } from 'src/rsuite/RevealUI'
 
 export const GraphSummaryUI = observer(function GraphSummaryUI_(p: { graph: GraphL }) {
     const graph = p.graph
     return (
         <Panel tw='relative [min-width:2rem]'>
-            {/* <div */}
-            {/* // */}
-            {/* // style={{ position: 'absolute', top: 0, left: 0, right: 0, zIndex: 1 }} */}
-            {/* > */}
             <GraphProgressUI graph={p.graph} />
             <NodeProgressUI graph={p.graph} />
             {/* </div> */}
@@ -28,18 +25,11 @@ export const GraphSummaryUI = observer(function GraphSummaryUI_(p: { graph: Grap
                 {graph.nodesByUpdatedAt.map((n, ix) => (
                     <div key={n.uid} className='flex items-center gap-0.5'>
                         {/* {n.status ?? '❓'} */}
-                        <Whisper
-                            enterable
-                            placement='auto'
-                            speaker={
-                                <Popover>
-                                    <JSONHighlightedCodeUI code={JSON.stringify(n.json, null, 3)} />
-                                </Popover>
-                            }
-                        >
+                        <RevealUI>
                             <span>{n.statusEmoji}</span>
+                            <JSONHighlightedCodeUI code={JSON.stringify(n.json, null, 3)} />
                             {/* <span className='material-symbols-outlined'>info</span> */}
-                        </Whisper>
+                        </RevealUI>
                         <NodeRefUI size={1.1} label={ix.toString()} node={n} />
                         <span tw='text-sm overflow-hidden whitespace-nowrap text-ellipsis'>{n.$schema.nameInComfy}</span>
                     </div>

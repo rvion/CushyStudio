@@ -12,6 +12,7 @@ import { OutputRuntimeErrorPreviewUI, OutputRuntimeErrorUI } from './OutputRunti
 import { OutputTextPreviewUI, OutputTextUI } from './OutputTextUI'
 import { OutputWorkflowPreviewUI, OutputWorkflowUI } from './OutputWorkflowUI'
 import { OutputDisplacementPreviewUI, OutputDisplacementUI } from './OutputDisplacement'
+import { OutputVideoPreviewUI, OutputVideoUI } from './OutputVideo'
 
 // PREVIEW -----------------------------------------------------------------------------
 // prettier-ignore
@@ -27,6 +28,7 @@ export const OutputPreviewUI = observer(function StepOutputUI_(p: { step: StepL;
     if (output.type === 'comfy-workflow')  return <OutputWorkflowPreviewUI     step={p.step} output={output} />
     if (output.type === 'image')           return <OutputImagePreviewUI        step={p.step} output={output} />
     if (output.type === 'displaced-image') return <OutputDisplacementPreviewUI step={p.step} output={output} />
+    if (output.type === 'video')           return <OutputVideoPreviewUI        step={p.step} output={output} />
 
     exhaust(output)
     return <div className='border'>❌ unhandled message of type `{(output as any).type}`</div>
@@ -46,6 +48,7 @@ export const OutputUI = observer(function StepOutputUI_(p: { step: StepL; output
     if (output.type === 'comfy-workflow')  return <OutputWorkflowUI            step={p.step} output={output} />
     if (output.type === 'image')           return <OutputImageUI               step={p.step} output={output} />
     if (output.type === 'displaced-image') return <OutputDisplacementUI        step={p.step} output={output} />
+    if (output.type === 'video')           return <OutputVideoUI               step={p.step} output={output} />
 
     exhaust(output)
     return <div className='border'>❌ unhandled message of type `{(output as any).type}`</div>

@@ -24,7 +24,7 @@ export type CytoJSON = {
     }
 }
 
-export const runAutolayout = async (graph: GraphL): Promise<CytoJSON> => {
+export const runAutolayout = (graph: GraphL): CytoJSON => {
     // Define the graph elements
 
     const elements: any[] = []

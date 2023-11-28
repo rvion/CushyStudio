@@ -18,7 +18,7 @@ import { GraphL } from '../models/Graph'
 import { ImageL } from '../models/Image'
 import { PromptL } from '../models/Prompt'
 import { StepL } from '../models/Step'
-import { ApiPromptInput, PromptInfo } from '../types/ComfyWsApi'
+import { ApiPromptInput, ComfyUploadImageResult, PromptInfo } from '../types/ComfyWsApi'
 import { createMP4FromImages } from '../utils/ffmpeg/ffmpegScripts'
 import { AbsolutePath, RelativePath } from '../utils/fs/BrandedPaths'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
@@ -188,7 +188,7 @@ export class Runtime<FIELDS extends WidgetDict = any> {
         partialCmd: string,
         suffix: string,
     ): string => {
-        const pathA = img.localAbsolutePath
+        const pathA = img.absPath
         // 🔴 wait
         const pathB = `${pathA}.${suffix}.png`
         const cmd = `convert "${pathA}" ${partialCmd} "${pathB}"`
@@ -202,10 +202,10 @@ export class Runtime<FIELDS extends WidgetDict = any> {
     /** list of all images produed over the whole script execution */
     // generatedImages: ImageL[] = []
     get generatedImages(): ImageL[] {
-        return this.step.generatedImages
+        return this.step.generatedImages.map((i) => this.st.db.images.getOrThrow(i.imgID))
     }
-    get firstImage() { return this.generatedImages[0] } // prettier-ignore
-    get lastImage() { return this.generatedImages[this.generatedImages.length - 1] } // prettier-ignore
+    // get firstImage() { return this.generatedImages[0] } // prettier-ignore
+    // get lastImage() { return this.generatedImages[this.generatedImages.length - 1] } // prettier-ignore
 
     folder: AbsolutePath
 
@@ -229,13 +229,15 @@ export class Runtime<FIELDS extends WidgetDict = any> {
 
     // ------------------------------------------------------------------------------------
     /** output a 3d scene from an image and its displacement and depth maps */
-    output_3dImage = (p: { image: string; depth: string; normal: string }) => {
-        const image = this.generatedImages //
-            .find((i) => i.data.imageInfos?.filename.startsWith(p.image))
-        const depth = this.generatedImages //
-            .find((i) => i.data.imageInfos?.filename.startsWith(p.depth))
-        const normal = this.generatedImages //
-            .find((i) => i.data.imageInfos?.filename.startsWith(p.normal))
+    output_3dImage = (p: {
+        //
+        image: string
+        depth: string
+        normal: string
+    }) => {
+        const image = this.generatedImages.find((i) => i.filename.startsWith(p.image))
+        const depth = this.generatedImages.find((i) => i.filename.startsWith(p.depth))
+        const normal = this.generatedImages.find((i) => i.filename.startsWith(p.normal))
         if (image == null) throw new Error(`image not found: ${p.image}`)
         if (depth == null) throw new Error(`image not found: ${p.image}`)
         if (normal == null) throw new Error(`image not found: ${p.image}`)
@@ -247,14 +249,30 @@ export class Runtime<FIELDS extends WidgetDict = any> {
             depthMap: depth.url,
             normalMap: normal.url,
         })
-        this.st.layout.FOCUS_OR_CREATE('DisplacedImage', {
-            width: image.data.width ?? 512,
-            height: image.data.height ?? 512,
-            image: image.url,
-            depthMap: depth.url,
-            normalMap: normal.url,
-        })
+        // this.st.layout.FOCUS_OR_CREATE('DisplacedImage', {
+        //     width: image.data.width ?? 512,
+        //     height: image.data.height ?? 512,
+        //     image: image.url,
+        //     depthMap: depth.url,
+        //     normalMap: normal.url,
+        // })
     }
+
+    // ------------------------------------------------------------------------------------
+    // output_image = (p: { url: string }) => {
+    //     const img = this.st.db.images.create({
+    //         downloaded: true,
+    //         localFilePath: './foobbabbababa',
+    //         comfyImageInfo: { filename: 'test' },
+    //     })
+    //     this.st.layout.FOCUS_OR_CREATE('DisplacedImage', {
+    //         width: image.data.width ?? 512,
+    //         height: image.data.height ?? 512,
+    //         image: image.url,
+    //         depthMap: depth.url,
+    //         normalMap: normal.url,
+    //     })
+    // }
 
     output_File = async (path: RelativePath, content: string): Promise<void> => {
         const absPath = this.st.resolve(this.folder, path)
@@ -292,70 +310,42 @@ export class Runtime<FIELDS extends WidgetDict = any> {
         inputFPS = 30,
         opts: { transparent?: Maybe<boolean> } = {},
     ): Promise<void> => {
+        // 1. path
         console.log('🎥 creating animation')
-        const outputAbsPath = this.st.cacheFolderPath
-        const targetVideoAbsPath = asAbsolutePath(path.join(outputAbsPath, `video-${Date.now()}-${Runtime.VideoCounter++}.mp4`))
-        console.log('🎥 outputAbsPath', outputAbsPath)
-        console.log('🎥 targetVideoAbsPath', targetVideoAbsPath)
 
-        // console.info(`target video path: ${targetVideoPath}`)
-        // console.info(`target video uri: ${targetVideoURI}`)
+        // 2. ensure we have enough outputs
         const images = source ?? this.generatedImages
-        // this.workspace.writeTextFile(targetVideoURI, JSON.stringify(currentJSON, null, 4))
         if (images.length === 0) {
-            console.error(`no images to create animation; did you forget to call prompt() first ?`)
+            this.step.addOutput({
+                type: 'runtimeError',
+                message: `no images to create animation; did you forget to call prompt() first ?`,
+                infos: {},
+            })
             return
+        }
+        if (images.length === 1) {
+            this.step.addOutput({
+                type: 'runtimeError',
+                message: `only one image to create animation`,
+                infos: {},
+            })
         }
         console.info(`🎥 awaiting all files to be ready locally...`)
         await Promise.all(images.map((i) => i.finished))
         console.info(`🎥 all files are ready locally`)
+
+        const outputAbsPath = this.st.cacheFolderPath
+        const targetVideoAbsPath = asAbsolutePath(path.join(outputAbsPath, `video-${Date.now()}-${Runtime.VideoCounter++}.mp4`))
+        console.log('🎥 outputAbsPath', outputAbsPath)
+        console.log('🎥 targetVideoAbsPath', targetVideoAbsPath)
         const cwd = outputAbsPath
-        console.info(`🎥 target video path: ${targetVideoAbsPath}`)
+
+        // 4. create video
         console.info(`🎥 this.folder.path: ${this.folder}`)
         console.info(`🎥 cwd: ${cwd}`)
-
-        await createMP4FromImages(
-            images.map((i) => i.localAbsolutePath),
-            targetVideoAbsPath,
-            inputFPS,
-            cwd,
-            opts,
-        )
-        console.log('🔴', targetVideoAbsPath)
-        this.st.db.images.create({
-            localFilePath: targetVideoAbsPath,
-            type: 'video',
-        })
-        // 🔴 unfinished
-        // const fromPath = curr.webview.asWebviewUri(targetVideoURI).toString()
-        // const videoURL = this.st.absPathToURL(targetVideoAbsPath)
-        // console.info(`🎥 video url: ${videoURL}`)
-        // const content = `<video controls autoplay loop><source src="${videoURL}" type="video/mp4"></video>`
-        // this.st.broadCastToAllClients({ type: 'show-html', content, title: 'generated video' })
-        // turns a bunch of images into a gif with ffmpeg
-    }
-
-    /**
-     * ensure a model is present, and download it if needed
-     * @category robustness
-     * @alpha
-     * */
-    ensureModel = async (p: { name: string; url: string }): Promise<void> => {
-        return
-    }
-
-    /**
-     *
-     * ensure a custom onde is properly setup,
-     *  attempt to install it if the current ComfyUI does not have it
-     *  and download/clone it if needed
-     *
-     * @category robustness
-     * @alpha
-     *
-     * */
-    ensureCustomNodes = async (p: { path: string; url: string }): Promise<void> => {
-        return
+        const allAbsPaths = images.map((i) => i.absPath).filter((p) => p != null) as AbsolutePath[]
+        await createMP4FromImages(allAbsPaths, targetVideoAbsPath, inputFPS, cwd, opts)
+        this.st.db.images.create({ infos: { type: 'video-local-ffmpeg', absPath: targetVideoAbsPath } })
     }
 
     /**
@@ -409,11 +399,11 @@ export class Runtime<FIELDS extends WidgetDict = any> {
             if (ia.type === 'CushyImage') {
                 const img = this.st.db.images.getOrThrow(ia.imageID)
                 // this.print(JSON.stringify(img.data, null, 3))
-                if (img.data.downloaded) {
-                    const res = await this.upload_FileAtAbsolutePath(img.localAbsolutePath)
+                if (img.absPath) {
+                    const res = await this.upload_FileAtAbsolutePath(img.absPath)
                     return res.name as Enum_LoadImage_image // 🔴
                 }
-                return img.localAbsolutePath as Enum_LoadImage_image // 🔴
+                return img.absPath as Enum_LoadImage_image // 🔴
                 // // console.log(img.data)
                 // return this.nodes.Image_Load({
                 //     image_path: img.url ?? img.localAbsolutePath,
@@ -442,8 +432,8 @@ export class Runtime<FIELDS extends WidgetDict = any> {
             if (ia.type === 'CushyImage') {
                 const img = this.st.db.images.getOrThrow(ia.imageID)
                 // this.print(JSON.stringify(img.data, null, 3))
-                if (img.data.downloaded) {
-                    const res = await this.upload_FileAtAbsolutePath(img.localAbsolutePath)
+                if (img.absPath) {
+                    const res = await this.upload_FileAtAbsolutePath(img.absPath)
                     // this.print(JSON.stringify(res))
 
                     const img2 = this.nodes.LoadImage({ image: res.name as any })
@@ -452,7 +442,7 @@ export class Runtime<FIELDS extends WidgetDict = any> {
                 }
                 console.log(img.data)
                 return this.nodes.Image_Load({
-                    image_path: img.url ?? img.localAbsolutePath,
+                    image_path: img.url ?? img.absPath,
                     RGBA: 'false',
                     // RGBA: p?.joinImageWithAlpha ? 'true' : 'false', // 'false',
                 })
@@ -552,7 +542,8 @@ export class Runtime<FIELDS extends WidgetDict = any> {
     }
     /** load an image from dataURL */
     load_dataURL = async (dataURL: string): Promise<ImageAndMask> => {
-        const res = await this.st.uploader.upload_dataURL(dataURL)
+        const res: ComfyUploadImageResult = await this.st.uploader.upload_dataURL(dataURL)
+        // this.st.db.images.create({ infos:  })
         return this.loadImageAnswer({ type: 'ComfyImage', imageName: res.name })
     }
 

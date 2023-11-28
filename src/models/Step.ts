@@ -1,5 +1,5 @@
 import type { AppPath } from 'src/cards/CardPath'
-import type { StepOutput } from 'src/types/MessageFromExtensionToWebview'
+import type { StepOutput, StepOutput_Image } from 'src/types/MessageFromExtensionToWebview'
 import type { LiveInstance } from '../db/LiveInstance'
 import type { GraphID, GraphL } from '../models/Graph'
 import type { PromptL } from './Prompt'
@@ -62,17 +62,20 @@ export class StepL {
     get appFile(): LibraryFile | undefined { return this.st.library.cardsByPath.get(this.data.actionPath) } // prettier-ignore
     get appCompiled() { return this.appFile?.appCompiled } // prettier-ignore
     get name() { return this.data.name } // prettier-ignore
-    get generatedImages() { return this.prompts.items.map((p) => p.images.items).flat() } // prettier-ignore
+    get generatedImages(): StepOutput_Image[] {
+        if (this.data.outputs == null) return []
+        return this.data.outputs.filter((t) => t.type === 'image') as StepOutput_Image[]
+    }
 
     runtime: Maybe<Runtime> = null
 
     focusedOutput: Maybe<number>
-    get collage() {
-        const imgs = this.generatedImages
-        const last = imgs[imgs.length - 1]
-        if (last == null) return
-        if (this.focusedOutput == null) return this.generatedImages
-    }
+    // get collage() {
+    //     const imgs = this.generatedImages
+    //     const last = imgs[imgs.length - 1]
+    //     if (last == null) return
+    //     if (this.focusedOutput == null) return this.generatedImages
+    // }
 
     addOutput = (output: StepOutput) =>
         this.update({

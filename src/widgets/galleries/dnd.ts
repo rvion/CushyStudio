@@ -60,19 +60,12 @@ export const useImageDrop = (st: STATE, fn: (image: ImageL) => void) =>
                 const imageFile = Array.from(files).find((file) => file.type.startsWith('image/'))
                 console.log('[🗳️] drop box: image path is', imageFile?.path ?? '❌')
                 if (imageFile) {
-                    st.uploader.upload_NativeFile(imageFile).then((res) => {
-                        console.log(`[🗳️] drop box: uploaded image infos are ${JSON.stringify(res)}`)
-                        const image: ImageL = st.db.images.create({
-                            imageInfos: {
-                                filename: res.name,
-                                subfolder: res.subfolder,
-                                type: res.type,
-                            },
-                            localFilePath: imageFile.path,
-                            downloaded: true,
-                        })
-                        return fn(image)
-                    })
+                    const image: ImageL = st.db.images.create({ infos: { type: 'image-local', absPath: imageFile.path } })
+                    // 🔴 do I need to upload files right away ?
+                    // st.uploader.upload_NativeFile(imageFile).then((res) => {
+                    //     console.log(`[🗳️] drop box: uploaded image infos are ${JSON.stringify(res)}`)
+                    //     return fn(image)
+                    // })
                     return
                 } else {
                     console.log('Dropped non-image file')

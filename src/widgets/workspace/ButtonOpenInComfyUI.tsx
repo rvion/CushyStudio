@@ -25,7 +25,7 @@ export const ButtonOpenInComfyUI = observer(function ButtonOpenInComfyUI_(p: { g
                 onClick={async (ev) => {
                     ev.preventDefault()
                     ev.stopPropagation()
-                    const prompt = await graph?.json_workflow()
+                    const prompt = graph?.json_workflow()
                     if (prompt == null) return
                     st.layout.FOCUS_OR_CREATE('ComfyUI', { litegraphJson: prompt })
                     // st.setAction({ type: 'comfy', json: prompt })

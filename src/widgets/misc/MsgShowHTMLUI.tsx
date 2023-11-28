@@ -9,11 +9,10 @@ import { GraphL } from 'src/models/Graph'
 export const GraphPreviewUI = observer(function MsgShowHTMLUI_(p: { graph: GraphL }) {
     const graph = p.graph
     const elMap = document.querySelector('#map')
+    const cyto = graph.json_cyto
 
     // 1. trigger cyto update (🔶 this is asynchronous)
-    useMemo(() => graph.updateCyto(), [graph])
-
-    const cyto = graph.currentCyto
+    // useMemo(() => graph.updateCyto(), [graph])
 
     // 2. once cyto is done
     useLayoutEffect(() => {
