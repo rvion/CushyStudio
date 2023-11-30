@@ -21,7 +21,7 @@ import { LiveTable } from './LiveTable'
 import { readFileSync } from 'fs'
 import { TableInfo } from 'src/db2/TYPES_json'
 import { _applyAllMigrations } from 'src/db2/_applyAllMigrations'
-import { _createRootMig } from 'src/db2/_createRootMig'
+import { _setupMigrationEngine } from 'src/db2/_setupMigrationEngine'
 import { _listAllTables } from 'src/db2/_listAllTables'
 import { _checkAllMigrationsHaveDifferentIds } from 'src/db2/migrations'
 import { Media3dDisplacementL } from 'src/models/Media3dDisplacement'
@@ -36,6 +36,7 @@ import { ProjectL } from '../models/Project'
 import { SchemaL } from '../models/Schema'
 import { StepL } from '../models/Step'
 import { asRelativePath } from '../utils/fs/pathUtils'
+import { _printSchema } from 'src/db2/_printSchema'
 
 export type Indexed<T> = { [id: string]: T }
 
@@ -57,16 +58,26 @@ export class LiveDB {
     graphs: LiveTable<GraphT, ComfyWorkflowL>
     steps: LiveTable<StepT, StepL>
 
+    /** run all pending migrations */
+    migrate = () => {
+        _checkAllMigrationsHaveDifferentIds()
+        _applyAllMigrations(this)
+    }
+
+    /** You should not call that unless you know what you're doing */
+    runCodegen = () => {
+        _printSchema(this)
+    }
+
     // prettier-ignore
     constructor(public st: STATE) {
             // init SQLITE ---------------------------------------------------------
             const db = SQL('foobar.db', { nativeBinding: 'node_modules/better-sqlite3/build/Release/better_sqlite3.node' })
             db.pragma('journal_mode = WAL')
             this.db = db
-            _createRootMig(this)
-            _checkAllMigrationsHaveDifferentIds()
-            _applyAllMigrations(this)
-            _listAllTables(this)
+            _setupMigrationEngine(this)
+            this.migrate()
+            // _listAllTables(this)
 
             // ---------------------------------------------------------
             makeAutoObservable(this)

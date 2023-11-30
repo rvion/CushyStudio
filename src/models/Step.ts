@@ -16,34 +16,6 @@ import { MediaVideoL } from './MediaVideo'
 import { Media3dDisplacementL } from './Media3dDisplacement'
 
 export type FormPath = (string | number)[]
-
-// export type StepID = Branded<string, { StepID: true }>
-// export const asStepID = (s: string): StepID => s as any
-
-// export
-
-// export type StepT = {
-//     id: StepID
-//     createdAt: number
-//     updatedAt: number
-//     /** form that lead to creating this step */
-
-//     // ACTION ------------------------------
-//     name: string
-//     appPath: AppPath
-//     formResult: Maybe<any>
-//     formSerial: Maybe<any>
-
-//     // GRAPHS ------------------------------
-//     // parentGraphID: GraphID
-//     outputGraphID: GraphID
-
-//     // OUTPUTS -----------------------------
-//     /** outputs of the evaluated step */
-//     outputs?: Maybe<StepOutput[]>
-//     status: Status
-// }
-
 /** a thin wrapper around an app execution */
 export interface StepL extends LiveInstance<StepT, StepL> {}
 export class StepL {
@@ -61,8 +33,14 @@ export class StepL {
         }
     }
 
-    // parentWorkflow = new LiveRef<this, GraphL>(this, 'parentGraphID', 'graphs')
+    get finalStatus(): Status {
+        if (this.status !== Status.Success) return this.status
+        return this.comfy_prompts.items.every((p: ComfyPromptL) => p.data.executed) //
+            ? Status.Success
+            : Status.Running
+    }
 
+    get status():Status { return this.data.status as Status } // prettier-ignore
     get appFile(): LibraryFile | undefined { return this.st.library.cardsByPath.get(this.data.appPath) } // prettier-ignore
     get appCompiled() { return this.appFile?.appCompiled } // prettier-ignore
     get name() { return this.data.name } // prettier-ignore
@@ -80,11 +58,6 @@ export class StepL {
     comfy_workflows = new LiveCollection<ComfyWorkflowL>(this, 'stepID', () => this.db.graphs, this._CACHE_INVARIANT)
     comfy_prompts = new LiveCollection<ComfyPromptL>(this, 'stepID', () => this.db.comfy_prompts, this._CACHE_INVARIANT)
     runtimeErrors = new LiveCollection<RuntimeErrorL>(this, 'stepID', () => this.db.runtimeErrors, this._CACHE_INVARIANT)
-
-    // focusedOutput: Maybe<number>
-    // get focusedOutput(): number {
-
-    // }
 
     get lastOutput(): Maybe<StepOutput> {
         const outputs = this.outputs

@@ -1,7 +1,7 @@
 import { makeAutoObservable } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { createRef, useEffect, useLayoutEffect, useMemo } from 'react'
-import { Slider, Toggle } from 'src/rsuite/shims'
+import { Input, Slider, Toggle } from 'src/rsuite/shims'
 import { parseFloatNoRoundingErr } from 'src/utils/misc/parseFloatNoRoundingErr'
 import { FieldAndLabelUI } from 'src/widgets/misc/FieldAndLabelUI'
 import * as THREE from 'three'
@@ -11,6 +11,7 @@ import { StepL } from 'src/models/Step'
 import { useSt } from 'src/state/stateContext'
 import { OutputPreviewWrapperUI } from './OutputPreviewWrapperUI'
 import { bang } from 'src/utils/misc/bang'
+import { InputNumberUI } from 'src/rsuite/InputNumberUI'
 
 export const OutputDisplacementPreviewUI = observer(function OutputImagePreviewUI_(p: {
     step?: Maybe<StepL>
@@ -63,13 +64,13 @@ export const OutputDisplacementUI = observer(function OutputDisplacementUI_(p: {
         <div>
             <div tw='flex gap-2 px-2'>
                 <FieldAndLabelUI label='displacement'>
-                    <Slider
+                    <InputNumberUI
+                        mode='float'
                         style={{ width: '5rem' }}
                         min={0}
                         max={8}
                         value={state.displacementScale}
-                        onChange={(ev) => {
-                            const next = parseFloatNoRoundingErr(ev.target.value)
+                        onValueChange={(next) => {
                             state.displacementScale = next
                         }}
                     />
@@ -87,8 +88,9 @@ export const OutputDisplacementUI = observer(function OutputDisplacementUI_(p: {
                     />
                 </FieldAndLabelUI>
                 <FieldAndLabelUI label='light color'>
-                    <input
-                        tw='input'
+                    <Input
+                        tw='join-item input-xs'
+                        type='color'
                         style={{ width: '5rem' }}
                         value={state.ambientLightColor}
                         onChange={(ev) => {
@@ -96,7 +98,6 @@ export const OutputDisplacementUI = observer(function OutputDisplacementUI_(p: {
                             const hex = typeof next === 'string' ? parseInt(next.replace('#', ''), 16) : next
                             state.ambientLightColor = hex
                         }}
-                        type='color'
                     />
                 </FieldAndLabelUI>
                 <FieldAndLabelUI label='Symmetric Model'>
@@ -204,7 +205,13 @@ class State {
     constructor(public p: Panel_DisplacementProps) {
         // Set up scene, camera, and renderer
         this.scene = new THREE.Scene()
-        this.camera = new THREE.PerspectiveCamera(75, this.WIDTH / this.HEIGHT, 0.1, 1000)
+        this.camera = new THREE.PerspectiveCamera(
+            //
+            75,
+            this.WIDTH / this.HEIGHT,
+            0.1,
+            1000,
+        )
         this.renderer = new THREE.WebGLRenderer()
         this.renderer.setSize(this.WIDTH, this.HEIGHT)
 
@@ -250,7 +257,7 @@ class State {
         this.scene.add(this.planeSym)
 
         // Camera position
-        this.camera.position.z = 5
+        this.camera.position.z = 7
 
         // Lighting
         this.ambientLight = new THREE.AmbientLight(0xffffff, 3)

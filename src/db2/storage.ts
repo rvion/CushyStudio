@@ -1,9 +1,8 @@
 import { default as BetterSqlite3, default as SQL } from 'better-sqlite3'
-import { rmSync } from 'fs'
 import { _applyAllMigrations } from './_applyAllMigrations'
-import { _createRootMig } from './_createRootMig'
-import { _checkAllMigrationsHaveDifferentIds } from './migrations'
 import { _printSchema } from './_printSchema'
+import { _setupMigrationEngine } from './_setupMigrationEngine'
+import { _checkAllMigrationsHaveDifferentIds } from './migrations'
 
 let ix = 0
 
@@ -17,7 +16,7 @@ export class Store {
         db.pragma('journal_mode = WAL')
         this.db = db
 
-        _createRootMig(this)
+        _setupMigrationEngine(this)
         _checkAllMigrationsHaveDifferentIds()
         _applyAllMigrations(this)
         _printSchema(this)

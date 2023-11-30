@@ -20,7 +20,7 @@ export const OutputPreviewWrapperUI = observer(function OutputPreviewWrapperUI_(
             <div
                 onMouseEnter={(ev) => (st.hovered = p.output)}
                 onMouseLeave={() => {
-                    if (st.hovered === p.output) st.hovered = p.output
+                    if (st.hovered === p.output) st.hovered = null
                 }}
                 tw='rounded'
                 style={{ width: sizeStr, height: sizeStr }}

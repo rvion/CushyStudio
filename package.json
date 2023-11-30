@@ -70,6 +70,7 @@
         "esbuild": "^0.19.8",
         "fastest-levenshtein": "^1.0.16",
         "flexlayout-react": "^0.7.15",
+        "gaussian-splats-3d": "^0.0.5",
         "json5": "^2.2.3",
         "konva": "^9.2.3",
         "lexical": "^0.12.4",

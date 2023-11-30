@@ -2,7 +2,7 @@ import type { StepL } from 'src/models/Step'
 
 import { observer } from 'mobx-react-lite'
 import { _formatPreviewDate } from '../utils/formatters/_formatPreviewDate'
-import { OutputUI } from './OutputUI'
+import { OutputPreviewUI, OutputUI } from './OutputUI'
 
 export const StepOutputsV1UI = observer(function StepOutputsV1UI_(p: { step: StepL }) {
     const step = p.step
@@ -15,17 +15,6 @@ export const StepOutputsV1UI = observer(function StepOutputsV1UI_(p: { step: Ste
                 <StepOutputsBodyV1UI step={step} />
             </div>
         )
-})
-
-export const StepOutputsBodyV1UI = observer(function StepBodyUI_(p: { step: StepL }) {
-    const step = p.step
-    return (
-        <div className='flex flex-col-reverse gap-1'>
-            {step.outputs?.map((output, ix) => (
-                <OutputUI key={ix} step={step} output={output} />
-            ))}
-        </div>
-    )
 })
 
 export const StepOutputsHeaderV1UI = observer(function StepOutputsV1HeaderUI_(p: { step: StepL; className?: string }) {
@@ -43,6 +32,17 @@ export const StepOutputsHeaderV1UI = observer(function StepOutputsV1HeaderUI_(p:
         >
             <b>{step.name}</b>
             <div className='text-xs pr-4 opacity-50'>{_formatPreviewDate(new Date(step.createdAt))}</div>
+        </div>
+    )
+})
+
+export const StepOutputsBodyV1UI = observer(function StepBodyUI_(p: { step: StepL }) {
+    const step = p.step
+    return (
+        <div className='flex flex gap-1'>
+            {step.outputs?.map((output, ix) => (
+                <OutputPreviewUI key={ix} step={step} output={output} />
+            ))}
         </div>
     )
 })

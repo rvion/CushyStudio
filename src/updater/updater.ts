@@ -32,12 +32,6 @@ type ManagedFolderConfig = {
 
     /** can be uninstalled */
     canBeUninstalled: boolean
-
-    /**
-     * allow you to specify the name of the beta branch if you have one
-     * so early adopters can opt-out for early features
-     * */
-    betaBranch?: string
 }
 
 export class GitManagedFolder {

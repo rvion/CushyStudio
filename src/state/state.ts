@@ -45,9 +45,6 @@ import { DanbooruTags } from '../widgets/prompter/nodes/booru/BooruLoader'
 import { Uploader } from './Uploader'
 import { StepOutput } from 'src/types/StepOutput'
 
-// prettier-ignore
-type HoveredAsset = StepOutput
-
 export class STATE {
     /** hack to help closing prompt completions */
     currentPromptFocused: Maybe<HTMLDivElement> = null
@@ -120,7 +117,7 @@ export class STATE {
     comfyStatus: Maybe<ComfyStatus> = null
     configFile: JsonFile<ConfigFile>
     updater: GitManagedFolder
-    hovered: Maybe<HoveredAsset> = null
+    hovered: Maybe<StepOutput> = null
     electronUtils: ElectronUtils
     library: Library
     schemaReady = new ManualPromise<true>()
@@ -313,7 +310,6 @@ export class STATE {
             gitURLToFetchUpdatesFrom: 'rvion/CushyStudio',
             repositoryName: 'CushyStudio' as GithubRepoName,
             userName: 'rvion' as GithubUserName,
-            betaBranch: 'dev',
         })
         this.importer = new ComfyImporter(this)
         this.library = new Library(this)

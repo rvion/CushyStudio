@@ -86,7 +86,6 @@ export const UpdaterDetailsUI = observer(function UpdaterDetailsUI_(p: { updater
                     </Button>
                 ) : null}
             </div>
-            {updater.config.betaBranch ? <ReleaseChannelUI onChange={(e) => console.log(e)} /> : null}
             <UpdaterErrorUI updater={updater} />
 
             <div tw='virtualBorder'>

@@ -8,6 +8,7 @@ import { ComfyPromptT } from 'src/db2/TYPES.gen'
 import { Status } from '../back/Status'
 import { LiveRef } from '../db/LiveRef'
 import { exhaust } from '../utils/misc/ComfyUtils'
+import { SQLITE_true } from 'src/db/SQLITE_boolean'
 
 // export type ComfyPromptID = Branded<string, { PromptID: true }>
 // export const asComfyPromptID = (s: string): ComfyPromptID => s as any
@@ -77,10 +78,9 @@ export class ComfyPromptL {
     private onExecuting = (msg: WsMsgExecuting) => {
         this.graph.item.onExecuting(msg)
         if (msg.data.node == null) {
-            if (this.step.item.data.status !== Status.Failure) {
-                console.log('>> MARK SUCCESS')
-                this.step.item.update({ status: Status.Success })
-            }
+            // if (this.step.item.data.status !== Status.Failure) {
+            //     this.step.item.update({ status: Status.Success })
+            // }
             this._finish()
             return
         }
@@ -118,6 +118,7 @@ export class ComfyPromptL {
 
     /** finish this step */
     private _finish = () => {
+        this.update({ executed: SQLITE_true })
         if (this._resolve == null) throw new Error('❌ invariant violation: ScriptStep_prompt.resolve is null.')
         this._resolve(this)
     }

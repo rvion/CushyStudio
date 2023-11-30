@@ -198,6 +198,9 @@ export class Runtime<FIELDS extends WidgetDict = any> {
 
     /** list of all images produed over the whole script execution */
     // generatedImages: ImageL[] = []
+    get lastImage(): Maybe<MediaImageL> {
+        return this.generatedImages[this.generatedImages.length - 1]
+    }
     get generatedImages(): MediaImageL[] {
         return this.step.generatedImages
     }
@@ -292,10 +295,10 @@ export class Runtime<FIELDS extends WidgetDict = any> {
         // this.st.broadCastToAllClients({ type: 'show-html', content: p.htmlContent, title: p.title })
     }
 
-    output_Markdown = (p: { title: string; markdownContent: string }) => {
+    output_Markdown = (markdownContent: string) => {
         this.st.db.media_texts.create({
             kind: 'markdown',
-            content: p.markdownContent,
+            content: markdownContent,
             stepID: this.step.id,
         })
 

@@ -104,8 +104,7 @@ app({
             negative: negative,
             preview: false,
         }
-        const firstPass = run_sampler(flow, p.sampler, ctx_sampler)
-        latent = firstPass.latent
+        latent = run_sampler(flow, p.sampler, ctx_sampler).latent
 
         // graph.FUIOSUIO({}) as any
 
@@ -154,8 +153,6 @@ app({
         }
 
         let finalImage: HasSingle_IMAGE = graph.VAEDecode({ samples: latent, vae })
-        // DECODE --------------------------------------------------------------------------------
-        graph.SaveImage({ images: finalImage })
 
         // REMOVE BACKGROUND ---------------------------------------------------------------------
         if (p.removeBG) {
@@ -186,9 +183,34 @@ app({
                 return exhaust(show3d.normal)
             })()
             flow.add_saveImage(normal, 'normal')
+        } else {
+            // DECODE --------------------------------------------------------------------------------
+            graph.SaveImage({ images: finalImage })
         }
 
         await flow.PROMPT()
+
+        if (p.summary) {
+            flow.output_Markdown(`
+# Hello
+
+this is a test
+
+here are the 300 first chars from the readme:
+
+
+${flow.fs.readFileSync('README.md', 'utf-8').slice(0, 300)}
+
+
+Bye !
+
+this is the last generated image:
+
+![](${flow.lastImage?.url})
+
+`)
+        }
+        // =======================================================================================
 
         if (show3d) {
             flow.output_3dImage({ image: 'base', depth: 'depth', normal: 'normal' })

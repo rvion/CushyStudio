@@ -18,7 +18,7 @@ export const Panel_Steps = observer(function StepListUI_(p: {}) {
             />
             {/* </FieldAndLabelUI> */}
             {/* </Panel> */}
-            <div className='flex flex-col-reverse flex-grow' style={{ overflow: 'auto' }}>
+            <div className='flex flex-col flex-grow' style={{ overflow: 'auto' }}>
                 {steps.map((step) => (
                     // <InView key={step.id} as='div' onChange={(inView, entry) => {}}>
                     <StepOutputsV1UI step={step} />

@@ -23,7 +23,10 @@ export class LiveCollection<L extends LiveInstance<any, any>> {
     get items(): L[] {
         const remoteTable = this.remoteTable()
         const shouldCache = this.cache?.() ?? false
-        if (!shouldCache) DEPENDS_ON(remoteTable.liveEntities.size)
+        if (!shouldCache) {
+            // console.log(`<<< ${remoteTable.name} has size ${remoteTable.liveEntities.size} >>>`)
+            DEPENDS_ON(remoteTable.liveEntities.size)
+        }
         return remoteTable.find({ [this.remoteFieldName]: this.owner.id })
     }
 

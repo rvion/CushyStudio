@@ -1,18 +1,16 @@
 import type { StepL } from 'src/models/Step'
 
 import { observer } from 'mobx-react-lite'
-import { _formatPreviewDate } from '../utils/formatters/_formatPreviewDate'
-import { OutputPreviewUI, OutputUI } from './OutputUI'
-import { useSt } from 'src/state/stateContext'
+import { statusUI } from 'src/back/statusUI'
 import { AppIllustrationUI } from 'src/cards/fancycard/AppIllustrationUI'
+import { useSt } from 'src/state/stateContext'
+import { _formatPreviewDate } from '../utils/formatters/_formatPreviewDate'
+import { OutputPreviewUI } from './OutputUI'
 
 export const StepOutputsV2UI = observer(function StepOutputsV2UI_(p: { step: StepL }) {
     const step = p.step
-    // const isExpanded = step.expanded
-    // if (!isExpanded) return <StepOutputsHeaderV2UI className='py-2' step={step} />
-    // if (isExpanded)
     return (
-        <div tw='flex'>
+        <div tw='flex flex-wrap'>
             <StepOutputsHeaderV2UI step={step} />
             {step.outputs?.map((output, ix) => (
                 <OutputPreviewUI key={ix} step={step} output={output} />
@@ -66,6 +64,10 @@ const StepOutputsHeaderV2UI = observer(function StepOutputsV1HeaderUI_(p: { step
             <div className='text-xs pr-4 whitespace-nowrap overflow-ellipsis opacity-90 bg-black text-white absolute bottom-0'>
                 {/*  */}
                 {_formatPreviewDate(new Date(step.createdAt))}
+            </div>
+            <div className='text-xs whitespace-nowrap overflow-ellipsis opacity-90 bg-black text-white absolute top-0 right-0'>
+                {statusUI(p.step.finalStatus)}
+                {/*  */}
             </div>
         </div>
     )

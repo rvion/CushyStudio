@@ -8,7 +8,7 @@ export type Migration = {
     sql: string
 }
 
-export const _createRootMig = (store: {
+export const _setupMigrationEngine = (store: {
     //
     db: BetterSqlite3.Database
     log: (...res: any[]) => void

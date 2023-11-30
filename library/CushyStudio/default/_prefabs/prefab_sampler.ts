@@ -38,11 +38,7 @@ export type Ctx_sampler = {
 }
 
 // RUN -----------------------------------------------------------
-export const run_sampler = (
-    flow: Runtime,
-    opts: OutputFor<typeof ui_sampler>,
-    ctx: Ctx_sampler,
-): { image: VAEDecode; latent: KSampler } => {
+export const run_sampler = (flow: Runtime, opts: OutputFor<typeof ui_sampler>, ctx: Ctx_sampler): { latent: KSampler } => {
     const graph = flow.nodes
     // flow.output_text(`run_sampler with seed : ${opts.seed}`)
     const latent = graph.KSampler({
@@ -63,10 +59,16 @@ export const run_sampler = (
                 ? graph.CLIPTextEncode({ clip: ctx.clip, text: ctx.negative })
                 : ctx.negative,
     })
-    const image = graph.VAEDecode({
-        vae: ctx.vae,
-        samples: latent,
-    })
-    if (ctx.preview) graph.PreviewImage({ images: image })
-    return { image, latent }
+    // const image = graph.VAEDecode({
+    //     vae: ctx.vae,
+    //     samples: latent,
+    // })
+    if (ctx.preview)
+        graph.PreviewImage({
+            images: graph.VAEDecode({
+                vae: ctx.vae,
+                samples: latent,
+            }),
+        })
+    return { latent }
 }
