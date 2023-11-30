@@ -1,14 +1,14 @@
 import cytoscape from 'cytoscape'
 import klay from 'cytoscape-klay'
-import { GraphL } from '../models/Graph'
-import { ComfyNode } from './Node'
+import { ComfyWorkflowL } from '../models/Graph'
+import { ComfyNode } from './ComfyNode'
 
 cytoscape.use(klay)
 
 export class Cyto {
     cy: cytoscape.Core = cytoscape({})
 
-    constructor(public graph: GraphL) {
+    constructor(public graph: ComfyWorkflowL) {
         this.cy = cytoscape({
             styleEnabled: true,
             headless: true,

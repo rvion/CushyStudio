@@ -1,4 +1,4 @@
-import type { ImageID, ImageL } from 'src/models/Image'
+import type { MediaImageL } from 'src/models/MediaImage'
 import type { STATE } from '../state/state'
 
 import { existsSync, mkdirSync, writeFileSync } from 'fs'
@@ -29,7 +29,7 @@ class MinipaintState {
 
     // { uri: img.comfyURL }
     // { uri: string }
-    loadImage(iamgeL: ImageL) {
+    loadImage(iamgeL: MediaImageL) {
         // window.getElemnt
         const img = document.createElement('img')
         img.crossOrigin = 'Anonymous'
@@ -113,11 +113,7 @@ class MinipaintState {
             }
             writeFileSync(absPath, Buffer.from(buff))
             console.log(`saved`)
-            this.st.db.images.create({
-                localFilePath: absPath,
-                downloaded: true,
-                imageInfos: { filename, subfolder, type: 'painted' },
-            })
+            this.st.db.media_images.create({ infos: { type: 'image-local', absPath: absPath } })
         })
         // console.log('f')
         // writeFileSync()
@@ -127,7 +123,7 @@ class MinipaintState {
     }
 }
 // https://github.com/devforth/painterro
-export const Panel_Minipaint = observer(function PaintUI_(p: { imgID?: ImageID }) {
+export const Panel_Minipaint = observer(function PaintUI_(p: { imgID?: MediaImageID }) {
     // const action = p.action
     const st = useSt()
     const minipaintState = useMemo(() => new MinipaintState(st), [])
@@ -135,7 +131,7 @@ export const Panel_Minipaint = observer(function PaintUI_(p: { imgID?: ImageID }
     // load image once the widget is ready
     useLayoutEffect(() => {
         if (p.imgID == null) return
-        const img: ImageL = st.db.images.getOrThrow(p.imgID)
+        const img: MediaImageL = st.db.media_images.getOrThrow(p.imgID)
         setTimeout(() => minipaintState.loadImage(img), 100)
     }, [p.imgID])
 

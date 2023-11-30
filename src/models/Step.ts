@@ -1,42 +1,22 @@
-import type { AppPath } from 'src/cards/CardPath'
-import type { StepOutput } from 'src/types/MessageFromExtensionToWebview'
+import type { StepOutput } from 'src/types/StepOutput'
 import type { LiveInstance } from '../db/LiveInstance'
-import type { GraphID, GraphL } from '../models/Graph'
-import type { PromptL } from './Prompt'
+import type { ComfyWorkflowL } from '../models/Graph'
+import type { ComfyPromptL } from './ComfyPrompt'
 
 import { LibraryFile } from 'src/cards/CardFile'
+import { StepT } from 'src/db2/TYPES.gen'
 import { Runtime } from '../back/Runtime'
 import { Status } from '../back/Status'
 import { LiveCollection } from '../db/LiveCollection'
 import { LiveRef } from '../db/LiveRef'
+import { Media3dDisplacementL } from './Media3dDisplacement'
+import { MediaImageL } from './MediaImage'
+import { MediaTextL } from './MediaText'
+import { MediaVideoL } from './MediaVideo'
+import { RuntimeErrorL } from './RuntimeError'
+import { MediaSplatL } from './MediaSplat'
 
 export type FormPath = (string | number)[]
-
-export type StepID = Branded<string, { StepID: true }>
-export const asStepID = (s: string): StepID => s as any
-
-export type StepT = {
-    id: StepID
-    createdAt: number
-    updatedAt: number
-    /** form that lead to creating this step */
-
-    // ACTION ------------------------------
-    name: string
-    actionPath: AppPath
-    formResult: Maybe<any>
-    formSerial: Maybe<any>
-
-    // GRAPHS ------------------------------
-    parentGraphID: GraphID
-    outputGraphID: GraphID
-
-    // OUTPUTS -----------------------------
-    /** outputs of the evaluated step */
-    outputs?: Maybe<StepOutput[]>
-    status: Status
-}
-
 /** a thin wrapper around an app execution */
 export interface StepL extends LiveInstance<StepT, StepL> {}
 export class StepL {
@@ -47,38 +27,81 @@ export class StepL {
         // this.data.outputGraphID = out.id
         this.runtime = new Runtime(this)
         this.update({ status: Status.Running })
-        this.addOutput({ type: 'comfy-workflow', graphID: this.outputWorkflow.id })
         const scriptExecutionStatus = await this.runtime.run()
 
-        if (this.prompts.items.every((p: PromptL) => p.data.executed)) {
+        if (this.comfy_prompts.items.every((p: ComfyPromptL) => p.data.executed)) {
             this.update({ status: scriptExecutionStatus })
         }
     }
 
-    prompts = new LiveCollection<PromptL>(this, 'stepID', 'prompts')
-    parentWorkflow = new LiveRef<this, GraphL>(this, 'parentGraphID', 'graphs')
-    outputWorkflow = new LiveRef<this, GraphL>(this, 'outputGraphID', 'graphs')
+    get finalStatus(): Status {
+        if (this.status !== Status.Success) return this.status
+        return this.comfy_prompts.items.every((p: ComfyPromptL) => p.data.executed) //
+            ? Status.Success
+            : Status.Running
+    }
 
-    get appFile(): LibraryFile | undefined { return this.st.library.cardsByPath.get(this.data.actionPath) } // prettier-ignore
+    get status():Status { return this.data.status as Status } // prettier-ignore
+    get appFile(): LibraryFile | undefined { return this.st.library.cardsByPath.get(this.data.appPath) } // prettier-ignore
     get appCompiled() { return this.appFile?.appCompiled } // prettier-ignore
     get name() { return this.data.name } // prettier-ignore
-    get generatedImages() { return this.prompts.items.map((p) => p.images.items).flat() } // prettier-ignore
+    get generatedImages(): MediaImageL[] { return this.images.items } // prettier-ignore
+
+    outputWorkflow = new LiveRef<this, ComfyWorkflowL>(this, 'outputGraphID', () => this.db.graphs)
+
+    private _CACHE_INVARIANT = () => this.data.status !== Status.Running
+
+    texts = new LiveCollection<MediaTextL>(this, 'stepID', () => this.db.media_texts, this._CACHE_INVARIANT)
+    images = new LiveCollection<MediaImageL>(this, 'stepID', () => this.db.media_images, this._CACHE_INVARIANT)
+    videos = new LiveCollection<MediaVideoL>(this, 'stepID', () => this.db.media_videos, this._CACHE_INVARIANT)
+    displacements = new LiveCollection<Media3dDisplacementL>(this, 'stepID', () => this.db.media_3d_displacement, this._CACHE_INVARIANT) // prettier-ignore
+    splats = new LiveCollection<MediaSplatL>(this, 'stepID', () => this.db.media_splats, this._CACHE_INVARIANT) // prettier-ignore
+
+    comfy_workflows = new LiveCollection<ComfyWorkflowL>(this, 'stepID', () => this.db.graphs, this._CACHE_INVARIANT)
+    comfy_prompts = new LiveCollection<ComfyPromptL>(this, 'stepID', () => this.db.comfy_prompts, this._CACHE_INVARIANT)
+    runtimeErrors = new LiveCollection<RuntimeErrorL>(this, 'stepID', () => this.db.runtimeErrors, this._CACHE_INVARIANT)
+
+    get lastOutput(): Maybe<StepOutput> {
+        const outputs = this.outputs
+        return outputs[outputs.length - 1]
+    }
+    get outputs(): StepOutput[] {
+        return [
+            //
+            ...this.texts.items,
+            ...this.images.items,
+            ...this.videos.items,
+            ...this.splats.items,
+            ...this.displacements.items,
+            ...this.comfy_workflows.items,
+            ...this.comfy_prompts.items,
+            ...this.runtimeErrors.items,
+        ].sort((a, b) => a.createdAt - b.createdAt)
+    }
 
     runtime: Maybe<Runtime> = null
 
-    focusedOutput: Maybe<number>
-    get collage() {
-        const imgs = this.generatedImages
-        const last = imgs[imgs.length - 1]
-        if (last == null) return
-        if (this.focusedOutput == null) return this.generatedImages
-    }
+    // get collage() {
+    //     const imgs = this.generatedImages
+    //     const last = imgs[imgs.length - 1]
+    //     if (last == null) return
+    //     if (this.focusedOutput == null) return this.generatedImages
+    // }
 
-    addOutput = (output: StepOutput) =>
-        this.update({
-            outputs: [...(this.data.outputs ?? []), output],
+    recordError = (message: string, infos: any) => {
+        this.db.runtimeErrors.create({
+            stepID: this.id,
+            graphID: this.outputWorkflow.id,
+            message,
+            infos,
         })
-
+    }
+    addOutput = (output: StepOutput) => {
+        // this.update({
+        //     outputs: [...(this.outputs ?? []), output],
+        // })
+        console.log('🔴🔴🔴🔴🔴🔴🔴🔴 addOutput called')
+    }
     // UI expand/collapse state
     get defaultExpanded(): boolean{ return this.data.status === Status.Running } // prettier-ignore
     userDefinedExpanded: Maybe<boolean> = null

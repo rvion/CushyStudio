@@ -1,13 +1,13 @@
-import type { GraphL } from 'src/models/Graph'
+import type { ComfyWorkflowL } from 'src/models/Graph'
 
-import { ComfyNode } from '../core/Node'
+import { ComfyNode } from '../core/ComfyNode'
 
 export interface ComfyWorkflowBuilder extends ComfySetup {}
 
 export class ComfyWorkflowBuilder {
     // private nameCache = new Map<string, number>()
 
-    constructor(public graph: GraphL) {
+    constructor(public graph: ComfyWorkflowL) {
         const schema = graph.st.schema
         // TODO: rewrite with a single defineProperties call
         // with propery object being defined on the client

@@ -4,9 +4,8 @@ import { cwd } from 'process'
 import { useEffect } from 'react'
 import { showItemInFolder } from 'src/app/layout/openExternal'
 import { LibraryFile } from 'src/cards/CardFile'
-import { GithubUserUI } from 'src/cards/GithubAvatarUI'
 import { AppIllustrationUI } from 'src/cards/fancycard/AppIllustrationUI'
-import { DraftID, DraftL } from 'src/models/Draft'
+import { DraftL } from 'src/models/Draft'
 import { Dropdown, MenuItem } from 'src/rsuite/Dropdown'
 import { PhoneWrapperUI } from 'src/rsuite/PhoneWrapperUI'
 import { Button, Joined, Loader, Message } from 'src/rsuite/shims'
@@ -89,7 +88,7 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                         />
                     </PhoneWrapperUI>
                 )}
-                <Joined>
+                <Joined tw='opacity-50'>
                     <Button
                         onClick={() => st.layout.FOCUS_OR_CREATE('DraftJsonResult', { draftID: draft.id })}
                         size='sm'
@@ -295,6 +294,7 @@ export const AppCompilationErrorUI = observer(function AppCompilationErrorUI_(p:
 
 export const DraftHeaderUI = observer(function DraftHeaderUI_(p: { draft: DraftL; app: LibraryFile }) {
     const { app, draft } = p
+    const st = useSt()
     return (
         <div tw='flex p-1 bg-base-300 border-b border-b-base-300'>
             <div tw='flex gap-0.5 flex-grow relative text-base-content py-1'>
@@ -302,13 +302,21 @@ export const DraftHeaderUI = observer(function DraftHeaderUI_(p: { draft: DraftL
                 <div tw='px-1 flex-grow'>
                     <div
                         //
-                        tw='font-bold overflow-hidden overflow-ellipsis whitespace-nowrap'
+                        tw='flex font-bold overflow-hidden overflow-ellipsis whitespace-nowrap'
                         style={{
                             height: '2rem',
                             fontSize: '1.4rem',
                         }}
                     >
-                        {app.displayName}
+                        <span>{app.displayName}</span>
+                        <div
+                            tw='btn btn-subtle btn-xs'
+                            onClick={() => {
+                                st.layout.FOCUS_OR_CREATE('Draft', { draftID: draft.id }, 'LEFT_PANE_TABSET')
+                            }}
+                        >
+                            <span className='material-symbols-outlined'>open_in_new</span>
+                        </div>
                     </div>
                     <div style={{ height: '2rem' }} className='flex items-center gap-2 justify-between text-sm'>
                         <Joined>

@@ -1,17 +1,23 @@
 import { observer } from 'mobx-react-lite'
 import SortableList, { SortableItem } from 'react-easy-sort'
-import { ActionPackUI, AppEntryInvalidUI, AppEntryUI } from '../cards/CardPicker2UI'
+import { PkgUI, AppEntryInvalidUI, AppEntryUI } from '../cards/CardPicker2UI'
 import { useSt } from '../state/stateContext'
+import { Joined } from 'src/rsuite/shims'
 
 export const Panel_AppList = observer(function Panel_AppList_(p: {}) {
     const st = useSt()
     const library = st.library
     return (
         <>
-            <button tw='btn w-full btn-sm btn-active' onClick={() => st.toggleFullLibrary()}>
-                <span className='material-symbols-outlined'>view_list</span>
-                Library
-            </button>
+            <div tw='flex w-full'>
+                <button tw='btn btn-sm btn-active flex-grow' onClick={() => st.toggleFullLibrary()}>
+                    <span className='material-symbols-outlined'>view_list</span>
+                    Library
+                </button>
+                <button tw='btn btn-sm' onClick={() => library.decksSorted.forEach((d) => (d.folded = true))}>
+                    <span className='material-symbols-outlined'>minimize</span>
+                </button>
+            </div>
             {/* FAVORITES */}
             {library.allFavorites.length ? (
                 <div
@@ -53,7 +59,7 @@ export const Panel_AppList = observer(function Panel_AppList_(p: {}) {
             {/* INSTALLED */}
             <div tw='flex flex-col'>
                 {library.decksSorted.map((pack) => (
-                    <ActionPackUI key={pack.folderRel} deck={pack} />
+                    <PkgUI key={pack.folderRel} deck={pack} />
                 ))}
             </div>
         </>

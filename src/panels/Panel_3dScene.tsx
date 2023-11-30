@@ -1,20 +1,7 @@
-// import { observer } from 'mobx-react-lite'
-// import { SceneViewer } from 'src/widgets/3dview/3dview1'
-
-// export const Panel_3dScene = observer(function Panel_Scene_(p: { image: string; depth: string; normal: string }) {
-//     return (
-//         <SceneViewer //
-//             imageSrc={p.image}
-//             depthMapSrc={p.depth}
-//             normalMapSrc={p.normal}
-//         />
-//     )
-// })
-
 import { makeAutoObservable } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { createRef, useEffect, useLayoutEffect, useMemo } from 'react'
-import { Input, Slider, Toggle } from 'src/rsuite/shims'
+import { Slider, Toggle } from 'src/rsuite/shims'
 import { parseFloatNoRoundingErr } from 'src/utils/misc/parseFloatNoRoundingErr'
 import { FieldAndLabelUI } from 'src/widgets/misc/FieldAndLabelUI'
 import * as THREE from 'three'
@@ -29,7 +16,6 @@ type Panel_DisplacementProps = {
     height: number
 }
 
-// React component
 export const Panel_3dScene = observer(function SceneViewer_(p: Panel_DisplacementProps) {
     const state = useMemo(() => new State(p), [JSON.stringify(p)])
 

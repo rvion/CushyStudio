@@ -2,23 +2,22 @@ import type { App, WidgetDict } from 'src/cards/Card'
 import type { LiteGraphJSON } from 'src/core/LiteGraph'
 import type { STATE } from 'src/state/state'
 import type { ComfyPromptJSON } from '../types/ComfyPrompt'
-import type { AbsolutePath } from '../utils/fs/BrandedPaths'
 
 import { readFileSync } from 'fs'
 import { makeAutoObservable, observable } from 'mobx'
 import path, { join, relative } from 'pathe'
-import { AppPath } from 'src/cards/CardPath'
 import { Package } from 'src/cards/Pkg'
 import { DraftL } from 'src/models/Draft'
 import { clamp } from 'three/src/math/MathUtils'
 import { transpileCode } from '../back/transpiler'
 import { convertLiteGraphToPrompt } from '../core/litegraphToPrompt'
-import { getPngMetadataFromUint8Array } from '../importers/getPngMetadata'
+import { getPngMetadataFromUint8Array } from '../utils/png/_getPngMetadata'
 import { exhaust } from '../utils/misc/ComfyUtils'
 import { ManualPromise } from '../utils/misc/ManualPromise'
 import { generateAvatar } from './AvatarGenerator'
 import { AppManifest } from './DeckManifest'
 import { Library } from './Library'
+import { DraftT } from 'src/db2/TYPES.gen'
 
 // prettier-ignore
 export type LoadStrategy =
@@ -184,12 +183,12 @@ export class LibraryFile {
         const title = this.name + ' ' + this.drafts.length + 1
         const pj = this.st.getProject()
         const draft = this.st.db.drafts.create({
-            actionParams: {},
-            actionPath: this.relPath,
-            graphID: pj.rootGraph.id,
+            appParams: {},
+            appPath: this.relPath,
+            // graphID: pj.rootGraph.id,
             title: title,
         })
-        pj.st.layout.FOCUS_OR_CREATE('Draft', { draftID: draft.id })
+        // pj.st.layout.FOCUS_OR_CREATE('Draft', { draftID: draft.id })
         return draft
     }
     getLastDraft = (): DraftL => {
@@ -197,9 +196,15 @@ export class LibraryFile {
         const drafts = this.drafts
         return drafts.length > 0 ? drafts[0] : this.createDraft()
     }
+
     get drafts(): DraftL[] {
-        return this.st.db.drafts //
-            .filter((draft) => draft.data.actionPath === this.relPath)
+        const draftTable = this.st.db.drafts
+        const draftTableInfos = draftTable.infos
+        const draftsT = this.st.db.prepareAll<AppPath, DraftT>(
+            draftTableInfos,
+            'select * from draft where appPath=?',
+        )(this.relPath)
+        return draftsT.map((t) => draftTable.getOrCreateInstanceForExistingData(t))
     }
 
     getCompiledApp() {

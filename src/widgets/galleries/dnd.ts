@@ -1,13 +1,12 @@
 import type { STATE } from 'src/state/state'
-import type { ImageL } from 'src/models/Image'
+import type { MediaImageL } from 'src/models/MediaImage'
 
 import { NativeTypes } from 'react-dnd-html5-backend'
 import { ItemTypes } from './DnDItemTypes'
 import { useDrag, useDrop } from 'react-dnd'
 import { CSSProperties } from 'react'
-import { AbsolutePath } from 'src/utils/fs/BrandedPaths'
 
-export const useImageDrag = (image: ImageL) =>
+export const useImageDrag = (image: MediaImageL) =>
     useDrag(
         () => ({
             type: ItemTypes.Image,
@@ -33,10 +32,10 @@ export const useImageDrag = (image: ImageL) =>
 //         },
 //     }))
 
-type Drop1 = { image: ImageL }
+type Drop1 = { image: MediaImageL }
 type Drop2 = { files: (File & { path: AbsolutePath })[] }
 
-export const useImageDrop = (st: STATE, fn: (image: ImageL) => void) =>
+export const useImageDrop = (st: STATE, fn: (image: MediaImageL) => void) =>
     useDrop<Drop1 | Drop2, void, CSSProperties>(() => ({
         // 1. Accepts both custom Image and native files drops.
         accept: [ItemTypes.Image, NativeTypes.FILE],
@@ -49,7 +48,7 @@ export const useImageDrop = (st: STATE, fn: (image: ImageL) => void) =>
         // 3. import as ImageL if needed
         drop(item: Drop1 | Drop2, monitor) {
             if (monitor.getItemType() == ItemTypes.Image) {
-                const image: ImageL = (item as Drop1).image
+                const image: MediaImageL = (item as Drop1).image
                 return fn(image)
             }
             if (monitor.getItemType() === NativeTypes.FILE) {
@@ -60,19 +59,14 @@ export const useImageDrop = (st: STATE, fn: (image: ImageL) => void) =>
                 const imageFile = Array.from(files).find((file) => file.type.startsWith('image/'))
                 console.log('[🗳️] drop box: image path is', imageFile?.path ?? '❌')
                 if (imageFile) {
-                    st.uploader.upload_NativeFile(imageFile).then((res) => {
-                        console.log(`[🗳️] drop box: uploaded image infos are ${JSON.stringify(res)}`)
-                        const image: ImageL = st.db.images.create({
-                            imageInfos: {
-                                filename: res.name,
-                                subfolder: res.subfolder,
-                                type: res.type,
-                            },
-                            localFilePath: imageFile.path,
-                            downloaded: true,
-                        })
-                        return fn(image)
+                    const image: MediaImageL = st.db.media_images.create({
+                        infos: { type: 'image-local', absPath: imageFile.path },
                     })
+                    // 🔴 do I need to upload files right away ?
+                    // st.uploader.upload_NativeFile(imageFile).then((res) => {
+                    //     console.log(`[🗳️] drop box: uploaded image infos are ${JSON.stringify(res)}`)
+                    //     return fn(image)
+                    // })
                     return
                 } else {
                     console.log('Dropped non-image file')

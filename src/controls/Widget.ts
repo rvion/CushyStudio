@@ -10,7 +10,6 @@ import type { PossibleSerializedNodes } from 'src/widgets/prompter/plugins/Possi
 import type { AspectRatio, ComfyImageAnswer, CushyImageAnswer, CushySize, CushySizeByRatio, ImageAnswer, ImageAnswerForm, PaintImageAnswer, SDModelType } from './misc/InfoAnswer'
 import type { CleanedEnumResult } from 'src/types/EnumUtils'
 import type { IRequest, IWidget, ReqInput, ReqResult, StateFields } from './IWidget'
-import type { RelativePath } from 'src/utils/fs/BrandedPaths'
 import type { FormBuilder } from './FormBuilder'
 
 import { makeAutoObservable } from 'mobx'

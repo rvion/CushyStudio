@@ -24,56 +24,61 @@ const runCommand = (command, args) => {
     return spawnedProcess
 }
 
-console.log('Starting vite...')
-const vite = runCommand('vite', ['dev'])
+// ensure sqlite is compiled for the current electron ABI
+// by running: `electron-builder install-app-deps`
+console.log('Installing app dependencies...')
+const builder = runCommand('electron-builder', ['install-app-deps'])
 
-console.log('Starting electron...')
-const electron = runCommand('electron', ['-i', 'src/shell'])
+builder.on('close', (code) => {
+    console.log('Starting vite...')
+    const vite = runCommand('vite', ['dev'])
 
-const cleanup = (source) => {
-    console.log(`Killing processes from ${source}...`)
-    vite.kill('SIGKILL')
-    electron.kill()
+    console.log('Starting electron...')
+    const electron = runCommand('electron', ['-i', 'src/shell'])
 
-    // Forcefully terminate if not closed within a timeout
-    forceKill(vite, 1000) // Timeout in milliseconds
-    forceKill(electron, 1000)
-}
+    const cleanup = (source) => {
+        console.log(`Killing processes from ${source}...`)
+        vite.kill('SIGKILL')
+        electron.kill()
 
-// Customized forceful kill for stubborn processes
-const forceKill = (process, timeout = 5000) => {
-    const checkInterval = 100
-    let elapsed = 0
+        // Forcefully terminate if not closed within a timeout
+        forceKill(vite, 1000) // Timeout in milliseconds
+        forceKill(electron, 1000)
+    }
 
-    const interval = setInterval(() => {
-        if (process.killed) {
-            clearInterval(interval)
-        } else if (elapsed > timeout) {
-            console.warn(`Forcefully terminating process after ${timeout}ms`)
-            process.kill('SIGKILL')
-            clearInterval(interval)
-        } else {
-            elapsed += checkInterval
-        }
-    }, checkInterval)
-}
+    // Customized forceful kill for stubborn processes
+    const forceKill = (process, timeout = 5000) => {
+        const checkInterval = 100
+        let elapsed = 0
 
-// ... [Your existing code for process handling]
+        const interval = setInterval(() => {
+            if (process.killed) {
+                clearInterval(interval)
+            } else if (elapsed > timeout) {
+                console.warn(`Forcefully terminating process after ${timeout}ms`)
+                process.kill('SIGKILL')
+                clearInterval(interval)
+            } else {
+                elapsed += checkInterval
+            }
+        }, checkInterval)
+    }
 
-// Additional Windows-specific signal handling
-if (os.platform() === 'win32') {
-    const rl = require('readline').createInterface({
-        input: process.stdin,
-        output: process.stdout,
-    })
+    // ... [Your existing code for process handling]
 
-    rl.on('SIGINT', function () {
-        process.emit('SIGINT')
-    })
-}
+    // Additional Windows-specific signal handling
+    if (os.platform() === 'win32') {
+        const rl = require('readline').createInterface({
+            input: process.stdin,
+            output: process.stdout,
+        })
 
-process.on('SIGINT', () => cleanup('SIGINT'))
-process.on('SIGTERM', () => cleanup('SIGTERM'))
+        rl.on('SIGINT', function () {
+            process.emit('SIGINT')
+        })
+    }
 
-electron.on('close', () => cleanup('Electron'))
-// vite.on('close', () => cleanup('Vite'));
+    process.on('SIGINT', () => cleanup('SIGINT'))
+    process.on('SIGTERM', () => cleanup('SIGTERM'))
+    electron.on('close', () => cleanup('Electron'))
+})

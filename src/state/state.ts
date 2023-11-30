@@ -1,8 +1,8 @@
-import type { ImageL } from '../models/Image'
+import type { MediaImageL } from '../models/MediaImage'
 import type { ComfyStatus, PromptID, PromptRelated_WsMsg, WsMsg } from '../types/ComfyWsApi'
 import type { CSCriticalError } from '../widgets/CSCriticalError'
 
-import { existsSync, mkdirSync, readFile, readFileSync, writeFileSync } from 'fs'
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs'
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { join } from 'pathe'
@@ -15,46 +15,41 @@ import { closest } from 'fastest-levenshtein'
 import { ShortcutWatcher } from 'src/app/shortcuts/ShortcutManager'
 import { shortcutsDef } from 'src/app/shortcuts/shortcuts'
 import type { ActionTagMethodList } from 'src/cards/Card'
-import { AppPath, asAppPath } from 'src/cards/CardPath'
+import { asAppPath } from 'src/cards/CardPath'
 import { GithubUserName } from 'src/cards/GithubUser'
 import { Library } from 'src/cards/Library'
 import { GithubRepoName } from 'src/cards/githubRepo'
+import { ComfyHostDef, ComfyHostID, DEFAULT_COMFYUI_INSTANCE_ID, defaultHost } from 'src/config/ComfyHostDef'
 import { DraftL } from 'src/models/Draft'
 import { ProjectL } from 'src/models/Project'
+import { StepL } from 'src/models/Step'
 import { ThemeManager } from 'src/theme/ThemeManager'
 import { CleanedEnumResult } from 'src/types/EnumUtils'
 import { UserTags } from 'src/widgets/prompter/nodes/usertags/UserLoader'
 import { ResilientWebSocketClient } from '../back/ResilientWebsocket'
-import { GitManagedFolder } from '../updater/updater'
 import { JsonFile } from '../core/JsonFile'
 import { LiveDB } from '../db/LiveDB'
 import { ComfyImporter } from '../importers/ComfyImporter'
-import { GraphL } from '../models/Graph'
+import { ComfyWorkflowL } from '../models/Graph'
 import { EmbeddingName, EnumValue, SchemaL } from '../models/Schema'
 import { CushyLayoutManager } from '../panels/router/Layout'
-import { ComfySchemaJSON, ComfySchemaJSON_zod } from '../types/ComfySchemaJSON'
+import { ComfySchemaJSON } from '../types/ComfySchemaJSON'
+import { GitManagedFolder } from '../updater/updater'
 import { ElectronUtils } from '../utils/electron/ElectronUtils'
 import { extractErrorMessage } from '../utils/formatters/extractErrorMessage'
 import { readableStringify } from '../utils/formatters/stringifyReadable'
-import { AbsolutePath, RelativePath } from '../utils/fs/BrandedPaths'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { exhaust } from '../utils/misc/ComfyUtils'
 import { ManualPromise } from '../utils/misc/ManualPromise'
 import { DanbooruTags } from '../widgets/prompter/nodes/booru/BooruLoader'
 import { Uploader } from './Uploader'
-import { ComfyHostDef, ComfyHostID, DEFAULT_COMFYUI_INSTANCE_ID, defaultHost } from 'src/config/ComfyHostDef'
-import { StepID, StepL } from 'src/models/Step'
-
-// prettier-ignore
-type HoveredAsset =
-    | { type: 'image'; url: string }
-    | { type: 'video'; url: string }
+import { StepOutput } from 'src/types/StepOutput'
 
 export class STATE {
     /** hack to help closing prompt completions */
     currentPromptFocused: Maybe<HTMLDivElement> = null
 
-    __TEMPT__maxStepsToShow = 30
+    __TEMPT__maxStepsToShow = 10
 
     //file utils that need to be setup first because
     resolveFromRoot = (relativePath: RelativePath): AbsolutePath => asAbsolutePath(join(this.rootPath, relativePath))
@@ -117,12 +112,12 @@ export class STATE {
     actionsFolderPathRel: RelativePath
     outputFolderPath: AbsolutePath
     status: ComfyStatus | null = null
-    graphHovered: Maybe<{ graph: GraphL; pctTop: number; pctLeft: number }> = null
+    graphHovered: Maybe<{ graph: ComfyWorkflowL; pctTop: number; pctLeft: number }> = null
     sid: Maybe<string> = null
     comfyStatus: Maybe<ComfyStatus> = null
     configFile: JsonFile<ConfigFile>
     updater: GitManagedFolder
-    hovered: Maybe<HoveredAsset> = null
+    hovered: Maybe<StepOutput> = null
     electronUtils: ElectronUtils
     library: Library
     schemaReady = new ManualPromise<true>()
@@ -152,11 +147,6 @@ export class STATE {
     get gallerySizeStr() { return `${this.gallerySize}px` } // prettier-ignore
     set gallerySize(v: number) { this.configFile.update({ galleryImageSize: v }) } // prettier-ignore
     get gallerySize() { return this.configFile.value.galleryImageSize ?? 48 } // prettier-ignore
-
-    // output size
-    get outputPreviewSizeStr() { return `${this.outputPreviewSize}px` } // prettier-ignore
-    set outputPreviewSize(v: number) { this.configFile.update({ outputPreviewSize: v }) } // prettier-ignore
-    get outputPreviewSize() { return this.configFile.value.outputPreviewSize ?? 48 } // prettier-ignore
 
     // history app size
     get historySizeStr() { return `${this.historySize}px` } // prettier-ignore
@@ -213,6 +203,9 @@ export class STATE {
             // activeToolID: this.db.tools.values[0].id,
             rootGraphID: initialGraph.id,
             name: 'new project',
+            // 🔴 insert statement must be dynamic
+            currentApp: null,
+            currentDraftID: null,
         })
         return project
         // const startDraft = initialGraph.createDraft()
@@ -317,7 +310,6 @@ export class STATE {
             gitURLToFetchUpdatesFrom: 'rvion/CushyStudio',
             repositoryName: 'CushyStudio' as GithubRepoName,
             userName: 'rvion' as GithubUserName,
-            betaBranch: 'dev',
         })
         this.importer = new ComfyImporter(this)
         this.library = new Library(this)
@@ -376,7 +368,7 @@ export class STATE {
     private activePromptID: PromptID | null = null
     temporize = (prompt_id: PromptID, msg: PromptRelated_WsMsg) => {
         this.activePromptID = prompt_id
-        const prompt = this.db.prompts.get(prompt_id)
+        const prompt = this.db.comfy_prompts.get(prompt_id)
 
         // case 1. no prompt yet => just store the messages
         if (prompt == null) {
@@ -389,14 +381,14 @@ export class STATE {
         prompt.onPromptRelatedMessage(msg)
     }
 
-    preview: Maybe<{
+    latentPreview: Maybe<{
         receivedAt: Timestamp
         blob: Blob
         url: string
     }> = null
     onMessage = (e: MessageEvent) => {
         if (e.data instanceof ArrayBuffer) {
-            console.log('[👢] WEBSOCKET: received ArrayBuffer', e.data)
+            // 🔴 console.log('[👢] WEBSOCKET: received ArrayBuffer', e.data)
             const view = new DataView(e.data)
             const eventType = view.getUint32(0)
             const buffer = e.data.slice(4)
@@ -415,7 +407,7 @@ export class STATE {
                     }
                     const imageBlob = new Blob([buffer.slice(4)], { type: imageMime })
                     const imagePreview = URL.createObjectURL(imageBlob)
-                    this.preview = { blob: imageBlob, url: imagePreview, receivedAt: Date.now() }
+                    this.latentPreview = { blob: imageBlob, url: imagePreview, receivedAt: Date.now() }
                     // 🔴 const previewImage = this.db.images.upsert({
                     // 🔴     id: 'PREVIEW',
                     // 🔴     localFolderPath: this.resolve(this.rootPath, asRelativePath('PREVIEW')),
@@ -426,7 +418,7 @@ export class STATE {
             }
             return
         }
-        console.info(`[👢] WEBSOCKET: received ${e.data}`)
+        // 🔴 console.info(`[👢] WEBSOCKET: received ${e.data}`)
         const msg: WsMsg = JSON.parse(e.data as any)
 
         if (msg.type === 'status') {
@@ -572,18 +564,16 @@ export class STATE {
         return '🔴'
     }
 
+    focusedStepOutputID: Maybe<StepOutput> = null
     focusedStepID: Maybe<StepID> = null
     get focusedStepL(): Maybe<StepL> {
         if (this.focusedStepID) return this.db.steps.get(this.focusedStepID) ?? this.db.steps.last()
         return this.db.steps.last()
     }
 
-    graph: Maybe<GraphL> = null
-    // images: ImageT[] = []
-    // imagesById: Map<ImageID, ImageT> = new Map()
-    get imageToDisplay(): ImageL[] {
-        const maxImages = this.configFile.value.galleryMaxImages ?? 50
-        return this.db.images.values.slice(-maxImages).reverse()
+    get imageToDisplay(): MediaImageL[] {
+        const maxImages = this.configFile.value.galleryMaxImages ?? 20
+        return this.db.media_images.getLastN(maxImages)
     }
 
     // FILESYSTEM UTILS --------------------------------------------------------------------

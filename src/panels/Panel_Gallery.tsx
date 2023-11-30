@@ -7,34 +7,14 @@ import { FieldAndLabelUI } from 'src/widgets/misc/FieldAndLabelUI'
 
 export const Panel_Gallery = observer(function VerticalGalleryUI_(p: {}) {
     const st = useSt()
-    const preview = st.preview
     return (
         <div //
             className='flex flex-col bg-base-100 h-full'
             style={{ background: st.configFile.value.galleryBgColor }}
         >
             <GalleryControlsUI />
-            {/* MAIN IMAGE COLUMN */}
             <div className='flex flex-wrap overflow-auto'>
-                {preview ? ( //
-                    <img
-                        //
-                        style={{
-                            objectFit: 'contain',
-                            opacity: 1,
-                            padding: '0.2rem',
-                            borderRadius: '.5rem',
-                            width: st.gallerySizeStr,
-                            height: st.gallerySizeStr,
-                        }}
-                        src={preview.url}
-                        onMouseEnter={(ev) => (st.hovered = { type: 'image', url: preview.url })}
-                        onMouseLeave={() => {
-                            if (st.hovered?.url === preview.url) st.hovered = null
-                        }}
-                    />
-                ) : null}
-
+                <LatentPreviewUI />
                 {st.imageToDisplay.map((img, ix) => (
                     <ImageUI key={ix} img={img} />
                 ))}
@@ -43,6 +23,29 @@ export const Panel_Gallery = observer(function VerticalGalleryUI_(p: {}) {
     )
 })
 
+export const LatentPreviewUI = observer(function LatentPreviewUI_(p: {}) {
+    const st = useSt()
+    const preview = st.latentPreview
+    if (preview == null) return
+    return (
+        <img
+            //
+            style={{
+                objectFit: 'contain',
+                opacity: 1,
+                padding: '0.2rem',
+                borderRadius: '.5rem',
+                width: st.gallerySizeStr,
+                height: st.gallerySizeStr,
+            }}
+            src={preview.url}
+            // onMouseEnter={(ev) => (st.hovered = { type: 'image', url: preview.url })}
+            // onMouseLeave={() => {
+            //     if (st.hovered?.url === preview.url) st.hovered = null
+            // }}
+        />
+    )
+})
 export const GalleryControlsUI = observer(function GalleryControlsUI_(p: { children?: React.ReactNode }) {
     const st = useSt()
     // const preview = st.preview

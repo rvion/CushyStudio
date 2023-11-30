@@ -1,8 +1,6 @@
 import { pathe } from 'src/utils/fs/pathUtils'
 import { ActionExtensions, hasValidActionExtension } from '../back/ActionExtensions'
 
-export type AppPath = Branded<string, { ActionPath: true; RelativePath: true }>
-
 export const asAppPath = (path: string): AppPath => {
     if (pathe.isAbsolute(path)) throw new Error(`card path (${path}) must be relative`)
     if (!(path.startsWith('library/') || path.startsWith('library\\')))

@@ -35,7 +35,7 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: { r
                 <div className='flex gap-2 p-1 bg-base-100 border border-dashed border-neutral self-center'>
                     {req.state.cushy != null ? ( //
                         <div tw='flex items-start'>
-                            <ImageUI img={draft.db.images.getOrThrow(req.state.cushy.imageID)} />
+                            <ImageUI img={draft.db.media_images.getOrThrow(req.state.cushy.imageID)} />
                             {req instanceof Widget_imageOpt ? (
                                 <Button size='sm' onClick={() => (req.state.active = false)}>
                                     X

@@ -6,7 +6,7 @@ import { useSt } from '../../state/stateContext'
 export const IndicatorWebsocketUI = observer(function IndicatorWebsocketUI_(p: {}) {
     const st = useSt()
     return (
-        <RevealUI>
+        <RevealUI showDelay={0}>
             {st.ws.isOpen ? (
                 <Button size='sm' className='flex gap-1 text-sm px-1 rounded cursor-help'>
                     {/* <span className='material-symbols-outlined text-green-400 '>check_circle</span> */}

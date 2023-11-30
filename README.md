@@ -82,18 +82,19 @@ https://github.com/rvion/CushyStudio/assets/2150990/776b00f5-687e-4043-8dac-34df
 # 1. Installation
 
 1.  Requirements:
-    1.  [NodeJS](https://nodejs.org/en/download) (18 or higher)
+    1.  [NodeJS](https://nodejs.org/en/download)
     2.  [ComfyUI](https://github.com/comfyanonymous/ComfyUI) (local, remote, or cloud)
     3.  [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) (to install via git)
 
 2. run those commands in a terminal (< 10 seconds to complete):
 
-    ```sh
-    git clone https://github.com/rvion/CushyStudio --depth 1
-    cd CushyStudio
-    npm install
-    npm start
-    ```
+```sh
+
+git clone https://github.com/rvion/CushyStudio --depth 1
+cd CushyStudio
+npm install
+npm start
+```
 
 # 2. Quickstart Guide
 

@@ -7,8 +7,9 @@ import { useSt } from '../state/stateContext'
 
 export const Panel_ComfyUI = observer(function Panel_ComfyUI_(p: {
     //
-    autoLoadLast?: boolean
+    // autoLoadLast?: boolean
     litegraphJson?: Maybe<LiteGraphJSON>
+    className?: string
 }) {
     const st = useSt()
     const url = st.getServerHostHTTP()
@@ -74,7 +75,8 @@ export const Panel_ComfyUI = observer(function Panel_ComfyUI_(p: {
             <iframe //
                 ref={st.comfyUIIframeRef}
                 src={url}
-                style={{ width: '100%', height: '100%', border: 'none' }}
+                className={p.className}
+                // style={{ width: '100%', height: '100%', border: 'none' }}
             ></iframe>
         </>
     )

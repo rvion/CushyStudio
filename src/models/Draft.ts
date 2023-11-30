@@ -1,44 +1,22 @@
 import type { LiveInstance } from '../db/LiveInstance'
-import type { GraphID, GraphL } from './Graph'
 import type { StepL } from './Step'
 
-import { autorun, reaction, runInAction, toJS } from 'mobx'
-import { LibraryFile } from 'src/cards/CardFile'
-import { AppPath } from 'src/cards/CardPath'
-import { Widget_group, type Widget } from 'src/controls/Widget'
-import { FormBuilder } from 'src/controls/FormBuilder'
-import { __FAIL, __OK, type Result } from 'src/types/Either'
-import { LiveRef } from '../db/LiveRef'
+import { autorun, reaction, runInAction } from 'mobx'
 import { Status } from 'src/back/Status'
+import { LibraryFile } from 'src/cards/CardFile'
+import { FormBuilder } from 'src/controls/FormBuilder'
+import { Widget_group, type Widget } from 'src/controls/Widget'
+import { DraftT } from 'src/db2/TYPES.gen'
+import { __FAIL, __OK, type Result } from 'src/types/Either'
 
 export type FormPath = (string | number)[]
-
-export type DraftID = Branded<string, { DraftID: true }>
-export const asDraftID = (s: string): DraftID => s as any
-
-export type DraftT = {
-    id: DraftID /** form that lead to creating this Draft */
-    createdAt: number
-    updatedAt: number
-
-    // presetntation
-    title: string
-
-    // action
-    actionPath: AppPath
-    actionParams: any
-
-    // starting graph
-    graphID: GraphID
-}
 
 /** a thin wrapper around a single Draft somewhere in a .ts file */
 export interface DraftL extends LiveInstance<DraftT, DraftL> {}
 export class DraftL {
-    graph = new LiveRef<this, GraphL>(this, 'graphID', 'graphs')
-
     // 🔴 HACKY
     shouldAutoStart = false
+
     private autoStartTimer: NodeJS.Timeout | null = null
     setAutostart(val: boolean) {
         this.shouldAutoStart = val
@@ -55,34 +33,40 @@ export class DraftL {
     }
 
     start = (): StepL => {
+        // ----------------------------------------
+        // 🔴 2023-11-30 rvion:: TEMPORPARY HACKS
         this.st.focusedStepID = null
+        this.st.focusedStepOutputID = null
+        // ----------------------------------------
 
         // 1. ensure req valid (TODO: validate)
         const req = this.gui.value
         if (req == null) throw new Error('invalid req')
 
         // 2. ensure graph valid
-        const graph = this.graph.item
-        if (graph == null) throw new Error('invalid graph')
+        const startGraph = this.st.getProject().rootGraph.item
+        if (startGraph == null) throw new Error('invalid graph')
 
         // 3. bumpt the builder cache count
         // so widgets like seed can properly update
         const builder = req.builder
         builder._cache.count++
 
+        const graph = startGraph.clone()
         // 4. create step
         const step = this.db.steps.create({
             name: this.data.title,
             //
-            actionPath: this.data.actionPath,
+            appPath: this.data.appPath,
             formResult: req.result,
             formSerial: req.serial,
             //
-            parentGraphID: graph.id,
-            outputGraphID: graph.clone().id,
+            // parentGraphID: graph.id,
+            outputGraphID: graph.id,
             //
             status: Status.New,
         })
+        graph.update({ stepID: step.id }) // 🔶🔴
         step.start()
         return step
     }
@@ -90,7 +74,7 @@ export class DraftL {
     gui: Result<Widget> = __FAIL('not loaded yet')
 
     get app(): LibraryFile | undefined {
-        return this.st.library.cardsByPath.get(this.data.actionPath)
+        return this.st.library.cardsByPath.get(this.data.appPath)
     }
 
     get action() {
@@ -109,15 +93,15 @@ export class DraftL {
         const _1 = reaction(
             () => this.action,
             (action) => {
-                console.log(`[🦊] form: awakening app ${this.data.actionPath}`)
+                console.log(`[🦊] form: awakening app ${this.data.appPath}`)
                 if (action == null) return
                 try {
                     const formBuilder = new FormBuilder(this.st.schema)
                     const uiFn = action.ui
                     const req: Widget_group<any> =
                         uiFn == null //
-                            ? formBuilder._HYDRATE('group', { topLevel: true, items: () => ({}) }, this.data.actionParams)
-                            : formBuilder._HYDRATE('group', { topLevel: true, items: () => uiFn(formBuilder) }, this.data.actionParams) // prettier-ignore
+                            ? formBuilder._HYDRATE('group', { topLevel: true, items: () => ({}) }, this.data.appParams)
+                            : formBuilder._HYDRATE('group', { topLevel: true, items: () => uiFn(formBuilder) }, this.data.appParams) // prettier-ignore
                     /** 👇 HACK; see the comment near the ROOT property definition */
                     formBuilder._ROOT = req
                     this.gui = __OK(req)
@@ -140,7 +124,7 @@ export class DraftL {
             const _ = JSON.stringify(formValue.serial)
             runInAction(() => {
                 console.log(`[🦊] form: updating`)
-                this.update({ actionParams: formValue.serial })
+                this.update({ appParams: formValue.serial })
             })
         })
 

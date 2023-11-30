@@ -1,5 +1,4 @@
 import { observer } from 'mobx-react-lite'
-import { DraftID } from 'src/models/Draft'
 import { useSt } from 'src/state/stateContext'
 import { JsonViewUI } from 'src/widgets/workspace/JsonViewUI'
 

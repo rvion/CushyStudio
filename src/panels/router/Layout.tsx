@@ -8,7 +8,6 @@ import { observer } from 'mobx-react-lite'
 import { nanoid } from 'nanoid'
 import { FC, createElement, createRef } from 'react'
 import { Trigger } from 'src/app/shortcuts/Trigger'
-import { AppPath } from 'src/cards/CardPath'
 
 import { Panel_CardPicker3UI } from 'src/panels/Panel_FullScreenLibrary'
 import { Message } from 'src/rsuite/shims'
@@ -125,13 +124,19 @@ export class CushyLayoutManager {
     })
 
     nextPaintIDx = 0
-    openApp = (actionPath: AppPath) => {
+    openAppInMainPanel = (actionPath: AppPath) => {
+        const card = this.st.library.getFile(actionPath)
+        if (card == null) return null /* 🔴 add popup somewhere */
+        const draft = card.getLastDraft()
+        this.st.currentDraft = draft
+        // this.FOCUS_OR_CREATE('Draft', { draftID: draft?.id ?? '❌' }, 'LEFT_PANE_TABSET')
+    }
+
+    openAppInNewPanel = (actionPath: AppPath) => {
         const card = this.st.library.getFile(actionPath)
         if (card == null) return null /* 🔴 add popup somewhere */
         const draft = card.getLastDraft()
         this.FOCUS_OR_CREATE('Draft', { draftID: draft?.id ?? '❌' }, 'LEFT_PANE_TABSET')
-        // const icon = af?.illustrationPathWithFileProtocol
-        // this._AddWithProps(Widget.Draft, `/action/${actionPath}`, { title: actionPath, actionPath, icon })
     }
     // addDraft = (p: PropsOf<typeof Panel_Draft>) => {
     //     const draftID = p.draftID
@@ -212,6 +217,7 @@ export class CushyLayoutManager {
         props: PropsOf<Panels[K]['widget']>,
         where: 'full' | 'current' | LEFT_PANE_TABSET_T | RIGHT_PANE_TABSET_T = RIGHT_PANE_TABSET_ID,
     ): Maybe<FL.Node> => {
+        console.warn('----------🟢---------------')
         if (where === 'full') {
             this.TOGGLE_FULL(component, props)
             return null
@@ -286,14 +292,14 @@ export class CushyLayoutManager {
             },
             borders: [
                 // LEFT BORDER
-                // {
-                //     type: 'border',
-                //     size: 250,
-                //     location: 'left',
-                //     selected: 0,
-                //     show: true,
-                //     children: [this._add({ panel: 'FileList', props: {}, canClose: false, width: 250 })],
-                // },
+                {
+                    type: 'border',
+                    size: 250,
+                    location: 'left',
+                    selected: 0,
+                    show: true,
+                    children: [this._add({ panel: 'FileList', props: {}, canClose: false, width: 250 })],
+                },
                 // RIGHT BORDER
                 // {
                 //     type: 'border',
@@ -310,27 +316,27 @@ export class CushyLayoutManager {
                 id: 'rootRow',
                 type: 'row',
                 children: [
-                    {
-                        id: 'menuPane',
-                        type: 'row',
-                        width: 100,
-                        children: [
-                            {
-                                type: 'tabset',
-                                id: MENU_PANE_TABSET_ID,
-                                minWidth: 64,
-                                minHeight: 150,
-                                width: 200,
-                                enableClose: false,
-                                enableDeleteWhenEmpty: false,
-                                children: [
-                                    this._add({ panel: 'FileList', props: {}, canClose: false, width: 200 }),
-                                    // this._add({ panel: 'CurrentDraft', canClose: false, props: {}, width: 600 })
-                                ],
-                                enableSingleTabStretch: true,
-                            },
-                        ],
-                    },
+                    // {
+                    //     id: 'menuPane',
+                    //     type: 'row',
+                    //     width: 100,
+                    //     children: [
+                    //         {
+                    //             type: 'tabset',
+                    //             id: MENU_PANE_TABSET_ID,
+                    //             minWidth: 64,
+                    //             minHeight: 150,
+                    //             width: 200,
+                    //             enableClose: false,
+                    //             enableDeleteWhenEmpty: false,
+                    //             children: [
+                    //                 this._add({ panel: 'FileList', props: {}, canClose: false, width: 200 }),
+                    //                 // this._add({ panel: 'CurrentDraft', canClose: false, props: {}, width: 600 })
+                    //             ],
+                    //             enableSingleTabStretch: true,
+                    //         },
+                    //     ],
+                    // },
                     {
                         id: 'leftPane',
                         type: 'row',
@@ -366,7 +372,7 @@ export class CushyLayoutManager {
                                     this._add({ panel: 'LastImage', props: {} }),
                                     this._add({ panel: 'Outputs', props: {} }),
                                     this._add({ panel: 'Gallery', props: {} }),
-                                    this._add({ panel: 'LastLatent', props: {} }),
+                                    // this._add({ panel: 'LastLatent', props: {} }),
                                     this._add({ panel: 'LastStep', props: {}, canClose: false }),
                                     this._add({ panel: 'Steps', props: {}, canClose: false }),
                                 ],

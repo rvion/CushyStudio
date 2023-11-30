@@ -22,7 +22,7 @@ export const Panel_CurrentDraft = observer(function CurrentDraftUI_(p: {}) {
                 icon={<span className='material-symbols-outlined'>play_circle</span>}
                 label='Open Card Picker'
             >
-                Open the card picker
+                Open the App Library
                 <ComboUI combo='meta+1' />
             </MainNavEntryUI>
         )

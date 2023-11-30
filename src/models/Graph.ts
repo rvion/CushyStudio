@@ -1,27 +1,24 @@
 import type { LiveInstance } from 'src/db/LiveInstance'
 import type { HTMLContent, MDContent } from 'src/types/markdown'
 import type { Cyto } from '../core/AutolayoutV1'
-import type { VisEdges, VisNodes } from '../widgets/misc/VisUI'
+import type { ComfyNodeID } from '../types/ComfyNodeID'
 import type { ComfyPromptJSON } from '../types/ComfyPrompt'
 import type { WsMsgExecuting, WsMsgExecutionCached, WsMsgProgress } from '../types/ComfyWsApi'
-import type { ComfyNodeID } from '../types/ComfyNodeID'
+import type { VisEdges, VisNodes } from '../widgets/misc/VisUI'
 import type { ComfyNodeSchema, SchemaL } from './Schema'
 
 import { marked } from 'marked'
 import { join } from 'pathe'
-import { ManualPromise } from 'src/utils/misc/ManualPromise'
+import { IDNaminScheemeInPromptSentToComfyUI } from 'src/back/IDNaminScheemeInPromptSentToComfyUI'
 import { ComfyWorkflowBuilder } from '../back/NodeBuilder'
 import { CytoJSON, runAutolayout } from '../core/AutolayoutV2'
 import { comfyColors } from '../core/Colors'
 import { LiteGraphJSON, convertFlowToLiteGraphJSON } from '../core/LiteGraph'
-import { ComfyNode } from '../core/Node'
-import { LiveCollection } from '../db/LiveCollection'
-import { AbsolutePath } from '../utils/fs/BrandedPaths'
-import { asAbsolutePath } from '../utils/fs/pathUtils'
+import { ComfyNode } from '../core/ComfyNode'
 import { asHTMLContent, asMDContent } from '../types/markdown'
-import { DraftL } from './Draft'
-import { StepL } from './Step'
-import { IDNaminScheemeInPromptSentToComfyUI } from 'src/back/IDNaminScheemeInPromptSentToComfyUI'
+import { asAbsolutePath } from '../utils/fs/pathUtils'
+import { GraphT } from 'src/db2/TYPES.gen'
+import { bang } from 'src/utils/misc/bang'
 
 export type RunMode = 'fake' | 'real'
 
@@ -33,22 +30,22 @@ export type RunMode = 'fake' | 'real'
  *   - so no link to workspace or run
  */
 
-export type GraphID = Branded<string, { GraphID: true }>
-export const asGraphID = (s: string): GraphID => s as any
+// export type GraphID = Branded<string, { GraphID: true }>
+// export const asGraphID = (s: string): GraphID => s as any
 
-export type GraphT = {
-    /** graph ID */
-    id: GraphID
-    createdAt: number
-    updatedAt: number
-    /** graph json */
-    comfyPromptJSON: ComfyPromptJSON
-}
+// export type GraphT = {
+//     /** graph ID */
+//     id: GraphID
+//     createdAt: number
+//     updatedAt: number
+//     /** graph json */
+//     comfyPromptJSON: ComfyPromptJSON
+// }
 
 export const GraphIDCache = new Map<string, number>()
 
-export interface GraphL extends LiveInstance<GraphT, GraphL> {}
-export class GraphL {
+export interface ComfyWorkflowL extends LiveInstance<GraphT, ComfyWorkflowL> {}
+export class ComfyWorkflowL {
     /** number of node in the graph */
     get size(): number {
         return this.nodes.length
@@ -73,7 +70,7 @@ export class GraphL {
             this.nodesIndex.clear()
             this.currentExecutingNode = null
         }
-        for (const [uid, node] of Object.entries(next.comfyPromptJSON)) {
+        for (const [uid, node] of Object.entries(bang(next.comfyPromptJSON))) {
             new ComfyNode(this, uid, node)
         }
         // console.log(`[📈] GRAPH: manually updated ${prevSize} => ${this.size}`)
@@ -86,9 +83,9 @@ export class GraphL {
         return this.nodes.map((n) => n.$schema.nameInCushy)
     }
 
-    drafts = new LiveCollection<DraftL>(this, 'graphID', 'drafts')
-    childSteps = new LiveCollection<StepL>(this, 'parentGraphID', 'steps')
-    parentSteps = new LiveCollection<StepL>(this, 'outputGraphID', 'steps')
+    // drafts = new LiveCollection<DraftL>(this, 'graphID', 'drafts')
+    // childSteps = new LiveCollection<StepL>(this, 'parentGraphID', 'steps')
+    // parentSteps = new LiveCollection<StepL>(this, 'outputGraphID', 'steps')
 
     /** focus step and update selected Draft */
     // ⏸️ focusStepAndUpdateDraft = (step: StepL) => {
@@ -102,6 +99,7 @@ export class GraphL {
 
     /** @internal every node constructor must call this */
     registerNode = (node: ComfyNode<any>) => {
+        if (this.data.comfyPromptJSON == null) throw new Error('graph not hydrated')
         this.data.comfyPromptJSON[node.uid] = node.json
         this.nodesIndex.set(node.uid, node)
         this.nodes.push(node)
@@ -158,20 +156,13 @@ export class GraphL {
         return out
     }
 
-    currentCytoK: ManualPromise<CytoJSON> = new ManualPromise()
-    updateCyto = () => this.json_cyto().then((x) => this.currentCytoK.resolve(x))
-    get currentCyto(): CytoJSON {
-        if (this.currentCytoK.value) return this.currentCytoK.value
-        return { elements: { nodes: [] } }
-    }
-    json_cyto = async (): Promise<CytoJSON> => {
-        // const cytoJSONPath = asAbsolutePath(path.join(outputAbsPath, `cyto-${this._promptCounter}.json`))
-        const cytoJSON = await runAutolayout(this)
+    get json_cyto(): CytoJSON {
+        const cytoJSON = runAutolayout(this)
         return cytoJSON
     }
 
-    json_workflow = async (): Promise<LiteGraphJSON> => {
-        const cytoJSON = await this.json_cyto()
+    json_workflow = (): LiteGraphJSON => {
+        const cytoJSON = this.json_cyto
         const liteGraphJSON = convertFlowToLiteGraphJSON(this, cytoJSON)
         return liteGraphJSON
         // this.st.writeTextFile(workflowJSONPath, JSON.stringify(liteGraphJSON, null, 4))

@@ -1,6 +1,5 @@
 import type { LiveTable } from './LiveTable'
 import type { LiveInstance } from './LiveInstance'
-import type { TableName } from './LiveStore'
 
 export class LiveRefOpt<
     //
@@ -11,7 +10,7 @@ export class LiveRefOpt<
         //
         public owner: LiveInstance<any, any>,
         public key: keyof Owner['data'],
-        public tableName: TableName,
+        public tableName: TableNameInDB,
     ) {}
 
     get id(): Maybe<L['data']['id']> {

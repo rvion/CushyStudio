@@ -7,6 +7,7 @@ const installDir = cwd()
 
 // https://vitejs.dev/config/
 export default defineConfig({
+    clearScreen: false,
     optimizeDeps: {
         exclude: [
             //

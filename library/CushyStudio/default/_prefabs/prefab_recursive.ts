@@ -6,7 +6,7 @@ export const ui_recursive = (form: FormBuilder) => {
         items: () => ({
             cfg: form.float({ label: 'CFG', min: 3, max: 20, default: 8 }),
             loops: form.int({ default: 5, min: 2, max: 20 }),
-            denoise: form.float({ min: 0, max: 1, step: 0.01, default: 0.3 }),
+            denoise: form.float({ min: 0, max: 1, step: 0.01, default: 0.8 }),
             steps: form.int({ default: 2, min: 2, max: 20 }),
         }),
     })

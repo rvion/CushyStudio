@@ -33,8 +33,8 @@ export const UpdateBtnUI = observer(function UpdateBtnUI_(p: {
     )
     if (updater.hasUpdateAvailable)
         ANCHOR = (
-            <div className={p.className} tw='indicator'>
-                <span className='indicator-item badge badge-secondary'></span>
+            <div tw='flex items-center shrink-0' className={p.className}>
+                <span className='indicator-item badge badge-secondary'>new</span>
                 {ANCHOR}
             </div>
         )
@@ -86,7 +86,6 @@ export const UpdaterDetailsUI = observer(function UpdaterDetailsUI_(p: { updater
                     </Button>
                 ) : null}
             </div>
-            {updater.config.betaBranch ? <ReleaseChannelUI onChange={(e) => console.log(e)} /> : null}
             <UpdaterErrorUI updater={updater} />
 
             <div tw='virtualBorder'>

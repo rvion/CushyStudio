@@ -7,13 +7,13 @@ import { FieldAndLabelUI } from 'src/widgets/misc/FieldAndLabelUI'
 
 export const Panel_Outputs = observer(function Panel_Outputs_(p: {}) {
     const st = useSt()
-    const steps = st.db.steps.values.slice(-st.__TEMPT__maxStepsToShow)
+    const steps = st.db.steps.getLastN(st.__TEMPT__maxStepsToShow)
     return (
         <div className='flex flex-col'>
             {/* <FieldAndLabelUI label='Show Last'> */}
             <div className='flex'>
                 <GalleryControlsUI>
-                    <FieldAndLabelUI label='Steps'>
+                    <FieldAndLabelUI label='Number of items to display'>
                         <Slider
                             style={{ width: '5rem' }}
                             min={1}
@@ -26,10 +26,10 @@ export const Panel_Outputs = observer(function Panel_Outputs_(p: {}) {
             </div>
             {/* </FieldAndLabelUI> */}
             {/* </Panel> */}
-            <div className='flex flex-col-reverse flex-grow' style={{ overflow: 'auto' }}>
+            <div className='flex flex-col flex-grow' style={{ overflow: 'auto' }}>
                 {steps.map((step) => (
                     // <InView key={step.id} as='div' onChange={(inView, entry) => {}}>
-                    <StepOutputsV2UI step={step} />
+                    <StepOutputsV2UI key={step.id} step={step} />
                     // </InView>
                 ))}
             </div>

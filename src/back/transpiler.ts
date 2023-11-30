@@ -1,5 +1,4 @@
 import { spawn } from 'child_process'
-import { AbsolutePath } from 'src/utils/fs/BrandedPaths'
 import os from 'os'
 
 export async function transpileCode(filePath: AbsolutePath): Promise<string> {

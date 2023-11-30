@@ -6,7 +6,6 @@ import * as path from 'pathe'
 import { execSync } from 'child_process'
 import fs, { writeFileSync } from 'fs'
 import { marked } from 'marked'
-import { AppPath } from 'src/cards/CardPath'
 import { Uploader } from 'src/state/Uploader'
 import type { STATE } from 'src/state/state'
 import { assets } from 'src/utils/assets/assets'
@@ -14,13 +13,12 @@ import { braceExpansion } from 'src/utils/misc/expansion'
 import { ImageAnswer } from '../controls/misc/InfoAnswer'
 import { ComfyNodeOutput } from '../core/Slot'
 import { auto } from '../core/autoValue'
-import { GraphL } from '../models/Graph'
-import { ImageL } from '../models/Image'
-import { PromptL } from '../models/Prompt'
+import { ComfyWorkflowL } from '../models/Graph'
+import { MediaImageL } from '../models/MediaImage'
+import { ComfyPromptL } from '../models/ComfyPrompt'
 import { StepL } from '../models/Step'
-import { ApiPromptInput, PromptInfo } from '../types/ComfyWsApi'
+import { ApiPromptInput, ComfyUploadImageResult, PromptInfo } from '../types/ComfyWsApi'
 import { createMP4FromImages } from '../utils/ffmpeg/ffmpegScripts'
-import { AbsolutePath, RelativePath } from '../utils/fs/BrandedPaths'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { deepCopyNaive, exhaust } from '../utils/misc/ComfyUtils'
 import { wildcards } from '../widgets/prompter/nodes/wildcards/wildcards'
@@ -29,6 +27,7 @@ import { ImageSDK } from './ImageSDK'
 import { ComfyWorkflowBuilder } from './NodeBuilder'
 import { InvalidPromptError } from './RuntimeError'
 import { Status } from './Status'
+import { bang } from 'src/utils/misc/bang'
 
 export type ImageAndMask = HasSingle_IMAGE & HasSingle_MASK
 
@@ -95,7 +94,7 @@ export class Runtime<FIELDS extends WidgetDict = any> {
     get schema() { return this.st.schema } // prettier-ignore
 
     /** the default app's ComfyUI graph we're manipulating */
-    get workflow(): GraphL {
+    get workflow(): ComfyWorkflowL {
         return this.step.outputWorkflow.item
     }
 
@@ -163,13 +162,11 @@ export class Runtime<FIELDS extends WidgetDict = any> {
             console.error('🌠', (error as any as Error).name)
             console.error('🌠', (error as any as Error).message)
             console.error('🌠', 'RUN FAILURE')
-            const graphID = error instanceof InvalidPromptError ? error.graph.id : undefined
-            // insert an error into the output
-            this.step.addOutput({
-                type: 'runtimeError',
+            this.st.db.runtimeErrors.create({
                 message: error.message,
                 infos: error,
-                graphID,
+                graphID: this.workflow.id,
+                stepID: this.step.id,
             })
             return Status.Failure
         }
@@ -184,11 +181,11 @@ export class Runtime<FIELDS extends WidgetDict = any> {
     /** run an imagemagick convert action */
     imagemagicConvert = (
         //
-        img: ImageL,
+        img: MediaImageL,
         partialCmd: string,
         suffix: string,
     ): string => {
-        const pathA = img.localAbsolutePath
+        const pathA = img.absPath
         // 🔴 wait
         const pathB = `${pathA}.${suffix}.png`
         const cmd = `convert "${pathA}" ${partialCmd} "${pathB}"`
@@ -201,11 +198,14 @@ export class Runtime<FIELDS extends WidgetDict = any> {
 
     /** list of all images produed over the whole script execution */
     // generatedImages: ImageL[] = []
-    get generatedImages(): ImageL[] {
+    get lastImage(): Maybe<MediaImageL> {
+        return this.generatedImages[this.generatedImages.length - 1]
+    }
+    get generatedImages(): MediaImageL[] {
         return this.step.generatedImages
     }
-    get firstImage() { return this.generatedImages[0] } // prettier-ignore
-    get lastImage() { return this.generatedImages[this.generatedImages.length - 1] } // prettier-ignore
+    // get firstImage() { return this.generatedImages[0] } // prettier-ignore
+    // get lastImage() { return this.generatedImages[this.generatedImages.length - 1] } // prettier-ignore
 
     folder: AbsolutePath
 
@@ -228,33 +228,60 @@ export class Runtime<FIELDS extends WidgetDict = any> {
     }
 
     // ------------------------------------------------------------------------------------
+
+    output_GaussianSplat = (p: { url: string }) => {
+        this.st.db.media_splats.create({
+            url: p.url,
+            stepID: this.step.id,
+        })
+    }
     /** output a 3d scene from an image and its displacement and depth maps */
-    output_3dImage = (p: { image: string; depth: string; normal: string }) => {
-        const image = this.generatedImages //
-            .find((i) => i.data.imageInfos?.filename.startsWith(p.image))
-        const depth = this.generatedImages //
-            .find((i) => i.data.imageInfos?.filename.startsWith(p.depth))
-        const normal = this.generatedImages //
-            .find((i) => i.data.imageInfos?.filename.startsWith(p.normal))
+    output_3dImage = (p: {
+        //
+        image: string
+        depth: string
+        normal: string
+    }) => {
+        const image = this.generatedImages.find((i) => i.filename.startsWith(p.image))
+        const depth = this.generatedImages.find((i) => i.filename.startsWith(p.depth))
+        const normal = this.generatedImages.find((i) => i.filename.startsWith(p.normal))
         if (image == null) throw new Error(`image not found: ${p.image}`)
         if (depth == null) throw new Error(`image not found: ${p.image}`)
         if (normal == null) throw new Error(`image not found: ${p.image}`)
-        this.step.addOutput({
-            type: 'displaced-image',
+        this.st.db.media_3d_displacement.create({
+            // type: 'displaced-image',
             width: image.data.width ?? 512,
             height: image.data.height ?? 512,
             image: image.url,
             depthMap: depth.url,
             normalMap: normal.url,
+            stepID: this.step.id,
         })
-        this.st.layout.FOCUS_OR_CREATE('DisplacedImage', {
-            width: image.data.width ?? 512,
-            height: image.data.height ?? 512,
-            image: image.url,
-            depthMap: depth.url,
-            normalMap: normal.url,
-        })
+        console.log('🟢🟢🟢🟢🟢🟢 displaced')
+        // this.st.layout.FOCUS_OR_CREATE('DisplacedImage', {
+        //     width: image.data.width ?? 512,
+        //     height: image.data.height ?? 512,
+        //     image: image.url,
+        //     depthMap: depth.url,
+        //     normalMap: normal.url,
+        // })
     }
+
+    // ------------------------------------------------------------------------------------
+    // output_image = (p: { url: string }) => {
+    //     const img = this.st.db.images.create({
+    //         downloaded: true,
+    //         localFilePath: './foobbabbababa',
+    //         comfyImageInfo: { filename: 'test' },
+    //     })
+    //     this.st.layout.FOCUS_OR_CREATE('DisplacedImage', {
+    //         width: image.data.width ?? 512,
+    //         height: image.data.height ?? 512,
+    //         image: image.url,
+    //         depthMap: depth.url,
+    //         normalMap: normal.url,
+    //     })
+    // }
 
     output_File = async (path: RelativePath, content: string): Promise<void> => {
         const absPath = this.st.resolve(this.folder, path)
@@ -262,13 +289,28 @@ export class Runtime<FIELDS extends WidgetDict = any> {
     }
 
     output_HTML = (p: { htmlContent: string; title: string }) => {
-        this.step.addOutput({ type: 'show-html', content: p.htmlContent, title: p.title })
+        this.st.db.media_texts.create({
+            kind: 'html',
+            content: p.htmlContent,
+            stepID: this.step.id,
+        })
+        // this.step.addOutput({
+        //     type: 'show-html',
+        //     content: p.htmlContent,
+        //     title: p.title,
+        // })
         // this.st.broadCastToAllClients({ type: 'show-html', content: p.htmlContent, title: p.title })
     }
 
-    output_Markdown = (p: { title: string; markdownContent: string }) => {
-        const htmlContent = marked.parse(p.markdownContent)
-        this.step.addOutput({ type: 'show-html', content: htmlContent, title: p.title })
+    output_Markdown = (markdownContent: string) => {
+        this.st.db.media_texts.create({
+            kind: 'markdown',
+            content: markdownContent,
+            stepID: this.step.id,
+        })
+
+        // const htmlContent = marked.parse(p.markdownContent)
+        // this.step.addOutput({ type: 'show-html', content: htmlContent, title: p.title })
         // this.st.broadCastToAllClients({ type: 'show-html', content: htmlContent, title: p.title })
     }
     // ===================================================================================================
@@ -287,75 +329,36 @@ export class Runtime<FIELDS extends WidgetDict = any> {
     static VideoCounter = 1
     createAnimation = async (
         /** image to incldue (defaults to all images generated in the fun) */
-        source?: ImageL[],
+        source?: MediaImageL[],
         /** FPS (e.g. 60, 30, etc.) default is 30 */
         inputFPS = 30,
         opts: { transparent?: Maybe<boolean> } = {},
     ): Promise<void> => {
+        // 1. path
         console.log('🎥 creating animation')
+
+        // 2. ensure we have enough outputs
+        const images = source ?? this.generatedImages
+        if (images.length === 1) return this.step.recordError(`only one image to create animation`, {})
+        if (images.length === 0)
+            return this.step.recordError(`no images to create animation; did you forget to call prompt() first ?`, {})
+
+        console.info(`🎥 awaiting all files to be ready locally...`)
+        await Promise.all(images.map((i) => i.finished))
+        console.info(`🎥 all files are ready locally`)
+
         const outputAbsPath = this.st.cacheFolderPath
         const targetVideoAbsPath = asAbsolutePath(path.join(outputAbsPath, `video-${Date.now()}-${Runtime.VideoCounter++}.mp4`))
         console.log('🎥 outputAbsPath', outputAbsPath)
         console.log('🎥 targetVideoAbsPath', targetVideoAbsPath)
-
-        // console.info(`target video path: ${targetVideoPath}`)
-        // console.info(`target video uri: ${targetVideoURI}`)
-        const images = source ?? this.generatedImages
-        // this.workspace.writeTextFile(targetVideoURI, JSON.stringify(currentJSON, null, 4))
-        if (images.length === 0) {
-            console.error(`no images to create animation; did you forget to call prompt() first ?`)
-            return
-        }
-        console.info(`🎥 awaiting all files to be ready locally...`)
-        await Promise.all(images.map((i) => i.finished))
-        console.info(`🎥 all files are ready locally`)
         const cwd = outputAbsPath
-        console.info(`🎥 target video path: ${targetVideoAbsPath}`)
+
+        // 4. create video
         console.info(`🎥 this.folder.path: ${this.folder}`)
         console.info(`🎥 cwd: ${cwd}`)
-
-        await createMP4FromImages(
-            images.map((i) => i.localAbsolutePath),
-            targetVideoAbsPath,
-            inputFPS,
-            cwd,
-            opts,
-        )
-        console.log('🔴', targetVideoAbsPath)
-        this.st.db.images.create({
-            localFilePath: targetVideoAbsPath,
-            type: 'video',
-        })
-        // 🔴 unfinished
-        // const fromPath = curr.webview.asWebviewUri(targetVideoURI).toString()
-        // const videoURL = this.st.absPathToURL(targetVideoAbsPath)
-        // console.info(`🎥 video url: ${videoURL}`)
-        // const content = `<video controls autoplay loop><source src="${videoURL}" type="video/mp4"></video>`
-        // this.st.broadCastToAllClients({ type: 'show-html', content, title: 'generated video' })
-        // turns a bunch of images into a gif with ffmpeg
-    }
-
-    /**
-     * ensure a model is present, and download it if needed
-     * @category robustness
-     * @alpha
-     * */
-    ensureModel = async (p: { name: string; url: string }): Promise<void> => {
-        return
-    }
-
-    /**
-     *
-     * ensure a custom onde is properly setup,
-     *  attempt to install it if the current ComfyUI does not have it
-     *  and download/clone it if needed
-     *
-     * @category robustness
-     * @alpha
-     *
-     * */
-    ensureCustomNodes = async (p: { path: string; url: string }): Promise<void> => {
-        return
+        const allAbsPaths = images.map((i) => i.absPath).filter((p) => p != null) as AbsolutePath[]
+        await createMP4FromImages(allAbsPaths, targetVideoAbsPath, inputFPS, cwd, opts)
+        this.st.db.media_images.create({ infos: { type: 'video-local-ffmpeg', absPath: targetVideoAbsPath } })
     }
 
     /**
@@ -407,13 +410,13 @@ export class Runtime<FIELDS extends WidgetDict = any> {
     loadImageAnswerAsEnum = async (ia: ImageAnswer): Promise<Enum_LoadImage_image> => {
         try {
             if (ia.type === 'CushyImage') {
-                const img = this.st.db.images.getOrThrow(ia.imageID)
+                const img = this.st.db.media_images.getOrThrow(ia.imageID)
                 // this.print(JSON.stringify(img.data, null, 3))
-                if (img.data.downloaded) {
-                    const res = await this.upload_FileAtAbsolutePath(img.localAbsolutePath)
+                if (img.absPath) {
+                    const res = await this.upload_FileAtAbsolutePath(img.absPath)
                     return res.name as Enum_LoadImage_image // 🔴
                 }
-                return img.localAbsolutePath as Enum_LoadImage_image // 🔴
+                return img.absPath as Enum_LoadImage_image // 🔴
                 // // console.log(img.data)
                 // return this.nodes.Image_Load({
                 //     image_path: img.url ?? img.localAbsolutePath,
@@ -434,16 +437,35 @@ export class Runtime<FIELDS extends WidgetDict = any> {
         throw new Error('FAILURE to load image answer as enum')
     }
 
+    loadImageAnswer2 = async (
+        ia: ImageAnswer,
+    ): Promise<{
+        img: ImageAndMask
+        width: number
+        height: number
+    }> => {
+        if (ia.type === 'CushyImage') {
+            const mediaImage = this.st.db.media_images.getOrThrow(ia.imageID)
+            // this.print(JSON.stringify(img.data, null, 3))
+            if (mediaImage.absPath) {
+                const res = await this.upload_FileAtAbsolutePath(mediaImage.absPath)
+                const img = this.nodes.LoadImage({ image: res.name as any })
+                return { img, width: bang(mediaImage.data.width), height: bang(mediaImage.data.height) }
+            }
+        }
+        throw new Error('ERROR')
+    }
+
     loadImageAnswer = async (ia: ImageAnswer): Promise<ImageAndMask> => {
         try {
             // if (ia.type === 'imagePath') {
             //     return this.nodes.WASImageLoad({ image_path: ia.absPath, RGBA: 'false' })
             // }
             if (ia.type === 'CushyImage') {
-                const img = this.st.db.images.getOrThrow(ia.imageID)
+                const img = this.st.db.media_images.getOrThrow(ia.imageID)
                 // this.print(JSON.stringify(img.data, null, 3))
-                if (img.data.downloaded) {
-                    const res = await this.upload_FileAtAbsolutePath(img.localAbsolutePath)
+                if (img.absPath) {
+                    const res = await this.upload_FileAtAbsolutePath(img.absPath)
                     // this.print(JSON.stringify(res))
 
                     const img2 = this.nodes.LoadImage({ image: res.name as any })
@@ -452,7 +474,7 @@ export class Runtime<FIELDS extends WidgetDict = any> {
                 }
                 console.log(img.data)
                 return this.nodes.Image_Load({
-                    image_path: img.url ?? img.localAbsolutePath,
+                    image_path: img.url ?? img.absPath,
                     RGBA: 'false',
                     // RGBA: p?.joinImageWithAlpha ? 'true' : 'false', // 'false',
                 })
@@ -503,10 +525,11 @@ export class Runtime<FIELDS extends WidgetDict = any> {
     print = (message: Printable) => {
         this.output_text(message)
     }
+
     output_text = (message: Printable) => {
         let msg = this.extractString(message)
         console.info(msg)
-        this.step.addOutput({ type: 'print', message: msg })
+        this.step.db.media_texts.create({ kind: 'text', content: msg, stepID: this.step.id })
     }
 
     /** upload a file from disk to the ComfyUI backend */
@@ -552,7 +575,8 @@ export class Runtime<FIELDS extends WidgetDict = any> {
     }
     /** load an image from dataURL */
     load_dataURL = async (dataURL: string): Promise<ImageAndMask> => {
-        const res = await this.st.uploader.upload_dataURL(dataURL)
+        const res: ComfyUploadImageResult = await this.st.uploader.upload_dataURL(dataURL)
+        // this.st.db.images.create({ infos:  })
         return this.loadImageAnswer({ type: 'ComfyImage', imageName: res.name })
     }
 
@@ -571,7 +595,7 @@ export class Runtime<FIELDS extends WidgetDict = any> {
     async PROMPT(p?: {
         /** defaults to numbers */
         ids?: IDNaminScheemeInPromptSentToComfyUI
-    }): Promise<PromptL> {
+    }): Promise<ComfyPromptL> {
         console.info('prompt requested')
         const step = await this.sendPromp(p?.ids ?? 'use_stringified_numbers_only')
         // this.run.cyto.animate()
@@ -580,7 +604,7 @@ export class Runtime<FIELDS extends WidgetDict = any> {
     }
 
     private _promptCounter = 0
-    private sendPromp = async (idMode: IDNaminScheemeInPromptSentToComfyUI): Promise<PromptL> => {
+    private sendPromp = async (idMode: IDNaminScheemeInPromptSentToComfyUI): Promise<ComfyPromptL> => {
         const liveGraph = this.workflow
         if (liveGraph == null) throw new Error('no graph')
         const currentJSON = deepCopyNaive(liveGraph.json_forPrompt(idMode))
@@ -636,14 +660,14 @@ export class Runtime<FIELDS extends WidgetDict = any> {
         })
         const prompmtInfo: PromptInfo = await res.json()
         // console.log('prompt status', res.status, res.statusText, prompmtInfo)
-        this.step.addOutput({ type: 'prompt', promptID: prompmtInfo.prompt_id })
+        // this.step.addOutput({ type: 'prompt', promptID: prompmtInfo.prompt_id })
         if (res.status !== 200) {
             const err = new InvalidPromptError('ComfyUI Prompt request failed', graph, prompmtInfo)
             return Promise.reject(err)
         } else {
-            const prompt = this.st.db.prompts.create({
+            const prompt = this.st.db.comfy_prompts.create({
                 id: prompmtInfo.prompt_id,
-                executed: false,
+                executed: 0,
                 graphID: graph.id,
                 stepID,
             })

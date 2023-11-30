@@ -1,6 +1,6 @@
 import type { ComfyNodeJSON } from '../types/ComfyPrompt'
 import type { NodeProgress, _WsMsgExecutedData } from '../types/ComfyWsApi'
-import type { GraphL } from '../models/Graph'
+import type { ComfyWorkflowL } from '../models/Graph'
 
 import { configure, extendObservable, makeAutoObservable, toJS } from 'mobx'
 import { ComfyNodeID } from '../types/ComfyNodeID'
@@ -74,7 +74,7 @@ export class ComfyNode<
     uidPrefixed: string
     constructor(
         //
-        public graph: GraphL,
+        public graph: ComfyWorkflowL,
         public uid: string, //  = graph.getUID(),
         jsonExt: ComfyNodeJSON,
     ) {
@@ -86,6 +86,11 @@ export class ComfyNode<
 
         // this.uidNumber = parseInt(uid) // 🔴 ugly
         this.$schema = graph.schema.nodesByNameInComfy[jsonExt.class_type]
+        if (this.$schema == null) {
+            console.log(`❌ available nodes:`, Object.keys(graph.schema.nodesByNameInComfy).join(','))
+            throw new Error(`❌ no schema found for node "${jsonExt.class_type}"`)
+            // throw new Error('')
+        }
         this.uidPrefixed = `${this.$schema.nameInCushy}_${this.uidNumber}`
         let ix = 0
 
@@ -170,7 +175,7 @@ export class ComfyNode<
     serializeValue(field: string, value: unknown): unknown {
         if (value == null) {
             const schema = this.$schema.inputs.find((i: NodeInputExt) => i.nameInComfy === field)
-            if (schema == null) throw new Error(`🔴 no schema for field "${field}" (of node ${this.$schema.nameInCushy})`)
+            if (schema == null) throw new Error(`❌ no schema for field "${field}" (of node ${this.$schema.nameInCushy})`)
             // console.log('def1=', field, schema.opts.default)
             const opts = schema.opts == null || typeof schema.opts !== 'object' ? undefined : schema.opts
             if (opts?.default != null) return opts.default

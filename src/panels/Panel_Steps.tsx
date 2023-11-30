@@ -5,7 +5,7 @@ import { StepOutputsBodyV1UI, StepOutputsV1UI } from '../outputs/StepOutputsV1UI
 
 export const Panel_Steps = observer(function StepListUI_(p: {}) {
     const st = useSt()
-    const steps = st.db.steps.values.slice(-st.__TEMPT__maxStepsToShow)
+    const steps = st.db.steps.getLastN(st.__TEMPT__maxStepsToShow)
     return (
         <div className='flex flex-col'>
             {/* <FieldAndLabelUI label='Show Last'> */}
@@ -18,7 +18,7 @@ export const Panel_Steps = observer(function StepListUI_(p: {}) {
             />
             {/* </FieldAndLabelUI> */}
             {/* </Panel> */}
-            <div className='flex flex-col-reverse flex-grow' style={{ overflow: 'auto' }}>
+            <div className='flex flex-col flex-grow' style={{ overflow: 'auto' }}>
                 {steps.map((step) => (
                     // <InView key={step.id} as='div' onChange={(inView, entry) => {}}>
                     <StepOutputsV1UI step={step} />

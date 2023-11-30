@@ -1,7 +1,8 @@
-import type { ComfyEnumDef, ComfyInputOpts, ComfyNodeSchemaJSON, ComfySchemaJSON } from '../types/ComfySchemaJSON'
+import type { ComfyEnumDef, ComfyInputOpts, ComfyNodeSchemaJSON } from '../types/ComfySchemaJSON'
 
 import { observable, toJS } from 'mobx'
 import { LiveInstance } from 'src/db/LiveInstance'
+import { ComfySchemaT } from 'src/db2/TYPES.gen'
 import { ComfyPrimitiveMapping, ComfyPrimitives } from '../core/Primitives'
 import { normalizeJSIdentifier } from '../core/normalizeJSIdentifier'
 import { CodeBuffer } from '../utils/codegen/CodeBuffer'
@@ -31,22 +32,22 @@ export type NodeOutputExt = {
 }
 
 export type EnumValue = string | boolean | number
-
-export type SchemaT = {
-    id: 'main-schema'
-    createdAt: number
-    updatedAt: number
-    spec: ComfySchemaJSON
-    embeddings: EmbeddingName[]
-}
-
-export interface SchemaL extends LiveInstance<SchemaT, SchemaL> {}
 export type EnumInfo = {
     // enumNameInComfy: string
     enumNameInCushy: EnumName
     values: EnumValue[]
     aliases: string[]
 }
+
+// export type SchemaT = {
+//     id: 'main-schema'
+//     createdAt: number
+//     updatedAt: number
+//     spec: ComfySchemaJSON
+//     embeddings: EmbeddingName[]
+// }
+
+export interface SchemaL extends LiveInstance<ComfySchemaT, SchemaL> {}
 
 export class SchemaL {
     /**
@@ -310,11 +311,8 @@ export class SchemaL {
         const b = new CodeBuffer()
         const p = b.w
 
-        // 1️⃣ if (opts.cushySrcPathPrefix == null) {
-        // 1️⃣     p(`/// <reference path="cushy.d.ts" />`)
-        // 1️⃣ }
         p('')
-        p(`import type { ComfyNode } from '${prefix}core/Node'`)
+        p(`import type { ComfyNode } from '${prefix}core/ComfyNode'`)
         p(`import type { ComfyNodeID } from '${prefix}types/ComfyNodeID'`)
         p(`import type { ComfyNodeOutput } from '${prefix}core/Slot'`)
         p(`import type { ComfyNodeSchemaJSON } from '${prefix}types/ComfySchemaJSON'`)

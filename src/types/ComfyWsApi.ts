@@ -41,14 +41,18 @@ export type _WSMsgExecutingData = { prompt_id: PromptID; node: ComfyNodeID }
 export type _WsMsgExecutedData = { node: ComfyNodeID; output: { images: ComfyImageInfo[] }; prompt_id: PromptID }
 
 // helper types
-export type ComfyUploadImageResult = { name: Enum_LoadImage_image; subfolder: string; type: string }
+export type ComfyUploadImageResult = {
+    name: Enum_LoadImage_image
+    subfolder: string
+    type: string
+}
 export type ComfyImageInfo = { filename: string; subfolder: string; type: string }
 export type NodeProgress = { value: number; max: number }
 export type ComfyStatus = { exec_info: { queue_remaining: number }; sid: string }
 
 /** payload send back when triggering a promp */
 export type UUID = Tagged<string, 'UUID'>
-export type PromptID = Branded<UUID, { PromptID: true }>
+export type PromptID = Branded<UUID, { ComfyPromptID: true }>
 export type PromptInfo = {
     prompt_id: PromptID /** uuid */
 }

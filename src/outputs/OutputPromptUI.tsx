@@ -1,33 +1,58 @@
 import { observer } from 'mobx-react-lite'
-import { Button } from 'src/rsuite/shims'
-import { ImageUI } from '../widgets/galleries/ImageUI'
-import { GraphSummaryUI } from '../widgets/workspace/GraphSummaryUI'
-import { useSt } from 'src/state/stateContext'
-import { StepOutput_Prompt } from 'src/types/MessageFromExtensionToWebview'
+import { ComfyPromptL } from 'src/models/ComfyPrompt'
 import { StepL } from 'src/models/Step'
+import { Button } from 'src/rsuite/shims'
+import { useSt } from 'src/state/stateContext'
+import { GraphSummaryUI } from '../widgets/workspace/GraphSummaryUI'
 import { OutputPreviewWrapperUI } from './OutputPreviewWrapperUI'
+import { parseFloatNoRoundingErr } from 'src/utils/misc/parseFloatNoRoundingErr'
+
+export const OutputPromptPreviewUI = observer(function OutputPromptPreviewUI_(p: { step?: Maybe<StepL>; output: ComfyPromptL }) {
+    const st = useSt()
+    const graph = p.output.graph.item
+    const size = st.gallerySizeStr
+    if (graph == null)
+        return (
+            <OutputPreviewWrapperUI output={p.output}>
+                <div>❌ ERROR</div>
+                {/* <OutputPromptUI step={p.step} output={p.output} /> */}
+            </OutputPreviewWrapperUI>
+        )
+
+    const pgr1 = graph.progressGlobal
+    // const pgr2 = graph.graphProgressCurrentNode
+    return (
+        <OutputPreviewWrapperUI output={p.output}>
+            <div tw='bg-blue-800'>
+                <div
+                    className='radial-progress'
+                    style={{
+                        // width: '100%',
+                        // height: '100%',
+                        // @ts-ignore
+                        '--value': pgr1.percent,
+                        '--size': size,
+                    }}
+                    role='progressbar'
+                >
+                    {parseFloatNoRoundingErr(pgr1.percent, 0)}%
+                </div>
+            </div>
+        </OutputPreviewWrapperUI>
+    )
+})
 
 export const OutputPromptUI = observer(function OutputPromptUI_(p: {
     //
-    step: StepL
-    output: StepOutput_Prompt
+    step?: Maybe<StepL>
+    output: ComfyPromptL
 }) {
-    const msg = p.output
+    const prompt = p.output
     const st = useSt()
-    const db = st.db
-
-    const prompt = db.prompts.get(msg.promptID)
-    const graph = prompt?.graph.item
+    const graph = prompt.graph.item
     if (graph == null) return <>no graph</>
-    // const currNode = graph.currentExecutingNode
     return (
         <div className='flex flex-col gap-1'>
-            <div className='flex flex-wrap'>
-                {prompt?.images.map((img) => (
-                    <ImageUI key={img.id} img={img} />
-                ))}
-            </div>
-            {/* {currNode && <ComfyNodeUI node={currNode} />} */}
             {graph.done ? null : (
                 <Button
                     tw='self-end'
@@ -42,36 +67,5 @@ export const OutputPromptUI = observer(function OutputPromptUI_(p: {
             )}
             <GraphSummaryUI graph={graph} />
         </div>
-    )
-})
-
-export const OutputPromptPreviewUI = observer(function OutputPromptPreviewUI_(p: { step: StepL; output: StepOutput_Prompt }) {
-    const graph = p.step.outputWorkflow.item
-    if (graph == null)
-        return (
-            <OutputPreviewWrapperUI output={p.output}>
-                <div>❌ ERROR</div>
-                <OutputPromptUI step={p.step} output={p.output} />
-            </OutputPreviewWrapperUI>
-        )
-    const pgr1 = graph.progressGlobal
-    console.log('🟢', pgr1)
-    // const pgr2 = graph.graphProgressCurrentNode
-    return (
-        <OutputPreviewWrapperUI output={p.output}>
-            <div>
-                <div
-                    className='radial-progress'
-                    style={{
-                        // @ts-ignore
-                        '--value': pgr1.percent,
-                    }}
-                    role='progressbar'
-                >
-                    {pgr1.percent}%
-                </div>
-            </div>
-            <OutputPromptUI step={p.step} output={p.output} />
-        </OutputPreviewWrapperUI>
     )
 })

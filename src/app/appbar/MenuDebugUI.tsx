@@ -21,23 +21,36 @@ export const MenuDebugUI = observer(function MenuDebugUI_(p: {}) {
                 onClick={st.restart}
                 label='Reload'
             />
+            <div tw='divider my-0' />
             <MenuItem
                 //
-                tw={[st.db.healthColor]}
+                // tw={[st.db.healthColor]}
                 onClick={() => st.db.reset()}
-                icon={<span className='text-orange-500 material-symbols-outlined'>sync</span>}
+                icon={<span className='material-symbols-outlined text-red-500'>sync</span>}
             >
-                Reset DB ({st.db.health.sizeTxt})
+                Reset DB
+                {/* ({st.db.health.sizeTxt}) */}
             </MenuItem>
             <MenuItem //
-                icon={<span className='material-symbols-outlined text-orange-500'>bug_report</span>}
+                icon={<span className='material-symbols-outlined text-red-500'>bug_report</span>}
                 onClick={st.electronUtils.toggleDevTools}
                 label='console'
             />
             <MenuItem
-                icon={<span className='material-symbols-outlined text-orange-500'>sync</span>}
+                icon={<span className='material-symbols-outlined text-red-500'>sync</span>}
                 onClick={st.fullReset_eraseConfigAndSchemaFilesAndDB}
                 label='Full Reset'
+            />
+            <div tw='divider my-0' />
+            <MenuItem //
+                icon={<span className='material-symbols-outlined text-purple-500'>storage</span>}
+                onClick={st.db.migrate}
+                label='Migrate'
+            />
+            <MenuItem //
+                icon={<span className='material-symbols-outlined text-purple-500'>group_work</span>}
+                onClick={st.db.runCodegen}
+                label='CodeGen'
             />
         </Dropdown>
     )

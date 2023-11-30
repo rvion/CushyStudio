@@ -1,4 +1,3 @@
-import type { AbsolutePath, RelativePath } from 'src/utils/fs/BrandedPaths'
 import type { STATE } from '../state/state'
 
 import { exec } from 'child_process'
@@ -33,12 +32,6 @@ type ManagedFolderConfig = {
 
     /** can be uninstalled */
     canBeUninstalled: boolean
-
-    /**
-     * allow you to specify the name of the beta branch if you have one
-     * so early adopters can opt-out for early features
-     * */
-    betaBranch?: string
 }
 
 export class GitManagedFolder {

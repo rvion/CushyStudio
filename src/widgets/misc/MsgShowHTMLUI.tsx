@@ -4,16 +4,15 @@ import { useLayoutEffect, useMemo } from 'react'
 // @ts-ignore
 import { createPortal } from 'react-dom'
 import { renderMinimap } from 'src/widgets/minimap/Minimap'
-import { GraphL } from 'src/models/Graph'
+import { ComfyWorkflowL } from 'src/models/Graph'
 
-export const GraphPreviewUI = observer(function MsgShowHTMLUI_(p: { graph: GraphL }) {
+export const GraphPreviewUI = observer(function MsgShowHTMLUI_(p: { graph: ComfyWorkflowL }) {
     const graph = p.graph
     const elMap = document.querySelector('#map')
+    const cyto = graph.json_cyto
 
     // 1. trigger cyto update (🔶 this is asynchronous)
-    useMemo(() => graph.updateCyto(), [graph])
-
-    const cyto = graph.currentCyto
+    // useMemo(() => graph.updateCyto(), [graph])
 
     // 2. once cyto is done
     useLayoutEffect(() => {

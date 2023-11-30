@@ -1,9 +1,9 @@
+import type { ComfyWorkflowL } from 'src/models/Graph'
 import { observer } from 'mobx-react-lite'
 import { Button, Tooltip, Whisper } from 'src/rsuite/shims'
-import type { GraphID, GraphL } from 'src/models/Graph'
 import { useSt } from '../../state/stateContext'
 
-export const ButtonOpenInComfyUI = observer(function ButtonOpenInComfyUI_(p: { graph: GraphL | GraphID }) {
+export const ButtonOpenInComfyUI = observer(function ButtonOpenInComfyUI_(p: { graph: ComfyWorkflowL | GraphID }) {
     let graphOrGraphID = p.graph
     const st = useSt()
     const graph =
@@ -25,7 +25,7 @@ export const ButtonOpenInComfyUI = observer(function ButtonOpenInComfyUI_(p: { g
                 onClick={async (ev) => {
                     ev.preventDefault()
                     ev.stopPropagation()
-                    const prompt = await graph?.json_workflow()
+                    const prompt = graph?.json_workflow()
                     if (prompt == null) return
                     st.layout.FOCUS_OR_CREATE('ComfyUI', { litegraphJson: prompt })
                     // st.setAction({ type: 'comfy', json: prompt })

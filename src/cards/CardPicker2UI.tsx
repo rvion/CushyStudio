@@ -6,10 +6,9 @@ import { Fragment } from 'react'
 import { useSt } from '../state/stateContext'
 import { PkgHeaderUI } from './PkgHeaderUI'
 import { AppIllustrationUI } from './fancycard/AppIllustrationUI'
-import { AppPath } from './CardPath'
 import { RevealUI } from 'src/rsuite/RevealUI'
 
-export const ActionPackUI = observer(function ActionPackUI_(p: { deck: Package }) {
+export const PkgUI = observer(function ActionPackUI_(p: { deck: Package }) {
     const pkg: Package = p.deck
 
     return (
@@ -64,7 +63,8 @@ export const AppEntryUI = observer(function AppEntryUI_(p: { app: LibraryFile })
                 ev.preventDefault()
                 ev.stopPropagation()
                 const actionPath = app.relPath
-                st.layout.openApp(actionPath)
+                st.layout.openAppInMainPanel(actionPath)
+                // st.layout.openAppInNewPanel(actionPath)
             }}
         >
             <div tw='pl'>

@@ -1,4 +1,3 @@
-import type { AbsolutePath } from 'src/utils/fs/BrandedPaths'
 import JSON5 from 'json5'
 
 import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'fs'
@@ -8,13 +7,13 @@ import { basename, dirname, join } from 'pathe'
 import { readableStringify } from '../utils/formatters/stringifyReadable'
 import { bang } from '../utils/misc/bang'
 import { asAbsolutePath } from '../utils/fs/pathUtils'
-import { ZodSchema } from 'zod'
+// import { ZodSchema } from 'zod'
 
 export type PersistedJSONInfo<T extends object> = {
     path: AbsolutePath
     init: () => T
     maxLevel?: number
-    schema?: ZodSchema<T>
+    // schema?: ZodSchema<T>
     /** practical way to attempt to fix the config file if it's invalid */
     fixup?: (self: JsonFile<T>) => void
 }
