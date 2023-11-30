@@ -29,7 +29,7 @@ export const Panel_Output = observer(function Panel_Output_(p: {}) {
     const st = useSt()
     const selectedStep = st.focusedStepL
     if (selectedStep == null) return null
-    const out = st.hovered ?? st.pinned ?? selectedStep.lastOutput
+    const out = st.hovered ?? st.focusedStepOutputID ?? selectedStep.lastOutput
     return (
         <div
             tw={[
@@ -52,7 +52,7 @@ export const SideOutputListUI = observer(function SideOutputListUI_(p: {}) {
     const selectedStep = st.focusedStepL
     const size = st.gallerySizeStr
     return (
-        <div tw={[dir, 'flex gap-0.5 overflow-auto flex-shrink-0 bg-base-200 items-center']}>
+        <div tw={[dir, 'flex gap-0.5 p-1 overflow-auto flex-shrink-0 bg-base-300 items-center']}>
             <RevealUI tw='self-start' disableHover>
                 <div style={{ width: size, height: size, lineHeight: size }} tw='btn h-full'>
                     <span className='material-symbols-outlined'>settings</span>

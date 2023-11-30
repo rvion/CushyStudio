@@ -13,7 +13,7 @@ export const Panel_Outputs = observer(function Panel_Outputs_(p: {}) {
             {/* <FieldAndLabelUI label='Show Last'> */}
             <div className='flex'>
                 <GalleryControlsUI>
-                    <FieldAndLabelUI label='Steps'>
+                    <FieldAndLabelUI label='Number of items to display'>
                         <Slider
                             style={{ width: '5rem' }}
                             min={1}

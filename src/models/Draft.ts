@@ -11,29 +11,9 @@ import { __FAIL, __OK, type Result } from 'src/types/Either'
 
 export type FormPath = (string | number)[]
 
-// export type DraftID = Branded<string, { DraftID: true }>
-// export const asDraftID = (s: string): DraftID => s as any
-// export type DraftT = {
-//     id: DraftID /** form that lead to creating this Draft */
-//     createdAt: number
-//     updatedAt: number
-
-//     // presentation
-//     title: string
-
-//     // action
-//     appPath: AppPath
-//     appParams: any
-
-//     // starting graph
-//     // graphID: GraphID
-// }
-
 /** a thin wrapper around a single Draft somewhere in a .ts file */
 export interface DraftL extends LiveInstance<DraftT, DraftL> {}
 export class DraftL {
-    // graph = new LiveRef<this, GraphL>(this, 'graphID', 'graphs')
-
     // 🔴 HACKY
     shouldAutoStart = false
 
@@ -53,7 +33,11 @@ export class DraftL {
     }
 
     start = (): StepL => {
+        // ----------------------------------------
+        // 🔴 2023-11-30 rvion:: TEMPORPARY HACKS
         this.st.focusedStepID = null
+        this.st.focusedStepOutputID = null
+        // ----------------------------------------
 
         // 1. ensure req valid (TODO: validate)
         const req = this.gui.value

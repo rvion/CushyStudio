@@ -49,7 +49,7 @@ export class STATE {
     /** hack to help closing prompt completions */
     currentPromptFocused: Maybe<HTMLDivElement> = null
 
-    __TEMPT__maxStepsToShow = 30
+    __TEMPT__maxStepsToShow = 10
 
     //file utils that need to be setup first because
     resolveFromRoot = (relativePath: RelativePath): AbsolutePath => asAbsolutePath(join(this.rootPath, relativePath))
@@ -118,7 +118,6 @@ export class STATE {
     configFile: JsonFile<ConfigFile>
     updater: GitManagedFolder
     hovered: Maybe<StepOutput> = null
-    pinned: Maybe<StepOutput> = null
     electronUtils: ElectronUtils
     library: Library
     schemaReady = new ManualPromise<true>()
@@ -565,6 +564,7 @@ export class STATE {
         return '🔴'
     }
 
+    focusedStepOutputID: Maybe<StepOutput> = null
     focusedStepID: Maybe<StepID> = null
     get focusedStepL(): Maybe<StepL> {
         if (this.focusedStepID) return this.db.steps.get(this.focusedStepID) ?? this.db.steps.last()

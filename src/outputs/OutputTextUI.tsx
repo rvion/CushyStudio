@@ -6,6 +6,7 @@ import { OutputPreviewWrapperUI } from './OutputPreviewWrapperUI'
 import { useSt } from 'src/state/stateContext'
 import { TabsUI } from 'src/widgets/misc/TabUI'
 import { TabUI } from 'src/app/layout/TabUI'
+import { Panel } from 'src/rsuite/shims'
 
 export const OutputTextPreviewUI = observer(function OutputTextPreviewUI_(p: { step?: Maybe<StepL>; output: StepOutput_Text }) {
     const st = useSt()
@@ -57,10 +58,11 @@ export const OutputTextUI = observer(function OutputTextUI_(p: { step?: Maybe<St
 
     if (p.output.data.kind === 'text')
         return (
-            <div tw='card'>
+            <Panel className='w-full m-2'>
                 {/*  */}
+                <div tw='font-bold text-xl'>Text:</div>
                 {p.output.data.content}
-            </div>
+            </Panel>
         )
 
     return <div>unknown content</div>

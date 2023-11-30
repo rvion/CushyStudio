@@ -23,18 +23,20 @@ export const OutputPromptPreviewUI = observer(function OutputPromptPreviewUI_(p:
     // const pgr2 = graph.graphProgressCurrentNode
     return (
         <OutputPreviewWrapperUI output={p.output}>
-            <div
-                className='radial-progress'
-                style={{
-                    // width: '100%',
-                    // height: '100%',
-                    // @ts-ignore
-                    '--value': pgr1.percent,
-                    '--size': size,
-                }}
-                role='progressbar'
-            >
-                {parseFloatNoRoundingErr(pgr1.percent, 0)}%
+            <div tw='bg-blue-800'>
+                <div
+                    className='radial-progress'
+                    style={{
+                        // width: '100%',
+                        // height: '100%',
+                        // @ts-ignore
+                        '--value': pgr1.percent,
+                        '--size': size,
+                    }}
+                    role='progressbar'
+                >
+                    {parseFloatNoRoundingErr(pgr1.percent, 0)}%
+                </div>
             </div>
         </OutputPreviewWrapperUI>
     )
