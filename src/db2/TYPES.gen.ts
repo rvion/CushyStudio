@@ -1,11 +1,11 @@
 import * as T from './TYPES_json'
 import { Type } from '@sinclair/typebox'
 
-export const insertMigrationsSQL = 'insert into migrations (id, name, createdAt, sql) values (@id, @name, @createdAt, @sql)'
+
 export const asMigrationsID = (s: string): MigrationsID => s as any
 export type MigrationsT = {
     /** @default: null, sqlType: TEXT */
-    id?: MigrationsID;
+    id?: Maybe<MigrationsID>;
 
     /** @default: null, sqlType: TEXT */
     name: string;
@@ -18,16 +18,24 @@ export type MigrationsT = {
 
 }
 export const MigrationsSchema = Type.Object({
-    id: Type.String(),
-    name: Type.Optional(Type.String()),
-    createdAt: Type.Optional(Type.Number()),
-    sql: Type.Optional(Type.String()),
+    id: Type.Optional(T.Nullable(Type.String())),
+    name: Type.String(),
+    createdAt: Type.Number(),
+    sql: Type.String(),
 },{ additionalProperties: false })
-export const insertUsersSQL = 'insert into users (id, firstName, lastName, email, passwordHash) values (@id, @firstName, @lastName, @email, @passwordHash)'
+
+export const MigrationsFields = {
+    id: {cid:0,name:'id',type:'TEXT',notnull:0,dflt_value:null,pk:1},
+    name: {cid:1,name:'name',type:'TEXT',notnull:1,dflt_value:null,pk:0},
+    createdAt: {cid:2,name:'createdAt',type:'INTEGER',notnull:1,dflt_value:null,pk:0},
+    sql: {cid:3,name:'sql',type:'TEXT',notnull:1,dflt_value:null,pk:0},
+}
+
+
 export const asUsersID = (s: string): UsersID => s as any
 export type UsersT = {
     /** @default: null, sqlType: INTEGER */
-    id?: UsersID;
+    id?: Maybe<UsersID>;
 
     /** @default: null, sqlType: TEXT */
     firstName: string;
@@ -43,13 +51,22 @@ export type UsersT = {
 
 }
 export const UsersSchema = Type.Object({
-    id: Type.Number(),
-    firstName: Type.Optional(Type.String()),
-    lastName: Type.Optional(Type.String()),
-    email: Type.Optional(Type.String()),
-    passwordHash: Type.Optional(Type.String()),
+    id: Type.Optional(T.Nullable(Type.Number())),
+    firstName: Type.String(),
+    lastName: Type.String(),
+    email: Type.String(),
+    passwordHash: Type.String(),
 },{ additionalProperties: false })
-export const insertGraphSQL = 'insert into graph (id, createdAt, updatedAt, comfyPromptJSON) values (@id, @createdAt, @updatedAt, @comfyPromptJSON)'
+
+export const UsersFields = {
+    id: {cid:0,name:'id',type:'INTEGER',notnull:0,dflt_value:null,pk:1},
+    firstName: {cid:1,name:'firstName',type:'TEXT',notnull:1,dflt_value:null,pk:0},
+    lastName: {cid:2,name:'lastName',type:'TEXT',notnull:1,dflt_value:null,pk:0},
+    email: {cid:3,name:'email',type:'TEXT',notnull:1,dflt_value:null,pk:0},
+    passwordHash: {cid:4,name:'passwordHash',type:'TEXT',notnull:1,dflt_value:null,pk:0},
+}
+
+
 export const asGraphID = (s: string): GraphID => s as any
 export type GraphT = {
     /** @default: "hex(randomblob(16))", sqlType: string */
@@ -64,14 +81,27 @@ export type GraphT = {
     /** @default: null, sqlType: json */
     comfyPromptJSON: T.Graph_comfyPromptJSON;
 
+    /** @default: null, sqlType: TEXT */
+    stepID?: Maybe<StepID>;
+
 }
 export const GraphSchema = Type.Object({
-    id: Type.Optional(Type.String()),
-    createdAt: Type.Optional(Type.Number()),
-    updatedAt: Type.Optional(Type.Number()),
-    comfyPromptJSON: Type.Optional(T.Graph_comfyPromptJSON_Schema),
+    id: Type.String(),
+    createdAt: Type.Number(),
+    updatedAt: Type.Number(),
+    comfyPromptJSON: T.Graph_comfyPromptJSON_Schema,
+    stepID: Type.Optional(T.Nullable(Type.String())),
 },{ additionalProperties: false })
-export const insertDraftSQL = 'insert into draft (id, createdAt, updatedAt, title, appPath, appParams) values (@id, @createdAt, @updatedAt, @title, @appPath, @appParams)'
+
+export const GraphFields = {
+    id: {cid:0,name:'id',type:'string',notnull:1,dflt_value:'hex(randomblob(16))',pk:1},
+    createdAt: {cid:1,name:'createdAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
+    updatedAt: {cid:2,name:'updatedAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
+    comfyPromptJSON: {cid:3,name:'comfyPromptJSON',type:'json',notnull:1,dflt_value:null,pk:0},
+    stepID: {cid:4,name:'stepID',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+}
+
+
 export const asDraftID = (s: string): DraftID => s as any
 export type DraftT = {
     /** @default: "hex(randomblob(16))", sqlType: string */
@@ -84,7 +114,7 @@ export type DraftT = {
     updatedAt: number;
 
     /** @default: null, sqlType: TEXT */
-    title?: string;
+    title?: Maybe<string>;
 
     /** @default: null, sqlType: TEXT */
     appPath: AppPath;
@@ -94,14 +124,24 @@ export type DraftT = {
 
 }
 export const DraftSchema = Type.Object({
-    id: Type.Optional(Type.String()),
-    createdAt: Type.Optional(Type.Number()),
-    updatedAt: Type.Optional(Type.Number()),
-    title: Type.String(),
-    appPath: Type.Optional(Type.String()),
-    appParams: Type.Optional(T.Draft_appParams_Schema),
+    id: Type.String(),
+    createdAt: Type.Number(),
+    updatedAt: Type.Number(),
+    title: Type.Optional(T.Nullable(Type.String())),
+    appPath: Type.String(),
+    appParams: T.Draft_appParams_Schema,
 },{ additionalProperties: false })
-export const insertProjectSQL = 'insert into project (id, createdAt, updatedAt, name, rootGraphID, currentApp, currentDraftID) values (@id, @createdAt, @updatedAt, @name, @rootGraphID, @currentApp, @currentDraftID)'
+
+export const DraftFields = {
+    id: {cid:0,name:'id',type:'string',notnull:1,dflt_value:'hex(randomblob(16))',pk:1},
+    createdAt: {cid:1,name:'createdAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
+    updatedAt: {cid:2,name:'updatedAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
+    title: {cid:3,name:'title',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    appPath: {cid:4,name:'appPath',type:'TEXT',notnull:1,dflt_value:null,pk:0},
+    appParams: {cid:5,name:'appParams',type:'json',notnull:1,dflt_value:null,pk:0},
+}
+
+
 export const asProjectID = (s: string): ProjectID => s as any
 export type ProjectT = {
     /** @default: "hex(randomblob(16))", sqlType: string */
@@ -114,28 +154,39 @@ export type ProjectT = {
     updatedAt: number;
 
     /** @default: null, sqlType: TEXT */
-    name?: string;
+    name?: Maybe<string>;
 
     /** @default: null, sqlType: TEXT */
     rootGraphID: GraphID;
 
     /** @default: null, sqlType: TEXT */
-    currentApp?: string;
+    currentApp?: Maybe<string>;
 
     /** @default: null, sqlType: TEXT */
-    currentDraftID?: DraftID;
+    currentDraftID?: Maybe<DraftID>;
 
 }
 export const ProjectSchema = Type.Object({
-    id: Type.Optional(Type.String()),
-    createdAt: Type.Optional(Type.Number()),
-    updatedAt: Type.Optional(Type.Number()),
-    name: Type.String(),
-    rootGraphID: Type.Optional(Type.String()),
-    currentApp: Type.String(),
-    currentDraftID: Type.String(),
+    id: Type.String(),
+    createdAt: Type.Number(),
+    updatedAt: Type.Number(),
+    name: Type.Optional(T.Nullable(Type.String())),
+    rootGraphID: Type.String(),
+    currentApp: Type.Optional(T.Nullable(Type.String())),
+    currentDraftID: Type.Optional(T.Nullable(Type.String())),
 },{ additionalProperties: false })
-export const insertStepSQL = 'insert into step (id, createdAt, updatedAt, name, appPath, formResult, formSerial, outputGraphID, status) values (@id, @createdAt, @updatedAt, @name, @appPath, @formResult, @formSerial, @outputGraphID, @status)'
+
+export const ProjectFields = {
+    id: {cid:0,name:'id',type:'string',notnull:1,dflt_value:'hex(randomblob(16))',pk:1},
+    createdAt: {cid:1,name:'createdAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
+    updatedAt: {cid:2,name:'updatedAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
+    name: {cid:3,name:'name',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    rootGraphID: {cid:4,name:'rootGraphID',type:'TEXT',notnull:1,dflt_value:null,pk:0},
+    currentApp: {cid:5,name:'currentApp',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    currentDraftID: {cid:6,name:'currentDraftID',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+}
+
+
 export const asStepID = (s: string): StepID => s as any
 export type StepT = {
     /** @default: "hex(randomblob(16))", sqlType: string */
@@ -148,7 +199,7 @@ export type StepT = {
     updatedAt: number;
 
     /** @default: null, sqlType: TEXT */
-    name?: string;
+    name?: Maybe<string>;
 
     /** @default: null, sqlType: TEXT */
     appPath: AppPath;
@@ -167,17 +218,30 @@ export type StepT = {
 
 }
 export const StepSchema = Type.Object({
-    id: Type.Optional(Type.String()),
-    createdAt: Type.Optional(Type.Number()),
-    updatedAt: Type.Optional(Type.Number()),
-    name: Type.String(),
-    appPath: Type.Optional(Type.String()),
-    formResult: Type.Optional(T.Step_formResult_Schema),
-    formSerial: Type.Optional(T.Step_formSerial_Schema),
-    outputGraphID: Type.Optional(Type.String()),
-    status: Type.Optional(Type.String()),
+    id: Type.String(),
+    createdAt: Type.Number(),
+    updatedAt: Type.Number(),
+    name: Type.Optional(T.Nullable(Type.String())),
+    appPath: Type.String(),
+    formResult: T.Step_formResult_Schema,
+    formSerial: T.Step_formSerial_Schema,
+    outputGraphID: Type.String(),
+    status: Type.String(),
 },{ additionalProperties: false })
-export const insertComfyPromptSQL = 'insert into comfy_prompt (id, createdAt, updatedAt, stepID, graphID, executed, error) values (@id, @createdAt, @updatedAt, @stepID, @graphID, @executed, @error)'
+
+export const StepFields = {
+    id: {cid:0,name:'id',type:'string',notnull:1,dflt_value:'hex(randomblob(16))',pk:1},
+    createdAt: {cid:1,name:'createdAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
+    updatedAt: {cid:2,name:'updatedAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
+    name: {cid:3,name:'name',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    appPath: {cid:4,name:'appPath',type:'TEXT',notnull:1,dflt_value:null,pk:0},
+    formResult: {cid:5,name:'formResult',type:'json',notnull:1,dflt_value:null,pk:0},
+    formSerial: {cid:6,name:'formSerial',type:'json',notnull:1,dflt_value:null,pk:0},
+    outputGraphID: {cid:7,name:'outputGraphID',type:'TEXT',notnull:1,dflt_value:null,pk:0},
+    status: {cid:8,name:'status',type:'TEXT',notnull:1,dflt_value:null,pk:0},
+}
+
+
 export const asComfyPromptID = (s: string): ComfyPromptID => s as any
 export type ComfyPromptT = {
     /** @default: "hex(randomblob(16))", sqlType: string */
@@ -199,19 +263,30 @@ export type ComfyPromptT = {
     executed: number;
 
     /** @default: null, sqlType: json */
-    error?: T.ComfyPrompt_error;
+    error?: Maybe<T.ComfyPrompt_error>;
 
 }
 export const ComfyPromptSchema = Type.Object({
-    id: Type.Optional(Type.String()),
-    createdAt: Type.Optional(Type.Number()),
-    updatedAt: Type.Optional(Type.Number()),
-    stepID: Type.Optional(Type.String()),
-    graphID: Type.Optional(Type.String()),
-    executed: Type.Optional(Type.Number()),
-    error: T.ComfyPrompt_error_Schema,
+    id: Type.String(),
+    createdAt: Type.Number(),
+    updatedAt: Type.Number(),
+    stepID: Type.String(),
+    graphID: Type.String(),
+    executed: Type.Number(),
+    error: Type.Optional(T.Nullable(T.ComfyPrompt_error_Schema)),
 },{ additionalProperties: false })
-export const insertComfySchemaSQL = 'insert into comfy_schema (id, createdAt, updatedAt, spec, embeddings) values (@id, @createdAt, @updatedAt, @spec, @embeddings)'
+
+export const ComfyPromptFields = {
+    id: {cid:0,name:'id',type:'string',notnull:1,dflt_value:'hex(randomblob(16))',pk:1},
+    createdAt: {cid:1,name:'createdAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
+    updatedAt: {cid:2,name:'updatedAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
+    stepID: {cid:3,name:'stepID',type:'TEXT',notnull:1,dflt_value:null,pk:0},
+    graphID: {cid:4,name:'graphID',type:'TEXT',notnull:1,dflt_value:null,pk:0},
+    executed: {cid:5,name:'executed',type:'INT',notnull:1,dflt_value:'0',pk:0},
+    error: {cid:6,name:'error',type:'json',notnull:0,dflt_value:null,pk:0},
+}
+
+
 export const asComfySchemaID = (s: string): ComfySchemaID => s as any
 export type ComfySchemaT = {
     /** @default: "hex(randomblob(16))", sqlType: string */
@@ -231,13 +306,22 @@ export type ComfySchemaT = {
 
 }
 export const ComfySchemaSchema = Type.Object({
-    id: Type.Optional(Type.String()),
-    createdAt: Type.Optional(Type.Number()),
-    updatedAt: Type.Optional(Type.Number()),
-    spec: Type.Optional(T.ComfySchema_spec_Schema),
-    embeddings: Type.Optional(T.ComfySchema_embeddings_Schema),
+    id: Type.String(),
+    createdAt: Type.Number(),
+    updatedAt: Type.Number(),
+    spec: T.ComfySchema_spec_Schema,
+    embeddings: T.ComfySchema_embeddings_Schema,
 },{ additionalProperties: false })
-export const insertMediaTextSQL = 'insert into media_text (id, createdAt, updatedAt, kind, content, stepID) values (@id, @createdAt, @updatedAt, @kind, @content, @stepID)'
+
+export const ComfySchemaFields = {
+    id: {cid:0,name:'id',type:'string',notnull:1,dflt_value:'hex(randomblob(16))',pk:1},
+    createdAt: {cid:1,name:'createdAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
+    updatedAt: {cid:2,name:'updatedAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
+    spec: {cid:3,name:'spec',type:'json',notnull:1,dflt_value:null,pk:0},
+    embeddings: {cid:4,name:'embeddings',type:'json',notnull:1,dflt_value:null,pk:0},
+}
+
+
 export const asMediaTextID = (s: string): MediaTextID => s as any
 export type MediaTextT = {
     /** @default: "hex(randomblob(16))", sqlType: string */
@@ -256,18 +340,28 @@ export type MediaTextT = {
     content: string;
 
     /** @default: null, sqlType: TEXT */
-    stepID?: StepID;
+    stepID?: Maybe<StepID>;
 
 }
 export const MediaTextSchema = Type.Object({
-    id: Type.Optional(Type.String()),
-    createdAt: Type.Optional(Type.Number()),
-    updatedAt: Type.Optional(Type.Number()),
-    kind: Type.Optional(Type.String()),
-    content: Type.Optional(Type.String()),
-    stepID: Type.String(),
+    id: Type.String(),
+    createdAt: Type.Number(),
+    updatedAt: Type.Number(),
+    kind: Type.String(),
+    content: Type.String(),
+    stepID: Type.Optional(T.Nullable(Type.String())),
 },{ additionalProperties: false })
-export const insertMediaVideoSQL = 'insert into media_video (id, createdAt, updatedAt, absPath) values (@id, @createdAt, @updatedAt, @absPath)'
+
+export const MediaTextFields = {
+    id: {cid:0,name:'id',type:'string',notnull:1,dflt_value:'hex(randomblob(16))',pk:1},
+    createdAt: {cid:1,name:'createdAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
+    updatedAt: {cid:2,name:'updatedAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
+    kind: {cid:3,name:'kind',type:'TEXT',notnull:1,dflt_value:null,pk:0},
+    content: {cid:4,name:'content',type:'TEXT',notnull:1,dflt_value:null,pk:0},
+    stepID: {cid:5,name:'stepID',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+}
+
+
 export const asMediaVideoID = (s: string): MediaVideoID => s as any
 export type MediaVideoT = {
     /** @default: "hex(randomblob(16))", sqlType: string */
@@ -280,16 +374,34 @@ export type MediaVideoT = {
     updatedAt: number;
 
     /** @default: null, sqlType: TEXT */
-    absPath?: string;
+    absPath?: Maybe<string>;
+
+    /** @default: null, sqlType: TEXT */
+    stepID?: Maybe<StepID>;
+
+    /** @default: null, sqlType: TEXT */
+    promptID?: Maybe<ComfyPromptID>;
 
 }
 export const MediaVideoSchema = Type.Object({
-    id: Type.Optional(Type.String()),
-    createdAt: Type.Optional(Type.Number()),
-    updatedAt: Type.Optional(Type.Number()),
-    absPath: Type.String(),
+    id: Type.String(),
+    createdAt: Type.Number(),
+    updatedAt: Type.Number(),
+    absPath: Type.Optional(T.Nullable(Type.String())),
+    stepID: Type.Optional(T.Nullable(Type.String())),
+    promptID: Type.Optional(T.Nullable(Type.String())),
 },{ additionalProperties: false })
-export const insertMediaImageSQL = 'insert into media_image (id, createdAt, updatedAt, width, height, star, infos, promptID, stepID) values (@id, @createdAt, @updatedAt, @width, @height, @star, @infos, @promptID, @stepID)'
+
+export const MediaVideoFields = {
+    id: {cid:0,name:'id',type:'string',notnull:1,dflt_value:'hex(randomblob(16))',pk:1},
+    createdAt: {cid:1,name:'createdAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
+    updatedAt: {cid:2,name:'updatedAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
+    absPath: {cid:3,name:'absPath',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    stepID: {cid:4,name:'stepID',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    promptID: {cid:5,name:'promptID',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+}
+
+
 export const asMediaImageID = (s: string): MediaImageID => s as any
 export type MediaImageT = {
     /** @default: "hex(randomblob(16))", sqlType: string */
@@ -302,40 +414,53 @@ export type MediaImageT = {
     updatedAt: number;
 
     /** @default: null, sqlType: INT */
-    width?: number;
+    width?: Maybe<number>;
 
     /** @default: null, sqlType: INT */
-    height?: number;
+    height?: Maybe<number>;
 
     /** @default: null, sqlType: INT */
-    star?: number;
+    star?: Maybe<number>;
 
     /** @default: null, sqlType: json */
-    infos?: T.MediaImage_infos;
+    infos?: Maybe<T.MediaImage_infos>;
 
     /** @default: null, sqlType: TEXT */
-    promptID?: ComfyPromptID;
+    promptID?: Maybe<ComfyPromptID>;
 
     /** @default: null, sqlType: TEXT */
-    stepID?: StepID;
+    stepID?: Maybe<StepID>;
 
 }
 export const MediaImageSchema = Type.Object({
-    id: Type.Optional(Type.String()),
-    createdAt: Type.Optional(Type.Number()),
-    updatedAt: Type.Optional(Type.Number()),
-    width: Type.Number(),
-    height: Type.Number(),
-    star: Type.Number(),
-    infos: T.MediaImage_infos_Schema,
-    promptID: Type.String(),
-    stepID: Type.String(),
+    id: Type.String(),
+    createdAt: Type.Number(),
+    updatedAt: Type.Number(),
+    width: Type.Optional(T.Nullable(Type.Number())),
+    height: Type.Optional(T.Nullable(Type.Number())),
+    star: Type.Optional(T.Nullable(Type.Number())),
+    infos: Type.Optional(T.Nullable(T.MediaImage_infos_Schema)),
+    promptID: Type.Optional(T.Nullable(Type.String())),
+    stepID: Type.Optional(T.Nullable(Type.String())),
 },{ additionalProperties: false })
-export const insertMedia3ddisplacedSQL = 'insert into media_3ddisplaced (id, createdAt, updatedAt, width, height, image, depthMap, normalMap) values (@id, @createdAt, @updatedAt, @width, @height, @image, @depthMap, @normalMap)'
-export const asMedia3ddisplacedID = (s: string): Media3ddisplacedID => s as any
-export type Media3ddisplacedT = {
+
+export const MediaImageFields = {
+    id: {cid:0,name:'id',type:'string',notnull:1,dflt_value:'hex(randomblob(16))',pk:1},
+    createdAt: {cid:1,name:'createdAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
+    updatedAt: {cid:2,name:'updatedAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
+    width: {cid:3,name:'width',type:'INT',notnull:0,dflt_value:null,pk:0},
+    height: {cid:4,name:'height',type:'INT',notnull:0,dflt_value:null,pk:0},
+    star: {cid:5,name:'star',type:'INT',notnull:0,dflt_value:null,pk:0},
+    infos: {cid:6,name:'infos',type:'json',notnull:0,dflt_value:null,pk:0},
+    promptID: {cid:7,name:'promptID',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    stepID: {cid:8,name:'stepID',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+}
+
+
+export const asMedia3dDisplacementID = (s: string): Media3dDisplacementID => s as any
+export type Media3dDisplacementT = {
     /** @default: "hex(randomblob(16))", sqlType: string */
-    id: Media3ddisplacedID;
+    id: Media3dDisplacementID;
 
     /** @default: "now", sqlType: INTEGER */
     createdAt: number;
@@ -344,43 +469,181 @@ export type Media3ddisplacedT = {
     updatedAt: number;
 
     /** @default: null, sqlType: INT */
-    width?: number;
+    width?: Maybe<number>;
 
     /** @default: null, sqlType: INT */
-    height?: number;
+    height?: Maybe<number>;
 
     /** @default: null, sqlType: TEXT */
-    image?: string;
+    image?: Maybe<string>;
 
     /** @default: null, sqlType: TEXT */
-    depthMap?: string;
+    depthMap?: Maybe<string>;
 
     /** @default: null, sqlType: TEXT */
-    normalMap?: string;
+    normalMap?: Maybe<string>;
+
+    /** @default: null, sqlType: TEXT */
+    stepID?: Maybe<StepID>;
+
+    /** @default: null, sqlType: TEXT */
+    promptID?: Maybe<ComfyPromptID>;
 
 }
-export const Media3ddisplacedSchema = Type.Object({
-    id: Type.Optional(Type.String()),
-    createdAt: Type.Optional(Type.Number()),
-    updatedAt: Type.Optional(Type.Number()),
-    width: Type.Number(),
-    height: Type.Number(),
-    image: Type.String(),
-    depthMap: Type.String(),
-    normalMap: Type.String(),
+export const Media3dDisplacementSchema = Type.Object({
+    id: Type.String(),
+    createdAt: Type.Number(),
+    updatedAt: Type.Number(),
+    width: Type.Optional(T.Nullable(Type.Number())),
+    height: Type.Optional(T.Nullable(Type.Number())),
+    image: Type.Optional(T.Nullable(Type.String())),
+    depthMap: Type.Optional(T.Nullable(Type.String())),
+    normalMap: Type.Optional(T.Nullable(Type.String())),
+    stepID: Type.Optional(T.Nullable(Type.String())),
+    promptID: Type.Optional(T.Nullable(Type.String())),
 },{ additionalProperties: false })
 
-export const inserts = {
-    migrations: insertMigrationsSQL,
-    users: insertUsersSQL,
-    graph: insertGraphSQL,
-    draft: insertDraftSQL,
-    project: insertProjectSQL,
-    step: insertStepSQL,
-    comfy_prompt: insertComfyPromptSQL,
-    comfy_schema: insertComfySchemaSQL,
-    media_text: insertMediaTextSQL,
-    media_video: insertMediaVideoSQL,
-    media_image: insertMediaImageSQL,
-    media_3ddisplaced: insertMedia3ddisplacedSQL,
+export const Media3dDisplacementFields = {
+    id: {cid:0,name:'id',type:'string',notnull:1,dflt_value:'hex(randomblob(16))',pk:1},
+    createdAt: {cid:1,name:'createdAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
+    updatedAt: {cid:2,name:'updatedAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
+    width: {cid:3,name:'width',type:'INT',notnull:0,dflt_value:null,pk:0},
+    height: {cid:4,name:'height',type:'INT',notnull:0,dflt_value:null,pk:0},
+    image: {cid:5,name:'image',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    depthMap: {cid:6,name:'depthMap',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    normalMap: {cid:7,name:'normalMap',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    stepID: {cid:8,name:'stepID',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    promptID: {cid:9,name:'promptID',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+}
+
+
+export const asRuntimeErrorID = (s: string): RuntimeErrorID => s as any
+export type RuntimeErrorT = {
+    /** @default: "hex(randomblob(16))", sqlType: string */
+    id: RuntimeErrorID;
+
+    /** @default: "now", sqlType: INTEGER */
+    createdAt: number;
+
+    /** @default: "now", sqlType: INTEGER */
+    updatedAt: number;
+
+    /** @default: null, sqlType: TEXT */
+    message: string;
+
+    /** @default: null, sqlType: json */
+    infos: T.RuntimeError_infos;
+
+    /** @default: null, sqlType: TEXT */
+    promptID?: Maybe<ComfyPromptID>;
+
+    /** @default: null, sqlType: TEXT */
+    graphID?: Maybe<GraphID>;
+
+    /** @default: null, sqlType: TEXT */
+    stepID?: Maybe<StepID>;
+
+}
+export const RuntimeErrorSchema = Type.Object({
+    id: Type.String(),
+    createdAt: Type.Number(),
+    updatedAt: Type.Number(),
+    message: Type.String(),
+    infos: T.RuntimeError_infos_Schema,
+    promptID: Type.Optional(T.Nullable(Type.String())),
+    graphID: Type.Optional(T.Nullable(Type.String())),
+    stepID: Type.Optional(T.Nullable(Type.String())),
+},{ additionalProperties: false })
+
+export const RuntimeErrorFields = {
+    id: {cid:0,name:'id',type:'string',notnull:1,dflt_value:'hex(randomblob(16))',pk:1},
+    createdAt: {cid:1,name:'createdAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
+    updatedAt: {cid:2,name:'updatedAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
+    message: {cid:3,name:'message',type:'TEXT',notnull:1,dflt_value:null,pk:0},
+    infos: {cid:4,name:'infos',type:'json',notnull:1,dflt_value:null,pk:0},
+    promptID: {cid:5,name:'promptID',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    graphID: {cid:6,name:'graphID',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    stepID: {cid:7,name:'stepID',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+}
+
+
+export const schemas = {
+    migrations: new T.TableInfo(
+        'migrations',
+        'Migrations',
+        MigrationsFields,
+        MigrationsSchema,
+    ),
+    users: new T.TableInfo(
+        'users',
+        'Users',
+        UsersFields,
+        UsersSchema,
+    ),
+    graph: new T.TableInfo(
+        'graph',
+        'Graph',
+        GraphFields,
+        GraphSchema,
+    ),
+    draft: new T.TableInfo(
+        'draft',
+        'Draft',
+        DraftFields,
+        DraftSchema,
+    ),
+    project: new T.TableInfo(
+        'project',
+        'Project',
+        ProjectFields,
+        ProjectSchema,
+    ),
+    step: new T.TableInfo(
+        'step',
+        'Step',
+        StepFields,
+        StepSchema,
+    ),
+    comfy_prompt: new T.TableInfo(
+        'comfy_prompt',
+        'ComfyPrompt',
+        ComfyPromptFields,
+        ComfyPromptSchema,
+    ),
+    comfy_schema: new T.TableInfo(
+        'comfy_schema',
+        'ComfySchema',
+        ComfySchemaFields,
+        ComfySchemaSchema,
+    ),
+    media_text: new T.TableInfo(
+        'media_text',
+        'MediaText',
+        MediaTextFields,
+        MediaTextSchema,
+    ),
+    media_video: new T.TableInfo(
+        'media_video',
+        'MediaVideo',
+        MediaVideoFields,
+        MediaVideoSchema,
+    ),
+    media_image: new T.TableInfo(
+        'media_image',
+        'MediaImage',
+        MediaImageFields,
+        MediaImageSchema,
+    ),
+    media_3d_displacement: new T.TableInfo(
+        'media_3d_displacement',
+        'Media3dDisplacement',
+        Media3dDisplacementFields,
+        Media3dDisplacementSchema,
+    ),
+    runtime_error: new T.TableInfo(
+        'runtime_error',
+        'RuntimeError',
+        RuntimeErrorFields,
+        RuntimeErrorSchema,
+    ),
 }

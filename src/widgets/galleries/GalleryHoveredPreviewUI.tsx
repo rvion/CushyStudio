@@ -2,6 +2,7 @@ import { observer } from 'mobx-react-lite'
 import { CSSProperties } from 'react'
 import { useDragLayer } from 'react-dnd'
 import { useSt } from '../../state/stateContext'
+import { OutputUI } from 'src/outputs/OutputUI'
 
 export const GalleryHoveredPreviewUI = observer(function GalleryHoveredPreviewUI_(p: {}) {
     const st = useSt()
@@ -54,6 +55,7 @@ export const GalleryHoveredPreviewUI = observer(function GalleryHoveredPreviewUI
                     // background: 'red',
                 }}
             >
+                <OutputUI output={hovered} />
                 {/* METADATA */}
                 {/* <div className='absolute bottom-0 [background:#00000033] text-xs'>
                     <div className='flex whitespace-nowrap'>URL = {hovered.url}</div>
@@ -63,7 +65,7 @@ export const GalleryHoveredPreviewUI = observer(function GalleryHoveredPreviewUI
                     <div className='flex whitespace-nowrap'>promptID = {hovered.prompt.id}</div>
                 </div> */}
                 {/* IMAGE */}
-                {hovered.type === 'video' ? (
+                {/* {hovered.type === 'video' ? (
                     <video
                         style={{
                             objectFit: 'contain',
@@ -82,8 +84,7 @@ export const GalleryHoveredPreviewUI = observer(function GalleryHoveredPreviewUI
                             ...extraProps,
                         }}
                     />
-                )}
-                )
+                )} */}
             </div>
         </div>
     )

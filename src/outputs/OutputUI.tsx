@@ -1,4 +1,4 @@
-import type { StepL } from 'src/models/Step'
+import { StepL } from 'src/models/Step'
 
 import { observer } from 'mobx-react-lite'
 import { StepOutput } from 'src/types/StepOutput'
@@ -13,23 +13,29 @@ import { OutputTextPreviewUI, OutputTextUI } from './OutputTextUI'
 import { OutputWorkflowPreviewUI, OutputWorkflowUI } from './OutputWorkflowUI'
 import { OutputDisplacementPreviewUI, OutputDisplacementUI } from './OutputDisplacement'
 import { OutputVideoPreviewUI, OutputVideoUI } from './OutputVideo'
+import { MediaTextL } from 'src/models/MediaText'
+import { ComfyPromptL } from 'src/models/ComfyPrompt'
+import { MediaImageL } from 'src/models/MediaImage'
+import { MediaVideoL } from 'src/models/MediaVideo'
+import { RuntimeErrorL } from 'src/models/RuntimeError'
+import { Media3dDisplacementL } from 'src/models/Media3dDisplacement'
+import { GraphL } from 'src/models/Graph'
 
 // PREVIEW -----------------------------------------------------------------------------
 // prettier-ignore
-export const OutputPreviewUI = observer(function StepOutputUI_(p: { step: StepL; output: StepOutput }) {
+export const OutputPreviewUI = observer(function StepOutputUI_(p: { step?: Maybe<StepL>; output: StepOutput }) {
     const output = p.output
 
-    if (output.type === 'print')           return <OutputTextPreviewUI         step={p.step} output={output} />
-    if (output.type === 'prompt')          return <OutputPromptPreviewUI       step={p.step} output={output} />
-    if (output.type === 'runtimeError')    return <OutputRuntimeErrorPreviewUI step={p.step} output={output} />
-    if (output.type === 'comfy-workflow')  return <OutputWorkflowPreviewUI     step={p.step} output={output} />
-    if (output.type === 'image')           return <OutputImagePreviewUI        step={p.step} output={output} />
-    if (output.type === 'displaced-image') return <OutputDisplacementPreviewUI step={p.step} output={output} />
-    if (output.type === 'video')           return <OutputVideoPreviewUI        step={p.step} output={output} />
-    if (output.type === 'step')            return <>🔴</> //<OutputVideoPreviewUI        step={p.step} output={output} />
-    // if (output.type === 'executionError')  return <OutputExecutionErrorUI      step={p.step} output={output} />
-    // if (output.type === 'show-html')       return <OutputHtmlPreviewUI         step={p.step} output={output} />
-    // if (output.type === 'ask')             return <OutputAskPreviewUI          step={p.step} output={output} />
+    if (output instanceof MediaTextL)            return <OutputTextPreviewUI         step={p.step} output={output} />
+    if (output instanceof MediaImageL)           return <OutputImagePreviewUI        step={p.step} output={output} />
+    if (output instanceof MediaVideoL)           return <OutputVideoPreviewUI        step={p.step} output={output} />
+    if (output instanceof Media3dDisplacementL)  return <OutputDisplacementPreviewUI step={p.step} output={output} />
+
+    if (output instanceof ComfyPromptL)          return <OutputPromptPreviewUI       step={p.step} output={output} />
+    if (output instanceof GraphL /* workflow */) return <OutputWorkflowPreviewUI     step={p.step} output={output} />
+    if (output instanceof StepL)                 return <>🔴</>
+
+    if (output instanceof RuntimeErrorL)         return <OutputRuntimeErrorPreviewUI step={p.step} output={output} />
 
     exhaust(output)
     return <div className='border'>❌ unhandled message of type `{(output as any).type}`</div>
@@ -37,20 +43,19 @@ export const OutputPreviewUI = observer(function StepOutputUI_(p: { step: StepL;
 
 // FULL -----------------------------------------------------------------------------
 // prettier-ignore
-export const OutputUI = observer(function StepOutputUI_(p: { step: StepL; output: StepOutput }) {
+export const OutputUI = observer(function StepOutputUI_(p: { step?: Maybe<StepL>; output: StepOutput }) {
     const output = p.output
 
-    if (output.type === 'print')           return <OutputTextUI                step={p.step} output={output} />
-    if (output.type === 'prompt')          return <OutputPromptUI              step={p.step} output={output} />
-    if (output.type === 'runtimeError')    return <OutputRuntimeErrorUI        step={p.step} output={output} />
-    if (output.type === 'comfy-workflow')  return <OutputWorkflowUI            step={p.step} output={output} />
-    if (output.type === 'image')           return <OutputImageUI               step={p.step} output={output} />
-    if (output.type === 'displaced-image') return <OutputDisplacementUI        step={p.step} output={output} />
-    if (output.type === 'video')           return <OutputVideoUI               step={p.step} output={output} />
-    if (output.type === 'step')            return <>🔴</> //<OutputVideoPreviewUI        step={p.step} output={output} />
-    // if (output.type === 'executionError')  return <OutputExecutionErrorUI      step={p.step} output={output} />
-    // if (output.type === 'show-html')       return <OutputHtmlUI                step={p.step} output={output} />
-    // if (output.type === 'ask')             return <OutputAskUI                 step={p.step} output={output} />
+    if (output instanceof MediaTextL)            return <OutputTextUI                step={p.step} output={output} />
+    if (output instanceof MediaImageL)           return <OutputImageUI               step={p.step} output={output} />
+    if (output instanceof MediaVideoL)           return <OutputVideoUI               step={p.step} output={output} />
+    if (output instanceof Media3dDisplacementL)  return <OutputDisplacementUI        step={p.step} output={output} />
+
+    if (output instanceof ComfyPromptL)          return <OutputPromptUI              step={p.step} output={output} />
+    if (output instanceof GraphL /* workflow */) return <OutputWorkflowUI            step={p.step} output={output} />
+    if (output instanceof StepL)                 return <>🔴</>
+
+    if (output instanceof RuntimeErrorL)         return <OutputRuntimeErrorUI        step={p.step} output={output} />
 
     exhaust(output)
     return <div className='border'>❌ unhandled message of type `{(output as any).type}`</div>

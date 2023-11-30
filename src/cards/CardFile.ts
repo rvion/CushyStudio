@@ -17,6 +17,7 @@ import { ManualPromise } from '../utils/misc/ManualPromise'
 import { generateAvatar } from './AvatarGenerator'
 import { AppManifest } from './DeckManifest'
 import { Library } from './Library'
+import { DraftT } from 'src/db2/TYPES.gen'
 
 // prettier-ignore
 export type LoadStrategy =
@@ -195,9 +196,15 @@ export class LibraryFile {
         const drafts = this.drafts
         return drafts.length > 0 ? drafts[0] : this.createDraft()
     }
+
     get drafts(): DraftL[] {
-        return this.st.db.drafts //
-            .filter((draft) => draft.data.appPath === this.relPath)
+        const draftTable = this.st.db.drafts
+        const draftTableInfos = draftTable.infos
+        const draftsT = this.st.db.prepareAll<AppPath, DraftT>(
+            draftTableInfos,
+            'select * from draft where appPath=?',
+        )(this.relPath)
+        return draftsT.map((t) => draftTable.getOrCreateInstanceForExistingData(t))
     }
 
     getCompiledApp() {

@@ -1,24 +1,12 @@
 import { observer } from 'mobx-react-lite'
 import { StepL } from 'src/models/Step'
 import { useSt } from 'src/state/stateContext'
-import { StepOutput_DisplacedImage } from 'src/types/StepOutput'
 import { OutputPreviewWrapperUI } from './OutputPreviewWrapperUI'
-
-export const OutputDisplacementUI = observer(function OutputDisplacementUI_(p: {
-    step: StepL
-    output: StepOutput_DisplacedImage
-}) {
-    return (
-        <div>3d</div>
-        // <OutputWrapperUI label='image'>
-        // <ImageUI img={p.output.imgID} />
-        // </OutputWrapperUI>
-    )
-})
+import { Media3dDisplacementL } from 'src/models/Media3dDisplacement'
 
 export const OutputDisplacementPreviewUI = observer(function OutputImagePreviewUI_(p: {
-    step: StepL
-    output: StepOutput_DisplacedImage
+    step?: Maybe<StepL>
+    output: Media3dDisplacementL
 }) {
     const size = useSt().outputPreviewSizeStr
     return (
@@ -26,5 +14,17 @@ export const OutputDisplacementPreviewUI = observer(function OutputImagePreviewU
             3D
             <OutputDisplacementUI step={p.step} output={p.output} />
         </OutputPreviewWrapperUI>
+    )
+})
+
+export const OutputDisplacementUI = observer(function OutputDisplacementUI_(p: {
+    step?: Maybe<StepL>
+    output: Media3dDisplacementL
+}) {
+    return (
+        <div>3d</div>
+        // <OutputWrapperUI label='image'>
+        // <ImageUI img={p.output.imgID} />
+        // </OutputWrapperUI>
     )
 })

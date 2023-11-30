@@ -1,4 +1,4 @@
-import type { MediaImageL } from 'src/models/Image'
+import type { MediaImageL } from 'src/models/MediaImage'
 
 import { observer } from 'mobx-react-lite'
 import { JsonViewUI } from '../workspace/JsonViewUI'

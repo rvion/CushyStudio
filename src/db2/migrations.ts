@@ -94,7 +94,7 @@ export const migrations: {
                 //
                 `base64URL text`,
             ]),
-            _createTable('media_3ddisplaced', [
+            _createTable('media_3d_displacement', [
                 `width     int`,
                 `height    int`,
                 `image     text`,
@@ -128,6 +128,46 @@ export const migrations: {
             `alter table media_image add column promptID text references comfy_prompt(id)`,
             `alter table media_image add column stepID   text references step(id)`,
         ],
+    },
+    {
+        id: 'x8cqAoMEvu',
+        name: 'add runtime error',
+        up: [
+            _createTable('runtime_error', [
+                'message text not null',
+                'infos json not null',
+                'promptID text references comfy_prompt(id)',
+                'graphID text references graph(id)',
+            ]),
+        ],
+    },
+    {
+        id: '0D1XHSH0Dk',
+        name: 'add runtime error',
+        up: ['alter table runtime_error add column stepID text references step(id)'],
+    },
+    {
+        id: 'oOzhdq3rM2',
+        name: 'add step and prompt to video',
+        up: [
+            //
+            'alter table media_video add column stepID text references step(id)',
+            'alter table media_video add column promptID text references comfy_prompt(id)',
+        ],
+    },
+    {
+        id: 'isTECbxy71',
+        name: 'add step and prompt to video',
+        up: [
+            //
+            'alter table media_3d_displacement add column stepID text references step(id)',
+            'alter table media_3d_displacement add column promptID text references comfy_prompt(id)',
+        ],
+    },
+    {
+        id: 'XXDvvMf4Eu',
+        name: 'add step and graph',
+        up: ['alter table graph add column stepID text references step(id)'],
     },
     // {
     //     id: 'PONTSFSpA_',

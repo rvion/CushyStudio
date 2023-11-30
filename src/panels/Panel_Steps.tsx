@@ -5,7 +5,7 @@ import { StepOutputsBodyV1UI, StepOutputsV1UI } from '../outputs/StepOutputsV1UI
 
 export const Panel_Steps = observer(function StepListUI_(p: {}) {
     const st = useSt()
-    const steps = st.db.steps.stmt_lastN(st.__TEMPT__maxStepsToShow)
+    const steps = st.db.steps.getLastN(st.__TEMPT__maxStepsToShow)
     return (
         <div className='flex flex-col'>
             {/* <FieldAndLabelUI label='Show Last'> */}

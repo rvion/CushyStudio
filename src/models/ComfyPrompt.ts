@@ -1,5 +1,5 @@
 import type { LiveInstance } from '../db/LiveInstance'
-import type { StepL } from '../models/Step'
+import type { StepL } from './Step'
 import type { PromptRelated_WsMsg, WsMsgExecuted, WsMsgExecuting, WsMsgExecutionError } from '../types/ComfyWsApi'
 import type { GraphL } from './Graph'
 
@@ -22,8 +22,8 @@ import { exhaust } from '../utils/misc/ComfyUtils'
 //     error?: Maybe<WsMsgExecutionError>
 // }
 
-export interface PromptL extends LiveInstance<ComfyPromptT, PromptL> {}
-export class PromptL {
+export interface ComfyPromptL extends LiveInstance<ComfyPromptT, ComfyPromptL> {}
+export class ComfyPromptL {
     _resolve!: (value: this) => void
     _rejects!: (reason: any) => void
     finished: Promise<this> = new Promise((resolve, rejects) => {
@@ -45,8 +45,8 @@ export class PromptL {
     //     // if (next)
     // }
 
-    step = new LiveRef<this, StepL>(this, 'stepID', 'step')
-    graph = new LiveRef<this, GraphL>(this, 'graphID', 'graph')
+    step = new LiveRef<this, StepL>(this, 'stepID', () => this.db.steps)
+    graph = new LiveRef<this, GraphL>(this, 'graphID', () => this.db.graphs)
     // get project() { return this.step.item.project } // prettier-ignore
 
     onPromptRelatedMessage = (msg: PromptRelated_WsMsg) => {
@@ -95,7 +95,8 @@ export class PromptL {
     /** udpate execution list */
     private onExecuted = (msg: WsMsgExecuted) => {
         for (const img of msg.data.output.images) {
-            const image = this.db.media_images.create({
+            // const image =
+            this.db.media_images.create({
                 id: nanoid(),
                 stepID: this.step.id,
                 promptID: this.id,
@@ -106,7 +107,7 @@ export class PromptL {
                 },
             })
             // this.images.push(images)
-            this.step.item.addOutput({ type: 'image', imgID: image.id })
+            // this.step.item.addOutput({ type: 'image', imgID: image.id })
         }
         // this.outputs.push(msg) // accumulate in self
     }

@@ -9,40 +9,21 @@ export const OutputPreviewWrapperUI = observer(function OutputPreviewWrapperUI_(
     /** 3/4 letters max if possible */
     output: StepOutput
     /** must be able to scale to 64*64  */
-    children: [anchor: ReactNode, tooltip: ReactNode]
+    children: ReactNode
 }) {
     const st = useSt()
     const sizeStr = st.outputPreviewSizeStr
-    const type = p.output.type
     return (
-        <RevealUI showDelay={0}>
-            <div
-                // tw='animate-in zoom-in duration-300'
-                tw='rounded'
-                style={{
-                    width: sizeStr,
-                    height: sizeStr,
-                    // border: `2px solid ${getPreviewBorderColor(type)}`,
-                }}
-                className='flex flex-rowcol-info virtualBorder'
-            >
-                {p.children[0]}
-            </div>
-            {p.children[1]}
-        </RevealUI>
+        <div
+            onMouseEnter={(ev) => (st.hovered = p.output)}
+            onMouseLeave={() => {
+                if (st.hovered === p.output) st.hovered = p.output
+            }}
+            tw='rounded'
+            style={{ width: sizeStr, height: sizeStr }}
+            className='flex flex-rowcol-info virtualBorder'
+        >
+            {p.children}
+        </div>
     )
 })
-
-// const getPreviewBorderColor = (type: StepOutput['type']) => {
-//     if (type === 'print') return 'yellow'
-//     if (type === 'prompt') return 'cyan'
-//     if (type === 'runtimeError') return 'red'
-//     // if (type === 'executionError') return 'red'
-//     // if (type === 'show-html') return 'pink'
-//     // if (type === 'ask') return 'orange'
-//     if (type === 'comfy-workflow') return 'blue'
-//     if (type === 'image') return '#1183ad'
-//     if (type === 'displaced-image') return 'purple'
-//     if (type === 'video') return 'purple'
-//     return exhaust(type)
-// }

@@ -22,7 +22,7 @@ export const Panel_Output = observer(function Panel_Output_(p: {}) {
         >
             {/* <MainOutputHistoryUI /> */}
             <MainOutputItemsUI />
-            <Panel_ViewImage />
+            {/* <Panel_ViewImage /> */}
         </div>
     )
 })
@@ -85,7 +85,7 @@ export const MainOutputItemsUI = observer(function MainOutputItemsUI_(p: {}) {
 
 export const MainOutputHistoryUI = observer(function MainOutputHistoryUI_(p: {}) {
     const st = useSt()
-    const steps = st.db.steps.stmt_lastN(st.__TEMPT__maxStepsToShow)
+    const steps = st.db.steps.getLastN(st.__TEMPT__maxStepsToShow)
     const selectedStep = st.focusedStepL
     const size = st.historySizeStr
     return (

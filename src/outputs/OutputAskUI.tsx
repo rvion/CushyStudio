@@ -6,7 +6,7 @@
 
 // // -----------------
 
-// export const OutputAskUI = observer(function OutputAskUI_(p: { step: StepL; output: StepOutput_GUI }) {
+// export const OutputAskUI = observer(function OutputAskUI_(p: { step?: Maybe<StepL>; output: StepOutput_GUI }) {
 //     return (
 //         <OutputWrapperUI label='Ask'>
 //             <div>GUI ❓</div>
@@ -14,7 +14,7 @@
 //     )
 // })
 
-// export const OutputAskPreviewUI = observer(function OutputAskUI_(p: { step: StepL; output: StepOutput_GUI }) {
+// export const OutputAskPreviewUI = observer(function OutputAskUI_(p: { step?: Maybe<StepL>; output: StepOutput_GUI }) {
 //     return (
 //         <OutputPreviewWrapperUI output={p.output}>
 //             <div>GUI ❓</div>

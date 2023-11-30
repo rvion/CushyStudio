@@ -1,4 +1,4 @@
-import type { MediaImageL } from 'src/models/Image'
+import type { MediaImageL } from 'src/models/MediaImage'
 import type { STATE } from 'src/state/state'
 
 import { observer } from 'mobx-react-lite'
@@ -9,12 +9,17 @@ import { useSt } from 'src/state/stateContext'
 import { assets } from 'src/utils/assets/assets'
 import { openExternal, showItemInFolder } from '../app/layout/openExternal'
 
-export const Panel_ViewImage = observer(function Panel_ViewImage_(p: { className?: string; imageID?: MediaImageID | 'latent' }) {
+export const Panel_ViewImage = observer(function Panel_ViewImage_(p: {
+    //
+    className?: string
+    imageID?: MediaImageID | 'latent'
+}) {
     const st = useSt()
-    // const img: Maybe<ImageL> = p.imageID //
-    //     ? st.db.images.get(p.imageID)
-    //     : st.db.images.last()
-    const { img, url, latentUrl } = getPreviewType(st, p.imageID)
+    const img: Maybe<MediaImageL> = p.imageID //
+        ? st.db.media_images.get(p.imageID)
+        : st.db.media_images.last()
+    const url = img?.url
+    // const { img, url, latentUrl } = getPreviewType(st, p.imageID)
     const imgPathWithFileProtocol = img ? `file://${img.absPath}` : null
     // if (img == null) return null
     const background = st.configFile.value.galleryBgColor
@@ -90,14 +95,14 @@ export const Panel_ViewImage = observer(function Panel_ViewImage_(p: { className
                     wrapperStyle={{ /* border: '5px solid #b53737', */ height: '100%', width: '100%', display: 'flex' }}
                     contentStyle={{ /* border: '5px solid #38731f', */ height: '100%', width: '100%' }}
                 >
-                    {latentUrl && (
+                    {/* {latentUrl && (
                         <img //
                             tw='absolute bottom-0 right-0 shadow-xl'
                             style={{ width: st.latentSizeStr, height: st.latentSizeStr, objectFit: 'contain' }}
                             src={latentUrl}
                             alt='last generated image'
                         />
-                    )}
+                    )} */}
                     {url ? (
                         <img //
                             style={{ width: '100%', height: '100%', objectFit: 'contain' }}
@@ -126,41 +131,41 @@ export const Panel_ViewImage = observer(function Panel_ViewImage_(p: { className
     )
 })
 
-const getPreviewType = (
-    st: STATE,
-    imageID: Maybe<MediaImageID | 'latent'>,
-): {
-    url: string
-    latentUrl?: string
-    img?: Maybe<MediaImageL>
-} => {
-    const errorURL = assets.public_illustrations_image_home_jpg
-    if (imageID === 'latent') return { url: st.preview?.url ?? errorURL }
-    if (imageID != null) {
-        const img = st.db.media_images.get(imageID)
-        return { url: img?.url ?? errorURL, img }
-    }
-    if (imageID == null) {
-        if (st.showPreviewInPanel) {
-            if (st.hovered) return { url: st.hovered.url }
-        }
-        if (st.showLatentPreviewInLastImagePanel) {
-            const lastImage = st.db.media_images.last()
-            const latent = st.preview
-            if (latent == null) return { url: lastImage?.url ?? errorURL, img: lastImage }
-            if (lastImage == null) return { url: latent.url }
-            return {
-                url: lastImage.url,
-                img: lastImage,
-                latentUrl:
-                    latent.receivedAt > lastImage.createdAt //
-                        ? latent.url
-                        : undefined,
-            }
-        } else {
-            const lastImage = st.db.media_images.last()
-            return { url: lastImage?.url ?? errorURL, img: lastImage }
-        }
-    }
-    return { url: errorURL }
-}
+// const getPreviewType = (
+//     st: STATE,
+//     imageID: Maybe<MediaImageID | 'latent'>,
+// ): {
+//     url: string
+//     latentUrl?: string
+//     img?: Maybe<MediaImageL>
+// } => {
+//     const errorURL = assets.public_illustrations_image_home_jpg
+//     if (imageID === 'latent') return { url: st.latentPreview?.url ?? errorURL }
+//     if (imageID != null) {
+//         const img = st.db.media_images.get(imageID)
+//         return { url: img?.url ?? errorURL, img }
+//     }
+//     if (imageID == null) {
+//         if (st.showPreviewInPanel) {
+//             if (st.hovered) return { url: st.hovered.url }
+//         }
+//         if (st.showLatentPreviewInLastImagePanel) {
+//             const lastImage = st.db.media_images.last()
+//             const latent = st.latentPreview
+//             if (latent == null) return { url: lastImage?.url ?? errorURL, img: lastImage }
+//             if (lastImage == null) return { url: latent.url }
+//             return {
+//                 url: lastImage.url,
+//                 img: lastImage,
+//                 latentUrl:
+//                     latent.receivedAt > lastImage.createdAt //
+//                         ? latent.url
+//                         : undefined,
+//             }
+//         } else {
+//             const lastImage = st.db.media_images.last()
+//             return { url: lastImage?.url ?? errorURL, img: lastImage }
+//         }
+//     }
+//     return { url: errorURL }
+// }

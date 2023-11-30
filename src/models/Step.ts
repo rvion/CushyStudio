@@ -1,7 +1,7 @@
 import type { StepOutput, StepOutput_Image } from 'src/types/StepOutput'
 import type { LiveInstance } from '../db/LiveInstance'
 import type { GraphL } from '../models/Graph'
-import type { PromptL } from './Prompt'
+import type { ComfyPromptL } from './ComfyPrompt'
 
 import { LibraryFile } from 'src/cards/CardFile'
 import { Runtime } from '../back/Runtime'
@@ -9,7 +9,9 @@ import { Status } from '../back/Status'
 import { LiveCollection } from '../db/LiveCollection'
 import { LiveRef } from '../db/LiveRef'
 import { StepT } from 'src/db2/TYPES.gen'
-import { MediaImageL } from './Image'
+import { MediaImageL } from './MediaImage'
+import { MediaTextL } from './MediaText'
+import { RuntimeErrorL } from './RuntimeError'
 
 export type FormPath = (string | number)[]
 
@@ -50,36 +52,35 @@ export class StepL {
         // this.data.outputGraphID = out.id
         this.runtime = new Runtime(this)
         this.update({ status: Status.Running })
-        this.addOutput({ type: 'comfy-workflow', graphID: this.outputWorkflow.id })
         const scriptExecutionStatus = await this.runtime.run()
 
-        if (this.prompts.items.every((p: PromptL) => p.data.executed)) {
+        if (this.prompts.items.every((p: ComfyPromptL) => p.data.executed)) {
             this.update({ status: scriptExecutionStatus })
         }
     }
 
-    prompts = new LiveCollection<PromptL>(this, 'stepID', 'comfy_prompt')
     // parentWorkflow = new LiveRef<this, GraphL>(this, 'parentGraphID', 'graphs')
-    outputWorkflow = new LiveRef<this, GraphL>(this, 'outputGraphID', 'graph')
 
     get appFile(): LibraryFile | undefined { return this.st.library.cardsByPath.get(this.data.appPath) } // prettier-ignore
     get appCompiled() { return this.appFile?.appCompiled } // prettier-ignore
     get name() { return this.data.name } // prettier-ignore
+    get generatedImages(): MediaImageL[] { return this.images.items } // prettier-ignore
 
-    get generatedImages(): MediaImageL[] {
-        return this.images.items
-        // this
-        // return this.outputs.filter((t) => t.type === 'image') as StepOutput_Image[]
-    }
+    outputWorkflow = new LiveRef<this, GraphL>(this, 'outputGraphID', () => this.db.graphs)
 
-    images = new LiveCollection<MediaImageL>(this, 'stepID', 'media_image')
-    texts = new LiveCollection<MediaImageL>(this, 'stepID', 'media_text')
-    get outputs(): (MediaImageL | MediaImageL)[] {
+    images = new        LiveCollection<MediaImageL>(  this, 'stepID', () => this.db.media_images) // prettier-ignore
+    texts = new         LiveCollection<MediaTextL>(   this, 'stepID', () => this.db.media_texts) // prettier-ignore
+    prompts = new       LiveCollection<ComfyPromptL>( this, 'stepID', () => this.db.comfy_prompts) // prettier-ignore
+    runtimeErrors = new LiveCollection<RuntimeErrorL>(this, 'stepID', () => this.db.media_texts) // prettier-ignore
+
+    get outputs(): (MediaImageL | MediaTextL | ComfyPromptL | RuntimeErrorL)[] {
         return [
             //
             ...this.images.items,
             ...this.texts.items,
-        ]
+            ...this.prompts.items,
+            ...this.runtimeErrors.items,
+        ].sort((a, b) => a.createdAt - b.createdAt)
     }
 
     runtime: Maybe<Runtime> = null
@@ -92,11 +93,20 @@ export class StepL {
     //     if (this.focusedOutput == null) return this.generatedImages
     // }
 
-    addOutput = (output: StepOutput) =>
-        this.update({
-            outputs: [...(this.outputs ?? []), output],
+    recordError = (message: string, infos: any) => {
+        this.db.runtimeErrors.create({
+            stepID: this.id,
+            graphID: this.outputWorkflow.id,
+            message,
+            infos,
         })
-
+    }
+    addOutput = (output: StepOutput) => {
+        // this.update({
+        //     outputs: [...(this.outputs ?? []), output],
+        // })
+        console.log('🔴🔴🔴🔴🔴🔴🔴🔴 addOutput called')
+    }
     // UI expand/collapse state
     get defaultExpanded(): boolean{ return this.data.status === Status.Running } // prettier-ignore
     userDefinedExpanded: Maybe<boolean> = null

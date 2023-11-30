@@ -74,6 +74,4 @@ if (os.platform() === 'win32') {
 
 process.on('SIGINT', () => cleanup('SIGINT'))
 process.on('SIGTERM', () => cleanup('SIGTERM'))
-
 electron.on('close', () => cleanup('Electron'))
-// vite.on('close', () => cleanup('Vite'));

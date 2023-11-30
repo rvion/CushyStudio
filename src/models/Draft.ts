@@ -60,14 +60,15 @@ export class DraftL {
         if (req == null) throw new Error('invalid req')
 
         // 2. ensure graph valid
-        const graph = this.st.getProject().rootGraph.item
-        if (graph == null) throw new Error('invalid graph')
+        const startGraph = this.st.getProject().rootGraph.item
+        if (startGraph == null) throw new Error('invalid graph')
 
         // 3. bumpt the builder cache count
         // so widgets like seed can properly update
         const builder = req.builder
         builder._cache.count++
 
+        const graph = startGraph.clone()
         // 4. create step
         const step = this.db.steps.create({
             name: this.data.title,
@@ -77,10 +78,11 @@ export class DraftL {
             formSerial: req.serial,
             //
             // parentGraphID: graph.id,
-            outputGraphID: graph.clone().id,
+            outputGraphID: graph.id,
             //
             status: Status.New,
         })
+        graph.update({ stepID: step.id }) // 🔶🔴
         step.start()
         return step
     }

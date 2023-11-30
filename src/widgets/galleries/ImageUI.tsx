@@ -1,4 +1,4 @@
-import type { MediaImageL } from 'src/models/Image'
+import type { MediaImageL } from 'src/models/MediaImage'
 import { observer } from 'mobx-react-lite'
 import { RevealUI } from 'src/rsuite/RevealUI'
 import { Button } from 'src/rsuite/shims'
@@ -14,37 +14,39 @@ export const ImageUI = observer(function ImageUI_(p: { size?: string; img: Media
 
     if (image == null) return <div style={{ width: ImageWidth, height: ImageWidth }}>❌</div>
 
-    const IMG =
-        image.data.infos?.type === 'video-local-ffmpeg' ? (
-            <video
-                //
-                onMouseEnter={(ev) => (st.hovered = { type: 'video', url: image.url })}
-                onMouseLeave={() => {
-                    if (st.hovered?.url === image.url) st.hovered = null
-                }}
-                style={{ width: ImageWidth, height: ImageWidth }}
-                src={image.url}
-            ></video>
-        ) : (
-            <img
-                src={image.url}
-                ref={dragRef}
-                loading='lazy'
-                onMouseEnter={(ev) => (st.hovered = { type: 'image', url: image.url })}
-                onMouseLeave={() => {
-                    if (st.hovered?.url === image.url) st.hovered = null
-                }}
-                style={{
-                    objectFit: 'contain',
-                    width: ImageWidth,
-                    height: ImageWidth,
-                    opacity,
-                    padding: '0.2rem',
-                    borderRadius: '.5rem',
-                }}
-                onClick={() => st.layout.FOCUS_OR_CREATE('Image', { imageID: image.id })}
-            />
-        )
+    // const IMG =
+    //     image.data.infos?.type === 'video-local-ffmpeg' ? (
+    //         <video
+    //             //
+    //             onMouseEnter={(ev) => (st.hovered = { type: 'video', url: image.url })}
+    //             onMouseLeave={() => {
+    //                 if (st.hovered?.url === image.url) st.hovered = null
+    //             }}
+    //             style={{ width: ImageWidth, height: ImageWidth }}
+    //             src={image.url}
+    //         ></video>
+    //     ) : (
+    const IMG = (
+        <img
+            src={image.url}
+            ref={dragRef}
+            loading='lazy'
+            // onMouseEnter={(ev) => (st.hovered = { type: 'image', url: image.url })}
+            // onMouseLeave={() => {
+            //     if (st.hovered?.url === image.url) st.hovered = null
+            // }}
+            style={{
+                objectFit: 'contain',
+                width: ImageWidth,
+                height: ImageWidth,
+                opacity,
+                padding: '0.2rem',
+                borderRadius: '.5rem',
+            }}
+            onClick={() => st.layout.FOCUS_OR_CREATE('Image', { imageID: image.id })}
+        />
+    )
+    // )
     return (
         <RevealUI enableRightClick>
             <div>{IMG}</div>

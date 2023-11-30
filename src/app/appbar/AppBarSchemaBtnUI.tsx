@@ -6,7 +6,7 @@ import { useSt } from '../../state/stateContext'
 export const IndicatorSchemaUI = observer(function IndicatorSchemaUI_(p: {}) {
     const st = useSt()
     return (
-        <RevealUI>
+        <RevealUI showDelay={0}>
             <div>
                 {st.schemaReady.done ? (
                     <div className='flex gap-1 px-1 rounded cursor-help'>

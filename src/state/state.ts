@@ -1,4 +1,4 @@
-import type { MediaImageL } from '../models/Image'
+import type { MediaImageL } from '../models/MediaImage'
 import type { ComfyStatus, PromptID, PromptRelated_WsMsg, WsMsg } from '../types/ComfyWsApi'
 import type { CSCriticalError } from '../widgets/CSCriticalError'
 
@@ -43,11 +43,10 @@ import { exhaust } from '../utils/misc/ComfyUtils'
 import { ManualPromise } from '../utils/misc/ManualPromise'
 import { DanbooruTags } from '../widgets/prompter/nodes/booru/BooruLoader'
 import { Uploader } from './Uploader'
+import { StepOutput } from 'src/types/StepOutput'
 
 // prettier-ignore
-type HoveredAsset =
-    | { type: 'image'; url: string }
-    | { type: 'video'; url: string }
+type HoveredAsset = StepOutput
 
 export class STATE {
     /** hack to help closing prompt completions */
@@ -212,6 +211,9 @@ export class STATE {
             // activeToolID: this.db.tools.values[0].id,
             rootGraphID: initialGraph.id,
             name: 'new project',
+            // 🔴 insert statement must be dynamic
+            currentApp: null,
+            currentDraftID: null,
         })
         return project
         // const startDraft = initialGraph.createDraft()
@@ -375,7 +377,7 @@ export class STATE {
     private activePromptID: PromptID | null = null
     temporize = (prompt_id: PromptID, msg: PromptRelated_WsMsg) => {
         this.activePromptID = prompt_id
-        const prompt = this.db.prompts.get(prompt_id)
+        const prompt = this.db.comfy_prompts.get(prompt_id)
 
         // case 1. no prompt yet => just store the messages
         if (prompt == null) {
@@ -388,7 +390,7 @@ export class STATE {
         prompt.onPromptRelatedMessage(msg)
     }
 
-    preview: Maybe<{
+    latentPreview: Maybe<{
         receivedAt: Timestamp
         blob: Blob
         url: string
@@ -414,7 +416,7 @@ export class STATE {
                     }
                     const imageBlob = new Blob([buffer.slice(4)], { type: imageMime })
                     const imagePreview = URL.createObjectURL(imageBlob)
-                    this.preview = { blob: imageBlob, url: imagePreview, receivedAt: Date.now() }
+                    this.latentPreview = { blob: imageBlob, url: imagePreview, receivedAt: Date.now() }
                     // 🔴 const previewImage = this.db.images.upsert({
                     // 🔴     id: 'PREVIEW',
                     // 🔴     localFolderPath: this.resolve(this.rootPath, asRelativePath('PREVIEW')),
@@ -582,7 +584,8 @@ export class STATE {
     // imagesById: Map<ImageID, ImageT> = new Map()
     get imageToDisplay(): MediaImageL[] {
         const maxImages = this.configFile.value.galleryMaxImages ?? 50
-        return this.db.media_images.values.slice(-maxImages).reverse()
+        // 🔴 not dynamic
+        return this.db.media_images.getLastN(maxImages).reverse()
     }
 
     // FILESYSTEM UTILS --------------------------------------------------------------------

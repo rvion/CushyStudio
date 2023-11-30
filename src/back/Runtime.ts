@@ -14,8 +14,8 @@ import { ImageAnswer } from '../controls/misc/InfoAnswer'
 import { ComfyNodeOutput } from '../core/Slot'
 import { auto } from '../core/autoValue'
 import { GraphL } from '../models/Graph'
-import { MediaImageL } from '../models/Image'
-import { PromptL } from '../models/Prompt'
+import { MediaImageL } from '../models/MediaImage'
+import { ComfyPromptL } from '../models/ComfyPrompt'
 import { StepL } from '../models/Step'
 import { ApiPromptInput, ComfyUploadImageResult, PromptInfo } from '../types/ComfyWsApi'
 import { createMP4FromImages } from '../utils/ffmpeg/ffmpegScripts'
@@ -162,10 +162,11 @@ export class Runtime<FIELDS extends WidgetDict = any> {
             console.error('🌠', (error as any as Error).name)
             console.error('🌠', (error as any as Error).message)
             console.error('🌠', 'RUN FAILURE')
-            this.step.addOutput({
-                type: 'runtimeError',
+            this.st.db.runtimeErrors.create({
                 message: error.message,
                 infos: error,
+                graphID: this.workflow.id,
+                stepID: this.step.id,
             })
             return Status.Failure
         }
@@ -237,13 +238,14 @@ export class Runtime<FIELDS extends WidgetDict = any> {
         if (image == null) throw new Error(`image not found: ${p.image}`)
         if (depth == null) throw new Error(`image not found: ${p.image}`)
         if (normal == null) throw new Error(`image not found: ${p.image}`)
-        this.step.addOutput({
-            type: 'displaced-image',
+        this.st.db.media_3d_displacement.create({
+            // type: 'displaced-image',
             width: image.data.width ?? 512,
             height: image.data.height ?? 512,
             image: image.url,
             depthMap: depth.url,
             normalMap: normal.url,
+            stepID: this.step.id,
         })
         // this.st.layout.FOCUS_OR_CREATE('DisplacedImage', {
         //     width: image.data.width ?? 512,
@@ -276,17 +278,28 @@ export class Runtime<FIELDS extends WidgetDict = any> {
     }
 
     output_HTML = (p: { htmlContent: string; title: string }) => {
-        this.step.addOutput({
-            type: 'show-html',
+        this.st.db.media_texts.create({
+            kind: 'html',
             content: p.htmlContent,
-            title: p.title,
+            stepID: this.step.id,
         })
+        // this.step.addOutput({
+        //     type: 'show-html',
+        //     content: p.htmlContent,
+        //     title: p.title,
+        // })
         // this.st.broadCastToAllClients({ type: 'show-html', content: p.htmlContent, title: p.title })
     }
 
     output_Markdown = (p: { title: string; markdownContent: string }) => {
-        const htmlContent = marked.parse(p.markdownContent)
-        this.step.addOutput({ type: 'show-html', content: htmlContent, title: p.title })
+        this.st.db.media_texts.create({
+            kind: 'markdown',
+            content: p.markdownContent,
+            stepID: this.step.id,
+        })
+
+        // const htmlContent = marked.parse(p.markdownContent)
+        // this.step.addOutput({ type: 'show-html', content: htmlContent, title: p.title })
         // this.st.broadCastToAllClients({ type: 'show-html', content: htmlContent, title: p.title })
     }
     // ===================================================================================================
@@ -315,21 +328,10 @@ export class Runtime<FIELDS extends WidgetDict = any> {
 
         // 2. ensure we have enough outputs
         const images = source ?? this.generatedImages
-        if (images.length === 0) {
-            this.step.addOutput({
-                type: 'runtimeError',
-                message: `no images to create animation; did you forget to call prompt() first ?`,
-                infos: {},
-            })
-            return
-        }
-        if (images.length === 1) {
-            this.step.addOutput({
-                type: 'runtimeError',
-                message: `only one image to create animation`,
-                infos: {},
-            })
-        }
+        if (images.length === 1) return this.step.recordError(`only one image to create animation`, {})
+        if (images.length === 0)
+            return this.step.recordError(`no images to create animation; did you forget to call prompt() first ?`, {})
+
         console.info(`🎥 awaiting all files to be ready locally...`)
         await Promise.all(images.map((i) => i.finished))
         console.info(`🎥 all files are ready locally`)
@@ -515,7 +517,7 @@ export class Runtime<FIELDS extends WidgetDict = any> {
     output_text = (message: Printable) => {
         let msg = this.extractString(message)
         console.info(msg)
-        this.step.addOutput({ type: 'print', message: msg })
+        this.step.db.media_texts.create({ kind: 'text', content: msg, stepID: this.step.id })
     }
 
     /** upload a file from disk to the ComfyUI backend */
@@ -581,7 +583,7 @@ export class Runtime<FIELDS extends WidgetDict = any> {
     async PROMPT(p?: {
         /** defaults to numbers */
         ids?: IDNaminScheemeInPromptSentToComfyUI
-    }): Promise<PromptL> {
+    }): Promise<ComfyPromptL> {
         console.info('prompt requested')
         const step = await this.sendPromp(p?.ids ?? 'use_stringified_numbers_only')
         // this.run.cyto.animate()
@@ -590,7 +592,7 @@ export class Runtime<FIELDS extends WidgetDict = any> {
     }
 
     private _promptCounter = 0
-    private sendPromp = async (idMode: IDNaminScheemeInPromptSentToComfyUI): Promise<PromptL> => {
+    private sendPromp = async (idMode: IDNaminScheemeInPromptSentToComfyUI): Promise<ComfyPromptL> => {
         const liveGraph = this.workflow
         if (liveGraph == null) throw new Error('no graph')
         const currentJSON = deepCopyNaive(liveGraph.json_forPrompt(idMode))
@@ -646,12 +648,12 @@ export class Runtime<FIELDS extends WidgetDict = any> {
         })
         const prompmtInfo: PromptInfo = await res.json()
         // console.log('prompt status', res.status, res.statusText, prompmtInfo)
-        this.step.addOutput({ type: 'prompt', promptID: prompmtInfo.prompt_id })
+        // this.step.addOutput({ type: 'prompt', promptID: prompmtInfo.prompt_id })
         if (res.status !== 200) {
             const err = new InvalidPromptError('ComfyUI Prompt request failed', graph, prompmtInfo)
             return Promise.reject(err)
         } else {
-            const prompt = this.st.db.prompts.create({
+            const prompt = this.st.db.comfy_prompts.create({
                 id: prompmtInfo.prompt_id,
                 executed: 0,
                 graphID: graph.id,

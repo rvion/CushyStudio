@@ -2,6 +2,7 @@ import { default as BetterSqlite3 } from 'better-sqlite3'
 import { writeFileSync } from 'fs'
 import { _getAllColumnsForTable } from './_getAllColumnsForTable'
 import { _getAllForeignKeysForTable } from './_getAllForeignKeysForTable'
+import JSON5 from 'json5'
 
 export const _printSchema = (store: {
     //
@@ -23,6 +24,14 @@ export const _printSchema = (store: {
     const tables = stmt.all() as { name: string }[]
     store.log(`found tables ${tables.map((r) => r.name)}`)
 
+    let tableNames = '\n'
+    tableNames += 'declare type TableNameInDB =\n'
+    for (const table of tables) {
+        tableNames += `    | '${table.name}'\n`
+    }
+    tableNames += `\n`
+    out2 += tableNames
+
     for (const table of tables) {
         const jsTableName = convertTableNameToJSName(table.name)
         const fks = _getAllForeignKeysForTable(db, table.name)
@@ -32,10 +41,12 @@ export const _printSchema = (store: {
 
         let typeDecl: string = '\n'
         let schemaDecl: string = `\n`
+        let fieldsDef: string = `\n`
         out2 += `declare type ${jsTableName}ID = Branded<string, { ${jsTableName}ID: true }>\n`
         typeDecl += `export const as${jsTableName}ID = (s: string): ${jsTableName}ID => s as any\n`
         schemaDecl = `export const ${jsTableName}Schema = Type.Object({\n`
         typeDecl += `export type ${jsTableName}T = {\n`
+        fieldsDef += `export const ${jsTableName}Fields = {\n`
         for (const col of cols) {
             const comment = `/** @default: ${JSON.stringify(col.dflt_value) ?? 'null'}, sqlType: ${col.type} */`
 
@@ -68,33 +79,33 @@ export const _printSchema = (store: {
             })()
 
             schemaDecl += col.notnull //
-                ? `    ${col.name}: Type.Optional(${schemaField}),\n`
-                : `    ${col.name}: ${schemaField},\n`
+                ? `    ${col.name}: ${schemaField},\n`
+                : `    ${col.name}: Type.Optional(T.Nullable(${schemaField})),\n`
             const colon = col.notnull ? ':' : '?:'
             typeDecl += `    ${comment}\n`
-            typeDecl += `    ${col.name}${colon} ${fieldType};\n\n`
+            typeDecl += `    ${col.name}${colon} ${col.notnull ? fieldType : `Maybe<${fieldType}>`};\n\n`
+            fieldsDef += `    ${col.name}: ${JSON5.stringify(col)},\n`
         }
         typeDecl += `}`
         schemaDecl += '},{ additionalProperties: false })'
-
-        const insertFn = [
-            `export const insert${jsTableName}SQL = '`,
-            `insert into ${table.name} `,
-            `(${cols.map((c) => c.name).join(', ')})`,
-            ` values `,
-            `(${cols.map((c) => `@${c.name}`).join(', ')})`,
-            `'`,
-        ].join('')
+        fieldsDef += `}\n`
 
         // store.log(typeDecl)
-        out1 += insertFn
+        // out1 += insertFn
         out1 += typeDecl + '\n'
         out1 += schemaDecl + '\n'
+        out1 += fieldsDef + '\n'
     }
 
-    out1 += '\nexport const inserts = {\n'
+    out1 += '\nexport const schemas = {\n'
     for (const table of tables) {
-        out1 += `    ${table.name}: insert${convertTableNameToJSName(table.name)}SQL,\n`
+        out1 += `    ${table.name}: new T.TableInfo(\n`
+        out1 += `        '${table.name}',\n`
+        out1 += `        '${convertTableNameToJSName(table.name)}',\n`
+        out1 += `        ${convertTableNameToJSName(table.name)}Fields,\n`
+        out1 += `        ${convertTableNameToJSName(table.name)}Schema,\n`
+        // out1 += `        insert${convertTableNameToJSName(table.name)}SQL,\n`
+        out1 += `    ),\n`
     }
     out1 += '}'
 

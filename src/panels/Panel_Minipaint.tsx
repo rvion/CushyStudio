@@ -1,4 +1,4 @@
-import type { MediaImageL } from 'src/models/Image'
+import type { MediaImageL } from 'src/models/MediaImage'
 import type { STATE } from '../state/state'
 
 import { existsSync, mkdirSync, writeFileSync } from 'fs'

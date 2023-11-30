@@ -1,5 +1,5 @@
 import type { STATE } from 'src/state/state'
-import type { MediaImageL } from 'src/models/Image'
+import type { MediaImageL } from 'src/models/MediaImage'
 
 import { NativeTypes } from 'react-dnd-html5-backend'
 import { ItemTypes } from './DnDItemTypes'

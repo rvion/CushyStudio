@@ -16,7 +16,7 @@ export const _applyAllMigrations = (store: {
     for (const migration of migrations) {
         const hasRun = executedMigrations.find((m) => m.id === migration.id)
         if (hasRun) {
-            store.log(`🔵 HAS RUN |`, migration.name)
+            // store.log(`🔵 HAS RUN |`, migration.name)
             continue
         } else store.log(`🔵 MUST RUN |`, migration.name)
 
