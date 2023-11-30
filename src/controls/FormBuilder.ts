@@ -28,6 +28,7 @@ export class FormBuilder {
     matrix = (opts: W.Widget_matrix_opts) => new W.Widget_matrix(this, this.schema, opts)
     boolean = (opts: W.Widget_bool_opts) => new W.Widget_bool(this, this.schema, opts)
     bool = (opts: W.Widget_bool_opts) => new W.Widget_bool(this, this.schema, opts)
+    inlineRun = (opts: W.Widget_inlineRun_opts) => new W.Widget_inlineRun(this, this.schema, opts)
     loras = (opts: W.Widget_loras_opts) => new W.Widget_loras(this, this.schema, opts)
     image = (opts: W.Widget_image_opts) => new W.Widget_image(this, this.schema, opts)
     markdown = (opts: W.Widget_markdown_opts) => new W.Widget_markdown(this, this.schema, opts)
@@ -65,6 +66,7 @@ export class FormBuilder {
     /** (@internal) advanced way to restore form state. used internally */
     _HYDRATE = (type: W.Widget['type'], input: any, serial?: any): any => {
         if (type === 'bool') return new W.Widget_bool(this, this.schema, input, serial)
+        if (type === 'inlineRun') return new W.Widget_inlineRun(this, this.schema, input, serial)
         if (type === 'str') return new W.Widget_str(this, this.schema, input, serial)
         if (type === 'strOpt') return new W.Widget_strOpt(this, this.schema, input, serial)
         if (type === 'int') return new W.Widget_int(this, this.schema, input, serial)

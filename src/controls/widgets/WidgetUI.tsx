@@ -5,6 +5,7 @@ import { Message } from 'src/rsuite/shims'
 import { exhaust } from '../../utils/misc/ComfyUtils'
 import { WidgetPromptUI } from '../../widgets/prompter/WidgetPromptUI'
 import { WidgetBoolUI } from './WidgetBoolUI'
+import { WidgetInlineRunUI } from './WidgetInlineRunUI'
 import { WidgetChoiceUI } from './WidgetChoiceUI'
 import { WidgetChoicesUI } from './WidgetChoicesUI'
 import { WidgetColorUI } from './WidgetCololrUI'
@@ -50,6 +51,7 @@ export const WidgetUI = observer(function WidgetUI_(p: { req: R.Widget; focus?: 
     if (req instanceof R.Widget_enumOpt)            return <WidgetEnumUI        req={req} />
     if (req instanceof R.Widget_matrix)             return <WidgetMatrixUI      req={req} />
     if (req instanceof R.Widget_bool)               return <WidgetBoolUI        req={req} />
+    if (req instanceof R.Widget_inlineRun)          return <WidgetInlineRunUI   req={req} />
     if (req instanceof R.Widget_prompt)             return <WidgetPromptUI      req={req} />
     if (req instanceof R.Widget_promptOpt)          return <WidgetPromptUI      req={req} />
     if (req instanceof R.Widget_loras)              return <WidgetLorasUI       req={req} />

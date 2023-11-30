@@ -141,7 +141,10 @@ export const RunOrAutorunUI = observer(function RunOrAutorunUI_(p: { className?:
                         <span className='material-symbols-outlined'>play_arrow</span>
                     )
                 }
-                onClick={() => draft.start()}
+                onClick={() => {
+                    draft.setAutostart(false)
+                    draft.start()
+                }}
                 // size={'sm'}
             >
                 Run
