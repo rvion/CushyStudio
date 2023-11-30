@@ -17,6 +17,8 @@ import { MediaVideoL } from 'src/models/MediaVideo'
 import { RuntimeErrorL } from 'src/models/RuntimeError'
 import { Media3dDisplacementL } from 'src/models/Media3dDisplacement'
 import { ComfyWorkflowL } from 'src/models/Graph'
+import { MediaSplatL } from 'src/models/MediaSplat'
+import { OutputSplatPreviewUI, OutputSplatUI } from './OutputSplat'
 
 // PREVIEW -----------------------------------------------------------------------------
 // prettier-ignore
@@ -26,6 +28,7 @@ export const OutputPreviewUI = observer(function StepOutputUI_(p: { step?: Maybe
     if (output instanceof MediaTextL)            return <OutputTextPreviewUI         step={p.step} output={output} />
     if (output instanceof MediaImageL)           return <OutputImagePreviewUI        step={p.step} output={output} />
     if (output instanceof MediaVideoL)           return <OutputVideoPreviewUI        step={p.step} output={output} />
+    if (output instanceof MediaSplatL)           return <OutputSplatPreviewUI        step={p.step} output={output} />
     if (output instanceof Media3dDisplacementL)  return <OutputDisplacementPreviewUI step={p.step} output={output} />
 
     if (output instanceof ComfyPromptL)          return <OutputPromptPreviewUI       step={p.step} output={output} />
@@ -46,6 +49,7 @@ export const OutputUI = observer(function StepOutputUI_(p: { step?: Maybe<StepL>
     if (output instanceof MediaTextL)            return <OutputTextUI                step={p.step} output={output} />
     if (output instanceof MediaImageL)           return <OutputImageUI               step={p.step} output={output} />
     if (output instanceof MediaVideoL)           return <OutputVideoUI               step={p.step} output={output} />
+    if (output instanceof MediaSplatL)           return <OutputSplatUI               step={p.step} output={output} />
     if (output instanceof Media3dDisplacementL)  return <OutputDisplacementUI        step={p.step} output={output} />
 
     if (output instanceof ComfyPromptL)          return <OutputPromptUI              step={p.step} output={output} />

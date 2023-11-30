@@ -58,6 +58,7 @@ app({
         reversePositiveAndNegative: form.bool({ default: false }),
         makeAVideo: form.bool({ default: false }),
         summary: form.bool({ default: false }),
+        gaussianSplat: form.bool({ default: false }),
         show3d: form.groupOpt({
             items: () => {
                 return {
@@ -190,6 +191,9 @@ app({
 
         await flow.PROMPT()
 
+        if (p.gaussianSplat) {
+            flow.output_GaussianSplat({ url: '' })
+        }
         if (p.summary) {
             flow.output_Markdown(`
 # Hello

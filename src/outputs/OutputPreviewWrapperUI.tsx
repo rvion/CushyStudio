@@ -18,11 +18,12 @@ export const OutputPreviewWrapperUI = observer(function OutputPreviewWrapperUI_(
     return (
         <ErrorBoundary FallbackComponent={ErrorBoundaryFallback} onReset={(details) => {}}>
             <div
+                onClick={() => (st.pinned = p.output)}
                 onMouseEnter={(ev) => (st.hovered = p.output)}
                 onMouseLeave={() => {
                     if (st.hovered === p.output) st.hovered = null
                 }}
-                tw='rounded'
+                tw='rounded cursor-pointer hover:shadow-xl'
                 style={{ width: sizeStr, height: sizeStr }}
                 className='flex flex-rowcol-info virtualBorder'
             >

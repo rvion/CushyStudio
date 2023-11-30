@@ -228,6 +228,13 @@ export class Runtime<FIELDS extends WidgetDict = any> {
     }
 
     // ------------------------------------------------------------------------------------
+
+    output_GaussianSplat = (p: { url: string }) => {
+        this.st.db.media_splats.create({
+            url: p.url,
+            stepID: this.step.id,
+        })
+    }
     /** output a 3d scene from an image and its displacement and depth maps */
     output_3dImage = (p: {
         //
@@ -518,6 +525,7 @@ export class Runtime<FIELDS extends WidgetDict = any> {
     print = (message: Printable) => {
         this.output_text(message)
     }
+
     output_text = (message: Printable) => {
         let msg = this.extractString(message)
         console.info(msg)

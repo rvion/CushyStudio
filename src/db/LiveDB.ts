@@ -10,6 +10,7 @@ import {
     GraphT,
     Media3dDisplacementT,
     MediaImageT,
+    MediaSplatT,
     MediaTextT,
     MediaVideoT,
     ProjectT,
@@ -37,6 +38,7 @@ import { SchemaL } from '../models/Schema'
 import { StepL } from '../models/Step'
 import { asRelativePath } from '../utils/fs/pathUtils'
 import { _printSchema } from 'src/db2/_printSchema'
+import { MediaSplatL } from 'src/models/MediaSplat'
 
 export type Indexed<T> = { [id: string]: T }
 
@@ -52,6 +54,7 @@ export class LiveDB {
     media_texts: LiveTable<MediaTextT, MediaTextL>
     media_images: LiveTable<MediaImageT, MediaImageL>
     media_videos: LiveTable<MediaVideoT, MediaVideoL>
+    media_splats: LiveTable<MediaSplatT, MediaSplatL>
     media_3d_displacement: LiveTable<Media3dDisplacementT, Media3dDisplacementL>
     runtimeErrors: LiveTable<RuntimeErrorT, RuntimeErrorL>
     drafts: LiveTable<DraftT, DraftL>
@@ -89,6 +92,7 @@ export class LiveDB {
             this.media_texts =           new LiveTable(this, 'media_text'           , '💬', MediaTextL)
             this.media_images =          new LiveTable(this, 'media_image'          , '🖼️', MediaImageL)
             this.media_videos =          new LiveTable(this, 'media_video'          , '🖼️', MediaVideoL)
+            this.media_splats =          new LiveTable(this, 'media_splat'          , '🖼️', MediaSplatL)
             this.media_3d_displacement = new LiveTable(this, 'media_3d_displacement', '🖼️', Media3dDisplacementL)
             this.runtimeErrors =         new LiveTable(this, 'runtime_error'        , '❌', RuntimeErrorL)
             this.drafts =                new LiveTable(this, 'draft'                , '📝', DraftL)

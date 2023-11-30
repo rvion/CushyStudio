@@ -29,7 +29,7 @@ export const Panel_Output = observer(function Panel_Output_(p: {}) {
     const st = useSt()
     const selectedStep = st.focusedStepL
     if (selectedStep == null) return null
-    const out = st.hovered ?? selectedStep.lastOutput
+    const out = st.hovered ?? st.pinned ?? selectedStep.lastOutput
     return (
         <div
             tw={[

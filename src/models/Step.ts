@@ -1,19 +1,20 @@
-import type { StepOutput, StepOutput_Image } from 'src/types/StepOutput'
+import type { StepOutput } from 'src/types/StepOutput'
 import type { LiveInstance } from '../db/LiveInstance'
 import type { ComfyWorkflowL } from '../models/Graph'
 import type { ComfyPromptL } from './ComfyPrompt'
 
 import { LibraryFile } from 'src/cards/CardFile'
+import { StepT } from 'src/db2/TYPES.gen'
 import { Runtime } from '../back/Runtime'
 import { Status } from '../back/Status'
 import { LiveCollection } from '../db/LiveCollection'
 import { LiveRef } from '../db/LiveRef'
-import { StepT } from 'src/db2/TYPES.gen'
+import { Media3dDisplacementL } from './Media3dDisplacement'
 import { MediaImageL } from './MediaImage'
 import { MediaTextL } from './MediaText'
-import { RuntimeErrorL } from './RuntimeError'
 import { MediaVideoL } from './MediaVideo'
-import { Media3dDisplacementL } from './Media3dDisplacement'
+import { RuntimeErrorL } from './RuntimeError'
+import { MediaSplatL } from './MediaSplat'
 
 export type FormPath = (string | number)[]
 /** a thin wrapper around an app execution */
@@ -54,6 +55,7 @@ export class StepL {
     images = new LiveCollection<MediaImageL>(this, 'stepID', () => this.db.media_images, this._CACHE_INVARIANT)
     videos = new LiveCollection<MediaVideoL>(this, 'stepID', () => this.db.media_videos, this._CACHE_INVARIANT)
     displacements = new LiveCollection<Media3dDisplacementL>(this, 'stepID', () => this.db.media_3d_displacement, this._CACHE_INVARIANT) // prettier-ignore
+    splats = new LiveCollection<MediaSplatL>(this, 'stepID', () => this.db.media_splats, this._CACHE_INVARIANT) // prettier-ignore
 
     comfy_workflows = new LiveCollection<ComfyWorkflowL>(this, 'stepID', () => this.db.graphs, this._CACHE_INVARIANT)
     comfy_prompts = new LiveCollection<ComfyPromptL>(this, 'stepID', () => this.db.comfy_prompts, this._CACHE_INVARIANT)
@@ -69,6 +71,7 @@ export class StepL {
             ...this.texts.items,
             ...this.images.items,
             ...this.videos.items,
+            ...this.splats.items,
             ...this.displacements.items,
             ...this.comfy_workflows.items,
             ...this.comfy_prompts.items,

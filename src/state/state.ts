@@ -118,6 +118,7 @@ export class STATE {
     configFile: JsonFile<ConfigFile>
     updater: GitManagedFolder
     hovered: Maybe<StepOutput> = null
+    pinned: Maybe<StepOutput> = null
     electronUtils: ElectronUtils
     library: Library
     schemaReady = new ManualPromise<true>()

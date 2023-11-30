@@ -169,6 +169,16 @@ export const migrations: {
         name: 'add step and graph',
         up: ['alter table graph add column stepID text references step(id)'],
     },
+    {
+        id: '4cjq8_0hGP',
+        name: 'add gaussian splat support',
+        up: [_createTable('media_splat', [`stepID text references step(id)`])],
+    },
+    {
+        id: '-apJ3x9uB4',
+        name: 'add gaussian splat support',
+        up: [`alter table media_splat add column url text not null`],
+    },
     // {
     //     id: 'PONTSFSpA_',
     //     name: 'fix image2',

@@ -567,6 +567,41 @@ export const RuntimeErrorFields = {
 }
 
 
+export const asMediaSplatID = (s: string): MediaSplatID => s as any
+export type MediaSplatT = {
+    /** @default: "hex(randomblob(16))", sqlType: string */
+    id: MediaSplatID;
+
+    /** @default: "now", sqlType: INTEGER */
+    createdAt: number;
+
+    /** @default: "now", sqlType: INTEGER */
+    updatedAt: number;
+
+    /** @default: null, sqlType: TEXT */
+    stepID?: Maybe<StepID>;
+
+    /** @default: null, sqlType: TEXT */
+    url: string;
+
+}
+export const MediaSplatSchema = Type.Object({
+    id: Type.String(),
+    createdAt: Type.Number(),
+    updatedAt: Type.Number(),
+    stepID: Type.Optional(T.Nullable(Type.String())),
+    url: Type.String(),
+},{ additionalProperties: false })
+
+export const MediaSplatFields = {
+    id: {cid:0,name:'id',type:'string',notnull:1,dflt_value:'hex(randomblob(16))',pk:1},
+    createdAt: {cid:1,name:'createdAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
+    updatedAt: {cid:2,name:'updatedAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
+    stepID: {cid:3,name:'stepID',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    url: {cid:4,name:'url',type:'TEXT',notnull:1,dflt_value:null,pk:0},
+}
+
+
 export const schemas = {
     migrations: new T.TableInfo(
         'migrations',
@@ -645,5 +680,11 @@ export const schemas = {
         'RuntimeError',
         RuntimeErrorFields,
         RuntimeErrorSchema,
+    ),
+    media_splat: new T.TableInfo(
+        'media_splat',
+        'MediaSplat',
+        MediaSplatFields,
+        MediaSplatSchema,
     ),
 }

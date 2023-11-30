@@ -1,37 +1,34 @@
-import GaussianSplats3D from 'gaussian-splats-3d'
-import * as THREE from 'three'
+import { observer } from 'mobx-react-lite'
+import { MediaSplatL } from 'src/models/MediaSplat'
+import { StepL } from 'src/models/Step'
+import { useSt } from 'src/state/stateContext'
+import { OutputPreviewWrapperUI } from './OutputPreviewWrapperUI'
 
-const renderWidth = 800
-const renderHeight = 600
-
-const rootElement = document.createElement('div')
-rootElement.style.width = renderWidth + 'px'
-rootElement.style.height = renderHeight + 'px'
-document.body.appendChild(rootElement)
-
-const renderer = new THREE.WebGLRenderer({
-    antialias: false,
+export const OutputSplatPreviewUI = observer(function OutputImagePreviewUI_(p: { step?: Maybe<StepL>; output: MediaSplatL }) {
+    const st = useSt()
+    const size = st.gallerySize
+    const sizeStr = st.gallerySizeStr
+    return (
+        <OutputPreviewWrapperUI output={p.output}>
+            {/*  */}
+            <div
+                tw='bg-secondary text-secondary-content text-center w-full'
+                style={{ lineHeight: sizeStr, fontSize: `${size / 4}px` }}
+            >
+                Splat
+            </div>
+        </OutputPreviewWrapperUI>
+    )
 })
-renderer.setSize(renderWidth, renderHeight)
-rootElement.appendChild(renderer.domElement)
 
-const camera = new THREE.PerspectiveCamera(65, renderWidth / renderHeight, 0.1, 500)
-camera.position.copy(new THREE.Vector3().fromArray([-1, -4, 6]))
-camera.lookAt(new THREE.Vector3().fromArray([0, 4, -0]))
-camera.up = new THREE.Vector3().fromArray([0, -1, -0.6]).normalize()
-
-const viewer = new GaussianSplats3D.Viewer({
-    cameraUp: [0, -1, -0.6],
-    renderer: renderer,
-    initialCameraPosition: [-1, -4, 6],
-    initialCameraLookAt: [0, 4, 0],
-    ignoreDevicePixelRatio: false,
+export const OutputSplatUI = observer(function OutputSplatUI_(p: { step?: Maybe<StepL>; output: MediaSplatL }) {
+    return (
+        <iframe //
+            tabIndex={-1}
+            autoFocus
+            className='w-full h-full'
+            frameBorder='0'
+            src='https://antimatter15.com/splat/'
+        ></iframe>
+    )
 })
-viewer
-    .loadFile('<path to .ply or .splat file>', {
-        splatAlphaRemovalThreshold: 5, // out of 255
-        halfPrecisionCovariancesOnGPU: true,
-    })
-    .then(() => {
-        viewer.start()
-    })

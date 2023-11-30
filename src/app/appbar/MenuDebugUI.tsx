@@ -44,14 +44,12 @@ export const MenuDebugUI = observer(function MenuDebugUI_(p: {}) {
             <div tw='divider my-0' />
             <MenuItem //
                 icon={<span className='material-symbols-outlined text-purple-500'>storage</span>}
-                onClick={st.electronUtils.toggleDevTools}
+                onClick={st.db.migrate}
                 label='Migrate'
             />
             <MenuItem //
                 icon={<span className='material-symbols-outlined text-purple-500'>group_work</span>}
-                onClick={() => {
-                    st.db.migrate()
-                }}
+                onClick={st.db.runCodegen}
                 label='CodeGen'
             />
         </Dropdown>
