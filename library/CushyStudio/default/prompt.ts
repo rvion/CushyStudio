@@ -4,10 +4,11 @@ import { run_prompt } from './_prefabs/prefab_prompt'
 import { ui_recursive } from './_prefabs/prefab_recursive'
 import { Ctx_sampler, run_sampler, ui_sampler } from './_prefabs/prefab_sampler'
 import { ui_highresfix } from './_prefabs'
+import { output_demo_summary } from './_prefabs/prefab_markdown'
 
 app({
-    ui: (form) => ({
-        positive: form.prompt({
+    ui: (ui) => ({
+        positive: ui.prompt({
             default: {
                 tokens: [
                     { type: 'text', text: 'masterpiece, tree ' },
@@ -22,51 +23,45 @@ app({
                 ],
             },
         }),
-        negative: form.prompt({ default: 'nsfw, nude, girl, woman, human' }),
-        // seed: form.seed({}),
-        model: ui_model(form),
-        latent: ui_latent(form),
-        sampler: ui_sampler(form),
-        highResFix: ui_highresfix(form),
-        controlnets: form.groupOpt({
+        negative: ui.prompt({ default: 'nsfw, nude, girl, woman, human' }),
+        model: ui_model(ui),
+        latent: ui_latent(ui),
+        sampler: ui_sampler(ui),
+        highResFix: ui_highresfix(ui),
+        controlnets: ui.groupOpt({
             items: () => ({
-                pose: form.list({
+                pose: ui.list({
                     //
                     element: () =>
-                        form.group({
+                        ui.group({
                             items: () => ({
-                                pose: form.image({
-                                    assetSuggested: 'library/CushyStudio/default/_poses/' as RelativePath,
-                                }),
+                                pose: ui.image({ assetSuggested: 'library/CushyStudio/default/_poses/' as RelativePath }),
                             }),
                         }),
                 }),
             }),
         }),
-        recursiveImgToImg: ui_recursive(form),
-        loop: form.groupOpt({
+        recursiveImgToImg: ui_recursive(ui),
+        loop: ui.groupOpt({
             items: () => ({
-                batchCount: form.int({ default: 1 }),
-                delayBetween: form.int({
-                    tooltip: 'in ms',
-                    default: 0,
-                }),
+                batchCount: ui.int({ default: 1 }),
+                delayBetween: ui.int({ tooltip: 'in ms', default: 0 }),
             }),
         }),
         // startImage
-        removeBG: form.bool({ default: false }),
-        reversePositiveAndNegative: form.bool({ default: false }),
-        makeAVideo: form.bool({ default: false }),
-        summary: form.bool({ default: false }),
-        gaussianSplat: form.bool({ default: false }),
-        show3d: form.groupOpt({
+        removeBG: ui.bool({ default: false }),
+        reversePositiveAndNegative: ui.bool({ default: false }),
+        makeAVideo: ui.bool({ default: false }),
+        summary: ui.bool({ default: false }),
+        gaussianSplat: ui.bool({ default: false }),
+        show3d: ui.groupOpt({
             items: () => {
                 return {
-                    normal: form.selectOne({
+                    normal: ui.selectOne({
                         default: { id: 'MiDaS' },
                         choices: [{ id: 'MiDaS' }, { id: 'BAE' }],
                     }),
-                    depth: form.selectOne({
+                    depth: ui.selectOne({
                         default: { id: 'Zoe' },
                         choices: [{ id: 'MiDaS' }, { id: 'Zoe' }, { id: 'LeReS' }],
                     }),
@@ -106,8 +101,6 @@ app({
             preview: false,
         }
         latent = run_sampler(flow, p.sampler, ctx_sampler).latent
-
-        // graph.FUIOSUIO({}) as any
 
         // RECURSIVE PASS ----------------------------------------------------------------------------
         if (p.recursiveImgToImg) {
@@ -191,34 +184,9 @@ app({
 
         await flow.PROMPT()
 
-        if (p.gaussianSplat) {
-            flow.output_GaussianSplat({ url: '' })
-        }
-        if (p.summary) {
-            flow.output_Markdown(`
-# Hello
-
-this is a test
-
-here are the 300 first chars from the readme:
-
-
-${flow.fs.readFileSync('README.md', 'utf-8').slice(0, 300)}
-
-
-Bye !
-
-this is the last generated image:
-
-![](${flow.lastImage?.url})
-
-`)
-        }
-        // =======================================================================================
-
-        if (show3d) {
-            flow.output_3dImage({ image: 'base', depth: 'depth', normal: 'normal' })
-        }
+        if (p.gaussianSplat) flow.output_GaussianSplat({ url: '' })
+        if (p.summary) output_demo_summary(flow)
+        if (show3d) flow.output_3dImage({ image: 'base', depth: 'depth', normal: 'normal' })
 
         // LOOP IF NEED BE -----------------------------------------------------------------------
         const loop = p.loop
