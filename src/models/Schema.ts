@@ -311,11 +311,8 @@ export class SchemaL {
         const b = new CodeBuffer()
         const p = b.w
 
-        // 1️⃣ if (opts.cushySrcPathPrefix == null) {
-        // 1️⃣     p(`/// <reference path="cushy.d.ts" />`)
-        // 1️⃣ }
         p('')
-        p(`import type { ComfyNode } from '${prefix}core/Node'`)
+        p(`import type { ComfyNode } from '${prefix}core/ComfyNode'`)
         p(`import type { ComfyNodeID } from '${prefix}types/ComfyNodeID'`)
         p(`import type { ComfyNodeOutput } from '${prefix}core/Slot'`)
         p(`import type { ComfyNodeSchemaJSON } from '${prefix}types/ComfySchemaJSON'`)

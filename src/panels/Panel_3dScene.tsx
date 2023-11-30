@@ -14,7 +14,7 @@
 import { makeAutoObservable } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { createRef, useEffect, useLayoutEffect, useMemo } from 'react'
-import { Input, Slider, Toggle } from 'src/rsuite/shims'
+import { Slider, Toggle } from 'src/rsuite/shims'
 import { parseFloatNoRoundingErr } from 'src/utils/misc/parseFloatNoRoundingErr'
 import { FieldAndLabelUI } from 'src/widgets/misc/FieldAndLabelUI'
 import * as THREE from 'three'
