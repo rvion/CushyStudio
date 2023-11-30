@@ -17,6 +17,7 @@ export let WidgetDI = {
     Widget_int: 0 as any as typeof R.Widget_int,
     Widget_float: 0 as any as typeof R.Widget_float,
     Widget_bool: 0 as any as typeof R.Widget_bool,
+    Widget_inlineRun: 0 as any as typeof R.Widget_inlineRun,
     Widget_intOpt: 0 as any as typeof R.Widget_intOpt,
     Widget_floatOpt: 0 as any as typeof R.Widget_floatOpt,
     Widget_markdown: 0 as any as typeof R.Widget_markdown,

@@ -29,6 +29,7 @@ export type Widget =
     | Widget_int
     | Widget_float
     | Widget_bool
+    | Widget_inlineRun
     | Widget_intOpt
     | Widget_floatOpt
     | Widget_markdown
@@ -357,6 +358,31 @@ export class Widget_bool implements IRequest<'bool', Widget_bool_opts, Widget_bo
     }
     get serial(): Widget_bool_serial { return this.state }
     get result(): Widget_bool_output { return this.state.active ? this.state.val : false}
+}
+
+// 🅿️ inlineRun ==============================================================================
+export type Widget_inlineRun_opts  = ReqInput<{}>
+export type Widget_inlineRun_serial = Widget_inlineRun_state
+export type Widget_inlineRun_state  = StateFields<{ type:'inlineRun', active: true; val: boolean }>
+export type Widget_inlineRun_output = boolean
+export interface Widget_inlineRun extends IWidget<'inlineRun', Widget_inlineRun_opts, Widget_inlineRun_serial, Widget_inlineRun_state, Widget_inlineRun_output> {}
+export class Widget_inlineRun implements IRequest<'inlineRun', Widget_inlineRun_opts, Widget_inlineRun_serial, Widget_inlineRun_state, Widget_inlineRun_output> {
+    isOptional = false
+    id: string
+    type: 'inlineRun' = 'inlineRun'
+    state: Widget_inlineRun_state
+    constructor(
+        public builder: FormBuilder,
+        public schema: SchemaL,
+        public input: Widget_inlineRun_opts,
+        serial?: Widget_inlineRun_serial,
+    ) {
+        this.id = serial?.id ?? nanoid()
+        this.state = serial ?? { type: 'inlineRun', id: this.id, active: true, val: false }
+        makeAutoObservable(this)
+    }
+    get serial(): Widget_inlineRun_serial { return this.state }
+    get result(): Widget_inlineRun_output { return this.state.active ? this.state.val : false}
 }
 
 // 🅿️ intOpt ==============================================================================
@@ -1368,6 +1394,7 @@ WidgetDI.Widget_seed=Widget_seed
 WidgetDI.Widget_int=Widget_int
 WidgetDI.Widget_float=Widget_float
 WidgetDI.Widget_bool=Widget_bool
+WidgetDI.Widget_inlineRun=Widget_inlineRun
 WidgetDI.Widget_intOpt=Widget_intOpt
 WidgetDI.Widget_floatOpt=Widget_floatOpt
 WidgetDI.Widget_markdown=Widget_markdown
