@@ -36,7 +36,7 @@ export class DraftL {
         // ----------------------------------------
         // 🔴 2023-11-30 rvion:: TEMPORPARY HACKS
         this.st.focusedStepID = null
-        this.st.focusedStepOutputID = null
+        this.st.focusedStepOutput = null
         // ----------------------------------------
 
         // 1. ensure req valid (TODO: validate)

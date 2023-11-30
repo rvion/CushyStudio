@@ -17,7 +17,7 @@ export const LatentIfLastUI = observer(function LatentIfLastUI_(p: {}) {
     if (lastImage == null || latent.receivedAt > lastImage.createdAt)
         return (
             <img //
-                tw='absolute bottom-0 right-0 shadow-xl'
+                tw='absolute bottom-0 right-0 shadow-xl z-50'
                 style={{ width: st.latentSizeStr, height: st.latentSizeStr, objectFit: 'contain' }}
                 src={latent.url}
                 alt='last generated image'
@@ -29,7 +29,9 @@ export const Panel_Output = observer(function Panel_Output_(p: {}) {
     const st = useSt()
     const selectedStep = st.focusedStepL
     if (selectedStep == null) return null
-    const out = st.hovered ?? st.focusedStepOutputID ?? selectedStep.lastOutput
+    const out1 = st.focusedStepOutput ?? selectedStep.lastMediaOutput ?? st.db.media_images.last()
+    const out2 = st.hovered
+    const out3 = st.hovered ?? selectedStep.currentlyExecutingOutput
     return (
         <div
             tw={[
@@ -41,8 +43,19 @@ export const Panel_Output = observer(function Panel_Output_(p: {}) {
         >
             {/* <MainOutputHistoryUI /> */}
             <SideOutputListUI />
-            <div tw='flex flex-grow overflow-auto'>{out && <OutputUI output={out} />}</div>
-            <LatentIfLastUI />
+            <div tw='flex flex-grow relative'>
+                <div tw='flex flex-grow overflow-auto'>
+                    {/*  */}
+                    {out1 && <OutputUI output={out1} />}
+                </div>
+                <div tw='flex flex-grow overflow-auto absolute pointer-events-none inset-0 z-30'>
+                    {out2 && <OutputUI output={out2} />}
+                </div>
+                <div tw='flex flex-grow overflow-auto absolute pointer-events-none inset-0 z-20 opacity-25'>
+                    {out3 && <OutputUI output={out3} />}
+                </div>
+                <LatentIfLastUI />
+            </div>
         </div>
     )
 })

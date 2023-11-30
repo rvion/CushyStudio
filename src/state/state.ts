@@ -564,7 +564,7 @@ export class STATE {
         return '🔴'
     }
 
-    focusedStepOutputID: Maybe<StepOutput> = null
+    focusedStepOutput: Maybe<StepOutput> = null
     focusedStepID: Maybe<StepID> = null
     get focusedStepL(): Maybe<StepL> {
         if (this.focusedStepID) return this.db.steps.get(this.focusedStepID) ?? this.db.steps.last()

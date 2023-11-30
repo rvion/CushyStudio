@@ -61,6 +61,15 @@ export class StepL {
     comfy_prompts = new LiveCollection<ComfyPromptL>(this, 'stepID', () => this.db.comfy_prompts, this._CACHE_INVARIANT)
     runtimeErrors = new LiveCollection<RuntimeErrorL>(this, 'stepID', () => this.db.runtimeErrors, this._CACHE_INVARIANT)
 
+    get currentlyExecutingOutput(): Maybe<StepOutput> {
+        return this.comfy_prompts.items.find((p: ComfyPromptL) => !p.data.executed)
+    }
+    get lastMediaOutput(): Maybe<MediaImageL | MediaVideoL> {
+        const outputs = this.outputs
+        const last = outputs[outputs.length - 1]
+        if (last instanceof MediaImageL || last instanceof MediaVideoL) return last
+        return null
+    }
     get lastOutput(): Maybe<StepOutput> {
         const outputs = this.outputs
         return outputs[outputs.length - 1]

@@ -24,7 +24,7 @@ export const OutputPreviewWrapperUI = observer(function OutputPreviewWrapperUI_(
                 style={{ width: sizeStr, height: sizeStr }}
                 //
                 // LOGIC
-                onClick={() => (st.focusedStepOutputID = p.output)}
+                onClick={() => (st.focusedStepOutput = p.output)}
                 onMouseEnter={(ev) => (st.hovered = p.output)}
                 onMouseLeave={() => {
                     if (st.hovered === p.output) st.hovered = null
