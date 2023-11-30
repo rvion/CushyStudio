@@ -54,16 +54,14 @@ export const OutputPromptUI = observer(function OutputPromptUI_(p: {
     return (
         <div className='flex flex-col gap-1'>
             {graph.done ? null : (
-                <Button
-                    tw='self-end'
-                    size='xs'
-                    appearance='ghost'
+                <div
+                    tw='btn btn-sm'
                     onClick={() => {
                         st.stopCurrentPrompt()
                     }}
                 >
                     STOP GENERATING
-                </Button>
+                </div>
             )}
             <GraphSummaryUI graph={graph} />
         </div>

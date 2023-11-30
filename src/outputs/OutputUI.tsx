@@ -32,7 +32,7 @@ export const OutputPreviewUI = observer(function StepOutputUI_(p: { step?: Maybe
     if (output instanceof Media3dDisplacementL)  return <OutputDisplacementPreviewUI step={p.step} output={output} />
 
     if (output instanceof ComfyPromptL)          return <OutputPromptPreviewUI       step={p.step} output={output} />
-    if (output instanceof ComfyWorkflowL /* workflow */) return <OutputWorkflowPreviewUI     step={p.step} output={output} />
+    if (output instanceof ComfyWorkflowL)        return <OutputWorkflowPreviewUI     step={p.step} output={output} />
     if (output instanceof StepL)                 return <>🔴</>
 
     if (output instanceof RuntimeErrorL)         return <OutputRuntimeErrorPreviewUI step={p.step} output={output} />
@@ -53,7 +53,7 @@ export const OutputUI = observer(function StepOutputUI_(p: { step?: Maybe<StepL>
     if (output instanceof Media3dDisplacementL)  return <OutputDisplacementUI        step={p.step} output={output} />
 
     if (output instanceof ComfyPromptL)          return <OutputPromptUI              step={p.step} output={output} />
-    if (output instanceof ComfyWorkflowL /* workflow */) return <OutputWorkflowUI            step={p.step} output={output} />
+    if (output instanceof ComfyWorkflowL)        return <OutputWorkflowUI            step={p.step} output={output} />
     if (output instanceof StepL)                 return <>🔴</>
 
     if (output instanceof RuntimeErrorL)         return <OutputRuntimeErrorUI        step={p.step} output={output} />

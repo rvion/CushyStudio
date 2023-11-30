@@ -51,7 +51,7 @@ export const Panel_Output = observer(function Panel_Output_(p: {}) {
                 <div tw='flex flex-grow overflow-auto absolute pointer-events-none inset-0 z-30'>
                     {out2 && <OutputUI output={out2} />}
                 </div>
-                <div tw='flex flex-grow overflow-auto absolute pointer-events-none inset-0 z-20 opacity-25'>
+                <div tw='flex flex-grow overflow-auto absolute pointer-events-none inset-0 z-20'>
                     {out3 && <OutputUI output={out3} />}
                 </div>
                 <LatentIfLastUI />
