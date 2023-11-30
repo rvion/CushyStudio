@@ -8,7 +8,7 @@ export const OutputDisplacementPreviewUI = observer(function OutputImagePreviewU
     step?: Maybe<StepL>
     output: Media3dDisplacementL
 }) {
-    const size = useSt().outputPreviewSizeStr
+    const size = useSt().gallerySizeStr
     return (
         <OutputPreviewWrapperUI output={p.output}>
             3D

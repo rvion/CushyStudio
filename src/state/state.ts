@@ -151,11 +151,6 @@ export class STATE {
     set gallerySize(v: number) { this.configFile.update({ galleryImageSize: v }) } // prettier-ignore
     get gallerySize() { return this.configFile.value.galleryImageSize ?? 48 } // prettier-ignore
 
-    // output size
-    get outputPreviewSizeStr() { return `${this.outputPreviewSize}px` } // prettier-ignore
-    set outputPreviewSize(v: number) { this.configFile.update({ outputPreviewSize: v }) } // prettier-ignore
-    get outputPreviewSize() { return this.configFile.value.outputPreviewSize ?? 48 } // prettier-ignore
-
     // history app size
     get historySizeStr() { return `${this.historySize}px` } // prettier-ignore
     set historySize(v: number) { this.configFile.update({ historyAppSize: v }) } // prettier-ignore
@@ -397,7 +392,7 @@ export class STATE {
     }> = null
     onMessage = (e: MessageEvent) => {
         if (e.data instanceof ArrayBuffer) {
-            console.log('[👢] WEBSOCKET: received ArrayBuffer', e.data)
+            // 🔴 console.log('[👢] WEBSOCKET: received ArrayBuffer', e.data)
             const view = new DataView(e.data)
             const eventType = view.getUint32(0)
             const buffer = e.data.slice(4)
@@ -427,7 +422,7 @@ export class STATE {
             }
             return
         }
-        console.info(`[👢] WEBSOCKET: received ${e.data}`)
+        // 🔴 console.info(`[👢] WEBSOCKET: received ${e.data}`)
         const msg: WsMsg = JSON.parse(e.data as any)
 
         if (msg.type === 'status') {
@@ -583,9 +578,8 @@ export class STATE {
     // images: ImageT[] = []
     // imagesById: Map<ImageID, ImageT> = new Map()
     get imageToDisplay(): MediaImageL[] {
-        const maxImages = this.configFile.value.galleryMaxImages ?? 50
-        // 🔴 not dynamic
-        return this.db.media_images.getLastN(maxImages).reverse()
+        const maxImages = this.configFile.value.galleryMaxImages ?? 20
+        return this.db.media_images.getLastN(maxImages)
     }
 
     // FILESYSTEM UTILS --------------------------------------------------------------------

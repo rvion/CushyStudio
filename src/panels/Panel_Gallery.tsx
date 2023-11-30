@@ -7,21 +7,18 @@ import { FieldAndLabelUI } from 'src/widgets/misc/FieldAndLabelUI'
 
 export const Panel_Gallery = observer(function VerticalGalleryUI_(p: {}) {
     const st = useSt()
-    const preview = st.latentPreview
-    // cosnt items
     return (
         <div //
             className='flex flex-col bg-base-100 h-full'
             style={{ background: st.configFile.value.galleryBgColor }}
         >
+            <GalleryControlsUI />
             <div className='flex flex-wrap overflow-auto'>
                 <LatentPreviewUI />
                 {st.imageToDisplay.map((img, ix) => (
                     <ImageUI key={ix} img={img} />
                 ))}
             </div>
-            <GalleryControlsUI />
-            {/* MAIN IMAGE COLUMN */}
         </div>
     )
 })

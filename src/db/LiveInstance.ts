@@ -17,6 +17,7 @@ export interface LiveInstance<T extends BaseInstanceFields, L> {
     get id(): T['id']
     get createdAt(): T['createdAt']
     get updatedAt(): T['updatedAt']
+    get tableName(): TableNameInDB
     onHydrate?: (data: T) => void
     onCreate?: (data: T) => void
     onUpdate?: (prev: Maybe<T>, next: T) => void

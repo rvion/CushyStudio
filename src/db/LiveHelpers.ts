@@ -13,3 +13,5 @@ export const MIX = <T>(TargetCls: Class<T>, mixins: Mixins<T>) => {
 export const MERGE_PROTOTYPES = (TargetCls: Class<unknown>, SrcCls: Class<unknown>) => {
     return Object.defineProperties(TargetCls.prototype, Object.getOwnPropertyDescriptors(SrcCls.prototype))
 }
+
+export const DEPENDS_ON = (x: any) => {}

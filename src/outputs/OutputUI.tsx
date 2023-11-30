@@ -38,7 +38,7 @@ export const OutputPreviewUI = observer(function StepOutputUI_(p: { step?: Maybe
     if (output instanceof RuntimeErrorL)         return <OutputRuntimeErrorPreviewUI step={p.step} output={output} />
 
     exhaust(output)
-    return <div className='border'>❌ unhandled message of type `{(output as any).type}`</div>
+    return <div className='border'>❌ unhandled message of type `{(output as any).constructor.name}`</div>
 })
 
 // FULL -----------------------------------------------------------------------------

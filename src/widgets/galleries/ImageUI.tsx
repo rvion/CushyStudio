@@ -31,10 +31,6 @@ export const ImageUI = observer(function ImageUI_(p: { size?: string; img: Media
             src={image.url}
             ref={dragRef}
             loading='lazy'
-            // onMouseEnter={(ev) => (st.hovered = { type: 'image', url: image.url })}
-            // onMouseLeave={() => {
-            //     if (st.hovered?.url === image.url) st.hovered = null
-            // }}
             style={{
                 objectFit: 'contain',
                 width: ImageWidth,

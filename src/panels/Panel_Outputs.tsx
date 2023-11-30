@@ -26,12 +26,13 @@ export const Panel_Outputs = observer(function Panel_Outputs_(p: {}) {
             </div>
             {/* </FieldAndLabelUI> */}
             {/* </Panel> */}
-            <div className='flex flex-col-reverse flex-grow' style={{ overflow: 'auto' }}>
+            <div className='flex flex-col flex-grow' style={{ overflow: 'auto' }}>
                 {steps.map((step) => (
                     // <InView key={step.id} as='div' onChange={(inView, entry) => {}}>
                     <StepOutputsV2UI key={step.id} step={step} />
                     // </InView>
                 ))}
+                🟢
             </div>
         </div>
     )

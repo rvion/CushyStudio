@@ -58,19 +58,16 @@ export class TableInfo<T = any> {
     hydrateJSONFields = (data: any): T => {
         if (data == null) debugger
         for (const col of this.cols) {
-            if (col.type === 'json') {
-                const rawCol = data[col.name]
-
-                // when value is null
-                if (rawCol == null) {
-                    if (col.notnull) throw new Error(`json column ${col.name} is null`)
-                    data[col.name] = null
-                    continue
-                }
-
-                // when value is present
-                data[col.name] = JSON.parse(rawCol)
+            if (col.type !== 'json') continue
+            const rawCol = data[col.name]
+            // when value is null
+            if (rawCol == null) {
+                if (col.notnull) throw new Error(`json column ${col.name} is null`)
+                data[col.name] = null
+                continue
             }
+            // when value is present
+            data[col.name] = JSON.parse(rawCol)
         }
         return data
     }

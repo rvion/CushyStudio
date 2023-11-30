@@ -2,6 +2,7 @@ import type { LiveInstance } from './LiveInstance'
 
 import { makeAutoObservable } from 'mobx'
 import { LiveTable } from './LiveTable'
+import { DEPENDS_ON } from './LiveHelpers'
 
 export class LiveCollection<L extends LiveInstance<any, any>> {
     constructor(
@@ -9,6 +10,7 @@ export class LiveCollection<L extends LiveInstance<any, any>> {
         public owner: LiveInstance<any, any>,
         public remoteFieldName: keyof L['data'] & string,
         public remoteTable: () => LiveTable<any, any>,
+        public cache?: () => boolean,
     ) {
         makeAutoObservable(this)
     }
@@ -19,12 +21,10 @@ export class LiveCollection<L extends LiveInstance<any, any>> {
     }
 
     get items(): L[] {
-        const table = this.remoteTable()
-        const fn = this.owner.db.prepareAll<{ id: string }, L>(
-            table.infos,
-            `SELECT * FROM ${table.name} WHERE ${this.remoteFieldName} = :id`,
-        )
-        return fn({ id: this.owner.id })
+        const remoteTable = this.remoteTable()
+        const shouldCache = this.cache?.() ?? false
+        if (!shouldCache) DEPENDS_ON(remoteTable.liveEntities.size)
+        return remoteTable.find({ [this.remoteFieldName]: this.owner.id })
     }
 
     map = <T>(fn: (l: L) => T): T[] => this.items.map(fn)

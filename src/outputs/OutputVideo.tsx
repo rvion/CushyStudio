@@ -17,7 +17,7 @@ export const OutputVideoPreviewUI = observer(function OutputImagePreviewUI_(p: {
     step?: Maybe<StepL>
     output: StepOutput_Video
 }) {
-    const size = useSt().outputPreviewSizeStr
+    const size = useSt().gallerySizeStr
     return (
         <OutputPreviewWrapperUI output={p.output}>
             video

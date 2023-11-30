@@ -1,64 +1,37 @@
-import type { STATE } from 'src/state/state'
-import type { LiveDB } from './LiveDB'
-import type { $BaseInstanceFields, BaseInstanceFields, LiveInstance } from './LiveInstance'
 import { Value, ValueError } from '@sinclair/typebox/value'
 import { makeAutoObservable, toJS } from 'mobx'
 import { nanoid } from 'nanoid'
-import { MERGE_PROTOTYPES } from './LiveHelpers'
-import { LiveOrdering } from './LiveOrdering'
-import { TableInfo } from 'src/db2/TYPES_json'
 import { schemas } from 'src/db2/TYPES.gen'
-// import { inserts } from 'src/db2/TYPES.gen'
+import { TableInfo } from 'src/db2/TYPES_json'
+import type { STATE } from 'src/state/state'
+import type { LiveDB } from './LiveDB'
+import { DEPENDS_ON, MERGE_PROTOTYPES } from './LiveHelpers'
+import type { $BaseInstanceFields, BaseInstanceFields, LiveInstance } from './LiveInstance'
 
-// const insertFn = [
-//     `export const insert${jsTableName}SQL = '`,
-//     `insert into ${table.name} `,
-//     `(${cols.map((c) => c.name).join(', ')})`,
-//     ` values `,
-//     `(${cols.map((c) => `@${c.name}`).join(', ')})`,
-//     `'`,
-// ].join('')
 export interface LiveEntityClass<T extends BaseInstanceFields, L> {
     new (...args: any[]): LiveInstance<T, L> & L
 }
 
 export class LiveTable<T extends BaseInstanceFields, L extends LiveInstance<T, L>> {
     private Ktor: LiveEntityClass<T, L>
-    private liveEntities = new Map<string, T>()
+    liveEntities = new Map<string, L>()
     infos: TableInfo = schemas[this.name]
-    // toJSON = (): Indexed<T> => this._store
 
-    // 🔴 --------------------------------------------------------------------------------
-    // find = (check: (l: L) => boolean): Maybe<L> => {
-    //     for (const v of this.values) if (check(v)) return v
-    //     return null
-    // }
-
-    // 🔴 --------------------------------------------------------------------------------
-    // filter = (check: (l: L) => boolean): L[] => {
-    //     const res: L[] = []
-    //     for (const v of this.values) if (check(v)) res.push(v)
-    //     return res
-    // }
-
-    // 🔴 --------------------------------------------------------------------------------
-    // findOrCrash = (check: (l: L) => boolean): L => {
-    //     for (const v of this.values) {
-    //         if (check(v)) return v
-    //     }
-    //     throw new Error('no entry found')
-    // }
-
-    // 🟢🔶 --------------------------------------------------------------------------------
+    // 🟢 --------------------------------------------------------------------------------
     /** number of entities in the table */
-    get size() { return this.db._getCount(this.name) } // prettier-ignore
+    get size() {
+        DEPENDS_ON(this.liveEntities.size)
+        return this.db._getCount(this.name)
+    }
 
     // 🟢 --------------------------------------------------------------------------------
     getOrCreateInstanceForExistingData = (data: T): L => {
         const id = data.id
-        const instance = this.instances.get(id)
+        const instance = this.liveEntities.get(id)
         if (instance) {
-            Object.assign(instance.data, data)
+            // 2023-11-30 rvion: for now, I won't defensively merge the data
+            // I'll do it if the app become more complex and bugs arise.
+            // Object.assign(instance.data, data)
             return instance
         } else {
             return this._createInstance(data)
@@ -70,13 +43,16 @@ export class LiveTable<T extends BaseInstanceFields, L extends LiveInstance<T, L
     stmt_first = this.db.prepareGet0<Maybe<T>>(this.infos, `select * from ${this.name} order by createdAt asc limit 1`)
     first = (): Maybe<L> => {
         const data = this.stmt_first()
-        console.log('first =', data)
+        // 2023-11-30 rvion:
+        // 👇 first should mosltly not depends on anything
+        // I'll comment this out for the time being
+        // DEPENDS_ON(this.liveEntities.size)
         if (data == null) return null
         return this.getOrCreateInstanceForExistingData(data)
     }
 
     // 🟢 --------------------------------------------------------------------------------
-    /** return first entity from table, or crash if table is empty */
+    /** return first entity from table by createdAt, or crash if table is empty */
     firstOrCrash = (): L => {
         const fst = this.first()
         if (fst == null) throw new Error('collection is empty')
@@ -88,6 +64,7 @@ export class LiveTable<T extends BaseInstanceFields, L extends LiveInstance<T, L
     stmt_last = this.db.prepareGet0<Maybe<T>>(this.infos, `select * from ${this.name} order by createdAt desc limit 1`)
     last = (): Maybe<L> => {
         const data = this.stmt_last()
+        DEPENDS_ON(this.liveEntities.size)
         console.log('last =', data)
         if (data == null) return null
         return this.getOrCreateInstanceForExistingData(data)
@@ -100,6 +77,7 @@ export class LiveTable<T extends BaseInstanceFields, L extends LiveInstance<T, L
         if (lst == null) throw new Error('collection is empty')
         return lst
     }
+
     constructor(
         //
         public db: LiveDB,
@@ -108,10 +86,6 @@ export class LiveTable<T extends BaseInstanceFields, L extends LiveInstance<T, L
         public InstanceClass: LiveEntityClass<T, L>,
         public opts?: { singleton?: boolean },
     ) {
-        // ensure store has a key for this table
-        // if (!(name in db.store.models)) db.store.models[name] = {}
-        // this._store = (db.store.models as any)[name] as
-
         // register
         this.db._tables.push(this)
 
@@ -140,6 +114,7 @@ export class LiveTable<T extends BaseInstanceFields, L extends LiveInstance<T, L
             get id() { return this.data.id } // prettier-ignore
             get createdAt() { return this.data.createdAt } // prettier-ignore
             get updatedAt() { return this.data.updatedAt } // prettier-ignore
+            get tableName() { return this.table.name } // prettier-ignore
 
             update(t: Partial<T>) {
                 // 1. check if update is needed
@@ -155,9 +130,17 @@ export class LiveTable<T extends BaseInstanceFields, L extends LiveInstance<T, L
             }
 
             clone(t?: Partial<T>): T {
-                const cloneData = Object.assign({}, toJS(this.data), { id: nanoid(), ...t })
-                // console.log(`🔴 cloneData:`, cloneData)
-                // console.log(`🔴 this.data=`, this.data)
+                const cloneData = Object.assign(
+                    //
+                    {}, // receiving object
+                    toJS(this.data), // original object
+                    {
+                        // 2023-11-30 rvion:: no need to set the createdAt and updatedAt
+                        // they'll be taken care of by the create functio below
+                        id: nanoid(), // overrides
+                        ...t,
+                    },
+                )
                 return this.table.create(cloneData)
             }
 
@@ -189,7 +172,6 @@ export class LiveTable<T extends BaseInstanceFields, L extends LiveInstance<T, L
         makeAutoObservable(this, {
             // @ts-ignore (private properties are untyped in this function)
             Ktor: false,
-            store: false,
         })
 
         MERGE_PROTOTYPES(InstanceClass, BaseInstanceClass)
@@ -197,24 +179,15 @@ export class LiveTable<T extends BaseInstanceFields, L extends LiveInstance<T, L
     }
 
     // UTILITIES -----------------------------------------------------------------------
-
-    // map = <R>(fn: (inst: L, ix: number) => R): R[] => {
-    //     return this.values.map((v, ix) => fn(v, ix))
-    // }
-
-    // clear = () => {
-    //     this.instances.clear()
-    //     for (const k of this.ids) delete this._store[k]
-    // }
-
-    // get ids(): T['id'][] {
-    //     return Object.keys(this._store)
-    // }
-    createdAtDesc = new LiveOrdering(this, 'createdAt', 'desc')
-
     private stmt_lastN = this.db.prepareAll<number, T>(this.infos, `select * from ${this.name} order by createdAt desc limit ?`)
     getLastN = (amount: number): L[] => {
+        DEPENDS_ON(this.liveEntities.size)
         const ts = this.stmt_lastN(amount)
+        return ts.map((data) => this.getOrCreateInstanceForExistingData(data))
+    }
+    get Last10(): L[] {
+        DEPENDS_ON(this.liveEntities.size)
+        const ts = this.stmt_lastN(10)
         return ts.map((data) => this.getOrCreateInstanceForExistingData(data))
     }
 
@@ -240,7 +213,7 @@ export class LiveTable<T extends BaseInstanceFields, L extends LiveInstance<T, L
         if (id == null) return null
 
         // 1. check if instance exists in the entity map
-        const val = this.instances.get(id)
+        const val = this.liveEntities.get(id)
         if (val) return val
 
         // 2. check if data is on sqlite
@@ -269,9 +242,23 @@ export class LiveTable<T extends BaseInstanceFields, L extends LiveInstance<T, L
     stmt_deleteByID = this.db.prepareDelete<string, void>(`delete from ${this.name} where id = ?`)
     delete = (id: string) => {
         this.stmt_deleteByID(id)
-        this.instances.delete(id)
+        this.liveEntities.delete(id)
     }
 
+    find = (query: Partial<T>): L[] => {
+        const findSQL = [
+            `select * from ${this.name}`,
+            `where`,
+            Object.entries(query)
+                .map(([k, v]) => `${k} = @${k}`)
+                .join(' and '),
+        ].join(' ')
+        const stmt = this.db.db.prepare<{ [key: string]: any }>(findSQL)
+        const datas: T[] = stmt.all(query).map((data) => this.infos.hydrateJSONFields(data))
+        const instances = datas.map((d) => this.getOrCreateInstanceForExistingData(d))
+        console.log(`[🦜] find:`, { findSQL, instances })
+        return instances
+    }
     insert = (row: Partial<T>): L => {
         if (Array.isArray(row)) throw new Error('insert does not support arrays')
         if (typeof row !== 'object') throw new Error('insert does not support non-objects')
@@ -351,8 +338,6 @@ export class LiveTable<T extends BaseInstanceFields, L extends LiveInstance<T, L
         return instance
     }
 
-    private instances = new Map<string, L>()
-
     /** only call this with some data already in the database */
     private _createInstance = (data: T): L => {
         const instance = new this.Ktor()
@@ -367,7 +352,7 @@ export class LiveTable<T extends BaseInstanceFields, L extends LiveInstance<T, L
         }
         // --------------------
         instance.init(this, data)
-        this.instances.set(data.id, instance)
+        this.liveEntities.set(data.id, instance)
         return instance
     }
 

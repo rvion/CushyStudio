@@ -11,7 +11,6 @@ const mode: 'H' | 'V' = 1 - 1 == 0 ? 'V' : 'H'
 const dir = mode === 'H' ? 'flex-col' : 'flex-row'
 
 export const Panel_Output = observer(function Panel_Output_(p: {}) {
-    const st = useSt()
     return (
         <div
             tw={[
@@ -42,7 +41,7 @@ export const Panel_Output = observer(function Panel_Output_(p: {}) {
 export const MainOutputItemsUI = observer(function MainOutputItemsUI_(p: {}) {
     const st = useSt()
     const selectedStep = st.focusedStepL
-    const size = st.outputPreviewSizeStr
+    const size = st.gallerySizeStr
     return (
         <div tw={[dir, 'flex gap-0.5 overflow-auto flex-shrink-0 bg-base-200 items-center']}>
             <RevealUI tw='self-start' disableHover>
@@ -56,8 +55,8 @@ export const MainOutputItemsUI = observer(function MainOutputItemsUI_(p: {}) {
                             mode={'int'}
                             min={32}
                             max={200}
-                            onValueChange={(next) => (st.outputPreviewSize = next)}
-                            value={st.outputPreviewSize}
+                            onValueChange={(next) => (st.gallerySize = next)}
+                            value={st.gallerySize}
                         />
                         px Output Preview Size
                     </div>

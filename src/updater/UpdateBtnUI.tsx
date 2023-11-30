@@ -33,8 +33,8 @@ export const UpdateBtnUI = observer(function UpdateBtnUI_(p: {
     )
     if (updater.hasUpdateAvailable)
         ANCHOR = (
-            <div className={p.className} tw='indicator'>
-                <span className='indicator-item badge badge-secondary'></span>
+            <div className={p.className}>
+                <span className='indicator-item badge badge-secondary'>update</span>
                 {ANCHOR}
             </div>
         )

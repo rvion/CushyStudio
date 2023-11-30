@@ -12,7 +12,7 @@ export const OutputPreviewWrapperUI = observer(function OutputPreviewWrapperUI_(
     children: ReactNode
 }) {
     const st = useSt()
-    const sizeStr = st.outputPreviewSizeStr
+    const sizeStr = st.gallerySizeStr
     return (
         <div
             onMouseEnter={(ev) => (st.hovered = p.output)}

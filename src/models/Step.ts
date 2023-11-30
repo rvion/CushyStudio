@@ -68,10 +68,30 @@ export class StepL {
 
     outputWorkflow = new LiveRef<this, GraphL>(this, 'outputGraphID', () => this.db.graphs)
 
-    images = new        LiveCollection<MediaImageL>(  this, 'stepID', () => this.db.media_images) // prettier-ignore
-    texts = new         LiveCollection<MediaTextL>(   this, 'stepID', () => this.db.media_texts) // prettier-ignore
-    prompts = new       LiveCollection<ComfyPromptL>( this, 'stepID', () => this.db.comfy_prompts) // prettier-ignore
-    runtimeErrors = new LiveCollection<RuntimeErrorL>(this, 'stepID', () => this.db.media_texts) // prettier-ignore
+    images = new LiveCollection<MediaImageL>(
+        this,
+        'stepID',
+        () => this.db.media_images,
+        () => this.data.status !== Status.Running, // OPTIM
+    )
+    texts = new LiveCollection<MediaTextL>(
+        this,
+        'stepID',
+        () => this.db.media_texts,
+        () => this.data.status !== Status.Running, // OPTIM
+    )
+    prompts = new LiveCollection<ComfyPromptL>(
+        this,
+        'stepID',
+        () => this.db.comfy_prompts,
+        () => this.data.status !== Status.Running, // OPTIM
+    )
+    runtimeErrors = new LiveCollection<RuntimeErrorL>(
+        this,
+        'stepID',
+        () => this.db.media_texts,
+        () => this.data.status !== Status.Running, // OPTIM
+    )
 
     get outputs(): (MediaImageL | MediaTextL | ComfyPromptL | RuntimeErrorL)[] {
         return [

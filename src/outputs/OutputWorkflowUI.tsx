@@ -8,7 +8,7 @@ import { OutputPreviewWrapperUI } from './OutputPreviewWrapperUI'
 
 export const OutputWorkflowPreviewUI = observer(function OutputWorkflowUI_(p: { step?: Maybe<StepL>; output: GraphL }) {
     const st = useSt()
-    const size = st.outputPreviewSizeStr
+    const size = st.gallerySizeStr
     return (
         <OutputPreviewWrapperUI output={p.output}>
             <div style={{ width: size, height: size }} tw='bg-blue-800 flex item-center justify-center'>
