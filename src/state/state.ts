@@ -30,7 +30,7 @@ import { ResilientWebSocketClient } from '../back/ResilientWebsocket'
 import { JsonFile } from '../core/JsonFile'
 import { LiveDB } from '../db/LiveDB'
 import { ComfyImporter } from '../importers/ComfyImporter'
-import { GraphL } from '../models/Graph'
+import { ComfyWorkflowL } from '../models/Graph'
 import { EmbeddingName, EnumValue, SchemaL } from '../models/Schema'
 import { CushyLayoutManager } from '../panels/router/Layout'
 import { ComfySchemaJSON } from '../types/ComfySchemaJSON'
@@ -115,7 +115,7 @@ export class STATE {
     actionsFolderPathRel: RelativePath
     outputFolderPath: AbsolutePath
     status: ComfyStatus | null = null
-    graphHovered: Maybe<{ graph: GraphL; pctTop: number; pctLeft: number }> = null
+    graphHovered: Maybe<{ graph: ComfyWorkflowL; pctTop: number; pctLeft: number }> = null
     sid: Maybe<string> = null
     comfyStatus: Maybe<ComfyStatus> = null
     configFile: JsonFile<ConfigFile>
@@ -574,9 +574,6 @@ export class STATE {
         return this.db.steps.last()
     }
 
-    graph: Maybe<GraphL> = null
-    // images: ImageT[] = []
-    // imagesById: Map<ImageID, ImageT> = new Map()
     get imageToDisplay(): MediaImageL[] {
         const maxImages = this.configFile.value.galleryMaxImages ?? 20
         return this.db.media_images.getLastN(maxImages)

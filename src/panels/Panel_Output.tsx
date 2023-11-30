@@ -1,16 +1,19 @@
 import { observer } from 'mobx-react-lite'
 import { AppIllustrationUI } from 'src/cards/fancycard/AppIllustrationUI'
-import { OutputPreviewUI } from 'src/outputs/OutputUI'
+import { OutputPreviewUI, OutputUI } from 'src/outputs/OutputUI'
 import { InputNumberUI } from 'src/rsuite/InputNumberUI'
 import { RevealUI } from 'src/rsuite/RevealUI'
 import { FieldAndLabelUI } from 'src/widgets/misc/FieldAndLabelUI'
 import { useSt } from '../state/stateContext'
-import { Panel_ViewImage } from './Panel_ViewImage'
 
-const mode: 'H' | 'V' = 1 - 1 == 0 ? 'V' : 'H'
+const mode: 'H' | 'V' = 1 - 1 == 1 ? 'V' : 'H'
 const dir = mode === 'H' ? 'flex-col' : 'flex-row'
 
 export const Panel_Output = observer(function Panel_Output_(p: {}) {
+    const st = useSt()
+    const selectedStep = st.focusedStepL
+    if (selectedStep == null) return null
+    const out = st.hovered ?? selectedStep.lastOutput
     return (
         <div
             tw={[
@@ -21,22 +24,10 @@ export const Panel_Output = observer(function Panel_Output_(p: {}) {
         >
             {/* <MainOutputHistoryUI /> */}
             <MainOutputItemsUI />
-            {/* <Panel_ViewImage /> */}
+            {out && <OutputUI output={out} />}
         </div>
     )
 })
-
-// export const Panel_LastStep = observer(function StepListUI_(p: {}) {
-//     const st = useSt()
-//     const lastStep = st.db.steps.last()
-//     if (lastStep == null) return null
-//     return (
-//         <div className='flex flex-col'>
-//             {/* <StepHeaderUI step={lastStep} /> */}
-//             <StepBodyUI step={lastStep} />
-//         </div>
-//     )
-// })
 
 export const MainOutputItemsUI = observer(function MainOutputItemsUI_(p: {}) {
     const st = useSt()

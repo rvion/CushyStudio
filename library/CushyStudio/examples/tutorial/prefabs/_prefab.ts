@@ -4,7 +4,6 @@
 
 // 📝 Ideally, modular UI kits only import types with `import type {...}`
 // and do not import anything else
-// @ts-expect-error
 import type { FormBuilder } from 'src/controls/FormBuilder'
 
 // Example 1 -------------------------------------------------------------------------------------

@@ -1,6 +1,6 @@
 import type { StepOutput, StepOutput_Image } from 'src/types/StepOutput'
 import type { LiveInstance } from '../db/LiveInstance'
-import type { GraphL } from '../models/Graph'
+import type { ComfyWorkflowL } from '../models/Graph'
 import type { ComfyPromptL } from './ComfyPrompt'
 
 import { LibraryFile } from 'src/cards/CardFile'
@@ -12,6 +12,8 @@ import { StepT } from 'src/db2/TYPES.gen'
 import { MediaImageL } from './MediaImage'
 import { MediaTextL } from './MediaText'
 import { RuntimeErrorL } from './RuntimeError'
+import { MediaVideoL } from './MediaVideo'
+import { Media3dDisplacementL } from './Media3dDisplacement'
 
 export type FormPath = (string | number)[]
 
@@ -54,7 +56,7 @@ export class StepL {
         this.update({ status: Status.Running })
         const scriptExecutionStatus = await this.runtime.run()
 
-        if (this.prompts.items.every((p: ComfyPromptL) => p.data.executed)) {
+        if (this.comfy_prompts.items.every((p: ComfyPromptL) => p.data.executed)) {
             this.update({ status: scriptExecutionStatus })
         }
     }
@@ -66,46 +68,43 @@ export class StepL {
     get name() { return this.data.name } // prettier-ignore
     get generatedImages(): MediaImageL[] { return this.images.items } // prettier-ignore
 
-    outputWorkflow = new LiveRef<this, GraphL>(this, 'outputGraphID', () => this.db.graphs)
+    outputWorkflow = new LiveRef<this, ComfyWorkflowL>(this, 'outputGraphID', () => this.db.graphs)
 
-    images = new LiveCollection<MediaImageL>(
-        this,
-        'stepID',
-        () => this.db.media_images,
-        () => this.data.status !== Status.Running, // OPTIM
-    )
-    texts = new LiveCollection<MediaTextL>(
-        this,
-        'stepID',
-        () => this.db.media_texts,
-        () => this.data.status !== Status.Running, // OPTIM
-    )
-    prompts = new LiveCollection<ComfyPromptL>(
-        this,
-        'stepID',
-        () => this.db.comfy_prompts,
-        () => this.data.status !== Status.Running, // OPTIM
-    )
-    runtimeErrors = new LiveCollection<RuntimeErrorL>(
-        this,
-        'stepID',
-        () => this.db.media_texts,
-        () => this.data.status !== Status.Running, // OPTIM
-    )
+    private _CACHE_INVARIANT = () => this.data.status !== Status.Running
 
-    get outputs(): (MediaImageL | MediaTextL | ComfyPromptL | RuntimeErrorL)[] {
+    texts = new LiveCollection<MediaTextL>(this, 'stepID', () => this.db.media_texts, this._CACHE_INVARIANT)
+    images = new LiveCollection<MediaImageL>(this, 'stepID', () => this.db.media_images, this._CACHE_INVARIANT)
+    videos = new LiveCollection<MediaVideoL>(this, 'stepID', () => this.db.media_videos, this._CACHE_INVARIANT)
+    displacements = new LiveCollection<Media3dDisplacementL>(this, 'stepID', () => this.db.media_3d_displacement, this._CACHE_INVARIANT) // prettier-ignore
+
+    comfy_workflows = new LiveCollection<ComfyWorkflowL>(this, 'stepID', () => this.db.graphs, this._CACHE_INVARIANT)
+    comfy_prompts = new LiveCollection<ComfyPromptL>(this, 'stepID', () => this.db.comfy_prompts, this._CACHE_INVARIANT)
+    runtimeErrors = new LiveCollection<RuntimeErrorL>(this, 'stepID', () => this.db.runtimeErrors, this._CACHE_INVARIANT)
+
+    // focusedOutput: Maybe<number>
+    // get focusedOutput(): number {
+
+    // }
+
+    get lastOutput(): Maybe<StepOutput> {
+        const outputs = this.outputs
+        return outputs[outputs.length - 1]
+    }
+    get outputs(): StepOutput[] {
         return [
             //
-            ...this.images.items,
             ...this.texts.items,
-            ...this.prompts.items,
+            ...this.images.items,
+            ...this.videos.items,
+            ...this.displacements.items,
+            ...this.comfy_workflows.items,
+            ...this.comfy_prompts.items,
             ...this.runtimeErrors.items,
         ].sort((a, b) => a.createdAt - b.createdAt)
     }
 
     runtime: Maybe<Runtime> = null
 
-    focusedOutput: Maybe<number>
     // get collage() {
     //     const imgs = this.generatedImages
     //     const last = imgs[imgs.length - 1]

@@ -1,4 +1,4 @@
-import type { GraphL } from 'src/models/Graph'
+import type { ComfyWorkflowL } from 'src/models/Graph'
 
 import { observer } from 'mobx-react-lite'
 import { Panel, Popover, ProgressLine, Whisper } from 'src/rsuite/shims'
@@ -8,7 +8,7 @@ import { ButtonDownloadFilesUI } from './ButtonDownloadFilesUI'
 import { ButtonOpenInComfyUI } from './ButtonOpenInComfyUI'
 import { RevealUI } from 'src/rsuite/RevealUI'
 
-export const GraphSummaryUI = observer(function GraphSummaryUI_(p: { graph: GraphL }) {
+export const GraphSummaryUI = observer(function GraphSummaryUI_(p: { graph: ComfyWorkflowL }) {
     const graph = p.graph
     return (
         <Panel tw='relative [min-width:2rem]'>
@@ -19,7 +19,7 @@ export const GraphSummaryUI = observer(function GraphSummaryUI_(p: { graph: Grap
                 <ButtonDownloadFilesUI graph={graph} />
                 <ButtonOpenInComfyUI graph={graph} />
             </div>
-            <div className='max-h-48 overflow-auto'>
+            <div className='overflow-auto'>
                 {graph.size === 0 && <div>Empty Graph</div>}
                 {graph.pendingNodes.length > 0 && <div>+{graph.pendingNodes.length} nodes remaining</div>}
                 {graph.nodesByUpdatedAt.map((n, ix) => (
@@ -39,14 +39,14 @@ export const GraphSummaryUI = observer(function GraphSummaryUI_(p: { graph: Grap
     )
 })
 
-export const NodeProgressUI = observer(function NodeProgressUI_(p: { graph: GraphL }) {
+export const NodeProgressUI = observer(function NodeProgressUI_(p: { graph: ComfyWorkflowL }) {
     const graph = p.graph
     if (graph == null) return <>no execution yet</>
     const pgr = graph.progressCurrentNode
     return <ProgressLine status={pgr?.isDone ? 'success' : 'active'} percent={pgr?.percent} />
 })
 
-export const GraphProgressUI = observer(function NodeProgressUI_(p: { graph: GraphL }) {
+export const GraphProgressUI = observer(function NodeProgressUI_(p: { graph: ComfyWorkflowL }) {
     const graph = p.graph
     if (graph == null) return null
     const pgr = graph.progressGlobal

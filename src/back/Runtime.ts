@@ -13,7 +13,7 @@ import { braceExpansion } from 'src/utils/misc/expansion'
 import { ImageAnswer } from '../controls/misc/InfoAnswer'
 import { ComfyNodeOutput } from '../core/Slot'
 import { auto } from '../core/autoValue'
-import { GraphL } from '../models/Graph'
+import { ComfyWorkflowL } from '../models/Graph'
 import { MediaImageL } from '../models/MediaImage'
 import { ComfyPromptL } from '../models/ComfyPrompt'
 import { StepL } from '../models/Step'
@@ -94,7 +94,7 @@ export class Runtime<FIELDS extends WidgetDict = any> {
     get schema() { return this.st.schema } // prettier-ignore
 
     /** the default app's ComfyUI graph we're manipulating */
-    get workflow(): GraphL {
+    get workflow(): ComfyWorkflowL {
         return this.step.outputWorkflow.item
     }
 
@@ -247,6 +247,7 @@ export class Runtime<FIELDS extends WidgetDict = any> {
             normalMap: normal.url,
             stepID: this.step.id,
         })
+        console.log('🟢🟢🟢🟢🟢🟢 displaced')
         // this.st.layout.FOCUS_OR_CREATE('DisplacedImage', {
         //     width: image.data.width ?? 512,
         //     height: image.data.height ?? 512,

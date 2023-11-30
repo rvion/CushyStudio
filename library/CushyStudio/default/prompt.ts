@@ -57,6 +57,7 @@ app({
         removeBG: form.bool({ default: false }),
         reversePositiveAndNegative: form.bool({ default: false }),
         makeAVideo: form.bool({ default: false }),
+        summary: form.bool({ default: false }),
         show3d: form.groupOpt({
             items: () => {
                 return {

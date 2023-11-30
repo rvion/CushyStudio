@@ -1,4 +1,4 @@
-import type { ComfyNode } from '../../core/Node'
+import type { ComfyNode } from '../../core/ComfyNode'
 
 import { observer } from 'mobx-react-lite'
 import { comfyColors } from '../../core/Colors'

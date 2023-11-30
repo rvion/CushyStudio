@@ -14,7 +14,7 @@ import { ComfyWorkflowBuilder } from '../back/NodeBuilder'
 import { CytoJSON, runAutolayout } from '../core/AutolayoutV2'
 import { comfyColors } from '../core/Colors'
 import { LiteGraphJSON, convertFlowToLiteGraphJSON } from '../core/LiteGraph'
-import { ComfyNode } from '../core/Node'
+import { ComfyNode } from '../core/ComfyNode'
 import { asHTMLContent, asMDContent } from '../types/markdown'
 import { asAbsolutePath } from '../utils/fs/pathUtils'
 import { GraphT } from 'src/db2/TYPES.gen'
@@ -44,8 +44,8 @@ export type RunMode = 'fake' | 'real'
 
 export const GraphIDCache = new Map<string, number>()
 
-export interface GraphL extends LiveInstance<GraphT, GraphL> {}
-export class GraphL {
+export interface ComfyWorkflowL extends LiveInstance<GraphT, ComfyWorkflowL> {}
+export class ComfyWorkflowL {
     /** number of node in the graph */
     get size(): number {
         return this.nodes.length

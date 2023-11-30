@@ -1,5 +1,5 @@
 import type { LiveInstance } from '../db/LiveInstance'
-import type { GraphL } from './Graph'
+import type { ComfyWorkflowL } from './Graph'
 import type { SchemaL } from './Schema'
 
 import { LiveRef } from '../db/LiveRef'
@@ -22,7 +22,7 @@ export const asProjectID = (s: string): ProjectID => s as any
 /** a thin wrapper around a single Project somewhere in a .ts file */
 export interface ProjectL extends LiveInstance<ProjectT, ProjectL> {}
 export class ProjectL {
-    rootGraph = new LiveRef<this, GraphL>(this, 'rootGraphID', () => this.db.graphs)
+    rootGraph = new LiveRef<this, ComfyWorkflowL>(this, 'rootGraphID', () => this.db.graphs)
 
     get schema(): SchemaL {
         return this.db.schema

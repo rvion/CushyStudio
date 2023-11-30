@@ -5,6 +5,40 @@ import { Button } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
 import { GraphSummaryUI } from '../widgets/workspace/GraphSummaryUI'
 import { OutputPreviewWrapperUI } from './OutputPreviewWrapperUI'
+import { parseFloatNoRoundingErr } from 'src/utils/misc/parseFloatNoRoundingErr'
+
+export const OutputPromptPreviewUI = observer(function OutputPromptPreviewUI_(p: { step?: Maybe<StepL>; output: ComfyPromptL }) {
+    const st = useSt()
+    const graph = p.output.graph.item
+    const size = st.gallerySizeStr
+    if (graph == null)
+        return (
+            <OutputPreviewWrapperUI output={p.output}>
+                <div>❌ ERROR</div>
+                {/* <OutputPromptUI step={p.step} output={p.output} /> */}
+            </OutputPreviewWrapperUI>
+        )
+
+    const pgr1 = graph.progressGlobal
+    // const pgr2 = graph.graphProgressCurrentNode
+    return (
+        <OutputPreviewWrapperUI output={p.output}>
+            <div
+                className='radial-progress'
+                style={{
+                    // width: '100%',
+                    // height: '100%',
+                    // @ts-ignore
+                    '--value': pgr1.percent,
+                    '--size': size,
+                }}
+                role='progressbar'
+            >
+                {parseFloatNoRoundingErr(pgr1.percent, 0)}%
+            </div>
+        </OutputPreviewWrapperUI>
+    )
+})
 
 export const OutputPromptUI = observer(function OutputPromptUI_(p: {
     //
@@ -31,34 +65,5 @@ export const OutputPromptUI = observer(function OutputPromptUI_(p: {
             )}
             <GraphSummaryUI graph={graph} />
         </div>
-    )
-})
-
-export const OutputPromptPreviewUI = observer(function OutputPromptPreviewUI_(p: { step?: Maybe<StepL>; output: ComfyPromptL }) {
-    const graph = p.output.graph.item
-    if (graph == null)
-        return (
-            <OutputPreviewWrapperUI output={p.output}>
-                <div>❌ ERROR</div>
-                <OutputPromptUI step={p.step} output={p.output} />
-            </OutputPreviewWrapperUI>
-        )
-    const pgr1 = graph.progressGlobal
-    // const pgr2 = graph.graphProgressCurrentNode
-    return (
-        <OutputPreviewWrapperUI output={p.output}>
-            <div>
-                <div
-                    className='radial-progress'
-                    style={{
-                        // @ts-ignore
-                        '--value': pgr1.percent,
-                    }}
-                    role='progressbar'
-                >
-                    {pgr1.percent}%
-                </div>
-            </div>
-        </OutputPreviewWrapperUI>
     )
 })

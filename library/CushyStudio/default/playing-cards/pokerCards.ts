@@ -1,6 +1,6 @@
 import type { FormBuilder } from 'src/controls/FormBuilder'
 import { CardSuit, CardValue } from './_cardLayouts'
-import { _drawCard } from './drawCard'
+import { _drawCard } from './_drawCard'
 
 const ui = (form: FormBuilder) => ({
     // [UI] MODEL --------------------------------------

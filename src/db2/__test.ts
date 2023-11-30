@@ -1,5 +1,5 @@
-import { Value, ValueError } from '@sinclair/typebox/value'
 import { TSchema, Type } from '@sinclair/typebox'
+import { Value } from '@sinclair/typebox/value'
 
 export const Nullable = <T extends TSchema>(schema: T) =>
     Type.Union([

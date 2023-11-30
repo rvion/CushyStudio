@@ -11,8 +11,8 @@ export const OutputDisplacementPreviewUI = observer(function OutputImagePreviewU
     const size = useSt().gallerySizeStr
     return (
         <OutputPreviewWrapperUI output={p.output}>
+            {/*  */}
             3D
-            <OutputDisplacementUI step={p.step} output={p.output} />
         </OutputPreviewWrapperUI>
     )
 })

@@ -116,17 +116,57 @@ export class LiveTable<T extends BaseInstanceFields, L extends LiveInstance<T, L
             get updatedAt() { return this.data.updatedAt } // prettier-ignore
             get tableName() { return this.table.name } // prettier-ignore
 
-            update(t: Partial<T>) {
+            update(changes: Partial<T>) {
+                // 0. check that changes is valid
+                if (Array.isArray(changes)) throw new Error('insert does not support arrays')
+                if (typeof changes !== 'object') throw new Error('insert does not support non-objects')
+
                 // 1. check if update is needed
-                const isSame = Object.keys(t).every((k) => (this.data as any)[k] === (t as any)[k])
+                const isSame = Object.keys(changes).every((k) => (this.data as any)[k] === (changes as any)[k])
                 if (isSame) return console.log('no need to update') // no need to update
-                // 2. update
+
+                // 2. store the prev in case we have an onUpdate callback later
                 const prev = this.onUpdate //
                     ? JSON.parse(JSON.stringify(this.data))
                     : undefined
-                Object.assign(this.data, t)
-                this.data.updatedAt = Date.now()
-                this.onUpdate?.(prev, this.data)
+
+                // build the sql
+                const tableInfos = this.table.infos
+                const presentCols = Object.keys(changes)
+                const updateSQL = [
+                    `update ${tableInfos.sql_name}`,
+                    `set`,
+                    presentCols.map((c) => `${c} = @${c}`).join(', '),
+                    `where id = @id`,
+                    `returning *`,
+                ].join(' ')
+
+                const updatedAt = Date.now()
+                try {
+                    // prepare sql
+                    const stmt = this.db.db.prepare<Partial<T>>(updateSQL)
+
+                    // dehydrate fields needed to be updated
+                    const updatePayload: any = Object.fromEntries(
+                        Object.entries(changes as any).map(([k, v]) => {
+                            if (Array.isArray(v)) return [k, JSON.stringify(v)]
+                            if (typeof v === 'object' && v != null) return [k, JSON.stringify(v) ?? 'null']
+                            return [k, v]
+                        }),
+                    )
+                    updatePayload.updatedAt = updatedAt
+                    updatePayload.id = this.id
+
+                    // update the data
+                    /*const data =*/ stmt.get(updatePayload) as any as T
+
+                    Object.assign(this.data, changes)
+                    this.data.updatedAt = updatePayload
+                    this.onUpdate?.(prev, this.data)
+                } catch (e) {
+                    console.log(updateSQL)
+                    throw e
+                }
             }
 
             clone(t?: Partial<T>): T {
@@ -260,6 +300,7 @@ export class LiveTable<T extends BaseInstanceFields, L extends LiveInstance<T, L
         return instances
     }
     insert = (row: Partial<T>): L => {
+        // 0 check that row is valid
         if (Array.isArray(row)) throw new Error('insert does not support arrays')
         if (typeof row !== 'object') throw new Error('insert does not support non-objects')
 

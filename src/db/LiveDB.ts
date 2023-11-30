@@ -30,7 +30,7 @@ import { MediaVideoL } from 'src/models/MediaVideo'
 import { RuntimeErrorL } from 'src/models/RuntimeError'
 import { ComfyPromptL } from '../models/ComfyPrompt'
 import { DraftL } from '../models/Draft'
-import { GraphL } from '../models/Graph'
+import { ComfyWorkflowL } from '../models/Graph'
 import { MediaImageL } from '../models/MediaImage'
 import { ProjectL } from '../models/Project'
 import { SchemaL } from '../models/Schema'
@@ -54,7 +54,7 @@ export class LiveDB {
     media_3d_displacement: LiveTable<Media3dDisplacementT, Media3dDisplacementL>
     runtimeErrors: LiveTable<RuntimeErrorT, RuntimeErrorL>
     drafts: LiveTable<DraftT, DraftL>
-    graphs: LiveTable<GraphT, GraphL>
+    graphs: LiveTable<GraphT, ComfyWorkflowL>
     steps: LiveTable<StepT, StepL>
 
     // prettier-ignore
@@ -81,7 +81,7 @@ export class LiveDB {
             this.media_3d_displacement = new LiveTable(this, 'media_3d_displacement', '🖼️', Media3dDisplacementL)
             this.runtimeErrors =         new LiveTable(this, 'runtime_error'        , '❌', RuntimeErrorL)
             this.drafts =                new LiveTable(this, 'draft'                , '📝', DraftL)
-            this.graphs =                new LiveTable(this, 'graph'                , '📊', GraphL)
+            this.graphs =                new LiveTable(this, 'graph'                , '📊', ComfyWorkflowL)
             this.steps =                 new LiveTable(this, 'step'                 , '🚶‍♂️', StepL)
 
             console.log('🟢 TABLE INITIALIZED')
@@ -143,6 +143,7 @@ export class LiveDB {
         return this.schemas.getOrCreate('main-schema', () => {
             const objectInfoDefaultPath = this.st.resolve(this.st.rootPath, asRelativePath('schema/object_info.default.json'))
             const objectInfoDefault = JSON.parse(readFileSync(objectInfoDefaultPath, 'utf8'))
+            console.log('🟢 generating new schma')
             return {
                 id: 'main-schema',
                 embeddings: [],

@@ -1,12 +1,12 @@
 import type { StepL } from 'src/models/Step'
 
 import { observer } from 'mobx-react-lite'
-import { GraphL } from 'src/models/Graph'
+import { ComfyWorkflowL } from 'src/models/Graph'
 import { Panel_ComfyUI } from 'src/panels/Panel_ComfyUI'
 import { useSt } from 'src/state/stateContext'
 import { OutputPreviewWrapperUI } from './OutputPreviewWrapperUI'
 
-export const OutputWorkflowPreviewUI = observer(function OutputWorkflowUI_(p: { step?: Maybe<StepL>; output: GraphL }) {
+export const OutputWorkflowPreviewUI = observer(function OutputWorkflowUI_(p: { step?: Maybe<StepL>; output: ComfyWorkflowL }) {
     const st = useSt()
     const size = st.gallerySizeStr
     return (
@@ -27,7 +27,7 @@ export const OutputWorkflowPreviewUI = observer(function OutputWorkflowUI_(p: { 
     )
 })
 
-export const OutputWorkflowUI = observer(function OutputWorkflowUI_(p: { step?: Maybe<StepL>; output: GraphL }) {
+export const OutputWorkflowUI = observer(function OutputWorkflowUI_(p: { step?: Maybe<StepL>; output: ComfyWorkflowL }) {
     const graph = p.output
     return (
         <Panel_ComfyUI //

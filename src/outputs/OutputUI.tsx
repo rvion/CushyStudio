@@ -3,9 +3,6 @@ import { StepL } from 'src/models/Step'
 import { observer } from 'mobx-react-lite'
 import { StepOutput } from 'src/types/StepOutput'
 import { exhaust } from '../utils/misc/ComfyUtils'
-// import { OutputAskPreviewUI, OutputAskUI } from './OutputAskUI'
-// import { OutputExecutionErrorUI } from './OutputExecutionErrorUI'
-// import { OutputHtmlPreviewUI, OutputHtmlUI } from './OutputHtmlUI'
 import { OutputImagePreviewUI, OutputImageUI } from './OutputImageUI'
 import { OutputPromptPreviewUI, OutputPromptUI } from './OutputPromptUI'
 import { OutputRuntimeErrorPreviewUI, OutputRuntimeErrorUI } from './OutputRuntimeErrorUI'
@@ -19,7 +16,7 @@ import { MediaImageL } from 'src/models/MediaImage'
 import { MediaVideoL } from 'src/models/MediaVideo'
 import { RuntimeErrorL } from 'src/models/RuntimeError'
 import { Media3dDisplacementL } from 'src/models/Media3dDisplacement'
-import { GraphL } from 'src/models/Graph'
+import { ComfyWorkflowL } from 'src/models/Graph'
 
 // PREVIEW -----------------------------------------------------------------------------
 // prettier-ignore
@@ -32,7 +29,7 @@ export const OutputPreviewUI = observer(function StepOutputUI_(p: { step?: Maybe
     if (output instanceof Media3dDisplacementL)  return <OutputDisplacementPreviewUI step={p.step} output={output} />
 
     if (output instanceof ComfyPromptL)          return <OutputPromptPreviewUI       step={p.step} output={output} />
-    if (output instanceof GraphL /* workflow */) return <OutputWorkflowPreviewUI     step={p.step} output={output} />
+    if (output instanceof ComfyWorkflowL /* workflow */) return <OutputWorkflowPreviewUI     step={p.step} output={output} />
     if (output instanceof StepL)                 return <>🔴</>
 
     if (output instanceof RuntimeErrorL)         return <OutputRuntimeErrorPreviewUI step={p.step} output={output} />
@@ -52,7 +49,7 @@ export const OutputUI = observer(function StepOutputUI_(p: { step?: Maybe<StepL>
     if (output instanceof Media3dDisplacementL)  return <OutputDisplacementUI        step={p.step} output={output} />
 
     if (output instanceof ComfyPromptL)          return <OutputPromptUI              step={p.step} output={output} />
-    if (output instanceof GraphL /* workflow */) return <OutputWorkflowUI            step={p.step} output={output} />
+    if (output instanceof ComfyWorkflowL /* workflow */) return <OutputWorkflowUI            step={p.step} output={output} />
     if (output instanceof StepL)                 return <>🔴</>
 
     if (output instanceof RuntimeErrorL)         return <OutputRuntimeErrorUI        step={p.step} output={output} />

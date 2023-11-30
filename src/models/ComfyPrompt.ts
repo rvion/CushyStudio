@@ -1,7 +1,7 @@
 import type { LiveInstance } from '../db/LiveInstance'
 import type { StepL } from './Step'
 import type { PromptRelated_WsMsg, WsMsgExecuted, WsMsgExecuting, WsMsgExecutionError } from '../types/ComfyWsApi'
-import type { GraphL } from './Graph'
+import type { ComfyWorkflowL } from './Graph'
 
 import { nanoid } from 'nanoid'
 import { ComfyPromptT } from 'src/db2/TYPES.gen'
@@ -46,7 +46,7 @@ export class ComfyPromptL {
     // }
 
     step = new LiveRef<this, StepL>(this, 'stepID', () => this.db.steps)
-    graph = new LiveRef<this, GraphL>(this, 'graphID', () => this.db.graphs)
+    graph = new LiveRef<this, ComfyWorkflowL>(this, 'graphID', () => this.db.graphs)
     // get project() { return this.step.item.project } // prettier-ignore
 
     onPromptRelatedMessage = (msg: PromptRelated_WsMsg) => {

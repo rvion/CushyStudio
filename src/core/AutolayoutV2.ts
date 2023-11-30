@@ -1,5 +1,5 @@
 import cytoscape, { Stylesheet } from 'cytoscape'
-import type { GraphL } from '../models/Graph'
+import type { ComfyWorkflowL } from '../models/Graph'
 import klay from 'cytoscape-klay'
 import { bang } from '../utils/misc/bang'
 
@@ -24,7 +24,7 @@ export type CytoJSON = {
     }
 }
 
-export const runAutolayout = (graph: GraphL): CytoJSON => {
+export const runAutolayout = (graph: ComfyWorkflowL): CytoJSON => {
     // Define the graph elements
 
     const elements: any[] = []

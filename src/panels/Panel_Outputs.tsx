@@ -32,7 +32,6 @@ export const Panel_Outputs = observer(function Panel_Outputs_(p: {}) {
                     <StepOutputsV2UI key={step.id} step={step} />
                     // </InView>
                 ))}
-                🟢
             </div>
         </div>
     )

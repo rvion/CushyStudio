@@ -292,14 +292,14 @@ export class CushyLayoutManager {
             },
             borders: [
                 // LEFT BORDER
-                // {
-                //     type: 'border',
-                //     size: 250,
-                //     location: 'left',
-                //     selected: 0,
-                //     show: true,
-                //     children: [this._add({ panel: 'FileList', props: {}, canClose: false, width: 250 })],
-                // },
+                {
+                    type: 'border',
+                    size: 250,
+                    location: 'left',
+                    selected: 0,
+                    show: true,
+                    children: [this._add({ panel: 'FileList', props: {}, canClose: false, width: 250 })],
+                },
                 // RIGHT BORDER
                 // {
                 //     type: 'border',
@@ -316,27 +316,27 @@ export class CushyLayoutManager {
                 id: 'rootRow',
                 type: 'row',
                 children: [
-                    {
-                        id: 'menuPane',
-                        type: 'row',
-                        width: 100,
-                        children: [
-                            {
-                                type: 'tabset',
-                                id: MENU_PANE_TABSET_ID,
-                                minWidth: 64,
-                                minHeight: 150,
-                                width: 200,
-                                enableClose: false,
-                                enableDeleteWhenEmpty: false,
-                                children: [
-                                    this._add({ panel: 'FileList', props: {}, canClose: false, width: 200 }),
-                                    // this._add({ panel: 'CurrentDraft', canClose: false, props: {}, width: 600 })
-                                ],
-                                enableSingleTabStretch: true,
-                            },
-                        ],
-                    },
+                    // {
+                    //     id: 'menuPane',
+                    //     type: 'row',
+                    //     width: 100,
+                    //     children: [
+                    //         {
+                    //             type: 'tabset',
+                    //             id: MENU_PANE_TABSET_ID,
+                    //             minWidth: 64,
+                    //             minHeight: 150,
+                    //             width: 200,
+                    //             enableClose: false,
+                    //             enableDeleteWhenEmpty: false,
+                    //             children: [
+                    //                 this._add({ panel: 'FileList', props: {}, canClose: false, width: 200 }),
+                    //                 // this._add({ panel: 'CurrentDraft', canClose: false, props: {}, width: 600 })
+                    //             ],
+                    //             enableSingleTabStretch: true,
+                    //         },
+                    //     ],
+                    // },
                     {
                         id: 'leftPane',
                         type: 'row',

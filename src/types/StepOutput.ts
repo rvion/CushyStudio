@@ -1,5 +1,5 @@
 import type { ComfyPromptL } from 'src/models/ComfyPrompt'
-import type { GraphL } from 'src/models/Graph'
+import type { ComfyWorkflowL } from 'src/models/Graph'
 import type { Media3dDisplacementL } from 'src/models/Media3dDisplacement'
 import type { MediaImageL } from 'src/models/MediaImage'
 import type { MediaTextL } from 'src/models/MediaText'
@@ -16,7 +16,7 @@ export type StepOutput =
     | Media3dDisplacementL // StepOutput_DisplacedImage
     // core objects
     | ComfyPromptL         // ComfyPromptL
-    | GraphL               // StepOutput_ComfyWorkflow // graph
+    | ComfyWorkflowL               // StepOutput_ComfyWorkflow // graph
     | StepL                // StepOutput_Step // graph
     // CushyError
     | RuntimeErrorL // StepOutput_RuntimeError

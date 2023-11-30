@@ -1,9 +1,9 @@
-import type { GraphL } from 'src/models/Graph'
+import type { ComfyWorkflowL } from 'src/models/Graph'
 import { observer } from 'mobx-react-lite'
 import { Button, Tooltip, Whisper } from 'src/rsuite/shims'
 import { useSt } from '../../state/stateContext'
 
-export const ButtonOpenInComfyUI = observer(function ButtonOpenInComfyUI_(p: { graph: GraphL | GraphID }) {
+export const ButtonOpenInComfyUI = observer(function ButtonOpenInComfyUI_(p: { graph: ComfyWorkflowL | GraphID }) {
     let graphOrGraphID = p.graph
     const st = useSt()
     const graph =

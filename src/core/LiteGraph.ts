@@ -1,6 +1,6 @@
 import type { CytoJSON } from './AutolayoutV2'
-import type { GraphL } from '../models/Graph'
-import type { ComfyNode } from './Node'
+import type { ComfyWorkflowL } from '../models/Graph'
+import type { ComfyNode } from './ComfyNode'
 
 import { toJS } from 'mobx'
 import { bang } from '../utils/misc/bang'
@@ -68,7 +68,7 @@ export type LiteGraphNode = {
     widgets_values: any[]
 }
 
-export const convertFlowToLiteGraphJSON = (graph: GraphL, cytoJSON?: CytoJSON): LiteGraphJSON => {
+export const convertFlowToLiteGraphJSON = (graph: ComfyWorkflowL, cytoJSON?: CytoJSON): LiteGraphJSON => {
     const ctx = new LiteGraphCtx(graph)
     const last_node_id = Math.max(...graph.nodes.map((n) => n.uidNumber))
     // const last_node_id = graph.nodes[graph.nodes.length - 1].uid
@@ -167,7 +167,7 @@ const _isLink = (v: any): v is [string, number] => {
 }
 
 export class LiteGraphCtx {
-    constructor(public graph: GraphL) {}
+    constructor(public graph: ComfyWorkflowL) {}
     nextLinkId = 0
     links: LiteGraphLink[] = []
     allocateLink = (

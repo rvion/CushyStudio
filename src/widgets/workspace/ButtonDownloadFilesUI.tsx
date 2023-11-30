@@ -1,11 +1,11 @@
-import type { GraphL } from 'src/models/Graph'
+import type { ComfyWorkflowL } from 'src/models/Graph'
 
 import { existsSync, mkdirSync, writeFileSync } from 'fs'
 import { observer } from 'mobx-react-lite'
 import { Button, Tooltip, Whisper } from 'src/rsuite/shims'
 import { useSt } from '../../state/stateContext'
 
-export const ButtonDownloadFilesUI = observer(function ButtonDownloadFilesUI_(p: { graph: GraphL | GraphID }) {
+export const ButtonDownloadFilesUI = observer(function ButtonDownloadFilesUI_(p: { graph: ComfyWorkflowL | GraphID }) {
     let graphOrGraphID = p.graph
     const st = useSt()
     const graph =
