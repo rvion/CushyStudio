@@ -19,7 +19,7 @@ export type ImageInfos =
     | ImageInfos_ComfyGenerated
     | ImageInfos_Local
     | ImageInfos_Base64
-    | VideoInfos_FFMPEG
+// | VideoInfos_FFMPEG
 
 type ImageInfos_ComfyGenerated = {
     type: 'image-generated-by-comfy'
@@ -35,10 +35,10 @@ type ImageInfos_Base64 = {
     type: 'image-base64'
     base64Url: string
 }
-type VideoInfos_FFMPEG = {
-    type: 'video-local-ffmpeg'
-    absPath: AbsolutePath
-}
+// type VideoInfos_FFMPEG = {
+//     type: 'video-local-ffmpeg'
+//     absPath: AbsolutePath
+// }
 
 // ---------------------------------------------------------------------------------------------------
 // export interface MediaImageT<T extends ImageInfos = ImageInfos> {
@@ -78,7 +78,7 @@ export class MediaImageL {
         if (infos.type === 'image-base64') return infos.base64Url
         if (infos.type === 'image-generated-by-comfy') return basename(infos.comfyImageInfo.filename)
         // if (infos.type === 'image-uploaded-to-comfy') return basename(infos.comfyUploadImageResult.name)
-        if (infos.type === 'video-local-ffmpeg') return basename(infos.absPath)
+        // if (infos.type === 'video-local-ffmpeg') return basename(infos.absPath)
         exhaust(infos)
         return 'unknown'
     }
@@ -90,7 +90,7 @@ export class MediaImageL {
         if (infos == null) return `file://${assets.public_CushyLogo_png}`
         if (infos.type === 'image-local') return `file://${infos.absPath}`
         if (infos.type === 'image-base64') return infos.base64Url
-        if (infos.type === 'video-local-ffmpeg') return `file://${infos.absPath}`
+        // if (infos.type === 'video-local-ffmpeg') return `file://${infos.absPath}`
         if (infos.type === 'image-generated-by-comfy') {
             return infos.absPath //
                 ? `file://${infos.absPath}`

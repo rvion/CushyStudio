@@ -52,3 +52,8 @@
     border-top: 1px solid #333333;
     border-left: 1px solid #333333;
 }
+
+._MD pre {
+    background-color: oklch(var(--b2));
+    padding: .5rem;
+}

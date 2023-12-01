@@ -141,7 +141,7 @@ app({
             const scoreB = 100 * b.x + b.y
             return scoreA - scoreB
         })
-        flow.output_text(`🔴 ${cardsSorted.map((c) => `${c.col}${c.row}`)}`)
+        // flow.output_text(`🔴 ${cardsSorted.map((c) => `${c.col}${c.row}`)}`)
         for (const card of cardsSorted) {
             const { col: value, row: suit } = card
 
@@ -158,7 +158,7 @@ app({
                 }[value] ?? `background`
 
             const positiveText = `masterpiece, rpg, ${basePrompt}, ${suitColor} of ${suit} color, intricate details, theme of ${theme} and ${p.generalTheme}, 4k`
-            flow.output_text(`👉 ${value}${suit} : ${positiveText}`)
+            // flow.output_text(`👉 ${value}${suit} : ${positiveText}`)
             const positive = graph.CLIPTextEncode({ clip: ckpt, text: positiveText })
             // const crop_blending = 0
 

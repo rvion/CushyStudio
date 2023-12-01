@@ -23,7 +23,14 @@ export const OutputDisplacementPreviewUI = observer(function OutputImagePreviewU
     return (
         <OutputPreviewWrapperUI output={p.output}>
             {/*  */}
-            <div tw='text-center w-full' style={{ lineHeight: sizeStr, fontSize: `${size / 2}px` }}>
+            <div
+                tw={[
+                    //
+                    'bg-orange-500 text-black',
+                    'text-center w-full font-bold',
+                ]}
+                style={{ lineHeight: sizeStr, fontSize: `${size / 3}px` }}
+            >
                 3D
             </div>
         </OutputPreviewWrapperUI>

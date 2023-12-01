@@ -179,6 +179,23 @@ export const migrations: {
         name: 'add gaussian splat support',
         up: [`alter table media_splat add column url text not null`],
     },
+    {
+        id: 'kIoMnNKcix',
+        name: 'add non nullable title field to MediaText',
+        up: [
+            //
+            `alter table media_text add column title text not null default ''`,
+        ],
+    },
+    {
+        id: '5Ka1ddK8ma',
+        name: 'add filePath and url to MediaVideo',
+        up: [
+            //
+            `alter table media_video add column filePath text`,
+            `alter table media_video add column url text not null`,
+        ],
+    },
     // {
     //     id: 'PONTSFSpA_',
     //     name: 'fix image2',

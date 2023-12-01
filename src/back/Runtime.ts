@@ -28,6 +28,7 @@ import { ComfyWorkflowBuilder } from './NodeBuilder'
 import { InvalidPromptError } from './RuntimeError'
 import { Status } from './Status'
 import { bang } from 'src/utils/misc/bang'
+import { _FIX_INDENTATION } from 'src/utils/misc/_FIX_INDENTATION'
 
 export type ImageAndMask = HasSingle_IMAGE & HasSingle_MASK
 
@@ -291,21 +292,17 @@ export class Runtime<FIELDS extends WidgetDict = any> {
     output_HTML = (p: { htmlContent: string; title: string }) => {
         this.st.db.media_texts.create({
             kind: 'html',
+            title: p.title,
             content: p.htmlContent,
             stepID: this.step.id,
         })
-        // this.step.addOutput({
-        //     type: 'show-html',
-        //     content: p.htmlContent,
-        //     title: p.title,
-        // })
-        // this.st.broadCastToAllClients({ type: 'show-html', content: p.htmlContent, title: p.title })
     }
 
-    output_Markdown = (markdownContent: string) => {
+    output_Markdown = (p: { title: string; markdownContent: string }) => {
         this.st.db.media_texts.create({
             kind: 'markdown',
-            content: markdownContent,
+            title: p.title,
+            content: p.markdownContent,
             stepID: this.step.id,
         })
 
@@ -326,8 +323,21 @@ export class Runtime<FIELDS extends WidgetDict = any> {
         // delete link
     }
 
+    /** outputs a video */
+    output_video = (p: {
+        //
+        url: string
+        filePath?: string
+    }) => {
+        this.st.db.media_videos.create({
+            url: p.url,
+            absPath: p.filePath,
+            stepID: this.step.id,
+        })
+    }
+
     static VideoCounter = 1
-    createAnimation = async (
+    output_video_ffmpegGeneratedImagesTogether = async (
         /** image to incldue (defaults to all images generated in the fun) */
         source?: MediaImageL[],
         /** FPS (e.g. 60, 30, etc.) default is 30 */
@@ -357,8 +367,43 @@ export class Runtime<FIELDS extends WidgetDict = any> {
         console.info(`🎥 this.folder.path: ${this.folder}`)
         console.info(`🎥 cwd: ${cwd}`)
         const allAbsPaths = images.map((i) => i.absPath).filter((p) => p != null) as AbsolutePath[]
-        await createMP4FromImages(allAbsPaths, targetVideoAbsPath, inputFPS, cwd, opts)
-        this.st.db.media_images.create({ infos: { type: 'video-local-ffmpeg', absPath: targetVideoAbsPath } })
+        const ffmpegComandInfos = await createMP4FromImages(allAbsPaths, targetVideoAbsPath, inputFPS, cwd, opts)
+        if (ffmpegComandInfos) {
+            this.st.db.media_texts.create({
+                kind: 'markdown',
+                title: 'Video creation summary',
+                stepID: this.step.id,
+                content: `\
+# Video creation summary
+
+## command:
+
+\`\`\`
+${ffmpegComandInfos.ffmpegCommand}
+\`\`\`
+
+
+## frames file path:
+
+\`\`\`
+${ffmpegComandInfos.framesFilePath}
+\`\`\`
+
+## frames file content:
+
+\`\`\`
+${ffmpegComandInfos.framesFileContent}
+\`\`\`
+
+`,
+            })
+        }
+        this.st.db.media_videos.create({
+            url: `file://${targetVideoAbsPath}`,
+            absPath: targetVideoAbsPath,
+            stepID: this.step.id,
+            filePath: targetVideoAbsPath,
+        })
     }
 
     /**
@@ -387,7 +432,7 @@ export class Runtime<FIELDS extends WidgetDict = any> {
      */
     exec = (comand: string): string => {
         // promisify exec to run the command and collect the output
-        this.output_text('🔥 exec: ' + comand)
+        this.output_text({ title: 'command', message: '🔥 exec: ' + comand })
         const cwd = this.st.rootPath
         console.log('cwd', cwd)
         const res = execSync(comand, { encoding: 'utf-8', cwd })
@@ -521,15 +566,24 @@ export class Runtime<FIELDS extends WidgetDict = any> {
         return `❌ (impossible to extract string from ${typeof message} / ${(message as any)?.constructor?.name})`
     }
 
-    /** display something in the console */
+    /**
+     * @deprecated
+     * use `output_text` instead;
+     * */
     print = (message: Printable) => {
-        this.output_text(message)
+        this.output_text({ title: '<no-title>', message })
     }
 
-    output_text = (message: Printable) => {
+    output_text = (p: { title: string; message: Printable } | string) => {
+        const [title, message] = typeof p === 'string' ? ['<no-title>', p] : [p.title, p.message]
         let msg = this.extractString(message)
         console.info(msg)
-        this.step.db.media_texts.create({ kind: 'text', content: msg, stepID: this.step.id })
+        this.step.db.media_texts.create({
+            kind: 'text',
+            title: title,
+            content: msg,
+            stepID: this.step.id,
+        })
     }
 
     /** upload a file from disk to the ComfyUI backend */

@@ -1,12 +1,11 @@
 import { marked } from 'marked'
 import { observer } from 'mobx-react-lite'
+import { TabUI } from 'src/app/layout/TabUI'
 import { StepL } from 'src/models/Step'
+import { Panel } from 'src/rsuite/shims'
+import { useSt } from 'src/state/stateContext'
 import { StepOutput_Text } from 'src/types/StepOutput'
 import { OutputPreviewWrapperUI } from './OutputPreviewWrapperUI'
-import { useSt } from 'src/state/stateContext'
-import { TabsUI } from 'src/widgets/misc/TabUI'
-import { TabUI } from 'src/app/layout/TabUI'
-import { Panel } from 'src/rsuite/shims'
 
 export const OutputTextPreviewUI = observer(function OutputTextPreviewUI_(p: { step?: Maybe<StepL>; output: StepOutput_Text }) {
     const st = useSt()
@@ -21,12 +20,21 @@ export const OutputTextPreviewUI = observer(function OutputTextPreviewUI_(p: { s
                     'bg-accent text-accent-content',
                     'text-center w-full font-bold',
                 ]}
-                style={{ lineHeight: sizeStr, fontSize: `${size / 4}px` }}
+                style={{ lineHeight: sizeStr, fontSize: `${size / 3}px` }}
             >
-                #MD
+                MD
             </div>
         ) : output.data.kind === 'html' ? (
-            '<HTML/>'
+            <div
+                tw={[
+                    //
+                    'bg-purple-500 text-black',
+                    'text-center w-full font-bold',
+                ]}
+                style={{ lineHeight: sizeStr, fontSize: `${size / 5}px` }}
+            >
+                {'<HTML/>'}
+            </div>
         ) : (
             <div tw='bg-base-200 text-base-content text-xs whitespace-pre-wrap overflow-hidden overflow-ellipsis'>
                 {output.data.content}
@@ -40,20 +48,24 @@ export const OutputTextUI = observer(function OutputTextUI_(p: { step?: Maybe<St
     // 🔴 handle markdown / html / text
     if (p.output.data.kind === 'markdown')
         return (
-            <TabUI tw='w-full'>
-                <div>rendered version</div>
-                <div className='_MD w-full' dangerouslySetInnerHTML={{ __html: marked(p.output.data.content) }} />
-                <div>raw version</div>
-                <pre className='w-full'>{p.output.data.content}</pre>
-            </TabUI>
+            <Panel className='w-full m-2'>
+                <TabUI tw='w-full'>
+                    <div>rendered version</div>
+                    <div className='_MD w-full' dangerouslySetInnerHTML={{ __html: marked(p.output.data.content) }} />
+                    <div>raw version</div>
+                    <pre className='w-full'>{p.output.data.content}</pre>
+                </TabUI>
+            </Panel>
         )
 
     if (p.output.data.kind === 'html')
         return (
-            <div //
-                className='_HTML w-full'
-                dangerouslySetInnerHTML={{ __html: p.output.data.content }}
-            ></div>
+            <Panel className='w-full m-2'>
+                <div //
+                    className='_HTML _MD w-full'
+                    dangerouslySetInnerHTML={{ __html: p.output.data.content }}
+                ></div>
+            </Panel>
         )
 
     if (p.output.data.kind === 'text')

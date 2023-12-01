@@ -99,6 +99,6 @@ app({
             image: vAEDecode,
         })
         await flow.PROMPT()
-        await flow.createAnimation(undefined, 30, { transparent: p.removeBG })
+        await flow.output_video_ffmpegGeneratedImagesTogether(undefined, 30, { transparent: p.removeBG })
     },
 })

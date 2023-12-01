@@ -342,6 +342,9 @@ export type MediaTextT = {
     /** @default: null, sqlType: TEXT */
     stepID?: Maybe<StepID>;
 
+    /** @default: "''", sqlType: TEXT */
+    title: string;
+
 }
 export const MediaTextSchema = Type.Object({
     id: Type.String(),
@@ -350,6 +353,7 @@ export const MediaTextSchema = Type.Object({
     kind: Type.String(),
     content: Type.String(),
     stepID: Type.Optional(T.Nullable(Type.String())),
+    title: Type.String(),
 },{ additionalProperties: false })
 
 export const MediaTextFields = {
@@ -359,6 +363,7 @@ export const MediaTextFields = {
     kind: {cid:3,name:'kind',type:'TEXT',notnull:1,dflt_value:null,pk:0},
     content: {cid:4,name:'content',type:'TEXT',notnull:1,dflt_value:null,pk:0},
     stepID: {cid:5,name:'stepID',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    title: {cid:6,name:'title',type:'TEXT',notnull:1,dflt_value:"''",pk:0},
 }
 
 
@@ -382,6 +387,12 @@ export type MediaVideoT = {
     /** @default: null, sqlType: TEXT */
     promptID?: Maybe<ComfyPromptID>;
 
+    /** @default: null, sqlType: TEXT */
+    filePath?: Maybe<string>;
+
+    /** @default: null, sqlType: TEXT */
+    url: string;
+
 }
 export const MediaVideoSchema = Type.Object({
     id: Type.String(),
@@ -390,6 +401,8 @@ export const MediaVideoSchema = Type.Object({
     absPath: Type.Optional(T.Nullable(Type.String())),
     stepID: Type.Optional(T.Nullable(Type.String())),
     promptID: Type.Optional(T.Nullable(Type.String())),
+    filePath: Type.Optional(T.Nullable(Type.String())),
+    url: Type.String(),
 },{ additionalProperties: false })
 
 export const MediaVideoFields = {
@@ -399,6 +412,8 @@ export const MediaVideoFields = {
     absPath: {cid:3,name:'absPath',type:'TEXT',notnull:0,dflt_value:null,pk:0},
     stepID: {cid:4,name:'stepID',type:'TEXT',notnull:0,dflt_value:null,pk:0},
     promptID: {cid:5,name:'promptID',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    filePath: {cid:6,name:'filePath',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    url: {cid:7,name:'url',type:'TEXT',notnull:1,dflt_value:null,pk:0},
 }
 
 

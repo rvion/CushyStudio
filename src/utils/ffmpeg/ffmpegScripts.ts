@@ -12,9 +12,16 @@ export async function createMP4FromImages(
     opts?: {
         transparent?: Maybe<boolean>
     },
-): Promise<void> {
+): Promise<
+    Maybe<{
+        ffmpegCommand: string
+        framesFilePath: string
+        framesFileContent: string
+    }>
+> {
     const outputVideoFramePaths = outputVideo + '.frames.txt'
-    writeFileSync(outputVideoFramePaths, imageFiles.map((path) => `file '${path}'`).join('\n'), 'utf-8')
+    const framesFileContent = imageFiles.map((path) => `file '${path}'`).join('\n')
+    writeFileSync(outputVideoFramePaths, framesFileContent, 'utf-8')
     // Create the input file arguments for ffmpeg
     // const inputArgs = imageFiles.map((path, index) => `-loop 1 -t ${frameDuration / 1000} -i "${path}"`).join(' ')
 
@@ -39,6 +46,11 @@ export async function createMP4FromImages(
         // console.info(`[stderr] ${res.stderr}`)
         console.info(`[out] ${res}`)
         console.info(`Video created successfully: ${outputVideo}`)
+        return {
+            ffmpegCommand,
+            framesFilePath: outputVideoFramePaths,
+            framesFileContent,
+        }
     } catch (error) {
         console.error('Error creating video:', extractErrorMessage(error))
     }

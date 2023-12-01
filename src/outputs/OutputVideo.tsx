@@ -10,16 +10,22 @@ export const OutputVideoPreviewUI = observer(function OutputImagePreviewUI_(p: {
     return (
         <OutputPreviewWrapperUI output={p.output}>
             video
-            <OutputVideoUI step={p.step} output={p.output} />
+            <span className='material-symbols-outlined'>play_circle</span>
         </OutputPreviewWrapperUI>
     )
 })
 
 export const OutputVideoUI = observer(function OutputVideoUI_(p: { step?: Maybe<StepL>; output: MediaVideoL }) {
     return (
-        <div>video</div>
-        // <OutputWrapperUI label='image'>
-        // <ImageUI img={p.output.imgID} />
-        // </OutputWrapperUI>
+        <video
+            style={{
+                objectFit: 'contain',
+                // ...extraProps,
+            }}
+            src={p.output.url}
+            controls
+            autoPlay
+            loop
+        />
     )
 })

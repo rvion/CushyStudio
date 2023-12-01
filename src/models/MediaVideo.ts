@@ -8,4 +8,8 @@ export interface MediaVideoL extends LiveInstance<MediaVideoT, MediaVideoL> {}
 export class MediaVideoL {
     step = new LiveRefOpt<this, StepL>(this, 'stepID', 'step')
     prompt = new LiveRefOpt<this, StepL>(this, 'promptID', 'comfy_prompt')
+
+    get url() {
+        return this.data.url
+    }
 }
