@@ -6,11 +6,23 @@ import { useSt } from 'src/state/stateContext'
 import { OutputPreviewWrapperUI } from './OutputPreviewWrapperUI'
 
 export const OutputVideoPreviewUI = observer(function OutputImagePreviewUI_(p: { step?: Maybe<StepL>; output: MediaVideoL }) {
-    const size = useSt().gallerySizeStr
+    const st = useSt()
+    const size = st.gallerySize
+    const sizeStr = st.gallerySizeStr
     return (
         <OutputPreviewWrapperUI output={p.output}>
-            video
-            <span className='material-symbols-outlined'>play_circle</span>
+            <div
+                tw={[
+                    //
+                    'bg-red-400 text-black',
+                    'text-center w-full font-bold',
+                ]}
+                style={{ fontSize: `${size / 2}px` }}
+            >
+                <span style={{ lineHeight: sizeStr }} className='material-symbols-outlined p-0 m-0'>
+                    play_circle
+                </span>
+            </div>
         </OutputPreviewWrapperUI>
     )
 })

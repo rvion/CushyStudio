@@ -198,6 +198,6 @@ app({
             }
         }
 
-        if (p.makeAVideo) await flow.output_video_ffmpegGeneratedImagesTogether()
+        if (p.makeAVideo) await flow.output_video_ffmpegGeneratedImagesTogether(undefined, 2)
     },
 })
