@@ -1,7 +1,8 @@
 import { marked } from 'marked'
 import { observer } from 'mobx-react-lite'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Widget_CustomComponentPropsUI, Widget_markdown } from 'src/controls/Widget'
+import { MediaImageL } from 'src/models/MediaImage'
 import { ImageUI } from 'src/widgets/galleries/ImageUI'
 import { useDraft } from 'src/widgets/misc/useDraft'
 
@@ -33,6 +34,15 @@ export const WidgetMardownUI = observer(function WidgetMardownUI_(p: { req: Widg
 const ui: Widget_CustomComponentPropsUI = {
     image: ({ imageId }: { imageId: string }): JSX.Element => {
         const draft = useDraft()
-        return <ImageUI img={draft.db.media_images.getOrThrow(imageId)} />
+        const [image, setImage] = useState(undefined as undefined | MediaImageL)
+        useEffect(() => {
+            const timeoutId = setTimeout(() => {
+                setImage(draft.db.media_images.getOrThrow(imageId))
+            }, 100)
+            return () => {
+                clearTimeout(timeoutId)
+            }
+        }, [imageId])
+        return <ImageUI img={image ?? (`loading` as unknown as MediaImageL)} />
     },
 }
