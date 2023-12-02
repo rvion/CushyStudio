@@ -41,6 +41,7 @@ import { asRelativePath } from '../utils/fs/pathUtils'
 import { _printSchema } from 'src/db/_printSchema'
 import { MediaSplatL } from 'src/models/MediaSplat'
 import { CustomDataL } from 'src/models/CustomData'
+import { DB_RELATIVE_PATH } from './DB_CONFIG'
 
 export type Indexed<T> = { [id: string]: T }
 
@@ -78,7 +79,7 @@ export class LiveDB {
     // prettier-ignore
     constructor(public st: STATE) {
             // init SQLITE ---------------------------------------------------------
-            const db = SQL('src/db/cushy-1.db', { nativeBinding: 'node_modules/better-sqlite3/build/Release/better_sqlite3.node' })
+            const db = SQL(DB_RELATIVE_PATH, { nativeBinding: 'node_modules/better-sqlite3/build/Release/better_sqlite3.node' })
             db.pragma('journal_mode = WAL')
             this.db = db
             _setupMigrationEngine(this)
@@ -176,6 +177,6 @@ export class LiveDB {
     /* erase the DB file on disk */
     erase = () => {
         this.db.close()
-        rmSync('foobar.db')
+        rmSync(DB_RELATIVE_PATH)
     }
 }

@@ -7,7 +7,7 @@ import { DraftUI } from './Panel_Draft'
 
 export const Panel_CurrentDraft = observer(function CurrentDraftUI_(p: {}) {
     const st = useSt()
-    const draft = st._currentDraft
+    const draft = st.currentDraft
 
     // just in case no card is selected, open one
     // useEffect(() => {

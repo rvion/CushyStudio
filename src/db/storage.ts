@@ -3,6 +3,7 @@ import { _applyAllMigrations } from './_applyAllMigrations'
 import { _printSchema } from './_printSchema'
 import { _setupMigrationEngine } from './_setupMigrationEngine'
 import { _checkAllMigrationsHaveDifferentIds } from './migrations'
+import { DB_RELATIVE_PATH } from './DB_CONFIG'
 
 let ix = 0
 
@@ -12,7 +13,7 @@ export class Store {
     db: BetterSqlite3.Database
 
     constructor() {
-        const db = SQL('foobar.db', {})
+        const db = SQL(DB_RELATIVE_PATH, {})
         db.pragma('journal_mode = WAL')
         this.db = db
 

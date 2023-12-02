@@ -117,7 +117,6 @@ export class LiveTable<T extends BaseInstanceFields, L extends LiveInstance<T, L
             get tableName() { return this.table.name } // prettier-ignore
 
             update(changes: Partial<T>) {
-                console.log('💀 UPDATING ----------------------------')
                 // 0. check that changes is valid
                 if (Array.isArray(changes)) throw new Error('insert does not support arrays')
                 if (typeof changes !== 'object') throw new Error('insert does not support non-objects')
