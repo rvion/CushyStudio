@@ -200,15 +200,12 @@ export class STATE {
         console.log(`[🛋️] creating project`)
         const initialGraph = this.db.graphs.create({ comfyPromptJSON: {} })
         const project = this.db.projects.create({
-            // activeToolID: this.db.tools.values[0].id,
             rootGraphID: initialGraph.id,
             name: 'new project',
-            // 🔴 insert statement must be dynamic
             currentApp: null,
             currentDraftID: null,
         })
         return project
-        // const startDraft = initialGraph.createDraft()
     }
 
     _currentDraft: DraftL
@@ -221,9 +218,6 @@ export class STATE {
         this.closeFullLibrary()
         this._currentDraft = draft
     }
-    // {
-    //     cardPath: asCardPath('library/CushyStudio/default/prompt.ts'),
-    // }
 
     fixEnumValue = (
         //

@@ -30,6 +30,7 @@ import { Status } from './Status'
 import { bang } from 'src/utils/misc/bang'
 import { _FIX_INDENTATION } from 'src/utils/misc/_FIX_INDENTATION'
 import { Widget_group } from 'src/controls/Widget'
+import { SQLITE_true } from 'src/db/SQLITE_boolean'
 
 export type ImageAndMask = HasSingle_IMAGE & HasSingle_MASK
 
@@ -341,6 +342,7 @@ export class Runtime<FIELDS extends WidgetDict = any> {
     }) => {
         this.st.db.media_videos.create({
             url: p.url,
+            isOpened: SQLITE_true,
             absPath: p.filePath,
             stepID: this.step.id,
         })
