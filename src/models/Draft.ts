@@ -40,7 +40,7 @@ export class DraftL {
         // ----------------------------------------
 
         // 1. ensure req valid (TODO: validate)
-        const req = this.gui.value
+        const req: Maybe<Widget_group<any>> = this.gui.value
         if (req == null) throw new Error('invalid req')
 
         // 2. ensure graph valid
@@ -67,11 +67,11 @@ export class DraftL {
             status: Status.New,
         })
         graph.update({ stepID: step.id }) // 🔶🔴
-        step.start()
+        step.start({ formInstance: req })
         return step
     }
 
-    gui: Result<Widget> = __FAIL('not loaded yet')
+    gui: Result<Widget_group<any>> = __FAIL('not loaded yet')
 
     get app(): LibraryFile | undefined {
         return this.st.library.cardsByPath.get(this.data.appPath)

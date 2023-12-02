@@ -29,6 +29,7 @@ import { InvalidPromptError } from './RuntimeError'
 import { Status } from './Status'
 import { bang } from 'src/utils/misc/bang'
 import { _FIX_INDENTATION } from 'src/utils/misc/_FIX_INDENTATION'
+import { Widget_group } from 'src/controls/Widget'
 
 export type ImageAndMask = HasSingle_IMAGE & HasSingle_MASK
 
@@ -72,11 +73,18 @@ export class Runtime<FIELDS extends WidgetDict = any> {
         return this.st.configFile.value?.loraPrompts?.[loraName]?.text
     }
 
-    /** get the current json form result */
+    /** the current json form result */
     formResult!: { [k in keyof FIELDS]: FIELDS[k]['$Output'] }
 
-    /** get the extended json form value including internal state */
+    /** the extended json form value including internal state */
     formSerial!: { [k in keyof FIELDS]: FIELDS[k]['$Serial'] }
+
+    /**
+     * the live form instance;
+     * 🔶 it is NOT json: it's a complex object
+     * 🔶 it is NOT frozen: this will change during runtime if you update the draft form
+     * */
+    formInstance!: Widget_group<FIELDS>
 
     /**
      * get your configured lora metada
@@ -139,13 +147,15 @@ export class Runtime<FIELDS extends WidgetDict = any> {
     chooseRandomly = <T>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)]
 
     /** execute the app */
-    run = async (): Promise<Status> => {
+    run = async (p: { formInstance: Widget_group<any> }): Promise<Status> => {
         const start = Date.now()
         const app = this.step.appCompiled
         const appFormInput = this.step.data.formResult
         const appFormSerial = this.step.data.formSerial.values_
         this.formResult = appFormInput
         this.formSerial = appFormSerial
+        this.formInstance = p.formInstance
+
         // console.log(`🔴 before: size=${this.graph.nodes.length}`)
         // console.log(`FORM RESULT: data=${JSON.stringify(this.step.data.formResult, null, 3)}`)
         try {

@@ -15,19 +15,27 @@ import { MediaTextL } from './MediaText'
 import { MediaVideoL } from './MediaVideo'
 import { RuntimeErrorL } from './RuntimeError'
 import { MediaSplatL } from './MediaSplat'
+import { Widget_group } from 'src/controls/Widget'
 
 export type FormPath = (string | number)[]
 /** a thin wrapper around an app execution */
 export interface StepL extends LiveInstance<StepT, StepL> {}
 export class StepL {
-    start = async () => {
+    start = async (p: {
+        /**
+         * reference to the draft live form instance
+         * this will be made available to the runtime so the runtime can access
+         * the live form
+         * */
+        formInstance: Widget_group<any>
+    }) => {
         const action = this.appCompiled
         if (action == null) return console.log('🔴 no action found')
 
         // this.data.outputGraphID = out.id
         this.runtime = new Runtime(this)
         this.update({ status: Status.Running })
-        const scriptExecutionStatus = await this.runtime.run()
+        const scriptExecutionStatus = await this.runtime.run(p)
 
         if (this.comfy_prompts.items.every((p: ComfyPromptL) => p.data.executed)) {
             this.update({ status: scriptExecutionStatus })
