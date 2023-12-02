@@ -6,7 +6,7 @@ import { Status } from 'src/back/Status'
 import { LibraryFile } from 'src/cards/CardFile'
 import { FormBuilder } from 'src/controls/FormBuilder'
 import { Widget_group, type Widget } from 'src/controls/Widget'
-import { DraftT } from 'src/db2/TYPES.gen'
+import { DraftT } from 'src/db/TYPES.gen'
 import { __FAIL, __OK, type Result } from 'src/types/Either'
 
 export type FormPath = (string | number)[]

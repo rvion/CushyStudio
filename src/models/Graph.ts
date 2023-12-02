@@ -17,7 +17,7 @@ import { LiteGraphJSON, convertFlowToLiteGraphJSON } from '../core/LiteGraph'
 import { ComfyNode } from '../core/ComfyNode'
 import { asHTMLContent, asMDContent } from '../types/markdown'
 import { asAbsolutePath } from '../utils/fs/pathUtils'
-import { GraphT } from 'src/db2/TYPES.gen'
+import { GraphT } from 'src/db/TYPES.gen'
 import { bang } from 'src/utils/misc/bang'
 
 export type RunMode = 'fake' | 'real'

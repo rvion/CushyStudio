@@ -393,6 +393,9 @@ export type MediaVideoT = {
     /** @default: null, sqlType: TEXT */
     url: string;
 
+    /** @default: "1", sqlType: INT */
+    isOpened: number;
+
 }
 export const MediaVideoSchema = Type.Object({
     id: Type.String(),
@@ -403,6 +406,7 @@ export const MediaVideoSchema = Type.Object({
     promptID: Type.Optional(T.Nullable(Type.String())),
     filePath: Type.Optional(T.Nullable(Type.String())),
     url: Type.String(),
+    isOpened: Type.Number(),
 },{ additionalProperties: false })
 
 export const MediaVideoFields = {
@@ -414,6 +418,7 @@ export const MediaVideoFields = {
     promptID: {cid:5,name:'promptID',type:'TEXT',notnull:0,dflt_value:null,pk:0},
     filePath: {cid:6,name:'filePath',type:'TEXT',notnull:0,dflt_value:null,pk:0},
     url: {cid:7,name:'url',type:'TEXT',notnull:1,dflt_value:null,pk:0},
+    isOpened: {cid:8,name:'isOpened',type:'INT',notnull:1,dflt_value:'1',pk:0},
 }
 
 

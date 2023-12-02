@@ -3,7 +3,7 @@ import type { ComfyWorkflowL } from './Graph'
 import type { SchemaL } from './Schema'
 
 import { LiveRef } from '../db/LiveRef'
-import { ProjectT } from 'src/db2/TYPES.gen'
+import { ProjectT } from 'src/db/TYPES.gen'
 
 export type ProjectID = Branded<string, { ProjectID: true }>
 export const asProjectID = (s: string): ProjectID => s as any

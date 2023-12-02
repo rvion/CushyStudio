@@ -16,15 +16,15 @@ import {
     ProjectT,
     RuntimeErrorT,
     StepT,
-} from 'src/db2/TYPES.gen'
+} from 'src/db/TYPES.gen'
 import { LiveTable } from './LiveTable'
 // models
 import { readFileSync } from 'fs'
-import { TableInfo } from 'src/db2/TYPES_json'
-import { _applyAllMigrations } from 'src/db2/_applyAllMigrations'
-import { _setupMigrationEngine } from 'src/db2/_setupMigrationEngine'
-import { _listAllTables } from 'src/db2/_listAllTables'
-import { _checkAllMigrationsHaveDifferentIds } from 'src/db2/migrations'
+import { TableInfo } from 'src/db/TYPES_json'
+import { _applyAllMigrations } from 'src/db/_applyAllMigrations'
+import { _setupMigrationEngine } from 'src/db/_setupMigrationEngine'
+import { _listAllTables } from 'src/db/_listAllTables'
+import { _checkAllMigrationsHaveDifferentIds } from 'src/db/migrations'
 import { Media3dDisplacementL } from 'src/models/Media3dDisplacement'
 import { MediaTextL } from 'src/models/MediaText'
 import { MediaVideoL } from 'src/models/MediaVideo'
@@ -37,7 +37,7 @@ import { ProjectL } from '../models/Project'
 import { SchemaL } from '../models/Schema'
 import { StepL } from '../models/Step'
 import { asRelativePath } from '../utils/fs/pathUtils'
-import { _printSchema } from 'src/db2/_printSchema'
+import { _printSchema } from 'src/db/_printSchema'
 import { MediaSplatL } from 'src/models/MediaSplat'
 
 export type Indexed<T> = { [id: string]: T }
@@ -75,7 +75,7 @@ export class LiveDB {
     // prettier-ignore
     constructor(public st: STATE) {
             // init SQLITE ---------------------------------------------------------
-            const db = SQL('foobar.db', { nativeBinding: 'node_modules/better-sqlite3/build/Release/better_sqlite3.node' })
+            const db = SQL('src/db/cushy-1.db', { nativeBinding: 'node_modules/better-sqlite3/build/Release/better_sqlite3.node' })
             db.pragma('journal_mode = WAL')
             this.db = db
             _setupMigrationEngine(this)

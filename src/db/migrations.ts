@@ -196,6 +196,11 @@ export const migrations: {
             `alter table media_video add column url text not null`,
         ],
     },
+    {
+        id: 'sS4mA__Ofg',
+        name: 'add isOpened to drafts',
+        up: [`alter table draft add column isOpened int not null default 1`],
+    },
     // {
     //     id: 'PONTSFSpA_',
     //     name: 'fix image2',

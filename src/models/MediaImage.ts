@@ -6,7 +6,7 @@ import { exhaust } from 'src/utils/misc/ComfyUtils'
 import { ComfyImageInfo } from '../types/ComfyWsApi'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { _readPngSize } from '../utils/png/_readPngSize'
-import { MediaImageT } from 'src/db2/TYPES.gen'
+import { MediaImageT } from 'src/db/TYPES.gen'
 
 // ---------------------------------------------------------------------------------------------------
 // 2023-11-27: image model was a mess; at first, I though I could unify all image strings

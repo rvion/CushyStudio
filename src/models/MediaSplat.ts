@@ -1,4 +1,4 @@
-import type { MediaSplatT } from 'src/db2/TYPES.gen'
+import type { MediaSplatT } from 'src/db/TYPES.gen'
 import type { LiveInstance } from '../db/LiveInstance'
 import type { StepL } from './Step'
 

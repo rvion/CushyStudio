@@ -32,9 +32,10 @@ schema/*
 cushy.db
 cushy*.db
 cushy*.db.backup
-foobar.db
-*.db-shm
-*.db-wal
+
+src/db/cushy*.db
+src/db/cushy*.db-shm
+src/db/cushy*.db-wal
 
 *.vsix
 

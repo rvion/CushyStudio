@@ -4,7 +4,7 @@ import type { ComfyWorkflowL } from '../models/Graph'
 import type { ComfyPromptL } from './ComfyPrompt'
 
 import { LibraryFile } from 'src/cards/CardFile'
-import { StepT } from 'src/db2/TYPES.gen'
+import { StepT } from 'src/db/TYPES.gen'
 import { Runtime } from '../back/Runtime'
 import { Status } from '../back/Status'
 import { LiveCollection } from '../db/LiveCollection'
