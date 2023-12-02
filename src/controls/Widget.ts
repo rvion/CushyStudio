@@ -116,44 +116,43 @@ export type Widget_custom_componentProps_ui = {
     }) => JSX.Element
 }
 export type Widget_custom_componentProps<T = unknown> = {
-    value: T
-    onChange: (value: T) => void
+    value: undefined | T
+    onChange: (value: undefined | T) => void
     ui: Widget_custom_componentProps_ui
 }
-export type Widget_custom_component = (props: Widget_custom_componentProps) => JSX.Element
 
-export type Widget_custom_opts  = ReqInput<{ customComponent: Widget_custom_component }>
-export type Widget_custom_serial = StateFields<{ type: 'custom', active: true; componentViewState: unknown }>
-export type Widget_custom_state  = StateFields<{ type: 'custom', active: true; componentViewState: unknown }>
+export type Widget_custom_opts<TViewState>  = ReqInput<{ customComponent: (props: Widget_custom_componentProps<TViewState>) => JSX.Element }>
+export type Widget_custom_serial<TViewState> = StateFields<{ type: 'custom', active: true; componentViewState: undefined | TViewState }>
+export type Widget_custom_state<TViewState>  = StateFields<{ type: 'custom', active: true; componentViewState: undefined | TViewState }>
 export type Widget_custom_output = unknown
-export interface Widget_custom extends IWidget<'custom', Widget_custom_opts, Widget_custom_serial, Widget_custom_state, Widget_custom_output> {}
-export class Widget_custom implements IRequest<'custom', Widget_custom_opts, Widget_custom_serial, Widget_custom_state, Widget_custom_output> {
+export interface Widget_custom<TViewState> extends IWidget<'custom', Widget_custom_opts<TViewState>, Widget_custom_serial<TViewState>, Widget_custom_state<TViewState>, Widget_custom_output> {}
+export class Widget_custom<TViewState> implements IRequest<'custom', Widget_custom_opts<TViewState>, Widget_custom_serial<TViewState>, Widget_custom_state<TViewState>, Widget_custom_output> {
     isOptional = false
     id: string
     type: 'custom' = 'custom'
-    state: Widget_custom_state
+    state: Widget_custom_state<TViewState>
 
-    get customComponent(): Widget_custom_component {
+    get customComponent(): ((props: Widget_custom_componentProps<TViewState>) => JSX.Element) {
         return this.input.customComponent;
     }
-    get componentViewState() {
+    get componentViewState(): undefined | TViewState {
         return this.state.componentViewState;
     }
-    set componentViewState(v:unknown) {
+    set componentViewState(v: undefined | TViewState) {
          this.state.componentViewState = v;
     }
 
     constructor(
         public builder: FormBuilder,
         public schema: SchemaL,
-        public input: Widget_custom_opts,
-        serial?: Widget_custom_serial,
+        public input: Widget_custom_opts<TViewState>,
+        serial?: Widget_custom_serial<TViewState>,
     ) {
         this.id = serial?.id ?? nanoid()
         this.state = serial ?? { type:'custom', active: true, id: this.id, componentViewState: undefined }
         makeAutoObservable(this)
     }
-    get serial(): Widget_custom_serial { return this.state }
+    get serial(): Widget_custom_serial<TViewState> { return this.state }
     get result(): Widget_custom_output { return this.state.componentViewState }
 }
 
