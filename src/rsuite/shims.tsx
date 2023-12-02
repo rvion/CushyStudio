@@ -8,7 +8,9 @@ import { RSSize, RSAppearance } from './RsuiteTypes'
 export const FormHelpText = (p: any) => <div {...p}></div>
 export const FormControlLabel = (p: JSX.IntrinsicElements['label']) => <label {...p}></label>
 export const FormControl = (p: JSX.IntrinsicElements['input']) => <input tw='input input-bordered input-sm' {...p}></input>
-export const Joined = (p: { children?: ReactNode }) => <div tw='join virtualBorder' {...p}></div>
+export const Joined = (p: { className?: string; children?: ReactNode }) => (
+    <div tw={[p.className, 'join virtualBorder']}>{p.children}</div>
+)
 
 export const Addon = observer(function Addon_(p: any) {
     return <div tw='flex items-center px-2 join-item' {...p}></div>

@@ -4,10 +4,21 @@ import { LibraryFile } from '../CardFile'
 export const AppIllustrationUI = observer(function AppIllustrationUI_(p: {
     className?: string
     onClick?: () => void
-    card: LibraryFile
+    app: Maybe<LibraryFile>
     size: string
 }) {
-    const x = p.card.illustrationPathWithFileProtocol
+    const app = p.app
+    if (app == null)
+        return (
+            <div
+                //
+                tw='bg-error text-error-content'
+                style={{ height: p.size }}
+            >
+                ERROR
+            </div>
+        )
+    const x = app.illustrationPathWithFileProtocol
     // return null
     if (x.startsWith('<svg'))
         return (
@@ -26,10 +37,9 @@ export const AppIllustrationUI = observer(function AppIllustrationUI_(p: {
                 //
                 'rounded',
                 p.onClick ? 'cursor-pointer' : null,
-                // 'animate-in zoom-in duration-100',
             ]}
             style={{ width: p.size, height: p.size, objectFit: 'contain', imageRendering: 'pixelated' }}
-            src={p.card.illustrationPathWithFileProtocol}
+            src={app.illustrationPathWithFileProtocol}
             alt='card illustration'
             onClick={p.onClick}
         />

@@ -6,13 +6,18 @@ import { ManifestError } from './DeckManifest'
 import { RevealUI } from 'src/rsuite/RevealUI'
 import { exhaust } from 'src/utils/misc/ComfyUtils'
 import { ActionPackStatusUI } from './DeckStatusUI'
+import { PkgHeaderStyle } from './AppListStyles'
 
 export const PkgHeaderUI = observer(function ActionPackHeaderUI_(p: { pkg: Package }) {
     const pkg = p.pkg
     return (
         <>
             <div
-                tw='cursor-pointer flex gap-1 hover:bg-base-300 bg-base-200 pb-0.5 border-t border-t-base-300'
+                tw={[
+                    //
+                    PkgHeaderStyle,
+                    'cursor-pointer flex gap-1 pb-0.5 border-t border-t-base-300',
+                ]}
                 onClick={() => (pkg.folded = !pkg.folded)}
             >
                 <img //

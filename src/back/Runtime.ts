@@ -1,21 +1,22 @@
 import type { WidgetDict } from 'src/cards/Card'
 import type { Printable } from '../core/Printable'
+import type { STATE } from 'src/state/state'
 
 import * as path from 'pathe'
 // import { Cyto } from '../graph/cyto' 🔴🔴
 import { execSync } from 'child_process'
 import fs, { writeFileSync } from 'fs'
-import { marked } from 'marked'
+import { Widget_group } from 'src/controls/Widget'
 import { Uploader } from 'src/state/Uploader'
-import type { STATE } from 'src/state/state'
 import { assets } from 'src/utils/assets/assets'
+import { bang } from 'src/utils/misc/bang'
 import { braceExpansion } from 'src/utils/misc/expansion'
 import { ImageAnswer } from '../controls/misc/InfoAnswer'
 import { ComfyNodeOutput } from '../core/Slot'
 import { auto } from '../core/autoValue'
+import { ComfyPromptL } from '../models/ComfyPrompt'
 import { ComfyWorkflowL } from '../models/Graph'
 import { MediaImageL } from '../models/MediaImage'
-import { ComfyPromptL } from '../models/ComfyPrompt'
 import { StepL } from '../models/Step'
 import { ApiPromptInput, ComfyUploadImageResult, PromptInfo } from '../types/ComfyWsApi'
 import { createMP4FromImages } from '../utils/ffmpeg/ffmpegScripts'
@@ -27,10 +28,8 @@ import { ImageSDK } from './ImageSDK'
 import { ComfyWorkflowBuilder } from './NodeBuilder'
 import { InvalidPromptError } from './RuntimeError'
 import { Status } from './Status'
-import { bang } from 'src/utils/misc/bang'
-import { _FIX_INDENTATION } from 'src/utils/misc/_FIX_INDENTATION'
-import { Widget_group } from 'src/controls/Widget'
-import { SQLITE_true } from 'src/db/SQLITE_boolean'
+
+import child_process from 'child_process'
 
 export type ImageAndMask = HasSingle_IMAGE & HasSingle_MASK
 
@@ -55,6 +54,13 @@ export class Runtime<FIELDS extends WidgetDict = any> {
      * avoid concateing paths yourself if you want your app
      */
     path = path
+
+    /**
+     * sub-process creation and manipulation SDK;
+     * usefull to run external commands or operate external tools
+     * use with caution
+     */
+    child_process = child_process
 
     constructor(public step: StepL) {
         this.st = step.st
@@ -342,7 +348,6 @@ export class Runtime<FIELDS extends WidgetDict = any> {
     }) => {
         this.st.db.media_videos.create({
             url: p.url,
-            isOpened: SQLITE_true,
             absPath: p.filePath,
             stepID: this.step.id,
         })

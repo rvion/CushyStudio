@@ -110,8 +110,8 @@ export const _printSchema = (store: {
     out1 += '}'
 
     // console.log(out1)
-    writeFileSync('src/db2/TYPES.gen.ts', out1)
-    writeFileSync('src/db2/TYPES.d.ts', out2)
+    writeFileSync('src/db/TYPES.gen.ts', out1)
+    writeFileSync('src/db/TYPES.d.ts', out2)
 }
 
 const convertTableNameToJSName = (tableName: string) => {

@@ -50,7 +50,7 @@ export const AppCardUI = observer(function FancyCardUI_(p: {
                 </div>
             </div>
             <div tw='flex'>
-                <AppIllustrationUI card={card} size={st.library.imageSize} />
+                <AppIllustrationUI app={card} size={st.library.imageSize} />
                 {st.library.showDescription ? (
                     <div tw='flex-grow flex flex-col ml-1 w-44'>
                         <div>

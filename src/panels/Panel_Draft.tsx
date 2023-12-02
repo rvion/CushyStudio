@@ -299,31 +299,40 @@ export const DraftHeaderUI = observer(function DraftHeaderUI_(p: { draft: DraftL
     return (
         <div tw='flex p-1 bg-base-300 border-b border-b-base-300'>
             <div tw='flex gap-0.5 flex-grow relative text-base-content py-1'>
-                <AppIllustrationUI card={app} size='4rem' />
+                <AppIllustrationUI app={app} size='4rem' />
                 <div tw='px-1 flex-grow'>
                     <div
                         //
                         tw={[
                             //
-                            'font-bold',
                             'flex items-center',
                             'overflow-hidden overflow-ellipsis whitespace-nowrap',
                         ]}
-                        style={{
-                            height: '2rem',
-                            fontSize: '1.4rem',
-                        }}
+                        style={{ height: '2rem', fontSize: '1.4rem' }}
                     >
                         <AppFavoriteBtnUI app={app} />
                         <span>{app.displayName}</span>
-                        <div
-                            tw='btn btn-subtle btn-xs'
-                            onClick={() => {
-                                st.layout.FOCUS_OR_CREATE('Draft', { draftID: draft.id }, 'LEFT_PANE_TABSET')
-                            }}
-                        >
-                            <span className='material-symbols-outlined'>open_in_new</span>
-                        </div>
+                        <Joined tw={['absolute right-0']}>
+                            {/* Open draft in new tab btn */}
+                            <div
+                                tw='btn btn-subtle btn-xs'
+                                onClick={() => {
+                                    st.layout.FOCUS_OR_CREATE('Draft', { draftID: draft.id }, 'LEFT_PANE_TABSET')
+                                }}
+                            >
+                                <span className='material-symbols-outlined'>open_in_new</span>
+                            </div>
+                            {/* duplicate draft btn */}
+                            <div
+                                tw='btn btn-subtle btn-xs'
+                                onClick={() => {
+                                    const newDraft = draft.clone()
+                                    st.layout.FOCUS_OR_CREATE('Draft', { draftID: newDraft.id }, 'LEFT_PANE_TABSET')
+                                }}
+                            >
+                                <span className='material-symbols-outlined'>content_copy</span>
+                            </div>
+                        </Joined>
                     </div>
                     <div style={{ height: '2rem' }} className='flex items-center gap-2 justify-between text-sm'>
                         <Joined>

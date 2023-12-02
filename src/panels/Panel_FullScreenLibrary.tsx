@@ -6,6 +6,10 @@ import { FileBeeingImportedUI } from 'src/importers/FilesBeeingImported'
 import { useSt } from 'src/state/stateContext'
 import { ScrollablePaneUI } from 'src/widgets/misc/scrollableArea'
 import { FieldAndLabelUI } from 'src/widgets/misc/FieldAndLabelUI'
+import { DraftL } from 'src/models/Draft'
+import { AppIllustrationUI } from 'src/cards/fancycard/AppIllustrationUI'
+import { AppFavoriteBtnUI, DraftFavoriteBtnUI } from 'src/cards/CardPicker2UI'
+import { AppEntryStyle } from 'src/cards/AppListStyles'
 
 export const Panel_CardPicker3UI = observer(function Panel_CardPicker3UI_(p: {}) {
     const st = useSt()
@@ -101,24 +105,7 @@ export const Panel_CardPicker3UI = observer(function Panel_CardPicker3UI_(p: {})
                                 {card.drafts.length > 0 && st.library.showDrafts ? (
                                     <div tw='flex flex-col'>
                                         {card.drafts.map((draft, ix) => (
-                                            <div tw='flex items-center w-80' key={draft.id}>
-                                                <Button
-                                                    size='sm'
-                                                    icon={<span className='material-symbols-outlined'>delete</span>}
-                                                    appearance='subtle'
-                                                    color='red'
-                                                ></Button>
-                                                <Button
-                                                    size='sm'
-                                                    icon={<span className='material-symbols-outlined'>open_in_new</span>}
-                                                    appearance='subtle'
-                                                    color='blue'
-                                                ></Button>
-                                                {/* <span className='material-symbols-outlined'>play_arrow</span> */}
-                                                <div tw='underline flex items-center' onClick={() => (st.currentDraft = draft)}>
-                                                    draft #{ix}: {draft.data.title}
-                                                </div>
-                                            </div>
+                                            <DraftEntryUI draft={draft} />
                                         ))}
                                     </div>
                                 ) : null}
@@ -129,5 +116,35 @@ export const Panel_CardPicker3UI = observer(function Panel_CardPicker3UI_(p: {})
             </div>
         </div>
         // </div>
+    )
+})
+
+export const DraftEntryUI = observer(function DraftEntryUI_(p: { draft: DraftL }) {
+    const st = useSt()
+    const draft = p.draft
+    return (
+        <div tw={[AppEntryStyle, 'flex items-center gap-2']} key={draft.id}>
+            <div tw='pl-1'>
+                <DraftFavoriteBtnUI draft={draft} size='1.3rem' />
+            </div>
+            <AppIllustrationUI app={draft.app} size='1.5rem' />
+            <div tw='cursor-pointer single-line-ellipsis' onClick={() => (st.currentDraft = draft)}>
+                {draft.data.title}
+            </div>
+            <Joined tw='absolute right-0'>
+                <Button
+                    size='xs'
+                    icon={<span className='material-symbols-outlined'>delete</span>}
+                    appearance='subtle'
+                    color='red'
+                ></Button>
+                <Button
+                    size='xs'
+                    icon={<span className='material-symbols-outlined'>open_in_new</span>}
+                    appearance='subtle'
+                    color='blue'
+                ></Button>
+            </Joined>
+        </div>
     )
 })

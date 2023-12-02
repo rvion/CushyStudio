@@ -1,22 +1,11 @@
 import { observer } from 'mobx-react-lite'
 import { ErrorBoundary } from 'react-error-boundary'
-import { Loader } from 'src/rsuite/shims'
-import { Panel_Config } from '../../panels/Panel_Config'
 import { useSt } from '../../state/stateContext'
 import { GalleryHoveredPreviewUI } from '../../widgets/galleries/GalleryHoveredPreviewUI'
 import { ErrorBoundaryFallback } from '../../widgets/misc/ErrorBoundary'
 
 export const ProjectUI = observer(function ProjectUI_(p: {}) {
     const st = useSt()
-    const project = st.getProject()
-    // if (project == null)
-    //     return (
-    //         <div>
-    //             <Loader />
-    //             <div>No project yet, you first need to connect to ComfyUI</div>
-    //             <Panel_Config />
-    //         </div>
-    //     )
     return (
         <div className='relative flex-grow flex flex-col h-full'>
             <GalleryHoveredPreviewUI />
@@ -26,7 +15,6 @@ export const ProjectUI = observer(function ProjectUI_(p: {}) {
                 style={{ transition: 'all 0.2s ease-in-out', opacity: 0 }}
             />
             <ErrorBoundary FallbackComponent={ErrorBoundaryFallback} onReset={(details) => {}}>
-                {/* <GraphPreviewUI graph={lastGraph} /> */}
                 <st.layout.UI />
             </ErrorBoundary>
         </div>

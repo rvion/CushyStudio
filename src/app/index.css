@@ -7,6 +7,11 @@ html, body, #root {
 }
 
 
+.single-line-ellipsis {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
 .scroll { overflow:auto; }
 .inset-0 { top: 0; left: 0; right: 0; bottom: 0; }
 .h100 { height: 100%; }
