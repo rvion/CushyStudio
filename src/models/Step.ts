@@ -78,11 +78,13 @@ export class StepL {
         if (
             last instanceof MediaImageL || //
             last instanceof MediaVideoL ||
-            last instanceof Media3dDisplacementL
+            last instanceof Media3dDisplacementL ||
+            last instanceof MediaTextL ||
+            last instanceof MediaImageL
         )
             return last
 
-        return this.lastOutput
+        return null
     }
     get lastOutput(): Maybe<StepOutput> {
         const outputs = this.outputs

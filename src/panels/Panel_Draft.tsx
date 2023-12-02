@@ -326,9 +326,7 @@ export const DraftHeaderUI = observer(function DraftHeaderUI_(p: { draft: DraftL
                         </Joined>
                     </div>
                     <Input
-                        onChange={(ev) => {
-                            draft.data.title = ev.target.value
-                        }}
+                        onChange={(ev) => draft.update({ title: ev.target.value })}
                         tw='w-full'
                         value={draft.data.title ?? 'no title'}
                     ></Input>
