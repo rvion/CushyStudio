@@ -34,12 +34,5 @@ export class Store {
 
         const getB = this.db.prepare(`select json_extract(comfyPromptJSON,'$.a') as a from graph`)
         this.log(getB.all())
-        // const findByID = db.prepare('SELECT * FROM users WHERE id = ?')
-
-        // insert.get('John', 'Doe', 'jdoe@gmail.com', '123456')
-        // insert.get('John2', 'Doe2', 'jdoe@gmail.com', '123456')
-
-        // const row: any = findByID.get(1)
-        // console.this.log(row.firstName, row.lastName, row.email)
     }
 }
