@@ -1,8 +1,8 @@
 Todo before release
 
+☐ use any image as draft illustration
 ☐ don't autofocus preview images
 ☐ warning if custom nodes not installed by default
-☐ proper error message when node not found
 ☐ small mention in the readme that dev console can help troubleshoot problems.
 ✔ fix all selects @done(23-11-26 11:56)
 ☐ custom size on size widget
@@ -10,6 +10,7 @@ Todo before release
 ☐ background image for config panel
 ☐ draft result are too wide by default / should open in bottom panel
 ☐ selectMenu
+✔ proper error message when node not found @done(23-12-02 10:44)
 
 Misc:
     ☐ show different from current preset in color

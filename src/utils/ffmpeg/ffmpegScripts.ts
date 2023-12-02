@@ -12,9 +12,16 @@ export async function createMP4FromImages(
     opts?: {
         transparent?: Maybe<boolean>
     },
-): Promise<void> {
+): Promise<
+    Maybe<{
+        ffmpegCommand: string
+        framesFilePath: string
+        framesFileContent: string
+    }>
+> {
     const outputVideoFramePaths = outputVideo + '.frames.txt'
-    writeFileSync(outputVideoFramePaths, imageFiles.map((path) => `file '${path}'`).join('\n'), 'utf-8')
+    const framesFileContent = imageFiles.map((path) => `file '${path}'`).join('\n')
+    writeFileSync(outputVideoFramePaths, framesFileContent, 'utf-8')
     // Create the input file arguments for ffmpeg
     // const inputArgs = imageFiles.map((path, index) => `-loop 1 -t ${frameDuration / 1000} -i "${path}"`).join(' ')
 
@@ -27,7 +34,17 @@ export async function createMP4FromImages(
     // Construct the full ffmpeg command
     // const ffmpegCommand = `ffmpeg ${inputArgs} ${encodingArgs} "${outputVideo}"`
     const transparent = opts?.transparent ? '-pix_fmt yuva420p ' : '-pix_fmt yuva420p ' // 🔴
-    const ffmpegCommand = `ffmpeg -f concat -safe 0 -r ${inputFPS} -i "${outputVideoFramePaths}" -c:v libx264 -vf "fps=60" ${transparent}"${outputVideo}"`
+    const ffmpegArgs = [
+        `ffmpeg`,
+        `-f concat`,
+        `-safe 0`,
+        `-r ${inputFPS}`,
+        `-i "${outputVideoFramePaths}"`,
+        `-c:v libx264`,
+        `-vf "fps=60"`,
+        `${transparent}"${outputVideo}"`,
+    ]
+    const ffmpegCommand = ffmpegArgs.join(' ')
 
     console.info(`Working directory: ${workingDirectory}`)
     console.info(`Creating video with command: ${ffmpegCommand}`)
@@ -39,6 +56,11 @@ export async function createMP4FromImages(
         // console.info(`[stderr] ${res.stderr}`)
         console.info(`[out] ${res}`)
         console.info(`Video created successfully: ${outputVideo}`)
+        return {
+            ffmpegCommand: ffmpegArgs.join(' \\\n    '),
+            framesFilePath: outputVideoFramePaths,
+            framesFileContent,
+        }
     } catch (error) {
         console.error('Error creating video:', extractErrorMessage(error))
     }

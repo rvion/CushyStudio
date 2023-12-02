@@ -17,7 +17,8 @@ import { ManualPromise } from '../utils/misc/ManualPromise'
 import { generateAvatar } from './AvatarGenerator'
 import { AppManifest } from './DeckManifest'
 import { Library } from './Library'
-import { DraftT } from 'src/db2/TYPES.gen'
+import { DraftT } from 'src/db/TYPES.gen'
+import { SQLITE_true } from 'src/db/SQLITE_boolean'
 
 // prettier-ignore
 export type LoadStrategy =
@@ -181,11 +182,10 @@ export class LibraryFile {
 
     createDraft = (): DraftL => {
         const title = this.name + ' ' + this.drafts.length + 1
-        const pj = this.st.getProject()
         const draft = this.st.db.drafts.create({
             appParams: {},
             appPath: this.relPath,
-            // graphID: pj.rootGraph.id,
+            isOpened: SQLITE_true,
             title: title,
         })
         // pj.st.layout.FOCUS_OR_CREATE('Draft', { draftID: draft.id })

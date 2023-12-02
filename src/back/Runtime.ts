@@ -1,21 +1,22 @@
 import type { WidgetDict } from 'src/cards/Card'
 import type { Printable } from '../core/Printable'
+import type { STATE } from 'src/state/state'
 
 import * as path from 'pathe'
 // import { Cyto } from '../graph/cyto' 🔴🔴
 import { execSync } from 'child_process'
 import fs, { writeFileSync } from 'fs'
-import { marked } from 'marked'
+import { Widget_group } from 'src/controls/Widget'
 import { Uploader } from 'src/state/Uploader'
-import type { STATE } from 'src/state/state'
 import { assets } from 'src/utils/assets/assets'
+import { bang } from 'src/utils/misc/bang'
 import { braceExpansion } from 'src/utils/misc/expansion'
 import { ImageAnswer } from '../controls/misc/InfoAnswer'
 import { ComfyNodeOutput } from '../core/Slot'
 import { auto } from '../core/autoValue'
+import { ComfyPromptL } from '../models/ComfyPrompt'
 import { ComfyWorkflowL } from '../models/Graph'
 import { MediaImageL } from '../models/MediaImage'
-import { ComfyPromptL } from '../models/ComfyPrompt'
 import { StepL } from '../models/Step'
 import { ApiPromptInput, ComfyUploadImageResult, PromptInfo } from '../types/ComfyWsApi'
 import { createMP4FromImages } from '../utils/ffmpeg/ffmpegScripts'
@@ -27,12 +28,25 @@ import { ImageSDK } from './ImageSDK'
 import { ComfyWorkflowBuilder } from './NodeBuilder'
 import { InvalidPromptError } from './RuntimeError'
 import { Status } from './Status'
-import { bang } from 'src/utils/misc/bang'
+
+import child_process from 'child_process'
+import { CustomDataL } from 'src/models/CustomData'
+import { _formatAsRelativeDateTime } from 'src/updater/_getRelativeTimeString'
 
 export type ImageAndMask = HasSingle_IMAGE & HasSingle_MASK
 
 /** script exeuction instance */
 export class Runtime<FIELDS extends WidgetDict = any> {
+    constructor(public step: StepL) {
+        this.st = step.st
+        this.folder = step.st.outputFolderPath
+        this.upload_FileAtAbsolutePath = this.st.uploader.upload_FileAtAbsolutePath.bind(this.st.uploader)
+        this.upload_ImageAtURL = this.st.uploader.upload_ImageAtURL.bind(this.st.uploader)
+        this.upload_dataURL = this.st.uploader.upload_dataURL.bind(this.st.uploader)
+        this.upload_Asset = this.st.uploader.upload_Asset.bind(this.st.uploader)
+        this.upload_Blob = this.st.uploader.upload_Blob.bind(this.st.uploader)
+    }
+
     /**
      * the global CushyStudio app state
      * Apps should probably never touch this directly.
@@ -53,15 +67,12 @@ export class Runtime<FIELDS extends WidgetDict = any> {
      */
     path = path
 
-    constructor(public step: StepL) {
-        this.st = step.st
-        this.folder = step.st.outputFolderPath
-        this.upload_FileAtAbsolutePath = this.st.uploader.upload_FileAtAbsolutePath.bind(this.st.uploader)
-        this.upload_ImageAtURL = this.st.uploader.upload_ImageAtURL.bind(this.st.uploader)
-        this.upload_dataURL = this.st.uploader.upload_dataURL.bind(this.st.uploader)
-        this.upload_Asset = this.st.uploader.upload_Asset.bind(this.st.uploader)
-        this.upload_Blob = this.st.uploader.upload_Blob.bind(this.st.uploader)
-    }
+    /**
+     * sub-process creation and manipulation SDK;
+     * usefull to run external commands or operate external tools
+     * use with caution
+     */
+    child_process = child_process
 
     /**
      * get the configured trigger words for the given lora
@@ -71,11 +82,43 @@ export class Runtime<FIELDS extends WidgetDict = any> {
         return this.st.configFile.value?.loraPrompts?.[loraName]?.text
     }
 
-    /** get the current json form result */
+    /**
+     * the current json form result
+     * the main value sent to your app as context.
+     * Most apps only need this value.
+     */
     formResult!: { [k in keyof FIELDS]: FIELDS[k]['$Output'] }
 
-    /** get the extended json form value including internal state */
+    /**
+     * the extended json form value including internal state
+     * it includes all internal form ids, and other internal values
+     * it could be usefull for some cases like if you need to
+     *      - use the ids for dynamic references
+     *      - do something based on if some fields are folded
+     * */
     formSerial!: { [k in keyof FIELDS]: FIELDS[k]['$Serial'] }
+
+    /**
+     * the live form instance;
+     * 🔶 it is NOT json: it's a complex object
+     * 🔶 it is NOT frozen: this will change during runtime if you update the draft form
+     * */
+    formInstance!: Widget_group<FIELDS>
+
+    getStore_orCrashIfMissing = <T>(key: string): CustomDataL<T> => {
+        return this.st.db.custom_datas.getOrThrow(key)
+    }
+
+    getStore_orCreateIfMissing = <T>(key: string, def: () => T): CustomDataL<T> => {
+        return this.st.db.custom_datas.getOrCreate(key, () => ({
+            id: key,
+            json: def(),
+        }))
+    }
+
+    executeDraft = async (draftID: DraftID, args: any) => {
+        throw new Error('🔴 not yet implemented')
+    }
 
     /**
      * get your configured lora metada
@@ -138,13 +181,15 @@ export class Runtime<FIELDS extends WidgetDict = any> {
     chooseRandomly = <T>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)]
 
     /** execute the app */
-    run = async (): Promise<Status> => {
+    run = async (p: { formInstance: Widget_group<any> }): Promise<Status> => {
         const start = Date.now()
         const app = this.step.appCompiled
         const appFormInput = this.step.data.formResult
         const appFormSerial = this.step.data.formSerial.values_
         this.formResult = appFormInput
         this.formSerial = appFormSerial
+        this.formInstance = p.formInstance
+
         // console.log(`🔴 before: size=${this.graph.nodes.length}`)
         // console.log(`FORM RESULT: data=${JSON.stringify(this.step.data.formResult, null, 3)}`)
         try {
@@ -178,8 +223,12 @@ export class Runtime<FIELDS extends WidgetDict = any> {
     /** check if the current connected ComfyUI backend has a given checkpoint */
     hasCheckpoint = (loraName: string): boolean => this.schema.hasLora(loraName)
 
-    /** run an imagemagick convert action */
-    imagemagicConvert = (
+    /**
+     * helper function to quickly run some imagemagick convert command
+     * on an existing MediaImage instance, regardless of it's provenance
+     * 🔶 works but unfinished
+     */
+    exec_imagemagickConvert = (
         //
         img: MediaImageL,
         partialCmd: string,
@@ -229,19 +278,16 @@ export class Runtime<FIELDS extends WidgetDict = any> {
 
     // ------------------------------------------------------------------------------------
 
+    /** outputs a gaussian splat asset, accessible at the given URL */
     output_GaussianSplat = (p: { url: string }) => {
         this.st.db.media_splats.create({
             url: p.url,
             stepID: this.step.id,
         })
     }
+
     /** output a 3d scene from an image and its displacement and depth maps */
-    output_3dImage = (p: {
-        //
-        image: string
-        depth: string
-        normal: string
-    }) => {
+    output_3dImage = (p: { image: string; depth: string; normal: string }) => {
         const image = this.generatedImages.find((i) => i.filename.startsWith(p.image))
         const depth = this.generatedImages.find((i) => i.filename.startsWith(p.depth))
         const normal = this.generatedImages.find((i) => i.filename.startsWith(p.normal))
@@ -257,14 +303,47 @@ export class Runtime<FIELDS extends WidgetDict = any> {
             normalMap: normal.url,
             stepID: this.step.id,
         })
-        console.log('🟢🟢🟢🟢🟢🟢 displaced')
-        // this.st.layout.FOCUS_OR_CREATE('DisplacedImage', {
-        //     width: image.data.width ?? 512,
-        //     height: image.data.height ?? 512,
-        //     image: image.url,
-        //     depthMap: depth.url,
-        //     normalMap: normal.url,
-        // })
+    }
+
+    /** 🔴 unfinished */
+    output_File = async (path: RelativePath, content: string): Promise<void> => {
+        const absPath = this.st.resolve(this.folder, path)
+        writeFileSync(absPath, content, 'utf-8')
+    }
+
+    output_HTML = (p: { htmlContent: string; title: string }) => {
+        this.st.db.media_texts.create({
+            kind: 'html',
+            title: p.title,
+            content: p.htmlContent,
+            stepID: this.step.id,
+        })
+    }
+
+    output_Markdown = (p: string | { title: string; markdownContent: string }) => {
+        const title = typeof p === 'string' ? '<no-title>' : p.title
+        const content = typeof p === 'string' ? p : p.markdownContent
+        this.st.db.media_texts.create({ kind: 'markdown', title, content, stepID: this.step.id })
+    }
+
+    output_text = (p: { title: string; message: Printable } | string) => {
+        const [title, message] = typeof p === 'string' ? ['<no-title>', p] : [p.title, p.message]
+        let msg = this.extractString(message)
+        console.info(msg)
+        this.step.db.media_texts.create({
+            kind: 'text',
+            title: title,
+            content: msg,
+            stepID: this.step.id,
+        })
+    }
+
+    /**
+     * @deprecated
+     * use `output_text` instead;
+     * */
+    print = (message: Printable) => {
+        this.output_text({ title: '<no-title>', message })
     }
 
     // ------------------------------------------------------------------------------------
@@ -283,36 +362,6 @@ export class Runtime<FIELDS extends WidgetDict = any> {
     //     })
     // }
 
-    output_File = async (path: RelativePath, content: string): Promise<void> => {
-        const absPath = this.st.resolve(this.folder, path)
-        writeFileSync(absPath, content, 'utf-8')
-    }
-
-    output_HTML = (p: { htmlContent: string; title: string }) => {
-        this.st.db.media_texts.create({
-            kind: 'html',
-            content: p.htmlContent,
-            stepID: this.step.id,
-        })
-        // this.step.addOutput({
-        //     type: 'show-html',
-        //     content: p.htmlContent,
-        //     title: p.title,
-        // })
-        // this.st.broadCastToAllClients({ type: 'show-html', content: p.htmlContent, title: p.title })
-    }
-
-    output_Markdown = (markdownContent: string) => {
-        this.st.db.media_texts.create({
-            kind: 'markdown',
-            content: markdownContent,
-            stepID: this.step.id,
-        })
-
-        // const htmlContent = marked.parse(p.markdownContent)
-        // this.step.addOutput({ type: 'show-html', content: htmlContent, title: p.title })
-        // this.st.broadCastToAllClients({ type: 'show-html', content: htmlContent, title: p.title })
-    }
     // ===================================================================================================
 
     // private
@@ -326,8 +375,21 @@ export class Runtime<FIELDS extends WidgetDict = any> {
         // delete link
     }
 
+    /** outputs a video */
+    output_video = (p: {
+        //
+        url: string
+        filePath?: string
+    }) => {
+        this.st.db.media_videos.create({
+            url: p.url,
+            absPath: p.filePath,
+            stepID: this.step.id,
+        })
+    }
+
     static VideoCounter = 1
-    createAnimation = async (
+    output_video_ffmpegGeneratedImagesTogether = async (
         /** image to incldue (defaults to all images generated in the fun) */
         source?: MediaImageL[],
         /** FPS (e.g. 60, 30, etc.) default is 30 */
@@ -357,8 +419,43 @@ export class Runtime<FIELDS extends WidgetDict = any> {
         console.info(`🎥 this.folder.path: ${this.folder}`)
         console.info(`🎥 cwd: ${cwd}`)
         const allAbsPaths = images.map((i) => i.absPath).filter((p) => p != null) as AbsolutePath[]
-        await createMP4FromImages(allAbsPaths, targetVideoAbsPath, inputFPS, cwd, opts)
-        this.st.db.media_images.create({ infos: { type: 'video-local-ffmpeg', absPath: targetVideoAbsPath } })
+        const ffmpegComandInfos = await createMP4FromImages(allAbsPaths, targetVideoAbsPath, inputFPS, cwd, opts)
+        if (ffmpegComandInfos) {
+            this.st.db.media_texts.create({
+                kind: 'markdown',
+                title: 'Video creation summary',
+                stepID: this.step.id,
+                content: `\
+# Video creation summary
+
+## command:
+
+\`\`\`
+${ffmpegComandInfos.ffmpegCommand}
+\`\`\`
+
+
+## frames file path:
+
+\`\`\`
+${ffmpegComandInfos.framesFilePath}
+\`\`\`
+
+## frames file content:
+
+\`\`\`
+${ffmpegComandInfos.framesFileContent}
+\`\`\`
+
+`,
+            })
+        }
+        this.st.db.media_videos.create({
+            url: `file://${targetVideoAbsPath}`,
+            absPath: targetVideoAbsPath,
+            stepID: this.step.id,
+            filePath: targetVideoAbsPath,
+        })
     }
 
     /**
@@ -366,6 +463,7 @@ export class Runtime<FIELDS extends WidgetDict = any> {
      * e.g.: "EasyNegative" => "embedding:EasyNegative"
      * */
     formatEmbeddingForComfyUI = (t: Embeddings) => `embedding:${t}`
+    formatAsRelativeDateTime = (date: Date | number): string => _formatAsRelativeDateTime(date)
 
     // 🐉 /** ask the user a few informations */
     // 🐉 ask: InfoRequestFn = async <const Req extends { [key: string]: Widget }>(
@@ -387,7 +485,7 @@ export class Runtime<FIELDS extends WidgetDict = any> {
      */
     exec = (comand: string): string => {
         // promisify exec to run the command and collect the output
-        this.output_text('🔥 exec: ' + comand)
+        this.output_text({ title: 'command', message: '🔥 exec: ' + comand })
         const cwd = this.st.rootPath
         console.log('cwd', cwd)
         const res = execSync(comand, { encoding: 'utf-8', cwd })
@@ -521,17 +619,6 @@ export class Runtime<FIELDS extends WidgetDict = any> {
         return `❌ (impossible to extract string from ${typeof message} / ${(message as any)?.constructor?.name})`
     }
 
-    /** display something in the console */
-    print = (message: Printable) => {
-        this.output_text(message)
-    }
-
-    output_text = (message: Printable) => {
-        let msg = this.extractString(message)
-        console.info(msg)
-        this.step.db.media_texts.create({ kind: 'text', content: msg, stepID: this.step.id })
-    }
-
     /** upload a file from disk to the ComfyUI backend */
     // uploadImgFromDisk = async (path: string): Promise<ComfyUploadImageResult> => {
     //     return this.workspace.uploadImgFromDisk(asRelativePath(path))
@@ -604,6 +691,7 @@ export class Runtime<FIELDS extends WidgetDict = any> {
     }
 
     private _promptCounter = 0
+
     private sendPromp = async (idMode: IDNaminScheemeInPromptSentToComfyUI): Promise<ComfyPromptL> => {
         const liveGraph = this.workflow
         if (liveGraph == null) throw new Error('no graph')

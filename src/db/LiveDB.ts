@@ -1,11 +1,9 @@
-import { default as BetterSqlite3, default as SQL } from 'better-sqlite3'
-import { rmSync } from 'fs'
 import type { STATE } from '../state/state'
-
-import { makeAutoObservable } from 'mobx'
-import {
+import type { TableInfo } from 'src/db/TYPES_json'
+import type {
     ComfyPromptT,
     ComfySchemaT,
+    CustomDataT,
     DraftT,
     GraphT,
     Media3dDisplacementT,
@@ -16,15 +14,18 @@ import {
     ProjectT,
     RuntimeErrorT,
     StepT,
-} from 'src/db2/TYPES.gen'
+} from 'src/db/TYPES.gen'
+
+import { rmSync } from 'fs'
+import { makeAutoObservable } from 'mobx'
 import { LiveTable } from './LiveTable'
+import { default as BetterSqlite3, default as SQL } from 'better-sqlite3'
 // models
 import { readFileSync } from 'fs'
-import { TableInfo } from 'src/db2/TYPES_json'
-import { _applyAllMigrations } from 'src/db2/_applyAllMigrations'
-import { _setupMigrationEngine } from 'src/db2/_setupMigrationEngine'
-import { _listAllTables } from 'src/db2/_listAllTables'
-import { _checkAllMigrationsHaveDifferentIds } from 'src/db2/migrations'
+import { _applyAllMigrations } from 'src/db/_applyAllMigrations'
+import { _setupMigrationEngine } from 'src/db/_setupMigrationEngine'
+import { _listAllTables } from 'src/db/_listAllTables'
+import { _checkAllMigrationsHaveDifferentIds } from 'src/db/migrations'
 import { Media3dDisplacementL } from 'src/models/Media3dDisplacement'
 import { MediaTextL } from 'src/models/MediaText'
 import { MediaVideoL } from 'src/models/MediaVideo'
@@ -37,8 +38,9 @@ import { ProjectL } from '../models/Project'
 import { SchemaL } from '../models/Schema'
 import { StepL } from '../models/Step'
 import { asRelativePath } from '../utils/fs/pathUtils'
-import { _printSchema } from 'src/db2/_printSchema'
+import { _printSchema } from 'src/db/_printSchema'
 import { MediaSplatL } from 'src/models/MediaSplat'
+import { CustomDataL } from 'src/models/CustomData'
 
 export type Indexed<T> = { [id: string]: T }
 
@@ -49,6 +51,7 @@ export class LiveDB {
 
     // tables ---------------------------------------------------------
     projects: LiveTable<ProjectT, ProjectL>
+    custom_datas: LiveTable<CustomDataT, CustomDataL>
     schemas: LiveTable<ComfySchemaT, SchemaL>
     comfy_prompts: LiveTable<ComfyPromptT, ComfyPromptL>
     media_texts: LiveTable<MediaTextT, MediaTextL>
@@ -75,7 +78,7 @@ export class LiveDB {
     // prettier-ignore
     constructor(public st: STATE) {
             // init SQLITE ---------------------------------------------------------
-            const db = SQL('foobar.db', { nativeBinding: 'node_modules/better-sqlite3/build/Release/better_sqlite3.node' })
+            const db = SQL('src/db/cushy-1.db', { nativeBinding: 'node_modules/better-sqlite3/build/Release/better_sqlite3.node' })
             db.pragma('journal_mode = WAL')
             this.db = db
             _setupMigrationEngine(this)
@@ -87,6 +90,7 @@ export class LiveDB {
 
             // 3. create tables (after the store has benn made already observable)
             this.projects =              new LiveTable(this, 'project'              , '🤠', ProjectL, { singleton: true })
+            this.custom_datas =          new LiveTable(this, 'custom_data'          , '🎁', CustomDataL)
             this.schemas =               new LiveTable(this, 'comfy_schema'         , '📑', SchemaL, { singleton: true })
             this.comfy_prompts =         new LiveTable(this, 'comfy_prompt'         , '❓', ComfyPromptL)
             this.media_texts =           new LiveTable(this, 'media_text'           , '💬', MediaTextL)

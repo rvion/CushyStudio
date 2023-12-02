@@ -1,8 +1,9 @@
 import { observer } from 'mobx-react-lite'
 import SortableList, { SortableItem } from 'react-easy-sort'
-import { PkgUI, AppEntryInvalidUI, AppEntryUI } from '../cards/CardPicker2UI'
+import { AppEntryInvalidUI, AppEntryUI, PkgUI } from '../cards/CardPicker2UI'
 import { useSt } from '../state/stateContext'
-import { Joined } from 'src/rsuite/shims'
+import { DraftEntryUI } from './Panel_FullScreenLibrary'
+import { PkgHeaderStyle } from 'src/cards/AppListStyles'
 
 export const Panel_AppList = observer(function Panel_AppList_(p: {}) {
     const st = useSt()
@@ -18,10 +19,52 @@ export const Panel_AppList = observer(function Panel_AppList_(p: {}) {
                     <span className='material-symbols-outlined'>minimize</span>
                 </button>
             </div>
-            {/* FAVORITES */}
-            {library.allFavorites.length ? (
+
+            {/* DRAFTS */}
+            {st.allOpenDrafts.items.length > 0 ? (
                 <div
-                    tw='bg-base-200 cursor-pointer items-center gap-1  hover:bg-base-300  flex justify-between'
+                    tw={[
+                        //
+                        PkgHeaderStyle,
+                        'cursor-pointer items-center gap-1 flex justify-between',
+                    ]}
+                    onClick={() => (st.draftsFolded = !st.draftsFolded)}
+                >
+                    <div>
+                        <span
+                            //
+                            style={{ fontSize: '2rem' }}
+                            tw='text-primary'
+                            className='material-symbols-outlined'
+                        >
+                            dynamic_form
+                        </span>
+                    </div>
+                    <div tw='flex-1 text-base-content font-bold'>Drafts</div>
+                    <div>{st.draftsFolded ? '▸' : '▿'}</div>
+                </div>
+            ) : null}
+            {st.draftsFolded ? null : ( //
+                <div
+                    tw={[
+                        //
+                        '[max-height:10rem] overflow-auto',
+                    ]}
+                >
+                    {st.allOpenDrafts.items.map((draft) => {
+                        return <DraftEntryUI key={draft.id} draft={draft} />
+                    })}
+                </div>
+            )}
+
+            {/* FAVORITES */}
+            {library.allFavorites.length > 0 ? (
+                <div
+                    tw={[
+                        //
+                        PkgHeaderStyle,
+                        'cursor-pointer items-center gap-1 flex justify-between',
+                    ]}
                     onClick={() => (library.favoritesFolded = !library.favoritesFolded)}
                 >
                     <div>

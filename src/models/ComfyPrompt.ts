@@ -4,7 +4,7 @@ import type { PromptRelated_WsMsg, WsMsgExecuted, WsMsgExecuting, WsMsgExecution
 import type { ComfyWorkflowL } from './Graph'
 
 import { nanoid } from 'nanoid'
-import { ComfyPromptT } from 'src/db2/TYPES.gen'
+import { ComfyPromptT } from 'src/db/TYPES.gen'
 import { Status } from '../back/Status'
 import { LiveRef } from '../db/LiveRef'
 import { exhaust } from '../utils/misc/ComfyUtils'

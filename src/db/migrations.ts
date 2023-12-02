@@ -179,6 +179,44 @@ export const migrations: {
         name: 'add gaussian splat support',
         up: [`alter table media_splat add column url text not null`],
     },
+    {
+        id: 'kIoMnNKcix',
+        name: 'add non nullable title field to MediaText',
+        up: [
+            //
+            `alter table media_text add column title text not null default ''`,
+        ],
+    },
+    {
+        id: '5Ka1ddK8ma',
+        name: 'add filePath and url to MediaVideo',
+        up: [
+            //
+            `alter table media_video add column filePath text`,
+            `alter table media_video add column url text not null`,
+        ],
+    },
+    {
+        id: 'sS4mA__Ofg',
+        name: 'add isOpened to drafts',
+        up: [`alter table draft add column isOpened int not null default 1`],
+    },
+    {
+        id: 'M2uSmJqhbF',
+        name: 'new runtime datastore',
+        up: [
+            //
+            _createTable('custom_data', [
+                //
+                "data json not null default '{}'",
+            ]),
+        ],
+    },
+    {
+        id: '9e3b92c6-8a71-4a51-af90-03b2f0d48ec8',
+        name: 'new runtime datastore',
+        up: ['alter table custom_data rename column data to json'],
+    },
     // {
     //     id: 'PONTSFSpA_',
     //     name: 'fix image2',

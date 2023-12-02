@@ -49,7 +49,7 @@ const StepOutputsHeaderV2UI = observer(function StepOutputsV1HeaderUI_(p: { step
                 }}
             >
                 {step.appFile ? (
-                    <AppIllustrationUI tw='opacity-40 hover:opacity-100' size={size} card={step.appFile} />
+                    <AppIllustrationUI tw='opacity-40 hover:opacity-100' size={size} app={step.appFile} />
                 ) : (
                     <div
                         style={{

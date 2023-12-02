@@ -122,6 +122,9 @@ export type DraftT = {
     /** @default: null, sqlType: json */
     appParams: T.Draft_appParams;
 
+    /** @default: "1", sqlType: INT */
+    isOpened: number;
+
 }
 export const DraftSchema = Type.Object({
     id: Type.String(),
@@ -130,6 +133,7 @@ export const DraftSchema = Type.Object({
     title: Type.Optional(T.Nullable(Type.String())),
     appPath: Type.String(),
     appParams: T.Draft_appParams_Schema,
+    isOpened: Type.Number(),
 },{ additionalProperties: false })
 
 export const DraftFields = {
@@ -139,6 +143,7 @@ export const DraftFields = {
     title: {cid:3,name:'title',type:'TEXT',notnull:0,dflt_value:null,pk:0},
     appPath: {cid:4,name:'appPath',type:'TEXT',notnull:1,dflt_value:null,pk:0},
     appParams: {cid:5,name:'appParams',type:'json',notnull:1,dflt_value:null,pk:0},
+    isOpened: {cid:6,name:'isOpened',type:'INT',notnull:1,dflt_value:'1',pk:0},
 }
 
 
@@ -342,6 +347,9 @@ export type MediaTextT = {
     /** @default: null, sqlType: TEXT */
     stepID?: Maybe<StepID>;
 
+    /** @default: "''", sqlType: TEXT */
+    title: string;
+
 }
 export const MediaTextSchema = Type.Object({
     id: Type.String(),
@@ -350,6 +358,7 @@ export const MediaTextSchema = Type.Object({
     kind: Type.String(),
     content: Type.String(),
     stepID: Type.Optional(T.Nullable(Type.String())),
+    title: Type.String(),
 },{ additionalProperties: false })
 
 export const MediaTextFields = {
@@ -359,6 +368,7 @@ export const MediaTextFields = {
     kind: {cid:3,name:'kind',type:'TEXT',notnull:1,dflt_value:null,pk:0},
     content: {cid:4,name:'content',type:'TEXT',notnull:1,dflt_value:null,pk:0},
     stepID: {cid:5,name:'stepID',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    title: {cid:6,name:'title',type:'TEXT',notnull:1,dflt_value:"''",pk:0},
 }
 
 
@@ -382,6 +392,12 @@ export type MediaVideoT = {
     /** @default: null, sqlType: TEXT */
     promptID?: Maybe<ComfyPromptID>;
 
+    /** @default: null, sqlType: TEXT */
+    filePath?: Maybe<string>;
+
+    /** @default: null, sqlType: TEXT */
+    url: string;
+
 }
 export const MediaVideoSchema = Type.Object({
     id: Type.String(),
@@ -390,6 +406,8 @@ export const MediaVideoSchema = Type.Object({
     absPath: Type.Optional(T.Nullable(Type.String())),
     stepID: Type.Optional(T.Nullable(Type.String())),
     promptID: Type.Optional(T.Nullable(Type.String())),
+    filePath: Type.Optional(T.Nullable(Type.String())),
+    url: Type.String(),
 },{ additionalProperties: false })
 
 export const MediaVideoFields = {
@@ -399,6 +417,8 @@ export const MediaVideoFields = {
     absPath: {cid:3,name:'absPath',type:'TEXT',notnull:0,dflt_value:null,pk:0},
     stepID: {cid:4,name:'stepID',type:'TEXT',notnull:0,dflt_value:null,pk:0},
     promptID: {cid:5,name:'promptID',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    filePath: {cid:6,name:'filePath',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    url: {cid:7,name:'url',type:'TEXT',notnull:1,dflt_value:null,pk:0},
 }
 
 
@@ -602,6 +622,36 @@ export const MediaSplatFields = {
 }
 
 
+export const asCustomDataID = (s: string): CustomDataID => s as any
+export type CustomDataT = {
+    /** @default: "hex(randomblob(16))", sqlType: string */
+    id: CustomDataID;
+
+    /** @default: "now", sqlType: INTEGER */
+    createdAt: number;
+
+    /** @default: "now", sqlType: INTEGER */
+    updatedAt: number;
+
+    /** @default: "'{}'", sqlType: json */
+    json: T.CustomData_json;
+
+}
+export const CustomDataSchema = Type.Object({
+    id: Type.String(),
+    createdAt: Type.Number(),
+    updatedAt: Type.Number(),
+    json: T.CustomData_json_Schema,
+},{ additionalProperties: false })
+
+export const CustomDataFields = {
+    id: {cid:0,name:'id',type:'string',notnull:1,dflt_value:'hex(randomblob(16))',pk:1},
+    createdAt: {cid:1,name:'createdAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
+    updatedAt: {cid:2,name:'updatedAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
+    json: {cid:3,name:'json',type:'json',notnull:1,dflt_value:"'{}'",pk:0},
+}
+
+
 export const schemas = {
     migrations: new T.TableInfo(
         'migrations',
@@ -686,5 +736,11 @@ export const schemas = {
         'MediaSplat',
         MediaSplatFields,
         MediaSplatSchema,
+    ),
+    custom_data: new T.TableInfo(
+        'custom_data',
+        'CustomData',
+        CustomDataFields,
+        CustomDataSchema,
     ),
 }

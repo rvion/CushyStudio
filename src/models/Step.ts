@@ -4,7 +4,7 @@ import type { ComfyWorkflowL } from '../models/Graph'
 import type { ComfyPromptL } from './ComfyPrompt'
 
 import { LibraryFile } from 'src/cards/CardFile'
-import { StepT } from 'src/db2/TYPES.gen'
+import { StepT } from 'src/db/TYPES.gen'
 import { Runtime } from '../back/Runtime'
 import { Status } from '../back/Status'
 import { LiveCollection } from '../db/LiveCollection'
@@ -15,19 +15,27 @@ import { MediaTextL } from './MediaText'
 import { MediaVideoL } from './MediaVideo'
 import { RuntimeErrorL } from './RuntimeError'
 import { MediaSplatL } from './MediaSplat'
+import { Widget_group } from 'src/controls/Widget'
 
 export type FormPath = (string | number)[]
 /** a thin wrapper around an app execution */
 export interface StepL extends LiveInstance<StepT, StepL> {}
 export class StepL {
-    start = async () => {
+    start = async (p: {
+        /**
+         * reference to the draft live form instance
+         * this will be made available to the runtime so the runtime can access
+         * the live form
+         * */
+        formInstance: Widget_group<any>
+    }) => {
         const action = this.appCompiled
         if (action == null) return console.log('🔴 no action found')
 
         // this.data.outputGraphID = out.id
         this.runtime = new Runtime(this)
         this.update({ status: Status.Running })
-        const scriptExecutionStatus = await this.runtime.run()
+        const scriptExecutionStatus = await this.runtime.run(p)
 
         if (this.comfy_prompts.items.every((p: ComfyPromptL) => p.data.executed)) {
             this.update({ status: scriptExecutionStatus })
@@ -64,15 +72,18 @@ export class StepL {
     get currentlyExecutingOutput(): Maybe<StepOutput> {
         return this.comfy_prompts.items.find((p: ComfyPromptL) => !p.data.executed)
     }
-    get lastMediaOutput(): Maybe<MediaImageL | MediaVideoL | Media3dDisplacementL> {
+    get lastMediaOutput(): Maybe<StepOutput> {
         const outputs = this.outputs
         const last = outputs[outputs.length - 1]
         if (
             last instanceof MediaImageL || //
             last instanceof MediaVideoL ||
-            last instanceof Media3dDisplacementL
+            last instanceof Media3dDisplacementL ||
+            last instanceof MediaTextL ||
+            last instanceof MediaImageL
         )
             return last
+
         return null
     }
     get lastOutput(): Maybe<StepOutput> {

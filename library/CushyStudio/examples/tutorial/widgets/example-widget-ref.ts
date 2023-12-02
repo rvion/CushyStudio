@@ -16,7 +16,7 @@ app({
             choices: (f) => {
                 console.log(`☃️ ---------------`)
                 console.log(`☃️ A:`, f?.result ?? [])
-                const out = ((f?.result?.list ?? ['coucou']) as any as number[]).map((i) => ({ id: i.toString() }))
+                const out = ((f?.result?.list ?? ['no-value']) as any as number[]).map((i) => ({ id: i.toString() }))
                 console.log(`☃️ B:`, out)
                 return out
             },

@@ -8,7 +8,7 @@ import { AppIllustrationUI } from 'src/cards/fancycard/AppIllustrationUI'
 import { DraftL } from 'src/models/Draft'
 import { Dropdown, MenuItem } from 'src/rsuite/Dropdown'
 import { PhoneWrapperUI } from 'src/rsuite/PhoneWrapperUI'
-import { Button, Joined, Loader, Message } from 'src/rsuite/shims'
+import { Button, Input, Joined, Loader, Message } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
 import { openInVSCode } from 'src/utils/electron/openInVsCode'
 import { stringifyUnknown } from 'src/utils/formatters/stringifyUnknown'
@@ -17,6 +17,7 @@ import { WidgetUI } from '../controls/widgets/WidgetUI'
 import { ResultWrapperUI } from '../widgets/misc/ResultWrapperUI'
 import { ScrollablePaneUI } from '../widgets/misc/scrollableArea'
 import { draftContext } from '../widgets/misc/useDraft'
+import { AppFavoriteBtnUI } from 'src/cards/CardPicker2UI'
 
 export const Panel_Draft = observer(function Panel_Draft_(p: { draftID: DraftID }) {
     // 1. get draft
@@ -116,35 +117,26 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
 
 export const RunOrAutorunUI = observer(function RunOrAutorunUI_(p: { className?: string; draft: DraftL }) {
     const draft = p.draft
+    const icon = draft.shouldAutoStart ? 'pause' : 'play_arrow'
     return (
         <div tw='flex join virtualBorder' className={p.className}>
             <Button
-                //
                 tw='btn-sm self-start join-item btn-neutral'
                 icon={draft.shouldAutoStart ? <Loader /> : <span className='material-symbols-outlined'>repeat</span>}
-                // appearance='primary'
                 active={draft.shouldAutoStart}
                 color={draft.shouldAutoStart ? 'green' : undefined}
                 onClick={() => draft.setAutostart(!draft.shouldAutoStart)}
-                // size={size2}
             >
                 Auto
             </Button>
             <Button
                 tw='btn-sm join-item btn-primary'
                 className='self-start'
-                icon={
-                    draft.shouldAutoStart ? ( //
-                        <span className='material-symbols-outlined'>pause</span>
-                    ) : (
-                        <span className='material-symbols-outlined'>play_arrow</span>
-                    )
-                }
+                icon={<span className='material-symbols-outlined'>{icon}</span>}
                 onClick={() => {
                     draft.setAutostart(false)
                     draft.start()
                 }}
-                // size={'sm'}
             >
                 Run
             </Button>
@@ -298,26 +290,46 @@ export const DraftHeaderUI = observer(function DraftHeaderUI_(p: { draft: DraftL
     return (
         <div tw='flex p-1 bg-base-300 border-b border-b-base-300'>
             <div tw='flex gap-0.5 flex-grow relative text-base-content py-1'>
-                <AppIllustrationUI card={app} size='4rem' />
+                <AppIllustrationUI app={app} size='4rem' />
                 <div tw='px-1 flex-grow'>
                     <div
                         //
-                        tw='flex font-bold overflow-hidden overflow-ellipsis whitespace-nowrap'
-                        style={{
-                            height: '2rem',
-                            fontSize: '1.4rem',
-                        }}
+                        tw={[
+                            //
+                            'flex items-center',
+                            'overflow-hidden overflow-ellipsis whitespace-nowrap',
+                        ]}
+                        style={{ height: '2rem', fontSize: '1.4rem' }}
                     >
+                        <AppFavoriteBtnUI app={app} />
                         <span>{app.displayName}</span>
-                        <div
-                            tw='btn btn-subtle btn-xs'
-                            onClick={() => {
-                                st.layout.FOCUS_OR_CREATE('Draft', { draftID: draft.id }, 'LEFT_PANE_TABSET')
-                            }}
-                        >
-                            <span className='material-symbols-outlined'>open_in_new</span>
-                        </div>
+                        <Joined tw={['absolute right-0']}>
+                            {/* Open draft in new tab btn */}
+                            <div
+                                tw='btn btn-subtle btn-xs'
+                                onClick={() => {
+                                    st.layout.FOCUS_OR_CREATE('Draft', { draftID: draft.id }, 'LEFT_PANE_TABSET')
+                                }}
+                            >
+                                <span className='material-symbols-outlined'>open_in_new</span>
+                            </div>
+                            {/* duplicate draft btn */}
+                            <div
+                                tw='btn btn-subtle btn-xs'
+                                onClick={() => {
+                                    const newDraft = draft.clone()
+                                    st.layout.FOCUS_OR_CREATE('Draft', { draftID: newDraft.id }, 'LEFT_PANE_TABSET')
+                                }}
+                            >
+                                <span className='material-symbols-outlined'>content_copy</span>
+                            </div>
+                        </Joined>
                     </div>
+                    <Input
+                        onChange={(ev) => draft.update({ title: ev.target.value })}
+                        tw='w-full'
+                        value={draft.data.title ?? 'no title'}
+                    ></Input>
                     <div style={{ height: '2rem' }} className='flex items-center gap-2 justify-between text-sm'>
                         <Joined>
                             <CardActionsMenuUI tw='join-item' card={app} />

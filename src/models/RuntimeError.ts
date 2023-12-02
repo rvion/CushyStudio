@@ -2,7 +2,7 @@ import type { LiveInstance } from '../db/LiveInstance'
 import type { ComfyWorkflowL } from './Graph'
 import type { StepL } from './Step'
 import type { ComfyPromptL } from './ComfyPrompt'
-import type { RuntimeErrorT } from 'src/db2/TYPES.gen'
+import type { RuntimeErrorT } from 'src/db/TYPES.gen'
 
 import { LiveRef } from '../db/LiveRef'
 

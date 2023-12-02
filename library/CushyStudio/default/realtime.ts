@@ -82,7 +82,8 @@ app({
                     const options = (flow.wildcards as any)[tok.payload]
                     if (Array.isArray(options)) negativeText += ` ${flow.chooseRandomly(options)}`
                 } else if (tok.type === 'lora') {
-                    flow.output_text('unsupported: lora in negative prompt; check the default.cushy.ts file')
+                    throw new Error('unsupported: lora in negative prompt; check the default.cushy.ts file')
+                    // flow.output_text('unsupported: lora in negative prompt; check the default.cushy.ts file')
                     // clipAndModel = graph.LoraLoader({
                     //     model: clipAndModel,
                     //     clip: clipAndModel,

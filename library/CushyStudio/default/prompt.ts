@@ -27,7 +27,7 @@ app({
         model: ui_model(ui),
         latent: ui_latent(ui),
         sampler: ui_sampler(ui),
-        highResFix: ui_highresfix(ui),
+        highResFix: ui_highresfix(ui, { activeByDefault: true }),
         controlnets: ui.groupOpt({
             items: () => ({
                 pose: ui.list({
@@ -198,8 +198,6 @@ app({
             }
         }
 
-        if (p.makeAVideo) {
-            await flow.createAnimation()
-        }
+        if (p.makeAVideo) await flow.output_video_ffmpegGeneratedImagesTogether(undefined, 2)
     },
 })

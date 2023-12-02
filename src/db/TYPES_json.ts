@@ -15,6 +15,9 @@ export const Graph_comfyPromptJSON_Schema = Type.Record(Type.String(), Type.Any(
 export type Draft_appParams = Maybe<any>
 export const Draft_appParams_Schema = Type.Record(Type.String(), Type.Any())
 
+export type CustomData_json = any
+export const CustomData_json_Schema = Type.Any()
+
 export type Step_formResult = Maybe<any>
 export const Step_formResult_Schema = Type.Record(Type.String(), Type.Any())
 

@@ -1,5 +1,5 @@
 import type { LiveInstance } from '../db/LiveInstance'
-import type { MediaTextT } from 'src/db2/TYPES.gen'
+import type { MediaTextT } from 'src/db/TYPES.gen'
 import type { StepL } from './Step'
 
 import { LiveRefOpt } from 'src/db/LiveRefOpt'

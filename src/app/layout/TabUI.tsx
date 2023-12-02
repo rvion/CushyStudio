@@ -16,10 +16,15 @@ export const TabUI = observer(function TabUI_(p: {
     }
     return (
         <div className={'TabUI ' + p.className} style={p.style}>
-            <div tw='tabs tabs-lifted tabs-sm'>
+            <div tw='tablist tabs-lifted'>
                 {headers.map((h, ix) => {
                     return (
-                        <a onClick={() => setVal(ix)} className='tab' key={ix}>
+                        <a
+                            //
+                            tw={['tab', ix === val && 'tab-active']}
+                            onClick={() => setVal(ix)}
+                            key={ix}
+                        >
                             {h}
                         </a>
                     )

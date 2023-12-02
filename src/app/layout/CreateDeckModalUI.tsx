@@ -9,7 +9,7 @@ export class CreateDeckModalState {
         makeAutoObservable(this)
     }
     ref = createRef<HTMLDialogElement>()
-    deckName: string = 'my-cushy-deck'
+    deckName: string = 'cushy-package'
     open = false
     isCreating = false
     error: Maybe<string>

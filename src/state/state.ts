@@ -44,6 +44,9 @@ import { ManualPromise } from '../utils/misc/ManualPromise'
 import { DanbooruTags } from '../widgets/prompter/nodes/booru/BooruLoader'
 import { Uploader } from './Uploader'
 import { StepOutput } from 'src/types/StepOutput'
+import { LiveFind } from 'src/db/LiveQuery'
+import { SQLITE_true } from 'src/db/SQLITE_boolean'
+import { DraftT } from 'src/db/TYPES.gen'
 
 export class STATE {
     /** hack to help closing prompt completions */
@@ -200,16 +203,20 @@ export class STATE {
         console.log(`[🛋️] creating project`)
         const initialGraph = this.db.graphs.create({ comfyPromptJSON: {} })
         const project = this.db.projects.create({
-            // activeToolID: this.db.tools.values[0].id,
             rootGraphID: initialGraph.id,
             name: 'new project',
-            // 🔴 insert statement must be dynamic
             currentApp: null,
             currentDraftID: null,
         })
         return project
-        // const startDraft = initialGraph.createDraft()
     }
+
+    draftsFolded = false
+
+    allOpenDrafts = new LiveFind<DraftT, DraftL>({
+        remoteTable: () => this.db.drafts,
+        remoteQuery: () => ({ isOpened: SQLITE_true }),
+    })
 
     _currentDraft: DraftL
     get currentDraft(): DraftL {
@@ -221,9 +228,6 @@ export class STATE {
         this.closeFullLibrary()
         this._currentDraft = draft
     }
-    // {
-    //     cardPath: asCardPath('library/CushyStudio/default/prompt.ts'),
-    // }
 
     fixEnumValue = (
         //
