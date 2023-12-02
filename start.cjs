@@ -1,3 +1,15 @@
+/**
+ * 🔶 PLEASE HELP ME 🔶
+ *
+ * I'm trying to get this to work on Windows, MAC, and  Linux.
+ *
+ * This script is supposed to:
+ *  - recompile sqlite for your current arch  against your current electron ABI if need be
+ *  - spawn vite
+ *  - spawn electron
+ *  - attempt to make vite and electron close synchronously
+ */
+
 const { spawn } = require('child_process')
 const path = require('path')
 const os = require('os')
