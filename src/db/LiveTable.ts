@@ -389,7 +389,7 @@ export class LiveTable<T extends BaseInstanceFields, L extends LiveInstance<T, L
             const errors: ValueError[] = [...Value.Errors(schema, data)]
             console.log('❌', this.name)
             for (const i of errors) console.log(`❌`, JSON.stringify(i))
-            debugger
+            // debugger
         }
         // --------------------
         instance.init(this, data)
