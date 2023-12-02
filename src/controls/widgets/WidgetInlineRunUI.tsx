@@ -7,7 +7,7 @@ export const WidgetInlineRunUI = observer(function WidgetInlineRunUI_(p: { req: 
     const draft = useDraft()
     return (
         <Button
-            tw={['btn-sm join-item', p.req.input.kind === `warning` ? `btn-warning` : `btn-primary`]}
+            tw='btn-sm join-item btn-primary'
             className='self-start'
             icon={
                 draft.shouldAutoStart ? ( //
@@ -28,7 +28,7 @@ export const WidgetInlineRunUI = observer(function WidgetInlineRunUI_(p: { req: 
             }}
             // size={'sm'}
         >
-            {p.req.input.text ?? `Run`}
+            Run
         </Button>
     )
 })
