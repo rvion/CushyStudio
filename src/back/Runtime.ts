@@ -30,6 +30,8 @@ import { InvalidPromptError } from './RuntimeError'
 import { Status } from './Status'
 
 import child_process from 'child_process'
+import { CustomDataL } from 'src/models/CustomData'
+import { _formatAsRelativeDateTime } from 'src/updater/_getRelativeTimeString'
 
 export type ImageAndMask = HasSingle_IMAGE & HasSingle_MASK
 
@@ -102,6 +104,17 @@ export class Runtime<FIELDS extends WidgetDict = any> {
      * 🔶 it is NOT frozen: this will change during runtime if you update the draft form
      * */
     formInstance!: Widget_group<FIELDS>
+
+    getStore_orCrashIfMissing = <T>(key: string): CustomDataL<T> => {
+        return this.st.db.custom_datas.getOrThrow(key)
+    }
+
+    getStore_orCreateIfMissing = <T>(key: string, def: () => T): CustomDataL<T> => {
+        return this.st.db.custom_datas.getOrCreate(key, () => ({
+            id: key,
+            json: def(),
+        }))
+    }
 
     executeDraft = async (draftID: DraftID, args: any) => {
         throw new Error('🔴 not yet implemented')
@@ -210,8 +223,12 @@ export class Runtime<FIELDS extends WidgetDict = any> {
     /** check if the current connected ComfyUI backend has a given checkpoint */
     hasCheckpoint = (loraName: string): boolean => this.schema.hasLora(loraName)
 
-    /** run an imagemagick convert action */
-    imagemagicConvert = (
+    /**
+     * helper function to quickly run some imagemagick convert command
+     * on an existing MediaImage instance, regardless of it's provenance
+     * 🔶 works but unfinished
+     */
+    exec_imagemagickConvert = (
         //
         img: MediaImageL,
         partialCmd: string,
@@ -261,19 +278,16 @@ export class Runtime<FIELDS extends WidgetDict = any> {
 
     // ------------------------------------------------------------------------------------
 
+    /** outputs a gaussian splat asset, accessible at the given URL */
     output_GaussianSplat = (p: { url: string }) => {
         this.st.db.media_splats.create({
             url: p.url,
             stepID: this.step.id,
         })
     }
+
     /** output a 3d scene from an image and its displacement and depth maps */
-    output_3dImage = (p: {
-        //
-        image: string
-        depth: string
-        normal: string
-    }) => {
+    output_3dImage = (p: { image: string; depth: string; normal: string }) => {
         const image = this.generatedImages.find((i) => i.filename.startsWith(p.image))
         const depth = this.generatedImages.find((i) => i.filename.startsWith(p.depth))
         const normal = this.generatedImages.find((i) => i.filename.startsWith(p.normal))
@@ -289,14 +303,47 @@ export class Runtime<FIELDS extends WidgetDict = any> {
             normalMap: normal.url,
             stepID: this.step.id,
         })
-        console.log('🟢🟢🟢🟢🟢🟢 displaced')
-        // this.st.layout.FOCUS_OR_CREATE('DisplacedImage', {
-        //     width: image.data.width ?? 512,
-        //     height: image.data.height ?? 512,
-        //     image: image.url,
-        //     depthMap: depth.url,
-        //     normalMap: normal.url,
-        // })
+    }
+
+    /** 🔴 unfinished */
+    output_File = async (path: RelativePath, content: string): Promise<void> => {
+        const absPath = this.st.resolve(this.folder, path)
+        writeFileSync(absPath, content, 'utf-8')
+    }
+
+    output_HTML = (p: { htmlContent: string; title: string }) => {
+        this.st.db.media_texts.create({
+            kind: 'html',
+            title: p.title,
+            content: p.htmlContent,
+            stepID: this.step.id,
+        })
+    }
+
+    output_Markdown = (p: string | { title: string; markdownContent: string }) => {
+        const title = typeof p === 'string' ? '<no-title>' : p.title
+        const content = typeof p === 'string' ? p : p.markdownContent
+        this.st.db.media_texts.create({ kind: 'markdown', title, content, stepID: this.step.id })
+    }
+
+    output_text = (p: { title: string; message: Printable } | string) => {
+        const [title, message] = typeof p === 'string' ? ['<no-title>', p] : [p.title, p.message]
+        let msg = this.extractString(message)
+        console.info(msg)
+        this.step.db.media_texts.create({
+            kind: 'text',
+            title: title,
+            content: msg,
+            stepID: this.step.id,
+        })
+    }
+
+    /**
+     * @deprecated
+     * use `output_text` instead;
+     * */
+    print = (message: Printable) => {
+        this.output_text({ title: '<no-title>', message })
     }
 
     // ------------------------------------------------------------------------------------
@@ -315,32 +362,6 @@ export class Runtime<FIELDS extends WidgetDict = any> {
     //     })
     // }
 
-    output_File = async (path: RelativePath, content: string): Promise<void> => {
-        const absPath = this.st.resolve(this.folder, path)
-        writeFileSync(absPath, content, 'utf-8')
-    }
-
-    output_HTML = (p: { htmlContent: string; title: string }) => {
-        this.st.db.media_texts.create({
-            kind: 'html',
-            title: p.title,
-            content: p.htmlContent,
-            stepID: this.step.id,
-        })
-    }
-
-    output_Markdown = (p: { title: string; markdownContent: string }) => {
-        this.st.db.media_texts.create({
-            kind: 'markdown',
-            title: p.title,
-            content: p.markdownContent,
-            stepID: this.step.id,
-        })
-
-        // const htmlContent = marked.parse(p.markdownContent)
-        // this.step.addOutput({ type: 'show-html', content: htmlContent, title: p.title })
-        // this.st.broadCastToAllClients({ type: 'show-html', content: htmlContent, title: p.title })
-    }
     // ===================================================================================================
 
     // private
@@ -442,6 +463,7 @@ ${ffmpegComandInfos.framesFileContent}
      * e.g.: "EasyNegative" => "embedding:EasyNegative"
      * */
     formatEmbeddingForComfyUI = (t: Embeddings) => `embedding:${t}`
+    formatAsRelativeDateTime = (date: Date | number): string => _formatAsRelativeDateTime(date)
 
     // 🐉 /** ask the user a few informations */
     // 🐉 ask: InfoRequestFn = async <const Req extends { [key: string]: Widget }>(
@@ -595,26 +617,6 @@ ${ffmpegComandInfos.framesFileContent}
         if (typeof message === 'object')
             return `${message.$schema.nameInCushy}_${message.uid}(${JSON.stringify(message.json, null, 2)})`
         return `❌ (impossible to extract string from ${typeof message} / ${(message as any)?.constructor?.name})`
-    }
-
-    /**
-     * @deprecated
-     * use `output_text` instead;
-     * */
-    print = (message: Printable) => {
-        this.output_text({ title: '<no-title>', message })
-    }
-
-    output_text = (p: { title: string; message: Printable } | string) => {
-        const [title, message] = typeof p === 'string' ? ['<no-title>', p] : [p.title, p.message]
-        let msg = this.extractString(message)
-        console.info(msg)
-        this.step.db.media_texts.create({
-            kind: 'text',
-            title: title,
-            content: msg,
-            stepID: this.step.id,
-        })
     }
 
     /** upload a file from disk to the ComfyUI backend */

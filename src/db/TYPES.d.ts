@@ -14,6 +14,7 @@ declare type TableNameInDB =
     | 'media_3d_displacement'
     | 'runtime_error'
     | 'media_splat'
+    | 'custom_data'
 
 declare type MigrationsID = Branded<string, { MigrationsID: true }>
 declare type UsersID = Branded<string, { UsersID: true }>
@@ -29,3 +30,4 @@ declare type MediaImageID = Branded<string, { MediaImageID: true }>
 declare type Media3dDisplacementID = Branded<string, { Media3dDisplacementID: true }>
 declare type RuntimeErrorID = Branded<string, { RuntimeErrorID: true }>
 declare type MediaSplatID = Branded<string, { MediaSplatID: true }>
+declare type CustomDataID = Branded<string, { CustomDataID: true }>

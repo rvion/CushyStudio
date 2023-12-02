@@ -622,6 +622,36 @@ export const MediaSplatFields = {
 }
 
 
+export const asCustomDataID = (s: string): CustomDataID => s as any
+export type CustomDataT = {
+    /** @default: "hex(randomblob(16))", sqlType: string */
+    id: CustomDataID;
+
+    /** @default: "now", sqlType: INTEGER */
+    createdAt: number;
+
+    /** @default: "now", sqlType: INTEGER */
+    updatedAt: number;
+
+    /** @default: "'{}'", sqlType: json */
+    json: T.CustomData_json;
+
+}
+export const CustomDataSchema = Type.Object({
+    id: Type.String(),
+    createdAt: Type.Number(),
+    updatedAt: Type.Number(),
+    json: T.CustomData_json_Schema,
+},{ additionalProperties: false })
+
+export const CustomDataFields = {
+    id: {cid:0,name:'id',type:'string',notnull:1,dflt_value:'hex(randomblob(16))',pk:1},
+    createdAt: {cid:1,name:'createdAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
+    updatedAt: {cid:2,name:'updatedAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
+    json: {cid:3,name:'json',type:'json',notnull:1,dflt_value:"'{}'",pk:0},
+}
+
+
 export const schemas = {
     migrations: new T.TableInfo(
         'migrations',
@@ -706,5 +736,11 @@ export const schemas = {
         'MediaSplat',
         MediaSplatFields,
         MediaSplatSchema,
+    ),
+    custom_data: new T.TableInfo(
+        'custom_data',
+        'CustomData',
+        CustomDataFields,
+        CustomDataSchema,
     ),
 }

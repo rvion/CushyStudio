@@ -201,6 +201,22 @@ export const migrations: {
         name: 'add isOpened to drafts',
         up: [`alter table draft add column isOpened int not null default 1`],
     },
+    {
+        id: 'M2uSmJqhbF',
+        name: 'new runtime datastore',
+        up: [
+            //
+            _createTable('custom_data', [
+                //
+                "data json not null default '{}'",
+            ]),
+        ],
+    },
+    {
+        id: '9e3b92c6-8a71-4a51-af90-03b2f0d48ec8',
+        name: 'new runtime datastore',
+        up: ['alter table custom_data rename column data to json'],
+    },
     // {
     //     id: 'PONTSFSpA_',
     //     name: 'fix image2',

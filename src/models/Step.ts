@@ -72,7 +72,7 @@ export class StepL {
     get currentlyExecutingOutput(): Maybe<StepOutput> {
         return this.comfy_prompts.items.find((p: ComfyPromptL) => !p.data.executed)
     }
-    get lastMediaOutput(): Maybe<MediaImageL | MediaVideoL | Media3dDisplacementL> {
+    get lastMediaOutput(): Maybe<StepOutput> {
         const outputs = this.outputs
         const last = outputs[outputs.length - 1]
         if (
@@ -81,7 +81,8 @@ export class StepL {
             last instanceof Media3dDisplacementL
         )
             return last
-        return null
+
+        return this.lastOutput
     }
     get lastOutput(): Maybe<StepOutput> {
         const outputs = this.outputs

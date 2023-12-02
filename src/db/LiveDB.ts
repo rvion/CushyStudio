@@ -1,11 +1,9 @@
-import { default as BetterSqlite3, default as SQL } from 'better-sqlite3'
-import { rmSync } from 'fs'
 import type { STATE } from '../state/state'
-
-import { makeAutoObservable } from 'mobx'
-import {
+import type { TableInfo } from 'src/db/TYPES_json'
+import type {
     ComfyPromptT,
     ComfySchemaT,
+    CustomDataT,
     DraftT,
     GraphT,
     Media3dDisplacementT,
@@ -17,10 +15,13 @@ import {
     RuntimeErrorT,
     StepT,
 } from 'src/db/TYPES.gen'
+
+import { rmSync } from 'fs'
+import { makeAutoObservable } from 'mobx'
 import { LiveTable } from './LiveTable'
+import { default as BetterSqlite3, default as SQL } from 'better-sqlite3'
 // models
 import { readFileSync } from 'fs'
-import { TableInfo } from 'src/db/TYPES_json'
 import { _applyAllMigrations } from 'src/db/_applyAllMigrations'
 import { _setupMigrationEngine } from 'src/db/_setupMigrationEngine'
 import { _listAllTables } from 'src/db/_listAllTables'
@@ -39,6 +40,7 @@ import { StepL } from '../models/Step'
 import { asRelativePath } from '../utils/fs/pathUtils'
 import { _printSchema } from 'src/db/_printSchema'
 import { MediaSplatL } from 'src/models/MediaSplat'
+import { CustomDataL } from 'src/models/CustomData'
 
 export type Indexed<T> = { [id: string]: T }
 
@@ -49,6 +51,7 @@ export class LiveDB {
 
     // tables ---------------------------------------------------------
     projects: LiveTable<ProjectT, ProjectL>
+    custom_datas: LiveTable<CustomDataT, CustomDataL>
     schemas: LiveTable<ComfySchemaT, SchemaL>
     comfy_prompts: LiveTable<ComfyPromptT, ComfyPromptL>
     media_texts: LiveTable<MediaTextT, MediaTextL>
@@ -87,6 +90,7 @@ export class LiveDB {
 
             // 3. create tables (after the store has benn made already observable)
             this.projects =              new LiveTable(this, 'project'              , '🤠', ProjectL, { singleton: true })
+            this.custom_datas =          new LiveTable(this, 'custom_data'          , '🎁', CustomDataL)
             this.schemas =               new LiveTable(this, 'comfy_schema'         , '📑', SchemaL, { singleton: true })
             this.comfy_prompts =         new LiveTable(this, 'comfy_prompt'         , '❓', ComfyPromptL)
             this.media_texts =           new LiveTable(this, 'media_text'           , '💬', MediaTextL)

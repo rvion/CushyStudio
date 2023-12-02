@@ -117,35 +117,26 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
 
 export const RunOrAutorunUI = observer(function RunOrAutorunUI_(p: { className?: string; draft: DraftL }) {
     const draft = p.draft
+    const icon = draft.shouldAutoStart ? 'pause' : 'play_arrow'
     return (
         <div tw='flex join virtualBorder' className={p.className}>
             <Button
-                //
                 tw='btn-sm self-start join-item btn-neutral'
                 icon={draft.shouldAutoStart ? <Loader /> : <span className='material-symbols-outlined'>repeat</span>}
-                // appearance='primary'
                 active={draft.shouldAutoStart}
                 color={draft.shouldAutoStart ? 'green' : undefined}
                 onClick={() => draft.setAutostart(!draft.shouldAutoStart)}
-                // size={size2}
             >
                 Auto
             </Button>
             <Button
                 tw='btn-sm join-item btn-primary'
                 className='self-start'
-                icon={
-                    draft.shouldAutoStart ? ( //
-                        <span className='material-symbols-outlined'>pause</span>
-                    ) : (
-                        <span className='material-symbols-outlined'>play_arrow</span>
-                    )
-                }
+                icon={<span className='material-symbols-outlined'>{icon}</span>}
                 onClick={() => {
                     draft.setAutostart(false)
                     draft.start()
                 }}
-                // size={'sm'}
             >
                 Run
             </Button>

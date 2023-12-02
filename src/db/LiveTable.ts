@@ -117,13 +117,16 @@ export class LiveTable<T extends BaseInstanceFields, L extends LiveInstance<T, L
             get tableName() { return this.table.name } // prettier-ignore
 
             update(changes: Partial<T>) {
+                console.log('💀 UPDATING ----------------------------')
                 // 0. check that changes is valid
                 if (Array.isArray(changes)) throw new Error('insert does not support arrays')
                 if (typeof changes !== 'object') throw new Error('insert does not support non-objects')
 
                 // 1. check if update is needed
-                const isSame = Object.keys(changes).every((k) => (this.data as any)[k] === (changes as any)[k])
-                if (isSame) return console.log('no need to update') // no need to update
+                const isSame = Object.keys(changes).every((k) => {
+                    return (this.data as any)[k] === (changes as any)[k]
+                })
+                if (isSame) return console.log('❌ no need to update') // no need to update
 
                 // 2. store the prev in case we have an onUpdate callback later
                 const prev = this.onUpdate //
@@ -154,14 +157,18 @@ export class LiveTable<T extends BaseInstanceFields, L extends LiveInstance<T, L
                             return [k, v]
                         }),
                     )
+
+                    // inject id and patch updatedAt
                     updatePayload.updatedAt = updatedAt
                     updatePayload.id = this.id
 
                     // update the data
-                    /*const data =*/ stmt.get(updatePayload) as any as T
+                    stmt.get(updatePayload) as any as T
 
+                    // assign the changes
+                    // 2023-12-02 rvion: for now, I'm not re-assigning from the returned values
                     Object.assign(this.data, changes)
-                    this.data.updatedAt = updatePayload
+                    this.data.updatedAt = updatedAt
                     this.onUpdate?.(prev, this.data)
                 } catch (e) {
                     console.log(updateSQL)
