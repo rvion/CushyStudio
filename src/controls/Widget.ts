@@ -32,6 +32,7 @@ export type Widget =
     | Widget_intOpt
     | Widget_floatOpt
     | Widget_markdown
+    | Widget_custom
     | Widget_size
     | Widget_matrix
     | Widget_loras
@@ -128,6 +129,55 @@ export class Widget_markdown implements IRequest<'markdown', Widget_markdown_opt
     }
     get serial(): Widget_markdown_serial { return this.state }
     get result(): Widget_markdown_output { return this.state }
+}
+
+// 🅿️ custom ==============================================================================
+export type Widget_custom_componentProps_ui = {
+    image: (props: {     
+        size?: string | undefined;
+        img: MediaImageID; 
+    }) => JSX.Element
+}
+export type Widget_custom_componentProps<T = unknown> = {
+    value: T
+    onChange: (value: T) => void
+    ui: Widget_custom_componentProps_ui
+}
+export type Widget_custom_component = (props: Widget_custom_componentProps) => JSX.Element
+
+export type Widget_custom_opts  = ReqInput<{ customComponent: Widget_custom_component }>
+export type Widget_custom_serial = StateFields<{ type: 'custom', active: true; componentViewState: unknown }>
+export type Widget_custom_state  = StateFields<{ type: 'custom', active: true; componentViewState: unknown }>
+export type Widget_custom_output = unknown
+export interface Widget_custom extends IWidget<'custom', Widget_custom_opts, Widget_custom_serial, Widget_custom_state, Widget_custom_output> {}
+export class Widget_custom implements IRequest<'custom', Widget_custom_opts, Widget_custom_serial, Widget_custom_state, Widget_custom_output> {
+    isOptional = false
+    id: string
+    type: 'custom' = 'custom'
+    state: Widget_custom_state
+
+    get customComponent(): Widget_custom_component {
+        return this.input.customComponent;
+    }
+    get componentViewState() {
+        return this.state.componentViewState;
+    }
+    set componentViewState(v:unknown) {
+         this.state.componentViewState = v;
+    }
+
+    constructor(
+        public builder: FormBuilder,
+        public schema: SchemaL,
+        public input: Widget_custom_opts,
+        serial?: Widget_custom_serial,
+    ) {
+        this.id = serial?.id ?? nanoid()
+        this.state = serial ?? { type:'custom', active: true, id: this.id, componentViewState: undefined }
+        makeAutoObservable(this)
+    }
+    get serial(): Widget_custom_serial { return this.state }
+    get result(): Widget_custom_output { return this.state.componentViewState }
 }
 
 // 🅿️ str ==============================================================================
@@ -1424,6 +1474,7 @@ WidgetDI.Widget_inlineRun=Widget_inlineRun
 WidgetDI.Widget_intOpt=Widget_intOpt
 WidgetDI.Widget_floatOpt=Widget_floatOpt
 WidgetDI.Widget_markdown=Widget_markdown
+WidgetDI.Widget_custom=Widget_custom
 WidgetDI.Widget_size=Widget_size
 WidgetDI.Widget_matrix=Widget_matrix
 WidgetDI.Widget_loras=Widget_loras

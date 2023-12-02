@@ -32,6 +32,7 @@ export class FormBuilder {
     loras = (opts: W.Widget_loras_opts) => new W.Widget_loras(this, this.schema, opts)
     image = (opts: W.Widget_image_opts) => new W.Widget_image(this, this.schema, opts)
     markdown = (opts: W.Widget_markdown_opts) => new W.Widget_markdown(this, this.schema, opts)
+    custom = (opts: W.Widget_custom_opts) => new W.Widget_custom(this, this.schema, opts)
     imageOpt = (opts: W.Widget_imageOpt_opts) => new W.Widget_imageOpt(this, this.schema, opts)
     selectOneOrCustom = (p: W.Widget_selectOneOrCustom_opts) => new W.Widget_selectOneOrCustom(this, this.schema, p)
     selectManyOrCustom = (p: W.Widget_selectManyOrCustom_opts) => new W.Widget_selectManyOrCustom(this, this.schema, p)
@@ -95,6 +96,7 @@ export class FormBuilder {
         if (type === 'choice') return new W.Widget_choice(this, this.schema, input, serial)
         if (type === 'choices') return new W.Widget_choices(this, this.schema, input, serial)
         if (type === 'markdown') return new W.Widget_markdown(this, this.schema, input, serial)
+        if (type === 'custom') return new W.Widget_custom(this, this.schema, input, serial)
         console.log(`🔴 unknown type ${type}`)
         exhaust(type)
     }
