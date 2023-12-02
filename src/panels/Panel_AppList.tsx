@@ -45,7 +45,12 @@ export const Panel_AppList = observer(function Panel_AppList_(p: {}) {
                 </div>
             ) : null}
             {st.draftsFolded ? null : ( //
-                <div>
+                <div
+                    tw={[
+                        //
+                        '[max-height:10rem] overflow-auto',
+                    ]}
+                >
                     {st.allOpenDrafts.items.map((draft) => {
                         return <DraftEntryUI key={draft.id} draft={draft} />
                     })}

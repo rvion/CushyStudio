@@ -278,12 +278,20 @@ export class LiveTable<T extends BaseInstanceFields, L extends LiveInstance<T, L
         return val
     }
 
+    // DELETION ------------------------------------------------------------
+
     /** 🔴 unfinished */
     stmt_deleteByID = this.db.prepareDelete<string, void>(`delete from ${this.name} where id = ?`)
+
+    /** if this field  */
+    zz_deleted: boolean = false
+
     delete = (id: string) => {
         this.stmt_deleteByID(id)
+        this.zz_deleted = true
         this.liveEntities.delete(id)
     }
+    // ------------------------------------------------------------
 
     find = (query: Partial<T>): L[] => {
         const findSQL = [

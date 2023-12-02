@@ -131,18 +131,24 @@ export const DraftEntryUI = observer(function DraftEntryUI_(p: { draft: DraftL }
             <div tw='cursor-pointer single-line-ellipsis' onClick={() => (st.currentDraft = draft)}>
                 {draft.data.title}
             </div>
-            <Joined tw='absolute right-0'>
+            <Joined tw='ml-auto right-0'>
                 <Button
                     size='xs'
-                    icon={<span className='material-symbols-outlined'>delete</span>}
-                    appearance='subtle'
-                    color='red'
-                ></Button>
-                <Button
-                    size='xs'
+                    onClick={() => {
+                        st.layout.FOCUS_OR_CREATE('Draft', { draftID: draft.id }, 'LEFT_PANE_TABSET')
+                    }}
                     icon={<span className='material-symbols-outlined'>open_in_new</span>}
                     appearance='subtle'
                     color='blue'
+                ></Button>
+                <Button
+                    size='xs'
+                    onClick={() => {
+                        draft.delete()
+                    }}
+                    icon={<span className='material-symbols-outlined'>delete</span>}
+                    appearance='subtle'
+                    color='red'
                 ></Button>
             </Joined>
         </div>
