@@ -103,6 +103,10 @@ export class Runtime<FIELDS extends WidgetDict = any> {
      * */
     formInstance!: Widget_group<FIELDS>
 
+    executeDraft = async (draftID: DraftID, args: any) => {
+        throw new Error('🔴 not yet implemented')
+    }
+
     /**
      * get your configured lora metada
      * (those are user defined; hover your lora in any rich text prompt to edit them)

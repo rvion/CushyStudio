@@ -9,7 +9,7 @@ import { FieldAndLabelUI } from 'src/widgets/misc/FieldAndLabelUI'
 import { DraftL } from 'src/models/Draft'
 import { AppIllustrationUI } from 'src/cards/fancycard/AppIllustrationUI'
 import { AppFavoriteBtnUI, DraftFavoriteBtnUI } from 'src/cards/CardPicker2UI'
-import { AppEntryStyle } from 'src/cards/AppListStyles'
+import { AppEntryStyle, AppEntryStyleSelected } from 'src/cards/AppListStyles'
 
 export const Panel_CardPicker3UI = observer(function Panel_CardPicker3UI_(p: {}) {
     const st = useSt()
@@ -122,13 +122,27 @@ export const Panel_CardPicker3UI = observer(function Panel_CardPicker3UI_(p: {})
 export const DraftEntryUI = observer(function DraftEntryUI_(p: { draft: DraftL }) {
     const st = useSt()
     const draft = p.draft
+    const isSelected = st.currentDraft === draft
     return (
-        <div tw={[AppEntryStyle, 'flex items-center gap-2']} key={draft.id}>
+        <div
+            tw={[
+                //
+                'flex items-center gap-2',
+                isSelected ? AppEntryStyleSelected : AppEntryStyle,
+            ]}
+            key={draft.id}
+        >
             <div tw='pl-1'>
                 <DraftFavoriteBtnUI draft={draft} size='1.3rem' />
             </div>
             <AppIllustrationUI app={draft.app} size='1.5rem' />
-            <div tw='cursor-pointer single-line-ellipsis' onClick={() => (st.currentDraft = draft)}>
+            <div
+                tw='cursor-pointer single-line-ellipsis flex-grow'
+                onClick={() => {
+                    st.currentDraft = draft
+                    st.layout.FOCUS_OR_CREATE('CurrentDraft', {}, 'LEFT_PANE_TABSET')
+                }}
+            >
                 {draft.data.title}
             </div>
             <Joined tw='ml-auto right-0'>
