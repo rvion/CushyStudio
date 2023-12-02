@@ -68,7 +68,7 @@ export const AppEntryUI = observer(function AppEntryUI_(p: { app: LibraryFile })
             }}
         >
             <div tw='pl'>
-                <ActionFavoriteBtnUI app={app} size='1.3rem' />
+                <AppFavoriteBtnUI app={app} size='1.3rem' />
             </div>
             <AppIllustrationUI card={app} size='1.5rem' />
             <div tw='overflow-hidden text-base-content whitespace-nowrap overflow-ellipsis'>{app.displayName}</div>
@@ -76,33 +76,43 @@ export const AppEntryUI = observer(function AppEntryUI_(p: { app: LibraryFile })
     )
 })
 
-export const ActionFavoriteBtnUI = observer(function ActionFavoriteBtnUI_(p: { size: string; app: LibraryFile }) {
+export const AppFavoriteBtnUI = observer(function AppFavoriteBtnUI_(p: { size?: string; app: LibraryFile }) {
     const app = p.app
+    const size = p.size ?? '1.3rem'
     return (
         <Fragment>
             {app.isFavorite ? (
                 <span
+                    style={{ fontSize: size }}
+                    tw={[
+                        //
+                        'material-symbols-outlined',
+                        'cursor-pointer',
+                        'text-yellow-500 hover:text-red-500',
+                    ]}
                     onClick={(ev) => {
                         ev.preventDefault()
                         ev.stopPropagation()
                         app.setFavorite(false)
                     }}
                     //
-                    style={{ fontSize: p.size }}
-                    className='material-symbols-outlined text-yellow-500 hover:text-red-500'
                 >
                     star
                 </span>
             ) : (
                 <span
+                    tw={[
+                        //
+                        'material-symbols-outlined',
+                        'cursor-pointer',
+                        'hover:text-yellow-500 text-gray-500',
+                    ]}
+                    style={{ fontSize: size }}
                     onClick={(ev) => {
                         ev.preventDefault()
                         ev.stopPropagation()
                         app.setFavorite(true)
                     }}
-                    style={{ fontSize: p.size }}
-                    tw='hover:text-yellow-500 text-gray-500'
-                    className='material-symbols-outlined'
                 >
                     star
                 </span>

@@ -17,6 +17,7 @@ import { WidgetUI } from '../controls/widgets/WidgetUI'
 import { ResultWrapperUI } from '../widgets/misc/ResultWrapperUI'
 import { ScrollablePaneUI } from '../widgets/misc/scrollableArea'
 import { draftContext } from '../widgets/misc/useDraft'
+import { AppFavoriteBtnUI } from 'src/cards/CardPicker2UI'
 
 export const Panel_Draft = observer(function Panel_Draft_(p: { draftID: DraftID }) {
     // 1. get draft
@@ -302,12 +303,18 @@ export const DraftHeaderUI = observer(function DraftHeaderUI_(p: { draft: DraftL
                 <div tw='px-1 flex-grow'>
                     <div
                         //
-                        tw='flex font-bold overflow-hidden overflow-ellipsis whitespace-nowrap'
+                        tw={[
+                            //
+                            'font-bold',
+                            'flex items-center',
+                            'overflow-hidden overflow-ellipsis whitespace-nowrap',
+                        ]}
                         style={{
                             height: '2rem',
                             fontSize: '1.4rem',
                         }}
                     >
+                        <AppFavoriteBtnUI app={app} />
                         <span>{app.displayName}</span>
                         <div
                             tw='btn btn-subtle btn-xs'
