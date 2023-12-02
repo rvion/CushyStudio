@@ -3,7 +3,7 @@ import { Widget_custom_componentProps } from 'src'
 /**🔶 This is an advanced example of providing your own custom react component to display in the form */
 app({
     ui: (ui) => ({
-        updateIt: ui.bool({ default: true }),
+        resetIt: ui.bool({ default: true }),
         cool: ui.custom({
             /**🔶 Provide your component */
             customComponent: MyCustomComponent,
@@ -11,7 +11,11 @@ app({
     }),
 
     run: async (run, form) => {
-        if (form.updateIt) {
+        /**🔶 Get the view state during a run */
+        const clickCount = form.cool?.clickCount
+        run.output_text({ title: `Just for clicks`, message: `You have clicked it: ${clickCount ?? 0} times` })
+
+        if (form.resetIt) {
             /**🔶 Set the view state during a run */
             run.formInstance.state.values.cool.componentViewState = {
                 text: `yes`,
@@ -24,8 +28,8 @@ app({
 
 /**🔶 Define your own view state types */
 type MyCustomComponentPropsValue = {
-    text: string
-    time: Date
+    text?: string
+    time?: Date
     image?: MediaImageID
     clickCount?: number
 }
