@@ -25,7 +25,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     const st = useSt()
 
     let tooltip: Maybe<string> = req.input.tooltip
-    let label: Maybe<string> = req.input.label ?? makeLabelFromFieldName(rootKey)
+    let label: Maybe<string | false> = req.input.label ?? makeLabelFromFieldName(rootKey)
 
     const isVertical = (() => {
         if (st.preferedFormLayout === 'auto') {
@@ -99,17 +99,19 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                     <Tooltip>{tooltip}</Tooltip>
                 </RevealUI>
             )}
-            <span
-                //
-                tw={[p.isTopLevel ? 'font-bold' : undefined]}
-                style={
-                    true && !isVertical //
-                        ? { lineHeight: '2rem', display: 'inline-block' }
-                        : { lineHeight: '2rem' }
-                }
-            >
-                {label || '...'}
-            </span>{' '}
+            {label !== false && (
+                <span
+                    //
+                    tw={[p.isTopLevel ? 'font-bold' : undefined]}
+                    style={
+                        true && !isVertical //
+                            ? { lineHeight: '2rem', display: 'inline-block' }
+                            : { lineHeight: '2rem' }
+                    }
+                >
+                    {label || '...'}
+                </span>
+            )}
             <span tw='opacity-30 hover:opacity-100'>{v.state.collapsed ? '▸ {...}' : /*'▿'*/ ''}</span>
         </div>
     )

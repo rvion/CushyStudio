@@ -23,7 +23,7 @@ export type StateFields<X> = X & {
     vertical?: boolean
 }
 export type ReqInput<X> = X & {
-    label?: string
+    label?: string | false
     labelPos?: LabelPos
     layout?: 'H' | 'V'
     group?: string
