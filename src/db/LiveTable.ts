@@ -280,10 +280,12 @@ export class LiveTable<T extends BaseInstanceFields, L extends LiveInstance<T, L
 
     // DELETION ------------------------------------------------------------
 
-    /** 🔴 unfinished */
     stmt_deleteByID = this.db.prepareDelete<string, void>(`delete from ${this.name} where id = ?`)
 
-    /** if this field  */
+    /**
+     * TODO: we this use this field to throw if a
+     * deleted entity is accessed after beeing deleted
+     */
     zz_deleted: boolean = false
 
     delete = (id: string) => {

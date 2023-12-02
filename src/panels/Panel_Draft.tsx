@@ -8,7 +8,7 @@ import { AppIllustrationUI } from 'src/cards/fancycard/AppIllustrationUI'
 import { DraftL } from 'src/models/Draft'
 import { Dropdown, MenuItem } from 'src/rsuite/Dropdown'
 import { PhoneWrapperUI } from 'src/rsuite/PhoneWrapperUI'
-import { Button, Joined, Loader, Message } from 'src/rsuite/shims'
+import { Button, Input, Joined, Loader, Message } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
 import { openInVSCode } from 'src/utils/electron/openInVsCode'
 import { stringifyUnknown } from 'src/utils/formatters/stringifyUnknown'
@@ -334,6 +334,13 @@ export const DraftHeaderUI = observer(function DraftHeaderUI_(p: { draft: DraftL
                             </div>
                         </Joined>
                     </div>
+                    <Input
+                        onChange={(ev) => {
+                            draft.data.title = ev.target.value
+                        }}
+                        tw='w-full'
+                        value={draft.data.title ?? 'no title'}
+                    ></Input>
                     <div style={{ height: '2rem' }} className='flex items-center gap-2 justify-between text-sm'>
                         <Joined>
                             <CardActionsMenuUI tw='join-item' card={app} />
