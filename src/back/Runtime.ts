@@ -35,6 +35,16 @@ export type ImageAndMask = HasSingle_IMAGE & HasSingle_MASK
 
 /** script exeuction instance */
 export class Runtime<FIELDS extends WidgetDict = any> {
+    constructor(public step: StepL) {
+        this.st = step.st
+        this.folder = step.st.outputFolderPath
+        this.upload_FileAtAbsolutePath = this.st.uploader.upload_FileAtAbsolutePath.bind(this.st.uploader)
+        this.upload_ImageAtURL = this.st.uploader.upload_ImageAtURL.bind(this.st.uploader)
+        this.upload_dataURL = this.st.uploader.upload_dataURL.bind(this.st.uploader)
+        this.upload_Asset = this.st.uploader.upload_Asset.bind(this.st.uploader)
+        this.upload_Blob = this.st.uploader.upload_Blob.bind(this.st.uploader)
+    }
+
     /**
      * the global CushyStudio app state
      * Apps should probably never touch this directly.
@@ -62,16 +72,6 @@ export class Runtime<FIELDS extends WidgetDict = any> {
      */
     child_process = child_process
 
-    constructor(public step: StepL) {
-        this.st = step.st
-        this.folder = step.st.outputFolderPath
-        this.upload_FileAtAbsolutePath = this.st.uploader.upload_FileAtAbsolutePath.bind(this.st.uploader)
-        this.upload_ImageAtURL = this.st.uploader.upload_ImageAtURL.bind(this.st.uploader)
-        this.upload_dataURL = this.st.uploader.upload_dataURL.bind(this.st.uploader)
-        this.upload_Asset = this.st.uploader.upload_Asset.bind(this.st.uploader)
-        this.upload_Blob = this.st.uploader.upload_Blob.bind(this.st.uploader)
-    }
-
     /**
      * get the configured trigger words for the given lora
      * (those are user defined; hover your lora in any rich text prompt to edit them)
@@ -80,10 +80,20 @@ export class Runtime<FIELDS extends WidgetDict = any> {
         return this.st.configFile.value?.loraPrompts?.[loraName]?.text
     }
 
-    /** the current json form result */
+    /**
+     * the current json form result
+     * the main value sent to your app as context.
+     * Most apps only need this value.
+     */
     formResult!: { [k in keyof FIELDS]: FIELDS[k]['$Output'] }
 
-    /** the extended json form value including internal state */
+    /**
+     * the extended json form value including internal state
+     * it includes all internal form ids, and other internal values
+     * it could be usefull for some cases like if you need to
+     *      - use the ids for dynamic references
+     *      - do something based on if some fields are folded
+     * */
     formSerial!: { [k in keyof FIELDS]: FIELDS[k]['$Serial'] }
 
     /**
@@ -675,6 +685,7 @@ ${ffmpegComandInfos.framesFileContent}
     }
 
     private _promptCounter = 0
+
     private sendPromp = async (idMode: IDNaminScheemeInPromptSentToComfyUI): Promise<ComfyPromptL> => {
         const liveGraph = this.workflow
         if (liveGraph == null) throw new Error('no graph')
