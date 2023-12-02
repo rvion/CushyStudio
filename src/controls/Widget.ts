@@ -77,19 +77,9 @@ export class Widget_str implements IRequest<'str', Widget_str_opts, Widget_str_s
 }
 
 // 🅿️ markdown ==============================================================================
-export type Widget_CustomComponentPropsUI = {
-    image: (props: { imageId: string }) => JSX.Element
-}
-export type Widget_CustomComponentProps<T = unknown> = {
-    value: T
-    onChange: (value: T) => void
-    ui: Widget_CustomComponentPropsUI
-}
-export type Widget_CustomComponent = (props: Widget_CustomComponentProps) => JSX.Element
-
-export type Widget_markdown_opts = ReqInput<{ markdown: string | ((formRoot:Widget_group<any>) => string); customComponent?: Widget_CustomComponent}>
-export type Widget_markdown_serial = StateFields<{ type: 'markdown', active: true, renderId: number, componentValue: unknown }>
-export type Widget_markdown_state  = StateFields<{ type: 'markdown', active: true, renderId: number, componentValue: unknown }>
+export type Widget_markdown_opts = ReqInput<{ markdown: string | ((formRoot:Widget_group<any>) => string); }>
+export type Widget_markdown_serial = StateFields<{ type: 'markdown', active: true }>
+export type Widget_markdown_state  = StateFields<{ type: 'markdown', active: true }>
 export type Widget_markdown_output = { type: 'markdown', active: true }
 export interface Widget_markdown extends IWidget<'markdown', Widget_markdown_opts, Widget_markdown_serial, Widget_markdown_state, Widget_markdown_output> {}
 export class Widget_markdown implements IRequest<'markdown', Widget_markdown_opts, Widget_markdown_serial, Widget_markdown_state, Widget_markdown_output> {
@@ -104,19 +94,6 @@ export class Widget_markdown implements IRequest<'markdown', Widget_markdown_opt
         return md(this.builder._ROOT)
     }
 
-    get customComponent(): undefined|Widget_CustomComponent {
-        return this.input.customComponent;
-    }
-    get renderId() {
-        return this.state.renderId;
-    }
-    get componentValue() {
-        return this.state.componentValue;
-    }
-    set componentValue(v:unknown) {
-         this.state.componentValue=v;
-    }
-
     constructor(
         public builder: FormBuilder,
         public schema: SchemaL,
@@ -124,7 +101,7 @@ export class Widget_markdown implements IRequest<'markdown', Widget_markdown_opt
         serial?: Widget_markdown_serial,
     ) {
         this.id = serial?.id ?? nanoid()
-        this.state = serial ?? { type:'markdown', active: true, id: this.id, renderId: 0, componentValue: undefined }
+        this.state = serial ?? { type:'markdown', active: true, id: this.id }
         makeAutoObservable(this)
     }
     get serial(): Widget_markdown_serial { return this.state }
