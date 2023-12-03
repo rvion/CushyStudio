@@ -115,45 +115,45 @@ export type Widget_custom_componentProps_ui = {
         img: MediaImageID; 
     }) => JSX.Element
 }
-export type Widget_custom_componentProps<T = unknown> = {
-    value: undefined | T
-    onChange: (value: undefined | T) => void
+export type Widget_custom_componentProps<TComponentState = unknown> = {
+    componentState: TComponentState
+    onChange: (componentState: TComponentState) => void
     ui: Widget_custom_componentProps_ui
 }
 
-export type Widget_custom_opts<TViewState>  = ReqInput<{ customComponent: (props: Widget_custom_componentProps<TViewState>) => JSX.Element }>
-export type Widget_custom_serial<TViewState> = StateFields<{ type: 'custom', active: true; componentViewState: undefined | TViewState }>
-export type Widget_custom_state<TViewState>  = StateFields<{ type: 'custom', active: true; componentViewState: undefined | TViewState }>
-export type Widget_custom_output<TViewState> = undefined | TViewState
-export interface Widget_custom<TViewState> extends IWidget<'custom', Widget_custom_opts<TViewState>, Widget_custom_serial<TViewState>, Widget_custom_state<TViewState>, Widget_custom_output> {}
-export class Widget_custom<TViewState> implements IRequest<'custom', Widget_custom_opts<TViewState>, Widget_custom_serial<TViewState>, Widget_custom_state<TViewState>, Widget_custom_output> {
+export type Widget_custom_opts<TComponentState>  = ReqInput<{ default: TComponentState, Component: (props: Widget_custom_componentProps<TComponentState>) => JSX.Element, }>
+export type Widget_custom_serial<TComponentState> = StateFields<{ type: 'custom', active: true; componentState: TComponentState }>
+export type Widget_custom_state<TComponentState>  = StateFields<{ type: 'custom', active: true; componentState: TComponentState }>
+export type Widget_custom_output<TComponentState> = TComponentState
+export interface Widget_custom<TComponentState> extends IWidget<'custom', Widget_custom_opts<TComponentState>, Widget_custom_serial<TComponentState>, Widget_custom_state<TComponentState>, Widget_custom_output<TComponentState>> {}
+export class Widget_custom<TComponentState> implements IRequest<'custom', Widget_custom_opts<TComponentState>, Widget_custom_serial<TComponentState>, Widget_custom_state<TComponentState>, Widget_custom_output<TComponentState>> {
     isOptional = false
     id: string
     type: 'custom' = 'custom'
-    state: Widget_custom_state<TViewState>
+    state: Widget_custom_state<TComponentState>
 
-    get customComponent(): ((props: Widget_custom_componentProps<TViewState>) => JSX.Element) {
-        return this.input.customComponent;
+    get customComponent(): ((props: Widget_custom_componentProps<TComponentState>) => JSX.Element) {
+        return this.input.Component;
     }
-    get componentViewState(): undefined | TViewState {
-        return this.state.componentViewState;
+    get componentViewState(): TComponentState {
+        return this.state.componentState;
     }
-    set componentViewState(v: undefined | TViewState) {
-         this.state.componentViewState = v;
+    set componentViewState(v: TComponentState) {
+         this.state.componentState = v;
     }
 
     constructor(
         public builder: FormBuilder,
         public schema: SchemaL,
-        public input: Widget_custom_opts<TViewState>,
-        serial?: Widget_custom_serial<TViewState>,
+        public input: Widget_custom_opts<TComponentState>,
+        serial?: Widget_custom_serial<TComponentState>,
     ) {
         this.id = serial?.id ?? nanoid()
-        this.state = serial ?? { type:'custom', active: true, id: this.id, componentViewState: undefined }
+        this.state = serial ?? { type:'custom', active: true, id: this.id, componentState: this.input.default }
         makeAutoObservable(this)
     }
-    get serial(): Widget_custom_serial<TViewState> { return this.state }
-    get result(): Widget_custom_output<TViewState> { return this.state.componentViewState }
+    get serial(): Widget_custom_serial<TComponentState> { return this.state }
+    get result(): Widget_custom_output<TComponentState> { return this.state.componentState }
 }
 
 // 🅿️ str ==============================================================================

@@ -6,7 +6,12 @@ app({
         resetIt: ui.bool({ default: true }),
         cool: ui.custom({
             /**🔶 Provide your component */
-            customComponent: MyCustomComponent,
+            Component: MyCustomComponent,
+            /**🔶 Provide your initial component state */
+            default: {
+                text: `initial text`,
+                time: new Date(),
+            },
         }),
     }),
 
@@ -27,23 +32,23 @@ app({
 })
 
 /**🔶 Define your own view state types */
-type MyCustomComponentPropsValue = {
-    text?: string
-    time?: Date
+type MyCustomComponentState = {
+    text: string
+    time: Date
     image?: MediaImageID
     clickCount?: number
 }
 
 /**🔶 Define your component
  *  Note: This needs to be a .tsx file */
-function MyCustomComponent(props: Widget_custom_componentProps<MyCustomComponentPropsValue>) {
+function MyCustomComponent(props: Widget_custom_componentProps<MyCustomComponentState>) {
     /**🔶 Get your values
      * Note: The props.value is undefined by default, so this is a handy pattern */
-    const { time, image, text, clickCount } = props.value ?? {}
+    const { time, image, text, clickCount } = props.componentState
 
     /**🔶 Make a utility function so you can do partial updates without resetting all the other fields */
-    const change = (value: Partial<MyCustomComponentPropsValue>) => {
-        props.onChange({ ...(props.value ?? {}), ...value })
+    const change = (value: Partial<MyCustomComponentState>) => {
+        props.onChange({ ...props.componentState, ...value })
     }
 
     return (
