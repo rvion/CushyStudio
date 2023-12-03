@@ -1,15 +1,17 @@
 import { observer } from 'mobx-react-lite'
+import { createElement } from 'react'
 import { Widget_custom_componentProps_ui, Widget_custom } from 'src/controls/Widget'
 import { ImageUI } from 'src/widgets/galleries/ImageUI'
 
-export const WidgetCustomUI = observer(function WidgetCustomUI_(p: { req: Widget_custom }) {
+export const WidgetCustomUI = observer(function WidgetCustomUI_(p: { req: Widget_custom<unknown> }) {
     const req = p.req
 
-    return (
-        <>
-            <req.customComponent value={req.componentViewState} onChange={(v) => (req.componentViewState = v)} ui={ui} />
-        </>
-    )
+    return createElement(req.Component, {
+        req,
+        componentState: req.componentState,
+        onChange: (v) => (req.componentState = v),
+        ui,
+    })
 })
 
 /** Common ui components */

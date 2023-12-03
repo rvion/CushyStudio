@@ -32,7 +32,7 @@ export type Widget =
     | Widget_intOpt
     | Widget_floatOpt
     | Widget_markdown
-    | Widget_custom
+    | Widget_custom<unknown>
     | Widget_size
     | Widget_matrix
     | Widget_loras
@@ -115,46 +115,46 @@ export type Widget_custom_componentProps_ui = {
         img: MediaImageID; 
     }) => JSX.Element
 }
-export type Widget_custom_componentProps<T = unknown> = {
-    value: T
-    onChange: (value: T) => void
+export type Widget_custom_componentProps<TComponentState = unknown> = {
+    req: Widget_custom<unknown>;
+    componentState: TComponentState
+    onChange: (componentState: TComponentState) => void
     ui: Widget_custom_componentProps_ui
 }
-export type Widget_custom_component = (props: Widget_custom_componentProps) => JSX.Element
 
-export type Widget_custom_opts  = ReqInput<{ customComponent: Widget_custom_component }>
-export type Widget_custom_serial = StateFields<{ type: 'custom', active: true; componentViewState: unknown }>
-export type Widget_custom_state  = StateFields<{ type: 'custom', active: true; componentViewState: unknown }>
-export type Widget_custom_output = unknown
-export interface Widget_custom extends IWidget<'custom', Widget_custom_opts, Widget_custom_serial, Widget_custom_state, Widget_custom_output> {}
-export class Widget_custom implements IRequest<'custom', Widget_custom_opts, Widget_custom_serial, Widget_custom_state, Widget_custom_output> {
+export type Widget_custom_opts<TComponentState>  = ReqInput<{ default: TComponentState, Component: (props: Widget_custom_componentProps<TComponentState>) => JSX.Element, }>
+export type Widget_custom_serial<TComponentState> = StateFields<{ type: 'custom', active: true; componentState: TComponentState }>
+export type Widget_custom_state<TComponentState>  = StateFields<{ type: 'custom', active: true; componentState: TComponentState }>
+export type Widget_custom_output<TComponentState> = TComponentState
+export interface Widget_custom<TComponentState> extends IWidget<'custom', Widget_custom_opts<TComponentState>, Widget_custom_serial<TComponentState>, Widget_custom_state<TComponentState>, Widget_custom_output<TComponentState>> {}
+export class Widget_custom<TComponentState> implements IRequest<'custom', Widget_custom_opts<TComponentState>, Widget_custom_serial<TComponentState>, Widget_custom_state<TComponentState>, Widget_custom_output<TComponentState>> {
     isOptional = false
     id: string
     type: 'custom' = 'custom'
-    state: Widget_custom_state
+    state: Widget_custom_state<TComponentState>
 
-    get customComponent(): Widget_custom_component {
-        return this.input.customComponent;
+    get Component(): ((props: Widget_custom_componentProps<TComponentState>) => JSX.Element) {
+        return this.input.Component;
     }
-    get componentViewState() {
-        return this.state.componentViewState;
+    get componentState(): TComponentState {
+        return this.state.componentState;
     }
-    set componentViewState(v:unknown) {
-         this.state.componentViewState = v;
+    set componentState(v: TComponentState) {
+         this.state.componentState = v;
     }
 
     constructor(
         public builder: FormBuilder,
         public schema: SchemaL,
-        public input: Widget_custom_opts,
-        serial?: Widget_custom_serial,
+        public input: Widget_custom_opts<TComponentState>,
+        serial?: Widget_custom_serial<TComponentState>,
     ) {
         this.id = serial?.id ?? nanoid()
-        this.state = serial ?? { type:'custom', active: true, id: this.id, componentViewState: undefined }
+        this.state = serial ?? { type:'custom', active: true, id: this.id, componentState: this.input.default }
         makeAutoObservable(this)
     }
-    get serial(): Widget_custom_serial { return this.state }
-    get result(): Widget_custom_output { return this.state.componentViewState }
+    get serial(): Widget_custom_serial<TComponentState> { return this.state }
+    get result(): Widget_custom_output<TComponentState> { return this.state.componentState }
 }
 
 // 🅿️ str ==============================================================================
@@ -410,7 +410,7 @@ export class Widget_bool implements IRequest<'bool', Widget_bool_opts, Widget_bo
 }
 
 // 🅿️ inlineRun ==============================================================================
-export type Widget_inlineRun_opts  = ReqInput<{text?: string, kind?: `primary`|`warning`}>
+export type Widget_inlineRun_opts  = ReqInput<{}>
 export type Widget_inlineRun_serial = Widget_inlineRun_state
 export type Widget_inlineRun_state  = StateFields<{ type:'inlineRun', active: true; val: boolean }>
 export type Widget_inlineRun_output = boolean
@@ -426,12 +426,8 @@ export class Widget_inlineRun implements IRequest<'inlineRun', Widget_inlineRun_
         public input: Widget_inlineRun_opts,
         serial?: Widget_inlineRun_serial,
     ) {
-        if(input.text){
-            input.label = input.label ?? ` `;
-        }
-
         this.id = serial?.id ?? nanoid()
-        this.state = serial ?? { type: 'inlineRun', id: this.id, active: true, val: false, }
+        this.state = serial ?? { type: 'inlineRun', id: this.id, active: true, val: false }
         makeAutoObservable(this)
     }
     get serial(): Widget_inlineRun_serial { return this.state }
