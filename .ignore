@@ -7,5 +7,6 @@
 !schema/nodes.json
 !tsconfig.custom.json
 !CONFIG.json
-!library/**/*
+!library/**/*.ts
+!library/**/*.tsx
 !src/db/cushy-1.db
