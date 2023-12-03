@@ -2,21 +2,21 @@
  * this file is an attempt to centralize core widget definition in a single
  * file so it's easy to add any widget in the future
  */
-import type { ItemDataType } from 'src/rsuite/RsuiteTypes'
 import type { SchemaL } from 'src/models/Schema'
 import type { SimplifiedLoraDef } from 'src/presets/SimplifiedLoraDef'
+import type { ItemDataType } from 'src/rsuite/RsuiteTypes'
+import type { CleanedEnumResult } from 'src/types/EnumUtils'
 import type { WidgetPromptOutput } from 'src/widgets/prompter/WidgetPromptUI'
 import type { PossibleSerializedNodes } from 'src/widgets/prompter/plugins/PossibleSerializedNodes'
-import type { AspectRatio, ComfyImageAnswer, CushyImageAnswer, CushySize, CushySizeByRatio, ImageAnswer, ImageAnswerForm, PaintImageAnswer, SDModelType } from './misc/InfoAnswer'
-import type { CleanedEnumResult } from 'src/types/EnumUtils'
-import type { IRequest, IWidget, ReqInput, ReqResult, StateFields } from './IWidget'
 import type { FormBuilder } from './FormBuilder'
+import type { IRequest, IWidget, ReqInput, ReqResult, StateFields } from './IWidget'
+import type { AspectRatio, ComfyImageAnswer, CushyImageAnswer, CushySize, CushySizeByRatio, ImageAnswer, ImageAnswerForm, PaintImageAnswer, SDModelType } from './misc/InfoAnswer'
 
 import { makeAutoObservable } from 'mobx'
-import { bang } from 'src/utils/misc/bang'
 import { nanoid } from 'nanoid'
+import { FC } from 'react'
+import { bang } from 'src/utils/misc/bang'
 import { WidgetDI } from './widgets/WidgetUI.DI'
-import { observer } from 'mobx-react-lite'
 
 // Widget is a closed union for added type safety
 export type Widget =
@@ -110,13 +110,10 @@ export class Widget_markdown implements IRequest<'markdown', Widget_markdown_opt
 }
 
 // 🅿️ custom ==============================================================================
-export type CustomWidgetProps<T> = {
-    widget: Widget_custom<T>;
-    extra: import ('./widgets/WidgetCustomUI').UIKit
-}
-export type Widget_custom_opts<T>   = ReqInput<{ defaultValue: () => T, Component: (props: CustomWidgetProps<T>) => JSX.Element, }>
-export type Widget_custom_serial<T> = StateFields<{ type: 'custom', active: true; value: T }>
-export type Widget_custom_state<T>  = StateFields<{ type: 'custom', active: true; value: T }>
+export type CustomWidgetProps<T> = { widget: Widget_custom<T>; extra: import('./widgets/WidgetCustomUI').UIKit }
+export type Widget_custom_opts  <T> = ReqInput<{ defaultValue: () => T; Component: FC<CustomWidgetProps<T>>}>
+export type Widget_custom_serial<T> = StateFields<{ type: 'custom'; active: true; value: T }>
+export type Widget_custom_state <T> = StateFields<{ type: 'custom'; active: true; value: T }>
 export type Widget_custom_output<T> = T
 export interface Widget_custom<T> extends IWidget<'custom', Widget_custom_opts<T>, Widget_custom_serial<T>, Widget_custom_state<T>, Widget_custom_output<T>> {}
 export class Widget_custom<T> implements IRequest<'custom', Widget_custom_opts<T>, Widget_custom_serial<T>, Widget_custom_state<T>, Widget_custom_output<T>> {
@@ -124,13 +121,9 @@ export class Widget_custom<T> implements IRequest<'custom', Widget_custom_opts<T
     id: string
     type: 'custom' = 'custom'
     state: Widget_custom_state<T>
-
     Component: Widget_custom_opts<T>['Component']
     st = () => this.schema.st
-    reset=() => {
-        this.state.value = this.input.defaultValue()
-    }
-
+    reset = () => (this.state.value = this.input.defaultValue())
     constructor(
         public builder: FormBuilder,
         public schema: SchemaL,
@@ -138,18 +131,24 @@ export class Widget_custom<T> implements IRequest<'custom', Widget_custom_opts<T
         serial?: Widget_custom_serial<T>,
     ) {
         this.id = serial?.id ?? nanoid()
-        this.Component= observer(input.Component)
+        this.Component = input.Component
         this.state = serial ?? {
-            type:'custom', active: true, id: this.id, value: this.input.defaultValue() }
+            type: 'custom',
+            active: true,
+            id: this.id,
+            value: this.input.defaultValue(),
+        }
 
-        makeAutoObservable(this)
+        makeAutoObservable(this, { Component: false })
     }
+
     /** never mutate this field manually, only access to .state */
     get serial(): Widget_custom_serial<T> { return this.state }
 
     /** never mutate this field manually, only access to .state */
     get result(): Widget_custom_output<T> { return this.state.value }
 }
+
 
 // 🅿️ str ==============================================================================
 export type Widget_color_opts = ReqInput<{ default?: string; }>

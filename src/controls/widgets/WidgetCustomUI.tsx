@@ -7,11 +7,7 @@ import { JsonViewUI } from 'src/widgets/workspace/JsonViewUI'
 
 export const WidgetCustomUI = observer(function WidgetCustomUI_(p: { widget: Widget_custom<unknown> }) {
     const widget = p.widget
-
-    return createElement(widget.input.Component, {
-        widget: widget,
-        extra: _commonUIComponents,
-    })
+    return <widget.input.Component widget={widget} extra={_commonUIComponents} />
 })
 
 // ------------------------------------------------------------------------
