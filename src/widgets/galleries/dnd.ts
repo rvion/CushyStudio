@@ -67,7 +67,7 @@ export const useImageDrop = (st: STATE, fn: (image: MediaImageL) => void) =>
                     //     console.log(`[🗳️] drop box: uploaded image infos are ${JSON.stringify(res)}`)
                     //     return fn(image)
                     // })
-                    return
+                    return fn(image)
                 } else {
                     console.log('Dropped non-image file')
                     return
