@@ -9,11 +9,11 @@ import { parseFloatNoRoundingErr } from 'src/utils/misc/parseFloatNoRoundingErr'
 type ModelType = 'xl' | '1.5' | 'custom'
 type AspectRatio = '1:1' | '16:9' | '4:3' | '3:2' | 'custom'
 
-export const WigetSizeUI = observer(function WigetSizeUI_(p: { req: Widget_size }) {
+export const WigetSizeUI = observer(function WigetSizeUI_(p: { widget: Widget_size }) {
     return (
         <WigetSizeXUI //
-            size={p.req.state}
-            bounds={p.req.input}
+            size={p.widget.state}
+            bounds={p.widget.input}
         />
     )
 })

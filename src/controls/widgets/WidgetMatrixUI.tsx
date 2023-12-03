@@ -1,8 +1,8 @@
 import { observer } from 'mobx-react-lite'
 import { Widget_matrix } from 'src/controls/Widget'
 
-export const WidgetMatrixUI = observer(function WidgetStrUI_(p: { req: Widget_matrix }) {
-    const req = p.req
+export const WidgetMatrixUI = observer(function WidgetStrUI_(p: { widget: Widget_matrix }) {
+    const req = p.widget
     const cols = req.cols
     const rows = req.rows
     const collapsed = req.state.collapsed

@@ -64,7 +64,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
 
     let WIDGET = collapsed ? null : !v.state.active ? null : ( //
         <ErrorBoundary FallbackComponent={ErrorBoundaryFallback} onReset={(details) => {}}>
-            <WidgetDI.WidgetUI req={req} />
+            <WidgetDI.WidgetUI widget={req} />
         </ErrorBoundary>
     )
 

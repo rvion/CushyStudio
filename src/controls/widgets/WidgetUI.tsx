@@ -31,47 +31,47 @@ import { WidgetListExtUI } from './WidgetListExtUI'
  * collect the responses and submit them to the back once completed and valid.
  */
 // prettier-ignore
-export const WidgetUI = observer(function WidgetUI_(p: { req: R.Widget; focus?: boolean }) {
-    const req = p.req
-    if (req == null) return <>NULL</>
-    if (req instanceof R.Widget_seed)               return <WidgetSeedUI        req={req} />
-    if (req instanceof R.Widget_int)                return <WidgetNumUI         req={req} />
-    if (req instanceof R.Widget_intOpt)             return <WidgetNumOptUI      req={req} />
-    if (req instanceof R.Widget_float)              return <WidgetNumUI         req={req} />
-    if (req instanceof R.Widget_floatOpt)           return <WidgetNumOptUI      req={req} />
-    if (req instanceof R.Widget_str)                return <WidgetStrUI         req={req} />
-    if (req instanceof R.Widget_strOpt)             return <WidgetStrUI         req={req} />
-    if (req instanceof R.Widget_image)              return <WidgetSelectImageUI req={req} />
-    if (req instanceof R.Widget_imageOpt)           return <WidgetSelectImageUI req={req} />
-    if (req instanceof R.Widget_list)               return <WidgetListUI        req={req} />
-    if (req instanceof R.Widget_listExt)            return <WidgetListExtUI     req={req} />
-    if (req instanceof R.Widget_group)              return <WidgetGroupUI       req={req} />
-    if (req instanceof R.Widget_groupOpt)           return <WidgetGroupUI       req={req} />
-    if (req instanceof R.Widget_size)               return <WigetSizeUI         req={req} />
-    if (req instanceof R.Widget_enum)               return <WidgetEnumUI        req={req} />
-    if (req instanceof R.Widget_enumOpt)            return <WidgetEnumUI        req={req} />
-    if (req instanceof R.Widget_matrix)             return <WidgetMatrixUI      req={req} />
-    if (req instanceof R.Widget_bool)               return <WidgetBoolUI        req={req} />
-    if (req instanceof R.Widget_inlineRun)          return <WidgetInlineRunUI   req={req} />
-    if (req instanceof R.Widget_prompt)             return <WidgetPromptUI      req={req} />
-    if (req instanceof R.Widget_promptOpt)          return <WidgetPromptUI      req={req} />
-    if (req instanceof R.Widget_loras)              return <WidgetLorasUI       req={req} />
-    if (req instanceof R.Widget_color)              return <WidgetColorUI       req={req} />
-    if (req instanceof R.Widget_selectOne)          return <WidgetSelectOneUI   req={req} />
-    if (req instanceof R.Widget_choice)             return <WidgetChoiceUI      req={req} />
-    if (req instanceof R.Widget_choices)            return <WidgetChoicesUI     req={req} />
-    if (req instanceof R.Widget_markdown)           return <WidgetMardownUI     req={req} />
-    if (req instanceof R.Widget_custom)             return <WidgetCustomUI      req={req} />
-    if (req instanceof R.Widget_selectMany)         return <>TODO</>
-    if (req instanceof R.Widget_selectManyOrCustom) return <>TODO</>
-    if (req instanceof R.Widget_selectOneOrCustom)  return <>TODO</>
+export const WidgetUI = observer(function WidgetUI_(p: { widget: R.Widget; focus?: boolean }) {
+    const widget = p.widget
+    if (widget == null) return <>NULL</>
+    if (widget instanceof R.Widget_seed)               return <WidgetSeedUI        widget={widget} />
+    if (widget instanceof R.Widget_int)                return <WidgetNumUI         widget={widget} />
+    if (widget instanceof R.Widget_intOpt)             return <WidgetNumOptUI      widget={widget} />
+    if (widget instanceof R.Widget_float)              return <WidgetNumUI         widget={widget} />
+    if (widget instanceof R.Widget_floatOpt)           return <WidgetNumOptUI      widget={widget} />
+    if (widget instanceof R.Widget_str)                return <WidgetStrUI         widget={widget} />
+    if (widget instanceof R.Widget_strOpt)             return <WidgetStrUI         widget={widget} />
+    if (widget instanceof R.Widget_image)              return <WidgetSelectImageUI widget={widget} />
+    if (widget instanceof R.Widget_imageOpt)           return <WidgetSelectImageUI widget={widget} />
+    if (widget instanceof R.Widget_list)               return <WidgetListUI        widget={widget} />
+    if (widget instanceof R.Widget_listExt)            return <WidgetListExtUI     widget={widget} />
+    if (widget instanceof R.Widget_group)              return <WidgetGroupUI       widget={widget} />
+    if (widget instanceof R.Widget_groupOpt)           return <WidgetGroupUI       widget={widget} />
+    if (widget instanceof R.Widget_size)               return <WigetSizeUI         widget={widget} />
+    if (widget instanceof R.Widget_enum)               return <WidgetEnumUI        widget={widget} />
+    if (widget instanceof R.Widget_enumOpt)            return <WidgetEnumUI        widget={widget} />
+    if (widget instanceof R.Widget_matrix)             return <WidgetMatrixUI      widget={widget} />
+    if (widget instanceof R.Widget_bool)               return <WidgetBoolUI        widget={widget} />
+    if (widget instanceof R.Widget_inlineRun)          return <WidgetInlineRunUI   widget={widget} />
+    if (widget instanceof R.Widget_prompt)             return <WidgetPromptUI      widget={widget} />
+    if (widget instanceof R.Widget_promptOpt)          return <WidgetPromptUI      widget={widget} />
+    if (widget instanceof R.Widget_loras)              return <WidgetLorasUI       widget={widget} />
+    if (widget instanceof R.Widget_color)              return <WidgetColorUI       widget={widget} />
+    if (widget instanceof R.Widget_selectOne)          return <WidgetSelectOneUI   widget={widget} />
+    if (widget instanceof R.Widget_choice)             return <WidgetChoiceUI      widget={widget} />
+    if (widget instanceof R.Widget_choices)            return <WidgetChoicesUI     widget={widget} />
+    if (widget instanceof R.Widget_markdown)           return <WidgetMardownUI     widget={widget} />
+    if (widget instanceof R.Widget_custom)             return <WidgetCustomUI      widget={widget} />
+    if (widget instanceof R.Widget_selectMany)         return <>TODO</>
+    if (widget instanceof R.Widget_selectManyOrCustom) return <>TODO</>
+    if (widget instanceof R.Widget_selectOneOrCustom)  return <>TODO</>
 
-    exhaust(req)
-    console.log(`🔴`, (req as any).type, req)
+    exhaust(widget)
+    console.log(`🔴`, (widget as any).type, widget)
     return <Message type='error' showIcon>
-        <div>{(req as any).type}</div>
-        <div>{(req as any).constructor.name}</div>
-        <div>{typeof (req as any)}</div>
+        <div>{(widget as any).type}</div>
+        <div>{(widget as any).constructor.name}</div>
+        <div>{typeof (widget as any)}</div>
         not supported
      </Message>
 })

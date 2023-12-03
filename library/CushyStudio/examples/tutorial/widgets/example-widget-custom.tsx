@@ -1,74 +1,57 @@
-import { Widget_custom_componentProps } from 'src'
+/** 📝 This needs to be a .tsx file */
 
-/**🔶 This is an advanced example of providing your own custom react component to display in the form */
+import { observer } from 'mobx-react-lite'
+import type { CustomWidgetProps } from 'src'
+
+const MyCustomComponent = observer(function (
+    p: CustomWidgetProps<{
+        clickCount: number
+        text: string
+        image?: MediaImageID
+    }>,
+) {
+    const value = p.widget.state.value
+    const img = value.image ?? p.widget.st().db.media_images.last()
+    return (
+        <div className='flex flex-col gap-2 virtualBorder p-2'>
+            {/* Text Input -------------------------------------------------------- */}
+            type "reset" in the field here and press play to reset the state
+            <input
+                tw='input input-bordered p-2'
+                value={value.text ?? `Nothing to see here!`}
+                onChange={(ev) => (p.widget.state.value.text = ev.target.value)}
+            />
+            {/* Button -------------------------------------------------------- */}
+            <div className='btn btn-outline btn-primary btn-sm' onClick={() => p.widget.state.value.clickCount++}>
+                <div>Did you click it?</div>
+                <div>{value.clickCount ? `yes ${value.clickCount} times` : `nope`}</div>
+            </div>
+            {/* extra components -------------------------------------------------------- */}
+            <p.extra.JsonViewUI value={p.widget.state.value} />
+            {img && <p.extra.ImageUI img={img} />}
+        </div>
+    )
+})
+
 app({
     ui: (ui) => ({
-        resetIt: ui.bool({ default: true }),
-        cool: ui.custom({
-            /**🔶 Provide your component */
+        // doc: ui.markdown('This is an advanced example of providing your own custom react component to display in the form'),
+        demo: ui.custom({
+            /** 📝 Provide your component and default value */
             Component: MyCustomComponent,
-            /**🔶 Provide your initial component state */
-            default: {
+            defaultValue: () => ({
+                clickCount: 0,
                 text: `initial text`,
-                time: new Date(),
-            },
+            }),
         }),
     }),
 
-    run: async (run, form) => {
-        /**🔶 Get the view state during a run */
-        const clickCount = form.cool?.clickCount
-        run.output_text({ title: `Just for clicks`, message: `You have clicked it ${clickCount ?? 0} times (before resetting)` })
+    run: async (run, ui) => {
+        /** 📝 Get the view state during a run */
+        const clickCount = ui.demo.clickCount
+        run.output_text(`You have clicked it ${clickCount ?? 0} times (before resetting)`)
 
-        if (form.resetIt) {
-            /**🔶 Set the view state during a run */
-            run.formInstance.state.values.cool.componentState = {
-                text: `yes`,
-                time: new Date(),
-                image: run.st.db.media_images.last()?.id,
-            }
-        }
+        /** 📝 programmatically reset the state from the UI */
+        if (ui.demo.text === 'reset') run.formInstance.state.values.demo.reset()
     },
 })
-
-/**🔶 Define your own view state types */
-type MyCustomComponentState = {
-    text: string
-    time: Date
-    image?: MediaImageID
-    clickCount?: number
-}
-
-/**🔶 Define your component
- *  Note: This needs to be a .tsx file */
-function MyCustomComponent(props: Widget_custom_componentProps<MyCustomComponentState>) {
-    /**🔶 Get your values
-     * Note: The props.value is undefined by default, so this is a handy pattern */
-    const { time, image, text, clickCount } = props.componentState
-
-    /**🔶 Make a utility function so you can do partial updates without resetting all the other fields */
-    const change = (value: Partial<MyCustomComponentState>) => {
-        props.onChange({ ...props.componentState, ...value })
-    }
-
-    return (
-        <>
-            <div className='flex flex-col'>
-                <div className='flex flex-row'>{text ?? `Nothing to see here!`}</div>
-                <div className='flex flex-row'>{`last run: ${time}`}</div>
-                <div>Here is an image:</div>
-                <div>{image && <props.ui.image img={image} />}</div>
-
-                <div
-                    className='btn btn-outline'
-                    onClick={() => {
-                        change({ clickCount: (clickCount ?? 0) + 1 })
-                    }}
-                >
-                    <div>Did you click it?</div>
-                    <div>{clickCount ? `yes ${clickCount} times` : `nope`}</div>
-                </div>
-            </div>
-        </>
-    )
-}

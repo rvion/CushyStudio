@@ -4,21 +4,27 @@ import type { STATE } from 'src/state/state'
 import type { ComfyPromptJSON } from '../types/ComfyPrompt'
 
 import { readFileSync } from 'fs'
+import * as mobx from 'mobx'
 import { makeAutoObservable, observable } from 'mobx'
 import path, { join, relative } from 'pathe'
 import { Package } from 'src/cards/Pkg'
+import { SQLITE_true } from 'src/db/SQLITE_boolean'
+import { DraftT } from 'src/db/TYPES.gen'
 import { DraftL } from 'src/models/Draft'
 import { clamp } from 'three/src/math/MathUtils'
-// import { compileSingleFile } from '../back/transpiler'
 import { convertLiteGraphToPrompt } from '../core/litegraphToPrompt'
-import { getPngMetadataFromUint8Array } from '../utils/png/_getPngMetadata'
 import { exhaust } from '../utils/misc/ComfyUtils'
 import { ManualPromise } from '../utils/misc/ManualPromise'
+import { getPngMetadataFromUint8Array } from '../utils/png/_getPngMetadata'
 import { generateAvatar } from './AvatarGenerator'
 import { AppManifest } from './DeckManifest'
 import { Library } from './Library'
-import { DraftT } from 'src/db/TYPES.gen'
-import { SQLITE_true } from 'src/db/SQLITE_boolean'
+
+import { observer } from 'mobx-react-lite'
+import __react from 'react'
+
+// @ts-ignore
+import { jsx, jsxs } from 'src/utils/custom-jsx/jsx-runtime'
 
 // prettier-ignore
 export type LoadStrategy =
@@ -396,8 +402,12 @@ export class LibraryFile {
 
         // 2. eval file to extract actions
         try {
-            const ProjectScriptFn = new Function('action', 'card', 'app', codeJS)
-            ProjectScriptFn(registerAppFn, registerAppFn, registerAppFn)
+            const codJSWithoutWithImportsReplaced = REWRITE_IMPORTS(codeJS)
+            // console.log(codJSWithoutWithImportsReplaced)
+            // console.log({ jsx, jsxs })
+            const ProjectScriptFn = new Function('action', 'card', 'app', '__SYNC_IMPORT', codJSWithoutWithImportsReplaced)
+
+            ProjectScriptFn(registerAppFn, registerAppFn, registerAppFn, __SYNC_IMPORT)
             if (CARDS_FOUND_IN_FILE.length === 0) return
             if (CARDS_FOUND_IN_FILE.length > 1) this.addError(`❌4. more than one action found: (${CARDS_FOUND_IN_FILE.length})`)
             return CARDS_FOUND_IN_FILE[0]
@@ -406,4 +416,25 @@ export class LibraryFile {
             return
         }
     }
+}
+
+const REWRITE_IMPORTS = (code: string) => {
+    const singleImportRegex = /import\s+\{\s*(\w+)\s*\}\s+from\s+["'](.+?)["'];?/g
+    const multipleImportsRegex = /import\s+\{\s*(\w+(?:,\s*\w+)*)\s*\}\s+from\s+["'](.+?)["'];?/g
+    const defaultImportRegex = /import\s+(\w+)\s+from\s+["'](.+?)["'];?/g
+
+    let transformedCode = code
+        .replace(multipleImportsRegex, `const { $1 } = __SYNC_IMPORT("$2");`)
+        .replace(singleImportRegex, `const { $1 } = __SYNC_IMPORT("$2");`)
+        .replace(defaultImportRegex, `const $1 = __SYNC_IMPORT("$2");`)
+    return transformedCode
+}
+
+const __SYNC_IMPORT = (mod: string) => {
+    console.log('🔴 mod', mod)
+    if (mod === 'react') return __react
+    if (mod === 'mobx') return mobx
+    if (mod === 'mobx-react-lite') return { observer: observer }
+    if (mod === 'react/jsx-runtime') return { jsx, jsxs }
+    throw new Error('unsupported import: ' + mod)
 }

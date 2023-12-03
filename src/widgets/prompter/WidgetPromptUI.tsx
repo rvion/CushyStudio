@@ -41,9 +41,9 @@ export type WidgetPromptOutput = {
     tokens: PossibleSerializedNodes[]
 }
 
-export const WidgetPromptUI = observer((p: { req: Widget_prompt | Widget_promptOpt }) => {
+export const WidgetPromptUI = observer((p: { widget: Widget_prompt | Widget_promptOpt }) => {
     const st = useSt()
-    const req = p.req
+    const req = p.widget
     const cs = useMemo(
         () =>
             new CompletionState(st, {

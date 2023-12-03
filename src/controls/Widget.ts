@@ -2,19 +2,20 @@
  * this file is an attempt to centralize core widget definition in a single
  * file so it's easy to add any widget in the future
  */
-import type { ItemDataType } from 'src/rsuite/RsuiteTypes'
 import type { SchemaL } from 'src/models/Schema'
 import type { SimplifiedLoraDef } from 'src/presets/SimplifiedLoraDef'
+import type { ItemDataType } from 'src/rsuite/RsuiteTypes'
+import type { CleanedEnumResult } from 'src/types/EnumUtils'
 import type { WidgetPromptOutput } from 'src/widgets/prompter/WidgetPromptUI'
 import type { PossibleSerializedNodes } from 'src/widgets/prompter/plugins/PossibleSerializedNodes'
-import type { AspectRatio, ComfyImageAnswer, CushyImageAnswer, CushySize, CushySizeByRatio, ImageAnswer, ImageAnswerForm, PaintImageAnswer, SDModelType } from './misc/InfoAnswer'
-import type { CleanedEnumResult } from 'src/types/EnumUtils'
-import type { IRequest, IWidget, ReqInput, ReqResult, StateFields } from './IWidget'
 import type { FormBuilder } from './FormBuilder'
+import type { IRequest, IWidget, ReqInput, ReqResult, StateFields } from './IWidget'
+import type { AspectRatio, ComfyImageAnswer, CushyImageAnswer, CushySize, CushySizeByRatio, ImageAnswer, ImageAnswerForm, PaintImageAnswer, SDModelType } from './misc/InfoAnswer'
 
 import { makeAutoObservable } from 'mobx'
-import { bang } from 'src/utils/misc/bang'
 import { nanoid } from 'nanoid'
+import { FC } from 'react'
+import { bang } from 'src/utils/misc/bang'
 import { WidgetDI } from './widgets/WidgetUI.DI'
 
 // Widget is a closed union for added type safety
@@ -109,53 +110,45 @@ export class Widget_markdown implements IRequest<'markdown', Widget_markdown_opt
 }
 
 // 🅿️ custom ==============================================================================
-export type Widget_custom_componentProps_ui = {
-    image: (props: {     
-        size?: string | undefined;
-        img: MediaImageID; 
-    }) => JSX.Element
-}
-export type Widget_custom_componentProps<TComponentState> = {
-    req: Widget_custom<TComponentState>;
-    componentState: TComponentState
-    onChange: (componentState: TComponentState) => void
-    ui: Widget_custom_componentProps_ui
-}
-
-export type Widget_custom_opts<TComponentState>  = ReqInput<{ default: TComponentState, Component: (props: Widget_custom_componentProps<TComponentState>) => JSX.Element, }>
-export type Widget_custom_serial<TComponentState> = StateFields<{ type: 'custom', active: true; componentState: TComponentState }>
-export type Widget_custom_state<TComponentState>  = StateFields<{ type: 'custom', active: true; componentState: TComponentState }>
-export type Widget_custom_output<TComponentState> = TComponentState
-export interface Widget_custom<TComponentState> extends IWidget<'custom', Widget_custom_opts<TComponentState>, Widget_custom_serial<TComponentState>, Widget_custom_state<TComponentState>, Widget_custom_output<TComponentState>> {}
-export class Widget_custom<TComponentState> implements IRequest<'custom', Widget_custom_opts<TComponentState>, Widget_custom_serial<TComponentState>, Widget_custom_state<TComponentState>, Widget_custom_output<TComponentState>> {
+export type CustomWidgetProps<T> = { widget: Widget_custom<T>; extra: import('./widgets/WidgetCustomUI').UIKit }
+export type Widget_custom_opts  <T> = ReqInput<{ defaultValue: () => T; Component: FC<CustomWidgetProps<T>>}>
+export type Widget_custom_serial<T> = StateFields<{ type: 'custom'; active: true; value: T }>
+export type Widget_custom_state <T> = StateFields<{ type: 'custom'; active: true; value: T }>
+export type Widget_custom_output<T> = T
+export interface Widget_custom<T> extends IWidget<'custom', Widget_custom_opts<T>, Widget_custom_serial<T>, Widget_custom_state<T>, Widget_custom_output<T>> {}
+export class Widget_custom<T> implements IRequest<'custom', Widget_custom_opts<T>, Widget_custom_serial<T>, Widget_custom_state<T>, Widget_custom_output<T>> {
     isOptional = false
     id: string
     type: 'custom' = 'custom'
-    state: Widget_custom_state<TComponentState>
-
-    get Component(): ((props: Widget_custom_componentProps<TComponentState>) => JSX.Element) {
-        return this.input.Component;
-    }
-    get componentState(): TComponentState {
-        return this.state.componentState;
-    }
-    set componentState(v: TComponentState) {
-         this.state.componentState = v;
-    }
-
+    state: Widget_custom_state<T>
+    Component: Widget_custom_opts<T>['Component']
+    st = () => this.schema.st
+    reset = () => (this.state.value = this.input.defaultValue())
     constructor(
         public builder: FormBuilder,
         public schema: SchemaL,
-        public input: Widget_custom_opts<TComponentState>,
-        serial?: Widget_custom_serial<TComponentState>,
+        public input: Widget_custom_opts<T>,
+        serial?: Widget_custom_serial<T>,
     ) {
         this.id = serial?.id ?? nanoid()
-        this.state = serial ?? { type:'custom', active: true, id: this.id, componentState: this.input.default }
-        makeAutoObservable(this)
+        this.Component = input.Component
+        this.state = serial ?? {
+            type: 'custom',
+            active: true,
+            id: this.id,
+            value: this.input.defaultValue(),
+        }
+
+        makeAutoObservable(this, { Component: false })
     }
-    get serial(): Widget_custom_serial<TComponentState> { return this.state }
-    get result(): Widget_custom_output<TComponentState> { return this.state.componentState }
+
+    /** never mutate this field manually, only access to .state */
+    get serial(): Widget_custom_serial<T> { return this.state }
+
+    /** never mutate this field manually, only access to .state */
+    get result(): Widget_custom_output<T> { return this.state.value }
 }
+
 
 // 🅿️ str ==============================================================================
 export type Widget_color_opts = ReqInput<{ default?: string; }>

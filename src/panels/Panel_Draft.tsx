@@ -76,7 +76,7 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                             <ResultWrapperUI
                                 //
                                 res={draft.gui}
-                                whenValid={(req) => <WidgetUI req={req} />}
+                                whenValid={(req) => <WidgetUI widget={req} />}
                             />
                         </div>
                     </ScrollablePaneUI>
@@ -85,7 +85,7 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                         <ResultWrapperUI
                             //
                             res={draft.gui}
-                            whenValid={(req) => <WidgetUI req={req} />}
+                            whenValid={(req) => <WidgetUI widget={req} />}
                         />
                     </PhoneWrapperUI>
                 )}

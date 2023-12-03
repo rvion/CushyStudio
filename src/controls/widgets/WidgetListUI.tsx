@@ -8,8 +8,8 @@ import { forwardRef } from 'react'
 import { RevealUI } from 'src/rsuite/RevealUI'
 import { isWidgetCollapsible } from '../shared/isWidgetCollapsible'
 
-export const WidgetListUI = observer(function WidgetListUI_<T extends Widget>(p: { req: Widget_list<T> }) {
-    const req = p.req
+export const WidgetListUI = observer(function WidgetListUI_<T extends Widget>(p: { widget: Widget_list<T> }) {
+    const req = p.widget
     const values = req.state.items
     const min = req.input.min
     const WidgetUI = WidgetDI.WidgetUI
@@ -19,8 +19,8 @@ export const WidgetListUI = observer(function WidgetListUI_<T extends Widget>(p:
     // const indexWidth = len.toString().length
     return (
         <div className='_WidgetListUI' tw='flex-grow w-full'>
-            <ListControlsUI req={p.req} />
-            <SortableList onSortEnd={p.req.moveItem} className='list' draggedItemClassName='dragged'>
+            <ListControlsUI req={p.widget} />
+            <SortableList onSortEnd={p.widget.moveItem} className='list' draggedItemClassName='dragged'>
                 <div tw='flex flex-col gap-1'>
                     {values.map((v, ix) => (
                         <SortableItem key={v.state.id}>
@@ -29,7 +29,7 @@ export const WidgetListUI = observer(function WidgetListUI_<T extends Widget>(p:
                                     <ListDragHandleUI ix={ix} />
                                 </SortableKnob>
                                 <ListItemCollapseBtnUI req={v} />
-                                <WidgetUI req={v} />
+                                <WidgetUI widget={v} />
                                 <Button
                                     appearance='subtle'
                                     disabled={min ? req.state.items.length <= min : undefined}

@@ -121,16 +121,31 @@ export class Library {
             // console.log('🟢 1.', event) // => could be any target event: 'add', 'addDir', 'change', 'rename', 'renameDir', 'unlink' or 'unlinkDir'
             if (event === 'change') {
                 const relPath = path.relative(this.st.rootPath, targetPath)
-                console.log(relPath)
+                console.log(`[👁️] changed: ${relPath}`)
                 const isInLibrary = relPath.startsWith('library/') || relPath.startsWith('library\\')
-                if (isInLibrary && relPath.endsWith('.ts')) {
-                    // TODO 🔴 need to reload all cards in tne deck, so `prefabs` properly "hot-reload"
-                    const card = this.cardsByPath.get(asAppPath(relPath))
-                    if (card == null) return console.log('file watcher update aborted: not an action')
+                if (!isInLibrary) return
 
-                    // reload the card if it's already loaded
-                    if (card.loaded.value) card.load({ force: true })
-                }
+                const pieces = relPath.split('/')
+                if (pieces.length < 3) return
+                const deckFolder = pieces.slice(0, 3).join('/') as PackageRelPath
+
+                console.log(`[👁️] rebuilding: ${deckFolder}`)
+                const pkg = this.getOrCreatePackage(deckFolder)
+                pkg.rebuild()
+
+                const currentDraft = st.currentDraft
+                const currentApp = currentDraft?.app
+                if (currentApp == null) return console.log(`[👁️] ❌ no current app`)
+
+                // if (relPath.endsWith('.ts') || relPath.endsWith('.tsx')) {
+                // TODO 🔴 need to reload all cards in tne deck, so `prefabs` properly "hot-reload"
+                // const card = this.cardsByPath.get(asAppPath(relPath))
+                // if (card == null) return console.log('file watcher update aborted: not an action')
+
+                // reload the card if it's already loaded
+                console.log(`[👁️] reloading: ${currentApp.relPath}`)
+                currentApp.load({ force: true })
+                // }
             }
             // reutrn
             // console.log('🟢 2.', targetPath) // => the file system path where the event took place, this is always provided

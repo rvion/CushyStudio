@@ -2,8 +2,8 @@ import { observer } from 'mobx-react-lite'
 import { Button, Joined, InputNumberBase } from 'src/rsuite/shims'
 import { Widget_seed } from 'src/controls/Widget'
 
-export const WidgetSeedUI = observer(function WidgetSeedUI_(p: { req: Widget_seed }) {
-    const req = p.req
+export const WidgetSeedUI = observer(function WidgetSeedUI_(p: { widget: Widget_seed }) {
+    const req = p.widget
     const val = req.state.val
     return (
         <div tw='flex items-center join virtualBorder'>
