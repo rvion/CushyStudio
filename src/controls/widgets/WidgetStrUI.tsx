@@ -2,8 +2,8 @@ import { observer } from 'mobx-react-lite'
 import { Input } from 'src/rsuite/shims'
 import { Widget_str, Widget_strOpt } from 'src/controls/Widget'
 
-export const WidgetStrUI = observer(function WidgetStrUI_(p: { req: Widget_str | Widget_strOpt }) {
-    const req = p.req
+export const WidgetStrUI = observer(function WidgetStrUI_(p: { widget: Widget_str | Widget_strOpt }) {
+    const req = p.widget
     const val = req.state.val
     if (req.input.textarea) {
         return (

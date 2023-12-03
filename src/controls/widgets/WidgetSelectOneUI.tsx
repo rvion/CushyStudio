@@ -3,9 +3,9 @@ import { BaseSelectOneEntry, Widget_selectOne } from 'src/controls/Widget'
 import { SelectUI } from 'src/rsuite/SelectUI'
 
 export const WidgetSelectOneUI = observer(function WidgetSelectOneUI_<T extends BaseSelectOneEntry>(p: {
-    req: Widget_selectOne<T>
+    widget: Widget_selectOne<T>
 }) {
-    const req = p.req
+    const req = p.widget
     const value = req.state.val
     return (
         <SelectUI<T>

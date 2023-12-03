@@ -16,8 +16,8 @@ enum Tab {
     Scribble = 2,
     Asset = 3,
 }
-export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: { req: Widget_image | Widget_imageOpt }) {
-    const req = p.req
+export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: { widget: Widget_image | Widget_imageOpt }) {
+    const req = p.widget
     const st = useSt()
     const [dropStyle, dropRef] = useImageDrop(st, (i) => {
         runInAction(() => {

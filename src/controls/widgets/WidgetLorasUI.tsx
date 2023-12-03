@@ -6,8 +6,8 @@ import { parseFloatNoRoundingErr } from 'src/utils/misc/parseFloatNoRoundingErr'
 import { InputNumberUI } from 'src/rsuite/InputNumberUI'
 // ----------------------------------------------------------------------
 
-export const WidgetLorasUI = observer(function LoraWidgetUI_(p: { req: Widget_loras }) {
-    const req = p.req
+export const WidgetLorasUI = observer(function LoraWidgetUI_(p: { widget: Widget_loras }) {
+    const req = p.widget
     const st = useSt()
     const schema = st.schema
     if (schema == null) return <div>❌ no schema</div>

@@ -6,8 +6,8 @@ import { InputNumberUI } from 'src/rsuite/InputNumberUI'
 
 export type NumbericTheme = 'input' | 'slider'
 
-export const WidgetNumUI = observer(function WidgetNumUI_(p: { req: Widget_int | Widget_float }) {
-    const req = p.req
+export const WidgetNumUI = observer(function WidgetNumUI_(p: { widget: Widget_int | Widget_float }) {
+    const req = p.widget
     const val = req.state.val
     const mode = req instanceof Widget_int ? 'int' : 'float'
     const step = req.input.step ?? (mode === 'int' ? 1 : 0.1)

@@ -5,8 +5,8 @@ import { SelectUI } from 'src/rsuite/SelectUI'
 import { WidgetWithLabelUI } from '../shared/WidgetWithLabelUI'
 
 // 🔴 why "branches" field; why not just use sub wiget active state instead?
-export const WidgetChoicesUI = observer(function WidgetChoicesUI_(p: { req: Widget_choices<{ [key: string]: Widget }> }) {
-    const req = p.req
+export const WidgetChoicesUI = observer(function WidgetChoicesUI_(p: { widget: Widget_choices<{ [key: string]: Widget }> }) {
+    const req = p.widget
 
     type Entry = { key: string; value?: Maybe<boolean> }
 

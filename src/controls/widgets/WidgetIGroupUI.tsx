@@ -5,11 +5,11 @@ import { WidgetWithLabelUI } from '../shared/WidgetWithLabelUI'
 
 export const WidgetGroupUI = observer(function WidgetItemsUI_(p: {
     //
-    req:
+    widget:
         | Widget_group<{ [key: string]: Widget }> //
         | Widget_groupOpt<{ [key: string]: Widget }>
 }) {
-    const req = p.req
+    const req = p.widget
     const isTopLevel = req.input.topLevel
     const groupFields = Object.entries(req.state.values)
     const showAsCard = groupFields.length > 0 && !isTopLevel

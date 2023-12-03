@@ -7,10 +7,10 @@ import { WidgetRegionalUI } from './WidgetRegionalUI'
 import { WidgetDI } from './WidgetUI.DI'
 import { WigetSizeXUI } from './WidgetSizeUI'
 
-export const WidgetListExtUI = observer(function WidgetListExtUI_<T extends Widget>(p: { req: Widget_listExt<T> }) {
-    if (p.req.input.mode === 'timeline') return <WidgetListExtUI_timeline req={p.req} />
-    if (p.req.input.mode === 'regional') return <WidgetListExtUI_timeline req={p.req} />
-    return <WidgetListExtUI_timeline req={p.req} />
+export const WidgetListExtUI = observer(function WidgetListExtUI_<T extends Widget>(p: { widget: Widget_listExt<T> }) {
+    if (p.widget.input.mode === 'timeline') return <WidgetListExtUI_timeline req={p.widget} />
+    if (p.widget.input.mode === 'regional') return <WidgetListExtUI_timeline req={p.widget} />
+    return <WidgetListExtUI_timeline req={p.widget} />
 })
 
 function replacer(key: string, value: any) {
@@ -65,7 +65,7 @@ export const WidgetListExtUI_timeline = observer(function WidgetListExtUI_timeli
                                 >
                                     {v.state.collapsed ? '▸' : '▿'}
                                 </Button>
-                                <WidgetUI req={v} />
+                                <WidgetUI widget={v} />
                                 <Button
                                     appearance='subtle'
                                     disabled={min ? req.state.items.length <= min : undefined}

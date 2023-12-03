@@ -4,8 +4,8 @@ import { observer } from 'mobx-react-lite'
 import { SelectUI } from 'src/rsuite/SelectUI'
 import { WidgetUI } from './WidgetUI'
 
-export const WidgetChoiceUI = observer(function WidgetChoiceUI_(p: { req: Widget_choice<{ [key: string]: Widget }> }) {
-    const req = p.req
+export const WidgetChoiceUI = observer(function WidgetChoiceUI_(p: { widget: Widget_choice<{ [key: string]: Widget }> }) {
+    const req = p.widget
     const choicesStr: string[] = Object.keys(req.state.values)
     const choiceSubReq = req.state.values[req.state.pick]
     return (
@@ -32,7 +32,7 @@ export const WidgetChoiceUI = observer(function WidgetChoiceUI_(p: { req: Widget
                         <WidgetUI //
                             // labelPos={choiceSubReq.input.labelPos}
                             // rootKey={req.state.pick}
-                            req={choiceSubReq}
+                            widget={choiceSubReq}
                         />
                     )}
                 </div>

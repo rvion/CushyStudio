@@ -3,7 +3,7 @@ import { Widget_bool } from 'src/controls/Widget'
 
 // ----------------------------------------------------------------------
 
-export const WidgetBoolUI = observer(function WidgetBoolUI_(p: { req: Widget_bool }) {
+export const WidgetBoolUI = observer(function WidgetBoolUI_(p: { widget: Widget_bool }) {
     return null // fieldWithUI toogle should handle that alreadly
     // return (
     //     <Toggle //

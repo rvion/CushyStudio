@@ -12,9 +12,9 @@ type T = {
 }[]
 
 export const WidgetEnumUI = observer(function WidgetEnumUI_<K extends KnownEnumNames>(p: {
-    req: Widget_enum<K> | Widget_enumOpt<K>
+    widget: Widget_enum<K> | Widget_enumOpt<K>
 }) {
-    const req = p.req
+    const req = p.widget
     const enumName = req.input.enumName
     const isOptional = req instanceof Widget_enumOpt
     const value = req.status

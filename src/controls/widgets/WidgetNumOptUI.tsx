@@ -3,8 +3,8 @@ import { InputNumberBase, Slider } from 'src/rsuite/shims'
 import { Widget_floatOpt, Widget_intOpt } from 'src/controls/Widget'
 import { parseFloatNoRoundingErr } from 'src/utils/misc/parseFloatNoRoundingErr'
 
-export const WidgetNumOptUI = observer(function WidgetNumOptUI_(p: { req: Widget_intOpt | Widget_floatOpt }) {
-    const req = p.req
+export const WidgetNumOptUI = observer(function WidgetNumOptUI_(p: { widget: Widget_intOpt | Widget_floatOpt }) {
+    const req = p.widget
     const mode = req instanceof Widget_intOpt ? 'int' : 'float'
     const val = req.state.val
     const step = req.input.step ?? (mode === 'int' ? 1 : 0.1)
