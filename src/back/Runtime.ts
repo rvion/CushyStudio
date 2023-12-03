@@ -36,6 +36,7 @@ import { OpenRouterRequest } from 'src/llm/OpenRouter_Request'
 import { OpenRouterResponse } from 'src/llm/OpenRouter_Response'
 import { OpenRouter_ask } from 'src/llm/OpenRouter_ask'
 import { OpenRouter_Models } from 'src/llm/OpenRouter_models'
+import { openRouterInfos } from 'src/llm/OpenRouter_infos'
 
 export type ImageAndMask = HasSingle_IMAGE & HasSingle_MASK
 
@@ -118,6 +119,9 @@ export class Runtime<FIELDS extends WidgetDict = any> {
         return await OpenRouter_ask(this.st.configFile.value.OPENROUTER_API_KEY, p)
     }
 
+    /** dictionary of all known openrouter models */
+    llm_allModels = openRouterInfos
+
     /** turn any simple request into an LLM */
     llm_ask_PromptMaster = async (
         /** description / instruction of  */
@@ -132,6 +136,7 @@ export class Runtime<FIELDS extends WidgetDict = any> {
         llmResponse: OpenRouterResponse
     }> => {
         const res: OpenRouterResponse = await OpenRouter_ask(this.st.configFile.value.OPENROUTER_API_KEY, {
+            max_tokens: 300,
             model: model,
             messages: [
                 {
@@ -139,15 +144,14 @@ export class Runtime<FIELDS extends WidgetDict = any> {
                     content: [
                         //
                         `You are an assistant in charge of writing a prompt to be submitted to a stable distribution ai image generative pipeline.`,
-                        `you need to understand what the user wants, and write a prompt that will be sent to the ai.`,
-                        `Always answer in english.`,
-                        `Your answer must be arond 80chars in length`,
-                        `include lots of adjective and advers.`,
-                        `unusual and strong words are better than common ones`,
-                        `start with most important words describing the prompt`,
-                        `ONLY answer with the prompt itself. DO NOT answer anything else.`,
-                        'Do not use any word beside the prompt. No hello, no goodbye.',
-                    ].join('\n\n'),
+                        `Write a prompt describing the user submited topic in a way that will help the ai generate a relevant image.`,
+                        `Your answer must be arond 500 chars in length`,
+                        `Start with most important words describing the prompt`,
+                        `Include lots of adjective and advers. no full sentences. remove useless words`,
+                        `try to include a long list coma separated words.`,
+                        'Once main keywords are in, if you still have character to add, include vaiours beauty or artsy words',
+                        `ONLY answer with the prompt itself. DO NOT answer anything else. No Hello, no thanks, no signature, no nothing.`,
+                    ].join('\n'),
                 },
                 {
                     role: 'user',

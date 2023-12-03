@@ -1,11 +1,18 @@
+import type { OpenRouter_Models } from 'src/llm/OpenRouter_models'
+
+import { openRouterInfos } from 'src/llm/OpenRouter_infos'
+
 app({
     ui: (ui) => ({
         topic: ui.string({ textarea: true }),
+        model: ui.selectOne({
+            choices: Object.entries(openRouterInfos).map(([id, info]) => ({ id: id as OpenRouter_Models, label: info.name })),
+        }),
     }),
 
     run: async (sdk, ui) => {
         // ask LLM to generate
-        const llmResult = await sdk.llm_ask_PromptMaster(ui.topic)
+        const llmResult = await sdk.llm_ask_PromptMaster(ui.topic, ui.model.id)
         const positiveTxt = llmResult.prompt
 
         sdk.output_text(positiveTxt)
