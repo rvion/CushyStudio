@@ -116,6 +116,7 @@ export type Widget_custom_componentProps_ui = {
     }) => JSX.Element
 }
 export type Widget_custom_componentProps<TComponentState = unknown> = {
+    req: Widget_custom<unknown>;
     componentState: TComponentState
     onChange: (componentState: TComponentState) => void
     ui: Widget_custom_componentProps_ui
@@ -132,13 +133,13 @@ export class Widget_custom<TComponentState> implements IRequest<'custom', Widget
     type: 'custom' = 'custom'
     state: Widget_custom_state<TComponentState>
 
-    get customComponent(): ((props: Widget_custom_componentProps<TComponentState>) => JSX.Element) {
+    get Component(): ((props: Widget_custom_componentProps<TComponentState>) => JSX.Element) {
         return this.input.Component;
     }
-    get componentViewState(): TComponentState {
+    get componentState(): TComponentState {
         return this.state.componentState;
     }
-    set componentViewState(v: TComponentState) {
+    set componentState(v: TComponentState) {
          this.state.componentState = v;
     }
 

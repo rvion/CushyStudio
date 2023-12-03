@@ -22,7 +22,7 @@ app({
 
         if (form.resetIt) {
             /**🔶 Set the view state during a run */
-            run.formInstance.state.values.cool.componentViewState = {
+            run.formInstance.state.values.cool.componentState = {
                 text: `yes`,
                 time: new Date(),
                 image: run.st.db.media_images.last()?.id,
