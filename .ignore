@@ -8,3 +8,4 @@
 !tsconfig.custom.json
 !CONFIG.json
 !library/**/*
+!src/db/cushy-1.db
