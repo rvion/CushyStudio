@@ -109,12 +109,7 @@ export class Widget_markdown implements IRequest<'markdown', Widget_markdown_opt
 }
 
 // 🅿️ custom ==============================================================================
-export type Widget_custom_componentProps_ui = {
-    image: (props: {     
-        size?: string | undefined;
-        img: MediaImageID; 
-    }) => JSX.Element
-}
+export type Widget_custom_componentProps_ui = import ('./widgets/WidgetCustomUI').UIKit
 export type Widget_custom_componentProps<TComponentState> = {
     req: Widget_custom<TComponentState>;
     componentState: TComponentState

@@ -1,6 +1,7 @@
 import { observer } from 'mobx-react-lite'
 import { createElement } from 'react'
 import { Widget_custom_componentProps_ui, Widget_custom } from 'src/controls/Widget'
+import { PropsOf } from 'src/panels/router/Layout'
 import { ImageUI } from 'src/widgets/galleries/ImageUI'
 
 export const WidgetCustomUI = observer(function WidgetCustomUI_(p: { req: Widget_custom<unknown> }) {
@@ -10,11 +11,13 @@ export const WidgetCustomUI = observer(function WidgetCustomUI_(p: { req: Widget
         req,
         componentState: req.componentState,
         onChange: (v) => (req.componentState = v),
-        ui,
+        ui: commonUIComponents,
     })
 })
 
 /** Common ui components */
-const ui: Widget_custom_componentProps_ui = {
-    image: (p) => <ImageUI {...p} />,
+const commonUIComponents = {
+    image: (p: PropsOf<typeof ImageUI>) => <ImageUI {...p} />,
 }
+
+export type UIKit = typeof commonUIComponents
