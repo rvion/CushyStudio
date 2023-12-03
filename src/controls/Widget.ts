@@ -32,7 +32,7 @@ export type Widget =
     | Widget_intOpt
     | Widget_floatOpt
     | Widget_markdown
-    | Widget_custom<unknown>
+    | Widget_custom<any>
     | Widget_size
     | Widget_matrix
     | Widget_loras
@@ -115,8 +115,8 @@ export type Widget_custom_componentProps_ui = {
         img: MediaImageID; 
     }) => JSX.Element
 }
-export type Widget_custom_componentProps<TComponentState = unknown> = {
-    req: Widget_custom<unknown>;
+export type Widget_custom_componentProps<TComponentState> = {
+    req: Widget_custom<TComponentState>;
     componentState: TComponentState
     onChange: (componentState: TComponentState) => void
     ui: Widget_custom_componentProps_ui
