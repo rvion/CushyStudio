@@ -65,6 +65,14 @@ export const Panel_Config = observer(function Panel_Config_() {
                             }}
                         />
                     </FieldUI>
+                    <FieldUI label='OpenRouter API KEY'>
+                        <input
+                            tw='input'
+                            type='password' //
+                            value={config.value.OPENROUTER_API_KEY ?? ''}
+                            onChange={(ev) => config.update({ OPENROUTER_API_KEY: ev.target.value })}
+                        />
+                    </FieldUI>
                 </div>
 
                 {/* <Message type='info' showIcon className='self-start'>
