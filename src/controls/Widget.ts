@@ -109,15 +109,14 @@ export class Widget_markdown implements IRequest<'markdown', Widget_markdown_opt
 }
 
 // 🅿️ custom ==============================================================================
-export type Widget_custom_componentProps_ui = import ('./widgets/WidgetCustomUI').UIKit
-export type Widget_custom_componentProps<TComponentState> = {
+export type CustomWidgetProps<TComponentState> = {
     req: Widget_custom<TComponentState>;
     componentState: TComponentState
     onChange: (componentState: TComponentState) => void
-    ui: Widget_custom_componentProps_ui
+    ui: import ('./widgets/WidgetCustomUI').UIKit
 }
 
-export type Widget_custom_opts<TComponentState>  = ReqInput<{ default: TComponentState, Component: (props: Widget_custom_componentProps<TComponentState>) => JSX.Element, }>
+export type Widget_custom_opts<TComponentState>  = ReqInput<{ default: TComponentState, Component: (props: CustomWidgetProps<TComponentState>) => JSX.Element, }>
 export type Widget_custom_serial<TComponentState> = StateFields<{ type: 'custom', active: true; componentState: TComponentState }>
 export type Widget_custom_state<TComponentState>  = StateFields<{ type: 'custom', active: true; componentState: TComponentState }>
 export type Widget_custom_output<TComponentState> = TComponentState
@@ -128,7 +127,7 @@ export class Widget_custom<TComponentState> implements IRequest<'custom', Widget
     type: 'custom' = 'custom'
     state: Widget_custom_state<TComponentState>
 
-    get Component(): ((props: Widget_custom_componentProps<TComponentState>) => JSX.Element) {
+    get Component(): ((props: CustomWidgetProps<TComponentState>) => JSX.Element) {
         return this.input.Component;
     }
     get componentState(): TComponentState {

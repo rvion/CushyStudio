@@ -1,4 +1,4 @@
-import { Widget_custom_componentProps } from 'src'
+import { CustomWidgetProps } from 'src'
 
 /**🔶 This is an advanced example of providing your own custom react component to display in the form */
 app({
@@ -17,7 +17,7 @@ app({
 
     run: async (run, form) => {
         /**🔶 Get the view state during a run */
-        const clickCount = form.cool?.clickCount
+        const clickCount = form.cool.clickCount
         run.output_text({ title: `Just for clicks`, message: `You have clicked it ${clickCount ?? 0} times (before resetting)` })
 
         if (form.resetIt) {
@@ -31,24 +31,25 @@ app({
     },
 })
 
-/**🔶 Define your own view state types */
-type MyCustomComponentState = {
-    text: string
-    time: Date
-    image?: MediaImageID
-    clickCount?: number
-}
-
-/**🔶 Define your component
- *  Note: This needs to be a .tsx file */
-function MyCustomComponent(props: Widget_custom_componentProps<MyCustomComponentState>) {
+/**
+ * Define your component
+ * 📝 This needs to be a .tsx file
+ * */
+const MyCustomComponent = (
+    p: CustomWidgetProps<{
+        text: string
+        time: Date
+        image?: MediaImageID
+        clickCount?: number
+    }>,
+) => {
     /**🔶 Get your values
-     * Note: The props.value is undefined by default, so this is a handy pattern */
-    const { time, image, text, clickCount } = props.componentState
+     * 📝 The props.value is undefined by default, so this is a handy pattern */
+    const { time, image, text, clickCount } = p.componentState
 
     /**🔶 Make a utility function so you can do partial updates without resetting all the other fields */
     const change = (value: Partial<MyCustomComponentState>) => {
-        props.onChange({ ...props.componentState, ...value })
+        p.onChange({ ...p.componentState, ...value })
     }
 
     return (
@@ -57,7 +58,7 @@ function MyCustomComponent(props: Widget_custom_componentProps<MyCustomComponent
                 <div className='flex flex-row'>{text ?? `Nothing to see here!`}</div>
                 <div className='flex flex-row'>{`last run: ${time}`}</div>
                 <div>Here is an image:</div>
-                <div>{image && <props.ui.image img={image} />}</div>
+                <div>{image && <p.ui.image img={image} />}</div>
 
                 <div
                     className='btn btn-outline'
