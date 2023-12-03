@@ -1,9 +1,10 @@
 {
-    "editor.formatOnSave": true,
-    "peacock.color": "#0b4867",
-    "editor.indentSize": 4,
+    // lint options
     "css.lint.unknownAtRules": "ignore",
     "tailwindCSS.classAttributes": ["class", "className", "tw"],
+
+    // Custom colors
+    "peacock.color": "#0b4867",
     "workbench.colorCustomizations": {
         "activityBar.activeBackground": "#106895",
         "activityBar.background": "#106895",
@@ -23,24 +24,18 @@
         "titleBar.inactiveBackground": "#0b486799",
         "titleBar.inactiveForeground": "#e7e7e799"
     },
-    "[css]": {
-        // "editor.defaultFormatter": null
-        "editor.formatOnSave": false
-    },
-    // automatically format code with prettier for all contributors
-    "[typescriptreact]": {
-        "editor.defaultFormatter": "esbenp.prettier-vscode"
-    },
-    "[typescript]": {
-        "editor.defaultFormatter": "esbenp.prettier-vscode"
-    },
-    "[json]": {
-        "editor.defaultFormatter": "esbenp.prettier-vscode"
-    },
+
+    // Styling preferences
+    "editor.formatOnSave": true,
+    "editor.indentSize": 4,
+    "[css]": { "editor.formatOnSave": false },
+    "[typescriptreact]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+    "[typescript]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+    "[json]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
     "files.associations": {
         "**/cushy-deck.json": "jsonc"
     },
-    "typescript.tsserver.experimental.enableProjectDiagnostics": true,
+
     "files.exclude": {
         "**/.git": true,
         "**/.svn": true,
@@ -49,31 +44,14 @@
         "**/.DS_Store": true,
         "**/Thumbs.db": true
     },
+
     "pasteImage.path": "site/assets",
     "search.exclude": {
         "out": true, // set this to false to include "out" folder in search results
         "public": true,
         "package-lock.json": true
     },
-    // Turn off tsc task auto detection since we have the necessary tasks as npm scripts
-    "typescript.tsc.autoDetect": "off",
 
-    "markdown.extension.toc.omittedFromToc": {
-        "library/CushyStudio/tutorial/reusable-ui-kits/readme.md": [
-            //
-            "# Modular decks example"
-        ],
-        // Use a path relative to your workspace.
-        "README.md": [
-            //
-            "# 🛋️ CushyStudio",
-            "## _The **easiest** and most **powerful** Stable Diffusion frontend_",
-            "# Table of content",
-            "## Table of content"
-            // "# Introduction",
-            // "## Also omitted"
-        ],
-        // Or an absolute path for standalone files.
-        "/home/foo/Documents/todo-list.md": ["## Shame list (I'll never do these)"]
-    }
+    // Turn off tsc task auto detection since we have the necessary tasks as npm scripts
+    "typescript.tsc.autoDetect": "off"
 }
