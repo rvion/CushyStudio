@@ -18,7 +18,7 @@ app({
     run: async (run, form) => {
         /**🔶 Get the view state during a run */
         const clickCount = form.cool?.clickCount
-        run.output_text({ title: `Just for clicks`, message: `Before resetting, you have clicked it ${clickCount ?? 0} times` })
+        run.output_text({ title: `Just for clicks`, message: `You have clicked it ${clickCount ?? 0} times (before resetting)` })
 
         if (form.resetIt) {
             /**🔶 Set the view state during a run */
