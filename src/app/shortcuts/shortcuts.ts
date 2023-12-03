@@ -25,6 +25,7 @@ const simpleValidInInput = (combo: Combo | Combo[], action: (fn: STATE) => void)
 export const shortcutsDef: Shortcut<STATE>[] = [
     // simpleValidInInput('meta+shift+k', (st) => (st.showSuperAdmin = !st.showSuperAdmin)),
     // simpleValidInInput('meta+shift+z', (st) => (st.showSuperAdminBubbles = !st.showSuperAdminBubbles)),
+    simpleValidInInput(['meta+,', 'ctrl+,'], (st) => st.layout.FOCUS_OR_CREATE('Config', {})),
     simpleValidInInput(['meta+escape', 'ctrl+escape'], (st) => st.closeFullLibrary()),
     simpleValidInInput(['meta+1', 'ctrl+1', 'meta+p', 'ctrl+p', 'meta+j'], (st) => st.toggleFullLibrary()),
     // simpleValidInInput(['meta+2', 'ctrl+2'], (st) => st.layout.addMarketplace()),

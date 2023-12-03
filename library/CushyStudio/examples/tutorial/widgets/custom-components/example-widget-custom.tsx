@@ -1,7 +1,10 @@
 /** 📝 This needs to be a .tsx file */
 
-import { observer } from 'mobx-react-lite'
 import type { CustomWidgetProps } from 'src'
+
+import { observer } from 'mobx-react-lite'
+import { MyCustomComponent2 } from './example-widget-custom-2'
+import Confetti from 'react-confetti'
 
 const MyCustomComponent = observer(function (
     p: CustomWidgetProps<{
@@ -19,16 +22,22 @@ const MyCustomComponent = observer(function (
             <input
                 tw='input input-bordered p-2'
                 value={value.text ?? `Nothing to see here!`}
-                onChange={(ev) => (p.widget.state.value.text = ev.target.value)}
+                onChange={(ev) => (value.text = ev.target.value)}
             />
             {/* Button -------------------------------------------------------- */}
-            <div className='btn btn-outline btn-primary btn-sm' onClick={() => p.widget.state.value.clickCount++}>
+            <div className='btn btn-outline btn-primary btn-sm' onClick={() => value.clickCount++}>
                 <div>Did you click it?</div>
                 <div>{value.clickCount ? `yes ${value.clickCount} times` : `nope`}</div>
             </div>
             {/* extra components -------------------------------------------------------- */}
-            <p.extra.JsonViewUI value={p.widget.state.value} />
+            <p.extra.JsonViewUI value={value} />
             {img && <p.extra.ImageUI img={img} />}
+            {/* imported file -------------------------------------------------------- */}
+            <MyCustomComponent2 text={value.text} />
+            {/* imported file -------------------------------------------------------- */}
+            <div tw='relative' style={{ height: '300px', width: '300px' }}>
+                <Confetti width={300} height={300} />
+            </div>
         </div>
     )
 })

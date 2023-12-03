@@ -32,6 +32,11 @@ import { Status } from './Status'
 import child_process from 'child_process'
 import { CustomDataL } from 'src/models/CustomData'
 import { _formatAsRelativeDateTime } from 'src/updater/_getRelativeTimeString'
+import { OpenRouterRequest } from 'src/llm/OpenRouter_Request'
+import { OpenRouterResponse } from 'src/llm/OpenRouter_Response'
+import { OpenRouter_ask } from 'src/llm/OpenRouter_ask'
+import { OpenRouter_Models } from 'src/llm/OpenRouter_models'
+import { openRouterInfos } from 'src/llm/OpenRouter_infos'
 
 export type ImageAndMask = HasSingle_IMAGE & HasSingle_MASK
 
@@ -80,6 +85,89 @@ export class Runtime<FIELDS extends WidgetDict = any> {
      */
     getLoraAssociatedTriggerWords = (loraName: string): Maybe<string> => {
         return this.st.configFile.value?.loraPrompts?.[loraName]?.text
+    }
+
+    /** create a new empty ComfyUI workflow */
+    create_ComfyUIWorkflow = (): ComfyWorkflowL => {
+        return this.st.db.graphs.create({ comfyPromptJSON: {}, stepID: this.step.id })
+    }
+
+    /** create a new empty ComfyUI workflow */
+    create_ComfyUIWorkflow_forTestPurpose = (p: { positivePrompt: string }): ComfyWorkflowL => {
+        const graph = this.st.db.graphs.create({ comfyPromptJSON: {}, stepID: this.step.id })
+        const builder = graph.builder
+
+        const model = builder.CheckpointLoaderSimple({ ckpt_name: 'lyriel_v15.safetensors' })
+        builder.PreviewImage({
+            images: builder.VAEDecode({
+                vae: model,
+                samples: builder.KSampler({
+                    latent_image: builder.EmptyLatentImage({}),
+                    model: model,
+                    sampler_name: 'ddim',
+                    scheduler: 'ddim_uniform',
+                    positive: builder.CLIPTextEncode({ clip: model, text: p.positivePrompt }),
+                    negative: builder.CLIPTextEncode({ clip: model, text: 'nsfw, nude' }),
+                }),
+            }),
+        })
+        return graph
+    }
+
+    /** geenric function to ask open router anything */
+    llm_ask_OpenRouter = async (p: OpenRouterRequest): Promise<OpenRouterResponse> => {
+        return await OpenRouter_ask(this.st.configFile.value.OPENROUTER_API_KEY, p)
+    }
+
+    /** dictionary of all known openrouter models */
+    llm_allModels = openRouterInfos
+
+    /** turn any simple request into an LLM */
+    llm_ask_PromptMaster = async (
+        /** description / instruction of  */
+        question: string,
+        /**
+         * the list of all openRouter models available
+         * 🔶 may not be up-to-date; last updated on 2023-12-03
+         * */
+        model: OpenRouter_Models = 'openai/gpt-3.5-turbo-instruct',
+    ): Promise<{
+        prompt: string
+        llmResponse: OpenRouterResponse
+    }> => {
+        const res: OpenRouterResponse = await OpenRouter_ask(this.st.configFile.value.OPENROUTER_API_KEY, {
+            max_tokens: 300,
+            model: model,
+            messages: [
+                {
+                    role: 'system',
+                    content: [
+                        //
+                        `You are an assistant in charge of writing a prompt to be submitted to a stable distribution ai image generative pipeline.`,
+                        `Write a prompt describing the user submited topic in a way that will help the ai generate a relevant image.`,
+                        `Your answer must be arond 500 chars in length`,
+                        `Start with most important words describing the prompt`,
+                        `Include lots of adjective and advers. no full sentences. remove useless words`,
+                        `try to include a long list coma separated words.`,
+                        'Once main keywords are in, if you still have character to add, include vaiours beauty or artsy words',
+                        `ONLY answer with the prompt itself. DO NOT answer anything else. No Hello, no thanks, no signature, no nothing.`,
+                    ].join('\n'),
+                },
+                {
+                    role: 'user',
+                    content: question,
+                },
+                // { role: 'user', content: 'Who are you?' },
+            ],
+        })
+        if (res.choices.length === 0) throw new Error('no choices in response')
+        const msg0 = res.choices[0].message
+        if (msg0 == null) throw new Error('choice 0 is null')
+        if (typeof msg0 === 'string') throw new Error('choice 0 seems to be an error')
+        return {
+            prompt: msg0.content ?? '',
+            llmResponse: res,
+        }
     }
 
     /**
@@ -684,85 +772,13 @@ ${ffmpegComandInfos.framesFileContent}
         ids?: IDNaminScheemeInPromptSentToComfyUI
     }): Promise<ComfyPromptL> {
         console.info('prompt requested')
-        const step = await this.sendPromp(p?.ids ?? 'use_stringified_numbers_only')
-        // this.run.cyto.animate()
-        await step.finished
-        return step
+        const prompt = await this.workflow.PROMPT({
+            step: this.step,
+            idMode: p?.ids,
+        })
+        await prompt.finished
+        return prompt
     }
 
     private _promptCounter = 0
-
-    private sendPromp = async (idMode: IDNaminScheemeInPromptSentToComfyUI): Promise<ComfyPromptL> => {
-        const liveGraph = this.workflow
-        if (liveGraph == null) throw new Error('no graph')
-        const currentJSON = deepCopyNaive(liveGraph.json_forPrompt(idMode))
-        const debugWorkflow = await liveGraph.json_workflow()
-        // this.step.append({ type: 'prompt', graph: currentJSON })
-        console.info('checkpoint:' + JSON.stringify(currentJSON))
-        // const step = new PromptExecution(this, currentJSON)
-        // this.steps.unshift(step)
-
-        // if we're note really running prompts, just resolve the step and continue
-        // if (this.opts?.mock) {
-        //     console.info('MOCK => aborting')
-        //     step._resolve!(step)
-        //     return step
-        // }
-
-        // const graphID = asGraphID(nanoid())
-        // const graph = this.st.db.graphs.create({ id: graphID, comfyPromptJSON: currentJSON })
-        const stepID = this.step.id
-
-        // 🔴 TODO: store the whole project in the prompt
-        const out: ApiPromptInput = {
-            client_id: this.st.comfySessionId,
-            extra_data: { extra_pnginfo: { workflow: debugWorkflow } },
-            prompt: currentJSON,
-        }
-
-        // | const outputAbsPath = this.st.cacheFolderPath
-
-        // save a copy of the prompt to the cache folder
-        // | const promptJSONPath = asAbsolutePath(path.join(outputAbsPath, `prompt-${++this._promptCounter}.json`))
-        // | this.st.writeTextFile(promptJSONPath, JSON.stringify(currentJSON, null, 4))
-
-        // save a corresponding workflow file
-        // | const cytoJSONPath = asAbsolutePath(path.join(outputAbsPath, `cyto-${this._promptCounter}.json`))
-        // | const cytoJSON = await runAutolayout(this.graph)
-        // | this.st.writeTextFile(cytoJSONPath, JSON.stringify(cytoJSON, null, 4))
-
-        // save a corresponding workflow file
-        // | const workflowJSONPath = asAbsolutePath(path.join(outputAbsPath, `workflow-${this._promptCounter}.json`))
-        // | const liteGraphJSON = convertFlowToLiteGraphJSON(this.graph, cytoJSON)
-        // | this.st.writeTextFile(workflowJSONPath, JSON.stringify(liteGraphJSON, null, 4))
-
-        // 🔶 not waiting here, because output comes back from somewhere else
-        // TODO: but we may want to catch error here to fail early
-        // otherwise, we might get stuck
-        const promptEndpoint = `${this.st.getServerHostHTTP()}/prompt`
-        console.info('sending prompt to ' + promptEndpoint)
-        const graph = this.st.db.graphs.create({ comfyPromptJSON: currentJSON })
-        const res = await fetch(promptEndpoint, {
-            method: 'POST',
-            body: JSON.stringify(out),
-        })
-        const prompmtInfo: PromptInfo = await res.json()
-        // console.log('prompt status', res.status, res.statusText, prompmtInfo)
-        // this.step.addOutput({ type: 'prompt', promptID: prompmtInfo.prompt_id })
-        if (res.status !== 200) {
-            const err = new InvalidPromptError('ComfyUI Prompt request failed', graph, prompmtInfo)
-            return Promise.reject(err)
-        } else {
-            const prompt = this.st.db.comfy_prompts.create({
-                id: prompmtInfo.prompt_id,
-                executed: 0,
-                graphID: graph.id,
-                stepID,
-            })
-            // this.step.addOutput({ type: 'prompt', promptID: prompmtInfo.prompt_id })
-            return prompt
-        }
-        // await sleep(1000)
-        // return step
-    }
 }

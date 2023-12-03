@@ -25,6 +25,7 @@ import __react from 'react'
 
 // @ts-ignore
 import { jsx, jsxs } from 'src/utils/custom-jsx/jsx-runtime'
+import { replaceImportsWithSyncImport } from 'src/back/ImportStructure'
 
 // prettier-ignore
 export type LoadStrategy =
@@ -402,12 +403,12 @@ export class LibraryFile {
 
         // 2. eval file to extract actions
         try {
-            const codJSWithoutWithImportsReplaced = REWRITE_IMPORTS(codeJS)
-            // console.log(codJSWithoutWithImportsReplaced)
+            const codJSWithoutWithImportsReplaced = replaceImportsWithSyncImport(codeJS) // REWRITE_IMPORTS(codeJS)
+            console.log(codJSWithoutWithImportsReplaced)
             // console.log({ jsx, jsxs })
-            const ProjectScriptFn = new Function('action', 'card', 'app', '__SYNC_IMPORT', codJSWithoutWithImportsReplaced)
+            const ProjectScriptFn = new Function('action', 'card', 'app', 'CUSHY_IMPORT', codJSWithoutWithImportsReplaced)
 
-            ProjectScriptFn(registerAppFn, registerAppFn, registerAppFn, __SYNC_IMPORT)
+            ProjectScriptFn(registerAppFn, registerAppFn, registerAppFn, CUSHY_IMPORT)
             if (CARDS_FOUND_IN_FILE.length === 0) return
             if (CARDS_FOUND_IN_FILE.length > 1) this.addError(`❌4. more than one action found: (${CARDS_FOUND_IN_FILE.length})`)
             return CARDS_FOUND_IN_FILE[0]
@@ -418,19 +419,23 @@ export class LibraryFile {
     }
 }
 
-const REWRITE_IMPORTS = (code: string) => {
-    const singleImportRegex = /import\s+\{\s*(\w+)\s*\}\s+from\s+["'](.+?)["'];?/g
-    const multipleImportsRegex = /import\s+\{\s*(\w+(?:,\s*\w+)*)\s*\}\s+from\s+["'](.+?)["'];?/g
-    const defaultImportRegex = /import\s+(\w+)\s+from\s+["'](.+?)["'];?/g
+// const REWRITE_IMPORTS = (code: string) => {
+//     const singleImportRegex = /import\s+\{\s*(\w+)\s*\}\s+from\s+["'](.+?)["'];?/g
+//     const multipleImportsRegex = /import\s+\{\s*(\w+(?:,\s*\w+)*)\s*\}\s+from\s+["'](.+?)["'];?/g
+//     const defaultImportRegex = /import\s+(\w+)\s+from\s+["'](.+?)["'];?/g
+//     const renamedSingleImportRegex = /import\s+\{\s*(\w+)\s+as\s+(\w+)\s*\}\s+from\s+["'](.+?)["'];?/g
+//     const renamedMultipleImportsRegex = /import\s+\{\s*(\w+\s+as\s+\w+(?:,\s*\w+\s+as\s+\w+)*)\s*\}\s+from\s+["'](.+?)["'];?/g
 
-    let transformedCode = code
-        .replace(multipleImportsRegex, `const { $1 } = __SYNC_IMPORT("$2");`)
-        .replace(singleImportRegex, `const { $1 } = __SYNC_IMPORT("$2");`)
-        .replace(defaultImportRegex, `const $1 = __SYNC_IMPORT("$2");`)
-    return transformedCode
-}
+//     let transformedCode = code
+//         .replace(renamedSingleImportRegex, `const { $1: $2 } = __SYNC_IMPORT("$3");`)
+//         .replace(renamedMultipleImportsRegex, `const { $1 } = __SYNC_IMPORT("$2");`)
+//         .replace(multipleImportsRegex, `const { $1 } = __SYNC_IMPORT("$2");`)
+//         .replace(singleImportRegex, `const { $1 } = __SYNC_IMPORT("$2");`)
+//         .replace(defaultImportRegex, `const $1 = __SYNC_IMPORT("$2");`)
+//     return transformedCode
+// }
 
-const __SYNC_IMPORT = (mod: string) => {
+const CUSHY_IMPORT = (mod: string) => {
     console.log('🔴 mod', mod)
     if (mod === 'react') return __react
     if (mod === 'mobx') return mobx

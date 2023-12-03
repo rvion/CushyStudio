@@ -9,6 +9,8 @@ export type ConfigFile = {
     /** this will allow you to enable typechecking for folders you manage */
     githubUsername?: string
 
+    OPENROUTER_API_KEY?: string
+
     /** this is the set of custom trigger owrds associated to your loras */
     loraPrompts?: {
         [loraName: string]: {
