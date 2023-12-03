@@ -50,6 +50,8 @@ library/*
 !library/CushyStudio
 !library/_doc
 
+library/**/dist
+
 .cushy/**/*.json
 
 src/theme/theme-rvion.css

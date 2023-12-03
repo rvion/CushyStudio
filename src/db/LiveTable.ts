@@ -65,7 +65,7 @@ export class LiveTable<T extends BaseInstanceFields, L extends LiveInstance<T, L
     last = (): Maybe<L> => {
         const data = this.stmt_last()
         DEPENDS_ON(this.liveEntities.size)
-        console.log('last =', data)
+        // console.log('last =', data)
         if (data == null) return null
         return this.getOrCreateInstanceForExistingData(data)
     }

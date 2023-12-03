@@ -10,8 +10,8 @@ export const _applyAllMigrations = (store: {
 }) => {
     const db = store.db
     const executedMigrations: Migration[] = db.prepare('select * from migrations').all() as Migration[]
-    const executedMigrationsNames = executedMigrations.map((e) => e.name)
-    store.log(`x executedMigrations:`, executedMigrationsNames)
+    // const executedMigrationsNames = executedMigrations.map((e) => e.name)
+    // store.log(`x executedMigrations:`, executedMigrationsNames)
 
     for (const migration of migrations) {
         const hasRun = executedMigrations.find((m) => m.id === migration.id)

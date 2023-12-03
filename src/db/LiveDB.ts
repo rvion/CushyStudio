@@ -104,7 +104,7 @@ export class LiveDB {
             this.graphs =                new LiveTable(this, 'graph'                , '📊', ComfyWorkflowL)
             this.steps =                 new LiveTable(this, 'step'                 , '🚶‍♂️', StepL)
 
-            console.log('🟢 TABLE INITIALIZED')
+            // console.log('🟢 TABLE INITIALIZED')
         }
 
     _getCount = (tabeName: string): number => {

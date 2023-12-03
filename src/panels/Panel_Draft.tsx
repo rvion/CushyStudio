@@ -237,7 +237,7 @@ const size2 = 'sm' as const
 
 const ErrorPanelUI = observer(function ErrorPanelUI_(p: { children: React.ReactNode }) {
     return (
-        <div tw='h-full' style={{ background: '#210202' }}>
+        <div tw='h-full'>
             <Message type='error'>{p.children}</Message>
         </div>
     )
@@ -256,25 +256,25 @@ export const AppCompilationErrorUI = observer(function AppCompilationErrorUI_(p:
                     ))}
                 </ul>
             </Message>
-            {card.errors.map((e) => {
+            {card.errors.map((e, ix) => {
                 return (
-                    <Message showIcon type='error' header={e.title}>
+                    <Message key={ix} showIcon type='error' header={e.title}>
                         {typeof e.details === 'string' ? (
-                            <pre tw='text-red-400'>{e.details}</pre>
+                            <pre>{e.details}</pre>
                         ) : isError(e.details) ? (
                             <div>
-                                <pre tw='text-red-400'>
+                                <pre>
                                     <b>name</b> {e.details.name}
                                 </pre>
-                                <pre tw='text-red-400'>
+                                <pre>
                                     <b>message</b> {e.details.message}
                                 </pre>
-                                <pre tw='text-red-400'>
+                                <pre>
                                     <b>stack</b> {e.details.stack}
                                 </pre>
                             </div>
                         ) : (
-                            <pre tw='text-red-400'>{JSON.stringify(e.details, null, 3)}</pre>
+                            <pre>{JSON.stringify(e.details, null, 3)}</pre>
                         )}
                     </Message>
                 )

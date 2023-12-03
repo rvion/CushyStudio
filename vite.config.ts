@@ -12,6 +12,7 @@ export default defineConfig({
         exclude: [
             //
             'fsevents',
+            'esbuild',
         ],
     },
     publicDir: 'library',
@@ -29,6 +30,13 @@ export default defineConfig({
                 '**/library/**/*.tsx',
                 '**/tsconfig.custom.json',
                 '**/tsconfig.json',
+
+                // find which one to keep later
+                '**/library/**/*.js',
+                '**/library/*/*/dist',
+                '**/library/*/*/dist/',
+                '**/library/*/*/dist/**/*.js',
+                '**/library/**/dist/**/*.js',
             ],
         },
     },
