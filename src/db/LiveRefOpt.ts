@@ -10,42 +10,27 @@ export class LiveRefOpt<
         //
         public owner: LiveInstance<any, any>,
         public key: keyof Owner['data'],
-        public tableName: TableNameInDB,
+        public table: () => LiveTable<any, L>,
     ) {}
 
     get id(): Maybe<L['data']['id']> {
         return this.owner.data[this.key]
     }
 
-    /** debug string for pretty printing */
-    get debugStr() {
-        return `LiveRefOpt: ${this.owner.table.name}->${this.tableName}(${this.id})`
-    }
-
     /** unsafe version of item, that crashes if item not found */
     get itemOrCrash(): L {
         const db = this.owner.db
-        const taretTable = (db as any)[this.tableName] as LiveTable<any, any>
-        const targetID = this.id
-        if (targetID == null) throw new Error(`1-${this.debugStr}`)
-        const targetInst = taretTable.get(targetID)
-        if (targetInst == null) {
-            console.log(JSON.stringify(this.owner.data))
-            throw new Error(`2-${this.debugStr}`)
-        }
-        return targetInst
+        if (this.id == null) throw new Error(`❌ LiveRefOpt.itemOrCrash: no id`)
+        return this.table().getOrThrow(this.id)
     }
 
     get item(): Maybe<L> {
         const db = this.owner.db
-        const taretTable = (db as any)[this.tableName] as LiveTable<any, any>
-        const targetID = this.id
-        if (targetID == null) return null
-        const targetInst = taretTable.get(targetID)
-        if (targetInst == null) {
-            console.log(`🔴`, JSON.stringify(this.owner.data))
-            throw new Error(`3-${this.debugStr}`)
-        }
-        return targetInst
+        return this.table().get(this.id)
+    }
+
+    /** debug string for pretty printing */
+    get debugStr() {
+        return `LiveRefOpt: ${this.owner.table.name}->${this.table().name}(${this.id})`
     }
 }

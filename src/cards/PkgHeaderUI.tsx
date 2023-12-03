@@ -20,11 +20,18 @@ export const PkgHeaderUI = observer(function ActionPackHeaderUI_(p: { pkg: Packa
                 ]}
                 onClick={() => (pkg.folded = !pkg.folded)}
             >
-                <img //
-                    style={{ height: `2rem` }}
-                    src={pkg.logo}
-                    alt='logo'
-                />
+                <RevealUI tw='shrink-0  '>
+                    <img //
+                        style={{ height: `2rem` }}
+                        src={pkg.logo}
+                        alt='logo'
+                    />
+                    <div tw='flex flex-col'>
+                        {pkg.esbuildEntrypoints.map((e) => (
+                            <div key={e}>{e}</div>
+                        ))}
+                    </div>
+                </RevealUI>
 
                 <div tw='flex flex-grow items-center'>
                     <div tw='flex-grow whitespace-nowrap overflow-hidden overflow-ellipsis'>{pkg.name}</div>

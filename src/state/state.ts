@@ -202,11 +202,17 @@ export class STATE {
         }
         console.log(`[🛋️] creating project`)
         const initialGraph = this.db.graphs.create({ comfyPromptJSON: {} })
+        const defaultAppPath = asAppPath('library/CushyStudio/default/prompt.ts')
+        const initialDraft = this.db.drafts.create({
+            appParams: {},
+            appPath: defaultAppPath,
+            isOpened: SQLITE_true,
+        })
         const project = this.db.projects.create({
             rootGraphID: initialGraph.id,
             name: 'new project',
-            currentApp: null,
-            currentDraftID: null,
+            currentApp: defaultAppPath,
+            currentDraftID: initialDraft.id,
         })
         return project
     }
@@ -218,15 +224,13 @@ export class STATE {
         remoteQuery: () => ({ isOpened: SQLITE_true }),
     })
 
-    _currentDraft: DraftL
-    get currentDraft(): DraftL {
-        return this._currentDraft
+    get currentDraft(): Maybe<DraftL> {
+        return this.getProject().draft.item
     }
     set currentDraft(draft: DraftL) {
-        const card = draft.app
-        card?.load()
+        this.getProject().update({ currentDraftID: draft.id })
+        draft.app?.load()
         this.closeFullLibrary()
-        this._currentDraft = draft
     }
 
     fixEnumValue = (
@@ -317,8 +321,6 @@ export class STATE {
         })
         this.importer = new ComfyImporter(this)
         this.library = new Library(this)
-        const defaultCard = this.library.getFileOrThrow(asAppPath('library/CushyStudio/default/prompt.ts'))
-        this._currentDraft = defaultCard.getLastDraft()
         ;(async () => {
             await this.schemaReady
             const project = this.getProject()

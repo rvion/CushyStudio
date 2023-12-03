@@ -3,11 +3,13 @@ import { Combo, parseInputSequence } from 'src/app/shortcuts/ShortcutManager'
 
 export const ComboUI = observer(function ComboUI_(p: { theme?: 'dark' | 'light'; combo?: Combo }) {
     if (p.combo == null) return null
-    const foo = parseInputSequence(p.combo)
+    const tokens = parseInputSequence(p.combo)
     return (
         <div tw='whitespace-nowrap'>
-            {foo.map((i) => (
-                <span tw='kbd'>{i}</span>
+            {tokens.map((token) => (
+                <span tw='kbd' key={token}>
+                    {token}
+                </span>
             ))}
         </div>
     )

@@ -181,7 +181,7 @@ export class ComfyNode<
             if (opts?.default != null) return opts.default
             // console.log('def2=', field, schema.required)
             if (!schema.required) return undefined
-            console.error(this.json)
+            console.error(field, 'is required but value is ', value, this.json)
             this.graph.recordProblem(
                 `🔴 [serializeValue] field "${field}" (of node ${this.$schema.nameInCushy}#${this.uid}) value is null but field is not optional`,
             )

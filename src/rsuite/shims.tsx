@@ -242,9 +242,12 @@ export const Message = observer(function Message_(p: {
             {...rest}
         >
             {p.header}
-            <div className='flex flex-wrap items-center'>
+            <div
+                //
+                className='flex flex-wrap items-baseline'
+            >
                 {messageIcon(p.type)}
-                {p.children}
+                <div>{p.children}</div>
             </div>
         </div>
     )

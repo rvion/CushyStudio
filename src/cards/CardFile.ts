@@ -9,7 +9,7 @@ import path, { join, relative } from 'pathe'
 import { Package } from 'src/cards/Pkg'
 import { DraftL } from 'src/models/Draft'
 import { clamp } from 'three/src/math/MathUtils'
-import { transpileCode } from '../back/transpiler'
+// import { compileSingleFile } from '../back/transpiler'
 import { convertLiteGraphToPrompt } from '../core/litegraphToPrompt'
 import { getPngMetadataFromUint8Array } from '../utils/png/_getPngMetadata'
 import { exhaust } from '../utils/misc/ComfyUtils'
@@ -271,20 +271,24 @@ export class LibraryFile {
     // LOADERS ------------------------------------------------------------------------
     // ACTION
     private load_asCushyStudioAction = async (): Promise<LoadStatus> => {
-        // 1. transpile
-        let codeJS: string
         try {
-            codeJS = await transpileCode(this.absPath)
-            this.codeJS = codeJS
+            // 1. transpile
+            await this.deck.rebuild()
+
+            const distPathWrongExt = path.join(this.deck.folderAbs, 'dist', this.deckRelativeFilePath)
+            const ext = path.extname(distPathWrongExt)
+            const distPathJS = distPathWrongExt.slice(0, -ext.length) + '.js'
+
+            this.codeJS = readFileSync(distPathJS, 'utf-8')
             this.codeTS = readFileSync(this.absPath, 'utf-8')
+
+            // 2. extract tools
+            this.appCompiled = this.RUN_ACTION_FILE(this.codeJS)
+            if (this.appCompiled == null) return this.addError('❌ [load_asCushyStudioAction] no actions found', null)
+            return LoadStatus.SUCCESS
         } catch (e) {
             return this.addError('transpile error in load_asCushyStudioAction', e)
         }
-
-        // 2. extract tools
-        this.appCompiled = this.RUN_ACTION_FILE(codeJS)
-        if (this.appCompiled == null) return this.addError('❌ [load_asCushyStudioAction] no actions found', null)
-        return LoadStatus.SUCCESS
     }
 
     // PROMPT
