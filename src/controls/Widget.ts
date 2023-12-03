@@ -32,7 +32,7 @@ export type Widget =
     | Widget_intOpt
     | Widget_floatOpt
     | Widget_markdown
-    | Widget_custom
+    | Widget_custom<unknown>
     | Widget_size
     | Widget_matrix
     | Widget_loras
