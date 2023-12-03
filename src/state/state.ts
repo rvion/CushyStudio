@@ -227,9 +227,9 @@ export class STATE {
     get currentDraft(): Maybe<DraftL> {
         return this.getProject().draft.item
     }
-    set currentDraft(draft: DraftL) {
-        this.getProject().update({ currentDraftID: draft.id })
-        draft.app?.load()
+    set currentDraft(draft: DraftL | null) {
+        this.getProject().update({ currentDraftID: draft ? draft.id : draft })
+        draft?.app?.load()
         this.closeFullLibrary()
     }
 

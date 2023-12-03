@@ -158,6 +158,7 @@ export const DraftEntryUI = observer(function DraftEntryUI_(p: { draft: DraftL }
                 <Button
                     size='xs'
                     onClick={() => {
+                        if (st.currentDraft?.id === draft.id) st.currentDraft = null
                         draft.delete()
                     }}
                     icon={<span className='material-symbols-outlined'>delete</span>}

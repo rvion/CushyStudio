@@ -52,6 +52,7 @@ export const ActionDraftListUI = observer(function ActionDraftListUI_(p: { card:
                                 onClick={(ev) => {
                                     ev.preventDefault()
                                     ev.stopPropagation()
+                                    if (st.currentDraft?.id === draft.id) st.currentDraft = null
                                     draft.delete()
                                     st.layout.closeTab(`/draft/${draft.id}`)
                                     // if (st.layout.currentTabID)
