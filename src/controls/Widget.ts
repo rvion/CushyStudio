@@ -32,6 +32,7 @@ export type Widget =
     | Widget_intOpt
     | Widget_floatOpt
     | Widget_markdown
+    | Widget_custom<any>
     | Widget_size
     | Widget_matrix
     | Widget_loras
@@ -105,6 +106,55 @@ export class Widget_markdown implements IRequest<'markdown', Widget_markdown_opt
     }
     get serial(): Widget_markdown_serial { return this.state }
     get result(): Widget_markdown_output { return this.state }
+}
+
+// 🅿️ custom ==============================================================================
+export type Widget_custom_componentProps_ui = {
+    image: (props: {     
+        size?: string | undefined;
+        img: MediaImageID; 
+    }) => JSX.Element
+}
+export type Widget_custom_componentProps<TComponentState> = {
+    req: Widget_custom<TComponentState>;
+    componentState: TComponentState
+    onChange: (componentState: TComponentState) => void
+    ui: Widget_custom_componentProps_ui
+}
+
+export type Widget_custom_opts<TComponentState>  = ReqInput<{ default: TComponentState, Component: (props: Widget_custom_componentProps<TComponentState>) => JSX.Element, }>
+export type Widget_custom_serial<TComponentState> = StateFields<{ type: 'custom', active: true; componentState: TComponentState }>
+export type Widget_custom_state<TComponentState>  = StateFields<{ type: 'custom', active: true; componentState: TComponentState }>
+export type Widget_custom_output<TComponentState> = TComponentState
+export interface Widget_custom<TComponentState> extends IWidget<'custom', Widget_custom_opts<TComponentState>, Widget_custom_serial<TComponentState>, Widget_custom_state<TComponentState>, Widget_custom_output<TComponentState>> {}
+export class Widget_custom<TComponentState> implements IRequest<'custom', Widget_custom_opts<TComponentState>, Widget_custom_serial<TComponentState>, Widget_custom_state<TComponentState>, Widget_custom_output<TComponentState>> {
+    isOptional = false
+    id: string
+    type: 'custom' = 'custom'
+    state: Widget_custom_state<TComponentState>
+
+    get Component(): ((props: Widget_custom_componentProps<TComponentState>) => JSX.Element) {
+        return this.input.Component;
+    }
+    get componentState(): TComponentState {
+        return this.state.componentState;
+    }
+    set componentState(v: TComponentState) {
+         this.state.componentState = v;
+    }
+
+    constructor(
+        public builder: FormBuilder,
+        public schema: SchemaL,
+        public input: Widget_custom_opts<TComponentState>,
+        serial?: Widget_custom_serial<TComponentState>,
+    ) {
+        this.id = serial?.id ?? nanoid()
+        this.state = serial ?? { type:'custom', active: true, id: this.id, componentState: this.input.default }
+        makeAutoObservable(this)
+    }
+    get serial(): Widget_custom_serial<TComponentState> { return this.state }
+    get result(): Widget_custom_output<TComponentState> { return this.state.componentState }
 }
 
 // 🅿️ str ==============================================================================
@@ -1397,6 +1447,7 @@ WidgetDI.Widget_inlineRun=Widget_inlineRun
 WidgetDI.Widget_intOpt=Widget_intOpt
 WidgetDI.Widget_floatOpt=Widget_floatOpt
 WidgetDI.Widget_markdown=Widget_markdown
+WidgetDI.Widget_custom=Widget_custom
 WidgetDI.Widget_size=Widget_size
 WidgetDI.Widget_matrix=Widget_matrix
 WidgetDI.Widget_loras=Widget_loras
