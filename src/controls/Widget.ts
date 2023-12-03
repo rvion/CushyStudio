@@ -126,7 +126,7 @@ export class Widget_custom<T> implements IRequest<'custom', Widget_custom_opts<T
     state: Widget_custom_state<T>
 
     Component: Widget_custom_opts<T>['Component']
-
+    st = () => this.schema.st
     reset=() => {
         this.state.value = this.input.defaultValue()
     }
@@ -141,6 +141,7 @@ export class Widget_custom<T> implements IRequest<'custom', Widget_custom_opts<T
         this.Component= observer(input.Component)
         this.state = serial ?? {
             type:'custom', active: true, id: this.id, value: this.input.defaultValue() }
+
         makeAutoObservable(this)
     }
     /** never mutate this field manually, only access to .state */
