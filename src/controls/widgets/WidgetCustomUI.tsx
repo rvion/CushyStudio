@@ -1,23 +1,23 @@
 import { observer } from 'mobx-react-lite'
 import { createElement } from 'react'
-import { Widget_custom_componentProps_ui, Widget_custom } from 'src/controls/Widget'
+import { Widget_custom } from 'src/controls/Widget'
 import { PropsOf } from 'src/panels/router/Layout'
 import { ImageUI } from 'src/widgets/galleries/ImageUI'
 
-export const WidgetCustomUI = observer(function WidgetCustomUI_(p: { req: Widget_custom<unknown> }) {
-    const req = p.req
+export const WidgetCustomUI = observer(function WidgetCustomUI_(p: { widget: Widget_custom<unknown> }) {
+    const widget = p.widget
 
-    return createElement(req.Component, {
-        req,
-        componentState: req.componentState,
-        onChange: (v) => (req.componentState = v),
-        ui: commonUIComponents,
+    return createElement(widget.input.Component, {
+        widget: widget,
+        extra: _commonUIComponents,
     })
 })
 
+// ------------------------------------------------------------------------
+
 /** Common ui components */
-const commonUIComponents = {
-    image: (p: PropsOf<typeof ImageUI>) => <ImageUI {...p} />,
+const _commonUIComponents = {
+    ImageUI: (p: PropsOf<typeof ImageUI>) => <ImageUI {...p} />,
 }
 
-export type UIKit = typeof commonUIComponents
+export type UIKit = typeof _commonUIComponents

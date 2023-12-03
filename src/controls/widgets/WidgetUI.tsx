@@ -61,7 +61,7 @@ export const WidgetUI = observer(function WidgetUI_(p: { req: R.Widget; focus?: 
     if (req instanceof R.Widget_choice)             return <WidgetChoiceUI      req={req} />
     if (req instanceof R.Widget_choices)            return <WidgetChoicesUI     req={req} />
     if (req instanceof R.Widget_markdown)           return <WidgetMardownUI     req={req} />
-    if (req instanceof R.Widget_custom)             return <WidgetCustomUI      req={req} />
+    if (req instanceof R.Widget_custom)             return <WidgetCustomUI      widget={req} />
     if (req instanceof R.Widget_selectMany)         return <>TODO</>
     if (req instanceof R.Widget_selectManyOrCustom) return <>TODO</>
     if (req instanceof R.Widget_selectOneOrCustom)  return <>TODO</>
