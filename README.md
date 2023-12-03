@@ -1,8 +1,8 @@
 <div align="center">
 
-# 🛋️ CushyStudio
+# 1. 🛋️ CushyStudio
 
-## _The **AI** and **Generative Art** platform for everyone_
+## 1.1. _The **AI** and **Generative Art** platform for everyone_
 
 <img height="21"  alt="Maturity"     src="https://img.shields.io/badge/status-BETA-yellow" />
 <img height="21" alt="Build Status" src="https://img.shields.io/badge/build-passing-%20brightgreen" />
@@ -79,7 +79,7 @@ _media 4: Sample Video (placeholder until real video)_
 https://github.com/rvion/CushyStudio/assets/2150990/776b00f5-687e-4043-8dac-34dfe7bd2184
 
 
-# 1. Installation
+# 2. Installation
 
 1.  Requirements:
     1.  [NodeJS](https://nodejs.org/en/download)
@@ -96,9 +96,9 @@ npm install
 npm start
 ```
 
-# 2. Quickstart Guide
+# 3. Quickstart Guide
 
-## 2.1. Starting
+## 3.1. Starting
 
 You can start **CushyStudio** in two ways:
 
@@ -106,7 +106,7 @@ You can start **CushyStudio** in two ways:
 - By running the `2_run.sh` (Mac, Linux) or `2_run.bat` (Windows)
 
 
-## 2.2. Updating
+## 3.2. Updating
 
 You can update **CushyStudio** in two ways:
 
@@ -114,47 +114,47 @@ You can update **CushyStudio** in two ways:
 - 1. Fastest: Click the update button in the top navbar (may not work when dependencies changes)
 
 
-## 2.3. Moving around
+## 3.3. Moving around
 
 - **CushyStudio** uses a powerful **dock** system to organize your workspace.
 - Every panel can be moved around, and even detached from the main window.
 - Use ctrl+w or cmd+w to close the current tab
 
-### 2.3.1. The top bar
+### 3.3.1. The top bar
 
 ![](site/assets/images/2023-11-25-10-20-36.png)
 
-## 2.4. Use built-in apps
+## 3.4. Use built-in apps
 
 - Use the `Library` panel to select the `CushyStudio/prompt` card.
 - Pick a model and click `run` to see it in action
 
-## 2.5. Install custom apps
+## 3.5. Install custom apps
 
 - Open the `Library` panel to select the `CushyStudio/prompt` card.
 
-## 2.6. Create custom Apps
+## 3.6. Create custom Apps
 
 
-## 2.7. Misc Tips
+## 3.7. Misc Tips
 
 -  Lots of Shorcuts, and way more to come.
 -  Right-clicking any tooltip / menu / dropdown handle make the tooltip persistently visible
 -  left and right borders fold back when tab handle is clicked
 -  click any version number to reveal a update system
 
-# 3. Features
+# 4. Features
 
-## 3.1. First-class ComfyUI support
+## 4.1. First-class ComfyUI support
 
-### 3.1.1. Work with **Local**, **Managed**, **Remote**, and **Cloud** ComfyUI instances
+### 4.1.1. Work with **Local**, **Managed**, **Remote**, and **Cloud** ComfyUI instances
 
 -   ✅ Quickly switch between various ComfyUI setups
 -   ✅ Parallelize work across multiple instances
 
 ![](site/assets/images/2023-11-25-comfy-host-management.jpg)
 
-### 3.1.2. Parallelize load across multiple ComfyUI instances
+### 4.1.2. Parallelize load across multiple ComfyUI instances
 
 -   ✅ Automatically download images in your local outputs folder
 -   ✅ Automatically upload missing files
@@ -164,17 +164,21 @@ You can update **CushyStudio** in two ways:
 
 
 
-### 3.1.3. Support ComfyUI workflow natively
+### 4.1.3. Support ComfyUI workflow natively
 
 **_🛋️ CushyStudio_** is directly compatible with **_ComfyUI_** workflow json format and images. Add them to the action folder to quickly use them inside CushyStudio.
 
 You can convert them to actions in cone click t
 
-## 3.2. Real-time enabled
+## 4.2. Full LLM support
+
+![](site/assets/images/2023-12-03-llm-example.jpg)
+
+## 4.3. Real-time enabled
 
 https://github.com/rvion/CushyStudio/assets/2150990/d71d7f9a-b0e9-415d-ab5a-7852b17894dc
 
-## 3.3. CivitAI integration
+## 4.4. CivitAI integration
 
 -   ✅ Embedded Civitai browser so you can find and copy models refs for download
 -   ✅ Civitai custom ComfyUI Nodes support
@@ -183,13 +187,13 @@ https://github.com/rvion/CushyStudio/assets/2150990/d71d7f9a-b0e9-415d-ab5a-7852
 ![](site/assets/images/2023-10-19-00-31-02.png)
 
 
-## 3.4. Built-in full-featured Image Editor
+## 4.5. Built-in full-featured Image Editor
 
 Layers, effects, masks, blending modes, ...and more. Always one click away
 
 ![](site/assets/images/2023-10-18-22-51-22.png)
 
-## 3.5. Easy to extend
+## 4.6. Easy to extend
 
 👉 In case you have a problem, check the logs and report what you see
 
@@ -200,7 +204,7 @@ Layers, effects, masks, blending modes, ...and more. Always one click away
 
 </details>
 
-## 3.6. Create your own Apps to streamline any image or video production
+## 4.7. Create your own Apps to streamline any image or video production
 
 ![](site/assets/images/2023-09-29-22-35-25.png)
 
@@ -217,7 +221,7 @@ Layers, effects, masks, blending modes, ...and more. Always one click away
     2. A built-in standard library made to quickly build your dream workflow
     3. Use lambda to get completion only for the node that produces the value needed
 
-# 4. Quickstart Guide For Action Creators
+# 5. Quickstart Guide For Action Creators
 
 Creating **Apps** is easy.
 In this section, we will
@@ -227,7 +231,7 @@ In this section, we will
 - See how to edit your apps
 - See how to publish your deck on the library
 
-## 4.1. How does `CushySudio` work ?
+## 5.1. How does `CushySudio` work ?
 
 1. On startup, **_CushyStudio_** connect to your **_ComfyUI_** server(s)
 
@@ -237,7 +241,7 @@ In this section, we will
     - 👉 this file is updated after each ComfyUI connection.
     - 👉 It means it will only be created after the first successful connection to your ComfyUI instance
 
-## 4.2. What is an `Action`?
+## 5.2. What is an `Action`?
 
 An `Action` is self-contained.
 - A widget definition ( `"ui"` function)
@@ -257,7 +261,7 @@ card({
 
 
 
-## 4.3. What is an `Action`?
+## 5.3. What is an `Action`?
 
 A `Deck` is a folder containing
 
@@ -272,7 +276,7 @@ Decks are made to be shared.
 - You can download `Decks` from the `Library` panel
 - You can publish `Decks` from the `Library` panel
 
-##  4.4. Create your first deck
+##  5.4. Create your first deck
 
 1. Click the `[+ Create Deck]` button at the top of the `Library`
 
@@ -356,7 +360,7 @@ A `Card` is a file containing
 -   ...And more
 
 
-## 4.5. `Prefabs` so you don't repeat yourself
+## 5.5. `Prefabs` so you don't repeat yourself
 
 The simplest way to modularize your **Apps** is to build `prefabs`.
 
@@ -371,7 +375,7 @@ _Best practices:_
 - You can The main `prefab` used by the built-in `deck` here: `library/CushyStudio/default/_prefab.ts`:
 
 
-### 4.5.1. `Prefabs` are just functions.
+### 5.5.1. `Prefabs` are just functions.
 
 - 👉 A `ui prefab` is a `function` that takes a `formBuilder` and returns a `Widget`.
 - 👉 A `run prefab` is a function that takes a `runtime` and modifies its `graph` or performs other actions.
@@ -395,11 +399,11 @@ export const ui_startImage = (form: FormBuilder) =>
     })
 ```
 
-### 4.5.2. Naming Conventions
+### 5.5.2. Naming Conventions
 
 
 
-### 4.5.3. Use a UI Prefab
+### 5.5.3. Use a UI Prefab
 
 To use a `prefab` in your card, you can simply import it and use it.
 
@@ -431,7 +435,7 @@ card({
     },
 })
 ```
-### 4.5.4. Execution Prefab
+### 5.5.4. Execution Prefab
 
 The resulting card looks like this:
 
@@ -439,7 +443,7 @@ The resulting card looks like this:
 
 
 
-## 4.6. Various Function notations
+## 5.6. Various Function notations
 
 **CushyStudio** aims to be accessible to non-programmers, while still being powerful enough for advanced users. You don't need to know typescript to get started, you can just learn what you need along the way.
 
@@ -448,7 +452,7 @@ This section is not a typescript tutorial, but rather a list of points of attent
 Be careful to understand those various notations for functions
 
 
-### 4.6.1. The special `() => ({ })` notation to return objects in a single line
+### 5.6.1. The special `() => ({ })` notation to return objects in a single line
 
 
 ```ts
@@ -473,7 +477,7 @@ function fn() {
 }
 ```
 
-## 4.7. Publish your Deck
+## 5.7. Publish your Deck
 
 Publishing your deck/apps is easy!
 
@@ -520,73 +524,27 @@ Then open an issue asking [there](https://github.com/rvion/CushyStudio/issues/ne
 
 
 
-# 5. Frequently Asked Questions:
+# 6. Frequently Asked Questions:
 
 In case you want to know more about the CLA, here are some answers to questions you might have:
 If your questions are not covered, you can take a look at the full FAQ: https://github.com/rvion/CushyStudio/blob/master/docs/FAQ.md
 
-## 5.1. Q: Will **CushyStudio** remain open source and free?
+## 6.1. Q: Will **CushyStudio** remain open source and free?
 
 **A**: Absolutely! I'm committed to keeping **CushyStudio** 100% open source and free to use as a tool. Create assets, art, games – you name it. It's your creation, and I'm just here to help you make it.
 
-## 5.2. Q: Why the AGPL and not the GPLV3?
+## 6.2. Q: Why the AGPL and not the GPLV3?
 
 **A**: For now, **CushyStudio** is licensed under AGPL as I aim to guide the project towards sustainability. I plan to transition to GPLV3 in the future, once the project achieves a stable foundation. This choice is designed to safeguard the project and its dedicated community. Rest assured, utilizing **CushyStudio** for asset creation remains unrestricted. My primary intention is to prevent the unauthorized resale or commercialization of **CushyStudio** as a service.
 
-## 5.3. Q: Any plans for a paid version of **CushyStudio**?
+## 6.3. Q: Any plans for a paid version of **CushyStudio**?
 
 **A**: No, and that's a promise. **CushyStudio** will always be free and open source. While I do have plans to offer complementary services (like cloud GPU services), the core of **CushyStudio** will remain free for all. Again, I simply wish to prevent the unauthorized resale or commercialization of **CushyStudio** as a service.
 
 Thank you for your understanding and patience in going through this agreement. Together, let's make **CushyStudio** better for everyone! 💪🎉
 
-# 6. Theming
+# 7. Theming
 
 Full theming capabilities using **DaisyUI** themes.
 
 TODO: add screenshots here.
-
-
-
-<!--
-
-- [1. Installation](#1-installation)
-- [2. Quickstart Guide](#2-quickstart-guide)
-  - [2.1. Starting](#21-starting)
-  - [2.2. Updating](#22-updating)
-  - [2.3. Moving around](#23-moving-around)
-    - [2.3.1. The top bar](#231-the-top-bar)
-  - [2.4. Use built-in apps](#24-use-built-in-apps)
-  - [2.5. Install custom apps](#25-install-custom-apps)
-  - [2.6. Create custom Apps](#26-create-custom-apps)
-  - [2.7. Misc Tips](#27-misc-tips)
-- [3. Features](#3-features)
-  - [3.1. First-class ComfyUI support](#31-first-class-comfyui-support)
-    - [3.1.1. Work with **Local**, **Managed**, **Remote**, and **Cloud** ComfyUI instances](#311-work-with-local-managed-remote-and-cloud-comfyui-instances)
-    - [3.1.2. Parallelize load across multiple ComfyUI instances](#312-parallelize-load-across-multiple-comfyui-instances)
-    - [3.1.3. Support ComfyUI workflow natively](#313-support-comfyui-workflow-natively)
-  - [3.2. Real-time enabled](#32-real-time-enabled)
-  - [3.3. CivitAI integration](#33-civitai-integration)
-  - [3.4. Built-in full-featured Image Editor](#34-built-in-full-featured-image-editor)
-  - [3.5. Easy to extend](#35-easy-to-extend)
-  - [3.6. Create your own Apps to streamline any image or video production](#36-create-your-own-apps-to-streamline-any-image-or-video-production)
-- [4. Quickstart Guide For Action Creators](#4-quickstart-guide-for-action-creators)
-  - [4.1. How does `CushySudio` work ?](#41-how-does-cushysudio-work-)
-  - [4.2. What is an `Action`?](#42-what-is-an-action)
-  - [4.3. What is an `Action`?](#43-what-is-an-action)
-  - [4.4. Create your first deck](#44-create-your-first-deck)
-  - [4.5. `Prefabs` so you don't repeat yourself](#45-prefabs-so-you-dont-repeat-yourself)
-    - [4.5.1. `Prefabs` are just functions.](#451-prefabs-are-just-functions)
-    - [4.5.2. Naming Conventions](#452-naming-conventions)
-    - [4.5.3. Use a UI Prefab](#453-use-a-ui-prefab)
-    - [4.5.4. Execution Prefab](#454-execution-prefab)
-  - [4.6. Various Function notations](#46-various-function-notations)
-    - [4.6.1. The special `() => ({ })` notation to return objects in a single line](#461-the-special-----notation-to-return-objects-in-a-single-line)
-  - [4.7. Publish your Deck](#47-publish-your-deck)
-- [5. Frequently Asked Questions:](#5-frequently-asked-questions)
-  - [5.1. Q: Will **CushyStudio** remain open source and free?](#51-q-will-cushystudio-remain-open-source-and-free)
-  - [5.2. Q: Why the AGPL and not the GPLV3?](#52-q-why-the-agpl-and-not-the-gplv3)
-  - [5.3. Q: Any plans for a paid version of **CushyStudio**?](#53-q-any-plans-for-a-paid-version-of-cushystudio)
-- [6. Theming](#6-theming)
-
-
- -->
