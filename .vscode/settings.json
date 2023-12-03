@@ -1,4 +1,19 @@
 {
+    "fileswitcher.mappings": [
+        {
+            "from": "library/([^/]+)/([^/]+)/(.*).tsx?",
+            "to": "library/:1/:2/dist/:3.js"
+        },
+        {
+            "from": "library/([^/]+)/([^/]+)/dist/(.*).js",
+            "to": "library/:1/:2/:3.tsx"
+        },
+        {
+            "from": "library/([^/]+)/([^/]+)/dist/(.*).js",
+            "to": "library/:1/:2/:3.ts"
+        }
+    ],
+
     // lint options
     "css.lint.unknownAtRules": "ignore",
     "tailwindCSS.classAttributes": ["class", "className", "tw"],

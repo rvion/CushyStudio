@@ -1,3 +1,10 @@
 {
-    "recommendations": ["bradlc.vscode-tailwindcss"]
+    "recommendations": [
+        // official vscode support for tailwind
+        "bradlc.vscode-tailwindcss",
+
+        // quick related-file swtching
+        // configured for tests and other more complex mapping
+        "johnathanludwig.fileswitcher"
+    ]
 }
