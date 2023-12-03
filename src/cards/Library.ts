@@ -13,6 +13,7 @@ import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { LibraryFile } from './CardFile'
 import { _FIX_INDENTATION } from 'src/utils/misc/_FIX_INDENTATION'
 import { ActionTagMethodList } from './Card'
+import { shouldSkip, shouldSkip_duringWatch } from './shouldSkip'
 
 export class Library {
     /** timestamp of last discoverAllApps */
@@ -67,13 +68,13 @@ export class Library {
         return card
     }
 
-    private decksByFolder = new Map<PackageRelPath, Package>()
+    private packageByFolder = new Map<PackageRelPath, Package>()
 
-    getPackage = (deckFolder: PackageRelPath): Package => {
-        const prev = this.decksByFolder.get(deckFolder)
+    getOrCreatePackage = (deckFolder: PackageRelPath): Package => {
+        const prev = this.packageByFolder.get(deckFolder)
         if (prev) return prev
         const next = new Package(this, deckFolder)
-        this.decksByFolder.set(deckFolder, next)
+        this.packageByFolder.set(deckFolder, next)
         this.decks.push(next)
         return next
     }
@@ -102,8 +103,8 @@ export class Library {
             ;(cache.watcher as Watcher).close()
         }
 
-        this.addKnownPacks()
-        this.discoverAllApps()
+        this.registerKnownPackages()
+        this.discoverAllPackages()
 
         // register watcher to properly reload all cards
         this.watcher = cache.watcher = new Watcher('library', {
@@ -111,7 +112,7 @@ export class Library {
             depth: 20,
             ignore: (t) => {
                 const baseName = path.basename(t)
-                return this.shouldSkip_duringWatch(baseName)
+                return shouldSkip_duringWatch(baseName)
             },
         })
 
@@ -140,27 +141,12 @@ export class Library {
         // this.filesMap = new Map()
     }
 
-    private shouldSkip_duringWatch = (baseName: string): boolean => {
-        if (baseName.startsWith('node_modules')) return true
-        return false
-    }
-
-    /** return true if the file or folder */
-    private shouldSkip = (baseName: string): boolean => {
-        if (baseName === 'cushy-deck.json') return true
-        if (baseName.startsWith('.')) return true
-        if (baseName.startsWith('_')) return true
-        if (baseName.startsWith('node_modules')) return true
-        if (baseName.startsWith('dist')) return true
-        return false
-    }
-
-    private addKnownPacks = () => {
-        this.getPackage('library/VinsiGit/Cushy_Action' as PackageRelPath)
-        this.getPackage('library/noellealarie/cushy-avatar-maker' as PackageRelPath)
-        this.getPackage('library/featherice/cushy-actions' as PackageRelPath)
-        this.getPackage('library/noellealarie/comfy2cushy-examples' as PackageRelPath)
-        this.getPackage('library/CushyStudio/default' as PackageRelPath)
+    private registerKnownPackages = () => {
+        this.getOrCreatePackage('library/VinsiGit/Cushy_Action' as PackageRelPath)
+        this.getOrCreatePackage('library/noellealarie/cushy-avatar-maker' as PackageRelPath)
+        this.getOrCreatePackage('library/featherice/cushy-actions' as PackageRelPath)
+        this.getOrCreatePackage('library/noellealarie/comfy2cushy-examples' as PackageRelPath)
+        this.getOrCreatePackage('library/CushyStudio/default' as PackageRelPath)
         // this.getDeck('library/CushyStudio/tutorial' as DeckFolder)
         // this.getDeck('library/rvion/cushy-example-deck' as DeckFolder)
         // this.getDeck('library/CushyStudio/cards' as DeckFolder)
@@ -206,9 +192,9 @@ export class Library {
         // writeFileSync(join(folder, 'cushy-deck.json'), `{}`)
         // copyFileSync(join(this.st.rootPath, 'assets', 'cushy-deck.png'), join(folder, 'cushy-deck.png'))
         // writeFileSync(join(folder, 'cushy-deck.png'), ``)
-        const deck = this.getPackage(folder)
+        const deck = this.getOrCreatePackage(folder)
         // await deck.updater._gitInit()
-        this.recursivelyFindCardsInFolder(this.st.actionsFolderPathAbs, this.fileTree)
+        // 🔴 this.recursivelyFindCardsInFolder(this.st.actionsFolderPathAbs, this.fileTree)
         return deck
     }
 
@@ -262,100 +248,37 @@ export class Library {
     }
     // ---------------------------------------------------------
 
-    discoverAllApps = (): boolean => {
+    discoverAllPackages = (): boolean => {
         // this.cardsByPath.clear() // reset
         this.fileTree.splice(0, this.fileTree.length) // reset
         this.folderMap.clear() // reset
         this.st.actionTags = [] // reset
 
-        console.log(`[💙] TOOL: starting discovery in ${this.st.actionsFolderPathAbs}`)
-        this.recursivelyFindCardsInFolder(this.st.actionsFolderPathAbs, this.fileTree)
+        // first level: author folders
+        // console.log(`[💙] LIBRARY: starting discovery in ${this.st.actionsFolderPathAbs}`)
+        const foundPackages = new Set<AbsolutePath>()
 
-        console.log(`[💙] TOOL: done walking, found ${this.cardsByPath.size} files`)
-        this.updatedAt = Date.now()
-        // await Promise.all([...this.filesMap.values()].map((f) => f.extractWorkflowsV2()))
-        // console.log(`[💙] TOOL: all ${this.filesMap.size} files are ready`)
-        return true
-    }
+        const authors = readdirSync(this.st.actionsFolderPathAbs)
+        for (const author of authors) {
+            const authorPath = join(this.st.actionsFolderPathAbs, author)
+            const baseName1 = path.basename(authorPath)
+            if (shouldSkip(baseName1)) continue
+            if (!statSync(authorPath).isDirectory()) continue
+            const packageFolders = readdirSync(authorPath)
+            for (const packageFolder of packageFolders) {
+                const packagePath = join(authorPath, packageFolder)
+                const baseName2 = path.basename(packagePath)
+                if (shouldSkip(baseName2)) continue
+                if (!statSync(packagePath).isDirectory()) continue
+                foundPackages.add(asAbsolutePath(packagePath))
 
-    /** @internal */
-    private recursivelyFindCardsInFolder = (
-        //
-        dir: string,
-        parentStack: ItemDataType[],
-    ) => {
-        const files = readdirSync(dir)
-        // console.log(files)
-        for (const baseName of files) {
-            if (baseName === '_actionTags.ts' || baseName === '_actionTags.js') {
-                const name = dir.split('/').at(-1)
-                const _this = this
-                function load(tags: ActionTagMethodList) {
-                    try {
-                        tags.forEach((tag) => {
-                            tag.key = `${name ? name : ''}/${tag.key}`
-                            _this.st.actionTags.push(tag)
-                        })
-                        console.log(`[🏷️] Loaded action tags for ${dir}`)
-                    } catch (error) {
-                        console.log(`[🔴] Failed to load action tags for ${dir}/_actionTags.ts\nGot: ${tags}`)
-                    }
-                }
-                try {
-                    const loader = new Function('actionTags', readFileSync(asAbsolutePath(join(dir, baseName))).toString())
-                    loader(load)
-                } catch (error) {
-                    console.log(`[🔴] Failed to load action tags for ${dir}/_actionTags.ts`)
-                }
-            }
-
-            const shouldSkip = this.shouldSkip(baseName)
-            if (shouldSkip) continue
-
-            const absPath = asAbsolutePath(join(dir, baseName))
-            const stat = statSync(absPath)
-            // const dirName = path.basename(filePath)
-            if (stat.isDirectory()) {
-                const relPath = asRelativePath(path.relative(this.st.actionsFolderPathAbs, absPath))
-                // console.log('1', folderEntry)
-                const ARRAY: ItemDataType[] = []
-                this.folderMap.add(relPath)
-                this.recursivelyFindCardsInFolder(absPath, ARRAY)
-                const folderEntry: ItemDataType = {
-                    value: relPath,
-                    children: ARRAY,
-                    label: baseName,
-                }
-                // console.log('2', folderEntry)
-                parentStack.push(folderEntry)
-            } else {
-                const relPath = path.relative(this.st.rootPath, absPath)
-                if (!hasValidActionExtension(relPath)) {
-                    // console.log(`skipping file ${relPath}`)
-                    continue
-                }
-                const parts = relPath.split('/').slice(0, 3)
-                if (parts.length < 3) {
-                    console.log(`skipping file ${relPath} cause it's not in a valid action folder`)
-                    continue
-                }
-                const apf = asRelativePath(path.join(...parts)) as PackageRelPath
-                const deck = this.getPackage(apf)
-                const cardPath = asAppPath(relPath)
-                deck._registerApp(absPath, 'B')
-                const treeEntry = { value: cardPath, label: baseName }
-                parentStack.push(treeEntry)
+                const pkgRelPath = path.relative(this.st.rootPath, packagePath) as PackageRelPath
+                this.getOrCreatePackage(pkgRelPath)
             }
         }
-    }
 
-    // debug = (at: ItemDataType = { children: this.fileTree, label: 'root' }, level = 0) => {
-    //     const indent = ' '.repeat(level * 2)
-    //     console.log(`|| ${indent}${at.label}`)
-    //     if (at.children) {
-    //         for (const child of at?.children ?? []) {
-    //             this.debug(child, level + 1)
-    //         }
-    //     }
-    // }
+        console.log(`[💙] LIBRARY: found ${foundPackages.size} packages`)
+        this.updatedAt = Date.now()
+        return true
+    }
 }

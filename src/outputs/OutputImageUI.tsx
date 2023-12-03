@@ -1,6 +1,5 @@
 import { observer } from 'mobx-react-lite'
 import { StepL } from 'src/models/Step'
-import { useSt } from 'src/state/stateContext'
 import { StepOutput_Image } from 'src/types/StepOutput'
 import { OutputPreviewWrapperUI } from './OutputPreviewWrapperUI'
 
@@ -11,7 +10,6 @@ export const OutputImagePreviewUI = observer(function OutputImagePreviewUI_(p: {
     step?: Maybe<StepL>
     output: StepOutput_Image
 }) {
-    // const size = useSt().outputPreviewSizeStr
     const image = p.output
     return (
         <OutputPreviewWrapperUI output={p.output}>
@@ -26,7 +24,6 @@ export const OutputImagePreviewUI = observer(function OutputImagePreviewUI_(p: {
                     borderRadius: '.5rem',
                 }}
             />
-            <OutputImageUI step={p.step} output={p.output} />
         </OutputPreviewWrapperUI>
     )
 })

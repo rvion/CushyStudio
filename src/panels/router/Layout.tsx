@@ -217,7 +217,6 @@ export class CushyLayoutManager {
         props: PropsOf<Panels[K]['widget']>,
         where: 'full' | 'current' | LEFT_PANE_TABSET_T | RIGHT_PANE_TABSET_T = RIGHT_PANE_TABSET_ID,
     ): Maybe<FL.Node> => {
-        console.warn('----------🟢---------------')
         if (where === 'full') {
             this.TOGGLE_FULL(component, props)
             return null

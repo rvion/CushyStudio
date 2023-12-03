@@ -3,6 +3,7 @@ import { _applyAllMigrations } from './_applyAllMigrations'
 import { _printSchema } from './_printSchema'
 import { _setupMigrationEngine } from './_setupMigrationEngine'
 import { _checkAllMigrationsHaveDifferentIds } from './migrations'
+import { DB_RELATIVE_PATH } from './DB_CONFIG'
 
 let ix = 0
 
@@ -12,7 +13,7 @@ export class Store {
     db: BetterSqlite3.Database
 
     constructor() {
-        const db = SQL('foobar.db', {})
+        const db = SQL(DB_RELATIVE_PATH, {})
         db.pragma('journal_mode = WAL')
         this.db = db
 
@@ -33,12 +34,5 @@ export class Store {
 
         const getB = this.db.prepare(`select json_extract(comfyPromptJSON,'$.a') as a from graph`)
         this.log(getB.all())
-        // const findByID = db.prepare('SELECT * FROM users WHERE id = ?')
-
-        // insert.get('John', 'Doe', 'jdoe@gmail.com', '123456')
-        // insert.get('John2', 'Doe2', 'jdoe@gmail.com', '123456')
-
-        // const row: any = findByID.get(1)
-        // console.this.log(row.firstName, row.lastName, row.email)
     }
 }

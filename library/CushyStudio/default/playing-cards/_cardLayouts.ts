@@ -36,6 +36,26 @@ export const getCardLayout = (value: CardValue): CardSuitPosition[] => {
             { x: 0.7, y: 0.8 },
             { x: 0.5, y: 0.5 },
         ]
+    if (value === '6')
+        return [
+            { x: 0.2, y: 0.2 },
+            { x: 0.2, y: 0.8 },
+            { x: 0.8, y: 0.2 },
+            { x: 0.8, y: 0.8 },
+            { x: 0.2, y: 0.5, flip: true },
+            { x: 0.8, y: 0.5, flip: true },
+        ]
+    if (value === '7')
+        return [
+            { x: 0.2, y: 0.2 },
+            { x: 0.2, y: 0.8 },
+            { x: 0.8, y: 0.2 },
+            { x: 0.8, y: 0.8 },
+            { x: 0.2, y: 0.5, flip: true },
+            { x: 0.8, y: 0.5, flip: true },
+            { x: 0.5, y: 0.3 },
+        ]
+
     if (value === '8')
         return [
             { x: 0.2, y: 0.2 },
@@ -46,6 +66,31 @@ export const getCardLayout = (value: CardValue): CardSuitPosition[] => {
             { x: 0.2, y: 0.8, flip: true },
             { x: 0.8, y: 0.6, flip: true },
             { x: 0.8, y: 0.8, flip: true },
+        ]
+    if (value === '9')
+        return [
+            { x: 0.2, y: 0.2 },
+            { x: 0.2, y: 0.4 },
+            { x: 0.8, y: 0.2 },
+            { x: 0.8, y: 0.4 },
+            { x: 0.2, y: 0.6, flip: true },
+            { x: 0.2, y: 0.8, flip: true },
+            { x: 0.8, y: 0.6, flip: true },
+            { x: 0.8, y: 0.8, flip: true },
+            { x: 0.5, y: 0.5 },
+        ]
+    if (value === '10')
+        return [
+            { x: 0.2, y: 0.2 },
+            { x: 0.2, y: 0.4 },
+            { x: 0.8, y: 0.2 },
+            { x: 0.8, y: 0.4 },
+            { x: 0.2, y: 0.6, flip: true },
+            { x: 0.2, y: 0.8, flip: true },
+            { x: 0.8, y: 0.6, flip: true },
+            { x: 0.8, y: 0.8, flip: true },
+            { x: 0.5, y: 0.3 },
+            { x: 0.5, y: 0.7 },
         ]
     return []
 }
