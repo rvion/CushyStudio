@@ -243,12 +243,13 @@ export class Package {
 
     private _discoverAllApps = (): boolean => {
         console.log(`[💜] PKG ${this.name.padEnd(20)}: loading ${this.folderAbs}`)
-        this.recursivelyFindCardsInFolder(this.folderAbs)
+        if (!existsSync(this.folderAbs)) return true
+        this.recursivelyFindAppsInFolder(this.folderAbs)
         return true
     }
 
     /** @internal */
-    private recursivelyFindCardsInFolder = (dir: string): void => {
+    private recursivelyFindAppsInFolder = (dir: string): void => {
         const files = readdirSync(dir)
         for (const baseName of files) {
             // TAGS ------------------------------------------------------------
@@ -284,7 +285,7 @@ export class Package {
             const absPath = asAbsolutePath(join(dir, baseName))
             const stat = statSync(absPath)
             if (stat.isDirectory()) {
-                this.recursivelyFindCardsInFolder(absPath)
+                this.recursivelyFindAppsInFolder(absPath)
                 continue
             }
 
