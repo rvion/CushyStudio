@@ -18,6 +18,7 @@ import { useSt } from 'src/state/stateContext'
 
 export const JsonViewUI = observer(function JsonViewUI_(p: { value?: object }) {
     const st = useSt()
+    JSON.stringify(p.value)
     return (
         <JsonView
             //
