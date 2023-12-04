@@ -32,6 +32,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
             if (req instanceof KLS.Widget_group) return true
             if (req instanceof KLS.Widget_groupOpt) return true
             if (req instanceof KLS.Widget_list) return true
+            if (req instanceof KLS.Widget_matrix) return true
             if (req instanceof KLS.Widget_listExt) return true
             if (req instanceof KLS.Widget_str && req.input.textarea) return true
             return false
