@@ -1,6 +1,7 @@
 import { execSync } from 'child_process'
 import { extractErrorMessage } from '../formatters/extractErrorMessage'
 import { writeFileSync } from 'fs'
+import { dirname, relative } from 'path'
 
 export async function createMP4FromImages(
     //
@@ -20,7 +21,9 @@ export async function createMP4FromImages(
     }>
 > {
     const outputVideoFramePaths = outputVideo + '.frames.txt'
-    const framesFileContent = imageFiles.map((path) => `file '${path}'`).join('\n')
+    const framesFileContent = imageFiles
+        .map((path) => `file '${relative(dirname(outputVideo), path).replace(`\\`, `/`)}'`)
+        .join('\n')
     writeFileSync(outputVideoFramePaths, framesFileContent, 'utf-8')
     // Create the input file arguments for ffmpeg
     // const inputArgs = imageFiles.map((path, index) => `-loop 1 -t ${frameDuration / 1000} -i "${path}"`).join(' ')
