@@ -26,7 +26,7 @@ export const StepOutputsHeaderV1UI = observer(function StepOutputsV1HeaderUI_(p:
                 //
                 'bg-base-200',
                 'flex items-center',
-                'cursor-pointer justify-between text-xs text-opacity-50 hover:bg-base-200',
+                'cursor-pointer text-xs text-opacity-50 hover:bg-base-200',
                 p.className,
             ]}
             onClick={() => (step.expanded = !step.expanded)}
@@ -34,6 +34,7 @@ export const StepOutputsHeaderV1UI = observer(function StepOutputsV1HeaderUI_(p:
         >
             <FoldIconUI val={step.expanded} />
             <b>{step.name ?? step.appFile?.name ?? 'no name'}</b>
+            <div tw='flex-grow'></div>
             <div className='text-xs opacity-50'>{_formatPreviewDate(new Date(step.createdAt))}</div>
         </div>
     )

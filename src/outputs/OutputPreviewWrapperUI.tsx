@@ -19,8 +19,8 @@ export const OutputPreviewWrapperUI = observer(function OutputPreviewWrapperUI_(
             <div
                 //
                 // STYLE
-                tw='rounded cursor-pointer hover:shadow-xl hover:brightness-110'
-                className='flex flex-rowcol-info virtualBorder2'
+                tw='rounded cursor-pointer'
+                className='virtualBorder shrink-0'
                 style={{ width: sizeStr, height: sizeStr }}
                 //
                 // LOGIC

@@ -6,6 +6,7 @@ import { Status } from 'src/back/Status'
 import { LibraryFile } from 'src/cards/CardFile'
 import { FormBuilder } from 'src/controls/FormBuilder'
 import { Widget_group, type Widget } from 'src/controls/Widget'
+import { SQLITE_true } from 'src/db/SQLITE_boolean'
 import { DraftT } from 'src/db/TYPES.gen'
 import { __FAIL, __OK, type Result } from 'src/types/Either'
 
@@ -63,6 +64,7 @@ export class DraftL {
             //
             // parentGraphID: graph.id,
             outputGraphID: graph.id,
+            isExpanded: SQLITE_true,
             //
             status: Status.New,
         })

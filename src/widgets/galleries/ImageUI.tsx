@@ -24,7 +24,7 @@ export const ImageUI = observer(function ImageUI_(p: { size?: string; img: Media
                 width: ImageWidth,
                 height: ImageWidth,
                 opacity,
-                padding: '0.2rem',
+                // padding: '0.2rem',
                 borderRadius: '.5rem',
             }}
             onClick={() => st.layout.FOCUS_OR_CREATE('Image', { imageID: image.id })}
@@ -56,7 +56,7 @@ export const PlaceholderImageUI = observer(function PlaceholderImageUI_(p: {}) {
                 objectFit: 'contain',
                 width: GalleryImageWidth,
                 height: GalleryImageWidth,
-                padding: '0.2rem',
+                padding: 0,
                 borderRadius: '.5rem',
             }}
         />
