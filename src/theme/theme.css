@@ -35,6 +35,7 @@
 
 /* markdown */
 
+/* ._MD { padding-left: .5rem } */
 ._MD h1 { font-size: 2rem; }
 ._MD h2 { font-size: 1.5rem; }
 ._MD h3 { font-size: 1.17rem; }
@@ -43,7 +44,6 @@
     color: oklch(var(--p))
 }
 
-._MD { padding-left: .5rem }
 ._MD ul, ._MD ol {
     padding-left: 1rem;
     margin-top: 0;
