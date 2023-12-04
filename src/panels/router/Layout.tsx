@@ -61,8 +61,8 @@ export class CushyLayoutManager {
     saveCurrentAs = (perspectiveName: string) => {
         const curr: FL.IJsonModel = this.model.toJson()
         this.st.configFile.update((t) => {
-            t.layouts_v7 ??= {}
-            t.layouts_v7[perspectiveName] = curr
+            t.layouts_v8 ??= {}
+            t.layouts_v8[perspectiveName] = curr
         })
     }
 
@@ -70,8 +70,8 @@ export class CushyLayoutManager {
     resetDefault = (): void => this.reset('default')
     reset = (perspectiveName: string): void => {
         this.st.configFile.update((t) => {
-            t.layouts_v7 ??= {}
-            delete t.layouts_v7[perspectiveName]
+            t.layouts_v8 ??= {}
+            delete t.layouts_v8[perspectiveName]
         })
         if (perspectiveName === this.currentPerspectiveName) {
             this.setModel(Model.fromJson(this.build()))
@@ -79,7 +79,7 @@ export class CushyLayoutManager {
     }
 
     constructor(public st: STATE) {
-        const prevLayout = st.configFile.value.layouts_v7?.default
+        const prevLayout = st.configFile.value.layouts_v8?.default
         const json = prevLayout ?? this.build()
         try {
             this.setModel(Model.fromJson(json))
