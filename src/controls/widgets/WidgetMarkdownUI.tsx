@@ -6,7 +6,7 @@ export const WidgetMardownUI = observer(function WidgetMardownUI_(p: { widget: W
     const req = p.widget
     return (
         <div //
-            className='_MD w-full'
+            className='_WidgetMardownUI _MD w-full'
             dangerouslySetInnerHTML={{ __html: marked(req.markdown) }}
         ></div>
     )
