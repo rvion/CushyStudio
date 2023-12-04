@@ -5,6 +5,7 @@ import { InputNumberUI } from 'src/rsuite/InputNumberUI'
 import { RevealUI } from 'src/rsuite/RevealUI'
 import { FieldAndLabelUI } from 'src/widgets/misc/FieldAndLabelUI'
 import { useSt } from '../state/stateContext'
+import { StepOutputsHeaderV2UI } from 'src/outputs/StepOutputsV2UI'
 
 const mode: 'H' | 'V' = 1 - 1 == 0 ? 'V' : 'H'
 const dir = mode === 'H' ? 'flex-col' : 'flex-row'
@@ -65,7 +66,7 @@ export const Panel_Output = observer(function Panel_Output_(p: {}) {
 
 export const SideOutputListUI = observer(function SideOutputListUI_(p: {}) {
     const st = useSt()
-    const selectedStep = st.focusedStepL
+    const step = st.focusedStepL
     const size = st.historySizeStr
     return (
         <div tw={'flex flex-wrap gap-0.5 p-1 overflow-auto flex-shrink-0 bg-base-300 items-center'}>
@@ -96,8 +97,9 @@ export const SideOutputListUI = observer(function SideOutputListUI_(p: {}) {
                     </FieldAndLabelUI>
                 </div>
             </RevealUI>
-            {selectedStep?.outputs?.map((output, ix) => (
-                <OutputPreviewUI key={ix} step={selectedStep} output={output} />
+            {step && <StepOutputsHeaderV2UI step={step} />}
+            {step?.outputs?.map((output, ix) => (
+                <OutputPreviewUI key={ix} step={step} output={output} />
             ))}
         </div>
     )

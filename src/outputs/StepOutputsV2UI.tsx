@@ -19,12 +19,12 @@ export const StepOutputsV2UI = observer(function StepOutputsV2UI_(p: { step: Ste
     )
 })
 
-const StepOutputsHeaderV2UI = observer(function StepOutputsV1HeaderUI_(p: { step: StepL; className?: string }) {
+export const StepOutputsHeaderV2UI = observer(function StepOutputsV1HeaderUI_(p: { step: StepL; className?: string }) {
     const st = useSt()
     const selectedStep = st.focusedStepL
     const step = p.step
     const selected = selectedStep === step
-    const size = st.gallerySizeStr
+    const size = st.historySizeStr
     return (
         <div
             tw={[
@@ -61,10 +61,9 @@ const StepOutputsHeaderV2UI = observer(function StepOutputsV1HeaderUI_(p: { step
                     </div>
                 )}
             </div>
-            <div className='text-xs pr-4 whitespace-nowrap overflow-ellipsis opacity-90 bg-black text-white absolute bottom-0'>
-                {/*  */}
+            {/* <div className='text-xs pr-4 whitespace-nowrap overflow-ellipsis opacity-90 bg-black text-white absolute bottom-0'>
                 {_formatPreviewDate(new Date(step.createdAt))}
-            </div>
+            </div> */}
             <div className='text-xs whitespace-nowrap overflow-ellipsis opacity-90 bg-black text-white absolute top-0 right-0'>
                 {statusUI(p.step.finalStatus)}
                 {/*  */}

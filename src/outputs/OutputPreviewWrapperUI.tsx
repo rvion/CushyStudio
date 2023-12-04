@@ -11,9 +11,12 @@ export const OutputPreviewWrapperUI = observer(function OutputPreviewWrapperUI_(
 
     /** must be able to scale to 64*64  */
     children: ReactNode
+
+    /** size in px */
+    size?: number
 }) {
     const st = useSt()
-    const sizeStr = st.historySizeStr
+    const sizeStr = p.size ? `${p.size}px` : st.historySizeStr
     return (
         <ErrorBoundary FallbackComponent={ErrorBoundaryFallback} onReset={(details) => {}}>
             <div

@@ -15,7 +15,6 @@ import { Panel_LastGraph } from '../Panel_LastGraph'
 import { Panel_Marketplace } from '../Panel_Marketplace'
 import { Panel_Minipaint } from '../Panel_Minipaint'
 import { Panel_Output } from '../Panel_Output'
-import { Panel_Outputs } from '../Panel_Outputs'
 import { Panel_Squoosh } from '../Panel_Squoosh'
 import { Panel_LastStep, Panel_Steps } from '../Panel_Steps'
 import { Panel_TypeDoc } from '../Panel_TypeDoc'
@@ -40,7 +39,6 @@ export const panels = {
 
     // misc
     Output:              { name: 'Output',              widget: Panel_Output,            header: (p: PropsOf<typeof Panel_Output           >) => ({title: 'Output',              icon: undefined                               }) },
-    Outputs:             { name: 'Outputs',             widget: Panel_Outputs,           header: (p: PropsOf<typeof Panel_Outputs          >) => ({title: 'Outputs',             icon: undefined                               }) },
     Steps:               { name: 'Steps',               widget: Panel_Steps,             header: (p: PropsOf<typeof Panel_Steps            >) => ({title: 'Steps',               icon: undefined                               }) },
     LastGraph:           { name: 'LastGraph',           widget: Panel_LastGraph,         header: (p: PropsOf<typeof Panel_LastGraph        >) => ({title: '⏱️ LastGraph',        icon: undefined                               }) },
     LastImage:           { name: 'LastImage',           widget: Panel_ViewImage,         header: (p: PropsOf<typeof Panel_ViewImage        >) => ({title: '⏱️ LastImage',        icon: undefined                               }) },

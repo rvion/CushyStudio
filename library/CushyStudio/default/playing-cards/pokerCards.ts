@@ -1,13 +1,12 @@
+import { ImageAndMask } from 'src'
 import type { FormBuilder } from 'src/controls/FormBuilder'
 import { CardSuit, CardValue } from './_cardLayouts'
 import { _drawCard } from './_drawCard'
-import { asAbsolutePath } from 'src/utils/fs/pathUtils'
-import { ImageAndMask } from 'src'
 
 const ui = (form: FormBuilder) => ({
     // [UI] MODEL --------------------------------------
     // generate
-    _1: form.markdown({ markdown: `# Model`, label: false }),
+    // _1: form.markdown({ markdown: `### Model`, label: false }),
     model: form.enum({
         enumName: 'Enum_CheckpointLoaderSimple_ckpt_name',
         default: 'revAnimated_v122.safetensors',
@@ -19,7 +18,7 @@ const ui = (form: FormBuilder) => ({
     // }),
 
     // [UI] CARD ---------------------------------------
-    _2: form.markdown({ markdown: `# Cards`, label: false }),
+    // _2: form.markdown({ markdown: `### Cards`, label: false }),
     cards: form.matrix({
         cols: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'],
         rows: ['spades', 'hearts', 'clubs', 'diamonds'],
@@ -37,7 +36,7 @@ const ui = (form: FormBuilder) => ({
         }),
     }),
 
-    _3: form.markdown({ markdown: `# Prompts`, label: false }),
+    // _3: form.markdown({ markdown: `### Prompts`, label: false }),
     generalTheme: form.string({ default: 'fantasy' }),
     // Main cards
     illustrations: form.group({

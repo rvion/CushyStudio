@@ -154,7 +154,7 @@ export class STATE {
     // history app size
     get historySizeStr() { return `${this.historySize}px` } // prettier-ignore
     set historySize(v: number) { this.configFile.update({ historyAppSize: v }) } // prettier-ignore
-    get historySize() { return this.configFile.value.historyAppSize ?? 48 } // prettier-ignore
+    get historySize() { return this.configFile.value.historyAppSize ?? 32 } // prettier-ignore
 
     // latent size pct
     get latentSizeStr() { return `${this.latentSize}%` } // prettier-ignore

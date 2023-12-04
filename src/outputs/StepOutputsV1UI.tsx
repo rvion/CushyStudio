@@ -4,6 +4,7 @@ import { observer } from 'mobx-react-lite'
 import { _formatPreviewDate } from '../utils/formatters/_formatPreviewDate'
 import { OutputPreviewUI, OutputUI } from './OutputUI'
 import { FoldIconUI } from 'src/cards/FoldIconUI'
+import { StepOutputsHeaderV2UI } from './StepOutputsV2UI'
 
 export const StepOutputsV1UI = observer(function StepOutputsV1UI_(p: { step: StepL }) {
     const step = p.step
@@ -44,6 +45,7 @@ export const StepOutputsBodyV1UI = observer(function StepBodyUI_(p: { step: Step
     const step = p.step
     return (
         <div className='flex flex-wrap gap-1'>
+            {step && <StepOutputsHeaderV2UI step={step} />}
             {step.outputs?.map((output, ix) => (
                 <OutputPreviewUI key={ix} step={step} output={output} />
             ))}
