@@ -1,9 +1,9 @@
 import { observer } from 'mobx-react-lite'
 import { Button, Input, Slider, Toggle } from 'src/rsuite/shims'
-import { useSt } from '../state/stateContext'
-import { ImageUI } from '../widgets/galleries/ImageUI'
 import { parseFloatNoRoundingErr } from 'src/utils/misc/parseFloatNoRoundingErr'
 import { FieldAndLabelUI } from 'src/widgets/misc/FieldAndLabelUI'
+import { useSt } from '../state/stateContext'
+import { ImageUI } from '../widgets/galleries/ImageUI'
 
 export const Panel_Gallery = observer(function VerticalGalleryUI_(p: {}) {
     const st = useSt()

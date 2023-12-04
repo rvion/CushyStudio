@@ -6,7 +6,7 @@ import { RevealUI } from 'src/rsuite/RevealUI'
 import { FieldAndLabelUI } from 'src/widgets/misc/FieldAndLabelUI'
 import { useSt } from '../state/stateContext'
 
-const mode: 'H' | 'V' = 1 - 1 == 1 ? 'V' : 'H'
+const mode: 'H' | 'V' = 1 - 1 == 0 ? 'V' : 'H'
 const dir = mode === 'H' ? 'flex-col' : 'flex-row'
 
 export const LatentIfLastUI = observer(function LatentIfLastUI_(p: {}) {
@@ -29,45 +29,46 @@ export const Panel_Output = observer(function Panel_Output_(p: {}) {
     const st = useSt()
     const selectedStep = st.focusedStepL
     if (selectedStep == null) return null
-    const out1 = st.focusedStepOutput ?? selectedStep.lastMediaOutput ?? st.db.media_images.last()
-    const out2 = st.hovered
+    const out1 = st.hovered ?? st.focusedStepOutput ?? selectedStep.lastMediaOutput ?? st.db.media_images.last()
+    const out2 = null
     const out3 = selectedStep.currentlyExecutingOutput
     return (
-        <div
-            tw={[
-                //
-                'relative',
-                mode === 'H' ? 'flex-row' : 'flex-col',
-                'flex flex-grow h-full w-full gap-0.5',
-            ]}
-        >
-            {/* <MainOutputHistoryUI /> */}
-            <SideOutputListUI />
-            <div tw='flex flex-grow relative'>
-                <div tw='flex flex-grow overflow-auto'>
+        <>
+            <div
+                tw={[
+                    //
+                    'flex flex-col',
+                    'flex-grow h-full w-full',
+                ]}
+            >
+                <SideOutputListUI />
+                {/* <MainOutputHistoryUI /> */}
+                {/* <div tw='flex-grow flex flex-row relative'> */}
+                <div tw={['animate-in zoom-in-75', 'flex flex-grow overflow-auto']}>
                     {/*  */}
                     {out1 && <OutputUI output={out1} />}
                 </div>
-                <div tw='flex flex-grow overflow-auto absolute pointer-events-none inset-0 z-30'>
+                <div tw={['flex flex-grow overflow-auto absolute pointer-events-none inset-0 z-30']}>
                     {out2 && <OutputUI output={out2} />}
                 </div>
                 {out3 && (
-                    <div tw='flex flex-grow overflow-auto absolute z-20 bg-base-100 bg-opacity-80'>
+                    <div tw={['flex flex-grow overflow-auto top-20 absolute z-20 bg-base-100 bg-opacity-80']}>
                         <OutputUI output={out3} />
                     </div>
                 )}
                 <LatentIfLastUI />
+                {/* </div> */}
             </div>
-        </div>
+        </>
     )
 })
 
 export const SideOutputListUI = observer(function SideOutputListUI_(p: {}) {
     const st = useSt()
     const selectedStep = st.focusedStepL
-    const size = st.gallerySizeStr
+    const size = st.historySizeStr
     return (
-        <div tw={[dir, 'flex gap-0.5 p-1 overflow-auto flex-shrink-0 bg-base-300 items-center']}>
+        <div tw={'flex flex-wrap gap-0.5 p-1 overflow-auto flex-shrink-0 bg-base-300 items-center'}>
             <RevealUI tw='self-start' disableHover>
                 <div style={{ width: size, height: size, lineHeight: size }} tw='btn h-full'>
                     <span className='material-symbols-outlined'>settings</span>
@@ -79,8 +80,8 @@ export const SideOutputListUI = observer(function SideOutputListUI_(p: {}) {
                             mode={'int'}
                             min={32}
                             max={200}
-                            onValueChange={(next) => (st.gallerySize = next)}
-                            value={st.gallerySize}
+                            onValueChange={(next) => (st.historySize = next)}
+                            value={st.historySize}
                         />
                     </FieldAndLabelUI>
                     <FieldAndLabelUI label='Latent Size (%)'>
@@ -95,11 +96,9 @@ export const SideOutputListUI = observer(function SideOutputListUI_(p: {}) {
                     </FieldAndLabelUI>
                 </div>
             </RevealUI>
-            <div tw={[dir, 'flex flex-grow gap-1 overflow-auto']}>
-                {selectedStep?.outputs?.map((output, ix) => (
-                    <OutputPreviewUI key={ix} step={selectedStep} output={output} />
-                ))}
-            </div>
+            {selectedStep?.outputs?.map((output, ix) => (
+                <OutputPreviewUI key={ix} step={selectedStep} output={output} />
+            ))}
         </div>
     )
 })

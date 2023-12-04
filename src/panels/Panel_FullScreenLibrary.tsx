@@ -143,7 +143,7 @@ export const DraftEntryUI = observer(function DraftEntryUI_(p: { draft: DraftL }
                     st.layout.FOCUS_OR_CREATE('CurrentDraft', {}, 'LEFT_PANE_TABSET')
                 }}
             >
-                {draft.data.title}
+                {draft.data.title || draft.app?.name || draft.data.appPath}
             </div>
             <Joined tw='ml-auto right-0'>
                 <Button

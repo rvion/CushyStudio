@@ -7,7 +7,11 @@ import { useSt } from 'src/state/stateContext'
 import { StepOutput_Text } from 'src/types/StepOutput'
 import { OutputPreviewWrapperUI } from './OutputPreviewWrapperUI'
 
-export const OutputTextPreviewUI = observer(function OutputTextPreviewUI_(p: { step?: Maybe<StepL>; output: StepOutput_Text }) {
+export const OutputTextPreviewUI = observer(function OutputTextPreviewUI_(p: {
+    //
+    step?: Maybe<StepL>
+    output: StepOutput_Text
+}) {
     const st = useSt()
     const output = p.output
     const size = st.gallerySize

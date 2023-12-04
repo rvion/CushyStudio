@@ -13,16 +13,14 @@ export const OutputPreviewWrapperUI = observer(function OutputPreviewWrapperUI_(
     children: ReactNode
 }) {
     const st = useSt()
-    const sizeStr = st.gallerySizeStr
+    const sizeStr = st.historySizeStr
     return (
         <ErrorBoundary FallbackComponent={ErrorBoundaryFallback} onReset={(details) => {}}>
             <div
-                //
                 // STYLE
-                tw='rounded cursor-pointer'
+                tw='rounded cursor-pointer overflow-hidden'
                 className='virtualBorder shrink-0'
                 style={{ width: sizeStr, height: sizeStr }}
-                //
                 // LOGIC
                 onClick={() => (st.focusedStepOutput = p.output)}
                 onMouseEnter={(ev) => (st.hovered = p.output)}
