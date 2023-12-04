@@ -132,9 +132,9 @@ export const DraftEntryUI = observer(function DraftEntryUI_(p: { draft: DraftL }
             ]}
             key={draft.id}
         >
-            <div tw='pl-1'>
+            {/* <div tw='pl-1'>
                 <DraftFavoriteBtnUI draft={draft} size='1.3rem' />
-            </div>
+            </div> */}
             <AppIllustrationUI app={draft.app} size='1.5rem' />
             <div
                 tw='cursor-pointer single-line-ellipsis flex-grow'
