@@ -70,6 +70,9 @@ export const OutputDisplacementUI = observer(function OutputDisplacementUI_(p: {
     return (
         <div>
             <div tw='flex gap-2 px-2'>
+                <FieldAndLabelUI label='Points'>
+                    <Toggle checked={state.usePoints} onChange={(e) => (state.usePoints = e.target.checked)} />
+                </FieldAndLabelUI>
                 <FieldAndLabelUI label='displacement'>
                     <InputNumberUI
                         mode='float'
@@ -129,6 +132,22 @@ class State {
     set displacementScale(v: number) {
         this._displacementScale = v
         this.material.displacementScale = v
+    }
+
+    private _usePoints = false
+    get usePoints() { return this._usePoints } // prettier-ignore
+    set usePoints(v: boolean) {
+        this._usePoints = v
+
+        if (v) {
+            this.scene.remove(this.plane)
+            this.scene.remove(this.planeSym)
+            this.scene.add(this.points)
+        } else {
+            this.scene.add(this.plane)
+            this.scene.add(this.planeSym)
+            this.scene.remove(this.points)
+        }
     }
 
     ambientLight: THREE.AmbientLight
@@ -196,6 +215,10 @@ class State {
 
     controls: OrbitControls
 
+    // point cloud
+    pointsMaterial: THREE.PointsMaterial
+    points: THREE.Points
+
     // plane
     geometry: THREE.PlaneGeometry
     material: THREE.MeshStandardMaterial
@@ -247,6 +270,17 @@ class State {
             Math.round(p.width),
             Math.round(p.height),
         )
+        this.pointsMaterial = new THREE.PointsMaterial({
+            map: texture,
+            transparent: true,
+            // displacementMap: depthTexture,
+            // displacementScale: this.displacementScale,
+            // normalMap: normalTexture,
+            // metalness: this.metalness,
+            // roughness: this.roughness,
+        })
+        this.points = new THREE.Points(this.geometry, this.pointsMaterial)
+
         this.material = new THREE.MeshStandardMaterial({
             map: texture,
             transparent: true,
@@ -256,10 +290,153 @@ class State {
             metalness: this.metalness,
             roughness: this.roughness,
         })
+
+        // 1.
+        // console.log(`shader.vertexShader`, { vertexShader: shader.vertexShader })
+
+        // const customTransform = `
+        //     vec3 transformed = vec3(position);
+        //     vec2 pixelUV = vUv * vec2(${displacementMapSizeX.toFixed(1)}, ${displacementMapSizeY.toFixed(1)});
+
+        //     // Calculate the difference in displacement values between neighboring pixels
+        //     float displacementDiffX = abs(texture2D(displacementMap, pixelUV + vec2(1, 0)).r - texture2D(displacementMap, pixelUV).r);
+        //     float displacementDiffY = abs(texture2D(displacementMap, pixelUV + vec2(0, 1)).r - texture2D(displacementMap, pixelUV).r);
+
+        //     // If the difference is above the threshold, discard the pixel
+        //     if (displacementDiffX > ${cutoutThreshold.toFixed(1)} || displacementDiffY > ${cutoutThreshold.toFixed(1)}) {
+        //         discard;
+        //     }
+        // `
+        //     const customTransform = `
+        //     // Simplified code for debugging
+        //     if (vUv.x > ${cutoutThreshold.toFixed(4)}) {
+        //         discard;
+        //     }
+        // `
+        // console.log(`shader.vertexShader`, { vertexShader: shader.vertexShader })
+
+        // 1b.
+        // // Add custom shader code to achieve cutout based on displacement difference
+        // const cutoutThreshold = 10000
+        // const displacementMapSizeX = p.width
+        // const displacementMapSizeY = p.height
+
+        // this.material.onBeforeCompile = (shader) => {
+        //     const customTransform = `
+        //     #include <map_fragment>
+        //     vec3 transformed = vec3(position);
+        //     vec2 pixelUV = vUv * vec2(${displacementMapSizeX.toFixed(1)}, ${displacementMapSizeY.toFixed(1)});
+
+        //     // Calculate the difference in displacement values between neighboring pixels
+        //     float displacementDiffX = abs(texture2D(displacementMap, pixelUV + vec2(1, 0)).r - texture2D(displacementMap, pixelUV).r);
+        //     float displacementDiffY = abs(texture2D(displacementMap, pixelUV + vec2(0, 1)).r - texture2D(displacementMap, pixelUV).r);
+
+        //     // If the difference is above the threshold, discard the pixel
+        //     if (displacementDiffX > ${cutoutThreshold.toFixed(1)} || displacementDiffY > ${cutoutThreshold.toFixed(1)}) {
+        //         discard;
+        //     }
+        //     `
+        //     shader.fragmentShader = shader.fragmentShader.replace('#include <map_fragment>', customTransform)
+        // }
+
+        // 2.
+        // // Add custom shader code to achieve cutout based on displacement difference
+        // const cutoutThreshold = 0.1
+        // const displacementMapSizeX = p.width
+        // const displacementMapSizeY = p.height
+
+        // this.material.onBeforeCompile = (shader) => {
+        //     // Declare varying variables in both vertex and fragment shaders
+        //     shader.fragmentShader = `
+        //         #include <map_fragment>
+
+        //         // Add custom code
+        //         vec2 pixelUV = vUv * vec2(${displacementMapSizeX.toFixed(1)}, ${displacementMapSizeY.toFixed(1)});
+        //         float displacementDiffX = abs(texture2D(displacementMap, pixelUV + vec2(1, 0)).r - texture2D(displacementMap, pixelUV).r);
+        //         float displacementDiffY = abs(texture2D(displacementMap, pixelUV + vec2(0, 1)).r - texture2D(displacementMap, pixelUV).r);
+
+        //         // If the difference is above the threshold, discard the pixel
+        //         if (displacementDiffX > ${cutoutThreshold.toFixed(4)} || displacementDiffY > ${cutoutThreshold.toFixed(4)}) {
+        //             discard;
+        //         }
+        //     `
+
+        //     // Ensure the custom shader code replaces the correct placeholder
+        //     shader.fragmentShader = shader.fragmentShader.replace('#include <map_fragment>', '')
+        // }
+
+        // 3.
+        // Add custom shader code to achieve cutout based on displacement difference
+        const cutoutThreshold = 0.05
+        const displacementMapSizeX = p.width
+        const displacementMapSizeY = p.height
+
+        this.material.onBeforeCompile = (shader) => {
+            shader.vertexShader = shader.vertexShader
+                .replace(
+                    `void main() {`,
+                    `varying float vTransformDiff;
+        void main() {`,
+                )
+                .replace(
+                    `#include <displacementmap_vertex>`,
+                    `#include <displacementmap_vertex>
+
+            // Calculate the maximum absolute displacement difference from neighboring pixels
+            vec2 dUv = vec2(1.0, 1.0) / vec2(textureSize(displacementMap, 0));
+
+            float diffX = abs(
+                texture2D(displacementMap, vDisplacementMapUv + vec2(dUv.x, 0.0)).x -
+                texture2D(displacementMap, vDisplacementMapUv - vec2(dUv.x, 0.0)).x
+            );
+
+            float diffY = abs(
+                texture2D(displacementMap, vDisplacementMapUv + vec2(0.0, dUv.y)).x -
+                texture2D(displacementMap, vDisplacementMapUv - vec2(0.0, dUv.y)).x
+            );
+
+            vec3 transformDiffX = normalize(objectNormal) * vec3(diffX * displacementScale + displacementBias);
+            vec3 transformDiffY = normalize(objectNormal) * vec3(diffY * displacementScale + displacementBias);
+
+            vTransformDiff = max(length(transformDiffX), length(transformDiffY));
+                    `,
+                )
+
+            // vDisplacementMapUv
+            // vec2 pixelUv = vUv * vec2(${displacementMapSizeX.toFixed(1)}, ${displacementMapSizeY.toFixed(1)});
+            // float displacementDiffX = abs(texture2D(displacementMap, pixelUv + vec2(1, 0)).r - texture2D(displacementMap, pixelUV).r)
+
+            shader.fragmentShader = shader.fragmentShader
+                .replace(
+                    `void main() {`,
+                    `varying float vTransformDiff;
+        void main() {`,
+                )
+                .replace(
+                    `#include <dithering_fragment>`,
+                    `#include <dithering_fragment>
+
+            // // debug: visualize vTransformDiff
+            // vec3 visualizationColor = vec3(vTransformDiff, 0.0, 1.0 - vTransformDiff);
+            // gl_FragColor = vec4(visualizationColor, 1.0);
+
+            // Discard fragments if vTransformDiff is above a cutoff
+            if (vTransformDiff > ${cutoutThreshold.toFixed(4)}) {
+                // gl_FragColor = vec4(0.0,1.0,0.0, 1.0);
+                // gl_FragColor = vec4(0.0,1.0,0.0, 0.0);
+                discard;
+            }
+                      `,
+                )
+            console.log(`vertexShader`, { vertexShader: shader.vertexShader, fragmentShader: shader.fragmentShader })
+        }
+
+        // plane
         this.plane = new THREE.Mesh(this.geometry, this.material)
         this.planeSym = new THREE.Mesh(this.geometry.clone(), this.material)
 
         // Add plane to scene
+        // this.scene.add(this.points)
         this.scene.add(this.plane)
         this.scene.add(this.planeSym)
 
