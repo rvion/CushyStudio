@@ -8,10 +8,10 @@ set errorlevel=
 :: Define variables
 SET PNPM_VERSION=8.11.0
 SET PNPM_HOME=%CD%\.cushy
-SET PNPM_BIN_PATH=%CD%\.cushy\pnpm
+SET PNPM_BIN_PATH=%CD%\.cushy\pnpm.exe
 
 :: Function to install using PowerShell
-CALL :install_with_powershell
+@REM CALL :install_with_powershell
 
 :: Check if pnpm is already installed
 IF EXIST "%PNPM_HOME%\pnpm" (
