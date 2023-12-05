@@ -8,6 +8,7 @@ export const run_prompt = (
         clip: _CLIP
         ckpt: _MODEL
         outputWildcardsPicked?: boolean
+        seed: number
     },
 ): {
     text: string
@@ -30,7 +31,7 @@ export const run_prompt = (
             else if (tok.type === 'wildcard') {
                 const options = (flow.wildcards as any)[tok.payload]
                 if (Array.isArray(options)) {
-                    const picked = flow.chooseRandomly(options)
+                    const picked = flow.chooseRandomly(`${tok.payload}`, p.seed, options)
                     text += ` ${picked}`
                     if (p.outputWildcardsPicked) textToOutput.push(picked)
                 }
