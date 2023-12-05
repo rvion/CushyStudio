@@ -5,6 +5,8 @@ import { defineConfig } from 'vite'
 
 const installDir = cwd()
 
+console.log(`[⚡️] loading vite config`)
+
 // https://vitejs.dev/config/
 export default defineConfig({
     clearScreen: false,
