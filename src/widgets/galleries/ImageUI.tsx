@@ -27,7 +27,7 @@ export const ImageUI = observer(function ImageUI_(p: { size?: string; img: Media
                 padding: '0.2rem',
                 borderRadius: '.5rem',
             }}
-            onClick={() => st.layout.FOCUS_OR_CREATE('Image', { imageID: image.id })}
+            onClick={() => st.layout.FOCUS_OR_CREATE('Image', { imageID: image.id }, undefined, true)}
         />
     )
     // )

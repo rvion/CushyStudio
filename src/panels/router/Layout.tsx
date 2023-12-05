@@ -216,6 +216,7 @@ export class CushyLayoutManager {
         component: K,
         props: PropsOf<Panels[K]['widget']>,
         where: 'full' | 'current' | LEFT_PANE_TABSET_T | RIGHT_PANE_TABSET_T = RIGHT_PANE_TABSET_ID,
+        reuseTab = false,
     ): Maybe<FL.Node> => {
         if (where === 'full') {
             this.TOGGLE_FULL(component, props)
@@ -227,7 +228,7 @@ export class CushyLayoutManager {
         if (currentLayout == null) return void console.log('❌ no currentLayout')
 
         // 2. get previous tab
-        const tabID = `/${component}/${hashJSONObject(props ?? {})}`
+        const tabID = `/${component}/${reuseTab ? `*` : hashJSONObject(props ?? {})}`
         let prevTab: FL.TabNode | undefined
         prevTab = this.model.getNodeById(tabID) as FL.TabNode // 🔴 UNSAFE ?
         console.log(`🦊 prevTab for ${tabID}:`, prevTab)
