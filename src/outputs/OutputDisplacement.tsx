@@ -145,6 +145,22 @@ export const saveCanvasAsImage = async (canvas: HTMLCanvasElement, st: STATE, su
     st.db.media_images.create({ infos: { type: 'image-local', absPath } })
 }
 
+export const saveDataUriAsImage = async (dataUri: string, st: STATE, subfolder?: string) => {
+    const imageID = nanoid()
+    const filename = `${imageID}.png`
+
+    const relPath = asRelativePath(subfolder ? path.join(subfolder, filename) : filename)
+    const absPath = st.resolve(st.outputFolderPath, relPath)
+    mkdirSync(dirname(absPath), { recursive: true })
+
+    const buffer = Buffer.from(dataUri.split(',')[1], 'base64')
+    writeFileSync(absPath, buffer)
+
+    console.log(`Image saved: ${absPath}, ${buffer.byteLength} bytes`)
+
+    st.db.media_images.create({ infos: { type: 'image-local', absPath } })
+}
+
 // State class
 class State {
     mountRef = createRef<HTMLDivElement>()
@@ -240,42 +256,45 @@ class State {
     renderer: THREE.WebGLRenderer
 
     // For screenshots
-    renderTarget: THREE.WebGLRenderTarget
-    renderCanvas: HTMLCanvasElement
+    // renderTarget: THREE.WebGLRenderTarget
+    // renderCanvas: HTMLCanvasElement
     takeScreenshot = (st: STATE) => {
-        const w = window.innerWidth
-        const h = window.innerHeight
+        const imgData = this.renderer.domElement.toDataURL(`image/png`)
+        saveDataUriAsImage(imgData, st, `3d-snapshots`)
 
-        // Render the scene to the render target
-        this.renderer.setRenderTarget(this.renderTarget)
-        this.renderer.render(this.scene, this.camera)
+        // const w = window.innerWidth
+        // const h = window.innerHeight
 
-        // Read the pixel data from the render target
-        const pixelBuffer = new Uint8Array(w * h * 4)
-        this.renderer.readRenderTargetPixels(this.renderTarget, 0, 0, w, h, pixelBuffer)
+        // // Render the scene to the render target
+        // this.renderer.setRenderTarget(this.renderTarget)
+        // this.renderer.render(this.scene, this.camera)
 
-        // Create a canvas element to draw the image
-        this.renderCanvas.width = w
-        this.renderCanvas.height = h
+        // // Read the pixel data from the render target
+        // const pixelBuffer = new Uint8Array(w * h * 4)
+        // this.renderer.readRenderTargetPixels(this.renderTarget, 0, 0, w, h, pixelBuffer)
 
-        // Draw the pixel data onto the canvas
-        const context = this.renderCanvas.getContext('2d')
-        if (!context) {
-            return
-        }
+        // // Create a canvas element to draw the image
+        // this.renderCanvas.width = w
+        // this.renderCanvas.height = h
 
-        const imageData = context.createImageData(w, h)
-        imageData.data.set(pixelBuffer)
-        context.putImageData(imageData, 0, 0)
+        // // Draw the pixel data onto the canvas
+        // const context = this.renderCanvas.getContext('2d')
+        // if (!context) {
+        //     return
+        // }
 
-        // flip image
-        context.scale(1, -1)
-        context.drawImage(this.renderCanvas, 0, -h)
+        // const imageData = context.createImageData(w, h)
+        // imageData.data.set(pixelBuffer)
+        // context.putImageData(imageData, 0, 0)
 
-        saveCanvasAsImage(this.renderCanvas, st, `3d-snapshots`)
+        // // flip image
+        // context.scale(1, -1)
+        // context.drawImage(this.renderCanvas, 0, -h)
+
+        // saveCanvasAsImage(this.renderCanvas, st, `3d-snapshots`)
 
         // reset
-        this.renderer.setRenderTarget(null)
+        // this.renderer.setRenderTarget(null)
     }
 
     controls: OrbitControls
@@ -307,12 +326,14 @@ class State {
             0.1,
             1000,
         )
-        this.renderer = new THREE.WebGLRenderer()
+        this.renderer = new THREE.WebGLRenderer({
+            preserveDrawingBuffer: true,
+        })
         this.renderer.setSize(this.WIDTH, this.HEIGHT)
 
-        this.renderTarget = new THREE.WebGLRenderTarget(window.innerWidth, window.innerHeight)
-        this.renderCanvas = document.createElement('canvas')
-        document.body.appendChild(this.renderCanvas)
+        // this.renderTarget = new THREE.WebGLRenderTarget(window.innerWidth, window.innerHeight)
+        // this.renderCanvas = document.createElement('canvas')
+        // document.body.appendChild(this.renderCanvas)
 
         // // Add renderer to DOM
         // this.mountRef.current?.appendChild(renderer.domElement)
