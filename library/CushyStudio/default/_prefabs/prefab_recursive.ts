@@ -6,8 +6,13 @@ export const ui_recursive = (form: FormBuilder) => {
         items: () => ({
             cfg: form.float({ label: 'CFG', min: 3, max: 20, default: 8 }),
             loops: form.int({ default: 5, min: 2, max: 20 }),
-            denoise: form.float({ min: 0, max: 1, step: 0.01, default: 0.8 }),
+            // denoise: form.float({ min: 0, max: 1, step: 0.01, default: 0.8 }),
             steps: form.int({ default: 2, min: 2, max: 20 }),
+            startStep: form.int({ default: 20, min: 0 }),
+            endStep: form.int({ default: 20, min: 0 }),
+            addNoise: form.boolean({}),
+
+            scaleFactor: form.float({ default: 2, min: 1, max: 8 }),
         }),
     })
 }

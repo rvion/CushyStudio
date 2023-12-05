@@ -24,6 +24,9 @@ app({
             },
         }),
         negative: ui.prompt({ default: 'nsfw, nude, girl, woman, human' }),
+        seed: ui.seed({}),
+        next: ui.inlineRun({}),
+        preview: ui.inlineRun({}),
         model: ui_model(ui),
         latent: ui_latent(ui),
         sampler: ui_sampler(ui),
@@ -75,16 +78,21 @@ app({
         // MODEL, clip skip, vae, etc. ---------------------------------------------------------------
         let { ckpt, vae, clip } = run_model(flow, p.model)
 
+        if (p.next) {
+            p.seed = flow.formInstance.state.values.seed.state.val = Math.floor(Math.random() * 1000000)
+            // flow.formSerial.seed.val = Math.floor(Math.random() * 1000000)
+        }
+
         const posPrompt = p.reversePositiveAndNegative ? p.negative : p.positive
         const negPrompt = p.reversePositiveAndNegative ? p.positive : p.negative
 
         // RICH PROMPT ENGINE -------- ---------------------------------------------------------------
-        const x = run_prompt(flow, { richPrompt: posPrompt, clip, ckpt, outputWildcardsPicked: true })
+        const x = run_prompt(flow, { richPrompt: posPrompt, clip, ckpt, outputWildcardsPicked: true, seed: p.seed })
         const clipPos = x.clip
         const ckptPos = x.ckpt
         const positive = x.conditionning
 
-        const y = run_prompt(flow, { richPrompt: negPrompt, clip, ckpt, outputWildcardsPicked: true })
+        const y = run_prompt(flow, { richPrompt: negPrompt, clip, ckpt, outputWildcardsPicked: true, seed: p.seed })
         const negative = y.conditionning
 
         // START IMAGE -------------------------------------------------------------------------------
@@ -100,20 +108,41 @@ app({
             negative: negative,
             preview: false,
         }
-        latent = run_sampler(flow, p.sampler, ctx_sampler).latent
+        latent = run_sampler(flow, { ...p.sampler, seed: p.seed }, ctx_sampler).latent
+        if (p.next || p.preview) {
+            graph.SaveImage({ images: graph.VAEDecode({ samples: latent, vae }) })
+            await flow.PROMPT()
+            return
+        }
 
         // RECURSIVE PASS ----------------------------------------------------------------------------
         if (p.recursiveImgToImg) {
             for (let i = 0; i < p.recursiveImgToImg.loops; i++) {
+                latent = graph.LatentUpscaleBy({
+                    samples: latent,
+                    scale_by: p.recursiveImgToImg.scaleFactor,
+                    upscale_method: `bicubic`,
+                }).outputs.LATENT
+                const scale = p.recursiveImgToImg.scaleFactor
+                const w = p.latent.size.width
+                const h = p.latent.size.height
+                const x = (w * (scale - 1)) / 2
+                const y = h * (scale - 1)
+                latent = graph.LatentCrop({ samples: latent, width: w, height: h, x, y }).outputs.LATENT
+
                 latent = run_sampler(
                     flow,
                     {
-                        seed: p.sampler.seed + i,
-                        cfg: p.recursiveImgToImg.cfg,
-                        steps: p.recursiveImgToImg.steps,
-                        denoise: p.recursiveImgToImg.denoise,
-                        sampler_name: 'ddim',
-                        scheduler: 'ddim_uniform',
+                        ...p.sampler,
+                        ...p.recursiveImgToImg,
+                        seed: p.seed + i,
+                        // cfg: p.recursiveImgToImg.cfg,
+                        // steps: p.recursiveImgToImg.steps,
+                        // denoise: p.recursiveImgToImg.denoise,
+                        // sampler_name: p.sampler.sampler_name,
+                        // scheduler: p.sampler.scheduler,
+                        // sampler_name: 'ddim',
+                        // scheduler: 'ddim_uniform',
                     },
                     { ...ctx_sampler, latent, preview: true },
                 ).latent
@@ -139,8 +168,10 @@ app({
                     cfg: p.sampler.cfg,
                     steps: p.highResFix.steps,
                     denoise: p.highResFix.denoise,
-                    sampler_name: 'ddim',
-                    scheduler: 'ddim_uniform',
+                    sampler_name: p.sampler.sampler_name,
+                    scheduler: p.sampler.scheduler,
+                    // sampler_name: 'ddim',
+                    // scheduler: 'ddim_uniform',
                 },
                 { ...ctx_sampler, latent, preview: false },
             ).latent
