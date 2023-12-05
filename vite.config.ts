@@ -5,7 +5,7 @@ import { defineConfig } from 'vite'
 
 const installDir = cwd()
 
-console.log(`[⚡️] loading vite config`)
+console.log(`[VITE] loading vite config`)
 
 // https://vitejs.dev/config/
 export default defineConfig({

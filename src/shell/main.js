@@ -106,10 +106,10 @@ async function START() {
                     .catch((err) => fetch('http://127.0.0.1:8788'))
 
                 if (res.status !== 200) {
-                    console.log(`[⚡️] vite not yet started (status:: ${res.status})`)
+                    console.log(`[VITE] vite not yet started (status:: ${res.status})`)
                     await sleep(1000)
                 } else {
-                    console.log(`[⚡️] vite started`)
+                    console.log(`[VITE] vite started`)
                     viteStarted = true
                 }
             } catch (error) {
