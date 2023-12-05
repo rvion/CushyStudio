@@ -1,18 +1,33 @@
-Todo before release
+Todo before release:
 
-☐ use any image as draft illustration
-☐ don't autofocus preview images
-☐ warning if custom nodes not installed by default
-☐ small mention in the readme that dev console can help troubleshoot problems.
-✔ fix all selects @done(23-11-26 11:56)
-☐ custom size on size widget
-☐ draft tabs/ files
-☐ background image for config panel
-☐ draft result are too wide by default / should open in bottom panel
-☐ selectMenu
-✔ proper error message when node not found @done(23-12-02 10:44)
+    ☐ remove the need for node / npm to be installed
+        ☐ ❌ problem :
+            - installing Cushy depends on having node and git installed
+            - many people don't have node installed
+            - many people have too old / incompatible version installed
+            - install instruction have too many steps
+            - it's hard to provide a self-contained upgradable archive
 
-Misc:
+        ☐ 🟢 solution:
+            - have a install script with 0 dependencies that
+                - download the tiny `pnpm` binary (exact version)
+                - use `pnpm` to install all dependencies including electron
+                - bypass completely the need for node by using electron built-in node
+                    - start `vite` via it's typescritp api from the start.cjs script itself
+                    - this will also probably fix the problem of vite/electron not closing synchronously
+            - extra bonus:
+                - ship pnpm binaries for common archs in the repo directly ?
+
+    ☐ fix sut
+    ☐ use any image as draft illustration
+    ☐ don't autofocus preview images
+    ☐ warning if custom nodes not installed by default
+    ☐ small mention in the readme that dev console can help troubleshoot problems.
+    ☐ custom size on size widget
+    ☐ draft tabs/ files
+    ☐ background image for config panel
+    ☐ draft result are too wide by default / should open in bottom panel
+    ☐ selectMenu
     ☐ show different from current preset in color
     ☐ surrounded by card for ju and tu
     ☐ better marketplace without fetching stars and repo infos by adding some gen-marketplace-data
@@ -35,6 +50,8 @@ Misc:
     ☐ make the run button red if cushy is not running
     ☐ option to reduce image size
 
+✔ fix all selects @done(23-11-26 11:56)
+✔ proper error message when node not found @done(23-12-02 10:44)
 ✔ open in correct panels @done(23-11-25 14:23)
 ✔ have official layout show on first launch even if no comfyUI found @done(23-11-24 22:39)
 ✔ auto-open all default 5/6 built-in apps @done(23-11-24 22:34)
