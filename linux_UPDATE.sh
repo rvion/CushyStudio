@@ -1,1 +1,0 @@
-./macos_UPDATE.sh
