@@ -1,0 +1,7 @@
+{
+    "$schema": "../../../src/cards/DeckManifest.schema.json",
+    "name": "Cushy SDK examples",
+    "authorName": "rvion",
+    "description": "Various CushySDK examples",
+    "cards": []
+}
