@@ -50,9 +50,11 @@ IF NOT EXIST "%tsconfigPath%" (
     ECHO %defaultTsconfigJSON% > "%tsconfigPath%"
 )
 
+node_modules\rcedit\bin\rcedit.exe "node_modules\electron\dist\electron.exe" --set-icon "library\CushyStudio\_public\CushyLogo.ico"
+
 :: Start Vite using Electron's Node
 ECHO Starting Vite with Electron's Node...
-CALL .\node_modules\.bin\electron -i src\shell
+CALL .\node_modules\.bin\electron --no-sandbox -i src\shell
 
 EXIT /B 0
 

@@ -38,15 +38,15 @@ exports.default = async function patchElectronIconAndName() {
 
         // 🟢 WINDOWS
         else if (platform === 'win32') {
-            const rcedit = require('rcedit')
-            console.log(`[ELECTRON] icon path: ${iconPathWindows}`)
-            const windowsExePath = path.join(electronPath, 'electron.exe')
-            // patch icon and name at once
-            await rcedit(windowsExePath, {
-                icon: iconPathWindows,
-                // 'product-version': newAppName,
-                // 'file-version': newAppName,
-            })
+            // const rcedit = require('rcedit')
+            // console.log(`[ELECTRON] icon path: ${iconPathWindows}`)
+            // const windowsExePath = path.join(electronPath, 'electron.exe')
+            // // patch icon and name at once
+            // await rcedit(windowsExePath, {
+            //     icon: iconPathWindows,
+            //     // 'product-version': newAppName,
+            //     // 'file-version': newAppName,
+            // })
         }
 
         // 🟢 LINUX
