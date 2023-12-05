@@ -1,5 +1,4 @@
-rmdir /s /q node_modules\.vite
-git checkout master -- package-lock.json
+@REM rmdir /s /q node_modules\.vite
 git checkout master
 git pull origin master
 @REM pause
