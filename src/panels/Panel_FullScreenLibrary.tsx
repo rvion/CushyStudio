@@ -132,9 +132,9 @@ export const DraftEntryUI = observer(function DraftEntryUI_(p: { draft: DraftL }
             ]}
             key={draft.id}
         >
-            <div tw='pl-1'>
+            {/* <div tw='pl-1'>
                 <DraftFavoriteBtnUI draft={draft} size='1.3rem' />
-            </div>
+            </div> */}
             <AppIllustrationUI app={draft.app} size='1.5rem' />
             <div
                 tw='cursor-pointer single-line-ellipsis flex-grow'
@@ -143,7 +143,7 @@ export const DraftEntryUI = observer(function DraftEntryUI_(p: { draft: DraftL }
                     st.layout.FOCUS_OR_CREATE('CurrentDraft', {}, 'LEFT_PANE_TABSET')
                 }}
             >
-                {draft.data.title}
+                {draft.data.title || draft.app?.name || draft.data.appPath}
             </div>
             <Joined tw='ml-auto right-0'>
                 <Button

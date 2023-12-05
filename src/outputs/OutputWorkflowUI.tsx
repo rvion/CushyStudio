@@ -8,17 +8,16 @@ import { OutputPreviewWrapperUI } from './OutputPreviewWrapperUI'
 
 export const OutputWorkflowPreviewUI = observer(function OutputWorkflowUI_(p: { step?: Maybe<StepL>; output: ComfyWorkflowL }) {
     const st = useSt()
-    const size = st.gallerySizeStr
+    const size = st.historySizeStr
     return (
         <OutputPreviewWrapperUI output={p.output}>
-            <div style={{ width: size, height: size }} tw='bg-blue-800 flex item-center justify-center'>
+            <div style={{ width: size, height: size }} tw='flex item-center justify-center'>
                 <span
-                    //
+                    className='material-symbols-outlined text-primary block'
                     style={{
                         marginTop: `calc(0.2 * ${size})`,
                         fontSize: `calc(0.6 * ${size})`,
                     }}
-                    className='material-symbols-outlined text-blue-400 block'
                 >
                     account_tree
                 </span>

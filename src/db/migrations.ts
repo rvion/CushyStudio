@@ -217,6 +217,11 @@ export const migrations: {
         name: 'new runtime datastore',
         up: ['alter table custom_data rename column data to json'],
     },
+    {
+        id: 'UI2LFUl9Lq',
+        name: 'step.isExpanded',
+        up: ['alter table step add column isExpanded int not null default 1'],
+    },
     // {
     //     id: 'PONTSFSpA_',
     //     name: 'fix image2',

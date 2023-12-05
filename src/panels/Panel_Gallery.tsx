@@ -1,9 +1,10 @@
 import { observer } from 'mobx-react-lite'
 import { Button, Input, Slider, Toggle } from 'src/rsuite/shims'
-import { useSt } from '../state/stateContext'
-import { ImageUI } from '../widgets/galleries/ImageUI'
 import { parseFloatNoRoundingErr } from 'src/utils/misc/parseFloatNoRoundingErr'
 import { FieldAndLabelUI } from 'src/widgets/misc/FieldAndLabelUI'
+import { useSt } from '../state/stateContext'
+import { ImageUI } from '../widgets/galleries/ImageUI'
+import { OutputPreviewWrapperUI } from 'src/outputs/OutputPreviewWrapperUI'
 
 export const Panel_Gallery = observer(function VerticalGalleryUI_(p: {}) {
     const st = useSt()
@@ -14,9 +15,11 @@ export const Panel_Gallery = observer(function VerticalGalleryUI_(p: {}) {
         >
             <GalleryControlsUI />
             <div className='flex flex-wrap overflow-auto'>
-                <LatentPreviewUI />
+                {/* <LatentPreviewUI /> */}
                 {st.imageToDisplay.map((img, ix) => (
-                    <ImageUI key={ix} img={img} />
+                    <OutputPreviewWrapperUI output={img} size={st.gallerySize}>
+                        <ImageUI key={ix} img={img} />
+                    </OutputPreviewWrapperUI>
                 ))}
             </div>
         </div>
@@ -39,10 +42,6 @@ export const LatentPreviewUI = observer(function LatentPreviewUI_(p: {}) {
                 height: st.gallerySizeStr,
             }}
             src={preview.url}
-            // onMouseEnter={(ev) => (st.hovered = { type: 'image', url: preview.url })}
-            // onMouseLeave={() => {
-            //     if (st.hovered?.url === preview.url) st.hovered = null
-            // }}
         />
     )
 })

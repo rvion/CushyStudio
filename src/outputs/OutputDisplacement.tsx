@@ -27,7 +27,7 @@ export const OutputDisplacementPreviewUI = observer(function OutputImagePreviewU
     const size = st.gallerySize
     const sizeStr = st.gallerySizeStr
     return (
-        <OutputPreviewWrapperUI output={p.output}>
+        <OutputPreviewWrapperUI size={st.gallerySize} output={p.output}>
             {/*  */}
             <div
                 tw={[

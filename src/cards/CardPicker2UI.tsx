@@ -70,11 +70,9 @@ export const AppEntryUI = observer(function AppEntryUI_(p: { app: LibraryFile })
                 // st.layout.openAppInNewPanel(actionPath)
             }}
         >
-            <div tw='pl-1'>
-                <AppFavoriteBtnUI app={app} size='1.3rem' />
-            </div>
             <AppIllustrationUI app={app} size='1.5rem' />
-            <div tw='text-base-content single-line-ellipsis'>{app.displayName}</div>
+            <div tw='text-base-content flex-grow single-line-ellipsis'>{app.displayName}</div>
+            <AppFavoriteBtnUI app={app} size='1rem' />
         </div>
     )
 })

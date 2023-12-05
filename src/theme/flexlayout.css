@@ -22,7 +22,7 @@
   --color-border-background: oklch(var(--b3));
   --color-border-divider-line: oklch(var(--b3));
   --color-tab-selected: oklch(var(--sc)); /* Assuming --sc is a valid variable for selected content */
-  --color-tab-selected-background: oklch(var(--s));
+  --color-tab-selected-background: oklch(var(--s)/.5);
   --color-tab-unselected-background: transparent;
   --color-tab-textbox-background: oklch(var(--b3));
   --color-border-tab-selected-background: transparent;

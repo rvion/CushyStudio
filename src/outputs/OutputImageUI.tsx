@@ -20,8 +20,8 @@ export const OutputImagePreviewUI = observer(function OutputImagePreviewUI_(p: {
                     objectFit: 'contain',
                     width: '100%',
                     height: '100%',
-                    padding: '0.2rem',
-                    borderRadius: '.5rem',
+                    // padding: '0.2rem',
+                    borderRadius: '.3rem',
                 }}
             />
         </OutputPreviewWrapperUI>

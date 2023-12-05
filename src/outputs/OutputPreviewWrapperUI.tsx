@@ -11,18 +11,19 @@ export const OutputPreviewWrapperUI = observer(function OutputPreviewWrapperUI_(
 
     /** must be able to scale to 64*64  */
     children: ReactNode
+
+    /** size in px */
+    size?: number
 }) {
     const st = useSt()
-    const sizeStr = st.gallerySizeStr
+    const sizeStr = p.size ? `${p.size}px` : st.historySizeStr
     return (
         <ErrorBoundary FallbackComponent={ErrorBoundaryFallback} onReset={(details) => {}}>
             <div
-                //
                 // STYLE
-                tw='rounded cursor-pointer hover:shadow-xl hover:brightness-110'
-                className='flex flex-rowcol-info virtualBorder2'
+                tw='rounded cursor-pointer overflow-hidden'
+                className='virtualBorder shrink-0'
                 style={{ width: sizeStr, height: sizeStr }}
-                //
                 // LOGIC
                 onClick={() => (st.focusedStepOutput = p.output)}
                 onMouseEnter={(ev) => (st.hovered = p.output)}

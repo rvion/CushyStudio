@@ -352,6 +352,11 @@ export class Runtime<FIELDS extends WidgetDict = any> {
     get lastImage(): Maybe<MediaImageL> {
         return this.generatedImages[this.generatedImages.length - 1]
     }
+
+    findLastImageByPrefix = (prefix: string): MediaImageL | undefined => {
+        return this.generatedImages.find((i) => i.filename.startsWith(prefix))
+    }
+
     get generatedImages(): MediaImageL[] {
         return this.step.generatedImages
     }

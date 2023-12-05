@@ -8,7 +8,6 @@ export const Panel_Steps = observer(function StepListUI_(p: {}) {
     const steps = st.db.steps.getLastN(st.__TEMPT__maxStepsToShow)
     return (
         <div className='flex flex-col'>
-            {/* <FieldAndLabelUI label='Show Last'> */}
             <Slider
                 style={{ width: '5rem' }}
                 min={1}
@@ -16,13 +15,9 @@ export const Panel_Steps = observer(function StepListUI_(p: {}) {
                 value={st.__TEMPT__maxStepsToShow}
                 onChange={(ev) => (st.__TEMPT__maxStepsToShow = parseInt(ev.target.value, 10))}
             />
-            {/* </FieldAndLabelUI> */}
-            {/* </Panel> */}
             <div className='flex flex-col flex-grow' style={{ overflow: 'auto' }}>
                 {steps.map((step) => (
-                    // <InView key={step.id} as='div' onChange={(inView, entry) => {}}>
                     <StepOutputsV1UI step={step} />
-                    // </InView>
                 ))}
             </div>
         </div>

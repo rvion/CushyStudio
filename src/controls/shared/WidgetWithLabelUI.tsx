@@ -32,6 +32,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
             if (req instanceof KLS.Widget_group) return true
             if (req instanceof KLS.Widget_groupOpt) return true
             if (req instanceof KLS.Widget_list) return true
+            if (req instanceof KLS.Widget_matrix) return true
             if (req instanceof KLS.Widget_listExt) return true
             if (req instanceof KLS.Widget_str && req.input.textarea) return true
             return false
@@ -75,7 +76,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                 isVertical ? 'w-full' : null,
                 WIDGET == null ? 'w-full' : null,
                 'min-w-max shrink-0',
-                'flex items-center gap-1',
+                'flex items-center gap-0',
                 'hover:bg-base-200 cursor-pointer',
             ]}
             onClick={() => {
@@ -116,9 +117,10 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
         </div>
     )
 
+    const labelGap = label == false ? '' : 'gap-1'
     let className = isVertical //
         ? `_WidgetWithLabelUI ${levelClass} flex flex-col items-baseline`
-        : `_WidgetWithLabelUI ${levelClass} flex flex-row ${isCollapsible ? 'items-baseline' : 'items-center'} gap-1`
+        : `_WidgetWithLabelUI ${levelClass} flex flex-row ${labelGap} ${isCollapsible ? 'items-baseline' : 'items-center'}`
 
     if (WIDGET == null) className += ' w-full'
     if (isVertical && WIDGET) {

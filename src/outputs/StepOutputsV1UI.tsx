@@ -3,6 +3,8 @@ import type { StepL } from 'src/models/Step'
 import { observer } from 'mobx-react-lite'
 import { _formatPreviewDate } from '../utils/formatters/_formatPreviewDate'
 import { OutputPreviewUI, OutputUI } from './OutputUI'
+import { FoldIconUI } from 'src/cards/FoldIconUI'
+import { StepOutputsHeaderV2UI } from './StepOutputsV2UI'
 
 export const StepOutputsV1UI = observer(function StepOutputsV1UI_(p: { step: StepL }) {
     const step = p.step
@@ -23,15 +25,18 @@ export const StepOutputsHeaderV1UI = observer(function StepOutputsV1HeaderUI_(p:
         <div
             tw={[
                 //
+                'bg-base-200',
                 'flex items-center',
-                'cursor-pointer justify-between text-xs text-gray-400 hover:bg-base-200',
+                'cursor-pointer text-xs text-opacity-50 hover:bg-base-200',
                 p.className,
             ]}
             onClick={() => (step.expanded = !step.expanded)}
             style={{ borderTop: '1px solid #2d2d2d' }}
         >
-            <b>{step.name}</b>
-            <div className='text-xs pr-4 opacity-50'>{_formatPreviewDate(new Date(step.createdAt))}</div>
+            <FoldIconUI val={step.expanded} />
+            <b>{step.name ?? step.appFile?.name ?? 'no name'}</b>
+            <div tw='flex-grow'></div>
+            <div className='text-xs opacity-50'>{_formatPreviewDate(new Date(step.createdAt))}</div>
         </div>
     )
 })
@@ -39,7 +44,8 @@ export const StepOutputsHeaderV1UI = observer(function StepOutputsV1HeaderUI_(p:
 export const StepOutputsBodyV1UI = observer(function StepBodyUI_(p: { step: StepL }) {
     const step = p.step
     return (
-        <div className='flex flex gap-1'>
+        <div className='flex flex-wrap gap-1'>
+            {step && <StepOutputsHeaderV2UI step={step} />}
             {step.outputs?.map((output, ix) => (
                 <OutputPreviewUI key={ix} step={step} output={output} />
             ))}

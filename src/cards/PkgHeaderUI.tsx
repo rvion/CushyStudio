@@ -45,6 +45,18 @@ export const PkgHeaderUI = observer(function ActionPackHeaderUI_(p: { pkg: Packa
                     )}
                     <ActionPackStatusUI tw='shrink-0' pack={pkg} />
                 </div>
+                {/* FOLD INDICATOR */}
+                <label className='swap swap-rotate'>
+                    <input
+                        type='checkbox'
+                        checked={pkg.folded}
+                        onChange={(ev) => {
+                            pkg.folded = !ev.target.checked
+                        }}
+                    />
+                    <span className='material-symbols-outlined swap-on'>keyboard_arrow_right</span>
+                    <span className='material-symbols-outlined swap-off'>keyboard_arrow_down</span>
+                </label>
             </div>
         </>
     )

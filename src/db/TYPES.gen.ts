@@ -221,6 +221,9 @@ export type StepT = {
     /** @default: null, sqlType: TEXT */
     status: string;
 
+    /** @default: "1", sqlType: INT */
+    isExpanded: number;
+
 }
 export const StepSchema = Type.Object({
     id: Type.String(),
@@ -232,6 +235,7 @@ export const StepSchema = Type.Object({
     formSerial: T.Step_formSerial_Schema,
     outputGraphID: Type.String(),
     status: Type.String(),
+    isExpanded: Type.Number(),
 },{ additionalProperties: false })
 
 export const StepFields = {
@@ -244,6 +248,7 @@ export const StepFields = {
     formSerial: {cid:6,name:'formSerial',type:'json',notnull:1,dflt_value:null,pk:0},
     outputGraphID: {cid:7,name:'outputGraphID',type:'TEXT',notnull:1,dflt_value:null,pk:0},
     status: {cid:8,name:'status',type:'TEXT',notnull:1,dflt_value:null,pk:0},
+    isExpanded: {cid:9,name:'isExpanded',type:'INT',notnull:1,dflt_value:'1',pk:0},
 }
 
 

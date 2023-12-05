@@ -16,6 +16,7 @@ import { MediaVideoL } from './MediaVideo'
 import { RuntimeErrorL } from './RuntimeError'
 import { MediaSplatL } from './MediaSplat'
 import { Widget_group } from 'src/controls/Widget'
+import { SQLITE_false, SQLITE_true } from 'src/db/SQLITE_boolean'
 
 export type FormPath = (string | number)[]
 /** a thin wrapper around an app execution */
@@ -121,15 +122,16 @@ export class StepL {
             infos,
         })
     }
-    addOutput = (output: StepOutput) => {
-        // this.update({
-        //     outputs: [...(this.outputs ?? []), output],
-        // })
-        console.log('🔴🔴🔴🔴🔴🔴🔴🔴 addOutput called')
-    }
+
     // UI expand/collapse state
-    get defaultExpanded(): boolean{ return this.data.status === Status.Running } // prettier-ignore
+    get defaultExpanded(): boolean {
+        return this.data.isExpanded === SQLITE_true ? true : false
+    }
     userDefinedExpanded: Maybe<boolean> = null
-    get expanded() { return this.userDefinedExpanded ?? this.defaultExpanded } // prettier-ignore
-    set expanded(next:boolean) { this.userDefinedExpanded=next } // prettier-ignore
+    get expanded() {
+        return this.userDefinedExpanded ?? this.defaultExpanded
+    }
+    set expanded(next: boolean) {
+        this.update({ isExpanded: next ? SQLITE_true : SQLITE_false })
+    }
 }

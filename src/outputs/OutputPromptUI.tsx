@@ -10,7 +10,7 @@ import { parseFloatNoRoundingErr } from 'src/utils/misc/parseFloatNoRoundingErr'
 export const OutputPromptPreviewUI = observer(function OutputPromptPreviewUI_(p: { step?: Maybe<StepL>; output: ComfyPromptL }) {
     const st = useSt()
     const graph = p.output.graph.item
-    const size = st.gallerySizeStr
+    const size = st.historySizeStr
     if (graph == null)
         return (
             <OutputPreviewWrapperUI output={p.output}>
@@ -23,7 +23,7 @@ export const OutputPromptPreviewUI = observer(function OutputPromptPreviewUI_(p:
     // const pgr2 = graph.graphProgressCurrentNode
     return (
         <OutputPreviewWrapperUI output={p.output}>
-            <div tw='bg-blue-800'>
+            <div tw='bg-blue-800 '>
                 <div
                     className='radial-progress'
                     style={{

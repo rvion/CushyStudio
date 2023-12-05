@@ -40,17 +40,24 @@ export const Panel_AppList = observer(function Panel_AppList_(p: {}) {
                             dynamic_form
                         </span>
                     </div>
-                    <div tw='flex-1 text-base-content font-bold'>Drafts</div>
-                    <div>{st.draftsFolded ? '▸' : '▿'}</div>
+                    <div tw='flex-1 text-base-content'>Drafts</div>
+                    {/* FOLD INDICATOR */}
+                    <label className='swap swap-rotate'>
+                        <input
+                            type='checkbox'
+                            checked={st.draftsFolded}
+                            onChange={(ev) => {
+                                st.draftsFolded = !ev.target.checked
+                            }}
+                        />
+                        <span className='material-symbols-outlined swap-on'>keyboard_arrow_right</span>
+                        <span className='material-symbols-outlined swap-off'>keyboard_arrow_down</span>
+                    </label>
                 </div>
             ) : null}
+
             {st.draftsFolded ? null : ( //
-                <div
-                    tw={[
-                        //
-                        '[max-height:10rem] overflow-auto',
-                    ]}
-                >
+                <div tw={['overflow-auto']}>
                     {st.allOpenDrafts.items.map((draft) => {
                         return <DraftEntryUI key={draft.id} draft={draft} />
                     })}
@@ -77,8 +84,18 @@ export const Panel_AppList = observer(function Panel_AppList_(p: {}) {
                             star
                         </span>
                     </div>
-                    <div tw='flex-1 text-base-content font-bold'>Favorites</div>
-                    <div>{library.favoritesFolded ? '▸' : '▿'}</div>
+                    <div tw='flex-1 text-base-content'>Favorites</div>
+                    <label className='swap swap-rotate'>
+                        <input
+                            type='checkbox'
+                            checked={library.favoritesFolded}
+                            onChange={(ev) => {
+                                library.favoritesFolded = !ev.target.checked
+                            }}
+                        />
+                        <span className='material-symbols-outlined swap-on'>keyboard_arrow_right</span>
+                        <span className='material-symbols-outlined swap-off'>keyboard_arrow_down</span>
+                    </label>
                 </div>
             ) : null}
             {library.favoritesFolded ? null : ( //
