@@ -1,7 +1,7 @@
 import { makeAutoObservable } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { createRef, useEffect, useLayoutEffect, useMemo } from 'react'
-import { Input, Slider, Toggle } from 'src/rsuite/shims'
+import { Button, Input, Slider, Toggle } from 'src/rsuite/shims'
 import { parseFloatNoRoundingErr } from 'src/utils/misc/parseFloatNoRoundingErr'
 import { FieldAndLabelUI } from 'src/widgets/misc/FieldAndLabelUI'
 import * as THREE from 'three'
@@ -12,6 +12,12 @@ import { useSt } from 'src/state/stateContext'
 import { OutputPreviewWrapperUI } from './OutputPreviewWrapperUI'
 import { bang } from 'src/utils/misc/bang'
 import { InputNumberUI } from 'src/rsuite/InputNumberUI'
+import { STATE } from 'src/state/state'
+import { mkdirSync, writeFileSync } from 'fs'
+import path, { dirname, join } from 'path'
+import { nanoid } from 'nanoid'
+import { asRelativePath } from 'src/utils/fs/pathUtils'
+import { warn } from 'console'
 
 export const OutputDisplacementPreviewUI = observer(function OutputImagePreviewUI_(p: {
     step?: Maybe<StepL>
@@ -66,6 +72,7 @@ export const OutputDisplacementUI = observer(function OutputDisplacementUI_(p: {
 
     useEffect(() => state.cleanup, [state])
     useLayoutEffect(() => state.mount(), [state])
+    const st = useSt()
 
     return (
         <div>
@@ -113,11 +120,30 @@ export const OutputDisplacementUI = observer(function OutputDisplacementUI_(p: {
                 <FieldAndLabelUI label='Symmetric Model'>
                     <Toggle checked={state.isSymmetric} onChange={(e) => (state.isSymmetric = e.target.checked)} />
                 </FieldAndLabelUI>
+
+                <FieldAndLabelUI label='Screenshot'>
+                    <Button onClick={() => state.takeScreenshot(st)}>Take Screenshot</Button>
+                </FieldAndLabelUI>
             </div>
             <div ref={state.mountRef} />
         </div>
     )
 })
+
+export const saveCanvasAsImage = async (canvas: HTMLCanvasElement, st: STATE, subfolder?: string) => {
+    const imageID = nanoid()
+    const filename = `${imageID}.png`
+
+    const relPath = asRelativePath(subfolder ? path.join(subfolder, filename) : filename)
+    const absPath = st.resolve(st.outputFolderPath, relPath)
+    mkdirSync(dirname(absPath), { recursive: true })
+
+    const buffer = await new Promise<ArrayBuffer>((resolve) => canvas.toBlob((blob) => blob?.arrayBuffer().then(resolve)))
+    writeFileSync(absPath, Buffer.from(buffer))
+    console.log(`Image saved: ${absPath}, ${buffer.byteLength} bytes`)
+
+    st.db.media_images.create({ infos: { type: 'image-local', absPath } })
+}
 
 // State class
 class State {
@@ -213,6 +239,45 @@ class State {
     camera: THREE.PerspectiveCamera
     renderer: THREE.WebGLRenderer
 
+    // For screenshots
+    renderTarget: THREE.WebGLRenderTarget
+    renderCanvas: HTMLCanvasElement
+    takeScreenshot = (st: STATE) => {
+        const w = window.innerWidth
+        const h = window.innerHeight
+
+        // Render the scene to the render target
+        this.renderer.setRenderTarget(this.renderTarget)
+        this.renderer.render(this.scene, this.camera)
+
+        // Read the pixel data from the render target
+        const pixelBuffer = new Uint8Array(w * h * 4)
+        this.renderer.readRenderTargetPixels(this.renderTarget, 0, 0, w, h, pixelBuffer)
+
+        // Create a canvas element to draw the image
+        this.renderCanvas.width = w
+        this.renderCanvas.height = h
+
+        // Draw the pixel data onto the canvas
+        const context = this.renderCanvas.getContext('2d')
+        if (!context) {
+            return
+        }
+
+        const imageData = context.createImageData(w, h)
+        imageData.data.set(pixelBuffer)
+        context.putImageData(imageData, 0, 0)
+
+        // flip image
+        context.scale(1, -1)
+        context.drawImage(this.renderCanvas, 0, -h)
+
+        saveCanvasAsImage(this.renderCanvas, st, `3d-snapshots`)
+
+        // reset
+        this.renderer.setRenderTarget(null)
+    }
+
     controls: OrbitControls
 
     // point cloud
@@ -244,6 +309,10 @@ class State {
         )
         this.renderer = new THREE.WebGLRenderer()
         this.renderer.setSize(this.WIDTH, this.HEIGHT)
+
+        this.renderTarget = new THREE.WebGLRenderTarget(window.innerWidth, window.innerHeight)
+        this.renderCanvas = document.createElement('canvas')
+        document.body.appendChild(this.renderCanvas)
 
         // // Add renderer to DOM
         // this.mountRef.current?.appendChild(renderer.domElement)
