@@ -12,8 +12,10 @@ SET PNPM_BIN_PATH=%CD%\.cushy\pnpm.exe
 
 :: Check if pnpm is already installed
 IF EXIST "%PNPM_HOME%\pnpm.exe" (
-    FOR /F "tokens=*" %%i IN ('%PNPM_BIN_PATH% --version') DO SET INSTALLED_PNPM_VERSION=%%i
-    IF NOT "%INSTALLED_PNPM_VERSION%"=="%PNPM_VERSION%" (
+    FOR /F "tokens=*" %%i IN ('"%PNPM_BIN_PATH%" --version') DO (
+        SET INSTALLED_PNPM_VERSION=%%i
+    )
+    IF NOT "!INSTALLED_PNPM_VERSION!"=="%PNPM_VERSION%" (
         ECHO Updating pnpm from version %INSTALLED_PNPM_VERSION% to %PNPM_VERSION%...
         CALL :install_with_powershell
     ) ELSE (
