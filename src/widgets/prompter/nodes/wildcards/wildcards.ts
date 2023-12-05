@@ -2,6 +2,9 @@
 
 export type Wildcards = {
     '3d_term': string[]
+    action_normal: string[]
+    action_fantasy: string[]
+    action_scifi: string[]
     actors: string[]
     actress: string[]
     adj_architecture: string[]
@@ -244,6 +247,317 @@ export const wildcards: Wildcards = {
         'wireframe model',
         'wireframe rendering',
     ],
+    action_normal: `
+    Brushing teeth
+Opening a door
+Checking the time on a watch
+Drinking from a water fountain
+Typing on a keyboard
+Putting on shoes
+Petting a cat
+Writing with a pen
+Turning on a computer
+Holding an umbrella
+Flipping through a magazine
+Cooking on a stove
+Turning off a light switch
+Riding a bicycle
+Sending a text message
+Playing a musical instrument
+Sitting on a park bench
+Pushing a shopping cart
+Ordering coffee at a cafe
+Doing push-ups
+Playing a video game
+Applying sunscreen
+Riding an escalator
+Answering a phone call
+Reading a newspaper
+Tying shoelaces
+Jumping rope
+Hailing a taxi
+Swiping a credit card
+Waving goodbye
+Checking a mirror
+Eating a sandwich
+Climbing stairs
+Stretching in the morning
+Riding a bus
+Taking a photograph
+Holding hands with a friend
+Flipping a light switch
+Doing a crossword puzzle
+Rolling dice
+Using chopsticks
+Balancing on one foot
+High-fiving someone
+Organizing a bookshelf
+Checking the mailbox
+Whistling a tune
+Folding a paper airplane
+Zipping up a jacket
+Giving a thumbs up
+Juggling balls
+Blowing up a balloon
+Putting on sunglasses
+Drawing a doodle
+Napping in a hammock
+Jumping into a pool
+Taking a deep breath
+Playing catch
+Tying a tie
+Blowing bubbles
+Tasting a new recipe
+Skimming stones on water
+Rolling down a hill
+Building a sandcastle
+Doing a cartwheel
+Hugging a friend
+Making a paper boat
+Doing a handstand
+Tying a bow
+Skipping rope
+Building a snowman
+Doing a backflip
+Playing tag
+Blowing a kiss
+Painting with watercolors
+Doing a somersault
+Playing hopscotch
+Making a wish on a dandelion
+Drawing in the sand
+Riding a skateboard
+Planting a tree
+Lacing up ice skates
+Playing hide and seek
+Making a cup of tea
+Setting up a tent
+Blowing out candles
+Throwing a frisbee
+Skating on rollerblades
+Picking flowers
+Making a birdhouse
+Doing a puzzle
+Riding a swing
+Winking at someone
+Playing the guitar
+Setting up a hammock
+Doing a puzzle
+Feeding ducks at a pond
+Making a friendship bracelet
+Jumping in puddles
+Doing a puzzle
+Playing with a yo-yo
+    `
+        .split(`\n`)
+        .map((x) => x.trim())
+        .filter((x) => x),
+    action_fantasy: `Conjuring a magical shield
+    Riding a mystical creature
+    Casting a spell with a wand
+    Flying on the back of a dragon
+    Navigating through a hidden portal
+    Attending a fairy banquet
+    Engaging in a mythical duel
+    Communicating with telepathy
+    Taming a legendary beast
+    Trading with enchanted merchants
+    Participating in an elven archery contest
+    Crafting potions with rare ingredients
+    Dancing under the moonlight at a fairy ball
+    Exploring a labyrinth for hidden treasures
+    Rescuing a captured princess or prince
+    Seeking guidance from a wise oracle
+    Teleporting to a magical realm
+    Negotiating with talking magical creatures
+    Crafting powerful enchanted artifacts
+    Battling ferocious mythical monsters
+    Embarking on an epic quest to save the world
+    Training with skilled elven warriors
+    Playing enchanted musical instruments
+    Disguising oneself with an invisibility cloak
+    Using a magical amulet to reveal secrets
+    Consulting a magical grimoire for knowledge
+    Healing wounds with mystical powers
+    Engaging in a magical alchemical experiment
+    Shapeshifting into different forms
+    Hosting a gathering of mythical beings
+    Initiating a magical ritual
+    Solving puzzles with magical solutions
+    Communing with nature spirits
+    Creating illusions with magical arts
+    Harnessing the power of elemental magic
+    Riding a unicorn through a moonlit forest
+    Trading dreams with a fantastical creature
+    Entering a magical tournament
+    Visiting a mystical academy for training
+    Dancing with fire during a magical celebration
+    Transforming into a creature of the night
+    Summoning a celestial guardian
+    Traveling through time with magical artifacts
+    Fending off a curse with counter-magic
+    Communing with ancient spirits
+    Navigating a maze of shifting dimensions
+    Becoming a guardian of a sacred artifact
+    Creating a magical barrier for protection
+    Seeking wisdom from a legendary sage
+    Harnessing the power of the four elements
+    Journeying through a realm of dreams
+    Creating illusions to confound foes
+    Channeling the power of the stars
+    Playing a magical game of chess
+    Crafting and enchanting a magical staff
+    Offering guidance as a mystical mentor
+    Attending a magical tea ceremony
+    Exploring a library of ancient spells
+    Levitating objects with telekinesis
+    Participating in a magical debate
+    Becoming a master of magical illusions
+    Confronting a malevolent sorcerer
+    Creating a potion of invisibility
+    Harnessing the power of a magical gem
+    Using a crystal ball for scrying
+    Engaging in a celestial dance
+    Transforming mundane objects into gold
+    Crafting a cloak of shadows
+    Summoning a familiar spirit
+    Initiating a magical pact with a deity
+    Transmuting elements with alchemy
+    Breaking a curse with a magical amulet
+    Performing a ritual of divination
+    Riding a magic carpet through the clouds
+    Crafting a potion of truth
+    Attending a magical masquerade ball
+    Challenging a rival to a magical duel
+    Seeking the counsel of ancient trees
+    Creating a magical firework display
+    Wielding a staff of lightning
+    Crafting an elixir of eternal youth
+    Using a crystal wand to channel magic
+    Performing a dance to summon rain
+    Riding a phoenix through the skies
+    Crafting a talisman of protection
+    Opening a portal to the Feywild
+    Transforming into a mythical creature
+    Creating a magical charm for luck
+    Seeking the guidance of a magical creature
+    Hosting a magical banquet for allies
+    Conjuring a bridge over a chasm
+    Becoming a master of illusion magic
+    Crafting a potion of strength
+    Using a magical mirror for scrying
+    Riding a giant eagle to a mountaintop
+    Initiating a magical ceremony of renewal
+    Channeling the power of the moon
+    Creating a potion of invisibility
+    Attending a gathering of elemental beings
+    Navigating a dreamscape to find answers`
+        .split(`\n`)
+        .map((x) => x.trim())
+        .filter((x) => x),
+    action_scifi: `Piloting a spaceship through asteroid fields
+    Participating in zero-gravity sports on a space station
+    Uploading consciousness into a virtual reality simulation
+    Assembling and activating a robot companion
+    Conducting experiments in a high-tech zero-gravity lab
+    Socializing at a futuristic space station party
+    Hacking into a computer system to access classified data
+    Exploring the surface of a distant alien planet
+    Racing hovercraft at breakneck speeds in a futuristic city
+    Engaging in a holographic multiplayer game challenge
+    Negotiating with alien species for interstellar trade
+    Developing advanced technology in a state-of-the-art lab
+    Playing in a futuristic zero-gravity sports league
+    Managing a bustling space colony with advanced infrastructure
+    Training in cutting-edge combat techniques with futuristic weapons
+    Building a high-tech gadget with precision engineering
+    Engaging in futuristic espionage with stealth technology
+    Operating a towering mech suit in a high-stakes battle
+    Solving complex problems using advanced artificial intelligence
+    Embarking on an interstellar space exploration mission
+    Activating a teleportation device to travel instantaneously
+    Experiencing time travel using experimental technology
+    Negotiating intergalactic treaties to maintain peace
+    Designing and constructing a state-of-the-art space station
+    Enhancing the human body with cybernetic implants
+    Participating in a virtual reality concert experience
+    Pioneering new energy source experiments for sustainable power
+    Racing futuristic vehicles on high-tech tracks
+    Experimenting with advanced genetic engineering in a lab
+    Joining a space exploration team for cosmic discoveries
+    Operating a surveillance drone in a futuristic city
+    Showcasing futuristic fashion in a holographic runway
+    Investigating and solving crimes with cutting-edge technology
+    Developing and managing a futuristic business empire
+    Crafting and enhancing cybernetic enhancements for the human body
+    Navigating a spaceship through a nebula
+    Participating in a space-age extreme sports competition
+    Battling rogue artificial intelligence in a virtual world
+    Communicating with extraterrestrial life forms using advanced translators
+    Building and deploying nanobots for medical advancements
+    Racing sleek hoverbikes through futuristic cityscapes
+    Experiencing mind-bending virtual reality simulations
+    Investigating anomalies on the surface of an alien planet
+    Programming and controlling autonomous robotic drones
+    Solving complex quantum physics puzzles
+    Engaging in a zero-gravity dance performance
+    Testing the limits of a spacesuit in a hostile environment
+    Managing a high-tech research and development facility
+    Negotiating trade agreements with alien civilizations
+    Participating in a futuristic VR e-sports tournament
+    Navigating through a wormhole for faster-than-light travel
+    Developing advanced medical treatments using nanotechnology
+    Racing advanced mechs in a futuristic arena
+    Experimenting with gravitational manipulation technology
+    Designing and testing advanced space propulsion systems
+    Participating in a futuristic zero-gravity dance competition
+    Operating a mind-controlled exoskeleton for enhanced mobility
+    Crafting and deploying energy shields for personal protection
+    Participating in a space colonization initiative
+    Developing advanced neural interfaces for direct communication
+    Racing futuristic drones through complex obstacle courses
+    Designing and testing advanced artificial intelligence algorithms
+    Navigating through a dense asteroid field in a spaceship
+    Participating in a zero-gravity parkour competition
+    Experimenting with advanced bioengineering for enhanced abilities
+    Creating and deploying holographic displays for communication
+    Racing futuristic jetpacks through a floating city
+    Developing advanced terraforming technologies for alien planets
+    Crafting and deploying self-replicating nanobots for exploration
+    Participating in a futuristic drone racing league
+    Navigating through a space-time rift for scientific exploration
+    Testing advanced exosuits for enhanced strength and agility
+    Engaging in a zero-gravity martial arts tournament
+    Experimenting with advanced materials for space construction
+    Designing and testing advanced prosthetics with neural integration
+    Racing futuristic submarines through underwater colonies
+    Participating in a futuristic battle royale competition
+    Navigating through a virtual reality maze
+    Developing advanced holographic communication devices
+    Crafting and deploying automated terraforming drones
+    Participating in a futuristic drone combat league
+    Navigating through a space-time anomaly for scientific study
+    Testing advanced stealth technology in a virtual simulation
+    Designing and testing advanced personal teleportation devices
+    Crafting and deploying robotic assistants for various tasks
+    Participating in a futuristic drone delivery service
+    Navigating through a dense asteroid field with precision piloting
+    Testing advanced genetic modification techniques for human enhancement
+    Engaging in a zero-gravity acrobatics performance
+    Experimenting with advanced brain-machine interfaces for communication
+    Racing futuristic spacecraft through a high-speed orbital track
+    Developing advanced AI-driven virtual reality experiences
+    Navigating through a cosmic dust cloud in a spaceship
+    Participating in a futuristic gladiator-style arena combat
+    Experimenting with advanced augmented reality technologies
+    Crafting and deploying automated agricultural drones
+    Racing advanced exoskeletons through a challenging obstacle course
+    Navigating through a futuristic asteroid mining operation
+    Testing advanced nanomedicine for rapid healing
+    Crafting and deploying robotic explorers for planetary surveys`
+        .split(`\n`)
+        .map((x) => x.trim())
+        .filter((x) => x),
     actors: [
         'al pacino',
         'arnold schwarzenegger',
