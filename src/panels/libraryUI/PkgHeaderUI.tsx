@@ -1,11 +1,11 @@
-import type { Package } from './Pkg'
+import type { Package } from '../../cards/Pkg'
 
 import { observer } from 'mobx-react-lite'
 import { stringifyUnknown } from 'src/utils/formatters/stringifyUnknown'
-import { ManifestError } from './DeckManifest'
+import { ManifestError } from '../../cards/DeckManifest'
 import { RevealUI } from 'src/rsuite/RevealUI'
 import { exhaust } from 'src/utils/misc/ComfyUtils'
-import { ActionPackStatusUI } from './DeckStatusUI'
+import { ActionPackStatusUI } from '../../cards/DeckStatusUI'
 import { PkgHeaderStyle } from './AppListStyles'
 
 export const PkgHeaderUI = observer(function ActionPackHeaderUI_(p: { pkg: Package }) {

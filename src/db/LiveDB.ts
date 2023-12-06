@@ -38,7 +38,7 @@ import { ProjectL } from '../models/Project'
 import { SchemaL } from '../models/Schema'
 import { StepL } from '../models/Step'
 import { asRelativePath } from '../utils/fs/pathUtils'
-import { _printSchema } from 'src/db/_printSchema'
+import { _codegenORM } from 'src/db/_codegenORM'
 import { MediaSplatL } from 'src/models/MediaSplat'
 import { CustomDataL } from 'src/models/CustomData'
 import { DB_RELATIVE_PATH } from './DB_CONFIG'
@@ -73,7 +73,7 @@ export class LiveDB {
 
     /** You should not call that unless you know what you're doing */
     runCodegen = () => {
-        _printSchema(this)
+        _codegenORM(this)
     }
 
     // prettier-ignore

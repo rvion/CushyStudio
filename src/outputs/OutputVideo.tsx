@@ -7,8 +7,8 @@ import { OutputPreviewWrapperUI } from './OutputPreviewWrapperUI'
 
 export const OutputVideoPreviewUI = observer(function OutputImagePreviewUI_(p: { step?: Maybe<StepL>; output: MediaVideoL }) {
     const st = useSt()
-    const size = st.gallerySize
-    const sizeStr = st.gallerySizeStr
+    const size = st.historySize
+    const sizeStr = st.historySizeStr
     return (
         <OutputPreviewWrapperUI output={p.output}>
             <div

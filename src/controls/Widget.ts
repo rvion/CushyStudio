@@ -220,6 +220,10 @@ export class Widget_prompt implements IRequest<'prompt', Widget_prompt_opts, Wid
     type: 'prompt' = 'prompt'
     state: Widget_prompt_state
 
+    // getText = () => {
+    //     const tokens = entry.item.tokens
+
+    // }
     constructor(
         public builder: FormBuilder,
         public schema: SchemaL,
@@ -1030,7 +1034,7 @@ export type Widget_listExt_opts<T extends Widget>  = ReqInput<{
     width: number,
     /** default: 100 */
     height: number,
-    element: (size: {width:number, height:number}) => WithPartialExt<T>,
+    element: (size: {ix:number, width:number, height:number}) => WithPartialExt<T>,
     min?: number,
     max?:number,
     defaultLength?:number
@@ -1054,7 +1058,7 @@ export class Widget_listExt      <T extends Widget> implements IRequest<'listExt
         serial?: Widget_listExt_serial<T>,
     ) {
         this.id = serial?.id ?? nanoid()
-        this._reference = input.element({width:100, height:100}).item
+        this._reference = input.element({width:100, height:100, ix: 0}).item
         if (serial) {
             const items:  WithExt<T>[] = serial.items_.map(({item_, ...ext}) => {
                 const item:T = builder._HYDRATE(item_.type, this._reference.input, item_)
@@ -1067,8 +1071,8 @@ export class Widget_listExt      <T extends Widget> implements IRequest<'listExt
             const clamp = (v: number, min: number, max: number) => Math.min(Math.max(v, min), max)
             const defaultLen = clamp(input.defaultLength ?? 0, input.min ?? 0, input.max ?? 10)
             const items: WithExt<T>[] = defaultLen
-                ? new Array(defaultLen).fill(0).map(() => {
-                    const partial: WithPartialExt<T> = input.element({width: w, height: h})
+                ? new Array(defaultLen).fill(0).map((_,ix) => {
+                    const partial: WithPartialExt<T> = input.element({width: w, height: h, ix})
                     const out : WithExt<T> = Object.assign({}, itemExtDefaults, partial)
                     return out
                 })
@@ -1080,7 +1084,7 @@ export class Widget_listExt      <T extends Widget> implements IRequest<'listExt
 
     // METHODS -----------------------------------------------------------------------------
     addItem() {
-        const newItemPartial = this.input.element({width: this.state.width, height: this.state.height})
+        const newItemPartial = this.input.element({width: this.state.width, height: this.state.height, ix: this.state.items.length})
         const newItem: WithExt<T> = { ...itemExtDefaults, ...newItemPartial}
         this.state.items.push(newItem)
     }

@@ -1,6 +1,6 @@
 import { default as BetterSqlite3, default as SQL } from 'better-sqlite3'
 import { _applyAllMigrations } from './_applyAllMigrations'
-import { _printSchema } from './_printSchema'
+import { _codegenORM } from './_codegenORM'
 import { _setupMigrationEngine } from './_setupMigrationEngine'
 import { _checkAllMigrationsHaveDifferentIds } from './migrations'
 import { DB_RELATIVE_PATH } from './DB_CONFIG'
@@ -20,7 +20,7 @@ export class Store {
         _setupMigrationEngine(this)
         _checkAllMigrationsHaveDifferentIds()
         _applyAllMigrations(this)
-        _printSchema(this)
+        _codegenORM(this)
     }
 
     test = () => {

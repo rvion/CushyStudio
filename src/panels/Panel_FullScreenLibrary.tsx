@@ -1,15 +1,12 @@
 import { observer } from 'mobx-react-lite'
-import { Button, Input, Joined, Addon, Slider, Toggle } from 'src/rsuite/shims'
 import { CreateDeckBtnUI } from 'src/app/layout/CreateDeckBtnUI'
 import { AppCardUI } from 'src/cards/fancycard/AppCardUI'
 import { FileBeeingImportedUI } from 'src/importers/FilesBeeingImported'
+import { Addon, Joined, Slider, Toggle } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
-import { ScrollablePaneUI } from 'src/widgets/misc/scrollableArea'
 import { FieldAndLabelUI } from 'src/widgets/misc/FieldAndLabelUI'
-import { DraftL } from 'src/models/Draft'
-import { AppIllustrationUI } from 'src/cards/fancycard/AppIllustrationUI'
-import { AppFavoriteBtnUI, DraftFavoriteBtnUI } from 'src/cards/CardPicker2UI'
-import { AppEntryStyle, AppEntryStyleSelected } from 'src/cards/AppListStyles'
+import { ScrollablePaneUI } from 'src/widgets/misc/scrollableArea'
+import { DraftEntryUI } from './libraryUI/DraftEntryUI'
 
 export const Panel_CardPicker3UI = observer(function Panel_CardPicker3UI_(p: {}) {
     const st = useSt()
@@ -116,56 +113,5 @@ export const Panel_CardPicker3UI = observer(function Panel_CardPicker3UI_(p: {})
             </div>
         </div>
         // </div>
-    )
-})
-
-export const DraftEntryUI = observer(function DraftEntryUI_(p: { draft: DraftL }) {
-    const st = useSt()
-    const draft = p.draft
-    const isSelected = st.currentDraft === draft
-    return (
-        <div
-            tw={[
-                //
-                'flex items-center gap-2',
-                isSelected ? AppEntryStyleSelected : AppEntryStyle,
-            ]}
-            key={draft.id}
-        >
-            {/* <div tw='pl-1'>
-                <DraftFavoriteBtnUI draft={draft} size='1.3rem' />
-            </div> */}
-            <AppIllustrationUI app={draft.app} size='1.5rem' />
-            <div
-                tw='cursor-pointer single-line-ellipsis flex-grow'
-                onClick={() => {
-                    st.currentDraft = draft
-                    st.layout.FOCUS_OR_CREATE('CurrentDraft', {}, 'LEFT_PANE_TABSET')
-                }}
-            >
-                {draft.data.title || draft.app?.name || draft.data.appPath}
-            </div>
-            <Joined tw='ml-auto right-0'>
-                <Button
-                    size='xs'
-                    onClick={() => {
-                        st.layout.FOCUS_OR_CREATE('Draft', { draftID: draft.id }, 'LEFT_PANE_TABSET')
-                    }}
-                    icon={<span className='material-symbols-outlined'>open_in_new</span>}
-                    appearance='subtle'
-                    color='blue'
-                ></Button>
-                <Button
-                    size='xs'
-                    onClick={() => {
-                        if (st.currentDraft?.id === draft.id) st.currentDraft = null
-                        draft.delete()
-                    }}
-                    icon={<span className='material-symbols-outlined'>delete</span>}
-                    appearance='subtle'
-                    color='red'
-                ></Button>
-            </Joined>
-        </div>
     )
 })

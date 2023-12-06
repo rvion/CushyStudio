@@ -1,22 +1,22 @@
 Todo before release:
 
-    ☐ remove the need for node / npm to be installed
-        ☐ ❌ problem :
-            - installing Cushy depends on having node and git installed
-            - many people don't have node installed
-            - many people have too old / incompatible version installed
-            - install instruction have too many steps
-            - it's hard to provide a self-contained upgradable archive
+✔ remove the need for node / npm to be installed @done(23-12-06 00:14)
+    ✔ ❌ problem : @done(23-12-06 00:14)
+        ✔ installing Cushy depends on having node and git installed @done(23-12-06 00:14)
+        ✔ many people don't have node installed @done(23-12-06 00:14)
+        ✔ many people have too old / incompatible version installed @done(23-12-06 00:14)
+        ✔ install instruction have too many steps @done(23-12-06 00:14)
+        ✔ it's hard to provide a self-contained upgradable archive @done(23-12-06 00:14)
 
-        ☐ 🟢 solution:
-            - have a install script with 0 dependencies that
-                - download the tiny `pnpm` binary (exact version)
-                - use `pnpm` to install all dependencies including electron
-                - bypass completely the need for node by using electron built-in node
-                    - start `vite` via it's typescritp api from the start.cjs script itself
-                    - this will also probably fix the problem of vite/electron not closing synchronously
-            - extra bonus:
-                - ship pnpm binaries for common archs in the repo directly ?
+    ✔ 🟢 solution: @done(23-12-06 00:14)
+        ✔ have a install script with 0 dependencies that @done(23-12-06 00:14)
+            ✔ download the tiny `pnpm` binary (exact version) @done(23-12-06 00:14)
+            ✔ use `pnpm` to install all dependencies including electron @done(23-12-06 00:14)
+            ✔ bypass completely the need for node by using electron built-in node @done(23-12-06 00:14)
+                ✔ start `vite` via it's typescritp api from the start.cjs script itself @done(23-12-06 00:14)
+                ✔ this will also probably fix the problem of vite/electron not closing synchronously @done(23-12-06 00:14)
+        ✔ extra bonus: @done(23-12-06 00:14)
+            ✔ ship pnpm binaries for common archs in the repo directly ? @done(23-12-06 00:14)
 
     ☐ fix sut
     ☐ use any image as draft illustration

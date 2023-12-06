@@ -4,7 +4,7 @@ import { _getAllColumnsForTable } from './_getAllColumnsForTable'
 import { _getAllForeignKeysForTable } from './_getAllForeignKeysForTable'
 import JSON5 from 'json5'
 
-export const _printSchema = (store: {
+export const _codegenORM = (store: {
     //
     db: BetterSqlite3.Database
     log: (...res: any[]) => void
@@ -57,6 +57,7 @@ export const _printSchema = (store: {
                 // custom cases
                 if (col.name === 'id') return `${jsTableName}ID`
                 if (col.name === 'appPath') return `AppPath`
+                if (col.name === 'status') return `T.StatusT`
                 // by types
                 if (col.type === 'INT') return 'number'
                 if (col.type === 'INTEGER') return 'number'

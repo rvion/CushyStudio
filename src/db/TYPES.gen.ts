@@ -219,7 +219,7 @@ export type StepT = {
     outputGraphID: GraphID;
 
     /** @default: null, sqlType: TEXT */
-    status: string;
+    status: T.StatusT;
 
     /** @default: "1", sqlType: INT */
     isExpanded: number;
@@ -275,6 +275,9 @@ export type ComfyPromptT = {
     /** @default: null, sqlType: json */
     error?: Maybe<T.ComfyPrompt_error>;
 
+    /** @default: null, sqlType: TEXT */
+    status?: Maybe<T.StatusT>;
+
 }
 export const ComfyPromptSchema = Type.Object({
     id: Type.String(),
@@ -284,6 +287,7 @@ export const ComfyPromptSchema = Type.Object({
     graphID: Type.String(),
     executed: Type.Number(),
     error: Type.Optional(T.Nullable(T.ComfyPrompt_error_Schema)),
+    status: Type.Optional(T.Nullable(Type.String())),
 },{ additionalProperties: false })
 
 export const ComfyPromptFields = {
@@ -294,6 +298,7 @@ export const ComfyPromptFields = {
     graphID: {cid:4,name:'graphID',type:'TEXT',notnull:1,dflt_value:null,pk:0},
     executed: {cid:5,name:'executed',type:'INT',notnull:1,dflt_value:'0',pk:0},
     error: {cid:6,name:'error',type:'json',notnull:0,dflt_value:null,pk:0},
+    status: {cid:7,name:'status',type:'TEXT',notnull:0,dflt_value:null,pk:0},
 }
 
 

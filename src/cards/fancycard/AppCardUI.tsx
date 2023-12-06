@@ -4,7 +4,7 @@ import { Tag } from 'src/rsuite/shims'
 import { LibraryFile } from '../CardFile'
 import { Package } from '../Pkg'
 
-import { AppFavoriteBtnUI } from '../CardPicker2UI'
+import { AppFavoriteBtnUI } from '../../panels/libraryUI/CardPicker2UI'
 import { GithubUserUI } from '../GithubAvatarUI'
 import { AppIllustrationUI } from './AppIllustrationUI'
 import { useSt } from 'src/state/stateContext'

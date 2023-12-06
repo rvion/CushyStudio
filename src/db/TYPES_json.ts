@@ -7,6 +7,10 @@ import type { ComfySchemaJSON } from 'src/types/ComfySchemaJSON'
 import type { WsMsgExecutionError } from 'src/types/ComfyWsApi'
 import type { SqlColDef } from './_getAllColumnsForTable'
 
+import type { Status } from 'src/back/Status'
+
+export type StatusT = keyof typeof Status
+
 export const Nullable = <T extends TSchema>(schema: T) => Type.Union([schema, Type.Null(), Type.Undefined()])
 
 export type Graph_comfyPromptJSON = ComfyPromptJSON

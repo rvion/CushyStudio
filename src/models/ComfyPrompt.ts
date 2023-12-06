@@ -1,7 +1,7 @@
 import type { LiveInstance } from '../db/LiveInstance'
 import type { StepL } from './Step'
 import type { PromptRelated_WsMsg, WsMsgExecuted, WsMsgExecuting, WsMsgExecutionError } from '../types/ComfyWsApi'
-import type { ComfyWorkflowL } from './Graph'
+import type { ComfyWorkflowL, ProgressReport } from './Graph'
 
 import { nanoid } from 'nanoid'
 import { ComfyPromptT } from 'src/db/TYPES.gen'
@@ -9,19 +9,6 @@ import { Status } from '../back/Status'
 import { LiveRef } from '../db/LiveRef'
 import { exhaust } from '../utils/misc/ComfyUtils'
 import { SQLITE_true } from 'src/db/SQLITE_boolean'
-
-// export type ComfyPromptID = Branded<string, { PromptID: true }>
-// export const asComfyPromptID = (s: string): ComfyPromptID => s as any
-
-// export type ComfyPromptT = {
-//     id: PromptID
-//     createdAt: number
-//     updatedAt: number
-//     stepID: StepID
-//     graphID: GraphID
-//     executed: boolean
-//     error?: Maybe<WsMsgExecutionError>
-// }
 
 export interface ComfyPromptL extends LiveInstance<ComfyPromptT, ComfyPromptL> {}
 export class ComfyPromptL {
@@ -46,21 +33,26 @@ export class ComfyPromptL {
     //     // if (next)
     // }
 
+    get progressGlobal(): ProgressReport {
+        if (this.data.status === 'Success') return { countDone: 1, countTotal: 1, isDone: true, percent: 100 }
+        return this.graph.item.progressGlobal
+    }
+    get status() {
+        return this.data.status ?? 'New'
+    }
     step = new LiveRef<this, StepL>(this, 'stepID', () => this.db.steps)
     graph = new LiveRef<this, ComfyWorkflowL>(this, 'graphID', () => this.db.graphs)
-    // get project() { return this.step.item.project } // prettier-ignore
 
     onPromptRelatedMessage = (msg: PromptRelated_WsMsg) => {
         // console.debug(`🐰 ${msg.type} ${JSON.stringify(msg.data)}`)
         const graph = this.graph.item
-
         if (msg.type === 'execution_start') return
         if (msg.type === 'execution_cached') return graph.onExecutionCached(msg)
         if (msg.type === 'executing') return this.onExecuting(msg)
         if (msg.type === 'progress') return graph.onProgress(msg)
         if (msg.type === 'executed') return this.onExecuted(msg)
         if (msg.type === 'execution_error') return this.onError(msg)
-
+        console.log(`[🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴] `, msg)
         exhaust(msg)
         // await Promise.all(images.map(i => i.savedPromise))
         // const uris = FrontWebview.with((curr) => {
@@ -81,15 +73,14 @@ export class ComfyPromptL {
             // if (this.step.item.data.status !== Status.Failure) {
             //     this.step.item.update({ status: Status.Success })
             // }
-            this._finish()
+            this._finish({ status: 'Success' })
             return
         }
     }
     private onError = (msg: WsMsgExecutionError) => {
         console.log('>> MARK ERROR')
         this.step.item.update({ status: Status.Failure })
-        this.update({ error: msg })
-        this._finish()
+        this._finish({ status: 'Failure', error: msg })
     }
 
     /** udpate execution list */
@@ -117,8 +108,11 @@ export class ComfyPromptL {
     // images: ImageL[] = []
 
     /** finish this step */
-    private _finish = () => {
-        this.update({ executed: SQLITE_true })
+    private _finish = (p: Pick<ComfyPromptT, 'status' | 'error'>) => {
+        this.update({
+            ...p,
+            executed: SQLITE_true,
+        })
         if (this._resolve == null) throw new Error('❌ invariant violation: ScriptStep_prompt.resolve is null.')
         this._resolve(this)
     }
