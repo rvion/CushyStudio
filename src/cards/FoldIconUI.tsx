@@ -2,14 +2,15 @@ import { observer } from 'mobx-react-lite'
 
 export const FoldIconUI = observer(function FoldIconUI_(p: {
     //
-    val: boolean
+    val?: boolean
     set?: (next: boolean) => void
 }) {
+    const val = p.val ?? false
     return (
-        <label className='swap swap-rotate'>
+        <label className='swap swap-rotate opacity-50'>
             <input
                 type='checkbox'
-                checked={!p.val}
+                checked={val}
                 onChange={(ev) => {
                     p.set?.(!ev.target.checked)
                 }}
