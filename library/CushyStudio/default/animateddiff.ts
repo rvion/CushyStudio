@@ -1,22 +1,32 @@
+const TOTAL_DURATION = 40
 app({
     ui: (form) => ({
         preText: form.str({
             default: ' (Masterpiece, best quality:1.2), closeup, close-up, a girl in a forest',
         }),
         seed: form.intOpt({ group: 'sampler' }),
-        text: form.str({
-            textarea: true,
-            default: [
-                `"0" :"spring day, blossoms, flowers, cloudy",`,
-                `"4" :"summer day, sunny, leaves",`,
-                `"8" :"fall day, colorful leaves dancing in the wind",`,
-                `"12" :"winter day, snowing, cold, jacket"`,
-                ``,
-            ].join('\n'),
+        timeline: form.timeline({
+            width: TOTAL_DURATION,
+            height: 2,
+            element: ({ ix }) => ({
+                item: form.prompt({}),
+                width: 0.25 * TOTAL_DURATION,
+                x: TOTAL_DURATION * (ix / 4),
+            }),
         }),
+        // text: form.str({
+        //     textarea: true,
+        //     default: [
+        //         `"0" :"spring day, blossoms, flowers, cloudy",`,
+        //         `"4" :"summer day, sunny, leaves",`,
+        //         `"8" :"fall day, colorful leaves dancing in the wind",`,
+        //         `"12" :"winter day, snowing, cold, jacket"`,
+        //         ``,
+        //     ].join('\n'),
+        // }),
         removeBG: form.bool({ default: false }),
-        steps: form.int({ default: 20, group: 'sampler' }),
-        frames: form.int({ default: 16, group: 'video' }),
+        samplerSteps: form.int({ default: 20, group: 'sampler' }),
+        // frames: form.int({ default: 16, group: 'video' }),
     }),
     run: async (flow, p) => {
         const graph = flow.nodes
@@ -43,8 +53,20 @@ app({
             model: checkpointLoaderSimpleWithNoiseSelect,
             context_options: aDE_AnimateDiffUniformContextOptions,
         })
+        const text = p.timeline.items
+            .map((entry) => {
+                const tokens = entry.item.tokens
+                const text = tokens
+                    .map((tok) => {
+                        if (tok.type === 'text') return tok.text
+                        return ''
+                    })
+                    .join(' ')
+                return `"${entry.x}" : "${text}"`
+            })
+            .join(',\n')
         const batchPromptSchedule = graph.BatchPromptSchedule({
-            text: p.text, //'"0" :"spring day, blossoms, flowers, cloudy",\n"25" :"summer day, sunny, leaves",\n"50" :"fall day, colorful leaves dancing in the wind",\n"75" :"winter day, snowing, cold, jacket"\n',
+            text: text, //'"0" :"spring day, blossoms, flowers, cloudy",\n"25" :"summer day, sunny, leaves",\n"50" :"fall day, colorful leaves dancing in the wind",\n"75" :"winter day, snowing, cold, jacket"\n',
             max_frames: 120,
             pre_text: p.preText, //' (Masterpiece, best quality:1.2), closeup, close-up, a girl in a forest',
             app_text: '',
@@ -57,11 +79,11 @@ app({
         const aDE_EmptyLatentImageLarge = graph.ADE$_EmptyLatentImageLarge({
             width: 512,
             height: 512,
-            batch_size: p.frames, //100,
+            batch_size: p.timeline.width, //100,
         })
         let kSampler = graph.KSampler({
             seed: p.seed ?? flow.randomSeed(),
-            steps: p.steps,
+            steps: p.samplerSteps,
             cfg: 7,
             sampler_name: 'euler_ancestral',
             scheduler: 'normal',
