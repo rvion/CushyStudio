@@ -34,7 +34,14 @@ IF NOT EXIST "%PNPM_BIN_PATH%" (
 
 :: Install dependencies using pnpm
 ECHO Installing dependencies...
-CALL %PNPM_BIN_PATH% install
+CALL %PNPM_BIN_PATH% install 
+IF ERRORLEVEL 1 (
+    ECHO Installing dependencies: node-gyp first...
+    CALL %PNPM_BIN_PATH% remove better-sqlite3
+    CALL %PNPM_BIN_PATH% install node-gyp
+    CALL %PNPM_BIN_PATH% install better-sqlite3
+    CALL %PNPM_BIN_PATH% install
+)
 
 :: ensuring binary dependencies are correctly linked across installed
 CALL .\node_modules\.bin\electron-builder install-app-deps
