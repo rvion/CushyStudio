@@ -114,6 +114,11 @@ export class Runtime<FIELDS extends WidgetDict = any> {
         return graph
     }
 
+    /** verify key is ready */
+    llm_isConfigured = async () => {
+        return !!this.st.configFile.value.OPENROUTER_API_KEY
+    }
+
     /** geenric function to ask open router anything */
     llm_ask_OpenRouter = async (p: OpenRouterRequest): Promise<OpenRouterResponse> => {
         return await OpenRouter_ask(this.st.configFile.value.OPENROUTER_API_KEY, p)
@@ -147,8 +152,8 @@ export class Runtime<FIELDS extends WidgetDict = any> {
                         `Write a prompt describing the user submited topic in a way that will help the ai generate a relevant image.`,
                         `Your answer must be arond 500 chars in length`,
                         `Start with most important words describing the prompt`,
-                        `Include lots of adjective and advers. no full sentences. remove useless words`,
-                        `try to include a long list coma separated words.`,
+                        `Include lots of adjective and adverbs. no full sentences. remove useless words`,
+                        `try to include a long list of comma separated words.`,
                         'Once main keywords are in, if you still have character to add, include vaiours beauty or artsy words',
                         `ONLY answer with the prompt itself. DO NOT answer anything else. No Hello, no thanks, no signature, no nothing.`,
                     ].join('\n'),
@@ -430,14 +435,14 @@ export class Runtime<FIELDS extends WidgetDict = any> {
     output_Markdown = (p: string | { title: string; markdownContent: string }) => {
         const title = typeof p === 'string' ? '<no-title>' : p.title
         const content = typeof p === 'string' ? p : p.markdownContent
-        this.st.db.media_texts.create({ kind: 'markdown', title, content, stepID: this.step.id })
+        return this.st.db.media_texts.create({ kind: 'markdown', title, content, stepID: this.step.id })
     }
 
     output_text = (p: { title: string; message: Printable } | string) => {
         const [title, message] = typeof p === 'string' ? ['<no-title>', p] : [p.title, p.message]
         let msg = this.extractString(message)
         console.info(msg)
-        this.step.db.media_texts.create({
+        return this.step.db.media_texts.create({
             kind: 'text',
             title: title,
             content: msg,
