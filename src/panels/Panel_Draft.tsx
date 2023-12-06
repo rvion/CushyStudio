@@ -17,7 +17,7 @@ import { WidgetUI } from '../controls/widgets/WidgetUI'
 import { ResultWrapperUI } from '../widgets/misc/ResultWrapperUI'
 import { ScrollablePaneUI } from '../widgets/misc/scrollableArea'
 import { draftContext } from '../widgets/misc/useDraft'
-import { AppFavoriteBtnUI } from 'src/cards/CardPicker2UI'
+import { AppFavoriteBtnUI } from 'src/panels/libraryUI/CardPicker2UI'
 
 export const Panel_Draft = observer(function Panel_Draft_(p: { draftID: DraftID }) {
     // 1. get draft

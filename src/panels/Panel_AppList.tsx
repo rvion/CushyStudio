@@ -1,103 +1,28 @@
 import { observer } from 'mobx-react-lite'
 import SortableList, { SortableItem } from 'react-easy-sort'
-import { AppEntryInvalidUI, AppEntryUI, PkgUI } from '../cards/CardPicker2UI'
 import { useSt } from '../state/stateContext'
-import { DraftEntryUI } from './Panel_FullScreenLibrary'
-import { PkgHeaderStyle } from 'src/cards/AppListStyles'
+import { AppEntryInvalidUI, AppEntryUI, PkgUI } from './libraryUI/CardPicker2UI'
+import { FavoriteHeaderUI } from './libraryUI/FavoriteHeaderUI'
+import { LibraryHeaderUI } from './libraryUI/LibraryHeaderUI'
 
 export const Panel_AppList = observer(function Panel_AppList_(p: {}) {
     const st = useSt()
     const library = st.library
     return (
         <>
-            <div tw='flex w-full'>
-                <button tw='btn btn-sm btn-active flex-grow' onClick={() => st.toggleFullLibrary()}>
-                    <span className='material-symbols-outlined'>view_list</span>
-                    Library
-                </button>
-                <button tw='btn btn-sm' onClick={() => library.decksSorted.forEach((d) => (d.folded = true))}>
-                    <span className='material-symbols-outlined'>minimize</span>
-                </button>
-            </div>
-
+            <LibraryHeaderUI />
             {/* DRAFTS */}
-            {st.allOpenDrafts.items.length > 0 ? (
-                <div
-                    tw={[
-                        //
-                        PkgHeaderStyle,
-                        'cursor-pointer items-center gap-1 flex justify-between',
-                    ]}
-                    onClick={() => (st.draftsFolded = !st.draftsFolded)}
-                >
-                    <div>
-                        <span
-                            //
-                            style={{ fontSize: '2rem' }}
-                            tw='text-primary'
-                            className='material-symbols-outlined'
-                        >
-                            dynamic_form
-                        </span>
-                    </div>
-                    <div tw='flex-1 text-base-content'>Drafts</div>
-                    {/* FOLD INDICATOR */}
-                    <label className='swap swap-rotate opacity-30'>
-                        <input
-                            type='checkbox'
-                            checked={st.draftsFolded}
-                            onChange={(ev) => {
-                                st.draftsFolded = !ev.target.checked
-                            }}
-                        />
-                        <span className='material-symbols-outlined swap-on'>keyboard_arrow_right</span>
-                        <span className='material-symbols-outlined swap-off'>keyboard_arrow_down</span>
-                    </label>
-                </div>
-            ) : null}
-
+            {/* {st.allOpenDrafts.items.length > 0 ? <DraftsHeaderUI /> : null}
             {st.draftsFolded ? null : ( //
                 <div tw={['overflow-auto']}>
                     {st.allOpenDrafts.items.map((draft) => {
                         return <DraftEntryUI key={draft.id} draft={draft} />
                     })}
                 </div>
-            )}
+            )} */}
 
             {/* FAVORITES */}
-            {library.allFavorites.length > 0 ? (
-                <div
-                    tw={[
-                        //
-                        PkgHeaderStyle,
-                        'cursor-pointer items-center gap-1 flex justify-between',
-                    ]}
-                    onClick={() => (library.favoritesFolded = !library.favoritesFolded)}
-                >
-                    <div>
-                        <span
-                            //
-                            style={{ fontSize: '2rem' }}
-                            tw='text-yellow-500'
-                            className='material-symbols-outlined'
-                        >
-                            star
-                        </span>
-                    </div>
-                    <div tw='flex-1 text-base-content'>Favorites</div>
-                    <label className='swap swap-rotate opacity-30'>
-                        <input
-                            type='checkbox'
-                            checked={library.favoritesFolded}
-                            onChange={(ev) => {
-                                library.favoritesFolded = !ev.target.checked
-                            }}
-                        />
-                        <span className='material-symbols-outlined swap-on'>keyboard_arrow_right</span>
-                        <span className='material-symbols-outlined swap-off'>keyboard_arrow_down</span>
-                    </label>
-                </div>
-            ) : null}
+            {library.allFavorites.length > 0 ? <FavoriteHeaderUI /> : null}
             {library.favoritesFolded ? null : ( //
                 <SortableList onSortEnd={library.moveFavorite} className='list' draggedItemClassName='dragged'>
                     {library.allFavorites.map((fav, ix) => (
