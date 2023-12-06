@@ -14,8 +14,8 @@ export const OutputTextPreviewUI = observer(function OutputTextPreviewUI_(p: {
 }) {
     const st = useSt()
     const output = p.output
-    const size = st.gallerySize
-    const sizeStr = st.gallerySizeStr
+    const size = st.historySize
+    const sizeStr = st.historySizeStr
     const message =
         output.data.kind === 'markdown' ? ( //
             <div

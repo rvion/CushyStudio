@@ -18,10 +18,10 @@ export const OutputDisplacementPreviewUI = observer(function OutputImagePreviewU
     output: Media3dDisplacementL
 }) {
     const st = useSt()
-    const size = st.gallerySize
-    const sizeStr = st.gallerySizeStr
+    const size = st.historySize
+    const sizeStr = st.historySizeStr
     return (
-        <OutputPreviewWrapperUI size={st.gallerySize} output={p.output}>
+        <OutputPreviewWrapperUI size={size} output={p.output}>
             {/*  */}
             <div
                 tw={[

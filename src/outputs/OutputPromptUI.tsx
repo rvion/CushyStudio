@@ -6,23 +6,25 @@ import { useSt } from 'src/state/stateContext'
 import { GraphSummaryUI } from '../widgets/workspace/GraphSummaryUI'
 import { OutputPreviewWrapperUI } from './OutputPreviewWrapperUI'
 import { parseFloatNoRoundingErr } from 'src/utils/misc/parseFloatNoRoundingErr'
+import { ProgressReport } from 'src/models/Graph'
 
 export const OutputPromptPreviewUI = observer(function OutputPromptPreviewUI_(p: { step?: Maybe<StepL>; output: ComfyPromptL }) {
     const st = useSt()
-    const graph = p.output.graph.item
+    const prompt = p.output
+    const graph = prompt.graph.item
     const size = st.historySizeStr
     if (graph == null)
         return (
-            <OutputPreviewWrapperUI output={p.output}>
+            <OutputPreviewWrapperUI output={prompt}>
                 <div>❌ ERROR</div>
-                {/* <OutputPromptUI step={p.step} output={p.output} /> */}
+                {/* <OutputPromptUI step={p.step} output={prompt} /> */}
             </OutputPreviewWrapperUI>
         )
 
-    const pgr1 = graph.progressGlobal
+    const pgr1: ProgressReport = prompt.progressGlobal
     // const pgr2 = graph.graphProgressCurrentNode
     return (
-        <OutputPreviewWrapperUI output={p.output}>
+        <OutputPreviewWrapperUI output={prompt}>
             <div tw='bg-blue-800 '>
                 <div
                     className='radial-progress'
@@ -53,7 +55,7 @@ export const OutputPromptUI = observer(function OutputPromptUI_(p: {
     if (graph == null) return <>no graph</>
     return (
         <div className='flex flex-col gap-1'>
-            {graph.done ? null : (
+            {prompt.status ? null : (
                 <div
                     tw='btn btn-sm'
                     onClick={() => {
