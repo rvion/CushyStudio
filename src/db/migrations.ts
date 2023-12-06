@@ -222,6 +222,11 @@ export const migrations: {
         name: 'step.isExpanded',
         up: ['alter table step add column isExpanded int not null default 1'],
     },
+    {
+        id: 'V_WM75Ppn3',
+        name: 'prompt.status',
+        up: ['alter table comfy_prompt add column status text'],
+    },
     // {
     //     id: 'PONTSFSpA_',
     //     name: 'fix image2',
