@@ -3,7 +3,9 @@ import * as React from 'react'
 import { Layer, Rect, Stage, Transformer } from 'react-konva'
 import type { ItemExt, Widget, Widget_listExt } from '../Widget'
 
-export const WidgetRegionalUI = observer(function WidgetRegionalUI_<T extends Widget>(p: { req: Widget_listExt<T> }) {
+export const WidgetListExt_RegionalUI = observer(function WidgetListExt_RegionalUI_<T extends Widget>(p: {
+    req: Widget_listExt<T>
+}) {
     const req = p.req
 
     const shapes = req.state.items
