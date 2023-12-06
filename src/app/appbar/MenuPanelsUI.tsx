@@ -17,6 +17,11 @@ export const MenuPanelsUI = observer(function MenuPanelsUI_(p: {}) {
             />
             <div className='divider'>Panels</div>
             <MenuItem
+                onClick={() => st.layout.FOCUS_OR_CREATE('Output', {})}
+                icon={<span className='material-symbols-outlined text-red-400'>image</span>}
+                label='Output'
+            />
+            <MenuItem
                 onClick={() => st.layout.FOCUS_OR_CREATE('Paint', {})}
                 icon={<span className='material-symbols-outlined text-red-400'>brush</span>}
                 label='paint - Minipaint'

@@ -42,7 +42,7 @@ export const Panel_AppList = observer(function Panel_AppList_(p: {}) {
                     </div>
                     <div tw='flex-1 text-base-content'>Drafts</div>
                     {/* FOLD INDICATOR */}
-                    <label className='swap swap-rotate'>
+                    <label className='swap swap-rotate opacity-30'>
                         <input
                             type='checkbox'
                             checked={st.draftsFolded}
@@ -85,7 +85,7 @@ export const Panel_AppList = observer(function Panel_AppList_(p: {}) {
                         </span>
                     </div>
                     <div tw='flex-1 text-base-content'>Favorites</div>
-                    <label className='swap swap-rotate'>
+                    <label className='swap swap-rotate opacity-30'>
                         <input
                             type='checkbox'
                             checked={library.favoritesFolded}

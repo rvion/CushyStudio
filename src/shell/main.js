@@ -3,6 +3,34 @@ START()
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true'
 
 async function START() {
+    // ===//=====//======//======//======//======//======//======//======//======//======//======//==
+    // ==//=====//======//======//======//======//======//======//======//======//======//======//===
+    // 1. START VITE DEV SERVER
+
+    const { createServer } = require('vite')
+
+    async function startDevServer() {
+        // Create a Vite development server
+        const server = await createServer({
+            // Pass any options you need for the server here
+            // For example, to specify the root directory:
+            // root: './path-to-your-root-directory'
+        })
+
+        // Start the server
+        await server.listen()
+
+        server.printUrls()
+    }
+
+    startDevServer().catch((error) => {
+        console.error(error)
+        process.exit(1)
+    })
+
+    // ===//=====//======//======//======//======//======//======//======//======//======//======//==
+    // ==//=====//======//======//======//======//======//======//======//======//======//======//===
+
     try {
         const patchElectronIconAndName = require('./patch.js').default
         patchElectronIconAndName()
@@ -77,11 +105,13 @@ async function START() {
                 res = await fetch('http://localhost:8788') //
                     .catch((err) => fetch('http://127.0.0.1:8788'))
 
-                console.log(res.status)
                 if (res.status !== 200) {
-                    console.log(res.status)
+                    console.log(`[VITE] vite not yet started (status:: ${res.status})`)
                     await sleep(1000)
-                } else viteStarted = true
+                } else {
+                    console.log(`[VITE] vite started`)
+                    viteStarted = true
+                }
             } catch (error) {
                 if (retryCount > 10) console.log('❌ error:', error)
                 await sleep(1000)

@@ -1,1 +1,0 @@
-node.exe start.cjs

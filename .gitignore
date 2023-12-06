@@ -59,3 +59,7 @@ src/theme/theme-rvion.css
 site/_site
 site/site
 lib
+
+.cushy/pnpm
+.cushy/pnpm*
+.cushy/store

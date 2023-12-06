@@ -18,27 +18,27 @@
     "css.lint.unknownAtRules": "ignore",
     "tailwindCSS.classAttributes": ["class", "className", "tw"],
 
-    // Custom colors
-    "peacock.color": "#0b4867",
-    "workbench.colorCustomizations": {
-        "activityBar.activeBackground": "#106895",
-        "activityBar.background": "#106895",
-        "activityBar.foreground": "#e7e7e7",
-        "activityBar.inactiveForeground": "#e7e7e799",
-        "activityBarBadge.background": "#f06fc4",
-        "activityBarBadge.foreground": "#15202b",
-        "commandCenter.border": "#e7e7e799",
-        "sash.hoverBorder": "#106895",
-        "statusBar.background": "#0b4867",
-        "statusBar.foreground": "#e7e7e7",
-        "statusBarItem.hoverBackground": "#106895",
-        "statusBarItem.remoteBackground": "#0b4867",
-        "statusBarItem.remoteForeground": "#e7e7e7",
-        "titleBar.activeBackground": "#0b4867",
-        "titleBar.activeForeground": "#e7e7e7",
-        "titleBar.inactiveBackground": "#0b486799",
-        "titleBar.inactiveForeground": "#e7e7e799"
-    },
+    // // Custom colors
+    // "peacock.color": "#0b4867",
+    // "workbench.colorCustomizations": {
+    //     "activityBar.activeBackground": "#106895",
+    //     "activityBar.background": "#106895",
+    //     "activityBar.foreground": "#e7e7e7",
+    //     "activityBar.inactiveForeground": "#e7e7e799",
+    //     "activityBarBadge.background": "#f06fc4",
+    //     "activityBarBadge.foreground": "#15202b",
+    //     "commandCenter.border": "#e7e7e799",
+    //     "sash.hoverBorder": "#106895",
+    //     "statusBar.background": "#0b4867",
+    //     "statusBar.foreground": "#e7e7e7",
+    //     "statusBarItem.hoverBackground": "#106895",
+    //     "statusBarItem.remoteBackground": "#0b4867",
+    //     "statusBarItem.remoteForeground": "#e7e7e7",
+    //     "titleBar.activeBackground": "#0b4867",
+    //     "titleBar.activeForeground": "#e7e7e7",
+    //     "titleBar.inactiveBackground": "#0b486799",
+    //     "titleBar.inactiveForeground": "#e7e7e799"
+    // },
 
     // Styling preferences
     "editor.formatOnSave": true,
