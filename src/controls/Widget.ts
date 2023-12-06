@@ -70,7 +70,7 @@ export class Widget_str implements IRequest<'str', Widget_str_opts, Widget_str_s
         serial?: Widget_str_serial,
     ) {
         this.id = serial?.id ?? nanoid()
-        this.state = serial ?? { type:'str', active: true, val: input.default ?? '', id: this.id }
+        this.state = serial ?? { type:'str', collapsed: input.startCollapsed, active: true, val: input.default ?? '', id: this.id }
         makeAutoObservable(this)
     }
     get serial(): Widget_str_serial { return this.state }
@@ -102,7 +102,7 @@ export class Widget_markdown implements IRequest<'markdown', Widget_markdown_opt
         serial?: Widget_markdown_serial,
     ) {
         this.id = serial?.id ?? nanoid()
-        this.state = serial ?? { type:'markdown', active: true, id: this.id }
+        this.state = serial ?? { type:'markdown', collapsed: input.startCollapsed, active: true, id: this.id }
         makeAutoObservable(this)
     }
     get serial(): Widget_markdown_serial { return this.state }
@@ -168,7 +168,7 @@ export class Widget_color implements IRequest<'color', Widget_color_opts, Widget
         serial?: Widget_color_serial,
     ) {
         this.id = serial?.id ?? nanoid()
-        this.state = serial ?? { type:'color', id: this.id,  active: true, val: input.default ?? '' }
+        this.state = serial ?? { type:'color', collapsed: input.startCollapsed, id: this.id,  active: true, val: input.default ?? '' }
         makeAutoObservable(this)
     }
     get serial(): Widget_color_serial { return this.state }
@@ -349,7 +349,7 @@ export class Widget_int implements IRequest<'int', Widget_int_opts, Widget_int_s
         serial?: Widget_int_serial,
     ) {
         this.id = serial?.id ?? nanoid()
-        this.state = serial ?? { type: 'int', id: this.id, active: true, val: input.default ?? 0 }
+        this.state = serial ?? { type: 'int', collapsed: input.startCollapsed, id: this.id, active: true, val: input.default ?? 0 }
         makeAutoObservable(this)
     }
     get serial(): Widget_int_serial { return this.state }
@@ -374,7 +374,7 @@ export class Widget_float implements IRequest<'float', Widget_float_opts, Widget
         serial?: Widget_float_serial,
     ) {
         this.id = serial?.id ?? nanoid()
-        this.state = serial ?? { type:'float', id: this.id, active: true, val: input.default ?? 0 }
+        this.state = serial ?? { type:'float', collapsed: input.startCollapsed, id: this.id, active: true, val: input.default ?? 0 }
         makeAutoObservable(this)
     }
     get serial(): Widget_float_serial { return this.state }
@@ -399,7 +399,7 @@ export class Widget_bool implements IRequest<'bool', Widget_bool_opts, Widget_bo
         serial?: Widget_bool_serial,
     ) {
         this.id = serial?.id ?? nanoid()
-        this.state = serial ?? { type: 'bool', id: this.id, active: true, val: input.default ?? false }
+        this.state = serial ?? { type: 'bool', collapsed: input.startCollapsed, id: this.id, active: true, val: input.default ?? false }
         makeAutoObservable(this)
     }
     get serial(): Widget_bool_serial { return this.state }
@@ -428,7 +428,7 @@ export class Widget_inlineRun implements IRequest<'inlineRun', Widget_inlineRun_
         }
 
         this.id = serial?.id ?? nanoid()
-        this.state = serial ?? { type: 'inlineRun', id: this.id, active: true, val: false, }
+        this.state = serial ?? { type: 'inlineRun', collapsed: input.startCollapsed, id: this.id, active: true, val: false, }
         makeAutoObservable(this)
     }
     get serial(): Widget_inlineRun_serial { return this.state }
@@ -576,7 +576,7 @@ export class Widget_matrix implements IRequest<'matrix', Widget_matrix_opts, Wid
         serial?: Widget_matrix_serial,
     ) {
         this.id = serial?.id ?? nanoid()
-        this.state = serial ?? { type:'matrix', id: this.id, active: true, selected: [] }
+        this.state = serial ?? { type:'matrix', collapsed: input.startCollapsed, id: this.id, active: true, selected: [] }
         const rows = input.rows
         const cols = input.cols
         // init all cells to false
@@ -667,7 +667,7 @@ export class Widget_loras implements IRequest<'loras', Widget_loras_opts, Widget
         serial?: Widget_loras_serial,
     ) {
         this.id = serial?.id ?? nanoid()
-        this.state = serial ?? { type: 'loras', id: this.id, active: true, loras: input.default ?? [] }
+        this.state = serial ?? { type: 'loras', collapsed: input.startCollapsed, id: this.id, active: true, loras: input.default ?? [] }
         this.allLoras = schema.getLoras()
         for (const lora of this.allLoras) {
             if (lora === 'None') continue
@@ -769,6 +769,7 @@ export class Widget_imageOpt implements IRequest<'imageOpt', Widget_imageOpt_opt
         this.id = serial?.id ?? nanoid()
         this.state = serial ?? {
             type: 'imageOpt',
+            collapsed: input.startCollapsed,
             id: this.id,
             active: input.default ? true : false,
             comfy: input.defaultComfy ?? { imageName: 'example.png', type: 'ComfyImage' },
@@ -816,6 +817,7 @@ export class Widget_selectOne<T extends BaseSelectOneEntry> implements IRequest<
         const choices = this.choices
         this.state = serial ?? {
             type: 'selectOne',
+            collapsed: input.startCollapsed,
             active: true,
             id: this.id,
             query: '',
@@ -847,6 +849,7 @@ export class Widget_selectOneOrCustom implements IRequest<'selectOneOrCustom', W
         this.id = serial?.id ?? nanoid()
         this.state = serial ?? {
             type: 'selectOneOrCustom',
+            collapsed: input.startCollapsed,
             id: this.id,
             query: '',
             val: input.default ?? input.choices[0] ?? '',
@@ -877,9 +880,19 @@ export class Widget_selectMany<T extends { type: string }> implements IRequest<'
         this.id = serial?.id ?? nanoid()
         if (serial) {
             const values = serial.values_.map((v) => input.choices.find((c) => c.type === v)!).filter((v) => v != null)
-            this.state = { type: 'selectMany', id: this.id, query: serial.query, values: values, }
+            this.state = {
+                type: 'selectMany',
+                collapsed: serial.collapsed,
+                id: this.id,
+                query: serial.query,
+                values: values
+            }
         } else {
-            this.state = { type: 'selectMany', id: this.id, query: '', values: input.default ?? [], }
+            this.state = {
+                type: 'selectMany',
+                collapsed: input.startCollapsed,
+                id: this.id,
+                query: '', values: input.default ?? [], }
         }
         makeAutoObservable(this)
     }
@@ -910,7 +923,7 @@ export class Widget_selectManyOrCustom implements IRequest<'selectManyOrCustom',
         serial?: Widget_selectManyOrCustom_serial,
     ) {
         this.id = serial?.id ?? nanoid()
-        this.state = serial ?? { type: 'selectManyOrCustom', id: this.id, query: '', values: input.default ?? [] }
+        this.state = serial ?? { type: 'selectManyOrCustom', collapsed: input.startCollapsed, id: this.id, query: '', values: input.default ?? [] }
         makeAutoObservable(this)
     }
     get serial(): Widget_selectManyOrCustom_serial { return this.state }

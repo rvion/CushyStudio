@@ -30,7 +30,5 @@ export type ReqInput<X> = X & {
     tooltip?: string
     i18n?: { [key: string]: string }
     className?: string
-
-    preferVertical?: boolean // 🔴 not implemented yet
-    preferFolded?: boolean // 🔴 not implemented yet
+    startCollapsed?: boolean
 }
