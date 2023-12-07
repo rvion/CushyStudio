@@ -18,8 +18,8 @@ export const Panel_Iframe = observer(function Panel_Iframe_(p: {
     return (
         <iframe //
             className='w-full h-full'
-            // frameBorder='0'
             src={p.url}
+            // frameBorder='0'
             // ⏸️ onLoad={() => {
             // ⏸️     console.log(`[👙] 🍻 loaded`)
             // ⏸️ }}

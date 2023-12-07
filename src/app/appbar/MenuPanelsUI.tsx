@@ -22,6 +22,11 @@ export const MenuPanelsUI = observer(function MenuPanelsUI_(p: {}) {
                 label='Output'
             />
             <MenuItem
+                onClick={() => st.layout.FOCUS_OR_CREATE('IFrame', { url: 'https://app.posemy.art/' })}
+                icon={<span className='material-symbols-outlined text-red-400'>brush</span>}
+                label='3d Poser (posemy.art)'
+            />
+            <MenuItem
                 onClick={() => st.layout.FOCUS_OR_CREATE('Paint', {})}
                 icon={<span className='material-symbols-outlined text-red-400'>brush</span>}
                 label='paint - Minipaint'
