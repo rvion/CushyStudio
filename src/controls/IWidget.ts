@@ -31,4 +31,5 @@ export type ReqInput<X> = X & {
     i18n?: { [key: string]: string }
     className?: string
     startCollapsed?: boolean
+    showID?: boolean
 }

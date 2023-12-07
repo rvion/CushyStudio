@@ -790,7 +790,7 @@ export class Widget_imageOpt implements IRequest<'imageOpt', Widget_imageOpt_opt
 
 // 🅿️ selectOne ==============================================================================
 export type BaseSelectOneEntry = { id: string, label?: string }
-export type Widget_selectOne_opts <T extends BaseSelectOneEntry>  = ReqInput<{ default?: T; choices: T[] | ((formRoot:Widget_group<any>) => T[]) }>
+export type Widget_selectOne_opts <T extends BaseSelectOneEntry>  = ReqInput<{ default?: T; choices: T[] | ((formRoot:Maybe<Widget_group<any>>) => T[]) }>
 export type Widget_selectOne_serial<T extends BaseSelectOneEntry> = Widget_selectOne_state<T>
 export type Widget_selectOne_state <T extends BaseSelectOneEntry>  = StateFields<{ type:'selectOne', query: string; val: T }>
 export type Widget_selectOne_output<T extends BaseSelectOneEntry> = T
@@ -932,7 +932,7 @@ export class Widget_selectManyOrCustom implements IRequest<'selectManyOrCustom',
 
 // 🅿️ list ==============================================================================
 export type Widget_list_opts<T extends Widget>  = ReqInput<{
-    element: () => T,
+    element: (ix:number) => T,
     min?: number,
     max?:number,
     defaultLength?:number
@@ -948,6 +948,7 @@ export class Widget_list<T extends Widget> implements IRequest<'list', Widget_li
     state: Widget_list_state<T>
     private _reference: T
 
+    get items(): T[] { return this.state.items }
     constructor(
         public builder: FormBuilder,
         public schema: SchemaL,
@@ -955,7 +956,7 @@ export class Widget_list<T extends Widget> implements IRequest<'list', Widget_li
         serial?: Widget_list_serial<T>,
     ) {
         this.id = serial?.id ?? nanoid()
-        this._reference = input.element()
+        this._reference = input.element(0)
         if (serial) {
             const items = serial.items_.map((sub_) => builder._HYDRATE(sub_.type, this._reference.input, sub_)) // 🔴 handler filter if wrong type
             this.state = { type: 'list', id: this.id, active: serial.active, items }
@@ -963,7 +964,7 @@ export class Widget_list<T extends Widget> implements IRequest<'list', Widget_li
             const clamp = (v: number, min: number, max: number) => Math.min(Math.max(v, min), max)
             const defaultLen = clamp(input.defaultLength ?? 0, input.min ?? 0, input.max ?? 10)
             const items = defaultLen
-                ? new Array(defaultLen).fill(0).map(() => input.element())
+                ? new Array(defaultLen).fill(0).map((_,ix) => input.element(ix))
                 : []
             this.state = {
                 type: 'list',
@@ -994,7 +995,7 @@ export class Widget_list<T extends Widget> implements IRequest<'list', Widget_li
     addItem() {
         // const _ref = this._reference
         // const newItem = this.builder.HYDRATE(_ref.type, _ref.input)
-        this.state.items.push(this.input.element())
+        this.state.items.push(this.input.element(this.state.items.length))
     }
 }
 
@@ -1138,6 +1139,10 @@ export class Widget_group<T extends { [key: string]: Widget }> implements IReque
     id: string
     type: 'group' = 'group'
     state: Widget_group_state<T>
+    /** all [key,value] pairs */
+    get entries() { return Object.entries(this.state.values) as [keyof T, T[keyof T]][] }
+    /** the dict of all child widgets */
+    get values() { return this.state.values }
     constructor(
         public builder: FormBuilder,
         public schema: SchemaL,
@@ -1199,6 +1204,10 @@ export class Widget_groupOpt<T extends { [key: string]: Widget }> implements IRe
     id: string
     type: 'groupOpt' = 'groupOpt'
     state: Widget_groupOpt_state<T>
+    /** all [key,value] pairs */
+    get entries() { return Object.entries(this.state.values) as [keyof T, T[keyof T]][] }
+    /** the dict of all child widgets */
+    get values() { return this.state.values }
     constructor(
         public builder: FormBuilder,
         public schema: SchemaL,
@@ -1284,6 +1293,11 @@ export class Widget_choice      <T extends { [key: string]: Widget }> implements
             this.state = { type: 'choice', id: this.id, active: true, values: _items, pick: defaultPick }
         }
         makeAutoObservable(this)
+    }
+
+    get pick() { return this.state.pick }
+    get child(){
+        return this.state.values[this.state.pick]
     }
     get serial(): Widget_choice_serial<T> {
         const out: { [key: string]: any } = {}
