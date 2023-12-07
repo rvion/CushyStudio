@@ -10,7 +10,7 @@ export const MenuAuthUI = observer(function MenuAuthUI_(p: {}) {
     const avatar = st.auth.avatar ? (
         <img tw='rounded' style={{ width: '1.2rem', height: '1.2rem' }} src={st.auth.avatar} alt='user avatar' />
     ) : (
-        <span className='material-symbols-outlined'>login</span>
+        <span className='material-symbols-outlined'>person</span>
     )
     const username = !st.auth.isConnected ? (
         'LOGIN'
@@ -36,13 +36,23 @@ export const MenuAuthUI = observer(function MenuAuthUI_(p: {}) {
         >
             {st.auth.isConnected ? (
                 <div>
-                    <div onClick={() => st.supabase.auth.signOut()} tw='btn '>
+                    <div onClick={() => st.supabase.auth.signOut()} tw='btn'>
                         Log-Out
                     </div>
                 </div>
             ) : (
                 <div tw='w-96 px-8'>
-                    <Auth appearance={{ theme: ThemeSupa }} supabaseClient={st.supabase} />
+                    <Auth
+                        providers={[
+                            //
+                            'github',
+                            // 'google',
+                            // 'facebook',
+                            // 'twitter',
+                        ]}
+                        appearance={{ theme: ThemeSupa }}
+                        supabaseClient={st.supabase}
+                    />
                 </div>
             )}
         </Dropdown>
