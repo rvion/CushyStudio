@@ -1140,7 +1140,7 @@ export class Widget_group<T extends { [key: string]: Widget }> implements IReque
     type: 'group' = 'group'
     state: Widget_group_state<T>
     /** all [key,value] pairs */
-    get entries() { return Object.entries(this.state.values) as [keyof T, T[keyof T]][] }
+    get entries() { return Object.entries(this.state.values) as [string, any][] }
     /** the dict of all child widgets */
     get values() { return this.state.values }
     constructor(
@@ -1205,7 +1205,7 @@ export class Widget_groupOpt<T extends { [key: string]: Widget }> implements IRe
     type: 'groupOpt' = 'groupOpt'
     state: Widget_groupOpt_state<T>
     /** all [key,value] pairs */
-    get entries() { return Object.entries(this.state.values) as [keyof T, T[keyof T]][] }
+    get entries() { return Object.entries(this.state.values) as [string, any][] }
     /** the dict of all child widgets */
     get values() { return this.state.values }
     constructor(
