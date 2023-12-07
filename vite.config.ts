@@ -23,6 +23,13 @@ export default defineConfig({
         react({ jsxImportSource: 'src/utils/custom-jsx' }),
         // viteSingleFile(),
     ],
+    build: {
+        // rollupOptions: {
+        //     external: allDependencies,
+        // },
+        emptyOutDir: true,
+        copyPublicDir: false,
+    },
     server: {
         port: 8788,
         watch: {
