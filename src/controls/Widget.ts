@@ -234,8 +234,13 @@ export class Widget_prompt implements IRequest<'prompt', Widget_prompt_opts, Wid
         if (serial) {
             this.state = serial
         } else {
-            this.state = { type:'prompt', id: this.id, active: true, /*text: '',*/ tokens: [] }
-
+            this.state = {
+                type:'prompt',
+                collapsed: input.startCollapsed,
+                id: this.id,
+                active: true,
+                tokens: []
+            }
             const def = input.default
             if (def != null) {
                 if (typeof def === 'string') {
@@ -275,7 +280,13 @@ export class Widget_promptOpt implements IRequest<'promptOpt', Widget_promptOpt_
         if (serial) {
             this.state = serial
         } else {
-            this.state = { type:'promptOpt', id: this.id, active: false, /*text: '',*/ tokens: [] }
+            this.state = {
+                type:'promptOpt',
+                collapsed: input.startCollapsed,
+                id: this.id,
+                active: false,
+                tokens: []
+            }
             const def = input.default
             if (def != null) {
                 if (typeof def === 'string') {

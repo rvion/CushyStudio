@@ -1,3 +1,5 @@
+const { mkdirSync } = require('fs')
+
 START()
 
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true'
@@ -90,6 +92,44 @@ async function START() {
             },
         })
         mainWindow.maximize()
+        mkdirSync('outputs/_downloads', { recursive: true })
+        // https://www.electronjs.org/docs/latest/api/download-item
+        // https://www.electronjs.org/docs/latest/api/download-item#class-downloaditem
+
+        const pathe = require('pathe')
+        mainWindow.webContents.session.on('will-download', (event, item, webContents) => {
+            const originalFileName = item.getFilename()
+            const finalFileName = `${Date.now()}-${originalFileName}`
+            const relativePath = `outputs/_downloads/${finalFileName}`
+
+            // Set the save path, making Electron not to prompt a save dialog.
+            item.setSavePath(relativePath)
+
+            item.on('updated', (event, state) => {
+                if (state === 'interrupted') {
+                    console.log('Download is interrupted but can be resumed')
+                } else if (state === 'progressing') {
+                    if (item.isPaused()) {
+                        console.log('Download is paused')
+                    } else {
+                        console.log(`Received bytes: ${item.getReceivedBytes()}`)
+                    }
+                }
+            })
+            item.once('done', (event, state) => {
+                if (state === 'completed') {
+                    console.log('Download successfully')
+                    mainWindow.webContents.send('filedownloaded', {
+                        fileName: finalFileName,
+                        originalFilename: originalFileName,
+                        relativePath: relativePath,
+                        absolutePath: pathe.resolve(relativePath),
+                    })
+                } else {
+                    console.log(`Download failed: ${state}`)
+                }
+            })
+        })
 
         // Open DevTools automatically
         // mainWindow.webContents.openDevTools()

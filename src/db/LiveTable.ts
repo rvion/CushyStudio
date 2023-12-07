@@ -315,7 +315,7 @@ export class LiveTable<T extends BaseInstanceFields, L extends LiveInstance<T, L
         // ⏸️ console.log(`[🦜] find:`, { findSQL, instances })
         return instances
     }
-    insert = (row: Partial<T>): L => {
+    private insert = (row: Partial<T>): L => {
         // 0 check that row is valid
         if (Array.isArray(row)) throw new Error('insert does not support arrays')
         if (typeof row !== 'object') throw new Error('insert does not support non-objects')

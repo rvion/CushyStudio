@@ -23,7 +23,10 @@ app({
                 ],
             },
         }),
-        negative: ui.prompt({ default: 'nsfw, nude, girl, woman, human' }),
+        negative: ui.prompt({
+            startCollapsed: true,
+            default: 'nsfw, nude, girl, woman, human',
+        }),
         model: ui_model(ui),
         latent: ui_latent(ui),
         sampler: ui_sampler(ui),
