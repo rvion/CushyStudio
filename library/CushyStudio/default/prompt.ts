@@ -85,13 +85,28 @@ app({
         const x = run_prompt(flow, { richPrompt: posPrompt, clip, ckpt, outputWildcardsPicked: true })
         const clipPos = x.clip
         const ckptPos = x.ckpt
-        const positive = x.conditionning
+        let positive = x.conditionning
 
         const y = run_prompt(flow, { richPrompt: negPrompt, clip, ckpt, outputWildcardsPicked: true })
         const negative = y.conditionning
 
         // START IMAGE -------------------------------------------------------------------------------
         let { latent } = await run_latent({ flow, opts: p.latent, vae })
+
+        // CNETS -------------------------------------------------------------------------------
+        const cnets = p.controlnets
+        if (cnets) {
+            for (const cnet of cnets.pose) {
+                positive = graph.ControlNetApply({
+                    conditioning: positive,
+                    control_net: graph.ControlNetLoader({
+                        control_net_name: 'control_openpose-fp16.safetensors',
+                    }),
+                    image: (await flow.loadImageAnswer(cnet.pose))._IMAGE,
+                    strength: 1,
+                })
+            }
+        }
 
         // FIRST PASS --------------------------------------------------------------------------------
         const ctx_sampler: Ctx_sampler = {
