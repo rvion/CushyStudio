@@ -404,7 +404,7 @@ export class LibraryFile {
         // 2. eval file to extract actions
         try {
             const codJSWithoutWithImportsReplaced = replaceImportsWithSyncImport(codeJS) // REWRITE_IMPORTS(codeJS)
-            console.log(codJSWithoutWithImportsReplaced)
+            // console.log(codJSWithoutWithImportsReplaced) ⏸️
             // console.log({ jsx, jsxs })
             const ProjectScriptFn = new Function('action', 'card', 'app', 'CUSHY_IMPORT', codJSWithoutWithImportsReplaced)
 

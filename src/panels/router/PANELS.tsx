@@ -20,6 +20,7 @@ import { Panel_LastStep, Panel_Steps } from '../Panel_Steps'
 import { Panel_TypeDoc } from '../Panel_TypeDoc'
 import { Panel_ViewImage } from '../Panel_ViewImage'
 import { PropsOf } from './Layout'
+import { Panel_Iframe } from '../Panel_IFrame'
 
 // prettier-ignore
 export const panels = {
@@ -54,6 +55,7 @@ export const panels = {
     // utils
     Civitai:             { name: 'Civitai',             widget: Panel_Civitai,           header: (p: PropsOf<typeof Panel_Civitai          >) => ({title: 'Civitai',             icon: assets.public_CivitaiLogo_png           }) },
     Squoosh:             { name: 'Squoosh',             widget: Panel_Squoosh,           header: (p: PropsOf<typeof Panel_Squoosh          >) => ({title: 'Squoosh',             icon: undefined                               }) },
+    IFrame:              { name: 'IFrame',              widget: Panel_Iframe,            header: (p: PropsOf<typeof Panel_Squoosh          >) => ({title: 'IFrame',              icon: undefined                               }) },
 
     // config
     Config:              { name: 'Config',              widget: Panel_Config,            header: (p: PropsOf<typeof Panel_Config           >) => ({title: 'Config',              icon: undefined                               }) },
@@ -61,7 +63,7 @@ export const panels = {
 
     // doc & help
     TypeDoc:             { name: 'TypeDoc',             widget: Panel_TypeDoc,           header: (p: PropsOf<typeof Panel_ComfyUIHosts   >) => ({title: 'TypeDoc',             icon: assets.public_typescript_512_png        }) },
-
 }
+
 export type Panels = typeof panels
 export type Panel = keyof Panels

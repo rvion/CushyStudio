@@ -135,7 +135,10 @@ export const RevealUI = observer(function Tooltip_(p: {
     const tooltip = uist.visible
         ? createPortal(
               <div
-                  tw={['card card-bordered bg-base-100 shadow-xl pointer-events-auto', ...(p.tooltipWrapperClassName ?? [])]}
+                  tw={[
+                      '_RevealUI card card-bordered bg-base-100 shadow-xl pointer-events-auto',
+                      ...(p.tooltipWrapperClassName ?? []),
+                  ]}
                   onClick={(ev) => {
                       ev.stopPropagation()
                       ev.preventDefault()

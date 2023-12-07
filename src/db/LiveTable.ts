@@ -312,7 +312,7 @@ export class LiveTable<T extends BaseInstanceFields, L extends LiveInstance<T, L
         const stmt = this.db.db.prepare<{ [key: string]: any }>(findSQL)
         const datas: T[] = stmt.all(query).map((data) => this.infos.hydrateJSONFields(data))
         const instances = datas.map((d) => this.getOrCreateInstanceForExistingData(d))
-        console.log(`[🦜] find:`, { findSQL, instances })
+        // ⏸️ console.log(`[🦜] find:`, { findSQL, instances })
         return instances
     }
     insert = (row: Partial<T>): L => {

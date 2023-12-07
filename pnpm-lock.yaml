@@ -26,6 +26,15 @@ dependencies:
   '@sinclair/typebox':
     specifier: ^0.31.28
     version: 0.31.28
+  '@supabase/auth-ui-react':
+    specifier: ^0.4.6
+    version: 0.4.6(@supabase/supabase-js@2.39.0)
+  '@supabase/auth-ui-shared':
+    specifier: ^0.1.8
+    version: 0.1.8(@supabase/supabase-js@2.39.0)
+  '@supabase/supabase-js':
+    specifier: ^2.39.0
+    version: 2.39.0
   '@types/better-sqlite3':
     specifier: ^7.6.8
     version: 7.6.8
@@ -113,6 +122,9 @@ dependencies:
   react-beautiful-dnd:
     specifier: ^13.1.1
     version: 13.1.1(react-dom@18.2.0)(react@18.2.0)
+  react-complex-tree:
+    specifier: ^2.3.2
+    version: 2.3.2(react@18.2.0)
   react-confetti:
     specifier: ^6.1.0
     version: 6.1.0(react@18.2.0)
@@ -1321,6 +1333,88 @@ packages:
     engines: {node: '>=10'}
     dev: false
 
+  /@stitches/core@1.2.8:
+    resolution: {integrity: sha512-Gfkvwk9o9kE9r9XNBmJRfV8zONvXThnm1tcuojL04Uy5uRyqg93DC83lDebl0rocZCfKSjUv+fWYtMQmEDJldg==}
+    dev: false
+
+  /@supabase/auth-ui-react@0.4.6(@supabase/supabase-js@2.39.0):
+    resolution: {integrity: sha512-uvjcH/K0rvFKUE5Uam5JI6IGXUWSv55GTYcVRRQFEwfav2sT4hzBh6A0gkX9gEZEprhSA9S5Pp5+TzkCAKgcbg==}
+    peerDependencies:
+      '@supabase/supabase-js': ^2.21.0
+    dependencies:
+      '@stitches/core': 1.2.8
+      '@supabase/auth-ui-shared': 0.1.8(@supabase/supabase-js@2.39.0)
+      '@supabase/supabase-js': 2.39.0
+      prop-types: 15.8.1
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: false
+
+  /@supabase/auth-ui-shared@0.1.8(@supabase/supabase-js@2.39.0):
+    resolution: {integrity: sha512-ouQ0DjKcEFg+0gZigFIEgu01V3e6riGZPzgVD0MJsCBNsMsiDT74+GgCEIElMUpTGkwSja3xLwdFRFgMNFKcjg==}
+    peerDependencies:
+      '@supabase/supabase-js': ^2.21.0
+    dependencies:
+      '@supabase/supabase-js': 2.39.0
+    dev: false
+
+  /@supabase/functions-js@2.1.5:
+    resolution: {integrity: sha512-BNzC5XhCzzCaggJ8s53DP+WeHHGT/NfTsx2wUSSGKR2/ikLFQTBCDzMvGz/PxYMqRko/LwncQtKXGOYp1PkPaw==}
+    dependencies:
+      '@supabase/node-fetch': 2.6.15
+    dev: false
+
+  /@supabase/gotrue-js@2.59.0:
+    resolution: {integrity: sha512-PHmoQfMWPOclBwTxhjxHSBMpso3gyZUSjJ/VojgRMQNYKz8e5aWYrGWoVgkewEgrdDviEbyE0gZSXvEnS+KCig==}
+    dependencies:
+      '@supabase/node-fetch': 2.6.15
+    dev: false
+
+  /@supabase/node-fetch@2.6.15:
+    resolution: {integrity: sha512-1ibVeYUacxWYi9i0cf5efil6adJ9WRyZBLivgjs+AUpewx1F3xPi7gLgaASI2SmIQxPoCEjAsLAzKPgMJVgOUQ==}
+    engines: {node: 4.x || >=6.0.0}
+    dependencies:
+      whatwg-url: 5.0.0
+    dev: false
+
+  /@supabase/postgrest-js@1.9.0:
+    resolution: {integrity: sha512-axP6cU69jDrLbfihJKQ6vU27tklD0gzb9idkMN363MtTXeJVt5DQNT3JnJ58JVNBdL74hgm26rAsFNvHk+tnSw==}
+    dependencies:
+      '@supabase/node-fetch': 2.6.15
+    dev: false
+
+  /@supabase/realtime-js@2.9.0:
+    resolution: {integrity: sha512-e/SI+/eqFJorAKAgVAwKQ9hSDQSBp86Yh7XbQmfJJ90LEfpM52HlTfJt/03lcepRu6BmH5h1uYn1b4zta7ghdw==}
+    dependencies:
+      '@supabase/node-fetch': 2.6.15
+      '@types/phoenix': 1.6.4
+      '@types/websocket': 1.0.10
+      ws: 8.14.2
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
+    dev: false
+
+  /@supabase/storage-js@2.5.5:
+    resolution: {integrity: sha512-OpLoDRjFwClwc2cjTJZG8XviTiQH4Ik8sCiMK5v7et0MDu2QlXjCAW3ljxJB5+z/KazdMOTnySi+hysxWUPu3w==}
+    dependencies:
+      '@supabase/node-fetch': 2.6.15
+    dev: false
+
+  /@supabase/supabase-js@2.39.0:
+    resolution: {integrity: sha512-cYfnwWRW5rYBbPT/BNIejtRT9ULdD9PnIExQV28PZpqcqm3PLwS4f3pY7WGB01Da63VYdvktZPKuYvreqsj/Zg==}
+    dependencies:
+      '@supabase/functions-js': 2.1.5
+      '@supabase/gotrue-js': 2.59.0
+      '@supabase/node-fetch': 2.6.15
+      '@supabase/postgrest-js': 1.9.0
+      '@supabase/realtime-js': 2.9.0
+      '@supabase/storage-js': 2.5.5
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
+    dev: false
+
   /@szmarczak/http-timer@4.0.6:
     resolution: {integrity: sha512-4BAffykYOgO+5nzBWYwE3W90sBgLJoUPRWWcL8wlyiM8IB8ipJz3UMJ9KXQd1RKQXpKp8Tutn80HZtWsu2u76w==}
     engines: {node: '>=10'}
@@ -1445,6 +1539,10 @@ packages:
       '@types/node': 20.10.3
     dev: true
 
+  /@types/phoenix@1.6.4:
+    resolution: {integrity: sha512-B34A7uot1Cv0XtaHRYDATltAdKx0BvVKNgYNqE4WjtPUa4VQJM7kxeXcVKaH+KS+kCmZ+6w+QaUdcljiheiBJA==}
+    dev: false
+
   /@types/plist@3.0.5:
     resolution: {integrity: sha512-E6OCaRmAe4WDmWNsL/9RMqdkkzDCY1etutkflWk4c+AcjDU07Pcz1fQwTX0TQz+Pxqn9i4L1TU3UFpjnrcDgxA==}
     requiresBuild: true
@@ -1512,6 +1610,12 @@ packages:
     requiresBuild: true
     dev: false
     optional: true
+
+  /@types/websocket@1.0.10:
+    resolution: {integrity: sha512-svjGZvPB7EzuYS94cI7a+qhwgGU1y89wUgjT6E2wVUfmAGIvRfT7obBvRtnhXCSsoMdlG4gBFGE7MfkIXZLoww==}
+    dependencies:
+      '@types/node': 20.10.3
+    dev: false
 
   /@types/webxr@0.5.10:
     resolution: {integrity: sha512-n3u5sqXQJhf1CS68mw3Wf16FQ4cRPNBBwdYLFzq3UddiADOim1Pn3Y6PBdDilz1vOJF3ybLxJ8ZEDlLIzrOQZg==}
@@ -2813,6 +2917,7 @@ packages:
 
   /ieee754@1.2.1:
     resolution: {integrity: sha512-dcyqhDvX1C46lXZcVqCpK+FtMRQVdIMN6/Df5js2zouUsqG7I6sFxitIC+7KYK29KdXOLHdu9zL4sFnoVQnqaA==}
+    requiresBuild: true
     dev: false
 
   /image-size@0.5.5:
@@ -3584,6 +3689,14 @@ packages:
       - react-native
     dev: false
 
+  /react-complex-tree@2.3.2(react@18.2.0):
+    resolution: {integrity: sha512-hLcJKjZVFEYBynbZX7eNcv0qPK+oM/K1p4lk1tTUTE6TJziFCHJ2PPRYOWGjIR0/uk97ibM5GhW2m5FlBKeAhg==}
+    peerDependencies:
+      react: '>=16.0.0'
+    dependencies:
+      react: 18.2.0
+    dev: false
+
   /react-confetti@6.1.0(react@18.2.0):
     resolution: {integrity: sha512-7Ypx4vz0+g8ECVxr88W9zhcQpbeujJAVqL14ZnXJ3I23mOI9/oBVTQ3dkJhUmB0D6XOtCZEM6N0Gm9PMngkORw==}
     engines: {node: '>=10.18'}
@@ -4224,6 +4337,10 @@ packages:
     dependencies:
       is-number: 7.0.0
 
+  /tr46@0.0.3:
+    resolution: {integrity: sha512-N3WMsuqV66lT30CrXNbEjx4GEwlow3v6rr4mCcv6prnfwhS01rkgyFdjPNBYd9br7LpXV1+Emh01fHnq2Gdgrw==}
+    dev: false
+
   /truncate-utf8-bytes@1.0.2:
     resolution: {integrity: sha512-95Pu1QXQvruGEhv62XCMO3Mm90GscOCClvrIUwCM0PYOXK3kaF3l3sIHxx71ThJfcbM2O5Au6SO3AWCSEfW4mQ==}
     dependencies:
@@ -4399,6 +4516,17 @@ packages:
       tiny-readdir: 2.3.0
     dev: false
 
+  /webidl-conversions@3.0.1:
+    resolution: {integrity: sha512-2JAn3z8AR6rjK8Sm8orRC0h/bcl/DqL7tRPdGZ4I1CjdF+EaMLmYxBHyXuKL849eucPFhvBoxMsflfOb8kxaeQ==}
+    dev: false
+
+  /whatwg-url@5.0.0:
+    resolution: {integrity: sha512-saE57nupxk6v3HY35+jzBwYa0rKSy0XR8JSxZPwgLr7ys0IBzhGviA1/TUGJLmSVqs8pb9AnvICXEuOHLprYTw==}
+    dependencies:
+      tr46: 0.0.3
+      webidl-conversions: 3.0.1
+    dev: false
+
   /which@2.0.2:
     resolution: {integrity: sha512-BLI3Tl1TW3Pvl70l3yq3Y64i+awpwXqsGBYWkkqMtnbXgrMD+yj7rhW0kuEDxzJaYXGjEW5ogapKNMEKNMjibA==}
     engines: {node: '>= 8'}
@@ -4417,6 +4545,19 @@ packages:
 
   /wrappy@1.0.2:
     resolution: {integrity: sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ==}
+
+  /ws@8.14.2:
+    resolution: {integrity: sha512-wEBG1ftX4jcglPxgFCMJmZ2PLtSbJ2Peg6TmpJFTbe9GZYOQCDPdMYu/Tm0/bGZkw8paZnJY45J4K2PZrLYq8g==}
+    engines: {node: '>=10.0.0'}
+    peerDependencies:
+      bufferutil: ^4.0.1
+      utf-8-validate: '>=5.0.2'
+    peerDependenciesMeta:
+      bufferutil:
+        optional: true
+      utf-8-validate:
+        optional: true
+    dev: false
 
   /xml2js@0.6.2:
     resolution: {integrity: sha512-T4rieHaC1EXcES0Kxxj4JWgaUQHDk+qwHcYOCFHfiwKz7tOVPLq7Hjq9dM1WCMhylqMEfP7hMcOIChvotiZegA==}

@@ -1,17 +1,17 @@
 import { observer } from 'mobx-react-lite'
-import { Button } from 'src/rsuite/shims'
 import { assets } from 'src/utils/assets/assets'
 import { useSt } from '../../state/stateContext'
 import { UpdateBtnUI } from '../../updater/UpdateBtnUI'
 import { CushyStudioLinkUI } from './AppBarCushyStudioLinkUI'
 import { IndicatorSchemaUI } from './AppBarSchemaBtnUI'
 import { IndicatorWebsocketUI } from './AppBarWebsocketBtnUI'
-import { MenuUtilsUI } from './MenuUtilsUI'
-import { MenuPanelsUI } from './MenuPanelsUI'
+import { MenuAuthUI } from './MenuAuthUI'
 import { MenuComfyUI } from './MenuComfyUI'
 import { MenuConfigUI } from './MenuConfigUI'
-import { MenuHelpUI } from './MenuHelpUI'
 import { MenuDebugUI } from './MenuDebugUI'
+import { MenuHelpUI } from './MenuHelpUI'
+import { MenuPanelsUI } from './MenuPanelsUI'
+import { MenuUtilsUI } from './MenuUtilsUI'
 
 export const AppBarUI = observer(function AppBarUI_(p: {}) {
     const st = useSt()
@@ -22,6 +22,7 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
                 <div tw='px-1'>
                     <UpdateBtnUI updater={st.updater}>CushyStudio </UpdateBtnUI>
                 </div>
+                <MenuAuthUI />
                 <MenuPanelsUI />
                 <MenuComfyUI />
                 <MenuUtilsUI />

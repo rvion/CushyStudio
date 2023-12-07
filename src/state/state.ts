@@ -2,6 +2,7 @@ import type { MediaImageL } from '../models/MediaImage'
 import type { ComfyStatus, PromptID, PromptRelated_WsMsg, WsMsg } from '../types/ComfyWsApi'
 import type { CSCriticalError } from '../widgets/CSCriticalError'
 
+import { createClient } from '@supabase/supabase-js'
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs'
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -47,6 +48,8 @@ import { StepOutput } from 'src/types/StepOutput'
 import { LiveFind } from 'src/db/LiveQuery'
 import { SQLITE_true } from 'src/db/SQLITE_boolean'
 import { DraftT } from 'src/db/TYPES.gen'
+import { mkSupa } from './supa'
+import { AuthState } from './AuthState'
 
 export class STATE {
     /** hack to help closing prompt completions */
@@ -64,6 +67,69 @@ export class STATE {
     shortcuts: ShortcutWatcher
     uploader: Uploader
 
+    supabase = mkSupa()
+    auth = new AuthState(this)
+    startLoginFlowWithGithub = async () => {
+        let { data, error } = await this.supabase.auth.signInWithOAuth({
+            provider: 'github',
+            options: {
+                skipBrowserRedirect: true,
+                redirectTo: 'http://localhost:8788/CushyStudio/_public/misc/cb.html',
+            },
+        })
+        if (data.url == null) return null
+        // this.layout.FOCUS_OR_CREATE('IFrame', { url: data.url })
+        const win = window.open(
+            data.url,
+            '_blank',
+            ['nodeIntegration=no'].join(','),
+            // 'top=500',
+            // 'left=200',
+            // 'frame=false',
+        )
+
+        // subscribe to window page (location) change
+        win?.addEventListener('message', (event) => {
+            console.log(`[👙]`, event)
+            console.log(`[👙]`, event.data.pageHref)
+            const data = event.data as {
+                pageHref: string
+            }
+            const pageref = data.pageHref
+            console.log(`[👙]`, data.pageHref)
+            const queryParams = new URL(pageref.replace('#', '?')).searchParams
+            const payload = {
+                expires_at: queryParams.get('expires_at'),
+                expires_in: queryParams.get('expires_in'),
+                provider_token: queryParams.get('provider_token'),
+                refresh_token: queryParams.get('refresh_token'),
+                token_type: queryParams.get('token_type'),
+                access_token: queryParams.get('access_token'),
+            }
+
+            console.log(`[👙] event:`, payload)
+
+            // manually login with the given payload
+            this.supabase.auth.setSession({
+                access_token: payload.access_token!,
+                refresh_token: payload.refresh_token!,
+            })
+
+            this.supabase.auth
+                .refreshSession({
+                    refresh_token: payload.refresh_token!,
+                })
+                .then((i) => {
+                    console.log(`[👙] i=`, i)
+                })
+            // void (async () => {
+            //     console.log(`[👙] awaiting user`)
+            //     const user = await this.supabase.auth.getUser()
+            //     console.log(`[👙] this`, user)
+            //     console.log(`[👙] this`, user.data.user)
+            // })()
+        })
+    }
     liveTime: number = (() => {
         const store = this.hotReloadPersistentCache
         if (store.liveTimeInterval != null) clearInterval(store.liveTimeInterval)

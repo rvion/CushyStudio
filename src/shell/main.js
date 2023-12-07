@@ -75,8 +75,8 @@ async function START() {
             icon: image,
             title: '🛋️ CushySudio',
             //
-            width: 800,
-            height: 600,
+            // width: 800,
+            // height: 600,
             webPreferences: {
                 plugins: true,
                 nodeIntegration: true,

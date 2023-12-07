@@ -1,3 +1,6 @@
+._RevealUI {
+    box-shadow: 0 5px 5px -3px oklch(var(--s));
+}
 ._MenuItem > div  {
     padding: 0.3em 0.5em;
 }
