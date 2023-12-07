@@ -158,7 +158,7 @@ export const SelectUI = observer(function SelectUI_<T>(p: PP<T>) {
                 {/* ANCHOR */}
                 <div //
                     tabIndex={-1}
-                    tw='input input-bordered input-sm w-full'
+                    tw='input input-bordered input-sm w-full overflow-hidden'
                 >
                     {s.displayValue}
                 </div>
