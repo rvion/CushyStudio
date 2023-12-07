@@ -29,7 +29,7 @@ export const MenuAuthUI = observer(function MenuAuthUI_(p: {}) {
 
     return (
         <Dropdown
-            tw={[isConnected ? null : 'text-warning-content bg-warning']}
+            // tw={[isConnected ? null : 'text-warning-content bg-warning']}
             startIcon={avatar}
             title={username}
             appearance='subtle'

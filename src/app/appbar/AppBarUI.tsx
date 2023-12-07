@@ -22,7 +22,6 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
                 <div tw='px-1'>
                     <UpdateBtnUI updater={st.updater}>CushyStudio </UpdateBtnUI>
                 </div>
-                <MenuAuthUI />
                 <MenuPanelsUI />
                 <MenuComfyUI />
                 <MenuUtilsUI />
@@ -30,6 +29,7 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
                 <MenuHelpUI />
                 <MenuDebugUI />
                 <div className='flex flex-grow'></div>
+                <MenuAuthUI />
                 <IndicatorWebsocketUI />
                 <IndicatorSchemaUI />
                 <CushyStudioLinkUI />
