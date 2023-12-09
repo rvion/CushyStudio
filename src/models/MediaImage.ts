@@ -87,7 +87,7 @@ export class MediaImageL {
     /** ready to be used in image fields */
     get url() {
         const infos = this.data.infos
-        if (infos == null) return `file://${assets.public_CushyLogo_png}`
+        if (infos == null) return `file://${assets.CushyLogo_png}`
         if (infos.type === 'image-local') return `file://${infos.absPath}`
         if (infos.type === 'image-base64') return infos.base64Url
         // if (infos.type === 'video-local-ffmpeg') return `file://${infos.absPath}`
@@ -97,7 +97,7 @@ export class MediaImageL {
                 : getComfyURLFromImageInfos(infos)
         }
         exhaust(infos)
-        return `file://${assets.public_CushyLogo_png}`
+        return `file://${assets.CushyLogo_png}`
     }
 
     // 🟢

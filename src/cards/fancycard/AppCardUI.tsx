@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 
 import { Tag } from 'src/rsuite/shims'
-import { LibraryFile } from '../CardFile'
+import { LibraryFile } from '../LibraryFile'
 import { Package } from '../Pkg'
 
 import { AppFavoriteBtnUI } from '../../panels/libraryUI/CardPicker2UI'
@@ -61,12 +61,6 @@ export const AppCardUI = observer(function FancyCardUI_(p: {
                         <div style={{ height: '5rem' }} tw='m-1 flex-grow text-sm'>
                             {card.description}
                         </div>
-                        <GithubUserUI
-                            //
-                            username={card.deck.githubUserName}
-                            showName
-                            size='1.2rem'
-                        />
                     </div>
                 ) : null}
             </div>

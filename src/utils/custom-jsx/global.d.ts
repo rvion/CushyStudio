@@ -15,3 +15,5 @@ declare module 'react' {
         tw?: string | ClassLike[]
     }
 }
+
+declare module '*.css' {}

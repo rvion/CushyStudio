@@ -124,7 +124,7 @@ export class CushyLayoutManager {
     })
 
     nextPaintIDx = 0
-    openAppInMainPanel = (actionPath: AppPath) => {
+    openAppInMainPanel = (actionPath: RelativePath) => {
         const card = this.st.library.getFile(actionPath)
         if (card == null) return null /* 🔴 add popup somewhere */
         const draft = card.getLastDraft()
@@ -132,7 +132,7 @@ export class CushyLayoutManager {
         // this.FOCUS_OR_CREATE('Draft', { draftID: draft?.id ?? '❌' }, 'LEFT_PANE_TABSET')
     }
 
-    openAppInNewPanel = (actionPath: AppPath) => {
+    openAppInNewPanel = (actionPath: RelativePath) => {
         const card = this.st.library.getFile(actionPath)
         if (card == null) return null /* 🔴 add popup somewhere */
         const draft = card.getLastDraft()
@@ -286,6 +286,9 @@ export class CushyLayoutManager {
     build = (): IJsonModel => {
         const out: IJsonModel = {
             global: {
+                splitterSize: 6,
+                borderEnableAutoHide: true,
+                borderAutoSelectTabWhenClosed: true,
                 //
                 // tabSetEnableSingleTabStretch: true,
             },

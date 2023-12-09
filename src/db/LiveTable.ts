@@ -315,6 +315,7 @@ export class LiveTable<T extends BaseInstanceFields, L extends LiveInstance<T, L
         // ⏸️ console.log(`[🦜] find:`, { findSQL, instances })
         return instances
     }
+
     private insert = (row: Partial<T>): L => {
         // 0 check that row is valid
         if (Array.isArray(row)) throw new Error('insert does not support arrays')
@@ -356,6 +357,13 @@ export class LiveTable<T extends BaseInstanceFields, L extends LiveInstance<T, L
             console.log(insertSQL)
             throw e
         }
+    }
+
+    upsert = (data: Omit<T, $BaseInstanceFields> & Partial<BaseInstanceFields>): L => {
+        const prev = this.get(data.id)
+        if (prev == null) return this.create(data)
+        prev.update(data as any)
+        return prev
     }
 
     /** only call with brand & never seen new data */

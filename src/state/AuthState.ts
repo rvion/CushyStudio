@@ -8,7 +8,7 @@ export class AuthState {
 
     constructor(public st: STATE) {
         //
-        this.updateCurrentUser()
+        // this.updateCurrentUser()
         makeAutoObservable(this)
     }
 

@@ -317,7 +317,7 @@ export class SchemaL {
         p(`import type { ComfyNodeOutput } from '${prefix}core/Slot'`)
         p(`import type { ComfyNodeSchemaJSON } from '${prefix}types/ComfySchemaJSON'`)
         p('')
-        p(`import type { GlobalFunctionToDefineAnApp } from '${prefix}cards/Card'`)
+        p(`import type { GlobalFunctionToDefineAnApp } from '${prefix}cards/App'`)
         p('')
         p(`// CONTENT IN THIS FILE:`)
         p('//')

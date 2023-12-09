@@ -26,17 +26,17 @@ import { Panel_Iframe } from '../Panel_IFrame'
 export const panels = {
     // image related
     Gallery:             { name: 'Gallery',             widget: Panel_Gallery,           header: (p: PropsOf<typeof Panel_Gallery          >) => ({title: '🎑 Gallery',          icon: undefined                               }) },
-    Paint:               { name: 'Paint',               widget: Panel_Minipaint,         header: (p: PropsOf<typeof Panel_Minipaint        >) => ({title: '🎨 Paint',            icon: assets.public_minipaint_images_logo_svg }) },
+    Paint:               { name: 'Paint',               widget: Panel_Minipaint,         header: (p: PropsOf<typeof Panel_Minipaint        >) => ({title: '🎨 Paint',            icon: assets.minipaint_images_logo_svg }) },
     Image:               { name: 'Image',               widget: Panel_ViewImage,         header: (p: PropsOf<typeof Panel_ViewImage        >) => ({title: '🎇 Image',            icon: undefined                               }) },
 
     // apps & marketplace
-    Marketplace:         { name: 'Marketplace',         widget: Panel_Marketplace,       header: (p: PropsOf<typeof Panel_Marketplace      >) => ({title: 'Marketplace',         icon: assets.public_CushyLogo_512_png         }) },
+    Marketplace:         { name: 'Marketplace',         widget: Panel_Marketplace,       header: (p: PropsOf<typeof Panel_Marketplace      >) => ({title: 'Marketplace',         icon: assets.CushyLogo_512_png         }) },
     Deck:                { name: 'Deck',                widget: Panel_ComfyNodeExplorer, header: (p: PropsOf<typeof Panel_ComfyNodeExplorer>) => ({title: 'Deck',                icon: undefined                               }) },
     FileList:            { name: 'FileList',            widget: Panel_AppList,          header: (p: PropsOf<typeof Panel_AppList         >) => ({title: 'FileList',            icon: undefined                               }) },
 
     // ComfyUI
-    ComfyUI:             { name: 'ComfyUI',             widget: Panel_ComfyUI,           header: (p: PropsOf<typeof Panel_ComfyUI          >) => ({title: 'ComfyUI',             icon: assets.public_ComfyUILogo_png           }) },
-    ComfyUINodeExplorer: { name: 'ComfyUINodeExplorer', widget: Panel_ComfyNodeExplorer, header: (p: PropsOf<typeof Panel_ComfyNodeExplorer>) => ({title: 'ComfyUINodeExplorer', icon: assets.public_ComfyUILogo_png           }) },
+    ComfyUI:             { name: 'ComfyUI',             widget: Panel_ComfyUI,           header: (p: PropsOf<typeof Panel_ComfyUI          >) => ({title: 'ComfyUI',             icon: assets.ComfyUILogo_png           }) },
+    ComfyUINodeExplorer: { name: 'ComfyUINodeExplorer', widget: Panel_ComfyNodeExplorer, header: (p: PropsOf<typeof Panel_ComfyNodeExplorer>) => ({title: 'ComfyUINodeExplorer', icon: assets.ComfyUILogo_png           }) },
 
     // misc
     Output:              { name: 'Output',              widget: Panel_Output,            header: (p: PropsOf<typeof Panel_Output           >) => ({title: 'Output',              icon: undefined                               }) },
@@ -53,7 +53,7 @@ export const panels = {
     // DisplacedImage:      { name: 'DisplacedImage',      widget: Panel_3dScene,           header: (p: PropsOf<typeof Panel_3dScene          >) => ({title: 'DisplacedImage',      icon: undefined                               }) },
 
     // utils
-    Civitai:             { name: 'Civitai',             widget: Panel_Civitai,           header: (p: PropsOf<typeof Panel_Civitai          >) => ({title: 'Civitai',             icon: assets.public_CivitaiLogo_png           }) },
+    Civitai:             { name: 'Civitai',             widget: Panel_Civitai,           header: (p: PropsOf<typeof Panel_Civitai          >) => ({title: 'Civitai',             icon: assets.CivitaiLogo_png           }) },
     Squoosh:             { name: 'Squoosh',             widget: Panel_Squoosh,           header: (p: PropsOf<typeof Panel_Squoosh          >) => ({title: 'Squoosh',             icon: undefined                               }) },
     IFrame:              { name: 'IFrame',              widget: Panel_Iframe,            header: (p: PropsOf<typeof Panel_Squoosh          >) => ({title: 'IFrame',              icon: undefined                               }) },
 
@@ -62,7 +62,7 @@ export const panels = {
     Hosts:               { name: 'Hosts',               widget: Panel_ComfyUIHosts,    header: (p: PropsOf<typeof Panel_ComfyUIHosts   >) => ({title: 'Hosts',               icon: undefined                               }) },
 
     // doc & help
-    TypeDoc:             { name: 'TypeDoc',             widget: Panel_TypeDoc,           header: (p: PropsOf<typeof Panel_ComfyUIHosts   >) => ({title: 'TypeDoc',             icon: assets.public_typescript_512_png        }) },
+    TypeDoc:             { name: 'TypeDoc',             widget: Panel_TypeDoc,           header: (p: PropsOf<typeof Panel_ComfyUIHosts   >) => ({title: 'TypeDoc',             icon: assets.typescript_512_png        }) },
 }
 
 export type Panels = typeof panels

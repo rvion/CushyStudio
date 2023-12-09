@@ -18,7 +18,7 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
     return (
         <div tw='overflow-auto' id='CushyAppBar'>
             <div tw='flex items-center px-2 overflow-auto'>
-                <img style={{ width: '1.6rem' }} src={assets.public_CushyLogo_512_png} alt='' />
+                <img style={{ width: '1.6rem' }} src={assets.CushyLogo_512_png} alt='' />
                 <div tw='px-1'>
                     <UpdateBtnUI updater={st.updater}>CushyStudio </UpdateBtnUI>
                 </div>

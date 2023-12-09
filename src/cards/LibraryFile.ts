@@ -1,4 +1,3 @@
-import type { App, WidgetDict } from 'src/cards/Card'
 import type { LiteGraphJSON } from 'src/core/LiteGraph'
 import type { STATE } from 'src/state/state'
 import type { ComfyPromptJSON } from '../types/ComfyPrompt'
@@ -6,26 +5,27 @@ import type { ComfyPromptJSON } from '../types/ComfyPrompt'
 import { readFileSync } from 'fs'
 import * as mobx from 'mobx'
 import { makeAutoObservable, observable } from 'mobx'
-import path, { join, relative } from 'pathe'
-import { Package } from 'src/cards/Pkg'
-import { SQLITE_true } from 'src/db/SQLITE_boolean'
+import path, { basename, relative } from 'pathe'
 import { DraftT } from 'src/db/TYPES.gen'
 import { DraftL } from 'src/models/Draft'
-import { clamp } from 'three/src/math/MathUtils'
 import { convertLiteGraphToPrompt } from '../core/litegraphToPrompt'
 import { exhaust } from '../utils/misc/ComfyUtils'
 import { ManualPromise } from '../utils/misc/ManualPromise'
 import { getPngMetadataFromUint8Array } from '../utils/png/_getPngMetadata'
-import { generateAvatar } from './AvatarGenerator'
-import { AppManifest } from './DeckManifest'
 import { Library } from './Library'
 
 import { observer } from 'mobx-react-lite'
 import __react from 'react'
 
+import { dirname } from 'path'
+import { createEsbuildContextFor } from 'src/back/transpiler'
+
 // @ts-ignore
 import { jsx, jsxs } from 'src/utils/custom-jsx/jsx-runtime'
-import { replaceImportsWithSyncImport } from 'src/back/ImportStructure'
+import { asAbsolutePath } from 'src/utils/fs/pathUtils'
+import { CompiledApp } from '../models/CushyApp'
+import { LiveCollection } from 'src/db/LiveCollection'
+import { CushyScriptL } from 'src/models/CushyScriptL'
 
 // prettier-ignore
 export type LoadStrategy =
@@ -40,108 +40,55 @@ enum LoadStatus {
     FAILURE = 0,
 }
 
+/**
+ * wrapper around files in the library folder
+ * responsible to convert files to scripts
+ */
 export class LibraryFile {
-    st: STATE
-
-    /** card display name */
-    get displayName(): string { return this.manifest.name } // prettier-ignore
-    get actionPackFolderRel(): string { return this.deck.folderRel } // prettier-ignore
-    get actionAuthorFolderRel(): string { return this.deck.authorFolderRel } // prettier-ignore
-    get priority(): number { return this.manifest.priority ?? 0 } // prettier-ignore
-    get description(): string { return this.manifest.description ?? 'no description' } // prettier-ignore
-
-    openLastDraftAsCurrent = () => {
-        this.st.currentDraft = this.getLastDraft()
-    }
-
-    /** true if card match current library search */
-    matchesSearch = (search: string): boolean => {
-        if (search === '') return true
-        const searchLower = search.toLowerCase()
-        const nameLower = this.displayName.toLowerCase()
-        const descriptionLower = this.description.toLowerCase()
-        return nameLower.includes(searchLower) || descriptionLower.includes(searchLower)
-    }
-
-    strategies: LoadStrategy[]
     constructor(
         //
         public library: Library,
-        public deck: Package,
+        // public pkg: Package,
         public absPath: AbsolutePath,
-        public relPath: AppPath,
+        public relPath: RelativePath,
     ) {
         this.st = library.st
-        this.defaultManifest = this.mkDefaultManifest()
         this.strategies = this.findLoadStrategies()
-        makeAutoObservable(this, { appCompiled: observable.ref })
+        makeAutoObservable(this)
+        // { appCompiled: observable.ref }
     }
+
+    /** access to the global app state */
+    st: STATE
+
+    /** abs path to the folder this file is in */
+    get folderAbs(): AbsolutePath {
+        console.log(`[👙] 🔴`, dirname(this.absPath))
+        return asAbsolutePath(dirname(this.absPath))
+    }
+
+    /** shortcut to open the last draft of the first app defined in this file */
+    // openLastDraftAsCurrent = () => {
+    //     this.st.currentDraft = this.getLastDraft()
+    // }
+
+    /** true if file match current library search */
+    matchesSearch = (search: string): boolean => {
+        if (search === '') return true
+        const searchLower = search.toLowerCase()
+        const nameLower = basename(this.relPath).toLowerCase()
+        return nameLower.includes(searchLower)
+    }
+
+    strategies: LoadStrategy[]
 
     // --------------------------------------------------------
-    // prettier-ignore
-    get score(): number {
-        let score = 0
-        // hardcoded rules
-        if (this.relPath==='library/CushyStudio/default/prompt.ts') score+=1000
-        if (this.relPath.endsWith('.ts')) score+=90
-        // malus
-        if (this.deckManifestType === 'crash')            score -= 60
-        if (this.deckManifestType === 'invalid manifest') score -= 50
-        if (this.deckManifestType === 'no manifest')      score -= 40
-        // positives
-        if (this.manifest.priority)                       score += clamp(this.manifest.priority, -100, 100)
-        if (this.authorDefinedManifest)                   score += 50
-        if (this.manifest.illustration?.endsWith('.png')) score += 100
-        return score
-    }
-
-    /** meh */
-    get deckManifestType(): 'no manifest' | 'invalid manifest' | 'crash' | 'valid' {
-        return this.deck.manifestError?.type ?? ('valid' as const)
-    }
-
-    get manifest(): AppManifest {
-        return (
-            this.authorDefinedManifest ?? //
-            this.defaultManifest
-        )
-    }
-
-    get authorDefinedManifest(): Maybe<AppManifest> {
-        const cards = this.deck.manifest.cards ?? []
-        const match = cards.find((c) => {
-            const absPath = path.join(this.deck.folderAbs, c.deckRelativeFilePath)
-            if (absPath === this.absPath) return true
-        })
-        return match
-    }
-
-    private defaultManifest: AppManifest
-    private mkDefaultManifest(): AppManifest {
-        const deckRelPath = this.deckRelativeFilePath
-        const baseName = path.basename(deckRelPath)
-        let cardName = baseName.endsWith('.ts') //
-            ? baseName.slice(0, -3)
-            : baseName
-
-        // support for https://comfyworkflows.com/ downloaded workflows
-        if (cardName.match(/comfyworkflows_[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}/)) {
-            cardName = `ComfyWorkflow ${cardName.slice(-12, -4)}`
-        }
-        return {
-            name: cardName,
-            deckRelativeFilePath: this.relPath,
-            author: 'unknown', // this.deck.githubUserName,
-            illustration: deckRelPath.endsWith('.png') //
-                ? deckRelPath
-                : generateAvatar(deckRelPath),
-            description: '<no manifest>',
-        }
-    }
+    get score(): number { return 0 } // prettier-ignore
 
     private get deckRelativeFilePath(): string {
-        return relative(this.deck.folderAbs, this.absPath)
+        return relative(this.folderAbs, this.absPath)
     }
+
     // --------------------------------------------------------
     // status
     loaded = new ManualPromise<true>()
@@ -151,33 +98,14 @@ export class LibraryFile {
         return LoadStatus.FAILURE
     }
 
-    get name() {
-        return this.manifest.name
-    }
-
-    /** action display name */
-    get illustrationPath_eiter_RelativeToDeckRoot_or_Base64Encoded_or_SVG(): Maybe<string> {
-        return this.manifest.illustration
-    }
-
-    get illustrationPathWithFileProtocol() {
-        const tmp = this.illustrationPath_eiter_RelativeToDeckRoot_or_Base64Encoded_or_SVG
-        if (tmp?.startsWith('data:')) return tmp
-        if (tmp?.startsWith('http')) return tmp
-        if (tmp?.startsWith('<svg')) return tmp
-        if (tmp) return `file://${join(this.deck.folderAbs, tmp)}`
-        // default illustration if none is provided
-        return `file://${join(this.st.rootPath, 'library/CushyStudio/default/_illustrations/default-card-illustration.jpg')}`
-    }
-
     get isFavorite(): boolean {
-        return this.st.configFile.value.favoriteCards?.includes(this.relPath) ?? false
+        return this.st.configFile.value.favoriteApps?.includes(this.relPath) ?? false
     }
 
     setFavorite = (fav: boolean) => {
         const favArray = this.st.configFile.update((f) => {
-            if (f.favoriteCards == null) f.favoriteCards = []
-            const favs = f.favoriteCards
+            if (f.favoriteApps == null) f.favoriteApps = []
+            const favs = f.favoriteApps
             if (fav) {
                 if (!favs.includes(this.relPath)) favs.unshift(this.relPath)
             } else {
@@ -187,41 +115,40 @@ export class LibraryFile {
         })
     }
 
-    createDraft = (): DraftL => {
-        const title = this.name + ' ' + this.drafts.length + 1
-        const draft = this.st.db.drafts.create({
-            appParams: {},
-            appPath: this.relPath,
-            isOpened: SQLITE_true,
-            title: title,
-        })
-        // pj.st.layout.FOCUS_OR_CREATE('Draft', { draftID: draft.id })
-        return draft
-    }
-    getLastDraft = (): DraftL => {
-        const pj = this.st.getProject()
-        const drafts = this.drafts
-        return drafts.length > 0 ? drafts[0] : this.createDraft()
-    }
+    // getLastDraft = (): DraftL => {
+    //     const drafts = this.drafts
+    //     return drafts.length > 0 ? drafts[0] : this.createDraft()
+    // }
 
     get drafts(): DraftL[] {
         const draftTable = this.st.db.drafts
         const draftTableInfos = draftTable.infos
-        const draftsT = this.st.db.prepareAll<AppPath, DraftT>(
+        const draftsT = this.st.db.prepareAll<RelativePath, DraftT>(
             draftTableInfos,
             'select * from draft where appPath=?',
         )(this.relPath)
         return draftsT.map((t) => draftTable.getOrCreateInstanceForExistingData(t))
     }
 
-    getCompiledApp() {
-        this.load()
-        return this.appCompiled
-    }
-    // extracted stuff
-    appCompiled?: Maybe<App<WidgetDict>> = null
+    // getCompiledApps(): CompiledApp[] {
+    //     this.load()
+    //     return this.appCompiled!
+    // }
+
+    // getFirstCompiledApp(): Maybe<CompiledApp> {
+    //     this.load()
+    //     return this.appCompiled?.[0]
+    // }
+
+    // the first thing to do to load an app is to get the Cushy Script from it.
     codeJS?: Maybe<string> = null
-    codeTS?: Maybe<string> = null
+    // appCompiled?: CompiledApp[] = []
+
+    scripts = new LiveCollection<CushyScriptL>(
+        () => ({ path: this.relPath }),
+        () => this.st.db.cushy_scripts,
+    )
+
     liteGraphJSON?: Maybe<LiteGraphJSON> = null
     promptJSON?: Maybe<ComfyPromptJSON> = null
     png?: Maybe<AbsolutePath> = null
@@ -229,10 +156,16 @@ export class LibraryFile {
 
     /** load a file trying all compatible strategies */
     successfullLoadStrategies: Maybe<LoadStrategy> = null
+
     load = async (p?: { force?: boolean }): Promise<true> => {
+        // don't load more than once unless manually requested
         if (this.loadRequested && !p?.force) return true
         this.loadRequested = true
+
+        // don't load once already loaded
         if (this.loaded.done && !p?.force) return true
+
+        // try every strategy in order
         for (const strategy of this.strategies) {
             const res = await this.loadWithStrategy(strategy)
             if (res === LoadStatus.SUCCESS) {
@@ -240,12 +173,14 @@ export class LibraryFile {
                 break
             }
         }
-        // if (this.action) this.displayName = this.action.name
-        // this.st.layout.renameTab(`/action/${this.relPath}`, this.displayName)
-        this.loaded.resolve(true)
-        if (this.drafts.length === 0) {
-            this.createDraft()
-        }
+
+        // // if one strategy worked, we're done
+        // this.loaded.resolve(true)
+
+        // // create a draft if none exists
+        // if (this.drafts.length === 0) this.createDraft()
+
+        // done
         return true
     }
 
@@ -277,25 +212,48 @@ export class LibraryFile {
 
     // LOADERS ------------------------------------------------------------------------
     // ACTION
+
+    // public syncS
+
     private load_asCushyStudioAction = async (): Promise<LoadStatus> => {
         try {
             // 1. transpile
-            await this.deck.rebuild()
+            // await this.pkg.rebuild()
+            // console.log('-- a', { eps: this.relPath })
+            const ctx = await this.esbuildContext
+            // console.log('-- b')
+            const res = await ctx.rebuild()
+            // console.log('-- c')
 
-            const distPathWrongExt = path.join(this.deck.folderAbs, 'dist', this.deckRelativeFilePath)
+            const distPathWrongExt = path.join(this.folderAbs, 'dist', this.deckRelativeFilePath)
             const ext = path.extname(distPathWrongExt)
             const distPathJS = distPathWrongExt.slice(0, -ext.length) + '.js'
 
             this.codeJS = readFileSync(distPathJS, 'utf-8')
-            this.codeTS = readFileSync(this.absPath, 'utf-8')
 
             // 2. extract tools
-            this.appCompiled = this.RUN_ACTION_FILE(this.codeJS)
+            this.appCompiled = this.EVALUATE_SCRIPT(this.codeJS)
             if (this.appCompiled == null) return this.addError('❌ [load_asCushyStudioAction] no actions found', null)
             return LoadStatus.SUCCESS
         } catch (e) {
             return this.addError('transpile error in load_asCushyStudioAction', e)
         }
+    }
+    /** the persistent esbuild context, used to allow for fast rebundling */
+    private get esbuildContext() {
+        // ensure typescript files
+        if (!this.relPath.endsWith('.ts') && !this.relPath.endsWith('.tsx'))
+            throw new Error('esbuild can only work on .ts or .tsx files')
+        // create context
+        const context = createEsbuildContextFor({
+            entrypoints: [this.absPath],
+            root: this.folderAbs,
+        })
+        // cache it
+        Object.defineProperty(this, 'esbuildContext', {
+            value: context,
+        })
+        return context
     }
 
     // PROMPT
@@ -311,9 +269,8 @@ export class LibraryFile {
                 preserveId: true,
                 autoUI: false,
             })
-            this.codeTS = this.codeJS
             this.promptJSON = comfyPromptJSON
-            this.appCompiled = this.RUN_ACTION_FILE(this.codeJS)
+            this.appCompiled = this.EVALUATE_SCRIPT(this.codeJS)
             const graph = this.st.db.graphs.create({ comfyPromptJSON: comfyPromptJSON })
             const workflow = await graph.json_workflow()
             this.liteGraphJSON = workflow
@@ -383,63 +340,41 @@ export class LibraryFile {
                 preserveId: true,
                 autoUI: true,
             })
-            this.codeTS = this.codeJS
-            this.appCompiled = this.RUN_ACTION_FILE(this.codeJS)
+            // this.codeTS = this.codeJS
+            this.appCompiled = this.EVALUATE_SCRIPT(this.codeJS)
             return LoadStatus.SUCCESS
         } catch (error) {
             return this.addError(`❌ failed to import workflow: cannot convert LiteGraph To Prompt`, error)
         }
     }
-
-    RUN_ACTION_FILE = (codeJS: string): App<WidgetDict> | undefined => {
-        // 1. DI registering mechanism
-        const CARDS_FOUND_IN_FILE: App<WidgetDict>[] = []
-
-        const registerAppFn = (a1: string, a2: App<any>): void => {
-            const action = typeof a1 !== 'string' ? a1 : a2
-            console.info(`[💙] found action: "${name}"`, { path: this.absPath })
-            CARDS_FOUND_IN_FILE.push(action)
-        }
-
-        // 2. eval file to extract actions
-        try {
-            const codJSWithoutWithImportsReplaced = replaceImportsWithSyncImport(codeJS) // REWRITE_IMPORTS(codeJS)
-            // console.log(codJSWithoutWithImportsReplaced) ⏸️
-            // console.log({ jsx, jsxs })
-            const ProjectScriptFn = new Function('action', 'card', 'app', 'CUSHY_IMPORT', codJSWithoutWithImportsReplaced)
-
-            ProjectScriptFn(registerAppFn, registerAppFn, registerAppFn, CUSHY_IMPORT)
-            if (CARDS_FOUND_IN_FILE.length === 0) return
-            if (CARDS_FOUND_IN_FILE.length > 1) this.addError(`❌4. more than one action found: (${CARDS_FOUND_IN_FILE.length})`)
-            return CARDS_FOUND_IN_FILE[0]
-        } catch (e) {
-            this.addError('❌5. cannot convert prompt to code', e)
-            return
-        }
-    }
 }
 
-// const REWRITE_IMPORTS = (code: string) => {
-//     const singleImportRegex = /import\s+\{\s*(\w+)\s*\}\s+from\s+["'](.+?)["'];?/g
-//     const multipleImportsRegex = /import\s+\{\s*(\w+(?:,\s*\w+)*)\s*\}\s+from\s+["'](.+?)["'];?/g
-//     const defaultImportRegex = /import\s+(\w+)\s+from\s+["'](.+?)["'];?/g
-//     const renamedSingleImportRegex = /import\s+\{\s*(\w+)\s+as\s+(\w+)\s*\}\s+from\s+["'](.+?)["'];?/g
-//     const renamedMultipleImportsRegex = /import\s+\{\s*(\w+\s+as\s+\w+(?:,\s*\w+\s+as\s+\w+)*)\s*\}\s+from\s+["'](.+?)["'];?/g
-
-//     let transformedCode = code
-//         .replace(renamedSingleImportRegex, `const { $1: $2 } = __SYNC_IMPORT("$3");`)
-//         .replace(renamedMultipleImportsRegex, `const { $1 } = __SYNC_IMPORT("$2");`)
-//         .replace(multipleImportsRegex, `const { $1 } = __SYNC_IMPORT("$2");`)
-//         .replace(singleImportRegex, `const { $1 } = __SYNC_IMPORT("$2");`)
-//         .replace(defaultImportRegex, `const $1 = __SYNC_IMPORT("$2");`)
-//     return transformedCode
+// get displayName(): string {
+//     return this.manifest.name ?? basename(this.relPath)
 // }
 
-const CUSHY_IMPORT = (mod: string) => {
-    console.log('🔴 mod', mod)
-    if (mod === 'react') return __react
-    if (mod === 'mobx') return mobx
-    if (mod === 'mobx-react-lite') return { observer: observer }
-    if (mod === 'react/jsx-runtime') return { jsx, jsxs }
-    throw new Error('unsupported import: ' + mod)
-}
+// get priority(): number {
+//     return this.manifest.priority ?? 0
+// }
+
+// get description(): string {
+//     return this.manifest.description ?? 'no description'
+// }
+
+/** meh */
+// get deckManifestType(): 'no manifest' | 'invalid manifest' | 'crash' | 'valid' {
+//     return this.pkg.manifestError?.type ?? ('valid' as const)
+// }
+
+// get manifest(): AppManifest {
+//     return this.appCompiled?.metadata ?? this.defaultManifest
+// }
+
+// get authorDefinedManifest(): Maybe<AppManifest> {
+//     const cards = this.deck.manifest.cards ?? []
+//     const match = cards.find((c) => {
+//         const absPath = path.join(this.deck.folderAbs, c.deckRelativeFilePath)
+//         if (absPath === this.absPath) return true
+//     })
+//     return match
+// }

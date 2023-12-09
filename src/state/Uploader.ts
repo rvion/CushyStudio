@@ -38,7 +38,7 @@ export class Uploader {
     }
 
     /** upload a deck asset to ComfyUI */
-    upload_Asset = async (assetName: AppPath): Promise<ComfyUploadImageResult> => {
+    upload_Asset = async (assetName: RelativePath): Promise<ComfyUploadImageResult> => {
         const absPath = asAbsolutePath(path.join(this.st.rootPath, assetName))
         return this.st.uploader.upload_FileAtAbsolutePath(absPath)
     }

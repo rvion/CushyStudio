@@ -17,7 +17,7 @@ async function* walk(dir: string): AsyncGenerator<string, void, void> {
 }
 
 const root = cwd()
-const assetFolder = join(root, 'library/CushyStudio/')
+const assetFolder = join(root, 'public')
 const assets: { relPath: string; baseName: string; path: string }[] = []
 
 for await (const p of walk(assetFolder)) {

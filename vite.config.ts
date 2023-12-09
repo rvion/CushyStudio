@@ -1,9 +1,14 @@
 import react from '@vitejs/plugin-react'
+import { readFileSync } from 'fs'
 import { resolve } from 'path'
 import { cwd } from 'process'
 import { defineConfig } from 'vite'
 
 const installDir = cwd()
+
+// Read package.json and get all dependencies
+// const packageJson = JSON.parse(readFileSync('./package.json', 'utf-8'))
+// const allDependencies = Object.keys(packageJson.dependencies)
 
 console.log(`[VITE] loading vite config`)
 
@@ -11,6 +16,7 @@ console.log(`[VITE] loading vite config`)
 export default defineConfig({
     clearScreen: false,
     optimizeDeps: {
+        // exclude: allDependencies,
         exclude: [
             //
             'fsevents',

@@ -23,12 +23,12 @@ export type ConfigFile = {
     preferedFormLayout?: PreferedFormLayout
     ['draft.mockup-mobile']?: boolean
 
-    favoriteCards?: AppPath[]
+    favoriteApps?: CushyAppID[]
     /** list of all comfyUI setup available */
     comfyUIHosts?: ComfyHostDef[]
 
     mainComfyHostID?: Maybe<ComfyHostID>
-
+    enableTypeCheckingBuiltInApps?: boolean
     /** 'light' or 'dark'; default to dark */
     theme?: ThemeName
     /** defaults to 48px */

@@ -119,7 +119,7 @@ export const Panel_ViewImage = observer(function Panel_ViewImage_(p: {
                             </div>
                             <img //
                                 style={{ width: '100%', height: '100%', objectFit: 'contain' }}
-                                src={assets.public_illustrations_image_home_transp_webp}
+                                src={assets.illustrations_image_home_transp_webp}
                                 alt='last generated image'
                             />
                         </div>

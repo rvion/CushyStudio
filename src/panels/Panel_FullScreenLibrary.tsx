@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite'
-import { CreateDeckBtnUI } from 'src/app/layout/CreateDeckBtnUI'
+// import { CreateDeckBtnUI } from 'src/app/layout/CreateDeckBtnUI'
 import { AppCardUI } from 'src/cards/fancycard/AppCardUI'
 import { FileBeeingImportedUI } from 'src/importers/FilesBeeingImported'
 import { Addon, Joined, Slider, Toggle } from 'src/rsuite/shims'
@@ -16,7 +16,7 @@ export const Panel_CardPicker3UI = observer(function Panel_CardPicker3UI_(p: {})
             <div tw='bg-base-200 p-4'>
                 <div tw='flex gap-2'>
                     <div tw='mr-2 text-2xl'>Library</div>
-                    <CreateDeckBtnUI />
+                    {/* <CreateDeckBtnUI /> */}
                 </div>
                 <div tw='flex gap-1 items-center'>
                     <Joined>
@@ -95,7 +95,7 @@ export const Panel_CardPicker3UI = observer(function Panel_CardPicker3UI_(p: {})
                             <div key={card.relPath}>
                                 <AppCardUI //
                                     active={st.library.selectionCursor === ix}
-                                    deck={card.deck}
+                                    deck={card.pkg}
                                     card={card}
                                 />
                                 {/* {card.priority} */}

@@ -56,7 +56,7 @@ export const Panel_ComfyUIHosts = observer(function Panel_ComfyUIHosts_(p: { hos
             </div>
             <div tw='flex flex-wrap gap-2'>
                 {allHosts?.map((host) => {
-                    return <HostUI host={host} />
+                    return <HostUI key={host.id} host={host} />
                 })}
             </div>
         </Panel>
@@ -128,7 +128,7 @@ export const HostUI = observer(function MachineUI_(p: { host: ComfyHostDef }) {
                             host.hostname = next
                             st.configFile.save()
                         }}
-                        value={host.hostname}
+                        value={host.hostname ?? ''}
                     ></input>
                 </div>
 
@@ -137,7 +137,7 @@ export const HostUI = observer(function MachineUI_(p: { host: ComfyHostDef }) {
                     <LabelUI>Port</LabelUI>
                     <input
                         tw='input input-bordered input-sm w-full' //
-                        value={host.port}
+                        value={host.port ?? 8188}
                         onChange={(ev) => {
                             const next = ev.target.value
                             host.port = parseInt(next, 10)
@@ -163,22 +163,25 @@ export const HostUI = observer(function MachineUI_(p: { host: ComfyHostDef }) {
                 {/* LOCAL PATH */}
                 <div tw='flex items-center gap-1'>
                     <LabelUI>is local</LabelUI>
-                    <Toggle
+                    {/* <Toggle
                         onChange={(ev) => {
                             const next = ev.target.checked
                             host.isLocal = next
                         }}
                         checked={host.isLocal ?? false}
-                    />
+                    /> */}
                     <input
                         tw='input input-bordered input-sm w-full'
                         type='string'
                         disabled={!Boolean(host.isLocal)}
-                        value={host.localPath}
+                        onChange={(ev) => {
+                            host.localPath = ev.target.value
+                        }}
+                        value={host.localPath ?? ''}
                     ></input>
                 </div>
                 {/* ID */}
-                <div tw='flex gap-2'>
+                {/* <div tw='flex gap-2'>
                     <LabelUI>id</LabelUI>
                     <input
                         tw='input input-bordered input-sm w-full'
@@ -188,7 +191,7 @@ export const HostUI = observer(function MachineUI_(p: { host: ComfyHostDef }) {
                         }}
                         value={host.id ?? 'unnamed'}
                     ></input>
-                </div>
+                </div> */}
             </div>
         </div>
     )

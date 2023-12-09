@@ -45,7 +45,7 @@ export const EnumSelectorUI = observer(function EnumSelectorUI_(p: {
     disabled?: boolean
     enumName: EnumName
 }) {
-    const project = useSt().getProject()
+    const project = useSt().project
     const schema = project.schema
     const options: EnumValue[] = schema.knownEnumsByName.get(p.enumName)?.values ?? [] // schema.getEnumOptionsForSelectPicker(p.enumName)
     // const valueIsValid = (p.value != null || p.isOptional) && options.some((x) => x.value === p.value)

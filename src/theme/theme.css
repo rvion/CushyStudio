@@ -1,3 +1,27 @@
+.rct-tree-item-button span.material-symbols-outlined {
+    font-size: 1.4rem;
+}
+.rct-tree-item-button {
+    padding: 0 0 0 1.3rem !important;
+}
+.rct-tree-root.rct-tree-root-focus .rct-tree-item-title-container-focused {
+    background-color: oklch(var(--b2)) !important;
+}
+.rct-tree-item-arrow-path {
+    fill: oklch(var(--bc)) !important;
+}
+.rct-tree-root {
+    color: oklch(var(--bc)) !important;
+}
+.rct-tree-item-button:hover {
+    background-color: oklch(var(--b2)) !important;
+    color: oklch(var(--bc)) !important;
+}
+.rct-tree-item-title-container-selected .rct-tree-item-button {
+    background-color: oklch(var(--b3)) !important;
+    color: oklch(var(--bc)) !important;
+
+}
 ._RevealUI {
     box-shadow: 0 5px 5px -3px oklch(var(--s));
 }

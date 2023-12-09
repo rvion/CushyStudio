@@ -6,9 +6,7 @@ import { DEPENDS_ON } from './LiveHelpers'
 
 export class LiveCollection<L extends LiveInstance<any, any>> {
     constructor(
-        //
-        public owner: LiveInstance<any, any>,
-        public remoteFieldName: keyof L['data'] & string,
+        public remoteFieldName: () => Partial<L['data']>,
         public remoteTable: () => LiveTable<any, any>,
         public cache?: () => boolean,
     ) {
@@ -16,9 +14,9 @@ export class LiveCollection<L extends LiveInstance<any, any>> {
     }
 
     /** debug string for pretty printing */
-    get debugStr() {
-        return `LiveCollection: ${this.owner.table.name}<<-${this.remoteTable.name}`
-    }
+    // get debugStr() {
+    //     return `LiveCollection: ${this.owner.table.name}<<-${this.remoteTable.name}`
+    // }
 
     get items(): L[] {
         const remoteTable = this.remoteTable()
@@ -27,7 +25,7 @@ export class LiveCollection<L extends LiveInstance<any, any>> {
             // console.log(`<<< ${remoteTable.name} has size ${remoteTable.liveEntities.size} >>>`)
             DEPENDS_ON(remoteTable.liveEntities.size)
         }
-        return remoteTable.find({ [this.remoteFieldName]: this.owner.id })
+        return remoteTable.find(this.remoteFieldName())
     }
 
     map = <T>(fn: (l: L) => T): T[] => this.items.map(fn)

@@ -10,13 +10,13 @@ import { join } from 'pathe'
 import { createRef } from 'react'
 import { PreferedFormLayout, type ConfigFile } from 'src/config/ConfigFile'
 import { mkConfigFile } from 'src/config/mkConfigFile'
-import { mkTypescriptConfig, type TsConfigCustom } from '../widgets/TsConfigCustom'
+import { mandatoryTSConfigIncludes, mkTypescriptConfig, type TsConfigCustom } from '../widgets/TsConfigCustom'
 
 import { closest } from 'fastest-levenshtein'
 import { ShortcutWatcher } from 'src/app/shortcuts/ShortcutManager'
 import { shortcutsDef } from 'src/app/shortcuts/shortcuts'
-import type { ActionTagMethodList } from 'src/cards/Card'
-import { asAppPath } from 'src/cards/CardPath'
+import type { ActionTagMethodList } from 'src/cards/App'
+import { asAppPath } from 'src/cards/asAppPath'
 import { GithubUserName } from 'src/cards/GithubUser'
 import { Library } from 'src/cards/Library'
 import { GithubRepoName } from 'src/cards/githubRepo'
@@ -177,8 +177,10 @@ export class STATE {
     comfyJSONPath: AbsolutePath
     embeddingsPath: AbsolutePath
     nodesTSPath: AbsolutePath
-    actionsFolderPathAbs: AbsolutePath
-    actionsFolderPathRel: RelativePath
+
+    libraryFolderPathAbs: AbsolutePath
+    libraryFolderPathRel: RelativePath
+
     outputFolderPath: AbsolutePath
     status: ComfyStatus | null = null
     graphHovered: Maybe<{ graph: ComfyWorkflowL; pctTop: number; pctLeft: number }> = null
@@ -229,7 +231,7 @@ export class STATE {
 
     //
     get githubUsername(): Maybe<GithubUserName> { return this.configFile.value.githubUsername as Maybe<GithubUserName> } // prettier-ignore
-    get favoriteActions(): AppPath[] { return this.configFile.value.favoriteCards ?? [] } // prettier-ignore
+    // get favoriteApps(): CushyAppID[] { return this.configFile.value.favoriteApps ?? [] } // prettier-ignore
 
     getConfigValue = <K extends keyof ConfigFile>(k: K) => this.configFile.value[k]
     setConfigValue = <K extends keyof ConfigFile>(k: K, v: ConfigFile[K]) => this.configFile.update({ [k]: v })
@@ -268,9 +270,10 @@ export class STATE {
         }
         console.log(`[🛋️] creating project`)
         const initialGraph = this.db.graphs.create({ comfyPromptJSON: {} })
-        const defaultAppPath = asAppPath('library/CushyStudio/default/prompt.ts')
+        const defaultAppPath = asAppPath('library/CushyStudio/default/SDUI.ts')
         const initialDraft = this.db.drafts.create({
             appParams: {},
+            title: 'initial draft',
             appPath: defaultAppPath,
             isOpened: SQLITE_true,
         })
@@ -291,11 +294,11 @@ export class STATE {
     })
 
     get currentDraft(): Maybe<DraftL> {
-        return this.getProject().draft.item
+        return this.project.draft.item
     }
     set currentDraft(draft: DraftL | null) {
-        this.getProject().update({ currentDraftID: draft ? draft.id : draft })
-        draft?.app?.load()
+        this.project.update({ currentDraftID: draft ? draft.id : draft })
+        draft?.file?.load()
         this.closeFullLibrary()
     }
 
@@ -341,11 +344,23 @@ export class STATE {
     expandNodes: boolean = false
 
     updateTsConfig = () => {
-        const finalInclude = ['src', 'schema/global.d.ts']
-        if (this.githubUsername) finalInclude.push(`library/${this.githubUsername}/**/*`)
-        if (this.githubUsername === 'rvion') finalInclude.push('library/CushyStudio/**/*')
-        this.typecheckingConfig.update({ include: finalInclude })
+        console.log(`[🍻] FIXUP TSConfig`)
+        const mandatory = mandatoryTSConfigIncludes
+        if (this.configFile.value.enableTypeCheckingBuiltInApps) mandatory.push('library/built-in')
+        const startTSConfig = this.typecheckingConfig.value
+        const hasAllMandatoryIncludes = mandatory.every((mandatory) => startTSConfig.include.includes(mandatory))
+        if (hasAllMandatoryIncludes) return // console.log(startTSConfig.include, mandatory)
+        this.typecheckingConfig.update((x) => {
+            const current = x.include
+            for (const inc of mandatory) {
+                if (current.includes(inc)) continue
+                console.log(`[👙] adding`, inc)
+                current.push(inc)
+            }
+        })
     }
+
+    project: ProjectL
 
     constructor(
         /** path of the workspace */
@@ -358,8 +373,8 @@ export class STATE {
         this.nodesTSPath = this.resolve(this.rootPath, asRelativePath('schema/global.d.ts'))
         this.outputFolderPath = this.cacheFolderPath // this.resolve(this.cacheFolderPath, asRelativePath('outputs'))
 
-        this.actionsFolderPathRel = asRelativePath('library')
-        this.actionsFolderPathAbs = this.resolve(this.rootPath, this.actionsFolderPathRel)
+        this.libraryFolderPathRel = asRelativePath('library')
+        this.libraryFolderPathAbs = this.resolve(this.rootPath, this.libraryFolderPathRel)
 
         // config files
         this.typecheckingConfig = mkTypescriptConfig()
@@ -387,11 +402,7 @@ export class STATE {
         })
         this.importer = new ComfyImporter(this)
         this.library = new Library(this)
-        ;(async () => {
-            await this.schemaReady
-            const project = this.getProject()
-        })()
-
+        this.project = this.getProject()
         this.ws = this.initWebsocket()
         makeAutoObservable(this, { comfyUIIframeRef: false })
     }

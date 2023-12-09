@@ -3,7 +3,7 @@ import type { LiveInstance } from '../db/LiveInstance'
 import type { ComfyWorkflowL } from '../models/Graph'
 import type { ComfyPromptL } from './ComfyPrompt'
 
-import { LibraryFile } from 'src/cards/CardFile'
+import { LibraryFile } from 'src/cards/LibraryFile'
 import { StepT } from 'src/db/TYPES.gen'
 import { Runtime } from '../back/Runtime'
 import { Status } from '../back/Status'
@@ -51,8 +51,8 @@ export class StepL {
     }
 
     get status():Status { return this.data.status as Status } // prettier-ignore
-    get appFile(): LibraryFile | undefined { return this.st.library.cardsByPath.get(this.data.appPath) } // prettier-ignore
-    get appCompiled() { return this.appFile?.appCompiled } // prettier-ignore
+    get appFile(): LibraryFile | undefined { return this.st.library.fileIndex.get(this.data.appPath) } // prettier-ignore
+    get appCompiled() { return this.appFile?.appCompiled??[] } // prettier-ignore
     get name() { return this.data.name } // prettier-ignore
     get generatedImages(): MediaImageL[] { return this.images.items } // prettier-ignore
 
@@ -60,15 +60,14 @@ export class StepL {
 
     private _CACHE_INVARIANT = () => this.data.status !== Status.Running
 
-    texts = new LiveCollection<MediaTextL>(this, 'stepID', () => this.db.media_texts, this._CACHE_INVARIANT)
-    images = new LiveCollection<MediaImageL>(this, 'stepID', () => this.db.media_images, this._CACHE_INVARIANT)
-    videos = new LiveCollection<MediaVideoL>(this, 'stepID', () => this.db.media_videos, this._CACHE_INVARIANT)
-    displacements = new LiveCollection<Media3dDisplacementL>(this, 'stepID', () => this.db.media_3d_displacement, this._CACHE_INVARIANT) // prettier-ignore
-    splats = new LiveCollection<MediaSplatL>(this, 'stepID', () => this.db.media_splats, this._CACHE_INVARIANT) // prettier-ignore
-
-    comfy_workflows = new LiveCollection<ComfyWorkflowL>(this, 'stepID', () => this.db.graphs, this._CACHE_INVARIANT)
-    comfy_prompts = new LiveCollection<ComfyPromptL>(this, 'stepID', () => this.db.comfy_prompts, this._CACHE_INVARIANT)
-    runtimeErrors = new LiveCollection<RuntimeErrorL>(this, 'stepID', () => this.db.runtimeErrors, this._CACHE_INVARIANT)
+    texts =           new LiveCollection<MediaTextL>          (() => ({stepID:this.id}), () => this.db.media_texts,           this._CACHE_INVARIANT) // prettier-ignore
+    images =          new LiveCollection<MediaImageL>         (() => ({stepID:this.id}), () => this.db.media_images,          this._CACHE_INVARIANT) // prettier-ignore
+    videos =          new LiveCollection<MediaVideoL>         (() => ({stepID:this.id}), () => this.db.media_videos,          this._CACHE_INVARIANT) // prettier-ignore
+    displacements =   new LiveCollection<Media3dDisplacementL>(() => ({stepID:this.id}), () => this.db.media_3d_displacement, this._CACHE_INVARIANT) // prettier-ignore
+    splats =          new LiveCollection<MediaSplatL>         (() => ({stepID:this.id}), () => this.db.media_splats,          this._CACHE_INVARIANT) // prettier-ignore
+    comfy_workflows = new LiveCollection<ComfyWorkflowL>      (() => ({stepID:this.id}), () => this.db.graphs,                this._CACHE_INVARIANT) // prettier-ignore
+    comfy_prompts =   new LiveCollection<ComfyPromptL>        (() => ({stepID:this.id}), () => this.db.comfy_prompts,         this._CACHE_INVARIANT) // prettier-ignore
+    runtimeErrors =   new LiveCollection<RuntimeErrorL>       (() => ({stepID:this.id}), () => this.db.runtimeErrors,         this._CACHE_INVARIANT) // prettier-ignore
 
     get currentlyExecutingOutput(): Maybe<StepOutput> {
         return this.comfy_prompts.items.find((p: ComfyPromptL) => !p.data.executed)

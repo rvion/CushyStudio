@@ -3,10 +3,16 @@ import { run_model, ui_model } from './_prefabs/prefab_model'
 import { run_prompt } from './_prefabs/prefab_prompt'
 import { ui_recursive } from './_prefabs/prefab_recursive'
 import { Ctx_sampler, run_sampler, ui_sampler } from './_prefabs/prefab_sampler'
-import { ui_highresfix } from './_prefabs'
+import { ui_highresfix } from './_prefabs/_prefabs'
 import { output_demo_summary } from './_prefabs/prefab_markdown'
+import { exhaust } from 'src/utils/misc/ComfyUtils'
+import { assets } from 'src/utils/assets/assets'
 
 app({
+    metadata: {
+        name: 'Cushy Diffusion UI',
+        illustration: (await import('./_illustrations/mc.jpg')).default,
+    },
     ui: (ui) => ({
         positive: ui.prompt({
             default: {

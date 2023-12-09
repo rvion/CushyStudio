@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite'
 import { cwd } from 'process'
 import { useEffect } from 'react'
 import { showItemInFolder } from 'src/app/layout/openExternal'
-import { LibraryFile } from 'src/cards/CardFile'
+import { LibraryFile } from 'src/cards/LibraryFile'
 import { AppIllustrationUI } from 'src/cards/fancycard/AppIllustrationUI'
 import { DraftL } from 'src/models/Draft'
 import { Dropdown, MenuItem } from 'src/rsuite/Dropdown'
@@ -33,10 +33,10 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
     // 1. draft
     if (draft == null) return <ErrorPanelUI>Draft not found</ErrorPanelUI>
     // 2. app
-    const app = draft.app
+    const app = draft.file
     if (app == null) return <ErrorPanelUI>Action not found</ErrorPanelUI>
     // 3. compiled app
-    const compiledApp = app.getCompiledApp()
+    const compiledApp = app.getCompiledApps()
     if (compiledApp == null) return <AppCompilationErrorUI card={app} />
 
     // 4. get form
@@ -163,7 +163,7 @@ export const CardActionsMenuUI = observer(function CardActionsMenuUI_(p: { card:
             </MenuItem>
             <MenuItem
                 icon={<span className='material-symbols-outlined'></span>}
-                onClick={() => openInVSCode(cwd(), card.deck.manifestPath)}
+                onClick={() => openInVSCode(cwd(), card.pkg.manifestPath)}
             >
                 Edit App Manifest
             </MenuItem>
@@ -189,7 +189,7 @@ export const FormLayoutPrefsUI = observer(function FormLayoutPrefsUI_(p: { class
             size={size1}
             appearance='subtle'
             startIcon={<span className='material-symbols-outlined'>dynamic_form</span>}
-            title={`${layout}`}
+            title={''} //`${layout}`}
             // startIcon={<span className='material-symbols-outlined'>format_size</span>}
         >
             <MenuItem
@@ -291,7 +291,7 @@ export const DraftHeaderUI = observer(function DraftHeaderUI_(p: { draft: DraftL
         <div tw='flex p-1 bg-base-300 border-b border-b-base-300'>
             <div tw='flex gap-0.5 flex-grow relative text-base-content py-1'>
                 <AppIllustrationUI app={app} size='4rem' />
-                <div tw='px-1 flex-grow'>
+                <div tw='ml-1 flex-grow'>
                     <div
                         //
                         tw={[
@@ -303,10 +303,13 @@ export const DraftHeaderUI = observer(function DraftHeaderUI_(p: { draft: DraftL
                     >
                         <AppFavoriteBtnUI app={app} />
                         <span>{app.displayName}</span>
-                        <Joined tw={['absolute right-0']}>
+
+                        <div tw={['absolute right-0']}>
                             {/* Open draft in new tab btn */}
+                            <CardActionsMenuUI tw='join-item' card={app} />
+                            <FormLayoutPrefsUI tw='join-item' />
                             <div
-                                tw='btn btn-subtle btn-xs'
+                                tw='btn btn-subtle btn-sm'
                                 onClick={() => {
                                     st.layout.FOCUS_OR_CREATE('Draft', { draftID: draft.id }, 'LEFT_PANE_TABSET')
                                 }}
@@ -315,7 +318,7 @@ export const DraftHeaderUI = observer(function DraftHeaderUI_(p: { draft: DraftL
                             </div>
                             {/* duplicate draft btn */}
                             <div
-                                tw='btn btn-subtle btn-xs'
+                                tw='btn btn-subtle btn-sm'
                                 onClick={() => {
                                     const newDraft = draft.clone()
                                     st.layout.FOCUS_OR_CREATE('Draft', { draftID: newDraft.id }, 'LEFT_PANE_TABSET')
@@ -323,19 +326,16 @@ export const DraftHeaderUI = observer(function DraftHeaderUI_(p: { draft: DraftL
                             >
                                 <span className='material-symbols-outlined'>content_copy</span>
                             </div>
-                        </Joined>
+                        </div>
                     </div>
-                    <Input
-                        onChange={(ev) => draft.update({ title: ev.target.value })}
-                        tw='w-full'
-                        value={draft.data.title ?? 'no title'}
-                    ></Input>
                     <div style={{ height: '2rem' }} className='flex items-center gap-2 justify-between text-sm'>
-                        <Joined>
-                            <CardActionsMenuUI tw='join-item' card={app} />
-                            <FormLayoutPrefsUI tw='join-item' />
-                        </Joined>
-                        <RunOrAutorunUI draft={draft} />
+                        <Input
+                            tw='flex-grow'
+                            onChange={(ev) => draft.update({ title: ev.target.value })}
+                            // tw='w-full'
+                            value={draft.data.title ?? 'no title'}
+                        ></Input>
+                        <RunOrAutorunUI tw='flex-shrink-0' draft={draft} />
                     </div>
                 </div>
             </div>

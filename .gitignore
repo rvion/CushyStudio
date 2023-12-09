@@ -46,9 +46,9 @@ global.d.ts
 !src/utils/custom-jsx/global.d.ts
 tsconfig.custom.json
 
-library/*
-!library/CushyStudio
-!library/_doc
+library/local
+library/installed
+library/legacy
 
 library/**/dist
 

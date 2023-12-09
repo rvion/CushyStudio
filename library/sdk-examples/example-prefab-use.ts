@@ -1,4 +1,4 @@
-import { ui_startImage } from './_prefab'
+import { ui_startImage } from './_shared/_prefab'
 
 app({
     ui: (formBuilder) => {

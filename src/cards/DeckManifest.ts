@@ -23,9 +23,6 @@ export type PackageManifest = {
 
 // DECK --------------------------------------
 export type AppManifest = {
-    /** relative to the deck root */
-    deckRelativeFilePath: string
-
     /** should be AAAxBBB pixel wide */
     cardBanner?: string
 
@@ -33,7 +30,7 @@ export type AppManifest = {
      * card name;
      * defaults to the file name without extension
      * */
-    name: string
+    name?: string
 
     /** card image that will be displayed in the tree picker */
     illustration?: string
@@ -67,7 +64,7 @@ export const AppSchema = Type.Object(
     {
         deckRelativeFilePath: Type.String(),
         cardBanner: Type.Optional(Type.String()),
-        name: Type.String(),
+        name: Type.Optional(Type.String()),
         illustration: Type.Optional(Type.String()),
         priority: Type.Optional(Type.Number()),
         style: Type.Optional(Type.Union([Type.Literal('A'), Type.Literal('B'), Type.Literal('C'), Type.Literal('D')])),

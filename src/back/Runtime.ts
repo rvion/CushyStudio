@@ -1,4 +1,4 @@
-import type { WidgetDict } from 'src/cards/Card'
+import type { WidgetDict } from 'src/cards/App'
 import type { Printable } from '../core/Printable'
 import type { STATE } from 'src/state/state'
 
@@ -761,7 +761,7 @@ ${ffmpegComandInfos.framesFileContent}
     }
 
     /** load a deck asset to ComfyUI */
-    load_Asset = async (asset: AppPath): Promise<ImageAndMask> => {
+    load_Asset = async (asset: RelativePath): Promise<ImageAndMask> => {
         const res = await this.st.uploader.upload_Asset(asset)
         return this.loadImageAnswer({ type: 'ComfyImage', imageName: res.name })
     }

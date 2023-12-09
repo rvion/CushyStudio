@@ -1,4 +1,4 @@
-import type { LibraryFile } from 'src/cards/CardFile'
+import type { LibraryFile } from 'src/cards/LibraryFile'
 import type { Package } from '../../cards/Pkg'
 
 import { observer } from 'mobx-react-lite'
@@ -20,7 +20,7 @@ export const PkgUI = observer(function ActionPackUI_(p: { deck: Package }) {
             <PkgHeaderUI pkg={pkg} />
             {pkg.folded ? null : (
                 <div tw='flex flex-col gap-0.5'>
-                    {pkg.apps.map((af) => (
+                    {pkg.files.map((af) => (
                         <AppEntryUI key={af.relPath} app={af} />
                     ))}
                 </div>
@@ -29,7 +29,7 @@ export const PkgUI = observer(function ActionPackUI_(p: { deck: Package }) {
     )
 })
 
-export const AppEntryInvalidUI = observer(function AppEntryInvalidUI_(p: { appPath: AppPath }) {
+export const AppEntryInvalidUI = observer(function AppEntryInvalidUI_(p: { appPath: RelativePath }) {
     const st = useSt()
     return (
         <div tw={[AppEntryStyle, 'flex gap-2 cursor-pointer']}>

@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite'
-import { LibraryFile } from '../CardFile'
+import { LibraryFile } from '../LibraryFile'
 
 export const AppIllustrationUI = observer(function AppIllustrationUI_(p: {
     className?: string

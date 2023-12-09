@@ -11,6 +11,7 @@ import ReactDOM from 'react-dom/client'
 import './index.css'
 import 'src/theme/flexlayout.css'
 import 'src/theme/theme.css'
+import 'react-complex-tree/lib/style-modern.css'
 // import 'src/theme/card.css'
 
 import { Main } from '../widgets/misc/MainUI'

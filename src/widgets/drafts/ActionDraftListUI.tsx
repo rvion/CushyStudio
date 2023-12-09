@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite'
-import { LibraryFile } from 'src/cards/CardFile'
+import { LibraryFile } from 'src/cards/LibraryFile'
 import { Button, Input } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
 

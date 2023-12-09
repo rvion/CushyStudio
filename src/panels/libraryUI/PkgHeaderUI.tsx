@@ -5,7 +5,7 @@ import { stringifyUnknown } from 'src/utils/formatters/stringifyUnknown'
 import { ManifestError } from '../../cards/DeckManifest'
 import { RevealUI } from 'src/rsuite/RevealUI'
 import { exhaust } from 'src/utils/misc/ComfyUtils'
-import { ActionPackStatusUI } from '../../cards/DeckStatusUI'
+// import { ActionPackStatusUI } from '../../cards/DeckStatusUI'
 import { PkgHeaderStyle } from './AppListStyles'
 
 export const PkgHeaderUI = observer(function ActionPackHeaderUI_(p: { pkg: Package }) {
@@ -26,16 +26,17 @@ export const PkgHeaderUI = observer(function ActionPackHeaderUI_(p: { pkg: Packa
                         src={pkg.logo}
                         alt='logo'
                     />
-                    <div tw='flex flex-col'>
+                    <div>🔴</div>
+                    {/* <div tw='flex flex-col'>
                         {pkg.esbuildEntrypoints.map((e) => (
                             <div key={e}>{e}</div>
                         ))}
-                    </div>
+                    </div> */}
                 </RevealUI>
 
                 <div tw='flex flex-grow items-center'>
                     <div tw='flex-grow whitespace-nowrap overflow-hidden overflow-ellipsis'>{pkg.name}</div>
-                    {pkg.manifestError && !p.pkg.isBuiltIn && (
+                    {pkg.manifestError && (
                         <RevealUI tw='shrink-0'>
                             <div className='btn btn-sm btn-narrow text-base-content'>
                                 <span className='material-symbols-outlined opacity-50'>error</span>
@@ -43,7 +44,7 @@ export const PkgHeaderUI = observer(function ActionPackHeaderUI_(p: { pkg: Packa
                             <PkgManifestErrorUI err={pkg.manifestError} />
                         </RevealUI>
                     )}
-                    <ActionPackStatusUI tw='shrink-0' pack={pkg} />
+                    {/* <ActionPackStatusUI tw='shrink-0' pack={pkg} /> */}
                 </div>
                 {/* FOLD INDICATOR */}
                 <label className='swap swap-rotate'>

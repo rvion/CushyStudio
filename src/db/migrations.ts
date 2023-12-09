@@ -227,9 +227,51 @@ export const migrations: {
         name: 'prompt.status',
         up: ['alter table comfy_prompt add column status text'],
     },
+    {
+        id: 'JIf9D18H7R',
+        name: 'create cushy_script table',
+        up: [_createTable('cushy_script', ['path text not null', 'code text not null'])],
+    },
+    {
+        id: 'hG9xjiZn4I',
+        name: 'create cushy_app table',
+        up: [
+            _createTable('cushy_app', [
+                //
+                'guid text unique',
+                'scripID text references graph(id) not null',
+            ]),
+        ],
+    },
+    {
+        id: 'kn8M4lrSlB',
+        name: 'create cushy_app table',
+        up: [`alter table cushy_app rename column scripID to scriptID`],
+    },
+    {
+        id: 'H2wy77-Rvx',
+        name: 'create cushy_app table',
+        up: [
+            `alter table cushy_app drop column scriptID`,
+            `alter table cushy_app add column scriptID text references cushy_script(id) not null`,
+        ],
+    },
+    {
+        id: 'baWamSPnwf',
+        name: 'create drafts now based on cushy_app table',
+        up: [
+            `alter table draft drop column appPath`,
+            `alter table draft add column appID text references cushy_app(id) not null`,
+        ],
+    },
+    {
+        id: 'D9nJFXN2t0',
+        name: 'idem for step',
+        up: [`alter table step drop column appPath`, `alter table step add column appID text references cushy_app(id) not null`],
+    },
     // {
-    //     id: 'PONTSFSpA_',
-    //     name: 'fix image2',
-    //     up: [`alter table media_image drop column base64URL`],
+    //     id: 'e574c006-daca-4fd0-a51b-73a66b4fbd79',
+    //     name: 'create cushy_app table',
+    //     up: ['drop table cushy_app'],
     // },
 ]

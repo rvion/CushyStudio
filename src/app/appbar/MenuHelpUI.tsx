@@ -22,14 +22,14 @@ export const MenuHelpUI = observer(function MenuHelpUI_(p: {}) {
                 onClick={() => {
                     window.require('electron').shell.openExternal('https://github.com/rvion/CushyStudio#readme')
                 }}
-                icon={<img style={{ width: '1rem', height: '1rem' }} src={assets.public_GithubLogo2_png}></img>}
+                icon={<img style={{ width: '1rem', height: '1rem' }} src={assets.GithubLogo2_png}></img>}
                 label='Open Github'
             />
             <MenuItem
                 onClick={() => {
                     window.require('electron').shell.openExternal('https://www.CushyStudio.com')
                 }}
-                icon={<img style={{ width: '1rem', height: '1rem' }} src={assets.public_GithubLogo2_png}></img>}
+                icon={<img style={{ width: '1rem', height: '1rem' }} src={assets.GithubLogo2_png}></img>}
                 label='Open Website'
             />
             <MenuItem

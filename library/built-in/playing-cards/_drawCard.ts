@@ -2,6 +2,7 @@ import type { NodeConfig } from 'konva/lib/Node'
 import type { ImageAndMask, Runtime } from 'src/back/Runtime'
 import { CardSuit, CardSuitPosition, CardValue, getCardLayout } from './_cardLayouts'
 import { TextConfig } from 'konva/lib/shapes/Text'
+import { exhaust } from 'src/utils/misc/ComfyUtils'
 
 export async function _drawCard(
     //

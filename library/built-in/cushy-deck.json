@@ -1,5 +1,5 @@
 {
-    "$schema": "../../../src/cards/DeckManifest.schema.json",
+    "$schema": "../../src/cards/DeckManifest.schema.json",
     "name": "Default deck name",
     "authorName": "rvion",
     "description": "Base deck containing necessary cards to have fun with generative art",

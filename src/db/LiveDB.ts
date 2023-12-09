@@ -3,6 +3,8 @@ import type { TableInfo } from 'src/db/TYPES_json'
 import type {
     ComfyPromptT,
     ComfySchemaT,
+    CushyAppT,
+    CushyScriptT,
     CustomDataT,
     DraftT,
     GraphT,
@@ -42,6 +44,8 @@ import { _codegenORM } from 'src/db/_codegenORM'
 import { MediaSplatL } from 'src/models/MediaSplat'
 import { CustomDataL } from 'src/models/CustomData'
 import { DB_RELATIVE_PATH } from './DB_CONFIG'
+import { CushyScriptL } from 'src/models/CushyScriptL'
+import { CushyAppL } from 'src/models/CushyApp'
 
 export type Indexed<T> = { [id: string]: T }
 
@@ -55,6 +59,8 @@ export class LiveDB {
     custom_datas: LiveTable<CustomDataT, CustomDataL>
     schemas: LiveTable<ComfySchemaT, SchemaL>
     comfy_prompts: LiveTable<ComfyPromptT, ComfyPromptL>
+    cushy_scripts: LiveTable<CushyScriptT, CushyScriptL>
+    cushy_apps: LiveTable<CushyAppT, CushyAppL>
     media_texts: LiveTable<MediaTextT, MediaTextL>
     media_images: LiveTable<MediaImageT, MediaImageL>
     media_videos: LiveTable<MediaVideoT, MediaVideoL>
@@ -94,6 +100,8 @@ export class LiveDB {
             this.custom_datas =          new LiveTable(this, 'custom_data'          , '🎁', CustomDataL)
             this.schemas =               new LiveTable(this, 'comfy_schema'         , '📑', SchemaL, { singleton: true })
             this.comfy_prompts =         new LiveTable(this, 'comfy_prompt'         , '❓', ComfyPromptL)
+            this.cushy_scripts =         new LiveTable(this, 'cushy_script'         , '⭐️', CushyScriptL)
+            this.cushy_apps =            new LiveTable(this, 'cushy_app'            , '🌟', CushyAppL)
             this.media_texts =           new LiveTable(this, 'media_text'           , '💬', MediaTextL)
             this.media_images =          new LiveTable(this, 'media_image'          , '🖼️', MediaImageL)
             this.media_videos =          new LiveTable(this, 'media_video'          , '🖼️', MediaVideoL)

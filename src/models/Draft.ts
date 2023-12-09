@@ -2,12 +2,14 @@ import type { LiveInstance } from '../db/LiveInstance'
 import type { StepL } from './Step'
 
 import { autorun, reaction, runInAction } from 'mobx'
+import { TreeItem, TreeItemIndex } from 'react-complex-tree'
 import { Status } from 'src/back/Status'
-import { LibraryFile } from 'src/cards/CardFile'
+import { LibraryFile } from 'src/cards/LibraryFile'
 import { FormBuilder } from 'src/controls/FormBuilder'
 import { Widget_group, type Widget } from 'src/controls/Widget'
 import { SQLITE_true } from 'src/db/SQLITE_boolean'
 import { DraftT } from 'src/db/TYPES.gen'
+import { ITreeEntry } from 'src/panels/libraryUI/tree/TreeEntry'
 import { __FAIL, __OK, type Result } from 'src/types/Either'
 
 export type FormPath = (string | number)[]
@@ -18,6 +20,9 @@ export class DraftL {
     // 🔴 HACKY
     shouldAutoStart = false
 
+    get name() {
+        return this.data.title ?? this.id
+    }
     private autoStartTimer: NodeJS.Timeout | null = null
     setAutostart(val: boolean) {
         this.shouldAutoStart = val
@@ -45,7 +50,7 @@ export class DraftL {
         if (req == null) throw new Error('invalid req')
 
         // 2. ensure graph valid
-        const startGraph = this.st.getProject().rootGraph.item
+        const startGraph = this.st.project.rootGraph.item
         if (startGraph == null) throw new Error('invalid graph')
 
         // 3. bumpt the builder cache count
@@ -75,12 +80,12 @@ export class DraftL {
 
     gui: Result<Widget_group<any>> = __FAIL('not loaded yet')
 
-    get app(): LibraryFile | undefined {
-        return this.st.library.cardsByPath.get(this.data.appPath)
+    get file(): LibraryFile | undefined {
+        return this.st.library.fileIndex.get(this.data.appPath)
     }
 
     get action() {
-        return this.app?.appCompiled
+        return this.file?.appCompiled
     }
 
     onHydrate = () => {

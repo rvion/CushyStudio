@@ -3,6 +3,7 @@ import type { Widget } from '../controls/Widget'
 import type { FormBuilder } from 'src/controls/FormBuilder'
 import type { ReqResult } from 'src/controls/IWidget'
 import type { CSSProperties } from 'react'
+import { AppManifest } from './DeckManifest'
 
 // ACTIONS ============================================================
 // 1. the main abstraction of cushy are actions.
@@ -19,6 +20,7 @@ export type FormResult<Req extends Widget> = ReqResult<Req>
 export type App<FIELDS extends WidgetDict> = {
     // UI PART ============================================================
     /** the list of dependencies user can specify */
+    metadata?: AppManifest
     ui?: (form: FormBuilder /*, flow: Workflow*/) => FIELDS
     /** form container className */
     containerClassName?: string
