@@ -6,6 +6,7 @@ import Watcher from 'watcher'
 import { makeAutoObservable } from 'mobx'
 import { LibraryFile } from './LibraryFile'
 import { shouldSkip_duringWatch } from './shouldSkip'
+import { asAbsolutePath } from 'src/utils/fs/pathUtils'
 
 export class Library {
     fileIndex = new Map<RelativePath, LibraryFile>()
@@ -16,6 +17,10 @@ export class Library {
     showFavorites = true
     imageSize = '11rem'
     selectionCursor = 0
+
+    get allFavorites(): CushyAppID[] {
+        return this.st.favoriteApps
+    }
 
     // 👉 use cardsFilteredSorted
     private get files(): LibraryFile[] {
@@ -33,8 +38,14 @@ export class Library {
         })
     }
 
-    getFile = (relPath: RelativePath): LibraryFile | undefined => {
-        return this.fileIndex.get(relPath)
+    // get or create file wrapper
+    getFile = (relPath: RelativePath): LibraryFile => {
+        const prev = this.fileIndex.get(relPath)
+        if (prev) return prev
+        const absPath = asAbsolutePath(path.join(this.st.rootPath, relPath))
+        const next = new LibraryFile(this, absPath, relPath)
+        this.fileIndex.set(relPath, next)
+        return next
     }
 
     /** returns the card or throws an error */
@@ -120,44 +131,11 @@ export class Library {
         // this.filesMap = new Map()
     }
 
-    // FAVORITE MANAGEMENT ------------------------------------------------
-    removeFavoriteByPath = (path: RelativePath) => {
-        this.st.configFile.update((x) => {
-            const fav = x.favoriteApps
-            if (fav == null) return
-            const index = fav.findIndex((x) => x === path)
-            if (index === -1) return
-            fav.splice(index, 1)
-        })
-    }
-
-    moveFavorite = (oldIndex: number, newIndex: number) => {
-        this.st.configFile.update((x) => {
-            const favs = x.favoriteApps
-            if (favs == null) return
-            favs.splice(newIndex, 0, favs.splice(oldIndex, 1)[0])
-        })
-    }
-
-    get allFavorites(): { appPath: RelativePath; app: Maybe<LibraryFile> }[] {
-        return this.st.favoriteApps.map((ap) => ({
-            appPath: ap,
-            app: this.getFile(ap),
-        }))
-    }
-
     // expand mechanism -------------------------------------------------
     private expanded: Set<string>
     get expandedPaths(): string[] { return [...this.expanded] } // prettier-ignore
 
     isExpanded = (path: string): boolean => this.expanded.has(path)
-    // isTypeChecked = (path: string): boolean => {
-    //     const deckP = path.split('/')[0]
-    //     console.log(deckP)
-    //     if (this.st.githubUsername === 'rvion' && deckP === 'CushyStudio') return true
-    //     if (this.st.githubUsername === deckP) return true
-    //     return false
-    // }
 
     expand = (path: string): void => {
         this.expanded.add(path)
@@ -171,3 +149,36 @@ export class Library {
         jsonF.update({ include: nextInclude })
     }
 }
+
+// FAVORITE MANAGEMENT ------------------------------------------------
+// removeFavoriteByPath = (path: RelativePath) => {
+//     this.st.configFile.update((x) => {
+//         const fav = x.favoriteApps
+//         if (fav == null) return
+//         const index = fav.findIndex((x) => x === path)
+//         if (index === -1) return
+//         fav.splice(index, 1)
+//     })
+// }
+
+// moveFavorite = (oldIndex: number, newIndex: number) => {
+//     this.st.configFile.update((x) => {
+//         const favs = x.favoriteApps
+//         if (favs == null) return
+//         favs.splice(newIndex, 0, favs.splice(oldIndex, 1)[0])
+//     })
+// }
+
+// get allFavorites(): { appPath: RelativePath; app: Maybe<LibraryFile> }[] {
+//     return this.st.favoriteApps.map((ap) => ({
+//         appPath: ap,
+//         app: this.getFile(ap),
+//     }))
+// }
+// isTypeChecked = (path: string): boolean => {
+//     const deckP = path.split('/')[0]
+//     console.log(deckP)
+//     if (this.st.githubUsername === 'rvion' && deckP === 'CushyStudio') return true
+//     if (this.st.githubUsername === deckP) return true
+//     return false
+// }

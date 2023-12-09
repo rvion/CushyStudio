@@ -18,17 +18,19 @@ export type WidgetDict = { [key: string]: Widget }
 export type FormResult<Req extends Widget> = ReqResult<Req>
 
 export type App<FIELDS extends WidgetDict> = {
-    // UI PART ============================================================
+    /** app interface (GUI) */
+    ui: (form: FormBuilder) => FIELDS
+
+    /** app execution logic */
+    run: (f: Runtime<FIELDS>, r: { [k in keyof FIELDS]: FIELDS[k]['$Output'] }) => void | Promise<void>
+
     /** the list of dependencies user can specify */
     metadata?: AppManifest
-    ui?: (form: FormBuilder /*, flow: Workflow*/) => FIELDS
+
     /** form container className */
     containerClassName?: string
-    containerStyle?: CSSProperties
 
-    // EXECUTION PART ============================================================
-    /** the code to run */
-    run: (f: Runtime<FIELDS>, r: { [k in keyof FIELDS]: FIELDS[k]['$Output'] }) => void | Promise<void>
+    containerStyle?: CSSProperties
 
     // HELP ============================================================
     /** dependencies of your action */

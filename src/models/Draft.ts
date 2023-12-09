@@ -7,10 +7,12 @@ import { Status } from 'src/back/Status'
 import { LibraryFile } from 'src/cards/LibraryFile'
 import { FormBuilder } from 'src/controls/FormBuilder'
 import { Widget_group, type Widget } from 'src/controls/Widget'
+import { LiveRef } from 'src/db/LiveRef'
 import { SQLITE_true } from 'src/db/SQLITE_boolean'
 import { DraftT } from 'src/db/TYPES.gen'
 import { ITreeEntry } from 'src/panels/libraryUI/tree/TreeEntry'
 import { __FAIL, __OK, type Result } from 'src/types/Either'
+import { CushyAppL } from './CushyApp'
 
 export type FormPath = (string | number)[]
 
@@ -20,10 +22,18 @@ export class DraftL {
     // 🔴 HACKY
     shouldAutoStart = false
 
+    app = new LiveRef<this, CushyAppL>(this, 'appID', () => this.db.cushy_apps)
+
+    get action() {
+        return this.app.item.live
+    }
+
     get name() {
         return this.data.title ?? this.id
     }
+
     private autoStartTimer: NodeJS.Timeout | null = null
+
     setAutostart(val: boolean) {
         this.shouldAutoStart = val
         if (this.shouldAutoStart) {
@@ -63,7 +73,7 @@ export class DraftL {
         const step = this.db.steps.create({
             name: this.data.title,
             //
-            appPath: this.data.appPath,
+            appID: this.data.appID,
             formResult: req.result,
             formSerial: req.serial,
             //
@@ -81,11 +91,7 @@ export class DraftL {
     gui: Result<Widget_group<any>> = __FAIL('not loaded yet')
 
     get file(): LibraryFile | undefined {
-        return this.st.library.fileIndex.get(this.data.appPath)
-    }
-
-    get action() {
-        return this.file?.appCompiled
+        return this.st.library.fileIndex.get(this.app.item.relPath)
     }
 
     onHydrate = () => {
@@ -100,7 +106,7 @@ export class DraftL {
         const _1 = reaction(
             () => this.action,
             (action) => {
-                console.log(`[🦊] form: awakening app ${this.data.appPath}`)
+                console.log(`[🦊] form: awakening app ${this.data.appID}`)
                 if (action == null) return
                 try {
                     const formBuilder = new FormBuilder(this.st.schema)

@@ -3,7 +3,7 @@ import { replaceImportsWithSyncImport } from 'src/back/ImportStructure'
 import { App, WidgetDict } from 'src/cards/App'
 import type { LiveInstance } from '../db/LiveInstance'
 
-import { CushyScriptT } from 'src/db/TYPES.gen'
+import { CushyScriptT, asCushyAppID } from 'src/db/TYPES.gen'
 import { asRelativePath } from 'src/utils/fs/pathUtils'
 import { CushyAppL } from './CushyApp'
 import { LiveCollection } from 'src/db/LiveCollection'
@@ -12,17 +12,40 @@ import { CUSHY_IMPORT } from './CUSHY_IMPORT'
 export interface CushyScriptL extends LiveInstance<CushyScriptT, CushyScriptL> {}
 export class CushyScriptL {
     get firstApp(): Maybe<CushyAppL> {
-        return this.apps.items[0]
+        return this.apps[0]
     }
-    /** collection of all apps upserted from this script */
-    apps = new LiveCollection<CushyAppL>(
-        () => ({ scriptID: this.id }),
-        () => this.db.cushy_scripts,
-    )
 
     /** relative path from CushyStudio root to the file that produced this script */
     get relPath(): RelativePath {
         return asRelativePath(this.data.path)
+    }
+
+    /** collection of all apps upserted from this script */
+    apps_viaDB = new LiveCollection<CushyAppL>(
+        () => ({ scriptID: this.id }),
+        () => this.db.cushy_scripts,
+    )
+
+    apps!: CushyAppL[]
+
+    onHydrate = () => {
+        this._LIVE_APPS = this.EVALUATE_SCRIPT(this.data.code)
+        this.apps = this._LIVE_APPS.map((liveApp: App<WidgetDict>, ix): CushyAppL => {
+            const computedAppID = this.relPath + ':' + ix
+            const app = this.db.cushy_apps.upsert({
+                id: asCushyAppID(computedAppID),
+                scriptID: this.id,
+            })
+            return app
+        })
+    }
+
+    getLiveApp(appID: CushyAppID): Maybe<App<WidgetDict>> {
+        return this.LIVE_APPS.find((liveApp, ix) => {
+            const computedAppID = this.relPath + ':' + ix
+            if (appID === computedAppID) return true
+            return false
+        })
     }
 
     get LIVE_APPS(): App<WidgetDict>[] {
@@ -39,10 +62,10 @@ export class CushyScriptL {
     }
 
     /** cache of extracted apps */
-    private _LIVE_APPS: Maybe<App<WidgetDict>[]> = null
+    private _LIVE_APPS!: App<WidgetDict>[]
 
     /** this function takes some bundled app JSCode, and returns the apps defined in it */
-    private EVALUATE_SCRIPT = (codeJS: string): App<WidgetDict>[] => {
+    EVALUATE_SCRIPT = (codeJS: string): App<WidgetDict>[] => {
         const APPS: App<WidgetDict>[] = []
 
         // 1. setup DI registering mechanism
@@ -80,7 +103,7 @@ export class CushyScriptL {
             // 2.3. return all apps
             return APPS //.map((app) => new CompiledApp(this, app))
         } catch (e) {
-            console.log(`[👙]`, e)
+            console.error(`[📜] CushyScript execution failed:`, e)
             // this.addError('❌5. cannot convert prompt to code', e)
             return []
         }

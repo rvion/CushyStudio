@@ -1,28 +1,47 @@
-import { basename } from 'pathe'
+import { basename, join } from 'pathe'
+import { LiveCollection } from 'src/db/LiveCollection'
 import { LiveInstance } from 'src/db/LiveInstance'
+import { LiveRef } from 'src/db/LiveRef'
+import { SQLITE_true } from 'src/db/SQLITE_boolean'
 import { CushyAppT } from 'src/db/TYPES.gen'
 import { CushyScriptL } from 'src/models/CushyScriptL'
 import { App, WidgetDict } from '../cards/App'
 import { generateAvatar } from '../cards/AvatarGenerator'
-import { LiveRef } from 'src/db/LiveRef'
-import { LiveCollection } from 'src/db/LiveCollection'
 import { DraftL } from './Draft'
 
 export interface CushyAppL extends LiveInstance<CushyAppT, CushyAppL> {}
 export class CushyAppL {
-    script: LiveRef<this, CushyScriptL> = new LiveRef(this, 'scriptID', () => this.db.cushy_scripts)
+    scriptL: LiveRef<this, CushyScriptL> = new LiveRef(this, 'scriptID', () => this.db.cushy_scripts)
+    get script() { return this.scriptL.item } // prettier-ignore
 
     drafts = new LiveCollection<DraftL>(
         () => ({ appID: this.id }),
         () => this.db.drafts,
     )
 
+    get isFavorite(): boolean {
+        return this.st.configFile.value.favoriteApps?.includes(this.id) ?? false
+    }
+
+    setFavorite = (fav: boolean) => {
+        const favArray = this.st.configFile.update((f) => {
+            if (f.favoriteApps == null) f.favoriteApps = []
+            const favs = f.favoriteApps
+            if (fav) {
+                if (!favs.includes(this.id)) favs.unshift(this.id)
+            } else {
+                const index = favs.indexOf(this.id)
+                if (index !== -1) favs.splice(index, 1)
+            }
+        })
+    }
+
     createDraft = (): DraftL => {
         console.log(`[👙] AAAAAAAAA`)
-        const title = this.name + ' ' + this.drafts.length + 1
+        const title = this.name + ' ' + this.drafts.items.length + 1
         const draft = this.st.db.drafts.create({
             appParams: {},
-            appPath: this.relPath,
+            appID: this.id,
             isOpened: SQLITE_true,
             title: title,
         })
@@ -39,12 +58,8 @@ export class CushyAppL {
         return nameLower.includes(searchLower) || descriptionLower.includes(searchLower)
     }
 
-    // get manifest(): AppManifest {
-    //     return this.app.metadata ?? this.defaultManifest
-    // }
-
-    get app() {
-        return this.script.item.apps.find((a) => a.metadata?.name === this.name)
+    get live(): Maybe<App<WidgetDict>> {
+        return this.script.getLiveApp(this.id)
     }
 
     /** globaly unique id (in theory...); 🔶 */
@@ -53,7 +68,7 @@ export class CushyAppL {
     }
 
     get name(): string {
-        if (this.app.metadata?.name) return this.app.metadata.name
+        if (this.live?.metadata?.name) return this.live.metadata.name
 
         // take basename as name
         const relPath = this.script.relPath
@@ -74,26 +89,27 @@ export class CushyAppL {
 
     /** retlative path to the script this app comes from */
     get relPath(): RelativePath {
-        return this.script.relPath
+        return this.scriptL.item.relPath
     }
 
     get description(): string {
-        return this.app.metadata?.description ?? '<no description>'
+        return this.live?.metadata?.description ?? '<no description>'
     }
 
     /** action display name */
     get illustrationPath_eiter_RelativeToDeckRoot_or_Base64Encoded_or_SVG(): Maybe<string> {
-        if (this.app.metadata?.illustration) return this.app.metadata.illustration
+        if (this.live?.metadata?.illustration) return this.live.metadata.illustration
         if (this.relPath.endsWith('.png')) return this.relPath
         return generateAvatar(this.relPath)
     }
 
+    /** ready to be used in URL */
     get illustrationPathWithFileProtocol() {
         const tmp = this.illustrationPath_eiter_RelativeToDeckRoot_or_Base64Encoded_or_SVG
         if (tmp?.startsWith('data:')) return tmp
         if (tmp?.startsWith('http')) return tmp
         if (tmp?.startsWith('<svg')) throw new Error('SVG not supported')
-        if (tmp) return `file://${join(this.deck.folderAbs, tmp)}`
+        if (tmp) return `file://${tmp}`
         // default illustration if none is provided
         return `file://${join(this.st.rootPath, 'library/CushyStudio/default/_illustrations/default-card-illustration.jpg')}`
     }

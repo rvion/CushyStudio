@@ -11,7 +11,10 @@ export const RenderItemTitleUI = observer(function RenderItemTitleUI_(x: {
 }) {
     const item = x.item
     let icon = item.data.icon
-    if (typeof icon === 'string') icon = <span className='material-icons-outlined'>{icon}</span>
+    if (typeof icon === 'string') {
+        icon = <img src={icon} style={{ width: '1.3rem', height: '1.3rem' }} />
+        // icon = <span className='material-icons-outlined'>{icon}</span>
+    }
 
     return (
         <div tw='flex flex-grow items-center gap-0.5 whitespace-nowrap overflow-ellipsis'>

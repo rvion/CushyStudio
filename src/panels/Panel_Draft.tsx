@@ -18,6 +18,7 @@ import { ResultWrapperUI } from '../widgets/misc/ResultWrapperUI'
 import { ScrollablePaneUI } from '../widgets/misc/scrollableArea'
 import { draftContext } from '../widgets/misc/useDraft'
 import { AppFavoriteBtnUI } from 'src/panels/libraryUI/CardPicker2UI'
+import { CushyAppL } from 'src/models/CushyApp'
 
 export const Panel_Draft = observer(function Panel_Draft_(p: { draftID: DraftID }) {
     // 1. get draft
@@ -32,12 +33,14 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
     useEffect(() => draft?.AWAKE(), [draft?.id])
     // 1. draft
     if (draft == null) return <ErrorPanelUI>Draft not found</ErrorPanelUI>
+
     // 2. app
-    const app = draft.file
-    if (app == null) return <ErrorPanelUI>Action not found</ErrorPanelUI>
+    const app = draft.app.item
+    if (app == null) return <ErrorPanelUI>File not found</ErrorPanelUI>
+
     // 3. compiled app
-    const compiledApp = app.getCompiledApps()
-    if (compiledApp == null) return <AppCompilationErrorUI card={app} />
+    const compiledApp = app.live
+    if (compiledApp == null) return <AppCompilationErrorUI app={app} />
 
     // 4. get form
     const guiR = draft.gui
@@ -69,7 +72,7 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                     }
                 }}
             >
-                <DraftHeaderUI app={app} draft={draft} />
+                <DraftHeaderUI file={app} draft={draft} />
                 {!st.isConfigValueEq('draft.mockup-mobile', true) ? (
                     <ScrollablePaneUI className='flex-grow'>
                         <div tw='pb-80 pl-2'>
@@ -144,8 +147,8 @@ export const RunOrAutorunUI = observer(function RunOrAutorunUI_(p: { className?:
     )
 })
 
-export const CardActionsMenuUI = observer(function CardActionsMenuUI_(p: { card: LibraryFile; className?: string }) {
-    const card = p.card
+export const CardActionsMenuUI = observer(function CardActionsMenuUI_(p: { file: LibraryFile; className?: string }) {
+    const file = p.file
     const st = useSt()
     return (
         <Dropdown
@@ -157,21 +160,21 @@ export const CardActionsMenuUI = observer(function CardActionsMenuUI_(p: { card:
         >
             <MenuItem
                 icon={<span className='material-symbols-outlined'></span>}
-                onClick={() => openInVSCode(cwd(), card.absPath)}
+                onClick={() => openInVSCode(cwd(), file.absPath)}
             >
                 Edit App Definition
             </MenuItem>
-            <MenuItem
+            {/* <MenuItem
                 icon={<span className='material-symbols-outlined'></span>}
-                onClick={() => openInVSCode(cwd(), card.pkg.manifestPath)}
+                onClick={() => openInVSCode(cwd(), file.pkg.manifestPath)}
             >
                 Edit App Manifest
-            </MenuItem>
-            <MenuItem icon={<span className='material-symbols-outlined'></span>} onClick={() => showItemInFolder(card.absPath)}>
+            </MenuItem> */}
+            <MenuItem icon={<span className='material-symbols-outlined'></span>} onClick={() => showItemInFolder(file.absPath)}>
                 Show Item In Folder
             </MenuItem>
-            {card.liteGraphJSON && (
-                <MenuItem onClick={() => st.layout.FOCUS_OR_CREATE('ComfyUI', { litegraphJson: card.liteGraphJSON })}>
+            {file.liteGraphJSON && (
+                <MenuItem onClick={() => st.layout.FOCUS_OR_CREATE('ComfyUI', { litegraphJson: file.liteGraphJSON })}>
                     Open in ComfyUI
                 </MenuItem>
             )}
@@ -243,20 +246,20 @@ const ErrorPanelUI = observer(function ErrorPanelUI_(p: { children: React.ReactN
     )
 })
 
-export const AppCompilationErrorUI = observer(function AppCompilationErrorUI_(p: { card: LibraryFile }) {
-    const card = p.card
+export const AppCompilationErrorUI = observer(function AppCompilationErrorUI_(p: { app: CushyAppL }) {
+    const card = p.app
     return (
         <ErrorPanelUI>
             <h3 tw='text-red-600'>invalid action</h3>
-            <Message showIcon type='info'>
+            {/* <Message showIcon type='info'>
                 <div>loading strategies attempted:</div>
                 <ul>
                     {card.strategies.map((u) => (
                         <li key={u}>{u}</li>
                     ))}
                 </ul>
-            </Message>
-            {card.errors.map((e, ix) => {
+            </Message> */}
+            {/* {card.errors.map((e, ix) => {
                 return (
                     <Message key={ix} showIcon type='error' header={e.title}>
                         {typeof e.details === 'string' ? (
@@ -278,14 +281,19 @@ export const AppCompilationErrorUI = observer(function AppCompilationErrorUI_(p:
                         )}
                     </Message>
                 )
-            })}
+            })} */}
             {/* <pre tw='text-red-600'>❌ errors: {JSON.stringify(card.errors, null, 2)}</pre> */}
         </ErrorPanelUI>
     )
 })
 
-export const DraftHeaderUI = observer(function DraftHeaderUI_(p: { draft: DraftL; app: LibraryFile }) {
-    const { app, draft } = p
+export const DraftHeaderUI = observer(function DraftHeaderUI_(p: {
+    //
+    draft: DraftL
+    file: LibraryFile
+}) {
+    const { file, draft } = p
+    const app = draft.app.item
     const st = useSt()
     return (
         <div tw='flex p-1 bg-base-300 border-b border-b-base-300'>
@@ -301,12 +309,12 @@ export const DraftHeaderUI = observer(function DraftHeaderUI_(p: { draft: DraftL
                         ]}
                         style={{ height: '2rem', fontSize: '1.4rem' }}
                     >
-                        <AppFavoriteBtnUI app={app} />
-                        <span>{app.displayName}</span>
+                        <AppFavoriteBtnUI app={file} />
+                        <span>{file.baseName}</span>
 
                         <div tw={['absolute right-0']}>
                             {/* Open draft in new tab btn */}
-                            <CardActionsMenuUI tw='join-item' card={app} />
+                            <CardActionsMenuUI tw='join-item' file={file} />
                             <FormLayoutPrefsUI tw='join-item' />
                             <div
                                 tw='btn btn-subtle btn-sm'

@@ -1,12 +1,13 @@
+import type { STATE } from 'src/state/state'
+import type { LiveDB } from './LiveDB'
+import type { $BaseInstanceFields, BaseInstanceFields, LiveInstance } from './LiveInstance'
+
 import { Value, ValueError } from '@sinclair/typebox/value'
 import { makeAutoObservable, toJS } from 'mobx'
 import { nanoid } from 'nanoid'
 import { schemas } from 'src/db/TYPES.gen'
 import { TableInfo } from 'src/db/TYPES_json'
-import type { STATE } from 'src/state/state'
-import type { LiveDB } from './LiveDB'
 import { DEPENDS_ON, MERGE_PROTOTYPES } from './LiveHelpers'
-import type { $BaseInstanceFields, BaseInstanceFields, LiveInstance } from './LiveInstance'
 
 export interface LiveEntityClass<T extends BaseInstanceFields, L> {
     new (...args: any[]): LiveInstance<T, L> & L
@@ -359,12 +360,25 @@ export class LiveTable<T extends BaseInstanceFields, L extends LiveInstance<T, L
         }
     }
 
-    upsert = (data: Omit<T, $BaseInstanceFields> & Partial<BaseInstanceFields>): L => {
-        const prev = this.get(data.id)
-        if (prev == null) return this.create(data)
-        prev.update(data as any)
-        return prev
+    upsert = (data: Omit<T, 'createdAt' | 'updatedAt'>): L => {
+        const id = data.id
+        // this.yjsMap.set(nanoid(), data)
+        const prev = this.get(id)
+        if (prev) {
+            prev.update(data as any /* 🔴 */)
+            return prev
+        } else {
+            const instance = this.create(data as any /* 🔴 */)
+            return instance
+        }
     }
+
+    // upsert = (data: Omit<T, $OptionalFieldsForUpsert> & Partial<$OptionalFieldsForUpsert>): L => {
+    //     const prev = this.get(data.id)
+    //     if (prev == null) return this.create(data as any)
+    //     prev.update(data as any)
+    //     return prev
+    // }
 
     /** only call with brand & never seen new data */
     create = (data: Omit<T, $BaseInstanceFields> & Partial<BaseInstanceFields>): L => {
@@ -419,18 +433,5 @@ export class LiveTable<T extends BaseInstanceFields, L extends LiveInstance<T, L
         instance.init(this, data)
         this.liveEntities.set(data.id, instance)
         return instance
-    }
-
-    upsert = (data: Omit<T, 'createdAt' | 'updatedAt'>): L => {
-        const id = data.id
-        // this.yjsMap.set(nanoid(), data)
-        const prev = this.get(id)
-        if (prev) {
-            prev.update(data as any /* 🔴 */)
-            return prev
-        } else {
-            const instance = this.create(data as any /* 🔴 */)
-            return instance
-        }
     }
 }

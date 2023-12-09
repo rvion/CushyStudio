@@ -1,11 +1,19 @@
-import { nanoid } from 'nanoid'
-import { TreeItem } from 'react-complex-tree'
-import { LibraryFile } from 'src/cards/LibraryFile'
+import { TreeItem, TreeItemIndex } from 'react-complex-tree'
+import { CushyAppL } from 'src/models/CushyApp'
+import { STATE } from 'src/state/state'
 import { ITreeEntry, TreeEntry, TreeEntryAction } from './TreeEntry'
-import { CompiledApp } from 'src/models/CushyApp'
 
 export class TreeApp implements ITreeEntry, TreeItem<TreeApp> {
-    get index() { return `app#${this.uid}`; } // prettier-ignore
+    app: CushyAppL
+    constructor(
+        //
+        public st: STATE,
+        public index: TreeItemIndex,
+        public appID: CushyAppID, // public app: CushyAppL,
+    ) {
+        this.app = st.db.cushy_apps.getOrThrow(appID)
+    }
+
     get name() { return `❌ ${this.app.name}`; } // prettier-ignore
     get entry(): Promise<TreeItem<TreeEntry>> { return Promise.resolve(this) } // prettier-ignore
     get data(): TreeApp { return this } // prettier-ignore
@@ -23,11 +31,4 @@ export class TreeApp implements ITreeEntry, TreeItem<TreeApp> {
             },
         },
     ]
-
-    constructor(
-        //
-
-        public app: CompiledApp,
-        public uid = nanoid(),
-    ) {}
 }

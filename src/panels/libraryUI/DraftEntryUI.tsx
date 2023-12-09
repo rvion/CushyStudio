@@ -26,7 +26,7 @@ export const DraftEntryUI = observer(function DraftEntryUI_(p: { draft: DraftL }
             >
                 <span className='material-symbols-outlined'>close</span>
             </div>
-            <AppIllustrationUI app={draft.file} size='1.5rem' />
+            <AppIllustrationUI app={draft.app.item} size='1.5rem' />
             <div
                 tw='cursor-pointer single-line-ellipsis flex-grow'
                 onClick={() => {
@@ -34,7 +34,7 @@ export const DraftEntryUI = observer(function DraftEntryUI_(p: { draft: DraftL }
                     st.layout.FOCUS_OR_CREATE('CurrentDraft', {}, 'LEFT_PANE_TABSET')
                 }}
             >
-                {draft.data.title || draft.file?.name || draft.data.appPath}
+                {draft.data.title || draft.app.item.name}
             </div>
             <div
                 tw='btn btn-ghost btn-xs btn-square'

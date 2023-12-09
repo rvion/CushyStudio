@@ -342,13 +342,15 @@ export class ComfyWorkflowL {
         const debugWorkflow = liveGraph.json_workflow()
         console.info('checkpoint:' + JSON.stringify(currentJSON))
 
-        // 🔴 TODO: store the whole project in the prompt
         const out: ApiPromptInput = {
             client_id: this.st.comfySessionId,
             extra_data: {
                 extra_pnginfo: {
+                    // regular ComfyUI metadat
                     workflow: debugWorkflow,
-                    cushy_app_name: p.step.appFile?.name,
+
+                    // Cushy metadata
+                    cushy_app_id: p.step.data.appID,
                     cushy_draft_result: p.step.data.formResult,
                     cushy_draft_serial: p.step.data.formSerial,
                 },

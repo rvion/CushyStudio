@@ -16,6 +16,8 @@ import { TreeFile } from './TreeFile'
 import { TreeFolder } from './TreeFolder'
 import { TreeRoot } from './TreeRoot'
 import { nanoid } from 'nanoid'
+import { TreeApp } from './TreeApp'
+import { asCushyAppID } from 'src/db/TYPES.gen'
 
 export const Tree3 = observer(() => {
     const st = useSt()
@@ -112,14 +114,19 @@ class MyTreeDataProvider implements TreeDataProvider<any> {
         if (typeof itemId !== 'string') {
             throw new Error(`[🔴] itemId must be string`)
         }
+        // ----------------
         if (itemId === '#root') {
             return Promise.resolve(new TreeRoot())
         }
         if (itemId === '#favorites') {
             return Promise.resolve(new TreeFavorite(this.st))
         }
+        // ----------------
         if (itemId.startsWith('favorite#')) {
             return Promise.resolve(new TreeFile(this.st, itemId, asAppPath(itemId.slice('favorite#'.length))))
+        }
+        if (itemId.startsWith('app#')) {
+            return Promise.resolve(new TreeApp(this.st, itemId, asCushyAppID(itemId.slice('app#'.length))))
         }
         if (itemId.startsWith('draft#')) {
             const draftId = itemId.slice('draft#'.length)

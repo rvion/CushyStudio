@@ -125,18 +125,20 @@ export class CushyLayoutManager {
 
     nextPaintIDx = 0
     openAppInMainPanel = (actionPath: RelativePath) => {
-        const card = this.st.library.getFile(actionPath)
-        if (card == null) return null /* 🔴 add popup somewhere */
-        const draft = card.getLastDraft()
-        this.st.currentDraft = draft
-        // this.FOCUS_OR_CREATE('Draft', { draftID: draft?.id ?? '❌' }, 'LEFT_PANE_TABSET')
+        throw new Error('not implemented')
+        // const card = this.st.library.getFile(actionPath)
+        // if (card == null) return null /* 🔴 add popup somewhere */
+        // const draft = card.getLastDraft()
+        // this.st.currentDraft = draft
+        // // this.FOCUS_OR_CREATE('Draft', { draftID: draft?.id ?? '❌' }, 'LEFT_PANE_TABSET')
     }
 
     openAppInNewPanel = (actionPath: RelativePath) => {
-        const card = this.st.library.getFile(actionPath)
-        if (card == null) return null /* 🔴 add popup somewhere */
-        const draft = card.getLastDraft()
-        this.FOCUS_OR_CREATE('Draft', { draftID: draft?.id ?? '❌' }, 'LEFT_PANE_TABSET')
+        throw new Error('not implemented')
+        // const card = this.st.library.getFile(actionPath)
+        // if (card == null) return null /* 🔴 add popup somewhere */
+        // const draft = card.getLastDraft()
+        // this.FOCUS_OR_CREATE('Draft', { draftID: draft?.id ?? '❌' }, 'LEFT_PANE_TABSET')
     }
     // addDraft = (p: PropsOf<typeof Panel_Draft>) => {
     //     const draftID = p.draftID

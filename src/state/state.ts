@@ -2,7 +2,6 @@ import type { MediaImageL } from '../models/MediaImage'
 import type { ComfyStatus, PromptID, PromptRelated_WsMsg, WsMsg } from '../types/ComfyWsApi'
 import type { CSCriticalError } from '../widgets/CSCriticalError'
 
-import { createClient } from '@supabase/supabase-js'
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs'
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -16,16 +15,20 @@ import { closest } from 'fastest-levenshtein'
 import { ShortcutWatcher } from 'src/app/shortcuts/ShortcutManager'
 import { shortcutsDef } from 'src/app/shortcuts/shortcuts'
 import type { ActionTagMethodList } from 'src/cards/App'
-import { asAppPath } from 'src/cards/asAppPath'
 import { GithubUserName } from 'src/cards/GithubUser'
 import { Library } from 'src/cards/Library'
+import { asAppPath } from 'src/cards/asAppPath'
 import { GithubRepoName } from 'src/cards/githubRepo'
 import { ComfyHostDef, ComfyHostID, DEFAULT_COMFYUI_INSTANCE_ID, defaultHost } from 'src/config/ComfyHostDef'
+import { LiveFind } from 'src/db/LiveQuery'
+import { SQLITE_true } from 'src/db/SQLITE_boolean'
+import { DraftT } from 'src/db/TYPES.gen'
 import { DraftL } from 'src/models/Draft'
 import { ProjectL } from 'src/models/Project'
 import { StepL } from 'src/models/Step'
 import { ThemeManager } from 'src/theme/ThemeManager'
 import { CleanedEnumResult } from 'src/types/EnumUtils'
+import { StepOutput } from 'src/types/StepOutput'
 import { UserTags } from 'src/widgets/prompter/nodes/usertags/UserLoader'
 import { ResilientWebSocketClient } from '../back/ResilientWebsocket'
 import { JsonFile } from '../core/JsonFile'
@@ -43,13 +46,9 @@ import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { exhaust } from '../utils/misc/ComfyUtils'
 import { ManualPromise } from '../utils/misc/ManualPromise'
 import { DanbooruTags } from '../widgets/prompter/nodes/booru/BooruLoader'
-import { Uploader } from './Uploader'
-import { StepOutput } from 'src/types/StepOutput'
-import { LiveFind } from 'src/db/LiveQuery'
-import { SQLITE_true } from 'src/db/SQLITE_boolean'
-import { DraftT } from 'src/db/TYPES.gen'
-import { mkSupa } from './supa'
 import { AuthState } from './AuthState'
+import { Uploader } from './Uploader'
+import { mkSupa } from './supa'
 
 export class STATE {
     /** hack to help closing prompt completions */
@@ -231,7 +230,7 @@ export class STATE {
 
     //
     get githubUsername(): Maybe<GithubUserName> { return this.configFile.value.githubUsername as Maybe<GithubUserName> } // prettier-ignore
-    // get favoriteApps(): CushyAppID[] { return this.configFile.value.favoriteApps ?? [] } // prettier-ignore
+    get favoriteApps(): CushyAppID[] { return this.configFile.value.favoriteApps ?? [] } // prettier-ignore
 
     getConfigValue = <K extends keyof ConfigFile>(k: K) => this.configFile.value[k]
     setConfigValue = <K extends keyof ConfigFile>(k: K, v: ConfigFile[K]) => this.configFile.update({ [k]: v })
@@ -271,17 +270,17 @@ export class STATE {
         console.log(`[🛋️] creating project`)
         const initialGraph = this.db.graphs.create({ comfyPromptJSON: {} })
         const defaultAppPath = asAppPath('library/CushyStudio/default/SDUI.ts')
-        const initialDraft = this.db.drafts.create({
-            appParams: {},
-            title: 'initial draft',
-            appPath: defaultAppPath,
-            isOpened: SQLITE_true,
-        })
+        // const initialDraft = this.db.drafts.create({
+        //     appParams: {},
+        //     title: 'initial draft',
+        //     appPath: defaultAppPath,
+        //     isOpened: SQLITE_true,
+        // })
         const project = this.db.projects.create({
             rootGraphID: initialGraph.id,
             name: 'new project',
             currentApp: defaultAppPath,
-            currentDraftID: initialDraft.id,
+            // currentDraftID: initialDraft.id,
         })
         return project
     }

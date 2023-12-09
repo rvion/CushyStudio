@@ -3,29 +3,22 @@ import type { STATE } from 'src/state/state'
 import type { ComfyPromptJSON } from '../types/ComfyPrompt'
 
 import { readFileSync } from 'fs'
-import * as mobx from 'mobx'
-import { makeAutoObservable, observable } from 'mobx'
+import { makeAutoObservable } from 'mobx'
 import path, { basename, relative } from 'pathe'
-import { DraftT } from 'src/db/TYPES.gen'
-import { DraftL } from 'src/models/Draft'
+import { asCushyScriptID } from 'src/db/TYPES.gen'
 import { convertLiteGraphToPrompt } from '../core/litegraphToPrompt'
 import { exhaust } from '../utils/misc/ComfyUtils'
 import { ManualPromise } from '../utils/misc/ManualPromise'
 import { getPngMetadataFromUint8Array } from '../utils/png/_getPngMetadata'
 import { Library } from './Library'
 
-import { observer } from 'mobx-react-lite'
-import __react from 'react'
-
 import { dirname } from 'path'
 import { createEsbuildContextFor } from 'src/back/transpiler'
 
 // @ts-ignore
-import { jsx, jsxs } from 'src/utils/custom-jsx/jsx-runtime'
-import { asAbsolutePath } from 'src/utils/fs/pathUtils'
-import { CompiledApp } from '../models/CushyApp'
 import { LiveCollection } from 'src/db/LiveCollection'
 import { CushyScriptL } from 'src/models/CushyScriptL'
+import { asAbsolutePath } from 'src/utils/fs/pathUtils'
 
 // prettier-ignore
 export type LoadStrategy =
@@ -35,10 +28,10 @@ export type LoadStrategy =
     | 'asComfyUIGeneratedPng'
     | 'asA1111PngGenerated'
 
-enum LoadStatus {
-    SUCCESS = 1,
-    FAILURE = 0,
-}
+// prettier-ignore
+type LoadStatus =
+    | { type: 'SUCCESS', script:CushyScriptL}
+    | { type: 'FAILURE', msg?: string }
 
 /**
  * wrapper around files in the library folder
@@ -48,22 +41,23 @@ export class LibraryFile {
     constructor(
         //
         public library: Library,
-        // public pkg: Package,
         public absPath: AbsolutePath,
         public relPath: RelativePath,
     ) {
         this.st = library.st
         this.strategies = this.findLoadStrategies()
-        makeAutoObservable(this)
-        // { appCompiled: observable.ref }
+        makeAutoObservable(this, { _esbuildContext: false })
     }
 
+    get baseName() {
+        return basename(this.relPath)
+    }
     /** access to the global app state */
     st: STATE
 
     /** abs path to the folder this file is in */
     get folderAbs(): AbsolutePath {
-        console.log(`[👙] 🔴`, dirname(this.absPath))
+        // console.log(`[👙] 🔴`, dirname(this.absPath))
         return asAbsolutePath(dirname(this.absPath))
     }
 
@@ -95,54 +89,11 @@ export class LibraryFile {
     errors: { title: string; details: any }[] = []
     addError = (title: string, details: any = null): LoadStatus => {
         this.errors.push({ title, details })
-        return LoadStatus.FAILURE
+        return { type: 'FAILURE' }
     }
-
-    get isFavorite(): boolean {
-        return this.st.configFile.value.favoriteApps?.includes(this.relPath) ?? false
-    }
-
-    setFavorite = (fav: boolean) => {
-        const favArray = this.st.configFile.update((f) => {
-            if (f.favoriteApps == null) f.favoriteApps = []
-            const favs = f.favoriteApps
-            if (fav) {
-                if (!favs.includes(this.relPath)) favs.unshift(this.relPath)
-            } else {
-                const index = favs.indexOf(this.relPath)
-                if (index !== -1) favs.splice(index, 1)
-            }
-        })
-    }
-
-    // getLastDraft = (): DraftL => {
-    //     const drafts = this.drafts
-    //     return drafts.length > 0 ? drafts[0] : this.createDraft()
-    // }
-
-    get drafts(): DraftL[] {
-        const draftTable = this.st.db.drafts
-        const draftTableInfos = draftTable.infos
-        const draftsT = this.st.db.prepareAll<RelativePath, DraftT>(
-            draftTableInfos,
-            'select * from draft where appPath=?',
-        )(this.relPath)
-        return draftsT.map((t) => draftTable.getOrCreateInstanceForExistingData(t))
-    }
-
-    // getCompiledApps(): CompiledApp[] {
-    //     this.load()
-    //     return this.appCompiled!
-    // }
-
-    // getFirstCompiledApp(): Maybe<CompiledApp> {
-    //     this.load()
-    //     return this.appCompiled?.[0]
-    // }
 
     // the first thing to do to load an app is to get the Cushy Script from it.
     codeJS?: Maybe<string> = null
-    // appCompiled?: CompiledApp[] = []
 
     scripts = new LiveCollection<CushyScriptL>(
         () => ({ path: this.relPath }),
@@ -157,6 +108,8 @@ export class LibraryFile {
     /** load a file trying all compatible strategies */
     successfullLoadStrategies: Maybe<LoadStrategy> = null
 
+    script0: Maybe<CushyScriptL>
+
     load = async (p?: { force?: boolean }): Promise<true> => {
         // don't load more than once unless manually requested
         if (this.loadRequested && !p?.force) return true
@@ -168,8 +121,10 @@ export class LibraryFile {
         // try every strategy in order
         for (const strategy of this.strategies) {
             const res = await this.loadWithStrategy(strategy)
-            if (res === LoadStatus.SUCCESS) {
+            if (res.type === 'SUCCESS') {
+                this.script0 = res.script
                 this.successfullLoadStrategies = strategy
+                console.log(`[🟢] LibFile: LOAD SUCCESS !`)
                 break
             }
         }
@@ -180,19 +135,20 @@ export class LibraryFile {
         // // create a draft if none exists
         // if (this.drafts.length === 0) this.createDraft()
 
+        console.log(`[🔴] LibFile: LOAD FAILURE !`)
         // done
         return true
     }
 
     private loadWithStrategy = async (strategy: LoadStrategy): Promise<LoadStatus> => {
-        if (strategy === 'asCushyStudioAction') return this.load_asCushyStudioAction()
-        if (strategy === 'asComfyUIPrompt') return this.load_asComfyUIPrompt()
-        if (strategy === 'asComfyUIWorkflow') return this.load_asComfyUIWorkflow()
+        if (strategy === 'asCushyStudioAction') return this.load_asTypescriptFile()
+        if (strategy === 'asComfyUIPrompt') return this.load_asComfyUIPromptJSON()
+        if (strategy === 'asComfyUIWorkflow') return this.load_asComfyUIWorkflowJSON()
         if (strategy === 'asComfyUIGeneratedPng') return this.load_asComfyUIGeneratedPng()
         if (strategy === 'asA1111PngGenerated') {
             if (this.png == null) this.png = this.absPath
             this.addError('❌ can not import file as Automaric1111 image', { reason: 'not supported yet' })
-            return LoadStatus.FAILURE
+            return { type: 'FAILURE' }
         }
 
         exhaust(strategy)
@@ -215,12 +171,12 @@ export class LibraryFile {
 
     // public syncS
 
-    private load_asCushyStudioAction = async (): Promise<LoadStatus> => {
+    private load_asTypescriptFile = async (): Promise<LoadStatus> => {
         try {
             // 1. transpile
             // await this.pkg.rebuild()
             // console.log('-- a', { eps: this.relPath })
-            const ctx = await this.esbuildContext
+            const ctx = await this._esbuildContext
             // console.log('-- b')
             const res = await ctx.rebuild()
             // console.log('-- c')
@@ -232,15 +188,14 @@ export class LibraryFile {
             this.codeJS = readFileSync(distPathJS, 'utf-8')
 
             // 2. extract tools
-            this.appCompiled = this.EVALUATE_SCRIPT(this.codeJS)
-            if (this.appCompiled == null) return this.addError('❌ [load_asCushyStudioAction] no actions found', null)
-            return LoadStatus.SUCCESS
+            return { type: 'SUCCESS', script: this.UPSERT_SCRIPT(this.codeJS) }
         } catch (e) {
+            console.error(`[🔴] failed to load ${this.relPath}`, e)
             return this.addError('transpile error in load_asCushyStudioAction', e)
         }
     }
     /** the persistent esbuild context, used to allow for fast rebundling */
-    private get esbuildContext() {
+    get _esbuildContext() {
         // ensure typescript files
         if (!this.relPath.endsWith('.ts') && !this.relPath.endsWith('.tsx'))
             throw new Error('esbuild can only work on .ts or .tsx files')
@@ -257,7 +212,7 @@ export class LibraryFile {
     }
 
     // PROMPT
-    private load_asComfyUIPrompt = async (): Promise<LoadStatus> => {
+    private load_asComfyUIPromptJSON = async (): Promise<LoadStatus> => {
         try {
             const comfyPromptJSON = JSON.parse(readFileSync(this.absPath, 'utf-8'))
             const filename = path.basename(this.absPath)
@@ -270,11 +225,11 @@ export class LibraryFile {
                 autoUI: false,
             })
             this.promptJSON = comfyPromptJSON
-            this.appCompiled = this.EVALUATE_SCRIPT(this.codeJS)
-            const graph = this.st.db.graphs.create({ comfyPromptJSON: comfyPromptJSON })
-            const workflow = await graph.json_workflow()
-            this.liteGraphJSON = workflow
-            return LoadStatus.SUCCESS
+            return { type: 'SUCCESS', script: this.UPSERT_SCRIPT(this.codeJS) }
+            // ⏸️ const graph = this.st.db.graphs.create({ comfyPromptJSON: comfyPromptJSON })
+            // ⏸️ const workflow = await graph.json_workflow()
+            // ⏸️ this.liteGraphJSON = workflow
+            // ⏸️ return LoadStatus.SUCCESS
             // 🦊 const codeJSAuto = this.st.importer.convertPromptToCode(json, { title, author, preserveId: true, autoUI: true })
             // 🦊 const codeTSAuto = codeJS
             // 🦊 const toolsAuto =  this.RUN_ACTION_FILE({ codeJS: codeJSAuto })
@@ -285,7 +240,7 @@ export class LibraryFile {
     }
 
     // WOKRFLOW
-    private load_asComfyUIWorkflow = (): Promise<LoadStatus> => {
+    private load_asComfyUIWorkflowJSON = (): Promise<LoadStatus> => {
         const workflowStr = readFileSync(this.absPath, 'utf-8')
         return this.importWorkflowFromStr(workflowStr)
     }
@@ -341,11 +296,20 @@ export class LibraryFile {
                 autoUI: true,
             })
             // this.codeTS = this.codeJS
-            this.appCompiled = this.EVALUATE_SCRIPT(this.codeJS)
-            return LoadStatus.SUCCESS
+            return { type: 'SUCCESS', script: this.UPSERT_SCRIPT(this.codeJS) }
         } catch (error) {
             return this.addError(`❌ failed to import workflow: cannot convert LiteGraph To Prompt`, error)
         }
+    }
+
+    UPSERT_SCRIPT = (codeJS: string): CushyScriptL => {
+        console.log(`[👙] `, codeJS)
+        const script = this.st.db.cushy_scripts.upsert({
+            id: asCushyScriptID(this.relPath),
+            code: codeJS,
+            path: this.relPath,
+        })
+        return script
     }
 }
 
@@ -378,3 +342,31 @@ export class LibraryFile {
 //     })
 //     return match
 // }
+
+// getLastDraft = (): DraftL => {
+//     const drafts = this.drafts
+//     return drafts.length > 0 ? drafts[0] : this.createDraft()
+// }
+
+// drafts= new LiveCollection<DraftL>
+// get drafts(): DraftL[] {
+//     const draftTable = this.st.db.drafts
+//     const draftTableInfos = draftTable.infos
+//     const draftsT = this.st.db.prepareAll<RelativePath, DraftT>(
+//         draftTableInfos,
+//         'efrom draft where appPath=?',
+//     )(this.relPath)
+//     return draftsT.map((t) => draftTable.getOrCreateInstanceForExistingData(t))
+// }
+
+// getCompiledApps(): CompiledApp[] {
+//     this.load()
+//     return this.appCompiled!
+// }
+
+// getFirstCompiledApp(): Maybe<CompiledApp> {
+//     this.load()
+//     return this.appCompiled?.[0]
+// }
+
+// appCompiled?: CompiledApp[] = []

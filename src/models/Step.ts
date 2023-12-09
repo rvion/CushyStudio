@@ -17,6 +17,8 @@ import { RuntimeErrorL } from './RuntimeError'
 import { MediaSplatL } from './MediaSplat'
 import { Widget_group } from 'src/controls/Widget'
 import { SQLITE_false, SQLITE_true } from 'src/db/SQLITE_boolean'
+import { CushyAppL } from './CushyApp'
+import { App, WidgetDict } from 'src/cards/App'
 
 export type FormPath = (string | number)[]
 /** a thin wrapper around an app execution */
@@ -50,11 +52,27 @@ export class StepL {
             : Status.Running
     }
 
-    get status():Status { return this.data.status as Status } // prettier-ignore
-    get appFile(): LibraryFile | undefined { return this.st.library.fileIndex.get(this.data.appPath) } // prettier-ignore
-    get appCompiled() { return this.appFile?.appCompiled??[] } // prettier-ignore
-    get name() { return this.data.name } // prettier-ignore
-    get generatedImages(): MediaImageL[] { return this.images.items } // prettier-ignore
+    appL = new LiveRef<this, CushyAppL>(this, 'appID', () => this.db.cushy_apps)
+
+    get app(): CushyAppL {
+        return this.appL.item
+    }
+
+    get status(): Status {
+        return this.data.status as Status
+    }
+
+    get appCompiled(): Maybe<App<WidgetDict>> {
+        return this.app.live
+    }
+
+    get name() {
+        return this.data.name
+    }
+
+    get generatedImages(): MediaImageL[] {
+        return this.images.items
+    }
 
     outputWorkflow = new LiveRef<this, ComfyWorkflowL>(this, 'outputGraphID', () => this.db.graphs)
 

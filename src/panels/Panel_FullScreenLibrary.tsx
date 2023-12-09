@@ -95,17 +95,17 @@ export const Panel_CardPicker3UI = observer(function Panel_CardPicker3UI_(p: {})
                             <div key={card.relPath}>
                                 <AppCardUI //
                                     active={st.library.selectionCursor === ix}
-                                    deck={card.pkg}
-                                    card={card}
+                                    // deck={card.pkg}
+                                    file={card}
                                 />
                                 {/* {card.priority} */}
-                                {card.drafts.length > 0 && st.library.showDrafts ? (
+                                {/* {card.drafts.length > 0 && st.library.showDrafts ? (
                                     <div tw='flex flex-col'>
                                         {card.drafts.map((draft, ix) => (
                                             <DraftEntryUI draft={draft} />
                                         ))}
                                     </div>
-                                ) : null}
+                                ) : null} */}
                             </div>
                         ))}
                     </div>

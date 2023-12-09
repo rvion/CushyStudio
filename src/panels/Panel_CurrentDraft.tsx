@@ -30,7 +30,7 @@ export const Panel_CurrentDraft = observer(function CurrentDraftUI_(p: {}) {
     if (card == null)
         return (
             <Message type='error' showIcon>
-                app "{draft.data.appPath}" not found
+                app "{draft.data.appID}" not found
             </Message>
         )
     // if (draft?.draftID == null) return <ActionDraftListUI card={card} />
