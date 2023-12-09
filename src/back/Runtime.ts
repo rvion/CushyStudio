@@ -16,7 +16,7 @@ import { ComfyNodeOutput } from '../core/Slot'
 import { auto } from '../core/autoValue'
 import { ComfyPromptL } from '../models/ComfyPrompt'
 import { ComfyWorkflowL } from '../models/Graph'
-import { MediaImageL } from '../models/MediaImage'
+import { MediaImageL, checkIfComfyImageExists } from '../models/MediaImage'
 import { StepL } from '../models/Step'
 import { ApiPromptInput, ComfyUploadImageResult, PromptInfo } from '../types/ComfyWsApi'
 import { createMP4FromImages } from '../utils/ffmpeg/ffmpegScripts'
@@ -360,6 +360,10 @@ export class Runtime<FIELDS extends WidgetDict = any> {
 
     findLastImageByPrefix = (prefix: string): MediaImageL | undefined => {
         return this.generatedImages.find((i) => i.filename.startsWith(prefix))
+    }
+
+    doesComfyImageExist = async (imageInfo: { type: `input` | `ouput`; subfolder: string; filename: string }) => {
+        return await checkIfComfyImageExists(this.st.getServerHostHTTP(), imageInfo)
     }
 
     get generatedImages(): MediaImageL[] {
