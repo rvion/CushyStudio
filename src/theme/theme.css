@@ -1,3 +1,16 @@
+.rct-tree-items-container {
+    position: relative;
+}
+.rct-tree-items-container .rct-tree-items-container .rct-tree-item-title-container::after {
+    content: '';
+    position: absolute;
+    top:0;
+    transform: translateX(-3px);
+    bottom: 0;
+    /* left: 10px; */
+    width: 1px;
+    background-color: oklch(var(--b3)) !important;
+}
 .rct-tree-root {
     color: oklch(var(--bc)) !important;
     flex-grow: 1;

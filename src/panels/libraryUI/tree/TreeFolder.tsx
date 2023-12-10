@@ -20,11 +20,9 @@ export class TreeFolder implements ITreeEntry, TreeItem<TreeFolder> {
     isFolder = true
 
     get actions(): TreeEntryAction[] {
-        if (this.path === 'library/Installed')
-            return [
-                //
-                { name: 'Add Draft', icon: 'add', onClick: () => {}, mode: 'full' },
-            ]
+        if (this.path === 'library/installed')
+            return [{ name: 'Find More...', icon: 'cloud_download', onClick: () => {}, mode: 'full' }]
+        if (this.path === 'library/local') return [{ name: 'create...', icon: 'add', onClick: () => {}, mode: 'full' }]
         return []
     }
     // prettier-ignore
@@ -33,7 +31,7 @@ export class TreeFolder implements ITreeEntry, TreeItem<TreeFolder> {
         if (this.path === 'library/local')                return <span className='material-symbols-outlined text-blue-500'>privacy_tip</span>
         if (this.path === 'library/built-in')             return <span className='material-symbols-outlined text-green-500'>apps</span>
         if (this.path === 'library/sdk-examples')         return <span className='material-symbols-outlined text-green-500'>live_help</span>
-        return <span className='material-symbols-outlined'>folder</span>
+        return <span className='material-symbols-outlined text-base-300'>folder</span>
     }
     // get iconExpanded() {}
     constructor(public path: string) {

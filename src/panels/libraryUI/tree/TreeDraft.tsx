@@ -1,6 +1,6 @@
 import { nanoid } from 'nanoid'
 import { TreeItem } from 'react-complex-tree'
-import { ITreeEntry, TreeEntry } from './TreeEntry'
+import { ITreeEntry, TreeEntry, TreeEntryAction } from './TreeEntry'
 import { DraftL } from 'src/models/Draft'
 import { STATE } from 'src/state/state'
 
@@ -16,6 +16,17 @@ export class TreeDraft implements ITreeEntry, TreeItem<TreeDraft> {
     entry: Promise<TreeItem<TreeEntry>>
     data: TreeDraft
 
+    actions: TreeEntryAction[] = [
+        {
+            name: 'add Draft',
+            icon: 'play_arrow',
+            mode: 'small',
+            onClick: () => {
+                this.draft.AWAKE()
+                this.draft.start()
+            },
+        },
+    ]
     constructor(
         //
         public st: STATE,

@@ -49,7 +49,7 @@ export class TreeFile implements ITreeEntry, TreeItem<TreeFile> {
     actions: TreeEntryAction[] = [
         {
             name: 'add Draft',
-            icon: 'play_arrow',
+            icon: 'find_in_page', //'play_arrow',
             mode: 'small',
             onClick: () => {
                 if (this.file == null) return
@@ -58,6 +58,7 @@ export class TreeFile implements ITreeEntry, TreeItem<TreeFile> {
         },
     ]
     onFocusItem = () => {
+        if (this.file.hasBeenLoadedAtLeastOnce) return
         this.file.load()
     }
     onPrimaryAction = () => {

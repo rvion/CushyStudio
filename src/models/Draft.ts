@@ -105,6 +105,7 @@ export class DraftL {
     isInitializing = false
     isInitialized = false
     AWAKE = () => {
+        if (this.isInitializing) return
         if (this.isInitialized) return
         this.isInitializing = true
         const _1 = reaction(
