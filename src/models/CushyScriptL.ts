@@ -41,7 +41,7 @@ export class CushyScriptL {
         })
     }
 
-    getLiveApp(appID: CushyAppID): Maybe<App<WidgetDict>> {
+    getExecutable(appID: CushyAppID): Maybe<App<WidgetDict>> {
         return this.LIVE_APPS.find((liveApp, ix) => {
             const computedAppID = this.relPath + ':' + ix
             if (appID === computedAppID) return true

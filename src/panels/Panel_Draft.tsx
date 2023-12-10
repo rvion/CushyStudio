@@ -35,11 +35,11 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
     if (draft == null) return <ErrorPanelUI>Draft not found</ErrorPanelUI>
 
     // 2. app
-    const app = draft.app.item
+    const app = draft.app
     if (app == null) return <ErrorPanelUI>File not found</ErrorPanelUI>
 
     // 3. compiled app
-    const compiledApp = app.live
+    const compiledApp = app.executable
     if (compiledApp == null) return <AppCompilationErrorUI app={app} />
 
     // 4. get form
@@ -107,7 +107,11 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                     >
                         Form state
                     </Button>
-                    <Button size='sm' tw='tab btn-ghost join-item'>
+                    <Button
+                        onClick={() => st.layout.FOCUS_OR_CREATE('Script', { scriptID: draft.app.script.id })}
+                        size='sm'
+                        tw='tab btn-ghost join-item'
+                    >
                         App code
                     </Button>
                     {/* <TypescriptHighlightedCodeUI code={app.codeJS ?? ''} /> */}
@@ -297,7 +301,7 @@ export const DraftHeaderUI = observer(function DraftHeaderUI_(p: {
     // file: LibraryFile
 }) {
     const { draft } = p
-    const app = draft.app.item
+    const app = draft.appRef.item
     const st = useSt()
     return (
         <div tw='flex p-1 bg-base-300 border-b border-b-base-300'>

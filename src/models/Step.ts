@@ -63,7 +63,7 @@ export class StepL {
     }
 
     get appCompiled(): Maybe<App<WidgetDict>> {
-        return this.app.live
+        return this.app.executable
     }
 
     get name(): string {

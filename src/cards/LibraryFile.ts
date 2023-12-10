@@ -276,11 +276,9 @@ export class LibraryFile {
             return this.addError(`❌ failed to import workflow: cannot convert LiteGraph To Prompt`, error)
         }
         // at this point, we know the workflow is valid
-        //  and we have both the prompt, and the workflow
+        // and we have both the prompt, and the workflow
         this.liteGraphJSON = workflowJSON
         this.promptJSON = promptJSON
-        // const title = path.basename(this.absPath)
-        // const author = path.basename(path.dirname(this.absPath))
 
         // 3. asAction
         try {

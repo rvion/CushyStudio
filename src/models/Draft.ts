@@ -22,10 +22,14 @@ export class DraftL {
     // 🔴 HACKY
     shouldAutoStart = false
 
-    app = new LiveRef<this, CushyAppL>(this, 'appID', () => this.db.cushy_apps)
+    appRef = new LiveRef<this, CushyAppL>(this, 'appID', () => this.db.cushy_apps)
 
-    get action() {
-        return this.app.item.live
+    get app(): CushyAppL {
+        return this.appRef.item
+    }
+
+    get executable() {
+        return this.app.executable
     }
 
     get name() {
@@ -91,7 +95,7 @@ export class DraftL {
     gui: Result<Widget_group<any>> = __FAIL('not loaded yet')
 
     get file(): LibraryFile {
-        return this.st.library.getFile(this.app.item.relPath)
+        return this.st.library.getFile(this.appRef.item.relPath)
     }
 
     onHydrate = () => {
@@ -104,7 +108,7 @@ export class DraftL {
         if (this.isInitialized) return
         this.isInitializing = true
         const _1 = reaction(
-            () => this.action,
+            () => this.executable,
             (action) => {
                 console.log(`[🦊] form: awakening app ${this.data.appID}`)
                 if (action == null) return

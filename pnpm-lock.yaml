@@ -71,6 +71,9 @@ dependencies:
   flexlayout-react:
     specifier: ^0.7.15
     version: 0.7.15(react-dom@18.2.0)(react@18.2.0)
+  highlight.js:
+    specifier: ^11.9.0
+    version: 11.9.0
   json5:
     specifier: ^2.2.3
     version: 2.2.3
@@ -2850,6 +2853,11 @@ packages:
 
   /heap@0.2.7:
     resolution: {integrity: sha512-2bsegYkkHO+h/9MGbn6KWcE45cHZgPANo5LXF7EvWdT0yT2EguSVO1nDgU5c8+ZOPwp2vMNa7YFsJhVcDR9Sdg==}
+    dev: false
+
+  /highlight.js@11.9.0:
+    resolution: {integrity: sha512-fJ7cW7fQGCYAkgv4CPfwFHrfd/cLS4Hau96JuJ+ZTOWhjnhoeN1ub1tFmALm/+lW5z4WCAuAV9bm05AP0mS6Gw==}
+    engines: {node: '>=12.0.0'}
     dev: false
 
   /hoist-non-react-statics@3.3.2:

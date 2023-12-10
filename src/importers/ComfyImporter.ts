@@ -128,11 +128,11 @@ export class ComfyImporter {
             default: string | number | boolean | null | undefined
         }
 
-        p   (`app('${opts.title}', { `) // prettier-ignore
+        p   (`app({ `) // prettier-ignore
         p   (`    metadata:{`) // prettier-ignore
-        if (opts.title)        p   (`        author: ${JSON.stringify(opts.author)},`) // prettier-ignore
-        if (opts.illustration) p   (`        name: ${JSON.stringify(opts.title)},`) // prettier-ignore
-        if (opts.author)       p   (`        illustration: ${JSON.stringify(opts.illustration)},`) // prettier-ignore
+        if (opts.author      ) p(`        author: ${JSON.stringify(opts.author)},`) // prettier-ignore
+        if (opts.title       ) p(`        name: ${JSON.stringify(opts.title)},`) // prettier-ignore
+        if (opts.illustration) p(`        illustration: ${JSON.stringify(opts.illustration)},`) // prettier-ignore
         p   (`    },`) // prettier-ignore
         pRun(`    run: async (flow, p) => {`)
         pRun(`        const graph = flow.nodes`)

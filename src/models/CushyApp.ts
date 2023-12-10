@@ -73,8 +73,8 @@ export class CushyAppL {
         return nameLower.includes(searchLower) || descriptionLower.includes(searchLower)
     }
 
-    get live(): Maybe<App<WidgetDict>> {
-        return this.script.getLiveApp(this.id)
+    get executable(): Maybe<App<WidgetDict>> {
+        return this.script.getExecutable(this.id)
     }
 
     /** globaly unique id (in theory...); 🔶 */
@@ -83,7 +83,7 @@ export class CushyAppL {
     }
 
     get name(): string {
-        if (this.live?.metadata?.name) return this.live.metadata.name
+        if (this.executable?.metadata?.name) return this.executable.metadata.name
 
         // take basename as name
         const relPath = this.script.relPath
@@ -114,12 +114,12 @@ export class CushyAppL {
 
     /** app description */
     get description(): string {
-        return this.live?.metadata?.description ?? '<no description>'
+        return this.executable?.metadata?.description ?? '<no description>'
     }
 
     /** action display name */
     get illustrationPath_eiter_RelativeToDeckRoot_or_Base64Encoded_or_SVG(): Maybe<string> {
-        if (this.live?.metadata?.illustration) return this.live.metadata.illustration
+        if (this.executable?.metadata?.illustration) return this.executable.metadata.illustration
         if (this.relPath.endsWith('.png')) return this.relPath
         return generateAvatar(this.relPath)
     }
@@ -130,7 +130,10 @@ export class CushyAppL {
         if (tmp?.startsWith('data:')) return tmp
         if (tmp?.startsWith('http')) return tmp
         if (tmp?.startsWith('<svg')) throw new Error('SVG not supported')
-        if (tmp) return `file://${tmp}`
+        if (tmp) {
+            if (tmp.startsWith('/')) return `file://${tmp}`
+            return `file://${join(this.st.rootPath, tmp)}`
+        }
         // default illustration if none is provided
         return `file://${join(this.st.rootPath, 'library/CushyStudio/default/_illustrations/default-card-illustration.jpg')}`
     }
