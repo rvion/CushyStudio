@@ -1,4 +1,4 @@
-import { run_prompt } from 'library/CushyStudio/default/_prefabs/prefab_prompt'
+import { run_prompt } from 'library/built-in/_prefabs/prefab_prompt'
 
 app({
     ui: (form) => ({

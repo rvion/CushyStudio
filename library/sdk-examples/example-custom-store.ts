@@ -6,7 +6,7 @@ app({
                 //
                 `This example showcase how apps can remember data across`,
                 `multiple runs though custom data store.`,
-                `- Press play to see the amount of times you've pressed play`,
+                `- Press [Run] to see the amount of times you've pressed play`,
                 `- 📝 note: you can restart the app, update it, it will remember how many times you pressed it.`,
             ].join('\n\n'),
         }),

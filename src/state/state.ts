@@ -345,7 +345,10 @@ export class STATE {
     updateTsConfig = () => {
         console.log(`[🍻] FIXUP TSConfig`)
         const mandatory = mandatoryTSConfigIncludes
-        if (this.configFile.value.enableTypeCheckingBuiltInApps) mandatory.push('library/built-in')
+        if (this.configFile.value.enableTypeCheckingBuiltInApps) {
+            mandatory.push('library/built-in')
+            mandatory.push('library/sdk-examples')
+        }
         const startTSConfig = this.typecheckingConfig.value
         const hasAllMandatoryIncludes = mandatory.every((mandatory) => startTSConfig.include.includes(mandatory))
         if (hasAllMandatoryIncludes) return // console.log(startTSConfig.include, mandatory)

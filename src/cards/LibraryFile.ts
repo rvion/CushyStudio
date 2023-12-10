@@ -200,7 +200,7 @@ export class LibraryFile {
             root: this.folderAbs,
         })
         // cache it
-        Object.defineProperty(this, 'esbuildContext', {
+        Object.defineProperty(this, '_esbuildContext', {
             value: context,
         })
         return context
