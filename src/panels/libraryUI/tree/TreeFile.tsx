@@ -65,21 +65,22 @@ export class TreeFile implements ITreeEntry, TreeItem<TreeFile> {
     }
 
     get children(): TreeItemIndex[] {
+        if (!this.file.hasBeenLoadedAtLeastOnce) return []
         if (this.file == null) {
-            console.log(`[🔴] TreeFile: FILE is null`)
+            console.log(`[🔴] TreeFile (${this.index}): FILE is null`)
             return []
         }
         if (this.script == null) {
-            console.log(`[🔴] TreeFile: SCRIPT is null`)
+            console.log(`[🔴] TreeFile (${this.index}): SCRIPT is null`)
             return []
         }
         const apps = this.script.apps
         if (apps.length === 0) {
-            console.log(`[🔴] TreeFile: APPS.length = 0`)
+            console.log(`[🔴] TreeFile (${this.index}): APPS.length = 0`)
             return []
         }
 
-        console.log(`[🟢] TreeFile: found ${apps.length} apps`)
+        // console.log(`[🟢] TreeFile: found ${apps.length} apps`)
         return [
             //
             ...apps.map((d) => `app#${d.id}`),

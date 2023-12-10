@@ -89,8 +89,10 @@ export class ComfyImporter {
     convertPromptToCode = (
         flow: ComfyPromptJSON,
         opts: {
-            title: string
-            author: string
+            title?: string
+            illustration?: string
+            author?: string
+            //
             preserveId: boolean
             autoUI: boolean
         },
@@ -126,8 +128,12 @@ export class ComfyImporter {
             default: string | number | boolean | null | undefined
         }
 
-        p   (`action('${opts.title}', { `) // prettier-ignore
-        p   (`    author: '${opts.author}',`) // prettier-ignore
+        p   (`app('${opts.title}', { `) // prettier-ignore
+        p   (`    metadata:{`) // prettier-ignore
+        if (opts.title)        p   (`        author: ${JSON.stringify(opts.author)},`) // prettier-ignore
+        if (opts.illustration) p   (`        name: ${JSON.stringify(opts.title)},`) // prettier-ignore
+        if (opts.author)       p   (`        illustration: ${JSON.stringify(opts.illustration)},`) // prettier-ignore
+        p   (`    },`) // prettier-ignore
         pRun(`    run: async (flow, p) => {`)
         pRun(`        const graph = flow.nodes`)
         pUI (`    ui: (ui) => ({`) // prettier-ignore

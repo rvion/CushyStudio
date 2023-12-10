@@ -21,6 +21,7 @@ import { Panel_TypeDoc } from '../Panel_TypeDoc'
 import { Panel_ViewImage } from '../Panel_ViewImage'
 import { PropsOf } from './Layout'
 import { Panel_Iframe } from '../Panel_IFrame'
+import { Panel_Script } from '../Panel_Script'
 
 // prettier-ignore
 export const panels = {
@@ -49,6 +50,7 @@ export const panels = {
     Draft:               { name: 'Draft',               widget: Panel_Draft,             header: (p: PropsOf<typeof Panel_Draft            >) => ({title: 'Draft',               icon: undefined                               }) },
     DraftJsonResult:     { name: 'DraftJsonResult',     widget: Panel_DraftJsonResult,   header: (p: PropsOf<typeof Panel_DraftJsonResult  >) => ({title: 'DraftJsonResult',     icon: undefined                               }) },
     DraftJsonSerial:     { name: 'DraftJsonSerial',     widget: Panel_DraftJsonSerial,   header: (p: PropsOf<typeof Panel_DraftJsonSerial  >) => ({title: 'DraftJsonSerial',     icon: undefined                               }) },
+    Script:              { name: 'Script',              widget: Panel_Script,            header: (p: PropsOf<typeof Panel_Script           >) => ({title: 'Script',              icon: undefined                               }) },
     CurrentDraft:        { name: 'CurrentDraft',        widget: Panel_CurrentDraft,      header: (p: PropsOf<typeof Panel_CurrentDraft     >) => ({title: 'CurrentDraft',        icon: undefined                               }) },
     // DisplacedImage:      { name: 'DisplacedImage',      widget: Panel_3dScene,           header: (p: PropsOf<typeof Panel_3dScene          >) => ({title: 'DisplacedImage',      icon: undefined                               }) },
 

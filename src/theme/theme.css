@@ -1,3 +1,8 @@
+.rct-tree-root {
+    color: oklch(var(--bc)) !important;
+    flex-grow: 1;
+    overflow: auto;
+}
 .rct-tree-item-button span.material-symbols-outlined {
     font-size: 1.4rem;
 }
@@ -10,9 +15,7 @@
 .rct-tree-item-arrow-path {
     fill: oklch(var(--bc)) !important;
 }
-.rct-tree-root {
-    color: oklch(var(--bc)) !important;
-}
+
 .rct-tree-item-button:hover {
     background-color: oklch(var(--b2)) !important;
     color: oklch(var(--bc)) !important;

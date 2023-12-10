@@ -3,7 +3,7 @@ import type { Widget } from '../controls/Widget'
 import type { FormBuilder } from 'src/controls/FormBuilder'
 import type { ReqResult } from 'src/controls/IWidget'
 import type { CSSProperties } from 'react'
-import { AppManifest } from './DeckManifest'
+import { AppMetadata } from './DeckManifest'
 
 // ACTIONS ============================================================
 // 1. the main abstraction of cushy are actions.
@@ -25,7 +25,7 @@ export type App<FIELDS extends WidgetDict> = {
     run: (f: Runtime<FIELDS>, r: { [k in keyof FIELDS]: FIELDS[k]['$Output'] }) => void | Promise<void>
 
     /** the list of dependencies user can specify */
-    metadata?: AppManifest
+    metadata?: AppMetadata
 
     /** form container className */
     containerClassName?: string

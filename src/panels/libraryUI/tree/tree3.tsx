@@ -54,7 +54,7 @@ export const Tree3 = observer(() => {
     )
 
     return (
-        <div tw='bg-base-100 flex-grow flex-col text-base-content overflow-hidden'>
+        <div tw='flex flex-col flex-grow text-base-content overflow-hidden'>
             <form onSubmit={find} tw='flex'>
                 {/* <button type='submit'>Find item</button> */}
                 <input

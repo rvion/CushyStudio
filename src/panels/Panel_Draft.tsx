@@ -101,7 +101,6 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                         Form result
                     </Button>
                     <Button
-                        //
                         onClick={() => st.layout.FOCUS_OR_CREATE('DraftJsonSerial', { draftID: draft.id })}
                         size='sm'
                         tw='tab btn-ghost join-item'
@@ -109,7 +108,7 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                         Form state
                     </Button>
                     <Button size='sm' tw='tab btn-ghost join-item'>
-                        Action code
+                        App code
                     </Button>
                     {/* <TypescriptHighlightedCodeUI code={app.codeJS ?? ''} /> */}
                 </Joined>

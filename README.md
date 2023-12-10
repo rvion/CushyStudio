@@ -81,29 +81,39 @@ https://github.com/rvion/CushyStudio/assets/2150990/776b00f5-687e-4043-8dac-34df
 
 # 2. Installation
 
+<!--
 1.  Requirements:
     1.  [ComfyUI](https://github.com/comfyanonymous/ComfyUI) (local, remote, or cloud) ([install](https://github.com/comfyanonymous/ComfyUI#installing))
-    2.  [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) (to install via git)
+    2.  [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) (to install via git) -->
 
-2. run those commands in a terminal (< 10 seconds to complete):
+1. download this repository,
 
-```sh
+   - a. option a. by downloading a zip archive of this repo
 
-git clone https://github.com/rvion/CushyStudio --depth 1
-cd CushyStudio
-npm install
-npm start
-```
+   - b. option b. via git clone
+        ```sh
+        git clone https://github.com/rvion/CushyStudio --depth 1
+        cd CushyStudio
+        ```
+
+
+
+
+then click
+<!-- npm install -->
+<!-- npm start -->
+
+
 
 # 3. Quickstart Guide
 
-## 3.1. Starting
+<!-- ## 3.1. Starting -->
 
-You can start **CushyStudio** in two ways:
+<!-- You can start **CushyStudio** in two ways: -->
 
-- By running `npm start` in a terminal, at the root of your CushyStudio install
+<!-- - By running `npm start` in a terminal, at the root of your CushyStudio install
 - By running the `2_run.sh` (Mac, Linux) or `2_run.bat` (Windows)
-
+ -->
 
 ## 3.2. Updating
 

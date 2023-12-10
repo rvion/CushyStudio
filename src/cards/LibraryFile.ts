@@ -19,6 +19,7 @@ import { createEsbuildContextFor } from 'src/back/transpiler'
 import { LiveCollection } from 'src/db/LiveCollection'
 import { CushyScriptL } from 'src/models/CushyScriptL'
 import { asAbsolutePath } from 'src/utils/fs/pathUtils'
+import { AppMetadata } from './DeckManifest'
 
 // prettier-ignore
 export type LoadStrategy =
@@ -98,17 +99,19 @@ export class LibraryFile {
     liteGraphJSON?: Maybe<LiteGraphJSON> = null
     promptJSON?: Maybe<ComfyPromptJSON> = null
     png?: Maybe<AbsolutePath> = null
-    loadRequested = false
 
     /** load a file trying all compatible strategies */
     successfullLoadStrategies: Maybe<LoadStrategy> = null
 
     script0: Maybe<CushyScriptL>
 
+    isLoading = false
+    hasBeenLoadedAtLeastOnce = false
+
     load = async (p?: { force?: boolean }): Promise<true> => {
         // don't load more than once unless manually requested
-        if (this.loadRequested && !p?.force) return true
-        this.loadRequested = true
+        if (this.isLoading) return true
+        this.isLoading = true
 
         // don't load once already loaded
         if (this.loaded.done && !p?.force) return true
@@ -124,14 +127,11 @@ export class LibraryFile {
             }
         }
 
-        // // if one strategy worked, we're done
-        // this.loaded.resolve(true)
-
-        // // create a draft if none exists
-        // if (this.drafts.length === 0) this.createDraft()
-
         console.log(`[🔴] LibFile: LOAD FAILURE !`)
+
         // done
+        this.hasBeenLoadedAtLeastOnce = true
+        this.isLoading = false
         return true
     }
 
@@ -250,15 +250,15 @@ export class LibraryFile {
         if (!result.success) return this.addError(`❌ [load_asComfyUIGeneratedPng] metadata extraction failed`, result.value)
         const metadata = result.value
         const workflowStr: string = (metadata as { [key: string]: any }).workflow
-        const promptStr: string = (metadata as { [key: string]: any }).prompt
+        // const promptStr: string = (metadata as { [key: string]: any }).prompt
 
         if (workflowStr == null) return this.addError(`❌ [load_asComfyUIGeneratedPng] no workflow in metadata`, metadata)
-        const res = await this.importWorkflowFromStr(workflowStr)
+        const res = await this.importWorkflowFromStr(workflowStr, { illustration: this.relPath })
         return res
     }
 
     // LOADERS ------------------------------------------------------------------------
-    private importWorkflowFromStr = async (workflowStr: string): Promise<LoadStatus> => {
+    private importWorkflowFromStr = async (workflowStr: string, metadata: AppMetadata = {}): Promise<LoadStatus> => {
         // 1. litegraphJSON
         let workflowJSON: LiteGraphJSON
         try {
@@ -279,14 +279,17 @@ export class LibraryFile {
         //  and we have both the prompt, and the workflow
         this.liteGraphJSON = workflowJSON
         this.promptJSON = promptJSON
-        const title = path.basename(this.absPath)
-        const author = path.basename(path.dirname(this.absPath))
+        // const title = path.basename(this.absPath)
+        // const author = path.basename(path.dirname(this.absPath))
 
         // 3. asAction
         try {
             this.codeJS = this.st.importer.convertPromptToCode(promptJSON, {
-                title,
-                author,
+                // metadat
+                illustration: metadata.illustration,
+                author: metadata.author,
+                title: metadata.name ?? path.basename(this.absPath),
+                // codegen
                 preserveId: true,
                 autoUI: true,
             })

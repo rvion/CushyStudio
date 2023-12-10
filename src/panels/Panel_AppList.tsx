@@ -8,7 +8,7 @@ export const Panel_AppList = observer(function Panel_AppList_(p: {}) {
     const st = useSt()
     const library = st.library
     return (
-        <div tw='flex flex-grow flex-col overflow-auto'>
+        <div tw='flex flex-grow flex-col overflow-auto h-full'>
             <LibraryHeaderUI />
             <Tree3 key={nanoid()} />
             {/* <div tw='flex flex-col'>
