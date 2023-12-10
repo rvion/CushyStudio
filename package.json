@@ -24,6 +24,7 @@
     "scripts": {
         "📌 CODEGEN": "",
         "gen-bins-node": "npm rebuild",
+        "gen-supa-types": "supabase gen types typescript --linked > src/supa/database.types.ts",
         "gen-bins": "electron-builder install-app-deps",
         "gen-assets": "bun src/utils/assets/assets.gen.ts",
         "gen-lib": "tsc -p tsconfig.doc.json",
@@ -122,6 +123,7 @@
         "cross-env": "^7.0.3",
         "less": "^4.2.0",
         "postcss": "^8.4.31",
+        "supabase": "^1.115.5",
         "tailwindcss": "^3.3.6",
         "vite": "^5.0.6"
     }

@@ -6,7 +6,9 @@ import { run_model, ui_model } from './_prefabs/prefab_model'
 import { run_prompt } from './_prefabs/prefab_prompt'
 import { ui_recursive } from './_prefabs/prefab_recursive'
 import { Ctx_sampler, run_sampler, ui_sampler } from './_prefabs/prefab_sampler'
+
 import IMG from './_illustrations/mc.jpg'
+
 app({
     metadata: {
         name: 'Cushy Diffusion UI',

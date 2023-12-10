@@ -3,22 +3,20 @@ import { observer } from 'mobx-react-lite'
 import { cwd } from 'process'
 import { useEffect } from 'react'
 import { showItemInFolder } from 'src/app/layout/openExternal'
-import { LibraryFile } from 'src/cards/LibraryFile'
 import { AppIllustrationUI } from 'src/cards/fancycard/AppIllustrationUI'
+import { CushyAppL } from 'src/models/CushyApp'
 import { DraftL } from 'src/models/Draft'
+import { AppFavoriteBtnUI } from 'src/panels/libraryUI/CardPicker2UI'
 import { Dropdown, MenuItem } from 'src/rsuite/Dropdown'
 import { PhoneWrapperUI } from 'src/rsuite/PhoneWrapperUI'
-import { Button, Input, Joined, Loader, Message } from 'src/rsuite/shims'
+import { Button, Joined, Loader, Message } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
 import { openInVSCode } from 'src/utils/electron/openInVsCode'
 import { stringifyUnknown } from 'src/utils/formatters/stringifyUnknown'
-import { isError } from 'src/utils/misc/isError'
 import { WidgetUI } from '../controls/widgets/WidgetUI'
 import { ResultWrapperUI } from '../widgets/misc/ResultWrapperUI'
 import { ScrollablePaneUI } from '../widgets/misc/scrollableArea'
 import { draftContext } from '../widgets/misc/useDraft'
-import { AppFavoriteBtnUI } from 'src/panels/libraryUI/CardPicker2UI'
-import { CushyAppL } from 'src/models/CushyApp'
 
 export const Panel_Draft = observer(function Panel_Draft_(p: { draftID: DraftID }) {
     // 1. get draft
@@ -320,6 +318,15 @@ export const DraftHeaderUI = observer(function DraftHeaderUI_(p: {
                         <span>{app.name}</span>
 
                         <div tw={['absolute right-0']}>
+                            <button
+                                disabled={app.isPublishing}
+                                tw='btn btn-ghost btn-square btn-sm'
+                                onClick={async () => {
+                                    await app.publish()
+                                }}
+                            >
+                                {app.isPublishing ? <Loader /> : <span className='material-symbols-outlined'>publish</span>}
+                            </button>
                             {/* Open draft in new tab btn */}
                             <DraftActionMenuUI draft={draft} />
                             <FormLayoutPrefsUI />

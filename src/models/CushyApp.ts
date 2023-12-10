@@ -78,6 +78,34 @@ export class CushyAppL {
         return this.script.getExecutable(this.id)
     }
 
+    isPublishing = false
+    publish = async () => {
+        if (this.isPublishing) return
+        this.isPublishing = true
+        try {
+            const st = this.st
+            const supa = st.supabase
+            const user_id = st.auth.user?.id
+            if (user_id == null) throw new Error('not logged in')
+            console.log(`[🐩] ✅ logged-in`)
+            const prev = await supa.from('published_apps').select('*').eq('user_id', user_id)
+            const count = prev.data?.length ?? prev.count ?? 0
+            if (count === 0) {
+                console.log(`[🐩] no published app found; inserting`)
+                const res = await supa.from('published_apps').insert({ user_id, name: this.name })
+                console.log(`[🐩] ✅ inserted !`)
+            } else {
+                //
+                console.log(`[🐩] found`, prev)
+            }
+        } catch (e) {
+            console.error(`[🐩] ❌ publish failed !`)
+            console.error(e)
+        } finally {
+            this.isPublishing = false
+        }
+    }
+
     /** globaly unique id (in theory...); 🔶 */
     get uid() {
         return this.data.createdAt

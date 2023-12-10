@@ -49,7 +49,8 @@ import { DanbooruTags } from '../widgets/prompter/nodes/booru/BooruLoader'
 import { AuthState } from './AuthState'
 import { Uploader } from './Uploader'
 import { mkSupa } from './supa'
-import { Session, SupabaseClient, User } from '@supabase/supabase-js'
+import { PostgrestSingleResponse, Session, SupabaseClient, User } from '@supabase/supabase-js'
+import { Database } from 'src/supa/database.types'
 
 export class STATE {
     /** hack to help closing prompt completions */
@@ -67,7 +68,7 @@ export class STATE {
     shortcuts: ShortcutWatcher
     uploader: Uploader
 
-    supabase: SupabaseClient<any, 'public', any>
+    supabase: SupabaseClient<Database>
     auth: AuthState
 
     /** mobx hack to make things refresh every few seconds */
@@ -182,6 +183,13 @@ export class STATE {
     set showPreviewInPanel(v: boolean) { this.configFile.update({ showPreviewInPanel: v }) } // prettier-ignore
 
     droppedFiles: File[] = []
+
+    _allPublishedApps: Maybe<PostgrestSingleResponse<Database['public']['Tables']['published_apps']['Row'][]>> = null
+    fetcAllPublishedApps = async () => {
+        const x = await this.supabase.from('published_apps').select('*')
+        this._allPublishedApps = x
+        return x
+    }
 
     // showCardPicker: boolean = false
     closeFullLibrary = () => (this.layout.fullPageComp = null)

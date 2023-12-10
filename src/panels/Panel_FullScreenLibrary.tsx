@@ -1,4 +1,6 @@
+import { use } from 'cytoscape'
 import { observer } from 'mobx-react-lite'
+import { useEffect } from 'react'
 import { AppCardUI } from 'src/cards/fancycard/AppCardUI'
 import { FileBeeingImportedUI } from 'src/importers/FilesBeeingImported'
 import { Addon, Joined, Slider, Toggle } from 'src/rsuite/shims'
@@ -9,11 +11,21 @@ import { ScrollablePaneUI } from 'src/widgets/misc/scrollableArea'
 export const Panel_CardPicker3UI = observer(function Panel_CardPicker3UI_(p: {}) {
     const st = useSt()
     const library = st.library
+
+    useEffect(() => {
+        st.fetcAllPublishedApps()
+    }, [])
+
     return (
         <div tw='relative h-full flex-grow flex flex-col'>
             <div tw='bg-base-200 p-4'>
                 <div tw='flex gap-2'>
                     <div tw='mr-2 text-2xl'>Library</div>
+                    {st._allPublishedApps?.data?.map((app) => (
+                        <div key={app.id}>
+                            <pre>{JSON.stringify(app)}</pre>
+                        </div>
+                    ))}
                     {/* <CreateDeckBtnUI /> */}
                 </div>
                 <div tw='flex gap-1 items-center'>
