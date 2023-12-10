@@ -714,6 +714,12 @@ export type CushyAppT = {
     /** @default: null, sqlType: TEXT */
     scriptID: CushyScriptID;
 
+    /** @default: null, sqlType: TEXT */
+    name?: Maybe<string>;
+
+    /** @default: null, sqlType: TEXT */
+    illustration?: Maybe<string>;
+
 }
 export const CushyAppSchema = Type.Object({
     id: Type.String(),
@@ -721,6 +727,8 @@ export const CushyAppSchema = Type.Object({
     updatedAt: Type.Number(),
     guid: Type.Optional(T.Nullable(Type.String())),
     scriptID: Type.String(),
+    name: Type.Optional(T.Nullable(Type.String())),
+    illustration: Type.Optional(T.Nullable(Type.String())),
 },{ additionalProperties: false })
 
 export const CushyAppFields = {
@@ -729,6 +737,68 @@ export const CushyAppFields = {
     updatedAt: {cid:2,name:'updatedAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
     guid: {cid:3,name:'guid',type:'TEXT',notnull:0,dflt_value:null,pk:0},
     scriptID: {cid:4,name:'scriptID',type:'TEXT',notnull:1,dflt_value:null,pk:0},
+    name: {cid:5,name:'name',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    illustration: {cid:6,name:'illustration',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+}
+
+
+export const asAuthID = (s: string): AuthID => s as any
+export type AuthT = {
+    /** @default: "hex(randomblob(16))", sqlType: string */
+    id: AuthID;
+
+    /** @default: "now", sqlType: INTEGER */
+    createdAt: number;
+
+    /** @default: "now", sqlType: INTEGER */
+    updatedAt: number;
+
+    /** @default: null, sqlType: TEXT */
+    provider_token?: Maybe<string>;
+
+    /** @default: null, sqlType: TEXT */
+    refresh_token?: Maybe<string>;
+
+    /** @default: null, sqlType: TEXT */
+    token_type?: Maybe<string>;
+
+    /** @default: null, sqlType: TEXT */
+    access_token?: Maybe<string>;
+
+    /** @default: null, sqlType: TEXT */
+    provider_refresh_token?: Maybe<string>;
+
+    /** @default: null, sqlType: INT */
+    expires_at?: Maybe<number>;
+
+    /** @default: null, sqlType: INT */
+    expires_in?: Maybe<number>;
+
+}
+export const AuthSchema = Type.Object({
+    id: Type.String(),
+    createdAt: Type.Number(),
+    updatedAt: Type.Number(),
+    provider_token: Type.Optional(T.Nullable(Type.String())),
+    refresh_token: Type.Optional(T.Nullable(Type.String())),
+    token_type: Type.Optional(T.Nullable(Type.String())),
+    access_token: Type.Optional(T.Nullable(Type.String())),
+    provider_refresh_token: Type.Optional(T.Nullable(Type.String())),
+    expires_at: Type.Optional(T.Nullable(Type.Number())),
+    expires_in: Type.Optional(T.Nullable(Type.Number())),
+},{ additionalProperties: false })
+
+export const AuthFields = {
+    id: {cid:0,name:'id',type:'string',notnull:1,dflt_value:'hex(randomblob(16))',pk:1},
+    createdAt: {cid:1,name:'createdAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
+    updatedAt: {cid:2,name:'updatedAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
+    provider_token: {cid:3,name:'provider_token',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    refresh_token: {cid:4,name:'refresh_token',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    token_type: {cid:5,name:'token_type',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    access_token: {cid:6,name:'access_token',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    provider_refresh_token: {cid:7,name:'provider_refresh_token',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    expires_at: {cid:8,name:'expires_at',type:'INT',notnull:0,dflt_value:null,pk:0},
+    expires_in: {cid:9,name:'expires_in',type:'INT',notnull:0,dflt_value:null,pk:0},
 }
 
 
@@ -834,5 +904,11 @@ export const schemas = {
         'CushyApp',
         CushyAppFields,
         CushyAppSchema,
+    ),
+    auth: new T.TableInfo(
+        'auth',
+        'Auth',
+        AuthFields,
+        AuthSchema,
     ),
 }

@@ -19,7 +19,7 @@ import { createEsbuildContextFor } from 'src/back/transpiler'
 import { LiveCollection } from 'src/db/LiveCollection'
 import { CushyScriptL } from 'src/models/CushyScriptL'
 import { asAbsolutePath } from 'src/utils/fs/pathUtils'
-import { AppMetadata } from './DeckManifest'
+import { AppMetadata } from './AppManifest'
 
 // prettier-ignore
 export type LoadStrategy =

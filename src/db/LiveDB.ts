@@ -1,6 +1,7 @@
 import type { STATE } from '../state/state'
 import type { TableInfo } from 'src/db/TYPES_json'
 import type {
+    AuthT,
     ComfyPromptT,
     ComfySchemaT,
     CushyAppT,
@@ -46,6 +47,7 @@ import { CustomDataL } from 'src/models/CustomData'
 import { DB_RELATIVE_PATH } from './DB_CONFIG'
 import { CushyScriptL } from 'src/models/CushyScriptL'
 import { CushyAppL } from 'src/models/CushyApp'
+import { AuthL } from 'src/models/Auth'
 
 export type Indexed<T> = { [id: string]: T }
 
@@ -70,6 +72,7 @@ export class LiveDB {
     drafts: LiveTable<DraftT, DraftL>
     graphs: LiveTable<GraphT, ComfyWorkflowL>
     steps: LiveTable<StepT, StepL>
+    auths: LiveTable<AuthT, AuthL>
 
     /** run all pending migrations */
     migrate = () => {
@@ -111,6 +114,7 @@ export class LiveDB {
             this.drafts =                new LiveTable(this, 'draft'                , '📝', DraftL)
             this.graphs =                new LiveTable(this, 'graph'                , '📊', ComfyWorkflowL)
             this.steps =                 new LiveTable(this, 'step'                 , '🚶‍♂️', StepL)
+            this.auths =                 new LiveTable(this, 'auth'                 , '🚶‍♂️', AuthL)
 
             // console.log('🟢 TABLE INITIALIZED')
         }

@@ -269,6 +269,37 @@ export const migrations: {
         name: 'idem for step',
         up: [`alter table step drop column appPath`, `alter table step add column appID text references cushy_app(id) not null`],
     },
+    {
+        id: 'ZVMqRs0ogh',
+        name: 'add user table',
+        up: [
+            _createTable('auth', [
+                'expires_at text',
+                'expires_in text',
+                'provider_token text',
+                'refresh_token text',
+                'token_type text',
+                'access_token text',
+            ]),
+            'alter table cushy_app add column name text',
+            'alter table cushy_app add column illustration text',
+        ],
+    },
+    {
+        id: '-U4fPEdWdv',
+        name: 'provider_refresh_token',
+        up: [`alter table auth add column provider_refresh_token text`],
+    },
+    {
+        id: '3ZOHzNx4CL',
+        name: 'auth.expires_at & auth.expires_in are numbers',
+        up: [
+            `alter table auth drop column expires_at`,
+            `alter table auth drop column expires_in`,
+            `alter table auth add column expires_at int `,
+            `alter table auth add column expires_in int `,
+        ],
+    },
     // {
     //     id: 'e574c006-daca-4fd0-a51b-73a66b4fbd79',
     //     name: 'create cushy_app table',

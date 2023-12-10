@@ -25,7 +25,7 @@ export const OutputPromptPreviewUI = observer(function OutputPromptPreviewUI_(p:
     // const pgr2 = graph.graphProgressCurrentNode
     return (
         <OutputPreviewWrapperUI output={prompt}>
-            <div tw='bg-blue-800 '>
+            <div tw='bg-blue-500 '>
                 <div
                     className='radial-progress'
                     style={{

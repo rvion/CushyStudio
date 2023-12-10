@@ -23,9 +23,6 @@ import { optionalString, string } from './schema'
 
 // DECK --------------------------------------
 export type AppMetadata = {
-    /** should be AAAxBBB pixel wide */
-    cardBanner?: string
-
     /**
      * card name;
      * defaults to the file name without extension
@@ -63,7 +60,6 @@ export type AppMetadata = {
 export const AppMetadataSchema = Type.Object(
     {
         deckRelativeFilePath: Type.String(),
-        cardBanner: Type.Optional(Type.String()),
         name: Type.Optional(Type.String()),
         illustration: Type.Optional(Type.String()),
         priority: Type.Optional(Type.Number()),
@@ -79,17 +75,17 @@ export const AppMetadataSchema = Type.Object(
 /* ✅ */ type _AppMetadataSchemaT = Static<typeof AppMetadataSchema>
 /* ✅ */ const _a2: AppMetadata = 0 as any as _AppMetadataSchemaT
 
-export const DeckSchema = Type.Object(
-    {
-        $schema: optionalString('the schema version'),
-        name: string('customize your package name'),
-        authorName: string('customize your author name'),
-        description: string('short summary of your package'),
-        relativeIconPath: optionalString('local path to an image in your package that should be used'),
-        cards: Type.Optional(Type.Array(AppMetadataSchema)),
-    },
-    { additionalProperties: false },
-)
+// export const DeckSchema = Type.Object(
+//     {
+//         $schema: optionalString('the schema version'),
+//         name: string('customize your package name'),
+//         authorName: string('customize your author name'),
+//         description: string('short summary of your package'),
+//         relativeIconPath: optionalString('local path to an image in your package that should be used'),
+//         cards: Type.Optional(Type.Array(AppMetadataSchema)),
+//     },
+//     { additionalProperties: false },
+// )
 
 // export const parseDeckManifest = (manifest: unknown): Either<ValueError[], PackageManifest> => {
 //     const errors: ValueError[] = [...Value.Errors(DeckSchema, manifest)]

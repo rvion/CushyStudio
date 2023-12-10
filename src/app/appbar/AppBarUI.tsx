@@ -7,7 +7,7 @@ import { IndicatorSchemaUI } from './AppBarSchemaBtnUI'
 import { IndicatorWebsocketUI } from './AppBarWebsocketBtnUI'
 import { MenuAuthUI } from './MenuAuthUI'
 import { MenuComfyUI } from './MenuComfyUI'
-import { MenuConfigUI } from './MenuConfigUI'
+import { MenuConfigUI, MenuThemeUI } from './MenuConfigUI'
 import { MenuDebugUI } from './MenuDebugUI'
 import { MenuHelpUI } from './MenuHelpUI'
 import { MenuPanelsUI } from './MenuPanelsUI'
@@ -26,10 +26,11 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
                 <MenuComfyUI />
                 <MenuUtilsUI />
                 <MenuConfigUI />
+                <MenuThemeUI />
                 <MenuHelpUI />
+                <MenuAuthUI />
                 <MenuDebugUI />
                 <div className='flex flex-grow'></div>
-                <MenuAuthUI />
                 <IndicatorWebsocketUI />
                 <IndicatorSchemaUI />
                 <CushyStudioLinkUI />

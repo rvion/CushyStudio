@@ -3,7 +3,7 @@ import type { Widget } from '../controls/Widget'
 import type { FormBuilder } from 'src/controls/FormBuilder'
 import type { ReqResult } from 'src/controls/IWidget'
 import type { CSSProperties } from 'react'
-import { AppMetadata } from './DeckManifest'
+import { AppMetadata } from './AppManifest'
 
 // ACTIONS ============================================================
 // 1. the main abstraction of cushy are actions.
