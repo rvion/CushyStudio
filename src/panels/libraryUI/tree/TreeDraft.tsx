@@ -9,7 +9,7 @@ export class TreeDraft implements ITreeEntry, TreeItem<TreeDraft> {
     get name() { return `${this.draft.name}` } // prettier-ignore
     isFolder = false
     canRename = true
-    onSelect = () => {
+    onPrimaryAction = () => {
         this.st.currentDraft = this.draft
     }
     icon = (<span>✨</span>)

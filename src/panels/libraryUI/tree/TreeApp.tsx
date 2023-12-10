@@ -14,12 +14,24 @@ export class TreeApp implements ITreeEntry, TreeItem<TreeApp> {
         this.app = st.db.cushy_apps.getOrThrow(appID)
     }
 
-    get name() { return `❌ ${this.app.name}`; } // prettier-ignore
+    get name() { return `${this.app.name}`; } // prettier-ignore
     get entry(): Promise<TreeItem<TreeEntry>> { return Promise.resolve(this) } // prettier-ignore
     get data(): TreeApp { return this } // prettier-ignore
-    isFolder = false
-    icon = (<span className='material-symbols-outlined'>Draft</span>)
+    isFolder = true
+    get icon() {
+        return this.app.illustrationPathWithFileProtocol
+        // return <span className='material-symbols-outlined'>Draft</span>
+    }
 
+    onPrimaryAction = () => {
+        if (this.app == null) return
+        if (this.app.drafts.length > 0) return
+        this.app.createDraft()
+    }
+
+    get children(): TreeItemIndex[] {
+        return this.app.drafts.map((draft) => `draft#${draft.id}`)
+    }
     actions: TreeEntryAction[] = [
         {
             name: 'add Draft',

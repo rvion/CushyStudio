@@ -8,16 +8,31 @@ import { CushyScriptL } from 'src/models/CushyScriptL'
 import { App, WidgetDict } from '../cards/App'
 import { generateAvatar } from '../cards/AvatarGenerator'
 import { DraftL } from './Draft'
+import { LibraryFile } from 'src/cards/LibraryFile'
 
 export interface CushyAppL extends LiveInstance<CushyAppT, CushyAppL> {}
 export class CushyAppL {
     scriptL: LiveRef<this, CushyScriptL> = new LiveRef(this, 'scriptID', () => this.db.cushy_scripts)
     get script() { return this.scriptL.item } // prettier-ignore
 
-    drafts = new LiveCollection<DraftL>(
-        () => ({ appID: this.id }),
-        () => this.db.drafts,
-    )
+    get drafts(): DraftL[] {
+        return this.draftsCollection.items
+    }
+
+    private draftsCollection = new LiveCollection<DraftL>({
+        table: () => this.db.drafts,
+        where: () => ({ appID: this.id }),
+    })
+
+    /** shortcut to open the last draft of the first app defined in this file */
+    openLastDraftAsCurrent = () => {
+        this.st.currentDraft = this.getLastDraft()
+    }
+
+    getLastDraft = (): DraftL => {
+        const drafts = this.drafts
+        return drafts.length > 0 ? drafts[0] : this.createDraft()
+    }
 
     get isFavorite(): boolean {
         return this.st.configFile.value.favoriteApps?.includes(this.id) ?? false
@@ -38,7 +53,7 @@ export class CushyAppL {
 
     createDraft = (): DraftL => {
         console.log(`[👙] AAAAAAAAA`)
-        const title = this.name + ' ' + this.drafts.items.length + 1
+        const title = this.name + ' ' + this.draftsCollection.items.length + 1
         const draft = this.st.db.drafts.create({
             appParams: {},
             appID: this.id,
@@ -92,6 +107,12 @@ export class CushyAppL {
         return this.scriptL.item.relPath
     }
 
+    /** quick way to access the LibraryFile this app script comes from */
+    get file(): LibraryFile {
+        return this.st.library.getFile(this.relPath)
+    }
+
+    /** app description */
     get description(): string {
         return this.live?.metadata?.description ?? '<no description>'
     }

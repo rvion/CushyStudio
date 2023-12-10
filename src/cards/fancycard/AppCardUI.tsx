@@ -7,14 +7,16 @@ import { LibraryFile } from '../LibraryFile'
 import { useSt } from 'src/state/stateContext'
 import { AppFavoriteBtnUI } from '../../panels/libraryUI/CardPicker2UI'
 import { AppIllustrationUI } from './AppIllustrationUI'
+import { CushyAppL } from 'src/models/CushyApp'
 
 export const AppCardUI = observer(function FancyCardUI_(p: {
     //
     // deck: Package
-    file: LibraryFile
+    app: CushyAppL
     active?: boolean
 }) {
-    const file = p.file
+    const app = p.app
+    const file = app.file
     const st = useSt()
     // const importedFrom
     // prettier-ignore
@@ -39,7 +41,7 @@ export const AppCardUI = observer(function FancyCardUI_(p: {
             ]}
         >
             <div tw='flex items-start flex-grow' style={{ fontSize: '1rem' }}>
-                {st.library.showFavorites ? <AppFavoriteBtnUI app={file} size={'1.5rem'} /> : null}
+                {st.library.showFavorites ? <AppFavoriteBtnUI app={app} size={'1.5rem'} /> : null}
                 <div
                     //
                     style={{ width: st.library.imageSize, height: '3rem' }}

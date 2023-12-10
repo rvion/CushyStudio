@@ -90,8 +90,8 @@ export class DraftL {
 
     gui: Result<Widget_group<any>> = __FAIL('not loaded yet')
 
-    get file(): LibraryFile | undefined {
-        return this.st.library.fileIndex.get(this.app.item.relPath)
+    get file(): LibraryFile {
+        return this.st.library.getFile(this.app.item.relPath)
     }
 
     onHydrate = () => {

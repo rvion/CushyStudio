@@ -7,10 +7,10 @@ import { makeAutoObservable } from 'mobx'
 import { LibraryFile } from './LibraryFile'
 import { shouldSkip_duringWatch } from './shouldSkip'
 import { asAbsolutePath } from 'src/utils/fs/pathUtils'
+import { LiveCollection } from 'src/db/LiveCollection'
+import { CushyAppL } from 'src/models/CushyApp'
 
 export class Library {
-    fileIndex = new Map<RelativePath, LibraryFile>()
-    rootLibraryFolder: AbsolutePath
     query = ''
     showDescription = true
     showDrafts = true
@@ -18,25 +18,21 @@ export class Library {
     imageSize = '11rem'
     selectionCursor = 0
 
+    private appsC = new LiveCollection<CushyAppL>({
+        where: () => ({ id: this.query as any /* 🔴 */ }),
+        table: () => this.st.db.cushy_apps,
+        options: { limit: 100 },
+    })
+
+    get appsFiltered(): CushyAppL[] {
+        return this.appsC.items
+    }
+
     get allFavorites(): CushyAppID[] {
         return this.st.favoriteApps
     }
 
-    // 👉 use cardsFilteredSorted
-    private get files(): LibraryFile[] {
-        return [...this.fileIndex.values()]
-    }
-
-    // 👉 use cardsFilteredSorted
-    private get filesFiltered() {
-        return this.files.filter((c) => c.matchesSearch(this.query))
-    }
-
-    get cardsFilteredSorted(): LibraryFile[] {
-        return this.filesFiltered.slice().sort((a, b) => {
-            return b.score - a.score
-        })
-    }
+    private fileIndex = new Map<RelativePath, LibraryFile>()
 
     // get or create file wrapper
     getFile = (relPath: RelativePath): LibraryFile => {
@@ -62,7 +58,6 @@ export class Library {
         public st: STATE,
     ) {
         // Watching a single path
-        this.rootLibraryFolder = st.libraryFolderPathAbs
         const included = st.typecheckingConfig.value.include
         const includedCards = included.filter(
             (x) =>
@@ -181,4 +176,20 @@ export class Library {
 //     if (this.st.githubUsername === 'rvion' && deckP === 'CushyStudio') return true
 //     if (this.st.githubUsername === deckP) return true
 //     return false
+// }
+
+// // 👉 use cardsFilteredSorted
+// private get files(): LibraryFile[] {
+//     return [...this.fileIndex.values()]
+// }
+
+// // 👉 use cardsFilteredSorted
+// private get filesFiltered() {
+//     return this.files.filter((c) => c.matchesSearch(this.query))
+// }
+
+// get cardsFilteredSorted(): LibraryFile[] {
+//     return this.filesFiltered.slice().sort((a, b) => {
+//         return b.score - a.score
+//     })
 // }

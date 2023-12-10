@@ -9,6 +9,7 @@ import { AppIllustrationUI } from '../../cards/fancycard/AppIllustrationUI'
 import { useSt } from '../../state/stateContext'
 import { AppEntryStyle } from './AppListStyles'
 import { DraftEntryUI } from './DraftEntryUI'
+import { CushyAppL } from 'src/models/CushyApp'
 // import { PkgHeaderUI } from './PkgHeaderUI'
 
 // export const PkgUI = observer(function ActionPackUI_(p: { deck: Package }) {
@@ -86,7 +87,7 @@ import { DraftEntryUI } from './DraftEntryUI'
 export const AppFavoriteBtnUI = observer(function AppFavoriteBtnUI_(p: {
     //
     size?: string
-    app: LibraryFile
+    app: CushyAppL
 }) {
     return (
         <AppFavoriteBtnCustomUI //

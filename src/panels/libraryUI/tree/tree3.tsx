@@ -84,7 +84,8 @@ export const Tree3 = observer(() => {
                 }}
                 canDragAndDrop
                 disableMultiselect
-                onPrimaryAction={(item) => item.data.onSelect?.()}
+                onFocusItem={(item) => item.data.onFocusItem?.()}
+                onPrimaryAction={(item) => item.data.onPrimaryAction?.()}
                 onStartRenamingItem={(item) => console.log(`[👙] renaming`)}
                 canDrag={(item) => true}
                 renderItemTitle={(x) => <RenderItemTitleUI item={x.item} context={x.context} info={x.info} title={x.title} />}

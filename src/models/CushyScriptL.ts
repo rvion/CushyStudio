@@ -8,6 +8,7 @@ import { asRelativePath } from 'src/utils/fs/pathUtils'
 import { CushyAppL } from './CushyApp'
 import { LiveCollection } from 'src/db/LiveCollection'
 import { CUSHY_IMPORT } from './CUSHY_IMPORT'
+import { LibraryFile } from 'src/cards/LibraryFile'
 
 export interface CushyScriptL extends LiveInstance<CushyScriptT, CushyScriptL> {}
 export class CushyScriptL {
@@ -21,10 +22,10 @@ export class CushyScriptL {
     }
 
     /** collection of all apps upserted from this script */
-    apps_viaDB = new LiveCollection<CushyAppL>(
-        () => ({ scriptID: this.id }),
-        () => this.db.cushy_scripts,
-    )
+    apps_viaDB = new LiveCollection<CushyAppL>({
+        table: () => this.db.cushy_scripts,
+        where: () => ({ scriptID: this.id }),
+    })
 
     apps!: CushyAppL[]
 
@@ -46,6 +47,10 @@ export class CushyScriptL {
             if (appID === computedAppID) return true
             return false
         })
+    }
+
+    get file(): LibraryFile {
+        return this.st.library.getFile(this.relPath)
     }
 
     get LIVE_APPS(): App<WidgetDict>[] {

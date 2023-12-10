@@ -72,7 +72,7 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                     }
                 }}
             >
-                <DraftHeaderUI file={app} draft={draft} />
+                <DraftHeaderUI draft={draft} />
                 {!st.isConfigValueEq('draft.mockup-mobile', true) ? (
                     <ScrollablePaneUI className='flex-grow'>
                         <div tw='pb-80 pl-2'>
@@ -147,8 +147,8 @@ export const RunOrAutorunUI = observer(function RunOrAutorunUI_(p: { className?:
     )
 })
 
-export const CardActionsMenuUI = observer(function CardActionsMenuUI_(p: { file: LibraryFile; className?: string }) {
-    const file = p.file
+export const DraftActionMenuUI = observer(function DraftActionMenuUI_(p: { draft: DraftL; className?: string }) {
+    const file = p.draft.file
     const st = useSt()
     return (
         <Dropdown
@@ -160,7 +160,7 @@ export const CardActionsMenuUI = observer(function CardActionsMenuUI_(p: { file:
         >
             <MenuItem
                 icon={<span className='material-symbols-outlined'></span>}
-                onClick={() => openInVSCode(cwd(), file.absPath)}
+                onClick={() => openInVSCode(cwd(), file?.absPath ?? '')}
             >
                 Edit App Definition
             </MenuItem>
@@ -170,10 +170,15 @@ export const CardActionsMenuUI = observer(function CardActionsMenuUI_(p: { file:
             >
                 Edit App Manifest
             </MenuItem> */}
-            <MenuItem icon={<span className='material-symbols-outlined'></span>} onClick={() => showItemInFolder(file.absPath)}>
+            <MenuItem
+                //
+                onClick={() => showItemInFolder(file.absPath)}
+                icon={<span className='material-symbols-outlined'></span>}
+            >
                 Show Item In Folder
             </MenuItem>
-            {file.liteGraphJSON && (
+
+            {file?.liteGraphJSON && (
                 <MenuItem onClick={() => st.layout.FOCUS_OR_CREATE('ComfyUI', { litegraphJson: file.liteGraphJSON })}>
                     Open in ComfyUI
                 </MenuItem>
@@ -290,9 +295,9 @@ export const AppCompilationErrorUI = observer(function AppCompilationErrorUI_(p:
 export const DraftHeaderUI = observer(function DraftHeaderUI_(p: {
     //
     draft: DraftL
-    file: LibraryFile
+    // file: LibraryFile
 }) {
-    const { file, draft } = p
+    const { draft } = p
     const app = draft.app.item
     const st = useSt()
     return (
@@ -309,12 +314,12 @@ export const DraftHeaderUI = observer(function DraftHeaderUI_(p: {
                         ]}
                         style={{ height: '2rem', fontSize: '1.4rem' }}
                     >
-                        <AppFavoriteBtnUI app={file} />
-                        <span>{file.baseName}</span>
+                        <AppFavoriteBtnUI app={app} />
+                        <span>{app.name}</span>
 
                         <div tw={['absolute right-0']}>
                             {/* Open draft in new tab btn */}
-                            <CardActionsMenuUI tw='join-item' file={file} />
+                            <DraftActionMenuUI tw='join-item' draft={draft} />
                             <FormLayoutPrefsUI tw='join-item' />
                             <div
                                 tw='btn btn-subtle btn-sm'

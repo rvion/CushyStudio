@@ -224,3 +224,8 @@ app({
         if (p.makeAVideo) await flow.output_video_ffmpegGeneratedImagesTogether(undefined, 2)
     },
 })
+
+app({
+    ui: () => ({}),
+    run: () => {},
+})

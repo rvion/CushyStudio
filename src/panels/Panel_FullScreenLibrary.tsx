@@ -33,9 +33,9 @@ export const Panel_CardPicker3UI = observer(function Panel_CardPicker3UI_(p: {})
                             }}
                             onKeyDown={(e) => {
                                 if (e.key === 'Enter') {
-                                    const card = library.cardsFilteredSorted[library.selectionCursor]
-                                    if (card == null) return
-                                    card.openLastDraftAsCurrent()
+                                    const app = library.appsFiltered[library.selectionCursor]
+                                    if (app == null) return
+                                    app.openLastDraftAsCurrent()
                                     st.closeFullLibrary()
                                 } else if (e.key === 'ArrowDown') {
                                     library.selectionCursor++
@@ -91,12 +91,12 @@ export const Panel_CardPicker3UI = observer(function Panel_CardPicker3UI_(p: {})
                 <ScrollablePaneUI tw='flex-grow'>
                     <div tw='flex flex-wrap  gap-2'>
                         <FileBeeingImportedUI files={st.droppedFiles} />
-                        {st.library.cardsFilteredSorted.map((card, ix) => (
+                        {st.library.appsFiltered.map((card, ix) => (
                             <div key={card.relPath}>
                                 <AppCardUI //
                                     active={st.library.selectionCursor === ix}
                                     // deck={card.pkg}
-                                    file={card}
+                                    app={card}
                                 />
                                 {/* {card.priority} */}
                                 {/* {card.drafts.length > 0 && st.library.showDrafts ? (

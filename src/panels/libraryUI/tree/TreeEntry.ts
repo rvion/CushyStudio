@@ -31,6 +31,7 @@ export interface ITreeEntry {
     icon?: Maybe<string | ReactNode>
     iconExpanded?: Maybe<string | ReactNode>
     entry: Promise<TreeItem<TreeEntry>>
-    onSelect?: () => void
+    onPrimaryAction?: () => void
+    onFocusItem?: () => void
     actions?: TreeEntryAction[]
 }

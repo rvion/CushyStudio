@@ -13,6 +13,10 @@ export interface LiveEntityClass<T extends BaseInstanceFields, L> {
     new (...args: any[]): LiveInstance<T, L> & L
 }
 
+export type SqlFindOptions = {
+    limit?: number
+}
+
 export class LiveTable<T extends BaseInstanceFields, L extends LiveInstance<T, L>> {
     private Ktor: LiveEntityClass<T, L>
     liveEntities = new Map<string, L>()
@@ -302,16 +306,22 @@ export class LiveTable<T extends BaseInstanceFields, L extends LiveInstance<T, L
     }
     // ------------------------------------------------------------
 
-    find = (query: Partial<T>): L[] => {
-        const findSQL = [
+    find = (
+        //
+        where: Partial<T>,
+        options: SqlFindOptions = {},
+    ): L[] => {
+        let findSQL = [
             `select * from ${this.name}`,
             `where`,
-            Object.entries(query)
+            Object.entries(where)
                 .map(([k, v]) => `${k} = @${k}`)
                 .join(' and '),
         ].join(' ')
+        if (options.limit) findSQL += ` limit ${options.limit}`
+
         const stmt = this.db.db.prepare<{ [key: string]: any }>(findSQL)
-        const datas: T[] = stmt.all(query).map((data) => this.infos.hydrateJSONFields(data))
+        const datas: T[] = stmt.all(where).map((data) => this.infos.hydrateJSONFields(data))
         const instances = datas.map((d) => this.getOrCreateInstanceForExistingData(d))
         // ⏸️ console.log(`[🦜] find:`, { findSQL, instances })
         return instances

@@ -61,11 +61,6 @@ export class LibraryFile {
         return asAbsolutePath(dirname(this.absPath))
     }
 
-    /** shortcut to open the last draft of the first app defined in this file */
-    // openLastDraftAsCurrent = () => {
-    //     this.st.currentDraft = this.getLastDraft()
-    // }
-
     /** true if file match current library search */
     matchesSearch = (search: string): boolean => {
         if (search === '') return true
@@ -95,10 +90,10 @@ export class LibraryFile {
     // the first thing to do to load an app is to get the Cushy Script from it.
     codeJS?: Maybe<string> = null
 
-    scripts = new LiveCollection<CushyScriptL>(
-        () => ({ path: this.relPath }),
-        () => this.st.db.cushy_scripts,
-    )
+    scripts = new LiveCollection<CushyScriptL>({
+        table: () => this.st.db.cushy_scripts,
+        where: () => ({ path: this.relPath }),
+    })
 
     liteGraphJSON?: Maybe<LiteGraphJSON> = null
     promptJSON?: Maybe<ComfyPromptJSON> = null
@@ -341,11 +336,6 @@ export class LibraryFile {
 //         if (absPath === this.absPath) return true
 //     })
 //     return match
-// }
-
-// getLastDraft = (): DraftL => {
-//     const drafts = this.drafts
-//     return drafts.length > 0 ? drafts[0] : this.createDraft()
 // }
 
 // drafts= new LiveCollection<DraftL>
