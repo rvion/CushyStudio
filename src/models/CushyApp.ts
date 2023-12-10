@@ -9,6 +9,7 @@ import { App, WidgetDict } from '../cards/App'
 import { generateAvatar } from '../cards/AvatarGenerator'
 import { DraftL } from './Draft'
 import { LibraryFile } from 'src/cards/LibraryFile'
+import { Executable } from './Executable'
 
 export interface CushyAppL extends LiveInstance<CushyAppT, CushyAppL> {}
 export class CushyAppL {
@@ -73,7 +74,7 @@ export class CushyAppL {
         return nameLower.includes(searchLower) || descriptionLower.includes(searchLower)
     }
 
-    get executable(): Maybe<App<WidgetDict>> {
+    get executable(): Maybe<Executable> {
         return this.script.getExecutable(this.id)
     }
 

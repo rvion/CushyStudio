@@ -1,12 +1,10 @@
 import { observer } from 'mobx-react-lite'
-// import { CreateDeckBtnUI } from 'src/app/layout/CreateDeckBtnUI'
 import { AppCardUI } from 'src/cards/fancycard/AppCardUI'
 import { FileBeeingImportedUI } from 'src/importers/FilesBeeingImported'
 import { Addon, Joined, Slider, Toggle } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
 import { FieldAndLabelUI } from 'src/widgets/misc/FieldAndLabelUI'
 import { ScrollablePaneUI } from 'src/widgets/misc/scrollableArea'
-import { DraftEntryUI } from './libraryUI/DraftEntryUI'
 
 export const Panel_CardPicker3UI = observer(function Panel_CardPicker3UI_(p: {}) {
     const st = useSt()
@@ -91,12 +89,12 @@ export const Panel_CardPicker3UI = observer(function Panel_CardPicker3UI_(p: {})
                 <ScrollablePaneUI tw='flex-grow'>
                     <div tw='flex flex-wrap  gap-2'>
                         <FileBeeingImportedUI files={st.droppedFiles} />
-                        {st.library.appsFiltered.map((card, ix) => (
-                            <div key={card.relPath}>
+                        {st.library.appsFiltered.map((app, ix) => (
+                            <div key={app.id}>
                                 <AppCardUI //
                                     active={st.library.selectionCursor === ix}
                                     // deck={card.pkg}
-                                    app={card}
+                                    app={app}
                                 />
                                 {/* {card.priority} */}
                                 {/* {card.drafts.length > 0 && st.library.showDrafts ? (

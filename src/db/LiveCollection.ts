@@ -1,14 +1,15 @@
 import type { LiveInstance } from './LiveInstance'
 
 import { makeAutoObservable } from 'mobx'
-import { LiveTable, SqlFindOptions } from './LiveTable'
+import { LiveTable } from './LiveTable'
+import { SQLWhere, SqlFindOptions } from './SQLWhere'
 import { DEPENDS_ON } from './LiveHelpers'
 
 export class LiveCollection<L extends LiveInstance<any, any>> {
     constructor(
         public p: {
             table: () => LiveTable<any, any>
-            where: () => Partial<L['data']>
+            where: () => SQLWhere<L['data']>
             options?: SqlFindOptions
             cache?: () => boolean
         },

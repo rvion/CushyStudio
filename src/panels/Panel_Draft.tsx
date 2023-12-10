@@ -54,7 +54,7 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
         )
 
     // 5. render form
-    const { containerClassName, containerStyle } = compiledApp ?? {}
+    const { containerClassName, containerStyle } = compiledApp.def ?? {}
     const defaultContainerStyle = { margin: '0 auto' }
 
     // {/* <ActionDraftListUI card={card} /> */}
@@ -126,15 +126,14 @@ export const RunOrAutorunUI = observer(function RunOrAutorunUI_(p: { className?:
     const icon = draft.shouldAutoStart ? 'pause' : 'play_arrow'
     return (
         <div tw='flex join virtualBorder' className={p.className}>
-            <Button
-                tw='btn-sm self-start join-item btn-neutral'
-                icon={draft.shouldAutoStart ? <Loader /> : <span className='material-symbols-outlined'>repeat</span>}
-                active={draft.shouldAutoStart}
-                color={draft.shouldAutoStart ? 'green' : undefined}
+            <div
+                tw={['btn btn-square btn-sm self-start join-item btn-neutral', draft.shouldAutoStart ? 'btn-active' : null]}
+                // color={draft.shouldAutoStart ? 'green' : undefined}
                 onClick={() => draft.setAutostart(!draft.shouldAutoStart)}
             >
-                Auto
-            </Button>
+                {draft.shouldAutoStart ? <Loader /> : <span className='material-symbols-outlined'>repeat</span>}
+                {/* Auto */}
+            </div>
             <Button
                 tw='btn-sm join-item btn-primary'
                 className='self-start'
@@ -155,7 +154,7 @@ export const DraftActionMenuUI = observer(function DraftActionMenuUI_(p: { draft
     const st = useSt()
     return (
         <Dropdown
-            tw={[p.className, 'bg-base-100']}
+            tw={[p.className, 'btn-square btn-sm']}
             startIcon={<span className='material-symbols-outlined'>edit</span>}
             title=''
             appearance='subtle'
@@ -322,10 +321,10 @@ export const DraftHeaderUI = observer(function DraftHeaderUI_(p: {
 
                         <div tw={['absolute right-0']}>
                             {/* Open draft in new tab btn */}
-                            <DraftActionMenuUI tw='join-item' draft={draft} />
-                            <FormLayoutPrefsUI tw='join-item' />
+                            <DraftActionMenuUI draft={draft} />
+                            <FormLayoutPrefsUI />
                             <div
-                                tw='btn btn-subtle btn-sm'
+                                tw='btn btn-ghost btn-square btn-sm'
                                 onClick={() => {
                                     st.layout.FOCUS_OR_CREATE('Draft', { draftID: draft.id }, 'LEFT_PANE_TABSET')
                                 }}
@@ -334,7 +333,7 @@ export const DraftHeaderUI = observer(function DraftHeaderUI_(p: {
                             </div>
                             {/* duplicate draft btn */}
                             <div
-                                tw='btn btn-subtle btn-sm'
+                                tw='btn btn-ghost btn-square btn-sm'
                                 onClick={() => {
                                     const newDraft = draft.clone()
                                     st.layout.FOCUS_OR_CREATE('Draft', { draftID: newDraft.id }, 'LEFT_PANE_TABSET')
@@ -345,12 +344,12 @@ export const DraftHeaderUI = observer(function DraftHeaderUI_(p: {
                         </div>
                     </div>
                     <div style={{ height: '2rem' }} className='flex items-center gap-2 justify-between text-sm'>
-                        <Input
-                            tw='flex-grow'
+                        <input
+                            tw='input input-bordered input-sm flex-grow'
                             onChange={(ev) => draft.update({ title: ev.target.value })}
                             // tw='w-full'
                             value={draft.data.title ?? 'no title'}
-                        ></Input>
+                        ></input>
                         <RunOrAutorunUI tw='flex-shrink-0' draft={draft} />
                     </div>
                 </div>

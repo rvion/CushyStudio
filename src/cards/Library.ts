@@ -19,7 +19,9 @@ export class Library {
     selectionCursor = 0
 
     private appsC = new LiveCollection<CushyAppL>({
-        where: () => ({ id: this.query as any /* 🔴 */ }),
+        where: () => {
+            return { id: { $like: `%${this.query}%` } }
+        },
         table: () => this.st.db.cushy_apps,
         options: { limit: 100 },
     })

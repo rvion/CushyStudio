@@ -9,6 +9,7 @@ import { CushyAppL } from './CushyApp'
 import { LiveCollection } from 'src/db/LiveCollection'
 import { CUSHY_IMPORT } from './CUSHY_IMPORT'
 import { LibraryFile } from 'src/cards/LibraryFile'
+import { Executable } from './Executable'
 
 export interface CushyScriptL extends LiveInstance<CushyScriptT, CushyScriptL> {}
 export class CushyScriptL {
@@ -30,34 +31,18 @@ export class CushyScriptL {
     apps!: CushyAppL[]
 
     onHydrate = () => {
-        this._LIVE_APPS = this.EVALUATE_SCRIPT(this.data.code)
-        this.apps = this._LIVE_APPS.map((liveApp: App<WidgetDict>, ix): CushyAppL => {
-            const computedAppID = this.relPath + ':' + ix
+        this._EXECUTABLES = this.EVALUATE_SCRIPT()
+        this.apps = this._EXECUTABLES.map((executable): CushyAppL => {
             const app = this.db.cushy_apps.upsert({
-                id: asCushyAppID(computedAppID),
+                id: executable.appID,
                 scriptID: this.id,
             })
             return app
         })
     }
 
-    getExecutable(appID: CushyAppID): Maybe<App<WidgetDict>> {
-        return this.LIVE_APPS.find((liveApp, ix) => {
-            const computedAppID = this.relPath + ':' + ix
-            if (appID === computedAppID) return true
-            return false
-        })
-    }
-
     get file(): LibraryFile {
         return this.st.library.getFile(this.relPath)
-    }
-
-    get LIVE_APPS(): App<WidgetDict>[] {
-        if (this._LIVE_APPS == null) {
-            this._LIVE_APPS = this.EVALUATE_SCRIPT(this.data.code)
-        }
-        return this._LIVE_APPS
     }
 
     errors: { title: string; details: any }[] = []
@@ -66,11 +51,23 @@ export class CushyScriptL {
         return LoadStatus.FAILURE
     }
 
+    // --------------------------------------------------------------------------------------
     /** cache of extracted apps */
-    private _LIVE_APPS!: App<WidgetDict>[]
+    private _EXECUTABLES!: Executable[]
+    get EXECUTABLES(): Executable[] {
+        if (this._EXECUTABLES == null) {
+            this._EXECUTABLES = this.EVALUATE_SCRIPT()
+        }
+        return this._EXECUTABLES
+    }
+
+    getExecutable(appID: CushyAppID): Maybe<Executable> {
+        return this.EXECUTABLES.find((executable) => appID === executable.appID)
+    }
 
     /** this function takes some bundled app JSCode, and returns the apps defined in it */
-    EVALUATE_SCRIPT = (codeJS: string): App<WidgetDict>[] => {
+    EVALUATE_SCRIPT = (): Executable[] => {
+        const codeJS = this.data.code
         const APPS: App<WidgetDict>[] = []
 
         // 1. setup DI registering mechanism
@@ -106,7 +103,7 @@ export class CushyScriptL {
             )
 
             // 2.3. return all apps
-            return APPS //.map((app) => new CompiledApp(this, app))
+            return APPS.map((app, ix) => new Executable(this, ix, app))
         } catch (e) {
             console.error(`[📜] CushyScript execution failed:`, e)
             // this.addError('❌5. cannot convert prompt to code', e)

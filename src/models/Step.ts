@@ -19,6 +19,7 @@ import { Widget_group } from 'src/controls/Widget'
 import { SQLITE_false, SQLITE_true } from 'src/db/SQLITE_boolean'
 import { CushyAppL } from './CushyApp'
 import { App, WidgetDict } from 'src/cards/App'
+import { Executable } from './Executable'
 
 export type FormPath = (string | number)[]
 /** a thin wrapper around an app execution */
@@ -32,7 +33,7 @@ export class StepL {
          * */
         formInstance: Widget_group<any>
     }) => {
-        const action = this.appCompiled
+        const action = this.executable
         if (action == null) return console.log('🔴 no action found')
 
         // this.data.outputGraphID = out.id
@@ -62,7 +63,7 @@ export class StepL {
         return this.data.status as Status
     }
 
-    get appCompiled(): Maybe<App<WidgetDict>> {
+    get executable(): Maybe<Executable> {
         return this.app.executable
     }
 

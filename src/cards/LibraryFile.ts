@@ -299,7 +299,9 @@ export class LibraryFile {
     }
 
     UPSERT_SCRIPT = (codeJS: string): CushyScriptL => {
-        console.log(`[👙] `, codeJS)
+        console.groupCollapsed(`[👙] script extracted for ${this.relPath}`)
+        console.log(codeJS)
+        console.groupEnd()
         const script = this.st.db.cushy_scripts.upsert({
             id: asCushyScriptID(this.relPath),
             code: codeJS,

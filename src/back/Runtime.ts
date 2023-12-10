@@ -271,7 +271,7 @@ export class Runtime<FIELDS extends WidgetDict = any> {
     /** execute the app */
     run = async (p: { formInstance: Widget_group<any> }): Promise<Status> => {
         const start = Date.now()
-        const app = this.step.appCompiled
+        const app = this.step.executable
         const appFormInput = this.step.data.formResult
         const appFormSerial = this.step.data.formSerial.values_
         this.formResult = appFormInput

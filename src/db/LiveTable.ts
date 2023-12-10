@@ -8,13 +8,10 @@ import { nanoid } from 'nanoid'
 import { schemas } from 'src/db/TYPES.gen'
 import { TableInfo } from 'src/db/TYPES_json'
 import { DEPENDS_ON, MERGE_PROTOTYPES } from './LiveHelpers'
+import { SQLWhere, SqlFindOptions, isSqlExpr } from './SQLWhere'
 
 export interface LiveEntityClass<T extends BaseInstanceFields, L> {
     new (...args: any[]): LiveInstance<T, L> & L
-}
-
-export type SqlFindOptions = {
-    limit?: number
 }
 
 export class LiveTable<T extends BaseInstanceFields, L extends LiveInstance<T, L>> {
@@ -308,20 +305,31 @@ export class LiveTable<T extends BaseInstanceFields, L extends LiveInstance<T, L
 
     find = (
         //
-        where: Partial<T>,
+        whereExt: SQLWhere<T>,
         options: SqlFindOptions = {},
     ): L[] => {
-        let findSQL = [
-            `select * from ${this.name}`,
-            `where`,
-            Object.entries(where)
-                .map(([k, v]) => `${k} = @${k}`)
-                .join(' and '),
-        ].join(' ')
+        let whereClause: string[] = []
+        let whereVars: { [key: string]: any } = {}
+
+        Object.entries(whereExt).forEach(([k, v]) => {
+            if (isSqlExpr(v)) {
+                if ('$like' in v) {
+                    whereVars[k] = v.$like
+                    whereClause.push(`${k} like @${k}`)
+                } else {
+                    throw new Error(`[👙] 🔴`)
+                }
+            } else {
+                whereVars[k] = v
+                whereClause.push(`${k} = @${k}`)
+            }
+        })
+        let findSQL = [`select * from ${this.name}`, `where`, whereClause.join(' and ')].join(' ')
         if (options.limit) findSQL += ` limit ${options.limit}`
 
+        console.log(`[👙] >>>`, findSQL, whereVars)
         const stmt = this.db.db.prepare<{ [key: string]: any }>(findSQL)
-        const datas: T[] = stmt.all(where).map((data) => this.infos.hydrateJSONFields(data))
+        const datas: T[] = stmt.all(whereVars).map((data) => this.infos.hydrateJSONFields(data))
         const instances = datas.map((d) => this.getOrCreateInstanceForExistingData(d))
         // ⏸️ console.log(`[🦜] find:`, { findSQL, instances })
         return instances

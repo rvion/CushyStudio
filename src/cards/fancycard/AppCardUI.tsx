@@ -22,7 +22,7 @@ export const AppCardUI = observer(function FancyCardUI_(p: {
     // prettier-ignore
     const color = (() => {
         const tw='px-1 py-0.5 overflow-hidden text-ellipsis block whitespace-nowrap self-stretch'
-        const maxWidth = undefined // st.library.imageSize
+        const maxWidth = st.library.imageSize
         if (file.absPath.endsWith('.ts'))   return <span tw={[tw, 'bg-primary text-primary-content']} style={{maxWidth}}>Cushy Action</span>
         if (file.absPath.endsWith('.json')) return <span tw={[tw, 'bg-secondary text-secondary-content']} style={{maxWidth}}>ComfyUI Workflow JSON</span>
         if (file.absPath.endsWith('.png'))  return <span tw={[tw, 'bg-accent text-accent-content']} style={{maxWidth}}>ComfyUI Workflow Image</span>
@@ -30,6 +30,7 @@ export const AppCardUI = observer(function FancyCardUI_(p: {
 
     return (
         <div
+            style={{ width: st.library.imageSize }}
             // onClick={p.card.openLastDraftAsCurrent}
             tw={[
                 //
@@ -40,19 +41,27 @@ export const AppCardUI = observer(function FancyCardUI_(p: {
                 'cursor-pointer',
             ]}
         >
+            {/* ROW 1 */}
             <div tw='flex items-start flex-grow' style={{ fontSize: '1rem' }}>
+                {/* FAVORITE */}
                 {st.library.showFavorites ? <AppFavoriteBtnUI app={app} size={'1.5rem'} /> : null}
+
+                {/* NAME */}
                 <div
                     //
                     style={{ width: st.library.imageSize, height: '3rem' }}
                     tw='overflow-hidden overflow-ellipsis pt-1 font-bold'
                 >
-                    {file.baseName}
+                    {app.name}
                 </div>
             </div>
+
+            {/* ROW 2 */}
             <div tw='flex'>
-                {/* 🔴 */}
-                {/* <AppIllustrationUI app={file} size={st.library.imageSize} /> */}
+                {/* ILLUSTRATION */}
+                <AppIllustrationUI app={app} size={st.library.imageSize} />
+
+                {/* DESCRIPTION */}
                 {st.library.showDescription ? (
                     <div tw='flex-grow flex flex-col ml-1 w-44'>
                         {/* <div>
@@ -66,6 +75,13 @@ export const AppCardUI = observer(function FancyCardUI_(p: {
                     </div>
                 ) : null}
             </div>
+
+            {/* ROW 3 */}
+            {/* PATH */}
+            <div tw='italic text-xs whitespace-nowrap overflow-ellipsis overflow-hidden text-opacity-50'>{file.relPath}</div>
+
+            {/* ROW 4 */}
+            {/* KIND */}
             {color}
         </div>
     )
