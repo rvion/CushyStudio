@@ -55,6 +55,11 @@ const config: Config = {
     themeConfig: {
         // Replace with your project's social card
         image: 'img/docusaurus-social-card.jpg',
+        // https://docusaurus.io/docs/api/themes/configuration#respectPrefersColorScheme
+        colorMode: {
+            defaultMode: 'dark',
+            respectPrefersColorScheme: true,
+        },
         navbar: {
             title: 'CushyStudio',
             logo: {
@@ -66,11 +71,11 @@ const config: Config = {
                     type: 'docSidebar',
                     sidebarId: 'tutorialSidebar',
                     position: 'left',
-                    label: 'Tutorial',
+                    label: 'Documentation',
                 },
                 { to: '/blog', label: 'Blog', position: 'left' },
                 {
-                    href: 'https://github.com/facebook/docusaurus',
+                    href: 'https://github.com/rvion/cushystudio',
                     label: 'GitHub',
                     position: 'right',
                 },
@@ -83,7 +88,7 @@ const config: Config = {
                     title: 'Docs',
                     items: [
                         {
-                            label: 'Tutorial',
+                            label: 'Documentation',
                             to: '/docs/intro',
                         },
                     ],
@@ -119,7 +124,8 @@ const config: Config = {
                     ],
                 },
             ],
-            copyright: `Copyright © ${new Date().getFullYear()} CushyStudio. Built with Docusaurus.`,
+            copyright: `Copyright © ${new Date().getFullYear()} CushyStudio.`,
+            //  Built with Docusaurus.
         },
         prism: {
             theme: prismThemes.github,
