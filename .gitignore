@@ -63,3 +63,5 @@ lib
 .cushy/pnpm
 .cushy/pnpm*
 .cushy/store
+
+docs/ex
