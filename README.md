@@ -10,7 +10,7 @@
 <!-- <img height="21"  alt="Sponsors"     src="https://img.shields.io/github/sponsors/rvion" /> -->
 
 
-_🔶 NOTICE: CushyStudio is still in development. It updates and breaks often. We are working hard to make a stable version. Current Focus is fixing the lack of variosu error message related to missing custom ComfyUI nodes 🔶_
+_🔶 NOTICE: CushyStudio is still in development. It updates and breaks often. We are working hard to make a stable version. Current Focus is on improving the install experience and switching to some real production-ready database 🔶_
 
 
 <br />
@@ -87,27 +87,29 @@ https://github.com/rvion/CushyStudio/assets/2150990/776b00f5-687e-4043-8dac-34df
     2.  [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) (to install via git) -->
 
 1. download this repository,
+    ```sh
+    git clone https://github.com/rvion/CushyStudio --depth 1
+    cd CushyStudio
+    ```
 
-   - a. option a. by downloading a zip archive of this repo
-
-   - b. option b. via git clone
-        ```sh
-        git clone https://github.com/rvion/CushyStudio --depth 1
-        cd CushyStudio
-        ```
-
-
-
-
-then click
-<!-- npm install -->
-<!-- npm start -->
+2. click
+   1. `_windows_INSTALL.bat` (on windows)
+   2. `_macos_INSTALL.sh` (on macos)
+   3. `_linux_INSTALL.sh` (on linux)
 
 
 
 # 3. Quickstart Guide
 
 <!-- ## 3.1. Starting -->
+
+
+
+2. click
+   1. `_windows_START.bat` (on windows)
+   2. `_macos_START.sh` (on macos)
+   3. `_linux_START.sh` (on linux)
+
 
 <!-- You can start **CushyStudio** in two ways: -->
 
