@@ -92,7 +92,10 @@ export class CushyAppL {
             const count = prev.data?.length ?? prev.count ?? 0
             if (count === 0) {
                 console.log(`[🐩] no published app found; inserting`)
-                const res = await supa.from('published_apps').insert({ user_id, name: this.name })
+                const res = await supa.from('published_apps').insert({
+                    user_id,
+                    name: this.name,
+                })
                 console.log(`[🐩] ✅ inserted !`)
             } else {
                 //
