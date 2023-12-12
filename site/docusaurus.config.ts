@@ -15,7 +15,7 @@ const config: Config = {
 
     // GitHub pages deployment config.
     // If you aren't using GitHub pages, you don't need these.
-    organizationName: 'CushyStudio', // Usually your GitHub org/user name.
+    organizationName: 'rvion', // Usually your GitHub org/user name.
     projectName: 'CushyStudio', // Usually your repo name.
 
     onBrokenLinks: 'throw',
