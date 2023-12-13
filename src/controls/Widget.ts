@@ -1236,7 +1236,7 @@ export class Widget_groupOpt<T extends { [key: string]: Widget }> implements IRe
 export type Widget_choice_opts <T extends { [key: string]: Widget }> = ReqInput<{ default?: keyof T; items: () => T }>
 export type Widget_choice_serial<T extends { [key: string]: Widget }> = StateFields<{ type: 'choice', active: boolean; pick: keyof T & string, values_: {[K in keyof T]: T[K]['$Serial']} }>
 export type Widget_choice_state <T extends { [key: string]: Widget }> = StateFields<{ type: 'choice', active: boolean; pick: keyof T & string, values: T }>
-export type Widget_choice_output<T extends { [key: string]: Widget }> = ReqResult<T[keyof T]>
+export type Widget_choice_output<T extends { [key: string]: Widget }> = { [k in keyof T]?: ReqResult<T[k]> }
 export interface Widget_choice  <T extends { [key: string]: Widget }> extends    IWidget<'choice',  Widget_choice_opts<T>, Widget_choice_serial<T>, Widget_choice_state<T>, Widget_choice_output<T>> {}
 export class Widget_choice      <T extends { [key: string]: Widget }> implements IRequest<'choice', Widget_choice_opts<T>, Widget_choice_serial<T>, Widget_choice_state<T>, Widget_choice_output<T>> {
     isOptional = false
@@ -1278,12 +1278,12 @@ export class Widget_choice      <T extends { [key: string]: Widget }> implements
         return { type: 'choice', id: this.id, active: this.state.active, values_: out as any, collapsed: this.state.collapsed, pick: this.state.pick }
     }
     get result(): Widget_choice_output<T> {
-        // @ts-ignore
-        if (!this.state.active) return undefined
-        // @ts-ignore
-        if (this.state.pick==null)return undefined
-
-        return this.state.values[this.state.pick].result
+        const out: { [key: string]: any } = {}
+        for (const key in this.state.values) {
+            if (key !== this.state.pick) continue
+            out[key] = this.state.values[key].result
+        }
+        return out as any
     }
 }
 
