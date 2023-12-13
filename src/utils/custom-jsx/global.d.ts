@@ -17,3 +17,5 @@ declare module 'react' {
 }
 
 declare module '*.css' {}
+
+declare module '@docusaurus/tsconfig' {}
