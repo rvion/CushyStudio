@@ -24,18 +24,24 @@ import { optionalString, string } from './schema'
 // DECK --------------------------------------
 export type AppMetadata = {
     /**
-     * card name;
+     * app name;
      * defaults to the file name without extension
      * */
     name?: string
 
-    /** card image that will be displayed in the tree picker */
+    /**
+     * app tags;
+     * @default []
+     * */
+    tags?: string[]
+
+    /** app image that will be displayed in the tree picker */
     illustration?: string
 
-    /** high priority means this card will be displayed other others */
+    /** high priority means this app will be displayed other others */
     priority?: number
 
-    /** card style in the library */
+    /** app style in the library */
     style?: 'A' | 'B' | 'C' | 'D'
 
     /** this description will show-up at the top of the action form */
@@ -51,8 +57,8 @@ export type AppMetadata = {
     author?: string
 
     /**
-     * an example of what this card can produce
-     * this may be displayed in the output Panel on first card opening
+     * an example of what this app can produce
+     * this may be displayed in the output Panel on first app opening
      */
     sampleOutput?: string
 }

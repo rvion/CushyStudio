@@ -554,8 +554,8 @@ export class STATE {
 
             // debug for rvion
             if (this.githubUsername === 'rvion') {
-                writeFileSync('docs/ex/a.md', '```ts\n' + comfySchemaTs + '\n```\n', 'utf-8')
-                writeFileSync('docs/ex/b.md', '```json\n' + object_info_str + '\n```\n', 'utf-8')
+                writeFileSync('tmp/docs/ex/a.md', '```ts\n' + comfySchemaTs + '\n```\n', 'utf-8')
+                writeFileSync('tmp/docs/ex/b.md', '```json\n' + object_info_str + '\n```\n', 'utf-8')
             }
         } catch (error) {
             console.error(error)

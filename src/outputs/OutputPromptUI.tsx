@@ -56,7 +56,7 @@ export const OutputPromptUI = observer(function OutputPromptUI_(p: {
     return (
         <div className='flex flex-col gap-1'>
             <div
-                tw='btn btn-sm'
+                tw='btn btn-sm btn-outline'
                 onClick={() => {
                     st.stopCurrentPrompt()
                 }}

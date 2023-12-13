@@ -81,7 +81,7 @@ export class LibraryFile {
 
     // --------------------------------------------------------
     // status
-    loaded = new ManualPromise<true>()
+    // loaded = new ManualPromise<true>()
     errors: { title: string; details: any }[] = []
     addError = (title: string, details: any = null): LoadStatus => {
         this.errors.push({ title, details })
@@ -114,7 +114,8 @@ export class LibraryFile {
         this.isLoading = true
 
         // don't load once already loaded
-        if (this.loaded.done && !p?.force) return true
+        // if (this.loaded.done && !p?.force) return true
+        if (this.hasBeenLoadedAtLeastOnce && !p?.force) return true
 
         // try every strategy in order
         for (const strategy of this.strategies) {
@@ -127,7 +128,9 @@ export class LibraryFile {
             }
         }
 
-        console.log(`[🔴] LibFile: LOAD FAILURE !`)
+        if (this.successfullLoadStrategies == null) {
+            console.log(`[🔴] LibFile: LOAD FAILURE !`)
+        }
 
         // done
         this.hasBeenLoadedAtLeastOnce = true

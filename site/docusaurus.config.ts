@@ -74,6 +74,7 @@ const config: Config = {
                     label: 'Documentation',
                 },
                 { to: '/blog', label: 'Blog', position: 'left' },
+                { to: '/app-marketplace', label: 'App Library', position: 'left' },
                 {
                     href: 'https://github.com/rvion/cushystudio',
                     label: 'GitHub',
@@ -130,6 +131,8 @@ const config: Config = {
         prism: {
             theme: prismThemes.github,
             darkTheme: prismThemes.dracula,
+            // https://lucidar.me/en/web-dev/list-of-supported-languages-by-prism/
+            additionalLanguages: ['json', 'typescript', 'bash'],
         },
     } satisfies Preset.ThemeConfig,
 }

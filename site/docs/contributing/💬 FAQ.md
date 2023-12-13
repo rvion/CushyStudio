@@ -58,7 +58,7 @@ I can obviously already do this with the code I wrote myself, but the CLA allows
 
 ---
 
-### Q: Does the CLA concern `User-published action packs in the marketplace` ?
+### Q: Does the CLA concern `User-published packages in the marketplace` ?
 
 ### A: No; your cards are yours.
 

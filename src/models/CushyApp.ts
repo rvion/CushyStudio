@@ -95,11 +95,22 @@ export class CushyAppL {
                 const res = await supa.from('published_apps').insert({
                     user_id,
                     name: this.name,
+                    description: this.description,
+                    illustration_url: this.executable?.illustration,
+                    tags: this.executable?.tags,
                 })
-                console.log(`[🐩] ✅ inserted !`)
+                console.log(`[🐩] ✅ inserted !`, res)
             } else {
                 //
-                console.log(`[🐩] found`, prev)
+                console.log(`[🐩] found`, prev, 'updating...')
+                throw new Error('🔴 UNFINISHED')
+                const res = await supa.from('published_apps').update({
+                    name: this.name,
+                    description: this.description,
+                    illustration_url: this.executable?.illustration,
+                    tags: this.executable?.tags,
+                })
+                console.log(`[🐩] ✅ updated !`, res)
             }
         } catch (e) {
             console.error(`[🐩] ❌ publish failed !`)
@@ -146,7 +157,7 @@ export class CushyAppL {
 
     /** app description */
     get description(): string {
-        return this.executable?.metadata?.description ?? '<no description>'
+        return this.data.description ?? this.executable?.description ?? '<no description>'
     }
 
     /** action display name */

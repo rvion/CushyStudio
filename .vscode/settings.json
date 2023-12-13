@@ -69,5 +69,6 @@
 
     // Turn off tsc task auto detection since we have the necessary tasks as npm scripts
     "typescript.tsc.autoDetect": "off",
-    "vsicons.presets.nestjs": true
+    "vsicons.presets.nestjs": true,
+    "mdx.server.enable": false
 }

@@ -1,8 +1,17 @@
 ---
-sidebar_position: 1
+sidebar_position: 0
 ---
 
-# Tutorial Intro
+# Welcome to CushyStudio
+
+:::danger
+
+UNFINISHED
+
+Most content here is placholder
+
+:::
+
 
 Let's discover **Docusaurus in less than 5 minutes**.
 

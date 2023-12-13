@@ -80,6 +80,9 @@ dependencies:
   lodash.debounce:
     specifier: ^4.0.8
     version: 4.0.8
+  logfile-service:
+    specifier: ^2.3.1
+    version: 2.3.1
   marked:
     specifier: ^10.0.0
     version: 10.0.0
@@ -3192,6 +3195,10 @@ packages:
 
   /lodash@4.17.21:
     resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}
+    dev: false
+
+  /logfile-service@2.3.1:
+    resolution: {integrity: sha512-hdOcQeaepNrx8sEV0qH6Dpr8ac8q4acQ5TJxCZDVJStb0Ut2e7JbzXuB9sgE9CeH0AK+KFK2sF0TzJPfXIyQqg==}
     dev: false
 
   /loose-envify@1.4.0:

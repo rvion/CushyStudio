@@ -36,6 +36,10 @@ export class CushyScriptL {
             const app = this.db.cushy_apps.upsert({
                 id: executable.appID,
                 scriptID: this.id,
+                description: executable.description,
+                illustration: executable.illustration,
+                name: executable.name,
+                tags: executable.tags.join(','),
             })
             return app
         })

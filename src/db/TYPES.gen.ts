@@ -720,6 +720,12 @@ export type CushyAppT = {
     /** @default: null, sqlType: TEXT */
     illustration?: Maybe<string>;
 
+    /** @default: null, sqlType: TEXT */
+    description?: Maybe<string>;
+
+    /** @default: null, sqlType: TEXT */
+    tags?: Maybe<string>;
+
 }
 export const CushyAppSchema = Type.Object({
     id: Type.String(),
@@ -729,6 +735,8 @@ export const CushyAppSchema = Type.Object({
     scriptID: Type.String(),
     name: Type.Optional(T.Nullable(Type.String())),
     illustration: Type.Optional(T.Nullable(Type.String())),
+    description: Type.Optional(T.Nullable(Type.String())),
+    tags: Type.Optional(T.Nullable(Type.String())),
 },{ additionalProperties: false })
 
 export const CushyAppFields = {
@@ -739,6 +747,8 @@ export const CushyAppFields = {
     scriptID: {cid:4,name:'scriptID',type:'TEXT',notnull:1,dflt_value:null,pk:0},
     name: {cid:5,name:'name',type:'TEXT',notnull:0,dflt_value:null,pk:0},
     illustration: {cid:6,name:'illustration',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    description: {cid:7,name:'description',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    tags: {cid:8,name:'tags',type:'TEXT',notnull:0,dflt_value:null,pk:0},
 }
 
 

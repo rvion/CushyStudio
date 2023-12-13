@@ -76,6 +76,7 @@
         "konva": "^9.2.3",
         "lexical": "^0.12.5",
         "lodash.debounce": "^4.0.8",
+        "logfile-service": "^2.3.1",
         "marked": "^10.0.0",
         "mime-types": "^2.1.35",
         "mobx": "^6.12.0",

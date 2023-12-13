@@ -60,6 +60,10 @@ export default defineConfig({
             src: resolve(__dirname, './src'),
             // injected node modules
             // check the `src/syms/_.cjs`
+            /* */ assert: `${installDir}/src/syms/assert.js`,
+            'node:assert': `${installDir}/src/syms/assert.js`,
+            /* */ url: `${installDir}/src/syms/url.js`,
+            'node:url': `${installDir}/src/syms/url.js`,
             /* */ buffer: `${installDir}/src/syms/buffer.js`,
             'node:buffer': `${installDir}/src/syms/buffer.js`,
             /* */ child_process: `${installDir}/src/syms/child_process.js`,

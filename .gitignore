@@ -65,3 +65,6 @@ lib
 .cushy/store
 
 docs/ex
+
+
+*.log

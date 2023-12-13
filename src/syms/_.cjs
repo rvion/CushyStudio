@@ -1,5 +1,7 @@
 const modulesToCache = [
     //
+    'assert',
+    'url',
     'buffer',
     'child_process',
     'fs',

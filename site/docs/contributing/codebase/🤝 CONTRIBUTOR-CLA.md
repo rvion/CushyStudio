@@ -1,4 +1,12 @@
+
+
 ## Contributor License Agreement
+
+When submitting your First PR on Github, you'll be asked to sign (click a button) a Contributor License Agreement (CLA). This is a one-time thing, and you won't have to sign it again for future contributions.
+
+Here is the content 👇
+
+-------
 
 ### Welcome to the `CushyStudio` Contributor Family!
 

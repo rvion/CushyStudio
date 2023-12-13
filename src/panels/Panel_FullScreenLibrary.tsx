@@ -2,6 +2,7 @@ import { use } from 'cytoscape'
 import { observer } from 'mobx-react-lite'
 import { useEffect } from 'react'
 import { AppCardUI } from 'src/cards/fancycard/AppCardUI'
+import { recursivelyFindAppsInFolder } from 'src/cards/walkLib'
 import { FileBeeingImportedUI } from 'src/importers/FilesBeeingImported'
 import { Addon, Joined, Slider, Toggle } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
@@ -21,11 +22,6 @@ export const Panel_CardPicker3UI = observer(function Panel_CardPicker3UI_(p: {})
             <div tw='bg-base-200 p-4'>
                 <div tw='flex gap-2'>
                     <div tw='mr-2 text-2xl'>Library</div>
-                    {st._allPublishedApps?.data?.map((app) => (
-                        <div key={app.id}>
-                            <pre>{JSON.stringify(app)}</pre>
-                        </div>
-                    ))}
                     {/* <CreateDeckBtnUI /> */}
                 </div>
                 <div tw='flex gap-1 items-center'>
@@ -57,6 +53,21 @@ export const Panel_CardPicker3UI = observer(function Panel_CardPicker3UI_(p: {})
                             placeholder='search'
                         />
                     </Joined>
+                    <div
+                        tw='btn btn-primary'
+                        onClick={async () => {
+                            //
+                            // throw new Error('not implemented; should walk, list all apps, and compile them to executable')
+                            const allFiles = recursivelyFindAppsInFolder(st.library, st.libraryFolderPathAbs)
+                            console.log(`[👙] allFiles:`, allFiles.length)
+                            for (const x of allFiles) {
+                                await x.load()
+                                console.log(`[👙] loaded`)
+                            }
+                        }}
+                    >
+                        Rebuild local store
+                    </div>
                     {/* </div> */}
                     {/* <div tw='flex gap-2'> */}
                     {/* <InputGroup tw='self-start'>
@@ -100,6 +111,11 @@ export const Panel_CardPicker3UI = observer(function Panel_CardPicker3UI_(p: {})
                 </ScrollablePaneUI> */}
                 <ScrollablePaneUI tw='flex-grow'>
                     <div tw='flex flex-wrap  gap-2'>
+                        {st._allPublishedApps?.data?.map((app) => (
+                            <div tw='w-96 h-80 virtualBorder' key={app.id}>
+                                <pre>{JSON.stringify(app, null, 3)}</pre>
+                            </div>
+                        ))}
                         <FileBeeingImportedUI files={st.droppedFiles} />
                         {st.library.appsFiltered.map((app, ix) => (
                             <div key={app.id}>

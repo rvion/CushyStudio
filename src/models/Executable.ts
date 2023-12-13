@@ -1,6 +1,8 @@
+import type { CushyScriptL } from './CushyScriptL'
+
 import { App, WidgetDict } from 'src/cards/App'
-import { CushyScriptL } from './CushyScriptL'
 import { asCushyAppID } from 'src/db/TYPES.gen'
+import { basename } from 'pathe'
 
 export class Executable {
     constructor(
@@ -20,6 +22,22 @@ export class Executable {
 
     get metadata() {
         return this.def.metadata
+    }
+
+    get name(): string {
+        return this.def.metadata?.name ?? basename(this.script.relPath)
+    }
+
+    get tags(): string[] {
+        return this.def.metadata?.tags ?? []
+    }
+
+    get description(): Maybe<string> {
+        return this.def.metadata?.description
+    }
+
+    get illustration(): Maybe<string> {
+        return this.def.metadata?.illustration
     }
 
     get appID(): CushyAppID {

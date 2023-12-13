@@ -258,7 +258,7 @@ In this section, we will
     - 👉 this file is updated after each ComfyUI connection.
     - 👉 It means it will only be created after the first successful connection to your ComfyUI instance
 
-## 5.2. What is an `Action`?
+## 5.2. What is an `App`?
 
 An `Action` is self-contained.
 - A widget definition ( `"ui"` function)
@@ -278,9 +278,9 @@ card({
 
 
 
-## 5.3. What is an `Action`?
+## 5.3. What is an `App`?
 
-A `Deck` is a folder containing
+A `Package` is a folder containing
 
   - A list of **Apps**
   - A list of `assets`
@@ -295,7 +295,7 @@ Decks are made to be shared.
 
 ##  5.4. Create your first deck
 
-1. Click the `[+ Create Deck]` button at the top of the `Library`
+1. Click the `[+ Create Package]` button at the top of the `Library`
 
 2. Enter your `github username` and `deck name`
    1. 👉 Your `github username` will be your dedicated namespace in the library
@@ -388,7 +388,7 @@ The simplest way to modularize your **Apps** is to build `prefabs`.
 
 _Best practices:_
 
-- Usually, your `Deck` will contain one or many `prefab` files,
+- Usually, your `Package` will contain one or many `prefab` files,
 - You can The main `prefab` used by the built-in `deck` here: `library/CushyStudio/default/_prefab.ts`:
 
 
@@ -494,7 +494,7 @@ function fn() {
 }
 ```
 
-## 5.7. Publish your Deck
+## 5.7. Publish your Package
 
 Publishing your deck/apps is easy!
 
@@ -510,7 +510,7 @@ Publishing your deck/apps is easy!
     1. You can one-click the `publish` button in your deck entry in the library
     2. You can follow the instructions given by Git Hub on the new repository page
 
-4.  Open an issue asking to add your `Deck` to the `Library`.
+4.  Open an issue asking to add your `Package` to the `Library`.
     -   https://github.com/rvion/CushyStudio/issues/new/choose
 
 <details>

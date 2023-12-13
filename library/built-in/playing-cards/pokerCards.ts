@@ -3,91 +3,94 @@ import type { FormBuilder } from 'src/controls/FormBuilder'
 import { CardSuit, CardValue } from './_cardLayouts'
 import { _drawCard } from './_drawCard'
 
-const ui = (form: FormBuilder) => ({
-    // [UI] MODEL --------------------------------------
-    // generate
-    // _1: form.markdown({ markdown: `### Model`, label: false }),
-    model: form.enum({
-        enumName: 'Enum_CheckpointLoaderSimple_ckpt_name',
-        default: 'revAnimated_v122.safetensors',
-        group: 'model',
-    }),
-    // foo: form.selectOne({
-    //     choices: [{ type: 'foo' }, { type: 'bar' }],
-    //     group: 'model',
-    // }),
-
-    // [UI] CARD ---------------------------------------
-    // _2: form.markdown({ markdown: `### Cards`, label: false }),
-    cards: form.matrix({
-        cols: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'],
-        rows: ['spades', 'hearts', 'clubs', 'diamonds'],
-        default: [],
-    }),
-
-    logos: form.group({
-        layout: 'H',
-        // className: 'flex flex-wrap',
-        items: () => ({
-            spades: form.imageOpt({}),
-            hearts: form.imageOpt({}),
-            clubs: form.imageOpt({}),
-            diamonds: form.imageOpt({}),
-        }),
-    }),
-
-    // _3: form.markdown({ markdown: `### Prompts`, label: false }),
-    generalTheme: form.string({ default: 'fantasy' }),
-    // Main cards
-    illustrations: form.group({
-        layout: 'H',
-        // className: 'p-2 bg-red-800',
-        items: () => ({
-            Jack: form.str({ default: 'gold, Knight', group: 'illusration' }),
-            Queen: form.str({ default: 'gold, Queen', group: 'illusration' }),
-            King: form.str({ default: 'gold, King', group: 'illusration' }),
-        }),
-    }),
-
-    // [UI] THEME --------------------------------------
-    themes: form.group({
-        items: () => ({
-            spades: form.string({ default: 'underwater, sea, fish, tentacles, ocean', group: 'theme' }),
-            hearts: form.string({ default: 'volcanic, lava, rock, fire', group: 'theme' }),
-            clubs: form.string({ default: 'forest, nature, branches, trees', group: 'theme' }),
-            diamonds: form.string({ default: 'snow, ice, mountain, transparent winter', group: 'theme' }),
-        }),
-    }),
-
-    colors: form.group({
-        items: () => ({
-            spades: form.string({ default: 'blue' }),
-            hearts: form.string({ default: 'red' }),
-            clubs: form.string({ default: 'green' }),
-            diamonds: form.string({ default: 'white' }),
-        }),
-    }),
-
-    // theme5: form.string({ default: 'winter', group: 'theme' }),
-
-    // [UI] SIZES --------------------------------------
-    logoSize: form.int({ default: 120, min: 20, max: 1000 }),
-    size: form.size({ default: { modelType: 'SD1.5 512', aspectRatio: '16:9' }, group: 'size' }),
-
-    // [UI] BORDERS ------------------------------------
-    background: form.group({
-        items: () => ({
-            seed: form.seed({ default: 0, defaultMode: 'fixed' }),
-            help: form.markdown({ markdown: `Use \`{color}\` and \`{suit}\` to insert the current color and suit` }),
-            prompt: form.string({ default: `{color} background pattern` }),
-        }),
-    }),
-    margin: form.intOpt({ default: 40 }),
-    symetry: form.bool({ default: false }),
-})
-
 app({
-    ui,
+    metadata: {
+        name: 'Illustrated deck of cards',
+        illustration: '_illustrations/poker-card-generator.jpg',
+        description: 'Allow you to generate illustrated deck of cards',
+    },
+    ui: (form: FormBuilder) => ({
+        // [UI] MODEL --------------------------------------
+        // generate
+        // _1: form.markdown({ markdown: `### Model`, label: false }),
+        model: form.enum({
+            enumName: 'Enum_CheckpointLoaderSimple_ckpt_name',
+            default: 'revAnimated_v122.safetensors',
+            group: 'model',
+        }),
+        // foo: form.selectOne({
+        //     choices: [{ type: 'foo' }, { type: 'bar' }],
+        //     group: 'model',
+        // }),
+
+        // [UI] CARD ---------------------------------------
+        // _2: form.markdown({ markdown: `### Cards`, label: false }),
+        cards: form.matrix({
+            cols: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'],
+            rows: ['spades', 'hearts', 'clubs', 'diamonds'],
+            default: [],
+        }),
+
+        logos: form.group({
+            layout: 'H',
+            // className: 'flex flex-wrap',
+            items: () => ({
+                spades: form.imageOpt({}),
+                hearts: form.imageOpt({}),
+                clubs: form.imageOpt({}),
+                diamonds: form.imageOpt({}),
+            }),
+        }),
+
+        // _3: form.markdown({ markdown: `### Prompts`, label: false }),
+        generalTheme: form.string({ default: 'fantasy' }),
+        // Main cards
+        illustrations: form.group({
+            layout: 'H',
+            // className: 'p-2 bg-red-800',
+            items: () => ({
+                Jack: form.str({ default: 'gold, Knight', group: 'illusration' }),
+                Queen: form.str({ default: 'gold, Queen', group: 'illusration' }),
+                King: form.str({ default: 'gold, King', group: 'illusration' }),
+            }),
+        }),
+
+        // [UI] THEME --------------------------------------
+        themes: form.group({
+            items: () => ({
+                spades: form.string({ default: 'underwater, sea, fish, tentacles, ocean', group: 'theme' }),
+                hearts: form.string({ default: 'volcanic, lava, rock, fire', group: 'theme' }),
+                clubs: form.string({ default: 'forest, nature, branches, trees', group: 'theme' }),
+                diamonds: form.string({ default: 'snow, ice, mountain, transparent winter', group: 'theme' }),
+            }),
+        }),
+
+        colors: form.group({
+            items: () => ({
+                spades: form.string({ default: 'blue' }),
+                hearts: form.string({ default: 'red' }),
+                clubs: form.string({ default: 'green' }),
+                diamonds: form.string({ default: 'white' }),
+            }),
+        }),
+
+        // theme5: form.string({ default: 'winter', group: 'theme' }),
+
+        // [UI] SIZES --------------------------------------
+        logoSize: form.int({ default: 120, min: 20, max: 1000 }),
+        size: form.size({ default: { modelType: 'SD1.5 512', aspectRatio: '16:9' }, group: 'size' }),
+
+        // [UI] BORDERS ------------------------------------
+        background: form.group({
+            items: () => ({
+                seed: form.seed({ default: 0, defaultMode: 'fixed' }),
+                help: form.markdown({ markdown: `Use \`{color}\` and \`{suit}\` to insert the current color and suit` }),
+                prompt: form.string({ default: `{color} background pattern` }),
+            }),
+        }),
+        margin: form.intOpt({ default: 40 }),
+        symetry: form.bool({ default: false }),
+    }),
     run: async (flow, p) => {
         //===//===//===//===//===//===//===//===//===//===//===//===//===//
         // 1. SETUP --------------------------------------------------

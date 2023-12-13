@@ -300,6 +300,15 @@ export const migrations: {
             `alter table auth add column expires_in int `,
         ],
     },
+    {
+        id: 'SKEO1Da-aa',
+        name: 'add app description and tags',
+        up: [
+            //
+            'alter table cushy_app add column description text',
+            'alter table cushy_app add column tags text',
+        ],
+    },
     // {
     //     id: 'e574c006-daca-4fd0-a51b-73a66b4fbd79',
     //     name: 'create cushy_app table',
