@@ -3,11 +3,13 @@ import { observer } from 'mobx-react-lite'
 import { FormEvent, useCallback, useMemo, useRef, useState } from 'react'
 import { Tree, TreeDataProvider, TreeItem, TreeItemIndex, TreeRef, UncontrolledTreeEnvironment } from 'react-complex-tree'
 import { asAppPath } from 'src/cards/asAppPath'
+import { asCushyAppID } from 'src/db/TYPES.gen'
 import { DraftL } from 'src/models/Draft'
 import { STATE } from 'src/state/state'
 import { useSt } from 'src/state/stateContext'
 import { asRelativePath } from 'src/utils/fs/pathUtils'
 import { RenderItemTitleUI } from './RenderItemTitleUI'
+import { TreeApp } from './TreeApp'
 import { TreeDraft } from './TreeDraft'
 import { ITreeEntry, TreeEntry } from './TreeEntry'
 import { TreeError } from './TreeError'
@@ -15,9 +17,6 @@ import { TreeFavorite } from './TreeFavorites'
 import { TreeFile } from './TreeFile'
 import { TreeFolder } from './TreeFolder'
 import { TreeRoot } from './TreeRoot'
-import { nanoid } from 'nanoid'
-import { TreeApp } from './TreeApp'
-import { asCushyAppID } from 'src/db/TYPES.gen'
 
 export const Tree3 = observer(() => {
     const st = useSt()
@@ -124,7 +123,8 @@ class MyTreeDataProvider implements TreeDataProvider<any> {
         }
         // ----------------
         if (itemId.startsWith('favorite#')) {
-            return Promise.resolve(new TreeFile(this.st, itemId, asAppPath(itemId.slice('favorite#'.length))))
+            const appID = asCushyAppID(itemId.slice('favorite#'.length))
+            return Promise.resolve(new TreeApp(this.st, itemId, appID))
         }
         if (itemId.startsWith('app#')) {
             return Promise.resolve(new TreeApp(this.st, itemId, asCushyAppID(itemId.slice('app#'.length))))

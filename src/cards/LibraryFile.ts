@@ -123,7 +123,7 @@ export class LibraryFile {
             if (res.type === 'SUCCESS') {
                 this.script0 = res.script
                 this.successfullLoadStrategies = strategy
-                console.log(`[🟢] LibFile: LOAD SUCCESS !`)
+                // console.log(`[🟢] LibFile: LOAD SUCCESS !`)
                 break
             }
         }

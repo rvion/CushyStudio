@@ -127,7 +127,7 @@ export class LiveTable<T extends BaseInstanceFields, L extends LiveInstance<T, L
                 const isSame = Object.keys(changes).every((k) => {
                     return (this.data as any)[k] === (changes as any)[k]
                 })
-                if (isSame) return console.log('❌ no need to update') // no need to update
+                if (isSame) return console.log(`✔️ ${this.table.name}#${changes.id} no need to update`) // no need to update
 
                 // 2. store the prev in case we have an onUpdate callback later
                 const prev = this.onUpdate //
@@ -327,7 +327,7 @@ export class LiveTable<T extends BaseInstanceFields, L extends LiveInstance<T, L
         let findSQL = [`select * from ${this.name}`, `where`, whereClause.join(' and ')].join(' ')
         if (options.limit) findSQL += ` limit ${options.limit}`
 
-        console.log(`[👙] >>>`, findSQL, whereVars)
+        // console.log(`[👙] >>>`, findSQL, whereVars)
         const stmt = this.db.db.prepare<{ [key: string]: any }>(findSQL)
         const datas: T[] = stmt.all(whereVars).map((data) => this.infos.hydrateJSONFields(data))
         const instances = datas.map((d) => this.getOrCreateInstanceForExistingData(d))

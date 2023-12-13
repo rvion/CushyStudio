@@ -7,7 +7,7 @@ import type { TreeFile } from './TreeFile'
 import type { TreeFolder } from './TreeFolder'
 import type { TreeRoot } from './TreeRoot'
 
-import { ReactNode } from 'react'
+import { FC, ReactNode } from 'react'
 
 // prettier-ignore
 export type TreeEntry =
@@ -24,6 +24,7 @@ export type TreeEntryAction = {
     mode: 'small' | 'full'
     icon: string
     onClick: () => void
+    className?: string
 }
 
 export interface ITreeEntry {
@@ -34,4 +35,5 @@ export interface ITreeEntry {
     onPrimaryAction?: () => void
     onFocusItem?: () => void
     actions?: TreeEntryAction[]
+    extra?: ReactNode
 }

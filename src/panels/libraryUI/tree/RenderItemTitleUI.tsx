@@ -1,6 +1,8 @@
 import { observer } from 'mobx-react-lite'
 import type { TreeInformation, TreeItem, TreeItemRenderContext } from 'react-complex-tree'
 import type { ITreeEntry } from './TreeEntry'
+import { createElement } from 'react'
+import { TreeIcon1UI } from './RenderTreeIcon1'
 
 export const RenderItemTitleUI = observer(function RenderItemTitleUI_(x: {
     //
@@ -24,18 +26,10 @@ export const RenderItemTitleUI = observer(function RenderItemTitleUI_(x: {
                 <div tw='absolute inset-0'>{item.data.name}</div>
             </div>
             <div tw='ml-auto opacity-40 hover:opacity-100'>
-                {item.data.actions?.map((action) => (
-                    <div
-                        key={action.name}
-                        tw='btn btn-xs btn-square btn-ghost'
-                        onClick={(e) => {
-                            e.stopPropagation()
-                            action.onClick?.()
-                        }}
-                    >
-                        <span className='material-symbols-outlined'>{action.icon}</span>
-                    </div>
-                ))}
+                {item.data.extra}
+                {item.data.actions?.map((action, ix) => {
+                    return <TreeIcon1UI key={ix} {...action} />
+                })}
             </div>
         </div>
     )

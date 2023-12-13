@@ -13,6 +13,7 @@ app({
     metadata: {
         name: 'Cushy Diffusion UI',
         illustration: IMG,
+        description: 'A card that contains all the features needed to play with stable diffusion',
     },
     ui: (ui) => ({
         positive: ui.prompt({

@@ -2,6 +2,8 @@ import { TreeItem, TreeItemIndex } from 'react-complex-tree'
 import { CushyAppL } from 'src/models/CushyApp'
 import { STATE } from 'src/state/state'
 import { ITreeEntry, TreeEntry, TreeEntryAction } from './TreeEntry'
+import { AppFavoriteBtnUI } from '../CardPicker2UI'
+import { observer } from 'mobx-react-lite'
 
 export class TreeApp implements ITreeEntry, TreeItem<TreeApp> {
     app: CushyAppL
@@ -32,6 +34,7 @@ export class TreeApp implements ITreeEntry, TreeItem<TreeApp> {
     get children(): TreeItemIndex[] {
         return this.app.drafts.map((draft) => `draft#${draft.id}`)
     }
+    extra = (<TreeApp_BtnFavUI entry={this} />)
     actions: TreeEntryAction[] = [
         {
             name: 'add Draft',
@@ -44,3 +47,7 @@ export class TreeApp implements ITreeEntry, TreeItem<TreeApp> {
         },
     ]
 }
+
+export const TreeApp_BtnFavUI = observer(function TreeApp_BtnFavUI_(p: { entry: TreeApp }) {
+    return <AppFavoriteBtnUI app={p.entry.app} />
+})
