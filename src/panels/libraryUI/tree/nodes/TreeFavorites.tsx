@@ -1,6 +1,5 @@
 import { STATE } from 'src/state/state'
-import { ITreeEntry, TreeEntry } from '../TreeEntry'
-import { TreeItem, TreeItemIndex } from 'react-complex-tree'
+import { ITreeEntry } from '../TreeEntry'
 
 export class TreeFavorite implements ITreeEntry {
     id = '#favorites'

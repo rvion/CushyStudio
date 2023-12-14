@@ -1,4 +1,3 @@
-import type { TreeItem } from 'react-complex-tree'
 import type { TreeApp } from './nodes/TreeApp'
 import type { TreeDraft } from './nodes/TreeDraft'
 import type { TreeError } from './nodes/TreeError'
@@ -7,7 +6,7 @@ import type { TreeFile } from './nodes/TreeFile'
 import type { TreeFolder } from './nodes/TreeFolder'
 import type { TreeRoot } from './nodes/TreeRoot'
 
-import { FC, ReactNode } from 'react'
+import type { ReactNode } from 'react'
 
 // prettier-ignore
 export type TreeEntry =
@@ -41,6 +40,9 @@ export interface ITreeEntry {
     name: string
     icon?: Maybe<string | ReactNode>
     iconExpanded?: Maybe<string | ReactNode>
+    //
+    isOpened?: boolean
+
     // entry: Promise<TreeItem<TreeEntry>>
     onPrimaryAction?: () => void
     onFocusItem?: () => void

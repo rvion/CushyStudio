@@ -122,9 +122,6 @@ dependencies:
   react-beautiful-dnd:
     specifier: ^13.1.1
     version: 13.1.1(react-dom@18.2.0)(react@18.2.0)
-  react-complex-tree:
-    specifier: ^2.3.2
-    version: 2.3.2(react@18.2.0)
   react-confetti:
     specifier: ^6.1.0
     version: 6.1.0(react@18.2.0)
@@ -3744,14 +3741,6 @@ packages:
       use-memo-one: 1.1.3(react@18.2.0)
     transitivePeerDependencies:
       - react-native
-    dev: false
-
-  /react-complex-tree@2.3.2(react@18.2.0):
-    resolution: {integrity: sha512-hLcJKjZVFEYBynbZX7eNcv0qPK+oM/K1p4lk1tTUTE6TJziFCHJ2PPRYOWGjIR0/uk97ibM5GhW2m5FlBKeAhg==}
-    peerDependencies:
-      react: '>=16.0.0'
-    dependencies:
-      react: 18.2.0
     dev: false
 
   /react-confetti@6.1.0(react@18.2.0):

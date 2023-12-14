@@ -1,5 +1,4 @@
-import { ITreeEntry, TreeEntry } from '../TreeEntry'
-import { TreeItem } from 'react-complex-tree'
+import { ITreeEntry } from '../TreeEntry'
 
 export class TreeRoot implements ITreeEntry {
     id = '#root'

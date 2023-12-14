@@ -1,5 +1,4 @@
 import { nanoid } from 'nanoid'
-import { TreeItem } from 'react-complex-tree'
 import { ITreeEntry } from '../TreeEntry'
 
 export class TreeError implements ITreeEntry {

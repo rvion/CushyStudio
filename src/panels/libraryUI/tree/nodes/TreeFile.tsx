@@ -1,11 +1,10 @@
 import { makeAutoObservable } from 'mobx'
 import { basename } from 'path'
-import { TreeItem, TreeItemIndex } from 'react-complex-tree'
+import { cwd } from 'process'
 import { LibraryFile } from 'src/cards/LibraryFile'
 import { STATE } from 'src/state/state'
 import { assets } from 'src/utils/assets/assets'
 import { ITreeEntry, TreeEntryAction } from '../TreeEntry'
-import { cwd } from 'process'
 
 export class TreeFile implements ITreeEntry {
     file: LibraryFile

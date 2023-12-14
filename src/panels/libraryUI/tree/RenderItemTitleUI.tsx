@@ -1,8 +1,6 @@
 import { observer } from 'mobx-react-lite'
-import type { TreeInformation, TreeItem, TreeItemRenderContext } from 'react-complex-tree'
-import type { ITreeEntry } from './TreeEntry'
-import { createElement } from 'react'
 import { TreeIcon1UI } from './RenderTreeIcon1'
+import type { ITreeEntry } from './TreeEntry'
 
 export const RenderItemTitleUI = observer(function RenderItemTitleUI_(x: {
     //
@@ -21,7 +19,17 @@ export const RenderItemTitleUI = observer(function RenderItemTitleUI_(x: {
     return (
         <div tw='flex flex-grow items-center gap-0.5 whitespace-nowrap overflow-ellipsis'>
             {icon}
-            <div tw='flex-grow relative overflow-hidden overflow-ellipsis'>
+            <div
+                tw={[
+                    //
+                    '_TreeItemTitle',
+                    'cursor-pointer',
+                    'flex-grow relative overflow-hidden overflow-ellipsis',
+                ]}
+                onClick={() => {
+                    item.onPrimaryAction?.()
+                }}
+            >
                 &nbsp;
                 <div tw='absolute inset-0'>{item.name}</div>
             </div>

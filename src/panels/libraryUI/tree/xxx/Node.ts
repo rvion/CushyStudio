@@ -12,41 +12,8 @@ export type NodeKey = string
 export type NodeKeyKind = 'Property' | 'ArrayIndex' | 'unknown'
 
 export type NodeSlot = `${NodeId}.${NodeKey}`
-// const mkSlot = (nodeId: NodeId, key: NodeKey): NodeSlot => `${nodeId}.${key}`
-
 export type MoveConflictResolution = 'disambiguate' | 'overwrite' | 'fail'
-
-// export const NodeDataKeys: (keyof NodeData)[] = [
-//     //
-//     'id',
-//     'typeName',
-//     'parentId',
-//     'parentKey',
-// ]
-
 export type NodeData = ITreeEntry
-// {
-//     /** unique node id */
-//     id: NodeId
-
-//     /** name of the schema for this node */
-//     // typeName?: string
-
-//     /** children */
-//     children?: () => NodeId[]
-
-//     /** parentId */
-//     // parentId?: NodeId
-
-//     /** the paren'ts key where this node is attached to ?
-//      * formats:
-//      *  - property:   [A-Z]...
-//      *  - array item: [0..9]...
-//      *  - variant:    [#]...
-//      *  - optional:   [_]...
-//      */
-//     // parentKey: string
-// }
 
 type IArrayLike = { [x: number]: Node }
 
@@ -66,13 +33,6 @@ const renderNodePath = (path: NodePath): string => {
 
 export interface Node extends IArrayLike {}
 export class Node {
-    // [__inpectKey__](depth: any, opts: any) {
-    //     return `Node(${Object.entries(this.data)
-    //         .map(([k, v]) => `${k}=${v}`)
-    //         .join(' ')})` //+ this.foo.toUpperCase()
-    // }
-
-    isProxy = false
     opened = false
     open() {
         this.opened = true
@@ -228,6 +188,10 @@ export class Node {
         let out: Node | undefined
         while ((at = at.lastChild)) out = at
         return out
+    }
+
+    get isRoot(): boolean {
+        return this.parentId == null
     }
 
     get root(): Node | undefined {

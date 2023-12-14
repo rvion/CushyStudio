@@ -11,6 +11,11 @@ input {
     display: flex;
     flex-direction: row;
 }
+
+._line:hover {
+    background: oklch(var(--b3));
+}
+/* ._TreeItemTitle */
 ._selected {
     background: oklch(var(--b3));
 }

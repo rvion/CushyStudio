@@ -1,9 +1,8 @@
-import { TreeItem, TreeItemIndex } from 'react-complex-tree'
+import { observer } from 'mobx-react-lite'
 import { CushyAppL } from 'src/models/CushyApp'
 import { STATE } from 'src/state/state'
-import { ITreeEntry, TreeEntry, TreeEntryAction } from '../TreeEntry'
 import { AppFavoriteBtnUI } from '../../CardPicker2UI'
-import { observer } from 'mobx-react-lite'
+import { ITreeEntry, TreeEntryAction } from '../TreeEntry'
 
 export class TreeApp implements ITreeEntry {
     app: CushyAppL

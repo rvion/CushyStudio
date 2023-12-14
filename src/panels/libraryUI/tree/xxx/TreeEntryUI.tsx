@@ -11,7 +11,9 @@ export const TreeEntryUI = observer(function TreeEntryUI_(p: { depth?: number; n
     const hasChildren = children.length > 0
     const tv = useTreeView()
     const selected = tv.at === n
-
+    if (n.isRoot) {
+        return n.children.map((c) => <TreeEntryUI key={c.id} node={c} />)
+    }
     return (
         <Fragment key={n.id}>
             <div
@@ -41,16 +43,10 @@ export const TreeEntryUI = observer(function TreeEntryUI_(p: { depth?: number; n
                     )}
                 </label>
                 <RenderItemTitleUI item={n.data} />
-
-                {/* <TreeKeyUI node={n} /> */}
-                {/* <TreeValueUI node={n} /> */}
-                {/* <TreeTypeUI node={n} /> */}
-                {/* <span>{n.id}</span> */}
             </div>
             {children.length && n.opened ? ( //
                 <div
                     tw='borderLeft'
-                    //
                     style={{
                         //
                         // borderLeft: '1px solid red',
