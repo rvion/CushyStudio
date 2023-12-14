@@ -4,14 +4,13 @@ import { basename } from 'path'
 import { TreeItem } from 'react-complex-tree'
 import { shouldSkip } from 'src/cards/shouldSkip'
 import { asRelativePath } from 'src/utils/fs/pathUtils'
-import { ITreeEntry, TreeEntryAction } from './TreeEntry'
+import { ITreeEntry, TreeEntryAction } from '../TreeEntry'
 
-export class TreeFolder implements ITreeEntry, TreeItem<TreeFolder> {
-    get index(){return `path#${this.path}`} //prettier-ignore
-    get entry(): Promise<TreeItem<TreeFolder>> { return Promise.resolve(this) } // prettier-ignore
+export class TreeFolder implements ITreeEntry {
+    get id(){return `path#${this.path}`} //prettier-ignore
     get data(): TreeFolder { return this } // prettier-ignore
     get name() { return basename(this.path) } // prettier-ignore
-    get children(): RelativePath[] {
+    children(): RelativePath[] {
         const files = readdirSync(this.path)
         return files //
             .filter((e) => !shouldSkip(e))

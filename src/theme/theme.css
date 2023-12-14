@@ -48,6 +48,10 @@
     padding-left: 0.2em;
     padding-right: 0.2em;
 }
+
+.borderLeft {
+    border-left: 1px solid oklch(var(--bc)/0.2);
+}
 .konvajs-content,
 .virtualBorder {
     border: 1px solid var(--fallback-bc,oklch(var(--bc)/0.2));

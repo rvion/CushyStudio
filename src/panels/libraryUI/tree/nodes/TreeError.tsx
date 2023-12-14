@@ -1,10 +1,9 @@
 import { nanoid } from 'nanoid'
 import { TreeItem } from 'react-complex-tree'
-import { ITreeEntry } from './TreeEntry'
+import { ITreeEntry } from '../TreeEntry'
 
-export class TreeError implements ITreeEntry, TreeItem<TreeError> {
-    get index() { return `error#${this.uid}` } // prettier-ignore
-    get entry(): Promise<TreeItem<TreeError>> { return Promise.resolve(this) } // prettier-ignore
+export class TreeError implements ITreeEntry {
+    get id() { return `error#${this.uid}` } // prettier-ignore
     get data(): TreeError { return this } // prettier-ignore
     get name() { return `❌ ${this.title}` } // prettier-ignore
     isFolder = false

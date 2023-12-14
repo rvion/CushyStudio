@@ -4,19 +4,19 @@ import { TreeItem, TreeItemIndex } from 'react-complex-tree'
 import { LibraryFile } from 'src/cards/LibraryFile'
 import { STATE } from 'src/state/state'
 import { assets } from 'src/utils/assets/assets'
-import { ITreeEntry, TreeEntryAction } from './TreeEntry'
+import { ITreeEntry, TreeEntryAction } from '../TreeEntry'
 import { cwd } from 'process'
 
-export class TreeFile implements ITreeEntry, TreeItem<TreeFile> {
+export class TreeFile implements ITreeEntry {
     file: LibraryFile
 
     constructor(
         //
         public st: STATE,
-        public index: TreeItemIndex,
+        public id: string,
         public path: RelativePath,
     ) {
-        console.log(`[👙] `, index, path)
+        console.log(`[👙] `, id, path)
         this.file = st.library.getFile(path)
         makeAutoObservable(this)
     }
@@ -42,7 +42,6 @@ export class TreeFile implements ITreeEntry, TreeItem<TreeFile> {
     }
 
     // get index(){return `path#${this.path}`} //prettier-ignore
-    get entry(): Promise<TreeItem<TreeFile>> { return Promise.resolve(this) } // prettier-ignore
     get data(): TreeFile { return this } // prettier-ignore
     get name() { return basename(this.path) } // prettier-ignore
 
@@ -65,19 +64,19 @@ export class TreeFile implements ITreeEntry, TreeItem<TreeFile> {
         this.file.load()
     }
 
-    get children(): TreeItemIndex[] {
+    children = (): string[] => {
         if (!this.file.hasBeenLoadedAtLeastOnce) return []
         if (this.file == null) {
-            console.log(`[🔴] TreeFile (${this.index}): FILE is null`)
+            console.log(`[🔴] TreeFile (${this.id}): FILE is null`)
             return []
         }
         if (this.script == null) {
-            console.log(`[🔴] TreeFile (${this.index}): SCRIPT is null`)
+            console.log(`[🔴] TreeFile (${this.id}): SCRIPT is null`)
             return []
         }
         const apps = this.script.apps
         if (apps.length === 0) {
-            console.log(`[🔴] TreeFile (${this.index}): APPS.length = 0`)
+            console.log(`[🔴] TreeFile (${this.id}): APPS.length = 0`)
             return []
         }
 

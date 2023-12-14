@@ -1,0 +1,20 @@
+input {
+    background-color: #c0e3c0;
+}
+._dim {
+    /* font-style: italic; */
+    /* font-size: 0.6em; */
+    color: #888;
+    line-height: 1.3rem;
+}
+._line {
+    display: flex;
+    flex-direction: row;
+}
+._selected {
+    background: oklch(var(--b3));
+}
+
+._gutter {
+    display: flex;
+}

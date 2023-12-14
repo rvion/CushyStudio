@@ -1,17 +1,16 @@
-import { ITreeEntry, TreeEntry } from './TreeEntry'
+import { ITreeEntry, TreeEntry } from '../TreeEntry'
 import { TreeItem } from 'react-complex-tree'
 
-export class TreeRoot implements ITreeEntry, TreeItem<TreeEntry> {
-    index = '#root'
+export class TreeRoot implements ITreeEntry {
+    id = '#root'
+
     constructor() {
         this.data = this
-        this.entry = Promise.resolve(this)
     }
 
-    entry: Promise<TreeItem<TreeEntry>>
     data: TreeRoot
     name = 'Root item'
-    children = [
+    children = () => [
         //
         '#favorites',
         'path#library/built-in',

@@ -1,11 +1,11 @@
 import type { TreeItem } from 'react-complex-tree'
-import type { TreeApp } from './TreeApp'
-import type { TreeDraft } from './TreeDraft'
-import type { TreeError } from './TreeError'
-import type { TreeFavorite } from './TreeFavorites'
-import type { TreeFile } from './TreeFile'
-import type { TreeFolder } from './TreeFolder'
-import type { TreeRoot } from './TreeRoot'
+import type { TreeApp } from './nodes/TreeApp'
+import type { TreeDraft } from './nodes/TreeDraft'
+import type { TreeError } from './nodes/TreeError'
+import type { TreeFavorite } from './nodes/TreeFavorites'
+import type { TreeFile } from './nodes/TreeFile'
+import type { TreeFolder } from './nodes/TreeFolder'
+import type { TreeRoot } from './nodes/TreeRoot'
 
 import { FC, ReactNode } from 'react'
 
@@ -27,11 +27,21 @@ export type TreeEntryAction = {
     className?: string
 }
 
+// index: TreeItemIndex;
+// children?: Array<TreeItemIndex>;
+// isFolder?: boolean;
+// canMove?: boolean;
+// canRename?: boolean;
+// data: T;
+
 export interface ITreeEntry {
+    id: string
+    children?: () => string[]
+    //
     name: string
     icon?: Maybe<string | ReactNode>
     iconExpanded?: Maybe<string | ReactNode>
-    entry: Promise<TreeItem<TreeEntry>>
+    // entry: Promise<TreeItem<TreeEntry>>
     onPrimaryAction?: () => void
     onFocusItem?: () => void
     actions?: TreeEntryAction[]

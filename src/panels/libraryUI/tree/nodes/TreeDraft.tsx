@@ -1,11 +1,11 @@
 import { nanoid } from 'nanoid'
 import { TreeItem } from 'react-complex-tree'
-import { ITreeEntry, TreeEntry, TreeEntryAction } from './TreeEntry'
+import { ITreeEntry, TreeEntry, TreeEntryAction } from '../TreeEntry'
 import { DraftL } from 'src/models/Draft'
 import { STATE } from 'src/state/state'
 
-export class TreeDraft implements ITreeEntry, TreeItem<TreeDraft> {
-    get index() { return `draft#${this.draft.id}` } // prettier-ignore
+export class TreeDraft implements ITreeEntry {
+    get id() { return `draft#${this.draft.id}` } // prettier-ignore
     get name() { return `${this.draft.name}` } // prettier-ignore
     isFolder = false
     canRename = true
@@ -13,7 +13,6 @@ export class TreeDraft implements ITreeEntry, TreeItem<TreeDraft> {
         this.st.currentDraft = this.draft
     }
     icon = (<span>✨</span>)
-    entry: Promise<TreeItem<TreeEntry>>
     data: TreeDraft
 
     actions: TreeEntryAction[] = [
@@ -33,6 +32,5 @@ export class TreeDraft implements ITreeEntry, TreeItem<TreeDraft> {
         public draft: DraftL,
     ) {
         this.data = this
-        this.entry = Promise.resolve(this)
     }
 }

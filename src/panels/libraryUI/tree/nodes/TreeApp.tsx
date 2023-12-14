@@ -1,23 +1,22 @@
 import { TreeItem, TreeItemIndex } from 'react-complex-tree'
 import { CushyAppL } from 'src/models/CushyApp'
 import { STATE } from 'src/state/state'
-import { ITreeEntry, TreeEntry, TreeEntryAction } from './TreeEntry'
-import { AppFavoriteBtnUI } from '../CardPicker2UI'
+import { ITreeEntry, TreeEntry, TreeEntryAction } from '../TreeEntry'
+import { AppFavoriteBtnUI } from '../../CardPicker2UI'
 import { observer } from 'mobx-react-lite'
 
-export class TreeApp implements ITreeEntry, TreeItem<TreeApp> {
+export class TreeApp implements ITreeEntry {
     app: CushyAppL
     constructor(
         //
         public st: STATE,
-        public index: TreeItemIndex,
+        public id: string,
         public appID: CushyAppID, // public app: CushyAppL,
     ) {
         this.app = st.db.cushy_apps.getOrThrow(appID)
     }
 
     get name() { return `${this.app.name}`; } // prettier-ignore
-    get entry(): Promise<TreeItem<TreeEntry>> { return Promise.resolve(this) } // prettier-ignore
     get data(): TreeApp { return this } // prettier-ignore
     isFolder = true
     get icon() {
@@ -31,7 +30,7 @@ export class TreeApp implements ITreeEntry, TreeItem<TreeApp> {
         this.app.createDraft()
     }
 
-    get children(): TreeItemIndex[] {
+    children = (): string[] => {
         return this.app.drafts.map((draft) => `draft#${draft.id}`)
     }
     extra = (<TreeApp_BtnFavUI entry={this} />)
