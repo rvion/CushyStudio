@@ -7,6 +7,9 @@ import type { TreeFolder } from './nodes/TreeFolder'
 import type { TreeRoot } from './nodes/TreeRoot'
 
 import type { ReactNode } from 'react'
+import type { TreeNode } from './xxx/TreeNode'
+
+export type TreeItemID = string
 
 // prettier-ignore
 export type TreeEntry =
@@ -44,8 +47,10 @@ export interface ITreeEntry {
     isOpened?: boolean
 
     // entry: Promise<TreeItem<TreeEntry>>
-    onPrimaryAction?: () => void
-    onFocusItem?: () => void
+    onPrimaryAction?: (n: TreeNode) => void
+    onFocusItem?: (n: TreeNode) => void
+    onExpand?: (n: TreeNode) => void
+
     actions?: TreeEntryAction[]
     extra?: ReactNode
 }

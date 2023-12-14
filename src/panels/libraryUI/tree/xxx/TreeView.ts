@@ -3,7 +3,7 @@ import { createRef } from 'react'
 import { makeAutoObservable } from 'mobx'
 
 import { Tree } from './Tree'
-import { Node } from './Node'
+import { TreeNode } from './TreeNode'
 import { KeyEv, onKeyDownHandlers } from './TreeShortcuts'
 import { nanoid } from 'nanoid'
 
@@ -33,7 +33,7 @@ export class TreeView {
     }
 
     // cursor
-    at: Node | undefined
+    at: TreeNode | undefined
 
     get cursorInfos() {
         const at = this.at
@@ -57,7 +57,7 @@ export class TreeView {
             firstChild: at.firstChild?.id,
         }
     }
-    focus = (at: Node) => {
+    focus = (at: TreeNode) => {
         this.at = at
     }
 
@@ -110,7 +110,7 @@ export class TreeView {
         this.at = parent?.nodeBelowInView ?? parent
     }
 
-    addChild = (): Node | undefined => {
+    addChild = (): TreeNode | undefined => {
         if (this.at == null) return this.resetCaretPos()
         console.log(`[👙] TODO`)
         // const res = window.prompt('parentKey', 'a')
@@ -145,6 +145,21 @@ export class TreeView {
         console.log(`[👙] ${this.id}.at=`, nextAt?.id, this.at.id)
     }
 
+    movePageUp = () => {
+        return this.resetCaretPos()
+    }
+
+    movePageDown = () => {
+        if (this.at == null) return this.resetCaretPos()
+        let ptr: Maybe<TreeNode> = this.at
+        let max = 100
+        let final: TreeNode = this.at
+        while ((ptr = ptr.nodeBelowInView) && max-- > 0) {
+            final = ptr
+        }
+        this.at = final
+    }
+
     moveDown = () => {
         if (this.at == null) return this.resetCaretPos()
         const nextAt = this.at.nodeBelowInView
@@ -157,14 +172,14 @@ export class TreeView {
         const children = this.at.children
         if (children.length > 0) {
             if (this.at.opened) return (this.at = children[0])
-            else return (this.at.opened = true)
+            else return this.at.open()
         }
         return this.moveDown()
     }
 
     moveLeft = () => {
         if (this.at == null) return this.resetCaretPos()
-        if (this.at.opened) return (this.at.opened = false)
+        if (this.at.opened) return this.at.close()
         if (this.at.parent) return (this.at = this.at.parent)
     }
 }

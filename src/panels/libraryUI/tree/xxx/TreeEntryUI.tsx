@@ -1,19 +1,16 @@
 import './Tree.css'
 import { observer } from 'mobx-react-lite'
-import { Node } from './Node'
+import { TreeNode } from './TreeNode'
 import { useTreeView } from './TreeCtx'
 import { Fragment } from 'react'
 import { RenderItemTitleUI } from '../RenderItemTitleUI'
 
-export const TreeEntryUI = observer(function TreeEntryUI_(p: { depth?: number; node: Node }) {
+export const TreeEntryUI = observer(function TreeEntryUI_(p: { depth?: number; node: TreeNode }) {
     const n = p.node
     const children = n.children
     const hasChildren = children.length > 0
     const tv = useTreeView()
     const selected = tv.at === n
-    if (n.isRoot) {
-        return n.children.map((c) => <TreeEntryUI key={c.id} node={c} />)
-    }
     return (
         <Fragment key={n.id}>
             <div
@@ -33,17 +30,22 @@ export const TreeEntryUI = observer(function TreeEntryUI_(p: { depth?: number; n
             >
                 {/* {tv.id}
                 {tv.at?.id} */}
-                <label className='swap swap-rotate opacity-50'>
-                    {n.opened ? (
-                        <span className='material-symbols-outlined swap-rotate'>keyboard_arrow_down</span>
-                    ) : (
-                        <>
-                            <span className='material-symbols-outlined swap-rotate'>keyboard_arrow_right</span>
-                        </>
-                    )}
-                </label>
-                <RenderItemTitleUI item={n.data} />
+                {hasChildren ? (
+                    <label onClick={() => n.toggle()} className='swap swap-rotate opacity-50'>
+                        {n.opened ? (
+                            <span className='material-symbols-outlined swap-rotate'>keyboard_arrow_down</span>
+                        ) : (
+                            <>
+                                <span className='material-symbols-outlined swap-rotate'>keyboard_arrow_right</span>
+                            </>
+                        )}
+                    </label>
+                ) : (
+                    <div tw='[width:1.3rem]'>&nbsp;</div>
+                )}
+                <RenderItemTitleUI node={n} />
             </div>
+
             {children.length && n.opened ? ( //
                 <div
                     tw='borderLeft'

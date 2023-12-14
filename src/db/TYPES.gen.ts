@@ -812,6 +812,36 @@ export const AuthFields = {
 }
 
 
+export const asTreeEntryID = (s: string): TreeEntryID => s as any
+export type TreeEntryT = {
+    /** @default: "hex(randomblob(16))", sqlType: string */
+    id: TreeEntryID;
+
+    /** @default: "now", sqlType: INTEGER */
+    createdAt: number;
+
+    /** @default: "now", sqlType: INTEGER */
+    updatedAt: number;
+
+    /** @default: null, sqlType: INT */
+    isExpanded?: Maybe<number>;
+
+}
+export const TreeEntrySchema = Type.Object({
+    id: Type.String(),
+    createdAt: Type.Number(),
+    updatedAt: Type.Number(),
+    isExpanded: Type.Optional(T.Nullable(Type.Number())),
+},{ additionalProperties: false })
+
+export const TreeEntryFields = {
+    id: {cid:0,name:'id',type:'string',notnull:1,dflt_value:'hex(randomblob(16))',pk:1},
+    createdAt: {cid:1,name:'createdAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
+    updatedAt: {cid:2,name:'updatedAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
+    isExpanded: {cid:3,name:'isExpanded',type:'INT',notnull:0,dflt_value:null,pk:0},
+}
+
+
 export const schemas = {
     migrations: new T.TableInfo(
         'migrations',
@@ -920,5 +950,11 @@ export const schemas = {
         'Auth',
         AuthFields,
         AuthSchema,
+    ),
+    tree_entry: new T.TableInfo(
+        'tree_entry',
+        'TreeEntry',
+        TreeEntryFields,
+        TreeEntrySchema,
     ),
 }

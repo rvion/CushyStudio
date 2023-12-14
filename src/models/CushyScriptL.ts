@@ -3,12 +3,12 @@ import { replaceImportsWithSyncImport } from 'src/back/ImportStructure'
 import { App, WidgetDict } from 'src/cards/App'
 import type { LiveInstance } from '../db/LiveInstance'
 
-import { CushyScriptT, asCushyAppID } from 'src/db/TYPES.gen'
-import { asRelativePath } from 'src/utils/fs/pathUtils'
-import { CushyAppL } from './CushyApp'
-import { LiveCollection } from 'src/db/LiveCollection'
-import { CUSHY_IMPORT } from './CUSHY_IMPORT'
 import { LibraryFile } from 'src/cards/LibraryFile'
+import { LiveCollection } from 'src/db/LiveCollection'
+import { CushyScriptT } from 'src/db/TYPES.gen'
+import { asRelativePath } from 'src/utils/fs/pathUtils'
+import { CUSHY_IMPORT } from './CUSHY_IMPORT'
+import { CushyAppL } from './CushyApp'
 import { Executable } from './Executable'
 
 export interface CushyScriptL extends LiveInstance<CushyScriptT, CushyScriptL> {}
@@ -83,9 +83,16 @@ export class CushyScriptL {
         }
 
         // 2. eval file to extract actions
+
+        let codJSWithoutWithImportsReplaced
+        try {
+            codJSWithoutWithImportsReplaced = replaceImportsWithSyncImport(codeJS) // REWRITE_IMPORTS(codeJS)
+        } catch {
+            console.error(`❌ impossible to replace imports`)
+            return []
+        }
         try {
             // 2.1. replace imports
-            const codJSWithoutWithImportsReplaced = replaceImportsWithSyncImport(codeJS) // REWRITE_IMPORTS(codeJS)
             const ProjectScriptFn = new Function(
                 //
                 'action',
@@ -110,6 +117,9 @@ export class CushyScriptL {
             return APPS.map((app, ix) => new Executable(this, ix, app))
         } catch (e) {
             console.error(`[📜] CushyScript execution failed:`, e)
+            console.groupCollapsed(`[📜] <script that failed>`)
+            console.log(codJSWithoutWithImportsReplaced)
+            console.groupEnd()
             // this.addError('❌5. cannot convert prompt to code', e)
             return []
         }

@@ -4,11 +4,15 @@ import { basename } from 'path'
 import { shouldSkip } from 'src/cards/shouldSkip'
 import { asRelativePath } from 'src/utils/fs/pathUtils'
 import { ITreeEntry, TreeEntryAction } from '../TreeEntry'
+import { TreeNode } from '../xxx/TreeNode'
 
 export class TreeFolder implements ITreeEntry {
+    constructor(public path: string) {
+        makeAutoObservable(this)
+    }
     get id(){return `path#${this.path}`} //prettier-ignore
-    get data(): TreeFolder { return this } // prettier-ignore
     get name() { return basename(this.path) } // prettier-ignore
+
     children(): RelativePath[] {
         const files = readdirSync(this.path)
         return files //
@@ -16,6 +20,10 @@ export class TreeFolder implements ITreeEntry {
             .map((file) => asRelativePath(`path#${this.path}/${file}`))
     }
     isFolder = true
+
+    onPrimaryAction = (n: TreeNode) => {
+        n.toggle()
+    }
 
     get actions(): TreeEntryAction[] {
         if (this.path === 'library/installed')
@@ -31,12 +39,4 @@ export class TreeFolder implements ITreeEntry {
         if (this.path === 'library/sdk-examples')         return <span className='material-symbols-outlined text-green-500'>live_help</span>
         return <span className='material-symbols-outlined text-base-300'>folder</span>
     }
-    // get iconExpanded() {}
-    constructor(public path: string) {
-        makeAutoObservable(this)
-    }
-    // getChildren = (): RelativePath[] => {
-    //     const files = readdirSync(this.path)
-    //     return files.map((file) => asRelativePath(`${this.path}/${file}`))
-    // }
 }

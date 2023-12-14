@@ -309,6 +309,16 @@ export const migrations: {
             'alter table cushy_app add column tags text',
         ],
     },
+    {
+        id: 'W4Srl6gMMD',
+        name: 'add app description and tags',
+        up: [_createTable('tree_infos', ['isExpanded int'])],
+    },
+    {
+        id: '8OUHASEkDa',
+        name: 'add app description and tags',
+        up: ['drop table tree_infos', _createTable('tree_entry', ['isExpanded int'])],
+    },
     // {
     //     id: 'e574c006-daca-4fd0-a51b-73a66b4fbd79',
     //     name: 'create cushy_app table',

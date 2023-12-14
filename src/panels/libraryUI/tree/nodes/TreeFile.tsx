@@ -9,6 +9,10 @@ import { ITreeEntry, TreeEntryAction } from '../TreeEntry'
 export class TreeFile implements ITreeEntry {
     file: LibraryFile
 
+    onExpand = async () => {
+        await this.file.load()
+    }
+
     constructor(
         //
         public st: STATE,
@@ -41,7 +45,6 @@ export class TreeFile implements ITreeEntry {
     }
 
     // get index(){return `path#${this.path}`} //prettier-ignore
-    get data(): TreeFile { return this } // prettier-ignore
     get name() { return basename(this.path) } // prettier-ignore
 
     actions: TreeEntryAction[] = [
@@ -55,10 +58,12 @@ export class TreeFile implements ITreeEntry {
             },
         },
     ]
+
     onFocusItem = () => {
         if (this.file.hasBeenLoadedAtLeastOnce) return
         this.file.load()
     }
+
     onPrimaryAction = () => {
         this.file.load()
     }

@@ -38,7 +38,7 @@ export const TreeUI = observer(function TreeEditorUI_(p: { tree: Tree }) {
                     {/* <CursorInfoUI es={es} /> */}
                 </div>
             </div>
-            {es.tree.nodes.length}
+            {/* {es.tree.nodes.length} */}
             {/* <TreeDebugUI /> */}
         </TreeViewCtx.Provider>
     )

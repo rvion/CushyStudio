@@ -1,8 +1,10 @@
+import type { DraftL } from 'src/models/Draft'
+import type { TreeEntry, TreeItemID } from '../TreeEntry'
+import type { STATE } from 'src/state/state'
+
 import { statSync } from 'fs'
 import { asCushyAppID } from 'src/db/TYPES.gen'
-import { DraftL } from 'src/models/Draft'
 import { asRelativePath } from 'src/utils/fs/pathUtils'
-import { TreeEntry } from '../TreeEntry'
 import { TreeApp } from './TreeApp'
 import { TreeDraft } from './TreeDraft'
 import { TreeError } from './TreeError'
@@ -10,9 +12,12 @@ import { TreeFavorite } from './TreeFavorites'
 import { TreeFile } from './TreeFile'
 import { TreeFolder } from './TreeFolder'
 import { TreeRoot } from './TreeRoot'
-import { STATE } from 'src/state/state'
 
-export const getTreeItem = (st: STATE, itemId: string): TreeEntry => {
+export const buildTreeItem = (
+    //
+    st: STATE,
+    itemId: TreeItemID,
+): TreeEntry => {
     if (typeof itemId !== 'string') {
         throw new Error(`[🔴] itemId must be string`)
     }

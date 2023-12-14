@@ -18,6 +18,8 @@ Todo before release:
         ✔ extra bonus: @done(23-12-06 00:14)
             ✔ ship pnpm binaries for common archs in the repo directly ? @done(23-12-06 00:14)
 
+
+    ☐ https://unjs.io/packages/image-meta
     ☐ fix sut
     ☐ use any image as draft illustration
     ☐ don't autofocus preview images

@@ -18,6 +18,7 @@ declare type TableNameInDB =
     | 'cushy_script'
     | 'cushy_app'
     | 'auth'
+    | 'tree_entry'
 
 declare type MigrationsID = Branded<string, { MigrationsID: true }>
 declare type UsersID = Branded<string, { UsersID: true }>
@@ -37,3 +38,4 @@ declare type CustomDataID = Branded<string, { CustomDataID: true }>
 declare type CushyScriptID = Branded<string, { CushyScriptID: true }>
 declare type CushyAppID = Branded<string, { CushyAppID: true }>
 declare type AuthID = Branded<string, { AuthID: true }>
+declare type TreeEntryID = Branded<string, { TreeEntryID: true }>

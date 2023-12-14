@@ -16,7 +16,6 @@ export class TreeApp implements ITreeEntry {
     }
 
     get name() { return `${this.app.name}`; } // prettier-ignore
-    get data(): TreeApp { return this } // prettier-ignore
     isFolder = true
     get icon() {
         return this.app.illustrationPathWithFileProtocol
@@ -29,9 +28,8 @@ export class TreeApp implements ITreeEntry {
         this.app.createDraft()
     }
 
-    children = (): string[] => {
-        return this.app.drafts.map((draft) => `draft#${draft.id}`)
-    }
+    children = (): string[] => this.app.drafts.map((draft) => `draft#${draft.id}`)
+
     extra = (<TreeApp_BtnFavUI entry={this} />)
     actions: TreeEntryAction[] = [
         {

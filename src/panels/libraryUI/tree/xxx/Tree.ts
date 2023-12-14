@@ -1,32 +1,37 @@
 import { makeAutoObservable } from 'mobx'
 import { STATE } from 'src/state/state'
-import { Node, NodeData, NodeId, NodeKey, NodeSlot, getId } from './Node'
+import { TreeNode, NodeData, NodeId, NodeKey, NodeSlot, getId } from './TreeNode'
 import { FAIL, VIOLATION } from './utils'
+import { buildTreeItem } from '../nodes/buildTreeItem'
+import { TreeItemID } from '../TreeEntry'
 
 export class Tree {
-    topLevelNodes: Node[] = []
+    topLevelNodes: TreeNode[] = []
     constructor(
         //
         public st: STATE,
-        rootNodes: NodeData[],
+        rootNodes: TreeItemID[],
     ) {
-        for (let nd of rootNodes) this.topLevelNodes.push(new Node(this, nd, null))
+        for (let uid of rootNodes) {
+            const nd = buildTreeItem(st, uid)
+            this.topLevelNodes.push(new TreeNode(this, nd, null))
+        }
         makeAutoObservable(this)
     }
 
-    get nodes(): Node[] {
+    get nodes(): TreeNode[] {
         return Array.from(this.nodeById.values())
     }
 
     // INDEXES ------------------------------------------------------
     /** get node by id */
-    private nodeById = new Map<NodeId, Node>()
-    private nodeBySlot = new Map<NodeSlot, Node>()
+    private nodeById = new Map<NodeId, TreeNode>()
+    private nodeBySlot = new Map<NodeSlot, TreeNode>()
     // private nodesByParentId = new Map<NodeId | undefined, Node[]>()
 
     // get topLevelNodes(): Node[] { return this.getChildrenOf(undefined) } // prettier-ignore
 
-    getNodeById = (nodeId: NodeId): Node | undefined => this.nodeById.get(nodeId)
+    getNodeById = (nodeId: NodeId): TreeNode | undefined => this.nodeById.get(nodeId)
 
     // getChildrenOf = (pid: NodeId | undefined): Node[] => {
     //     let arr = this.nodesByParentId.get(pid)
@@ -36,7 +41,7 @@ export class Tree {
     //     return arr
     // }
 
-    getNodeBySlot = (parent: Node | NodeId | undefined, key: string): Node | undefined => {
+    getNodeBySlot = (parent: TreeNode | NodeId | undefined, key: string): TreeNode | undefined => {
         const parentID = parent == null ? 'undefined' : getId(parent)
         const slot: NodeSlot = `${parentID}.${key}`
         return this.nodeBySlot.get(slot)
@@ -68,7 +73,7 @@ export class Tree {
     //     this.indexNode_byParent(n)
     // }
 
-    changeNodeKey = (n: Node, parentKey: NodeKey) => {
+    changeNodeKey = (n: TreeNode, parentKey: NodeKey) => {
         // if (!n.isProxy) FAIL('changeNodeParent must receive a proxified node, not a naked one')
         this.deindexNode_bySlot(n)
         n.parentKey = parentKey
@@ -76,14 +81,14 @@ export class Tree {
     }
 
     /** every node created must call this function to register itself properly */
-    indexNode = (n: Node) => {
+    indexNode = (n: TreeNode) => {
         // if (!n.isProxy) FAIL('indexNode must receive a proxified node, not a naked one')
         this.indexNode_byId(n)
         this.indexNode_byParent(n)
         this.indexNode_bySlot(n)
     }
 
-    deleteNode = (n: Node) => {
+    deleteNode = (n: TreeNode) => {
         const toDelete = n.get_descendant_and_self('bfs').reverse()
         for (const c of toDelete) {
             this.deindexNode_byParent(c)
@@ -93,38 +98,38 @@ export class Tree {
     }
     // =============================================================================================
     // BY ID ---------------------------------------------
-    private indexNode_byId = (n: Node) => {
+    private indexNode_byId = (n: TreeNode) => {
         const prevNodeById = this.nodeById.get(n.id)
         if (prevNodeById && prevNodeById !== n) FAIL('different node pre-existing for this id')
         this.nodeById.set(n.id, n)
     }
-    private deindexNode_byId = (n: Node) => {
+    private deindexNode_byId = (n: TreeNode) => {
         const prevNodeById = this.nodeById.get(n.id)
         if (prevNodeById == null) VIOLATION('node was not properly indexed')
         if (prevNodeById !== n) VIOLATION('another node was indexed at this id')
         this.nodeById.delete(n.id)
     }
     // BY PARENT ---------------------------------------------
-    private indexNode_byParent = (n: Node) => {
+    private indexNode_byParent = (n: TreeNode) => {
         // const siblings = this.getChildrenOf(n.parentId)
         // if (siblings.includes(n)) VIOLATION('already listed as child of parent')
         // siblings.push(n)
     }
-    private deindexNode_byParent = (n: Node) => {
+    private deindexNode_byParent = (n: TreeNode) => {
         // const siblings = this.getChildrenOf(n.parentId)
         // const index = siblings.indexOf(n)
         // if (!(index > -1)) VIOLATION('was not listed as children of given parent')
         // siblings.splice(index, 1)
     }
     // BY SLOT ---------------------------------------------
-    private indexNode_bySlot = (n: Node) => {
+    private indexNode_bySlot = (n: TreeNode) => {
         const slot: NodeSlot = `${n.parentId}.${n.parentKey}`
         const prevNodeBySlot = this.nodeBySlot.get(slot)
         if (prevNodeBySlot === n) VIOLATION('already indexed at same slot')
         if (prevNodeBySlot) VIOLATION('different node pre-existing for this slot')
         this.nodeBySlot.set(slot, n)
     }
-    private deindexNode_bySlot = (n: Node) => {
+    private deindexNode_bySlot = (n: TreeNode) => {
         const slot: NodeSlot = `${n.parentId}.${n.parentKey}`
         const prevNodeBySlot = this.nodeBySlot.get(slot)
         if (prevNodeBySlot == null) VIOLATION("node wasn't properly indexed at slot")
@@ -158,10 +163,10 @@ export class Tree {
     // }
 
     // PATH ------------------------------------------------------
-    getNodeAtPath = (path: string): Node => {
+    getNodeAtPath = (path: string): TreeNode => {
         const segments = path.split('/')
         let pid: NodeId | undefined
-        let at: Node | undefined
+        let at: TreeNode | undefined
         for (let key of segments) {
             const slot: NodeSlot = `${pid}.${key}`
             at = this.nodeBySlot.get(slot)

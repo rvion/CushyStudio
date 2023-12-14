@@ -1,15 +1,17 @@
 import { observer } from 'mobx-react-lite'
 import { TreeIcon1UI } from './RenderTreeIcon1'
 import type { ITreeEntry } from './TreeEntry'
+import { TreeNode } from './xxx/TreeNode'
 
-export const RenderItemTitleUI = observer(function RenderItemTitleUI_(x: {
+export const RenderItemTitleUI = observer(function RenderItemTitleUI_(p: {
     //
     // title: string
-    item: ITreeEntry
+    node: TreeNode
     // context: TreeItemRenderContext<never>
     // info: TreeInformation
 }) {
-    const item = x.item
+    const node = p.node
+    const item = node.data
     let icon = item.icon
     if (typeof icon === 'string') {
         icon = <img src={icon} style={{ width: '1.3rem', height: '1.3rem' }} />
@@ -27,7 +29,7 @@ export const RenderItemTitleUI = observer(function RenderItemTitleUI_(x: {
                     'flex-grow relative overflow-hidden overflow-ellipsis',
                 ]}
                 onClick={() => {
-                    item.onPrimaryAction?.()
+                    item.onPrimaryAction?.(node)
                 }}
             >
                 &nbsp;

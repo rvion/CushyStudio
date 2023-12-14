@@ -2,12 +2,6 @@ import { ITreeEntry } from '../TreeEntry'
 
 export class TreeRoot implements ITreeEntry {
     id = '#root'
-
-    constructor() {
-        this.data = this
-    }
-
-    data: TreeRoot
     name = 'Root item'
     children = () => [
         //

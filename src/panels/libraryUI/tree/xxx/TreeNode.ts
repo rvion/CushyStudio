@@ -4,8 +4,11 @@ import { makeAutoObservable } from 'mobx'
 
 import { FAIL, genUID } from './utils'
 import { bang } from 'src/utils/misc/bang'
-import { getTreeItem } from '../nodes/xxxx'
+import { buildTreeItem } from '../nodes/buildTreeItem'
 import { ITreeEntry, TreeEntry } from '../TreeEntry'
+import { TreeEntryL } from 'src/models/TreeEntry'
+import { asTreeEntryID } from 'src/db/TYPES.gen'
+import { SQLITE_true } from 'src/db/SQLITE_boolean'
 
 export type NodeId = string
 export type NodeKey = string
@@ -15,9 +18,9 @@ export type NodeSlot = `${NodeId}.${NodeKey}`
 export type MoveConflictResolution = 'disambiguate' | 'overwrite' | 'fail'
 export type NodeData = ITreeEntry
 
-type IArrayLike = { [x: number]: Node }
+type IArrayLike = { [x: number]: TreeNode }
 
-export const getId = (node: Node | NodeId) => {
+export const getId = (node: TreeNode | NodeId) => {
     if (typeof node === 'string') return node
     return node.id
 }
@@ -31,17 +34,28 @@ const renderNodePath = (path: NodePath): string => {
     return `${renderNodePath(path[1])}/${path[0]}`
 }
 
-export interface Node extends IArrayLike {}
-export class Node {
-    opened = false
+export interface TreeNode extends IArrayLike {}
+export class TreeNode {
+    get opened() {
+        return this.entryL.data.isExpanded ?? false
+    }
     open() {
-        this.opened = true
+        this.data.onExpand?.(this)
+        this.entryL.update({ isExpanded: SQLITE_true })
     }
     close() {
-        this.opened = false
+        this.entryL.update({ isExpanded: SQLITE_true })
+    }
+    toggle() {
+        if (this.opened) this.close()
+        else this.open()
     }
 
+    onPrimaryAction = () => this.data.onPrimaryAction?.(this)
+    onFocusItem = () => this.data.onFocusItem?.(this)
+
     parentKey: string
+    entryL: TreeEntryL
     constructor(
         //
         public tree: Tree,
@@ -49,27 +63,14 @@ export class Node {
         public parentId: NodeId | null,
     ) {
         this.parentKey = this.data.id
-        // const mixinDef = this.tree._mixins.get(this.typeName)
-        // if (mixinDef) extendObservable(this, mixinDef(this))
-        // Node.ASSERT_VALID_KEY(this.data.parentKey)
+        this.entryL = this.tree.st.db.tree_entries.upsert({
+            id: asTreeEntryID(this.data.id),
+        })!
         this.tree.indexNode(this)
         makeAutoObservable(this)
     }
 
     get id() { return this.data.id } // prettier-ignore
-    // get hasType() {
-    //     if (this.data.typeName == null) return false
-    //     if (this.data.typeName === '') return false
-    //     if (this.data.typeName === 'any') return false
-    //     return true
-    // }
-    // get typeName() { return this.data.typeName || 'any' } // prettier-ignore
-    // get parentId() { return this.parentId } // prettier-ignore
-    // get parentKey() { return this.id } // prettier-ignore
-    // get rawPrimValue() { return this.data.rawPrimValue } // prettier-ignore
-    // get value() { return this.rawPrimValue } // prettier-ignore
-    // get refUID() { return this.data.refUID } // prettier-ignore
-
     get valid() {
         return true
         // if (this.typeName === 'any') return true
@@ -79,15 +80,15 @@ export class Node {
         return this.children.length > 0
     }
 
-    get children(): Node[] {
+    get children(): TreeNode[] {
         const ids = this.data.children?.() ?? []
-        const out: Node[] = []
+        const out: TreeNode[] = []
         for (const id of ids) {
             const node =
                 this.tree.getNodeById(id) ??
-                new Node(
+                new TreeNode(
                     this.tree,
-                    getTreeItem(this.tree.st, id),
+                    buildTreeItem(this.tree.st, id),
                     this.id,
                     // {
                     //     id,
@@ -101,7 +102,7 @@ export class Node {
         // return this.tree.getChildrenOf(this.data.id)
     }
 
-    get parent(): Node | undefined {
+    get parent(): TreeNode | undefined {
         if (this.parentId == null) return
         return this.tree.getNodeById(this.parentId)
     }
@@ -136,7 +137,7 @@ export class Node {
         // ❌ return this.tree.getChildrenOf(this.parentId).filter((i) => i !== this)
     }
 
-    get nextSibling(): Node | undefined {
+    get nextSibling(): TreeNode | undefined {
         let siblings = this.siblingsIncludingSelf
         if (siblings.length === 0) FAIL('IMPOSSIBLE 1')
         if (siblings[siblings.length - 1] === this) return // last of the fratry
@@ -146,7 +147,7 @@ export class Node {
         return
     }
 
-    get prevSibling(): Node | undefined {
+    get prevSibling(): TreeNode | undefined {
         let siblings = this.siblingsIncludingSelf
         let self = this
         if (siblings.length === 0) FAIL('IMPOSSIBLE 2')
@@ -159,16 +160,16 @@ export class Node {
 
     /** return the first child of a given node
      * or undefined if node has no child */
-    get firstChild(): Node | undefined {
+    get firstChild(): TreeNode | undefined {
         const children = this.children
         if (children.length === 0) return
         return children[0]
     }
 
     get_descendant_and_self(mode: 'dfs' | 'bfs') {
-        const stack: Node[] = [this]
+        const stack: TreeNode[] = [this]
         let ix: number = 0
-        let at: Node | undefined
+        let at: TreeNode | undefined
         while ((at = stack[ix++])) {
             if (mode === 'bfs') stack.push(...at.children)
             else stack.splice(ix, 0, ...at.children)
@@ -176,16 +177,16 @@ export class Node {
         return stack
     }
 
-    get lastChild(): Node | undefined {
+    get lastChild(): TreeNode | undefined {
         if (this.children.length === 0) return
         return this.children[this.children.length - 1]
     }
 
     /** return the last descendant
      * [a[b,c],x[y,z]] => z */
-    get lastDescendant(): Node | undefined {
-        let at: Node | undefined = this
-        let out: Node | undefined
+    get lastDescendant(): TreeNode | undefined {
+        let at: TreeNode | undefined = this
+        let out: TreeNode | undefined
         while ((at = at.lastChild)) out = at
         return out
     }
@@ -194,21 +195,21 @@ export class Node {
         return this.parentId == null
     }
 
-    get root(): Node | undefined {
-        let at: Node | undefined = this
+    get root(): TreeNode | undefined {
+        let at: TreeNode | undefined = this
         while (at.parent) {
             at = at.parent
         }
         return at
     }
 
-    get rootOrSelf(): Node {
+    get rootOrSelf(): TreeNode {
         return this.root ?? this
     }
 
-    get lastOpenedDescendant(): Node | undefined {
-        let at: Node | undefined = this
-        let out: Node | undefined
+    get lastOpenedDescendant(): TreeNode | undefined {
+        let at: TreeNode | undefined = this
+        let out: TreeNode | undefined
         if (!at.opened) return
         while ((at = at.lastChild)) {
             out = at
@@ -229,14 +230,14 @@ export class Node {
         return this.get_descendant('dfs')
     }
 
-    get nodeAboveInView(): Node | undefined {
+    get nodeAboveInView(): TreeNode | undefined {
         return this.prevSibling?.lastOpenedDescendant ?? this.prevSibling ?? this.parent
     }
 
-    get nodeBelowInView(): Node | undefined {
+    get nodeBelowInView(): TreeNode | undefined {
         if (this.opened && this.firstChild) return this.firstChild
         if (this.nextSibling) return this.nextSibling
-        let at: Node | undefined = this
+        let at: TreeNode | undefined = this
         while ((at = at.parent)) if (at.nextSibling) return at.nextSibling
     }
 

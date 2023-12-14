@@ -1,5 +1,3 @@
-import type { STATE } from '../state/state'
-import type { TableInfo } from 'src/db/TYPES_json'
 import type {
     AuthT,
     ComfyPromptT,
@@ -17,22 +15,31 @@ import type {
     ProjectT,
     RuntimeErrorT,
     StepT,
+    TreeEntryT,
 } from 'src/db/TYPES.gen'
+import type { TableInfo } from 'src/db/TYPES_json'
+import type { STATE } from '../state/state'
 
+import { default as BetterSqlite3, default as SQL } from 'better-sqlite3'
 import { rmSync } from 'fs'
 import { makeAutoObservable } from 'mobx'
 import { LiveTable } from './LiveTable'
-import { default as BetterSqlite3, default as SQL } from 'better-sqlite3'
 // models
 import { readFileSync } from 'fs'
 import { _applyAllMigrations } from 'src/db/_applyAllMigrations'
+import { _codegenORM } from 'src/db/_codegenORM'
 import { _setupMigrationEngine } from 'src/db/_setupMigrationEngine'
-import { _listAllTables } from 'src/db/_listAllTables'
 import { _checkAllMigrationsHaveDifferentIds } from 'src/db/migrations'
+import { AuthL } from 'src/models/Auth'
+import { CushyAppL } from 'src/models/CushyApp'
+import { CushyScriptL } from 'src/models/CushyScriptL'
+import { CustomDataL } from 'src/models/CustomData'
 import { Media3dDisplacementL } from 'src/models/Media3dDisplacement'
+import { MediaSplatL } from 'src/models/MediaSplat'
 import { MediaTextL } from 'src/models/MediaText'
 import { MediaVideoL } from 'src/models/MediaVideo'
 import { RuntimeErrorL } from 'src/models/RuntimeError'
+import { TreeEntryL } from 'src/models/TreeEntry'
 import { ComfyPromptL } from '../models/ComfyPrompt'
 import { DraftL } from '../models/Draft'
 import { ComfyWorkflowL } from '../models/Graph'
@@ -41,13 +48,7 @@ import { ProjectL } from '../models/Project'
 import { SchemaL } from '../models/Schema'
 import { StepL } from '../models/Step'
 import { asRelativePath } from '../utils/fs/pathUtils'
-import { _codegenORM } from 'src/db/_codegenORM'
-import { MediaSplatL } from 'src/models/MediaSplat'
-import { CustomDataL } from 'src/models/CustomData'
 import { DB_RELATIVE_PATH } from './DB_CONFIG'
-import { CushyScriptL } from 'src/models/CushyScriptL'
-import { CushyAppL } from 'src/models/CushyApp'
-import { AuthL } from 'src/models/Auth'
 
 export type Indexed<T> = { [id: string]: T }
 
@@ -68,6 +69,7 @@ export class LiveDB {
     media_videos: LiveTable<MediaVideoT, MediaVideoL>
     media_splats: LiveTable<MediaSplatT, MediaSplatL>
     media_3d_displacement: LiveTable<Media3dDisplacementT, Media3dDisplacementL>
+    tree_entries: LiveTable<TreeEntryT, TreeEntryL>
     runtimeErrors: LiveTable<RuntimeErrorT, RuntimeErrorL>
     drafts: LiveTable<DraftT, DraftL>
     graphs: LiveTable<GraphT, ComfyWorkflowL>
@@ -110,6 +112,7 @@ export class LiveDB {
             this.media_videos =          new LiveTable(this, 'media_video'          , '🖼️', MediaVideoL)
             this.media_splats =          new LiveTable(this, 'media_splat'          , '🖼️', MediaSplatL)
             this.media_3d_displacement = new LiveTable(this, 'media_3d_displacement', '🖼️', Media3dDisplacementL)
+            this.tree_entries =          new LiveTable(this, 'tree_entry'           , '🖼️', TreeEntryL)
             this.runtimeErrors =         new LiveTable(this, 'runtime_error'        , '❌', RuntimeErrorL)
             this.drafts =                new LiveTable(this, 'draft'                , '📝', DraftL)
             this.graphs =                new LiveTable(this, 'graph'                , '📊', ComfyWorkflowL)
