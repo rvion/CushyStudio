@@ -24,26 +24,31 @@ export const WidgetListUI = observer(function WidgetListUI_<T extends Widget>(p:
                 <div tw='flex flex-col gap-1'>
                     {values.map((v, ix) => (
                         <SortableItem key={v.state.id}>
-                            <div key={v.id} tw='flex items-start'>
-                                <SortableKnob>
-                                    <ListDragHandleUI ix={ix} />
-                                </SortableKnob>
-                                <ListItemCollapseBtnUI req={v} />
-                                <WidgetUI widget={v} />
-                                <Button
-                                    appearance='subtle'
-                                    disabled={min ? req.state.items.length <= min : undefined}
-                                    tw='self-start'
-                                    onClick={() => req.removeItem(v)}
-                                    size='sm'
-                                >
-                                    X
-                                </Button>
+                            <div key={v.id} tw='flex flex-col'>
+                                <div key={v.id} tw='flex items-start'>
+                                    <SortableKnob>
+                                        <ListDragHandleUI ix={ix} />
+                                    </SortableKnob>
+                                    <ListItemCollapseBtnUI req={v} />
+                                    {v.state.collapsed && <WidgetUI widget={v} />}
+                                    {!v.state.collapsed && <div tw='flex-1' />}
+                                    <Button
+                                        appearance='subtle'
+                                        disabled={min ? req.state.items.length <= min : undefined}
+                                        tw='self-start'
+                                        onClick={() => req.removeItem(v)}
+                                        size='sm'
+                                    >
+                                        X
+                                    </Button>
+                                </div>
+                                {!v.state.collapsed && <WidgetUI widget={v} />}
                             </div>
                         </SortableItem>
                     ))}
                 </div>
             </SortableList>
+            <ListControlsUI req={p.widget} />
         </div>
     )
 })
