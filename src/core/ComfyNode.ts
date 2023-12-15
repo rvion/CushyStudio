@@ -169,7 +169,14 @@ export class ComfyNode<
             return opts?.multiline ? 40 : 30
         })
         const total = inputHeights.reduce((a, b) => a + b, 0)
-        return total + 30
+
+        const outputHeights = this.$schema.outputs.map((i) => {
+            return 30
+        })
+        const totalOutputs = outputHeights.reduce((a, b) => a + b, 0)
+
+        // max height since some nodes have many invisible inputs
+        return Math.min(1000, Math.max(total + 30, totalOutputs + 30))
     }
 
     serializeValue(field: string, value: unknown): unknown {
