@@ -407,7 +407,7 @@ export class Widget_bool implements IRequest<'bool', Widget_bool_opts, Widget_bo
 }
 
 // 🅿️ inlineRun ==============================================================================
-export type Widget_inlineRun_opts  = ReqInput<{text?: string, kind?: `primary`|`warning`}>
+export type Widget_inlineRun_opts  = ReqInput<{text?: string, kind?: `primary`|`special`|`warning`}>
 export type Widget_inlineRun_serial = Widget_inlineRun_state
 export type Widget_inlineRun_state  = StateFields<{ type:'inlineRun', active: true; val: boolean }>
 export type Widget_inlineRun_output = boolean
