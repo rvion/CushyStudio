@@ -30,8 +30,8 @@ export const WidgetListUI = observer(function WidgetListUI_<T extends Widget>(p:
                                         <ListDragHandleUI ix={ix} />
                                     </SortableKnob>
                                     <ListItemCollapseBtnUI req={v} />
-                                    {v.state.collapsed && <WidgetUI widget={v} />}
-                                    {!v.state.collapsed && <div tw='flex-1' />}
+                                    {(v.state.collapsed ?? true) && <WidgetUI widget={v} />}
+                                    {!(v.state.collapsed ?? true) && <div tw='flex-1' />}
                                     <Button
                                         appearance='subtle'
                                         disabled={min ? req.state.items.length <= min : undefined}
@@ -42,7 +42,7 @@ export const WidgetListUI = observer(function WidgetListUI_<T extends Widget>(p:
                                         X
                                     </Button>
                                 </div>
-                                {!v.state.collapsed && (
+                                {!(v.state.collapsed ?? true) && (
                                     <div key={v.id} tw='border-solid border-2 border-neutral-content'>
                                         <WidgetUI widget={v} />
                                     </div>
