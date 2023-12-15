@@ -80,20 +80,6 @@ export class TreeView {
         if (res != null) this.at.changeKey(res)
     }
 
-    // addSibling = () => {
-    //     if (this.at == null) return this.resetCaretPos()
-    //     const parent = this.at.parent
-    //     if (parent == null) return
-    //     const res = window.prompt('new key', this.at.parentKey)
-    //     if (res != null) parent.addChildAt(res)
-    // }
-
-    // changeValue = () => {
-    //     if (this.at == null) return this.resetCaretPos()
-    //     const res = window.prompt('new value', this.at.rawPrimValue)
-    //     if (res != null) this.at.changeValue(res)
-    // }
-
     deleteNodeAndFocusNodeAbove = () => {
         if (this.at == null) return this.resetCaretPos()
         const parent = this.at.nodeAboveInView
@@ -113,15 +99,6 @@ export class TreeView {
     addChild = (): TreeNode | undefined => {
         if (this.at == null) return this.resetCaretPos()
         console.log(`[👙] TODO`)
-        // const res = window.prompt('parentKey', 'a')
-        // if (res == null) return
-        // if (res.length === 0) return
-        // const key = res[0].toUpperCase() + res.slice(1)
-        // if (this.at.value != null) {
-        //     this.at.addChildAt('Value_', { rawPrimValue: this.at.value })
-        //     this.at.data.rawPrimValue = undefined
-        // }
-        // return this.at.addChildAt(key)
     }
 
     addChildAndFocus = () => {
@@ -133,16 +110,11 @@ export class TreeView {
         return
     }
 
-    // hoistNodeUp = () => {
-    //     if (this.at == null) return this.resetCaretPos()
-    //     this.at.hoistUp()
-    // }
-
     moveUp = () => {
         if (this.at == null) return this.resetCaretPos()
         const nextAt = this.at.nodeAboveInView
         if (nextAt) this.at = nextAt
-        console.log(`[👙] ${this.id}.at=`, nextAt?.id, this.at.id)
+        // console.log(`[👙] ${this.id}.at=`, nextAt?.id, this.at.id)
     }
 
     movePageUp = () => {
@@ -164,7 +136,7 @@ export class TreeView {
         if (this.at == null) return this.resetCaretPos()
         const nextAt = this.at.nodeBelowInView
         if (nextAt) this.at = nextAt
-        console.log(`[👙] ${this.id}.at=`, nextAt?.id, this.at.id)
+        // console.log(`[👙] ${this.id}.at=`, nextAt?.id, this.at.id)
     }
 
     moveRight = () => {
@@ -183,3 +155,32 @@ export class TreeView {
         if (this.at.parent) return (this.at = this.at.parent)
     }
 }
+
+// addSibling = () => {
+//     if (this.at == null) return this.resetCaretPos()
+//     const parent = this.at.parent
+//     if (parent == null) return
+//     const res = window.prompt('new key', this.at.parentKey)
+//     if (res != null) parent.addChildAt(res)
+// }
+
+// changeValue = () => {
+//     if (this.at == null) return this.resetCaretPos()
+//     const res = window.prompt('new value', this.at.rawPrimValue)
+//     if (res != null) this.at.changeValue(res)
+// }
+
+// hoistNodeUp = () => {
+//     if (this.at == null) return this.resetCaretPos()
+//     this.at.hoistUp()
+// }
+
+// const res = window.prompt('parentKey', 'a')
+// if (res == null) return
+// if (res.length === 0) return
+// const key = res[0].toUpperCase() + res.slice(1)
+// if (this.at.value != null) {
+//     this.at.addChildAt('Value_', { rawPrimValue: this.at.value })
+//     this.at.data.rawPrimValue = undefined
+// }
+// return this.at.addChildAt(key)

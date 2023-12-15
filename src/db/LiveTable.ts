@@ -118,6 +118,10 @@ export class LiveTable<T extends BaseInstanceFields, L extends LiveInstance<T, L
             get updatedAt() { return this.data.updatedAt } // prettier-ignore
             get tableName() { return this.table.name } // prettier-ignore
 
+            update_LiveOnly(changes: Partial<T>) {
+                Object.assign(this.data, changes)
+            }
+
             update(changes: Partial<T>) {
                 // 0. check that changes is valid
                 if (Array.isArray(changes)) throw new Error('insert does not support arrays')
@@ -127,7 +131,7 @@ export class LiveTable<T extends BaseInstanceFields, L extends LiveInstance<T, L
                 const isSame = Object.keys(changes).every((k) => {
                     return (this.data as any)[k] === (changes as any)[k]
                 })
-                if (isSame) return console.log(`✔️ ${this.table.name}#${changes.id} no need to update`) // no need to update
+                if (isSame) return // ⏸️ console.log(`✔️ ${this.table.name}#${changes.id} no need to update`) // no need to update
 
                 // 2. store the prev in case we have an onUpdate callback later
                 const prev = this.onUpdate //
@@ -302,6 +306,34 @@ export class LiveTable<T extends BaseInstanceFields, L extends LiveInstance<T, L
         this.liveEntities.delete(id)
     }
     // ------------------------------------------------------------
+
+    // clear = () => {
+    //     this.db.db.exec(`delete from ${this.name}`)
+    //     this.liveEntities.clear()
+    // }
+
+    /**
+     * probably unsafe to use
+     * - update all in DB
+     * - then patch all local instances bypassing the DB
+     */
+    updateAll = (changes: Partial<T>) => {
+        const sql = `update ${this.name} set ${Object.keys(changes)
+            .map((k) => `${k} = @${k}`)
+            .join(', ')}`
+        const stmt = this.db.db.prepare(sql)
+        stmt.run(changes)
+        for (const instance of this.liveEntities.values()) {
+            instance.update_LiveOnly(changes)
+        }
+    }
+
+    findAll = (): L[] => {
+        const stmt = this.db.db.prepare(`select * from ${this.name}`)
+        const datas: T[] = stmt.all().map((data) => this.infos.hydrateJSONFields(data))
+        const instances = datas.map((d) => this.getOrCreateInstanceForExistingData(d))
+        return instances
+    }
 
     find = (
         //

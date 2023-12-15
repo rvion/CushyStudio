@@ -1,5 +1,5 @@
 import type { DraftL } from 'src/models/Draft'
-import type { TreeEntry, TreeItemID } from '../TreeEntry'
+import type { ITreeEntry, TreeEntry, TreeItemID } from '../TreeEntry'
 import type { STATE } from 'src/state/state'
 
 import { statSync } from 'fs'
@@ -12,12 +12,13 @@ import { TreeFavorite } from './TreeFavorites'
 import { TreeFile } from './TreeFile'
 import { TreeFolder } from './TreeFolder'
 import { TreeRoot } from './TreeRoot'
+import { observable } from 'mobx'
 
 export const buildTreeItem = (
     //
     st: STATE,
     itemId: TreeItemID,
-): TreeEntry => {
+): ITreeEntry => {
     if (typeof itemId !== 'string') {
         throw new Error(`[🔴] itemId must be string`)
     }
@@ -25,6 +26,16 @@ export const buildTreeItem = (
     if (itemId === '#root') {
         return new TreeRoot()
     }
+    // ----------------
+    if (itemId === '#apps') {
+        return observable({
+            id: '#apps',
+            name: 'Apps',
+            icon: <span className='material-symbols-outlined'>play_arrow</span>,
+            children: () => st.db.cushy_apps.findAll().map((app) => `app#${app.id}`),
+        })
+    }
+    // ----------------
     if (itemId === '#favorites') {
         return new TreeFavorite(st)
     }
@@ -45,7 +56,7 @@ export const buildTreeItem = (
 
     if (itemId.startsWith('path#')) {
         const path = asRelativePath(itemId.slice('path#'.length))
-        console.log(`[🌲] << item`, path)
+        // console.log(`[🌲] << item`, path)
 
         // 1. folder----------
         const stats = statSync(path)

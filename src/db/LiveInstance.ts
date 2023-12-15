@@ -24,6 +24,7 @@ export interface LiveInstance<T extends BaseInstanceFields, L> {
     onCreate?: (data: T) => void
     onUpdate?: (prev: Maybe<T>, next: T) => void
     update: (t: Partial<T>) => void
+    update_LiveOnly: (t: Partial<T>) => void
     delete: () => void
     toJSON: () => T
     init(table: LiveTable<T, any>, data: T): void

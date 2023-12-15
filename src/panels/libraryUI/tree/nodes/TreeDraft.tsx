@@ -9,6 +9,7 @@ export class TreeDraft implements ITreeEntry {
     canRename = true
     onPrimaryAction = () => {
         this.st.currentDraft = this.draft
+        this.st.layout.FOCUS_OR_CREATE('CurrentDraft', {})
     }
     icon = (<span>✨</span>)
     data: TreeDraft

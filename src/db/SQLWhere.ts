@@ -6,6 +6,7 @@ export type SqlFindOptions = {
 }
 
 export type SqlExpr = { $like: string }
+
 export const isSqlExpr = (x: any): x is SqlExpr =>
     typeof x === 'object' && //
     x != null &&

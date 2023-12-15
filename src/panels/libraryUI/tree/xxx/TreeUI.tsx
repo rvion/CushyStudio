@@ -2,35 +2,41 @@ import { useMemo } from 'react'
 
 import { observer } from 'mobx-react-lite'
 
-import { TreeViewCtx } from './TreeCtx'
-import { TreeView } from './TreeView'
+import { useSt } from 'src/state/stateContext'
 import { Tree } from './Tree'
+import { TreeViewCtx } from './TreeCtx'
 import { TreeEntryUI } from './TreeEntryUI'
-import { TreeDebugUI } from './TreeDebugUI'
-// import { treeCSS } from './treeCSS'
-// import { LineUI } from './LineUI'
-// import { CursorInfoUI } from './CursorInfo'
+import { TreeView } from './TreeView'
 
 export const TreeUI = observer(function TreeEditorUI_(p: { tree: Tree }) {
+    const st = useSt()
     const es = useMemo(() => new TreeView(p.tree), [p.tree])
 
     return (
         <TreeViewCtx.Provider value={es}>
             <div className='boxed'>
-                {/* <h3>Editor</h3> */}
-                {/* <input
-                    onChange={(ev) => (es.filter = ev.target.value)}
-                    ref={es.filterRef}
-                    type='text'
-                    placeholder='filter'
-                    style={{ width: '100%', borderRadius: '1rem', margin: '1rem 0', padding: '.2rem .4rem' }}
-                /> */}
+                <div tw='flex'>
+                    <input
+                        tw='input input-bordered input-sm flex-grow'
+                        onChange={(ev) => (es.filter = ev.target.value)}
+                        ref={es.filterRef}
+                        type='text'
+                        placeholder='filter'
+                        // style={{ width: '100%', borderRadius: '1rem', margin: '1rem 0', padding: '.2rem .4rem' }}
+                    />
+                    <div
+                        onClick={() => {
+                            st.db.tree_entries.updateAll({ isExpanded: null })
+                        }}
+                        tw='btn btn-square btn-sm'
+                    >
+                        <span className='material-symbols-outlined'>minimize</span>
+                    </div>
+                </div>
                 <div className='w-full'>
-                    {/* {es.at?.id} */}
                     <div onKeyDown={es.onKeyDown} tabIndex={-1}>
-                        <div /*css={treeCSS}*/>
+                        <div>
                             {es.nodes.map((n) => (
-                                // <div key={n.id}>{n.id}</div>
                                 <TreeEntryUI key={n.id} node={n} />
                             ))}
                         </div>

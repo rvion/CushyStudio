@@ -19,7 +19,6 @@ export class TreeFile implements ITreeEntry {
         public id: string,
         public path: RelativePath,
     ) {
-        console.log(`[👙] `, id, path)
         this.file = st.library.getFile(path)
         makeAutoObservable(this)
     }

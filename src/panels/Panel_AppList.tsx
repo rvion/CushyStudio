@@ -9,10 +9,11 @@ export const Panel_AppList = observer(function Panel_AppList_(p: {}) {
     const st = useSt()
     const tree = useMemo(() => {
         return new Tree(st, [
+            //
             '#favorites',
+            // '#apps',
             'path#library/built-in',
             'path#library/local',
-            'path#library/installed',
             'path#library/sdk-examples',
         ])
     }, [])

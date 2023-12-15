@@ -10,6 +10,7 @@ import { asRelativePath } from 'src/utils/fs/pathUtils'
 import { CUSHY_IMPORT } from './CUSHY_IMPORT'
 import { CushyAppL } from './CushyApp'
 import { Executable } from './Executable'
+import { runInAction } from 'mobx'
 
 export interface CushyScriptL extends LiveInstance<CushyScriptT, CushyScriptL> {}
 export class CushyScriptL {
@@ -32,16 +33,18 @@ export class CushyScriptL {
 
     onHydrate = () => {
         this._EXECUTABLES = this.EVALUATE_SCRIPT()
-        this.apps = this._EXECUTABLES.map((executable): CushyAppL => {
-            const app = this.db.cushy_apps.upsert({
-                id: executable.appID,
-                scriptID: this.id,
-                description: executable.description,
-                illustration: executable.illustration,
-                name: executable.name,
-                tags: executable.tags.join(','),
+        runInAction(() => {
+            this.apps = this._EXECUTABLES.map((executable): CushyAppL => {
+                const app = this.db.cushy_apps.upsert({
+                    id: executable.appID,
+                    scriptID: this.id,
+                    description: executable.description,
+                    illustration: executable.illustration,
+                    name: executable.name,
+                    tags: executable.tags.join(','),
+                })
+                return app
             })
-            return app
         })
     }
 

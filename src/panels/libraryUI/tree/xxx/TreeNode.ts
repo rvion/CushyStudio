@@ -8,7 +8,7 @@ import { buildTreeItem } from '../nodes/buildTreeItem'
 import { ITreeEntry, TreeEntry } from '../TreeEntry'
 import { TreeEntryL } from 'src/models/TreeEntry'
 import { asTreeEntryID } from 'src/db/TYPES.gen'
-import { SQLITE_true } from 'src/db/SQLITE_boolean'
+import { SQLITE_false, SQLITE_true } from 'src/db/SQLITE_boolean'
 
 export type NodeId = string
 export type NodeKey = string
@@ -44,12 +44,16 @@ export class TreeNode {
         this.entryL.update({ isExpanded: SQLITE_true })
     }
     close() {
-        this.entryL.update({ isExpanded: SQLITE_true })
+        this.entryL.update({ isExpanded: SQLITE_false })
     }
     toggle() {
         if (this.opened) this.close()
         else this.open()
     }
+
+    // select = () => {
+    //     this.tree.view
+    // }
 
     onPrimaryAction = () => this.data.onPrimaryAction?.(this)
     onFocusItem = () => this.data.onFocusItem?.(this)
