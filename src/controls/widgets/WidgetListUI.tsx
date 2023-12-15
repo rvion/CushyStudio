@@ -52,7 +52,6 @@ export const WidgetListUI = observer(function WidgetListUI_<T extends Widget>(p:
                     ))}
                 </div>
             </SortableList>
-            <ListControlsUI req={p.widget} />
         </div>
     )
 })
