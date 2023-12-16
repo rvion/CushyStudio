@@ -37,6 +37,7 @@ import { OpenRouterResponse } from 'src/llm/OpenRouter_Response'
 import { OpenRouter_ask } from 'src/llm/OpenRouter_ask'
 import { OpenRouter_Models } from 'src/llm/OpenRouter_models'
 import { openRouterInfos } from 'src/llm/OpenRouter_infos'
+import { HostL } from 'src/models/Host'
 
 export type ImageAndMask = HasSingle_IMAGE & HasSingle_MASK
 
@@ -78,6 +79,15 @@ export class Runtime<FIELDS extends WidgetDict = any> {
      * use with caution
      */
     child_process = child_process
+
+    /**
+     * list of all configured hosts (machines) available
+     * example usage:
+     * - usefull if you want to manually dispatch things
+     * */
+    get hosts(): HostL[] {
+        return this.st.db.hosts.findAll()
+    }
 
     /**
      * get the configured trigger words for the given lora

@@ -4,7 +4,7 @@ import { useSt } from '../../state/stateContext'
 
 export const MenuComfyUI = observer(function MenuComfyUI_(p: {}) {
     const st = useSt()
-    const isConnected = st.ws.isOpen
+    const isConnected = st.ws?.isOpen ?? false
     return (
         <Dropdown
             tw={[isConnected ? null : 'text-error-content bg-error']}
@@ -22,15 +22,15 @@ export const MenuComfyUI = observer(function MenuComfyUI_(p: {}) {
                 icon={<span className='material-symbols-outlined text-cyan-400'>explore</span>}
                 label='Nodes'
             />
-            {Boolean(st.configFile.value.comfyUIHosts?.length) ? null : (
+            {/* {Boolean(st.configFile.value.comfyUIHosts?.length) ? null : (
                 <MenuItem
                     onClick={() => st.layout.FOCUS_OR_CREATE('Hosts', {})}
                     icon={<span className='material-symbols-outlined text-cyan-400'>settings</span>}
                     label='ComfyUI Hosts'
                 />
-            )}
+            )} */}
             <div className='divider'>hosts</div>
-            {st.configFile.value.comfyUIHosts?.map((host) => {
+            {st.hosts.map((host) => {
                 const isMain = host.id === st.configFile.value.mainComfyHostID
                 return (
                     <MenuItem
@@ -46,7 +46,7 @@ export const MenuComfyUI = observer(function MenuComfyUI_(p: {}) {
                         onClick={() => st.configFile.update({ mainComfyHostID: host.id })}
                         key={host.id}
                     >
-                        <div tw='flex-grow'>{host.name}</div>
+                        <div tw='flex-grow'>{host.data.name}</div>
                         <div
                             className='btn btn-xs'
                             onClick={(ev) => {

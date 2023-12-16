@@ -1,7 +1,6 @@
-import type { ThemeName } from 'src/theme/ThemeManager'
 import type { IJsonModel } from 'flexlayout-react'
-
-import { ComfyHostDef, ComfyHostID } from './ComfyHostDef'
+import type { ThemeName } from 'src/theme/ThemeManager'
+// import { ComfyHostID } from './ComfyHostDef'
 
 export type PreferedFormLayout = 'mobile' | 'dense' | 'auto'
 
@@ -24,10 +23,10 @@ export type ConfigFile = {
     ['draft.mockup-mobile']?: boolean
 
     favoriteApps?: CushyAppID[]
-    /** list of all comfyUI setup available */
-    comfyUIHosts?: ComfyHostDef[]
+    /* list of all comfyUI setup available */
+    // comfyUIHosts?: ComfyHostDef[]
 
-    mainComfyHostID?: Maybe<ComfyHostID>
+    mainComfyHostID?: Maybe<HostID>
     enableTypeCheckingBuiltInApps?: boolean
     /** 'light' or 'dark'; default to dark */
     theme?: ThemeName

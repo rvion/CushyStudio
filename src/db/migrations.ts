@@ -338,10 +338,19 @@ export const migrations: {
     },
     {
         id: 'ssH7sUSqD8',
-        name: 'switch comfy_host to proper table',
+        name: 'rename comfy_host to hosts',
         up: [
             //
             'alter table comfy_host rename to host',
+        ],
+    },
+    {
+        id: 'ikhG_dD58q',
+        name: 'tweak host table',
+        up: [
+            //
+            'alter table host rename column localPath to absolutePathToComfyUI',
+            'alter table host add column absolutPathToDownloadModelsTo text',
         ],
     },
     // {

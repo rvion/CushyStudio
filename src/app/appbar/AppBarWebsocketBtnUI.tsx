@@ -5,9 +5,10 @@ import { useSt } from '../../state/stateContext'
 
 export const IndicatorWebsocketUI = observer(function IndicatorWebsocketUI_(p: {}) {
     const st = useSt()
+    const ws = st.mainHost.ws
     return (
         <RevealUI showDelay={0}>
-            {st.ws.isOpen ? (
+            {ws?.isOpen ? (
                 <Button size='sm' className='flex gap-1 text-sm px-1 rounded cursor-help'>
                     {/* <span className='material-symbols-outlined text-green-400 '>check_circle</span> */}
                     <span className='text-success'>WS</span>
@@ -26,7 +27,7 @@ export const IndicatorWebsocketUI = observer(function IndicatorWebsocketUI_(p: {
                         <div>{st.getWSUrl()}</div>
                     </Message>
                 )}
-                {st.ws.debugMessages.map((x, ix) =>
+                {ws?.debugMessages.map((x, ix) =>
                     x.type === 'error' ? ( //
                         <div key={ix} className='text-red-400'>
                             {x.message}
