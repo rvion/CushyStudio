@@ -23,6 +23,8 @@
     "typings": "./lib/index.d.ts",
     "scripts": {
         "📌 CODEGEN": "",
+        "📌 LEGACY": "-----------------------------------------------------------------------",
+        "start": "node src/shell/start.cjs",
         "gen-bins-node": "npm rebuild",
         "gen-supa-types": "supabase gen types typescript --linked > src/supa/database.types.ts",
         "gen-bins": "electron-builder install-app-deps",
