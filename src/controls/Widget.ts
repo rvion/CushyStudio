@@ -1255,6 +1255,7 @@ export class Widget_choice      <T extends { [key: string]: Widget }> implements
             this.state = { type:'choice', id: this.id, active: serial.active, collapsed: serial.collapsed, values: {} as any, pick: serial.pick }
             const prevValues_ = serial.values_??{}
             for (const key in _newValues) {
+                if (key !== serial.pick) continue
                 const newItem = _newValues[key]
                 const prevValue_ = prevValues_[key]
                 const newInput = newItem.input
@@ -1274,7 +1275,10 @@ export class Widget_choice      <T extends { [key: string]: Widget }> implements
     }
     get serial(): Widget_choice_serial<T> {
         const out: { [key: string]: any } = {}
-        for (const key in this.state.values) out[key] = this.state.values[key].serial
+        for (const key in this.state.values) {
+            if (key !== this.state.pick) continue
+            out[key] = this.state.values[key].serial
+        }
         return { type: 'choice', id: this.id, active: this.state.active, values_: out as any, collapsed: this.state.collapsed, pick: this.state.pick }
     }
     get result(): Widget_choice_output<T> {
@@ -1329,7 +1333,9 @@ export class Widget_choices<T extends { [key: string]: Widget }> implements IReq
                 const newType = newItem.type
                 // restore branches value
                 if (prevValue_ && newType === prevValue_.type) {
-                    this.state.values[key] = this.builder._HYDRATE(newType, newInput, prevValue_)
+                    setTimeout(()=>{
+                        this.state.values[key] = this.builder._HYDRATE(newType, newInput, prevValue_)
+                    },0)
                 } else {
                     this.state.values[key] = newItem
                 }
