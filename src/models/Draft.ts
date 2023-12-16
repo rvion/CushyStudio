@@ -91,52 +91,58 @@ export class DraftL {
     isInitialized = false
     AWAKE = () => {
         if (this.isInitialized) return
-        this.isInitializing = true
-        const _1 = reaction(
-            () => this.action,
-            (action) => {
-                console.log(`[🦊] form: awakening app ${this.data.appPath}`)
-                if (action == null) return
-                try {
-                    const formBuilder = new FormBuilder(this.st.schema)
-                    const uiFn = action.ui
-                    const req: Widget_group<any> =
+        if (this.isInitializing) return
+        try {
+            this.isInitializing = true
+            const _1 = reaction(
+                () => this.action,
+                async (action) => {
+                    await new Promise((r) => setTimeout(r, 0))
+
+                    console.log(`[🦊] form: awakening app ${this.data.appPath}`)
+                    if (action == null) return
+                    try {
+                        const formBuilder = new FormBuilder(this.st.schema)
+                        const uiFn = action.ui
+                        const req: Widget_group<any> =
                         uiFn == null //
                             ? formBuilder._HYDRATE('group', { topLevel: true, items: () => ({}) }, this.data.appParams)
                             : formBuilder._HYDRATE('group', { topLevel: true, items: () => uiFn(formBuilder) }, this.data.appParams) // prettier-ignore
-                    /** 👇 HACK; see the comment near the ROOT property definition */
-                    formBuilder._ROOT = req
-                    this.gui = __OK(req)
-                    console.log(`[🦊] form: setup`)
-                    // subState.unsync()
-                } catch (e) {
-                    console.error(e)
-                    this.gui = __FAIL('ui function crashed', e)
-                    return
-                }
-            },
-            { fireImmediately: true },
-        )
+                        /** 👇 HACK; see the comment near the ROOT property definition */
+                        formBuilder._ROOT = req
+                        this.gui = __OK(req)
+                        console.log(`[🦊] form: setup`)
+                        // subState.unsync()
+                    } catch (e) {
+                        console.error(e)
+                        this.gui = __FAIL('ui function crashed', e)
+                        return
+                    }
+                },
+                { fireImmediately: true },
+            )
 
-        // 🔴 dangerous
-        const _2 = autorun(() => {
-            const formValue = this.gui.value
-            if (formValue == null) return null
-            const count = formValue.builder._cache.count // manual mobx invalidation
-            const _ = JSON.stringify(formValue.serial)
-            runInAction(() => {
-                console.log(`[🦊] form: updating`)
-                this.update({ appParams: formValue.serial })
+            // 🔴 dangerous
+            const _2 = autorun(() => {
+                const formValue = this.gui.value
+                if (formValue == null) return null
+                const count = formValue.builder._cache.count // manual mobx invalidation
+                const _ = JSON.stringify(formValue.serial)
+                runInAction(() => {
+                    console.log(`[🦊] form: updating`)
+                    this.update({ appParams: formValue.serial })
+                })
             })
-        })
 
-        this.isInitialized = true
-        this.isInitializing = false
-        return () => {
-            _1()
-            _2()
-            this.isInitialized = false
-            this.gui = __FAIL('not loaded yet')
+            this.isInitialized = true
+            return () => {
+                _1()
+                _2()
+                this.isInitialized = false
+                this.gui = __FAIL('not loaded yet')
+            }
+        } finally {
+            this.isInitializing = false
         }
     }
 }
