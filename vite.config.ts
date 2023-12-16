@@ -68,6 +68,8 @@ export default defineConfig({
             'node:buffer': `${installDir}/src/syms/buffer.js`,
             /* */ child_process: `${installDir}/src/syms/child_process.js`,
             'node:child_process': `${installDir}/src/syms/child_process.js`,
+            /* */ cluster: `${installDir}/src/syms/cluster.js`,
+            'node:cluster': `${installDir}/src/syms/cluster.js`,
             /* */ fs: `${installDir}/src/syms/fs.js`,
             'node:fs': `${installDir}/src/syms/fs.js`,
             /* */ os: `${installDir}/src/syms/os.js`,

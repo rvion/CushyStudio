@@ -12,6 +12,7 @@ const modulesToCache = [
     'util',
     'zlib',
     'events',
+    'cluster',
 ]
 
 const fs = require('fs')
