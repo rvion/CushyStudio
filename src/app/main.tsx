@@ -10,7 +10,7 @@ import 'src/theme/flexlayout.css'
 import 'src/theme/theme.css'
 // import 'src/theme/card.css'
 
-import { Main } from '../widgets/misc/MainUI'
+import { MainUI } from '../widgets/misc/MainUI'
 
 const root = document.getElementById('root') as HTMLElement
-ReactDOM.createRoot(root).render(<Main />)
+ReactDOM.createRoot(root).render(<MainUI />)
