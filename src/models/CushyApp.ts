@@ -105,6 +105,7 @@ export class CushyAppL {
                 console.log(`[🐩] found`, prev, 'updating...')
                 throw new Error('🔴 UNFINISHED')
                 const res = await supa.from('published_apps').update({
+                    // @ts-ignore
                     id: prev.data[0].id,
                     name: this.name,
                     description: this.description,
