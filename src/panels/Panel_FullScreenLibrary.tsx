@@ -30,7 +30,7 @@ export const Panel_CardPicker3UI = observer(function Panel_CardPicker3UI_(p: {})
                             <span className='material-symbols-outlined'>search</span>
                         </Addon>
                         <input
-                            tw='join-item input-sm'
+                            tw='join-item input input-sm'
                             type='string'
                             value={library.query}
                             onChange={(ev) => {
@@ -54,7 +54,7 @@ export const Panel_CardPicker3UI = observer(function Panel_CardPicker3UI_(p: {})
                         />
                     </Joined>
                     <div
-                        tw='btn btn-primary'
+                        tw='btn-sm btn btn-primary'
                         onClick={async () => {
                             //
                             // throw new Error('not implemented; should walk, list all apps, and compile them to executable')

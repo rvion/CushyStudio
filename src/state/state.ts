@@ -37,7 +37,7 @@ import { JsonFile } from '../core/JsonFile'
 import { LiveDB } from '../db/LiveDB'
 import { ComfyImporter } from '../importers/ComfyImporter'
 import { ComfyWorkflowL } from '../models/Graph'
-import { EmbeddingName, EnumValue, SchemaL } from '../models/Schema'
+import { EmbeddingName, EnumValue, ComfySchemaL } from '../models/Schema'
 import { CushyLayoutManager } from '../panels/router/Layout'
 import { ComfySchemaJSON } from '../types/ComfySchemaJSON'
 import { GitManagedFolder } from '../updater/updater'
@@ -111,7 +111,7 @@ export class STATE {
     }
 
     // main state api
-    schema: SchemaL
+    schema: ComfySchemaL
     comfySessionId = 'temp' /** send by ComfyUI server */
 
     // paths

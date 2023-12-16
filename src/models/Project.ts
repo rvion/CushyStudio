@@ -1,6 +1,6 @@
 import type { LiveInstance } from '../db/LiveInstance'
 import type { ComfyWorkflowL } from './Graph'
-import type { SchemaL } from './Schema'
+import type { ComfySchemaL } from './Schema'
 
 import { LiveRef } from '../db/LiveRef'
 import { ProjectT } from 'src/db/TYPES.gen'
@@ -27,7 +27,7 @@ export class ProjectL {
     rootGraph = new LiveRef<this, ComfyWorkflowL>(this, 'rootGraphID', () => this.db.graphs)
     draft = new LiveRefOpt<this, DraftL>(this, 'currentDraftID', () => this.db.drafts)
 
-    get schema(): SchemaL {
+    get schema(): ComfySchemaL {
         return this.db.schema
     }
 }

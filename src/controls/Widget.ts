@@ -2,7 +2,7 @@
  * this file is an attempt to centralize core widget definition in a single
  * file so it's easy to add any widget in the future
  */
-import type { SchemaL } from 'src/models/Schema'
+import type { ComfySchemaL } from 'src/models/Schema'
 import type { SimplifiedLoraDef } from 'src/presets/SimplifiedLoraDef'
 import type { ItemDataType } from 'src/rsuite/RsuiteTypes'
 import type { CleanedEnumResult } from 'src/types/EnumUtils'
@@ -65,7 +65,7 @@ export class Widget_str implements IRequest<'str', Widget_str_opts, Widget_str_s
     state: Widget_str_state
     constructor(
         public builder: FormBuilder,
-        public schema: SchemaL,
+        public schema: ComfySchemaL,
         public input: Widget_str_opts,
         serial?: Widget_str_serial,
     ) {
@@ -97,7 +97,7 @@ export class Widget_markdown implements IRequest<'markdown', Widget_markdown_opt
 
     constructor(
         public builder: FormBuilder,
-        public schema: SchemaL,
+        public schema: ComfySchemaL,
         public input: Widget_markdown_opts,
         serial?: Widget_markdown_serial,
     ) {
@@ -126,7 +126,7 @@ export class Widget_custom<T> implements IRequest<'custom', Widget_custom_opts<T
     reset = () => (this.state.value = this.input.defaultValue())
     constructor(
         public builder: FormBuilder,
-        public schema: SchemaL,
+        public schema: ComfySchemaL,
         public input: Widget_custom_opts<T>,
         serial?: Widget_custom_serial<T>,
     ) {
@@ -163,7 +163,7 @@ export class Widget_color implements IRequest<'color', Widget_color_opts, Widget
     state: Widget_color_state
     constructor(
         public builder: FormBuilder,
-        public schema: SchemaL,
+        public schema: ComfySchemaL,
         public input: Widget_color_opts,
         serial?: Widget_color_serial,
     ) {
@@ -188,7 +188,7 @@ export class Widget_strOpt implements IRequest<'strOpt', Widget_strOpt_opts, Wid
     state: Widget_strOpt_state
     constructor(
         public builder: FormBuilder,
-        public schema: SchemaL,
+        public schema: ComfySchemaL,
         public input: Widget_strOpt_opts,
         serial?: Widget_strOpt_serial,
     ) {
@@ -226,7 +226,7 @@ export class Widget_prompt implements IRequest<'prompt', Widget_prompt_opts, Wid
     // }
     constructor(
         public builder: FormBuilder,
-        public schema: SchemaL,
+        public schema: ComfySchemaL,
         public input: Widget_prompt_opts,
         serial?: Widget_prompt_serial,
     ) {
@@ -272,7 +272,7 @@ export class Widget_promptOpt implements IRequest<'promptOpt', Widget_promptOpt_
     state: Widget_promptOpt_state
     constructor(
         public builder: FormBuilder,
-        public schema: SchemaL,
+        public schema: ComfySchemaL,
         public input: Widget_promptOpt_opts,
         serial?: Widget_promptOpt_serial,
     ) {
@@ -319,7 +319,7 @@ export class Widget_seed implements IRequest<'seed', Widget_seed_opts, Widget_se
     state: Widget_seed_state
     constructor(
         public builder: FormBuilder,
-        public schema: SchemaL,
+        public schema: ComfySchemaL,
         public input: Widget_seed_opts,
         serial?: Widget_seed_serial,
     ) {
@@ -355,7 +355,7 @@ export class Widget_int implements IRequest<'int', Widget_int_opts, Widget_int_s
     state: Widget_int_state
     constructor(
         public builder: FormBuilder,
-        public schema: SchemaL,
+        public schema: ComfySchemaL,
         public input: Widget_int_opts,
         serial?: Widget_int_serial,
     ) {
@@ -380,7 +380,7 @@ export class Widget_float implements IRequest<'float', Widget_float_opts, Widget
     state: Widget_float_state
     constructor(
         public builder: FormBuilder,
-        public schema: SchemaL,
+        public schema: ComfySchemaL,
         public input: Widget_float_opts,
         serial?: Widget_float_serial,
     ) {
@@ -405,7 +405,7 @@ export class Widget_bool implements IRequest<'bool', Widget_bool_opts, Widget_bo
     state: Widget_bool_state
     constructor(
         public builder: FormBuilder,
-        public schema: SchemaL,
+        public schema: ComfySchemaL,
         public input: Widget_bool_opts,
         serial?: Widget_bool_serial,
     ) {
@@ -430,7 +430,7 @@ export class Widget_inlineRun implements IRequest<'inlineRun', Widget_inlineRun_
     state: Widget_inlineRun_state
     constructor(
         public builder: FormBuilder,
-        public schema: SchemaL,
+        public schema: ComfySchemaL,
         public input: Widget_inlineRun_opts,
         serial?: Widget_inlineRun_serial,
     ) {
@@ -459,7 +459,7 @@ export class Widget_intOpt implements IRequest<'intOpt', Widget_intOpt_opts, Wid
     state: Widget_intOpt_state
     constructor(
         public builder: FormBuilder,
-        public schema: SchemaL,
+        public schema: ComfySchemaL,
         public input: Widget_intOpt_opts,
         serial?: Widget_intOpt_serial,
     ) {
@@ -492,7 +492,7 @@ export class Widget_floatOpt implements IRequest<'floatOpt', Widget_floatOpt_opt
     state: Widget_floatOpt_state
     constructor(
         public builder: FormBuilder,
-        public schema: SchemaL,
+        public schema: ComfySchemaL,
         public input: Widget_floatOpt_opts,
         serial?: Widget_floatOpt_serial,
     ) {
@@ -530,7 +530,7 @@ export class Widget_size implements IRequest<'size', Widget_size_opts, Widget_si
     state: Widget_size_state
     constructor(
         public builder: FormBuilder,
-        public schema: SchemaL,
+        public schema: ComfySchemaL,
         public input: Widget_size_opts,
         serial?: Widget_size_serial,
     ) {
@@ -582,7 +582,7 @@ export class Widget_matrix implements IRequest<'matrix', Widget_matrix_opts, Wid
     cols: string[]
     constructor(
         public builder: FormBuilder,
-        public schema: SchemaL,
+        public schema: ComfySchemaL,
         public input: Widget_matrix_opts,
         serial?: Widget_matrix_serial,
     ) {
@@ -673,7 +673,7 @@ export class Widget_loras implements IRequest<'loras', Widget_loras_opts, Widget
     state: Widget_loras_state
     constructor(
         public builder: FormBuilder,
-        public schema: SchemaL,
+        public schema: ComfySchemaL,
         public input: Widget_loras_opts,
         serial?: Widget_loras_serial,
     ) {
@@ -735,7 +735,7 @@ export class Widget_image implements IRequest<'image', Widget_image_opts, Widget
     state: Widget_image_state
     constructor(
         public builder: FormBuilder,
-        public schema: SchemaL,
+        public schema: ComfySchemaL,
         public input: Widget_image_opts,
         serial?: Widget_image_serial,
     ) {
@@ -773,7 +773,7 @@ export class Widget_imageOpt implements IRequest<'imageOpt', Widget_imageOpt_opt
     state: Widget_imageOpt_state
     constructor(
         public builder: FormBuilder,
-        public schema: SchemaL,
+        public schema: ComfySchemaL,
         public input: Widget_imageOpt_opts,
         serial?: Widget_imageOpt_serial,
     ) {
@@ -820,7 +820,7 @@ export class Widget_selectOne<T extends BaseSelectOneEntry> implements IRequest<
     }
     constructor(
         public builder: FormBuilder,
-        public schema: SchemaL,
+        public schema: ComfySchemaL,
         public input: Widget_selectOne_opts<T>,
         serial?: Widget_selectOne_serial<T>,
     ) {
@@ -853,7 +853,7 @@ export class Widget_selectOneOrCustom implements IRequest<'selectOneOrCustom', W
     state: Widget_selectOneOrCustom_state
     constructor(
         public builder: FormBuilder,
-        public schema: SchemaL,
+        public schema: ComfySchemaL,
         public input: Widget_selectOneOrCustom_opts,
         serial?: Widget_selectOneOrCustom_serial,
     ) {
@@ -884,7 +884,7 @@ export class Widget_selectMany<T extends { type: string }> implements IRequest<'
     state: Widget_selectMany_state<T>
     constructor(
         public builder: FormBuilder,
-        public schema: SchemaL,
+        public schema: ComfySchemaL,
         public input: Widget_selectMany_opts<T>,
         serial?: Widget_selectMany_serial<T>,
     ) {
@@ -929,7 +929,7 @@ export class Widget_selectManyOrCustom implements IRequest<'selectManyOrCustom',
     state: Widget_selectManyOrCustom_state
     constructor(
         public builder: FormBuilder,
-        public schema: SchemaL,
+        public schema: ComfySchemaL,
         public input: Widget_selectManyOrCustom_opts,
         serial?: Widget_selectManyOrCustom_serial,
     ) {
@@ -962,7 +962,7 @@ export class Widget_list<T extends Widget> implements IRequest<'list', Widget_li
     get items(): T[] { return this.state.items }
     constructor(
         public builder: FormBuilder,
-        public schema: SchemaL,
+        public schema: ComfySchemaL,
         public input: Widget_list_opts<T>,
         serial?: Widget_list_serial<T>,
     ) {
@@ -1078,7 +1078,7 @@ export class Widget_listExt      <T extends Widget> implements IRequest<'listExt
     // INIT -----------------------------------------------------------------------------
     constructor(
         public builder: FormBuilder,
-        public schema: SchemaL,
+        public schema: ComfySchemaL,
         public input: Widget_listExt_opts<T>,
         serial?: Widget_listExt_serial<T>,
     ) {
@@ -1156,7 +1156,7 @@ export class Widget_group<T extends { [key: string]: Widget }> implements IReque
     get values() { return this.state.values }
     constructor(
         public builder: FormBuilder,
-        public schema: SchemaL,
+        public schema: ComfySchemaL,
         public input: Widget_group_opts<T>,
         serial?: Widget_group_serial<T>,
     ) {
@@ -1221,7 +1221,7 @@ export class Widget_groupOpt<T extends { [key: string]: Widget }> implements IRe
     get values() { return this.state.values }
     constructor(
         public builder: FormBuilder,
-        public schema: SchemaL,
+        public schema: ComfySchemaL,
         public input: Widget_groupOpt_opts<T>,
         serial?: Widget_groupOpt_serial<T>,
     ) {
@@ -1278,7 +1278,7 @@ export class Widget_choice      <T extends { [key: string]: Widget }> implements
     state: Widget_choice_state<T>
     constructor(
         public builder: FormBuilder,
-        public schema: SchemaL,
+        public schema: ComfySchemaL,
         public input: Widget_choice_opts<T>,
         serial?: Widget_choice_serial<T>,
     ) {
@@ -1339,7 +1339,7 @@ export class Widget_choices<T extends { [key: string]: Widget }> implements IReq
     state: Widget_choices_state<T>
     constructor(
         public builder: FormBuilder,
-        public schema: SchemaL,
+        public schema: ComfySchemaL,
         public input: Widget_choices_opts<T>,
         serial?: Widget_choices_serial<T>,
     ) {
@@ -1417,7 +1417,7 @@ export class Widget_enum<T extends KnownEnumNames> implements IRequest<'enum', W
     state: Widget_enum_state<T>
     constructor(
         public builder: FormBuilder,
-        public schema: SchemaL,
+        public schema: ComfySchemaL,
         public input: Widget_enum_opts<T>,
         serial?: Widget_enum_serial<T>,
     ) {
@@ -1449,7 +1449,7 @@ export class Widget_enumOpt<T extends KnownEnumNames> implements IRequest<'enumO
     state: Widget_enumOpt_state<T>
     constructor(
         public builder: FormBuilder,
-        public schema: SchemaL,
+        public schema: ComfySchemaL,
         public input: Widget_enumOpt_opts<T>,
         serial?: Widget_enumOpt_serial<T>,
     ) {

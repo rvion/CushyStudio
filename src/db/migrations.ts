@@ -319,6 +319,31 @@ export const migrations: {
         name: 'add app description and tags',
         up: ['drop table tree_infos', _createTable('tree_entry', ['isExpanded int'])],
     },
+    {
+        id: 'TsqhCRBCgq',
+        name: 'switch comfy_host to proper table',
+        up: [
+            //
+            _createTable('comfy_host', [
+                //
+                'name text not null default (hex(randomblob(16)))',
+                'hostname text not null default "localhost"',
+                'port int not null default 8188',
+                'useHttps int not null default 0',
+                'isLocal int not null default 0',
+                'localPath text',
+            ]),
+            'alter table comfy_schema add column hostID text references comfy_host(id)',
+        ],
+    },
+    {
+        id: 'ssH7sUSqD8',
+        name: 'switch comfy_host to proper table',
+        up: [
+            //
+            'alter table comfy_host rename to host',
+        ],
+    },
     // {
     //     id: 'e574c006-daca-4fd0-a51b-73a66b4fbd79',
     //     name: 'create cushy_app table',

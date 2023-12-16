@@ -7,6 +7,7 @@ import type {
     CustomDataT,
     DraftT,
     GraphT,
+    HostT,
     Media3dDisplacementT,
     MediaImageT,
     MediaSplatT,
@@ -45,10 +46,11 @@ import { DraftL } from '../models/Draft'
 import { ComfyWorkflowL } from '../models/Graph'
 import { MediaImageL } from '../models/MediaImage'
 import { ProjectL } from '../models/Project'
-import { SchemaL } from '../models/Schema'
+import { ComfySchemaL } from '../models/Schema'
 import { StepL } from '../models/Step'
 import { asRelativePath } from '../utils/fs/pathUtils'
 import { DB_RELATIVE_PATH } from './DB_CONFIG'
+import { HostL } from 'src/models/Host'
 
 export type Indexed<T> = { [id: string]: T }
 
@@ -60,7 +62,8 @@ export class LiveDB {
     // tables ---------------------------------------------------------
     projects: LiveTable<ProjectT, ProjectL>
     custom_datas: LiveTable<CustomDataT, CustomDataL>
-    schemas: LiveTable<ComfySchemaT, SchemaL>
+    comfy_schemas: LiveTable<ComfySchemaT, ComfySchemaL>
+    hosts: LiveTable<HostT, HostL>
     comfy_prompts: LiveTable<ComfyPromptT, ComfyPromptL>
     cushy_scripts: LiveTable<CushyScriptT, CushyScriptL>
     cushy_apps: LiveTable<CushyAppT, CushyAppL>
@@ -103,7 +106,8 @@ export class LiveDB {
             // 3. create tables (after the store has benn made already observable)
             this.projects =              new LiveTable(this, 'project'              , '🤠', ProjectL, { singleton: true })
             this.custom_datas =          new LiveTable(this, 'custom_data'          , '🎁', CustomDataL)
-            this.schemas =               new LiveTable(this, 'comfy_schema'         , '📑', SchemaL, { singleton: true })
+            this.comfy_schemas =         new LiveTable(this, 'comfy_schema'         , '📑', ComfySchemaL)
+            this.hosts =                 new LiveTable(this, 'host'                 , '📑', HostL)
             this.comfy_prompts =         new LiveTable(this, 'comfy_prompt'         , '❓', ComfyPromptL)
             this.cushy_scripts =         new LiveTable(this, 'cushy_script'         , '⭐️', CushyScriptL)
             this.cushy_apps =            new LiveTable(this, 'cushy_app'            , '🌟', CushyAppL)
@@ -174,8 +178,8 @@ export class LiveDB {
     db: BetterSqlite3.Database
 
     // misc ---------------------------------------------------------
-    get schema(): SchemaL {
-        return this.schemas.getOrCreate('main-schema', () => {
+    get schema(): ComfySchemaL {
+        return this.comfy_schemas.getOrCreate('main-schema', () => {
             const objectInfoDefaultPath = this.st.resolve(this.st.rootPath, asRelativePath('schema/object_info.default.json'))
             const objectInfoDefault = JSON.parse(readFileSync(objectInfoDefaultPath, 'utf8'))
             console.log('🟢 generating new schma')

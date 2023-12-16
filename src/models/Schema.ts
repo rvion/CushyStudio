@@ -47,9 +47,9 @@ export type EnumInfo = {
 //     embeddings: EmbeddingName[]
 // }
 
-export interface SchemaL extends LiveInstance<ComfySchemaT, SchemaL> {}
+export interface ComfySchemaL extends LiveInstance<ComfySchemaT, ComfySchemaL> {}
 
-export class SchemaL {
+export class ComfySchemaL {
     /**
      * for now, simply ensure that the number of parsed nodes matches the number of nodes
      * present in the object_info.json

@@ -5,7 +5,7 @@ import type { ComfyNodeID } from '../types/ComfyNodeID'
 import type { ComfyPromptJSON } from '../types/ComfyPrompt'
 import type { ApiPromptInput, PromptInfo, WsMsgExecuting, WsMsgExecutionCached, WsMsgProgress } from '../types/ComfyWsApi'
 import type { VisEdges, VisNodes } from '../widgets/misc/VisUI'
-import type { ComfyNodeSchema, SchemaL } from './Schema'
+import type { ComfyNodeSchema, ComfySchemaL } from './Schema'
 
 import { marked } from 'marked'
 import { join } from 'pathe'
@@ -311,7 +311,7 @@ export class ComfyWorkflowL {
     /** visjs JSON format (network visualisation) */
     get JSON_forVisDataVisualisation(): { nodes: VisNodes[]; edges: VisEdges[] } {
         const json: ComfyPromptJSON = this.json_forPrompt('use_stringified_numbers_only')
-        const schemas: SchemaL = this.db.schema
+        const schemas: ComfySchemaL = this.db.schema
         const nodes: VisNodes[] = []
         const edges: VisEdges[] = []
         if (json == null) return { nodes: [], edges: [] }

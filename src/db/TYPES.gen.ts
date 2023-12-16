@@ -319,6 +319,9 @@ export type ComfySchemaT = {
     /** @default: null, sqlType: json */
     embeddings: T.ComfySchema_embeddings;
 
+    /** @default: null, sqlType: TEXT */
+    hostID?: Maybe<HostID>;
+
 }
 export const ComfySchemaSchema = Type.Object({
     id: Type.String(),
@@ -326,6 +329,7 @@ export const ComfySchemaSchema = Type.Object({
     updatedAt: Type.Number(),
     spec: T.ComfySchema_spec_Schema,
     embeddings: T.ComfySchema_embeddings_Schema,
+    hostID: Type.Optional(T.Nullable(Type.String())),
 },{ additionalProperties: false })
 
 export const ComfySchemaFields = {
@@ -334,6 +338,7 @@ export const ComfySchemaFields = {
     updatedAt: {cid:2,name:'updatedAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
     spec: {cid:3,name:'spec',type:'json',notnull:1,dflt_value:null,pk:0},
     embeddings: {cid:4,name:'embeddings',type:'json',notnull:1,dflt_value:null,pk:0},
+    hostID: {cid:5,name:'hostID',type:'TEXT',notnull:0,dflt_value:null,pk:0},
 }
 
 
@@ -842,6 +847,61 @@ export const TreeEntryFields = {
 }
 
 
+export const asHostID = (s: string): HostID => s as any
+export type HostT = {
+    /** @default: "hex(randomblob(16))", sqlType: string */
+    id: HostID;
+
+    /** @default: "now", sqlType: INTEGER */
+    createdAt: number;
+
+    /** @default: "now", sqlType: INTEGER */
+    updatedAt: number;
+
+    /** @default: "hex(randomblob(16))", sqlType: TEXT */
+    name: string;
+
+    /** @default: "\"localhost\"", sqlType: TEXT */
+    hostname: string;
+
+    /** @default: "8188", sqlType: INT */
+    port: number;
+
+    /** @default: "0", sqlType: INT */
+    useHttps: number;
+
+    /** @default: "0", sqlType: INT */
+    isLocal: number;
+
+    /** @default: null, sqlType: TEXT */
+    localPath?: Maybe<string>;
+
+}
+export const HostSchema = Type.Object({
+    id: Type.String(),
+    createdAt: Type.Number(),
+    updatedAt: Type.Number(),
+    name: Type.String(),
+    hostname: Type.String(),
+    port: Type.Number(),
+    useHttps: Type.Number(),
+    isLocal: Type.Number(),
+    localPath: Type.Optional(T.Nullable(Type.String())),
+},{ additionalProperties: false })
+
+export const HostFields = {
+    id: {cid:0,name:'id',type:'string',notnull:1,dflt_value:'hex(randomblob(16))',pk:1},
+    createdAt: {cid:1,name:'createdAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
+    updatedAt: {cid:2,name:'updatedAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
+    name: {cid:3,name:'name',type:'TEXT',notnull:1,dflt_value:'hex(randomblob(16))',pk:0},
+    hostname: {cid:4,name:'hostname',type:'TEXT',notnull:1,dflt_value:'"localhost"',pk:0},
+    port: {cid:5,name:'port',type:'INT',notnull:1,dflt_value:'8188',pk:0},
+    useHttps: {cid:6,name:'useHttps',type:'INT',notnull:1,dflt_value:'0',pk:0},
+    isLocal: {cid:7,name:'isLocal',type:'INT',notnull:1,dflt_value:'0',pk:0},
+    localPath: {cid:8,name:'localPath',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+}
+
+
 export const schemas = {
     migrations: new T.TableInfo(
         'migrations',
@@ -956,5 +1016,11 @@ export const schemas = {
         'TreeEntry',
         TreeEntryFields,
         TreeEntrySchema,
+    ),
+    host: new T.TableInfo(
+        'host',
+        'Host',
+        HostFields,
+        HostSchema,
     ),
 }
