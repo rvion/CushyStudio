@@ -356,7 +356,8 @@ export class LiveTable<T extends BaseInstanceFields, L extends LiveInstance<T, L
                 whereClause.push(`${k} = @${k}`)
             }
         })
-        let findSQL = [`select * from ${this.name}`, `where`, whereClause.join(' and ')].join(' ')
+        let findSQL = `select * from ${this.name}`
+        if (whereClause.length > 0) findSQL += ` where ${whereClause.join(' and ')}`
         if (options.limit) findSQL += ` limit ${options.limit}`
 
         // console.log(`[👙] >>>`, findSQL, whereVars)
