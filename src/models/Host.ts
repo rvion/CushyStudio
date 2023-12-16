@@ -79,12 +79,13 @@ export class HostL {
 
     initWebsocket = () => {
         console.log('[👢] WEBSOCKET: starting client to ComfyUI')
-        return new ResilientWebSocketClient({
+        this.ws = new ResilientWebSocketClient({
             onConnectOrReconnect: () => this.fetchAndUdpateSchema(),
             onMessage: this.st.onMessage,
             url: this.getWSUrl,
             onClose: () => {},
         })
+        return this.ws
     }
 
     schemaReady = new ManualPromise<true>()

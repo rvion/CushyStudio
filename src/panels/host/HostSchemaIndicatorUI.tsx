@@ -3,13 +3,19 @@ import { HostL } from 'src/models/Host'
 import { RevealUI } from 'src/rsuite/RevealUI'
 import { Loader, Message } from 'src/rsuite/shims'
 
-export const HostSchemaIndicatorUI = observer(function HostSchemaIndicatorUI_(p: { host: HostL }) {
+export const HostSchemaIndicatorUI = observer(function HostSchemaIndicatorUI_(p: {
+    //
+    showIcon?: boolean
+    host: HostL
+}) {
     const host = p.host
+
     return (
         <RevealUI showDelay={0}>
             <div>
                 {host.schemaReady.done ? (
-                    <div className='flex gap-1 px-1 rounded cursor-help'>
+                    <div className='btn btn-sm cursor-help'>
+                        {p.showIcon && <span className='material-symbols-outlined text-green-400 '>check_circle</span>}
                         <span className='text-success'>Schema</span>
                     </div>
                 ) : (

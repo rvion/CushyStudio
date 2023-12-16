@@ -1,23 +1,34 @@
 import { observer } from 'mobx-react-lite'
-import { RevealUI } from 'src/rsuite/RevealUI'
-import { Button, Message } from 'src/rsuite/shims'
-import { useSt } from '../../../state/stateContext'
 import { HostL } from 'src/models/Host'
+import { RevealUI } from 'src/rsuite/RevealUI'
+import { Message } from 'src/rsuite/shims'
+import { useSt } from '../../state/stateContext'
 
-export const HostWebsocketIndicatorUI = observer(function HostWebsocketIndicatorUI_(p: { host: HostL }) {
+export const HostWebsocketIndicatorUI = observer(function HostWebsocketIndicatorUI_(p: {
+    //
+    showIcon?: boolean
+    host: HostL
+}) {
     const st = useSt()
     const ws = p.host.ws
+    if (p.host.data.isVirtual)
+        return (
+            <RevealUI showDelay={0}>
+                <div tw='btn btn-sm text-opacity-25'>WS</div>
+                <div tw='p-2'>Not Applicable</div>
+            </RevealUI>
+        )
     return (
         <RevealUI showDelay={0}>
             {ws?.isOpen ? (
-                <Button size='sm' className='flex gap-1 text-sm px-1 rounded cursor-help'>
-                    {/* <span className='material-symbols-outlined text-green-400 '>check_circle</span> */}
+                <div tw='btn btn-sm'>
+                    {p.showIcon && <span className='material-symbols-outlined text-green-400 '>check_circle</span>}
                     <span className='text-success'>WS</span>
-                </Button>
+                </div>
             ) : (
                 <div tw='btn btn-sm btn-error flex-nowrap'>
                     <div tw='loading loading-spinner loading-xs' />
-                    ComfyUI
+                    WS
                 </div>
             )}
             <div tw='menu'>
