@@ -353,6 +353,14 @@ export const migrations: {
             'alter table host add column absolutPathToDownloadModelsTo text',
         ],
     },
+    {
+        id: 'F4j-vbWNqe',
+        name: 'more host table tweaks',
+        up: [
+            //
+            'alter table host add column isVirtual int not null default 0',
+        ],
+    },
     // {
     //     id: 'e574c006-daca-4fd0-a51b-73a66b4fbd79',
     //     name: 'create cushy_app table',

@@ -113,7 +113,7 @@ export class ComfyWorkflowL {
 
     /** proxy to this.db.schema */
     get schema() {
-        return this.db.schema
+        return this.st.schema
     }
 
     /** nodes, in creation order */
@@ -311,7 +311,7 @@ export class ComfyWorkflowL {
     /** visjs JSON format (network visualisation) */
     get JSON_forVisDataVisualisation(): { nodes: VisNodes[]; edges: VisEdges[] } {
         const json: ComfyPromptJSON = this.json_forPrompt('use_stringified_numbers_only')
-        const schemas: ComfySchemaL = this.db.schema
+        const schemas: ComfySchemaL = this.schema
         const nodes: VisNodes[] = []
         const edges: VisEdges[] = []
         if (json == null) return { nodes: [], edges: [] }

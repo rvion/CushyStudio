@@ -28,6 +28,6 @@ export class ProjectL {
     draft = new LiveRefOpt<this, DraftL>(this, 'currentDraftID', () => this.db.drafts)
 
     get schema(): ComfySchemaL {
-        return this.db.schema
+        return this.st.schema
     }
 }

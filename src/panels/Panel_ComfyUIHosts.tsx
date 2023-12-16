@@ -1,7 +1,7 @@
+import { runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { nanoid } from 'nanoid'
 import { resolve } from 'path'
-import { DEFAULT_COMFYUI_INSTANCE_ID } from 'src/config/ComfyHostDef'
 import { SQLITE_false, SQLITE_true } from 'src/db/SQLITE_boolean'
 import { HostL } from 'src/models/Host'
 import { SelectUI } from 'src/rsuite/SelectUI'
@@ -15,12 +15,8 @@ export const LabelUI = observer(function LabelUI_(p: { children: React.ReactNode
 
 export const Panel_ComfyUIHosts = observer(function Panel_ComfyUIHosts_(p: { hostID?: HostID }) {
     const st = useSt()
-    const config = st.configFile.value
-
-    const mainHostID = config.mainComfyHostID ?? DEFAULT_COMFYUI_INSTANCE_ID
-    const mainHost = st.hosts.find((h) => h.id === mainHostID)
-
-    const allHosts = st.hosts ?? []
+    const allHosts = st.hosts.items
+    const mainHost = st.mainHost
 
     return (
         <Panel tw='w-full h-full flex flex-col gap-2 p-2'>
@@ -42,7 +38,8 @@ export const Panel_ComfyUIHosts = observer(function Panel_ComfyUIHosts_(p: { hos
                                 name: '192.168.1.19',
                                 isLocal: SQLITE_false,
                                 useHttps: SQLITE_false,
-                                localPath: asAbsolutePath(resolve('comfy')),
+                                absolutePathToComfyUI: asAbsolutePath(resolve('comfy')),
+                                isVirtual: SQLITE_false,
                             })
                         })
                     }}
@@ -58,7 +55,8 @@ export const Panel_ComfyUIHosts = observer(function Panel_ComfyUIHosts_(p: { hos
                             port: 443,
                             isLocal: SQLITE_false,
                             useHttps: SQLITE_true,
-                            localPath: asAbsolutePath(resolve('comfy')),
+                            absolutePathToComfyUI: asAbsolutePath(resolve('comfy')),
+                            isVirtual: SQLITE_false,
                         })
                     }}
                 >
@@ -105,7 +103,10 @@ export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
                     <div
                         tw='btn'
                         onClick={() => {
-                            host.delete()
+                            runInAction(() => {
+                                host.schema.delete()
+                                host.delete()
+                            })
                             // st.configFile.update(() => {
                             //     if (config.mainComfyHostID === host.id) config.mainComfyHostID = null
                             //     const index = config.comfyUIHosts?.indexOf(host)
@@ -163,19 +164,31 @@ export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
                 {/* LOCAL PATH */}
                 <div tw='flex items-center gap-1'>
                     <LabelUI>is local</LabelUI>
-                    {/* <Toggle
-                        onChange={(ev) => {
-                            const next = ev.target.checked
-                            host.isLocal = next
-                        }}
-                        checked={host.isLocal ?? false}
-                    /> */}
+                    <Toggle
+                        //
+                        onChange={(ev) => host.update({ isLocal: ev.target.checked ? SQLITE_true : SQLITE_false })}
+                        checked={host.data.isLocal ? true : false}
+                    />
+                </div>
+                <div tw='flex flex-col'>
+                    <LabelUI>absolute path to ComfyUI setup</LabelUI>
+                    <input
+                        tw='input input-bordered input-sm w-full'
+                        type='string'
+                        // placeholder='absolute path to ComfyUI install'
+                        disabled={!Boolean(host.data.isLocal)}
+                        onChange={(ev) => host.update({ absolutePathToComfyUI: ev.target.value })}
+                        value={host.data.absolutePathToComfyUI ?? ''}
+                    ></input>
+                </div>
+                <div tw='flex flex-col'>
+                    <LabelUI>Absolute path to model folder</LabelUI>
                     <input
                         tw='input input-bordered input-sm w-full'
                         type='string'
                         disabled={!Boolean(host.data.isLocal)}
-                        onChange={(ev) => host.update({ localPath: ev.target.value })}
-                        value={host.data.localPath ?? ''}
+                        onChange={(ev) => host.update({ absolutePathToComfyUI: ev.target.value })}
+                        value={host.data.absolutPathToDownloadModelsTo ?? ''}
                     ></input>
                 </div>
                 {/* ID */}

@@ -874,7 +874,13 @@ export type HostT = {
     isLocal: number;
 
     /** @default: null, sqlType: TEXT */
-    localPath?: Maybe<string>;
+    absolutePathToComfyUI?: Maybe<string>;
+
+    /** @default: null, sqlType: TEXT */
+    absolutPathToDownloadModelsTo?: Maybe<string>;
+
+    /** @default: "0", sqlType: INT */
+    isVirtual: number;
 
 }
 export const HostSchema = Type.Object({
@@ -886,7 +892,9 @@ export const HostSchema = Type.Object({
     port: Type.Number(),
     useHttps: Type.Number(),
     isLocal: Type.Number(),
-    localPath: Type.Optional(T.Nullable(Type.String())),
+    absolutePathToComfyUI: Type.Optional(T.Nullable(Type.String())),
+    absolutPathToDownloadModelsTo: Type.Optional(T.Nullable(Type.String())),
+    isVirtual: Type.Number(),
 },{ additionalProperties: false })
 
 export const HostFields = {
@@ -898,7 +906,9 @@ export const HostFields = {
     port: {cid:5,name:'port',type:'INT',notnull:1,dflt_value:'8188',pk:0},
     useHttps: {cid:6,name:'useHttps',type:'INT',notnull:1,dflt_value:'0',pk:0},
     isLocal: {cid:7,name:'isLocal',type:'INT',notnull:1,dflt_value:'0',pk:0},
-    localPath: {cid:8,name:'localPath',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    absolutePathToComfyUI: {cid:8,name:'absolutePathToComfyUI',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    absolutPathToDownloadModelsTo: {cid:9,name:'absolutPathToDownloadModelsTo',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    isVirtual: {cid:10,name:'isVirtual',type:'INT',notnull:1,dflt_value:'0',pk:0},
 }
 
 

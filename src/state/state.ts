@@ -112,7 +112,10 @@ export class STATE {
     }
 
     // main state api
-    schema: ComfySchemaL
+    get schema(): ComfySchemaL {
+        return this.mainHost.schema
+    }
+
     comfySessionId = 'temp' /** send by ComfyUI server */
 
     // paths
@@ -335,7 +338,7 @@ export class STATE {
 
         // core instances
         this.db = new LiveDB(this)
-        this.schema = this.db.schema
+        // this.schema = this.db.schema
         this.supabase = mkSupa()
         this.electronUtils = new ElectronUtils(this)
         this.shortcuts = new ShortcutWatcher(shortcutsDef, this, { name: nanoid() })
@@ -372,8 +375,9 @@ export class STATE {
             hostname: 'localhost',
             useHttps: SQLITE_false,
             port: 8188,
-            name: 'local',
+            name: 'virtual-ComfyUI-default',
             isLocal: SQLITE_true,
+            isVirtual: SQLITE_true,
         })
     }
 
