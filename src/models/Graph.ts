@@ -296,7 +296,7 @@ export class ComfyWorkflowL {
     // @deprecated
     get flowSummaryHTML(): HTMLContent {
         // https://mermaid.js.org/config/usage.html
-        return asHTMLContent(marked.parse(this.flowSummaryMd))
+        return asHTMLContent(marked(this.flowSummaryMd) as string)
     }
 
     _uidNumber = 0
