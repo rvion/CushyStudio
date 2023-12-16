@@ -20,7 +20,8 @@ import { GithubUserName } from 'src/cards/GithubUser'
 import { Library } from 'src/cards/Library'
 import { asAppPath } from 'src/cards/asAppPath'
 import { GithubRepoName } from 'src/cards/githubRepo'
-import { DEFAULT_COMFYUI_INSTANCE_ID } from 'src/config/ComfyHostDef'
+import { vIRTUAL_HOST_ID__BASE, vIRTUAL_HOST_ID__FULL } from 'src/config/ComfyHostDef'
+import { LiveCollection } from 'src/db/LiveCollection'
 import { LiveFind } from 'src/db/LiveQuery'
 import { SQLITE_false, SQLITE_true } from 'src/db/SQLITE_boolean'
 import { DraftT, asHostID } from 'src/db/TYPES.gen'
@@ -33,17 +34,14 @@ import { ThemeManager } from 'src/theme/ThemeManager'
 import { CleanedEnumResult } from 'src/types/EnumUtils'
 import { StepOutput } from 'src/types/StepOutput'
 import { UserTags } from 'src/widgets/prompter/nodes/usertags/UserLoader'
-import { ResilientWebSocketClient } from '../back/ResilientWebsocket'
 import { JsonFile } from '../core/JsonFile'
 import { LiveDB } from '../db/LiveDB'
 import { ComfyImporter } from '../importers/ComfyImporter'
 import { ComfyWorkflowL } from '../models/Graph'
-import { ComfySchemaL, EmbeddingName, EnumValue } from '../models/Schema'
+import { ComfySchemaL, EnumValue } from '../models/Schema'
 import { CushyLayoutManager } from '../panels/router/Layout'
 import { GitManagedFolder } from '../updater/updater'
 import { ElectronUtils } from '../utils/electron/ElectronUtils'
-import { extractErrorMessage } from '../utils/formatters/extractErrorMessage'
-import { readableStringify } from '../utils/formatters/stringifyReadable'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { exhaust } from '../utils/misc/ComfyUtils'
 import { ManualPromise } from '../utils/misc/ManualPromise'
@@ -51,7 +49,6 @@ import { DanbooruTags } from '../widgets/prompter/nodes/booru/BooruLoader'
 import { AuthState } from './AuthState'
 import { Uploader } from './Uploader'
 import { mkSupa } from './supa'
-import { LiveCollection } from 'src/db/LiveCollection'
 
 export class STATE {
     /** hack to help closing prompt completions */
@@ -136,12 +133,15 @@ export class STATE {
     hovered: Maybe<StepOutput> = null
     electronUtils: ElectronUtils
     library: Library
-    schemaReady = new ManualPromise<true>()
     danbooru = DanbooruTags.build()
     userTags = UserTags.build()
     actionTags: ActionTagMethodList = []
     importer: ComfyImporter
     typecheckingConfig: JsonFile<TsConfigCustom>
+
+    get schemaReady() {
+        return this.mainHost.schemaReady
+    }
 
     // showLatentPreviewInLastImagePanel
     get showLatentPreviewInLastImagePanel() { return this.configFile.value.showLatentPreviewInLastImagePanel ?? false } // prettier-ignore
@@ -359,23 +359,41 @@ export class STATE {
         this.library = new Library(this)
         this.project = this.getProject()
         this.auth = new AuthState(this)
+
+        this.virtualHostBase // ensure getters are called at least once so we upsert the two core virtual hosts
+        this.virtualHostFull // ensure getters are called at least once so we upsert the two core virtual hosts
+
+        this.mainHost.load()
+
         makeAutoObservable(this, { comfyUIIframeRef: false })
     }
 
     get mainComfyHostID(): HostID {
         return (
             this.configFile.value.mainComfyHostID ?? //
-            DEFAULT_COMFYUI_INSTANCE_ID
+            vIRTUAL_HOST_ID__BASE
         )
     }
 
-    get defaultHost(): HostL {
+    get virtualHostBase(): HostL {
         return this.db.hosts.upsert({
-            id: asHostID(DEFAULT_COMFYUI_INSTANCE_ID),
+            id: asHostID(vIRTUAL_HOST_ID__BASE),
             hostname: 'localhost',
             useHttps: SQLITE_false,
             port: 8188,
-            name: 'virtual-ComfyUI-default',
+            name: 'virtual-ComfyUI-base',
+            isLocal: SQLITE_true,
+            isVirtual: SQLITE_true,
+        })
+    }
+
+    get virtualHostFull(): HostL {
+        return this.db.hosts.upsert({
+            id: asHostID(vIRTUAL_HOST_ID__FULL),
+            hostname: 'localhost',
+            useHttps: SQLITE_false,
+            port: 8188,
+            name: 'virtual-ComfyUI-full',
             isLocal: SQLITE_true,
             isVirtual: SQLITE_true,
         })
@@ -397,7 +415,7 @@ export class STATE {
     /** main host */
     get mainHost(): HostL {
         const selectedHost = this.db.hosts.get(this.mainComfyHostID)
-        return selectedHost ?? this.defaultHost
+        return selectedHost ?? this.virtualHostBase
     }
 
     /** todo: rename */

@@ -3,8 +3,8 @@ import { assets } from 'src/utils/assets/assets'
 import { useSt } from '../../state/stateContext'
 import { UpdateBtnUI } from '../../updater/UpdateBtnUI'
 import { CushyStudioLinkUI } from './AppBarCushyStudioLinkUI'
-import { IndicatorSchemaUI } from './AppBarSchemaBtnUI'
-import { IndicatorWebsocketUI } from './AppBarWebsocketBtnUI'
+import { HostSchemaIndicatorUI } from './host/AppBarSchemaBtnUI'
+import { HostWebsocketIndicatorUI } from './host/HostWebsocketIndicatorUI'
 import { MenuAuthUI } from './MenuAuthUI'
 import { MenuComfyUI } from './MenuComfyUI'
 import { MenuConfigUI, MenuThemeUI } from './MenuConfigUI'
@@ -15,6 +15,7 @@ import { MenuUtilsUI } from './MenuUtilsUI'
 
 export const AppBarUI = observer(function AppBarUI_(p: {}) {
     const st = useSt()
+    const mainHost = st.mainHost
     return (
         <div tw='overflow-auto' id='CushyAppBar'>
             <div tw='flex items-center px-2 overflow-auto'>
@@ -31,8 +32,8 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
                 <MenuAuthUI />
                 <MenuDebugUI />
                 <div className='flex flex-grow'></div>
-                <IndicatorWebsocketUI />
-                <IndicatorSchemaUI />
+                <HostWebsocketIndicatorUI host={mainHost} />
+                <HostSchemaIndicatorUI host={mainHost} />
                 <CushyStudioLinkUI />
                 <label tw='swap swap-flip text-2xl'>
                     <input type='checkbox' />

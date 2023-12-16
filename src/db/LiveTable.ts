@@ -301,6 +301,7 @@ export class LiveTable<T extends BaseInstanceFields, L extends LiveInstance<T, L
     zz_deleted: boolean = false
 
     delete = (id: string) => {
+        console.log(`[👙] `)
         this.stmt_deleteByID(id)
         this.zz_deleted = true
         this.liveEntities.delete(id)

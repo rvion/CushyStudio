@@ -24,10 +24,10 @@ outputs/*
 !outputs/.gitkeep
 
 # keep .schema folder
-schema/*
-!schema/.gitkeep
-!schema/object_info.default.json
-!schema/embeddings.default.json
+schema/globa.d.ts
+schema/hosts/*
+!schema/hosts/virtual-base
+!schema/hosts/virtual-full
 
 cushy.db
 cushy*.db

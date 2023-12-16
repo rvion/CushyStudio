@@ -1,10 +1,7 @@
-import { asAbsolutePath } from 'src/utils/fs/pathUtils'
-import { resolve } from 'pathe'
-import { nanoid } from 'nanoid'
-import { HostT, asHostID } from 'src/db/TYPES.gen'
-import { SQLITE_false, SQLITE_true } from 'src/db/SQLITE_boolean'
+import { asHostID } from 'src/db/TYPES.gen'
 
-export const DEFAULT_COMFYUI_INSTANCE_ID: HostID = asHostID('default-local')
+export const vIRTUAL_HOST_ID__BASE: HostID = asHostID('virtual-base')
+export const vIRTUAL_HOST_ID__FULL: HostID = asHostID('virtual-full')
 
 // export type ComfyHostID = Branded<string, { ComfyUIHostID: true }>
 

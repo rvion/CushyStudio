@@ -2,17 +2,41 @@ import type { LiveInstance } from 'src/db/LiveInstance'
 import { asComfySchemaID, type HostT } from 'src/db/TYPES.gen'
 import type { ComfySchemaL, EmbeddingName } from './Schema'
 
-import { existsSync, writeFileSync } from 'fs'
+import { existsSync, mkdirSync, writeFileSync } from 'fs'
 import { ResilientWebSocketClient } from 'src/back/ResilientWebsocket'
 import { extractErrorMessage } from 'src/utils/formatters/extractErrorMessage'
 import { readableStringify } from 'src/utils/formatters/stringifyReadable'
 import { asRelativePath } from 'src/utils/fs/pathUtils'
+import { ManualPromise } from 'src/utils/misc/ManualPromise'
 
 export interface HostL extends LiveInstance<HostT, HostL> {}
 
 export class HostL {
-    schemaRetrievalLogs: string[] = []
+    // INIT -----------------------------------------------------------------------------
+    /** folder where file related to the host config will be cached */
+    fileCacheFolder: AbsolutePath = null as any /**  'null' is here for a reason */
+    comfyJSONPath: AbsolutePath = null as any /**  'null' is here for a reason */
+    embeddingsPath: AbsolutePath = null as any /**  'null' is here for a reason */
+    nodesTSPath: AbsolutePath = null as any /**  'null' is here for a reason */
+    schema: ComfySchemaL = null as any /**  'null' is here for a reason */
+    onHydrate = () => {
+        this.fileCacheFolder = this.st.resolve(this.st.rootPath, asRelativePath(`schema/hosts/${this.id}`))
+        const exists = existsSync(this.fileCacheFolder)
+        if (!exists) {
+            console.log('🟢 creating folder', this.fileCacheFolder)
+            mkdirSync(this.fileCacheFolder)
+        }
+        this.comfyJSONPath = this.st.resolve(this.fileCacheFolder, asRelativePath(`object_info.json`))
+        this.embeddingsPath = this.st.resolve(this.fileCacheFolder, asRelativePath(`embeddings.json`))
+        this.nodesTSPath = this.st.resolve(this.fileCacheFolder, asRelativePath(`sdk.dts.txt`))
+        this.schema = this.st.db.comfy_schemas.getOrCreate(asComfySchemaID(this.id), () => ({
+            embeddings: [],
+            spec: {},
+            hostID: this.id,
+        }))
+    }
 
+    // URLS -----------------------------------------------------------------------------
     getServerHostHTTP(): string {
         const method = this.data.useHttps ? 'https' : 'http'
         const host = this.data.hostname
@@ -27,30 +51,26 @@ export class HostL {
         return `${method}://${host}:${port}/ws`
     }
 
+    // LOGS -----------------------------------------------------------------------------
+    schemaRetrievalLogs: string[] = []
+    resetLog = () => {
+        this.schemaRetrievalLogs.splice(0, this.schemaRetrievalLogs.length)
+    }
     addLog = (...args: any[]) => {
         this.schemaRetrievalLogs.push(args.join(' '))
         console.info('[🐱] CONFY:', ...args)
     }
 
-    /** folder where file related to the host config will be cached */
-    fileCacheFolder: AbsolutePath = null as any /**  'null' is here for a reason */
-    comfyJSONPath: AbsolutePath = null as any /**  'null' is here for a reason */
-    embeddingsPath: AbsolutePath = null as any /**  'null' is here for a reason */
-    nodesTSPath: AbsolutePath = null as any /**  'null' is here for a reason */
-    schema: ComfySchemaL = null as any /**  'null' is here for a reason */
+    // STARTING -----------------------------------------------------------------------------
+    isLoaded = false
 
-    onHydrate = () => {
-        this.fileCacheFolder = this.st.resolve(this.st.rootPath, asRelativePath(`schema/hosts/${this.id}`))
-        this.comfyJSONPath = this.st.resolve(this.fileCacheFolder, asRelativePath(`object_info.json`))
-        this.embeddingsPath = this.st.resolve(this.fileCacheFolder, asRelativePath(`embeddings.json`))
-        this.nodesTSPath = this.st.resolve(this.fileCacheFolder, asRelativePath(`sdk.dts.txt`))
-        this.schema = this.st.db.comfy_schemas.getOrCreate(asComfySchemaID(this.id), () => ({
-            embeddings: [],
-            spec: {},
-            hostID: this.id,
-        }))
+    load = () => {
+        this.fetchAndUdpateSchema()
+        if (this.data.isVirtual) return
+        this.initWebsocket()
     }
 
+    // WEBSCKET -----------------------------------------------------------------------------
     /**
      * will be created only after we've loaded cnfig file
      * so we don't attempt to connect to some default server
@@ -67,16 +87,27 @@ export class HostL {
         })
     }
 
+    schemaReady = new ManualPromise<true>()
+
     /** retrieve the comfy spec from the schema*/
     fetchAndUdpateSchema = async (): Promise<void> => {
+        if (this.data.isVirtual) {
+            const object_info_json = this.st.readJSON<any>(this.comfyJSONPath)
+            const embeddings_json = this.st.readJSON<any>(this.embeddingsPath)
+
+            // update schema
+            this.schema.update({ spec: object_info_json, embeddings: embeddings_json })
+            this.schema.RUN_BASIC_CHECKS()
+
+            // regen sdk
+            const comfySchemaTs = this.schema.codegenDTS()
+            writeFileSync(this.nodesTSPath, comfySchemaTs, 'utf-8')
+
+            return
+        }
         // 1. fetch schema$
         // let object_info_json: ComfySchemaJSON = this.schema.data.spec
 
-        this.schemaRetrievalLogs.splice(0, this.schemaRetrievalLogs.length)
-        const addLog = (...args: any[]) => {
-            this.schemaRetrievalLogs.push(args.join(' '))
-            console.info('[🐱] CONFY:', ...args)
-        }
         try {
             // 1 ------------------------------------
             // download object_info
@@ -120,30 +151,30 @@ export class HostL {
             }
         }
 
-        this.st.schemaReady.resolve(true)
-
-        // this.objectInfoFile.update(schema$)
-        // this.comfySDKFile.updateFromCodegen(comfySdkCode)
-        // this.comfySDKFile.syncWithDiskFile()
-
-        // const debugObjectInfosPath = 'schema/debug.json'
-        // const hasDebugObjectInfosJSON = existsSync(debugObjectInfosPath)
-        // if (hasDebugObjectInfosJSON) {
-        //     const debugObjectInfosStr = readFileSync(debugObjectInfosPath, 'utf8')
-        //     const debugObjectInfosJSON = JSON.parse(debugObjectInfosStr)
-        //     schema$ = debugObjectInfosJSON
-        //     const res = ComfySchemaJSON_zod.safeParse(schema$) //{ KSampler: schema$['KSampler'] })
-        //     if (res.success) {
-        //         console.log('🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢 valid schema')
-        //     } else {
-        //         console.log('🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 invalid schema')
-        //         const DEBUG_small = JSON.stringify(res.error.flatten(), null, 4)
-        //         writeFileSync('schema/debug.errors.json', DEBUG_small, 'utf-8')
-        //         const DEBUG_full = JSON.stringify(res.error, null, 4)
-        //         writeFileSync('schema/debug.errors-full.json', DEBUG_full, 'utf-8')
-        //         console.log(res.error.flatten())
-        //     }
-        // } else {
-        // }
+        this.schemaReady.resolve(true)
     }
 }
+
+// this.objectInfoFile.update(schema$)
+// this.comfySDKFile.updateFromCodegen(comfySdkCode)
+// this.comfySDKFile.syncWithDiskFile()
+
+// const debugObjectInfosPath = 'schema/debug.json'
+// const hasDebugObjectInfosJSON = existsSync(debugObjectInfosPath)
+// if (hasDebugObjectInfosJSON) {
+//     const debugObjectInfosStr = readFileSync(debugObjectInfosPath, 'utf8')
+//     const debugObjectInfosJSON = JSON.parse(debugObjectInfosStr)
+//     schema$ = debugObjectInfosJSON
+//     const res = ComfySchemaJSON_zod.safeParse(schema$) //{ KSampler: schema$['KSampler'] })
+//     if (res.success) {
+//         console.log('🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢 valid schema')
+//     } else {
+//         console.log('🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 invalid schema')
+//         const DEBUG_small = JSON.stringify(res.error.flatten(), null, 4)
+//         writeFileSync('schema/debug.errors.json', DEBUG_small, 'utf-8')
+//         const DEBUG_full = JSON.stringify(res.error, null, 4)
+//         writeFileSync('schema/debug.errors-full.json', DEBUG_full, 'utf-8')
+//         console.log(res.error.flatten())
+//     }
+// } else {
+// }

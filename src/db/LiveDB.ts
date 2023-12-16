@@ -177,22 +177,9 @@ export class LiveDB {
     log = (...res: any[]) => console.log(`{${ix++}}`, ...res)
     db: BetterSqlite3.Database
 
-    // misc ---------------------------------------------------------
-    get schema(): ComfySchemaL {
-        return this.comfy_schemas.getOrCreate('main-schema', () => {
-            const objectInfoDefaultPath = this.st.resolve(this.st.rootPath, asRelativePath('schema/object_info.default.json'))
-            const objectInfoDefault = JSON.parse(readFileSync(objectInfoDefaultPath, 'utf8'))
-            console.log('🟢 generating new schma')
-            return {
-                id: 'main-schema',
-                embeddings: [],
-                spec: objectInfoDefault,
-            }
-        })
-    }
-
     /* erase the DB file on disk */
     reset = () => this.erase()
+
     /* erase the DB file on disk */
     erase = () => {
         this.db.close()

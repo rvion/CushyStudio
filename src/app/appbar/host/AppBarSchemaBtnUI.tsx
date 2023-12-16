@@ -1,14 +1,14 @@
 import { observer } from 'mobx-react-lite'
+import { HostL } from 'src/models/Host'
 import { RevealUI } from 'src/rsuite/RevealUI'
 import { Loader, Message } from 'src/rsuite/shims'
-import { useSt } from '../../state/stateContext'
 
-export const IndicatorSchemaUI = observer(function IndicatorSchemaUI_(p: {}) {
-    const st = useSt()
+export const HostSchemaIndicatorUI = observer(function HostSchemaIndicatorUI_(p: { host: HostL }) {
+    const host = p.host
     return (
         <RevealUI showDelay={0}>
             <div>
-                {st.schemaReady.done ? (
+                {host.schemaReady.done ? (
                     <div className='flex gap-1 px-1 rounded cursor-help'>
                         <span className='text-success'>Schema</span>
                     </div>
@@ -20,14 +20,14 @@ export const IndicatorSchemaUI = observer(function IndicatorSchemaUI_(p: {}) {
                 )}
             </div>
             <div tw='menu'>
-                {st.schemaReady.done ? null : (
+                {host.schemaReady.done ? null : (
                     <Message showIcon type='warning'>
                         Is your ComfyUI server running? You config file says it should be accessible at
-                        <div>{st.getServerHostHTTP()}</div>
-                        <div>{st.getWSUrl()}</div>
+                        <div>{host.getServerHostHTTP()}</div>
+                        <div>{host.getWSUrl()}</div>
                     </Message>
                 )}
-                <pre>{st.schemaRetrievalLogs.join('\n')}</pre>
+                <pre>{host.schemaRetrievalLogs.join('\n')}</pre>
             </div>
         </RevealUI>
     )

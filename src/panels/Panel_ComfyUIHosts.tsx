@@ -10,7 +10,7 @@ import { useSt } from 'src/state/stateContext'
 import { asAbsolutePath } from 'src/utils/fs/pathUtils'
 
 export const LabelUI = observer(function LabelUI_(p: { children: React.ReactNode }) {
-    return <div tw='whitespace-nowrap'>{p.children}: </div>
+    return <div tw='whitespace-nowrap'>{p.children}</div>
 })
 
 export const Panel_ComfyUIHosts = observer(function Panel_ComfyUIHosts_(p: { hostID?: HostID }) {
@@ -28,8 +28,10 @@ export const Panel_ComfyUIHosts = observer(function Panel_ComfyUIHosts_(p: { hos
                     onChange={null}
                     getLabelText={(h) => h.data.name || h.id}
                 />
+            </div>
+            <div tw='flex gap-1'>
                 <div
-                    tw='btn-sm btn btn-outline'
+                    tw='btn-sm btn btn-primary'
                     onClick={() => {
                         st.configFile.update(() => {
                             st.db.hosts.create({
@@ -44,10 +46,11 @@ export const Panel_ComfyUIHosts = observer(function Panel_ComfyUIHosts_(p: { hos
                         })
                     }}
                 >
+                    <span className='material-symbols-outlined'>add</span>
                     Add (local network)
                 </div>
                 <div
-                    tw='btn-sm btn btn-outline'
+                    tw='btn-sm btn btn-primary'
                     onClick={() => {
                         st.db.hosts.create({
                             name: `cloud_${nanoid()}`,
@@ -60,6 +63,7 @@ export const Panel_ComfyUIHosts = observer(function Panel_ComfyUIHosts_(p: { hos
                         })
                     }}
                 >
+                    <span className='material-symbols-outlined'>add</span>
                     Add (cloud)
                 </div>
             </div>
@@ -77,7 +81,7 @@ export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
     const config = st.configFile.value
     const host: HostL = p.host
     const isMain = host.id === config.mainComfyHostID
-
+    const disabled = host.data.isVirtual ? true : false
     return (
         <div
             tw={[
@@ -119,9 +123,11 @@ export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
                 </Joined>
 
                 {/* NAME */}
-                <div tw='flex gap-2'>
-                    <LabelUI>name</LabelUI>
+
+                <div tw='flex gap-1 items-center'>
+                    <div tw='w-14'>name</div>
                     <input
+                        disabled={disabled}
                         tw='input input-bordered input-sm w-full'
                         onChange={(ev) => host.update({ name: ev.target.value })}
                         value={host.data.name ?? 'unnamed'}
@@ -129,9 +135,10 @@ export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
                 </div>
 
                 {/* HOST */}
-                <div tw='flex items-center gap-1'>
-                    <LabelUI>Host</LabelUI>
+                <div tw='flex gap-1 items-center'>
+                    <div tw='w-14'>Host</div>
                     <input
+                        disabled={disabled}
                         tw='input input-bordered input-sm w-full' //
                         onChange={(ev) => host.update({ hostname: ev.target.value })}
                         value={host.data.hostname ?? ''}
@@ -139,9 +146,10 @@ export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
                 </div>
 
                 {/* PORT */}
-                <div tw='flex items-center gap-1'>
-                    <LabelUI>Port</LabelUI>
+                <div tw='flex gap-1 items-center'>
+                    <div tw='w-14'>Port</div>
                     <input
+                        disabled={disabled}
                         tw='input input-bordered input-sm w-full' //
                         value={host.data.port ?? 8188}
                         onChange={(ev) => {
@@ -153,30 +161,31 @@ export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
 
                 {/* HTTPS */}
                 <div tw='flex gap-2'>
-                    <LabelUI>use HTTPS</LabelUI>
                     <Toggle //
+                        disabled={disabled}
                         checked={host.data.useHttps ? true : false}
                         onChange={(ev) => host.update({ useHttps: ev.target.checked ? SQLITE_true : SQLITE_false })}
                         name='useHttps'
                     />
+                    <LabelUI>use HTTPS</LabelUI>
                 </div>
 
                 {/* LOCAL PATH */}
                 <div tw='flex items-center gap-1'>
-                    <LabelUI>is local</LabelUI>
                     <Toggle
                         //
+                        disabled={disabled}
                         onChange={(ev) => host.update({ isLocal: ev.target.checked ? SQLITE_true : SQLITE_false })}
                         checked={host.data.isLocal ? true : false}
                     />
+                    <LabelUI>is local</LabelUI>
                 </div>
                 <div tw='flex flex-col'>
                     <LabelUI>absolute path to ComfyUI setup</LabelUI>
                     <input
+                        disabled={disabled}
                         tw='input input-bordered input-sm w-full'
                         type='string'
-                        // placeholder='absolute path to ComfyUI install'
-                        disabled={!Boolean(host.data.isLocal)}
                         onChange={(ev) => host.update({ absolutePathToComfyUI: ev.target.value })}
                         value={host.data.absolutePathToComfyUI ?? ''}
                     ></input>
@@ -186,24 +195,29 @@ export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
                     <input
                         tw='input input-bordered input-sm w-full'
                         type='string'
-                        disabled={!Boolean(host.data.isLocal)}
+                        disabled={disabled}
                         onChange={(ev) => host.update({ absolutePathToComfyUI: ev.target.value })}
                         value={host.data.absolutPathToDownloadModelsTo ?? ''}
                     ></input>
                 </div>
                 {/* ID */}
-                {/* <div tw='flex gap-2'>
-                    <LabelUI>id</LabelUI>
-                    <input
-                        tw='input input-bordered input-sm w-full'
-                        onChange={(ev) => {
-                            const next = ev.target.value
-                            host.id = next as ComfyHostID
-                        }}
-                        value={host.id ?? 'unnamed'}
-                    ></input>
-                </div> */}
+                <div tw='flex'>
+                    <div tw='italic text-xs text-opacity-50'>id: {host.id}</div>
+                </div>
             </div>
+            {/* STATUS */}
+            <div>
+                <div>isLoaded: {host.isLoaded ? 'true' : 'false'}</div>
+                <div onClick={() => host.load()} tw='btn btn-primary w-full my-1 btn-sm'>
+                    Load
+                </div>
+            </div>
+            {/* STATUS */}
+            {host.data.isVirtual ? (
+                <div tw='bg-warning text-warning-content p-0.5 opacity-50'>
+                    VIRTUAL HOST (not a real machine you can connect to)
+                </div>
+            ) : null}
         </div>
     )
 })

@@ -1,11 +1,12 @@
 import { observer } from 'mobx-react-lite'
 import { RevealUI } from 'src/rsuite/RevealUI'
 import { Button, Message } from 'src/rsuite/shims'
-import { useSt } from '../../state/stateContext'
+import { useSt } from '../../../state/stateContext'
+import { HostL } from 'src/models/Host'
 
-export const IndicatorWebsocketUI = observer(function IndicatorWebsocketUI_(p: {}) {
+export const HostWebsocketIndicatorUI = observer(function HostWebsocketIndicatorUI_(p: { host: HostL }) {
     const st = useSt()
-    const ws = st.mainHost.ws
+    const ws = p.host.ws
     return (
         <RevealUI showDelay={0}>
             {ws?.isOpen ? (
