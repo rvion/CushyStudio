@@ -51,6 +51,7 @@ import { DanbooruTags } from '../widgets/prompter/nodes/booru/BooruLoader'
 import { AuthState } from './AuthState'
 import { Uploader } from './Uploader'
 import { mkSupa } from './supa'
+import { LiveCollection } from 'src/db/LiveCollection'
 
 export class STATE {
     /** hack to help closing prompt completions */
@@ -384,9 +385,10 @@ export class STATE {
         return this.mainHost.ws
     }
 
-    get hosts(): HostL[] {
-        return this.db.hosts.findAll()
-    }
+    hosts = new LiveCollection<HostL>({
+        table: () => this.db.hosts,
+        where: () => ({}),
+    })
 
     /** main host */
     get mainHost(): HostL {
