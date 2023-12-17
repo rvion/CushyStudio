@@ -36,6 +36,7 @@ export interface Database {
     Tables: {
       published_apps: {
         Row: {
+          app_id: string
           created_at: string
           description: string | null
           id: string
@@ -46,6 +47,7 @@ export interface Database {
           user_id: string
         }
         Insert: {
+          app_id: string
           created_at?: string
           description?: string | null
           id?: string
@@ -56,6 +58,7 @@ export interface Database {
           user_id: string
         }
         Update: {
+          app_id?: string
           created_at?: string
           description?: string | null
           id?: string

@@ -1,15 +1,18 @@
-import { basename, join } from 'pathe'
+import { existsSync, readFileSync } from 'fs'
+import { basename, extname, join } from 'pathe'
+import { toast } from 'react-toastify'
+import { LibraryFile } from 'src/cards/LibraryFile'
 import { LiveCollection } from 'src/db/LiveCollection'
 import { LiveInstance } from 'src/db/LiveInstance'
 import { LiveRef } from 'src/db/LiveRef'
 import { SQLITE_true } from 'src/db/SQLITE_boolean'
 import { CushyAppT } from 'src/db/TYPES.gen'
 import { CushyScriptL } from 'src/models/CushyScriptL'
-import { App, WidgetDict } from '../cards/App'
+import { hashArrayBuffer } from 'src/state/hashBlob'
 import { generateAvatar } from '../cards/AvatarGenerator'
 import { DraftL } from './Draft'
-import { LibraryFile } from 'src/cards/LibraryFile'
 import { Executable } from './Executable'
+import { toastError } from 'src/utils/misc/toasts'
 
 export interface CushyAppL extends LiveInstance<CushyAppT, CushyAppL> {}
 export class CushyAppL {
@@ -78,44 +81,151 @@ export class CushyAppL {
         return this.script.getExecutable(this.id)
     }
 
+    // PUBLISHING ---------------------------------------------------------------------------
     isPublishing = false
+    FAIL_prepublish = (summary: string, howToFix?: string): never => {
+        const title = `[🚀] ❌ pre-publish check failed: ${summary}`
+        console.log(title)
+        toastError(title)
+        throw new Error([title, howToFix].join('\n'))
+    }
+
     publish = async () => {
         if (this.isPublishing) return
         this.isPublishing = true
         try {
             const st = this.st
+            const x = this.executable
+
+            // ensure app is compiled
+            if (x == null) {
+                return this.FAIL_prepublish(`no valid compiled app found`)
+            }
+
+            // ensure valid metadata
+            if (
+                x.illustration == null || //
+                x.name == null ||
+                x.description == null
+            ) {
+                console.error(this.executable?.metadata)
+                return this.FAIL_prepublish(
+                    `missing metadata (${(['illustration', 'name', 'description'] as const)
+                        .filter((y) => x[y] == null)
+                        .join(', ')})`,
+                    [
+                        ` | app({`,
+                        ` |     metadata: {`,
+                        ` |    👉   name: 'Cushy Diffusion UI',`,
+                        ` |    👉   illustration: IMG,`,
+                        ` |    👉   description: 'A card that contains all the features needed to play with stable diffusion',`,
+                        ` |     },`,
+                        ` |     ui: (ui) => ({`,
+                        ` |        ...`,
+                    ].join('\n'),
+                )
+            }
+
+            // ensure illustration is valid
+            if (x.illustration.startsWith('data:')) {
+                return this.FAIL_prepublish(
+                    'invalid illustration',
+                    'illustration must be a path to a local file, not a base64 encoded image',
+                )
+            }
+
+            // 1. ensure user is logged in
             const supa = st.supabase
             const user_id = st.auth.user?.id
             if (user_id == null) throw new Error('not logged in')
-            console.log(`[🐩] ✅ logged-in`)
-            const prev = await supa.from('published_apps').select('*').eq('user_id', user_id)
-            const count = prev.data?.length ?? prev.count ?? 0
-            if (count === 0) {
-                console.log(`[🐩] no published app found; inserting`)
+            console.log(`[🚀] ✅ logged-in`)
+
+            // 2. retrieve the app short-name
+            const appUID = `${user_id}/${this.id}`
+            console.log(`[🚀] ✅ starting publish flow for app ${appUID}`)
+
+            // 3. fetch the currently published app f
+            const prevRes = await supa
+                .from('published_apps') //
+                .select('*')
+                .eq('user_id', user_id)
+                .eq('app_id', this.id)
+
+            if (prevRes.error) {
+                console.log(`[🚀] publish failed due to some postgres error`, prevRes.error)
+                throw prevRes.error
+            }
+
+            // get prevPayload
+            const prev = prevRes.data.at(0)
+
+            // publish image to supabase
+            const illustration = x.illustration
+            const illustrationPath = illustration.startsWith('file://') //
+                ? illustration.slice('file://'.length)
+                : illustration
+
+            //
+            const imageExtension = extname(illustrationPath)
+            const validExtensions = ['.png', '.jpg', '.jpeg']
+            if (!validExtensions.includes(imageExtension)) {
+                return this.FAIL_prepublish(
+                    'invalid illustration',
+                    ` | illustration must be a png or jpg file, not a ${imageExtension} file`,
+                )
+            }
+
+            // ensure image exists -------------------------------------------------
+            const exists = existsSync(illustrationPath)
+            if (!exists)
+                return this.FAIL_prepublish('illustration file not found', ` | no image found from path "${illustrationPath}"`)
+            const imageBuffer = readFileSync(illustrationPath)
+            const hash = await hashArrayBuffer(imageBuffer)
+            const bucketPath = `${user_id}/${hash}${imageExtension}`
+            const { data, error } = await supa.storage //
+                .from('Apps')
+                .upload(bucketPath, imageBuffer, { cacheControl: '3600', upsert: false })
+            if (
+                error && //
+                error.message !== 'The resource already exists' &&
+                (error as any).error !== 'Duplicate'
+            ) {
+                console.error(error.message === 'The resource already exists')
+                throw new Error(`[🚀] ❌ publish failed due to some storage error`, error)
+            }
+            console.log(`[🚀] ✅ illustration ${bucketPath} uploaded !`)
+            const illustration_url = supa.storage.from('Apps').getPublicUrl(bucketPath).data.publicUrl
+            console.log(`[🚀] ✅ illustration public url is ${illustration_url}`)
+
+            // ensure image exists -------------------------------------------------
+            if (prev == null) {
+                console.log(`[🚀] no published app for ${appUID} found; publishing...`)
                 const res = await supa.from('published_apps').insert({
                     user_id,
+                    app_id: this.id,
                     name: this.name,
                     description: this.description,
-                    illustration_url: this.executable?.illustration,
+                    illustration_url: illustration_url,
                     tags: this.executable?.tags,
                 })
-                console.log(`[🐩] ✅ inserted !`, res)
+                console.log(`[🚀] ✅ ${appUID} published !`, res)
             } else {
                 //
-                console.log(`[🐩] found`, prev, 'updating...')
-                throw new Error('🔴 UNFINISHED')
+                console.log(`[🚀] app found`, prev, 'updating...')
                 const res = await supa.from('published_apps').update({
-                    // @ts-ignore
-                    id: prev.data[0].id,
+                    id: prev.id,
+                    app_id: this.id,
                     name: this.name,
                     description: this.description,
-                    illustration_url: this.executable?.illustration,
+                    illustration_url: illustration_url,
                     tags: this.executable?.tags,
                 })
-                console.log(`[🐩] ✅ updated !`, res)
+                console.log(`[🚀] ✅ ${appUID} updated !`, res)
             }
-        } catch (e) {
-            console.error(`[🐩] ❌ publish failed !`)
+        } catch (e: unknown) {
+            const err = e as Error
+            toastError(err.message ?? `[🚀] ❌ publish failed !`)
+            console.error(`[🚀] ❌ publish failed !`)
             console.error(e)
         } finally {
             this.isPublishing = false
