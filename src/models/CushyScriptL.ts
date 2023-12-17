@@ -33,20 +33,7 @@ export class CushyScriptL {
     apps!: CushyAppL[]
 
     onHydrate = () => {
-        this._EXECUTABLES = this.EVALUATE_SCRIPT()
-        runInAction(() => {
-            this.apps = this._EXECUTABLES.map((executable): CushyAppL => {
-                const app = this.db.cushy_apps.upsert({
-                    id: executable.appID,
-                    scriptID: this.id,
-                    description: executable.description,
-                    illustration: executable.illustration,
-                    name: executable.name,
-                    tags: executable.tags.join(','),
-                })
-                return app
-            })
-        })
+        if (this.data.lastEvaluatedAt == null) this.extractApps()
     }
 
     get file(): LibraryFile {
@@ -63,9 +50,7 @@ export class CushyScriptL {
     /** cache of extracted apps */
     private _EXECUTABLES!: Executable[]
     get EXECUTABLES(): Executable[] {
-        if (this._EXECUTABLES == null) {
-            this._EXECUTABLES = this.EVALUATE_SCRIPT()
-        }
+        if (this._EXECUTABLES == null) return this.extractApps()
         return this._EXECUTABLES
     }
 
@@ -73,8 +58,42 @@ export class CushyScriptL {
         return this.EXECUTABLES.find((executable) => appID === executable.appID)
     }
 
-    /** this function takes some bundled app JSCode, and returns the apps defined in it */
-    EVALUATE_SCRIPT = (): Executable[] => {
+    // --------------------------------------------------------------------------------------
+    /**
+     * this function
+     *  - 1. evaluate scripts
+     *  - 2. upsert apps in db
+     *  - 3. bumpt lastEvaluatedAt (and lastSuccessfulEvaluation)
+     */
+    extractApps = () => {
+        this._EXECUTABLES = this._EVALUATE_SCRIPT()
+        runInAction(() => {
+            this.apps = this._EXECUTABLES.map((executable): CushyAppL => {
+                const app = this.db.cushy_apps.upsert({
+                    id: executable.appID,
+                    scriptID: this.id,
+                    description: executable.description,
+                    illustration: executable.illustration,
+                    name: executable.name,
+                    tags: executable.tags.join(','),
+                })
+                return app
+            })
+
+            // bumpt timestamps
+            const now = Date.now()
+            if (this.apps.length === 0) this.update({ lastEvaluatedAt: now })
+            else this.update({ lastEvaluatedAt: now, lastSuccessfulEvaluationAt: now })
+        })
+        return this._EXECUTABLES
+    }
+
+    /**
+     * this function takes some bundled app JSCode,
+     * and returns the apps defined in it
+     * returns [] on script execution failure
+     * */
+    private _EVALUATE_SCRIPT = (): Executable[] => {
         toastInfo(`evaluating script: ${this.relPath}`)
         const codeJS = this.data.code
         const APPS: App<WidgetDict>[] = []

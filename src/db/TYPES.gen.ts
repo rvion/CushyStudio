@@ -684,6 +684,12 @@ export type CushyScriptT = {
     /** @default: null, sqlType: TEXT */
     code: string;
 
+    /** @default: null, sqlType: INT */
+    lastEvaluatedAt?: Maybe<number>;
+
+    /** @default: null, sqlType: INT */
+    lastSuccessfulEvaluationAt?: Maybe<number>;
+
 }
 export const CushyScriptSchema = Type.Object({
     id: Type.String(),
@@ -691,6 +697,8 @@ export const CushyScriptSchema = Type.Object({
     updatedAt: Type.Number(),
     path: Type.String(),
     code: Type.String(),
+    lastEvaluatedAt: Type.Optional(T.Nullable(Type.Number())),
+    lastSuccessfulEvaluationAt: Type.Optional(T.Nullable(Type.Number())),
 },{ additionalProperties: false })
 
 export const CushyScriptFields = {
@@ -699,6 +707,8 @@ export const CushyScriptFields = {
     updatedAt: {cid:2,name:'updatedAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
     path: {cid:3,name:'path',type:'TEXT',notnull:1,dflt_value:null,pk:0},
     code: {cid:4,name:'code',type:'TEXT',notnull:1,dflt_value:null,pk:0},
+    lastEvaluatedAt: {cid:5,name:'lastEvaluatedAt',type:'INT',notnull:0,dflt_value:null,pk:0},
+    lastSuccessfulEvaluationAt: {cid:6,name:'lastSuccessfulEvaluationAt',type:'INT',notnull:0,dflt_value:null,pk:0},
 }
 
 
@@ -731,6 +741,12 @@ export type CushyAppT = {
     /** @default: null, sqlType: TEXT */
     tags?: Maybe<string>;
 
+    /** @default: null, sqlType: TEXT */
+    publishedAsUserID?: Maybe<string>;
+
+    /** @default: null, sqlType: INT */
+    publishedAt?: Maybe<number>;
+
 }
 export const CushyAppSchema = Type.Object({
     id: Type.String(),
@@ -742,6 +758,8 @@ export const CushyAppSchema = Type.Object({
     illustration: Type.Optional(T.Nullable(Type.String())),
     description: Type.Optional(T.Nullable(Type.String())),
     tags: Type.Optional(T.Nullable(Type.String())),
+    publishedAsUserID: Type.Optional(T.Nullable(Type.String())),
+    publishedAt: Type.Optional(T.Nullable(Type.Number())),
 },{ additionalProperties: false })
 
 export const CushyAppFields = {
@@ -754,6 +772,8 @@ export const CushyAppFields = {
     illustration: {cid:6,name:'illustration',type:'TEXT',notnull:0,dflt_value:null,pk:0},
     description: {cid:7,name:'description',type:'TEXT',notnull:0,dflt_value:null,pk:0},
     tags: {cid:8,name:'tags',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    publishedAsUserID: {cid:9,name:'publishedAsUserID',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    publishedAt: {cid:10,name:'publishedAt',type:'INT',notnull:0,dflt_value:null,pk:0},
 }
 
 

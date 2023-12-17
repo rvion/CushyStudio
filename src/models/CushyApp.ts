@@ -233,6 +233,10 @@ export class CushyAppL {
                 console.log(`[🚀] ✅ ${appUID} updated !`, res)
                 toastSuccess(`[🚀] ✅ ${appUID} updated !`)
             }
+            this.update({
+                publishedAsUserID: user_id,
+                publishedAt: Date.now(),
+            })
         } catch (e: unknown) {
             const err = e as Error
             toastError(err.message ?? `[🚀] ❌ publish failed !`)

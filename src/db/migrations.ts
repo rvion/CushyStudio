@@ -361,6 +361,46 @@ export const migrations: {
             'alter table host add column isVirtual int not null default 0',
         ],
     },
+    {
+        id: 'dCGQQaHT8F',
+        name: 'misc',
+        up: [
+            //
+            'alter table cushy_app add column publishedID text',
+            'alter table cushy_app add column publishedAs text',
+            'alter table cushy_script add column lastEvaluatedAt text',
+            'alter table cushy_script add column lastSuccessfulEvaluation text',
+        ],
+    },
+    {
+        id: 'XemPQB9Biq',
+        name: 'misc',
+        up: [
+            //
+            'alter table cushy_app add column publishedVersion int',
+            'alter table cushy_app add column publishedAt text',
+        ],
+    },
+    {
+        id: 'qDXgzrF5GN',
+        name: 'misc',
+        up: [
+            // rename
+            'alter table cushy_app    rename column publishedAs to publishedAsUserID',
+
+            // delete
+            'alter table cushy_app    drop column publishedID',
+            'alter table cushy_app    drop column publishedVersion',
+            'alter table cushy_app    drop column publishedAt',
+            'alter table cushy_script drop column lastEvaluatedAt',
+            'alter table cushy_script drop column lastSuccessfulEvaluation',
+
+            // recreate
+            'alter table cushy_app    add column publishedAt INT',
+            'alter table cushy_script add column lastEvaluatedAt INT',
+            'alter table cushy_script add column lastSuccessfulEvaluationAt INT',
+        ],
+    },
     // {
     //     id: 'e574c006-daca-4fd0-a51b-73a66b4fbd79',
     //     name: 'create cushy_app table',
