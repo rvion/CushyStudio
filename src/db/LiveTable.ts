@@ -286,7 +286,12 @@ export class LiveTable<T extends BaseInstanceFields, L extends LiveInstance<T, L
         // console.log(`🦊 ${this.name}.getOrCreate`)
         // 1. check if instance exists in the entity map
         const val = this.get(id)
-        if (val == null) return this.create(def())
+        if (val == null) {
+            const data = def() as any
+            if (data.id && data.id !== id) throw new Error(`GET OR CREATE INVARIANT VIOLATION`)
+            if (data.id == null) data.id = id
+            return this.create(data)
+        }
         return val
     }
 
