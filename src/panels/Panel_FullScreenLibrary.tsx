@@ -4,6 +4,7 @@ import { useEffect } from 'react'
 import { AppCardUI } from 'src/cards/fancycard/AppCardUI'
 import { recursivelyFindAppsInFolder } from 'src/cards/walkLib'
 import { FileBeeingImportedUI } from 'src/importers/FilesBeeingImported'
+import { RevealUI } from 'src/rsuite/RevealUI'
 import { Addon, Joined, Slider, Toggle } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
 import { FieldAndLabelUI } from 'src/widgets/misc/FieldAndLabelUI'
@@ -108,11 +109,20 @@ export const Panel_CardPicker3UI = observer(function Panel_CardPicker3UI_(p: {})
                 </ScrollablePaneUI> */}
                 <ScrollablePaneUI tw='flex-grow'>
                     <FileBeeingImportedUI files={st.droppedFiles} />
-                    <div tw='text-3xl text-accent font-bold'>Cloud Installed Apps</div>
+                    <div tw='text-3xl text-accent font-bold'>Installed Apps</div>
                     <div tw='flex flex-wrap  gap-2'>
                         {st._allPublishedApps?.data?.map((app) => (
                             <div tw='w-96 h-80 virtualBorder' key={app.id}>
-                                <pre>{JSON.stringify(app, null, 3)}</pre>
+                                <div tw='font-bold'>{app.name}</div>
+                                <img
+                                    //
+                                    style={{ width: '5rem', height: '5rem' }}
+                                    src={app.illustration_url ?? ''}
+                                ></img>
+                                <RevealUI disableHover>
+                                    <div tw='font-bold'>{app.description}</div>
+                                    <pre tw='bg-base-300 text-xs overflow-auto'>{JSON.stringify(app, null, 3)}</pre>
+                                </RevealUI>
                             </div>
                         ))}
                     </div>

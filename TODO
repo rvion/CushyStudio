@@ -1,5 +1,9 @@
 Todo before release:
 
+    ☐ hot reload apps
+    ☐ finish full page apps
+    ☐ add browser/install page
+    ☐ library page on the website
     ☐ https://unjs.io/packages/image-meta
     ☐ fix sut
     ☐ use any image as draft illustration
