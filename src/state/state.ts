@@ -139,9 +139,9 @@ export class STATE {
     importer: ComfyImporter
     typecheckingConfig: JsonFile<TsConfigCustom>
 
-    get schemaReady() {
-        return this.mainHost.schemaReady
-    }
+    // get schemaReady() {
+    //     return this.mainHost.schemaReady
+    // }
 
     // showLatentPreviewInLastImagePanel
     get showLatentPreviewInLastImagePanel() { return this.configFile.value.showLatentPreviewInLastImagePanel ?? false } // prettier-ignore

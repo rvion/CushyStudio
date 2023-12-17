@@ -29,7 +29,9 @@ export class HostL {
         this.comfyJSONPath = this.st.resolve(this.fileCacheFolder, asRelativePath(`object_info.json`))
         this.embeddingsPath = this.st.resolve(this.fileCacheFolder, asRelativePath(`embeddings.json`))
         this.nodesTSPath = this.st.resolve(this.fileCacheFolder, asRelativePath(`sdk.dts.txt`))
-        this.schema = this.st.db.comfy_schemas.getOrCreate(asComfySchemaID(this.id), () => ({
+        const associatedSchemaID = asComfySchemaID(this.id)
+        this.schema = this.st.db.comfy_schemas.getOrCreate(associatedSchemaID, () => ({
+            id: associatedSchemaID,
             embeddings: [],
             spec: {},
             hostID: this.id,
@@ -88,28 +90,34 @@ export class HostL {
         return this.ws
     }
 
-    schemaReady = new ManualPromise<true>()
+    isUpdatingSchema: boolean = false
+    schemaUpdateResult: Maybe<{ type: 'success' } | { type: 'error'; error: any }> = null
+
+    updateSchemaFromFileCache = () => {
+        const object_info_json = this.st.readJSON<any>(this.comfyJSONPath)
+        const embeddings_json = this.st.readJSON<any>(this.embeddingsPath)
+
+        // update schema
+        this.schema.update({ spec: object_info_json, embeddings: embeddings_json })
+        this.schema.RUN_BASIC_CHECKS()
+
+        // regen sdk
+        const comfySchemaTs = this.schema.codegenDTS()
+        writeFileSync(this.nodesTSPath, comfySchemaTs, 'utf-8')
+    }
 
     /** retrieve the comfy spec from the schema*/
     fetchAndUdpateSchema = async (): Promise<void> => {
-        if (this.data.isVirtual) {
-            const object_info_json = this.st.readJSON<any>(this.comfyJSONPath)
-            const embeddings_json = this.st.readJSON<any>(this.embeddingsPath)
-
-            // update schema
-            this.schema.update({ spec: object_info_json, embeddings: embeddings_json })
-            this.schema.RUN_BASIC_CHECKS()
-
-            // regen sdk
-            const comfySchemaTs = this.schema.codegenDTS()
-            writeFileSync(this.nodesTSPath, comfySchemaTs, 'utf-8')
-
-            return
-        }
-        // 1. fetch schema$
-        // let object_info_json: ComfySchemaJSON = this.schema.data.spec
-
         try {
+            // ------------------------------------------------------------------------------------
+            if (this.data.isVirtual) {
+                this.updateSchemaFromFileCache()
+                return
+            }
+            this.isUpdatingSchema = true
+            // ------------------------------------------------------------------------------------
+            // 1. fetch schema$
+            // let object_info_json: ComfySchemaJSON = this.schema.data.spec
             // 1 ------------------------------------
             // download object_info
             const headers: HeadersInit = { 'Content-Type': 'application/json' }
@@ -141,7 +149,12 @@ export class HostL {
                 writeFileSync('tmp/docs/ex/a.md', '```ts\n' + comfySchemaTs + '\n```\n', 'utf-8')
                 writeFileSync('tmp/docs/ex/b.md', '```json\n' + object_info_str + '\n```\n', 'utf-8')
             }
+            this.isUpdatingSchema = false
+            this.schemaUpdateResult = { type: 'success' }
         } catch (error) {
+            this.isUpdatingSchema = false
+            this.schemaUpdateResult = { type: 'error', error: error }
+
             console.error(error)
             console.error('🔴 FAILURE TO GENERATE nodes.d.ts', extractErrorMessage(error))
 
@@ -150,9 +163,9 @@ export class HostL {
                 const comfySchemaTs = this.schema.codegenDTS()
                 writeFileSync(this.nodesTSPath, comfySchemaTs, 'utf-8')
             }
+        } finally {
+            this.isUpdatingSchema = false
         }
-
-        this.schemaReady.resolve(true)
     }
 }
 

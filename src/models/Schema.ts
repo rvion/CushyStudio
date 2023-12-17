@@ -39,17 +39,18 @@ export type EnumInfo = {
     aliases: string[]
 }
 
-// export type SchemaT = {
-//     id: 'main-schema'
-//     createdAt: number
-//     updatedAt: number
-//     spec: ComfySchemaJSON
-//     embeddings: EmbeddingName[]
-// }
-
 export interface ComfySchemaL extends LiveInstance<ComfySchemaT, ComfySchemaL> {}
 
 export class ComfySchemaL {
+    /**
+     * return the number of nodes in your current schema
+     * quick way to check your instance info
+     * */
+    get size(): number {
+        console.log(`[👙] `, toJS(this.data.spec), Object.keys(this.data.spec).length)
+        return Object.keys(this.data.spec).length
+    }
+
     /**
      * for now, simply ensure that the number of parsed nodes matches the number of nodes
      * present in the object_info.json
@@ -106,6 +107,10 @@ export class ComfySchemaL {
     nodesByNameInCushy: { [key: string]: ComfyNodeSchema } = {}
     nodesByProduction: { [key: string]: NodeNameInCushy[] } = {}
     enumsAppearingInOutput = new Set<string>()
+
+    onHydrate = () => {
+        this.onUpdate()
+    }
 
     /** on update is called automatically by live instances */
     onUpdate() {

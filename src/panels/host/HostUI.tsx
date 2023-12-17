@@ -114,7 +114,7 @@ export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
                     <LabelUI>is local</LabelUI>
                 </div>
                 <div tw='flex flex-col'>
-                    <LabelUI>absolute path to ComfyUI setup</LabelUI>
+                    <LabelUI>absolute path to ComfyUI install folder</LabelUI>
                     <input
                         disabled={disabled}
                         tw='input input-bordered input-sm w-full'
@@ -142,8 +142,8 @@ export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
             <div tw='font-bold under'>Status</div>
             {/* STATUS */}
             <div tw='flex gap-1'>
-                <HostWebsocketIndicatorUI host={host} />
-                <HostSchemaIndicatorUI host={host} />
+                <HostWebsocketIndicatorUI showIcon host={host} />
+                <HostSchemaIndicatorUI showIcon showSize host={host} />
             </div>
 
             <div>
@@ -154,7 +154,7 @@ export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
             </div>
             {/* STATUS */}
             {host.data.isVirtual ? (
-                <div tw='bg-warning text-warning-content p-0.5 opacity-50'>VIRTUAL HOST (types only)</div>
+                <div tw='bg-warning text-warning-content p-0.5 opacity-50'>Virtual Host (Types Only)</div>
             ) : null}
         </div>
     )

@@ -74,7 +74,7 @@ export const EnumSelectorUI = observer(function EnumSelectorUI_(p: {
                         speaker={
                             <Popover>
                                 <span>
-                                    <span tw='bord'>{p.value.candidateValue}</span> is not in your ComfyUI setup
+                                    <span tw='bord'>{p.value.candidateValue}</span> is not in your ComfyUI install folder
                                 </span>
                                 <div>
                                     <span tw='bord'>{p.value.finalValue}</span> used instead

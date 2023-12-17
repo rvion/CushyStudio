@@ -32,7 +32,7 @@ export const HostWebsocketIndicatorUI = observer(function HostWebsocketIndicator
                 </div>
             )}
             <div tw='menu'>
-                {st.schemaReady.done ? null : (
+                {ws?.isOpen ? null : (
                     <Message showIcon type='warning'>
                         <span>Is your ComfyUI server running? </span>
                         <span>You config file says it should be accessible at</span>
