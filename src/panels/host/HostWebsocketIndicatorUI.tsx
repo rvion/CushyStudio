@@ -20,7 +20,12 @@ export const HostWebsocketIndicatorUI = observer(function HostWebsocketIndicator
         )
     return (
         <RevealUI showDelay={0}>
-            {ws?.isOpen ? (
+            {ws == null ? (
+                <div tw='btn btn-sm opacity-50'>
+                    {p.showIcon && <span className='material-symbols-outlined '>cloud_off</span>}
+                    <span className=''>WS</span>
+                </div>
+            ) : ws?.isOpen ? (
                 <div tw='btn btn-sm'>
                     {p.showIcon && <span className='material-symbols-outlined text-green-400 '>check_circle</span>}
                     <span className='text-success'>WS</span>

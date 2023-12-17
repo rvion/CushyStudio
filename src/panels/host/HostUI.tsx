@@ -147,9 +147,9 @@ export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
             </div>
 
             <div>
-                <div>isLoaded: {host.isLoaded ? 'true' : 'false'}</div>
-                <div onClick={() => host.load()} tw='btn btn-primary w-full my-1 btn-sm'>
-                    Load
+                <div>isLoaded: {host.isConnected ? 'true' : 'false'}</div>
+                <div onClick={() => host.CONNECT()} tw='btn btn-primary w-full my-1 btn-sm'>
+                    {host.isConnected ? 'Re-Connect' : 'Connect'}
                 </div>
             </div>
             {/* STATUS */}

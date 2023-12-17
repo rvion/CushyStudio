@@ -9,6 +9,7 @@ export class ResilientWebSocketClient {
     private url: string
     private currentWS?: Maybe<WebSocket>
     private messageBuffer: Message[] = []
+
     isOpen = false
 
     debugMessages: { type: 'info' | 'error'; timestamp: number; message: string }[] = []

@@ -20,13 +20,13 @@ export const HostSchemaIndicatorUI = observer(function HostSchemaIndicatorUI_(p:
                 {host.schemaUpdateResult ? (
                     host.schemaUpdateResult.type === 'error' ? (
                         <div className='btn btn-sm cursor-help'>
-                            <span className='text-error'>update error</span>
+                            <span className='text-error'>history</span>
                         </div>
-                    ) : (
+                    ) : p.showIcon ? (
                         <div className='btn btn-sm cursor-help'>
-                            <span className='text-success'>updated</span>
+                            {p.showIcon && <span className='material-symbols-outlined text-green-400 '>check_circle</span>}
                         </div>
-                    )
+                    ) : null
                 ) : null}
 
                 {/* SIZE */}

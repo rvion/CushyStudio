@@ -363,7 +363,7 @@ export class STATE {
         this.virtualHostBase // ensure getters are called at least once so we upsert the two core virtual hosts
         this.virtualHostFull // ensure getters are called at least once so we upsert the two core virtual hosts
 
-        this.mainHost.load()
+        this.mainHost.CONNECT()
 
         makeAutoObservable(this, { comfyUIIframeRef: false })
     }

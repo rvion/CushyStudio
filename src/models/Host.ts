@@ -64,9 +64,11 @@ export class HostL {
     }
 
     // STARTING -----------------------------------------------------------------------------
-    isLoaded = false
+    get isConnected() {
+        return this.ws?.isOpen
+    }
 
-    load = () => {
+    CONNECT = () => {
         this.fetchAndUdpateSchema()
         if (this.data.isVirtual) return
         this.initWebsocket()
