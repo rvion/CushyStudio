@@ -6,6 +6,7 @@ import { lookup } from 'mime-types'
 import { asSTRING_orCrash } from 'src/utils/misc/bang'
 import type { STATE } from './state'
 import { asAbsolutePath } from 'src/utils/fs/pathUtils'
+import { hashBlob } from './hashBlob'
 
 export class Uploader {
     constructor(private st: STATE) {}
@@ -47,7 +48,7 @@ export class Uploader {
     upload_Blob = async (blob: Blob): Promise<ComfyUploadImageResult> => {
         console.warn('[⬆️] upload_Blob')
         // 1. hash the image blob, and retrieve its stable name for quick lookup
-        const hash = await this.hashBlob(blob)
+        const hash = await hashBlob(blob)
         const uniqFileName = `${hash}.png` as Enum_LoadImage_image
 
         // 2. if image already exists, return it
@@ -72,13 +73,5 @@ export class Uploader {
 
         // 6. return the image
         return result
-    }
-
-    private hashBlob = async (blob: Blob): Promise<string> => {
-        const buffer = await blob.arrayBuffer()
-        const hash = await crypto.subtle.digest('SHA-256', buffer)
-        const hashArray = Array.from(new Uint8Array(hash))
-        const hashHex = hashArray.map((b) => b.toString(16).padStart(2, '0')).join('')
-        return hashHex
     }
 }
