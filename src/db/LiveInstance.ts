@@ -22,6 +22,7 @@ export interface LiveInstance<T extends BaseInstanceFields, L> {
     get tableName(): TableNameInDB
     onHydrate?: (data: T) => void
     onCreate?: (data: T) => void
+    /** called on both hydrate and update (bad; need to be changed ❌) */
     onUpdate?: (prev: Maybe<T>, next: T) => void
     update: (t: Partial<T>) => void
     update_LiveOnly: (t: Partial<T>) => void

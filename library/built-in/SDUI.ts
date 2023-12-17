@@ -7,12 +7,10 @@ import { run_prompt } from './_prefabs/prefab_prompt'
 import { ui_recursive } from './_prefabs/prefab_recursive'
 import { Ctx_sampler, run_sampler, ui_sampler } from './_prefabs/prefab_sampler'
 
-import IMG from './_illustrations/mc.jpg'
-
 app({
     metadata: {
         name: 'Cushy Diffusion UI',
-        illustration: IMG,
+        illustration: 'library/built-in/_illustrations/mc.jpg',
         description: 'A card that contains all the features needed to play with stable diffusion',
     },
     ui: (ui) => ({

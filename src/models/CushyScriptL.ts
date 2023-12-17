@@ -11,6 +11,7 @@ import { CUSHY_IMPORT } from './CUSHY_IMPORT'
 import { CushyAppL } from './CushyApp'
 import { Executable } from './Executable'
 import { runInAction } from 'mobx'
+import { toastInfo } from 'src/utils/misc/toasts'
 
 export interface CushyScriptL extends LiveInstance<CushyScriptT, CushyScriptL> {}
 export class CushyScriptL {
@@ -74,6 +75,7 @@ export class CushyScriptL {
 
     /** this function takes some bundled app JSCode, and returns the apps defined in it */
     EVALUATE_SCRIPT = (): Executable[] => {
+        toastInfo(`evaluating script: ${this.relPath}`)
         const codeJS = this.data.code
         const APPS: App<WidgetDict>[] = []
 

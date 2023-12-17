@@ -7,6 +7,8 @@ import { ComfyPrimitiveMapping, ComfyPrimitives } from '../core/Primitives'
 import { normalizeJSIdentifier } from '../core/normalizeJSIdentifier'
 import { CodeBuffer } from '../utils/codegen/CodeBuffer'
 import { escapeJSKey } from '../utils/codegen/escapeJSKey'
+import { LiveRef } from 'src/db/LiveRef'
+import { HostL } from './Host'
 
 export type EnumHash = string
 export type EnumName = string
@@ -109,12 +111,21 @@ export class ComfySchemaL {
     enumsAppearingInOutput = new Set<string>()
 
     onHydrate = () => {
-        this.onUpdate()
+        // this.onUpdate()
     }
+
+    hostRef = new LiveRef<this, HostL>(
+        //
+        this,
+        'hostID',
+        () => this.db.hosts,
+    )
+    // get host(): HostL { return this.hostRef.item } // prettier-ignore
+    // get hostName(): string { return this.hostRef.item.data.name } // prettier-ignore
 
     /** on update is called automatically by live instances */
     onUpdate() {
-        this.log('updating schema')
+        this.log(`updating schema (${this.id})`)
         // reset spec
         // this.spec = this.data.spec
         // this.embeddings = this.data.embeddings

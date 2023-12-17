@@ -1,5 +1,10 @@
 const TOTAL_DURATION = 40
 app({
+    metadata: {
+        name: 'AnimateDiff v0.1',
+        illustration: 'library/built-in/_illustrations/mc.jpg',
+        description: 'Minimalist AnimateDiff example',
+    },
     ui: (form) => ({
         preText: form.str({
             default: ' (Masterpiece, best quality:1.2), closeup, close-up, a girl in a forest',

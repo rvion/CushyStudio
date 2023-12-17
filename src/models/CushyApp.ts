@@ -12,7 +12,7 @@ import { hashArrayBuffer } from 'src/state/hashBlob'
 import { generateAvatar } from '../cards/AvatarGenerator'
 import { DraftL } from './Draft'
 import { Executable } from './Executable'
-import { toastError } from 'src/utils/misc/toasts'
+import { toastError, toastInfo, toastSuccess } from 'src/utils/misc/toasts'
 
 export interface CushyAppL extends LiveInstance<CushyAppT, CushyAppL> {}
 export class CushyAppL {
@@ -21,6 +21,13 @@ export class CushyAppL {
 
     get drafts(): DraftL[] {
         return this.draftsCollection.items
+    }
+
+    get isLocal(): boolean {
+        return this.script.relPath.startsWith('library/local')
+    }
+    get isBuiltIn(): boolean {
+        return this.script.relPath.startsWith('library/built-in')
     }
 
     private draftsCollection = new LiveCollection<DraftL>({
@@ -209,18 +216,22 @@ export class CushyAppL {
                     tags: this.executable?.tags,
                 })
                 console.log(`[🚀] ✅ ${appUID} published !`, res)
+                toastSuccess(`[🚀] ✅ ${appUID} published !`)
             } else {
                 //
                 console.log(`[🚀] app found`, prev, 'updating...')
-                const res = await supa.from('published_apps').update({
-                    id: prev.id,
-                    app_id: this.id,
-                    name: this.name,
-                    description: this.description,
-                    illustration_url: illustration_url,
-                    tags: this.executable?.tags,
-                })
+                const res = await supa
+                    .from('published_apps') //
+                    .update({
+                        app_id: this.id,
+                        name: this.name,
+                        description: this.description,
+                        illustration_url: illustration_url,
+                        tags: this.executable?.tags,
+                    })
+                    .eq('id', prev.id)
                 console.log(`[🚀] ✅ ${appUID} updated !`, res)
+                toastSuccess(`[🚀] ✅ ${appUID} updated !`)
             }
         } catch (e: unknown) {
             const err = e as Error

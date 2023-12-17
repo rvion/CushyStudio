@@ -107,14 +107,19 @@ export const Panel_CardPicker3UI = observer(function Panel_CardPicker3UI_(p: {})
                     <Panel_DeckList />
                 </ScrollablePaneUI> */}
                 <ScrollablePaneUI tw='flex-grow'>
+                    <FileBeeingImportedUI files={st.droppedFiles} />
+                    <div tw='text-3xl text-accent font-bold'>Cloud Installed Apps</div>
                     <div tw='flex flex-wrap  gap-2'>
                         {st._allPublishedApps?.data?.map((app) => (
                             <div tw='w-96 h-80 virtualBorder' key={app.id}>
                                 <pre>{JSON.stringify(app, null, 3)}</pre>
                             </div>
                         ))}
-                        <FileBeeingImportedUI files={st.droppedFiles} />
-                        {st.library.appsFiltered.map((app, ix) => (
+                    </div>
+                    <div tw='divider'></div>
+                    <div tw='text-3xl text-accent font-bold'>Built-in Apps</div>
+                    <div tw='flex flex-wrap  gap-2'>
+                        {st.library.appsFilteredBuiltIn.map((app, ix) => (
                             <div key={app.id}>
                                 <AppCardUI //
                                     active={st.library.selectionCursor === ix}
@@ -129,6 +134,18 @@ export const Panel_CardPicker3UI = observer(function Panel_CardPicker3UI_(p: {})
                                         ))}
                                     </div>
                                 ) : null} */}
+                            </div>
+                        ))}
+                    </div>
+                    <div tw='divider'></div>
+                    <div tw='text-3xl text-accent font-bold'>Local Apps</div>
+                    <div tw='flex flex-wrap  gap-2'>
+                        {st.library.appsFilteredLocal.map((app, ix) => (
+                            <div key={app.id}>
+                                <AppCardUI //
+                                    active={st.library.selectionCursor === ix}
+                                    app={app}
+                                />
                             </div>
                         ))}
                     </div>

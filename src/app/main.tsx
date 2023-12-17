@@ -5,6 +5,7 @@ import ReactDOM from 'react-dom/client'
 // import 'rsuite/dist/rsuite.min.css'
 // import 'src/theme/theme-rvion.css'
 
+import 'react-toastify/dist/ReactToastify.css'
 import './index.css'
 import 'src/theme/flexlayout.css'
 import 'src/theme/theme.css'
