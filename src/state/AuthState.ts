@@ -154,7 +154,7 @@ export class AuthState {
         if (user == null) throw new Error(`[🔑 AUTH] ❌ failure: user is null`)
         if (session == null) throw new Error(`[🔑 AUTH] ❌ failure: session is null`)
 
-        console.log(`[🔑 AUTH] 🟢 success.`, session)
+        console.log(`[🔑 AUTH] 🟢 success.`) //, session)
 
         // ⏸️ const prev = deepCopyNaive(this.st.db.auths.get(asAuthID('current'))?.data)
 
