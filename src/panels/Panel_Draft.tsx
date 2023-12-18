@@ -206,7 +206,7 @@ export const FormLayoutPrefsUI = observer(function FormLayoutPrefsUI_(p: { class
                 active={layout == 'auto'}
             >
                 Auto Layout
-                <div tw='badge badge-neutral'>recommanded</div>
+                <div tw='badge badge-neutral'>recommended</div>
             </MenuItem>
             <MenuItem
                 icon={<span className='material-symbols-outlined'>photo_size_select_small</span>}
