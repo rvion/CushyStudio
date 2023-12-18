@@ -54,13 +54,18 @@ export class CushyScriptL {
 
     // --------------------------------------------------------------------------------------
     /** cache of extracted apps */
-    private _EXECUTABLES!: Executable[]
+    private _EXECUTABLES: Maybe<Executable[]> = null
     get EXECUTABLES(): Executable[] {
         if (this._EXECUTABLES == null) return this.extractApps()
         return this._EXECUTABLES
     }
 
-    getExecutable(appID: CushyAppID): Maybe<Executable> {
+    getExecutable_orNull(appID: CushyAppID): Maybe<Executable> {
+        return this._EXECUTABLES?.find((executable) => appID === executable.appID)
+    }
+
+    /** more costly variation of getExecutable_orNull */
+    getExecutable_orExtract(appID: CushyAppID): Maybe<Executable> {
         return this.EXECUTABLES.find((executable) => appID === executable.appID)
     }
 
@@ -74,7 +79,7 @@ export class CushyScriptL {
     extractApps = () => {
         this._EXECUTABLES = this._EVALUATE_SCRIPT()
         runInAction(() => {
-            this._apps_viaScript = this._EXECUTABLES.map((executable): CushyAppL => {
+            this._apps_viaScript = this._EXECUTABLES!.map((executable): CushyAppL => {
                 const app = this.db.cushy_apps.upsert({
                     id: executable.appID,
                     scriptID: this.id,

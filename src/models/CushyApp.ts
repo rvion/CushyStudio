@@ -89,8 +89,12 @@ export class CushyAppL {
     }
 
     get executable(): Maybe<Executable> {
-        return this.script.getExecutable(this.id)
+        return this.script.getExecutable_orExtract(this.id)
     }
+
+    // get possiblyAlreadyCachedexecutable(): Maybe<Executable> {
+    //     return this.script.getExecutable_orNull(this.id)
+    // }
 
     // PUBLISHING ---------------------------------------------------------------------------
     isPublishing = false
@@ -288,12 +292,13 @@ export class CushyAppL {
 
     /** app description */
     get description(): string {
-        return this.data.description ?? this.executable?.description ?? '<no description>'
+        return this.data.description /*?? this.executable?.description*/ ?? '<no description>'
     }
 
     /** action display name */
     get illustrationPath_eiter_RelativeToDeckRoot_or_Base64Encoded_or_SVG(): Maybe<string> {
-        if (this.executable?.metadata?.illustration) return this.executable.metadata.illustration
+        // if (this.executable?.metadata?.illustration) return this.executable.metadata.illustration
+        if (this.data.illustration) return this.data.illustration
         if (this.relPath.endsWith('.png')) return this.relPath
         return generateAvatar(this.relPath)
     }
