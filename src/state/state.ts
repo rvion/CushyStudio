@@ -148,10 +148,6 @@ export class STATE {
     importer: ComfyImporter
     typecheckingConfig: JsonFile<TsConfigCustom>
 
-    // showLatentPreviewInLastImagePanel
-    get showLatentPreviewInLastImagePanel() { return this.configFile.value.showLatentPreviewInLastImagePanel ?? false } // prettier-ignore
-    set showLatentPreviewInLastImagePanel(v: boolean) { this.configFile.update({ showLatentPreviewInLastImagePanel: v }) } // prettier-ignore
-
     // showPreviewInFullScreen
     get showPreviewInFullScreen() { return this.configFile.value.showPreviewInFullScreen ?? false } // prettier-ignore
     set showPreviewInFullScreen(v: boolean) { this.configFile.update({ showPreviewInFullScreen: v }) } // prettier-ignore

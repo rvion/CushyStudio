@@ -53,8 +53,6 @@ export type ConfigFile = {
      */
     releaseChannel?: 'stable' | 'dev'
 
-    /** if true, the lastImage preview will also display the latent */
-    showLatentPreviewInLastImagePanel?: boolean
     /**
      * if true, hovering any image in the ui will scale the image
      * so it use all screen real estate rather than be limited by its
