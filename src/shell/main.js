@@ -62,12 +62,12 @@ async function START() {
     // ===//=====//======//======//======//======//======//======//======//======//======//======//==
     // ==//=====//======//======//======//======//======//======//======//======//======//======//===
 
-    try {
-        const patchElectronIconAndName = require('./patch.js').default
-        patchElectronIconAndName()
-    } catch (error) {
-        console.log('❌ error patching electron icon and name', error)
-    }
+    // ⏸️ try {
+    // ⏸️     const patchElectronIconAndName = require('./patch.js').default
+    // ⏸️     patchElectronIconAndName()
+    // ⏸️ } catch (error) {
+    // ⏸️     console.log('❌ error patching electron icon and name', error)
+    // ⏸️ }
 
     const { app, BrowserWindow, globalShortcut, ipcMain, session } = require('electron')
 
