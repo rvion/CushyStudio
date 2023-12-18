@@ -12,25 +12,31 @@ import { CushyAppL } from './CushyApp'
 import { Executable } from './Executable'
 import { runInAction } from 'mobx'
 import { toastInfo } from 'src/utils/misc/toasts'
+// import { LazyValue } from 'src/db/LazyValue'
 
 export interface CushyScriptL extends LiveInstance<CushyScriptT, CushyScriptL> {}
 export class CushyScriptL {
-    get firstApp(): Maybe<CushyAppL> {
-        return this.apps[0]
-    }
+    // get firstApp(): Maybe<CushyAppL> {
+    //     return this.apps[0]
+    // }
 
     /** relative path from CushyStudio root to the file that produced this script */
     get relPath(): RelativePath {
         return asRelativePath(this.data.path)
     }
 
-    /** collection of all apps upserted from this script */
+    /** collection of all apps related to this script in the db */
     apps_viaDB = new LiveCollection<CushyAppL>({
         table: () => this.db.cushy_scripts,
         where: () => ({ scriptID: this.id }),
     })
 
-    apps!: CushyAppL[]
+    /** collection of all apps related to this script currently in the script (no past values) */
+    _apps_viaScript: Maybe<CushyAppL[]> = null
+    get apps_viaScript(): CushyAppL[] {
+        if (this._apps_viaScript == null) this.extractApps()
+        return this._apps_viaScript!
+    }
 
     onHydrate = () => {
         if (this.data.lastEvaluatedAt == null) this.extractApps()
@@ -68,7 +74,7 @@ export class CushyScriptL {
     extractApps = () => {
         this._EXECUTABLES = this._EVALUATE_SCRIPT()
         runInAction(() => {
-            this.apps = this._EXECUTABLES.map((executable): CushyAppL => {
+            this._apps_viaScript = this._EXECUTABLES.map((executable): CushyAppL => {
                 const app = this.db.cushy_apps.upsert({
                     id: executable.appID,
                     scriptID: this.id,
@@ -82,7 +88,7 @@ export class CushyScriptL {
 
             // bumpt timestamps
             const now = Date.now()
-            if (this.apps.length === 0) this.update({ lastEvaluatedAt: now })
+            if (this.apps_viaScript.length === 0) this.update({ lastEvaluatedAt: now })
             else this.update({ lastEvaluatedAt: now, lastSuccessfulEvaluationAt: now })
         })
         return this._EXECUTABLES

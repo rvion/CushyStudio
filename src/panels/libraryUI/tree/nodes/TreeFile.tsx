@@ -77,7 +77,7 @@ export class TreeFile implements ITreeEntry {
             console.log(`[🔴] TreeFile (${this.id}): SCRIPT is null`)
             return []
         }
-        const apps = this.script.apps
+        const apps = this.script.apps_viaScript
         if (apps.length === 0) {
             console.log(`[🔴] TreeFile (${this.id}): APPS.length = 0`)
             return []
