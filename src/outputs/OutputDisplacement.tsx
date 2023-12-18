@@ -234,7 +234,8 @@ class State {
         // Load textures
         const loader = new THREE.TextureLoader()
         const texture = loader.load(p.image)
-        texture.encoding = THREE.sRGBEncoding
+        // texture.encoding = THREE.sRGBEncoding
+        texture.colorSpace = THREE.SRGBColorSpace
         const depthTexture = loader.load(p.depthMap)
         const normalTexture = loader.load(p.normalMap)
 
