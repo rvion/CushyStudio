@@ -69,6 +69,7 @@
         "electron": "^28.0.0",
         "electron-builder": "^24.9.1",
         "esbuild": "^0.19.9",
+        "express": "^4.18.2",
         "fastest-levenshtein": "^1.0.16",
         "flexlayout-react": "^0.7.15",
         "highlight.js": "^11.9.0",
