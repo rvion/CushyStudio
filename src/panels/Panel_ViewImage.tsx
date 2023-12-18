@@ -82,6 +82,8 @@ export const ImageActionBarUI = observer(function ImageActionBarUI_(p: { img?: M
                 <div>
                     <div>Data</div>
                     <JsonViewUI value={img?.data}></JsonViewUI>
+                    <div>meta</div>
+                    <JsonViewUI value={img?.ComfyNodeMetadta ?? undefined}></JsonViewUI>
                     <div>node</div>
                     <JsonViewUI value={img?.ComfyNode ?? undefined}></JsonViewUI>
                 </div>

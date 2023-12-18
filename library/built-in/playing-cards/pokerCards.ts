@@ -2,11 +2,12 @@ import { ImageAndMask } from 'src'
 import type { FormBuilder } from 'src/controls/FormBuilder'
 import { CardSuit, CardValue } from './_cardLayouts'
 import { _drawCard } from './_drawCard'
+import { toJS } from 'mobx'
 
 app({
     metadata: {
         name: 'Illustrated deck of cards',
-        illustration: '_illustrations/poker-card-generator.jpg',
+        illustration: 'library/built-in/_illustrations/poker-card-generator.jpg',
         description: 'Allow you to generate illustrated deck of cards',
     },
     ui: (form: FormBuilder) => ({
@@ -91,28 +92,29 @@ app({
         margin: form.intOpt({ default: 40 }),
         symetry: form.bool({ default: false }),
     }),
-    run: async (flow, p) => {
+    run: async (run, ui) => {
         //===//===//===//===//===//===//===//===//===//===//===//===//===//
         // 1. SETUP --------------------------------------------------
-        const graph = flow.nodes
+        const graph = run.nodes
         const floor = (x: number) => Math.floor(x)
-        const ckpt = graph.CheckpointLoaderSimple({ ckpt_name: p.model })
-        const suits = Array.from(new Set(p.cards.map((c) => c.row)))
-        const values = Array.from(new Set(p.cards.map((c) => c.col)))
-        const W = p.size.width, W2 = floor(W / 2), W3 = floor(W / 3), W4 = floor(W / 4) // prettier-ignore
-        const H = p.size.height, H2 = floor(H / 2), H3 = floor(H / 3), H4 = floor(H / 4) // prettier-ignore
-        const margin = p.margin ?? 50
+        const ckpt = graph.CheckpointLoaderSimple({ ckpt_name: ui.model })
+        const suits = Array.from(new Set(ui.cards.map((c) => c.row)))
+        const values = Array.from(new Set(ui.cards.map((c) => c.col)))
+        const W = ui.size.width, W2 = floor(W / 2), W3 = floor(W / 3), W4 = floor(W / 4) // prettier-ignore
+        const H = ui.size.height, H2 = floor(H / 2), H3 = floor(H / 3), H4 = floor(H / 4) // prettier-ignore
+        const margin = ui.margin ?? 50
 
         //===//===//===//===//===//===//===//===//===//===//===//===//===//
         // 2. BACKGROUND --------------------------------------------------
         const suitsBackground = new Map<(typeof suits)[number], _LATENT>()
         const suitsBackgroundLatent = graph.EmptyLatentImage({ width: W, height: H })
         for (const suit of suits) {
-            const suitColor = p.colors[suit as keyof typeof p.colors]
-            const suitBGPrompt = p.background.prompt.replace('{color}', suitColor).replace('{suit}', suit)
-            flow.output_text(`generating background for ${suit} with prompt "${suitBGPrompt}"`)
+            // const store = run.getImageStore({ tag: `bg-${suit}`, autoUpdate: (img) => img.filename.startsWith(`${suit}_BG`) })
+            const suitColor = ui.colors[suit as keyof typeof ui.colors]
+            const suitBGPrompt = ui.background.prompt.replace('{color}', suitColor).replace('{suit}', suit)
+            run.output_text(`generating background for ${suit} with prompt "${suitBGPrompt}"`)
             const colorImage = graph.KSampler({
-                seed: p.background.seed,
+                seed: ui.background.seed,
                 latent_image: suitsBackgroundLatent,
                 sampler_name: 'euler',
                 steps: 10,
@@ -121,31 +123,33 @@ app({
                 positive: graph.CLIPTextEncode({ clip: ckpt, text: suitBGPrompt }),
                 negative: graph.CLIPTextEncode({ clip: ckpt, text: 'text, watermarks, logo, 1girl' }),
             })
-            // TODO: save image ++
-            graph.SaveImage({
-                images: graph.VAEDecode({ samples: colorImage, vae: ckpt }),
-                filename_prefix: `${suit}_BG`,
-            })
+            const pixels = graph.VAEDecode({ samples: colorImage, vae: ckpt })
+            graph.SaveImage({ images: pixels, filename_prefix: `${suit}_BG` }).storeAs(`bg-${suit}`)
             suitsBackground.set(suit, colorImage)
         }
-        await flow.PROMPT()
-        const spadesBG = flow.findLastImageByPrefix('spades_BG')
-        flow.output_text(spadesBG?.absPath ?? 'no')
+        await run.PROMPT()
+
+        // const spadesBG = run.findLastImageByPrefix('spades_BG')
+        // run.output_text(spadesBG?.id ?? 'no')
+        // run.output_text(spadesBG?.absPath ?? 'no')
 
         //===//===//===//===//===//===//===//===//===//===//===//===//===//
         // 3. CARD LAYOUTS --------------------------------------------------
         const negativeText = 'text, watermarks, logo, nsfw, boobs'
-        const cardsSorted = p.cards.sort((a, b) => 100 * a.x + a.y - (100 * b.x + b.y))
+        const cardsSorted = ui.cards.sort((a, b) => 100 * a.x + a.y - (100 * b.x + b.y))
         let foo: { [key: string]: { base: ImageAndMask; mask: ImageAndMask } } = {}
         for (const card of cardsSorted) {
+            // console.log(`[👙] `, toJS(card))
             const { col: value, row: suit } = card
-            const xx = await _drawCard(flow, {
-                baseUrl: spadesBG?.url ?? 'file:///Users/loco/dev/CushyStudio/outputs/spades_BG_00002_.png',
+            const bg = run.getImageStore(`bg-${suit}`).image
+            const xx = await _drawCard(run, {
+                baseUrl: bg?.url ?? 'file:///Users/loco/dev/CushyStudio/outputs/spades_BG_00002_.png',
                 value: value as CardValue,
                 suit: suit as CardSuit,
                 H,
                 W,
             })
+            console.log(`[👙] `, toJS(xx))
             foo[`${suit}_${value}`] = xx
             graph.SaveImage({ images: xx.mask, filename_prefix: 'mask_1' })
             graph.SaveImage({
@@ -153,16 +157,16 @@ app({
                 filename_prefix: 'base_1',
             })
         }
-        await flow.PROMPT()
+        await run.PROMPT()
 
         //===//===//===//===//===//===//===//===//===//===//===//===//===//
         // PROMPT  ----------------------------------------
         // const emptyLatent = graph.EmptyLatentImage({ width: W, height: H })
         for (const card of cardsSorted) {
             const { col: value, row: suit } = card
-            const theme = p.themes[suit as keyof typeof p.themes]
-            const suitColor = p.colors[suit as keyof typeof p.colors]
-            const illustrations = p.illustrations
+            const theme = ui.themes[suit as keyof typeof ui.themes]
+            const suitColor = ui.colors[suit as keyof typeof ui.colors]
+            const illustrations = ui.illustrations
             const basePrompt =
                 {
                     J: illustrations.Jack,
@@ -170,7 +174,7 @@ app({
                     K: illustrations.King,
                 }[value] ?? `background`
 
-            const positiveText = `masterpiece, rpg, ${basePrompt}, ${suitColor} of ${suit} color, intricate details, theme of ${theme} and ${p.generalTheme}, 4k`
+            const positiveText = `masterpiece, rpg, ${basePrompt}, ${suitColor} of ${suit} color, intricate details, theme of ${theme} and ${ui.generalTheme}, 4k`
             const positive = graph.CLIPTextEncode({ clip: ckpt, text: positiveText })
             const xxx = foo[`${suit}_${value}`]
             // let latent: _LATENT = suitsBackground.get(suit)! // emptyLatent
@@ -181,7 +185,7 @@ app({
             })
             graph.PreviewImage({ images: graph.MaskToImage({ mask: xxx.mask }) })
             let sample: _LATENT = graph.KSampler({
-                seed: flow.randomSeed(),
+                seed: run.randomSeed(),
                 latent_image: latent,
                 model: ckpt,
                 positive: positive,
@@ -196,7 +200,7 @@ app({
             let pixels: _IMAGE = graph.VAEDecode({ vae: ckpt, samples: sample })
             graph.SaveImage({ images: pixels, filename_prefix: `${suit}_${value}/img` })
         }
-        await flow.PROMPT()
+        await run.PROMPT()
         return
 
         // 👙        for (const card of cardsSorted) {

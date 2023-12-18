@@ -409,6 +409,32 @@ export const migrations: {
             'alter table media_image add column promptNodeID text',
         ],
     },
+    {
+        id: '9tHBrHFrCu',
+        name: 'misc',
+        up: [
+            // rename
+            'alter table graph add column metadata json',
+        ],
+    },
+    {
+        id: 'gz_W2ilKV1',
+        name: 'misc',
+        up: [
+            // rename
+            'alter table graph drop column metadata',
+            `alter table graph add column metadata json default '{}'`,
+        ],
+    },
+    {
+        id: 'yACVuOp3-B',
+        name: 'misc',
+        up: [
+            // rename
+            'alter table graph drop column metadata',
+            `alter table graph add column metadata json not null default '{}'`,
+        ],
+    },
     // {
     //     id: 'e574c006-daca-4fd0-a51b-73a66b4fbd79',
     //     name: 'create cushy_app table',

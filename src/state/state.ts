@@ -222,7 +222,7 @@ export class STATE {
             return this.db.projects.firstOrCrash()
         }
         console.log(`[🛋️] creating project`)
-        const initialGraph = this.db.graphs.create({ comfyPromptJSON: {} })
+        const initialGraph = this.db.graphs.create({ comfyPromptJSON: {}, metadata: {} })
         const defaultAppPath = asAppPath('library/CushyStudio/default/SDUI.ts')
         // const initialDraft = this.db.drafts.create({
         //     appParams: {},

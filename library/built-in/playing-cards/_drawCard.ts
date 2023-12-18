@@ -42,10 +42,10 @@ export async function _drawCard(
     // prettier-ignore
     const image = await (() => {
         // return I.loadImage('CushyStudio/default/_assets/symbol-diamond.png')
-        if (suit === 'diamonds') return I.loadImage('CushyStudio/default/_assets/symbol-diamond.png')
-        if (suit === 'clubs')    return I.loadImage('CushyStudio/default/_assets/symbol-club.png')
-        if (suit === 'hearts')   return I.loadImage('CushyStudio/default/_assets/symbol-heart.png')
-        if (suit === 'spades')   return I.loadImage('CushyStudio/default/_assets/symbol-spades.png')
+        if (suit === 'diamonds') return I.getHTMLImage_fromPath('library/built-in/_assets/symbol-diamond.png')
+        if (suit === 'clubs')    return I.getHTMLImage_fromPath('library/built-in/_assets/symbol-club.png')
+        if (suit === 'hearts')   return I.getHTMLImage_fromPath('library/built-in/_assets/symbol-heart.png')
+        if (suit === 'spades')   return I.getHTMLImage_fromPath('library/built-in/_assets/symbol-spades.png')
         return exhaust(suit)
     })()
 

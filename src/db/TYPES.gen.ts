@@ -84,6 +84,9 @@ export type GraphT = {
     /** @default: null, sqlType: TEXT */
     stepID?: Maybe<StepID>;
 
+    /** @default: "'{}'", sqlType: json */
+    metadata: T.Graph_metadata;
+
 }
 export const GraphSchema = Type.Object({
     id: Type.String(),
@@ -91,6 +94,7 @@ export const GraphSchema = Type.Object({
     updatedAt: Type.Number(),
     comfyPromptJSON: T.Graph_comfyPromptJSON_Schema,
     stepID: Type.Optional(T.Nullable(Type.String())),
+    metadata: T.Graph_metadata_Schema,
 },{ additionalProperties: false })
 
 export const GraphFields = {
@@ -99,6 +103,7 @@ export const GraphFields = {
     updatedAt: {cid:2,name:'updatedAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
     comfyPromptJSON: {cid:3,name:'comfyPromptJSON',type:'json',notnull:1,dflt_value:null,pk:0},
     stepID: {cid:4,name:'stepID',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    metadata: {cid:5,name:'metadata',type:'json',notnull:1,dflt_value:"'{}'",pk:0},
 }
 
 

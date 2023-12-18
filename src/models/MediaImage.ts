@@ -11,6 +11,7 @@ import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { _readPngSize } from '../utils/png/_readPngSize'
 import { ComfyPromptL } from './ComfyPrompt'
 import { ComfyWorkflowL } from './Graph'
+import { ComfyNodeMetadata } from 'src/types/ComfyNodeID'
 
 // prettier-ignore
 export type ImageInfos =
@@ -76,11 +77,18 @@ export class MediaImageL {
         return this.prompt?.graph.item
     }
 
-    /** return the json of the ComfyNode that let to this image */
+    /** return the json of the ComfyNode that led to this image */
     get ComfyNode(): Maybe<ComfyNodeJSON> {
         const nodeID = this.data.promptNodeID
         if (nodeID == null) return null
         return this.graph?.data.comfyPromptJSON[nodeID]
+    }
+
+    /** return the metadata of the ComfyNode that led to this image */
+    get ComfyNodeMetadta(): Maybe<ComfyNodeMetadata> {
+        const nodeID = this.data.promptNodeID
+        if (nodeID == null) return null
+        return this.graph?.data.metadata[nodeID]
     }
 
     /** ready to be used in image fields */

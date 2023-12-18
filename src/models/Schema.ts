@@ -329,7 +329,7 @@ export class ComfySchemaL {
 
         p('')
         p(`import type { ComfyNode } from '${prefix}core/ComfyNode'`)
-        p(`import type { ComfyNodeID } from '${prefix}types/ComfyNodeID'`)
+        p(`import type { ComfyNodeID, ComfyNodeMetadata } from '${prefix}types/ComfyNodeID'`)
         p(`import type { ComfyNodeOutput } from '${prefix}core/Slot'`)
         p(`import type { ComfyNodeSchemaJSON } from '${prefix}types/ComfySchemaJSON'`)
         p('')
@@ -365,7 +365,7 @@ export class ComfySchemaL {
         // prettier-ignore
         for (const n of this.nodes) {
             p(`    /* category:${n.category}, name:"${n.nameInComfy}", output:${n.outputs.map(o => o.nameInCushy).join('+')} */`)
-            p(`    ${n.nameInCushy}(p: ${n.nameInCushy}_input, id?: ComfyNodeID): ${n.nameInCushy}`)
+            p(`    ${n.nameInCushy}(p: ${n.nameInCushy}_input, meta?: ComfyNodeMetadata): ${n.nameInCushy}`)
         }
         p(`}`)
 

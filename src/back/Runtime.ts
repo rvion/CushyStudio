@@ -37,6 +37,8 @@ import { CustomDataL } from 'src/models/CustomData'
 import { HostL } from 'src/models/Host'
 import { _formatAsRelativeDateTime } from 'src/updater/_getRelativeTimeString'
 import { Wildcards } from 'src/widgets/prompter/nodes/wildcards/wildcards'
+import { observer } from 'mobx-react-lite'
+import { ImageStore, ImageStoreAutoUpdateLogic, ImageStoreT } from './ImageStore'
 
 export type ImageAndMask = HasSingle_IMAGE & HasSingle_MASK
 
@@ -98,12 +100,12 @@ export class Runtime<FIELDS extends WidgetDict = any> {
 
     /** create a new empty ComfyUI workflow */
     create_ComfyUIWorkflow = (): ComfyWorkflowL => {
-        return this.st.db.graphs.create({ comfyPromptJSON: {}, stepID: this.step.id })
+        return this.st.db.graphs.create({ comfyPromptJSON: {}, metadata: {}, stepID: this.step.id })
     }
 
-    /** create a new empty ComfyUI workflow */
+    /** create a new very basic ComfyUI workflow */
     create_ComfyUIWorkflow_forTestPurpose = (p: { positivePrompt: string }): ComfyWorkflowL => {
-        const graph = this.st.db.graphs.create({ comfyPromptJSON: {}, stepID: this.step.id })
+        const graph = this.st.db.graphs.create({ comfyPromptJSON: {}, metadata: {}, stepID: this.step.id })
         const builder = graph.builder
 
         const model = builder.CheckpointLoaderSimple({ ckpt_name: 'lyriel_v15.safetensors' })
@@ -349,6 +351,30 @@ export class Runtime<FIELDS extends WidgetDict = any> {
         return this.generatedImages[this.generatedImages.length - 1]
     }
 
+    // IMAGE HELPES ---------------------------------------------------------------------------------------
+
+    /** stores are .... */
+    getImageStore = (storeName: string): ImageStore => {
+        const storeID = `app:${this.step.app.id}/imageStore/${storeName}`
+        const prev = this.imageStoresIndex.get(storeID)
+        if (prev) return prev
+        const rawStore: CustomDataL<ImageStoreT> = this.getStore_orCreateIfMissing(storeID, () => ({}))
+        const store = new ImageStore(rawStore /*p.autoUpdate*/)
+        this.imageStoresIndex.set(storeID, store)
+        return store
+    }
+
+    private imageStoresIndex = new Map<string, ImageStore>()
+
+    // ⏸️ /**
+    // ⏸️  * list of all images stores currently active in this run
+    // ⏸️  * every image generated will be sent though those stores for
+    // ⏸️  * potential caching
+    // ⏸️  * */
+    // ⏸️ get imageStores() {
+    // ⏸️     return [...this.imageStoresIndex.values()]
+    // ⏸️ }
+
     findLastImageByPrefix = (prefix: string): MediaImageL | undefined => {
         return this.generatedImages.find((i) => i.filename.startsWith(prefix))
     }
@@ -356,6 +382,14 @@ export class Runtime<FIELDS extends WidgetDict = any> {
     get generatedImages(): MediaImageL[] {
         return this.step.generatedImages
     }
+
+    // ⏸️ /**
+    // ⏸️  * some magical utility that takes an _IMAGE
+    // ⏸️  * (anything that will produce an image, and ensure its output will be present after the run)
+    // ⏸️  * */
+    // ⏸️ TODO: exercice: implement that using useImageStore
+
+    // ---------------------------------------------------------------------------------------
     // get firstImage() { return this.generatedImages[0] } // prettier-ignore
     // get lastImage() { return this.generatedImages[this.generatedImages.length - 1] } // prettier-ignore
 
@@ -793,6 +827,7 @@ ${ffmpegComandInfos.framesFileContent}
             step: this.step,
             idMode: p?.ids,
         })
+        prompt.RUNTIME = this
         await prompt.finished
         return prompt
     }
