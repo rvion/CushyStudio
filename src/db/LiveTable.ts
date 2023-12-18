@@ -279,6 +279,7 @@ export class LiveTable<T extends BaseInstanceFields, L extends LiveInstance<T, L
     }
 
     getOrThrow = (id: string): L => {
+        if (id == null) throw new Error(`ERR:  getOrThrow called without id`)
         const val = this.get(id)
         if (val == null) throw new Error(`ERR: ${this.name}(${id}) not found`)
         return val
