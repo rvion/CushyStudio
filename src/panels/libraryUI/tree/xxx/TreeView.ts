@@ -11,7 +11,7 @@ export class TreeView {
     id = nanoid(4)
     constructor(public tree: Tree) {
         this.resetCaretPos()
-        makeAutoObservable(this)
+        makeAutoObservable(this, { filterRef: false, id: false })
     }
 
     filterRef = createRef<HTMLInputElement>()

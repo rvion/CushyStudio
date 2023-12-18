@@ -90,7 +90,7 @@ export class CushyLayoutManager {
             this.setModel(Model.fromJson(this.build()))
             // this.setModel(Model.fromJson({ layout: { type: 'row', children: [] } }))
         }
-        makeAutoObservable(this)
+        makeAutoObservable(this, { layoutRef: false })
     }
 
     layoutRef = createRef<Layout>()

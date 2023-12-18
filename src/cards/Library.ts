@@ -3,7 +3,7 @@ import type { STATE } from 'src/state/state'
 import path from 'pathe'
 import Watcher from 'watcher'
 
-import { makeAutoObservable } from 'mobx'
+import { makeAutoObservable, action } from 'mobx'
 import { LiveCollection } from 'src/db/LiveCollection'
 import { CushyAppL } from 'src/models/CushyApp'
 import { asAbsolutePath } from 'src/utils/fs/pathUtils'
@@ -131,7 +131,7 @@ export class Library {
             // console.log('🟢 3.', targetPathNext) // => the file system path "targetPath" got renamed to, this is only provided on 'rename'/'renameDir' events
         })
 
-        makeAutoObservable(this)
+        makeAutoObservable(this, { getFile: action })
         // this.filesMap = new Map()
     }
 

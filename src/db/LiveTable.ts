@@ -3,7 +3,7 @@ import type { LiveDB } from './LiveDB'
 import type { $BaseInstanceFields, BaseInstanceFields, LiveInstance } from './LiveInstance'
 
 import { Value, ValueError } from '@sinclair/typebox/value'
-import { makeAutoObservable, toJS } from 'mobx'
+import { action, makeAutoObservable, toJS } from 'mobx'
 import { nanoid } from 'nanoid'
 import { schemas } from 'src/db/TYPES.gen'
 import { TableInfo } from 'src/db/TYPES_json'
@@ -224,6 +224,7 @@ export class LiveTable<T extends BaseInstanceFields, L extends LiveInstance<T, L
         makeAutoObservable(this, {
             // @ts-ignore (private properties are untyped in this function)
             Ktor: false,
+            _createInstance: action,
         })
 
         MERGE_PROTOTYPES(InstanceClass, BaseInstanceClass)
@@ -475,7 +476,7 @@ export class LiveTable<T extends BaseInstanceFields, L extends LiveInstance<T, L
     }
 
     /** only call this with some data already in the database */
-    private _createInstance = (data: T): L => {
+    _createInstance = (data: T): L => {
         const instance = new this.Ktor()
         // TYPE CHECKING --------------------
         const schema = this.infos.schema
