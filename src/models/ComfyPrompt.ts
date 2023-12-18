@@ -86,11 +86,17 @@ export class ComfyPromptL {
     /** udpate execution list */
     private onExecuted = (msg: WsMsgExecuted) => {
         for (const img of msg.data.output.images) {
-            // const image =
+            // retrieve the node
+            const promptNodeID = msg.data.node
+            const promptNode = this.graph.item.data.comfyPromptJSON[promptNodeID]
+            if (promptNode == null) throw new Error(`❌ invariant violation: promptNode is null`)
+
+            // create the image
             this.db.media_images.create({
                 id: nanoid(),
                 stepID: this.step.id,
                 promptID: this.id,
+                promptNodeID: promptNodeID,
                 infos: {
                     type: 'image-generated-by-comfy',
                     comfyImageInfo: img,
