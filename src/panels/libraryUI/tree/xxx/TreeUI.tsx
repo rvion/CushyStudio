@@ -17,7 +17,7 @@ export const TreeUI = observer(function TreeEditorUI_(p: { tree: Tree }) {
             <div className='boxed _TreeUI'>
                 <div tw='flex'>
                     <input
-                        tw='input input-bordered input-sm flex-grow'
+                        tw='input input-bordered input-sm flex-grow min-w-0'
                         onChange={(ev) => (es.filter = ev.target.value)}
                         ref={es.filterRef}
                         type='text'
@@ -25,10 +25,10 @@ export const TreeUI = observer(function TreeEditorUI_(p: { tree: Tree }) {
                         // style={{ width: '100%', borderRadius: '1rem', margin: '1rem 0', padding: '.2rem .4rem' }}
                     />
                     <div
+                        tw='btn btn-square btn-ghost btn-sm shrink-0'
                         onClick={() => {
                             st.db.tree_entries.updateAll({ isExpanded: null })
                         }}
-                        tw='btn btn-square btn-sm'
                     >
                         <span className='material-symbols-outlined'>minimize</span>
                     </div>
