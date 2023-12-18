@@ -1,4 +1,3 @@
-import './Tree.css'
 import { observer } from 'mobx-react-lite'
 import { TreeNode } from './TreeNode'
 import { useTreeView } from './TreeCtx'

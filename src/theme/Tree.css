@@ -1,25 +1,25 @@
-input {
+._TreeUI input {
     background-color: #c0e3c0;
 }
-._dim {
+._TreeUI ._dim {
     /* font-style: italic; */
     /* font-size: 0.6em; */
     color: #888;
     line-height: 1.3rem;
 }
-._line {
+._TreeUI ._line {
     display: flex;
     flex-direction: row;
 }
 
-._line:hover {
+._TreeUI ._line:hover {
     background: oklch(var(--b3));
 }
 /* ._TreeItemTitle */
-._selected {
+._TreeUI ._selected {
     background: oklch(var(--b3));
 }
 
-._gutter {
+._TreeUI ._gutter {
     display: flex;
 }

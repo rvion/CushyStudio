@@ -3,8 +3,6 @@ import hljs from 'highlight.js/lib/core'
 import typescript from 'highlight.js/lib/languages/typescript'
 import { useLayoutEffect, useRef } from 'react'
 import { Button } from 'src/rsuite/shims'
-// import 'highlight.js/styles/stackoverflow-light.css'
-import 'highlight.js/styles/stackoverflow-dark.css'
 
 hljs.registerLanguage('typescript', typescript)
 // hljs.registerLanguage('json', json)

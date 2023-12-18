@@ -14,7 +14,7 @@ export const TreeUI = observer(function TreeEditorUI_(p: { tree: Tree }) {
 
     return (
         <TreeViewCtx.Provider value={es}>
-            <div className='boxed'>
+            <div className='boxed _TreeUI'>
                 <div tw='flex'>
                     <input
                         tw='input input-bordered input-sm flex-grow'

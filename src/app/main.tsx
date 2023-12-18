@@ -1,15 +1,14 @@
 import ReactDOM from 'react-dom/client'
 
-// import 'flexlayout-react/style/dark.css'
-// import 'flexlayout-react/style/underline.css'
-// import 'rsuite/dist/rsuite.min.css'
-// import 'src/theme/theme-rvion.css'
-
+import 'src/theme/tw.css'
 import 'react-toastify/dist/ReactToastify.css'
-import './index.css'
+import 'highlight.js/styles/stackoverflow-dark.css'
+import 'src/theme/LexicalPlaygroundEditorTheme'
+import 'src/theme/LexicalPopover.css'
 import 'src/theme/flexlayout.css'
+import 'src/theme/index.css'
 import 'src/theme/theme.css'
-// import 'src/theme/card.css'
+import 'src/theme/Tree.css'
 
 import { MainUI } from '../widgets/misc/MainUI'
 
