@@ -5,8 +5,6 @@ START()
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true'
 
 async function START() {
-    const PORT = 8788
-
     const mode = process.env['CUSHY_RUN_MODE']
     if (mode == null) throw new Error('CUSHY_RUN_MODE is not defined')
     const allowedModes = ['dev', 'dist']
@@ -14,6 +12,8 @@ async function START() {
         console.error(`CUSHY_RUN_MODE is not allowed: ${mode}`)
         process.exit(1)
     }
+
+    const PORT = mode === 'dist' ? 8688 : 8788
     // ===//=====//======//======//======//======//======//======//======//======//======//======//==
     // ==//=====//======//======//======//======//======//======//======//======//======//======//===
     // 1. START VITE DEV SERVER

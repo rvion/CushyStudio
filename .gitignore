@@ -18,7 +18,6 @@ website/static/0.0.3-2023-03-19-index.html
 # electron
 out
 
-release/
 # keep .cushy folder
 outputs/*
 !outputs/.gitkeep
@@ -72,4 +71,5 @@ docs/ex
 
 *.log
 
-release
+release/main.css
+release/meta.json
