@@ -1,5 +1,4 @@
 import react from '@vitejs/plugin-react'
-import { readFileSync } from 'fs'
 import { resolve } from 'path'
 import { cwd } from 'process'
 import { defineConfig } from 'vite'
@@ -57,7 +56,17 @@ export default defineConfig({
     },
     resolve: {
         alias: {
-            src: resolve(__dirname, './src'),
+            // -----------------------------------------------------------------------
+            three: `${installDir}/src/syms/three.js`,
+            mobx: `${installDir}/src/syms/mobx.js`,
+            'cytoscape-klay': `${installDir}/src/syms/cytoscape-klay.js`,
+            cytoscape: `${installDir}/src/syms/cytoscape.js`,
+            lexical: `${installDir}/src/syms/lexical.js`,
+
+            // -----------------------------------------------------------------------
+            src: `${installDir}/src`,
+
+            // -----------------------------------------------------------------------
             // injected node modules
             // check the `src/syms/_.cjs`
             /* */ assert: `${installDir}/src/syms/assert.js`,

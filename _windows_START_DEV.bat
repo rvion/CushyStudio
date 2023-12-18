@@ -5,7 +5,8 @@ setlocal enabledelayedexpansion
 :: Exit with nonzero exit code if anything fails
 set errorlevel=
 
-SET CUSHY_RUN_MODE=dist
+:: Define variables
+SET CUSHY_RUN_MODE=dev
 
 :: Start Vite using Electron's Node
 ECHO Starting Vite with Electron's Node...

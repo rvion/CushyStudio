@@ -2,6 +2,14 @@ const { exec } = require('child_process')
 const os = require('os')
 const { cwd } = require('process')
 
+const mode = process.env['CUSHY_RUN_MODE']
+if (mode == null) throw new Error('CUSHY_RUN_MODE is not defined')
+const allowedModes = ['dev', 'dist']
+if (!allowedModes.includes(mode)) {
+    console.error(`CUSHY_RUN_MODE is not allowed: ${mode}`)
+    process.exit(1)
+}
+
 // Function to execute the shell script
 function executeShellScript(scriptPath) {
     const dir = cwd()
@@ -24,11 +32,15 @@ function executeShellScript(scriptPath) {
 // Determine the OS and dispatch the appropriate script
 const platform = os.platform()
 if (platform === 'win32') {
-    executeShellScript('./_windows_INSTALL.bat')
+    if (mode === 'dev') executeShellScript('./_windows_START_DEV.bat')
+    else executeShellScript('./_windows_START.bat')
 } else if (platform === 'linux') {
     // Other OS (like Linux or macOS) - execute .sh script
-    executeShellScript('./_macos_INSTALL.sh')
+    if (mode === 'dev') executeShellScript('./_macos_START_DEV.sh')
+    else executeShellScript('./_macos_START.sh')
 } else if (platform === 'darwin') {
-    executeShellScript('./_macos_INSTALL.sh')
+    if (mode === 'dev') executeShellScript('./_macos_START_DEV.sh')
+    else executeShellScript('./_macos_START.sh')
 } else {
+    throw new Error(`Unsupported platform: ${platform}`)
 }
