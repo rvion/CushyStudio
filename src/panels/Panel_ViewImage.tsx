@@ -74,6 +74,18 @@ export const ImageActionBarUI = observer(function ImageActionBarUI_(p: { img?: M
                     img.update({ star: next })
                 }}
             />
+            <RevealUI disableHover>
+                <div>
+                    <span className='material-symbols-outlined'>info</span>
+                    infos
+                </div>
+                <div>
+                    <div>Data</div>
+                    <JsonViewUI value={img?.data}></JsonViewUI>
+                    <div>node</div>
+                    <JsonViewUI value={img?.ComfyNode ?? undefined}></JsonViewUI>
+                </div>
+            </RevealUI>
             <div
                 tw='btn btn-sm'
                 onClick={() => {
