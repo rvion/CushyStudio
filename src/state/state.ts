@@ -44,7 +44,6 @@ import { GitManagedFolder } from '../updater/updater'
 import { ElectronUtils } from '../utils/electron/ElectronUtils'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { exhaust } from '../utils/misc/ComfyUtils'
-import { ManualPromise } from '../utils/misc/ManualPromise'
 import { DanbooruTags } from '../widgets/prompter/nodes/booru/BooruLoader'
 import { AuthState } from './AuthState'
 import { Uploader } from './Uploader'
@@ -69,15 +68,17 @@ export class STATE {
     supabase: SupabaseClient<Database>
     auth: AuthState
 
+    _udpateTime = () => {
+        const now = Date.now()
+        // console.log(`time is now ${now}`)
+        this.liveTime = Math.round(now / 1000)
+    }
+
     /** mobx hack to make things refresh every few seconds */
     liveTime: number = (() => {
         const store = this.hotReloadPersistentCache
         if (store.liveTimeInterval != null) clearInterval(store.liveTimeInterval)
-        store.liveTimeInterval = setInterval(() => {
-            const now = Date.now()
-            // console.log(`time is now ${now}`)
-            this.liveTime = Math.round(now / 1000)
-        }, 1000)
+        store.liveTimeInterval = setInterval(() => this._udpateTime, 1000)
         return Date.now()
     })()
 

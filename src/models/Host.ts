@@ -92,7 +92,10 @@ export class HostL {
         return this.ws
     }
 
-    isUpdatingSchema: boolean = false
+    _isUpdatingSchema: boolean = false
+    get isUpdatingSchema() { return this._isUpdatingSchema } // prettier-ignore
+    set isUpdatingSchema(v: boolean) { this._isUpdatingSchema = v; } // prettier-ignore
+
     schemaUpdateResult: Maybe<{ type: 'success' } | { type: 'error'; error: any }> = null
 
     updateSchemaFromFileCache = () => {

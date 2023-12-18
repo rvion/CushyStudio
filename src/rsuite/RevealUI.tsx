@@ -1,4 +1,4 @@
-import { makeAutoObservable } from 'mobx'
+import { makeAutoObservable, runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
@@ -58,7 +58,11 @@ class TooltipState {
         }
         // start enter
         if (this.enterAnchorTimeoutId) clearTimeout(this.enterAnchorTimeoutId)
-        this.enterAnchorTimeoutId = setTimeout(() => (this.inAnchor = true), this.showDelay)
+        this.enterAnchorTimeoutId = setTimeout(() => {
+            runInAction(() => {
+                this.inAnchor = true
+            })
+        }, this.showDelay)
     }
     leaveAnchor = () => {
         // cancer enter
@@ -68,7 +72,11 @@ class TooltipState {
         }
         // start leave
         if (this.leaveAnchorTimeoutId) clearTimeout(this.leaveAnchorTimeoutId)
-        this.leaveAnchorTimeoutId = setTimeout(() => (this.inAnchor = false), this.hideDelay)
+        this.leaveAnchorTimeoutId = setTimeout(() => {
+            runInAction(() => {
+                this.inAnchor = false
+            })
+        }, this.hideDelay)
     }
 
     get defaultCursor() {

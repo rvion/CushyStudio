@@ -1,3 +1,4 @@
+import { runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { ReactNode } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
@@ -25,10 +26,10 @@ export const OutputPreviewWrapperUI = observer(function OutputPreviewWrapperUI_(
                 className='virtualBorder shrink-0'
                 style={{ width: sizeStr, height: sizeStr }}
                 // LOGIC
-                onClick={() => (st.focusedStepOutput = p.output)}
-                onMouseEnter={(ev) => (st.hovered = p.output)}
+                onClick={() => runInAction(() => (st.focusedStepOutput = p.output))}
+                onMouseEnter={(ev) => runInAction(() => (st.hovered = p.output))}
                 onMouseLeave={() => {
-                    if (st.hovered === p.output) st.hovered = null
+                    if (st.hovered === p.output) runInAction(() => (st.hovered = null))
                 }}
             >
                 {p.children}

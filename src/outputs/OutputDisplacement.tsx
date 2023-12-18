@@ -299,7 +299,7 @@ class State {
             normalTexture.dispose()
         }
 
-        makeAutoObservable(this)
+        makeAutoObservable(this, { mountRef: false })
     }
     cleanup: () => void
 }

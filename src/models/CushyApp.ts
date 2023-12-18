@@ -1,6 +1,5 @@
 import { existsSync, readFileSync } from 'fs'
 import { basename, extname, join } from 'pathe'
-import { toast } from 'react-toastify'
 import { LibraryFile } from 'src/cards/LibraryFile'
 import { LiveCollection } from 'src/db/LiveCollection'
 import { LiveInstance } from 'src/db/LiveInstance'
@@ -9,31 +8,37 @@ import { SQLITE_true } from 'src/db/SQLITE_boolean'
 import { CushyAppT } from 'src/db/TYPES.gen'
 import { CushyScriptL } from 'src/models/CushyScriptL'
 import { hashArrayBuffer } from 'src/state/hashBlob'
+import { toastError, toastSuccess } from 'src/utils/misc/toasts'
 import { generateAvatar } from '../cards/AvatarGenerator'
 import { DraftL } from './Draft'
 import { Executable } from './Executable'
-import { toastError, toastInfo, toastSuccess } from 'src/utils/misc/toasts'
 
 export interface CushyAppL extends LiveInstance<CushyAppT, CushyAppL> {}
 export class CushyAppL {
-    scriptL: LiveRef<this, CushyScriptL> = new LiveRef(this, 'scriptID', () => this.db.cushy_scripts)
-    get script() { return this.scriptL.item } // prettier-ignore
-
-    get drafts(): DraftL[] {
-        return this.draftsCollection.items
+    // linked scripts
+    private _scriptL: LiveRef<this, CushyScriptL> = new LiveRef(this, 'scriptID', () => this.db.cushy_scripts)
+    get script() {
+        return this._scriptL.item
     }
 
-    get isLocal(): boolean {
-        return this.script.relPath.startsWith('library/local')
-    }
-    get isBuiltIn(): boolean {
-        return this.script.relPath.startsWith('library/built-in')
-    }
-
-    private draftsCollection = new LiveCollection<DraftL>({
+    // link drafts
+    private _draftsCollection = new LiveCollection<DraftL>({
         table: () => this.db.drafts,
         where: () => ({ appID: this.id }),
     })
+    get drafts(): DraftL[] {
+        return this._draftsCollection.items
+    }
+
+    /** true if in the library/local folder */
+    get isLocal(): boolean {
+        return this.script.relPath.startsWith('library/local')
+    }
+
+    /** true if in built-in  */
+    get isBuiltIn(): boolean {
+        return this.script.relPath.startsWith('library/built-in')
+    }
 
     /** shortcut to open the last draft of the first app defined in this file */
     openLastDraftAsCurrent = () => {
@@ -63,8 +68,7 @@ export class CushyAppL {
     }
 
     createDraft = (): DraftL => {
-        console.log(`[👙] AAAAAAAAA`)
-        const title = this.name + ' ' + this.draftsCollection.items.length + 1
+        const title = this.name + ' ' + this._draftsCollection.items.length + 1
         const draft = this.st.db.drafts.create({
             appParams: {},
             appID: this.id,
@@ -274,7 +278,7 @@ export class CushyAppL {
 
     /** retlative path to the script this app comes from */
     get relPath(): RelativePath {
-        return this.scriptL.item.relPath
+        return this._scriptL.item.relPath
     }
 
     /** quick way to access the LibraryFile this app script comes from */
