@@ -5,13 +5,16 @@ import { Input, Slider, Toggle } from 'src/rsuite/shims'
 import { parseFloatNoRoundingErr } from 'src/utils/misc/parseFloatNoRoundingErr'
 import { FieldAndLabelUI } from 'src/widgets/misc/FieldAndLabelUI'
 import * as THREE from 'three'
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { Media3dDisplacementL } from 'src/models/Media3dDisplacement'
 import { StepL } from 'src/models/Step'
 import { useSt } from 'src/state/stateContext'
 import { OutputPreviewWrapperUI } from './OutputPreviewWrapperUI'
 import { bang } from 'src/utils/misc/bang'
 import { InputNumberUI } from 'src/rsuite/InputNumberUI'
+// import type { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+
+// const { OrbitControls } = require('three/examples/jsm/controls/OrbitControls')
+import { OrbitControls } from '../panels/3d/controls/OrbitControls'
 
 export const OutputDisplacementPreviewUI = observer(function OutputImagePreviewUI_(p: {
     step?: Maybe<StepL>
@@ -116,6 +119,8 @@ export const OutputDisplacementUI = observer(function OutputDisplacementUI_(p: {
     )
 })
 
+type OrbitControls2 = import('three/examples/jsm/controls/OrbitControls').OrbitControls
+
 // State class
 class State {
     mountRef = createRef<HTMLDivElement>()
@@ -194,9 +199,7 @@ class State {
     camera: THREE.PerspectiveCamera
     renderer: THREE.WebGLRenderer
 
-    controls: OrbitControls
-
-    // plane
+    controls: OrbitControls2
     geometry: THREE.PlaneGeometry
     material: THREE.MeshStandardMaterial
     plane: THREE.Mesh
@@ -226,7 +229,7 @@ class State {
         // this.mountRef.current?.appendChild(renderer.domElement)
 
         // OrbitControls
-        this.controls = new OrbitControls(this.camera, this.renderer.domElement)
+        this.controls = new OrbitControls(this.camera, this.renderer.domElement) as OrbitControls2
         this.controls.enableDamping = true
         this.controls.dampingFactor = 0.25
         this.controls.enableZoom = true
