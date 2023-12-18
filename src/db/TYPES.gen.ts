@@ -466,6 +466,9 @@ export type MediaImageT = {
     /** @default: null, sqlType: TEXT */
     stepID?: Maybe<StepID>;
 
+    /** @default: null, sqlType: TEXT */
+    promptNodeID?: Maybe<string>;
+
 }
 export const MediaImageSchema = Type.Object({
     id: Type.String(),
@@ -477,6 +480,7 @@ export const MediaImageSchema = Type.Object({
     infos: Type.Optional(T.Nullable(T.MediaImage_infos_Schema)),
     promptID: Type.Optional(T.Nullable(Type.String())),
     stepID: Type.Optional(T.Nullable(Type.String())),
+    promptNodeID: Type.Optional(T.Nullable(Type.String())),
 },{ additionalProperties: false })
 
 export const MediaImageFields = {
@@ -489,6 +493,7 @@ export const MediaImageFields = {
     infos: {cid:6,name:'infos',type:'json',notnull:0,dflt_value:null,pk:0},
     promptID: {cid:7,name:'promptID',type:'TEXT',notnull:0,dflt_value:null,pk:0},
     stepID: {cid:8,name:'stepID',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    promptNodeID: {cid:9,name:'promptNodeID',type:'TEXT',notnull:0,dflt_value:null,pk:0},
 }
 
 
