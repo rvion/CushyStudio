@@ -278,7 +278,7 @@ export class Runtime<FIELDS extends WidgetDict = any> {
     chooseRandomly = <T>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)]
 
     /** execute the app */
-    run = async (p: { formInstance: Widget_group<any> }): Promise<Status> => {
+    run = async (p: { formInstance: Widget_group<any> }): Promise<{ type: 'success' } | { type: 'error'; error: any }> => {
         const start = Date.now()
         const app = this.step.executable
         const appFormInput = this.step.data.formResult
@@ -292,25 +292,26 @@ export class Runtime<FIELDS extends WidgetDict = any> {
         try {
             if (app == null) {
                 console.log(`❌ action not found`)
-                return Status.Failure
+                return { type: 'error', error: 'action not found' }
             }
             await app.run(this, appFormInput)
             console.log(`🔴 after: size=${this.workflow.nodes.length}`)
             console.log('[✅] RUN SUCCESS')
             const duration = Date.now() - start
-            return Status.Success
+            return { type: 'success' }
         } catch (error: any /* 🔴 */) {
-            console.log(error)
-            console.error('🌠', (error as any as Error).name)
-            console.error('🌠', (error as any as Error).message)
-            console.error('🌠', 'RUN FAILURE')
+            // console.log(error)
+            // console.error('🌠', (error as any as Error).name)
+            // console.error('🌠', (error as any as Error).message)
+            // console.error('🌠', 'RUN FAILURE')
             this.st.db.runtimeErrors.create({
-                message: error.message,
+                message: error.message ?? 'no-message',
                 infos: error,
                 graphID: this.workflow.id,
                 stepID: this.step.id,
             })
-            return Status.Failure
+            // return Status.Failure
+            return { type: 'error', error: error }
         }
     }
 

@@ -41,8 +41,12 @@ export class StepL {
         this.update({ status: Status.Running })
         const scriptExecutionStatus = await this.runtime.run(p)
 
-        if (this.comfy_prompts.items.every((p: ComfyPromptL) => p.data.executed)) {
-            this.update({ status: scriptExecutionStatus })
+        if (scriptExecutionStatus.type === 'error') {
+            this.update({ status: Status.Failure })
+        } else {
+            if (this.comfy_prompts.items.every((p: ComfyPromptL) => p.data.executed)) {
+                this.update({ status: Status.Success })
+            }
         }
     }
 

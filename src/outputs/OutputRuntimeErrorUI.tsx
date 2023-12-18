@@ -12,7 +12,7 @@ export const OutputRuntimeErrorPreviewUI = observer(function OutputRuntimeErrorP
     const msg = p.output
     return (
         <OutputPreviewWrapperUI output={p.output}>
-            <div>Runtime Error</div>
+            <div tw='text-error-content bg-error font-bold'>Runtime Error</div>
         </OutputPreviewWrapperUI>
     )
 })
@@ -21,7 +21,7 @@ export const OutputRuntimeErrorUI = observer(function OutputRuntimeErrorUI_(p: {
     const output = p.output
     const msg = output.data
     return (
-        <Panel>
+        <Panel tw='w-full h-full'>
             <div className='bg-error text-error-content'>
                 <div tw='text-xl font-bold'>Runtime Error</div>
                 <div tw='italic'>{msg.message}</div>
