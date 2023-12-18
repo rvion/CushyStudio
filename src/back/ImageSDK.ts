@@ -1,6 +1,7 @@
 import type { Layer } from 'konva/lib/Layer'
 import type { Stage } from 'konva/lib/Stage'
 import type { STATE } from 'src/state/state'
+import { resolve, isAbsolute } from 'pathe'
 
 export type Konva = typeof import('konva').default
 export class ImageSDK {
@@ -47,17 +48,38 @@ export class ImageSDK {
         )
     }
 
-    loadImage(
+    getHTMLImage_fromPath(
+        /** the same `src` value you would use in an <img /> html node */
+        path: string,
+    ): Promise<HTMLImageElement> {
+        return new Promise((yes, no) => {
+            const abspath = isAbsolute(path) //
+                ? path
+                : resolve(this.st.rootPath, path)
+            const img = new Image()
+            img.onload = () => yes(img)
+            img.onerror = no
+            img.src = 'file://' + abspath
+        })
+    }
+
+    getHTMLImage_fromURL(
         /** the same `src` value you would use in an <img /> html node */
         src: string,
     ): Promise<HTMLImageElement> {
-        return new Promise((resolve, reject) => {
+        return new Promise((yes, no) => {
             const img = new Image()
-            img.onload = () => resolve(img)
-            img.onerror = reject
+            img.onload = () => yes(img)
+            img.onerror = no
             img.src = src
         })
     }
+
+    /**
+     * @deprecated
+     * use `getHTMLImage_fromURL` instead
+     * */
+    loadImage = this.getHTMLImage_fromURL
 
     createContainer = (): HTMLDivElement => {
         const container: HTMLDivElement =
