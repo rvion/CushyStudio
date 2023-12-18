@@ -72,17 +72,17 @@ PNPM_BIN_PATH=$(pwd)/.cushy/pnpm
 # ===//=====//======//======//======//======//======//======//======//======//======//======//==
 # ==//=====//======//======//======//======//======//======//======//======//======//======//===
 
-# Define the path to tsconfig.custom.json
-tsconfigPath="./tsconfig.custom.json"
+# # Define the path to tsconfig.custom.json
+# tsconfigPath="./tsconfig.custom.json"
 
-# JSON content to write if the file does not exist
-defaultTsconfigJSON='{ "include": ["src", "schema/global.d.ts"], "exclude": [] }'
+# # JSON content to write if the file does not exist
+# defaultTsconfigJSON='{ "include": ["src", "schema/global.d.ts"], "exclude": [] }'
 
-# Check if the file exists
-if [ ! -f "$tsconfigPath" ]; then
-    # Write the JSON content to the file without formatting
-    echo "$defaultTsconfigJSON" > "$tsconfigPath"
-fi
+# # Check if the file exists
+# if [ ! -f "$tsconfigPath" ]; then
+#     # Write the JSON content to the file without formatting
+#     echo "$defaultTsconfigJSON" > "$tsconfigPath"
+# fi
 
 
 # ===//=====//======//======//======//======//======//======//======//======//======//======//==
