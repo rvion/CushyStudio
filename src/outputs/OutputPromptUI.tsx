@@ -29,8 +29,6 @@ export const OutputPromptPreviewUI = observer(function OutputPromptPreviewUI_(p:
                 <div
                     className='radial-progress'
                     style={{
-                        // width: '100%',
-                        // height: '100%',
                         // @ts-ignore
                         '--value': pgr1.percent,
                         '--size': size,
