@@ -1,9 +1,10 @@
 import { observer } from 'mobx-react-lite'
 import { RevealUI } from 'src/rsuite/RevealUI'
 import { WildcardNode } from './WildcardNode'
-import { wildcards } from './wildcards'
+import { useSt } from 'src/state/stateContext'
 
 export const WildcardNodeUI = observer(function WildcardNodeUI_(p: { node: WildcardNode }) {
+    const st = useSt()
     const node = p.node
     return (
         <span
@@ -13,7 +14,7 @@ export const WildcardNodeUI = observer(function WildcardNodeUI_(p: { node: Wildc
         >
             <RevealUI disableHover>
                 <span>{node.wildcardName}🎲</span>
-                <div tw='w-96 menu'>{((wildcards as any)[node.wildcardName] ?? []).slice(0, 20).join(', ') + '...'}</div>
+                <div tw='w-96 menu'>{((st.wildcards as any)[node.wildcardName] ?? []).slice(0, 20).join(', ') + '...'}</div>
             </RevealUI>
         </span>
     )

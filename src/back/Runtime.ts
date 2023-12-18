@@ -596,7 +596,9 @@ ${ffmpegComandInfos.framesFileContent}
     }
 
     /** built-in wildcards */
-    wildcards = wildcards
+    get wildcards(): Wildcards {
+        return this.st.wildcards
+    }
 
     /**
      * get a random int seed

@@ -1,3 +1,4 @@
+import type { Wildcards } from 'src/widgets/prompter/nodes/wildcards/wildcards'
 import type { MediaImageL } from '../models/MediaImage'
 import type { ComfyStatus, PromptID, PromptRelated_WsMsg, WsMsg } from '../types/ComfyWsApi'
 import type { CSCriticalError } from '../widgets/CSCriticalError'
@@ -90,6 +91,13 @@ export class STATE {
         const globalRef = globalThis as any
         if (globalRef.__hotReloadPersistentCache == null) globalRef.__hotReloadPersistentCache = {}
         return globalRef.__hotReloadPersistentCache
+    }
+
+    get wildcards(): Wildcards {
+        const wcdsPath = this.resolveFromRoot(asRelativePath('src/widgets/prompter/nodes/wildcards/wildcards.json'))
+        const wcds = this.readJSON<Wildcards>(wcdsPath)
+        Object.defineProperty(this, 'wildcards', { value: wcds })
+        return wcds
     }
 
     restart = () => {
@@ -366,7 +374,10 @@ export class STATE {
 
         this.mainHost.CONNECT()
 
-        makeAutoObservable(this, { comfyUIIframeRef: false })
+        makeAutoObservable(this, {
+            comfyUIIframeRef: false,
+            wildcards: false,
+        })
     }
 
     get mainComfyHostID(): HostID {
