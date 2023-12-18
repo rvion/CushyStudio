@@ -34,6 +34,12 @@ type LoadStatus =
     | { type: 'SUCCESS', script:CushyScriptL}
     | { type: 'FAILURE', msg?: string }
 
+// prettier-ignore
+type FileLoadResult =
+    | { type: 'cached' }
+    | { type: 'failed' }
+    | { type: 'newScript'; script: CushyScriptL }
+
 /**
  * wrapper around files in the library folder
  * responsible to convert files to scripts
@@ -108,19 +114,21 @@ export class LibraryFile {
     isLoading = false
     hasBeenLoadedAtLeastOnce = false
 
-    load = async (p?: { force?: boolean }): Promise<true> => {
+    load = async (p?: { force?: boolean }): Promise<FileLoadResult> => {
         // don't load more than once unless manually requested
-        if (this.isLoading) return true
+        if (this.isLoading) return { type: 'cached' }
         this.isLoading = true
 
         // don't load once already loaded
         // if (this.loaded.done && !p?.force) return true
-        if (this.hasBeenLoadedAtLeastOnce && !p?.force) return true
+        if (this.hasBeenLoadedAtLeastOnce && !p?.force) return { type: 'cached' }
 
+        let script: Maybe<CushyScriptL> = null
         // try every strategy in order
         for (const strategy of this.strategies) {
             const res = await this.loadWithStrategy(strategy)
             if (res.type === 'SUCCESS') {
+                script = res.script
                 this.script0 = res.script
                 this.successfullLoadStrategies = strategy
                 // console.log(`[🟢] LibFile: LOAD SUCCESS !`)
@@ -128,14 +136,15 @@ export class LibraryFile {
             }
         }
 
-        if (this.successfullLoadStrategies == null) {
-            console.log(`[🔴] LibFile: LOAD FAILURE !`)
-        }
-
         // done
         this.hasBeenLoadedAtLeastOnce = true
         this.isLoading = false
-        return true
+        if (script == null) {
+            console.log(`[🔴] LibFile: LOAD FAILURE !`)
+            return { type: 'failed' }
+        } else {
+            return { type: 'newScript', script }
+        }
     }
 
     private loadWithStrategy = async (strategy: LoadStrategy): Promise<LoadStatus> => {

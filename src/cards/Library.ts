@@ -113,8 +113,8 @@ export class Library {
                 // pkg.rebuild()
 
                 const currentDraft = st.currentDraft
-                const currentApp = currentDraft?.file
-                if (currentApp == null) return console.log(`[👁️] ❌ no current app`)
+                const currentFile = currentDraft?.file
+                if (currentFile == null) return console.log(`[👁️] ❌ no current app`)
 
                 // if (relPath.endsWith('.ts') || relPath.endsWith('.tsx')) {
                 // TODO 🔴 need to reload all cards in tne deck, so `prefabs` properly "hot-reload"
@@ -122,8 +122,13 @@ export class Library {
                 // if (card == null) return console.log('file watcher update aborted: not an action')
 
                 // reload the card if it's already loaded
-                console.log(`[👁️] reloading: ${currentApp.relPath}`)
-                currentApp.load({ force: true })
+                console.log(`[👁️] reloading: ${currentFile.relPath}`)
+                const res = currentFile.load({ force: true }).then((x) => {
+                    if (x.type === 'newScript') {
+                        x.script.extractApps()
+                    }
+                })
+
                 // }
             }
             // reutrn
