@@ -12,6 +12,7 @@ import { ReactNode, createElement } from 'react'
 import { NodeStatusEmojiUI } from './NodeStatusEmojiUI'
 
 configure({ enforceActions: 'never' })
+// ·configure({ enforceActions: 'always' })
 
 type NodeExecutionStatus = 'executing' | 'done' | 'error' | 'waiting' | 'cached' | null
 

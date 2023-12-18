@@ -85,6 +85,7 @@ export class TreeNode {
     }
 
     get children(): TreeNode[] {
+        // return []
         const ids = this.data.children?.() ?? []
         const out: TreeNode[] = []
         for (const id of ids) {

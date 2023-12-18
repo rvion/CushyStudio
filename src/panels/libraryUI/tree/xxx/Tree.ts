@@ -1,4 +1,4 @@
-import { makeAutoObservable } from 'mobx'
+import { makeAutoObservable, action } from 'mobx'
 import { STATE } from 'src/state/state'
 import { TreeNode, NodeData, NodeId, NodeKey, NodeSlot, getId } from './TreeNode'
 import { FAIL, VIOLATION } from './utils'
@@ -16,7 +16,7 @@ export class Tree {
             const nd = buildTreeItem(st, uid)
             this.topLevelNodes.push(new TreeNode(this, nd, null))
         }
-        makeAutoObservable(this)
+        makeAutoObservable(this, { indexNode: action })
     }
 
     get nodes(): TreeNode[] {
