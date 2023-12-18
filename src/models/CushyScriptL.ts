@@ -88,7 +88,7 @@ export class CushyScriptL {
 
             // bumpt timestamps
             const now = Date.now()
-            if (this.apps_viaScript.length === 0) this.update({ lastEvaluatedAt: now })
+            if (this._apps_viaScript.length === 0) this.update({ lastEvaluatedAt: now })
             else this.update({ lastEvaluatedAt: now, lastSuccessfulEvaluationAt: now })
         })
         return this._EXECUTABLES

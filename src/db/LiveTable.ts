@@ -225,6 +225,7 @@ export class LiveTable<T extends BaseInstanceFields, L extends LiveInstance<T, L
             // @ts-ignore (private properties are untyped in this function)
             Ktor: false,
             _createInstance: action,
+            get: action,
         })
 
         MERGE_PROTOTYPES(InstanceClass, BaseInstanceClass)
