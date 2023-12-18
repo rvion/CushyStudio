@@ -5,6 +5,7 @@ import { LibraryFile } from 'src/cards/LibraryFile'
 import { STATE } from 'src/state/state'
 import { assets } from 'src/utils/assets/assets'
 import { ITreeEntry, TreeEntryAction } from '../TreeEntry'
+import { TreeNode } from '../xxx/TreeNode'
 
 export class TreeFile implements ITreeEntry {
     file: LibraryFile
@@ -63,8 +64,9 @@ export class TreeFile implements ITreeEntry {
         this.file.load()
     }
 
-    onPrimaryAction = () => {
+    onPrimaryAction = (n: TreeNode) => {
         this.file.load()
+        n.open()
     }
 
     children = (): string[] => {
