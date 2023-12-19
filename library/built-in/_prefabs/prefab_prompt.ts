@@ -53,6 +53,12 @@ export const run_prompt = (
         if (p.outputWildcardsPicked && textToOutput.length > 0)
             flow.output_text({ title: 'wildcards', message: textToOutput.join(' ') })
     }
-    const conditionning = flow.nodes.CLIPTextEncode({ clip, text })
-    return { text, conditionning, clip, ckpt }
+    return {
+        text,
+        get conditionning() {
+            return flow.nodes.CLIPTextEncode({ clip, text })
+        },
+        clip,
+        ckpt,
+    }
 }
