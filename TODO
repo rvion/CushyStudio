@@ -9,12 +9,16 @@ Todo before release:
     ☐ https://unjs.io/packages/image-meta
     ☐ fix sut
     ☐ use any image as draft illustration
-    ☐ don't autofocus preview images
+    ✔ don't autofocus preview images @done(23-12-19 10:25)
     ☐ warning if custom nodes not installed by default
-    ☐ small mention in the readme that dev console can help troubleshoot problems.
-    ☐ custom size on size widget
-    ☐ draft tabs/ files
-    ☐ background image for config panel
+    ✘ small mention in the readme that dev console can help troubleshoot problems. @cancelled(23-12-19 10:24)
+    ✘ custom size on size widget @cancelled(23-12-19 10:24)
+    ✔ draft tabs/ files @done(23-12-19 10:24)
+    ✔ background image for config panel @done(23-12-19 10:24)
+
+    // 🔶 can't move frame ref here because no way to override mobx
+    // comfyUIIframeRef = createRef<HTMLIFrameElement>()
+
     ☐ draft result are too wide by default / should open in bottom panel
     ☐ selectMenu
     ☐ show different from current preset in color

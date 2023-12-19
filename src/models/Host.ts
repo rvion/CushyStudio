@@ -9,10 +9,14 @@ import { readableStringify } from 'src/utils/formatters/stringifyReadable'
 import { asRelativePath } from 'src/utils/fs/pathUtils'
 import { ManualPromise } from 'src/utils/misc/ManualPromise'
 import { toastError, toastSuccess } from 'src/utils/misc/toasts'
+import { createRef } from 'react'
 
 export interface HostL extends LiveInstance<HostT, HostL> {}
 
 export class HostL {
+    // 🔶 can't move frame ref here because no way to override mobx
+    // comfyUIIframeRef = createRef<HTMLIFrameElement>()
+
     // INIT -----------------------------------------------------------------------------
     /** folder where file related to the host config will be cached */
     fileCacheFolder: AbsolutePath = null as any /**  'null' is here for a reason */
@@ -43,6 +47,7 @@ export class HostL {
         toastSuccess(`Primary host set to ${this.data.name}`)
         this.st.configFile.update({ mainComfyHostID: this.id })
         this._copyGeneratedSDKToGlobalDTS()
+        this.CONNECT()
     }
 
     _copyGeneratedSDKToGlobalDTS = (): void => {
@@ -81,10 +86,36 @@ export class HostL {
         return this.ws?.isOpen
     }
 
+    // 🔶 TODO
+    // 🔶 DISCONNECT = () => {
+    // 🔶     this.ws?
+    // 🔶 }
+
     CONNECT = () => {
-        this.fetchAndUdpateSchema()
+        if (this.data.isVirtual) {
+            this.updateSchemaFromFileCache()
+        } else {
+            this.initWebsocket()
+        }
+        // this.fetchAndUdpateSchema()
         if (this.data.isVirtual) return
-        this.initWebsocket()
+    }
+
+    get isPrimary(): boolean {
+        return this.st.configFile.value.mainComfyHostID === this.id
+    }
+
+    private writeSDKToDisk = () => {
+        const comfySchemaTs = this.schema.codegenDTS()
+        writeFileSync(this.sdkDTSPath, comfySchemaTs, 'utf-8')
+        if (this.isPrimary) writeFileSync(this.st.primarySdkDtsPath, comfySchemaTs, 'utf-8')
+        // if (this.isPrimary) this._copyGeneratedSDKToGlobalDTS()
+        if (this.st.githubUsername === 'rvion') {
+            // prettier-ignore
+            /* 💊 */ /* 💊 */ writeFileSync('tmp/docs/ex/a.md', '```ts\n' + comfySchemaTs + '\n```\n', 'utf-8')
+            /* 💊 */ // writeFileSync('tmp/docs/ex/b.md', '```json\n' + object_info_str + '\n```\n', 'utf-8')
+            /* 💊 */
+        }
     }
 
     // WEBSCKET -----------------------------------------------------------------------------
@@ -120,8 +151,7 @@ export class HostL {
         this.schema.RUN_BASIC_CHECKS()
 
         // regen sdk
-        const comfySchemaTs = this.schema.codegenDTS()
-        writeFileSync(this.sdkDTSPath, comfySchemaTs, 'utf-8')
+        this.writeSDKToDisk()
     }
 
     /** retrieve the comfy spec from the schema*/
@@ -129,7 +159,7 @@ export class HostL {
         try {
             // ------------------------------------------------------------------------------------
             if (this.data.isVirtual) {
-                this.updateSchemaFromFileCache()
+                // this.updateSchemaFromFileCache()
                 return
             }
             this.isUpdatingSchema = true
@@ -159,14 +189,7 @@ export class HostL {
 
             // 3 ------------------------------------
             // regen sdk
-            const comfySchemaTs = this.schema.codegenDTS()
-            writeFileSync(this.sdkDTSPath, comfySchemaTs, 'utf-8')
-
-            // debug for rvion
-            if (this.st.githubUsername === 'rvion') {
-                writeFileSync('tmp/docs/ex/a.md', '```ts\n' + comfySchemaTs + '\n```\n', 'utf-8')
-                writeFileSync('tmp/docs/ex/b.md', '```json\n' + object_info_str + '\n```\n', 'utf-8')
-            }
+            this.writeSDKToDisk()
             this.isUpdatingSchema = false
             this.schemaUpdateResult = { type: 'success' }
         } catch (error) {
@@ -177,10 +200,7 @@ export class HostL {
             console.error('🔴 FAILURE TO GENERATE nodes.d.ts', extractErrorMessage(error))
 
             const schemaExists = existsSync(this.sdkDTSPath)
-            if (!schemaExists) {
-                const comfySchemaTs = this.schema.codegenDTS()
-                writeFileSync(this.sdkDTSPath, comfySchemaTs, 'utf-8')
-            }
+            if (!schemaExists) this.writeSDKToDisk()
         } finally {
             this.isUpdatingSchema = false
         }

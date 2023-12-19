@@ -62,7 +62,7 @@ export const MenuComfyUI = observer(function MenuComfyUI_(p: {}) {
                             onClick={(ev) => {
                                 ev.preventDefault()
                                 ev.stopPropagation()
-                                st.layout.FOCUS_OR_CREATE('Hosts', { hostID: host.id })
+                                st.layout.FOCUS_OR_CREATE('ComfyUI', { hostID: host.id }, 'full')
                             }}
                         >
                             <span className='material-symbols-outlined'>open_in_full</span>
