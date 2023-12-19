@@ -16,6 +16,15 @@ type RuleInput = {
     valueStr: string | number | boolean | null | undefined
 }
 
+export type PromptToCodeOpts = {
+    title?: string
+    illustration?: string
+    author?: string
+    //
+    preserveId: boolean
+    autoUI: boolean
+}
+
 export class ComfyImporter {
     constructor(public st: STATE) {}
 
@@ -86,17 +95,7 @@ export class ComfyImporter {
         return x
     }
 
-    convertPromptToCode = (
-        flow: ComfyPromptJSON,
-        opts: {
-            title?: string
-            illustration?: string
-            author?: string
-            //
-            preserveId: boolean
-            autoUI: boolean
-        },
-    ): string => {
+    convertPromptToCode = (flow: ComfyPromptJSON, opts: PromptToCodeOpts): string => {
         const flowNodes = Object.entries(flow)
         const ids = Object.keys(flow)
         const edges: TEdge[] = []
@@ -134,9 +133,9 @@ export class ComfyImporter {
         if (opts.title       ) p(`        name: ${JSON.stringify(opts.title)},`) // prettier-ignore
         if (opts.illustration) p(`        illustration: ${JSON.stringify(opts.illustration)},`) // prettier-ignore
         p   (`    },`) // prettier-ignore
-        pRun(`    run: async (flow, p) => {`)
-        pRun(`        const graph = flow.nodes`)
-        pUI (`    ui: (ui) => ({`) // prettier-ignore
+        pRun(`    run: async (run, ui) => {`)
+        pRun(`        const graph = run.nodes`)
+        pUI (`    ui: (form) => ({`) // prettier-ignore
         // p(`import { Comfy } from '../core/dsl'\n`)
         // p(`export const demo = new Comfy()`)
 
@@ -225,11 +224,11 @@ export class ComfyImporter {
             }
 
             if (uiStuff.length === 1) {
-                piUI(`        ${inputGroupName}: ui.group({`)
+                piUI(`        ${inputGroupName}: form.group({`)
                 piUI(` items:() => ({ ${uiStuff[0]} })`)
                 piUI(`}),\n`)
             } else if (uiStuff.length > 0) {
-                pUI(`        ${inputGroupName}: ui.group({`)
+                pUI(`        ${inputGroupName}: form.group({`)
                 pUI(`           items:() => ({`)
                 for (const x of uiStuff) {
                     pUI(`                ` + x)
@@ -238,31 +237,33 @@ export class ComfyImporter {
                 pUI(`        }),`)
             }
 
-            if (opts.preserveId || true) pRun(`}, '${nodeID}')`)
+            if (opts.preserveId) pRun(`}, {id: '${nodeID}'})`)
             else pRun(`})`)
         }
 
-        pRun('        await flow.PROMPT()')
+        pRun('        await run.PROMPT()')
         pRun('    },')
 
         function renderAdapterForInput(x: UIVal, inputGroupName?: string) {
             const s = x.schema
             const inputName = x.name
-            const prefix = inputGroupName ? `p.${inputGroupName}` : 'p'
+            const prefix = inputGroupName ? `ui.${inputGroupName}` : 'ui'
             if (s == null) return `null`
-            if (s.type === 'Enum_LoadImage_image') return `await flow.loadImageAnswerAsEnum(${prefix}${asJSAccessor(inputName)})`
+            if (s.type === 'Enum_LoadImage_image') return `await run.loadImageAnswerAsEnum(${prefix}${asJSAccessor(inputName)})`
             return `${prefix}${asJSAccessor(inputName)}`
         }
 
         function renderUIForInput(x: UIVal) {
+            const formVarInUIFn = 'form'
+
             const s = x.schema
             // no schema, let's try to infer the type from the value
-            if (s == null) return `ui.${x.typeofValue}({default: ${jsEscapeStr(x.default)}})`
+            if (s == null) return `${formVarInUIFn}.${x.typeofValue}({default: ${jsEscapeStr(x.default)}})`
 
-            if (x.name === 'seed' && s.type === 'INT') return `ui.seed({default: ${jsEscapeStr(x.default)}})`
-            if (s.type === 'Enum_LoadImage_image') return `ui.image({default: ${jsEscapeStr(x.default)}})`
+            if (x.name === 'seed' && s.type === 'INT') return `${formVarInUIFn}.seed({default: ${jsEscapeStr(x.default)}})`
+            if (s.type === 'Enum_LoadImage_image') return `${formVarInUIFn}.image({default: ${jsEscapeStr(x.default)}})`
             if (s.type.startsWith('Enum_'))
-                return `ui.enum({default: ${jsEscapeStr(x.default)}, enumName: ${JSON.stringify(s.type)}})`
+                return `${formVarInUIFn}.enum({default: ${jsEscapeStr(x.default)}, enumName: ${JSON.stringify(s.type)}})`
 
             if (s.type in ComfyPrimitiveMapping) {
                 let builderFnName = (() => {
@@ -281,7 +282,7 @@ export class ComfyImporter {
                 const maxP = opts.max != null ? `, max: ${opts.max}` : ''
                 const stepP = opts.step != null ? `, step: ${opts.step}` : ''
                 const extraOpts = `${minP}${maxP}${stepP}`
-                return `ui.${builderFnName}({default: ${jsEscapeStr(x.default)}${extraOpts}})`
+                return `${formVarInUIFn}.${builderFnName}({default: ${jsEscapeStr(x.default)}${extraOpts}})`
             }
         }
 

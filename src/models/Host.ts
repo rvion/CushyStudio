@@ -50,6 +50,11 @@ export class HostL {
         this.CONNECT()
     }
 
+    downloadFileIfMissing = (url: string, to: AbsolutePath | string) => {
+        //
+        console.log(`[🔴] NOT IMPLEMENTED`)
+    }
+
     _copyGeneratedSDKToGlobalDTS = (): void => {
         const exists = existsSync(this.sdkDTSPath)
         if (!exists) return void toastError(`No SDK found for ${this.data.name}`)

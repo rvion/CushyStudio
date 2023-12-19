@@ -90,6 +90,10 @@ export class Runtime<FIELDS extends WidgetDict = any> {
         return this.st.db.hosts.findAll()
     }
 
+    get mainHost(): HostL {
+        return this.st.mainHost
+    }
+
     /**
      * get the configured trigger words for the given lora
      * (those are user defined; hover your lora in any rich text prompt to edit them)

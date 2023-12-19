@@ -14,6 +14,7 @@ export const TargetBox = observer((p: { children?: ReactNode }) => {
                 if (item) {
                     const files = item.files
                     st.droppedFiles.push(...files)
+                    st.layout.FOCUS_OR_CREATE('Import', {})
                 }
             },
             canDrop(item: any) {

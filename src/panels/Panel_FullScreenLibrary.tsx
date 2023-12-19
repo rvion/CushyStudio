@@ -3,7 +3,6 @@ import { observer } from 'mobx-react-lite'
 import { useEffect } from 'react'
 import { AppCardUI } from 'src/cards/fancycard/AppCardUI'
 import { recursivelyFindAppsInFolder } from 'src/cards/walkLib'
-import { FileBeeingImportedUI } from 'src/importers/FilesBeeingImported'
 import { RevealUI } from 'src/rsuite/RevealUI'
 import { Addon, Joined, Slider, Toggle } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
@@ -108,7 +107,6 @@ export const Panel_CardPicker3UI = observer(function Panel_CardPicker3UI_(p: {})
                     <Panel_DeckList />
                 </ScrollablePaneUI> */}
                 <ScrollablePaneUI tw='flex-grow'>
-                    <FileBeeingImportedUI files={st.droppedFiles} />
                     <div tw='text-3xl text-accent font-bold'>Installed Apps</div>
                     <div>--</div>
                     <div tw='text-3xl text-accent font-bold'>App marketplace</div>

@@ -3,9 +3,8 @@ import { StepL } from 'src/models/Step'
 import { StepOutput_Image } from 'src/types/StepOutput'
 import { OutputPreviewWrapperUI } from './OutputPreviewWrapperUI'
 
-import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch'
-import { assets } from 'src/utils/assets/assets'
 import { Panel_ViewImage } from 'src/panels/Panel_ViewImage'
+import { ImageUI } from 'src/widgets/galleries/ImageUI'
 
 export const OutputImagePreviewUI = observer(function OutputImagePreviewUI_(p: {
     step?: Maybe<StepL>
@@ -14,7 +13,8 @@ export const OutputImagePreviewUI = observer(function OutputImagePreviewUI_(p: {
     const image = p.output
     return (
         <OutputPreviewWrapperUI output={p.output}>
-            <img
+            <ImageUI img={p.output} size='100%' />
+            {/* <img
                 src={image.url}
                 loading='lazy'
                 style={{
@@ -24,7 +24,7 @@ export const OutputImagePreviewUI = observer(function OutputImagePreviewUI_(p: {
                     // padding: '0.2rem',
                     borderRadius: '.3rem',
                 }}
-            />
+            /> */}
         </OutputPreviewWrapperUI>
     )
 })
