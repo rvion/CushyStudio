@@ -1,6 +1,6 @@
 
 import type { ComfyNode } from '../src/core/ComfyNode'
-import type { ComfyNodeID } from '../src/types/ComfyNodeID'
+import type { ComfyNodeID, ComfyNodeMetadata } from '../src/types/ComfyNodeID'
 import type { ComfyNodeOutput } from '../src/core/Slot'
 import type { ComfyNodeSchemaJSON } from '../src/types/ComfySchemaJSON'
 
@@ -34,251 +34,251 @@ const app: GlobalFunctionToDefineAnApp
 // 0. Entrypoint --------------------------
 export interface ComfySetup {
     /* category:sampling, name:"KSampler", output:LATENT */
-    KSampler(p: KSampler_input, id?: ComfyNodeID): KSampler
+    KSampler(p: KSampler_input, meta?: ComfyNodeMetadata): KSampler
     /* category:loaders, name:"CheckpointLoaderSimple", output:MODEL+CLIP+VAE */
-    CheckpointLoaderSimple(p: CheckpointLoaderSimple_input, id?: ComfyNodeID): CheckpointLoaderSimple
+    CheckpointLoaderSimple(p: CheckpointLoaderSimple_input, meta?: ComfyNodeMetadata): CheckpointLoaderSimple
     /* category:conditioning, name:"CLIPTextEncode", output:CONDITIONING */
-    CLIPTextEncode(p: CLIPTextEncode_input, id?: ComfyNodeID): CLIPTextEncode
+    CLIPTextEncode(p: CLIPTextEncode_input, meta?: ComfyNodeMetadata): CLIPTextEncode
     /* category:conditioning, name:"CLIPSetLastLayer", output:CLIP */
-    CLIPSetLastLayer(p: CLIPSetLastLayer_input, id?: ComfyNodeID): CLIPSetLastLayer
+    CLIPSetLastLayer(p: CLIPSetLastLayer_input, meta?: ComfyNodeMetadata): CLIPSetLastLayer
     /* category:latent, name:"VAEDecode", output:IMAGE */
-    VAEDecode(p: VAEDecode_input, id?: ComfyNodeID): VAEDecode
+    VAEDecode(p: VAEDecode_input, meta?: ComfyNodeMetadata): VAEDecode
     /* category:latent, name:"VAEEncode", output:LATENT */
-    VAEEncode(p: VAEEncode_input, id?: ComfyNodeID): VAEEncode
+    VAEEncode(p: VAEEncode_input, meta?: ComfyNodeMetadata): VAEEncode
     /* category:latent_inpaint, name:"VAEEncodeForInpaint", output:LATENT */
-    VAEEncodeForInpaint(p: VAEEncodeForInpaint_input, id?: ComfyNodeID): VAEEncodeForInpaint
+    VAEEncodeForInpaint(p: VAEEncodeForInpaint_input, meta?: ComfyNodeMetadata): VAEEncodeForInpaint
     /* category:loaders, name:"VAELoader", output:VAE */
-    VAELoader(p: VAELoader_input, id?: ComfyNodeID): VAELoader
+    VAELoader(p: VAELoader_input, meta?: ComfyNodeMetadata): VAELoader
     /* category:latent, name:"EmptyLatentImage", output:LATENT */
-    EmptyLatentImage(p: EmptyLatentImage_input, id?: ComfyNodeID): EmptyLatentImage
+    EmptyLatentImage(p: EmptyLatentImage_input, meta?: ComfyNodeMetadata): EmptyLatentImage
     /* category:latent, name:"LatentUpscale", output:LATENT */
-    LatentUpscale(p: LatentUpscale_input, id?: ComfyNodeID): LatentUpscale
+    LatentUpscale(p: LatentUpscale_input, meta?: ComfyNodeMetadata): LatentUpscale
     /* category:latent, name:"LatentUpscaleBy", output:LATENT */
-    LatentUpscaleBy(p: LatentUpscaleBy_input, id?: ComfyNodeID): LatentUpscaleBy
+    LatentUpscaleBy(p: LatentUpscaleBy_input, meta?: ComfyNodeMetadata): LatentUpscaleBy
     /* category:latent_batch, name:"LatentFromBatch", output:LATENT */
-    LatentFromBatch(p: LatentFromBatch_input, id?: ComfyNodeID): LatentFromBatch
+    LatentFromBatch(p: LatentFromBatch_input, meta?: ComfyNodeMetadata): LatentFromBatch
     /* category:latent_batch, name:"RepeatLatentBatch", output:LATENT */
-    RepeatLatentBatch(p: RepeatLatentBatch_input, id?: ComfyNodeID): RepeatLatentBatch
+    RepeatLatentBatch(p: RepeatLatentBatch_input, meta?: ComfyNodeMetadata): RepeatLatentBatch
     /* category:image, name:"SaveImage", output: */
-    SaveImage(p: SaveImage_input, id?: ComfyNodeID): SaveImage
+    SaveImage(p: SaveImage_input, meta?: ComfyNodeMetadata): SaveImage
     /* category:image, name:"PreviewImage", output: */
-    PreviewImage(p: PreviewImage_input, id?: ComfyNodeID): PreviewImage
+    PreviewImage(p: PreviewImage_input, meta?: ComfyNodeMetadata): PreviewImage
     /* category:image, name:"LoadImage", output:IMAGE+MASK */
-    LoadImage(p: LoadImage_input, id?: ComfyNodeID): LoadImage
+    LoadImage(p: LoadImage_input, meta?: ComfyNodeMetadata): LoadImage
     /* category:mask, name:"LoadImageMask", output:MASK */
-    LoadImageMask(p: LoadImageMask_input, id?: ComfyNodeID): LoadImageMask
+    LoadImageMask(p: LoadImageMask_input, meta?: ComfyNodeMetadata): LoadImageMask
     /* category:image_upscaling, name:"ImageScale", output:IMAGE */
-    ImageScale(p: ImageScale_input, id?: ComfyNodeID): ImageScale
+    ImageScale(p: ImageScale_input, meta?: ComfyNodeMetadata): ImageScale
     /* category:image_upscaling, name:"ImageScaleBy", output:IMAGE */
-    ImageScaleBy(p: ImageScaleBy_input, id?: ComfyNodeID): ImageScaleBy
+    ImageScaleBy(p: ImageScaleBy_input, meta?: ComfyNodeMetadata): ImageScaleBy
     /* category:image, name:"ImageInvert", output:IMAGE */
-    ImageInvert(p: ImageInvert_input, id?: ComfyNodeID): ImageInvert
+    ImageInvert(p: ImageInvert_input, meta?: ComfyNodeMetadata): ImageInvert
     /* category:image, name:"ImageBatch", output:IMAGE */
-    ImageBatch(p: ImageBatch_input, id?: ComfyNodeID): ImageBatch
+    ImageBatch(p: ImageBatch_input, meta?: ComfyNodeMetadata): ImageBatch
     /* category:image, name:"ImagePadForOutpaint", output:IMAGE+MASK */
-    ImagePadForOutpaint(p: ImagePadForOutpaint_input, id?: ComfyNodeID): ImagePadForOutpaint
+    ImagePadForOutpaint(p: ImagePadForOutpaint_input, meta?: ComfyNodeMetadata): ImagePadForOutpaint
     /* category:image, name:"EmptyImage", output:IMAGE */
-    EmptyImage(p: EmptyImage_input, id?: ComfyNodeID): EmptyImage
+    EmptyImage(p: EmptyImage_input, meta?: ComfyNodeMetadata): EmptyImage
     /* category:conditioning, name:"ConditioningAverage", output:CONDITIONING */
-    ConditioningAverage(p: ConditioningAverage_input, id?: ComfyNodeID): ConditioningAverage
+    ConditioningAverage(p: ConditioningAverage_input, meta?: ComfyNodeMetadata): ConditioningAverage
     /* category:conditioning, name:"ConditioningCombine", output:CONDITIONING */
-    ConditioningCombine(p: ConditioningCombine_input, id?: ComfyNodeID): ConditioningCombine
+    ConditioningCombine(p: ConditioningCombine_input, meta?: ComfyNodeMetadata): ConditioningCombine
     /* category:conditioning, name:"ConditioningConcat", output:CONDITIONING */
-    ConditioningConcat(p: ConditioningConcat_input, id?: ComfyNodeID): ConditioningConcat
+    ConditioningConcat(p: ConditioningConcat_input, meta?: ComfyNodeMetadata): ConditioningConcat
     /* category:conditioning, name:"ConditioningSetArea", output:CONDITIONING */
-    ConditioningSetArea(p: ConditioningSetArea_input, id?: ComfyNodeID): ConditioningSetArea
+    ConditioningSetArea(p: ConditioningSetArea_input, meta?: ComfyNodeMetadata): ConditioningSetArea
     /* category:conditioning, name:"ConditioningSetAreaPercentage", output:CONDITIONING */
-    ConditioningSetAreaPercentage(p: ConditioningSetAreaPercentage_input, id?: ComfyNodeID): ConditioningSetAreaPercentage
+    ConditioningSetAreaPercentage(p: ConditioningSetAreaPercentage_input, meta?: ComfyNodeMetadata): ConditioningSetAreaPercentage
     /* category:conditioning, name:"ConditioningSetMask", output:CONDITIONING */
-    ConditioningSetMask(p: ConditioningSetMask_input, id?: ComfyNodeID): ConditioningSetMask
+    ConditioningSetMask(p: ConditioningSetMask_input, meta?: ComfyNodeMetadata): ConditioningSetMask
     /* category:sampling, name:"KSamplerAdvanced", output:LATENT */
-    KSamplerAdvanced(p: KSamplerAdvanced_input, id?: ComfyNodeID): KSamplerAdvanced
+    KSamplerAdvanced(p: KSamplerAdvanced_input, meta?: ComfyNodeMetadata): KSamplerAdvanced
     /* category:latent_inpaint, name:"SetLatentNoiseMask", output:LATENT */
-    SetLatentNoiseMask(p: SetLatentNoiseMask_input, id?: ComfyNodeID): SetLatentNoiseMask
+    SetLatentNoiseMask(p: SetLatentNoiseMask_input, meta?: ComfyNodeMetadata): SetLatentNoiseMask
     /* category:latent, name:"LatentComposite", output:LATENT */
-    LatentComposite(p: LatentComposite_input, id?: ComfyNodeID): LatentComposite
+    LatentComposite(p: LatentComposite_input, meta?: ComfyNodeMetadata): LatentComposite
     /* category:_for_testing, name:"LatentBlend", output:LATENT */
-    LatentBlend(p: LatentBlend_input, id?: ComfyNodeID): LatentBlend
+    LatentBlend(p: LatentBlend_input, meta?: ComfyNodeMetadata): LatentBlend
     /* category:latent_transform, name:"LatentRotate", output:LATENT */
-    LatentRotate(p: LatentRotate_input, id?: ComfyNodeID): LatentRotate
+    LatentRotate(p: LatentRotate_input, meta?: ComfyNodeMetadata): LatentRotate
     /* category:latent_transform, name:"LatentFlip", output:LATENT */
-    LatentFlip(p: LatentFlip_input, id?: ComfyNodeID): LatentFlip
+    LatentFlip(p: LatentFlip_input, meta?: ComfyNodeMetadata): LatentFlip
     /* category:latent_transform, name:"LatentCrop", output:LATENT */
-    LatentCrop(p: LatentCrop_input, id?: ComfyNodeID): LatentCrop
+    LatentCrop(p: LatentCrop_input, meta?: ComfyNodeMetadata): LatentCrop
     /* category:loaders, name:"LoraLoader", output:MODEL+CLIP */
-    LoraLoader(p: LoraLoader_input, id?: ComfyNodeID): LoraLoader
+    LoraLoader(p: LoraLoader_input, meta?: ComfyNodeMetadata): LoraLoader
     /* category:advanced_loaders, name:"CLIPLoader", output:CLIP */
-    CLIPLoader(p: CLIPLoader_input, id?: ComfyNodeID): CLIPLoader
+    CLIPLoader(p: CLIPLoader_input, meta?: ComfyNodeMetadata): CLIPLoader
     /* category:advanced_loaders, name:"UNETLoader", output:MODEL */
-    UNETLoader(p: UNETLoader_input, id?: ComfyNodeID): UNETLoader
+    UNETLoader(p: UNETLoader_input, meta?: ComfyNodeMetadata): UNETLoader
     /* category:advanced_loaders, name:"DualCLIPLoader", output:CLIP */
-    DualCLIPLoader(p: DualCLIPLoader_input, id?: ComfyNodeID): DualCLIPLoader
+    DualCLIPLoader(p: DualCLIPLoader_input, meta?: ComfyNodeMetadata): DualCLIPLoader
     /* category:conditioning, name:"CLIPVisionEncode", output:CLIP_VISION_OUTPUT */
-    CLIPVisionEncode(p: CLIPVisionEncode_input, id?: ComfyNodeID): CLIPVisionEncode
+    CLIPVisionEncode(p: CLIPVisionEncode_input, meta?: ComfyNodeMetadata): CLIPVisionEncode
     /* category:conditioning_style_model, name:"StyleModelApply", output:CONDITIONING */
-    StyleModelApply(p: StyleModelApply_input, id?: ComfyNodeID): StyleModelApply
+    StyleModelApply(p: StyleModelApply_input, meta?: ComfyNodeMetadata): StyleModelApply
     /* category:conditioning, name:"unCLIPConditioning", output:CONDITIONING */
-    unCLIPConditioning(p: unCLIPConditioning_input, id?: ComfyNodeID): unCLIPConditioning
+    unCLIPConditioning(p: unCLIPConditioning_input, meta?: ComfyNodeMetadata): unCLIPConditioning
     /* category:conditioning, name:"ControlNetApply", output:CONDITIONING */
-    ControlNetApply(p: ControlNetApply_input, id?: ComfyNodeID): ControlNetApply
+    ControlNetApply(p: ControlNetApply_input, meta?: ComfyNodeMetadata): ControlNetApply
     /* category:conditioning, name:"ControlNetApplyAdvanced", output:positive+negative */
-    ControlNetApplyAdvanced(p: ControlNetApplyAdvanced_input, id?: ComfyNodeID): ControlNetApplyAdvanced
+    ControlNetApplyAdvanced(p: ControlNetApplyAdvanced_input, meta?: ComfyNodeMetadata): ControlNetApplyAdvanced
     /* category:loaders, name:"ControlNetLoader", output:CONTROL_NET */
-    ControlNetLoader(p: ControlNetLoader_input, id?: ComfyNodeID): ControlNetLoader
+    ControlNetLoader(p: ControlNetLoader_input, meta?: ComfyNodeMetadata): ControlNetLoader
     /* category:loaders, name:"DiffControlNetLoader", output:CONTROL_NET */
-    DiffControlNetLoader(p: DiffControlNetLoader_input, id?: ComfyNodeID): DiffControlNetLoader
+    DiffControlNetLoader(p: DiffControlNetLoader_input, meta?: ComfyNodeMetadata): DiffControlNetLoader
     /* category:loaders, name:"StyleModelLoader", output:STYLE_MODEL */
-    StyleModelLoader(p: StyleModelLoader_input, id?: ComfyNodeID): StyleModelLoader
+    StyleModelLoader(p: StyleModelLoader_input, meta?: ComfyNodeMetadata): StyleModelLoader
     /* category:loaders, name:"CLIPVisionLoader", output:CLIP_VISION */
-    CLIPVisionLoader(p: CLIPVisionLoader_input, id?: ComfyNodeID): CLIPVisionLoader
+    CLIPVisionLoader(p: CLIPVisionLoader_input, meta?: ComfyNodeMetadata): CLIPVisionLoader
     /* category:_for_testing, name:"VAEDecodeTiled", output:IMAGE */
-    VAEDecodeTiled(p: VAEDecodeTiled_input, id?: ComfyNodeID): VAEDecodeTiled
+    VAEDecodeTiled(p: VAEDecodeTiled_input, meta?: ComfyNodeMetadata): VAEDecodeTiled
     /* category:_for_testing, name:"VAEEncodeTiled", output:LATENT */
-    VAEEncodeTiled(p: VAEEncodeTiled_input, id?: ComfyNodeID): VAEEncodeTiled
+    VAEEncodeTiled(p: VAEEncodeTiled_input, meta?: ComfyNodeMetadata): VAEEncodeTiled
     /* category:loaders, name:"unCLIPCheckpointLoader", output:MODEL+CLIP+VAE+CLIP_VISION */
-    unCLIPCheckpointLoader(p: unCLIPCheckpointLoader_input, id?: ComfyNodeID): unCLIPCheckpointLoader
+    unCLIPCheckpointLoader(p: unCLIPCheckpointLoader_input, meta?: ComfyNodeMetadata): unCLIPCheckpointLoader
     /* category:loaders, name:"GLIGENLoader", output:GLIGEN */
-    GLIGENLoader(p: GLIGENLoader_input, id?: ComfyNodeID): GLIGENLoader
+    GLIGENLoader(p: GLIGENLoader_input, meta?: ComfyNodeMetadata): GLIGENLoader
     /* category:conditioning_gligen, name:"GLIGENTextBoxApply", output:CONDITIONING */
-    GLIGENTextBoxApply(p: GLIGENTextBoxApply_input, id?: ComfyNodeID): GLIGENTextBoxApply
+    GLIGENTextBoxApply(p: GLIGENTextBoxApply_input, meta?: ComfyNodeMetadata): GLIGENTextBoxApply
     /* category:advanced_loaders, name:"CheckpointLoader", output:MODEL+CLIP+VAE */
-    CheckpointLoader(p: CheckpointLoader_input, id?: ComfyNodeID): CheckpointLoader
+    CheckpointLoader(p: CheckpointLoader_input, meta?: ComfyNodeMetadata): CheckpointLoader
     /* category:advanced_loaders_deprecated, name:"DiffusersLoader", output:MODEL+CLIP+VAE */
-    DiffusersLoader(p: DiffusersLoader_input, id?: ComfyNodeID): DiffusersLoader
+    DiffusersLoader(p: DiffusersLoader_input, meta?: ComfyNodeMetadata): DiffusersLoader
     /* category:_for_testing, name:"LoadLatent", output:LATENT */
-    LoadLatent(p: LoadLatent_input, id?: ComfyNodeID): LoadLatent
+    LoadLatent(p: LoadLatent_input, meta?: ComfyNodeMetadata): LoadLatent
     /* category:_for_testing, name:"SaveLatent", output: */
-    SaveLatent(p: SaveLatent_input, id?: ComfyNodeID): SaveLatent
+    SaveLatent(p: SaveLatent_input, meta?: ComfyNodeMetadata): SaveLatent
     /* category:advanced_conditioning, name:"ConditioningZeroOut", output:CONDITIONING */
-    ConditioningZeroOut(p: ConditioningZeroOut_input, id?: ComfyNodeID): ConditioningZeroOut
+    ConditioningZeroOut(p: ConditioningZeroOut_input, meta?: ComfyNodeMetadata): ConditioningZeroOut
     /* category:advanced_conditioning, name:"ConditioningSetTimestepRange", output:CONDITIONING */
-    ConditioningSetTimestepRange(p: ConditioningSetTimestepRange_input, id?: ComfyNodeID): ConditioningSetTimestepRange
+    ConditioningSetTimestepRange(p: ConditioningSetTimestepRange_input, meta?: ComfyNodeMetadata): ConditioningSetTimestepRange
     /* category:latent_advanced, name:"LatentAdd", output:LATENT */
-    LatentAdd(p: LatentAdd_input, id?: ComfyNodeID): LatentAdd
+    LatentAdd(p: LatentAdd_input, meta?: ComfyNodeMetadata): LatentAdd
     /* category:latent_advanced, name:"LatentSubtract", output:LATENT */
-    LatentSubtract(p: LatentSubtract_input, id?: ComfyNodeID): LatentSubtract
+    LatentSubtract(p: LatentSubtract_input, meta?: ComfyNodeMetadata): LatentSubtract
     /* category:latent_advanced, name:"LatentMultiply", output:LATENT */
-    LatentMultiply(p: LatentMultiply_input, id?: ComfyNodeID): LatentMultiply
+    LatentMultiply(p: LatentMultiply_input, meta?: ComfyNodeMetadata): LatentMultiply
     /* category:latent_advanced, name:"LatentInterpolate", output:LATENT */
-    LatentInterpolate(p: LatentInterpolate_input, id?: ComfyNodeID): LatentInterpolate
+    LatentInterpolate(p: LatentInterpolate_input, meta?: ComfyNodeMetadata): LatentInterpolate
     /* category:loaders, name:"HypernetworkLoader", output:MODEL */
-    HypernetworkLoader(p: HypernetworkLoader_input, id?: ComfyNodeID): HypernetworkLoader
+    HypernetworkLoader(p: HypernetworkLoader_input, meta?: ComfyNodeMetadata): HypernetworkLoader
     /* category:loaders, name:"UpscaleModelLoader", output:UPSCALE_MODEL */
-    UpscaleModelLoader(p: UpscaleModelLoader_input, id?: ComfyNodeID): UpscaleModelLoader
+    UpscaleModelLoader(p: UpscaleModelLoader_input, meta?: ComfyNodeMetadata): UpscaleModelLoader
     /* category:image_upscaling, name:"ImageUpscaleWithModel", output:IMAGE */
-    ImageUpscaleWithModel(p: ImageUpscaleWithModel_input, id?: ComfyNodeID): ImageUpscaleWithModel
+    ImageUpscaleWithModel(p: ImageUpscaleWithModel_input, meta?: ComfyNodeMetadata): ImageUpscaleWithModel
     /* category:image_postprocessing, name:"ImageBlend", output:IMAGE */
-    ImageBlend(p: ImageBlend_input, id?: ComfyNodeID): ImageBlend
+    ImageBlend(p: ImageBlend_input, meta?: ComfyNodeMetadata): ImageBlend
     /* category:image_postprocessing, name:"ImageBlur", output:IMAGE */
-    ImageBlur(p: ImageBlur_input, id?: ComfyNodeID): ImageBlur
+    ImageBlur(p: ImageBlur_input, meta?: ComfyNodeMetadata): ImageBlur
     /* category:image_postprocessing, name:"ImageQuantize", output:IMAGE */
-    ImageQuantize(p: ImageQuantize_input, id?: ComfyNodeID): ImageQuantize
+    ImageQuantize(p: ImageQuantize_input, meta?: ComfyNodeMetadata): ImageQuantize
     /* category:image_postprocessing, name:"ImageSharpen", output:IMAGE */
-    ImageSharpen(p: ImageSharpen_input, id?: ComfyNodeID): ImageSharpen
+    ImageSharpen(p: ImageSharpen_input, meta?: ComfyNodeMetadata): ImageSharpen
     /* category:image_upscaling, name:"ImageScaleToTotalPixels", output:IMAGE */
-    ImageScaleToTotalPixels(p: ImageScaleToTotalPixels_input, id?: ComfyNodeID): ImageScaleToTotalPixels
+    ImageScaleToTotalPixels(p: ImageScaleToTotalPixels_input, meta?: ComfyNodeMetadata): ImageScaleToTotalPixels
     /* category:latent, name:"LatentCompositeMasked", output:LATENT */
-    LatentCompositeMasked(p: LatentCompositeMasked_input, id?: ComfyNodeID): LatentCompositeMasked
+    LatentCompositeMasked(p: LatentCompositeMasked_input, meta?: ComfyNodeMetadata): LatentCompositeMasked
     /* category:image, name:"ImageCompositeMasked", output:IMAGE */
-    ImageCompositeMasked(p: ImageCompositeMasked_input, id?: ComfyNodeID): ImageCompositeMasked
+    ImageCompositeMasked(p: ImageCompositeMasked_input, meta?: ComfyNodeMetadata): ImageCompositeMasked
     /* category:mask, name:"MaskToImage", output:IMAGE */
-    MaskToImage(p: MaskToImage_input, id?: ComfyNodeID): MaskToImage
+    MaskToImage(p: MaskToImage_input, meta?: ComfyNodeMetadata): MaskToImage
     /* category:mask, name:"ImageToMask", output:MASK */
-    ImageToMask(p: ImageToMask_input, id?: ComfyNodeID): ImageToMask
+    ImageToMask(p: ImageToMask_input, meta?: ComfyNodeMetadata): ImageToMask
     /* category:mask, name:"ImageColorToMask", output:MASK */
-    ImageColorToMask(p: ImageColorToMask_input, id?: ComfyNodeID): ImageColorToMask
+    ImageColorToMask(p: ImageColorToMask_input, meta?: ComfyNodeMetadata): ImageColorToMask
     /* category:mask, name:"SolidMask", output:MASK */
-    SolidMask(p: SolidMask_input, id?: ComfyNodeID): SolidMask
+    SolidMask(p: SolidMask_input, meta?: ComfyNodeMetadata): SolidMask
     /* category:mask, name:"InvertMask", output:MASK */
-    InvertMask(p: InvertMask_input, id?: ComfyNodeID): InvertMask
+    InvertMask(p: InvertMask_input, meta?: ComfyNodeMetadata): InvertMask
     /* category:mask, name:"CropMask", output:MASK */
-    CropMask(p: CropMask_input, id?: ComfyNodeID): CropMask
+    CropMask(p: CropMask_input, meta?: ComfyNodeMetadata): CropMask
     /* category:mask, name:"MaskComposite", output:MASK */
-    MaskComposite(p: MaskComposite_input, id?: ComfyNodeID): MaskComposite
+    MaskComposite(p: MaskComposite_input, meta?: ComfyNodeMetadata): MaskComposite
     /* category:mask, name:"FeatherMask", output:MASK */
-    FeatherMask(p: FeatherMask_input, id?: ComfyNodeID): FeatherMask
+    FeatherMask(p: FeatherMask_input, meta?: ComfyNodeMetadata): FeatherMask
     /* category:mask, name:"GrowMask", output:MASK */
-    GrowMask(p: GrowMask_input, id?: ComfyNodeID): GrowMask
+    GrowMask(p: GrowMask_input, meta?: ComfyNodeMetadata): GrowMask
     /* category:mask_compositing, name:"PorterDuffImageComposite", output:IMAGE+MASK */
-    PorterDuffImageComposite(p: PorterDuffImageComposite_input, id?: ComfyNodeID): PorterDuffImageComposite
+    PorterDuffImageComposite(p: PorterDuffImageComposite_input, meta?: ComfyNodeMetadata): PorterDuffImageComposite
     /* category:mask_compositing, name:"SplitImageWithAlpha", output:IMAGE+MASK */
-    SplitImageWithAlpha(p: SplitImageWithAlpha_input, id?: ComfyNodeID): SplitImageWithAlpha
+    SplitImageWithAlpha(p: SplitImageWithAlpha_input, meta?: ComfyNodeMetadata): SplitImageWithAlpha
     /* category:mask_compositing, name:"JoinImageWithAlpha", output:IMAGE */
-    JoinImageWithAlpha(p: JoinImageWithAlpha_input, id?: ComfyNodeID): JoinImageWithAlpha
+    JoinImageWithAlpha(p: JoinImageWithAlpha_input, meta?: ComfyNodeMetadata): JoinImageWithAlpha
     /* category:latent_batch, name:"RebatchLatents", output:LATENT */
-    RebatchLatents(p: RebatchLatents_input, id?: ComfyNodeID): RebatchLatents
+    RebatchLatents(p: RebatchLatents_input, meta?: ComfyNodeMetadata): RebatchLatents
     /* category:advanced_model_merging, name:"ModelMergeSimple", output:MODEL */
-    ModelMergeSimple(p: ModelMergeSimple_input, id?: ComfyNodeID): ModelMergeSimple
+    ModelMergeSimple(p: ModelMergeSimple_input, meta?: ComfyNodeMetadata): ModelMergeSimple
     /* category:advanced_model_merging, name:"ModelMergeBlocks", output:MODEL */
-    ModelMergeBlocks(p: ModelMergeBlocks_input, id?: ComfyNodeID): ModelMergeBlocks
+    ModelMergeBlocks(p: ModelMergeBlocks_input, meta?: ComfyNodeMetadata): ModelMergeBlocks
     /* category:advanced_model_merging, name:"ModelMergeSubtract", output:MODEL */
-    ModelMergeSubtract(p: ModelMergeSubtract_input, id?: ComfyNodeID): ModelMergeSubtract
+    ModelMergeSubtract(p: ModelMergeSubtract_input, meta?: ComfyNodeMetadata): ModelMergeSubtract
     /* category:advanced_model_merging, name:"ModelMergeAdd", output:MODEL */
-    ModelMergeAdd(p: ModelMergeAdd_input, id?: ComfyNodeID): ModelMergeAdd
+    ModelMergeAdd(p: ModelMergeAdd_input, meta?: ComfyNodeMetadata): ModelMergeAdd
     /* category:advanced_model_merging, name:"CheckpointSave", output: */
-    CheckpointSave(p: CheckpointSave_input, id?: ComfyNodeID): CheckpointSave
+    CheckpointSave(p: CheckpointSave_input, meta?: ComfyNodeMetadata): CheckpointSave
     /* category:advanced_model_merging, name:"CLIPMergeSimple", output:CLIP */
-    CLIPMergeSimple(p: CLIPMergeSimple_input, id?: ComfyNodeID): CLIPMergeSimple
+    CLIPMergeSimple(p: CLIPMergeSimple_input, meta?: ComfyNodeMetadata): CLIPMergeSimple
     /* category:advanced_model_merging, name:"CLIPSave", output: */
-    CLIPSave(p: CLIPSave_input, id?: ComfyNodeID): CLIPSave
+    CLIPSave(p: CLIPSave_input, meta?: ComfyNodeMetadata): CLIPSave
     /* category:advanced_model_merging, name:"VAESave", output: */
-    VAESave(p: VAESave_input, id?: ComfyNodeID): VAESave
+    VAESave(p: VAESave_input, meta?: ComfyNodeMetadata): VAESave
     /* category:_for_testing, name:"TomePatchModel", output:MODEL */
-    TomePatchModel(p: TomePatchModel_input, id?: ComfyNodeID): TomePatchModel
+    TomePatchModel(p: TomePatchModel_input, meta?: ComfyNodeMetadata): TomePatchModel
     /* category:advanced_conditioning, name:"CLIPTextEncodeSDXLRefiner", output:CONDITIONING */
-    CLIPTextEncodeSDXLRefiner(p: CLIPTextEncodeSDXLRefiner_input, id?: ComfyNodeID): CLIPTextEncodeSDXLRefiner
+    CLIPTextEncodeSDXLRefiner(p: CLIPTextEncodeSDXLRefiner_input, meta?: ComfyNodeMetadata): CLIPTextEncodeSDXLRefiner
     /* category:advanced_conditioning, name:"CLIPTextEncodeSDXL", output:CONDITIONING */
-    CLIPTextEncodeSDXL(p: CLIPTextEncodeSDXL_input, id?: ComfyNodeID): CLIPTextEncodeSDXL
+    CLIPTextEncodeSDXL(p: CLIPTextEncodeSDXL_input, meta?: ComfyNodeMetadata): CLIPTextEncodeSDXL
     /* category:image_preprocessors, name:"Canny", output:IMAGE */
-    Canny(p: Canny_input, id?: ComfyNodeID): Canny
+    Canny(p: Canny_input, meta?: ComfyNodeMetadata): Canny
     /* category:_for_testing, name:"FreeU", output:MODEL */
-    FreeU(p: FreeU_input, id?: ComfyNodeID): FreeU
+    FreeU(p: FreeU_input, meta?: ComfyNodeMetadata): FreeU
     /* category:_for_testing, name:"FreeU_V2", output:MODEL */
-    FreeU$_V2(p: FreeU$_V2_input, id?: ComfyNodeID): FreeU$_V2
+    FreeU$_V2(p: FreeU$_V2_input, meta?: ComfyNodeMetadata): FreeU$_V2
     /* category:sampling_custom_sampling, name:"SamplerCustom", output:output+denoised_output */
-    SamplerCustom(p: SamplerCustom_input, id?: ComfyNodeID): SamplerCustom
+    SamplerCustom(p: SamplerCustom_input, meta?: ComfyNodeMetadata): SamplerCustom
     /* category:sampling_custom_sampling_schedulers, name:"BasicScheduler", output:SIGMAS */
-    BasicScheduler(p: BasicScheduler_input, id?: ComfyNodeID): BasicScheduler
+    BasicScheduler(p: BasicScheduler_input, meta?: ComfyNodeMetadata): BasicScheduler
     /* category:sampling_custom_sampling_schedulers, name:"KarrasScheduler", output:SIGMAS */
-    KarrasScheduler(p: KarrasScheduler_input, id?: ComfyNodeID): KarrasScheduler
+    KarrasScheduler(p: KarrasScheduler_input, meta?: ComfyNodeMetadata): KarrasScheduler
     /* category:sampling_custom_sampling_schedulers, name:"ExponentialScheduler", output:SIGMAS */
-    ExponentialScheduler(p: ExponentialScheduler_input, id?: ComfyNodeID): ExponentialScheduler
+    ExponentialScheduler(p: ExponentialScheduler_input, meta?: ComfyNodeMetadata): ExponentialScheduler
     /* category:sampling_custom_sampling_schedulers, name:"PolyexponentialScheduler", output:SIGMAS */
-    PolyexponentialScheduler(p: PolyexponentialScheduler_input, id?: ComfyNodeID): PolyexponentialScheduler
+    PolyexponentialScheduler(p: PolyexponentialScheduler_input, meta?: ComfyNodeMetadata): PolyexponentialScheduler
     /* category:sampling_custom_sampling_schedulers, name:"VPScheduler", output:SIGMAS */
-    VPScheduler(p: VPScheduler_input, id?: ComfyNodeID): VPScheduler
+    VPScheduler(p: VPScheduler_input, meta?: ComfyNodeMetadata): VPScheduler
     /* category:sampling_custom_sampling_samplers, name:"KSamplerSelect", output:SAMPLER */
-    KSamplerSelect(p: KSamplerSelect_input, id?: ComfyNodeID): KSamplerSelect
+    KSamplerSelect(p: KSamplerSelect_input, meta?: ComfyNodeMetadata): KSamplerSelect
     /* category:sampling_custom_sampling_samplers, name:"SamplerDPMPP_2M_SDE", output:SAMPLER */
-    SamplerDPMPP$_2M$_SDE(p: SamplerDPMPP$_2M$_SDE_input, id?: ComfyNodeID): SamplerDPMPP$_2M$_SDE
+    SamplerDPMPP$_2M$_SDE(p: SamplerDPMPP$_2M$_SDE_input, meta?: ComfyNodeMetadata): SamplerDPMPP$_2M$_SDE
     /* category:sampling_custom_sampling_samplers, name:"SamplerDPMPP_SDE", output:SAMPLER */
-    SamplerDPMPP$_SDE(p: SamplerDPMPP$_SDE_input, id?: ComfyNodeID): SamplerDPMPP$_SDE
+    SamplerDPMPP$_SDE(p: SamplerDPMPP$_SDE_input, meta?: ComfyNodeMetadata): SamplerDPMPP$_SDE
     /* category:sampling_custom_sampling_sigmas, name:"SplitSigmas", output:SIGMAS+SIGMAS_1 */
-    SplitSigmas(p: SplitSigmas_input, id?: ComfyNodeID): SplitSigmas
+    SplitSigmas(p: SplitSigmas_input, meta?: ComfyNodeMetadata): SplitSigmas
     /* category:sampling_custom_sampling_sigmas, name:"FlipSigmas", output:SIGMAS */
-    FlipSigmas(p: FlipSigmas_input, id?: ComfyNodeID): FlipSigmas
+    FlipSigmas(p: FlipSigmas_input, meta?: ComfyNodeMetadata): FlipSigmas
     /* category:_for_testing, name:"HyperTile", output:MODEL */
-    HyperTile(p: HyperTile_input, id?: ComfyNodeID): HyperTile
+    HyperTile(p: HyperTile_input, meta?: ComfyNodeMetadata): HyperTile
     /* category:advanced_model, name:"ModelSamplingDiscrete", output:MODEL */
-    ModelSamplingDiscrete(p: ModelSamplingDiscrete_input, id?: ComfyNodeID): ModelSamplingDiscrete
+    ModelSamplingDiscrete(p: ModelSamplingDiscrete_input, meta?: ComfyNodeMetadata): ModelSamplingDiscrete
     /* category:advanced_model, name:"ModelSamplingContinuousEDM", output:MODEL */
-    ModelSamplingContinuousEDM(p: ModelSamplingContinuousEDM_input, id?: ComfyNodeID): ModelSamplingContinuousEDM
+    ModelSamplingContinuousEDM(p: ModelSamplingContinuousEDM_input, meta?: ComfyNodeMetadata): ModelSamplingContinuousEDM
     /* category:advanced_model, name:"RescaleCFG", output:MODEL */
-    RescaleCFG(p: RescaleCFG_input, id?: ComfyNodeID): RescaleCFG
+    RescaleCFG(p: RescaleCFG_input, meta?: ComfyNodeMetadata): RescaleCFG
     /* category:_for_testing, name:"PatchModelAddDownscale", output:MODEL */
-    PatchModelAddDownscale(p: PatchModelAddDownscale_input, id?: ComfyNodeID): PatchModelAddDownscale
+    PatchModelAddDownscale(p: PatchModelAddDownscale_input, meta?: ComfyNodeMetadata): PatchModelAddDownscale
     /* category:image_transform, name:"ImageCrop", output:IMAGE */
-    ImageCrop(p: ImageCrop_input, id?: ComfyNodeID): ImageCrop
+    ImageCrop(p: ImageCrop_input, meta?: ComfyNodeMetadata): ImageCrop
     /* category:image_batch, name:"RepeatImageBatch", output:IMAGE */
-    RepeatImageBatch(p: RepeatImageBatch_input, id?: ComfyNodeID): RepeatImageBatch
+    RepeatImageBatch(p: RepeatImageBatch_input, meta?: ComfyNodeMetadata): RepeatImageBatch
     /* category:_for_testing, name:"SaveAnimatedWEBP", output: */
-    SaveAnimatedWEBP(p: SaveAnimatedWEBP_input, id?: ComfyNodeID): SaveAnimatedWEBP
+    SaveAnimatedWEBP(p: SaveAnimatedWEBP_input, meta?: ComfyNodeMetadata): SaveAnimatedWEBP
     /* category:loaders_video_models, name:"ImageOnlyCheckpointLoader", output:MODEL+CLIP_VISION+VAE */
-    ImageOnlyCheckpointLoader(p: ImageOnlyCheckpointLoader_input, id?: ComfyNodeID): ImageOnlyCheckpointLoader
+    ImageOnlyCheckpointLoader(p: ImageOnlyCheckpointLoader_input, meta?: ComfyNodeMetadata): ImageOnlyCheckpointLoader
     /* category:conditioning_video_models, name:"SVD_img2vid_Conditioning", output:positive+negative+latent */
-    SVD$_img2vid$_Conditioning(p: SVD$_img2vid$_Conditioning_input, id?: ComfyNodeID): SVD$_img2vid$_Conditioning
+    SVD$_img2vid$_Conditioning(p: SVD$_img2vid$_Conditioning_input, meta?: ComfyNodeMetadata): SVD$_img2vid$_Conditioning
     /* category:sampling_video_models, name:"VideoLinearCFGGuidance", output:MODEL */
-    VideoLinearCFGGuidance(p: VideoLinearCFGGuidance_input, id?: ComfyNodeID): VideoLinearCFGGuidance
+    VideoLinearCFGGuidance(p: VideoLinearCFGGuidance_input, meta?: ComfyNodeMetadata): VideoLinearCFGGuidance
 }
 
 // 1. Requirable --------------------------

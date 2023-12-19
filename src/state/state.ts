@@ -317,16 +317,16 @@ export class STATE {
     }
 
     project: ProjectL
-
+    primarySdkDtsPath: AbsolutePath
     constructor(
         /** path of the workspace */
         public rootPath: AbsolutePath,
     ) {
         console.log('[🛋️] starting Cushy')
         this.cacheFolderPath = this.resolve(this.rootPath, asRelativePath('outputs'))
+        this.primarySdkDtsPath = this.resolve(this.rootPath, asRelativePath('schema/global.d.ts'))
         // this.comfyJSONPath = this.resolve(this.rootPath, asRelativePath('schema/object_info.json'))
         // this.embeddingsPath = this.resolve(this.rootPath, asRelativePath('schema/embeddings.json'))
-        // this.nodesTSPath = this.resolve(this.rootPath, asRelativePath('schema/global.d.ts'))
         this.outputFolderPath = this.cacheFolderPath // this.resolve(this.cacheFolderPath, asRelativePath('outputs'))
 
         this.libraryFolderPathRel = asRelativePath('library')

@@ -110,6 +110,8 @@ export const Panel_CardPicker3UI = observer(function Panel_CardPicker3UI_(p: {})
                 <ScrollablePaneUI tw='flex-grow'>
                     <FileBeeingImportedUI files={st.droppedFiles} />
                     <div tw='text-3xl text-accent font-bold'>Installed Apps</div>
+                    <div>--</div>
+                    <div tw='text-3xl text-accent font-bold'>App marketplace</div>
                     <div tw='flex flex-wrap  gap-2'>
                         {st._allPublishedApps?.data?.map((app) => (
                             <div tw='w-96 h-80 virtualBorder' key={app.id}>

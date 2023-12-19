@@ -34,7 +34,7 @@
         "gen-dts": "tsc -p tsconfig.doc.json",
         "gen-syms": "node src/syms/_.cjs",
         "gen-doc": "typedoc --excludeInternal --out site/documentation src/back/Runtime.ts src/controls/FormBuilder.ts src/controls/Widget.ts",
-        "gen-initial-schema": "bun src/utils/codegen/gen.initial-schema.ts",
+        "gen-virtual": "bun src/utils/codegen/gen.initial-schema.ts",
         "js-1": "node --loader ts-node/esm             --experimental-modules    --experimental-specifier-resolution=node",
         "js": "node --loader @esbuild-kit/esm-loader --experimental-vm-modules --experimental-specifier-resolution=node",
         "📌 WEBSITE": "----------------------------------------------------------------------",

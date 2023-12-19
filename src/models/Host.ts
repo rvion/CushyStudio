@@ -2,12 +2,13 @@ import type { LiveInstance } from 'src/db/LiveInstance'
 import { asComfySchemaID, type HostT } from 'src/db/TYPES.gen'
 import type { ComfySchemaL, EmbeddingName } from './Schema'
 
-import { existsSync, mkdirSync, writeFileSync } from 'fs'
+import { copyFileSync, existsSync, mkdirSync, writeFileSync } from 'fs'
 import { ResilientWebSocketClient } from 'src/back/ResilientWebsocket'
 import { extractErrorMessage } from 'src/utils/formatters/extractErrorMessage'
 import { readableStringify } from 'src/utils/formatters/stringifyReadable'
 import { asRelativePath } from 'src/utils/fs/pathUtils'
 import { ManualPromise } from 'src/utils/misc/ManualPromise'
+import { toastError, toastSuccess } from 'src/utils/misc/toasts'
 
 export interface HostL extends LiveInstance<HostT, HostL> {}
 
@@ -17,7 +18,7 @@ export class HostL {
     fileCacheFolder: AbsolutePath = null as any /**  'null' is here for a reason */
     comfyJSONPath: AbsolutePath = null as any /**  'null' is here for a reason */
     embeddingsPath: AbsolutePath = null as any /**  'null' is here for a reason */
-    nodesTSPath: AbsolutePath = null as any /**  'null' is here for a reason */
+    sdkDTSPath: AbsolutePath = null as any /**  'null' is here for a reason */
     schema: ComfySchemaL = null as any /**  'null' is here for a reason */
     onHydrate = () => {
         this.fileCacheFolder = this.st.resolve(this.st.rootPath, asRelativePath(`schema/hosts/${this.id}`))
@@ -28,7 +29,7 @@ export class HostL {
         }
         this.comfyJSONPath = this.st.resolve(this.fileCacheFolder, asRelativePath(`object_info.json`))
         this.embeddingsPath = this.st.resolve(this.fileCacheFolder, asRelativePath(`embeddings.json`))
-        this.nodesTSPath = this.st.resolve(this.fileCacheFolder, asRelativePath(`sdk.dts.txt`))
+        this.sdkDTSPath = this.st.resolve(this.fileCacheFolder, asRelativePath(`sdk.dts.txt`))
         const associatedSchemaID = asComfySchemaID(this.id)
         this.schema = this.st.db.comfy_schemas.getOrCreate(associatedSchemaID, () => ({
             id: associatedSchemaID,
@@ -36,6 +37,18 @@ export class HostL {
             spec: {},
             hostID: this.id,
         }))
+    }
+
+    electAsPrimary = (): void => {
+        toastSuccess(`Primary host set to ${this.data.name}`)
+        this.st.configFile.update({ mainComfyHostID: this.id })
+        this._copyGeneratedSDKToGlobalDTS()
+    }
+
+    _copyGeneratedSDKToGlobalDTS = (): void => {
+        const exists = existsSync(this.sdkDTSPath)
+        if (!exists) return void toastError(`No SDK found for ${this.data.name}`)
+        copyFileSync(this.sdkDTSPath, this.st.primarySdkDtsPath)
     }
 
     // URLS -----------------------------------------------------------------------------
@@ -98,7 +111,7 @@ export class HostL {
 
     schemaUpdateResult: Maybe<{ type: 'success' } | { type: 'error'; error: any }> = null
 
-    updateSchemaFromFileCache = () => {
+    private updateSchemaFromFileCache = () => {
         const object_info_json = this.st.readJSON<any>(this.comfyJSONPath)
         const embeddings_json = this.st.readJSON<any>(this.embeddingsPath)
 
@@ -108,7 +121,7 @@ export class HostL {
 
         // regen sdk
         const comfySchemaTs = this.schema.codegenDTS()
-        writeFileSync(this.nodesTSPath, comfySchemaTs, 'utf-8')
+        writeFileSync(this.sdkDTSPath, comfySchemaTs, 'utf-8')
     }
 
     /** retrieve the comfy spec from the schema*/
@@ -147,7 +160,7 @@ export class HostL {
             // 3 ------------------------------------
             // regen sdk
             const comfySchemaTs = this.schema.codegenDTS()
-            writeFileSync(this.nodesTSPath, comfySchemaTs, 'utf-8')
+            writeFileSync(this.sdkDTSPath, comfySchemaTs, 'utf-8')
 
             // debug for rvion
             if (this.st.githubUsername === 'rvion') {
@@ -163,10 +176,10 @@ export class HostL {
             console.error(error)
             console.error('🔴 FAILURE TO GENERATE nodes.d.ts', extractErrorMessage(error))
 
-            const schemaExists = existsSync(this.nodesTSPath)
+            const schemaExists = existsSync(this.sdkDTSPath)
             if (!schemaExists) {
                 const comfySchemaTs = this.schema.codegenDTS()
-                writeFileSync(this.nodesTSPath, comfySchemaTs, 'utf-8')
+                writeFileSync(this.sdkDTSPath, comfySchemaTs, 'utf-8')
             }
         } finally {
             this.isUpdatingSchema = false

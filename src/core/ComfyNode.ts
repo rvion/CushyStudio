@@ -25,13 +25,12 @@ export class ComfyNode<
     ComfyNode_input extends object,
     ComfyNode_output extends object = {},
 > {
-    // METADATA ---------------------------------------
-    tag = (tagName: string) => {
-        this.meta.tag = tagName
-        return this
-    }
     storeAs = (storeName: string) => {
         this.meta.storeAs = storeName
+        return this
+    }
+    tag = (tagName: string) => {
+        this.meta.tag = tagName
         return this
     }
     // ---------------------------------------

@@ -32,7 +32,7 @@ export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
                             isMain ? 'btn-success' : 'btn-info btn-outline',
                             `btn btn-md flex-grow font-bold`,
                         ]}
-                        onClick={() => st.configFile.update({ mainComfyHostID: host.id })}
+                        onClick={() => host.electAsPrimary()}
                     >
                         {host.data.name ?? `${host.data.hostname}:${host.data.port}`}
                     </div>

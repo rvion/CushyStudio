@@ -43,7 +43,7 @@ export const MenuComfyUI = observer(function MenuComfyUI_(p: {}) {
                                 desktop_mac
                             </span>
                         }
-                        onClick={() => st.configFile.update({ mainComfyHostID: host.id })}
+                        onClick={() => host.electAsPrimary()}
                         key={host.id}
                     >
                         <div tw='flex-grow'>{host.data.name}</div>

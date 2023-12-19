@@ -3,6 +3,9 @@ import type { FormBuilder } from 'src/controls/FormBuilder'
 import { CardSuit, CardValue } from './_cardLayouts'
 import { _drawCard } from './_drawCard'
 import { toJS } from 'mobx'
+import { ui_highresfix } from '../_prefabs/_prefabs'
+import { run_model, ui_model } from '../_prefabs/prefab_model'
+import { run_sampler, ui_sampler } from '../_prefabs/prefab_sampler'
 
 app({
     metadata: {
@@ -11,19 +14,6 @@ app({
         description: 'Allow you to generate illustrated deck of cards',
     },
     ui: (form: FormBuilder) => ({
-        // [UI] MODEL --------------------------------------
-        // generate
-        // _1: form.markdown({ markdown: `### Model`, label: false }),
-        model: form.enum({
-            enumName: 'Enum_CheckpointLoaderSimple_ckpt_name',
-            default: 'revAnimated_v122.safetensors',
-            group: 'model',
-        }),
-        // foo: form.selectOne({
-        //     choices: [{ type: 'foo' }, { type: 'bar' }],
-        //     group: 'model',
-        // }),
-
         // [UI] CARD ---------------------------------------
         // _2: form.markdown({ markdown: `### Cards`, label: false }),
         cards: form.matrix({
@@ -31,6 +21,10 @@ app({
             rows: ['spades', 'hearts', 'clubs', 'diamonds'],
             default: [],
         }),
+        // [UI] MODEL --------------------------------------
+        model: ui_model(form),
+        sampler: ui_sampler(form),
+        highResFix: ui_highresfix(form, { activeByDefault: true }),
 
         logos: form.group({
             layout: 'H',
@@ -97,7 +91,7 @@ app({
         // 1. SETUP --------------------------------------------------
         const graph = run.nodes
         const floor = (x: number) => Math.floor(x)
-        const ckpt = graph.CheckpointLoaderSimple({ ckpt_name: ui.model })
+        let { ckpt, vae, clip } = run_model(run, ui.model)
         const suits = Array.from(new Set(ui.cards.map((c) => c.row)))
         const values = Array.from(new Set(ui.cards.map((c) => c.col)))
         const W = ui.size.width, W2 = floor(W / 2), W3 = floor(W / 3), W4 = floor(W / 4) // prettier-ignore
@@ -120,10 +114,10 @@ app({
                 steps: 10,
                 scheduler: 'karras',
                 model: ckpt,
-                positive: graph.CLIPTextEncode({ clip: ckpt, text: suitBGPrompt }),
-                negative: graph.CLIPTextEncode({ clip: ckpt, text: 'text, watermarks, logo, 1girl' }),
+                positive: graph.CLIPTextEncode({ clip, text: suitBGPrompt }),
+                negative: graph.CLIPTextEncode({ clip, text: 'text, watermarks, logo, 1girl' }),
             })
-            const pixels = graph.VAEDecode({ samples: colorImage, vae: ckpt })
+            const pixels = graph.VAEDecode({ samples: colorImage, vae })
             graph.SaveImage({ images: pixels, filename_prefix: `${suit}_BG` }).storeAs(`bg-${suit}`)
             suitsBackground.set(suit, colorImage)
         }
@@ -175,29 +169,57 @@ app({
                 }[value] ?? `background`
 
             const positiveText = `masterpiece, rpg, ${basePrompt}, ${suitColor} of ${suit} color, intricate details, theme of ${theme} and ${ui.generalTheme}, 4k`
-            const positive = graph.CLIPTextEncode({ clip: ckpt, text: positiveText })
+            const positive = graph.CLIPTextEncode({ clip, text: positiveText })
+            const negative = graph.CLIPTextEncode({ clip, text: negativeText })
             const xxx = foo[`${suit}_${value}`]
             // let latent: _LATENT = suitsBackground.get(suit)! // emptyLatent
-            let latent: _LATENT = graph.VAEEncode({ pixels: xxx.base, vae: ckpt })
+            let latent: _LATENT = graph.VAEEncode({ pixels: xxx.base, vae })
             latent = graph.SetLatentNoiseMask({
                 samples: latent,
                 mask: xxx.mask, // graph.ImageToMask({ image: xxx.mask, channel: 'alpha' }),
             })
             graph.PreviewImage({ images: graph.MaskToImage({ mask: xxx.mask }) })
-            let sample: _LATENT = graph.KSampler({
+            latent = graph.KSampler({
                 seed: run.randomSeed(),
                 latent_image: latent,
                 model: ckpt,
                 positive: positive,
-                negative: graph.CLIPTextEncode({ clip: ckpt, text: negativeText }),
+                negative: negative,
                 sampler_name: 'euler',
                 scheduler: 'karras',
                 denoise: 1,
                 steps: 30,
             })
 
+            if (ui.highResFix) {
+                const emptyMask = graph.SolidMask({ height: H, width: W, value: 1 })
+                latent = graph.SetLatentNoiseMask({ mask: emptyMask, samples: latent })
+                if (ui.highResFix.saveIntermediaryImage) {
+                    graph.SaveImage({ images: graph.VAEDecode({ samples: latent, vae }) })
+                }
+                latent = graph.LatentUpscale({
+                    samples: latent,
+                    crop: 'disabled',
+                    upscale_method: 'nearest-exact',
+                    height: ui.size.height * ui.highResFix.scaleFactor,
+                    width: ui.size.width * ui.highResFix.scaleFactor,
+                })
+                latent = latent = run_sampler(
+                    run,
+                    {
+                        seed: ui.sampler.seed,
+                        cfg: ui.sampler.cfg,
+                        steps: ui.highResFix.steps,
+                        denoise: ui.highResFix.denoise,
+                        sampler_name: 'ddim',
+                        scheduler: 'ddim_uniform',
+                    },
+                    { ckpt, clip, negative, positive, vae, latent, preview: false },
+                ).latent
+            }
+
             // ADD LOGOS ----------------------------------------
-            let pixels: _IMAGE = graph.VAEDecode({ vae: ckpt, samples: sample })
+            let pixels: _IMAGE = graph.VAEDecode({ vae, samples: latent })
             graph.SaveImage({ images: pixels, filename_prefix: `${suit}_${value}/img` })
         }
         await run.PROMPT()
