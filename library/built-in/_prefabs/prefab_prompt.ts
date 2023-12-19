@@ -1,4 +1,4 @@
-import type { Runtime } from 'src/back/Runtime'
+import type { Runtime } from 'src/runtime/Runtime'
 import type { WidgetPromptOutput } from 'src/widgets/prompter/WidgetPromptUI'
 
 export const run_prompt = (

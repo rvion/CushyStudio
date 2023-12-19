@@ -1,4 +1,4 @@
-import type { Runtime } from 'src/back/Runtime'
+import type { Runtime } from 'src/runtime/Runtime'
 import type { Widget } from '../controls/Widget'
 import type { FormBuilder } from 'src/controls/FormBuilder'
 import type { ReqResult } from 'src/controls/IWidget'

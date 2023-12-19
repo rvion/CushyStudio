@@ -6,7 +6,7 @@ import type { ComfyPromptL } from './ComfyPrompt'
 import { Widget_group } from 'src/controls/Widget'
 import { SQLITE_false, SQLITE_true } from 'src/db/SQLITE_boolean'
 import { StepT } from 'src/db/TYPES.gen'
-import { Runtime } from '../back/Runtime'
+import { Runtime } from '../runtime/Runtime'
 import { Status } from '../back/Status'
 import { LiveCollection } from '../db/LiveCollection'
 import { LiveRef } from '../db/LiveRef'
@@ -37,7 +37,7 @@ export class StepL {
         // this.data.outputGraphID = out.id
         this.runtime = new Runtime(this)
         this.update({ status: Status.Running })
-        const scriptExecutionStatus = await this.runtime.run(p)
+        const scriptExecutionStatus = await this.runtime._EXECUTE(p)
 
         if (scriptExecutionStatus.type === 'error') {
             this.update({ status: Status.Failure })

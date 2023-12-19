@@ -1,5 +1,5 @@
 // RUNTIME
-export * from 'src/back/Runtime'
+export * from 'src/runtime/Runtime'
 
 // UI
 export * from 'src/controls/FormBuilder'

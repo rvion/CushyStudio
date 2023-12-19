@@ -19,6 +19,10 @@ export class ImageStore {
         //
         makeAutoObservable(this)
     }
+
+    get hasImage(): boolean {
+        return !!this.imageID
+    }
     //  ------------------- getters
     get image(): Maybe<MediaImageL> {
         return this.store.st.db.media_images.get(this.imageID)

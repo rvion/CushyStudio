@@ -22,10 +22,10 @@ import { ComfyUploadImageResult } from '../types/ComfyWsApi'
 import { createMP4FromImages } from '../utils/ffmpeg/ffmpegScripts'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { exhaust } from '../utils/misc/ComfyUtils'
-import { IDNaminScheemeInPromptSentToComfyUI } from './IDNaminScheemeInPromptSentToComfyUI'
-import { ImageSDK } from './ImageSDK'
-import { ComfyWorkflowBuilder } from './NodeBuilder'
-import { Status } from './Status'
+import { IDNaminScheemeInPromptSentToComfyUI } from '../back/IDNaminScheemeInPromptSentToComfyUI'
+import { ImageSDK } from '../back/ImageSDK'
+import { ComfyWorkflowBuilder } from '../back/NodeBuilder'
+import { Status } from '../back/Status'
 
 import child_process from 'child_process'
 import { OpenRouterRequest } from 'src/llm/OpenRouter_Request'
@@ -38,15 +38,26 @@ import { HostL } from 'src/models/Host'
 import { _formatAsRelativeDateTime } from 'src/updater/_getRelativeTimeString'
 import { Wildcards } from 'src/widgets/prompter/nodes/wildcards/wildcards'
 import { observer } from 'mobx-react-lite'
-import { ImageStore, ImageStoreAutoUpdateLogic, ImageStoreT } from './ImageStore'
+import { ImageStore, ImageStoreAutoUpdateLogic, ImageStoreT } from '../back/ImageStore'
+import { RuntimeStore } from './RuntimeStore'
+import { RuntimeHosts } from './RuntimeHosts'
 
 export type ImageAndMask = HasSingle_IMAGE & HasSingle_MASK
 
+// 2 nest max
+// run.store.getLocal
+// run.store.getGlobal
+
 /** script exeuction instance */
 export class Runtime<FIELDS extends WidgetDict = any> {
+    store: RuntimeStore
+    hosts: RuntimeHosts
+
     constructor(public step: StepL) {
         this.st = step.st
         this.folder = step.st.outputFolderPath
+        this.store = new RuntimeStore(this)
+        this.hosts = new RuntimeHosts(this)
         this.upload_FileAtAbsolutePath = this.st.uploader.upload_FileAtAbsolutePath.bind(this.st.uploader)
         this.upload_ImageAtURL = this.st.uploader.upload_ImageAtURL.bind(this.st.uploader)
         this.upload_dataURL = this.st.uploader.upload_dataURL.bind(this.st.uploader)
@@ -80,19 +91,6 @@ export class Runtime<FIELDS extends WidgetDict = any> {
      * use with caution
      */
     child_process = child_process
-
-    /**
-     * list of all configured hosts (machines) available
-     * example usage:
-     * - usefull if you want to manually dispatch things
-     * */
-    get hosts(): HostL[] {
-        return this.st.db.hosts.findAll()
-    }
-
-    get mainHost(): HostL {
-        return this.st.mainHost
-    }
 
     /**
      * get the configured trigger words for the given lora
@@ -208,17 +206,6 @@ export class Runtime<FIELDS extends WidgetDict = any> {
      * */
     formInstance!: Widget_group<FIELDS>
 
-    getStore_orCrashIfMissing = <T>(key: string): CustomDataL<T> => {
-        return this.st.db.custom_datas.getOrThrow(key)
-    }
-
-    getStore_orCreateIfMissing = <T>(key: string, def: () => T): CustomDataL<T> => {
-        return this.st.db.custom_datas.getOrCreate(key, () => ({
-            id: key,
-            json: def(),
-        }))
-    }
-
     executeDraft = async (draftID: DraftID, args: any) => {
         throw new Error('🔴 not yet implemented')
     }
@@ -283,8 +270,11 @@ export class Runtime<FIELDS extends WidgetDict = any> {
     /** helper to chose radomly any item from a list */
     chooseRandomly = <T>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)]
 
-    /** execute the app */
-    run = async (p: { formInstance: Widget_group<any> }): Promise<{ type: 'success' } | { type: 'error'; error: any }> => {
+    /**
+     * @internal
+     * execute the draft
+     */
+    _EXECUTE = async (p: { formInstance: Widget_group<any> }): Promise<{ type: 'success' } | { type: 'error'; error: any }> => {
         const start = Date.now()
         const app = this.step.executable
         const appFormInput = this.step.data.formResult
@@ -356,19 +346,6 @@ export class Runtime<FIELDS extends WidgetDict = any> {
     }
 
     // IMAGE HELPES ---------------------------------------------------------------------------------------
-
-    /** stores are .... */
-    getImageStore = (storeName: string): ImageStore => {
-        const storeID = `app:${this.step.app.id}/imageStore/${storeName}`
-        const prev = this.imageStoresIndex.get(storeID)
-        if (prev) return prev
-        const rawStore: CustomDataL<ImageStoreT> = this.getStore_orCreateIfMissing(storeID, () => ({}))
-        const store = new ImageStore(rawStore /*p.autoUpdate*/)
-        this.imageStoresIndex.set(storeID, store)
-        return store
-    }
-
-    private imageStoresIndex = new Map<string, ImageStore>()
 
     // ⏸️ /**
     // ⏸️  * list of all images stores currently active in this run
