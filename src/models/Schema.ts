@@ -212,16 +212,28 @@ export class ComfySchemaL {
             }
 
             // INPUTS ----------------------------------------------------------------------
-            const requiredInputs = Object.entries(nodeDef.input?.required ?? {}) //
-                .map(([name, spec]) => ({ required: true, name, spec }))
             const optionalInputs = Object.entries(nodeDef.input?.optional ?? {}) //
                 .map(([name, spec]) => ({ required: false, name, spec }))
+            const requiredInputs = Object.entries(nodeDef.input?.required ?? {}) //
+                .map(([name, spec]) => ({ required: true, name, spec }))
+                // REMOVE DUPLICATES
+                // ! "CR ControlNet Input Switch": {
+                // !    "input": {
+                // !        "required": {
+                // !            "Input": ["INT",{"default":1,"min":1,"max":2}]
+                // !             "control_net1": ["CONTROL_NET"] 👈
+                // !        }
+                // !         "optional": {
+                // !            "control_net1": ["CONTROL_NET"] 👈
+                // !        }
+                // !    }
+                // 👇 this makes only the optional propery to be kept
+                .filter((i) => optionalInputs.find((oi) => oi.name === i.name) == null)
             const allInputs = [
                 //
                 ...requiredInputs,
                 ...optionalInputs,
             ]
-
             for (const ipt of allInputs) {
                 const inputNameInComfy = ipt.name
                 const inputNameInCushy = normalizeJSIdentifier(ipt.name, '_')
@@ -329,7 +341,7 @@ export class ComfySchemaL {
 
         p('')
         p(`import type { ComfyNode } from '${prefix}core/ComfyNode'`)
-        p(`import type { ComfyNodeID, ComfyNodeMetadata } from '${prefix}types/ComfyNodeID'`)
+        p(`import type { ComfyNodeMetadata } from '${prefix}types/ComfyNodeID'`)
         p(`import type { ComfyNodeOutput } from '${prefix}core/Slot'`)
         p(`import type { ComfyNodeSchemaJSON } from '${prefix}types/ComfySchemaJSON'`)
         p('')
