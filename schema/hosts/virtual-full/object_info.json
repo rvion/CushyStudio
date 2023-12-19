@@ -106,7 +106,9 @@
         "input": {
             "required": {
                 "ckpt_name": [
-                    []
+                    [
+                        "revAnimated_v122.safetensors"
+                    ]
                 ]
             }
         },
@@ -287,6 +289,7 @@
             "required": {
                 "vae_name": [
                     [
+                        "vae-ft-mse-840000-ema-pruned.safetensors",
                         "taesd",
                         "taesdxl"
                     ]
@@ -574,6 +577,8 @@
             "required": {
                 "image": [
                     [
+                        "5faf07e34756413c84d98cc85ac94b546c4b88e9ea0ab877bfaec7948a3b536b.png",
+                        "e2ef233a64ca3d0148b87fc64c3951035ae857e4b2c302915e6a4f69217912a1.png",
                         "example.png"
                     ],
                     {
@@ -605,6 +610,8 @@
             "required": {
                 "image": [
                     [
+                        "5faf07e34756413c84d98cc85ac94b546c4b88e9ea0ab877bfaec7948a3b536b.png",
+                        "e2ef233a64ca3d0148b87fc64c3951035ae857e4b2c302915e6a4f69217912a1.png",
                         "example.png"
                     ],
                     {
@@ -1538,7 +1545,9 @@
                     "CLIP"
                 ],
                 "lora_name": [
-                    []
+                    [
+                        "Stained Glass Portrait.safetensors"
+                    ]
                 ],
                 "strength_model": [
                     "FLOAT",
@@ -2018,7 +2027,9 @@
         "input": {
             "required": {
                 "ckpt_name": [
-                    []
+                    [
+                        "revAnimated_v122.safetensors"
+                    ]
                 ]
             }
         },
@@ -2159,7 +2170,9 @@
                     ]
                 ],
                 "ckpt_name": [
-                    []
+                    [
+                        "revAnimated_v122.safetensors"
+                    ]
                 ]
             }
         },
@@ -2327,6 +2340,43 @@
         "category": "advanced/conditioning",
         "output_node": false
     },
+    "LoraLoaderModelOnly": {
+        "input": {
+            "required": {
+                "model": [
+                    "MODEL"
+                ],
+                "lora_name": [
+                    [
+                        "Stained Glass Portrait.safetensors"
+                    ]
+                ],
+                "strength_model": [
+                    "FLOAT",
+                    {
+                        "default": 1,
+                        "min": -20,
+                        "max": 20,
+                        "step": 0.01
+                    }
+                ]
+            }
+        },
+        "output": [
+            "MODEL"
+        ],
+        "output_is_list": [
+            false
+        ],
+        "output_name": [
+            "MODEL"
+        ],
+        "name": "LoraLoaderModelOnly",
+        "display_name": "LoraLoaderModelOnly",
+        "description": "",
+        "category": "loaders",
+        "output_node": false
+    },
     "LatentAdd": {
         "input": {
             "required": {
@@ -2444,6 +2494,32 @@
         "display_name": "LatentInterpolate",
         "description": "",
         "category": "latent/advanced",
+        "output_node": false
+    },
+    "LatentBatch": {
+        "input": {
+            "required": {
+                "samples1": [
+                    "LATENT"
+                ],
+                "samples2": [
+                    "LATENT"
+                ]
+            }
+        },
+        "output": [
+            "LATENT"
+        ],
+        "output_is_list": [
+            false
+        ],
+        "output_name": [
+            "LATENT"
+        ],
+        "name": "LatentBatch",
+        "display_name": "LatentBatch",
+        "description": "",
+        "category": "latent/batch",
         "output_node": false
     },
     "HypernetworkLoader": {
@@ -4298,6 +4374,37 @@
         "category": "sampling/custom_sampling/schedulers",
         "output_node": false
     },
+    "SDTurboScheduler": {
+        "input": {
+            "required": {
+                "model": [
+                    "MODEL"
+                ],
+                "steps": [
+                    "INT",
+                    {
+                        "default": 1,
+                        "min": 1,
+                        "max": 10
+                    }
+                ]
+            }
+        },
+        "output": [
+            "SIGMAS"
+        ],
+        "output_is_list": [
+            false
+        ],
+        "output_name": [
+            "SIGMAS"
+        ],
+        "name": "SDTurboScheduler",
+        "display_name": "SDTurboScheduler",
+        "description": "",
+        "category": "sampling/custom_sampling/schedulers",
+        "output_node": false
+    },
     "KSamplerSelect": {
         "input": {
             "required": {
@@ -4906,14 +5013,60 @@
         "name": "SaveAnimatedWEBP",
         "display_name": "SaveAnimatedWEBP",
         "description": "",
-        "category": "_for_testing",
+        "category": "image/animation",
+        "output_node": true
+    },
+    "SaveAnimatedPNG": {
+        "input": {
+            "required": {
+                "images": [
+                    "IMAGE"
+                ],
+                "filename_prefix": [
+                    "STRING",
+                    {
+                        "default": "ComfyUI"
+                    }
+                ],
+                "fps": [
+                    "FLOAT",
+                    {
+                        "default": 6,
+                        "min": 0.01,
+                        "max": 1000,
+                        "step": 0.01
+                    }
+                ],
+                "compress_level": [
+                    "INT",
+                    {
+                        "default": 4,
+                        "min": 0,
+                        "max": 9
+                    }
+                ]
+            },
+            "hidden": {
+                "prompt": "PROMPT",
+                "extra_pnginfo": "EXTRA_PNGINFO"
+            }
+        },
+        "output": [],
+        "output_is_list": [],
+        "output_name": [],
+        "name": "SaveAnimatedPNG",
+        "display_name": "SaveAnimatedPNG",
+        "description": "",
+        "category": "image/animation",
         "output_node": true
     },
     "ImageOnlyCheckpointLoader": {
         "input": {
             "required": {
                 "ckpt_name": [
-                    []
+                    [
+                        "revAnimated_v122.safetensors"
+                    ]
                 ]
             }
         },
@@ -5055,6 +5208,158 @@
         "display_name": "VideoLinearCFGGuidance",
         "description": "",
         "category": "sampling/video_models",
+        "output_node": false
+    },
+    "SelfAttentionGuidance": {
+        "input": {
+            "required": {
+                "model": [
+                    "MODEL"
+                ],
+                "scale": [
+                    "FLOAT",
+                    {
+                        "default": 0.5,
+                        "min": -2,
+                        "max": 5,
+                        "step": 0.1
+                    }
+                ],
+                "blur_sigma": [
+                    "FLOAT",
+                    {
+                        "default": 2,
+                        "min": 0,
+                        "max": 10,
+                        "step": 0.1
+                    }
+                ]
+            }
+        },
+        "output": [
+            "MODEL"
+        ],
+        "output_is_list": [
+            false
+        ],
+        "output_name": [
+            "MODEL"
+        ],
+        "name": "SelfAttentionGuidance",
+        "display_name": "Self-Attention Guidance",
+        "description": "",
+        "category": "_for_testing",
+        "output_node": false
+    },
+    "PerpNeg": {
+        "input": {
+            "required": {
+                "model": [
+                    "MODEL"
+                ],
+                "empty_conditioning": [
+                    "CONDITIONING"
+                ],
+                "neg_scale": [
+                    "FLOAT",
+                    {
+                        "default": 1,
+                        "min": 0,
+                        "max": 100
+                    }
+                ]
+            }
+        },
+        "output": [
+            "MODEL"
+        ],
+        "output_is_list": [
+            false
+        ],
+        "output_name": [
+            "MODEL"
+        ],
+        "name": "PerpNeg",
+        "display_name": "Perp-Neg",
+        "description": "",
+        "category": "_for_testing",
+        "output_node": false
+    },
+    "StableZero123_Conditioning": {
+        "input": {
+            "required": {
+                "clip_vision": [
+                    "CLIP_VISION"
+                ],
+                "init_image": [
+                    "IMAGE"
+                ],
+                "vae": [
+                    "VAE"
+                ],
+                "width": [
+                    "INT",
+                    {
+                        "default": 256,
+                        "min": 16,
+                        "max": 8192,
+                        "step": 8
+                    }
+                ],
+                "height": [
+                    "INT",
+                    {
+                        "default": 256,
+                        "min": 16,
+                        "max": 8192,
+                        "step": 8
+                    }
+                ],
+                "batch_size": [
+                    "INT",
+                    {
+                        "default": 1,
+                        "min": 1,
+                        "max": 4096
+                    }
+                ],
+                "elevation": [
+                    "FLOAT",
+                    {
+                        "default": 0,
+                        "min": -180,
+                        "max": 180
+                    }
+                ],
+                "azimuth": [
+                    "FLOAT",
+                    {
+                        "default": 0,
+                        "min": -180,
+                        "max": 180
+                    }
+                ]
+            }
+        },
+        "output": [
+            "CONDITIONING",
+            "CONDITIONING",
+            "LATENT"
+        ],
+        "output_is_list": [
+            false,
+            false,
+            false
+        ],
+        "output_name": [
+            "positive",
+            "negative",
+            "latent"
+        ],
+        "name": "StableZero123_Conditioning",
+        "display_name": "StableZero123_Conditioning",
+        "description": "",
+        "category": "conditioning/3d_models",
         "output_node": false
     }
 }
