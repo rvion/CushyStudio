@@ -177,7 +177,7 @@ app({
             finalImage = graph.Image_Rembg_$1Remove_Background$2({
                 images: run.AUTO,
                 model: 'u2net',
-                background_color: 'magenta',
+                background_color: 'none',
             })
             graph.SaveImage({ images: finalImage })
         }
