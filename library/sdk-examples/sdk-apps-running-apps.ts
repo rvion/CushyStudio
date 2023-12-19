@@ -39,6 +39,8 @@ const foo = app({
         reprocess: form.boolean({ default: false }),
     }),
     run: async (run, ui) => {
+        // run.formInstance.values.frameStart
+
         for (let frame = ui.frameStart; frame <= ui.frameEnd; frame++) {
             const frameKey = `frame-${frame}`
             const store: ImageStore = run.store.getImageStore(frameKey)
