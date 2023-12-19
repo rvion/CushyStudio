@@ -5164,6 +5164,10 @@ details.collapse summary::-webkit-details-marker {
   margin: 0.5rem;
 }
 
+.m-3 {
+  margin: 0.75rem;
+}
+
 .mx-2 {
   margin-left: 0.5rem;
   margin-right: 0.5rem;
@@ -8638,7 +8642,7 @@ pre{
 }
 
 ._RevealUI{
-  box-shadow:0 5px 5px -3px oklch(var(--s))
+  box-shadow:0 5px 15px -5px oklch(var(--p))
 }
 
 ._MenuItem>div{
