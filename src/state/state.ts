@@ -1,8 +1,8 @@
+import type { Wildcards } from 'src/widgets/prompter/nodes/wildcards/wildcards'
 import type { MediaImageL } from '../models/MediaImage'
 import type { ComfyStatus, PromptID, PromptRelated_WsMsg, WsMsg } from '../types/ComfyWsApi'
 import type { CSCriticalError } from '../widgets/CSCriticalError'
 
-import { createClient } from '@supabase/supabase-js'
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs'
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -10,46 +10,45 @@ import { join } from 'pathe'
 import { createRef } from 'react'
 import { PreferedFormLayout, type ConfigFile } from 'src/config/ConfigFile'
 import { mkConfigFile } from 'src/config/mkConfigFile'
-import { mkTypescriptConfig, type TsConfigCustom } from '../widgets/TsConfigCustom'
+import { mandatoryTSConfigIncludes, mkTypescriptConfig, type TsConfigCustom } from '../widgets/TsConfigCustom'
 
+import { PostgrestSingleResponse, SupabaseClient } from '@supabase/supabase-js'
 import { closest } from 'fastest-levenshtein'
 import { ShortcutWatcher } from 'src/app/shortcuts/ShortcutManager'
 import { shortcutsDef } from 'src/app/shortcuts/shortcuts'
-import type { ActionTagMethodList } from 'src/cards/Card'
-import { asAppPath } from 'src/cards/CardPath'
+import type { ActionTagMethodList } from 'src/cards/App'
 import { GithubUserName } from 'src/cards/GithubUser'
 import { Library } from 'src/cards/Library'
+import { asAppPath } from 'src/cards/asAppPath'
 import { GithubRepoName } from 'src/cards/githubRepo'
-import { ComfyHostDef, ComfyHostID, DEFAULT_COMFYUI_INSTANCE_ID, defaultHost } from 'src/config/ComfyHostDef'
+import { vIRTUAL_HOST_ID__BASE, vIRTUAL_HOST_ID__FULL } from 'src/config/ComfyHostDef'
+import { LiveCollection } from 'src/db/LiveCollection'
+import { LiveFind } from 'src/db/LiveQuery'
+import { SQLITE_false, SQLITE_true } from 'src/db/SQLITE_boolean'
+import { DraftT, asHostID } from 'src/db/TYPES.gen'
 import { DraftL } from 'src/models/Draft'
+import { HostL } from 'src/models/Host'
 import { ProjectL } from 'src/models/Project'
 import { StepL } from 'src/models/Step'
+import { Database } from 'src/supa/database.types'
 import { ThemeManager } from 'src/theme/ThemeManager'
 import { CleanedEnumResult } from 'src/types/EnumUtils'
+import { StepOutput } from 'src/types/StepOutput'
 import { UserTags } from 'src/widgets/prompter/nodes/usertags/UserLoader'
-import { ResilientWebSocketClient } from '../back/ResilientWebsocket'
 import { JsonFile } from '../core/JsonFile'
 import { LiveDB } from '../db/LiveDB'
 import { ComfyImporter } from '../importers/ComfyImporter'
 import { ComfyWorkflowL } from '../models/Graph'
-import { EmbeddingName, EnumValue, SchemaL } from '../models/Schema'
+import { ComfySchemaL, EnumValue } from '../models/Schema'
 import { CushyLayoutManager } from '../panels/router/Layout'
-import { ComfySchemaJSON } from '../types/ComfySchemaJSON'
 import { GitManagedFolder } from '../updater/updater'
 import { ElectronUtils } from '../utils/electron/ElectronUtils'
-import { extractErrorMessage } from '../utils/formatters/extractErrorMessage'
-import { readableStringify } from '../utils/formatters/stringifyReadable'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { exhaust } from '../utils/misc/ComfyUtils'
-import { ManualPromise } from '../utils/misc/ManualPromise'
 import { DanbooruTags } from '../widgets/prompter/nodes/booru/BooruLoader'
-import { Uploader } from './Uploader'
-import { StepOutput } from 'src/types/StepOutput'
-import { LiveFind } from 'src/db/LiveQuery'
-import { SQLITE_true } from 'src/db/SQLITE_boolean'
-import { DraftT } from 'src/db/TYPES.gen'
-import { mkSupa } from './supa'
 import { AuthState } from './AuthState'
+import { Uploader } from './Uploader'
+import { mkSupa } from './supa'
 
 export class STATE {
     /** hack to help closing prompt completions */
@@ -67,77 +66,20 @@ export class STATE {
     shortcuts: ShortcutWatcher
     uploader: Uploader
 
-    supabase = mkSupa()
-    auth = new AuthState(this)
-    startLoginFlowWithGithub = async () => {
-        let { data, error } = await this.supabase.auth.signInWithOAuth({
-            provider: 'github',
-            options: {
-                skipBrowserRedirect: true,
-                redirectTo: 'http://localhost:8788/CushyStudio/_public/misc/cb.html',
-            },
-        })
-        if (data.url == null) return null
-        // this.layout.FOCUS_OR_CREATE('IFrame', { url: data.url })
-        const win = window.open(
-            data.url,
-            '_blank',
-            ['nodeIntegration=no'].join(','),
-            // 'top=500',
-            // 'left=200',
-            // 'frame=false',
-        )
+    supabase: SupabaseClient<Database>
+    auth: AuthState
 
-        // subscribe to window page (location) change
-        win?.addEventListener('message', (event) => {
-            console.log(`[👙]`, event)
-            console.log(`[👙]`, event.data.pageHref)
-            const data = event.data as {
-                pageHref: string
-            }
-            const pageref = data.pageHref
-            console.log(`[👙]`, data.pageHref)
-            const queryParams = new URL(pageref.replace('#', '?')).searchParams
-            const payload = {
-                expires_at: queryParams.get('expires_at'),
-                expires_in: queryParams.get('expires_in'),
-                provider_token: queryParams.get('provider_token'),
-                refresh_token: queryParams.get('refresh_token'),
-                token_type: queryParams.get('token_type'),
-                access_token: queryParams.get('access_token'),
-            }
-
-            console.log(`[👙] event:`, payload)
-
-            // manually login with the given payload
-            this.supabase.auth.setSession({
-                access_token: payload.access_token!,
-                refresh_token: payload.refresh_token!,
-            })
-
-            this.supabase.auth
-                .refreshSession({
-                    refresh_token: payload.refresh_token!,
-                })
-                .then((i) => {
-                    console.log(`[👙] i=`, i)
-                })
-            // void (async () => {
-            //     console.log(`[👙] awaiting user`)
-            //     const user = await this.supabase.auth.getUser()
-            //     console.log(`[👙] this`, user)
-            //     console.log(`[👙] this`, user.data.user)
-            // })()
-        })
+    _udpateTime = () => {
+        const now = Date.now()
+        // console.log(`time is now ${now}`)
+        this.liveTime = Math.round(now / 1000)
     }
+
+    /** mobx hack to make things refresh every few seconds */
     liveTime: number = (() => {
         const store = this.hotReloadPersistentCache
         if (store.liveTimeInterval != null) clearInterval(store.liveTimeInterval)
-        store.liveTimeInterval = setInterval(() => {
-            const now = Date.now()
-            // console.log(`time is now ${now}`)
-            this.liveTime = Math.round(now / 1000)
-        }, 1000)
+        store.liveTimeInterval = setInterval(() => this._udpateTime, 1000)
         return Date.now()
     })()
 
@@ -149,6 +91,13 @@ export class STATE {
         const globalRef = globalThis as any
         if (globalRef.__hotReloadPersistentCache == null) globalRef.__hotReloadPersistentCache = {}
         return globalRef.__hotReloadPersistentCache
+    }
+
+    get wildcards(): Wildcards {
+        const wcdsPath = this.resolveFromRoot(asRelativePath('src/widgets/prompter/nodes/wildcards/wildcards.json'))
+        const wcds = this.readJSON<Wildcards>(wcdsPath)
+        Object.defineProperty(this, 'wildcards', { value: wcds })
+        return wcds
     }
 
     restart = () => {
@@ -169,16 +118,20 @@ export class STATE {
     }
 
     // main state api
-    schema: SchemaL
+    get schema(): ComfySchemaL {
+        return this.mainHost.schema
+    }
+
     comfySessionId = 'temp' /** send by ComfyUI server */
 
     // paths
     cacheFolderPath: AbsolutePath
-    comfyJSONPath: AbsolutePath
-    embeddingsPath: AbsolutePath
-    nodesTSPath: AbsolutePath
-    actionsFolderPathAbs: AbsolutePath
-    actionsFolderPathRel: RelativePath
+    // comfyJSONPath: AbsolutePath
+    // embeddingsPath: AbsolutePath
+
+    libraryFolderPathAbs: AbsolutePath
+    libraryFolderPathRel: RelativePath
+
     outputFolderPath: AbsolutePath
     status: ComfyStatus | null = null
     graphHovered: Maybe<{ graph: ComfyWorkflowL; pctTop: number; pctLeft: number }> = null
@@ -189,16 +142,11 @@ export class STATE {
     hovered: Maybe<StepOutput> = null
     electronUtils: ElectronUtils
     library: Library
-    schemaReady = new ManualPromise<true>()
     danbooru = DanbooruTags.build()
     userTags = UserTags.build()
     actionTags: ActionTagMethodList = []
     importer: ComfyImporter
     typecheckingConfig: JsonFile<TsConfigCustom>
-
-    // showLatentPreviewInLastImagePanel
-    get showLatentPreviewInLastImagePanel() { return this.configFile.value.showLatentPreviewInLastImagePanel ?? false } // prettier-ignore
-    set showLatentPreviewInLastImagePanel(v: boolean) { this.configFile.update({ showLatentPreviewInLastImagePanel: v }) } // prettier-ignore
 
     // showPreviewInFullScreen
     get showPreviewInFullScreen() { return this.configFile.value.showPreviewInFullScreen ?? false } // prettier-ignore
@@ -229,7 +177,7 @@ export class STATE {
 
     //
     get githubUsername(): Maybe<GithubUserName> { return this.configFile.value.githubUsername as Maybe<GithubUserName> } // prettier-ignore
-    get favoriteActions(): AppPath[] { return this.configFile.value.favoriteCards ?? [] } // prettier-ignore
+    get favoriteApps(): CushyAppID[] { return this.configFile.value.favoriteApps ?? [] } // prettier-ignore
 
     getConfigValue = <K extends keyof ConfigFile>(k: K) => this.configFile.value[k]
     setConfigValue = <K extends keyof ConfigFile>(k: K, v: ConfigFile[K]) => this.configFile.update({ [k]: v })
@@ -239,6 +187,13 @@ export class STATE {
     set showPreviewInPanel(v: boolean) { this.configFile.update({ showPreviewInPanel: v }) } // prettier-ignore
 
     droppedFiles: File[] = []
+
+    _allPublishedApps: Maybe<PostgrestSingleResponse<Database['public']['Tables']['published_apps']['Row'][]>> = null
+    fetcAllPublishedApps = async () => {
+        const x = await this.supabase.from('published_apps').select('*')
+        this._allPublishedApps = x
+        return x
+    }
 
     // showCardPicker: boolean = false
     closeFullLibrary = () => (this.layout.fullPageComp = null)
@@ -267,18 +222,19 @@ export class STATE {
             return this.db.projects.firstOrCrash()
         }
         console.log(`[🛋️] creating project`)
-        const initialGraph = this.db.graphs.create({ comfyPromptJSON: {} })
-        const defaultAppPath = asAppPath('library/CushyStudio/default/prompt.ts')
-        const initialDraft = this.db.drafts.create({
-            appParams: {},
-            appPath: defaultAppPath,
-            isOpened: SQLITE_true,
-        })
+        const initialGraph = this.db.graphs.create({ comfyPromptJSON: {}, metadata: {} })
+        const defaultAppPath = asAppPath('library/CushyStudio/default/SDUI.ts')
+        // const initialDraft = this.db.drafts.create({
+        //     appParams: {},
+        //     title: 'initial draft',
+        //     appPath: defaultAppPath,
+        //     isOpened: SQLITE_true,
+        // })
         const project = this.db.projects.create({
             rootGraphID: initialGraph.id,
             name: 'new project',
             currentApp: defaultAppPath,
-            currentDraftID: initialDraft.id,
+            // currentDraftID: initialDraft.id,
         })
         return project
     }
@@ -291,11 +247,11 @@ export class STATE {
     })
 
     get currentDraft(): Maybe<DraftL> {
-        return this.getProject().draft.item
+        return this.project.draft.item
     }
     set currentDraft(draft: DraftL | null) {
-        this.getProject().update({ currentDraftID: draft ? draft.id : draft })
-        draft?.app?.load()
+        this.project.update({ currentDraftID: draft ? draft.id : draft })
+        draft?.file?.load()
         this.closeFullLibrary()
     }
 
@@ -341,25 +297,40 @@ export class STATE {
     expandNodes: boolean = false
 
     updateTsConfig = () => {
-        const finalInclude = ['src', 'schema/global.d.ts']
-        if (this.githubUsername) finalInclude.push(`library/${this.githubUsername}/**/*`)
-        if (this.githubUsername === 'rvion') finalInclude.push('library/CushyStudio/**/*')
-        this.typecheckingConfig.update({ include: finalInclude })
+        console.log(`[🍻] FIXUP TSConfig`)
+        const mandatory = mandatoryTSConfigIncludes
+        if (this.configFile.value.enableTypeCheckingBuiltInApps) {
+            mandatory.push('library/built-in')
+            mandatory.push('library/sdk-examples')
+        }
+        const startTSConfig = this.typecheckingConfig.value
+        const hasAllMandatoryIncludes = mandatory.every((mandatory) => startTSConfig.include.includes(mandatory))
+        if (hasAllMandatoryIncludes) return // console.log(startTSConfig.include, mandatory)
+        this.typecheckingConfig.update((x) => {
+            const current = x.include
+            for (const inc of mandatory) {
+                if (current.includes(inc)) continue
+                console.log(`[👙] adding`, inc)
+                current.push(inc)
+            }
+        })
     }
 
+    project: ProjectL
+    primarySdkDtsPath: AbsolutePath
     constructor(
         /** path of the workspace */
         public rootPath: AbsolutePath,
     ) {
         console.log('[🛋️] starting Cushy')
         this.cacheFolderPath = this.resolve(this.rootPath, asRelativePath('outputs'))
-        this.comfyJSONPath = this.resolve(this.rootPath, asRelativePath('schema/object_info.json'))
-        this.embeddingsPath = this.resolve(this.rootPath, asRelativePath('schema/embeddings.json'))
-        this.nodesTSPath = this.resolve(this.rootPath, asRelativePath('schema/global.d.ts'))
+        this.primarySdkDtsPath = this.resolve(this.rootPath, asRelativePath('schema/global.d.ts'))
+        // this.comfyJSONPath = this.resolve(this.rootPath, asRelativePath('schema/object_info.json'))
+        // this.embeddingsPath = this.resolve(this.rootPath, asRelativePath('schema/embeddings.json'))
         this.outputFolderPath = this.cacheFolderPath // this.resolve(this.cacheFolderPath, asRelativePath('outputs'))
 
-        this.actionsFolderPathRel = asRelativePath('library')
-        this.actionsFolderPathAbs = this.resolve(this.rootPath, this.actionsFolderPathRel)
+        this.libraryFolderPathRel = asRelativePath('library')
+        this.libraryFolderPathAbs = this.resolve(this.rootPath, this.libraryFolderPathRel)
 
         // config files
         this.typecheckingConfig = mkTypescriptConfig()
@@ -368,8 +339,8 @@ export class STATE {
 
         // core instances
         this.db = new LiveDB(this)
-        this.schema = this.db.schema
-
+        // this.schema = this.db.schema
+        this.supabase = mkSupa()
         this.electronUtils = new ElectronUtils(this)
         this.shortcuts = new ShortcutWatcher(shortcutsDef, this, { name: nanoid() })
         console.log(`[🛋️] ${this.shortcuts.shortcuts.length} shortcuts loaded`)
@@ -387,53 +358,78 @@ export class STATE {
         })
         this.importer = new ComfyImporter(this)
         this.library = new Library(this)
-        ;(async () => {
-            await this.schemaReady
-            const project = this.getProject()
-        })()
+        this.project = this.getProject()
+        this.auth = new AuthState(this)
 
-        this.ws = this.initWebsocket()
-        makeAutoObservable(this, { comfyUIIframeRef: false })
+        this.virtualHostBase // ensure getters are called at least once so we upsert the two core virtual hosts
+        this.virtualHostFull // ensure getters are called at least once so we upsert the two core virtual hosts
+
+        this.mainHost.CONNECT()
+
+        makeAutoObservable(this, {
+            comfyUIIframeRef: false,
+            wildcards: false,
+        })
     }
 
-    get mainComfyHostID(): ComfyHostID {
+    get mainComfyHostID(): HostID {
         return (
             this.configFile.value.mainComfyHostID ?? //
-            DEFAULT_COMFYUI_INSTANCE_ID
+            vIRTUAL_HOST_ID__BASE
         )
     }
 
-    get mainComfyHost(): ComfyHostDef {
-        const selectedHost = this.configFile.value.comfyUIHosts?.find((h) => h.id === this.mainComfyHostID)
-        return selectedHost ?? defaultHost
+    get virtualHostBase(): HostL {
+        return this.db.hosts.upsert({
+            id: asHostID(vIRTUAL_HOST_ID__BASE),
+            hostname: 'localhost',
+            useHttps: SQLITE_false,
+            port: 8188,
+            name: 'virtual-ComfyUI-base',
+            isLocal: SQLITE_true,
+            isVirtual: SQLITE_true,
+        })
+    }
+
+    get virtualHostFull(): HostL {
+        return this.db.hosts.upsert({
+            id: asHostID(vIRTUAL_HOST_ID__FULL),
+            hostname: 'localhost',
+            useHttps: SQLITE_false,
+            port: 8188,
+            name: 'virtual-ComfyUI-full',
+            isLocal: SQLITE_true,
+            isVirtual: SQLITE_true,
+        })
     }
 
     /**
-     * will be created only after we've loaded cnfig file
-     * so we don't attempt to connect to some default server
+     * main host websocket
+     * (exposed here for legacy reasons)
      * */
-    ws: ResilientWebSocketClient
-    getServerHostHTTP(): string {
-        const method = this.mainComfyHost.useHttps ? 'https' : 'http'
-        const host = this.mainComfyHost.hostname
-        const port = this.mainComfyHost.port
-        return `${method}://${host}:${port}`
-    }
-    getWSUrl = (): string => {
-        const method = this.mainComfyHost.useHttps ? 'wss' : 'ws'
-        const host = this.mainComfyHost.hostname
-        const port = this.mainComfyHost.port
-        return `${method}://${host}:${port}/ws`
+    get ws() {
+        return this.mainHost.ws
     }
 
-    initWebsocket = () => {
-        console.log('[👢] WEBSOCKET: starting client to ComfyUI')
-        return new ResilientWebSocketClient({
-            onConnectOrReconnect: () => this.fetchAndUdpateSchema(),
-            onMessage: this.onMessage,
-            url: this.getWSUrl,
-            onClose: () => {},
-        })
+    hosts = new LiveCollection<HostL>({
+        table: () => this.db.hosts,
+        where: () => ({}),
+    })
+
+    /** main host */
+    get mainHost(): HostL {
+        const selectedHost = this.db.hosts.get(this.mainComfyHostID)
+        return selectedHost ?? this.virtualHostBase
+    }
+
+    /** todo: rename */
+    getServerHostHTTP(): string {
+        return this.mainHost.getServerHostHTTP()
+    }
+
+    /** todo: rename */
+    getWSUrl = (): string => {
+        return this.mainHost.getServerHostHTTP()
     }
 
     _pendingMsgs = new Map<PromptID, PromptRelated_WsMsg[]>()
@@ -551,85 +547,6 @@ export class STATE {
     CRITICAL_ERROR: Maybe<CSCriticalError> = null
 
     schemaRetrievalLogs: string[] = []
-    /** retrieve the comfy spec from the schema*/
-    fetchAndUdpateSchema = async (): Promise<void> => {
-        // 1. fetch schema$
-        let object_info_json: ComfySchemaJSON = this.schema.data.spec
-
-        this.schemaRetrievalLogs.splice(0, this.schemaRetrievalLogs.length)
-        const addLog = (...args: any[]) => {
-            this.schemaRetrievalLogs.push(args.join(' '))
-            console.info('[🐱] CONFY:', ...args)
-        }
-        try {
-            // 1 ------------------------------------
-            // download object_info
-            const headers: HeadersInit = { 'Content-Type': 'application/json' }
-            const object_info_url = `${this.getServerHostHTTP()}/object_info`
-            const object_info_res = await fetch(object_info_url, { method: 'GET', headers })
-            const object_info_json = (await object_info_res.json()) as { [key: string]: any }
-            const object_info_str = readableStringify(object_info_json, 4)
-            writeFileSync(this.comfyJSONPath, object_info_str, 'utf-8')
-
-            // 2 ------------------------------------
-            // download embeddigns
-            const embeddings_url = `${this.getServerHostHTTP()}/embeddings`
-            const embeddings_res = await fetch(embeddings_url, { method: 'GET', headers })
-            const embeddings_json = (await embeddings_res.json()) as EmbeddingName[]
-            writeFileSync(this.embeddingsPath, JSON.stringify(embeddings_json), 'utf-8')
-
-            // 3 ------------------------------------
-            // update schema
-            this.schema.update({ spec: object_info_json, embeddings: embeddings_json })
-            this.schema.RUN_BASIC_CHECKS()
-
-            // 3 ------------------------------------
-            // regen sdk
-            const comfySchemaTs = this.schema.codegenDTS()
-            writeFileSync(this.nodesTSPath, comfySchemaTs, 'utf-8')
-
-            // debug for rvion
-            if (this.githubUsername === 'rvion') {
-                writeFileSync('docs/ex/a.md', '```ts\n' + comfySchemaTs + '\n```\n', 'utf-8')
-                writeFileSync('docs/ex/b.md', '```json\n' + object_info_str + '\n```\n', 'utf-8')
-            }
-        } catch (error) {
-            console.error(error)
-            console.error('🔴 FAILURE TO GENERATE nodes.d.ts', extractErrorMessage(error))
-
-            const schemaExists = existsSync(this.nodesTSPath)
-            if (!schemaExists) {
-                const comfySchemaTs = this.schema.codegenDTS()
-                writeFileSync(this.nodesTSPath, comfySchemaTs, 'utf-8')
-            }
-        }
-
-        this.schemaReady.resolve(true)
-
-        // this.objectInfoFile.update(schema$)
-        // this.comfySDKFile.updateFromCodegen(comfySdkCode)
-        // this.comfySDKFile.syncWithDiskFile()
-
-        // const debugObjectInfosPath = 'schema/debug.json'
-        // const hasDebugObjectInfosJSON = existsSync(debugObjectInfosPath)
-        // if (hasDebugObjectInfosJSON) {
-        //     const debugObjectInfosStr = readFileSync(debugObjectInfosPath, 'utf8')
-        //     const debugObjectInfosJSON = JSON.parse(debugObjectInfosStr)
-        //     schema$ = debugObjectInfosJSON
-        //     const res = ComfySchemaJSON_zod.safeParse(schema$) //{ KSampler: schema$['KSampler'] })
-        //     if (res.success) {
-        //         console.log('🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢 valid schema')
-        //     } else {
-        //         console.log('🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 invalid schema')
-        //         const DEBUG_small = JSON.stringify(res.error.flatten(), null, 4)
-        //         writeFileSync('schema/debug.errors.json', DEBUG_small, 'utf-8')
-        //         const DEBUG_full = JSON.stringify(res.error, null, 4)
-        //         writeFileSync('schema/debug.errors-full.json', DEBUG_full, 'utf-8')
-        //         console.log(res.error.flatten())
-        //     }
-        // } else {
-        // }
-    }
 
     get schemaStatusEmoji() {
         if (this.schema.nodes.length > 10) return '🟢'

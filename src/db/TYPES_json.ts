@@ -8,10 +8,14 @@ import type { WsMsgExecutionError } from 'src/types/ComfyWsApi'
 import type { SqlColDef } from './_getAllColumnsForTable'
 
 import type { Status } from 'src/back/Status'
+import type { ComfyNodeID, ComfyNodeMetadata } from 'src/types/ComfyNodeID'
 
 export type StatusT = keyof typeof Status
 
 export const Nullable = <T extends TSchema>(schema: T) => Type.Union([schema, Type.Null(), Type.Undefined()])
+
+export type Graph_metadata = { [key: ComfyNodeID]: ComfyNodeMetadata }
+export const Graph_metadata_Schema = Type.Record(Type.String(), Type.Any())
 
 export type Graph_comfyPromptJSON = ComfyPromptJSON
 export const Graph_comfyPromptJSON_Schema = Type.Record(Type.String(), Type.Any())

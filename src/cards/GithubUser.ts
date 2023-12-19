@@ -90,7 +90,7 @@ export class GithubUser {
     //     if (this.isFake)
     //         return {
     //             fetchedAt: 0 as Timestamp,
-    //             json: { avatar_url: assets.public_CushyLogo_512_png },
+    //             json: { avatar_url: assets.CushyLogo_512_png },
     //         }
     //     const response = await fetch(`https://api.github.com/users/${this.username}`)
     //     if (!response.ok) throw new Error('Failed to fetch user data')

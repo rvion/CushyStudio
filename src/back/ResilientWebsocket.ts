@@ -9,13 +9,16 @@ export class ResilientWebSocketClient {
     private url: string
     private currentWS?: Maybe<WebSocket>
     private messageBuffer: Message[] = []
+
     isOpen = false
 
     debugMessages: { type: 'info' | 'error'; timestamp: number; message: string }[] = []
+
     addInfo = (msg: string) => {
         this.debugMessages.push({ type: 'info', timestamp: Date.now(), message: msg })
         console.info('[🧦] WS:', msg)
     }
+
     addError = (err: string) => {
         this.debugMessages.push({ type: 'error', timestamp: Date.now(), message: err })
         console.error('[🧦] WS:', err)

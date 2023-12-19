@@ -8,7 +8,6 @@ import { DraftUI } from './Panel_Draft'
 export const Panel_CurrentDraft = observer(function CurrentDraftUI_(p: {}) {
     const st = useSt()
     const draft = st.currentDraft
-
     // just in case no card is selected, open one
     // useEffect(() => {
     //     if (draft?.cardPath == null) st.openCardPicker()
@@ -27,11 +26,11 @@ export const Panel_CurrentDraft = observer(function CurrentDraftUI_(p: {}) {
             </MainNavEntryUI>
         )
     }
-    const card = draft.app
+    const card = draft.file
     if (card == null)
         return (
             <Message type='error' showIcon>
-                card not found
+                app "{draft.data.appID}" not found
             </Message>
         )
     // if (draft?.draftID == null) return <ActionDraftListUI card={card} />

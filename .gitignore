@@ -18,16 +18,15 @@ website/static/0.0.3-2023-03-19-index.html
 # electron
 out
 
-
 # keep .cushy folder
 outputs/*
 !outputs/.gitkeep
 
 # keep .schema folder
-schema/*
-!schema/.gitkeep
-!schema/object_info.default.json
-!schema/embeddings.default.json
+schema/globa.d.ts
+schema/hosts/*
+!schema/hosts/virtual-base
+!schema/hosts/virtual-full
 
 cushy.db
 cushy*.db
@@ -46,10 +45,13 @@ global.d.ts
 !src/utils/custom-jsx/global.d.ts
 tsconfig.custom.json
 
-library/*
-!library/CushyStudio
-!library/_doc
+library/local/*
+!library/local/.gitkeep
 
+library/installed/*
+!library/installed/.gitkeep
+
+library/legacy
 library/**/dist
 
 .cushy/**/*.json
@@ -63,3 +65,11 @@ lib
 .cushy/pnpm
 .cushy/pnpm*
 .cushy/store
+
+docs/ex
+
+
+*.log
+
+release/main.css
+release/meta.json

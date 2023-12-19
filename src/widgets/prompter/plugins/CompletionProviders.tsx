@@ -1,8 +1,8 @@
 import type { STATE } from 'src/state/state'
-import { wildcards } from 'src/widgets/prompter/nodes/wildcards/wildcards'
+
 import { LexicalNode } from 'lexical'
 import { makeAutoObservable } from 'mobx'
-import { ReactElement, ReactNode } from 'react'
+import { ReactElement } from 'react'
 import { $createBooruNode } from '../nodes/booru/BooruNode'
 import { $createEmbeddingNode } from '../nodes/embedding/EmbeddingNode'
 import { $createLoraNode } from '../nodes/lora/LoraNode'
@@ -67,7 +67,7 @@ export class CompletionState {
         const menuLabel = <span tw='text-yellow-500'>wildcard:</span>
         const provider = new CopmletionProvider({
             getValues: () =>
-                Object.entries(wildcards).map(([x, values]) => ({
+                Object.entries(st.wildcards).map(([x, values]) => ({
                     trigger: '*',
                     menuLabel,
                     title: x,

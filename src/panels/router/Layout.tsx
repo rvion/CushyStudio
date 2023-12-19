@@ -90,7 +90,7 @@ export class CushyLayoutManager {
             this.setModel(Model.fromJson(this.build()))
             // this.setModel(Model.fromJson({ layout: { type: 'row', children: [] } }))
         }
-        makeAutoObservable(this)
+        makeAutoObservable(this, { layoutRef: false })
     }
 
     layoutRef = createRef<Layout>()
@@ -124,19 +124,21 @@ export class CushyLayoutManager {
     })
 
     nextPaintIDx = 0
-    openAppInMainPanel = (actionPath: AppPath) => {
-        const card = this.st.library.getFile(actionPath)
-        if (card == null) return null /* 🔴 add popup somewhere */
-        const draft = card.getLastDraft()
-        this.st.currentDraft = draft
-        // this.FOCUS_OR_CREATE('Draft', { draftID: draft?.id ?? '❌' }, 'LEFT_PANE_TABSET')
+    openAppInMainPanel = (actionPath: RelativePath) => {
+        throw new Error('not implemented')
+        // const card = this.st.library.getFile(actionPath)
+        // if (card == null) return null /* 🔴 add popup somewhere */
+        // const draft = card.getLastDraft()
+        // this.st.currentDraft = draft
+        // // this.FOCUS_OR_CREATE('Draft', { draftID: draft?.id ?? '❌' }, 'LEFT_PANE_TABSET')
     }
 
-    openAppInNewPanel = (actionPath: AppPath) => {
-        const card = this.st.library.getFile(actionPath)
-        if (card == null) return null /* 🔴 add popup somewhere */
-        const draft = card.getLastDraft()
-        this.FOCUS_OR_CREATE('Draft', { draftID: draft?.id ?? '❌' }, 'LEFT_PANE_TABSET')
+    openAppInNewPanel = (actionPath: RelativePath) => {
+        throw new Error('not implemented')
+        // const card = this.st.library.getFile(actionPath)
+        // if (card == null) return null /* 🔴 add popup somewhere */
+        // const draft = card.getLastDraft()
+        // this.FOCUS_OR_CREATE('Draft', { draftID: draft?.id ?? '❌' }, 'LEFT_PANE_TABSET')
     }
     // addDraft = (p: PropsOf<typeof Panel_Draft>) => {
     //     const draftID = p.draftID
@@ -286,6 +288,9 @@ export class CushyLayoutManager {
     build = (): IJsonModel => {
         const out: IJsonModel = {
             global: {
+                splitterSize: 6,
+                borderEnableAutoHide: true,
+                borderAutoSelectTabWhenClosed: true,
                 //
                 // tabSetEnableSingleTabStretch: true,
             },

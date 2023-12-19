@@ -84,6 +84,9 @@ export type GraphT = {
     /** @default: null, sqlType: TEXT */
     stepID?: Maybe<StepID>;
 
+    /** @default: "'{}'", sqlType: json */
+    metadata: T.Graph_metadata;
+
 }
 export const GraphSchema = Type.Object({
     id: Type.String(),
@@ -91,6 +94,7 @@ export const GraphSchema = Type.Object({
     updatedAt: Type.Number(),
     comfyPromptJSON: T.Graph_comfyPromptJSON_Schema,
     stepID: Type.Optional(T.Nullable(Type.String())),
+    metadata: T.Graph_metadata_Schema,
 },{ additionalProperties: false })
 
 export const GraphFields = {
@@ -99,6 +103,7 @@ export const GraphFields = {
     updatedAt: {cid:2,name:'updatedAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
     comfyPromptJSON: {cid:3,name:'comfyPromptJSON',type:'json',notnull:1,dflt_value:null,pk:0},
     stepID: {cid:4,name:'stepID',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    metadata: {cid:5,name:'metadata',type:'json',notnull:1,dflt_value:"'{}'",pk:0},
 }
 
 
@@ -116,14 +121,14 @@ export type DraftT = {
     /** @default: null, sqlType: TEXT */
     title?: Maybe<string>;
 
-    /** @default: null, sqlType: TEXT */
-    appPath: AppPath;
-
     /** @default: null, sqlType: json */
     appParams: T.Draft_appParams;
 
     /** @default: "1", sqlType: INT */
     isOpened: number;
+
+    /** @default: null, sqlType: TEXT */
+    appID: CushyAppID;
 
 }
 export const DraftSchema = Type.Object({
@@ -131,9 +136,9 @@ export const DraftSchema = Type.Object({
     createdAt: Type.Number(),
     updatedAt: Type.Number(),
     title: Type.Optional(T.Nullable(Type.String())),
-    appPath: Type.String(),
     appParams: T.Draft_appParams_Schema,
     isOpened: Type.Number(),
+    appID: Type.String(),
 },{ additionalProperties: false })
 
 export const DraftFields = {
@@ -141,9 +146,9 @@ export const DraftFields = {
     createdAt: {cid:1,name:'createdAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
     updatedAt: {cid:2,name:'updatedAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
     title: {cid:3,name:'title',type:'TEXT',notnull:0,dflt_value:null,pk:0},
-    appPath: {cid:4,name:'appPath',type:'TEXT',notnull:1,dflt_value:null,pk:0},
-    appParams: {cid:5,name:'appParams',type:'json',notnull:1,dflt_value:null,pk:0},
-    isOpened: {cid:6,name:'isOpened',type:'INT',notnull:1,dflt_value:'1',pk:0},
+    appParams: {cid:4,name:'appParams',type:'json',notnull:1,dflt_value:null,pk:0},
+    isOpened: {cid:5,name:'isOpened',type:'INT',notnull:1,dflt_value:'1',pk:0},
+    appID: {cid:6,name:'appID',type:'TEXT',notnull:1,dflt_value:null,pk:0},
 }
 
 
@@ -206,9 +211,6 @@ export type StepT = {
     /** @default: null, sqlType: TEXT */
     name?: Maybe<string>;
 
-    /** @default: null, sqlType: TEXT */
-    appPath: AppPath;
-
     /** @default: null, sqlType: json */
     formResult: T.Step_formResult;
 
@@ -224,18 +226,21 @@ export type StepT = {
     /** @default: "1", sqlType: INT */
     isExpanded: number;
 
+    /** @default: null, sqlType: TEXT */
+    appID: CushyAppID;
+
 }
 export const StepSchema = Type.Object({
     id: Type.String(),
     createdAt: Type.Number(),
     updatedAt: Type.Number(),
     name: Type.Optional(T.Nullable(Type.String())),
-    appPath: Type.String(),
     formResult: T.Step_formResult_Schema,
     formSerial: T.Step_formSerial_Schema,
     outputGraphID: Type.String(),
     status: Type.String(),
     isExpanded: Type.Number(),
+    appID: Type.String(),
 },{ additionalProperties: false })
 
 export const StepFields = {
@@ -243,12 +248,12 @@ export const StepFields = {
     createdAt: {cid:1,name:'createdAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
     updatedAt: {cid:2,name:'updatedAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
     name: {cid:3,name:'name',type:'TEXT',notnull:0,dflt_value:null,pk:0},
-    appPath: {cid:4,name:'appPath',type:'TEXT',notnull:1,dflt_value:null,pk:0},
-    formResult: {cid:5,name:'formResult',type:'json',notnull:1,dflt_value:null,pk:0},
-    formSerial: {cid:6,name:'formSerial',type:'json',notnull:1,dflt_value:null,pk:0},
-    outputGraphID: {cid:7,name:'outputGraphID',type:'TEXT',notnull:1,dflt_value:null,pk:0},
-    status: {cid:8,name:'status',type:'TEXT',notnull:1,dflt_value:null,pk:0},
-    isExpanded: {cid:9,name:'isExpanded',type:'INT',notnull:1,dflt_value:'1',pk:0},
+    formResult: {cid:4,name:'formResult',type:'json',notnull:1,dflt_value:null,pk:0},
+    formSerial: {cid:5,name:'formSerial',type:'json',notnull:1,dflt_value:null,pk:0},
+    outputGraphID: {cid:6,name:'outputGraphID',type:'TEXT',notnull:1,dflt_value:null,pk:0},
+    status: {cid:7,name:'status',type:'TEXT',notnull:1,dflt_value:null,pk:0},
+    isExpanded: {cid:8,name:'isExpanded',type:'INT',notnull:1,dflt_value:'1',pk:0},
+    appID: {cid:9,name:'appID',type:'TEXT',notnull:1,dflt_value:null,pk:0},
 }
 
 
@@ -319,6 +324,9 @@ export type ComfySchemaT = {
     /** @default: null, sqlType: json */
     embeddings: T.ComfySchema_embeddings;
 
+    /** @default: null, sqlType: TEXT */
+    hostID?: Maybe<HostID>;
+
 }
 export const ComfySchemaSchema = Type.Object({
     id: Type.String(),
@@ -326,6 +334,7 @@ export const ComfySchemaSchema = Type.Object({
     updatedAt: Type.Number(),
     spec: T.ComfySchema_spec_Schema,
     embeddings: T.ComfySchema_embeddings_Schema,
+    hostID: Type.Optional(T.Nullable(Type.String())),
 },{ additionalProperties: false })
 
 export const ComfySchemaFields = {
@@ -334,6 +343,7 @@ export const ComfySchemaFields = {
     updatedAt: {cid:2,name:'updatedAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
     spec: {cid:3,name:'spec',type:'json',notnull:1,dflt_value:null,pk:0},
     embeddings: {cid:4,name:'embeddings',type:'json',notnull:1,dflt_value:null,pk:0},
+    hostID: {cid:5,name:'hostID',type:'TEXT',notnull:0,dflt_value:null,pk:0},
 }
 
 
@@ -461,6 +471,9 @@ export type MediaImageT = {
     /** @default: null, sqlType: TEXT */
     stepID?: Maybe<StepID>;
 
+    /** @default: null, sqlType: TEXT */
+    promptNodeID?: Maybe<string>;
+
 }
 export const MediaImageSchema = Type.Object({
     id: Type.String(),
@@ -472,6 +485,7 @@ export const MediaImageSchema = Type.Object({
     infos: Type.Optional(T.Nullable(T.MediaImage_infos_Schema)),
     promptID: Type.Optional(T.Nullable(Type.String())),
     stepID: Type.Optional(T.Nullable(Type.String())),
+    promptNodeID: Type.Optional(T.Nullable(Type.String())),
 },{ additionalProperties: false })
 
 export const MediaImageFields = {
@@ -484,6 +498,7 @@ export const MediaImageFields = {
     infos: {cid:6,name:'infos',type:'json',notnull:0,dflt_value:null,pk:0},
     promptID: {cid:7,name:'promptID',type:'TEXT',notnull:0,dflt_value:null,pk:0},
     stepID: {cid:8,name:'stepID',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    promptNodeID: {cid:9,name:'promptNodeID',type:'TEXT',notnull:0,dflt_value:null,pk:0},
 }
 
 
@@ -662,6 +677,271 @@ export const CustomDataFields = {
 }
 
 
+export const asCushyScriptID = (s: string): CushyScriptID => s as any
+export type CushyScriptT = {
+    /** @default: "hex(randomblob(16))", sqlType: string */
+    id: CushyScriptID;
+
+    /** @default: "now", sqlType: INTEGER */
+    createdAt: number;
+
+    /** @default: "now", sqlType: INTEGER */
+    updatedAt: number;
+
+    /** @default: null, sqlType: TEXT */
+    path: string;
+
+    /** @default: null, sqlType: TEXT */
+    code: string;
+
+    /** @default: null, sqlType: INT */
+    lastEvaluatedAt?: Maybe<number>;
+
+    /** @default: null, sqlType: INT */
+    lastSuccessfulEvaluationAt?: Maybe<number>;
+
+}
+export const CushyScriptSchema = Type.Object({
+    id: Type.String(),
+    createdAt: Type.Number(),
+    updatedAt: Type.Number(),
+    path: Type.String(),
+    code: Type.String(),
+    lastEvaluatedAt: Type.Optional(T.Nullable(Type.Number())),
+    lastSuccessfulEvaluationAt: Type.Optional(T.Nullable(Type.Number())),
+},{ additionalProperties: false })
+
+export const CushyScriptFields = {
+    id: {cid:0,name:'id',type:'string',notnull:1,dflt_value:'hex(randomblob(16))',pk:1},
+    createdAt: {cid:1,name:'createdAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
+    updatedAt: {cid:2,name:'updatedAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
+    path: {cid:3,name:'path',type:'TEXT',notnull:1,dflt_value:null,pk:0},
+    code: {cid:4,name:'code',type:'TEXT',notnull:1,dflt_value:null,pk:0},
+    lastEvaluatedAt: {cid:5,name:'lastEvaluatedAt',type:'INT',notnull:0,dflt_value:null,pk:0},
+    lastSuccessfulEvaluationAt: {cid:6,name:'lastSuccessfulEvaluationAt',type:'INT',notnull:0,dflt_value:null,pk:0},
+}
+
+
+export const asCushyAppID = (s: string): CushyAppID => s as any
+export type CushyAppT = {
+    /** @default: "hex(randomblob(16))", sqlType: string */
+    id: CushyAppID;
+
+    /** @default: "now", sqlType: INTEGER */
+    createdAt: number;
+
+    /** @default: "now", sqlType: INTEGER */
+    updatedAt: number;
+
+    /** @default: null, sqlType: TEXT */
+    guid?: Maybe<string>;
+
+    /** @default: null, sqlType: TEXT */
+    scriptID: CushyScriptID;
+
+    /** @default: null, sqlType: TEXT */
+    name?: Maybe<string>;
+
+    /** @default: null, sqlType: TEXT */
+    illustration?: Maybe<string>;
+
+    /** @default: null, sqlType: TEXT */
+    description?: Maybe<string>;
+
+    /** @default: null, sqlType: TEXT */
+    tags?: Maybe<string>;
+
+    /** @default: null, sqlType: TEXT */
+    publishedAsUserID?: Maybe<string>;
+
+    /** @default: null, sqlType: INT */
+    publishedAt?: Maybe<number>;
+
+}
+export const CushyAppSchema = Type.Object({
+    id: Type.String(),
+    createdAt: Type.Number(),
+    updatedAt: Type.Number(),
+    guid: Type.Optional(T.Nullable(Type.String())),
+    scriptID: Type.String(),
+    name: Type.Optional(T.Nullable(Type.String())),
+    illustration: Type.Optional(T.Nullable(Type.String())),
+    description: Type.Optional(T.Nullable(Type.String())),
+    tags: Type.Optional(T.Nullable(Type.String())),
+    publishedAsUserID: Type.Optional(T.Nullable(Type.String())),
+    publishedAt: Type.Optional(T.Nullable(Type.Number())),
+},{ additionalProperties: false })
+
+export const CushyAppFields = {
+    id: {cid:0,name:'id',type:'string',notnull:1,dflt_value:'hex(randomblob(16))',pk:1},
+    createdAt: {cid:1,name:'createdAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
+    updatedAt: {cid:2,name:'updatedAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
+    guid: {cid:3,name:'guid',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    scriptID: {cid:4,name:'scriptID',type:'TEXT',notnull:1,dflt_value:null,pk:0},
+    name: {cid:5,name:'name',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    illustration: {cid:6,name:'illustration',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    description: {cid:7,name:'description',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    tags: {cid:8,name:'tags',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    publishedAsUserID: {cid:9,name:'publishedAsUserID',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    publishedAt: {cid:10,name:'publishedAt',type:'INT',notnull:0,dflt_value:null,pk:0},
+}
+
+
+export const asAuthID = (s: string): AuthID => s as any
+export type AuthT = {
+    /** @default: "hex(randomblob(16))", sqlType: string */
+    id: AuthID;
+
+    /** @default: "now", sqlType: INTEGER */
+    createdAt: number;
+
+    /** @default: "now", sqlType: INTEGER */
+    updatedAt: number;
+
+    /** @default: null, sqlType: TEXT */
+    provider_token?: Maybe<string>;
+
+    /** @default: null, sqlType: TEXT */
+    refresh_token?: Maybe<string>;
+
+    /** @default: null, sqlType: TEXT */
+    token_type?: Maybe<string>;
+
+    /** @default: null, sqlType: TEXT */
+    access_token?: Maybe<string>;
+
+    /** @default: null, sqlType: TEXT */
+    provider_refresh_token?: Maybe<string>;
+
+    /** @default: null, sqlType: INT */
+    expires_at?: Maybe<number>;
+
+    /** @default: null, sqlType: INT */
+    expires_in?: Maybe<number>;
+
+}
+export const AuthSchema = Type.Object({
+    id: Type.String(),
+    createdAt: Type.Number(),
+    updatedAt: Type.Number(),
+    provider_token: Type.Optional(T.Nullable(Type.String())),
+    refresh_token: Type.Optional(T.Nullable(Type.String())),
+    token_type: Type.Optional(T.Nullable(Type.String())),
+    access_token: Type.Optional(T.Nullable(Type.String())),
+    provider_refresh_token: Type.Optional(T.Nullable(Type.String())),
+    expires_at: Type.Optional(T.Nullable(Type.Number())),
+    expires_in: Type.Optional(T.Nullable(Type.Number())),
+},{ additionalProperties: false })
+
+export const AuthFields = {
+    id: {cid:0,name:'id',type:'string',notnull:1,dflt_value:'hex(randomblob(16))',pk:1},
+    createdAt: {cid:1,name:'createdAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
+    updatedAt: {cid:2,name:'updatedAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
+    provider_token: {cid:3,name:'provider_token',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    refresh_token: {cid:4,name:'refresh_token',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    token_type: {cid:5,name:'token_type',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    access_token: {cid:6,name:'access_token',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    provider_refresh_token: {cid:7,name:'provider_refresh_token',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    expires_at: {cid:8,name:'expires_at',type:'INT',notnull:0,dflt_value:null,pk:0},
+    expires_in: {cid:9,name:'expires_in',type:'INT',notnull:0,dflt_value:null,pk:0},
+}
+
+
+export const asTreeEntryID = (s: string): TreeEntryID => s as any
+export type TreeEntryT = {
+    /** @default: "hex(randomblob(16))", sqlType: string */
+    id: TreeEntryID;
+
+    /** @default: "now", sqlType: INTEGER */
+    createdAt: number;
+
+    /** @default: "now", sqlType: INTEGER */
+    updatedAt: number;
+
+    /** @default: null, sqlType: INT */
+    isExpanded?: Maybe<number>;
+
+}
+export const TreeEntrySchema = Type.Object({
+    id: Type.String(),
+    createdAt: Type.Number(),
+    updatedAt: Type.Number(),
+    isExpanded: Type.Optional(T.Nullable(Type.Number())),
+},{ additionalProperties: false })
+
+export const TreeEntryFields = {
+    id: {cid:0,name:'id',type:'string',notnull:1,dflt_value:'hex(randomblob(16))',pk:1},
+    createdAt: {cid:1,name:'createdAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
+    updatedAt: {cid:2,name:'updatedAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
+    isExpanded: {cid:3,name:'isExpanded',type:'INT',notnull:0,dflt_value:null,pk:0},
+}
+
+
+export const asHostID = (s: string): HostID => s as any
+export type HostT = {
+    /** @default: "hex(randomblob(16))", sqlType: string */
+    id: HostID;
+
+    /** @default: "now", sqlType: INTEGER */
+    createdAt: number;
+
+    /** @default: "now", sqlType: INTEGER */
+    updatedAt: number;
+
+    /** @default: "hex(randomblob(16))", sqlType: TEXT */
+    name: string;
+
+    /** @default: "\"localhost\"", sqlType: TEXT */
+    hostname: string;
+
+    /** @default: "8188", sqlType: INT */
+    port: number;
+
+    /** @default: "0", sqlType: INT */
+    useHttps: number;
+
+    /** @default: "0", sqlType: INT */
+    isLocal: number;
+
+    /** @default: null, sqlType: TEXT */
+    absolutePathToComfyUI?: Maybe<string>;
+
+    /** @default: null, sqlType: TEXT */
+    absolutPathToDownloadModelsTo?: Maybe<string>;
+
+    /** @default: "0", sqlType: INT */
+    isVirtual: number;
+
+}
+export const HostSchema = Type.Object({
+    id: Type.String(),
+    createdAt: Type.Number(),
+    updatedAt: Type.Number(),
+    name: Type.String(),
+    hostname: Type.String(),
+    port: Type.Number(),
+    useHttps: Type.Number(),
+    isLocal: Type.Number(),
+    absolutePathToComfyUI: Type.Optional(T.Nullable(Type.String())),
+    absolutPathToDownloadModelsTo: Type.Optional(T.Nullable(Type.String())),
+    isVirtual: Type.Number(),
+},{ additionalProperties: false })
+
+export const HostFields = {
+    id: {cid:0,name:'id',type:'string',notnull:1,dflt_value:'hex(randomblob(16))',pk:1},
+    createdAt: {cid:1,name:'createdAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
+    updatedAt: {cid:2,name:'updatedAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
+    name: {cid:3,name:'name',type:'TEXT',notnull:1,dflt_value:'hex(randomblob(16))',pk:0},
+    hostname: {cid:4,name:'hostname',type:'TEXT',notnull:1,dflt_value:'"localhost"',pk:0},
+    port: {cid:5,name:'port',type:'INT',notnull:1,dflt_value:'8188',pk:0},
+    useHttps: {cid:6,name:'useHttps',type:'INT',notnull:1,dflt_value:'0',pk:0},
+    isLocal: {cid:7,name:'isLocal',type:'INT',notnull:1,dflt_value:'0',pk:0},
+    absolutePathToComfyUI: {cid:8,name:'absolutePathToComfyUI',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    absolutPathToDownloadModelsTo: {cid:9,name:'absolutPathToDownloadModelsTo',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    isVirtual: {cid:10,name:'isVirtual',type:'INT',notnull:1,dflt_value:'0',pk:0},
+}
+
+
 export const schemas = {
     migrations: new T.TableInfo(
         'migrations',
@@ -752,5 +1032,35 @@ export const schemas = {
         'CustomData',
         CustomDataFields,
         CustomDataSchema,
+    ),
+    cushy_script: new T.TableInfo(
+        'cushy_script',
+        'CushyScript',
+        CushyScriptFields,
+        CushyScriptSchema,
+    ),
+    cushy_app: new T.TableInfo(
+        'cushy_app',
+        'CushyApp',
+        CushyAppFields,
+        CushyAppSchema,
+    ),
+    auth: new T.TableInfo(
+        'auth',
+        'Auth',
+        AuthFields,
+        AuthSchema,
+    ),
+    tree_entry: new T.TableInfo(
+        'tree_entry',
+        'TreeEntry',
+        TreeEntryFields,
+        TreeEntrySchema,
+    ),
+    host: new T.TableInfo(
+        'host',
+        'Host',
+        HostFields,
+        HostSchema,
     ),
 }

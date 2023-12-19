@@ -1,7 +1,9 @@
 /** return true if the file or folder */
 
 export const shouldSkip = (baseName: string): boolean => {
+    // legacy name of cushy.json
     if (baseName === 'cushy-deck.json') return true
+    if (baseName === 'cushy.json') return true
     if (baseName.startsWith('.')) return true
     if (baseName.startsWith('_')) return true
     if (baseName.startsWith('node_modules')) return true

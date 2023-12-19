@@ -1,7 +1,6 @@
-import type { ThemeName } from 'src/theme/ThemeManager'
 import type { IJsonModel } from 'flexlayout-react'
-
-import { ComfyHostDef, ComfyHostID } from './ComfyHostDef'
+import type { ThemeName } from 'src/theme/ThemeManager'
+// import { ComfyHostID } from './ComfyHostDef'
 
 export type PreferedFormLayout = 'mobile' | 'dense' | 'auto'
 
@@ -23,12 +22,12 @@ export type ConfigFile = {
     preferedFormLayout?: PreferedFormLayout
     ['draft.mockup-mobile']?: boolean
 
-    favoriteCards?: AppPath[]
-    /** list of all comfyUI setup available */
-    comfyUIHosts?: ComfyHostDef[]
+    favoriteApps?: CushyAppID[]
+    /* list of all comfyUI setup available */
+    // comfyUIHosts?: ComfyHostDef[]
 
-    mainComfyHostID?: Maybe<ComfyHostID>
-
+    mainComfyHostID?: Maybe<HostID>
+    enableTypeCheckingBuiltInApps?: boolean
     /** 'light' or 'dark'; default to dark */
     theme?: ThemeName
     /** defaults to 48px */
@@ -54,8 +53,6 @@ export type ConfigFile = {
      */
     releaseChannel?: 'stable' | 'dev'
 
-    /** if true, the lastImage preview will also display the latent */
-    showLatentPreviewInLastImagePanel?: boolean
     /**
      * if true, hovering any image in the ui will scale the image
      * so it use all screen real estate rather than be limited by its

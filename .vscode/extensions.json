@@ -5,6 +5,10 @@
 
         // quick related-file swtching
         // configured for tests and other more complex mapping
-        "johnathanludwig.fileswitcher"
+        "johnathanludwig.fileswitcher",
+
+        // for mdx support
+        // mostly usefull if you want to write blog posts or edit documentation
+        "unifiedjs.vscode-mdx"
     ]
 }

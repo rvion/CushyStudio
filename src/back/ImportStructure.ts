@@ -48,6 +48,7 @@ function parseImportStatements(code: string): ImportStructure[] {
 
     return result
 }
+
 function generateSyncImportReplacement(importStructure: ImportStructure): string {
     const { moduleName, defaultImport, namedImports } = importStructure
 

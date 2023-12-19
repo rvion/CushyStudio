@@ -1,1 +1,0 @@
-osascript -e 'tell application "System Events" to tell process "CushyStudio" to set size of front window to {1280, 640}'

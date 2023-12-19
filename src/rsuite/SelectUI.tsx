@@ -24,7 +24,7 @@ type PP<T> = {
 
 class AutoCompleteSelectState<T> {
     constructor(public st: STATE, public p: PP<T>) {
-        makeAutoObservable(this)
+        makeAutoObservable(this, { anchorRef: false })
     }
     onChange = this.p.onChange
     multiple = this.p.multiple ?? false

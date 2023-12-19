@@ -1,7 +1,6 @@
-import { default as BetterSqlite3, default as SQL } from 'better-sqlite3'
+import { default as BetterSqlite3 } from 'better-sqlite3'
 import { Migration } from './_setupMigrationEngine'
 import { migrations } from './migrations'
-import { Store } from './storage'
 
 export const _applyAllMigrations = (store: {
     //

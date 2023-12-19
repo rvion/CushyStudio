@@ -1,4 +1,4 @@
-import type { SchemaL } from 'src/models/Schema'
+import type { ComfySchemaL } from 'src/models/Schema'
 import * as W from './Widget'
 import { exhaust } from 'src/utils/misc/ComfyUtils'
 import { makeAutoObservable } from 'mobx'
@@ -6,7 +6,7 @@ import { _FIX_INDENTATION } from '../utils/misc/_FIX_INDENTATION'
 
 export class FormBuilder {
     /** (@internal) don't call this yourself */
-    constructor(public schema: SchemaL) {
+    constructor(public schema: ComfySchemaL) {
         makeAutoObservable(this)
     }
 

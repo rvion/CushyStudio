@@ -10,3 +10,4 @@
 !library/**/*.ts
 !library/**/*.tsx
 !src/db/cushy-1.db
+!release/**/*

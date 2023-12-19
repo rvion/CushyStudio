@@ -1,19 +1,19 @@
-// import hljs from 'highlight.js/lib/core'
+import hljs from 'highlight.js/lib/core'
 // import json from 'highlight.js/lib/languages/json'
-// import typescript from 'highlight.js/lib/languages/typescript'
-// import { useLayoutEffect, useRef } from 'react'
+import typescript from 'highlight.js/lib/languages/typescript'
+import { useLayoutEffect, useRef } from 'react'
 import { Button } from 'src/rsuite/shims'
 
-// hljs.registerLanguage('typescript', typescript)
+hljs.registerLanguage('typescript', typescript)
 // hljs.registerLanguage('json', json)
 
 export const TypescriptHighlightedCodeUI = (p: { className?: string; code: string; wrap?: boolean }) => {
-    // const ref = useRef(null)
-    // useLayoutEffect(() => {
-    //     const e = ref.current
-    //     if (e == null) return
-    //     hljs.highlightElement(e)
-    // }, [ref, p.code])
+    const ref = useRef(null)
+    useLayoutEffect(() => {
+        const e = ref.current
+        if (e == null) return
+        hljs.highlightElement(e)
+    }, [ref, p.code])
     return (
         <div className='relative'>
             <div className='absolute top-2 right-2'>
@@ -27,7 +27,7 @@ export const TypescriptHighlightedCodeUI = (p: { className?: string; code: strin
             <code
                 className={'language-typescript text-xs ' + p.className}
                 style={{ whiteSpace: p.wrap ? 'pre-wrap' : 'pre' }}
-                // ref={ref}
+                ref={ref}
             >
                 {p.code}
             </code>

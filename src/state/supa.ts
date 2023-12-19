@@ -10,5 +10,6 @@ export const mkSupa = () => {
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhjYmF3ZG11cG5sdnF0eWF1YnZ0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDE5MDAxMzQsImV4cCI6MjAxNzQ3NjEzNH0.uqeWM2KalDxBD2Z52hrXlRLueDziW1_jaUXdmmFyIpQ'
     if (supabaseKey == null) throw new Error('foobar')
     const supabase = createClient(supabaseUrl, supabaseKey)
+
     return supabase
 }

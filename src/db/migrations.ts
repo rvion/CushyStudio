@@ -227,9 +227,217 @@ export const migrations: {
         name: 'prompt.status',
         up: ['alter table comfy_prompt add column status text'],
     },
+    {
+        id: 'JIf9D18H7R',
+        name: 'create cushy_script table',
+        up: [_createTable('cushy_script', ['path text not null', 'code text not null'])],
+    },
+    {
+        id: 'hG9xjiZn4I',
+        name: 'create cushy_app table',
+        up: [
+            _createTable('cushy_app', [
+                //
+                'guid text unique',
+                'scripID text references graph(id) not null',
+            ]),
+        ],
+    },
+    {
+        id: 'kn8M4lrSlB',
+        name: 'create cushy_app table',
+        up: [`alter table cushy_app rename column scripID to scriptID`],
+    },
+    {
+        id: 'H2wy77-Rvx',
+        name: 'create cushy_app table',
+        up: [
+            `alter table cushy_app drop column scriptID`,
+            `alter table cushy_app add column scriptID text references cushy_script(id) not null`,
+        ],
+    },
+    {
+        id: 'baWamSPnwf',
+        name: 'create drafts now based on cushy_app table',
+        up: [
+            `alter table draft drop column appPath`,
+            `alter table draft add column appID text references cushy_app(id) not null`,
+        ],
+    },
+    {
+        id: 'D9nJFXN2t0',
+        name: 'idem for step',
+        up: [`alter table step drop column appPath`, `alter table step add column appID text references cushy_app(id) not null`],
+    },
+    {
+        id: 'ZVMqRs0ogh',
+        name: 'add user table',
+        up: [
+            _createTable('auth', [
+                'expires_at text',
+                'expires_in text',
+                'provider_token text',
+                'refresh_token text',
+                'token_type text',
+                'access_token text',
+            ]),
+            'alter table cushy_app add column name text',
+            'alter table cushy_app add column illustration text',
+        ],
+    },
+    {
+        id: '-U4fPEdWdv',
+        name: 'provider_refresh_token',
+        up: [`alter table auth add column provider_refresh_token text`],
+    },
+    {
+        id: '3ZOHzNx4CL',
+        name: 'auth.expires_at & auth.expires_in are numbers',
+        up: [
+            `alter table auth drop column expires_at`,
+            `alter table auth drop column expires_in`,
+            `alter table auth add column expires_at int `,
+            `alter table auth add column expires_in int `,
+        ],
+    },
+    {
+        id: 'SKEO1Da-aa',
+        name: 'add app description and tags',
+        up: [
+            //
+            'alter table cushy_app add column description text',
+            'alter table cushy_app add column tags text',
+        ],
+    },
+    {
+        id: 'W4Srl6gMMD',
+        name: 'add app description and tags',
+        up: [_createTable('tree_infos', ['isExpanded int'])],
+    },
+    {
+        id: '8OUHASEkDa',
+        name: 'add app description and tags',
+        up: ['drop table tree_infos', _createTable('tree_entry', ['isExpanded int'])],
+    },
+    {
+        id: 'TsqhCRBCgq',
+        name: 'switch comfy_host to proper table',
+        up: [
+            //
+            _createTable('comfy_host', [
+                //
+                'name text not null default (hex(randomblob(16)))',
+                'hostname text not null default "localhost"',
+                'port int not null default 8188',
+                'useHttps int not null default 0',
+                'isLocal int not null default 0',
+                'localPath text',
+            ]),
+            'alter table comfy_schema add column hostID text references comfy_host(id)',
+        ],
+    },
+    {
+        id: 'ssH7sUSqD8',
+        name: 'rename comfy_host to hosts',
+        up: [
+            //
+            'alter table comfy_host rename to host',
+        ],
+    },
+    {
+        id: 'ikhG_dD58q',
+        name: 'tweak host table',
+        up: [
+            //
+            'alter table host rename column localPath to absolutePathToComfyUI',
+            'alter table host add column absolutPathToDownloadModelsTo text',
+        ],
+    },
+    {
+        id: 'F4j-vbWNqe',
+        name: 'more host table tweaks',
+        up: [
+            //
+            'alter table host add column isVirtual int not null default 0',
+        ],
+    },
+    {
+        id: 'dCGQQaHT8F',
+        name: 'misc',
+        up: [
+            //
+            'alter table cushy_app add column publishedID text',
+            'alter table cushy_app add column publishedAs text',
+            'alter table cushy_script add column lastEvaluatedAt text',
+            'alter table cushy_script add column lastSuccessfulEvaluation text',
+        ],
+    },
+    {
+        id: 'XemPQB9Biq',
+        name: 'misc',
+        up: [
+            //
+            'alter table cushy_app add column publishedVersion int',
+            'alter table cushy_app add column publishedAt text',
+        ],
+    },
+    {
+        id: 'qDXgzrF5GN',
+        name: 'misc',
+        up: [
+            // rename
+            'alter table cushy_app    rename column publishedAs to publishedAsUserID',
+
+            // delete
+            'alter table cushy_app    drop column publishedID',
+            'alter table cushy_app    drop column publishedVersion',
+            'alter table cushy_app    drop column publishedAt',
+            'alter table cushy_script drop column lastEvaluatedAt',
+            'alter table cushy_script drop column lastSuccessfulEvaluation',
+
+            // recreate
+            'alter table cushy_app    add column publishedAt INT',
+            'alter table cushy_script add column lastEvaluatedAt INT',
+            'alter table cushy_script add column lastSuccessfulEvaluationAt INT',
+        ],
+    },
+    {
+        id: 'aqBUfUJihT',
+        name: 'misc',
+        up: [
+            // rename
+            'alter table media_image add column promptNodeID text',
+        ],
+    },
+    {
+        id: '9tHBrHFrCu',
+        name: 'misc',
+        up: [
+            // rename
+            'alter table graph add column metadata json',
+        ],
+    },
+    {
+        id: 'gz_W2ilKV1',
+        name: 'misc',
+        up: [
+            // rename
+            'alter table graph drop column metadata',
+            `alter table graph add column metadata json default '{}'`,
+        ],
+    },
+    {
+        id: 'yACVuOp3-B',
+        name: 'misc',
+        up: [
+            // rename
+            'alter table graph drop column metadata',
+            `alter table graph add column metadata json not null default '{}'`,
+        ],
+    },
     // {
-    //     id: 'PONTSFSpA_',
-    //     name: 'fix image2',
-    //     up: [`alter table media_image drop column base64URL`],
+    //     id: 'e574c006-daca-4fd0-a51b-73a66b4fbd79',
+    //     name: 'create cushy_app table',
+    //     up: ['drop table cushy_app'],
     // },
 ]

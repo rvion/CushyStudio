@@ -34,7 +34,7 @@ export const StepOutputsHeaderV1UI = observer(function StepOutputsV1HeaderUI_(p:
             style={{ borderTop: '1px solid #2d2d2d' }}
         >
             <FoldIconUI val={step.expanded} />
-            <b>{step.name ?? step.appFile?.name ?? 'no name'}</b>
+            <b>{step.name ?? step.name}</b>
             <div tw='flex-grow'></div>
             <div className='text-xs opacity-50'>{_formatPreviewDate(new Date(step.createdAt))}</div>
         </div>
