@@ -1,29 +1,21 @@
-import { ui_latent } from './_prefabs/prefab_latent'
-
 app({
     // metadata for publishing
-    metadata: {
-        name: 'Zero123',
-        description: 'Zero123',
-    },
+    metadata: { name: 'Zero123', description: 'Zero123' },
 
-    // GUI
+    // interface
     ui: (ui) => ({
         about: ui.markdown('https://comfyanonymous.github.io/ComfyUI_examples/3d/'),
-
         // start image
         image: ui.image({ default: 'comfy', defaultComfy: { type: 'ComfyImage', imageName: 'example.png' } }),
-
         // elevation
         elevation: ui.float({ default: 10 }),
-
         // angle / azimuth
         from: ui.float({ min: -180, max: 180, default: -180 }),
         to: ui.float({ min: -180, max: 180, default: 180 }),
         step: ui.float({ min: 0.1, max: 180, default: 10 }),
     }),
 
-    // EXECUTION logic
+    // execution logic
     run: async (run, ui) => {
         // 1. ensure we have the model present
         run.mainHost.downloadFileIfMissing(
@@ -33,9 +25,7 @@ app({
 
         const graph = run.nodes
         const ckpt = graph.ImageOnlyCheckpointLoader({ ckpt_name: 'stable_zero123.ckpt' })
-
         const startImage = await run.loadImageAnswer(ui.image)
-        // const startImage = image
         for (const angle of run.range(ui.from, ui.to, ui.step)) {
             const sz123 = graph.StableZero123$_Conditioning({
                 width: 256,

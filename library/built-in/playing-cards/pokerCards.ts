@@ -6,6 +6,7 @@ import { toJS } from 'mobx'
 import { ui_highresfix } from '../_prefabs/_prefabs'
 import { run_model, ui_model } from '../_prefabs/prefab_model'
 import { run_sampler, ui_sampler } from '../_prefabs/prefab_sampler'
+import { run_prompt } from '../_prefabs/prefab_prompt'
 
 app({
     metadata: {
@@ -25,7 +26,7 @@ app({
         model: ui_model(form),
         sampler: ui_sampler(form),
         highResFix: ui_highresfix(form, { activeByDefault: true }),
-
+        globalNegative: form.prompt({}),
         logos: form.group({
             layout: 'H',
             // className: 'flex flex-wrap',
@@ -123,10 +124,6 @@ app({
         }
         await run.PROMPT()
 
-        // const spadesBG = run.findLastImageByPrefix('spades_BG')
-        // run.output_text(spadesBG?.id ?? 'no')
-        // run.output_text(spadesBG?.absPath ?? 'no')
-
         //===//===//===//===//===//===//===//===//===//===//===//===//===//
         // 3. CARD LAYOUTS --------------------------------------------------
         const negativeText = 'text, watermarks, logo, nsfw, boobs'
@@ -154,7 +151,8 @@ app({
         await run.PROMPT()
 
         //===//===//===//===//===//===//===//===//===//===//===//===//===//
-        // PROMPT  ----------------------------------------
+        // 4. PROMPT  ----------------------------------------
+        const negP = run_prompt(run, { richPrompt: ui.globalNegative, ckpt, clip })
         // const emptyLatent = graph.EmptyLatentImage({ width: W, height: H })
         for (const card of cardsSorted) {
             const { col: value, row: suit } = card
@@ -170,7 +168,7 @@ app({
 
             const positiveText = `masterpiece, rpg, ${basePrompt}, ${suitColor} of ${suit} color, intricate details, theme of ${theme} and ${ui.generalTheme}, 4k`
             const positive = graph.CLIPTextEncode({ clip, text: positiveText })
-            const negative = graph.CLIPTextEncode({ clip, text: negativeText })
+            const negative = negP.conditionning // graph.CLIPTextEncode({ clip, text: negativeText })
             const xxx = foo[`${suit}_${value}`]
             // let latent: _LATENT = suitsBackground.get(suit)! // emptyLatent
             let latent: _LATENT = graph.VAEEncode({ pixels: xxx.base, vae })
