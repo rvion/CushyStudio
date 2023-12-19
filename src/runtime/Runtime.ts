@@ -11,6 +11,9 @@ import { Uploader } from 'src/state/Uploader'
 import { assets } from 'src/utils/assets/assets'
 import { bang } from 'src/utils/misc/bang'
 import { braceExpansion } from 'src/utils/misc/expansion'
+import { IDNaminScheemeInPromptSentToComfyUI } from '../back/IDNaminScheemeInPromptSentToComfyUI'
+import { ImageSDK } from '../back/ImageSDK'
+import { ComfyWorkflowBuilder } from '../back/NodeBuilder'
 import { ImageAnswer } from '../controls/misc/InfoAnswer'
 import { ComfyNodeOutput } from '../core/Slot'
 import { auto } from '../core/autoValue'
@@ -22,10 +25,6 @@ import { ComfyUploadImageResult } from '../types/ComfyWsApi'
 import { createMP4FromImages } from '../utils/ffmpeg/ffmpegScripts'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { exhaust } from '../utils/misc/ComfyUtils'
-import { IDNaminScheemeInPromptSentToComfyUI } from '../back/IDNaminScheemeInPromptSentToComfyUI'
-import { ImageSDK } from '../back/ImageSDK'
-import { ComfyWorkflowBuilder } from '../back/NodeBuilder'
-import { Status } from '../back/Status'
 
 import child_process from 'child_process'
 import { OpenRouterRequest } from 'src/llm/OpenRouter_Request'
@@ -33,16 +32,23 @@ import { OpenRouterResponse } from 'src/llm/OpenRouter_Response'
 import { OpenRouter_ask } from 'src/llm/OpenRouter_ask'
 import { openRouterInfos } from 'src/llm/OpenRouter_infos'
 import { OpenRouter_Models } from 'src/llm/OpenRouter_models'
-import { CustomDataL } from 'src/models/CustomData'
-import { HostL } from 'src/models/Host'
 import { _formatAsRelativeDateTime } from 'src/updater/_getRelativeTimeString'
 import { Wildcards } from 'src/widgets/prompter/nodes/wildcards/wildcards'
-import { observer } from 'mobx-react-lite'
-import { ImageStore, ImageStoreAutoUpdateLogic, ImageStoreT } from '../back/ImageStore'
-import { RuntimeStore } from './RuntimeStore'
+import { RuntimeApps } from './RuntimeApps'
+import { RuntimeCushy } from './RuntimeCushy'
 import { RuntimeHosts } from './RuntimeHosts'
+import { RuntimeStore } from './RuntimeStore'
 
 export type ImageAndMask = HasSingle_IMAGE & HasSingle_MASK
+
+export type RuntimeExecutionResult =
+    | {
+          type: 'success'
+      }
+    | {
+          type: 'error'
+          error: any
+      }
 
 // 2 nest max
 // run.store.getLocal
@@ -50,14 +56,34 @@ export type ImageAndMask = HasSingle_IMAGE & HasSingle_MASK
 
 /** script exeuction instance */
 export class Runtime<FIELDS extends WidgetDict = any> {
-    store: RuntimeStore
-    hosts: RuntimeHosts
+    get store(): RuntimeStore {
+        const it = new RuntimeStore(this)
+        Object.defineProperty(this, 'store', { value: it })
+        return it
+    }
+
+    get hosts(): RuntimeHosts {
+        const it = new RuntimeHosts(this)
+        Object.defineProperty(this, 'hosts', { value: it })
+        return it
+    }
+
+    get cushy(): RuntimeCushy {
+        const it = new RuntimeCushy(this)
+        Object.defineProperty(this, 'cushy', { value: it })
+        return it
+    }
+
+    get apps(): RuntimeApps {
+        const it = new RuntimeApps(this)
+        Object.defineProperty(this, 'apps', { value: it })
+        return it
+    }
 
     constructor(public step: StepL) {
         this.st = step.st
         this.folder = step.st.outputFolderPath
-        this.store = new RuntimeStore(this)
-        this.hosts = new RuntimeHosts(this)
+
         this.upload_FileAtAbsolutePath = this.st.uploader.upload_FileAtAbsolutePath.bind(this.st.uploader)
         this.upload_ImageAtURL = this.st.uploader.upload_ImageAtURL.bind(this.st.uploader)
         this.upload_dataURL = this.st.uploader.upload_dataURL.bind(this.st.uploader)
@@ -274,7 +300,7 @@ export class Runtime<FIELDS extends WidgetDict = any> {
      * @internal
      * execute the draft
      */
-    _EXECUTE = async (p: { formInstance: Widget_group<any> }): Promise<{ type: 'success' } | { type: 'error'; error: any }> => {
+    _EXECUTE = async (p: { formInstance: Widget_group<any> }): Promise<RuntimeExecutionResult> => {
         const start = Date.now()
         const app = this.step.executable
         const appFormInput = this.step.data.formResult

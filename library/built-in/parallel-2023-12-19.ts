@@ -1,16 +1,34 @@
 import type { ImageStore } from 'src/back/ImageStore'
 
+// ID = library/built-in/parallel-2023-12-19.ts:0
 app({
     metadata: {
         name: 'orchestrator',
     },
-    ui: (form) => ({}),
+    ui: (form) => ({
+        batchesStart: form.int({ default: 5 }),
+        batchesEnd: form.int({ default: 7 }),
+    }),
     run: async (run, ui) => {
-        run.executeApp<typeof foo>('test-2023-12-19', {})
-        run.executeApp<typeof foo>('test-2023-12-19', {})
+        for (let batch = ui.batchesStart; batch <= ui.batchesEnd; batch++) {
+            run.output_text(`starting batch ${batch}`)
+            try {
+                await run.apps.execute({
+                    app: foo,
+                    formValue: {
+                        frameStart: 2 * batch,
+                        frameEnd: 2 * batch + 2,
+                        reprocess: false,
+                    },
+                })
+            } catch (e) {
+                run.output_text(`error in batch ${batch}: ${e}`)
+            }
+        }
     },
 })
 
+// ID = library/built-in/parallel-2023-12-19.ts:1
 const foo = app({
     metadata: {
         name: 'test-2023-12-19',

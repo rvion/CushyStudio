@@ -22,7 +22,7 @@ app({
         // 1. ensure we have the model present
         run.hosts.main.downloadFileIfMissing(
             'https://huggingface.co/stabilityai/stable-zero123/resolve/main/stable_zero123.ckpt',
-            `${run.hosts.main.data.absolutePathToComfyUI}/models/checkpoints/stable_zero123.ckpt`,
+            `${run.hosts.main.absolutPathToDownloadModelsTo}/stable_zero123.ckpt`,
         )
 
         const graph = run.nodes

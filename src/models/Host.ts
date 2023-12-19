@@ -25,7 +25,7 @@ export class HostL {
     get absolutPathToDownloadModelsTo() {
         return (
             this.data.absolutPathToDownloadModelsTo ?? //
-            `${this.data.absolutePathToComfyUI}/models/checkpoints/stable_zero123.ckpt`
+            `${this.data.absolutePathToComfyUI}/models/checkpoints`
         )
     }
 

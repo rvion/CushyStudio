@@ -50,7 +50,7 @@ export class DraftL {
         }
     }
 
-    start = (): StepL => {
+    start = (formValueOverride?: Maybe<any>): StepL => {
         // ----------------------------------------
         // 🔴 2023-11-30 rvion:: TEMPORPARY HACKS
         this.st.focusedStepID = null
@@ -58,7 +58,15 @@ export class DraftL {
         // ----------------------------------------
 
         // 1. ensure req valid (TODO: validate)
-        const req: Maybe<Widget_group<any>> = this.gui.value
+        const req = formValueOverride
+            ? // case of sub-drafts created/started from within a draft
+              ({
+                  builder: { _cache: { count: 0 } },
+                  result: formValueOverride,
+                  serial: {},
+              } as any as Widget_group<any>)
+            : this.gui.value
+
         if (req == null) throw new Error('invalid req')
 
         // 2. ensure graph valid

@@ -10,12 +10,15 @@ import { AppMetadata } from './AppManifest'
 /** quick function to help build actions in a type-safe way */
 
 // export const action = <const F extends WidgetDict>(name: string, t: Omit<Action<F>, 'name'>): Action<F> => ({ name, ...t })
-export type GlobalFunctionToDefineAnApp = <const F extends WidgetDict>(t: App<F>) => App<F>
+export type GlobalFunctionToDefineAnApp = <const F extends WidgetDict>(t: App<F>) => AppRef<F>
 export type ActionTagMethod = (arg0: string) => string
 export type ActionTagMethodList = Array<{ key: string; method: ActionTagMethod }>
 export type ActionTags = (arg0: ActionTagMethodList) => void
 export type WidgetDict = { [key: string]: Widget }
 export type FormResult<Req extends Widget> = ReqResult<Req>
+export type AppRef<F> = { $DO_NOT_USE: F; id: CushyAppID }
+
+export type $ExtractFormValueType<FIELDS extends WidgetDict> = { [k in keyof FIELDS]: FIELDS[k]['$Output'] }
 
 export type App<FIELDS extends WidgetDict> = {
     /** app interface (GUI) */
