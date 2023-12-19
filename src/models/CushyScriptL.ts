@@ -117,7 +117,7 @@ export class CushyScriptL {
             console.info(`[💙] found action: "${name}"`, { path: this.relPath })
             APPS.push(app)
             const appID = asCushyAppID(this.relPath + ':' + appIndex++) // 🔴 SUPER UNSAFE
-            console.log(`[👙] >> appID==`, appID)
+            // console.log(`[👙] >> appID==`, appID)
             return { $DO_NOT_USE: 0 as any, id: appID }
         }
 
