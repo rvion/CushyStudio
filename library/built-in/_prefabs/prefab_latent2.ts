@@ -18,12 +18,12 @@ export const ui_latent = (form: FormBuilder) => {
 
 export const run_latent = async (p: {
     //
-    flow: Runtime
+    run: Runtime
     opts: OutputFor<typeof ui_latent>
     vae: _VAE
 }) => {
     // init stuff
-    const graph = p.flow.nodes
+    const graph = p.run.nodes
     const opts = p.opts
 
     // misc calculatiosn
@@ -34,7 +34,7 @@ export const run_latent = async (p: {
     // 🔴
     // case 1. start form image
     if (opts.image) {
-        const imageRaw = await p.flow.loadImageAnswer(opts.image)
+        const imageRaw = await p.run.loadImageAnswer(opts.image)
         // May need to use a different node for resizing
         const image = await graph.ImageTransformResizeClip({
             images: imageRaw,
