@@ -7,12 +7,13 @@ export const RevealUI = observer(function Tooltip_(p: {
     //
     children: [React.ReactNode, React.ReactNode]
     tooltipWrapperClassName?: string[]
-    disableHover?: boolean
     className?: string
     showDelay?: number
     hideDelay?: number
     enableRightClick?: boolean
     cursor?: string
+    disableHover?: boolean
+    disableClick?: boolean
 }) {
     const showDelay = p.showDelay ?? defaultShowDelay
     const hideDelay = p.hideDelay ?? defaultHideDelay
@@ -73,6 +74,7 @@ export const RevealUI = observer(function Tooltip_(p: {
             onMouseEnter={uist.onMouseEnterAnchor}
             onMouseLeave={uist.onMouseLeaveAnchor}
             onClick={(ev) => {
+                if (p.disableClick) return
                 ev.stopPropagation()
                 ev.preventDefault()
                 if (uist.visible) uist.leaveAnchor()

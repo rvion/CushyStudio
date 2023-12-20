@@ -175,6 +175,9 @@ export type ProjectT = {
     /** @default: null, sqlType: TEXT */
     currentDraftID?: Maybe<DraftID>;
 
+    /** @default: "0", sqlType: INT */
+    filterNSFW: number;
+
 }
 export const ProjectSchema = Type.Object({
     id: Type.String(),
@@ -184,6 +187,7 @@ export const ProjectSchema = Type.Object({
     rootGraphID: Type.String(),
     currentApp: Type.Optional(T.Nullable(Type.String())),
     currentDraftID: Type.Optional(T.Nullable(Type.String())),
+    filterNSFW: Type.Number(),
 },{ additionalProperties: false })
 
 export const ProjectFields = {
@@ -194,6 +198,7 @@ export const ProjectFields = {
     rootGraphID: {cid:4,name:'rootGraphID',type:'TEXT',notnull:1,dflt_value:null,pk:0},
     currentApp: {cid:5,name:'currentApp',type:'TEXT',notnull:0,dflt_value:null,pk:0},
     currentDraftID: {cid:6,name:'currentDraftID',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    filterNSFW: {cid:7,name:'filterNSFW',type:'INT',notnull:1,dflt_value:'0',pk:0},
 }
 
 

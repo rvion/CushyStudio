@@ -443,6 +443,14 @@ export const migrations: {
             'alter table step add column draftID text references draft(id)',
         ],
     },
+    {
+        id: 'S7ah1uaV3n',
+        name: 'misc',
+        up: [
+            // rename
+            'alter table project add column filterNSFW int not null default 0',
+        ],
+    },
     // {
     //     id: 'e574c006-daca-4fd0-a51b-73a66b4fbd79',
     //     name: 'create cushy_app table',
