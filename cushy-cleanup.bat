@@ -10,3 +10,5 @@ setlocal
 @REM - /q does it quietly without prompting for confirmation.
 rd /s /q node_modules
 rd /s /q .cushy\store
+
+pause
