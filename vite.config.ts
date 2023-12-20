@@ -61,6 +61,7 @@ export default defineConfig({
             'cytoscape-klay': `${installDir}/src/syms/cytoscape-klay.js`,
             cytoscape: `${installDir}/src/syms/cytoscape.js`,
             lexical: `${installDir}/src/syms/lexical.js`,
+            '@tensorflow/tfjs': './src/syms/@tensorflow/tfjs',
 
             // -----------------------------------------------------------------------
             src: `${installDir}/src`,

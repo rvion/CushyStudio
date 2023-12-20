@@ -137,5 +137,10 @@
         "supabase": "^1.123.4",
         "tailwindcss": "^3.3.6",
         "vite": "^5.0.10"
+    },
+    "pnpm": {
+        "patchedDependencies": {
+            "three-stdlib@2.28.7": "patches/three-stdlib@2.28.7.patch"
+        }
     }
 }
