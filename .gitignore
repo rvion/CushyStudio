@@ -68,7 +68,7 @@ lib
 
 docs/ex
 
-
+logs/
 *.log
 
 release/main.css
