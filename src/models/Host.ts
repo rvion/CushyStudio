@@ -10,6 +10,7 @@ import { extractErrorMessage } from 'src/utils/formatters/extractErrorMessage'
 import { readableStringify } from 'src/utils/formatters/stringifyReadable'
 import { asRelativePath } from 'src/utils/fs/pathUtils'
 import { toastError, toastSuccess } from 'src/utils/misc/toasts'
+import { downloadFile } from 'src/utils/fs/downloadFile'
 export interface HostL extends LiveInstance<HostT, HostL> {}
 
 export class HostL {
@@ -65,8 +66,8 @@ export class HostL {
     /**  */
     downloadFileIfMissing = async (url: string, to: AbsolutePath | string) => {
         if (this.data.isLocal) {
-            return await https.get(url, (res) => res.pipe(require('fs').createWriteStream(to)))
-            return
+            // return await https.get(url, (res) => res.pipe(require('fs').createWriteStream(to)))
+            return downloadFile(url, to)
         }
         //
         console.log(`[🔴] NOT IMPLEMENTED`)
