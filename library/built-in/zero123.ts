@@ -76,3 +76,14 @@ app({
         await run.videos.output_video_ffmpegGeneratedImagesTogether(imagesSorted)
     },
 })
+
+app({
+    metadata: {
+        name: 'tset',
+        description: 'tset',
+    },
+    ui: (form) => ({
+        orbit: form.orbit({}),
+    }),
+    run: async (run, ui) => {},
+})

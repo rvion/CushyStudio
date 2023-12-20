@@ -25,6 +25,7 @@ import { WigetSizeUI } from './WidgetSizeUI'
 import { WidgetStrUI } from './WidgetStrUI'
 import { WidgetDI } from './WidgetUI.DI'
 import { WidgetListExtUI } from './WidgetListExtUI'
+import { WidgetOrbitUI } from './WidgetOrbitUI'
 
 /**
  * this widget will then dispatch the individual requests to the appropriate sub-widgets
@@ -65,6 +66,7 @@ export const WidgetUI = observer(function WidgetUI_(p: { widget: R.Widget; focus
     if (widget instanceof R.Widget_selectMany)         return <>TODO</>
     if (widget instanceof R.Widget_selectManyOrCustom) return <>TODO</>
     if (widget instanceof R.Widget_selectOneOrCustom)  return <>TODO</>
+    if (widget instanceof R.Widget_orbit)              return <WidgetOrbitUI       widget={widget} />
 
     exhaust(widget)
     console.log(`🔴`, (widget as any).type, widget)
