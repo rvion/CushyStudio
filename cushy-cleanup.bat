@@ -1,5 +1,5 @@
 @REM @echo off: This turns off the command echoing, which makes the script output cleaner.
-@echo off
+@REM @echo off
 
 @REM setlocal: Ensures that the environment changes are local to the script.
 setlocal
