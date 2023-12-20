@@ -1,5 +1,4 @@
 import react from '@vitejs/plugin-react'
-import { resolve } from 'path'
 import { cwd } from 'process'
 import { defineConfig } from 'vite'
 
@@ -81,6 +80,8 @@ export default defineConfig({
             'node:cluster': `${installDir}/src/syms/cluster.js`,
             /* */ fs: `${installDir}/src/syms/fs.js`,
             'node:fs': `${installDir}/src/syms/fs.js`,
+            /* */ https: `${installDir}/src/syms/https.js`,
+            'node:https': `${installDir}/src/syms/https.js`,
             /* */ os: `${installDir}/src/syms/os.js`,
             'node:os': `${installDir}/src/syms/os.js`,
             /* */ path: `${installDir}/src/syms/path.js`,
