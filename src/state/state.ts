@@ -49,6 +49,7 @@ import { DanbooruTags } from '../widgets/prompter/nodes/booru/BooruLoader'
 import { AuthState } from './AuthState'
 import { Uploader } from './Uploader'
 import { mkSupa } from './supa'
+import { SafetyChecker } from 'src/safety/Safety'
 
 export class STATE {
     /** hack to help closing prompt completions */
@@ -234,11 +235,13 @@ export class STATE {
             rootGraphID: initialGraph.id,
             name: 'new project',
             currentApp: defaultAppPath,
+            filterNSFW: SQLITE_false,
             // currentDraftID: initialDraft.id,
         })
         return project
     }
 
+    safetyChecker = new SafetyChecker(this)
     draftsFolded = false
 
     allOpenDrafts = new LiveFind<DraftT, DraftL>({

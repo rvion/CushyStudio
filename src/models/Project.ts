@@ -6,6 +6,7 @@ import { LiveRef } from '../db/LiveRef'
 import { ProjectT } from 'src/db/TYPES.gen'
 import { LiveRefOpt } from 'src/db/LiveRefOpt'
 import { DraftL } from './Draft'
+import { SQLITE_false, SQLITE_true } from 'src/db/SQLITE_boolean'
 
 export type ProjectID = Branded<string, { ProjectID: true }>
 export const asProjectID = (s: string): ProjectID => s as any
@@ -27,6 +28,12 @@ export class ProjectL {
     rootGraph = new LiveRef<this, ComfyWorkflowL>(this, 'rootGraphID', () => this.db.graphs)
     draft = new LiveRefOpt<this, DraftL>(this, 'currentDraftID', () => this.db.drafts)
 
+    get filterNSFW(): boolean {
+        return this.data.filterNSFW ? true : false
+    }
+    set filterNSFW(v: boolean) {
+        this.update({ filterNSFW: v ? SQLITE_true : SQLITE_false })
+    }
     get schema(): ComfySchemaL {
         return this.st.schema
     }

@@ -6,7 +6,7 @@ import { useSt } from 'src/state/stateContext'
 export const MenuNSFWCheckerUI = observer(function MenuNSFWCheckerUI_(p: {}) {
     const st = useSt()
     const pj = st.project
-    const val = pj.data.filterNSFW ? true : false
+    const val = pj.filterNSFW
     return (
         <RevealUI disableClick showDelay={0}>
             <label tw='swap swap-flip text-2xl'>
@@ -16,7 +16,7 @@ export const MenuNSFWCheckerUI = observer(function MenuNSFWCheckerUI_(p: {}) {
                     onChange={(ev) => {
                         console.log(`[👙] was`, val)
                         console.log(`[👙] willbe`, val ? SQLITE_false : SQLITE_true)
-                        pj.update({ filterNSFW: val ? SQLITE_false : SQLITE_true })
+                        pj.filterNSFW = !val
                     }}
                 />
                 <div tw='swap-on'>😇</div>
@@ -24,7 +24,7 @@ export const MenuNSFWCheckerUI = observer(function MenuNSFWCheckerUI_(p: {}) {
             </label>
             <div>
                 NSFW filter is currently
-                {st.project.data.filterNSFW ? ' ON' : ' OFF'}
+                {val ? ' ON' : ' OFF'}
             </div>
         </RevealUI>
     )

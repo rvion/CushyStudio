@@ -142,6 +142,10 @@ export class MediaImageL {
         this.downloadImageAndSaveToDisk()
     }
 
+    get isSafe() {
+        return this.st.safetyChecker.isSafe(this.url)
+    }
+
     get existsLocally(): boolean {
         return this.absPath != null
     }

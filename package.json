@@ -91,6 +91,7 @@
         "mobx-react-lite": "^4.0.5",
         "mobx-utils": "^6.0.8",
         "nanoid": "^5.0.4",
+        "nsfwjs": "^2.4.2",
         "papaparse": "^5.4.1",
         "pathe": "^1.1.1",
         "plist": "^3.1.0",

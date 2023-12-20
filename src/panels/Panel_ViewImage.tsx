@@ -23,9 +23,16 @@ export const Panel_ViewImage = observer(function Panel_ViewImage_(p: {
     const url = img?.url
     const background = st.configFile.value.galleryBgColor
 
+    const shouldFilter = st.project.filterNSFW
+    const safety =
+        img?.url && shouldFilter //
+            ? st.safetyChecker.isSafe(img?.url)
+            : null
+
     return (
         <div className={p.className} style={{ background }} tw='flex flex-col flex-grow bg-base-100 relative'>
             <ImageActionBarUI img={img} />
+            {shouldFilter && <pre>{JSON.stringify(safety?.value)}</pre>}
             <TransformWrapper centerZoomedOut centerOnInit>
                 <TransformComponent
                     wrapperStyle={{ height: '100%', width: '100%', display: 'flex' }}
@@ -33,7 +40,18 @@ export const Panel_ViewImage = observer(function Panel_ViewImage_(p: {
                 >
                     {url ? (
                         <img //
-                            style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                            style={{
+                                filter: !st.project.filterNSFW
+                                    ? undefined
+                                    : safety?.value == null //
+                                    ? 'blur(50px)'
+                                    : safety.value.isSafe
+                                    ? undefined
+                                    : 'blur(50px)',
+                                width: '100%',
+                                height: '100%',
+                                objectFit: 'contain',
+                            }}
                             src={url}
                             alt='last generated image'
                         />

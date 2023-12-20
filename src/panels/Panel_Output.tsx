@@ -15,15 +15,22 @@ export const LatentIfLastUI = observer(function LatentIfLastUI_(p: {}) {
     const lastImage = st.db.media_images.last()
     const latent = st.latentPreview
     if (latent == null) return null
-    if (lastImage == null || latent.receivedAt > lastImage.createdAt)
+    if (lastImage == null || latent.receivedAt > lastImage.createdAt) {
         return (
             <img //
                 tw='absolute bottom-0 right-0 shadow-xl z-50'
-                style={{ width: st.latentSizeStr, height: st.latentSizeStr, objectFit: 'contain' }}
+                style={{
+                    //
+                    filter: st.project.filterNSFW ? 'blur(50px)' : undefined,
+                    width: st.latentSizeStr,
+                    height: st.latentSizeStr,
+                    objectFit: 'contain',
+                }}
                 src={latent.url}
                 alt='last generated image'
             />
         )
+    }
 })
 
 export const Panel_Output = observer(function Panel_Output_(p: {}) {
