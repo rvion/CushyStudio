@@ -3,6 +3,7 @@ Todo before release:
     ☐ Vinsi
         ☐ opening a past step fold it in the outputs panel
         ☐ fix login callback not beeing available after public dir change
+        ☐ disable publish button if not logged in
         ☐ stuck in ComfyUI
         ☐ improve OuputWrappers to allow to open in side panes
         ✔ menu reveal  close itself too fast @done(23-12-20 15:12)
@@ -18,6 +19,7 @@ Todo before release:
         ☐ auto layout not handling positive correctly
         ☐ rich prompt + shift/alt+enter should not accept compltion but insert newline
         ☐ better treeview with apps
+
     ☐ codegen swap file
     ☐ video
     ☐ hot reload apps
