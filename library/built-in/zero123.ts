@@ -68,9 +68,11 @@ app({
         }
 
         await run.PROMPT()
+
+        // generate video
         const imagesSorted = run.generatedImages
             .filter((i) => i.filename.startsWith('3dComfyUI_'))
             .sort((a, b) => a.filename.localeCompare(b.filename))
-        await run.output_video_ffmpegGeneratedImagesTogether(imagesSorted)
+        await run.videos.output_video_ffmpegGeneratedImagesTogether(imagesSorted)
     },
 })

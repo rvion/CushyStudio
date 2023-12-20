@@ -38,6 +38,7 @@ import { RuntimeApps } from './RuntimeApps'
 import { RuntimeCushy } from './RuntimeCushy'
 import { RuntimeHosts } from './RuntimeHosts'
 import { RuntimeStore } from './RuntimeStore'
+import { RuntimeVideo } from './RuntimeVideo'
 
 export type ImageAndMask = HasSingle_IMAGE & HasSingle_MASK
 
@@ -76,6 +77,12 @@ export class Runtime<FIELDS extends WidgetDict = any> {
 
     get apps(): RuntimeApps {
         const it = new RuntimeApps(this)
+        Object.defineProperty(this, 'apps', { value: it })
+        return it
+    }
+
+    get videos(): RuntimeVideo {
+        const it = new RuntimeVideo(this)
         Object.defineProperty(this, 'apps', { value: it })
         return it
     }
@@ -519,89 +526,6 @@ export class Runtime<FIELDS extends WidgetDict = any> {
         link.click()
         document.body.removeChild(link)
         // delete link
-    }
-
-    /** outputs a video */
-    output_video = (p: {
-        //
-        url: string
-        filePath?: string
-    }) => {
-        this.st.db.media_videos.create({
-            url: p.url,
-            absPath: p.filePath,
-            stepID: this.step.id,
-        })
-    }
-
-    static VideoCounter = 1
-    output_video_ffmpegGeneratedImagesTogether = async (
-        /** image to incldue (defaults to all images generated in the fun) */
-        source?: MediaImageL[],
-        /** FPS (e.g. 60, 30, etc.) default is 30 */
-        inputFPS = 30,
-        opts: { transparent?: Maybe<boolean> } = {},
-    ): Promise<void> => {
-        // 1. path
-        console.log('🎥 creating animation')
-
-        // 2. ensure we have enough outputs
-        const images = source ?? this.generatedImages
-        if (images.length === 1) return this.step.recordError(`only one image to create animation`, {})
-        if (images.length === 0)
-            return this.step.recordError(`no images to create animation; did you forget to call prompt() first ?`, {})
-
-        console.info(`🎥 awaiting all files to be ready locally...`)
-        await Promise.all(images.map((i) => i.finished))
-        console.info(`🎥 all files are ready locally`)
-
-        const outputAbsPath = this.st.cacheFolderPath
-        const targetVideoAbsPath = asAbsolutePath(path.join(outputAbsPath, `video-${Date.now()}-${Runtime.VideoCounter++}.mp4`))
-        console.log('🎥 outputAbsPath', outputAbsPath)
-        console.log('🎥 targetVideoAbsPath', targetVideoAbsPath)
-        const cwd = outputAbsPath
-
-        // 4. create video
-        console.info(`🎥 this.folder.path: ${this.folder}`)
-        console.info(`🎥 cwd: ${cwd}`)
-        const allAbsPaths = images.map((i) => i.absPath).filter((p) => p != null) as AbsolutePath[]
-        const ffmpegComandInfos = await createMP4FromImages(allAbsPaths, targetVideoAbsPath, inputFPS, cwd, opts)
-        if (ffmpegComandInfos) {
-            this.st.db.media_texts.create({
-                kind: 'markdown',
-                title: 'Video creation summary',
-                stepID: this.step.id,
-                content: `\
-# Video creation summary
-
-## command:
-
-\`\`\`
-${ffmpegComandInfos.ffmpegCommand}
-\`\`\`
-
-
-## frames file path:
-
-\`\`\`
-${ffmpegComandInfos.framesFilePath}
-\`\`\`
-
-## frames file content:
-
-\`\`\`
-${ffmpegComandInfos.framesFileContent}
-\`\`\`
-
-`,
-            })
-        }
-        this.st.db.media_videos.create({
-            url: `file://${targetVideoAbsPath}`,
-            absPath: targetVideoAbsPath,
-            stepID: this.step.id,
-            filePath: targetVideoAbsPath,
-        })
     }
 
     /**
