@@ -62,6 +62,7 @@
         "@lexical/react": "^0.12.5",
         "@lexical/rich-text": "^0.12.5",
         "@lexical/utils": "^0.12.5",
+        "@react-three/fiber": "^8.15.12",
         "@sinclair/typebox": "^0.31.28",
         "@supabase/supabase-js": "^2.39.0",
         "@types/better-sqlite3": "^7.6.8",
