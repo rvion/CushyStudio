@@ -27,8 +27,8 @@ export const run_latent = async (p: {
     const opts = p.opts
 
     // misc calculatiosn
-    let width: number | ComfyNodeOutput<'INT'>
-    let height: number | ComfyNodeOutput<'INT'>
+    let width: number | ComfyNodeOutput<'INT'> = 1 // 🔴
+    let height: number | ComfyNodeOutput<'INT'> = 1 // 🔴
     let latent: HasSingle_LATENT
 
     // 🔴
