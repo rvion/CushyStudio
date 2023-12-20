@@ -5,7 +5,7 @@ import { ListControlsUI } from '../shared/ListControlsUI'
 import { WidgetDI } from './WidgetUI.DI'
 import SortableList, { SortableItem, SortableKnob } from 'react-easy-sort'
 import { forwardRef } from 'react'
-import { RevealUI } from 'src/rsuite/RevealUI'
+import { RevealUI } from 'src/rsuite/reveal/RevealUI'
 import { isWidgetCollapsible } from '../shared/isWidgetCollapsible'
 
 export const WidgetListUI = observer(function WidgetListUI_<T extends Widget>(p: { widget: Widget_list<T> }) {
@@ -43,7 +43,10 @@ export const WidgetListUI = observer(function WidgetListUI_<T extends Widget>(p:
                                     </div>
                                 </div>
                                 {!(v.state.collapsed ?? false) && (
-                                    <div key={v.id} tw='border-solid border-2 border-neutral-content'>
+                                    <div
+                                        key={v.id}
+                                        // tw='border-solid border-2 border-neutral-content'
+                                    >
                                         <WidgetUI widget={v} />
                                     </div>
                                 )}

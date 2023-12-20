@@ -31,7 +31,7 @@ export const AppCardUI = observer(function FancyCardUI_(p: {
     return (
         <div
             style={{ width: st.library.imageSize }}
-            // onClick={p.card.openLastDraftAsCurrent}
+            onClick={p.app.openLastDraftAsCurrent}
             tw={[
                 //
                 'flex flex-col',

@@ -7,7 +7,8 @@ import { HostSchemaIndicatorUI } from '../../panels/host/HostSchemaIndicatorUI'
 import { HostWebsocketIndicatorUI } from '../../panels/host/HostWebsocketIndicatorUI'
 import { MenuAuthUI } from './MenuAuthUI'
 import { MenuComfyUI } from './MenuComfyUI'
-import { MenuConfigUI, MenuThemeUI } from './MenuConfigUI'
+import { MenuConfigUI } from './MenuConfigUI'
+import { MenuThemeUI } from './MenuThemeUI'
 import { MenuDebugUI } from './MenuDebugUI'
 import { MenuHelpUI } from './MenuHelpUI'
 import { MenuPanelsUI } from './MenuPanelsUI'
@@ -29,8 +30,8 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
                 <MenuConfigUI />
                 <MenuThemeUI />
                 <MenuHelpUI />
-                <MenuAuthUI />
                 <MenuDebugUI />
+                <MenuAuthUI />
                 <div className='flex flex-grow'></div>
                 <HostWebsocketIndicatorUI host={mainHost} />
                 <HostSchemaIndicatorUI host={mainHost} />

@@ -43,7 +43,7 @@ export const ListControlsUI = observer(function ListControlsUI_(p: {
             >
                 Expand All
             </Button>
-            <Button
+            {/* <Button
                 tw='btn-sm join-item btn-ghost'
                 disabled={max ? req.state.items.length >= max : undefined}
                 icon={<span className='material-symbols-outlined'>add</span>}
@@ -54,7 +54,7 @@ export const ListControlsUI = observer(function ListControlsUI_(p: {
                 }}
             >
                 Add 100 more
-            </Button>
+            </Button> */}
         </Joined>
     )
 })

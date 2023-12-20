@@ -370,6 +370,7 @@ export class STATE {
             comfyUIIframeRef: false,
             wildcards: false,
         })
+        ;(window as any).st = this
     }
 
     get mainComfyHostID(): HostID {

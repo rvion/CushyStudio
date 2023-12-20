@@ -5,6 +5,25 @@
         "body": ["export const $1UI = observer(function $1UI_(p: { $2 }){", "return (<div>", "$3", "</div>)", "})"],
         "description": "scaffold a new React functional component"
     },
+    "app": {
+        "scope": "typescript",
+        "prefix": "app",
+        "body": [
+            "app({",
+            "    metadata: {",
+            "        name: '$1',",
+            "        description: '$1',",
+            "    },",
+            "    ui: (form) => ({",
+            "        $2",
+            "    }),",
+            "    run: async (run, ui) => {",
+            "        $3",
+            "    },",
+            "})",
+        ],
+        "description": "scaffold a new React functional component"
+    },
     "create new observable react component with st": {
         "scope": "typescriptreact",
         "prefix": "ocompst",

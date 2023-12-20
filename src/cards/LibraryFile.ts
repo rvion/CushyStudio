@@ -12,7 +12,7 @@ import { ManualPromise } from '../utils/misc/ManualPromise'
 import { getPngMetadataFromUint8Array } from '../utils/png/_getPngMetadata'
 import { Library } from './Library'
 
-import { dirname } from 'path'
+import { dirname } from 'pathe'
 import { createEsbuildContextFor } from 'src/back/transpiler'
 
 // @ts-ignore

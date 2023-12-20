@@ -6,7 +6,7 @@ import type { ComfyPromptL } from './ComfyPrompt'
 import { Widget_group } from 'src/controls/Widget'
 import { SQLITE_false, SQLITE_true } from 'src/db/SQLITE_boolean'
 import { StepT } from 'src/db/TYPES.gen'
-import { Runtime } from '../back/Runtime'
+import { Runtime, RuntimeExecutionResult } from '../runtime/Runtime'
 import { Status } from '../back/Status'
 import { LiveCollection } from '../db/LiveCollection'
 import { LiveRef } from '../db/LiveRef'
@@ -18,11 +18,13 @@ import { MediaSplatL } from './MediaSplat'
 import { MediaTextL } from './MediaText'
 import { MediaVideoL } from './MediaVideo'
 import { RuntimeErrorL } from './RuntimeError'
+import { ManualPromise } from 'src/utils/misc/ManualPromise'
 
 export type FormPath = (string | number)[]
 /** a thin wrapper around an app execution */
 export interface StepL extends LiveInstance<StepT, StepL> {}
 export class StepL {
+    finished = new ManualPromise<RuntimeExecutionResult>()
     start = async (p: {
         /**
          * reference to the draft live form instance
@@ -37,7 +39,7 @@ export class StepL {
         // this.data.outputGraphID = out.id
         this.runtime = new Runtime(this)
         this.update({ status: Status.Running })
-        const scriptExecutionStatus = await this.runtime.run(p)
+        const scriptExecutionStatus: RuntimeExecutionResult = await this.runtime._EXECUTE(p)
 
         if (scriptExecutionStatus.type === 'error') {
             this.update({ status: Status.Failure })
@@ -46,6 +48,7 @@ export class StepL {
                 this.update({ status: Status.Success })
             }
         }
+        this.finished.resolve(scriptExecutionStatus)
     }
 
     get finalStatus(): Status {

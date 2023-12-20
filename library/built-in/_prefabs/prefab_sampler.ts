@@ -1,4 +1,4 @@
-import type { Runtime } from 'src/back/Runtime'
+import type { Runtime } from 'src/runtime/Runtime'
 import type { FormBuilder } from 'src/controls/FormBuilder'
 import type { OutputFor } from './_prefabs'
 
@@ -38,8 +38,8 @@ export type Ctx_sampler = {
 }
 
 // RUN -----------------------------------------------------------
-export const run_sampler = (flow: Runtime, opts: OutputFor<typeof ui_sampler>, ctx: Ctx_sampler): { latent: KSampler } => {
-    const graph = flow.nodes
+export const run_sampler = (run: Runtime, opts: OutputFor<typeof ui_sampler>, ctx: Ctx_sampler): { latent: KSampler } => {
+    const graph = run.nodes
     // flow.output_text(`run_sampler with seed : ${opts.seed}`)
     const latent = graph.KSampler({
         model: ctx.ckpt,

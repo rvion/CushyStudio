@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 import { ReactNode } from 'react'
 import { RSAppearance, RSSize } from './RsuiteTypes'
-import { RevealUI } from './RevealUI'
+import { RevealUI } from './reveal/RevealUI'
 
 export const Dropdown = (p: {
     className?: string
@@ -16,8 +16,8 @@ export const Dropdown = (p: {
         //
         enableRightClick={p.enableRightClick}
         disableHover
-        showDelay={300}
-        hideDelay={300}
+        // showDelay={0}
+        // hideDelay={500}
         className='dropdown'
         tw={[p.className]}
     >

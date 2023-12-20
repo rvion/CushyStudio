@@ -1,7 +1,7 @@
 import { execSync } from 'child_process'
 import { extractErrorMessage } from '../formatters/extractErrorMessage'
 import { writeFileSync } from 'fs'
-import { dirname, relative } from 'path'
+import { dirname, relative } from 'pathe'
 
 export async function createMP4FromImages(
     //

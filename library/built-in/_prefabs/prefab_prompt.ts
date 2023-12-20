@@ -1,14 +1,14 @@
-import type { Runtime } from 'src/back/Runtime'
+import type { Runtime } from 'src/runtime/Runtime'
 import type { WidgetPromptOutput } from 'src/widgets/prompter/WidgetPromptUI'
 
 export const run_prompt = (
-    flow: Runtime,
+    run: Runtime,
     p: {
         richPrompt: WidgetPromptOutput
         clip: _CLIP
         ckpt: _MODEL
         outputWildcardsPicked?: boolean
-        seed: number
+        seed?: number
     },
 ): {
     text: string
@@ -29,14 +29,14 @@ export const run_prompt = (
             else if (tok.type === 'text') text += `${_space}${tok.text}`
             else if (tok.type === 'embedding') text += `${_space}embedding:${tok.embeddingName}`
             else if (tok.type === 'wildcard') {
-                const options = (flow.wildcards as any)[tok.payload]
+                const options = (run.wildcards as any)[tok.payload]
                 if (Array.isArray(options)) {
-                    const picked = flow.chooseRandomly(`${tok.payload}`, p.seed, options)
+                    const picked = run.chooseRandomly(`${tok.payload}`, p.seed ?? run.randomSeed(), options)
                     text += ` ${picked}`
                     if (p.outputWildcardsPicked) textToOutput.push(picked)
                 }
             } else if (tok.type === 'lora') {
-                const next = flow.nodes.LoraLoader({
+                const next = run.nodes.LoraLoader({
                     model: ckpt,
                     clip: clip,
                     lora_name: tok.loraDef.name,
@@ -44,7 +44,7 @@ export const run_prompt = (
                     strength_model: tok.loraDef.strength_model,
                 })
 
-                const associatedText = flow.getLoraAssociatedTriggerWords(tok.loraDef.name)
+                const associatedText = run.getLoraAssociatedTriggerWords(tok.loraDef.name)
                 if (associatedText) text += ` ${associatedText}`
 
                 clip = next._CLIP
@@ -52,12 +52,12 @@ export const run_prompt = (
             }
         }
         if (p.outputWildcardsPicked && textToOutput.length > 0)
-            flow.output_text({ title: 'wildcards', message: textToOutput.join(' ') })
+            run.output_text({ title: 'wildcards', message: textToOutput.join(' ') })
     }
     return {
         text,
         get conditionning() {
-            return flow.nodes.CLIPTextEncode({ clip, text })
+            return run.nodes.CLIPTextEncode({ clip, text })
         },
         clip,
         ckpt,

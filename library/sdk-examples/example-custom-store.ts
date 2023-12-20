@@ -13,7 +13,7 @@ app({
     }),
 
     run: async (sdk, ui) => {
-        const store = sdk.getStore_orCreateIfMissing('example-key-1337', () => ({ count: 0 }))
+        const store = sdk.store.getOrCreate({ key: 'example-key-1337', makeDefaultValue: () => ({ count: 0 }) })
         const prevValue = store.get()
         sdk.output_Markdown(
             [

@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 import { HostL } from 'src/models/Host'
-import { RevealUI } from 'src/rsuite/RevealUI'
+import { RevealUI } from 'src/rsuite/reveal/RevealUI'
 import { Loader, Message } from 'src/rsuite/shims'
 
 export const HostSchemaIndicatorUI = observer(function HostSchemaIndicatorUI_(p: {

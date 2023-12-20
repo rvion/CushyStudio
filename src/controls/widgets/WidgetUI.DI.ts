@@ -39,4 +39,5 @@ export let WidgetDI = {
     Widget_enum: 0 as any as typeof R.Widget_enum,
     Widget_enumOpt: 0 as any as typeof R.Widget_enumOpt,
     Widget_listExt: 0 as any as typeof R.Widget_listExt,
+    Widget_orbit: 0 as any as typeof R.Widget_orbit,
 }

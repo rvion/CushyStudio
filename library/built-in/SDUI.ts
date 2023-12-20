@@ -97,7 +97,7 @@ app({
         const negative = y.conditionning
 
         // START IMAGE -------------------------------------------------------------------------------
-        let { latent } = await run_latent({ flow: run, opts: ui.latent, vae })
+        let { latent } = await run_latent({ run: run, opts: ui.latent, vae })
 
         // CNETS -------------------------------------------------------------------------------
         const cnets = ui.controlnets
@@ -222,6 +222,6 @@ app({
             }
         }
 
-        if (ui.makeAVideo) await run.output_video_ffmpegGeneratedImagesTogether(undefined, 2)
+        if (ui.makeAVideo) await run.videos.output_video_ffmpegGeneratedImagesTogether(undefined, 2)
     },
 })

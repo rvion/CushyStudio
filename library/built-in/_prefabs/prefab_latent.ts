@@ -1,7 +1,7 @@
-import type { Runtime } from 'src/back/Runtime'
 import type { FormBuilder } from 'src/controls/FormBuilder'
 import type { ComfyNodeOutput } from 'src/core/Slot'
 import type { OutputFor } from './_prefabs'
+import type { Runtime } from 'src'
 
 export const ui_latent = (form: FormBuilder) => {
     return form.group({
@@ -18,12 +18,12 @@ export const ui_latent = (form: FormBuilder) => {
 
 export const run_latent = async (p: {
     //
-    flow: Runtime
+    run: Runtime
     opts: OutputFor<typeof ui_latent>
     vae: _VAE
 }) => {
     // init stuff
-    const graph = p.flow.nodes
+    const graph = p.run.nodes
     const opts = p.opts
 
     // misc calculatiosn
@@ -33,20 +33,11 @@ export const run_latent = async (p: {
 
     // case 1. start form image
     if (opts.image) {
-        const imageRaw = await p.flow.loadImageAnswer(opts.image)
-        // May need to use a different node for resizing
-        const image = await graph.ImageTransformResizeClip({
-            images: imageRaw,
-            method: `lanczos`,
-            max_width: width,
-            max_height: height,
-        })
-        const size = graph.Image_Size_to_Number({ image })
+        const image = await p.run.loadImageAnswer(opts.image)
+        latent = graph.VAEEncode({ pixels: image, vae: p.vae })
+        const size = graph.Image_Size_to_Number({ image: image })
         width = size.outputs.width_int
         height = size.outputs.height_int
-
-        latent = graph.VAEEncode({ pixels: image, vae: p.vae })
-        graph.SaveImage({ images: graph.VAEDecode({ samples: latent, vae: p.vae }) })
     }
 
     // case 2. start form empty latent

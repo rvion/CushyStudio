@@ -11,6 +11,9 @@ import { Uploader } from 'src/state/Uploader'
 import { assets } from 'src/utils/assets/assets'
 import { bang } from 'src/utils/misc/bang'
 import { braceExpansion } from 'src/utils/misc/expansion'
+import { IDNaminScheemeInPromptSentToComfyUI } from '../back/IDNaminScheemeInPromptSentToComfyUI'
+import { ImageSDK } from '../back/ImageSDK'
+import { ComfyWorkflowBuilder } from '../back/NodeBuilder'
 import { ImageAnswer } from '../controls/misc/InfoAnswer'
 import { ComfyNodeOutput } from '../core/Slot'
 import { auto } from '../core/autoValue'
@@ -19,13 +22,8 @@ import { ComfyWorkflowL } from '../models/Graph'
 import { MediaImageL, checkIfComfyImageExists } from '../models/MediaImage'
 import { StepL } from '../models/Step'
 import { ComfyUploadImageResult } from '../types/ComfyWsApi'
-import { createMP4FromImages } from '../utils/ffmpeg/ffmpegScripts'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { exhaust } from '../utils/misc/ComfyUtils'
-import { IDNaminScheemeInPromptSentToComfyUI } from './IDNaminScheemeInPromptSentToComfyUI'
-import { ImageSDK } from './ImageSDK'
-import { ComfyWorkflowBuilder } from './NodeBuilder'
-import { Status } from './Status'
 
 import child_process from 'child_process'
 import { OpenRouterRequest } from 'src/llm/OpenRouter_Request'
@@ -33,21 +31,66 @@ import { OpenRouterResponse } from 'src/llm/OpenRouter_Response'
 import { OpenRouter_ask } from 'src/llm/OpenRouter_ask'
 import { openRouterInfos } from 'src/llm/OpenRouter_infos'
 import { OpenRouter_Models } from 'src/llm/OpenRouter_models'
-import { CustomDataL } from 'src/models/CustomData'
-import { HostL } from 'src/models/Host'
 import { _formatAsRelativeDateTime } from 'src/updater/_getRelativeTimeString'
 import { Wildcards } from 'src/widgets/prompter/nodes/wildcards/wildcards'
-import { observer } from 'mobx-react-lite'
-import { ImageStore, ImageStoreAutoUpdateLogic, ImageStoreT } from './ImageStore'
-import { createRandomGenerator } from './random'
+import { RuntimeApps } from './RuntimeApps'
+import { RuntimeCushy } from './RuntimeCushy'
+import { RuntimeHosts } from './RuntimeHosts'
+import { RuntimeStore } from './RuntimeStore'
+import { RuntimeVideo } from './RuntimeVideo'
+import { createRandomGenerator } from 'src/back/random'
 
 export type ImageAndMask = HasSingle_IMAGE & HasSingle_MASK
 
+export type RuntimeExecutionResult =
+    | {
+          type: 'success'
+      }
+    | {
+          type: 'error'
+          error: any
+      }
+
+// 2 nest max
+// run.store.getLocal
+// run.store.getGlobal
+
 /** script exeuction instance */
 export class Runtime<FIELDS extends WidgetDict = any> {
+    get store(): RuntimeStore {
+        const it = new RuntimeStore(this)
+        Object.defineProperty(this, 'store', { value: it })
+        return it
+    }
+
+    get hosts(): RuntimeHosts {
+        const it = new RuntimeHosts(this)
+        Object.defineProperty(this, 'hosts', { value: it })
+        return it
+    }
+
+    get cushy(): RuntimeCushy {
+        const it = new RuntimeCushy(this)
+        Object.defineProperty(this, 'cushy', { value: it })
+        return it
+    }
+
+    get apps(): RuntimeApps {
+        const it = new RuntimeApps(this)
+        Object.defineProperty(this, 'apps', { value: it })
+        return it
+    }
+
+    get videos(): RuntimeVideo {
+        const it = new RuntimeVideo(this)
+        Object.defineProperty(this, 'apps', { value: it })
+        return it
+    }
+
     constructor(public step: StepL) {
         this.st = step.st
         this.folder = step.st.outputFolderPath
+
         this.upload_FileAtAbsolutePath = this.st.uploader.upload_FileAtAbsolutePath.bind(this.st.uploader)
         this.upload_ImageAtURL = this.st.uploader.upload_ImageAtURL.bind(this.st.uploader)
         this.upload_dataURL = this.st.uploader.upload_dataURL.bind(this.st.uploader)
@@ -81,19 +124,6 @@ export class Runtime<FIELDS extends WidgetDict = any> {
      * use with caution
      */
     child_process = child_process
-
-    /**
-     * list of all configured hosts (machines) available
-     * example usage:
-     * - usefull if you want to manually dispatch things
-     * */
-    get hosts(): HostL[] {
-        return this.st.db.hosts.findAll()
-    }
-
-    get mainHost(): HostL {
-        return this.st.mainHost
-    }
 
     /**
      * get the configured trigger words for the given lora
@@ -191,6 +221,7 @@ export class Runtime<FIELDS extends WidgetDict = any> {
         }
     }
 
+    // ----------------------------
     /**
      * the current json form result
      * the main value sent to your app as context.
@@ -213,17 +244,7 @@ export class Runtime<FIELDS extends WidgetDict = any> {
      * 🔶 it is NOT frozen: this will change during runtime if you update the draft form
      * */
     formInstance!: Widget_group<FIELDS>
-
-    getStore_orCrashIfMissing = <T>(key: string): CustomDataL<T> => {
-        return this.st.db.custom_datas.getOrThrow(key)
-    }
-
-    getStore_orCreateIfMissing = <T>(key: string, def: () => T): CustomDataL<T> => {
-        return this.st.db.custom_datas.getOrCreate(key, () => ({
-            id: key,
-            json: def(),
-        }))
-    }
+    // ----------------------------
 
     executeDraft = async (draftID: DraftID, args: any) => {
         throw new Error('🔴 not yet implemented')
@@ -291,8 +312,11 @@ export class Runtime<FIELDS extends WidgetDict = any> {
         return createRandomGenerator(`${key}:${seed}`).randomItem(arr)
     }
 
-    /** execute the app */
-    run = async (p: { formInstance: Widget_group<any> }): Promise<{ type: 'success' } | { type: 'error'; error: any }> => {
+    /**
+     * @internal
+     * execute the draft
+     */
+    _EXECUTE = async (p: { formInstance: Widget_group<any> }): Promise<RuntimeExecutionResult> => {
         const start = Date.now()
         const app = this.step.executable
         const appFormInput = this.step.data.formResult
@@ -364,19 +388,6 @@ export class Runtime<FIELDS extends WidgetDict = any> {
     }
 
     // IMAGE HELPES ---------------------------------------------------------------------------------------
-
-    /** stores are .... */
-    getImageStore = (storeName: string): ImageStore => {
-        const storeID = `app:${this.step.app.id}/imageStore/${storeName}`
-        const prev = this.imageStoresIndex.get(storeID)
-        if (prev) return prev
-        const rawStore: CustomDataL<ImageStoreT> = this.getStore_orCreateIfMissing(storeID, () => ({}))
-        const store = new ImageStore(rawStore /*p.autoUpdate*/)
-        this.imageStoresIndex.set(storeID, store)
-        return store
-    }
-
-    private imageStoresIndex = new Map<string, ImageStore>()
 
     // ⏸️ /**
     // ⏸️  * list of all images stores currently active in this run
@@ -526,89 +537,6 @@ export class Runtime<FIELDS extends WidgetDict = any> {
         link.click()
         document.body.removeChild(link)
         // delete link
-    }
-
-    /** outputs a video */
-    output_video = (p: {
-        //
-        url: string
-        filePath?: string
-    }) => {
-        this.st.db.media_videos.create({
-            url: p.url,
-            absPath: p.filePath,
-            stepID: this.step.id,
-        })
-    }
-
-    static VideoCounter = 1
-    output_video_ffmpegGeneratedImagesTogether = async (
-        /** image to incldue (defaults to all images generated in the fun) */
-        source?: MediaImageL[],
-        /** FPS (e.g. 60, 30, etc.) default is 30 */
-        inputFPS = 30,
-        opts: { transparent?: Maybe<boolean> } = {},
-    ): Promise<void> => {
-        // 1. path
-        console.log('🎥 creating animation')
-
-        // 2. ensure we have enough outputs
-        const images = source ?? this.generatedImages
-        if (images.length === 1) return this.step.recordError(`only one image to create animation`, {})
-        if (images.length === 0)
-            return this.step.recordError(`no images to create animation; did you forget to call prompt() first ?`, {})
-
-        console.info(`🎥 awaiting all files to be ready locally...`)
-        await Promise.all(images.map((i) => i.finished))
-        console.info(`🎥 all files are ready locally`)
-
-        const outputAbsPath = this.st.cacheFolderPath
-        const targetVideoAbsPath = asAbsolutePath(path.join(outputAbsPath, `video-${Date.now()}-${Runtime.VideoCounter++}.mp4`))
-        console.log('🎥 outputAbsPath', outputAbsPath)
-        console.log('🎥 targetVideoAbsPath', targetVideoAbsPath)
-        const cwd = outputAbsPath
-
-        // 4. create video
-        console.info(`🎥 this.folder.path: ${this.folder}`)
-        console.info(`🎥 cwd: ${cwd}`)
-        const allAbsPaths = images.map((i) => i.absPath).filter((p) => p != null) as AbsolutePath[]
-        const ffmpegComandInfos = await createMP4FromImages(allAbsPaths, targetVideoAbsPath, inputFPS, cwd, opts)
-        if (ffmpegComandInfos) {
-            this.st.db.media_texts.create({
-                kind: 'markdown',
-                title: 'Video creation summary',
-                stepID: this.step.id,
-                content: `\
-# Video creation summary
-
-## command:
-
-\`\`\`
-${ffmpegComandInfos.ffmpegCommand}
-\`\`\`
-
-
-## frames file path:
-
-\`\`\`
-${ffmpegComandInfos.framesFilePath}
-\`\`\`
-
-## frames file content:
-
-\`\`\`
-${ffmpegComandInfos.framesFileContent}
-\`\`\`
-
-`,
-            })
-        }
-        this.st.db.media_videos.create({
-            url: `file://${targetVideoAbsPath}`,
-            absPath: targetVideoAbsPath,
-            stepID: this.step.id,
-            filePath: targetVideoAbsPath,
-        })
     }
 
     /**
