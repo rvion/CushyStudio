@@ -14,13 +14,13 @@ export const MenuComfyUI = observer(function MenuComfyUI_(p: {}) {
         >
             <MenuItem
                 onClick={() => st.layout.FOCUS_OR_CREATE('ComfyUI', {})}
-                label='Comfy'
+                label='ComfyUI'
                 icon={<span className='material-symbols-outlined text-cyan-400'>account_tree</span>}
             />
             <MenuItem
                 onClick={() => st.layout.FOCUS_OR_CREATE('ComfyUINodeExplorer', {})}
                 icon={<span className='material-symbols-outlined text-cyan-400'>explore</span>}
-                label='Nodes'
+                label='Nodes Explorer'
             />
             {/* {Boolean(st.configFile.value.comfyUIHosts?.length) ? null : (
                 <MenuItem

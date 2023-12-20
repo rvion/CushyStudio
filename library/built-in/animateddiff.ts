@@ -33,8 +33,8 @@ app({
         samplerSteps: form.int({ default: 20, group: 'sampler' }),
         // frames: form.int({ default: 16, group: 'video' }),
     }),
-    run: async (flow, p) => {
-        const graph = flow.nodes
+    run: async (run, ui) => {
+        const graph = run.nodes
 
         const checkpointLoaderSimpleWithNoiseSelect = graph.CheckpointLoaderSimpleWithNoiseSelect({
             ckpt_name: 'deliberate_v2.safetensors',
@@ -58,7 +58,7 @@ app({
             model: checkpointLoaderSimpleWithNoiseSelect,
             context_options: aDE_AnimateDiffUniformContextOptions,
         })
-        const text = p.timeline.items
+        const text = ui.timeline.items
             .map((entry) => {
                 const tokens = entry.item.tokens
                 const text = tokens
@@ -73,7 +73,7 @@ app({
         const batchPromptSchedule = graph.BatchPromptSchedule({
             text: text, //'"0" :"spring day, blossoms, flowers, cloudy",\n"25" :"summer day, sunny, leaves",\n"50" :"fall day, colorful leaves dancing in the wind",\n"75" :"winter day, snowing, cold, jacket"\n',
             max_frames: 120,
-            pre_text: p.preText, //' (Masterpiece, best quality:1.2), closeup, close-up, a girl in a forest',
+            pre_text: ui.preText, //' (Masterpiece, best quality:1.2), closeup, close-up, a girl in a forest',
             app_text: '',
             pw_a: 0,
             pw_b: 0,
@@ -84,11 +84,11 @@ app({
         const aDE_EmptyLatentImageLarge = graph.ADE$_EmptyLatentImageLarge({
             width: 512,
             height: 512,
-            batch_size: p.timeline.width, //100,
+            batch_size: ui.timeline.width, //100,
         })
         let kSampler = graph.KSampler({
-            seed: p.seed ?? flow.randomSeed(),
-            steps: p.samplerSteps,
+            seed: ui.seed ?? run.randomSeed(),
+            steps: ui.samplerSteps,
             cfg: 7,
             sampler_name: 'euler_ancestral',
             scheduler: 'normal',
@@ -99,7 +99,7 @@ app({
             latent_image: aDE_EmptyLatentImageLarge,
         })
         let vAEDecode
-        if (p.removeBG) {
+        if (ui.removeBG) {
             vAEDecode = graph.Image_Rembg_$1Remove_Background$2({
                 images: graph.VAEDecode({ samples: kSampler, vae: vAE }),
                 model: 'u2net',
@@ -125,7 +125,7 @@ app({
         const gif = graph.Write_to_GIF({
             image: vAEDecode,
         })
-        await flow.PROMPT()
-        await flow.output_video_ffmpegGeneratedImagesTogether(undefined, 30, { transparent: p.removeBG })
+        await run.PROMPT()
+        await run.videos.output_video_ffmpegGeneratedImagesTogether(undefined, 30, { transparent: ui.removeBG })
     },
 })

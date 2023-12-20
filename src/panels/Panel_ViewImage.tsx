@@ -8,7 +8,7 @@ import { Rate, Toggle } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
 import { assets } from 'src/utils/assets/assets'
 import { openExternal, showItemInFolder } from '../app/layout/openExternal'
-import { RevealUI } from 'src/rsuite/RevealUI'
+import { RevealUI } from 'src/rsuite/reveal/RevealUI'
 import { JsonViewUI } from 'src/widgets/workspace/JsonViewUI'
 
 export const Panel_ViewImage = observer(function Panel_ViewImage_(p: {

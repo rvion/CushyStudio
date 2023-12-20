@@ -13,6 +13,7 @@ const modulesToCache = [
     ['zlib', 'zlib'],
     ['events', 'events'],
     ['cluster', 'cluster'],
+    ['https', 'https'],
     // externals ----------------
     ['three', 'three'],
     ['mobx', 'mobx'],

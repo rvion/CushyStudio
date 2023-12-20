@@ -1,21 +1,34 @@
 import type { LiveInstance } from 'src/db/LiveInstance'
-import { asComfySchemaID, type HostT } from 'src/db/TYPES.gen'
 import type { ComfySchemaL, EmbeddingName } from './Schema'
 
+import https from 'https'
+
+import { asComfySchemaID, type HostT } from 'src/db/TYPES.gen'
 import { copyFileSync, existsSync, mkdirSync, writeFileSync } from 'fs'
 import { ResilientWebSocketClient } from 'src/back/ResilientWebsocket'
 import { extractErrorMessage } from 'src/utils/formatters/extractErrorMessage'
 import { readableStringify } from 'src/utils/formatters/stringifyReadable'
 import { asRelativePath } from 'src/utils/fs/pathUtils'
-import { ManualPromise } from 'src/utils/misc/ManualPromise'
 import { toastError, toastSuccess } from 'src/utils/misc/toasts'
-import { createRef } from 'react'
-
+import { downloadFile } from 'src/utils/fs/downloadFile'
 export interface HostL extends LiveInstance<HostT, HostL> {}
 
 export class HostL {
     // 🔶 can't move frame ref here because no way to override mobx
     // comfyUIIframeRef = createRef<HTMLIFrameElement>()
+
+    /** root install of ComfyUI on the host filesystem */
+    get absolutePathToComfyUI() {
+        return this.data.absolutePathToComfyUI
+    }
+
+    /** prefered location to download models */
+    get absolutPathToDownloadModelsTo() {
+        return (
+            this.data.absolutPathToDownloadModelsTo ?? //
+            `${this.data.absolutePathToComfyUI}/models/checkpoints`
+        )
+    }
 
     // INIT -----------------------------------------------------------------------------
     /** folder where file related to the host config will be cached */
@@ -50,7 +63,12 @@ export class HostL {
         this.CONNECT()
     }
 
-    downloadFileIfMissing = (url: string, to: AbsolutePath | string) => {
+    /**  */
+    downloadFileIfMissing = async (url: string, to: AbsolutePath | string) => {
+        if (this.data.isLocal) {
+            // return await https.get(url, (res) => res.pipe(require('fs').createWriteStream(to)))
+            return downloadFile(url, to)
+        }
         //
         console.log(`[🔴] NOT IMPLEMENTED`)
     }
@@ -81,6 +99,7 @@ export class HostL {
     resetLog = () => {
         this.schemaRetrievalLogs.splice(0, this.schemaRetrievalLogs.length)
     }
+
     addLog = (...args: any[]) => {
         this.schemaRetrievalLogs.push(args.join(' '))
         console.info('[🐱] CONFY:', ...args)

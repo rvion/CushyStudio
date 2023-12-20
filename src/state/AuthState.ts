@@ -69,13 +69,25 @@ export class AuthState {
         })
     }
 
+    get cushyPort(): number {
+        const mode = process.env['CUSHY_RUN_MODE']
+        if (mode == null) throw new Error('CUSHY_RUN_MODE is not defined')
+        const allowedModes = ['dev', 'dist']
+        if (!allowedModes.includes(mode)) {
+            console.error(`CUSHY_RUN_MODE is not allowed: ${mode}`)
+            process.exit(1)
+        }
+        const PORT = mode === 'dist' ? 8688 : 8788
+        return PORT
+    }
+
     startLoginFlowWithGithub = async () => {
         logger.info(`[🔑 AUTH] starting login flow...`)
         let { data, error } = await this.st.supabase.auth.signInWithOAuth({
             provider: 'github',
             options: {
                 skipBrowserRedirect: true,
-                redirectTo: 'http://localhost:8788/public/misc/cb.html',
+                redirectTo: `http://localhost:${this.cushyPort}/public/misc/cb.html`,
                 queryParams: {
                     prompt: 'login',
                     // prompt: 'select_account', for google

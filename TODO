@@ -1,6 +1,31 @@
 Todo before release:
 
-    ☐ codegen swap file
+    2023-12-20 (Vinsi feedback + misc extra stuff):
+        ☐ fix login callback not beeing available after public dir change
+        ☐ disable publish button if not logged in
+        ☐ stuck in ComfyUI
+        ☐ improve OuputWrappers to allow to open in side panes
+        ☐ single output panel
+        ☐ open folder
+        ☐ "edit" delete the output image
+        ☐ config => settings
+        ☐ move hosts in an other panel
+        ☐ safe/unsafe should be option panel
+        ☐ comfyUI node explorer looks bad
+        ☐ disable the delete button for virtual-comfyui hosts
+        ☐ rich prompt + shift/alt+enter should not accept compltion but insert newline
+        ☐ better treeview with apps
+        ☐ add default non virtual local host
+        ✔ opening a past step fold it in the outputs panel @done(23-12-20 15:34)
+        ✔ menu reveal  close itself too fast @done(23-12-20 15:12)
+        ✔ text on theme menu @done(23-12-20 15:13)
+        ✔ auto layout not handling positive correctly @done(23-12-20 15:50)
+        ✔ improve forms look and feel @done(23-12-20 15:27)
+        ✔ improve size widget preview a bit @done(23-12-20 15:27)
+        ✔ hacky fix library so it's at least a bit usable @done(23-12-20 15:40)
+
+
+    ✔ codegen swap file @done(23-12-20 15:17)
     ☐ video
     ☐ hot reload apps
     ☐ finish full page apps

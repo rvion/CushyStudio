@@ -15,6 +15,7 @@ export class FormBuilder {
     size = (opts: W.Widget_size_opts) => new W.Widget_size(this, this.schema, opts)
     stringOpt = (opts: W.Widget_strOpt_opts) => new W.Widget_strOpt(this, this.schema, opts)
     str = (opts: W.Widget_str_opts) => new W.Widget_str(this, this.schema, opts)
+    orbit = (opts: W.Widget_orbit_opts) => new W.Widget_orbit(this, this.schema, opts)
     strOpt = (opts: W.Widget_strOpt_opts) => new W.Widget_strOpt(this, this.schema, opts)
     prompt = (opts: W.Widget_prompt_opts) => new W.Widget_prompt(this, this.schema, opts)
     promptOpt = (opts: W.Widget_promptOpt_opts) => new W.Widget_promptOpt(this, this.schema, opts)
@@ -98,6 +99,7 @@ export class FormBuilder {
         if (type === 'choices') return new W.Widget_choices(this, this.schema, input, serial)
         if (type === 'markdown') return new W.Widget_markdown(this, this.schema, input, serial)
         if (type === 'custom') return new W.Widget_custom(this, this.schema, input, serial)
+        if (type === 'orbit') return new W.Widget_orbit(this, this.schema, input, serial)
         console.log(`🔴 unknown type ${type}`)
         exhaust(type)
     }

@@ -1,6 +1,6 @@
 import { readdirSync } from 'fs'
 import { makeAutoObservable } from 'mobx'
-import { basename } from 'path'
+import { basename } from 'pathe'
 import { shouldSkip } from 'src/cards/shouldSkip'
 import { asRelativePath } from 'src/utils/fs/pathUtils'
 import { ITreeEntry, TreeEntryAction } from '../TreeEntry'

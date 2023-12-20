@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 import { nanoid } from 'nanoid'
-import { resolve } from 'path'
+import { resolve } from 'pathe'
 import { SQLITE_false, SQLITE_true } from 'src/db/SQLITE_boolean'
 import { HostL } from 'src/models/Host'
 import { SelectUI } from 'src/rsuite/SelectUI'

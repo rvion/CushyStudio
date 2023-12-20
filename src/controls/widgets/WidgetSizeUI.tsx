@@ -119,7 +119,16 @@ export const WigetSizeXUI = observer(function WigetSizeXUI_(p: {
                     </button>
                 </Joined>
             </div>
-            <div tw='bg-primary' style={{ width: '2rem', height: `${(uist.height / uist.width) * 2}rem` }}></div>
+            <div tw='virtualBorder' style={{ width: '4rem', height: '4rem' }}>
+                <div
+                    tw='bg-primary'
+                    style={{
+                        //
+                        width: uist.height < uist.width ? '4rem' : `${(uist.width / uist.height) * 4}rem`,
+                        height: uist.height < uist.width ? `${(uist.height / uist.width) * 4}rem` : '4rem',
+                    }}
+                ></div>
+            </div>
             {/* <select value={uist.desiredAspectRatio} onChange={(e) => uist.setAspectRatio(e.target.value as AspectRatio)}>
                 <option value='1:1'>1:1</option>
                 <option value='16:9'>16:9</option>

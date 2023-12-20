@@ -229,6 +229,9 @@ export type StepT = {
     /** @default: null, sqlType: TEXT */
     appID: CushyAppID;
 
+    /** @default: null, sqlType: TEXT */
+    draftID?: Maybe<DraftID>;
+
 }
 export const StepSchema = Type.Object({
     id: Type.String(),
@@ -241,6 +244,7 @@ export const StepSchema = Type.Object({
     status: Type.String(),
     isExpanded: Type.Number(),
     appID: Type.String(),
+    draftID: Type.Optional(T.Nullable(Type.String())),
 },{ additionalProperties: false })
 
 export const StepFields = {
@@ -254,6 +258,7 @@ export const StepFields = {
     status: {cid:7,name:'status',type:'TEXT',notnull:1,dflt_value:null,pk:0},
     isExpanded: {cid:8,name:'isExpanded',type:'INT',notnull:1,dflt_value:'1',pk:0},
     appID: {cid:9,name:'appID',type:'TEXT',notnull:1,dflt_value:null,pk:0},
+    draftID: {cid:10,name:'draftID',type:'TEXT',notnull:0,dflt_value:null,pk:0},
 }
 
 

@@ -1,4 +1,4 @@
-import type { Runtime } from 'src/back/Runtime'
+import type { Runtime } from 'src/runtime/Runtime'
 import type { FormBuilder } from 'src/controls/FormBuilder'
 import { OutputFor } from './_prefabs'
 
@@ -29,10 +29,10 @@ export const ui_model = (form: FormBuilder) => {
 // RUN -----------------------------------------------------------
 export const run_model = (
     //
-    flow: Runtime,
+    run: Runtime,
     otps: OutputFor<typeof ui_model>,
 ) => {
-    const graph = flow.nodes
+    const graph = run.nodes
 
     // 1. MODEL
     const ckptSimple = otps.civtai_ckpt_air

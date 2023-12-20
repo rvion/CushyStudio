@@ -435,6 +435,14 @@ export const migrations: {
             `alter table graph add column metadata json not null default '{}'`,
         ],
     },
+    {
+        id: 'M0A2RGCDiV',
+        name: 'misc',
+        up: [
+            // rename
+            'alter table step add column draftID text references draft(id)',
+        ],
+    },
     // {
     //     id: 'e574c006-daca-4fd0-a51b-73a66b4fbd79',
     //     name: 'create cushy_app table',

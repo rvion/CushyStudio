@@ -3,14 +3,14 @@ import type * as R from 'src/controls/Widget'
 
 import { observer } from 'mobx-react-lite'
 
+import { ChangeEvent } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
-import { Toggle, Tooltip, Whisper } from 'src/rsuite/shims'
+import { RevealUI } from 'src/rsuite/reveal/RevealUI'
+import { Toggle, Tooltip } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
+import { makeLabelFromFieldName } from '../../utils/misc/makeLabelFromFieldName'
 import { ErrorBoundaryFallback } from '../../widgets/misc/ErrorBoundary'
 import { WidgetDI } from '../widgets/WidgetUI.DI'
-import { makeLabelFromFieldName } from '../../utils/misc/makeLabelFromFieldName'
-import { RevealUI } from 'src/rsuite/RevealUI'
-import { ChangeEvent } from 'react'
 import { isWidgetCollapsible } from './isWidgetCollapsible'
 
 export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
@@ -30,6 +30,9 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     const isVertical = (() => {
         if (p.req.input.showID) return true
         if (st.preferedFormLayout === 'auto') {
+            if (req instanceof KLS.Widget_prompt) return true
+            if (req instanceof KLS.Widget_promptOpt) return true
+            if (req instanceof KLS.Widget_group) return true
             if (req instanceof KLS.Widget_group) return true
             if (req instanceof KLS.Widget_groupOpt) return true
             if (req instanceof KLS.Widget_list) return true
@@ -127,7 +130,11 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     if (WIDGET == null) className += ' w-full'
     if (isVertical && WIDGET) {
         WIDGET = (
-            <div tw='w-full' style={{ padding: '0 0rem 0 2rem' }}>
+            <div
+                //
+                tw='w-full'
+                // style={{ padding: '0 0rem 0 2rem' }}
+            >
                 {WIDGET}
             </div>
         )

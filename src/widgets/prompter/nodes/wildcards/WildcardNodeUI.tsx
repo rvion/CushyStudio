@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite'
-import { RevealUI } from 'src/rsuite/RevealUI'
+import { RevealUI } from 'src/rsuite/reveal/RevealUI'
 import { WildcardNode } from './WildcardNode'
 import { useSt } from 'src/state/stateContext'
 
