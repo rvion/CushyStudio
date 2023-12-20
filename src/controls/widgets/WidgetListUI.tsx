@@ -43,7 +43,10 @@ export const WidgetListUI = observer(function WidgetListUI_<T extends Widget>(p:
                                     </div>
                                 </div>
                                 {!(v.state.collapsed ?? false) && (
-                                    <div key={v.id} tw='border-solid border-2 border-neutral-content'>
+                                    <div
+                                        key={v.id}
+                                        // tw='border-solid border-2 border-neutral-content'
+                                    >
                                         <WidgetUI widget={v} />
                                     </div>
                                 )}
