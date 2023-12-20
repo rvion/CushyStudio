@@ -1,1 +1,0 @@
-./_macos_INSTALL.sh

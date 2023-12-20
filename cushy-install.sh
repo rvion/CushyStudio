@@ -2,10 +2,7 @@
 
 set -e # Exit with nonzero exit code if anything fails
 set -u # Treat unset variables as an error
-# set -x # Print commands and their arguments as they are executed
-
-# ===//=====//======//======//======//======//======//======//======//======//======//======//==
-# ==//=====//======//======//======//======//======//======//======//======//======//======//===
+set -x # Print commands and their arguments as they are executed
 
 PNPM_VERSION=8.11.0
 PNPM_HOME=$(pwd)/.cushy
@@ -62,15 +59,9 @@ fi
 echo "Installing dependencies..."
 $PNPM_BIN_PATH install
 
-# ===//=====//======//======//======//======//======//======//======//======//======//======//==
-# ==//=====//======//======//======//======//======//======//======//======//======//======//===
-
 # ensuring binary dependencies are correctly linked across installed
 ./node_modules/.bin/electron-builder install-app-deps
 
-
-# ===//=====//======//======//======//======//======//======//======//======//======//======//==
-# ==//=====//======//======//======//======//======//======//======//======//======//======//===
 
 # Define the path to tsconfig.custom.json
 tsconfigPath="./tsconfig.custom.json"
@@ -84,10 +75,4 @@ if [ ! -f "$tsconfigPath" ]; then
     echo "$defaultTsconfigJSON" > "$tsconfigPath"
 fi
 
-
-# ===//=====//======//======//======//======//======//======//======//======//======//======//==
-# ==//=====//======//======//======//======//======//======//======//======//======//======//===
-
-# Start Vite using Electron's Node
-echo "Starting Vite with Electron's Node..."
-./node_modules/.bin/electron -i src/shell
+echo "🟢 cushy-install.sh completed successfully."

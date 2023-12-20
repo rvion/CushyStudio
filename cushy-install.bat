@@ -34,7 +34,7 @@ IF NOT EXIST "%PNPM_BIN_PATH%" (
 
 :: Install dependencies using pnpm
 ECHO Installing dependencies...
-CALL "%PNPM_BIN_PATH%" install 
+CALL "%PNPM_BIN_PATH%" install
 IF ERRORLEVEL 1 (
     ECHO Installing dependencies: node-gyp first...
     CALL "%PNPM_BIN_PATH%" remove better-sqlite3
@@ -58,11 +58,6 @@ IF NOT EXIST "%tsconfigPath%" (
 )
 
 node_modules\rcedit\bin\rcedit.exe "node_modules\electron\dist\electron.exe" --set-icon "library\CushyStudio\_public\CushyLogo.ico"
-
-SET CUSHY_RUN_MODE=dev
-:: Start Vite using Electron's Node
-ECHO Starting Vite with Electron's Node...
-CALL .\node_modules\.bin\electron --no-sandbox -i src\shell
 
 EXIT /B 0
 
