@@ -118,7 +118,7 @@ export class CushyScriptL {
             APPS.push(app)
             const appID = asCushyAppID(this.relPath + ':' + appIndex++) // 🔴 SUPER UNSAFE
             // console.log(`[👙] >> appID==`, appID)
-            return { $DO_NOT_USE: 0 as any, id: appID }
+            return { $Output: 0 as any, id: appID }
         }
 
         // 2. eval file to extract actions

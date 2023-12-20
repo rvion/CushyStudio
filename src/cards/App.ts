@@ -16,7 +16,7 @@ export type ActionTagMethodList = Array<{ key: string; method: ActionTagMethod }
 export type ActionTags = (arg0: ActionTagMethodList) => void
 export type WidgetDict = { [key: string]: Widget }
 export type FormResult<Req extends Widget> = ReqResult<Req>
-export type AppRef<F> = { $DO_NOT_USE: F; id: CushyAppID }
+export type AppRef<F> = { $Output: F; id: CushyAppID }
 
 export type $ExtractFormValueType<FIELDS extends WidgetDict> = { [k in keyof FIELDS]: FIELDS[k]['$Output'] }
 

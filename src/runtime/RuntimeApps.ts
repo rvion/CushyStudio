@@ -59,7 +59,7 @@ export class RuntimeApps {
         )
         try {
             const step = draft.start(p.formValue)
-            const result = await step.completionPromise
+            const result = await step.finished
             return result
         } catch (e) {
             console.error(e)

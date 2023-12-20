@@ -19,7 +19,7 @@ export class RuntimeStore {
 
     // generic stores
     // you can type them the way you want when creating them
-    get_orThrow = <T>(p: {
+    getOrThrow = <T>(p: {
         /** scope key */
         key: string
         /**
@@ -34,7 +34,7 @@ export class RuntimeStore {
         return this.CustomDataTable.getOrThrow(finalKey)
     }
 
-    get_orCreate = <T>(p: {
+    getOrCreate = <T>(p: {
         /** scope key */
         key: string
         /**
@@ -71,7 +71,7 @@ export class RuntimeStore {
         const storeID = `${prefix}/imageStore/${storeName}`
         const prev = this.imageStoresIndex.get(storeID)
         if (prev) return prev
-        const rawStore: CustomDataL<ImageStoreT> = this.get_orCreate({
+        const rawStore: CustomDataL<ImageStoreT> = this.getOrCreate({
             key: storeID,
             scope: 'global',
             makeDefaultValue: () => ({}),

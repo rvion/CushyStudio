@@ -24,7 +24,7 @@ export type FormPath = (string | number)[]
 /** a thin wrapper around an app execution */
 export interface StepL extends LiveInstance<StepT, StepL> {}
 export class StepL {
-    completionPromise = new ManualPromise<RuntimeExecutionResult>()
+    finished = new ManualPromise<RuntimeExecutionResult>()
     start = async (p: {
         /**
          * reference to the draft live form instance
@@ -48,7 +48,7 @@ export class StepL {
                 this.update({ status: Status.Success })
             }
         }
-        this.completionPromise.resolve(scriptExecutionStatus)
+        this.finished.resolve(scriptExecutionStatus)
     }
 
     get finalStatus(): Status {
