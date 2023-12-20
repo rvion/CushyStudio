@@ -3,25 +3,28 @@ import type { LiveInstance } from '../db/LiveInstance'
 import type { ComfyWorkflowL } from '../models/Graph'
 import type { ComfyPromptL } from './ComfyPrompt'
 
-import { LibraryFile } from 'src/cards/CardFile'
+import { Widget_group } from 'src/controls/Widget'
+import { SQLITE_false, SQLITE_true } from 'src/db/SQLITE_boolean'
 import { StepT } from 'src/db/TYPES.gen'
-import { Runtime } from '../back/Runtime'
+import { Runtime, RuntimeExecutionResult } from '../runtime/Runtime'
 import { Status } from '../back/Status'
 import { LiveCollection } from '../db/LiveCollection'
 import { LiveRef } from '../db/LiveRef'
+import { CushyAppL } from './CushyApp'
+import { Executable } from './Executable'
 import { Media3dDisplacementL } from './Media3dDisplacement'
 import { MediaImageL } from './MediaImage'
+import { MediaSplatL } from './MediaSplat'
 import { MediaTextL } from './MediaText'
 import { MediaVideoL } from './MediaVideo'
 import { RuntimeErrorL } from './RuntimeError'
-import { MediaSplatL } from './MediaSplat'
-import { Widget_group } from 'src/controls/Widget'
-import { SQLITE_false, SQLITE_true } from 'src/db/SQLITE_boolean'
+import { ManualPromise } from 'src/utils/misc/ManualPromise'
 
 export type FormPath = (string | number)[]
 /** a thin wrapper around an app execution */
 export interface StepL extends LiveInstance<StepT, StepL> {}
 export class StepL {
+    finished = new ManualPromise<RuntimeExecutionResult>()
     start = async (p: {
         /**
          * reference to the draft live form instance
@@ -30,17 +33,22 @@ export class StepL {
          * */
         formInstance: Widget_group<any>
     }) => {
-        const action = this.appCompiled
+        const action = this.executable
         if (action == null) return console.log('🔴 no action found')
 
         // this.data.outputGraphID = out.id
         this.runtime = new Runtime(this)
         this.update({ status: Status.Running })
-        const scriptExecutionStatus = await this.runtime.run(p)
+        const scriptExecutionStatus: RuntimeExecutionResult = await this.runtime._EXECUTE(p)
 
-        if (this.comfy_prompts.items.every((p: ComfyPromptL) => p.data.executed)) {
-            this.update({ status: scriptExecutionStatus })
+        if (scriptExecutionStatus.type === 'error') {
+            this.update({ status: Status.Failure })
+        } else {
+            if (this.comfy_prompts.items.every((p: ComfyPromptL) => p.data.executed)) {
+                this.update({ status: Status.Success })
+            }
         }
+        this.finished.resolve(scriptExecutionStatus)
     }
 
     get finalStatus(): Status {
@@ -50,25 +58,40 @@ export class StepL {
             : Status.Running
     }
 
-    get status():Status { return this.data.status as Status } // prettier-ignore
-    get appFile(): LibraryFile | undefined { return this.st.library.cardsByPath.get(this.data.appPath) } // prettier-ignore
-    get appCompiled() { return this.appFile?.appCompiled } // prettier-ignore
-    get name() { return this.data.name } // prettier-ignore
-    get generatedImages(): MediaImageL[] { return this.images.items } // prettier-ignore
+    appL = new LiveRef<this, CushyAppL>(this, 'appID', () => this.db.cushy_apps)
+
+    get app(): CushyAppL {
+        return this.appL.item
+    }
+
+    get status(): Status {
+        return this.data.status as Status
+    }
+
+    get executable(): Maybe<Executable> {
+        return this.app.executable
+    }
+
+    get name(): string {
+        return this.data.name ?? this.app.name
+    }
+
+    get generatedImages(): MediaImageL[] {
+        return this.images.items
+    }
 
     outputWorkflow = new LiveRef<this, ComfyWorkflowL>(this, 'outputGraphID', () => this.db.graphs)
 
     private _CACHE_INVARIANT = () => this.data.status !== Status.Running
 
-    texts = new LiveCollection<MediaTextL>(this, 'stepID', () => this.db.media_texts, this._CACHE_INVARIANT)
-    images = new LiveCollection<MediaImageL>(this, 'stepID', () => this.db.media_images, this._CACHE_INVARIANT)
-    videos = new LiveCollection<MediaVideoL>(this, 'stepID', () => this.db.media_videos, this._CACHE_INVARIANT)
-    displacements = new LiveCollection<Media3dDisplacementL>(this, 'stepID', () => this.db.media_3d_displacement, this._CACHE_INVARIANT) // prettier-ignore
-    splats = new LiveCollection<MediaSplatL>(this, 'stepID', () => this.db.media_splats, this._CACHE_INVARIANT) // prettier-ignore
-
-    comfy_workflows = new LiveCollection<ComfyWorkflowL>(this, 'stepID', () => this.db.graphs, this._CACHE_INVARIANT)
-    comfy_prompts = new LiveCollection<ComfyPromptL>(this, 'stepID', () => this.db.comfy_prompts, this._CACHE_INVARIANT)
-    runtimeErrors = new LiveCollection<RuntimeErrorL>(this, 'stepID', () => this.db.runtimeErrors, this._CACHE_INVARIANT)
+    texts =           new LiveCollection<MediaTextL>          ({table: () => this.db.media_texts,           where: () => ({stepID:this.id}), cache: this._CACHE_INVARIANT}) // prettier-ignore
+    images =          new LiveCollection<MediaImageL>         ({table: () => this.db.media_images,          where: () => ({stepID:this.id}), cache: this._CACHE_INVARIANT}) // prettier-ignore
+    videos =          new LiveCollection<MediaVideoL>         ({table: () => this.db.media_videos,          where: () => ({stepID:this.id}), cache: this._CACHE_INVARIANT}) // prettier-ignore
+    displacements =   new LiveCollection<Media3dDisplacementL>({table: () => this.db.media_3d_displacement, where: () => ({stepID:this.id}), cache: this._CACHE_INVARIANT}) // prettier-ignore
+    splats =          new LiveCollection<MediaSplatL>         ({table: () => this.db.media_splats,          where: () => ({stepID:this.id}), cache: this._CACHE_INVARIANT}) // prettier-ignore
+    comfy_workflows = new LiveCollection<ComfyWorkflowL>      ({table: () => this.db.graphs,                where: () => ({stepID:this.id}), cache: this._CACHE_INVARIANT}) // prettier-ignore
+    comfy_prompts =   new LiveCollection<ComfyPromptL>        ({table: () => this.db.comfy_prompts,         where: () => ({stepID:this.id}), cache: this._CACHE_INVARIANT}) // prettier-ignore
+    runtimeErrors =   new LiveCollection<RuntimeErrorL>       ({table: () => this.db.runtimeErrors,         where: () => ({stepID:this.id}), cache: this._CACHE_INVARIANT}) // prettier-ignore
 
     get currentlyExecutingOutput(): Maybe<StepOutput> {
         return this.comfy_prompts.items.find((p: ComfyPromptL) => !p.data.executed)

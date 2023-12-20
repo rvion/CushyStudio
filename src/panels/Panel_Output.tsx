@@ -2,7 +2,7 @@ import { observer } from 'mobx-react-lite'
 import { AppIllustrationUI } from 'src/cards/fancycard/AppIllustrationUI'
 import { OutputPreviewUI, OutputUI } from 'src/outputs/OutputUI'
 import { InputNumberUI } from 'src/rsuite/InputNumberUI'
-import { RevealUI } from 'src/rsuite/RevealUI'
+import { RevealUI } from 'src/rsuite/reveal/RevealUI'
 import { FieldAndLabelUI } from 'src/widgets/misc/FieldAndLabelUI'
 import { useSt } from '../state/stateContext'
 import { StepOutputsHeaderV2UI } from 'src/outputs/StepOutputsV2UI'
@@ -15,15 +15,22 @@ export const LatentIfLastUI = observer(function LatentIfLastUI_(p: {}) {
     const lastImage = st.db.media_images.last()
     const latent = st.latentPreview
     if (latent == null) return null
-    if (lastImage == null || latent.receivedAt > lastImage.createdAt)
+    if (lastImage == null || latent.receivedAt > lastImage.createdAt) {
         return (
             <img //
                 tw='absolute bottom-0 right-0 shadow-xl z-50'
-                style={{ width: st.latentSizeStr, height: st.latentSizeStr, objectFit: 'contain' }}
+                style={{
+                    //
+                    filter: st.project.filterNSFW ? 'blur(50px)' : undefined,
+                    width: st.latentSizeStr,
+                    height: st.latentSizeStr,
+                    objectFit: 'contain',
+                }}
                 src={latent.url}
                 alt='last generated image'
             />
         )
+    }
 })
 
 export const Panel_Output = observer(function Panel_Output_(p: {}) {
@@ -69,7 +76,7 @@ export const SideOutputListUI = observer(function SideOutputListUI_(p: {}) {
     const step = st.focusedStepL
     const size = st.historySizeStr
     return (
-        <div tw={'flex flex-wrap gap-0.5 p-1 overflow-auto flex-shrink-0 bg-base-300 items-center'}>
+        <div tw={'flex flex-wrap gap-0.5 p-1 overflow-auto flex-shrink-0 bg-base-300 items-center max-h-[50%]'}>
             <RevealUI tw='self-start' disableHover>
                 <div style={{ width: size, height: size, lineHeight: size }} tw='btn h-full'>
                     <span className='material-symbols-outlined'>settings</span>

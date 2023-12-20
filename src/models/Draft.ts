@@ -3,12 +3,14 @@ import type { StepL } from './Step'
 
 import { autorun, reaction, runInAction } from 'mobx'
 import { Status } from 'src/back/Status'
-import { LibraryFile } from 'src/cards/CardFile'
+import { LibraryFile } from 'src/cards/LibraryFile'
 import { FormBuilder } from 'src/controls/FormBuilder'
-import { Widget_group, type Widget } from 'src/controls/Widget'
+import { Widget_group } from 'src/controls/Widget'
+import { LiveRef } from 'src/db/LiveRef'
 import { SQLITE_true } from 'src/db/SQLITE_boolean'
 import { DraftT } from 'src/db/TYPES.gen'
 import { __FAIL, __OK, type Result } from 'src/types/Either'
+import { CushyAppL } from './CushyApp'
 
 export type FormPath = (string | number)[]
 
@@ -18,7 +20,22 @@ export class DraftL {
     // 🔴 HACKY
     shouldAutoStart = false
 
+    appRef = new LiveRef<this, CushyAppL>(this, 'appID', () => this.db.cushy_apps)
+
+    get app(): CushyAppL {
+        return this.appRef.item
+    }
+
+    get executable() {
+        return this.app.executable
+    }
+
+    get name() {
+        return this.data.title ?? this.id
+    }
+
     private autoStartTimer: NodeJS.Timeout | null = null
+
     setAutostart(val: boolean) {
         this.shouldAutoStart = val
         if (this.shouldAutoStart) {
@@ -33,7 +50,7 @@ export class DraftL {
         }
     }
 
-    start = (): StepL => {
+    start = (formValueOverride?: Maybe<any>): StepL => {
         // ----------------------------------------
         // 🔴 2023-11-30 rvion:: TEMPORPARY HACKS
         this.st.focusedStepID = null
@@ -41,11 +58,19 @@ export class DraftL {
         // ----------------------------------------
 
         // 1. ensure req valid (TODO: validate)
-        const req: Maybe<Widget_group<any>> = this.gui.value
+        const req = formValueOverride
+            ? // case of sub-drafts created/started from within a draft
+              ({
+                  builder: { _cache: { count: 0 } },
+                  result: formValueOverride,
+                  serial: {},
+              } as any as Widget_group<any>)
+            : this.gui.value
+
         if (req == null) throw new Error('invalid req')
 
         // 2. ensure graph valid
-        const startGraph = this.st.getProject().rootGraph.item
+        const startGraph = this.st.project.rootGraph.item
         if (startGraph == null) throw new Error('invalid graph')
 
         // 3. bumpt the builder cache count
@@ -58,7 +83,7 @@ export class DraftL {
         const step = this.db.steps.create({
             name: this.data.title,
             //
-            appPath: this.data.appPath,
+            appID: this.data.appID,
             formResult: req.result,
             formSerial: req.serial,
             //
@@ -75,12 +100,8 @@ export class DraftL {
 
     gui: Result<Widget_group<any>> = __FAIL('not loaded yet')
 
-    get app(): LibraryFile | undefined {
-        return this.st.library.cardsByPath.get(this.data.appPath)
-    }
-
-    get action() {
-        return this.app?.appCompiled
+    get file(): LibraryFile {
+        return this.st.library.getFile(this.appRef.item.relPath)
     }
 
     onHydrate = () => {
@@ -90,12 +111,13 @@ export class DraftL {
     isInitializing = false
     isInitialized = false
     AWAKE = () => {
+        if (this.isInitializing) return
         if (this.isInitialized) return
         this.isInitializing = true
         const _1 = reaction(
-            () => this.action,
+            () => this.executable,
             (action) => {
-                console.log(`[🦊] form: awakening app ${this.data.appPath}`)
+                console.log(`[🦊] form: awakening app ${this.data.appID}`)
                 if (action == null) return
                 try {
                     const formBuilder = new FormBuilder(this.st.schema)

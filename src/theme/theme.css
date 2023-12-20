@@ -1,5 +1,47 @@
+.rct-tree-items-container {
+    position: relative;
+}
+.rct-tree-items-container .rct-tree-items-container .rct-tree-item-title-container::after {
+    content: '';
+    position: absolute;
+    top:0;
+    transform: translateX(-3px);
+    bottom: 0;
+    /* left: 10px; */
+    width: 1px;
+    background-color: oklch(var(--b3)) !important;
+}
+.rct-tree-root {
+    color: oklch(var(--bc)) !important;
+    flex-grow: 1;
+    overflow: auto;
+}
+.rct-tree-item-button span.material-symbols-outlined {
+    font-size: 1.4rem;
+}
+.rct-tree-item-button {
+    padding: 0 0 0 1.3rem !important;
+}
+.rct-tree-root.rct-tree-root-focus .rct-tree-item-title-container-focused {
+    background-color: oklch(var(--b2)) !important;
+}
+.rct-tree-item-arrow-path {
+    fill: oklch(var(--bc)) !important;
+}
+
+.rct-tree-item-button:hover {
+    background-color: oklch(var(--b2)) !important;
+    color: oklch(var(--bc)) !important;
+}
+.rct-tree-item-title-container-selected .rct-tree-item-button {
+    background-color: oklch(var(--b3)) !important;
+    color: oklch(var(--bc)) !important;
+
+}
 ._RevealUI {
-    box-shadow: 0 5px 5px -3px oklch(var(--s));
+    box-shadow:
+        0 5px 15px -5px oklch(var(--p));
+        /* 0 0 10px 1px oklch(var(--b3)); */
 }
 ._MenuItem > div  {
     padding: 0.3em 0.5em;
@@ -7,6 +49,10 @@
 .btn-narrow {
     padding-left: 0.2em;
     padding-right: 0.2em;
+}
+
+.borderLeft {
+    border-left: 1px solid oklch(var(--bc)/0.2);
 }
 .konvajs-content,
 .virtualBorder {

@@ -1,7 +1,8 @@
 import { observer } from 'mobx-react-lite'
 import { InputNumberBase, Slider } from 'src/rsuite/shims'
 import { parseFloatNoRoundingErr } from 'src/utils/misc/parseFloatNoRoundingErr'
-import { clamp } from 'three/src/math/MathUtils'
+
+const clamp = (x: number, min: number, max: number) => Math.max(min, Math.min(max, x))
 
 export const InputNumberUI = observer(function InputNumberUI_(p: {
     value?: Maybe<number>

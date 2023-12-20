@@ -1,7 +1,7 @@
 import * as fs from 'fs'
 import { writeFileSync } from 'fs'
-import * as path from 'path'
-import { join } from 'path'
+import * as path from 'pathe'
+import { join } from 'pathe'
 import { cwd } from 'process'
 // import { getRepoRoot } from 'src/back/reusable/getRepoFilePath'
 // import { variableNameify } from 'src/back/reusable/variableNameify'
@@ -17,7 +17,7 @@ async function* walk(dir: string): AsyncGenerator<string, void, void> {
 }
 
 const root = cwd()
-const assetFolder = join(root, 'library/CushyStudio/')
+const assetFolder = join(root, 'public')
 const assets: { relPath: string; baseName: string; path: string }[] = []
 
 for await (const p of walk(assetFolder)) {

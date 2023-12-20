@@ -36,8 +36,8 @@ export class JsonFile<T extends object> {
         this.folderPath = asAbsolutePath(dirname(p.path))
         this.folderName = basename(this.folderPath)
         this.init(p)
-        p.fixup?.(this)
         makeAutoObservable(this)
+        p.fixup?.(this)
     }
 
     erase = () => {
@@ -62,6 +62,7 @@ export class JsonFile<T extends object> {
             maxLevel == null //
                 ? JSON.stringify(this.value, null, 4)
                 : readableStringify(this.value, maxLevel)
+        // console.warn(`[👙] save to `, this._path, content)
         writeFileSync(this._path, content)
         return true
     }

@@ -1,40 +1,60 @@
 Todo before release:
 
-✔ remove the need for node / npm to be installed @done(23-12-06 00:14)
-    ✔ ❌ problem : @done(23-12-06 00:14)
-        ✔ installing Cushy depends on having node and git installed @done(23-12-06 00:14)
-        ✔ many people don't have node installed @done(23-12-06 00:14)
-        ✔ many people have too old / incompatible version installed @done(23-12-06 00:14)
-        ✔ install instruction have too many steps @done(23-12-06 00:14)
-        ✔ it's hard to provide a self-contained upgradable archive @done(23-12-06 00:14)
+    2023-12-20 (Vinsi feedback + misc extra stuff):
+        ☐ fix login callback not beeing available after public dir change
+        ☐ disable publish button if not logged in
+        ☐ stuck in ComfyUI
+        ☐ improve OuputWrappers to allow to open in side panes
+        ☐ single output panel
+        ☐ open folder
+        ☐ "edit" delete the output image
+        ☐ config => settings
+        ☐ move hosts in an other panel
+        ☐ safe/unsafe should be option panel
+        ☐ comfyUI node explorer looks bad
+        ☐ disable the delete button for virtual-comfyui hosts
+        ☐ rich prompt + shift/alt+enter should not accept compltion but insert newline
+        ☐ better treeview with apps
+        ☐ add default non virtual local host
+        ✔ capitalize `theme` word in appbar @done(23-12-20 15:55)
+        ✔ reorder appbar to have login at the end of the left section @done(23-12-20 15:55)
+        ✔ opening a past step fold it in the outputs panel @done(23-12-20 15:34)
+        ✔ menu reveal  close itself too fast @done(23-12-20 15:12)
+        ✔ text on theme menu @done(23-12-20 15:13)
+        ✔ auto layout not handling positive correctly @done(23-12-20 15:50)
+        ✔ improve forms look and feel @done(23-12-20 15:27)
+        ✔ improve size widget preview a bit @done(23-12-20 15:27)
+        ✔ hacky fix library so it's at least a bit usable @done(23-12-20 15:40)
 
-    ✔ 🟢 solution: @done(23-12-06 00:14)
-        ✔ have a install script with 0 dependencies that @done(23-12-06 00:14)
-            ✔ download the tiny `pnpm` binary (exact version) @done(23-12-06 00:14)
-            ✔ use `pnpm` to install all dependencies including electron @done(23-12-06 00:14)
-            ✔ bypass completely the need for node by using electron built-in node @done(23-12-06 00:14)
-                ✔ start `vite` via it's typescritp api from the start.cjs script itself @done(23-12-06 00:14)
-                ✔ this will also probably fix the problem of vite/electron not closing synchronously @done(23-12-06 00:14)
-        ✔ extra bonus: @done(23-12-06 00:14)
-            ✔ ship pnpm binaries for common archs in the repo directly ? @done(23-12-06 00:14)
 
+    ✔ codegen swap file @done(23-12-20 15:17)
+    ☐ video
+    ☐ hot reload apps
+    ☐ finish full page apps
+    ☐ add browser/install page
+    ☐ library page on the website
+    ☐ https://unjs.io/packages/image-meta
     ☐ fix sut
     ☐ use any image as draft illustration
-    ☐ don't autofocus preview images
+    ✔ don't autofocus preview images @done(23-12-19 10:25)
     ☐ warning if custom nodes not installed by default
-    ☐ small mention in the readme that dev console can help troubleshoot problems.
-    ☐ custom size on size widget
-    ☐ draft tabs/ files
-    ☐ background image for config panel
+    ✘ small mention in the readme that dev console can help troubleshoot problems. @cancelled(23-12-19 10:24)
+    ✘ custom size on size widget @cancelled(23-12-19 10:24)
+    ✔ draft tabs/ files @done(23-12-19 10:24)
+    ✔ background image for config panel @done(23-12-19 10:24)
+
+    // 🔶 can't move frame ref here because no way to override mobx
+    // comfyUIIframeRef = createRef<HTMLIFrameElement>()
+
     ☐ draft result are too wide by default / should open in bottom panel
     ☐ selectMenu
     ☐ show different from current preset in color
-    ☐ surrounded by card for ju and tu
-    ☐ better marketplace without fetching stars and repo infos by adding some gen-marketplace-data
-    ☐ tree library menu by default
-    ☐ drafts
+    ✘ surrounded by card for ju and tu @cancelled(23-12-16 17:59)
+    ✔ better marketplace without fetching stars and repo infos by adding some gen-marketplace-data @done(23-12-16 17:59)
+    ✔ tree library menu by default @done(23-12-16 17:53)
+    ✔ drafts @done(23-12-16 17:53)
     ☐ click on rich prompt should
-    ☐ fix the "run" button not being disabled when it should
+    ✔ fix the "run" button not being disabled when it should @done(23-12-16 17:53)
     ☐ finish autorun so it wait for nothing to be running an action change
     ☐ primitive to show that a custom node is required
     ☐ proper model picker action
@@ -44,11 +64,28 @@ Todo before release:
     ☐ code builder:
     ☐ image drop anywhere in the app
     ☐ select nodes  => see the corresponding code in realtime
-    ☐ have a better auto-UI generated
+    ✔ have a better auto-UI generated @done(23-12-16 18:00)
     ☐ new primitive to add all the primitive inputs instead of having super long names,
-    ☐ optimize all images
-    ☐ make the run button red if cushy is not running
-    ☐ option to reduce image size
+    ☐ optimize all images ☐ option to reduce image size
+    ✔ make the run button red if cushy is not running @done(23-12-16 18:00)
+
+✔ remove the need for node / npm to be installed @done(23-12-06 00:14)
+✔ ❌ problem : @done(23-12-06 00:14)
+    ✔ installing Cushy depends on having node and git installed @done(23-12-06 00:14)
+    ✔ many people don't have node installed @done(23-12-06 00:14)
+    ✔ many people have too old / incompatible version installed @done(23-12-06 00:14)
+    ✔ install instruction have too many steps @done(23-12-06 00:14)
+    ✔ it's hard to provide a self-contained upgradable archive @done(23-12-06 00:14)
+
+✔ 🟢 solution: @done(23-12-06 00:14)
+    ✔ have a install script with 0 dependencies that @done(23-12-06 00:14)
+        ✔ download the tiny `pnpm` binary (exact version) @done(23-12-06 00:14)
+        ✔ use `pnpm` to install all dependencies including electron @done(23-12-06 00:14)
+        ✔ bypass completely the need for node by using electron built-in node @done(23-12-06 00:14)
+            ✔ start `vite` via it's typescritp api from the start.cjs script itself @done(23-12-06 00:14)
+            ✔ this will also probably fix the problem of vite/electron not closing synchronously @done(23-12-06 00:14)
+    ✔ extra bonus: @done(23-12-06 00:14)
+        ✔ ship pnpm binaries for common archs in the repo directly ? @done(23-12-06 00:14)
 
 ✔ fix all selects @done(23-11-26 11:56)
 ✔ proper error message when node not found @done(23-12-02 10:44)
@@ -115,7 +152,7 @@ panes:
 
 asset pack:
     ✔ marketplace should allow custom assets for images @done(23-11-08 20:57)
-    ✔ support assets in action packs @done(23-11-08 20:57)
+    ✔ support assets in packages @done(23-11-08 20:57)
 
 widget UI:
     ✔ polish some widgets @done(23-11-08 20:57)

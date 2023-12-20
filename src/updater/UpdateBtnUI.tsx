@@ -1,16 +1,14 @@
 import { observer } from 'mobx-react-lite'
-import { GitManagedFolder } from 'src/updater/updater'
+import { ReactNode } from 'react'
 import { FolderGitStatus } from 'src/cards/FolderGitStatus'
+import { RevealUI } from 'src/rsuite/reveal/RevealUI'
 import { Button, Joined, Loader, Message } from 'src/rsuite/shims'
-import { ReleaseChannelUI } from '../app/layout/ReleaseChannelUI'
-import { RevealUI } from 'src/rsuite/RevealUI'
-import { GitInitBtnUI } from './GitInitBtnUI'
+import { GitManagedFolder } from 'src/updater/updater'
+import { exhaust } from 'src/utils/misc/ComfyUtils'
 import { GitInstallUI } from './GitInstallUI'
-import { _formatAsRelativeDateTime } from './_getRelativeTimeString'
 import { UninstallUI } from './GitUninstallUI'
 import { UpdaterErrorUI } from './UpdaterErrorUI'
-import { ReactNode } from 'react'
-import { exhaust } from 'src/utils/misc/ComfyUtils'
+import { _formatAsRelativeDateTime } from './_getRelativeTimeString'
 
 export const UpdateBtnUI = observer(function UpdateBtnUI_(p: {
     //
@@ -53,7 +51,7 @@ export const UpdaterAnchorUI = observer(function UpdaterAnchorUI_(p: { updater: 
     if (status === FolderGitStatus.Unknown) return <Loader />
     if (status === FolderGitStatus.DoesNotExist) return <GitInstallUI udpater={updater} />
     if (status === FolderGitStatus.NotADirectory) return <div>❓ unexpected file</div>
-    if (status === FolderGitStatus.FolderWithoutGit) return <GitInitBtnUI updater={updater} />
+    if (status === FolderGitStatus.FolderWithoutGit) return null // <GitInitBtnUI updater={updater} />
     if (status === FolderGitStatus.FolderWithGitButWithProblems) return <div>❓</div>
     if (status === FolderGitStatus.FolderWithGit) return updater.currentVersion
     exhaust(status)

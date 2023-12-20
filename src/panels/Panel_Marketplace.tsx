@@ -1,11 +1,6 @@
 import { observer } from 'mobx-react-lite'
-import { ErrorBoundary } from 'react-error-boundary'
 import { Button } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
-import { GithubUserUI } from 'src/cards/GithubAvatarUI'
-import { ErrorBoundaryFallback } from 'src/widgets/misc/ErrorBoundary'
-import { Package } from '../cards/Pkg'
-import { ActionPackStatusUI } from '../cards/DeckStatusUI'
 // import { ActionPackStarsUI } from '../cards/DeckStarsUI'
 
 export const Panel_Marketplace = observer(function Panel_Marketplace_(p: {}) {
@@ -17,33 +12,33 @@ export const Panel_Marketplace = observer(function Panel_Marketplace_(p: {}) {
                     Create action
                 </Button>
             </div>
-            {st.library.decks.map((actionPack) => (
-                <ErrorBoundary key={actionPack.github} FallbackComponent={ErrorBoundaryFallback}>
-                    <ActionPackUI key={actionPack.github} actionPack={actionPack} />
+            {/* {st.library.decks.map((pkg) => (
+                <ErrorBoundary key={pkg.github} FallbackComponent={ErrorBoundaryFallback}>
+                    <ActionPackUI key={pkg.github} pkg={pkg} />
                 </ErrorBoundary>
-            ))}
+            ))} */}
         </div>
     )
 })
 
-export const ActionPackUI = observer(function ActionPackUI_(p: { actionPack: Package }) {
-    const pack = p.actionPack
-    return (
-        <div tw='cursor-pointer hover:bg-gray-700 p-2' key={pack.name} style={{ borderBottom: '1px solid #515151' }}>
-            <div tw='flex  gap-2'>
-                <div tw='flex-grow'>
-                    <div tw='text-lg font-bold'>{pack.name}</div>
-                    <GithubUserUI size='1.5rem' username={pack.githubUserName} showName />
-                    <div tw='text-neutral-content'>{pack.description}</div>
-                </div>
-                {/* {pack.isBuiltIn ? null : <ActionPackStarsUI pack={pack} />} */}
-            </div>
-            <ActionPackStatusUI pack={pack} />
-            {pack.installK.logs.length > 0 && (
-                <div>
-                    <pre>{JSON.stringify(pack.installK.logs)}</pre>
-                </div>
-            )}
-        </div>
-    )
-})
+// export const ActionPackUI = observer(function ActionPackUI_(p: { pkg: Package }) {
+//     const pkg = p.pkg
+//     return (
+//         <div tw='cursor-pointer hover:bg-gray-700 p-2' key={pkg.name} style={{ borderBottom: '1px solid #515151' }}>
+//             <div tw='flex  gap-2'>
+//                 <div tw='flex-grow'>
+//                     <div tw='text-lg font-bold'>{pkg.name}</div>
+//                     {/* <GithubUserUI size='1.5rem' username={pkg.githubUserName} showName /> */}
+//                     <div tw='text-neutral-content'>{pkg.description}</div>
+//                 </div>
+//                 {/* {pack.isBuiltIn ? null : <ActionPackStarsUI pack={pack} />} */}
+//             </div>
+//             {/* <ActionPackStatusUI pack={pkg} /> */}
+//             {pkg.installK.logs.length > 0 && (
+//                 <div>
+//                     <pre>{JSON.stringify(pkg.installK.logs)}</pre>
+//                 </div>
+//             )}
+//         </div>
+//     )
+// })

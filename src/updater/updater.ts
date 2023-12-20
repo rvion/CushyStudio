@@ -2,7 +2,7 @@ import type { STATE } from '../state/state'
 
 import { exec } from 'child_process'
 import { existsSync, lstatSync, mkdirSync, statSync, utimesSync } from 'fs'
-import { makeAutoObservable } from 'mobx'
+import { makeAutoObservable, runInAction } from 'mobx'
 import { join, relative } from 'pathe'
 import simpleGit, { SimpleGit } from 'simple-git'
 import { GithubUserName } from 'src/cards/GithubUser'
@@ -154,19 +154,24 @@ export class GitManagedFolder {
 
             // update values
             const defaultBranch = headBranchMatch // headBranchMatch[1]
-            this.mainBranchName = defaultBranch
+            const headCommitsCount = await _getHeadCommitsCount('HEAD')
+            const originCommitsCount = await _getHeadCommitsCount(`origin/${defaultBranch}`)
 
             try {
-                this.headCommitsCount = await _getHeadCommitsCount('HEAD')
-                this.originCommitsCount = await _getHeadCommitsCount(`origin/${defaultBranch}`)
+                runInAction(() => {
+                    this.mainBranchName = defaultBranch
+                    this.headCommitsCount = headCommitsCount
+                    this.originCommitsCount = originCommitsCount
+                    this.status = FolderGitStatus.FolderWithGit
+                })
             } catch (error) {
                 this.log('❌ updateInfos failed', error)
-                this.status = FolderGitStatus.FolderWithGitButWithProblems
+                runInAction(() => {
+                    this.status = FolderGitStatus.FolderWithGitButWithProblems
+                })
                 this.resetAllGitInfos()
                 return
             }
-
-            this.status = FolderGitStatus.FolderWithGit
 
             if (!this._hasPeriodicUpdateCheck()) {
                 this._startPeriodicUpdateCheck()

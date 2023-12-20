@@ -12,7 +12,6 @@ import { PlainTextPlugin } from '@lexical/react/LexicalPlainTextPlugin'
 import { $createLineBreakNode, $createParagraphNode, $createTextNode, $getRoot, EditorState, LexicalEditor } from 'lexical'
 
 // theme
-import './theme/Popover.css'
 import theme from './theme/WidgetLexicalTheme'
 
 // nodes

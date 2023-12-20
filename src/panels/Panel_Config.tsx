@@ -45,6 +45,13 @@ export const Panel_Config = observer(function Panel_Config_() {
                             onValueChange={(val) => config.update({ galleryImageSize: val })}
                         />
                     </FieldUI>
+                    <FieldUI label='Enable TypeChecking Default Apps'>
+                        <Toggle
+                            onChange={(t) => config.update({ enableTypeCheckingBuiltInApps: t.target.checked })}
+                            checked={config.value.enableTypeCheckingBuiltInApps ?? false}
+                        ></Toggle>
+                    </FieldUI>
+
                     <FieldUI label='Check update every X minutes'>
                         <FormControl //
                             type='number'

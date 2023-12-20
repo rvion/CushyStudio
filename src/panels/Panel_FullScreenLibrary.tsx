@@ -1,22 +1,28 @@
+import { use } from 'cytoscape'
 import { observer } from 'mobx-react-lite'
-import { CreateDeckBtnUI } from 'src/app/layout/CreateDeckBtnUI'
+import { useEffect } from 'react'
 import { AppCardUI } from 'src/cards/fancycard/AppCardUI'
-import { FileBeeingImportedUI } from 'src/importers/FilesBeeingImported'
+import { recursivelyFindAppsInFolder } from 'src/cards/walkLib'
+import { RevealUI } from 'src/rsuite/reveal/RevealUI'
 import { Addon, Joined, Slider, Toggle } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
 import { FieldAndLabelUI } from 'src/widgets/misc/FieldAndLabelUI'
 import { ScrollablePaneUI } from 'src/widgets/misc/scrollableArea'
-import { DraftEntryUI } from './libraryUI/DraftEntryUI'
 
 export const Panel_CardPicker3UI = observer(function Panel_CardPicker3UI_(p: {}) {
     const st = useSt()
     const library = st.library
+
+    useEffect(() => {
+        st.fetcAllPublishedApps()
+    }, [])
+
     return (
         <div tw='relative h-full flex-grow flex flex-col'>
             <div tw='bg-base-200 p-4'>
                 <div tw='flex gap-2'>
                     <div tw='mr-2 text-2xl'>Library</div>
-                    <CreateDeckBtnUI />
+                    {/* <CreateDeckBtnUI /> */}
                 </div>
                 <div tw='flex gap-1 items-center'>
                     <Joined>
@@ -24,7 +30,7 @@ export const Panel_CardPicker3UI = observer(function Panel_CardPicker3UI_(p: {})
                             <span className='material-symbols-outlined'>search</span>
                         </Addon>
                         <input
-                            tw='join-item input-sm'
+                            tw='join-item input input-sm'
                             type='string'
                             value={library.query}
                             onChange={(ev) => {
@@ -33,9 +39,9 @@ export const Panel_CardPicker3UI = observer(function Panel_CardPicker3UI_(p: {})
                             }}
                             onKeyDown={(e) => {
                                 if (e.key === 'Enter') {
-                                    const card = library.cardsFilteredSorted[library.selectionCursor]
-                                    if (card == null) return
-                                    card.openLastDraftAsCurrent()
+                                    const app = library.appsFiltered[library.selectionCursor]
+                                    if (app == null) return
+                                    app.openLastDraftAsCurrent()
                                     st.closeFullLibrary()
                                 } else if (e.key === 'ArrowDown') {
                                     library.selectionCursor++
@@ -47,6 +53,18 @@ export const Panel_CardPicker3UI = observer(function Panel_CardPicker3UI_(p: {})
                             placeholder='search'
                         />
                     </Joined>
+                    <div
+                        tw='btn-sm btn btn-primary'
+                        onClick={async () => {
+                            //
+                            // throw new Error('not implemented; should walk, list all apps, and compile them to executable')
+                            const allFiles = recursivelyFindAppsInFolder(st.library, st.libraryFolderPathAbs)
+                            console.log(`[👙] allFiles:`, allFiles.length)
+                            for (const x of allFiles) await x.load()
+                        }}
+                    >
+                        Rebuild local store
+                    </div>
                     {/* </div> */}
                     {/* <div tw='flex gap-2'> */}
                     {/* <InputGroup tw='self-start'>
@@ -89,23 +107,67 @@ export const Panel_CardPicker3UI = observer(function Panel_CardPicker3UI_(p: {})
                     <Panel_DeckList />
                 </ScrollablePaneUI> */}
                 <ScrollablePaneUI tw='flex-grow'>
+                    <div tw='text-xl text-accent font-bold'>Installed Apps</div>
+                    <div>--</div>
+                    <div tw='text-xl text-accent font-bold'>App marketplace</div>
                     <div tw='flex flex-wrap  gap-2'>
-                        <FileBeeingImportedUI files={st.droppedFiles} />
-                        {st.library.cardsFilteredSorted.map((card, ix) => (
-                            <div key={card.relPath}>
+                        {st._allPublishedApps?.data?.map((app) => (
+                            <div tw='w-96 h-80 virtualBorder' key={app.id}>
+                                <div tw='font-bold'>{app.name}</div>
+                                <img
+                                    //
+                                    style={{ width: '5rem', height: '5rem' }}
+                                    src={app.illustration_url ?? ''}
+                                ></img>
+                                <RevealUI disableHover>
+                                    <div tw='font-bold'>{app.description}</div>
+                                    <pre tw='bg-base-300 text-xs overflow-auto'>{JSON.stringify(app, null, 3)}</pre>
+                                </RevealUI>
+                            </div>
+                        ))}
+                    </div>
+                    <div tw='divider'></div>
+                    <div tw='text-xl text-accent font-bold'>Built-in Apps</div>
+                    <div tw='flex flex-wrap  gap-2'>
+                        {st.library.appsFilteredBuiltIn.map((app, ix) => (
+                            <div key={app.id}>
                                 <AppCardUI //
                                     active={st.library.selectionCursor === ix}
-                                    deck={card.deck}
-                                    card={card}
+                                    // deck={card.pkg}
+                                    app={app}
                                 />
                                 {/* {card.priority} */}
-                                {card.drafts.length > 0 && st.library.showDrafts ? (
+                                {/* {card.drafts.length > 0 && st.library.showDrafts ? (
                                     <div tw='flex flex-col'>
                                         {card.drafts.map((draft, ix) => (
                                             <DraftEntryUI draft={draft} />
                                         ))}
                                     </div>
-                                ) : null}
+                                ) : null} */}
+                            </div>
+                        ))}
+                    </div>
+                    <div tw='divider'></div>
+                    <div tw='text-xl text-accent font-bold'>Local Apps</div>
+                    <div tw='flex flex-wrap  gap-2'>
+                        {st.library.appsFilteredLocal.map((app, ix) => (
+                            <div key={app.id}>
+                                <AppCardUI //
+                                    active={st.library.selectionCursor === ix}
+                                    app={app}
+                                />
+                            </div>
+                        ))}
+                    </div>
+                    <div tw='divider'></div>
+                    <div tw='text-xl text-accent font-bold'>SDK Examples</div>
+                    <div tw='flex flex-wrap  gap-2'>
+                        {st.library.appsFilteredExample.map((app, ix) => (
+                            <div key={app.id}>
+                                <AppCardUI //
+                                    active={st.library.selectionCursor === ix}
+                                    app={app}
+                                />
                             </div>
                         ))}
                     </div>

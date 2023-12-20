@@ -18,7 +18,7 @@ export function GithubUserUI(p: {
     const textClassName = p.textClassName
     const imgURL =
         username === 'CushyStudio' //
-            ? assets.public_CushyLogo_512_png
+            ? assets.CushyLogo_512_png
             : GithubUser.get(st, asGithubUserName(username), false).localAvatarURL
     try {
         return (

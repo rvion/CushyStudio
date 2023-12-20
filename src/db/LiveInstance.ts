@@ -2,6 +2,8 @@ import type { LiveDB } from './LiveDB'
 import type { LiveTable } from './LiveTable'
 import type { STATE } from 'src/state/state'
 
+export type $OptionalFieldsForUpsert = 'createdAt' | 'updatedAt'
+
 export type $BaseInstanceFields = 'id' | 'createdAt' | 'updatedAt'
 export type BaseInstanceFields = {
     id: string
@@ -20,8 +22,10 @@ export interface LiveInstance<T extends BaseInstanceFields, L> {
     get tableName(): TableNameInDB
     onHydrate?: (data: T) => void
     onCreate?: (data: T) => void
+    /** called on both hydrate and update (bad; need to be changed ❌) */
     onUpdate?: (prev: Maybe<T>, next: T) => void
     update: (t: Partial<T>) => void
+    update_LiveOnly: (t: Partial<T>) => void
     delete: () => void
     toJSON: () => T
     init(table: LiveTable<T, any>, data: T): void

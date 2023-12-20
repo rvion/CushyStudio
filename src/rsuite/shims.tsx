@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 import { ReactNode } from 'react'
-import { RevealUI } from './RevealUI'
+import { RevealUI } from './reveal/RevealUI'
 import { exhaust } from 'src/utils/misc/ComfyUtils'
 import { RSSize, RSAppearance } from './RsuiteTypes'
 

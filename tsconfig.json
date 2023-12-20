@@ -5,6 +5,7 @@
         "lib": ["DOM", "DOM.Iterable", "ESNext"],
         "allowJs": false,
         "skipLibCheck": false,
+        "noImplicitAny": true,
         "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
         "strict": true,
@@ -15,9 +16,22 @@
         "isolatedModules": true,
         "noEmit": true,
         "jsx": "react-jsx",
-        "baseUrl": "."
+        "baseUrl": ".",
+        "typeRoots": ["src/typings"],
+        "types": [],
+        "paths": {
+            // overrides
+            "nsfwjs": ["src/typings/nsfwjs.d.ts"],
+
+            // emptied
+            "typescript": ["src/typings/empty-types.d.ts"],
+            "webgl2": ["src/typings/empty-types.d.ts"],
+            "@tensorflow/tfjs": ["src/typings/empty-types.d.ts"],
+            "@types/webgl": ["src/typings/empty-types.d.ts"],
+            "@types/webgl-ext": ["src/typings/empty-types.d.ts"]
+        }
     },
-    "exclude": [],
+
     // this file will be created by CushyStudio itself
     // when it runs for the first time
     // it will allow to only see errors in decks you either

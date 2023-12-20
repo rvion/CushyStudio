@@ -14,7 +14,7 @@ export const GithubUsernameInputUI = observer(function GithubUsernameInputUI_(p:
     return (
         <Joined tw='w-auto join'>
             <Addon>
-                <img src={assets.public_GithubLogo2_png} alt='Github Logo' style={{ width: '1.4rem', height: '1.4rem' }} />
+                <img src={assets.GithubLogo2_png} alt='Github Logo' style={{ width: '1.4rem', height: '1.4rem' }} />
                 <Whisper
                     //
                     enterable

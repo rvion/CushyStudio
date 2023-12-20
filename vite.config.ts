@@ -1,9 +1,12 @@
 import react from '@vitejs/plugin-react'
-import { resolve } from 'path'
 import { cwd } from 'process'
 import { defineConfig } from 'vite'
 
 const installDir = cwd()
+
+// Read package.json and get all dependencies
+// const packageJson = JSON.parse(readFileSync('./package.json', 'utf-8'))
+// const allDependencies = Object.keys(packageJson.dependencies)
 
 console.log(`[VITE] loading vite config`)
 
@@ -11,6 +14,7 @@ console.log(`[VITE] loading vite config`)
 export default defineConfig({
     clearScreen: false,
     optimizeDeps: {
+        // exclude: allDependencies,
         exclude: [
             //
             'fsevents',
@@ -51,15 +55,34 @@ export default defineConfig({
     },
     resolve: {
         alias: {
-            src: resolve(__dirname, './src'),
+            // -----------------------------------------------------------------------
+            three: `${installDir}/src/syms/three.js`,
+            mobx: `${installDir}/src/syms/mobx.js`,
+            'cytoscape-klay': `${installDir}/src/syms/cytoscape-klay.js`,
+            cytoscape: `${installDir}/src/syms/cytoscape.js`,
+            lexical: `${installDir}/src/syms/lexical.js`,
+            '@tensorflow/tfjs': './src/syms/@tensorflow/tfjs',
+
+            // -----------------------------------------------------------------------
+            src: `${installDir}/src`,
+
+            // -----------------------------------------------------------------------
             // injected node modules
             // check the `src/syms/_.cjs`
+            /* */ assert: `${installDir}/src/syms/assert.js`,
+            'node:assert': `${installDir}/src/syms/assert.js`,
+            /* */ url: `${installDir}/src/syms/url.js`,
+            'node:url': `${installDir}/src/syms/url.js`,
             /* */ buffer: `${installDir}/src/syms/buffer.js`,
             'node:buffer': `${installDir}/src/syms/buffer.js`,
             /* */ child_process: `${installDir}/src/syms/child_process.js`,
             'node:child_process': `${installDir}/src/syms/child_process.js`,
+            /* */ cluster: `${installDir}/src/syms/cluster.js`,
+            'node:cluster': `${installDir}/src/syms/cluster.js`,
             /* */ fs: `${installDir}/src/syms/fs.js`,
             'node:fs': `${installDir}/src/syms/fs.js`,
+            /* */ https: `${installDir}/src/syms/https.js`,
+            'node:https': `${installDir}/src/syms/https.js`,
             /* */ os: `${installDir}/src/syms/os.js`,
             'node:os': `${installDir}/src/syms/os.js`,
             /* */ path: `${installDir}/src/syms/path.js`,

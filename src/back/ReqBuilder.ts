@@ -1,5 +1,5 @@
-import type { ReqBuilder, Requirement } from '../cards/Card'
-import type { Runtime } from './Runtime'
+import type { ReqBuilder, Requirement } from '../cards/App'
+import type { Runtime } from '../runtime/Runtime'
 
 export interface RequirementBuilder extends ReqBuilder {}
 export class RequirementBuilder {

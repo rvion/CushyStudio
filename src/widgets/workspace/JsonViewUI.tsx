@@ -16,15 +16,14 @@ import { lightTheme } from '@uiw/react-json-view/light'
 import { observer } from 'mobx-react-lite'
 import { useSt } from 'src/state/stateContext'
 
-export const JsonViewUI = observer(function JsonViewUI_(p: { value?: object }) {
+export const JsonViewUI = observer(function JsonViewUI_(p: { value?: Maybe<object> }) {
     const st = useSt()
     JSON.stringify(p.value)
     return (
         <JsonView
-            //
             shortenTextAfterLength={100}
             style={st.themeMgr.theme === 'light' ? lightTheme : (_githubDarkTheme as any)}
-            value={p.value ?? example}
+            value={p.value ?? {}} //example}
             enableClipboard={false}
         />
     )
