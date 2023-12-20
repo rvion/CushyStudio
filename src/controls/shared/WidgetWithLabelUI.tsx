@@ -127,7 +127,11 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     if (WIDGET == null) className += ' w-full'
     if (isVertical && WIDGET) {
         WIDGET = (
-            <div tw='w-full' style={{ padding: '0 0rem 0 2rem' }}>
+            <div
+                //
+                tw='w-full'
+                // style={{ padding: '0 0rem 0 2rem' }}
+            >
                 {WIDGET}
             </div>
         )
