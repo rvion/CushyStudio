@@ -20,6 +20,8 @@ Todo before release:
         ☐ rich prompt + shift/alt+enter should not accept compltion but insert newline
         ☐ better treeview with apps
         ☐ add default non virtual local host
+        ✔ improve forms look and feel @done(23-12-20 15:27)
+        ✔ improve size widget preview a bit @done(23-12-20 15:27)
 
     ✔ codegen swap file @done(23-12-20 15:17)
     ☐ video
