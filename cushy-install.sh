@@ -76,7 +76,7 @@ if [ ! -f "$tsconfigPath" ]; then
 fi
 
 # Build the release folder
-./node_modules/.bin/electron -i src/shell/build.js js css mini
+./node_modules/.bin/electron -i src/shell/build.js js css
 
 # Done
 echo "🟢 cushy-install.sh completed successfully."
