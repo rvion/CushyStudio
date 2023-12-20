@@ -34,6 +34,7 @@ export const run_latent = async (p: {
     // case 1. start form image
     if (opts.image) {
         const imageRaw = await p.flow.loadImageAnswer(opts.image)
+        // May need to use a different node for resizing
         const image = await graph.ImageTransformResizeClip({
             images: imageRaw,
             method: `lanczos`,

@@ -1371,9 +1371,7 @@ export class Widget_choices<T extends { [key: string]: Widget }> implements IReq
                 const newType = newItem.type
                 // restore branches value
                 if (prevValue_ && newType === prevValue_.type) {
-                    setTimeout(()=>{
-                        this.state.values[key] = this.builder._HYDRATE(newType, newInput, prevValue_)
-                    },0)
+                    this.state.values[key] = this.builder._HYDRATE(newType, newInput, prevValue_)
                 } else {
                     this.state.values[key] = newItem
                 }

@@ -11,7 +11,7 @@ export const WidgetChoiceUI = observer(function WidgetChoiceUI_(p: { widget: Wid
     return (
         <div tw='_WidgetChoiceUI relative w-full'>
             <SelectUI
-                getLabelText={(v) => choiceSubReq.input.label || v}
+                getLabelText={(v) => v}
                 cleanable={false}
                 options={choicesStr}
                 value={() => req.state.pick}
