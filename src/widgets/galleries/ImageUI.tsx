@@ -1,6 +1,6 @@
 import type { MediaImageL } from 'src/models/MediaImage'
 import { observer } from 'mobx-react-lite'
-import { RevealUI } from 'src/rsuite/RevealUI'
+import { RevealUI } from 'src/rsuite/reveal/RevealUI'
 import { Button } from 'src/rsuite/shims'
 import { useSt } from '../../state/stateContext'
 import { useImageDrag } from './dnd'

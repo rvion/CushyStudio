@@ -5,6 +5,8 @@ import { AppBarUI } from '../appbar/AppBarUI'
 import { ProjectUI } from './ProjectUI'
 import { Trigger } from '../shortcuts/Trigger'
 import { RenderFullPagePanelUI } from 'src/panels/router/RenderFullPagePanelUI'
+import { RevealState } from 'src/rsuite/reveal/RevealState'
+import { runInAction } from 'mobx'
 
 export const CushyUI = observer(function CushyUI_() {
     const st = useSt()
@@ -49,6 +51,14 @@ export const CushyUI = observer(function CushyUI_() {
             data-theme={st.themeMgr.theme}
             id='CushyStudio'
             tabIndex={-1}
+            onClick={(ev) => {
+                // if a click has bubbled outwards up to the body, then we want to close various things
+                // such as contet menus, tooltips, Revals, etc.
+                runInAction(() => {
+                    RevealState.shared.current?.close()
+                    RevealState.shared.current = null
+                })
+            }}
             ref={appRef}
             tw={['col grow h100 text-base-content']}
         >

@@ -9,7 +9,7 @@ import { useSt } from 'src/state/stateContext'
 import { ErrorBoundaryFallback } from '../../widgets/misc/ErrorBoundary'
 import { WidgetDI } from '../widgets/WidgetUI.DI'
 import { makeLabelFromFieldName } from '../../utils/misc/makeLabelFromFieldName'
-import { RevealUI } from 'src/rsuite/RevealUI'
+import { RevealUI } from 'src/rsuite/reveal/RevealUI'
 import { ChangeEvent } from 'react'
 import { isWidgetCollapsible } from './isWidgetCollapsible'
 

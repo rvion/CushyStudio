@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 import { ReactNode } from 'react'
 import { FolderGitStatus } from 'src/cards/FolderGitStatus'
-import { RevealUI } from 'src/rsuite/RevealUI'
+import { RevealUI } from 'src/rsuite/reveal/RevealUI'
 import { Button, Joined, Loader, Message } from 'src/rsuite/shims'
 import { GitManagedFolder } from 'src/updater/updater'
 import { exhaust } from 'src/utils/misc/ComfyUtils'
