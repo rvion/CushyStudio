@@ -178,6 +178,12 @@ export type ProjectT = {
     /** @default: "0", sqlType: INT */
     filterNSFW: number;
 
+    /** @default: "0", sqlType: INT */
+    autostartDelay: number;
+
+    /** @default: "100", sqlType: INT */
+    autostartMaxDelay: number;
+
 }
 export const ProjectSchema = Type.Object({
     id: Type.String(),
@@ -188,6 +194,8 @@ export const ProjectSchema = Type.Object({
     currentApp: Type.Optional(T.Nullable(Type.String())),
     currentDraftID: Type.Optional(T.Nullable(Type.String())),
     filterNSFW: Type.Number(),
+    autostartDelay: Type.Number(),
+    autostartMaxDelay: Type.Number(),
 },{ additionalProperties: false })
 
 export const ProjectFields = {
@@ -199,6 +207,8 @@ export const ProjectFields = {
     currentApp: {cid:5,name:'currentApp',type:'TEXT',notnull:0,dflt_value:null,pk:0},
     currentDraftID: {cid:6,name:'currentDraftID',type:'TEXT',notnull:0,dflt_value:null,pk:0},
     filterNSFW: {cid:7,name:'filterNSFW',type:'INT',notnull:1,dflt_value:'0',pk:0},
+    autostartDelay: {cid:8,name:'autostartDelay',type:'INT',notnull:1,dflt_value:'0',pk:0},
+    autostartMaxDelay: {cid:9,name:'autostartMaxDelay',type:'INT',notnull:1,dflt_value:'100',pk:0},
 }
 
 

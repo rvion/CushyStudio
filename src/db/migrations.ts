@@ -451,6 +451,22 @@ export const migrations: {
             'alter table project add column filterNSFW int not null default 0',
         ],
     },
+    {
+        id: '3acd7308-0815-4473-a2a4-5818b6c7b74a',
+        name: 'misc',
+        up: [
+            // rename
+            'alter table project add column autostartDelay int not null default 0',
+        ],
+    },
+    {
+        id: '7b2a2F2kj9',
+        name: 'misc',
+        up: [
+            // rename
+            'alter table project add column autostartMaxDelay int not null default 100',
+        ],
+    },
     // {
     //     id: 'e574c006-daca-4fd0-a51b-73a66b4fbd79',
     //     name: 'create cushy_app table',

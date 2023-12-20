@@ -236,6 +236,8 @@ export class STATE {
             name: 'new project',
             currentApp: defaultAppPath,
             filterNSFW: SQLITE_false,
+            autostartDelay: 0,
+            autostartMaxDelay: 100,
             // currentDraftID: initialDraft.id,
         })
         return project
