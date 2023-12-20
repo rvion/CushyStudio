@@ -1,10 +1,9 @@
+import type { OrbitControls as OrbitControlsT } from 'three/examples/jsm/controls/OrbitControls'
 import { OrbitControls } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
 import { runInAction } from 'mobx'
 import { useRef } from 'react'
-import type { OrbitControls as OrbitControlsT } from 'three/examples/jsm/controls/OrbitControls'
 import { Widget_orbit } from '../Widget'
-import { useLocalObservable } from 'mobx-react-lite'
 
 // extend({ MeshBasicMaterial })
 
@@ -25,6 +24,7 @@ export const WidgetOrbitUI = (p: { widget: Widget_orbit }) => {
                 <pointLight position={[10, 10, 10]} />
                 <Cube />
                 <OrbitControls
+                    enableDamping={false}
                     // getPolarAngle={() => p.widget.state.val.elevation / (180 / Math.PI)}
                     // getAzimuthalAngle={() => p.widget.state.val.azimuth / (180 / Math.PI)}
                     ref={ref}
