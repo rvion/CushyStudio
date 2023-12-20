@@ -6,7 +6,7 @@ import { LiveTable } from 'src/db/LiveTable'
 import { CustomDataT } from 'src/db/TYPES.gen'
 import { bang } from 'src/utils/misc/bang'
 
-export type StoreScope = 'global' | 'app' | 'drafts' | 'run'
+export type StoreScope = 'global' | 'app' | 'draft' | 'run'
 
 export class RuntimeStore {
     private CustomDataTable: LiveTable<CustomDataT, CustomDataL<any>>
