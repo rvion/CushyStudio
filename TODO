@@ -19,8 +19,9 @@ Todo before release:
         ☐ auto layout not handling positive correctly
         ☐ rich prompt + shift/alt+enter should not accept compltion but insert newline
         ☐ better treeview with apps
+        ☐ add default non virtual local host
 
-    ☐ codegen swap file
+    ✔ codegen swap file @done(23-12-20 15:17)
     ☐ video
     ☐ hot reload apps
     ☐ finish full page apps
