@@ -39,6 +39,7 @@ import { _formatAsRelativeDateTime } from 'src/updater/_getRelativeTimeString'
 import { Wildcards } from 'src/widgets/prompter/nodes/wildcards/wildcards'
 import { observer } from 'mobx-react-lite'
 import { ImageStore, ImageStoreAutoUpdateLogic, ImageStoreT } from './ImageStore'
+import { createRandomGenerator } from './random'
 
 export type ImageAndMask = HasSingle_IMAGE & HasSingle_MASK
 
@@ -287,19 +288,7 @@ export class Runtime<FIELDS extends WidgetDict = any> {
 
     /** helper to chose radomly any item from a list */
     chooseRandomly = <T>(key: string, seed: number, arr: T[]): T => {
-        function seededRandom(seed: string): number {
-            let hash = 0
-            for (let i = 0; i < seed.length; i++) {
-                const char = seed.charCodeAt(i)
-                hash = (hash << 5) - hash + char
-                hash &= hash // Convert to 32-bit integer
-            }
-
-            const x = Math.sin(hash) * 10000
-            return x - Math.floor(x)
-        }
-
-        return arr[Math.floor(seededRandom(`${key}:${seed}`) * arr.length)]
+        return createRandomGenerator(`${key}:${seed}`).randomItem(arr)
     }
 
     /** execute the app */
