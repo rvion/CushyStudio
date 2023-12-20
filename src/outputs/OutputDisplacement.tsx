@@ -79,54 +79,70 @@ export const OutputDisplacementUI = observer(function OutputDisplacementUI_(p: {
 
     return (
         <div>
-            <div tw='flex gap-2 px-2'>
-                <FieldAndLabelUI label='Points'>
-                    <Toggle checked={state.usePoints} onChange={(e) => (state.usePoints = e.target.checked)} />
-                </FieldAndLabelUI>
-                <FieldAndLabelUI label='displacement'>
-                    <InputNumberUI
-                        mode='float'
-                        style={{ width: '5rem' }}
-                        min={0}
-                        max={8}
-                        value={state.displacementScale}
-                        onValueChange={(next) => {
-                            state.displacementScale = next
-                        }}
-                    />
-                </FieldAndLabelUI>
-                <FieldAndLabelUI label='light'>
-                    <Slider
-                        style={{ width: '5rem' }}
-                        min={0}
-                        max={8}
-                        value={state.ambientLightIntensity}
-                        onChange={(ev) => {
-                            const next = parseFloatNoRoundingErr(ev.target.value)
-                            state.ambientLightIntensity = next
-                        }}
-                    />
-                </FieldAndLabelUI>
-                <FieldAndLabelUI label='light color'>
-                    <Input
-                        tw='join-item input-xs'
-                        type='color'
-                        style={{ width: '5rem' }}
-                        value={state.ambientLightColor}
-                        onChange={(ev) => {
-                            const next = ev.target.value
-                            const hex = typeof next === 'string' ? parseInt(next.replace('#', ''), 16) : next
-                            state.ambientLightColor = hex
-                        }}
-                    />
-                </FieldAndLabelUI>
-                <FieldAndLabelUI label='Symmetric Model'>
-                    <Toggle checked={state.isSymmetric} onChange={(e) => (state.isSymmetric = e.target.checked)} />
-                </FieldAndLabelUI>
+            <div tw='flex flex-col'>
+                <div tw='flex gap-2 px-2'>
+                    <FieldAndLabelUI label='Points'>
+                        <Toggle checked={state.usePoints} onChange={(e) => (state.usePoints = e.target.checked)} />
+                    </FieldAndLabelUI>
+                    <FieldAndLabelUI label='displacement'>
+                        <InputNumberUI
+                            mode='float'
+                            style={{ width: '5rem' }}
+                            min={0}
+                            max={8}
+                            value={state.displacementScale}
+                            onValueChange={(next) => {
+                                state.displacementScale = next
+                            }}
+                        />
+                    </FieldAndLabelUI>
+                    <FieldAndLabelUI label='cutout'>
+                        <InputNumberUI
+                            mode='float'
+                            style={{ width: '5rem' }}
+                            min={0}
+                            max={1}
+                            value={state.cutout}
+                            onValueChange={(next) => {
+                                state.cutout = next
+                            }}
+                        />
+                    </FieldAndLabelUI>
+                </div>
+                <div tw='flex gap-2 px-2'>
+                    <FieldAndLabelUI label='light'>
+                        <Slider
+                            style={{ width: '5rem' }}
+                            min={0}
+                            max={8}
+                            value={state.ambientLightIntensity}
+                            onChange={(ev) => {
+                                const next = parseFloatNoRoundingErr(ev.target.value)
+                                state.ambientLightIntensity = next
+                            }}
+                        />
+                    </FieldAndLabelUI>
+                    <FieldAndLabelUI label='light color'>
+                        <Input
+                            tw='join-item input-xs'
+                            type='color'
+                            style={{ width: '5rem' }}
+                            value={state.ambientLightColor}
+                            onChange={(ev) => {
+                                const next = ev.target.value
+                                const hex = typeof next === 'string' ? parseInt(next.replace('#', ''), 16) : next
+                                state.ambientLightColor = hex
+                            }}
+                        />
+                    </FieldAndLabelUI>
+                    <FieldAndLabelUI label='Symmetric Model'>
+                        <Toggle checked={state.isSymmetric} onChange={(e) => (state.isSymmetric = e.target.checked)} />
+                    </FieldAndLabelUI>
 
-                <FieldAndLabelUI label='Screenshot'>
-                    <Button onClick={() => state.takeScreenshot(st)}>Take Screenshot</Button>
-                </FieldAndLabelUI>
+                    <FieldAndLabelUI label='Screenshot'>
+                        <Button onClick={() => state.takeScreenshot(st)}>Take Screenshot</Button>
+                    </FieldAndLabelUI>
+                </div>
             </div>
             <div ref={state.mountRef} />
         </div>
@@ -179,6 +195,87 @@ class State {
     set displacementScale(v: number) {
         this._displacementScale = v
         this.material.displacementScale = v
+    }
+
+    private _cutout = 0.5
+    get cutout() { return this._cutout } // prettier-ignore
+    set cutout(v: number) {
+        this._cutout = v
+        // this.material.setValues({
+        //     userData: { cutout: { value: this._cutout } },
+        // })
+        this.material.userData.cutout.value = v
+        // this.material.needsUpdate = true
+    }
+
+    private setCutoutMaterial() {
+        // const cutoutThreshold = 0.05
+        // const displacementMapSizeX = p.width
+        // const displacementMapSizeY = p.height
+
+        const mat = this.material
+        mat.userData = { cutout: { value: this._cutout } }
+
+        mat.onBeforeCompile = (shader) => {
+            shader.uniforms.cutout = mat.userData.cutout
+
+            shader.vertexShader = shader.vertexShader
+                .replace(
+                    `void main() {`,
+                    `varying float vTransformDiff;
+uniform float cutout;
+void main() {`,
+                )
+                .replace(
+                    `#include <displacementmap_vertex>`,
+                    `#include <displacementmap_vertex>
+
+            // Calculate the maximum absolute displacement difference from neighboring pixels
+            vec2 dUv = vec2(1.0, 1.0) / vec2(textureSize(displacementMap, 0));
+
+            float diffX = abs(
+                texture2D(displacementMap, vDisplacementMapUv + vec2(dUv.x, 0.0)).x -
+                texture2D(displacementMap, vDisplacementMapUv - vec2(dUv.x, 0.0)).x
+            );
+
+            float diffY = abs(
+                texture2D(displacementMap, vDisplacementMapUv + vec2(0.0, dUv.y)).x -
+                texture2D(displacementMap, vDisplacementMapUv - vec2(0.0, dUv.y)).x
+            );
+
+            vec3 transformDiffX = normalize(objectNormal) * vec3(diffX * displacementScale + displacementBias);
+            vec3 transformDiffY = normalize(objectNormal) * vec3(diffY * displacementScale + displacementBias);
+
+            vTransformDiff = max(length(transformDiffX), length(transformDiffY));
+                    `,
+                )
+
+            shader.fragmentShader = shader.fragmentShader
+                .replace(
+                    `void main() {`,
+                    `varying float vTransformDiff;
+uniform float cutout;
+void main() {`,
+                )
+                .replace(
+                    `#include <dithering_fragment>`,
+                    `#include <dithering_fragment>
+
+            // // debug: visualize vTransformDiff
+            // vec3 visualizationColor = vec3(vTransformDiff, 0.0, 1.0 - vTransformDiff);
+            // gl_FragColor = vec4(visualizationColor, 1.0);
+
+            // Discard fragments if vTransformDiff is above a cutoff
+            if (vTransformDiff > cutout) {
+                // gl_FragColor = vec4(0.0,1.0,0.0, 1.0);
+                // gl_FragColor = vec4(0.0,1.0,0.0, 0.0);
+                discard;
+            }
+                      `,
+                )
+
+            console.log(`vertexShader`, { vertexShader: shader.vertexShader, fragmentShader: shader.fragmentShader })
+        }
     }
 
     private _usePoints = false
@@ -463,69 +560,7 @@ class State {
 
         // 3.
         // Add custom shader code to achieve cutout based on displacement difference
-        const cutoutThreshold = 0.05
-        const displacementMapSizeX = p.width
-        const displacementMapSizeY = p.height
-
-        this.material.onBeforeCompile = (shader) => {
-            shader.vertexShader = shader.vertexShader
-                .replace(
-                    `void main() {`,
-                    `varying float vTransformDiff;
-        void main() {`,
-                )
-                .replace(
-                    `#include <displacementmap_vertex>`,
-                    `#include <displacementmap_vertex>
-
-            // Calculate the maximum absolute displacement difference from neighboring pixels
-            vec2 dUv = vec2(1.0, 1.0) / vec2(textureSize(displacementMap, 0));
-
-            float diffX = abs(
-                texture2D(displacementMap, vDisplacementMapUv + vec2(dUv.x, 0.0)).x -
-                texture2D(displacementMap, vDisplacementMapUv - vec2(dUv.x, 0.0)).x
-            );
-
-            float diffY = abs(
-                texture2D(displacementMap, vDisplacementMapUv + vec2(0.0, dUv.y)).x -
-                texture2D(displacementMap, vDisplacementMapUv - vec2(0.0, dUv.y)).x
-            );
-
-            vec3 transformDiffX = normalize(objectNormal) * vec3(diffX * displacementScale + displacementBias);
-            vec3 transformDiffY = normalize(objectNormal) * vec3(diffY * displacementScale + displacementBias);
-
-            vTransformDiff = max(length(transformDiffX), length(transformDiffY));
-                    `,
-                )
-
-            // vDisplacementMapUv
-            // vec2 pixelUv = vUv * vec2(${displacementMapSizeX.toFixed(1)}, ${displacementMapSizeY.toFixed(1)});
-            // float displacementDiffX = abs(texture2D(displacementMap, pixelUv + vec2(1, 0)).r - texture2D(displacementMap, pixelUV).r)
-
-            shader.fragmentShader = shader.fragmentShader
-                .replace(
-                    `void main() {`,
-                    `varying float vTransformDiff;
-        void main() {`,
-                )
-                .replace(
-                    `#include <dithering_fragment>`,
-                    `#include <dithering_fragment>
-
-            // // debug: visualize vTransformDiff
-            // vec3 visualizationColor = vec3(vTransformDiff, 0.0, 1.0 - vTransformDiff);
-            // gl_FragColor = vec4(visualizationColor, 1.0);
-
-            // Discard fragments if vTransformDiff is above a cutoff
-            if (vTransformDiff > ${cutoutThreshold.toFixed(4)}) {
-                // gl_FragColor = vec4(0.0,1.0,0.0, 1.0);
-                // gl_FragColor = vec4(0.0,1.0,0.0, 0.0);
-                discard;
-            }
-                      `,
-                )
-            console.log(`vertexShader`, { vertexShader: shader.vertexShader, fragmentShader: shader.fragmentShader })
-        }
+        this.setCutoutMaterial()
 
         // plane
         this.plane = new THREE.Mesh(this.geometry, this.material)
