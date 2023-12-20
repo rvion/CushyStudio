@@ -17,7 +17,7 @@ export const Panel_Steps = observer(function StepListUI_(p: {}) {
             />
             <div className='flex flex-col flex-grow' style={{ overflow: 'auto' }}>
                 {steps.map((step) => (
-                    <StepOutputsV1UI step={step} />
+                    <StepOutputsV1UI key={step.id} step={step} />
                 ))}
             </div>
         </div>

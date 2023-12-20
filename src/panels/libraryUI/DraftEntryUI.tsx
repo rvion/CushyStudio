@@ -34,7 +34,7 @@ export const DraftEntryUI = observer(function DraftEntryUI_(p: { draft: DraftL }
                     st.layout.FOCUS_OR_CREATE('CurrentDraft', {}, 'LEFT_PANE_TABSET')
                 }}
             >
-                {draft.data.title || draft.app?.name || draft.data.appPath}
+                {draft.data.title || draft.app.name}
             </div>
             <div
                 tw='btn btn-ghost btn-xs btn-square'

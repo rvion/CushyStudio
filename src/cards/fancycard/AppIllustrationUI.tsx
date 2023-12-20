@@ -1,10 +1,10 @@
 import { observer } from 'mobx-react-lite'
-import { LibraryFile } from '../CardFile'
+import { CushyAppL } from 'src/models/CushyApp'
 
 export const AppIllustrationUI = observer(function AppIllustrationUI_(p: {
     className?: string
     onClick?: () => void
-    app: Maybe<LibraryFile>
+    app: Maybe<CushyAppL>
     size: string
 }) {
     const app = p.app

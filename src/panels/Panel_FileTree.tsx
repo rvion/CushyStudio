@@ -39,7 +39,7 @@
 //                         <div tw='ml-auto'>
 //                             {isTypechecked && (
 //                                 <TooltipUI>
-//                                     <img tw='mr-1' style={{ width: '1rem' }} src={assets.public_typescript_512_png} alt='' />
+//                                     <img tw='mr-1' style={{ width: '1rem' }} src={assets.typescript_512_png} alt='' />
 //                                     <div>is being type-checked</div>
 //                                 </TooltipUI>
 //                             )}

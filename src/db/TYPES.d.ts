@@ -15,6 +15,11 @@ declare type TableNameInDB =
     | 'runtime_error'
     | 'media_splat'
     | 'custom_data'
+    | 'cushy_script'
+    | 'cushy_app'
+    | 'auth'
+    | 'tree_entry'
+    | 'host'
 
 declare type MigrationsID = Branded<string, { MigrationsID: true }>
 declare type UsersID = Branded<string, { UsersID: true }>
@@ -31,3 +36,8 @@ declare type Media3dDisplacementID = Branded<string, { Media3dDisplacementID: tr
 declare type RuntimeErrorID = Branded<string, { RuntimeErrorID: true }>
 declare type MediaSplatID = Branded<string, { MediaSplatID: true }>
 declare type CustomDataID = Branded<string, { CustomDataID: true }>
+declare type CushyScriptID = Branded<string, { CushyScriptID: true }>
+declare type CushyAppID = Branded<string, { CushyAppID: true }>
+declare type AuthID = Branded<string, { AuthID: true }>
+declare type TreeEntryID = Branded<string, { TreeEntryID: true }>
+declare type HostID = Branded<string, { HostID: true }>

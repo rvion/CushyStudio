@@ -2,6 +2,7 @@ import type { LiveInstance } from '../db/LiveInstance'
 import type { StepL } from './Step'
 import type { PromptRelated_WsMsg, WsMsgExecuted, WsMsgExecuting, WsMsgExecutionError } from '../types/ComfyWsApi'
 import type { ComfyWorkflowL, ProgressReport } from './Graph'
+import type { Runtime } from 'src/back/Runtime'
 
 import { nanoid } from 'nanoid'
 import { ComfyPromptT } from 'src/db/TYPES.gen'
@@ -83,20 +84,37 @@ export class ComfyPromptL {
         this._finish({ status: 'Failure', error: msg })
     }
 
+    /**
+     * maybe be set during CushyStudio lifetime;
+     * NOT available once cushy has restarted
+     */
+    RUNTIME: Maybe<Runtime> = null
+
     /** udpate execution list */
     private onExecuted = (msg: WsMsgExecuted) => {
         for (const img of msg.data.output.images) {
-            // const image =
-            this.db.media_images.create({
+            // retrieve the node
+            const promptNodeID = msg.data.node
+            const promptNode = this.graph.item.data.comfyPromptJSON[promptNodeID]
+            const promptMeta = this.graph.item.data.metadata[promptNodeID]
+            if (promptNode == null) throw new Error(`❌ invariant violation: promptNode is null`)
+
+            // create the image
+            const imgL = this.db.media_images.create({
                 id: nanoid(),
                 stepID: this.step.id,
                 promptID: this.id,
+                promptNodeID: promptNodeID,
                 infos: {
                     type: 'image-generated-by-comfy',
                     comfyImageInfo: img,
                     comfyHostHttpURL: this.st.getServerHostHTTP(),
                 },
             })
+
+            if (this.RUNTIME && promptMeta.storeAs) {
+                this.RUNTIME.getImageStore(promptMeta.storeAs).set(imgL)
+            }
             // this.images.push(images)
             // this.step.item.addOutput({ type: 'image', imgID: image.id })
         }

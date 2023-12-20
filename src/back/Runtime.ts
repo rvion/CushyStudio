@@ -1,6 +1,6 @@
-import type { WidgetDict } from 'src/cards/Card'
-import type { Printable } from '../core/Printable'
+import type { WidgetDict } from 'src/cards/App'
 import type { STATE } from 'src/state/state'
+import type { Printable } from '../core/Printable'
 
 import * as path from 'pathe'
 // import { Cyto } from '../graph/cyto' 🔴🔴
@@ -18,25 +18,27 @@ import { ComfyPromptL } from '../models/ComfyPrompt'
 import { ComfyWorkflowL } from '../models/Graph'
 import { MediaImageL, checkIfComfyImageExists } from '../models/MediaImage'
 import { StepL } from '../models/Step'
-import { ApiPromptInput, ComfyUploadImageResult, PromptInfo } from '../types/ComfyWsApi'
+import { ComfyUploadImageResult } from '../types/ComfyWsApi'
 import { createMP4FromImages } from '../utils/ffmpeg/ffmpegScripts'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
-import { deepCopyNaive, exhaust } from '../utils/misc/ComfyUtils'
-import { wildcards } from '../widgets/prompter/nodes/wildcards/wildcards'
+import { exhaust } from '../utils/misc/ComfyUtils'
 import { IDNaminScheemeInPromptSentToComfyUI } from './IDNaminScheemeInPromptSentToComfyUI'
 import { ImageSDK } from './ImageSDK'
 import { ComfyWorkflowBuilder } from './NodeBuilder'
-import { InvalidPromptError } from './RuntimeError'
 import { Status } from './Status'
 
 import child_process from 'child_process'
-import { CustomDataL } from 'src/models/CustomData'
-import { _formatAsRelativeDateTime } from 'src/updater/_getRelativeTimeString'
 import { OpenRouterRequest } from 'src/llm/OpenRouter_Request'
 import { OpenRouterResponse } from 'src/llm/OpenRouter_Response'
 import { OpenRouter_ask } from 'src/llm/OpenRouter_ask'
-import { OpenRouter_Models } from 'src/llm/OpenRouter_models'
 import { openRouterInfos } from 'src/llm/OpenRouter_infos'
+import { OpenRouter_Models } from 'src/llm/OpenRouter_models'
+import { CustomDataL } from 'src/models/CustomData'
+import { HostL } from 'src/models/Host'
+import { _formatAsRelativeDateTime } from 'src/updater/_getRelativeTimeString'
+import { Wildcards } from 'src/widgets/prompter/nodes/wildcards/wildcards'
+import { observer } from 'mobx-react-lite'
+import { ImageStore, ImageStoreAutoUpdateLogic, ImageStoreT } from './ImageStore'
 
 export type ImageAndMask = HasSingle_IMAGE & HasSingle_MASK
 
@@ -80,6 +82,19 @@ export class Runtime<FIELDS extends WidgetDict = any> {
     child_process = child_process
 
     /**
+     * list of all configured hosts (machines) available
+     * example usage:
+     * - usefull if you want to manually dispatch things
+     * */
+    get hosts(): HostL[] {
+        return this.st.db.hosts.findAll()
+    }
+
+    get mainHost(): HostL {
+        return this.st.mainHost
+    }
+
+    /**
      * get the configured trigger words for the given lora
      * (those are user defined; hover your lora in any rich text prompt to edit them)
      */
@@ -89,12 +104,12 @@ export class Runtime<FIELDS extends WidgetDict = any> {
 
     /** create a new empty ComfyUI workflow */
     create_ComfyUIWorkflow = (): ComfyWorkflowL => {
-        return this.st.db.graphs.create({ comfyPromptJSON: {}, stepID: this.step.id })
+        return this.st.db.graphs.create({ comfyPromptJSON: {}, metadata: {}, stepID: this.step.id })
     }
 
-    /** create a new empty ComfyUI workflow */
+    /** create a new very basic ComfyUI workflow */
     create_ComfyUIWorkflow_forTestPurpose = (p: { positivePrompt: string }): ComfyWorkflowL => {
-        const graph = this.st.db.graphs.create({ comfyPromptJSON: {}, stepID: this.step.id })
+        const graph = this.st.db.graphs.create({ comfyPromptJSON: {}, metadata: {}, stepID: this.step.id })
         const builder = graph.builder
 
         const model = builder.CheckpointLoaderSimple({ ckpt_name: 'lyriel_v15.safetensors' })
@@ -288,9 +303,9 @@ export class Runtime<FIELDS extends WidgetDict = any> {
     }
 
     /** execute the app */
-    run = async (p: { formInstance: Widget_group<any> }): Promise<Status> => {
+    run = async (p: { formInstance: Widget_group<any> }): Promise<{ type: 'success' } | { type: 'error'; error: any }> => {
         const start = Date.now()
-        const app = this.step.appCompiled
+        const app = this.step.executable
         const appFormInput = this.step.data.formResult
         const appFormSerial = this.step.data.formSerial.values_
         this.formResult = appFormInput
@@ -302,25 +317,26 @@ export class Runtime<FIELDS extends WidgetDict = any> {
         try {
             if (app == null) {
                 console.log(`❌ action not found`)
-                return Status.Failure
+                return { type: 'error', error: 'action not found' }
             }
             await app.run(this, appFormInput)
             console.log(`🔴 after: size=${this.workflow.nodes.length}`)
             console.log('[✅] RUN SUCCESS')
             const duration = Date.now() - start
-            return Status.Success
+            return { type: 'success' }
         } catch (error: any /* 🔴 */) {
-            console.log(error)
-            console.error('🌠', (error as any as Error).name)
-            console.error('🌠', (error as any as Error).message)
-            console.error('🌠', 'RUN FAILURE')
+            // console.log(error)
+            // console.error('🌠', (error as any as Error).name)
+            // console.error('🌠', (error as any as Error).message)
+            // console.error('🌠', 'RUN FAILURE')
             this.st.db.runtimeErrors.create({
-                message: error.message,
+                message: error.message ?? 'no-message',
                 infos: error,
                 graphID: this.workflow.id,
                 stepID: this.step.id,
             })
-            return Status.Failure
+            // return Status.Failure
+            return { type: 'error', error: error }
         }
     }
 
@@ -358,6 +374,30 @@ export class Runtime<FIELDS extends WidgetDict = any> {
         return this.generatedImages[this.generatedImages.length - 1]
     }
 
+    // IMAGE HELPES ---------------------------------------------------------------------------------------
+
+    /** stores are .... */
+    getImageStore = (storeName: string): ImageStore => {
+        const storeID = `app:${this.step.app.id}/imageStore/${storeName}`
+        const prev = this.imageStoresIndex.get(storeID)
+        if (prev) return prev
+        const rawStore: CustomDataL<ImageStoreT> = this.getStore_orCreateIfMissing(storeID, () => ({}))
+        const store = new ImageStore(rawStore /*p.autoUpdate*/)
+        this.imageStoresIndex.set(storeID, store)
+        return store
+    }
+
+    private imageStoresIndex = new Map<string, ImageStore>()
+
+    // ⏸️ /**
+    // ⏸️  * list of all images stores currently active in this run
+    // ⏸️  * every image generated will be sent though those stores for
+    // ⏸️  * potential caching
+    // ⏸️  * */
+    // ⏸️ get imageStores() {
+    // ⏸️     return [...this.imageStoresIndex.values()]
+    // ⏸️ }
+
     findLastImageByPrefix = (prefix: string): MediaImageL | undefined => {
         return this.generatedImages.find((i) => i.filename.startsWith(prefix))
     }
@@ -369,6 +409,14 @@ export class Runtime<FIELDS extends WidgetDict = any> {
     get generatedImages(): MediaImageL[] {
         return this.step.generatedImages
     }
+
+    // ⏸️ /**
+    // ⏸️  * some magical utility that takes an _IMAGE
+    // ⏸️  * (anything that will produce an image, and ensure its output will be present after the run)
+    // ⏸️  * */
+    // ⏸️ TODO: exercice: implement that using useImageStore
+
+    // ---------------------------------------------------------------------------------------
     // get firstImage() { return this.generatedImages[0] } // prettier-ignore
     // get lastImage() { return this.generatedImages[this.generatedImages.length - 1] } // prettier-ignore
 
@@ -609,7 +657,9 @@ ${ffmpegComandInfos.framesFileContent}
     }
 
     /** built-in wildcards */
-    wildcards = wildcards
+    get wildcards(): Wildcards {
+        return this.st.wildcards
+    }
 
     /**
      * get a random int seed
@@ -784,7 +834,7 @@ ${ffmpegComandInfos.framesFileContent}
     }
 
     /** load a deck asset to ComfyUI */
-    load_Asset = async (asset: AppPath): Promise<ImageAndMask> => {
+    load_Asset = async (asset: RelativePath): Promise<ImageAndMask> => {
         const res = await this.st.uploader.upload_Asset(asset)
         return this.loadImageAnswer({ type: 'ComfyImage', imageName: res.name })
     }
@@ -804,6 +854,7 @@ ${ffmpegComandInfos.framesFileContent}
             step: this.step,
             idMode: p?.ids,
         })
+        prompt.RUNTIME = this
         await prompt.finished
         return prompt
     }

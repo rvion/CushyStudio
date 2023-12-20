@@ -16,9 +16,9 @@ export const Panel_Gallery = observer(function VerticalGalleryUI_(p: {}) {
             <GalleryControlsUI />
             <div className='flex flex-wrap overflow-auto'>
                 {/* <LatentPreviewUI /> */}
-                {st.imageToDisplay.map((img, ix) => (
-                    <OutputPreviewWrapperUI output={img} size={st.gallerySize}>
-                        <ImageUI key={ix} img={img} />
+                {st.imageToDisplay.map((img) => (
+                    <OutputPreviewWrapperUI key={img.id} output={img} size={st.gallerySize}>
+                        <ImageUI img={img} />
                     </OutputPreviewWrapperUI>
                 ))}
             </div>

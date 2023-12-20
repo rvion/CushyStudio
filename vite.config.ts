@@ -5,12 +5,17 @@ import { defineConfig } from 'vite'
 
 const installDir = cwd()
 
+// Read package.json and get all dependencies
+// const packageJson = JSON.parse(readFileSync('./package.json', 'utf-8'))
+// const allDependencies = Object.keys(packageJson.dependencies)
+
 console.log(`[VITE] loading vite config`)
 
 // https://vitejs.dev/config/
 export default defineConfig({
     clearScreen: false,
     optimizeDeps: {
+        // exclude: allDependencies,
         exclude: [
             //
             'fsevents',
@@ -23,6 +28,13 @@ export default defineConfig({
         react({ jsxImportSource: 'src/utils/custom-jsx' }),
         // viteSingleFile(),
     ],
+    build: {
+        // rollupOptions: {
+        //     external: allDependencies,
+        // },
+        emptyOutDir: true,
+        copyPublicDir: false,
+    },
     server: {
         port: 8788,
         watch: {
@@ -44,13 +56,29 @@ export default defineConfig({
     },
     resolve: {
         alias: {
-            src: resolve(__dirname, './src'),
+            // -----------------------------------------------------------------------
+            three: `${installDir}/src/syms/three.js`,
+            mobx: `${installDir}/src/syms/mobx.js`,
+            'cytoscape-klay': `${installDir}/src/syms/cytoscape-klay.js`,
+            cytoscape: `${installDir}/src/syms/cytoscape.js`,
+            lexical: `${installDir}/src/syms/lexical.js`,
+
+            // -----------------------------------------------------------------------
+            src: `${installDir}/src`,
+
+            // -----------------------------------------------------------------------
             // injected node modules
             // check the `src/syms/_.cjs`
+            /* */ assert: `${installDir}/src/syms/assert.js`,
+            'node:assert': `${installDir}/src/syms/assert.js`,
+            /* */ url: `${installDir}/src/syms/url.js`,
+            'node:url': `${installDir}/src/syms/url.js`,
             /* */ buffer: `${installDir}/src/syms/buffer.js`,
             'node:buffer': `${installDir}/src/syms/buffer.js`,
             /* */ child_process: `${installDir}/src/syms/child_process.js`,
             'node:child_process': `${installDir}/src/syms/child_process.js`,
+            /* */ cluster: `${installDir}/src/syms/cluster.js`,
+            'node:cluster': `${installDir}/src/syms/cluster.js`,
             /* */ fs: `${installDir}/src/syms/fs.js`,
             'node:fs': `${installDir}/src/syms/fs.js`,
             /* */ os: `${installDir}/src/syms/os.js`,

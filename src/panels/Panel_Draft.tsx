@@ -3,21 +3,20 @@ import { observer } from 'mobx-react-lite'
 import { cwd } from 'process'
 import { useEffect } from 'react'
 import { showItemInFolder } from 'src/app/layout/openExternal'
-import { LibraryFile } from 'src/cards/CardFile'
 import { AppIllustrationUI } from 'src/cards/fancycard/AppIllustrationUI'
+import { CushyAppL } from 'src/models/CushyApp'
 import { DraftL } from 'src/models/Draft'
+import { AppFavoriteBtnUI } from 'src/panels/libraryUI/CardPicker2UI'
 import { Dropdown, MenuItem } from 'src/rsuite/Dropdown'
 import { PhoneWrapperUI } from 'src/rsuite/PhoneWrapperUI'
-import { Button, Input, Joined, Loader, Message } from 'src/rsuite/shims'
+import { Button, Joined, Loader, Message } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
 import { openInVSCode } from 'src/utils/electron/openInVsCode'
 import { stringifyUnknown } from 'src/utils/formatters/stringifyUnknown'
-import { isError } from 'src/utils/misc/isError'
 import { WidgetUI } from '../controls/widgets/WidgetUI'
 import { ResultWrapperUI } from '../widgets/misc/ResultWrapperUI'
 import { ScrollablePaneUI } from '../widgets/misc/scrollableArea'
 import { draftContext } from '../widgets/misc/useDraft'
-import { AppFavoriteBtnUI } from 'src/panels/libraryUI/CardPicker2UI'
 
 export const Panel_Draft = observer(function Panel_Draft_(p: { draftID: DraftID }) {
     // 1. get draft
@@ -32,12 +31,14 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
     useEffect(() => draft?.AWAKE(), [draft?.id])
     // 1. draft
     if (draft == null) return <ErrorPanelUI>Draft not found</ErrorPanelUI>
+
     // 2. app
     const app = draft.app
-    if (app == null) return <ErrorPanelUI>Action not found</ErrorPanelUI>
+    if (app == null) return <ErrorPanelUI>File not found</ErrorPanelUI>
+
     // 3. compiled app
-    const compiledApp = app.getCompiledApp()
-    if (compiledApp == null) return <AppCompilationErrorUI card={app} />
+    const compiledApp = app.executable
+    if (compiledApp == null) return <AppCompilationErrorUI app={app} />
 
     // 4. get form
     const guiR = draft.gui
@@ -51,7 +52,7 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
         )
 
     // 5. render form
-    const { containerClassName, containerStyle } = compiledApp ?? {}
+    const { containerClassName, containerStyle } = compiledApp.def ?? {}
     const defaultContainerStyle = { margin: '0 auto' }
 
     // {/* <ActionDraftListUI card={card} /> */}
@@ -69,7 +70,7 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                     }
                 }}
             >
-                <DraftHeaderUI app={app} draft={draft} />
+                <DraftHeaderUI draft={draft} />
                 {!st.isConfigValueEq('draft.mockup-mobile', true) ? (
                     <ScrollablePaneUI className='flex-grow'>
                         <div tw='pb-80 pl-2'>
@@ -98,15 +99,18 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                         Form result
                     </Button>
                     <Button
-                        //
                         onClick={() => st.layout.FOCUS_OR_CREATE('DraftJsonSerial', { draftID: draft.id })}
                         size='sm'
                         tw='tab btn-ghost join-item'
                     >
                         Form state
                     </Button>
-                    <Button size='sm' tw='tab btn-ghost join-item'>
-                        Action code
+                    <Button
+                        onClick={() => st.layout.FOCUS_OR_CREATE('Script', { scriptID: draft.app.script.id })}
+                        size='sm'
+                        tw='tab btn-ghost join-item'
+                    >
+                        App code
                     </Button>
                     {/* <TypescriptHighlightedCodeUI code={app.codeJS ?? ''} /> */}
                 </Joined>
@@ -120,15 +124,14 @@ export const RunOrAutorunUI = observer(function RunOrAutorunUI_(p: { className?:
     const icon = draft.shouldAutoStart ? 'pause' : 'play_arrow'
     return (
         <div tw='flex join virtualBorder' className={p.className}>
-            <Button
-                tw='btn-sm self-start join-item btn-neutral'
-                icon={draft.shouldAutoStart ? <Loader /> : <span className='material-symbols-outlined'>repeat</span>}
-                active={draft.shouldAutoStart}
-                color={draft.shouldAutoStart ? 'green' : undefined}
+            <div
+                tw={['btn btn-square btn-sm self-start join-item btn-neutral', draft.shouldAutoStart ? 'btn-active' : null]}
+                // color={draft.shouldAutoStart ? 'green' : undefined}
                 onClick={() => draft.setAutostart(!draft.shouldAutoStart)}
             >
-                Auto
-            </Button>
+                {draft.shouldAutoStart ? <Loader /> : <span className='material-symbols-outlined'>repeat</span>}
+                {/* Auto */}
+            </div>
             <Button
                 tw='btn-sm join-item btn-primary'
                 className='self-start'
@@ -144,12 +147,12 @@ export const RunOrAutorunUI = observer(function RunOrAutorunUI_(p: { className?:
     )
 })
 
-export const CardActionsMenuUI = observer(function CardActionsMenuUI_(p: { card: LibraryFile; className?: string }) {
-    const card = p.card
+export const DraftActionMenuUI = observer(function DraftActionMenuUI_(p: { draft: DraftL; className?: string }) {
+    const file = p.draft.file
     const st = useSt()
     return (
         <Dropdown
-            tw={[p.className, 'bg-base-100']}
+            tw={[p.className, 'btn-square btn-sm']}
             startIcon={<span className='material-symbols-outlined'>edit</span>}
             title=''
             appearance='subtle'
@@ -157,21 +160,26 @@ export const CardActionsMenuUI = observer(function CardActionsMenuUI_(p: { card:
         >
             <MenuItem
                 icon={<span className='material-symbols-outlined'></span>}
-                onClick={() => openInVSCode(cwd(), card.absPath)}
+                onClick={() => openInVSCode(cwd(), file?.absPath ?? '')}
             >
                 Edit App Definition
             </MenuItem>
-            <MenuItem
+            {/* <MenuItem
                 icon={<span className='material-symbols-outlined'></span>}
-                onClick={() => openInVSCode(cwd(), card.deck.manifestPath)}
+                onClick={() => openInVSCode(cwd(), file.pkg.manifestPath)}
             >
                 Edit App Manifest
-            </MenuItem>
-            <MenuItem icon={<span className='material-symbols-outlined'></span>} onClick={() => showItemInFolder(card.absPath)}>
+            </MenuItem> */}
+            <MenuItem
+                //
+                onClick={() => showItemInFolder(file.absPath)}
+                icon={<span className='material-symbols-outlined'></span>}
+            >
                 Show Item In Folder
             </MenuItem>
-            {card.liteGraphJSON && (
-                <MenuItem onClick={() => st.layout.FOCUS_OR_CREATE('ComfyUI', { litegraphJson: card.liteGraphJSON })}>
+
+            {file?.liteGraphJSON && (
+                <MenuItem onClick={() => st.layout.FOCUS_OR_CREATE('ComfyUI', { litegraphJson: file.liteGraphJSON })}>
                     Open in ComfyUI
                 </MenuItem>
             )}
@@ -189,7 +197,7 @@ export const FormLayoutPrefsUI = observer(function FormLayoutPrefsUI_(p: { class
             size={size1}
             appearance='subtle'
             startIcon={<span className='material-symbols-outlined'>dynamic_form</span>}
-            title={`${layout}`}
+            title={''} //`${layout}`}
             // startIcon={<span className='material-symbols-outlined'>format_size</span>}
         >
             <MenuItem
@@ -198,7 +206,7 @@ export const FormLayoutPrefsUI = observer(function FormLayoutPrefsUI_(p: { class
                 active={layout == 'auto'}
             >
                 Auto Layout
-                <div tw='badge badge-neutral'>recommanded</div>
+                <div tw='badge badge-neutral'>recommended</div>
             </MenuItem>
             <MenuItem
                 icon={<span className='material-symbols-outlined'>photo_size_select_small</span>}
@@ -243,20 +251,20 @@ const ErrorPanelUI = observer(function ErrorPanelUI_(p: { children: React.ReactN
     )
 })
 
-export const AppCompilationErrorUI = observer(function AppCompilationErrorUI_(p: { card: LibraryFile }) {
-    const card = p.card
+export const AppCompilationErrorUI = observer(function AppCompilationErrorUI_(p: { app: CushyAppL }) {
+    const card = p.app
     return (
         <ErrorPanelUI>
             <h3 tw='text-red-600'>invalid action</h3>
-            <Message showIcon type='info'>
+            {/* <Message showIcon type='info'>
                 <div>loading strategies attempted:</div>
                 <ul>
                     {card.strategies.map((u) => (
                         <li key={u}>{u}</li>
                     ))}
                 </ul>
-            </Message>
-            {card.errors.map((e, ix) => {
+            </Message> */}
+            {/* {card.errors.map((e, ix) => {
                 return (
                     <Message key={ix} showIcon type='error' header={e.title}>
                         {typeof e.details === 'string' ? (
@@ -278,20 +286,25 @@ export const AppCompilationErrorUI = observer(function AppCompilationErrorUI_(p:
                         )}
                     </Message>
                 )
-            })}
+            })} */}
             {/* <pre tw='text-red-600'>❌ errors: {JSON.stringify(card.errors, null, 2)}</pre> */}
         </ErrorPanelUI>
     )
 })
 
-export const DraftHeaderUI = observer(function DraftHeaderUI_(p: { draft: DraftL; app: LibraryFile }) {
-    const { app, draft } = p
+export const DraftHeaderUI = observer(function DraftHeaderUI_(p: {
+    //
+    draft: DraftL
+    // file: LibraryFile
+}) {
+    const { draft } = p
+    const app = draft.appRef.item
     const st = useSt()
     return (
         <div tw='flex p-1 bg-base-300 border-b border-b-base-300'>
             <div tw='flex gap-0.5 flex-grow relative text-base-content py-1'>
                 <AppIllustrationUI app={app} size='4rem' />
-                <div tw='px-1 flex-grow'>
+                <div tw='ml-1 flex-grow'>
                     <div
                         //
                         tw={[
@@ -302,11 +315,23 @@ export const DraftHeaderUI = observer(function DraftHeaderUI_(p: { draft: DraftL
                         style={{ height: '2rem', fontSize: '1.4rem' }}
                     >
                         <AppFavoriteBtnUI app={app} />
-                        <span>{app.displayName}</span>
-                        <Joined tw={['absolute right-0']}>
+                        <span>{app.name}</span>
+
+                        <div tw={['absolute right-0']}>
+                            <button
+                                disabled={app.isPublishing}
+                                tw='btn btn-ghost btn-square btn-sm'
+                                onClick={async () => {
+                                    await app.publish()
+                                }}
+                            >
+                                {app.isPublishing ? <Loader /> : <span className='material-symbols-outlined'>publish</span>}
+                            </button>
                             {/* Open draft in new tab btn */}
+                            <DraftActionMenuUI draft={draft} />
+                            <FormLayoutPrefsUI />
                             <div
-                                tw='btn btn-subtle btn-xs'
+                                tw='btn btn-ghost btn-square btn-sm'
                                 onClick={() => {
                                     st.layout.FOCUS_OR_CREATE('Draft', { draftID: draft.id }, 'LEFT_PANE_TABSET')
                                 }}
@@ -315,7 +340,7 @@ export const DraftHeaderUI = observer(function DraftHeaderUI_(p: { draft: DraftL
                             </div>
                             {/* duplicate draft btn */}
                             <div
-                                tw='btn btn-subtle btn-xs'
+                                tw='btn btn-ghost btn-square btn-sm'
                                 onClick={() => {
                                     const newDraft = draft.clone()
                                     st.layout.FOCUS_OR_CREATE('Draft', { draftID: newDraft.id }, 'LEFT_PANE_TABSET')
@@ -323,19 +348,16 @@ export const DraftHeaderUI = observer(function DraftHeaderUI_(p: { draft: DraftL
                             >
                                 <span className='material-symbols-outlined'>content_copy</span>
                             </div>
-                        </Joined>
+                        </div>
                     </div>
-                    <Input
-                        onChange={(ev) => draft.update({ title: ev.target.value })}
-                        tw='w-full'
-                        value={draft.data.title ?? 'no title'}
-                    ></Input>
                     <div style={{ height: '2rem' }} className='flex items-center gap-2 justify-between text-sm'>
-                        <Joined>
-                            <CardActionsMenuUI tw='join-item' card={app} />
-                            <FormLayoutPrefsUI tw='join-item' />
-                        </Joined>
-                        <RunOrAutorunUI draft={draft} />
+                        <input
+                            tw='input input-bordered input-sm flex-grow'
+                            onChange={(ev) => draft.update({ title: ev.target.value })}
+                            // tw='w-full'
+                            value={draft.data.title ?? 'no title'}
+                        ></input>
+                        <RunOrAutorunUI tw='flex-shrink-0' draft={draft} />
                     </div>
                 </div>
             </div>

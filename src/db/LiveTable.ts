@@ -1,12 +1,14 @@
+import type { STATE } from 'src/state/state'
+import type { LiveDB } from './LiveDB'
+import type { $BaseInstanceFields, BaseInstanceFields, LiveInstance } from './LiveInstance'
+
 import { Value, ValueError } from '@sinclair/typebox/value'
-import { makeAutoObservable, toJS } from 'mobx'
+import { action, makeAutoObservable, toJS } from 'mobx'
 import { nanoid } from 'nanoid'
 import { schemas } from 'src/db/TYPES.gen'
 import { TableInfo } from 'src/db/TYPES_json'
-import type { STATE } from 'src/state/state'
-import type { LiveDB } from './LiveDB'
 import { DEPENDS_ON, MERGE_PROTOTYPES } from './LiveHelpers'
-import type { $BaseInstanceFields, BaseInstanceFields, LiveInstance } from './LiveInstance'
+import { SQLWhere, SqlFindOptions, isSqlExpr } from './SQLWhere'
 
 export interface LiveEntityClass<T extends BaseInstanceFields, L> {
     new (...args: any[]): LiveInstance<T, L> & L
@@ -116,6 +118,10 @@ export class LiveTable<T extends BaseInstanceFields, L extends LiveInstance<T, L
             get updatedAt() { return this.data.updatedAt } // prettier-ignore
             get tableName() { return this.table.name } // prettier-ignore
 
+            update_LiveOnly(changes: Partial<T>) {
+                Object.assign(this.data, changes)
+            }
+
             update(changes: Partial<T>) {
                 // 0. check that changes is valid
                 if (Array.isArray(changes)) throw new Error('insert does not support arrays')
@@ -125,7 +131,7 @@ export class LiveTable<T extends BaseInstanceFields, L extends LiveInstance<T, L
                 const isSame = Object.keys(changes).every((k) => {
                     return (this.data as any)[k] === (changes as any)[k]
                 })
-                if (isSame) return console.log('❌ no need to update') // no need to update
+                if (isSame) return // ⏸️ console.log(`✔️ ${this.table.name}#${changes.id} no need to update`) // no need to update
 
                 // 2. store the prev in case we have an onUpdate callback later
                 const prev = this.onUpdate //
@@ -218,6 +224,8 @@ export class LiveTable<T extends BaseInstanceFields, L extends LiveInstance<T, L
         makeAutoObservable(this, {
             // @ts-ignore (private properties are untyped in this function)
             Ktor: false,
+            _createInstance: action,
+            get: action,
         })
 
         MERGE_PROTOTYPES(InstanceClass, BaseInstanceClass)
@@ -271,6 +279,7 @@ export class LiveTable<T extends BaseInstanceFields, L extends LiveInstance<T, L
     }
 
     getOrThrow = (id: string): L => {
+        if (id == null) throw new Error(`ERR:  getOrThrow called without id`)
         const val = this.get(id)
         if (val == null) throw new Error(`ERR: ${this.name}(${id}) not found`)
         return val
@@ -280,7 +289,12 @@ export class LiveTable<T extends BaseInstanceFields, L extends LiveInstance<T, L
         // console.log(`🦊 ${this.name}.getOrCreate`)
         // 1. check if instance exists in the entity map
         const val = this.get(id)
-        if (val == null) return this.create(def())
+        if (val == null) {
+            const data = def() as any
+            if (data.id && data.id !== id) throw new Error(`GET OR CREATE INVARIANT VIOLATION`)
+            if (data.id == null) data.id = id
+            return this.create(data)
+        }
         return val
     }
 
@@ -295,27 +309,75 @@ export class LiveTable<T extends BaseInstanceFields, L extends LiveInstance<T, L
     zz_deleted: boolean = false
 
     delete = (id: string) => {
+        console.log(`[👙] `)
         this.stmt_deleteByID(id)
         this.zz_deleted = true
         this.liveEntities.delete(id)
     }
     // ------------------------------------------------------------
 
-    find = (query: Partial<T>): L[] => {
-        const findSQL = [
-            `select * from ${this.name}`,
-            `where`,
-            Object.entries(query)
-                .map(([k, v]) => `${k} = @${k}`)
-                .join(' and '),
-        ].join(' ')
-        const stmt = this.db.db.prepare<{ [key: string]: any }>(findSQL)
-        const datas: T[] = stmt.all(query).map((data) => this.infos.hydrateJSONFields(data))
+    // clear = () => {
+    //     this.db.db.exec(`delete from ${this.name}`)
+    //     this.liveEntities.clear()
+    // }
+
+    /**
+     * probably unsafe to use
+     * - update all in DB
+     * - then patch all local instances bypassing the DB
+     */
+    updateAll = (changes: Partial<T>) => {
+        const sql = `update ${this.name} set ${Object.keys(changes)
+            .map((k) => `${k} = @${k}`)
+            .join(', ')}`
+        const stmt = this.db.db.prepare(sql)
+        stmt.run(changes)
+        for (const instance of this.liveEntities.values()) {
+            instance.update_LiveOnly(changes)
+        }
+    }
+
+    findAll = (): L[] => {
+        const stmt = this.db.db.prepare(`select * from ${this.name}`)
+        const datas: T[] = stmt.all().map((data) => this.infos.hydrateJSONFields(data))
         const instances = datas.map((d) => this.getOrCreateInstanceForExistingData(d))
-        console.log(`[🦜] find:`, { findSQL, instances })
         return instances
     }
-    insert = (row: Partial<T>): L => {
+
+    find = (
+        //
+        whereExt: SQLWhere<T>,
+        options: SqlFindOptions = {},
+    ): L[] => {
+        let whereClause: string[] = []
+        let whereVars: { [key: string]: any } = {}
+
+        Object.entries(whereExt).forEach(([k, v]) => {
+            if (isSqlExpr(v)) {
+                if ('$like' in v) {
+                    whereVars[k] = v.$like
+                    whereClause.push(`${k} like @${k}`)
+                } else {
+                    throw new Error(`[👙] 🔴`)
+                }
+            } else {
+                whereVars[k] = v
+                whereClause.push(`${k} = @${k}`)
+            }
+        })
+        let findSQL = `select * from ${this.name}`
+        if (whereClause.length > 0) findSQL += ` where ${whereClause.join(' and ')}`
+        if (options.limit) findSQL += ` limit ${options.limit}`
+
+        // console.log(`[👙] >>>`, findSQL, whereVars)
+        const stmt = this.db.db.prepare<{ [key: string]: any }>(findSQL)
+        const datas: T[] = stmt.all(whereVars).map((data) => this.infos.hydrateJSONFields(data))
+        const instances = datas.map((d) => this.getOrCreateInstanceForExistingData(d))
+        // ⏸️ console.log(`[🦜] find:`, { findSQL, instances })
+        return instances
+    }
+
+    private insert = (row: Partial<T>): L => {
         // 0 check that row is valid
         if (Array.isArray(row)) throw new Error('insert does not support arrays')
         if (typeof row !== 'object') throw new Error('insert does not support non-objects')
@@ -358,6 +420,26 @@ export class LiveTable<T extends BaseInstanceFields, L extends LiveInstance<T, L
         }
     }
 
+    upsert = (data: Omit<T, 'createdAt' | 'updatedAt'>): L => {
+        const id = data.id
+        // this.yjsMap.set(nanoid(), data)
+        const prev = this.get(id)
+        if (prev) {
+            prev.update(data as any /* 🔴 */)
+            return prev
+        } else {
+            const instance = this.create(data as any /* 🔴 */)
+            return instance
+        }
+    }
+
+    // upsert = (data: Omit<T, $OptionalFieldsForUpsert> & Partial<$OptionalFieldsForUpsert>): L => {
+    //     const prev = this.get(data.id)
+    //     if (prev == null) return this.create(data as any)
+    //     prev.update(data as any)
+    //     return prev
+    // }
+
     /** only call with brand & never seen new data */
     create = (data: Omit<T, $BaseInstanceFields> & Partial<BaseInstanceFields>): L => {
         // enforce singlettons
@@ -396,7 +478,7 @@ export class LiveTable<T extends BaseInstanceFields, L extends LiveInstance<T, L
     }
 
     /** only call this with some data already in the database */
-    private _createInstance = (data: T): L => {
+    _createInstance = (data: T): L => {
         const instance = new this.Ktor()
         // TYPE CHECKING --------------------
         const schema = this.infos.schema
@@ -411,18 +493,5 @@ export class LiveTable<T extends BaseInstanceFields, L extends LiveInstance<T, L
         instance.init(this, data)
         this.liveEntities.set(data.id, instance)
         return instance
-    }
-
-    upsert = (data: Omit<T, 'createdAt' | 'updatedAt'>): L => {
-        const id = data.id
-        // this.yjsMap.set(nanoid(), data)
-        const prev = this.get(id)
-        if (prev) {
-            prev.update(data as any /* 🔴 */)
-            return prev
-        } else {
-            const instance = this.create(data as any /* 🔴 */)
-            return instance
-        }
     }
 }

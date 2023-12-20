@@ -48,8 +48,8 @@ export const StepOutputsHeaderV2UI = observer(function StepOutputsV1HeaderUI_(p:
                     flexShrink: 0,
                 }}
             >
-                {step.appFile ? (
-                    <AppIllustrationUI tw='opacity-40 hover:opacity-100' size={size} app={step.appFile} />
+                {step.app ? (
+                    <AppIllustrationUI tw='opacity-40 hover:opacity-100' size={size} app={step.app} />
                 ) : (
                     <div
                         style={{

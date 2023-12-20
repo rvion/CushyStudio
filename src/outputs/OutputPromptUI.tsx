@@ -25,12 +25,10 @@ export const OutputPromptPreviewUI = observer(function OutputPromptPreviewUI_(p:
     // const pgr2 = graph.graphProgressCurrentNode
     return (
         <OutputPreviewWrapperUI output={prompt}>
-            <div tw='bg-blue-800 '>
+            <div tw='bg-blue-500 '>
                 <div
                     className='radial-progress'
                     style={{
-                        // width: '100%',
-                        // height: '100%',
                         // @ts-ignore
                         '--value': pgr1.percent,
                         '--size': size,
@@ -55,7 +53,15 @@ export const OutputPromptUI = observer(function OutputPromptUI_(p: {
     if (graph == null) return <>no graph</>
     return (
         <div className='flex flex-col gap-1'>
-            {prompt.status ? null : (
+            <div
+                tw='btn btn-sm btn-outline'
+                onClick={() => {
+                    st.stopCurrentPrompt()
+                }}
+            >
+                STOP GENERATING
+            </div>
+            {/* {prompt.status !== 'Running' ? null : (
                 <div
                     tw='btn btn-sm'
                     onClick={() => {
@@ -64,7 +70,7 @@ export const OutputPromptUI = observer(function OutputPromptUI_(p: {
                 >
                     STOP GENERATING
                 </div>
-            )}
+            )} */}
             <GraphSummaryUI graph={graph} />
         </div>
     )

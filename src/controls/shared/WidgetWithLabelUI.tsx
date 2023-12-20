@@ -28,6 +28,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     let label: Maybe<string | false> = req.input.label ?? makeLabelFromFieldName(rootKey)
 
     const isVertical = (() => {
+        if (p.req.input.showID) return true
         if (st.preferedFormLayout === 'auto') {
             if (req instanceof KLS.Widget_group) return true
             if (req instanceof KLS.Widget_groupOpt) return true
@@ -111,6 +112,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                     }
                 >
                     {label || '...'}
+                    {p.req.input.showID ? <span tw='opacity-50 italic text-sm'>#{p.req.id.slice(0, 3)}</span> : null}
                 </span>
             )}
             <span tw='opacity-30 hover:opacity-100'>{v.state.collapsed ? '▸ {...}' : /*'▿'*/ ''}</span>

@@ -24,7 +24,7 @@ type PP<T> = {
 
 class AutoCompleteSelectState<T> {
     constructor(public st: STATE, public p: PP<T>) {
-        makeAutoObservable(this)
+        makeAutoObservable(this, { anchorRef: false })
     }
     onChange = this.p.onChange
     multiple = this.p.multiple ?? false
@@ -158,7 +158,7 @@ export const SelectUI = observer(function SelectUI_<T>(p: PP<T>) {
                 {/* ANCHOR */}
                 <div //
                     tabIndex={-1}
-                    tw='input input-bordered input-sm w-full'
+                    tw='input input-bordered input-sm w-full overflow-hidden'
                 >
                     {s.displayValue}
                 </div>

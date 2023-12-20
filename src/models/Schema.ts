@@ -7,6 +7,8 @@ import { ComfyPrimitiveMapping, ComfyPrimitives } from '../core/Primitives'
 import { normalizeJSIdentifier } from '../core/normalizeJSIdentifier'
 import { CodeBuffer } from '../utils/codegen/CodeBuffer'
 import { escapeJSKey } from '../utils/codegen/escapeJSKey'
+import { LiveRef } from 'src/db/LiveRef'
+import { HostL } from './Host'
 
 export type EnumHash = string
 export type EnumName = string
@@ -39,17 +41,18 @@ export type EnumInfo = {
     aliases: string[]
 }
 
-// export type SchemaT = {
-//     id: 'main-schema'
-//     createdAt: number
-//     updatedAt: number
-//     spec: ComfySchemaJSON
-//     embeddings: EmbeddingName[]
-// }
+export interface ComfySchemaL extends LiveInstance<ComfySchemaT, ComfySchemaL> {}
 
-export interface SchemaL extends LiveInstance<ComfySchemaT, SchemaL> {}
+export class ComfySchemaL {
+    /**
+     * return the number of nodes in your current schema
+     * quick way to check your instance info
+     * */
+    get size(): number {
+        console.log(`[👙] `, toJS(this.data.spec), Object.keys(this.data.spec).length)
+        return Object.keys(this.data.spec).length
+    }
 
-export class SchemaL {
     /**
      * for now, simply ensure that the number of parsed nodes matches the number of nodes
      * present in the object_info.json
@@ -107,9 +110,22 @@ export class SchemaL {
     nodesByProduction: { [key: string]: NodeNameInCushy[] } = {}
     enumsAppearingInOutput = new Set<string>()
 
+    onHydrate = () => {
+        // this.onUpdate()
+    }
+
+    hostRef = new LiveRef<this, HostL>(
+        //
+        this,
+        'hostID',
+        () => this.db.hosts,
+    )
+    // get host(): HostL { return this.hostRef.item } // prettier-ignore
+    // get hostName(): string { return this.hostRef.item.data.name } // prettier-ignore
+
     /** on update is called automatically by live instances */
     onUpdate() {
-        this.log('updating schema')
+        this.log(`updating schema (${this.id})`)
         // reset spec
         // this.spec = this.data.spec
         // this.embeddings = this.data.embeddings
@@ -196,16 +212,28 @@ export class SchemaL {
             }
 
             // INPUTS ----------------------------------------------------------------------
-            const requiredInputs = Object.entries(nodeDef.input?.required ?? {}) //
-                .map(([name, spec]) => ({ required: true, name, spec }))
             const optionalInputs = Object.entries(nodeDef.input?.optional ?? {}) //
                 .map(([name, spec]) => ({ required: false, name, spec }))
+            const requiredInputs = Object.entries(nodeDef.input?.required ?? {}) //
+                .map(([name, spec]) => ({ required: true, name, spec }))
+                // REMOVE DUPLICATES
+                // ! "CR ControlNet Input Switch": {
+                // !    "input": {
+                // !        "required": {
+                // !            "Input": ["INT",{"default":1,"min":1,"max":2}]
+                // !             "control_net1": ["CONTROL_NET"] 👈
+                // !        }
+                // !         "optional": {
+                // !            "control_net1": ["CONTROL_NET"] 👈
+                // !        }
+                // !    }
+                // 👇 this makes only the optional propery to be kept
+                .filter((i) => optionalInputs.find((oi) => oi.name === i.name) == null)
             const allInputs = [
                 //
                 ...requiredInputs,
                 ...optionalInputs,
             ]
-
             for (const ipt of allInputs) {
                 const inputNameInComfy = ipt.name
                 const inputNameInCushy = normalizeJSIdentifier(ipt.name, '_')
@@ -313,11 +341,11 @@ export class SchemaL {
 
         p('')
         p(`import type { ComfyNode } from '${prefix}core/ComfyNode'`)
-        p(`import type { ComfyNodeID } from '${prefix}types/ComfyNodeID'`)
+        p(`import type { ComfyNodeMetadata } from '${prefix}types/ComfyNodeID'`)
         p(`import type { ComfyNodeOutput } from '${prefix}core/Slot'`)
         p(`import type { ComfyNodeSchemaJSON } from '${prefix}types/ComfySchemaJSON'`)
         p('')
-        p(`import type { GlobalFunctionToDefineAnApp } from '${prefix}cards/Card'`)
+        p(`import type { GlobalFunctionToDefineAnApp } from '${prefix}cards/App'`)
         p('')
         p(`// CONTENT IN THIS FILE:`)
         p('//')
@@ -349,7 +377,7 @@ export class SchemaL {
         // prettier-ignore
         for (const n of this.nodes) {
             p(`    /* category:${n.category}, name:"${n.nameInComfy}", output:${n.outputs.map(o => o.nameInCushy).join('+')} */`)
-            p(`    ${n.nameInCushy}(p: ${n.nameInCushy}_input, id?: ComfyNodeID): ${n.nameInCushy}`)
+            p(`    ${n.nameInCushy}(p: ${n.nameInCushy}_input, meta?: ComfyNodeMetadata): ${n.nameInCushy}`)
         }
         p(`}`)
 
