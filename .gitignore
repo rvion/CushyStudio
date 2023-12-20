@@ -73,3 +73,5 @@ logs/
 
 release/main.css
 release/meta.json
+release/output.css
+release/main.js
