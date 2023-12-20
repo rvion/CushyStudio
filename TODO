@@ -16,6 +16,7 @@ Todo before release:
         ☐ rich prompt + shift/alt+enter should not accept compltion but insert newline
         ☐ better treeview with apps
         ☐ add default non virtual local host
+        ✔ reorder appbar to have login at the end of the left section @done(23-12-20 15:55)
         ✔ opening a past step fold it in the outputs panel @done(23-12-20 15:34)
         ✔ menu reveal  close itself too fast @done(23-12-20 15:12)
         ✔ text on theme menu @done(23-12-20 15:13)
