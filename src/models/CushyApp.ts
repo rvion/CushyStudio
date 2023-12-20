@@ -35,6 +35,11 @@ export class CushyAppL {
         return this.script.relPath.startsWith('library/local')
     }
 
+    /** true if in the library/local folder */
+    get isExample(): boolean {
+        return this.script.relPath.startsWith('library/sdk-examples')
+    }
+
     /** true if in built-in  */
     get isBuiltIn(): boolean {
         return this.script.relPath.startsWith('library/built-in')

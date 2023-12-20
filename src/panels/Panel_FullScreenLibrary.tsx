@@ -107,9 +107,9 @@ export const Panel_CardPicker3UI = observer(function Panel_CardPicker3UI_(p: {})
                     <Panel_DeckList />
                 </ScrollablePaneUI> */}
                 <ScrollablePaneUI tw='flex-grow'>
-                    <div tw='text-3xl text-accent font-bold'>Installed Apps</div>
+                    <div tw='text-xl text-accent font-bold'>Installed Apps</div>
                     <div>--</div>
-                    <div tw='text-3xl text-accent font-bold'>App marketplace</div>
+                    <div tw='text-xl text-accent font-bold'>App marketplace</div>
                     <div tw='flex flex-wrap  gap-2'>
                         {st._allPublishedApps?.data?.map((app) => (
                             <div tw='w-96 h-80 virtualBorder' key={app.id}>
@@ -127,7 +127,7 @@ export const Panel_CardPicker3UI = observer(function Panel_CardPicker3UI_(p: {})
                         ))}
                     </div>
                     <div tw='divider'></div>
-                    <div tw='text-3xl text-accent font-bold'>Built-in Apps</div>
+                    <div tw='text-xl text-accent font-bold'>Built-in Apps</div>
                     <div tw='flex flex-wrap  gap-2'>
                         {st.library.appsFilteredBuiltIn.map((app, ix) => (
                             <div key={app.id}>
@@ -148,9 +148,21 @@ export const Panel_CardPicker3UI = observer(function Panel_CardPicker3UI_(p: {})
                         ))}
                     </div>
                     <div tw='divider'></div>
-                    <div tw='text-3xl text-accent font-bold'>Local Apps</div>
+                    <div tw='text-xl text-accent font-bold'>Local Apps</div>
                     <div tw='flex flex-wrap  gap-2'>
                         {st.library.appsFilteredLocal.map((app, ix) => (
+                            <div key={app.id}>
+                                <AppCardUI //
+                                    active={st.library.selectionCursor === ix}
+                                    app={app}
+                                />
+                            </div>
+                        ))}
+                    </div>
+                    <div tw='divider'></div>
+                    <div tw='text-xl text-accent font-bold'>SDK Examples</div>
+                    <div tw='flex flex-wrap  gap-2'>
+                        {st.library.appsFilteredExample.map((app, ix) => (
                             <div key={app.id}>
                                 <AppCardUI //
                                     active={st.library.selectionCursor === ix}

@@ -36,6 +36,9 @@ export class Library {
     get appsFilteredLocal(): CushyAppL[] {
         return this.appsFiltered.filter((x) => x.isLocal)
     }
+    get appsFilteredExample(): CushyAppL[] {
+        return this.appsFiltered.filter((x) => x.isExample)
+    }
 
     get allFavorites(): CushyAppID[] {
         return this.st.favoriteApps

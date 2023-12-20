@@ -22,6 +22,8 @@ Todo before release:
         ☐ add default non virtual local host
         ✔ improve forms look and feel @done(23-12-20 15:27)
         ✔ improve size widget preview a bit @done(23-12-20 15:27)
+        ✔ hacky fix library so it's at least a bit usable @done(23-12-20 15:40)
+
 
     ✔ codegen swap file @done(23-12-20 15:17)
     ☐ video
