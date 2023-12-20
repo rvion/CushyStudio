@@ -59,6 +59,9 @@ IF NOT EXIST "%tsconfigPath%" (
 
 node_modules\rcedit\bin\rcedit.exe "node_modules\electron\dist\electron.exe" --set-icon "library\CushyStudio\_public\CushyLogo.ico"
 
+:: build the release folder
+CALL .\node_modules\.bin\electron --no-sandbox -i src\shell\build.js js css mini
+
 EXIT /B 0
 
 :install_with_powershell
