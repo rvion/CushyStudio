@@ -90,6 +90,10 @@ export class Widget_orbit implements IRequest<'orbit', Widget_orbit_opts, Widget
     id: string
     type: 'orbit' = 'orbit'
     state: Widget_orbit_state
+    reset = () => {
+        this.state.val.azimuth = this.input.default?.azimuth ?? 0
+        this.state.val.elevation = this.input.default?.elevation ?? 0
+    }
     constructor(
         public builder: FormBuilder,
         public schema: ComfySchemaL,

@@ -1,10 +1,10 @@
-import type { OrbitControls as OrbitControlsT } from 'three/examples/jsm/controls/OrbitControls'
 import { OrbitControls } from '@react-three/drei'
-import { Canvas, extend } from '@react-three/fiber'
-import { Widget_orbit } from '../Widget'
-import { MeshBasicMaterial } from 'three'
-import { Ref, useRef } from 'react'
+import { Canvas } from '@react-three/fiber'
 import { runInAction } from 'mobx'
+import { useRef } from 'react'
+import type { OrbitControls as OrbitControlsT } from 'three/examples/jsm/controls/OrbitControls'
+import { Widget_orbit } from '../Widget'
+import { useLocalObservable } from 'mobx-react-lite'
 
 // extend({ MeshBasicMaterial })
 
@@ -12,19 +12,29 @@ export const WidgetOrbitUI = (p: { widget: Widget_orbit }) => {
     const ref = useRef<any>(null)
     return (
         <div tw='virtualBorder'>
+            <div
+                tw='btn'
+                onClick={() => {
+                    p.widget.reset()
+                }}
+            >
+                reset
+            </div>
             <Canvas>
                 <ambientLight intensity={1.5} />
                 <pointLight position={[10, 10, 10]} />
                 <Cube />
                 <OrbitControls
+                    // getPolarAngle={() => p.widget.state.val.elevation / (180 / Math.PI)}
+                    // getAzimuthalAngle={() => p.widget.state.val.azimuth / (180 / Math.PI)}
                     ref={ref}
                     // enableZoom={false}
                     onChange={(e) => {
                         const curr = ref.current as OrbitControlsT
-                        console.log(`[👙] `)
                         runInAction(() => {
-                            p.widget.state.val.azimuth = curr.getAzimuthalAngle()
-                            p.widget.state.val.elevation = curr.getPolarAngle()
+                            p.widget.state.val.azimuth = curr.getAzimuthalAngle() * (180 / Math.PI)
+                            p.widget.state.val.elevation = -(curr.getPolarAngle() * (180 / Math.PI) - 90)
+                            console.log(`[👙] `, JSON.stringify(p.widget.state.val))
                         })
                         // if (e == null) return
                         // const azimuthDeg = e.azimuthalAngle * (180 / Math.PI)
