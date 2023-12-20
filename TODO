@@ -1,7 +1,7 @@
 Todo before release:
 
     ☐ Vinsi
-        ☐ opening a past step fold it in the outputs panel
+        ✔ opening a past step fold it in the outputs panel @done(23-12-20 15:34)
         ☐ fix login callback not beeing available after public dir change
         ☐ disable publish button if not logged in
         ☐ stuck in ComfyUI

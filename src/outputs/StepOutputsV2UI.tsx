@@ -33,13 +33,17 @@ export const StepOutputsHeaderV2UI = observer(function StepOutputsV1HeaderUI_(p:
                 'cursor-pointer justify-between text-xs text-gray-400 hover:bg-base-200',
                 p.className,
             ]}
-            onClick={() => (step.expanded = !step.expanded)}
+            // onClick={(ev) => {
+            //     // step.expanded = !step.expanded
+            //     ev.stopPropagation()
+            //     ev.preventDefault()
+            // }}
+            onClick={() => (st.focusedStepID = step.id)}
             style={{ borderTop: '1px solid #2d2d2d' }}
         >
             {/* <b>{step.name}</b> */}
             <div
                 tw={['cursor-pointer', selectedStep === step ? 'border-2 border-primary' : '']}
-                onClick={() => (st.focusedStepID = step.id)}
                 style={{
                     // 🔴
                     outline: selected ? '4px solid white' : undefined,

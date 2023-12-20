@@ -7,7 +7,7 @@ export const MenuConfigUI = observer(function MenuConfigUI_(p: {}) {
     return (
         <Dropdown //
             startIcon={<span className='material-symbols-outlined text-purple-500'>settings</span>}
-            title='Config'
+            title='Settings'
             appearance='subtle'
         >
             <MenuItem
