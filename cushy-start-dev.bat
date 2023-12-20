@@ -7,7 +7,7 @@ set errorlevel=
 SET CUSHY_RUN_MODE=dev
 
 :: Start Vite using Electron's Node
-ECHO Starting Vite with Electron's Node...
+ECHO Starting Cushy in dev mode...
 CALL .\node_modules\.bin\electron --no-sandbox -i src\shell
 
 EXIT /B 0
