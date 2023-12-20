@@ -1,11 +1,11 @@
 import { basename } from 'pathe'
 import { replaceImportsWithSyncImport } from 'src/back/ImportStructure'
-import { App, WidgetDict } from 'src/cards/App'
+import { App, AppRef, WidgetDict } from 'src/cards/App'
 import type { LiveInstance } from '../db/LiveInstance'
 
 import { LibraryFile } from 'src/cards/LibraryFile'
 import { LiveCollection } from 'src/db/LiveCollection'
-import { CushyScriptT } from 'src/db/TYPES.gen'
+import { CushyScriptT, asCushyAppID } from 'src/db/TYPES.gen'
 import { asRelativePath } from 'src/utils/fs/pathUtils'
 import { CUSHY_IMPORT } from './CUSHY_IMPORT'
 import { CushyAppL } from './CushyApp'
@@ -109,12 +109,16 @@ export class CushyScriptL {
         const codeJS = this.data.code
         const APPS: App<WidgetDict>[] = []
 
+        let appIndex = 0
         // 1. setup DI registering mechanism
-        const registerAppFn = (a1: string, a2: App<any>): void => {
+        const registerAppFn = (a1: string, a2: App<any>): AppRef<any> => {
             const app: App<WidgetDict> = typeof a1 !== 'string' ? a1 : a2
             const name = app.metadata?.name ?? basename(this.relPath)
             console.info(`[💙] found action: "${name}"`, { path: this.relPath })
             APPS.push(app)
+            const appID = asCushyAppID(this.relPath + ':' + appIndex++) // 🔴 SUPER UNSAFE
+            // console.log(`[👙] >> appID==`, appID)
+            return { $Output: 0 as any, id: appID }
         }
 
         // 2. eval file to extract actions

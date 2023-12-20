@@ -58,6 +58,8 @@ const build = async () => {
             'node:cluster': `./src/syms/cluster.js`,
             /* */ fs: `./src/syms/fs.js`,
             'node:fs': `./src/syms/fs.js`,
+            /* */ https: `./src/syms/https.js`,
+            'node:https': `./src/syms/https.js`,
             /* */ os: `./src/syms/os.js`,
             'node:os': `./src/syms/os.js`,
             /* */ path: `./src/syms/path.js`,

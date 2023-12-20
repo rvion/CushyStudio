@@ -22,6 +22,7 @@ import { WidgetDI } from './widgets/WidgetUI.DI'
 export type Widget =
     | Widget_color
     | Widget_str
+    | Widget_orbit
     | Widget_strOpt
     | Widget_prompt
     | Widget_promptOpt
@@ -75,6 +76,45 @@ export class Widget_str implements IRequest<'str', Widget_str_opts, Widget_str_s
     }
     get serial(): Widget_str_serial { return this.state }
     get result(): Widget_str_output { return this.state.val }
+}
+
+// 🅿️ orbit ==============================================================================
+export type OrbitData = { azimuth: number; elevation: number }
+export type Widget_orbit_opts  = ReqInput<{ default?: Partial<OrbitData> }>
+export type Widget_orbit_serial = StateFields<{ type: 'orbit', active: true; val: OrbitData }>
+export type Widget_orbit_state  = StateFields<{ type: 'orbit', active: true; val: OrbitData }>
+export type Widget_orbit_output = OrbitData
+export interface Widget_orbit extends IWidget<'orbit', Widget_orbit_opts, Widget_orbit_serial, Widget_orbit_state, Widget_orbit_output> {}
+export class Widget_orbit implements IRequest<'orbit', Widget_orbit_opts, Widget_orbit_serial, Widget_orbit_state, Widget_orbit_output> {
+    isOptional = false
+    id: string
+    type: 'orbit' = 'orbit'
+    state: Widget_orbit_state
+    reset = () => {
+        this.state.val.azimuth = this.input.default?.azimuth ?? 0
+        this.state.val.elevation = this.input.default?.elevation ?? 0
+    }
+    constructor(
+        public builder: FormBuilder,
+        public schema: ComfySchemaL,
+        public input: Widget_orbit_opts,
+        serial?: Widget_orbit_serial,
+    ) {
+        this.id = serial?.id ?? nanoid()
+        this.state = serial ?? {
+            type:'orbit',
+            collapsed: input.startCollapsed,
+            active: true,
+            val: {
+                azimuth: input.default?.azimuth ?? 0,
+                elevation: input.default?.elevation ?? 0,
+            },
+            id: this.id
+        }
+        makeAutoObservable(this)
+    }
+    get serial(): Widget_orbit_serial { return this.state }
+    get result(): Widget_orbit_output { return this.state.val }
 }
 
 // 🅿️ markdown ==============================================================================
@@ -1477,34 +1517,35 @@ export class Widget_enumOpt<T extends KnownEnumNames> implements IRequest<'enumO
 
 
 
-WidgetDI.Widget_color=Widget_color
-WidgetDI.Widget_str=Widget_str
-WidgetDI.Widget_strOpt=Widget_strOpt
-WidgetDI.Widget_prompt=Widget_prompt
-WidgetDI.Widget_promptOpt=Widget_promptOpt
-WidgetDI.Widget_seed=Widget_seed
-WidgetDI.Widget_int=Widget_int
-WidgetDI.Widget_float=Widget_float
-WidgetDI.Widget_bool=Widget_bool
-WidgetDI.Widget_inlineRun=Widget_inlineRun
-WidgetDI.Widget_intOpt=Widget_intOpt
-WidgetDI.Widget_floatOpt=Widget_floatOpt
-WidgetDI.Widget_markdown=Widget_markdown
-WidgetDI.Widget_custom=Widget_custom
-WidgetDI.Widget_size=Widget_size
-WidgetDI.Widget_matrix=Widget_matrix
-WidgetDI.Widget_loras=Widget_loras
-WidgetDI.Widget_image=Widget_image
-WidgetDI.Widget_imageOpt=Widget_imageOpt
-WidgetDI.Widget_selectOneOrCustom=Widget_selectOneOrCustom
-WidgetDI.Widget_selectMany=Widget_selectMany
-WidgetDI.Widget_selectManyOrCustom=Widget_selectManyOrCustom
-WidgetDI.Widget_selectOne=Widget_selectOne
-WidgetDI.Widget_list=Widget_list
-WidgetDI.Widget_group=Widget_group
-WidgetDI.Widget_groupOpt=Widget_groupOpt
-WidgetDI.Widget_choice=Widget_choice
-WidgetDI.Widget_choices=Widget_choices
-WidgetDI.Widget_enum=Widget_enum
-WidgetDI.Widget_enumOpt=Widget_enumOpt
-WidgetDI.Widget_listExt=Widget_listExt
+WidgetDI.Widget_color              = Widget_color
+WidgetDI.Widget_str                = Widget_str
+WidgetDI.Widget_strOpt             = Widget_strOpt
+WidgetDI.Widget_prompt             = Widget_prompt
+WidgetDI.Widget_promptOpt          = Widget_promptOpt
+WidgetDI.Widget_seed               = Widget_seed
+WidgetDI.Widget_int                = Widget_int
+WidgetDI.Widget_float              = Widget_float
+WidgetDI.Widget_bool               = Widget_bool
+WidgetDI.Widget_inlineRun          = Widget_inlineRun
+WidgetDI.Widget_intOpt             = Widget_intOpt
+WidgetDI.Widget_floatOpt           = Widget_floatOpt
+WidgetDI.Widget_markdown           = Widget_markdown
+WidgetDI.Widget_custom             = Widget_custom
+WidgetDI.Widget_size               = Widget_size
+WidgetDI.Widget_matrix             = Widget_matrix
+WidgetDI.Widget_loras              = Widget_loras
+WidgetDI.Widget_image              = Widget_image
+WidgetDI.Widget_imageOpt           = Widget_imageOpt
+WidgetDI.Widget_selectOneOrCustom  = Widget_selectOneOrCustom
+WidgetDI.Widget_selectMany         = Widget_selectMany
+WidgetDI.Widget_selectManyOrCustom = Widget_selectManyOrCustom
+WidgetDI.Widget_selectOne          = Widget_selectOne
+WidgetDI.Widget_list               = Widget_list
+WidgetDI.Widget_group              = Widget_group
+WidgetDI.Widget_groupOpt           = Widget_groupOpt
+WidgetDI.Widget_choice             = Widget_choice
+WidgetDI.Widget_choices            = Widget_choices
+WidgetDI.Widget_enum               = Widget_enum
+WidgetDI.Widget_enumOpt            = Widget_enumOpt
+WidgetDI.Widget_listExt            = Widget_listExt
+WidgetDI.Widget_orbit              = Widget_orbit
