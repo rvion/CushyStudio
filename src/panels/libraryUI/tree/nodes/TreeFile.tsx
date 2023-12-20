@@ -1,5 +1,5 @@
 import { makeAutoObservable } from 'mobx'
-import { basename } from 'path'
+import { basename } from 'pathe'
 import { cwd } from 'process'
 import { LibraryFile } from 'src/cards/LibraryFile'
 import { STATE } from 'src/state/state'
