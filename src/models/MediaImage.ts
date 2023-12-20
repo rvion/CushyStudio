@@ -38,6 +38,30 @@ const getComfyURLFromImageInfos = (infos: ImageInfos_ComfyGenerated) => {
     return infos.comfyHostHttpURL + '/view?' + new URLSearchParams(infos.comfyImageInfo).toString()
 }
 
+export const checkIfComfyImageExists = async (
+    comfyHostHttpURL: string,
+    imageInfo: { type: `input` | `ouput`; subfolder: string; filename: string },
+) => {
+    try {
+        const url = getComfyURLFromImageInfos({
+            type: `image-generated-by-comfy`,
+            comfyHostHttpURL,
+            comfyImageInfo: {
+                ...imageInfo,
+            },
+        })
+        console.log(`checkIfComfyImageExists`, { url })
+        const result = await fetch(url, {
+            method: `HEAD`,
+        })
+        console.log(`checkIfComfyImageExists result`, { url, result })
+
+        return result.ok
+    } catch {
+        return false
+    }
+}
+
 export interface MediaImageL extends LiveInstance<MediaImageT, MediaImageL> {}
 export class MediaImageL {
     /** return the image filename */

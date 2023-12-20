@@ -33,11 +33,20 @@ export const run_latent = async (p: {
 
     // case 1. start form image
     if (opts.image) {
-        const image = await p.flow.loadImageAnswer(opts.image)
-        latent = graph.VAEEncode({ pixels: image, vae: p.vae })
-        const size = graph.Image_Size_to_Number({ image: image })
+        const imageRaw = await p.flow.loadImageAnswer(opts.image)
+        // May need to use a different node for resizing
+        const image = await graph.ImageTransformResizeClip({
+            images: imageRaw,
+            method: `lanczos`,
+            max_width: width,
+            max_height: height,
+        })
+        const size = graph.Image_Size_to_Number({ image })
         width = size.outputs.width_int
         height = size.outputs.height_int
+
+        latent = graph.VAEEncode({ pixels: image, vae: p.vae })
+        graph.SaveImage({ images: graph.VAEDecode({ samples: latent, vae: p.vae }) })
     }
 
     // case 2. start form empty latent

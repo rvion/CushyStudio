@@ -69,7 +69,7 @@ export const SideOutputListUI = observer(function SideOutputListUI_(p: {}) {
     const step = st.focusedStepL
     const size = st.historySizeStr
     return (
-        <div tw={'flex flex-wrap gap-0.5 p-1 overflow-auto flex-shrink-0 bg-base-300 items-center'}>
+        <div tw={'flex flex-wrap gap-0.5 p-1 overflow-auto flex-shrink-0 bg-base-300 items-center max-h-[50%]'}>
             <RevealUI tw='self-start' disableHover>
                 <div style={{ width: size, height: size, lineHeight: size }} tw='btn h-full'>
                     <span className='material-symbols-outlined'>settings</span>

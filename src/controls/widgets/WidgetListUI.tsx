@@ -24,21 +24,29 @@ export const WidgetListUI = observer(function WidgetListUI_<T extends Widget>(p:
                 <div tw='flex flex-col gap-1'>
                     {values.map((v, ix) => (
                         <SortableItem key={v.state.id}>
-                            <div key={v.id} tw='flex items-start'>
-                                <SortableKnob>
-                                    <ListDragHandleUI ix={ix} />
-                                </SortableKnob>
-                                <ListItemCollapseBtnUI req={v} />
-                                <WidgetUI widget={v} />
-                                <div
-                                    tw={[
-                                        min && req.state.items.length <= min ? 'btn-disabled' : null,
-                                        'btn btn-square btn-subtle btn-sm self-start',
-                                    ]}
-                                    onClick={() => req.removeItem(v)}
-                                >
-                                    X
+                            <div key={v.id} tw='flex flex-col'>
+                                <div key={v.id} tw='flex items-start'>
+                                    <SortableKnob>
+                                        <ListDragHandleUI ix={ix} />
+                                    </SortableKnob>
+                                    <ListItemCollapseBtnUI req={v} />
+                                    {(v.state.collapsed ?? false) && <WidgetUI widget={v} />}
+                                    {!(v.state.collapsed ?? false) && <div tw='flex-1' />}
+                                    <div
+                                        tw={[
+                                            min && req.state.items.length <= min ? 'btn-disabled' : null,
+                                            'btn btn-square btn-subtle btn-sm self-start',
+                                        ]}
+                                        onClick={() => req.removeItem(v)}
+                                    >
+                                        X
+                                    </div>
                                 </div>
+                                {!(v.state.collapsed ?? false) && (
+                                    <div key={v.id} tw='border-solid border-2 border-neutral-content'>
+                                        <WidgetUI widget={v} />
+                                    </div>
+                                )}
                             </div>
                         </SortableItem>
                     ))}

@@ -58,7 +58,7 @@ app({
                 else if (tok.type === 'embedding') positiveText += ` embedding:${tok.embeddingName}`
                 else if (tok.type === 'wildcard') {
                     const options = (flow.wildcards as any)[tok.payload]
-                    if (Array.isArray(options)) positiveText += ` ${flow.chooseRandomly(options)}`
+                    if (Array.isArray(options)) positiveText += ` ${flow.chooseRandomly(`${tok.payload}`, p.seed, options)}`
                 } else if (tok.type === 'lora') {
                     clipAndModel = graph.LoraLoader({
                         model: clipAndModel,
@@ -80,7 +80,7 @@ app({
                 else if (tok.type === 'embedding') negativeText += ` embedding:${tok.embeddingName}`
                 else if (tok.type === 'wildcard') {
                     const options = (flow.wildcards as any)[tok.payload]
-                    if (Array.isArray(options)) negativeText += ` ${flow.chooseRandomly(options)}`
+                    if (Array.isArray(options)) negativeText += ` ${flow.chooseRandomly(`${tok.payload}`, p.seed, options)}`
                 } else if (tok.type === 'lora') {
                     throw new Error('unsupported: lora in negative prompt; check the default.cushy.ts file')
                     // flow.output_text('unsupported: lora in negative prompt; check the default.cushy.ts file')

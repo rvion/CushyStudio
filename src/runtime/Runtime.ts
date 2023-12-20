@@ -19,10 +19,9 @@ import { ComfyNodeOutput } from '../core/Slot'
 import { auto } from '../core/autoValue'
 import { ComfyPromptL } from '../models/ComfyPrompt'
 import { ComfyWorkflowL } from '../models/Graph'
-import { MediaImageL } from '../models/MediaImage'
+import { MediaImageL, checkIfComfyImageExists } from '../models/MediaImage'
 import { StepL } from '../models/Step'
 import { ComfyUploadImageResult } from '../types/ComfyWsApi'
-import { createMP4FromImages } from '../utils/ffmpeg/ffmpegScripts'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { exhaust } from '../utils/misc/ComfyUtils'
 
@@ -39,6 +38,7 @@ import { RuntimeCushy } from './RuntimeCushy'
 import { RuntimeHosts } from './RuntimeHosts'
 import { RuntimeStore } from './RuntimeStore'
 import { RuntimeVideo } from './RuntimeVideo'
+import { createRandomGenerator } from 'src/back/random'
 
 export type ImageAndMask = HasSingle_IMAGE & HasSingle_MASK
 
@@ -160,6 +160,11 @@ export class Runtime<FIELDS extends WidgetDict = any> {
         return graph
     }
 
+    /** verify key is ready */
+    llm_isConfigured = async () => {
+        return !!this.st.configFile.value.OPENROUTER_API_KEY
+    }
+
     /** geenric function to ask open router anything */
     llm_ask_OpenRouter = async (p: OpenRouterRequest): Promise<OpenRouterResponse> => {
         return await OpenRouter_ask(this.st.configFile.value.OPENROUTER_API_KEY, p)
@@ -193,8 +198,8 @@ export class Runtime<FIELDS extends WidgetDict = any> {
                         `Write a prompt describing the user submited topic in a way that will help the ai generate a relevant image.`,
                         `Your answer must be arond 500 chars in length`,
                         `Start with most important words describing the prompt`,
-                        `Include lots of adjective and advers. no full sentences. remove useless words`,
-                        `try to include a long list coma separated words.`,
+                        `Include lots of adjective and adverbs. no full sentences. remove useless words`,
+                        `try to include a long list of comma separated words.`,
                         'Once main keywords are in, if you still have character to add, include vaiours beauty or artsy words',
                         `ONLY answer with the prompt itself. DO NOT answer anything else. No Hello, no thanks, no signature, no nothing.`,
                     ].join('\n'),
@@ -303,7 +308,9 @@ export class Runtime<FIELDS extends WidgetDict = any> {
     AUTO = auto
 
     /** helper to chose radomly any item from a list */
-    chooseRandomly = <T>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)]
+    chooseRandomly = <T>(key: string, seed: number, arr: T[]): T => {
+        return createRandomGenerator(`${key}:${seed}`).randomItem(arr)
+    }
 
     /**
      * @internal
@@ -395,6 +402,10 @@ export class Runtime<FIELDS extends WidgetDict = any> {
         return this.generatedImages.find((i) => i.filename.startsWith(prefix))
     }
 
+    doesComfyImageExist = async (imageInfo: { type: `input` | `ouput`; subfolder: string; filename: string }) => {
+        return await checkIfComfyImageExists(this.st.getServerHostHTTP(), imageInfo)
+    }
+
     get generatedImages(): MediaImageL[] {
         return this.step.generatedImages
     }
@@ -476,14 +487,14 @@ export class Runtime<FIELDS extends WidgetDict = any> {
     output_Markdown = (p: string | { title: string; markdownContent: string }) => {
         const title = typeof p === 'string' ? '<no-title>' : p.title
         const content = typeof p === 'string' ? p : p.markdownContent
-        this.st.db.media_texts.create({ kind: 'markdown', title, content, stepID: this.step.id })
+        return this.st.db.media_texts.create({ kind: 'markdown', title, content, stepID: this.step.id })
     }
 
     output_text = (p: { title: string; message: Printable } | string) => {
         const [title, message] = typeof p === 'string' ? ['<no-title>', p] : [p.title, p.message]
         let msg = this.extractString(message)
         console.info(msg)
-        this.step.db.media_texts.create({
+        return this.step.db.media_texts.create({
             kind: 'text',
             title: title,
             content: msg,
