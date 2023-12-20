@@ -3,12 +3,14 @@ import type { StepL } from './Step'
 
 import { autorun, reaction, runInAction } from 'mobx'
 import { Status } from 'src/back/Status'
-import { LibraryFile } from 'src/cards/CardFile'
+import { LibraryFile } from 'src/cards/LibraryFile'
 import { FormBuilder } from 'src/controls/FormBuilder'
-import { Widget_group, type Widget } from 'src/controls/Widget'
+import { Widget_group } from 'src/controls/Widget'
+import { LiveRef } from 'src/db/LiveRef'
 import { SQLITE_true } from 'src/db/SQLITE_boolean'
 import { DraftT } from 'src/db/TYPES.gen'
 import { __FAIL, __OK, type Result } from 'src/types/Either'
+import { CushyAppL } from './CushyApp'
 
 export type FormPath = (string | number)[]
 
@@ -18,7 +20,22 @@ export class DraftL {
     // 🔴 HACKY
     shouldAutoStart = false
 
+    appRef = new LiveRef<this, CushyAppL>(this, 'appID', () => this.db.cushy_apps)
+
+    get app(): CushyAppL {
+        return this.appRef.item
+    }
+
+    get executable() {
+        return this.app.executable
+    }
+
+    get name() {
+        return this.data.title ?? this.id
+    }
+
     private autoStartTimer: NodeJS.Timeout | null = null
+
     setAutostart(val: boolean) {
         this.shouldAutoStart = val
         if (this.shouldAutoStart) {
@@ -45,7 +62,7 @@ export class DraftL {
         if (req == null) throw new Error('invalid req')
 
         // 2. ensure graph valid
-        const startGraph = this.st.getProject().rootGraph.item
+        const startGraph = this.st.project.rootGraph.item
         if (startGraph == null) throw new Error('invalid graph')
 
         // 3. bumpt the builder cache count
@@ -58,7 +75,7 @@ export class DraftL {
         const step = this.db.steps.create({
             name: this.data.title,
             //
-            appPath: this.data.appPath,
+            appID: this.data.appID,
             formResult: req.result,
             formSerial: req.serial,
             //
@@ -75,12 +92,8 @@ export class DraftL {
 
     gui: Result<Widget_group<any>> = __FAIL('not loaded yet')
 
-    get app(): LibraryFile | undefined {
-        return this.st.library.cardsByPath.get(this.data.appPath)
-    }
-
-    get action() {
-        return this.app?.appCompiled
+    get file(): LibraryFile {
+        return this.st.library.getFile(this.appRef.item.relPath)
     }
 
     onHydrate = () => {
@@ -90,59 +103,54 @@ export class DraftL {
     isInitializing = false
     isInitialized = false
     AWAKE = () => {
-        if (this.isInitialized) return
         if (this.isInitializing) return
-        try {
-            this.isInitializing = true
-            const _1 = reaction(
-                () => this.action,
-                async (action) => {
-                    await new Promise((r) => setTimeout(r, 0))
-
-                    console.log(`[🦊] form: awakening app ${this.data.appPath}`)
-                    if (action == null) return
-                    try {
-                        const formBuilder = new FormBuilder(this.st.schema)
-                        const uiFn = action.ui
-                        const req: Widget_group<any> =
+        if (this.isInitialized) return
+        this.isInitializing = true
+        const _1 = reaction(
+            () => this.executable,
+            (action) => {
+                console.log(`[🦊] form: awakening app ${this.data.appID}`)
+                if (action == null) return
+                try {
+                    const formBuilder = new FormBuilder(this.st.schema)
+                    const uiFn = action.ui
+                    const req: Widget_group<any> =
                         uiFn == null //
                             ? formBuilder._HYDRATE('group', { topLevel: true, items: () => ({}) }, this.data.appParams)
                             : formBuilder._HYDRATE('group', { topLevel: true, items: () => uiFn(formBuilder) }, this.data.appParams) // prettier-ignore
-                        /** 👇 HACK; see the comment near the ROOT property definition */
-                        formBuilder._ROOT = req
-                        this.gui = __OK(req)
-                        console.log(`[🦊] form: setup`)
-                        // subState.unsync()
-                    } catch (e) {
-                        console.error(e)
-                        this.gui = __FAIL('ui function crashed', e)
-                        return
-                    }
-                },
-                { fireImmediately: true },
-            )
+                    /** 👇 HACK; see the comment near the ROOT property definition */
+                    formBuilder._ROOT = req
+                    this.gui = __OK(req)
+                    console.log(`[🦊] form: setup`)
+                    // subState.unsync()
+                } catch (e) {
+                    console.error(e)
+                    this.gui = __FAIL('ui function crashed', e)
+                    return
+                }
+            },
+            { fireImmediately: true },
+        )
 
-            // 🔴 dangerous
-            const _2 = autorun(() => {
-                const formValue = this.gui.value
-                if (formValue == null) return null
-                const count = formValue.builder._cache.count // manual mobx invalidation
-                const _ = JSON.stringify(formValue.serial)
-                runInAction(() => {
-                    console.log(`[🦊] form: updating`)
-                    this.update({ appParams: formValue.serial })
-                })
+        // 🔴 dangerous
+        const _2 = autorun(() => {
+            const formValue = this.gui.value
+            if (formValue == null) return null
+            const count = formValue.builder._cache.count // manual mobx invalidation
+            const _ = JSON.stringify(formValue.serial)
+            runInAction(() => {
+                console.log(`[🦊] form: updating`)
+                this.update({ appParams: formValue.serial })
             })
+        })
 
-            this.isInitialized = true
-            return () => {
-                _1()
-                _2()
-                this.isInitialized = false
-                this.gui = __FAIL('not loaded yet')
-            }
-        } finally {
-            this.isInitializing = false
+        this.isInitialized = true
+        this.isInitializing = false
+        return () => {
+            _1()
+            _2()
+            this.isInitialized = false
+            this.gui = __FAIL('not loaded yet')
         }
     }
 }

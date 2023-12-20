@@ -10,28 +10,17 @@ import { Button, Panel } from 'src/rsuite/shims'
 import { useSt } from '../state/stateContext'
 import { TypescriptHighlightedCodeUI } from '../widgets/misc/TypescriptHighlightedCodeUI'
 import { convertLiteGraphToPrompt } from '../core/litegraphToPrompt'
+import { PromptToCodeOpts } from './ComfyImporter'
 
 export interface FileListProps {
     files: File[]
 }
 
-export const FileBeeingImportedUI: FC<FileListProps> = observer(function FileBeeingImportedUI_({ files }) {
-    if (files.length === 0) {
-        return null
-        // return <div>Nothing to display</div>
-    }
-    return (
-        <div>
-            {files.map((file) => (
-                <ImportedFileUI key={file.name} file={file} />
-            ))}
-        </div>
-    )
-})
-
-// const label = (file: File) => `'${file.name}' of size '${file.size}' and type '${file.type}'`
-
-export const ImportedFileUI = observer(function ImportedFileUI_(p: { file: File }) {
+export const ImportedFileUI = observer(function ImportedFileUI_(p: {
+    //
+    className?: string
+    file: File
+}) {
     const file = p.file
 
     const [code, setCode] = useState<string | null>(null)
@@ -64,9 +53,18 @@ export const ImportedFileUI = observer(function ImportedFileUI_(p: { file: File 
 
     // const json = rawJson?.value ? JSON.parse(rawJson.value) : null
     // const hasWorkflow = json?.workflow
-
+    const partialImportConfs: {
+        title: string
+        conf: Partial<PromptToCodeOpts>
+    }[] = [
+        //
+        { title: 'autoui+id', conf: { preserveId: true, autoUI: true } },
+        { title: 'autoui', conf: { preserveId: false, autoUI: true } },
+        { title: 'base+id', conf: { preserveId: true, autoUI: false } },
+        { title: 'base', conf: { preserveId: false, autoUI: false } },
+    ]
     return (
-        <Panel tw='bg-base-300'>
+        <Panel className={p.className} tw='bg-base-300 overflow-auto virtua'>
             <Field k='name' v={file.name} />
             <Field k='size' v={file.size} />
             <Field k='name' v={file.type} />
@@ -75,21 +73,28 @@ export const ImportedFileUI = observer(function ImportedFileUI_(p: { file: File 
             <Field k='workflowJSON' v={workflowJSON} />
             {/* <div>workfow:</div> */}
             {/* <pre>{JSON.stringify(workflowJSON)}</pre> */}
-            <Button
-                appearance='primary'
-                onClick={async () => {
-                    //
-                    const x = st.importer.convertPromptToCode(promptJSON, {
-                        title: 'file.name',
-                        author: 'test',
-                        preserveId: true,
-                        autoUI: true,
-                    })
-                    setCode(x)
-                }}
-            >
-                Importer
-            </Button>
+
+            <div tw='join'>
+                {partialImportConfs.map((conf) => (
+                    <div
+                        tw='btn btn-sm btn-outline join-item'
+                        key={conf.title}
+                        onClick={async () => {
+                            //
+                            const x = st.importer.convertPromptToCode(promptJSON, {
+                                title: file.name,
+                                author: 'unknown',
+                                preserveId: conf.conf.preserveId ?? false,
+                                autoUI: conf.conf.autoUI ?? true,
+                            })
+                            setCode(x)
+                        }}
+                    >
+                        {conf.title}
+                    </div>
+                ))}
+            </div>
+
             {code && <TypescriptHighlightedCodeUI code={code} />}
             {/* {json ? <pre>{JSON.stringify(json.value, null, 4)}</pre> : null} */}
             {/* {Boolean(hasWorkflow) ? '🟢 has workflow' : `🔴 no workflow`} */}

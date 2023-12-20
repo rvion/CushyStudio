@@ -5,13 +5,16 @@ import { Button, Input, Slider, Toggle } from 'src/rsuite/shims'
 import { parseFloatNoRoundingErr } from 'src/utils/misc/parseFloatNoRoundingErr'
 import { FieldAndLabelUI } from 'src/widgets/misc/FieldAndLabelUI'
 import * as THREE from 'three'
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { Media3dDisplacementL } from 'src/models/Media3dDisplacement'
 import { StepL } from 'src/models/Step'
 import { useSt } from 'src/state/stateContext'
 import { OutputPreviewWrapperUI } from './OutputPreviewWrapperUI'
 import { bang } from 'src/utils/misc/bang'
 import { InputNumberUI } from 'src/rsuite/InputNumberUI'
+// import type { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+
+// const { OrbitControls } = require('three/examples/jsm/controls/OrbitControls')
+import { OrbitControls } from '../panels/3d/controls/OrbitControls'
 import { STATE } from 'src/state/state'
 import { mkdirSync, writeFileSync } from 'fs'
 import path, { dirname, join } from 'path'
@@ -129,6 +132,8 @@ export const OutputDisplacementUI = observer(function OutputDisplacementUI_(p: {
         </div>
     )
 })
+
+type OrbitControls2 = import('three/examples/jsm/controls/OrbitControls').OrbitControls
 
 export const saveCanvasAsImage = async (canvas: HTMLCanvasElement, st: STATE, subfolder?: string) => {
     const imageID = nanoid()
@@ -297,7 +302,7 @@ class State {
         // this.renderer.setRenderTarget(null)
     }
 
-    controls: OrbitControls
+    controls: OrbitControls2
 
     // point cloud
     pointsMaterial: THREE.PointsMaterial
@@ -339,7 +344,7 @@ class State {
         // this.mountRef.current?.appendChild(renderer.domElement)
 
         // OrbitControls
-        this.controls = new OrbitControls(this.camera, this.renderer.domElement)
+        this.controls = new OrbitControls(this.camera, this.renderer.domElement) as OrbitControls2
         this.controls.enableDamping = true
         this.controls.dampingFactor = 0.25
         this.controls.enableZoom = true
@@ -347,7 +352,8 @@ class State {
         // Load textures
         const loader = new THREE.TextureLoader()
         const texture = loader.load(p.image)
-        texture.encoding = THREE.sRGBEncoding
+        // texture.encoding = THREE.sRGBEncoding
+        texture.colorSpace = THREE.SRGBColorSpace
         const depthTexture = loader.load(p.depthMap)
         const normalTexture = loader.load(p.normalMap)
 
@@ -565,7 +571,7 @@ class State {
             normalTexture.dispose()
         }
 
-        makeAutoObservable(this)
+        makeAutoObservable(this, { mountRef: false })
     }
     cleanup: () => void
 }

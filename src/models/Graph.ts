@@ -1,11 +1,11 @@
 import type { LiveInstance } from 'src/db/LiveInstance'
 import type { HTMLContent, MDContent } from 'src/types/markdown'
 import type { Cyto } from '../core/AutolayoutV1'
-import type { ComfyNodeID } from '../types/ComfyNodeID'
+import type { ComfyNodeID, ComfyNodeMetadata } from '../types/ComfyNodeID'
 import type { ComfyPromptJSON } from '../types/ComfyPrompt'
 import type { ApiPromptInput, PromptInfo, WsMsgExecuting, WsMsgExecutionCached, WsMsgProgress } from '../types/ComfyWsApi'
 import type { VisEdges, VisNodes } from '../widgets/misc/VisUI'
-import type { ComfyNodeSchema, SchemaL } from './Schema'
+import type { ComfyNodeSchema, ComfySchemaL } from './Schema'
 
 import { marked } from 'marked'
 import { join } from 'pathe'
@@ -27,24 +27,12 @@ import { StepL } from './Step'
 export type RunMode = 'fake' | 'real'
 
 /**
- * graph abstraction
+ * ComfyWorkflowL
  * - holds the nodes
  * - holds the cyto graph
  * - can be instanciated in both extension and webview
  *   - so no link to workspace or run
  */
-
-// export type GraphID = Branded<string, { GraphID: true }>
-// export const asGraphID = (s: string): GraphID => s as any
-
-// export type GraphT = {
-//     /** graph ID */
-//     id: GraphID
-//     createdAt: number
-//     updatedAt: number
-//     /** graph json */
-//     comfyPromptJSON: ComfyPromptJSON
-// }
 
 export const GraphIDCache = new Map<string, number>()
 
@@ -53,6 +41,16 @@ export class ComfyWorkflowL {
     /** number of node in the graph */
     get size(): number {
         return this.nodes.length
+    }
+
+    /** ❓ UNTESTED */
+    setMetadata = (nodeID: ComfyNodeID, meta: ComfyNodeMetadata) => {
+        this.data.metadata[nodeID] = meta
+    }
+
+    /** ❓ UNTESTED */
+    getMetadata = (nodeID: ComfyNodeID): Maybe<ComfyNodeMetadata> => {
+        return this.data.metadata[nodeID] ?? null
     }
 
     _problems: { title: string; data?: any }[] = []
@@ -75,7 +73,8 @@ export class ComfyWorkflowL {
             this.currentExecutingNode = null
         }
         for (const [uid, node] of Object.entries(bang(next.comfyPromptJSON))) {
-            new ComfyNode(this, uid, node)
+            const meta: Maybe<ComfyNodeMetadata> = next.metadata?.[uid]
+            new ComfyNode(this, uid, node, meta)
         }
         // console.log(`[📈] GRAPH: manually updated ${prevSize} => ${this.size}`)
     }
@@ -105,6 +104,7 @@ export class ComfyWorkflowL {
     registerNode = (node: ComfyNode<any>) => {
         if (this.data.comfyPromptJSON == null) throw new Error('graph not hydrated')
         this.data.comfyPromptJSON[node.uid] = node.json
+        this.data.metadata[node.uid] = node.meta
         this.nodesIndex.set(node.uid, node)
         this.nodes.push(node)
         this.cyto?.trackNode(node)
@@ -113,7 +113,7 @@ export class ComfyWorkflowL {
 
     /** proxy to this.db.schema */
     get schema() {
-        return this.db.schema
+        return this.st.schema
     }
 
     /** nodes, in creation order */
@@ -296,7 +296,7 @@ export class ComfyWorkflowL {
     // @deprecated
     get flowSummaryHTML(): HTMLContent {
         // https://mermaid.js.org/config/usage.html
-        return asHTMLContent(marked.parse(this.flowSummaryMd))
+        return asHTMLContent(marked(this.flowSummaryMd) as string)
     }
 
     _uidNumber = 0
@@ -311,7 +311,7 @@ export class ComfyWorkflowL {
     /** visjs JSON format (network visualisation) */
     get JSON_forVisDataVisualisation(): { nodes: VisNodes[]; edges: VisEdges[] } {
         const json: ComfyPromptJSON = this.json_forPrompt('use_stringified_numbers_only')
-        const schemas: SchemaL = this.db.schema
+        const schemas: ComfySchemaL = this.schema
         const nodes: VisNodes[] = []
         const edges: VisEdges[] = []
         if (json == null) return { nodes: [], edges: [] }
@@ -342,13 +342,15 @@ export class ComfyWorkflowL {
         const debugWorkflow = liveGraph.json_workflow()
         console.info('checkpoint:' + JSON.stringify(currentJSON))
 
-        // 🔴 TODO: store the whole project in the prompt
         const out: ApiPromptInput = {
             client_id: this.st.comfySessionId,
             extra_data: {
                 extra_pnginfo: {
+                    // regular ComfyUI metadat
                     workflow: debugWorkflow,
-                    cushy_app_name: p.step.appFile?.name,
+
+                    // Cushy metadata
+                    cushy_app_id: p.step.data.appID,
                     cushy_draft_result: p.step.data.formResult,
                     cushy_draft_serial: p.step.data.formSerial,
                 },
@@ -361,7 +363,11 @@ export class ComfyWorkflowL {
         // otherwise, we might get stuck
         const promptEndpoint = `${this.st.getServerHostHTTP()}/prompt`
         console.info('sending prompt to ' + promptEndpoint)
-        const graph = this.st.db.graphs.create({ comfyPromptJSON: currentJSON })
+        const graph = this.st.db.graphs.create({
+            //
+            comfyPromptJSON: currentJSON,
+            metadata: this.data.metadata,
+        })
         const res = await fetch(promptEndpoint, {
             method: 'POST',
             body: JSON.stringify(out),

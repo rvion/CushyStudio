@@ -32,15 +32,15 @@ export const WidgetListUI = observer(function WidgetListUI_<T extends Widget>(p:
                                     <ListItemCollapseBtnUI req={v} />
                                     {(v.state.collapsed ?? true) && <WidgetUI widget={v} />}
                                     {!(v.state.collapsed ?? true) && <div tw='flex-1' />}
-                                    <Button
-                                        appearance='subtle'
-                                        disabled={min ? req.state.items.length <= min : undefined}
-                                        tw='self-start'
+                                    <div
+                                        tw={[
+                                            min && req.state.items.length <= min ? 'btn-disabled' : null,
+                                            'btn btn-square btn-subtle btn-sm self-start',
+                                        ]}
                                         onClick={() => req.removeItem(v)}
-                                        size='sm'
                                     >
                                         X
-                                    </Button>
+                                    </div>
                                 </div>
                                 {!(v.state.collapsed ?? true) && (
                                     <div key={v.id} tw='border-solid border-2 border-neutral-content'>
@@ -60,7 +60,7 @@ const ListDragHandleUI = forwardRef<HTMLDivElement, { ix: number }>((props, ref)
     return (
         <div ref={ref}>
             <RevealUI cursor='cursor-move'>
-                <div tw='btn btn-sm btn-ghost opacity-50'>
+                <div tw='btn btn-sm btn-ghost opacity-50 btn-square'>
                     <span className='material-symbols-outlined'>menu</span>
                 </div>
                 <div>{props.ix}</div>
@@ -75,7 +75,7 @@ export const ListItemCollapseBtnUI = observer(function ListItemCollapseBtnUI_(p:
     if (!isCollapsible) return null
     return (
         <div
-            tw='btn btn-ghost btn-sm'
+            tw='btn btn-ghost btn-square btn-sm'
             // style={{ width: `${indexWidth}rem` }}
             onClick={() => (v.state.collapsed = !Boolean(v.state.collapsed))}
         >

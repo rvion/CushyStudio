@@ -2,7 +2,7 @@
  * this file is an attempt to centralize core widget definition in a single
  * file so it's easy to add any widget in the future
  */
-import type { SchemaL } from 'src/models/Schema'
+import type { ComfySchemaL } from 'src/models/Schema'
 import type { SimplifiedLoraDef } from 'src/presets/SimplifiedLoraDef'
 import type { ItemDataType } from 'src/rsuite/RsuiteTypes'
 import type { CleanedEnumResult } from 'src/types/EnumUtils'
@@ -65,12 +65,12 @@ export class Widget_str implements IRequest<'str', Widget_str_opts, Widget_str_s
     state: Widget_str_state
     constructor(
         public builder: FormBuilder,
-        public schema: SchemaL,
+        public schema: ComfySchemaL,
         public input: Widget_str_opts,
         serial?: Widget_str_serial,
     ) {
         this.id = serial?.id ?? nanoid()
-        this.state = serial ?? { type:'str', active: true, val: input.default ?? '', id: this.id }
+        this.state = serial ?? { type:'str', collapsed: input.startCollapsed, active: true, val: input.default ?? '', id: this.id }
         makeAutoObservable(this)
     }
     get serial(): Widget_str_serial { return this.state }
@@ -97,12 +97,12 @@ export class Widget_markdown implements IRequest<'markdown', Widget_markdown_opt
 
     constructor(
         public builder: FormBuilder,
-        public schema: SchemaL,
+        public schema: ComfySchemaL,
         public input: Widget_markdown_opts,
         serial?: Widget_markdown_serial,
     ) {
         this.id = serial?.id ?? nanoid()
-        this.state = serial ?? { type:'markdown', active: true, id: this.id }
+        this.state = serial ?? { type:'markdown', collapsed: input.startCollapsed, active: true, id: this.id }
         makeAutoObservable(this)
     }
     get serial(): Widget_markdown_serial { return this.state }
@@ -126,7 +126,7 @@ export class Widget_custom<T> implements IRequest<'custom', Widget_custom_opts<T
     reset = () => (this.state.value = this.input.defaultValue())
     constructor(
         public builder: FormBuilder,
-        public schema: SchemaL,
+        public schema: ComfySchemaL,
         public input: Widget_custom_opts<T>,
         serial?: Widget_custom_serial<T>,
     ) {
@@ -163,12 +163,12 @@ export class Widget_color implements IRequest<'color', Widget_color_opts, Widget
     state: Widget_color_state
     constructor(
         public builder: FormBuilder,
-        public schema: SchemaL,
+        public schema: ComfySchemaL,
         public input: Widget_color_opts,
         serial?: Widget_color_serial,
     ) {
         this.id = serial?.id ?? nanoid()
-        this.state = serial ?? { type:'color', id: this.id,  active: true, val: input.default ?? '' }
+        this.state = serial ?? { type:'color', collapsed: input.startCollapsed, id: this.id,  active: true, val: input.default ?? '' }
         makeAutoObservable(this)
     }
     get serial(): Widget_color_serial { return this.state }
@@ -188,7 +188,7 @@ export class Widget_strOpt implements IRequest<'strOpt', Widget_strOpt_opts, Wid
     state: Widget_strOpt_state
     constructor(
         public builder: FormBuilder,
-        public schema: SchemaL,
+        public schema: ComfySchemaL,
         public input: Widget_strOpt_opts,
         serial?: Widget_strOpt_serial,
     ) {
@@ -226,7 +226,7 @@ export class Widget_prompt implements IRequest<'prompt', Widget_prompt_opts, Wid
     // }
     constructor(
         public builder: FormBuilder,
-        public schema: SchemaL,
+        public schema: ComfySchemaL,
         public input: Widget_prompt_opts,
         serial?: Widget_prompt_serial,
     ) {
@@ -234,8 +234,13 @@ export class Widget_prompt implements IRequest<'prompt', Widget_prompt_opts, Wid
         if (serial) {
             this.state = serial
         } else {
-            this.state = { type:'prompt', id: this.id, active: true, /*text: '',*/ tokens: [] }
-
+            this.state = {
+                type:'prompt',
+                collapsed: input.startCollapsed,
+                id: this.id,
+                active: true,
+                tokens: []
+            }
             const def = input.default
             if (def != null) {
                 if (typeof def === 'string') {
@@ -267,7 +272,7 @@ export class Widget_promptOpt implements IRequest<'promptOpt', Widget_promptOpt_
     state: Widget_promptOpt_state
     constructor(
         public builder: FormBuilder,
-        public schema: SchemaL,
+        public schema: ComfySchemaL,
         public input: Widget_promptOpt_opts,
         serial?: Widget_promptOpt_serial,
     ) {
@@ -275,7 +280,13 @@ export class Widget_promptOpt implements IRequest<'promptOpt', Widget_promptOpt_
         if (serial) {
             this.state = serial
         } else {
-            this.state = { type:'promptOpt', id: this.id, active: false, /*text: '',*/ tokens: [] }
+            this.state = {
+                type:'promptOpt',
+                collapsed: input.startCollapsed,
+                id: this.id,
+                active: false,
+                tokens: []
+            }
             const def = input.default
             if (def != null) {
                 if (typeof def === 'string') {
@@ -308,7 +319,7 @@ export class Widget_seed implements IRequest<'seed', Widget_seed_opts, Widget_se
     state: Widget_seed_state
     constructor(
         public builder: FormBuilder,
-        public schema: SchemaL,
+        public schema: ComfySchemaL,
         public input: Widget_seed_opts,
         serial?: Widget_seed_serial,
     ) {
@@ -344,12 +355,12 @@ export class Widget_int implements IRequest<'int', Widget_int_opts, Widget_int_s
     state: Widget_int_state
     constructor(
         public builder: FormBuilder,
-        public schema: SchemaL,
+        public schema: ComfySchemaL,
         public input: Widget_int_opts,
         serial?: Widget_int_serial,
     ) {
         this.id = serial?.id ?? nanoid()
-        this.state = serial ?? { type: 'int', id: this.id, active: true, val: input.default ?? 0 }
+        this.state = serial ?? { type: 'int', collapsed: input.startCollapsed, id: this.id, active: true, val: input.default ?? 0 }
         makeAutoObservable(this)
     }
     get serial(): Widget_int_serial { return this.state }
@@ -369,12 +380,12 @@ export class Widget_float implements IRequest<'float', Widget_float_opts, Widget
     state: Widget_float_state
     constructor(
         public builder: FormBuilder,
-        public schema: SchemaL,
+        public schema: ComfySchemaL,
         public input: Widget_float_opts,
         serial?: Widget_float_serial,
     ) {
         this.id = serial?.id ?? nanoid()
-        this.state = serial ?? { type:'float', id: this.id, active: true, val: input.default ?? 0 }
+        this.state = serial ?? { type:'float', collapsed: input.startCollapsed, id: this.id, active: true, val: input.default ?? 0 }
         makeAutoObservable(this)
     }
     get serial(): Widget_float_serial { return this.state }
@@ -394,12 +405,12 @@ export class Widget_bool implements IRequest<'bool', Widget_bool_opts, Widget_bo
     state: Widget_bool_state
     constructor(
         public builder: FormBuilder,
-        public schema: SchemaL,
+        public schema: ComfySchemaL,
         public input: Widget_bool_opts,
         serial?: Widget_bool_serial,
     ) {
         this.id = serial?.id ?? nanoid()
-        this.state = serial ?? { type: 'bool', id: this.id, active: true, val: input.default ?? false }
+        this.state = serial ?? { type: 'bool', collapsed: input.startCollapsed, id: this.id, active: true, val: input.default ?? false }
         makeAutoObservable(this)
     }
     get serial(): Widget_bool_serial { return this.state }
@@ -419,7 +430,7 @@ export class Widget_inlineRun implements IRequest<'inlineRun', Widget_inlineRun_
     state: Widget_inlineRun_state
     constructor(
         public builder: FormBuilder,
-        public schema: SchemaL,
+        public schema: ComfySchemaL,
         public input: Widget_inlineRun_opts,
         serial?: Widget_inlineRun_serial,
     ) {
@@ -428,7 +439,7 @@ export class Widget_inlineRun implements IRequest<'inlineRun', Widget_inlineRun_
         }
 
         this.id = serial?.id ?? nanoid()
-        this.state = serial ?? { type: 'inlineRun', id: this.id, active: true, val: false, }
+        this.state = serial ?? { type: 'inlineRun', collapsed: input.startCollapsed, id: this.id, active: true, val: false, }
         makeAutoObservable(this)
     }
     get serial(): Widget_inlineRun_serial { return this.state }
@@ -448,7 +459,7 @@ export class Widget_intOpt implements IRequest<'intOpt', Widget_intOpt_opts, Wid
     state: Widget_intOpt_state
     constructor(
         public builder: FormBuilder,
-        public schema: SchemaL,
+        public schema: ComfySchemaL,
         public input: Widget_intOpt_opts,
         serial?: Widget_intOpt_serial,
     ) {
@@ -481,7 +492,7 @@ export class Widget_floatOpt implements IRequest<'floatOpt', Widget_floatOpt_opt
     state: Widget_floatOpt_state
     constructor(
         public builder: FormBuilder,
-        public schema: SchemaL,
+        public schema: ComfySchemaL,
         public input: Widget_floatOpt_opts,
         serial?: Widget_floatOpt_serial,
     ) {
@@ -519,7 +530,7 @@ export class Widget_size implements IRequest<'size', Widget_size_opts, Widget_si
     state: Widget_size_state
     constructor(
         public builder: FormBuilder,
-        public schema: SchemaL,
+        public schema: ComfySchemaL,
         public input: Widget_size_opts,
         serial?: Widget_size_serial,
     ) {
@@ -571,12 +582,12 @@ export class Widget_matrix implements IRequest<'matrix', Widget_matrix_opts, Wid
     cols: string[]
     constructor(
         public builder: FormBuilder,
-        public schema: SchemaL,
+        public schema: ComfySchemaL,
         public input: Widget_matrix_opts,
         serial?: Widget_matrix_serial,
     ) {
         this.id = serial?.id ?? nanoid()
-        this.state = serial ?? { type:'matrix', id: this.id, active: true, selected: [] }
+        this.state = serial ?? { type:'matrix', collapsed: input.startCollapsed, id: this.id, active: true, selected: [] }
         const rows = input.rows
         const cols = input.cols
         // init all cells to false
@@ -662,12 +673,12 @@ export class Widget_loras implements IRequest<'loras', Widget_loras_opts, Widget
     state: Widget_loras_state
     constructor(
         public builder: FormBuilder,
-        public schema: SchemaL,
+        public schema: ComfySchemaL,
         public input: Widget_loras_opts,
         serial?: Widget_loras_serial,
     ) {
         this.id = serial?.id ?? nanoid()
-        this.state = serial ?? { type: 'loras', id: this.id, active: true, loras: input.default ?? [] }
+        this.state = serial ?? { type: 'loras', collapsed: input.startCollapsed, id: this.id, active: true, loras: input.default ?? [] }
         this.allLoras = schema.getLoras()
         for (const lora of this.allLoras) {
             if (lora === 'None') continue
@@ -724,7 +735,7 @@ export class Widget_image implements IRequest<'image', Widget_image_opts, Widget
     state: Widget_image_state
     constructor(
         public builder: FormBuilder,
-        public schema: SchemaL,
+        public schema: ComfySchemaL,
         public input: Widget_image_opts,
         serial?: Widget_image_serial,
     ) {
@@ -762,13 +773,14 @@ export class Widget_imageOpt implements IRequest<'imageOpt', Widget_imageOpt_opt
     state: Widget_imageOpt_state
     constructor(
         public builder: FormBuilder,
-        public schema: SchemaL,
+        public schema: ComfySchemaL,
         public input: Widget_imageOpt_opts,
         serial?: Widget_imageOpt_serial,
     ) {
         this.id = serial?.id ?? nanoid()
         this.state = serial ?? {
             type: 'imageOpt',
+            collapsed: input.startCollapsed,
             id: this.id,
             active: input.default ? true : false,
             comfy: input.defaultComfy ?? { imageName: 'example.png', type: 'ComfyImage' },
@@ -789,7 +801,7 @@ export class Widget_imageOpt implements IRequest<'imageOpt', Widget_imageOpt_opt
 
 // 🅿️ selectOne ==============================================================================
 export type BaseSelectOneEntry = { id: string, label?: string }
-export type Widget_selectOne_opts <T extends BaseSelectOneEntry>  = ReqInput<{ default?: T; choices: T[] | ((formRoot:Widget_group<any>) => T[]) }>
+export type Widget_selectOne_opts <T extends BaseSelectOneEntry>  = ReqInput<{ default?: T; choices: T[] | ((formRoot:Maybe<Widget_group<any>>) => T[]) }>
 export type Widget_selectOne_serial<T extends BaseSelectOneEntry> = Widget_selectOne_state<T>
 export type Widget_selectOne_state <T extends BaseSelectOneEntry>  = StateFields<{ type:'selectOne', query: string; val: T }>
 export type Widget_selectOne_output<T extends BaseSelectOneEntry> = T
@@ -808,7 +820,7 @@ export class Widget_selectOne<T extends BaseSelectOneEntry> implements IRequest<
     }
     constructor(
         public builder: FormBuilder,
-        public schema: SchemaL,
+        public schema: ComfySchemaL,
         public input: Widget_selectOne_opts<T>,
         serial?: Widget_selectOne_serial<T>,
     ) {
@@ -816,6 +828,7 @@ export class Widget_selectOne<T extends BaseSelectOneEntry> implements IRequest<
         const choices = this.choices
         this.state = serial ?? {
             type: 'selectOne',
+            collapsed: input.startCollapsed,
             active: true,
             id: this.id,
             query: '',
@@ -840,13 +853,14 @@ export class Widget_selectOneOrCustom implements IRequest<'selectOneOrCustom', W
     state: Widget_selectOneOrCustom_state
     constructor(
         public builder: FormBuilder,
-        public schema: SchemaL,
+        public schema: ComfySchemaL,
         public input: Widget_selectOneOrCustom_opts,
         serial?: Widget_selectOneOrCustom_serial,
     ) {
         this.id = serial?.id ?? nanoid()
         this.state = serial ?? {
             type: 'selectOneOrCustom',
+            collapsed: input.startCollapsed,
             id: this.id,
             query: '',
             val: input.default ?? input.choices[0] ?? '',
@@ -870,16 +884,26 @@ export class Widget_selectMany<T extends { type: string }> implements IRequest<'
     state: Widget_selectMany_state<T>
     constructor(
         public builder: FormBuilder,
-        public schema: SchemaL,
+        public schema: ComfySchemaL,
         public input: Widget_selectMany_opts<T>,
         serial?: Widget_selectMany_serial<T>,
     ) {
         this.id = serial?.id ?? nanoid()
         if (serial) {
             const values = serial.values_.map((v) => input.choices.find((c) => c.type === v)!).filter((v) => v != null)
-            this.state = { type: 'selectMany', id: this.id, query: serial.query, values: values, }
+            this.state = {
+                type: 'selectMany',
+                collapsed: serial.collapsed,
+                id: this.id,
+                query: serial.query,
+                values: values
+            }
         } else {
-            this.state = { type: 'selectMany', id: this.id, query: '', values: input.default ?? [], }
+            this.state = {
+                type: 'selectMany',
+                collapsed: input.startCollapsed,
+                id: this.id,
+                query: '', values: input.default ?? [], }
         }
         makeAutoObservable(this)
     }
@@ -905,12 +929,12 @@ export class Widget_selectManyOrCustom implements IRequest<'selectManyOrCustom',
     state: Widget_selectManyOrCustom_state
     constructor(
         public builder: FormBuilder,
-        public schema: SchemaL,
+        public schema: ComfySchemaL,
         public input: Widget_selectManyOrCustom_opts,
         serial?: Widget_selectManyOrCustom_serial,
     ) {
         this.id = serial?.id ?? nanoid()
-        this.state = serial ?? { type: 'selectManyOrCustom', id: this.id, query: '', values: input.default ?? [] }
+        this.state = serial ?? { type: 'selectManyOrCustom', collapsed: input.startCollapsed, id: this.id, query: '', values: input.default ?? [] }
         makeAutoObservable(this)
     }
     get serial(): Widget_selectManyOrCustom_serial { return this.state }
@@ -919,7 +943,7 @@ export class Widget_selectManyOrCustom implements IRequest<'selectManyOrCustom',
 
 // 🅿️ list ==============================================================================
 export type Widget_list_opts<T extends Widget>  = ReqInput<{
-    element: () => T,
+    element: (ix:number) => T,
     min?: number,
     max?:number,
     defaultLength?:number
@@ -935,14 +959,15 @@ export class Widget_list<T extends Widget> implements IRequest<'list', Widget_li
     state: Widget_list_state<T>
     private _reference: T
 
+    get items(): T[] { return this.state.items }
     constructor(
         public builder: FormBuilder,
-        public schema: SchemaL,
+        public schema: ComfySchemaL,
         public input: Widget_list_opts<T>,
         serial?: Widget_list_serial<T>,
     ) {
         this.id = serial?.id ?? nanoid()
-        this._reference = input.element()
+        this._reference = input.element(0)
         if (serial) {
             const items = serial.items_.map((sub_) => builder._HYDRATE(sub_.type, this._reference.input, sub_)) // 🔴 handler filter if wrong type
             this.state = { type: 'list', id: this.id, active: serial.active, items }
@@ -950,7 +975,7 @@ export class Widget_list<T extends Widget> implements IRequest<'list', Widget_li
             const clamp = (v: number, min: number, max: number) => Math.min(Math.max(v, min), max)
             const defaultLen = clamp(input.defaultLength ?? 0, input.min ?? 0, input.max ?? 10)
             const items = defaultLen
-                ? new Array(defaultLen).fill(0).map(() => input.element())
+                ? new Array(defaultLen).fill(0).map((_,ix) => input.element(ix))
                 : []
             this.state = {
                 type: 'list',
@@ -981,7 +1006,7 @@ export class Widget_list<T extends Widget> implements IRequest<'list', Widget_li
     addItem() {
         // const _ref = this._reference
         // const newItem = this.builder.HYDRATE(_ref.type, _ref.input)
-        this.state.items.push(this.input.element())
+        this.state.items.push(this.input.element(this.state.items.length))
     }
 }
 
@@ -1053,7 +1078,7 @@ export class Widget_listExt      <T extends Widget> implements IRequest<'listExt
     // INIT -----------------------------------------------------------------------------
     constructor(
         public builder: FormBuilder,
-        public schema: SchemaL,
+        public schema: ComfySchemaL,
         public input: Widget_listExt_opts<T>,
         serial?: Widget_listExt_serial<T>,
     ) {
@@ -1125,9 +1150,13 @@ export class Widget_group<T extends { [key: string]: Widget }> implements IReque
     id: string
     type: 'group' = 'group'
     state: Widget_group_state<T>
+    /** all [key,value] pairs */
+    get entries() { return Object.entries(this.state.values) as [string, any][] }
+    /** the dict of all child widgets */
+    get values() { return this.state.values }
     constructor(
         public builder: FormBuilder,
-        public schema: SchemaL,
+        public schema: ComfySchemaL,
         public input: Widget_group_opts<T>,
         serial?: Widget_group_serial<T>,
     ) {
@@ -1186,9 +1215,13 @@ export class Widget_groupOpt<T extends { [key: string]: Widget }> implements IRe
     id: string
     type: 'groupOpt' = 'groupOpt'
     state: Widget_groupOpt_state<T>
+    /** all [key,value] pairs */
+    get entries() { return Object.entries(this.state.values) as [string, any][] }
+    /** the dict of all child widgets */
+    get values() { return this.state.values }
     constructor(
         public builder: FormBuilder,
-        public schema: SchemaL,
+        public schema: ComfySchemaL,
         public input: Widget_groupOpt_opts<T>,
         serial?: Widget_groupOpt_serial<T>,
     ) {
@@ -1245,7 +1278,7 @@ export class Widget_choice      <T extends { [key: string]: Widget }> implements
     state: Widget_choice_state<T>
     constructor(
         public builder: FormBuilder,
-        public schema: SchemaL,
+        public schema: ComfySchemaL,
         public input: Widget_choice_opts<T>,
         serial?: Widget_choice_serial<T>,
     ) {
@@ -1268,10 +1301,15 @@ export class Widget_choice      <T extends { [key: string]: Widget }> implements
             }
         } else {
             const _items = input.items()
-            const defaultPick: keyof T & string = (Object.keys(_items)[0]  ?? '_error_')
+            const defaultPick: keyof T & string = (input.default as string ?? Object.keys(_items)[0]  ??'error')
             this.state = { type: 'choice', id: this.id, active: true, values: _items, pick: defaultPick }
         }
         makeAutoObservable(this)
+    }
+
+    get pick() { return this.state.pick }
+    get child(){
+        return this.state.values[this.state.pick]
     }
     get serial(): Widget_choice_serial<T> {
         const out: { [key: string]: any } = {}
@@ -1305,7 +1343,7 @@ export class Widget_choices<T extends { [key: string]: Widget }> implements IReq
     state: Widget_choices_state<T>
     constructor(
         public builder: FormBuilder,
-        public schema: SchemaL,
+        public schema: ComfySchemaL,
         public input: Widget_choices_opts<T>,
         serial?: Widget_choices_serial<T>,
     ) {
@@ -1385,7 +1423,7 @@ export class Widget_enum<T extends KnownEnumNames> implements IRequest<'enum', W
     state: Widget_enum_state<T>
     constructor(
         public builder: FormBuilder,
-        public schema: SchemaL,
+        public schema: ComfySchemaL,
         public input: Widget_enum_opts<T>,
         serial?: Widget_enum_serial<T>,
     ) {
@@ -1417,7 +1455,7 @@ export class Widget_enumOpt<T extends KnownEnumNames> implements IRequest<'enumO
     state: Widget_enumOpt_state<T>
     constructor(
         public builder: FormBuilder,
-        public schema: SchemaL,
+        public schema: ComfySchemaL,
         public input: Widget_enumOpt_opts<T>,
         serial?: Widget_enumOpt_serial<T>,
     ) {

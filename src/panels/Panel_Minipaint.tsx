@@ -163,7 +163,7 @@ export const Panel_Minipaint = observer(function PaintUI_(p: { imgID?: MediaImag
                     // height: '612px',
                 }}
                 id='miniPaint'
-                src={'http://localhost:8788/CushyStudio/_public/minipaint/index.html'}
+                src={'http://localhost:8788/public/minipaint/index.html'}
                 allow='camera'
             ></iframe>
 

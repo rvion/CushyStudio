@@ -1,8 +1,29 @@
 import type { STATE } from '../../state/state'
+import { asAbsolutePath } from '../fs/pathUtils'
 
 export class ElectronUtils {
     constructor(public st: STATE) {
-        //
+        const ipcRenderer = window.require('electron').ipcRenderer
+        ipcRenderer.on(
+            'filedownloaded',
+            (
+                _ev,
+                json: {
+                    originalFilename: string
+                    fileName: string
+                    absolutePath: string
+                    relativePath: string
+                },
+            ) => {
+                // console.log(`[👙] `, {ev, json})
+                st.db.media_images.create({
+                    infos: {
+                        type: 'image-local',
+                        absPath: asAbsolutePath(json.absolutePath),
+                    },
+                })
+            },
+        )
     }
 
     toggleDevTools = () => {

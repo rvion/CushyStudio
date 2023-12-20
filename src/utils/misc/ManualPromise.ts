@@ -41,6 +41,6 @@ export class ManualPromise<T = any> implements PromiseLike<T> {
     }
 }
 
-const isPromise = (p: any): p is Promise<any> => {
+export const isPromise = (p: any): p is Promise<any> => {
     return p != null && typeof p.then === 'function'
 }

@@ -1,6 +1,8 @@
 import type { ComfyWorkflowL } from 'src/models/Graph'
 
 import { ComfyNode } from '../core/ComfyNode'
+import { ComfyNodeMetadata } from 'src/types/ComfyNodeID'
+import { observable, toJS } from 'mobx'
 
 export interface ComfyWorkflowBuilder extends ComfySetup {}
 
@@ -23,31 +25,33 @@ export class ComfyWorkflowBuilder {
             // console.log(`node: ${node.name}`)
             try {
                 Object.defineProperty(this, node.nameInCushy, {
-                    value: (inputs: any, uidToPreserve?: Maybe<string>) => {
+                    value: (inputs: any, meta?: ComfyNodeMetadata) => {
                         // ⏸️ const nthForGivenNode = this.nameCache.get(node.nameInCushy) ?? 0
                         // ⏸️ const practicalNameWithinGraph = `${node.nameInCushy}_${nthForGivenNode}`
                         // ⏸️ this.nameCache.set(node.nameInCushy, nthForGivenNode + 1)
 
                         // 1. allocate an id
                         let uidString: string
-                        if (uidToPreserve != null && uidToPreserve !== '') {
-                            // console.log(`>>> trying to preserve id: ${uidToPreserve}`)
+                        if (meta?.id != null && meta.id !== '') {
+                            // console.log(`>>> trying to preserve id: ${meta.id}`)
                             // increment the graph _uiNumber, so if we modify this later
                             // we won't reuse the same uid and have broken conflicts
-                            const uidNumber = parseInt(uidToPreserve, 10)
+                            const uidNumber = parseInt(meta.id, 10)
                             if (!isNaN(uidNumber) && uidNumber > this.graph._uidNumber)
                                 this.graph._uidNumber = Math.round(uidNumber + 1)
-
-                            uidString = uidToPreserve
+                            uidString = meta.id
                         } else {
                             uidString = (this.graph._uidNumber++).toString()
                         }
 
                         // 2. instanciate the node
-                        return new ComfyNode(graph, uidString, {
-                            class_type: node.nameInComfy as any,
-                            inputs,
-                        })
+                        return new ComfyNode(
+                            //
+                            graph,
+                            uidString,
+                            observable({ class_type: node.nameInComfy as any, inputs }),
+                            observable(meta ?? {}),
+                        )
                     },
                 })
             } catch (e) {

@@ -1,17 +1,18 @@
-import type { ComfyNodeJSON } from '../types/ComfyPrompt'
-import type { NodeProgress, _WsMsgExecutedData } from '../types/ComfyWsApi'
 import type { ComfyWorkflowL } from '../models/Graph'
+import type { ComfyNodeJSON } from '../types/ComfyPrompt'
+import type { NodeProgress } from '../types/ComfyWsApi'
 
-import { configure, extendObservable, makeAutoObservable, toJS } from 'mobx'
-import { ComfyNodeID } from '../types/ComfyNodeID'
-import { ComfyNodeSchema, NodeInputExt, NodeOutputExt } from '../models/Schema'
-import { ComfyNodeOutput } from './Slot'
-import { comfyColors } from './Colors'
-import { auto_ } from './autoValue'
+import { configure, extendObservable, makeAutoObservable } from 'mobx'
 import { ReactNode, createElement } from 'react'
+import { ComfyNodeSchema, NodeInputExt, NodeOutputExt } from '../models/Schema'
+import { ComfyNodeID, ComfyNodeMetadata } from '../types/ComfyNodeID'
+import { comfyColors } from './Colors'
 import { NodeStatusEmojiUI } from './NodeStatusEmojiUI'
+import { ComfyNodeOutput } from './Slot'
+import { auto_ } from './autoValue'
 
 configure({ enforceActions: 'never' })
+// ·configure({ enforceActions: 'always' })
 
 type NodeExecutionStatus = 'executing' | 'done' | 'error' | 'waiting' | 'cached' | null
 
@@ -24,6 +25,16 @@ export class ComfyNode<
     ComfyNode_input extends object,
     ComfyNode_output extends object = {},
 > {
+    storeAs = (storeName: string) => {
+        this.meta.storeAs = storeName
+        return this
+    }
+    tag = (tagName: string) => {
+        this.meta.tag = tagName
+        return this
+    }
+    // ---------------------------------------
+
     // artifacts: _WsMsgExecutedData[] = []
     // images: GeneratedImage[] = []
     progressRatio: number = 0
@@ -77,6 +88,7 @@ export class ComfyNode<
         public graph: ComfyWorkflowL,
         public uid: string, //  = graph.getUID(),
         jsonExt: ComfyNodeJSON,
+        public meta: ComfyNodeMetadata = {},
     ) {
         this.uidNumber = this.graph._uidNumber++
         if (jsonExt == null) throw new Error('invariant violation: jsonExt is null')

@@ -1,7 +1,7 @@
 import { DecoratorNode, LexicalNode, NodeKey, SerializedLexicalNode } from 'lexical'
 import { observable } from 'mobx'
 import { ReactNode } from 'react'
-import { ActionTagMethod } from 'src/cards/Card'
+import { ActionTagMethod } from 'src/cards/App'
 import { ActionNodeUI } from './ActionNodeUI'
 
 export type ActionTag = {

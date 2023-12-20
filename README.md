@@ -10,7 +10,7 @@
 <!-- <img height="21"  alt="Sponsors"     src="https://img.shields.io/github/sponsors/rvion" /> -->
 
 
-_🔶 NOTICE: CushyStudio is still in development. It updates and breaks often. We are working hard to make a stable version. Current Focus is fixing the lack of variosu error message related to missing custom ComfyUI nodes 🔶_
+_🔶 NOTICE: CushyStudio is still in development. It updates and breaks often. We are working hard to make a stable version. Current Focus is on improving the install experience and switching to some real production-ready database 🔶_
 
 
 <br />
@@ -42,12 +42,12 @@ _🔶 NOTICE: CushyStudio is still in development. It updates and breaks often. 
 
 _media 1: CushyStudio_
 
-![](site/assets/images/2023-11-20-00-20-41.png)
+![](site/static/screenshots/2023-11-20-00-20-41.png)
 
 
 _media 2: CushyStudio gallery_
 
-![](site/assets/images/2023-11-20-00-16-19.png)
+![](site/static/screenshots/2023-11-20-00-16-19.png)
 
 - a list of apps ready to be used
   - Apps with the `Cushy Action` label are native CushyApps using the CushyStudio SDK.
@@ -56,7 +56,7 @@ _media 2: CushyStudio gallery_
 
 _media 3: ComfyUI on steroids_
 
-![](site/assets/images/2023-11-25-comfy-on-steroids.jpg)
+![](site/static/screenshots/2023-11-25-comfy-on-steroids.jpg)
 
 -----
 
@@ -81,29 +81,41 @@ https://github.com/rvion/CushyStudio/assets/2150990/776b00f5-687e-4043-8dac-34df
 
 # 2. Installation
 
+<!--
 1.  Requirements:
     1.  [ComfyUI](https://github.com/comfyanonymous/ComfyUI) (local, remote, or cloud) ([install](https://github.com/comfyanonymous/ComfyUI#installing))
-    2.  [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) (to install via git)
+    2.  [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) (to install via git) -->
 
-2. run those commands in a terminal (< 10 seconds to complete):
+1. download this repository,
+    ```sh
+    git clone https://github.com/rvion/CushyStudio --depth 1
+    cd CushyStudio
+    ```
 
-```sh
+2. click
+   1. `_windows_INSTALL.bat` (on windows)
+   2. `_macos_INSTALL.sh` (on macos)
+   3. `_linux_INSTALL.sh` (on linux)
 
-git clone https://github.com/rvion/CushyStudio --depth 1
-cd CushyStudio
-npm install
-npm start
-```
+
 
 # 3. Quickstart Guide
 
-## 3.1. Starting
+<!-- ## 3.1. Starting -->
 
-You can start **CushyStudio** in two ways:
 
-- By running `npm start` in a terminal, at the root of your CushyStudio install
+
+2. click
+   1. `_windows_START.bat` (on windows)
+   2. `_macos_START.sh` (on macos)
+   3. `_linux_START.sh` (on linux)
+
+
+<!-- You can start **CushyStudio** in two ways: -->
+
+<!-- - By running `npm start` in a terminal, at the root of your CushyStudio install
 - By running the `2_run.sh` (Mac, Linux) or `2_run.bat` (Windows)
-
+ -->
 
 ## 3.2. Updating
 
@@ -121,7 +133,7 @@ You can update **CushyStudio** in two ways:
 
 ### 3.3.1. The top bar
 
-![](site/assets/images/2023-11-25-10-20-36.png)
+![](site/static/screenshots/2023-11-25-10-20-36.png)
 
 ## 3.4. Use built-in apps
 
@@ -151,7 +163,7 @@ You can update **CushyStudio** in two ways:
 -   ✅ Quickly switch between various ComfyUI setups
 -   ✅ Parallelize work across multiple instances
 
-![](site/assets/images/2023-11-25-comfy-host-management.jpg)
+![](site/static/screenshots/2023-11-25-comfy-host-management.jpg)
 
 ### 4.1.2. Parallelize load across multiple ComfyUI instances
 
@@ -159,7 +171,7 @@ You can update **CushyStudio** in two ways:
 -   ✅ Automatically upload missing files
 -   ✅ Powerful image hashing system to avoid duplicate uploads
 
-![](site/assets/images/2023-11-25-10-56-57.png)
+![](site/static/screenshots/2023-11-25-10-56-57.png)
 
 
 
@@ -176,7 +188,7 @@ You can convert them to actions in cone click t
 - open-router based
   -  => you have access to all the models chatgpt4, claude 2, various unfiltered llama flavors, etc.
 
-![](site/assets/images/2023-12-03-llm-example.jpg)
+![](site/static/screenshots/2023-12-03-llm-example.jpg)
 
 
 ## 4.3. Real-time enabled
@@ -189,14 +201,14 @@ https://github.com/rvion/CushyStudio/assets/2150990/d71d7f9a-b0e9-415d-ab5a-7852
 -   ✅ Civitai custom ComfyUI Nodes support
 -   ✅ Dedicated Civitai widgets to augment your allow your apps to select CivitAI models directly
 
-![](site/assets/images/2023-10-19-00-31-02.png)
+![](site/static/screenshots/2023-10-19-00-31-02.png)
 
 
 ## 4.5. Built-in full-featured Image Editor
 
 Layers, effects, masks, blending modes, ...and more. Always one click away
 
-![](site/assets/images/2023-10-18-22-51-22.png)
+![](site/static/screenshots/2023-10-18-22-51-22.png)
 
 ## 4.6. Easy to extend
 
@@ -205,18 +217,18 @@ Layers, effects, masks, blending modes, ...and more. Always one click away
 <details>
   <summary> Click here to see how to reveal the debug console</summary>
 
-![](site/assets/images/2023-10-03-22-36-49.png)
+![](site/static/screenshots/2023-10-03-22-36-49.png)
 
 </details>
 
 ## 4.7. Create your own Apps to streamline any image or video production
 
-![](site/assets/images/2023-09-29-22-35-25.png)
+![](site/static/screenshots/2023-09-29-22-35-25.png)
 
 <p align="center">
-  <img alt="Light" src="./site/assets/images/2023-09-29-typescript-autocompletion-in-vscode.png" width="45%">
+  <img alt="Light" src="./site/static/screenshots/2023-09-29-typescript-autocompletion-in-vscode.png" width="45%">
 &nbsp; &nbsp; &nbsp; &nbsp;
-  <img alt="Dark" src="./site/assets/images/2023-09-30-08-40-13.png" width="45%">
+  <img alt="Dark" src="./site/static/screenshots/2023-09-30-08-40-13.png" width="45%">
 </p>
 
 1. Define your own UI
@@ -246,7 +258,7 @@ In this section, we will
     - 👉 this file is updated after each ComfyUI connection.
     - 👉 It means it will only be created after the first successful connection to your ComfyUI instance
 
-## 5.2. What is an `Action`?
+## 5.2. What is an `App`?
 
 An `Action` is self-contained.
 - A widget definition ( `"ui"` function)
@@ -266,9 +278,9 @@ card({
 
 
 
-## 5.3. What is an `Action`?
+## 5.3. What is an `App`?
 
-A `Deck` is a folder containing
+A `Package` is a folder containing
 
   - A list of **Apps**
   - A list of `assets`
@@ -283,13 +295,13 @@ Decks are made to be shared.
 
 ##  5.4. Create your first deck
 
-1. Click the `[+ Create Deck]` button at the top of the `Library`
+1. Click the `[+ Create Package]` button at the top of the `Library`
 
 2. Enter your `github username` and `deck name`
    1. 👉 Your `github username` will be your dedicated namespace in the library
    2. 👉 All your decks will live under the `library/<username>/` folder
 
-    ![](./site/assets/images/2023-11-01-18-58-13.webp)
+    ![](./site/static/screenshots/2023-11-01-18-58-13.webp)
 
 3. Click `[OK]`
 
@@ -376,7 +388,7 @@ The simplest way to modularize your **Apps** is to build `prefabs`.
 
 _Best practices:_
 
-- Usually, your `Deck` will contain one or many `prefab` files,
+- Usually, your `Package` will contain one or many `prefab` files,
 - You can The main `prefab` used by the built-in `deck` here: `library/CushyStudio/default/_prefab.ts`:
 
 
@@ -412,7 +424,7 @@ export const ui_startImage = (form: FormBuilder) =>
 
 To use a `prefab` in your card, you can simply import it and use it.
 
-![](./site/assets/images/2023-11-01-18-27-38.webp)
+![](./site/static/screenshots/2023-11-01-18-27-38.webp)
 
 - `ui prefabs` are made to be used in the `ui` function of your card.
 - `run prefabs` are made to be used in the `run` function of your card.
@@ -444,7 +456,7 @@ card({
 
 The resulting card looks like this:
 
-![](./site/assets/images/2023-11-01-18-20-20.webp)
+![](./site/static/screenshots/2023-11-01-18-20-20.webp)
 
 
 
@@ -482,7 +494,7 @@ function fn() {
 }
 ```
 
-## 5.7. Publish your Deck
+## 5.7. Publish your Package
 
 Publishing your deck/apps is easy!
 
@@ -492,13 +504,13 @@ Publishing your deck/apps is easy!
 
 2.  Create a GitHub repository. (https://github.com/new)
 
-    ![](site/assets/images/2023-10-18-23-15-11.png)
+    ![](site/static/screenshots/2023-10-18-23-15-11.png)
 
 3.  Commit your deck files
     1. You can one-click the `publish` button in your deck entry in the library
     2. You can follow the instructions given by Git Hub on the new repository page
 
-4.  Open an issue asking to add your `Deck` to the `Library`.
+4.  Open an issue asking to add your `Package` to the `Library`.
     -   https://github.com/rvion/CushyStudio/issues/new/choose
 
 <details>

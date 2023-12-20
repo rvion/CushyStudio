@@ -16,10 +16,15 @@ export const mkTypescriptConfig = (): JsonFile<TsConfigCustom> => {
             // when it runs for the first time
             // it will allow to only see errors in cards you either
             // MAINTAIN or are CURRENTLY WORKING ON
-            include: [...mandatoryIncludes],
+            include: [...mandatoryTSConfigIncludes],
             exclude: [],
         }),
     })
 }
 
-const mandatoryIncludes: string[] = ['src', 'schema/global.d.ts']
+export const mandatoryTSConfigIncludes: string[] = [
+    //
+    'src',
+    'library/local',
+    'schema/global.d.ts',
+]

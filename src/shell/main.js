@@ -1,42 +1,73 @@
+const { mkdirSync } = require('fs')
+
 START()
 
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true'
 
 async function START() {
+    const mode = process.env['CUSHY_RUN_MODE']
+    if (mode == null) throw new Error('CUSHY_RUN_MODE is not defined')
+    const allowedModes = ['dev', 'dist']
+    if (!allowedModes.includes(mode)) {
+        console.error(`CUSHY_RUN_MODE is not allowed: ${mode}`)
+        process.exit(1)
+    }
+
+    const PORT = mode === 'dist' ? 8688 : 8788
     // ===//=====//======//======//======//======//======//======//======//======//======//======//==
     // ==//=====//======//======//======//======//======//======//======//======//======//======//===
     // 1. START VITE DEV SERVER
 
-    const { createServer } = require('vite')
+    // DIST MODE ------------------------------------------
+    if (mode === 'dist') {
+        async function startDistServer() {
+            const express = require('express')
+            const app = express()
+            const path = require('path')
 
-    async function startDevServer() {
-        // Create a Vite development server
-        const server = await createServer({
-            // Pass any options you need for the server here
-            // For example, to specify the root directory:
-            // root: './path-to-your-root-directory'
-        })
-
-        // Start the server
-        await server.listen()
-
-        server.printUrls()
+            // Directory paths for the two public folders
+            app.use(express.static('release'))
+            app.use(express.static('public'))
+            // Define a simple route for the home page
+            app.get('/', (req, res) => {
+                res.sendFile(path.join('release/index.html'))
+            })
+            // Start the server on port ${PORT}
+            app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`))
+        }
+        startDistServer()
     }
+    // DEV MODE ------------------------------------------
+    else {
+        const { createServer } = require('vite')
+        async function startDevServer() {
+            // Create a Vite development server
+            const server = await createServer({
+                // Pass any options you need for the server here
+                // For example, to specify the root directory:
+                // root: './path-to-your-root-directory'
+            })
 
-    startDevServer().catch((error) => {
-        console.error(error)
-        process.exit(1)
-    })
+            // Start the server
+            await server.listen()
+
+            server.printUrls()
+        }
+        startDevServer().catch((error) => {
+            console.error(error)
+            process.exit(1)
+        })
+    }
 
     // ===//=====//======//======//======//======//======//======//======//======//======//======//==
     // ==//=====//======//======//======//======//======//======//======//======//======//======//===
 
-    try {
-        const patchElectronIconAndName = require('./patch.js').default
-        patchElectronIconAndName()
-    } catch (error) {
-        console.log('❌ error patching electron icon and name', error)
-    }
+    // ⏸️ try {
+    // ⏸️     const patchElectronIconAndName = require('./patch.js').default
+    // ⏸️     patchElectronIconAndName()
+    // ⏸️ } catch (error) {
+    // ⏸️     console.log('❌ error patching electron icon and name', error)
+    // ⏸️ }
 
     const { app, BrowserWindow, globalShortcut, ipcMain, session } = require('electron')
 
@@ -75,8 +106,8 @@ async function START() {
             icon: image,
             title: '🛋️ CushySudio',
             //
-            width: 800,
-            height: 600,
+            // width: 800,
+            // height: 600,
             webPreferences: {
                 plugins: true,
                 nodeIntegration: true,
@@ -90,36 +121,74 @@ async function START() {
             },
         })
         mainWindow.maximize()
+        mkdirSync('outputs/_downloads', { recursive: true })
+        // https://www.electronjs.org/docs/latest/api/download-item
+        // https://www.electronjs.org/docs/latest/api/download-item#class-downloaditem
+
+        const pathe = require('pathe')
+        mainWindow.webContents.session.on('will-download', (event, item, webContents) => {
+            const originalFileName = item.getFilename()
+            const finalFileName = `${Date.now()}-${originalFileName}`
+            const relativePath = `outputs/_downloads/${finalFileName}`
+
+            // Set the save path, making Electron not to prompt a save dialog.
+            item.setSavePath(relativePath)
+
+            item.on('updated', (event, state) => {
+                if (state === 'interrupted') {
+                    console.log('Download is interrupted but can be resumed')
+                } else if (state === 'progressing') {
+                    if (item.isPaused()) {
+                        console.log('Download is paused')
+                    } else {
+                        console.log(`Received bytes: ${item.getReceivedBytes()}`)
+                    }
+                }
+            })
+            item.once('done', (event, state) => {
+                if (state === 'completed') {
+                    console.log('Download successfully')
+                    mainWindow.webContents.send('filedownloaded', {
+                        fileName: finalFileName,
+                        originalFilename: originalFileName,
+                        relativePath: relativePath,
+                        absolutePath: pathe.resolve(relativePath),
+                    })
+                } else {
+                    console.log(`Download failed: ${state}`)
+                }
+            })
+        })
 
         // Open DevTools automatically
         // mainWindow.webContents.openDevTools()
 
         // check if cushy is running
-        let viteStarted = false
+        let serverStarted = false
         const sleep = (duration) => new Promise((resolve) => setTimeout(resolve, duration))
         let retryCount = 0
         do {
             console.log('waiting for cushy to start')
             retryCount++
             try {
-                res = await fetch('http://localhost:8788') //
-                    .catch((err) => fetch('http://127.0.0.1:8788'))
+                res = await fetch(`http://localhost:${PORT}`) //
+                    .catch((err) => fetch(`http://127.0.0.1:${PORT}`))
 
                 if (res.status !== 200) {
                     console.log(`[VITE] vite not yet started (status:: ${res.status})`)
                     await sleep(1000)
                 } else {
                     console.log(`[VITE] vite started`)
-                    viteStarted = true
+                    serverStarted = true
                 }
             } catch (error) {
-                if (retryCount > 10) console.log('❌ error:', error)
-                await sleep(1000)
+                if (retryCount > 100) console.log('❌ error:', error)
+                await sleep(100)
             }
-        } while (!viteStarted)
+        } while (!serverStarted)
 
         // load cushy
-        mainWindow.loadURL('http://localhost:8788', { extraHeaders: 'pragma: no-cache\n' }) // Load your localhost URL
+        mainWindow.loadURL(`http://localhost:${PORT}`, { extraHeaders: 'pragma: no-cache\n' }) // Load your localhost URL
 
         // Open DevTools (optional)
         // mainWindow.webContents.openDevTools();
