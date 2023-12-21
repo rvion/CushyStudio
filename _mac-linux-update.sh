@@ -5,4 +5,4 @@ git checkout master || true
 
 git pull origin master || true
 
-./maclinux-install.sh
+./_mac-linux-install.sh

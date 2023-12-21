@@ -22,4 +22,4 @@ IF %ERRORLEVEL% NEQ 0 (
     EXIT /B 1
 )
 
-CALL windows-install.bat
+CALL _windows-install.bat
