@@ -10,13 +10,13 @@ export async function _drawCard(
     opts: { baseUrl: string; value: CardValue; suit: CardSuit; W: number; H: number },
 ): Promise<{ base: ImageAndMask; mask: ImageAndMask }> {
     const { suit, value, W, H } = opts
-    const canvas = run.Canvas
+    const canvas = run.Konva
     const K = canvas.Konva
 
     // BASE IMAGE -----------------------------------------------------------------
     // transparent base image
     const size = { width: W, height: H }
-    const base = run.Canvas.createStageWithLayer(size)
+    const base = run.Konva.createStageWithLayer(size)
     if (opts.baseUrl) {
         const image = await canvas.createHTMLImage_fromURL(opts.baseUrl)
         base.add(new K.Image({ image /*x: 0, y: 0, width: W, height: H*/ }))

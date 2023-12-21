@@ -5,6 +5,7 @@ import { $ExtractFormValueType, AppRef, WidgetDict } from 'src/cards/App'
 import { Runtime, RuntimeExecutionResult } from './Runtime'
 import { SQLITE_false } from 'src/db/SQLITE_boolean'
 
+/** namespace for all Apps-related utils */
 export class RuntimeApps {
     constructor(private rt: Runtime) {
         makeAutoObservable(this)

@@ -2,6 +2,7 @@ import { makeAutoObservable } from 'mobx'
 import { Runtime } from './Runtime'
 import { ComfyWorkflowL } from 'src/models/Graph'
 
+/** namespace for all ComfyUI-related utils */
 export class RuntimeComfyUI {
     constructor(private rt: Runtime) {
         makeAutoObservable(this)

@@ -9,19 +9,13 @@ app({
     }),
 
     run: async (run, ui) => {
-        //
-        const size = 512
-        const layer = run.Canvas.createStageWithLayer({ width: size, height: size })
-        run.Canvas.fillFullLayerWithGradient(layer, [0, 'red', 1, 'blue'])
-
-        const oldLogo = await run.Canvas.createHTMLImage_fromPath('site/static/img/CushyLogo.png')
-        layer.add(new run.Canvas.Konva.Image({ image: oldLogo }))
+        const layer = run.Konva.createStageWithLayer({ width: 512, height: 512 })
+        run.Konva.fillFullLayerWithGradient(layer, [0, run.Colors.randomHexColor(), 1, run.Colors.randomHexColor()])
+        const logo = await run.Konva.createHTMLImage_fromPath('site/static/img/CushyLogo.png')
+        layer.add(run.Konva.Image({ image: logo }))
         layer.draw()
-
         const b64 = layer.toDataURL()
-        const img = run.Images.createFromBase64(b64)
-        // run
 
-        // const img = await run.load_dataURL(b64)
+        const img = run.Images.createFromBase64(b64)
     },
 })

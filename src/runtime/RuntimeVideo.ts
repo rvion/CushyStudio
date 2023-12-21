@@ -5,7 +5,8 @@ import { createMP4FromImages } from 'src/utils/ffmpeg/ffmpegScripts'
 import { asAbsolutePath } from 'src/utils/fs/pathUtils'
 import { Runtime } from './Runtime'
 
-export class RuntimeVideo {
+/** namespace for all video-related utils */
+export class RuntimeVideos {
     private st = this.rt.st
     private step = this.rt.step
     private folder = this.rt.folder
@@ -51,7 +52,7 @@ export class RuntimeVideo {
 
         const outputAbsPath = this.st.cacheFolderPath
         const targetVideoAbsPath = asAbsolutePath(
-            path.join(outputAbsPath, `video-${Date.now()}-${RuntimeVideo.VideoCounter++}.mp4`),
+            path.join(outputAbsPath, `video-${Date.now()}-${RuntimeVideos.VideoCounter++}.mp4`),
         )
         console.log('🎥 outputAbsPath', outputAbsPath)
         console.log('🎥 targetVideoAbsPath', targetVideoAbsPath)

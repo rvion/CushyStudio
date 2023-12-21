@@ -2,14 +2,17 @@ import { isAbsolute, resolve } from 'pathe'
 import { makeAutoObservable } from 'mobx'
 import { Runtime } from './Runtime'
 import konva from 'konva'
+import type { ImageConfig } from 'konva/lib/shapes/Image'
 
 /**
  * provide both raw-access to the underling KonvaJS library
  * and higher level accesses to simplify cushy<->konva interactions
  */
-export class RuntimeCanvasKonva {
+export class RuntimeKonva {
     /** access to the full Konva library */
     Konva: typeof konva = konva
+
+    Image = (imageConfig: ImageConfig) => new this.Konva.Image(imageConfig)
 
     constructor(private rt: Runtime) {
         makeAutoObservable(this, { Konva: false })

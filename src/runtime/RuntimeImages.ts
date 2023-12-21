@@ -2,7 +2,8 @@ import { makeAutoObservable } from 'mobx'
 import { Runtime } from './Runtime'
 import { MediaImageL } from 'src/models/MediaImage'
 
-export class RuntimeImage {
+/** namespace for all image-related utils */
+export class RuntimeImages {
     constructor(private rt: Runtime) {
         makeAutoObservable(this)
     }
