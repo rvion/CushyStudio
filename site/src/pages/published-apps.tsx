@@ -7,8 +7,13 @@ import { observer } from 'mobx-react-lite'
 import { useMemo } from 'react'
 import { cachePromise } from '../utils/cached'
 import { getSupabase } from '../utils/getSupabase'
+import BrowserOnly from '@docusaurus/BrowserOnly'
 
-export default observer(function Hello() {
+export default function PublishedAppPageWrapper() {
+    return <BrowserOnly>{() => <PublishedAppPage />}</BrowserOnly>
+}
+
+const PublishedAppPage = observer(function Hello() {
     const supa = getSupabase()
     const library = useMemo(() => new Foo(supa), [supa])
     // const
