@@ -17,6 +17,9 @@ export class HostL {
     // 🔶 can't move frame ref here because no way to override mobx
     // comfyUIIframeRef = createRef<HTMLIFrameElement>()
 
+    get isReadonly(): boolean {
+        return this.data.isReadonly ? true : false
+    }
     /** root install of ComfyUI on the host filesystem */
     get absolutePathToComfyUI() {
         return this.data.absolutePathToComfyUI

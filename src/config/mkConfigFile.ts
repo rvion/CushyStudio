@@ -1,15 +1,15 @@
 import { resolve } from 'pathe'
 import { asAbsolutePath } from 'src/utils/fs/pathUtils'
 import { JsonFile } from '../core/JsonFile'
+import { STANDARD_HOST_ID } from './ComfyHostDef'
 import { ConfigFile } from './ConfigFile'
-import { vIRTUAL_HOST_ID__BASE } from './ComfyHostDef'
 
 export const mkConfigFile = (): JsonFile<ConfigFile> => {
     return new JsonFile<ConfigFile>({
         path: asAbsolutePath(resolve('CONFIG.json')),
         maxLevel: 3,
         init: (): ConfigFile => ({
-            mainComfyHostID: vIRTUAL_HOST_ID__BASE,
+            mainComfyHostID: STANDARD_HOST_ID,
             galleryImageSize: 48,
             theme: 'dark',
         }),

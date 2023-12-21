@@ -1,6 +1,6 @@
 
 import type { ComfyNode } from '../src/core/ComfyNode'
-import type { ComfyNodeID, ComfyNodeMetadata } from '../src/types/ComfyNodeID'
+import type { ComfyNodeMetadata } from '../src/types/ComfyNodeID'
 import type { ComfyNodeOutput } from '../src/core/Slot'
 import type { ComfyNodeSchemaJSON } from '../src/types/ComfySchemaJSON'
 
@@ -153,6 +153,8 @@ export interface ComfySetup {
     ConditioningZeroOut(p: ConditioningZeroOut_input, meta?: ComfyNodeMetadata): ConditioningZeroOut
     /* category:advanced_conditioning, name:"ConditioningSetTimestepRange", output:CONDITIONING */
     ConditioningSetTimestepRange(p: ConditioningSetTimestepRange_input, meta?: ComfyNodeMetadata): ConditioningSetTimestepRange
+    /* category:loaders, name:"LoraLoaderModelOnly", output:MODEL */
+    LoraLoaderModelOnly(p: LoraLoaderModelOnly_input, meta?: ComfyNodeMetadata): LoraLoaderModelOnly
     /* category:latent_advanced, name:"LatentAdd", output:LATENT */
     LatentAdd(p: LatentAdd_input, meta?: ComfyNodeMetadata): LatentAdd
     /* category:latent_advanced, name:"LatentSubtract", output:LATENT */
@@ -161,6 +163,8 @@ export interface ComfySetup {
     LatentMultiply(p: LatentMultiply_input, meta?: ComfyNodeMetadata): LatentMultiply
     /* category:latent_advanced, name:"LatentInterpolate", output:LATENT */
     LatentInterpolate(p: LatentInterpolate_input, meta?: ComfyNodeMetadata): LatentInterpolate
+    /* category:latent_batch, name:"LatentBatch", output:LATENT */
+    LatentBatch(p: LatentBatch_input, meta?: ComfyNodeMetadata): LatentBatch
     /* category:loaders, name:"HypernetworkLoader", output:MODEL */
     HypernetworkLoader(p: HypernetworkLoader_input, meta?: ComfyNodeMetadata): HypernetworkLoader
     /* category:loaders, name:"UpscaleModelLoader", output:UPSCALE_MODEL */
@@ -247,6 +251,8 @@ export interface ComfySetup {
     PolyexponentialScheduler(p: PolyexponentialScheduler_input, meta?: ComfyNodeMetadata): PolyexponentialScheduler
     /* category:sampling_custom_sampling_schedulers, name:"VPScheduler", output:SIGMAS */
     VPScheduler(p: VPScheduler_input, meta?: ComfyNodeMetadata): VPScheduler
+    /* category:sampling_custom_sampling_schedulers, name:"SDTurboScheduler", output:SIGMAS */
+    SDTurboScheduler(p: SDTurboScheduler_input, meta?: ComfyNodeMetadata): SDTurboScheduler
     /* category:sampling_custom_sampling_samplers, name:"KSamplerSelect", output:SAMPLER */
     KSamplerSelect(p: KSamplerSelect_input, meta?: ComfyNodeMetadata): KSamplerSelect
     /* category:sampling_custom_sampling_samplers, name:"SamplerDPMPP_2M_SDE", output:SAMPLER */
@@ -271,14 +277,22 @@ export interface ComfySetup {
     ImageCrop(p: ImageCrop_input, meta?: ComfyNodeMetadata): ImageCrop
     /* category:image_batch, name:"RepeatImageBatch", output:IMAGE */
     RepeatImageBatch(p: RepeatImageBatch_input, meta?: ComfyNodeMetadata): RepeatImageBatch
-    /* category:_for_testing, name:"SaveAnimatedWEBP", output: */
+    /* category:image_animation, name:"SaveAnimatedWEBP", output: */
     SaveAnimatedWEBP(p: SaveAnimatedWEBP_input, meta?: ComfyNodeMetadata): SaveAnimatedWEBP
+    /* category:image_animation, name:"SaveAnimatedPNG", output: */
+    SaveAnimatedPNG(p: SaveAnimatedPNG_input, meta?: ComfyNodeMetadata): SaveAnimatedPNG
     /* category:loaders_video_models, name:"ImageOnlyCheckpointLoader", output:MODEL+CLIP_VISION+VAE */
     ImageOnlyCheckpointLoader(p: ImageOnlyCheckpointLoader_input, meta?: ComfyNodeMetadata): ImageOnlyCheckpointLoader
     /* category:conditioning_video_models, name:"SVD_img2vid_Conditioning", output:positive+negative+latent */
     SVD$_img2vid$_Conditioning(p: SVD$_img2vid$_Conditioning_input, meta?: ComfyNodeMetadata): SVD$_img2vid$_Conditioning
     /* category:sampling_video_models, name:"VideoLinearCFGGuidance", output:MODEL */
     VideoLinearCFGGuidance(p: VideoLinearCFGGuidance_input, meta?: ComfyNodeMetadata): VideoLinearCFGGuidance
+    /* category:_for_testing, name:"SelfAttentionGuidance", output:MODEL */
+    SelfAttentionGuidance(p: SelfAttentionGuidance_input, meta?: ComfyNodeMetadata): SelfAttentionGuidance
+    /* category:_for_testing, name:"PerpNeg", output:MODEL */
+    PerpNeg(p: PerpNeg_input, meta?: ComfyNodeMetadata): PerpNeg
+    /* category:conditioning_3d_models, name:"StableZero123_Conditioning", output:positive+negative+latent */
+    StableZero123$_Conditioning(p: StableZero123$_Conditioning_input, meta?: ComfyNodeMetadata): StableZero123$_Conditioning
 }
 
 // 1. Requirable --------------------------
@@ -337,6 +351,7 @@ export interface Requirable {
     Enum_CheckpointLoader_ckpt_name: Enum_CheckpointLoader_ckpt_name,
     Enum_DiffusersLoader_model_path: Enum_DiffusersLoader_model_path,
     Enum_LoadLatent_latent: Enum_LoadLatent_latent,
+    Enum_LoraLoaderModelOnly_lora_name: Enum_LoraLoaderModelOnly_lora_name,
     Enum_HypernetworkLoader_hypernetwork_name: Enum_HypernetworkLoader_hypernetwork_name,
     Enum_UpscaleModelLoader_model_name: Enum_UpscaleModelLoader_model_name,
     Enum_ImageBlend_blend_mode: Enum_ImageBlend_blend_mode,
@@ -416,10 +431,12 @@ export interface Requirable {
     SaveLatent: SaveLatent,
     ConditioningZeroOut: ConditioningZeroOut,
     ConditioningSetTimestepRange: ConditioningSetTimestepRange,
+    LoraLoaderModelOnly: LoraLoaderModelOnly,
     LatentAdd: LatentAdd,
     LatentSubtract: LatentSubtract,
     LatentMultiply: LatentMultiply,
     LatentInterpolate: LatentInterpolate,
+    LatentBatch: LatentBatch,
     HypernetworkLoader: HypernetworkLoader,
     UpscaleModelLoader: UpscaleModelLoader,
     ImageUpscaleWithModel: ImageUpscaleWithModel,
@@ -463,6 +480,7 @@ export interface Requirable {
     ExponentialScheduler: ExponentialScheduler,
     PolyexponentialScheduler: PolyexponentialScheduler,
     VPScheduler: VPScheduler,
+    SDTurboScheduler: SDTurboScheduler,
     KSamplerSelect: KSamplerSelect,
     "SamplerDPMPP$_2M$_SDE": SamplerDPMPP$_2M$_SDE,
     "SamplerDPMPP$_SDE": SamplerDPMPP$_SDE,
@@ -476,9 +494,13 @@ export interface Requirable {
     ImageCrop: ImageCrop,
     RepeatImageBatch: RepeatImageBatch,
     SaveAnimatedWEBP: SaveAnimatedWEBP,
+    SaveAnimatedPNG: SaveAnimatedPNG,
     ImageOnlyCheckpointLoader: ImageOnlyCheckpointLoader,
     "SVD$_img2vid$_Conditioning": SVD$_img2vid$_Conditioning,
     VideoLinearCFGGuidance: VideoLinearCFGGuidance,
+    SelfAttentionGuidance: SelfAttentionGuidance,
+    PerpNeg: PerpNeg,
+    "StableZero123$_Conditioning": StableZero123$_Conditioning,
 }
 
 // 2. Embeddings -------------------------------
@@ -489,11 +511,11 @@ export interface CanProduce_boolean {}
 export interface CanProduce_number {}
 export interface CanProduce_number {}
 export interface CanProduce_string {}
-export interface CanProduce_LATENT extends Pick<ComfySetup, 'KSampler' | 'VAEEncode' | 'VAEEncodeForInpaint' | 'EmptyLatentImage' | 'LatentUpscale' | 'LatentUpscaleBy' | 'LatentFromBatch' | 'RepeatLatentBatch' | 'KSamplerAdvanced' | 'SetLatentNoiseMask' | 'LatentComposite' | 'LatentBlend' | 'LatentRotate' | 'LatentFlip' | 'LatentCrop' | 'VAEEncodeTiled' | 'LoadLatent' | 'LatentAdd' | 'LatentSubtract' | 'LatentMultiply' | 'LatentInterpolate' | 'LatentCompositeMasked' | 'RebatchLatents' | 'SamplerCustom' | 'SamplerCustom' | 'SVD$_img2vid$_Conditioning'> { }
-export interface CanProduce_MODEL extends Pick<ComfySetup, 'CheckpointLoaderSimple' | 'LoraLoader' | 'UNETLoader' | 'unCLIPCheckpointLoader' | 'CheckpointLoader' | 'DiffusersLoader' | 'HypernetworkLoader' | 'ModelMergeSimple' | 'ModelMergeBlocks' | 'ModelMergeSubtract' | 'ModelMergeAdd' | 'TomePatchModel' | 'FreeU' | 'FreeU$_V2' | 'HyperTile' | 'ModelSamplingDiscrete' | 'ModelSamplingContinuousEDM' | 'RescaleCFG' | 'PatchModelAddDownscale' | 'ImageOnlyCheckpointLoader' | 'VideoLinearCFGGuidance'> { }
+export interface CanProduce_LATENT extends Pick<ComfySetup, 'KSampler' | 'VAEEncode' | 'VAEEncodeForInpaint' | 'EmptyLatentImage' | 'LatentUpscale' | 'LatentUpscaleBy' | 'LatentFromBatch' | 'RepeatLatentBatch' | 'KSamplerAdvanced' | 'SetLatentNoiseMask' | 'LatentComposite' | 'LatentBlend' | 'LatentRotate' | 'LatentFlip' | 'LatentCrop' | 'VAEEncodeTiled' | 'LoadLatent' | 'LatentAdd' | 'LatentSubtract' | 'LatentMultiply' | 'LatentInterpolate' | 'LatentBatch' | 'LatentCompositeMasked' | 'RebatchLatents' | 'SamplerCustom' | 'SamplerCustom' | 'SVD$_img2vid$_Conditioning' | 'StableZero123$_Conditioning'> { }
+export interface CanProduce_MODEL extends Pick<ComfySetup, 'CheckpointLoaderSimple' | 'LoraLoader' | 'UNETLoader' | 'unCLIPCheckpointLoader' | 'CheckpointLoader' | 'DiffusersLoader' | 'LoraLoaderModelOnly' | 'HypernetworkLoader' | 'ModelMergeSimple' | 'ModelMergeBlocks' | 'ModelMergeSubtract' | 'ModelMergeAdd' | 'TomePatchModel' | 'FreeU' | 'FreeU$_V2' | 'HyperTile' | 'ModelSamplingDiscrete' | 'ModelSamplingContinuousEDM' | 'RescaleCFG' | 'PatchModelAddDownscale' | 'ImageOnlyCheckpointLoader' | 'VideoLinearCFGGuidance' | 'SelfAttentionGuidance' | 'PerpNeg'> { }
 export interface CanProduce_CLIP extends Pick<ComfySetup, 'CheckpointLoaderSimple' | 'CLIPSetLastLayer' | 'LoraLoader' | 'CLIPLoader' | 'DualCLIPLoader' | 'unCLIPCheckpointLoader' | 'CheckpointLoader' | 'DiffusersLoader' | 'CLIPMergeSimple'> { }
 export interface CanProduce_VAE extends Pick<ComfySetup, 'CheckpointLoaderSimple' | 'VAELoader' | 'unCLIPCheckpointLoader' | 'CheckpointLoader' | 'DiffusersLoader' | 'ImageOnlyCheckpointLoader'> { }
-export interface CanProduce_CONDITIONING extends Pick<ComfySetup, 'CLIPTextEncode' | 'ConditioningAverage' | 'ConditioningCombine' | 'ConditioningConcat' | 'ConditioningSetArea' | 'ConditioningSetAreaPercentage' | 'ConditioningSetMask' | 'StyleModelApply' | 'unCLIPConditioning' | 'ControlNetApply' | 'ControlNetApplyAdvanced' | 'ControlNetApplyAdvanced' | 'GLIGENTextBoxApply' | 'ConditioningZeroOut' | 'ConditioningSetTimestepRange' | 'CLIPTextEncodeSDXLRefiner' | 'CLIPTextEncodeSDXL' | 'SVD$_img2vid$_Conditioning' | 'SVD$_img2vid$_Conditioning'> { }
+export interface CanProduce_CONDITIONING extends Pick<ComfySetup, 'CLIPTextEncode' | 'ConditioningAverage' | 'ConditioningCombine' | 'ConditioningConcat' | 'ConditioningSetArea' | 'ConditioningSetAreaPercentage' | 'ConditioningSetMask' | 'StyleModelApply' | 'unCLIPConditioning' | 'ControlNetApply' | 'ControlNetApplyAdvanced' | 'ControlNetApplyAdvanced' | 'GLIGENTextBoxApply' | 'ConditioningZeroOut' | 'ConditioningSetTimestepRange' | 'CLIPTextEncodeSDXLRefiner' | 'CLIPTextEncodeSDXL' | 'SVD$_img2vid$_Conditioning' | 'SVD$_img2vid$_Conditioning' | 'StableZero123$_Conditioning' | 'StableZero123$_Conditioning'> { }
 export interface CanProduce_IMAGE extends Pick<ComfySetup, 'VAEDecode' | 'LoadImage' | 'ImageScale' | 'ImageScaleBy' | 'ImageInvert' | 'ImageBatch' | 'ImagePadForOutpaint' | 'EmptyImage' | 'VAEDecodeTiled' | 'ImageUpscaleWithModel' | 'ImageBlend' | 'ImageBlur' | 'ImageQuantize' | 'ImageSharpen' | 'ImageScaleToTotalPixels' | 'ImageCompositeMasked' | 'MaskToImage' | 'PorterDuffImageComposite' | 'SplitImageWithAlpha' | 'JoinImageWithAlpha' | 'Canny' | 'ImageCrop' | 'RepeatImageBatch'> { }
 export interface CanProduce_MASK extends Pick<ComfySetup, 'LoadImage' | 'LoadImageMask' | 'ImagePadForOutpaint' | 'ImageToMask' | 'ImageColorToMask' | 'SolidMask' | 'InvertMask' | 'CropMask' | 'MaskComposite' | 'FeatherMask' | 'GrowMask' | 'PorterDuffImageComposite' | 'SplitImageWithAlpha'> { }
 export interface CanProduce_CLIP_VISION_OUTPUT extends Pick<ComfySetup, 'CLIPVisionEncode'> { }
@@ -502,7 +524,7 @@ export interface CanProduce_STYLE_MODEL extends Pick<ComfySetup, 'StyleModelLoad
 export interface CanProduce_CLIP_VISION extends Pick<ComfySetup, 'CLIPVisionLoader' | 'unCLIPCheckpointLoader' | 'ImageOnlyCheckpointLoader'> { }
 export interface CanProduce_GLIGEN extends Pick<ComfySetup, 'GLIGENLoader'> { }
 export interface CanProduce_UPSCALE_MODEL extends Pick<ComfySetup, 'UpscaleModelLoader'> { }
-export interface CanProduce_SIGMAS extends Pick<ComfySetup, 'BasicScheduler' | 'KarrasScheduler' | 'ExponentialScheduler' | 'PolyexponentialScheduler' | 'VPScheduler' | 'SplitSigmas' | 'SplitSigmas' | 'FlipSigmas'> { }
+export interface CanProduce_SIGMAS extends Pick<ComfySetup, 'BasicScheduler' | 'KarrasScheduler' | 'ExponentialScheduler' | 'PolyexponentialScheduler' | 'VPScheduler' | 'SDTurboScheduler' | 'SplitSigmas' | 'SplitSigmas' | 'FlipSigmas'> { }
 export interface CanProduce_SAMPLER extends Pick<ComfySetup, 'KSamplerSelect' | 'SamplerDPMPP$_2M$_SDE' | 'SamplerDPMPP$_SDE'> { }
 export interface CanProduce_INT {}
 export interface CanProduce_FLOAT {}
@@ -558,15 +580,18 @@ export type Enum_KSamplerSelect_sampler_name = Enum_KSampler_sampler_name
 export type Enum_KSampler_scheduler = "ddim_uniform" | "exponential" | "karras" | "normal" | "sgm_uniform" | "simple"
 export type Enum_KSamplerAdvanced_scheduler = Enum_KSampler_scheduler
 export type Enum_BasicScheduler_scheduler = Enum_KSampler_scheduler
-export type Enum_CheckpointLoaderSimple_ckpt_name = '🔴' // never
-export type Enum_VAELoader_vae_name = "taesd" | "taesdxl"
+export type Enum_CheckpointLoaderSimple_ckpt_name = "revAnimated_v122.safetensors"
+export type Enum_unCLIPCheckpointLoader_ckpt_name = Enum_CheckpointLoaderSimple_ckpt_name
+export type Enum_CheckpointLoader_ckpt_name = Enum_CheckpointLoaderSimple_ckpt_name
+export type Enum_ImageOnlyCheckpointLoader_ckpt_name = Enum_CheckpointLoaderSimple_ckpt_name
+export type Enum_VAELoader_vae_name = "taesd" | "taesdxl" | "vae-ft-mse-840000-ema-pruned.safetensors"
 export type Enum_LatentUpscale_upscale_method = "area" | "bicubic" | "bilinear" | "bislerp" | "nearest-exact"
 export type Enum_LatentUpscaleBy_upscale_method = Enum_LatentUpscale_upscale_method
 export type Enum_PatchModelAddDownscale_downscale_method = Enum_LatentUpscale_upscale_method
 export type Enum_PatchModelAddDownscale_upscale_method = Enum_LatentUpscale_upscale_method
 export type Enum_LatentUpscale_crop = "center" | "disabled"
 export type Enum_ImageScale_crop = Enum_LatentUpscale_crop
-export type Enum_LoadImage_image = "example.png"
+export type Enum_LoadImage_image = "5faf07e34756413c84d98cc85ac94b546c4b88e9ea0ab877bfaec7948a3b536b.png" | "e2ef233a64ca3d0148b87fc64c3951035ae857e4b2c302915e6a4f69217912a1.png" | "example.png"
 export type Enum_LoadImageMask_image = Enum_LoadImage_image
 export type Enum_LoadImageMask_channel = "alpha" | "blue" | "green" | "red"
 export type Enum_ImageToMask_channel = Enum_LoadImageMask_channel
@@ -578,7 +603,8 @@ export type Enum_KSamplerAdvanced_add_noise = "disable" | "enable"
 export type Enum_KSamplerAdvanced_return_with_leftover_noise = Enum_KSamplerAdvanced_add_noise
 export type Enum_LatentRotate_rotation = "180 degrees" | "270 degrees" | "90 degrees" | "none"
 export type Enum_LatentFlip_flip_method = "x-axis: vertically" | "y-axis: horizontally"
-export type Enum_LoraLoader_lora_name = '🔴' // never
+export type Enum_LoraLoader_lora_name = "Stained Glass Portrait.safetensors"
+export type Enum_LoraLoaderModelOnly_lora_name = Enum_LoraLoader_lora_name
 export type Enum_CLIPLoader_clip_name = '🔴' // never
 export type Enum_UNETLoader_unet_name = '🔴' // never
 export type Enum_DualCLIPLoader_clip_name1 = '🔴' // never
@@ -587,10 +613,8 @@ export type Enum_ControlNetLoader_control_net_name = '🔴' // never
 export type Enum_DiffControlNetLoader_control_net_name = '🔴' // never
 export type Enum_StyleModelLoader_style_model_name = '🔴' // never
 export type Enum_CLIPVisionLoader_clip_name = '🔴' // never
-export type Enum_unCLIPCheckpointLoader_ckpt_name = '🔴' // never
 export type Enum_GLIGENLoader_gligen_name = '🔴' // never
 export type Enum_CheckpointLoader_config_name = "anything_v3.yaml" | "v1-inference.yaml" | "v1-inference_clip_skip_2.yaml" | "v1-inference_clip_skip_2_fp16.yaml" | "v1-inference_fp16.yaml" | "v1-inpainting-inference.yaml" | "v2-inference-v.yaml" | "v2-inference-v_fp32.yaml" | "v2-inference.yaml" | "v2-inference_fp32.yaml" | "v2-inpainting-inference.yaml"
-export type Enum_CheckpointLoader_ckpt_name = '🔴' // never
 export type Enum_DiffusersLoader_model_path = '🔴' // never
 export type Enum_LoadLatent_latent = '🔴' // never
 export type Enum_HypernetworkLoader_hypernetwork_name = '🔴' // never
@@ -605,7 +629,6 @@ export type Enum_SamplerDPMPP$_SDE_noise_device = Enum_SamplerDPMPP$_2M$_SDE_noi
 export type Enum_ModelSamplingDiscrete_sampling = "eps" | "lcm" | "v_prediction"
 export type Enum_ModelSamplingContinuousEDM_sampling = "eps" | "v_prediction"
 export type Enum_SaveAnimatedWEBP_method = "default" | "fastest" | "slowest"
-export type Enum_ImageOnlyCheckpointLoader_ckpt_name = '🔴' // never
 export type KnownEnumNames = keyof Requirable
 
 // 7. INTERFACES --------------------------
@@ -1383,7 +1406,7 @@ export interface unCLIPCheckpointLoader_output {
     CLIP_VISION: ComfyNodeOutput<'CLIP_VISION', 3>,
 }
 export interface unCLIPCheckpointLoader_input {
-    ckpt_name: Enum_unCLIPCheckpointLoader_ckpt_name
+    ckpt_name: Enum_CheckpointLoaderSimple_ckpt_name
 }
 
 // GLIGENLoader [loaders]
@@ -1431,7 +1454,7 @@ export interface CheckpointLoader_output {
 }
 export interface CheckpointLoader_input {
     config_name: Enum_CheckpointLoader_config_name
-    ckpt_name: Enum_CheckpointLoader_ckpt_name
+    ckpt_name: Enum_CheckpointLoaderSimple_ckpt_name
 }
 
 // DiffusersLoader [advanced_loaders_deprecated]
@@ -1496,6 +1519,20 @@ export interface ConditioningSetTimestepRange_input {
     end?: _FLOAT
 }
 
+// LoraLoaderModelOnly [loaders]
+export interface LoraLoaderModelOnly extends HasSingle_MODEL, ComfyNode<LoraLoaderModelOnly_input, LoraLoaderModelOnly_output> {
+    nameInComfy: "LoraLoaderModelOnly"
+}
+export interface LoraLoaderModelOnly_output {
+    MODEL: ComfyNodeOutput<'MODEL', 0>,
+}
+export interface LoraLoaderModelOnly_input {
+    model: _MODEL
+    lora_name: Enum_LoraLoader_lora_name
+    /** default=1 min=20 max=20 step=0.01 */
+    strength_model?: _FLOAT
+}
+
 // LatentAdd [latent_advanced]
 export interface LatentAdd extends HasSingle_LATENT, ComfyNode<LatentAdd_input, LatentAdd_output> {
     nameInComfy: "LatentAdd"
@@ -1545,6 +1582,18 @@ export interface LatentInterpolate_input {
     samples2: _LATENT
     /** default=1 min=1 max=1 step=0.01 */
     ratio?: _FLOAT
+}
+
+// LatentBatch [latent_batch]
+export interface LatentBatch extends HasSingle_LATENT, ComfyNode<LatentBatch_input, LatentBatch_output> {
+    nameInComfy: "LatentBatch"
+}
+export interface LatentBatch_output {
+    LATENT: ComfyNodeOutput<'LATENT', 0>,
+}
+export interface LatentBatch_input {
+    samples1: _LATENT
+    samples2: _LATENT
 }
 
 // HypernetworkLoader [loaders]
@@ -2213,6 +2262,19 @@ export interface VPScheduler_input {
     eps_s?: _FLOAT
 }
 
+// SDTurboScheduler [sampling_custom_sampling_schedulers]
+export interface SDTurboScheduler extends HasSingle_SIGMAS, ComfyNode<SDTurboScheduler_input, SDTurboScheduler_output> {
+    nameInComfy: "SDTurboScheduler"
+}
+export interface SDTurboScheduler_output {
+    SIGMAS: ComfyNodeOutput<'SIGMAS', 0>,
+}
+export interface SDTurboScheduler_input {
+    model: _MODEL
+    /** default=1 min=10 max=10 */
+    steps?: _INT
+}
+
 // KSamplerSelect [sampling_custom_sampling_samplers]
 export interface KSamplerSelect extends HasSingle_SAMPLER, ComfyNode<KSamplerSelect_input, KSamplerSelect_output> {
     nameInComfy: "KSamplerSelect"
@@ -2399,7 +2461,7 @@ export interface RepeatImageBatch_input {
     amount?: _INT
 }
 
-// SaveAnimatedWEBP [_for_testing]
+// SaveAnimatedWEBP [image_animation]
 export interface SaveAnimatedWEBP extends ComfyNode<SaveAnimatedWEBP_input, SaveAnimatedWEBP_output> {
     nameInComfy: "SaveAnimatedWEBP"
 }
@@ -2418,6 +2480,22 @@ export interface SaveAnimatedWEBP_input {
     method: Enum_SaveAnimatedWEBP_method
 }
 
+// SaveAnimatedPNG [image_animation]
+export interface SaveAnimatedPNG extends ComfyNode<SaveAnimatedPNG_input, SaveAnimatedPNG_output> {
+    nameInComfy: "SaveAnimatedPNG"
+}
+export interface SaveAnimatedPNG_output {
+}
+export interface SaveAnimatedPNG_input {
+    images: _IMAGE
+    /** default="ComfyUI" */
+    filename_prefix?: _STRING
+    /** default=6 min=1000 max=1000 step=0.01 */
+    fps?: _FLOAT
+    /** default=4 min=9 max=9 */
+    compress_level?: _INT
+}
+
 // ImageOnlyCheckpointLoader [loaders_video_models]
 export interface ImageOnlyCheckpointLoader extends HasSingle_MODEL, HasSingle_CLIP_VISION, HasSingle_VAE, ComfyNode<ImageOnlyCheckpointLoader_input, ImageOnlyCheckpointLoader_output> {
     nameInComfy: "ImageOnlyCheckpointLoader"
@@ -2428,7 +2506,7 @@ export interface ImageOnlyCheckpointLoader_output {
     VAE: ComfyNodeOutput<'VAE', 2>,
 }
 export interface ImageOnlyCheckpointLoader_input {
-    ckpt_name: Enum_ImageOnlyCheckpointLoader_ckpt_name
+    ckpt_name: Enum_CheckpointLoaderSimple_ckpt_name
 }
 
 // SVD_img2vid_Conditioning [conditioning_video_models]
@@ -2469,6 +2547,60 @@ export interface VideoLinearCFGGuidance_input {
     model: _MODEL
     /** default=1 min=100 max=100 step=0.5 */
     min_cfg?: _FLOAT
+}
+
+// SelfAttentionGuidance [_for_testing]
+export interface SelfAttentionGuidance extends HasSingle_MODEL, ComfyNode<SelfAttentionGuidance_input, SelfAttentionGuidance_output> {
+    nameInComfy: "SelfAttentionGuidance"
+}
+export interface SelfAttentionGuidance_output {
+    MODEL: ComfyNodeOutput<'MODEL', 0>,
+}
+export interface SelfAttentionGuidance_input {
+    model: _MODEL
+    /** default=0.5 min=5 max=5 step=0.1 */
+    scale?: _FLOAT
+    /** default=2 min=10 max=10 step=0.1 */
+    blur_sigma?: _FLOAT
+}
+
+// PerpNeg [_for_testing]
+export interface PerpNeg extends HasSingle_MODEL, ComfyNode<PerpNeg_input, PerpNeg_output> {
+    nameInComfy: "PerpNeg"
+}
+export interface PerpNeg_output {
+    MODEL: ComfyNodeOutput<'MODEL', 0>,
+}
+export interface PerpNeg_input {
+    model: _MODEL
+    empty_conditioning: _CONDITIONING
+    /** default=1 min=100 max=100 */
+    neg_scale?: _FLOAT
+}
+
+// StableZero123_Conditioning [conditioning_3d_models]
+export interface StableZero123$_Conditioning extends HasSingle_LATENT, ComfyNode<StableZero123$_Conditioning_input, StableZero123$_Conditioning_output> {
+    nameInComfy: "StableZero123_Conditioning"
+}
+export interface StableZero123$_Conditioning_output {
+    positive: ComfyNodeOutput<'CONDITIONING', 0>,
+    negative: ComfyNodeOutput<'CONDITIONING', 1>,
+    latent: ComfyNodeOutput<'LATENT', 2>,
+}
+export interface StableZero123$_Conditioning_input {
+    clip_vision: _CLIP_VISION
+    init_image: _IMAGE
+    vae: _VAE
+    /** default=256 min=8192 max=8192 step=8 */
+    width?: _INT
+    /** default=256 min=8192 max=8192 step=8 */
+    height?: _INT
+    /** default=1 min=4096 max=4096 */
+    batch_size?: _INT
+    /** default=0 min=180 max=180 */
+    elevation?: _FLOAT
+    /** default=0 min=180 max=180 */
+    azimuth?: _FLOAT
 }
 
 
@@ -2534,10 +2666,12 @@ export type Schemas = {
     SaveLatent: ComfyNodeSchemaJSON,
     ConditioningZeroOut: ComfyNodeSchemaJSON,
     ConditioningSetTimestepRange: ComfyNodeSchemaJSON,
+    LoraLoaderModelOnly: ComfyNodeSchemaJSON,
     LatentAdd: ComfyNodeSchemaJSON,
     LatentSubtract: ComfyNodeSchemaJSON,
     LatentMultiply: ComfyNodeSchemaJSON,
     LatentInterpolate: ComfyNodeSchemaJSON,
+    LatentBatch: ComfyNodeSchemaJSON,
     HypernetworkLoader: ComfyNodeSchemaJSON,
     UpscaleModelLoader: ComfyNodeSchemaJSON,
     ImageUpscaleWithModel: ComfyNodeSchemaJSON,
@@ -2581,6 +2715,7 @@ export type Schemas = {
     ExponentialScheduler: ComfyNodeSchemaJSON,
     PolyexponentialScheduler: ComfyNodeSchemaJSON,
     VPScheduler: ComfyNodeSchemaJSON,
+    SDTurboScheduler: ComfyNodeSchemaJSON,
     KSamplerSelect: ComfyNodeSchemaJSON,
     SamplerDPMPP$_2M$_SDE: ComfyNodeSchemaJSON,
     SamplerDPMPP$_SDE: ComfyNodeSchemaJSON,
@@ -2594,9 +2729,13 @@ export type Schemas = {
     ImageCrop: ComfyNodeSchemaJSON,
     RepeatImageBatch: ComfyNodeSchemaJSON,
     SaveAnimatedWEBP: ComfyNodeSchemaJSON,
+    SaveAnimatedPNG: ComfyNodeSchemaJSON,
     ImageOnlyCheckpointLoader: ComfyNodeSchemaJSON,
     SVD$_img2vid$_Conditioning: ComfyNodeSchemaJSON,
     VideoLinearCFGGuidance: ComfyNodeSchemaJSON,
+    SelfAttentionGuidance: ComfyNodeSchemaJSON,
+    PerpNeg: ComfyNodeSchemaJSON,
+    StableZero123$_Conditioning: ComfyNodeSchemaJSON,
 }
 export type ComfyNodeType = keyof Schemas
 }
