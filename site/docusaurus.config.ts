@@ -53,6 +53,12 @@ const config: Config = {
     ],
 
     themeConfig: {
+        announcementBar: {
+            content:
+                'CushyStudio is still in pre-release. This website too. Both updates often (and sometimes breaks). Welcome nonetheless to the upcoming best Generative-AI platform.',
+            textColor: '#160101',
+            backgroundColor: '#fde59c',
+        },
         // Replace with your project's social card
         image: 'img/docusaurus-social-card.jpg',
         // https://docusaurus.io/docs/api/themes/configuration#respectPrefersColorScheme
