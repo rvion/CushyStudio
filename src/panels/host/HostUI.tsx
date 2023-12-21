@@ -129,7 +129,7 @@ export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
                         tw='input input-bordered input-sm w-full'
                         type='string'
                         disabled={disabled}
-                        onChange={(ev) => host.update({ absolutePathToComfyUI: ev.target.value })}
+                        onChange={(ev) => host.update({ absolutPathToDownloadModelsTo: ev.target.value })}
                         value={host.data.absolutPathToDownloadModelsTo ?? ''}
                     ></input>
                 </div>
