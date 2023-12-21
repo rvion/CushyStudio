@@ -74,7 +74,11 @@ const config: Config = {
                     label: 'Documentation',
                 },
                 { to: '/blog', label: 'Blog', position: 'left' },
-                { to: '/app-marketplace', label: 'App Library', position: 'left' },
+                {
+                    to: '/published-apps',
+                    label: 'App Library',
+                    position: 'left',
+                },
                 {
                     href: 'https://github.com/rvion/cushystudio',
                     label: 'GitHub',
