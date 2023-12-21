@@ -12,7 +12,6 @@ import { assets } from 'src/utils/assets/assets'
 import { bang } from 'src/utils/misc/bang'
 import { braceExpansion } from 'src/utils/misc/expansion'
 import { IDNaminScheemeInPromptSentToComfyUI } from '../back/IDNaminScheemeInPromptSentToComfyUI'
-import { ImageSDK } from '../back/ImageSDK'
 import { ComfyWorkflowBuilder } from '../back/NodeBuilder'
 import { ImageAnswer } from '../controls/misc/InfoAnswer'
 import { ComfyNodeOutput } from '../core/Slot'
@@ -39,6 +38,8 @@ import { RuntimeHosts } from './RuntimeHosts'
 import { RuntimeStore } from './RuntimeStore'
 import { RuntimeVideo } from './RuntimeVideo'
 import { createRandomGenerator } from 'src/back/random'
+import { RuntimeCanvasNative } from './RuntimeCanvasWeb'
+import { RuntimeCanvasKonva } from './RuntimeCanvasKonva'
 
 export type ImageAndMask = HasSingle_IMAGE & HasSingle_MASK
 
@@ -83,7 +84,27 @@ export class Runtime<FIELDS extends WidgetDict = any> {
 
     get videos(): RuntimeVideo {
         const it = new RuntimeVideo(this)
-        Object.defineProperty(this, 'apps', { value: it })
+        Object.defineProperty(this, 'videos', { value: it })
+        return it
+    }
+
+    /**
+     * SDK to programmatically build images
+     * using the KonvaJS library (layers, filters, effects, etc.)
+     */
+    get canvas(): RuntimeCanvasKonva {
+        const it = new RuntimeCanvasKonva(this)
+        Object.defineProperty(this, 'canvas', { value: it })
+        return it
+    }
+
+    /**
+     * SDK to programmatically build images
+     * using the native web canvas api
+     */
+    get canvas_native(): RuntimeCanvasNative {
+        const it = new RuntimeCanvasNative(this)
+        Object.defineProperty(this, 'canvas_native', { value: it })
         return it
     }
 
@@ -432,12 +453,6 @@ export class Runtime<FIELDS extends WidgetDict = any> {
 
     /** list of all built-in assets, with completion for quick demos  */
     assets = assets
-
-    /**
-     * a full-featured image builder SDK, based on Konva, extended with
-     * top level helpers dedicated to StableDiffusion workflows, and CushyStudio
-     */
-    loadImageSDK = () => ImageSDK.init(this.st)
 
     /** quick helper to make your card sleep for a given number fo milisecond */
     sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms))
