@@ -23,6 +23,7 @@ import { ComfyPromptL } from './ComfyPrompt'
 import { deepCopyNaive } from 'src/utils/misc/ComfyUtils'
 import { InvalidPromptError } from 'src/back/RuntimeError'
 import { StepL } from './Step'
+import { LiveRefOpt } from 'src/db/LiveRefOpt'
 
 export type RunMode = 'fake' | 'real'
 
@@ -332,11 +333,22 @@ export class ComfyWorkflowL {
 
     // ------------------------
 
-    PROMPT = async (p: {
-        //
-        step: StepL
-        idMode?: IDNaminScheemeInPromptSentToComfyUI
-    }): Promise<ComfyPromptL> => {
+    /** workflows are created by steps (app/draft/step) */
+    stepRef = new LiveRefOpt<this, StepL>(this, 'stepID', () => this.st.db.steps)
+
+    /** workflows are created by steps (app/draft/step) */
+    get step(): Maybe<StepL> {
+        return this.stepRef.item
+    }
+
+    sendPromptAndWaitUntilDone = async (p?: { idMode?: IDNaminScheemeInPromptSentToComfyUI }) => {
+        const prompt = await this.sendPrompt(p)
+        await prompt.finished
+        return prompt
+    }
+
+    sendPrompt = async (p: { idMode?: IDNaminScheemeInPromptSentToComfyUI } = {}): Promise<ComfyPromptL> => {
+        const step = this.step
         const liveGraph = this
         const currentJSON = deepCopyNaive(liveGraph.json_forPrompt(p.idMode ?? 'use_stringified_numbers_only'))
         const debugWorkflow = liveGraph.json_workflow()
@@ -350,9 +362,9 @@ export class ComfyWorkflowL {
                     workflow: debugWorkflow,
 
                     // Cushy metadata
-                    cushy_app_id: p.step.data.appID,
-                    cushy_draft_result: p.step.data.formResult,
-                    cushy_draft_serial: p.step.data.formSerial,
+                    cushy_app_id: this.step?.data.appID,
+                    cushy_draft_result: this.step?.data.formResult,
+                    cushy_draft_serial: this.step?.data.formSerial,
                 },
             },
             prompt: currentJSON,
@@ -383,7 +395,7 @@ export class ComfyWorkflowL {
                 id: prompmtInfo.prompt_id,
                 executed: 0,
                 graphID: graph.id,
-                stepID: p.step.id,
+                stepID: bang(step).id, // 🔴
             })
             return prompt
         }

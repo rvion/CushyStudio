@@ -4,7 +4,7 @@ import type * as Preset from '@docusaurus/preset-classic'
 
 const config: Config = {
     title: 'CushyStudio',
-    tagline: '🛋 The AI and Generative Art platform for everyone',
+    tagline: '🛋 The AI and Generative Art platform for everyone. Free. OpenSource.',
     favicon: 'img/favicon.ico',
 
     // Set the production url of your site here
@@ -37,13 +37,13 @@ const config: Config = {
                     sidebarPath: './sidebars.ts',
                     // Please change this to your repo.
                     // Remove this to remove the "edit this page" links.
-                    editUrl: 'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
+                    editUrl: 'https://github.com/rvion/CushyStudio/tree/master/site',
                 },
                 blog: {
                     showReadingTime: true,
                     // Please change this to your repo.
                     // Remove this to remove the "edit this page" links.
-                    editUrl: 'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
+                    editUrl: 'https://github.com/rvion/CushyStudio/tree/master/site',
                 },
                 theme: {
                     customCss: './src/css/custom.css',
@@ -53,6 +53,12 @@ const config: Config = {
     ],
 
     themeConfig: {
+        announcementBar: {
+            content:
+                'CushyStudio is still in pre-release. This website too. Both updates often (and sometimes breaks). Welcome nonetheless to the upcoming best Generative-AI platform.',
+            textColor: '#160101',
+            backgroundColor: '#fde59c',
+        },
         // Replace with your project's social card
         image: 'img/docusaurus-social-card.jpg',
         // https://docusaurus.io/docs/api/themes/configuration#respectPrefersColorScheme
@@ -74,7 +80,11 @@ const config: Config = {
                     label: 'Documentation',
                 },
                 { to: '/blog', label: 'Blog', position: 'left' },
-                { to: '/app-marketplace', label: 'App Library', position: 'left' },
+                {
+                    to: '/published-apps',
+                    label: 'App Library',
+                    position: 'left',
+                },
                 {
                     href: 'https://github.com/rvion/cushystudio',
                     label: 'GitHub',

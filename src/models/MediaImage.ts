@@ -98,7 +98,7 @@ export class MediaImageL {
      * @since v.2384
      */
     get graph(): ComfyWorkflowL | undefined {
-        return this.prompt?.graph.item
+        return this.prompt?.graph
     }
 
     /** return the json of the ComfyNode that led to this image */

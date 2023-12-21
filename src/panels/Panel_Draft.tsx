@@ -17,6 +17,7 @@ import { WidgetUI } from '../controls/widgets/WidgetUI'
 import { ResultWrapperUI } from '../widgets/misc/ResultWrapperUI'
 import { ScrollablePaneUI } from '../widgets/misc/scrollableArea'
 import { draftContext } from '../widgets/misc/useDraft'
+import { RevealUI } from 'src/rsuite/reveal/RevealUI'
 
 export const Panel_Draft = observer(function Panel_Draft_(p: { draftID: DraftID }) {
     // 1. get draft
@@ -124,6 +125,40 @@ export const RunOrAutorunUI = observer(function RunOrAutorunUI_(p: { className?:
     const icon = draft.shouldAutoStart ? 'pause' : 'play_arrow'
     return (
         <div tw='flex join virtualBorder' className={p.className}>
+            <RevealUI disableHover>
+                <div tw='btn btn-sm btn-square'>
+                    <span className='material-symbols-outlined'>timer</span>
+                </div>
+
+                <div tw='p-2'>
+                    <div>ms to wait after a change</div>
+                    <input
+                        //
+                        value={draft.st.project.data.autostartDelay}
+                        onChange={(ev) => {
+                            const val = parseInt(ev.target.value)
+                            if (Number.isNaN(val)) return
+                            draft.st.project.update({ autostartDelay: val })
+                        }}
+                        tw='input input-bordered input-sm'
+                        type='number'
+                        placeholder='ms'
+                    />
+                    <div>max ms to wait before running anyway</div>
+                    <input
+                        //
+                        value={draft.st.project.data.autostartMaxDelay}
+                        onChange={(ev) => {
+                            const val = parseInt(ev.target.value)
+                            if (Number.isNaN(val)) return
+                            draft.st.project.update({ autostartMaxDelay: val })
+                        }}
+                        tw='input input-bordered input-sm'
+                        type='number'
+                        placeholder='ms'
+                    />
+                </div>
+            </RevealUI>
             <div
                 tw={['btn btn-square btn-sm self-start join-item btn-neutral', draft.shouldAutoStart ? 'btn-active' : null]}
                 // color={draft.shouldAutoStart ? 'green' : undefined}

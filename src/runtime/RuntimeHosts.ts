@@ -2,6 +2,7 @@ import { makeAutoObservable } from 'mobx'
 import { HostL } from 'src/models/Host'
 import { Runtime } from './Runtime'
 
+/** namespace for all host-related utils */
 export class RuntimeHosts {
     constructor(private rt: Runtime) {
         makeAutoObservable(this)

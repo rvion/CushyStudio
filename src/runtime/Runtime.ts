@@ -12,7 +12,6 @@ import { assets } from 'src/utils/assets/assets'
 import { bang } from 'src/utils/misc/bang'
 import { braceExpansion } from 'src/utils/misc/expansion'
 import { IDNaminScheemeInPromptSentToComfyUI } from '../back/IDNaminScheemeInPromptSentToComfyUI'
-import { ImageSDK } from '../back/ImageSDK'
 import { ComfyWorkflowBuilder } from '../back/NodeBuilder'
 import { ImageAnswer } from '../controls/misc/InfoAnswer'
 import { ComfyNodeOutput } from '../core/Slot'
@@ -37,8 +36,13 @@ import { RuntimeApps } from './RuntimeApps'
 import { RuntimeCushy } from './RuntimeCushy'
 import { RuntimeHosts } from './RuntimeHosts'
 import { RuntimeStore } from './RuntimeStore'
-import { RuntimeVideo } from './RuntimeVideo'
+import { RuntimeVideos } from './RuntimeVideo'
 import { createRandomGenerator } from 'src/back/random'
+import { RuntimeCanvas } from './RuntimeCanvas'
+import { RuntimeKonva } from './RuntimeKonva'
+import { RuntimeComfyUI } from './RuntimeComfyUI'
+import { RuntimeImages } from './RuntimeImages'
+import { RuntimeColors } from './RuntimeColors'
 
 export type ImageAndMask = HasSingle_IMAGE & HasSingle_MASK
 
@@ -57,34 +61,79 @@ export type RuntimeExecutionResult =
 
 /** script exeuction instance */
 export class Runtime<FIELDS extends WidgetDict = any> {
-    get store(): RuntimeStore {
+    get Colors(): RuntimeColors {
+        const it = new RuntimeColors(this)
+        Object.defineProperty(this, 'Colors', { value: it })
+        return it
+    }
+
+    get Store(): RuntimeStore {
         const it = new RuntimeStore(this)
-        Object.defineProperty(this, 'store', { value: it })
+        Object.defineProperty(this, 'Store', { value: it })
+        return it
+    }
+    get ComfyUI(): RuntimeComfyUI {
+        const it = new RuntimeComfyUI(this)
+        Object.defineProperty(this, 'ComfyUI', { value: it })
         return it
     }
 
-    get hosts(): RuntimeHosts {
+    get Images(): RuntimeImages {
+        const it = new RuntimeImages(this)
+        Object.defineProperty(this, 'Images', { value: it })
+        return it
+    }
+
+    get Hosts(): RuntimeHosts {
         const it = new RuntimeHosts(this)
-        Object.defineProperty(this, 'hosts', { value: it })
+        Object.defineProperty(this, 'Hosts', { value: it })
         return it
     }
 
-    get cushy(): RuntimeCushy {
+    get Cushy(): RuntimeCushy {
         const it = new RuntimeCushy(this)
-        Object.defineProperty(this, 'cushy', { value: it })
+        Object.defineProperty(this, 'Cushy', { value: it })
         return it
     }
 
-    get apps(): RuntimeApps {
+    get Apps(): RuntimeApps {
         const it = new RuntimeApps(this)
-        Object.defineProperty(this, 'apps', { value: it })
+        Object.defineProperty(this, 'Apps', { value: it })
         return it
     }
 
-    get videos(): RuntimeVideo {
-        const it = new RuntimeVideo(this)
-        Object.defineProperty(this, 'apps', { value: it })
+    get Videos(): RuntimeVideos {
+        const it = new RuntimeVideos(this)
+        Object.defineProperty(this, 'Videos', { value: it })
         return it
+    }
+
+    /**
+     * SDK to programmatically build images
+     * using the KonvaJS library (layers, filters, effects, etc.)
+     */
+    get Konva(): RuntimeKonva {
+        const it = new RuntimeKonva(this)
+        Object.defineProperty(this, 'Konva', { value: it })
+        return it
+    }
+
+    /**
+     * SDK to programmatically build images
+     * using the native web canvas api
+     */
+    get Canvas(): RuntimeCanvas {
+        const it = new RuntimeCanvas(this)
+        Object.defineProperty(this, 'Canvas', { value: it })
+        return it
+    }
+
+    isCurrentDraftAutoStartEnabled = (): Maybe<boolean> => {
+        return this.step.draft?.shouldAutoStart
+    }
+
+    isCurrentDraftDirty(): Maybe<boolean> {
+        return this.step.draft?.isDirty
     }
 
     constructor(public step: StepL) {
@@ -131,33 +180,6 @@ export class Runtime<FIELDS extends WidgetDict = any> {
      */
     getLoraAssociatedTriggerWords = (loraName: string): Maybe<string> => {
         return this.st.configFile.value?.loraPrompts?.[loraName]?.text
-    }
-
-    /** create a new empty ComfyUI workflow */
-    create_ComfyUIWorkflow = (): ComfyWorkflowL => {
-        return this.st.db.graphs.create({ comfyPromptJSON: {}, metadata: {}, stepID: this.step.id })
-    }
-
-    /** create a new very basic ComfyUI workflow */
-    create_ComfyUIWorkflow_forTestPurpose = (p: { positivePrompt: string }): ComfyWorkflowL => {
-        const graph = this.st.db.graphs.create({ comfyPromptJSON: {}, metadata: {}, stepID: this.step.id })
-        const builder = graph.builder
-
-        const model = builder.CheckpointLoaderSimple({ ckpt_name: 'lyriel_v15.safetensors' })
-        builder.PreviewImage({
-            images: builder.VAEDecode({
-                vae: model,
-                samples: builder.KSampler({
-                    latent_image: builder.EmptyLatentImage({}),
-                    model: model,
-                    sampler_name: 'ddim',
-                    scheduler: 'ddim_uniform',
-                    positive: builder.CLIPTextEncode({ clip: model, text: p.positivePrompt }),
-                    negative: builder.CLIPTextEncode({ clip: model, text: 'nsfw, nude' }),
-                }),
-            }),
-        })
-        return graph
     }
 
     /** verify key is ready */
@@ -263,9 +285,6 @@ export class Runtime<FIELDS extends WidgetDict = any> {
         return this.st.configFile.value?.loraPrompts?.[loraName]
     }
 
-    /** retrieve the global schema */
-    get schema() { return this.st.schema } // prettier-ignore
-
     /** the default app's ComfyUI graph we're manipulating */
     get workflow(): ComfyWorkflowL {
         return this.step.outputWorkflow.item
@@ -338,7 +357,7 @@ export class Runtime<FIELDS extends WidgetDict = any> {
             const duration = Date.now() - start
             return { type: 'success' }
         } catch (error: any /* 🔴 */) {
-            // console.log(error)
+            console.error(error)
             // console.error('🌠', (error as any as Error).name)
             // console.error('🌠', (error as any as Error).message)
             // console.error('🌠', 'RUN FAILURE')
@@ -352,12 +371,6 @@ export class Runtime<FIELDS extends WidgetDict = any> {
             return { type: 'error', error: error }
         }
     }
-
-    /** check if the current connected ComfyUI backend has a given lora by name */
-    hasLora = (loraName: string): boolean => this.schema.hasLora(loraName)
-
-    /** check if the current connected ComfyUI backend has a given checkpoint */
-    hasCheckpoint = (loraName: string): boolean => this.schema.hasLora(loraName)
 
     /**
      * helper function to quickly run some imagemagick convert command
@@ -424,12 +437,6 @@ export class Runtime<FIELDS extends WidgetDict = any> {
 
     /** list of all built-in assets, with completion for quick demos  */
     assets = assets
-
-    /**
-     * a full-featured image builder SDK, based on Konva, extended with
-     * top level helpers dedicated to StableDiffusion workflows, and CushyStudio
-     */
-    loadImageSDK = () => ImageSDK.init(this.st)
 
     /** quick helper to make your card sleep for a given number fo milisecond */
     sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms))
@@ -767,11 +774,7 @@ export class Runtime<FIELDS extends WidgetDict = any> {
         ids?: IDNaminScheemeInPromptSentToComfyUI
     }): Promise<ComfyPromptL> {
         console.info('prompt requested')
-        const prompt = await this.workflow.PROMPT({
-            step: this.step,
-            idMode: p?.ids,
-        })
-        prompt.RUNTIME = this
+        const prompt = await this.workflow.sendPrompt({ idMode: p?.ids })
         await prompt.finished
         return prompt
     }

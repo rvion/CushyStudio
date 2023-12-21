@@ -38,19 +38,31 @@ export class DraftL {
 
     setAutostart(val: boolean) {
         this.shouldAutoStart = val
-        if (this.shouldAutoStart) {
-            if (this.autoStartTimer) clearInterval(this.autoStartTimer)
-            this.autoStartTimer = setInterval(() => this.start(), 2000)
-        } else {
-            // Stop the timer when shouldAutoStart is false
-            if (this.autoStartTimer) {
-                clearInterval(this.autoStartTimer)
-                this.autoStartTimer = null
-            }
-        }
+        if (val) this.start()
     }
 
+    lastStarted: Maybe<StepL> = null
+    isDirty = false
+
+    // mailboxes as signal slot for other to mention stuff
+    checkIfShouldRestart = (): void => {
+        if (!this.shouldAutoStart) return // console.log(`[⏰] no autostart`)
+        if (this.lastStarted?.finished.value == null) return // console.log(`[⏰] already running`)
+        if (!this.isDirty) return // console.log(`[⏰] not dirty`)
+        if (this.autoStartTimer != null) {
+            // console.log(`[⏰] already scheduled; clearing prev schedule`)
+            clearTimeout(this.autoStartTimer)
+            // return console.log(`[⏰] already scheduled`)
+        }
+        this.autoStartTimer = setTimeout(() => {
+            if (this.lastStarted?.finished.value == null) return console.log(`[⏰] ready to start, but step still running`)
+            this.autoStartTimer = null
+            this.start()
+        }, this.st.project.data.autostartDelay)
+        //
+    }
     start = (formValueOverride?: Maybe<any>): StepL => {
+        this.isDirty = false
         // ----------------------------------------
         // 🔴 2023-11-30 rvion:: TEMPORPARY HACKS
         this.st.focusedStepID = null
@@ -75,8 +87,11 @@ export class DraftL {
 
         // 3. bumpt the builder cache count
         // so widgets like seed can properly update
-        const builder = req.builder
-        builder._cache.count++
+
+        // 2023-12-21 was used for seeds, but send a wrong message to mimick a form upadte everytime a run start
+        // it is in direct contradiction with the new autorun mechanism
+        // ⏸️ const builder = req.builder
+        // ⏸️ builder._cache.count++ 🔴
 
         const graph = startGraph.clone()
         // 4. create step
@@ -86,6 +101,7 @@ export class DraftL {
             appID: this.data.appID,
             formResult: req.result,
             formSerial: req.serial,
+            draftID: this.id,
             //
             // parentGraphID: graph.id,
             outputGraphID: graph.id,
@@ -95,6 +111,10 @@ export class DraftL {
         })
         graph.update({ stepID: step.id }) // 🔶🔴
         step.start({ formInstance: req })
+        this.lastStarted = step
+        void step.finished.then(() => {
+            this.checkIfShouldRestart()
+        })
         return step
     }
 
@@ -149,6 +169,8 @@ export class DraftL {
             runInAction(() => {
                 console.log(`[🦊] form: updating`)
                 this.update({ appParams: formValue.serial })
+                this.isDirty = true
+                this.checkIfShouldRestart()
             })
         })
 

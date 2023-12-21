@@ -8,6 +8,7 @@ import { bang } from 'src/utils/misc/bang'
 
 export type StoreScope = 'global' | 'app' | 'drafts' | 'run'
 
+/** namespace for all store-related utils */
 export class RuntimeStore {
     private CustomDataTable: LiveTable<CustomDataT, CustomDataL<any>>
     private imageStoresIndex = new Map<string, ImageStore>()

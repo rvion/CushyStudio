@@ -1,6 +1,8 @@
 import type { STATE } from 'src/state/state'
 import { Combo, Shortcut } from './ShortcutManager'
 import { Trigger } from './Trigger'
+import { TreeUIKeyboardNavigableRootID } from 'src/panels/libraryUI/tree/xxx/TreeUIKeyboardNavigableRootID'
+import { runInAction } from 'mobx'
 
 // ------------------------------------------------------------------------------------
 // basic utils
@@ -25,10 +27,21 @@ const simpleValidInInput = (combo: Combo | Combo[], action: (fn: STATE) => void)
 export const shortcutsDef: Shortcut<STATE>[] = [
     // simpleValidInInput('meta+shift+k', (st) => (st.showSuperAdmin = !st.showSuperAdmin)),
     // simpleValidInInput('meta+shift+z', (st) => (st.showSuperAdminBubbles = !st.showSuperAdminBubbles)),
-    simpleValidInInput(['meta+shit+e,', 'ctrl+shitt+e'], (st) => st.layout.FOCUS_OR_CREATE('FileList', {})),
+    simpleValidInInput(['meta+2'], (st) => {
+        runInAction(() => {
+            const node = st.layout.FOCUS_OR_CREATE('FileList', {})
+            setImmediate(() => {
+                const isVisible = node?.isVisible()
+                if (!isVisible) return console.log(`[👙] not visible`)
+                const item = window.document.getElementById(TreeUIKeyboardNavigableRootID)
+                if (item == null) return console.log(`[👙] dom node #${TreeUIKeyboardNavigableRootID} not found`)
+                item.focus()
+            })
+        })
+    }),
+    simpleValidInInput(['meta+1', 'ctrl+1', 'meta+p', 'ctrl+p', 'meta+j'], (st) => st.toggleFullLibrary()),
     simpleValidInInput(['meta+,', 'ctrl+,'], (st) => st.layout.FOCUS_OR_CREATE('Config', {})),
     simpleValidInInput(['meta+escape', 'ctrl+escape'], (st) => st.closeFullLibrary()),
-    simpleValidInInput(['meta+1', 'ctrl+1', 'meta+p', 'ctrl+p', 'meta+j'], (st) => st.toggleFullLibrary()),
     // simpleValidInInput(['meta+2', 'ctrl+2'], (st) => st.layout.addMarketplace()),
     simpleValidInInput(['meta+3', 'ctrl+3'], (st) => st.layout.FOCUS_OR_CREATE('Paint', {})),
     simpleValidInInput(['meta+4', 'ctrl+4'], (st) => st.layout.FOCUS_OR_CREATE('ComfyUI', {})),

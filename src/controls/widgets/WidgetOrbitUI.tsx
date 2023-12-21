@@ -34,7 +34,7 @@ export const WidgetOrbitUI = (p: { widget: Widget_orbit }) => {
                         runInAction(() => {
                             p.widget.state.val.azimuth = curr.getAzimuthalAngle() * (180 / Math.PI)
                             p.widget.state.val.elevation = -(curr.getPolarAngle() * (180 / Math.PI) - 90)
-                            console.log(`[👙] `, JSON.stringify(p.widget.state.val))
+                            // console.log(`[👙] `, JSON.stringify(p.widget.state.val))
                         })
                         // if (e == null) return
                         // const azimuthDeg = e.azimuthalAngle * (180 / Math.PI)
