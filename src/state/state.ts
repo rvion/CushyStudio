@@ -190,7 +190,7 @@ export class STATE {
     droppedFiles: File[] = []
 
     _allPublishedApps: Maybe<PostgrestSingleResponse<Database['public']['Tables']['published_apps']['Row'][]>> = null
-    fetcAllPublishedApps = async () => {
+    fetchAllPublishedApps = async () => {
         const x = await this.supabase.from('published_apps').select('*')
         this._allPublishedApps = x
         return x

@@ -14,7 +14,7 @@ export const Panel_CardPicker3UI = observer(function Panel_CardPicker3UI_(p: {})
     const library = st.library
 
     useEffect(() => {
-        st.fetcAllPublishedApps()
+        st.fetchAllPublishedApps()
     }, [])
 
     return (
