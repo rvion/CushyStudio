@@ -7,6 +7,7 @@ import { Tree } from './Tree'
 import { TreeViewCtx } from './TreeCtx'
 import { TreeEntryUI } from './TreeEntryUI'
 import { TreeView } from './TreeView'
+import { TreeUIKeyboardNavigableRootID } from './TreeUIKeyboardNavigableRootID'
 
 export const TreeUI = observer(function TreeEditorUI_(p: { tree: Tree }) {
     const st = useSt()
@@ -34,7 +35,7 @@ export const TreeUI = observer(function TreeEditorUI_(p: { tree: Tree }) {
                     </div>
                 </div>
                 <div className='w-full'>
-                    <div onKeyDown={es.onKeyDown} tabIndex={-1}>
+                    <div id={TreeUIKeyboardNavigableRootID} onKeyDown={es.onKeyDown} tabIndex={-1}>
                         <div>
                             {es.nodes.map((n) => (
                                 <TreeEntryUI key={n.id} node={n} />
