@@ -367,7 +367,7 @@ export class Runtime<FIELDS extends WidgetDict = any> {
             const duration = Date.now() - start
             return { type: 'success' }
         } catch (error: any /* 🔴 */) {
-            // console.log(error)
+            console.error(error)
             // console.error('🌠', (error as any as Error).name)
             // console.error('🌠', (error as any as Error).message)
             // console.error('🌠', 'RUN FAILURE')
