@@ -4,7 +4,7 @@ import type * as Preset from '@docusaurus/preset-classic'
 
 const config: Config = {
     title: 'CushyStudio',
-    tagline: '🛋 The AI and Generative Art platform for everyone',
+    tagline: '🛋 The AI and Generative Art platform for everyone. Free. OpenSource.',
     favicon: 'img/favicon.ico',
 
     // Set the production url of your site here
