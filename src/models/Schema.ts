@@ -49,7 +49,7 @@ export class ComfySchemaL {
      * quick way to check your instance info
      * */
     get size(): number {
-        console.log(`[👙] `, toJS(this.data.spec), Object.keys(this.data.spec).length)
+        // console.log(`[👙] `, toJS(this.data.spec), Object.keys(this.data.spec).length)
         return Object.keys(this.data.spec).length
     }
 
