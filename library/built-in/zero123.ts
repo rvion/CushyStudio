@@ -1,3 +1,5 @@
+import { run_sampler } from './_prefabs/prefab_sampler'
+
 app({
     // metadata for publishing
     metadata: { name: 'Zero123', description: 'Zero123' },
@@ -79,7 +81,7 @@ app({
 
 app({
     metadata: {
-        name: 'tset',
+        name: 'aaaa',
         description: 'tset',
     },
     ui: (form) => ({
@@ -114,12 +116,50 @@ app({
             latent_image: sz123,
         })
 
-        let image: _IMAGE = graph.VAEDecode({ samples: latent, vae: ckpt })
         // run.add_previewImageWithAlpha(latent)
-        graph.SaveImage({
-            images: image,
-            // filename_prefix: `3d/3dComfyUI_${angle + 360}`,
+        graph.SaveImage({ images: graph.VAEDecode({ samples: latent, vae: ckpt }) })
+        await run.PROMPT()
+        if (run.isCurrentDraftAutoStartEnabled() && run.isCurrentDraftDirty()) {
+            console.log(`[👙] 1. isCurrentDraftAutoStartEnabled: ${run.isCurrentDraftAutoStartEnabled()}`)
+            console.log(`[👙] 1. isCurrentDraftDirty: ${run.isCurrentDraftDirty()}`)
+            return
+        }
+
+        // Keep gooing if more time available ---------------------------------------------------------
+        // if (ui.highResFix) {
+        // if (ui.highResFix.saveIntermediaryImage) {
+        //     graph.SaveImage({ images: graph.VAEDecode({ samples: latent, vae }) })
+        // }
+        const ckpt2 = graph.CheckpointLoaderSimple({ ckpt_name: 'revAnimated_v121.safetensors' })
+        latent = graph.LatentUpscale({
+            samples: latent,
+            crop: 'disabled',
+            upscale_method: 'nearest-exact',
+            height: 512,
+            width: 512,
         })
+        latent = latent = run_sampler(
+            run,
+            {
+                seed: run.randomSeed(),
+                cfg: 4,
+                steps: 15,
+                denoise: 0.6,
+                sampler_name: 'ddim',
+                scheduler: 'ddim_uniform',
+            },
+            {
+                latent,
+                preview: false,
+                ckpt: ckpt2,
+                clip: ckpt2,
+                vae: ckpt2,
+                negative: run.formatEmbeddingForComfyUI('EasyNegative'),
+                positive: '3dcg, toy dinosaur, green',
+            },
+        ).latent
+
+        graph.SaveImage({ images: graph.VAEDecode({ samples: latent, vae: ckpt }) })
         await run.PROMPT()
     },
 })

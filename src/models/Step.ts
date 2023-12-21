@@ -19,11 +19,18 @@ import { MediaTextL } from './MediaText'
 import { MediaVideoL } from './MediaVideo'
 import { RuntimeErrorL } from './RuntimeError'
 import { ManualPromise } from 'src/utils/misc/ManualPromise'
+import { DraftL } from './Draft'
+import { LiveRefOpt } from 'src/db/LiveRefOpt'
 
 export type FormPath = (string | number)[]
 /** a thin wrapper around an app execution */
 export interface StepL extends LiveInstance<StepT, StepL> {}
 export class StepL {
+    draftL = new LiveRefOpt<this, DraftL>(this, 'draftID', () => this.db.drafts)
+    get draft(): Maybe<DraftL> {
+        return this.draftL.item
+    }
+
     finished = new ManualPromise<RuntimeExecutionResult>()
     start = async (p: {
         /**

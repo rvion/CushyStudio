@@ -87,6 +87,14 @@ export class Runtime<FIELDS extends WidgetDict = any> {
         return it
     }
 
+    isCurrentDraftAutoStartEnabled = (): Maybe<boolean> => {
+        return this.step.draft?.shouldAutoStart
+    }
+
+    isCurrentDraftDirty(): Maybe<boolean> {
+        return this.step.draft?.isDirty
+    }
+
     constructor(public step: StepL) {
         this.st = step.st
         this.folder = step.st.outputFolderPath
