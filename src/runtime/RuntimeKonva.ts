@@ -3,6 +3,7 @@ import { makeAutoObservable } from 'mobx'
 import { Runtime } from './Runtime'
 import konva from 'konva'
 import type { ImageConfig } from 'konva/lib/shapes/Image'
+import { MediaImageL } from 'src/models/MediaImage'
 
 /**
  * provide both raw-access to the underling KonvaJS library
@@ -12,7 +13,25 @@ export class RuntimeKonva {
     /** access to the full Konva library */
     Konva: typeof konva = konva
 
-    Image = (imageConfig: ImageConfig) => new this.Konva.Image(imageConfig)
+    Image = (imageConfig: ImageConfig): konva.Image => new this.Konva.Image(imageConfig)
+
+    Image_fromPath = async (absPath: string, opts?: Omit<ImageConfig, 'image'>): Promise<konva.Image> => {
+        const img = await this.createHTMLImage_fromPath(absPath)
+        return new this.Konva.Image({ image: img, ...opts })
+    }
+
+    convertLayerToBase64 = (layer: konva.Layer): string => {
+        layer.draw()
+        const b64 = layer.toDataURL()
+        return b64
+    }
+    createImageFromLayer = async (layer: konva.Layer): Promise<MediaImageL> => {
+        layer.add(await this.rt.Konva.Image_fromPath('site/static/img/CushyLogo.png'))
+        layer.draw()
+        const b64 = layer.toDataURL()
+        const img = this.rt.Images.createFromBase64(b64)
+        return img
+    }
 
     constructor(private rt: Runtime) {
         makeAutoObservable(this, { Konva: false })

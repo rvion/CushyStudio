@@ -8,14 +8,13 @@ app({
         title: form.string({ placeHolder: 'My Project' }),
     }),
 
-    run: async (run, ui) => {
-        const layer = run.Konva.createStageWithLayer({ width: 512, height: 512 })
-        run.Konva.fillFullLayerWithGradient(layer, [0, run.Colors.randomHexColor(), 1, run.Colors.randomHexColor()])
-        const logo = await run.Konva.createHTMLImage_fromPath('site/static/img/CushyLogo.png')
-        layer.add(run.Konva.Image({ image: logo }))
-        layer.draw()
-        const b64 = layer.toDataURL()
-
-        const img = run.Images.createFromBase64(b64)
+    run: async ({ Konva, Colors, Images }, ui) => {
+        const layer = Konva.createStageWithLayer({ width: 512, height: 512 })
+        Konva.fillFullLayerWithGradient(layer, [0, Colors.randomHexColor(), 1, Colors.randomHexColor()])
+        const logo = await Konva.Image_fromPath('site/static/img/CushyLogo.png')
+        logo.setSize({ width: 512, height: 512 })
+        layer.add(logo)
+        const b64 = Konva.convertLayerToBase64(layer)
+        const img = Images.createFromBase64(b64)
     },
 })
