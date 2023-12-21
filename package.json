@@ -40,7 +40,7 @@
         "📌 WEBSITE": "----------------------------------------------------------------------",
         "site:install": "cd site && pnpm install",
         "site:run": "cd site && pnpm start",
-        "site:deploy": "cd site && pnpm start",
+        "site:deploy": "cd site && pnpm run deploy",
         "📌 FRONT": "------------------------------------------------------------------------",
         "build": "node src/shell/build.js",
         "⏸️-build-old": "vite build",
