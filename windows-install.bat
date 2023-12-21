@@ -1,4 +1,4 @@
-@REM @echo off
+@echo off
 SETLOCAL EnableExtensions
 setlocal enabledelayedexpansion
 
@@ -41,10 +41,12 @@ IF ERRORLEVEL 1 (
     CALL "%PNPM_BIN_PATH%" install node-gyp
     CALL "%PNPM_BIN_PATH%" install better-sqlite3
     CALL "%PNPM_BIN_PATH%" install
+    IF %ERRORLEVEL% NEQ 0 EXIT /B %ERRORLEVEL%
 )
 
 :: ensuring binary dependencies are correctly linked across installed
 CALL .\node_modules\.bin\electron-builder install-app-deps
+IF %ERRORLEVEL% NEQ 0 EXIT /B %ERRORLEVEL%
 
 :: Define the path to tsconfig.custom.json
 SET tsconfigPath=.\tsconfig.custom.json
