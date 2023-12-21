@@ -20,8 +20,8 @@ export const Panel_AppList = observer(function Panel_AppList_(p: {}) {
 
     return (
         <div tw='flex flex-grow flex-col overflow-auto h-full'>
-            <LibraryHeaderUI />
             <TreeUI tree={tree} />
+            <LibraryHeaderUI />
         </div>
     )
 })

@@ -40,6 +40,7 @@ import { RuntimeVideo } from './RuntimeVideo'
 import { createRandomGenerator } from 'src/back/random'
 import { RuntimeCanvasNative } from './RuntimeCanvasWeb'
 import { RuntimeCanvasKonva } from './RuntimeCanvasKonva'
+import { RuntimeComfyUI } from './RuntimeComfyUI'
 
 export type ImageAndMask = HasSingle_IMAGE & HasSingle_MASK
 
@@ -108,6 +109,12 @@ export class Runtime<FIELDS extends WidgetDict = any> {
         return it
     }
 
+    get comfyui(): RuntimeComfyUI {
+        const it = new RuntimeComfyUI(this)
+        Object.defineProperty(this, 'comfyui', { value: it })
+        return it
+    }
+
     isCurrentDraftAutoStartEnabled = (): Maybe<boolean> => {
         return this.step.draft?.shouldAutoStart
     }
@@ -160,33 +167,6 @@ export class Runtime<FIELDS extends WidgetDict = any> {
      */
     getLoraAssociatedTriggerWords = (loraName: string): Maybe<string> => {
         return this.st.configFile.value?.loraPrompts?.[loraName]?.text
-    }
-
-    /** create a new empty ComfyUI workflow */
-    create_ComfyUIWorkflow = (): ComfyWorkflowL => {
-        return this.st.db.graphs.create({ comfyPromptJSON: {}, metadata: {}, stepID: this.step.id })
-    }
-
-    /** create a new very basic ComfyUI workflow */
-    create_ComfyUIWorkflow_forTestPurpose = (p: { positivePrompt: string }): ComfyWorkflowL => {
-        const graph = this.st.db.graphs.create({ comfyPromptJSON: {}, metadata: {}, stepID: this.step.id })
-        const builder = graph.builder
-
-        const model = builder.CheckpointLoaderSimple({ ckpt_name: 'lyriel_v15.safetensors' })
-        builder.PreviewImage({
-            images: builder.VAEDecode({
-                vae: model,
-                samples: builder.KSampler({
-                    latent_image: builder.EmptyLatentImage({}),
-                    model: model,
-                    sampler_name: 'ddim',
-                    scheduler: 'ddim_uniform',
-                    positive: builder.CLIPTextEncode({ clip: model, text: p.positivePrompt }),
-                    negative: builder.CLIPTextEncode({ clip: model, text: 'nsfw, nude' }),
-                }),
-            }),
-        })
-        return graph
     }
 
     /** verify key is ready */
@@ -292,9 +272,6 @@ export class Runtime<FIELDS extends WidgetDict = any> {
         return this.st.configFile.value?.loraPrompts?.[loraName]
     }
 
-    /** retrieve the global schema */
-    get schema() { return this.st.schema } // prettier-ignore
-
     /** the default app's ComfyUI graph we're manipulating */
     get workflow(): ComfyWorkflowL {
         return this.step.outputWorkflow.item
@@ -381,12 +358,6 @@ export class Runtime<FIELDS extends WidgetDict = any> {
             return { type: 'error', error: error }
         }
     }
-
-    /** check if the current connected ComfyUI backend has a given lora by name */
-    hasLora = (loraName: string): boolean => this.schema.hasLora(loraName)
-
-    /** check if the current connected ComfyUI backend has a given checkpoint */
-    hasCheckpoint = (loraName: string): boolean => this.schema.hasLora(loraName)
 
     /**
      * helper function to quickly run some imagemagick convert command
@@ -790,11 +761,7 @@ export class Runtime<FIELDS extends WidgetDict = any> {
         ids?: IDNaminScheemeInPromptSentToComfyUI
     }): Promise<ComfyPromptL> {
         console.info('prompt requested')
-        const prompt = await this.workflow.PROMPT({
-            step: this.step,
-            idMode: p?.ids,
-        })
-        prompt.RUNTIME = this
+        const prompt = await this.workflow.sendPrompt({ idMode: p?.ids })
         await prompt.finished
         return prompt
     }

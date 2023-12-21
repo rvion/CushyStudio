@@ -36,17 +36,23 @@ export class ComfyPromptL {
 
     get progressGlobal(): ProgressReport {
         if (this.data.status === 'Success') return { countDone: 1, countTotal: 1, isDone: true, percent: 100 }
-        return this.graph.item.progressGlobal
+        return this.graph.progressGlobal
     }
     get status() {
         return this.data.status ?? 'New'
     }
-    step = new LiveRef<this, StepL>(this, 'stepID', () => this.db.steps)
-    graph = new LiveRef<this, ComfyWorkflowL>(this, 'graphID', () => this.db.graphs)
+
+    // link to step
+    stepRef = new LiveRef<this, StepL>(this, 'stepID', () => this.db.steps)
+    get step(){ return this.stepRef.item } // prettier-ignore
+
+    // link to grah
+    graphRef = new LiveRef<this, ComfyWorkflowL>(this, 'graphID', () => this.db.graphs)
+    get graph() { return this.graphRef.item } // prettier-ignore
 
     onPromptRelatedMessage = (msg: PromptRelated_WsMsg) => {
         // console.debug(`🐰 ${msg.type} ${JSON.stringify(msg.data)}`)
-        const graph = this.graph.item
+        const graph = this.graph
         if (msg.type === 'execution_start') return
         if (msg.type === 'execution_cached') return graph.onExecutionCached(msg)
         if (msg.type === 'executing') return this.onExecuting(msg)
@@ -69,10 +75,10 @@ export class ComfyPromptL {
 
     /** update pointer to the currently executing node */
     private onExecuting = (msg: WsMsgExecuting) => {
-        this.graph.item.onExecuting(msg)
+        this.graph.onExecuting(msg)
         if (msg.data.node == null) {
-            // if (this.step.item.data.status !== Status.Failure) {
-            //     this.step.item.update({ status: Status.Success })
+            // if (this.step.data.status !== Status.Failure) {
+            //     this.step.update({ status: Status.Success })
             // }
             this._finish({ status: 'Success' })
             return
@@ -80,7 +86,7 @@ export class ComfyPromptL {
     }
     private onError = (msg: WsMsgExecutionError) => {
         console.log('>> MARK ERROR')
-        this.step.item.update({ status: Status.Failure })
+        this.step.update({ status: Status.Failure })
         this._finish({ status: 'Failure', error: msg })
     }
 
@@ -88,15 +94,17 @@ export class ComfyPromptL {
      * maybe be set during CushyStudio lifetime;
      * NOT available once cushy has restarted
      */
-    RUNTIME: Maybe<Runtime> = null
+    get RUNTIME(): Maybe<Runtime> {
+        return this.step.runtime
+    }
 
     /** udpate execution list */
     private onExecuted = (msg: WsMsgExecuted) => {
         for (const img of msg.data.output.images) {
             // retrieve the node
             const promptNodeID = msg.data.node
-            const promptNode = this.graph.item.data.comfyPromptJSON[promptNodeID]
-            const promptMeta = this.graph.item.data.metadata[promptNodeID]
+            const promptNode = this.graph.data.comfyPromptJSON[promptNodeID]
+            const promptMeta = this.graph.data.metadata[promptNodeID]
             if (promptNode == null) throw new Error(`❌ invariant violation: promptNode is null`)
 
             // create the image
@@ -112,11 +120,11 @@ export class ComfyPromptL {
                 },
             })
 
-            if (this.RUNTIME && promptMeta.storeAs) {
-                this.RUNTIME.store.getImageStore(promptMeta.storeAs).set(imgL)
+            if (this.step.runtime && promptMeta.storeAs) {
+                this.step.runtime.store.getImageStore(promptMeta.storeAs).set(imgL)
             }
             // this.images.push(images)
-            // this.step.item.addOutput({ type: 'image', imgID: image.id })
+            // this.step.addOutput({ type: 'image', imgID: image.id })
         }
         // this.outputs.push(msg) // accumulate in self
     }

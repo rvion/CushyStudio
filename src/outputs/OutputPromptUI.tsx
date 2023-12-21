@@ -1,17 +1,16 @@
 import { observer } from 'mobx-react-lite'
 import { ComfyPromptL } from 'src/models/ComfyPrompt'
+import { ProgressReport } from 'src/models/Graph'
 import { StepL } from 'src/models/Step'
-import { Button } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
+import { parseFloatNoRoundingErr } from 'src/utils/misc/parseFloatNoRoundingErr'
 import { GraphSummaryUI } from '../widgets/workspace/GraphSummaryUI'
 import { OutputPreviewWrapperUI } from './OutputPreviewWrapperUI'
-import { parseFloatNoRoundingErr } from 'src/utils/misc/parseFloatNoRoundingErr'
-import { ProgressReport } from 'src/models/Graph'
 
 export const OutputPromptPreviewUI = observer(function OutputPromptPreviewUI_(p: { step?: Maybe<StepL>; output: ComfyPromptL }) {
     const st = useSt()
     const prompt = p.output
-    const graph = prompt.graph.item
+    const graph = prompt.graph
     const size = st.historySizeStr
     if (graph == null)
         return (
@@ -49,7 +48,7 @@ export const OutputPromptUI = observer(function OutputPromptUI_(p: {
 }) {
     const prompt = p.output
     const st = useSt()
-    const graph = prompt.graph.item
+    const graph = prompt.graph
     if (graph == null) return <>no graph</>
     return (
         <div className='flex flex-col gap-1'>
