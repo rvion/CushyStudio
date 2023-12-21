@@ -161,7 +161,9 @@ async function START() {
         })
 
         // Open DevTools automatically
-        // mainWindow.webContents.openDevTools()
+        if (mode === 'dev') {
+            mainWindow.webContents.openDevTools()
+        }
 
         // check if cushy is running
         let serverStarted = false
