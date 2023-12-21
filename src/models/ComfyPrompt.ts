@@ -121,7 +121,7 @@ export class ComfyPromptL {
             })
 
             if (this.step.runtime && promptMeta.storeAs) {
-                this.step.runtime.store.getImageStore(promptMeta.storeAs).set(imgL)
+                this.step.runtime.Store.getImageStore(promptMeta.storeAs).set(imgL)
             }
             // this.images.push(images)
             // this.step.addOutput({ type: 'image', imgID: image.id })

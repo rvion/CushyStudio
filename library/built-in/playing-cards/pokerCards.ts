@@ -132,7 +132,7 @@ app({
         for (const card of cardsSorted) {
             // console.log(`[👙] `, toJS(card))
             const { col: value, row: suit } = card
-            const bg = run.store.getImageStore(`bg-${suit}`).image
+            const bg = run.Store.getImageStore(`bg-${suit}`).image
             const xx = await _drawCard(run, {
                 baseUrl: bg?.url ?? 'file:///Users/loco/dev/CushyStudio/outputs/spades_BG_00002_.png',
                 value: value as CardValue,

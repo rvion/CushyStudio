@@ -126,6 +126,6 @@ app({
             image: vAEDecode,
         })
         await run.PROMPT()
-        await run.videos.output_video_ffmpegGeneratedImagesTogether(undefined, 30, { transparent: ui.removeBG })
+        await run.Videos.output_video_ffmpegGeneratedImagesTogether(undefined, 30, { transparent: ui.removeBG })
     },
 })

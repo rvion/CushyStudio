@@ -41,6 +41,7 @@ import { createRandomGenerator } from 'src/back/random'
 import { RuntimeCanvasNative } from './RuntimeCanvasWeb'
 import { RuntimeCanvasKonva } from './RuntimeCanvasKonva'
 import { RuntimeComfyUI } from './RuntimeComfyUI'
+import { RuntimeImage } from './RuntimeImage'
 
 export type ImageAndMask = HasSingle_IMAGE & HasSingle_MASK
 
@@ -59,33 +60,44 @@ export type RuntimeExecutionResult =
 
 /** script exeuction instance */
 export class Runtime<FIELDS extends WidgetDict = any> {
-    get store(): RuntimeStore {
+    get Store(): RuntimeStore {
         const it = new RuntimeStore(this)
-        Object.defineProperty(this, 'store', { value: it })
+        Object.defineProperty(this, 'Store', { value: it })
+        return it
+    }
+    get ComfyUI(): RuntimeComfyUI {
+        const it = new RuntimeComfyUI(this)
+        Object.defineProperty(this, 'ComfyUI', { value: it })
         return it
     }
 
-    get hosts(): RuntimeHosts {
+    get Images(): RuntimeImage {
+        const it = new RuntimeImage(this)
+        Object.defineProperty(this, 'Images', { value: it })
+        return it
+    }
+
+    get Hosts(): RuntimeHosts {
         const it = new RuntimeHosts(this)
-        Object.defineProperty(this, 'hosts', { value: it })
+        Object.defineProperty(this, 'Hosts', { value: it })
         return it
     }
 
-    get cushy(): RuntimeCushy {
+    get Cushy(): RuntimeCushy {
         const it = new RuntimeCushy(this)
-        Object.defineProperty(this, 'cushy', { value: it })
+        Object.defineProperty(this, 'Cushy', { value: it })
         return it
     }
 
-    get apps(): RuntimeApps {
+    get Apps(): RuntimeApps {
         const it = new RuntimeApps(this)
-        Object.defineProperty(this, 'apps', { value: it })
+        Object.defineProperty(this, 'Apps', { value: it })
         return it
     }
 
-    get videos(): RuntimeVideo {
+    get Videos(): RuntimeVideo {
         const it = new RuntimeVideo(this)
-        Object.defineProperty(this, 'videos', { value: it })
+        Object.defineProperty(this, 'Videos', { value: it })
         return it
     }
 
@@ -93,9 +105,9 @@ export class Runtime<FIELDS extends WidgetDict = any> {
      * SDK to programmatically build images
      * using the KonvaJS library (layers, filters, effects, etc.)
      */
-    get canvas(): RuntimeCanvasKonva {
+    get Canvas(): RuntimeCanvasKonva {
         const it = new RuntimeCanvasKonva(this)
-        Object.defineProperty(this, 'canvas', { value: it })
+        Object.defineProperty(this, 'Canvas', { value: it })
         return it
     }
 
@@ -103,15 +115,9 @@ export class Runtime<FIELDS extends WidgetDict = any> {
      * SDK to programmatically build images
      * using the native web canvas api
      */
-    get canvas_native(): RuntimeCanvasNative {
+    get CanvasNative(): RuntimeCanvasNative {
         const it = new RuntimeCanvasNative(this)
-        Object.defineProperty(this, 'canvas_native', { value: it })
-        return it
-    }
-
-    get comfyui(): RuntimeComfyUI {
-        const it = new RuntimeComfyUI(this)
-        Object.defineProperty(this, 'comfyui', { value: it })
+        Object.defineProperty(this, 'CanvasNative', { value: it })
         return it
     }
 

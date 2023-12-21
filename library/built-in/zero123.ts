@@ -22,11 +22,13 @@ app({
     // execution logic
     run: async (run, ui) => {
         // 1. ensure we have the model present
-        run.hosts.main.downloadFileIfMissing(
+        const mainHost = run.Hosts.main
+        mainHost.downloadFileIfMissing(
             'https://huggingface.co/stabilityai/stable-zero123/resolve/main/stable_zero123.ckpt',
-            `${run.hosts.main.absolutPathToDownloadModelsTo}/stable_zero123.ckpt`,
+            `${mainHost.absolutPathToDownloadModelsTo}/stable_zero123.ckpt`,
         )
 
+        // 2.
         const graph = run.nodes
         const ckpt = graph.ImageOnlyCheckpointLoader({ ckpt_name: 'stable_zero123.ckpt' })
         const startImage2 = await run.loadImageAnswer(ui.image)
@@ -75,7 +77,7 @@ app({
         const imagesSorted = run.generatedImages
             .filter((i) => i.filename.startsWith('3dComfyUI_'))
             .sort((a, b) => a.filename.localeCompare(b.filename))
-        await run.videos.output_video_ffmpegGeneratedImagesTogether(imagesSorted)
+        await run.Videos.output_video_ffmpegGeneratedImagesTogether(imagesSorted)
     },
 })
 

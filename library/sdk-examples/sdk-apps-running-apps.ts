@@ -13,7 +13,7 @@ app({
         for (let batch = ui.batchesStart; batch <= ui.batchesEnd; batch++) {
             run.output_text(`starting batch ${batch}`)
             try {
-                await run.apps.execute({
+                await run.Apps.execute({
                     app: foo,
                     formValue: {
                         frameStart: 2 * batch,
@@ -43,7 +43,7 @@ const foo = app({
 
         for (let frame = ui.frameStart; frame <= ui.frameEnd; frame++) {
             const frameKey = `frame-${frame}`
-            const store: ImageStore = run.store.getImageStore(frameKey)
+            const store: ImageStore = run.Store.getImageStore(frameKey)
 
             // abort if frame is already done
             if (store.hasImage && !ui.reprocess) {

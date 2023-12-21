@@ -222,6 +222,6 @@ app({
             }
         }
 
-        if (ui.makeAVideo) await run.videos.output_video_ffmpegGeneratedImagesTogether(undefined, 2)
+        if (ui.makeAVideo) await run.Videos.output_video_ffmpegGeneratedImagesTogether(undefined, 2)
     },
 })
