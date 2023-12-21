@@ -1,5 +1,8 @@
 set -eux
+
 # rm -rf node_modules/.vite
 git checkout master || true
+
 git pull origin master || true
-./cushy-install.sh
+
+./maclinux-install.sh
