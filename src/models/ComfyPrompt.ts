@@ -85,7 +85,14 @@ export class ComfyPromptL {
         }
     }
     private onError = (msg: WsMsgExecutionError) => {
-        console.log('>> MARK ERROR')
+        console.error(msg)
+        this.db.runtimeErrors.create({
+            message: 'Prompt failed',
+            infos: msg,
+            promptID: this.id,
+            graphID: this.graph.id,
+            stepID: this.step.id,
+        })
         this.step.update({ status: Status.Failure })
         this._finish({ status: 'Failure', error: msg })
     }

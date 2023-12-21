@@ -1,6 +1,7 @@
 import { observer } from 'mobx-react-lite'
 import { Dropdown, MenuItem } from 'src/rsuite/Dropdown'
 import { useSt } from '../../state/stateContext'
+import { getDBStats } from 'src/db/getDBStats'
 
 export const MenuDebugUI = observer(function MenuDebugUI_(p: {}) {
     const st = useSt()
@@ -17,6 +18,12 @@ export const MenuDebugUI = observer(function MenuDebugUI_(p: {}) {
                 label='Fix Layout'
             />
             <MenuItem
+                onClick={() => getDBStats(st.db)}
+                icon={<span className='material-symbols-outlined text-red-500'>account_balance</span>}
+            >
+                print DB stats
+            </MenuItem>
+            <MenuItem
                 icon={<span className='material-symbols-outlined text-orange-500'>sync</span>}
                 onClick={st.restart}
                 label='Reload'
@@ -32,7 +39,6 @@ export const MenuDebugUI = observer(function MenuDebugUI_(p: {}) {
                 icon={<span className='material-symbols-outlined text-red-500'>sync</span>}
             >
                 Reset DB
-                {/* ({st.db.health.sizeTxt}) */}
             </MenuItem>
             <MenuItem //
                 icon={<span className='material-symbols-outlined text-red-500'>bug_report</span>}
