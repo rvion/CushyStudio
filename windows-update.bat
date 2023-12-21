@@ -17,4 +17,3 @@ IF %ERRORLEVEL% NEQ 0 (
 )
 
 CALL windows-install.bat
-pause

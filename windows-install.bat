@@ -29,6 +29,7 @@ IF EXIST "%PNPM_HOME%\pnpm.exe" (
 :: Verify pnpm installation
 IF NOT EXIST "%PNPM_BIN_PATH%" (
     ECHO Failed to install or update pnpm.
+    pause
     EXIT /B 1
 )
 
@@ -41,12 +42,20 @@ IF ERRORLEVEL 1 (
     CALL "%PNPM_BIN_PATH%" install node-gyp
     CALL "%PNPM_BIN_PATH%" install better-sqlite3
     CALL "%PNPM_BIN_PATH%" install
-    IF %ERRORLEVEL% NEQ 0 EXIT /B %ERRORLEVEL%
+    IF %ERRORLEVEL% NEQ 0 (
+        ECHO "installing dependencies failed"
+        pause
+        EXIT /B 1
+    )
 )
 
 :: ensuring binary dependencies are correctly linked across installed
 CALL .\node_modules\.bin\electron-builder install-app-deps
-IF %ERRORLEVEL% NEQ 0 EXIT /B %ERRORLEVEL%
+IF %ERRORLEVEL% NEQ 0 (
+    ECHO "binary dependencies linking failed"
+    pause
+    EXIT /B 1
+)
 
 :: Define the path to tsconfig.custom.json
 SET tsconfigPath=.\tsconfig.custom.json
@@ -64,6 +73,9 @@ node_modules\rcedit\bin\rcedit.exe "node_modules\electron\dist\electron.exe" --s
 :: build the release folder
 CALL .\node_modules\.bin\electron --no-sandbox -i src\shell\build.js js css
 
+ECHO ""
+ECHO SUCCESS
+pause
 EXIT /B 0
 
 :install_with_powershell
