@@ -37,20 +37,14 @@ IF NOT EXIST "%PNPM_BIN_PATH%" (
 )
 
 ECHO [===================================================]
-ECHO Installing dependencies...
-
+ECHO Installing dependencies: node-gyp first...
+CALL "%PNPM_BIN_PATH%" install node-gyp --ignore-scripts
+CALL "%PNPM_BIN_PATH%" install better-sqlite3 --ignore-scripts
 CALL "%PNPM_BIN_PATH%" install
-IF ERRORLEVEL 1 (
-    ECHO Installing dependencies: node-gyp first...
-    CALL "%PNPM_BIN_PATH%" remove better-sqlite3
-    CALL "%PNPM_BIN_PATH%" install node-gyp
-    CALL "%PNPM_BIN_PATH%" install better-sqlite3
-    CALL "%PNPM_BIN_PATH%" install
-    IF %ERRORLEVEL% NEQ 0 (
-        ECHO "installing dependencies failed"
-        pause
-        EXIT /B 1
-    )
+IF %ERRORLEVEL% NEQ 0 (
+    ECHO "installing dependencies failed"
+    pause
+    EXIT /B 1
 )
 
 ECHO [===================================================]
