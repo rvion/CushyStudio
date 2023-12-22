@@ -52,24 +52,9 @@ export const OutputPromptUI = observer(function OutputPromptUI_(p: {
     if (graph == null) return <>no graph</>
     return (
         <div className='flex flex-col gap-1'>
-            <div
-                tw='btn btn-sm btn-outline'
-                onClick={() => {
-                    st.stopCurrentPrompt()
-                }}
-            >
+            <div tw='btn btn-sm btn-outline' onClick={() => st.stopCurrentPrompt()}>
                 STOP GENERATING
             </div>
-            {/* {prompt.status !== 'Running' ? null : (
-                <div
-                    tw='btn btn-sm'
-                    onClick={() => {
-                        st.stopCurrentPrompt()
-                    }}
-                >
-                    STOP GENERATING
-                </div>
-            )} */}
             <GraphSummaryUI graph={graph} />
         </div>
     )
