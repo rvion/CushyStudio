@@ -6,7 +6,7 @@ import { createPortal } from 'react-dom'
 import { renderMinimap } from 'src/widgets/minimap/Minimap'
 import { ComfyWorkflowL } from 'src/models/ComfyWorkflow'
 
-export const GraphPreviewUI = observer(function MsgShowHTMLUI_(p: { graph: ComfyWorkflowL }) {
+export const GraphPreviewUI = observer(function GraphPreviewUI_(p: { graph: ComfyWorkflowL }) {
     const graph = p.graph
     const elMap = document.querySelector('#map')
     const cyto = graph.json_cyto_small
@@ -68,7 +68,7 @@ export const GraphPreviewUI = observer(function MsgShowHTMLUI_(p: { graph: Comfy
                         {/* <div>{n.data.width}</div> */}
                         <div>
                             {node._incomingEdges().map((ie) => (
-                                <div key={ie.from}>
+                                <div key={ie.inputName}>
                                     {ie.inputName} {'<-'} [{ie.from}]
                                 </div>
                             ))}

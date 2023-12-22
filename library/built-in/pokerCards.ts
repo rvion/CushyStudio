@@ -222,7 +222,7 @@ app({
 
             // ADD LOGOS ----------------------------------------
             let pixels: _IMAGE = graph.VAEDecode({ vae, samples: latent })
-            graph.SaveImage({ images: pixels, filename_prefix: `${suit}_${value}/img` })
+            graph.SaveImage({ images: pixels, filename_prefix: `cards/${suit}/${value}/img` })
         }
         await run.PROMPT()
         return

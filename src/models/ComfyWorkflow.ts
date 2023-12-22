@@ -174,7 +174,6 @@ export class ComfyWorkflowL {
     }
 
     get json_cyto_small(): CytoJSON {
-        const clamp = (v: number, min: number, max: number) => Math.min(Math.max(v, min), max)
         const PX = 15
         const cytoJSON = runAutolayout(this, {
             width: (node) => {
