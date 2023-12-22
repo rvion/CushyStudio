@@ -15,7 +15,7 @@ export const TabUI = observer(function TabUI_(p: {
         contents.push(x[i + 1])
     }
     return (
-        <div className={'TabUI ' + p.className} style={p.style}>
+        <div className={'flex flex-col TabUI ' + p.className} style={p.style}>
             <div tw='tablist tabs-lifted'>
                 {headers.map((h, ix) => {
                     return (
@@ -30,7 +30,7 @@ export const TabUI = observer(function TabUI_(p: {
                     )
                 })}
             </div>
-            <div tw='bg-base-100 text-base-content'>{contents[val]}</div>
+            <div tw='bg-base-100 text-base-content flex-grow'>{contents[val]}</div>
         </div>
     )
 })
