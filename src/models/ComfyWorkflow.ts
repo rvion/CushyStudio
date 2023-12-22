@@ -416,7 +416,7 @@ export class ComfyWorkflowL {
         console.info('sending prompt to ' + promptEndpoint)
 
         // meh  --------------------------------------------
-        this.update({ comfyPromptJSON: currentJSON })
+        // this.update({ comfyPromptJSON: currentJSON })
         // -------------------------------------------------
 
         const graph = this.st.db.graphs.create({
