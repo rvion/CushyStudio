@@ -8,7 +8,6 @@ Todo before release:
         ☐ single output panel
         ☐ open folder
         ☐ "edit" delete the output image
-        ☐ config => settings
         ☐ move hosts in an other panel
         ☐ safe/unsafe should be option panel
         ☐ comfyUI node explorer looks bad
@@ -16,6 +15,10 @@ Todo before release:
         ☐ rich prompt + shift/alt+enter should not accept compltion but insert newline
         ☐ better treeview with apps
         ☐ add default non virtual local host
+        ✔ config => settings @done(23-12-21 23:16)
+        ✔ ability to quickly troubleshoot db problems via debug menu @done(23-12-21 23:16)
+        ✔ proper size & orientation detection is now available for any kind of image, thanks to image-meta @done(23-12-21 23:16)
+        ✔ prompt errors reported by cushy (not runtime error) are now properly reported as errors in the UI and persisted in the DB @done(23-12-21 23:16)
         ✔ capitalize `theme` word in appbar @done(23-12-20 15:55)
         ✔ reorder appbar to have login at the end of the left section @done(23-12-20 15:55)
         ✔ opening a past step fold it in the outputs panel @done(23-12-20 15:34)

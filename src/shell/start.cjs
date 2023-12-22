@@ -32,15 +32,15 @@ function executeShellScript(scriptPath) {
 // Determine the OS and dispatch the appropriate script
 const platform = os.platform()
 if (platform === 'win32') {
-    if (mode === 'dev') executeShellScript('./cushy-start-dev.bat')
-    else executeShellScript('./cushy-start.bat')
+    if (mode === 'dev') executeShellScript('./_windows-start-dev.bat')
+    else executeShellScript('./_windows-start.bat')
 } else if (platform === 'linux') {
     // Other OS (like Linux or macOS) - execute .sh script
-    if (mode === 'dev') executeShellScript('./cushy-start-dev.sh')
-    else executeShellScript('./cushy-start.sh')
+    if (mode === 'dev') executeShellScript('./_mac-linux-start-dev.sh')
+    else executeShellScript('./_mac-linux-start.sh')
 } else if (platform === 'darwin') {
-    if (mode === 'dev') executeShellScript('./cushy-start-dev.sh')
-    else executeShellScript('./cushy-start.sh')
+    if (mode === 'dev') executeShellScript('./_mac-linux-start-dev.sh')
+    else executeShellScript('./_mac-linux-start.sh')
 } else {
     throw new Error(`Unsupported platform: ${platform}`)
 }

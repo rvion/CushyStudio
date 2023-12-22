@@ -1,6 +1,7 @@
 import { makeAutoObservable } from 'mobx'
 import { Runtime } from './Runtime'
 import { ComfyWorkflowL } from 'src/models/Graph'
+import { MediaImageL } from 'src/models/MediaImage'
 
 /** namespace for all ComfyUI-related utils */
 export class RuntimeComfyUI {
@@ -19,11 +20,16 @@ export class RuntimeComfyUI {
     }
 
     /** create a new very basic ComfyUI workflow */
-    create_ComfyUIWorkflow_forTestPurpose = (p: {
-        //
-        chekpointName?: Enum_CheckpointLoaderSimple_ckpt_name
-        positivePrompt?: string
-    }): ComfyWorkflowL => {
+    create_basicWorkflow = (
+        p: {
+            //
+            from?: MediaImageL
+            chekpointName?: Enum_CheckpointLoaderSimple_ckpt_name
+            positivePrompt?: string
+            /** min:0, max:1 */
+            denoise?: number
+        } = {},
+    ): ComfyWorkflowL => {
         const graph = this.rt.st.db.graphs.create({
             stepID: this.rt.step.id,
             comfyPromptJSON: {},
@@ -34,11 +40,18 @@ export class RuntimeComfyUI {
         const model = builder.CheckpointLoaderSimple({
             ckpt_name: p.chekpointName ?? this.favoriteCheckpiont,
         })
+        const latent = p.from //
+            ? builder.VAEEncode({
+                  vae: model,
+                  pixels: builder.Base64ImageInput({ bas64_image: p.from.url.replace('data:image/png;base64,', '') }),
+              })
+            : builder.EmptyLatentImage({})
         builder.PreviewImage({
             images: builder.VAEDecode({
                 vae: model,
                 samples: builder.KSampler({
-                    latent_image: builder.EmptyLatentImage({}),
+                    denoise: p.denoise ?? 1,
+                    latent_image: latent,
                     model: model,
                     sampler_name: 'ddim',
                     scheduler: 'ddim_uniform',

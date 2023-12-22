@@ -6,7 +6,7 @@ import { SQLITE_false, SQLITE_true } from 'src/db/SQLITE_boolean'
 import { HostL } from 'src/models/Host'
 import { Joined, Toggle } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
-import { LabelUI } from '../Panel_ComfyUIHosts'
+import { LabelUI } from '../LabelUI'
 
 export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
     const st = useSt()
@@ -20,25 +20,44 @@ export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
                 //
                 'virtualBorder',
                 'p-2 bg-base-200 w-96 shadow-xl',
-                isMain && 'bg-base-300',
+                isMain && 'bg-primary bg-opacity-30',
             ]}
         >
+            {/* {host.data.isReadonly ? (
+                <div tw='bg-secondary text-secondary-content p-0.5 opacity-50'>Readonly Host (Built-in)</div>
+            ) : (
+                <div tw='bg-base-100 p-0.5'>Custom Host</div>
+            )} */}
+            <div tw='flex gap-1'>
+                <HostWebsocketIndicatorUI showIcon host={host} />
+                {host.data.isVirtual ? (
+                    <div tw='bg-info text-info-content p-0.5 opacity-50'>Virtual Host (Types Only)</div>
+                ) : (
+                    <HostSchemaIndicatorUI showIcon showSize host={host} />
+                )}
+            </div>
+
             <div className='p-2 flex flex-col gap-1'>
                 {/* SELECT BTN */}
-                <Joined tw='flex gap-3'>
+                <Joined tw='flex '>
                     <div
                         tw={[
                             //
                             isMain ? 'btn-success' : 'btn-info btn-outline',
-                            `btn btn-md flex-grow font-bold`,
+                            `btn btn-sm flex-grow font-bold`,
                         ]}
                         onClick={() => host.electAsPrimary()}
                     >
-                        {host.data.name ?? `${host.data.hostname}:${host.data.port}`}
+                        Set Primary
+                        {/* {host.data.name ?? `${host.data.hostname}:${host.data.port}`} */}
+                    </div>
+                    <div onClick={() => host.CONNECT()} tw='btn btn-sm btn-outline'>
+                        {host.isConnected ? 'Re-Connect' : 'Connect'}
                     </div>
                     <div
-                        tw='btn'
+                        tw={['btn btn-outline btn-square btn-sm', host.isReadonly && 'btn-disabled']}
                         onClick={() => {
+                            if (host.isReadonly) return
                             runInAction(() => {
                                 host.schema.delete()
                                 host.delete()
@@ -54,8 +73,8 @@ export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
                     </div>
                 </Joined>
 
-                <div tw='divider m-1'></div>
-                <div tw='font-bold under'>Configuration</div>
+                {/* <div tw='divider m-1'></div> */}
+                {/* <div tw='font-bold under'>Configuration</div> */}
                 {/* NAME */}
                 <div tw='flex gap-1 items-center'>
                     <div tw='w-14'>name</div>
@@ -138,24 +157,17 @@ export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
                     <div tw='italic text-xs text-opacity-50'>id: {host.id}</div>
                 </div>
             </div>
-            <div tw='divider m-1'></div>
-            <div tw='font-bold under'>Status</div>
+            {/* <div tw='divider m-1'></div> */}
+            {/* <div tw='font-bold under'>Status</div> */}
             {/* STATUS */}
-            <div tw='flex gap-1'>
+            {/* <div tw='flex gap-1'>
                 <HostWebsocketIndicatorUI showIcon host={host} />
                 <HostSchemaIndicatorUI showIcon showSize host={host} />
-            </div>
-
-            <div>
+            </div> */}
+            {/* <div>
                 <div>isLoaded: {host.isConnected ? 'true' : 'false'}</div>
-                <div onClick={() => host.CONNECT()} tw='btn btn-primary w-full my-1 btn-sm'>
-                    {host.isConnected ? 'Re-Connect' : 'Connect'}
-                </div>
-            </div>
+            </div> */}
             {/* STATUS */}
-            {host.data.isVirtual ? (
-                <div tw='bg-warning text-warning-content p-0.5 opacity-50'>Virtual Host (Types Only)</div>
-            ) : null}
         </div>
     )
 })

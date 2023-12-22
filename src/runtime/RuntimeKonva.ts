@@ -54,7 +54,7 @@ export class RuntimeKonva {
     }
 
     // -----------------------------------------
-    fillFullLayerWithGradient = (layer: konva.Layer, color: Array<number | string>) => {
+    addGradientToLayer = (layer: konva.Layer, color: Array<number | string>) => {
         layer.add(
             new this.Konva.Rect({
                 x: 0,

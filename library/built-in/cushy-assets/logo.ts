@@ -6,15 +6,26 @@ app({
 
     ui: (form) => ({
         title: form.string({ placeHolder: 'My Project' }),
+        prompt: form.string({ textarea: true }),
+        from: form.imageOpt({}),
     }),
 
-    run: async ({ Konva, Colors, Images }, ui) => {
-        const layer = Konva.createStageWithLayer({ width: 512, height: 512 })
-        Konva.fillFullLayerWithGradient(layer, [0, Colors.randomHexColor(), 1, Colors.randomHexColor()])
+    run: async (run, ui) => {
+        const size = 1024
+        const { Konva, Colors, Images, ComfyUI } = run
+        const layer = Konva.createStageWithLayer({ width: size, height: size })
+        Konva.addGradientToLayer(layer, [0, Colors.randomHexColor(), 1, Colors.randomHexColor()])
         const logo = await Konva.Image_fromPath('site/static/img/CushyLogo.png')
-        logo.setSize({ width: 512, height: 512 })
+        logo.setSize({ width: size, height: size })
         layer.add(logo)
         const b64 = Konva.convertLayerToBase64(layer)
         const img = Images.createFromBase64(b64)
+        const flow = ComfyUI.create_basicWorkflow({
+            from: img,
+            denoise: 0.9,
+            positivePrompt: ui.prompt,
+            chekpointName: 'revAnimated_v122.safetensors',
+        })
+        await flow.sendPromptAndWaitUntilDone()
     },
 })

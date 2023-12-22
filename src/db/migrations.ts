@@ -467,6 +467,14 @@ export const migrations: {
             'alter table project add column autostartMaxDelay int not null default 100',
         ],
     },
+    {
+        id: 'RRvM1VVbV6',
+        name: 'more host table tweaks',
+        up: [
+            //
+            'alter table host add column isReadonly int not null default 0',
+        ],
+    },
     // {
     //     id: 'e574c006-daca-4fd0-a51b-73a66b4fbd79',
     //     name: 'create cushy_app table',

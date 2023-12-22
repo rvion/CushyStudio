@@ -932,6 +932,9 @@ export type HostT = {
     /** @default: "0", sqlType: INT */
     isVirtual: number;
 
+    /** @default: "0", sqlType: INT */
+    isReadonly: number;
+
 }
 export const HostSchema = Type.Object({
     id: Type.String(),
@@ -945,6 +948,7 @@ export const HostSchema = Type.Object({
     absolutePathToComfyUI: Type.Optional(T.Nullable(Type.String())),
     absolutPathToDownloadModelsTo: Type.Optional(T.Nullable(Type.String())),
     isVirtual: Type.Number(),
+    isReadonly: Type.Number(),
 },{ additionalProperties: false })
 
 export const HostFields = {
@@ -959,6 +963,7 @@ export const HostFields = {
     absolutePathToComfyUI: {cid:8,name:'absolutePathToComfyUI',type:'TEXT',notnull:0,dflt_value:null,pk:0},
     absolutPathToDownloadModelsTo: {cid:9,name:'absolutPathToDownloadModelsTo',type:'TEXT',notnull:0,dflt_value:null,pk:0},
     isVirtual: {cid:10,name:'isVirtual',type:'INT',notnull:1,dflt_value:'0',pk:0},
+    isReadonly: {cid:11,name:'isReadonly',type:'INT',notnull:1,dflt_value:'0',pk:0},
 }
 
 

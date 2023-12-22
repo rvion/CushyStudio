@@ -2,6 +2,7 @@ import { asHostID } from 'src/db/TYPES.gen'
 
 export const vIRTUAL_HOST_ID__BASE: HostID = asHostID('virtual-base')
 export const vIRTUAL_HOST_ID__FULL: HostID = asHostID('virtual-full')
+export const STANDARD_HOST_ID: HostID = asHostID('standard')
 
 // export type ComfyHostID = Branded<string, { ComfyUIHostID: true }>
 

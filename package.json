@@ -80,6 +80,7 @@
         "fastest-levenshtein": "^1.0.16",
         "flexlayout-react": "^0.7.15",
         "highlight.js": "^11.9.0",
+        "image-meta": "^0.2.0",
         "json5": "^2.2.3",
         "konva": "^9.2.3",
         "lexical": "^0.12.5",

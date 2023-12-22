@@ -9,10 +9,6 @@ import { useSt } from 'src/state/stateContext'
 import { asAbsolutePath } from 'src/utils/fs/pathUtils'
 import { HostUI } from './host/HostUI'
 
-export const LabelUI = observer(function LabelUI_(p: { children: React.ReactNode }) {
-    return <div tw='whitespace-nowrap'>{p.children}</div>
-})
-
 export const Panel_ComfyUIHosts = observer(function Panel_ComfyUIHosts_(p: { hostID?: HostID }) {
     const st = useSt()
     const allHosts = st.hosts.items
@@ -42,6 +38,7 @@ export const Panel_ComfyUIHosts = observer(function Panel_ComfyUIHosts_(p: { hos
                                 useHttps: SQLITE_false,
                                 absolutePathToComfyUI: asAbsolutePath(resolve('comfy')),
                                 isVirtual: SQLITE_false,
+                                isReadonly: SQLITE_false,
                             })
                         })
                     }}
@@ -60,6 +57,7 @@ export const Panel_ComfyUIHosts = observer(function Panel_ComfyUIHosts_(p: { hos
                             useHttps: SQLITE_true,
                             absolutePathToComfyUI: asAbsolutePath(resolve('comfy')),
                             isVirtual: SQLITE_false,
+                            isReadonly: SQLITE_false,
                         })
                     }}
                 >
@@ -67,10 +65,22 @@ export const Panel_ComfyUIHosts = observer(function Panel_ComfyUIHosts_(p: { hos
                     Add (cloud)
                 </div>
             </div>
+            <div tw='text-xl font-bold'>My Custom Hosts</div>
             <div tw='flex flex-wrap gap-2'>
-                {allHosts?.map((host) => {
-                    return <HostUI key={host.id} host={host} />
-                })}
+                {allHosts
+                    ?.filter((g) => !g.isReadonly)
+                    .map((host) => {
+                        return <HostUI key={host.id} host={host} />
+                    })}
+            </div>
+            <div tw='divider'></div>
+            <div tw='text-xl font-bold'>Pre-configured Hosts</div>
+            <div tw='flex flex-wrap gap-2'>
+                {allHosts
+                    ?.filter((g) => g.isReadonly)
+                    .map((host) => {
+                        return <HostUI key={host.id} host={host} />
+                    })}
             </div>
         </Panel>
     )

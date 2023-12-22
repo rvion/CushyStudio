@@ -32,7 +32,7 @@ app({
         sdk.formInstance.state.values.promptFromLlm.input.markdown = positiveTxt
 
         // generate an image
-        const graph = sdk.ComfyUI.create_ComfyUIWorkflow_forTestPurpose({
+        const graph = sdk.ComfyUI.create_basicWorkflow({
             positivePrompt: positiveTxt,
             chekpointName: ui.ckpt_name,
         })

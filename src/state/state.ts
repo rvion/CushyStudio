@@ -21,7 +21,7 @@ import { GithubUserName } from 'src/cards/GithubUser'
 import { Library } from 'src/cards/Library'
 import { asAppPath } from 'src/cards/asAppPath'
 import { GithubRepoName } from 'src/cards/githubRepo'
-import { vIRTUAL_HOST_ID__BASE, vIRTUAL_HOST_ID__FULL } from 'src/config/ComfyHostDef'
+import { STANDARD_HOST_ID, vIRTUAL_HOST_ID__BASE, vIRTUAL_HOST_ID__FULL } from 'src/config/ComfyHostDef'
 import { LiveCollection } from 'src/db/LiveCollection'
 import { LiveFind } from 'src/db/LiveQuery'
 import { SQLITE_false, SQLITE_true } from 'src/db/SQLITE_boolean'
@@ -368,6 +368,7 @@ export class STATE {
 
         this.virtualHostBase // ensure getters are called at least once so we upsert the two core virtual hosts
         this.virtualHostFull // ensure getters are called at least once so we upsert the two core virtual hosts
+        this.standardHost // ensure getters are called at least once so we upsert the two core virtual hosts
 
         this.mainHost.CONNECT()
 
@@ -394,6 +395,20 @@ export class STATE {
             name: 'virtual-ComfyUI-base',
             isLocal: SQLITE_true,
             isVirtual: SQLITE_true,
+            isReadonly: SQLITE_true,
+        })
+    }
+
+    get standardHost(): HostL {
+        return this.db.hosts.upsert({
+            id: asHostID(STANDARD_HOST_ID),
+            hostname: 'localhost',
+            useHttps: SQLITE_false,
+            port: 8188,
+            name: 'standard',
+            isLocal: SQLITE_true,
+            isVirtual: SQLITE_false,
+            isReadonly: SQLITE_true,
         })
     }
 
@@ -406,6 +421,7 @@ export class STATE {
             name: 'virtual-ComfyUI-full',
             isLocal: SQLITE_true,
             isVirtual: SQLITE_true,
+            isReadonly: SQLITE_true,
         })
     }
 

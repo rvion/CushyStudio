@@ -32,10 +32,10 @@ async function build() {
 }
 
 async function buildJS() {
-    console.log(`[🚧] 1. build js`)
+    console.log(`[BUILD] 1. build js`)
     const shouldMinify = args.includes('mini') || args.includes('minify')
-    if (shouldMinify) console.log(`[🚧] (WITH minify)`)
-    else console.log(`[🚧] (NO minify)`)
+    if (shouldMinify) console.log(`[BUILD] (WITH minify)`)
+    else console.log(`[BUILD] (NO minify)`)
 
     const res = await esbuild.build({
         entryPoints: ['src/app/main.tsx'],
@@ -124,13 +124,13 @@ async function buildJS() {
         },
         outfile: 'release/main.js',
     })
-    if (res.errors) console.log(`[🚧]`, res.errors)
-    if (res.warnings) console.log(`[🚧]`, res.warnings)
+    if (res.errors) console.log(`[BUILD]`, res.errors)
+    if (res.warnings) console.log(`[BUILD]`, res.warnings)
     writeFileSync('release/meta.json', JSON.stringify(res.metafile, null, 2))
 }
 
 async function buildTailwind() {
-    console.log(`[🚧] 2. build css `)
+    console.log(`[BUILD] 2. build css `)
 
     try {
         // Define file paths
