@@ -7,14 +7,14 @@ Todo before release:
         ☐ improve OuputWrappers to allow to open in side panes
         ☐ single output panel
         ☐ open folder
-        ☐ "edit" delete the output image
         ☐ move hosts in an other panel
         ☐ safe/unsafe should be option panel
         ☐ comfyUI node explorer looks bad
         ☐ disable the delete button for virtual-comfyui hosts
         ☐ rich prompt + shift/alt+enter should not accept compltion but insert newline
         ☐ better treeview with apps
-        ☐ add default non virtual local host
+        ✔ "edit" delete the output image @done(23-12-22 14:02)
+        ✔ add default non virtual local host @done(23-12-22 13:57)
         ✔ config => settings @done(23-12-21 23:16)
         ✔ ability to quickly troubleshoot db problems via debug menu @done(23-12-21 23:16)
         ✔ proper size & orientation detection is now available for any kind of image, thanks to image-meta @done(23-12-21 23:16)
