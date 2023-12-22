@@ -1,7 +1,7 @@
 import type { StepL } from 'src/models/Step'
 
 import { observer } from 'mobx-react-lite'
-import { ComfyWorkflowL } from 'src/models/Graph'
+import { ComfyWorkflowL } from 'src/models/ComfyWorkflow'
 import { Panel_ComfyUI } from 'src/panels/Panel_ComfyUI'
 import { useSt } from 'src/state/stateContext'
 import { OutputPreviewWrapperUI } from './OutputPreviewWrapperUI'

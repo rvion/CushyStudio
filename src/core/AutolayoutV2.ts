@@ -1,5 +1,5 @@
 import cytoscape, { Stylesheet } from 'cytoscape'
-import type { ComfyWorkflowL } from '../models/Graph'
+import type { ComfyWorkflowL } from '../models/ComfyWorkflow'
 import klay from 'cytoscape-klay'
 import { bang } from '../utils/misc/bang'
 import { ComfyNode } from './ComfyNode'

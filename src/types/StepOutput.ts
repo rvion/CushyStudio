@@ -1,5 +1,5 @@
 import type { ComfyPromptL } from 'src/models/ComfyPrompt'
-import type { ComfyWorkflowL } from 'src/models/Graph'
+import type { ComfyWorkflowL } from 'src/models/ComfyWorkflow'
 import type { Media3dDisplacementL } from 'src/models/Media3dDisplacement'
 import type { MediaImageL } from 'src/models/MediaImage'
 import { MediaSplatL } from 'src/models/MediaSplat'

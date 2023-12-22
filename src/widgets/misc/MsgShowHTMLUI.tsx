@@ -4,7 +4,7 @@ import { useLayoutEffect, useMemo } from 'react'
 // @ts-ignore
 import { createPortal } from 'react-dom'
 import { renderMinimap } from 'src/widgets/minimap/Minimap'
-import { ComfyWorkflowL } from 'src/models/Graph'
+import { ComfyWorkflowL } from 'src/models/ComfyWorkflow'
 
 export const GraphPreviewUI = observer(function MsgShowHTMLUI_(p: { graph: ComfyWorkflowL }) {
     const graph = p.graph

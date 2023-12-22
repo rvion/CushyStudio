@@ -1,4 +1,4 @@
-import type { ComfyWorkflowL } from 'src/models/Graph'
+import type { ComfyWorkflowL } from 'src/models/ComfyWorkflow'
 import { observer } from 'mobx-react-lite'
 import { Button, Tooltip, Whisper } from 'src/rsuite/shims'
 import { useSt } from '../../state/stateContext'

@@ -1,6 +1,6 @@
 import type { StepOutput } from 'src/types/StepOutput'
 import type { LiveInstance } from '../db/LiveInstance'
-import type { ComfyWorkflowL } from '../models/Graph'
+import type { ComfyWorkflowL } from './ComfyWorkflow'
 import type { ComfyPromptL } from './ComfyPrompt'
 
 import { Widget_group } from 'src/controls/Widget'

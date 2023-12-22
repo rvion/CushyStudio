@@ -13,7 +13,7 @@ import { getPngMetadataFromUint8Array } from '../utils/png/_getPngMetadata'
 import { Library } from './Library'
 
 import { dirname } from 'pathe'
-import { createEsbuildContextFor } from 'src/back/transpiler'
+import { createEsbuildContextFor } from 'src/compiler/transpiler'
 
 // @ts-ignore
 import { LiveCollection } from 'src/db/LiveCollection'

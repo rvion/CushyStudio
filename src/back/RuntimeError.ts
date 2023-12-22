@@ -1,4 +1,4 @@
-import type { ComfyWorkflowL } from 'src/models/Graph'
+import type { ComfyWorkflowL } from 'src/models/ComfyWorkflow'
 
 export class InvalidPromptError extends Error {
     constructor(

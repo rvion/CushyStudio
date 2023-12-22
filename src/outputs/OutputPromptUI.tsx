@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 import { ComfyPromptL } from 'src/models/ComfyPrompt'
-import { ProgressReport } from 'src/models/Graph'
+import { ProgressReport } from 'src/models/ComfyWorkflow'
 import { StepL } from 'src/models/Step'
 import { useSt } from 'src/state/stateContext'
 import { parseFloatNoRoundingErr } from 'src/utils/misc/parseFloatNoRoundingErr'

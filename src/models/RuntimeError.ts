@@ -1,5 +1,5 @@
 import type { LiveInstance } from '../db/LiveInstance'
-import type { ComfyWorkflowL } from './Graph'
+import type { ComfyWorkflowL } from './ComfyWorkflow'
 import type { StepL } from './Step'
 import type { ComfyPromptL } from './ComfyPrompt'
 import type { RuntimeErrorT } from 'src/db/TYPES.gen'

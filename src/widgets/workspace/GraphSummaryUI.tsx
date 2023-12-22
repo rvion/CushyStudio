@@ -1,4 +1,4 @@
-import type { ComfyWorkflowL } from 'src/models/Graph'
+import type { ComfyWorkflowL } from 'src/models/ComfyWorkflow'
 
 import { observer } from 'mobx-react-lite'
 import { Panel, Popover, ProgressLine, Whisper } from 'src/rsuite/shims'

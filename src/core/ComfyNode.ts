@@ -1,4 +1,4 @@
-import type { ComfyWorkflowL } from '../models/Graph'
+import type { ComfyWorkflowL } from '../models/ComfyWorkflow'
 import type { ComfyNodeJSON } from '../types/ComfyPrompt'
 import type { NodeProgress } from '../types/ComfyWsApi'
 
