@@ -2,7 +2,7 @@
 
 set -e # Exit with nonzero exit code if anything fails
 set -u # Treat unset variables as an error
-set -x # Print commands and their arguments as they are executed
+# set -x # Print commands and their arguments as they are executed
 
 PNPM_VERSION=8.11.0
 PNPM_HOME=$(pwd)/.cushy
@@ -11,13 +11,13 @@ PNPM_BIN_PATH=$(pwd)/.cushy/pnpm
 # Function to install using curl
 install_with_curl() {
     echo "Installing pnpm with curl..."
-    curl -fsSL https://get.pnpm.io/install.sh | env PNPM_VERSION=$PNPM_VERSION sh -
+    curl -fsSL https://get.pnpm.io/install.sh | env PNPM_VERSION=$PNPM_VERSION PNPM_BIN_PATH=$PNPM_BIN_PATH PNPM_HOME=$PNPM_HOME sh -
 }
 
 # Function to install using wget
 install_with_wget() {
     echo "Installing pnpm with wget..."
-    wget -qO- https://get.pnpm.io/install.sh | env PNPM_VERSION=$PNPM_VERSION sh -
+    wget -qO- https://get.pnpm.io/install.sh | env PNPM_VERSION=$PNPM_VERSION PNPM_BIN_PATH=$PNPM_BIN_PATH PNPM_HOME=$PNPM_HOME sh -
 }
 
 install_or_update_pnpm() {
