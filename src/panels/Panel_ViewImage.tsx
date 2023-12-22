@@ -7,7 +7,7 @@ import { Dropdown, MenuItem } from 'src/rsuite/Dropdown'
 import { Rate, Toggle } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
 import { assets } from 'src/utils/assets/assets'
-import { openExternal, showItemInFolder } from '../app/layout/openExternal'
+import { openExternal, showItemInFolder_BROKEN } from '../app/layout/openExternal'
 import { RevealUI } from 'src/rsuite/reveal/RevealUI'
 import { JsonViewUI } from 'src/widgets/workspace/JsonViewUI'
 
@@ -110,7 +110,7 @@ export const ImageActionBarUI = observer(function ImageActionBarUI_(p: { img?: M
                 tw='btn btn-sm'
                 onClick={() => {
                     if (img == null) return
-                    st.db.media_images.delete(img.id)
+                    img.openInImageEditor()
                 }}
             >
                 <span className='material-symbols-outlined'>edit</span>
@@ -136,7 +136,7 @@ export const ImageActionBarUI = observer(function ImageActionBarUI_(p: { img?: M
                     disabled={!img?.absPath}
                     onClick={() => {
                         if (!img?.absPath) return
-                        showItemInFolder(img.absPath)
+                        showItemInFolder_BROKEN(img.absPath)
                     }}
                 >
                     open folder
