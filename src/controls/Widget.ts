@@ -669,6 +669,7 @@ export class Widget_matrix implements IRequest<'matrix', Widget_matrix_opts, Wid
 
     setAll = (value: boolean) => {
         for (const v of this.allCells) v.value = value
+        this.UPDATE()
         // this.p.set(this.values)
     }
 

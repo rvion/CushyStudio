@@ -11,7 +11,7 @@ export const ProjectUI = observer(function ProjectUI_(p: {}) {
             <GalleryHoveredPreviewUI />
             <div
                 id='hovered-graph'
-                className='absolute top-3 left-3 right-3 bottom-3 [z-index:2000] overflow-auto pointer-events-none'
+                className='bg-base-300 bg-opacity-80 absolute top-3 left-3 right-3 bottom-3 [z-index:2000] overflow-auto pointer-events-none'
                 style={{ transition: 'all 0.2s ease-in-out', opacity: 0 }}
             />
             <ErrorBoundary FallbackComponent={ErrorBoundaryFallback} onReset={(details) => {}}>

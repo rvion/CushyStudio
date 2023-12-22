@@ -113,7 +113,6 @@ export class CushyLayoutManager {
                         this.currentTab = this.currentTabSet?.getSelectedNode()
                         this.currentTabID = this.currentTab?.getId()
                     })
-                    console.log(`[💠] Layout: 📦 onModelChange`)
                     this.saveCurrentAsDefault()
                 }}
                 ref={this.layoutRef}

@@ -20,7 +20,11 @@ export const WidgetMatrixUI = observer(function WidgetStrUI_(p: { widget: Widget
             <table cellSpacing={0} cellPadding={0}>
                 <thead>
                     <tr>
-                        <th className='cursor-pointer hover:text-red-600' onClick={() => req.setAll(!req.firstValue)}>
+                        <th
+                            //
+                            className='cursor-pointer hover:text-red-600'
+                            onClick={() => req.setAll(!req.firstValue)}
+                        >
                             all
                         </th>
                         {cols.map((col, ix) => (

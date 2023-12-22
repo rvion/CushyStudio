@@ -9,6 +9,7 @@ import { DraftL } from 'src/models/Draft'
 import { AppFavoriteBtnUI } from 'src/panels/libraryUI/CardPicker2UI'
 import { Dropdown, MenuItem } from 'src/rsuite/Dropdown'
 import { PhoneWrapperUI } from 'src/rsuite/PhoneWrapperUI'
+import { RevealUI } from 'src/rsuite/reveal/RevealUI'
 import { Button, Joined, Loader, Message } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
 import { openInVSCode } from 'src/utils/electron/openInVsCode'
@@ -17,7 +18,6 @@ import { WidgetUI } from '../controls/widgets/WidgetUI'
 import { ResultWrapperUI } from '../widgets/misc/ResultWrapperUI'
 import { ScrollablePaneUI } from '../widgets/misc/scrollableArea'
 import { draftContext } from '../widgets/misc/useDraft'
-import { RevealUI } from 'src/rsuite/reveal/RevealUI'
 
 export const Panel_Draft = observer(function Panel_Draft_(p: { draftID: DraftID }) {
     // 1. get draft
@@ -336,7 +336,7 @@ export const DraftHeaderUI = observer(function DraftHeaderUI_(p: {
     const app = draft.appRef.item
     const st = useSt()
     return (
-        <div tw='flex p-1 bg-base-300 border-b border-b-base-300'>
+        <div tw='flex bg-base-300 border-b border-b-base-300'>
             <div tw='flex gap-0.5 flex-grow relative text-base-content py-1'>
                 <AppIllustrationUI app={app} size='4rem' />
                 <div tw='ml-1 flex-grow'>
@@ -347,7 +347,7 @@ export const DraftHeaderUI = observer(function DraftHeaderUI_(p: {
                             'flex items-center',
                             'overflow-hidden overflow-ellipsis whitespace-nowrap',
                         ]}
-                        style={{ height: '2rem', fontSize: '1.4rem' }}
+                        style={{ height: '2rem', fontSize: '1.2rem' }}
                     >
                         <AppFavoriteBtnUI app={app} />
                         <span>{app.name}</span>

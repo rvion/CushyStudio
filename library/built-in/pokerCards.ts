@@ -1,12 +1,12 @@
 import { ImageAndMask } from 'src'
 import type { FormBuilder } from 'src/controls/FormBuilder'
-import { CardSuit, CardValue } from './_cardLayouts'
-import { _drawCard } from './_drawCard'
+import { CardSuit, CardValue } from './playing-cards/_cardLayouts'
+import { _drawCard } from './playing-cards/_drawCard'
 import { toJS } from 'mobx'
-import { ui_highresfix } from '../_prefabs/_prefabs'
-import { run_model, ui_model } from '../_prefabs/prefab_model'
-import { run_sampler, ui_sampler } from '../_prefabs/prefab_sampler'
-import { run_prompt } from '../_prefabs/prefab_prompt'
+import { ui_highresfix } from './_prefabs/_prefabs'
+import { run_model, ui_model } from './_prefabs/prefab_model'
+import { run_sampler, ui_sampler } from './_prefabs/prefab_sampler'
+import { run_prompt } from './_prefabs/prefab_prompt'
 
 app({
     metadata: {
@@ -22,6 +22,14 @@ app({
             rows: ['spades', 'hearts', 'clubs', 'diamonds'],
             default: [],
         }),
+        // [UI] SIZES --------------------------------------
+        size: form.size({
+            //
+            default: { modelType: 'SD1.5 512', aspectRatio: '16:9' },
+            group: 'size',
+        }),
+        logoSize: form.int({ default: 120, min: 20, max: 1000 }),
+
         // [UI] MODEL --------------------------------------
         model: ui_model(form),
         sampler: ui_sampler(form),
@@ -71,10 +79,6 @@ app({
         }),
 
         // theme5: form.string({ default: 'winter', group: 'theme' }),
-
-        // [UI] SIZES --------------------------------------
-        logoSize: form.int({ default: 120, min: 20, max: 1000 }),
-        size: form.size({ default: { modelType: 'SD1.5 512', aspectRatio: '16:9' }, group: 'size' }),
 
         // [UI] BORDERS ------------------------------------
         background: form.group({

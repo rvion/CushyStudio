@@ -39,7 +39,7 @@ export const Panel_Output = observer(function Panel_Output_(p: {}) {
     if (selectedStep == null) return null
     const out1 = st.hovered ?? st.focusedStepOutput ?? selectedStep.lastMediaOutput ?? st.db.media_images.last()
     const out2 = null
-    const out3 = selectedStep.currentlyExecutingOutput
+    // const out3 = selectedStep.currentlyExecutingOutput
     return (
         <>
             <div
@@ -59,11 +59,11 @@ export const Panel_Output = observer(function Panel_Output_(p: {}) {
                 <div tw={['flex flex-grow overflow-auto absolute pointer-events-none inset-0 z-30']}>
                     {out2 && <OutputUI output={out2} />}
                 </div>
-                {out3 && (
+                {/* {out3 && (
                     <div tw={['flex flex-grow overflow-auto top-20 absolute z-20 bg-base-100 bg-opacity-80']}>
                         <OutputUI output={out3} />
                     </div>
-                )}
+                )} */}
                 <LatentIfLastUI />
                 {/* </div> */}
             </div>

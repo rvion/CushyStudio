@@ -1,15 +1,14 @@
 import type { MediaImageL } from 'src/models/MediaImage'
-import type { STATE } from 'src/state/state'
 
 import { observer } from 'mobx-react-lite'
 import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch'
 import { Dropdown, MenuItem } from 'src/rsuite/Dropdown'
-import { Rate, Toggle } from 'src/rsuite/shims'
+import { RevealUI } from 'src/rsuite/reveal/RevealUI'
+import { Rate } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
 import { assets } from 'src/utils/assets/assets'
-import { openExternal, showItemInFolder_BROKEN } from '../app/layout/openExternal'
-import { RevealUI } from 'src/rsuite/reveal/RevealUI'
 import { JsonViewUI } from 'src/widgets/workspace/JsonViewUI'
+import { openExternal, showItemInFolder } from '../app/layout/openExternal'
 
 export const Panel_ViewImage = observer(function Panel_ViewImage_(p: {
     //
@@ -136,7 +135,7 @@ export const ImageActionBarUI = observer(function ImageActionBarUI_(p: { img?: M
                     disabled={!img?.absPath}
                     onClick={() => {
                         if (!img?.absPath) return
-                        showItemInFolder_BROKEN(img.absPath)
+                        showItemInFolder(img.absPath)
                     }}
                 >
                     open folder
