@@ -31,5 +31,11 @@ export class TreeDraft implements ITreeEntry {
                 this.draft.start()
             },
         },
+        {
+            name: 'add Draft',
+            icon: 'close',
+            mode: 'small',
+            onClick: () => this.draft.delete(),
+        },
     ]
 }
