@@ -1317,6 +1317,7 @@ export class Widget_choice      <T extends { [key: string]: Widget }> implements
     id: string
     type: 'choice' = 'choice'
     state: Widget_choice_state<T>
+    possibleChoices:string[]
     constructor(
         public builder: FormBuilder,
         public schema: ComfySchemaL,
@@ -1324,13 +1325,15 @@ export class Widget_choice      <T extends { [key: string]: Widget }> implements
         serial?: Widget_choice_serial<T>,
     ) {
         this.id = serial?.id ?? nanoid()
+        const _items = input.items()
+        this.possibleChoices=Object.keys(_items)
         if (serial){
-            const _newValues = input.items()
             this.state = { type:'choice', id: this.id, active: serial.active, collapsed: serial.collapsed, values: {} as any, pick: serial.pick }
             const prevValues_ = serial.values_??{}
-            for (const key in _newValues) {
-                if (key !== serial.pick) continue
-                const newItem = _newValues[key]
+            for (const key in _items) {
+                // 🔴 👇 this was a hacky fix for the perf problem
+                // 🔴 if (key !== serial.pick) continue
+                const newItem = _items[key]
                 const prevValue_ = prevValues_[key]
                 const newInput = newItem.input
                 const newType = newItem.type
@@ -1341,13 +1344,13 @@ export class Widget_choice      <T extends { [key: string]: Widget }> implements
                 }
             }
         } else {
-            const _items = input.items()
             const defaultPick: keyof T & string = (input.default as string ?? Object.keys(_items)[0]  ??'error')
             this.state = { type: 'choice', id: this.id, active: true, values: _items, pick: defaultPick }
         }
         makeAutoObservable(this)
     }
 
+    /** return the key of the selected item */
     get pick() { return this.state.pick }
     get child(){
         return this.state.values[this.state.pick]
@@ -1355,7 +1358,8 @@ export class Widget_choice      <T extends { [key: string]: Widget }> implements
     get serial(): Widget_choice_serial<T> {
         const out: { [key: string]: any } = {}
         for (const key in this.state.values) {
-            if (key !== this.state.pick) continue
+            // 🔴 👇 this was a hacky fix for the perf problem
+            // 🔴  if (key !== this.state.pick) continue
             out[key] = this.state.values[key].serial
         }
         return { type: 'choice', id: this.id, active: this.state.active, values_: out as any, collapsed: this.state.collapsed, pick: this.state.pick }
