@@ -5,6 +5,13 @@ import { ITreeEntry, TreeEntryAction } from '../TreeEntry'
 export class TreeDraft implements ITreeEntry {
     get id() { return `draft#${this.draft.id}` } // prettier-ignore
     get name() { return `${this.draft.name}` } // prettier-ignore
+    constructor(
+        //
+        public st: STATE,
+        public draft: DraftL,
+    ) {
+        this.data = this
+    }
     isFolder = false
     canRename = true
     onPrimaryAction = () => {
@@ -25,11 +32,4 @@ export class TreeDraft implements ITreeEntry {
             },
         },
     ]
-    constructor(
-        //
-        public st: STATE,
-        public draft: DraftL,
-    ) {
-        this.data = this
-    }
 }

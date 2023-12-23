@@ -83,10 +83,6 @@ export class Library {
             ;(cache.watcher as Watcher).close()
         }
 
-        // this.getOrCreatePackage('library/local' as PackageRelPath)
-        // this.getOrCreatePackage('library/built-in' as PackageRelPath)
-        // this.getOrCreatePackage('library/sdk-examples' as PackageRelPath)
-
         // register watcher to properly reload all cards
         this.watcher = cache.watcher = new Watcher('library', {
             recursive: true,

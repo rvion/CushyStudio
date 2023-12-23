@@ -34,7 +34,12 @@ export class TreeApp implements ITreeEntry {
 
     children = (): string[] => this.app?.drafts.map((draft) => `draft#${draft.id}`) ?? []
 
-    extra = (<TreeApp_BtnFavUI entry={this} />)
+    extra = () => (
+        <>
+            {this.app?.isLoadedInMemory ? <span className='material-symbols-outlined text-green-500'>memory</span> : null}
+            <TreeApp_BtnFavUI entry={this} />
+        </>
+    )
     actions: TreeEntryAction[] = [
         {
             name: 'add Draft',

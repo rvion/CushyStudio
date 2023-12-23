@@ -93,6 +93,14 @@ export class CushyAppL {
         return nameLower.includes(searchLower) || descriptionLower.includes(searchLower)
     }
 
+    get isLoadedInMemory() {
+        return this.script.getExecutable_orNull(this.id) != null
+    }
+
+    get executableOrNull(): Maybe<Executable> {
+        return this.script.getExecutable_orNull(this.id)
+    }
+
     get executable(): Maybe<Executable> {
         return this.script.getExecutable_orExtract(this.id)
     }
@@ -266,7 +274,8 @@ export class CushyAppL {
     }
 
     get name(): string {
-        if (this.executable?.metadata?.name) return this.executable.metadata.name
+        if (this.data.name) return this.data.name
+        // if (this.executable?.metadata?.name) return this.executable.metadata.name
 
         // take basename as name
         const relPath = this.script.relPath
