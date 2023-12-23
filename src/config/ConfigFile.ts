@@ -30,6 +30,8 @@ export type ConfigFile = {
     enableTypeCheckingBuiltInApps?: boolean
     /** 'light' or 'dark'; default to dark */
     theme?: ThemeName
+    /** cloud service api key */
+    cushyCloudGPUApiKey?: string
     /** defaults to 48px */
     outputPreviewSize?: number
     historyAppSize?: number

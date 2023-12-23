@@ -35,6 +35,17 @@ export const Panel_Config = observer(function Panel_Config_() {
                             name='githubUsername'
                         />
                     </FieldUI>
+                    <FieldUI label='Your github username'>
+                        <FormControl //
+                            value={config.value.cushyCloudGPUApiKey}
+                            onChange={(ev) => {
+                                config.update({ cushyCloudGPUApiKey: ev.target.value })
+                                st.updateTsConfig()
+                            }}
+                            name='githubUsername'
+                        />
+                    </FieldUI>
+
                     <FieldUI label='Gallery Image Size (px)'>
                         <InputNumberUI //
                             placeholder='48'
