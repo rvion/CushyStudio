@@ -45,9 +45,10 @@ export class TreeApp implements ITreeEntry {
             name: 'add Draft',
             icon: 'add',
             mode: 'small',
-            onClick: () => {
+            onClick: (node) => {
                 if (this.app == null) return
                 this.app.createDraft()
+                node.open()
             },
         },
     ]
