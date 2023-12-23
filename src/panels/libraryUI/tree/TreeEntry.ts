@@ -25,7 +25,7 @@ export type TreeEntryAction = {
     name: string
     mode: 'small' | 'full'
     icon: string
-    onClick: () => void
+    onClick: (node: TreeNode) => void
     className?: string
 }
 
