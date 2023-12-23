@@ -155,16 +155,16 @@ app({
                 upscale_method: 'nearest-exact',
                 height: ui.latent.size.height * ui.highResFix.scaleFactor,
                 width: ui.latent.size.width * ui.highResFix.scaleFactor,
-            })
+            })            
             latent = latent = run_sampler(
                 run,
                 {
-                    seed: ui.sampler.seed,
-                    cfg: ui.sampler.cfg,
-                    steps: ui.highResFix.steps,
-                    denoise: ui.highResFix.denoise,
-                    sampler_name: 'ddim',
-                    scheduler: 'ddim_uniform',
+                    seed: ui.highResFix.samplerSelect?ui.highResFix.samplerSelect.sampler.seed:ui.sampler.seed,
+                    cfg: ui.highResFix.samplerSelect?ui.highResFix.samplerSelect.sampler.cfg:ui.sampler.cfg,
+                    steps: ui.highResFix.samplerSelect?ui.highResFix.samplerSelect.sampler.steps:ui.sampler.steps,
+                    denoise: ui.highResFix.samplerSelect?ui.highResFix.samplerSelect.sampler.denoise:ui.highResFix.denoise,
+                    sampler_name: ui.highResFix.samplerSelect?ui.highResFix.samplerSelect.sampler.sampler_name:ui.sampler.sampler_name,
+                    scheduler: ui.highResFix.samplerSelect?ui.highResFix.samplerSelect.sampler.scheduler:ui.sampler.scheduler,
                 },
                 { ...ctx_sampler, latent, preview: false },
             ).latent

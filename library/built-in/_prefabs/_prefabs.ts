@@ -12,6 +12,7 @@
  * */
 import type { FormBuilder } from 'src/controls/FormBuilder'
 import type { ReqResult } from 'src/controls/IWidget'
+import { ui_sampler } from './prefab_sampler'
 
 // this should be a default
 export type OutputFor<UIFn extends (form: FormBuilder) => any> = ReqResult<ReturnType<UIFn>>
@@ -26,10 +27,16 @@ export const ui_highresfix = (form: FormBuilder, p: { activeByDefault?: true } =
         default: p.activeByDefault,
         label: 'Second Pass with latent Upscale (a.k.a. High Res Fix)',
         items: () => ({
-            scaleFactor: form.int({ default: 2, min: 1, max: 8 }),
-            steps: form.int({ default: 15 }),
-            denoise: form.float({ min: 0, default: 0.6, max: 1, step: 0.01 }),
-            saveIntermediaryImage: form.bool({ default: true }),
+            scaleFactor: form.float({ default: 1.5, min: 0.5, max: 8, step:0.25}),
+            denoise: form.float({ default: 0.4, step: 0.01, min: 0, max: 1,  label: 'Denoise (will be ignored if separate sampler enabled)' }),
+            saveIntermediaryImage: form.bool({ default: true }),            
+            samplerSelect: form.groupOpt({
+                label:'Separate Sampler Settings',
+                default:false,
+                items: () => ({
+                    sampler: ui_sampler(form)
+                })
+            })
         }),
     })
 
