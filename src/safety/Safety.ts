@@ -2,7 +2,7 @@ import { ManualPromise } from 'src/utils/misc/ManualPromise'
 import { STATE } from 'src/state/state'
 import type nsfwjs from 'nsfwjs'
 
-const nsfwjsImpl = require('nsfwjs')
+const nsfwjsImpl = require('nsfwjs') as typeof import('nsfwjs')
 
 export type SafetyRating = nsfwjs.predictionType
 export type SafetyResult = {
@@ -19,7 +19,8 @@ export class SafetyChecker {
     isSafe = (url: string): ManualPromise<SafetyResult> => {
         if (!this.loaded) {
             this.loaded = true
-            this.model = nsfwjsImpl.load()
+            this.model = nsfwjsImpl.load('src/safety/')
+            //'https://labs.site.com/nsfwjs/example/nsfw_demo/public/quant_nsfw_mobilenet/')
         }
 
         const prev = this.promises.get(url)
