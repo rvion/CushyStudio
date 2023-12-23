@@ -19,14 +19,15 @@ async function START() {
     // 1. START VITE DEV SERVER
 
     // DIST MODE ------------------------------------------
+    const express = require('express')
     if (mode === 'dist') {
         async function startDistServer() {
-            const express = require('express')
             const app = express()
             const path = require('path')
 
             // Directory paths for the two public folders
             app.use(express.static('release'))
+            app.use(express.static('library'))
             app.use(express.static('public'))
             // Define a simple route for the home page
             app.get('/', (req, res) => {
@@ -47,7 +48,9 @@ async function START() {
                 // For example, to specify the root directory:
                 // root: './path-to-your-root-directory'
             })
-
+            server.middlewares.use(express.static('release'))
+            server.middlewares.use(express.static('library'))
+            server.middlewares.use(express.static('public'))
             // Start the server
             await server.listen()
 

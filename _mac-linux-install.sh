@@ -57,7 +57,7 @@ fi
 
 # Install dependencies using pnpm
 echo "Installing dependencies..."
-$PNPM_BIN_PATH install
+$PNPM_BIN_PATH install --ignore-scripts
 
 # ensuring binary dependencies are correctly linked across installed
 ./node_modules/.bin/electron-builder install-app-deps

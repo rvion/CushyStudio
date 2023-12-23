@@ -21,7 +21,7 @@ export default defineConfig({
             'esbuild',
         ],
     },
-    publicDir: 'library',
+    // publicDir: 'library',
     plugins: [
         // dynamicModulePlugin(),
         react({ jsxImportSource: 'src/utils/custom-jsx' }),

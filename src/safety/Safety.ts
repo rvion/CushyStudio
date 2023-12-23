@@ -19,7 +19,7 @@ export class SafetyChecker {
     isSafe = (url: string): ManualPromise<SafetyResult> => {
         if (!this.loaded) {
             this.loaded = true
-            this.model = nsfwjsImpl.load('src/safety/')
+            this.model = nsfwjsImpl.load('/safety/')
             this.model.then(() => console.log(`[🙈] model loaded`))
             //'https://labs.site.com/nsfwjs/example/nsfw_demo/public/quant_nsfw_mobilenet/')
         }
