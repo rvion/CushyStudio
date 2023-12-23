@@ -24,6 +24,13 @@ export const MigrationsSchema = Type.Object({
     sql: Type.String(),
 },{ additionalProperties: false })
 
+export const MigrationsRefs =[
+
+]
+export const MigrationsBackRefs =[
+
+]
+
 export const MigrationsFields = {
     id: {cid:0,name:'id',type:'TEXT',notnull:0,dflt_value:null,pk:1},
     name: {cid:1,name:'name',type:'TEXT',notnull:1,dflt_value:null,pk:0},
@@ -57,6 +64,13 @@ export const UsersSchema = Type.Object({
     email: Type.String(),
     passwordHash: Type.String(),
 },{ additionalProperties: false })
+
+export const UsersRefs =[
+
+]
+export const UsersBackRefs =[
+
+]
 
 export const UsersFields = {
     id: {cid:0,name:'id',type:'INTEGER',notnull:0,dflt_value:null,pk:1},
@@ -96,6 +110,16 @@ export const GraphSchema = Type.Object({
     stepID: Type.Optional(T.Nullable(Type.String())),
     metadata: T.Graph_metadata_Schema,
 },{ additionalProperties: false })
+
+export const GraphRefs =[
+    {"fromTable":"graph","fromField":"stepID","toTable":"step","tofield":"id"}
+]
+export const GraphBackRefs =[
+    {"fromTable":"project","fromField":"rootGraphID","toTable":"graph","tofield":"id"},
+    {"fromTable":"step","fromField":"outputGraphID","toTable":"graph","tofield":"id"},
+    {"fromTable":"comfy_prompt","fromField":"graphID","toTable":"graph","tofield":"id"},
+    {"fromTable":"runtime_error","fromField":"graphID","toTable":"graph","tofield":"id"}
+]
 
 export const GraphFields = {
     id: {cid:0,name:'id',type:'string',notnull:1,dflt_value:'hex(randomblob(16))',pk:1},
@@ -140,6 +164,14 @@ export const DraftSchema = Type.Object({
     isOpened: Type.Number(),
     appID: Type.String(),
 },{ additionalProperties: false })
+
+export const DraftRefs =[
+    {"fromTable":"draft","fromField":"appID","toTable":"cushy_app","tofield":"id"}
+]
+export const DraftBackRefs =[
+    {"fromTable":"project","fromField":"currentDraftID","toTable":"draft","tofield":"id"},
+    {"fromTable":"step","fromField":"draftID","toTable":"draft","tofield":"id"}
+]
 
 export const DraftFields = {
     id: {cid:0,name:'id',type:'string',notnull:1,dflt_value:'hex(randomblob(16))',pk:1},
@@ -197,6 +229,14 @@ export const ProjectSchema = Type.Object({
     autostartDelay: Type.Number(),
     autostartMaxDelay: Type.Number(),
 },{ additionalProperties: false })
+
+export const ProjectRefs =[
+    {"fromTable":"project","fromField":"currentDraftID","toTable":"draft","tofield":"id"},
+    {"fromTable":"project","fromField":"rootGraphID","toTable":"graph","tofield":"id"}
+]
+export const ProjectBackRefs =[
+
+]
 
 export const ProjectFields = {
     id: {cid:0,name:'id',type:'string',notnull:1,dflt_value:'hex(randomblob(16))',pk:1},
@@ -262,6 +302,22 @@ export const StepSchema = Type.Object({
     draftID: Type.Optional(T.Nullable(Type.String())),
 },{ additionalProperties: false })
 
+export const StepRefs =[
+    {"fromTable":"step","fromField":"draftID","toTable":"draft","tofield":"id"},
+    {"fromTable":"step","fromField":"appID","toTable":"cushy_app","tofield":"id"},
+    {"fromTable":"step","fromField":"outputGraphID","toTable":"graph","tofield":"id"}
+]
+export const StepBackRefs =[
+    {"fromTable":"graph","fromField":"stepID","toTable":"step","tofield":"id"},
+    {"fromTable":"comfy_prompt","fromField":"stepID","toTable":"step","tofield":"id"},
+    {"fromTable":"media_text","fromField":"stepID","toTable":"step","tofield":"id"},
+    {"fromTable":"media_video","fromField":"stepID","toTable":"step","tofield":"id"},
+    {"fromTable":"media_image","fromField":"stepID","toTable":"step","tofield":"id"},
+    {"fromTable":"media_3d_displacement","fromField":"stepID","toTable":"step","tofield":"id"},
+    {"fromTable":"runtime_error","fromField":"stepID","toTable":"step","tofield":"id"},
+    {"fromTable":"media_splat","fromField":"stepID","toTable":"step","tofield":"id"}
+]
+
 export const StepFields = {
     id: {cid:0,name:'id',type:'string',notnull:1,dflt_value:'hex(randomblob(16))',pk:1},
     createdAt: {cid:1,name:'createdAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
@@ -315,6 +371,17 @@ export const ComfyPromptSchema = Type.Object({
     status: Type.Optional(T.Nullable(Type.String())),
 },{ additionalProperties: false })
 
+export const ComfyPromptRefs =[
+    {"fromTable":"comfy_prompt","fromField":"graphID","toTable":"graph","tofield":"id"},
+    {"fromTable":"comfy_prompt","fromField":"stepID","toTable":"step","tofield":"id"}
+]
+export const ComfyPromptBackRefs =[
+    {"fromTable":"media_video","fromField":"promptID","toTable":"comfy_prompt","tofield":"id"},
+    {"fromTable":"media_image","fromField":"promptID","toTable":"comfy_prompt","tofield":"id"},
+    {"fromTable":"media_3d_displacement","fromField":"promptID","toTable":"comfy_prompt","tofield":"id"},
+    {"fromTable":"runtime_error","fromField":"promptID","toTable":"comfy_prompt","tofield":"id"}
+]
+
 export const ComfyPromptFields = {
     id: {cid:0,name:'id',type:'string',notnull:1,dflt_value:'hex(randomblob(16))',pk:1},
     createdAt: {cid:1,name:'createdAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
@@ -356,6 +423,13 @@ export const ComfySchemaSchema = Type.Object({
     embeddings: T.ComfySchema_embeddings_Schema,
     hostID: Type.Optional(T.Nullable(Type.String())),
 },{ additionalProperties: false })
+
+export const ComfySchemaRefs =[
+    {"fromTable":"comfy_schema","fromField":"hostID","toTable":"host","tofield":"id"}
+]
+export const ComfySchemaBackRefs =[
+
+]
 
 export const ComfySchemaFields = {
     id: {cid:0,name:'id',type:'string',notnull:1,dflt_value:'hex(randomblob(16))',pk:1},
@@ -400,6 +474,13 @@ export const MediaTextSchema = Type.Object({
     stepID: Type.Optional(T.Nullable(Type.String())),
     title: Type.String(),
 },{ additionalProperties: false })
+
+export const MediaTextRefs =[
+    {"fromTable":"media_text","fromField":"stepID","toTable":"step","tofield":"id"}
+]
+export const MediaTextBackRefs =[
+
+]
 
 export const MediaTextFields = {
     id: {cid:0,name:'id',type:'string',notnull:1,dflt_value:'hex(randomblob(16))',pk:1},
@@ -449,6 +530,14 @@ export const MediaVideoSchema = Type.Object({
     filePath: Type.Optional(T.Nullable(Type.String())),
     url: Type.String(),
 },{ additionalProperties: false })
+
+export const MediaVideoRefs =[
+    {"fromTable":"media_video","fromField":"promptID","toTable":"comfy_prompt","tofield":"id"},
+    {"fromTable":"media_video","fromField":"stepID","toTable":"step","tofield":"id"}
+]
+export const MediaVideoBackRefs =[
+
+]
 
 export const MediaVideoFields = {
     id: {cid:0,name:'id',type:'string',notnull:1,dflt_value:'hex(randomblob(16))',pk:1},
@@ -507,6 +596,14 @@ export const MediaImageSchema = Type.Object({
     stepID: Type.Optional(T.Nullable(Type.String())),
     promptNodeID: Type.Optional(T.Nullable(Type.String())),
 },{ additionalProperties: false })
+
+export const MediaImageRefs =[
+    {"fromTable":"media_image","fromField":"stepID","toTable":"step","tofield":"id"},
+    {"fromTable":"media_image","fromField":"promptID","toTable":"comfy_prompt","tofield":"id"}
+]
+export const MediaImageBackRefs =[
+
+]
 
 export const MediaImageFields = {
     id: {cid:0,name:'id',type:'string',notnull:1,dflt_value:'hex(randomblob(16))',pk:1},
@@ -568,6 +665,14 @@ export const Media3dDisplacementSchema = Type.Object({
     promptID: Type.Optional(T.Nullable(Type.String())),
 },{ additionalProperties: false })
 
+export const Media3dDisplacementRefs =[
+    {"fromTable":"media_3d_displacement","fromField":"promptID","toTable":"comfy_prompt","tofield":"id"},
+    {"fromTable":"media_3d_displacement","fromField":"stepID","toTable":"step","tofield":"id"}
+]
+export const Media3dDisplacementBackRefs =[
+
+]
+
 export const Media3dDisplacementFields = {
     id: {cid:0,name:'id',type:'string',notnull:1,dflt_value:'hex(randomblob(16))',pk:1},
     createdAt: {cid:1,name:'createdAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
@@ -620,6 +725,15 @@ export const RuntimeErrorSchema = Type.Object({
     stepID: Type.Optional(T.Nullable(Type.String())),
 },{ additionalProperties: false })
 
+export const RuntimeErrorRefs =[
+    {"fromTable":"runtime_error","fromField":"stepID","toTable":"step","tofield":"id"},
+    {"fromTable":"runtime_error","fromField":"graphID","toTable":"graph","tofield":"id"},
+    {"fromTable":"runtime_error","fromField":"promptID","toTable":"comfy_prompt","tofield":"id"}
+]
+export const RuntimeErrorBackRefs =[
+
+]
+
 export const RuntimeErrorFields = {
     id: {cid:0,name:'id',type:'string',notnull:1,dflt_value:'hex(randomblob(16))',pk:1},
     createdAt: {cid:1,name:'createdAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
@@ -658,6 +772,13 @@ export const MediaSplatSchema = Type.Object({
     url: Type.String(),
 },{ additionalProperties: false })
 
+export const MediaSplatRefs =[
+    {"fromTable":"media_splat","fromField":"stepID","toTable":"step","tofield":"id"}
+]
+export const MediaSplatBackRefs =[
+
+]
+
 export const MediaSplatFields = {
     id: {cid:0,name:'id',type:'string',notnull:1,dflt_value:'hex(randomblob(16))',pk:1},
     createdAt: {cid:1,name:'createdAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
@@ -688,6 +809,13 @@ export const CustomDataSchema = Type.Object({
     updatedAt: Type.Number(),
     json: T.CustomData_json_Schema,
 },{ additionalProperties: false })
+
+export const CustomDataRefs =[
+
+]
+export const CustomDataBackRefs =[
+
+]
 
 export const CustomDataFields = {
     id: {cid:0,name:'id',type:'string',notnull:1,dflt_value:'hex(randomblob(16))',pk:1},
@@ -730,6 +858,13 @@ export const CushyScriptSchema = Type.Object({
     lastEvaluatedAt: Type.Optional(T.Nullable(Type.Number())),
     lastSuccessfulEvaluationAt: Type.Optional(T.Nullable(Type.Number())),
 },{ additionalProperties: false })
+
+export const CushyScriptRefs =[
+
+]
+export const CushyScriptBackRefs =[
+    {"fromTable":"cushy_app","fromField":"scriptID","toTable":"cushy_script","tofield":"id"}
+]
 
 export const CushyScriptFields = {
     id: {cid:0,name:'id',type:'string',notnull:1,dflt_value:'hex(randomblob(16))',pk:1},
@@ -792,6 +927,14 @@ export const CushyAppSchema = Type.Object({
     publishedAt: Type.Optional(T.Nullable(Type.Number())),
 },{ additionalProperties: false })
 
+export const CushyAppRefs =[
+    {"fromTable":"cushy_app","fromField":"scriptID","toTable":"cushy_script","tofield":"id"}
+]
+export const CushyAppBackRefs =[
+    {"fromTable":"draft","fromField":"appID","toTable":"cushy_app","tofield":"id"},
+    {"fromTable":"step","fromField":"appID","toTable":"cushy_app","tofield":"id"}
+]
+
 export const CushyAppFields = {
     id: {cid:0,name:'id',type:'string',notnull:1,dflt_value:'hex(randomblob(16))',pk:1},
     createdAt: {cid:1,name:'createdAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
@@ -853,6 +996,13 @@ export const AuthSchema = Type.Object({
     expires_in: Type.Optional(T.Nullable(Type.Number())),
 },{ additionalProperties: false })
 
+export const AuthRefs =[
+
+]
+export const AuthBackRefs =[
+
+]
+
 export const AuthFields = {
     id: {cid:0,name:'id',type:'string',notnull:1,dflt_value:'hex(randomblob(16))',pk:1},
     createdAt: {cid:1,name:'createdAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
@@ -888,6 +1038,13 @@ export const TreeEntrySchema = Type.Object({
     updatedAt: Type.Number(),
     isExpanded: Type.Optional(T.Nullable(Type.Number())),
 },{ additionalProperties: false })
+
+export const TreeEntryRefs =[
+
+]
+export const TreeEntryBackRefs =[
+
+]
 
 export const TreeEntryFields = {
     id: {cid:0,name:'id',type:'string',notnull:1,dflt_value:'hex(randomblob(16))',pk:1},
@@ -951,6 +1108,13 @@ export const HostSchema = Type.Object({
     isReadonly: Type.Number(),
 },{ additionalProperties: false })
 
+export const HostRefs =[
+
+]
+export const HostBackRefs =[
+    {"fromTable":"comfy_schema","fromField":"hostID","toTable":"host","tofield":"id"}
+]
+
 export const HostFields = {
     id: {cid:0,name:'id',type:'string',notnull:1,dflt_value:'hex(randomblob(16))',pk:1},
     createdAt: {cid:1,name:'createdAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
@@ -973,119 +1137,159 @@ export const schemas = {
         'Migrations',
         MigrationsFields,
         MigrationsSchema,
+        MigrationsRefs,
+        MigrationsBackRefs,
     ),
     users: new T.TableInfo(
         'users',
         'Users',
         UsersFields,
         UsersSchema,
+        UsersRefs,
+        UsersBackRefs,
     ),
     graph: new T.TableInfo(
         'graph',
         'Graph',
         GraphFields,
         GraphSchema,
+        GraphRefs,
+        GraphBackRefs,
     ),
     draft: new T.TableInfo(
         'draft',
         'Draft',
         DraftFields,
         DraftSchema,
+        DraftRefs,
+        DraftBackRefs,
     ),
     project: new T.TableInfo(
         'project',
         'Project',
         ProjectFields,
         ProjectSchema,
+        ProjectRefs,
+        ProjectBackRefs,
     ),
     step: new T.TableInfo(
         'step',
         'Step',
         StepFields,
         StepSchema,
+        StepRefs,
+        StepBackRefs,
     ),
     comfy_prompt: new T.TableInfo(
         'comfy_prompt',
         'ComfyPrompt',
         ComfyPromptFields,
         ComfyPromptSchema,
+        ComfyPromptRefs,
+        ComfyPromptBackRefs,
     ),
     comfy_schema: new T.TableInfo(
         'comfy_schema',
         'ComfySchema',
         ComfySchemaFields,
         ComfySchemaSchema,
+        ComfySchemaRefs,
+        ComfySchemaBackRefs,
     ),
     media_text: new T.TableInfo(
         'media_text',
         'MediaText',
         MediaTextFields,
         MediaTextSchema,
+        MediaTextRefs,
+        MediaTextBackRefs,
     ),
     media_video: new T.TableInfo(
         'media_video',
         'MediaVideo',
         MediaVideoFields,
         MediaVideoSchema,
+        MediaVideoRefs,
+        MediaVideoBackRefs,
     ),
     media_image: new T.TableInfo(
         'media_image',
         'MediaImage',
         MediaImageFields,
         MediaImageSchema,
+        MediaImageRefs,
+        MediaImageBackRefs,
     ),
     media_3d_displacement: new T.TableInfo(
         'media_3d_displacement',
         'Media3dDisplacement',
         Media3dDisplacementFields,
         Media3dDisplacementSchema,
+        Media3dDisplacementRefs,
+        Media3dDisplacementBackRefs,
     ),
     runtime_error: new T.TableInfo(
         'runtime_error',
         'RuntimeError',
         RuntimeErrorFields,
         RuntimeErrorSchema,
+        RuntimeErrorRefs,
+        RuntimeErrorBackRefs,
     ),
     media_splat: new T.TableInfo(
         'media_splat',
         'MediaSplat',
         MediaSplatFields,
         MediaSplatSchema,
+        MediaSplatRefs,
+        MediaSplatBackRefs,
     ),
     custom_data: new T.TableInfo(
         'custom_data',
         'CustomData',
         CustomDataFields,
         CustomDataSchema,
+        CustomDataRefs,
+        CustomDataBackRefs,
     ),
     cushy_script: new T.TableInfo(
         'cushy_script',
         'CushyScript',
         CushyScriptFields,
         CushyScriptSchema,
+        CushyScriptRefs,
+        CushyScriptBackRefs,
     ),
     cushy_app: new T.TableInfo(
         'cushy_app',
         'CushyApp',
         CushyAppFields,
         CushyAppSchema,
+        CushyAppRefs,
+        CushyAppBackRefs,
     ),
     auth: new T.TableInfo(
         'auth',
         'Auth',
         AuthFields,
         AuthSchema,
+        AuthRefs,
+        AuthBackRefs,
     ),
     tree_entry: new T.TableInfo(
         'tree_entry',
         'TreeEntry',
         TreeEntryFields,
         TreeEntrySchema,
+        TreeEntryRefs,
+        TreeEntryBackRefs,
     ),
     host: new T.TableInfo(
         'host',
         'Host',
         HostFields,
         HostSchema,
+        HostRefs,
+        HostBackRefs,
     ),
 }

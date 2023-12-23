@@ -300,7 +300,7 @@ export class LiveTable<T extends BaseInstanceFields, L extends LiveInstance<T, L
 
     // DELETION ------------------------------------------------------------
 
-    stmt_deleteByID = this.db.prepareDelete<string, void>(`delete from ${this.name} where id = ?`)
+    // stmt_deleteByID = this.db.prepareDelete<string, void>(`delete from ${this.name} where id = ?`)
 
     /**
      * TODO: we this use this field to throw if a
@@ -309,10 +309,25 @@ export class LiveTable<T extends BaseInstanceFields, L extends LiveInstance<T, L
     zz_deleted: boolean = false
 
     delete = (id: string) => {
-        console.log(`[👙] `)
-        this.stmt_deleteByID(id)
-        this.zz_deleted = true
-        this.liveEntities.delete(id)
+        const sql = `delete from ${this.name} where id = ?`
+        try {
+            this.infos.backrefs.forEach((backref) => {
+                const softCascadeSQL = `update ${backref.fromTable} set ${backref.fromField} = null where ${backref.fromField} = ?`
+                console.log(`[🗑️] cascade `, softCascadeSQL, id)
+                const stmt = this.db.db.prepare(softCascadeSQL)
+                // 🔴 TODO: requires an update of all liveInstances too
+                stmt.run(id)
+            })
+            console.log(`[🗑️] cascade `, sql, id)
+            const stmt = this.db.prepareDelete<string, void>(sql)
+            stmt(id)
+            this.zz_deleted = true
+            this.liveEntities.delete(id)
+        } catch (e) {
+            console.log(`[🗑️] sql failed:`, sql, [id])
+            console.error(e)
+            throw e
+        }
     }
     // ------------------------------------------------------------
 

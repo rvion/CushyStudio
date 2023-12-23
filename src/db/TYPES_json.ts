@@ -47,6 +47,8 @@ export const MediaImage_infos_Schema = Type.Record(Type.String(), Type.Any())
 export type RuntimeError_infos = { [key: string]: any }
 export const RuntimeError_infos_Schema = Type.Record(Type.String(), Type.Any())
 
+export type DBRef = { fromTable: string; fromField: string; toTable: string; tofield: string }
+
 export class TableInfo<T = any> {
     cols: SqlColDef[]
     // insertSQL: string
@@ -56,6 +58,8 @@ export class TableInfo<T = any> {
         public ts_name: string,
         public fields: { [fieldName: string]: SqlColDef },
         public schema: TObject<any>,
+        public refs: DBRef[],
+        public backrefs: DBRef[],
     ) {
         this.cols = Object.values(fields)
         // this.insertSQL = [
