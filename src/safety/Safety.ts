@@ -20,6 +20,7 @@ export class SafetyChecker {
         if (!this.loaded) {
             this.loaded = true
             this.model = nsfwjsImpl.load('src/safety/')
+            this.model.then(() => console.log(`[🙈] model loaded`))
             //'https://labs.site.com/nsfwjs/example/nsfw_demo/public/quant_nsfw_mobilenet/')
         }
 
@@ -29,7 +30,6 @@ export class SafetyChecker {
         const next = new ManualPromise<SafetyResult>()
         this.promises.set(url, next)
         this.model?.then(async (model) => {
-            console.log(`[🙈] model loaded`)
             // 1. get dom image and wait for it to be ready
             const img = await new Promise<HTMLImageElement>((yes, no) => {
                 const img = new Image()
