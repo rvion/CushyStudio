@@ -40,7 +40,7 @@ export const GraphPreviewUI = observer(function GraphPreviewUI_(p: { graph: Comf
 
     const fullGraph = (
         <>
-            {cyto.elements.nodes.length}
+            {/* {cyto.elements.nodes.length} */}
             {cyto.elements.nodes.map((n) => {
                 const node = graph.getNode(n.data.originalID)
                 if (node == null) return
