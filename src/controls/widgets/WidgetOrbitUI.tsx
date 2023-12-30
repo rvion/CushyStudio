@@ -1,11 +1,11 @@
 import type { OrbitControls as OrbitControlsT } from 'three/examples/jsm/controls/OrbitControls'
 
-import { OrbitControls, PerspectiveCamera, PivotControls, RenderTexture, Text } from '@react-three/drei'
+import { OrbitControls, PerspectiveCamera, RenderTexture, Text } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
 import { runInAction } from 'mobx'
+import { observer } from 'mobx-react-lite'
 import { useRef } from 'react'
 import { Widget_orbit } from '../Widget'
-import { observer } from 'mobx-react-lite'
 
 const clampMod = (v: number, min: number, max: number) => {
     const rangeSize = max - min + 1
@@ -16,15 +16,13 @@ export const WidgetOrbitUI = observer((p: { widget: Widget_orbit }) => {
     const ref = useRef<any>(null)
     return (
         <div tw='virtualBorder'>
-            <div
-                tw='btn'
-                onClick={() => {
-                    p.widget.reset()
-                }}
-            >
-                reset
+            <div tw='flex items-center'>
+                <div tw='btn' onClick={() => p.widget.reset()}>
+                    reset
+                </div>
+                {/* <pre>{JSON.stringify(p.widget.euler, null, 2)}</pre> */}
+                <pre tw='text-xs italic'>{JSON.stringify(p.widget.englishSummary, null, 2)}</pre>
             </div>
-            <pre>{JSON.stringify(p.widget.euler, null, 2)}</pre>
             <Canvas
                 camera={{
                     //

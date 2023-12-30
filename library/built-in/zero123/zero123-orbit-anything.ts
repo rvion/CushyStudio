@@ -1,3 +1,4 @@
+import { run_prompt } from '../_prefabs/prefab_prompt'
 import { run_sampler } from '../_prefabs/prefab_sampler'
 
 // todo:
@@ -68,16 +69,16 @@ app({
             samples: latent,
             crop: 'disabled',
             upscale_method: 'nearest-exact',
-            height: 512,
-            width: 512,
+            height: 768,
+            width: 768,
         })
         latent = latent = run_sampler(
             run,
             {
                 seed: run.randomSeed(),
-                cfg: 4,
-                steps: 15,
-                denoise: 0.6,
+                cfg: 6,
+                steps: 30,
+                denoise: 0.66,
                 sampler_name: 'ddim',
                 scheduler: 'ddim_uniform',
             },
@@ -87,8 +88,16 @@ app({
                 ckpt: ckpt2,
                 clip: ckpt2,
                 vae: ckpt2,
-                negative: run.formatEmbeddingForComfyUI('EasyNegative'),
-                positive: '3dcg, toy dinosaur, green',
+                negative: '', // run.formatEmbeddingForComfyUI('EasyNegative'),
+                positive: run_prompt(run, {
+                    richPrompt: {
+                        tokens: [
+                            // inject the english words for the angle
+                            { type: 'text', text: ui.orbit.englishSummary },
+                            ...ui.sndPass.positive.tokens,
+                        ],
+                    },
+                }).conditionning,
             },
         ).latent
 
