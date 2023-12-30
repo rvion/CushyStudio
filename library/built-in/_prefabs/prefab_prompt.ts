@@ -5,8 +5,11 @@ export const run_prompt = (
     run: Runtime,
     p: {
         richPrompt: WidgetPromptOutput
-        clip: _CLIP
-        ckpt: _MODEL
+        /** recommanded, but if left empty, AUTO will be used */
+        clip?: _CLIP
+        /** recommanded, but if left empty, AUTO will be used */
+        ckpt?: _MODEL
+
         outputWildcardsPicked?: boolean
         seed?: number
     },
@@ -18,8 +21,8 @@ export const run_prompt = (
 } => {
     let text = ''
     const richPrompt = p.richPrompt
-    let clip = p.clip
-    let ckpt = p.ckpt
+    let clip = p.clip ?? run.AUTO
+    let ckpt = p.ckpt ?? run.AUTO
     if (richPrompt) {
         const textToOutput: string[] = []
         for (const tok of richPrompt.tokens) {
