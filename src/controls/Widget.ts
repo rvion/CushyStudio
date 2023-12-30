@@ -94,6 +94,16 @@ export class Widget_orbit implements IRequest<'orbit', Widget_orbit_opts, Widget
         this.state.val.azimuth = this.input.default?.azimuth ?? 0
         this.state.val.elevation = this.input.default?.elevation ?? 0
     }
+    get euler(){
+        const radius = 5
+        const azimuthRad = this.state.val.azimuth * (Math.PI / 180)
+        const elevationRad = this.state.val.elevation * (Math.PI / 180)
+        const x =radius * Math.cos(elevationRad) * Math.sin(azimuthRad)
+        const y =radius * Math.cos(elevationRad) * Math.cos(azimuthRad)
+        const z = radius * Math.sin(elevationRad)
+        // const cameraPosition =[x,y,z] as const
+        return {x:y,y:z,z:-x}
+    }
     constructor(
         public builder: FormBuilder,
         public schema: ComfySchemaL,
