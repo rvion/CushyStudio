@@ -5,8 +5,9 @@ import { Runtime } from './Runtime'
 import { LiveTable } from 'src/db/LiveTable'
 import { CustomDataT } from 'src/db/TYPES.gen'
 import { bang } from 'src/utils/misc/bang'
+import { exhaust } from 'src/utils/misc/ComfyUtils'
 
-export type StoreScope = 'global' | 'app' | 'drafts' | 'run'
+export type StoreScope = 'global' | 'app' | 'draft' | 'run'
 
 /** namespace for all store-related utils */
 export class RuntimeStore {
@@ -85,7 +86,7 @@ export class RuntimeStore {
     private mkPrefixForScope = (scope: StoreScope) => {
         if (scope === 'global') return ''
         if (scope === 'app') return `app:${this.rt.step.app.id}`
-        if (scope === 'drafts') return `draft:${bang(this.rt.step.data.draftID)}`
+        if (scope === 'draft') return `draft:${bang(this.rt.step.data.draftID)}`
         if (scope === 'run') return `run:${this.rt.step.id}`
         return exhaust(scope)
     }
