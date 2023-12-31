@@ -409,7 +409,7 @@ export class GitManagedFolder {
             ? Math.floor(Math.random() * 1000 * 1)
             : minutesBetweenChecks * MINUTE - (now - lastFetchAt)
         this.nextFetchAt = now + delayBeforeFirstUpdate
-        this.log(`udpate checking will start in ${Math.round(delayBeforeFirstUpdate / 1000)} seconds`)
+        this.log(`update checking will start in ${Math.round(delayBeforeFirstUpdate / 1000)} seconds`)
         await new Promise((resolve) => setTimeout(resolve, delayBeforeFirstUpdate))
 
         // 5. start the update interval

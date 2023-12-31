@@ -105,7 +105,7 @@ export class ComfyPromptL {
         return this.step.runtime
     }
 
-    /** udpate execution list */
+    /** update execution list */
     private onExecuted = (msg: WsMsgExecuted) => {
         for (const img of msg.data.output.images) {
             // retrieve the node
