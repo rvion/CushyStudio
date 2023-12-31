@@ -21,9 +21,7 @@ import { RuntimeErrorL } from './RuntimeError'
 import { ManualPromise } from 'src/utils/misc/ManualPromise'
 import { DraftL } from './Draft'
 import { LiveRefOpt } from 'src/db/LiveRefOpt'
-import { AsyncLocalStorage } from 'async_hooks'
-
-const asyncLocalStorage = new AsyncLocalStorage()
+import { getGlobalRuntimeCtx } from './_ctx2'
 
 export type FormPath = (string | number)[]
 /** a thin wrapper around an app execution */
@@ -58,9 +56,11 @@ export class StepL {
         // (avoid drilling props)
         // | 🔶 TODO: ensure memory is freed after execution
         // | 🔶 doc here: https://nodejs.org/api/async_context.html#asynchronous-context-tracking
-        const scriptExecutionStatus: RuntimeExecutionResult = await asyncLocalStorage.run(this.id, async () => {
-            return await runtime._EXECUTE(p)
-        })
+        const asyncRuntimeStorage = getGlobalRuntimeCtx()
+        const scriptExecutionStatus: RuntimeExecutionResult = await asyncRuntimeStorage.run(
+            { runtime, stepID: this.id },
+            async () => await runtime._EXECUTE(p),
+        )
 
         // const scriptExecutionStatus: RuntimeExecutionResult = await this.runtime._EXECUTE(p)
 

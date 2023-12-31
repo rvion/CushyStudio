@@ -5,6 +5,7 @@
 import type { FormBuilder } from 'src/controls/FormBuilder'
 import type { Runtime } from 'src/runtime/Runtime'
 import type { GlobalCtx } from './_ctx3'
+import type { AsyncRuntimeStorage } from './asyncRuntimeStorage'
 
 const getGlobalCtx = () => {
     const _ = (globalThis as any).globalCtx as GlobalCtx
@@ -24,16 +25,6 @@ export const runWithGlobalForm = <T>(form: FormBuilder, f: () => T): T => {
     return res
 }
 
-/** every function that may potentially call prefab run needs to be wrapped with that */
-export const runWithGlobalRun = <T>(run: Runtime, f: () => T): T => {
-    const globalCtx = getGlobalCtx()
-    const prev = globalCtx.currentRun
-    globalCtx.currentRun = run
-    const res = f()
-    globalCtx.currentRun = prev
-    return res
-}
-
 export const getCurrentForm = (): FormBuilder => {
     const globalCtx = getGlobalCtx()
     if (globalCtx.currentForm == null) {
@@ -44,8 +35,19 @@ export const getCurrentForm = (): FormBuilder => {
     return globalCtx.currentForm
 }
 
+// -------------------------------------------------------
+export const getGlobalRuntimeCtx = () => {
+    const _ = (globalThis as any).globalAsyncStorage as AsyncRuntimeStorage
+    if (_ == null) {
+        debugger
+        throw new Error(`No AsyncRuntimeStorage`)
+    }
+    return _
+}
+
 export const getCurrentRun = (): Runtime => {
-    const globalCtx = getGlobalCtx()
-    if (globalCtx.currentRun == null) throw new Error(`No run in context`)
-    return globalCtx.currentRun
+    const globalCtx = getGlobalRuntimeCtx()
+    const ctx = globalCtx.getStore()
+    if (ctx == null) throw new Error(`No run in context`)
+    return ctx.runtime
 }

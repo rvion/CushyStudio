@@ -1,4 +1,5 @@
 import 'src/models/_ctx3'
+import 'src/models/asyncRuntimeStorage'
 
 import type { Wildcards } from 'src/widgets/prompter/nodes/wildcards/wildcards'
 import type { MediaImageL } from '../models/MediaImage'

@@ -8,5 +8,5 @@ export class GlobalCtx {
     currentRun: Maybe<Runtime> = null
 }
 
-export const globalCtx = new GlobalCtx()
+const globalCtx = new GlobalCtx()
 ;(globalThis as any).globalCtx = globalCtx

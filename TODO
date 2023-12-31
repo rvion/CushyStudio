@@ -6,8 +6,8 @@ Todo :
     ✔ better hot-reload @done(23-12-31 18:38)
     ✔ store metafile @done(23-12-31 18:38)
     ✔ stop storing build artifact on disk @done(23-12-31 18:38)
+    ✔ currentRun() @done(23-12-31 18:53)
     ☐ create all nodes at once, then hydrate them after, so all json are ready
-    ☐ currentRun()
     ☐ runpod serverless
     ☐ fix login callback not beeing available after public dir change
     ☐ disable publish button if not logged in

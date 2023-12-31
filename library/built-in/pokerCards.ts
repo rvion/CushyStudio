@@ -96,7 +96,7 @@ app({
         // 1. SETUP --------------------------------------------------
         const graph = run.nodes
         const floor = (x: number) => Math.floor(x)
-        let { ckpt, vae, clip } = run_model(run, ui.model)
+        let { ckpt, vae, clip } = run_model(ui.model)
         const suits = Array.from(new Set(ui.cards.map((c) => c.row)))
         const values = Array.from(new Set(ui.cards.map((c) => c.col)))
         const W = ui.size.width, W2 = floor(W / 2), W3 = floor(W / 3), W4 = floor(W / 4) // prettier-ignore

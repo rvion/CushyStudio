@@ -82,7 +82,7 @@ app({
     run: async (run, ui) => {
         const graph = run.nodes
         // MODEL, clip skip, vae, etc. ---------------------------------------------------------------
-        let { ckpt, vae, clip } = run_model(run, ui.model)
+        let { ckpt, vae, clip } = run_model(ui.model)
 
         const posPrompt = ui.reversePositiveAndNegative ? ui.negative : ui.positive
         const negPrompt = ui.reversePositiveAndNegative ? ui.positive : ui.negative

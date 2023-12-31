@@ -27,11 +27,8 @@ export const ui_model = () => {
 }
 
 // RUN -----------------------------------------------------------
-export const run_model = (
-    //
-    run: Runtime,
-    otps: OutputFor<typeof ui_model>,
-) => {
+export const run_model = (otps: OutputFor<typeof ui_model>) => {
+    const run = getCurrentRun()
     const graph = run.nodes
 
     // 1. MODEL
