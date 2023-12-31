@@ -1,7 +1,10 @@
 Todo :
-    ☐ create all nodes at once, then hydrate them after, so all json are ready
+    ✔ currentForm() @done(23-12-31 15:38)
     ✔ fix nsfwjs by including the model locally (web host went down) @done(23-12-23 08:54)
     ✔ button to delete draft @done(23-12-31 01:16)
+    ✔ https://unjs.io/packages/image-meta @done(23-12-31 13:21)
+    ☐ create all nodes at once, then hydrate them after, so all json are ready
+    ☐ currentRun()
     ☐ runpod serverless
     ☐ fix login callback not beeing available after public dir change
     ☐ disable publish button if not logged in
@@ -22,7 +25,6 @@ Todo :
     ☐ finish full page apps
     ☐ add browser/install page
     ☐ library page on the website
-    ☐ https://unjs.io/packages/image-meta
     ☐ fix sut
     ☐ use any image as draft illustration
     ☐ draft result are too wide by default / should open in bottom panel

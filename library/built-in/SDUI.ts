@@ -33,7 +33,7 @@ app({
             startCollapsed: true,
             default: 'nsfw, nude, girl, woman, human',
         }),
-        model: ui_model(form),
+        model: ui_model(),
         latent: ui_latent(form),
         sampler: ui_sampler(form),
         highResFix: ui_highresfix(form, { activeByDefault: true }),

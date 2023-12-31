@@ -1,9 +1,9 @@
 import type { Runtime } from 'src/runtime/Runtime'
-import type { FormBuilder } from 'src/controls/FormBuilder'
-import { OutputFor } from './_prefabs'
+import type { OutputFor } from './_prefabs'
 
 // UI -----------------------------------------------------------
-export const ui_model = (form: FormBuilder) => {
+export const ui_model = () => {
+    const form = getCurrentForm()
     return form.group({
         label: 'AI Model',
         items: () => ({

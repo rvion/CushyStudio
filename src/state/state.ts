@@ -1,3 +1,5 @@
+import 'src/models/_ctx3'
+
 import type { Wildcards } from 'src/widgets/prompter/nodes/wildcards/wildcards'
 import type { MediaImageL } from '../models/MediaImage'
 import type { ComfyStatus, PromptID, PromptRelated_WsMsg, WsMsg } from '../types/ComfyWsApi'
@@ -66,7 +68,6 @@ export class STATE {
     db: LiveDB // core data
     shortcuts: ShortcutWatcher
     uploader: Uploader
-
     supabase: SupabaseClient<Database>
     auth: AuthState
 

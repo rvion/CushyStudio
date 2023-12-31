@@ -31,7 +31,7 @@ app({
         logoSize: form.int({ default: 120, min: 20, max: 1000 }),
 
         // [UI] MODEL --------------------------------------
-        model: ui_model(form),
+        model: ui_model(),
         sampler: ui_sampler(form),
         highResFix: ui_highresfix(form, { activeByDefault: true }),
         globalNegative: form.prompt({}),

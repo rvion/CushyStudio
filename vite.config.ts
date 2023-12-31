@@ -97,6 +97,8 @@ export default defineConfig({
             'node:zlib': `${installDir}/src/syms/zlib.js`,
             /* */ events: `${installDir}/src/syms/events.js`,
             'node:events': `${installDir}/src/syms/events.js`,
+            /* */ async_hooks: `${installDir}/src/syms/async_hooks.js`,
+            'node:async_hooks': `${installDir}/src/syms/async_hooks.js`,
         },
     },
 })

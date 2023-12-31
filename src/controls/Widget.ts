@@ -17,6 +17,7 @@ import { nanoid } from 'nanoid'
 import { FC } from 'react'
 import { bang } from 'src/utils/misc/bang'
 import { WidgetDI } from './widgets/WidgetUI.DI'
+import { runWithGlobalForm } from 'src/models/_ctx2'
 
 // Widget is a closed union for added type safety
 export type Widget =
@@ -1064,7 +1065,7 @@ export class Widget_list<T extends Widget> implements IRequest<'list', Widget_li
         serial?: Widget_list_serial<T>,
     ) {
         this.id = serial?.id ?? nanoid()
-        this._reference = input.element(0)
+        this._reference = runWithGlobalForm(this.builder, () => input.element(0))
         if (serial) {
             const items = serial.items_.map((sub_) => builder._HYDRATE(sub_.type, this._reference.input, sub_)) // 🔴 handler filter if wrong type
             this.state = { type: 'list', id: this.id, active: serial.active, items }
@@ -1180,7 +1181,7 @@ export class Widget_listExt      <T extends Widget> implements IRequest<'listExt
         serial?: Widget_listExt_serial<T>,
     ) {
         this.id = serial?.id ?? nanoid()
-        this._reference = input.element({width:100, height:100, ix: 0}).item
+        this._reference = runWithGlobalForm(this.builder, () => input.element({width:100, height:100, ix: 0}).item)
         if (serial) {
             const items:  WithExt<T>[] = serial.items_.map(({item_, ...ext}) => {
                 const item:T = builder._HYDRATE(item_.type, this._reference.input, item_)
@@ -1206,7 +1207,7 @@ export class Widget_listExt      <T extends Widget> implements IRequest<'listExt
 
     // METHODS -----------------------------------------------------------------------------
     addItem() {
-        const newItemPartial = this.input.element({width: this.state.width, height: this.state.height, ix: this.state.items.length})
+        const newItemPartial = runWithGlobalForm(this.builder, () => this.input.element({width: this.state.width, height: this.state.height, ix: this.state.items.length}))
         const newItem: WithExt<T> = { ...itemExtDefaults, ...newItemPartial}
         this.state.items.push(newItem)
     }
@@ -1264,7 +1265,7 @@ export class Widget_group<T extends { [key: string]: Widget }> implements IReque
         }
         // debugger
         if (serial){
-            const _newValues = input.items()
+            const _newValues = runWithGlobalForm(this.builder, () => input.items())
             this.state = { type: 'group', id: this.id, active: serial.active, collapsed: serial.collapsed, values: {} as any}
             const prevValues_ = serial.values_??{}
             for (const key in _newValues) {
@@ -1282,7 +1283,7 @@ export class Widget_group<T extends { [key: string]: Widget }> implements IReque
                 }
             }
         } else {
-            const _items = input.items()
+            const _items = runWithGlobalForm(this.builder, () => input.items())
             this.state = { type: 'group', id: this.id, active: true, values: _items, vertical: input.verticalLabels??true }
         }
         makeAutoObservable(this)
