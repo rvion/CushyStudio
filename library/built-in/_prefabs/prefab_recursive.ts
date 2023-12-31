@@ -1,7 +1,6 @@
-import type { FormBuilder } from 'src/controls/FormBuilder'
-
 // UI -----------------------------------------------------------
-export const ui_recursive = (form: FormBuilder) => {
+export const ui_recursive = () => {
+    const form = getCurrentForm()
     return form.groupOpt({
         items: () => ({
             cfg: form.float({ label: 'CFG', min: 3, max: 20, default: 8 }),

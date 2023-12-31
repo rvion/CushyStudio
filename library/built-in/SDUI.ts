@@ -34,8 +34,8 @@ app({
             default: 'nsfw, nude, girl, woman, human',
         }),
         model: ui_model(),
-        latent: ui_latent(form),
-        sampler: ui_sampler(form),
+        latent: ui_latent(),
+        sampler: ui_sampler(),
         highResFix: ui_highresfix(form, { activeByDefault: true }),
         controlnets: form.groupOpt({
             items: () => ({
@@ -50,7 +50,7 @@ app({
                 }),
             }),
         }),
-        recursiveImgToImg: ui_recursive(form),
+        recursiveImgToImg: ui_recursive(),
         loop: form.groupOpt({
             items: () => ({
                 batchCount: form.int({ default: 1 }),

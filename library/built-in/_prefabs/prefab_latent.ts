@@ -3,7 +3,8 @@ import type { ComfyNodeOutput } from 'src/core/Slot'
 import type { OutputFor } from './_prefabs'
 import type { Runtime } from 'src'
 
-export const ui_latent = (form: FormBuilder) => {
+export const ui_latent = () => {
+    const form: FormBuilder = getCurrentForm()
     return form.group({
         label: 'Start from',
         items: () => ({

@@ -3,7 +3,8 @@ import type { FormBuilder } from 'src/controls/FormBuilder'
 import type { OutputFor } from './_prefabs'
 
 // UI -----------------------------------------------------------
-export const ui_sampler = (form: FormBuilder) => {
+export const ui_sampler = () => {
+    const form: FormBuilder = getCurrentForm()
     return form.group({
         items: () => ({
             denoise: form.float({ step: 0.01, min: 0, max: 1, default: 1, label: 'Denoise', group: 'KSampler' }),
