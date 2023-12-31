@@ -132,7 +132,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
         : `_WidgetWithLabelUI ${levelClass} flex flex-row ${labelGap} ${isCollapsible ? 'items-baseline' : 'items-center'}`
 
     if (WIDGET == null) className += ' w-full'
-    if (isVertical && WIDGET) {
+    if (isVertical && /*WIDGET*/ true) {
         WIDGET = <div tw='w-full'>{WIDGET}</div>
         return (
             <fieldset className={className} key={rootKey}>
