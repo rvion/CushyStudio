@@ -213,6 +213,19 @@ export class CushyLayoutManager {
         }
     }
 
+    /** practical way to keep a tab properly named (synced with it's content) */
+    syncTabTitle = <const K extends Panel>(
+        //
+        component: K,
+        props: PropsOf<Panels[K]['widget']>,
+        title: string,
+    ) => {
+        const tabID = `/${component}/${hashJSONObject(props ?? {})}`
+        const tab = this.model.getNodeById(tabID)
+        if (tab == null) return
+        this.model.doAction(Actions.renameTab(tabID, title || component))
+    }
+
     FOCUS_OR_CREATE = <const K extends Panel>(
         component: K,
         props: PropsOf<Panels[K]['widget']>,
@@ -240,7 +253,7 @@ export class CushyLayoutManager {
                 where === 'current' //
                     ? this.currentTabSet?.getId() ?? LEFT_PANE_TABSET_ID
                     : where
-            currentLayout.addTabToTabSet(tabsetIDToAddThePanelTo, {
+            const addition = currentLayout.addTabToTabSet(tabsetIDToAddThePanelTo, {
                 component: component,
                 id: tabID,
                 icon: icon,
@@ -248,7 +261,10 @@ export class CushyLayoutManager {
                 config: props,
             })
             prevTab = this.model.getNodeById(tabID) as FL.TabNode // 🔴 UNSAFE ?
-            if (prevTab == null) return void console.log('❌ no tabAdded')
+            if (prevTab == null) {
+                console.log(`[👙] addition:`, addition, { component, tabID, icon, title, props })
+                return void console.log('❌ no new tab')
+            }
         } else {
             this.model.doAction(Actions.updateNodeAttributes(tabID, { config: props }))
             this.model.doAction(Actions.selectTab(tabID))

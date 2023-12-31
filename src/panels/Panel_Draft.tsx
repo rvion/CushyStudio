@@ -6,7 +6,6 @@ import { showItemInFolder } from 'src/app/layout/openExternal'
 import { AppIllustrationUI } from 'src/cards/fancycard/AppIllustrationUI'
 import { CushyAppL } from 'src/models/CushyApp'
 import { DraftL } from 'src/models/Draft'
-import { AppFavoriteBtnUI } from 'src/panels/libraryUI/CardPicker2UI'
 import { Dropdown, MenuItem } from 'src/rsuite/Dropdown'
 import { PhoneWrapperUI } from 'src/rsuite/PhoneWrapperUI'
 import { SelectUI } from 'src/rsuite/SelectUI'
@@ -30,6 +29,12 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
     const st = useSt()
     const draft = p.draft
     useEffect(() => draft?.AWAKE(), [draft?.id])
+
+    // ensure
+    useEffect(() => {
+        if (draft?.name != null) st.layout.syncTabTitle('Draft', { draftID: draft.id }, draft.name)
+    }, [draft?.name])
+
     // 1. draft
     if (draft == null) return <ErrorPanelUI>Draft not found</ErrorPanelUI>
 
