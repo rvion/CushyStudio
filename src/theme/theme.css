@@ -61,6 +61,27 @@
 .virtualBorder2 {
     border: 1px solid var(--fallback-bc,oklch(var(--bc)/0.5));
 }
+
+/* FIELDSETS */
+legend {
+    width: 100%;
+    /* margin-left: 1.3rem; */
+}
+fieldset {
+    background: oklch(var(--p)/.05);
+    display: block;
+    /* margin-left: 2px; */
+    /* margin-right: 2px; */
+    /* padding: .4rem; */
+    /* padding-top: 0.35em; */
+    padding-bottom: 0.3em;
+    padding-left: 0.3em;
+    padding-right: 0.3em;
+    border: 1px groove var(--fallback-p,oklch(var(--p)/0.45));
+    /* border-top: 1px groove var(--fallback-p,oklch(var(--p)/0.6)); */
+    /* border-top: 1px groove var(--fallback-p,oklch(var(--p)/0.6)); */
+    /* border: 1px groove var(--fallback-bc,oklch(var(--bc)/0.2)); */
+  }
 /* COMFY NODES ------------------------------------ */
 #CushyStudio.light {
     --comfy-default: #d6d6d6;

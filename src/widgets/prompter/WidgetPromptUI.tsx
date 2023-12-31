@@ -128,10 +128,10 @@ export const WidgetPromptUI = observer((p: { widget: Widget_prompt | Widget_prom
                         style={{
                             minHeight: '3rem',
                             background: 'var(--rs-input-bg)',
-                            borderRadius: '0.5rem',
+                            // borderRadius: '0.5rem',
                             paddingLeft: '.2rem',
                         }}
-                        className='_WidgetPromptUI virtualBorder p-0.5  rounded flex flex-grow border-gray-500 [min-width:8rem]'
+                        className='_WidgetPromptUI virtualBorder p-0.5 flex flex-grow border-gray-500 [min-width:8rem]'
                     />
                 }
                 placeholder={null}

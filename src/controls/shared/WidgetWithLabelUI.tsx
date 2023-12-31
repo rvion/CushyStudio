@@ -107,7 +107,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
             {label !== false && (
                 <span
                     //
-                    tw={[p.isTopLevel ? 'font-bold' : undefined]}
+                    tw={[p.isTopLevel ? 'font-bold text-primary' : undefined]}
                     style={
                         true && !isVertical //
                             ? { lineHeight: '2rem', display: 'inline-block' }
@@ -129,14 +129,12 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
 
     if (WIDGET == null) className += ' w-full'
     if (isVertical && WIDGET) {
-        WIDGET = (
-            <div
-                //
-                tw='w-full'
-                // style={{ padding: '0 0rem 0 2rem' }}
-            >
+        WIDGET = <div tw='w-full'>{WIDGET}</div>
+        return (
+            <fieldset className={className} key={rootKey}>
+                <legend>{LABEL}</legend>
                 {WIDGET}
-            </div>
+            </fieldset>
         )
     }
     if (p.labelPos === 'end') {
