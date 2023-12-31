@@ -33,9 +33,11 @@ export class Library {
     get appsFilteredBuiltIn(): CushyAppL[] {
         return this.appsFiltered.filter((x) => x.isBuiltIn)
     }
+
     get appsFilteredLocal(): CushyAppL[] {
         return this.appsFiltered.filter((x) => x.isLocal)
     }
+
     get appsFilteredExample(): CushyAppL[] {
         return this.appsFiltered.filter((x) => x.isExample)
     }
