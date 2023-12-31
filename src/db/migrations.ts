@@ -475,6 +475,14 @@ export const migrations: {
             'alter table host add column isReadonly int not null default 0',
         ],
     },
+    {
+        id: '3IcMByr0Rg',
+        name: 'store cushy_script metafile',
+        up: [
+            //
+            'alter table cushy_script add column metafile json',
+        ],
+    },
     // {
     //     id: 'e574c006-daca-4fd0-a51b-73a66b4fbd79',
     //     name: 'create cushy_app table',

@@ -14,7 +14,7 @@ export const LibraryHeaderUI = observer(function LibraryHeaderUI_(p: {}) {
                     // throw new Error('not implemented; should walk, list all apps, and compile them to executable')
                     const allFiles = recursivelyFindAppsInFolder(st.library, st.libraryFolderPathAbs)
                     console.log(`[👙] allFiles:`, allFiles.length)
-                    for (const x of allFiles) await x.load()
+                    for (const x of allFiles) await x.extractScriptFromFile()
                 }}
             >
                 Rebuild local store

@@ -21,6 +21,9 @@ import { RuntimeErrorL } from './RuntimeError'
 import { ManualPromise } from 'src/utils/misc/ManualPromise'
 import { DraftL } from './Draft'
 import { LiveRefOpt } from 'src/db/LiveRefOpt'
+import { AsyncLocalStorage } from 'async_hooks'
+
+const asyncLocalStorage = new AsyncLocalStorage()
 
 export type FormPath = (string | number)[]
 /** a thin wrapper around an app execution */
@@ -40,13 +43,26 @@ export class StepL {
          * */
         formInstance: Widget_group<any>
     }) => {
-        const action = this.executable
-        if (action == null) return console.log('🔴 no action found')
+        // ensure we have an executable
+        const executable = this.executable
+        if (executable == null) return console.log('🔴 no executable found for this app')
 
-        // this.data.outputGraphID = out.id
-        this.runtime = new Runtime(this)
+        // instanciate the runtime
+        const runtime = new Runtime(this)
+        this.runtime = runtime
+
+        // mark as running
         this.update({ status: Status.Running })
-        const scriptExecutionStatus: RuntimeExecutionResult = await this.runtime._EXECUTE(p)
+
+        // allocate a new async store so any async prefab can still retrieve its intance globally
+        // (avoid drilling props)
+        // | 🔶 TODO: ensure memory is freed after execution
+        // | 🔶 doc here: https://nodejs.org/api/async_context.html#asynchronous-context-tracking
+        const scriptExecutionStatus: RuntimeExecutionResult = await asyncLocalStorage.run(this.id, async () => {
+            return await runtime._EXECUTE(p)
+        })
+
+        // const scriptExecutionStatus: RuntimeExecutionResult = await this.runtime._EXECUTE(p)
 
         if (scriptExecutionStatus.type === 'error') {
             this.update({ status: Status.Failure })

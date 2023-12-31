@@ -848,6 +848,9 @@ export type CushyScriptT = {
     /** @default: null, sqlType: INT */
     lastSuccessfulEvaluationAt?: Maybe<number>;
 
+    /** @default: null, sqlType: json */
+    metafile?: Maybe<T.CushyScript_metafile>;
+
 }
 export const CushyScriptSchema = Type.Object({
     id: Type.String(),
@@ -857,6 +860,7 @@ export const CushyScriptSchema = Type.Object({
     code: Type.String(),
     lastEvaluatedAt: Type.Optional(T.Nullable(Type.Number())),
     lastSuccessfulEvaluationAt: Type.Optional(T.Nullable(Type.Number())),
+    metafile: Type.Optional(T.Nullable(T.CushyScript_metafile_Schema)),
 },{ additionalProperties: false })
 
 export const CushyScriptRefs =[
@@ -874,6 +878,7 @@ export const CushyScriptFields = {
     code: {cid:4,name:'code',type:'TEXT',notnull:1,dflt_value:null,pk:0},
     lastEvaluatedAt: {cid:5,name:'lastEvaluatedAt',type:'INT',notnull:0,dflt_value:null,pk:0},
     lastSuccessfulEvaluationAt: {cid:6,name:'lastSuccessfulEvaluationAt',type:'INT',notnull:0,dflt_value:null,pk:0},
+    metafile: {cid:7,name:'metafile',type:'json',notnull:0,dflt_value:null,pk:0},
 }
 
 

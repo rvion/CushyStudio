@@ -257,7 +257,7 @@ export class STATE {
     }
     set currentDraft(draft: DraftL | null) {
         this.project.update({ currentDraftID: draft ? draft.id : draft })
-        draft?.file?.load()
+        draft?.file?.extractScriptFromFile()
         this.closeFullLibrary()
     }
 

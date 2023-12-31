@@ -1,5 +1,6 @@
 import { TObject, TSchema, Type } from '@sinclair/typebox'
 
+import type { Metafile } from 'esbuild'
 import type { ImageInfos } from 'src/models/MediaImage'
 import type { EmbeddingName } from 'src/models/Schema'
 import type { ComfyPromptJSON } from 'src/types/ComfyPrompt'
@@ -13,6 +14,13 @@ import type { ComfyNodeID, ComfyNodeMetadata } from 'src/types/ComfyNodeID'
 export type StatusT = keyof typeof Status
 
 export const Nullable = <T extends TSchema>(schema: T) => Type.Union([schema, Type.Null(), Type.Undefined()])
+
+export type CushyScript_metafile = Metafile
+// export type CushyScript_metafile = {
+//     inputs: { [relPath: string]: { bytes: number /* incomplete types */ } }
+//     outputs: any
+// }
+export const CushyScript_metafile_Schema = Type.Record(Type.String(), Type.Any())
 
 export type Graph_metadata = { [key: ComfyNodeID]: ComfyNodeMetadata }
 export const Graph_metadata_Schema = Type.Record(Type.String(), Type.Any())

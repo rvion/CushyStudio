@@ -22,7 +22,11 @@ export async function createEsbuildContextFor(p: { entrypoints: AbsolutePath[]; 
         },
         outdir: distFolder,
         external: ['react', 'mobx', 'mobx-react-lite'],
-        // metafile: true,
+
+        // ----------------------
+        write: false,
+        metafile: true,
+        // ----------------------
         // loader: { '.png': 'dataurl' },
         // outfile: path.join(fileFolder, basenameWithoutExt + '.cushyapp.js'), // Output file path
         // write: false,

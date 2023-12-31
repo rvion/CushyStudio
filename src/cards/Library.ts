@@ -103,17 +103,55 @@ export class Library {
                 const isInLibrary = relPath.startsWith('library/') || relPath.startsWith('library\\')
                 if (!isInLibrary) return
 
-                // const pieces = relPath.split('/')
-                // if (pieces.length < 3) return
-                // const deckFolder = pieces.slice(0, 3).join('/') as PackageRelPath
+                const allAppsNeedingUpdate = new Set<CushyAppL>()
+                const allDrafts = st.layout.findTabsFor('Draft')
+                for (const d of allDrafts) {
+                    // retrieve the draft from the tab
+                    const draft = st.db.drafts.get(d.config.draftID)
+                    if (draft == null) return console.error(`[👙] missing draft ${d.config.draftID}`)
 
-                // console.log(`[👁️] rebuilding: ${deckFolder}`)
-                // const pkg = this.getOrCreatePackage(deckFolder)
-                // pkg.rebuild()
+                    // check if the changed file is directly related to the draft
+                    const file = draft.file
+                    const relPath2 = file?.relPath
+                    console.log(`[👁️] - draft: ${d.config.draftID}: relPath ${relPath2}`)
+                    let shouldUpdate = relPath2 === relPath
 
-                const currentDraft = st.currentDraft
-                const currentFile = currentDraft?.file
-                if (currentFile == null) return console.log(`[👁️] ❌ no current app`)
+                    // check if the changed file is an indirect dependency of the draft
+                    const scriptX = file?.scriptX
+                    const metafileX = scriptX?.data.metafile
+                    if (!shouldUpdate && metafileX != null) {
+                        const draftDeps = Object.keys(metafileX.inputs)
+                        // console.log(`[👁️]   | ${draftDeps.join('\n       | ')} `)
+                        const changedDep = draftDeps.find((x) => x === relPath)
+                        if (changedDep != null) {
+                            console.log(`[👁️]        | ${d.config.draftID}: one depdency (${changedDep}) changed`)
+                            shouldUpdate = true
+                        }
+                    } else {
+                        console.log(`[👁️]        | no metafile`)
+                    }
+
+                    // abort if no update is necessary
+                    if (!shouldUpdate) continue
+
+                    // 🔴 if more than one draft relatedc to the same file, will make this update more than once
+                    // 🔴 TODO: debounce
+                    console.log(`[👁️]        | 🟢 updating draft ${draft.name}! `)
+
+                    allAppsNeedingUpdate.add(draft.app)
+                }
+                const apps = [...allAppsNeedingUpdate]
+                console.log(`[👁️] ${apps.length} apps need an update`)
+                for (const app of apps) {
+                    const res = app.file.extractScriptFromFile({ force: true }).then((x) => {
+                        if (x.type === 'newScript') {
+                            x.script.extractApps()
+                        }
+                    })
+                }
+                // const currentDraft = st.currentDraft
+                // const currentFile = currentDraft?.file
+                // if (currentFile == null) return console.log(`[👁️] ❌ no current app`)
 
                 // if (relPath.endsWith('.ts') || relPath.endsWith('.tsx')) {
                 // TODO 🔴 need to reload all cards in tne deck, so `prefabs` properly "hot-reload"
@@ -121,12 +159,12 @@ export class Library {
                 // if (card == null) return console.log('file watcher update aborted: not an action')
 
                 // reload the card if it's already loaded
-                console.log(`[👁️] reloading: ${currentFile.relPath}`)
-                const res = currentFile.load({ force: true }).then((x) => {
-                    if (x.type === 'newScript') {
-                        x.script.extractApps()
-                    }
-                })
+                // console.log(`[👁️] reloading: ${currentFile.relPath}`)
+                // const res = currentFile.extractScriptFromFile({ force: true }).then((x) => {
+                //     if (x.type === 'newScript') {
+                //         x.script.extractApps()
+                //     }
+                // })
 
                 // }
             }

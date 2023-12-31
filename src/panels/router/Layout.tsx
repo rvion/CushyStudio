@@ -3,7 +3,7 @@ import type { STATE } from 'src/state/state'
 import * as FL from 'flexlayout-react'
 import { Actions, IJsonModel, Layout, Model } from 'flexlayout-react'
 
-import { makeAutoObservable, runInAction } from 'mobx'
+import { makeAutoObservable, runInAction, toJS } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { nanoid } from 'nanoid'
 import { FC, createElement, createRef } from 'react'
@@ -211,6 +211,29 @@ export class CushyLayoutManager {
         } else {
             this.fullPageComp = null
         }
+    }
+
+    findTabsFor = <K extends Panel>(
+        component: K,
+    ): {
+        //
+        tabNode: FL.TabNode
+        config: PropsOf<Panels[K]['widget']>
+    }[] => {
+        const tabPrefix = `/${component}/`
+        const tabs: FL.TabNode[] = []
+        this.model.visitNodes((node) => {
+            const id = node.getId()
+            const type = node.getType()
+            if (type === 'tab' && id.startsWith(tabPrefix)) tabs.push(node as FL.TabNode)
+        })
+        const out = tabs
+            .filter((tab) => tab.getId().startsWith(tabPrefix))
+            .map((tab) => ({
+                config: toJS(tab.getConfig()) as PropsOf<Panels[K]['widget']>,
+                tabNode: tab,
+            }))
+        return out
     }
 
     /** practical way to keep a tab properly named (synced with it's content) */

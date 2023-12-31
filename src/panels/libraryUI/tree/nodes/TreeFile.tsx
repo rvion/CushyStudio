@@ -11,7 +11,7 @@ export class TreeFile implements ITreeEntry {
     file: LibraryFile
 
     onExpand = async () => {
-        await this.file.load()
+        await this.file.extractScriptFromFile()
     }
 
     constructor(
@@ -54,18 +54,18 @@ export class TreeFile implements ITreeEntry {
             mode: 'small',
             onClick: () => {
                 if (this.file == null) return
-                this.file.load()
+                this.file.extractScriptFromFile()
             },
         },
     ]
 
     onFocusItem = () => {
         if (this.file.hasBeenLoadedAtLeastOnce) return
-        this.file.load()
+        this.file.extractScriptFromFile()
     }
 
     onPrimaryAction = (n: TreeNode) => {
-        this.file.load()
+        this.file.extractScriptFromFile()
         n.open()
     }
 
