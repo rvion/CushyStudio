@@ -107,7 +107,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
             {label !== false && (
                 <span
                     //
-                    tw={[p.isTopLevel ? 'font-bold text-primary' : undefined]}
+                    tw={[p.isTopLevel ? 'text-primary' : undefined]}
                     style={
                         true && !isVertical //
                             ? { lineHeight: '2rem', display: 'inline-block' }

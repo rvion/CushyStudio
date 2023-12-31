@@ -178,19 +178,19 @@ export class ComfyWorkflowL {
         const cytoJSON = runAutolayout(this, {
             width: (node) => {
                 const max = 20
-                console.log(`[👙] `, node.$schema.nameInComfy, node.$schema.nameInComfy.length)
+                // ⏸️ console.log(`[👙] `, node.$schema.nameInComfy, node.$schema.nameInComfy.length)
                 let len = node.$schema.nameInComfy.length
                 const prims = node._primitives()
                 for (const p of prims) {
                     const x = p.inputName.length + (p.value?.length ?? 0)
-                    console.log(`[👙] x`, x)
+                    // ⏸️ console.log(`[👙] x`, x)
                     if (x > max) {
-                        console.log(`[👙] MAX`, x)
+                        // ⏸️ console.log(`[👙] MAX`, x)
                         return max * PX
                     }
                     if (x > len) len = x
                 }
-                console.log(`[👙] OUT`, len)
+                // ⏸️ console.log(`[👙] OUT`, len)
                 return len * PX
             },
             height: (node) => {

@@ -11,7 +11,7 @@ export type ThemeName =
     | 'cupcake'
     | 'valentine'
     | 'wireframe'
-    | 'aqua'
+    // | 'aqua'
     | 'forest'
 // | 'sunset'
 // | 'luxury'
@@ -22,14 +22,14 @@ export class ThemeManager {
         //
         'light',
         'light2',
-        'dark',
-        'dark2',
-        'dark3',
         'cupcake',
         'valentine',
         'wireframe',
-        'aqua',
+        'dark',
+        'dark2',
+        'dark3',
         'forest',
+        // 'aqua',
         // 'sunset',
         // 'luxury',
         // 'business',

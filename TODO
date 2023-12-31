@@ -1,6 +1,6 @@
 Todo :
     ✔ fix nsfwjs by including the model locally (web host went down) @done(23-12-23 08:54)
-    ☐ button to delete draft
+    ✔ button to delete draft @done(23-12-31 01:16)
     ☐ runpod serverless
     ☐ fix login callback not beeing available after public dir change
     ☐ disable publish button if not logged in

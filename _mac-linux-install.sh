@@ -57,7 +57,9 @@ fi
 
 # Install dependencies using pnpm
 echo "Installing dependencies..."
-$PNPM_BIN_PATH install --ignore-scripts
+# $PNPM_BIN_PATH install node-gyp --ignore-scripts
+# $PNPM_BIN_PATH install better-sqlite3 --ignore-scripts
+$PNPM_BIN_PATH install # --ignore-scripts
 
 # ensuring binary dependencies are correctly linked across installed
 ./node_modules/.bin/electron-builder install-app-deps
