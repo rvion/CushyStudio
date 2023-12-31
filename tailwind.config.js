@@ -44,7 +44,10 @@ module.exports = {
                 dark: {
                     ...require('daisyui/src/theming/themes')['dim'],
                     // primary: 'oklch(65.69% 0.196 275.75)',
-                    secondary: '#8ebc5f', // 'oklch(0.49 0.16 246.51)',
+                    primary: '#9FA8DA',
+                    secondary: 'oklch(74.8% 0.26 342.55)',
+                    // accent: 'oklch(74.51% 0.167 183.61)',
+                    // secondary: '#8ebc5f', // 'oklch(0.49 0.16 246.51)',
                     // accent: 'oklch(74.51% 0.167 183.61)',
                     'base-100': '#2A303C',
                     'base-200': '#20252E',
