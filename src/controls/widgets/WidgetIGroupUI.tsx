@@ -13,6 +13,7 @@ export const WidgetGroupUI = observer(function WidgetItemsUI_(p: {
     const isTopLevel = req.input.topLevel
     const groupFields = Object.entries(req.state.values)
     const showAsCard = groupFields.length > 0 && !isTopLevel
+    const isHorizontal = req.input.layout === 'H'
     return (
         <div
             tw={[
@@ -32,7 +33,13 @@ export const WidgetGroupUI = observer(function WidgetItemsUI_(p: {
             {req.state.collapsed ? null : (
                 <div
                     // style={isTopLevel ? undefined : { border: '1px solid #262626' }}
-                    tw={['_WidgetGroupUI w-full', req.input.layout === 'H' ? 'flex flex-wrap gap-2' : null]}
+                    tw={[
+                        //
+                        '_WidgetGroupUI w-full',
+                        isHorizontal //
+                            ? `flex flex-wrap gap-2`
+                            : `flex flex-col gap-1`,
+                    ]}
                     className={req.input.className}
                 >
                     {groupFields.map(([rootKey, sub], ix) => (

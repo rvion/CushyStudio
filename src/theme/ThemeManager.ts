@@ -19,16 +19,17 @@ export type ThemeName =
 
 export class ThemeManager {
     themes: ThemeName[] = [
+        // dark themes
+        'dark',
+        'dark2',
+        'dark3',
+        'forest',
         //
         'light',
         'light2',
         'cupcake',
         'valentine',
         'wireframe',
-        'dark',
-        'dark2',
-        'dark3',
-        'forest',
         // 'aqua',
         // 'sunset',
         // 'luxury',

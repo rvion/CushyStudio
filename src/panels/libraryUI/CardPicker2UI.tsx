@@ -90,11 +90,13 @@ export const AppFavoriteBtnUI = observer(function AppFavoriteBtnUI_(p: {
     app: CushyAppL
 }) {
     return (
-        <AppFavoriteBtnCustomUI //
-            get={() => p.app.isFavorite}
-            set={(v) => p.app.setFavorite(v)}
-            size={p.size}
-        />
+        <div tw='btn btn-square btn-ghost btn-sm'>
+            <AppFavoriteBtnCustomUI //
+                get={() => p.app.isFavorite}
+                set={(v) => p.app.setFavorite(v)}
+                size={p.size}
+            />
+        </div>
     )
 })
 
@@ -104,11 +106,13 @@ export const DraftFavoriteBtnUI = observer(function DraftFavoriteBtnUI_(p: {
     draft: DraftL
 }) {
     return (
-        <AppFavoriteBtnCustomUI //
-            get={() => Boolean(p.draft.data.isOpened)}
-            set={(v) => p.draft.update({ isOpened: v ? SQLITE_true : SQLITE_false })}
-            size={p.size}
-        />
+        <div tw='btn btn-square btn-ghost btn-sm'>
+            <AppFavoriteBtnCustomUI //
+                get={() => Boolean(p.draft.data.isOpened)}
+                set={(v) => p.draft.update({ isOpened: v ? SQLITE_true : SQLITE_false })}
+                size={p.size}
+            />
+        </div>
     )
 })
 

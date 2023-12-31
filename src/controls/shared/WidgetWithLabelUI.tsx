@@ -30,6 +30,9 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     const isVertical = (() => {
         if (p.req.input.showID) return true
         if (st.preferedFormLayout === 'auto') {
+            if (req instanceof KLS.Widget_orbit) return true
+            if (req instanceof KLS.Widget_image) return true
+            if (req instanceof KLS.Widget_imageOpt) return true
             if (req instanceof KLS.Widget_prompt) return true
             if (req instanceof KLS.Widget_promptOpt) return true
             if (req instanceof KLS.Widget_group) return true
@@ -92,6 +95,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
         >
             {showToogle && (
                 <Toggle
+                    tw='mr-2'
                     color='green'
                     checked={toggleInfo.value}
                     onChange={toggleInfo.onChange}

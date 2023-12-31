@@ -9,6 +9,7 @@ import { DraftL } from 'src/models/Draft'
 import { AppFavoriteBtnUI } from 'src/panels/libraryUI/CardPicker2UI'
 import { Dropdown, MenuItem } from 'src/rsuite/Dropdown'
 import { PhoneWrapperUI } from 'src/rsuite/PhoneWrapperUI'
+import { SelectUI } from 'src/rsuite/SelectUI'
 import { RevealUI } from 'src/rsuite/reveal/RevealUI'
 import { Button, Joined, Loader, Message } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
@@ -16,7 +17,6 @@ import { openInVSCode } from 'src/utils/electron/openInVsCode'
 import { stringifyUnknown } from 'src/utils/formatters/stringifyUnknown'
 import { WidgetUI } from '../controls/widgets/WidgetUI'
 import { ResultWrapperUI } from '../widgets/misc/ResultWrapperUI'
-import { ScrollablePaneUI } from '../widgets/misc/scrollableArea'
 import { draftContext } from '../widgets/misc/useDraft'
 
 export const Panel_Draft = observer(function Panel_Draft_(p: { draftID: DraftID }) {
@@ -56,8 +56,9 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
     const { containerClassName, containerStyle } = compiledApp.def ?? {}
     const defaultContainerStyle = { margin: '0 auto' }
 
+    const wrapMobile = st.isConfigValueEq('draft.mockup-mobile', true)
     // {/* <ActionDraftListUI card={card} /> */}
-    return (
+    const OUT = (
         <draftContext.Provider value={draft} key={draft.id}>
             <div
                 style={toJS(containerStyle ?? defaultContainerStyle)}
@@ -72,25 +73,13 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                 }}
             >
                 <DraftHeaderUI draft={draft} />
-                {!st.isConfigValueEq('draft.mockup-mobile', true) ? (
-                    <ScrollablePaneUI className='flex-grow'>
-                        <div tw='pb-80 px-1'>
-                            <ResultWrapperUI
-                                //
-                                res={draft.gui}
-                                whenValid={(req) => <WidgetUI widget={req} />}
-                            />
-                        </div>
-                    </ScrollablePaneUI>
-                ) : (
-                    <PhoneWrapperUI>
-                        <ResultWrapperUI
-                            //
-                            res={draft.gui}
-                            whenValid={(req) => <WidgetUI widget={req} />}
-                        />
-                    </PhoneWrapperUI>
-                )}
+                <div tw='pb-80 px-1'>
+                    <ResultWrapperUI
+                        //
+                        res={draft.gui}
+                        whenValid={(req) => <WidgetUI widget={req} />}
+                    />
+                </div>
                 <Joined tw='opacity-50'>
                     <Button
                         onClick={() => st.layout.FOCUS_OR_CREATE('DraftJsonResult', { draftID: draft.id })}
@@ -117,6 +106,25 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                 </Joined>
             </div>
         </draftContext.Provider>
+    )
+    if (!wrapMobile) return OUT
+    return (
+        <div tw='flex flex-col items-center pt-2'>
+            <SelectUI
+                tw='w-full'
+                options={[
+                    { label: 'iPhone 5', value: 5 },
+                    { label: 'iPhone 6', value: 6 },
+                ]}
+                onChange={null}
+                getLabelText={(t): string => {
+                    return t.label
+                }}
+            />
+            <PhoneWrapperUI tw='m-auto' size={5}>
+                {OUT}
+            </PhoneWrapperUI>
+        </div>
     )
 })
 
@@ -164,7 +172,11 @@ export const RunOrAutorunUI = observer(function RunOrAutorunUI_(p: { className?:
                 // color={draft.shouldAutoStart ? 'green' : undefined}
                 onClick={() => draft.setAutostart(!draft.shouldAutoStart)}
             >
-                {draft.shouldAutoStart ? <Loader /> : <span className='material-symbols-outlined'>repeat</span>}
+                {draft.shouldAutoStart ? (
+                    <div className='loading loading-spinner loading-sm' />
+                ) : (
+                    <span className='material-symbols-outlined'>repeat</span>
+                )}
                 {/* Auto */}
             </div>
             <Button
@@ -182,19 +194,68 @@ export const RunOrAutorunUI = observer(function RunOrAutorunUI_(p: { className?:
     )
 })
 
-export const DraftActionMenuUI = observer(function DraftActionMenuUI_(p: { draft: DraftL; className?: string }) {
-    const file = p.draft.file
+export const DraftMenuUI = observer(function DraftMenuUI_(p: { title: string; draft: DraftL; className?: string }) {
     const st = useSt()
+    const draft = p.draft
+    const file = draft.file
+    const layout = st.preferedFormLayout
+    const app = draft.app
     return (
         <Dropdown
-            tw={[p.className, 'btn-square btn-sm']}
-            startIcon={<span className='material-symbols-outlined'>edit</span>}
-            title=''
-            appearance='subtle'
+            //
+            className={p.className}
             size={size1}
+            appearance='subtle'
+            startIcon={<span className='material-symbols-outlined'>settings</span>}
+            title={p.title} //`${layout}`}
+            // startIcon={<span className='material-symbols-outlined'>format_size</span>}
         >
             <MenuItem
-                icon={<span className='material-symbols-outlined'></span>}
+                active={app.isFavorite}
+                onClick={() => app.setFavorite(!app.isFavorite)}
+                icon={
+                    <span tw={[app.isFavorite ? 'text-yellow-500' : null]} className='material-symbols-outlined'>
+                        star
+                    </span>
+                }
+            >
+                Favorite
+            </MenuItem>
+
+            <div tw='divider my-0' />
+            <MenuItem
+                // tw='btn btn-ghost btn-square btn-sm'
+                icon={<span className='material-symbols-outlined'>open_in_new</span>}
+                onClick={() => {
+                    st.layout.FOCUS_OR_CREATE('Draft', { draftID: draft.id }, 'LEFT_PANE_TABSET')
+                }}
+            >
+                Open in a new tab
+            </MenuItem>
+            {/* duplicate draft btn */}
+            <MenuItem
+                // tw='btn btn-ghost btn-square btn-sm'
+                icon={<span className='material-symbols-outlined'>content_copy</span>}
+                onClick={() => {
+                    const newDraft = draft.clone()
+                    st.layout.FOCUS_OR_CREATE('Draft', { draftID: newDraft.id }, 'LEFT_PANE_TABSET')
+                }}
+            >
+                Duplicate Draft
+            </MenuItem>
+            <div tw='divider my-0' />
+            {/* <button disabled={app.isPublishing} tw='btn btn-ghost btn-square btn-sm' onClick={async () => {}}></button> */}
+            <MenuItem
+                icon={app.isPublishing ? <Loader /> : <span className='material-symbols-outlined'>publish</span>}
+                onClick={async () => await app.publish()}
+            >
+                Publish on app-store
+            </MenuItem>
+
+            <div tw='divider my-0' />
+
+            <MenuItem
+                icon={<span className='material-symbols-outlined'>edit</span>}
                 onClick={() => openInVSCode(cwd(), file?.absPath ?? '')}
             >
                 Edit App Definition
@@ -208,7 +269,7 @@ export const DraftActionMenuUI = observer(function DraftActionMenuUI_(p: { draft
             <MenuItem
                 //
                 onClick={() => showItemInFolder(file.absPath)}
-                icon={<span className='material-symbols-outlined'></span>}
+                icon={<span className='material-symbols-outlined'>open_in_browser</span>}
             >
                 Show Item In Folder
             </MenuItem>
@@ -218,25 +279,9 @@ export const DraftActionMenuUI = observer(function DraftActionMenuUI_(p: { draft
                     Open in ComfyUI
                 </MenuItem>
             )}
-        </Dropdown>
-    )
-})
-
-export const FormLayoutPrefsUI = observer(function FormLayoutPrefsUI_(p: { className?: string }) {
-    const st = useSt()
-    const layout = st.preferedFormLayout
-    return (
-        <Dropdown
-            //
-            tw={[p.className]}
-            size={size1}
-            appearance='subtle'
-            startIcon={<span className='material-symbols-outlined'>dynamic_form</span>}
-            title={''} //`${layout}`}
-            // startIcon={<span className='material-symbols-outlined'>format_size</span>}
-        >
+            <div tw='divider my-0' />
             <MenuItem
-                icon={<span className='material-symbols-outlined'>photo_size_select_large</span>}
+                icon={<span className='material-symbols-outlined'>open_with</span>}
                 onClick={() => (st.preferedFormLayout = 'auto')}
                 active={layout == 'auto'}
             >
@@ -251,13 +296,13 @@ export const FormLayoutPrefsUI = observer(function FormLayoutPrefsUI_(p: { class
                 Dense Layout
             </MenuItem>
             <MenuItem
-                icon={<span className='material-symbols-outlined'>photo_size_select_actual</span>}
+                icon={<span className='material-symbols-outlined'>panorama_wide_angle</span>}
                 onClick={() => (st.preferedFormLayout = 'mobile')}
                 active={layout == 'mobile'}
             >
-                Mobile Layout
+                Expanded Layout
             </MenuItem>
-            <hr />
+            <div tw='divider my-0' />
             <MenuItem
                 icon={<span className='material-symbols-outlined'>mobile_screen_share</span>}
                 onClick={() => st.setConfigValue('draft.mockup-mobile', !st.getConfigValue('draft.mockup-mobile'))}
@@ -336,55 +381,10 @@ export const DraftHeaderUI = observer(function DraftHeaderUI_(p: {
     const app = draft.appRef.item
     const st = useSt()
     return (
-        <div tw='flex bg-base-300 border-b border-b-base-300'>
+        <div tw='flex bg-base-300 border-b border-b-base-300 sticky top-0 z-50'>
             <div tw='flex gap-0.5 flex-grow relative text-base-content py-1'>
                 <AppIllustrationUI app={app} size='4rem' />
                 <div tw='ml-1 flex-grow'>
-                    <div
-                        //
-                        tw={[
-                            //
-                            'flex items-center',
-                            'overflow-hidden overflow-ellipsis whitespace-nowrap',
-                        ]}
-                        style={{ height: '2rem', fontSize: '1.2rem' }}
-                    >
-                        <AppFavoriteBtnUI app={app} />
-                        <span>{app.name}</span>
-
-                        <div tw={['absolute right-0']}>
-                            <button
-                                disabled={app.isPublishing}
-                                tw='btn btn-ghost btn-square btn-sm'
-                                onClick={async () => {
-                                    await app.publish()
-                                }}
-                            >
-                                {app.isPublishing ? <Loader /> : <span className='material-symbols-outlined'>publish</span>}
-                            </button>
-                            {/* Open draft in new tab btn */}
-                            <DraftActionMenuUI draft={draft} />
-                            <FormLayoutPrefsUI />
-                            <div
-                                tw='btn btn-ghost btn-square btn-sm'
-                                onClick={() => {
-                                    st.layout.FOCUS_OR_CREATE('Draft', { draftID: draft.id }, 'LEFT_PANE_TABSET')
-                                }}
-                            >
-                                <span className='material-symbols-outlined'>open_in_new</span>
-                            </div>
-                            {/* duplicate draft btn */}
-                            <div
-                                tw='btn btn-ghost btn-square btn-sm'
-                                onClick={() => {
-                                    const newDraft = draft.clone()
-                                    st.layout.FOCUS_OR_CREATE('Draft', { draftID: newDraft.id }, 'LEFT_PANE_TABSET')
-                                }}
-                            >
-                                <span className='material-symbols-outlined'>content_copy</span>
-                            </div>
-                        </div>
-                    </div>
                     <div style={{ height: '2rem' }} className='flex items-center gap-2 justify-between text-sm'>
                         <input
                             tw='input input-bordered input-sm flex-grow'
@@ -394,6 +394,7 @@ export const DraftHeaderUI = observer(function DraftHeaderUI_(p: {
                         ></input>
                         <RunOrAutorunUI tw='flex-shrink-0' draft={draft} />
                     </div>
+                    <DraftMenuUI tw='w-full' draft={draft} title={app.name} />
                 </div>
             </div>
         </div>

@@ -20,6 +20,7 @@ type PP<T> = {
     disabled?: boolean
     cleanable?: boolean
     hideValue?: boolean
+    className?: string
 }
 
 class AutoCompleteSelectState<T> {
@@ -145,7 +146,7 @@ export const SelectUI = observer(function SelectUI_<T>(p: PP<T>) {
     const s = useMemo(() => new AutoCompleteSelectState(st, p), [p])
 
     return (
-        <div tw='flex flex-1 items-center'>
+        <div tw='flex flex-1 items-center' className={p.className}>
             <div className='relative flex-1'>
                 {/* {p.label && (
                     <span tw='btn btn-sm absolute right-0' className='material-symbols-outlined'>

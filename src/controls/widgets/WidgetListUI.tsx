@@ -24,8 +24,14 @@ export const WidgetListUI = observer(function WidgetListUI_<T extends Widget>(p:
                 <div tw='flex flex-col gap-1'>
                     {values.map((v, ix) => (
                         <SortableItem key={v.state.id}>
-                            <div key={v.id} tw='flex flex-col'>
-                                <div key={v.id} tw='flex items-start'>
+                            <div
+                                // key={v.id}
+                                tw='flex flex-col'
+                            >
+                                <div
+                                    // key={v.id}
+                                    tw='flex items-start'
+                                >
                                     <SortableKnob>
                                         <ListDragHandleUI ix={ix} />
                                     </SortableKnob>
@@ -44,8 +50,8 @@ export const WidgetListUI = observer(function WidgetListUI_<T extends Widget>(p:
                                 </div>
                                 {!(v.state.collapsed ?? false) && (
                                     <div
-                                        key={v.id}
-                                        // tw='border-solid border-2 border-neutral-content'
+                                    // key={v.id}
+                                    // tw='border-solid border-2 border-neutral-content'
                                     >
                                         <WidgetUI widget={v} />
                                     </div>

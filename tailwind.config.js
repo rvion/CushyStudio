@@ -62,6 +62,7 @@ module.exports = {
             {
                 dark3: {
                     ...require('daisyui/src/theming/themes')['dark'],
+                    primary: '#9FA8DA',
                     ...notReallyRound,
                 },
             },

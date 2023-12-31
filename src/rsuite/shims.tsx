@@ -90,7 +90,7 @@ export const Slider = observer(function Slider_(p: JSX.IntrinsicElements['input'
         <input //
             type='range'
             {...p}
-            tw={['range range-sm range-secondary']}
+            tw={['range range-sm range-primary']}
         ></input>
     )
 })
