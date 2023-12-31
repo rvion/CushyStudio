@@ -100,8 +100,8 @@ async function buildJS() {
             'node:zlib': `./src/syms/zlib.js`,
             /* */ events: `./src/syms/events.js`,
             'node:events': `./src/syms/events.js`,
-            /* */ async_hooks: `${installDir}/src/syms/async_hooks.js`,
-            'node:async_hooks': `${installDir}/src/syms/async_hooks.js`,
+            /* */ async_hooks: `./src/syms/async_hooks.js`,
+            'node:async_hooks': `./src/syms/async_hooks.js`,
         },
         // external: [
         //     'assert',
