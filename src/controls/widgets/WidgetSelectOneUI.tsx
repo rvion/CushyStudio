@@ -14,7 +14,7 @@ export const WidgetSelectOneUI = observer(function WidgetSelectOneUI_<T extends 
                 const def = typeof (t as any).type === 'string' ? (t as any).type : '<no label>'
                 return t.label ?? t.id ?? def
             }}
-            options={req.choices}
+            options={() => req.choices}
             value={() => value}
             onChange={(selectOption) => {
                 if (selectOption == null) {

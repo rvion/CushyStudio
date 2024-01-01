@@ -19,7 +19,7 @@ export const Panel_ComfyUIHosts = observer(function Panel_ComfyUIHosts_(p: { hos
             <div tw='flex flex-wrap gap-2'>
                 <SelectUI<HostL>
                     label='Current Host'
-                    options={allHosts}
+                    options={() => allHosts}
                     value={() => mainHost}
                     onChange={null}
                     getLabelText={(h) => h.data.name || h.id}

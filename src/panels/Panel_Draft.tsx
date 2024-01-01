@@ -117,7 +117,7 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
         <div tw='flex flex-col items-center pt-2'>
             <SelectUI
                 tw='w-full'
-                options={[
+                options={() => [
                     { label: 'iPhone 5', value: 5 },
                     { label: 'iPhone 6', value: 6 },
                 ]}

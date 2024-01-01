@@ -14,7 +14,7 @@ export const WidgetChoiceUI = observer(function WidgetChoiceUI_(p: { widget: Wid
             <SelectUI
                 getLabelText={(v) => v}
                 cleanable={false}
-                options={choicesStr}
+                options={() => choicesStr}
                 value={() => req.state.pick}
                 onChange={(v) => {
                     if (v == null) return

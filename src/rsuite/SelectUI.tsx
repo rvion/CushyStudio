@@ -7,30 +7,46 @@ import React, { useMemo } from 'react'
 import { useSt } from 'src/state/stateContext'
 import { searchMatches } from 'src/utils/misc/searchMatches'
 import { createPortal } from 'react-dom'
+import { nanoid } from 'nanoid'
 
 type PP<T> = {
     label?: string
+    /** callback when a new option is added */
     onChange: null | ((next: T, self: AutoCompleteSelectState<T>) => void)
+    /** list of all options */
+    options?: () => T[]
+    /** if provided, is used to compare options with selected values */
+    equalityCheck?: (a: T, b: T) => boolean
+    /** used to search/filter & for UI if no getLabelUI provided */
     getLabelText: (t: T) => string
+    /** if provided, is used to display the options */
     getLabelUI?: (t: T) => React.ReactNode
-    options?: T[]
+    /** the selected value / list of values if multiple values provided */
     value?: () => Maybe<T | T[]>
+    /** if true, this widget is considered a multi-select */
     multiple?: boolean
     size?: RSSize
     disabled?: boolean
     cleanable?: boolean
     hideValue?: boolean
     className?: string
+    /** @default: false if multi-select, true if single select */
+    closeOnPick?: boolean
+    /** @default: false if multi-select, true if single select */
+    resetQueryOnPick?: boolean
 }
 
 class AutoCompleteSelectState<T> {
+    /** for debugging purposes */
+    _uid = nanoid()
+
     constructor(public st: STATE, public p: PP<T>) {
         makeAutoObservable(this, { anchorRef: false })
     }
     onChange = this.p.onChange
     multiple = this.p.multiple ?? false
-    get options() {
-        return this.p.options ?? [] // replace with actual options logic
+    get options(): T[] {
+        return this.p.options?.() ?? [] // replace with actual options logic
     }
     get filteredOptions() {
         if (this.searchQuery === '') return this.options
@@ -41,9 +57,18 @@ class AutoCompleteSelectState<T> {
     }
     searchQuery = ''
 
-    get value() {
+    /** currently selected value */
+    get value(): Maybe<T | T[]> {
         return this.p.value?.()
     }
+
+    /** list of all selected values */
+    get values(): T[] {
+        const v = this.value
+        if (v == null) return []
+        return Array.isArray(v) ? v : [v]
+    }
+
     get displayValue(): string {
         if (this.p.hideValue) return ''
         const sop = this.value
@@ -102,8 +127,10 @@ class AutoCompleteSelectState<T> {
         const selectedOption = this.filteredOptions[index]
         if (selectedOption) {
             this.onChange?.(selectedOption, this)
-            this.searchQuery = ''
-            this.closeMenu()
+            const shouldResetQuery = this.p.resetQueryOnPick ?? !this.multiple
+            const shouldCloseMenu = this.p.closeOnPick ?? !this.multiple
+            if (shouldResetQuery) this.searchQuery = ''
+            if (shouldCloseMenu) this.closeMenu()
         }
     }
 
@@ -143,8 +170,7 @@ class AutoCompleteSelectState<T> {
 
 export const SelectUI = observer(function SelectUI_<T>(p: PP<T>) {
     const st = useSt()
-    const s = useMemo(() => new AutoCompleteSelectState(st, p), [p])
-
+    const s = useMemo(() => new AutoCompleteSelectState(st, p), [])
     return (
         <div tw='flex flex-1 items-center' className={p.className}>
             <div className='relative flex-1'>
@@ -203,18 +229,27 @@ export const SelectPopupUI = observer(function SelectPopupUI_<T>(p: { s: AutoCom
             className='p-2 bg-base-100 shadow-2xl max-h-60 overflow-auto'
         >
             {s.filteredOptions.length === 0 ? <li className='p-2'>No results</li> : null}
-            {s.filteredOptions.map((option, index) => (
-                <li
-                    key={index}
-                    style={{ minWidth: '10rem' }}
-                    className={`p-2 hover:bg-base-300 cursor-pointer ${index === s.selectedIndex ? 'bg-base-300' : ''}`}
-                    onMouseDown={(ev) => s.onMenuEntryClick(ev, index)}
-                >
-                    {s.p.getLabelUI //
-                        ? s.p.getLabelUI(option)
-                        : s.p.getLabelText(option)}
-                </li>
-            ))}
+            {s.filteredOptions.map((option, index) => {
+                const isSelected =
+                    s.values.find((v) => {
+                        if (s.p.equalityCheck != null) return s.p.equalityCheck(v, option)
+                        return v === option
+                    }) != null
+                return (
+                    <li
+                        key={index}
+                        style={{ minWidth: '10rem' }}
+                        className={`p-2 hover:bg-base-300 cursor-pointer ${index === s.selectedIndex ? 'bg-base-300' : ''}`}
+                        tw={[isSelected && 'bg-primary text-primary-content']}
+                        onMouseDown={(ev) => s.onMenuEntryClick(ev, index)}
+                    >
+                        {/* {isSelected ? '🟢' : null} */}
+                        {s.p.getLabelUI //
+                            ? s.p.getLabelUI(option)
+                            : s.p.getLabelText(option)}
+                    </li>
+                )
+            })}
         </ul>,
         document.getElementById('tooltip-root')!,
     )

@@ -57,7 +57,7 @@ export const EnumSelectorUI = observer(function EnumSelectorUI_(p: {
                 size='sm'
                 disabled={p.disabled}
                 cleanable={p.isOptional}
-                options={options}
+                options={() => options}
                 getLabelText={(v) => v.toString()}
                 value={() => p.value.candidateValue}
                 hideValue={p.displayValue}
