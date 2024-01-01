@@ -154,6 +154,9 @@ export type DraftT = {
     /** @default: null, sqlType: TEXT */
     appID: CushyAppID;
 
+    /** @default: null, sqlType: TEXT */
+    illustration?: Maybe<string>;
+
 }
 export const DraftSchema = Type.Object({
     id: Type.String(),
@@ -163,6 +166,7 @@ export const DraftSchema = Type.Object({
     appParams: T.Draft_appParams_Schema,
     isOpened: Type.Number(),
     appID: Type.String(),
+    illustration: Type.Optional(T.Nullable(Type.String())),
 },{ additionalProperties: false })
 
 export const DraftRefs =[
@@ -181,6 +185,7 @@ export const DraftFields = {
     appParams: {cid:4,name:'appParams',type:'json',notnull:1,dflt_value:null,pk:0},
     isOpened: {cid:5,name:'isOpened',type:'INT',notnull:1,dflt_value:'1',pk:0},
     appID: {cid:6,name:'appID',type:'TEXT',notnull:1,dflt_value:null,pk:0},
+    illustration: {cid:7,name:'illustration',type:'TEXT',notnull:0,dflt_value:null,pk:0},
 }
 
 

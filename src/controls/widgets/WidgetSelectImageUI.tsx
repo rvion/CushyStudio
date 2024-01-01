@@ -65,7 +65,7 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: { w
                     <EnumSelectorUI
                         enumName='Enum_LoadImage_image'
                         // value={req.state.comfy?.imageName ?? null}
-                        value={st.fixEnumValue(req.state.comfy?.imageName, 'Enum_LoadImage_image', req.isOptional)}
+                        value={() => st.fixEnumValue(req.state.comfy?.imageName, 'Enum_LoadImage_image', req.isOptional)}
                         isOptional={req.state.pick !== 'comfy' || !req.state.active}
                         onChange={(t) => {
                             // handle nullability for Widget_imageOpt

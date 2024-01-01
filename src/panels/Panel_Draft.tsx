@@ -17,6 +17,7 @@ import { stringifyUnknown } from 'src/utils/formatters/stringifyUnknown'
 import { WidgetUI } from '../controls/widgets/WidgetUI'
 import { ResultWrapperUI } from '../widgets/misc/ResultWrapperUI'
 import { draftContext } from '../widgets/misc/useDraft'
+import { DraftIllustrationUI } from 'src/cards/fancycard/DraftIllustration'
 
 export const Panel_Draft = observer(function Panel_Draft_(p: { draftID: DraftID }) {
     // 1. get draft
@@ -390,15 +391,18 @@ export const AppCompilationErrorUI = observer(function AppCompilationErrorUI_(p:
 export const DraftHeaderUI = observer(function DraftHeaderUI_(p: {
     //
     draft: DraftL
-    // file: LibraryFile
+    className?: string
 }) {
     const { draft } = p
     const app = draft.appRef.item
-    const st = useSt()
     return (
-        <div tw='flex bg-base-300 border-b border-b-base-300 sticky top-0 z-50'>
+        <div
+            style={{ zIndex: 99 /*boxShadow: '0 0 0.5rem oklch(var(--p)/.3)'*/ }}
+            className={p.className}
+            tw='_DraftHeaderUI flex bg-base-300 border-b border-b-base-300 sticky top-0 z-50'
+        >
             <div tw='flex gap-0.5 flex-grow relative text-base-content py-1'>
-                <AppIllustrationUI app={app} size='4rem' />
+                <DraftIllustrationUI draft={draft} size='4rem' />
                 <div tw='ml-1 flex-grow'>
                     <div style={{ height: '2rem' }} className='flex items-center gap-2 justify-between text-sm'>
                         <input

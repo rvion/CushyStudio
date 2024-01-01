@@ -81,13 +81,20 @@ export class AuthState {
         return PORT
     }
 
+    __testCB = () => {
+        this.st.layout.FOCUS_OR_CREATE('IFrame', {
+            url: `http://localhost:${this.cushyPort}/public/auth/cb_test.html`,
+            name: 'test 1',
+        })
+        this.st.layout.FOCUS_OR_CREATE('IFrame', { url: `http://localhost:${this.cushyPort}/auth/cb_test.html`, name: 'test 2' })
+    }
     startLoginFlowWithGithub = async () => {
         logger.info(`[🔑 AUTH] starting login flow...`)
         let { data, error } = await this.st.supabase.auth.signInWithOAuth({
             provider: 'github',
             options: {
                 skipBrowserRedirect: true,
-                redirectTo: `http://localhost:${this.cushyPort}/public/misc/cb.html`,
+                redirectTo: `http://localhost:${this.cushyPort}/auth/cb.html`,
                 queryParams: {
                     prompt: 'login',
                     // prompt: 'select_account', for google

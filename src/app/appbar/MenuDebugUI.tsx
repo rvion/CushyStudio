@@ -24,6 +24,12 @@ export const MenuDebugUI = observer(function MenuDebugUI_(p: {}) {
                 print DB stats
             </MenuItem>
             <MenuItem
+                onClick={st.auth.__testCB}
+                icon={<span className='material-symbols-outlined text-red-500'>account_balance</span>}
+            >
+                Test Auth CB page
+            </MenuItem>
+            <MenuItem
                 icon={<span className='material-symbols-outlined text-orange-500'>sync</span>}
                 onClick={st.restart}
                 label='Reload'

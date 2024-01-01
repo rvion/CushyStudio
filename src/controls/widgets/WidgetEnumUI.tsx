@@ -17,10 +17,9 @@ export const WidgetEnumUI = observer(function WidgetEnumUI_<K extends KnownEnumN
     const req = p.widget
     const enumName = req.input.enumName
     const isOptional = req instanceof Widget_enumOpt
-    const value = req.status
     return (
         <EnumSelectorUI
-            value={value}
+            value={() => req.status}
             disabled={!req.state.active}
             isOptional={isOptional}
             enumName={enumName}
@@ -38,7 +37,7 @@ export const WidgetEnumUI = observer(function WidgetEnumUI_<K extends KnownEnumN
 
 export const EnumSelectorUI = observer(function EnumSelectorUI_(p: {
     isOptional: boolean
-    value: CleanedEnumResult<any>
+    value: () => CleanedEnumResult<any>
     displayValue?: boolean
     // substituteValue?: EnumValue | null
     onChange: (v: EnumValue | null) => void
@@ -49,7 +48,8 @@ export const EnumSelectorUI = observer(function EnumSelectorUI_(p: {
     const schema = project.schema
     const options: EnumValue[] = schema.knownEnumsByName.get(p.enumName)?.values ?? [] // schema.getEnumOptionsForSelectPicker(p.enumName)
     // const valueIsValid = (p.value != null || p.isOptional) && options.some((x) => x.value === p.value)
-    const hasError = Boolean(p.value.isSubstitute || p.value.ENUM_HAS_NO_VALUES)
+    const value = p.value()
+    const hasError = Boolean(value.isSubstitute || value.ENUM_HAS_NO_VALUES)
     return (
         <div tw='flex-1'>
             <SelectUI //
@@ -59,7 +59,7 @@ export const EnumSelectorUI = observer(function EnumSelectorUI_(p: {
                 cleanable={p.isOptional}
                 options={() => options}
                 getLabelText={(v) => v.toString()}
-                value={() => p.value.candidateValue}
+                value={() => p.value().candidateValue}
                 hideValue={p.displayValue}
                 onChange={(option) => {
                     if (option == null) return
@@ -67,28 +67,28 @@ export const EnumSelectorUI = observer(function EnumSelectorUI_(p: {
                 }}
             />
             <div tw='flex flex-wrap gap-2'>
-                {p.value.isSubstitute ? ( //
+                {value.isSubstitute ? ( //
                     <Whisper
                         enterable
                         placement='bottom'
                         speaker={
                             <Popover>
                                 <span>
-                                    <span tw='bord'>{p.value.candidateValue}</span> is not in your ComfyUI install folder
+                                    <span tw='bord'>{value.candidateValue}</span> is not in your ComfyUI install folder
                                 </span>
                                 <div>
-                                    <span tw='bord'>{p.value.finalValue}</span> used instead
+                                    <span tw='bord'>{value.finalValue}</span> used instead
                                 </div>
                             </Popover>
                         }
                     >
                         <div className='text-orange-500 flex items-center'>
                             <span className='material-symbols-outlined'>info</span>
-                            <span>{p.value.finalValue}</span>
+                            <span>{value.finalValue}</span>
                         </div>
                     </Whisper>
                 ) : null}
-                {p.value.ENUM_HAS_NO_VALUES ? <div tw='text-red-500'>ENUM HAS NO VALUE</div> : null}
+                {value.ENUM_HAS_NO_VALUES ? <div tw='text-red-500'>ENUM HAS NO VALUE</div> : null}
             </div>
         </div>
     )
