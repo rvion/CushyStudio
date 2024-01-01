@@ -34,14 +34,20 @@ export const ImageUI = observer(function ImageUI_(p: { size?: string; img: Media
     return (
         <RevealUI enableRightClick>
             <div>{IMG}</div>
-            <div>
-                <Button
-                    icon={<span className='material-symbols-outlined'>edit</span>}
-                    onClick={() => st.layout.FOCUS_OR_CREATE('Paint', { imgID: image.id })}
-                >
-                    Paint
-                </Button>
-            </div>
+            <ul tw='shadow menu dropdown-content z-[1] bg-base-100 rounded-box'>
+                <li onClick={() => image.useAsDraftIllustration()}>
+                    <div className='flex items-center gap-2'>
+                        <span className='material-symbols-outlined'>image</span>
+                        Use as draft illustration
+                    </div>
+                </li>
+                <li onClick={() => st.layout.FOCUS_OR_CREATE('Paint', { imgID: image.id })}>
+                    <div className='flex items-center gap-2'>
+                        <span className='material-symbols-outlined'>edit</span>
+                        Paint
+                    </div>
+                </li>
+            </ul>
         </RevealUI>
     )
 })

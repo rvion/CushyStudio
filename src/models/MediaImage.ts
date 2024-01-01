@@ -16,6 +16,11 @@ import { ComfyNodeMetadata } from 'src/types/ComfyNodeID'
 import { ManualPromise } from 'src/utils/misc/ManualPromise'
 import { SafetyResult } from 'src/safety/Safety'
 import { readFileSync } from 'fs'
+import { StepL } from './Step'
+import { DraftL } from './Draft'
+import { CushyScriptL } from './CushyScriptL'
+import { CushyAppL } from './CushyApp'
+import { toastError } from 'src/utils/misc/toasts'
 
 // prettier-ignore
 export type ImageInfos =
@@ -80,6 +85,17 @@ export class MediaImageL {
         // if (infos.type === 'video-local-ffmpeg') return basename(infos.absPath)
         exhaust(infos)
         return 'unknown'
+    }
+
+    get step(): Maybe<StepL> { return this.prompt?.step } // prettier-ignore
+    get draft(): Maybe<DraftL> { return this.step?.draft } // prettier-ignore
+    get app(): Maybe<CushyAppL> {return this.draft?.app} // prettier-ignore
+    get script(): Maybe<CushyScriptL> {return this.app?.script } // prettier-ignore
+
+    useAsDraftIllustration = () => {
+        const draft = this.draft
+        if (draft == null) return toastError(`no related draft found`)
+        draft.update({ illustration: this.url })
     }
 
     /**

@@ -17,7 +17,11 @@ export class TreeDraft implements ITreeEntry {
     onPrimaryAction = () => this.draft.openOrFocusTab()
     // icon = (<span>✨</span>)
     get icon() {
-        return this.draft.app?.illustrationPathWithFileProtocol ?? ''
+        return (
+            this.draft.data.illustration ?? //
+            this.draft.app?.illustrationPathWithFileProtocol ??
+            ''
+        )
         // return <span className='material-symbols-outlined'>Draft</span>
     }
 
