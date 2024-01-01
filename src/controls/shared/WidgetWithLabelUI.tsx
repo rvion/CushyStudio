@@ -36,6 +36,8 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
             if (req instanceof KLS.Widget_prompt) return true
             if (req instanceof KLS.Widget_promptOpt) return true
             if (req instanceof KLS.Widget_group) return true
+            if (req instanceof KLS.Widget_choice) return true
+            if (req instanceof KLS.Widget_choices) return true
             if (req instanceof KLS.Widget_group) return true
             if (req instanceof KLS.Widget_groupOpt) return true
             if (req instanceof KLS.Widget_list) return true
