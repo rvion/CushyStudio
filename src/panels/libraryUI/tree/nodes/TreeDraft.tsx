@@ -18,8 +18,12 @@ export class TreeDraft implements ITreeEntry {
         this.st.currentDraft = this.draft
         this.draft.openOrFocusTab()
         // this.st.layout.FOCUS_OR_CREATE('CurrentDraft', {})
+    // icon = (<span>✨</span>)
+    get icon() {
+        return this.draft.app?.illustrationPathWithFileProtocol ?? ''
+        // return <span className='material-symbols-outlined'>Draft</span>
     }
-    icon = (<span>✨</span>)
+
     data: TreeDraft
 
     actions: TreeEntryAction[] = [
