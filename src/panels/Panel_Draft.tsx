@@ -388,12 +388,19 @@ export const AppCompilationErrorUI = observer(function AppCompilationErrorUI_(p:
     )
 })
 
-export const DraftHeaderUI = observer(function DraftHeaderUI_(p: { draft: DraftL }) {
+export const DraftHeaderUI = observer(function DraftHeaderUI_(p: {
+    //
+    draft: DraftL
+    className?: string
+}) {
     const { draft } = p
     const app = draft.appRef.item
-    const st = useSt()
     return (
-        <div tw='flex bg-base-300 border-b border-b-base-300 sticky top-0 z-50'>
+        <div
+            style={{ zIndex: 99 /*boxShadow: '0 0 0.5rem oklch(var(--p)/.3)'*/ }}
+            className={p.className}
+            tw='_DraftHeaderUI flex bg-base-300 border-b border-b-base-300 sticky top-0 z-50'
+        >
             <div tw='flex gap-0.5 flex-grow relative text-base-content py-1'>
                 <DraftIllustrationUI draft={draft} size='4rem' />
                 <div tw='ml-1 flex-grow'>
