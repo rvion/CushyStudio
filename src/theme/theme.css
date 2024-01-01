@@ -38,6 +38,8 @@
     color: oklch(var(--bc)) !important;
 
 }
+
+._SelectPopupUI,
 ._RevealUI {
     box-shadow:
         0 5px 15px -5px oklch(var(--p));

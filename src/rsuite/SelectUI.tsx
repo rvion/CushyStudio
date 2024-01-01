@@ -226,7 +226,7 @@ export const SelectPopupUI = observer(function SelectPopupUI_<T>(p: { s: AutoCom
                 left: `${s.tooltipPosition.left}px`,
                 // Adjust positioning as needed
             }}
-            className='p-2 bg-base-100 shadow-2xl max-h-60 overflow-auto'
+            className='_SelectPopupUI p-2 bg-base-100 shadow-2xl max-h-60 overflow-auto'
         >
             {s.filteredOptions.length === 0 ? <li className='p-2'>No results</li> : null}
             {s.filteredOptions.map((option, index) => {
