@@ -9,6 +9,7 @@ import type { WsMsgExecutionError } from 'src/types/ComfyWsApi'
 import type { SqlColDef } from './_getAllColumnsForTable'
 
 import type { Status } from 'src/back/Status'
+import type { Widget_group_serial } from 'src/controls/Widget'
 import type { ComfyNodeID, ComfyNodeMetadata } from 'src/types/ComfyNodeID'
 
 export type StatusT = keyof typeof Status
@@ -28,7 +29,7 @@ export const Graph_metadata_Schema = Type.Record(Type.String(), Type.Any())
 export type Graph_comfyPromptJSON = ComfyPromptJSON
 export const Graph_comfyPromptJSON_Schema = Type.Record(Type.String(), Type.Any())
 
-export type Draft_appParams = Maybe<any>
+export type Draft_appParams = Widget_group_serial<any>
 export const Draft_appParams_Schema = Type.Record(Type.String(), Type.Any())
 
 export type CustomData_json = any

@@ -32,6 +32,7 @@ export type ConfigFile = {
     theme?: ThemeName
     /** cloud service api key */
     cushyCloudGPUApiKey?: string
+    // ---------------------------------------------------------------------------------------
     /** defaults to 48px */
     outputPreviewSize?: number
     historyAppSize?: number
@@ -44,6 +45,7 @@ export type ConfigFile = {
     galleryBgColor?: string
     /** opacity of hovered images */
     galleryHoverOpacity?: number
+    // ---------------------------------------------------------------------------------------
     /** if true, will auto-open devtools on startup */
     preferDevToolsOpen?: boolean
     /** defaults to 5 */

@@ -20,6 +20,10 @@ export class DraftL {
     // 🔴 HACKY
     shouldAutoStart = false
 
+    foldTopLevel = () => {
+        this.form.value?.foldAll()
+    }
+
     appRef = new LiveRef<this, CushyAppL>(this, 'appID', () => this.db.cushy_apps)
 
     openOrFocusTab = () => {
@@ -89,7 +93,7 @@ export class DraftL {
                   result: formValueOverride,
                   serial: {},
               } as any as Widget_group<any>)
-            : this.gui.value
+            : this.form.value
 
         if (req == null) throw new Error('invalid req')
 
@@ -130,7 +134,7 @@ export class DraftL {
         return step
     }
 
-    gui: Result<Widget_group<any>> = __FAIL('not loaded yet')
+    form: Result<Widget_group<any>> = __FAIL('not loaded yet')
 
     get file(): LibraryFile {
         return this.st.library.getFile(this.appRef.item.relPath)
@@ -160,12 +164,12 @@ export class DraftL {
                             : formBuilder._HYDRATE('group', { topLevel: true, items: () => uiFn(formBuilder) }, this.data.appParams) // prettier-ignore
                     /** 👇 HACK; see the comment near the ROOT property definition */
                     formBuilder._ROOT = req
-                    this.gui = __OK(req)
+                    this.form = __OK(req)
                     console.log(`[🦊] form: setup`)
                     // subState.unsync()
                 } catch (e) {
                     console.error(e)
-                    this.gui = __FAIL('ui function crashed', e)
+                    this.form = __FAIL('ui function crashed', e)
                     return
                 }
             },
@@ -174,7 +178,7 @@ export class DraftL {
 
         // 🔴 dangerous
         const _2 = autorun(() => {
-            const formValue = this.gui.value
+            const formValue = this.form.value
             if (formValue == null) return null
             const count = formValue.builder._cache.count // manual mobx invalidation
             const _ = JSON.stringify(formValue.serial)
@@ -192,7 +196,7 @@ export class DraftL {
             _1()
             _2()
             this.isInitialized = false
-            this.gui = __FAIL('not loaded yet')
+            this.form = __FAIL('not loaded yet')
         }
     }
 }

@@ -75,6 +75,7 @@ export class CushyAppL {
     createDraft = (): DraftL => {
         const title = this.name + ' ' + this._draftsCollection.items.length + 1
         const draft = this.st.db.drafts.create({
+            // @ts-expect-error 🔴
             appParams: {},
             appID: this.id,
             isOpened: SQLITE_true,

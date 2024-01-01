@@ -53,6 +53,7 @@ export class RuntimeApps {
             () => ({
                 appID: app.id,
                 // appParams is actually `formSerial`, not `formValue`
+                // @ts-expect-error 🔴
                 appParams: {}, // 🔴 we can't go from formValue to formSerial
                 isOpened: SQLITE_false,
                 title: '<sub-draft>',

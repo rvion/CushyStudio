@@ -48,7 +48,7 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
     if (compiledApp == null) return <AppCompilationErrorUI app={app} />
 
     // 4. get form
-    const guiR = draft.gui
+    const guiR = draft.form
     if (!guiR.success)
         return (
             <ErrorPanelUI>
@@ -82,7 +82,7 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                 <div tw='pb-80 px-1'>
                     <ResultWrapperUI
                         //
-                        res={draft.gui}
+                        res={draft.form}
                         whenValid={(req) => <WidgetUI widget={req} />}
                     />
                 </div>
@@ -227,13 +227,9 @@ export const DraftMenuUI = observer(function DraftMenuUI_(p: { title: string; dr
                 Favorite
             </MenuItem>
             <MenuItem
-                active={app.isFavorite}
-                onClick={() => app.setFavorite(!app.isFavorite)}
-                icon={
-                    <span tw={[app.isFavorite ? 'text-yellow-500' : null]} className='material-symbols-outlined'>
-                        co
-                    </span>
-                }
+                // active={app.isFavorite}
+                onClick={draft.foldTopLevel}
+                icon={<span className='material-symbols-outlined'>unfold_less</span>}
             >
                 Fold top level
             </MenuItem>
