@@ -216,17 +216,17 @@ export const DraftMenuUI = observer(function DraftMenuUI_(p: { title: string; dr
             <div tw='divider my-0' />
             <MenuItem
                 // active={app.isFavorite}
-                onClick={draft.expandTopLevelFormEntries}
+                onClick={draft.collapseTopLevelFormEntries}
                 icon={<span className='material-symbols-outlined'>unfold_more</span>}
             >
-                Fold top level
+                Collapse top level entries
             </MenuItem>
             <MenuItem
                 // active={app.isFavorite}
-                onClick={draft.collapseTopLevelFormEntries}
+                onClick={draft.expandTopLevelFormEntries}
                 icon={<span className='material-symbols-outlined'>unfold_less</span>}
             >
-                Unfold top level
+                Expand top level entries
             </MenuItem>
             <div tw='divider my-0' />
 

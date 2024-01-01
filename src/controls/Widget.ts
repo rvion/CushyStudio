@@ -18,6 +18,7 @@ import { FC } from 'react'
 import { bang } from 'src/utils/misc/bang'
 import { WidgetDI } from './widgets/WidgetUI.DI'
 import { runWithGlobalForm } from 'src/models/_ctx2'
+import { EnumDefault, extractDefaultValue } from './EnumDefault'
 
 // Widget is a closed union for added type safety
 export type Widget =
@@ -1073,7 +1074,7 @@ export class Widget_list<T extends Widget> implements IRequest<'list', Widget_li
             const clamp = (v: number, min: number, max: number) => Math.min(Math.max(v, min), max)
             const defaultLen = clamp(input.defaultLength ?? 0, input.min ?? 0, input.max ?? 10)
             const items = defaultLen
-                ? new Array(defaultLen).fill(0).map((_,ix) => input.element(ix))
+                ? runWithGlobalForm(this.builder, () => new Array(defaultLen).fill(0).map((_,ix) => input.element(ix)))
                 : []
             this.state = {
                 type: 'list',
@@ -1388,7 +1389,7 @@ export class Widget_choice      <T extends { [key: string]: Widget }> implements
         serial?: Widget_choice_serial<T>,
     ) {
         this.id = serial?.id ?? nanoid()
-        const _items = input.items()
+        const _items = runWithGlobalForm(this.builder, () => input.items())
         this.possibleChoices=Object.keys(_items)
         if (serial){
             this.state = { type:'choice', id: this.id, active: serial.active, collapsed: serial.collapsed, values: {} as any, pick: serial.pick }
@@ -1517,7 +1518,7 @@ export class Widget_choices<T extends { [key: string]: Widget }> implements IReq
 }
 
 // 🅿️ enum ==============================================================================
-export type Widget_enum_opts<T extends KnownEnumNames>  = ReqInput<{ default?: Requirable[T]; enumName: T }>
+export type Widget_enum_opts<T extends KnownEnumNames>  = ReqInput<{ default?: Requirable[T] | EnumDefault; enumName: T }>
 export type Widget_enum_serial<T extends KnownEnumNames> = Widget_enum_state<T>
 export type Widget_enum_state<T extends KnownEnumNames>  = StateFields<{ type: 'enum', active: true; val: Requirable[T] }>
 export type Widget_enum_output<T extends KnownEnumNames> = Requirable[T]
@@ -1527,6 +1528,7 @@ export class Widget_enum<T extends KnownEnumNames> implements IRequest<'enum', W
     id: string
     type: 'enum' = 'enum'
     state: Widget_enum_state<T>
+    get possibleValues() {return  this.schema.knownEnumsByName.get(this.input.enumName)?.values ?? []}
     constructor(
         public builder: FormBuilder,
         public schema: ComfySchemaL,
@@ -1534,12 +1536,11 @@ export class Widget_enum<T extends KnownEnumNames> implements IRequest<'enum', W
         serial?: Widget_enum_serial<T>,
     ) {
         this.id = serial?.id ?? nanoid()
-        const possibleValues = this.schema.knownEnumsByName.get(input.enumName)?.values ?? []
         this.state = serial ?? {
             type: 'enum',
             id: this.id,
             active: true,
-            val: input.default ?? (possibleValues[0] as any)
+            val: extractDefaultValue(input.default as any /* 🔴 */) ?? (this.possibleValues[0] as any)
         }
         makeAutoObservable(this)
     }
@@ -1559,6 +1560,7 @@ export class Widget_enumOpt<T extends KnownEnumNames> implements IRequest<'enumO
     id: string
     type: 'enumOpt' = 'enumOpt'
     state: Widget_enumOpt_state<T>
+    get possibleValues() {return  this.schema.knownEnumsByName.get(this.input.enumName)?.values ?? []}
     constructor(
         public builder: FormBuilder,
         public schema: ComfySchemaL,
@@ -1566,12 +1568,11 @@ export class Widget_enumOpt<T extends KnownEnumNames> implements IRequest<'enumO
         serial?: Widget_enumOpt_serial<T>,
     ) {
         this.id = serial?.id ?? nanoid()
-        const possibleValues = this.schema.knownEnumsByName.get(input.enumName)?.values ?? []
         this.state = serial ?? {
             type: 'enumOpt',
             id: this.id,
             active: input.default != null,
-            val: input.default ?? (possibleValues[0] as any) /* 🔴 */,
+            val: input.default ?? (this.possibleValues[0] as any) /* 🔴 */,
         }
         makeAutoObservable(this)
     }

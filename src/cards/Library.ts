@@ -110,7 +110,10 @@ export class Library {
                 for (const d of allDrafts) {
                     // retrieve the draft from the tab
                     const draft = st.db.drafts.get(d.config.draftID)
-                    if (draft == null) return console.error(`[👙] missing draft ${d.config.draftID}`)
+                    if (draft == null) {
+                        console.error(`[👙] missing draft ${d.config.draftID}; SKIPPING...`)
+                        continue
+                    }
 
                     // check if the changed file is directly related to the draft
                     const file = draft.file

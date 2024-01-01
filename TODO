@@ -1,3 +1,14 @@
+cnets:
+    ✔  better way for authors to add defautls to their prefabs / presets (??) @done(24-01-01 22:50)
+        ✔ avoid errors @done(24-01-01 22:50)
+    ✔ include requirements on custom nodes needed so an error message appear if missing custom nodes @done(24-01-01 22:50)
+        ☐ display it if node is missing
+    ✔ button to download missing models automatically @done(24-01-01 22:51)
+    ☐ better enum widget with filter support (5min)
+    ☐ fix bug where dropping images doesn't work (?)
+    ☐ list UI is just hard to read
+    ☐ review how prefabs canons
+
 Todo :
     ✔ currentForm() @done(23-12-31 15:38)
     ✔ fix nsfwjs by including the model locally (web host went down) @done(23-12-23 08:54)
