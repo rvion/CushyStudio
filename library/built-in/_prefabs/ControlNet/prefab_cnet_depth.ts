@@ -1,19 +1,19 @@
-import type { FormBuilder, Runtime } from "src"
-import { Cnet_args, cnet_preprocessor_ui_common, cnet_ui_common } from "../prefab_cnet"
-import { OutputFor } from '../_prefabs';
-import { getCurrentForm, getCurrentRun } from "../../../../src/models/_ctx2";
+import { getCurrentForm, getCurrentRun } from '../../../../src/models/_ctx2'
+import { OutputFor } from '../_prefabs'
+import { Cnet_args, cnet_preprocessor_ui_common, cnet_ui_common } from '../prefab_cnet'
 
 // 🅿️ Depth FORM ===================================================
 export const ui_subform_Depth = () => {
     const form = getCurrentForm()
     return form.group({
         label: 'Depth',
+        customNodes: 'ComfyUI-Advanced-ControlNet',
         items: () => ({
             ...cnet_ui_common(form),
-            preprocessor: ui_subform_Depth_Preprocessor(form),
+            preprocessor: ui_subform_Depth_Preprocessor(),
             cnet_model_name: form.enum({
                 enumName: 'Enum_ControlNetLoader_control_net_name',
-                default: 'control_v11f1p_sd15_depth.pth',
+                default: { knownModel: 'ControlNet-v1-1 (depth; fp16)' },
                 group: 'Controlnet',
                 label: 'Model',
             }),
@@ -31,11 +31,11 @@ export const ui_subform_Depth_Preprocessor = () => {
                 items: () => ({
                     MiDaS: ui_subform_Depth_Midas(),
                     LeReS: ui_subform_Depth_LeReS(),
-                    Zoe: ui_subform_Depth_Zoe()
-                })
-            })
+                    Zoe: ui_subform_Depth_Zoe(),
+                }),
+            }),
             // TODO: Add support for auto-modifying the resolution based on other form selections
-            // TODO: Add support for auto-cropping   
+            // TODO: Add support for auto-cropping
         }),
     })
 }
@@ -48,7 +48,7 @@ export const ui_subform_Depth_Midas = () => {
             ...cnet_preprocessor_ui_common(form),
             a_value: form.float({ default: 6.28 }),
             bg_threshold: form.float({ default: 0.1 }),
-        })
+        }),
     })
 }
 
@@ -60,8 +60,8 @@ export const ui_subform_Depth_LeReS = () => {
             ...cnet_preprocessor_ui_common(form),
             rm_nearest: form.float({ default: 0.0 }),
             rm_background: form.float({ default: 0.0 }),
-            boost: form.bool({ default: false })
-        })
+            boost: form.bool({ default: false }),
+        }),
     })
 }
 
@@ -71,7 +71,7 @@ export const ui_subform_Depth_Zoe = () => {
         label: 'Zoe Depth',
         items: () => ({
             ...cnet_preprocessor_ui_common(form),
-        })
+        }),
     })
 }
 
@@ -100,36 +100,28 @@ export const run_cnet_Depth = async (Depth: OutputFor<typeof ui_subform_Depth>, 
                 resolution: leres.resolution,
                 rm_nearest: leres.rm_nearest,
                 rm_background: leres.rm_background,
-                boost: leres.boost ? 'enable' : 'disable'
+                boost: leres.boost ? 'enable' : 'disable',
             })._IMAGE
-            if (leres.saveProcessedImage)
-                graph.SaveImage({ images: image, filename_prefix: 'cnet\\Depth\\leres' })
-            else
-                graph.PreviewImage({ images: image })
-        }
-        else if (Depth.preprocessor.type.MiDaS) {
+            if (leres.saveProcessedImage) graph.SaveImage({ images: image, filename_prefix: 'cnet\\Depth\\leres' })
+            else graph.PreviewImage({ images: image })
+        } else if (Depth.preprocessor.type.MiDaS) {
             const midas = Depth.preprocessor.type.MiDaS
             image = graph.MiDaS$7DepthMapPreprocessor({
                 image: image,
                 resolution: midas.resolution,
                 a: midas.a_value,
-                bg_threshold: midas.bg_threshold
+                bg_threshold: midas.bg_threshold,
             })._IMAGE
-            if (midas.saveProcessedImage)
-                graph.SaveImage({ images: image, filename_prefix: 'cnet\\Depth\\midas' })
-            else
-                graph.PreviewImage({ images: image })
-        }
-        else if (Depth.preprocessor.type.Zoe) {
+            if (midas.saveProcessedImage) graph.SaveImage({ images: image, filename_prefix: 'cnet\\Depth\\midas' })
+            else graph.PreviewImage({ images: image })
+        } else if (Depth.preprocessor.type.Zoe) {
             const zoe = Depth.preprocessor.type.Zoe
             image = graph.Zoe$7DepthMapPreprocessor({
                 image: image,
                 resolution: zoe.resolution,
             })._IMAGE
-            if (zoe.saveProcessedImage)
-                graph.SaveImage({ images: image, filename_prefix: 'cnet\\Depth\\zoe' })
-            else
-                graph.PreviewImage({ images: image })
+            if (zoe.saveProcessedImage) graph.SaveImage({ images: image, filename_prefix: 'cnet\\Depth\\zoe' })
+            else graph.PreviewImage({ images: image })
         }
     }
 

@@ -1,3 +1,5 @@
+import type { KnownCustomNodes } from 'src/wiki/custom-node-list'
+
 export type IWidget<T, I, X extends { type: T }, S, O> = {
     $Input: I
     $Serial: X
@@ -32,4 +34,5 @@ export type ReqInput<X> = X & {
     className?: string
     startCollapsed?: boolean
     showID?: boolean
+    customNodes?: KnownCustomNodes | KnownCustomNodes[]
 }

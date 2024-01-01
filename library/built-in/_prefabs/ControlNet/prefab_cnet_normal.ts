@@ -1,18 +1,19 @@
-import type { FormBuilder, Runtime } from "src"
-import { Cnet_args, cnet_preprocessor_ui_common, cnet_ui_common } from "../prefab_cnet"
-import { OutputFor } from '../_prefabs';
+import type { FormBuilder, Runtime } from 'src'
+import { Cnet_args, cnet_preprocessor_ui_common, cnet_ui_common } from '../prefab_cnet'
+import { OutputFor } from '../_prefabs'
 
 // 🅿️ Normal FORM ===================================================
 export const ui_subform_Normal = () => {
     const form = getCurrentForm()
     return form.group({
         label: 'Normal',
+        customNodes: 'ComfyUI-Advanced-ControlNet',
         items: () => ({
             ...cnet_ui_common(form),
             preprocessor: ui_subform_Normal_Preprocessor(),
             cnet_model_name: form.enum({
                 enumName: 'Enum_ControlNetLoader_control_net_name',
-                default: 'control_v11p_sd15_normalbae.pth',
+                default: { knownModel: 'ControlNet-v1-1 (normalbae; fp16)' },
                 group: 'Controlnet',
                 label: 'Model',
             }),
@@ -29,11 +30,11 @@ export const ui_subform_Normal_Preprocessor = () => {
                 label: 'Type',
                 items: () => ({
                     MiDaS: ui_subform_Normal_Midas(),
-                    bae: ui_subform_Normal_bae()
-                })
-            })
+                    bae: ui_subform_Normal_bae(),
+                }),
+            }),
             // TODO: Add support for auto-modifying the resolution based on other form selections
-            // TODO: Add support for auto-cropping   
+            // TODO: Add support for auto-cropping
         }),
     })
 }
@@ -46,7 +47,7 @@ export const ui_subform_Normal_Midas = () => {
             ...cnet_preprocessor_ui_common(form),
             a_value: form.float({ default: 6.28 }),
             bg_threshold: form.float({ default: 0.1 }),
-        })
+        }),
     })
 }
 
@@ -56,7 +57,7 @@ export const ui_subform_Normal_bae = () => {
         label: 'BAE Normal',
         items: () => ({
             ...cnet_preprocessor_ui_common(form),
-        })
+        }),
     })
 }
 
@@ -84,23 +85,18 @@ export const run_cnet_Normal = async (Normal: OutputFor<typeof ui_subform_Normal
                 image: image,
                 resolution: midas.resolution,
                 a: midas.a_value,
-                bg_threshold: midas.bg_threshold
+                bg_threshold: midas.bg_threshold,
             })._IMAGE
-            if (midas.saveProcessedImage)
-                graph.SaveImage({ images: image, filename_prefix: 'cnet\\Normal\\midas' })
-            else
-                graph.PreviewImage({ images: image })
-        }
-        else if (Normal.preprocessor.type.bae) {
+            if (midas.saveProcessedImage) graph.SaveImage({ images: image, filename_prefix: 'cnet\\Normal\\midas' })
+            else graph.PreviewImage({ images: image })
+        } else if (Normal.preprocessor.type.bae) {
             const bae = Normal.preprocessor.type.bae
             image = graph.BAE$7NormalMapPreprocessor({
                 image: image,
                 resolution: bae.resolution,
             })._IMAGE
-            if (bae.saveProcessedImage)
-                graph.SaveImage({ images: image, filename_prefix: 'cnet\\Normal\\bae' })
-            else
-                graph.PreviewImage({ images: image })
+            if (bae.saveProcessedImage) graph.SaveImage({ images: image, filename_prefix: 'cnet\\Normal\\bae' })
+            else graph.PreviewImage({ images: image })
         }
     }
 

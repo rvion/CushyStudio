@@ -1,5 +1,6 @@
 import https from 'https'
-import fs from 'fs'
+import fs, { mkdirSync } from 'fs'
+import { dirname } from 'pathe'
 
 /** Usage example
  * | ;(async () => {
@@ -13,9 +14,21 @@ import fs from 'fs'
  * |
  */
 export function downloadFile(url: string, outputPath: AbsolutePath | string) {
+    const baseDir = dirname(outputPath)
+    mkdirSync(baseDir, { recursive: true })
+
     return new Promise<true>((resolve, reject) => {
         const request = https.get(url, (response) => {
             // initial response --------------------------------------------
+            // Check for redirect
+            if (response.statusCode === 302 || response.statusCode === 301) {
+                // Follow the redirect and call downloadFile recursively
+                const newUrl = response.headers.location!
+                console.log(`Redirected to ${newUrl}`)
+                resolve(downloadFile(newUrl, outputPath))
+                return
+            }
+
             if (response.statusCode !== 200) {
                 reject(`Failed to download file: Status Code ${response.statusCode}`)
                 return

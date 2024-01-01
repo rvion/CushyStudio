@@ -1,26 +1,32 @@
-import type { FormBuilder, Runtime } from "src"
-import { Cnet_args, cnet_ui_common } from "../prefab_cnet"
-import { OutputFor } from '../_prefabs';
+import { OutputFor } from '../_prefabs'
+import { Cnet_args } from '../prefab_cnet'
 
 // 🅿️ IPAdapter FORM ===================================================
 export const ui_subform_IPAdapter = () => {
     const form = getCurrentForm()
     return form.group({
         label: 'IPAdapter',
+        customNodes: 'ComfyUI_IPAdapter_plus',
         items: () => ({
-            image: form.image({ default: 'cushy', group: 'Cnet_Image', tooltip: 'There is currently a bug with multiple controlnets where an image wont allow drop except for the first controlnet in the list. If you add multiple controlnets, then reload using Ctrl+R, it should allow you to drop an image on any of the controlnets.' }),
+            image: form.image({
+                default: 'cushy',
+                group: 'Cnet_Image',
+                tooltip:
+                    'There is currently a bug with multiple controlnets where an image wont allow drop except for the first controlnet in the list. If you add multiple controlnets, then reload using Ctrl+R, it should allow you to drop an image on any of the controlnets.',
+            }),
             strength: form.float({ default: 1, min: 0, max: 2, step: 0.1 }),
             startAtStepPercent: form.float({ default: 0, min: 0, max: 1, step: 0.1 }),
             endAtStepPercent: form.float({ default: 1, min: 0, max: 1, step: 0.1 }),
             clip_name: form.enum({
                 enumName: 'Enum_CLIPVisionLoader_clip_name',
-                default: 'model.safetensors',
+                default: { knownModel: 'CLIPVision model (IP-Adapter)' },
                 group: 'IPAdapter',
                 label: 'Model',
             }),
             cnet_model_name: form.enum({
                 enumName: 'Enum_IPAdapterModelLoader_ipadapter_file',
-                default: 'ip-adapter_sd15.safetensors',
+                default: { knownModel: ['ip-adapter_sd15.safetensors'] },
+                // default: 'ip-adapter_sd15.safetensors'
                 group: 'IPAdapter',
                 label: 'Model',
             }),
@@ -44,7 +50,7 @@ export const ui_subform_IPAdapter = () => {
             }),
             noise: form.float({ default: 0, min: 0, max: 1, step: 0.1 }),
             prep_sharpening: form.float({ default: 0, min: 0, max: 1, step: 0.01 }),
-            unfold_batch: form.bool({ default: false })
+            unfold_batch: form.bool({ default: false }),
         }),
     })
 }
@@ -77,7 +83,7 @@ export const run_cnet_IPAdapter = async (IPAdapter: OutputFor<typeof ui_subform_
         weight_type: ip.weight_type,
         start_at: ip.startAtStepPercent,
         end_at: ip.endAtStepPercent,
-        unfold_batch: ip.unfold_batch
+        unfold_batch: ip.unfold_batch,
     })._MODEL
 
     return { ip_adapted_model }

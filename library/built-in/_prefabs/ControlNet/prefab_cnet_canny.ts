@@ -1,18 +1,19 @@
-import { Cnet_args, cnet_preprocessor_ui_common, cnet_ui_common } from "../prefab_cnet"
-import type { OutputFor } from '../_prefabs';
-import type { FormBuilder } from 'src';
+import { Cnet_args, cnet_preprocessor_ui_common, cnet_ui_common } from '../prefab_cnet'
+import type { OutputFor } from '../_prefabs'
+import type { FormBuilder } from 'src'
 
 // 🅿️ Canny FORM ===================================================
 export const ui_subform_Canny = () => {
     const form = getCurrentForm()
     return form.group({
         label: 'Canny',
+        customNodes: 'ComfyUI-Advanced-ControlNet',
         items: () => ({
             ...cnet_ui_common(form),
             preprocessor: ui_subform_Canny_Preprocessor(form),
             cnet_model_name: form.enum({
                 enumName: 'Enum_ControlNetLoader_control_net_name',
-                default: 'control_v11p_sd15_canny.pth',
+                default: { knownModel: 'ControlNet-v1-1 (canny; fp16)' },
                 group: 'Controlnet',
                 label: 'Model',
             }),
@@ -28,7 +29,7 @@ export const ui_subform_Canny_Preprocessor = (form: FormBuilder) => {
             lowThreshold: form.int({ default: 100, min: 0, max: 200, step: 10 }),
             highThreshold: form.int({ default: 200, min: 0, max: 400, step: 10 }),
             // TODO: Add support for auto-modifying the resolution based on other form selections
-            // TODO: Add support for auto-cropping   
+            // TODO: Add support for auto-cropping
         }),
     })
 }
@@ -58,10 +59,8 @@ export const run_cnet_canny = async (canny: OutputFor<typeof ui_subform_Canny>, 
             high_threshold: canPP.highThreshold,
             resolution: canPP.resolution,
         })._IMAGE
-        if (canPP.saveProcessedImage)
-            graph.SaveImage({ images: image, filename_prefix: 'cnet\\canny\\' })
-        else
-            graph.PreviewImage({ images: image })
+        if (canPP.saveProcessedImage) graph.SaveImage({ images: image, filename_prefix: 'cnet\\canny\\' })
+        else graph.PreviewImage({ images: image })
     }
 
     return { cnet_name, image }

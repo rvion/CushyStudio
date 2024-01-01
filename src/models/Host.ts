@@ -11,6 +11,7 @@ import { readableStringify } from 'src/utils/formatters/stringifyReadable'
 import { asRelativePath } from 'src/utils/fs/pathUtils'
 import { toastError, toastSuccess } from 'src/utils/misc/toasts'
 import { downloadFile } from 'src/utils/fs/downloadFile'
+import { knownCustomNodes, KnownCustomNodes } from 'src/wiki/custom-node-list'
 export interface HostL extends LiveInstance<HostT, HostL> {}
 
 export class HostL {
@@ -67,13 +68,39 @@ export class HostL {
     }
 
     /**  */
-    downloadFileIfMissing = async (url: string, to: AbsolutePath | string) => {
+    downloadFileIfMissing = async (url: string, to: AbsolutePath | string): Promise<true> => {
+        const exists = existsSync(to)
+        if (exists) return true
         if (this.data.isLocal) {
             // return await https.get(url, (res) => res.pipe(require('fs').createWriteStream(to)))
             return downloadFile(url, to)
         }
         //
+        toastError(`[🔴] NOT IMPLEMENTED`)
         console.log(`[🔴] NOT IMPLEMENTED`)
+        return true
+    }
+
+    restartComfyUI = async (): Promise<true> => {
+        toastError(`[🔴] NOT IMPLEMENTED`)
+        console.log(`[🔴] NOT IMPLEMENTED`)
+        return true
+    }
+
+    /**  */
+    installCustomNode = async (
+        //
+        customNode: KnownCustomNodes,
+        to: AbsolutePath | string,
+    ) => {
+        if (this.data.isLocal) {
+            const customNodeInfo = knownCustomNodes.get(customNode)
+            // ....
+        }
+        //
+        toastError(`[🔴] NOT IMPLEMENTED`)
+        console.log(`[🔴] NOT IMPLEMENTED`)
+        return true
     }
 
     _copyGeneratedSDKToGlobalDTS = (): void => {

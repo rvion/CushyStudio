@@ -5,33 +5,80 @@ import { Popover, Whisper } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
 import { CleanedEnumResult } from 'src/types/EnumUtils'
 import type { EnumName, EnumValue } from '../../models/Schema'
+import { extractDownloadCandidates } from '../EnumDefault'
 
 type T = {
     label: EnumValue
     value: EnumValue | null
 }[]
 
+export const EnumDownloaderUI = observer(function EnumDownloaderUI_<K extends KnownEnumNames>(p: {
+    widget: Widget_enum<K> | Widget_enumOpt<K>
+}) {
+    const st = useSt()
+    const models = extractDownloadCandidates(p.widget.input.default as any)
+    if (models == null) return null
+    return (
+        <div tw='flex flex-col flex-wrap gap-1'>
+            {/* {models.length} */}
+            {/* <pre>{JSON.stringify(p.widget.input.default)}</pre> */}
+            {models.map((m) => {
+                const isInstalled = p.widget.possibleValues.find((x) => x === m.filename)
+                const host = st.mainHost
+                const rootComfyUIFolder = host.absolutPathToDownloadModelsTo
+                const dlPath = `${rootComfyUIFolder}/${m.type}/${m.filename}`
+                return (
+                    <div>
+                        <div
+                            onClick={async () => {
+                                // download file
+                                const res = await host.downloadFileIfMissing(m.url, dlPath)
+
+                                // retrieve the enum info
+                                // add the new value (BRITTLE)
+                                const enumInfo = st.schema.knownEnumsByName //
+                                    .get(p.widget.input.enumName)
+                                enumInfo?.values.push(m.filename)
+                            }}
+                            tw='btn btn-sm btn-outline'
+                            key={m.name}
+                        >
+                            {isInstalled ? '🟢' : null}
+                            <span className='material-symbols-outlined'>cloud_download</span>
+                            <span>{m.name}</span>
+                        </div>
+                        <div tw='text-xx italic'>{m.url}</div>
+                        <div tw='text-xx italic'>{dlPath}</div>
+                    </div>
+                )
+            })}
+        </div>
+    )
+})
 export const WidgetEnumUI = observer(function WidgetEnumUI_<K extends KnownEnumNames>(p: {
     widget: Widget_enum<K> | Widget_enumOpt<K>
 }) {
-    const req = p.widget
-    const enumName = req.input.enumName
-    const isOptional = req instanceof Widget_enumOpt
+    const widget = p.widget
+    const enumName = widget.input.enumName
+    const isOptional = widget instanceof Widget_enumOpt
     return (
-        <EnumSelectorUI
-            value={() => req.status}
-            disabled={!req.state.active}
-            isOptional={isOptional}
-            enumName={enumName}
-            // substituteValue={req.status}
-            onChange={(e) => {
-                if (e == null) {
-                    if (isOptional) req.state.active = false
-                    return
-                }
-                req.state.val = e as any // 🔴
-            }}
-        />
+        <div>
+            <EnumSelectorUI
+                value={() => widget.status}
+                disabled={!widget.state.active}
+                isOptional={isOptional}
+                enumName={enumName}
+                // substituteValue={req.status}
+                onChange={(e) => {
+                    if (e == null) {
+                        if (isOptional) widget.state.active = false
+                        return
+                    }
+                    widget.state.val = e as any // 🔴
+                }}
+            />
+            <EnumDownloaderUI widget={widget} />
+        </div>
     )
 })
 

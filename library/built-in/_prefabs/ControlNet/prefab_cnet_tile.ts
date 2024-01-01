@@ -1,6 +1,6 @@
-import type { FormBuilder, Runtime } from "src"
-import { Cnet_args, cnet_preprocessor_ui_common, cnet_ui_common } from "../prefab_cnet"
-import { OutputFor } from '../_prefabs';
+import type { FormBuilder, Runtime } from 'src'
+import { Cnet_args, cnet_preprocessor_ui_common, cnet_ui_common } from '../prefab_cnet'
+import { OutputFor } from '../_prefabs'
 
 // 🅿️ Tile FORM ===================================================
 export const ui_subform_Tile = () => {
@@ -12,7 +12,7 @@ export const ui_subform_Tile = () => {
             preprocessor: ui_subform_Tile_Preprocessor(form),
             cnet_model_name: form.enum({
                 enumName: 'Enum_ControlNetLoader_control_net_name',
-                default: 'control_v11f1e_sd15_tile.pth',
+                default: { knownModel: 'ControlNet-v1-1 (tile; fp16; v11f1e)' },
                 group: 'Controlnet',
                 label: 'Model',
             }),
@@ -27,11 +27,11 @@ export const ui_subform_Tile_Preprocessor = (form: FormBuilder) => {
             type: form.choice({
                 label: 'Type',
                 items: () => ({
-                    Tile: ui_subform_Tile_pyrUp(form)
-                })
-            })
+                    Tile: ui_subform_Tile_pyrUp(form),
+                }),
+            }),
             // TODO: Add support for auto-modifying the resolution based on other form selections
-            // TODO: Add support for auto-cropping   
+            // TODO: Add support for auto-cropping
         }),
     })
 }
@@ -41,8 +41,8 @@ export const ui_subform_Tile_pyrUp = (form: FormBuilder) => {
         label: 'Tile Preprocessor',
         items: () => ({
             ...cnet_preprocessor_ui_common(form),
-            pyrup: form.int({ default: 3, min: 0 })
-        })
+            pyrup: form.int({ default: 3, min: 0 }),
+        }),
     })
 }
 
@@ -69,12 +69,10 @@ export const run_cnet_Tile = async (Tile: OutputFor<typeof ui_subform_Tile>, cne
             image = graph.TilePreprocessor({
                 image: image,
                 resolution: tile.resolution,
-                pyrUp_iters: tile.pyrup
+                pyrUp_iters: tile.pyrup,
             })._IMAGE
-            if (tile.saveProcessedImage)
-                graph.SaveImage({ images: image, filename_prefix: 'cnet\\Tile\\midas' })
-            else
-                graph.PreviewImage({ images: image })
+            if (tile.saveProcessedImage) graph.SaveImage({ images: image, filename_prefix: 'cnet\\Tile\\midas' })
+            else graph.PreviewImage({ images: image })
         }
     }
 

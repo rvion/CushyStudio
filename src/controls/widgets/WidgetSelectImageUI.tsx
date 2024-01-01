@@ -21,7 +21,7 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: { w
     const st = useSt()
     const [dropStyle, dropRef] = useImageDrop(st, (i) => {
         runInAction(() => {
-            console.log('DROPPED', i)
+            // console.log('DROPPED', JSON.stringify(i.data, null, 3))
             req.state.active = true
             req.state.cushy = { type: 'CushyImage', imageID: i.id }
             req.state.pick = 'cushy'
