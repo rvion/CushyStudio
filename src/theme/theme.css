@@ -74,9 +74,9 @@ fieldset {
     /* margin-right: 2px; */
     /* padding: .4rem; */
     /* padding-top: 0.35em; */
-    padding-bottom: 0.3em;
-    padding-left: 0.3em;
-    padding-right: 0.3em;
+    padding-bottom: 0.3rem;
+    padding-left: 0.3rem;
+    padding-right: 0.3rem;
     border: 1px groove var(--fallback-p,oklch(var(--p)/0.45));
     /* border-left: 1px groove var(--fallback-p,oklch(var(--p)/0.45)); */
     /* border-top: 1px groove var(--fallback-p,oklch(var(--p)/0.6)); */

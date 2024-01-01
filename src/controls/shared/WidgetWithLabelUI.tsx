@@ -145,14 +145,14 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     }
     if (p.labelPos === 'end') {
         return (
-            <div className={className} key={rootKey}>
+            <div tw='[padding-left:0.3rem]' className={className} key={rootKey}>
                 {WIDGET}
                 {LABEL}
             </div>
         )
     } else {
         return (
-            <div className={className} key={rootKey}>
+            <div tw='[padding-left:0.3rem]' className={className} key={rootKey}>
                 {LABEL}
                 {WIDGET}
             </div>
