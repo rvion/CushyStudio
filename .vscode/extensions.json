@@ -1,5 +1,9 @@
 {
     "recommendations": [
+        // will autoformat your code on save
+        // so no more diff hell with contributors
+        "esbenp.prettier-vscode",
+
         // official vscode support for tailwind
         "bradlc.vscode-tailwindcss",
 
