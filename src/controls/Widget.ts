@@ -1074,7 +1074,7 @@ export class Widget_list<T extends Widget> implements IRequest<'list', Widget_li
             const clamp = (v: number, min: number, max: number) => Math.min(Math.max(v, min), max)
             const defaultLen = clamp(input.defaultLength ?? 0, input.min ?? 0, input.max ?? 10)
             const items = defaultLen
-                ? new Array(defaultLen).fill(0).map((_,ix) => input.element(ix))
+                ? runWithGlobalForm(this.builder, () => new Array(defaultLen).fill(0).map((_,ix) => input.element(ix)))
                 : []
             this.state = {
                 type: 'list',
@@ -1389,7 +1389,7 @@ export class Widget_choice      <T extends { [key: string]: Widget }> implements
         serial?: Widget_choice_serial<T>,
     ) {
         this.id = serial?.id ?? nanoid()
-        const _items = input.items()
+        const _items = runWithGlobalForm(this.builder, () => input.items())
         this.possibleChoices=Object.keys(_items)
         if (serial){
             this.state = { type:'choice', id: this.id, active: serial.active, collapsed: serial.collapsed, values: {} as any, pick: serial.pick }
