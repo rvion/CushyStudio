@@ -85,30 +85,6 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                         whenValid={(req) => <WidgetUI widget={req} />}
                     />
                 </div>
-                <Joined tw='opacity-50'>
-                    <Button
-                        onClick={() => st.layout.FOCUS_OR_CREATE('DraftJsonResult', { draftID: draft.id })}
-                        size='sm'
-                        tw='tab btn-ghost join-item'
-                    >
-                        Form result
-                    </Button>
-                    <Button
-                        onClick={() => st.layout.FOCUS_OR_CREATE('DraftJsonSerial', { draftID: draft.id })}
-                        size='sm'
-                        tw='tab btn-ghost join-item'
-                    >
-                        Form state
-                    </Button>
-                    <Button
-                        onClick={() => st.layout.FOCUS_OR_CREATE('Script', { scriptID: draft.app.script.id })}
-                        size='sm'
-                        tw='tab btn-ghost join-item'
-                    >
-                        App code
-                    </Button>
-                    {/* <TypescriptHighlightedCodeUI code={app.codeJS ?? ''} /> */}
-                </Joined>
             </div>
         </draftContext.Provider>
     )
@@ -216,6 +192,29 @@ export const DraftMenuUI = observer(function DraftMenuUI_(p: { title: string; dr
             // startIcon={<span className='material-symbols-outlined'>format_size</span>}
         >
             <MenuItem
+                icon={<span className='material-symbols-outlined'>info</span>}
+                onClick={() => st.layout.FOCUS_OR_CREATE('DraftJsonResult', { draftID: draft.id })}
+                size='sm'
+            >
+                Form result
+            </MenuItem>
+            <MenuItem
+                icon={<span className='material-symbols-outlined'>dynamic_form</span>}
+                onClick={() => st.layout.FOCUS_OR_CREATE('DraftJsonSerial', { draftID: draft.id })}
+                size='sm'
+            >
+                Form state
+            </MenuItem>
+            <MenuItem
+                icon={<span className='material-symbols-outlined'>code</span>}
+                onClick={() => st.layout.FOCUS_OR_CREATE('Script', { scriptID: draft.app.script.id })}
+                size='sm'
+            >
+                App code
+            </MenuItem>
+            <div tw='divider my-0' />
+
+            <MenuItem
                 active={app.isFavorite}
                 onClick={() => app.setFavorite(!app.isFavorite)}
                 icon={
@@ -225,6 +224,17 @@ export const DraftMenuUI = observer(function DraftMenuUI_(p: { title: string; dr
                 }
             >
                 Favorite
+            </MenuItem>
+            <MenuItem
+                active={app.isFavorite}
+                onClick={() => app.setFavorite(!app.isFavorite)}
+                icon={
+                    <span tw={[app.isFavorite ? 'text-yellow-500' : null]} className='material-symbols-outlined'>
+                        co
+                    </span>
+                }
+            >
+                Fold top level
             </MenuItem>
 
             <div tw='divider my-0' />
