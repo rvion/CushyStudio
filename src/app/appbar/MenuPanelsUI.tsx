@@ -7,7 +7,7 @@ export const MenuPanelsUI = observer(function MenuPanelsUI_(p: {}) {
     return (
         <Dropdown
             startIcon={<span className='material-symbols-outlined text-red-400'>image</span>}
-            title='Layout'
+            title='Panels'
             appearance='subtle'
         >
             <MenuItem

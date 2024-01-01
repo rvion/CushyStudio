@@ -1,4 +1,4 @@
-import type { IJsonModel } from 'flexlayout-react'
+import type { IJsonModel } from 'flexlayout1-react'
 import type { ThemeName } from 'src/theme/ThemeManager'
 // import { ComfyHostID } from './ComfyHostDef'
 
@@ -70,7 +70,7 @@ export type ConfigFile = {
     showPreviewInPanel?: boolean
 
     /** named perspectives */
-    layouts_v8?: { [perspectiveName: string]: IJsonModel }
+    layouts_v9?: { [perspectiveName: string]: IJsonModel }
     // bad place to store that
     stars?: { [actionPackName: string]: { at: Timestamp; stars: number } }
     packs?: { [actionPackName: string]: { installed: boolean } }

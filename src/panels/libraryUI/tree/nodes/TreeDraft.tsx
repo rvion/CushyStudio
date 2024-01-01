@@ -14,10 +14,7 @@ export class TreeDraft implements ITreeEntry {
     }
     isFolder = false
     canRename = true
-    onPrimaryAction = () => {
-        this.st.currentDraft = this.draft
-        this.draft.openOrFocusTab()
-        // this.st.layout.FOCUS_OR_CREATE('CurrentDraft', {})
+    onPrimaryAction = () => this.draft.openOrFocusTab()
     // icon = (<span>✨</span>)
     get icon() {
         return this.draft.app?.illustrationPathWithFileProtocol ?? ''

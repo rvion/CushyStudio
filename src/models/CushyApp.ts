@@ -46,8 +46,8 @@ export class CushyAppL {
     }
 
     /** shortcut to open the last draft of the first app defined in this file */
-    openLastDraftAsCurrent = () => {
-        this.st.currentDraft = this.getLastDraft()
+    openLastDraft = () => {
+        this.getLastDraft().openOrFocusTab()
     }
 
     getLastDraft = (): DraftL => {

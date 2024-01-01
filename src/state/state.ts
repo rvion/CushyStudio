@@ -253,15 +253,6 @@ export class STATE {
         remoteQuery: () => ({ isOpened: SQLITE_true }),
     })
 
-    get currentDraft(): Maybe<DraftL> {
-        return this.project.draft.item
-    }
-    set currentDraft(draft: DraftL | null) {
-        this.project.update({ currentDraftID: draft ? draft.id : draft })
-        draft?.file?.extractScriptFromFile()
-        this.closeFullLibrary()
-    }
-
     fixEnumValue = (
         //
         candidateValue: Maybe<EnumValue>,
