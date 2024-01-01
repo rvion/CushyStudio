@@ -20,9 +20,11 @@ export class DraftL {
     // 🔴 HACKY
     shouldAutoStart = false
 
-    foldTopLevel = () => {
-        this.form.value?.foldAll()
-    }
+    /** collapse all top-level form entryes */
+    collapseTopLevelFormEntries = () => this.form.value?.collapseAllEntries()
+
+    /** expand all top-level form entries */
+    expandTopLevelFormEntries = () => this.form.value?.expandAllEntries()
 
     appRef = new LiveRef<this, CushyAppL>(this, 'appID', () => this.db.cushy_apps)
 

@@ -214,6 +214,21 @@ export const DraftMenuUI = observer(function DraftMenuUI_(p: { title: string; dr
                 App code
             </MenuItem>
             <div tw='divider my-0' />
+            <MenuItem
+                // active={app.isFavorite}
+                onClick={draft.expandTopLevelFormEntries}
+                icon={<span className='material-symbols-outlined'>unfold_more</span>}
+            >
+                Fold top level
+            </MenuItem>
+            <MenuItem
+                // active={app.isFavorite}
+                onClick={draft.collapseTopLevelFormEntries}
+                icon={<span className='material-symbols-outlined'>unfold_less</span>}
+            >
+                Unfold top level
+            </MenuItem>
+            <div tw='divider my-0' />
 
             <MenuItem
                 active={app.isFavorite}
@@ -225,13 +240,6 @@ export const DraftMenuUI = observer(function DraftMenuUI_(p: { title: string; dr
                 }
             >
                 Favorite
-            </MenuItem>
-            <MenuItem
-                // active={app.isFavorite}
-                onClick={draft.foldTopLevel}
-                icon={<span className='material-symbols-outlined'>unfold_less</span>}
-            >
-                Fold top level
             </MenuItem>
 
             <div tw='divider my-0' />

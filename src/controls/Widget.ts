@@ -1252,8 +1252,11 @@ export class Widget_group<T extends { [key: string]: Widget }> implements IReque
     get entries() { return Object.entries(this.state.values) as [string, any][] }
     /** the dict of all child widgets */
     get values() { return this.state.values }
-    foldAll = () => {
+    collapseAllEntries = () => {
         for (const [key, item] of this.entries)  item.state.collapsed = true
+    }
+    expandAllEntries = () => {
+        for (const [key, item] of this.entries)  item.state.collapsed = undefined
     }
     constructor(
         public builder: FormBuilder,
