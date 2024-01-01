@@ -6,6 +6,7 @@ import { run_model, ui_model } from './_prefabs/prefab_model'
 import { run_prompt } from './_prefabs/prefab_prompt'
 import { ui_recursive } from './_prefabs/prefab_recursive'
 import { Ctx_sampler, run_sampler, ui_sampler } from './_prefabs/prefab_sampler'
+import { run_cnet, ui_cnet, Cnet_args } from './_prefabs/prefab_cnet'
 
 app({
     metadata: {
@@ -37,19 +38,7 @@ app({
         latent: ui_latent(),
         sampler: ui_sampler(),
         highResFix: ui_highresfix(form, { activeByDefault: true }),
-        controlnets: form.groupOpt({
-            items: () => ({
-                pose: form.list({
-                    //
-                    element: () =>
-                        form.group({
-                            items: () => ({
-                                pose: form.image({ assetSuggested: 'library/CushyStudio/default/_poses/' as RelativePath }),
-                            }),
-                        }),
-                }),
-            }),
-        }),
+        controlnets: ui_cnet(),
         recursiveImgToImg: ui_recursive(),
         loop: form.groupOpt({
             items: () => ({
@@ -90,28 +79,28 @@ app({
         // RICH PROMPT ENGINE -------- ---------------------------------------------------------------
         const x = run_prompt(run, { richPrompt: posPrompt, clip, ckpt, outputWildcardsPicked: true })
         const clipPos = x.clip
-        const ckptPos = x.ckpt
+        let ckptPos = x.ckpt
         let positive = x.conditionning
 
         const y = run_prompt(run, { richPrompt: negPrompt, clip, ckpt, outputWildcardsPicked: true })
-        const negative = y.conditionning
+        let negative = y.conditionning
 
         // START IMAGE -------------------------------------------------------------------------------
-        let { latent } = await run_latent({ run: run, opts: ui.latent, vae })
+        let { latent, width, height } = await run_latent({ run: run, opts: ui.latent, vae })
 
         // CNETS -------------------------------------------------------------------------------
-        const cnets = ui.controlnets
-        if (cnets) {
-            for (const cnet of cnets.pose) {
-                positive = graph.ControlNetApply({
-                    conditioning: positive,
-                    control_net: graph.ControlNetLoader({
-                        control_net_name: 'control_openpose-fp16.safetensors',
-                    }),
-                    image: (await run.loadImageAnswer(cnet.pose))._IMAGE,
-                    strength: 1,
-                })
+        if (ui.controlnets) {
+            const Cnet_args: Cnet_args = {
+                positive,
+                negative,
+                width,
+                height,
+                ckptPos,
             }
+            var cnet_out = await run_cnet(ui.controlnets, Cnet_args)
+            positive = cnet_out.cnet_positive
+            negative = cnet_out.cnet_negative
+            ckptPos = cnet_out.ckpt_return //only used for ipAdapter, otherwise it will just be a passthrough
         }
 
         // FIRST PASS --------------------------------------------------------------------------------
