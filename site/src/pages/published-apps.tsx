@@ -30,14 +30,18 @@ const PublishedAppPage = observer(function Hello() {
             >
                 <div>
                     <div>Published apps: </div>
-                    <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '.5rem' }}>
                         {library.allPublishedApps?.data?.map((x) => (
                             <div
                                 //
                                 key={x.app_id}
-                                style={{ border: '1px solid blue', padding: '1rem' }}
+                                style={{ border: '1px solid lightgray', padding: '1rem', display: 'flex', gap: '.5rem' }}
                             >
-                                {x.name}
+                                <img style={{ width: '5rem', height: '5rem' }} src={x.illustration_url} alt='' />
+                                <div style={{ maxWidth: '10rem' }}>
+                                    <div style={{ fontWeight: 'bold' }}>{x.name}</div>
+                                    <div>{x.description}</div>
+                                </div>
                             </div>
                         ))}
                     </div>
