@@ -99,7 +99,7 @@ export class Runtime<FIELDS extends WidgetDict = any> {
 
     get LLM(): RuntimeLLM {
         const it = new RuntimeLLM(this)
-        Object.defineProperty(this, 'RuntimeLLM', { value: it })
+        Object.defineProperty(this, 'LLM', { value: it })
         return it
     }
 

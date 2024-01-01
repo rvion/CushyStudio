@@ -12,6 +12,11 @@ export class RuntimeLLM {
         makeAutoObservable(this)
     }
 
+    // ---------------------------
+    // LOCAL LLM PART GOES HERE
+    // 👉 .. TODO
+    // ---------------------------
+
     /** verify key is ready */
     isConfigured = async () => {
         return !!this.rt.st.configFile.value.OPENROUTER_API_KEY
