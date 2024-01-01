@@ -4,7 +4,7 @@ import type { TreeError } from './nodes/TreeError'
 import type { TreeFavorite } from './nodes/TreeFavorites'
 import type { TreeFile } from './nodes/TreeFile'
 import type { TreeFolder } from './nodes/TreeFolder'
-import type { TreeRoot } from './nodes/TreeRoot'
+// import type { TreeRoot } from './nodes/TreeRoot'
 
 import type { ReactNode } from 'react'
 import type { TreeNode } from './xxx/TreeNode'
@@ -17,7 +17,7 @@ export type TreeEntry =
     | TreeFile
     | TreeDraft
     | TreeApp
-    | TreeRoot
+    // | TreeRoot
     | TreeFavorite
     | TreeError
 
@@ -25,7 +25,7 @@ export type TreeEntryAction = {
     name: string
     mode: 'small' | 'full'
     icon: string
-    onClick: () => void
+    onClick: (node: TreeNode) => void
     className?: string
 }
 
@@ -52,5 +52,5 @@ export interface ITreeEntry {
     onExpand?: (n: TreeNode) => void
 
     actions?: TreeEntryAction[]
-    extra?: ReactNode
+    extra?: () => ReactNode
 }

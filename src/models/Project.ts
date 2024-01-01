@@ -1,5 +1,5 @@
 import type { LiveInstance } from '../db/LiveInstance'
-import type { ComfyWorkflowL } from './Graph'
+import type { ComfyWorkflowL } from './ComfyWorkflow'
 import type { ComfySchemaL } from './Schema'
 
 import { LiveRef } from '../db/LiveRef'

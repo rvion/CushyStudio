@@ -4,11 +4,14 @@ import type { STATE } from 'src/state/state'
 // prettier-ignore
 export type ThemeName =
     | 'light'
+    | 'light2'
     | 'dark'
+    | 'dark2'
+    | 'dark3'
     | 'cupcake'
     | 'valentine'
     | 'wireframe'
-    | 'aqua'
+    // | 'aqua'
     | 'forest'
 // | 'sunset'
 // | 'luxury'
@@ -16,14 +19,18 @@ export type ThemeName =
 
 export class ThemeManager {
     themes: ThemeName[] = [
+        // dark themes
+        'dark',
+        'dark2',
+        'dark3',
+        'forest',
         //
         'light',
-        'dark',
+        'light2',
         'cupcake',
         'valentine',
         'wireframe',
-        'aqua',
-        'forest',
+        // 'aqua',
         // 'sunset',
         // 'luxury',
         // 'business',

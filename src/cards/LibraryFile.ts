@@ -1,3 +1,4 @@
+import type { Metafile, OutputFile } from 'esbuild'
 import type { LiteGraphJSON } from 'src/core/LiteGraph'
 import type { STATE } from 'src/state/state'
 import type { ComfyPromptJSON } from '../types/ComfyPrompt'
@@ -13,7 +14,7 @@ import { getPngMetadataFromUint8Array } from '../utils/png/_getPngMetadata'
 import { Library } from './Library'
 
 import { dirname } from 'pathe'
-import { createEsbuildContextFor } from 'src/back/transpiler'
+import { createEsbuildContextFor } from 'src/compiler/transpiler'
 
 // @ts-ignore
 import { LiveCollection } from 'src/db/LiveCollection'
@@ -76,6 +77,10 @@ export class LibraryFile {
         return nameLower.includes(searchLower)
     }
 
+    get scriptX(): Maybe<CushyScriptL> {
+        return this.scripts.items[0]
+    }
+
     strategies: LoadStrategy[]
 
     // --------------------------------------------------------
@@ -96,6 +101,8 @@ export class LibraryFile {
 
     // the first thing to do to load an app is to get the Cushy Script from it.
     codeJS?: Maybe<string> = null
+    metafile?: Maybe<Metafile> = null
+    script?: Maybe<CushyScriptL> = null
 
     scripts = new LiveCollection<CushyScriptL>({
         table: () => this.st.db.cushy_scripts,
@@ -114,7 +121,9 @@ export class LibraryFile {
     isLoading = false
     hasBeenLoadedAtLeastOnce = false
 
-    load = async (p?: { force?: boolean }): Promise<FileLoadResult> => {
+    // 🔶 TODO: split into two functions for easier code path understanding from
+    // 🔶 other locations.
+    extractScriptFromFile = async (p?: { force?: boolean }): Promise<FileLoadResult> => {
         // don't load more than once unless manually requested
         if (this.isLoading) return { type: 'cached' }
         this.isLoading = true
@@ -186,16 +195,22 @@ export class LibraryFile {
             const ctx = await this._esbuildContext
             // console.log('-- b')
             const res = await ctx.rebuild()
+            // console.log(`[👙] res`, Object.keys(res.metafile.inputs))
+            const outFile: OutputFile = res.outputFiles[0]!
+            // console.log(`[👙] res`, outFile.text)
+            if (outFile.text == null) throw new Error('compilation failed')
             // console.log('-- c')
 
-            const distPathWrongExt = path.join(this.folderAbs, 'dist', this.deckRelativeFilePath)
-            const ext = path.extname(distPathWrongExt)
-            const distPathJS = distPathWrongExt.slice(0, -ext.length) + '.js'
+            // const distPathWrongExt = path.join(this.folderAbs, 'dist', this.deckRelativeFilePath)
+            // const ext = path.extname(distPathWrongExt)
+            // const distPathJS = distPathWrongExt.slice(0, -ext.length) + '.js'
 
-            this.codeJS = readFileSync(distPathJS, 'utf-8')
+            this.codeJS = outFile.text // readFileSync(distPathJS, 'utf-8')
+            this.metafile = res.metafile as Metafile
+            const script = this.UPSERT_SCRIPT(this.codeJS, this.metafile)
 
             // 2. extract tools
-            return { type: 'SUCCESS', script: this.UPSERT_SCRIPT(this.codeJS) }
+            return { type: 'SUCCESS', script: script }
         } catch (e) {
             console.error(`[🔴] failed to load ${this.relPath}`, e)
             return this.addError('transpile error in load_asCushyStudioAction', e)
@@ -310,7 +325,11 @@ export class LibraryFile {
         }
     }
 
-    UPSERT_SCRIPT = (codeJS: string): CushyScriptL => {
+    UPSERT_SCRIPT = (
+        //
+        codeJS: string,
+        metafile?: Metafile,
+    ): CushyScriptL => {
         console.groupCollapsed(`[👙] script extracted for ${this.relPath}`)
         console.log(codeJS)
         console.groupEnd()
@@ -318,7 +337,9 @@ export class LibraryFile {
             id: asCushyScriptID(this.relPath),
             code: codeJS,
             path: this.relPath,
+            metafile: metafile ?? null,
         })
+        this.script = script
         return script
     }
 }

@@ -5,13 +5,22 @@ import { ITreeEntry, TreeEntryAction } from '../TreeEntry'
 export class TreeDraft implements ITreeEntry {
     get id() { return `draft#${this.draft.id}` } // prettier-ignore
     get name() { return `${this.draft.name}` } // prettier-ignore
+    constructor(
+        //
+        public st: STATE,
+        public draft: DraftL,
+    ) {
+        this.data = this
+    }
     isFolder = false
     canRename = true
-    onPrimaryAction = () => {
-        this.st.currentDraft = this.draft
-        this.st.layout.FOCUS_OR_CREATE('CurrentDraft', {})
+    onPrimaryAction = () => this.draft.openOrFocusTab()
+    // icon = (<span>✨</span>)
+    get icon() {
+        return this.draft.app?.illustrationPathWithFileProtocol ?? ''
+        // return <span className='material-symbols-outlined'>Draft</span>
     }
-    icon = (<span>✨</span>)
+
     data: TreeDraft
 
     actions: TreeEntryAction[] = [
@@ -24,12 +33,11 @@ export class TreeDraft implements ITreeEntry {
                 this.draft.start()
             },
         },
+        {
+            name: 'add Draft',
+            icon: 'close',
+            mode: 'small',
+            onClick: () => this.draft.delete(),
+        },
     ]
-    constructor(
-        //
-        public st: STATE,
-        public draft: DraftL,
-    ) {
-        this.data = this
-    }
 }

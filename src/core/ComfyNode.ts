@@ -1,4 +1,4 @@
-import type { ComfyWorkflowL } from '../models/Graph'
+import type { ComfyWorkflowL } from '../models/ComfyWorkflow'
 import type { ComfyNodeJSON } from '../types/ComfyPrompt'
 import type { NodeProgress } from '../types/ComfyWsApi'
 
@@ -151,7 +151,7 @@ export class ComfyNode<
     }
 
     /** return the list of nodes piped into this node */
-    _incomingNodes() {
+    _incomingNodes(): ComfyNodeID[] {
         const incomingNodes: ComfyNodeID[] = []
         for (const [_name, val] of Object.entries(this.inputs)) {
             if (val instanceof Array) {
@@ -161,7 +161,17 @@ export class ComfyNode<
         }
         return incomingNodes
     }
-    _incomingEdges() {
+
+    _primitives(): { inputName: string; value: string }[] {
+        const primitives: { inputName: string; value: string }[] = []
+        for (const [inputName, val] of Object.entries(this.inputs)) {
+            if (val instanceof Array) continue
+            primitives.push({ inputName: inputName, value: val?.toString() })
+        }
+        return primitives
+    }
+
+    _incomingEdges(): { from: ComfyNodeID; inputName: string }[] {
         const incomingEdges: { from: ComfyNodeID; inputName: string }[] = []
         for (const [inputName, val] of Object.entries(this.inputs)) {
             if (val instanceof Array) {

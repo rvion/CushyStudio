@@ -36,9 +36,9 @@ export const RenderItemTitleUI = observer(function RenderItemTitleUI_(p: {
                 <div tw='absolute inset-0'>{item.name}</div>
             </div>
             <div tw='ml-auto opacity-40 hover:opacity-100'>
-                {item.extra}
+                {item.extra?.()}
                 {item.actions?.map((action, ix) => {
-                    return <TreeIcon1UI key={ix} {...action} />
+                    return <TreeIcon1UI key={ix} node={node} {...action} />
                 })}
             </div>
         </div>

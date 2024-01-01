@@ -33,9 +33,9 @@ app({
             startCollapsed: true,
             default: 'nsfw, nude, girl, woman, human',
         }),
-        model: ui_model(form),
-        latent: ui_latent(form),
-        sampler: ui_sampler(form),
+        model: ui_model(),
+        latent: ui_latent(),
+        sampler: ui_sampler(),
         highResFix: ui_highresfix(form, { activeByDefault: true }),
         controlnets: form.groupOpt({
             items: () => ({
@@ -50,7 +50,7 @@ app({
                 }),
             }),
         }),
-        recursiveImgToImg: ui_recursive(form),
+        recursiveImgToImg: ui_recursive(),
         loop: form.groupOpt({
             items: () => ({
                 batchCount: form.int({ default: 1 }),
@@ -82,7 +82,7 @@ app({
     run: async (run, ui) => {
         const graph = run.nodes
         // MODEL, clip skip, vae, etc. ---------------------------------------------------------------
-        let { ckpt, vae, clip } = run_model(run, ui.model)
+        let { ckpt, vae, clip } = run_model(ui.model)
 
         const posPrompt = ui.reversePositiveAndNegative ? ui.negative : ui.positive
         const negPrompt = ui.reversePositiveAndNegative ? ui.positive : ui.negative

@@ -49,7 +49,7 @@ export const UpdaterAnchorUI = observer(function UpdaterAnchorUI_(p: { updater: 
     const updater = p.updater
     const status = updater.status
     if (status === FolderGitStatus.Unknown) return <Loader />
-    if (status === FolderGitStatus.DoesNotExist) return <GitInstallUI udpater={updater} />
+    if (status === FolderGitStatus.DoesNotExist) return <GitInstallUI updater={updater} />
     if (status === FolderGitStatus.NotADirectory) return <div>❓ unexpected file</div>
     if (status === FolderGitStatus.FolderWithoutGit) return null // <GitInitBtnUI updater={updater} />
     if (status === FolderGitStatus.FolderWithGitButWithProblems) return <div>❓</div>

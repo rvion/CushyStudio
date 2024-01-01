@@ -1,7 +1,7 @@
 import type { LiveInstance } from '../db/LiveInstance'
 import type { StepL } from './Step'
 import type { PromptRelated_WsMsg, WsMsgExecuted, WsMsgExecuting, WsMsgExecutionError } from '../types/ComfyWsApi'
-import type { ComfyWorkflowL, ProgressReport } from './Graph'
+import type { ComfyWorkflowL, ProgressReport } from './ComfyWorkflow'
 import type { Runtime } from 'src/runtime/Runtime'
 
 import { nanoid } from 'nanoid'
@@ -105,7 +105,7 @@ export class ComfyPromptL {
         return this.step.runtime
     }
 
-    /** udpate execution list */
+    /** update execution list */
     private onExecuted = (msg: WsMsgExecuted) => {
         for (const img of msg.data.output.images) {
             // retrieve the node

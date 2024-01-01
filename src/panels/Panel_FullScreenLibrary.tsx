@@ -41,7 +41,7 @@ export const Panel_CardPicker3UI = observer(function Panel_CardPicker3UI_(p: {})
                                 if (e.key === 'Enter') {
                                     const app = library.appsFiltered[library.selectionCursor]
                                     if (app == null) return
-                                    app.openLastDraftAsCurrent()
+                                    app.openLastDraft()
                                     st.closeFullLibrary()
                                 } else if (e.key === 'ArrowDown') {
                                     library.selectionCursor++
@@ -60,7 +60,7 @@ export const Panel_CardPicker3UI = observer(function Panel_CardPicker3UI_(p: {})
                             // throw new Error('not implemented; should walk, list all apps, and compile them to executable')
                             const allFiles = recursivelyFindAppsInFolder(st.library, st.libraryFolderPathAbs)
                             console.log(`[👙] allFiles:`, allFiles.length)
-                            for (const x of allFiles) await x.load()
+                            for (const x of allFiles) await x.extractScriptFromFile()
                         }}
                     >
                         Rebuild local store

@@ -24,9 +24,17 @@ export const WidgetChoicesUI = observer(function WidgetChoicesUI_(p: { widget: W
             <div tw='flex items-start w-full'>
                 <SelectUI<Entry>
                     tw='flex-grow'
-                    value={() => values}
-                    options={choices}
+                    value={() =>
+                        Object.entries(req.state.branches)
+                            .map(([key, value]) => ({ key, value }))
+                            .filter((x) => x.value)
+                    }
+                    options={() => choices}
                     getLabelText={(v) => v.key ?? v.key}
+                    equalityCheck={(a, b) => a.key === b.key}
+                    multiple
+                    closeOnPick={false}
+                    resetQueryOnPick={false}
                     onChange={(v) => {
                         const prev = Boolean(req.state.branches[v.key])
                         req.state.branches[v.key] = !prev

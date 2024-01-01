@@ -16,7 +16,7 @@ import { MediaImageL } from 'src/models/MediaImage'
 import { MediaVideoL } from 'src/models/MediaVideo'
 import { RuntimeErrorL } from 'src/models/RuntimeError'
 import { Media3dDisplacementL } from 'src/models/Media3dDisplacement'
-import { ComfyWorkflowL } from 'src/models/Graph'
+import { ComfyWorkflowL } from 'src/models/ComfyWorkflow'
 import { MediaSplatL } from 'src/models/MediaSplat'
 import { OutputSplatPreviewUI, OutputSplatUI } from './OutputSplat'
 

@@ -17,6 +17,7 @@ import { nanoid } from 'nanoid'
 import { FC } from 'react'
 import { bang } from 'src/utils/misc/bang'
 import { WidgetDI } from './widgets/WidgetUI.DI'
+import { runWithGlobalForm } from 'src/models/_ctx2'
 
 // Widget is a closed union for added type safety
 export type Widget =
@@ -79,11 +80,49 @@ export class Widget_str implements IRequest<'str', Widget_str_opts, Widget_str_s
 }
 
 // 🅿️ orbit ==============================================================================
-export type OrbitData = { azimuth: number; elevation: number }
+const inRange = (val: number, min:number,max:number, margin:number=0) => {
+    return val >= (min-margin) && val <= (max+margin)
+
+}
+const mkEnglishSummary = (
+    /** in deg; from -180 to 180 */
+    azimuth:number,
+    /** in deg, from -90 to 90 */
+    elevation: number
+):string => {
+    const words:string[] =[]
+    // const azimuth = this.state.val.azimuth
+    // faces: front, back, left, right
+    const margin = 20
+
+    if (inRange(elevation,-90,-80,margin)) words.push('from-below')
+    else if (inRange(elevation,80,90,0)) words.push('from-above')
+    else {
+        if (inRange(elevation,-80,-45,0)) words.push('low')
+        else if (inRange(elevation,45,80,0)) words.push('high')
+
+        if (inRange(azimuth,-180,-135,margin)) words.push('back')
+        else if (inRange(azimuth,135,180,margin)) words.push('back')
+        else if (inRange(azimuth,-45,45,margin)) words.push('front')
+        else {
+            if (inRange(azimuth,-135,-45,margin)) words.push('righ-side') // 'right')
+            else if (inRange(azimuth,45,135,margin)) words.push('left-side') // left')
+        }
+
+    }
+
+    return `${words.join('-')} view`
+}
+export type OrbitData = {
+    azimuth: number;
+    elevation: number;
+}
 export type Widget_orbit_opts  = ReqInput<{ default?: Partial<OrbitData> }>
 export type Widget_orbit_serial = StateFields<{ type: 'orbit', active: true; val: OrbitData }>
 export type Widget_orbit_state  = StateFields<{ type: 'orbit', active: true; val: OrbitData }>
-export type Widget_orbit_output = OrbitData
+export type Widget_orbit_output = OrbitData & {
+    englishSummary: string;
+}
 export interface Widget_orbit extends IWidget<'orbit', Widget_orbit_opts, Widget_orbit_serial, Widget_orbit_state, Widget_orbit_output> {}
 export class Widget_orbit implements IRequest<'orbit', Widget_orbit_opts, Widget_orbit_serial, Widget_orbit_state, Widget_orbit_output> {
     isOptional = false
@@ -93,6 +132,20 @@ export class Widget_orbit implements IRequest<'orbit', Widget_orbit_opts, Widget
     reset = () => {
         this.state.val.azimuth = this.input.default?.azimuth ?? 0
         this.state.val.elevation = this.input.default?.elevation ?? 0
+    }
+
+    get englishSummary(){
+        return  mkEnglishSummary(this.state.val.azimuth, this.state.val.elevation)
+    }
+    get euler(){
+        const radius = 5
+        const azimuthRad = this.state.val.azimuth * (Math.PI / 180)
+        const elevationRad = this.state.val.elevation * (Math.PI / 180)
+        const x =radius * Math.cos(elevationRad) * Math.sin(azimuthRad)
+        const y =radius * Math.cos(elevationRad) * Math.cos(azimuthRad)
+        const z = radius * Math.sin(elevationRad)
+        // const cameraPosition =[x,y,z] as const
+        return {x:y,y:z,z:-x}
     }
     constructor(
         public builder: FormBuilder,
@@ -114,7 +167,11 @@ export class Widget_orbit implements IRequest<'orbit', Widget_orbit_opts, Widget
         makeAutoObservable(this)
     }
     get serial(): Widget_orbit_serial { return this.state }
-    get result(): Widget_orbit_output { return this.state.val }
+    get result(): Widget_orbit_output { return {
+        azimuth: this.state.val.azimuth,
+        elevation: this.state.val.elevation,
+        englishSummary: this.englishSummary,
+    }}
 }
 
 // 🅿️ markdown ==============================================================================
@@ -669,6 +726,7 @@ export class Widget_matrix implements IRequest<'matrix', Widget_matrix_opts, Wid
 
     setAll = (value: boolean) => {
         for (const v of this.allCells) v.value = value
+        this.UPDATE()
         // this.p.set(this.values)
     }
 
@@ -1007,7 +1065,7 @@ export class Widget_list<T extends Widget> implements IRequest<'list', Widget_li
         serial?: Widget_list_serial<T>,
     ) {
         this.id = serial?.id ?? nanoid()
-        this._reference = input.element(0)
+        this._reference = runWithGlobalForm(this.builder, () => input.element(0))
         if (serial) {
             const items = serial.items_.map((sub_) => builder._HYDRATE(sub_.type, this._reference.input, sub_)) // 🔴 handler filter if wrong type
             this.state = { type: 'list', id: this.id, active: serial.active, items }
@@ -1123,7 +1181,7 @@ export class Widget_listExt      <T extends Widget> implements IRequest<'listExt
         serial?: Widget_listExt_serial<T>,
     ) {
         this.id = serial?.id ?? nanoid()
-        this._reference = input.element({width:100, height:100, ix: 0}).item
+        this._reference = runWithGlobalForm(this.builder, () => input.element({width:100, height:100, ix: 0}).item)
         if (serial) {
             const items:  WithExt<T>[] = serial.items_.map(({item_, ...ext}) => {
                 const item:T = builder._HYDRATE(item_.type, this._reference.input, item_)
@@ -1149,7 +1207,7 @@ export class Widget_listExt      <T extends Widget> implements IRequest<'listExt
 
     // METHODS -----------------------------------------------------------------------------
     addItem() {
-        const newItemPartial = this.input.element({width: this.state.width, height: this.state.height, ix: this.state.items.length})
+        const newItemPartial = runWithGlobalForm(this.builder, () => this.input.element({width: this.state.width, height: this.state.height, ix: this.state.items.length}))
         const newItem: WithExt<T> = { ...itemExtDefaults, ...newItemPartial}
         this.state.items.push(newItem)
     }
@@ -1207,7 +1265,7 @@ export class Widget_group<T extends { [key: string]: Widget }> implements IReque
         }
         // debugger
         if (serial){
-            const _newValues = input.items()
+            const _newValues = runWithGlobalForm(this.builder, () => input.items())
             this.state = { type: 'group', id: this.id, active: serial.active, collapsed: serial.collapsed, values: {} as any}
             const prevValues_ = serial.values_??{}
             for (const key in _newValues) {
@@ -1225,7 +1283,7 @@ export class Widget_group<T extends { [key: string]: Widget }> implements IReque
                 }
             }
         } else {
-            const _items = input.items()
+            const _items = runWithGlobalForm(this.builder, () => input.items())
             this.state = { type: 'group', id: this.id, active: true, values: _items, vertical: input.verticalLabels??true }
         }
         makeAutoObservable(this)
@@ -1316,6 +1374,7 @@ export class Widget_choice      <T extends { [key: string]: Widget }> implements
     id: string
     type: 'choice' = 'choice'
     state: Widget_choice_state<T>
+    possibleChoices:string[]
     constructor(
         public builder: FormBuilder,
         public schema: ComfySchemaL,
@@ -1323,13 +1382,15 @@ export class Widget_choice      <T extends { [key: string]: Widget }> implements
         serial?: Widget_choice_serial<T>,
     ) {
         this.id = serial?.id ?? nanoid()
+        const _items = input.items()
+        this.possibleChoices=Object.keys(_items)
         if (serial){
-            const _newValues = input.items()
             this.state = { type:'choice', id: this.id, active: serial.active, collapsed: serial.collapsed, values: {} as any, pick: serial.pick }
             const prevValues_ = serial.values_??{}
-            for (const key in _newValues) {
-                if (key !== serial.pick) continue
-                const newItem = _newValues[key]
+            for (const key in _items) {
+                // 🔴 👇 this was a hacky fix for the perf problem
+                // 🔴 if (key !== serial.pick) continue
+                const newItem = _items[key]
                 const prevValue_ = prevValues_[key]
                 const newInput = newItem.input
                 const newType = newItem.type
@@ -1340,13 +1401,13 @@ export class Widget_choice      <T extends { [key: string]: Widget }> implements
                 }
             }
         } else {
-            const _items = input.items()
             const defaultPick: keyof T & string = (input.default as string ?? Object.keys(_items)[0]  ??'error')
             this.state = { type: 'choice', id: this.id, active: true, values: _items, pick: defaultPick }
         }
         makeAutoObservable(this)
     }
 
+    /** return the key of the selected item */
     get pick() { return this.state.pick }
     get child(){
         return this.state.values[this.state.pick]
@@ -1354,7 +1415,8 @@ export class Widget_choice      <T extends { [key: string]: Widget }> implements
     get serial(): Widget_choice_serial<T> {
         const out: { [key: string]: any } = {}
         for (const key in this.state.values) {
-            if (key !== this.state.pick) continue
+            // 🔴 👇 this was a hacky fix for the perf problem
+            // 🔴  if (key !== this.state.pick) continue
             out[key] = this.state.values[key].serial
         }
         return { type: 'choice', id: this.id, active: this.state.active, values_: out as any, collapsed: this.state.collapsed, pick: this.state.pick }
@@ -1394,7 +1456,7 @@ export class Widget_choices<T extends { [key: string]: Widget }> implements IReq
         }
         // debugger
         if (serial){
-            const _newValues = input.items()
+            const _newValues = runWithGlobalForm(this.builder, () => input.items())
             this.state = {
                 type: 'choices',
                 id: this.id,
@@ -1421,7 +1483,7 @@ export class Widget_choices<T extends { [key: string]: Widget }> implements IReq
                 }
             }
         } else {
-            const _items = input.items()
+            const _items = runWithGlobalForm(this.builder, () => input.items())
             this.state = { type: 'choices', id: this.id, active: true, values: _items, branches: {} }
         }
         makeAutoObservable(this)

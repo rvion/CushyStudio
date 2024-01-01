@@ -1,4 +1,4 @@
-import type { ComfyWorkflowL } from 'src/models/Graph'
+import type { ComfyWorkflowL } from 'src/models/ComfyWorkflow'
 
 import { ComfyNode } from '../core/ComfyNode'
 import { ComfyNodeMetadata } from 'src/types/ComfyNodeID'

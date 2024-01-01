@@ -1,4 +1,4 @@
-import type { ComfyWorkflowL } from 'src/models/Graph'
+import type { ComfyWorkflowL } from 'src/models/ComfyWorkflow'
 
 import { existsSync, mkdirSync, writeFileSync } from 'fs'
 import { observer } from 'mobx-react-lite'

@@ -25,6 +25,8 @@
         "📌 LEGACY": "-----------------------------------------------------------------------",
         "start": "CUSHY_RUN_MODE=dist node src/shell/start.cjs",
         "start-dev": "CUSHY_RUN_MODE=dev node src/shell/start.cjs",
+        "run-update": "CUSHY_RUN_MODE=dev node src/shell/update.cjs",
+        "run-install": "CUSHY_RUN_MODE=dev node src/shell/install.cjs",
         "📌 CODEGEN": "----------------------------------------------------------------------",
         "gen-bins-node": "npm rebuild",
         "gen-supa-types": "supabase gen types typescript --linked > src/supa/database.types.ts",

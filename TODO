@@ -1,63 +1,39 @@
-Todo before release:
-
-    2023-12-20 (Vinsi feedback + misc extra stuff):
-        ☐ fix login callback not beeing available after public dir change
-        ☐ disable publish button if not logged in
-        ☐ stuck in ComfyUI
-        ☐ improve OuputWrappers to allow to open in side panes
-        ☐ single output panel
-        ☐ open folder
-        ☐ "edit" delete the output image
-        ☐ move hosts in an other panel
-        ☐ safe/unsafe should be option panel
-        ☐ comfyUI node explorer looks bad
-        ☐ disable the delete button for virtual-comfyui hosts
-        ☐ rich prompt + shift/alt+enter should not accept compltion but insert newline
-        ☐ better treeview with apps
-        ☐ add default non virtual local host
-        ✔ config => settings @done(23-12-21 23:16)
-        ✔ ability to quickly troubleshoot db problems via debug menu @done(23-12-21 23:16)
-        ✔ proper size & orientation detection is now available for any kind of image, thanks to image-meta @done(23-12-21 23:16)
-        ✔ prompt errors reported by cushy (not runtime error) are now properly reported as errors in the UI and persisted in the DB @done(23-12-21 23:16)
-        ✔ capitalize `theme` word in appbar @done(23-12-20 15:55)
-        ✔ reorder appbar to have login at the end of the left section @done(23-12-20 15:55)
-        ✔ opening a past step fold it in the outputs panel @done(23-12-20 15:34)
-        ✔ menu reveal  close itself too fast @done(23-12-20 15:12)
-        ✔ text on theme menu @done(23-12-20 15:13)
-        ✔ auto layout not handling positive correctly @done(23-12-20 15:50)
-        ✔ improve forms look and feel @done(23-12-20 15:27)
-        ✔ improve size widget preview a bit @done(23-12-20 15:27)
-        ✔ hacky fix library so it's at least a bit usable @done(23-12-20 15:40)
-
-
-    ✔ codegen swap file @done(23-12-20 15:17)
+Todo :
+    ✔ currentForm() @done(23-12-31 15:38)
+    ✔ fix nsfwjs by including the model locally (web host went down) @done(23-12-23 08:54)
+    ✔ button to delete draft @done(23-12-31 01:16)
+    ✔ https://unjs.io/packages/image-meta @done(23-12-31 13:21)
+    ✔ better hot-reload @done(23-12-31 18:38)
+    ✔ store metafile @done(23-12-31 18:38)
+    ✔ stop storing build artifact on disk @done(23-12-31 18:38)
+    ✔ currentRun() @done(23-12-31 18:53)
+    ☐ create all nodes at once, then hydrate them after, so all json are ready
+    ☐ runpod serverless
+    ☐ fix login callback not beeing available after public dir change
+    ☐ disable publish button if not logged in
+    ☐ one-click create app
+    ☐ disable update button from within the app, and tell people to close cushy and click install
+    ☐ stuck in ComfyUI
+    ☐ improve OuputWrappers to allow to open in side panes
+    ☐ single output panel
+    ☐ move hosts in an other panel
+    ☐ safe/unsafe should be option panel
+    ☐ comfyUI node explorer looks bad
+    ☐ disable the delete button for virtual-comfyui hosts
+    ☐ rich prompt + shift/alt+enter should not accept compltion but insert newline
+    ☐ better treeview with apps
+    ☐ finish website
     ☐ video
-    ☐ hot reload apps
+    ☐ warning if custom nodes not installed by default
     ☐ finish full page apps
     ☐ add browser/install page
     ☐ library page on the website
-    ☐ https://unjs.io/packages/image-meta
     ☐ fix sut
     ☐ use any image as draft illustration
-    ✔ don't autofocus preview images @done(23-12-19 10:25)
-    ☐ warning if custom nodes not installed by default
-    ✘ small mention in the readme that dev console can help troubleshoot problems. @cancelled(23-12-19 10:24)
-    ✘ custom size on size widget @cancelled(23-12-19 10:24)
-    ✔ draft tabs/ files @done(23-12-19 10:24)
-    ✔ background image for config panel @done(23-12-19 10:24)
-
-    // 🔶 can't move frame ref here because no way to override mobx
-    // comfyUIIframeRef = createRef<HTMLIFrameElement>()
-
     ☐ draft result are too wide by default / should open in bottom panel
     ☐ selectMenu
     ☐ show different from current preset in color
-    ✘ surrounded by card for ju and tu @cancelled(23-12-16 17:59)
-    ✔ better marketplace without fetching stars and repo infos by adding some gen-marketplace-data @done(23-12-16 17:59)
-    ✔ tree library menu by default @done(23-12-16 17:53)
-    ✔ drafts @done(23-12-16 17:53)
     ☐ click on rich prompt should
-    ✔ fix the "run" button not being disabled when it should @done(23-12-16 17:53)
     ☐ finish autorun so it wait for nothing to be running an action change
     ☐ primitive to show that a custom node is required
     ☐ proper model picker action
@@ -67,9 +43,45 @@ Todo before release:
     ☐ code builder:
     ☐ image drop anywhere in the app
     ☐ select nodes  => see the corresponding code in realtime
-    ✔ have a better auto-UI generated @done(23-12-16 18:00)
     ☐ new primitive to add all the primitive inputs instead of having super long names,
     ☐ optimize all images ☐ option to reduce image size
+
+
+misc:
+    ✔ open folder @done(23-12-22 15:59)
+    ✔ "edit" delete the output image @done(23-12-22 14:02)
+    ✔ add default non virtual local host @done(23-12-22 13:57)
+    ✔ config => settings @done(23-12-21 23:16)
+    ✔ ability to quickly troubleshoot db problems via debug menu @done(23-12-21 23:16)
+    ✔ proper size & orientation detection is now available for any kind of image, thanks to image-meta @done(23-12-21 23:16)
+    ✔ prompt errors reported by cushy (not runtime error) are now properly reported as errors in the UI and persisted in the DB @done(23-12-21 23:16)
+    ✔ capitalize `theme` word in appbar @done(23-12-20 15:55)
+    ✔ reorder appbar to have login at the end of the left section @done(23-12-20 15:55)
+    ✔ opening a past step fold it in the outputs panel @done(23-12-20 15:34)
+    ✔ menu reveal  close itself too fast @done(23-12-20 15:12)
+    ✔ text on theme menu @done(23-12-20 15:13)
+    ✔ auto layout not handling positive correctly @done(23-12-20 15:50)
+    ✔ improve forms look and feel @done(23-12-20 15:27)
+    ✔ improve size widget preview a bit @done(23-12-20 15:27)
+    ✔ hacky fix library so it's at least a bit usable @done(23-12-20 15:40)
+    ✔ codegen swap file @done(23-12-20 15:17)
+    ✔ hot reload apps @done(23-12-22 17:37)
+    ✔ don't autofocus preview images @done(23-12-19 10:25)
+    ✔ draft tabs/ files @done(23-12-19 10:24)
+    ✔ background image for config panel @done(23-12-19 10:24)
+
+    ✘ small mention in the readme that dev console can help troubleshoot problems. @cancelled(23-12-19 10:24)
+    ✘ custom size on size widget @cancelled(23-12-19 10:24)
+
+    // 🔶 can't move frame ref here because no way to override mobx
+    // comfyUIIframeRef = createRef<HTMLIFrameElement>()
+
+    ✘ surrounded by card for ju and tu @cancelled(23-12-16 17:59)
+    ✔ better marketplace without fetching stars and repo infos by adding some gen-marketplace-data @done(23-12-16 17:59)
+    ✔ tree library menu by default @done(23-12-16 17:53)
+    ✔ drafts @done(23-12-16 17:53)
+    ✔ fix the "run" button not being disabled when it should @done(23-12-16 17:53)
+    ✔ have a better auto-UI generated @done(23-12-16 18:00)
     ✔ make the run button red if cushy is not running @done(23-12-16 18:00)
 
 ✔ remove the need for node / npm to be installed @done(23-12-06 00:14)

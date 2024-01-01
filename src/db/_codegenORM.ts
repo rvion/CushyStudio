@@ -32,11 +32,44 @@ export const _codegenORM = (store: {
     tableNames += `\n`
     out2 += tableNames
 
+    type DBRef = { fromTable: string; fromField: string; toTable: string; tofield: string }
+    const backRefs = new Map<string, DBRef[]>()
+    const refs = new Map<string, DBRef[]>()
+    const addRef = (p: DBRef) => {
+        // ref
+        if (refs.has(p.fromTable)) refs.get(p.fromTable)!.push(p)
+        else refs.set(p.fromTable, [p])
+        // back
+        if (backRefs.has(p.toTable)) backRefs.get(p.toTable)!.push(p)
+        else backRefs.set(p.toTable, [p])
+    }
+
+    for (const table of tables) {
+        const fks = _getAllForeignKeysForTable(db, table.name)
+        for (const fk of fks) {
+            addRef({
+                fromTable: table.name,
+                fromField: fk.from,
+                toTable: fk.table,
+                tofield: fk.to,
+            })
+        }
+    }
     for (const table of tables) {
         const jsTableName = convertTableNameToJSName(table.name)
         const fks = _getAllForeignKeysForTable(db, table.name)
         const cols = _getAllColumnsForTable(db, table.name)
 
+        const xxx =
+            [
+                `export const ${jsTableName}Refs =[`,
+                (refs.get(table.name) ?? []).map((fk) => `    ${JSON.stringify(fk)}`).join(',\n'),
+                ']',
+                `export const ${jsTableName}BackRefs =[`,
+                (backRefs.get(table.name) ?? []).map((fk) => `    ${JSON.stringify(fk)}`).join(',\n'),
+                ']',
+            ].join('\n') + '\n'
+        console.log(`[👙] `, xxx)
         //
 
         let typeDecl: string = '\n'
@@ -46,7 +79,7 @@ export const _codegenORM = (store: {
         typeDecl += `export const as${jsTableName}ID = (s: string): ${jsTableName}ID => s as any\n`
         schemaDecl = `export const ${jsTableName}Schema = Type.Object({\n`
         typeDecl += `export type ${jsTableName}T = {\n`
-        fieldsDef += `export const ${jsTableName}Fields = {\n`
+        fieldsDef += `${xxx}\nexport const ${jsTableName}Fields = {\n`
         for (const col of cols) {
             const comment = `/** @default: ${JSON.stringify(col.dflt_value) ?? 'null'}, sqlType: ${col.type} */`
 
@@ -105,6 +138,8 @@ export const _codegenORM = (store: {
         out1 += `        '${convertTableNameToJSName(table.name)}',\n`
         out1 += `        ${convertTableNameToJSName(table.name)}Fields,\n`
         out1 += `        ${convertTableNameToJSName(table.name)}Schema,\n`
+        out1 += `        ${convertTableNameToJSName(table.name)}Refs,\n`
+        out1 += `        ${convertTableNameToJSName(table.name)}BackRefs,\n`
         // out1 += `        insert${convertTableNameToJSName(table.name)}SQL,\n`
         out1 += `    ),\n`
     }
@@ -113,6 +148,9 @@ export const _codegenORM = (store: {
     // console.log(out1)
     writeFileSync('src/db/TYPES.gen.ts', out1)
     writeFileSync('src/db/TYPES.d.ts', out2)
+
+    console.log(`[👙] `, backRefs)
+    console.log(`[👙] `, refs)
 }
 
 const convertTableNameToJSName = (tableName: string) => {

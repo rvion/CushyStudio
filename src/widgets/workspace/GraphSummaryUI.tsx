@@ -1,4 +1,4 @@
-import type { ComfyWorkflowL } from 'src/models/Graph'
+import type { ComfyWorkflowL } from 'src/models/ComfyWorkflow'
 
 import { observer } from 'mobx-react-lite'
 import { Panel, Popover, ProgressLine, Whisper } from 'src/rsuite/shims'
@@ -13,7 +13,7 @@ export const GraphSummaryUI = observer(function GraphSummaryUI_(p: { graph: Comf
     return (
         <Panel tw='relative [min-width:2rem]'>
             <GraphProgressUI graph={p.graph} />
-            <NodeProgressUI graph={p.graph} />
+            {p.graph.done ? null : <NodeProgressUI graph={p.graph} />}
             {/* </div> */}
             <div>
                 <ButtonDownloadFilesUI graph={graph} />

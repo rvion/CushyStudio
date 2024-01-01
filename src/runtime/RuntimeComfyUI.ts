@@ -1,6 +1,6 @@
 import { makeAutoObservable } from 'mobx'
 import { Runtime } from './Runtime'
-import { ComfyWorkflowL } from 'src/models/Graph'
+import { ComfyWorkflowL } from 'src/models/ComfyWorkflow'
 import { MediaImageL } from 'src/models/MediaImage'
 
 /** namespace for all ComfyUI-related utils */

@@ -1,7 +1,8 @@
 import cytoscape, { Stylesheet } from 'cytoscape'
-import type { ComfyWorkflowL } from '../models/Graph'
+import type { ComfyWorkflowL } from '../models/ComfyWorkflow'
 import klay from 'cytoscape-klay'
 import { bang } from '../utils/misc/bang'
+import { ComfyNode } from './ComfyNode'
 
 cytoscape.use(klay)
 
@@ -15,6 +16,7 @@ export type CytoJSON = {
                 id: string
                 width: number
                 height: number
+                originalID: string
             }
             position: {
                 x: number
@@ -24,7 +26,14 @@ export type CytoJSON = {
     }
 }
 
-export const runAutolayout = (graph: ComfyWorkflowL): CytoJSON => {
+export const runAutolayout = (
+    //
+    graph: ComfyWorkflowL,
+    p?: {
+        width?: (node: ComfyNode<any, any>) => number
+        height?: (node: ComfyNode<any, any>) => number
+    },
+): CytoJSON => {
     // Define the graph elements
 
     const elements: any[] = []
@@ -32,15 +41,17 @@ export const runAutolayout = (graph: ComfyWorkflowL): CytoJSON => {
     // for (const node of graph.nodes) {
     //     node.uidNumber = uidNumber++ // 🔴 HORRIBLE HACK
     // }
-
+    console.log(`[👙] runAutoLayout with ${graph.nodes.length} nodes`)
     for (const node of graph.nodes) {
         elements.push({
             data: {
                 // shape: 'rectangle',
                 label: node.$schema.nameInComfy,
                 id: node.uidNumber,
-                width: node.width * 1.2,
-                height: node.height * 1.2,
+                width: p?.width?.(node) ?? node.width * 1.2,
+                height: p?.height?.(node) ?? node.height * 1.2,
+                // @ts-ignore
+                originalID: node.uid,
                 // color: node.color ?? 'gray',
             },
         })
@@ -76,7 +87,7 @@ export const runAutolayout = (graph: ComfyWorkflowL): CytoJSON => {
                 'font-size': 6,
                 'curve-style': 'bezier',
                 'target-arrow-shape': 'triangle',
-                label: 'data(label)',
+                // label: 'data(label)',
                 // width: 'data(weight)',
             },
         },

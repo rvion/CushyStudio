@@ -44,6 +44,10 @@ export class ComfyWorkflowL {
         return this.nodes.length
     }
 
+    get comfyPromptJSON() {
+        return this.data.comfyPromptJSON
+    }
+
     /** ❓ UNTESTED */
     setMetadata = (nodeID: ComfyNodeID, meta: ComfyNodeMetadata) => {
         this.data.metadata[nodeID] = meta
@@ -78,6 +82,9 @@ export class ComfyWorkflowL {
             new ComfyNode(this, uid, node, meta)
         }
         // console.log(`[📈] GRAPH: manually updated ${prevSize} => ${this.size}`)
+        // if (this.id === 'hMVVgKmyYZ-baEQtdibSx') {
+        //     console.log(`[👙] GRAPH.onUpdate`, prev, next, this.nodes.length)
+        // }
     }
 
     /** cytoscape instance to live update graph */
@@ -163,6 +170,34 @@ export class ComfyWorkflowL {
 
     get json_cyto(): CytoJSON {
         const cytoJSON = runAutolayout(this)
+        return cytoJSON
+    }
+
+    get json_cyto_small(): CytoJSON {
+        const PX = 15
+        const cytoJSON = runAutolayout(this, {
+            width: (node) => {
+                const max = 20
+                // ⏸️ console.log(`[👙] `, node.$schema.nameInComfy, node.$schema.nameInComfy.length)
+                let len = node.$schema.nameInComfy.length
+                const prims = node._primitives()
+                for (const p of prims) {
+                    const x = p.inputName.length + (p.value?.length ?? 0)
+                    // ⏸️ console.log(`[👙] x`, x)
+                    if (x > max) {
+                        // ⏸️ console.log(`[👙] MAX`, x)
+                        return max * PX
+                    }
+                    if (x > len) len = x
+                }
+                // ⏸️ console.log(`[👙] OUT`, len)
+                return len * PX
+            },
+            height: (node) => {
+                // return PX * (node._primitives().length + 2)
+                return PX * node.$schema.inputs.length + 2
+            },
+        })
         return cytoJSON
     }
 
@@ -308,6 +343,10 @@ export class ComfyWorkflowL {
         if (node == null) throw new Error('Node not found:' + nodeID)
         return node
     }
+    getNode = (nodeID: ComfyNodeID): Maybe<ComfyNode<any>> => {
+        const node = this.nodesIndex.get(nodeID)
+        return node
+    }
 
     /** visjs JSON format (network visualisation) */
     get JSON_forVisDataVisualisation(): { nodes: VisNodes[]; edges: VisEdges[] } {
@@ -375,10 +414,16 @@ export class ComfyWorkflowL {
         // otherwise, we might get stuck
         const promptEndpoint = `${this.st.getServerHostHTTP()}/prompt`
         console.info('sending prompt to ' + promptEndpoint)
+
+        // meh  --------------------------------------------
+        // this.update({ comfyPromptJSON: currentJSON })
+        // -------------------------------------------------
+
         const graph = this.st.db.graphs.create({
             //
             comfyPromptJSON: currentJSON,
             metadata: this.data.metadata,
+            stepID: step?.id,
         })
         const res = await fetch(promptEndpoint, {
             method: 'POST',

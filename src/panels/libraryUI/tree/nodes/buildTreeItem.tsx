@@ -11,7 +11,7 @@ import { TreeError } from './TreeError'
 import { TreeFavorite } from './TreeFavorites'
 import { TreeFile } from './TreeFile'
 import { TreeFolder } from './TreeFolder'
-import { TreeRoot } from './TreeRoot'
+// import { TreeRoot } from './TreeRoot'
 import { observable } from 'mobx'
 
 export const buildTreeItem = (
@@ -22,10 +22,10 @@ export const buildTreeItem = (
     if (typeof itemId !== 'string') {
         throw new Error(`[🔴] itemId must be string`)
     }
-    // ----------------
-    if (itemId === '#root') {
-        return new TreeRoot()
-    }
+    // // ----------------
+    // if (itemId === '#root') {
+    //     return new TreeRoot()
+    // }
     // ----------------
     if (itemId === '#apps') {
         return observable({

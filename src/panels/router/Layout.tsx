@@ -3,7 +3,7 @@ import type { STATE } from 'src/state/state'
 import * as FL from 'flexlayout-react'
 import { Actions, IJsonModel, Layout, Model } from 'flexlayout-react'
 
-import { makeAutoObservable, runInAction } from 'mobx'
+import { makeAutoObservable, runInAction, toJS } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { nanoid } from 'nanoid'
 import { FC, createElement, createRef } from 'react'
@@ -61,8 +61,8 @@ export class CushyLayoutManager {
     saveCurrentAs = (perspectiveName: string) => {
         const curr: FL.IJsonModel = this.model.toJson()
         this.st.configFile.update((t) => {
-            t.layouts_v8 ??= {}
-            t.layouts_v8[perspectiveName] = curr
+            t.layouts_v9 ??= {}
+            t.layouts_v9[perspectiveName] = curr
         })
     }
 
@@ -70,8 +70,8 @@ export class CushyLayoutManager {
     resetDefault = (): void => this.reset('default')
     reset = (perspectiveName: string): void => {
         this.st.configFile.update((t) => {
-            t.layouts_v8 ??= {}
-            delete t.layouts_v8[perspectiveName]
+            t.layouts_v9 ??= {}
+            delete t.layouts_v9[perspectiveName]
         })
         if (perspectiveName === this.currentPerspectiveName) {
             this.setModel(Model.fromJson(this.build()))
@@ -79,7 +79,7 @@ export class CushyLayoutManager {
     }
 
     constructor(public st: STATE) {
-        const prevLayout = st.configFile.value.layouts_v8?.default
+        const prevLayout = st.configFile.value.layouts_v9?.default
         const json = prevLayout ?? this.build()
         try {
             this.setModel(Model.fromJson(json))
@@ -113,7 +113,6 @@ export class CushyLayoutManager {
                         this.currentTab = this.currentTabSet?.getSelectedNode()
                         this.currentTabID = this.currentTab?.getId()
                     })
-                    console.log(`[💠] Layout: 📦 onModelChange`)
                     this.saveCurrentAsDefault()
                 }}
                 ref={this.layoutRef}
@@ -214,6 +213,42 @@ export class CushyLayoutManager {
         }
     }
 
+    findTabsFor = <K extends Panel>(
+        component: K,
+    ): {
+        //
+        tabNode: FL.TabNode
+        config: PropsOf<Panels[K]['widget']>
+    }[] => {
+        const tabPrefix = `/${component}/`
+        const tabs: FL.TabNode[] = []
+        this.model.visitNodes((node) => {
+            const id = node.getId()
+            const type = node.getType()
+            if (type === 'tab' && id.startsWith(tabPrefix)) tabs.push(node as FL.TabNode)
+        })
+        const out = tabs
+            .filter((tab) => tab.getId().startsWith(tabPrefix))
+            .map((tab) => ({
+                config: toJS(tab.getConfig()) as PropsOf<Panels[K]['widget']>,
+                tabNode: tab,
+            }))
+        return out
+    }
+
+    /** practical way to keep a tab properly named (synced with it's content) */
+    syncTabTitle = <const K extends Panel>(
+        //
+        component: K,
+        props: PropsOf<Panels[K]['widget']>,
+        title: string,
+    ) => {
+        const tabID = `/${component}/${hashJSONObject(props ?? {})}`
+        const tab = this.model.getNodeById(tabID)
+        if (tab == null) return
+        this.model.doAction(Actions.renameTab(tabID, title || component))
+    }
+
     FOCUS_OR_CREATE = <const K extends Panel>(
         component: K,
         props: PropsOf<Panels[K]['widget']>,
@@ -241,7 +276,7 @@ export class CushyLayoutManager {
                 where === 'current' //
                     ? this.currentTabSet?.getId() ?? LEFT_PANE_TABSET_ID
                     : where
-            currentLayout.addTabToTabSet(tabsetIDToAddThePanelTo, {
+            const addition = currentLayout.addTabToTabSet(tabsetIDToAddThePanelTo, {
                 component: component,
                 id: tabID,
                 icon: icon,
@@ -249,7 +284,10 @@ export class CushyLayoutManager {
                 config: props,
             })
             prevTab = this.model.getNodeById(tabID) as FL.TabNode // 🔴 UNSAFE ?
-            if (prevTab == null) return void console.log('❌ no tabAdded')
+            if (prevTab == null) {
+                console.log(`[👙] addition:`, addition, { component, tabID, icon, title, props })
+                return void console.log('❌ no new tab')
+            }
         } else {
             this.model.doAction(Actions.updateNodeAttributes(tabID, { config: props }))
             this.model.doAction(Actions.selectTab(tabID))

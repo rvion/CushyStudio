@@ -20,13 +20,13 @@ app({
     }),
 
     run: async (sdk, ui) => {
-        if (!sdk.llm_isConfigured) {
+        if (!sdk.LLM.isConfigured) {
             sdk.output_text(`Enter your api key in Config`)
             return
         }
 
         // ask LLM to generate
-        const llmResult = await sdk.llm_ask_PromptMaster(ui.topic, ui.llmModel.id)
+        const llmResult = await sdk.LLM.expandPrompt(ui.topic, ui.llmModel.id)
         const positiveTxt = llmResult.prompt
 
         sdk.formInstance.state.values.promptFromLlm.input.markdown = positiveTxt

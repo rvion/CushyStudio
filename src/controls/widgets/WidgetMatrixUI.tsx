@@ -20,13 +20,17 @@ export const WidgetMatrixUI = observer(function WidgetStrUI_(p: { widget: Widget
             <table cellSpacing={0} cellPadding={0}>
                 <thead>
                     <tr>
-                        <th className='cursor-pointer hover:text-red-600' onClick={() => req.setAll(!req.firstValue)}>
+                        <th
+                            //
+                            className='cursor-pointer hover:text-red-600 virtualBorder'
+                            onClick={() => req.setAll(!req.firstValue)}
+                        >
                             all
                         </th>
                         {cols.map((col, ix) => (
                             <th
                                 //
-                                className='bg-accent text-accent-content'
+                                className='bg-base-200 virtualBorder'
                                 key={ix}
                                 onClick={() => req.setCol(col, !req.get(rows[0], col).value)}
                             >
@@ -41,7 +45,7 @@ export const WidgetMatrixUI = observer(function WidgetStrUI_(p: { widget: Widget
                             <td
                                 //
                                 onClick={() => req.setRow(row, !req.get(row, cols[0]).value)}
-                                className='bg-base-300 text-secondary-content bg-secondary cursor-pointer'
+                                className='bg-base-302 virtualBorder cursor-pointer'
                             >
                                 {row}
                             </td>
@@ -50,11 +54,11 @@ export const WidgetMatrixUI = observer(function WidgetStrUI_(p: { widget: Widget
                                 return (
                                     <td
                                         key={colIx}
-                                        className='hover:bg-gray-400 cursor-pointer'
+                                        className='hover:bg-gray-400 cursor-pointer virtualBorder'
                                         onClick={() => req.set(row, col, !checked)}
-                                        tw={[checked ? 'bg-success' : 'bg-base-200']}
+                                        tw={[checked ? undefined : 'bg-base-200']}
                                         style={{
-                                            border: '1px solid #726767',
+                                            background: checked ? 'oklch(var(--p)/.5)' : undefined,
                                             height: '2rem',
                                             width: '2rem',
                                         }}

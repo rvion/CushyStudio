@@ -1,14 +1,14 @@
-import type { LibraryFile } from 'src/cards/LibraryFile'
+// import type { LibraryFile } from 'src/cards/LibraryFile'
 // import type { Package } from '../../cards/Pkg'
 
 import { observer } from 'mobx-react-lite'
-import { FoldIconUI } from 'src/cards/FoldIconUI'
+// import { FoldIconUI } from 'src/cards/FoldIconUI'
 import { SQLITE_false, SQLITE_true } from 'src/db/SQLITE_boolean'
 import { DraftL } from 'src/models/Draft'
-import { AppIllustrationUI } from '../../cards/fancycard/AppIllustrationUI'
-import { useSt } from '../../state/stateContext'
-import { AppEntryStyle } from './AppListStyles'
-import { DraftEntryUI } from './DraftEntryUI'
+// import { AppIllustrationUI } from '../../cards/fancycard/AppIllustrationUI'
+// import { useSt } from '../../state/stateContext'
+// import { AppEntryStyle } from './AppListStyles'
+// import { DraftEntryUI } from './DraftEntryUI'
 import { CushyAppL } from 'src/models/CushyApp'
 // import { PkgHeaderUI } from './PkgHeaderUI'
 
@@ -90,11 +90,13 @@ export const AppFavoriteBtnUI = observer(function AppFavoriteBtnUI_(p: {
     app: CushyAppL
 }) {
     return (
-        <AppFavoriteBtnCustomUI //
-            get={() => p.app.isFavorite}
-            set={(v) => p.app.setFavorite(v)}
-            size={p.size}
-        />
+        <div tw='btn btn-square btn-ghost btn-sm'>
+            <AppFavoriteBtnCustomUI //
+                get={() => p.app.isFavorite}
+                set={(v) => p.app.setFavorite(v)}
+                size={p.size}
+            />
+        </div>
     )
 })
 
@@ -104,11 +106,13 @@ export const DraftFavoriteBtnUI = observer(function DraftFavoriteBtnUI_(p: {
     draft: DraftL
 }) {
     return (
-        <AppFavoriteBtnCustomUI //
-            get={() => Boolean(p.draft.data.isOpened)}
-            set={(v) => p.draft.update({ isOpened: v ? SQLITE_true : SQLITE_false })}
-            size={p.size}
-        />
+        <div tw='btn btn-square btn-ghost btn-sm'>
+            <AppFavoriteBtnCustomUI //
+                get={() => Boolean(p.draft.data.isOpened)}
+                set={(v) => p.draft.update({ isOpened: v ? SQLITE_true : SQLITE_false })}
+                size={p.size}
+            />
+        </div>
     )
 })
 

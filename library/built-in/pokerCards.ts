@@ -1,12 +1,12 @@
 import { ImageAndMask } from 'src'
 import type { FormBuilder } from 'src/controls/FormBuilder'
-import { CardSuit, CardValue } from './_cardLayouts'
-import { _drawCard } from './_drawCard'
+import { CardSuit, CardValue } from './playing-cards/_cardLayouts'
+import { _drawCard } from './playing-cards/_drawCard'
 import { toJS } from 'mobx'
-import { ui_highresfix } from '../_prefabs/_prefabs'
-import { run_model, ui_model } from '../_prefabs/prefab_model'
-import { run_sampler, ui_sampler } from '../_prefabs/prefab_sampler'
-import { run_prompt } from '../_prefabs/prefab_prompt'
+import { ui_highresfix } from './_prefabs/_prefabs'
+import { run_model, ui_model } from './_prefabs/prefab_model'
+import { run_sampler, ui_sampler } from './_prefabs/prefab_sampler'
+import { run_prompt } from './_prefabs/prefab_prompt'
 
 app({
     metadata: {
@@ -22,9 +22,17 @@ app({
             rows: ['spades', 'hearts', 'clubs', 'diamonds'],
             default: [],
         }),
+        // [UI] SIZES --------------------------------------
+        size: form.size({
+            //
+            default: { modelType: 'SD1.5 512', aspectRatio: '16:9' },
+            group: 'size',
+        }),
+        logoSize: form.int({ default: 120, min: 20, max: 1000 }),
+
         // [UI] MODEL --------------------------------------
-        model: ui_model(form),
-        sampler: ui_sampler(form),
+        model: ui_model(),
+        sampler: ui_sampler(),
         highResFix: ui_highresfix(form, { activeByDefault: true }),
         globalNegative: form.prompt({}),
         logos: form.group({
@@ -72,10 +80,6 @@ app({
 
         // theme5: form.string({ default: 'winter', group: 'theme' }),
 
-        // [UI] SIZES --------------------------------------
-        logoSize: form.int({ default: 120, min: 20, max: 1000 }),
-        size: form.size({ default: { modelType: 'SD1.5 512', aspectRatio: '16:9' }, group: 'size' }),
-
         // [UI] BORDERS ------------------------------------
         background: form.group({
             items: () => ({
@@ -92,7 +96,7 @@ app({
         // 1. SETUP --------------------------------------------------
         const graph = run.nodes
         const floor = (x: number) => Math.floor(x)
-        let { ckpt, vae, clip } = run_model(run, ui.model)
+        let { ckpt, vae, clip } = run_model(ui.model)
         const suits = Array.from(new Set(ui.cards.map((c) => c.row)))
         const values = Array.from(new Set(ui.cards.map((c) => c.col)))
         const W = ui.size.width, W2 = floor(W / 2), W3 = floor(W / 3), W4 = floor(W / 4) // prettier-ignore
@@ -218,7 +222,7 @@ app({
 
             // ADD LOGOS ----------------------------------------
             let pixels: _IMAGE = graph.VAEDecode({ vae, samples: latent })
-            graph.SaveImage({ images: pixels, filename_prefix: `${suit}_${value}/img` })
+            graph.SaveImage({ images: pixels, filename_prefix: `cards/${suit}/${value}/img` })
         }
         await run.PROMPT()
         return

@@ -22,6 +22,10 @@ export class DraftL {
 
     appRef = new LiveRef<this, CushyAppL>(this, 'appID', () => this.db.cushy_apps)
 
+    openOrFocusTab = () => {
+        this.st.layout.FOCUS_OR_CREATE('Draft', { draftID: this.id }, 'LEFT_PANE_TABSET')
+    }
+
     get app(): CushyAppL {
         return this.appRef.item
     }
@@ -42,6 +46,7 @@ export class DraftL {
     }
 
     lastStarted: Maybe<StepL> = null
+
     isDirty = false
 
     // mailboxes as signal slot for other to mention stuff
@@ -61,6 +66,13 @@ export class DraftL {
         }, this.st.project.data.autostartDelay)
         //
     }
+
+    /**
+     * start a draft
+     * a.k.a. "running a draft"
+     * a.k.a. "starting the app"
+     * a.k.a. "executing the app"
+     * */
     start = (formValueOverride?: Maybe<any>): StepL => {
         this.isDirty = false
         // ----------------------------------------
@@ -99,9 +111,9 @@ export class DraftL {
             name: this.data.title,
             //
             appID: this.data.appID,
+            draftID: this.data.id,
             formResult: req.result,
             formSerial: req.serial,
-            draftID: this.id,
             //
             // parentGraphID: graph.id,
             outputGraphID: graph.id,

@@ -30,9 +30,14 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     const isVertical = (() => {
         if (p.req.input.showID) return true
         if (st.preferedFormLayout === 'auto') {
+            if (req instanceof KLS.Widget_orbit) return true
+            if (req instanceof KLS.Widget_image) return true
+            if (req instanceof KLS.Widget_imageOpt) return true
             if (req instanceof KLS.Widget_prompt) return true
             if (req instanceof KLS.Widget_promptOpt) return true
             if (req instanceof KLS.Widget_group) return true
+            if (req instanceof KLS.Widget_choice) return true
+            if (req instanceof KLS.Widget_choices) return true
             if (req instanceof KLS.Widget_group) return true
             if (req instanceof KLS.Widget_groupOpt) return true
             if (req instanceof KLS.Widget_list) return true
@@ -92,6 +97,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
         >
             {showToogle && (
                 <Toggle
+                    tw='mr-2'
                     color='green'
                     checked={toggleInfo.value}
                     onChange={toggleInfo.onChange}
@@ -107,7 +113,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
             {label !== false && (
                 <span
                     //
-                    tw={[p.isTopLevel ? 'font-bold' : undefined]}
+                    tw={[p.isTopLevel ? 'text-primary' : undefined]}
                     style={
                         true && !isVertical //
                             ? { lineHeight: '2rem', display: 'inline-block' }
@@ -128,27 +134,25 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
         : `_WidgetWithLabelUI ${levelClass} flex flex-row ${labelGap} ${isCollapsible ? 'items-baseline' : 'items-center'}`
 
     if (WIDGET == null) className += ' w-full'
-    if (isVertical && WIDGET) {
-        WIDGET = (
-            <div
-                //
-                tw='w-full'
-                // style={{ padding: '0 0rem 0 2rem' }}
-            >
+    if (isVertical && /*WIDGET*/ true) {
+        WIDGET = <div tw='w-full'>{WIDGET}</div>
+        return (
+            <fieldset className={className} key={rootKey}>
+                <legend>{LABEL}</legend>
                 {WIDGET}
-            </div>
+            </fieldset>
         )
     }
     if (p.labelPos === 'end') {
         return (
-            <div className={className} key={rootKey}>
+            <div tw='[padding-left:0.3rem]' className={className} key={rootKey}>
                 {WIDGET}
                 {LABEL}
             </div>
         )
     } else {
         return (
-            <div className={className} key={rootKey}>
+            <div tw='[padding-left:0.3rem]' className={className} key={rootKey}>
                 {LABEL}
                 {WIDGET}
             </div>

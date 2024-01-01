@@ -11,6 +11,8 @@ import { AppMetadata } from './AppManifest'
 
 // export const action = <const F extends WidgetDict>(name: string, t: Omit<Action<F>, 'name'>): Action<F> => ({ name, ...t })
 export type GlobalFunctionToDefineAnApp = <const F extends WidgetDict>(t: App<F>) => AppRef<F>
+export type GlobalGetCurrentRun = () => Runtime
+export type GlobalGetCurrentForm = () => FormBuilder
 export type ActionTagMethod = (arg0: string) => string
 export type ActionTagMethodList = Array<{ key: string; method: ActionTagMethod }>
 export type ActionTags = (arg0: ActionTagMethodList) => void

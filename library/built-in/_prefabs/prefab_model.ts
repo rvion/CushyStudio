@@ -1,9 +1,9 @@
 import type { Runtime } from 'src/runtime/Runtime'
-import type { FormBuilder } from 'src/controls/FormBuilder'
-import { OutputFor } from './_prefabs'
+import type { OutputFor } from './_prefabs'
 
 // UI -----------------------------------------------------------
-export const ui_model = (form: FormBuilder) => {
+export const ui_model = () => {
+    const form = getCurrentForm()
     return form.group({
         label: 'AI Model',
         items: () => ({
@@ -27,11 +27,8 @@ export const ui_model = (form: FormBuilder) => {
 }
 
 // RUN -----------------------------------------------------------
-export const run_model = (
-    //
-    run: Runtime,
-    otps: OutputFor<typeof ui_model>,
-) => {
+export const run_model = (otps: OutputFor<typeof ui_model>) => {
+    const run = getCurrentRun()
     const graph = run.nodes
 
     // 1. MODEL

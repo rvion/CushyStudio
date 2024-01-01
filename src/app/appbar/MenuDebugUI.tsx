@@ -30,6 +30,19 @@ export const MenuDebugUI = observer(function MenuDebugUI_(p: {}) {
             />
             <div tw='divider my-0' />
             <MenuItem
+                onClick={() => st.wipeOuputTopLevelImages()}
+                icon={<span className='material-symbols-outlined text-red-500'>image_not_supported</span>}
+            >
+                remove all images
+            </MenuItem>
+            <MenuItem
+                onClick={() => st.wipeOuputTopLevelImages()}
+                icon={<span className='material-symbols-outlined text-red-500'>image_not_supported</span>}
+            >
+                remove top-level images
+            </MenuItem>
+            <div tw='divider my-0' />
+            <MenuItem
                 //
                 // tw={[st.db.healthColor]}
                 onClick={() => {

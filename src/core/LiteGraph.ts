@@ -1,5 +1,5 @@
 import type { CytoJSON } from './AutolayoutV2'
-import type { ComfyWorkflowL } from '../models/Graph'
+import type { ComfyWorkflowL } from '../models/ComfyWorkflow'
 import type { ComfyNode } from './ComfyNode'
 
 import { toJS } from 'mobx'

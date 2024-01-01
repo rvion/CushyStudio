@@ -46,8 +46,8 @@ export class CushyAppL {
     }
 
     /** shortcut to open the last draft of the first app defined in this file */
-    openLastDraftAsCurrent = () => {
-        this.st.currentDraft = this.getLastDraft()
+    openLastDraft = () => {
+        this.getLastDraft().openOrFocusTab()
     }
 
     getLastDraft = (): DraftL => {
@@ -91,6 +91,14 @@ export class CushyAppL {
         const nameLower = this.name.toLowerCase()
         const descriptionLower = this.description.toLowerCase()
         return nameLower.includes(searchLower) || descriptionLower.includes(searchLower)
+    }
+
+    get isLoadedInMemory() {
+        return this.script.getExecutable_orNull(this.id) != null
+    }
+
+    get executableOrNull(): Maybe<Executable> {
+        return this.script.getExecutable_orNull(this.id)
     }
 
     get executable(): Maybe<Executable> {
@@ -266,7 +274,8 @@ export class CushyAppL {
     }
 
     get name(): string {
-        if (this.executable?.metadata?.name) return this.executable.metadata.name
+        if (this.data.name) return this.data.name
+        // if (this.executable?.metadata?.name) return this.executable.metadata.name
 
         // take basename as name
         const relPath = this.script.relPath

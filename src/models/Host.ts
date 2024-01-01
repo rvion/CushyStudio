@@ -124,7 +124,7 @@ export class HostL {
         } else {
             this.initWebsocket()
         }
-        // this.fetchAndUdpateSchema()
+        // this.fetchAndUpdateSchema()
         if (this.data.isVirtual) return
     }
 
@@ -155,7 +155,7 @@ export class HostL {
     initWebsocket = () => {
         console.log('[👢] WEBSOCKET: starting client to ComfyUI')
         this.ws = new ResilientWebSocketClient({
-            onConnectOrReconnect: () => this.fetchAndUdpateSchema(),
+            onConnectOrReconnect: () => this.fetchAndUpdateSchema(),
             onMessage: this.st.onMessage,
             url: this.getWSUrl,
             onClose: () => {},
@@ -182,7 +182,7 @@ export class HostL {
     }
 
     /** retrieve the comfy spec from the schema*/
-    fetchAndUdpateSchema = async (): Promise<void> => {
+    fetchAndUpdateSchema = async (): Promise<void> => {
         try {
             // ------------------------------------------------------------------------------------
             if (this.data.isVirtual) {

@@ -7,11 +7,12 @@ import { LibraryFile } from 'src/cards/LibraryFile'
 import { LiveCollection } from 'src/db/LiveCollection'
 import { CushyScriptT, asCushyAppID } from 'src/db/TYPES.gen'
 import { asRelativePath } from 'src/utils/fs/pathUtils'
-import { CUSHY_IMPORT } from './CUSHY_IMPORT'
+import { CUSHY_IMPORT } from '../compiler/CUSHY_IMPORT'
 import { CushyAppL } from './CushyApp'
 import { Executable } from './Executable'
 import { runInAction } from 'mobx'
 import { toastInfo } from 'src/utils/misc/toasts'
+import { getCurrentForm, getCurrentRun } from './_ctx2'
 // import { LazyValue } from 'src/db/LazyValue'
 
 export interface CushyScriptL extends LiveInstance<CushyScriptT, CushyScriptL> {}
@@ -138,6 +139,8 @@ export class CushyScriptL {
                 'card',
                 'app',
                 'CUSHY_IMPORT',
+                'getCurrentForm',
+                'getCurrentRun',
                 //
                 codJSWithoutWithImportsReplaced,
             )
@@ -150,6 +153,8 @@ export class CushyScriptL {
                 registerAppFn,
                 //
                 CUSHY_IMPORT,
+                getCurrentForm,
+                getCurrentRun,
             )
 
             // 2.3. return all apps

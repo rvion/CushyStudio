@@ -11,7 +11,7 @@ import { ComfyImageInfo } from '../types/ComfyWsApi'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { _readPngSize } from '../utils/png/_readPngSize'
 import { ComfyPromptL } from './ComfyPrompt'
-import { ComfyWorkflowL } from './Graph'
+import { ComfyWorkflowL } from './ComfyWorkflow'
 import { ComfyNodeMetadata } from 'src/types/ComfyNodeID'
 import { ManualPromise } from 'src/utils/misc/ManualPromise'
 import { SafetyResult } from 'src/safety/Safety'
@@ -111,6 +111,10 @@ export class MediaImageL {
         const nodeID = this.data.promptNodeID
         if (nodeID == null) return null
         return this.graph?.data.comfyPromptJSON[nodeID]
+    }
+
+    openInImageEditor = () => {
+        this.st.layout.FOCUS_OR_CREATE('Paint', { imgID: this.id })
     }
 
     /**

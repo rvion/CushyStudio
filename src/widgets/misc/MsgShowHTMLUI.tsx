@@ -4,12 +4,12 @@ import { useLayoutEffect, useMemo } from 'react'
 // @ts-ignore
 import { createPortal } from 'react-dom'
 import { renderMinimap } from 'src/widgets/minimap/Minimap'
-import { ComfyWorkflowL } from 'src/models/Graph'
+import { ComfyWorkflowL } from 'src/models/ComfyWorkflow'
 
-export const GraphPreviewUI = observer(function MsgShowHTMLUI_(p: { graph: ComfyWorkflowL }) {
+export const GraphPreviewUI = observer(function GraphPreviewUI_(p: { graph: ComfyWorkflowL }) {
     const graph = p.graph
     const elMap = document.querySelector('#map')
-    const cyto = graph.json_cyto
+    const cyto = graph.json_cyto_small
 
     // 1. trigger cyto update (🔶 this is asynchronous)
     // useMemo(() => graph.updateCyto(), [graph])
@@ -27,33 +27,58 @@ export const GraphPreviewUI = observer(function MsgShowHTMLUI_(p: { graph: Comfy
                 // 'h2,h3,h4': 'rgba(0,0,0,0.08)',
                 'div.node': 'rgba(176, 80, 80, 0.8)',
             },
-            back: 'rgba(0,0,0,0.02)',
-            view: 'rgba(0,0,0,0.05)',
-            drag: 'rgba(0,0,0,0.10)',
+            back: 'rgba(0,0,0,0.12)',
+            view: 'rgba(0,0,0,0.25)',
+            drag: 'rgba(0,0,0,0.30)',
             // interval: 2000,
         })
     }, [graph, elMap, cyto])
 
     const domNode = document.getElementById('hovered-graph')
-    if (domNode == null) return null
-    if (cyto.elements.nodes == null) return null
+    if (domNode == null) return '❌ domNode is null'
+    if (cyto.elements.nodes == null) return `❌ cyto.elements.nodes is null`
 
     const fullGraph = (
         <>
+            {/* {cyto.elements.nodes.length} */}
             {cyto.elements.nodes.map((n) => {
+                const node = graph.getNode(n.data.originalID)
+                if (node == null) return
                 return (
                     <div
-                        className='node'
+                        className='node virtualBorder bg-base-100'
                         key={n.data.id}
                         style={{
+                            fontFamily: 'monospace',
+                            fontWeight: '15px',
+                            lineHeight: '15px',
                             position: 'absolute',
                             top: n.position.y,
                             left: n.position.x,
                             width: n.data.width,
                             height: n.data.height,
-                            background: '#aaa',
+                            // padding: 10,
+                            // overflow: 'hidden',
+                            // background: '#aaa',
                         }}
-                    ></div>
+                    >
+                        <div tw='bg-primary text-primary-content overflow-hidden whitespace-nowrap overflow-ellipsis'>
+                            {node.$schema.nameInComfy} [{n.data.id}]
+                        </div>
+                        {/* <div>{n.data.width}</div> */}
+                        <div>
+                            {node._incomingEdges().map((ie) => (
+                                <div key={ie.inputName}>
+                                    {ie.inputName} {'<-'} [{ie.from}]
+                                </div>
+                            ))}
+                            {node._primitives().map((ie) => (
+                                <div key={ie.inputName} tw='overflow-hidden whitespace-nowrap overflow-ellipsis'>
+                                    ${ie.inputName} = {ie.value}
+                                </div>
+                            ))}
+                        </div>
+                    </div>
                 )
             })}
         </>
@@ -61,10 +86,10 @@ export const GraphPreviewUI = observer(function MsgShowHTMLUI_(p: { graph: Comfy
     return (
         <div>
             <canvas
-                onMouseEnter={() => (domNode.style.opacity = '0.8')}
+                onMouseEnter={() => (domNode.style.opacity = '1')}
                 onMouseLeave={() => (domNode.style.opacity = '0')}
                 id='map'
-                style={{ width: '200px', height: '200px', zIndex: 1000 }}
+                style={{ width: '400px', height: '400px', zIndex: 1000 }}
             ></canvas>
             {createPortal(fullGraph, domNode)}
         </div>

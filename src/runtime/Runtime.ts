@@ -17,7 +17,7 @@ import { ImageAnswer } from '../controls/misc/InfoAnswer'
 import { ComfyNodeOutput } from '../core/Slot'
 import { auto } from '../core/autoValue'
 import { ComfyPromptL } from '../models/ComfyPrompt'
-import { ComfyWorkflowL } from '../models/Graph'
+import { ComfyWorkflowL } from '../models/ComfyWorkflow'
 import { MediaImageL, checkIfComfyImageExists } from '../models/MediaImage'
 import { StepL } from '../models/Step'
 import { ComfyUploadImageResult } from '../types/ComfyWsApi'
@@ -43,6 +43,7 @@ import { RuntimeKonva } from './RuntimeKonva'
 import { RuntimeComfyUI } from './RuntimeComfyUI'
 import { RuntimeImages } from './RuntimeImages'
 import { RuntimeColors } from './RuntimeColors'
+import { RuntimeLLM } from './RuntimeLLM'
 
 export type ImageAndMask = HasSingle_IMAGE & HasSingle_MASK
 
@@ -93,6 +94,12 @@ export class Runtime<FIELDS extends WidgetDict = any> {
     get Cushy(): RuntimeCushy {
         const it = new RuntimeCushy(this)
         Object.defineProperty(this, 'Cushy', { value: it })
+        return it
+    }
+
+    get LLM(): RuntimeLLM {
+        const it = new RuntimeLLM(this)
+        Object.defineProperty(this, 'RuntimeLLM', { value: it })
         return it
     }
 
@@ -180,67 +187,6 @@ export class Runtime<FIELDS extends WidgetDict = any> {
      */
     getLoraAssociatedTriggerWords = (loraName: string): Maybe<string> => {
         return this.st.configFile.value?.loraPrompts?.[loraName]?.text
-    }
-
-    /** verify key is ready */
-    llm_isConfigured = async () => {
-        return !!this.st.configFile.value.OPENROUTER_API_KEY
-    }
-
-    /** geenric function to ask open router anything */
-    llm_ask_OpenRouter = async (p: OpenRouterRequest): Promise<OpenRouterResponse> => {
-        return await OpenRouter_ask(this.st.configFile.value.OPENROUTER_API_KEY, p)
-    }
-
-    /** dictionary of all known openrouter models */
-    llm_allModels = openRouterInfos
-
-    /** turn any simple request into an LLM */
-    llm_ask_PromptMaster = async (
-        /** description / instruction of  */
-        question: string,
-        /**
-         * the list of all openRouter models available
-         * 🔶 may not be up-to-date; last updated on 2023-12-03
-         * */
-        model: OpenRouter_Models = 'openai/gpt-3.5-turbo-instruct',
-    ): Promise<{
-        prompt: string
-        llmResponse: OpenRouterResponse
-    }> => {
-        const res: OpenRouterResponse = await OpenRouter_ask(this.st.configFile.value.OPENROUTER_API_KEY, {
-            max_tokens: 300,
-            model: model,
-            messages: [
-                {
-                    role: 'system',
-                    content: [
-                        //
-                        `You are an assistant in charge of writing a prompt to be submitted to a stable distribution ai image generative pipeline.`,
-                        `Write a prompt describing the user submited topic in a way that will help the ai generate a relevant image.`,
-                        `Your answer must be arond 500 chars in length`,
-                        `Start with most important words describing the prompt`,
-                        `Include lots of adjective and adverbs. no full sentences. remove useless words`,
-                        `try to include a long list of comma separated words.`,
-                        'Once main keywords are in, if you still have character to add, include vaiours beauty or artsy words',
-                        `ONLY answer with the prompt itself. DO NOT answer anything else. No Hello, no thanks, no signature, no nothing.`,
-                    ].join('\n'),
-                },
-                {
-                    role: 'user',
-                    content: question,
-                },
-                // { role: 'user', content: 'Who are you?' },
-            ],
-        })
-        if (res.choices.length === 0) throw new Error('no choices in response')
-        const msg0 = res.choices[0].message
-        if (msg0 == null) throw new Error('choice 0 is null')
-        if (typeof msg0 === 'string') throw new Error('choice 0 seems to be an error')
-        return {
-            prompt: msg0.content ?? '',
-            llmResponse: res,
-        }
     }
 
     // ----------------------------

@@ -11,7 +11,7 @@ export const Panel_AppList = observer(function Panel_AppList_(p: {}) {
         return new Tree(st, [
             //
             '#favorites',
-            // '#apps',
+            '#apps',
             'path#library/built-in',
             'path#library/local',
             'path#library/sdk-examples',
@@ -20,8 +20,8 @@ export const Panel_AppList = observer(function Panel_AppList_(p: {}) {
 
     return (
         <div tw='flex flex-grow flex-col overflow-auto h-full'>
-            <TreeUI tree={tree} />
             <LibraryHeaderUI />
+            <TreeUI tree={tree} />
         </div>
     )
 })

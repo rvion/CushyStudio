@@ -1,11 +1,11 @@
 import { observer } from 'mobx-react-lite'
-import { AppIllustrationUI } from 'src/cards/fancycard/AppIllustrationUI'
 import { OutputPreviewUI, OutputUI } from 'src/outputs/OutputUI'
+import { StepOutputsHeaderV2UI } from 'src/outputs/StepOutputsV2UI'
 import { InputNumberUI } from 'src/rsuite/InputNumberUI'
 import { RevealUI } from 'src/rsuite/reveal/RevealUI'
 import { FieldAndLabelUI } from 'src/widgets/misc/FieldAndLabelUI'
 import { useSt } from '../state/stateContext'
-import { StepOutputsHeaderV2UI } from 'src/outputs/StepOutputsV2UI'
+import { Status } from 'src/back/Status'
 
 const mode: 'H' | 'V' = 1 - 1 == 0 ? 'V' : 'H'
 const dir = mode === 'H' ? 'flex-col' : 'flex-row'
@@ -39,7 +39,7 @@ export const Panel_Output = observer(function Panel_Output_(p: {}) {
     if (selectedStep == null) return null
     const out1 = st.hovered ?? st.focusedStepOutput ?? selectedStep.lastMediaOutput ?? st.db.media_images.last()
     const out2 = null
-    const out3 = selectedStep.currentlyExecutingOutput
+    // const out3 = selectedStep.currentlyExecutingOutput
     return (
         <>
             <div
@@ -59,11 +59,11 @@ export const Panel_Output = observer(function Panel_Output_(p: {}) {
                 <div tw={['flex flex-grow overflow-auto absolute pointer-events-none inset-0 z-30']}>
                     {out2 && <OutputUI output={out2} />}
                 </div>
-                {out3 && (
+                {/* {out3 && (
                     <div tw={['flex flex-grow overflow-auto top-20 absolute z-20 bg-base-100 bg-opacity-80']}>
                         <OutputUI output={out3} />
                     </div>
-                )}
+                )} */}
                 <LatentIfLastUI />
                 {/* </div> */}
             </div>
@@ -104,6 +104,11 @@ export const SideOutputListUI = observer(function SideOutputListUI_(p: {}) {
                     </FieldAndLabelUI>
                 </div>
             </RevealUI>
+            {step?.finalStatus === Status.Running && (
+                <div tw='btn btn-sm btn-outline' onClick={() => st.stopCurrentPrompt()}>
+                    STOP
+                </div>
+            )}
             {step && <StepOutputsHeaderV2UI step={step} />}
             {step?.outputs?.map((output, ix) => (
                 <OutputPreviewUI key={ix} step={step} output={output} />

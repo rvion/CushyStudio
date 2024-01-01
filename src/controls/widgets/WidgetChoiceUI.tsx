@@ -3,22 +3,25 @@ import type { Widget, Widget_choice } from 'src/controls/Widget'
 import { observer } from 'mobx-react-lite'
 import { SelectUI } from 'src/rsuite/SelectUI'
 import { WidgetUI } from './WidgetUI'
+import { runInAction } from 'mobx'
 
 export const WidgetChoiceUI = observer(function WidgetChoiceUI_(p: { widget: Widget_choice<{ [key: string]: Widget }> }) {
     const req = p.widget
-    const choicesStr: string[] = Object.keys(req.state.values)
+    const choicesStr: string[] = req.possibleChoices // Object.keys(req.state.values)
     const choiceSubReq = req.state.values[req.state.pick]
     return (
         <div tw='_WidgetChoiceUI relative w-full'>
             <SelectUI
                 getLabelText={(v) => v}
                 cleanable={false}
-                options={choicesStr}
+                options={() => choicesStr}
                 value={() => req.state.pick}
                 onChange={(v) => {
                     if (v == null) return
-                    req.state.pick = v
-                    req.state.active = true
+                    runInAction(() => {
+                        req.state.pick = v
+                        req.state.active = true
+                    })
                 }}
             />
 

@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 import { ComfyPromptL } from 'src/models/ComfyPrompt'
-import { ProgressReport } from 'src/models/Graph'
+import { ProgressReport } from 'src/models/ComfyWorkflow'
 import { StepL } from 'src/models/Step'
 import { useSt } from 'src/state/stateContext'
 import { parseFloatNoRoundingErr } from 'src/utils/misc/parseFloatNoRoundingErr'
@@ -24,7 +24,7 @@ export const OutputPromptPreviewUI = observer(function OutputPromptPreviewUI_(p:
     // const pgr2 = graph.graphProgressCurrentNode
     return (
         <OutputPreviewWrapperUI output={prompt}>
-            <div tw='bg-blue-500 '>
+            <div /*tw='bg-blue-500 '*/>
                 <div
                     className='radial-progress'
                     style={{
@@ -52,24 +52,9 @@ export const OutputPromptUI = observer(function OutputPromptUI_(p: {
     if (graph == null) return <>no graph</>
     return (
         <div className='flex flex-col gap-1'>
-            <div
-                tw='btn btn-sm btn-outline'
-                onClick={() => {
-                    st.stopCurrentPrompt()
-                }}
-            >
+            <div tw='btn btn-sm btn-outline' onClick={() => st.stopCurrentPrompt()}>
                 STOP GENERATING
             </div>
-            {/* {prompt.status !== 'Running' ? null : (
-                <div
-                    tw='btn btn-sm'
-                    onClick={() => {
-                        st.stopCurrentPrompt()
-                    }}
-                >
-                    STOP GENERATING
-                </div>
-            )} */}
             <GraphSummaryUI graph={graph} />
         </div>
     )

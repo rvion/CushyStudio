@@ -12,7 +12,7 @@ export const ListControlsUI = observer(function ListControlsUI_(p: {
     const max = req.input.max
     const min = req.input.min
     return (
-        <Joined tw='sticky top-0 z-[100] bg-neutral bg-opacity-100 opacity-100'>
+        <Joined tw='sticky top-0 z-[100] bg-neutral text-neutral-content bg-opacity-100 opacity-100'>
             <Button
                 tw='btn-sm join-item btn-ghost'
                 disabled={max ? req.state.items.length >= max : undefined}
