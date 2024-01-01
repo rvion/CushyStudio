@@ -1456,7 +1456,7 @@ export class Widget_choices<T extends { [key: string]: Widget }> implements IReq
         }
         // debugger
         if (serial){
-            const _newValues = input.items()
+            const _newValues = runWithGlobalForm(this.builder, () => input.items())
             this.state = {
                 type: 'choices',
                 id: this.id,
@@ -1483,7 +1483,7 @@ export class Widget_choices<T extends { [key: string]: Widget }> implements IReq
                 }
             }
         } else {
-            const _items = input.items()
+            const _items = runWithGlobalForm(this.builder, () => input.items())
             this.state = { type: 'choices', id: this.id, active: true, values: _items, branches: {} }
         }
         makeAutoObservable(this)
