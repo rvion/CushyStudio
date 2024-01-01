@@ -6,7 +6,6 @@ export const WidgetSelectOneUI = observer(function WidgetSelectOneUI_<T extends 
     widget: Widget_selectOne<T>
 }) {
     const req = p.widget
-    const value = req.state.val
     return (
         <SelectUI<T>
             size='sm'
@@ -15,7 +14,7 @@ export const WidgetSelectOneUI = observer(function WidgetSelectOneUI_<T extends 
                 return t.label ?? t.id ?? def
             }}
             options={() => req.choices}
-            value={() => value}
+            value={() => req.state.val}
             onChange={(selectOption) => {
                 if (selectOption == null) {
                     if (!req.isOptional) return
