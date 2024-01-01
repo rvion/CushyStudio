@@ -27,15 +27,6 @@ export const MenuAuthUI = observer(function MenuAuthUI_(p: {}) {
             appearance='subtle'
         >
             <div tw='flex flex-col'>
-                {st.auth.user && (
-                    <RevealUI>
-                        <div tw='btn btn-ghost'>
-                            <span className='material-symbols-outlined'>info</span>
-                            Infos
-                        </div>
-                        <JsonViewUI value={st.auth.user} />
-                    </RevealUI>
-                )}
                 {st.auth.isConnected ? (
                     <div onClick={() => st.auth.logout()} tw='btn'>
                         LogOut
@@ -49,6 +40,15 @@ export const MenuAuthUI = observer(function MenuAuthUI_(p: {}) {
                     >
                         login
                     </div>
+                )}
+                {st.auth.user && (
+                    // <RevealUI>
+                    //     <div tw='btn btn-ghost'>
+                    //         <span className='material-symbols-outlined'>info</span>
+                    //         Infos
+                    //     </div>
+                    <JsonViewUI value={st.auth.user} />
+                    // {/* </RevealUI> */}
                 )}
             </div>
         </Dropdown>
