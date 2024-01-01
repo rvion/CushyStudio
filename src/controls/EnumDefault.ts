@@ -1,5 +1,5 @@
 import type { EnumValue } from 'src/models/Schema'
-import { knownModels, type KnownModelName, type ModelInfo } from 'src/wiki/modelList'
+import { knownModels, type KnownModelName, type ModelInfo } from 'src/wiki/model-list'
 
 export const extractDefaultValue = <T extends KnownEnumNames>(def: EnumValue | EnumDefault): Maybe<EnumValue> => {
     // case value (backwards compat)

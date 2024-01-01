@@ -31,6 +31,10 @@ export const EnumDownloaderUI = observer(function EnumDownloaderUI_<K extends Kn
                     <div>
                         <div
                             onClick={async () => {
+                                // 🔴 TODO
+                                // https://github.com/ltdrdata/ComfyUI-Manager/blob/main/js/model-downloader.js#L11
+                                // copy Data-it implementation
+
                                 // download file
                                 const res = await host.downloadFileIfMissing(m.url, dlPath)
 
