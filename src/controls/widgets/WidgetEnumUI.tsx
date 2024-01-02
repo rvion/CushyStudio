@@ -72,7 +72,7 @@ export const WidgetEnumUI = observer(function WidgetEnumUI_<K extends KnownEnumN
     const enumName = widget.input.enumName
     const isOptional = widget instanceof Widget_enumOpt
     return (
-        <div>
+        <>
             <EnumSelectorUI
                 value={() => widget.status}
                 disabled={!widget.state.active}
@@ -88,7 +88,7 @@ export const WidgetEnumUI = observer(function WidgetEnumUI_<K extends KnownEnumN
                 }}
             />
             <EnumDownloaderUI widget={widget} />
-        </div>
+        </>
     )
 })
 

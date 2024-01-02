@@ -88,18 +88,18 @@ legend {
 .FIELD .FIELD .FIELD {border-color: oklch(var(--p)/0.45);}
 .FIELD .FIELD .FIELD .FIELD {border-color: oklch(var(--p)/0.45);}
 .FIELD .FIELD .FIELD .FIELD .FIELD {border-color: oklch(var(--p)/0.45);} */
-.FIELD:hover {
+.FIELD .FIELD:hover {
     /* background: oklch(var(--p)/.01); */
-    border-left-color: oklch(var(--p));
-    border-top-left-radius: .8rem;
+    border-left: 3px groove var(--fallback-p,oklch(var(--p)/0.5));
+    /* border-top-left-radius: .8rem; */
 }
-.FIELD {
+.FIELD .FIELD {
     /* border-top-left-radius: .8rem; */
     border-bottom-left-radius: .5rem;
     position: relative;
     /* margin-bottom: 0.3rem; */
     padding-left: 0.5rem;
-    border-left: 3px groove var(--fallback-p,oklch(var(--p)/0.45));
+    border-left: 3px groove var(--fallback-p,oklch(var(--p)/0.2));
     /* background: oklch(var(--p)/.05); */
     /* display: block; */
     /* margin-left: 2px; */

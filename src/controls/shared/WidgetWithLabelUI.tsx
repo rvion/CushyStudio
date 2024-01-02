@@ -60,6 +60,9 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
         req instanceof KLS.Widget_bool
             ? {
                   value: req.state.val,
+                  toggle: () => {
+                      req.state.val = !req.state.val
+                  },
                   onChange: (ev: ChangeEvent<HTMLInputElement>) => {
                       req.state.val = ev.target.checked
                       req.state.active = true
@@ -67,11 +70,17 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
               }
             : {
                   value: req.state.active,
+                  toggle: () => {
+                      req.state.active = !req.state.active
+                  },
                   onChange: (ev: ChangeEvent<HTMLInputElement>) => {
                       req.state.active = ev.target.checked
                   },
               }
-    const showToogle = req.isOptional || !req.state.active || req instanceof KLS.Widget_bool
+    const showToogle =
+        req.isOptional || //
+        !req.state.active ||
+        req instanceof KLS.Widget_bool //
 
     let WIDGET = collapsed ? null : !v.state.active ? null : ( //
         <ErrorBoundary FallbackComponent={ErrorBoundaryFallback} onReset={(details) => {}}>
@@ -97,13 +106,23 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
             }}
         >
             {showToogle && (
-                <Toggle
-                    tw='mr-2'
-                    color='green'
-                    checked={toggleInfo.value}
-                    onChange={toggleInfo.onChange}
-                    onClick={(ev) => ev.stopPropagation()}
-                />
+                <div
+                    style={{ width: '1.3rem', height: '1.3rem' }}
+                    tw={[
+                        toggleInfo.value ? 'bg-primary' : null,
+                        //
+                        'virtualBorder',
+                        'rounded mr-2',
+                        'cursor-pointer',
+                    ]}
+                    tabIndex={-1}
+                    onClick={(ev) => {
+                        ev.stopPropagation()
+                        toggleInfo.toggle()
+                    }}
+                >
+                    {toggleInfo.value ? <span className='material-symbols-outlined text-primary-content'>check</span> : null}
+                </div>
             )}
             {tooltip && (
                 <RevealUI>
@@ -114,7 +133,11 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
             {label !== false && (
                 <span
                     //
-                    tw={[p.isTopLevel ? 'text-primary' : undefined]}
+                    tw={[
+                        //
+                        '',
+                        p.isTopLevel ? 'text-primary font-bold' : undefined,
+                    ]}
                     style={
                         true && !isVertical //
                             ? { lineHeight: '2rem', display: 'inline-block' }
