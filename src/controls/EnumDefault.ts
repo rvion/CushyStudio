@@ -2,6 +2,7 @@ import type { EnumValue } from 'src/models/Schema'
 import { knownModels, type KnownModelName, type ModelInfo } from 'src/wiki/model-list'
 
 export const extractDefaultValue = <T extends KnownEnumNames>(def: EnumValue | EnumDefault): Maybe<EnumValue> => {
+    if (def == null) return null
     // case value (backwards compat)
     if (typeof def === 'string') return def
     if (typeof def === 'boolean') return def
