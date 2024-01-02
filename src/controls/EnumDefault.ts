@@ -27,7 +27,8 @@ export const extractDefaultValue = <T extends KnownEnumNames>(def: EnumValue | E
 export const extractDownloadCandidates = <T extends KnownEnumNames>(def: EnumValue | EnumDefault): Maybe<ModelInfo[]> => {
     if (typeof def !== 'object') return null
     if (!('knownModel' in def)) return null
-    const x = def.knownModel!
+    if (def.knownModel == null) return null
+    const x = def.knownModel
     const entries = Array.isArray(x) ? x : [x]
     const OUT: ModelInfo[] = []
     for (const entry of entries) {
