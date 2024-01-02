@@ -38,7 +38,7 @@ export const WidgetGroupUI = observer(function WidgetItemsUI_(p: {
                         '_WidgetGroupUI w-full',
                         isHorizontal //
                             ? `flex flex-wrap gap-2`
-                            : `flex flex-col gap-0.5`,
+                            : `flex flex-col gap-1.5`,
                     ]}
                     className={req.input.className}
                 >

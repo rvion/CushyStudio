@@ -93,7 +93,8 @@ legend {
     border-left: 3px groove var(--fallback-p,oklch(var(--p)/0.5));
     /* border-top-left-radius: .8rem; */
 }
-.FIELD .FIELD {
+
+.FIELD {
     /* border-top-left-radius: .8rem; */
     border-bottom-left-radius: .5rem;
     position: relative;
