@@ -7,6 +7,7 @@ import { run_prompt } from './_prefabs/prefab_prompt'
 import { ui_recursive } from './_prefabs/prefab_recursive'
 import { Ctx_sampler, run_sampler, ui_sampler } from './_prefabs/prefab_sampler'
 import { run_cnet, ui_cnet, Cnet_args } from './_prefabs/prefab_cnet'
+import { run_improveFace, ui_improveFace } from './_prefabs/prefab_detailer'
 
 app({
     metadata: {
@@ -52,6 +53,7 @@ app({
         makeAVideo: form.bool({ default: false }),
         summary: form.bool({ default: false }),
         gaussianSplat: form.bool({ default: false }),
+        improveFaces: ui_improveFace(),
         show3d: form.groupOpt({
             items: () => {
                 return {
@@ -159,7 +161,12 @@ app({
             ).latent
         }
 
-        let finalImage: HasSingle_IMAGE = graph.VAEDecode({ samples: latent, vae })
+        let finalImage: _IMAGE = graph.VAEDecode({ samples: latent, vae })
+
+        // -------------
+        if (ui.improveFaces) {
+            finalImage = run_improveFace(finalImage)
+        }
 
         // REMOVE BACKGROUND ---------------------------------------------------------------------
         if (ui.removeBG) {

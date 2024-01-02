@@ -1518,7 +1518,7 @@ export class Widget_choices<T extends { [key: string]: Widget }> implements IReq
 }
 
 // 🅿️ enum ==============================================================================
-export type Widget_enum_opts<T extends KnownEnumNames>  = ReqInput<{ default?: Requirable[T] | EnumDefault; enumName: T }>
+export type Widget_enum_opts<T extends KnownEnumNames>  = ReqInput<{ default?: Requirable[T] | EnumDefault<T>; enumName: T }>
 export type Widget_enum_serial<T extends KnownEnumNames> = Widget_enum_state<T>
 export type Widget_enum_state<T extends KnownEnumNames>  = StateFields<{ type: 'enum', active: true; val: Requirable[T] }>
 export type Widget_enum_output<T extends KnownEnumNames> = Requirable[T]

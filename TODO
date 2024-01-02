@@ -9,6 +9,9 @@ cnets:
     ☐ list UI is just hard to read
     ☐ review how prefabs canons
 
+
+    ☐ unbreak the select sub-selects (add tests)
+
 Todo :
     ✔ currentForm() @done(23-12-31 15:38)
     ✔ fix nsfwjs by including the model locally (web host went down) @done(23-12-23 08:54)

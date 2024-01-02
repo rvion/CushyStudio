@@ -12,6 +12,7 @@ import { makeLabelFromFieldName } from '../../utils/misc/makeLabelFromFieldName'
 import { ErrorBoundaryFallback } from '../../widgets/misc/ErrorBoundary'
 import { WidgetDI } from '../widgets/WidgetUI.DI'
 import { isWidgetCollapsible } from './isWidgetCollapsible'
+import { runInAction } from 'mobx'
 
 export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     req: R.Widget
@@ -61,21 +62,25 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
             ? {
                   value: req.state.val,
                   toggle: () => {
-                      req.state.val = !req.state.val
+                      runInAction(() => {
+                          req.state.val = !req.state.val
+                      })
                   },
-                  onChange: (ev: ChangeEvent<HTMLInputElement>) => {
-                      req.state.val = ev.target.checked
-                      req.state.active = true
-                  },
+                  //   onChange: (ev: ChangeEvent<HTMLInputElement>) => {
+                  //       req.state.val = ev.target.checked
+                  //       req.state.active = true
+                  //   },
               }
             : {
                   value: req.state.active,
                   toggle: () => {
-                      req.state.active = !req.state.active
+                      runInAction(() => {
+                          req.state.active = !req.state.active
+                      })
                   },
-                  onChange: (ev: ChangeEvent<HTMLInputElement>) => {
-                      req.state.active = ev.target.checked
-                  },
+                  //   onChange: (ev: ChangeEvent<HTMLInputElement>) => {
+                  //       req.state.active = ev.target.checked
+                  //   },
               }
     const showToogle =
         req.isOptional || //

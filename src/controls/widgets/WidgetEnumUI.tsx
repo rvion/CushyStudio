@@ -20,49 +20,54 @@ export const EnumDownloaderUI = observer(function EnumDownloaderUI_<K extends Kn
     const models = extractDownloadCandidates(p.widget.input.default as any)
     if (models == null) return null
     return (
-        <div tw='flex flex-col flex-wrap gap-1'>
-            {/* {models.length} */}
-            {/* <pre>{JSON.stringify(p.widget.input.default)}</pre> */}
-            {models.map((m) => {
-                const isInstalled = p.widget.possibleValues.find((x) => x === m.filename)
-                const host = st.mainHost
-                const rootComfyUIFolder = host.absolutPathToDownloadModelsTo
-                const dlPath = `${rootComfyUIFolder}/${m.type}/${m.filename}`
-                return (
-                    <div>
-                        <div
-                            onClick={async () => {
-                                // 🔴 TODO
-                                // https://github.com/ltdrdata/ComfyUI-Manager/blob/main/js/model-downloader.js#L11
-                                // copy Data-it implementation
+        <RevealUI>
+            <div tw='btn btn-square btn-ghost btn-sm'>
+                <span className='material-symbols-outlined'>cloud_download</span>
+            </div>
+            <div tw='flex flex-col flex-wrap gap-1'>
+                {/* {models.length} */}
+                {/* <pre>{JSON.stringify(p.widget.input.default)}</pre> */}
+                {models.map((m) => {
+                    const isInstalled = p.widget.possibleValues.find((x) => x === m.filename)
+                    const host = st.mainHost
+                    const rootComfyUIFolder = host.absolutPathToDownloadModelsTo
+                    const dlPath = `${rootComfyUIFolder}/${m.type}/${m.filename}`
+                    return (
+                        <div>
+                            <div
+                                onClick={async () => {
+                                    // 🔴 TODO
+                                    // https://github.com/ltdrdata/ComfyUI-Manager/blob/main/js/model-downloader.js#L11
+                                    // copy Data-it implementation
 
-                                // download file
-                                const res = await host.downloadFileIfMissing(m.url, dlPath)
+                                    // download file
+                                    const res = await host.downloadFileIfMissing(m.url, dlPath)
 
-                                // retrieve the enum info
-                                // add the new value (BRITTLE)
-                                const enumInfo = st.schema.knownEnumsByName //
-                                    .get(p.widget.input.enumName)
-                                enumInfo?.values.push(m.filename)
-                            }}
-                            tw='btn btn-sm btn-outline'
-                            key={m.name}
-                        >
-                            {isInstalled ? '🟢' : null}
-                            <span className='material-symbols-outlined'>cloud_download</span>
-                            <span>{m.name}</span>
-                        </div>
-                        <RevealUI>
+                                    // retrieve the enum info
+                                    // add the new value (BRITTLE)
+                                    const enumInfo = st.schema.knownEnumsByName //
+                                        .get(p.widget.input.enumName)
+                                    enumInfo?.values.push(m.filename)
+                                }}
+                                tw='btn btn-sm btn-outline'
+                                key={m.name}
+                            >
+                                {isInstalled ? '🟢' : null}
+                                <span className='material-symbols-outlined'>cloud_download</span>
+                                <span>{m.name}</span>
+                            </div>
+                            {/* <RevealUI> */}
                             <div>infos</div>
                             <div>
                                 <div tw='text-xx italic'>{m.url}</div>
                                 <div tw='text-xx italic'>{dlPath}</div>
                             </div>
-                        </RevealUI>
-                    </div>
-                )
-            })}
-        </div>
+                            {/* </RevealUI> */}
+                        </div>
+                    )
+                })}
+            </div>
+        </RevealUI>
     )
 })
 export const WidgetEnumUI = observer(function WidgetEnumUI_<K extends KnownEnumNames>(p: {
@@ -87,6 +92,7 @@ export const WidgetEnumUI = observer(function WidgetEnumUI_<K extends KnownEnumN
                     widget.state.val = e as any // 🔴
                 }}
             />
+
             <EnumDownloaderUI widget={widget} />
         </>
     )

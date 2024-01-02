@@ -44,9 +44,9 @@ export const extractDownloadCandidates = <T extends KnownEnumNames>(def: EnumVal
  * this object is the new value that
  * needs to be given to an enum default.
  */
-export type EnumDefault<T = any> = {
+export type EnumDefault<T extends KnownEnumNames = any> = {
     /** 🔶 */
-    value?: string
+    value?: Requirable[T]
     /** 🔴 UNIMPLEMENTED */
     values?: string[]
     /** 🔶 */

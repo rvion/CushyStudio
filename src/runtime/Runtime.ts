@@ -263,7 +263,7 @@ export class Runtime<FIELDS extends WidgetDict = any> {
 
     /** a built-in prefab to quickly
      * add a PreviewImage node to your ComfyUI graph */
-    add_saveImage = (image: HasSingle_IMAGE, prefix?: string) => {
+    add_saveImage = (image: _IMAGE, prefix?: string) => {
         return this.nodes.SaveImage({ images: image, filename_prefix: prefix })
     }
 
