@@ -6,6 +6,7 @@ import { useSt } from 'src/state/stateContext'
 import { CleanedEnumResult } from 'src/types/EnumUtils'
 import type { EnumName, EnumValue } from '../../models/Schema'
 import { extractDownloadCandidates } from '../EnumDefault'
+import { RevealUI } from 'src/rsuite/reveal/RevealUI'
 
 type T = {
     label: EnumValue
@@ -51,8 +52,13 @@ export const EnumDownloaderUI = observer(function EnumDownloaderUI_<K extends Kn
                             <span className='material-symbols-outlined'>cloud_download</span>
                             <span>{m.name}</span>
                         </div>
-                        <div tw='text-xx italic'>{m.url}</div>
-                        <div tw='text-xx italic'>{dlPath}</div>
+                        <RevealUI>
+                            <div>infos</div>
+                            <div>
+                                <div tw='text-xx italic'>{m.url}</div>
+                                <div tw='text-xx italic'>{dlPath}</div>
+                            </div>
+                        </RevealUI>
                     </div>
                 )
             })}

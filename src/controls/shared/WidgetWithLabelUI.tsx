@@ -31,6 +31,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
         if (p.req.input.showID) return true
         if (st.preferedFormLayout === 'auto') {
             if (req instanceof KLS.Widget_orbit) return true
+            if (req instanceof KLS.Widget_size) return true
             if (req instanceof KLS.Widget_image) return true
             if (req instanceof KLS.Widget_imageOpt) return true
             if (req instanceof KLS.Widget_prompt) return true
@@ -136,23 +137,23 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     if (WIDGET == null) className += ' w-full'
     if (isVertical && /*WIDGET*/ true) {
         WIDGET = <div tw='w-full'>{WIDGET}</div>
-        return (
-            <fieldset className={className} key={rootKey}>
-                <legend>{LABEL}</legend>
-                {WIDGET}
-            </fieldset>
-        )
+        // return (
+        //     <fieldset className={className} key={rootKey}>
+        //         <legend>{LABEL}</legend>
+        //         {WIDGET}
+        //     </fieldset>
+        // )
     }
     if (p.labelPos === 'end') {
         return (
-            <div tw='[padding-left:0.3rem]' className={className} key={rootKey}>
+            <div tw='FIELD [padding-left:0.3rem]' className={className} key={rootKey}>
                 {WIDGET}
                 {LABEL}
             </div>
         )
     } else {
         return (
-            <div tw='[padding-left:0.3rem]' className={className} key={rootKey}>
+            <div tw='FIELD [padding-left:0.3rem]' className={className} key={rootKey}>
                 {LABEL}
                 {WIDGET}
             </div>

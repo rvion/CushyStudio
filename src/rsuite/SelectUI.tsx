@@ -173,15 +173,15 @@ export const SelectUI = observer(function SelectUI_<T>(p: PP<T>) {
     const s = useMemo(() => new AutoCompleteSelectState(st, p), [])
     return (
         <div tw='flex flex-1 items-center' className={p.className}>
-            <div className='relative flex-1'>
+            {/* <span tw='btn btn-sm' className='material-symbols-outlined'>
+                search
+            </span> */}
+            <div className='relative flex-1 w-full'>
                 {/* {p.label && (
                     <span tw='btn btn-sm absolute right-0' className='material-symbols-outlined'>
-                        search
+                    search
                     </span>
                 )} */}
-                <span tw='btn btn-sm absolute right-0' className='material-symbols-outlined'>
-                    search
-                </span>
                 {/* ANCHOR */}
                 <div //
                     tabIndex={-1}
@@ -201,7 +201,8 @@ export const SelectUI = observer(function SelectUI_<T>(p: PP<T>) {
                         style={{ background: s.searchQuery === '' ? 'none' : undefined }}
                         // style={{ opacity: s.searchQuery === '' ? 0 : 1 }}
                         // style={{ background: 'none' }}
-                        tw='input input-bordered input-sm w-full'
+                        // tw='input input-bordered input-sm w-full'
+                        tw='input input-sm w-full'
                         // placeholder={s.displayValue}
                         type='text'
                         value={s.searchQuery}

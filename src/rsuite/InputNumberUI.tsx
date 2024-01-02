@@ -28,8 +28,10 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
                 </div>
             )}
             {p.hideSlider ? null : (
-                <Slider //
+                <input //
+                    type='range'
                     style={{ width: '6rem' }}
+                    tw='w-full flex-grow range range-sm range-primary'
                     value={val}
                     min={p.min}
                     max={p.max}

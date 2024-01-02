@@ -17,11 +17,11 @@ import { bang } from 'src/utils/misc/bang'
 export const ui_cnet = () => {
     const form = getCurrentForm()
     return form.groupOpt({
-        label: 'ControlNet',
+        label: 'ControlNets',
         items: () => ({
             useControlnetConditioningForUpscalePassIfEnabled: form.bool({ default: false }),
             controlNetList: form.list({
-                //
+                label: false,
                 element: () =>
                     form.choice({
                         label: 'Pick=>',
