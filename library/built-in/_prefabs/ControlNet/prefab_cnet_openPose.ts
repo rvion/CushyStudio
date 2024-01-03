@@ -15,12 +15,7 @@ export const ui_subform_OpenPose = () => {
                 enumName: 'Enum_ControlNetLoader_control_net_name',
                 default: {
                     value: 'control_v11p_sd15_openpose.pth',
-                    knownModel: 'ControlNet-v1-1 (openpose; fp16)',
-                    // knownModel: [
-                    //     //
-                    //     'ControlNet-v1-1 (openpose; fp16)',
-                    //     'ControlNet-v1-1 (canny; fp16)',
-                    // ],
+                    knownModel: ['ControlNet-v1-1 (openpose; fp16)', 'SDXL-controlnet: OpenPose (v2)'],
                 },
                 group: 'Controlnet',
                 label: 'Model',
