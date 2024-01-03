@@ -13,7 +13,15 @@ export const ui_subform_Depth = () => {
             preprocessor: ui_subform_Depth_Preprocessor(),
             cnet_model_name: form.enum({
                 enumName: 'Enum_ControlNetLoader_control_net_name',
-                default: { knownModel: 'ControlNet-v1-1 (depth; fp16)' },
+                default: {
+                    value: 'control_v11f1p_sd15_depth.pth',
+                    knownModel: [
+                        'ControlNet-v1-1 (depth; fp16)',
+                        'stabilityai/control-lora-depth-rank128.safetensors',
+                        'stabilityai/control-lora-depth-rank256.safetensors',
+                        'controlnet-SargeZT/controlnet-sd-xl-1.0-depth-16bit-zoe',
+                    ],
+                },
                 group: 'Controlnet',
                 label: 'Model',
             }),
