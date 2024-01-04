@@ -12,7 +12,6 @@ export const WidgetGroupUI = observer(function WidgetItemsUI_(p: {
     const req = p.widget
     const isTopLevel = req.input.topLevel
     const groupFields = Object.entries(req.state.values)
-    const showAsCard = groupFields.length > 0 && !isTopLevel
     const isHorizontal = req.input.layout === 'H'
     return (
         <div
@@ -47,7 +46,7 @@ export const WidgetGroupUI = observer(function WidgetItemsUI_(p: {
                             isTopLevel={isTopLevel}
                             vertical={req.state.vertical}
                             key={rootKey}
-                            labelPos={sub.input.labelPos}
+                            // labelPos={sub.input.labelPos}
                             rootKey={rootKey}
                             req={sub}
                         />

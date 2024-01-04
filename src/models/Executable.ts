@@ -1,4 +1,5 @@
 import type { CushyScriptL } from './CushyScriptL'
+import type { AppMetadata } from 'src/cards/AppManifest'
 
 import { App, WidgetDict } from 'src/cards/App'
 import { asCushyAppID } from 'src/db/TYPES.gen'
@@ -9,7 +10,7 @@ export class Executable {
         //
         public script: CushyScriptL,
         public ix: number,
-        public def: App<WidgetDict>,
+        public def: App<any>,
     ) {}
 
     get ui() {
@@ -20,7 +21,7 @@ export class Executable {
         return this.def.run
     }
 
-    get metadata() {
+    get metadata(): Maybe<AppMetadata> {
         return this.def.metadata
     }
 

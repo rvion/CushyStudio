@@ -46,7 +46,7 @@ export const extractDownloadCandidates = <T extends KnownEnumNames>(def: EnumVal
  */
 export type EnumDefault<T extends KnownEnumNames = any> = {
     /** 🔶 */
-    value?: Requirable[T]
+    value?: Requirable[T] | string
     /** 🔴 UNIMPLEMENTED */
     values?: string[]
     /** 🔶 */

@@ -3,20 +3,18 @@ import type * as R from 'src/controls/Widget'
 
 import { observer } from 'mobx-react-lite'
 
-import { ChangeEvent } from 'react'
+import { runInAction } from 'mobx'
 import { ErrorBoundary } from 'react-error-boundary'
 import { RevealUI } from 'src/rsuite/reveal/RevealUI'
-import { Toggle, Tooltip } from 'src/rsuite/shims'
+import { Tooltip } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
 import { makeLabelFromFieldName } from '../../utils/misc/makeLabelFromFieldName'
 import { ErrorBoundaryFallback } from '../../widgets/misc/ErrorBoundary'
 import { WidgetDI } from '../widgets/WidgetUI.DI'
-import { isWidgetCollapsible } from './isWidgetCollapsible'
-import { runInAction } from 'mobx'
 
 export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     req: R.Widget
-    labelPos?: LabelPos
+    // labelPos?: LabelPos
     rootKey: string
     vertical?: boolean
     isTopLevel?: boolean
@@ -30,29 +28,12 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
 
     const isVertical = (() => {
         if (p.req.input.showID) return true
-        if (st.preferedFormLayout === 'auto') {
-            if (req instanceof KLS.Widget_orbit) return true
-            if (req instanceof KLS.Widget_size) return true
-            if (req instanceof KLS.Widget_image) return true
-            if (req instanceof KLS.Widget_imageOpt) return true
-            if (req instanceof KLS.Widget_prompt) return true
-            if (req instanceof KLS.Widget_promptOpt) return true
-            if (req instanceof KLS.Widget_group) return true
-            if (req instanceof KLS.Widget_choice) return true
-            if (req instanceof KLS.Widget_choices) return true
-            if (req instanceof KLS.Widget_group) return true
-            if (req instanceof KLS.Widget_groupOpt) return true
-            if (req instanceof KLS.Widget_list) return true
-            if (req instanceof KLS.Widget_matrix) return true
-            if (req instanceof KLS.Widget_listExt) return true
-            if (req instanceof KLS.Widget_str && req.input.textarea) return true
-            return false
-        }
+        if (st.preferedFormLayout === 'auto') return p.req.isVerticalByDefault
         if (st.preferedFormLayout === 'mobile') return true
         if (st.preferedFormLayout === 'dense') return false
     })()
 
-    const isCollapsible = isWidgetCollapsible(req)
+    const isCollapsible = req.isCollapsible
     const collapsed = req.state.collapsed && isCollapsible
     const v = p.req
     const levelClass = p.isTopLevel ? '_isTopLevel' : '_isNotTopLevel'
@@ -105,8 +86,14 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
             ]}
             onClick={() => {
                 if (v.state.collapsed) return (v.state.collapsed = false)
-                if (!isCollapsible) return
-                if (!v.state.active) return
+                if (!isCollapsible) {
+                    if (showToogle) toggleInfo.toggle()
+                    return
+                }
+                if (!v.state.active) {
+                    v.state.active = true
+                    return
+                }
                 v.state.collapsed = true
             }}
         >
@@ -158,9 +145,11 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     )
 
     const labelGap = label == false ? '' : 'gap-1'
+    const clsX = v.state.collapsed ? '_COLLAPSED' : ''
+    // prettier-ignore
     let className = isVertical //
-        ? `_WidgetWithLabelUI ${levelClass} flex flex-col items-baseline`
-        : `_WidgetWithLabelUI ${levelClass} flex flex-row ${labelGap} ${isCollapsible ? 'items-baseline' : 'items-center'}`
+        ? `${clsX} __${req.type} _WidgetWithLabelUI ${levelClass} flex flex-col items-baseline`
+        : `${clsX} __${req.type} _WidgetWithLabelUI ${levelClass} flex flex-row ${labelGap} ${isCollapsible ? 'items-baseline' : 'items-center'}` // prettier-ignore
 
     if (WIDGET == null) className += ' w-full'
     if (isVertical && /*WIDGET*/ true) {
@@ -172,19 +161,19 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
         //     </fieldset>
         // )
     }
-    if (p.labelPos === 'end') {
-        return (
-            <div tw='FIELD [padding-left:0.3rem]' className={className} key={rootKey}>
-                {WIDGET}
-                {LABEL}
-            </div>
-        )
-    } else {
-        return (
-            <div tw='FIELD [padding-left:0.3rem]' className={className} key={rootKey}>
-                {LABEL}
-                {WIDGET}
-            </div>
-        )
-    }
+    // if (p.labelPos === 'end') {
+    //     return (
+    //         <div tw='FIELD [padding-left:0.3rem]' className={className} key={rootKey}>
+    //             {WIDGET}
+    //             {LABEL}
+    //         </div>
+    //     )
+    // } else {
+    return (
+        <div tw='FIELD [padding-left:0.3rem]' className={className} key={rootKey}>
+            {LABEL}
+            {WIDGET}
+        </div>
+    )
+    // }
 })

@@ -32,7 +32,11 @@ import { WidgetOrbitUI } from './WidgetOrbitUI'
  * collect the responses and submit them to the back once completed and valid.
  */
 // prettier-ignore
-export const WidgetUI = observer(function WidgetUI_(p: { widget: R.Widget; focus?: boolean }) {
+export const WidgetUI = observer(function WidgetUI_(p: {
+    //
+    widget: R.Widget;
+    focus?: boolean
+}) {
     const widget = p.widget
     if (widget == null) return <>NULL</>
     if (widget instanceof R.Widget_seed)               return <WidgetSeedUI        widget={widget} />
