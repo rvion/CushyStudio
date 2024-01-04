@@ -27,7 +27,14 @@ export const ui_improveFace = () => {
     })
 }
 
-export const run_improveFace = (finalImage: _IMAGE = getCurrentRun().AUTO): _IMAGE => {
+export const run_improveFace_fromLatent = (latent: _LATENT = getCurrentRun().AUTO): _IMAGE => {
+    const run = getCurrentRun()
+    const graph = run.nodes
+    const image: _IMAGE = graph.VAEDecode({ samples: latent, vae: run.AUTO })
+    return run_improveFace_fromImage(image)
+}
+
+export const run_improveFace_fromImage = (finalImage: _IMAGE = getCurrentRun().AUTO): _IMAGE => {
     const run = getCurrentRun()
     const graph = run.nodes
     run.add_saveImage(run.AUTO, 'base')
@@ -43,12 +50,17 @@ export const run_improveFace = (finalImage: _IMAGE = getCurrentRun().AUTO): _IMA
         model: run.AUTO,
         clip: run.AUTO,
         vae: run.AUTO,
+        // force_inpaint: false,
         denoise: 0.6,
-        steps: 20,
-        sampler_name: 'ddim',
-        // scheduler: 'karras',
-        scheduler: 'ddim_uniform',
-        positive: graph.CLIPTextEncode({ clip: run.AUTO, text: 'perfect face, masterpiece, hightly detailed, smiling' }),
+        steps: 40,
+        // sampler_name: 'ddim',
+        // scheduler: 'ddim_uniform',
+        sampler_name: 'euler',
+        scheduler: 'sgm_uniform',
+        positive: graph.CLIPTextEncode({
+            clip: run.AUTO,
+            text: 'perfect face, masterpiece, hightly detailed, sharp details',
+        }),
         negative: run.AUTO,
         sam_detection_hint: 'center-1', // ❓
         sam_mask_hint_use_negative: 'False',

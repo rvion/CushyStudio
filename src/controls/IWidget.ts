@@ -1,32 +1,37 @@
 import type { KnownCustomNodes } from 'src/wiki/custom-node-list'
+import { KnownModelName } from 'src/wiki/model-list'
 
-export type IWidget<T, I, X extends { type: T }, S, O> = {
+export type WidgetTypeHelpers<T, I, X extends { type: T }, S, O> = {
     $Input: I
     $Serial: X
     $State: S
     $Output: O
 }
-export type IRequest<T, I, X, S, O> = {
+export type IWidget<T, I, X, S, O> = {
     id: string
     isOptional: boolean
+    isVerticalByDefault: boolean
+    isCollapsible: boolean
     type: T
     state: S
     readonly result: O
     readonly serial: X
 }
-export type ReqResult<Req> = Req extends IWidget<any, any, any, any, infer O> ? O : never
-export type ReqState<Req> = Req extends IWidget<any, any, any, infer S, any> ? S : never
+export type GetWidgetResult<Req> = Req extends WidgetTypeHelpers<any, any, any, any, infer O> ? O : never
+export type GetWidgetState<Req> = Req extends WidgetTypeHelpers<any, any, any, infer S, any> ? S : never
 
 export type LabelPos = 'start' | 'end'
-export type StateFields<X> = X & {
+export type WidgetStateFields<X> = X & {
     id: string
     active?: boolean
     collapsed?: boolean
     vertical?: boolean
 }
-export type ReqInput<X> = X & {
+
+// do not need to be serializable
+export type WidgetInputFields<X> = X & {
     label?: string | false
-    labelPos?: LabelPos
+    // labelPos?: LabelPos
     layout?: 'H' | 'V'
     group?: string
     tooltip?: string
@@ -35,4 +40,6 @@ export type ReqInput<X> = X & {
     startCollapsed?: boolean
     showID?: boolean
     customNodes?: KnownCustomNodes | KnownCustomNodes[]
+    customModels?: KnownModelName | KnownModelName[]
+    summary?: (self: X) => string
 }

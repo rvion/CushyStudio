@@ -12,16 +12,12 @@ export const ButtonOpenInComfyUI = observer(function ButtonOpenInComfyUI_(p: { g
             : graphOrGraphID
 
     return (
-        <Whisper
-            //
-            enterable
-            placement='autoVerticalEnd'
-            speaker={<Tooltip>Open in ComfyUI</Tooltip>}
-        >
+        <div tw='flex gap-2 items-center'>
+            Open:
             <Button
                 icon={<span className='material-symbols-outlined'>open_in_new</span>}
-                appearance='link'
-                size='xs'
+                appearance='ghost'
+                size='sm'
                 onClick={async (ev) => {
                     ev.preventDefault()
                     ev.stopPropagation()
@@ -36,7 +32,23 @@ export const ButtonOpenInComfyUI = observer(function ButtonOpenInComfyUI_(p: { g
                     // window.require('electron').shell.openExternal(`file://${path}/..`)
                     // writeFileSync(path, JSON.stringify(jsonWorkflow, null, 3))
                 }}
-            ></Button>
-        </Whisper>
+            >
+                open in ComfyUI Tab
+            </Button>
+            <Button
+                icon={<span className='material-symbols-outlined'>open_in_full</span>}
+                appearance='ghost'
+                size='sm'
+                onClick={async (ev) => {
+                    ev.preventDefault()
+                    ev.stopPropagation()
+                    const prompt = graph?.json_workflow()
+                    if (prompt == null) return
+                    st.layout.FOCUS_OR_CREATE('ComfyUI', { litegraphJson: prompt }, 'full')
+                }}
+            >
+                open in ComfyUI FULL
+            </Button>
+        </div>
     )
 })

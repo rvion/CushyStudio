@@ -46,6 +46,7 @@ export type LiteGraphNodeOutput = {
     type: string // 'CONDITIONING'
     links: LiteGraphLinkID[]
     slot_index: LiteGraphSlotIndex
+    name: string
 }
 
 export type LiteGraphNode = {
@@ -145,6 +146,7 @@ const convertNodeToLiteGraphNode = (
             type: i.typeName,
             links: [], // empty links by default 🔴
             slot_index: asLiteGraphSlotIndex(ix),
+            name: i.nameInCushy,
         }),
     )
     return {

@@ -49,10 +49,13 @@ export class FormBuilder {
     groupOpt = <const T extends { [key: string]: W.Widget }>(p: W.Widget_groupOpt_opts<T>) =>
         new W.Widget_groupOpt(this, this.schema, p)
     group = <const T extends { [key: string]: W.Widget }>(p: W.Widget_group_opts<T>) => new W.Widget_group(this, this.schema, p)
-    selectOne = <const T extends { id: string; label?: string }>(p: W.Widget_selectOne_opts<T>) =>
-        new W.Widget_selectOne(this, this.schema, p)
-    selectMany = <const T extends { type: string }>(p: W.Widget_selectMany_opts<T>) =>
+
+    // List API--------------
+    selectOne = <const T extends W.BaseSelectEntry>(p: W.Widget_selectOne_opts<T>) => new W.Widget_selectOne(this, this.schema, p)
+    selectMany = <const T extends W.BaseSelectEntry>(p: W.Widget_selectMany_opts<T>) =>
         new W.Widget_selectMany(this, this.schema, p)
+
+    // Object API-------------
     choice = <const T extends { [key: string]: W.Widget }>(p: W.Widget_choice_opts<T>) =>
         new W.Widget_choice(this, this.schema, p)
     choices = <const T extends { [key: string]: W.Widget }>(p: W.Widget_choices_opts<T>) =>

@@ -195,7 +195,7 @@ export class ComfyWorkflowL {
             },
             height: (node) => {
                 // return PX * (node._primitives().length + 2)
-                return PX * node.$schema.inputs.length + 2
+                return PX * (node.$schema.inputs.length + 2)
             },
         })
         return cytoJSON

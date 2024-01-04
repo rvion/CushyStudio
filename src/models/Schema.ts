@@ -30,6 +30,7 @@ export type NodeInputExt = {
 export type NodeOutputExt = {
     typeName: string
     nameInCushy: string
+    nameInComfy: string
     isPrimitive: boolean
 }
 
@@ -204,7 +205,7 @@ export class ComfySchemaL {
                 // const nameInCushy = normalizeJSIdentifier(nameInComfy)
                 outputs.push({
                     typeName: slotTypeName,
-                    // nameInCushy: outputNameInComfy,
+                    nameInComfy: outputNameInComfy,
                     nameInCushy: outputNameInCushy,
                     isPrimitive: false,
                 })

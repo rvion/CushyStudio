@@ -263,6 +263,12 @@ export class Runtime<FIELDS extends WidgetDict = any> {
 
     /** a built-in prefab to quickly
      * add a PreviewImage node to your ComfyUI graph */
+    add_PreviewMask = (mask: _MASK) => {
+        return this.nodes.PreviewImage({ images: this.nodes.MaskToImage({ mask: mask }) })
+    }
+
+    /** a built-in prefab to quickly
+     * add a PreviewImage node to your ComfyUI graph */
     add_saveImage = (image: _IMAGE, prefix?: string) => {
         return this.nodes.SaveImage({ images: image, filename_prefix: prefix })
     }
@@ -283,7 +289,7 @@ export class Runtime<FIELDS extends WidgetDict = any> {
      */
     _EXECUTE = async (p: { formInstance: Widget_group<any> }): Promise<RuntimeExecutionResult> => {
         const start = Date.now()
-        const app = this.step.executable
+        const executable = this.step.executable
         const appFormInput = this.step.data.formResult
         const appFormSerial = this.step.data.formSerial.values_
         this.formResult = appFormInput
@@ -293,11 +299,11 @@ export class Runtime<FIELDS extends WidgetDict = any> {
         // console.log(`🔴 before: size=${this.graph.nodes.length}`)
         // console.log(`FORM RESULT: data=${JSON.stringify(this.step.data.formResult, null, 3)}`)
         try {
-            if (app == null) {
+            if (executable == null) {
                 console.log(`❌ action not found`)
                 return { type: 'error', error: 'action not found' }
             }
-            await app.run(this, appFormInput)
+            await executable.run(this, appFormInput)
             console.log(`🔴 after: size=${this.workflow.nodes.length}`)
             console.log('[✅] RUN SUCCESS')
             const duration = Date.now() - start

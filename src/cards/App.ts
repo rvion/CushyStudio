@@ -1,8 +1,7 @@
+import type { CSSProperties } from 'react'
+import type { FormBuilder } from 'src/controls/FormBuilder'
 import type { Runtime } from 'src/runtime/Runtime'
 import type { Widget } from '../controls/Widget'
-import type { FormBuilder } from 'src/controls/FormBuilder'
-import type { ReqResult } from 'src/controls/IWidget'
-import type { CSSProperties } from 'react'
 import { AppMetadata } from './AppManifest'
 
 // ACTIONS ============================================================
@@ -17,7 +16,6 @@ export type ActionTagMethod = (arg0: string) => string
 export type ActionTagMethodList = Array<{ key: string; method: ActionTagMethod }>
 export type ActionTags = (arg0: ActionTagMethodList) => void
 export type WidgetDict = { [key: string]: Widget }
-export type FormResult<Req extends Widget> = ReqResult<Req>
 export type AppRef<F> = { $Output: F; id: CushyAppID }
 
 export type $ExtractFormValueType<FIELDS extends WidgetDict> = { [k in keyof FIELDS]: FIELDS[k]['$Output'] }

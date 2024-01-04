@@ -7,7 +7,7 @@ import { run_prompt } from './_prefabs/prefab_prompt'
 import { ui_recursive } from './_prefabs/prefab_recursive'
 import { Ctx_sampler, run_sampler, ui_sampler } from './_prefabs/prefab_sampler'
 import { run_cnet, ui_cnet, Cnet_args } from './_prefabs/prefab_cnet'
-import { run_improveFace, ui_improveFace } from './_prefabs/prefab_detailer'
+import { run_improveFace_fromImage, run_improveFace_fromLatent, ui_improveFace } from './_prefabs/prefab_detailer'
 
 app({
     metadata: {
@@ -135,6 +135,12 @@ app({
             }
         }
 
+        // REFINE PASS BEFORE -------------
+        // if (ui.improveFaces) {
+        //     const image = run_improveFace_fromLatent(latent)
+        //     latent = graph.VAEEncode({ pixels: image, vae })
+        // }
+
         // SECOND PASS (a.k.a. highres fix) ---------------------------------------------------------
         if (ui.highResFix) {
             if (ui.highResFix.saveIntermediaryImage) {
@@ -161,11 +167,16 @@ app({
             ).latent
         }
 
+        // UPSCALE with upscale model ------------------------------------------------------------
+        // TODO
+
+        // ---------------------------------------------------------------------------------------
         let finalImage: _IMAGE = graph.VAEDecode({ samples: latent, vae })
 
-        // -------------
+        // REFINE PASS AFTER ---------------------------------------------------------------------
         if (ui.improveFaces) {
-            finalImage = run_improveFace(finalImage)
+            const image = run_improveFace_fromImage(finalImage)
+            // latent = graph.VAEEncode({ pixels: image, vae })
         }
 
         // REMOVE BACKGROUND ---------------------------------------------------------------------

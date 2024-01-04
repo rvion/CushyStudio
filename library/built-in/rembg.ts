@@ -4,14 +4,14 @@ app({
         // startImage
         startImage: form.image({ label: 'Start image', default: 'comfy', defaultComfy: { type:'ComfyImage', imageName:'example.png' }}),
         //
-        with_RemBG:           form.groupOpt({ labelPos: 'end', label: 'RemBG', items: () => ({}) }),
-        with_ABG:             form.groupOpt({ labelPos: 'end', label: 'ABG',   items: () => ({}) }),
-        with_isnetAnime:      form.bool    ({ labelPos: 'end', label: 'isnet-anime' }),
-        with_isnetGeneralUse: form.bool    ({ labelPos: 'end', label: 'isnet-general-use' }),
-        with_silueta:         form.bool    ({ labelPos: 'end', label: 'silueta' }),
-        with_u2net:           form.bool    ({ labelPos: 'end', label: 'u2net' }),
-        with_u2net_human_seg: form.bool    ({ labelPos: 'end', label: 'u2net_human_seg' }),
-        with_u2netp:          form.bool    ({ labelPos: 'end', label: 'u2netp' }),
+        with_RemBG:           form.groupOpt({ label: 'RemBG', items: () => ({}) }),
+        with_ABG:             form.groupOpt({ label: 'ABG',   items: () => ({}) }),
+        with_isnetAnime:      form.bool    ({ label: 'isnet-anime' }),
+        with_isnetGeneralUse: form.bool    ({ label: 'isnet-general-use' }),
+        with_silueta:         form.bool    ({ label: 'silueta' }),
+        with_u2net:           form.bool    ({ label: 'u2net' }),
+        with_u2net_human_seg: form.bool    ({ label: 'u2net_human_seg' }),
+        with_u2netp:          form.bool    ({ label: 'u2netp' }),
     }),
 
     run: async (flow, form) => {

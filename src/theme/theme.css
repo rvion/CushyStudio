@@ -88,19 +88,19 @@ legend {
 .FIELD .FIELD .FIELD {border-color: oklch(var(--p)/0.45);}
 .FIELD .FIELD .FIELD .FIELD {border-color: oklch(var(--p)/0.45);}
 .FIELD .FIELD .FIELD .FIELD .FIELD {border-color: oklch(var(--p)/0.45);} */
-.FIELD .FIELD:hover {
-    /* background: oklch(var(--p)/.01); */
-    border-left: 3px groove var(--fallback-p,oklch(var(--p)/0.5));
+.FIELD:hover {
+    background: oklch(var(--p)/.05);
+    border-left: 3px groove oklch(var(--s)/0.5);
     /* border-top-left-radius: .8rem; */
 }
 
 .FIELD {
-    /* border-top-left-radius: .8rem; */
-    border-bottom-left-radius: .5rem;
+    border-top-left-radius: .8rem;
+    border-bottom-left-radius: .8rem;
     position: relative;
     /* margin-bottom: 0.3rem; */
     padding-left: 0.5rem;
-    border-left: 3px groove var(--fallback-p,oklch(var(--p)/0.2));
+    border-left: 3px groove oklch(var(--p)/0.2);
     /* background: oklch(var(--p)/.05); */
     /* display: block; */
     /* margin-left: 2px; */
@@ -163,7 +163,9 @@ legend {
     border-left: 1px solid #333333;
 }
 
+
+._MD code,
 ._MD pre {
-    background-color: oklch(var(--b2));
+    background-color: oklch(var(--p)/.2);
     padding: .5rem;
 }

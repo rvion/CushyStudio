@@ -21,6 +21,7 @@ import { WidgetNumUI } from './WidgetNumUI'
 import { WidgetSeedUI } from './WidgetSeedUI'
 import { WidgetSelectImageUI } from './WidgetSelectImageUI'
 import { WidgetSelectOneUI } from './WidgetSelectOneUI'
+import { WidgetSelectManyUI } from './WidgetSelectManyUI'
 import { WigetSizeUI } from './WidgetSizeUI'
 import { WidgetStrUI } from './WidgetStrUI'
 import { WidgetDI } from './WidgetUI.DI'
@@ -32,7 +33,11 @@ import { WidgetOrbitUI } from './WidgetOrbitUI'
  * collect the responses and submit them to the back once completed and valid.
  */
 // prettier-ignore
-export const WidgetUI = observer(function WidgetUI_(p: { widget: R.Widget; focus?: boolean }) {
+export const WidgetUI = observer(function WidgetUI_(p: {
+    //
+    widget: R.Widget;
+    focus?: boolean
+}) {
     const widget = p.widget
     if (widget == null) return <>NULL</>
     if (widget instanceof R.Widget_seed)               return <WidgetSeedUI        widget={widget} />
@@ -63,7 +68,7 @@ export const WidgetUI = observer(function WidgetUI_(p: { widget: R.Widget; focus
     if (widget instanceof R.Widget_choices)            return <WidgetChoicesUI     widget={widget} />
     if (widget instanceof R.Widget_markdown)           return <WidgetMardownUI     widget={widget} />
     if (widget instanceof R.Widget_custom)             return <WidgetCustomUI      widget={widget} />
-    if (widget instanceof R.Widget_selectMany)         return <>TODO</>
+    if (widget instanceof R.Widget_selectMany)         return <WidgetSelectManyUI  widget={widget} />
     if (widget instanceof R.Widget_selectManyOrCustom) return <>TODO</>
     if (widget instanceof R.Widget_selectOneOrCustom)  return <>TODO</>
     if (widget instanceof R.Widget_orbit)              return <WidgetOrbitUI       widget={widget} />
