@@ -945,13 +945,13 @@ export class Widget_imageOpt implements IWidget<'imageOpt', Widget_imageOpt_opts
 }
 
 // 🅿️ selectOne ==============================================================================
-export type BaseSelectOneEntry = { id: string, label?: string }
-export type Widget_selectOne_opts <T extends BaseSelectOneEntry>  = WidgetInputFields<{ default?: T; choices: T[] | ((formRoot:Maybe<Widget_group<any>>) => T[]) }>
-export type Widget_selectOne_serial<T extends BaseSelectOneEntry> = Widget_selectOne_state<T>
-export type Widget_selectOne_state <T extends BaseSelectOneEntry>  = WidgetStateFields<{ type:'selectOne', query: string; val: T }>
-export type Widget_selectOne_output<T extends BaseSelectOneEntry> = T
+export type BaseSelectEntry = { id: string, label?: string }
+export type Widget_selectOne_opts <T extends BaseSelectEntry>  = WidgetInputFields<{ default?: T; choices: T[] | ((formRoot:Maybe<Widget_group<any>>) => T[]) }>
+export type Widget_selectOne_serial<T extends BaseSelectEntry> = Widget_selectOne_state<T>
+export type Widget_selectOne_state <T extends BaseSelectEntry>  = WidgetStateFields<{ type:'selectOne', query: string; val: T }>
+export type Widget_selectOne_output<T extends BaseSelectEntry> = T
 export interface Widget_selectOne<T>  extends WidgetTypeHelpers<'selectOne', Widget_selectOne_opts<T>, Widget_selectOne_serial<T>, Widget_selectOne_state<T>, Widget_selectOne_output<T>> {}
-export class Widget_selectOne<T extends BaseSelectOneEntry> implements IWidget<'selectOne', Widget_selectOne_opts<T>, Widget_selectOne_serial<T>, Widget_selectOne_state<T>, Widget_selectOne_output<T>> {
+export class Widget_selectOne<T extends BaseSelectEntry> implements IWidget<'selectOne', Widget_selectOne_opts<T>, Widget_selectOne_serial<T>, Widget_selectOne_state<T>, Widget_selectOne_output<T>> {
     isVerticalByDefault = false
     isCollapsible = false
     isOptional = false
@@ -988,9 +988,9 @@ export class Widget_selectOne<T extends BaseSelectOneEntry> implements IWidget<'
 }
 
 // 🅿️ selectOneOrCustom ==============================================================================
-export type Widget_selectOneOrCustom_opts  = WidgetInputFields<{ default?: string; choices: string[] }>
+export type Widget_selectOneOrCustom_opts  = WidgetInputFields<{ default?: BaseSelectEntry; choices: BaseSelectEntry[] }>
 export type Widget_selectOneOrCustom_serial = Widget_selectOneOrCustom_state
-export type Widget_selectOneOrCustom_state  = WidgetStateFields<{ type:'selectOneOrCustom', query: string; val: string }>
+export type Widget_selectOneOrCustom_state  = WidgetStateFields<{ type:'selectOneOrCustom', query: string; val: BaseSelectEntry }>
 export type Widget_selectOneOrCustom_output = string
 export interface Widget_selectOneOrCustom extends WidgetTypeHelpers<'selectOneOrCustom', Widget_selectOneOrCustom_opts, Widget_selectOneOrCustom_serial, Widget_selectOneOrCustom_state, Widget_selectOneOrCustom_output > {}
 export class Widget_selectOneOrCustom implements IWidget<'selectOneOrCustom', Widget_selectOneOrCustom_opts, Widget_selectOneOrCustom_serial, Widget_selectOneOrCustom_state, Widget_selectOneOrCustom_output > {
@@ -1017,22 +1017,28 @@ export class Widget_selectOneOrCustom implements IWidget<'selectOneOrCustom', Wi
         makeAutoObservable(this)
     }
     get serial(): Widget_selectOneOrCustom_serial { return this.state }
-    get result(): Widget_selectOneOrCustom_output { return this.state.val }
+    get result(): Widget_selectOneOrCustom_output { return this.state.val.id }
 }
 
 // 🅿️ selectMany ==============================================================================
-export type Widget_selectMany_opts<T extends { type: string }>  = WidgetInputFields<{ default?: T[]; choices: T[] }>
-export type Widget_selectMany_serial<T extends { type: string }> = WidgetStateFields<{ type: 'selectMany', query: string; values_: string[] }>
-export type Widget_selectMany_state<T extends { type: string }>  = WidgetStateFields<{ type: 'selectMany', query: string; values: T[] }>
-export type Widget_selectMany_output<T extends { type: string }> = T[]
-export interface Widget_selectMany<T extends { type: string }> extends WidgetTypeHelpers<'selectMany', Widget_selectMany_opts<T>, Widget_selectMany_serial<T>, Widget_selectMany_state<T>, Widget_selectMany_output<T>> {}
-export class Widget_selectMany<T extends { type: string }> implements IWidget<'selectMany', Widget_selectMany_opts<T>, Widget_selectMany_serial<T>, Widget_selectMany_state<T>, Widget_selectMany_output<T>> {
+export type Widget_selectMany_opts<T extends BaseSelectEntry>  = WidgetInputFields<{ default?: T[]; choices: T[] | ((formRoot:Maybe<Widget_group<any>>) => T[]) }>
+export type Widget_selectMany_serial<T extends BaseSelectEntry> = Widget_selectMany_state<T>
+export type Widget_selectMany_state<T extends BaseSelectEntry>  = WidgetStateFields<{ type: 'selectMany', query: string; values: T[] }>
+export type Widget_selectMany_output<T extends BaseSelectEntry> = T[]
+export interface Widget_selectMany<T extends BaseSelectEntry> extends WidgetTypeHelpers<'selectMany', Widget_selectMany_opts<T>, Widget_selectMany_serial<T>, Widget_selectMany_state<T>, Widget_selectMany_output<T>> {}
+export class Widget_selectMany<T extends BaseSelectEntry> implements IWidget<'selectMany', Widget_selectMany_opts<T>, Widget_selectMany_serial<T>, Widget_selectMany_state<T>, Widget_selectMany_output<T>> {
     isVerticalByDefault = false
     isCollapsible = false
     isOptional = false
     id: string
     type: 'selectMany' = 'selectMany'
     state: Widget_selectMany_state<T>
+    get choices():T[]{
+        const _choices = this.input.choices
+        return typeof _choices === 'function' //
+            ? _choices(this.builder._ROOT)
+            : _choices
+    }
     constructor(
         public builder: FormBuilder,
         public schema: ComfySchemaL,
@@ -1041,26 +1047,42 @@ export class Widget_selectMany<T extends { type: string }> implements IWidget<'s
     ) {
         this.id = serial?.id ?? nanoid()
         if (serial) {
-            const values = serial.values_.map((v) => input.choices.find((c) => c.type === v)!).filter((v) => v != null)
             this.state = {
                 type: 'selectMany',
                 collapsed: serial.collapsed,
                 id: this.id,
                 query: serial.query,
-                values: values
+                values: serial.values,
+                active: serial.active,
             }
         } else {
             this.state = {
                 type: 'selectMany',
                 collapsed: input.startCollapsed,
                 id: this.id,
+                active: true,
                 query: '', values: input.default ?? [], }
         }
         makeAutoObservable(this)
     }
+
+    removeItem = (item: T): void => {
+        if (this.state.values==null) {this.state.values = []; return} // just in case
+        this.state.values = this.state.values.filter((v) => v.id !== item.id) // filter just in case of duplicate
+    }
+    addItem = (item: T): void => {
+        if (this.state.values==null) {this.state.values = [item]; return} // just in case
+        const i = this.state.values.indexOf(item)
+        if (i < 0) this.state.values.push(item)
+    }
+    toggleItem = (item: T): void => {
+        if (this.state.values==null) {this.state.values = [item]; return} // just in case
+        const i = this.state.values.indexOf(item)
+        if (i < 0) this.state.values.push(item)
+        else this.state.values = this.state.values.filter((v) => v.id !== item.id) // filter just in case of duplicate
+    }
     get serial(): Widget_selectMany_serial<T> {
-        const values_ = this.state.values.map((v) => v.type)
-        return { type: 'selectMany', id: this.id, query: this.state.query, values_ }
+        return this.state //{ type: 'selectMany', id: this.id, query: this.state.query, values: values_ }
     }
     get result(): Widget_selectMany_output<T> {
         return this.state.values

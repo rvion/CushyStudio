@@ -163,7 +163,9 @@ legend {
     border-left: 1px solid #333333;
 }
 
+
+._MD code,
 ._MD pre {
-    background-color: oklch(var(--b2));
+    background-color: oklch(var(--p)/.2);
     padding: .5rem;
 }
