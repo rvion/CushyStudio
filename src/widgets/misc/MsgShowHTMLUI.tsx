@@ -1,24 +1,27 @@
 import { observer } from 'mobx-react-lite'
-import { useLayoutEffect, useMemo } from 'react'
+import { MutableRefObject, useEffect, useMemo } from 'react'
 
 // @ts-ignore
+import { observable } from 'mobx'
 import { createPortal } from 'react-dom'
-import { renderMinimap } from 'src/widgets/minimap/Minimap'
 import { ComfyWorkflowL } from 'src/models/ComfyWorkflow'
+import { renderMinimap } from 'src/widgets/minimap/Minimap'
+
+export const useObservableRef = <T extends any>() => useMemo(() => observable({ current: null } as MutableRefObject<T>), [])
 
 export const GraphPreviewUI = observer(function GraphPreviewUI_(p: { graph: ComfyWorkflowL }) {
     const graph = p.graph
-    const elMap = document.querySelector('#map')
     const cyto = graph.json_cyto_small
-
+    const canvasRef = useObservableRef<HTMLCanvasElement>()
+    const elMap = canvasRef.current
     // 1. trigger cyto update (🔶 this is asynchronous)
     // useMemo(() => graph.updateCyto(), [graph])
 
     // 2. once cyto is done
-    useLayoutEffect(() => {
-        if (graph == null) return // ❌ console.log('❌ no graph yet')
-        if (elMap == null) return // ❌ console.log('❌ no elMap yet')
-        if (cyto == null) return // ❌ console.log('❌ no cyto yet')
+    useEffect(() => {
+        if (graph == null) return console.log('❌ no graph yet')
+        if (elMap == null) return console.log('❌ no elMap yet')
+        if (cyto == null) return console.log('❌ no cyto yet')
         renderMinimap(document.querySelector('#map')!, {
             viewport: domNode,
             styles: {
@@ -32,7 +35,7 @@ export const GraphPreviewUI = observer(function GraphPreviewUI_(p: { graph: Comf
             drag: 'rgba(0,0,0,0.30)',
             // interval: 2000,
         })
-    }, [graph, elMap, cyto])
+    }, [graph, canvasRef.current, cyto])
 
     const domNode = document.getElementById('hovered-graph')
     if (domNode == null) return '❌ domNode is null'
@@ -86,10 +89,11 @@ export const GraphPreviewUI = observer(function GraphPreviewUI_(p: { graph: Comf
     return (
         <div>
             <canvas
+                ref={canvasRef}
                 onMouseEnter={() => (domNode.style.opacity = '1')}
                 onMouseLeave={() => (domNode.style.opacity = '0')}
-                id='map'
                 style={{ width: '400px', height: '400px', zIndex: 1000 }}
+                id='map'
             ></canvas>
             {createPortal(fullGraph, domNode)}
         </div>
