@@ -3,7 +3,6 @@ import { observer } from 'mobx-react-lite'
 import { cwd } from 'process'
 import { useEffect } from 'react'
 import { showItemInFolder } from 'src/app/layout/openExternal'
-import { AppIllustrationUI } from 'src/cards/fancycard/AppIllustrationUI'
 import { CushyAppL } from 'src/models/CushyApp'
 import { DraftL } from 'src/models/Draft'
 import { Dropdown, MenuItem } from 'src/rsuite/Dropdown'
@@ -417,7 +416,26 @@ export const DraftHeaderUI = observer(function DraftHeaderUI_(p: {
                         ></input>
                         <RunOrAutorunUI tw='flex-shrink-0' draft={draft} />
                     </div>
-                    <DraftMenuUI tw='w-full' draft={draft} title={app.name} />
+                    <div tw='flex'>
+                        <DraftMenuUI tw='w-full' draft={draft} title={app.name} />
+
+                        <div
+                            tw='btn btn-square btn-sm join-item'
+                            // active={app.isFavorite}
+                            onClick={draft.collapseTopLevelFormEntries}
+                        >
+                            <span className='material-symbols-outlined'>unfold_less</span>
+                            {/* Collapse top level entries */}
+                        </div>
+                        <div
+                            tw='btn btn-square btn-sm join-item'
+                            // active={app.isFavorite}
+                            onClick={draft.expandTopLevelFormEntries}
+                        >
+                            <span className='material-symbols-outlined'>unfold_more</span>
+                            {/* Expand top level entries */}
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
