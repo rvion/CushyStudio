@@ -72,7 +72,14 @@ export const ui_subform_Normal_bae = () => {
 }
 
 // 🅿️ Normal RUN ===================================================
-export const run_cnet_Normal = async (Normal: OutputFor<typeof ui_subform_Normal>, cnet_args: Cnet_args, image: IMAGE) => {
+export const run_cnet_Normal = (
+    Normal: OutputFor<typeof ui_subform_Normal>,
+    cnet_args: Cnet_args,
+    image: IMAGE,
+): {
+    image: IMAGE
+    cnet_name: Enum_ControlNetLoader_control_net_name
+} => {
     const run = getCurrentRun()
     const graph = run.nodes
     const cnet_name = Normal.cnet_model_name

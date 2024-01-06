@@ -82,7 +82,14 @@ export const ui_subform_Lineart_Manga = () => {
 }
 
 // 🅿️ Lineart RUN ===================================================
-export const run_cnet_Lineart = async (Lineart: OutputFor<typeof ui_subform_Lineart>, cnet_args: Cnet_args, image: IMAGE) => {
+export const run_cnet_Lineart = (
+    Lineart: OutputFor<typeof ui_subform_Lineart>,
+    cnet_args: Cnet_args,
+    image: IMAGE,
+): {
+    image: IMAGE
+    cnet_name: Enum_ControlNetLoader_control_net_name
+} => {
     const run = getCurrentRun()
     const graph = run.nodes
     const cnet_name = Lineart.cnet_model_name

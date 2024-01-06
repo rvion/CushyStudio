@@ -79,11 +79,13 @@ export const ui_subform_IPAdapter = () => {
 }
 
 // 🅿️ IPAdapter RUN ===================================================
-export const run_cnet_IPAdapter = async (
+export const run_cnet_IPAdapter = (
     IPAdapter: OutputFor<typeof ui_subform_IPAdapter>,
     cnet_args: Cnet_args,
     image: _IMAGE,
-) => {
+): {
+    ip_adapted_model: _MODEL
+} => {
     const run = getCurrentRun()
     const graph = run.nodes
     const ip = IPAdapter

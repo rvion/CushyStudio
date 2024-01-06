@@ -83,7 +83,14 @@ export const ui_subform_Scribble_XDoG_Lines = () => {
 }
 
 // 🅿️ Scribble RUN ===================================================
-export const run_cnet_Scribble = async (Scribble: OutputFor<typeof ui_subform_Scribble>, cnet_args: Cnet_args, image: IMAGE) => {
+export const run_cnet_Scribble = (
+    Scribble: OutputFor<typeof ui_subform_Scribble>,
+    cnet_args: Cnet_args,
+    image: IMAGE,
+): {
+    image: IMAGE
+    cnet_name: Enum_ControlNetLoader_control_net_name
+} => {
     const run = getCurrentRun()
     const graph = run.nodes
     const cnet_name = Scribble.cnet_model_name
