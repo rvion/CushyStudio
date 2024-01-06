@@ -79,3 +79,4 @@ release/main.js
 .cushy
 
 .env
+node-*.tar.gz
