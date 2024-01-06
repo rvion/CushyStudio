@@ -11,7 +11,7 @@ import { readableStringify } from 'src/utils/formatters/stringifyReadable'
 import { asRelativePath } from 'src/utils/fs/pathUtils'
 import { toastError, toastSuccess } from 'src/utils/misc/toasts'
 import { downloadFile } from 'src/utils/fs/downloadFile'
-import { knownCustomNodes, KnownCustomNodes } from 'src/wiki/custom-node-list'
+import { knownCustomNodes, KnownCustomNodes } from 'src/wiki/customNodeList'
 export interface HostL extends LiveInstance<HostT, HostL> {}
 
 export class HostL {

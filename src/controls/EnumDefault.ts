@@ -1,5 +1,5 @@
 import type { EnumValue } from 'src/models/Schema'
-import { knownModels, type KnownModelName, type ModelInfo } from 'src/wiki/model-list'
+import { knownModels, type KnownModelName, type ModelInfo } from 'src/wiki/modelList'
 
 export const extractDefaultValue = <T extends KnownEnumNames>(def: EnumValue | EnumDefault): Maybe<EnumValue> => {
     if (def == null) return null

@@ -1,5 +1,5 @@
-import type { KnownCustomNodes } from 'src/wiki/custom-node-list'
-import { KnownModelName } from 'src/wiki/model-list'
+import type { KnownCustomNodes } from 'src/wiki/customNodeList'
+import { KnownModelName } from 'src/wiki/modelList'
 
 export type WidgetTypeHelpers<T, I, X extends { type: T }, S, O> = {
     $Input: I

@@ -14,7 +14,7 @@ type CustomNodeFile = {
     custom_nodes: CustomNodesInfo[]
 }
 
-const knownCustomNodesFile: CustomNodeFile = JSON.parse(readFileSync('src/wiki/custom-node-list_.json', 'utf8'))
+const knownCustomNodesFile: CustomNodeFile = JSON.parse(readFileSync('src/wiki/custom-node-list.json', 'utf8'))
 const knownCustomNodeList = knownCustomNodesFile.custom_nodes
 
 export const knownCustomNodes = new Map<KnownCustomNodes, CustomNodesInfo>()
