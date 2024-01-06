@@ -1,3 +1,3 @@
 set -eu
 rm -rf node_modules
-rm -rf .cushy/store
+rm -rf .cushy
