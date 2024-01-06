@@ -14,9 +14,9 @@ ECHO deleting node_modules folder...
 rd /s /q node_modules
 
 ECHO [===================================================]
-ECHO deleting recursively .cushy\store (local pnpm cache)...
+ECHO deleting recursively .cushy
 
-rd /s /q .cushy\store
+rd /s /q .cushy
 
 ECHO SUCCESS
 pause

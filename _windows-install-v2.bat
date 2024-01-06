@@ -48,8 +48,8 @@ IF EXIST "%EXTRACT_DIR%\bin\node.exe" (
 ECHO [===================================================]
 ECHO Installing dependencies
 
-SET NPM_BIN_PATH=%EXTRACT_DIR%\bin\npm
-SET NODE_BIN_PATH=%EXTRACT_DIR%\bin\node
+SET NPM_BIN_PATH=%EXTRACT_DIR%\npm
+SET NODE_BIN_PATH=%EXTRACT_DIR%\node
 ECHO NPM binary path: %NPM_BIN_PATH%
 ECHO Node binary path: %NODE_BIN_PATH%
 
