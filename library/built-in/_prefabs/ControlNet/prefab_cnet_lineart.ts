@@ -7,6 +7,7 @@ export const ui_subform_Lineart = () => {
     const form = getCurrentForm()
     return form.group({
         label: 'Lineart',
+        customNodes: 'ComfyUI-Advanced-ControlNet',
         items: () => ({
             ...cnet_ui_common(form),
             preprocessor: ui_subform_Lineart_Preprocessor(),
@@ -27,17 +28,24 @@ export const ui_subform_Lineart_Preprocessor = () => {
     const form = getCurrentForm()
     return form.groupOpt({
         label: 'Lineart Preprocessor',
+        default: true,
         items: () => ({
-            type: form.choice({
-                label: 'Type',
+            advanced: form.groupOpt({
+                label: 'Advanced Preprocessor Settings',
                 items: () => ({
-                    Realistic: ui_subform_Lineart_realistic(),
-                    Anime: ui_subform_Lineart_Anime(),
-                    Manga: ui_subform_Lineart_Manga(),
+                    type: form.choice({
+                        label: 'Type',
+                        default: 'Realistic',
+                        items: () => ({
+                            Realistic: ui_subform_Lineart_realistic(),
+                            Anime: ui_subform_Lineart_Anime(),
+                            Manga: ui_subform_Lineart_Manga(),
+                        }),
+                    }),
+                    // TODO: Add support for auto-modifying the resolution based on other form selections
+                    // TODO: Add support for auto-cropping
                 }),
             }),
-            // TODO: Add support for auto-modifying the resolution based on other form selections
-            // TODO: Add support for auto-cropping
         }),
     })
 }
@@ -74,47 +82,46 @@ export const ui_subform_Lineart_Manga = () => {
 }
 
 // 🅿️ Lineart RUN ===================================================
-export const run_cnet_Lineart = async (Lineart: OutputFor<typeof ui_subform_Lineart>, cnet_args: Cnet_args) => {
+export const run_cnet_Lineart = async (Lineart: OutputFor<typeof ui_subform_Lineart>, cnet_args: Cnet_args, image: IMAGE) => {
     const run = getCurrentRun()
     const graph = run.nodes
-    let image: IMAGE
     const cnet_name = Lineart.cnet_model_name
     //crop the image to the right size
     //todo: make these editable
     image = graph.ImageScale({
-        image: (await run.loadImageAnswer(Lineart.image))._IMAGE,
+        image,
         width: cnet_args.width ?? 512,
         height: cnet_args.height ?? 512,
-        upscale_method: Lineart.upscale_method,
-        crop: Lineart.crop,
+        upscale_method: Lineart.advanced?.upscale_method ?? 'lanczos',
+        crop: Lineart.advanced?.crop ?? 'center',
     })._IMAGE
 
     // PREPROCESSOR - Lineart ===========================================================
     if (Lineart.preprocessor) {
-        if (Lineart.preprocessor.type.Realistic) {
-            const Realistic = Lineart.preprocessor.type.Realistic
-            image = graph.LineArtPreprocessor({
-                image: image,
-                resolution: Realistic.resolution,
-                coarse: Realistic.coarse ? 'enable' : 'disable',
-            })._IMAGE
-            if (Realistic.saveProcessedImage) graph.SaveImage({ images: image, filename_prefix: 'cnet\\Lineart\\realistic' })
-            else graph.PreviewImage({ images: image })
-        } else if (Lineart.preprocessor.type.Anime) {
-            const anime = Lineart.preprocessor.type.Anime
+        if (Lineart.preprocessor.advanced?.type.Anime) {
+            const anime = Lineart.preprocessor.advanced.type.Anime
             image = graph.AnimeLineArtPreprocessor({
                 image: image,
                 resolution: anime.resolution,
             })._IMAGE
             if (anime.saveProcessedImage) graph.SaveImage({ images: image, filename_prefix: 'cnet\\Lineart\\anime' })
             else graph.PreviewImage({ images: image })
-        } else if (Lineart.preprocessor.type.Manga) {
-            const manga = Lineart.preprocessor.type.Manga
+        } else if (Lineart.preprocessor.advanced?.type.Manga) {
+            const manga = Lineart.preprocessor.advanced.type.Manga
             image = graph.Manga2Anime$_LineArt$_Preprocessor({
                 image: image,
                 resolution: manga.resolution,
             })._IMAGE
             if (manga.saveProcessedImage) graph.SaveImage({ images: image, filename_prefix: 'cnet\\Lineart\\manga' })
+            else graph.PreviewImage({ images: image })
+        } else {
+            const Realistic = Lineart.preprocessor.advanced?.type.Realistic
+            image = graph.LineArtPreprocessor({
+                image: image,
+                resolution: Realistic?.resolution ?? 512,
+                coarse: !Realistic || Realistic?.coarse ? 'enable' : 'disable',
+            })._IMAGE
+            if (Realistic?.saveProcessedImage) graph.SaveImage({ images: image, filename_prefix: 'cnet\\Lineart\\realistic' })
             else graph.PreviewImage({ images: image })
         }
     }

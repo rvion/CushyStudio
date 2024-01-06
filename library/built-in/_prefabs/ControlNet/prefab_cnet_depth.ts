@@ -33,17 +33,24 @@ export const ui_subform_Depth_Preprocessor = () => {
     const form = getCurrentForm()
     return form.groupOpt({
         label: 'Depth Preprocessor',
+        default: true,
         items: () => ({
-            type: form.choice({
-                label: 'Type',
+            advanced: form.groupOpt({
+                label: 'Advanced Preprocessor Settings',
                 items: () => ({
-                    MiDaS: ui_subform_Depth_Midas(),
-                    LeReS: ui_subform_Depth_LeReS(),
-                    Zoe: ui_subform_Depth_Zoe(),
+                    type: form.choice({
+                        label: 'Type',
+                        default: 'MiDaS',
+                        items: () => ({
+                            MiDaS: ui_subform_Depth_Midas(),
+                            LeReS: ui_subform_Depth_LeReS(),
+                            Zoe: ui_subform_Depth_Zoe(),
+                        }),
+                    }),
+                    // TODO: Add support for auto-modifying the resolution based on other form selections
+                    // TODO: Add support for auto-cropping
                 }),
             }),
-            // TODO: Add support for auto-modifying the resolution based on other form selections
-            // TODO: Add support for auto-cropping
         }),
     })
 }
@@ -84,25 +91,24 @@ export const ui_subform_Depth_Zoe = () => {
 }
 
 // 🅿️ Depth RUN ===================================================
-export const run_cnet_Depth = async (Depth: OutputFor<typeof ui_subform_Depth>, cnet_args: Cnet_args) => {
+export const run_cnet_Depth = async (Depth: OutputFor<typeof ui_subform_Depth>, cnet_args: Cnet_args, image: IMAGE) => {
     const run = getCurrentRun()
     const graph = run.nodes
-    let image: IMAGE
     const cnet_name = Depth.cnet_model_name
     //crop the image to the right size
     //todo: make these editable
     image = graph.ImageScale({
-        image: (await run.loadImageAnswer(Depth.image))._IMAGE,
+        image,
         width: cnet_args.width ?? 512,
         height: cnet_args.height ?? 512,
-        upscale_method: Depth.upscale_method,
-        crop: Depth.crop,
+        upscale_method: Depth.advanced?.upscale_method ?? 'lanczos',
+        crop: Depth.advanced?.crop ?? 'center',
     })._IMAGE
 
     // PREPROCESSOR - Depth ===========================================================
     if (Depth.preprocessor) {
-        if (Depth.preprocessor.type.LeReS) {
-            const leres = Depth.preprocessor.type.LeReS
+        if (Depth.preprocessor.advanced?.type.LeReS) {
+            const leres = Depth.preprocessor.advanced.type.LeReS
             image = graph.LeReS$7DepthMapPreprocessor({
                 image: image,
                 resolution: leres.resolution,
@@ -112,23 +118,23 @@ export const run_cnet_Depth = async (Depth: OutputFor<typeof ui_subform_Depth>, 
             })._IMAGE
             if (leres.saveProcessedImage) graph.SaveImage({ images: image, filename_prefix: 'cnet\\Depth\\leres' })
             else graph.PreviewImage({ images: image })
-        } else if (Depth.preprocessor.type.MiDaS) {
-            const midas = Depth.preprocessor.type.MiDaS
-            image = graph.MiDaS$7DepthMapPreprocessor({
-                image: image,
-                resolution: midas.resolution,
-                a: midas.a_value,
-                bg_threshold: midas.bg_threshold,
-            })._IMAGE
-            if (midas.saveProcessedImage) graph.SaveImage({ images: image, filename_prefix: 'cnet\\Depth\\midas' })
-            else graph.PreviewImage({ images: image })
-        } else if (Depth.preprocessor.type.Zoe) {
-            const zoe = Depth.preprocessor.type.Zoe
+        } else if (Depth.preprocessor.advanced?.type.Zoe) {
+            const zoe = Depth.preprocessor.advanced.type.Zoe
             image = graph.Zoe$7DepthMapPreprocessor({
                 image: image,
                 resolution: zoe.resolution,
             })._IMAGE
             if (zoe.saveProcessedImage) graph.SaveImage({ images: image, filename_prefix: 'cnet\\Depth\\zoe' })
+            else graph.PreviewImage({ images: image })
+        } else {
+            const midas = Depth.preprocessor?.advanced?.type.MiDaS
+            image = graph.MiDaS$7DepthMapPreprocessor({
+                image: image,
+                resolution: midas?.resolution ?? 512,
+                a: midas?.a_value ?? 6.28,
+                bg_threshold: midas?.bg_threshold ?? 0.1,
+            })._IMAGE
+            if (midas?.saveProcessedImage) graph.SaveImage({ images: image, filename_prefix: 'cnet\\Depth\\midas' })
             else graph.PreviewImage({ images: image })
         }
     }

@@ -23,18 +23,29 @@ export const ui_cnet = () => {
             controlNetList: form.list({
                 label: false,
                 element: () =>
-                    form.choice({
-                        label: 'Pick=>',
+                    form.group({
+                        label: 'Controlnet Image',
                         items: () => ({
-                            OpenPose: ui_subform_OpenPose(),
-                            Canny: ui_subform_Canny(),
-                            Depth: ui_subform_Depth(),
-                            Normal: ui_subform_Normal(),
-                            Tile: ui_subform_Tile(),
-                            IPAdapter: ui_subform_IPAdapter(),
-                            Scribble: ui_subform_Scribble(),
-                            Lineart: ui_subform_Lineart(),
-                            SoftEdge: ui_subform_SoftEdge(),
+                            image: form.image({
+                                default: 'cushy',
+                                group: 'Cnet_Image',
+                                tooltip:
+                                    'There is currently a bug with multiple controlnets where an image wont allow drop except for the first controlnet in the list. If you add multiple controlnets, then reload using Ctrl+R, it should allow you to drop an image on any of the controlnets.',
+                            }),
+                            cnets: form.choices({
+                                label: 'Pick Cnets=>',
+                                items: () => ({
+                                    OpenPose: ui_subform_OpenPose(),
+                                    Canny: ui_subform_Canny(),
+                                    Depth: ui_subform_Depth(),
+                                    Normal: ui_subform_Normal(),
+                                    Tile: ui_subform_Tile(),
+                                    IPAdapter: ui_subform_IPAdapter(),
+                                    Scribble: ui_subform_Scribble(),
+                                    Lineart: ui_subform_Lineart(),
+                                    SoftEdge: ui_subform_SoftEdge(),
+                                }),
+                            }),
                         }),
                     }),
             }),
@@ -44,26 +55,24 @@ export const ui_cnet = () => {
 
 // 🅿️ CNET COMMON FORM ===================================================
 export const cnet_ui_common = (form: FormBuilder) => ({
-    image: form.image({
-        default: 'cushy',
-        group: 'Cnet_Image',
-        tooltip:
-            'There is currently a bug with multiple controlnets where an image wont allow drop except for the first controlnet in the list. If you add multiple controlnets, then reload using Ctrl+R, it should allow you to drop an image on any of the controlnets.',
-    }),
     strength: form.float({ default: 1, min: 0, max: 2, step: 0.1 }),
-    startAtStepPercent: form.float({ default: 0, min: 0, max: 1, step: 0.1 }),
-    endAtStepPercent: form.float({ default: 1, min: 0, max: 1, step: 0.1 }),
-    crop: form.enum({
-        enumName: 'Enum_LatentUpscale_crop',
-        default: 'disabled',
-        group: 'ControlNet',
-        label: 'Image Prep Crop mode',
-    }),
-    upscale_method: form.enum({
-        enumName: 'Enum_ImageScale_upscale_method',
-        default: 'lanczos',
-        group: 'ControlNet',
-        label: 'Scale method',
+    advanced: form.groupOpt({
+        items: () => ({
+            startAtStepPercent: form.float({ default: 0, min: 0, max: 1, step: 0.1 }),
+            endAtStepPercent: form.float({ default: 1, min: 0, max: 1, step: 0.1 }),
+            crop: form.enum({
+                enumName: 'Enum_LatentUpscale_crop',
+                default: 'disabled',
+                group: 'ControlNet',
+                label: 'Image Prep Crop mode',
+            }),
+            upscale_method: form.enum({
+                enumName: 'Enum_ImageScale_upscale_method',
+                default: 'lanczos',
+                group: 'ControlNet',
+                label: 'Scale method',
+            }),
+        }),
     }),
 })
 
@@ -81,6 +90,14 @@ export type Cnet_args = {
     ckptPos: _MODEL
 }
 
+export type Cnet_return = {
+    cnet_positive: _CONDITIONING
+    cnet_negative: _CONDITIONING
+    post_cnet_positive: _CONDITIONING
+    post_cnet_negative: _CONDITIONING
+    ckpt_return: _MODEL
+}
+
 export const run_cnet = async (opts: OutputFor<typeof ui_cnet>, cnet_args: Cnet_args) => {
     const run = getCurrentRun()
     const graph = run.nodes
@@ -93,60 +110,60 @@ export const run_cnet = async (opts: OutputFor<typeof ui_cnet>, cnet_args: Cnet_
     let cnet_negative = cnet_args.negative
 
     if (cnetList) {
-        for (const cnet of cnetList) {
-            let image: IMAGE
+        for (const cnetImage of cnetList) {
+            let image: IMAGE = (await run.loadImageAnswer(cnetImage.image))._IMAGE
             let cnet_name: Enum_ControlNetLoader_control_net_name
 
-            if (cnet.IPAdapter) {
+            if (cnetImage.cnets.IPAdapter) {
                 // IPAdapter APPLY ===========================================================
-                const ip_adapter_result = run_cnet_IPAdapter(cnet.IPAdapter, cnet_args)
+                const ip_adapter_result = run_cnet_IPAdapter(cnetImage.cnets.IPAdapter, cnet_args, image)
                 ckpt_return = (await ip_adapter_result).ip_adapted_model
             } else {
                 // CANNY ===========================================================
-                if (cnet.Canny) {
-                    const cnet_return_canny = await run_cnet_canny(cnet.Canny, cnet_args)
+                if (cnetImage.cnets.Canny) {
+                    const cnet_return_canny = await run_cnet_canny(cnetImage.cnets.Canny, cnet_args, image)
                     image = cnet_return_canny.image
                     cnet_name = cnet_return_canny.cnet_name
                 }
                 // POSE ===========================================================
-                else if (cnet.OpenPose) {
-                    const cnet_return_openPose = await run_cnet_openPose(cnet.OpenPose, cnet_args)
+                else if (cnetImage.cnets.OpenPose) {
+                    const cnet_return_openPose = await run_cnet_openPose(cnetImage.cnets.OpenPose, cnet_args, image)
                     image = cnet_return_openPose.image
                     cnet_name = cnet_return_openPose.cnet_name
                 }
                 // DEPTH ===========================================================
-                else if (cnet.Depth) {
-                    const cnet_return_depth = await run_cnet_Depth(cnet.Depth, cnet_args)
+                else if (cnetImage.cnets.Depth) {
+                    const cnet_return_depth = await run_cnet_Depth(cnetImage.cnets.Depth, cnet_args, image)
                     image = cnet_return_depth.image
                     cnet_name = cnet_return_depth.cnet_name
                 }
                 // Normal ===========================================================
-                else if (cnet.Normal) {
-                    const cnet_return_normal = await run_cnet_Normal(cnet.Normal, cnet_args)
+                else if (cnetImage.cnets.Normal) {
+                    const cnet_return_normal = await run_cnet_Normal(cnetImage.cnets.Normal, cnet_args, image)
                     image = cnet_return_normal.image
                     cnet_name = cnet_return_normal.cnet_name
                 }
                 // Tile ===========================================================
-                else if (cnet.Tile) {
-                    const cnet_return_tile = await run_cnet_Tile(cnet.Tile, cnet_args)
+                else if (cnetImage.cnets.Tile) {
+                    const cnet_return_tile = await run_cnet_Tile(cnetImage.cnets.Tile, cnet_args, image)
                     image = cnet_return_tile.image
                     cnet_name = cnet_return_tile.cnet_name
                 }
                 // Scribble ===========================================================
-                else if (cnet.Scribble) {
-                    const cnet_return_scribble = await run_cnet_Scribble(cnet.Scribble, cnet_args)
+                else if (cnetImage.cnets.Scribble) {
+                    const cnet_return_scribble = await run_cnet_Scribble(cnetImage.cnets.Scribble, cnet_args, image)
                     image = cnet_return_scribble.image
                     cnet_name = cnet_return_scribble.cnet_name
                 }
                 // Lineart ===========================================================
-                else if (cnet.Lineart) {
-                    const cnet_return_lineart = await run_cnet_Lineart(cnet.Lineart, cnet_args)
+                else if (cnetImage.cnets.Lineart) {
+                    const cnet_return_lineart = await run_cnet_Lineart(cnetImage.cnets.Lineart, cnet_args, image)
                     image = cnet_return_lineart.image
                     cnet_name = cnet_return_lineart.cnet_name
                 }
                 // SoftEdge ===========================================================
-                else if (cnet.SoftEdge) {
-                    const cnet_return_softedge = await run_cnet_SoftEdge(cnet.SoftEdge, cnet_args)
+                else if (cnetImage.cnets.SoftEdge) {
+                    const cnet_return_softedge = await run_cnet_SoftEdge(cnetImage.cnets.SoftEdge, cnet_args, image)
                     image = cnet_return_softedge.image
                     cnet_name = cnet_return_softedge.cnet_name
                 } else {
@@ -168,5 +185,11 @@ export const run_cnet = async (opts: OutputFor<typeof ui_cnet>, cnet_args: Cnet_
         }
     }
 
-    return { cnet_positive, cnet_negative, ckpt_return }
+    return {
+        cnet_positive,
+        cnet_negative,
+        post_cnet_positive: opts?.useControlnetConditioningForUpscalePassIfEnabled ? cnet_positive : cnet_args.positive, //generally upscales are cleaner if not controlled
+        post_cnet_negative: opts?.useControlnetConditioningForUpscalePassIfEnabled ? cnet_negative : cnet_args.negative,
+        ckpt_return,
+    }
 }

@@ -8,15 +8,36 @@ export const ui_subform_IPAdapter = () => {
         label: 'IPAdapter',
         customNodes: 'ComfyUI_IPAdapter_plus',
         items: () => ({
-            image: form.image({
-                default: 'cushy',
-                group: 'Cnet_Image',
-                tooltip:
-                    'There is currently a bug with multiple controlnets where an image wont allow drop except for the first controlnet in the list. If you add multiple controlnets, then reload using Ctrl+R, it should allow you to drop an image on any of the controlnets.',
-            }),
             strength: form.float({ default: 1, min: 0, max: 2, step: 0.1 }),
-            startAtStepPercent: form.float({ default: 0, min: 0, max: 1, step: 0.1 }),
-            endAtStepPercent: form.float({ default: 1, min: 0, max: 1, step: 0.1 }),
+            advanced: form.groupOpt({
+                label: 'Advanced',
+                items: () => ({
+                    startAtStepPercent: form.float({ default: 0, min: 0, max: 1, step: 0.1 }),
+                    endAtStepPercent: form.float({ default: 1, min: 0, max: 1, step: 0.1 }),
+
+                    interpolation: form.enum({
+                        enumName: 'Enum_PrepImageForClipVision_interpolation',
+                        default: 'LANCZOS',
+                        group: 'IPAdapter',
+                        label: 'Prep Image Scaling Type',
+                    }),
+                    crop_position: form.enum({
+                        enumName: 'Enum_PrepImageForClipVision_crop_position',
+                        default: 'center',
+                        group: 'IPAdapter',
+                        label: 'Prep Image Crop Position',
+                    }),
+                    weight_type: form.enum({
+                        enumName: 'Enum_IPAdapterApply_weight_type',
+                        default: 'original',
+                        group: 'IPAdapter',
+                        label: 'Weight Type',
+                    }),
+                    noise: form.float({ default: 0, min: 0, max: 1, step: 0.1 }),
+                    prep_sharpening: form.float({ default: 0, min: 0, max: 1, step: 0.01 }),
+                    unfold_batch: form.bool({ default: false }),
+                }),
+            }),
             clip_name: form.enum({
                 enumName: 'Enum_CLIPVisionLoader_clip_name',
                 default: {
@@ -53,44 +74,26 @@ export const ui_subform_IPAdapter = () => {
                 group: 'IPAdapter',
                 label: 'IP Adapter Model',
             }),
-            interpolation: form.enum({
-                enumName: 'Enum_PrepImageForClipVision_interpolation',
-                default: 'LANCZOS',
-                group: 'IPAdapter',
-                label: 'Prep Image Scaling Type',
-            }),
-            crop_position: form.enum({
-                enumName: 'Enum_PrepImageForClipVision_crop_position',
-                default: 'center',
-                group: 'IPAdapter',
-                label: 'Prep Image Crop Position',
-            }),
-            weight_type: form.enum({
-                enumName: 'Enum_IPAdapterApply_weight_type',
-                default: 'original',
-                group: 'IPAdapter',
-                label: 'Weight Type',
-            }),
-            noise: form.float({ default: 0, min: 0, max: 1, step: 0.1 }),
-            prep_sharpening: form.float({ default: 0, min: 0, max: 1, step: 0.01 }),
-            unfold_batch: form.bool({ default: false }),
         }),
     })
 }
 
 // 🅿️ IPAdapter RUN ===================================================
-export const run_cnet_IPAdapter = async (IPAdapter: OutputFor<typeof ui_subform_IPAdapter>, cnet_args: Cnet_args) => {
+export const run_cnet_IPAdapter = async (
+    IPAdapter: OutputFor<typeof ui_subform_IPAdapter>,
+    cnet_args: Cnet_args,
+    image: _IMAGE,
+) => {
     const run = getCurrentRun()
     const graph = run.nodes
     const ip = IPAdapter
-    let image: IMAGE
     //crop the image to the right size
     //todo: make these editable
     image = graph.PrepImageForClipVision({
-        image: (await run.loadImageAnswer(ip.image))._IMAGE,
-        interpolation: ip.interpolation,
-        crop_position: ip.crop_position,
-        sharpening: ip.prep_sharpening,
+        image,
+        interpolation: ip.advanced?.interpolation ?? 'LANCZOS',
+        crop_position: ip.advanced?.crop_position ?? 'center',
+        sharpening: ip.advanced?.prep_sharpening ?? 0,
     })._IMAGE
 
     const ip_model = graph.IPAdapterModelLoader({ ipadapter_file: ip.cnet_model_name })
@@ -102,11 +105,11 @@ export const run_cnet_IPAdapter = async (IPAdapter: OutputFor<typeof ui_subform_
         image: image,
         model: cnet_args.ckptPos,
         weight: ip.strength,
-        noise: ip.noise,
-        weight_type: ip.weight_type,
-        start_at: ip.startAtStepPercent,
-        end_at: ip.endAtStepPercent,
-        unfold_batch: ip.unfold_batch,
+        noise: ip.advanced?.noise ?? 0,
+        weight_type: ip.advanced?.weight_type ?? 'original',
+        start_at: ip.advanced?.startAtStepPercent ?? 0,
+        end_at: ip.advanced?.endAtStepPercent ?? 1,
+        unfold_batch: ip.advanced?.unfold_batch ?? false,
     })._MODEL
 
     return { ip_adapted_model }
