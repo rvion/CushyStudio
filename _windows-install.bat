@@ -16,9 +16,9 @@ ECHO Architecture: %OS_ARCH%
 :: Set the Node.js version and architecture based on OS and CPU architecture
 SET NODE_VERSION=v18.19.0
 IF "%OS_ARCH%"=="64-bit" (
-    SET NODE_ARCH=win-x64
-) ELSE (
     SET NODE_ARCH=win-x86
+) ELSE (
+    SET NODE_ARCH=win-x64
 )
 ECHO Node.js architecture: %NODE_ARCH%
 
