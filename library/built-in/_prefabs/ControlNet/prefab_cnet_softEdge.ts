@@ -57,7 +57,14 @@ export const ui_subform_SoftEdge_Preprocessor_Options = (form: FormBuilder) => {
 }
 
 // 🅿️ SoftEdge RUN ===================================================
-export const run_cnet_SoftEdge = async (SoftEdge: OutputFor<typeof ui_subform_SoftEdge>, cnet_args: Cnet_args, image: IMAGE) => {
+export const run_cnet_SoftEdge = (
+    SoftEdge: OutputFor<typeof ui_subform_SoftEdge>,
+    cnet_args: Cnet_args,
+    image: IMAGE,
+): {
+    image: IMAGE
+    cnet_name: Enum_ControlNetLoader_control_net_name
+} => {
     const run = getCurrentRun()
     const graph = run.nodes
     const cnet_name = SoftEdge.cnet_model_name

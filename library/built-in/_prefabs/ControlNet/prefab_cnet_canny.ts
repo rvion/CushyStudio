@@ -49,7 +49,14 @@ export const ui_subform_Canny_Preprocessor = (form: FormBuilder) => {
 }
 
 // 🅿️ Canny RUN ===================================================
-export const run_cnet_canny = async (canny: OutputFor<typeof ui_subform_Canny>, cnet_args: Cnet_args, image: IMAGE) => {
+export const run_cnet_canny = (
+    canny: OutputFor<typeof ui_subform_Canny>,
+    cnet_args: Cnet_args,
+    image: IMAGE,
+): {
+    image: IMAGE
+    cnet_name: Enum_ControlNetLoader_control_net_name
+} => {
     const run = getCurrentRun()
     const graph = run.nodes
     const cnet_name = canny.cnet_model_name

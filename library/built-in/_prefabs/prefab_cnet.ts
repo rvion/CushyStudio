@@ -1,3 +1,6 @@
+import type { OutputFor } from './_prefabs'
+import type { FormBuilder } from '../../../src/controls/FormBuilder'
+
 import { run_cnet_openPose, ui_subform_OpenPose } from './ControlNet/prefab_cnet_openPose'
 import { run_cnet_canny, ui_subform_Canny } from './ControlNet/prefab_cnet_canny'
 import { run_cnet_Depth, ui_subform_Depth } from './ControlNet/prefab_cnet_depth'
@@ -7,9 +10,6 @@ import { run_cnet_IPAdapter, ui_subform_IPAdapter } from './ControlNet/prefab_cn
 import { run_cnet_Scribble, ui_subform_Scribble } from './ControlNet/prefab_cnet_scribble'
 import { run_cnet_Lineart, ui_subform_Lineart } from './ControlNet/prefab_cnet_lineart'
 import { run_cnet_SoftEdge, ui_subform_SoftEdge } from './ControlNet/prefab_cnet_softEdge'
-import type { OutputFor } from './_prefabs'
-//import type { FormBuilder } from 'src/controls/FormBuilder'
-import { FormBuilder } from '../../../src/controls/FormBuilder'
 import { getCurrentForm } from '../../../src/models/_ctx2'
 import { bang } from 'src/utils/misc/bang'
 
@@ -98,108 +98,101 @@ export type Cnet_return = {
     ckpt_return: _MODEL
 }
 
-export const run_cnet = async (opts: OutputFor<typeof ui_cnet>, cnet_args: Cnet_args) => {
+export const run_cnet = async (opts: OutputFor<typeof ui_cnet>, ctx: Cnet_args) => {
     const run = getCurrentRun()
-    const graph = run.nodes
-    // var positive = cnet_args.positive
-    // var negative = cnet_args.negative
-    // CNET APPLY
     const cnetList = opts?.controlNetList
-    let ckpt_return = cnet_args.ckptPos
-    let cnet_positive = cnet_args.positive
-    let cnet_negative = cnet_args.negative
+    let args: Cnet_args = { ...ctx }
 
     if (cnetList) {
         for (const cnetImage of cnetList) {
             let image: IMAGE = (await run.loadImageAnswer(cnetImage.image))._IMAGE
-            let cnet_name: Enum_ControlNetLoader_control_net_name
 
             if (cnetImage.cnets.IPAdapter) {
                 // IPAdapter APPLY ===========================================================
-                const ip_adapter_result = run_cnet_IPAdapter(cnetImage.cnets.IPAdapter, cnet_args, image)
-                ckpt_return = (await ip_adapter_result).ip_adapted_model
+                const ip_adapter_result = run_cnet_IPAdapter(cnetImage.cnets.IPAdapter, ctx, image)
+                args.ckptPos = ip_adapter_result.ip_adapted_model
             } else {
-                let strength: number | undefined
                 // CANNY ===========================================================
-                if (cnetImage.cnets.Canny) {
-                    const cnet_return_canny = await run_cnet_canny(cnetImage.cnets.Canny, cnet_args, image)
-                    strength = cnetImage.cnets.Canny.strength
-                    image = cnet_return_canny.image
-                    cnet_name = cnet_return_canny.cnet_name
+                const { Canny, Depth, Normal, Lineart, OpenPose, Scribble, SoftEdge, Tile } = cnetImage.cnets
+                if (Canny) {
+                    const y = run_cnet_canny(Canny, ctx, image)
+                    _apply_cnet(args, Canny.strength, y.image, y.cnet_name)
                 }
                 // POSE ===========================================================
-                else if (cnetImage.cnets.OpenPose) {
-                    const cnet_return_openPose = await run_cnet_openPose(cnetImage.cnets.OpenPose, cnet_args, image)
-                    strength = cnetImage.cnets.OpenPose.strength
-                    image = cnet_return_openPose.image
-                    cnet_name = cnet_return_openPose.cnet_name
+                if (OpenPose) {
+                    const y = run_cnet_openPose(OpenPose, ctx, image)
+                    _apply_cnet(args, OpenPose.strength, y.image, y.cnet_name)
                 }
                 // DEPTH ===========================================================
-                else if (cnetImage.cnets.Depth) {
-                    const cnet_return_depth = await run_cnet_Depth(cnetImage.cnets.Depth, cnet_args, image)
-                    strength = cnetImage.cnets.Depth.strength
-                    image = cnet_return_depth.image
-                    cnet_name = cnet_return_depth.cnet_name
+                if (Depth) {
+                    const y = run_cnet_Depth(Depth, ctx, image)
+                    _apply_cnet(args, Depth.strength, y.image, y.cnet_name)
                 }
                 // Normal ===========================================================
-                else if (cnetImage.cnets.Normal) {
-                    const cnet_return_normal = await run_cnet_Normal(cnetImage.cnets.Normal, cnet_args, image)
-                    strength = cnetImage.cnets.Normal.strength
-                    image = cnet_return_normal.image
-                    cnet_name = cnet_return_normal.cnet_name
+                if (Normal) {
+                    const y = run_cnet_Normal(Normal, ctx, image)
+                    _apply_cnet(args, Normal.strength, y.image, y.cnet_name)
                 }
                 // Tile ===========================================================
-                else if (cnetImage.cnets.Tile) {
-                    const cnet_return_tile = await run_cnet_Tile(cnetImage.cnets.Tile, cnet_args, image)
-                    strength = cnetImage.cnets.Tile.strength
-                    image = cnet_return_tile.image
-                    cnet_name = cnet_return_tile.cnet_name
+                if (Tile) {
+                    const y = run_cnet_Tile(Tile, ctx, image)
+                    _apply_cnet(args, Tile.strength, y.image, y.cnet_name)
                 }
                 // Scribble ===========================================================
-                else if (cnetImage.cnets.Scribble) {
-                    const cnet_return_scribble = await run_cnet_Scribble(cnetImage.cnets.Scribble, cnet_args, image)
-                    strength = cnetImage.cnets.Scribble.strength
-                    image = cnet_return_scribble.image
-                    cnet_name = cnet_return_scribble.cnet_name
+                if (Scribble) {
+                    const y = run_cnet_Scribble(Scribble, ctx, image)
+                    _apply_cnet(args, Scribble.strength, y.image, y.cnet_name)
                 }
                 // Lineart ===========================================================
-                else if (cnetImage.cnets.Lineart) {
-                    const cnet_return_lineart = await run_cnet_Lineart(cnetImage.cnets.Lineart, cnet_args, image)
-                    strength = cnetImage.cnets.Lineart.strength
-                    image = cnet_return_lineart.image
-                    cnet_name = cnet_return_lineart.cnet_name
+                if (Lineart) {
+                    const y = run_cnet_Lineart(Lineart, ctx, image)
+                    _apply_cnet(args, Lineart.strength, y.image, y.cnet_name)
                 }
                 // SoftEdge ===========================================================
-                else if (cnetImage.cnets.SoftEdge) {
-                    const cnet_return_softedge = await run_cnet_SoftEdge(cnetImage.cnets.SoftEdge, cnet_args, image)
-                    strength = cnetImage.cnets.SoftEdge.strength
-                    image = cnet_return_softedge.image
-                    cnet_name = cnet_return_softedge.cnet_name
-                } else {
-                    throw new Error('invalid CNET')
+                if (SoftEdge) {
+                    const y = run_cnet_SoftEdge(SoftEdge, ctx, image)
+                    _apply_cnet(args, SoftEdge.strength, y.image, y.cnet_name)
                 }
-
-                // CONTROL NET APPLY ===========================================================
-                const cnet_node = graph.ControlNetApplyAdvanced({
-                    strength: strength ?? 1,
-                    positive: cnet_positive,
-                    negative: cnet_negative,
-                    image: /* 🔴 */ bang(image),
-                    control_net: graph.ControlNetLoader({
-                        control_net_name: /* 🔴 */ bang(cnet_name),
-                    }),
-                })
-                cnet_positive = cnet_node.outputs.positive
-                cnet_negative = cnet_node.outputs.negative
             }
         }
     }
 
     return {
-        cnet_positive,
-        cnet_negative,
-        post_cnet_positive: opts?.useControlnetConditioningForUpscalePassIfEnabled ? cnet_positive : cnet_args.positive, //generally upscales are cleaner if not controlled
-        post_cnet_negative: opts?.useControlnetConditioningForUpscalePassIfEnabled ? cnet_negative : cnet_args.negative,
-        ckpt_return,
+        // transformed ckpt
+        ckpt_return: args.ckptPos,
+
+        // transformed conditionnings
+        cnet_positive: args.positive,
+        cnet_negative: args.negative,
+
+        // forward either the original or the transformed conditioning
+        post_cnet_positive: opts?.useControlnetConditioningForUpscalePassIfEnabled //
+            ? args.positive
+            : ctx.positive, // generally upscales are cleaner if not controlled
+        post_cnet_negative: opts?.useControlnetConditioningForUpscalePassIfEnabled //
+            ? args.negative
+            : ctx.negative,
     }
+}
+
+const _apply_cnet = (
+    args: Cnet_args,
+    //
+    strength: number,
+    image: _IMAGE,
+    cnet_name: Enum_ControlNetLoader_control_net_name,
+) => {
+    const run = getCurrentRun()
+    const graph = run.nodes
+    const cnet_node = graph.ControlNetApplyAdvanced({
+        strength: strength ?? 1,
+        positive: args.positive,
+        negative: args.negative,
+        image: /* 🔴 */ bang(image),
+        control_net: graph.ControlNetLoader({
+            control_net_name: /* 🔴 */ bang(cnet_name),
+        }),
+    })
+    args.positive = cnet_node.outputs.positive
+    args.negative = cnet_node.outputs.negative
 }

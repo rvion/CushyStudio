@@ -58,7 +58,14 @@ export const ui_subform_OpenPose_Preprocessor = (form: FormBuilder) => {
 }
 
 // 🅿️ OPEN POSE RUN ===================================================
-export const run_cnet_openPose = async (openPose: OutputFor<typeof ui_subform_OpenPose>, cnet_args: Cnet_args, image: _IMAGE) => {
+export const run_cnet_openPose = (
+    openPose: OutputFor<typeof ui_subform_OpenPose>,
+    cnet_args: Cnet_args,
+    image: _IMAGE,
+): {
+    image: IMAGE
+    cnet_name: Enum_ControlNetLoader_control_net_name
+} => {
     const run = getCurrentRun()
     const graph = run.nodes
     const cnet_name = openPose.cnet_model_name

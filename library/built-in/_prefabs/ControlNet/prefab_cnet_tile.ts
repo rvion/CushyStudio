@@ -42,7 +42,14 @@ export const ui_subform_Tile_Preprocessor = (form: FormBuilder) => {
 }
 
 // 🅿️ Tile RUN ===================================================
-export const run_cnet_Tile = async (Tile: OutputFor<typeof ui_subform_Tile>, cnet_args: Cnet_args, image: IMAGE) => {
+export const run_cnet_Tile = (
+    Tile: OutputFor<typeof ui_subform_Tile>,
+    cnet_args: Cnet_args,
+    image: IMAGE,
+): {
+    image: IMAGE
+    cnet_name: Enum_ControlNetLoader_control_net_name
+} => {
     const run = getCurrentRun()
     const graph = run.nodes
     const cnet_name = Tile.cnet_model_name

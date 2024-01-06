@@ -91,7 +91,14 @@ export const ui_subform_Depth_Zoe = () => {
 }
 
 // 🅿️ Depth RUN ===================================================
-export const run_cnet_Depth = async (Depth: OutputFor<typeof ui_subform_Depth>, cnet_args: Cnet_args, image: IMAGE) => {
+export const run_cnet_Depth = (
+    Depth: OutputFor<typeof ui_subform_Depth>,
+    cnet_args: Cnet_args,
+    image: IMAGE,
+): {
+    image: IMAGE
+    cnet_name: Enum_ControlNetLoader_control_net_name
+} => {
     const run = getCurrentRun()
     const graph = run.nodes
     const cnet_name = Depth.cnet_model_name
