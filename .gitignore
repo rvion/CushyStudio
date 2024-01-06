@@ -62,8 +62,6 @@ site/_site
 site/site
 lib
 
-.cushy/pnpm
-.cushy/pnpm*
 .cushy/store
 
 docs/ex
@@ -79,3 +77,4 @@ release/main.js
 .cushy
 
 .env
+node-*.tar.gz
