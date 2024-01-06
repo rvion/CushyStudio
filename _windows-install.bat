@@ -5,47 +5,59 @@ setlocal enabledelayedexpansion
 :: Exit with nonzero exit code if anything fails
 set errorlevel=
 
-:: Define variables
-SET PNPM_VERSION=8.11.0
-SET PNPM_HOME=%CD%\.cushy
-SET PNPM_BIN_PATH=%CD%\.cushy\pnpm.exe
-
 ECHO [===================================================]
-ECHO Bootstrapping Cushy...
+ECHO Ensuring Node version...
 
-:: Check if pnpm is already installed
-IF EXIST "%PNPM_HOME%\pnpm.exe" (
-    FOR /F "tokens=*" %%i IN ('"%PNPM_BIN_PATH%" --version') DO (
-        SET INSTALLED_PNPM_VERSION=%%i
-    )
-    IF NOT "!INSTALLED_PNPM_VERSION!"=="%PNPM_VERSION%" (
-        ECHO Updating pnpm from version %INSTALLED_PNPM_VERSION% to %PNPM_VERSION%...
-        CALL :install_with_powershell
-    ) ELSE (
-        ECHO pnpm is already installed and up to date.
-    )
+:: Detect the operating system and architecture
+FOR /F "tokens=*" %%a IN ('wmic os get osarchitecture ^| findstr /r /c:"[0-9][0-9]-bit"') DO SET OS_ARCH=%%a
+ECHO Operating system: Windows
+ECHO Architecture: %OS_ARCH%
+
+:: Set the Node.js version and architecture based on OS and CPU architecture
+SET NODE_VERSION=v18.19.0
+IF "%OS_ARCH%"=="64-bit" (
+    SET NODE_ARCH=win-x64
 ) ELSE (
-    ECHO pnpm is not installed, proceeding with installation...
-    CALL :install_with_powershell
+    SET NODE_ARCH=win-x86
+)
+ECHO Node.js architecture: %NODE_ARCH%
+
+:: Define the download URL
+SET URL=https://nodejs.org/dist/%NODE_VERSION%/node-%NODE_VERSION%-%NODE_ARCH%.zip
+ECHO Download URL: %URL%
+
+:: Define directories
+SET CWD=%CD%
+SET EXTRACT_DIR=%CWD%\.cushy\node\%NODE_VERSION%-%NODE_ARCH%
+ECHO Current working directory: %CWD%
+ECHO Extraction directory: %EXTRACT_DIR%
+
+:: Create the directory if it doesn't exist
+IF NOT EXIST "%EXTRACT_DIR%" (
+    MKDIR "%EXTRACT_DIR%"
 )
 
-:: Verify pnpm installation
-IF NOT EXIST "%PNPM_BIN_PATH%" (
-    ECHO Failed to install or update pnpm.
-    pause
-    EXIT /B 1
+SET NODE_INSTALL_DIR=%EXTRACT_DIR%\node-%NODE_VERSION%-%NODE_ARCH%
+:: Install Node.js if necessary
+ECHO Checking for existing Node.js installation at "%NODE_INSTALL_DIR%\node.exe" ...
+IF EXIST "%NODE_INSTALL_DIR%\node.exe" (
+    ECHO Node.js %NODE_VERSION% is already installed in %NODE_INSTALL_DIR%
+) ELSE (
+    ECHO No existing Node.js installation found in %NODE_INSTALL_DIR%. Proceeding with installation.
+    CALL :download_and_extract
 )
 
 ECHO [===================================================]
-ECHO Installing dependencies: node-gyp first...
-CALL "%PNPM_BIN_PATH%" install node-gyp --ignore-scripts
-CALL "%PNPM_BIN_PATH%" install better-sqlite3 --ignore-scripts
-CALL "%PNPM_BIN_PATH%" install
-IF %ERRORLEVEL% NEQ 0 (
-    ECHO "installing dependencies failed"
-    pause
-    EXIT /B 1
-)
+ECHO Installing dependencies
+
+SET NPM_BIN_PATH=%NODE_INSTALL_DIR%\npm
+SET NODE_BIN_PATH=%NODE_INSTALL_DIR%\node
+ECHO NPM binary path: %NPM_BIN_PATH%
+ECHO Node binary path: %NODE_BIN_PATH%
+
+:: Install dependencies with npm
+ECHO Installing dependencies...
+CALL "%NPM_BIN_PATH%" install
 
 ECHO [===================================================]
 ECHO ensuring binary dependencies are correctly linked...
@@ -86,7 +98,6 @@ ECHO SUCCESS
 pause
 EXIT /B 0
 
-:install_with_powershell
-    ECHO Installing pnpm with PowerShell...
-    PowerShell -Command "iwr https://get.pnpm.io/install.ps1 -useb | iex"
-    EXIT /B 0
+:download_and_extract
+    ECHO Downloading Node.js %NODE_VERSION% for %NODE_ARCH% FROM %URL%...
+    PowerShell -Command "$ProgressPreference = 'SilentlyContinue'; Invoke-WebRequest -Uri '%URL%' -OutFile 'node.zip'; Expand-Archive -LiteralPath 'node.zip' -DestinationPath '%EXTRACT_DIR%' -Force; Remove-Item 'node.zip'"
