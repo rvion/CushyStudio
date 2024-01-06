@@ -37,19 +37,21 @@ IF NOT EXIST "%EXTRACT_DIR%" (
     MKDIR "%EXTRACT_DIR%"
 )
 
+SET NODE_INSTALL_DIR=%EXTRACT_DIR%\node-%NODE_VERSION%-%NODE_ARCH%
 :: Install Node.js if necessary
-IF EXIST "%EXTRACT_DIR%\bin\node.exe" (
-    ECHO Node.js %NODE_VERSION% is already installed in %EXTRACT_DIR%
+ECHO Checking for existing Node.js installation at "%NODE_INSTALL_DIR%\node.exe" ...
+IF EXIST "%NODE_INSTALL_DIR%\node.exe" (
+    ECHO Node.js %NODE_VERSION% is already installed in %NODE_INSTALL_DIR%
 ) ELSE (
-    ECHO No existing Node.js installation found in %EXTRACT_DIR%. Proceeding with installation.
+    ECHO No existing Node.js installation found in %NODE_INSTALL_DIR%. Proceeding with installation.
     CALL :download_and_extract
 )
 
 ECHO [===================================================]
 ECHO Installing dependencies
 
-SET NPM_BIN_PATH=%EXTRACT_DIR%\npm
-SET NODE_BIN_PATH=%EXTRACT_DIR%\node
+SET NPM_BIN_PATH=%NODE_INSTALL_DIR%\npm
+SET NODE_BIN_PATH=%NODE_INSTALL_DIR%\node
 ECHO NPM binary path: %NPM_BIN_PATH%
 ECHO Node binary path: %NODE_BIN_PATH%
 
