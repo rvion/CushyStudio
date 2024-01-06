@@ -6,16 +6,16 @@ import { WidgetWithLabelUI } from '../shared/WidgetWithLabelUI'
 
 // 🔴 why "branches" field; why not just use sub wiget active state instead?
 export const WidgetChoicesUI = observer(function WidgetChoicesUI_(p: { widget: Widget_choices<{ [key: string]: Widget }> }) {
-    const req = p.widget
+    const widget = p.widget
 
     type Entry = { key: string; value?: Maybe<boolean> }
 
     // choices
-    const choicesStr: string[] = Object.keys(req.state.values)
+    const choicesStr: string[] = Object.keys(widget.state.values)
     const choices: Entry[] = choicesStr.map((v) => ({ key: v }))
 
     // values
-    const values = Object.entries(req.state.branches)
+    const values = Object.entries(widget.state.branches)
         .map(([key, value]) => ({ key, value }))
         .filter((x) => x.value)
 
@@ -26,7 +26,7 @@ export const WidgetChoicesUI = observer(function WidgetChoicesUI_(p: { widget: W
                     tw='flex-grow'
                     placeholder={p.widget.input.placeholder}
                     value={() =>
-                        Object.entries(req.state.branches)
+                        Object.entries(widget.state.branches)
                             .map(([key, value]) => ({ key, value }))
                             .filter((x) => x.value)
                     }
@@ -37,28 +37,28 @@ export const WidgetChoicesUI = observer(function WidgetChoicesUI_(p: { widget: W
                     closeOnPick={false}
                     resetQueryOnPick={false}
                     onChange={(v) => {
-                        const prev = Boolean(req.state.branches[v.key])
-                        req.state.branches[v.key] = !prev
+                        const prev = Boolean(widget.state.branches[v.key])
+                        widget.state.branches[v.key] = !prev
                     }}
                 />
                 {/* <Button appearance='subtle' size='xs' onClick={() => (req.state.collapsed = !Boolean(req.state.collapsed))}>
                     {collapsed ? '▿' : '▸'}
                 </Button> */}
             </div>
-            {req.state.collapsed ? null : (
+            {widget.state.collapsed ? null : (
                 <div
                     // style={{ border: '1px solid gray' }}
-                    tw={[req.input.layout === 'H' ? 'flex' : null]}
-                    className={req.input.className}
+                    tw={[widget.input.layout === 'H' ? 'flex' : null]}
+                    className={widget.input.className}
                 >
                     {values.map((val) => {
-                        const subReq = req.state.values[val.key]
+                        const subWidget = widget.state.values[val.key]
                         return (
                             <WidgetWithLabelUI //
                                 key={val.key}
                                 rootKey={val.key}
                                 // labelPos={subReq.input.labelPos}
-                                req={subReq}
+                                widget={subWidget}
                             />
                         )
                     })}

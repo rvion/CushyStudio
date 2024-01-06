@@ -4,10 +4,10 @@ import { Widget_floatOpt, Widget_intOpt } from 'src/controls/Widget'
 import { parseFloatNoRoundingErr } from 'src/utils/misc/parseFloatNoRoundingErr'
 
 export const WidgetNumOptUI = observer(function WidgetNumOptUI_(p: { widget: Widget_intOpt | Widget_floatOpt }) {
-    const req = p.widget
-    const mode = req instanceof Widget_intOpt ? 'int' : 'float'
-    const val = req.state.val
-    const step = req.input.step ?? (mode === 'int' ? 1 : 0.1)
+    const widget = p.widget
+    const mode = widget instanceof Widget_intOpt ? 'int' : 'float'
+    const val = widget.state.val
+    const step = widget.input.step ?? (mode === 'int' ? 1 : 0.1)
     const valueIsValid = typeof val === 'number' && !isNaN(val)
 
     return (
@@ -18,12 +18,12 @@ export const WidgetNumOptUI = observer(function WidgetNumOptUI_(p: { widget: Wid
                     <pre>{JSON.stringify(val)}</pre>
                 </div>
             )}
-            {req.input.hideSlider ? null : (
+            {widget.input.hideSlider ? null : (
                 <Slider //
                     style={{ width: '10rem' }}
                     value={val}
-                    min={req.input.min}
-                    max={req.input.max}
+                    min={widget.input.min}
+                    max={widget.input.max}
                     step={step}
                     onChange={(ev) => {
                         const next = ev.target.value
@@ -41,14 +41,14 @@ export const WidgetNumOptUI = observer(function WidgetNumOptUI_(p: { widget: Wid
                         }
                         // ensure ints are ints
                         if (mode == 'int') num = Math.round(num)
-                        req.state.val = num
+                        widget.state.val = num
                     }}
                 />
             )}
             <InputNumberBase //
-                disabled={!req.state.active}
-                min={req.input.min}
-                max={req.input.max}
+                disabled={!widget.state.active}
+                min={widget.input.min}
+                max={widget.input.max}
                 step={step}
                 style={{
                     fontFamily: 'monospace',
@@ -72,7 +72,7 @@ export const WidgetNumOptUI = observer(function WidgetNumOptUI_(p: { widget: Wid
                     }
                     // ensure ints are ints
                     if (mode == 'int') num = Math.round(num)
-                    req.state.val = num
+                    widget.state.val = num
                 }}
             />
         </div>

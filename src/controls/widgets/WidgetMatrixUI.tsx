@@ -2,10 +2,10 @@ import { observer } from 'mobx-react-lite'
 import { Widget_matrix } from 'src/controls/Widget'
 
 export const WidgetMatrixUI = observer(function WidgetStrUI_(p: { widget: Widget_matrix }) {
-    const req = p.widget
-    const cols = req.cols
-    const rows = req.rows
-    const collapsed = req.state.collapsed
+    const widget = p.widget
+    const cols = widget.cols
+    const rows = widget.rows
+    // const collapsed = widget.state.collapsed
     // if (collapsed)
     //     return (
     //         <Button appearance='subtle' tw='' size='xs' onClick={() => (req.state.collapsed = !Boolean(req.state.collapsed))}>
@@ -23,7 +23,7 @@ export const WidgetMatrixUI = observer(function WidgetStrUI_(p: { widget: Widget
                         <th
                             //
                             className='cursor-pointer hover:text-red-600 virtualBorder'
-                            onClick={() => req.setAll(!req.firstValue)}
+                            onClick={() => widget.setAll(!widget.firstValue)}
                         >
                             all
                         </th>
@@ -32,7 +32,7 @@ export const WidgetMatrixUI = observer(function WidgetStrUI_(p: { widget: Widget
                                 //
                                 className='bg-base-200 virtualBorder'
                                 key={ix}
-                                onClick={() => req.setCol(col, !req.get(rows[0], col).value)}
+                                onClick={() => widget.setCol(col, !widget.get(rows[0], col).value)}
                             >
                                 {col}
                             </th>
@@ -44,18 +44,18 @@ export const WidgetMatrixUI = observer(function WidgetStrUI_(p: { widget: Widget
                         <tr key={rowIx} className='p-0 m-0'>
                             <td
                                 //
-                                onClick={() => req.setRow(row, !req.get(row, cols[0]).value)}
+                                onClick={() => widget.setRow(row, !widget.get(row, cols[0]).value)}
                                 className='bg-base-302 virtualBorder cursor-pointer'
                             >
                                 {row}
                             </td>
                             {cols.map((col, colIx: number) => {
-                                const checked = req.get(row, col).value
+                                const checked = widget.get(row, col).value
                                 return (
                                     <td
                                         key={colIx}
                                         className='hover:bg-gray-400 cursor-pointer virtualBorder'
-                                        onClick={() => req.set(row, col, !checked)}
+                                        onClick={() => widget.set(row, col, !checked)}
                                         tw={[checked ? undefined : 'bg-base-200']}
                                         style={{
                                             background: checked ? 'oklch(var(--p)/.5)' : undefined,

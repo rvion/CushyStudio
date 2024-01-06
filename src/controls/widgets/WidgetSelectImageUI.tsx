@@ -17,14 +17,14 @@ enum Tab {
     Asset = 3,
 }
 export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: { widget: Widget_image | Widget_imageOpt }) {
-    const req = p.widget
+    const widget = p.widget
     const st = useSt()
     const [dropStyle, dropRef] = useImageDrop(st, (i) => {
         runInAction(() => {
             // console.log('DROPPED', JSON.stringify(i.data, null, 3))
-            req.state.active = true
-            req.state.cushy = { type: 'CushyImage', imageID: i.id }
-            req.state.pick = 'cushy'
+            widget.state.active = true
+            widget.state.cushy = { type: 'CushyImage', imageID: i.id }
+            widget.state.pick = 'cushy'
         })
     })
     const draft = useDraft()
@@ -33,11 +33,11 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: { w
             title: () => <>Drop</>,
             body: () => (
                 <div className='flex gap-2 p-1 bg-base-100 border border-dashed border-neutral self-center'>
-                    {req.state.cushy != null ? ( //
+                    {widget.state.cushy != null ? ( //
                         <div tw='flex items-start'>
-                            <ImageUI img={draft.db.media_images.getOrThrow(req.state.cushy.imageID)} />
-                            {req instanceof Widget_imageOpt ? (
-                                <Button size='sm' onClick={() => (req.state.active = false)}>
+                            <ImageUI img={draft.db.media_images.getOrThrow(widget.state.cushy.imageID)} />
+                            {widget instanceof Widget_imageOpt ? (
+                                <Button size='sm' onClick={() => (widget.state.active = false)}>
                                     X
                                 </Button>
                             ) : null}
@@ -52,11 +52,11 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: { w
             title: () => <>Pick</>,
             body: () => (
                 <>
-                    {req.state.comfy && (
+                    {widget.state.comfy && (
                         <img
                             style={{ width: '7rem', height: '7rem' }}
                             src={`${st.getServerHostHTTP()}/view?filename=${encodeURIComponent(
-                                req.state.comfy.imageName,
+                                widget.state.comfy.imageName,
                             )}&type=input&subfolder=`}
                             alt=''
                         />
@@ -65,23 +65,23 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: { w
                     <EnumSelectorUI
                         enumName='Enum_LoadImage_image'
                         // value={req.state.comfy?.imageName ?? null}
-                        value={() => st.fixEnumValue(req.state.comfy?.imageName, 'Enum_LoadImage_image', req.isOptional)}
-                        isOptional={req.state.pick !== 'comfy' || !req.state.active}
+                        value={() => st.fixEnumValue(widget.state.comfy?.imageName, 'Enum_LoadImage_image', widget.isOptional)}
+                        isOptional={widget.state.pick !== 'comfy' || !widget.state.active}
                         onChange={(t) => {
                             // handle nullability for Widget_imageOpt
                             if (
                                 t == null &&
-                                (req instanceof Widget_imageOpt || req instanceof Widget_image) &&
-                                req.state.active &&
-                                req.state.pick === 'comfy'
+                                (widget instanceof Widget_imageOpt || widget instanceof Widget_image) &&
+                                widget.state.active &&
+                                widget.state.pick === 'comfy'
                             ) {
-                                req.state.active = false
+                                widget.state.active = false
                             }
 
                             if (t == null) return
                             // handle value
-                            req.state.comfy.imageName = t as Enum_LoadImage_image
-                            req.state.pick = 'comfy'
+                            widget.state.comfy.imageName = t as Enum_LoadImage_image
+                            widget.state.pick = 'comfy'
                         }}
                     />
                 </>
@@ -96,8 +96,8 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: { w
                     fillStyle='black'
                     strokeStyle='white'
                     onChange={(base64: string) => {
-                        req.state.paint = { type: 'PaintImage', base64 }
-                        if (req.state.pick !== 'paint') req.state.pick = 'paint'
+                        widget.state.paint = { type: 'PaintImage', base64 }
+                        if (widget.state.pick !== 'paint') widget.state.pick = 'paint'
                     }}
                 />
             ),
@@ -111,13 +111,13 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: { w
     //     })
     // }
     const current =
-        !req.state.active || req.state.pick === 'cushy'
+        !widget.state.active || widget.state.pick === 'cushy'
             ? Tab.Cushy
-            : req.state.pick === 'comfy'
+            : widget.state.pick === 'comfy'
             ? Tab.Comfy
-            : req.state.pick === 'paint'
+            : widget.state.pick === 'paint'
             ? Tab.Scribble
-            : req.state.pick === 'asset'
+            : widget.state.pick === 'asset'
             ? Tab.Asset
             : Tab.Asset
 
@@ -127,14 +127,14 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: { w
                 <TabsUI
                     current={current}
                     tabs={tabs}
-                    disabled={!req.state.active}
+                    disabled={!widget.state.active}
                     onClick={(i) => {
                         // if (i === Tab.None && req instanceof Widget_imageOpt) req.state.active = false
-                        req.state.active = true
-                        if (i === Tab.Cushy) req.state.pick = 'cushy'
-                        if (i === Tab.Comfy) req.state.pick = 'comfy'
-                        if (i === Tab.Scribble) req.state.pick = 'paint'
-                        if (i === Tab.Asset) req.state.pick = 'asset'
+                        widget.state.active = true
+                        if (i === Tab.Cushy) widget.state.pick = 'cushy'
+                        if (i === Tab.Comfy) widget.state.pick = 'comfy'
+                        if (i === Tab.Scribble) widget.state.pick = 'paint'
+                        if (i === Tab.Asset) widget.state.pick = 'asset'
                     }}
                 />
             </div>

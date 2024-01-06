@@ -6,36 +6,36 @@ import { WidgetUI } from './WidgetUI'
 import { runInAction } from 'mobx'
 
 export const WidgetChoiceUI = observer(function WidgetChoiceUI_(p: { widget: Widget_choice<{ [key: string]: Widget }> }) {
-    const req = p.widget
-    const choicesStr: string[] = req.possibleChoices // Object.keys(req.state.values)
-    const choiceSubReq = req.state.values[req.state.pick]
+    const widget = p.widget
+    const choicesStr: string[] = widget.possibleChoices // Object.keys(req.state.values)
+    const choiceSubWidget = widget.state.values[widget.state.pick]
     return (
         <div tw='_WidgetChoiceUI relative w-full'>
             <SelectUI
                 getLabelText={(v) => v}
                 cleanable={false}
                 options={() => choicesStr}
-                value={() => req.state.pick}
+                value={() => widget.state.pick}
                 onChange={(v) => {
                     if (v == null) return
                     runInAction(() => {
-                        req.state.pick = v
-                        req.state.active = true
+                        widget.state.pick = v
+                        widget.state.active = true
                     })
                 }}
             />
 
-            {req.state.collapsed ? null : (
+            {widget.state.collapsed ? null : (
                 <div
                     // style={{ border: '1px solid gray' }}
-                    tw={[req.input.layout === 'H' ? 'flex' : null]}
-                    className={req.input.className}
+                    tw={[widget.input.layout === 'H' ? 'flex' : null]}
+                    className={widget.input.className}
                 >
-                    {choiceSubReq && (
+                    {choiceSubWidget && (
                         <WidgetUI //
                             // labelPos={choiceSubReq.input.labelPos}
                             // rootKey={req.state.pick}
-                            widget={choiceSubReq}
+                            widget={choiceSubWidget}
                         />
                     )}
                 </div>

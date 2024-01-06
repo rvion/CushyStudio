@@ -9,10 +9,10 @@ export const WidgetGroupUI = observer(function WidgetItemsUI_(p: {
         | Widget_group<{ [key: string]: Widget }> //
         | Widget_groupOpt<{ [key: string]: Widget }>
 }) {
-    const req = p.widget
-    const isTopLevel = req.input.topLevel
-    const groupFields = Object.entries(req.state.values)
-    const isHorizontal = req.input.layout === 'H'
+    const widget = p.widget
+    const isTopLevel = widget.input.topLevel
+    const groupFields = Object.entries(widget.state.values)
+    const isHorizontal = widget.input.layout === 'H'
     return (
         <div
             tw={[
@@ -29,7 +29,7 @@ export const WidgetGroupUI = observer(function WidgetItemsUI_(p: {
                 // paddingLeft: showAsCard ? '.4rem' : undefined,
             }}
         >
-            {req.state.collapsed ? null : (
+            {widget.state.collapsed ? null : (
                 <div
                     // style={isTopLevel ? undefined : { border: '1px solid #262626' }}
                     tw={[
@@ -39,16 +39,16 @@ export const WidgetGroupUI = observer(function WidgetItemsUI_(p: {
                             ? `flex flex-wrap gap-2`
                             : `flex flex-col gap-1.5`,
                     ]}
-                    className={req.input.className}
+                    className={widget.input.className}
                 >
                     {groupFields.map(([rootKey, sub], ix) => (
                         <WidgetWithLabelUI //
                             isTopLevel={isTopLevel}
-                            vertical={req.state.vertical}
+                            vertical={widget.state.vertical}
                             key={rootKey}
                             // labelPos={sub.input.labelPos}
                             rootKey={rootKey}
-                            req={sub}
+                            widget={sub}
                         />
                     ))}
                 </div>

@@ -7,17 +7,17 @@ import { WidgetListExt_ValuesUI } from './WidgetListExt_ValuesUI'
 import { WidgetListExt_TimelineUI } from './WidgetListExt_TimelineUI'
 
 export const WidgetListExtUI = observer(function WidgetListExtUI_<T extends Widget>(p: { widget: Widget_listExt<T> }) {
-    const req = p.widget
+    const widget = p.widget
     return (
         <div className='_WidgetListExtUI' tw='flex-grow w-full'>
-            <ListControlsUI req={req} />
-            <WigetSizeXUI size={req.state} />
+            <ListControlsUI req={widget} />
+            <WigetSizeXUI size={widget.state} />
             {p.widget.input.mode === 'timeline' ? ( //
-                <WidgetListExt_TimelineUI req={req} />
+                <WidgetListExt_TimelineUI req={widget} />
             ) : (
-                <WidgetListExt_RegionalUI req={req} />
+                <WidgetListExt_RegionalUI req={widget} />
             )}
-            <WidgetListExt_ValuesUI req={req} />
+            <WidgetListExt_ValuesUI req={widget} />
         </div>
     )
 })

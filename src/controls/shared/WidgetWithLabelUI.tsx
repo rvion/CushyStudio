@@ -1,4 +1,3 @@
-import type { LabelPos } from 'src/controls/IWidget'
 import type * as R from 'src/controls/Widget'
 
 import { observer } from 'mobx-react-lite'
@@ -13,13 +12,13 @@ import { ErrorBoundaryFallback } from '../../widgets/misc/ErrorBoundary'
 import { WidgetDI } from '../widgets/WidgetUI.DI'
 
 export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
-    req: R.Widget
+    widget: R.Widget
     // labelPos?: LabelPos
     rootKey: string
     vertical?: boolean
     isTopLevel?: boolean
 }) {
-    const { rootKey, req } = p
+    const { rootKey, widget: req } = p
     const KLS = WidgetDI
     const st = useSt()
 
@@ -27,15 +26,15 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     let label: Maybe<string | false> = req.input.label ?? makeLabelFromFieldName(rootKey)
 
     const isVertical = (() => {
-        if (p.req.input.showID) return true
-        if (st.preferedFormLayout === 'auto') return p.req.isVerticalByDefault
+        if (p.widget.input.showID) return true
+        if (st.preferedFormLayout === 'auto') return p.widget.isVerticalByDefault
         if (st.preferedFormLayout === 'mobile') return true
         if (st.preferedFormLayout === 'dense') return false
     })()
 
     const isCollapsible = req.isCollapsible
     const collapsed = req.state.collapsed && isCollapsible
-    const v = p.req
+    const v = p.widget
     const levelClass = p.isTopLevel ? '_isTopLevel' : '_isNotTopLevel'
 
     const toggleInfo =
@@ -137,7 +136,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                     }
                 >
                     {label || '...'}
-                    {p.req.input.showID ? <span tw='opacity-50 italic text-sm'>#{p.req.id.slice(0, 3)}</span> : null}
+                    {p.widget.input.showID ? <span tw='opacity-50 italic text-sm'>#{p.widget.id.slice(0, 3)}</span> : null}
                 </span>
             )}
             <span tw='opacity-30 hover:opacity-100'>{v.state.collapsed ? '▸ {...}' : /*'▿'*/ ''}</span>

@@ -7,11 +7,11 @@ import { InputNumberUI } from 'src/rsuite/InputNumberUI'
 // ----------------------------------------------------------------------
 
 export const WidgetLorasUI = observer(function LoraWidgetUI_(p: { widget: Widget_loras }) {
-    const req = p.widget
+    const widget = p.widget
     const st = useSt()
     const schema = st.schema
     if (schema == null) return <div>❌ no schema</div>
-    const values = req.state.loras
+    const values = widget.state.loras
     const names = values.map((x) => x.name)
 
     return (
@@ -21,7 +21,7 @@ export const WidgetLorasUI = observer(function LoraWidgetUI_(p: { widget: Widget
                 style={{ maxWidth: '300px' }}
                 value={names}
                 menuWidth={300}
-                data={req.FOLDER}
+                data={widget.FOLDER}
                 onChange={(rawPicks: (string | number)[]) => {
                     const picks = rawPicks.map((raw) => {
                         if (typeof raw === 'number') return raw.toString()
@@ -29,7 +29,7 @@ export const WidgetLorasUI = observer(function LoraWidgetUI_(p: { widget: Widget
                     })
                     console.log({ picks })
                     const nextNames: string[] = []
-                    for (const rawPath of req.allLoras) {
+                    for (const rawPath of widget.allLoras) {
                         const path = rawPath.replace(/\\/g, '/')
                         for (const v of picks) {
                             if (typeof v == 'number') continue
@@ -39,13 +39,13 @@ export const WidgetLorasUI = observer(function LoraWidgetUI_(p: { widget: Widget
                         }
                     }
                     // remove old vals
-                    for (const oldNv of req.selectedLoras.keys()) {
-                        if (!nextNames.includes(oldNv)) req.selectedLoras.delete(oldNv)
+                    for (const oldNv of widget.selectedLoras.keys()) {
+                        if (!nextNames.includes(oldNv)) widget.selectedLoras.delete(oldNv)
                     }
                     // add new vals
                     for (const nv of nextNames) {
-                        if (req.selectedLoras.has(nv)) continue
-                        req.selectedLoras.set(nv, { strength_clip: 1, strength_model: 1, name: nv as any })
+                        if (widget.selectedLoras.has(nv)) continue
+                        widget.selectedLoras.set(nv, { strength_clip: 1, strength_model: 1, name: nv as any })
                     }
                     // const nextValues: SimplifiedLoraDef[] = nextNames.map(
                     //     (x): SimplifiedLoraDef => ({
@@ -54,13 +54,13 @@ export const WidgetLorasUI = observer(function LoraWidgetUI_(p: { widget: Widget
                     //         strength_model: 1,
                     //     }),
                     // )
-                    const nextValues = [...req.selectedLoras.values()]
-                    req.state.loras = nextValues
+                    const nextValues = [...widget.selectedLoras.values()]
+                    widget.state.loras = nextValues
                 }}
                 // block
             />
             <div>
-                {[...req.selectedLoras.entries()].map(([loraName, sld]) => (
+                {[...widget.selectedLoras.entries()].map(([loraName, sld]) => (
                     <div key={loraName} className='flex items-start'>
                         <div className='shrink-0'>{loraName.replace('.safetensors', '')}</div>
                         <div className='flex-grow'></div>
@@ -87,8 +87,8 @@ export const WidgetLorasUI = observer(function LoraWidgetUI_(p: { widget: Widget
                             icon={<span className='material-symbols-outlined'>delete</span>}
                             onClick={() => {
                                 const next = values.filter((x) => x.name !== loraName)
-                                req.selectedLoras.delete(loraName)
-                                req.state.loras = next
+                                widget.selectedLoras.delete(loraName)
+                                widget.state.loras = next
                             }}
                         />
                     </div>

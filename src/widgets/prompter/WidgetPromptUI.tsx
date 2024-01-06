@@ -42,7 +42,7 @@ export type WidgetPromptOutput = {
 
 export const WidgetPromptUI = observer((p: { widget: Widget_prompt | Widget_promptOpt }) => {
     const st = useSt()
-    const req = p.widget
+    const widget = p.widget
     const cs = useMemo(
         () =>
             new CompletionState(st, {
@@ -69,7 +69,7 @@ export const WidgetPromptUI = observer((p: { widget: Widget_prompt | Widget_prom
         ],
         editorState: () => {
             console.log('[💬] LEXICAL: mounting lexical widget')
-            const initialValue: WidgetPromptOutput = req.state
+            const initialValue: WidgetPromptOutput = widget.state
             console.log('[💬] LEXICAL: initial value is', { initialValue: toJS(initialValue) })
 
             if (
@@ -143,7 +143,7 @@ export const WidgetPromptUI = observer((p: { widget: Widget_prompt | Widget_prom
             {/* <PrompterConfigUI /> */}
             <OnChangePlugin
                 onChange={(editorState: EditorState, editor: LexicalEditor, tags: Set<string>) => {
-                    onChange(req, editorState)
+                    onChange(widget, editorState)
                 }}
             />
             <HistoryPlugin />

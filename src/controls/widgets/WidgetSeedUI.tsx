@@ -3,26 +3,26 @@ import { Button, Joined, InputNumberBase } from 'src/rsuite/shims'
 import { Widget_seed } from 'src/controls/Widget'
 
 export const WidgetSeedUI = observer(function WidgetSeedUI_(p: { widget: Widget_seed }) {
-    const req = p.widget
-    const val = req.state.val
+    const widget = p.widget
+    const val = widget.state.val
     return (
         <div tw='flex items-center join virtualBorder'>
             <button
                 type='button'
-                tw={['join-item btn-sm btn-ghost', req.state.mode === 'randomize' && 'btn-active']}
+                tw={['join-item btn-sm btn-ghost', widget.state.mode === 'randomize' && 'btn-active']}
                 onClick={() => {
-                    req.state.mode = 'randomize'
-                    req.state.active = true
+                    widget.state.mode = 'randomize'
+                    widget.state.active = true
                 }}
             >
                 🎲 Rand
             </button>
             <button
                 type='button'
-                tw={['join-item btn-sm btn-ghost', req.state.mode === 'fixed' && 'btn-active']}
+                tw={['join-item btn-sm btn-ghost', widget.state.mode === 'fixed' && 'btn-active']}
                 onClick={() => {
-                    req.state.mode = 'fixed'
-                    req.state.active = true
+                    widget.state.mode = 'fixed'
+                    widget.state.active = true
                     // req.state.val = Math.floor(Math.random() * 1000000)
                 }}
             >
@@ -35,10 +35,10 @@ export const WidgetSeedUI = observer(function WidgetSeedUI_(p: { widget: Widget_
                     width: val.toString().length + 6 + 'ch',
                 }}
                 className='input-sm'
-                disabled={!(req.state.mode !== 'randomize' || !req.state.active)}
+                disabled={!(widget.state.mode !== 'randomize' || !widget.state.active)}
                 value={val}
-                min={req.input.min}
-                max={req.input.max}
+                min={widget.input.min}
+                max={widget.input.max}
                 step={1}
                 onChange={(ev) => {
                     const next = ev.target.value
@@ -54,16 +54,16 @@ export const WidgetSeedUI = observer(function WidgetSeedUI_(p: { widget: Widget_
                     }
                     // ensure ints are ints
                     num = Math.round(num)
-                    req.state.val = num
+                    widget.state.val = num
                 }}
             />
             <Button
                 size='sm'
                 appearance='subtle'
                 onClick={() => {
-                    req.state.mode = 'fixed'
-                    req.state.active = true
-                    req.state.val = Math.floor(Math.random() * 1000000)
+                    widget.state.mode = 'fixed'
+                    widget.state.active = true
+                    widget.state.val = Math.floor(Math.random() * 1000000)
                 }}
                 icon={<span className='material-symbols-outlined'>autorenew</span>}
             >

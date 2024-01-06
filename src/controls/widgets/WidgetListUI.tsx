@@ -7,12 +7,12 @@ import { ListControlsUI } from '../shared/ListControlsUI'
 import { WidgetDI } from './WidgetUI.DI'
 
 export const WidgetListUI = observer(function WidgetListUI_<T extends Widget>(p: { widget: Widget_list<T> }) {
-    const req = p.widget
-    const values = req.state.items
-    const min = req.input.min
+    const widget = p.widget
+    const values = widget.state.items
+    const min = widget.input.min
     const WidgetUI = WidgetDI.WidgetUI
     if (WidgetUI == null) return <Message type='error'>Internal list failure</Message>
-    const isCollapsed = req.state.collapsed ?? false
+    const isCollapsed = widget.state.collapsed ?? false
     // const isExpanded = !isCollapsed
     // const len = values.length
     // const indexWidth = len.toString().length
@@ -34,9 +34,9 @@ export const WidgetListUI = observer(function WidgetListUI_<T extends Widget>(p:
                                     <div
                                         tw={[
                                             'btn btn-sm btn-narrower btn-ghost opacity-50',
-                                            min && req.state.items.length <= min ? 'btn-disabled' : null,
+                                            min && widget.state.items.length <= min ? 'btn-disabled' : null,
                                         ]}
-                                        onClick={() => req.removeItem(v)}
+                                        onClick={() => widget.removeItem(v)}
                                     >
                                         <span className='material-symbols-outlined'>delete</span>
                                     </div>

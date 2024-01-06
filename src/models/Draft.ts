@@ -88,7 +88,7 @@ export class DraftL {
         // ----------------------------------------
 
         // 1. ensure req valid (TODO: validate)
-        const req = formValueOverride
+        const widget = formValueOverride
             ? // case of sub-drafts created/started from within a draft
               ({
                   builder: { _cache: { count: 0 } },
@@ -97,7 +97,7 @@ export class DraftL {
               } as any as Widget_group<any>)
             : this.form.value
 
-        if (req == null) throw new Error('invalid req')
+        if (widget == null) throw new Error('invalid req')
 
         // 2. ensure graph valid
         const startGraph = this.st.project.rootGraph.item
@@ -118,8 +118,8 @@ export class DraftL {
             //
             appID: this.data.appID,
             draftID: this.data.id,
-            formResult: req.result,
-            formSerial: req.serial,
+            formResult: widget.result,
+            formSerial: widget.serial,
             //
             // parentGraphID: graph.id,
             outputGraphID: graph.id,
@@ -128,7 +128,7 @@ export class DraftL {
             status: Status.New,
         })
         graph.update({ stepID: step.id }) // 🔶🔴
-        step.start({ formInstance: req })
+        step.start({ formInstance: widget })
         this.lastStarted = step
         void step.finished.then(() => {
             this.checkIfShouldRestart()

@@ -6,14 +6,14 @@ import type { ItemExt, Widget, Widget_listExt } from '../Widget'
 export const WidgetListExt_RegionalUI = observer(function WidgetListExt_RegionalUI_<T extends Widget>(p: {
     req: Widget_listExt<T>
 }) {
-    const req = p.req
+    const widget = p.req
 
-    const shapes = req.state.items
+    const shapes = widget.state.items
     return (
         <Stage
             //
-            width={req.state.width}
-            height={req.state.height}
+            width={widget.state.width}
+            height={widget.state.height}
             onContextMenu={(e) => {
                 e.evt.preventDefault()
                 console.log('context menu')

@@ -4,12 +4,12 @@ import { Button } from 'src/rsuite/shims'
 import { WidgetDI } from './WidgetUI.DI'
 
 export const WidgetListExt_ValuesUI = observer(function WidgetListExtValuesUI_<T extends Widget>(p: { req: Widget_listExt<T> }) {
-    const req = p.req
-    const values = req.state.items
+    const widget = p.req
+    const values = widget.state.items
     const len = values.length
     const indexWidth = len < 10 ? 1 : len < 100 ? 2 : 3
     const WidgetUI = WidgetDI.WidgetUI
-    const min = req.input.min
+    const min = widget.input.min
     return (
         <div tw='flex flex-col gap-1'>
             {values.map((x, ix) => {
@@ -29,9 +29,9 @@ export const WidgetListExt_ValuesUI = observer(function WidgetListExtValuesUI_<T
                         <WidgetUI widget={v} />
                         <Button
                             appearance='subtle'
-                            disabled={min ? req.state.items.length <= min : undefined}
+                            disabled={min ? widget.state.items.length <= min : undefined}
                             tw='self-start'
-                            onClick={() => req.removeItem(x)}
+                            onClick={() => widget.removeItem(x)}
                             size='sm'
                         >
                             X
