@@ -28,17 +28,24 @@ export const ui_subform_Scribble_Preprocessor = () => {
     const form = getCurrentForm()
     return form.groupOpt({
         label: 'Scribble Preprocessor',
+        default: true,
         items: () => ({
-            type: form.choice({
-                label: 'Type',
+            advanced: form.groupOpt({
+                label: 'Advanced Preprocessor Settings',
                 items: () => ({
-                    ScribbleLines: ui_subform_Scribble_Lines(),
-                    FakeScribble: ui_subform_Fake_Scribble_Lines(),
-                    XDOG: ui_subform_Scribble_XDoG_Lines(),
+                    type: form.choice({
+                        label: 'Type',
+                        default: 'ScribbleLines',
+                        items: () => ({
+                            ScribbleLines: ui_subform_Scribble_Lines(),
+                            FakeScribble: ui_subform_Fake_Scribble_Lines(),
+                            XDOG: ui_subform_Scribble_XDoG_Lines(),
+                        }),
+                    }),
+                    // TODO: Add support for auto-modifying the resolution based on other form selections
+                    // TODO: Add support for auto-cropping
                 }),
             }),
-            // TODO: Add support for auto-modifying the resolution based on other form selections
-            // TODO: Add support for auto-cropping
         }),
     })
 }
@@ -76,33 +83,24 @@ export const ui_subform_Scribble_XDoG_Lines = () => {
 }
 
 // 🅿️ Scribble RUN ===================================================
-export const run_cnet_Scribble = async (Scribble: OutputFor<typeof ui_subform_Scribble>, cnet_args: Cnet_args) => {
+export const run_cnet_Scribble = async (Scribble: OutputFor<typeof ui_subform_Scribble>, cnet_args: Cnet_args, image: IMAGE) => {
     const run = getCurrentRun()
     const graph = run.nodes
-    let image: IMAGE
     const cnet_name = Scribble.cnet_model_name
     //crop the image to the right size
     //todo: make these editable
     image = graph.ImageScale({
-        image: (await run.loadImageAnswer(Scribble.image))._IMAGE,
+        image,
         width: cnet_args.width ?? 512,
         height: cnet_args.height ?? 512,
-        upscale_method: Scribble.upscale_method,
-        crop: Scribble.crop,
+        upscale_method: Scribble.advanced?.upscale_method ?? 'lanczos',
+        crop: Scribble.advanced?.crop ?? 'center',
     })._IMAGE
 
     // PREPROCESSOR - Scribble ===========================================================
     if (Scribble.preprocessor) {
-        if (Scribble.preprocessor.type.ScribbleLines) {
-            const scribble = Scribble.preprocessor.type.ScribbleLines
-            image = graph.ScribblePreprocessor({
-                image: image,
-                resolution: scribble.resolution,
-            })._IMAGE
-            if (scribble.saveProcessedImage) graph.SaveImage({ images: image, filename_prefix: 'cnet\\Scribble\\scribble' })
-            else graph.PreviewImage({ images: image })
-        } else if (Scribble.preprocessor.type.FakeScribble) {
-            const fake = Scribble.preprocessor.type.FakeScribble
+        if (Scribble.preprocessor.advanced?.type.FakeScribble) {
+            const fake = Scribble.preprocessor.advanced?.type.FakeScribble
             image = graph.FakeScribblePreprocessor({
                 image: image,
                 resolution: fake.resolution,
@@ -110,14 +108,22 @@ export const run_cnet_Scribble = async (Scribble: OutputFor<typeof ui_subform_Sc
             })._IMAGE
             if (fake.saveProcessedImage) graph.SaveImage({ images: image, filename_prefix: 'cnet\\Scribble\\fake' })
             else graph.PreviewImage({ images: image })
-        } else if (Scribble.preprocessor.type.XDOG) {
-            const xdog = Scribble.preprocessor.type.XDOG
+        } else if (Scribble.preprocessor.advanced?.type.XDOG) {
+            const xdog = Scribble.preprocessor.advanced.type.XDOG
             image = graph.Scribble$_XDoG$_Preprocessor({
                 image: image,
                 resolution: xdog.resolution,
                 threshold: xdog.threshold,
             })._IMAGE
             if (xdog.saveProcessedImage) graph.SaveImage({ images: image, filename_prefix: 'cnet\\Scribble\\xdog' })
+            else graph.PreviewImage({ images: image })
+        } else {
+            const scribble = Scribble.preprocessor.advanced?.type.ScribbleLines
+            image = graph.ScribblePreprocessor({
+                image: image,
+                resolution: scribble?.resolution ?? 512,
+            })._IMAGE
+            if (scribble?.saveProcessedImage) graph.SaveImage({ images: image, filename_prefix: 'cnet\\Scribble\\scribble' })
             else graph.PreviewImage({ images: image })
         }
     }

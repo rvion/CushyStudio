@@ -26,57 +26,46 @@ export const ui_subform_Tile = () => {
 export const ui_subform_Tile_Preprocessor = (form: FormBuilder) => {
     return form.groupOpt({
         label: 'Tile Preprocessor',
+        default: true,
         items: () => ({
-            type: form.choice({
-                label: 'Type',
+            advanced: form.groupOpt({
+                label: 'Advanced Preprocessor Settings',
                 items: () => ({
-                    Tile: ui_subform_Tile_pyrUp(form),
+                    ...cnet_preprocessor_ui_common(form),
+                    pyrup: form.int({ default: 3, min: 0 }),
+                    // TODO: Add support for auto-modifying the resolution based on other form selections
+                    // TODO: Add support for auto-cropping
                 }),
             }),
-            // TODO: Add support for auto-modifying the resolution based on other form selections
-            // TODO: Add support for auto-cropping
-        }),
-    })
-}
-
-export const ui_subform_Tile_pyrUp = (form: FormBuilder) => {
-    return form.group({
-        label: 'Tile Preprocessor',
-        items: () => ({
-            ...cnet_preprocessor_ui_common(form),
-            pyrup: form.int({ default: 3, min: 0 }),
         }),
     })
 }
 
 // 🅿️ Tile RUN ===================================================
-export const run_cnet_Tile = async (Tile: OutputFor<typeof ui_subform_Tile>, cnet_args: Cnet_args) => {
+export const run_cnet_Tile = async (Tile: OutputFor<typeof ui_subform_Tile>, cnet_args: Cnet_args, image: IMAGE) => {
     const run = getCurrentRun()
     const graph = run.nodes
-    let image: IMAGE
     const cnet_name = Tile.cnet_model_name
     //crop the image to the right size
     //todo: make these editable
     image = graph.ImageScale({
-        image: (await run.loadImageAnswer(Tile.image))._IMAGE,
+        image,
         width: cnet_args.width ?? 512,
         height: cnet_args.height ?? 512,
-        upscale_method: Tile.upscale_method,
-        crop: Tile.crop,
+        upscale_method: Tile.advanced?.upscale_method ?? 'lanczos',
+        crop: Tile.advanced?.crop ?? 'center',
     })._IMAGE
 
     // PREPROCESSOR - Tile ===========================================================
     if (Tile.preprocessor) {
-        if (Tile.preprocessor.type.Tile) {
-            const tile = Tile.preprocessor.type.Tile
-            image = graph.TilePreprocessor({
-                image: image,
-                resolution: tile.resolution,
-                pyrUp_iters: tile.pyrup,
-            })._IMAGE
-            if (tile.saveProcessedImage) graph.SaveImage({ images: image, filename_prefix: 'cnet\\Tile\\midas' })
-            else graph.PreviewImage({ images: image })
-        }
+        const tile = Tile.preprocessor.advanced
+        image = graph.TilePreprocessor({
+            image: image,
+            resolution: tile?.resolution ?? 512,
+            pyrUp_iters: tile?.pyrup ?? 3,
+        })._IMAGE
+        if (tile?.saveProcessedImage) graph.SaveImage({ images: image, filename_prefix: 'cnet\\Tile\\midas' })
+        else graph.PreviewImage({ images: image })
     }
 
     return { cnet_name, image }

@@ -28,16 +28,23 @@ export const ui_subform_Normal_Preprocessor = () => {
     const form = getCurrentForm()
     return form.groupOpt({
         label: 'Normal Preprocessor',
+        default: true,
         items: () => ({
-            type: form.choice({
-                label: 'Type',
+            advanced: form.groupOpt({
+                label: 'Advanced Preprocessor Settings',
                 items: () => ({
-                    MiDaS: ui_subform_Normal_Midas(),
-                    bae: ui_subform_Normal_bae(),
+                    type: form.choice({
+                        label: 'Type',
+                        default: 'MiDaS',
+                        items: () => ({
+                            MiDaS: ui_subform_Normal_Midas(),
+                            bae: ui_subform_Normal_bae(),
+                        }),
+                    }),
+                    // TODO: Add support for auto-modifying the resolution based on other form selections
+                    // TODO: Add support for auto-cropping
                 }),
             }),
-            // TODO: Add support for auto-modifying the resolution based on other form selections
-            // TODO: Add support for auto-cropping
         }),
     })
 }
@@ -65,40 +72,39 @@ export const ui_subform_Normal_bae = () => {
 }
 
 // 🅿️ Normal RUN ===================================================
-export const run_cnet_Normal = async (Normal: OutputFor<typeof ui_subform_Normal>, cnet_args: Cnet_args) => {
+export const run_cnet_Normal = async (Normal: OutputFor<typeof ui_subform_Normal>, cnet_args: Cnet_args, image: IMAGE) => {
     const run = getCurrentRun()
     const graph = run.nodes
-    let image: IMAGE
     const cnet_name = Normal.cnet_model_name
     //crop the image to the right size
     //todo: make these editable
     image = graph.ImageScale({
-        image: (await run.loadImageAnswer(Normal.image))._IMAGE,
+        image,
         width: cnet_args.width ?? 512,
         height: cnet_args.height ?? 512,
-        upscale_method: Normal.upscale_method,
-        crop: Normal.crop,
+        upscale_method: Normal.advanced?.upscale_method ?? 'lanczos',
+        crop: Normal.advanced?.crop ?? 'center',
     })._IMAGE
 
     // PREPROCESSOR - Normal ===========================================================
     if (Normal.preprocessor) {
-        if (Normal.preprocessor.type.MiDaS) {
-            const midas = Normal.preprocessor.type.MiDaS
-            image = graph.MiDaS$7NormalMapPreprocessor({
-                image: image,
-                resolution: midas.resolution,
-                a: midas.a_value,
-                bg_threshold: midas.bg_threshold,
-            })._IMAGE
-            if (midas.saveProcessedImage) graph.SaveImage({ images: image, filename_prefix: 'cnet\\Normal\\midas' })
-            else graph.PreviewImage({ images: image })
-        } else if (Normal.preprocessor.type.bae) {
-            const bae = Normal.preprocessor.type.bae
+        if (Normal.preprocessor.advanced?.type.bae) {
+            const bae = Normal.preprocessor.advanced.type.bae
             image = graph.BAE$7NormalMapPreprocessor({
                 image: image,
                 resolution: bae.resolution,
             })._IMAGE
             if (bae.saveProcessedImage) graph.SaveImage({ images: image, filename_prefix: 'cnet\\Normal\\bae' })
+            else graph.PreviewImage({ images: image })
+        } else {
+            const midas = Normal.preprocessor.advanced?.type.MiDaS
+            image = graph.MiDaS$7NormalMapPreprocessor({
+                image: image,
+                resolution: midas?.resolution ?? 512,
+                a: midas?.a_value ?? 6.28,
+                bg_threshold: midas?.bg_threshold ?? 0.1,
+            })._IMAGE
+            if (midas?.saveProcessedImage) graph.SaveImage({ images: image, filename_prefix: 'cnet\\Normal\\midas' })
             else graph.PreviewImage({ images: image })
         }
     }

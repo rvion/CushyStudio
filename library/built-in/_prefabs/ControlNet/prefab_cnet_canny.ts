@@ -32,30 +32,35 @@ export const ui_subform_Canny = () => {
 export const ui_subform_Canny_Preprocessor = (form: FormBuilder) => {
     return form.groupOpt({
         label: 'Canny Edge Preprocessor',
+        default: true,
         items: () => ({
-            ...cnet_preprocessor_ui_common(form),
-            lowThreshold: form.int({ default: 100, min: 0, max: 200, step: 10 }),
-            highThreshold: form.int({ default: 200, min: 0, max: 400, step: 10 }),
-            // TODO: Add support for auto-modifying the resolution based on other form selections
-            // TODO: Add support for auto-cropping
+            advanced: form.groupOpt({
+                label: 'Advanced Preprocessor Settings',
+                items: () => ({
+                    ...cnet_preprocessor_ui_common(form),
+                    lowThreshold: form.int({ default: 100, min: 0, max: 200, step: 10 }),
+                    highThreshold: form.int({ default: 200, min: 0, max: 400, step: 10 }),
+                    // TODO: Add support for auto-modifying the resolution based on other form selections
+                    // TODO: Add support for auto-cropping
+                }),
+            }),
         }),
     })
 }
 
 // 🅿️ Canny RUN ===================================================
-export const run_cnet_canny = async (canny: OutputFor<typeof ui_subform_Canny>, cnet_args: Cnet_args) => {
+export const run_cnet_canny = async (canny: OutputFor<typeof ui_subform_Canny>, cnet_args: Cnet_args, image: IMAGE) => {
     const run = getCurrentRun()
     const graph = run.nodes
-    let image: IMAGE
     const cnet_name = canny.cnet_model_name
     //crop the image to the right size
     //todo: make these editable
     image = graph.ImageScale({
-        image: (await run.loadImageAnswer(canny.image))._IMAGE,
+        image,
         width: cnet_args.width ?? 512,
         height: cnet_args.height ?? 512,
-        upscale_method: canny.upscale_method,
-        crop: canny.crop,
+        upscale_method: canny.advanced?.upscale_method ?? 'lanczos',
+        crop: canny.advanced?.crop ?? 'disabled',
     })._IMAGE
 
     // PREPROCESSOR - CANNY ===========================================================
@@ -63,11 +68,11 @@ export const run_cnet_canny = async (canny: OutputFor<typeof ui_subform_Canny>, 
         var canPP = canny.preprocessor
         image = graph.CannyEdgePreprocessor({
             image: image,
-            low_threshold: canPP.lowThreshold,
-            high_threshold: canPP.highThreshold,
-            resolution: canPP.resolution,
+            low_threshold: canPP.advanced?.lowThreshold ?? 100,
+            high_threshold: canPP.advanced?.highThreshold ?? 200,
+            resolution: canPP.advanced?.resolution ?? 512,
         })._IMAGE
-        if (canPP.saveProcessedImage) graph.SaveImage({ images: image, filename_prefix: 'cnet\\canny\\' })
+        if (canPP.advanced?.saveProcessedImage) graph.SaveImage({ images: image, filename_prefix: 'cnet\\canny\\' })
         else graph.PreviewImage({ images: image })
     }
 

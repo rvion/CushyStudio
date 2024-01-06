@@ -6,7 +6,7 @@ import { run_model, ui_model } from './_prefabs/prefab_model'
 import { run_prompt } from './_prefabs/prefab_prompt'
 import { ui_recursive } from './_prefabs/prefab_recursive'
 import { Ctx_sampler, run_sampler, ui_sampler } from './_prefabs/prefab_sampler'
-import { run_cnet, ui_cnet, Cnet_args } from './_prefabs/prefab_cnet'
+import { run_cnet, ui_cnet, Cnet_args, Cnet_return } from './_prefabs/prefab_cnet'
 import { run_improveFace_fromImage, run_improveFace_fromLatent, ui_improveFace } from './_prefabs/prefab_detailer'
 
 app({
@@ -91,6 +91,7 @@ app({
         let { latent, width, height } = await run_latent({ run: run, opts: ui.latent, vae })
 
         // CNETS -------------------------------------------------------------------------------
+        let cnet_out: Cnet_return | undefined
         if (ui.controlnets) {
             const Cnet_args: Cnet_args = {
                 positive,
@@ -99,7 +100,7 @@ app({
                 height,
                 ckptPos,
             }
-            var cnet_out = await run_cnet(ui.controlnets, Cnet_args)
+            cnet_out = await run_cnet(ui.controlnets, Cnet_args)
             positive = cnet_out.cnet_positive
             negative = cnet_out.cnet_negative
             ckptPos = cnet_out.ckpt_return //only used for ipAdapter, otherwise it will just be a passthrough
@@ -142,6 +143,15 @@ app({
         // }
 
         // SECOND PASS (a.k.a. highres fix) ---------------------------------------------------------
+        const ctx_sampler_fix: Ctx_sampler = {
+            ckpt: ckptPos,
+            clip: clipPos,
+            vae,
+            latent,
+            positive: cnet_out?.post_cnet_positive ?? positive,
+            negative: cnet_out?.post_cnet_negative ?? negative,
+            preview: false,
+        }
         if (ui.highResFix) {
             if (ui.highResFix.saveIntermediaryImage) {
                 graph.SaveImage({ images: graph.VAEDecode({ samples: latent, vae }) })
@@ -163,7 +173,7 @@ app({
                     sampler_name: 'ddim',
                     scheduler: 'ddim_uniform',
                 },
-                { ...ctx_sampler, latent, preview: false },
+                { ...ctx_sampler_fix, latent, preview: false },
             ).latent
         }
 
