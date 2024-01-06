@@ -119,51 +119,60 @@ export const run_cnet = async (opts: OutputFor<typeof ui_cnet>, cnet_args: Cnet_
                 const ip_adapter_result = run_cnet_IPAdapter(cnetImage.cnets.IPAdapter, cnet_args, image)
                 ckpt_return = (await ip_adapter_result).ip_adapted_model
             } else {
+                let strength: number | undefined
                 // CANNY ===========================================================
                 if (cnetImage.cnets.Canny) {
                     const cnet_return_canny = await run_cnet_canny(cnetImage.cnets.Canny, cnet_args, image)
+                    strength = cnetImage.cnets.Canny.strength
                     image = cnet_return_canny.image
                     cnet_name = cnet_return_canny.cnet_name
                 }
                 // POSE ===========================================================
                 else if (cnetImage.cnets.OpenPose) {
                     const cnet_return_openPose = await run_cnet_openPose(cnetImage.cnets.OpenPose, cnet_args, image)
+                    strength = cnetImage.cnets.OpenPose.strength
                     image = cnet_return_openPose.image
                     cnet_name = cnet_return_openPose.cnet_name
                 }
                 // DEPTH ===========================================================
                 else if (cnetImage.cnets.Depth) {
                     const cnet_return_depth = await run_cnet_Depth(cnetImage.cnets.Depth, cnet_args, image)
+                    strength = cnetImage.cnets.Depth.strength
                     image = cnet_return_depth.image
                     cnet_name = cnet_return_depth.cnet_name
                 }
                 // Normal ===========================================================
                 else if (cnetImage.cnets.Normal) {
                     const cnet_return_normal = await run_cnet_Normal(cnetImage.cnets.Normal, cnet_args, image)
+                    strength = cnetImage.cnets.Normal.strength
                     image = cnet_return_normal.image
                     cnet_name = cnet_return_normal.cnet_name
                 }
                 // Tile ===========================================================
                 else if (cnetImage.cnets.Tile) {
                     const cnet_return_tile = await run_cnet_Tile(cnetImage.cnets.Tile, cnet_args, image)
+                    strength = cnetImage.cnets.Tile.strength
                     image = cnet_return_tile.image
                     cnet_name = cnet_return_tile.cnet_name
                 }
                 // Scribble ===========================================================
                 else if (cnetImage.cnets.Scribble) {
                     const cnet_return_scribble = await run_cnet_Scribble(cnetImage.cnets.Scribble, cnet_args, image)
+                    strength = cnetImage.cnets.Scribble.strength
                     image = cnet_return_scribble.image
                     cnet_name = cnet_return_scribble.cnet_name
                 }
                 // Lineart ===========================================================
                 else if (cnetImage.cnets.Lineart) {
                     const cnet_return_lineart = await run_cnet_Lineart(cnetImage.cnets.Lineart, cnet_args, image)
+                    strength = cnetImage.cnets.Lineart.strength
                     image = cnet_return_lineart.image
                     cnet_name = cnet_return_lineart.cnet_name
                 }
                 // SoftEdge ===========================================================
                 else if (cnetImage.cnets.SoftEdge) {
                     const cnet_return_softedge = await run_cnet_SoftEdge(cnetImage.cnets.SoftEdge, cnet_args, image)
+                    strength = cnetImage.cnets.SoftEdge.strength
                     image = cnet_return_softedge.image
                     cnet_name = cnet_return_softedge.cnet_name
                 } else {
@@ -172,6 +181,7 @@ export const run_cnet = async (opts: OutputFor<typeof ui_cnet>, cnet_args: Cnet_
 
                 // CONTROL NET APPLY ===========================================================
                 const cnet_node = graph.ControlNetApplyAdvanced({
+                    strength: strength ?? 1,
                     positive: cnet_positive,
                     negative: cnet_negative,
                     image: /* 🔴 */ bang(image),
