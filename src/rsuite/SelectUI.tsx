@@ -9,7 +9,7 @@ import { searchMatches } from 'src/utils/misc/searchMatches'
 import { createPortal } from 'react-dom'
 import { nanoid } from 'nanoid'
 
-type PP<T> = {
+type SelectProps<T> = {
     label?: string
     /** callback when a new option is added */
     onChange: null | ((next: T, self: AutoCompleteSelectState<T>) => void)
@@ -25,6 +25,7 @@ type PP<T> = {
     value?: () => Maybe<T | T[]>
     /** if true, this widget is considered a multi-select */
     multiple?: boolean
+    placeholder?: string
     size?: RSSize
     disabled?: boolean
     cleanable?: boolean
@@ -40,7 +41,7 @@ class AutoCompleteSelectState<T> {
     /** for debugging purposes */
     _uid = nanoid()
 
-    constructor(public st: STATE, public p: PP<T>) {
+    constructor(public st: STATE, public p: SelectProps<T>) {
         makeAutoObservable(this, { anchorRef: false })
     }
     onChange = this.p.onChange
@@ -70,12 +71,19 @@ class AutoCompleteSelectState<T> {
     }
 
     get displayValue(): string {
-        if (this.p.hideValue) return ''
-        const sop = this.value
-        if (sop == null) return 'Select...'
-        const str = Array.isArray(sop) ? sop.map(this.p.getLabelText).join(', ') : this.p.getLabelText(sop)
-        if (this.p.label) return `${this.p.label}: ${str}`
-        return str
+        if (this.p.hideValue) return this.p.placeholder ?? ''
+        const value = this.value
+        const placeHolderStr = this.p.placeholder ?? 'Select...'
+        if (value == null) return placeHolderStr
+        if (Array.isArray(value)) {
+            const str = value.length === 0 ? placeHolderStr : value.map(this.p.getLabelText).join(', ')
+            if (this.p.label) return `${this.p.label}: ${str}`
+            return str
+        } else {
+            const str = this.p.getLabelText(value)
+            if (this.p.label) return `${this.p.label}: ${str}`
+            return str
+        }
     }
 
     anchorRef = React.createRef<HTMLInputElement>()
@@ -168,7 +176,7 @@ class AutoCompleteSelectState<T> {
     }
 }
 
-export const SelectUI = observer(function SelectUI_<T>(p: PP<T>) {
+export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
     const st = useSt()
     const s = useMemo(() => new AutoCompleteSelectState(st, p), [])
     return (

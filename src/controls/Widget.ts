@@ -1526,7 +1526,7 @@ export class Widget_choice      <T extends { [key: string]: Widget }> implements
 
 
 // 🅿️ choices ==============================================================================
-export type Widget_choices_opts <T extends { [key: string]: Widget }> = WidgetInputFields<{ items: () => T, defaultActiveBranches?: {[k in keyof T]?: boolean}  }>
+export type Widget_choices_opts <T extends { [key: string]: Widget }> = WidgetInputFields<{ items: () => T, defaultActiveBranches?: {[k in keyof T]?: boolean}, placeholder?: string  }>
 export type Widget_choices_serial<T extends { [key: string]: Widget }> = WidgetStateFields<{ type: 'choices', active: true; branches: {[k in keyof T]?: boolean}, values_: {[k in keyof T]: T[k]['$Serial']} }>
 export type Widget_choices_state <T extends { [key: string]: Widget }> = WidgetStateFields<{ type: 'choices', active: true; branches: {[k in keyof T]?: boolean}, values: T }>
 export type Widget_choices_output<T extends { [key: string]: Widget }> = { [k in keyof T]?: GetWidgetResult<T[k]> }

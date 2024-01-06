@@ -24,6 +24,7 @@ export const WidgetChoicesUI = observer(function WidgetChoicesUI_(p: { widget: W
             <div tw='flex items-start w-full'>
                 <SelectUI<Entry>
                     tw='flex-grow'
+                    placeholder={p.widget.input.placeholder}
                     value={() =>
                         Object.entries(req.state.branches)
                             .map(([key, value]) => ({ key, value }))

@@ -33,7 +33,8 @@ export const ui_cnet = () => {
                                     'There is currently a bug with multiple controlnets where an image wont allow drop except for the first controlnet in the list. If you add multiple controlnets, then reload using Ctrl+R, it should allow you to drop an image on any of the controlnets.',
                             }),
                             cnets: form.choices({
-                                label: 'Pick Cnets=>',
+                                label: false, //'Pick Cnets=>',
+                                placeholder: 'ControlNets...',
                                 items: () => ({
                                     OpenPose: ui_subform_OpenPose(),
                                     Canny: ui_subform_Canny(),
