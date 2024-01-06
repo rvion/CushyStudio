@@ -17,7 +17,7 @@ type ModelFile = {
     models: ModelInfo[]
 }
 
-const knownModelsFile: ModelFile = JSON.parse(readFileSync('src/wiki/model-list.json', 'utf8'))
+const knownModelsFile: ModelFile = JSON.parse(readFileSync('src/wiki/jsons/model-list.json', 'utf8'))
 const knownModelList = knownModelsFile.models
 
 export const knownModels = new Map<KnownModelName, ModelInfo>()

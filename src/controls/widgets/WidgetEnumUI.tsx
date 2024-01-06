@@ -41,7 +41,10 @@ export const EnumDownloaderUI = observer(function EnumDownloaderUI_<K extends Kn
                                     // copy Data-it implementation
 
                                     // download file
-                                    const res = await host.downloadFileIfMissing(m.url, dlPath)
+                                    const res = await host.getComfyUIManager()?.installModel(m)
+                                    if (!res) return
+
+                                    // const res = await host.downloadFileIfMissing(m.url, dlPath)
 
                                     // retrieve the enum info
                                     // add the new value (BRITTLE)

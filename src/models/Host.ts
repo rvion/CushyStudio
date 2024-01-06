@@ -12,6 +12,7 @@ import { asRelativePath } from 'src/utils/fs/pathUtils'
 import { toastError, toastSuccess } from 'src/utils/misc/toasts'
 import { downloadFile } from 'src/utils/fs/downloadFile'
 import { knownCustomNodes, KnownCustomNodes } from 'src/wiki/customNodeList'
+import { ComfyUIManager } from 'src/wiki/managerAPI'
 export interface HostL extends LiveInstance<HostT, HostL> {}
 
 export class HostL {
@@ -21,6 +22,7 @@ export class HostL {
     get isReadonly(): boolean {
         return this.data.isReadonly ? true : false
     }
+
     /** root install of ComfyUI on the host filesystem */
     get absolutePathToComfyUI() {
         return this.data.absolutePathToComfyUI
@@ -32,6 +34,12 @@ export class HostL {
             this.data.absolutPathToDownloadModelsTo ?? //
             `${this.data.absolutePathToComfyUI}/models/checkpoints`
         )
+    }
+
+    private _comfyUIManager: Maybe<ComfyUIManager> = null
+    getComfyUIManager() {
+        if (this._comfyUIManager === null) this._comfyUIManager = new ComfyUIManager(this)
+        return this._comfyUIManager
     }
 
     // INIT -----------------------------------------------------------------------------
