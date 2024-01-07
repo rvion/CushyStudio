@@ -105,7 +105,8 @@ export const getKnownModels = (p?: {
 
     if (p?.genTypes) {
         let out = 'export type ComfyUIManagerKnownModelNames ='
-        for (const modelInfo of knownModelList) {
+        const sortedModels = knownModelList.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()))
+        for (const modelInfo of sortedModels) {
             out += `\n    | ${JSON.stringify(modelInfo.name)}`
         }
         writeFileSync('src/wiki/modelListType.ts', out + '\n', 'utf-8')
