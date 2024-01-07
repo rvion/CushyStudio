@@ -3,7 +3,7 @@ import type { RSSize } from './RsuiteTypes'
 
 import { makeAutoObservable } from 'mobx'
 import { observer } from 'mobx-react-lite'
-import React, { useMemo } from 'react'
+import React, { useMemo, useRef } from 'react'
 import { useSt } from 'src/state/stateContext'
 import { searchMatches } from 'src/utils/misc/searchMatches'
 import { createPortal } from 'react-dom'
@@ -100,6 +100,11 @@ class AutoCompleteSelectState<T> {
         }
     }
 
+    onTooltipMouseOut = (ev: React.MouseEvent<HTMLUListElement, MouseEvent>) => {
+        // ev.preventDefault()
+        // ev.stopPropagation()
+        this.closeMenu()
+    }
     onRealWidgetMouseDown = (ev: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
         // ev.preventDefault()
         // ev.stopPropagation()
@@ -193,9 +198,12 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
                 {/* ANCHOR */}
                 <div //
                     tabIndex={-1}
-                    tw='input input-bordered input-sm w-full overflow-hidden'
+                    tw='input input-bordered input-sm w-full overflow-hidden pl-0 flex items-center'
                 >
-                    {s.displayValue}
+                    <div tw='btn btn-square btn-sm mr-1'>
+                        <span className='material-symbols-outlined'>search</span>
+                    </div>
+                    <div tw='whitespace-nowrap overflow-hidden'>{s.displayValue}</div>
                 </div>
                 <div tw='absolute top-0 left-0 right-0 z-50'>
                     <input
@@ -227,7 +235,10 @@ export const SelectPopupUI = observer(function SelectPopupUI_<T>(p: { s: AutoCom
     const s = p.s
     return createPortal(
         <ul
+            onMouseLeave={s.onTooltipMouseOut}
+            className='_SelectPopupUI p-2 bg-base-100 shadow-2xl max-h-96 overflow-auto'
             style={{
+                minWidth: s.anchorRef.current?.clientWidth ?? '100%',
                 pointerEvents: 'initial',
                 position: 'absolute',
                 zIndex: 99999999,
@@ -235,7 +246,6 @@ export const SelectPopupUI = observer(function SelectPopupUI_<T>(p: { s: AutoCom
                 left: `${s.tooltipPosition.left}px`,
                 // Adjust positioning as needed
             }}
-            className='_SelectPopupUI p-2 bg-base-100 shadow-2xl max-h-60 overflow-auto'
         >
             {s.filteredOptions.length === 0 ? <li className='p-2'>No results</li> : null}
             {s.filteredOptions.map((option, index) => {
@@ -248,10 +258,13 @@ export const SelectPopupUI = observer(function SelectPopupUI_<T>(p: { s: AutoCom
                     <li
                         key={index}
                         style={{ minWidth: '10rem' }}
-                        className={`p-2 hover:bg-base-300 cursor-pointer ${index === s.selectedIndex ? 'bg-base-300' : ''}`}
-                        tw={[isSelected && 'bg-primary text-primary-content']}
+                        className={`p-0.5 hover:bg-base-300 cursor-pointer ${index === s.selectedIndex ? 'bg-base-300' : ''}`}
+                        tw={['flex items-center gap-1']}
                         onMouseDown={(ev) => s.onMenuEntryClick(ev, index)}
                     >
+                        <div>
+                            <input checked={isSelected} type='checkbox' tw='checkbox checkbox-primary input-xs' />
+                        </div>
                         {/* {isSelected ? '🟢' : null} */}
                         {s.p.getLabelUI //
                             ? s.p.getLabelUI(option)
