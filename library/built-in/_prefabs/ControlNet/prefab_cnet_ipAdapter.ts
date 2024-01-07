@@ -43,7 +43,8 @@ export const ui_subform_IPAdapter = () => {
                 default: {
                     value: 'model.safetensors',
                     knownModel: [
-                        'CLIPVision model (IP-Adapter)',
+                        'CLIPVision model (IP-Adapter) 1.5',
+                        'CLIPVision model (IP-Adapter) XL',
                         'CLIPVision model (openai/clip-vit-large)',
                         'CLIPVision model (stabilityai/clip_vision_g)',
                     ],

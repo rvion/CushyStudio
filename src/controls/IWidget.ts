@@ -1,5 +1,5 @@
 import type { KnownCustomNodes } from 'src/wiki/customNodeList'
-import { KnownModelName } from 'src/wiki/modelList'
+import { ComfyUIManagerKnownModelNames } from 'src/wiki/modelListType'
 
 export type WidgetTypeHelpers<T, I, X extends { type: T }, S, O> = {
     $Input: I
@@ -40,6 +40,6 @@ export type WidgetInputFields<X> = X & {
     startCollapsed?: boolean
     showID?: boolean
     customNodes?: KnownCustomNodes | KnownCustomNodes[]
-    customModels?: KnownModelName | KnownModelName[]
-    summary?: (self: X) => string
+    customModels?: ComfyUIManagerKnownModelNames | ComfyUIManagerKnownModelNames[]
+    // summary?: (self: X) => string
 }

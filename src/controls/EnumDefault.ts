@@ -1,5 +1,6 @@
 import type { EnumValue } from 'src/models/Schema'
-import { knownModels, type KnownModelName, type ModelInfo } from 'src/wiki/modelList'
+import { getKnownModels, type ModelInfo } from 'src/wiki/modelList'
+import { type ComfyUIManagerKnownModelNames } from 'src/wiki/modelListType'
 
 export const extractDefaultValue = <T extends KnownEnumNames>(def: EnumValue | EnumDefault): Maybe<EnumValue> => {
     if (def == null) return null
@@ -12,6 +13,7 @@ export const extractDefaultValue = <T extends KnownEnumNames>(def: EnumValue | E
     const x = def.knownModel
     if (x != null) {
         const entry = Array.isArray(x) ? x[0] : x
+        const knownModels = getKnownModels()
         const modelInfo = knownModels.get(entry)
         if (modelInfo == null) {
             console.error(`Unknown model: ${entry}`)
@@ -26,6 +28,7 @@ export const extractDefaultValue = <T extends KnownEnumNames>(def: EnumValue | E
 
 // 🔴 rewrite that
 export const extractDownloadCandidates = <T extends KnownEnumNames>(def: EnumValue | EnumDefault): Maybe<ModelInfo[]> => {
+    const knownModels = getKnownModels()
     if (typeof def !== 'object') return null
     if (!('knownModel' in def)) return null
     if (def.knownModel == null) return null
@@ -50,7 +53,7 @@ export type EnumDefault<T extends KnownEnumNames = any> = {
     /** 🔴 UNIMPLEMENTED */
     values?: string[]
     /** 🔶 */
-    knownModel?: KnownModelName | KnownModelName[]
+    knownModel?: ComfyUIManagerKnownModelNames | ComfyUIManagerKnownModelNames[]
     /** 🔴 UNIMPLEMENTED */
     find?: (candidate: string) => number
     /** 🔴 UNIMPLEMENTED */

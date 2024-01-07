@@ -1,4 +1,5 @@
 import { downloadFile } from 'src/utils/fs/downloadFile'
+import { getKnownModels } from './modelList'
 
 await downloadFile(
     'https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/main/alter-list.json',
@@ -16,3 +17,10 @@ await downloadFile(
     'https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/main/model-list.json',
     'src/wiki/jsons/model-list.json',
 )
+
+getKnownModels({
+    //
+    updateCache: true,
+    check: true,
+    genTypes: true,
+})

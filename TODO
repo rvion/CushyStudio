@@ -9,7 +9,7 @@ cnets:
     ☐ list UI is just hard to read
     ☐ review how prefabs canons
 
-
+    ✔ duplicated 'CLIPVision model (IP-Adapter)' + finish fixing the ip adapter @done(24-01-07 09:40)
     ☐ unbreak the select sub-selects (add tests)
 
 Todo :
