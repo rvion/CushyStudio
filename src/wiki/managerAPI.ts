@@ -37,6 +37,18 @@ export class ComfyUIManager {
         }
     }
 
+    installCustomNode = async (model: ModelInfo) => {
+        try {
+            const status = await this.fetchPost('/customnode/install', model)
+            toastSuccess('Custom Node installed')
+            return true
+        } catch (exception) {
+            console.error(`Install failed: ${/*model.title*/ ''} / ${exception}`)
+            toastError('Custom Node Installation Failed')
+            return false
+        }
+    }
+
     private fetchPost = async <In, Out>(
         //
         endopint: string,
