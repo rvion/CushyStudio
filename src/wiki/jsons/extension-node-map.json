@@ -822,7 +822,8 @@
     ],
     "https://github.com/Hangover3832/ComfyUI-Hangover-Nodes": [
         [
-            "MS kosmos-2 Interrogator"
+            "MS kosmos-2 Interrogator",
+            "Save Image w/o Metadata"
         ],
         {
             "title_aux": "ComfyUI-Hangover-Nodes"
@@ -2007,6 +2008,8 @@
             "FC FaceSegAndReplace",
             "FC FaceSegment",
             "FC MaskOP",
+            "FC RemoveCannyFace",
+            "FC ReplaceByMask",
             "FCStyleLoraLoad"
         ],
         {
@@ -3755,6 +3758,15 @@
             "title_aux": "SDXL Auto Prompter"
         }
     ],
+    "https://github.com/daniel-lewis-ab/ComfyUI-Llama": [
+        [
+            "Call LLM",
+            "Load LLM Model"
+        ],
+        {
+            "title_aux": "ComfyUI-Llama"
+        }
+    ],
     "https://github.com/dawangraoming/ComfyUI_ksampler_gpu/raw/main/ksampler_gpu.py": [
         [
             "KSamplerAdvancedGPU",
@@ -3822,6 +3834,14 @@
         ],
         {
             "title_aux": "ComfyUI-Vextra-Nodes"
+        }
+    ],
+    "https://github.com/djbielejeski/a-person-mask-generator": [
+        [
+            "APersonMaskGenerator"
+        ],
+        {
+            "title_aux": "a-person-mask-generator"
         }
     ],
     "https://github.com/dmarx/ComfyUI-AudioReactive": [
@@ -4476,7 +4496,8 @@
     "https://github.com/kft334/Knodes": [
         [
             "Image(s) To Websocket (Base64)",
-            "ImageOutput"
+            "ImageOutput",
+            "Load Image(s) From Websocket (Base64)"
         ],
         {
             "title_aux": "Knodes"
@@ -4571,6 +4592,14 @@
         ],
         {
             "title_aux": "ComfyUI_GradientDeepShrink"
+        }
+    ],
+    "https://github.com/kinfolk0117/ComfyUI_Pilgram": [
+        [
+            "Pilgram"
+        ],
+        {
+            "title_aux": "ComfyUI_Pilgram"
         }
     ],
     "https://github.com/kinfolk0117/ComfyUI_SimpleTiles": [
@@ -5670,6 +5699,17 @@
             "title_aux": "comfyui-mixlab-nodes"
         }
     ],
+    "https://github.com/shiimizu/ComfyUI-TiledDiffusion": [
+        [
+            "NoiseInversion",
+            "TiledDiffusion",
+            "VAEDecodeTiled_TiledDiffusion",
+            "VAEEncodeTiled_TiledDiffusion"
+        ],
+        {
+            "title_aux": "Tiled Diffusion & VAE for ComfyUI"
+        }
+    ],
     "https://github.com/shiimizu/ComfyUI_smZNodes": [
         [
             "smZ CLIPTextEncode",
@@ -5822,6 +5862,14 @@
             "title_aux": "ComfyUI-Coziness"
         }
     ],
+    "https://github.com/smagnetize/kb-comfyui-nodes": [
+        [
+            "SingleImageDataUrlLoader"
+        ],
+        {
+            "title_aux": "kb-comfyui-nodes"
+        }
+    ],
     "https://github.com/space-nuko/ComfyUI-Disco-Diffusion": [
         [
             "DiscoDiffusion_DiscoDiffusion",
@@ -5864,10 +5912,16 @@
     ],
     "https://github.com/spacepxl/ComfyUI-Image-Filters": [
         [
+            "AdainImage",
+            "AdainLatent",
             "AlphaClean",
             "AlphaMatte",
+            "BatchNormalizeImage",
+            "BatchNormalizeLatent",
             "BlurImageFast",
             "BlurMaskFast",
+            "ClampOutliers",
+            "DifferenceChecker",
             "DilateErodeMask",
             "EnhanceDetail",
             "GuidedFilterAlpha",

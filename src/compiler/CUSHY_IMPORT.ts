@@ -1,5 +1,5 @@
 import * as mobx from 'mobx'
-
+import * as fs from 'fs'
 import { observer } from 'mobx-react-lite'
 import __react from 'react'
 
@@ -10,6 +10,7 @@ export const CUSHY_IMPORT = (mod: string) => {
     console.log('🔴 mod', mod)
     if (mod === 'react') return __react
     if (mod === 'mobx') return mobx
+    if (mod === 'fs') return fs
     if (mod === 'mobx-react-lite') return { observer: observer }
     if (mod === 'react/jsx-runtime') return { jsx, jsxs }
     throw new Error('unsupported import: ' + mod)

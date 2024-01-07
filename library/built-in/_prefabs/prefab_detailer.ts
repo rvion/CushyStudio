@@ -6,8 +6,8 @@ export const ui_improveFace = () => {
             faces: form.enum({
                 //
                 enumName: 'Enum_UltralyticsDetectorProvider_model_name',
-                default: {
-                    value: 'bbox/face_yolov8m.pt',
+                default: { value: 'bbox/face_yolov8m.pt' },
+                recommandedModels: {
                     knownModel: [
                         //
                         'face_yolov8m (bbox)',

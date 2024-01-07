@@ -1,192 +1,166 @@
+import { Static, Type } from '@sinclair/typebox'
+import { Value, ValueError } from '@sinclair/typebox/value'
+
 // https://github.com/ltdrdata/ComfyUI-Manager/blob/main/model-list.json
-import { readFileSync } from 'fs'
+import { readFileSync, writeFileSync } from 'fs'
+import { ComfyUIManagerKnownModelNames, ComfyUIManagerKnownModelTypes } from './modelListType'
 
 // prettier-ignore
 export type ModelInfo = {
-    "name"       : string, // "ip-adapter_sd15_light.safetensors",
-    "type"       : string, // "IP-Adapter",
-    "base"       : string, // "SD1.5",
-    "save_path"  : string, // "ipadapter",
-    "description": string, // "You can use this model in the [a/ComfyUI IPAdapter plus](https://github.com/cubiq/ComfyUI_IPAdapter_plus) extension.",
-    "reference"  : string, // "https://huggingface.co/h94/IP-Adapter",
-    "filename"   : string, // "ip-adapter_sd15_light.safetensors",
-    "url"        : string, // "https://huggingface.co/h94/IP-Adapter/resolve/main/models/ip-adapter_sd15_light.safetensors"
+    "name"       : ComfyUIManagerKnownModelNames , // e.g. "ip-adapter_sd15_light.safetensors",
+    "type"       : ComfyUIManagerKnownModelTypes, // e.g. "IP-Adapter",
+    "base"       : string, // e.g. "SD1.5",
+    "save_path"  : string, // e.g. "ipadapter",
+    "description": string, // e.g. "You can use this model in the [a/ComfyUI IPAdapter plus](https://github.com/cubiq/ComfyUI_IPAdapter_plus) extension.",
+    "reference"  : string, // e.g. "https://huggingface.co/h94/IP-Adapter",
+    "filename"   : string, // e.g. "ip-adapter_sd15_light.safetensors",
+    "url"        : string, // e.g. "https://huggingface.co/h94/IP-Adapter/resolve/main/models/ip-adapter_sd15_light.safetensors"
 }
 
-type ModelFile = {
+export const ModelInfo_Schema = Type.Object(
+    {
+        name: Type.Any(Type.String()),
+        type: Type.Any(Type.String()),
+        base: Type.String(),
+        save_path: Type.String(),
+        description: Type.String(),
+        reference: Type.String(),
+        filename: Type.String(),
+        url: Type.String(),
+    },
+    { additionalProperties: false },
+)
+
+/* ✅ */ type ModelInfo2 = Static<typeof ModelInfo_Schema>
+/* ✅ */ const _t1: ModelInfo = 0 as any as ModelInfo2
+/* ✅ */ const _t2: ModelInfo2 = 0 as any as ModelInfo
+
+/**
+ * try to replicate the logic of ComfyUIManager to extract the final
+ * file path of a downloaded managed model
+ */
+export const getModelInfoFinalFilePath = (mi: ModelInfo): string => {
+    /**
+     * the wide data-lt once told:
+     *
+     * | if save_path is 'default'
+     * | models/type'/filename
+     *
+     * | if type is "checkpoint"
+     * | models/checkpoints/filename
+     *
+     * | if save_path not starting with custom node
+     * | base path is models
+     * | e.g. save_path is "checkpoints/SD1.5"
+     * | models/checkpoints/SD1.5/filename
+     * | save_path is "custom_nodes/AAA/models"
+     * | custom_nodes/AAA/models/filename
+     *
+     */
+    if (mi.save_path === 'default') return `models/${mi.type}/${mi.filename}`
+    if (mi.type === 'checkpoint') return `models/checkpoints/${mi.filename}`
+    if (mi.save_path.startsWith('custom_nodes')) return `${mi.save_path}/${mi.filename}`
+    else return `models/${mi.save_path}/${mi.filename}`
+}
+
+export const getModelInfoEnumName = (mi: ModelInfo, prefix: string = ''): { win: string; nix: string } => {
+    const relPath = getModelInfoFinalFilePath(mi)
+
+    const winPath = relPath.replace(/\//g, '\\')
+    const winPrefix = prefix?.replace(/\//g, '\\')
+    const isUnderPrefixWin = winPath.startsWith(winPrefix)
+
+    const nixPath = relPath.replace(/\\/g, '/')
+    const nixPrefix = prefix?.replace(/\//g, '\\')
+    const isUnderPrefixNix = nixPath.startsWith(nixPrefix)
+
+    const isUnderPrefix = isUnderPrefixNix || isUnderPrefixWin
+    return {
+        win: isUnderPrefix ? winPath.slice(winPrefix.length) : mi.filename /* winRel */,
+        nix: isUnderPrefix ? nixPath.slice(nixPrefix.length) : mi.filename /* nixRel */,
+    }
+}
+
+export type ModelFile = {
     models: ModelInfo[]
 }
 
-const knownModelsFile: ModelFile = JSON.parse(readFileSync('src/wiki/model-list.json', 'utf8'))
-const knownModelList = knownModelsFile.models
+type KnownModelMap = Map<ComfyUIManagerKnownModelNames, ModelInfo>
 
-export const knownModels = new Map<KnownModelName, ModelInfo>()
-for (const modelInfo of knownModelList) {
-    knownModels.set(modelInfo.name as KnownModelName, modelInfo)
+let knownModels: Maybe<KnownModelMap> = null
+
+export const getKnownModels = (p?: {
+    //
+    updateCache?: boolean
+    check?: boolean
+    genTypes?: boolean
+}): KnownModelMap => {
+    if (knownModels != null && !p?.updateCache) return knownModels
+
+    const knownModelsFile: ModelFile = JSON.parse(readFileSync('src/wiki/jsons/model-list.json', 'utf8'))
+    const knownModelsFileExtra: ModelFile = JSON.parse(readFileSync('src/wiki/jsons/model-list-extra.json', 'utf8'))
+    const knownModelList = knownModelsFile.models.concat(knownModelsFileExtra.models)
+
+    let hasErrors = false
+
+    knownModels = new Map<ComfyUIManagerKnownModelNames, ModelInfo>()
+
+    for (const modelInfo of knownModelList) {
+        knownModels.set(modelInfo.name as ComfyUIManagerKnownModelNames, modelInfo)
+
+        if (!hasErrors && p?.check) {
+            const valid = Value.Check(ModelInfo_Schema, modelInfo)
+            if (!valid) {
+                const errors: ValueError[] = [...Value.Errors(ModelInfo_Schema, modelInfo)]
+                console.error(`❌ model doesn't match schema:`, modelInfo)
+                console.error(`❌ errors`, errors)
+                for (const i of errors) console.log(`❌`, JSON.stringify(i))
+                hasErrors = false
+                // debugger
+            }
+        }
+    }
+
+    if (p?.genTypes) {
+        let out = ''
+        // categories
+        const uniqCategories: { [key: string]: number } = knownModelList.reduce((acc, cur) => {
+            if (acc[cur.type] != null) acc[cur.type] += 1
+            else acc[cur.type] = 1
+            return acc
+        }, {} as { [key: string]: number })
+        out += 'export type ComfyUIManagerKnownModelTypes =\n'
+        for (const [cat, count] of Object.entries(uniqCategories))
+            out += `    | ${JSON.stringify(cat).padEnd(20)} // x ${count.toString().padStart(3)}\n`
+        out += '\n'
+
+        // list
+        const sortedModels = knownModelList.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()))
+        out += 'export type ComfyUIManagerKnownModelNames =\n'
+        for (const modelInfo of sortedModels) out += `    | ${JSON.stringify(modelInfo.name)}\n`
+        out += '\n'
+
+        writeFileSync('src/wiki/modelListType.ts', out + '\n', 'utf-8')
+    }
+
+    if (p?.check) {
+        //
+        console.log(`${knownModelList.length} models found`)
+        console.log(`${knownModels.size} models registered map`)
+        if (knownModelList.length !== knownModels.size)
+            console.log(`❌ some models are either duplicated or have overlapping indexing keys`)
+        //
+        if (hasErrors) console.log(`❌ some models don't match schema`)
+        else console.log(`✅ all models match schema`)
+    }
+
+    return knownModels
 }
 
-export type KnownModelName =
-    | 'TAESDXL Decoder'
-    | 'TAESDXL Encoder'
-    | 'TAESD Decoder'
-    | 'TAESD Encoder'
-    | 'RealESRGAN x2'
-    | 'RealESRGAN x4'
-    | 'ESRGAN x4'
-    | '4x_foolhardy_Remacri'
-    | '4x-AnimeSharp'
-    | '4x-UltraSharp'
-    | '4x_NMKD-Siax_200k'
-    | '8x_NMKD-Superscale_150000_G'
-    | 'Inswapper-fp16 (face swap)'
-    | 'Inswapper (face swap)'
-    | 'Deepbump'
-    | 'GFPGAN 1.3'
-    | 'GFPGAN 1.4'
-    | 'RestoreFormer'
-    | 'Stable Video Diffusion Image-to-Video'
-    | 'stabilityai/Stable Zero123'
-    | 'Stable Video Diffusion Image-to-Video (XT)'
-    | 'negative_hand Negative Embedding'
-    | 'bad_prompt Negative Embedding'
-    | 'Deep Negative V1.75'
-    | 'EasyNegative'
-    | 'SDXL-Turbo 1.0 (fp16)'
-    | 'SDXL-Turbo 1.0'
-    | 'sd_xl_base_1.0_0.9vae.safetensors'
-    | 'sd_xl_base_1.0.safetensors'
-    | 'sd_xl_refiner_1.0_0.9vae.safetensors'
-    | 'stable-diffusion-xl-refiner-1.0'
-    | 'diffusers/stable-diffusion-xl-1.0-inpainting-0.1 (UNET/fp16)'
-    | 'diffusers/stable-diffusion-xl-1.0-inpainting-0.1 (UNET)'
-    | 'sd_xl_offset_example-lora_1.0.safetensors'
-    | 'v1-5-pruned-emaonly.ckpt'
-    | 'v2-1_512-ema-pruned.safetensors'
-    | 'v2-1_768-ema-pruned.safetensors'
-    | 'AbyssOrangeMix2 (hard)'
-    | 'AbyssOrangeMix3 A1'
-    | 'AbyssOrangeMix3 A3'
-    | 'Anything v3 (fp16; pruned)'
-    | 'Waifu Diffusion 1.5 Beta3 (fp16)'
-    | 'illuminatiDiffusionV1_v11 unCLIP model'
-    | 'Waifu Diffusion 1.5 unCLIP model'
-    | 'sdxl_vae.safetensors'
-    | 'vae-ft-mse-840000-ema-pruned'
-    | 'orangemix.vae'
-    | 'kl-f8-anime2'
-    | 'LCM LoRA SD1.5'
-    | 'LCM LoRA SSD-1B'
-    | 'LCM LoRA SDXL'
-    | 'Segmind-Vega'
-    | 'Segmind-VegaRT - Latent Consistency Model (LCM) LoRA of Segmind-Vega'
-    | "Theovercomer8's Contrast Fix (SD2.1)"
-    | "Theovercomer8's Contrast Fix (SD1.5)"
-    | 'T2I-Adapter (depth)'
-    | 'T2I-Adapter (seg)'
-    | 'T2I-Adapter (sketch)'
-    | 'T2I-Adapter (keypose)'
-    | 'T2I-Adapter (openpose)'
-    | 'T2I-Adapter (color)'
-    | 'T2I-Adapter (canny)'
-    | 'T2I-Style model'
-    | 'CiaraRowles/TemporalNet2'
-    | 'CiaraRowles/TemporalNet1XL (1.0)'
-    | 'CLIPVision model (stabilityai/clip_vision_g)'
-    | 'CLIPVision model (openai/clip-vit-large)'
-    | 'CLIPVision model (IP-Adapter)'
-    | 'CLIPVision model (IP-Adapter)'
-    | 'stabilityai/control-lora-canny-rank128.safetensors'
-    | 'stabilityai/control-lora-depth-rank128.safetensors'
-    | 'stabilityai/control-lora-recolor-rank128.safetensors'
-    | 'stabilityai/control-lora-sketch-rank128-metadata.safetensors'
-    | 'stabilityai/control-lora-canny-rank256.safetensors'
-    | 'stabilityai/control-lora-depth-rank256.safetensors'
-    | 'stabilityai/control-lora-recolor-rank256.safetensors'
-    | 'stabilityai/control-lora-sketch-rank256.safetensors'
-    | 'kohya-ss/ControlNet-LLLite: SDXL Canny Anime'
-    | 'SDXL-controlnet: OpenPose (v2)'
-    | 'controlnet-SargeZT/controlnet-sd-xl-1.0-softedge-dexined'
-    | 'controlnet-SargeZT/controlnet-sd-xl-1.0-depth-16bit-zoe'
-    | 'ControlNet-v1-1 (ip2p; fp16)'
-    | 'ControlNet-v1-1 (shuffle; fp16)'
-    | 'ControlNet-v1-1 (canny; fp16)'
-    | 'ControlNet-v1-1 (depth; fp16)'
-    | 'ControlNet-v1-1 (inpaint; fp16)'
-    | 'ControlNet-v1-1 (lineart; fp16)'
-    | 'ControlNet-v1-1 (mlsd; fp16)'
-    | 'ControlNet-v1-1 (normalbae; fp16)'
-    | 'ControlNet-v1-1 (openpose; fp16)'
-    | 'ControlNet-v1-1 (scribble; fp16)'
-    | 'ControlNet-v1-1 (seg; fp16)'
-    | 'ControlNet-v1-1 (softedge; fp16)'
-    | 'ControlNet-v1-1 (anime; fp16)'
-    | 'ControlNet-v1-1 (tile; fp16; v11u)'
-    | 'ControlNet-v1-1 (tile; fp16; v11f1e)'
-    | 'GLIGEN textbox (fp16; pruned)'
-    | 'ViT-H SAM model'
-    | 'ViT-L SAM model'
-    | 'ViT-B SAM model'
-    | 'seecoder v1.0'
-    | 'seecoder pa v1.0'
-    | 'seecoder anime v1.0'
-    | 'face_yolov8m (bbox)'
-    | 'face_yolov8n (bbox)'
-    | 'face_yolov8n_v2 (bbox)'
-    | 'face_yolov8s (bbox)'
-    | 'hand_yolov8n (bbox)'
-    | 'hand_yolov8s (bbox)'
-    | 'person_yolov8m (segm)'
-    | 'person_yolov8n (segm)'
-    | 'person_yolov8s (segm)'
-    | 'deepfashion2_yolov8s (segm)'
-    | 'face_yolov8m-seg_60.pt (segm)'
-    | 'face_yolov8n-seg2_60.pt (segm)'
-    | 'hair_yolov8n-seg_60.pt (segm)'
-    | 'skin_yolov8m-seg_400.pt (segm)'
-    | 'skin_yolov8n-seg_400.pt (segm)'
-    | 'skin_yolov8n-seg_800.pt (segm)'
-    | 'animatediff/mmd_sd_v14.ckpt (comfyui-animatediff)'
-    | 'animatediff/mm_sd_v15.ckpt (comfyui-animatediff)'
-    | 'animatediff/mmd_sd_v14.ckpt (ComfyUI-AnimateDiff-Evolved)'
-    | 'animatediff/mm_sd_v15.ckpt (ComfyUI-AnimateDiff-Evolved)'
-    | 'animatediff/mm_sd_v15_v2.ckpt (ComfyUI-AnimateDiff-Evolved)'
-    | 'animatediff/v3_sd15_sparsectrl_rgb.ckpt (ComfyUI-AnimateDiff-Evolved)'
-    | 'animatediff/v3_sd15_sparsectrl_scribble.ckpt'
-    | 'animatediff/v3_sd15_mm.ckpt (ComfyUI-AnimateDiff-Evolved)'
-    | 'animatediff/v3_sd15_adapter.ckpt'
-    | 'animatediff/mm_sdxl_v10_beta.ckpt (ComfyUI-AnimateDiff-Evolved)'
-    | 'AD_Stabilized_Motion/mm-Stabilized_high.pth (ComfyUI-AnimateDiff-Evolved)'
-    | 'AD_Stabilized_Motion/mm-Stabilized_mid.pth (ComfyUI-AnimateDiff-Evolved)'
-    | 'CiaraRowles/temporaldiff-v1-animatediff.ckpt (ComfyUI-AnimateDiff-Evolved)'
-    | 'animatediff/v2_lora_PanLeft.ckpt (ComfyUI-AnimateDiff-Evolved)'
-    | 'animatediff/v2_lora_PanRight.ckpt (ComfyUI-AnimateDiff-Evolved)'
-    | 'animatediff/v2_lora_RollingAnticlockwise.ckpt (ComfyUI-AnimateDiff-Evolved)'
-    | 'animatediff/v2_lora_RollingClockwise.ckpt (ComfyUI-AnimateDiff-Evolved)'
-    | 'animatediff/v2_lora_TiltDown.ckpt (ComfyUI-AnimateDiff-Evolved)'
-    | 'animatediff/v2_lora_TiltUp.ckpt (ComfyUI-AnimateDiff-Evolved)'
-    | 'animatediff/v2_lora_ZoomIn.ckpt (ComfyUI-AnimateDiff-Evolved)'
-    | 'animatediff/v2_lora_ZoomOut.ckpt (ComfyUI-AnimateDiff-Evolved)'
-    | 'LongAnimatediff/lt_long_mm_32_frames.ckpt (ComfyUI-AnimateDiff-Evolved)'
-    | 'LongAnimatediff/lt_long_mm_16_64_frames.ckpt (ComfyUI-AnimateDiff-Evolved)'
-    | 'LongAnimatediff/lt_long_mm_16_64_frames_v1.1.ckpt (ComfyUI-AnimateDiff-Evolved)'
-    | 'ip-adapter_sd15.safetensors'
-    | 'ip-adapter_sd15_light.safetensors'
-    | 'ip-adapter_sd15_vit-G.safetensors'
-    | 'ip-adapter-plus_sd15.safetensors'
-    | 'ip-adapter-plus-face_sd15.safetensors'
-    | 'ip-adapter-full-face_sd15.safetensors'
-    | 'ip-adapter-faceid_sd15.bin'
-    | 'ip-adapter-faceid_sd15_lora.safetensors'
-    | 'ip-adapter_sdxl.safetensors'
-    | 'ip-adapter_sdxl_vit-h.safetensors'
-    | 'ip-adapter-plus_sdxl_vit-h.safetensors'
-    | 'ip-adapter-plus-face_sdxl_vit-h.safetensors'
-    | 'pfg-novel-n10.pt'
-    | 'pfg-wd14-n10.pt'
-    | 'pfg-wd15beta2-n10.pt'
-    | 'GFPGANv1.4.pth'
-    | 'codeformer.pth'
-    | 'detection_Resnet50_Final.pth'
-    | 'detection_mobilenet0.25_Final.pth'
-    | 'yolov5l-face.pth'
-    | 'yolov5n-face.pth'
+export const getKnownCheckpoints = (): ModelInfo[] => {
+    const knownModels = getKnownModels()
+    // for (const mi of knownModels.values()) {
+    //     console.log(`[👙] `, mi.type === 'checkpoint' ? '✅' : '❌', mi.name)
+    // }
+    return [...knownModels.values()].filter((i) => i.type === 'checkpoint' || i.type === 'checkpoints')
+}

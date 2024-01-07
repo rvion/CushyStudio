@@ -108,52 +108,51 @@ export const run_cnet = async (opts: OutputFor<typeof ui_cnet>, ctx: Cnet_args) 
         for (const cnetImage of cnetList) {
             let image: IMAGE = (await run.loadImageAnswer(cnetImage.image))._IMAGE
 
-            if (cnetImage.cnets.IPAdapter) {
-                // IPAdapter APPLY ===========================================================
-                const ip_adapter_result = run_cnet_IPAdapter(cnetImage.cnets.IPAdapter, ctx, image)
+            const { IPAdapter, Canny, Depth, Normal, Lineart, OpenPose, Scribble, SoftEdge, Tile } = cnetImage.cnets
+            // IPAdapter ===========================================================
+            if (IPAdapter) {
+                const ip_adapter_result = run_cnet_IPAdapter(IPAdapter, ctx, image)
                 args.ckptPos = ip_adapter_result.ip_adapted_model
-            } else {
-                // CANNY ===========================================================
-                const { Canny, Depth, Normal, Lineart, OpenPose, Scribble, SoftEdge, Tile } = cnetImage.cnets
-                if (Canny) {
-                    const y = run_cnet_canny(Canny, ctx, image)
-                    _apply_cnet(args, Canny.strength, y.image, y.cnet_name)
-                }
-                // POSE ===========================================================
-                if (OpenPose) {
-                    const y = run_cnet_openPose(OpenPose, ctx, image)
-                    _apply_cnet(args, OpenPose.strength, y.image, y.cnet_name)
-                }
-                // DEPTH ===========================================================
-                if (Depth) {
-                    const y = run_cnet_Depth(Depth, ctx, image)
-                    _apply_cnet(args, Depth.strength, y.image, y.cnet_name)
-                }
-                // Normal ===========================================================
-                if (Normal) {
-                    const y = run_cnet_Normal(Normal, ctx, image)
-                    _apply_cnet(args, Normal.strength, y.image, y.cnet_name)
-                }
-                // Tile ===========================================================
-                if (Tile) {
-                    const y = run_cnet_Tile(Tile, ctx, image)
-                    _apply_cnet(args, Tile.strength, y.image, y.cnet_name)
-                }
-                // Scribble ===========================================================
-                if (Scribble) {
-                    const y = run_cnet_Scribble(Scribble, ctx, image)
-                    _apply_cnet(args, Scribble.strength, y.image, y.cnet_name)
-                }
-                // Lineart ===========================================================
-                if (Lineart) {
-                    const y = run_cnet_Lineart(Lineart, ctx, image)
-                    _apply_cnet(args, Lineart.strength, y.image, y.cnet_name)
-                }
-                // SoftEdge ===========================================================
-                if (SoftEdge) {
-                    const y = run_cnet_SoftEdge(SoftEdge, ctx, image)
-                    _apply_cnet(args, SoftEdge.strength, y.image, y.cnet_name)
-                }
+            }
+            // CANNY ===========================================================
+            if (Canny) {
+                const y = run_cnet_canny(Canny, ctx, image)
+                _apply_cnet(args, Canny.strength, y.image, y.cnet_name)
+            }
+            // POSE ===========================================================
+            if (OpenPose) {
+                const y = run_cnet_openPose(OpenPose, ctx, image)
+                _apply_cnet(args, OpenPose.strength, y.image, y.cnet_name)
+            }
+            // DEPTH ===========================================================
+            if (Depth) {
+                const y = run_cnet_Depth(Depth, ctx, image)
+                _apply_cnet(args, Depth.strength, y.image, y.cnet_name)
+            }
+            // Normal ===========================================================
+            if (Normal) {
+                const y = run_cnet_Normal(Normal, ctx, image)
+                _apply_cnet(args, Normal.strength, y.image, y.cnet_name)
+            }
+            // Tile ===========================================================
+            if (Tile) {
+                const y = run_cnet_Tile(Tile, ctx, image)
+                _apply_cnet(args, Tile.strength, y.image, y.cnet_name)
+            }
+            // Scribble ===========================================================
+            if (Scribble) {
+                const y = run_cnet_Scribble(Scribble, ctx, image)
+                _apply_cnet(args, Scribble.strength, y.image, y.cnet_name)
+            }
+            // Lineart ===========================================================
+            if (Lineart) {
+                const y = run_cnet_Lineart(Lineart, ctx, image)
+                _apply_cnet(args, Lineart.strength, y.image, y.cnet_name)
+            }
+            // SoftEdge ===========================================================
+            if (SoftEdge) {
+                const y = run_cnet_SoftEdge(SoftEdge, ctx, image)
+                _apply_cnet(args, SoftEdge.strength, y.image, y.cnet_name)
             }
         }
     }

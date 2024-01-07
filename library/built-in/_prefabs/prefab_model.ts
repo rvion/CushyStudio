@@ -1,9 +1,10 @@
-import type { Runtime } from 'src/runtime/Runtime'
+import { getKnownCheckpoints } from 'src/wiki/modelList'
 import type { OutputFor } from './_prefabs'
 
 // UI -----------------------------------------------------------
 export const ui_model = () => {
     const form = getCurrentForm()
+    const ckpts = form.schema.st.getKnownCheckpoints()
     return form.group({
         label: 'AI Model',
         items: () => ({
@@ -12,6 +13,7 @@ export const ui_model = () => {
                 default: 'revAnimated_v122.safetensors',
                 group: 'Model',
                 label: 'Checkpoint',
+                recommandedModels: { knownModel: ckpts.map((x) => x.name) },
             }),
             civtai_ckpt_air: form.stringOpt({
                 tooltip: 'Civitai checkpoint Air, as found on the civitai Website. It should look like this: 43331@176425',

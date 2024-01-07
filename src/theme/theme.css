@@ -89,7 +89,7 @@ legend {
 .FIELD .FIELD .FIELD .FIELD {border-color: oklch(var(--p)/0.45);}
 .FIELD .FIELD .FIELD .FIELD .FIELD {border-color: oklch(var(--p)/0.45);} */
 .FIELD:hover {
-    background: oklch(var(--p)/.05);
+    background: oklch(var(--p)/.025);
     border-left: 3px groove oklch(var(--s)/0.5);
     /* border-top-left-radius: .8rem; */
 }

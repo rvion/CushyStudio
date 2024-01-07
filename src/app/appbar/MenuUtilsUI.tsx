@@ -22,6 +22,16 @@ export const MenuUtilsUI = observer(function MenuUtilsUI_(p: {}) {
                 icon={<img style={{ width: '1em', height: '1em' }} src={assets.logos_squoosh_png}></img>}
                 label='Squoosh'
             />
+            <MenuItem
+                onClick={() => st.layout.FOCUS_OR_CREATE('IFrame', { url: 'https://app.posemy.art/' })}
+                icon={<span className='material-symbols-outlined text-red-400'>brush</span>}
+                label='3d Poser (posemy.art)'
+            />
+            <MenuItem
+                onClick={() => st.layout.FOCUS_OR_CREATE('IFrame', { url: 'https://unsplash.com/' })}
+                icon={<span className='material-symbols-outlined text-purple-400'>image_search</span>}
+                label='Unsplash - Free images'
+            />
         </Dropdown>
     )
 })

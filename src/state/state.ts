@@ -53,6 +53,7 @@ import { AuthState } from './AuthState'
 import { Uploader } from './Uploader'
 import { mkSupa } from './supa'
 import { SafetyChecker } from 'src/safety/Safety'
+import { getKnownCheckpoints, getKnownModels } from 'src/wiki/modelList'
 
 export class STATE {
     /** hack to help closing prompt completions */
@@ -102,6 +103,9 @@ export class STATE {
         Object.defineProperty(this, 'wildcards', { value: wcds })
         return wcds
     }
+
+    getKnownCheckpoints = getKnownCheckpoints
+    getKnownModels = getKnownModels
 
     restart = () => {
         window.location.reload()

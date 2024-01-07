@@ -1,5 +1,6 @@
 import type { EnumValue } from 'src/models/Schema'
-import { knownModels, type KnownModelName, type ModelInfo } from 'src/wiki/modelList'
+import { getKnownModels, type ModelInfo } from 'src/wiki/modelList'
+import { type ComfyUIManagerKnownModelNames } from 'src/wiki/modelListType'
 
 export const extractDefaultValue = <T extends KnownEnumNames>(def: EnumValue | EnumDefault): Maybe<EnumValue> => {
     if (def == null) return null
@@ -8,36 +9,58 @@ export const extractDefaultValue = <T extends KnownEnumNames>(def: EnumValue | E
     if (typeof def === 'boolean') return def
     if (typeof def === 'number') return def
 
-    // case defaultModel
-    const x = def.knownModel
-    if (x != null) {
-        const entry = Array.isArray(x) ? x[0] : x
-        const modelInfo = knownModels.get(entry)
-        if (modelInfo == null) {
-            console.error(`Unknown model: ${entry}`)
-            return null
-        }
-        return modelInfo.filename
-    }
+    // ⏸️ // case defaultModel
+    // ⏸️ const x = def.knownModel
+    // ⏸️ if (x != null) {
+    // ⏸️     const entry = Array.isArray(x) ? x[0] : x
+    // ⏸️     const knownModels = getKnownModels()
+    // ⏸️     const modelInfo = knownModels.get(entry)
+    // ⏸️     if (modelInfo == null) {
+    // ⏸️         console.error(`Unknown model: ${entry}`)
+    // ⏸️         return null
+    // ⏸️     }
+    // ⏸️     return modelInfo.filename
+    // ⏸️ }
 
     // default
     return null
 }
 
-// 🔴 rewrite that
-export const extractDownloadCandidates = <T extends KnownEnumNames>(def: EnumValue | EnumDefault): Maybe<ModelInfo[]> => {
-    if (typeof def !== 'object') return null
-    if (!('knownModel' in def)) return null
-    if (def.knownModel == null) return null
-    const x = def.knownModel
-    const entries = Array.isArray(x) ? x : [x]
+export const extractDownloadCandidates = (
+    //
+    def: RecommendedModelDownload,
+): ModelInfo[] => {
+    const knownModels = getKnownModels()
     const OUT: ModelInfo[] = []
+
+    // --------------------------------------
+    const x = def.knownModel ?? []
+    const entries = Array.isArray(x) ? x : [x]
     for (const entry of entries) {
         const modelInfo = knownModels.get(entry)
         if (modelInfo == null) continue
         OUT.push(modelInfo)
     }
+
+    // --------------------------------------
+    const y = def.customModels ?? []
+    const entries2 = Array.isArray(y) ? y : [y]
+    for (const entry of entries2) {
+        OUT.push(entry)
+    }
+
+    // --------------------------------------
     return OUT
+}
+
+export type RecommendedModelDownload = {
+    reason?: string
+    modelFolderPrefix?: string
+    // prettier-ignore
+    knownModel?:
+        | ComfyUIManagerKnownModelNames
+        | ComfyUIManagerKnownModelNames[]
+    customModels?: ModelInfo | ModelInfo[]
 }
 
 /**
@@ -50,11 +73,10 @@ export type EnumDefault<T extends KnownEnumNames = any> = {
     /** 🔴 UNIMPLEMENTED */
     values?: string[]
     /** 🔶 */
-    knownModel?: KnownModelName | KnownModelName[]
     /** 🔴 UNIMPLEMENTED */
     find?: (candidate: string) => number
     /** 🔴 UNIMPLEMENTED */
-    customDownloads?: { [modelName: string]: ModelInfo }
+    // customDownloads?: { [modelName: string]: ModelInfo }
 }
 
 /** showcase an example default value with all options filled */

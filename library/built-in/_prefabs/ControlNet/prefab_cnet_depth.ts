@@ -13,8 +13,8 @@ export const ui_subform_Depth = () => {
             preprocessor: ui_subform_Depth_Preprocessor(),
             cnet_model_name: form.enum({
                 enumName: 'Enum_ControlNetLoader_control_net_name',
-                default: {
-                    value: 'control_v11f1p_sd15_depth.pth',
+                default: { value: 'control_v11f1p_sd15_depth.pth' },
+                recommandedModels: {
                     knownModel: [
                         'ControlNet-v1-1 (depth; fp16)',
                         'stabilityai/control-lora-depth-rank128.safetensors',

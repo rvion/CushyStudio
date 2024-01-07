@@ -1,5 +1,6 @@
 import type { KnownCustomNodes } from 'src/wiki/customNodeList'
-import { KnownModelName } from 'src/wiki/modelList'
+import { ComfyUIManagerKnownModelNames } from 'src/wiki/modelListType'
+import { RecommendedModelDownload } from './EnumDefault'
 
 export type WidgetTypeHelpers<T, I, X extends { type: T }, S, O> = {
     $Input: I
@@ -39,7 +40,7 @@ export type WidgetInputFields<X> = X & {
     className?: string
     startCollapsed?: boolean
     showID?: boolean
+    recommandedModels?: RecommendedModelDownload
     customNodes?: KnownCustomNodes | KnownCustomNodes[]
-    customModels?: KnownModelName | KnownModelName[]
-    summary?: (self: X) => string
+    // summary?: (self: X) => string
 }
