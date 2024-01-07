@@ -99,16 +99,22 @@ export class HostL {
     installCustomNode = async (
         //
         customNode: KnownCustomNodes,
-        to: AbsolutePath | string,
+        // to: AbsolutePath | string,
     ) => {
-        if (this.data.isLocal) {
-            const customNodeInfo = knownCustomNodes.get(customNode)
-            // ....
+        const customNodeInfo = knownCustomNodes.get(customNode)
+        if (customNodeInfo == null) {
+            toastError(`Unknown custom node ${customNode}`)
+            return
         }
-        //
-        toastError(`[🔴] NOT IMPLEMENTED`)
-        console.log(`[🔴] NOT IMPLEMENTED`)
-        return true
+        this.getComfyUIManager()?.installCustomNode(customNodeInfo)
+        // if (this.data.isLocal) {
+        //     const customNodeInfo = knownCustomNodes.get(customNode)
+        //     // ....
+        // }
+        // //
+        // toastError(`[🔴] NOT IMPLEMENTED`)
+        // console.log(`[🔴] NOT IMPLEMENTED`)
+        // return true
     }
 
     _copyGeneratedSDKToGlobalDTS = (): void => {
