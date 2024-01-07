@@ -66,6 +66,7 @@ export const ui_subform_IPAdapter = () => {
             }),
             clip_name: form.enum({
                 enumName: 'Enum_CLIPVisionLoader_clip_name',
+                label: 'Clip Vision Model',
                 default: {
                     value: 'model.safetensors',
                     knownModel: [
@@ -77,7 +78,6 @@ export const ui_subform_IPAdapter = () => {
                         'CLIPVision model (stabilityai/clip_vision_g)',
                     ],
                 },
-                label: 'Clip Vision Model',
             }),
             cnet_model_name: form.enum({
                 enumName: 'Enum_IPAdapterModelLoader_ipadapter_file',

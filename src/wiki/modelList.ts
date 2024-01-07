@@ -7,7 +7,7 @@ import { ComfyUIManagerKnownModelNames } from './modelListType'
 
 // prettier-ignore
 export type ModelInfo = {
-    "name"       : string, // "ip-adapter_sd15_light.safetensors",
+    "name"       : ComfyUIManagerKnownModelNames , // "ip-adapter_sd15_light.safetensors",
     "type"       : string, // "IP-Adapter",
     "base"       : string, // "SD1.5",
     "save_path"  : string, // "ipadapter",
@@ -19,7 +19,7 @@ export type ModelInfo = {
 
 export const ModelInfo_Schema = Type.Object(
     {
-        name: Type.String(),
+        name: Type.Any(Type.String()),
         type: Type.String(),
         base: Type.String(),
         save_path: Type.String(),
@@ -124,4 +124,9 @@ export const getKnownModels = (p?: {
     }
 
     return knownModels
+}
+
+export const getKnownCheckpoints = (): ModelInfo[] => {
+    const knownModels = getKnownModels()
+    return [...knownModels.values()].filter((i) => i.type === 'checkpoint')
 }
