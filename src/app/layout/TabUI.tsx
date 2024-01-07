@@ -30,7 +30,7 @@ export const TabUI = observer(function TabUI_(p: {
                     )
                 })}
             </div>
-            <div tw='bg-base-100 text-base-content flex-grow'>{contents[val]}</div>
+            <div tw='text-base-content flex-grow'>{contents[val]}</div>
         </div>
     )
 })

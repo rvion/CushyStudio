@@ -19,12 +19,12 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     vertical?: boolean
     isTopLevel?: boolean
 }) {
-    const { rootKey, widget: req } = p
+    const { rootKey, widget } = p
     const KLS = WidgetDI
     const st = useSt()
 
-    let tooltip: Maybe<string> = req.input.tooltip
-    let label: Maybe<string | false> = req.input.label ?? makeLabelFromFieldName(rootKey)
+    let tooltip: Maybe<string> = widget.input.tooltip
+    let label: Maybe<string | false> = widget.input.label ?? makeLabelFromFieldName(rootKey)
 
     const isVertical = (() => {
         if (p.widget.input.showID) return true
@@ -33,18 +33,18 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
         if (st.preferedFormLayout === 'dense') return false
     })()
 
-    const isCollapsible = req.isCollapsible
-    const collapsed = req.state.collapsed && isCollapsible
+    const isCollapsible = widget.isCollapsible
+    const collapsed = widget.state.collapsed && isCollapsible
     const v = p.widget
     const levelClass = p.isTopLevel ? '_isTopLevel' : '_isNotTopLevel'
 
     const toggleInfo =
-        req instanceof KLS.Widget_bool
+        widget instanceof KLS.Widget_bool
             ? {
-                  value: req.state.val,
+                  value: widget.state.val,
                   toggle: () => {
                       runInAction(() => {
-                          req.state.val = !req.state.val
+                          widget.state.val = !widget.state.val
                       })
                   },
                   //   onChange: (ev: ChangeEvent<HTMLInputElement>) => {
@@ -53,10 +53,10 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                   //   },
               }
             : {
-                  value: req.state.active,
+                  value: widget.state.active,
                   toggle: () => {
                       runInAction(() => {
-                          req.state.active = !req.state.active
+                          widget.state.active = !widget.state.active
                       })
                   },
                   //   onChange: (ev: ChangeEvent<HTMLInputElement>) => {
@@ -64,15 +64,25 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                   //   },
               }
     const showToogle =
-        req.isOptional || //
-        !req.state.active ||
-        req instanceof KLS.Widget_bool //
+        widget.isOptional || //
+        !widget.state.active ||
+        widget instanceof KLS.Widget_bool //
 
-    let WIDGET = collapsed ? null : !v.state.active ? null : ( //
-        <ErrorBoundary FallbackComponent={ErrorBoundaryFallback} onReset={(details) => {}}>
-            <WidgetDI.WidgetUI widget={req} />
-        </ErrorBoundary>
-    )
+    let WIDGET =
+        collapsed || widget.type === 'bool' ? null : !v.state.active ? null : (
+            <ErrorBoundary FallbackComponent={ErrorBoundaryFallback} onReset={(details) => {}}>
+                <WidgetDI.WidgetUI widget={widget} />
+            </ErrorBoundary>
+        )
+
+    const isBoldTitle =
+        p.isTopLevel ||
+        widget.type === 'group' ||
+        widget.type === 'groupOpt' ||
+        widget.type === 'list' ||
+        widget.type === 'choices'
+
+    const hasNoWidget = WIDGET == null
 
     const LABEL = (
         <div
@@ -82,7 +92,8 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                 WIDGET == null ? 'w-full' : null,
                 'min-w-max shrink-0',
                 'flex items-center gap-0',
-                'hover:bg-base-200 cursor-pointer',
+                // 'hover:bg-base-200 cursor-pointer',
+                'cursor-pointer',
             ]}
             onClick={() => {
                 if (v.state.collapsed) return (v.state.collapsed = false)
@@ -122,13 +133,15 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                     <Tooltip>{tooltip}</Tooltip>
                 </RevealUI>
             )}
+
+            {/* Label ------------------------------------ */}
             {label !== false && (
                 <span
                     //
                     tw={[
                         //
                         '',
-                        p.isTopLevel ? 'text-primary font-bold' : undefined,
+                        isBoldTitle ? 'text-primary font-medium' : undefined,
                     ]}
                     style={
                         true && !isVertical //
@@ -140,8 +153,33 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                     {p.widget.input.showID ? <span tw='opacity-50 italic text-sm'>#{p.widget.id.slice(0, 3)}</span> : null}
                 </span>
             )}
+
+            {/* Install Models ------------------------------------ */}
             {p.widget.input.recommandedModels ? <InstallModelBtnUI models={p.widget.input.recommandedModels} /> : null}
-            <span tw='opacity-30 hover:opacity-100'>{v.state.collapsed ? '▸ {...}' : /*'▿'*/ ''}</span>
+
+            {/* Spacer ------------------------------------ */}
+            <div tw='flex-1'></div>
+
+            {/* Collapse ONLY Indicator ------------------------------------ */}
+            <span
+                onClick={(ev) => {
+                    if (v.state.collapsed) {
+                        ev.stopPropagation()
+                        ev.preventDefault()
+                        v.state.collapsed = false
+                        return
+                    }
+                    if (!isCollapsible) {
+                        if (showToogle) toggleInfo.toggle()
+                        ev.stopPropagation()
+                        ev.preventDefault()
+                        return
+                    }
+                }}
+                tw='opacity-30 hover:opacity-100'
+            >
+                {v.state.collapsed ? '▸ {...}' : /*'▿'*/ ''}
+            </span>
         </div>
     )
 
@@ -149,8 +187,8 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     const clsX = v.state.collapsed ? '_COLLAPSED' : ''
     // prettier-ignore
     let className = isVertical //
-        ? `${clsX} __${req.type} _WidgetWithLabelUI ${levelClass} flex flex-col items-baseline`
-        : `${clsX} __${req.type} _WidgetWithLabelUI ${levelClass} flex flex-row ${labelGap} ${isCollapsible ? 'items-baseline' : 'items-center'}` // prettier-ignore
+        ? `${clsX} __${widget.type} _WidgetWithLabelUI ${levelClass} flex flex-col items-baseline`
+        : `${clsX} __${widget.type} _WidgetWithLabelUI ${levelClass} flex flex-row ${labelGap} ${isCollapsible ? 'items-baseline' : 'items-center'}` // prettier-ignore
 
     if (WIDGET == null) className += ' w-full'
     if (isVertical && /*WIDGET*/ true) {

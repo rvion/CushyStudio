@@ -12,7 +12,7 @@ export const ListControlsUI = observer(function ListControlsUI_(p: {
     const max = widget.input.max
     const min = widget.input.min
     return (
-        <Joined tw='sticky top-0 z-[100] bg-neutral text-neutral-content bg-opacity-100 opacity-100'>
+        <div tw='sticky top-0 z-[100] w-full bg-base-300'>
             <Button
                 tw='btn-sm join-item btn-ghost'
                 disabled={max ? widget.state.items.length >= max : undefined}
@@ -55,6 +55,6 @@ export const ListControlsUI = observer(function ListControlsUI_(p: {
             >
                 Add 100 more
             </Button> */}
-        </Joined>
+        </div>
     )
 })

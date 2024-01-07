@@ -55,7 +55,7 @@ export const TabsUI = observer(function Tabs_(p: {
             tw={['_TabsUI', p.className, p.grow && '_grow', 'relative', p.inline && 'flex']}
         >
             {p.bottomTabs ? null : tabHeader}
-            <div className='_tab_body bg-base-100 tab-content block'>
+            <div className='_tab_body tab-content block'>
                 {selectedTab ? ( //
                     <TabBodyWrapperUI key={onIx} fn={selectedTab.body} />
                 ) : (

@@ -1332,11 +1332,13 @@ export class Widget_group<T extends { [key: string]: Widget }> implements IWidge
     type: 'group' = 'group'
     state: Widget_group_state<T>
     /** all [key,value] pairs */
-    get entries() { return Object.entries(this.state.values) as [string, any][] }
+    get entries() { return Object.entries(this.state.values) as [string, Widget][] }
     /** the dict of all child widgets */
     get values() { return this.state.values }
     collapseAllEntries = () => {
-        for (const [key, item] of this.entries)  item.state.collapsed = true
+        for (const [key, item] of this.entries) {
+            if (item.isCollapsible) item.state.collapsed = true
+        }
     }
     expandAllEntries = () => {
         for (const [key, item] of this.entries)  item.state.collapsed = undefined
