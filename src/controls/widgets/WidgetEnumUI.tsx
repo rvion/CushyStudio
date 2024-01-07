@@ -5,7 +5,6 @@ import { Popover, Whisper } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
 import { CleanedEnumResult } from 'src/types/EnumUtils'
 import type { EnumName, EnumValue } from '../../models/Schema'
-import { InstallModelBtnUI } from './InstallModelBtnUI'
 
 type T = {
     label: EnumValue

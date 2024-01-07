@@ -33,12 +33,34 @@ app({
         }),
         negative: form.prompt({
             startCollapsed: true,
-            default: 'nsfw, nude, girl, woman, human',
+            default: 'bad quality, blurry, low resolution, pixelated, noisy',
         }),
         model: ui_model(),
         latent: ui_latent(),
         sampler: ui_sampler(),
         highResFix: ui_highresfix(form, { activeByDefault: true }),
+        upscale: form.groupOpt({
+            items: () => ({
+                model: form.enum({
+                    enumName: 'Enum_UpscaleModelLoader_model_name',
+                    default: '4x-UltraSharp.pth',
+                }),
+            }),
+            recommandedModels: {
+                knownModel: [
+                    // 2x
+                    'RealESRGAN x2',
+                    // 4x
+                    'RealESRGAN x4',
+                    '4x-UltraSharp',
+                    '4x-AnimeSharp',
+                    '4x_foolhardy_Remacri',
+                    '4x_NMKD-Siax_200k',
+                    // 8x
+                    '8x_NMKD-Superscale_150000_G',
+                ],
+            },
+        }),
         controlnets: ui_cnet(),
         recursiveImgToImg: ui_recursive(),
         loop: form.groupOpt({
@@ -221,6 +243,14 @@ app({
         } else {
             // DECODE --------------------------------------------------------------------------------
             graph.SaveImage({ images: finalImage })
+        }
+
+        if (ui.upscale) {
+            const upscale = ui.upscale
+            const upscaleModelName = upscale.model
+            const upscaleModel = graph.UpscaleModelLoader({ model_name: upscaleModelName })
+            const upscaledResult = graph.ImageUpscaleWithModel({ image: finalImage, upscale_model: upscaleModel })
+            graph.SaveImage({ images: upscaledResult })
         }
 
         await run.PROMPT()
