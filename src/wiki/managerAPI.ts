@@ -1,9 +1,13 @@
 import { HostL } from 'src/models/Host'
-import { ModelInfo } from './modelList'
+import { ModelInfo, getModelInfoFinalFilePath } from './modelList'
 import { toastError, toastSuccess } from 'src/utils/misc/toasts'
 
 export class ComfyUIManager {
     constructor(public host: HostL) {}
+
+    getModelInfoFinalFilePath = (mi: ModelInfo): string => {
+        return getModelInfoFinalFilePath(mi)
+    }
 
     // downloadModel = async (model: ModelInfo) => {
     //     try {

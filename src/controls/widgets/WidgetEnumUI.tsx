@@ -13,7 +13,7 @@ type T = {
     value: EnumValue | null
 }[]
 
-export const EnumDownloaderUI = observer(function EnumDownloaderUI_<K extends KnownEnumNames>(p: {
+export const InstallModelBtnUI = observer(function InstallModelBtnUI_<K extends KnownEnumNames>(p: {
     widget: Widget_enum<K> | Widget_enumOpt<K>
 }) {
     const st = useSt()
@@ -27,11 +27,11 @@ export const EnumDownloaderUI = observer(function EnumDownloaderUI_<K extends Kn
             <div tw='flex flex-col flex-wrap gap-1'>
                 {/* {models.length} */}
                 {/* <pre>{JSON.stringify(p.widget.input.default)}</pre> */}
-                {models.map((m) => {
-                    const isInstalled = p.widget.possibleValues.find((x) => x === m.filename)
+                {models.map((mi) => {
+                    const isInstalled = p.widget.possibleValues.find((x) => x === mi.filename)
                     const host = st.mainHost
                     const rootComfyUIFolder = host.absolutPathToDownloadModelsTo
-                    const dlPath = `${rootComfyUIFolder}/${m.type}/${m.filename}`
+                    const dlPath = host.getComfyUIManager()?.getModelInfoFinalFilePath(mi)
                     return (
                         <div>
                             <div
@@ -41,7 +41,7 @@ export const EnumDownloaderUI = observer(function EnumDownloaderUI_<K extends Kn
                                     // copy Data-it implementation
 
                                     // download file
-                                    const res = await host.getComfyUIManager()?.installModel(m)
+                                    const res = await host.getComfyUIManager()?.installModel(mi)
                                     if (!res) return
 
                                     // const res = await host.downloadFileIfMissing(m.url, dlPath)
@@ -50,19 +50,19 @@ export const EnumDownloaderUI = observer(function EnumDownloaderUI_<K extends Kn
                                     // add the new value (BRITTLE)
                                     const enumInfo = st.schema.knownEnumsByName //
                                         .get(p.widget.input.enumName)
-                                    enumInfo?.values.push(m.filename)
+                                    enumInfo?.values.push(mi.filename)
                                 }}
                                 tw='btn btn-sm btn-outline'
-                                key={m.name}
+                                key={mi.name}
                             >
                                 {isInstalled ? '🟢' : null}
                                 <span className='material-symbols-outlined'>cloud_download</span>
-                                <span>{m.name}</span>
+                                <span>{mi.name}</span>
                             </div>
                             {/* <RevealUI> */}
                             <div>infos</div>
                             <div>
-                                <div tw='text-xx italic'>{m.url}</div>
+                                <div tw='text-xx italic'>{mi.url}</div>
                                 <div tw='text-xx italic'>{dlPath}</div>
                             </div>
                             {/* </RevealUI> */}
@@ -96,7 +96,7 @@ export const WidgetEnumUI = observer(function WidgetEnumUI_<K extends KnownEnumN
                 }}
             />
 
-            <EnumDownloaderUI widget={widget} />
+            <InstallModelBtnUI widget={widget} />
         </>
     )
 })
