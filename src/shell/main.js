@@ -123,6 +123,19 @@ async function START() {
                 allowRunningInsecureContent: true, // Disable CORS
             },
         })
+
+        //remove X-Frame-Options headers on all incoming requests.
+        mainWindow.webContents.session.webRequest.onHeadersReceived({ urls: ['*://*/*'] }, (details, callback) => {
+            if (details && details.responseHeaders) {
+                if (details.responseHeaders['X-Frame-Options']) {
+                    delete details.responseHeaders['X-Frame-Options']
+                } else if (details.responseHeaders['x-frame-options']) {
+                    delete details.responseHeaders['x-frame-options']
+                }
+            }
+            callback({ cancel: false, responseHeaders: details.responseHeaders })
+        })
+
         mainWindow.maximize()
         mkdirSync('outputs/_downloads', { recursive: true })
         // https://www.electronjs.org/docs/latest/api/download-item
