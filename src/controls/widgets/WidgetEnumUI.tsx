@@ -21,7 +21,7 @@ export const InstallModelBtnUI = observer(function InstallModelBtnUI_<K extends 
     if (models == null) return null
     return (
         <RevealUI>
-            <div tw='btn btn-square btn-ghost btn-sm'>
+            <div tw='btn btn-square btn-sm'>
                 <span className='material-symbols-outlined'>cloud_download</span>
             </div>
             <div tw='flex flex-col flex-wrap gap-1'>
@@ -52,18 +52,18 @@ export const InstallModelBtnUI = observer(function InstallModelBtnUI_<K extends 
                                         .get(p.widget.input.enumName)
                                     enumInfo?.values.push(mi.filename)
                                 }}
-                                tw='btn btn-sm btn-outline'
+                                tw='btn btn-sm btn-outline btn-sm'
                                 key={mi.name}
                             >
-                                {isInstalled ? '🟢' : null}
+                                {isInstalled ? '✅' : null}
                                 <span className='material-symbols-outlined'>cloud_download</span>
                                 <span>{mi.name}</span>
                             </div>
                             {/* <RevealUI> */}
-                            <div>infos</div>
-                            <div>
+                            {/* <div>infos</div> */}
+                            <div tw='text-xs italic'>
+                                <div tw='text-xx italic'>{mi.description}</div>
                                 <div tw='text-xx italic'>{mi.url}</div>
-                                <div tw='text-xx italic'>{dlPath}</div>
                             </div>
                             {/* </RevealUI> */}
                         </div>
