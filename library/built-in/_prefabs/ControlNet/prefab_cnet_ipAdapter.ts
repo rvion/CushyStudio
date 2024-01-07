@@ -47,19 +47,16 @@ export const ui_subform_IPAdapter = () => {
                     interpolation: form.enum({
                         enumName: 'Enum_PrepImageForClipVision_interpolation',
                         default: 'LANCZOS',
-                        group: 'IPAdapter',
                         label: 'Prep Image Scaling Type',
                     }),
                     crop_position: form.enum({
                         enumName: 'Enum_PrepImageForClipVision_crop_position',
                         default: 'center',
-                        group: 'IPAdapter',
                         label: 'Prep Image Crop Position',
                     }),
                     weight_type: form.enum({
                         enumName: 'Enum_IPAdapterApply_weight_type',
                         default: 'original',
-                        group: 'IPAdapter',
                         label: 'Weight Type',
                     }),
                     noise: form.float({ default: 0, min: 0, max: 1, step: 0.1 }),
@@ -80,7 +77,6 @@ export const ui_subform_IPAdapter = () => {
                         'CLIPVision model (stabilityai/clip_vision_g)',
                     ],
                 },
-                group: 'IPAdapter',
                 label: 'Clip Vision Model',
             }),
             cnet_model_name: form.enum({
@@ -103,7 +99,6 @@ export const ui_subform_IPAdapter = () => {
                     ],
                 },
                 // default: 'ip-adapter_sd15.safetensors'
-                group: 'IPAdapter',
                 label: 'IP Adapter Model',
             }),
         }),
