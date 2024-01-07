@@ -52,7 +52,7 @@ export const run_improveFace_fromImage = (finalImage: _IMAGE = getCurrentRun().A
         vae: run.AUTO,
         // force_inpaint: false,
         denoise: 0.6,
-        steps: 40,
+        steps: 20,
         // sampler_name: 'ddim',
         // scheduler: 'ddim_uniform',
         sampler_name: 'euler',

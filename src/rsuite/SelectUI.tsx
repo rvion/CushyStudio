@@ -3,7 +3,7 @@ import type { RSSize } from './RsuiteTypes'
 
 import { makeAutoObservable } from 'mobx'
 import { observer } from 'mobx-react-lite'
-import React, { useMemo, useRef } from 'react'
+import React, { ReactNode, useMemo, useRef } from 'react'
 import { useSt } from 'src/state/stateContext'
 import { searchMatches } from 'src/utils/misc/searchMatches'
 import { createPortal } from 'react-dom'
@@ -70,15 +70,30 @@ class AutoCompleteSelectState<T> {
         return Array.isArray(v) ? v : [v]
     }
 
-    get displayValue(): string {
+    get displayValue(): ReactNode {
         if (this.p.hideValue) return this.p.placeholder ?? ''
         const value = this.value
         const placeHolderStr = this.p.placeholder ?? 'Select...'
         if (value == null) return placeHolderStr
         if (Array.isArray(value)) {
-            const str = value.length === 0 ? placeHolderStr : value.map(this.p.getLabelText).join(', ')
-            if (this.p.label) return `${this.p.label}: ${str}`
-            return str
+            const str =
+                value.length === 0 //
+                    ? placeHolderStr
+                    : value.map((i) => {
+                          const label = this.p.getLabelText(i)
+                          return (
+                              <div key={label} tw='badge badge-primary'>
+                                  {label}
+                              </div>
+                          )
+                      })
+            if (this.p.label)
+                return (
+                    <div tw='flex gap-1'>
+                        {this.p.label}: ${str}
+                    </div>
+                )
+            return <div tw='flex gap-1'>{str}</div>
         } else {
             const str = this.p.getLabelText(value)
             if (this.p.label) return `${this.p.label}: ${str}`
