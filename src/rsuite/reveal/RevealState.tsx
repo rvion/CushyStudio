@@ -1,7 +1,7 @@
 import { makeAutoObservable, observable, runInAction } from 'mobx'
 
 export const defaultShowDelay = 100
-export const defaultHideDelay = 800
+export const defaultHideDelay = 300
 
 export class RevealState {
     static shared: { current: Maybe<RevealState> } = observable({ current: null })
