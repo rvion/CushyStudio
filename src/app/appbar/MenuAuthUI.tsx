@@ -28,7 +28,7 @@ export const MenuAuthUI = observer(function MenuAuthUI_(p: {}) {
         >
             <div tw='flex flex-col'>
                 {st.auth.isConnected ? (
-                    <div onClick={() => st.auth.logout()} tw='btn'>
+                    <div onClick={() => st.auth.logout()} tw='btn btn-sm btn-outline btn-error'>
                         LogOut
                     </div>
                 ) : (

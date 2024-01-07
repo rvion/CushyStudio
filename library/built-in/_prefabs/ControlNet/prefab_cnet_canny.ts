@@ -13,8 +13,8 @@ export const ui_subform_Canny = () => {
             preprocessor: ui_subform_Canny_Preprocessor(form),
             cnet_model_name: form.enum({
                 enumName: 'Enum_ControlNetLoader_control_net_name',
-                default: {
-                    value: 'control_v11p_sd15_canny.pth',
+                default: { value: 'control_v11p_sd15_canny.pth' },
+                recommandedModels: {
                     knownModel: [
                         'ControlNet-v1-1 (canny; fp16)',
                         'stabilityai/control-lora-canny-rank128.safetensors',

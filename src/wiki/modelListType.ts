@@ -1,3 +1,33 @@
+export type ComfyUIManagerKnownModelTypes =
+    | "TAESD"              // x   4
+    | "upscale"            // x   9
+    | "checkpoint"         // x   2
+    | "insightface"        // x   2
+    | "deepbump"           // x   1
+    | "face_restore"       // x   3
+    | "checkpoints"        // x  17
+    | "zero123"            // x   1
+    | "embeddings"         // x   4
+    | "unet"               // x   2
+    | "lora"               // x   9
+    | "unclip"             // x   2
+    | "VAE"                // x   4
+    | "T2I-Adapter"        // x   7
+    | "T2I-Style"          // x   1
+    | "controlnet"         // x  33
+    | "clip_vision"        // x   8
+    | "gligen"             // x   1
+    | "sam"                // x   3
+    | "seecoder"           // x   3
+    | "Ultralytics"        // x  16
+    | "animatediff"        // x  13
+    | "motion lora"        // x   8
+    | "IP-Adapter"         // x  11
+    | "PFG"                // x   3
+    | "GFPGAN"             // x   1
+    | "CodeFormer"         // x   1
+    | "facexlib"           // x   4
+
 export type ComfyUIManagerKnownModelNames =
     | "4x_foolhardy_Remacri"
     | "4x_NMKD-Siax_200k"
@@ -34,6 +64,8 @@ export type ComfyUIManagerKnownModelNames =
     | "CiaraRowles/TemporalNet2"
     | "CLIPVision model (IP-Adapter) 1.5"
     | "CLIPVision model (IP-Adapter) CLIP-ViT-bigG-14-laion2B-39B-b160k"
+    | "CLIPVision model (IP-Adapter) CLIP-ViT-bigG-14-laion2B-39B-b160k"
+    | "CLIPVision model (IP-Adapter) CLIP-ViT-H-14-laion2B-s32B-b79K"
     | "CLIPVision model (IP-Adapter) CLIP-ViT-H-14-laion2B-s32B-b79K"
     | "CLIPVision model (IP-Adapter) XL"
     | "CLIPVision model (openai/clip-vit-large)"
@@ -170,3 +202,5 @@ export type ComfyUIManagerKnownModelNames =
     | "Waifu Diffusion 1.5 unCLIP model"
     | "yolov5l-face.pth"
     | "yolov5n-face.pth"
+
+

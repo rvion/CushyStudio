@@ -1,26 +1,26 @@
-import { Static, TObject, TSchema, Type } from '@sinclair/typebox'
+import { Static, Type } from '@sinclair/typebox'
 import { Value, ValueError } from '@sinclair/typebox/value'
 
 // https://github.com/ltdrdata/ComfyUI-Manager/blob/main/model-list.json
 import { readFileSync, writeFileSync } from 'fs'
-import { ComfyUIManagerKnownModelNames } from './modelListType'
+import { ComfyUIManagerKnownModelNames, ComfyUIManagerKnownModelTypes } from './modelListType'
 
 // prettier-ignore
 export type ModelInfo = {
-    "name"       : ComfyUIManagerKnownModelNames , // "ip-adapter_sd15_light.safetensors",
-    "type"       : string, // "IP-Adapter",
-    "base"       : string, // "SD1.5",
-    "save_path"  : string, // "ipadapter",
-    "description": string, // "You can use this model in the [a/ComfyUI IPAdapter plus](https://github.com/cubiq/ComfyUI_IPAdapter_plus) extension.",
-    "reference"  : string, // "https://huggingface.co/h94/IP-Adapter",
-    "filename"   : string, // "ip-adapter_sd15_light.safetensors",
-    "url"        : string, // "https://huggingface.co/h94/IP-Adapter/resolve/main/models/ip-adapter_sd15_light.safetensors"
+    "name"       : ComfyUIManagerKnownModelNames , // e.g. "ip-adapter_sd15_light.safetensors",
+    "type"       : ComfyUIManagerKnownModelTypes, // e.g. "IP-Adapter",
+    "base"       : string, // e.g. "SD1.5",
+    "save_path"  : string, // e.g. "ipadapter",
+    "description": string, // e.g. "You can use this model in the [a/ComfyUI IPAdapter plus](https://github.com/cubiq/ComfyUI_IPAdapter_plus) extension.",
+    "reference"  : string, // e.g. "https://huggingface.co/h94/IP-Adapter",
+    "filename"   : string, // e.g. "ip-adapter_sd15_light.safetensors",
+    "url"        : string, // e.g. "https://huggingface.co/h94/IP-Adapter/resolve/main/models/ip-adapter_sd15_light.safetensors"
 }
 
 export const ModelInfo_Schema = Type.Object(
     {
         name: Type.Any(Type.String()),
-        type: Type.String(),
+        type: Type.Any(Type.String()),
         base: Type.String(),
         save_path: Type.String(),
         description: Type.String(),
@@ -61,6 +61,24 @@ export const getModelInfoFinalFilePath = (mi: ModelInfo): string => {
     if (mi.type === 'checkpoint') return `models/checkpoints/${mi.filename}`
     if (mi.save_path.startsWith('custom_nodes')) return `${mi.save_path}/${mi.filename}`
     else return `models/${mi.save_path}/${mi.filename}`
+}
+
+export const getModelInfoEnumName = (mi: ModelInfo, prefix: string = ''): { win: string; nix: string } => {
+    const relPath = getModelInfoFinalFilePath(mi)
+
+    const winPath = relPath.replace(/\//g, '\\')
+    const winPrefix = prefix?.replace(/\//g, '\\')
+    const isUnderPrefixWin = winPath.startsWith(winPrefix)
+
+    const nixPath = relPath.replace(/\\/g, '/')
+    const nixPrefix = prefix?.replace(/\//g, '\\')
+    const isUnderPrefixNix = nixPath.startsWith(nixPrefix)
+
+    const isUnderPrefix = isUnderPrefixNix || isUnderPrefixWin
+    return {
+        win: isUnderPrefix ? winPath.slice(winPrefix.length) : mi.filename /* winRel */,
+        nix: isUnderPrefix ? nixPath.slice(nixPrefix.length) : mi.filename /* nixRel */,
+    }
 }
 
 export type ModelFile = {
@@ -104,11 +122,24 @@ export const getKnownModels = (p?: {
     }
 
     if (p?.genTypes) {
-        let out = 'export type ComfyUIManagerKnownModelNames ='
+        let out = ''
+        // categories
+        const uniqCategories: { [key: string]: number } = knownModelList.reduce((acc, cur) => {
+            if (acc[cur.type] != null) acc[cur.type] += 1
+            else acc[cur.type] = 1
+            return acc
+        }, {} as { [key: string]: number })
+        out += 'export type ComfyUIManagerKnownModelTypes =\n'
+        for (const [cat, count] of Object.entries(uniqCategories))
+            out += `    | ${JSON.stringify(cat).padEnd(20)} // x ${count.toString().padStart(3)}\n`
+        out += '\n'
+
+        // list
         const sortedModels = knownModelList.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()))
-        for (const modelInfo of sortedModels) {
-            out += `\n    | ${JSON.stringify(modelInfo.name)}`
-        }
+        out += 'export type ComfyUIManagerKnownModelNames =\n'
+        for (const modelInfo of sortedModels) out += `    | ${JSON.stringify(modelInfo.name)}\n`
+        out += '\n'
+
         writeFileSync('src/wiki/modelListType.ts', out + '\n', 'utf-8')
     }
 
@@ -128,5 +159,8 @@ export const getKnownModels = (p?: {
 
 export const getKnownCheckpoints = (): ModelInfo[] => {
     const knownModels = getKnownModels()
-    return [...knownModels.values()].filter((i) => i.type === 'checkpoint')
+    for (const mi of knownModels.values()) {
+        console.log(`[👙] `, mi.type === 'checkpoint' ? '✅' : '❌', mi.name)
+    }
+    return [...knownModels.values()].filter((i) => i.type === 'checkpoint' || i.type === 'checkpoints')
 }

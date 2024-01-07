@@ -5,74 +5,13 @@ import { Popover, Whisper } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
 import { CleanedEnumResult } from 'src/types/EnumUtils'
 import type { EnumName, EnumValue } from '../../models/Schema'
-import { extractDownloadCandidates } from '../EnumDefault'
-import { RevealUI } from 'src/rsuite/reveal/RevealUI'
+import { InstallModelBtnUI } from './InstallModelBtnUI'
 
 type T = {
     label: EnumValue
     value: EnumValue | null
 }[]
 
-export const InstallModelBtnUI = observer(function InstallModelBtnUI_<K extends KnownEnumNames>(p: {
-    widget: Widget_enum<K> | Widget_enumOpt<K>
-}) {
-    const st = useSt()
-    const models = extractDownloadCandidates(p.widget.input.default as any)
-    if (models == null) return null
-    return (
-        <RevealUI>
-            <div tw='btn btn-square btn-sm'>
-                <span className='material-symbols-outlined'>cloud_download</span>
-            </div>
-            <div tw='flex flex-col flex-wrap gap-1'>
-                {/* {models.length} */}
-                {/* <pre>{JSON.stringify(p.widget.input.default)}</pre> */}
-                {models.map((mi) => {
-                    const isInstalled = p.widget.possibleValues.find((x) => x === mi.filename)
-                    const host = st.mainHost
-                    const rootComfyUIFolder = host.absolutPathToDownloadModelsTo
-                    const dlPath = host.getComfyUIManager()?.getModelInfoFinalFilePath(mi)
-                    return (
-                        <div>
-                            <div
-                                onClick={async () => {
-                                    // 🔴 TODO
-                                    // https://github.com/ltdrdata/ComfyUI-Manager/blob/main/js/model-downloader.js#L11
-                                    // copy Data-it implementation
-
-                                    // download file
-                                    const res = await host.getComfyUIManager()?.installModel(mi)
-                                    if (!res) return
-
-                                    // const res = await host.downloadFileIfMissing(m.url, dlPath)
-
-                                    // retrieve the enum info
-                                    // add the new value (BRITTLE)
-                                    const enumInfo = st.schema.knownEnumsByName //
-                                        .get(p.widget.input.enumName)
-                                    enumInfo?.values.push(mi.filename)
-                                }}
-                                tw='btn btn-sm btn-outline btn-sm'
-                                key={mi.name}
-                            >
-                                {isInstalled ? '✅' : null}
-                                <span className='material-symbols-outlined'>cloud_download</span>
-                                <span>{mi.name}</span>
-                            </div>
-                            {/* <RevealUI> */}
-                            {/* <div>infos</div> */}
-                            <div tw='text-xs italic'>
-                                <div tw='text-xx italic'>{mi.description}</div>
-                                <div tw='text-xx italic'>{mi.url}</div>
-                            </div>
-                            {/* </RevealUI> */}
-                        </div>
-                    )
-                })}
-            </div>
-        </RevealUI>
-    )
-})
 export const WidgetEnumUI = observer(function WidgetEnumUI_<K extends KnownEnumNames>(p: {
     widget: Widget_enum<K> | Widget_enumOpt<K>
 }) {
@@ -81,6 +20,7 @@ export const WidgetEnumUI = observer(function WidgetEnumUI_<K extends KnownEnumN
     const isOptional = widget instanceof Widget_enumOpt
     return (
         <>
+            {/* <InstallModelBtnUI widget={widget} modelFolderPrefix={} /> */}
             <EnumSelectorUI
                 value={() => widget.status}
                 disabled={!widget.state.active}
@@ -95,8 +35,6 @@ export const WidgetEnumUI = observer(function WidgetEnumUI_<K extends KnownEnumN
                     widget.state.val = e as any // 🔴
                 }}
             />
-
-            <InstallModelBtnUI widget={widget} />
         </>
     )
 })

@@ -12,10 +12,8 @@ export const ui_subform_Tile = () => {
             preprocessor: ui_subform_Tile_Preprocessor(form),
             cnet_model_name: form.enum({
                 enumName: 'Enum_ControlNetLoader_control_net_name',
-                default: {
-                    value: 'control_v11f1e_sd15_tile.pth',
-                    knownModel: ['ControlNet-v1-1 (tile; fp16; v11u)', 'ControlNet-v1-1 (tile; fp16; v11f1e)'],
-                },
+                default: { value: 'control_v11f1e_sd15_tile.pth' },
+                recommandedModels: { knownModel: ['ControlNet-v1-1 (tile; fp16; v11u)', 'ControlNet-v1-1 (tile; fp16; v11f1e)'] },
                 group: 'Controlnet',
                 label: 'Model',
             }),

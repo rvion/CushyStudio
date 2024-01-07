@@ -13,10 +13,8 @@ export const ui_subform_OpenPose = () => {
             preprocessor: ui_subform_OpenPose_Preprocessor(form),
             cnet_model_name: form.enum({
                 enumName: 'Enum_ControlNetLoader_control_net_name',
-                default: {
-                    value: 'control_v11p_sd15_openpose.pth',
-                    knownModel: ['ControlNet-v1-1 (openpose; fp16)', 'SDXL-controlnet: OpenPose (v2)'],
-                },
+                default: { value: 'control_v11p_sd15_openpose.pth' },
+                recommandedModels: { knownModel: ['ControlNet-v1-1 (openpose; fp16)', 'SDXL-controlnet: OpenPose (v2)'] },
                 group: 'Controlnet',
                 label: 'Model',
             }),

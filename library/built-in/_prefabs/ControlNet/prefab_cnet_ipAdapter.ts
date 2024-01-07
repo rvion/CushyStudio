@@ -67,8 +67,9 @@ export const ui_subform_IPAdapter = () => {
             clip_name: form.enum({
                 enumName: 'Enum_CLIPVisionLoader_clip_name',
                 label: 'Clip Vision Model',
-                default: {
-                    value: 'model.safetensors',
+                default: { value: 'model.safetensors' },
+                recommandedModels: {
+                    modelFolderPrefix: 'models/clip_vision',
                     knownModel: [
                         'CLIPVision model (IP-Adapter) CLIP-ViT-H-14-laion2B-s32B-b79K',
                         'CLIPVision model (IP-Adapter) CLIP-ViT-bigG-14-laion2B-39B-b160k',
@@ -81,8 +82,8 @@ export const ui_subform_IPAdapter = () => {
             }),
             cnet_model_name: form.enum({
                 enumName: 'Enum_IPAdapterModelLoader_ipadapter_file',
-                default: {
-                    value: 'ip-adapter_sd15.safetensors',
+                default: { value: 'ip-adapter_sd15.safetensors' },
+                recommandedModels: {
                     knownModel: [
                         'ip-adapter_sd15.safetensors',
                         'ip-adapter_sd15_light.safetensors',
