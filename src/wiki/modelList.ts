@@ -35,6 +35,34 @@ export const ModelInfo_Schema = Type.Object(
 /* ✅ */ const _t1: ModelInfo = 0 as any as ModelInfo2
 /* ✅ */ const _t2: ModelInfo2 = 0 as any as ModelInfo
 
+/**
+ * try to replicate the logic of ComfyUIManager to extract the final
+ * file path of a downloaded managed model
+ */
+export const getModelInfoFinalFilePath = (mi: ModelInfo): string => {
+    /**
+     * the wide data-lt once told:
+     *
+     * | if save_path is 'default'
+     * | models/type'/filename
+     *
+     * | if type is "checkpoint"
+     * | models/checkpoints/filename
+     *
+     * | if save_path not starting with custom node
+     * | base path is models
+     * | e.g. save_path is "checkpoints/SD1.5"
+     * | models/checkpoints/SD1.5/filename
+     * | save_path is "custom_nodes/AAA/models"
+     * | custom_nodes/AAA/models/filename
+     *
+     */
+    if (mi.save_path === 'default') return `models/${mi.type}/${mi.filename}`
+    if (mi.type === 'checkpoint') return `models/checkpoints/${mi.filename}`
+    if (mi.save_path.startsWith('custom_nodes')) return `${mi.save_path}/${mi.filename}`
+    else return `models/${mi.save_path}/${mi.filename}`
+}
+
 export type ModelFile = {
     models: ModelInfo[]
 }
