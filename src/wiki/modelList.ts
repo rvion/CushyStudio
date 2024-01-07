@@ -52,7 +52,9 @@ export const getKnownModels = (p?: {
     if (knownModels != null && !p?.updateCache) return knownModels
 
     const knownModelsFile: ModelFile = JSON.parse(readFileSync('src/wiki/jsons/model-list.json', 'utf8'))
-    const knownModelList = knownModelsFile.models
+    const knownModelsFileExtra: ModelFile = JSON.parse(readFileSync('src/wiki/jsons/model-list-extra.json', 'utf8'))
+    const knownModelList = knownModelsFile.models.concat(knownModelsFileExtra.models)
+
     let hasErrors = false
 
     knownModels = new Map<ComfyUIManagerKnownModelNames, ModelInfo>()
