@@ -21,7 +21,7 @@ export async function createEsbuildContextFor(p: { entrypoints: AbsolutePath[]; 
             '.svg': 'dataurl',
         },
         outdir: distFolder,
-        external: ['react', 'mobx', 'mobx-react-lite'],
+        external: ['react', 'mobx', 'mobx-react-lite', 'fs'],
 
         // ----------------------
         write: false,
