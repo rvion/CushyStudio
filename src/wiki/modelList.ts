@@ -159,8 +159,8 @@ export const getKnownModels = (p?: {
 
 export const getKnownCheckpoints = (): ModelInfo[] => {
     const knownModels = getKnownModels()
-    for (const mi of knownModels.values()) {
-        console.log(`[👙] `, mi.type === 'checkpoint' ? '✅' : '❌', mi.name)
-    }
+    // for (const mi of knownModels.values()) {
+    //     console.log(`[👙] `, mi.type === 'checkpoint' ? '✅' : '❌', mi.name)
+    // }
     return [...knownModels.values()].filter((i) => i.type === 'checkpoint' || i.type === 'checkpoints')
 }
