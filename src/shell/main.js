@@ -124,6 +124,8 @@ async function START() {
             },
         })
 
+        // ------------------------------------------------------------
+        // https://github.com/electron/electron/pull/573
         //remove X-Frame-Options headers on all incoming requests.
         mainWindow.webContents.session.webRequest.onHeadersReceived({ urls: ['*://*/*'] }, (details, callback) => {
             if (details && details.responseHeaders) {
@@ -136,6 +138,7 @@ async function START() {
             callback({ cancel: false, responseHeaders: details.responseHeaders })
         })
 
+        // ------------------------------------------------------------
         mainWindow.maximize()
         mkdirSync('outputs/_downloads', { recursive: true })
         // https://www.electronjs.org/docs/latest/api/download-item
