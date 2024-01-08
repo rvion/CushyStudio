@@ -1,13 +1,14 @@
 import { exhaust } from 'src/utils/misc/ComfyUtils'
 import { ui_highresfix } from './_prefabs/_prefabs'
+import { Cnet_args, Cnet_return, run_cnet, ui_cnet } from './_prefabs/prefab_cnet'
+import { run_improveFace_fromImage, ui_improveFace } from './_prefabs/prefab_detailer'
 import { run_latent, ui_latent } from './_prefabs/prefab_latent'
 import { output_demo_summary } from './_prefabs/prefab_markdown'
 import { run_model, ui_model } from './_prefabs/prefab_model'
 import { run_prompt } from './_prefabs/prefab_prompt'
 import { ui_recursive } from './_prefabs/prefab_recursive'
 import { Ctx_sampler, run_sampler, ui_sampler } from './_prefabs/prefab_sampler'
-import { run_cnet, ui_cnet, Cnet_args, Cnet_return } from './_prefabs/prefab_cnet'
-import { run_improveFace_fromImage, run_improveFace_fromLatent, ui_improveFace } from './_prefabs/prefab_detailer'
+import { run_upscaleWithModel, ui_upscaleWithModel } from './_prefabs/prefab_upscaleWithModel'
 
 app({
     metadata: {
@@ -39,28 +40,7 @@ app({
         latent: ui_latent(),
         sampler: ui_sampler(),
         highResFix: ui_highresfix(form, { activeByDefault: true }),
-        upscale: form.groupOpt({
-            items: () => ({
-                model: form.enum({
-                    enumName: 'Enum_UpscaleModelLoader_model_name',
-                    default: '4x-UltraSharp.pth',
-                }),
-            }),
-            recommandedModels: {
-                knownModel: [
-                    // 2x
-                    'RealESRGAN x2',
-                    // 4x
-                    'RealESRGAN x4',
-                    '4x-UltraSharp',
-                    '4x-AnimeSharp',
-                    '4x_foolhardy_Remacri',
-                    '4x_NMKD-Siax_200k',
-                    // 8x
-                    '8x_NMKD-Superscale_150000_G',
-                ],
-            },
-        }),
+        upscale: ui_upscaleWithModel(),
         controlnets: ui_cnet(),
         recursiveImgToImg: ui_recursive(),
         loop: form.groupOpt({
@@ -110,7 +90,7 @@ app({
         let negative = y.conditionning
 
         // START IMAGE -------------------------------------------------------------------------------
-        let { latent, width, height } = await run_latent({ run: run, opts: ui.latent, vae })
+        let { latent, width, height } = await run_latent({ opts: ui.latent, vae })
 
         // CNETS -------------------------------------------------------------------------------
         let cnet_out: Cnet_return | undefined
@@ -246,11 +226,7 @@ app({
         }
 
         if (ui.upscale) {
-            const upscale = ui.upscale
-            const upscaleModelName = upscale.model
-            const upscaleModel = graph.UpscaleModelLoader({ model_name: upscaleModelName })
-            const upscaledResult = graph.ImageUpscaleWithModel({ image: finalImage, upscale_model: upscaleModel })
-            graph.SaveImage({ images: upscaledResult })
+            finalImage = run_upscaleWithModel(ui.upscale, { image: finalImage })
         }
 
         await run.PROMPT()

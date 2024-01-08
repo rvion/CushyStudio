@@ -1,4 +1,5 @@
 import { observer } from 'mobx-react-lite'
+import { useEffect, useLayoutEffect } from 'react'
 // import { Message } from 'src/rsuite/shims'
 // import { useSt } from 'src/state/stateContext'
 // import { MainNavEntryUI } from '../app/layout/MainNavEntryUI'
@@ -6,7 +7,20 @@ import { observer } from 'mobx-react-lite'
 // import { DraftUI } from './Panel_Draft'
 
 export const Panel_CurrentDraft = observer(function CurrentDraftUI_(p: {}) {
-    return <>This panel is Deprecated</>
+    useEffect(() => {
+        // confetti
+        void (async () => {
+            const confetti = (await import('https://cdn.skypack.dev/canvas-confetti' as any)).default
+            confetti()
+        })()
+    })
+    return (
+        <div tw='relative'>
+            <section tw='text-center py-2'>
+                <h1 tw='text-xl'>Welcome to CushyStudio !</h1>
+            </section>
+        </div>
+    )
     // const st = useSt()
     // const draft = st.currentDraft
     // // just in case no card is selected, open one

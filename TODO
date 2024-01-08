@@ -1,28 +1,15 @@
 cnets:
-    ✔  better way for authors to add defautls to their prefabs / presets (??) @done(24-01-01 22:50)
-        ✔ avoid errors @done(24-01-01 22:50)
-    ✔ include requirements on custom nodes needed so an error message appear if missing custom nodes @done(24-01-01 22:50)
-        ☐ display it if node is missing
-    ✔ button to download missing models automatically @done(24-01-01 22:51)
     ☐ better enum widget with filter support (5min)
     ☐ fix bug where dropping images doesn't work (?)
     ☐ list UI is just hard to read
     ☐ review how prefabs canons
 
-    ✔ duplicated 'CLIPVision model (IP-Adapter)' + finish fixing the ip adapter @done(24-01-07 09:40)
-    ☐ unbreak the select sub-selects (add tests)
 
 Todo :
-    ✔ currentForm() @done(23-12-31 15:38)
-    ✔ fix nsfwjs by including the model locally (web host went down) @done(23-12-23 08:54)
-    ✔ button to delete draft @done(23-12-31 01:16)
-    ✔ https://unjs.io/packages/image-meta @done(23-12-31 13:21)
-    ✔ better hot-reload @done(23-12-31 18:38)
-    ✔ store metafile @done(23-12-31 18:38)
-    ✔ stop storing build artifact on disk @done(23-12-31 18:38)
-    ✔ currentRun() @done(23-12-31 18:53)
-    ✔ fix login callback not beeing available after public dir change @done(24-01-06 22:12)
     ☐ create all nodes at once, then hydrate them after, so all json are ready
+    ☐ better error message when node not found
+    ☐ home page
+    ☐ image app
     ☐ runpod serverless
     ☐ disable publish button if not logged in
     ☐ one-click create app
@@ -59,6 +46,21 @@ Todo :
     ☐ select nodes  => see the corresponding code in realtime
     ☐ new primitive to add all the primitive inputs instead of having super long names,
     ☐ optimize all images ☐ option to reduce image size
+    ✔ currentForm() @done(23-12-31 15:38)
+    ✔ fix nsfwjs by including the model locally (web host went down) @done(23-12-23 08:54)
+    ✔ button to delete draft @done(23-12-31 01:16)
+    ✔ https://unjs.io/packages/image-meta @done(23-12-31 13:21)
+    ✔ better hot-reload @done(23-12-31 18:38)
+    ✔ store metafile @done(23-12-31 18:38)
+    ✔ stop storing build artifact on disk @done(23-12-31 18:38)
+    ✔ currentRun() @done(23-12-31 18:53)
+    ✔ fix login callback not beeing available after public dir change @done(24-01-06 22:12)
+    ✔  better way for authors to add defautls to their prefabs / presets (??) @done(24-01-01 22:50)
+        ✔ avoid errors @done(24-01-01 22:50)
+    ✔ include requirements on custom nodes needed so an error message appear if missing custom nodes @done(24-01-01 22:50)
+        ☐ display it if node is missing
+    ✔ button to download missing models automatically @done(24-01-01 22:51)
+    ✔ duplicated 'CLIPVision model (IP-Adapter)' + finish fixing the ip adapter @done(24-01-07 09:40)
 
 
 misc:

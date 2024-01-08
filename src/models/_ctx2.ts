@@ -18,6 +18,11 @@ const getGlobalCtx = () => {
 /** every function that may potentially call prefab form needs to be wrapped with that */
 export const runWithGlobalForm = <T>(form: FormBuilder, f: () => T): T => {
     const globalCtx = getGlobalCtx()
+
+    // same form, no need to do anything
+    if (globalCtx.currentForm === form) return f()
+
+    // different form, temporarilly change context
     const prev = globalCtx.currentForm
     globalCtx.currentForm = form
     const res = f()

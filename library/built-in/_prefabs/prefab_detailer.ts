@@ -67,7 +67,7 @@ export const run_improveFace_fromImage = (finalImage: _IMAGE = getCurrentRun().A
         wildcard: '',
     })
     run.add_saveImage(x.outputs.image)
-    run.add_saveImage(x.outputs.cropped_refined)
+    // run.add_saveImage(x.outputs.cropped_refined)
     // run.add_saveImage(x.outputs.cropped_enhanced_alpha)
     // run.add_PreviewMask(x._MASK)
     // run.add_saveImage(x.outputs.cnet_images)
