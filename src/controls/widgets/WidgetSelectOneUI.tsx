@@ -8,6 +8,7 @@ export const WidgetSelectOneUI = observer(function WidgetSelectOneUI_<T extends 
     const widget = p.widget
     return (
         <SelectUI<T>
+            key={widget.id}
             size='sm'
             getLabelText={(t) => {
                 // const def = typeof (t as any).type === 'string' ? (t as any).type : '<no label>'
