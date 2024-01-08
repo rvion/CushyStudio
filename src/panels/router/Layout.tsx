@@ -399,7 +399,7 @@ export class CushyLayoutManager {
                                 width: 512,
                                 enableClose: false,
                                 enableDeleteWhenEmpty: false,
-                                children: [this._add({ panel: 'CurrentDraft', canClose: false, props: {}, width: 512 })],
+                                children: [this._add({ panel: 'CurrentDraft', props: {}, width: 512 })],
                                 // enableSingleTabStretch: true,
                             },
                         ],
