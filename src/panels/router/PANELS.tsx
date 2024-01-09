@@ -53,7 +53,7 @@ export const panels = {
     DraftJsonResult:     { name: 'DraftJsonResult',     widget: Panel_DraftJsonResult,   header: (p: PropsOf<typeof Panel_DraftJsonResult  >) => ({title: 'DraftJsonResult',     icon: undefined                         }) },
     DraftJsonSerial:     { name: 'DraftJsonSerial',     widget: Panel_DraftJsonSerial,   header: (p: PropsOf<typeof Panel_DraftJsonSerial  >) => ({title: 'DraftJsonSerial',     icon: undefined                         }) },
     Script:              { name: 'Script',              widget: Panel_Script,            header: (p: PropsOf<typeof Panel_Script           >) => ({title: 'Script',              icon: undefined                         }) },
-    Welcome:             { name: 'CurrentDraft',        widget: Panel_Welcome,           header: (p: PropsOf<typeof Panel_Welcome     >) => ({title: 'CurrentDraft',             icon: undefined                         }) },
+    Welcome:             { name: 'Welcome',             widget: Panel_Welcome,           header: (p: PropsOf<typeof Panel_Welcome          >) => ({title: 'Welcome',             icon: undefined                         }) },
     // DisplacedImage:      { name: 'DisplacedImage',      widget: Panel_3dScene,           header: (p: PropsOf<typeof Panel_3dScene          >) => ({title: 'DisplacedImage',      icon: undefined                      }) },
 
     // utils

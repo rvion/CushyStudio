@@ -242,7 +242,6 @@ export class STATE {
             filterNSFW: SQLITE_false,
             autostartDelay: 0,
             autostartMaxDelay: 100,
-            // currentDraftID: initialDraft.id,
         })
         return project
     }
