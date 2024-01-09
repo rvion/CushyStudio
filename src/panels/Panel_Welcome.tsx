@@ -4,7 +4,7 @@ import { IndexAllAppsBtnUI } from './libraryUI/LibraryHeaderUI'
 import { AppCardUI } from 'src/cards/fancycard/AppCardUI'
 import { useSt } from 'src/state/stateContext'
 
-export const Panel_CurrentDraft = observer(function CurrentDraftUI_(p: {}) {
+export const Panel_Welcome = observer(function Panel_Welcome_(p: {}) {
     useEffect(() => {
         // confetti
         void (async () => {

@@ -61,8 +61,8 @@ export class CushyLayoutManager {
     saveCurrentAs = (perspectiveName: string) => {
         const curr: FL.IJsonModel = this.model.toJson()
         this.st.configFile.update((t) => {
-            t.layouts_v10 ??= {}
-            t.layouts_v10[perspectiveName] = curr
+            t.layouts_v11 ??= {}
+            t.layouts_v11[perspectiveName] = curr
         })
     }
 
@@ -70,8 +70,8 @@ export class CushyLayoutManager {
     resetDefault = (): void => this.reset('default')
     reset = (perspectiveName: string): void => {
         this.st.configFile.update((t) => {
-            t.layouts_v10 ??= {}
-            delete t.layouts_v10[perspectiveName]
+            t.layouts_v11 ??= {}
+            delete t.layouts_v11[perspectiveName]
         })
         if (perspectiveName === this.currentPerspectiveName) {
             this.setModel(Model.fromJson(this.build()))
@@ -79,7 +79,7 @@ export class CushyLayoutManager {
     }
 
     constructor(public st: STATE) {
-        const prevLayout = st.configFile.value.layouts_v10?.default
+        const prevLayout = st.configFile.value.layouts_v11?.default
         const json = prevLayout ?? this.build()
         try {
             this.setModel(Model.fromJson(json))
@@ -399,7 +399,7 @@ export class CushyLayoutManager {
                                 width: 400,
                                 enableClose: false,
                                 enableDeleteWhenEmpty: false,
-                                children: [this._add({ panel: 'CurrentDraft', props: {}, width: 512 })],
+                                children: [this._add({ panel: 'Welcome', props: {}, width: 512 })],
                                 // enableSingleTabStretch: true,
                             },
                         ],

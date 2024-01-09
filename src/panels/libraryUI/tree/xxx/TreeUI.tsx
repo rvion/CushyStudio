@@ -25,13 +25,14 @@ export const TreeUI = observer(function TreeEditorUI_(p: { tree: Tree }) {
                     ⏸️    placeholder='filter'
                     ⏸️    // style={{ width: '100%', borderRadius: '1rem', margin: '1rem 0', padding: '.2rem .4rem' }}
                     /> */}
+                    <div className='flex-1'></div>
                     <div
                         tw='btn btn-square btn-ghost btn-sm shrink-0'
                         onClick={() => {
                             st.db.tree_entries.updateAll({ isExpanded: null })
                         }}
                     >
-                        <span className='material-symbols-outlined'>minimize</span>
+                        <span className='material-symbols-outlined'>unfold_less</span>
                     </div>
                 </div>
                 <div className='w-full'>

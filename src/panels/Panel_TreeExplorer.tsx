@@ -5,7 +5,7 @@ import { LibraryHeaderUI } from './libraryUI/LibraryHeaderUI'
 import { Tree } from './libraryUI/tree/xxx/Tree'
 import { TreeUI } from './libraryUI/tree/xxx/TreeUI'
 
-export const Panel_AppList = observer(function Panel_AppList_(p: {}) {
+export const Panel_TreeExplorer = observer(function Panel_TreeExplorer_(p: {}) {
     const st = useSt()
     const tree = useMemo(() => {
         return new Tree(st, [

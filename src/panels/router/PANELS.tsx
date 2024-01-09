@@ -1,11 +1,11 @@
 import { assets } from 'src/utils/assets/assets'
-import { Panel_AppList } from '../Panel_AppList'
+import { Panel_TreeExplorer } from '../Panel_TreeExplorer'
 import { Panel_Civitai } from '../Panel_Civitai'
 import { Panel_ComfyNodeExplorer } from '../Panel_ComfyNodeExplorer'
 import { Panel_ComfyUI } from '../Panel_ComfyUI'
 import { Panel_ComfyUIHosts } from '../Panel_ComfyUIHosts'
 import { Panel_Config } from '../Panel_Config'
-import { Panel_CurrentDraft } from '../Panel_CurrentDraft'
+import { Panel_Welcome } from '../Panel_Welcome'
 import { Panel_Draft } from '../draft/Panel_Draft'
 import { Panel_DraftJsonResult } from '../Panel_DraftJsonResult'
 import { Panel_DraftJsonSerial } from '../Panel_DraftJsonSerial'
@@ -34,7 +34,7 @@ export const panels = {
     // apps & marketplace
     Marketplace:         { name: 'Marketplace',         widget: Panel_Marketplace,       header: (p: PropsOf<typeof Panel_Marketplace      >) => ({title: 'Marketplace',         icon: assets.CushyLogo_512_png          }) },
     Deck:                { name: 'Deck',                widget: Panel_ComfyNodeExplorer, header: (p: PropsOf<typeof Panel_ComfyNodeExplorer>) => ({title: 'Deck',                icon: undefined                         }) },
-    FileList:            { name: 'FileList',            widget: Panel_AppList,           header: (p: PropsOf<typeof Panel_AppList          >) => ({title: 'FileList',            icon: undefined                         }) },
+    FileList:            { name: 'FileList',            widget: Panel_TreeExplorer,           header: (p: PropsOf<typeof Panel_TreeExplorer          >) => ({title: 'FileList',            icon: undefined                         }) },
     Import:              { name: 'Import',              widget: Panel_Import,            header: (p: PropsOf<typeof Panel_Import           >) => ({title: 'Import',              icon: undefined                         }) },
 
     // ComfyUI
@@ -53,7 +53,7 @@ export const panels = {
     DraftJsonResult:     { name: 'DraftJsonResult',     widget: Panel_DraftJsonResult,   header: (p: PropsOf<typeof Panel_DraftJsonResult  >) => ({title: 'DraftJsonResult',     icon: undefined                         }) },
     DraftJsonSerial:     { name: 'DraftJsonSerial',     widget: Panel_DraftJsonSerial,   header: (p: PropsOf<typeof Panel_DraftJsonSerial  >) => ({title: 'DraftJsonSerial',     icon: undefined                         }) },
     Script:              { name: 'Script',              widget: Panel_Script,            header: (p: PropsOf<typeof Panel_Script           >) => ({title: 'Script',              icon: undefined                         }) },
-    CurrentDraft:        { name: 'CurrentDraft',        widget: Panel_CurrentDraft,      header: (p: PropsOf<typeof Panel_CurrentDraft     >) => ({title: 'CurrentDraft',        icon: undefined                         }) },
+    Welcome:             { name: 'CurrentDraft',        widget: Panel_Welcome,           header: (p: PropsOf<typeof Panel_Welcome     >) => ({title: 'CurrentDraft',             icon: undefined                         }) },
     // DisplacedImage:      { name: 'DisplacedImage',      widget: Panel_3dScene,           header: (p: PropsOf<typeof Panel_3dScene          >) => ({title: 'DisplacedImage',      icon: undefined                      }) },
 
     // utils

@@ -72,7 +72,7 @@ export type ConfigFile = {
     showPreviewInPanel?: boolean
 
     /** named perspectives */
-    layouts_v10?: { [perspectiveName: string]: IJsonModel }
+    layouts_v11?: { [perspectiveName: string]: IJsonModel }
     // bad place to store that
     stars?: { [actionPackName: string]: { at: Timestamp; stars: number } }
     packs?: { [actionPackName: string]: { installed: boolean } }
