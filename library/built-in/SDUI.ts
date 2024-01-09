@@ -9,6 +9,7 @@ import { run_prompt } from './_prefabs/prefab_prompt'
 import { ui_recursive } from './_prefabs/prefab_recursive'
 import { Ctx_sampler, run_sampler, ui_sampler } from './_prefabs/prefab_sampler'
 import { run_upscaleWithModel, ui_upscaleWithModel } from './_prefabs/prefab_upscaleWithModel'
+import { run_saveAllImages, ui_saveAllImages } from './_prefabs/saveSmall'
 
 app({
     metadata: {
@@ -49,6 +50,7 @@ app({
                 delayBetween: form.int({ tooltip: 'in ms', default: 0 }),
             }),
         }),
+        compressImage: ui_saveAllImages(),
         // startImage
         removeBG: form.bool({ default: false }),
         reversePositiveAndNegative: form.bool({ default: false }),
@@ -187,7 +189,7 @@ app({
 
         // REFINE PASS AFTER ---------------------------------------------------------------------
         if (ui.improveFaces) {
-            const image = run_improveFace_fromImage(finalImage)
+            finalImage = run_improveFace_fromImage(finalImage)
             // latent = graph.VAEEncode({ pixels: image, vae })
         }
 
@@ -234,6 +236,10 @@ app({
         if (ui.gaussianSplat) run.output_GaussianSplat({ url: '' })
         if (ui.summary) output_demo_summary(run)
         if (show3d) run.output_3dImage({ image: 'base', depth: 'depth', normal: 'normal' })
+
+        if (ui.compressImage) {
+            run_saveAllImages({ format: 'webp', quality: ui.compressImage.quality })
+        }
 
         // LOOP IF NEED BE -----------------------------------------------------------------------
         const loop = ui.loop

@@ -9,6 +9,7 @@ import { useSt } from 'src/state/stateContext'
 import { assets } from 'src/utils/assets/assets'
 import { JsonViewUI } from 'src/widgets/workspace/JsonViewUI'
 import { openExternal, showItemInFolder } from '../app/layout/openExternal'
+import { formatSize } from 'src/db/getDBStats'
 
 export const Panel_ViewImage = observer(function Panel_ViewImage_(p: {
     //
@@ -78,6 +79,7 @@ export const Panel_ViewImage = observer(function Panel_ViewImage_(p: {
 export const ImageActionBarUI = observer(function ImageActionBarUI_(p: { img?: Maybe<MediaImageL> }) {
     const st = useSt()
     const img = p.img
+    img?.getSize()
     return (
         <div tw='flex items-center gap-2 bg-base-200'>
             {/* <FieldAndLabelUI label='Rating'> */}
@@ -155,7 +157,13 @@ export const ImageActionBarUI = observer(function ImageActionBarUI_(p: { img?: M
                     open
                 </MenuItem>
             </Dropdown>
-            <div tw='virtualBorder p-1'>{`${img?.data.width ?? '?'} x ${img?.data.height ?? '?'}`}</div>
+            {img ? (
+                <>
+                    <div tw='virtualBorder p-1'>{`${img.data.width ?? '?'} x ${img?.data.height ?? '?'}`}</div>
+                    {img.data.fileSize && <div tw='virtualBorder p-1'>{`${formatSize(img.data.fileSize)}`}</div>}
+                    <div tw='virtualBorder p-1'>{`${img.data.hash?.slice(0, 5)}...`}</div>
+                </>
+            ) : null}
         </div>
     )
 })

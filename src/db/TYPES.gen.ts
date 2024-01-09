@@ -588,6 +588,12 @@ export type MediaImageT = {
     /** @default: null, sqlType: TEXT */
     promptNodeID?: Maybe<string>;
 
+    /** @default: null, sqlType: INT */
+    fileSize?: Maybe<number>;
+
+    /** @default: null, sqlType: TEXT */
+    hash?: Maybe<string>;
+
 }
 export const MediaImageSchema = Type.Object({
     id: Type.String(),
@@ -600,6 +606,8 @@ export const MediaImageSchema = Type.Object({
     promptID: Type.Optional(T.Nullable(Type.String())),
     stepID: Type.Optional(T.Nullable(Type.String())),
     promptNodeID: Type.Optional(T.Nullable(Type.String())),
+    fileSize: Type.Optional(T.Nullable(Type.Number())),
+    hash: Type.Optional(T.Nullable(Type.String())),
 },{ additionalProperties: false })
 
 export const MediaImageRefs =[
@@ -621,6 +629,8 @@ export const MediaImageFields = {
     promptID: {cid:7,name:'promptID',type:'TEXT',notnull:0,dflt_value:null,pk:0},
     stepID: {cid:8,name:'stepID',type:'TEXT',notnull:0,dflt_value:null,pk:0},
     promptNodeID: {cid:9,name:'promptNodeID',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    fileSize: {cid:10,name:'fileSize',type:'INT',notnull:0,dflt_value:null,pk:0},
+    hash: {cid:11,name:'hash',type:'TEXT',notnull:0,dflt_value:null,pk:0},
 }
 
 
