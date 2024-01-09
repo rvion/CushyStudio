@@ -1473,8 +1473,8 @@ export type Widget_choice_state <T extends { [key: string]: Widget }> = WidgetSt
 export type Widget_choice_output<T extends { [key: string]: Widget }> = { [k in keyof T]?: GetWidgetResult<T[k]> }
 export interface Widget_choice  <T extends { [key: string]: Widget }> extends    WidgetTypeHelpers<'choice',  Widget_choice_opts<T>, Widget_choice_serial<T>, Widget_choice_state<T>, Widget_choice_output<T>> {}
 export class Widget_choice      <T extends { [key: string]: Widget }> implements IWidget<'choice', Widget_choice_opts<T>, Widget_choice_serial<T>, Widget_choice_state<T>, Widget_choice_output<T>> {
-    isVerticalByDefault = false
-    isCollapsible = false
+    isVerticalByDefault = true
+    isCollapsible = true
     isOptional = false
     id: string
     type: 'choice' = 'choice'
