@@ -21,11 +21,20 @@ export class CushyAppL {
         return this._scriptL.item
     }
 
+    get canBePublishedByUser(): boolean {
+        if (this.file == null) return false
+        if (this.file.relPath.startsWith('library/built-in')) return false
+        if (this.file.relPath.startsWith('library/installed')) return false
+        if (this.file.relPath.startsWith('library/sdk-examples')) return false
+        return true
+    }
+
     // link drafts
     private _draftsCollection = new LiveCollection<DraftL>({
         table: () => this.db.drafts,
         where: () => ({ appID: this.id }),
     })
+
     get drafts(): DraftL[] {
         return this._draftsCollection.items
     }
