@@ -5,6 +5,7 @@ import { FieldAndLabelUI } from 'src/widgets/misc/FieldAndLabelUI'
 import { useSt } from '../state/stateContext'
 import { ImageUI } from '../widgets/galleries/ImageUI'
 import { OutputPreviewWrapperUI } from 'src/outputs/OutputPreviewWrapperUI'
+import { RevealUI } from 'src/rsuite/reveal/RevealUI'
 
 export const Panel_Gallery = observer(function VerticalGalleryUI_(p: {}) {
     const st = useSt()
@@ -13,7 +14,14 @@ export const Panel_Gallery = observer(function VerticalGalleryUI_(p: {}) {
             className='flex flex-col bg-base-100 h-full'
             style={{ background: st.configFile.value.galleryBgColor }}
         >
-            <GalleryControlsUI />
+            <RevealUI tw='flex overflow-auto gap-2 px-2 bg-base-200 w-full flex-shrink-0'>
+                <div tw='btn btn-lg'>
+                    <span className='material-symbols-outlined'>settings</span>
+                    Options
+                </div>
+                <GalleryControlsUI />
+            </RevealUI>
+
             <div className='flex flex-wrap overflow-auto'>
                 {/* <LatentPreviewUI /> */}
                 {st.imageToDisplay.map((img) => (
@@ -49,7 +57,7 @@ export const GalleryControlsUI = observer(function GalleryControlsUI_(p: { child
     const st = useSt()
     // const preview = st.preview
     return (
-        <div tw='flex overflow-auto gap-2 px-2 bg-base-200 w-full flex-shrink-0'>
+        <div tw='flex flex-col overflow-auto gap-2 px-2 bg-base-200 w-full flex-shrink-0 min-w-80'>
             {p.children}
             <FieldAndLabelUI label='Size'>
                 <Slider
@@ -76,12 +84,12 @@ export const GalleryControlsUI = observer(function GalleryControlsUI_(p: { child
                     />
                 </div>
             </FieldAndLabelUI>
-            <FieldAndLabelUI label='full-screen'>
+            {/* <FieldAndLabelUI label='full-screen'>
                 <Toggle
                     checked={st.showPreviewInFullScreen ?? true}
                     onChange={(ev) => (st.showPreviewInFullScreen = ev.target.checked)}
                 />
-            </FieldAndLabelUI>
+            </FieldAndLabelUI> */}
             <FieldAndLabelUI label='in-panel'>
                 <Toggle checked={st.showPreviewInPanel} onChange={(ev) => (st.showPreviewInPanel = ev.target.checked)} />
             </FieldAndLabelUI>

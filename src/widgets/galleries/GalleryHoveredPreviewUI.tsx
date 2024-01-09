@@ -14,13 +14,13 @@ export const GalleryHoveredPreviewUI = observer(function GalleryHoveredPreviewUI
     const hovered = st.hovered
     if (hovered == null) return null
     if (st.showPreviewInPanel) return null
-    const extraProps: CSSProperties = st.showPreviewInFullScreen
-        ? {
-              maxHeight: st.showPreviewInFullScreen ? '95vh' : undefined,
-              maxWidth: st.showPreviewInFullScreen ? '95vw' : undefined,
-              width: '95%',
-          }
-        : {}
+    // ⏸️ const extraProps: CSSProperties = st.showPreviewInFullScreen
+    // ⏸️     ? {
+    // ⏸️           maxHeight: st.showPreviewInFullScreen ? '95vh' : undefined,
+    // ⏸️           maxWidth: st.showPreviewInFullScreen ? '95vw' : undefined,
+    // ⏸️           width: '95%',
+    // ⏸️       }
+    // ⏸️     : {}
 
     return (
         <div>

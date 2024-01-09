@@ -5,11 +5,10 @@ import type { ComfyPromptJSON } from '../types/ComfyPrompt'
 
 import { readFileSync } from 'fs'
 import { makeAutoObservable } from 'mobx'
-import path, { basename, relative } from 'pathe'
+import path, { basename } from 'pathe'
 import { asCushyScriptID } from 'src/db/TYPES.gen'
 import { convertLiteGraphToPrompt } from '../core/litegraphToPrompt'
 import { exhaust } from '../utils/misc/ComfyUtils'
-import { ManualPromise } from '../utils/misc/ManualPromise'
 import { getPngMetadataFromUint8Array } from '../utils/png/_getPngMetadata'
 import { Library } from './Library'
 
@@ -32,7 +31,7 @@ export type LoadStrategy =
 
 // prettier-ignore
 type LoadStatus =
-    | { type: 'SUCCESS', script:CushyScriptL}
+    | { type: 'SUCCESS', script: CushyScriptL}
     | { type: 'FAILURE', msg?: string }
 
 // prettier-ignore
@@ -81,17 +80,9 @@ export class LibraryFile {
         return this.scripts.items[0]
     }
 
-    strategies: LoadStrategy[]
+    strategies: LoadStrategy[] = []
 
     // --------------------------------------------------------
-    get score(): number { return 0 } // prettier-ignore
-
-    private get deckRelativeFilePath(): string {
-        return relative(this.folderAbs, this.absPath)
-    }
-
-    // --------------------------------------------------------
-    // status
     // loaded = new ManualPromise<true>()
     errors: { title: string; details: any }[] = []
     addError = (title: string, details: any = null): LoadStatus => {
@@ -116,7 +107,7 @@ export class LibraryFile {
     /** load a file trying all compatible strategies */
     successfullLoadStrategies: Maybe<LoadStrategy> = null
 
-    script0: Maybe<CushyScriptL>
+    script0: Maybe<CushyScriptL> = null
 
     isLoading = false
     hasBeenLoadedAtLeastOnce = false
@@ -343,56 +334,3 @@ export class LibraryFile {
         return script
     }
 }
-
-// get displayName(): string {
-//     return this.manifest.name ?? basename(this.relPath)
-// }
-
-// get priority(): number {
-//     return this.manifest.priority ?? 0
-// }
-
-// get description(): string {
-//     return this.manifest.description ?? 'no description'
-// }
-
-/** meh */
-// get deckManifestType(): 'no manifest' | 'invalid manifest' | 'crash' | 'valid' {
-//     return this.pkg.manifestError?.type ?? ('valid' as const)
-// }
-
-// get manifest(): AppManifest {
-//     return this.appCompiled?.metadata ?? this.defaultManifest
-// }
-
-// get authorDefinedManifest(): Maybe<AppManifest> {
-//     const cards = this.deck.manifest.cards ?? []
-//     const match = cards.find((c) => {
-//         const absPath = path.join(this.deck.folderAbs, c.deckRelativeFilePath)
-//         if (absPath === this.absPath) return true
-//     })
-//     return match
-// }
-
-// drafts= new LiveCollection<DraftL>
-// get drafts(): DraftL[] {
-//     const draftTable = this.st.db.drafts
-//     const draftTableInfos = draftTable.infos
-//     const draftsT = this.st.db.prepareAll<RelativePath, DraftT>(
-//         draftTableInfos,
-//         'efrom draft where appPath=?',
-//     )(this.relPath)
-//     return draftsT.map((t) => draftTable.getOrCreateInstanceForExistingData(t))
-// }
-
-// getCompiledApps(): CompiledApp[] {
-//     this.load()
-//     return this.appCompiled!
-// }
-
-// getFirstCompiledApp(): Maybe<CompiledApp> {
-//     this.load()
-//     return this.appCompiled?.[0]
-// }
-
-// appCompiled?: CompiledApp[] = []

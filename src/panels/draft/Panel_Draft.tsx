@@ -8,10 +8,10 @@ import { SelectUI } from 'src/rsuite/SelectUI'
 import { Message } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
 import { stringifyUnknown } from 'src/utils/formatters/stringifyUnknown'
-import { WidgetUI } from '../controls/widgets/WidgetUI'
-import { ResultWrapperUI } from '../widgets/misc/ResultWrapperUI'
-import { draftContext } from '../widgets/misc/useDraft'
-import { DraftHeaderUI } from './draft/DraftHeaderUI'
+import { WidgetUI } from '../../controls/widgets/WidgetUI'
+import { ResultWrapperUI } from '../../widgets/misc/ResultWrapperUI'
+import { draftContext } from '../../widgets/misc/useDraft'
+import { DraftHeaderUI } from './DraftHeaderUI'
 
 export const Panel_Draft = observer(function Panel_Draft_(p: { draftID: DraftID }) {
     // 1. get draft
@@ -119,7 +119,7 @@ const ErrorPanelUI = observer(function ErrorPanelUI_(p: { children: React.ReactN
 })
 
 export const AppCompilationErrorUI = observer(function AppCompilationErrorUI_(p: { app: CushyAppL }) {
-    const card = p.app
+    // const app = p.app
     return (
         <ErrorPanelUI>
             <h3 tw='text-red-600'>invalid action</h3>

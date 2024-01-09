@@ -61,8 +61,8 @@ export class CushyLayoutManager {
     saveCurrentAs = (perspectiveName: string) => {
         const curr: FL.IJsonModel = this.model.toJson()
         this.st.configFile.update((t) => {
-            t.layouts_v9 ??= {}
-            t.layouts_v9[perspectiveName] = curr
+            t.layouts_v10 ??= {}
+            t.layouts_v10[perspectiveName] = curr
         })
     }
 
@@ -70,8 +70,8 @@ export class CushyLayoutManager {
     resetDefault = (): void => this.reset('default')
     reset = (perspectiveName: string): void => {
         this.st.configFile.update((t) => {
-            t.layouts_v9 ??= {}
-            delete t.layouts_v9[perspectiveName]
+            t.layouts_v10 ??= {}
+            delete t.layouts_v10[perspectiveName]
         })
         if (perspectiveName === this.currentPerspectiveName) {
             this.setModel(Model.fromJson(this.build()))
@@ -79,7 +79,7 @@ export class CushyLayoutManager {
     }
 
     constructor(public st: STATE) {
-        const prevLayout = st.configFile.value.layouts_v9?.default
+        const prevLayout = st.configFile.value.layouts_v10?.default
         const json = prevLayout ?? this.build()
         try {
             this.setModel(Model.fromJson(json))
@@ -396,7 +396,7 @@ export class CushyLayoutManager {
                                 id: LEFT_PANE_TABSET_ID,
                                 minWidth: 150,
                                 minHeight: 150,
-                                width: 512,
+                                width: 400,
                                 enableClose: false,
                                 enableDeleteWhenEmpty: false,
                                 children: [this._add({ panel: 'CurrentDraft', props: {}, width: 512 })],
@@ -433,14 +433,42 @@ export class CushyLayoutManager {
                             //             minHeight: 100,
                             //             children: [this._add({ panel: 'Steps', props: {}, canClose: false })],
                             //         },
+                            // {
+                            //     type: 'tabset',
+                            //     height: 256,
+                            //     minWidth: 100,
+                            //     minHeight: 100,
+                            //     children: [
+                            //         this._add({ panel: 'Gallery', props: {} }),
+                            //         // this._add({ panel: 'LastImage', props: {} }),
+                            //         // // this._add({ panel: 'Steps', props: {}, canClose: false }),
+                            //         // this._add({ panel: 'Outputs', props: {} }),
+                            //         // // this._add({ panel: 'Gallery', props: {} }),
+                            //         // this._add({ panel: 'LastStep', props: {}, canClose: false }),
+                            //         // this._add({ panel: 'Steps', props: {}, canClose: false }),
+                            //         // this._add({ panel: 'LastImage', props: {} }),
+                            //         // // this._add({ panel: 'LastLatent', props: {} }),
+                            //         // // this._persistentTab('Hosts', Widget.Hosts),
+                            //     ],
+                            // },
+                            // ],
+                            // },
+                        ],
+                    },
+                    {
+                        id: 'rightsidePane',
+                        type: 'row',
+                        weight: 10,
+                        children: [
                             {
                                 type: 'tabset',
-                                height: 256,
+                                // height: 256,
+                                width: 300,
                                 minWidth: 100,
                                 minHeight: 100,
                                 children: [
                                     this._add({ panel: 'Gallery', props: {} }),
-                                    this._add({ panel: 'LastImage', props: {} }),
+                                    // this._add({ panel: 'LastImage', props: {} }),
                                     // // this._add({ panel: 'Steps', props: {}, canClose: false }),
                                     // this._add({ panel: 'Outputs', props: {} }),
                                     // // this._add({ panel: 'Gallery', props: {} }),
@@ -451,8 +479,6 @@ export class CushyLayoutManager {
                                     // // this._persistentTab('Hosts', Widget.Hosts),
                                 ],
                             },
-                            // ],
-                            // },
                         ],
                     },
                 ],
