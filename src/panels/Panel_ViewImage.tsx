@@ -10,6 +10,7 @@ import { assets } from 'src/utils/assets/assets'
 import { JsonViewUI } from 'src/widgets/workspace/JsonViewUI'
 import { openExternal, showItemInFolder } from '../app/layout/openExternal'
 import { formatSize } from 'src/db/getDBStats'
+import { ImageDropdownUI } from './ImageDropdownUI'
 
 export const Panel_ViewImage = observer(function Panel_ViewImage_(p: {
     //
@@ -129,34 +130,7 @@ export const ImageActionBarUI = observer(function ImageActionBarUI_(p: { img?: M
             </div>
 
             {/* 3. OPEN OUTPUT FOLDER */}
-            <Dropdown title='Actions' startIcon={<span className='material-symbols-outlined'>menu</span>}>
-                <MenuItem
-                    icon={<span className='material-symbols-outlined'>folder</span>}
-                    size='sm'
-                    // appearance='subtle'
-                    disabled={!img?.absPath}
-                    onClick={() => {
-                        if (!img?.absPath) return
-                        showItemInFolder(img.absPath)
-                    }}
-                >
-                    open folder
-                </MenuItem>
-                {/* 3. OPEN FILE ITSELF */}
-                <MenuItem
-                    icon={<span className='material-symbols-outlined'>folder</span>}
-                    size='xs'
-                    // appearance='subtle'
-                    disabled={!img?.absPath}
-                    onClick={() => {
-                        const imgPathWithFileProtocol = img ? `file://${img.absPath}` : null
-                        if (imgPathWithFileProtocol == null) return
-                        openExternal(imgPathWithFileProtocol)
-                    }}
-                >
-                    open
-                </MenuItem>
-            </Dropdown>
+            {img ? <ImageDropdownUI img={img} /> : null}
             {img ? (
                 <>
                     <div tw='virtualBorder p-1'>{`${img.data.width ?? '?'} x ${img?.data.height ?? '?'}`}</div>

@@ -123,7 +123,7 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: { w
 
     return (
         <div>
-            <div style={dropStyle} ref={dropRef} className='flexflex-row items-center'>
+            <div style={dropStyle} ref={dropRef} className='_WidgetSelectImageUI flexflex-row items-center'>
                 <TabsUI
                     current={current}
                     tabs={tabs}

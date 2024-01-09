@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite'
-import { ImportedFileUI } from 'src/importers/FilesBeeingImported'
+import { ImportAsImageUI, ImportedFileUI } from 'src/importers/FilesBeeingImported'
 import { TargetBox } from 'src/importers/TargetBox'
 import { useSt } from '../state/stateContext'
 
@@ -9,8 +9,20 @@ export const Panel_Import = observer(function Panel_Import_(p: {}) {
     return (
         <div tw='w-full h-full'>
             <div tw='flex flex-col gap-3 m-3'>
-                {st.droppedFiles.map((file) => (
-                    <ImportedFileUI key={file.name} file={file} />
+                {st.droppedFiles.map((file, ix) => (
+                    <div key={file.name} tw='card card-bordered p-2 bg-base-200'>
+                        <div tw='card-title'>Imported file</div>
+                        <div tw='italic text-sm'>"{file.name}"</div>
+                        <ul>
+                            <li tw='virtualBorder'>
+                                as workflow:
+                                <ImportedFileUI key={file.name} file={file} />
+                            </li>
+                            <li>
+                                as image: <ImportAsImageUI file={file} />
+                            </li>
+                        </ul>
+                    </div>
                 ))}
             </div>
             <div tw='relative w-96 h-96 virtualBorder'>

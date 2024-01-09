@@ -63,7 +63,7 @@ export const Panel_CardPicker3UI = observer(function Panel_CardPicker3UI_(p: {})
                             for (const x of allFiles) await x.extractScriptFromFile()
                         }}
                     >
-                        Rebuild local store
+                        Index All Apps
                     </div>
                     {/* </div> */}
                     {/* <div tw='flex gap-2'> */}

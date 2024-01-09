@@ -44,9 +44,9 @@ export const Panel_ComfyUIHosts = observer(function Panel_ComfyUIHosts_(p: { hos
                     }}
                 >
                     <span className='material-symbols-outlined'>add</span>
-                    Add (local network)
+                    Add Host
                 </div>
-                <div
+                {/* <div
                     tw='btn-sm btn btn-primary'
                     onClick={() => {
                         st.db.hosts.create({
@@ -63,7 +63,7 @@ export const Panel_ComfyUIHosts = observer(function Panel_ComfyUIHosts_(p: { hos
                 >
                     <span className='material-symbols-outlined'>add</span>
                     Add (cloud)
-                </div>
+                </div> */}
             </div>
             <div tw='text-xl font-bold'>My Custom Hosts</div>
             <div tw='flex flex-wrap gap-2'>

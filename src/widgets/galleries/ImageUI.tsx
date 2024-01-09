@@ -4,6 +4,7 @@ import { RevealUI } from 'src/rsuite/reveal/RevealUI'
 import { Button } from 'src/rsuite/shims'
 import { useSt } from '../../state/stateContext'
 import { useImageDrag } from './dnd'
+import { ImageDropdownMenuUI } from 'src/panels/ImageDropdownUI'
 
 export const ImageUI = observer(function ImageUI_(p: { size?: string; img: MediaImageL | MediaImageID }) {
     const st = useSt()
@@ -32,9 +33,12 @@ export const ImageUI = observer(function ImageUI_(p: { size?: string; img: Media
     )
     // )
     return (
-        <RevealUI enableRightClick>
+        <RevealUI disableHover>
             <div>{IMG}</div>
-            <ul tw='shadow menu dropdown-content z-[1] bg-base-100 rounded-box'>
+            <ul tabIndex={0} tw='shadow menu dropdown-content z-[1] bg-base-100 rounded-box'>
+                <ImageDropdownMenuUI img={image} />
+            </ul>
+            {/* <ul tw='shadow menu dropdown-content z-[1] bg-base-100 rounded-box'>
                 <li className='_MenuItem' onClick={() => image.useAsDraftIllustration()}>
                     <div className='flex items-center gap-2'>
                         <span className='material-symbols-outlined'>image</span>
@@ -47,7 +51,7 @@ export const ImageUI = observer(function ImageUI_(p: { size?: string; img: Media
                         Paint
                     </div>
                 </li>
-            </ul>
+            </ul> */}
         </RevealUI>
     )
 })

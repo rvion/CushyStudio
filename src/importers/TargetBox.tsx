@@ -9,7 +9,12 @@ export const TargetBox = observer((p: { children?: ReactNode }) => {
     const st = useSt()
     const [{ isActive, canDrop, isOver }, drop] = useDrop(
         () => ({
-            accept: [NativeTypes.FILE],
+            accept: [
+                //
+                NativeTypes.FILE,
+                // NativeTypes.URL,
+                // NativeTypes.TEXT,
+            ],
             drop(item: { files: any[] }) {
                 if (item) {
                     const files = item.files

@@ -9,12 +9,14 @@ import { STATE } from '../../state/state'
 import { stContext } from '../../state/stateContext'
 import { asAbsolutePath } from '../../utils/fs/pathUtils'
 import { ToastContainer } from 'react-toastify'
+import { useGlobalDropHook } from './useGlobalDropHook'
 
 const path = asAbsolutePath(process.cwd())
 
 export const MainUI = observer(() => {
     console.log(`[🛋️] rendering CushyStudio`)
     const st = useMemo(() => runInAction(() => new STATE(path)), [])
+    useGlobalDropHook(st)
     return (
         <stContext.Provider value={st}>
             <ToastContainer />

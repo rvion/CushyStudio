@@ -2,6 +2,7 @@ import { observer } from 'mobx-react-lite'
 import { ReactNode } from 'react'
 import { RSAppearance, RSSize } from './RsuiteTypes'
 import { RevealUI } from './reveal/RevealUI'
+import { ComboUI } from 'src/app/shortcuts/ComboUI'
 
 export const Dropdown = (p: {
     className?: string
@@ -40,6 +41,7 @@ export const MenuItem = observer(function DropdownItem_(p: {
     className?: string
     children?: ReactNode
     label?: ReactNode
+    shortcut?: ReactNode
 }) {
     const { size, label, disabled, icon, children, active, onClick, ...rest } = p
 
@@ -62,6 +64,11 @@ export const MenuItem = observer(function DropdownItem_(p: {
                 {icon ?? null /*<span className='material-symbols-outlined'>spa</span>*/}
                 {label}
                 {children}
+                {p.shortcut ? (
+                    <div tw='ml-auto pl-4 text-xs italic'>
+                        <div tw='kbd'>cmd</div>+<div tw='kbd'>R</div>
+                    </div>
+                ) : null}
             </div>
         </li>
     )

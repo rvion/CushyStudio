@@ -2,7 +2,7 @@ import type { LiteGraphJSON } from 'src/core/LiteGraph'
 import type { ComfyPromptJSON } from 'src/types/ComfyPrompt'
 import type { FC } from 'react'
 
-import { observer } from 'mobx-react-lite'
+import { observer, useLocalObservable } from 'mobx-react-lite'
 import { useMemo, useState } from 'react'
 import { getPngMetadataFromFile } from '../utils/png/_getPngMetadata'
 import { usePromise } from './usePromise'
@@ -11,10 +11,69 @@ import { useSt } from '../state/stateContext'
 import { TypescriptHighlightedCodeUI } from '../widgets/misc/TypescriptHighlightedCodeUI'
 import { convertLiteGraphToPrompt } from '../core/litegraphToPrompt'
 import { PromptToCodeOpts } from './ComfyImporter'
+import { STATE } from 'src/state/state'
+import { makeAutoObservable } from 'mobx'
+import { mkdirSync, writeFileSync } from 'fs'
+import { nanoid } from 'nanoid'
+import { downloadFile } from 'src/utils/fs/downloadFile'
 
 export interface FileListProps {
     files: File[]
 }
+
+// class FileImporter {
+//     constructor(
+//         //
+//         public st: STATE,
+//         public file: File,
+//     ) {
+//         makeAutoObservable(this)
+//     }
+
+//     get isPng() {
+//         return this.file.name.endsWith('.png')
+//     }
+// }
+
+export const ImportAsImageUI = observer(function ImportAsImageUI_(p: { className?: string; file: File }) {
+    const xx = 0
+    const st = useSt()
+    const file = p.file
+    const url = URL.createObjectURL(p.file)
+    const uiSt = useLocalObservable(() => ({ validImage: false }))
+    return (
+        <div tw='flex'>
+            <img
+                onLoad={() => {
+                    uiSt.validImage = true
+                    // URL.revokeObjectURL(url)
+                }}
+                style={{ width: '2rem', height: '2rem' }}
+                src={url}
+            />
+            <div
+                tw={['btn', uiSt.validImage ? null : 'btn-disabled']}
+                onClick={async () => {
+                    if (!uiSt.validImage) return
+                    // non-integrated with CushyStudio way of saving an image
+                    mkdirSync('output/imported/', { recursive: true })
+                    const relPath = `output/imported/${file.name}` as RelativePath
+
+                    const buffer = await file.arrayBuffer().then((x) => Buffer.from(x))
+                    writeFileSync(relPath, buffer)
+
+                    const absPath = st.resolveFromRoot(relPath)
+                    st.db.media_images.create({
+                        infos: { type: 'image-local', absPath },
+                    })
+                }}
+            >
+                {' '}
+                import as image
+            </div>
+        </div>
+    )
+})
 
 export const ImportedFileUI = observer(function ImportedFileUI_(p: {
     //
@@ -27,7 +86,7 @@ export const ImportedFileUI = observer(function ImportedFileUI_(p: {
 
     const st = useSt()
     const isPng = file.name.endsWith('.png')
-    if (!isPng) return <>not a png</>
+    if (!isPng) return <>❌ 0. not a png</>
 
     const promise = usePromise(() => getPngMetadataFromFile(file), [])
     const metadata = promise.value

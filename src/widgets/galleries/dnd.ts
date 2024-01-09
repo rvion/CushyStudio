@@ -38,7 +38,11 @@ type Drop2 = { files: (File & { path: AbsolutePath })[] }
 export const useImageDrop = (st: STATE, fn: (image: MediaImageL) => void) =>
     useDrop<Drop1 | Drop2, void, CSSProperties>(() => ({
         // 1. Accepts both custom Image and native files drops.
-        accept: [ItemTypes.Image, NativeTypes.FILE],
+        accept: [
+            //
+            ItemTypes.Image,
+            NativeTypes.FILE,
+        ],
 
         // 2. add golden border when hovering over
         collect(monitor) {

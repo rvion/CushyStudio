@@ -52,6 +52,7 @@ export const RevealUI = observer(function Tooltip_(p: {
                   onMouseLeave={uist.onMouseLeaveTooltip}
                   onContextMenu={uist.enterAnchor}
                   style={{
+                      //   borderTop: uist._lock ? '1px dashed yellow' : undefined,
                       position: 'absolute',
                       zIndex: 99999999,
                       top: `${uist.tooltipPosition.top}px`,
@@ -59,6 +60,7 @@ export const RevealUI = observer(function Tooltip_(p: {
                       // Adjust positioning as needed
                   }}
               >
+                  {uist._lock ? <span tw='opacity-50 italic text-sm'>locked; right-click to unlock</span> : null}
                   {p.children[1]}
               </div>,
               document.getElementById('tooltip-root')!,

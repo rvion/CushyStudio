@@ -13,27 +13,34 @@ export const MenuDebugUI = observer(function MenuDebugUI_(p: {}) {
             title='Debug'
         >
             <MenuItem
-                icon={<span className='material-symbols-outlined text-orange-500'>panorama_horizontal</span>}
+                icon={<span className='material-symbols-outlined text-green-500'>panorama_horizontal</span>}
                 onClick={st.layout.resetCurrent}
                 label='Fix Layout'
             />
+            <MenuItem //
+                icon={<span className='material-symbols-outlined text-green-500'>bug_report</span>}
+                onClick={st.electronUtils.toggleDevTools}
+                label='console'
+            />
+            <MenuItem
+                icon={<span className='material-symbols-outlined text-orange-500'>sync</span>}
+                onClick={st.restart}
+                shortcut='CmdOrCtrl+R'
+                label='Reload'
+            />
+            <div tw='divider my-0' />
             <MenuItem
                 onClick={() => getDBStats(st.db)}
-                icon={<span className='material-symbols-outlined text-red-500'>account_balance</span>}
+                icon={<span className='material-symbols-outlined text-yellow-500'>account_balance</span>}
             >
                 print DB stats
             </MenuItem>
             <MenuItem
                 onClick={st.auth.__testCB}
-                icon={<span className='material-symbols-outlined text-red-500'>account_balance</span>}
+                icon={<span className='material-symbols-outlined text-yellow-500'>account_balance</span>}
             >
                 Test Auth CB page
             </MenuItem>
-            <MenuItem
-                icon={<span className='material-symbols-outlined text-orange-500'>sync</span>}
-                onClick={st.restart}
-                label='Reload'
-            />
             <div tw='divider my-0' />
             <MenuItem
                 onClick={() => st.wipeOuputTopLevelImages()}
@@ -59,11 +66,6 @@ export const MenuDebugUI = observer(function MenuDebugUI_(p: {}) {
             >
                 Reset DB
             </MenuItem>
-            <MenuItem //
-                icon={<span className='material-symbols-outlined text-red-500'>bug_report</span>}
-                onClick={st.electronUtils.toggleDevTools}
-                label='console'
-            />
             <MenuItem
                 icon={<span className='material-symbols-outlined text-red-500'>sync</span>}
                 onClick={st.fullReset_eraseConfigAndSchemaFilesAndDB}
