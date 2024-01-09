@@ -1,63 +1,43 @@
 import type { LiteGraphJSON } from 'src/core/LiteGraph'
 import type { ComfyPromptJSON } from 'src/types/ComfyPrompt'
-import type { FC } from 'react'
 
-import { observer, useLocalObservable } from 'mobx-react-lite'
-import { useMemo, useState } from 'react'
-import { getPngMetadataFromFile } from '../utils/png/_getPngMetadata'
-import { usePromise } from './usePromise'
-import { Button, Panel } from 'src/rsuite/shims'
-import { useSt } from '../state/stateContext'
-import { TypescriptHighlightedCodeUI } from '../widgets/misc/TypescriptHighlightedCodeUI'
-import { convertLiteGraphToPrompt } from '../core/litegraphToPrompt'
-import { PromptToCodeOpts } from './ComfyImporter'
-import { STATE } from 'src/state/state'
-import { makeAutoObservable } from 'mobx'
 import { mkdirSync, writeFileSync } from 'fs'
-import { nanoid } from 'nanoid'
-import { downloadFile } from 'src/utils/fs/downloadFile'
+import { observer, useLocalObservable } from 'mobx-react-lite'
+import { useState } from 'react'
+import { Panel } from 'src/rsuite/shims'
+import { convertLiteGraphToPrompt } from '../core/litegraphToPrompt'
+import { useSt } from '../state/stateContext'
+import { getPngMetadataFromFile } from '../utils/png/_getPngMetadata'
+import { TypescriptHighlightedCodeUI } from '../widgets/misc/TypescriptHighlightedCodeUI'
+import { PromptToCodeOpts } from './ComfyImporter'
+import { usePromise } from './usePromise'
 
 export interface FileListProps {
     files: File[]
 }
 
-// class FileImporter {
-//     constructor(
-//         //
-//         public st: STATE,
-//         public file: File,
-//     ) {
-//         makeAutoObservable(this)
-//     }
-
-//     get isPng() {
-//         return this.file.name.endsWith('.png')
-//     }
-// }
-
 export const ImportAsImageUI = observer(function ImportAsImageUI_(p: { className?: string; file: File }) {
-    const xx = 0
     const st = useSt()
     const file = p.file
     const url = URL.createObjectURL(p.file)
     const uiSt = useLocalObservable(() => ({ validImage: false }))
     return (
-        <div tw='flex'>
+        <div tw='flex gap-1'>
             <img
                 onLoad={() => {
                     uiSt.validImage = true
                     // URL.revokeObjectURL(url)
                 }}
-                style={{ width: '2rem', height: '2rem' }}
+                style={{ width: '5rem', height: '5rem' }}
                 src={url}
             />
             <div
-                tw={['btn', uiSt.validImage ? null : 'btn-disabled']}
+                tw={['btn btn-primary btn-sm', uiSt.validImage ? null : 'btn-disabled']}
                 onClick={async () => {
                     if (!uiSt.validImage) return
                     // non-integrated with CushyStudio way of saving an image
-                    mkdirSync('output/imported/', { recursive: true })
-                    const relPath = `output/imported/${file.name}` as RelativePath
+                    mkdirSync('outputs/imported/', { recursive: true })
+                    const relPath = `outputs/imported/${file.name}` as RelativePath
 
                     const buffer = await file.arrayBuffer().then((x) => Buffer.from(x))
                     writeFileSync(relPath, buffer)

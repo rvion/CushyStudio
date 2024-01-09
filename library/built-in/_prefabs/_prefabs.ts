@@ -24,7 +24,7 @@ export type OutputFor<UIFn extends (form: FormBuilder) => any> = GetWidgetResult
 export const ui_highresfix = (form: FormBuilder, p: { activeByDefault?: true } = {}) =>
     form.groupOpt({
         default: p.activeByDefault,
-        label: 'Second Pass with latent Upscale (a.k.a. High Res Fix)',
+        label: 'Upscale Pass (High Res Fix)',
         items: () => ({
             scaleFactor: form.float({ default: 1.5, min: 0.5, max: 8, step: 0.1 }),
             steps: form.int({ default: 15 }),

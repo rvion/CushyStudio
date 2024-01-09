@@ -416,8 +416,10 @@ export class CushyLayoutManager {
                                 enableDeleteWhenEmpty: false,
                                 minWidth: 100,
                                 minHeight: 100,
+                                selected: 1,
                                 children: [
                                     this._add({ panel: 'Output', props: {}, canClose: false }),
+                                    this._add({ panel: 'Hosts', props: {}, canClose: false }),
                                     // this._add({ panel: 'Outputs', props: {} }),
                                     // this._add({ panel: 'Gallery', props: {} }),
                                 ],
@@ -463,7 +465,7 @@ export class CushyLayoutManager {
                             {
                                 type: 'tabset',
                                 // height: 256,
-                                width: 300,
+                                width: 400,
                                 minWidth: 100,
                                 minHeight: 100,
                                 children: [
