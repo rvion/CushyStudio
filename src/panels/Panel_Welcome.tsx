@@ -17,14 +17,22 @@ export const Panel_Welcome = observer(function Panel_Welcome_(p: {}) {
         <div tw='relative'>
             <section tw='text-center py-2 flex flex-col gap-2 items-center px-8'>
                 <h1 tw='text-2xl'>Welcome to CushyStudio !</h1>
-                <div>You managed to get it running !</div>
+                <div tw='italic text-sm'>
+                    Psss. You're early; this app is still in Beta. It update often, and break sometimes. Hope you'll have fun !
+                </div>
                 <div tw='divider mx-8'></div>
                 <div>You can fill your local CushyApp database by indexing all apps in the `./library` folder</div>
                 <IndexAllAppsBtnUI />
                 <div tw='divider mx-8'></div>
+                To get started, try those apps ?
                 {['library/built-in/SDUI.ts'].map((path) => (
                     <StandaloneAppBtnUI key={path} path={path as RelativePath} />
                 ))}
+                <div tw='divider mx-8'></div>
+                <div>
+                    Time to create your own app ? Let's GOO ! and if you're feeling lost, check the{' '}
+                    <div tw='btn btn-sm'>SDK examples</div> or the <div tw='btn btn-sm'>Documentation</div> website
+                </div>
             </section>
         </div>
     )
