@@ -12,7 +12,7 @@ import type { FormBuilder } from './FormBuilder'
 import type { IWidget, WidgetTypeHelpers, WidgetInputFields, GetWidgetResult, WidgetStateFields } from './IWidget'
 import type { AspectRatio, ComfyImageAnswer, CushyImageAnswer, CushySize, CushySizeByRatio, ImageAnswer, ImageAnswerForm, PaintImageAnswer, SDModelType } from './misc/InfoAnswer'
 
-import { makeAutoObservable } from 'mobx'
+import { computed, makeAutoObservable, action, makeObservable, observable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { FC } from 'react'
 import { bang } from 'src/utils/misc/bang'
@@ -384,11 +384,11 @@ export type Widget_promptOpt_state  = WidgetStateFields<{ type: 'promptOpt'; act
 export type Widget_promptOpt_output = Maybe<WidgetPromptOutput>
 export interface Widget_promptOpt extends WidgetTypeHelpers<'promptOpt', Widget_promptOpt_opts, Widget_promptOpt_serial, Widget_promptOpt_state, Widget_promptOpt_output> {}
 export class Widget_promptOpt implements IWidget<'promptOpt', Widget_promptOpt_opts, Widget_promptOpt_serial, Widget_promptOpt_state, Widget_promptOpt_output> {
-    isVerticalByDefault = true
-    isCollapsible = true
-    isOptional = true
-    id: string
-    type: 'promptOpt' = 'promptOpt'
+    readonly isVerticalByDefault = true
+    readonly isCollapsible = true
+    readonly isOptional = true
+    readonly id: string
+    readonly type: 'promptOpt' = 'promptOpt'
     state: Widget_promptOpt_state
     constructor(
         public builder: FormBuilder,
@@ -471,11 +471,11 @@ export type Widget_int_state  = WidgetStateFields<{ type:'int', active: true; va
 export type Widget_int_output = number
 export interface Widget_int extends WidgetTypeHelpers<'int', Widget_int_opts, Widget_int_serial, Widget_int_state, Widget_int_output> {}
 export class Widget_int implements IWidget<'int', Widget_int_opts, Widget_int_serial, Widget_int_state, Widget_int_output> {
-    isVerticalByDefault = false
-    isCollapsible = false
-    isOptional = false
-    id: string
-    type: 'int' = 'int'
+    readonly isVerticalByDefault = false
+    readonly isCollapsible = false
+    readonly isOptional = false
+    readonly id: string
+    readonly type: 'int' = 'int'
     state: Widget_int_state
     constructor(
         public builder: FormBuilder,
@@ -485,7 +485,12 @@ export class Widget_int implements IWidget<'int', Widget_int_opts, Widget_int_se
     ) {
         this.id = serial?.id ?? nanoid()
         this.state = serial ?? { type: 'int', collapsed: input.startCollapsed, id: this.id, active: true, val: input.default ?? 0 }
-        makeAutoObservable(this)
+        // makeAutoObservable(this)
+        makeObservable(this, {
+            state: observable,
+            serial: computed,
+            result: computed,
+        })
     }
     get serial(): Widget_int_serial { return this.state }
     get result(): Widget_int_output { return this.state.val }
@@ -498,11 +503,11 @@ export type Widget_float_state  = WidgetStateFields<{ type:'float', active: true
 export type Widget_float_output = number
 export interface Widget_float extends WidgetTypeHelpers<'float', Widget_float_opts, Widget_float_serial, Widget_float_state, Widget_float_output> {}
 export class Widget_float implements IWidget<'float', Widget_float_opts, Widget_float_serial, Widget_float_state, Widget_float_output> {
-    isVerticalByDefault = false
-    isCollapsible = false
-    isOptional = false
-    id: string
-    type: 'float' = 'float'
+    readonly isVerticalByDefault = false
+    readonly isCollapsible = false
+    readonly isOptional = false
+    readonly id: string
+    readonly type: 'float' = 'float'
     state: Widget_float_state
     constructor(
         public builder: FormBuilder,
@@ -512,7 +517,11 @@ export class Widget_float implements IWidget<'float', Widget_float_opts, Widget_
     ) {
         this.id = serial?.id ?? nanoid()
         this.state = serial ?? { type:'float', collapsed: input.startCollapsed, id: this.id, active: true, val: input.default ?? 0 }
-        makeAutoObservable(this)
+        makeObservable(this,{
+            state: observable,
+            serial: computed,
+            result: computed,
+        })
     }
     get serial(): Widget_float_serial { return this.state }
     get result(): Widget_float_output { return this.state.val }
@@ -525,11 +534,11 @@ export type Widget_bool_state  = WidgetStateFields<{ type:'bool', active: true; 
 export type Widget_bool_output = boolean
 export interface Widget_bool extends WidgetTypeHelpers<'bool', Widget_bool_opts, Widget_bool_serial, Widget_bool_state, Widget_bool_output> {}
 export class Widget_bool implements IWidget<'bool', Widget_bool_opts, Widget_bool_serial, Widget_bool_state, Widget_bool_output> {
-    isVerticalByDefault = false
-    isCollapsible = false
-    isOptional = true
-    id: string
-    type: 'bool' = 'bool'
+    readonly isVerticalByDefault = false
+    readonly isCollapsible = false
+    readonly isOptional = true
+    readonly id: string
+    readonly type: 'bool' = 'bool'
     state: Widget_bool_state
     constructor(
         public builder: FormBuilder,
@@ -539,7 +548,11 @@ export class Widget_bool implements IWidget<'bool', Widget_bool_opts, Widget_boo
     ) {
         this.id = serial?.id ?? nanoid()
         this.state = serial ?? { type: 'bool', collapsed: input.startCollapsed, id: this.id, active: true, val: input.default ?? false }
-        makeAutoObservable(this)
+        makeObservable(this,{
+            state: observable,
+            serial: computed,
+            result: computed,
+        })
     }
     get serial(): Widget_bool_serial { return this.state }
     get result(): Widget_bool_output { return this.state.active ? this.state.val : false}
@@ -910,11 +923,11 @@ export type Widget_imageOpt_state  = WidgetStateFields<ImageAnswerForm<'imageOpt
 export type Widget_imageOpt_output = Maybe<ImageAnswer>
 export interface Widget_imageOpt extends WidgetTypeHelpers<'imageOpt', Widget_imageOpt_opts, Widget_imageOpt_serial, Widget_imageOpt_state, Widget_imageOpt_output> {}
 export class Widget_imageOpt implements IWidget<'imageOpt', Widget_imageOpt_opts, Widget_imageOpt_serial, Widget_imageOpt_state, Widget_imageOpt_output> {
-    isVerticalByDefault = true
-    isCollapsible = true
-    isOptional = true
-    id: string
-    type: 'imageOpt' = 'imageOpt'
+    readonly isVerticalByDefault = true
+    readonly isCollapsible = true
+    readonly isOptional = true
+    readonly id: string
+    readonly type: 'imageOpt' = 'imageOpt'
     state: Widget_imageOpt_state
     constructor(
         public builder: FormBuilder,
@@ -1400,11 +1413,11 @@ export type Widget_groupOpt_state <T extends { [key: string]: Widget }> = Widget
 export type Widget_groupOpt_output<T extends { [key: string]: Widget }> = Maybe<{ [k in keyof T]: GetWidgetResult<T[k]> }>
 export interface Widget_groupOpt<T extends { [key: string]: Widget }> extends WidgetTypeHelpers<'groupOpt', Widget_groupOpt_opts<T>, Widget_groupOpt_serial<T>, Widget_groupOpt_state<T>, Widget_groupOpt_output<T>> {}
 export class Widget_groupOpt<T extends { [key: string]: Widget }> implements IWidget<'groupOpt', Widget_groupOpt_opts<T>, Widget_groupOpt_serial<T>, Widget_groupOpt_state<T>, Widget_groupOpt_output<T>> {
-    isVerticalByDefault = true
-    isCollapsible = true
-    isOptional = true
-    id: string
-    type: 'groupOpt' = 'groupOpt'
+    readonly isVerticalByDefault = true
+    readonly isCollapsible = true
+    readonly isOptional = true
+    readonly id: string
+    readonly type: 'groupOpt' = 'groupOpt'
     state: Widget_groupOpt_state<T>
     /** all [key,value] pairs */
     get entries() { return Object.entries(this.state.values) as [string, any][] }
@@ -1424,11 +1437,8 @@ export class Widget_groupOpt<T extends { [key: string]: Widget }> implements IWi
             for (const key in _newValues) {
                 const newItem = _newValues[key]
                 const prevValue_ = prevValues_[key]
-                // if (newItem==null) continue // 🔴 loop should be on now item keys, not prev
-                // if (newItem==null) debugger
                 const newInput = newItem.input
                 const newType = newItem.type
-                // console.log(' 👀 >>', key, prev_)
                 if (prevValue_ && newType === prevValue_.type) {
                     this.state.values[key] = this.builder._HYDRATE(newType, newInput, prevValue_)
                 } else {

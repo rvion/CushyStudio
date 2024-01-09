@@ -35,7 +35,6 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
 
     const isCollapsible = widget.isCollapsible
     const collapsed = widget.state.collapsed && isCollapsible
-    const v = p.widget
     const levelClass = p.isTopLevel ? '_isTopLevel' : '_isNotTopLevel'
 
     const toggleInfo =
@@ -68,8 +67,8 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
         !widget.state.active ||
         widget instanceof KLS.Widget_bool //
 
-    let WIDGET =
-        collapsed || widget.type === 'bool' ? null : !v.state.active ? null : (
+    let widgetUI =
+        collapsed || widget.type === 'bool' ? null : !widget.state.active ? null : (
             <ErrorBoundary FallbackComponent={ErrorBoundaryFallback} onReset={(details) => {}}>
                 <WidgetDI.WidgetUI widget={widget} />
             </ErrorBoundary>
@@ -82,32 +81,34 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
         widget.type === 'list' ||
         widget.type === 'choices'
 
-    const hasNoWidget = WIDGET == null
+    // const hasNoWidget = widgetUI == null
 
     const LABEL = (
         <div
             tw={[
                 '_WidgetLabel',
                 isVertical ? 'w-full' : null,
-                WIDGET == null ? 'w-full' : null,
+                widgetUI == null ? 'w-full' : null,
                 'min-w-max shrink-0',
                 'flex items-center gap-0',
                 // 'hover:bg-base-200 cursor-pointer',
                 'cursor-pointer',
             ]}
             onClick={() => {
-                if (v.state.collapsed) return (v.state.collapsed = false)
+                if (widget.state.collapsed) return (widget.state.collapsed = false)
                 if (!isCollapsible) {
                     if (showToogle) toggleInfo.toggle()
                     return
                 }
-                if (!v.state.active) {
-                    v.state.active = true
+                if (!widget.state.active) {
+                    widget.state.active = true
                     return
                 }
-                v.state.collapsed = true
+                widget.state.collapsed = true
             }}
         >
+            {/* {widget.state == null ? '🟢' : '🔴'} */}
+            {/* {JSON.stringify(widget.serial)} */}
             {showToogle && (
                 <div
                     style={{ width: '1.3rem', height: '1.3rem' }}
@@ -163,10 +164,10 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
             {/* Collapse ONLY Indicator ------------------------------------ */}
             <span
                 onClick={(ev) => {
-                    if (v.state.collapsed) {
+                    if (widget.state.collapsed) {
                         ev.stopPropagation()
                         ev.preventDefault()
-                        v.state.collapsed = false
+                        widget.state.collapsed = false
                         return
                     }
                     if (!isCollapsible) {
@@ -178,21 +179,21 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                 }}
                 tw='opacity-30 hover:opacity-100'
             >
-                {v.state.collapsed ? '▸ {...}' : /*'▿'*/ ''}
+                {widget.state.collapsed ? '▸ {...}' : /*'▿'*/ ''}
             </span>
         </div>
     )
 
     const labelGap = label == false ? '' : 'gap-1'
-    const clsX = v.state.collapsed ? '_COLLAPSED' : ''
+    const clsX = widget.state.collapsed ? '_COLLAPSED' : ''
     // prettier-ignore
     let className = isVertical //
         ? `${clsX} __${widget.type} _WidgetWithLabelUI ${levelClass} flex flex-col items-baseline`
         : `${clsX} __${widget.type} _WidgetWithLabelUI ${levelClass} flex flex-row ${labelGap} ${isCollapsible ? 'items-baseline' : 'items-center'}` // prettier-ignore
 
-    if (WIDGET == null) className += ' w-full'
+    if (widgetUI == null) className += ' w-full'
     if (isVertical && /*WIDGET*/ true) {
-        WIDGET = <div tw='w-full'>{WIDGET}</div>
+        widgetUI = <div tw='w-full'>{widgetUI}</div>
         // return (
         //     <fieldset className={className} key={rootKey}>
         //         <legend>{LABEL}</legend>
@@ -211,7 +212,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     return (
         <div tw='FIELD [padding-left:0.3rem]' className={className} key={rootKey}>
             {LABEL}
-            {WIDGET}
+            {widgetUI}
         </div>
     )
     // }

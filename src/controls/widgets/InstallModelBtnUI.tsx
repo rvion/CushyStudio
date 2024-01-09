@@ -28,7 +28,7 @@ export const InstallModelBtnUI = observer(function InstallModelBtnUI_<K extends 
                     // const rootComfyUIFolder = host.absolutPathToDownloadModelsTo
                     // const dlPath = host.getComfyUIManager()?.getModelInfoFinalFilePath(mi)
                     return (
-                        <div>
+                        <div key={mi.url}>
                             <div
                                 onClick={async () => {
                                     // 🔴 TODO

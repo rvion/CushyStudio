@@ -3,7 +3,7 @@ import type { STATE } from 'src/state/state'
 import * as FL from 'flexlayout-react'
 import { Actions, IJsonModel, Layout, Model } from 'flexlayout-react'
 
-import { makeAutoObservable, runInAction, toJS } from 'mobx'
+import { action, makeAutoObservable, runInAction, toJS } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { nanoid } from 'nanoid'
 import { FC, createElement, createRef } from 'react'
@@ -90,7 +90,7 @@ export class CushyLayoutManager {
             this.setModel(Model.fromJson(this.build()))
             // this.setModel(Model.fromJson({ layout: { type: 'row', children: [] } }))
         }
-        makeAutoObservable(this, { layoutRef: false })
+        makeAutoObservable(this, { layoutRef: false, FOCUS_OR_CREATE: action })
     }
 
     layoutRef = createRef<Layout>()
@@ -327,6 +327,7 @@ export class CushyLayoutManager {
         const out: IJsonModel = {
             global: {
                 splitterSize: 6,
+                tabEnableRename: false,
                 borderEnableAutoHide: true,
                 borderAutoSelectTabWhenClosed: true,
                 //
@@ -398,7 +399,7 @@ export class CushyLayoutManager {
                                 width: 512,
                                 enableClose: false,
                                 enableDeleteWhenEmpty: false,
-                                children: [this._add({ panel: 'CurrentDraft', canClose: false, props: {}, width: 512 })],
+                                children: [this._add({ panel: 'CurrentDraft', props: {}, width: 512 })],
                                 // enableSingleTabStretch: true,
                             },
                         ],
@@ -482,6 +483,10 @@ export class CushyLayoutManager {
                 </Message>
             )
 
-        return createElement(RenderPanelUI, { panel, panelProps })
+        return createElement(RenderPanelUI, {
+            node,
+            panel,
+            panelProps,
+        })
     }
 }

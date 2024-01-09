@@ -278,7 +278,12 @@ export const SelectPopupUI = observer(function SelectPopupUI_<T>(p: { s: AutoCom
                         onMouseDown={(ev) => s.onMenuEntryClick(ev, index)}
                     >
                         <div>
-                            <input checked={isSelected} type='checkbox' tw='checkbox checkbox-primary input-xs' />
+                            <input
+                                onChange={() => {}}
+                                checked={isSelected}
+                                type='checkbox'
+                                tw='checkbox checkbox-primary input-xs'
+                            />
                         </div>
                         {/* {isSelected ? '🟢' : null} */}
                         {s.p.getLabelUI //

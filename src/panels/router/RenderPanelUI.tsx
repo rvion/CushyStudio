@@ -1,11 +1,25 @@
+import type * as FL from 'flexlayout-react'
 import { observer } from 'mobx-react-lite'
-import { Message } from 'src/rsuite/shims'
-import { Panel, panels } from './PANELS'
+import { useState } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
+import { Message } from 'src/rsuite/shims'
 import { ErrorBoundaryFallback } from 'src/widgets/misc/ErrorBoundary'
+import { Panel, panels } from './PANELS'
 
-export const RenderPanelUI = observer(function RenderPanelUI_(p: { panel: Panel; panelProps: any }) {
-    const { panel, panelProps } = p
+export const RenderPanelUI = observer(function RenderPanelUI_(p: {
+    //
+    node?: FL.TabNode
+    panel: Panel
+    panelProps: any
+}) {
+    const { panel, panelProps, node } = p
+
+    // -----------------------
+    // Those 3 lines allow to unmount the component when it's not visible
+    const [visible, setVisible] = useState(() => node?.isVisible() ?? true)
+    p.node?.setEventListener('visibility', (e: { visible: boolean }) => setVisible(e.visible))
+    if (!visible) return null
+    // -----------------------
 
     // 3. get panel definition
     const panelDef = (panels as any)[panel]

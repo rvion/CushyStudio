@@ -21,6 +21,7 @@ import { DraftL } from './Draft'
 import { CushyScriptL } from './CushyScriptL'
 import { CushyAppL } from './CushyApp'
 import { toastError } from 'src/utils/misc/toasts'
+import { hashArrayBuffer } from 'src/state/hashBlob'
 
 // prettier-ignore
 export type ImageInfos =
@@ -237,7 +238,13 @@ export class MediaImageL {
         const uint8arr = new Uint8Array(buff)
         const size = imageMeta(uint8arr)
         console.log(`[🏞️]`, size)
-        this.update({ width: size?.width, height: size?.height })
+        const hash = await hashArrayBuffer(uint8arr)
+        this.update({
+            width: size?.width,
+            height: size?.height,
+            fileSize: uint8arr.byteLength,
+            hash: hash,
+        })
         return size
     }
 

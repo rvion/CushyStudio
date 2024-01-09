@@ -1,7 +1,6 @@
 import type { FormBuilder } from 'src/controls/FormBuilder'
 import type { ComfyNodeOutput } from 'src/core/Slot'
 import type { OutputFor } from './_prefabs'
-import type { Runtime } from 'src'
 
 export const ui_latent = () => {
     const form: FormBuilder = getCurrentForm()
@@ -17,14 +16,10 @@ export const ui_latent = () => {
     })
 }
 
-export const run_latent = async (p: {
-    //
-    run: Runtime
-    opts: OutputFor<typeof ui_latent>
-    vae: _VAE
-}) => {
+export const run_latent = async (p: { opts: OutputFor<typeof ui_latent>; vae: _VAE }) => {
     // init stuff
-    const graph = p.run.nodes
+    const run = getCurrentRun()
+    const graph = run.nodes
     const opts = p.opts
 
     // misc calculatiosn
@@ -34,7 +29,7 @@ export const run_latent = async (p: {
 
     // case 1. start form image
     if (opts.image) {
-        const image = await p.run.loadImageAnswer(opts.image)
+        const image = await run.loadImageAnswer(opts.image)
         latent = graph.VAEEncode({ pixels: image, vae: p.vae })
         const size = graph.Image_Size_to_Number({ image: image })
         width = size.outputs.width_int
