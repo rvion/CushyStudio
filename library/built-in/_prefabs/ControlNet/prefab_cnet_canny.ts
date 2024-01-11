@@ -7,7 +7,7 @@ export const ui_subform_Canny = () => {
     const form = getCurrentForm()
     return form.group({
         label: 'Canny',
-        customNodes: 'ComfyUI-Advanced-ControlNet',
+        customNodesByTitle: 'ComfyUI-Advanced-ControlNet',
         items: () => ({
             ...cnet_ui_common(form),
             preprocessor: ui_subform_Canny_Preprocessor(form),

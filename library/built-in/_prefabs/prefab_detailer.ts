@@ -1,7 +1,7 @@
 export const ui_improveFace = () => {
     const form = getCurrentForm()
     return form.groupOpt({
-        customNodes: 'ComfyUI Impact Pack',
+        customNodesByTitle: 'ComfyUI Impact Pack',
         items: () => ({
             faces: form.enum({
                 //

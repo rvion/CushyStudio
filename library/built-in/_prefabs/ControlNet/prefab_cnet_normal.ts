@@ -6,7 +6,7 @@ export const ui_subform_Normal = () => {
     const form = getCurrentForm()
     return form.group({
         label: 'Normal',
-        customNodes: 'ComfyUI-Advanced-ControlNet',
+        customNodesByTitle: 'ComfyUI-Advanced-ControlNet',
         items: () => ({
             ...cnet_ui_common(form),
             preprocessor: ui_subform_Normal_Preprocessor(),

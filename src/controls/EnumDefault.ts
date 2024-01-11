@@ -26,33 +26,6 @@ export const extractDefaultValue = <T extends KnownEnumNames>(def: EnumValue | E
     return null
 }
 
-export const extractDownloadCandidates = (
-    //
-    def: RecommendedModelDownload,
-): ModelInfo[] => {
-    const knownModels = getKnownModels()
-    const OUT: ModelInfo[] = []
-
-    // --------------------------------------
-    const x = def.knownModel ?? []
-    const entries = Array.isArray(x) ? x : [x]
-    for (const entry of entries) {
-        const modelInfo = knownModels.get(entry)
-        if (modelInfo == null) continue
-        OUT.push(modelInfo)
-    }
-
-    // --------------------------------------
-    const y = def.customModels ?? []
-    const entries2 = Array.isArray(y) ? y : [y]
-    for (const entry of entries2) {
-        OUT.push(entry)
-    }
-
-    // --------------------------------------
-    return OUT
-}
-
 export type RecommendedModelDownload = {
     reason?: string
     modelFolderPrefix?: string

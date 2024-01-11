@@ -1,8 +1,8 @@
 import { observer } from 'mobx-react-lite'
 import { RevealUI } from 'src/rsuite/reveal/RevealUI'
 import { useSt } from 'src/state/stateContext'
-import { getModelInfoEnumName } from 'src/wiki/modelList'
-import { RecommendedModelDownload, extractDownloadCandidates } from '../EnumDefault'
+import { ModelInfo, getKnownModels, getModelInfoEnumName } from 'src/wiki/modelList'
+import { RecommendedModelDownload } from '../EnumDefault'
 
 export const InstallModelBtnUI = observer(function InstallModelBtnUI_<K extends KnownEnumNames>(p: {
     // widget: Widget_enum<K> | Widget_enumOpt<K>
@@ -68,3 +68,30 @@ export const InstallModelBtnUI = observer(function InstallModelBtnUI_<K extends 
         </RevealUI>
     )
 })
+
+export const extractDownloadCandidates = (
+    //
+    def: RecommendedModelDownload,
+): ModelInfo[] => {
+    const knownModels = getKnownModels()
+    const OUT: ModelInfo[] = []
+
+    // --------------------------------------
+    const x = def.knownModel ?? []
+    const entries = Array.isArray(x) ? x : [x]
+    for (const entry of entries) {
+        const modelInfo = knownModels.get(entry)
+        if (modelInfo == null) continue
+        OUT.push(modelInfo)
+    }
+
+    // --------------------------------------
+    const y = def.customModels ?? []
+    const entries2 = Array.isArray(y) ? y : [y]
+    for (const entry of entries2) {
+        OUT.push(entry)
+    }
+
+    // --------------------------------------
+    return OUT
+}

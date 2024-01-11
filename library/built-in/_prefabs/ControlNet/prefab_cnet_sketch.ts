@@ -6,7 +6,7 @@ export const ui_subform_Sketch = () => {
     const form = getCurrentForm()
     return form.group({
         label: 'Sketch',
-        customNodes: 'ComfyUI-Advanced-ControlNet',
+        customNodesByTitle: 'ComfyUI-Advanced-ControlNet',
         items: () => ({
             ...cnet_ui_common(form),
             cnet_model_name: form.enum({

@@ -7,7 +7,7 @@ export const ui_subform_Lineart = () => {
     const form = getCurrentForm()
     return form.group({
         label: 'Lineart',
-        customNodes: 'ComfyUI-Advanced-ControlNet',
+        customNodesByTitle: 'ComfyUI-Advanced-ControlNet',
         items: () => ({
             ...cnet_ui_common(form),
             preprocessor: ui_subform_Lineart_Preprocessor(),

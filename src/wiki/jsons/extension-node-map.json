@@ -70,6 +70,19 @@
             "title_aux": "ComfyUI-Static-Primitives"
         }
     ],
+    "https://github.com/AInseven/ComfyUI-fastblend": [
+        [
+            "FillDarkMask",
+            "InterpolateKeyFrame",
+            "MaskListcaptoBatch",
+            "MyOpenPoseNode",
+            "SmoothVideo",
+            "reBatchImage"
+        ],
+        {
+            "title_aux": "ComfyUI-fastblend"
+        }
+    ],
     "https://github.com/AIrjen/OneButtonPrompt": [
         [
             "AutoNegativePrompt",
@@ -101,6 +114,8 @@
     ],
     "https://github.com/AbyssYuan0/ComfyUI_BadgerTools": [
         [
+            "ApplyMaskToImage-badger",
+            "CropImageByMask-badger",
             "FloatToInt-badger",
             "FloatToString-badger",
             "ImageNormalization-badger",
@@ -111,6 +126,7 @@
             "StringToFizz-badger",
             "TextListToString-badger",
             "VideoCut-badger",
+            "deleteDir-badger",
             "findCenterOfMask-badger",
             "getImageSide-badger",
             "getParentDir-badger",
@@ -672,6 +688,7 @@
             "ColorPreprocessor",
             "DWPreprocessor",
             "DensePosePreprocessor",
+            "FacialPartColoringFromPoseKps",
             "FakeScribblePreprocessor",
             "HEDPreprocessor",
             "HintImageEnchance",
@@ -822,6 +839,7 @@
     ],
     "https://github.com/Hangover3832/ComfyUI-Hangover-Nodes": [
         [
+            "Image Scale Bounding Box",
             "MS kosmos-2 Interrogator",
             "Save Image w/o Metadata"
         ],
@@ -971,6 +989,7 @@
     "https://github.com/Kosinkadink/ComfyUI-Advanced-ControlNet": [
         [
             "ACN_AdvancedControlNetApply",
+            "ACN_ControlNetLoaderWithLoraAdvanced",
             "ACN_DefaultUniversalWeights",
             "ACN_SparseCtrlIndexMethodNode",
             "ACN_SparseCtrlLoaderAdvanced",
@@ -1026,8 +1045,10 @@
         [
             "VHS_DuplicateImages",
             "VHS_DuplicateLatents",
+            "VHS_DuplicateMasks",
             "VHS_GetImageCount",
             "VHS_GetLatentCount",
+            "VHS_GetMaskCount",
             "VHS_LoadAudio",
             "VHS_LoadImages",
             "VHS_LoadImagesPath",
@@ -1035,10 +1056,13 @@
             "VHS_LoadVideoPath",
             "VHS_MergeImages",
             "VHS_MergeLatents",
+            "VHS_MergeMasks",
             "VHS_SelectEveryNthImage",
             "VHS_SelectEveryNthLatent",
+            "VHS_SelectEveryNthMask",
             "VHS_SplitImages",
             "VHS_SplitLatents",
+            "VHS_SplitMasks",
             "VHS_VAEDecodeBatched",
             "VHS_VAEEncodeBatched",
             "VHS_VideoCombine"
@@ -1905,6 +1929,7 @@
             "CR Select Model",
             "CR Set Value On Binary",
             "CR Set Value On Boolean",
+            "CR Set Value on String",
             "CR Simple Annotations",
             "CR Simple Banner",
             "CR Simple Binary Pattern",
@@ -1938,10 +1963,13 @@
             "CR Text Cycler",
             "CR Text Input Switch",
             "CR Text Input Switch (4 way)",
+            "CR Text Length",
             "CR Text List",
             "CR Text List Cross Join",
             "CR Text List Simple",
             "CR Text List To String",
+            "CR Text Operation",
+            "CR Text Replace",
             "CR Text Scheduler",
             "CR Thumbnail Preview",
             "CR Trigger",
@@ -1964,7 +1992,7 @@
         ],
         {
             "author": "Suzie1",
-            "description": "160 custom nodes for artists, designers and animators.",
+            "description": "164 custom nodes for artists, designers and animators.",
             "nickname": "Comfyroll Studio",
             "title": "Comfyroll Studio",
             "title_aux": "ComfyUI_Comfyroll_CustomNodes"
@@ -2003,6 +2031,7 @@
         [
             "FC CropAndPaste",
             "FC CropBottom",
+            "FC CropToOrigin",
             "FC FaceDetectCrop",
             "FC FaceFusion",
             "FC FaceSegAndReplace",
@@ -2010,7 +2039,7 @@
             "FC MaskOP",
             "FC RemoveCannyFace",
             "FC ReplaceByMask",
-            "FCStyleLoraLoad"
+            "FC StyleLoraLoad"
         ],
         {
             "title_aux": "ComfyUI-FaceChain"
@@ -2052,6 +2081,8 @@
             "tri3d-extract-parts-batch",
             "tri3d-extract-parts-batch2",
             "tri3d-extract-parts-mask-batch",
+            "tri3d-face-recognise",
+            "tri3d-float-to-image",
             "tri3d-fuzzification",
             "tri3d-interaction-canny",
             "tri3d-load-pose-json",
@@ -2162,6 +2193,7 @@
             "0246.Beautify",
             "0246.BoxRange",
             "0246.CastReroute",
+            "0246.Cloud",
             "0246.Convert",
             "0246.Count",
             "0246.Highway",
@@ -2449,6 +2481,9 @@
             "Text Concatenate",
             "Text Dictionary Convert",
             "Text Dictionary Get",
+            "Text Dictionary Keys",
+            "Text Dictionary New",
+            "Text Dictionary To Text",
             "Text Dictionary Update",
             "Text File History Loader",
             "Text Find and Replace",
@@ -3720,6 +3755,7 @@
             "BatchCount+",
             "CLIPTextEncodeSDXL+",
             "ConsoleDebug+",
+            "DebugTensorShape+",
             "ExtractKeyframes+",
             "GetImageSize+",
             "ImageCASharpening+",
@@ -3741,7 +3777,6 @@
             "ModelCompile+",
             "SDXLResolutionPicker+",
             "SimpleMath+",
-            "StableZero123_Increments",
             "TransitionMask+"
         ],
         {
@@ -3979,7 +4014,12 @@
     ],
     "https://github.com/edenartlab/eden_comfy_pipelines": [
         [
-            "CLIP_Interrogator"
+            "CLIP_Interrogator",
+            "Filepicker",
+            "IMG_padder",
+            "IMG_scaler",
+            "IMG_unpadder",
+            "VAEDecode_to_folder"
         ],
         {
             "title_aux": "eden_comfy_pipelines"
@@ -4178,7 +4218,9 @@
     "https://github.com/glibsonoran/Plush-for-ComfyUI": [
         [
             "DalleImage",
-            "Enhancer"
+            "Enhancer",
+            "ImgTextSwitch",
+            "mulTextSwitch"
         ],
         {
             "title_aux": "Plush-for-ComfyUI"
@@ -4191,6 +4233,14 @@
         ],
         {
             "title_aux": "ComfyUI-GlifNodes"
+        }
+    ],
+    "https://github.com/glowcone/comfyui-base64-to-image": [
+        [
+            "LoadImageFromBase64"
+        ],
+        {
+            "title_aux": "Load Image From Base64 URI"
         }
     ],
     "https://github.com/guoyk93/yk-node-suite-comfyui": [
@@ -4497,7 +4547,8 @@
         [
             "Image(s) To Websocket (Base64)",
             "ImageOutput",
-            "Load Image(s) From Websocket (Base64)"
+            "Load Image (Base64)",
+            "Load Images (Base64)"
         ],
         {
             "title_aux": "Knodes"
@@ -4952,11 +5003,13 @@
             "GlobalSampler //Inspire",
             "GlobalSeed //Inspire",
             "HEDPreprocessor_Provider_for_SEGS //Inspire",
+            "ImageBatchSplitter //Inspire",
             "InpaintPreprocessor_Provider_for_SEGS //Inspire",
             "KSampler //Inspire",
             "KSamplerAdvanced //Inspire",
             "KSamplerAdvancedProgress //Inspire",
             "KSamplerProgress //Inspire",
+            "LatentBatchSplitter //Inspire",
             "LeRes_DepthMap_Preprocessor_Provider_for_SEGS //Inspire",
             "LineArt_Preprocessor_Provider_for_SEGS //Inspire",
             "ListCounter //Inspire",
@@ -4968,6 +5021,7 @@
             "LoadSinglePromptFromFile //Inspire",
             "LoraBlockInfo //Inspire",
             "LoraLoaderBlockWeight //Inspire",
+            "MakeBasicPipe //Inspire",
             "Manga2Anime_LineArt_Preprocessor_Provider_for_SEGS //Inspire",
             "MediaPipeFaceMeshDetectorProvider //Inspire",
             "MediaPipe_FaceMesh_Preprocessor_Provider_for_SEGS //Inspire",
@@ -4976,6 +5030,7 @@
             "OpenPose_Preprocessor_Provider_for_SEGS //Inspire",
             "PromptBuilder //Inspire",
             "PromptExtractor //Inspire",
+            "RandomGeneratorForList //Inspire",
             "RegionalConditioningColorMask //Inspire",
             "RegionalConditioningSimple //Inspire",
             "RegionalIPAdapterColorMask //Inspire",
@@ -5664,6 +5719,7 @@
             "GamePal",
             "GetImageSize_",
             "GradientImage",
+            "ImageColorTransfer",
             "ImageCropByAlpha",
             "IntNumber",
             "LaMaInpainting",
@@ -5671,6 +5727,7 @@
             "LoadImagesFromPath",
             "LoadImagesFromURL",
             "MergeLayers",
+            "MirroredImage",
             "MultiplicationNode",
             "NewLayer",
             "NoiseImage",
@@ -5688,6 +5745,7 @@
             "SplitLongMask",
             "SvgImage",
             "SwitchByIndex",
+            "TESTNODE_",
             "TextImage",
             "TextInput_",
             "TextToNumber",
@@ -6134,6 +6192,7 @@
             "LoadImageNode_LCM",
             "Loader_SegmindVega",
             "OutpaintCanvasTool",
+            "SaveImage_Canvas",
             "SaveImage_LCM",
             "SaveImage_Puzzle",
             "SaveImage_PuzzleV2",
@@ -6143,6 +6202,15 @@
         ],
         {
             "title_aux": "LCM_Inpaint-Outpaint_Comfy"
+        }
+    ],
+    "https://github.com/talesofai/comfyui-browser": [
+        [
+            "LoadImageByUrl //Browser",
+            "SelectInputs //Browser"
+        ],
+        {
+            "title_aux": "ComfyUI Browser"
         }
     ],
     "https://github.com/theUpsider/ComfyUI-Logic": [
@@ -6589,6 +6657,7 @@
             "easy imageSizeByLongerSide",
             "easy imageSizeBySide",
             "easy kSampler",
+            "easy kSamplerDownscaleUnet",
             "easy kSamplerInpainting",
             "easy kSamplerSDTurbo",
             "easy kSamplerTiled",

@@ -6,12 +6,7 @@ import { run_cnet_canny, ui_subform_Canny } from './ControlNet/prefab_cnet_canny
 import { run_cnet_Depth, ui_subform_Depth } from './ControlNet/prefab_cnet_depth'
 import { run_cnet_Normal, ui_subform_Normal } from './ControlNet/prefab_cnet_normal'
 import { ui_subform_Tile, run_cnet_Tile } from './ControlNet/prefab_cnet_tile'
-import {
-    run_cnet_IPAdapter,
-    run_cnet_IPAdapterFaceID,
-    ui_IPAdapterFaceID,
-    ui_subform_IPAdapter,
-} from './ControlNet/prefab_cnet_ipAdapter'
+import { run_cnet_IPAdapter, ui_subform_IPAdapter } from './ControlNet/ipAdapter/prefab_ipAdapter_base'
 import { run_cnet_Scribble, ui_subform_Scribble } from './ControlNet/prefab_cnet_scribble'
 import { run_cnet_Lineart, ui_subform_Lineart } from './ControlNet/prefab_cnet_lineart'
 import { run_cnet_SoftEdge, ui_subform_SoftEdge } from './ControlNet/prefab_cnet_softEdge'
@@ -19,6 +14,7 @@ import { getCurrentForm } from '../../../src/models/_ctx2'
 import { bang } from 'src/utils/misc/bang'
 import { run_cnet_Sketch, ui_subform_Sketch } from './ControlNet/prefab_cnet_sketch'
 import type { SDModelType } from 'src/controls/misc/InfoAnswer'
+import { run_cnet_IPAdapterFaceID, ui_IPAdapterFaceID } from './ControlNet/ipAdapter/prefab_ipAdapter_face'
 
 // 🅿️ CNET UI -----------------------------------------------------------
 export const ui_cnet = () => {

@@ -11,6 +11,7 @@ import { makeLabelFromFieldName } from '../../utils/misc/makeLabelFromFieldName'
 import { ErrorBoundaryFallback } from '../../widgets/misc/ErrorBoundary'
 import { WidgetDI } from '../widgets/WidgetUI.DI'
 import { InstallModelBtnUI } from '../widgets/InstallModelBtnUI'
+import { InstallCustomNodeBtnUI } from '../widgets/InstallCustomNodeBtnUI'
 
 export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     widget: R.Widget
@@ -157,6 +158,13 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
 
             {/* Install Models ------------------------------------ */}
             {p.widget.input.recommandedModels ? <InstallModelBtnUI models={p.widget.input.recommandedModels} /> : null}
+            {p.widget.input.customNodesByTitle ?? p.widget.input.customNodesByURI ? (
+                <InstallCustomNodeBtnUI
+                    //
+                    customNodesByTitle={p.widget.input.customNodesByTitle}
+                    customNodesByURI={p.widget.input.customNodesByURI}
+                />
+            ) : null}
 
             {/* Spacer ------------------------------------ */}
             <div tw='flex-1'></div>

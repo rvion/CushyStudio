@@ -11,8 +11,9 @@ import { readableStringify } from 'src/utils/formatters/stringifyReadable'
 import { asRelativePath } from 'src/utils/fs/pathUtils'
 import { toastError, toastSuccess } from 'src/utils/misc/toasts'
 import { downloadFile } from 'src/utils/fs/downloadFile'
-import { knownCustomNodes, KnownCustomNodes } from 'src/wiki/customNodeList'
 import { ComfyUIManager } from 'src/wiki/managerAPI'
+import { ComfyUIManagerKnownCustomNode_Title, ComfyUIManagerKnownCustomNode_Files } from 'src/wiki/customNodeListTypes'
+import { getKnownPlugins, PluginInfo } from 'src/wiki/customNodeList'
 export interface HostL extends LiveInstance<HostT, HostL> {}
 
 export class HostL {
@@ -95,26 +96,22 @@ export class HostL {
         return true
     }
 
-    /**  */
-    installCustomNode = async (
-        //
-        customNode: KnownCustomNodes,
-        // to: AbsolutePath | string,
-    ) => {
-        const customNodeInfo = knownCustomNodes.get(customNode)
-        if (customNodeInfo == null) {
-            toastError(`Unknown custom node ${customNode}`)
-            return
-        }
-        this.getComfyUIManager()?.installCustomNode(customNodeInfo)
-        // if (this.data.isLocal) {
-        //     const customNodeInfo = knownCustomNodes.get(customNode)
-        //     // ....
-        // }
-        // //
-        // toastError(`[🔴] NOT IMPLEMENTED`)
-        // console.log(`[🔴] NOT IMPLEMENTED`)
-        // return true
+    installCustomNodeByFile = async (customNodeFile: ComfyUIManagerKnownCustomNode_Files) => {
+        const x = getKnownPlugins()
+        const plugin = x.byURI.get(customNodeFile)
+        if (plugin == null) throw new Error(`Unknown custom node for file: "${customNodeFile}"`)
+        return this.getComfyUIManager()?.installCustomNode(plugin)
+    }
+
+    installCustomNodeByTitle = async (customNodeTitle: ComfyUIManagerKnownCustomNode_Title) => {
+        const x = getKnownPlugins()
+        const plugin = x.byURI.get(customNodeTitle)
+        if (plugin == null) throw new Error(`Unknown custom node for title: "${customNodeTitle}"`)
+        return this.getComfyUIManager()?.installCustomNode(plugin)
+    }
+
+    installCustomNode = async (customNode: PluginInfo) => {
+        return this.getComfyUIManager()?.installCustomNode(customNode)
     }
 
     _copyGeneratedSDKToGlobalDTS = (): void => {

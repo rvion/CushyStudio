@@ -6,7 +6,7 @@ export const ui_subform_Scribble = () => {
     const form = getCurrentForm()
     return form.group({
         label: 'Scribble',
-        customNodes: 'ComfyUI-Advanced-ControlNet',
+        customNodesByTitle: 'ComfyUI-Advanced-ControlNet',
         items: () => ({
             ...cnet_ui_common(form),
             preprocessor: ui_subform_Scribble_Preprocessor(),

@@ -1,7 +1,7 @@
 import { HostL } from 'src/models/Host'
 import { ModelInfo, getModelInfoFinalFilePath } from './modelList'
 import { toastError, toastSuccess } from 'src/utils/misc/toasts'
-import { CustomNodesInfo } from './customNodeList'
+import { PluginInfo } from './customNodeList'
 
 export class ComfyUIManager {
     constructor(public host: HostL) {}
@@ -38,7 +38,7 @@ export class ComfyUIManager {
         }
     }
 
-    installCustomNode = async (model: CustomNodesInfo) => {
+    installCustomNode = async (model: PluginInfo) => {
         try {
             const status = await this.fetchPost('/customnode/install', model)
             toastSuccess('Custom Node installed')
