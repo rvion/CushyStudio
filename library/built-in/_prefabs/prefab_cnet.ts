@@ -44,7 +44,6 @@ export const ui_cnet = () => {
                                     'There is currently a bug with multiple controlnets where an image wont allow drop except for the first controlnet in the list. If you add multiple controlnets, then reload using Ctrl+R, it should allow you to drop an image on any of the controlnets.',
                             }),
                             resize: form.bool({ default: true }),
-                            crop: form.bool({ default: true }),
                             cnets: form.choices({
                                 label: false, //'Pick Cnets=>',
                                 placeholder: 'ControlNets...',
@@ -135,11 +134,16 @@ export const run_cnet = async (opts: OutputFor<typeof ui_cnet>, ctx: Cnet_args) 
         }
         for (const cnetImage of cnetList) {
             let image: IMAGE = (await run.loadImageAnswer(cnetImage.image))._IMAGE
+            const widthValue = typeof ctx.width === 'number' ? ctx.width : resolution
+            const heightValue = typeof ctx.width === 'number' ? ctx.width : resolution
             if (cnetImage.resize) {
+                // console.log('Width: ' + widthValue)
+                // console.log('Width: ' + heightValue)
+
                 const scaledCnetNode = run.nodes.ImageScale({
                     image,
-                    width: ctx.width ?? resolution,
-                    height: ctx.height ?? resolution,
+                    width: widthValue,
+                    height: heightValue,
                     upscale_method: 'lanczos',
                     crop: 'center',
                 })
