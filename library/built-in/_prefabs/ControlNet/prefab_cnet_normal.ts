@@ -1,5 +1,4 @@
-import type { FormBuilder, Runtime } from 'src'
-import { Cnet_args, cnet_preprocessor_ui_common, cnet_ui_common } from '../prefab_cnet'
+import { cnet_preprocessor_ui_common, cnet_ui_common } from '../prefab_cnet'
 import { OutputFor } from '../_prefabs'
 
 // 🅿️ Normal FORM ===================================================
@@ -72,8 +71,8 @@ export const ui_subform_Normal_bae = () => {
 // 🅿️ Normal RUN ===================================================
 export const run_cnet_Normal = (
     Normal: OutputFor<typeof ui_subform_Normal>,
-    cnet_args: Cnet_args,
     image: IMAGE,
+    resolution: 512 | 768 | 1024 = 512,
 ): {
     image: IMAGE
     cnet_name: Enum_ControlNetLoader_control_net_name
@@ -81,15 +80,6 @@ export const run_cnet_Normal = (
     const run = getCurrentRun()
     const graph = run.nodes
     const cnet_name = Normal.cnet_model_name
-    //crop the image to the right size
-    //todo: make these editable
-    image = graph.ImageScale({
-        image,
-        width: cnet_args.width ?? 512,
-        height: cnet_args.height ?? 512,
-        upscale_method: Normal.advanced?.upscale_method ?? 'lanczos',
-        crop: Normal.advanced?.crop ?? 'center',
-    })._IMAGE
 
     // PREPROCESSOR - Normal ===========================================================
     if (Normal.preprocessor) {
@@ -97,7 +87,7 @@ export const run_cnet_Normal = (
             const bae = Normal.preprocessor.advanced.type.bae
             image = graph.BAE$7NormalMapPreprocessor({
                 image: image,
-                resolution: bae.resolution,
+                resolution: resolution,
             })._IMAGE
             if (bae.saveProcessedImage) graph.SaveImage({ images: image, filename_prefix: 'cnet\\Normal\\bae' })
             else graph.PreviewImage({ images: image })
@@ -105,7 +95,7 @@ export const run_cnet_Normal = (
             const midas = Normal.preprocessor.advanced?.type.MiDaS
             image = graph.MiDaS$7NormalMapPreprocessor({
                 image: image,
-                resolution: midas?.resolution ?? 512,
+                resolution: resolution,
                 a: midas?.a_value ?? 6.28,
                 bg_threshold: midas?.bg_threshold ?? 0.1,
             })._IMAGE

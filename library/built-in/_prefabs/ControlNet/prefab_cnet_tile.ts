@@ -1,5 +1,5 @@
-import type { FormBuilder, Runtime } from 'src'
-import { Cnet_args, cnet_preprocessor_ui_common, cnet_ui_common } from '../prefab_cnet'
+import type { FormBuilder } from 'src'
+import { cnet_preprocessor_ui_common, cnet_ui_common } from '../prefab_cnet'
 import { OutputFor } from '../_prefabs'
 
 // 🅿️ Tile FORM ===================================================
@@ -42,8 +42,8 @@ export const ui_subform_Tile_Preprocessor = (form: FormBuilder) => {
 // 🅿️ Tile RUN ===================================================
 export const run_cnet_Tile = (
     Tile: OutputFor<typeof ui_subform_Tile>,
-    cnet_args: Cnet_args,
     image: IMAGE,
+    resolution: 512 | 768 | 1024 = 512,
 ): {
     image: IMAGE
     cnet_name: Enum_ControlNetLoader_control_net_name
@@ -51,22 +51,13 @@ export const run_cnet_Tile = (
     const run = getCurrentRun()
     const graph = run.nodes
     const cnet_name = Tile.cnet_model_name
-    //crop the image to the right size
-    //todo: make these editable
-    image = graph.ImageScale({
-        image,
-        width: cnet_args.width ?? 512,
-        height: cnet_args.height ?? 512,
-        upscale_method: Tile.advanced?.upscale_method ?? 'lanczos',
-        crop: Tile.advanced?.crop ?? 'center',
-    })._IMAGE
 
     // PREPROCESSOR - Tile ===========================================================
     if (Tile.preprocessor) {
         const tile = Tile.preprocessor.advanced
         image = graph.TilePreprocessor({
             image: image,
-            resolution: tile?.resolution ?? 512,
+            resolution: resolution,
             pyrUp_iters: tile?.pyrup ?? 3,
         })._IMAGE
         if (tile?.saveProcessedImage) graph.SaveImage({ images: image, filename_prefix: 'cnet\\Tile\\midas' })

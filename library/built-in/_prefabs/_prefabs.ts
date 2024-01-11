@@ -30,6 +30,7 @@ export const ui_highresfix = (form: FormBuilder, p: { activeByDefault?: true } =
             steps: form.int({ default: 15 }),
             denoise: form.float({ min: 0, default: 0.6, max: 1, step: 0.01 }),
             saveIntermediaryImage: form.bool({ default: true }),
+            useMainSampler: form.bool({ default: true }),
         }),
     })
 

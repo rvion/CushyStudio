@@ -103,6 +103,7 @@ app({
                 width,
                 height,
                 ckptPos,
+                modelType: ui.latent.size.modelType,
             }
             cnet_out = await run_cnet(ui.controlnets, Cnet_args)
             positive = cnet_out.cnet_positive
@@ -160,12 +161,10 @@ app({
             if (ui.highResFix.saveIntermediaryImage) {
                 graph.SaveImage({ images: graph.VAEDecode({ samples: latent, vae }) })
             }
-            latent = graph.LatentUpscale({
-                samples: latent,
-                crop: 'disabled',
-                upscale_method: 'nearest-exact',
-                height: ui.latent.size.height * ui.highResFix.scaleFactor,
-                width: ui.latent.size.width * ui.highResFix.scaleFactor,
+            latent = graph.NNLatentUpscale({
+                latent,
+                version: ui.latent.size.modelType == 'SDXL 1024' ? 'SDXL' : 'SD 1.x',
+                upscale: ui.highResFix.scaleFactor,
             })
             latent = latent = run_sampler(
                 run,

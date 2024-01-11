@@ -6,12 +6,19 @@ import { run_cnet_canny, ui_subform_Canny } from './ControlNet/prefab_cnet_canny
 import { run_cnet_Depth, ui_subform_Depth } from './ControlNet/prefab_cnet_depth'
 import { run_cnet_Normal, ui_subform_Normal } from './ControlNet/prefab_cnet_normal'
 import { ui_subform_Tile, run_cnet_Tile } from './ControlNet/prefab_cnet_tile'
-import { run_cnet_IPAdapter, ui_subform_IPAdapter } from './ControlNet/prefab_cnet_ipAdapter'
+import {
+    run_cnet_IPAdapter,
+    run_cnet_IPAdapterFaceID,
+    ui_IPAdapterFaceID,
+    ui_subform_IPAdapter,
+} from './ControlNet/prefab_cnet_ipAdapter'
 import { run_cnet_Scribble, ui_subform_Scribble } from './ControlNet/prefab_cnet_scribble'
 import { run_cnet_Lineart, ui_subform_Lineart } from './ControlNet/prefab_cnet_lineart'
 import { run_cnet_SoftEdge, ui_subform_SoftEdge } from './ControlNet/prefab_cnet_softEdge'
 import { getCurrentForm } from '../../../src/models/_ctx2'
 import { bang } from 'src/utils/misc/bang'
+import { run_cnet_Sketch, ui_subform_Sketch } from './ControlNet/prefab_cnet_sketch'
+import type { SDModelType } from 'src/controls/misc/InfoAnswer'
 
 // 🅿️ CNET UI -----------------------------------------------------------
 export const ui_cnet = () => {
@@ -19,6 +26,10 @@ export const ui_cnet = () => {
     return form.groupOpt({
         label: 'ControlNets',
         items: () => ({
+            help: form.markdown({
+                startCollapsed: true,
+                markdown: `Instructional resources:\nhttps://github.com/lllyasviel/ControlNet\nhttps://stable-diffusion-art.com/controlnet/`,
+            }),
             useControlnetConditioningForUpscalePassIfEnabled: form.bool({ default: false }),
             controlNetList: form.list({
                 label: false,
@@ -32,6 +43,8 @@ export const ui_cnet = () => {
                                 tooltip:
                                     'There is currently a bug with multiple controlnets where an image wont allow drop except for the first controlnet in the list. If you add multiple controlnets, then reload using Ctrl+R, it should allow you to drop an image on any of the controlnets.',
                             }),
+                            resize: form.bool({ default: true }),
+                            crop: form.bool({ default: true }),
                             cnets: form.choices({
                                 label: false, //'Pick Cnets=>',
                                 placeholder: 'ControlNets...',
@@ -42,9 +55,11 @@ export const ui_cnet = () => {
                                     Normal: ui_subform_Normal(),
                                     Tile: ui_subform_Tile(),
                                     IPAdapter: ui_subform_IPAdapter(),
+                                    FaceID: ui_IPAdapterFaceID(),
                                     Scribble: ui_subform_Scribble(),
                                     Lineart: ui_subform_Lineart(),
                                     SoftEdge: ui_subform_SoftEdge(),
+                                    Sketch: ui_subform_Sketch(),
                                 }),
                             }),
                         }),
@@ -78,8 +93,9 @@ export const cnet_ui_common = (form: FormBuilder) => ({
 })
 
 export const cnet_preprocessor_ui_common = (form: FormBuilder) => ({
+    //preview: form.inlineRun({ text: 'Preview', kind: 'special' }),
     saveProcessedImage: form.bool({ default: false }),
-    resolution: form.int({ default: 512, min: 512, max: 1024, step: 512 }),
+    //resolution: form.int({ default: 512, min: 512, max: 1024, step: 512 }),
 })
 
 // RUN -----------------------------------------------------------
@@ -89,6 +105,7 @@ export type Cnet_args = {
     width: INT
     height: INT
     ckptPos: _MODEL
+    modelType: SDModelType
 }
 
 export type Cnet_return = {
@@ -105,55 +122,93 @@ export const run_cnet = async (opts: OutputFor<typeof ui_cnet>, ctx: Cnet_args) 
     let args: Cnet_args = { ...ctx }
 
     if (cnetList) {
+        let resolution: 512 | 768 | 1024
+        switch (args.modelType) {
+            case 'SD1.5 512':
+                resolution = 512
+            case 'SD2.1 768':
+                resolution = 768
+            case 'SDXL 1024':
+                resolution = 1024
+            case 'custom':
+                resolution = 512
+        }
         for (const cnetImage of cnetList) {
             let image: IMAGE = (await run.loadImageAnswer(cnetImage.image))._IMAGE
+            if (cnetImage.resize) {
+                const scaledCnetNode = run.nodes.ImageScale({
+                    image,
+                    width: ctx.width ?? resolution,
+                    height: ctx.height ?? resolution,
+                    upscale_method: 'lanczos',
+                    crop: 'center',
+                })
+                image = scaledCnetNode._IMAGE
+            }
 
-            const { IPAdapter, Canny, Depth, Normal, Lineart, OpenPose, Scribble, SoftEdge, Tile } = cnetImage.cnets
+            const { IPAdapter, FaceID, Canny, Depth, Normal, Lineart, OpenPose, Scribble, SoftEdge, Tile, Sketch } =
+                cnetImage.cnets
             // IPAdapter ===========================================================
             if (IPAdapter) {
                 const ip_adapter_result = run_cnet_IPAdapter(IPAdapter, ctx, image)
                 args.ckptPos = ip_adapter_result.ip_adapted_model
             }
+            // IPAdapter ===========================================================
+            if (FaceID) {
+                const ip_adapter_result = run_cnet_IPAdapterFaceID(FaceID, ctx, image)
+                args.ckptPos = ip_adapter_result.ip_adapted_model
+            }
             // CANNY ===========================================================
             if (Canny) {
-                const y = run_cnet_canny(Canny, ctx, image)
+                const y = run_cnet_canny(Canny, image, resolution)
                 _apply_cnet(args, Canny.strength, y.image, y.cnet_name)
             }
             // POSE ===========================================================
             if (OpenPose) {
-                const y = run_cnet_openPose(OpenPose, ctx, image)
+                const y = run_cnet_openPose(OpenPose, image, resolution)
                 _apply_cnet(args, OpenPose.strength, y.image, y.cnet_name)
             }
             // DEPTH ===========================================================
             if (Depth) {
-                const y = run_cnet_Depth(Depth, ctx, image)
+                const y = run_cnet_Depth(Depth, image, resolution)
                 _apply_cnet(args, Depth.strength, y.image, y.cnet_name)
             }
             // Normal ===========================================================
             if (Normal) {
-                const y = run_cnet_Normal(Normal, ctx, image)
+                const y = run_cnet_Normal(Normal, image, resolution)
                 _apply_cnet(args, Normal.strength, y.image, y.cnet_name)
             }
             // Tile ===========================================================
             if (Tile) {
-                const y = run_cnet_Tile(Tile, ctx, image)
+                const y = run_cnet_Tile(Tile, image, resolution)
                 _apply_cnet(args, Tile.strength, y.image, y.cnet_name)
             }
             // Scribble ===========================================================
             if (Scribble) {
-                const y = run_cnet_Scribble(Scribble, ctx, image)
+                const y = run_cnet_Scribble(Scribble, image, resolution)
                 _apply_cnet(args, Scribble.strength, y.image, y.cnet_name)
             }
             // Lineart ===========================================================
             if (Lineart) {
-                const y = run_cnet_Lineart(Lineart, ctx, image)
+                const y = run_cnet_Lineart(Lineart, image, resolution)
                 _apply_cnet(args, Lineart.strength, y.image, y.cnet_name)
             }
             // SoftEdge ===========================================================
             if (SoftEdge) {
-                const y = run_cnet_SoftEdge(SoftEdge, ctx, image)
+                const y = run_cnet_SoftEdge(SoftEdge, image, resolution)
                 _apply_cnet(args, SoftEdge.strength, y.image, y.cnet_name)
             }
+            // Sketch ===========================================================
+            if (Sketch) {
+                const y = run_cnet_Sketch(Sketch, image)
+                _apply_cnet(args, Sketch.strength, y.image, y.cnet_name)
+            }
+            // MLSD ===========================================================
+            // Reference (do we need this? it is basically ipadapter) ===========================================================
+            // Segmentation ===========================================================
+            // Shuffle ===========================================================
+            // Color Grid ===========================================================
+            // Inpainting ===========================================================
         }
     }
 
@@ -189,7 +244,8 @@ const _apply_cnet = (
         positive: args.positive,
         negative: args.negative,
         image: /* 🔴 */ bang(image),
-        control_net: graph.ControlNetLoader({
+        control_net: graph.DiffControlNetLoader({
+            model: run.AUTO,
             control_net_name: /* 🔴 */ bang(cnet_name),
         }),
     })
