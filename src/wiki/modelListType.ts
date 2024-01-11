@@ -1,28 +1,27 @@
 export type ComfyUIManagerKnownModelTypes =
     | "TAESD"              // x   4
     | "upscale"            // x   9
-    | "checkpoint"         // x   2
+    | "checkpoints"        // x  19
     | "insightface"        // x   2
     | "deepbump"           // x   1
     | "face_restore"       // x   3
-    | "checkpoints"        // x  17
     | "zero123"            // x   1
     | "embeddings"         // x   4
     | "unet"               // x   2
-    | "lora"               // x   9
+    | "lora"               // x  10
     | "unclip"             // x   2
     | "VAE"                // x   4
     | "T2I-Adapter"        // x   7
     | "T2I-Style"          // x   1
     | "controlnet"         // x  33
-    | "clip_vision"        // x   8
+    | "clip_vision"        // x   6
     | "gligen"             // x   1
     | "sam"                // x   3
     | "seecoder"           // x   3
     | "Ultralytics"        // x  16
     | "animatediff"        // x  13
     | "motion lora"        // x   8
-    | "IP-Adapter"         // x  11
+    | "IP-Adapter"         // x  12
     | "PFG"                // x   3
     | "GFPGAN"             // x   1
     | "CodeFormer"         // x   1
@@ -64,8 +63,6 @@ export type ComfyUIManagerKnownModelNames =
     | "CiaraRowles/TemporalNet2"
     | "CLIPVision model (IP-Adapter) 1.5"
     | "CLIPVision model (IP-Adapter) CLIP-ViT-bigG-14-laion2B-39B-b160k"
-    | "CLIPVision model (IP-Adapter) CLIP-ViT-bigG-14-laion2B-39B-b160k"
-    | "CLIPVision model (IP-Adapter) CLIP-ViT-H-14-laion2B-s32B-b79K"
     | "CLIPVision model (IP-Adapter) CLIP-ViT-H-14-laion2B-s32B-b79K"
     | "CLIPVision model (IP-Adapter) XL"
     | "CLIPVision model (openai/clip-vit-large)"
@@ -122,6 +119,8 @@ export type ComfyUIManagerKnownModelNames =
     | "ip-adapter_sdxl.safetensors"
     | "ip-adapter-faceid_sd15_lora.safetensors"
     | "ip-adapter-faceid_sd15.bin"
+    | "ip-adapter-faceid-plusv2_sd15_lora.safetensors"
+    | "ip-adapter-faceid-plusv2_sd15.bin"
     | "ip-adapter-full-face_sd15.safetensors"
     | "ip-adapter-plus_sd15.safetensors"
     | "ip-adapter-plus_sdxl_vit-h.safetensors"

@@ -30,7 +30,14 @@ export type ImageAnswerForm<Type extends string, Bool extends boolean> = {
 }
 
 // SIZES ----------------------------------------------------------------------------
-export type SDModelType = 'SD1.5 512' | 'SD2.1 768' | 'SDXL 1024' | 'custom'
+
+// prettier-ignore
+export type SDModelType =
+    | 'SD1.5 512'
+    | 'SD2.1 768'
+    | 'SDXL 1024'
+    | 'custom'
+
 export type AspectRatio =
     | '16:9'
     | '1:1'

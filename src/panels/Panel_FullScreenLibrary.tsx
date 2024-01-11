@@ -1,4 +1,3 @@
-import { use } from 'cytoscape'
 import { observer } from 'mobx-react-lite'
 import { useEffect } from 'react'
 import { AppCardUI } from 'src/cards/fancycard/AppCardUI'

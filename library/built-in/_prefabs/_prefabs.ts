@@ -21,17 +21,25 @@ export type OutputFor<UIFn extends (form: FormBuilder) => any> = GetWidgetResult
 
 // HIGH_RES_FIX -----------------------------------------------------------
 
-export const ui_highresfix = (form: FormBuilder, p: { activeByDefault?: true } = {}) =>
-    form.groupOpt({
+export const ui_highresfix = (p: { activeByDefault?: true } = {}) => {
+    const form = getCurrentForm()
+    return form.groupOpt({
         default: p.activeByDefault,
         label: 'Upscale Pass (High Res Fix)',
         items: () => ({
+            NNLatentUpscale: form.bool({
+                customNodesByURI: 'https://github.com/Ttl/ComfyUi_NNLatentUpscale',
+                default: false,
+                label: 'NN Latent Upscale?',
+            }),
             scaleFactor: form.float({ default: 1.5, min: 0.5, max: 8, step: 0.1 }),
             steps: form.int({ default: 15 }),
             denoise: form.float({ min: 0, default: 0.6, max: 1, step: 0.01 }),
             saveIntermediaryImage: form.bool({ default: true }),
+            useMainSampler: form.bool({ default: true }),
         }),
     })
+}
 
 // ---------------------------------------------------------
 export const ui_themes = (form: FormBuilder) =>

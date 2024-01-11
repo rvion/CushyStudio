@@ -33,7 +33,7 @@ app({
         // [UI] MODEL --------------------------------------
         model: ui_model(),
         sampler: ui_sampler(),
-        highResFix: ui_highresfix(form, { activeByDefault: true }),
+        highResFix: ui_highresfix({ activeByDefault: true }),
         globalNegative: form.prompt({}),
         logos: form.group({
             layout: 'H',

@@ -1,5 +1,6 @@
 import { downloadFile } from 'src/utils/fs/downloadFile'
-import { getKnownModels } from './modelList'
+import { getKnownCheckpoints, getKnownModels } from './modelList'
+import { getKnownPlugins } from './customNodeList'
 
 await downloadFile(
     'https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/main/alter-list.json',
@@ -19,6 +20,13 @@ await downloadFile(
 )
 
 getKnownModels({
+    //
+    updateCache: true,
+    check: true,
+    genTypes: true,
+})
+
+getKnownPlugins({
     //
     updateCache: true,
     check: true,

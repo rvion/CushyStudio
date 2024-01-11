@@ -1,5 +1,4 @@
-import type { FormBuilder, Runtime } from 'src'
-import { Cnet_args, cnet_preprocessor_ui_common, cnet_ui_common } from '../prefab_cnet'
+import { cnet_preprocessor_ui_common, cnet_ui_common } from '../prefab_cnet'
 import { OutputFor } from '../_prefabs'
 
 // 🅿️ Scribble FORM ===================================================
@@ -7,7 +6,7 @@ export const ui_subform_Scribble = () => {
     const form = getCurrentForm()
     return form.group({
         label: 'Scribble',
-        customNodes: 'ComfyUI-Advanced-ControlNet',
+        customNodesByTitle: 'ComfyUI-Advanced-ControlNet',
         items: () => ({
             ...cnet_ui_common(form),
             preprocessor: ui_subform_Scribble_Preprocessor(),
@@ -83,8 +82,8 @@ export const ui_subform_Scribble_XDoG_Lines = () => {
 // 🅿️ Scribble RUN ===================================================
 export const run_cnet_Scribble = (
     Scribble: OutputFor<typeof ui_subform_Scribble>,
-    cnet_args: Cnet_args,
     image: IMAGE,
+    resolution: 512 | 768 | 1024 = 512,
 ): {
     image: IMAGE
     cnet_name: Enum_ControlNetLoader_control_net_name
@@ -92,15 +91,6 @@ export const run_cnet_Scribble = (
     const run = getCurrentRun()
     const graph = run.nodes
     const cnet_name = Scribble.cnet_model_name
-    //crop the image to the right size
-    //todo: make these editable
-    image = graph.ImageScale({
-        image,
-        width: cnet_args.width ?? 512,
-        height: cnet_args.height ?? 512,
-        upscale_method: Scribble.advanced?.upscale_method ?? 'lanczos',
-        crop: Scribble.advanced?.crop ?? 'center',
-    })._IMAGE
 
     // PREPROCESSOR - Scribble ===========================================================
     if (Scribble.preprocessor) {
@@ -108,7 +98,7 @@ export const run_cnet_Scribble = (
             const fake = Scribble.preprocessor.advanced?.type.FakeScribble
             image = graph.FakeScribblePreprocessor({
                 image: image,
-                resolution: fake.resolution,
+                resolution: resolution,
                 safe: fake.safe ? 'enable' : 'disable',
             })._IMAGE
             if (fake.saveProcessedImage) graph.SaveImage({ images: image, filename_prefix: 'cnet\\Scribble\\fake' })
@@ -117,7 +107,7 @@ export const run_cnet_Scribble = (
             const xdog = Scribble.preprocessor.advanced.type.XDOG
             image = graph.Scribble$_XDoG$_Preprocessor({
                 image: image,
-                resolution: xdog.resolution,
+                resolution: resolution,
                 threshold: xdog.threshold,
             })._IMAGE
             if (xdog.saveProcessedImage) graph.SaveImage({ images: image, filename_prefix: 'cnet\\Scribble\\xdog' })
@@ -126,7 +116,7 @@ export const run_cnet_Scribble = (
             const scribble = Scribble.preprocessor.advanced?.type.ScribbleLines
             image = graph.ScribblePreprocessor({
                 image: image,
-                resolution: scribble?.resolution ?? 512,
+                resolution: resolution,
             })._IMAGE
             if (scribble?.saveProcessedImage) graph.SaveImage({ images: image, filename_prefix: 'cnet\\Scribble\\scribble' })
             else graph.PreviewImage({ images: image })

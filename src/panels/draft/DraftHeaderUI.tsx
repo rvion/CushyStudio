@@ -36,24 +36,13 @@ export const DraftHeaderUI = observer(function DraftHeaderUI_(p: {
 
                         {/* --------------------------------- */}
                         <PublishAppBtnUI app={app} />
-
                         {/* --------------------------------- */}
-                        <div
-                            tw='btn btn-square btn-sm join-item'
-                            // active={app.isFavorite}
-                            onClick={draft.collapseTopLevelFormEntries}
-                        >
-                            <span className='material-symbols-outlined'>unfold_less</span>
-                            {/* Collapse top level entries */}
+                        <div onClick={draft.expandTopLevelFormEntries} tw='btn btn-square btn-sm join-item'>
+                            <span className='material-symbols-outlined'>unfold_more</span>
                         </div>
                         {/* --------------------------------- */}
-                        <div
-                            tw='btn btn-square btn-sm join-item'
-                            // active={app.isFavorite}
-                            onClick={draft.expandTopLevelFormEntries}
-                        >
-                            <span className='material-symbols-outlined'>unfold_more</span>
-                            {/* Expand top level entries */}
+                        <div onClick={draft.collapseTopLevelFormEntries} tw='btn btn-square btn-sm join-item'>
+                            <span className='material-symbols-outlined'>unfold_less</span>
                         </div>
                     </div>
                 </div>

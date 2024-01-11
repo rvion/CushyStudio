@@ -1,21 +1,22 @@
 import { getCurrentForm, getCurrentRun } from '../../../../src/models/_ctx2'
 import { OutputFor } from '../_prefabs'
-import { Cnet_args, cnet_preprocessor_ui_common, cnet_ui_common } from '../prefab_cnet'
+import { cnet_preprocessor_ui_common, cnet_ui_common } from '../prefab_cnet'
 
 // 🅿️ Depth FORM ===================================================
 export const ui_subform_Depth = () => {
     const form = getCurrentForm()
     return form.group({
         label: 'Depth',
-        customNodes: 'ComfyUI-Advanced-ControlNet',
+        customNodesByTitle: 'ComfyUI-Advanced-ControlNet',
         items: () => ({
             ...cnet_ui_common(form),
             preprocessor: ui_subform_Depth_Preprocessor(),
             cnet_model_name: form.enum({
                 enumName: 'Enum_ControlNetLoader_control_net_name',
-                default: { value: 'control_v11f1p_sd15_depth.pth' },
+                default: { value: 't2iadapter_canny_sd14v1.pth' },
                 recommandedModels: {
                     knownModel: [
+                        'T2I-Adapter (depth)',
                         'ControlNet-v1-1 (depth; fp16)',
                         'stabilityai/control-lora-depth-rank128.safetensors',
                         'stabilityai/control-lora-depth-rank256.safetensors',
@@ -93,8 +94,8 @@ export const ui_subform_Depth_Zoe = () => {
 // 🅿️ Depth RUN ===================================================
 export const run_cnet_Depth = (
     Depth: OutputFor<typeof ui_subform_Depth>,
-    cnet_args: Cnet_args,
     image: IMAGE,
+    resolution: 512 | 768 | 1024 = 512,
 ): {
     image: IMAGE
     cnet_name: Enum_ControlNetLoader_control_net_name
@@ -102,15 +103,6 @@ export const run_cnet_Depth = (
     const run = getCurrentRun()
     const graph = run.nodes
     const cnet_name = Depth.cnet_model_name
-    //crop the image to the right size
-    //todo: make these editable
-    image = graph.ImageScale({
-        image,
-        width: cnet_args.width ?? 512,
-        height: cnet_args.height ?? 512,
-        upscale_method: Depth.advanced?.upscale_method ?? 'lanczos',
-        crop: Depth.advanced?.crop ?? 'center',
-    })._IMAGE
 
     // PREPROCESSOR - Depth ===========================================================
     if (Depth.preprocessor) {
@@ -118,7 +110,7 @@ export const run_cnet_Depth = (
             const leres = Depth.preprocessor.advanced.type.LeReS
             image = graph.LeReS$7DepthMapPreprocessor({
                 image: image,
-                resolution: leres.resolution,
+                resolution: resolution,
                 rm_nearest: leres.rm_nearest,
                 rm_background: leres.rm_background,
                 boost: leres.boost ? 'enable' : 'disable',
@@ -129,7 +121,7 @@ export const run_cnet_Depth = (
             const zoe = Depth.preprocessor.advanced.type.Zoe
             image = graph.Zoe$7DepthMapPreprocessor({
                 image: image,
-                resolution: zoe.resolution,
+                resolution: resolution,
             })._IMAGE
             if (zoe.saveProcessedImage) graph.SaveImage({ images: image, filename_prefix: 'cnet\\Depth\\zoe' })
             else graph.PreviewImage({ images: image })
@@ -137,7 +129,7 @@ export const run_cnet_Depth = (
             const midas = Depth.preprocessor?.advanced?.type.MiDaS
             image = graph.MiDaS$7DepthMapPreprocessor({
                 image: image,
-                resolution: midas?.resolution ?? 512,
+                resolution: resolution,
                 a: midas?.a_value ?? 6.28,
                 bg_threshold: midas?.bg_threshold ?? 0.1,
             })._IMAGE

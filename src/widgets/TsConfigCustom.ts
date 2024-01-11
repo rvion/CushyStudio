@@ -25,6 +25,6 @@ export const mkTypescriptConfig = (): JsonFile<TsConfigCustom> => {
 export const mandatoryTSConfigIncludes: string[] = [
     //
     'src',
-    'library/local',
+    'library',
     'schema/global.d.ts',
 ]

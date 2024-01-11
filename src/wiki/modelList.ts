@@ -58,7 +58,7 @@ export const getModelInfoFinalFilePath = (mi: ModelInfo): string => {
      *
      */
     if (mi.save_path === 'default') return `models/${mi.type}/${mi.filename}`
-    if (mi.type === 'checkpoint') return `models/checkpoints/${mi.filename}`
+    if (mi.type === 'checkpoints') return `models/checkpoints/${mi.filename}`
     if (mi.save_path.startsWith('custom_nodes')) return `${mi.save_path}/${mi.filename}`
     else return `models/${mi.save_path}/${mi.filename}`
 }
@@ -86,7 +86,6 @@ export type ModelFile = {
 }
 
 type KnownModelMap = Map<ComfyUIManagerKnownModelNames, ModelInfo>
-
 let knownModels: Maybe<KnownModelMap> = null
 
 export const getKnownModels = (p?: {
@@ -106,8 +105,10 @@ export const getKnownModels = (p?: {
     knownModels = new Map<ComfyUIManagerKnownModelNames, ModelInfo>()
 
     for (const modelInfo of knownModelList) {
+        // INITIALIZATION ------------------------------------------------------------
         knownModels.set(modelInfo.name as ComfyUIManagerKnownModelNames, modelInfo)
 
+        // JSON CHECKS -----------------------------------------------------------
         if (!hasErrors && p?.check) {
             const valid = Value.Check(ModelInfo_Schema, modelInfo)
             if (!valid) {
@@ -115,12 +116,13 @@ export const getKnownModels = (p?: {
                 console.error(`❌ model doesn't match schema:`, modelInfo)
                 console.error(`❌ errors`, errors)
                 for (const i of errors) console.log(`❌`, JSON.stringify(i))
-                hasErrors = false
+                hasErrors = true
                 // debugger
             }
         }
     }
 
+    // CODEGEN ------------------------------------------------------------
     if (p?.genTypes) {
         let out = ''
         // categories
@@ -143,6 +145,7 @@ export const getKnownModels = (p?: {
         writeFileSync('src/wiki/modelListType.ts', out + '\n', 'utf-8')
     }
 
+    // INDEXING CHECKS ------------------------------------------------------------
     if (p?.check) {
         //
         console.log(`${knownModelList.length} models found`)
@@ -162,5 +165,5 @@ export const getKnownCheckpoints = (): ModelInfo[] => {
     // for (const mi of knownModels.values()) {
     //     console.log(`[👙] `, mi.type === 'checkpoint' ? '✅' : '❌', mi.name)
     // }
-    return [...knownModels.values()].filter((i) => i.type === 'checkpoint' || i.type === 'checkpoints')
+    return [...knownModels.values()].filter((i) => i.type === 'checkpoints')
 }

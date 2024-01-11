@@ -1,6 +1,6 @@
 import type { FormBuilder } from 'src'
 import type { OutputFor } from '../_prefabs'
-import { Cnet_args, cnet_preprocessor_ui_common, cnet_ui_common } from '../prefab_cnet'
+import { cnet_preprocessor_ui_common, cnet_ui_common } from '../prefab_cnet'
 
 // 🅿️ SoftEdge FORM ===================================================
 export const ui_subform_SoftEdge = () => {
@@ -59,8 +59,8 @@ export const ui_subform_SoftEdge_Preprocessor_Options = (form: FormBuilder) => {
 // 🅿️ SoftEdge RUN ===================================================
 export const run_cnet_SoftEdge = (
     SoftEdge: OutputFor<typeof ui_subform_SoftEdge>,
-    cnet_args: Cnet_args,
     image: IMAGE,
+    resolution: 512 | 768 | 1024 = 512,
 ): {
     image: IMAGE
     cnet_name: Enum_ControlNetLoader_control_net_name
@@ -68,22 +68,13 @@ export const run_cnet_SoftEdge = (
     const run = getCurrentRun()
     const graph = run.nodes
     const cnet_name = SoftEdge.cnet_model_name
-    //crop the image to the right size
-    //todo: make these editable
-    image = graph.ImageScale({
-        image,
-        width: cnet_args.width ?? 512,
-        height: cnet_args.height ?? 512,
-        upscale_method: SoftEdge.advanced?.upscale_method ?? 'lanczos',
-        crop: SoftEdge.advanced?.crop ?? 'center',
-    })._IMAGE
 
     // PREPROCESSOR - SoftEdge ===========================================================
     if (SoftEdge.preprocessor?.advanced?.type.PiDiNet) {
         var pid = SoftEdge.preprocessor.advanced?.type.PiDiNet
         image = graph.PiDiNetPreprocessor({
             image: image,
-            resolution: pid.resolution,
+            resolution: resolution,
             safe: pid.safe ? 'enable' : 'disable',
         })._IMAGE
         if (pid.saveProcessedImage) graph.SaveImage({ images: image, filename_prefix: 'cnet\\SoftEdge\\pid' })
@@ -92,7 +83,7 @@ export const run_cnet_SoftEdge = (
         var hed = SoftEdge.preprocessor?.advanced?.type.HED
         image = graph.HEDPreprocessor({
             image: image,
-            resolution: hed?.resolution ?? 512,
+            resolution: resolution,
             safe: !hed || hed?.safe ? 'enable' : 'disable',
         })._IMAGE
         if (hed?.saveProcessedImage) graph.SaveImage({ images: image, filename_prefix: 'cnet\\SoftEdge\\hed' })
