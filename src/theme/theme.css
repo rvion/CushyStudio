@@ -1,3 +1,5 @@
+input[type='range']::-webkit-slider-runnable-track { height: 2rem; }
+
 .rct-tree-items-container {
     position: relative;
 }
@@ -91,19 +93,38 @@ legend {
 /* .FIELD {
     background: oklch(var(--b2));
 } */
+/* .FIELDSimple:hover, */
 .FIELD:hover {
-    background: oklch(var(--p)/.01);
-    border-left: 3px groove oklch(var(--s)/0.5);
+    border-left: 2px groove oklch(var(--s)/0.5);
+    /* border-top-left-radius: .8rem; */
+}
+.FIELDSimple._isTopLevel,
+.FIELD._isTopLevel {
+    margin-left: 0;
+    border: none;
+    padding-left: 0;
+    transform: none;
+    /* border-left: 2px groove oklch(var(--p)/0.5); */
     /* border-top-left-radius: .8rem; */
 }
 
+.FIELD,
+.FIELDSimple {
+    margin-left: .5rem;
+    padding-left: .5rem;
+    border-left: 2px groove oklch(var(--p)/0.5);
+    /* border-top-left-radius: .5rem; */
+    /* border-bottom-left-radius: 1rem; */
+}
+/* .FIELD._isTopLevel {
+    background: oklch(var(--p)/.1);
+} */
 .FIELD {
-    border-top-left-radius: .8rem;
-    border-bottom-left-radius: .8rem;
+    /* transition: all 0.2s ease-in-out; */
+    /* border-top-left-radius: .8rem; */
+    /* border-bottom-left-radius: .8rem; */
     position: relative;
-    /* margin-bottom: 0.3rem; */
-    padding-left: 0.5rem;
-    border-left: 3px groove oklch(var(--p)/0.2);
+    padding-left: .5rem;
     /* background: oklch(var(--p)/.05); */
     /* display: block; */
     /* margin-left: 2px; */

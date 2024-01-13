@@ -1,26 +1,30 @@
 import type { EnumValue } from 'src/models/Schema'
 import { getKnownModels, type ModelInfo } from 'src/wiki/modelList'
 import { type ComfyUIManagerKnownModelNames } from 'src/wiki/modelListType'
+import type { Widget_enum_opts } from './Widget'
 
-export const extractDefaultValue = <T extends KnownEnumNames>(def: EnumValue | EnumDefault): Maybe<EnumValue> => {
-    if (def == null) return null
-    // case value (backwards compat)
-    if (typeof def === 'string') return def
-    if (typeof def === 'boolean') return def
-    if (typeof def === 'number') return def
+export const extractDefaultValue = <T extends KnownEnumNames>(input: Widget_enum_opts<T>): Maybe<EnumValue> => {
+    const def = input.default
 
-    // ⏸️ // case defaultModel
-    // ⏸️ const x = def.knownModel
-    // ⏸️ if (x != null) {
-    // ⏸️     const entry = Array.isArray(x) ? x[0] : x
-    // ⏸️     const knownModels = getKnownModels()
-    // ⏸️     const modelInfo = knownModels.get(entry)
-    // ⏸️     if (modelInfo == null) {
-    // ⏸️         console.error(`Unknown model: ${entry}`)
-    // ⏸️         return null
-    // ⏸️     }
-    // ⏸️     return modelInfo.filename
-    // ⏸️ }
+    if (def != null) {
+        // case value (backwards compat)
+        if (typeof def === 'string') return def
+        if (typeof def === 'boolean') return def
+        if (typeof def === 'number') return def
+
+        // case defaultModel
+        const def2 = def as EnumDefault<T>
+        if (def2.value != null) return def2.value as any
+
+        // ⏸️ const entry = Array.isArray(def2) ? def2[0] : def2
+        // ⏸️ const knownModels = getKnownModels()
+        // ⏸️ const modelInfo = knownModels.get(entry)
+        // ⏸️ if (modelInfo == null) {
+        // ⏸️     console.error(`Unknown model: ${entry}`)
+        // ⏸️     return null
+        // ⏸️ }
+        // ⏸️ return modelInfo.filename
+    }
 
     // default
     return null

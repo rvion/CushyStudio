@@ -1,48 +1,55 @@
-import { runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { Widget_list, Widget_listExt } from 'src/controls/Widget'
-import { Button, Joined } from 'src/rsuite/shims'
+import { Button } from 'src/rsuite/shims'
 
 export const ListControlsUI = observer(function ListControlsUI_(p: {
     //
-    req: Widget_listExt<any> | Widget_list<any>
+    widget: Widget_listExt<any> | Widget_list<any>
 }) {
-    const widget = p.req
+    const widget = p.widget
     const values = widget.state.items
     const max = widget.input.max
     const min = widget.input.min
     return (
-        <div tw='sticky top-0 z-[100] w-full bg-base-300'>
+        <div tw='sticky top-0 z-[100] w-full'>
             <Button
-                tw='btn-sm join-item btn-ghost'
+                tw='btn-sm join-item btn-ghost btn-square'
                 disabled={max ? widget.state.items.length >= max : undefined}
                 icon={<span className='material-symbols-outlined'>add</span>}
-                onClick={() => widget.addItem()}
+                onClick={(ev) => {
+                    ev.stopPropagation()
+                    widget.addItem()
+                }}
             >
-                Add
+                {/* Add */}
             </Button>
             <Button
-                tw='btn-sm join-item btn-ghost'
+                tw='btn-sm join-item btn-ghost btn-square'
                 disabled={min ? widget.state.items.length <= min : undefined}
                 icon={<span className='material-symbols-outlined'>delete_forever</span>}
-                onClick={() => widget.removemAllItems()}
+                onClick={(ev) => {
+                    ev.stopPropagation()
+                    widget.removemAllItems()
+                }}
             >
-                Clear
+                {/* Clear */}
             </Button>
             <Button
-                tw='btn-sm join-item btn-ghost'
-                icon={<span className='material-symbols-outlined'>unfold_less</span>}
-                onClick={() => widget.collapseAllItems()}
-            >
-                Collapse all
-            </Button>
-            <Button
-                tw='btn-sm join-item btn-ghost'
+                tw='btn-sm join-item btn-ghost btn-square'
                 icon={<span className='material-symbols-outlined'>unfold_more</span>}
-                onClick={() => widget.expandAllItems()}
-            >
-                Expand All
-            </Button>
+                onClick={(ev) => {
+                    ev.stopPropagation()
+                    widget.expandAllItems()
+                }}
+            ></Button>
+            <Button
+                tw='btn-sm join-item btn-ghost btn-square'
+                icon={<span className='material-symbols-outlined'>unfold_less</span>}
+                onClick={(ev) => {
+                    ev.stopPropagation()
+                    widget.collapseAllItems()
+                }}
+            ></Button>
             {/* <Button
                 tw='btn-sm join-item btn-ghost'
                 disabled={max ? req.state.items.length >= max : undefined}

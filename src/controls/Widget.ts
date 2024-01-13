@@ -923,8 +923,8 @@ export type Widget_imageOpt_state  = WidgetStateFields<ImageAnswerForm<'imageOpt
 export type Widget_imageOpt_output = Maybe<ImageAnswer>
 export interface Widget_imageOpt extends WidgetTypeHelpers<'imageOpt', Widget_imageOpt_opts, Widget_imageOpt_serial, Widget_imageOpt_state, Widget_imageOpt_output> {}
 export class Widget_imageOpt implements IWidget<'imageOpt', Widget_imageOpt_opts, Widget_imageOpt_serial, Widget_imageOpt_state, Widget_imageOpt_output> {
-    readonly isVerticalByDefault = true
-    readonly isCollapsible = true
+    readonly isVerticalByDefault = false
+    readonly isCollapsible = false
     readonly isOptional = true
     readonly id: string
     readonly type: 'imageOpt' = 'imageOpt'
@@ -1350,7 +1350,7 @@ export class Widget_group<T extends { [key: string]: Widget }> implements IWidge
     get values() { return this.state.values }
     collapseAllEntries = () => {
         for (const [key, item] of this.entries) {
-            if (item.isCollapsible) item.state.collapsed = true
+            if (item.isCollapsible && item.state.active) item.state.collapsed = true
         }
     }
     expandAllEntries = () => {
@@ -1642,7 +1642,7 @@ export class Widget_enum<T extends KnownEnumNames> implements IWidget<'enum', Wi
             type: 'enum',
             id: this.id,
             active: true,
-            val: extractDefaultValue(input.default as any /* 🔴 */) ?? (this.possibleValues[0] as any)
+            val: extractDefaultValue(input) ?? (this.possibleValues[0] as any)
         }
         makeAutoObservable(this)
     }

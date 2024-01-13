@@ -21,14 +21,11 @@ export const ui_cnet = () => {
     const form = getCurrentForm()
     return form.groupOpt({
         label: 'ControlNets',
+        tooltip: `Instructional resources:\nhttps://github.com/lllyasviel/ControlNet\nhttps://stable-diffusion-art.com/controlnet/`,
         items: () => ({
-            help: form.markdown({
-                startCollapsed: true,
-                markdown: `Instructional resources:\nhttps://github.com/lllyasviel/ControlNet\nhttps://stable-diffusion-art.com/controlnet/`,
-            }),
             useControlnetConditioningForUpscalePassIfEnabled: form.bool({ default: false }),
             controlNetList: form.list({
-                label: false,
+                // label: false,
                 element: () =>
                     form.group({
                         label: 'Controlnet Image',
@@ -41,7 +38,7 @@ export const ui_cnet = () => {
                             }),
                             resize: form.bool({ default: true }),
                             cnets: form.choices({
-                                label: false, //'Pick Cnets=>',
+                                // label: false, //'Pick Cnets=>',
                                 placeholder: 'ControlNets...',
                                 items: () => ({
                                     OpenPose: ui_subform_OpenPose(),
