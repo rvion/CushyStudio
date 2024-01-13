@@ -120,7 +120,7 @@ export class MediaImageL {
         this.st.layout.FOCUS_OR_CREATE('Paint', { imgID: this.id })
     }
 
-    openInCanvas = (): void => {
+    openInCanvasEditor = (): void => {
         this.st.layout.FOCUS_OR_CREATE('Canvas', { imgID: this.id })
     }
 

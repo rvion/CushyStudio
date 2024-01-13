@@ -112,7 +112,7 @@ export const ImageActionBarUI = observer(function ImageActionBarUI_(p: { img?: M
                 tw='btn btn-sm'
                 onClick={() => {
                     if (img == null) return
-                    img.openInImageEditor()
+                    img.openInCanvasEditor()
                 }}
             >
                 <span className='material-symbols-outlined'>edit</span>
