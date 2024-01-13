@@ -21,6 +21,7 @@ import path, { dirname, join } from 'path'
 import { nanoid } from 'nanoid'
 import { asRelativePath } from 'src/utils/fs/pathUtils'
 import { warn } from 'console'
+import { createMediaImage_fromDataURI } from 'src/models/createMediaImage_fromWebFile'
 
 export const OutputDisplacementPreviewUI = observer(function OutputImagePreviewUI_(p: {
     step?: Maybe<StepL>
@@ -151,35 +152,23 @@ export const OutputDisplacementUI = observer(function OutputDisplacementUI_(p: {
 
 type OrbitControls2 = import('three/examples/jsm/controls/OrbitControls').OrbitControls
 
-export const saveCanvasAsImage = async (canvas: HTMLCanvasElement, st: STATE, subfolder?: string) => {
-    const imageID = nanoid()
-    const filename = `${imageID}.png`
+// export const saveCanvasAsImage = async (canvas: HTMLCanvasElement, st: STATE, subfolder?: string) => {
+//     const imageID = nanoid()
+//     const filename = `${imageID}.png`
 
-    const relPath = asRelativePath(subfolder ? path.join(subfolder, filename) : filename)
-    const absPath = st.resolve(st.outputFolderPath, relPath)
-    mkdirSync(dirname(absPath), { recursive: true })
+//     const relPath = asRelativePath(subfolder ? path.join(subfolder, filename) : filename)
+//     const absPath = st.resolve(st.outputFolderPath, relPath)
+//     mkdirSync(dirname(absPath), { recursive: true })
 
-    const buffer = await new Promise<ArrayBuffer>((resolve) => canvas.toBlob((blob) => blob?.arrayBuffer().then(resolve)))
-    writeFileSync(absPath, Buffer.from(buffer))
-    console.log(`Image saved: ${absPath}, ${buffer.byteLength} bytes`)
+//     const buffer = await new Promise<ArrayBuffer>((resolve) => canvas.toBlob((blob) => blob?.arrayBuffer().then(resolve)))
+//     writeFileSync(absPath, Buffer.from(buffer))
+//     console.log(`Image saved: ${absPath}, ${buffer.byteLength} bytes`)
 
-    st.db.media_images.create({ infos: { type: 'image-local', absPath } })
-}
+//     st.db.media_images.create({ infos: { type: 'image-local', absPath } })
+// }
 
-export const saveDataUriAsImage = async (dataUri: string, st: STATE, subfolder?: string) => {
-    const imageID = nanoid()
-    const filename = `${imageID}.png`
-
-    const relPath = asRelativePath(subfolder ? path.join(subfolder, filename) : filename)
-    const absPath = st.resolve(st.outputFolderPath, relPath)
-    mkdirSync(dirname(absPath), { recursive: true })
-
-    const buffer = Buffer.from(dataUri.split(',')[1], 'base64')
-    writeFileSync(absPath, buffer)
-
-    console.log(`Image saved: ${absPath}, ${buffer.byteLength} bytes`)
-
-    st.db.media_images.create({ infos: { type: 'image-local', absPath } })
+export const saveDataUriAsImage = async (dataURI: string, st: STATE, subfolder?: string) => {
+    return createMediaImage_fromDataURI(st, dataURI, subfolder)
 }
 
 // State class
@@ -361,8 +350,9 @@ void main() {`,
     // renderTarget: THREE.WebGLRenderTarget
     // renderCanvas: HTMLCanvasElement
     takeScreenshot = (st: STATE) => {
-        const imgData = this.renderer.domElement.toDataURL(`image/png`)
-        saveDataUriAsImage(imgData, st, `3d-snapshots`)
+        const imgDataURL = this.renderer.domElement.toDataURL(`image/png`)
+        // saveDataUriAsImage(imgData, st, `3d-snapshots`)
+        return createMediaImage_fromDataURI(st, imgDataURL, `3d-snapshots`)
 
         // const w = window.innerWidth
         // const h = window.innerHeight

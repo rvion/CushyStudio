@@ -11,6 +11,11 @@ import { Button } from 'src/rsuite/shims'
 import { useSt } from '../state/stateContext'
 import { asRelativePath } from '../utils/fs/pathUtils'
 import { CUSHY_PORT } from 'src/state/PORT'
+import {
+    createMediaImage_fromBlobObject,
+    createMediaImage_fromFileObject,
+    createMediaImage_fromPath,
+} from 'src/models/createMediaImage_fromWebFile'
 
 // export type UIPagePaint = {
 //     type: 'paint'
@@ -77,15 +82,6 @@ class MinipaintState {
         Layers.convert_layers_to_canvas(tempCtx)
         // console.log(Layers.get_layer('MASK'))
 
-        // if (is_edge_or_ie() == false) {
-        //update image using blob (faster)
-        // tempCanvas.toBlob(function (blob) {
-        //     if (blob == null) throw new Error('no blob')
-        //     console.log('Data length: ' + blob.size)
-        //     console.log(blob)
-        // }, 'image/png')
-        // } else {
-        //     //slow way for IE, Edge
         console.log('e')
         var data = tempCanvas.toDataURL()
         // alert('Data length: ' + data.length)
@@ -94,33 +90,8 @@ class MinipaintState {
         tempCanvas.toBlob(async (blob) => {
             if (blob == null) throw new Error(`❌ blob is null`)
             const filename = imageID + '.png'
-
-            // create minipaint folder
-            const subfolder = 'minipaint'
-            const subFoldePath = join(this.st.outputFolderPath, subfolder)
-            mkdirSync(subFoldePath, { recursive: true })
-
-            //  create image
-            const relPath = asRelativePath(join(subfolder, filename))
-            const absPath = this.st.resolve(this.st.outputFolderPath, relPath)
-            const buff = await blob.arrayBuffer()
-            // console.log({ relPath })
-            // console.log({ absPath })
-            // console.log({ byteLength: buff.byteLength })
-            const dirExists = existsSync(this.st.outputFolderPath)
-            if (!dirExists) {
-                console.log(`creating dir ${this.st.outputFolderPath}`)
-                mkdirSync(this.st.outputFolderPath, { recursive: true })
-            }
-            writeFileSync(absPath, Buffer.from(buff))
-            console.log(`saved`)
-            this.st.db.media_images.create({ infos: { type: 'image-local', absPath: absPath } })
+            createMediaImage_fromBlobObject(this.st, blob, `outputs/minipaint/${filename}`)
         })
-        // console.log('f')
-        // writeFileSync()
-        // 🔴🔴
-        // this.st.sendMessageToExtension({ type: 'image', base64: data, imageID })
-        // }
     }
 }
 // https://github.com/devforth/painterro

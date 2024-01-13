@@ -1,7 +1,6 @@
 import { TObject, TSchema, Type } from '@sinclair/typebox'
 
 import type { Metafile } from 'esbuild'
-import type { ImageInfos } from 'src/models/MediaImage'
 import type { EmbeddingName } from 'src/models/Schema'
 import type { ComfyPromptJSON } from 'src/types/ComfyPrompt'
 import type { ComfySchemaJSON } from 'src/types/ComfySchemaJSON'
@@ -11,6 +10,7 @@ import type { SqlColDef } from './_getAllColumnsForTable'
 import type { Status } from 'src/back/Status'
 import type { Widget_group_serial } from 'src/controls/Widget'
 import type { ComfyNodeID, ComfyNodeMetadata } from 'src/types/ComfyNodeID'
+import { ImageInfos_ComfyGenerated } from 'src/models/MediaImage'
 
 export type StatusT = keyof typeof Status
 
@@ -50,8 +50,8 @@ export const ComfySchema_spec_Schema = Type.Record(Type.String(), Type.Any())
 export type ComfySchema_embeddings = EmbeddingName[]
 export const ComfySchema_embeddings_Schema = Type.Array(Type.String())
 
-export type MediaImage_infos = ImageInfos
-export const MediaImage_infos_Schema = Type.Record(Type.String(), Type.Any())
+export type MediaImage_comfyUIInfos = ImageInfos_ComfyGenerated
+export const MediaImage_comfyUIInfos_Schema = Type.Record(Type.String(), Type.Any())
 
 export type RuntimeError_infos = { [key: string]: any }
 export const RuntimeError_infos_Schema = Type.Record(Type.String(), Type.Any())

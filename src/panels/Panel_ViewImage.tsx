@@ -82,7 +82,7 @@ export const ImageActionBarUI = observer(function ImageActionBarUI_(p: { img?: M
     const img = p.img
     img?.getSize()
     return (
-        <div tw='flex items-center gap-2 bg-base-200'>
+        <div tw='flex items-center gap-2 bg-base-200 flex-wrap'>
             {/* <FieldAndLabelUI label='Rating'> */}
             <Rate
                 name={img?.id ?? 'latent'}
@@ -117,6 +117,16 @@ export const ImageActionBarUI = observer(function ImageActionBarUI_(p: { img?: M
             >
                 <span className='material-symbols-outlined'>edit</span>
                 Edit
+            </div>
+            <div
+                tw='btn btn-sm'
+                onClick={() => {
+                    if (img == null) return
+                    img.openInImageEditor()
+                }}
+            >
+                <span className='material-symbols-outlined'>edit</span>
+                Edit (old)
             </div>
             <div
                 tw='btn btn-sm'

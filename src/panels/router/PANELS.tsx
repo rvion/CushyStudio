@@ -23,12 +23,14 @@ import { PropsOf } from './Layout'
 import { Panel_Iframe } from '../Panel_IFrame'
 import { Panel_Script } from '../Panel_Script'
 import { Panel_Import } from '../Panel_Import'
+import { Panel_Canvas } from '../Panel_Canvas'
 
 // prettier-ignore
 export const panels = {
     // image related
     Gallery:             { name: 'Gallery',             widget: Panel_Gallery,           header: (p: PropsOf<typeof Panel_Gallery          >) => ({title: '🎑 Gallery',          icon: undefined                         }) },
     Paint:               { name: 'Paint',               widget: Panel_Minipaint,         header: (p: PropsOf<typeof Panel_Minipaint        >) => ({title: '🎨 Paint',            icon: assets.minipaint_images_logo_svg  }) },
+    Canvas:              { name: 'Canvas',              widget: Panel_Canvas,            header: (p: PropsOf<typeof Panel_Canvas           >) => ({title: '🎨 Canvas',           icon: assets.minipaint_images_logo_svg  }) },
     Image:               { name: 'Image',               widget: Panel_ViewImage,         header: (p: PropsOf<typeof Panel_ViewImage        >) => ({title: '🎇 Image',            icon: undefined                         }) },
 
     // apps & marketplace

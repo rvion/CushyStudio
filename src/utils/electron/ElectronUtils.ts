@@ -1,5 +1,5 @@
+import { createMediaImage_fromPath } from 'src/models/createMediaImage_fromWebFile'
 import type { STATE } from '../../state/state'
-import { asAbsolutePath } from '../fs/pathUtils'
 
 export class ElectronUtils {
     constructor(public st: STATE) {
@@ -15,13 +15,8 @@ export class ElectronUtils {
                     relativePath: string
                 },
             ) => {
-                // console.log(`[👙] `, {ev, json})
-                st.db.media_images.create({
-                    infos: {
-                        type: 'image-local',
-                        absPath: asAbsolutePath(json.absolutePath),
-                    },
-                })
+                console.log(`[👙] `, { json })
+                createMediaImage_fromPath(st, json.relativePath, {})
             },
         )
     }

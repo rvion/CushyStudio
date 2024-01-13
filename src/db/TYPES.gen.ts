@@ -568,16 +568,7 @@ export type MediaImageT = {
     updatedAt: number;
 
     /** @default: null, sqlType: INT */
-    width?: Maybe<number>;
-
-    /** @default: null, sqlType: INT */
-    height?: Maybe<number>;
-
-    /** @default: null, sqlType: INT */
     star?: Maybe<number>;
-
-    /** @default: null, sqlType: json */
-    infos?: Maybe<T.MediaImage_infos>;
 
     /** @default: null, sqlType: TEXT */
     promptID?: Maybe<ComfyPromptID>;
@@ -589,25 +580,46 @@ export type MediaImageT = {
     promptNodeID?: Maybe<string>;
 
     /** @default: null, sqlType: INT */
-    fileSize?: Maybe<number>;
+    width: number;
+
+    /** @default: null, sqlType: INT */
+    height: number;
+
+    /** @default: null, sqlType: INT */
+    fileSize: number;
 
     /** @default: null, sqlType: TEXT */
-    hash?: Maybe<string>;
+    hash: string;
+
+    /** @default: null, sqlType: TEXT */
+    path: string;
+
+    /** @default: null, sqlType: json */
+    comfyUIInfos?: Maybe<T.MediaImage_comfyUIInfos>;
+
+    /** @default: null, sqlType: TEXT */
+    type?: Maybe<string>;
+
+    /** @default: null, sqlType: INT */
+    orientation?: Maybe<number>;
 
 }
 export const MediaImageSchema = Type.Object({
     id: Type.String(),
     createdAt: Type.Number(),
     updatedAt: Type.Number(),
-    width: Type.Optional(T.Nullable(Type.Number())),
-    height: Type.Optional(T.Nullable(Type.Number())),
     star: Type.Optional(T.Nullable(Type.Number())),
-    infos: Type.Optional(T.Nullable(T.MediaImage_infos_Schema)),
     promptID: Type.Optional(T.Nullable(Type.String())),
     stepID: Type.Optional(T.Nullable(Type.String())),
     promptNodeID: Type.Optional(T.Nullable(Type.String())),
-    fileSize: Type.Optional(T.Nullable(Type.Number())),
-    hash: Type.Optional(T.Nullable(Type.String())),
+    width: Type.Number(),
+    height: Type.Number(),
+    fileSize: Type.Number(),
+    hash: Type.String(),
+    path: Type.String(),
+    comfyUIInfos: Type.Optional(T.Nullable(T.MediaImage_comfyUIInfos_Schema)),
+    type: Type.Optional(T.Nullable(Type.String())),
+    orientation: Type.Optional(T.Nullable(Type.Number())),
 },{ additionalProperties: false })
 
 export const MediaImageRefs =[
@@ -622,15 +634,18 @@ export const MediaImageFields = {
     id: {cid:0,name:'id',type:'string',notnull:1,dflt_value:'hex(randomblob(16))',pk:1},
     createdAt: {cid:1,name:'createdAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
     updatedAt: {cid:2,name:'updatedAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
-    width: {cid:3,name:'width',type:'INT',notnull:0,dflt_value:null,pk:0},
-    height: {cid:4,name:'height',type:'INT',notnull:0,dflt_value:null,pk:0},
-    star: {cid:5,name:'star',type:'INT',notnull:0,dflt_value:null,pk:0},
-    infos: {cid:6,name:'infos',type:'json',notnull:0,dflt_value:null,pk:0},
-    promptID: {cid:7,name:'promptID',type:'TEXT',notnull:0,dflt_value:null,pk:0},
-    stepID: {cid:8,name:'stepID',type:'TEXT',notnull:0,dflt_value:null,pk:0},
-    promptNodeID: {cid:9,name:'promptNodeID',type:'TEXT',notnull:0,dflt_value:null,pk:0},
-    fileSize: {cid:10,name:'fileSize',type:'INT',notnull:0,dflt_value:null,pk:0},
-    hash: {cid:11,name:'hash',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    star: {cid:3,name:'star',type:'INT',notnull:0,dflt_value:null,pk:0},
+    promptID: {cid:4,name:'promptID',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    stepID: {cid:5,name:'stepID',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    promptNodeID: {cid:6,name:'promptNodeID',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    width: {cid:7,name:'width',type:'INT',notnull:1,dflt_value:null,pk:0},
+    height: {cid:8,name:'height',type:'INT',notnull:1,dflt_value:null,pk:0},
+    fileSize: {cid:9,name:'fileSize',type:'INT',notnull:1,dflt_value:null,pk:0},
+    hash: {cid:10,name:'hash',type:'TEXT',notnull:1,dflt_value:null,pk:0},
+    path: {cid:11,name:'path',type:'TEXT',notnull:1,dflt_value:null,pk:0},
+    comfyUIInfos: {cid:12,name:'comfyUIInfos',type:'json',notnull:0,dflt_value:null,pk:0},
+    type: {cid:13,name:'type',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    orientation: {cid:14,name:'orientation',type:'INT',notnull:0,dflt_value:null,pk:0},
 }
 
 

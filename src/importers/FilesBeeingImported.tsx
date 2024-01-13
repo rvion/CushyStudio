@@ -1,9 +1,9 @@
 import type { LiteGraphJSON } from 'src/core/LiteGraph'
 import type { ComfyPromptJSON } from 'src/types/ComfyPrompt'
 
-import { mkdirSync, writeFileSync } from 'fs'
 import { observer, useLocalObservable } from 'mobx-react-lite'
 import { useState } from 'react'
+import { createMediaImage_fromFileObject } from 'src/models/createMediaImage_fromWebFile'
 import { Panel } from 'src/rsuite/shims'
 import { convertLiteGraphToPrompt } from '../core/litegraphToPrompt'
 import { useSt } from '../state/stateContext'
@@ -35,20 +35,9 @@ export const ImportAsImageUI = observer(function ImportAsImageUI_(p: { className
                 tw={['btn btn-primary btn-sm', uiSt.validImage ? null : 'btn-disabled']}
                 onClick={async () => {
                     if (!uiSt.validImage) return
-                    // non-integrated with CushyStudio way of saving an image
-                    mkdirSync('outputs/imported/', { recursive: true })
-                    const relPath = `outputs/imported/${file.name}` as RelativePath
-
-                    const buffer = await file.arrayBuffer().then((x) => Buffer.from(x))
-                    writeFileSync(relPath, buffer)
-
-                    const absPath = st.resolveFromRoot(relPath)
-                    st.db.media_images.create({
-                        infos: { type: 'image-local', absPath },
-                    })
+                    await createMediaImage_fromFileObject(st, file)
                 }}
             >
-                {' '}
                 import as image
             </div>
         </div>
