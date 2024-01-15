@@ -9,7 +9,7 @@ import { ImageDropdownMenuUI } from 'src/panels/ImageDropdownUI'
 export const ImageUI = observer(function ImageUI_(p: {
     //
     size?: string
-    img: MediaImageL | MediaImageID
+    img: MediaImageL | MediaImageID | null
     className?: string
 }) {
     const st = useSt()
