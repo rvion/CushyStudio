@@ -13,33 +13,39 @@ export class RuntimeImages {
 
     // ----------------------------------------------------------------------------------------
     // simple to use functions
-    loadAsImage = async (relPath: string, workflow?: ComfyWorkflowL): Promise<LoadImage> => {
-        const img = this.createFromPath(relPath)
+    loadAsImage = async (relPathOrDataURL: string, workflow?: ComfyWorkflowL): Promise<LoadImage> => {
+        const img = this.createFromDataURLOrPath(relPathOrDataURL)
         return await img.uploadAndloadAsImage(workflow ?? this.rt.workflow)
     }
 
     loadAsMask = async (
-        relPath: string,
+        relPathOrDataURL: string,
         channel: Enum_LoadImageMask_channel,
         workflow?: ComfyWorkflowL,
     ): Promise<LoadImageMask> => {
-        const img = this.createFromPath(relPath)
+        const img = this.createFromDataURLOrPath(relPathOrDataURL)
         return await img.uploadAndloadAsMask(workflow ?? this.rt.workflow, channel)
     }
 
-    loadAsEnum = async (relPath: string): Promise<Enum_LoadImage_image> => {
-        const img = this.createFromPath(relPath)
+    loadAsEnum = async (relPathOrDataURL: string): Promise<Enum_LoadImage_image> => {
+        const img = this.createFromDataURLOrPath(relPathOrDataURL)
         return await img.uploadAndReturnEnumName()
     }
 
     // ----------------------------------------------------------------------------------------
     // utils to create CushyStudio `MediaImagesL` without using them directly
-    createFromBase64 = (base64Url: string): MediaImageL => {
-        return createMediaImage_fromDataURI(this.rt.st, base64Url)
+
+    createFromDataURLOrPath = (relPathOrDataURL: string): MediaImageL => {
+        return relPathOrDataURL.startsWith('data:') //
+            ? this.createFromDataURL(relPathOrDataURL)
+            : this.createFromPath(relPathOrDataURL)
     }
 
-    createFromBase64AsLocalPath = (base64Url: string): MediaImageL => {
-        return createMediaImage_fromDataURI(this.rt.st, base64Url)
+    createFromDataURL = (
+        /** base 64 encoded data URL */
+        dataURL: string,
+    ): MediaImageL => {
+        return createMediaImage_fromDataURI(this.rt.st, dataURL)
     }
 
     createFromPath = (relPath: string, p: { promptID?: PromptID } = {}): MediaImageL => {

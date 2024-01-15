@@ -238,30 +238,6 @@ export class MediaImageL {
         return this.absPath != null
     }
 
-    // ⏸️ getSize = async (): Promise<ImageMeta> => {
-    // ⏸️     if (this.data.width && this.data.height)
-    // ⏸️         return {
-    // ⏸️             width: this.data.width,
-    // ⏸️             height: this.data.height,
-    // ⏸️         }
-    // ⏸️     return this.updateImageMeta()
-    // ⏸️ }
-
-    // ⏸️ private updateImageMeta = async (buffer?: ArrayBuffer): Promise<ImageMeta> => {
-    // ⏸️     const buff = buffer ?? (await this.getArrayBuffer())
-    // ⏸️     const uint8arr = new Uint8Array(buff)
-    // ⏸️     const size = imageMeta(uint8arr)
-    // ⏸️     const hash = hashArrayBuffer(uint8arr)
-    // ⏸️     console.log(`[🏞️]`, { size, hash })
-    // ⏸️     this.update({
-    // ⏸️         width: size?.width,
-    // ⏸️         height: size?.height,
-    // ⏸️         fileSize: uint8arr.byteLength,
-    // ⏸️         hash: hash,
-    // ⏸️     })
-    // ⏸️     return size
-    // ⏸️ }
-
     // turns this into some clean abstraction
     _resolve!: (value: this) => void
     _rejects!: (reason: any) => void
@@ -270,3 +246,27 @@ export class MediaImageL {
         this._rejects = rejects
     })
 }
+
+// ⏸️ getSize = async (): Promise<ImageMeta> => {
+// ⏸️     if (this.data.width && this.data.height)
+// ⏸️         return {
+// ⏸️             width: this.data.width,
+// ⏸️             height: this.data.height,
+// ⏸️         }
+// ⏸️     return this.updateImageMeta()
+// ⏸️ }
+
+// ⏸️ private updateImageMeta = async (buffer?: ArrayBuffer): Promise<ImageMeta> => {
+// ⏸️     const buff = buffer ?? (await this.getArrayBuffer())
+// ⏸️     const uint8arr = new Uint8Array(buff)
+// ⏸️     const size = imageMeta(uint8arr)
+// ⏸️     const hash = hashArrayBuffer(uint8arr)
+// ⏸️     console.log(`[🏞️]`, { size, hash })
+// ⏸️     this.update({
+// ⏸️         width: size?.width,
+// ⏸️         height: size?.height,
+// ⏸️         fileSize: uint8arr.byteLength,
+// ⏸️         hash: hash,
+// ⏸️     })
+// ⏸️     return size
+// ⏸️ }

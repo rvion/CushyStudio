@@ -45,7 +45,12 @@ export const createMediaImage_fromDataURI = (st: STATE, dataURI: string, subFold
     if (payload.length === 0) throw new Error(`❌ dataURI base64 payload is empty`)
     const buff = Buffer.from(payload, 'base64')
 
-    const fName = nanoid() + ext
+    // 🔴🔴🔴🔴🔴
+    const hash = hashArrayBuffer(new Uint8Array(buff))
+    // 🔴🔴🔴🔴🔴
+
+    // const fName = nanoid() + ext
+    const fName = hash + ext
     const relPath = `outputs/${subFolder}/${fName}` as RelativePath
     writeFileSync(relPath, buff)
     return _createMediaImage_fromLocalyAvailableImage(st, relPath, buff)

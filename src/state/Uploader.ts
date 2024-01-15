@@ -56,10 +56,12 @@ export class Uploader {
             subfolder?: string
         },
     ): Promise<Enum_LoadImage_image> => {
-        const uniqFileName = img.uploadName as Enum_LoadImage_image
+        const uniqFileName = img.enumName as Enum_LoadImage_image
         // console.warn(`[🌁] UPLOAD: ${img.relPath} required as "${uniqFileName}"...`)
 
-        const expectedFinalName = p.subfolder ? `${p.subfolder}/${uniqFileName}` : uniqFileName
+        const expectedFinalName = p.subfolder //
+            ? `${p.subfolder}/${uniqFileName}`
+            : uniqFileName
         // 2. if image already exists, return it
         if (this.st.schema.hasImage(expectedFinalName)) {
             console.log(`[🌁] UPLOAD: 🩶 "${img.relPath}" already exists on current ComfyUI instance`)
