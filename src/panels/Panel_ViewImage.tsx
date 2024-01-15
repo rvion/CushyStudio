@@ -80,7 +80,6 @@ export const Panel_ViewImage = observer(function Panel_ViewImage_(p: {
 export const ImageActionBarUI = observer(function ImageActionBarUI_(p: { img?: Maybe<MediaImageL> }) {
     const st = useSt()
     const img = p.img
-    img?.getSize()
     return (
         <div tw='flex items-center gap-2 bg-base-200 flex-wrap'>
             {/* <FieldAndLabelUI label='Rating'> */}

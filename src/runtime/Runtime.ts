@@ -7,9 +7,7 @@ import * as path from 'pathe'
 import { execSync } from 'child_process'
 import fs, { writeFileSync } from 'fs'
 import { Widget_group } from 'src/controls/Widget'
-import { Uploader } from 'src/state/Uploader'
 import { assets } from 'src/utils/assets/assets'
-import { bang } from 'src/utils/misc/bang'
 import { braceExpansion } from 'src/utils/misc/expansion'
 import { IDNaminScheemeInPromptSentToComfyUI } from '../back/IDNaminScheemeInPromptSentToComfyUI'
 import { ComfyWorkflowBuilder } from '../back/NodeBuilder'
@@ -20,30 +18,23 @@ import { ComfyPromptL } from '../models/ComfyPrompt'
 import { ComfyWorkflowL } from '../models/ComfyWorkflow'
 import { MediaImageL, checkIfComfyImageExists } from '../models/MediaImage'
 import { StepL } from '../models/Step'
-import { ComfyUploadImageResult } from '../types/ComfyWsApi'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
-import { exhaust } from '../utils/misc/ComfyUtils'
 
 import child_process from 'child_process'
-import { OpenRouterRequest } from 'src/llm/OpenRouter_Request'
-import { OpenRouterResponse } from 'src/llm/OpenRouter_Response'
-import { OpenRouter_ask } from 'src/llm/OpenRouter_ask'
-import { openRouterInfos } from 'src/llm/OpenRouter_infos'
-import { OpenRouter_Models } from 'src/llm/OpenRouter_models'
+import { createRandomGenerator } from 'src/back/random'
 import { _formatAsRelativeDateTime } from 'src/updater/_getRelativeTimeString'
 import { Wildcards } from 'src/widgets/prompter/nodes/wildcards/wildcards'
 import { RuntimeApps } from './RuntimeApps'
+import { RuntimeCanvas } from './RuntimeCanvas'
+import { RuntimeColors } from './RuntimeColors'
+import { RuntimeComfyUI } from './RuntimeComfyUI'
 import { RuntimeCushy } from './RuntimeCushy'
 import { RuntimeHosts } from './RuntimeHosts'
+import { RuntimeImages } from './RuntimeImages'
+import { RuntimeKonva } from './RuntimeKonva'
+import { RuntimeLLM } from './RuntimeLLM'
 import { RuntimeStore } from './RuntimeStore'
 import { RuntimeVideos } from './RuntimeVideo'
-import { createRandomGenerator } from 'src/back/random'
-import { RuntimeCanvas } from './RuntimeCanvas'
-import { RuntimeKonva } from './RuntimeKonva'
-import { RuntimeComfyUI } from './RuntimeComfyUI'
-import { RuntimeImages } from './RuntimeImages'
-import { RuntimeColors } from './RuntimeColors'
-import { RuntimeLLM } from './RuntimeLLM'
 
 export type ImageAndMask = HasSingle_IMAGE & HasSingle_MASK
 
@@ -147,11 +138,11 @@ export class Runtime<FIELDS extends WidgetDict = any> {
         this.st = step.st
         this.folder = step.st.outputFolderPath
 
-        this.upload_FileAtAbsolutePath = this.st.uploader.upload_FileAtAbsolutePath.bind(this.st.uploader)
-        this.upload_ImageAtURL = this.st.uploader.upload_ImageAtURL.bind(this.st.uploader)
-        this.upload_dataURL = this.st.uploader.upload_dataURL.bind(this.st.uploader)
-        this.upload_Asset = this.st.uploader.upload_Asset.bind(this.st.uploader)
-        this.upload_Blob = this.st.uploader.upload_Blob.bind(this.st.uploader)
+        // ⏸️ this.upload_FileAtAbsolutePath = this.st.uploader.upload_FileAtAbsolutePath.bind(this.st.uploader)
+        // ⏸️ this.upload_ImageAtURL = this.st.uploader.upload_ImageAtURL.bind(this.st.uploader)
+        // ⏸️ this.upload_dataURL = this.st.uploader.upload_dataURL.bind(this.st.uploader)
+        // ⏸️ this.upload_Asset = this.st.uploader.upload_Asset.bind(this.st.uploader)
+        // ⏸️ this.upload_Blob = this.st.uploader.upload_Blob.bind(this.st.uploader)
     }
 
     /**
@@ -559,10 +550,7 @@ export class Runtime<FIELDS extends WidgetDict = any> {
 
     loadImageAnswer = async (ia: ImageAnswer): Promise<ImageAndMask> => {
         const img = this.st.db.media_images.getOrThrow(ia.imageID)
-        const absPath = bang(img.absPath)
-        const res = await this.upload_FileAtAbsolutePath(absPath)
-        const img2 = this.nodes.LoadImage({ image: res.name as any })
-        return img2
+        return await img.uploadAndloadAsImage(this.workflow)
     }
 
     private extractString = (message: Printable): string => {
@@ -588,51 +576,51 @@ export class Runtime<FIELDS extends WidgetDict = any> {
         return res
     }
 
-    // UPLOAD ------------------------------------------------------------------------------------------
-    /** upload an image present on disk to ComfyUI */
-    upload_FileAtAbsolutePath: Uploader['upload_FileAtAbsolutePath']
-
-    /** upload an image that can be downloaded form a given URL to ComfyUI */
-    upload_ImageAtURL: Uploader['upload_ImageAtURL']
-
-    /** upload an image from dataURL */
-    upload_dataURL: Uploader['upload_dataURL']
-
-    /** upload a deck asset to ComfyUI */
-    upload_Asset: Uploader['upload_Asset']
-
-    /** upload a Blob */
-    upload_Blob: Uploader['upload_Blob']
-
-    // LOAD IMAGE --------------------------------------------------------------------------------------
-    /** load an image present on disk to ComfyUI */
-    load_FileAtAbsolutePath = async (absPath: AbsolutePath): Promise<ImageAndMask> => {
-        const res = await this.st.uploader.upload_FileAtAbsolutePath(absPath)
-        return this.loadImageAnswer({ type: 'ComfyImage', imageName: res.name })
-    }
-
-    /** load an image that can be downloaded form a given URL to ComfyUI */
-    load_ImageAtURL = async (url: string): Promise<ImageAndMask> => {
-        const res = await this.st.uploader.upload_ImageAtURL(url)
-        return this.loadImageAnswer({ type: 'ComfyImage', imageName: res.name })
-    }
-    /** load an image from dataURL */
-    load_dataURL = async (dataURL: string): Promise<ImageAndMask> => {
-        const res: ComfyUploadImageResult = await this.st.uploader.upload_dataURL(dataURL)
-        // this.st.db.images.create({ infos:  })
-        return this.loadImageAnswer({ type: 'ComfyImage', imageName: res.name })
-    }
-
-    /** load a deck asset to ComfyUI */
-    load_Asset = async (asset: RelativePath): Promise<ImageAndMask> => {
-        const res = await this.st.uploader.upload_Asset(asset)
-        return this.loadImageAnswer({ type: 'ComfyImage', imageName: res.name })
-    }
-    /** load a Blob */
-    load_Blob = async (blob: Blob): Promise<ImageAndMask> => {
-        const res = await this.st.uploader.upload_Blob(blob)
-        return this.loadImageAnswer({ type: 'ComfyImage', imageName: res.name })
-    }
+    // ⏸️ // UPLOAD ------------------------------------------------------------------------------------------
+    // ⏸️ /** upload an image present on disk to ComfyUI */
+    // ⏸️ upload_FileAtAbsolutePath: Uploader['upload_FileAtAbsolutePath']
+    // ⏸️
+    // ⏸️ /** upload an image that can be downloaded form a given URL to ComfyUI */
+    // ⏸️ upload_ImageAtURL: Uploader['upload_ImageAtURL']
+    // ⏸️
+    // ⏸️ /** upload an image from dataURL */
+    // ⏸️ upload_dataURL: Uploader['upload_dataURL']
+    // ⏸️
+    // ⏸️ /** upload a deck asset to ComfyUI */
+    // ⏸️ upload_Asset: Uploader['upload_Asset']
+    // ⏸️
+    // ⏸️ /** upload a Blob */
+    // ⏸️ upload_Blob: Uploader['upload_Blob']
+    // ⏸️
+    // ⏸️ // LOAD IMAGE --------------------------------------------------------------------------------------
+    // ⏸️ /** load an image present on disk to ComfyUI */
+    // ⏸️ load_FileAtAbsolutePath = async (absPath: AbsolutePath): Promise<ImageAndMask> => {
+    // ⏸️     const res = await this.st.uploader.upload_FileAtAbsolutePath(absPath)
+    // ⏸️     return this.loadImageAnswer({ type: 'ComfyImage', imageName: res.name })
+    // ⏸️ }
+    // ⏸️
+    // ⏸️ /** load an image that can be downloaded form a given URL to ComfyUI */
+    // ⏸️ load_ImageAtURL = async (url: string): Promise<ImageAndMask> => {
+    // ⏸️     const res = await this.st.uploader.upload_ImageAtURL(url)
+    // ⏸️     return this.loadImageAnswer({ type: 'ComfyImage', imageName: res.name })
+    // ⏸️ }
+    // ⏸️ /** load an image from dataURL */
+    // ⏸️ load_dataURL = async (dataURL: string): Promise<ImageAndMask> => {
+    // ⏸️     const res: ComfyUploadImageResult = await this.st.uploader.upload_dataURL(dataURL)
+    // ⏸️     // this.st.db.images.create({ infos:  })
+    // ⏸️     return this.loadImageAnswer({ type: 'ComfyImage', imageName: res.name })
+    // ⏸️ }
+    // ⏸️
+    // ⏸️ /** load a deck asset to ComfyUI */
+    // ⏸️ load_Asset = async (asset: RelativePath): Promise<ImageAndMask> => {
+    // ⏸️     const res = await this.st.uploader.upload_Asset(asset)
+    // ⏸️     return this.loadImageAnswer({ type: 'ComfyImage', imageName: res.name })
+    // ⏸️ }
+    // ⏸️ /** load a Blob */
+    // ⏸️ load_Blob = async (blob: Blob): Promise<ImageAndMask> => {
+    // ⏸️     const res = await this.st.uploader.upload_Blob(blob)
+    // ⏸️     return this.loadImageAnswer({ type: 'ComfyImage', imageName: res.name })
+    // ⏸️ }
 
     // INTERRACTIONS ------------------------------------------------------------------------------------------
     async PROMPT(p?: {

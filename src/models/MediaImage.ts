@@ -19,6 +19,8 @@ import { CushyAppL } from './CushyApp'
 import { CushyScriptL } from './CushyScriptL'
 import { DraftL } from './Draft'
 import { StepL } from './Step'
+import { lookup } from 'mime-types'
+import { asSTRING_orCrash } from 'src/utils/misc/bang'
 
 export type ImageInfos_ComfyGenerated = {
     comfyHostHttpURL: string
@@ -69,6 +71,47 @@ export class MediaImageL {
         const draft = this.draft
         if (draft == null) return toastError(`no related draft found`)
         draft.update({ illustration: this.url })
+    }
+
+    get relPath() {
+        return asRelativePath(this.data.path)
+    }
+
+    get baseName() {
+        return basename(this.data.path)
+    }
+
+    get baseNameWithoutExtension() {
+        const fname = this.baseName
+        return fname.slice(0, fname.lastIndexOf('.'))
+    }
+
+    /** return file extension including dot */
+    get extension() {
+        const fname = this.baseName
+        return fname.slice(((fname.lastIndexOf('.') - 1) >>> 0) + 1)
+    }
+
+    /** get the expected enum name */
+    get enumName(): Enum_LoadImage_image {
+        // return `${this.baseNameWithoutExtension}-${this.data.hash}${this.extension}`
+        return `${this.data.hash}${this.extension}` as Enum_LoadImage_image
+    }
+
+    uploadAndReturnEnumName = async (): Promise<Enum_LoadImage_image> => {
+        const finalName = await this.st.uploader.upload_Image(this, { type: 'input', override: true })
+        return finalName
+    }
+
+    uploadAndloadAsImage = async (graph: ComfyWorkflowL): Promise<LoadImage> => {
+        const enumName = await this.uploadAndReturnEnumName()
+        const img = graph.builder.LoadImage({ image: enumName })
+        return img
+    }
+    uploadAndloadAsMask = async (graph: ComfyWorkflowL, channel: Enum_LoadImageMask_channel): Promise<LoadImageMask> => {
+        const enumName = await this.uploadAndReturnEnumName()
+        const mask: LoadImageMask = graph.builder.LoadImageMask({ image: enumName, channel })
+        return mask
     }
 
     /**
@@ -159,13 +202,29 @@ export class MediaImageL {
         return bin
     }
 
+    /** return as web `Blob` */
+    getAsBlob(): Blob {
+        const filePath = this.data.path
+        const mime = asSTRING_orCrash(lookup(filePath))
+        const blob = new Blob([readFileSync(filePath)], { type: mime })
+        return blob
+    }
+
+    /** return as web `File` */
+    getAsFile(): File {
+        const filePath = this.data.path
+        const mime = asSTRING_orCrash(lookup(filePath))
+        const file = new File([readFileSync(filePath)], basename(filePath), { type: mime })
+        return file
+    }
+
     /** ready to be used in image fields */
     get url(): string {
         return `file://${this.absPath}`
     }
 
     /** absolute path on the machine running CushyStudio */
-    get absPath(): Maybe<AbsolutePath> {
+    get absPath(): AbsolutePath {
         const path = this.data.path
         if (path.startsWith('outputs/')) return this.st.resolveFromRoot(asRelativePath(path))
         return asAbsolutePath(resolve(this.st.rootPath, path))
@@ -179,29 +238,29 @@ export class MediaImageL {
         return this.absPath != null
     }
 
-    getSize = async (): Promise<ImageMeta> => {
-        if (this.data.width && this.data.height)
-            return {
-                width: this.data.width,
-                height: this.data.height,
-            }
-        return this.updateImageMeta()
-    }
+    // ⏸️ getSize = async (): Promise<ImageMeta> => {
+    // ⏸️     if (this.data.width && this.data.height)
+    // ⏸️         return {
+    // ⏸️             width: this.data.width,
+    // ⏸️             height: this.data.height,
+    // ⏸️         }
+    // ⏸️     return this.updateImageMeta()
+    // ⏸️ }
 
-    private updateImageMeta = async (buffer?: ArrayBuffer): Promise<ImageMeta> => {
-        const buff = buffer ?? (await this.getArrayBuffer())
-        const uint8arr = new Uint8Array(buff)
-        const size = imageMeta(uint8arr)
-        const hash = hashArrayBuffer(uint8arr)
-        console.log(`[🏞️]`, { size, hash })
-        this.update({
-            width: size?.width,
-            height: size?.height,
-            fileSize: uint8arr.byteLength,
-            hash: hash,
-        })
-        return size
-    }
+    // ⏸️ private updateImageMeta = async (buffer?: ArrayBuffer): Promise<ImageMeta> => {
+    // ⏸️     const buff = buffer ?? (await this.getArrayBuffer())
+    // ⏸️     const uint8arr = new Uint8Array(buff)
+    // ⏸️     const size = imageMeta(uint8arr)
+    // ⏸️     const hash = hashArrayBuffer(uint8arr)
+    // ⏸️     console.log(`[🏞️]`, { size, hash })
+    // ⏸️     this.update({
+    // ⏸️         width: size?.width,
+    // ⏸️         height: size?.height,
+    // ⏸️         fileSize: uint8arr.byteLength,
+    // ⏸️         hash: hash,
+    // ⏸️     })
+    // ⏸️     return size
+    // ⏸️ }
 
     // turns this into some clean abstraction
     _resolve!: (value: this) => void

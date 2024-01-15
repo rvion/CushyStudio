@@ -146,10 +146,10 @@ app({
             })
             console.log(`[👙] `, toJS(xx))
             foo[`${suit}_${value}`] = xx
-            graph.SaveImage({ images: xx.mask, filename_prefix: 'mask_1' })
-            graph.SaveImage({
+            graph.PreviewImage({ images: xx.mask /*filename_prefix: 'mask_1'*/ })
+            graph.PreviewImage({
                 images: graph.JoinImageWithAlpha({ alpha: xx.base, image: xx.base }),
-                filename_prefix: 'base_1',
+                /*filename_prefix: 'base_1',*/
             })
         }
         await run.PROMPT()
