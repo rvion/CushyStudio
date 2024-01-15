@@ -12,6 +12,7 @@ export const useGlobalDropHook = (st: STATE) => {
                 let at: Maybe<HTMLElement> = ev.target
                 while ((at = at.parentElement) != null) {
                     if (at.classList.contains('_WidgetSelectImageUI')) return null
+                    if (at.classList.contains('DROP_IMAGE_HANDLER')) return null
                 }
             }
 

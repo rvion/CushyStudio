@@ -12,7 +12,7 @@ app({
     ui: (form) => ({
         about: form.markdown('https://comfyanonymous.github.io/ComfyUI_examples/3d/'),
         // start image
-        image: form.image({ default: 'comfy', defaultComfy: { type: 'ComfyImage', imageName: 'example.png' } }),
+        image: form.image({}),
         // elevation
         elevation: form.float({ default: 10 }),
         // angle / azimuth

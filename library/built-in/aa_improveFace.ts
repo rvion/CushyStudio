@@ -9,6 +9,6 @@ app({
     }),
     run: async (run, ui) => {},
     startFromImage: (image, form) => {
-        form.values.image.state.pick === 'cushy'
+        // form.values.image.state.pick === 'cushy'
     },
 })

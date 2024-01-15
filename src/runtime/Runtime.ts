@@ -547,108 +547,22 @@ export class Runtime<FIELDS extends WidgetDict = any> {
         return seed
     }
 
-    loadImageAnswerAsEnum = async (ia: ImageAnswer): Promise<Enum_LoadImage_image> => {
-        try {
-            if (ia.type === 'CushyImage') {
-                const img = this.st.db.media_images.getOrThrow(ia.imageID)
-                // this.print(JSON.stringify(img.data, null, 3))
-                if (img.absPath) {
-                    const res = await this.upload_FileAtAbsolutePath(img.absPath)
-                    return res.name as Enum_LoadImage_image // 🔴
-                }
-                return img.absPath as Enum_LoadImage_image // 🔴
-                // // console.log(img.data)
-                // return this.nodes.Image_Load({
-                //     image_path: img.url ?? img.localAbsolutePath,
-                //     RGBA: false, // 'false',
-                // })
-            }
-            if (ia.type === 'ComfyImage') return ia.imageName
-            if (ia.type === 'PaintImage') {
-                // const res = await this.uploadAnyFile(ia.base64)
-                // return res.name as Enum_LoadImage_image
-                throw new Error('🔴 not implemented')
-            }
-            exhaust(ia)
-        } catch (err) {
-            console.log('❌ failed to convert ImageAnser to Enum_LoadImage_image', ia)
-            throw err
-        }
-        throw new Error('FAILURE to load image answer as enum')
+    /** @deprecated */
+    loadImageAnswer2 = (ia: ImageAnswer): never => {
+        throw new Error('🔴 legacy function')
     }
 
-    loadImageAnswer2 = async (
-        ia: ImageAnswer,
-    ): Promise<{
-        img: ImageAndMask
-        width: number
-        height: number
-    }> => {
-        if (ia.type === 'CushyImage') {
-            const mediaImage = this.st.db.media_images.getOrThrow(ia.imageID)
-            // this.print(JSON.stringify(img.data, null, 3))
-            if (mediaImage.absPath) {
-                const res = await this.upload_FileAtAbsolutePath(mediaImage.absPath)
-                const img = this.nodes.LoadImage({ image: res.name as any })
-                return { img, width: bang(mediaImage.data.width), height: bang(mediaImage.data.height) }
-            }
-        }
-        throw new Error('ERROR')
+    /** @deprecated */
+    loadImageAnswerAsEnum = (ia: ImageAnswer): never => {
+        throw new Error('🔴 legacy function')
     }
 
     loadImageAnswer = async (ia: ImageAnswer): Promise<ImageAndMask> => {
-        try {
-            // if (ia.type === 'imagePath') {
-            //     return this.nodes.WASImageLoad({ image_path: ia.absPath, RGBA: 'false' })
-            // }
-            if (ia.type === 'CushyImage') {
-                const img = this.st.db.media_images.getOrThrow(ia.imageID)
-                // this.print(JSON.stringify(img.data, null, 3))
-                if (img.absPath) {
-                    const res = await this.upload_FileAtAbsolutePath(img.absPath)
-                    // this.print(JSON.stringify(res))
-
-                    const img2 = this.nodes.LoadImage({ image: res.name as any })
-                    // if (p?.joinImageWithAlpha) return this.nodes.JoinImageWithAlpha({ image: img2, alpha: img2 })
-                    return img2
-                }
-                console.log(img.data)
-                return this.nodes.Image_Load({
-                    image_path: img.url ?? img.absPath,
-                    RGBA: 'false',
-                    // RGBA: p?.joinImageWithAlpha ? 'true' : 'false', // 'false',
-                })
-            }
-            if (ia.type === 'ComfyImage') {
-                const img2 = this.nodes.LoadImage({ image: ia.imageName })
-                // const img2 = this.nodes.LoadImage({ image: res.name as any })
-                // if (p?.joinImageWithAlpha) return this.nodes.JoinImageWithAlpha({ image: img2, alpha: img2 })
-                return img2
-            }
-            if (ia.type === 'PaintImage') {
-                const img2 = this.nodes.Base64ImageInput({ bas64_image: ia.base64 })
-                // const img2 = this.nodes.LoadImage({ image: res.name as any })
-                // if (p?.joinImageWithAlpha) return this.nodes.JoinImageWithAlpha({ image: img2, alpha: img2 })
-                return img2 as any // 🔴
-            }
-            exhaust(ia)
-            // if (ia.type === 'imageSignal') {
-            //     const node = this.graph.nodesIndex.get(ia.nodeID)
-            //     if (node == null) throw new Error('node is not in current graph')
-            //     // 🔴 need runtime checking here
-            //     const xx = (node as any)[ia.fieldName]
-            //     console.log({ xx })
-            //     return xx
-            // }
-            // if (ia.type === 'imageURL') {
-            //     return this.nodes.WASImageLoad({ image_path: ia.url, RGBA: 'false' })
-            // }
-            throw new Error('FAILURE')
-            // return exhaust(ia)
-        } catch (err) {
-            console.log('🔴 failed to convert ImageAnser to _IMAGE', ia)
-            throw err
-        }
+        const img = this.st.db.media_images.getOrThrow(ia.imageID)
+        const absPath = bang(img.absPath)
+        const res = await this.upload_FileAtAbsolutePath(absPath)
+        const img2 = this.nodes.LoadImage({ image: res.name as any })
+        return img2
     }
 
     private extractString = (message: Printable): string => {

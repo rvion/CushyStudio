@@ -12,7 +12,7 @@ app({
     },
     ui: (form) => ({
         orbit: form.orbit({}),
-        image: form.image({ default: 'comfy', defaultComfy: { type: 'ComfyImage', imageName: 'example.png' } }),
+        image: form.image({}),
         sndPass: form.groupOpt({
             items: () => ({
                 positive: form.prompt({}),

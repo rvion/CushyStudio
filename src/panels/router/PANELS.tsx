@@ -23,7 +23,7 @@ import { PropsOf } from './Layout'
 import { Panel_Iframe } from '../Panel_IFrame'
 import { Panel_Script } from '../Panel_Script'
 import { Panel_Import } from '../Panel_Import'
-import { Panel_Canvas } from '../Panel_Canvas'
+import { Panel_Canvas } from '../Panel_Canvas/Panel_Canvas'
 
 // prettier-ignore
 export const panels = {

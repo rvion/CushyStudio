@@ -31,7 +31,6 @@ export const ui_cnet = () => {
                         label: 'Controlnet Image',
                         items: () => ({
                             image: form.image({
-                                default: 'cushy',
                                 group: 'Cnet_Image',
                                 tooltip:
                                     'There is currently a bug with multiple controlnets where an image wont allow drop except for the first controlnet in the list. If you add multiple controlnets, then reload using Ctrl+R, it should allow you to drop an image on any of the controlnets.',

@@ -7,6 +7,7 @@ import { MediaImageL } from './MediaImage'
 import { extractExtensionFromContentType } from 'src/widgets/misc/extractExtensionFromContentType'
 import { PromptID } from 'src/types/ComfyWsApi'
 import { dirname } from 'pathe'
+import { toastInfo } from 'src/utils/misc/toasts'
 
 type imageCreationOpts = {
     promptID?: PromptID
@@ -75,7 +76,27 @@ const _createMediaImage_fromLocalyAvailableImage = (
     const hash = hashArrayBuffer(uint8arr)
     console.log(`[🏞️]`, { ...meta, hash })
 
-    // const absPath = st.resolveFromRoot(relPath)
+    const prevs = st.db.media_images.find({ path: relPath }, { limit: 1 })
+    const prev = prevs[0]
+
+    if (prev) {
+        console.log(`[🏞️] updating existing imamge`)
+        toastInfo(`🏞️ updating existing imamge`)
+        prev.update({
+            orientation: meta.orientation,
+            type: meta.type,
+            fileSize: fileSize,
+            width: meta.width,
+            height: meta.height,
+            hash,
+            path: relPath,
+            promptID: opts?.promptID ?? prev.data.promptID,
+            stepID: opts?.stepID ?? prev.data.stepID,
+        })
+        return prev
+    }
+
+    console.log(`[🏞️] create new imamge`)
     return st.db.media_images.create({
         orientation: meta.orientation,
         type: meta.type,

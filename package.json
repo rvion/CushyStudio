@@ -66,6 +66,7 @@
         "@lexical/react": "^0.12.5",
         "@lexical/rich-text": "^0.12.5",
         "@lexical/utils": "^0.12.5",
+        "@react-hook/resize-observer": "^1.2.6",
         "@react-three/drei": "^9.93.0",
         "@react-three/fiber": "^8.15.13",
         "@sinclair/typebox": "^0.32.5",

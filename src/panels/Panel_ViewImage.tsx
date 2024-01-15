@@ -116,7 +116,7 @@ export const ImageActionBarUI = observer(function ImageActionBarUI_(p: { img?: M
                 }}
             >
                 <span className='material-symbols-outlined'>edit</span>
-                Edit
+                Canvas
             </div>
             <div
                 tw='btn btn-sm'
@@ -126,7 +126,7 @@ export const ImageActionBarUI = observer(function ImageActionBarUI_(p: { img?: M
                 }}
             >
                 <span className='material-symbols-outlined'>edit</span>
-                Edit (old)
+                Paint
             </div>
             <div
                 tw='btn btn-sm'
