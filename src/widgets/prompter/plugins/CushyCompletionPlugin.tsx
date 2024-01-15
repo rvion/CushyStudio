@@ -92,7 +92,7 @@ export const CushyCompletionPlugin = observer((p: { cs: CompletionState }) => {
                 const lastWordWithoutSymbols = queryString?.replace(/[^a-zA-Z0-9]/g, '')
                 const patrn = new RegExp(lastWordWithoutSymbols, 'gi')
                 if (patrn.exec(option.title)) return true
-                if (option.keywords.some((keyword: string) => patrn.exec(keyword))) return true
+                //if (option.keywords.some((keyword: string) => patrn.exec(keyword))) return true
                 return false
             })
             .slice(0, MAX_SUGGESTION_COUNT)
@@ -171,6 +171,7 @@ export const CompletionMenuUI = observer(function CompletionMenuUI_(p: {
                         option={option}
                         onMouseEnter={() => setHighlightedIndex(index)}
                         onClick={() => {
+                            console.log('[🔥]The completion onClick() event FIRED!!')
                             setHighlightedIndex(index)
                             selectOptionAndCleanUp(option)
                         }}
