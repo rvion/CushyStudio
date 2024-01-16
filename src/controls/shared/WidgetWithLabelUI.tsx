@@ -11,7 +11,7 @@ import { makeLabelFromFieldName } from '../../utils/misc/makeLabelFromFieldName'
 import { ErrorBoundaryFallback } from '../../widgets/misc/ErrorBoundary'
 import { WidgetDI } from '../widgets/WidgetUI.DI'
 import { InstallModelBtnUI } from '../widgets/InstallModelBtnUI'
-import { InstallCustomNodeBtnUI } from '../widgets/InstallCustomNodeBtnUI'
+import { InstallCustomNodeBtnUI } from '../../wiki/ui/InstallCustomNodeBtnUI'
 import { ListControlsUI } from './ListControlsUI'
 import { WidgetListExtUI } from '../widgets/WidgetListExtUI'
 
