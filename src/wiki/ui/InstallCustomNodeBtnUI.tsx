@@ -1,13 +1,11 @@
 import { observer } from 'mobx-react-lite'
 import { RevealUI } from 'src/rsuite/reveal/RevealUI'
 import { useSt } from 'src/state/stateContext'
-import { CustomNodeRecommandation } from '../../controls/IWidget'
-import { PluginSuggestion, convertToPluginInfoList } from './convertToPluginInfoList'
 import { usePromise } from 'src/utils/misc/usePromise'
-import { PluginInstallStatus, InstallPluginCardUI } from './InstallPluginCardUI'
-import { toastError } from 'src/utils/misc/toasts'
-import { useAsyncAction } from 'src/importers/usePromise'
+import { CustomNodeRecommandation } from '../../controls/IWidget'
+import { InstallPluginCardUI, PluginInstallStatus } from './InstallPluginCardUI'
 import { QuickHostActionsUI } from './QuickHostActionsUI'
+import { PluginSuggestion, convertToPluginInfoList } from './convertToPluginInfoList'
 
 export const InstallCustomNodeBtnUI = observer(function InstallCustomNodeBtnUI_<K extends KnownEnumNames>(p: {
     recomandation: CustomNodeRecommandation
@@ -16,8 +14,8 @@ export const InstallCustomNodeBtnUI = observer(function InstallCustomNodeBtnUI_<
     if (suggestions.length === 0) return <pre>🔴{JSON.stringify(p)}</pre>
     return (
         <RevealUI>
-            <div tw='btn btn-square btn-sm'>
-                <span className='material-symbols-outlined'>cloud_download</span>
+            <div tw='btn btn-square btn-sm btn-ghost opacity-50'>
+                <span className='material-symbols-outlined'>scatter_plot</span>
             </div>
             <InstallableCustomNodeListUI suggestions={suggestions} />
         </RevealUI>

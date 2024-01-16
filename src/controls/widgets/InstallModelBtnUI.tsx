@@ -57,11 +57,13 @@ export const InstallModelBtnUI = observer(function InstallModelBtnUI_<K extends 
                             </div>
                             {/* <RevealUI> */}
                             {/* <div>infos</div> */}
-                            <div tw='text-sm italic'>
-                                <div tw='italic'>enumName: {enumName.win}</div>
-                                <div tw='italic'>desc: {mi.description}</div>
-                                <div tw='italic'>url: {mi.url}</div>
-                            </div>
+                            {/*
+                            ⏸️ <div tw='text-sm italic'>
+                            ⏸️     <div tw='italic'>enumName: {enumName.win}</div>
+                            ⏸️     <div tw='italic'>desc: {mi.description}</div>
+                            ⏸️     <div tw='italic'>url: {mi.url}</div>
+                            ⏸️ </div>
+                             */}
                             {/* </RevealUI> */}
                         </div>
                     )
