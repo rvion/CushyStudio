@@ -5,8 +5,22 @@ import { getCustomNodeRegistry } from 'src/wiki/extension-node-map/extension-nod
 export const convertToPluginInfoList = (p: {
     recomandation: CustomNodeRecommandation
 }): { reason: string; plugin: PluginInfo }[] => {
+    // multiple sources
+    const {
+        //
+        customNodesByTitle,
+        customNodesByURI,
+        customNodesByNameInCushy,
+    } = p.recomandation
+
+    // accumulator
+    const uniq = new Set<PluginInfo>()
     const OUT: { reason: string; plugin: PluginInfo }[] = []
-    const { customNodesByTitle, customNodesByURI, customNodesByNameInCushy } = p.recomandation
+    const PUSH = (p: { reason: string; plugin: PluginInfo }) => {
+        if (uniq.has(p.plugin)) return
+        uniq.add(p.plugin)
+        OUT.push(p)
+    }
 
     // by titles
     if (customNodesByTitle != null) {
@@ -18,7 +32,7 @@ export const convertToPluginInfoList = (p: {
                 console.log(`[🔎] ❌ no CusomNode pack found for title ${title}`)
                 continue
             }
-            OUT.push({ reason: `(title:${title})`, plugin: pluginInfo })
+            PUSH({ reason: `(title:${title})`, plugin: pluginInfo })
         }
     }
     // by URI
@@ -31,7 +45,7 @@ export const convertToPluginInfoList = (p: {
                 console.log(`[🔎] ❌ no CusomNode pack found for uri ${uri}`)
                 continue
             }
-            OUT.push({ reason: `(uri:${uri})`, plugin: pluginInfo })
+            PUSH({ reason: `(uri:${uri})`, plugin: pluginInfo })
         }
     }
 
@@ -53,7 +67,7 @@ export const convertToPluginInfoList = (p: {
                     console.log(`[🔎] ❌ no CusomNode pack found for uri ${uri}`)
                     continue
                 }
-                OUT.push({ reason: `(node:${cushyName})`, plugin: pluginInfo })
+                PUSH({ reason: `(node:${cushyName})`, plugin: pluginInfo })
             }
         }
     }
@@ -72,7 +86,7 @@ export const convertToPluginInfoList = (p: {
 //         for (const url of arr) {
 //             const pluginInfo = x.byURI.get(url)
 //             if (!pluginInfo) continue
-//             OUT.push({ reason: `(ComfyNode:${uri})`, plugin: pluginInfo })
+//             PUSH({ reason: `(ComfyNode:${uri})`, plugin: pluginInfo })
 //         }
 //     }
 // }
