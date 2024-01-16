@@ -69,7 +69,7 @@ export const getCustomNodeRegistry = (p?: {
             if (entry1 == null) {
                 customNodeRegistry.byNodeNameInComfy.set(nodeNameInComfy, [enmEntry.url as ComfyUIManagerKnownCustomNode_Files])
             } else {
-                console.log(`[👙] duplicated node ${nodeNameInComfy}`)
+                if (p?.check) console.log(`[👙] duplicated node ${nodeNameInComfy}`)
                 entry1.push(enmEntry.url as ComfyUIManagerKnownCustomNode_Files)
             }
 
@@ -79,7 +79,7 @@ export const getCustomNodeRegistry = (p?: {
             if (entry2 == null) {
                 customNodeRegistry.byNodeNameInCushy.set(nodeInCushy, [enmEntry.url as ComfyUIManagerKnownCustomNode_Files])
             } else {
-                console.log(`[👙] duplicated node ${nodeInCushy}`)
+                if (p?.check) console.log(`[👙] duplicated node ${nodeInCushy}`)
                 entry2.push(enmEntry.url as ComfyUIManagerKnownCustomNode_Files)
             }
         }
@@ -89,12 +89,12 @@ export const getCustomNodeRegistry = (p?: {
     if (p?.genTypes) {
         let out = ''
 
-        // NameInComfy
-        const allComfyNames = [...customNodeRegistry.byNodeNameInComfy.keys()]
-        const sortedComfyNames = allComfyNames.sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()))
-        out += 'export type KnownInstallableCustomNodeComfyName =\n'
-        for (const pluginTitle of sortedComfyNames) out += `    | ${JSON.stringify(pluginTitle)}\n`
-        out += '\n'
+        // // NameInComfy
+        // const allComfyNames = [...customNodeRegistry.byNodeNameInComfy.keys()]
+        // const sortedComfyNames = allComfyNames.sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()))
+        // out += 'export type KnownInstallableCustomNodeComfyName =\n'
+        // for (const pluginTitle of sortedComfyNames) out += `    | ${JSON.stringify(pluginTitle)}\n`
+        // out += '\n'
 
         // NameInCushy
         const allCushyNodeNames = [...customNodeRegistry.byNodeNameInCushy.keys()]

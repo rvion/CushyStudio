@@ -1,10 +1,6 @@
-import { ComfyUIManagerKnownModelNames } from 'src/wiki/modelListType'
+import { ComfyUIManagerKnownCustomNode_Files, ComfyUIManagerKnownCustomNode_Title } from 'src/wiki/customNodeListTypes'
+import { KnownInstallableCustomNodeCushyName } from 'src/wiki/extension-node-map/extension-node-map-enums'
 import { RecommendedModelDownload } from './EnumDefault'
-import { ComfyUIManagerKnownCustomNode_Title, ComfyUIManagerKnownCustomNode_Files } from 'src/wiki/customNodeListTypes'
-import {
-    KnownInstallableCustomNodeComfyName,
-    KnownInstallableCustomNodeCushyName,
-} from 'src/wiki/extension-node-map/extension-node-map-enums'
 
 export type WidgetTypeHelpers<T, I, X extends { type: T }, S, O> = {
     $Input: I
@@ -51,6 +47,6 @@ export type WidgetInputFields<X> = X & {
 export type CustomNodeRecommandation = {
     customNodesByTitle?: ComfyUIManagerKnownCustomNode_Title | ComfyUIManagerKnownCustomNode_Title[]
     customNodesByURI?: ComfyUIManagerKnownCustomNode_Files | ComfyUIManagerKnownCustomNode_Files[]
-    customNodesByNameInComfy?: KnownInstallableCustomNodeComfyName | KnownInstallableCustomNodeComfyName[]
     customNodesByNameInCushy?: KnownInstallableCustomNodeCushyName | KnownInstallableCustomNodeCushyName[]
+    // customNodesByNameInComfy?: KnownInstallableCustomNodeComfyName | KnownInstallableCustomNodeComfyName[]
 }

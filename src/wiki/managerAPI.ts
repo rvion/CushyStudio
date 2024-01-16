@@ -38,6 +38,32 @@ export class ComfyUIManager {
         }
     }
 
+    // https://github.com/ltdrdata/ComfyUI-Manager/blob/4649d216b1842aa48b95d3f064c679a1b698e506/js/custom-nodes-downloader.js#L14C25-L14C88
+    getNodeList = async (
+        // prettier-ignore
+        /** @default: 'cache' */
+        mode:
+            /** DB: Channel (1day cache)' */
+            | 'cache'
+            /** text: 'DB: Local' */
+            | 'local'
+            /** DB: Channel (remote) */
+            | 'url'
+            ='cache',
+        /** @default: true */
+        skipUpdate: boolean = true,
+    ) => {
+        try {
+            const skip_update = skipUpdate ? '&skip_update=true' : ''
+            const status = await this.fetchGet(`/customnode/getlist?mode=${mode}${skip_update}`)
+            return status
+        } catch (exception) {
+            console.error(`node list retrieval failed: ${exception}`)
+            toastError('node list retrieveal failed')
+            return false
+        }
+    }
+
     installCustomNode = async (model: PluginInfo) => {
         try {
             const status = await this.fetchPost('/customnode/install', model)
