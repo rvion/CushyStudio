@@ -1,7 +1,7 @@
 import { HostL } from 'src/models/Host'
-import { ModelInfo, getModelInfoFinalFilePath } from './modelList'
+import { ModelInfo, getModelInfoFinalFilePath } from '../modelList'
 import { toastError, toastSuccess } from 'src/utils/misc/toasts'
-import { PluginInfo } from './customNodeList'
+import { PluginInfo } from '../customNodeList'
 
 export class ComfyUIManager {
     constructor(public host: HostL) {}
@@ -21,6 +21,11 @@ export class ComfyUIManager {
     //         return false
     //     }
     // }
+
+    rebootComfyUI = async () => {
+        // @server.PromptServer.instance.routes.get("/manager/reboot")
+        return this.fetchGet('/manager/reboot')
+    }
 
     getCachedModels = (): Promise<ModelInfo[]> => {
         return this.fetchGet<ModelInfo[]>('/externalmodel/getlist?mode=cache')

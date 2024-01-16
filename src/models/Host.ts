@@ -11,7 +11,7 @@ import { readableStringify } from 'src/utils/formatters/stringifyReadable'
 import { asRelativePath } from 'src/utils/fs/pathUtils'
 import { toastError, toastSuccess } from 'src/utils/misc/toasts'
 import { downloadFile } from 'src/utils/fs/downloadFile'
-import { ComfyUIManager } from 'src/wiki/managerAPI'
+import { ComfyUIManager } from 'src/wiki/api/managerAPI'
 import { ComfyUIManagerKnownCustomNode_Title, ComfyUIManagerKnownCustomNode_Files } from 'src/wiki/customNodeListTypes'
 import { getKnownPlugins, PluginInfo } from 'src/wiki/customNodeList'
 export interface HostL extends LiveInstance<HostT, HostL> {}
