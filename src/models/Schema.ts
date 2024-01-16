@@ -146,8 +146,7 @@ export class ComfySchemaL {
             const nodeDef = __x[1]
             // console.chanel?.append(`[${nodeNameInComfy}]`)
             // apply prefix
-            const normalizedNodeNameInCushy = normalizeJSIdentifier(nodeNameInComfy, ' ')
-            const nodeNameInCushy = normalizedNodeNameInCushy
+            const nodeNameInCushy = normalizeJSIdentifier(nodeNameInComfy, ' ')
             // console.log('>>', nodeTypeDef.category, nodeNameInCushy)
 
             const inputs: NodeInputExt[] = []
