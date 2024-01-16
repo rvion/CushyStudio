@@ -15,7 +15,7 @@ SET CWD=%CD%
 SET EXTRACT_DIR=%CWD%\.cushy\node\%NODE_VERSION%-%NODE_ARCH%
 SET NODE_INSTALL_DIR=%EXTRACT_DIR%\node-%NODE_VERSION%-%NODE_ARCH%
 SET URL=https://nodejs.org/dist/%NODE_VERSION%/node-%NODE_VERSION%-%NODE_ARCH%.zip
-SET PATH=%NODE_INSTALL_DIR%;$PATH
+SET "PATH=%NODE_INSTALL_DIR%;%PATH%"
 SET NPM_BIN_PATH=%NODE_INSTALL_DIR%\npm
 SET NODE_BIN_PATH=%NODE_INSTALL_DIR%\node
 :: ------------------------------------------------------------------------------
