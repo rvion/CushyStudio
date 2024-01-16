@@ -1425,7 +1425,7 @@ export class Widget_groupOpt<T extends { [key: string]: Widget }> implements IWi
     ) {
         this.id = serial?.id ?? nanoid()
         if (serial){
-            const _newValues = input.items()
+            const _newValues = runWithGlobalForm(this.builder, () => input.items())
             this.state = { type:'groupOpt', id: this.id, active: serial.active, collapsed: serial.collapsed, values: {} as any }
             const prevValues_ = serial.values_??{}
             for (const key in _newValues) {
@@ -1440,7 +1440,7 @@ export class Widget_groupOpt<T extends { [key: string]: Widget }> implements IWi
                 }
             }
         } else {
-            const _items = input.items()
+            const _items = runWithGlobalForm(this.builder, () => input.items())
             this.state = { type: 'groupOpt', id: this.id, active: input.default ?? false, values: _items }
         }
         makeAutoObservable(this)
