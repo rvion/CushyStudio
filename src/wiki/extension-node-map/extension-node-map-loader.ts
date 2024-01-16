@@ -77,7 +77,7 @@ export const getCustomNodeRegistry = (p?: {
             const nodeInCushy = normalizeJSIdentifier(nodeNameInComfy, ' ')
             const entry2 = customNodeRegistry.byNodeNameInCushy.get(nodeInCushy)
             if (entry2 == null) {
-                customNodeRegistry.byNodeNameInComfy.set(nodeInCushy, [enmEntry.url as ComfyUIManagerKnownCustomNode_Files])
+                customNodeRegistry.byNodeNameInCushy.set(nodeInCushy, [enmEntry.url as ComfyUIManagerKnownCustomNode_Files])
             } else {
                 console.log(`[👙] duplicated node ${nodeInCushy}`)
                 entry2.push(enmEntry.url as ComfyUIManagerKnownCustomNode_Files)
@@ -86,24 +86,25 @@ export const getCustomNodeRegistry = (p?: {
     }
 
     // CODEGEN ------------------------------------------------------------
-    // if (p?.genTypes) {
-    //     let out = ''
-    //     // TitleType
-    //     const allTitles = [...CustomNodeURL.byNodeNameInComfy.keys()]
-    //     const sortedPluginTitles = allTitles.sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()))
-    //     out += 'export type ComfyUIManagerKnownCustomNode_Title =\n'
-    //     for (const pluginTitle of sortedPluginTitles) out += `    | ${JSON.stringify(pluginTitle)}\n`
-    //     out += '\n'
+    if (p?.genTypes) {
+        let out = ''
 
-    //     // FileType
-    //     const allFileNames = [...CustomNodeURL.byNodeNameInCushy.keys()]
-    //     const sortedFileNames = allFileNames.sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()))
-    //     out += 'export type ComfyUIManagerKnownCustomNode_Files =\n'
-    //     for (const fileName of sortedFileNames) out += `    | ${JSON.stringify(fileName)}\n`
-    //     out += '\n'
+        // NameInComfy
+        const allComfyNames = [...customNodeRegistry.byNodeNameInComfy.keys()]
+        const sortedComfyNames = allComfyNames.sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()))
+        out += 'export type KnownInstallableCustomNodeComfyName =\n'
+        for (const pluginTitle of sortedComfyNames) out += `    | ${JSON.stringify(pluginTitle)}\n`
+        out += '\n'
 
-    //     writeFileSync('src/wiki/customNodeListTypes.ts', out + '\n', 'utf-8')
-    // }
+        // NameInCushy
+        const allCushyNodeNames = [...customNodeRegistry.byNodeNameInCushy.keys()]
+        const sortedCushyNames = allCushyNodeNames.sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()))
+        out += 'export type KnownInstallableCustomNodeCushyName =\n'
+        for (const fileName of sortedCushyNames) out += `    | ${JSON.stringify(fileName)}\n`
+        out += '\n'
+
+        writeFileSync('src/wiki/extension-node-map/extension-node-map-enums.ts', out + '\n', 'utf-8')
+    }
 
     // // INDEXING CHECKS ------------------------------------------------------------
     if (p?.check) {
