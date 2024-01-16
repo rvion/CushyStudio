@@ -3,36 +3,35 @@ import { RevealUI } from 'src/rsuite/reveal/RevealUI'
 import { useSt } from 'src/state/stateContext'
 import { PluginInfo } from 'src/wiki/customNodeList'
 import { CustomNodeRecommandation } from '../../controls/IWidget'
-import { convertToPluginInfoList } from './convertToPluginInfoList'
+import { PluginSuggestion, convertToPluginInfoList } from './convertToPluginInfoList'
 import { usePromise } from 'src/utils/misc/usePromise'
 
 export const InstallCustomNodeBtnUI = observer(function InstallCustomNodeBtnUI_<K extends KnownEnumNames>(p: {
     recomandation: CustomNodeRecommandation
 }) {
-    const plugins: { reason: string; plugin: PluginInfo }[] = convertToPluginInfoList(p)
-    if (plugins.length === 0) return <pre>🔴{JSON.stringify(p)}</pre>
+    const suggestions: PluginSuggestion[] = convertToPluginInfoList(p)
+    if (suggestions.length === 0) return <pre>🔴{JSON.stringify(p)}</pre>
     return (
         <RevealUI>
             <div tw='btn btn-square btn-sm'>
                 <span className='material-symbols-outlined'>cloud_download</span>
             </div>
-            <RelatedPluginsUI recomandation={p.recomandation} />
+            <InstallableCustomNodeListUI suggestions={suggestions} />
         </RevealUI>
     )
 })
 
-export const RelatedPluginsUI = observer(function RelatedPluginsUI_(p: { recomandation: CustomNodeRecommandation }) {
-    const plugins: { reason: string; plugin: PluginInfo }[] = convertToPluginInfoList(p)
-    if (plugins.length === 0) return <pre>🔴{JSON.stringify(p)}</pre>
+export const InstallableCustomNodeListUI = observer(function InstallableCustomNodeListUI_(p: {
+    suggestions: PluginSuggestion[]
+}) {
+    const suggestions: PluginSuggestion[] = p.suggestions
+    if (suggestions.length === 0) return <pre>🔴{JSON.stringify(p)}</pre>
 
     const st = useSt()
     const foo = usePromise(() => st.mainHost.getComfyUIManager()?.getNodeList(), [])
-    console.log(`[👙] 🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢`, foo)
     return (
-        <div tw='flex flex-col flex-wrap gap-1'>
-            {/* {models.length} */}
-            {/* <pre>{JSON.stringify(p.widget.input.default)}</pre> */}
-            {plugins.map(({ plugin, reason }, ix) => {
+        <div tw='flex flex-col flex-wrap gap-1 p-2'>
+            {suggestions.map(({ plugin, reason }, ix) => {
                 const entry = foo?.value?.custom_nodes.find((x) => x.title === plugin.title)
                 const status = ((): PluginInstallStatus => {
                     if (!entry) return 'unknown'
@@ -77,7 +76,7 @@ export const PluginInstallUI = observer(function PluginInstallUI_(p: {
     const isInstalled = false // 🔴 p.widget.possibleValues.find((x) => x === enumName.nix || x === enumName.win)
     const host = st.mainHost
     return (
-        <div key={plugin.title} tw='max-w-96 flex flex-col'>
+        <div key={plugin.title} tw='max-w-96 flex flex-col virtualBorder p-2'>
             <div>
                 <span className='font-bold text-primary p-1'>{plugin.title}</span>
                 {renderStatus(p.status)}
@@ -97,7 +96,7 @@ export const PluginInstallUI = observer(function PluginInstallUI_(p: {
                 <span className='material-symbols-outlined'>cloud_download</span>
                 Télécharger
             </div>
-            <span>{plugin.description}</span>
+            <span tw='italic text-sm opacity-75'>{plugin.description}</span>
         </div>
     )
 })

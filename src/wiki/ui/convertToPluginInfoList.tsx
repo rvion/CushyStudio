@@ -2,9 +2,9 @@ import { PluginInfo, getKnownPlugins } from 'src/wiki/customNodeList'
 import { CustomNodeRecommandation } from '../../controls/IWidget'
 import { getCustomNodeRegistry } from 'src/wiki/extension-node-map/extension-node-map-loader'
 
-export const convertToPluginInfoList = (p: {
-    recomandation: CustomNodeRecommandation
-}): { reason: string; plugin: PluginInfo }[] => {
+export type PluginSuggestion = { reason: string; plugin: PluginInfo }
+
+export const convertToPluginInfoList = (p: { recomandation: CustomNodeRecommandation }): PluginSuggestion[] => {
     // multiple sources
     const {
         //
@@ -15,8 +15,8 @@ export const convertToPluginInfoList = (p: {
 
     // accumulator
     const uniq = new Set<PluginInfo>()
-    const OUT: { reason: string; plugin: PluginInfo }[] = []
-    const PUSH = (p: { reason: string; plugin: PluginInfo }) => {
+    const OUT: PluginSuggestion[] = []
+    const PUSH = (p: PluginSuggestion) => {
         if (uniq.has(p.plugin)) return
         uniq.add(p.plugin)
         OUT.push(p)
