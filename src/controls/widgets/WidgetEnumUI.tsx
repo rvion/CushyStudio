@@ -91,7 +91,7 @@ export const EnumSelectorUI = observer(function EnumSelectorUI_(p: {
                         </div>
                     </Whisper>
                 ) : null}
-                {value.ENUM_HAS_NO_VALUES ? <div tw='text-red-500'>ENUM HAS NO VALUE</div> : null}
+                {value.ENUM_HAS_NO_VALUES ? <div tw='text-red-500'>NO VALUE FOR {p.enumName}</div> : null}
             </div>
         </div>
     )

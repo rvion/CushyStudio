@@ -5,6 +5,7 @@ import { NativeTypes } from 'react-dnd-html5-backend'
 import { ItemTypes } from './DnDItemTypes'
 import { useDrag, useDrop } from 'react-dnd'
 import { CSSProperties } from 'react'
+import { createMediaImage_fromFileObject } from 'src/models/createMediaImage_fromWebFile'
 
 export const useImageDrag = (image: MediaImageL) =>
     useDrag(
@@ -63,15 +64,8 @@ export const useImageDrop = (st: STATE, fn: (image: MediaImageL) => void) =>
                 const imageFile = Array.from(files).find((file) => file.type.startsWith('image/'))
                 console.log('[🗳️] drop box: image path is', imageFile?.path ?? '❌')
                 if (imageFile) {
-                    const image: MediaImageL = st.db.media_images.create({
-                        infos: { type: 'image-local', absPath: imageFile.path },
-                    })
-                    // 🔴 do I need to upload files right away ?
-                    // st.uploader.upload_NativeFile(imageFile).then((res) => {
-                    //     console.log(`[🗳️] drop box: uploaded image infos are ${JSON.stringify(res)}`)
-                    //     return fn(image)
-                    // })
-                    return fn(image)
+                    console.log(`[🌠] importing native file...`)
+                    void createMediaImage_fromFileObject(st, imageFile).then(fn)
                 } else {
                     console.log('Dropped non-image file')
                     return

@@ -105,7 +105,7 @@ export class StepL {
 
     outputWorkflow = new LiveRef<this, ComfyWorkflowL>(this, 'outputGraphID', () => this.db.graphs)
 
-    private _CACHE_INVARIANT = () => this.data.status !== Status.Running
+    private _CACHE_INVARIANT = null // () => this.data.status !== Status.Running
 
     texts =           new LiveCollection<MediaTextL>          ({table: () => this.db.media_texts,           where: () => ({stepID:this.id}), cache: this._CACHE_INVARIANT}) // prettier-ignore
     images =          new LiveCollection<MediaImageL>         ({table: () => this.db.media_images,          where: () => ({stepID:this.id}), cache: this._CACHE_INVARIANT}) // prettier-ignore

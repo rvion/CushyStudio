@@ -500,6 +500,36 @@ export const migrations: {
             'alter table media_image add column hash text',
         ],
     },
+    {
+        id: 'QpwjQfxeBX',
+        name: 'redo images',
+        up: [
+            //
+            'delete from media_image',
+            //
+            'alter table media_image drop column width       ',
+            'alter table media_image drop column height      ',
+            'alter table media_image drop column fileSize    ',
+            'alter table media_image drop column hash        ',
+            'alter table media_image drop column infos       ',
+
+            `alter table media_image add column  width        int  NOT NULL`,
+            `alter table media_image add column  height       int  NOT NULL`,
+            'alter table media_image add column  fileSize     int  NOT NULL',
+            'alter table media_image add column  hash         text NOT NULL',
+            'alter table media_image add column  path         text NOT NULL',
+            `alter table media_image add column  comfyUIInfos json`,
+        ],
+    },
+    {
+        id: 'hrMMl9pMZ5',
+        name: 'more image-meta fields',
+        up: [
+            //
+            'alter table media_image add column  type         text',
+            'alter table media_image add column  orientation  int',
+        ],
+    },
     // {
     //     id: 'e574c006-daca-4fd0-a51b-73a66b4fbd79',
     //     name: 'create cushy_app table',

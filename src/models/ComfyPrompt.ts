@@ -1,6 +1,6 @@
 import type { LiveInstance } from '../db/LiveInstance'
 import type { StepL } from './Step'
-import type { PromptRelated_WsMsg, WsMsgExecuted, WsMsgExecuting, WsMsgExecutionError } from '../types/ComfyWsApi'
+import type { ComfyImageInfo, PromptRelated_WsMsg, WsMsgExecuted, WsMsgExecuting, WsMsgExecutionError } from '../types/ComfyWsApi'
 import type { ComfyWorkflowL, ProgressReport } from './ComfyWorkflow'
 import type { Runtime } from 'src/runtime/Runtime'
 
@@ -10,6 +10,12 @@ import { Status } from '../back/Status'
 import { LiveRef } from '../db/LiveRef'
 import { exhaust } from '../utils/misc/ComfyUtils'
 import { SQLITE_true } from 'src/db/SQLITE_boolean'
+import { imageMeta } from 'image-meta'
+import { hashArrayBuffer } from 'src/state/hashBlob'
+import { asRelativePath } from 'src/utils/fs/pathUtils'
+import { dirname, join } from 'pathe'
+import { ComfyNodeID } from 'src/types/ComfyNodeID'
+import { mkdirSync, writeFileSync } from 'fs'
 
 export interface ComfyPromptL extends LiveInstance<ComfyPromptT, ComfyPromptL> {}
 export class ComfyPromptL {
@@ -107,33 +113,69 @@ export class ComfyPromptL {
 
     /** update execution list */
     private onExecuted = (msg: WsMsgExecuted) => {
+        const promptNodeID = msg.data.node
         for (const img of msg.data.output.images) {
-            // retrieve the node
-            const promptNodeID = msg.data.node
-            const promptNode = this.graph.data.comfyPromptJSON[promptNodeID]
-            const promptMeta = this.graph.data.metadata[promptNodeID]
-            if (promptNode == null) throw new Error(`❌ invariant violation: promptNode is null`)
-
-            // create the image
-            const imgL = this.db.media_images.create({
-                id: nanoid(),
-                stepID: this.step.id,
-                promptID: this.id,
-                promptNodeID: promptNodeID,
-                infos: {
-                    type: 'image-generated-by-comfy',
-                    comfyImageInfo: img,
-                    comfyHostHttpURL: this.st.getServerHostHTTP(),
-                },
-            })
-
-            if (this.step.runtime && promptMeta.storeAs) {
-                this.step.runtime.Store.getImageStore(promptMeta.storeAs).set(imgL)
-            }
-            // this.images.push(images)
-            // this.step.addOutput({ type: 'image', imgID: image.id })
+            void this.retrieveImage(img, promptNodeID)
         }
-        // this.outputs.push(msg) // accumulate in self
+    }
+
+    retrieveImage = async (
+        //
+        comfyImageInfo: ComfyImageInfo,
+        promptNodeID: ComfyNodeID,
+    ) => {
+        // retrieve the node
+        const promptNode = this.graph.data.comfyPromptJSON[promptNodeID]
+        const promptMeta = this.graph.data.metadata[promptNodeID]
+        if (promptNode == null) throw new Error(`❌ invariant violation: promptNode is null`)
+
+        // retrieve the image
+        const serverURL = this.st.mainHost.getServerHostHTTP()
+        const imgUrl = serverURL + '/view?' + new URLSearchParams(comfyImageInfo).toString()
+        const outputRelPath = asRelativePath(join(comfyImageInfo.subfolder, comfyImageInfo.filename))
+        const absPath = this.st.resolve(this.st.outputFolderPath, outputRelPath)
+
+        // download  image
+        const response = await fetch(imgUrl, {
+            headers: { 'Content-Type': 'image/png' },
+            method: 'GET',
+        })
+        const buff = await response.arrayBuffer()
+
+        // compute hash and size
+        const uint8arr = new Uint8Array(buff)
+        const meta = imageMeta(uint8arr)
+        if (meta.width == null) throw new Error(`❌ size.width is null`)
+        if (meta.height == null) throw new Error(`❌ size.height is null`)
+        const hash = hashArrayBuffer(uint8arr)
+        console.log(`[🏞️]`, { ...meta, hash })
+
+        const dir = dirname(absPath)
+        mkdirSync(dir, { recursive: true })
+        writeFileSync(absPath, uint8arr)
+
+        // create the image
+        const imgL = this.db.media_images.create({
+            id: nanoid(),
+            stepID: this.step.id,
+            promptID: this.id,
+            promptNodeID: promptNodeID,
+            height: meta.height,
+            width: meta.width,
+            hash: hash,
+            fileSize: uint8arr.byteLength,
+            orientation: meta.orientation,
+            type: meta.type,
+            path: `outputs/${outputRelPath}`,
+            comfyUIInfos: {
+                comfyImageInfo: comfyImageInfo,
+                comfyHostHttpURL: this.st.getServerHostHTTP(),
+            },
+        })
+
+        if (this.step.runtime && promptMeta.storeAs) {
+            this.step.runtime.Store.getImageStore(promptMeta.storeAs).set(imgL)
+        }
     }
 
     /** outputs are both stored in ScriptStep_prompt, and on ScriptExecution */

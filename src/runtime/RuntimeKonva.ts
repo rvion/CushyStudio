@@ -20,7 +20,7 @@ export class RuntimeKonva {
         return new this.Konva.Image({ image: img, ...opts })
     }
 
-    convertLayerToBase64 = (layer: konva.Layer): string => {
+    convertLayerToDataURL = (layer: konva.Layer): string => {
         layer.draw()
         const b64 = layer.toDataURL()
         return b64
@@ -29,7 +29,7 @@ export class RuntimeKonva {
         layer.add(await this.rt.Konva.Image_fromPath('site/static/img/CushyLogo.png'))
         layer.draw()
         const b64 = layer.toDataURL()
-        const img = this.rt.Images.createFromBase64(b64)
+        const img = this.rt.Images.createFromDataURL(b64)
         return img
     }
 

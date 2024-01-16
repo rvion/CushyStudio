@@ -18,6 +18,7 @@ export const WidgetGroupUI = observer(function WidgetItemsUI_(p: {
             tw={[
                 //
                 'flex rounded-box bg-opacity-95 items-start w-full text-base-content',
+                // 'ml-1',
                 // showAsCard ? 'mb-2' : undefined,
                 // showAsCard ? 'bg-base-300 bg-opacity-30 p-1' : undefined,
                 // showAsCard ? 'virtualBorder' : undefined,
@@ -37,7 +38,7 @@ export const WidgetGroupUI = observer(function WidgetItemsUI_(p: {
                         '_WidgetGroupUI w-full',
                         isHorizontal //
                             ? `flex flex-wrap gap-2`
-                            : `flex flex-col gap-1.5`,
+                            : `flex flex-col gap-1`,
                     ]}
                     className={widget.input.className}
                 >

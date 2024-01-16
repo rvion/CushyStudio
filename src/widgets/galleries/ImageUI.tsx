@@ -6,7 +6,12 @@ import { useSt } from '../../state/stateContext'
 import { useImageDrag } from './dnd'
 import { ImageDropdownMenuUI } from 'src/panels/ImageDropdownUI'
 
-export const ImageUI = observer(function ImageUI_(p: { size?: string; img: MediaImageL | MediaImageID }) {
+export const ImageUI = observer(function ImageUI_(p: {
+    //
+    size?: string
+    img: MediaImageL | MediaImageID
+    className?: string
+}) {
     const st = useSt()
     const image = typeof p.img === 'string' ? st.db.media_images.get(p.img) : p.img
 
@@ -17,6 +22,7 @@ export const ImageUI = observer(function ImageUI_(p: { size?: string; img: Media
 
     const IMG = (
         <img
+            className={p.className}
             src={image.url}
             ref={dragRef}
             loading='lazy'

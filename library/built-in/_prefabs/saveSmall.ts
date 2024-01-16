@@ -43,9 +43,8 @@ export const run_saveAllImages = async (
         //     continue
         // }
         // get canvas size (use 'image-meta' that supports all the image file formats you can think of)
-        const size = await img.getSize()
-        const width = size.width!
-        const height = size.height!
+        const width = img.data.width
+        const height = img.data.height
 
         // resize the canvas accordingly
         canvas.width = width

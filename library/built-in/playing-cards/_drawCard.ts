@@ -4,6 +4,7 @@ import type { ImageAndMask, Runtime } from 'src/runtime/Runtime'
 import { TextConfig } from 'konva/lib/shapes/Text'
 import { exhaust } from 'src/utils/misc/ComfyUtils'
 import { CardSuit, CardSuitPosition, CardValue, getCardLayout } from './_cardLayouts'
+import { createMediaImage_fromDataURI } from 'src/models/createMediaImage_fromWebFile'
 
 export async function _drawCard(
     run: Runtime,
@@ -98,8 +99,9 @@ export async function _drawCard(
     base /*.stage*/.draw()
     const dataURL_mask = mask /*.stage*/
         .toDataURL({ width: W, height: H })
+
     return {
-        base: await run.load_dataURL(dataURL_base),
-        mask: await run.load_dataURL(dataURL_mask),
+        base: await run.Images.createFromDataURL(dataURL_base).uploadAndloadAsImage(run.workflow),
+        mask: await run.Images.createFromDataURL(dataURL_mask).uploadAndloadAsImage(run.workflow),
     }
 }

@@ -2395,7 +2395,7 @@
                 "https://github.com/THtianhao/ComfyUI-FaceChain"
             ],
             "install_type": "git-clone",
-            "description": "Nodes:FC FaceFusion, FC StyleLoraLoad, FC FaceDetection, FC CropMask, FC ReplaceImage, FC CropBottom, FC CropAndPaste, FC MaskOP"
+            "description": "The official ComfyUI version of facechain greatly improves the speed of reasoning and has great custom process controls."
         },
         {
             "author": "zer0TF",
@@ -2416,6 +2416,16 @@
             ],
             "install_type": "git-clone",
             "description": "A text-to-speech plugin used under ComfyUI. It utilizes the Microsoft Speech TTS interface to convert text content into MP3 format audio files."
+        },
+        {
+            "author": "chflame163",
+            "title": "ComfyUI_WordCloud",
+            "reference": "https://github.com/chflame163/ComfyUI_WordCloud",
+            "files": [
+                "https://github.com/chflame163/ComfyUI_WordCloud"
+            ],
+            "install_type": "git-clone",
+            "description": "Nodes:Word Cloud, Load Text File"
         },
         {
             "author": "drustan-hawk",
@@ -2858,7 +2868,7 @@
                 "https://github.com/GTSuya-Studio/ComfyUI-Gtsuya-Nodes"
             ],
             "install_type": "git-clone",
-            "description": "ComfyUI-GTSuya-Nodes is a ComyUI extension designed to add several wildcards supports into ComfyUI. Wildcards allow you to use __name__ syntax in your prompt to get a random line from a file named name.txt in a wildcards directory."
+            "description": "ComfyUI-GTSuya-Nodes is a ComfyUI extension designed to add several wildcards supports into ComfyUI. Wildcards allow you to use __name__ syntax in your prompt to get a random line from a file named name.txt in a wildcards directory."
         },
         {
             "author": "oyvindg",
@@ -2969,6 +2979,16 @@
             ],
             "install_type": "git-clone",
             "description": "Nodes:XL DreamBooth LoRA, S3 Bucket LoRA"
+        },
+        {
+            "author": "komojini",
+            "title": "komojini-comfyui-nodes",
+            "reference": "https://github.com/komojini/komojini-comfyui-nodes",
+            "files": [
+                "https://github.com/komojini/komojini-comfyui-nodes"
+            ],
+            "install_type": "git-clone",
+            "description": "Nodes:YouTube Video Loader. Custom ComfyUI Nodes for video generation"
         },
         {
             "author": "ZHO-ZHO-ZHO",
@@ -3509,7 +3529,7 @@
                 "https://github.com/vienteck/ComfyUI-Chat-GPT-Integration"
             ],
             "install_type": "git-clone",
-            
+
             "description": "This extension is a reimagined version based on the [a/ComfyUI-QualityOfLifeSuit_Omar92](https://github.com/omar92/ComfyUI-QualityOfLifeSuit_Omar92) extension, and it supports integration with ChatGPT through the new OpenAI API.\nNOTE: See detailed installation instructions on the [a/repository](https://github.com/vienteck/ComfyUI-Chat-GPT-Integration)."
         },
         {
@@ -4035,6 +4055,26 @@
             "description": "Nodes: Download the weights of MotionCtrl [a/motionctrl.pth](https://huggingface.co/TencentARC/MotionCtrl/blob/main/motionctrl.pth) and put it to ComfyUI/models/checkpoints"
         },
         {
+            "author": "chaojie",
+            "title": "ComfyUI-MotionCtrl-SVD",
+            "reference": "https://github.com/chaojie/ComfyUI-MotionCtrl-SVD",
+            "files": [
+                "https://github.com/chaojie/ComfyUI-MotionCtrl-SVD"
+            ],
+            "install_type": "git-clone",
+            "description": "Nodes: Download the weights of MotionCtrl-SVD [a/motionctrl_svd.ckpt](https://huggingface.co/TencentARC/MotionCtrl/blob/main/motionctrl_svd.ckpt) and put it to ComfyUI/models/checkpoints"
+        },
+        {
+            "author": "chaojie",
+            "title": "ComfyUI-DragNUWA",
+            "reference": "https://github.com/chaojie/ComfyUI-DragNUWA",
+            "files": [
+                "https://github.com/chaojie/ComfyUI-DragNUWA"
+            ],
+            "install_type": "git-clone",
+            "description": "Nodes: Download the weights of DragNUWA [a/drag_nuwa_svd.pth](https://drive.google.com/file/d/1Z4JOley0SJCb35kFF4PCc6N6P1ftfX4i/view) and put it to ComfyUI/models/checkpoints/drag_nuwa_svd.pth"
+        },
+        {
             "author": "alexopus",
             "title": "ComfyUI Image Saver",
             "reference": "https://github.com/alexopus/ComfyUI-Image-Saver",
@@ -4144,6 +4184,107 @@
             "install_type": "git-clone",
             "description": "fastblend for comfyui, and other nodes that I write for video2video. rebatch image, my openpose"
         },
+        {
+            "author": "HebelHuber",
+            "title": "comfyui-enhanced-save-node",
+            "reference": "https://github.com/HebelHuber/comfyui-enhanced-save-node",
+            "files": [
+                "https://github.com/HebelHuber/comfyui-enhanced-save-node"
+            ],
+            "install_type": "git-clone",
+            "description": "Nodes:Enhanced Save Node"
+        },
+        {
+            "author": "LarryJane491",
+            "title": "Lora-Training-in-Comfy",
+            "reference": "https://github.com/LarryJane491/Lora-Training-in-Comfy",
+            "files": [
+                "https://github.com/LarryJane491/Lora-Training-in-Comfy"
+            ],
+            "install_type": "git-clone",
+            "description": "If you see this message, your ComfyUI-Manager is outdated.\nRecent channel provides only the list of the latest nodes. If you want to find the complete node list, please go to the Default channel.\nMaking LoRA has never been easier!"
+        },
+        {
+            "author": "LarryJane491",
+            "title": "Image-Captioning-in-ComfyUI",
+            "reference": "https://github.com/LarryJane491/Image-Captioning-in-ComfyUI",
+            "files": [
+                "https://github.com/LarryJane491/Image-Captioning-in-ComfyUI"
+            ],
+            "install_type": "git-clone",
+            "description": "The LoRA Caption custom nodes, just like their name suggests, allow you to caption images so they are ready for LoRA training."
+        },
+        {
+            "author": "Layer-norm",
+            "title": "Comfyui lama remover",
+            "reference": "https://github.com/Layer-norm/comfyui-lama-remover",
+            "files": [
+                "https://github.com/Layer-norm/comfyui-lama-remover"
+            ],
+            "install_type": "git-clone",
+            "description": "A very simple ComfyUI node to remove item with mask."
+        },
+        {
+            "author": "Taremin",
+            "title": "ComfyUI Prompt ExtraNetworks",
+            "reference": "https://github.com/Taremin/comfyui-prompt-extranetworks",
+            "files": [
+                "https://github.com/Taremin/comfyui-prompt-extranetworks"
+            ],
+            "install_type": "git-clone",
+            "description": "Instead of LoraLoader or HypernetworkLoader, it receives a prompt and loads and applies LoRA or HN based on the specifications within the prompt. The main purpose of this custom node is to allow changes without reconnecting the LoraLoader node when the prompt is randomly altered, etc."
+        },
+        {
+            "author": "foxtrot-roger",
+            "title": "RF Nodes",
+            "reference": "https://github.com/foxtrot-roger/comfyui-rf-nodes",
+            "files": [
+                "https://github.com/foxtrot-roger/comfyui-rf-nodes"
+            ],
+            "install_type": "git-clone",
+            "description": "A bunch of nodes that can be useful to manipulate primitive types (numbers, text, ...) Also some helpers to generate text and timestamps."
+        },
+        {
+            "author": "abyz22",
+            "title": "image_control",
+            "reference": "https://github.com/abyz22/image_control",
+            "files": [
+                "https://github.com/abyz22/image_control"
+            ],
+            "install_type": "git-clone",
+            "description": "Nodes:abyz22_Padding Image, abyz22_ImpactWildcardEncode, abyz22_setimageinfo, abyz22_SaveImage, abyz22_ImpactWildcardEncode_GetPrompt, abyz22_SetQueue, abyz22_drawmask, abyz22_FirstNonNull, abyz22_blendimages, abyz22_blend_onecolor"
+        },
+        {
+            "author": "HAL41",
+            "title": "ComfyUI aichemy nodes",
+            "reference": "https://github.com/HAL41/ComfyUI-aichemy-nodes",
+            "files": [
+                "https://github.com/HAL41/ComfyUI-aichemy-nodes"
+            ],
+            "install_type": "git-clone",
+            "description": "Simple node to handle scaling of YOLOv8 segmentation masks"
+        },
+        {
+            "author": "nkchocoai",
+            "title": "ComfyUI-SizeFromPresets",
+            "reference": "https://github.com/nkchocoai/ComfyUI-SizeFromPresets",
+            "files": [
+                "https://github.com/nkchocoai/ComfyUI-SizeFromPresets"
+            ],
+            "install_type": "git-clone",
+            "description": "Add a node that outputs width and height of the size selected from the preset (.csv)."
+        },
+        {
+            "author": "JaredTherriault",
+            "title": "ComfyUI-JNodes",
+            "reference": "https://github.com/JaredTherriault/ComfyUI-JNodes",
+            "files": [
+                "https://github.com/JaredTherriault/ComfyUI-JNodes"
+            ],
+            "install_type": "git-clone",
+            "description": "python and web UX improvements for ComfyUI.\n[w/'DynamicPrompts.js' and 'EditAttention.js' from the core, along with 'ImageFeed.js' and 'favicon.js' from the custom scripts of pythongosssss, are not compatible. Therefore, manual deletion of these files is required to use this web extension.]"
+        },
+
 
 
         {

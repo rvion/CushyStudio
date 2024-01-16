@@ -80,9 +80,8 @@ export const Panel_ViewImage = observer(function Panel_ViewImage_(p: {
 export const ImageActionBarUI = observer(function ImageActionBarUI_(p: { img?: Maybe<MediaImageL> }) {
     const st = useSt()
     const img = p.img
-    img?.getSize()
     return (
-        <div tw='flex items-center gap-2 bg-base-200'>
+        <div tw='flex items-center gap-2 bg-base-200 flex-wrap'>
             {/* <FieldAndLabelUI label='Rating'> */}
             <Rate
                 name={img?.id ?? 'latent'}
@@ -112,11 +111,21 @@ export const ImageActionBarUI = observer(function ImageActionBarUI_(p: { img?: M
                 tw='btn btn-sm'
                 onClick={() => {
                     if (img == null) return
+                    img.openInCanvasEditor()
+                }}
+            >
+                <span className='material-symbols-outlined'>edit</span>
+                Canvas
+            </div>
+            <div
+                tw='btn btn-sm'
+                onClick={() => {
+                    if (img == null) return
                     img.openInImageEditor()
                 }}
             >
                 <span className='material-symbols-outlined'>edit</span>
-                Edit
+                Paint
             </div>
             <div
                 tw='btn btn-sm'

@@ -11,7 +11,9 @@ import { makeLabelFromFieldName } from '../../utils/misc/makeLabelFromFieldName'
 import { ErrorBoundaryFallback } from '../../widgets/misc/ErrorBoundary'
 import { WidgetDI } from '../widgets/WidgetUI.DI'
 import { InstallModelBtnUI } from '../widgets/InstallModelBtnUI'
-import { InstallCustomNodeBtnUI } from '../widgets/InstallCustomNodeBtnUI'
+import { InstallCustomNodeBtnUI } from '../../wiki/ui/InstallCustomNodeBtnUI'
+import { ListControlsUI } from './ListControlsUI'
+import { WidgetListExtUI } from '../widgets/WidgetListExtUI'
 
 export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     widget: R.Widget
@@ -75,12 +77,17 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
             </ErrorBoundary>
         )
 
-    const isBoldTitle =
-        p.isTopLevel ||
-        widget.type === 'group' ||
-        widget.type === 'groupOpt' ||
-        widget.type === 'list' ||
-        widget.type === 'choices'
+    const isCollapsed = widget.state.collapsed
+    const isBoldTitle = p.isTopLevel || isVertical
+
+    const showListControls = !isCollapsed && (widget instanceof KLS.Widget_listExt || widget instanceof KLS.Widget_list)
+    const showFoldIndicator = !widget.state.active || (!widget.state.collapsed && !widget.isCollapsible)
+    const showTooltip = tooltip != null
+    const showLabel = label !== false
+    // widget.type === 'group' ||
+    // widget.type === 'groupOpt' ||
+    // widget.type === 'list' ||
+    // widget.type === 'choices'
 
     // const hasNoWidget = widgetUI == null
 
@@ -91,58 +98,60 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                 isVertical ? 'w-full' : null,
                 widgetUI == null ? 'w-full' : null,
                 'min-w-max shrink-0',
-                'flex items-center gap-0',
+                'flex items-center gap-1 self-start',
                 // 'hover:bg-base-200 cursor-pointer',
                 'cursor-pointer',
             ]}
             onClick={() => {
-                if (widget.state.collapsed) return (widget.state.collapsed = false)
-                if (!isCollapsible) {
-                    if (showToogle) toggleInfo.toggle()
-                    return
-                }
-                if (!widget.state.active) {
-                    widget.state.active = true
-                    return
-                }
+                if (isCollapsed) return (widget.state.collapsed = false)
+                if (showToogle) return toggleInfo.toggle()
+                if (!widget.state.active) return (widget.state.active = true)
                 widget.state.collapsed = true
             }}
         >
             {/* {widget.state == null ? '🟢' : '🔴'} */}
             {/* {JSON.stringify(widget.serial)} */}
-            {showToogle && (
-                <div
-                    style={{ width: '1.3rem', height: '1.3rem' }}
-                    tw={[
-                        toggleInfo.value ? 'bg-primary' : null,
-                        //
-                        'virtualBorder',
-                        'rounded mr-2',
-                        'cursor-pointer',
-                    ]}
-                    tabIndex={-1}
-                    onClick={(ev) => {
-                        ev.stopPropagation()
-                        toggleInfo.toggle()
-                    }}
-                >
-                    {toggleInfo.value ? <span className='material-symbols-outlined text-primary-content'>check</span> : null}
-                </div>
-            )}
-            {tooltip && (
-                <RevealUI>
-                    <span className='material-symbols-outlined'>info</span>
-                    <Tooltip>{tooltip}</Tooltip>
-                </RevealUI>
-            )}
+            {
+                showToogle ? (
+                    <div
+                        style={{ width: '1.3rem', height: '1.3rem' }}
+                        tw={[
+                            toggleInfo.value ? 'bg-primary' : null,
+                            //
+                            'virtualBorder',
+                            'rounded mr-1',
+                            'cursor-pointer',
+                        ]}
+                        tabIndex={-1}
+                        onClick={(ev) => {
+                            ev.stopPropagation()
+                            toggleInfo.toggle()
+                        }}
+                    >
+                        {toggleInfo.value ? <span className='material-symbols-outlined text-primary-content'>check</span> : null}
+                    </div>
+                ) : null
+                // <div
+                //     style={{
+                //         width: '1.3rem',
+                //         height: '1.3rem',
+                //         // background: 'oklch(var(--p)/.3)',
+                //     }}
+                //     // tw={[toggleInfo.value ? 'bg-primary' : null, 'virtualBorder', 'rounded mr-1']}
+                //     tabIndex={-1}
+                // >
+                //     {/* <span className='material-symbols-outlined text-primary-content'>check</span> */}
+                // </div>
+            }
 
             {/* Label ------------------------------------ */}
-            {label !== false && (
+            {showLabel && (
                 <span
                     //
                     tw={[
                         //
-                        '',
+                        'whitespace-nowrap',
+                        'flex items-center',
                         isBoldTitle ? 'text-primary font-medium' : undefined,
                     ]}
                     style={
@@ -152,43 +161,60 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                     }
                 >
                     {label || '...'}
+                    {widget.state.collapsed ? <span className='material-symbols-outlined'>keyboard_arrow_right</span> : null}
+                    {/* {widget.state.collapsed ? '{...}' : null} */}
                     {p.widget.input.showID ? <span tw='opacity-50 italic text-sm'>#{p.widget.id.slice(0, 3)}</span> : null}
                 </span>
             )}
 
+            {/* Tooltip ------------------------------------ */}
+            {showTooltip && (
+                <RevealUI>
+                    <div className='btn btn-sm btn-square'>
+                        <span className='material-symbols-outlined'>info</span>
+                    </div>
+                    <Tooltip>{tooltip}</Tooltip>
+                </RevealUI>
+            )}
+
             {/* Install Models ------------------------------------ */}
             {p.widget.input.recommandedModels ? <InstallModelBtnUI models={p.widget.input.recommandedModels} /> : null}
+
+            {/* Install Custom nodes ------------------------------------ */}
             {p.widget.input.customNodesByTitle ?? p.widget.input.customNodesByURI ? (
-                <InstallCustomNodeBtnUI
-                    //
-                    customNodesByTitle={p.widget.input.customNodesByTitle}
-                    customNodesByURI={p.widget.input.customNodesByURI}
-                />
+                <InstallCustomNodeBtnUI recomandation={p.widget.input} />
             ) : null}
 
             {/* Spacer ------------------------------------ */}
-            <div tw='flex-1'></div>
+
+            {showListControls ? <ListControlsUI widget={widget} /> : null}
 
             {/* Collapse ONLY Indicator ------------------------------------ */}
-            <span
-                onClick={(ev) => {
-                    if (widget.state.collapsed) {
+            {showFoldIndicator ? null : (
+                <span
+                    onClick={(ev) => {
+                        if (!widget.isCollapsible) return
+
                         ev.stopPropagation()
                         ev.preventDefault()
-                        widget.state.collapsed = false
-                        return
-                    }
-                    if (!isCollapsible) {
-                        if (showToogle) toggleInfo.toggle()
-                        ev.stopPropagation()
-                        ev.preventDefault()
-                        return
-                    }
-                }}
-                tw='opacity-30 hover:opacity-100'
-            >
-                {widget.state.collapsed ? '▸ {...}' : /*'▿'*/ ''}
-            </span>
+
+                        if (widget.state.collapsed) {
+                            widget.state.collapsed = false
+                        } else {
+                            widget.state.collapsed = true
+                        }
+                    }}
+                    tw='opacity-30 hover:opacity-100 ml-auto'
+                >
+                    {widget.state.collapsed ? (
+                        <>
+                            <span className='material-symbols-outlined'>keyboard_arrow_right</span>
+                        </>
+                    ) : widget.isCollapsible ? (
+                        /*'▿'*/ <span className='material-symbols-outlined'>keyboard_arrow_down</span>
+                    ) : null}
+                </span>
+            )}
         </div>
     )
 
@@ -218,7 +244,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     //     )
     // } else {
     return (
-        <div tw='FIELD [padding-left:0.3rem]' className={className} key={rootKey}>
+        <div tw={[isVertical ? '[padding-left:0.3rem] FIELD' : 'FIELDSimple']} className={className} key={rootKey}>
             {LABEL}
             {widgetUI}
         </div>

@@ -1,51 +1,33 @@
 import type { LiveInstance } from '../db/LiveInstance'
 
+import { readFileSync } from 'fs'
 import { imageMeta, ImageMeta } from 'image-meta'
-import { basename, join } from 'pathe'
+import { basename, resolve } from 'pathe'
 import { LiveRefOpt } from 'src/db/LiveRefOpt'
 import { MediaImageT } from 'src/db/TYPES.gen'
+import { SafetyResult } from 'src/safety/Safety'
+import { hashArrayBuffer } from 'src/state/hashBlob'
+import { ComfyNodeMetadata } from 'src/types/ComfyNodeID'
 import { ComfyNodeJSON } from 'src/types/ComfyPrompt'
-import { assets } from 'src/utils/assets/assets'
-import { exhaust } from 'src/utils/misc/ComfyUtils'
+import { ManualPromise } from 'src/utils/misc/ManualPromise'
+import { toastError } from 'src/utils/misc/toasts'
 import { ComfyImageInfo } from '../types/ComfyWsApi'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
-import { _readPngSize } from '../utils/png/_readPngSize'
 import { ComfyPromptL } from './ComfyPrompt'
 import { ComfyWorkflowL } from './ComfyWorkflow'
-import { ComfyNodeMetadata } from 'src/types/ComfyNodeID'
-import { ManualPromise } from 'src/utils/misc/ManualPromise'
-import { SafetyResult } from 'src/safety/Safety'
-import { readFileSync } from 'fs'
-import { StepL } from './Step'
-import { DraftL } from './Draft'
-import { CushyScriptL } from './CushyScriptL'
 import { CushyAppL } from './CushyApp'
-import { toastError } from 'src/utils/misc/toasts'
-import { hashArrayBuffer } from 'src/state/hashBlob'
+import { CushyScriptL } from './CushyScriptL'
+import { DraftL } from './Draft'
+import { StepL } from './Step'
+import { lookup } from 'mime-types'
+import { asSTRING_orCrash } from 'src/utils/misc/bang'
 
-// prettier-ignore
-export type ImageInfos =
-    | ImageInfos_ComfyGenerated
-    | ImageInfos_Local
-    | ImageInfos_Base64
-
-type ImageInfos_ComfyGenerated = {
-    type: 'image-generated-by-comfy'
+export type ImageInfos_ComfyGenerated = {
     comfyHostHttpURL: string
     comfyImageInfo: ComfyImageInfo
-    /** present if the file has been cached locally */
-    absPath?: string
-}
-type ImageInfos_Local = {
-    type: 'image-local'
-    absPath: AbsolutePath
-}
-type ImageInfos_Base64 = {
-    type: 'image-base64'
-    base64Url: string
 }
 
-const getComfyURLFromImageInfos = (infos: ImageInfos_ComfyGenerated) => {
+export const getComfyURLFromImageInfos = (infos: ImageInfos_ComfyGenerated) => {
     return infos.comfyHostHttpURL + '/view?' + new URLSearchParams(infos.comfyImageInfo).toString()
 }
 
@@ -54,19 +36,10 @@ export const checkIfComfyImageExists = async (
     imageInfo: { type: `input` | `ouput`; subfolder: string; filename: string },
 ) => {
     try {
-        const url = getComfyURLFromImageInfos({
-            type: `image-generated-by-comfy`,
-            comfyHostHttpURL,
-            comfyImageInfo: {
-                ...imageInfo,
-            },
-        })
+        const url = getComfyURLFromImageInfos({ comfyHostHttpURL, comfyImageInfo: imageInfo })
         console.log(`checkIfComfyImageExists`, { url })
-        const result = await fetch(url, {
-            method: `HEAD`,
-        })
+        const result = await fetch(url, { method: `HEAD` })
         console.log(`checkIfComfyImageExists result`, { url, result })
-
         return result.ok
     } catch {
         return false
@@ -77,15 +50,16 @@ export interface MediaImageL extends LiveInstance<MediaImageT, MediaImageL> {}
 export class MediaImageL {
     /** return the image filename */
     get filename() {
-        const infos = this.data.infos
-        if (infos == null) return 'null'
-        if (infos.type === 'image-local') return basename(infos.absPath)
-        if (infos.type === 'image-base64') return this.id
-        if (infos.type === 'image-generated-by-comfy') return basename(infos.comfyImageInfo.filename)
-        // if (infos.type === 'image-uploaded-to-comfy') return basename(infos.comfyUploadImageResult.name)
-        // if (infos.type === 'video-local-ffmpeg') return basename(infos.absPath)
-        exhaust(infos)
-        return 'unknown'
+        return basename(this.data.path)
+        // const infos = this.data.comfyUIInfos
+        // if (infos == null) return 'null'
+        // if (infos.type === 'image-local') return basename(infos.absPath)
+        // if (infos.type === 'image-base64') return this.id
+        // if (infos.type === 'image-generated-by-comfy') return basename(infos.comfyImageInfo.filename)
+        // // if (infos.type === 'image-uploaded-to-comfy') return basename(infos.comfyUploadImageResult.name)
+        // // if (infos.type === 'video-local-ffmpeg') return basename(infos.absPath)
+        // exhaust(infos)
+        // return 'unknown'
     }
 
     get step(): Maybe<StepL> { return this.prompt?.step } // prettier-ignore
@@ -97,6 +71,47 @@ export class MediaImageL {
         const draft = this.draft
         if (draft == null) return toastError(`no related draft found`)
         draft.update({ illustration: this.url })
+    }
+
+    get relPath() {
+        return asRelativePath(this.data.path)
+    }
+
+    get baseName() {
+        return basename(this.data.path)
+    }
+
+    get baseNameWithoutExtension() {
+        const fname = this.baseName
+        return fname.slice(0, fname.lastIndexOf('.'))
+    }
+
+    /** return file extension including dot */
+    get extension() {
+        const fname = this.baseName
+        return fname.slice(((fname.lastIndexOf('.') - 1) >>> 0) + 1)
+    }
+
+    /** get the expected enum name */
+    get enumName(): Enum_LoadImage_image {
+        // return `${this.baseNameWithoutExtension}-${this.data.hash}${this.extension}`
+        return `${this.data.hash}${this.extension}` as Enum_LoadImage_image
+    }
+
+    uploadAndReturnEnumName = async (): Promise<Enum_LoadImage_image> => {
+        const finalName = await this.st.uploader.upload_Image(this, { type: 'input', override: true })
+        return finalName
+    }
+
+    uploadAndloadAsImage = async (graph: ComfyWorkflowL): Promise<LoadImage> => {
+        const enumName = await this.uploadAndReturnEnumName()
+        const img = graph.builder.LoadImage({ image: enumName })
+        return img
+    }
+    uploadAndloadAsMask = async (graph: ComfyWorkflowL, channel: Enum_LoadImageMask_channel): Promise<LoadImageMask> => {
+        const enumName = await this.uploadAndReturnEnumName()
+        const mask: LoadImageMask = graph.builder.LoadImageMask({ image: enumName, channel })
+        return mask
     }
 
     /**
@@ -130,8 +145,26 @@ export class MediaImageL {
         return this.graph?.data.comfyPromptJSON[nodeID]
     }
 
-    openInImageEditor = () => {
+    get asHTMLImageElement(): HTMLImageElement {
+        const img: HTMLImageElement = new Image()
+        img.src = this.url
+        return img
+    }
+
+    get width(): number {
+        return this.data.width
+    }
+
+    get height(): number {
+        return this.data.height
+    }
+
+    openInImageEditor = (): void => {
         this.st.layout.FOCUS_OR_CREATE('Paint', { imgID: this.id })
+    }
+
+    openInCanvasEditor = (): void => {
+        this.st.layout.FOCUS_OR_CREATE('Canvas', { imgID: this.id })
     }
 
     /**
@@ -147,73 +180,54 @@ export class MediaImageL {
 
     /**
      * return the base64 url for this file, regardless of it's exact representation
-     * includes the prefix `data:image/png;base64,`
+     * includes the prefix `data:image/<type>;base64,`
      */
-    async getBase64Url(): Promise<string> {
-        const infos = this.data.infos
-        if (infos == null) return Promise.reject('can not extract base64 URL: no infos available')
-        if (infos.type === 'image-base64') return infos.base64Url
-        const bin = await this.getArrayBuffer()
-        return `data:image/png;base64,${btoa(String.fromCharCode(...new Uint8Array(bin)))}`
+    getBase64Url(): string {
+        const imgType = this.data.type ?? 'png'
+        return `data:image/${imgType};base64,${this.getBase64Payload()}`
+    }
+
+    /**
+     * return the base64 url for this file, regardless of it's exact representation
+     * does not includes the prefix `data:image/png;base64,`
+     */
+    getBase64Payload(): string {
+        const bin = this.getArrayBuffer()
+        return bin.toString('base64')
     }
 
     /** return the ArrayBuffer for this file, regardless it's exact representation  */
-    async getArrayBuffer(): Promise<ArrayBuffer> {
-        const infos = this.data.infos
-        // case 1. missing
-        if (infos == null) return Promise.reject('failed to extract ArrayBuffer')
+    getArrayBuffer(): Buffer {
+        const bin = readFileSync(this.data.path)
+        return bin
+    }
 
-        // case 2. base64
-        if (infos.type === 'image-base64') {
-            const base64_string = infos.base64Url.replace('data:image/png;base64,', '')
-            return Uint8Array.from(atob(base64_string), (c) => c.charCodeAt(0))
-        }
+    /** return as web `Blob` */
+    getAsBlob(): Blob {
+        const filePath = this.data.path
+        const mime = asSTRING_orCrash(lookup(filePath))
+        const blob = new Blob([readFileSync(filePath)], { type: mime })
+        return blob
+    }
 
-        // case 3. comfy
-        if (infos.type === 'image-generated-by-comfy') {
-            const response = await fetch(this.url, {
-                headers: { 'Content-Type': 'image/png' },
-                method: 'GET',
-            })
-            const binArr = await response.arrayBuffer()
-            return binArr
-        }
-
-        // case 4. local file
-        if (infos.type === 'image-local') {
-            const bin = readFileSync(infos.absPath)
-            return bin
-        }
-
-        // or fail
-        exhaust(infos)
-        return Promise.reject('failed to extract ArrayBuffer')
+    /** return as web `File` */
+    getAsFile(): File {
+        const filePath = this.data.path
+        const mime = asSTRING_orCrash(lookup(filePath))
+        const file = new File([readFileSync(filePath)], basename(filePath), { type: mime })
+        return file
     }
 
     /** ready to be used in image fields */
-    get url() {
-        const infos = this.data.infos
-        if (infos == null) return `file://${assets.CushyLogo_png}`
-        if (infos.type === 'image-local') return `file://${infos.absPath}`
-        if (infos.type === 'image-base64') return infos.base64Url
-        // if (infos.type === 'video-local-ffmpeg') return `file://${infos.absPath}`
-        if (infos.type === 'image-generated-by-comfy') {
-            return infos.absPath //
-                ? `file://${infos.absPath}`
-                : getComfyURLFromImageInfos(infos)
-        }
-        exhaust(infos)
-        return `file://${assets.CushyLogo_png}`
+    get url(): string {
+        return `file://${this.absPath}`
     }
 
     /** absolute path on the machine running CushyStudio */
-    get absPath(): Maybe<AbsolutePath> {
-        const url = this.url
-        if (url.startsWith('file://')) return asAbsolutePath(url.slice('file://'.length))
-    }
-
-    onCreate = (): void => {
-        this.downloadImageAndSaveToDisk()
+    get absPath(): AbsolutePath {
+        const path = this.data.path
+        if (path.startsWith('outputs/')) return this.st.resolveFromRoot(asRelativePath(path))
+        return asAbsolutePath(resolve(this.st.rootPath, path))
     }
 
     get isSafe(): ManualPromise<SafetyResult> {
@@ -224,49 +238,6 @@ export class MediaImageL {
         return this.absPath != null
     }
 
-    getSize = async (): Promise<ImageMeta> => {
-        if (this.data.width && this.data.height)
-            return {
-                width: this.data.width,
-                height: this.data.height,
-            }
-        return this.updateImageMeta()
-    }
-
-    private updateImageMeta = async (buffer?: ArrayBuffer): Promise<ImageMeta> => {
-        const buff = buffer ?? (await this.getArrayBuffer())
-        const uint8arr = new Uint8Array(buff)
-        const size = imageMeta(uint8arr)
-        console.log(`[🏞️]`, size)
-        const hash = await hashArrayBuffer(uint8arr)
-        this.update({
-            width: size?.width,
-            height: size?.height,
-            fileSize: uint8arr.byteLength,
-            hash: hash,
-        })
-        return size
-    }
-
-    private downloadImageAndSaveToDisk = async (): Promise<true> => {
-        const infos = this.data.infos
-
-        if (infos?.type !== 'image-generated-by-comfy') return true
-        if (infos.absPath != null) return true
-
-        // save image
-        const outputRelPath = asRelativePath(join(infos.comfyImageInfo.subfolder, infos.comfyImageInfo.filename))
-        const absPath = this.st.resolve(this.st.outputFolderPath, outputRelPath)
-        const binArr = await this.getArrayBuffer()
-        this.updateImageMeta(binArr)
-        this.st.writeBinaryFile(absPath, Buffer.from(binArr))
-        this.update({ infos: { ...infos, absPath: absPath } })
-        console.info('🖼️ image saved')
-        this._resolve(this)
-
-        return true
-    }
-
     // turns this into some clean abstraction
     _resolve!: (value: this) => void
     _rejects!: (reason: any) => void
@@ -275,3 +246,27 @@ export class MediaImageL {
         this._rejects = rejects
     })
 }
+
+// ⏸️ getSize = async (): Promise<ImageMeta> => {
+// ⏸️     if (this.data.width && this.data.height)
+// ⏸️         return {
+// ⏸️             width: this.data.width,
+// ⏸️             height: this.data.height,
+// ⏸️         }
+// ⏸️     return this.updateImageMeta()
+// ⏸️ }
+
+// ⏸️ private updateImageMeta = async (buffer?: ArrayBuffer): Promise<ImageMeta> => {
+// ⏸️     const buff = buffer ?? (await this.getArrayBuffer())
+// ⏸️     const uint8arr = new Uint8Array(buff)
+// ⏸️     const size = imageMeta(uint8arr)
+// ⏸️     const hash = hashArrayBuffer(uint8arr)
+// ⏸️     console.log(`[🏞️]`, { size, hash })
+// ⏸️     this.update({
+// ⏸️         width: size?.width,
+// ⏸️         height: size?.height,
+// ⏸️         fileSize: uint8arr.byteLength,
+// ⏸️         hash: hash,
+// ⏸️     })
+// ⏸️     return size
+// ⏸️ }

@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
-import React, { useEffect, useMemo, useRef, useState } from 'react'
+import React, { useEffect, useMemo, useRef } from 'react'
 import { createPortal } from 'react-dom'
-import { defaultShowDelay, defaultHideDelay, RevealState } from './RevealState'
+import { RevealState, defaultHideDelay, defaultShowDelay } from './RevealState'
 
 export const RevealUI = observer(function Tooltip_(p: {
     //
@@ -14,6 +14,7 @@ export const RevealUI = observer(function Tooltip_(p: {
     cursor?: string
     disableHover?: boolean
     disableClick?: boolean
+    style?: React.CSSProperties
 }) {
     const showDelay = p.showDelay ?? defaultShowDelay
     const hideDelay = p.hideDelay ?? defaultHideDelay
@@ -72,6 +73,7 @@ export const RevealUI = observer(function Tooltip_(p: {
             tw={[p.cursor ?? uist.defaultCursor]}
             className={p.className}
             ref={ref}
+            style={p.style}
             onContextMenu={uist.toggleLock}
             onMouseEnter={uist.onMouseEnterAnchor}
             onMouseLeave={uist.onMouseLeaveAnchor}

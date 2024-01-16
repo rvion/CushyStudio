@@ -7,7 +7,12 @@ import { Joined, Toggle } from 'src/rsuite/shims'
 import { parseFloatNoRoundingErr } from 'src/utils/misc/parseFloatNoRoundingErr'
 
 type ModelType = 'xl' | '1.5' | 'custom'
-type AspectRatio = '1:1' | '16:9' | '4:3' | '3:2' | 'custom'
+// prettier-ignore
+type AspectRatio =
+    | '1:1'
+    | 'custom'
+    | '16:9' | '4:3' | '3:2'
+    | '9:16' | '3:4' | '2:3'
 
 export const WigetSizeUI = observer(function WigetSizeUI_(p: { widget: Widget_size }) {
     return (
@@ -39,7 +44,7 @@ export const WigetSizeXUI = observer(function WigetSizeXUI_(p: {
     const resoBtn = (ar: AspectRatio) => (
         <button
             type='button'
-            tw={['btn btn-sm join-item btn-ghost', uist.desiredAspectRatio === ar && 'btn-active']}
+            tw={['btn btn-sm btn-ghost join-item', uist.desiredAspectRatio === ar && 'btn-active']}
             onClick={() => uist.setAspectRatio(ar)}
         >
             {ar}
@@ -49,7 +54,7 @@ export const WigetSizeXUI = observer(function WigetSizeXUI_(p: {
     const modelBtn = (model: ModelType) => (
         <button
             type='button'
-            tw={['btn btn-sm join-item', uist.desiredModelType === model && 'btn-active']}
+            tw={['btn btn-sm btn-ghost join-item', uist.desiredModelType === model && 'btn-active']}
             onClick={() => uist.setModelType(model)}
         >
             {model}
@@ -57,9 +62,9 @@ export const WigetSizeXUI = observer(function WigetSizeXUI_(p: {
     )
 
     return (
-        <div className='flex items-center flex-wrap space-x-2'>
+        <div className='flex flex-col gap-1'>
             <div className='flex flex-col gap-1'>
-                <div tw='flex'>
+                <div tw='flex items-center gap-1'>
                     <div tw='w-12'>Width</div>
                     <InputNumberUI
                         //
@@ -73,7 +78,7 @@ export const WigetSizeXUI = observer(function WigetSizeXUI_(p: {
                         // hideSlider
                     />
                 </div>
-                <div tw='flex'>
+                <div tw='flex items-center gap-1'>
                     <div tw='w-12'>Height</div>
                     <InputNumberUI
                         //
@@ -89,46 +94,58 @@ export const WigetSizeXUI = observer(function WigetSizeXUI_(p: {
                 </div>
             </div>
             {/* {JSON.stringify(uist.width)}x{JSON.stringify(uist.height)} */}
-            <div tw='flex flex-col gap-1'>
-                <div tw='flex items-centered gap-1'>
+            <div tw='flex flex-col gap-'>
+                <div tw='flex items-start justify-end gap-3'>
+                    <div tw='virtualBorder' style={{ width: '2rem', height: '2rem' }}>
+                        <div
+                            tw='bg-primary'
+                            style={{
+                                //
+                                width: uist.height < uist.width ? '2rem' : `${(uist.width / uist.height) * 2}rem`,
+                                height: uist.height < uist.width ? `${(uist.height / uist.width) * 2}rem` : '2rem',
+                            }}
+                        ></div>
+                    </div>
                     <Joined>
                         {modelBtn('1.5')}
                         {modelBtn('xl')}
                     </Joined>
 
-                    <div tw='flex items-center'>
+                    {/* <div tw='flex items-center'>
                         filp:
                         <Toggle
                             //
                             checked={uist.flip}
                             onChange={(ev) => (uist.flip = ev.target.checked)}
                         />
+                    </div> */}
+                    <div tw='flex'>
+                        <div tw='flex flex-col'>
+                            {resoBtn('1:1')}
+                            <button
+                                type='button'
+                                tw={['btn btn-sm btn-ghost join-item', uist.desiredAspectRatio === 'custom' && 'btn-active']}
+                                onClick={() => uist.setAspectRatio('custom')}
+                            >
+                                ?
+                            </button>
+                        </div>
+                        <div>
+                            <div>
+                                {resoBtn('16:9')}
+                                {resoBtn('4:3')}
+                                {resoBtn('3:2')}
+                            </div>
+                            <div>
+                                {resoBtn('9:16')}
+                                {resoBtn('3:4')}
+                                {resoBtn('2:3')}
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <Joined>
-                    {resoBtn('1:1')}
-                    {resoBtn('16:9')}
-                    {resoBtn('4:3')}
-                    {resoBtn('3:2')}
-                    <button
-                        type='button'
-                        tw={['btn btn-sm join-item', uist.desiredAspectRatio === 'custom' && 'btn-active']}
-                        onClick={() => uist.setAspectRatio('custom')}
-                    >
-                        ?
-                    </button>
-                </Joined>
             </div>
-            <div tw='virtualBorder' style={{ width: '4rem', height: '4rem' }}>
-                <div
-                    tw='bg-primary'
-                    style={{
-                        //
-                        width: uist.height < uist.width ? '4rem' : `${(uist.width / uist.height) * 4}rem`,
-                        height: uist.height < uist.width ? `${(uist.height / uist.width) * 4}rem` : '4rem',
-                    }}
-                ></div>
-            </div>
+
             {/* <select value={uist.desiredAspectRatio} onChange={(e) => uist.setAspectRatio(e.target.value as AspectRatio)}>
                 <option value='1:1'>1:1</option>
                 <option value='16:9'>16:9</option>

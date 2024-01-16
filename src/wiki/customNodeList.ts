@@ -120,13 +120,13 @@ export const getKnownPlugins = (p?: {
         // console.log(`${knownModelList.length} models found`)
         console.log(`${totalPluginSeen} CustomNodes in file`)
         console.log(`${knownPlugins.byTitle.size} CustomNodes registered in map`)
-        if (totalPluginSeen !== knownPlugins.byTitle.size)
-            console.log(`❌ some customNodes are either duplicated or have overlapping titles`)
+        // if (totalPluginSeen !== knownPlugins.byTitle.size)
+        //     console.log(`❌ some customNodes are either duplicated or have overlapping titles`)
 
         console.log(`${totalFileSeen} CustomNodes-File Seen`)
         console.log(`${knownPlugins.byURI.size} CustomNodes-File registered in map`)
-        if (totalFileSeen !== knownPlugins.byURI.size)
-            console.log(`❌ some customNodes are either duplicated or have overlapping files`)
+        // if (totalFileSeen !== knownPlugins.byURI.size)
+        //     console.log(`❌ some customNodes are either duplicated or have overlapping files`)
 
         if (hasErrors) console.log(`❌ some CustomNodes don't match schema`)
         else console.log(`✅ all CustomNodes match schema`)

@@ -1,8 +1,9 @@
 import { makeAutoObservable } from 'mobx'
-import { Runtime } from './Runtime'
 import { MediaImageL } from 'src/models/MediaImage'
-import { asAbsolutePath } from 'src/utils/fs/pathUtils'
+import { createMediaImage_fromDataURI, createMediaImage_fromPath } from 'src/models/createMediaImage_fromWebFile'
 import { PromptID } from 'src/types/ComfyWsApi'
+import { Runtime } from './Runtime'
+import { ComfyWorkflowL } from 'src/models/ComfyWorkflow'
 
 /** namespace for all image-related utils */
 export class RuntimeImages {
@@ -10,26 +11,45 @@ export class RuntimeImages {
         makeAutoObservable(this)
     }
 
-    createFromBase64 = (base64Url: string): MediaImageL => {
-        return this.rt.st.db.media_images.create({
-            infos: { type: 'image-base64', base64Url },
-        })
+    // ----------------------------------------------------------------------------------------
+    // simple to use functions
+    loadAsImage = async (relPathOrDataURL: string, workflow?: ComfyWorkflowL): Promise<LoadImage> => {
+        const img = this.createFromDataURLOrPath(relPathOrDataURL)
+        return await img.uploadAndloadAsImage(workflow ?? this.rt.workflow)
     }
 
-    createFromBase64AsLocalPath = (base64Url: string): MediaImageL => {
-        return this.rt.st.db.media_images.create({
-            infos: { type: 'image-base64', base64Url },
-        })
+    loadAsMask = async (
+        relPathOrDataURL: string,
+        channel: Enum_LoadImageMask_channel,
+        workflow?: ComfyWorkflowL,
+    ): Promise<LoadImageMask> => {
+        const img = this.createFromDataURLOrPath(relPathOrDataURL)
+        return await img.uploadAndloadAsMask(workflow ?? this.rt.workflow, channel)
     }
 
-    createFromPath = (path: RelativePath, p: { promptID?: PromptID }): MediaImageL => {
+    loadAsEnum = async (relPathOrDataURL: string): Promise<Enum_LoadImage_image> => {
+        const img = this.createFromDataURLOrPath(relPathOrDataURL)
+        return await img.uploadAndReturnEnumName()
+    }
+
+    // ----------------------------------------------------------------------------------------
+    // utils to create CushyStudio `MediaImagesL` without using them directly
+
+    createFromDataURLOrPath = (relPathOrDataURL: string): MediaImageL => {
+        return relPathOrDataURL.startsWith('data:') //
+            ? this.createFromDataURL(relPathOrDataURL)
+            : this.createFromPath(relPathOrDataURL)
+    }
+
+    createFromDataURL = (
+        /** base 64 encoded data URL */
+        dataURL: string,
+    ): MediaImageL => {
+        return createMediaImage_fromDataURI(this.rt.st, dataURL)
+    }
+
+    createFromPath = (relPath: string, p: { promptID?: PromptID } = {}): MediaImageL => {
         const stepID = this.rt.step.id
-        const absPath = this.rt.st.resolveFromRoot(path)
-        console.log(`[👙] `, stepID, p.promptID)
-        return this.rt.st.db.media_images.create({
-            infos: { type: 'image-local', absPath },
-            promptID: p.promptID,
-            stepID,
-        })
+        return createMediaImage_fromPath(this.rt.st, relPath, { promptID: p.promptID, stepID })
     }
 }

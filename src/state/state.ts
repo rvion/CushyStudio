@@ -54,6 +54,8 @@ import { Uploader } from './Uploader'
 import { mkSupa } from './supa'
 import { SafetyChecker } from 'src/safety/Safety'
 import { getKnownCheckpoints, getKnownModels } from 'src/wiki/modelList'
+import { createMediaImage_fromPath } from 'src/models/createMediaImage_fromWebFile'
+import { assets } from 'src/utils/assets/assets'
 
 export class STATE {
     /** hack to help closing prompt completions */
@@ -102,6 +104,12 @@ export class STATE {
         const wcds = this.readJSON<Wildcards>(wcdsPath)
         Object.defineProperty(this, 'wildcards', { value: wcds })
         return wcds
+    }
+
+    get defaultImage(): MediaImageL {
+        const def = this.db.media_images.find({ path: 'public/CushyLogo-512.png' }, { limit: 1 })
+        if (def[0] == null) return createMediaImage_fromPath(this, 'public/CushyLogo-512.png')
+        return def[0]
     }
 
     getKnownCheckpoints = getKnownCheckpoints

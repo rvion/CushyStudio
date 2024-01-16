@@ -21,27 +21,23 @@ export const ui_cnet = () => {
     const form = getCurrentForm()
     return form.groupOpt({
         label: 'ControlNets',
+        tooltip: `Instructional resources:\nhttps://github.com/lllyasviel/ControlNet\nhttps://stable-diffusion-art.com/controlnet/`,
         items: () => ({
-            help: form.markdown({
-                startCollapsed: true,
-                markdown: `Instructional resources:\nhttps://github.com/lllyasviel/ControlNet\nhttps://stable-diffusion-art.com/controlnet/`,
-            }),
             useControlnetConditioningForUpscalePassIfEnabled: form.bool({ default: false }),
             controlNetList: form.list({
-                label: false,
+                // label: false,
                 element: () =>
                     form.group({
                         label: 'Controlnet Image',
                         items: () => ({
                             image: form.image({
-                                default: 'cushy',
                                 group: 'Cnet_Image',
                                 tooltip:
                                     'There is currently a bug with multiple controlnets where an image wont allow drop except for the first controlnet in the list. If you add multiple controlnets, then reload using Ctrl+R, it should allow you to drop an image on any of the controlnets.',
                             }),
                             resize: form.bool({ default: true }),
                             cnets: form.choices({
-                                label: false, //'Pick Cnets=>',
+                                // label: false, //'Pick Cnets=>',
                                 placeholder: 'ControlNets...',
                                 items: () => ({
                                     OpenPose: ui_subform_OpenPose(),

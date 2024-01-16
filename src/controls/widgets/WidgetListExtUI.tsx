@@ -10,7 +10,7 @@ export const WidgetListExtUI = observer(function WidgetListExtUI_<T extends Widg
     const widget = p.widget
     return (
         <div className='_WidgetListExtUI' tw='flex-grow w-full'>
-            <ListControlsUI req={widget} />
+            <ListControlsUI widget={widget} />
             <WigetSizeXUI size={widget.state} />
             {p.widget.input.mode === 'timeline' ? ( //
                 <WidgetListExt_TimelineUI req={widget} />

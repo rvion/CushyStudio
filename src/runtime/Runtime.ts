@@ -7,9 +7,7 @@ import * as path from 'pathe'
 import { execSync } from 'child_process'
 import fs, { writeFileSync } from 'fs'
 import { Widget_group } from 'src/controls/Widget'
-import { Uploader } from 'src/state/Uploader'
 import { assets } from 'src/utils/assets/assets'
-import { bang } from 'src/utils/misc/bang'
 import { braceExpansion } from 'src/utils/misc/expansion'
 import { IDNaminScheemeInPromptSentToComfyUI } from '../back/IDNaminScheemeInPromptSentToComfyUI'
 import { ComfyWorkflowBuilder } from '../back/NodeBuilder'
@@ -20,30 +18,23 @@ import { ComfyPromptL } from '../models/ComfyPrompt'
 import { ComfyWorkflowL } from '../models/ComfyWorkflow'
 import { MediaImageL, checkIfComfyImageExists } from '../models/MediaImage'
 import { StepL } from '../models/Step'
-import { ComfyUploadImageResult } from '../types/ComfyWsApi'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
-import { exhaust } from '../utils/misc/ComfyUtils'
 
 import child_process from 'child_process'
-import { OpenRouterRequest } from 'src/llm/OpenRouter_Request'
-import { OpenRouterResponse } from 'src/llm/OpenRouter_Response'
-import { OpenRouter_ask } from 'src/llm/OpenRouter_ask'
-import { openRouterInfos } from 'src/llm/OpenRouter_infos'
-import { OpenRouter_Models } from 'src/llm/OpenRouter_models'
+import { createRandomGenerator } from 'src/back/random'
 import { _formatAsRelativeDateTime } from 'src/updater/_getRelativeTimeString'
 import { Wildcards } from 'src/widgets/prompter/nodes/wildcards/wildcards'
 import { RuntimeApps } from './RuntimeApps'
+import { RuntimeCanvas } from './RuntimeCanvas'
+import { RuntimeColors } from './RuntimeColors'
+import { RuntimeComfyUI } from './RuntimeComfyUI'
 import { RuntimeCushy } from './RuntimeCushy'
 import { RuntimeHosts } from './RuntimeHosts'
+import { RuntimeImages } from './RuntimeImages'
+import { RuntimeKonva } from './RuntimeKonva'
+import { RuntimeLLM } from './RuntimeLLM'
 import { RuntimeStore } from './RuntimeStore'
 import { RuntimeVideos } from './RuntimeVideo'
-import { createRandomGenerator } from 'src/back/random'
-import { RuntimeCanvas } from './RuntimeCanvas'
-import { RuntimeKonva } from './RuntimeKonva'
-import { RuntimeComfyUI } from './RuntimeComfyUI'
-import { RuntimeImages } from './RuntimeImages'
-import { RuntimeColors } from './RuntimeColors'
-import { RuntimeLLM } from './RuntimeLLM'
 
 export type ImageAndMask = HasSingle_IMAGE & HasSingle_MASK
 
@@ -147,11 +138,11 @@ export class Runtime<FIELDS extends WidgetDict = any> {
         this.st = step.st
         this.folder = step.st.outputFolderPath
 
-        this.upload_FileAtAbsolutePath = this.st.uploader.upload_FileAtAbsolutePath.bind(this.st.uploader)
-        this.upload_ImageAtURL = this.st.uploader.upload_ImageAtURL.bind(this.st.uploader)
-        this.upload_dataURL = this.st.uploader.upload_dataURL.bind(this.st.uploader)
-        this.upload_Asset = this.st.uploader.upload_Asset.bind(this.st.uploader)
-        this.upload_Blob = this.st.uploader.upload_Blob.bind(this.st.uploader)
+        // ⏸️ this.upload_FileAtAbsolutePath = this.st.uploader.upload_FileAtAbsolutePath.bind(this.st.uploader)
+        // ⏸️ this.upload_ImageAtURL = this.st.uploader.upload_ImageAtURL.bind(this.st.uploader)
+        // ⏸️ this.upload_dataURL = this.st.uploader.upload_dataURL.bind(this.st.uploader)
+        // ⏸️ this.upload_Asset = this.st.uploader.upload_Asset.bind(this.st.uploader)
+        // ⏸️ this.upload_Blob = this.st.uploader.upload_Blob.bind(this.st.uploader)
     }
 
     /**
@@ -547,108 +538,18 @@ export class Runtime<FIELDS extends WidgetDict = any> {
         return seed
     }
 
-    loadImageAnswerAsEnum = async (ia: ImageAnswer): Promise<Enum_LoadImage_image> => {
-        try {
-            if (ia.type === 'CushyImage') {
-                const img = this.st.db.media_images.getOrThrow(ia.imageID)
-                // this.print(JSON.stringify(img.data, null, 3))
-                if (img.absPath) {
-                    const res = await this.upload_FileAtAbsolutePath(img.absPath)
-                    return res.name as Enum_LoadImage_image // 🔴
-                }
-                return img.absPath as Enum_LoadImage_image // 🔴
-                // // console.log(img.data)
-                // return this.nodes.Image_Load({
-                //     image_path: img.url ?? img.localAbsolutePath,
-                //     RGBA: false, // 'false',
-                // })
-            }
-            if (ia.type === 'ComfyImage') return ia.imageName
-            if (ia.type === 'PaintImage') {
-                // const res = await this.uploadAnyFile(ia.base64)
-                // return res.name as Enum_LoadImage_image
-                throw new Error('🔴 not implemented')
-            }
-            exhaust(ia)
-        } catch (err) {
-            console.log('❌ failed to convert ImageAnser to Enum_LoadImage_image', ia)
-            throw err
-        }
-        throw new Error('FAILURE to load image answer as enum')
+    loadImageAnswerAsEnum = (ia: ImageAnswer): Promise<Enum_LoadImage_image> => {
+        const img = this.st.db.media_images.getOrThrow(ia.imageID)
+        return img.uploadAndReturnEnumName()
     }
 
-    loadImageAnswer2 = async (
-        ia: ImageAnswer,
-    ): Promise<{
-        img: ImageAndMask
-        width: number
-        height: number
-    }> => {
-        if (ia.type === 'CushyImage') {
-            const mediaImage = this.st.db.media_images.getOrThrow(ia.imageID)
-            // this.print(JSON.stringify(img.data, null, 3))
-            if (mediaImage.absPath) {
-                const res = await this.upload_FileAtAbsolutePath(mediaImage.absPath)
-                const img = this.nodes.LoadImage({ image: res.name as any })
-                return { img, width: bang(mediaImage.data.width), height: bang(mediaImage.data.height) }
-            }
-        }
-        throw new Error('ERROR')
+    loadImageAnswer2 = (ia: ImageAnswer): MediaImageL => {
+        return this.st.db.media_images.getOrThrow(ia.imageID)
     }
 
     loadImageAnswer = async (ia: ImageAnswer): Promise<ImageAndMask> => {
-        try {
-            // if (ia.type === 'imagePath') {
-            //     return this.nodes.WASImageLoad({ image_path: ia.absPath, RGBA: 'false' })
-            // }
-            if (ia.type === 'CushyImage') {
-                const img = this.st.db.media_images.getOrThrow(ia.imageID)
-                // this.print(JSON.stringify(img.data, null, 3))
-                if (img.absPath) {
-                    const res = await this.upload_FileAtAbsolutePath(img.absPath)
-                    // this.print(JSON.stringify(res))
-
-                    const img2 = this.nodes.LoadImage({ image: res.name as any })
-                    // if (p?.joinImageWithAlpha) return this.nodes.JoinImageWithAlpha({ image: img2, alpha: img2 })
-                    return img2
-                }
-                console.log(img.data)
-                return this.nodes.Image_Load({
-                    image_path: img.url ?? img.absPath,
-                    RGBA: 'false',
-                    // RGBA: p?.joinImageWithAlpha ? 'true' : 'false', // 'false',
-                })
-            }
-            if (ia.type === 'ComfyImage') {
-                const img2 = this.nodes.LoadImage({ image: ia.imageName })
-                // const img2 = this.nodes.LoadImage({ image: res.name as any })
-                // if (p?.joinImageWithAlpha) return this.nodes.JoinImageWithAlpha({ image: img2, alpha: img2 })
-                return img2
-            }
-            if (ia.type === 'PaintImage') {
-                const img2 = this.nodes.Base64ImageInput({ bas64_image: ia.base64 })
-                // const img2 = this.nodes.LoadImage({ image: res.name as any })
-                // if (p?.joinImageWithAlpha) return this.nodes.JoinImageWithAlpha({ image: img2, alpha: img2 })
-                return img2 as any // 🔴
-            }
-            exhaust(ia)
-            // if (ia.type === 'imageSignal') {
-            //     const node = this.graph.nodesIndex.get(ia.nodeID)
-            //     if (node == null) throw new Error('node is not in current graph')
-            //     // 🔴 need runtime checking here
-            //     const xx = (node as any)[ia.fieldName]
-            //     console.log({ xx })
-            //     return xx
-            // }
-            // if (ia.type === 'imageURL') {
-            //     return this.nodes.WASImageLoad({ image_path: ia.url, RGBA: 'false' })
-            // }
-            throw new Error('FAILURE')
-            // return exhaust(ia)
-        } catch (err) {
-            console.log('🔴 failed to convert ImageAnser to _IMAGE', ia)
-            throw err
-        }
+        const img = this.st.db.media_images.getOrThrow(ia.imageID)
+        return await img.uploadAndloadAsImage(this.workflow)
     }
 
     private extractString = (message: Printable): string => {
@@ -674,51 +575,51 @@ export class Runtime<FIELDS extends WidgetDict = any> {
         return res
     }
 
-    // UPLOAD ------------------------------------------------------------------------------------------
-    /** upload an image present on disk to ComfyUI */
-    upload_FileAtAbsolutePath: Uploader['upload_FileAtAbsolutePath']
-
-    /** upload an image that can be downloaded form a given URL to ComfyUI */
-    upload_ImageAtURL: Uploader['upload_ImageAtURL']
-
-    /** upload an image from dataURL */
-    upload_dataURL: Uploader['upload_dataURL']
-
-    /** upload a deck asset to ComfyUI */
-    upload_Asset: Uploader['upload_Asset']
-
-    /** upload a Blob */
-    upload_Blob: Uploader['upload_Blob']
-
-    // LOAD IMAGE --------------------------------------------------------------------------------------
-    /** load an image present on disk to ComfyUI */
-    load_FileAtAbsolutePath = async (absPath: AbsolutePath): Promise<ImageAndMask> => {
-        const res = await this.st.uploader.upload_FileAtAbsolutePath(absPath)
-        return this.loadImageAnswer({ type: 'ComfyImage', imageName: res.name })
-    }
-
-    /** load an image that can be downloaded form a given URL to ComfyUI */
-    load_ImageAtURL = async (url: string): Promise<ImageAndMask> => {
-        const res = await this.st.uploader.upload_ImageAtURL(url)
-        return this.loadImageAnswer({ type: 'ComfyImage', imageName: res.name })
-    }
-    /** load an image from dataURL */
-    load_dataURL = async (dataURL: string): Promise<ImageAndMask> => {
-        const res: ComfyUploadImageResult = await this.st.uploader.upload_dataURL(dataURL)
-        // this.st.db.images.create({ infos:  })
-        return this.loadImageAnswer({ type: 'ComfyImage', imageName: res.name })
-    }
-
-    /** load a deck asset to ComfyUI */
-    load_Asset = async (asset: RelativePath): Promise<ImageAndMask> => {
-        const res = await this.st.uploader.upload_Asset(asset)
-        return this.loadImageAnswer({ type: 'ComfyImage', imageName: res.name })
-    }
-    /** load a Blob */
-    load_Blob = async (blob: Blob): Promise<ImageAndMask> => {
-        const res = await this.st.uploader.upload_Blob(blob)
-        return this.loadImageAnswer({ type: 'ComfyImage', imageName: res.name })
-    }
+    // ⏸️ // UPLOAD ------------------------------------------------------------------------------------------
+    // ⏸️ /** upload an image present on disk to ComfyUI */
+    // ⏸️ upload_FileAtAbsolutePath: Uploader['upload_FileAtAbsolutePath']
+    // ⏸️
+    // ⏸️ /** upload an image that can be downloaded form a given URL to ComfyUI */
+    // ⏸️ upload_ImageAtURL: Uploader['upload_ImageAtURL']
+    // ⏸️
+    // ⏸️ /** upload an image from dataURL */
+    // ⏸️ upload_dataURL: Uploader['upload_dataURL']
+    // ⏸️
+    // ⏸️ /** upload a deck asset to ComfyUI */
+    // ⏸️ upload_Asset: Uploader['upload_Asset']
+    // ⏸️
+    // ⏸️ /** upload a Blob */
+    // ⏸️ upload_Blob: Uploader['upload_Blob']
+    // ⏸️
+    // ⏸️ // LOAD IMAGE --------------------------------------------------------------------------------------
+    // ⏸️ /** load an image present on disk to ComfyUI */
+    // ⏸️ load_FileAtAbsolutePath = async (absPath: AbsolutePath): Promise<ImageAndMask> => {
+    // ⏸️     const res = await this.st.uploader.upload_FileAtAbsolutePath(absPath)
+    // ⏸️     return this.loadImageAnswer({ type: 'ComfyImage', imageName: res.name })
+    // ⏸️ }
+    // ⏸️
+    // ⏸️ /** load an image that can be downloaded form a given URL to ComfyUI */
+    // ⏸️ load_ImageAtURL = async (url: string): Promise<ImageAndMask> => {
+    // ⏸️     const res = await this.st.uploader.upload_ImageAtURL(url)
+    // ⏸️     return this.loadImageAnswer({ type: 'ComfyImage', imageName: res.name })
+    // ⏸️ }
+    // ⏸️ /** load an image from dataURL */
+    // ⏸️ load_dataURL = async (dataURL: string): Promise<ImageAndMask> => {
+    // ⏸️     const res: ComfyUploadImageResult = await this.st.uploader.upload_dataURL(dataURL)
+    // ⏸️     // this.st.db.images.create({ infos:  })
+    // ⏸️     return this.loadImageAnswer({ type: 'ComfyImage', imageName: res.name })
+    // ⏸️ }
+    // ⏸️
+    // ⏸️ /** load a deck asset to ComfyUI */
+    // ⏸️ load_Asset = async (asset: RelativePath): Promise<ImageAndMask> => {
+    // ⏸️     const res = await this.st.uploader.upload_Asset(asset)
+    // ⏸️     return this.loadImageAnswer({ type: 'ComfyImage', imageName: res.name })
+    // ⏸️ }
+    // ⏸️ /** load a Blob */
+    // ⏸️ load_Blob = async (blob: Blob): Promise<ImageAndMask> => {
+    // ⏸️     const res = await this.st.uploader.upload_Blob(blob)
+    // ⏸️     return this.loadImageAnswer({ type: 'ComfyImage', imageName: res.name })
+    // ⏸️ }
 
     // INTERRACTIONS ------------------------------------------------------------------------------------------
     async PROMPT(p?: {

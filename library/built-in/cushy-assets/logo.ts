@@ -18,8 +18,8 @@ app({
         const logo = await Konva.Image_fromPath('site/static/img/CushyLogo.png')
         logo.setSize({ width: size, height: size })
         layer.add(logo)
-        const b64 = Konva.convertLayerToBase64(layer)
-        const img = Images.createFromBase64(b64)
+        const b64 = Konva.convertLayerToDataURL(layer)
+        const img = Images.createFromDataURL(b64)
         const flow = ComfyUI.create_basicWorkflow({
             from: img,
             denoise: 0.9,

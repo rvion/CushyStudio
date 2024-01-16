@@ -28,6 +28,11 @@ export const MenuUtilsUI = observer(function MenuUtilsUI_(p: {}) {
                 label='3d Poser (posemy.art)'
             />
             <MenuItem
+                onClick={() => st.layout.FOCUS_OR_CREATE('Paint', {})}
+                icon={<span className='material-symbols-outlined text-red-400'>brush</span>}
+                label='Minipaint'
+            />
+            <MenuItem
                 onClick={() => st.layout.FOCUS_OR_CREATE('IFrame', { url: 'https://unsplash.com/' })}
                 icon={<span className='material-symbols-outlined text-purple-400'>image_search</span>}
                 label='Unsplash - Free images'

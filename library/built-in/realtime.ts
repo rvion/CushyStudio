@@ -21,7 +21,7 @@ app({
         // latent
         strength: form.float({ default: 0.9, group: 'latent', min: 0, max: 1, step: 0.1 }),
         cnet: form.enum({ enumName: 'Enum_ControlNetLoader_control_net_name', default: 'control_scribble-fp16.safetensors' }),
-        startImage: form.image({ group: 'latent', default: 'paint', defaultPaint: { type: 'PaintImage', base64: '' } }),
+        startImage: form.image({ group: 'latent' }),
         // width: form.int({ default: 1024, group: 'latent' }),
         // height: form.int({ default: 1024, group: 'latent' }),
         batchSize: form.int({ default: 1, group: 'latent', min: 1 }),

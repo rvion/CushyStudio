@@ -1,6 +1,7 @@
 import { nanoid } from 'nanoid'
 import { useEffect } from 'react'
 import type { STATE } from 'src/state/state'
+import { extractExtensionFromContentType } from './extractExtensionFromContentType'
 
 export const useGlobalDropHook = (st: STATE) => {
     useEffect(() => {
@@ -11,6 +12,7 @@ export const useGlobalDropHook = (st: STATE) => {
                 let at: Maybe<HTMLElement> = ev.target
                 while ((at = at.parentElement) != null) {
                     if (at.classList.contains('_WidgetSelectImageUI')) return null
+                    if (at.classList.contains('DROP_IMAGE_HANDLER')) return null
                 }
             }
 
@@ -93,17 +95,3 @@ const extractImgFromHTML = (html: Maybe<string>) => {
     console.log(`[🫳] DROP:    | extractImgFromHTML:`, url)
     return url?.[1] ?? null
 }
-
-const extractExtensionFromContentType = (contentType: string): string => {
-    if (contentType === `image/bmp`) return '.bmp'
-    if (contentType === `image/gif`) return '.gif'
-    if (contentType === `image/x-icon`) return '.ico'
-    if (contentType === `image/jpeg`) return '.jpeg'
-    if (contentType === `image/png`) return '.png'
-    if (contentType === `image/svg+xml`) return '.svg'
-    if (contentType === `image/tiff`) return '.tiff'
-    if (contentType === `image/webp`) return '.webp'
-    return ''
-}
-
-const knownImageExtensions = ['.bmp', '.gif', '.ico', '.jpeg', '.png', '.svg', '.tiff', '.webp']

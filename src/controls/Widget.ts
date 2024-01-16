@@ -2,6 +2,8 @@
  * this file is an attempt to centralize core widget definition in a single
  * file so it's easy to add any widget in the future
  */
+import type { SQLWhere } from 'src/db/SQLWhere'
+import type { MediaImageT } from 'src/db/TYPES.gen'
 import type { ComfySchemaL } from 'src/models/Schema'
 import type { SimplifiedLoraDef } from 'src/presets/SimplifiedLoraDef'
 import type { ItemDataType } from 'src/rsuite/RsuiteTypes'
@@ -9,16 +11,16 @@ import type { CleanedEnumResult } from 'src/types/EnumUtils'
 import type { WidgetPromptOutput } from 'src/widgets/prompter/WidgetPromptUI'
 import type { PossibleSerializedNodes } from 'src/widgets/prompter/plugins/PossibleSerializedNodes'
 import type { FormBuilder } from './FormBuilder'
-import type { IWidget, WidgetTypeHelpers, WidgetInputFields, GetWidgetResult, WidgetStateFields } from './IWidget'
-import type { AspectRatio, ComfyImageAnswer, CushyImageAnswer, CushySize, CushySizeByRatio, ImageAnswer, ImageAnswerForm, PaintImageAnswer, SDModelType } from './misc/InfoAnswer'
+import type { GetWidgetResult, IWidget, WidgetInputFields, WidgetStateFields, WidgetTypeHelpers } from './IWidget'
+import type { AspectRatio, CushySize, CushySizeByRatio, ImageAnswer, ImageAnswerForm, SDModelType } from './misc/InfoAnswer'
 
-import { computed, makeAutoObservable, action, makeObservable, observable } from 'mobx'
+import { computed, makeAutoObservable, makeObservable, observable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { FC } from 'react'
-import { bang } from 'src/utils/misc/bang'
-import { WidgetDI } from './widgets/WidgetUI.DI'
 import { runWithGlobalForm } from 'src/models/_ctx2'
+import { bang } from 'src/utils/misc/bang'
 import { EnumDefault, extractDefaultValue } from './EnumDefault'
+import { WidgetDI } from './widgets/WidgetUI.DI'
 
 // Widget is a closed union for added type safety
 export type Widget =
@@ -590,7 +592,14 @@ export class Widget_inlineRun implements IWidget<'inlineRun', Widget_inlineRun_o
 }
 
 // 🅿️ intOpt ==============================================================================
-export type Widget_intOpt_opts  = WidgetInputFields<{ default?: number; min?: number; max?: number; step?: number, hideSlider?: boolean }>
+export type Widget_intOpt_opts  = WidgetInputFields<{
+    defaultActive?: boolean;
+    default?: number;
+    min?: number;
+    max?: number;
+    step?: number,
+    hideSlider?: boolean
+}>
 export type Widget_intOpt_serial = Widget_intOpt_state
 export type Widget_intOpt_state  = WidgetStateFields<{ type: 'intOpt', active: boolean; val: number }>
 export type Widget_intOpt_output = Maybe<number>
@@ -612,7 +621,7 @@ export class Widget_intOpt implements IWidget<'intOpt', Widget_intOpt_opts, Widg
         this.state = serial ?? {
             type: 'intOpt',
             id: this.id,
-            active: input.default != null,
+            active: input.defaultActive ?? false,
             val: input.default ?? 0,
         }
         makeAutoObservable(this)
@@ -870,12 +879,8 @@ export class Widget_loras implements IWidget<'loras', Widget_loras_opts, Widget_
 
 // 🅿️ image ==============================================================================
 export type Widget_image_opts  = WidgetInputFields<{
-    default?: 'cushy' | 'comfy' | 'paint',
-    defaultComfy?: ComfyImageAnswer,
-    defaultCushy?: CushyImageAnswer,
-    defaultPaint?: PaintImageAnswer,
-    scribbleStrokeColor?: string,
-    scribbleFillColor?: string
+    defaultActive?: boolean
+    suggestionWhere?: SQLWhere<MediaImageT>
     assetSuggested?: RelativePath
 }>
 export type Widget_image_serial = Widget_image_state
@@ -896,23 +901,17 @@ export class Widget_image implements IWidget<'image', Widget_image_opts, Widget_
         serial?: Widget_image_serial,
     ) {
         this.id = serial?.id ?? nanoid()
-        // console.log('🔴 AAA', serial)
         this.state = serial ?? {
             type: 'image',
             id: this.id,
             active: true,
-            comfy: input.defaultComfy ?? { imageName: 'example.png', type: 'ComfyImage' },
-            cushy: input.defaultCushy,
-            paint: input.defaultPaint,
-            pick: input.default ?? 'comfy',
+            imageID: this.schema.st.defaultImage.id,
         }
         makeAutoObservable(this)
     }
     get serial(): Widget_image_serial { return this.state }
     get result(): Widget_image_output {
-        if (this.state.pick === 'cushy' && this.state.cushy) return this.state.cushy
-        if (this.state.pick === 'paint' && this.state.paint) return this.state.paint
-        return this.state.comfy
+        return { imageID: this.state.imageID ?? this.schema.st.defaultImage.id }
     }
 }
 
@@ -923,8 +922,8 @@ export type Widget_imageOpt_state  = WidgetStateFields<ImageAnswerForm<'imageOpt
 export type Widget_imageOpt_output = Maybe<ImageAnswer>
 export interface Widget_imageOpt extends WidgetTypeHelpers<'imageOpt', Widget_imageOpt_opts, Widget_imageOpt_serial, Widget_imageOpt_state, Widget_imageOpt_output> {}
 export class Widget_imageOpt implements IWidget<'imageOpt', Widget_imageOpt_opts, Widget_imageOpt_serial, Widget_imageOpt_state, Widget_imageOpt_output> {
-    readonly isVerticalByDefault = true
-    readonly isCollapsible = true
+    readonly isVerticalByDefault = false
+    readonly isCollapsible = false
     readonly isOptional = true
     readonly id: string
     readonly type: 'imageOpt' = 'imageOpt'
@@ -940,20 +939,15 @@ export class Widget_imageOpt implements IWidget<'imageOpt', Widget_imageOpt_opts
             type: 'imageOpt',
             collapsed: input.startCollapsed,
             id: this.id,
-            active: input.default ? true : false,
-            comfy: input.defaultComfy ?? { imageName: 'example.png', type: 'ComfyImage' },
-            cushy: input.defaultCushy,
-            paint: input.defaultPaint,
-            pick: input.default ?? 'comfy',
+            active: input.defaultActive ?? false,
+            imageID: this.schema.st.defaultImage.id,
         }
         makeAutoObservable(this)
     }
     get serial(): Widget_imageOpt_serial { return this.state }
     get result(): Widget_imageOpt_output {
-        if (!this.state.active) return undefined
-        if (this.state.pick === 'cushy' && this.state.cushy) return this.state.cushy
-        if (this.state.pick === 'paint' && this.state.paint) return this.state.paint
-        return this.state.comfy
+        return { imageID: this.state.imageID ?? this.schema.st.defaultImage.id }
+
     }
 }
 
@@ -1350,7 +1344,7 @@ export class Widget_group<T extends { [key: string]: Widget }> implements IWidge
     get values() { return this.state.values }
     collapseAllEntries = () => {
         for (const [key, item] of this.entries) {
-            if (item.isCollapsible) item.state.collapsed = true
+            if (item.isCollapsible && item.state.active) item.state.collapsed = true
         }
     }
     expandAllEntries = () => {
@@ -1431,7 +1425,7 @@ export class Widget_groupOpt<T extends { [key: string]: Widget }> implements IWi
     ) {
         this.id = serial?.id ?? nanoid()
         if (serial){
-            const _newValues = input.items()
+            const _newValues = runWithGlobalForm(this.builder, () => input.items())
             this.state = { type:'groupOpt', id: this.id, active: serial.active, collapsed: serial.collapsed, values: {} as any }
             const prevValues_ = serial.values_??{}
             for (const key in _newValues) {
@@ -1446,7 +1440,7 @@ export class Widget_groupOpt<T extends { [key: string]: Widget }> implements IWi
                 }
             }
         } else {
-            const _items = input.items()
+            const _items = runWithGlobalForm(this.builder, () => input.items())
             this.state = { type: 'groupOpt', id: this.id, active: input.default ?? false, values: _items }
         }
         makeAutoObservable(this)
@@ -1642,7 +1636,7 @@ export class Widget_enum<T extends KnownEnumNames> implements IWidget<'enum', Wi
             type: 'enum',
             id: this.id,
             active: true,
-            val: extractDefaultValue(input.default as any /* 🔴 */) ?? (this.possibleValues[0] as any)
+            val: extractDefaultValue(input) ?? (this.possibleValues[0] as any)
         }
         makeAutoObservable(this)
     }

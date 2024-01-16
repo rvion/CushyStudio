@@ -1,7 +1,7 @@
 import { HostL } from 'src/models/Host'
-import { ModelInfo, getModelInfoFinalFilePath } from './modelList'
+import { ModelInfo, getModelInfoFinalFilePath } from '../modelList'
 import { toastError, toastSuccess } from 'src/utils/misc/toasts'
-import { PluginInfo } from './customNodeList'
+import { PluginInfo } from '../customNodeList'
 
 export class ComfyUIManager {
     constructor(public host: HostL) {}
@@ -22,6 +22,11 @@ export class ComfyUIManager {
     //     }
     // }
 
+    rebootComfyUI = async () => {
+        // @server.PromptServer.instance.routes.get("/manager/reboot")
+        return this.fetchGet('/manager/reboot')
+    }
+
     getCachedModels = (): Promise<ModelInfo[]> => {
         return this.fetchGet<ModelInfo[]>('/externalmodel/getlist?mode=cache')
     }
@@ -35,6 +40,47 @@ export class ComfyUIManager {
             console.error(`Install failed: ${/*model.title*/ ''} / ${exception}`)
             toastError('Model Installation Failed')
             return false
+        }
+    }
+
+    nodeList: Maybe<{
+        custom_nodes: {
+            title: string
+            installed: 'False' | 'True' | 'Update' /* ... */
+        }[]
+        chanel: 'string'
+    }> = null
+
+    // https://github.com/ltdrdata/ComfyUI-Manager/blob/4649d216b1842aa48b95d3f064c679a1b698e506/js/custom-nodes-downloader.js#L14C25-L14C88
+    getNodeList = async (
+        // prettier-ignore
+        /** @default: 'cache' */
+        mode:
+            /** DB: Channel (1day cache)' */
+            | 'cache'
+            /** text: 'DB: Local' */
+            | 'local'
+            /** DB: Channel (remote) */
+            | 'url'
+            ='cache',
+        /** @default: true */
+        skipUpdate: boolean = true,
+    ): Promise<{
+        custom_nodes: {
+            title: string
+            installed: 'False' | 'True' | 'Update' /* ... */
+        }[]
+        chanel: 'string'
+    }> => {
+        try {
+            const skip_update = skipUpdate ? '&skip_update=true' : ''
+            const status = await this.fetchGet(`/customnode/getlist?mode=${mode}${skip_update}`)
+            this.nodeList = status as any
+            return status as any
+        } catch (exception) {
+            console.error(`node list retrieval failed: ${exception}`)
+            toastError('node list retrieveal failed')
+            throw exception
         }
     }
 

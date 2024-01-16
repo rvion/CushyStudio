@@ -3,7 +3,6 @@ import { forwardRef } from 'react'
 import SortableList, { SortableItem, SortableKnob } from 'react-easy-sort'
 import { Widget, Widget_list } from 'src/controls/Widget'
 import { Message } from 'src/rsuite/shims'
-import { ListControlsUI } from '../shared/ListControlsUI'
 import { WidgetDI } from './WidgetUI.DI'
 
 export const WidgetListUI = observer(function WidgetListUI_<T extends Widget>(p: { widget: Widget_list<T> }) {
@@ -18,12 +17,12 @@ export const WidgetListUI = observer(function WidgetListUI_<T extends Widget>(p:
     // const indexWidth = len.toString().length
     return (
         <div className='_WidgetListUI' tw='flex-grow w-full'>
-            <ListControlsUI req={p.widget} />
+            {/* <ListControlsUI widget={p.widget} /> */}
             <SortableList onSortEnd={p.widget.moveItem} className='list' draggedItemClassName='dragged'>
-                <div tw='flex flex-col gap-1'>
+                <div tw='flex flex-col gap-2'>
                     {values.map((v, ix) => (
                         <SortableItem key={v.state.id}>
-                            <div tw='FIELD flex flex-col'>
+                            <div tw='flex flex-col'>
                                 <div tw='flex items-center'>
                                     <SortableKnob>
                                         <ListDragHandleUI widget={v} ix={ix} />

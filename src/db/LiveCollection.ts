@@ -11,7 +11,7 @@ export class LiveCollection<L extends LiveInstance<any, any>> {
             table: () => LiveTable<any, any>
             where: () => SQLWhere<L['data']>
             options?: SqlFindOptions
-            cache?: () => boolean
+            cache?: Maybe<() => boolean>
         },
     ) {
         makeAutoObservable(this)
