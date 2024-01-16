@@ -46,6 +46,11 @@ export const Panel_ComfyUIHosts = observer(function Panel_ComfyUIHosts_(p: { hos
                     <span className='material-symbols-outlined'>add</span>
                     Add Host
                 </div>
+
+                <div tw='virtualBorder p-2 rounded flex items-center gap-2 bg-info-2'>
+                    <span className='material-symbols-outlined'>info</span>
+                    The Primary host is the one used for typigns, and to send prompts to by default.
+                </div>
                 {/* <div
                     tw='btn-sm btn btn-primary'
                     onClick={() => {

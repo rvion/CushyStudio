@@ -1,5 +1,11 @@
 input[type='range']::-webkit-slider-runnable-track { height: 2rem; }
 
+.bg-primary-1 { background-color: oklch(var(--p)/.1); }
+.bg-primary-2 { background-color: oklch(var(--p)/.2); }
+
+.bg-info-1 { background-color: oklch(var(--in)/.1); }
+.bg-info-2 { background-color: oklch(var(--in)/.2); }
+
 .rct-tree-items-container {
     position: relative;
 }
