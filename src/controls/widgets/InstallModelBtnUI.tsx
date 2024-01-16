@@ -3,6 +3,7 @@ import { RevealUI } from 'src/rsuite/reveal/RevealUI'
 import { useSt } from 'src/state/stateContext'
 import { ModelInfo, getKnownModels, getModelInfoEnumName } from 'src/wiki/modelList'
 import { RecommendedModelDownload } from '../EnumDefault'
+import { QuickHostActionsUI } from 'src/wiki/ui/QuickHostActionsUI'
 
 export const InstallModelBtnUI = observer(function InstallModelBtnUI_<K extends KnownEnumNames>(p: {
     // widget: Widget_enum<K> | Widget_enumOpt<K>
@@ -19,6 +20,7 @@ export const InstallModelBtnUI = observer(function InstallModelBtnUI_<K extends 
                 <span className='material-symbols-outlined'>cloud_download</span>
             </div>
             <div tw='flex flex-col flex-wrap gap-1'>
+                <QuickHostActionsUI />
                 {/* {models.length} */}
                 {/* <pre>{JSON.stringify(p.widget.input.default)}</pre> */}
                 {models.map((mi) => {

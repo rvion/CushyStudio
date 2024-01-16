@@ -7,6 +7,7 @@ import { usePromise } from 'src/utils/misc/usePromise'
 import { PluginInstallStatus, InstallPluginCardUI } from './InstallPluginCardUI'
 import { toastError } from 'src/utils/misc/toasts'
 import { useAsyncAction } from 'src/importers/usePromise'
+import { QuickHostActionsUI } from './QuickHostActionsUI'
 
 export const InstallCustomNodeBtnUI = observer(function InstallCustomNodeBtnUI_<K extends KnownEnumNames>(p: {
     recomandation: CustomNodeRecommandation
@@ -33,16 +34,7 @@ export const InstallableCustomNodeListUI = observer(function InstallableCustomNo
     const foo = usePromise(() => st.mainHost.getComfyUIManager()?.getNodeList(), [])
     return (
         <div tw='flex flex-col flex-wrap gap-1 p-2'>
-            <div
-                className='btn btn-sm'
-                onClick={() => {
-                    // toastError('TODO: reload schema')
-                    // st.mainHost.fetchAndUpdateSchema()
-                    st.mainHost.getComfyUIManager()?.rebootComfyUI()
-                }}
-            >
-                Reload Schema
-            </div>
+            <QuickHostActionsUI />
             {suggestions.map(({ plugin, reason }, ix) => {
                 const entry = foo?.value?.custom_nodes.find((x) => x.title === plugin.title)
                 const status = ((): PluginInstallStatus => {
