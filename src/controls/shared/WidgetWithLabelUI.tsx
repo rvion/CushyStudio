@@ -182,11 +182,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
 
             {/* Install Custom nodes ------------------------------------ */}
             {p.widget.input.customNodesByTitle ?? p.widget.input.customNodesByURI ? (
-                <InstallCustomNodeBtnUI
-                    //
-                    customNodesByTitle={p.widget.input.customNodesByTitle}
-                    customNodesByURI={p.widget.input.customNodesByURI}
-                />
+                <InstallCustomNodeBtnUI recomandation={p.widget.input} />
             ) : null}
 
             {/* Spacer ------------------------------------ */}

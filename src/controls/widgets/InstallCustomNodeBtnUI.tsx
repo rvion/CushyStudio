@@ -4,17 +4,16 @@ import { STATE } from 'src/state/state'
 import { useSt } from 'src/state/stateContext'
 import { PluginInfo, getKnownPlugins } from 'src/wiki/customNodeList'
 import { ComfyUIManagerKnownCustomNode_Files, ComfyUIManagerKnownCustomNode_Title } from 'src/wiki/customNodeListTypes'
+import { CustomNodeRecommandation } from '../IWidget'
+import { getCustomNodeRegistry } from 'src/wiki/extension-node-map/extension-node-map-loader'
 
-const convertToPluginInfoList = (p: {
-    customNodesByTitle?: ComfyUIManagerKnownCustomNode_Title | ComfyUIManagerKnownCustomNode_Title[]
-    customNodesByURI?: ComfyUIManagerKnownCustomNode_Files | ComfyUIManagerKnownCustomNode_Files[]
-}): PluginInfo[] => {
-    const x = getKnownPlugins()
+const convertToPluginInfoList = (p: { recomandation: CustomNodeRecommandation }): PluginInfo[] => {
     const OUT = [] as PluginInfo[]
-    const { customNodesByTitle, customNodesByURI } = p
+    const { customNodesByTitle, customNodesByURI, customNodesByNameInComfy, customNodesByNameInCushy } = p.recomandation
 
     // by titles
     if (customNodesByTitle != null) {
+        const x = getKnownPlugins()
         const titles = Array.isArray(customNodesByTitle) ? customNodesByTitle : [customNodesByTitle]
         for (const title of titles) {
             const pluginInfo = x.byTitle.get(title)
@@ -22,7 +21,9 @@ const convertToPluginInfoList = (p: {
             OUT.push(pluginInfo)
         }
     }
+    // by URI
     if (customNodesByURI != null) {
+        const x = getKnownPlugins()
         const uris = Array.isArray(customNodesByURI) ? customNodesByURI : [customNodesByURI]
         for (const uri of uris) {
             const pluginInfo = x.byURI.get(uri)
@@ -30,13 +31,45 @@ const convertToPluginInfoList = (p: {
             OUT.push(pluginInfo)
         }
     }
+
+    // by comfy name
+    if (customNodesByNameInComfy != null) {
+        const x = getKnownPlugins()
+        const y = getCustomNodeRegistry()
+        const comfyNames = Array.isArray(customNodesByNameInComfy) ? customNodesByNameInComfy : [customNodesByNameInComfy]
+        for (const comfyName of comfyNames) {
+            const pluginURI = y.byNodeNameInComfy.get(comfyName)
+            if (!pluginURI) continue
+            const arr = Array.isArray(pluginURI) ? pluginURI : [pluginURI]
+            for (const url of arr) {
+                const pluginInfo = x.byURI.get(url)
+                if (!pluginInfo) continue
+                OUT.push(pluginInfo)
+            }
+        }
+    }
+
+    // by cushy name
+    if (customNodesByNameInCushy != null) {
+        const x = getKnownPlugins()
+        const y = getCustomNodeRegistry()
+        const cushyNames = Array.isArray(customNodesByNameInCushy) ? customNodesByNameInCushy : [customNodesByNameInCushy]
+        for (const cushyName of cushyNames) {
+            const pluginURI = y.byNodeNameInComfy.get(cushyName)
+            if (!pluginURI) continue
+            const arr = Array.isArray(pluginURI) ? pluginURI : [pluginURI]
+            for (const url of arr) {
+                const pluginInfo = x.byURI.get(url)
+                if (!pluginInfo) continue
+                OUT.push(pluginInfo)
+            }
+        }
+    }
     return OUT
 }
+
 export const InstallCustomNodeBtnUI = observer(function InstallCustomNodeBtnUI_<K extends KnownEnumNames>(p: {
-    // widget: Widget_enum<K> | Widget_enumOpt<K>
-    // modelFolderPrefix: string
-    customNodesByTitle?: ComfyUIManagerKnownCustomNode_Title | ComfyUIManagerKnownCustomNode_Title[]
-    customNodesByURI?: ComfyUIManagerKnownCustomNode_Files | ComfyUIManagerKnownCustomNode_Files[]
+    recomandation: CustomNodeRecommandation
 }) {
     const st = useSt()
     const plugins: PluginInfo[] = convertToPluginInfoList(p)
@@ -85,12 +118,3 @@ export const InstallCustomNodeBtnUI = observer(function InstallCustomNodeBtnUI_<
         </RevealUI>
     )
 })
-
-class Plugin {
-    get isInstalled() {
-        return false
-    }
-    constructor(public st: STATE, public p: PluginInfo) {
-        //
-    }
-}
