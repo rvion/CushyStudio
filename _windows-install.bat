@@ -8,27 +8,20 @@ set errorlevel=
 ECHO [===================================================]
 ECHO Ensuring Node version...
 
-:: Detect the operating system and architecture
-FOR /F "tokens=*" %%a IN ('wmic os get osarchitecture ^| findstr /r /c:"[0-9][0-9]-bit"') DO SET OS_ARCH=%%a
-ECHO Operating system: Windows
-ECHO Architecture: %OS_ARCH%
-
-:: Set the Node.js version and architecture based on OS and CPU architecture
+:: --------------------------------------------------------------------------------
 SET NODE_VERSION=v18.19.0
-IF "%OS_ARCH%"=="64-bit" (
-    SET NODE_ARCH=win-x86
-) ELSE (
-    SET NODE_ARCH=win-x64
-)
-ECHO Node.js architecture: %NODE_ARCH%
-
-:: Define the download URL
-SET URL=https://nodejs.org/dist/%NODE_VERSION%/node-%NODE_VERSION%-%NODE_ARCH%.zip
-ECHO Download URL: %URL%
-
-:: Define directories
+SET NODE_ARCH=win-x64
 SET CWD=%CD%
 SET EXTRACT_DIR=%CWD%\.cushy\node\%NODE_VERSION%-%NODE_ARCH%
+SET NODE_INSTALL_DIR=%EXTRACT_DIR%\node-%NODE_VERSION%-%NODE_ARCH%
+SET URL=https://nodejs.org/dist/%NODE_VERSION%/node-%NODE_VERSION%-%NODE_ARCH%.zip
+SET PATH=%NODE_INSTALL_DIR%;$PATH
+SET NPM_BIN_PATH=%NODE_INSTALL_DIR%\npm
+SET NODE_BIN_PATH=%NODE_INSTALL_DIR%\node
+:: ------------------------------------------------------------------------------
+
+ECHO Node.js architecture: %NODE_ARCH%
+ECHO Download URL: %URL%
 ECHO Current working directory: %CWD%
 ECHO Extraction directory: %EXTRACT_DIR%
 
@@ -37,7 +30,6 @@ IF NOT EXIST "%EXTRACT_DIR%" (
     MKDIR "%EXTRACT_DIR%"
 )
 
-SET NODE_INSTALL_DIR=%EXTRACT_DIR%\node-%NODE_VERSION%-%NODE_ARCH%
 :: Install Node.js if necessary
 ECHO Checking for existing Node.js installation at "%NODE_INSTALL_DIR%\node.exe" ...
 IF EXIST "%NODE_INSTALL_DIR%\node.exe" (
@@ -50,8 +42,6 @@ IF EXIST "%NODE_INSTALL_DIR%\node.exe" (
 ECHO [===================================================]
 ECHO Installing dependencies
 
-SET NPM_BIN_PATH=%NODE_INSTALL_DIR%\npm
-SET NODE_BIN_PATH=%NODE_INSTALL_DIR%\node
 ECHO NPM binary path: %NPM_BIN_PATH%
 ECHO Node binary path: %NODE_BIN_PATH%
 
