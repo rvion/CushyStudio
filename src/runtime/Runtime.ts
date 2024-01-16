@@ -538,14 +538,13 @@ export class Runtime<FIELDS extends WidgetDict = any> {
         return seed
     }
 
-    /** @deprecated */
-    loadImageAnswer2 = (ia: ImageAnswer): never => {
-        throw new Error('🔴 legacy function')
+    loadImageAnswerAsEnum = (ia: ImageAnswer): Promise<Enum_LoadImage_image> => {
+        const img = this.st.db.media_images.getOrThrow(ia.imageID)
+        return img.uploadAndReturnEnumName()
     }
 
-    /** @deprecated */
-    loadImageAnswerAsEnum = (ia: ImageAnswer): never => {
-        throw new Error('🔴 legacy function')
+    loadImageAnswer2 = (ia: ImageAnswer): MediaImageL => {
+        return this.st.db.media_images.getOrThrow(ia.imageID)
     }
 
     loadImageAnswer = async (ia: ImageAnswer): Promise<ImageAndMask> => {
