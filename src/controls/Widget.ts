@@ -1382,7 +1382,14 @@ export class Widget_group<T extends { [key: string]: Widget }> implements IWidge
             }
         } else {
             const _items = runWithGlobalForm(this.builder, () => input.items())
-            this.state = { type: 'group', id: this.id, active: true, values: _items, vertical: input.verticalLabels??true }
+            this.state = {
+                type: 'group',
+                id: this.id,
+                active: true,
+                values: _items,
+                vertical: input.verticalLabels ?? true,
+                collapsed: input.startCollapsed ?? true
+            }
         }
         makeAutoObservable(this)
     }
@@ -1441,7 +1448,13 @@ export class Widget_groupOpt<T extends { [key: string]: Widget }> implements IWi
             }
         } else {
             const _items = runWithGlobalForm(this.builder, () => input.items())
-            this.state = { type: 'groupOpt', id: this.id, active: input.default ?? false, values: _items }
+            this.state = {
+                type: 'groupOpt',
+                id: this.id,
+                active: input.default ?? false,
+                values: _items,
+                collapsed: input.startCollapsed ?? true
+            }
         }
         makeAutoObservable(this)
     }
