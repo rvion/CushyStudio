@@ -89,8 +89,9 @@ export const OutputDisplacementUI = observer(function OutputDisplacementUI_(p: {
                         <InputNumberUI
                             mode='float'
                             style={{ width: '5rem' }}
+                            step={0.01}
                             min={0}
-                            max={8}
+                            max={5}
                             value={state.displacementScale}
                             onValueChange={(next) => {
                                 state.displacementScale = next
@@ -103,6 +104,7 @@ export const OutputDisplacementUI = observer(function OutputDisplacementUI_(p: {
                             style={{ width: '5rem' }}
                             min={0}
                             max={1}
+                            step={0.01}
                             value={state.cutout}
                             onValueChange={(next) => {
                                 state.cutout = next
@@ -179,14 +181,14 @@ class State {
     metalness = 0
     roughness = 1
 
-    private _displacementScale = 3
+    private _displacementScale = 1
     get displacementScale() { return this._displacementScale } // prettier-ignore
     set displacementScale(v: number) {
         this._displacementScale = v
         this.material.displacementScale = v
     }
 
-    private _cutout = 0.5
+    private _cutout = 0.1
     get cutout() { return this._cutout } // prettier-ignore
     set cutout(v: number) {
         this._cutout = v
@@ -351,42 +353,7 @@ void main() {`,
     // renderCanvas: HTMLCanvasElement
     takeScreenshot = (st: STATE) => {
         const imgDataURL = this.renderer.domElement.toDataURL(`image/png`)
-        // saveDataUriAsImage(imgData, st, `3d-snapshots`)
         return createMediaImage_fromDataURI(st, imgDataURL, `3d-snapshots`)
-
-        // const w = window.innerWidth
-        // const h = window.innerHeight
-
-        // // Render the scene to the render target
-        // this.renderer.setRenderTarget(this.renderTarget)
-        // this.renderer.render(this.scene, this.camera)
-
-        // // Read the pixel data from the render target
-        // const pixelBuffer = new Uint8Array(w * h * 4)
-        // this.renderer.readRenderTargetPixels(this.renderTarget, 0, 0, w, h, pixelBuffer)
-
-        // // Create a canvas element to draw the image
-        // this.renderCanvas.width = w
-        // this.renderCanvas.height = h
-
-        // // Draw the pixel data onto the canvas
-        // const context = this.renderCanvas.getContext('2d')
-        // if (!context) {
-        //     return
-        // }
-
-        // const imageData = context.createImageData(w, h)
-        // imageData.data.set(pixelBuffer)
-        // context.putImageData(imageData, 0, 0)
-
-        // // flip image
-        // context.scale(1, -1)
-        // context.drawImage(this.renderCanvas, 0, -h)
-
-        // saveCanvasAsImage(this.renderCanvas, st, `3d-snapshots`)
-
-        // reset
-        // this.renderer.setRenderTarget(null)
     }
 
     controls: OrbitControls2
@@ -448,8 +415,8 @@ void main() {`,
         // Create a plane geometry for the image
         this.geometry = new THREE.PlaneGeometry(
             //
-            5,
-            5 * aspectRatio,
+            1,
+            1 * aspectRatio,
             Math.round(p.width),
             Math.round(p.height),
         )
@@ -562,7 +529,7 @@ void main() {`,
         this.scene.add(this.planeSym)
 
         // Camera position
-        this.camera.position.z = 7
+        this.camera.position.z = 2
 
         // Lighting
         this.ambientLight = new THREE.AmbientLight(0xffffff, 3)
