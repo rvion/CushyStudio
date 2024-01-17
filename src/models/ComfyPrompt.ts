@@ -19,8 +19,8 @@ import { mkdirSync, writeFileSync } from 'fs'
 
 export interface ComfyPromptL extends LiveInstance<ComfyPromptT, ComfyPromptL> {}
 export class ComfyPromptL {
-    _resolve!: (value: this) => void
-    _rejects!: (reason: any) => void
+    private _resolve!: (value: this) => void
+    private _rejects!: (reason: any) => void
     finished: Promise<this> = new Promise((resolve, rejects) => {
         this._resolve = resolve
         this._rejects = rejects
@@ -115,9 +115,10 @@ export class ComfyPromptL {
     private onExecuted = (msg: WsMsgExecuted) => {
         const promptNodeID = msg.data.node
         for (const img of msg.data.output.images) {
-            void this.retrieveImage(img, promptNodeID)
+            this.pendingPromises.push(this.retrieveImage(img, promptNodeID))
         }
     }
+    private pendingPromises: Promise<void>[] = []
 
     retrieveImage = async (
         //
@@ -183,11 +184,9 @@ export class ComfyPromptL {
     // images: ImageL[] = []
 
     /** finish this step */
-    private _finish = (p: Pick<ComfyPromptT, 'status' | 'error'>) => {
-        this.update({
-            ...p,
-            executed: SQLITE_true,
-        })
+    private _finish = async (p: Pick<ComfyPromptT, 'status' | 'error'>) => {
+        this.update({ ...p, executed: SQLITE_true })
+        await Promise.all(this.pendingPromises)
         if (this._resolve == null) throw new Error('❌ invariant violation: ScriptStep_prompt.resolve is null.')
         this._resolve(this)
     }
