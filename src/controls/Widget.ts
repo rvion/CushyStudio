@@ -1448,12 +1448,13 @@ export class Widget_groupOpt<T extends { [key: string]: Widget }> implements IWi
             }
         } else {
             const _items = runWithGlobalForm(this.builder, () => input.items())
+            const startActive = input.default ?? false
             this.state = {
                 type: 'groupOpt',
                 id: this.id,
-                active: input.default ?? false,
+                active: startActive,
                 values: _items,
-                collapsed: input.startCollapsed ?? true
+                collapsed: input.startCollapsed ?? startActive
             }
         }
         makeAutoObservable(this)
