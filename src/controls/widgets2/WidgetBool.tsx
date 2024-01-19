@@ -1,6 +1,6 @@
 import type { ComfySchemaL } from 'src/models/Schema'
 import type { FormBuilder } from '../FormBuilder'
-import type { IWidget2, WidgetConfigFields, WidgetStateFields, WidgetTypeHelpers2 } from '../IWidget'
+import type { IWidget2, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers2 } from '../IWidget'
 
 import { computed, makeObservable, observable } from 'mobx'
 import { observer } from 'mobx-react-lite'
@@ -10,7 +10,7 @@ import { nanoid } from 'nanoid'
 export type Widget_bool_config = WidgetConfigFields<{ default?: boolean }>
 
 // SERIAL
-export type Widget_bool_serial = WidgetStateFields<{ type: 'bool' }>
+export type Widget_bool_serial = WidgetSerialFields<{ type: 'bool' }>
 
 // OUT
 export type Widget_bool_output = boolean

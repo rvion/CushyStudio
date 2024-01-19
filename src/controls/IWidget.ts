@@ -55,7 +55,7 @@ export type GetWidgetResult<Req> = Req extends WidgetTypeHelpers<any, any, any, 
 export type GetWidgetState<Req> = Req extends WidgetTypeHelpers<any, any, any, infer S, any> ? S : never
 
 export type LabelPos = 'start' | 'end'
-export type WidgetStateFields<X> = X & {
+export type WidgetSerialFields<X> = X & {
     id: string
     active?: boolean
     collapsed?: boolean

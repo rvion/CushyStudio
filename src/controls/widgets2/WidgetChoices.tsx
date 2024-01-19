@@ -12,7 +12,7 @@ import { runWithGlobalForm } from 'src/models/_ctx2'
 import { FormBuilder } from '../FormBuilder'
 import {
     WidgetConfigFields,
-    WidgetStateFields,
+    WidgetSerialFields,
     GetWidgetResult,
     WidgetTypeHelpers,
     IWidget,
@@ -32,7 +32,7 @@ export type Widget_choices_config<T extends BranchDefinitions> = WidgetConfigFie
 }>
 
 // SERIAL
-export type Widget_choices_serial<T extends BranchDefinitions> = WidgetStateFields<{
+export type Widget_choices_serial<T extends BranchDefinitions> = WidgetSerialFields<{
     type: 'choices'
     active: true
     branches: { [k in keyof T]?: boolean }

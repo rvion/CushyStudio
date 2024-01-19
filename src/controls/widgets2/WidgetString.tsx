@@ -2,7 +2,7 @@
 
 import type { ComfySchemaL } from 'src/models/Schema'
 import type { FormBuilder } from '../FormBuilder'
-import type { IWidget2, WidgetConfigFields, WidgetStateFields, WidgetTypeHelpers2 } from '../IWidget'
+import type { IWidget2, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers2 } from '../IWidget'
 
 import { makeAutoObservable } from 'mobx'
 import { observer } from 'mobx-react-lite'
@@ -17,7 +17,7 @@ export type Widget_str_config<T extends { optional: boolean }> = WidgetConfigFie
 }>
 
 // SERIAL
-export type Widget_str_serial = WidgetStateFields<{
+export type Widget_str_serial = WidgetSerialFields<{
     type: 'str'
     active: true
     val: string

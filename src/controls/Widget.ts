@@ -11,7 +11,7 @@ import type { CleanedEnumResult } from 'src/types/EnumUtils'
 import type { WidgetPromptOutput } from 'src/widgets/prompter/WidgetPromptUI'
 import type { PossibleSerializedNodes } from 'src/widgets/prompter/plugins/PossibleSerializedNodes'
 import type { FormBuilder } from './FormBuilder'
-import type { GetWidgetResult, IWidget, WidgetConfigFields, WidgetStateFields, WidgetTypeHelpers } from './IWidget'
+import type { GetWidgetResult, IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from './IWidget'
 import type { AspectRatio, CushySize, CushySizeByRatio, ImageAnswer, ImageAnswerForm, SDModelType } from './misc/InfoAnswer'
 
 import { computed, makeAutoObservable, makeObservable, observable } from 'mobx'
@@ -95,8 +95,8 @@ export type OrbitData = {
     elevation: number;
 }
 export type Widget_orbit_config  = WidgetConfigFields<{ default?: Partial<OrbitData> }>
-export type Widget_orbit_serial = WidgetStateFields<{ type: 'orbit', active: true; val: OrbitData }>
-export type Widget_orbit_state  = WidgetStateFields<{ type: 'orbit', active: true; val: OrbitData }>
+export type Widget_orbit_serial = WidgetSerialFields<{ type: 'orbit', active: true; val: OrbitData }>
+export type Widget_orbit_state  = WidgetSerialFields<{ type: 'orbit', active: true; val: OrbitData }>
 export type Widget_orbit_output = OrbitData & {
     englishSummary: string;
 }
@@ -155,8 +155,8 @@ export class Widget_orbit implements IWidget<'orbit', Widget_orbit_config, Widge
 
 // 🅿️ markdown ==============================================================================
 export type Widget_markdown_config = WidgetConfigFields<{ markdown: string | ((formRoot:Widget_group<any>) => string); }>
-export type Widget_markdown_serial = WidgetStateFields<{ type: 'markdown', active: true }>
-export type Widget_markdown_state  = WidgetStateFields<{ type: 'markdown', active: true }>
+export type Widget_markdown_serial = WidgetSerialFields<{ type: 'markdown', active: true }>
+export type Widget_markdown_state  = WidgetSerialFields<{ type: 'markdown', active: true }>
 export type Widget_markdown_output = { type: 'markdown', active: true }
 export interface Widget_markdown extends WidgetTypeHelpers<'markdown', Widget_markdown_config, Widget_markdown_serial, Widget_markdown_state, Widget_markdown_output> {}
 export class Widget_markdown implements IWidget<'markdown', Widget_markdown_config, Widget_markdown_serial, Widget_markdown_state, Widget_markdown_output> {
@@ -190,8 +190,8 @@ export class Widget_markdown implements IWidget<'markdown', Widget_markdown_conf
 // 🅿️ custom ==============================================================================
 export type CustomWidgetProps<T> = { widget: Widget_custom<T>; extra: import('./widgets/WidgetCustomUI').UIKit }
 export type Widget_custom_config  <T> = WidgetConfigFields<{ defaultValue: () => T; Component: FC<CustomWidgetProps<T>>}>
-export type Widget_custom_serial<T> = WidgetStateFields<{ type: 'custom'; active: true; value: T }>
-export type Widget_custom_state <T> = WidgetStateFields<{ type: 'custom'; active: true; value: T }>
+export type Widget_custom_serial<T> = WidgetSerialFields<{ type: 'custom'; active: true; value: T }>
+export type Widget_custom_state <T> = WidgetSerialFields<{ type: 'custom'; active: true; value: T }>
 export type Widget_custom_output<T> = T
 export interface Widget_custom<T> extends WidgetTypeHelpers<'custom', Widget_custom_config<T>, Widget_custom_serial<T>, Widget_custom_state<T>, Widget_custom_output<T>> {}
 export class Widget_custom<T> implements IWidget<'custom', Widget_custom_config<T>, Widget_custom_serial<T>, Widget_custom_state<T>, Widget_custom_output<T>> {
@@ -232,8 +232,8 @@ export class Widget_custom<T> implements IWidget<'custom', Widget_custom_config<
 
 // 🅿️ str ==============================================================================
 export type Widget_color_config = WidgetConfigFields<{ default?: string; }>
-export type Widget_color_serial = WidgetStateFields<{ type: 'color', active: true; val: string }>
-export type Widget_color_state  = WidgetStateFields<{ type: 'color', active: true; val: string }>
+export type Widget_color_serial = WidgetSerialFields<{ type: 'color', active: true; val: string }>
+export type Widget_color_state  = WidgetSerialFields<{ type: 'color', active: true; val: string }>
 export type Widget_color_output = string
 export interface Widget_color extends WidgetTypeHelpers<'color', Widget_color_config, Widget_color_serial, Widget_color_state, Widget_color_output> {}
 export class Widget_color implements IWidget<'color', Widget_color_config, Widget_color_serial, Widget_color_state, Widget_color_output> {
@@ -260,7 +260,7 @@ export class Widget_color implements IWidget<'color', Widget_color_config, Widge
 // 🅿️ prompt ==============================================================================
 export type Widget_prompt_config  = WidgetConfigFields<{ default?: string | WidgetPromptOutput }>
 export type Widget_prompt_serial = Widget_prompt_state
-export type Widget_prompt_state  = WidgetStateFields<{ type: 'prompt'; active: true; /*text: string;*/ tokens: PossibleSerializedNodes[] }>
+export type Widget_prompt_state  = WidgetSerialFields<{ type: 'prompt'; active: true; /*text: string;*/ tokens: PossibleSerializedNodes[] }>
 export type Widget_prompt_output = { type: 'prompt'; active: true; /*text: string;*/ tokens: PossibleSerializedNodes[] }
 export interface Widget_prompt extends WidgetTypeHelpers<'prompt', Widget_prompt_config, Widget_prompt_serial, Widget_prompt_state, Widget_prompt_output> {}
 export class Widget_prompt implements IWidget<'prompt', Widget_prompt_config, Widget_prompt_serial, Widget_prompt_state, Widget_prompt_output> {
@@ -313,7 +313,7 @@ export class Widget_prompt implements IWidget<'prompt', Widget_prompt_config, Wi
 // 🅿️ promptOpt ==============================================================================
 export type Widget_promptOpt_config  = WidgetConfigFields<{ default?: string | WidgetPromptOutput }>
 export type Widget_promptOpt_serial = Widget_promptOpt_state // { type: 'promptOpt'; active: boolean; /* text: string;*/ tokens: PossibleSerializedNodes[] }
-export type Widget_promptOpt_state  = WidgetStateFields<{ type: 'promptOpt'; active: boolean; /* text: string;*/ tokens: PossibleSerializedNodes[] }>
+export type Widget_promptOpt_state  = WidgetSerialFields<{ type: 'promptOpt'; active: boolean; /* text: string;*/ tokens: PossibleSerializedNodes[] }>
 export type Widget_promptOpt_output = Maybe<WidgetPromptOutput>
 export interface Widget_promptOpt extends WidgetTypeHelpers<'promptOpt', Widget_promptOpt_config, Widget_promptOpt_serial, Widget_promptOpt_state, Widget_promptOpt_output> {}
 export class Widget_promptOpt implements IWidget<'promptOpt', Widget_promptOpt_config, Widget_promptOpt_serial, Widget_promptOpt_state, Widget_promptOpt_output> {
@@ -362,7 +362,7 @@ export class Widget_promptOpt implements IWidget<'promptOpt', Widget_promptOpt_c
 // 🅿️ seed ==============================================================================
 export type Widget_seed_config  = WidgetConfigFields<{ default?: number; defaultMode?: 'randomize' | 'fixed' | 'last', min?: number; max?: number }>
 export type Widget_seed_serial = Widget_seed_state
-export type Widget_seed_state  = WidgetStateFields<{ type:'seed', active: true; val: number, mode: 'randomize' | 'fixed' | 'last' }>
+export type Widget_seed_state  = WidgetSerialFields<{ type:'seed', active: true; val: number, mode: 'randomize' | 'fixed' | 'last' }>
 export type Widget_seed_output = number
 export interface Widget_seed extends WidgetTypeHelpers<'seed', Widget_seed_config, Widget_seed_serial, Widget_seed_state, Widget_seed_output> {}
 export class Widget_seed implements IWidget<'seed', Widget_seed_config, Widget_seed_serial, Widget_seed_state, Widget_seed_output> {
@@ -400,7 +400,7 @@ export class Widget_seed implements IWidget<'seed', Widget_seed_config, Widget_s
 // 🅿️ int ==============================================================================
 export type Widget_int_config = WidgetConfigFields<{ default?: number; min?: number; max?: number, step?: number, hideSlider?: boolean }>
 export type Widget_int_serial = Widget_int_state
-export type Widget_int_state  = WidgetStateFields<{ type:'int', active: true; val: number }>
+export type Widget_int_state  = WidgetSerialFields<{ type:'int', active: true; val: number }>
 export type Widget_int_output = number
 export interface Widget_int extends WidgetTypeHelpers<'int', Widget_int_config, Widget_int_serial, Widget_int_state, Widget_int_output> {}
 export class Widget_int implements IWidget<'int', Widget_int_config, Widget_int_serial, Widget_int_state, Widget_int_output> {
@@ -431,7 +431,7 @@ export class Widget_int implements IWidget<'int', Widget_int_config, Widget_int_
 // 🅿️ float ==============================================================================
 export type Widget_float_config  = WidgetConfigFields<{ default?: number; min?: number; max?: number, step?: number, hideSlider?: boolean }>
 export type Widget_float_serial = Widget_float_state
-export type Widget_float_state  = WidgetStateFields<{ type:'float', active: true; val: number }>
+export type Widget_float_state  = WidgetSerialFields<{ type:'float', active: true; val: number }>
 export type Widget_float_output = number
 export interface Widget_float extends WidgetTypeHelpers<'float', Widget_float_config, Widget_float_serial, Widget_float_state, Widget_float_output> {}
 export class Widget_float implements IWidget<'float', Widget_float_config, Widget_float_serial, Widget_float_state, Widget_float_output> {
@@ -465,7 +465,7 @@ export class Widget_float implements IWidget<'float', Widget_float_config, Widge
 // 🅿️ inlineRun ==============================================================================
 export type Widget_inlineRun_config  = WidgetConfigFields<{text?: string, kind?: `primary`|`special`|`warning`}>
 export type Widget_inlineRun_serial = Widget_inlineRun_state
-export type Widget_inlineRun_state  = WidgetStateFields<{ type:'inlineRun', active: true; val: boolean }>
+export type Widget_inlineRun_state  = WidgetSerialFields<{ type:'inlineRun', active: true; val: boolean }>
 export type Widget_inlineRun_output = boolean
 export interface Widget_inlineRun extends WidgetTypeHelpers<'inlineRun', Widget_inlineRun_config, Widget_inlineRun_serial, Widget_inlineRun_state, Widget_inlineRun_output> {}
 export class Widget_inlineRun implements IWidget<'inlineRun', Widget_inlineRun_config, Widget_inlineRun_serial, Widget_inlineRun_state, Widget_inlineRun_output> {
@@ -503,7 +503,7 @@ export type Widget_intOpt_config  = WidgetConfigFields<{
     hideSlider?: boolean
 }>
 export type Widget_intOpt_serial = Widget_intOpt_state
-export type Widget_intOpt_state  = WidgetStateFields<{ type: 'intOpt', active: boolean; val: number }>
+export type Widget_intOpt_state  = WidgetSerialFields<{ type: 'intOpt', active: boolean; val: number }>
 export type Widget_intOpt_output = Maybe<number>
 export interface Widget_intOpt extends WidgetTypeHelpers<'intOpt', Widget_intOpt_config, Widget_intOpt_serial, Widget_intOpt_state, Widget_intOpt_output> {}
 export class Widget_intOpt implements IWidget<'intOpt', Widget_intOpt_config, Widget_intOpt_serial, Widget_intOpt_state, Widget_intOpt_output> {
@@ -538,7 +538,7 @@ export class Widget_intOpt implements IWidget<'intOpt', Widget_intOpt_config, Wi
 // 🅿️ floatOpt ==============================================================================
 export type Widget_floatOpt_config  = WidgetConfigFields<{ default?: number; min?: number; max?: number; step?: number, hideSlider?: boolean }>
 export type Widget_floatOpt_serial = Widget_floatOpt_state
-export type Widget_floatOpt_state  = WidgetStateFields<{ type: 'floatOpt', active: boolean; val: number }>
+export type Widget_floatOpt_state  = WidgetSerialFields<{ type: 'floatOpt', active: boolean; val: number }>
 export type Widget_floatOpt_output = Maybe<number>
 export interface Widget_floatOpt extends WidgetTypeHelpers<'floatOpt', Widget_floatOpt_config, Widget_floatOpt_serial, Widget_floatOpt_state, Widget_floatOpt_output> {}
 export class Widget_floatOpt implements IWidget<'floatOpt', Widget_floatOpt_config, Widget_floatOpt_serial, Widget_floatOpt_state, Widget_floatOpt_output> {
@@ -578,7 +578,7 @@ export type Widget_size_config  = WidgetConfigFields<{
     step?: number
 }>
 export type Widget_size_serial = Widget_size_state
-export type Widget_size_state  = WidgetStateFields<CushySize>
+export type Widget_size_state  = WidgetSerialFields<CushySize>
 export type Widget_size_output = CushySize
 export interface Widget_size extends WidgetTypeHelpers<'size', Widget_size_config, Widget_size_serial, Widget_size_state, Widget_size_output> {}
 export class Widget_size implements IWidget<'size', Widget_size_config, Widget_size_serial, Widget_size_state, Widget_size_output> {
@@ -630,7 +630,7 @@ export type Widget_matrix_cell = {
 }
 export type Widget_matrix_config  = WidgetConfigFields<{ default?: { row: string; col: string }[]; rows: string[]; cols: string[] }>
 export type Widget_matrix_serial = Widget_matrix_state
-export type Widget_matrix_state  = WidgetStateFields<{ type: 'matrix', active: true; selected: Widget_matrix_cell[] }>
+export type Widget_matrix_state  = WidgetSerialFields<{ type: 'matrix', active: true; selected: Widget_matrix_cell[] }>
 export type Widget_matrix_output = Widget_matrix_cell[]
 export interface Widget_matrix extends WidgetTypeHelpers<'matrix', Widget_matrix_config, Widget_matrix_serial, Widget_matrix_state, Widget_matrix_output> {}
 export class Widget_matrix implements IWidget<'matrix', Widget_matrix_config, Widget_matrix_serial, Widget_matrix_state, Widget_matrix_output> {
@@ -726,7 +726,7 @@ export class Widget_matrix implements IWidget<'matrix', Widget_matrix_config, Wi
 // 🅿️ loras ==============================================================================
 export type Widget_loras_config  = WidgetConfigFields<{ default?: SimplifiedLoraDef[] }>
 export type Widget_loras_serial = Widget_loras_state
-export type Widget_loras_state  = WidgetStateFields<{ type: 'loras', active: true; loras: SimplifiedLoraDef[] }>
+export type Widget_loras_state  = WidgetSerialFields<{ type: 'loras', active: true; loras: SimplifiedLoraDef[] }>
 export type Widget_loras_output = SimplifiedLoraDef[]
 export interface Widget_loras extends WidgetTypeHelpers<'loras', Widget_loras_config, Widget_loras_serial, Widget_loras_state, Widget_loras_output> {}
 export class Widget_loras implements IWidget<'loras', Widget_loras_config, Widget_loras_serial, Widget_loras_state, Widget_loras_output> {
@@ -786,7 +786,7 @@ export type Widget_image_config  = WidgetConfigFields<{
     assetSuggested?: RelativePath
 }>
 export type Widget_image_serial = Widget_image_state
-export type Widget_image_state  = WidgetStateFields<ImageAnswerForm<'image', true>>
+export type Widget_image_state  = WidgetSerialFields<ImageAnswerForm<'image', true>>
 export type Widget_image_output = ImageAnswer
 export interface Widget_image extends WidgetTypeHelpers<'image', Widget_image_config, Widget_image_serial, Widget_image_state, Widget_image_output> {}
 export class Widget_image implements IWidget<'image', Widget_image_config, Widget_image_serial, Widget_image_state, Widget_image_output> {
@@ -820,7 +820,7 @@ export class Widget_image implements IWidget<'image', Widget_image_config, Widge
 // 🅿️ imageOpt ==============================================================================
 export type Widget_imageOpt_config  = Widget_image_config // same as image
 export type Widget_imageOpt_serial = Widget_imageOpt_state
-export type Widget_imageOpt_state  = WidgetStateFields<ImageAnswerForm<'imageOpt', boolean>>
+export type Widget_imageOpt_state  = WidgetSerialFields<ImageAnswerForm<'imageOpt', boolean>>
 export type Widget_imageOpt_output = Maybe<ImageAnswer>
 export interface Widget_imageOpt extends WidgetTypeHelpers<'imageOpt', Widget_imageOpt_config, Widget_imageOpt_serial, Widget_imageOpt_state, Widget_imageOpt_output> {}
 export class Widget_imageOpt implements IWidget<'imageOpt', Widget_imageOpt_config, Widget_imageOpt_serial, Widget_imageOpt_state, Widget_imageOpt_output> {
@@ -857,7 +857,7 @@ export class Widget_imageOpt implements IWidget<'imageOpt', Widget_imageOpt_conf
 export type BaseSelectEntry = { id: string, label?: string }
 export type Widget_selectOne_config <T extends BaseSelectEntry>  = WidgetConfigFields<{ default?: T; choices: T[] | ((formRoot:Maybe<Widget_group<any>>) => T[]) }>
 export type Widget_selectOne_serial<T extends BaseSelectEntry> = Widget_selectOne_state<T>
-export type Widget_selectOne_state <T extends BaseSelectEntry>  = WidgetStateFields<{ type:'selectOne', query: string; val: T }>
+export type Widget_selectOne_state <T extends BaseSelectEntry>  = WidgetSerialFields<{ type:'selectOne', query: string; val: T }>
 export type Widget_selectOne_output<T extends BaseSelectEntry> = T
 export interface Widget_selectOne<T>  extends WidgetTypeHelpers<'selectOne', Widget_selectOne_config<T>, Widget_selectOne_serial<T>, Widget_selectOne_state<T>, Widget_selectOne_output<T>> {}
 export class Widget_selectOne<T extends BaseSelectEntry> implements IWidget<'selectOne', Widget_selectOne_config<T>, Widget_selectOne_serial<T>, Widget_selectOne_state<T>, Widget_selectOne_output<T>> {
@@ -900,7 +900,7 @@ export class Widget_selectOne<T extends BaseSelectEntry> implements IWidget<'sel
 // 🅿️ selectMany ==============================================================================
 export type Widget_selectMany_config<T extends BaseSelectEntry>  = WidgetConfigFields<{ default?: T[]; choices: T[] | ((formRoot:Maybe<Widget_group<any>>) => T[]) }>
 export type Widget_selectMany_serial<T extends BaseSelectEntry> = Widget_selectMany_state<T>
-export type Widget_selectMany_state<T extends BaseSelectEntry>  = WidgetStateFields<{ type: 'selectMany', query: string; values: T[] }>
+export type Widget_selectMany_state<T extends BaseSelectEntry>  = WidgetSerialFields<{ type: 'selectMany', query: string; values: T[] }>
 export type Widget_selectMany_output<T extends BaseSelectEntry> = T[]
 export interface Widget_selectMany<T extends BaseSelectEntry> extends WidgetTypeHelpers<'selectMany', Widget_selectMany_config<T>, Widget_selectMany_serial<T>, Widget_selectMany_state<T>, Widget_selectMany_output<T>> {}
 export class Widget_selectMany<T extends BaseSelectEntry> implements IWidget<'selectMany', Widget_selectMany_config<T>, Widget_selectMany_serial<T>, Widget_selectMany_state<T>, Widget_selectMany_output<T>> {
@@ -974,8 +974,8 @@ export type Widget_list_config<T extends Widget>  = WidgetConfigFields<{
     max?:number,
     defaultLength?:number
 }>
-export type Widget_list_serial<T extends Widget> = WidgetStateFields<{ type: 'list', active: true; items_: T['$Serial'][] }>
-export type Widget_list_state<T extends Widget>  = WidgetStateFields<{ type: 'list', active: true; items: T[] }>
+export type Widget_list_serial<T extends Widget> = WidgetSerialFields<{ type: 'list', active: true; items_: T['$Serial'][] }>
+export type Widget_list_state<T extends Widget>  = WidgetSerialFields<{ type: 'list', active: true; items: T[] }>
 export type Widget_list_output<T extends Widget> = T['$Output'][]
 export interface Widget_list<T extends Widget> extends WidgetTypeHelpers<'list', Widget_list_config<T>, Widget_list_serial<T>, Widget_list_state<T>, Widget_list_output<T>> {}
 export class Widget_list<T extends Widget> implements IWidget<'list', Widget_list_config<T>, Widget_list_serial<T>, Widget_list_state<T>, Widget_list_output<T>> {
@@ -1092,8 +1092,8 @@ export type Widget_listExt_config<T extends Widget>  = WidgetConfigFields<{
     max?:number,
     defaultLength?:number
 }>
-export type Widget_listExt_serial<T extends Widget> = WidgetStateFields<{ type: 'listExt', active: true; items_: ({item_: T['$Serial']} & ItemExt)[] } & RootExt>
-export type Widget_listExt_state <T extends Widget> = WidgetStateFields<{ type: 'listExt', active: true; items:  ({item:  T           } & ItemExt)[] } & RootExt>
+export type Widget_listExt_serial<T extends Widget> = WidgetSerialFields<{ type: 'listExt', active: true; items_: ({item_: T['$Serial']} & ItemExt)[] } & RootExt>
+export type Widget_listExt_state <T extends Widget> = WidgetSerialFields<{ type: 'listExt', active: true; items:  ({item:  T           } & ItemExt)[] } & RootExt>
 export type Widget_listExt_output<T extends Widget> = RootExt & { items: (ItemExt & {item: T['$Output'] })[] }
 export interface Widget_listExt  <T extends Widget> extends     WidgetTypeHelpers<'listExt', Widget_listExt_config<T>, Widget_listExt_serial<T>, Widget_listExt_state<T>, Widget_listExt_output<T>> {}
 export class Widget_listExt      <T extends Widget> implements IWidget<'listExt', Widget_listExt_config<T>, Widget_listExt_serial<T>, Widget_listExt_state<T>, Widget_listExt_output<T>> {
@@ -1171,8 +1171,8 @@ export class Widget_listExt      <T extends Widget> implements IWidget<'listExt'
 
 // 🅿️ group ==============================================================================
 export type Widget_group_config <T extends { [key: string]: Widget }> = WidgetConfigFields<{ items: () => T, topLevel?: boolean, verticalLabels?: boolean }>
-export type Widget_group_serial<T extends { [key: string]: Widget }> = WidgetStateFields<{ type: 'group', active: true; values_: {[k in keyof T]: T[k]['$Serial']}, collapsed?: boolean }>
-export type Widget_group_state <T extends { [key: string]: Widget }> = WidgetStateFields<{ type: 'group', active: true; values: T, vertical?: boolean }>
+export type Widget_group_serial<T extends { [key: string]: Widget }> = WidgetSerialFields<{ type: 'group', active: true; values_: {[k in keyof T]: T[k]['$Serial']}, collapsed?: boolean }>
+export type Widget_group_state <T extends { [key: string]: Widget }> = WidgetSerialFields<{ type: 'group', active: true; values: T, vertical?: boolean }>
 export type Widget_group_output<T extends { [key: string]: Widget }> = { [k in keyof T]: GetWidgetResult<T[k]> }
 export interface Widget_group<T extends { [key: string]: Widget }> extends WidgetTypeHelpers<'group', Widget_group_config<T>, Widget_group_serial<T>, Widget_group_state<T>, Widget_group_output<T>> {}
 export class Widget_group<T extends { [key: string]: Widget }> implements IWidget<'group', Widget_group_config<T>, Widget_group_serial<T>, Widget_group_state<T>, Widget_group_output<T>> {
@@ -1253,8 +1253,8 @@ export class Widget_group<T extends { [key: string]: Widget }> implements IWidge
 
 // 🅿️ groupOpt ==============================================================================
 export type Widget_groupOpt_config <T extends { [key: string]: Widget }> = WidgetConfigFields<{ default?: boolean; items: () => T, topLevel?: false }>
-export type Widget_groupOpt_serial<T extends { [key: string]: Widget }> = WidgetStateFields<{ type: 'groupOpt', active: boolean; values_: {[K in keyof T]: T[K]['$Serial']}, }>
-export type Widget_groupOpt_state <T extends { [key: string]: Widget }> = WidgetStateFields<{ type: 'groupOpt', active: boolean; values: T, }>
+export type Widget_groupOpt_serial<T extends { [key: string]: Widget }> = WidgetSerialFields<{ type: 'groupOpt', active: boolean; values_: {[K in keyof T]: T[K]['$Serial']}, }>
+export type Widget_groupOpt_state <T extends { [key: string]: Widget }> = WidgetSerialFields<{ type: 'groupOpt', active: boolean; values: T, }>
 export type Widget_groupOpt_output<T extends { [key: string]: Widget }> = Maybe<{ [k in keyof T]: GetWidgetResult<T[k]> }>
 export interface Widget_groupOpt<T extends { [key: string]: Widget }> extends WidgetTypeHelpers<'groupOpt', Widget_groupOpt_config<T>, Widget_groupOpt_serial<T>, Widget_groupOpt_state<T>, Widget_groupOpt_output<T>> {}
 export class Widget_groupOpt<T extends { [key: string]: Widget }> implements IWidget<'groupOpt', Widget_groupOpt_config<T>, Widget_groupOpt_serial<T>, Widget_groupOpt_state<T>, Widget_groupOpt_output<T>> {
@@ -1325,7 +1325,7 @@ export class Widget_groupOpt<T extends { [key: string]: Widget }> implements IWi
 // 🅿️ enum ==============================================================================
 export type Widget_enum_config<T extends KnownEnumNames>  = WidgetConfigFields<{ default?: Requirable[T] | EnumDefault<T>; enumName: T }>
 export type Widget_enum_serial<T extends KnownEnumNames> = Widget_enum_state<T>
-export type Widget_enum_state<T extends KnownEnumNames>  = WidgetStateFields<{ type: 'enum', active: true; val: Requirable[T] }>
+export type Widget_enum_state<T extends KnownEnumNames>  = WidgetSerialFields<{ type: 'enum', active: true; val: Requirable[T] }>
 export type Widget_enum_output<T extends KnownEnumNames> = Requirable[T]
 export interface Widget_enum<T extends KnownEnumNames> extends WidgetTypeHelpers<'enum', Widget_enum_config<T>, Widget_enum_serial<T>, Widget_enum_state<T>, Widget_enum_output<T>> {}
 export class Widget_enum<T extends KnownEnumNames> implements IWidget<'enum', Widget_enum_config<T>, Widget_enum_serial<T>, Widget_enum_state<T>, Widget_enum_output<T>> {
@@ -1359,7 +1359,7 @@ export class Widget_enum<T extends KnownEnumNames> implements IWidget<'enum', Wi
 // 🅿️ enumOpt ==============================================================================
 export type Widget_enumOpt_config<T extends KnownEnumNames>  = WidgetConfigFields<{ default?: Requirable[T]; enumName: T }>
 export type Widget_enumOpt_serial<T extends KnownEnumNames> = Widget_enumOpt_state<T>
-export type Widget_enumOpt_state<T extends KnownEnumNames>  = WidgetStateFields<{ type: 'enumOpt', active: boolean; val: Requirable[T] }>
+export type Widget_enumOpt_state<T extends KnownEnumNames>  = WidgetSerialFields<{ type: 'enumOpt', active: boolean; val: Requirable[T] }>
 export type Widget_enumOpt_output<T extends KnownEnumNames> = Maybe<Requirable[T]>
 export interface Widget_enumOpt<T extends KnownEnumNames> extends WidgetTypeHelpers<'enumOpt', Widget_enumOpt_config<T>, Widget_enumOpt_serial<T>, Widget_enumOpt_state<T>, Widget_enumOpt_output<T>> {}
 export class Widget_enumOpt<T extends KnownEnumNames> implements IWidget<'enumOpt', Widget_enumOpt_config<T>, Widget_enumOpt_serial<T>, Widget_enumOpt_state<T>, Widget_enumOpt_output<T>> {
