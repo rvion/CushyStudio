@@ -21,8 +21,8 @@ import { runWithGlobalForm } from 'src/models/_ctx2'
 import { bang } from 'src/utils/misc/bang'
 import { EnumDefault, extractDefaultValue } from './EnumDefault'
 import { WidgetDI } from './widgets/WidgetUI.DI'
-import { Widget_choices } from './widgets/WidgetChoicesUI'
-import { Widget_str } from './widgets/WidgetStrUI'
+import { Widget_choices } from './widgets2/WidgetChoices'
+import { Widget_str } from './widgets2/WidgetString'
 
 // Widget is a closed union for added type safety
 export type Widget =

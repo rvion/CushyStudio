@@ -3,8 +3,8 @@ import * as W from './Widget'
 import { exhaust } from 'src/utils/misc/ComfyUtils'
 import { makeAutoObservable } from 'mobx'
 import { _FIX_INDENTATION } from '../utils/misc/_FIX_INDENTATION'
-import { Widget_choices, Widget_choices_config } from './widgets/WidgetChoicesUI'
-import { Widget_str, Widget_str_config } from './widgets/WidgetStrUI'
+import { Widget_choices, Widget_choices_config } from './widgets2/WidgetChoices'
+import { Widget_str, Widget_str_config } from './widgets2/WidgetString'
 
 export class FormBuilder {
     /** (@internal) don't call this yourself */
