@@ -9,7 +9,7 @@ export const WidgetListExt_ValuesUI = observer(function WidgetListExtValuesUI_<T
     const len = values.length
     const indexWidth = len < 10 ? 1 : len < 100 ? 2 : 3
     const WidgetUI = WidgetDI.WidgetUI
-    const min = widget.input.min
+    const min = widget.config.min
     return (
         <div tw='flex flex-col gap-1'>
             {values.map((x, ix) => {
@@ -22,9 +22,9 @@ export const WidgetListExt_ValuesUI = observer(function WidgetListExtValuesUI_<T
                             style={{ width: `${indexWidth}rem` }}
                             appearance='subtle'
                             size='sm'
-                            onClick={() => (v.state.collapsed = !Boolean(v.state.collapsed))}
+                            onClick={() => (v.serial.collapsed = !Boolean(v.serial.collapsed))}
                         >
-                            {v.state.collapsed ? '▸' : '▿'}
+                            {v.serial.collapsed ? '▸' : '▿'}
                         </Button>
                         <WidgetUI widget={v} />
                         <Button

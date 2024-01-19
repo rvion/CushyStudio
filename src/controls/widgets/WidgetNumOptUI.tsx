@@ -7,7 +7,7 @@ export const WidgetNumOptUI = observer(function WidgetNumOptUI_(p: { widget: Wid
     const widget = p.widget
     const mode = widget instanceof Widget_intOpt ? 'int' : 'float'
     const val = widget.state.val
-    const step = widget.input.step ?? (mode === 'int' ? 1 : 0.1)
+    const step = widget.config.step ?? (mode === 'int' ? 1 : 0.1)
     const valueIsValid = typeof val === 'number' && !isNaN(val)
 
     return (
@@ -18,12 +18,12 @@ export const WidgetNumOptUI = observer(function WidgetNumOptUI_(p: { widget: Wid
                     <pre>{JSON.stringify(val)}</pre>
                 </div>
             )}
-            {widget.input.hideSlider ? null : (
+            {widget.config.hideSlider ? null : (
                 <Slider //
                     style={{ width: '10rem' }}
                     value={val}
-                    min={widget.input.min}
-                    max={widget.input.max}
+                    min={widget.config.min}
+                    max={widget.config.max}
                     step={step}
                     onChange={(ev) => {
                         const next = ev.target.value
@@ -47,8 +47,8 @@ export const WidgetNumOptUI = observer(function WidgetNumOptUI_(p: { widget: Wid
             )}
             <InputNumberBase //
                 disabled={!widget.state.active}
-                min={widget.input.min}
-                max={widget.input.max}
+                min={widget.config.min}
+                max={widget.config.max}
                 step={step}
                 style={{
                     fontFamily: 'monospace',

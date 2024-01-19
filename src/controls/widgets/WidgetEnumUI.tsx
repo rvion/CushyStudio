@@ -15,7 +15,7 @@ export const WidgetEnumUI = observer(function WidgetEnumUI_<K extends KnownEnumN
     widget: Widget_enum<K> | Widget_enumOpt<K>
 }) {
     const widget = p.widget
-    const enumName = widget.input.enumName
+    const enumName = widget.config.enumName
     const isOptional = widget instanceof Widget_enumOpt
     return (
         <>

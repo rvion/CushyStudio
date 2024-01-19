@@ -10,16 +10,16 @@ export const WidgetNumUI = observer(function WidgetNumUI_(p: { widget: Widget_in
     const widget = p.widget
     const value = widget.state.val
     const mode = widget instanceof Widget_int ? 'int' : 'float'
-    const step = widget.input.step ?? (mode === 'int' ? 1 : 0.1)
+    const step = widget.config.step ?? (mode === 'int' ? 1 : 0.1)
 
     return (
         <InputNumberUI
             //
             mode={mode}
             value={value}
-            hideSlider={widget.input.hideSlider}
-            max={widget.input.max}
-            min={widget.input.min}
+            hideSlider={widget.config.hideSlider}
+            max={widget.config.max}
+            min={widget.config.min}
             step={step}
             onValueChange={(next) => (widget.state.val = next)}
         />

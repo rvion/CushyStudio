@@ -18,7 +18,7 @@ export const WigetSizeUI = observer(function WigetSizeUI_(p: { widget: Widget_si
     return (
         <WigetSizeXUI //
             size={p.widget.state}
-            bounds={p.widget.input}
+            bounds={p.widget.config}
         />
     )
 })

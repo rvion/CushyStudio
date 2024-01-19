@@ -28,8 +28,8 @@ export const WidgetChoiceUI = observer(function WidgetChoiceUI_(p: { widget: Wid
             {widget.state.collapsed ? null : (
                 <div
                     // style={{ border: '1px solid gray' }}
-                    tw={[widget.input.layout === 'H' ? 'flex' : null]}
-                    className={widget.input.className}
+                    tw={[widget.config.layout === 'H' ? 'flex' : null]}
+                    className={widget.config.className}
                 >
                     {choiceSubWidget && (
                         <WidgetUI //

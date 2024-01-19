@@ -11,7 +11,7 @@ import type { CleanedEnumResult } from 'src/types/EnumUtils'
 import type { WidgetPromptOutput } from 'src/widgets/prompter/WidgetPromptUI'
 import type { PossibleSerializedNodes } from 'src/widgets/prompter/plugins/PossibleSerializedNodes'
 import type { FormBuilder } from './FormBuilder'
-import type { GetWidgetResult, IWidget, WidgetInputFields, WidgetStateFields, WidgetTypeHelpers } from './IWidget'
+import type { GetWidgetResult, IWidget, WidgetConfigFields, WidgetStateFields, WidgetTypeHelpers } from './IWidget'
 import type { AspectRatio, CushySize, CushySizeByRatio, ImageAnswer, ImageAnswerForm, SDModelType } from './misc/InfoAnswer'
 
 import { computed, makeAutoObservable, makeObservable, observable } from 'mobx'
@@ -21,32 +21,27 @@ import { runWithGlobalForm } from 'src/models/_ctx2'
 import { bang } from 'src/utils/misc/bang'
 import { EnumDefault, extractDefaultValue } from './EnumDefault'
 import { WidgetDI } from './widgets/WidgetUI.DI'
+import { Widget_choices } from './widgets/WidgetChoicesUI'
+import { Widget_str } from './widgets/WidgetStrUI'
 
 // Widget is a closed union for added type safety
 export type Widget =
     | Widget_color
-    | Widget_str
+    | Widget_str<any>
     | Widget_orbit
-    | Widget_strOpt
     | Widget_prompt
-    | Widget_promptOpt
     | Widget_seed
     | Widget_int
     | Widget_float
     | Widget_bool
     | Widget_inlineRun
-    | Widget_intOpt
-    | Widget_floatOpt
     | Widget_markdown
     | Widget_custom<any>
     | Widget_size
     | Widget_matrix
     | Widget_loras
     | Widget_image
-    | Widget_imageOpt
-    | Widget_selectOneOrCustom
     | Widget_selectMany<any>
-    | Widget_selectManyOrCustom
     | Widget_selectOne<any>
     | Widget_list<any>
     | Widget_listExt<any>
@@ -56,36 +51,10 @@ export type Widget =
     | Widget_choices<any>
     | Widget_enum<any>
     | Widget_enumOpt<any>
-
-// 🅿️ str ==============================================================================
-export type Widget_str_opts  = WidgetInputFields<{ default?: string; textarea?: boolean, placeHolder?:string }>
-export type Widget_str_serial = WidgetStateFields<{ type: 'str', active: true; val: string }>
-export type Widget_str_state  = WidgetStateFields<{ type: 'str', active: true; val: string }>
-export type Widget_str_output = string
-export interface Widget_str extends WidgetTypeHelpers<'str', Widget_str_opts, Widget_str_serial, Widget_str_state, Widget_str_output> {}
-export class Widget_str implements IWidget<'str', Widget_str_opts, Widget_str_serial, Widget_str_state, Widget_str_output> {
-    get isVerticalByDefault():boolean{
-        if (this.input.textarea) return true
-        return false
-    }
-    isCollapsible = false
-    isOptional = false
-    id: string
-    type: 'str' = 'str'
-    state: Widget_str_state
-    constructor(
-        public builder: FormBuilder,
-        public schema: ComfySchemaL,
-        public input: Widget_str_opts,
-        serial?: Widget_str_serial,
-    ) {
-        this.id = serial?.id ?? nanoid()
-        this.state = serial ?? { type:'str', collapsed: input.startCollapsed, active: true, val: input.default ?? '', id: this.id }
-        makeAutoObservable(this)
-    }
-    get serial(): Widget_str_serial { return this.state }
-    get result(): Widget_str_output { return this.state.val }
-}
+    /* 🗑️ */ | Widget_promptOpt
+    /* 🗑️ */ | Widget_intOpt
+    /* 🗑️ */ | Widget_floatOpt
+    /* 🗑️ */ | Widget_imageOpt
 
 // 🅿️ orbit ==============================================================================
 const inRange = (val: number, min:number,max:number, margin:number=0) => {
@@ -125,14 +94,14 @@ export type OrbitData = {
     azimuth: number;
     elevation: number;
 }
-export type Widget_orbit_opts  = WidgetInputFields<{ default?: Partial<OrbitData> }>
+export type Widget_orbit_config  = WidgetConfigFields<{ default?: Partial<OrbitData> }>
 export type Widget_orbit_serial = WidgetStateFields<{ type: 'orbit', active: true; val: OrbitData }>
 export type Widget_orbit_state  = WidgetStateFields<{ type: 'orbit', active: true; val: OrbitData }>
 export type Widget_orbit_output = OrbitData & {
     englishSummary: string;
 }
-export interface Widget_orbit extends WidgetTypeHelpers<'orbit', Widget_orbit_opts, Widget_orbit_serial, Widget_orbit_state, Widget_orbit_output> {}
-export class Widget_orbit implements IWidget<'orbit', Widget_orbit_opts, Widget_orbit_serial, Widget_orbit_state, Widget_orbit_output> {
+export interface Widget_orbit extends WidgetTypeHelpers<'orbit', Widget_orbit_config, Widget_orbit_serial, Widget_orbit_state, Widget_orbit_output> {}
+export class Widget_orbit implements IWidget<'orbit', Widget_orbit_config, Widget_orbit_serial, Widget_orbit_state, Widget_orbit_output> {
     isVerticalByDefault = true
     isCollapsible = false
     isOptional = false
@@ -140,8 +109,8 @@ export class Widget_orbit implements IWidget<'orbit', Widget_orbit_opts, Widget_
     type: 'orbit' = 'orbit'
     state: Widget_orbit_state
     reset = () => {
-        this.state.val.azimuth = this.input.default?.azimuth ?? 0
-        this.state.val.elevation = this.input.default?.elevation ?? 0
+        this.state.val.azimuth = this.config.default?.azimuth ?? 0
+        this.state.val.elevation = this.config.default?.elevation ?? 0
     }
 
     get englishSummary(){
@@ -160,17 +129,17 @@ export class Widget_orbit implements IWidget<'orbit', Widget_orbit_opts, Widget_
     constructor(
         public builder: FormBuilder,
         public schema: ComfySchemaL,
-        public input: Widget_orbit_opts,
+        public config: Widget_orbit_config,
         serial?: Widget_orbit_serial,
     ) {
         this.id = serial?.id ?? nanoid()
         this.state = serial ?? {
             type:'orbit',
-            collapsed: input.startCollapsed,
+            collapsed: config.startCollapsed,
             active: true,
             val: {
-                azimuth: input.default?.azimuth ?? 0,
-                elevation: input.default?.elevation ?? 0,
+                azimuth: config.default?.azimuth ?? 0,
+                elevation: config.default?.elevation ?? 0,
             },
             id: this.id
         }
@@ -185,12 +154,12 @@ export class Widget_orbit implements IWidget<'orbit', Widget_orbit_opts, Widget_
 }
 
 // 🅿️ markdown ==============================================================================
-export type Widget_markdown_opts = WidgetInputFields<{ markdown: string | ((formRoot:Widget_group<any>) => string); }>
+export type Widget_markdown_config = WidgetConfigFields<{ markdown: string | ((formRoot:Widget_group<any>) => string); }>
 export type Widget_markdown_serial = WidgetStateFields<{ type: 'markdown', active: true }>
 export type Widget_markdown_state  = WidgetStateFields<{ type: 'markdown', active: true }>
 export type Widget_markdown_output = { type: 'markdown', active: true }
-export interface Widget_markdown extends WidgetTypeHelpers<'markdown', Widget_markdown_opts, Widget_markdown_serial, Widget_markdown_state, Widget_markdown_output> {}
-export class Widget_markdown implements IWidget<'markdown', Widget_markdown_opts, Widget_markdown_serial, Widget_markdown_state, Widget_markdown_output> {
+export interface Widget_markdown extends WidgetTypeHelpers<'markdown', Widget_markdown_config, Widget_markdown_serial, Widget_markdown_state, Widget_markdown_output> {}
+export class Widget_markdown implements IWidget<'markdown', Widget_markdown_config, Widget_markdown_serial, Widget_markdown_state, Widget_markdown_output> {
     isVerticalByDefault = true
     isCollapsible = true
     isOptional = false
@@ -199,7 +168,7 @@ export class Widget_markdown implements IWidget<'markdown', Widget_markdown_opts
     state: Widget_markdown_state
 
     get markdown() :string{
-        const md= this.input.markdown
+        const md= this.config.markdown
         if (typeof md === 'string') return md
         return md(this.builder._ROOT)
     }
@@ -207,11 +176,11 @@ export class Widget_markdown implements IWidget<'markdown', Widget_markdown_opts
     constructor(
         public builder: FormBuilder,
         public schema: ComfySchemaL,
-        public input: Widget_markdown_opts,
+        public config: Widget_markdown_config,
         serial?: Widget_markdown_serial,
     ) {
         this.id = serial?.id ?? nanoid()
-        this.state = serial ?? { type:'markdown', collapsed: input.startCollapsed, active: true, id: this.id }
+        this.state = serial ?? { type:'markdown', collapsed: config.startCollapsed, active: true, id: this.id }
         makeAutoObservable(this)
     }
     get serial(): Widget_markdown_serial { return this.state }
@@ -220,34 +189,34 @@ export class Widget_markdown implements IWidget<'markdown', Widget_markdown_opts
 
 // 🅿️ custom ==============================================================================
 export type CustomWidgetProps<T> = { widget: Widget_custom<T>; extra: import('./widgets/WidgetCustomUI').UIKit }
-export type Widget_custom_opts  <T> = WidgetInputFields<{ defaultValue: () => T; Component: FC<CustomWidgetProps<T>>}>
+export type Widget_custom_config  <T> = WidgetConfigFields<{ defaultValue: () => T; Component: FC<CustomWidgetProps<T>>}>
 export type Widget_custom_serial<T> = WidgetStateFields<{ type: 'custom'; active: true; value: T }>
 export type Widget_custom_state <T> = WidgetStateFields<{ type: 'custom'; active: true; value: T }>
 export type Widget_custom_output<T> = T
-export interface Widget_custom<T> extends WidgetTypeHelpers<'custom', Widget_custom_opts<T>, Widget_custom_serial<T>, Widget_custom_state<T>, Widget_custom_output<T>> {}
-export class Widget_custom<T> implements IWidget<'custom', Widget_custom_opts<T>, Widget_custom_serial<T>, Widget_custom_state<T>, Widget_custom_output<T>> {
+export interface Widget_custom<T> extends WidgetTypeHelpers<'custom', Widget_custom_config<T>, Widget_custom_serial<T>, Widget_custom_state<T>, Widget_custom_output<T>> {}
+export class Widget_custom<T> implements IWidget<'custom', Widget_custom_config<T>, Widget_custom_serial<T>, Widget_custom_state<T>, Widget_custom_output<T>> {
     isVerticalByDefault = true
     isCollapsible = true
     isOptional = false
     id: string
     type: 'custom' = 'custom'
     state: Widget_custom_state<T>
-    Component: Widget_custom_opts<T>['Component']
+    Component: Widget_custom_config<T>['Component']
     st = () => this.schema.st
-    reset = () => (this.state.value = this.input.defaultValue())
+    reset = () => (this.state.value = this.config.defaultValue())
     constructor(
         public builder: FormBuilder,
         public schema: ComfySchemaL,
-        public input: Widget_custom_opts<T>,
+        public config: Widget_custom_config<T>,
         serial?: Widget_custom_serial<T>,
     ) {
         this.id = serial?.id ?? nanoid()
-        this.Component = input.Component
+        this.Component = config.Component
         this.state = serial ?? {
             type: 'custom',
             active: true,
             id: this.id,
-            value: this.input.defaultValue(),
+            value: this.config.defaultValue(),
         }
 
         makeAutoObservable(this, { Component: false })
@@ -262,12 +231,12 @@ export class Widget_custom<T> implements IWidget<'custom', Widget_custom_opts<T>
 
 
 // 🅿️ str ==============================================================================
-export type Widget_color_opts = WidgetInputFields<{ default?: string; }>
+export type Widget_color_config = WidgetConfigFields<{ default?: string; }>
 export type Widget_color_serial = WidgetStateFields<{ type: 'color', active: true; val: string }>
 export type Widget_color_state  = WidgetStateFields<{ type: 'color', active: true; val: string }>
 export type Widget_color_output = string
-export interface Widget_color extends WidgetTypeHelpers<'color', Widget_color_opts, Widget_color_serial, Widget_color_state, Widget_color_output> {}
-export class Widget_color implements IWidget<'color', Widget_color_opts, Widget_color_serial, Widget_color_state, Widget_color_output> {
+export interface Widget_color extends WidgetTypeHelpers<'color', Widget_color_config, Widget_color_serial, Widget_color_state, Widget_color_output> {}
+export class Widget_color implements IWidget<'color', Widget_color_config, Widget_color_serial, Widget_color_state, Widget_color_output> {
     isVerticalByDefault = false
     isCollapsible = false
     isOptional = false
@@ -277,62 +246,24 @@ export class Widget_color implements IWidget<'color', Widget_color_opts, Widget_
     constructor(
         public builder: FormBuilder,
         public schema: ComfySchemaL,
-        public input: Widget_color_opts,
+        public config: Widget_color_config,
         serial?: Widget_color_serial,
     ) {
         this.id = serial?.id ?? nanoid()
-        this.state = serial ?? { type:'color', collapsed: input.startCollapsed, id: this.id,  active: true, val: input.default ?? '' }
+        this.state = serial ?? { type:'color', collapsed: config.startCollapsed, id: this.id,  active: true, val: config.default ?? '' }
         makeAutoObservable(this)
     }
     get serial(): Widget_color_serial { return this.state }
     get result(): Widget_color_output { return this.state.val }
 }
 
-// 🅿️ strOpt ==============================================================================
-export type Widget_strOpt_opts  = Widget_str_opts
-export type Widget_strOpt_serial = Widget_strOpt_state
-export type Widget_strOpt_state  = WidgetStateFields<{ type:'strOpt', active: boolean; val: string }>
-export type Widget_strOpt_output = Maybe<string>
-export interface Widget_strOpt extends WidgetTypeHelpers<'strOpt', Widget_strOpt_opts, Widget_strOpt_serial, Widget_strOpt_state, Widget_strOpt_output> {}
-export class Widget_strOpt implements IWidget<'strOpt', Widget_strOpt_opts, Widget_strOpt_serial, Widget_strOpt_state, Widget_strOpt_output> {
-    get isVerticalByDefault():boolean{
-        if (this.input.textarea) return true
-        return false
-    }
-    isCollapsible = false
-    isOptional = true
-    id: string
-    type: 'strOpt' = 'strOpt'
-    state: Widget_strOpt_state
-    constructor(
-        public builder: FormBuilder,
-        public schema: ComfySchemaL,
-        public input: Widget_strOpt_opts,
-        serial?: Widget_strOpt_serial,
-    ) {
-        this.id = serial?.id ?? nanoid()
-        this.state = serial ?? {
-            type: 'strOpt',
-            id: this.id,
-            active: input.default != null,
-            val: input.default ?? '',
-        }
-        makeAutoObservable(this)
-    }
-    get serial(){ return this.state }
-    get result(): Widget_strOpt_output {
-        if (!this.state.active) return undefined
-        return this.state.val
-    }
-}
-
 // 🅿️ prompt ==============================================================================
-export type Widget_prompt_opts  = WidgetInputFields<{ default?: string | WidgetPromptOutput }>
+export type Widget_prompt_config  = WidgetConfigFields<{ default?: string | WidgetPromptOutput }>
 export type Widget_prompt_serial = Widget_prompt_state
 export type Widget_prompt_state  = WidgetStateFields<{ type: 'prompt'; active: true; /*text: string;*/ tokens: PossibleSerializedNodes[] }>
 export type Widget_prompt_output = { type: 'prompt'; active: true; /*text: string;*/ tokens: PossibleSerializedNodes[] }
-export interface Widget_prompt extends WidgetTypeHelpers<'prompt', Widget_prompt_opts, Widget_prompt_serial, Widget_prompt_state, Widget_prompt_output> {}
-export class Widget_prompt implements IWidget<'prompt', Widget_prompt_opts, Widget_prompt_serial, Widget_prompt_state, Widget_prompt_output> {
+export interface Widget_prompt extends WidgetTypeHelpers<'prompt', Widget_prompt_config, Widget_prompt_serial, Widget_prompt_state, Widget_prompt_output> {}
+export class Widget_prompt implements IWidget<'prompt', Widget_prompt_config, Widget_prompt_serial, Widget_prompt_state, Widget_prompt_output> {
     isVerticalByDefault = true
     isCollapsible = true
     isOptional = false
@@ -347,7 +278,7 @@ export class Widget_prompt implements IWidget<'prompt', Widget_prompt_opts, Widg
     constructor(
         public builder: FormBuilder,
         public schema: ComfySchemaL,
-        public input: Widget_prompt_opts,
+        public config: Widget_prompt_config,
         serial?: Widget_prompt_serial,
     ) {
         this.id = serial?.id ?? nanoid()
@@ -356,12 +287,12 @@ export class Widget_prompt implements IWidget<'prompt', Widget_prompt_opts, Widg
         } else {
             this.state = {
                 type:'prompt',
-                collapsed: input.startCollapsed,
+                collapsed: config.startCollapsed,
                 id: this.id,
                 active: true,
                 tokens: []
             }
-            const def = input.default
+            const def = config.default
             if (def != null) {
                 if (typeof def === 'string') {
                     this.state.tokens = [{ type: 'text', text: def }]
@@ -380,12 +311,12 @@ export class Widget_prompt implements IWidget<'prompt', Widget_prompt_opts, Widg
 }
 
 // 🅿️ promptOpt ==============================================================================
-export type Widget_promptOpt_opts  = WidgetInputFields<{ default?: string | WidgetPromptOutput }>
+export type Widget_promptOpt_config  = WidgetConfigFields<{ default?: string | WidgetPromptOutput }>
 export type Widget_promptOpt_serial = Widget_promptOpt_state // { type: 'promptOpt'; active: boolean; /* text: string;*/ tokens: PossibleSerializedNodes[] }
 export type Widget_promptOpt_state  = WidgetStateFields<{ type: 'promptOpt'; active: boolean; /* text: string;*/ tokens: PossibleSerializedNodes[] }>
 export type Widget_promptOpt_output = Maybe<WidgetPromptOutput>
-export interface Widget_promptOpt extends WidgetTypeHelpers<'promptOpt', Widget_promptOpt_opts, Widget_promptOpt_serial, Widget_promptOpt_state, Widget_promptOpt_output> {}
-export class Widget_promptOpt implements IWidget<'promptOpt', Widget_promptOpt_opts, Widget_promptOpt_serial, Widget_promptOpt_state, Widget_promptOpt_output> {
+export interface Widget_promptOpt extends WidgetTypeHelpers<'promptOpt', Widget_promptOpt_config, Widget_promptOpt_serial, Widget_promptOpt_state, Widget_promptOpt_output> {}
+export class Widget_promptOpt implements IWidget<'promptOpt', Widget_promptOpt_config, Widget_promptOpt_serial, Widget_promptOpt_state, Widget_promptOpt_output> {
     readonly isVerticalByDefault = true
     readonly isCollapsible = true
     readonly isOptional = true
@@ -393,9 +324,9 @@ export class Widget_promptOpt implements IWidget<'promptOpt', Widget_promptOpt_o
     readonly type: 'promptOpt' = 'promptOpt'
     state: Widget_promptOpt_state
     constructor(
-        public builder: FormBuilder,
-        public schema: ComfySchemaL,
-        public input: Widget_promptOpt_opts,
+        public readonly builder: FormBuilder,
+        public readonly schema: ComfySchemaL,
+        public readonly config: Widget_promptOpt_config,
         serial?: Widget_promptOpt_serial,
     ) {
         this.id = serial?.id ?? nanoid()
@@ -404,12 +335,12 @@ export class Widget_promptOpt implements IWidget<'promptOpt', Widget_promptOpt_o
         } else {
             this.state = {
                 type:'promptOpt',
-                collapsed: input.startCollapsed,
+                collapsed: config.startCollapsed,
                 id: this.id,
                 active: false,
                 tokens: []
             }
-            const def = input.default
+            const def = config.default
             if (def != null) {
                 if (typeof def === 'string') {
                     this.state.active = true
@@ -429,12 +360,12 @@ export class Widget_promptOpt implements IWidget<'promptOpt', Widget_promptOpt_o
 }
 
 // 🅿️ seed ==============================================================================
-export type Widget_seed_opts  = WidgetInputFields<{ default?: number; defaultMode?: 'randomize' | 'fixed' | 'last', min?: number; max?: number }>
+export type Widget_seed_config  = WidgetConfigFields<{ default?: number; defaultMode?: 'randomize' | 'fixed' | 'last', min?: number; max?: number }>
 export type Widget_seed_serial = Widget_seed_state
 export type Widget_seed_state  = WidgetStateFields<{ type:'seed', active: true; val: number, mode: 'randomize' | 'fixed' | 'last' }>
 export type Widget_seed_output = number
-export interface Widget_seed extends WidgetTypeHelpers<'seed', Widget_seed_opts, Widget_seed_serial, Widget_seed_state, Widget_seed_output> {}
-export class Widget_seed implements IWidget<'seed', Widget_seed_opts, Widget_seed_serial, Widget_seed_state, Widget_seed_output> {
+export interface Widget_seed extends WidgetTypeHelpers<'seed', Widget_seed_config, Widget_seed_serial, Widget_seed_state, Widget_seed_output> {}
+export class Widget_seed implements IWidget<'seed', Widget_seed_config, Widget_seed_serial, Widget_seed_state, Widget_seed_output> {
     isVerticalByDefault = false
     isCollapsible = false
     isOptional = false
@@ -444,7 +375,7 @@ export class Widget_seed implements IWidget<'seed', Widget_seed_opts, Widget_see
     constructor(
         public builder: FormBuilder,
         public schema: ComfySchemaL,
-        public input: Widget_seed_opts,
+        public config: Widget_seed_config,
         serial?: Widget_seed_serial,
     ) {
         this.id = serial?.id ?? nanoid()
@@ -452,8 +383,8 @@ export class Widget_seed implements IWidget<'seed', Widget_seed_opts, Widget_see
             type: 'seed',
             id: this.id,
             active: true,
-            val: input.default ?? 0,
-            mode: input.defaultMode ?? 'randomize'
+            val: config.default ?? 0,
+            mode: config.defaultMode ?? 'randomize'
         }
         makeAutoObservable(this)
     }
@@ -467,12 +398,12 @@ export class Widget_seed implements IWidget<'seed', Widget_seed_opts, Widget_see
 }
 
 // 🅿️ int ==============================================================================
-export type Widget_int_opts  = WidgetInputFields<{ default?: number; min?: number; max?: number, step?: number, hideSlider?: boolean }>
+export type Widget_int_config = WidgetConfigFields<{ default?: number; min?: number; max?: number, step?: number, hideSlider?: boolean }>
 export type Widget_int_serial = Widget_int_state
 export type Widget_int_state  = WidgetStateFields<{ type:'int', active: true; val: number }>
 export type Widget_int_output = number
-export interface Widget_int extends WidgetTypeHelpers<'int', Widget_int_opts, Widget_int_serial, Widget_int_state, Widget_int_output> {}
-export class Widget_int implements IWidget<'int', Widget_int_opts, Widget_int_serial, Widget_int_state, Widget_int_output> {
+export interface Widget_int extends WidgetTypeHelpers<'int', Widget_int_config, Widget_int_serial, Widget_int_state, Widget_int_output> {}
+export class Widget_int implements IWidget<'int', Widget_int_config, Widget_int_serial, Widget_int_state, Widget_int_output> {
     readonly isVerticalByDefault = false
     readonly isCollapsible = false
     readonly isOptional = false
@@ -480,14 +411,13 @@ export class Widget_int implements IWidget<'int', Widget_int_opts, Widget_int_se
     readonly type: 'int' = 'int'
     state: Widget_int_state
     constructor(
-        public builder: FormBuilder,
-        public schema: ComfySchemaL,
-        public input: Widget_int_opts,
+        public readonly builder: FormBuilder,
+        public readonly schema: ComfySchemaL,
+        public readonly config: Widget_int_config,
         serial?: Widget_int_serial,
     ) {
         this.id = serial?.id ?? nanoid()
-        this.state = serial ?? { type: 'int', collapsed: input.startCollapsed, id: this.id, active: true, val: input.default ?? 0 }
-        // makeAutoObservable(this)
+        this.state = serial ?? { type: 'int', collapsed: config.startCollapsed, id: this.id, active: true, val: config.default ?? 0 }
         makeObservable(this, {
             state: observable,
             serial: computed,
@@ -499,12 +429,12 @@ export class Widget_int implements IWidget<'int', Widget_int_opts, Widget_int_se
 }
 
 // 🅿️ float ==============================================================================
-export type Widget_float_opts  = WidgetInputFields<{ default?: number; min?: number; max?: number, step?: number, hideSlider?: boolean }>
+export type Widget_float_config  = WidgetConfigFields<{ default?: number; min?: number; max?: number, step?: number, hideSlider?: boolean }>
 export type Widget_float_serial = Widget_float_state
 export type Widget_float_state  = WidgetStateFields<{ type:'float', active: true; val: number }>
 export type Widget_float_output = number
-export interface Widget_float extends WidgetTypeHelpers<'float', Widget_float_opts, Widget_float_serial, Widget_float_state, Widget_float_output> {}
-export class Widget_float implements IWidget<'float', Widget_float_opts, Widget_float_serial, Widget_float_state, Widget_float_output> {
+export interface Widget_float extends WidgetTypeHelpers<'float', Widget_float_config, Widget_float_serial, Widget_float_state, Widget_float_output> {}
+export class Widget_float implements IWidget<'float', Widget_float_config, Widget_float_serial, Widget_float_state, Widget_float_output> {
     readonly isVerticalByDefault = false
     readonly isCollapsible = false
     readonly isOptional = false
@@ -514,11 +444,11 @@ export class Widget_float implements IWidget<'float', Widget_float_opts, Widget_
     constructor(
         public builder: FormBuilder,
         public schema: ComfySchemaL,
-        public input: Widget_float_opts,
+        public config: Widget_float_config,
         serial?: Widget_float_serial,
     ) {
         this.id = serial?.id ?? nanoid()
-        this.state = serial ?? { type:'float', collapsed: input.startCollapsed, id: this.id, active: true, val: input.default ?? 0 }
+        this.state = serial ?? { type:'float', collapsed: config.startCollapsed, id: this.id, active: true, val: config.default ?? 0 }
         makeObservable(this,{
             state: observable,
             serial: computed,
@@ -530,12 +460,12 @@ export class Widget_float implements IWidget<'float', Widget_float_opts, Widget_
 }
 
 // 🅿️ bool ==============================================================================
-export type Widget_bool_opts  = WidgetInputFields<{ default?: boolean }>
+export type Widget_bool_config  = WidgetConfigFields<{ default?: boolean }>
 export type Widget_bool_serial = Widget_bool_state
 export type Widget_bool_state  = WidgetStateFields<{ type:'bool', active: true; val: boolean }>
 export type Widget_bool_output = boolean
-export interface Widget_bool extends WidgetTypeHelpers<'bool', Widget_bool_opts, Widget_bool_serial, Widget_bool_state, Widget_bool_output> {}
-export class Widget_bool implements IWidget<'bool', Widget_bool_opts, Widget_bool_serial, Widget_bool_state, Widget_bool_output> {
+export interface Widget_bool extends WidgetTypeHelpers<'bool', Widget_bool_config, Widget_bool_serial, Widget_bool_state, Widget_bool_output> {}
+export class Widget_bool implements IWidget<'bool', Widget_bool_config, Widget_bool_serial, Widget_bool_state, Widget_bool_output> {
     readonly isVerticalByDefault = false
     readonly isCollapsible = false
     readonly isOptional = true
@@ -545,11 +475,11 @@ export class Widget_bool implements IWidget<'bool', Widget_bool_opts, Widget_boo
     constructor(
         public builder: FormBuilder,
         public schema: ComfySchemaL,
-        public input: Widget_bool_opts,
+        public config: Widget_bool_config,
         serial?: Widget_bool_serial,
     ) {
         this.id = serial?.id ?? nanoid()
-        this.state = serial ?? { type: 'bool', collapsed: input.startCollapsed, id: this.id, active: true, val: input.default ?? false }
+        this.state = serial ?? { type: 'bool', collapsed: config.startCollapsed, id: this.id, active: true, val: config.default ?? false }
         makeObservable(this,{
             state: observable,
             serial: computed,
@@ -561,12 +491,12 @@ export class Widget_bool implements IWidget<'bool', Widget_bool_opts, Widget_boo
 }
 
 // 🅿️ inlineRun ==============================================================================
-export type Widget_inlineRun_opts  = WidgetInputFields<{text?: string, kind?: `primary`|`special`|`warning`}>
+export type Widget_inlineRun_config  = WidgetConfigFields<{text?: string, kind?: `primary`|`special`|`warning`}>
 export type Widget_inlineRun_serial = Widget_inlineRun_state
 export type Widget_inlineRun_state  = WidgetStateFields<{ type:'inlineRun', active: true; val: boolean }>
 export type Widget_inlineRun_output = boolean
-export interface Widget_inlineRun extends WidgetTypeHelpers<'inlineRun', Widget_inlineRun_opts, Widget_inlineRun_serial, Widget_inlineRun_state, Widget_inlineRun_output> {}
-export class Widget_inlineRun implements IWidget<'inlineRun', Widget_inlineRun_opts, Widget_inlineRun_serial, Widget_inlineRun_state, Widget_inlineRun_output> {
+export interface Widget_inlineRun extends WidgetTypeHelpers<'inlineRun', Widget_inlineRun_config, Widget_inlineRun_serial, Widget_inlineRun_state, Widget_inlineRun_output> {}
+export class Widget_inlineRun implements IWidget<'inlineRun', Widget_inlineRun_config, Widget_inlineRun_serial, Widget_inlineRun_state, Widget_inlineRun_output> {
     isVerticalByDefault = false
     isCollapsible = false
     isOptional = false
@@ -576,15 +506,15 @@ export class Widget_inlineRun implements IWidget<'inlineRun', Widget_inlineRun_o
     constructor(
         public builder: FormBuilder,
         public schema: ComfySchemaL,
-        public input: Widget_inlineRun_opts,
+        public config: Widget_inlineRun_config,
         serial?: Widget_inlineRun_serial,
     ) {
-        if(input.text){
-            input.label = input.label ?? ` `;
+        if(config.text){
+            config.label = config.label ?? ` `;
         }
 
         this.id = serial?.id ?? nanoid()
-        this.state = serial ?? { type: 'inlineRun', collapsed: input.startCollapsed, id: this.id, active: true, val: false, }
+        this.state = serial ?? { type: 'inlineRun', collapsed: config.startCollapsed, id: this.id, active: true, val: false, }
         makeAutoObservable(this)
     }
     get serial(): Widget_inlineRun_serial { return this.state }
@@ -592,7 +522,7 @@ export class Widget_inlineRun implements IWidget<'inlineRun', Widget_inlineRun_o
 }
 
 // 🅿️ intOpt ==============================================================================
-export type Widget_intOpt_opts  = WidgetInputFields<{
+export type Widget_intOpt_config  = WidgetConfigFields<{
     defaultActive?: boolean;
     default?: number;
     min?: number;
@@ -603,8 +533,8 @@ export type Widget_intOpt_opts  = WidgetInputFields<{
 export type Widget_intOpt_serial = Widget_intOpt_state
 export type Widget_intOpt_state  = WidgetStateFields<{ type: 'intOpt', active: boolean; val: number }>
 export type Widget_intOpt_output = Maybe<number>
-export interface Widget_intOpt extends WidgetTypeHelpers<'intOpt', Widget_intOpt_opts, Widget_intOpt_serial, Widget_intOpt_state, Widget_intOpt_output> {}
-export class Widget_intOpt implements IWidget<'intOpt', Widget_intOpt_opts, Widget_intOpt_serial, Widget_intOpt_state, Widget_intOpt_output> {
+export interface Widget_intOpt extends WidgetTypeHelpers<'intOpt', Widget_intOpt_config, Widget_intOpt_serial, Widget_intOpt_state, Widget_intOpt_output> {}
+export class Widget_intOpt implements IWidget<'intOpt', Widget_intOpt_config, Widget_intOpt_serial, Widget_intOpt_state, Widget_intOpt_output> {
     isVerticalByDefault = false
     isCollapsible = false
     isOptional = true
@@ -614,15 +544,15 @@ export class Widget_intOpt implements IWidget<'intOpt', Widget_intOpt_opts, Widg
     constructor(
         public builder: FormBuilder,
         public schema: ComfySchemaL,
-        public input: Widget_intOpt_opts,
+        public config: Widget_intOpt_config,
         serial?: Widget_intOpt_serial,
     ) {
         this.id = serial?.id ?? nanoid()
         this.state = serial ?? {
             type: 'intOpt',
             id: this.id,
-            active: input.defaultActive ?? false,
-            val: input.default ?? 0,
+            active: config.defaultActive ?? false,
+            val: config.default ?? 0,
         }
         makeAutoObservable(this)
     }
@@ -634,12 +564,12 @@ export class Widget_intOpt implements IWidget<'intOpt', Widget_intOpt_opts, Widg
 }
 
 // 🅿️ floatOpt ==============================================================================
-export type Widget_floatOpt_opts  = WidgetInputFields<{ default?: number; min?: number; max?: number; step?: number, hideSlider?: boolean }>
+export type Widget_floatOpt_config  = WidgetConfigFields<{ default?: number; min?: number; max?: number; step?: number, hideSlider?: boolean }>
 export type Widget_floatOpt_serial = Widget_floatOpt_state
 export type Widget_floatOpt_state  = WidgetStateFields<{ type: 'floatOpt', active: boolean; val: number }>
 export type Widget_floatOpt_output = Maybe<number>
-export interface Widget_floatOpt extends WidgetTypeHelpers<'floatOpt', Widget_floatOpt_opts, Widget_floatOpt_serial, Widget_floatOpt_state, Widget_floatOpt_output> {}
-export class Widget_floatOpt implements IWidget<'floatOpt', Widget_floatOpt_opts, Widget_floatOpt_serial, Widget_floatOpt_state, Widget_floatOpt_output> {
+export interface Widget_floatOpt extends WidgetTypeHelpers<'floatOpt', Widget_floatOpt_config, Widget_floatOpt_serial, Widget_floatOpt_state, Widget_floatOpt_output> {}
+export class Widget_floatOpt implements IWidget<'floatOpt', Widget_floatOpt_config, Widget_floatOpt_serial, Widget_floatOpt_state, Widget_floatOpt_output> {
     isVerticalByDefault = false
     isCollapsible = false
     isOptional = true
@@ -649,15 +579,15 @@ export class Widget_floatOpt implements IWidget<'floatOpt', Widget_floatOpt_opts
     constructor(
         public builder: FormBuilder,
         public schema: ComfySchemaL,
-        public input: Widget_floatOpt_opts,
+        public config: Widget_floatOpt_config,
         serial?: Widget_floatOpt_serial,
     ) {
         this.id = serial?.id ?? nanoid()
         this.state = serial ?? {
             type: 'floatOpt',
             id: this.id,
-            active: input.default != null,
-            val: input.default ?? 0,
+            active: config.default != null,
+            val: config.default ?? 0,
         }
         makeAutoObservable(this)
     }
@@ -669,7 +599,7 @@ export class Widget_floatOpt implements IWidget<'floatOpt', Widget_floatOpt_opts
 }
 
 // 🅿️ size ==============================================================================
-export type Widget_size_opts  = WidgetInputFields<{
+export type Widget_size_config  = WidgetConfigFields<{
     default?: CushySizeByRatio
     min?: number
     max?: number
@@ -678,8 +608,8 @@ export type Widget_size_opts  = WidgetInputFields<{
 export type Widget_size_serial = Widget_size_state
 export type Widget_size_state  = WidgetStateFields<CushySize>
 export type Widget_size_output = CushySize
-export interface Widget_size extends WidgetTypeHelpers<'size', Widget_size_opts, Widget_size_serial, Widget_size_state, Widget_size_output> {}
-export class Widget_size implements IWidget<'size', Widget_size_opts, Widget_size_serial, Widget_size_state, Widget_size_output> {
+export interface Widget_size extends WidgetTypeHelpers<'size', Widget_size_config, Widget_size_serial, Widget_size_state, Widget_size_output> {}
+export class Widget_size implements IWidget<'size', Widget_size_config, Widget_size_serial, Widget_size_state, Widget_size_output> {
     isVerticalByDefault = true
     isCollapsible = true
     isOptional = false
@@ -689,15 +619,15 @@ export class Widget_size implements IWidget<'size', Widget_size_opts, Widget_siz
     constructor(
         public builder: FormBuilder,
         public schema: ComfySchemaL,
-        public input: Widget_size_opts,
+        public config: Widget_size_config,
         serial?: Widget_size_serial,
     ) {
         this.id = serial?.id ?? nanoid()
         if (serial) {
             this.state = serial
         } else {
-            const aspectRatio: AspectRatio = input.default?.aspectRatio ?? '1:1'
-            const modelType: SDModelType = input.default?.modelType ?? 'SD1.5 512'
+            const aspectRatio: AspectRatio = config.default?.aspectRatio ?? '1:1'
+            const modelType: SDModelType = config.default?.modelType ?? 'SD1.5 512'
             const width = 512 // 🔴
             const height = 512 // 🔴
             this.state = {
@@ -726,12 +656,12 @@ export type Widget_matrix_cell = {
     col: string
     value: boolean
 }
-export type Widget_matrix_opts  = WidgetInputFields<{ default?: { row: string; col: string }[]; rows: string[]; cols: string[] }>
+export type Widget_matrix_config  = WidgetConfigFields<{ default?: { row: string; col: string }[]; rows: string[]; cols: string[] }>
 export type Widget_matrix_serial = Widget_matrix_state
 export type Widget_matrix_state  = WidgetStateFields<{ type: 'matrix', active: true; selected: Widget_matrix_cell[] }>
 export type Widget_matrix_output = Widget_matrix_cell[]
-export interface Widget_matrix extends WidgetTypeHelpers<'matrix', Widget_matrix_opts, Widget_matrix_serial, Widget_matrix_state, Widget_matrix_output> {}
-export class Widget_matrix implements IWidget<'matrix', Widget_matrix_opts, Widget_matrix_serial, Widget_matrix_state, Widget_matrix_output> {
+export interface Widget_matrix extends WidgetTypeHelpers<'matrix', Widget_matrix_config, Widget_matrix_serial, Widget_matrix_state, Widget_matrix_output> {}
+export class Widget_matrix implements IWidget<'matrix', Widget_matrix_config, Widget_matrix_serial, Widget_matrix_state, Widget_matrix_output> {
     isVerticalByDefault = true
     isCollapsible = true
     isOptional = false
@@ -743,13 +673,13 @@ export class Widget_matrix implements IWidget<'matrix', Widget_matrix_opts, Widg
     constructor(
         public builder: FormBuilder,
         public schema: ComfySchemaL,
-        public input: Widget_matrix_opts,
+        public config: Widget_matrix_config,
         serial?: Widget_matrix_serial,
     ) {
         this.id = serial?.id ?? nanoid()
-        this.state = serial ?? { type:'matrix', collapsed: input.startCollapsed, id: this.id, active: true, selected: [] }
-        const rows = input.rows
-        const cols = input.cols
+        this.state = serial ?? { type:'matrix', collapsed: config.startCollapsed, id: this.id, active: true, selected: [] }
+        const rows = config.rows
+        const cols = config.cols
         // init all cells to false
         for (const [rowIx, row] of rows.entries()) {
             for (const [colIx, col] of cols.entries()) {
@@ -762,8 +692,8 @@ export class Widget_matrix implements IWidget<'matrix', Widget_matrix_opts, Widg
             for (const v of values) {
                 this.store.set(this.key(rows[v.x], cols[v.y]), v)
             }
-        this.rows = input.rows
-        this.cols = input.cols
+        this.rows = config.rows
+        this.cols = config.cols
         // make observable
         makeAutoObservable(this)
     }
@@ -822,12 +752,12 @@ export class Widget_matrix implements IWidget<'matrix', Widget_matrix_opts, Widg
 }
 
 // 🅿️ loras ==============================================================================
-export type Widget_loras_opts  = WidgetInputFields<{ default?: SimplifiedLoraDef[] }>
+export type Widget_loras_config  = WidgetConfigFields<{ default?: SimplifiedLoraDef[] }>
 export type Widget_loras_serial = Widget_loras_state
 export type Widget_loras_state  = WidgetStateFields<{ type: 'loras', active: true; loras: SimplifiedLoraDef[] }>
 export type Widget_loras_output = SimplifiedLoraDef[]
-export interface Widget_loras extends WidgetTypeHelpers<'loras', Widget_loras_opts, Widget_loras_serial, Widget_loras_state, Widget_loras_output> {}
-export class Widget_loras implements IWidget<'loras', Widget_loras_opts, Widget_loras_serial, Widget_loras_state, Widget_loras_output> {
+export interface Widget_loras extends WidgetTypeHelpers<'loras', Widget_loras_config, Widget_loras_serial, Widget_loras_state, Widget_loras_output> {}
+export class Widget_loras implements IWidget<'loras', Widget_loras_config, Widget_loras_serial, Widget_loras_state, Widget_loras_output> {
     isVerticalByDefault = true
     isCollapsible = true
     isOptional = false
@@ -837,11 +767,11 @@ export class Widget_loras implements IWidget<'loras', Widget_loras_opts, Widget_
     constructor(
         public builder: FormBuilder,
         public schema: ComfySchemaL,
-        public input: Widget_loras_opts,
+        public config: Widget_loras_config,
         serial?: Widget_loras_serial,
     ) {
         this.id = serial?.id ?? nanoid()
-        this.state = serial ?? { type: 'loras', collapsed: input.startCollapsed, id: this.id, active: true, loras: input.default ?? [] }
+        this.state = serial ?? { type: 'loras', collapsed: config.startCollapsed, id: this.id, active: true, loras: config.default ?? [] }
         this.allLoras = schema.getLoras()
         for (const lora of this.allLoras) {
             if (lora === 'None') continue
@@ -878,7 +808,7 @@ export class Widget_loras implements IWidget<'loras', Widget_loras_opts, Widget_
 }
 
 // 🅿️ image ==============================================================================
-export type Widget_image_opts  = WidgetInputFields<{
+export type Widget_image_config  = WidgetConfigFields<{
     defaultActive?: boolean
     suggestionWhere?: SQLWhere<MediaImageT>
     assetSuggested?: RelativePath
@@ -886,8 +816,8 @@ export type Widget_image_opts  = WidgetInputFields<{
 export type Widget_image_serial = Widget_image_state
 export type Widget_image_state  = WidgetStateFields<ImageAnswerForm<'image', true>>
 export type Widget_image_output = ImageAnswer
-export interface Widget_image extends WidgetTypeHelpers<'image', Widget_image_opts, Widget_image_serial, Widget_image_state, Widget_image_output> {}
-export class Widget_image implements IWidget<'image', Widget_image_opts, Widget_image_serial, Widget_image_state, Widget_image_output> {
+export interface Widget_image extends WidgetTypeHelpers<'image', Widget_image_config, Widget_image_serial, Widget_image_state, Widget_image_output> {}
+export class Widget_image implements IWidget<'image', Widget_image_config, Widget_image_serial, Widget_image_state, Widget_image_output> {
     isVerticalByDefault = true
     isCollapsible = true
     isOptional = false
@@ -897,7 +827,7 @@ export class Widget_image implements IWidget<'image', Widget_image_opts, Widget_
     constructor(
         public builder: FormBuilder,
         public schema: ComfySchemaL,
-        public input: Widget_image_opts,
+        public config: Widget_image_config,
         serial?: Widget_image_serial,
     ) {
         this.id = serial?.id ?? nanoid()
@@ -916,12 +846,12 @@ export class Widget_image implements IWidget<'image', Widget_image_opts, Widget_
 }
 
 // 🅿️ imageOpt ==============================================================================
-export type Widget_imageOpt_opts  = Widget_image_opts // same as image
+export type Widget_imageOpt_config  = Widget_image_config // same as image
 export type Widget_imageOpt_serial = Widget_imageOpt_state
 export type Widget_imageOpt_state  = WidgetStateFields<ImageAnswerForm<'imageOpt', boolean>>
 export type Widget_imageOpt_output = Maybe<ImageAnswer>
-export interface Widget_imageOpt extends WidgetTypeHelpers<'imageOpt', Widget_imageOpt_opts, Widget_imageOpt_serial, Widget_imageOpt_state, Widget_imageOpt_output> {}
-export class Widget_imageOpt implements IWidget<'imageOpt', Widget_imageOpt_opts, Widget_imageOpt_serial, Widget_imageOpt_state, Widget_imageOpt_output> {
+export interface Widget_imageOpt extends WidgetTypeHelpers<'imageOpt', Widget_imageOpt_config, Widget_imageOpt_serial, Widget_imageOpt_state, Widget_imageOpt_output> {}
+export class Widget_imageOpt implements IWidget<'imageOpt', Widget_imageOpt_config, Widget_imageOpt_serial, Widget_imageOpt_state, Widget_imageOpt_output> {
     readonly isVerticalByDefault = false
     readonly isCollapsible = false
     readonly isOptional = true
@@ -931,15 +861,15 @@ export class Widget_imageOpt implements IWidget<'imageOpt', Widget_imageOpt_opts
     constructor(
         public builder: FormBuilder,
         public schema: ComfySchemaL,
-        public input: Widget_imageOpt_opts,
+        public config: Widget_imageOpt_config,
         serial?: Widget_imageOpt_serial,
     ) {
         this.id = serial?.id ?? nanoid()
         this.state = serial ?? {
             type: 'imageOpt',
-            collapsed: input.startCollapsed,
+            collapsed: config.startCollapsed,
             id: this.id,
-            active: input.defaultActive ?? false,
+            active: config.defaultActive ?? false,
             imageID: this.schema.st.defaultImage.id,
         }
         makeAutoObservable(this)
@@ -953,12 +883,12 @@ export class Widget_imageOpt implements IWidget<'imageOpt', Widget_imageOpt_opts
 
 // 🅿️ selectOne ==============================================================================
 export type BaseSelectEntry = { id: string, label?: string }
-export type Widget_selectOne_opts <T extends BaseSelectEntry>  = WidgetInputFields<{ default?: T; choices: T[] | ((formRoot:Maybe<Widget_group<any>>) => T[]) }>
+export type Widget_selectOne_config <T extends BaseSelectEntry>  = WidgetConfigFields<{ default?: T; choices: T[] | ((formRoot:Maybe<Widget_group<any>>) => T[]) }>
 export type Widget_selectOne_serial<T extends BaseSelectEntry> = Widget_selectOne_state<T>
 export type Widget_selectOne_state <T extends BaseSelectEntry>  = WidgetStateFields<{ type:'selectOne', query: string; val: T }>
 export type Widget_selectOne_output<T extends BaseSelectEntry> = T
-export interface Widget_selectOne<T>  extends WidgetTypeHelpers<'selectOne', Widget_selectOne_opts<T>, Widget_selectOne_serial<T>, Widget_selectOne_state<T>, Widget_selectOne_output<T>> {}
-export class Widget_selectOne<T extends BaseSelectEntry> implements IWidget<'selectOne', Widget_selectOne_opts<T>, Widget_selectOne_serial<T>, Widget_selectOne_state<T>, Widget_selectOne_output<T>> {
+export interface Widget_selectOne<T>  extends WidgetTypeHelpers<'selectOne', Widget_selectOne_config<T>, Widget_selectOne_serial<T>, Widget_selectOne_state<T>, Widget_selectOne_output<T>> {}
+export class Widget_selectOne<T extends BaseSelectEntry> implements IWidget<'selectOne', Widget_selectOne_config<T>, Widget_selectOne_serial<T>, Widget_selectOne_state<T>, Widget_selectOne_output<T>> {
     isVerticalByDefault = false
     isCollapsible = false
     isOptional = false
@@ -967,7 +897,7 @@ export class Widget_selectOne<T extends BaseSelectEntry> implements IWidget<'sel
     state: Widget_selectOne_state<T>
 
     get choices():T[]{
-        const _choices = this.input.choices
+        const _choices = this.config.choices
         return typeof _choices === 'function' //
             ? _choices(this.builder._ROOT)
             : _choices
@@ -975,18 +905,18 @@ export class Widget_selectOne<T extends BaseSelectEntry> implements IWidget<'sel
     constructor(
         public builder: FormBuilder,
         public schema: ComfySchemaL,
-        public input: Widget_selectOne_opts<T>,
+        public config: Widget_selectOne_config<T>,
         serial?: Widget_selectOne_serial<T>,
     ) {
         this.id = serial?.id ?? nanoid()
         const choices = this.choices
         this.state = serial ?? {
             type: 'selectOne',
-            collapsed: input.startCollapsed,
+            collapsed: config.startCollapsed,
             active: true,
             id: this.id,
             query: '',
-            val: input.default ?? choices[0],
+            val: config.default ?? choices[0],
         }
         makeAutoObservable(this)
     }
@@ -994,46 +924,14 @@ export class Widget_selectOne<T extends BaseSelectEntry> implements IWidget<'sel
     get result(): Widget_selectOne_output<T> { return this.state.val }
 }
 
-// 🅿️ selectOneOrCustom ==============================================================================
-export type Widget_selectOneOrCustom_opts  = WidgetInputFields<{ default?: BaseSelectEntry; choices: BaseSelectEntry[] }>
-export type Widget_selectOneOrCustom_serial = Widget_selectOneOrCustom_state
-export type Widget_selectOneOrCustom_state  = WidgetStateFields<{ type:'selectOneOrCustom', query: string; val: BaseSelectEntry }>
-export type Widget_selectOneOrCustom_output = string
-export interface Widget_selectOneOrCustom extends WidgetTypeHelpers<'selectOneOrCustom', Widget_selectOneOrCustom_opts, Widget_selectOneOrCustom_serial, Widget_selectOneOrCustom_state, Widget_selectOneOrCustom_output > {}
-export class Widget_selectOneOrCustom implements IWidget<'selectOneOrCustom', Widget_selectOneOrCustom_opts, Widget_selectOneOrCustom_serial, Widget_selectOneOrCustom_state, Widget_selectOneOrCustom_output > {
-    isVerticalByDefault = false
-    isCollapsible = false
-    isOptional = false
-    id: string
-    type: 'selectOneOrCustom' = 'selectOneOrCustom'
-    state: Widget_selectOneOrCustom_state
-    constructor(
-        public builder: FormBuilder,
-        public schema: ComfySchemaL,
-        public input: Widget_selectOneOrCustom_opts,
-        serial?: Widget_selectOneOrCustom_serial,
-    ) {
-        this.id = serial?.id ?? nanoid()
-        this.state = serial ?? {
-            type: 'selectOneOrCustom',
-            collapsed: input.startCollapsed,
-            id: this.id,
-            query: '',
-            val: input.default ?? input.choices[0] ?? '',
-        }
-        makeAutoObservable(this)
-    }
-    get serial(): Widget_selectOneOrCustom_serial { return this.state }
-    get result(): Widget_selectOneOrCustom_output { return this.state.val.id }
-}
 
 // 🅿️ selectMany ==============================================================================
-export type Widget_selectMany_opts<T extends BaseSelectEntry>  = WidgetInputFields<{ default?: T[]; choices: T[] | ((formRoot:Maybe<Widget_group<any>>) => T[]) }>
+export type Widget_selectMany_config<T extends BaseSelectEntry>  = WidgetConfigFields<{ default?: T[]; choices: T[] | ((formRoot:Maybe<Widget_group<any>>) => T[]) }>
 export type Widget_selectMany_serial<T extends BaseSelectEntry> = Widget_selectMany_state<T>
 export type Widget_selectMany_state<T extends BaseSelectEntry>  = WidgetStateFields<{ type: 'selectMany', query: string; values: T[] }>
 export type Widget_selectMany_output<T extends BaseSelectEntry> = T[]
-export interface Widget_selectMany<T extends BaseSelectEntry> extends WidgetTypeHelpers<'selectMany', Widget_selectMany_opts<T>, Widget_selectMany_serial<T>, Widget_selectMany_state<T>, Widget_selectMany_output<T>> {}
-export class Widget_selectMany<T extends BaseSelectEntry> implements IWidget<'selectMany', Widget_selectMany_opts<T>, Widget_selectMany_serial<T>, Widget_selectMany_state<T>, Widget_selectMany_output<T>> {
+export interface Widget_selectMany<T extends BaseSelectEntry> extends WidgetTypeHelpers<'selectMany', Widget_selectMany_config<T>, Widget_selectMany_serial<T>, Widget_selectMany_state<T>, Widget_selectMany_output<T>> {}
+export class Widget_selectMany<T extends BaseSelectEntry> implements IWidget<'selectMany', Widget_selectMany_config<T>, Widget_selectMany_serial<T>, Widget_selectMany_state<T>, Widget_selectMany_output<T>> {
     isVerticalByDefault = false
     isCollapsible = false
     isOptional = false
@@ -1041,7 +939,7 @@ export class Widget_selectMany<T extends BaseSelectEntry> implements IWidget<'se
     type: 'selectMany' = 'selectMany'
     state: Widget_selectMany_state<T>
     get choices():T[]{
-        const _choices = this.input.choices
+        const _choices = this.config.choices
         return typeof _choices === 'function' //
             ? _choices(this.builder._ROOT)
             : _choices
@@ -1049,7 +947,7 @@ export class Widget_selectMany<T extends BaseSelectEntry> implements IWidget<'se
     constructor(
         public builder: FormBuilder,
         public schema: ComfySchemaL,
-        public input: Widget_selectMany_opts<T>,
+        public config: Widget_selectMany_config<T>,
         serial?: Widget_selectMany_serial<T>,
     ) {
         this.id = serial?.id ?? nanoid()
@@ -1065,10 +963,10 @@ export class Widget_selectMany<T extends BaseSelectEntry> implements IWidget<'se
         } else {
             this.state = {
                 type: 'selectMany',
-                collapsed: input.startCollapsed,
+                collapsed: config.startCollapsed,
                 id: this.id,
                 active: true,
-                query: '', values: input.default ?? [], }
+                query: '', values: config.default ?? [], }
         }
         makeAutoObservable(this)
     }
@@ -1096,35 +994,9 @@ export class Widget_selectMany<T extends BaseSelectEntry> implements IWidget<'se
     }
 }
 
-// 🅿️ selectManyOrCustom ==============================================================================
-export type Widget_selectManyOrCustom_opts  = WidgetInputFields<{ default?: string[]; choices: string[] }>
-export type Widget_selectManyOrCustom_serial = Widget_selectManyOrCustom_state
-export type Widget_selectManyOrCustom_state  = WidgetStateFields<{ type: 'selectManyOrCustom', query: string; values: string[] }>
-export type Widget_selectManyOrCustom_output = string[]
-export interface Widget_selectManyOrCustom extends WidgetTypeHelpers<'selectManyOrCustom',  Widget_selectManyOrCustom_opts, Widget_selectManyOrCustom_serial, Widget_selectManyOrCustom_state, Widget_selectManyOrCustom_output > {}
-export class Widget_selectManyOrCustom implements IWidget<'selectManyOrCustom', Widget_selectManyOrCustom_opts, Widget_selectManyOrCustom_serial, Widget_selectManyOrCustom_state, Widget_selectManyOrCustom_output > {
-    isVerticalByDefault = false
-    isCollapsible = false
-    isOptional = false
-    id: string
-    type: 'selectManyOrCustom' = 'selectManyOrCustom'
-    state: Widget_selectManyOrCustom_state
-    constructor(
-        public builder: FormBuilder,
-        public schema: ComfySchemaL,
-        public input: Widget_selectManyOrCustom_opts,
-        serial?: Widget_selectManyOrCustom_serial,
-    ) {
-        this.id = serial?.id ?? nanoid()
-        this.state = serial ?? { type: 'selectManyOrCustom', collapsed: input.startCollapsed, id: this.id, query: '', values: input.default ?? [] }
-        makeAutoObservable(this)
-    }
-    get serial(): Widget_selectManyOrCustom_serial { return this.state }
-    get result(): Widget_selectManyOrCustom_output { return this.state.values }
-}
 
 // 🅿️ list ==============================================================================
-export type Widget_list_opts<T extends Widget>  = WidgetInputFields<{
+export type Widget_list_config<T extends Widget>  = WidgetConfigFields<{
     element: (ix:number) => T,
     min?: number,
     max?:number,
@@ -1133,8 +1005,8 @@ export type Widget_list_opts<T extends Widget>  = WidgetInputFields<{
 export type Widget_list_serial<T extends Widget> = WidgetStateFields<{ type: 'list', active: true; items_: T['$Serial'][] }>
 export type Widget_list_state<T extends Widget>  = WidgetStateFields<{ type: 'list', active: true; items: T[] }>
 export type Widget_list_output<T extends Widget> = T['$Output'][]
-export interface Widget_list<T extends Widget> extends WidgetTypeHelpers<'list', Widget_list_opts<T>, Widget_list_serial<T>, Widget_list_state<T>, Widget_list_output<T>> {}
-export class Widget_list<T extends Widget> implements IWidget<'list', Widget_list_opts<T>, Widget_list_serial<T>, Widget_list_state<T>, Widget_list_output<T>> {
+export interface Widget_list<T extends Widget> extends WidgetTypeHelpers<'list', Widget_list_config<T>, Widget_list_serial<T>, Widget_list_state<T>, Widget_list_output<T>> {}
+export class Widget_list<T extends Widget> implements IWidget<'list', Widget_list_config<T>, Widget_list_serial<T>, Widget_list_state<T>, Widget_list_output<T>> {
     isVerticalByDefault = true
     isCollapsible = true
     isOptional = false
@@ -1147,19 +1019,19 @@ export class Widget_list<T extends Widget> implements IWidget<'list', Widget_lis
     constructor(
         public builder: FormBuilder,
         public schema: ComfySchemaL,
-        public input: Widget_list_opts<T>,
+        public config: Widget_list_config<T>,
         serial?: Widget_list_serial<T>,
     ) {
         this.id = serial?.id ?? nanoid()
-        this._reference = runWithGlobalForm(this.builder, () => input.element(0))
+        this._reference = runWithGlobalForm(this.builder, () => config.element(0))
         if (serial) {
-            const items = serial.items_.map((sub_) => builder._HYDRATE(sub_.type, this._reference.input, sub_)) // 🔴 handler filter if wrong type
+            const items = serial.items_.map((sub_) => builder._HYDRATE(sub_.type, this._reference.config, sub_)) // 🔴 handler filter if wrong type
             this.state = { type: 'list', id: this.id, active: serial.active, items }
         } else {
             const clamp = (v: number, min: number, max: number) => Math.min(Math.max(v, min), max)
-            const defaultLen = clamp(input.defaultLength ?? 0, input.min ?? 0, input.max ?? 10)
+            const defaultLen = clamp(config.defaultLength ?? 0, config.min ?? 0, config.max ?? 10)
             const items = defaultLen
-                ? runWithGlobalForm(this.builder, () => new Array(defaultLen).fill(0).map((_,ix) => input.element(ix)))
+                ? runWithGlobalForm(this.builder, () => new Array(defaultLen).fill(0).map((_,ix) => config.element(ix)))
                 : []
             this.state = {
                 type: 'list',
@@ -1170,9 +1042,9 @@ export class Widget_list<T extends Widget> implements IWidget<'list', Widget_lis
         }
         makeAutoObservable(this)
     }
-    removemAllItems = () => this.state.items = this.state.items.slice(0, this.input.min ?? 0)
-    collapseAllItems = () => this.state.items.forEach((i) => i.state.collapsed = true)
-    expandAllItems = () => this.state.items.forEach((i) => i.state.collapsed = false)
+    removemAllItems = () => this.state.items = this.state.items.slice(0, this.config.min ?? 0)
+    collapseAllItems = () => this.state.items.forEach((i) => i.serial.collapsed = true)
+    expandAllItems = () => this.state.items.forEach((i) => i.serial.collapsed = false)
     removeItem = (item: T) => {
         const i = this.state.items.indexOf(item)
         if (i >= 0) this.state.items.splice(i, 1)
@@ -1190,7 +1062,7 @@ export class Widget_list<T extends Widget> implements IWidget<'list', Widget_lis
     addItem() {
         // const _ref = this._reference
         // const newItem = this.builder.HYDRATE(_ref.type, _ref.input)
-        this.state.items.push(this.input.element(this.state.items.length))
+        this.state.items.push(this.config.element(this.state.items.length))
     }
 }
 
@@ -1237,7 +1109,7 @@ const itemExtDefaults : ItemExt = {x: 50, y: 50, z: 0, width: 50, height: 50, de
 type WithExt <T extends Widget> = { item:  T } & ItemExt
 type WithPartialExt <T extends Widget> = { item:  T } & Partial<ItemExt>
 
-export type Widget_listExt_opts<T extends Widget>  = WidgetInputFields<{
+export type Widget_listExt_config<T extends Widget>  = WidgetConfigFields<{
     mode?: 'regional' | 'timeline',
     /** default: 100 */
     width: number,
@@ -1251,8 +1123,8 @@ export type Widget_listExt_opts<T extends Widget>  = WidgetInputFields<{
 export type Widget_listExt_serial<T extends Widget> = WidgetStateFields<{ type: 'listExt', active: true; items_: ({item_: T['$Serial']} & ItemExt)[] } & RootExt>
 export type Widget_listExt_state <T extends Widget> = WidgetStateFields<{ type: 'listExt', active: true; items:  ({item:  T           } & ItemExt)[] } & RootExt>
 export type Widget_listExt_output<T extends Widget> = RootExt & { items: (ItemExt & {item: T['$Output'] })[] }
-export interface Widget_listExt  <T extends Widget> extends     WidgetTypeHelpers<'listExt', Widget_listExt_opts<T>, Widget_listExt_serial<T>, Widget_listExt_state<T>, Widget_listExt_output<T>> {}
-export class Widget_listExt      <T extends Widget> implements IWidget<'listExt', Widget_listExt_opts<T>, Widget_listExt_serial<T>, Widget_listExt_state<T>, Widget_listExt_output<T>> {
+export interface Widget_listExt  <T extends Widget> extends     WidgetTypeHelpers<'listExt', Widget_listExt_config<T>, Widget_listExt_serial<T>, Widget_listExt_state<T>, Widget_listExt_output<T>> {}
+export class Widget_listExt      <T extends Widget> implements IWidget<'listExt', Widget_listExt_config<T>, Widget_listExt_serial<T>, Widget_listExt_state<T>, Widget_listExt_output<T>> {
     isVerticalByDefault = true
     isCollapsible = true
     isOptional = false
@@ -1265,25 +1137,25 @@ export class Widget_listExt      <T extends Widget> implements IWidget<'listExt'
     constructor(
         public builder: FormBuilder,
         public schema: ComfySchemaL,
-        public input: Widget_listExt_opts<T>,
+        public config: Widget_listExt_config<T>,
         serial?: Widget_listExt_serial<T>,
     ) {
         this.id = serial?.id ?? nanoid()
-        this._reference = runWithGlobalForm(this.builder, () => input.element({width:100, height:100, ix: 0}).item)
+        this._reference = runWithGlobalForm(this.builder, () => config.element({width:100, height:100, ix: 0}).item)
         if (serial) {
             const items:  WithExt<T>[] = serial.items_.map(({item_, ...ext}) => {
-                const item:T = builder._HYDRATE(item_.type, this._reference.input, item_)
+                const item:T = builder._HYDRATE(item_.type, this._reference.config, item_)
                 return {item, ...ext}
             })
             this.state = { type: 'listExt', id: this.id, active: serial.active, items, width: serial.width, height: serial.height }
         } else {
-            const w = input.width ?? 100
-            const h = input.height ?? 100
+            const w = config.width ?? 100
+            const h = config.height ?? 100
             const clamp = (v: number, min: number, max: number) => Math.min(Math.max(v, min), max)
-            const defaultLen = clamp(input.defaultLength ?? 0, input.min ?? 0, input.max ?? 10)
+            const defaultLen = clamp(config.defaultLength ?? 0, config.min ?? 0, config.max ?? 10)
             const items: WithExt<T>[] = defaultLen
                 ? new Array(defaultLen).fill(0).map((_,ix) => {
-                    const partial: WithPartialExt<T> = input.element({width: w, height: h, ix})
+                    const partial: WithPartialExt<T> = config.element({width: w, height: h, ix})
                     const out : WithExt<T> = Object.assign({}, itemExtDefaults, partial)
                     return out
                 })
@@ -1295,13 +1167,13 @@ export class Widget_listExt      <T extends Widget> implements IWidget<'listExt'
 
     // METHODS -----------------------------------------------------------------------------
     addItem() {
-        const newItemPartial = runWithGlobalForm(this.builder, () => this.input.element({width: this.state.width, height: this.state.height, ix: this.state.items.length}))
+        const newItemPartial = runWithGlobalForm(this.builder, () => this.config.element({width: this.state.width, height: this.state.height, ix: this.state.items.length}))
         const newItem: WithExt<T> = { ...itemExtDefaults, ...newItemPartial}
         this.state.items.push(newItem)
     }
-    removemAllItems = () => this.state.items = this.state.items.slice(0, this.input.min ?? 0)
-    collapseAllItems = () => this.state.items.forEach((i) => i.item.state.collapsed = true)
-    expandAllItems = () => this.state.items.forEach((i) => i.item.state.collapsed = false)
+    removemAllItems = () => this.state.items = this.state.items.slice(0, this.config.min ?? 0)
+    collapseAllItems = () => this.state.items.forEach((i) => i.item.serial.collapsed = true)
+    expandAllItems = () => this.state.items.forEach((i) => i.item.serial.collapsed = false)
     removeItem = (item: WithExt<T>) => {
         const i = this.state.items.indexOf(item) // 🔴 dangerous, ref equality fast but error prone
         if (i >= 0) this.state.items.splice(i, 1)
@@ -1326,12 +1198,12 @@ export class Widget_listExt      <T extends Widget> implements IWidget<'listExt'
 }
 
 // 🅿️ group ==============================================================================
-export type Widget_group_opts <T extends { [key: string]: Widget }> = WidgetInputFields<{ items: () => T, topLevel?: boolean, verticalLabels?: boolean }>
+export type Widget_group_config <T extends { [key: string]: Widget }> = WidgetConfigFields<{ items: () => T, topLevel?: boolean, verticalLabels?: boolean }>
 export type Widget_group_serial<T extends { [key: string]: Widget }> = WidgetStateFields<{ type: 'group', active: true; values_: {[k in keyof T]: T[k]['$Serial']}, collapsed?: boolean }>
 export type Widget_group_state <T extends { [key: string]: Widget }> = WidgetStateFields<{ type: 'group', active: true; values: T, vertical?: boolean }>
 export type Widget_group_output<T extends { [key: string]: Widget }> = { [k in keyof T]: GetWidgetResult<T[k]> }
-export interface Widget_group<T extends { [key: string]: Widget }> extends WidgetTypeHelpers<'group', Widget_group_opts<T>, Widget_group_serial<T>, Widget_group_state<T>, Widget_group_output<T>> {}
-export class Widget_group<T extends { [key: string]: Widget }> implements IWidget<'group', Widget_group_opts<T>, Widget_group_serial<T>, Widget_group_state<T>, Widget_group_output<T>> {
+export interface Widget_group<T extends { [key: string]: Widget }> extends WidgetTypeHelpers<'group', Widget_group_config<T>, Widget_group_serial<T>, Widget_group_state<T>, Widget_group_output<T>> {}
+export class Widget_group<T extends { [key: string]: Widget }> implements IWidget<'group', Widget_group_config<T>, Widget_group_serial<T>, Widget_group_state<T>, Widget_group_output<T>> {
     isVerticalByDefault = true
     isCollapsible = true
     isOptional = false
@@ -1344,26 +1216,26 @@ export class Widget_group<T extends { [key: string]: Widget }> implements IWidge
     get values() { return this.state.values }
     collapseAllEntries = () => {
         for (const [key, item] of this.entries) {
-            if (item.isCollapsible && item.state.active) item.state.collapsed = true
+            if (item.isCollapsible && item.serial.active) item.serial.collapsed = true
         }
     }
     expandAllEntries = () => {
-        for (const [key, item] of this.entries)  item.state.collapsed = undefined
+        for (const [key, item] of this.entries)  item.serial.collapsed = undefined
     }
     constructor(
         public builder: FormBuilder,
         public schema: ComfySchemaL,
-        public input: Widget_group_opts<T>,
+        public config: Widget_group_config<T>,
         serial?: Widget_group_serial<T>,
     ) {
         this.id = serial?.id ?? nanoid()
-        if (typeof input.items!=='function') {
+        if (typeof config.items!=='function') {
             console.log('🔴 group "items" should be af unction')
             debugger
         }
         // debugger
         if (serial){
-            const _newValues = runWithGlobalForm(this.builder, () => input.items())
+            const _newValues = runWithGlobalForm(this.builder, () => config.items())
             this.state = { type: 'group', id: this.id, active: serial.active, collapsed: serial.collapsed, values: {} as any}
             const prevValues_ = serial.values_??{}
             for (const key in _newValues) {
@@ -1371,7 +1243,7 @@ export class Widget_group<T extends { [key: string]: Widget }> implements IWidge
                 const prevValue_ = prevValues_[key]
                 // if (newItem==null) continue // 🔴 loop should be on now item keys, not prev
                 // if (newItem==null) debugger
-                const newInput = newItem.input
+                const newInput = newItem.config
                 const newType = newItem.type
                 // console.log(' 👀 >>', key, prev_)
                 if (prevValue_ && newType === prevValue_.type) {
@@ -1381,14 +1253,14 @@ export class Widget_group<T extends { [key: string]: Widget }> implements IWidge
                 }
             }
         } else {
-            const _items = runWithGlobalForm(this.builder, () => input.items())
+            const _items = runWithGlobalForm(this.builder, () => config.items())
             this.state = {
                 type: 'group',
                 id: this.id,
                 active: true,
                 values: _items,
-                vertical: input.verticalLabels ?? true,
-                collapsed: input.startCollapsed ?? true
+                vertical: config.verticalLabels ?? true,
+                collapsed: config.startCollapsed ?? true
             }
         }
         makeAutoObservable(this)
@@ -1408,12 +1280,12 @@ export class Widget_group<T extends { [key: string]: Widget }> implements IWidge
 }
 
 // 🅿️ groupOpt ==============================================================================
-export type Widget_groupOpt_opts <T extends { [key: string]: Widget }> = WidgetInputFields<{ default?: boolean; items: () => T, topLevel?: false }>
+export type Widget_groupOpt_config <T extends { [key: string]: Widget }> = WidgetConfigFields<{ default?: boolean; items: () => T, topLevel?: false }>
 export type Widget_groupOpt_serial<T extends { [key: string]: Widget }> = WidgetStateFields<{ type: 'groupOpt', active: boolean; values_: {[K in keyof T]: T[K]['$Serial']}, }>
 export type Widget_groupOpt_state <T extends { [key: string]: Widget }> = WidgetStateFields<{ type: 'groupOpt', active: boolean; values: T, }>
 export type Widget_groupOpt_output<T extends { [key: string]: Widget }> = Maybe<{ [k in keyof T]: GetWidgetResult<T[k]> }>
-export interface Widget_groupOpt<T extends { [key: string]: Widget }> extends WidgetTypeHelpers<'groupOpt', Widget_groupOpt_opts<T>, Widget_groupOpt_serial<T>, Widget_groupOpt_state<T>, Widget_groupOpt_output<T>> {}
-export class Widget_groupOpt<T extends { [key: string]: Widget }> implements IWidget<'groupOpt', Widget_groupOpt_opts<T>, Widget_groupOpt_serial<T>, Widget_groupOpt_state<T>, Widget_groupOpt_output<T>> {
+export interface Widget_groupOpt<T extends { [key: string]: Widget }> extends WidgetTypeHelpers<'groupOpt', Widget_groupOpt_config<T>, Widget_groupOpt_serial<T>, Widget_groupOpt_state<T>, Widget_groupOpt_output<T>> {}
+export class Widget_groupOpt<T extends { [key: string]: Widget }> implements IWidget<'groupOpt', Widget_groupOpt_config<T>, Widget_groupOpt_serial<T>, Widget_groupOpt_state<T>, Widget_groupOpt_output<T>> {
     readonly isVerticalByDefault = true
     readonly isCollapsible = true
     readonly isOptional = true
@@ -1427,18 +1299,18 @@ export class Widget_groupOpt<T extends { [key: string]: Widget }> implements IWi
     constructor(
         public builder: FormBuilder,
         public schema: ComfySchemaL,
-        public input: Widget_groupOpt_opts<T>,
+        public config: Widget_groupOpt_config<T>,
         serial?: Widget_groupOpt_serial<T>,
     ) {
         this.id = serial?.id ?? nanoid()
         if (serial){
-            const _newValues = runWithGlobalForm(this.builder, () => input.items())
+            const _newValues = runWithGlobalForm(this.builder, () => config.items())
             this.state = { type:'groupOpt', id: this.id, active: serial.active, collapsed: serial.collapsed, values: {} as any }
             const prevValues_ = serial.values_??{}
             for (const key in _newValues) {
                 const newItem = _newValues[key]
                 const prevValue_ = prevValues_[key]
-                const newInput = newItem.input
+                const newInput = newItem.config
                 const newType = newItem.type
                 if (prevValue_ && newType === prevValue_.type) {
                     this.state.values[key] = this.builder._HYDRATE(newType, newInput, prevValue_)
@@ -1447,14 +1319,14 @@ export class Widget_groupOpt<T extends { [key: string]: Widget }> implements IWi
                 }
             }
         } else {
-            const _items = runWithGlobalForm(this.builder, () => input.items())
-            const startActive = input.default ?? false
+            const _items = runWithGlobalForm(this.builder, () => config.items())
+            const startActive = config.default ?? false
             this.state = {
                 type: 'groupOpt',
                 id: this.id,
                 active: startActive,
                 values: _items,
-                collapsed: input.startCollapsed ?? startActive
+                collapsed: config.startCollapsed ?? startActive
             }
         }
         makeAutoObservable(this)
@@ -1475,12 +1347,12 @@ export class Widget_groupOpt<T extends { [key: string]: Widget }> implements IWi
 }
 
 // 🅿️ choice ==============================================================================
-export type Widget_choice_opts <T extends { [key: string]: Widget }> = WidgetInputFields<{ default?: keyof T; items: () => T }>
+export type Widget_choice_config<T extends { [key: string]: Widget }> = WidgetConfigFields<{ default?: keyof T; items: () => T }>
 export type Widget_choice_serial<T extends { [key: string]: Widget }> = WidgetStateFields<{ type: 'choice', active: boolean; pick: keyof T & string, values_: {[K in keyof T]: T[K]['$Serial']} }>
 export type Widget_choice_state <T extends { [key: string]: Widget }> = WidgetStateFields<{ type: 'choice', active: boolean; pick: keyof T & string, values: T }>
 export type Widget_choice_output<T extends { [key: string]: Widget }> = { [k in keyof T]?: GetWidgetResult<T[k]> }
-export interface Widget_choice  <T extends { [key: string]: Widget }> extends    WidgetTypeHelpers<'choice',  Widget_choice_opts<T>, Widget_choice_serial<T>, Widget_choice_state<T>, Widget_choice_output<T>> {}
-export class Widget_choice      <T extends { [key: string]: Widget }> implements IWidget<'choice', Widget_choice_opts<T>, Widget_choice_serial<T>, Widget_choice_state<T>, Widget_choice_output<T>> {
+export interface Widget_choice  <T extends { [key: string]: Widget }> extends    WidgetTypeHelpers<'choice',  Widget_choice_config<T>, Widget_choice_serial<T>, Widget_choice_state<T>, Widget_choice_output<T>> {}
+export class Widget_choice      <T extends { [key: string]: Widget }> implements IWidget<'choice', Widget_choice_config<T>, Widget_choice_serial<T>, Widget_choice_state<T>, Widget_choice_output<T>> {
     isVerticalByDefault = true
     isCollapsible = true
     isOptional = false
@@ -1491,11 +1363,11 @@ export class Widget_choice      <T extends { [key: string]: Widget }> implements
     constructor(
         public builder: FormBuilder,
         public schema: ComfySchemaL,
-        public input: Widget_choice_opts<T>,
+        public config: Widget_choice_config<T>,
         serial?: Widget_choice_serial<T>,
     ) {
         this.id = serial?.id ?? nanoid()
-        const _items = runWithGlobalForm(this.builder, () => input.items())
+        const _items = runWithGlobalForm(this.builder, () => config.items())
         this.possibleChoices=Object.keys(_items)
         if (serial){
             this.state = { type:'choice', id: this.id, active: serial.active, collapsed: serial.collapsed, values: {} as any, pick: serial.pick }
@@ -1505,7 +1377,7 @@ export class Widget_choice      <T extends { [key: string]: Widget }> implements
                 // 🔴 if (key !== serial.pick) continue
                 const newItem = _items[key]
                 const prevValue_ = prevValues_[key]
-                const newInput = newItem.input
+                const newInput = newItem.config
                 const newType = newItem.type
                 if (prevValue_ && newType === prevValue_.type) {
                     this.state.values[key] = this.builder._HYDRATE(newType, newInput, prevValue_)
@@ -1514,7 +1386,7 @@ export class Widget_choice      <T extends { [key: string]: Widget }> implements
                 }
             }
         } else {
-            const defaultPick: keyof T & string = (input.default as string ?? Object.keys(_items)[0]  ??'error')
+            const defaultPick: keyof T & string = (config.default as string ?? Object.keys(_items)[0]  ??'error')
             this.state = { type: 'choice', id: this.id, active: true, values: _items, pick: defaultPick }
         }
         makeAutoObservable(this)
@@ -1545,104 +1417,25 @@ export class Widget_choice      <T extends { [key: string]: Widget }> implements
 }
 
 
-// 🅿️ choices ==============================================================================
-export type Widget_choices_opts <T extends { [key: string]: Widget }> = WidgetInputFields<{ items: () => T, defaultActiveBranches?: {[k in keyof T]?: boolean}, placeholder?: string  }>
-export type Widget_choices_serial<T extends { [key: string]: Widget }> = WidgetStateFields<{ type: 'choices', active: true; branches: {[k in keyof T]?: boolean}, values_: {[k in keyof T]: T[k]['$Serial']} }>
-export type Widget_choices_state <T extends { [key: string]: Widget }> = WidgetStateFields<{ type: 'choices', active: true; branches: {[k in keyof T]?: boolean}, values: T }>
-export type Widget_choices_output<T extends { [key: string]: Widget }> = { [k in keyof T]?: GetWidgetResult<T[k]> }
-export interface Widget_choices<T extends { [key: string]: Widget }> extends WidgetTypeHelpers<'choices', Widget_choices_opts<T>, Widget_choices_serial<T>, Widget_choices_state<T>, Widget_choices_output<T>> {}
-export class Widget_choices<T extends { [key: string]: Widget }> implements IWidget<'choices', Widget_choices_opts<T>, Widget_choices_serial<T>, Widget_choices_state<T>, Widget_choices_output<T>> {
-    isVerticalByDefault = true
-    isCollapsible = true
-    isOptional = false
-    id: string
-    type: 'choices' = 'choices'
-    state: Widget_choices_state<T>
-    constructor(
-        public builder: FormBuilder,
-        public schema: ComfySchemaL,
-        public input: Widget_choices_opts<T>,
-        serial?: Widget_choices_serial<T>,
-    ) {
-        this.id = serial?.id ?? nanoid()
-        if (typeof input.items!=='function') {
-            console.log('🔴 choices "items" should be af unction')
-            debugger
-        }
-        // debugger
-        if (serial){
-            const _newValues = runWithGlobalForm(this.builder, () => input.items())
-            this.state = {
-                type: 'choices',
-                id: this.id,
-                active: serial.active,
-                collapsed: serial.collapsed,
-                branches: this.input.defaultActiveBranches??{},
-                values: {} as any
-            }
-            const prevValues_ = serial.values_??{}
-            for (const key in _newValues) {
-                const newItem = _newValues[key]
-                const prevValue_ = prevValues_[key]
-                const newInput = newItem.input
-                const newType = newItem.type
-                // restore branches value
-                if (prevValue_ && newType === prevValue_.type) {
-                    this.state.values[key] = this.builder._HYDRATE(newType, newInput, prevValue_)
-                } else {
-                    this.state.values[key] = newItem
-                }
-                // restore branch action state
-                if (serial.branches[key]!=null) {
-                    this.state.branches[key] = serial.branches[key]
-                }
-            }
-        } else {
-            const _items = runWithGlobalForm(this.builder, () => input.items())
-            this.state = { type: 'choices', id: this.id, active: true, values: _items, branches: {} }
-        }
-        makeAutoObservable(this)
-    }
-    get serial(): Widget_choices_serial<T> {
-        const values_: { [key: string]: any } = {}
-        for (const key in this.state.values) values_[key] = this.state.values[key].serial
-        return {
-            type: 'choices',
-            id: this.id,
-            active: this.state.active,
-            values_: values_ as any,
-            collapsed: this.state.collapsed ,
-            branches: this.state.branches
-        }
-    }
-    get result(): Widget_choices_output<T> {
-        const out: { [key: string]: any } = {}
-        for (const key in this.state.values) {
-            if (this.state.branches[key] !== true) continue
-            out[key] = this.state.values[key].result
-        }
-        return out as any
-    }
-}
 
 // 🅿️ enum ==============================================================================
-export type Widget_enum_opts<T extends KnownEnumNames>  = WidgetInputFields<{ default?: Requirable[T] | EnumDefault<T>; enumName: T }>
+export type Widget_enum_config<T extends KnownEnumNames>  = WidgetConfigFields<{ default?: Requirable[T] | EnumDefault<T>; enumName: T }>
 export type Widget_enum_serial<T extends KnownEnumNames> = Widget_enum_state<T>
 export type Widget_enum_state<T extends KnownEnumNames>  = WidgetStateFields<{ type: 'enum', active: true; val: Requirable[T] }>
 export type Widget_enum_output<T extends KnownEnumNames> = Requirable[T]
-export interface Widget_enum<T extends KnownEnumNames> extends WidgetTypeHelpers<'enum', Widget_enum_opts<T>, Widget_enum_serial<T>, Widget_enum_state<T>, Widget_enum_output<T>> {}
-export class Widget_enum<T extends KnownEnumNames> implements IWidget<'enum', Widget_enum_opts<T>, Widget_enum_serial<T>, Widget_enum_state<T>, Widget_enum_output<T>> {
+export interface Widget_enum<T extends KnownEnumNames> extends WidgetTypeHelpers<'enum', Widget_enum_config<T>, Widget_enum_serial<T>, Widget_enum_state<T>, Widget_enum_output<T>> {}
+export class Widget_enum<T extends KnownEnumNames> implements IWidget<'enum', Widget_enum_config<T>, Widget_enum_serial<T>, Widget_enum_state<T>, Widget_enum_output<T>> {
     isVerticalByDefault = false
     isCollapsible = false
     isOptional = false
     id: string
     type: 'enum' = 'enum'
     state: Widget_enum_state<T>
-    get possibleValues() {return  this.schema.knownEnumsByName.get(this.input.enumName)?.values ?? []}
+    get possibleValues() {return  this.schema.knownEnumsByName.get(this.config.enumName)?.values ?? []}
     constructor(
         public builder: FormBuilder,
         public schema: ComfySchemaL,
-        public input: Widget_enum_opts<T>,
+        public config: Widget_enum_config<T>,
         serial?: Widget_enum_serial<T>,
     ) {
         this.id = serial?.id ?? nanoid()
@@ -1650,45 +1443,45 @@ export class Widget_enum<T extends KnownEnumNames> implements IWidget<'enum', Wi
             type: 'enum',
             id: this.id,
             active: true,
-            val: extractDefaultValue(input) ?? (this.possibleValues[0] as any)
+            val: extractDefaultValue(config) ?? (this.possibleValues[0] as any)
         }
         makeAutoObservable(this)
     }
-    get status(): CleanedEnumResult<any> { return this.schema.st.fixEnumValue(this.state.val as any, this.input.enumName, false) } // prettier-ignore
+    get status(): CleanedEnumResult<any> { return this.schema.st.fixEnumValue(this.state.val as any, this.config.enumName, false) } // prettier-ignore
     get serial(): Widget_enum_serial<T> { return this.state }
     get result(): Widget_enum_output<T> { return this.status.finalValue }
 }
 
 // 🅿️ enumOpt ==============================================================================
-export type Widget_enumOpt_opts<T extends KnownEnumNames>  = WidgetInputFields<{ default?: Requirable[T]; enumName: T }>
+export type Widget_enumOpt_config<T extends KnownEnumNames>  = WidgetConfigFields<{ default?: Requirable[T]; enumName: T }>
 export type Widget_enumOpt_serial<T extends KnownEnumNames> = Widget_enumOpt_state<T>
 export type Widget_enumOpt_state<T extends KnownEnumNames>  = WidgetStateFields<{ type: 'enumOpt', active: boolean; val: Requirable[T] }>
 export type Widget_enumOpt_output<T extends KnownEnumNames> = Maybe<Requirable[T]>
-export interface Widget_enumOpt<T extends KnownEnumNames> extends WidgetTypeHelpers<'enumOpt', Widget_enumOpt_opts<T>, Widget_enumOpt_serial<T>, Widget_enumOpt_state<T>, Widget_enumOpt_output<T>> {}
-export class Widget_enumOpt<T extends KnownEnumNames> implements IWidget<'enumOpt', Widget_enumOpt_opts<T>, Widget_enumOpt_serial<T>, Widget_enumOpt_state<T>, Widget_enumOpt_output<T>> {
+export interface Widget_enumOpt<T extends KnownEnumNames> extends WidgetTypeHelpers<'enumOpt', Widget_enumOpt_config<T>, Widget_enumOpt_serial<T>, Widget_enumOpt_state<T>, Widget_enumOpt_output<T>> {}
+export class Widget_enumOpt<T extends KnownEnumNames> implements IWidget<'enumOpt', Widget_enumOpt_config<T>, Widget_enumOpt_serial<T>, Widget_enumOpt_state<T>, Widget_enumOpt_output<T>> {
     isVerticalByDefault = false
     isCollapsible = false
     isOptional = true
     id: string
     type: 'enumOpt' = 'enumOpt'
     state: Widget_enumOpt_state<T>
-    get possibleValues() {return  this.schema.knownEnumsByName.get(this.input.enumName)?.values ?? []}
+    get possibleValues() {return  this.schema.knownEnumsByName.get(this.config.enumName)?.values ?? []}
     constructor(
         public builder: FormBuilder,
         public schema: ComfySchemaL,
-        public input: Widget_enumOpt_opts<T>,
+        public config: Widget_enumOpt_config<T>,
         serial?: Widget_enumOpt_serial<T>,
     ) {
         this.id = serial?.id ?? nanoid()
         this.state = serial ?? {
             type: 'enumOpt',
             id: this.id,
-            active: input.default != null,
-            val: input.default ?? (this.possibleValues[0] as any) /* 🔴 */,
+            active: config.default != null,
+            val: config.default ?? (this.possibleValues[0] as any) /* 🔴 */,
         }
         makeAutoObservable(this)
     }
-    get status(): CleanedEnumResult<any> { return this.schema.st.fixEnumValue(this.state.val as any, this.input.enumName, true) } // prettier-ignore
+    get status(): CleanedEnumResult<any> { return this.schema.st.fixEnumValue(this.state.val as any, this.config.enumName, true) } // prettier-ignore
     get serial(): Widget_enumOpt_serial<T> { return this.state }
     get result(): Widget_enumOpt_output<T> {
         if (!this.state.active) return undefined
@@ -1700,7 +1493,6 @@ export class Widget_enumOpt<T extends KnownEnumNames> implements IWidget<'enumOp
 
 WidgetDI.Widget_color              = Widget_color
 WidgetDI.Widget_str                = Widget_str
-WidgetDI.Widget_strOpt             = Widget_strOpt
 WidgetDI.Widget_prompt             = Widget_prompt
 WidgetDI.Widget_promptOpt          = Widget_promptOpt
 WidgetDI.Widget_seed               = Widget_seed
@@ -1717,9 +1509,7 @@ WidgetDI.Widget_matrix             = Widget_matrix
 WidgetDI.Widget_loras              = Widget_loras
 WidgetDI.Widget_image              = Widget_image
 WidgetDI.Widget_imageOpt           = Widget_imageOpt
-WidgetDI.Widget_selectOneOrCustom  = Widget_selectOneOrCustom
 WidgetDI.Widget_selectMany         = Widget_selectMany
-WidgetDI.Widget_selectManyOrCustom = Widget_selectManyOrCustom
 WidgetDI.Widget_selectOne          = Widget_selectOne
 WidgetDI.Widget_list               = Widget_list
 WidgetDI.Widget_group              = Widget_group

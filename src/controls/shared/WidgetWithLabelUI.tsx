@@ -9,15 +9,13 @@ import { Tooltip } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
 import { makeLabelFromFieldName } from '../../utils/misc/makeLabelFromFieldName'
 import { ErrorBoundaryFallback } from '../../widgets/misc/ErrorBoundary'
-import { WidgetDI } from '../widgets/WidgetUI.DI'
-import { InstallModelBtnUI } from '../widgets/InstallModelBtnUI'
 import { InstallCustomNodeBtnUI } from '../../wiki/ui/InstallCustomNodeBtnUI'
+import { InstallModelBtnUI } from '../misc/InstallModelBtnUI'
+import { WidgetDI } from '../widgets/WidgetUI.DI'
 import { ListControlsUI } from './ListControlsUI'
-import { WidgetListExtUI } from '../widgets/WidgetListExtUI'
 
 export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     widget: R.Widget
-    // labelPos?: LabelPos
     rootKey: string
     vertical?: boolean
     isTopLevel?: boolean
@@ -26,39 +24,39 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     const KLS = WidgetDI
     const st = useSt()
 
-    let tooltip: Maybe<string> = widget.input.tooltip
-    let label: Maybe<string | false> = widget.input.label ?? makeLabelFromFieldName(rootKey)
+    let tooltip: Maybe<string> = widget.config.tooltip
+    let label: Maybe<string | false> = widget.config.label ?? makeLabelFromFieldName(rootKey)
 
     const isVertical = (() => {
-        if (p.widget.input.showID) return true
+        if (p.widget.config.showID) return true
         if (st.preferedFormLayout === 'auto') return p.widget.isVerticalByDefault
         if (st.preferedFormLayout === 'mobile') return true
         if (st.preferedFormLayout === 'dense') return false
     })()
 
     const isCollapsible = widget.isCollapsible
-    const collapsed = widget.state.collapsed && isCollapsible
+    const collapsed = widget.serial.collapsed && isCollapsible
     const levelClass = p.isTopLevel ? '_isTopLevel' : '_isNotTopLevel'
 
     const toggleInfo =
         widget instanceof KLS.Widget_bool
             ? {
-                  value: widget.state.val,
+                  value: widget.serial.val,
                   toggle: () => {
                       runInAction(() => {
-                          widget.state.val = !widget.state.val
+                          widget.serial.val = !widget.serial.val
                       })
                   },
                   //   onChange: (ev: ChangeEvent<HTMLInputElement>) => {
-                  //       req.state.val = ev.target.checked
-                  //       req.state.active = true
+                  //       req.serial.val = ev.target.checked
+                  //       req.serial.active = true
                   //   },
               }
             : {
-                  value: widget.state.active,
+                  value: widget.serial.active,
                   toggle: () => {
                       runInAction(() => {
-                          widget.state.active = !widget.state.active
+                          widget.serial.active = !widget.serial.active
                       })
                   },
                   //   onChange: (ev: ChangeEvent<HTMLInputElement>) => {
@@ -67,21 +65,21 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
               }
     const showToogle =
         widget.isOptional || //
-        !widget.state.active ||
+        !widget.serial.active ||
         widget instanceof KLS.Widget_bool //
 
     let widgetUI =
-        collapsed || widget.type === 'bool' ? null : !widget.state.active ? null : (
+        collapsed || widget.type === 'bool' ? null : !widget.serial.active ? null : (
             <ErrorBoundary FallbackComponent={ErrorBoundaryFallback} onReset={(details) => {}}>
                 <WidgetDI.WidgetUI widget={widget} />
             </ErrorBoundary>
         )
 
-    const isCollapsed = widget.state.collapsed
+    const isCollapsed = widget.serial.collapsed
     const isBoldTitle = p.isTopLevel || isVertical
 
     const showListControls = !isCollapsed && (widget instanceof KLS.Widget_listExt || widget instanceof KLS.Widget_list)
-    const showFoldIndicator = !widget.state.active || (!widget.state.collapsed && !widget.isCollapsible)
+    const showFoldIndicator = !widget.serial.active || (!widget.serial.collapsed && !widget.isCollapsible)
     const showTooltip = tooltip != null
     const showLabel = label !== false
     // widget.type === 'group' ||
@@ -103,13 +101,13 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                 'cursor-pointer',
             ]}
             onClick={() => {
-                if (isCollapsed) return (widget.state.collapsed = false)
+                if (isCollapsed) return (widget.serial.collapsed = false)
                 if (showToogle) return toggleInfo.toggle()
-                if (!widget.state.active) return (widget.state.active = true)
-                widget.state.collapsed = true
+                if (!widget.serial.active) return (widget.serial.active = true)
+                widget.serial.collapsed = true
             }}
         >
-            {/* {widget.state == null ? '🟢' : '🔴'} */}
+            {/* {widget.serial == null ? '🟢' : '🔴'} */}
             {/* {JSON.stringify(widget.serial)} */}
             {
                 showToogle ? (
@@ -161,9 +159,9 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                     }
                 >
                     {label || '...'}
-                    {widget.state.collapsed ? <span className='material-symbols-outlined'>keyboard_arrow_right</span> : null}
-                    {/* {widget.state.collapsed ? '{...}' : null} */}
-                    {p.widget.input.showID ? <span tw='opacity-50 italic text-sm'>#{p.widget.id.slice(0, 3)}</span> : null}
+                    {widget.serial.collapsed ? <span className='material-symbols-outlined'>keyboard_arrow_right</span> : null}
+                    {/* {widget.serial.collapsed ? '{...}' : null} */}
+                    {p.widget.config.showID ? <span tw='opacity-50 italic text-sm'>#{p.widget.id.slice(0, 3)}</span> : null}
                 </span>
             )}
 
@@ -178,11 +176,11 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
             )}
 
             {/* Install Models ------------------------------------ */}
-            {p.widget.input.recommandedModels ? <InstallModelBtnUI models={p.widget.input.recommandedModels} /> : null}
+            {p.widget.config.recommandedModels ? <InstallModelBtnUI models={p.widget.config.recommandedModels} /> : null}
 
             {/* Install Custom nodes ------------------------------------ */}
-            {p.widget.input.customNodesByTitle ?? p.widget.input.customNodesByURI ? (
-                <InstallCustomNodeBtnUI recomandation={p.widget.input} />
+            {p.widget.config.customNodesByTitle ?? p.widget.config.customNodesByURI ? (
+                <InstallCustomNodeBtnUI recomandation={p.widget.config} />
             ) : null}
 
             {/* Spacer ------------------------------------ */}
@@ -198,15 +196,15 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                         ev.stopPropagation()
                         ev.preventDefault()
 
-                        if (widget.state.collapsed) {
-                            widget.state.collapsed = false
+                        if (widget.serial.collapsed) {
+                            widget.serial.collapsed = false
                         } else {
-                            widget.state.collapsed = true
+                            widget.serial.collapsed = true
                         }
                     }}
                     tw='opacity-30 hover:opacity-100 ml-auto'
                 >
-                    {widget.state.collapsed ? (
+                    {widget.serial.collapsed ? (
                         <>
                             <span className='material-symbols-outlined'>keyboard_arrow_right</span>
                         </>
@@ -219,7 +217,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     )
 
     const labelGap = label == false ? '' : 'gap-1'
-    const clsX = widget.state.collapsed ? '_COLLAPSED' : ''
+    const clsX = widget.serial.collapsed ? '_COLLAPSED' : ''
     // prettier-ignore
     let className = isVertical //
         ? `${clsX} __${widget.type} _WidgetWithLabelUI ${levelClass} flex flex-col items-baseline`

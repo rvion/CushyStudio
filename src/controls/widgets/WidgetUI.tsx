@@ -7,7 +7,7 @@ import { WidgetPromptUI } from '../../widgets/prompter/WidgetPromptUI'
 import { WidgetBoolUI } from './WidgetBoolUI'
 import { WidgetInlineRunUI } from './WidgetInlineRunUI'
 import { WidgetChoiceUI } from './WidgetChoiceUI'
-import { WidgetChoicesUI } from './WidgetChoicesUI'
+import { WidgetChoicesUI, Widget_choices } from './WidgetChoicesUI'
 import { WidgetColorUI } from './WidgetColorUI'
 import { WidgetEnumUI } from './WidgetEnumUI'
 import { WidgetGroupUI } from './WidgetIGroupUI'
@@ -23,7 +23,7 @@ import { WidgetSelectImageUI } from './WidgetSelectImageUI'
 import { WidgetSelectOneUI } from './WidgetSelectOneUI'
 import { WidgetSelectManyUI } from './WidgetSelectManyUI'
 import { WigetSizeUI } from './WidgetSizeUI'
-import { WidgetStrUI } from './WidgetStrUI'
+import { WidgetStrUI, Widget_str } from './WidgetStrUI'
 import { WidgetDI } from './WidgetUI.DI'
 import { WidgetListExtUI } from './WidgetListExtUI'
 import { WidgetOrbitUI } from './WidgetOrbitUI'
@@ -45,8 +45,7 @@ export const WidgetUI = observer(function WidgetUI_(p: {
     if (widget instanceof R.Widget_intOpt)             return <WidgetNumOptUI      widget={widget} />
     if (widget instanceof R.Widget_float)              return <WidgetNumUI         widget={widget} />
     if (widget instanceof R.Widget_floatOpt)           return <WidgetNumOptUI      widget={widget} />
-    if (widget instanceof R.Widget_str)                return <WidgetStrUI         widget={widget} />
-    if (widget instanceof R.Widget_strOpt)             return <WidgetStrUI         widget={widget} />
+    if (widget instanceof Widget_str)                  return <WidgetStrUI         widget={widget} />
     if (widget instanceof R.Widget_image)              return <WidgetSelectImageUI widget={widget} />
     if (widget instanceof R.Widget_imageOpt)           return <WidgetSelectImageUI widget={widget} />
     if (widget instanceof R.Widget_list)               return <WidgetListUI        widget={widget} />
@@ -65,12 +64,10 @@ export const WidgetUI = observer(function WidgetUI_(p: {
     if (widget instanceof R.Widget_color)              return <WidgetColorUI       widget={widget} />
     if (widget instanceof R.Widget_selectOne)          return <WidgetSelectOneUI   widget={widget} />
     if (widget instanceof R.Widget_choice)             return <WidgetChoiceUI      widget={widget} />
-    if (widget instanceof R.Widget_choices)            return <WidgetChoicesUI     widget={widget} />
+    if (widget instanceof Widget_choices)              return <WidgetChoicesUI     widget={widget} />
     if (widget instanceof R.Widget_markdown)           return <WidgetMardownUI     widget={widget} />
     if (widget instanceof R.Widget_custom)             return <WidgetCustomUI      widget={widget} />
     if (widget instanceof R.Widget_selectMany)         return <WidgetSelectManyUI  widget={widget} />
-    if (widget instanceof R.Widget_selectManyOrCustom) return <>TODO</>
-    if (widget instanceof R.Widget_selectOneOrCustom)  return <>TODO</>
     if (widget instanceof R.Widget_orbit)              return <WidgetOrbitUI       widget={widget} />
 
     exhaust(widget)

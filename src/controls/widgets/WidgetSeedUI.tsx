@@ -37,8 +37,8 @@ export const WidgetSeedUI = observer(function WidgetSeedUI_(p: { widget: Widget_
                 className='input-sm'
                 disabled={!(widget.state.mode !== 'randomize' || !widget.state.active)}
                 value={val}
-                min={widget.input.min}
-                max={widget.input.max}
+                min={widget.config.min}
+                max={widget.config.max}
                 step={1}
                 onChange={(ev) => {
                     const next = ev.target.value

@@ -9,9 +9,9 @@ export const WidgetInlineRunUI = observer(function WidgetInlineRunUI_(p: { widge
         <Button
             tw={[
                 'btn-sm join-item',
-                p.widget.input.kind === `special`
+                p.widget.config.kind === `special`
                     ? `btn-secondary`
-                    : p.widget.input.kind === `warning`
+                    : p.widget.config.kind === `warning`
                     ? `btn-warning`
                     : `btn-primary`,
             ]}
@@ -35,7 +35,7 @@ export const WidgetInlineRunUI = observer(function WidgetInlineRunUI_(p: { widge
             }}
             // size={'sm'}
         >
-            {p.widget.input.text ?? `Run`}
+            {p.widget.config.text ?? `Run`}
         </Button>
     )
 })

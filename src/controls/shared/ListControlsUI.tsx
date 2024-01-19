@@ -8,8 +8,8 @@ export const ListControlsUI = observer(function ListControlsUI_(p: {
 }) {
     const widget = p.widget
     const values = widget.state.items
-    const max = widget.input.max
-    const min = widget.input.min
+    const max = widget.config.max
+    const min = widget.config.min
     return (
         <div tw='sticky top-0 z-[100] w-full'>
             <Button

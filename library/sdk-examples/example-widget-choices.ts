@@ -1,12 +1,12 @@
 app({
     ui: (form) => ({
         foo: form.choices({
-            items: () => ({
-                testInt: form.int({}),
-                testString: form.str({}),
-                testGroup: form.group({ items: () => ({ c1: form.str({}), c2: form.str({}) }) }),
-                testList: form.list({ element: () => form.str({}) }),
-            }),
+            items: {
+                testInt: () => form.int({}),
+                testString: () => form.str({}),
+                testGroup: () => form.group({ items: () => ({ c1: form.str({}), c2: form.str({}) }) }),
+                testList: () => form.list({ element: () => form.str({}) }),
+            },
         }),
     }),
 

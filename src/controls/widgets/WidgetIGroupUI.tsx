@@ -10,9 +10,9 @@ export const WidgetGroupUI = observer(function WidgetItemsUI_(p: {
         | Widget_groupOpt<{ [key: string]: Widget }>
 }) {
     const widget = p.widget
-    const isTopLevel = widget.input.topLevel
+    const isTopLevel = widget.config.topLevel
     const groupFields = Object.entries(widget.state.values)
-    const isHorizontal = widget.input.layout === 'H'
+    const isHorizontal = widget.config.layout === 'H'
     return (
         <div
             tw={[
@@ -40,7 +40,7 @@ export const WidgetGroupUI = observer(function WidgetItemsUI_(p: {
                             ? `flex flex-wrap gap-2`
                             : `flex flex-col gap-1`,
                     ]}
-                    className={widget.input.className}
+                    className={widget.config.className}
                 >
                     {groupFields.map(([rootKey, sub], ix) => (
                         <WidgetWithLabelUI //
