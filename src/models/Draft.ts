@@ -160,14 +160,20 @@ export class DraftL {
                 try {
                     const formBuilder = new FormBuilder(this.st.schema)
                     const uiFn = action.ui
-                    const req: Widget_group<any> =
-                        uiFn == null //
-                            ? formBuilder._HYDRATE('group', { topLevel: true, items: () => ({}) }, this.data.appParams)
-                            : formBuilder._HYDRATE('group', { topLevel: true, items: () => uiFn(formBuilder) }, this.data.appParams) // prettier-ignore
-                    /** 👇 HACK; see the comment near the ROOT property definition */
-                    formBuilder._ROOT = req
-                    this.form = __OK(req)
-                    console.log(`[🦊] form: setup`)
+                    runInAction(() => {
+                        const req: Widget_group<any> =
+                            uiFn == null
+                                ? formBuilder._HYDRATE('group', { topLevel: true, items: () => ({}) }, this.data.appParams)
+                                : formBuilder._HYDRATE(
+                                      'group',
+                                      { topLevel: true, items: () => uiFn(formBuilder) },
+                                      this.data.appParams,
+                                  )
+                        /** 👇 HACK; see the comment near the ROOT property definition */
+                        formBuilder._ROOT = req
+                        this.form = __OK(req)
+                        console.log(`[🦊] form: setup`)
+                    })
                     // subState.unsync()
                 } catch (e) {
                     console.error(e)
