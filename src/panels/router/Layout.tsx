@@ -192,16 +192,6 @@ export class CushyLayoutManager {
         return Trigger.Success
     }
 
-    // add = <K extends Panel>(component: K, props: PropsOf<Panels[K]['widget']>) => {
-    //     const { icon, title } = panels[component].header(props as any)
-    //     this._AddWithProps(
-    //         //
-    //         component,
-    //         `/${component}/${JSON.stringify(props)}`,
-    //         { title: 'CardPicker3UI', ...props },
-    //     )
-    // }
-
     TOGGLE_FULL = <const K extends Panel>(component: K, props: PropsOf<Panels[K]['widget']>) => {
         if (
             this.fullPageComp == null || //

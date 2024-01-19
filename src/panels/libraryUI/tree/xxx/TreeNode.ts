@@ -2,13 +2,12 @@ import type { Tree } from './Tree'
 
 import { makeAutoObservable } from 'mobx'
 
-import { FAIL, genUID } from './utils'
-import { bang } from 'src/utils/misc/bang'
-import { buildTreeItem } from '../nodes/buildTreeItem'
-import { ITreeEntry, TreeEntry } from '../TreeEntry'
-import { TreeEntryL } from 'src/models/TreeEntry'
-import { asTreeEntryID } from 'src/db/TYPES.gen'
 import { SQLITE_false, SQLITE_true } from 'src/db/SQLITE_boolean'
+import { asTreeEntryID } from 'src/db/TYPES.gen'
+import { TreeEntryL } from 'src/models/TreeEntry'
+import { ITreeEntry } from '../TreeEntry'
+import { buildTreeItem } from '../nodes/buildTreeItem'
+import { FAIL } from './utils'
 
 export type NodeId = string
 export type NodeKey = string
@@ -250,106 +249,13 @@ export class TreeNode {
         return `${this.parentId}.${this.parentKey}`
     }
 
-    getChildAt = (key: NodeKey) => this.tree.getNodeBySlot(this.id, key)
-
-    // hoistUp = () => this.changeParent(this.parent?.parent, { onConflict: 'disambiguate' })
-
-    // GENERIC ACTIONS
-    // changeParent = (nextParent: Node | NodeId | undefined, opts: { onConflict: MoveConflictResolution }) => {
-    //     this.tree.changeNodeParent(this, nextParent, opts)
-    // }
-
     changeKey = (nextParentKey: NodeKey) => {
         this.tree.changeNodeKey(this, nextParentKey)
     }
-
-    // changeValue = (nextRawPrimValue: string) => {
-    //     this.data.rawPrimValue = nextRawPrimValue
-    // }
 
     detach = (): this => {
         this.parentKey = this.id
         this.parentId = null
         return this
     }
-
-    // addChildAt = (key: string, data: Partial<NodeData> = {}) =>
-    //     new Node(this.tree, {
-    //         id: genUID(),
-    //         parentKey: key,
-    //         parentId: this.data.id,
-    //         ...data,
-    //     })
 }
-
-// VIEWS
-// toJSON = () => this.json1
-// get json1(): object | null | string {
-//     if (this.rawPrimValue) return this.rawPrimValue
-//     const cs = this.children
-//     if (cs.length === 0) return {}
-//     const c0 = cs[0]
-//     const kind = keyKind(c0.parentKey)
-//     if (kind === 'ArrayIndex') return cs.map((i) => i.json1)
-//     if (kind === 'Property') {
-//         let out: any = {}
-//         for (let i of cs) out[i.parentKey] = i.json1
-//         return out
-//     }
-//     return null
-// }
-
-// export type INode2 = NodeData & {
-//     children: Node[]
-// } & IArrayLike
-
-// const AProxy: ProxyHandler<Node> = {
-//     get(self: Node, p: string) {
-//         if (p === 'isProxy') return true
-//         if (p in self) return (self as any)[p]
-//         // methods
-//         // if (p === "json") return self.nodeToJSON1(this)
-//         // if (p === "children") return self.module.instancesOf.get(self.id)
-
-//         // prroperty item
-//         // A=65, Z=90, 0=48, 9=57
-//         const code = p.charCodeAt(0)
-//         if (code >= c_A && code <= c_Z) return self.tree.getNodeBySlot(self.id, p)
-//         if (code >= c_0 && code <= c_9) return self.tree.getNodeBySlot(self.id, p)
-//     },
-// }
-
-// const c_A = 65,
-//     c_Z = 90,
-//     c_0 = 48,
-//     c_9 = 57,
-//     c_Sharp = 36,
-//     c_Dollar = 36
-
-// const keyKind = (key: string): NodeKeyKind => {
-//     const code = key.charCodeAt(0)
-//     if (code >= c_A && code <= c_Z) return 'Property'
-//     if (code >= c_0 && code <= c_9) return 'ArrayIndex'
-//     return 'unknown'
-// }
-
-// static
-// static ASSERT_VALID_KEY = (key: string) => {
-//     return true
-//     // const code = key.charCodeAt(0)
-//     // if (code === c_Sharp) return true
-//     // if (code === c_Dollar) return true
-//     // if (code >= c_A && code <= c_Z) return true
-//     // if (code >= c_0 && code <= c_9) return true
-//     // throw new Error('invalid node key: ' + key + ' ' + code)
-// }
-
-// get parentKeyKind(): NodeKeyKind {
-//     const code = this.parentKey.charCodeAt(0)
-//     if (code === c_Sharp) return 'Property'
-//     if (code === c_Dollar) return 'Property'
-//     if (code >= c_A && code <= c_Z) return 'Property'
-//     if (code >= c_0 && code <= c_9) return 'ArrayIndex'
-//     throw new Error('invalid node key: ' + this.parentKey)
-//     // return "unknown"
-// }
