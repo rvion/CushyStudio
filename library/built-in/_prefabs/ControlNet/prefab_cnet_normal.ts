@@ -33,10 +33,10 @@ export const ui_subform_Normal_Preprocessor = () => {
                     type: form.choice({
                         label: 'Type',
                         default: 'MiDaS',
-                        items: () => ({
-                            MiDaS: ui_subform_Normal_Midas(),
-                            bae: ui_subform_Normal_bae(),
-                        }),
+                        items: {
+                            MiDaS: () => ui_subform_Normal_Midas(),
+                            bae: () => ui_subform_Normal_bae(),
+                        },
                     }),
                     // TODO: Add support for auto-modifying the resolution based on other form selections
                     // TODO: Add support for auto-cropping

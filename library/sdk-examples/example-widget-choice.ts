@@ -3,17 +3,18 @@ import { exhaust } from 'src/utils/misc/ComfyUtils'
 app({
     ui: (form) => ({
         examleChoice: form.choice({
-            items: () => ({
-                image: form.image({}),
-                list: form.list({ element: () => form.int({}) }),
-                group: form.group({
-                    items: () => ({
-                        x: form.markdown({ markdown: '## Hello world' }),
-                        c: form.int({}),
-                        d: form.str({}),
+            items: {
+                image: () => form.image({}),
+                list: () => form.list({ element: () => form.int({}) }),
+                group: () =>
+                    form.group({
+                        items: () => ({
+                            x: form.markdown({ markdown: '## Hello world' }),
+                            c: form.int({}),
+                            d: form.str({}),
+                        }),
                     }),
-                }),
-            }),
+            },
         }),
     }),
 

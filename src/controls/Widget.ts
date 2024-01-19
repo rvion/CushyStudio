@@ -47,7 +47,6 @@ export type Widget =
     | Widget_listExt<any>
     | Widget_group<any>
     | Widget_groupOpt<any>
-    | Widget_choice<any>
     | Widget_choices<any>
     | Widget_enum<any>
     | Widget_enumOpt<any>
@@ -1346,75 +1345,7 @@ export class Widget_groupOpt<T extends { [key: string]: Widget }> implements IWi
     }
 }
 
-// 🅿️ choice ==============================================================================
-export type Widget_choice_config<T extends { [key: string]: Widget }> = WidgetConfigFields<{ default?: keyof T; items: () => T }>
-export type Widget_choice_serial<T extends { [key: string]: Widget }> = WidgetStateFields<{ type: 'choice', active: boolean; pick: keyof T & string, values_: {[K in keyof T]: T[K]['$Serial']} }>
-export type Widget_choice_state <T extends { [key: string]: Widget }> = WidgetStateFields<{ type: 'choice', active: boolean; pick: keyof T & string, values: T }>
-export type Widget_choice_output<T extends { [key: string]: Widget }> = { [k in keyof T]?: GetWidgetResult<T[k]> }
-export interface Widget_choice  <T extends { [key: string]: Widget }> extends    WidgetTypeHelpers<'choice',  Widget_choice_config<T>, Widget_choice_serial<T>, Widget_choice_state<T>, Widget_choice_output<T>> {}
-export class Widget_choice      <T extends { [key: string]: Widget }> implements IWidget<'choice', Widget_choice_config<T>, Widget_choice_serial<T>, Widget_choice_state<T>, Widget_choice_output<T>> {
-    isVerticalByDefault = true
-    isCollapsible = true
-    isOptional = false
-    id: string
-    type: 'choice' = 'choice'
-    state: Widget_choice_state<T>
-    possibleChoices:string[]
-    constructor(
-        public builder: FormBuilder,
-        public schema: ComfySchemaL,
-        public config: Widget_choice_config<T>,
-        serial?: Widget_choice_serial<T>,
-    ) {
-        this.id = serial?.id ?? nanoid()
-        const _items = runWithGlobalForm(this.builder, () => config.items())
-        this.possibleChoices=Object.keys(_items)
-        if (serial){
-            this.state = { type:'choice', id: this.id, active: serial.active, collapsed: serial.collapsed, values: {} as any, pick: serial.pick }
-            const prevValues_ = serial.values_??{}
-            for (const key in _items) {
-                // 🔴 👇 this was a hacky fix for the perf problem
-                // 🔴 if (key !== serial.pick) continue
-                const newItem = _items[key]
-                const prevValue_ = prevValues_[key]
-                const newInput = newItem.config
-                const newType = newItem.type
-                if (prevValue_ && newType === prevValue_.type) {
-                    this.state.values[key] = this.builder._HYDRATE(newType, newInput, prevValue_)
-                } else {
-                    this.state.values[key] = newItem
-                }
-            }
-        } else {
-            const defaultPick: keyof T & string = (config.default as string ?? Object.keys(_items)[0]  ??'error')
-            this.state = { type: 'choice', id: this.id, active: true, values: _items, pick: defaultPick }
-        }
-        makeAutoObservable(this)
-    }
 
-    /** return the key of the selected item */
-    get pick() { return this.state.pick }
-    get child(){
-        return this.state.values[this.state.pick]
-    }
-    get serial(): Widget_choice_serial<T> {
-        const out: { [key: string]: any } = {}
-        for (const key in this.state.values) {
-            // 🔴 👇 this was a hacky fix for the perf problem
-            // 🔴  if (key !== this.state.pick) continue
-            out[key] = this.state.values[key].serial
-        }
-        return { type: 'choice', id: this.id, active: this.state.active, values_: out as any, collapsed: this.state.collapsed, pick: this.state.pick }
-    }
-    get result(): Widget_choice_output<T> {
-        const out: { [key: string]: any } = {}
-        for (const key in this.state.values) {
-            if (key !== this.state.pick) continue
-            out[key] = this.state.values[key].result
-        }
-        return out as any
-    }
-}
 
 
 
@@ -1514,7 +1445,6 @@ WidgetDI.Widget_selectOne          = Widget_selectOne
 WidgetDI.Widget_list               = Widget_list
 WidgetDI.Widget_group              = Widget_group
 WidgetDI.Widget_groupOpt           = Widget_groupOpt
-WidgetDI.Widget_choice             = Widget_choice
 WidgetDI.Widget_choices            = Widget_choices
 WidgetDI.Widget_enum               = Widget_enum
 WidgetDI.Widget_enumOpt            = Widget_enumOpt

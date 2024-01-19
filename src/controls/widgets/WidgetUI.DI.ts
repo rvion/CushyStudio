@@ -33,7 +33,6 @@ export let WidgetDI = {
     Widget_list: 0 as any as typeof R.Widget_list,
     Widget_group: 0 as any as typeof R.Widget_group,
     Widget_groupOpt: 0 as any as typeof R.Widget_groupOpt,
-    Widget_choice: 0 as any as typeof R.Widget_choice,
     Widget_choices: 0 as any as typeof Widget_choices,
     Widget_enum: 0 as any as typeof R.Widget_enum,
     Widget_enumOpt: 0 as any as typeof R.Widget_enumOpt,

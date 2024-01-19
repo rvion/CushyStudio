@@ -72,6 +72,7 @@ export type WidgetConfigFields<X> = X & {
     i18n?: { [key: string]: string }
     className?: string
     startCollapsed?: boolean
+    startActive?: boolean
     showID?: boolean
     recommandedModels?: RecommendedModelDownload
     // summary?: (self: X) => string

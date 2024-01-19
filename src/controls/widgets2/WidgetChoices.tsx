@@ -21,17 +21,18 @@ import {
 } from '../IWidget'
 import { toastError } from 'src/utils/misc/toasts'
 
-type __ChoiceDef = { [key: string]: () => Widget }
+type BranchDefinitions = { [key: string]: () => Widget }
 
 // CONFIG
-export type Widget_choices_config<T extends __ChoiceDef> = WidgetConfigFields<{
+export type Widget_choices_config<T extends BranchDefinitions> = WidgetConfigFields<{
     items: T
-    defaultActiveBranches?: { [k in keyof T]?: boolean }
+    multi?: boolean
+    default?: { [k in keyof T]?: boolean } | keyof T
     placeholder?: string
 }>
 
 // SERIAL
-export type Widget_choices_serial<T extends __ChoiceDef> = WidgetStateFields<{
+export type Widget_choices_serial<T extends BranchDefinitions> = WidgetStateFields<{
     type: 'choices'
     active: true
     branches: { [k in keyof T]?: boolean }
@@ -39,20 +40,20 @@ export type Widget_choices_serial<T extends __ChoiceDef> = WidgetStateFields<{
 }>
 
 // OUT
-export type Widget_choices_output<T extends __ChoiceDef> = {
+export type Widget_choices_output<T extends BranchDefinitions> = {
     [k in keyof T]?: GetWidgetResult<ReturnType<T[k]>>
 }
 
 // TYPES
-export type Widget_choices_types<T extends __ChoiceDef> = {
+export type Widget_choices_types<T extends BranchDefinitions> = {
     $Type: 'choices'
     $Input: Widget_choices_config<T>
     $Serial: Widget_choices_serial<T>
     $Output: Widget_choices_output<T>
 }
 
-export interface Widget_choices<T extends __ChoiceDef> extends WidgetTypeHelpers2<Widget_choices_types<T>> {}
-export class Widget_choices<T extends __ChoiceDef> implements IWidget2<Widget_choices_types<T>> {
+export interface Widget_choices<T extends BranchDefinitions> extends WidgetTypeHelpers2<Widget_choices_types<T>> {}
+export class Widget_choices<T extends BranchDefinitions> implements IWidget2<Widget_choices_types<T>> {
     readonly isVerticalByDefault = true
     readonly isCollapsible = true
     readonly isOptional = false
@@ -61,6 +62,19 @@ export class Widget_choices<T extends __ChoiceDef> implements IWidget2<Widget_ch
 
     children: { [k in keyof T]?: ReturnType<T[k]> } = {}
     serial: Widget_choices_serial<T>
+
+    get activeBranches(): (keyof T & string)[] {
+        return Object.keys(this.serial.branches) as any
+    }
+
+    get firstActiveBranchName(): (keyof T & string) | undefined {
+        return this.activeBranches[0]
+    }
+
+    get firstActiveBranchWidget(): ReturnType<T[keyof T]> | undefined {
+        if (this.firstActiveBranchName == null) return undefined
+        return this.children[this.firstActiveBranchName]
+    }
 
     constructor(
         public readonly builder: FormBuilder,
@@ -93,7 +107,7 @@ export class Widget_choices<T extends __ChoiceDef> implements IWidget2<Widget_ch
         // find all active branches
         const activeBranches: (keyof T)[] = []
         runWithGlobalForm(this.builder, () => {
-            for (const [branch, isBranchActive] of Object.entries(this.config.defaultActiveBranches ?? {})) {
+            for (const [branch, isBranchActive] of Object.entries(this.config.default ?? {})) {
                 if (isBranchActive) this.enableBranch(branch)
             }
         })

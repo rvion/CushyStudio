@@ -1,7 +1,7 @@
 app({
     ui: (form) => ({
         steps: form.choices({
-            defaultActiveBranches: {
+            default: {
                 frame: true,
             },
             items: {

@@ -33,11 +33,11 @@ export const ui_subform_Scribble_Preprocessor = () => {
                     type: form.choice({
                         label: 'Type',
                         default: 'ScribbleLines',
-                        items: () => ({
-                            ScribbleLines: ui_subform_Scribble_Lines(),
-                            FakeScribble: ui_subform_Fake_Scribble_Lines(),
-                            XDOG: ui_subform_Scribble_XDoG_Lines(),
-                        }),
+                        items: {
+                            ScribbleLines: () => ui_subform_Scribble_Lines(),
+                            FakeScribble: () => ui_subform_Fake_Scribble_Lines(),
+                            XDOG: () => ui_subform_Scribble_XDoG_Lines(),
+                        },
                     }),
                     // TODO: Add support for auto-modifying the resolution based on other form selections
                     // TODO: Add support for auto-cropping

@@ -4,29 +4,28 @@ import { observer } from 'mobx-react-lite'
 import { Message } from 'src/rsuite/shims'
 import { exhaust } from '../../utils/misc/ComfyUtils'
 import { WidgetPromptUI } from '../../widgets/prompter/WidgetPromptUI'
-import { WidgetBoolUI } from './WidgetBoolUI'
-import { WidgetInlineRunUI } from './WidgetInlineRunUI'
-import { WidgetChoiceUI } from './WidgetChoiceUI'
 import { WidgetChoicesUI, Widget_choices } from '../widgets2/WidgetChoices'
+import { WidgetStrUI, Widget_str } from '../widgets2/WidgetString'
+import { WidgetBoolUI } from './WidgetBoolUI'
 import { WidgetColorUI } from './WidgetColorUI'
+import { WidgetCustomUI } from './WidgetCustomUI'
 import { WidgetEnumUI } from './WidgetEnumUI'
 import { WidgetGroupUI } from './WidgetIGroupUI'
+import { WidgetInlineRunUI } from './WidgetInlineRunUI'
+import { WidgetListExtUI } from './WidgetListExtUI'
 import { WidgetListUI } from './WidgetListUI'
 import { WidgetLorasUI } from './WidgetLorasUI'
 import { WidgetMardownUI } from './WidgetMarkdownUI'
-import { WidgetCustomUI } from './WidgetCustomUI'
 import { WidgetMatrixUI } from './WidgetMatrixUI'
 import { WidgetNumOptUI } from './WidgetNumOptUI'
 import { WidgetNumUI } from './WidgetNumUI'
+import { WidgetOrbitUI } from './WidgetOrbitUI'
 import { WidgetSeedUI } from './WidgetSeedUI'
 import { WidgetSelectImageUI } from './WidgetSelectImageUI'
-import { WidgetSelectOneUI } from './WidgetSelectOneUI'
 import { WidgetSelectManyUI } from './WidgetSelectManyUI'
+import { WidgetSelectOneUI } from './WidgetSelectOneUI'
 import { WigetSizeUI } from './WidgetSizeUI'
-import { WidgetStrUI, Widget_str } from '../widgets2/WidgetString'
 import { WidgetDI } from './WidgetUI.DI'
-import { WidgetListExtUI } from './WidgetListExtUI'
-import { WidgetOrbitUI } from './WidgetOrbitUI'
 
 /**
  * this widget will then dispatch the individual requests to the appropriate sub-widgets
@@ -63,7 +62,6 @@ export const WidgetUI = observer(function WidgetUI_(p: {
     if (widget instanceof R.Widget_loras)              return <WidgetLorasUI       widget={widget} />
     if (widget instanceof R.Widget_color)              return <WidgetColorUI       widget={widget} />
     if (widget instanceof R.Widget_selectOne)          return <WidgetSelectOneUI   widget={widget} />
-    if (widget instanceof R.Widget_choice)             return <WidgetChoiceUI      widget={widget} />
     if (widget instanceof Widget_choices)              return <WidgetChoicesUI     widget={widget} />
     if (widget instanceof R.Widget_markdown)           return <WidgetMardownUI     widget={widget} />
     if (widget instanceof R.Widget_custom)             return <WidgetCustomUI      widget={widget} />

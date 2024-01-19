@@ -33,10 +33,10 @@ export const ui_subform_SoftEdge_Preprocessor = (form: FormBuilder) => {
                 items: () => ({
                     type: form.choice({
                         label: 'Type',
-                        items: () => ({
-                            HED: ui_subform_SoftEdge_Preprocessor_Options(form),
-                            PiDiNet: ui_subform_SoftEdge_Preprocessor_Options(form),
-                        }),
+                        items: {
+                            HED: () => ui_subform_SoftEdge_Preprocessor_Options(form),
+                            PiDiNet: () => ui_subform_SoftEdge_Preprocessor_Options(form),
+                        },
                     }),
                     // TODO: Add support for auto-modifying the resolution based on other form selections
                     // TODO: Add support for auto-cropping

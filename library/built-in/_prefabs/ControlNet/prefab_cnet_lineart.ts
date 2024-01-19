@@ -34,11 +34,11 @@ export const ui_subform_Lineart_Preprocessor = () => {
                     type: form.choice({
                         label: 'Type',
                         default: 'Realistic',
-                        items: () => ({
-                            Realistic: ui_subform_Lineart_realistic(),
-                            Anime: ui_subform_Lineart_Anime(),
-                            Manga: ui_subform_Lineart_Manga(),
-                        }),
+                        items: {
+                            Realistic: () => ui_subform_Lineart_realistic(),
+                            Anime: () => ui_subform_Lineart_Anime(),
+                            Manga: () => ui_subform_Lineart_Manga(),
+                        },
                     }),
                     // TODO: Add support for auto-modifying the resolution based on other form selections
                     // TODO: Add support for auto-cropping

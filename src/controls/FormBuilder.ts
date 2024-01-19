@@ -59,8 +59,8 @@ export class FormBuilder {
         new W.Widget_selectMany(this, this.schema, p)
 
     // Object API-------------
-    choice = <const T extends { [key: string]: W.Widget }>(p: W.Widget_choice_config<T>) =>
-        new W.Widget_choice(this, this.schema, p)
+    choice = <const T extends { [key: string]: () => W.Widget }>(p: Widget_choices_config<T>) =>
+        new Widget_choices(this, this.schema, { ...p, multi: false })
     choices = <const T extends { [key: string]: () => W.Widget }>(p: Widget_choices_config<T>) =>
         new Widget_choices(this, this.schema, p)
 
@@ -98,7 +98,6 @@ export class FormBuilder {
         if (type === 'selectMany') return new W.Widget_selectMany(this, this.schema, input, serial)
         if (type === 'size') return new W.Widget_size(this, this.schema, input, serial)
         if (type === 'color') return new W.Widget_color(this, this.schema, input, serial)
-        if (type === 'choice') return new W.Widget_choice(this, this.schema, input, serial)
         if (type === 'choices') return new Widget_choices(this, this.schema, input, serial)
         if (type === 'markdown') return new W.Widget_markdown(this, this.schema, input, serial)
         if (type === 'custom') return new W.Widget_custom(this, this.schema, input, serial)

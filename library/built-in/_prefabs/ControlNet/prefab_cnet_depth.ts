@@ -42,11 +42,11 @@ export const ui_subform_Depth_Preprocessor = () => {
                     type: form.choice({
                         label: 'Type',
                         default: 'MiDaS',
-                        items: () => ({
-                            MiDaS: ui_subform_Depth_Midas(),
-                            LeReS: ui_subform_Depth_LeReS(),
-                            Zoe: ui_subform_Depth_Zoe(),
-                        }),
+                        items: {
+                            MiDaS: () => ui_subform_Depth_Midas(),
+                            LeReS: () => ui_subform_Depth_LeReS(),
+                            Zoe: () => ui_subform_Depth_Zoe(),
+                        },
                     }),
                     // TODO: Add support for auto-modifying the resolution based on other form selections
                     // TODO: Add support for auto-cropping
