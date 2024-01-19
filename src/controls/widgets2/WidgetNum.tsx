@@ -9,7 +9,7 @@ import { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } fr
 // CONFIG
 export type Widget_int_config<T extends { optional: boolean }> = WidgetConfigFields<{
     mode: 'int' | 'float'
-    optional: T['optional']
+    optional: boolean // T['optional'] (🔶 COMMENTED TO SPEED UP TYPESCRIPT)
     default?: number
     min?: number
     max?: number

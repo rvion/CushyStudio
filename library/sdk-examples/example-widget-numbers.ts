@@ -13,7 +13,6 @@ app({
             default: 12,
             max: 20,
         }),
-
         float: form.float({
             default: 1.0,
             min: 0.0,
@@ -21,6 +20,12 @@ app({
             step: 0.01,
             hideSlider: true,
         }),
+        xx: form.float({
+            min: 10,
+            max: 100,
+        }),
+        abcd: form.floatOpt({}),
+        abcd2: form.floatOpt({ startActive: true }),
     }),
 
     run: async (flow, form) => {},

@@ -11,7 +11,7 @@ import { nanoid } from 'nanoid'
 // CONFIG
 export type Widget_str_config<T extends { optional: boolean }> = WidgetConfigFields<{
     default?: string
-    optional: T['optional']
+    optional: boolean // T['optional'] (🔶 COMMENTED TO SPEED UP TYPESCRIPT)
     textarea?: boolean
     placeHolder?: string
 }>

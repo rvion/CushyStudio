@@ -3,10 +3,10 @@ import * as W from './Widget'
 import { exhaust } from 'src/utils/misc/ComfyUtils'
 import { makeAutoObservable } from 'mobx'
 import { _FIX_INDENTATION } from '../utils/misc/_FIX_INDENTATION'
-import { Widget_choices, Widget_choices_config } from './widgets2/WidgetChoices'
-import { Widget_str, Widget_str_config } from './widgets2/WidgetString'
-import { Widget_bool, Widget_bool_config } from './widgets2/WidgetBool'
-import { Widget_int, Widget_int_config } from './widgets2/WidgetNum'
+import { Widget_choices, type Widget_choices_config } from './widgets2/WidgetChoices'
+import { Widget_str, type Widget_str_config } from './widgets2/WidgetString'
+import { Widget_bool, type Widget_bool_config } from './widgets2/WidgetBool'
+import { Widget_int, type Widget_int_config } from './widgets2/WidgetNum'
 
 export class FormBuilder {
     /** (@internal) don't call this yourself */
@@ -27,9 +27,10 @@ export class FormBuilder {
     // number
     int       = (opts: Omit<Widget_int_config<{ optional: false }>,'mode' | 'optional'>) => new Widget_int(this, this.schema, { mode: 'int',   optional:false, ...opts }) // prettier-ignore
     float     = (opts: Omit<Widget_int_config<{ optional: false }>,'mode' | 'optional'>) => new Widget_int(this, this.schema, { mode: 'float', optional:false, ...opts }) // prettier-ignore
-    number    = (opts: Omit<Widget_int_config<{ optional: false }>,'mode' | 'optional'>) => new Widget_int(this, this.schema, { mode: 'float', optional:false, ...opts }) // prettier-ignore
     intOpt    = (opts: Omit<Widget_int_config<{ optional: true  }>,'mode' | 'optional'>) => new Widget_int(this, this.schema, { mode: 'int',   optional:true,  ...opts }) // prettier-ignore
     floatOpt  = (opts: Omit<Widget_int_config<{ optional: true  }>,'mode' | 'optional'>) => new Widget_int(this, this.schema, { mode: 'float', optional:true,  ...opts }) // prettier-ignore
+
+    number    = (opts: Omit<Widget_int_config<{ optional: false }>,'mode' | 'optional'>) => new Widget_int(this, this.schema, { mode: 'float', optional:false, ...opts }) // prettier-ignore
     numberOpt = (opts: Omit<Widget_int_config<{ optional: true  }>,'mode' | 'optional'>) => new Widget_int(this, this.schema, { mode: 'float', optional:true,  ...opts }) // prettier-ignore
 
     // --------------------

@@ -76,7 +76,10 @@ export type WidgetConfigFields<X> = X & {
     showID?: boolean
     recommandedModels?: RecommendedModelDownload
     // summary?: (self: X) => string
-} & CustomNodeRecommandation
+    customNodesByTitle?: ComfyUIManagerKnownCustomNode_Title | ComfyUIManagerKnownCustomNode_Title[]
+    customNodesByURI?: ComfyUIManagerKnownCustomNode_Files | ComfyUIManagerKnownCustomNode_Files[]
+    customNodesByNameInCushy?: KnownInstallableCustomNodeCushyName | KnownInstallableCustomNodeCushyName[]
+} // & CustomNodeRecommandation
 
 export type CustomNodeRecommandation = {
     customNodesByTitle?: ComfyUIManagerKnownCustomNode_Title | ComfyUIManagerKnownCustomNode_Title[]
