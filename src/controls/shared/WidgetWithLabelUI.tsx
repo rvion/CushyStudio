@@ -38,31 +38,13 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     const collapsed = widget.serial.collapsed && isCollapsible
     const levelClass = p.isTopLevel ? '_isTopLevel' : '_isNotTopLevel'
 
-    const toggleInfo =
-        widget instanceof KLS.Widget_bool
-            ? {
-                  value: widget.serial.val,
-                  toggle: () => {
-                      runInAction(() => {
-                          widget.serial.val = !widget.serial.val
-                      })
-                  },
-                  //   onChange: (ev: ChangeEvent<HTMLInputElement>) => {
-                  //       req.serial.val = ev.target.checked
-                  //       req.serial.active = true
-                  //   },
-              }
-            : {
-                  value: widget.serial.active,
-                  toggle: () => {
-                      runInAction(() => {
-                          widget.serial.active = !widget.serial.active
-                      })
-                  },
-                  //   onChange: (ev: ChangeEvent<HTMLInputElement>) => {
-                  //       req.state.active = ev.target.checked
-                  //   },
-              }
+    const toggleInfo = {
+        value: widget.serial.active,
+        toggle: () => runInAction(() => (widget.serial.active = !widget.serial.active)),
+        //   onChange: (ev: ChangeEvent<HTMLInputElement>) => {
+        //       req.state.active = ev.target.checked
+        //   },
+    }
     const showToogle =
         widget.isOptional || //
         !widget.serial.active ||

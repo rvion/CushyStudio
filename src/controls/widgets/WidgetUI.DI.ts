@@ -2,6 +2,7 @@ import type { WidgetUI } from './WidgetUI'
 import type * as R from '../Widget'
 import type { Widget_choices } from '../widgets2/WidgetChoices'
 import type { Widget_str } from '../widgets2/WidgetString'
+import type { Widget_bool } from '../widgets2/WidgetBoolUI'
 
 /**
  * DI stands for dependency injection
@@ -17,7 +18,7 @@ export let WidgetDI = {
     Widget_seed: 0 as any as typeof R.Widget_seed,
     Widget_int: 0 as any as typeof R.Widget_int,
     Widget_float: 0 as any as typeof R.Widget_float,
-    Widget_bool: 0 as any as typeof R.Widget_bool,
+    Widget_bool: 0 as any as typeof Widget_bool,
     Widget_inlineRun: 0 as any as typeof R.Widget_inlineRun,
     Widget_intOpt: 0 as any as typeof R.Widget_intOpt,
     Widget_floatOpt: 0 as any as typeof R.Widget_floatOpt,

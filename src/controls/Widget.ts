@@ -20,6 +20,7 @@ import { FC } from 'react'
 import { runWithGlobalForm } from 'src/models/_ctx2'
 import { bang } from 'src/utils/misc/bang'
 import { EnumDefault, extractDefaultValue } from './EnumDefault'
+import { Widget_bool } from './widgets2/WidgetBoolUI'
 import { WidgetDI } from './widgets/WidgetUI.DI'
 import { Widget_choices } from './widgets2/WidgetChoices'
 import { Widget_str } from './widgets2/WidgetString'
@@ -459,35 +460,7 @@ export class Widget_float implements IWidget<'float', Widget_float_config, Widge
 }
 
 // 🅿️ bool ==============================================================================
-export type Widget_bool_config  = WidgetConfigFields<{ default?: boolean }>
-export type Widget_bool_serial = Widget_bool_state
-export type Widget_bool_state  = WidgetStateFields<{ type:'bool', active: true; val: boolean }>
-export type Widget_bool_output = boolean
-export interface Widget_bool extends WidgetTypeHelpers<'bool', Widget_bool_config, Widget_bool_serial, Widget_bool_state, Widget_bool_output> {}
-export class Widget_bool implements IWidget<'bool', Widget_bool_config, Widget_bool_serial, Widget_bool_state, Widget_bool_output> {
-    readonly isVerticalByDefault = false
-    readonly isCollapsible = false
-    readonly isOptional = true
-    readonly id: string
-    readonly type: 'bool' = 'bool'
-    state: Widget_bool_state
-    constructor(
-        public builder: FormBuilder,
-        public schema: ComfySchemaL,
-        public config: Widget_bool_config,
-        serial?: Widget_bool_serial,
-    ) {
-        this.id = serial?.id ?? nanoid()
-        this.state = serial ?? { type: 'bool', collapsed: config.startCollapsed, id: this.id, active: true, val: config.default ?? false }
-        makeObservable(this,{
-            state: observable,
-            serial: computed,
-            result: computed,
-        })
-    }
-    get serial(): Widget_bool_serial { return this.state }
-    get result(): Widget_bool_output { return this.state.active ? this.state.val : false}
-}
+
 
 // 🅿️ inlineRun ==============================================================================
 export type Widget_inlineRun_config  = WidgetConfigFields<{text?: string, kind?: `primary`|`special`|`warning`}>

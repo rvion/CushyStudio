@@ -5,6 +5,7 @@ import { makeAutoObservable } from 'mobx'
 import { _FIX_INDENTATION } from '../utils/misc/_FIX_INDENTATION'
 import { Widget_choices, Widget_choices_config } from './widgets2/WidgetChoices'
 import { Widget_str, Widget_str_config } from './widgets2/WidgetString'
+import { Widget_bool, Widget_bool_config } from './widgets2/WidgetBoolUI'
 
 export class FormBuilder {
     /** (@internal) don't call this yourself */
@@ -17,6 +18,9 @@ export class FormBuilder {
     str       = (opts: Widget_str_config<{ optional: false }>) => new Widget_str(this, this.schema, opts) // prettier-ignore
     stringOpt = (opts: Widget_str_config<{ optional: true  }>) => new Widget_str(this, this.schema, opts) // prettier-ignore
     strOpt    = (opts: Widget_str_config<{ optional: true  }>) => new Widget_str(this, this.schema, opts) // prettier-ignore
+
+    boolean = (opts: Widget_bool_config) => new Widget_bool(this, this.schema, opts) // prettier-ignore
+    bool    = (opts: Widget_bool_config) => new Widget_bool(this, this.schema, opts) // prettier-ignore
 
     color = (opts: W.Widget_color_config) => new W.Widget_color(this, this.schema, opts)
     size = (opts: W.Widget_size_config) => new W.Widget_size(this, this.schema, opts)
@@ -31,8 +35,7 @@ export class FormBuilder {
     number = (opts: W.Widget_float_config) => new W.Widget_float(this, this.schema, opts)
     numberOpt = (opts: W.Widget_floatOpt_config) => new W.Widget_floatOpt(this, this.schema, opts)
     matrix = (opts: W.Widget_matrix_config) => new W.Widget_matrix(this, this.schema, opts)
-    boolean = (opts: W.Widget_bool_config) => new W.Widget_bool(this, this.schema, opts)
-    bool = (opts: W.Widget_bool_config) => new W.Widget_bool(this, this.schema, opts)
+
     inlineRun = (opts: W.Widget_inlineRun_config) => new W.Widget_inlineRun(this, this.schema, opts)
     loras = (opts: W.Widget_loras_config) => new W.Widget_loras(this, this.schema, opts)
     image = (opts: W.Widget_image_config) => new W.Widget_image(this, this.schema, opts)
@@ -74,9 +77,11 @@ export class FormBuilder {
 
     /** (@internal) advanced way to restore form state. used internally */
     _HYDRATE = (type: W.Widget['type'], input: any, serial?: any): any => {
-        if (type === 'bool') return new W.Widget_bool(this, this.schema, input, serial)
-        if (type === 'inlineRun') return new W.Widget_inlineRun(this, this.schema, input, serial)
+        if (type === 'bool') return new Widget_bool(this, this.schema, input, serial)
         if (type === 'str') return new Widget_str(this, this.schema, input, serial)
+        if (type === 'choices') return new Widget_choices(this, this.schema, input, serial)
+
+        if (type === 'inlineRun') return new W.Widget_inlineRun(this, this.schema, input, serial)
         if (type === 'int') return new W.Widget_int(this, this.schema, input, serial)
         if (type === 'seed') return new W.Widget_seed(this, this.schema, input, serial)
         if (type === 'intOpt') return new W.Widget_intOpt(this, this.schema, input, serial)
@@ -98,7 +103,6 @@ export class FormBuilder {
         if (type === 'selectMany') return new W.Widget_selectMany(this, this.schema, input, serial)
         if (type === 'size') return new W.Widget_size(this, this.schema, input, serial)
         if (type === 'color') return new W.Widget_color(this, this.schema, input, serial)
-        if (type === 'choices') return new Widget_choices(this, this.schema, input, serial)
         if (type === 'markdown') return new W.Widget_markdown(this, this.schema, input, serial)
         if (type === 'custom') return new W.Widget_custom(this, this.schema, input, serial)
         if (type === 'orbit') return new W.Widget_orbit(this, this.schema, input, serial)

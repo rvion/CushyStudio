@@ -6,7 +6,7 @@ import { exhaust } from '../../utils/misc/ComfyUtils'
 import { WidgetPromptUI } from '../../widgets/prompter/WidgetPromptUI'
 import { WidgetChoicesUI, Widget_choices } from '../widgets2/WidgetChoices'
 import { WidgetStrUI, Widget_str } from '../widgets2/WidgetString'
-import { WidgetBoolUI } from './WidgetBoolUI'
+import { WidgetBoolUI, Widget_bool } from '../widgets2/WidgetBoolUI'
 import { WidgetColorUI } from './WidgetColorUI'
 import { WidgetCustomUI } from './WidgetCustomUI'
 import { WidgetEnumUI } from './WidgetEnumUI'
@@ -55,7 +55,7 @@ export const WidgetUI = observer(function WidgetUI_(p: {
     if (widget instanceof R.Widget_enum)               return <WidgetEnumUI        widget={widget} />
     if (widget instanceof R.Widget_enumOpt)            return <WidgetEnumUI        widget={widget} />
     if (widget instanceof R.Widget_matrix)             return <WidgetMatrixUI      widget={widget} />
-    if (widget instanceof R.Widget_bool)               return <WidgetBoolUI        widget={widget} />
+    if (widget instanceof Widget_bool)                 return <WidgetBoolUI        widget={widget} />
     if (widget instanceof R.Widget_inlineRun)          return <WidgetInlineRunUI   widget={widget} />
     if (widget instanceof R.Widget_prompt)             return <WidgetPromptUI      widget={widget} />
     if (widget instanceof R.Widget_promptOpt)          return <WidgetPromptUI      widget={widget} />
