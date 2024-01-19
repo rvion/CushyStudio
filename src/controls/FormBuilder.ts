@@ -60,9 +60,9 @@ export class FormBuilder {
 
     // Object API-------------
     choice = <const T extends { [key: string]: () => W.Widget }>(p: Widget_choices_config<T>) =>
-        new Widget_choices(this, this.schema, { ...p, multi: false })
+        new Widget_choices(this, this.schema, { multi: false, ...p })
     choices = <const T extends { [key: string]: () => W.Widget }>(p: Widget_choices_config<T>) =>
-        new Widget_choices(this, this.schema, p)
+        new Widget_choices(this, this.schema, { multi: true, ...p })
 
     _FIX_INDENTATION = _FIX_INDENTATION
 

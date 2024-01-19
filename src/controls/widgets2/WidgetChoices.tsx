@@ -128,6 +128,11 @@ export class Widget_choices<T extends BranchDefinitions> implements IWidget2<Wid
     }
 
     enableBranch(branch: keyof T & string) {
+        if (this.config.multi !== true) {
+            for (const key in this.children) {
+                this.disableBranch(key)
+            }
+        }
         if (this.children[branch]) throw new Error(`❌ Branch "${branch}" already enabled`)
         // first: quick safety net to check against schema changes
         // a. re-create an empty item to check it's schema
@@ -182,6 +187,7 @@ export const WidgetChoicesUI = observer(function WidgetChoicesUI_(p: {
     return (
         <div className='_WidgetChoicesUI' tw='relative'>
             <div tw='flex items-start w-full'>
+                {widget.config.multi ? 'MULTI' : 'SINGLE'}
                 <SelectUI<Entry>
                     tw='flex-grow'
                     placeholder={p.widget.config.placeholder}
@@ -209,14 +215,10 @@ export const WidgetChoicesUI = observer(function WidgetChoicesUI_(p: {
                         </div>
                     )}
                     equalityCheck={(a, b) => a.key === b.key}
-                    multiple
+                    multiple={widget.config.multi ?? false}
                     closeOnPick={false}
                     resetQueryOnPick={false}
-                    onChange={(v) => {
-                        widget.toggleBranch(v.key)
-                        // const prev = Boolean(widget.serial.branches[v.key])
-                        // widget.serial.branches[v.key] = !prev
-                    }}
+                    onChange={(v) => widget.toggleBranch(v.key)}
                 />
             </div>
             <div tw={[widget.config.layout === 'H' ? 'flex' : null]} className={widget.config.className}>
