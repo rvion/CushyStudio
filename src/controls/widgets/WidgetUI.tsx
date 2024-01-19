@@ -7,7 +7,7 @@ import { WidgetPromptUI } from '../../widgets/prompter/WidgetPromptUI'
 import { WidgetChoicesUI, Widget_choices } from '../widgets2/WidgetChoices'
 import { WidgetStrUI, Widget_str } from '../widgets2/WidgetString'
 import { WidgetBoolUI, Widget_bool } from '../widgets2/WidgetBool'
-import { WidgetColorUI } from './WidgetColorUI'
+import { WidgetColorUI, Widget_color } from '../widgets2/WidgetColor'
 import { WidgetCustomUI } from './WidgetCustomUI'
 import { WidgetEnumUI } from './WidgetEnumUI'
 import { WidgetGroupUI } from './WidgetIGroupUI'
@@ -56,7 +56,7 @@ export const WidgetUI = observer(function WidgetUI_(p: {
     if (widget instanceof R.Widget_prompt)             return <WidgetPromptUI      widget={widget} />
     if (widget instanceof R.Widget_promptOpt)          return <WidgetPromptUI      widget={widget} />
     if (widget instanceof R.Widget_loras)              return <WidgetLorasUI       widget={widget} />
-    if (widget instanceof R.Widget_color)              return <WidgetColorUI       widget={widget} />
+    if (widget instanceof Widget_color)                return <WidgetColorUI       widget={widget} />
     if (widget instanceof R.Widget_selectOne)          return <WidgetSelectOneUI   widget={widget} />
     if (widget instanceof Widget_choices)              return <WidgetChoicesUI     widget={widget} />
     if (widget instanceof R.Widget_markdown)           return <WidgetMardownUI     widget={widget} />

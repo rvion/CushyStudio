@@ -4,6 +4,7 @@ import type { Widget_choices } from '../widgets2/WidgetChoices'
 import type { Widget_str } from '../widgets2/WidgetString'
 import type { Widget_bool } from '../widgets2/WidgetBool'
 import type { Widget_number } from '../widgets2/WidgetNum'
+import type { Widget_color } from '../widgets2/WidgetColor'
 
 /**
  * DI stands for dependency injection
@@ -12,7 +13,7 @@ import type { Widget_number } from '../widgets2/WidgetNum'
  * */
 export let WidgetDI = {
     WidgetUI: 0 as any as typeof WidgetUI,
-    Widget_color: 0 as any as typeof R.Widget_color,
+    Widget_color: 0 as any as typeof Widget_color,
     Widget_str: 0 as any as typeof Widget_str,
     Widget_prompt: 0 as any as typeof R.Widget_prompt,
     Widget_promptOpt: 0 as any as typeof R.Widget_promptOpt,

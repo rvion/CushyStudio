@@ -25,6 +25,7 @@ import { WidgetDI } from './widgets/WidgetUI.DI'
 import { Widget_choices } from './widgets2/WidgetChoices'
 import { Widget_str } from './widgets2/WidgetString'
 import { Widget_number } from './widgets2/WidgetNum'
+import { Widget_color } from './widgets2/WidgetColor'
 
 // Widget is a closed union for added type safety
 export type Widget =
@@ -228,32 +229,6 @@ export class Widget_custom<T> implements IWidget_OLD<'custom', Widget_custom_con
 }
 
 
-// 🅿️ str ==============================================================================
-export type Widget_color_config = WidgetConfigFields<{ default?: string; }>
-export type Widget_color_serial = WidgetSerialFields<{ type: 'color', active: true; val: string }>
-export type Widget_color_state  = WidgetSerialFields<{ type: 'color', active: true; val: string }>
-export type Widget_color_output = string
-export interface Widget_color extends WidgetTypeHelpers_OLD<'color', Widget_color_config, Widget_color_serial, Widget_color_state, Widget_color_output> {}
-export class Widget_color implements IWidget_OLD<'color', Widget_color_config, Widget_color_serial, Widget_color_state, Widget_color_output> {
-    isVerticalByDefault = false
-    isCollapsible = false
-    isOptional = false
-    id: string
-    type: 'color' = 'color'
-    state: Widget_color_state
-    constructor(
-        public builder: FormBuilder,
-        public schema: ComfySchemaL,
-        public config: Widget_color_config,
-        serial?: Widget_color_serial,
-    ) {
-        this.id = serial?.id ?? nanoid()
-        this.state = serial ?? { type:'color', collapsed: config.startCollapsed, id: this.id,  active: true, val: config.default ?? '' }
-        makeAutoObservable(this)
-    }
-    get serial(): Widget_color_serial { return this.state }
-    get result(): Widget_color_output { return this.state.val }
-}
 
 // 🅿️ prompt ==============================================================================
 export type Widget_prompt_config  = WidgetConfigFields<{ default?: string | WidgetPromptOutput }>

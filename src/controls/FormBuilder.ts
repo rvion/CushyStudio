@@ -7,6 +7,7 @@ import { Widget_choices, type Widget_choices_config } from './widgets2/WidgetCho
 import { Widget_str, type Widget_str_config } from './widgets2/WidgetString'
 import { Widget_bool, type Widget_bool_config } from './widgets2/WidgetBool'
 import { Widget_number, type Widget_number_config } from './widgets2/WidgetNum'
+import { Widget_color, type Widget_color_config } from './widgets2/WidgetColor'
 
 export class FormBuilder {
     /** (@internal) don't call this yourself */
@@ -34,7 +35,7 @@ export class FormBuilder {
     numberOpt = (opts: Omit<Widget_number_config<{ optional: true  }>,'mode' | 'optional'>) => new Widget_number(this, this.schema, { mode: 'float', optional:true,  ...opts }) // prettier-ignore
 
     // --------------------
-    color = (opts: W.Widget_color_config) => new W.Widget_color(this, this.schema, opts)
+    color = (opts: Widget_color_config) => new Widget_color(this, this.schema, opts)
     size = (opts: W.Widget_size_config) => new W.Widget_size(this, this.schema, opts)
     orbit = (opts: W.Widget_orbit_config) => new W.Widget_orbit(this, this.schema, opts)
     prompt = (opts: W.Widget_prompt_config) => new W.Widget_prompt(this, this.schema, opts)
@@ -106,7 +107,7 @@ export class FormBuilder {
         if (type === 'selectOne') return new W.Widget_selectOne(this, this.schema, input, serial)
         if (type === 'selectMany') return new W.Widget_selectMany(this, this.schema, input, serial)
         if (type === 'size') return new W.Widget_size(this, this.schema, input, serial)
-        if (type === 'color') return new W.Widget_color(this, this.schema, input, serial)
+        if (type === 'color') return new Widget_color(this, this.schema, input, serial)
         if (type === 'markdown') return new W.Widget_markdown(this, this.schema, input, serial)
         if (type === 'custom') return new W.Widget_custom(this, this.schema, input, serial)
         if (type === 'orbit') return new W.Widget_orbit(this, this.schema, input, serial)
