@@ -2,7 +2,7 @@ import { exhaust } from 'src/utils/misc/ComfyUtils'
 
 app({
     ui: (form) => ({
-        examleChoice: form.choice({
+        exampleChoice: form.choice({
             items: {
                 image: () => form.image({}),
                 list: () => form.list({ element: () => form.int({}) }),
@@ -21,15 +21,15 @@ app({
     run: async (flow, form) => {
         const graph = flow.nodes
         //   👇 < should be infered as (string | number)
-        form.examleChoice
-        if (form.examleChoice.group) {
-            flow.output_text(`got a group: ${JSON.stringify(form.examleChoice.group)}`)
+        form.exampleChoice
+        if (form.exampleChoice.group) {
+            flow.output_text(`got a group: ${JSON.stringify(form.exampleChoice.group)}`)
         }
-        if (form.examleChoice.list) {
-            flow.output_text(`got a list: ${JSON.stringify(form.examleChoice.list)}`)
+        if (form.exampleChoice.list) {
+            flow.output_text(`got a list: ${JSON.stringify(form.exampleChoice.list)}`)
         }
-        if (form.examleChoice.image) {
-            flow.output_text(`got an image: ${JSON.stringify(form.examleChoice.image)}`)
+        if (form.exampleChoice.image) {
+            flow.output_text(`got an image: ${JSON.stringify(form.exampleChoice.image)}`)
         }
     },
 })
