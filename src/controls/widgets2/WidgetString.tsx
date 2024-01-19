@@ -2,7 +2,7 @@
 
 import type { ComfySchemaL } from 'src/models/Schema'
 import type { FormBuilder } from '../FormBuilder'
-import type { IWidget2, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers2 } from '../IWidget'
+import type { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../IWidget'
 
 import { makeAutoObservable } from 'mobx'
 import { observer } from 'mobx-react-lite'
@@ -11,7 +11,7 @@ import { nanoid } from 'nanoid'
 // CONFIG
 export type Widget_str_config<T extends { optional: boolean }> = WidgetConfigFields<{
     default?: string
-    defaultActive?: T['optional'] extends true ? boolean : true
+    optional: T['optional']
     textarea?: boolean
     placeHolder?: string
 }>
@@ -37,15 +37,16 @@ export type Widget_str_types<T extends { optional: boolean }> = {
 }
 
 // STATE
-export interface Widget_str<T extends { optional: boolean }> extends WidgetTypeHelpers2<Widget_str_types<T>> {}
-export class Widget_str<T extends { optional: boolean }> implements IWidget2<Widget_str_types<T>> {
+export interface Widget_str<T extends { optional: boolean }> extends WidgetTypeHelpers<Widget_str_types<T>> {}
+export class Widget_str<T extends { optional: boolean }> implements IWidget<Widget_str_types<T>> {
     get isVerticalByDefault(): boolean {
         if (this.config.textarea) return true
         return false
     }
 
-    readonly isCollapsible = false
-    readonly isOptional = false
+    get isCollapsible() { return this.config.textarea ?? false } // prettier-ignore
+    get isOptional() { return this.config.optional ?? false } // prettier-ignore
+
     readonly id: string
     readonly type: 'str' = 'str'
 

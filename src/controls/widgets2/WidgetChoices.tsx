@@ -14,10 +14,10 @@ import {
     WidgetConfigFields,
     WidgetSerialFields,
     GetWidgetResult,
+    WidgetTypeHelpers_OLD,
+    IWidget_OLD,
     WidgetTypeHelpers,
     IWidget,
-    WidgetTypeHelpers2,
-    IWidget2,
 } from '../IWidget'
 import { toastError } from 'src/utils/misc/toasts'
 
@@ -52,8 +52,8 @@ export type Widget_choices_types<T extends BranchDefinitions> = {
     $Output: Widget_choices_output<T>
 }
 
-export interface Widget_choices<T extends BranchDefinitions> extends WidgetTypeHelpers2<Widget_choices_types<T>> {}
-export class Widget_choices<T extends BranchDefinitions> implements IWidget2<Widget_choices_types<T>> {
+export interface Widget_choices<T extends BranchDefinitions> extends WidgetTypeHelpers<Widget_choices_types<T>> {}
+export class Widget_choices<T extends BranchDefinitions> implements IWidget<Widget_choices_types<T>> {
     readonly isVerticalByDefault = true
     readonly isCollapsible = true
     readonly isOptional = false

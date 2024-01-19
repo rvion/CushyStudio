@@ -18,7 +18,7 @@ export const ui_model = () => {
             vae: form.enumOpt({ enumName: 'Enum_VAELoader_vae_name', group: 'Model' }),
             clipSkip: form.intOpt({
                 label: 'Clip Skip',
-                defaultActive: false,
+                startActive: false,
                 default: 1,
                 min: 1,
                 max: 5,

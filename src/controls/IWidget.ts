@@ -4,27 +4,27 @@ import type { ComfyUIManagerKnownCustomNode_Files, ComfyUIManagerKnownCustomNode
 import type { KnownInstallableCustomNodeCushyName } from 'src/wiki/extension-node-map/extension-node-map-enums'
 import type { RecommendedModelDownload } from './EnumDefault'
 
-export type WidgetTypeHelpers<T, I, X extends { type: T }, S, O> = {
+export type WidgetTypeHelpers_OLD<T, I, X extends { type: T }, S, O> = {
     $Input: I
     $Serial: X
     $Output: O
 }
 
-type IIII = {
+type $WidgetTypes = {
     $Type: any
     $Input: any
     $Serial: any
     $Output: any
 }
 
-export type WidgetTypeHelpers2<K extends IIII> = {
+export type WidgetTypeHelpers<K extends $WidgetTypes> = {
     $Type: K['$Type']
     $Input: K['$Input']
     $Serial: K['$Serial']
     $Output: K['$Output']
 }
 
-export type IWidget<T, I, X, S, O> = {
+export type IWidget_OLD<T, I, X, S, O> = {
     id: string
     isOptional: boolean
     isVerticalByDefault: boolean
@@ -38,7 +38,7 @@ export type IWidget<T, I, X, S, O> = {
     readonly config: WidgetConfigFields<any>
 }
 
-export type IWidget2<K extends IIII> = {
+export type IWidget<K extends $WidgetTypes> = {
     id: string
     isOptional: boolean
     isVerticalByDefault: boolean
@@ -51,8 +51,8 @@ export type IWidget2<K extends IIII> = {
     readonly config: WidgetConfigFields<any>
 }
 
-export type GetWidgetResult<Req> = Req extends WidgetTypeHelpers<any, any, any, any, infer O> ? O : never
-export type GetWidgetState<Req> = Req extends WidgetTypeHelpers<any, any, any, infer S, any> ? S : never
+export type GetWidgetResult<Req> = Req extends WidgetTypeHelpers_OLD<any, any, any, any, infer O> ? O : never
+export type GetWidgetState<Req> = Req extends WidgetTypeHelpers_OLD<any, any, any, infer S, any> ? S : never
 
 export type LabelPos = 'start' | 'end'
 export type WidgetSerialFields<X> = X & {

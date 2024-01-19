@@ -14,7 +14,7 @@ app({
         for (const _ of [1, 2, 3, 4, 5]) {
             await run.sleep(100)
             run.formInstance.state.values.list.state.items.map((i) => {
-                i.state.val += 3
+                i.serial.val += 3
             })
         }
     },

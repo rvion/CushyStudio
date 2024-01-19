@@ -1,6 +1,6 @@
 import type { ComfySchemaL } from 'src/models/Schema'
 import type { FormBuilder } from '../FormBuilder'
-import type { IWidget2, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers2 } from '../IWidget'
+import type { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../IWidget'
 
 import { computed, makeObservable, observable } from 'mobx'
 import { observer } from 'mobx-react-lite'
@@ -23,8 +23,9 @@ export type Widget_str_types = {
     $Output: Widget_bool_output
 }
 
-export interface Widget_bool extends WidgetTypeHelpers2<Widget_str_types> {}
-export class Widget_bool implements IWidget2<Widget_str_types> {
+// STATE
+export interface Widget_bool extends WidgetTypeHelpers<Widget_str_types> {}
+export class Widget_bool implements IWidget<Widget_str_types> {
     readonly isVerticalByDefault = false
     readonly isCollapsible = false
     readonly isOptional = true

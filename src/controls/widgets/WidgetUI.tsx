@@ -17,8 +17,7 @@ import { WidgetListUI } from './WidgetListUI'
 import { WidgetLorasUI } from './WidgetLorasUI'
 import { WidgetMardownUI } from './WidgetMarkdownUI'
 import { WidgetMatrixUI } from './WidgetMatrixUI'
-import { WidgetNumOptUI } from './WidgetNumOptUI'
-import { WidgetNumUI } from './WidgetNumUI'
+import { WidgetNumUI, Widget_int } from '../widgets2/WidgetNum'
 import { WidgetOrbitUI } from './WidgetOrbitUI'
 import { WidgetSeedUI } from './WidgetSeedUI'
 import { WidgetSelectImageUI } from './WidgetSelectImageUI'
@@ -40,10 +39,7 @@ export const WidgetUI = observer(function WidgetUI_(p: {
     const widget = p.widget
     if (widget == null) return <>NULL</>
     if (widget instanceof R.Widget_seed)               return <WidgetSeedUI        widget={widget} />
-    if (widget instanceof R.Widget_int)                return <WidgetNumUI         widget={widget} />
-    if (widget instanceof R.Widget_intOpt)             return <WidgetNumOptUI      widget={widget} />
-    if (widget instanceof R.Widget_float)              return <WidgetNumUI         widget={widget} />
-    if (widget instanceof R.Widget_floatOpt)           return <WidgetNumOptUI      widget={widget} />
+    if (widget instanceof Widget_int)                  return <WidgetNumUI         widget={widget} />
     if (widget instanceof Widget_str)                  return <WidgetStrUI         widget={widget} />
     if (widget instanceof R.Widget_image)              return <WidgetSelectImageUI widget={widget} />
     if (widget instanceof R.Widget_imageOpt)           return <WidgetSelectImageUI widget={widget} />
