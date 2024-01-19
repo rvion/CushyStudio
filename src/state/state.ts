@@ -56,6 +56,7 @@ import { SafetyChecker } from 'src/safety/Safety'
 import { getKnownCheckpoints, getKnownModels } from 'src/wiki/modelList'
 import { createMediaImage_fromPath } from 'src/models/createMediaImage_fromWebFile'
 import { assets } from 'src/utils/assets/assets'
+import { Tree } from 'src/panels/libraryUI/tree/xxx/Tree'
 
 export class STATE {
     /** hack to help closing prompt completions */
@@ -88,6 +89,8 @@ export class STATE {
         store.liveTimeInterval = setInterval(() => this._updateTime, 1000)
         return Date.now()
     })()
+
+    tree: Tree
 
     /**
      * global hotReload persistent cache that should survive hot reload
@@ -373,6 +376,14 @@ export class STATE {
         this.standardHost // ensure getters are called at least once so we upsert the two core virtual hosts
 
         this.mainHost.CONNECT()
+        this.tree = new Tree(this, [
+            //
+            '#favorites',
+            '#apps',
+            'path#library/built-in',
+            'path#library/local',
+            'path#library/sdk-examples',
+        ])
 
         makeAutoObservable(this, {
             comfyUIIframeRef: false,

@@ -27,6 +27,7 @@ export type NodeInputExt = {
     required: boolean
     index: number
 }
+
 export type NodeOutputExt = {
     typeName: string
     nameInCushy: string
@@ -102,7 +103,7 @@ export class ComfySchemaL {
         return candidates.map((x) => ({ asOptionLabel: x.toString(), value: x }))
     }
 
-    knownTypes = new Set<string>()
+    knownSlotTypes = new Set<string>()
     knownEnumsByName = new Map<EnumName, EnumInfo>()
     knownEnumsByHash = new Map<EnumHash, EnumInfo>()
     nodes: ComfyNodeSchema[] = []
@@ -130,7 +131,7 @@ export class ComfySchemaL {
         // reset spec
         // this.spec = this.data.spec
         // this.embeddings = this.data.embeddings
-        this.knownTypes.clear()
+        this.knownSlotTypes.clear()
         this.knownEnumsByHash.clear()
         this.knownEnumsByName.clear()
         this.nodes.splice(0, this.nodes.length)
@@ -183,7 +184,7 @@ export class ComfySchemaL {
                 let slotTypeName: string
                 if (typeof slotType === 'string') {
                     slotTypeName = normalizeJSIdentifier(slotType, '_')
-                    this.knownTypes.add(slotTypeName)
+                    this.knownSlotTypes.add(slotTypeName)
                 } else if (Array.isArray(slotType)) {
                     const uniqueEnumName = `Enum_${nodeNameInCushy}_${outputNameInCushy}_out`
                     slotTypeName = this.processEnumNameOrValue({ candidateName: uniqueEnumName, comfyEnumDef: slotType })
@@ -246,7 +247,7 @@ export class ComfySchemaL {
 
                 if (typeof slotType === 'string') {
                     inputTypeNameInCushy = normalizeJSIdentifier(slotType, '_')
-                    this.knownTypes.add(inputTypeNameInCushy)
+                    this.knownSlotTypes.add(inputTypeNameInCushy)
                 } else if (Array.isArray(slotType)) {
                     const uniqueEnumName = `Enum_${nodeNameInCushy}_${inputNameInCushy}`
                     inputTypeNameInCushy = this.processEnumNameOrValue({ candidateName: uniqueEnumName, comfyEnumDef: slotType })
@@ -328,9 +329,9 @@ export class ComfySchemaL {
         kind: 'enum' | 'node' | 'prim'
     }[] {
         const out: { name: string; kind: 'enum' | 'node' | 'prim' }[] = []
-        for (const n of this.knownTypes) out.push({ name: n, kind: 'prim' })
+        // for (const n of this.knownSlotTypes) out.push({ name: n, kind: 'prim' })
         for (const n of this.knownEnumsByName) out.push({ name: n[0], kind: 'enum' })
-        for (const n of this.nodes) out.push({ name: n.nameInCushy, kind: 'node' })
+        // for (const n of this.nodes) out.push({ name: n.nameInCushy, kind: 'node' })
         return out
     }
 
@@ -399,36 +400,48 @@ export class ComfySchemaL {
             }`,
         )
 
-        p(`\n// 3. Suggestions -------------------------------`)
-        for (const [k, value] of Object.entries(ComfyPrimitiveMapping)) {
-            p(`export interface CanProduce_${value} {}`)
-        }
-        for (const [tp, nns] of Object.entries(this.nodesByProduction)) {
-            p(`export interface CanProduce_${tp} extends Pick<ComfySetup, ${nns.map((i) => `'${i}'`).join(' | ')}> { }`)
-        }
-        for (const tp of this.knownTypes) {
-            if (!(tp in this.nodesByProduction)) p(`export interface CanProduce_${tp} {}`)
-        }
-
-        p(`\n// 4. TYPES -------------------------------`)
-        const types = [...this.knownTypes.values()] //
+        const slotTypes = [...this.knownSlotTypes.values()] //
             .map((comfyType) => ({
                 comfyType,
-                normalizedType: comfyType,
+                /** alias name */
+                // slotTypeAlias: comfyType + '__Value',
+                /** yep def */
                 tsType: this.toTSType(comfyType),
+                tsType2: this.toSignalType(comfyType),
             }))
             .sort((a, b) => b.tsType.length - a.tsType.length)
 
-        for (const t of types) {
-            // const tsType = this.toTSType(t)
-            p(`export type ${t.normalizedType} = ${t.tsType}`)
+        p(`\n// 3. Suggestions -------------------------------`)
+        p(`// 3.1. primitives`)
+        for (const [k, value] of Object.entries(ComfyPrimitiveMapping)) {
+            p(`export interface CanProduce_${value} {}`)
+        }
+        p(`// 3.1. types produced`)
+        // for (const [tp, nns] of Object.entries(this.nodesByProduction)) {
+        // }
+        for (const tp of slotTypes) {
+            const producingNodes: string[] = this.nodesByProduction[tp.comfyType]
+            if (producingNodes)
+                p(
+                    `export interface CanProduce_${tp.comfyType} extends Pick<ComfySetup, ${producingNodes
+                        .map((i) => `'${i}'`)
+                        .join(' | ')}> { }`,
+                )
+            else p(`export interface CanProduce_${tp.comfyType} {} // 🔶 no node can output this type.`)
         }
 
+        p(`\n// 4. TYPES -------------------------------`)
+
+        // ⏸️ for (const t of slotTypes) {
+        // ⏸️     // const tsType = this.toTSType(t)
+        // ⏸️     p(`export type ${t.slotTypeAlias} = ${t.tsType}`)
+        // ⏸️ }
+
         p(`\n// 5. ACCEPTABLE INPUTS -------------------------------`)
-        for (const t of types) {
+        for (const t of slotTypes) {
             // const tsType = this.toTSType(t)
             p(
-                `export type _${t.normalizedType} = ${t.tsType} | HasSingle_${t.normalizedType} | ((x: CanProduce_${t.normalizedType}) => _${t.normalizedType})`,
+                `export type _${t.comfyType} = ${t.tsType} | HasSingle_${t.comfyType} | ((x: CanProduce_${t.comfyType}) => _${t.comfyType})`,
             )
             // ${i.type} | HasSingle_${i.type}
         }
@@ -451,8 +464,8 @@ export class ComfySchemaL {
         p(`export type KnownEnumNames = keyof Requirable`)
 
         p(`\n// 7. INTERFACES --------------------------`)
-        for (const t of this.knownTypes.values()) {
-            p(`export interface HasSingle_${t} { _${t}: ${t} } // prettier-ignore`)
+        for (const t of slotTypes) {
+            p(`export interface HasSingle_${t.comfyType} { _${t.comfyType}: ${t.tsType} } // prettier-ignore`)
         }
         // knownEnumOutput
         for (const t of this.enumsAppearingInOutput.values()) {
@@ -502,6 +515,7 @@ export class ComfySchemaL {
 
     private toTSType = (t: string) =>
         ComfyPrimitiveMapping[t] ? `${ComfyPrimitiveMapping[t]} | ComfyNodeOutput<'${t}'>` : `ComfyNodeOutput<'${t}'>`
+    private toSignalType = (t: string) => `ComfyNodeOutput<'${t}'>`
 }
 
 export class ComfyNodeSchema {
