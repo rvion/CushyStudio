@@ -5,7 +5,7 @@ import { makeAutoObservable } from 'mobx'
 import { _FIX_INDENTATION } from '../utils/misc/_FIX_INDENTATION'
 import { Widget_choices, Widget_choices_config } from './widgets2/WidgetChoices'
 import { Widget_str, Widget_str_config } from './widgets2/WidgetString'
-import { Widget_bool, Widget_bool_config } from './widgets2/WidgetBoolUI'
+import { Widget_bool, Widget_bool_config } from './widgets2/WidgetBool'
 
 export class FormBuilder {
     /** (@internal) don't call this yourself */

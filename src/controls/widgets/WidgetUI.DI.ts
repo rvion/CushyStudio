@@ -2,7 +2,7 @@ import type { WidgetUI } from './WidgetUI'
 import type * as R from '../Widget'
 import type { Widget_choices } from '../widgets2/WidgetChoices'
 import type { Widget_str } from '../widgets2/WidgetString'
-import type { Widget_bool } from '../widgets2/WidgetBoolUI'
+import type { Widget_bool } from '../widgets2/WidgetBool'
 
 /**
  * DI stands for dependency injection
