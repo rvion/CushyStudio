@@ -3,7 +3,7 @@ import type * as R from '../Widget'
 import type { Widget_choices } from '../widgets2/WidgetChoices'
 import type { Widget_str } from '../widgets2/WidgetString'
 import type { Widget_bool } from '../widgets2/WidgetBool'
-import type { Widget_int } from '../widgets2/WidgetNum'
+import type { Widget_number } from '../widgets2/WidgetNum'
 
 /**
  * DI stands for dependency injection
@@ -17,7 +17,7 @@ export let WidgetDI = {
     Widget_prompt: 0 as any as typeof R.Widget_prompt,
     Widget_promptOpt: 0 as any as typeof R.Widget_promptOpt,
     Widget_seed: 0 as any as typeof R.Widget_seed,
-    Widget_int: 0 as any as typeof Widget_int,
+    Widget_number: 0 as any as typeof Widget_number,
     Widget_bool: 0 as any as typeof Widget_bool,
     Widget_inlineRun: 0 as any as typeof R.Widget_inlineRun,
     Widget_markdown: 0 as any as typeof R.Widget_markdown,

@@ -24,7 +24,7 @@ import { Widget_bool } from './widgets2/WidgetBool'
 import { WidgetDI } from './widgets/WidgetUI.DI'
 import { Widget_choices } from './widgets2/WidgetChoices'
 import { Widget_str } from './widgets2/WidgetString'
-import { Widget_int } from './widgets2/WidgetNum'
+import { Widget_number } from './widgets2/WidgetNum'
 
 // Widget is a closed union for added type safety
 export type Widget =
@@ -33,7 +33,7 @@ export type Widget =
     | Widget_orbit
     | Widget_prompt
     | Widget_seed
-    | Widget_int<any>
+    | Widget_number<any>
     | Widget_bool
     | Widget_inlineRun
     | Widget_markdown
@@ -1258,7 +1258,7 @@ WidgetDI.Widget_str                = Widget_str
 WidgetDI.Widget_prompt             = Widget_prompt
 WidgetDI.Widget_promptOpt          = Widget_promptOpt
 WidgetDI.Widget_seed               = Widget_seed
-WidgetDI.Widget_int                = Widget_int
+WidgetDI.Widget_number             = Widget_number
 WidgetDI.Widget_bool               = Widget_bool
 WidgetDI.Widget_inlineRun          = Widget_inlineRun
 WidgetDI.Widget_markdown           = Widget_markdown

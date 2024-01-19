@@ -1,5 +1,4 @@
 import { observer } from 'mobx-react-lite'
-import { InputNumberBase, Slider } from 'src/rsuite/shims'
 import { parseFloatNoRoundingErr } from 'src/utils/misc/parseFloatNoRoundingErr'
 
 const clamp = (x: number, min: number, max: number) => Math.max(min, Math.min(max, x))

@@ -6,7 +6,7 @@ import { _FIX_INDENTATION } from '../utils/misc/_FIX_INDENTATION'
 import { Widget_choices, type Widget_choices_config } from './widgets2/WidgetChoices'
 import { Widget_str, type Widget_str_config } from './widgets2/WidgetString'
 import { Widget_bool, type Widget_bool_config } from './widgets2/WidgetBool'
-import { Widget_int, type Widget_int_config } from './widgets2/WidgetNum'
+import { Widget_number, type Widget_number_config } from './widgets2/WidgetNum'
 
 export class FormBuilder {
     /** (@internal) don't call this yourself */
@@ -25,13 +25,13 @@ export class FormBuilder {
     bool    = (opts: Widget_bool_config) => new Widget_bool(this, this.schema, opts) // prettier-ignore
 
     // number
-    int       = (opts: Omit<Widget_int_config<{ optional: false }>,'mode' | 'optional'>) => new Widget_int(this, this.schema, { mode: 'int',   optional:false, ...opts }) // prettier-ignore
-    float     = (opts: Omit<Widget_int_config<{ optional: false }>,'mode' | 'optional'>) => new Widget_int(this, this.schema, { mode: 'float', optional:false, ...opts }) // prettier-ignore
-    intOpt    = (opts: Omit<Widget_int_config<{ optional: true  }>,'mode' | 'optional'>) => new Widget_int(this, this.schema, { mode: 'int',   optional:true,  ...opts }) // prettier-ignore
-    floatOpt  = (opts: Omit<Widget_int_config<{ optional: true  }>,'mode' | 'optional'>) => new Widget_int(this, this.schema, { mode: 'float', optional:true,  ...opts }) // prettier-ignore
+    int       = (opts: Omit<Widget_number_config<{ optional: false }>,'mode' | 'optional'>) => new Widget_number(this, this.schema, { mode: 'int',   optional:false, ...opts }) // prettier-ignore
+    float     = (opts: Omit<Widget_number_config<{ optional: false }>,'mode' | 'optional'>) => new Widget_number(this, this.schema, { mode: 'float', optional:false, ...opts }) // prettier-ignore
+    intOpt    = (opts: Omit<Widget_number_config<{ optional: true  }>,'mode' | 'optional'>) => new Widget_number(this, this.schema, { mode: 'int',   optional:true,  ...opts }) // prettier-ignore
+    floatOpt  = (opts: Omit<Widget_number_config<{ optional: true  }>,'mode' | 'optional'>) => new Widget_number(this, this.schema, { mode: 'float', optional:true,  ...opts }) // prettier-ignore
 
-    number    = (opts: Omit<Widget_int_config<{ optional: false }>,'mode' | 'optional'>) => new Widget_int(this, this.schema, { mode: 'float', optional:false, ...opts }) // prettier-ignore
-    numberOpt = (opts: Omit<Widget_int_config<{ optional: true  }>,'mode' | 'optional'>) => new Widget_int(this, this.schema, { mode: 'float', optional:true,  ...opts }) // prettier-ignore
+    number    = (opts: Omit<Widget_number_config<{ optional: false }>,'mode' | 'optional'>) => new Widget_number(this, this.schema, { mode: 'float', optional:false, ...opts }) // prettier-ignore
+    numberOpt = (opts: Omit<Widget_number_config<{ optional: true  }>,'mode' | 'optional'>) => new Widget_number(this, this.schema, { mode: 'float', optional:true,  ...opts }) // prettier-ignore
 
     // --------------------
     color = (opts: W.Widget_color_config) => new W.Widget_color(this, this.schema, opts)
@@ -89,7 +89,7 @@ export class FormBuilder {
         if (type === 'choices') return new Widget_choices(this, this.schema, input, serial)
 
         if (type === 'inlineRun') return new W.Widget_inlineRun(this, this.schema, input, serial)
-        if (type === 'int') return new Widget_int(this, this.schema, input, serial)
+        if (type === 'number') return new Widget_number(this, this.schema, input, serial)
         if (type === 'seed') return new W.Widget_seed(this, this.schema, input, serial)
         if (type === 'matrix') return new W.Widget_matrix(this, this.schema, input, serial)
         if (type === 'prompt') return new W.Widget_prompt(this, this.schema, input, serial)
