@@ -93,8 +93,8 @@ export const cnet_preprocessor_ui_common = (form: FormBuilder) => ({
 export type Cnet_args = {
     positive: _CONDITIONING
     negative: _CONDITIONING
-    width: INT
-    height: INT
+    width: _INT
+    height: _INT
     ckptPos: _MODEL
     modelType: SDModelType
 }
@@ -125,7 +125,7 @@ export const run_cnet = async (opts: OutputFor<typeof ui_cnet>, ctx: Cnet_args) 
                 resolution = 512
         }
         for (const cnetImage of cnetList) {
-            let image: IMAGE = (await run.loadImageAnswer(cnetImage.image))._IMAGE
+            let image: _IMAGE = (await run.loadImageAnswer(cnetImage.image))._IMAGE
             const widthValue = typeof ctx.width === 'number' ? ctx.width : resolution
             const heightValue = typeof ctx.width === 'number' ? ctx.width : resolution
             if (cnetImage.resize) {

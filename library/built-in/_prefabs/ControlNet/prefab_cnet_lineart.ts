@@ -82,10 +82,10 @@ export const ui_subform_Lineart_Manga = () => {
 // 🅿️ Lineart RUN ===================================================
 export const run_cnet_Lineart = (
     Lineart: OutputFor<typeof ui_subform_Lineart>,
-    image: IMAGE,
+    image: _IMAGE,
     resolution: 512 | 768 | 1024 = 512,
 ): {
-    image: IMAGE
+    image: _IMAGE
     cnet_name: Enum_ControlNetLoader_control_net_name
 } => {
     const run = getCurrentRun()

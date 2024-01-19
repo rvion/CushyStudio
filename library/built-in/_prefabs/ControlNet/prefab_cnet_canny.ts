@@ -52,10 +52,10 @@ export const ui_subform_Canny_Preprocessor = (form: FormBuilder) => {
 // 🅿️ Canny RUN ===================================================
 export const run_cnet_canny = (
     canny: OutputFor<typeof ui_subform_Canny>,
-    image: IMAGE,
+    image: _IMAGE,
     resolution: 512 | 768 | 1024 = 512,
 ): {
-    image: IMAGE
+    image: _IMAGE
     cnet_name: Enum_ControlNetLoader_control_net_name
 } => {
     const run = getCurrentRun()

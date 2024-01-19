@@ -59,10 +59,10 @@ export const ui_subform_SoftEdge_Preprocessor_Options = (form: FormBuilder) => {
 // 🅿️ SoftEdge RUN ===================================================
 export const run_cnet_SoftEdge = (
     SoftEdge: OutputFor<typeof ui_subform_SoftEdge>,
-    image: IMAGE,
+    image: _IMAGE,
     resolution: 512 | 768 | 1024 = 512,
 ): {
-    image: IMAGE
+    image: _IMAGE
     cnet_name: Enum_ControlNetLoader_control_net_name
 } => {
     const run = getCurrentRun()

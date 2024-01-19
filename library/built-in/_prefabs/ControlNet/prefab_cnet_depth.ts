@@ -94,10 +94,10 @@ export const ui_subform_Depth_Zoe = () => {
 // 🅿️ Depth RUN ===================================================
 export const run_cnet_Depth = (
     Depth: OutputFor<typeof ui_subform_Depth>,
-    image: IMAGE,
+    image: _IMAGE,
     resolution: 512 | 768 | 1024 = 512,
 ): {
-    image: IMAGE
+    image: _IMAGE
     cnet_name: Enum_ControlNetLoader_control_net_name
 } => {
     const run = getCurrentRun()

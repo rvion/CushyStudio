@@ -31,9 +31,9 @@ export const ui_subform_Sketch = () => {
 // 🅿️ Sketch RUN ===================================================
 export const run_cnet_Sketch = (
     Sketch: OutputFor<typeof ui_subform_Sketch>,
-    image: IMAGE,
+    image: _IMAGE,
 ): {
-    image: IMAGE
+    image: _IMAGE
     cnet_name: Enum_ControlNetLoader_control_net_name
 } => {
     const run = getCurrentRun()

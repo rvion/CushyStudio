@@ -71,10 +71,10 @@ export const ui_subform_Normal_bae = () => {
 // 🅿️ Normal RUN ===================================================
 export const run_cnet_Normal = (
     Normal: OutputFor<typeof ui_subform_Normal>,
-    image: IMAGE,
+    image: _IMAGE,
     resolution: 512 | 768 | 1024 = 512,
 ): {
-    image: IMAGE
+    image: _IMAGE
     cnet_name: Enum_ControlNetLoader_control_net_name
 } => {
     const run = getCurrentRun()
