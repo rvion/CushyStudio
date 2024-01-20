@@ -1,5 +1,3 @@
-// 🟢 2024-01-19: convert to V2
-
 import type { ComfySchemaL } from 'src/models/Schema'
 import type { FormBuilder } from '../FormBuilder'
 import type { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../IWidget'

@@ -1,37 +1,96 @@
+import type { CleanedEnumResult } from 'src/types/EnumUtils'
+import type { ComfySchemaL, EnumName, EnumValue } from '../../models/Schema'
+import { EnumDefault, extractDefaultValue } from '../EnumDefault'
+import type { FormBuilder } from '../FormBuilder'
+import type { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../IWidget'
+
+import { makeAutoObservable } from 'mobx'
 import { observer } from 'mobx-react-lite'
-import { Widget_enum, Widget_enumOpt } from 'src/controls/Widget'
+import { nanoid } from 'nanoid'
 import { SelectUI } from 'src/rsuite/SelectUI'
 import { Popover, Whisper } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
-import { CleanedEnumResult } from 'src/types/EnumUtils'
-import type { EnumName, EnumValue } from '../../models/Schema'
+import { WidgetDI } from '../widgets/WidgetUI.DI'
 
-type T = {
-    label: EnumValue
-    value: EnumValue | null
-}[]
+// CONFIG
+export type Widget_enum_config<T extends KnownEnumNames> = WidgetConfigFields<{
+    default?: Requirable[T] | EnumDefault<T>
+    enumName: T
+}>
 
-export const WidgetEnumUI = observer(function WidgetEnumUI_<K extends KnownEnumNames>(p: {
-    widget: Widget_enum<K> | Widget_enumOpt<K>
-}) {
+// SERIAL
+export type Widget_enum_serial<T extends KnownEnumNames> = WidgetSerialFields<{ type: 'enum'; active: true; val: Requirable[T] }>
+
+// OUT
+export type Widget_enum_output<T extends KnownEnumNames> = Requirable[T]
+
+// TYPES
+export type Widget_enum_types<T extends KnownEnumNames> = {
+    $Type: 'enum'
+    $Input: Widget_enum_config<T>
+    $Serial: Widget_enum_serial<T>
+    $Output: Widget_enum_output<T>
+}
+
+// STATE
+export interface Widget_enum<T extends KnownEnumNames> extends WidgetTypeHelpers<Widget_enum_types<T>> {}
+export class Widget_enum<T extends KnownEnumNames> implements IWidget<Widget_enum_types<T>> {
+    isVerticalByDefault = false
+    isCollapsible = false
+    id: string
+    type: 'enum' = 'enum'
+    get possibleValues() {
+        return this.schema.knownEnumsByName.get(this.config.enumName)?.values ?? []
+    }
+
+    serial: Widget_enum_serial<T>
+
+    constructor(
+        public builder: FormBuilder,
+        public schema: ComfySchemaL,
+        public config: Widget_enum_config<T>,
+        serial?: Widget_enum_serial<T>,
+    ) {
+        this.id = serial?.id ?? nanoid()
+        this.serial = serial ?? {
+            type: 'enum',
+            id: this.id,
+            active: true,
+            val: extractDefaultValue(config) ?? (this.possibleValues[0] as any),
+        }
+        makeAutoObservable(this)
+    }
+    get status(): CleanedEnumResult<any> {
+        return this.schema.st.fixEnumValue(this.serial.val as any, this.config.enumName, false)
+    }
+    get result(): Widget_enum_output<T> {
+        return this.status.finalValue
+    }
+}
+
+// DI
+WidgetDI.Widget_enum = Widget_enum
+
+// UI
+export const WidgetEnumUI = observer(function WidgetEnumUI_<K extends KnownEnumNames>(p: { widget: Widget_enum<K> }) {
     const widget = p.widget
     const enumName = widget.config.enumName
-    const isOptional = widget instanceof Widget_enumOpt
+    const isOptional = false // TODO: hook into parent once parent is accessible from state
     return (
         <>
             {/* <InstallModelBtnUI widget={widget} modelFolderPrefix={} /> */}
             <EnumSelectorUI
                 value={() => widget.status}
-                disabled={!widget.state.active}
+                disabled={!widget.serial.active}
                 isOptional={isOptional}
                 enumName={enumName}
                 // substituteValue={req.status}
                 onChange={(e) => {
                     if (e == null) {
-                        if (isOptional) widget.state.active = false
+                        // if (isOptional) widget.serial.active = false
                         return
                     }
-                    widget.state.val = e as any // 🔴
+                    widget.serial.val = e as any // 🔴
                 }}
             />
         </>

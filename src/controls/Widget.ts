@@ -7,7 +7,6 @@ import type { MediaImageT } from 'src/db/TYPES.gen'
 import type { ComfySchemaL } from 'src/models/Schema'
 import type { SimplifiedLoraDef } from 'src/presets/SimplifiedLoraDef'
 import type { ItemDataType } from 'src/rsuite/RsuiteTypes'
-import type { CleanedEnumResult } from 'src/types/EnumUtils'
 import type { WidgetPromptOutput } from 'src/widgets/prompter/WidgetPromptUI'
 import type { PossibleSerializedNodes } from 'src/widgets/prompter/plugins/PossibleSerializedNodes'
 import type { FormBuilder } from './FormBuilder'
@@ -19,18 +18,18 @@ import { nanoid } from 'nanoid'
 import { FC } from 'react'
 import { runWithGlobalForm } from 'src/models/_ctx2'
 import { bang } from 'src/utils/misc/bang'
-import { EnumDefault, extractDefaultValue } from './EnumDefault'
 
 import { WidgetDI } from './widgets/WidgetUI.DI'
 
-import type { Widget_group } from './widgets2/WidgetIGroup'
 import type { Widget_bool } from './widgets2/WidgetBool'
 import type { Widget_choices } from './widgets2/WidgetChoices'
 import type { Widget_color } from './widgets2/WidgetColor'
+import type { Widget_group } from './widgets2/WidgetIGroup'
 import type { Widget_number } from './widgets2/WidgetNumber'
-import type { Widget_str } from './widgets2/WidgetString'
 import type { Widget_optional } from './widgets2/WidgetOptional'
 import type { Widget_orbit } from './widgets2/WidgetOrbit'
+import type { Widget_str } from './widgets2/WidgetString'
+import type { Widget_enum } from './widgets2/WidgetEnumUI'
 
 // Widget is a closed union for added type safety
 export type Widget =
@@ -56,7 +55,6 @@ export type Widget =
     | Widget_group<any>
     | Widget_choices<any>
     | Widget_enum<any>
-    | Widget_enumOpt<any>
 
 
 // 🅿️ markdown ==============================================================================
@@ -809,74 +807,6 @@ export class Widget_listExt      <T extends Widget> implements IWidget_OLD<'list
     }
 }
 
-// 🅿️ enum ==============================================================================
-export type Widget_enum_config<T extends KnownEnumNames>  = WidgetConfigFields<{ default?: Requirable[T] | EnumDefault<T>; enumName: T }>
-export type Widget_enum_serial<T extends KnownEnumNames> = Widget_enum_state<T>
-export type Widget_enum_state<T extends KnownEnumNames>  = WidgetSerialFields<{ type: 'enum', active: true; val: Requirable[T] }>
-export type Widget_enum_output<T extends KnownEnumNames> = Requirable[T]
-export interface Widget_enum<T extends KnownEnumNames> extends WidgetTypeHelpers_OLD<'enum', Widget_enum_config<T>, Widget_enum_serial<T>, Widget_enum_state<T>, Widget_enum_output<T>> {}
-export class Widget_enum<T extends KnownEnumNames> implements IWidget_OLD<'enum', Widget_enum_config<T>, Widget_enum_serial<T>, Widget_enum_state<T>, Widget_enum_output<T>> {
-    isVerticalByDefault = false
-    isCollapsible = false
-    id: string
-    type: 'enum' = 'enum'
-    state: Widget_enum_state<T>
-    get possibleValues() {return  this.schema.knownEnumsByName.get(this.config.enumName)?.values ?? []}
-    constructor(
-        public builder: FormBuilder,
-        public schema: ComfySchemaL,
-        public config: Widget_enum_config<T>,
-        serial?: Widget_enum_serial<T>,
-    ) {
-        this.id = serial?.id ?? nanoid()
-        this.state = serial ?? {
-            type: 'enum',
-            id: this.id,
-            active: true,
-            val: extractDefaultValue(config) ?? (this.possibleValues[0] as any)
-        }
-        makeAutoObservable(this)
-    }
-    get status(): CleanedEnumResult<any> { return this.schema.st.fixEnumValue(this.state.val as any, this.config.enumName, false) } // prettier-ignore
-    get serial(): Widget_enum_serial<T> { return this.state }
-    get result(): Widget_enum_output<T> { return this.status.finalValue }
-}
-
-// 🅿️ enumOpt ==============================================================================
-export type Widget_enumOpt_config<T extends KnownEnumNames>  = WidgetConfigFields<{ default?: Requirable[T]; enumName: T }>
-export type Widget_enumOpt_serial<T extends KnownEnumNames> = Widget_enumOpt_state<T>
-export type Widget_enumOpt_state<T extends KnownEnumNames>  = WidgetSerialFields<{ type: 'enumOpt', active: boolean; val: Requirable[T] }>
-export type Widget_enumOpt_output<T extends KnownEnumNames> = Maybe<Requirable[T]>
-export interface Widget_enumOpt<T extends KnownEnumNames> extends WidgetTypeHelpers_OLD<'enumOpt', Widget_enumOpt_config<T>, Widget_enumOpt_serial<T>, Widget_enumOpt_state<T>, Widget_enumOpt_output<T>> {}
-export class Widget_enumOpt<T extends KnownEnumNames> implements IWidget_OLD<'enumOpt', Widget_enumOpt_config<T>, Widget_enumOpt_serial<T>, Widget_enumOpt_state<T>, Widget_enumOpt_output<T>> {
-    isVerticalByDefault = false
-    isCollapsible = false
-    id: string
-    type: 'enumOpt' = 'enumOpt'
-    state: Widget_enumOpt_state<T>
-    get possibleValues() {return  this.schema.knownEnumsByName.get(this.config.enumName)?.values ?? []}
-    constructor(
-        public builder: FormBuilder,
-        public schema: ComfySchemaL,
-        public config: Widget_enumOpt_config<T>,
-        serial?: Widget_enumOpt_serial<T>,
-    ) {
-        this.id = serial?.id ?? nanoid()
-        this.state = serial ?? {
-            type: 'enumOpt',
-            id: this.id,
-            active: config.default != null,
-            val: config.default ?? (this.possibleValues[0] as any) /* 🔴 */,
-        }
-        makeAutoObservable(this)
-    }
-    get status(): CleanedEnumResult<any> { return this.schema.st.fixEnumValue(this.state.val as any, this.config.enumName, true) } // prettier-ignore
-    get serial(): Widget_enumOpt_serial<T> { return this.state }
-    get result(): Widget_enumOpt_output<T> {
-        if (!this.state.active) return undefined
-        return this.status.finalValue
-    }
-}
 
 
 
@@ -892,6 +822,4 @@ WidgetDI.Widget_image              = Widget_image
 WidgetDI.Widget_selectMany         = Widget_selectMany
 WidgetDI.Widget_selectOne          = Widget_selectOne
 WidgetDI.Widget_list               = Widget_list
-WidgetDI.Widget_enum               = Widget_enum
-WidgetDI.Widget_enumOpt            = Widget_enumOpt
 WidgetDI.Widget_listExt            = Widget_listExt

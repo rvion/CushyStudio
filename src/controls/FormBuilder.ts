@@ -11,6 +11,7 @@ import { Widget_number, type Widget_number_config } from './widgets2/WidgetNumbe
 import { Widget_str, type Widget_str_config } from './widgets2/WidgetString'
 import { Widget_optional, type Widget_optional_config } from './widgets2/WidgetOptional'
 import { Widget_orbit, type Widget_orbit_config } from './widgets2/WidgetOrbit'
+import { Widget_enum, Widget_enum_config } from './widgets2/WidgetEnumUI'
 
 export class FormBuilder {
     /** (@internal) don't call this yourself */
@@ -70,15 +71,26 @@ export class FormBuilder {
         })
 
     // --------------------
-    prompt    = (opts: W.Widget_prompt_config)    => new W.Widget_prompt(this, this.schema, opts) // prettier-ignore
-    promptOpt = (opts: W.Widget_prompt_config & { startActive?: boolean }) =>
+    prompt = (config: W.Widget_prompt_config) => new W.Widget_prompt(this, this.schema, config)
+    promptOpt = (config: W.Widget_prompt_config & { startActive?: boolean }) =>
         this.optional({
-            label: opts.label,
-            startActive: opts.startActive,
-            widget: () => new W.Widget_prompt(this, this.schema, opts),
+            label: config.label,
+            startActive: config.startActive,
+            widget: () => new W.Widget_prompt(this, this.schema, config),
         })
 
     // --------------------
+
+    enum = <const T extends KnownEnumNames>(config: Widget_enum_config<T>) => new Widget_enum(this, this.schema, config)
+    enumOpt = <const T extends KnownEnumNames>(config: Widget_enum_config<T> & { startActive?: boolean }) =>
+        this.optional({
+            label: config.label,
+            startActive: config.startActive,
+            widget: () => new Widget_enum(this, this.schema, config),
+        })
+
+    // --------------------
+
     color     = (opts: Widget_color_config)       => new Widget_color(this, this.schema, opts) // prettier-ignore
     size      = (opts: W.Widget_size_config)      => new W.Widget_size(this, this.schema, opts) // prettier-ignore
     orbit     = (opts: Widget_orbit_config)     => new Widget_orbit(this, this.schema, opts) // prettier-ignore
@@ -92,8 +104,7 @@ export class FormBuilder {
     markdown = (opts: W.Widget_markdown_config | string) =>
         new W.Widget_markdown(this, this.schema, typeof opts === 'string' ? { markdown: opts } : opts)
     custom = <TViewState>(opts: W.Widget_custom_config<TViewState>) => new W.Widget_custom<TViewState>(this, this.schema, opts)
-    enum = <const T extends KnownEnumNames>(p: W.Widget_enum_config<T>) => new W.Widget_enum(this, this.schema, p)
-    enumOpt = <const T extends KnownEnumNames>(p: W.Widget_enumOpt_config<T>) => new W.Widget_enumOpt(this, this.schema, p)
+
     list = <const T extends W.Widget>(p: W.Widget_list_config<T>) => new W.Widget_list(this, this.schema, p)
 
     optional = <const T extends W.Widget>(p: Widget_optional_config<T>) => new Widget_optional(this, this.schema, p)
@@ -151,8 +162,7 @@ export class FormBuilder {
         if (type === 'prompt') return new W.Widget_prompt(this, this.schema, input, serial)
         if (type === 'loras') return new W.Widget_loras(this, this.schema, input, serial)
         if (type === 'image') return new W.Widget_image(this, this.schema, input, serial)
-        if (type === 'enum') return new W.Widget_enum(this, this.schema, input, serial)
-        if (type === 'enumOpt') return new W.Widget_enumOpt(this, this.schema, input, serial)
+        if (type === 'enum') return new Widget_enum(this, this.schema, input, serial)
         if (type === 'list') return new W.Widget_list(this, this.schema, input, serial)
         if (type === 'listExt') return new W.Widget_listExt(this, this.schema, input, serial)
         if (type === 'selectOne') return new W.Widget_selectOne(this, this.schema, input, serial)

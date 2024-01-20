@@ -7,10 +7,11 @@ import type { Widget_number } from '../widgets2/WidgetNumber'
 import type { Widget_color } from '../widgets2/WidgetColor'
 import type { Widget_group } from '../widgets2/WidgetIGroup'
 import type { Widget_optional } from '../widgets2/WidgetOptional'
-import { Widget_orbit } from '../widgets2/WidgetOrbit'
+import type { Widget_orbit } from '../widgets2/WidgetOrbit'
+import type { Widget_enum } from '../widgets2/WidgetEnumUI'
 
 /**
- * DI stands for dependency injection
+ * DI (Dependency Injection)
  * this is here to allow for hot reloading of complex widgets
  * regardless of circular dependencies.
  * */
@@ -35,8 +36,7 @@ export let WidgetDI = {
     Widget_list: 0 as any as typeof R.Widget_list,
     Widget_group: 0 as any as typeof Widget_group,
     Widget_choices: 0 as any as typeof Widget_choices,
-    Widget_enum: 0 as any as typeof R.Widget_enum,
-    Widget_enumOpt: 0 as any as typeof R.Widget_enumOpt,
+    Widget_enum: 0 as any as typeof Widget_enum,
     Widget_listExt: 0 as any as typeof R.Widget_listExt,
     Widget_orbit: 0 as any as typeof Widget_orbit,
 }

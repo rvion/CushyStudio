@@ -9,7 +9,7 @@ import { WidgetStrUI, Widget_str } from '../widgets2/WidgetString'
 import { WidgetBoolUI, Widget_bool } from '../widgets2/WidgetBool'
 import { WidgetColorUI, Widget_color } from '../widgets2/WidgetColor'
 import { WidgetCustomUI } from './WidgetCustomUI'
-import { WidgetEnumUI } from './WidgetEnumUI'
+import { WidgetEnumUI, Widget_enum } from '../widgets2/WidgetEnumUI'
 import { WidgetGroupUI, Widget_group } from '../widgets2/WidgetIGroup'
 import { WidgetInlineRunUI } from './WidgetInlineRunUI'
 import { WidgetListExtUI } from './WidgetListExtUI'
@@ -48,8 +48,7 @@ export const WidgetUI = observer(function WidgetUI_(p: {
     if (widget instanceof R.Widget_listExt)    return <WidgetListExtUI     widget={widget} />
     if (widget instanceof Widget_group)        return <WidgetGroupUI       widget={widget} />
     if (widget instanceof R.Widget_size)       return <WigetSizeUI         widget={widget} />
-    if (widget instanceof R.Widget_enum)       return <WidgetEnumUI        widget={widget} />
-    if (widget instanceof R.Widget_enumOpt)    return <WidgetEnumUI        widget={widget} />
+    if (widget instanceof Widget_enum)         return <WidgetEnumUI        widget={widget} />
     if (widget instanceof R.Widget_matrix)     return <WidgetMatrixUI      widget={widget} />
     if (widget instanceof Widget_bool)         return <WidgetBoolUI        widget={widget} />
     if (widget instanceof R.Widget_inlineRun)  return <WidgetInlineRunUI   widget={widget} />
