@@ -11,12 +11,6 @@ import type { FormBuilder } from './FormBuilder'
 import type { IWidget_OLD, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers_OLD } from './IWidget'
 import type { AspectRatio, CushySize, CushySizeByRatio, ImageAnswer, ImageAnswerForm, SDModelType } from './misc/InfoAnswer'
 
-import { makeAutoObservable } from 'mobx'
-import { nanoid } from 'nanoid'
-import { bang } from 'src/utils/misc/bang'
-
-import { WidgetDI } from './widgets/WidgetUI.DI'
-
 import type { Widget_bool } from './widgets/bool/WidgetBool'
 import type { Widget_choices } from './widgets/choices/WidgetChoices'
 import type { Widget_color } from './widgets/color/WidgetColor'
@@ -29,6 +23,13 @@ import type { Widget_optional } from './widgets/optional/WidgetOptional'
 import type { Widget_orbit } from './widgets/orbit/WidgetOrbit'
 import type { Widget_string } from './widgets/string/WidgetString'
 import type { Widget_prompt } from './widgets/prompt/WidgetPrompt'
+
+import { makeAutoObservable } from 'mobx'
+import { nanoid } from 'nanoid'
+import { bang } from 'src/utils/misc/bang'
+
+import { WidgetDI } from './widgets/WidgetUI.DI'
+
 
 // Widget is a closed union for added type safety
 export type Widget =
@@ -132,18 +133,18 @@ export type Widget_seed_state  = WidgetSerialFields<{ type:'seed', active: true;
 export type Widget_seed_output = number
 export interface Widget_seed extends WidgetTypeHelpers_OLD<'seed', Widget_seed_config, Widget_seed_serial, Widget_seed_state, Widget_seed_output> {}
 export class Widget_seed implements IWidget_OLD<'seed', Widget_seed_config, Widget_seed_serial, Widget_seed_state, Widget_seed_output> {
-    isVerticalByDefault = false
-    isCollapsible = false
-    id: string
-    type: 'seed' = 'seed'
-    state: Widget_seed_state
+    readonly isVerticalByDefault = false
+    readonly isCollapsible = false
+    readonly id: string
+    readonly type: 'seed' = 'seed'
+    readonly serial: Widget_seed_state
     constructor(
         public builder: FormBuilder,
         public config: Widget_seed_config,
         serial?: Widget_seed_serial,
     ) {
         this.id = serial?.id ?? nanoid()
-        this.state = serial ?? {
+        this.serial = serial ?? {
             type: 'seed',
             id: this.id,
             active: true,
@@ -152,12 +153,11 @@ export class Widget_seed implements IWidget_OLD<'seed', Widget_seed_config, Widg
         }
         makeAutoObservable(this)
     }
-    get serial(): Widget_seed_serial { return this.state }
     get result(): Widget_seed_output {
         const count = this.builder._cache.count
-        return this.state.mode ==='randomize'
+        return this.serial.mode ==='randomize'
             ? Math.floor(Math.random()* 9_999_999)
-            : this.state.val
+            : this.serial.val
     }
 }
 

@@ -4,25 +4,25 @@ import { Widget_seed } from 'src/controls/Widget'
 
 export const WidgetSeedUI = observer(function WidgetSeedUI_(p: { widget: Widget_seed }) {
     const widget = p.widget
-    const val = widget.state.val
+    const val = widget.serial.val
     return (
         <div tw='flex items-center join virtualBorder'>
             <button
                 type='button'
-                tw={['join-item btn-sm btn-ghost', widget.state.mode === 'randomize' && 'btn-active']}
+                tw={['join-item btn-sm btn-ghost', widget.serial.mode === 'randomize' && 'btn-active']}
                 onClick={() => {
-                    widget.state.mode = 'randomize'
-                    widget.state.active = true
+                    widget.serial.mode = 'randomize'
+                    widget.serial.active = true
                 }}
             >
                 🎲 Rand
             </button>
             <button
                 type='button'
-                tw={['join-item btn-sm btn-ghost', widget.state.mode === 'fixed' && 'btn-active']}
+                tw={['join-item btn-sm btn-ghost', widget.serial.mode === 'fixed' && 'btn-active']}
                 onClick={() => {
-                    widget.state.mode = 'fixed'
-                    widget.state.active = true
+                    widget.serial.mode = 'fixed'
+                    widget.serial.active = true
                     // req.state.val = Math.floor(Math.random() * 1000000)
                 }}
             >
@@ -35,7 +35,7 @@ export const WidgetSeedUI = observer(function WidgetSeedUI_(p: { widget: Widget_
                     width: val.toString().length + 6 + 'ch',
                 }}
                 className='input-sm'
-                disabled={!(widget.state.mode !== 'randomize' || !widget.state.active)}
+                disabled={!(widget.serial.mode !== 'randomize' || !widget.serial.active)}
                 value={val}
                 min={widget.config.min}
                 max={widget.config.max}
@@ -54,16 +54,16 @@ export const WidgetSeedUI = observer(function WidgetSeedUI_(p: { widget: Widget_
                     }
                     // ensure ints are ints
                     num = Math.round(num)
-                    widget.state.val = num
+                    widget.serial.val = num
                 }}
             />
             <Button
                 size='sm'
                 appearance='subtle'
                 onClick={() => {
-                    widget.state.mode = 'fixed'
-                    widget.state.active = true
-                    widget.state.val = Math.floor(Math.random() * 1000000)
+                    widget.serial.mode = 'fixed'
+                    widget.serial.active = true
+                    widget.serial.val = Math.floor(Math.random() * 1000000)
                 }}
                 icon={<span className='material-symbols-outlined'>autorenew</span>}
             >
