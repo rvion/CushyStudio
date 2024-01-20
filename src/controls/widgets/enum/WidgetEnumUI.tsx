@@ -1,77 +1,14 @@
 import type { CleanedEnumResult } from 'src/types/EnumUtils'
-import type { ComfySchemaL, EnumName, EnumValue } from '../../../models/Schema'
-import { EnumDefault, extractDefaultValue } from '../../EnumDefault'
-import type { FormBuilder } from '../../FormBuilder'
-import type { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../../IWidget'
+import type { EnumName, EnumValue } from '../../../models/Schema'
+import type { Widget_enum } from './WidgetEnum'
 
-import { makeAutoObservable } from 'mobx'
 import { observer } from 'mobx-react-lite'
-import { nanoid } from 'nanoid'
 import { SelectUI } from 'src/rsuite/SelectUI'
 import { Popover, Whisper } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
-import { WidgetDI } from '../WidgetUI.DI'
-
-// CONFIG
-export type Widget_enum_config<T extends KnownEnumNames> = WidgetConfigFields<{
-    default?: Requirable[T] | EnumDefault<T>
-    enumName: T
-}>
-
-// SERIAL
-export type Widget_enum_serial<T extends KnownEnumNames> = WidgetSerialFields<{ type: 'enum'; active: true; val: Requirable[T] }>
-
-// OUT
-export type Widget_enum_output<T extends KnownEnumNames> = Requirable[T]
-
-// TYPES
-export type Widget_enum_types<T extends KnownEnumNames> = {
-    $Type: 'enum'
-    $Input: Widget_enum_config<T>
-    $Serial: Widget_enum_serial<T>
-    $Output: Widget_enum_output<T>
-}
-
-// STATE
-export interface Widget_enum<T extends KnownEnumNames> extends WidgetTypeHelpers<Widget_enum_types<T>> {}
-export class Widget_enum<T extends KnownEnumNames> implements IWidget<Widget_enum_types<T>> {
-    isVerticalByDefault = false
-    isCollapsible = false
-    id: string
-    type: 'enum' = 'enum'
-    get possibleValues() {
-        return this.schema.knownEnumsByName.get(this.config.enumName)?.values ?? []
-    }
-
-    serial: Widget_enum_serial<T>
-
-    constructor(
-        public builder: FormBuilder,
-        public schema: ComfySchemaL,
-        public config: Widget_enum_config<T>,
-        serial?: Widget_enum_serial<T>,
-    ) {
-        this.id = serial?.id ?? nanoid()
-        this.serial = serial ?? {
-            type: 'enum',
-            id: this.id,
-            active: true,
-            val: extractDefaultValue(config) ?? (this.possibleValues[0] as any),
-        }
-        makeAutoObservable(this)
-    }
-    get status(): CleanedEnumResult<any> {
-        return this.schema.st.fixEnumValue(this.serial.val as any, this.config.enumName, false)
-    }
-    get result(): Widget_enum_output<T> {
-        return this.status.finalValue
-    }
-}
-
-// DI
-WidgetDI.Widget_enum = Widget_enum
 
 // UI
+
 export const WidgetEnumUI = observer(function WidgetEnumUI_<K extends KnownEnumNames>(p: { widget: Widget_enum<K> }) {
     const widget = p.widget
     const enumName = widget.config.enumName
@@ -109,6 +46,7 @@ export const EnumSelectorUI = observer(function EnumSelectorUI_(p: {
     const project = useSt().project
     const schema = project.schema
     const options: EnumValue[] = schema.knownEnumsByName.get(p.enumName)?.values ?? [] // schema.getEnumOptionsForSelectPicker(p.enumName)
+
     // const valueIsValid = (p.value != null || p.isOptional) && options.some((x) => x.value === p.value)
     const value = p.value()
     const hasError = Boolean(value.isSubstitute || value.ENUM_HAS_NO_VALUES)

@@ -1,5 +1,4 @@
 import { makeAutoObservable } from 'mobx'
-import { observer } from 'mobx-react-lite'
 import { nanoid } from 'nanoid'
 import { ComfySchemaL } from 'src/models/Schema'
 import { FormBuilder } from '../../FormBuilder'
@@ -52,17 +51,3 @@ export class Widget_color implements IWidget_OLD<'color', Widget_color_config, W
 
 // DI
 WidgetDI.Widget_color = Widget_color
-
-// UI
-export const WidgetColorUI = observer(function WidgetColorUI_(p: { widget: Widget_color }) {
-    const widget = p.widget
-    return (
-        <div>
-            <input //
-                value={widget.serial.val}
-                type='color'
-                onChange={(ev) => (widget.serial.val = ev.target.value)}
-            />
-        </div>
-    )
-})

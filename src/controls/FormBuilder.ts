@@ -3,7 +3,8 @@ import type { ComfySchemaL } from 'src/models/Schema'
 import { exhaust } from 'src/utils/misc/ComfyUtils'
 import { _FIX_INDENTATION } from '../utils/misc/_FIX_INDENTATION'
 import * as W from './Widget'
-import { Widget_group, type Widget_group_config } from './widgets/group/WidgetIGroup'
+
+import { Widget_group, type Widget_group_config } from './widgets/group/WidgetGroup'
 import { Widget_bool, type Widget_bool_config } from './widgets/bool/WidgetBool'
 import { Widget_choices, type Widget_choices_config } from './widgets/choices/WidgetChoices'
 import { Widget_color, type Widget_color_config } from './widgets/color/WidgetColor'
@@ -11,8 +12,8 @@ import { Widget_number, type Widget_number_config } from './widgets/number/Widge
 import { Widget_string, type Widget_string_config } from './widgets/string/WidgetString'
 import { Widget_optional, type Widget_optional_config } from './widgets/optional/WidgetOptional'
 import { Widget_orbit, type Widget_orbit_config } from './widgets/orbit/WidgetOrbit'
-import { Widget_enum, Widget_enum_config } from './widgets/enum/WidgetEnumUI'
-import { Widget_list, Widget_list_config } from './widgets/list/WidgetList'
+import { Widget_enum, type Widget_enum_config } from './widgets/enum/WidgetEnum'
+import { Widget_list, type Widget_list_config } from './widgets/list/WidgetList'
 
 export class FormBuilder {
     /** (@internal) don't call this yourself */

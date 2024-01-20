@@ -34,7 +34,7 @@ import { RuntimeKonva } from './RuntimeKonva'
 import { RuntimeLLM } from './RuntimeLLM'
 import { RuntimeStore } from './RuntimeStore'
 import { RuntimeVideos } from './RuntimeVideo'
-import { Widget_group } from 'src/controls/widgets/group/WidgetIGroup'
+import { Widget_group } from 'src/controls/widgets/group/WidgetGroup'
 
 export type ImageAndMask = HasSingle_IMAGE & HasSingle_MASK
 

@@ -5,10 +5,10 @@ import type { Widget_string } from './string/WidgetString'
 import type { Widget_bool } from './bool/WidgetBool'
 import type { Widget_number } from './number/WidgetNumber'
 import type { Widget_color } from './color/WidgetColor'
-import type { Widget_group } from './group/WidgetIGroup'
+import type { Widget_group } from './group/WidgetGroup'
 import type { Widget_optional } from './optional/WidgetOptional'
 import type { Widget_orbit } from './orbit/WidgetOrbit'
-import type { Widget_enum } from './enum/WidgetEnumUI'
+import type { Widget_enum } from './enum/WidgetEnum'
 import type { Widget_list } from './list/WidgetList'
 
 /**

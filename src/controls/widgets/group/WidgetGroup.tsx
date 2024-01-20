@@ -4,10 +4,8 @@ import type { FormBuilder } from '../../FormBuilder'
 import type { GetWidgetResult, IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../../IWidget'
 
 import { makeAutoObservable } from 'mobx'
-import { observer } from 'mobx-react-lite'
 import { nanoid } from 'nanoid'
 import { runWithGlobalForm } from 'src/models/_ctx2'
-import { WidgetWithLabelUI } from '../../shared/WidgetWithLabelUI'
 import { bang } from 'src/utils/misc/bang'
 import { WidgetDI } from '../WidgetUI.DI'
 
@@ -115,63 +113,3 @@ export class Widget_group<T extends { [key: string]: Widget }> implements IWidge
 
 // DI
 WidgetDI.Widget_group = Widget_group
-
-// UI
-export const WidgetGroupUI = observer(function WidgetItemsUI_(p: {
-    //
-    widget: Widget_group<{ [key: string]: Widget }>
-}) {
-    const widget = p.widget
-    const isTopLevel = widget.config.topLevel
-    const groupFields = Object.entries(widget.values)
-    const isHorizontal = widget.config.layout === 'H'
-    return (
-        <div
-            tw={['flex rounded-box bg-opacity-95 items-start w-full text-base-content']}
-            style={{
-                position: 'relative',
-            }}
-        >
-            {/* 🟢
-            {widget.serial.collapsed ? 'Coolapsed' : undefined}
-            {groupFields.length}
-            {groupFields.map(([rootKey, sub], ix) => (
-                <div key={rootKey}>{rootKey}</div>
-            ))} */}
-            {widget.serial.collapsed ? null : (
-                <div
-                    // style={isTopLevel ? undefined : { border: '1px solid #262626' }}
-                    tw={[
-                        //
-                        '_WidgetGroupUI w-full',
-                        isHorizontal //
-                            ? `flex flex-wrap gap-2`
-                            : `flex flex-col gap-1`,
-                    ]}
-                    className={widget.config.className}
-                >
-                    {groupFields.map(([rootKey, sub], ix) => (
-                        <WidgetWithLabelUI //
-                            isTopLevel={isTopLevel}
-                            key={rootKey}
-                            // labelPos={sub.input.labelPos}
-                            rootKey={rootKey}
-                            widget={bang(sub)}
-                        />
-                    ))}
-                </div>
-            )}
-        </div>
-    )
-})
-
-// tw:
-// | 'ml-1',
-// | showAsCard ? 'mb-2' : undefined,
-// | showAsCard ? 'bg-base-300 bg-opacity-30 p-1' : undefined,
-// | showAsCard ? 'virtualBorder' : undefined,
-
-// style:
-// | borderRadius: '0.5rem',
-// | border: showAsCard ? 'solid' : undefined,
-// | paddingLeft: showAsCard ? '.4rem' : undefined,
