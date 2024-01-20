@@ -20,17 +20,17 @@ import { FC } from 'react'
 import { runWithGlobalForm } from 'src/models/_ctx2'
 import { bang } from 'src/utils/misc/bang'
 import { EnumDefault, extractDefaultValue } from './EnumDefault'
-import { Widget_group } from './widgets/WidgetIGroupUI'
 
 import { WidgetDI } from './widgets/WidgetUI.DI'
 
+import type { Widget_group } from './widgets2/WidgetIGroup'
 import type { Widget_bool } from './widgets2/WidgetBool'
 import type { Widget_choices } from './widgets2/WidgetChoices'
 import type { Widget_color } from './widgets2/WidgetColor'
 import type { Widget_number } from './widgets2/WidgetNumber'
 import type { Widget_str } from './widgets2/WidgetString'
 import type { Widget_optional } from './widgets2/WidgetOptional'
-import type { Widget_orbit } from './widgets/WidgetOrbitUI'
+import type { Widget_orbit } from './widgets2/WidgetOrbit'
 
 // Widget is a closed union for added type safety
 export type Widget =
@@ -892,7 +892,6 @@ WidgetDI.Widget_image              = Widget_image
 WidgetDI.Widget_selectMany         = Widget_selectMany
 WidgetDI.Widget_selectOne          = Widget_selectOne
 WidgetDI.Widget_list               = Widget_list
-WidgetDI.Widget_group              = Widget_group
 WidgetDI.Widget_enum               = Widget_enum
 WidgetDI.Widget_enumOpt            = Widget_enumOpt
 WidgetDI.Widget_listExt            = Widget_listExt

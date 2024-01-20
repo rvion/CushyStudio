@@ -3,14 +3,14 @@ import type { ComfySchemaL } from 'src/models/Schema'
 import { exhaust } from 'src/utils/misc/ComfyUtils'
 import { _FIX_INDENTATION } from '../utils/misc/_FIX_INDENTATION'
 import * as W from './Widget'
-import { Widget_group, type Widget_group_config } from './widgets/WidgetIGroupUI'
+import { Widget_group, type Widget_group_config } from './widgets2/WidgetIGroup'
 import { Widget_bool, type Widget_bool_config } from './widgets2/WidgetBool'
 import { Widget_choices, type Widget_choices_config } from './widgets2/WidgetChoices'
 import { Widget_color, type Widget_color_config } from './widgets2/WidgetColor'
 import { Widget_number, type Widget_number_config } from './widgets2/WidgetNumber'
 import { Widget_str, type Widget_str_config } from './widgets2/WidgetString'
 import { Widget_optional, type Widget_optional_config } from './widgets2/WidgetOptional'
-import { Widget_orbit, type Widget_orbit_config } from './widgets/WidgetOrbitUI'
+import { Widget_orbit, type Widget_orbit_config } from './widgets2/WidgetOrbit'
 
 export class FormBuilder {
     /** (@internal) don't call this yourself */

@@ -4,7 +4,7 @@ import type { Runtime } from 'src/runtime/Runtime'
 import type { Widget } from '../controls/Widget'
 import type { AppMetadata } from './AppManifest'
 import type { MediaImageL } from 'src/models/MediaImage'
-import type { Widget_group } from 'src/controls/widgets/WidgetIGroupUI'
+import type { Widget_group } from 'src/controls/widgets2/WidgetIGroup'
 
 // ACTIONS ============================================================
 // 1. the main abstraction of cushy are actions.

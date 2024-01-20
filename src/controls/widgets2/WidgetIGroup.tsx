@@ -9,6 +9,7 @@ import { nanoid } from 'nanoid'
 import { runWithGlobalForm } from 'src/models/_ctx2'
 import { WidgetWithLabelUI } from '../shared/WidgetWithLabelUI'
 import { bang } from 'src/utils/misc/bang'
+import { WidgetDI } from '../widgets/WidgetUI.DI'
 
 // CONFIG
 export type Widget_group_config<T extends { [key: string]: Widget }> = WidgetConfigFields<{
@@ -39,7 +40,6 @@ export type Widget_group_types<T extends { [key: string]: Widget }> = {
 
 // STATE
 export interface Widget_group<T extends { [key: string]: Widget }> extends WidgetTypeHelpers<Widget_group_types<T>> {}
-
 export class Widget_group<T extends { [key: string]: Widget }> implements IWidget<Widget_group_types<T>> {
     readonly isVerticalByDefault = true
     readonly isCollapsible = true
@@ -113,6 +113,10 @@ export class Widget_group<T extends { [key: string]: Widget }> implements IWidge
     }
 }
 
+// DI
+WidgetDI.Widget_group = Widget_group
+
+// UI
 export const WidgetGroupUI = observer(function WidgetItemsUI_(p: {
     //
     widget: Widget_group<{ [key: string]: Widget }>

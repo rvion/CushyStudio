@@ -5,9 +5,9 @@ import type { Widget_str } from '../widgets2/WidgetString'
 import type { Widget_bool } from '../widgets2/WidgetBool'
 import type { Widget_number } from '../widgets2/WidgetNumber'
 import type { Widget_color } from '../widgets2/WidgetColor'
-import type { Widget_group } from './WidgetIGroupUI'
+import type { Widget_group } from '../widgets2/WidgetIGroup'
 import type { Widget_optional } from '../widgets2/WidgetOptional'
-import { Widget_orbit } from './WidgetOrbitUI'
+import { Widget_orbit } from '../widgets2/WidgetOrbit'
 
 /**
  * DI stands for dependency injection

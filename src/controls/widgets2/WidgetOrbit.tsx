@@ -9,7 +9,7 @@ import { useRef } from 'react'
 import { ComfySchemaL } from 'src/models/Schema'
 import { FormBuilder } from '../FormBuilder'
 import { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../IWidget'
-import { WidgetDI } from './WidgetUI.DI'
+import { WidgetDI } from '../widgets/WidgetUI.DI'
 
 export type OrbitData = {
     azimuth: number
