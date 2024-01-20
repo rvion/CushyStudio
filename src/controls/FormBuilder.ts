@@ -23,12 +23,12 @@ export class FormBuilder {
     }
 
     // string
-    string = (opts: Widget_string_config) => new Widget_string(this, this.schema, opts)
+    string = (opts: Widget_string_config) => new Widget_string(this, opts)
     stringOpt = (opts: Widget_string_config & { startActive?: boolean }) =>
         this.optional({
             label: opts.label,
             startActive: opts.startActive,
-            widget: () => new Widget_string(this, this.schema, opts),
+            widget: () => new Widget_string(this, opts),
         })
 
     /** @deprecated */
@@ -38,87 +38,85 @@ export class FormBuilder {
     strOpt = this.stringOpt
 
     // boolean
-    boolean = (opts: Widget_bool_config) => new Widget_bool(this, this.schema, opts) // prettier-ignore
-    bool    = (opts: Widget_bool_config) => new Widget_bool(this, this.schema, opts) // prettier-ignore
+    boolean = (opts: Widget_bool_config) => new Widget_bool(this, opts) // prettier-ignore
+    bool    = (opts: Widget_bool_config) => new Widget_bool(this, opts) // prettier-ignore
 
     // number
-    int       = (opts: Omit<Widget_number_config,'mode'>) => new Widget_number(this, this.schema, { mode: 'int',   ...opts }) // prettier-ignore
-    float     = (opts: Omit<Widget_number_config,'mode'>) => new Widget_number(this, this.schema, { mode: 'float', ...opts }) // prettier-ignore
-    number    = (opts: Omit<Widget_number_config,'mode'>) => new Widget_number(this, this.schema, { mode: 'float', ...opts }) // prettier-ignore
+    int       = (opts: Omit<Widget_number_config,'mode'>) => new Widget_number(this, { mode: 'int',   ...opts }) // prettier-ignore
+    float     = (opts: Omit<Widget_number_config,'mode'>) => new Widget_number(this, { mode: 'float', ...opts }) // prettier-ignore
+    number    = (opts: Omit<Widget_number_config,'mode'>) => new Widget_number(this, { mode: 'float', ...opts }) // prettier-ignore
 
     intOpt = (opts: Omit<Widget_number_config, 'mode'> & { startActive?: boolean }) =>
         this.optional({
             label: opts.label,
             startActive: opts.startActive,
-            widget: () => new Widget_number(this, this.schema, { mode: 'int', ...opts }),
+            widget: () => new Widget_number(this, { mode: 'int', ...opts }),
         })
     floatOpt = (opts: Omit<Widget_number_config, 'mode'> & { startActive?: boolean }) =>
         this.optional({
             label: opts.label,
             startActive: opts.startActive,
-            widget: () => new Widget_number(this, this.schema, { mode: 'float', ...opts }),
+            widget: () => new Widget_number(this, { mode: 'float', ...opts }),
         })
     numberOpt = (opts: Omit<Widget_number_config, 'mode'> & { startActive?: boolean }) =>
         this.optional({
             label: opts.label,
             startActive: opts.startActive,
-            widget: () => new Widget_number(this, this.schema, { mode: 'float', ...opts }),
+            widget: () => new Widget_number(this, { mode: 'float', ...opts }),
         })
 
-    image = (opts: W.Widget_image_config) => new W.Widget_image(this, this.schema, opts)
+    image = (opts: W.Widget_image_config) => new W.Widget_image(this, opts)
     imageOpt = (opts: W.Widget_image_config & { startActive?: boolean }) =>
         this.optional({
             label: opts.label,
             startActive: opts.startActive,
-            widget: () => new W.Widget_image(this, this.schema, opts),
+            widget: () => new W.Widget_image(this, opts),
         })
 
     // --------------------
-    prompt = (config: W.Widget_prompt_config) => new W.Widget_prompt(this, this.schema, config)
+    prompt = (config: W.Widget_prompt_config) => new W.Widget_prompt(this, config)
     promptOpt = (config: W.Widget_prompt_config & { startActive?: boolean }) =>
         this.optional({
             label: config.label,
             startActive: config.startActive,
-            widget: () => new W.Widget_prompt(this, this.schema, config),
+            widget: () => new W.Widget_prompt(this, config),
         })
 
     // --------------------
 
-    enum = <const T extends KnownEnumNames>(config: Widget_enum_config<T>) => new Widget_enum(this, this.schema, config)
+    enum = <const T extends KnownEnumNames>(config: Widget_enum_config<T>) => new Widget_enum(this, config)
     enumOpt = <const T extends KnownEnumNames>(config: Widget_enum_config<T> & { startActive?: boolean }) =>
         this.optional({
             label: config.label,
             startActive: config.startActive,
-            widget: () => new Widget_enum(this, this.schema, config),
+            widget: () => new Widget_enum(this, config),
         })
 
     // --------------------
 
-    color     = (opts: Widget_color_config)       => new Widget_color(this, this.schema, opts) // prettier-ignore
-    size      = (opts: W.Widget_size_config)      => new W.Widget_size(this, this.schema, opts) // prettier-ignore
-    orbit     = (opts: Widget_orbit_config)     => new Widget_orbit(this, this.schema, opts) // prettier-ignore
-    seed      = (opts: W.Widget_seed_config)      => new W.Widget_seed(this, this.schema, opts) // prettier-ignore
+    color     = (opts: Widget_color_config)       => new Widget_color(this, opts) // prettier-ignore
+    size      = (opts: W.Widget_size_config)      => new W.Widget_size(this, opts) // prettier-ignore
+    orbit     = (opts: Widget_orbit_config)     => new Widget_orbit(this, opts) // prettier-ignore
+    seed      = (opts: W.Widget_seed_config)      => new W.Widget_seed(this, opts) // prettier-ignore
 
-    matrix = (opts: W.Widget_matrix_config) => new W.Widget_matrix(this, this.schema, opts)
+    matrix = (opts: W.Widget_matrix_config) => new W.Widget_matrix(this, opts)
 
-    inlineRun = (opts: W.Widget_inlineRun_config) => new W.Widget_inlineRun(this, this.schema, opts)
-    loras = (opts: W.Widget_loras_config) => new W.Widget_loras(this, this.schema, opts)
+    inlineRun = (opts: W.Widget_inlineRun_config) => new W.Widget_inlineRun(this, opts)
+    loras = (opts: W.Widget_loras_config) => new W.Widget_loras(this, opts)
 
     markdown = (opts: W.Widget_markdown_config | string) =>
-        new W.Widget_markdown(this, this.schema, typeof opts === 'string' ? { markdown: opts } : opts)
-    custom = <TViewState>(opts: W.Widget_custom_config<TViewState>) => new W.Widget_custom<TViewState>(this, this.schema, opts)
+        new W.Widget_markdown(this, typeof opts === 'string' ? { markdown: opts } : opts)
+    custom = <TViewState>(opts: W.Widget_custom_config<TViewState>) => new W.Widget_custom<TViewState>(this, opts)
 
-    list = <const T extends W.Widget>(p: Widget_list_config<T>) => new Widget_list(this, this.schema, p)
+    list = <const T extends W.Widget>(p: Widget_list_config<T>) => new Widget_list(this, p)
 
-    optional = <const T extends W.Widget>(p: Widget_optional_config<T>) => new Widget_optional(this, this.schema, p)
+    optional = <const T extends W.Widget>(p: Widget_optional_config<T>) => new Widget_optional(this, p)
 
-    listExt = <const T extends W.Widget>(p: Widget_listExt_config<T>) => new Widget_listExt(this, this.schema, p)
+    listExt = <const T extends W.Widget>(p: Widget_listExt_config<T>) => new Widget_listExt(this, p)
 
-    timeline = <const T extends W.Widget>(p: Widget_listExt_config<T>) =>
-        new Widget_listExt(this, this.schema, { mode: 'timeline', ...p })
+    timeline = <const T extends W.Widget>(p: Widget_listExt_config<T>) => new Widget_listExt(this, { mode: 'timeline', ...p })
 
-    regional = <const T extends W.Widget>(p: Widget_listExt_config<T>) =>
-        new Widget_listExt(this, this.schema, { mode: 'regional', ...p })
+    regional = <const T extends W.Widget>(p: Widget_listExt_config<T>) => new Widget_listExt(this, { mode: 'regional', ...p })
 
     groupOpt = <const T extends { [key: string]: W.Widget }>(p: Widget_group_config<T> & { startActive?: boolean }) =>
         this.optional({
@@ -126,20 +124,18 @@ export class FormBuilder {
             widget: () => this.group(p),
         })
 
-    group = <const T extends { [key: string]: W.Widget }>(p: Widget_group_config<T>) => new Widget_group(this, this.schema, p)
+    group = <const T extends { [key: string]: W.Widget }>(p: Widget_group_config<T>) => new Widget_group(this, p)
 
     // List API--------------
-    selectOne = <const T extends W.BaseSelectEntry>(p: W.Widget_selectOne_config<T>) =>
-        new W.Widget_selectOne(this, this.schema, p)
+    selectOne = <const T extends W.BaseSelectEntry>(p: W.Widget_selectOne_config<T>) => new W.Widget_selectOne(this, p)
 
-    selectMany = <const T extends W.BaseSelectEntry>(p: W.Widget_selectMany_config<T>) =>
-        new W.Widget_selectMany(this, this.schema, p)
+    selectMany = <const T extends W.BaseSelectEntry>(p: W.Widget_selectMany_config<T>) => new W.Widget_selectMany(this, p)
 
     // Object API-------------
     choice = <const T extends { [key: string]: () => W.Widget }>(p: Widget_choices_config<T>) =>
-        new Widget_choices(this, this.schema, { multi: false, ...p })
+        new Widget_choices(this, { multi: false, ...p })
     choices = <const T extends { [key: string]: () => W.Widget }>(p: Widget_choices_config<T>) =>
-        new Widget_choices(this, this.schema, { multi: true, ...p })
+        new Widget_choices(this, { multi: true, ...p })
 
     _FIX_INDENTATION = _FIX_INDENTATION
 
@@ -151,29 +147,29 @@ export class FormBuilder {
 
     /** (@internal) advanced way to restore form state. used internally */
     _HYDRATE = (type: W.Widget['type'], input: any, serial?: any): any => {
-        if (type === 'optional') return new Widget_optional(this, this.schema, input, serial)
-        if (type === 'bool') return new Widget_bool(this, this.schema, input, serial)
-        if (type === 'str') return new Widget_string(this, this.schema, input, serial)
-        if (type === 'choices') return new Widget_choices(this, this.schema, input, serial)
-        if (type === 'number') return new Widget_number(this, this.schema, input, serial)
-        if (type === 'group') return new Widget_group(this, this.schema, input, serial)
-        if (type === 'color') return new Widget_color(this, this.schema, input, serial)
-        if (type === 'enum') return new Widget_enum(this, this.schema, input, serial)
-        if (type === 'list') return new Widget_list(this, this.schema, input, serial)
-        if (type === 'orbit') return new Widget_orbit(this, this.schema, input, serial)
-        if (type === 'listExt') return new Widget_listExt(this, this.schema, input, serial)
+        if (type === 'optional') return new Widget_optional(this, input, serial)
+        if (type === 'bool') return new Widget_bool(this, input, serial)
+        if (type === 'str') return new Widget_string(this, input, serial)
+        if (type === 'choices') return new Widget_choices(this, input, serial)
+        if (type === 'number') return new Widget_number(this, input, serial)
+        if (type === 'group') return new Widget_group(this, input, serial)
+        if (type === 'color') return new Widget_color(this, input, serial)
+        if (type === 'enum') return new Widget_enum(this, input, serial)
+        if (type === 'list') return new Widget_list(this, input, serial)
+        if (type === 'orbit') return new Widget_orbit(this, input, serial)
+        if (type === 'listExt') return new Widget_listExt(this, input, serial)
 
-        if (type === 'inlineRun') return new W.Widget_inlineRun(this, this.schema, input, serial)
-        if (type === 'seed') return new W.Widget_seed(this, this.schema, input, serial)
-        if (type === 'matrix') return new W.Widget_matrix(this, this.schema, input, serial)
-        if (type === 'prompt') return new W.Widget_prompt(this, this.schema, input, serial)
-        if (type === 'loras') return new W.Widget_loras(this, this.schema, input, serial)
-        if (type === 'image') return new W.Widget_image(this, this.schema, input, serial)
-        if (type === 'selectOne') return new W.Widget_selectOne(this, this.schema, input, serial)
-        if (type === 'selectMany') return new W.Widget_selectMany(this, this.schema, input, serial)
-        if (type === 'size') return new W.Widget_size(this, this.schema, input, serial)
-        if (type === 'markdown') return new W.Widget_markdown(this, this.schema, input, serial)
-        if (type === 'custom') return new W.Widget_custom(this, this.schema, input, serial)
+        if (type === 'inlineRun') return new W.Widget_inlineRun(this, input, serial)
+        if (type === 'seed') return new W.Widget_seed(this, input, serial)
+        if (type === 'matrix') return new W.Widget_matrix(this, input, serial)
+        if (type === 'prompt') return new W.Widget_prompt(this, input, serial)
+        if (type === 'loras') return new W.Widget_loras(this, input, serial)
+        if (type === 'image') return new W.Widget_image(this, input, serial)
+        if (type === 'selectOne') return new W.Widget_selectOne(this, input, serial)
+        if (type === 'selectMany') return new W.Widget_selectMany(this, input, serial)
+        if (type === 'size') return new W.Widget_size(this, input, serial)
+        if (type === 'markdown') return new W.Widget_markdown(this, input, serial)
+        if (type === 'custom') return new W.Widget_custom(this, input, serial)
 
         console.log(`🔴 unknown type ${type}`)
         exhaust(type)

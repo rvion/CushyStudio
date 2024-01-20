@@ -69,7 +69,7 @@ export class Widget_markdown implements IWidget_OLD<'markdown', Widget_markdown_
     isCollapsible = true
     id: string
     type: 'markdown' = 'markdown'
-    state: Widget_markdown_state
+    serial: Widget_markdown_state
 
     get markdown() :string{
         const md= this.config.markdown
@@ -79,43 +79,41 @@ export class Widget_markdown implements IWidget_OLD<'markdown', Widget_markdown_
 
     constructor(
         public builder: FormBuilder,
-        public schema: ComfySchemaL,
         public config: Widget_markdown_config,
         serial?: Widget_markdown_serial,
     ) {
         this.id = serial?.id ?? nanoid()
-        this.state = serial ?? { type:'markdown', collapsed: config.startCollapsed, active: true, id: this.id }
+        this.serial = serial ?? { type:'markdown', collapsed: config.startCollapsed, active: true, id: this.id }
         makeAutoObservable(this)
     }
-    get serial(): Widget_markdown_serial { return this.state }
-    get result(): Widget_markdown_output { return this.state }
+
+    get result(): Widget_markdown_output { return this.serial }
 }
 
 // 🅿️ custom ==============================================================================
 export type CustomWidgetProps<T> = { widget: Widget_custom<T>; extra: import('./widgets/WidgetCustomUI').UIKit }
 export type Widget_custom_config  <T> = WidgetConfigFields<{ defaultValue: () => T; Component: FC<CustomWidgetProps<T>>}>
 export type Widget_custom_serial<T> = WidgetSerialFields<{ type: 'custom'; active: true; value: T }>
-export type Widget_custom_state <T> = WidgetSerialFields<{ type: 'custom'; active: true; value: T }>
 export type Widget_custom_output<T> = T
-export interface Widget_custom<T> extends WidgetTypeHelpers_OLD<'custom', Widget_custom_config<T>, Widget_custom_serial<T>, Widget_custom_state<T>, Widget_custom_output<T>> {}
-export class Widget_custom<T> implements IWidget_OLD<'custom', Widget_custom_config<T>, Widget_custom_serial<T>, Widget_custom_state<T>, Widget_custom_output<T>> {
-    isVerticalByDefault = true
-    isCollapsible = true
-    id: string
-    type: 'custom' = 'custom'
-    state: Widget_custom_state<T>
+export interface Widget_custom<T> extends WidgetTypeHelpers_OLD<'custom', Widget_custom_config<T>, Widget_custom_serial<T>, any, Widget_custom_output<T>> {}
+export class Widget_custom<T> implements IWidget_OLD<'custom', Widget_custom_config<T>, Widget_custom_serial<T>, any, Widget_custom_output<T>> {
+    readonly isVerticalByDefault = true
+    readonly isCollapsible = true
+    readonly id: string
+    readonly type: 'custom' = 'custom'
+
+    serial: Widget_custom_serial<T>
     Component: Widget_custom_config<T>['Component']
-    st = () => this.schema.st
-    reset = () => (this.state.value = this.config.defaultValue())
+    st = () => this.builder.schema.st
+    reset = () => (this.serial.value = this.config.defaultValue())
     constructor(
         public builder: FormBuilder,
-        public schema: ComfySchemaL,
         public config: Widget_custom_config<T>,
         serial?: Widget_custom_serial<T>,
     ) {
         this.id = serial?.id ?? nanoid()
         this.Component = config.Component
-        this.state = serial ?? {
+        this.serial = serial ?? {
             type: 'custom',
             active: true,
             id: this.id,
@@ -126,10 +124,7 @@ export class Widget_custom<T> implements IWidget_OLD<'custom', Widget_custom_con
     }
 
     /** never mutate this field manually, only access to .state */
-    get serial(): Widget_custom_serial<T> { return this.state }
-
-    /** never mutate this field manually, only access to .state */
-    get result(): Widget_custom_output<T> { return this.state.value }
+    get result(): Widget_custom_output<T> { return this.serial.value }
 }
 
 
@@ -153,7 +148,6 @@ export class Widget_prompt implements IWidget_OLD<'prompt', Widget_prompt_config
     // }
     constructor(
         public builder: FormBuilder,
-        public schema: ComfySchemaL,
         public config: Widget_prompt_config,
         serial?: Widget_prompt_serial,
     ) {
@@ -201,7 +195,6 @@ export class Widget_seed implements IWidget_OLD<'seed', Widget_seed_config, Widg
     state: Widget_seed_state
     constructor(
         public builder: FormBuilder,
-        public schema: ComfySchemaL,
         public config: Widget_seed_config,
         serial?: Widget_seed_serial,
     ) {
@@ -239,7 +232,6 @@ export class Widget_inlineRun implements IWidget_OLD<'inlineRun', Widget_inlineR
     state: Widget_inlineRun_state
     constructor(
         public builder: FormBuilder,
-        public schema: ComfySchemaL,
         public config: Widget_inlineRun_config,
         serial?: Widget_inlineRun_serial,
     ) {
@@ -275,7 +267,6 @@ export class Widget_size implements IWidget_OLD<'size', Widget_size_config, Widg
     state: Widget_size_state
     constructor(
         public builder: FormBuilder,
-        public schema: ComfySchemaL,
         public config: Widget_size_config,
         serial?: Widget_size_serial,
     ) {
@@ -327,7 +318,6 @@ export class Widget_matrix implements IWidget_OLD<'matrix', Widget_matrix_config
     cols: string[]
     constructor(
         public builder: FormBuilder,
-        public schema: ComfySchemaL,
         public config: Widget_matrix_config,
         serial?: Widget_matrix_serial,
     ) {
@@ -408,35 +398,32 @@ export class Widget_matrix implements IWidget_OLD<'matrix', Widget_matrix_config
 
 // 🅿️ loras ==============================================================================
 export type Widget_loras_config  = WidgetConfigFields<{ default?: SimplifiedLoraDef[] }>
-export type Widget_loras_serial = Widget_loras_state
-export type Widget_loras_state  = WidgetSerialFields<{ type: 'loras', active: true; loras: SimplifiedLoraDef[] }>
+export type Widget_loras_serial = WidgetSerialFields<{ type: 'loras', active: true; loras: SimplifiedLoraDef[] }>
 export type Widget_loras_output = SimplifiedLoraDef[]
-export interface Widget_loras extends WidgetTypeHelpers_OLD<'loras', Widget_loras_config, Widget_loras_serial, Widget_loras_state, Widget_loras_output> {}
-export class Widget_loras implements IWidget_OLD<'loras', Widget_loras_config, Widget_loras_serial, Widget_loras_state, Widget_loras_output> {
+export interface Widget_loras extends WidgetTypeHelpers_OLD<'loras', Widget_loras_config, Widget_loras_serial, any, Widget_loras_output> {}
+export class Widget_loras implements IWidget_OLD<'loras', Widget_loras_config, Widget_loras_serial, any, Widget_loras_output> {
     isVerticalByDefault = true
     isCollapsible = true
     id: string
     type: 'loras' = 'loras'
-    state: Widget_loras_state
+    serial: Widget_loras_serial
     constructor(
         public builder: FormBuilder,
-        public schema: ComfySchemaL,
         public config: Widget_loras_config,
         serial?: Widget_loras_serial,
     ) {
         this.id = serial?.id ?? nanoid()
-        this.state = serial ?? { type: 'loras', collapsed: config.startCollapsed, id: this.id, active: true, loras: config.default ?? [] }
-        this.allLoras = schema.getLoras()
+        this.serial = serial ?? { type: 'loras', collapsed: config.startCollapsed, id: this.id, active: true, loras: config.default ?? [] }
+        this.allLoras = builder.schema.getLoras()
         for (const lora of this.allLoras) {
             if (lora === 'None') continue
             this._insertLora(lora)
         }
-        for (const v of this.state.loras) this.selectedLoras.set(v.name, v)
+        for (const v of this.serial.loras) this.selectedLoras.set(v.name, v)
         makeAutoObservable(this)
     }
-    get serial(): Widget_loras_serial { return this.state }
     get result(): Widget_loras_output {
-        return this.state.loras
+        return this.serial.loras
     }
     allLoras: string[]
     selectedLoras = new Map<string, SimplifiedLoraDef>()
@@ -479,7 +466,6 @@ export class Widget_image implements IWidget_OLD<'image', Widget_image_config, W
     state: Widget_image_state
     constructor(
         public builder: FormBuilder,
-        public schema: ComfySchemaL,
         public config: Widget_image_config,
         serial?: Widget_image_serial,
     ) {
@@ -488,13 +474,13 @@ export class Widget_image implements IWidget_OLD<'image', Widget_image_config, W
             type: 'image',
             id: this.id,
             active: true,
-            imageID: this.schema.st.defaultImage.id,
+            imageID: builder.schema.st.defaultImage.id,
         }
         makeAutoObservable(this)
     }
     get serial(): Widget_image_serial { return this.state }
     get result(): Widget_image_output {
-        return { imageID: this.state.imageID ?? this.schema.st.defaultImage.id }
+        return { imageID: this.state.imageID ?? this.builder.schema.st.defaultImage.id }
     }
 }
 
@@ -520,7 +506,6 @@ export class Widget_selectOne<T extends BaseSelectEntry> implements IWidget_OLD<
     }
     constructor(
         public builder: FormBuilder,
-        public schema: ComfySchemaL,
         public config: Widget_selectOne_config<T>,
         serial?: Widget_selectOne_serial<T>,
     ) {
@@ -560,7 +545,6 @@ export class Widget_selectMany<T extends BaseSelectEntry> implements IWidget_OLD
     }
     constructor(
         public builder: FormBuilder,
-        public schema: ComfySchemaL,
         public config: Widget_selectMany_config<T>,
         serial?: Widget_selectMany_serial<T>,
     ) {

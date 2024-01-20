@@ -82,12 +82,7 @@ export class Widget_group<T extends { [key: string]: Widget }> implements IWidge
         }
     }
 
-    constructor(
-        public builder: FormBuilder,
-        public schema: ComfySchemaL,
-        public config: Widget_group_config<T>,
-        serial?: Widget_group_serial<T>,
-    ) {
+    constructor(public builder: FormBuilder, public config: Widget_group_config<T>, serial?: Widget_group_serial<T>) {
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? {
             type: 'group',

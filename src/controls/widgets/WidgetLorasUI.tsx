@@ -11,7 +11,7 @@ export const WidgetLorasUI = observer(function LoraWidgetUI_(p: { widget: Widget
     const st = useSt()
     const schema = st.schema
     if (schema == null) return <div>❌ no schema</div>
-    const values = widget.state.loras
+    const values = widget.serial.loras
     const names = values.map((x) => x.name)
 
     return (
@@ -55,7 +55,7 @@ export const WidgetLorasUI = observer(function LoraWidgetUI_(p: { widget: Widget
                     //     }),
                     // )
                     const nextValues = [...widget.selectedLoras.values()]
-                    widget.state.loras = nextValues
+                    widget.serial.loras = nextValues
                 }}
                 // block
             />
@@ -88,7 +88,7 @@ export const WidgetLorasUI = observer(function LoraWidgetUI_(p: { widget: Widget
                             onClick={() => {
                                 const next = values.filter((x) => x.name !== loraName)
                                 widget.selectedLoras.delete(loraName)
-                                widget.state.loras = next
+                                widget.serial.loras = next
                             }}
                         />
                     </div>

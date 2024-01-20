@@ -33,7 +33,6 @@ export type IWidget_OLD<T, I, X, S, O> = {
     readonly result: O
     readonly serial: X
     readonly builder: FormBuilder
-    readonly schema: ComfySchemaL
     readonly config: WidgetConfigFields<any>
 }
 
@@ -45,7 +44,6 @@ export type IWidget<K extends $WidgetTypes> = {
     readonly result: K['$Output']
     readonly serial: K['$Serial']
     readonly builder: FormBuilder
-    readonly schema: ComfySchemaL
     readonly config: WidgetConfigFields<any>
 }
 

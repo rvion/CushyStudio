@@ -66,7 +66,6 @@ export class Widget_choices<T extends BranchDefinitions> implements IWidget<Widg
 
     constructor(
         public readonly builder: FormBuilder,
-        public readonly schema: ComfySchemaL,
         public readonly config: Widget_choices_config<T>,
         serial?: Widget_choices_serial<T>,
     ) {

@@ -44,12 +44,7 @@ export class Widget_list<T extends Widget> implements IWidget<Widget_list_types<
     items: T[]
     serial: Widget_list_serial<T>
 
-    constructor(
-        public builder: FormBuilder,
-        public schema: ComfySchemaL,
-        public config: Widget_list_config<T>,
-        serial?: Widget_list_serial<T>,
-    ) {
+    constructor(public builder: FormBuilder, public config: Widget_list_config<T>, serial?: Widget_list_serial<T>) {
         this.id = serial?.id ?? nanoid()
 
         // serial

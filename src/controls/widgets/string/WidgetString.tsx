@@ -47,7 +47,6 @@ export class Widget_string implements IWidget<Widget_string_types> {
 
     constructor(
         public readonly builder: FormBuilder,
-        public readonly schema: ComfySchemaL,
         public readonly config: Widget_string_config,
         serial?: Widget_string_serial,
     ) {

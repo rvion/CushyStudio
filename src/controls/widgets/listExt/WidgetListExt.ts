@@ -63,12 +63,7 @@ export class Widget_listExt<T extends Widget> implements IWidget<Widget_listExt_
     }
 
     // INIT -----------------------------------------------------------------------------
-    constructor(
-        public builder: FormBuilder,
-        public schema: ComfySchemaL,
-        public config: Widget_listExt_config<T>,
-        serial?: Widget_listExt_serial<T>,
-    ) {
+    constructor(public builder: FormBuilder, public config: Widget_listExt_config<T>, serial?: Widget_listExt_serial<T>) {
         this.id = serial?.id ?? nanoid()
 
         const w = config.width ?? 100

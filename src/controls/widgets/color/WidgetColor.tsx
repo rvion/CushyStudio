@@ -1,8 +1,8 @@
+import type { FormBuilder } from '../../FormBuilder'
+import type { IWidget_OLD, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers_OLD } from '../../IWidget'
+
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
-import { ComfySchemaL } from 'src/models/Schema'
-import { FormBuilder } from '../../FormBuilder'
-import { IWidget_OLD, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers_OLD } from '../../IWidget'
 import { WidgetDI } from '../WidgetUI.DI'
 
 // CONFIG
@@ -27,12 +27,7 @@ export class Widget_color implements IWidget_OLD<'color', Widget_color_config, W
 
     serial: Widget_color_serial
 
-    constructor(
-        public readonly builder: FormBuilder,
-        public readonly schema: ComfySchemaL,
-        public readonly config: Widget_color_config,
-        serial?: Widget_color_serial,
-    ) {
+    constructor(public readonly builder: FormBuilder, public readonly config: Widget_color_config, serial?: Widget_color_serial) {
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? {
             type: 'color',

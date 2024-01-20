@@ -1,9 +1,9 @@
 import type { CleanedEnumResult } from 'src/types/EnumUtils'
-import type { ComfySchemaL } from '../../../models/Schema'
-import { EnumDefault, extractDefaultValue } from '../../EnumDefault'
+import type { EnumValue } from '../../../models/Schema'
 import type { FormBuilder } from '../../FormBuilder'
 import type { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../../IWidget'
 
+import { EnumDefault, extractDefaultValue } from '../../EnumDefault'
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { WidgetDI } from '../WidgetUI.DI'
@@ -31,22 +31,18 @@ export type Widget_enum_types<T extends KnownEnumNames> = {
 // STATE
 export interface Widget_enum<T extends KnownEnumNames> extends WidgetTypeHelpers<Widget_enum_types<T>> {}
 export class Widget_enum<T extends KnownEnumNames> implements IWidget<Widget_enum_types<T>> {
-    isVerticalByDefault = false
-    isCollapsible = false
-    id: string
-    type: 'enum' = 'enum'
-    get possibleValues() {
-        return this.schema.knownEnumsByName.get(this.config.enumName)?.values ?? []
+    readonly isVerticalByDefault = false
+    readonly isCollapsible = false
+    readonly id: string
+    readonly type: 'enum' = 'enum'
+
+    get possibleValues(): EnumValue[] {
+        return this.builder.schema.knownEnumsByName.get(this.config.enumName)?.values ?? []
     }
 
     serial: Widget_enum_serial<T>
 
-    constructor(
-        public builder: FormBuilder,
-        public schema: ComfySchemaL,
-        public config: Widget_enum_config<T>,
-        serial?: Widget_enum_serial<T>,
-    ) {
+    constructor(public builder: FormBuilder, public config: Widget_enum_config<T>, serial?: Widget_enum_serial<T>) {
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? {
             type: 'enum',
@@ -57,7 +53,7 @@ export class Widget_enum<T extends KnownEnumNames> implements IWidget<Widget_enu
         makeAutoObservable(this)
     }
     get status(): CleanedEnumResult<any> {
-        return this.schema.st.fixEnumValue(this.serial.val as any, this.config.enumName, false)
+        return this.builder.schema.st.fixEnumValue(this.serial.val as any, this.config.enumName, false)
     }
     get result(): Widget_enum_output<T> {
         return this.status.finalValue

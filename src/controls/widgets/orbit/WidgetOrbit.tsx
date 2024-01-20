@@ -70,12 +70,7 @@ export class Widget_orbit implements IWidget<Widget_orbit_types> {
 
     serial: Widget_orbit_serial
 
-    constructor(
-        public builder: FormBuilder,
-        public schema: ComfySchemaL,
-        public config: Widget_orbit_config,
-        serial?: Widget_orbit_serial,
-    ) {
+    constructor(public builder: FormBuilder, public config: Widget_orbit_config, serial?: Widget_orbit_serial) {
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? {
             type: 'orbit',

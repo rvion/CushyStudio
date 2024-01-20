@@ -13,7 +13,7 @@ const MyCustomComponent = observer(function (
         image?: MediaImageID
     }>,
 ) {
-    const value = p.widget.state.value
+    const value = p.widget.serial.value
     const img = value.image ?? p.widget.st().db.media_images.last()
     return (
         <div className='flex flex-col gap-2 virtualBorder p-2'>

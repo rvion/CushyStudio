@@ -70,12 +70,7 @@ export class Widget_optional<T extends Widget> implements IWidget<Widget_string_
         // this.serial.child = undefined
     }
 
-    constructor(
-        public builder: FormBuilder,
-        public schema: ComfySchemaL,
-        public config: Widget_optional_config<T>,
-        serial?: Widget_optional_serial<T>,
-    ) {
+    constructor(public builder: FormBuilder, public config: Widget_optional_config<T>, serial?: Widget_optional_serial<T>) {
         this.id = serial?.id ?? nanoid()
         const defaultActive = config.startActive
         this.serial = serial ?? {
