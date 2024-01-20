@@ -1,25 +1,16 @@
-// 🟢 2024-01-19: convert to V2
-
 import type { Widget } from 'src/controls/Widget'
 
-import { observer } from 'mobx-react-lite'
-import { SelectUI } from 'src/rsuite/SelectUI'
-import { WidgetWithLabelUI } from '../shared/WidgetWithLabelUI'
 import { makeAutoObservable } from 'mobx'
+import { observer } from 'mobx-react-lite'
 import { nanoid } from 'nanoid'
 import { ComfySchemaL } from 'src/models/Schema'
 import { runWithGlobalForm } from 'src/models/_ctx2'
-import { FormBuilder } from '../FormBuilder'
-import {
-    WidgetConfigFields,
-    WidgetSerialFields,
-    GetWidgetResult,
-    WidgetTypeHelpers_OLD,
-    IWidget_OLD,
-    WidgetTypeHelpers,
-    IWidget,
-} from '../IWidget'
+import { SelectUI } from 'src/rsuite/SelectUI'
 import { toastError } from 'src/utils/misc/toasts'
+import { FormBuilder } from '../FormBuilder'
+import { GetWidgetResult, IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../IWidget'
+import { WidgetWithLabelUI } from '../shared/WidgetWithLabelUI'
+import { WidgetDI } from '../widgets/WidgetUI.DI'
 
 type BranchDefinitions = { [key: string]: () => Widget }
 
@@ -52,6 +43,7 @@ export type Widget_choices_types<T extends BranchDefinitions> = {
     $Output: Widget_choices_output<T>
 }
 
+// STATE
 export interface Widget_choices<T extends BranchDefinitions> extends WidgetTypeHelpers<Widget_choices_types<T>> {}
 export class Widget_choices<T extends BranchDefinitions> implements IWidget<Widget_choices_types<T>> {
     readonly isVerticalByDefault = true
@@ -168,6 +160,10 @@ export class Widget_choices<T extends BranchDefinitions> implements IWidget<Widg
     }
 }
 
+// DI
+WidgetDI.Widget_choices = Widget_choices
+
+// UI
 export const WidgetChoicesUI = observer(function WidgetChoicesUI_(p: {
     widget: Widget_choices<{ [key: string]: () => Widget }>
 }) {

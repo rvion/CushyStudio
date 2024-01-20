@@ -21,13 +21,16 @@ import { runWithGlobalForm } from 'src/models/_ctx2'
 import { bang } from 'src/utils/misc/bang'
 import { EnumDefault, extractDefaultValue } from './EnumDefault'
 import { Widget_group } from './widgets/WidgetIGroupUI'
+
 import { WidgetDI } from './widgets/WidgetUI.DI'
-import { Widget_bool } from './widgets2/WidgetBool'
-import { Widget_choices } from './widgets2/WidgetChoices'
-import { Widget_color } from './widgets2/WidgetColor'
-import { Widget_number } from './widgets2/WidgetNumber'
-import { Widget_str } from './widgets2/WidgetString'
-import { Widget_optional } from './widgets2/WidgetOptional'
+
+import type { Widget_bool } from './widgets2/WidgetBool'
+import type { Widget_choices } from './widgets2/WidgetChoices'
+import type { Widget_color } from './widgets2/WidgetColor'
+import type { Widget_number } from './widgets2/WidgetNumber'
+import type { Widget_str } from './widgets2/WidgetString'
+import type { Widget_optional } from './widgets2/WidgetOptional'
+import type { Widget_orbit } from './widgets/WidgetOrbitUI'
 
 // Widget is a closed union for added type safety
 export type Widget =
@@ -55,101 +58,6 @@ export type Widget =
     | Widget_enum<any>
     | Widget_enumOpt<any>
 
-// 🅿️ orbit ==============================================================================
-const inRange = (val: number, min:number,max:number, margin:number=0) => {
-    return val >= (min-margin) && val <= (max+margin)
-
-}
-const mkEnglishSummary = (
-    /** in deg; from -180 to 180 */
-    azimuth:number,
-    /** in deg, from -90 to 90 */
-    elevation: number
-):string => {
-    const words:string[] =[]
-    // const azimuth = this.state.val.azimuth
-    // faces: front, back, left, right
-    const margin = 20
-
-    if (inRange(elevation,-90,-80,margin)) words.push('from-below')
-    else if (inRange(elevation,80,90,0)) words.push('from-above')
-    else {
-        if (inRange(elevation,-80,-45,0)) words.push('low')
-        else if (inRange(elevation,45,80,0)) words.push('high')
-
-        if (inRange(azimuth,-180,-135,margin)) words.push('back')
-        else if (inRange(azimuth,135,180,margin)) words.push('back')
-        else if (inRange(azimuth,-45,45,margin)) words.push('front')
-        else {
-            if (inRange(azimuth,-135,-45,margin)) words.push('righ-side') // 'right')
-            else if (inRange(azimuth,45,135,margin)) words.push('left-side') // left')
-        }
-
-    }
-
-    return `${words.join('-')} view`
-}
-export type OrbitData = {
-    azimuth: number;
-    elevation: number;
-}
-export type Widget_orbit_config  = WidgetConfigFields<{ default?: Partial<OrbitData> }>
-export type Widget_orbit_serial = WidgetSerialFields<{ type: 'orbit', active: true; val: OrbitData }>
-export type Widget_orbit_state  = WidgetSerialFields<{ type: 'orbit', active: true; val: OrbitData }>
-export type Widget_orbit_output = OrbitData & {
-    englishSummary: string;
-}
-export interface Widget_orbit extends WidgetTypeHelpers_OLD<'orbit', Widget_orbit_config, Widget_orbit_serial, Widget_orbit_state, Widget_orbit_output> {}
-export class Widget_orbit implements IWidget_OLD<'orbit', Widget_orbit_config, Widget_orbit_serial, Widget_orbit_state, Widget_orbit_output> {
-    isVerticalByDefault = true
-    isCollapsible = false
-    id: string
-    type: 'orbit' = 'orbit'
-    state: Widget_orbit_state
-    reset = () => {
-        this.state.val.azimuth = this.config.default?.azimuth ?? 0
-        this.state.val.elevation = this.config.default?.elevation ?? 0
-    }
-
-    get englishSummary(){
-        return  mkEnglishSummary(this.state.val.azimuth, this.state.val.elevation)
-    }
-    get euler(){
-        const radius = 5
-        const azimuthRad = this.state.val.azimuth * (Math.PI / 180)
-        const elevationRad = this.state.val.elevation * (Math.PI / 180)
-        const x =radius * Math.cos(elevationRad) * Math.sin(azimuthRad)
-        const y =radius * Math.cos(elevationRad) * Math.cos(azimuthRad)
-        const z = radius * Math.sin(elevationRad)
-        // const cameraPosition =[x,y,z] as const
-        return {x:y,y:z,z:-x}
-    }
-    constructor(
-        public builder: FormBuilder,
-        public schema: ComfySchemaL,
-        public config: Widget_orbit_config,
-        serial?: Widget_orbit_serial,
-    ) {
-        this.id = serial?.id ?? nanoid()
-        this.state = serial ?? {
-            type:'orbit',
-            collapsed: config.startCollapsed,
-            active: true,
-            val: {
-                azimuth: config.default?.azimuth ?? 0,
-                elevation: config.default?.elevation ?? 0,
-            },
-            id: this.id
-        }
-        makeAutoObservable(this)
-    }
-    get serial(): Widget_orbit_serial { return this.state }
-    get result(): Widget_orbit_output { return {
-        azimuth: this.state.val.azimuth,
-        elevation: this.state.val.elevation,
-        englishSummary: this.englishSummary,
-    }}
-}
 
 // 🅿️ markdown ==============================================================================
 export type Widget_markdown_config = WidgetConfigFields<{ markdown: string | ((formRoot:Widget_group<any>) => string); }>
@@ -985,8 +893,6 @@ WidgetDI.Widget_selectMany         = Widget_selectMany
 WidgetDI.Widget_selectOne          = Widget_selectOne
 WidgetDI.Widget_list               = Widget_list
 WidgetDI.Widget_group              = Widget_group
-WidgetDI.Widget_choices            = Widget_choices
 WidgetDI.Widget_enum               = Widget_enum
 WidgetDI.Widget_enumOpt            = Widget_enumOpt
 WidgetDI.Widget_listExt            = Widget_listExt
-WidgetDI.Widget_orbit              = Widget_orbit

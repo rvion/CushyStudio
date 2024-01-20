@@ -9,7 +9,8 @@ import { Widget_choices, type Widget_choices_config } from './widgets2/WidgetCho
 import { Widget_color, type Widget_color_config } from './widgets2/WidgetColor'
 import { Widget_number, type Widget_number_config } from './widgets2/WidgetNumber'
 import { Widget_str, type Widget_str_config } from './widgets2/WidgetString'
-import { Widget_optional, Widget_optional_config } from './widgets2/WidgetOptional'
+import { Widget_optional, type Widget_optional_config } from './widgets2/WidgetOptional'
+import { Widget_orbit, type Widget_orbit_config } from './widgets/WidgetOrbitUI'
 
 export class FormBuilder {
     /** (@internal) don't call this yourself */
@@ -80,7 +81,7 @@ export class FormBuilder {
     // --------------------
     color     = (opts: Widget_color_config)       => new Widget_color(this, this.schema, opts) // prettier-ignore
     size      = (opts: W.Widget_size_config)      => new W.Widget_size(this, this.schema, opts) // prettier-ignore
-    orbit     = (opts: W.Widget_orbit_config)     => new W.Widget_orbit(this, this.schema, opts) // prettier-ignore
+    orbit     = (opts: Widget_orbit_config)     => new Widget_orbit(this, this.schema, opts) // prettier-ignore
     seed      = (opts: W.Widget_seed_config)      => new W.Widget_seed(this, this.schema, opts) // prettier-ignore
 
     matrix = (opts: W.Widget_matrix_config) => new W.Widget_matrix(this, this.schema, opts)
@@ -159,8 +160,8 @@ export class FormBuilder {
         if (type === 'size') return new W.Widget_size(this, this.schema, input, serial)
         if (type === 'markdown') return new W.Widget_markdown(this, this.schema, input, serial)
         if (type === 'custom') return new W.Widget_custom(this, this.schema, input, serial)
-        if (type === 'orbit') return new W.Widget_orbit(this, this.schema, input, serial)
-        if (type === 'orbit') return new W.Widget_orbit(this, this.schema, input, serial)
+        if (type === 'orbit') return new Widget_orbit(this, this.schema, input, serial)
+
         console.log(`🔴 unknown type ${type}`)
         exhaust(type)
     }

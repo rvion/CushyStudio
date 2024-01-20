@@ -2,15 +2,109 @@ import type { OrbitControls as OrbitControlsT } from 'three/examples/jsm/control
 
 import { OrbitControls, PerspectiveCamera, RenderTexture, Text } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
-import { runInAction } from 'mobx'
+import { makeAutoObservable, runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
+import { nanoid } from 'nanoid'
 import { useRef } from 'react'
-import { Widget_orbit } from '../Widget'
+import { ComfySchemaL } from 'src/models/Schema'
+import { FormBuilder } from '../FormBuilder'
+import { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../IWidget'
+import { WidgetDI } from './WidgetUI.DI'
 
-const clampMod = (v: number, min: number, max: number) => {
-    const rangeSize = max - min + 1
-    return ((((v - min) % rangeSize) + rangeSize) % rangeSize) + min
+export type OrbitData = {
+    azimuth: number
+    elevation: number
 }
+
+// CONFIG
+export type Widget_orbit_config = WidgetConfigFields<{
+    default?: Partial<OrbitData>
+}>
+
+// SERIAL
+export type Widget_orbit_serial = WidgetSerialFields<{
+    type: 'orbit'
+    active: true
+    val: OrbitData
+}>
+
+// OUT
+export type Widget_orbit_output = {
+    azimuth: number
+    elevation: number
+    englishSummary: string
+}
+
+// TYPES
+export type Widget_orbit_types = {
+    $Type: 'orbit'
+    $Input: Widget_orbit_config
+    $Serial: Widget_orbit_serial
+    $Output: Widget_orbit_output
+}
+
+// STATE
+export interface Widget_orbit extends WidgetTypeHelpers<Widget_orbit_types> {}
+export class Widget_orbit implements IWidget<Widget_orbit_types> {
+    isVerticalByDefault = true
+    isCollapsible = false
+    id: string
+    type: 'orbit' = 'orbit'
+
+    /** reset azimuth and elevation */
+    reset = () => {
+        this.serial.val.azimuth = this.config.default?.azimuth ?? 0
+        this.serial.val.elevation = this.config.default?.elevation ?? 0
+    }
+
+    /** practical to add to your textual prompt */
+    get englishSummary() {
+        return mkEnglishSummary(this.serial.val.azimuth, this.serial.val.elevation)
+    }
+
+    get euler() {
+        const radius = 5
+        const azimuthRad = this.serial.val.azimuth * (Math.PI / 180)
+        const elevationRad = this.serial.val.elevation * (Math.PI / 180)
+        const x = radius * Math.cos(elevationRad) * Math.sin(azimuthRad)
+        const y = radius * Math.cos(elevationRad) * Math.cos(azimuthRad)
+        const z = radius * Math.sin(elevationRad)
+        // const cameraPosition =[x,y,z] as const
+        return { x: y, y: z, z: -x }
+    }
+
+    serial: Widget_orbit_serial
+
+    constructor(
+        public builder: FormBuilder,
+        public schema: ComfySchemaL,
+        public config: Widget_orbit_config,
+        serial?: Widget_orbit_serial,
+    ) {
+        this.id = serial?.id ?? nanoid()
+        this.serial = serial ?? {
+            type: 'orbit',
+            collapsed: config.startCollapsed,
+            active: true,
+            val: {
+                azimuth: config.default?.azimuth ?? 0,
+                elevation: config.default?.elevation ?? 0,
+            },
+            id: this.id,
+        }
+        makeAutoObservable(this)
+    }
+    get result(): Widget_orbit_output {
+        return {
+            azimuth: this.serial.val.azimuth,
+            elevation: this.serial.val.elevation,
+            englishSummary: this.englishSummary,
+        }
+    }
+}
+
+// DI
+WidgetDI.Widget_orbit = Widget_orbit
 
 export const WidgetOrbitUI = observer((p: { widget: Widget_orbit }) => {
     const ref = useRef<any>(null)
@@ -50,8 +144,8 @@ export const WidgetOrbitUI = observer((p: { widget: Widget_orbit }) => {
                     onChange={(e) => {
                         const curr = ref.current as OrbitControlsT
                         runInAction(() => {
-                            p.widget.state.val.azimuth = clampMod(-90 + curr.getAzimuthalAngle() * (180 / Math.PI), -180, 180)
-                            p.widget.state.val.elevation = clampMod(90 - curr.getPolarAngle() * (180 / Math.PI), -180, 180) // (Math.PI / 4 - curr.getPolarAngle()) * (180 / Math.PI)
+                            p.widget.serial.val.azimuth = clampMod(-90 + curr.getAzimuthalAngle() * (180 / Math.PI), -180, 180)
+                            p.widget.serial.val.elevation = clampMod(90 - curr.getPolarAngle() * (180 / Math.PI), -180, 180) // (Math.PI / 4 - curr.getPolarAngle()) * (180 / Math.PI)
                             // console.log(`[👙] `, JSON.stringify(p.widget.state.val))
                         })
                         // if (e == null) return
@@ -101,6 +195,45 @@ function Cube() {
     )
 }
 
+// UTILS
 // import { suspend } from 'suspend-react'
 // const inter = import('@pmndrs/assets/fonts/inter_regular.woff')
 // useFrame((state) => (textRef.current!.position!.x = Math.sin(state.clock.elapsedTime) * 2))
+
+const clampMod = (v: number, min: number, max: number) => {
+    const rangeSize = max - min + 1
+    return ((((v - min) % rangeSize) + rangeSize) % rangeSize) + min
+}
+
+const inRange = (val: number, min: number, max: number, margin: number = 0) => {
+    return val >= min - margin && val <= max + margin
+}
+
+const mkEnglishSummary = (
+    /** in deg; from -180 to 180 */
+    azimuth: number,
+    /** in deg, from -90 to 90 */
+    elevation: number,
+): string => {
+    const words: string[] = []
+    // const azimuth = this.state.val.azimuth
+    // faces: front, back, left, right
+    const margin = 20
+
+    if (inRange(elevation, -90, -80, margin)) words.push('from-below')
+    else if (inRange(elevation, 80, 90, 0)) words.push('from-above')
+    else {
+        if (inRange(elevation, -80, -45, 0)) words.push('low')
+        else if (inRange(elevation, 45, 80, 0)) words.push('high')
+
+        if (inRange(azimuth, -180, -135, margin)) words.push('back')
+        else if (inRange(azimuth, 135, 180, margin)) words.push('back')
+        else if (inRange(azimuth, -45, 45, margin)) words.push('front')
+        else {
+            if (inRange(azimuth, -135, -45, margin)) words.push('righ-side') // 'right')
+            else if (inRange(azimuth, 45, 135, margin)) words.push('left-side') // left')
+        }
+    }
+
+    return `${words.join('-')} view`
+}
