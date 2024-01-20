@@ -79,16 +79,12 @@ export class Widget_choices<T extends BranchDefinitions> implements IWidget<Widg
         }
 
         // ensure serial present and valid
-        if (serial) {
-            this.serial = serial
-        } else {
-            this.serial = {
-                type: 'choices',
-                id: this.id,
-                active: true,
-                values_: {},
-                branches: {},
-            }
+        this.serial = serial ?? {
+            type: 'choices',
+            id: this.id,
+            active: true,
+            values_: {},
+            branches: {},
         }
 
         // find all active branches
