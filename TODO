@@ -1,3 +1,15 @@
+
+Migration guide:
+
+
+- `form.str(...)` has been renamed to `form.string(...)`
+- `form.strOpt(...)` has been renamed to `form.stringOpt(...)`
+- in various `form.*Opt` variants: `default` property has been renamed to `startActive`
+- no more `group: string` param in widget configs, it was anyway unused
+
+
+---------------------
+
 - stop that crap with optionals at type level => use proper Optional warpper.
     - make it transparent through the formBuilder
     - hoist label automagically.

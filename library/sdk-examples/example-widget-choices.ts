@@ -3,9 +3,9 @@ app({
         foo: form.choices({
             items: {
                 testInt: () => form.int({}),
-                testString: () => form.str({}),
-                testGroup: () => form.group({ items: () => ({ c1: form.str({}), c2: form.str({}) }) }),
-                testList: () => form.list({ element: () => form.str({}) }),
+                testString: () => form.string({}),
+                testGroup: () => form.group({ items: () => ({ c1: form.string({}), c2: form.string({}) }) }),
+                testList: () => form.list({ element: () => form.string({}) }),
             },
         }),
     }),

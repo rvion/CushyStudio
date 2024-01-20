@@ -10,9 +10,8 @@ import { nanoid } from 'nanoid'
 import { WidgetDI } from '../widgets/WidgetUI.DI'
 
 // CONFIG
-export type Widget_str_config<T extends { optional: boolean }> = WidgetConfigFields<{
+export type Widget_str_config = WidgetConfigFields<{
     default?: string
-    optional: boolean // T['optional'] (🔶 COMMENTED TO SPEED UP TYPESCRIPT)
     textarea?: boolean
     placeHolder?: string
 }>
@@ -20,33 +19,29 @@ export type Widget_str_config<T extends { optional: boolean }> = WidgetConfigFie
 // SERIAL
 export type Widget_str_serial = WidgetSerialFields<{
     type: 'str'
-    active: true
-    val: string
+    val?: string
 }>
 
 // OUT
-export type Widget_str_output<T extends { optional: boolean }> = T['optional'] extends true //
-    ? Maybe<string>
-    : string
+export type Widget_str_output = string
 
 // TYPES
-export type Widget_str_types<T extends { optional: boolean }> = {
+export type Widget_str_types = {
     $Type: 'str'
-    $Input: Widget_str_config<T>
+    $Input: Widget_str_config
     $Serial: Widget_str_serial
-    $Output: Widget_str_output<T>
+    $Output: Widget_str_output
 }
 
 // STATE
-export interface Widget_str<T extends { optional: boolean }> extends WidgetTypeHelpers<Widget_str_types<T>> {}
-export class Widget_str<T extends { optional: boolean }> implements IWidget<Widget_str_types<T>> {
+export interface Widget_str extends WidgetTypeHelpers<Widget_str_types> {}
+export class Widget_str implements IWidget<Widget_str_types> {
     get isVerticalByDefault(): boolean {
         if (this.config.textarea) return true
         return false
     }
 
     get isCollapsible() { return this.config.textarea ?? false } // prettier-ignore
-    get isOptional() { return this.config.optional ?? false } // prettier-ignore
 
     readonly id: string
     readonly type: 'str' = 'str'
@@ -56,23 +51,20 @@ export class Widget_str<T extends { optional: boolean }> implements IWidget<Widg
     constructor(
         public readonly builder: FormBuilder,
         public readonly schema: ComfySchemaL,
-        public readonly config: Widget_str_config<T>,
+        public readonly config: Widget_str_config,
         serial?: Widget_str_serial,
     ) {
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? {
             type: 'str',
             collapsed: config.startCollapsed,
-            active: true,
-            val: config.default ?? '',
             id: this.id,
         }
         makeAutoObservable(this)
     }
 
-    get result(): Widget_str_output<T> {
-        if (!this.serial.active) return undefined as any
-        return this.serial.val
+    get result(): Widget_str_output {
+        return this.serial.val ?? this.config.default ?? ''
     }
 }
 
@@ -80,9 +72,9 @@ export class Widget_str<T extends { optional: boolean }> implements IWidget<Widg
 WidgetDI.Widget_str = Widget_str
 
 // UI
-export const WidgetStrUI = observer(function WidgetStrUI_(p: { widget: Widget_str<any> }) {
+export const WidgetStrUI = observer(function WidgetStrUI_(p: { widget: Widget_str }) {
     const widget = p.widget
-    const val = widget.serial.val
+    const val = widget.result
     if (widget.config.textarea) {
         return (
             <textarea

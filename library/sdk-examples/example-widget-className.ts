@@ -13,7 +13,7 @@ app({
                                 default: 12,
                                 defaultMode: 'fixed',
                             }),
-                            positive: form.str({}),
+                            positive: form.string({}),
                         }),
                     }),
                 portrait: () =>

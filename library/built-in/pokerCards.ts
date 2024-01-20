@@ -49,9 +49,9 @@ app({
             layout: 'H',
             // className: 'p-2 bg-red-800',
             items: () => ({
-                Jack: form.str({ default: 'gold, Knight' }),
-                Queen: form.str({ default: 'gold, Queen' }),
-                King: form.str({ default: 'gold, King' }),
+                Jack: form.string({ default: 'gold, Knight' }),
+                Queen: form.string({ default: 'gold, Queen' }),
+                King: form.string({ default: 'gold, King' }),
             }),
         }),
 

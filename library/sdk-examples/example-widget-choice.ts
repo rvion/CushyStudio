@@ -11,7 +11,7 @@ app({
                         items: () => ({
                             x: form.markdown({ markdown: '## Hello world' }),
                             c: form.int({}),
-                            d: form.str({}),
+                            d: form.string({}),
                         }),
                     }),
             },

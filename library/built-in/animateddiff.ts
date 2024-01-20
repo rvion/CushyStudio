@@ -6,7 +6,7 @@ app({
         description: 'Minimalist AnimateDiff example',
     },
     ui: (form) => ({
-        preText: form.str({
+        preText: form.string({
             default: ' (Masterpiece, best quality:1.2), closeup, close-up, a girl in a forest',
         }),
         seed: form.intOpt({}),

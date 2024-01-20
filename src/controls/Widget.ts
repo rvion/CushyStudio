@@ -33,7 +33,7 @@ import { Widget_optional } from './widgets2/WidgetOptional'
 export type Widget =
     | Widget_optional<any>
     | Widget_color
-    | Widget_str<any>
+    | Widget_str
     | Widget_orbit
     | Widget_prompt
     | Widget_seed

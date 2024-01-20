@@ -18,11 +18,19 @@ export class FormBuilder {
     }
 
     // string
-    string    = (opts: Omit<Widget_str_config<{ optional: false }>, 'optional'>) => new Widget_str(this, this.schema, { optional: false, ...opts}) // prettier-ignore
-    str       = (opts: Omit<Widget_str_config<{ optional: false }>, 'optional'>) => new Widget_str(this, this.schema, { optional: false, ...opts}) // prettier-ignore
+    string = (opts: Widget_str_config) => new Widget_str(this, this.schema, opts)
+    stringOpt = (opts: Widget_str_config & { startActive?: boolean }) =>
+        this.optional({
+            label: opts.label,
+            startActive: opts.startActive,
+            widget: () => new Widget_str(this, this.schema, opts),
+        })
 
-    stringOpt = (opts: Omit<Widget_str_config<{ optional: true  }>, 'optional'>) => new Widget_str(this, this.schema, { optional: true,  ...opts}) // prettier-ignore
-    strOpt    = (opts: Omit<Widget_str_config<{ optional: true  }>, 'optional'>) => new Widget_str(this, this.schema, { optional: true,  ...opts}) // prettier-ignore
+    /** @deprecated */
+    str = this.string
+
+    /** @deprecated */
+    strOpt = this.stringOpt
 
     // boolean
     boolean = (opts: Widget_bool_config) => new Widget_bool(this, this.schema, opts) // prettier-ignore

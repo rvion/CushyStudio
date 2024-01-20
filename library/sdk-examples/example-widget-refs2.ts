@@ -41,7 +41,7 @@ app({
                 form.group({
                     label: 'stuff you can select in the reference input below',
                     items: () => ({
-                        name: form.str({}),
+                        name: form.string({}),
                         a: form.number({}),
                         b: form.number({}),
                         c: form.number({}),
