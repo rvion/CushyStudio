@@ -7,6 +7,7 @@ import type { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers
 import { makeAutoObservable } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { nanoid } from 'nanoid'
+import { WidgetDI } from '../widgets/WidgetUI.DI'
 
 // CONFIG
 export type Widget_str_config<T extends { optional: boolean }> = WidgetConfigFields<{
@@ -74,6 +75,9 @@ export class Widget_str<T extends { optional: boolean }> implements IWidget<Widg
         return this.serial.val
     }
 }
+
+// DI
+WidgetDI.Widget_str = Widget_str
 
 // UI
 export const WidgetStrUI = observer(function WidgetStrUI_(p: { widget: Widget_str<any> }) {

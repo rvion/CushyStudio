@@ -104,6 +104,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                             toggleInfo.toggle()
                         }}
                     >
+                        {/* {widget.type} */}
                         {toggleInfo.value ? <span className='material-symbols-outlined text-primary-content'>check</span> : null}
                     </div>
                 ) : null

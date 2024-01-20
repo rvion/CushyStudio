@@ -1056,12 +1056,9 @@ export class Widget_enumOpt<T extends KnownEnumNames> implements IWidget_OLD<'en
 
 
 
-WidgetDI.Widget_str                = Widget_str
 WidgetDI.Widget_prompt             = Widget_prompt
 WidgetDI.Widget_promptOpt          = Widget_promptOpt
 WidgetDI.Widget_seed               = Widget_seed
-
-WidgetDI.Widget_bool               = Widget_bool
 WidgetDI.Widget_inlineRun          = Widget_inlineRun
 WidgetDI.Widget_markdown           = Widget_markdown
 WidgetDI.Widget_custom             = Widget_custom
