@@ -37,6 +37,7 @@ import { Widget_optional } from './optional/WidgetOptional'
 import { WidgetOptionalUI } from './optional/WidgetOptionalUI'
 import { Widget_list } from './list/WidgetList'
 import { Widget_listExt } from './listExt/WidgetListExt'
+import { Widget_prompt } from './prompt/WidgetPrompt'
 
 /**
  * this widget will then dispatch the individual requests to the appropriate sub-widgets
@@ -51,7 +52,7 @@ export const WidgetUI = observer(function WidgetUI_(p: {
     const widget = p.widget
     if (widget == null) return <>NULL</>
     if (widget instanceof R.Widget_seed)       return <WidgetSeedUI        widget={widget} />
-    if (widget instanceof Widget_number)       return <WidgetNumberUI         widget={widget} />
+    if (widget instanceof Widget_number)       return <WidgetNumberUI      widget={widget} />
     if (widget instanceof Widget_string)       return <WidgetStringUI      widget={widget} />
     if (widget instanceof Widget_optional)     return <WidgetOptionalUI    widget={widget} />
     if (widget instanceof R.Widget_image)      return <WidgetSelectImageUI widget={widget} />
@@ -63,7 +64,7 @@ export const WidgetUI = observer(function WidgetUI_(p: {
     if (widget instanceof R.Widget_matrix)     return <WidgetMatrixUI      widget={widget} />
     if (widget instanceof Widget_bool)         return <WidgetBoolUI        widget={widget} />
     if (widget instanceof R.Widget_inlineRun)  return <WidgetInlineRunUI   widget={widget} />
-    if (widget instanceof R.Widget_prompt)     return <WidgetPromptUI      widget={widget} />
+    if (widget instanceof Widget_prompt)     return <WidgetPromptUI        widget={widget} />
     if (widget instanceof R.Widget_loras)      return <WidgetLorasUI       widget={widget} />
     if (widget instanceof Widget_color)        return <WidgetColorUI       widget={widget} />
     if (widget instanceof R.Widget_selectOne)  return <WidgetSelectOneUI   widget={widget} />

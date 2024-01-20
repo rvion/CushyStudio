@@ -5,11 +5,8 @@
 import type { FC } from 'react'
 import type { SQLWhere } from 'src/db/SQLWhere'
 import type { MediaImageT } from 'src/db/TYPES.gen'
-import type { ComfySchemaL } from 'src/models/Schema'
 import type { SimplifiedLoraDef } from 'src/presets/SimplifiedLoraDef'
 import type { ItemDataType } from 'src/rsuite/RsuiteTypes'
-import type { WidgetPromptOutput } from 'src/widgets/prompter/WidgetPromptUI'
-import type { PossibleSerializedNodes } from 'src/widgets/prompter/plugins/PossibleSerializedNodes'
 import type { FormBuilder } from './FormBuilder'
 import type { IWidget_OLD, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers_OLD } from './IWidget'
 import type { AspectRatio, CushySize, CushySizeByRatio, ImageAnswer, ImageAnswerForm, SDModelType } from './misc/InfoAnswer'
@@ -31,6 +28,7 @@ import type { Widget_number } from './widgets/number/WidgetNumber'
 import type { Widget_optional } from './widgets/optional/WidgetOptional'
 import type { Widget_orbit } from './widgets/orbit/WidgetOrbit'
 import type { Widget_string } from './widgets/string/WidgetString'
+import type { Widget_prompt } from './widgets/prompt/WidgetPrompt'
 
 // Widget is a closed union for added type safety
 export type Widget =
@@ -126,60 +124,6 @@ export class Widget_custom<T> implements IWidget_OLD<'custom', Widget_custom_con
     /** never mutate this field manually, only access to .state */
     get result(): Widget_custom_output<T> { return this.serial.value }
 }
-
-
-
-// 🅿️ prompt ==============================================================================
-export type Widget_prompt_config  = WidgetConfigFields<{ default?: string | WidgetPromptOutput }>
-export type Widget_prompt_serial = Widget_prompt_state
-export type Widget_prompt_state  = WidgetSerialFields<{ type: 'prompt'; active: true; /*text: string;*/ tokens: PossibleSerializedNodes[] }>
-export type Widget_prompt_output = { type: 'prompt'; active: true; /*text: string;*/ tokens: PossibleSerializedNodes[] }
-export interface Widget_prompt extends WidgetTypeHelpers_OLD<'prompt', Widget_prompt_config, Widget_prompt_serial, Widget_prompt_state, Widget_prompt_output> {}
-export class Widget_prompt implements IWidget_OLD<'prompt', Widget_prompt_config, Widget_prompt_serial, Widget_prompt_state, Widget_prompt_output> {
-    isVerticalByDefault = true
-    isCollapsible = true
-    id: string
-    type: 'prompt' = 'prompt'
-    state: Widget_prompt_state
-
-    // getText = () => {
-    //     const tokens = entry.item.tokens
-
-    // }
-    constructor(
-        public builder: FormBuilder,
-        public config: Widget_prompt_config,
-        serial?: Widget_prompt_serial,
-    ) {
-        this.id = serial?.id ?? nanoid()
-        if (serial) {
-            this.state = serial
-        } else {
-            this.state = {
-                type:'prompt',
-                collapsed: config.startCollapsed,
-                id: this.id,
-                active: true,
-                tokens: []
-            }
-            const def = config.default
-            if (def != null) {
-                if (typeof def === 'string') {
-                    this.state.tokens = [{ type: 'text', text: def }]
-                }else {
-                    this.state.tokens = def.tokens
-                }
-            }
-        }
-        makeAutoObservable(this)
-    }
-    get serial(): Widget_prompt_serial { return this.state } // prettier-ignore
-    get result(): Widget_prompt_output {
-        JSON.stringify(this.state) // 🔶 force deep observation
-        return this.state
-    }
-}
-
 
 // 🅿️ seed ==============================================================================
 export type Widget_seed_config  = WidgetConfigFields<{ default?: number; defaultMode?: 'randomize' | 'fixed' | 'last', min?: number; max?: number }>
@@ -463,14 +407,14 @@ export class Widget_image implements IWidget_OLD<'image', Widget_image_config, W
     isCollapsible = true
     id: string
     type: 'image' = 'image'
-    state: Widget_image_state
+    serial: Widget_image_state
     constructor(
         public builder: FormBuilder,
         public config: Widget_image_config,
         serial?: Widget_image_serial,
     ) {
         this.id = serial?.id ?? nanoid()
-        this.state = serial ?? {
+        this.serial = serial ?? {
             type: 'image',
             id: this.id,
             active: true,
@@ -478,9 +422,8 @@ export class Widget_image implements IWidget_OLD<'image', Widget_image_config, W
         }
         makeAutoObservable(this)
     }
-    get serial(): Widget_image_serial { return this.state }
     get result(): Widget_image_output {
-        return { imageID: this.state.imageID ?? this.builder.schema.st.defaultImage.id }
+        return { imageID: this.serial.imageID ?? this.builder.schema.st.defaultImage.id }
     }
 }
 
@@ -492,11 +435,11 @@ export type Widget_selectOne_state <T extends BaseSelectEntry>  = WidgetSerialFi
 export type Widget_selectOne_output<T extends BaseSelectEntry> = T
 export interface Widget_selectOne<T>  extends WidgetTypeHelpers_OLD<'selectOne', Widget_selectOne_config<T>, Widget_selectOne_serial<T>, Widget_selectOne_state<T>, Widget_selectOne_output<T>> {}
 export class Widget_selectOne<T extends BaseSelectEntry> implements IWidget_OLD<'selectOne', Widget_selectOne_config<T>, Widget_selectOne_serial<T>, Widget_selectOne_state<T>, Widget_selectOne_output<T>> {
-    isVerticalByDefault = false
-    isCollapsible = false
-    id: string
-    type: 'selectOne' = 'selectOne'
-    state: Widget_selectOne_state<T>
+    public readonly isVerticalByDefault = false
+    public readonly isCollapsible = false
+    public readonly id: string
+    public readonly type: 'selectOne' = 'selectOne'
+    public readonly serial: Widget_selectOne_state<T>
 
     get choices():T[]{
         const _choices = this.config.choices
@@ -511,7 +454,7 @@ export class Widget_selectOne<T extends BaseSelectEntry> implements IWidget_OLD<
     ) {
         this.id = serial?.id ?? nanoid()
         const choices = this.choices
-        this.state = serial ?? {
+        this.serial = serial ?? {
             type: 'selectOne',
             collapsed: config.startCollapsed,
             id: this.id,
@@ -520,8 +463,7 @@ export class Widget_selectOne<T extends BaseSelectEntry> implements IWidget_OLD<
         }
         makeAutoObservable(this)
     }
-    get serial(): Widget_selectOne_serial<T> { return this.state }
-    get result(): Widget_selectOne_output<T> { return this.state.val }
+    get result(): Widget_selectOne_output<T> { return this.serial.val }
 }
 
 
@@ -591,7 +533,6 @@ export class Widget_selectMany<T extends BaseSelectEntry> implements IWidget_OLD
 }
 
 
-WidgetDI.Widget_prompt             = Widget_prompt
 WidgetDI.Widget_seed               = Widget_seed
 WidgetDI.Widget_inlineRun          = Widget_inlineRun
 WidgetDI.Widget_markdown           = Widget_markdown

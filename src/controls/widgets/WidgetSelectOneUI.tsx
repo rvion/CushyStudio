@@ -12,7 +12,7 @@ export const WidgetSelectOneUI = observer(function WidgetSelectOneUI_<T extends 
             size='sm'
             getLabelText={(t) => t.label ?? t.id}
             options={() => widget.choices}
-            value={() => widget.state.val}
+            value={() => widget.serial.val}
             onChange={(selectOption) => {
                 if (selectOption == null) {
                     // TODO: hook into it's parent if parent is an option block ?
@@ -25,7 +25,7 @@ export const WidgetSelectOneUI = observer(function WidgetSelectOneUI_<T extends 
                     console.log(`❌ WidgetSelectOneUI: could not find choice for ${JSON.stringify(selectOption)}`)
                     return
                 }
-                widget.state.val = next
+                widget.serial.val = next
             }}
         />
     )

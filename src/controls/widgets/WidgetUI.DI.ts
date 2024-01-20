@@ -11,6 +11,7 @@ import type { Widget_orbit } from './orbit/WidgetOrbit'
 import type { Widget_enum } from './enum/WidgetEnum'
 import type { Widget_list } from './list/WidgetList'
 import type { Widget_listExt } from './listExt/WidgetListExt'
+import { Widget_prompt } from './prompt/WidgetPrompt'
 
 /**
  * DI (Dependency Injection)
@@ -22,7 +23,7 @@ export let WidgetDI = {
     Widget_optional: 0 as any as typeof Widget_optional,
     Widget_color: 0 as any as typeof Widget_color,
     Widget_string: 0 as any as typeof Widget_string,
-    Widget_prompt: 0 as any as typeof R.Widget_prompt,
+    Widget_prompt: 0 as any as typeof Widget_prompt,
     Widget_seed: 0 as any as typeof R.Widget_seed,
     Widget_number: 0 as any as typeof Widget_number,
     Widget_bool: 0 as any as typeof Widget_bool,

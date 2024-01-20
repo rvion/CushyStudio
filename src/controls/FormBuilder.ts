@@ -15,6 +15,7 @@ import { Widget_orbit, type Widget_orbit_config } from './widgets/orbit/WidgetOr
 import { Widget_enum, type Widget_enum_config } from './widgets/enum/WidgetEnum'
 import { Widget_list, type Widget_list_config } from './widgets/list/WidgetList'
 import { Widget_listExt, type Widget_listExt_config } from './widgets/listExt/WidgetListExt'
+import { Widget_prompt, type Widget_prompt_config } from './widgets/prompt/WidgetPrompt'
 
 export class FormBuilder {
     /** (@internal) don't call this yourself */
@@ -74,12 +75,12 @@ export class FormBuilder {
         })
 
     // --------------------
-    prompt = (config: W.Widget_prompt_config) => new W.Widget_prompt(this, config)
-    promptOpt = (config: W.Widget_prompt_config & { startActive?: boolean }) =>
+    prompt = (config: Widget_prompt_config) => new Widget_prompt(this, config)
+    promptOpt = (config: Widget_prompt_config & { startActive?: boolean }) =>
         this.optional({
             label: config.label,
             startActive: config.startActive,
-            widget: () => new W.Widget_prompt(this, config),
+            widget: () => new Widget_prompt(this, config),
         })
 
     // --------------------
@@ -162,7 +163,7 @@ export class FormBuilder {
         if (type === 'inlineRun') return new W.Widget_inlineRun(this, input, serial)
         if (type === 'seed') return new W.Widget_seed(this, input, serial)
         if (type === 'matrix') return new W.Widget_matrix(this, input, serial)
-        if (type === 'prompt') return new W.Widget_prompt(this, input, serial)
+        if (type === 'prompt') return new Widget_prompt(this, input, serial)
         if (type === 'loras') return new W.Widget_loras(this, input, serial)
         if (type === 'image') return new W.Widget_image(this, input, serial)
         if (type === 'selectOne') return new W.Widget_selectOne(this, input, serial)

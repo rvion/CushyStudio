@@ -18,8 +18,8 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: { w
     const [dropStyle, dropRef] = useImageDrop(st, (i) => {
         runInAction(() => {
             // console.log('DROPPED', JSON.stringify(i.data, null, 3))
-            widget.state.active = true
-            widget.state.imageID = i.id
+            widget.serial.active = true
+            widget.serial.imageID = i.id
         })
     })
     const draft = useDraft()
@@ -30,9 +30,9 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: { w
             className='DROP_IMAGE_HANDLER'
             tw='_WidgetSelectImageUI flex gap-2 p-1 bg-base-100 border border-dashed border-neutral self-center'
         >
-            {widget.state.imageID != null ? ( //
+            {widget.serial.imageID != null ? ( //
                 <div tw='flex items-start'>
-                    <ImageUI tw='virtualBorder' size={'5rem'} img={draft.db.media_images.getOrThrow(widget.state.imageID)} />
+                    <ImageUI tw='virtualBorder' size={'5rem'} img={draft.db.media_images.getOrThrow(widget.serial.imageID)} />
                     {/* {widget instanceof Widget_imageOpt ? (
                         <Button size='sm' onClick={() => (widget.state.active = false)}>
                             X

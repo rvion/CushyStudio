@@ -23,7 +23,6 @@ import { $createWildcardNode, WildcardNode } from './nodes/wildcards/WildcardNod
 // plugins
 import { toJS } from 'mobx'
 import { useMemo } from 'react'
-import { Widget_prompt } from 'src/controls/Widget'
 import { $createActionNode, ActionNode } from './nodes/actions/ActionNode'
 import { $createUserNode, UserNode } from './nodes/usertags/UserNode'
 import { CopyPastePlugin } from './CopyPastePlugin'
@@ -34,6 +33,7 @@ import { CushyShortcutPlugin } from './plugins/CushyShortcutPlugin'
 import { getFinalJSON } from './plugins/getFinalJSON'
 import { $createBreakNode, BreakNode } from './nodes/break/BreakNode'
 import { exhaust } from 'src/utils/misc/ComfyUtils'
+import type { Widget_prompt } from 'src/controls/widgets/prompt/WidgetPrompt'
 
 export type WidgetPromptOutput = {
     // text: string
@@ -69,7 +69,7 @@ export const WidgetPromptUI = observer((p: { widget: Widget_prompt }) => {
         ],
         editorState: () => {
             console.log('[💬] LEXICAL: mounting lexical widget')
-            const initialValue: WidgetPromptOutput = widget.state
+            const initialValue: WidgetPromptOutput = widget.serial
             console.log('[💬] LEXICAL: initial value is', { initialValue: toJS(initialValue) })
 
             if (
@@ -170,10 +170,10 @@ function onChange(
         const txt = root.__cachedText
         if (txt) {
             // req.state.text = txt
-            req.state.tokens = getFinalJSON(editorState).items
+            req.serial.tokens = getFinalJSON(editorState).items
             // if (req instanceof Widget_promptOpt) req.state.active = true
         } else {
-            req.state.tokens = getFinalJSON(editorState).items
+            req.serial.tokens = getFinalJSON(editorState).items
         }
         // .set({
         //         active: true,
