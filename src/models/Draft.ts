@@ -161,14 +161,11 @@ export class DraftL {
                     const formBuilder = new FormBuilder(this.st.schema)
                     const uiFn = action.ui
                     runInAction(() => {
-                        const req: Widget_group<any> =
-                            uiFn == null
-                                ? formBuilder._HYDRATE('group', { topLevel: true, items: () => ({}) }, this.data.appParams)
-                                : formBuilder._HYDRATE(
-                                      'group',
-                                      { topLevel: true, items: () => uiFn(formBuilder) },
-                                      this.data.appParams,
-                                  )
+                        const req: Widget_group<any> = formBuilder._HYDRATE(
+                            'group',
+                            { topLevel: true, items: () => uiFn?.(formBuilder) ?? {} },
+                            this.data.appParams,
+                        )
                         /** 👇 HACK; see the comment near the ROOT property definition */
                         formBuilder._ROOT = req
                         this.form = __OK(req)
