@@ -21,8 +21,8 @@ import { bang } from 'src/utils/misc/bang'
 
 import { WidgetDI } from './widgets/WidgetUI.DI'
 
-import type { Widget_bool } from './widgets2/WidgetBool'
-import type { Widget_choices } from './widgets2/WidgetChoices'
+import type { Widget_bool } from './widgets/bool/WidgetBool'
+import type { Widget_choices } from './widgets/choices/WidgetChoices'
 import type { Widget_color } from './widgets2/WidgetColor'
 import type { Widget_group } from './widgets2/WidgetIGroup'
 import type { Widget_number } from './widgets2/WidgetNumber'

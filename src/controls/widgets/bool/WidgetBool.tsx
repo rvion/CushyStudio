@@ -1,11 +1,10 @@
 import type { ComfySchemaL } from 'src/models/Schema'
-import type { FormBuilder } from '../FormBuilder'
-import type { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../IWidget'
+import type { FormBuilder } from '../../FormBuilder'
+import type { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../../IWidget'
 
 import { computed, makeObservable, observable } from 'mobx'
-import { observer } from 'mobx-react-lite'
 import { nanoid } from 'nanoid'
-import { WidgetDI } from '../widgets/WidgetUI.DI'
+import { WidgetDI } from '../WidgetUI.DI'
 
 // CONFIG
 export type Widget_bool_config = WidgetConfigFields<{ default?: boolean }>
@@ -65,8 +64,3 @@ export class Widget_bool implements IWidget<Widget_string_types> {
 
 // DI
 WidgetDI.Widget_bool = Widget_bool
-
-// UI
-export const WidgetBoolUI = observer(function WidgetBoolUI_(p: { widget: Widget_bool }) {
-    return null // fieldWithUI toogle should handle that alreadly
-})
