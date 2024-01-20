@@ -423,16 +423,16 @@ export class Widget_selectOne<T extends BaseSelectEntry> implements IWidget_OLD<
 
 // 🅿️ selectMany ==============================================================================
 export type Widget_selectMany_config<T extends BaseSelectEntry>  = WidgetConfigFields<{ default?: T[]; choices: T[] | ((formRoot:Maybe<Widget_group<any>>) => T[]) }>
-export type Widget_selectMany_serial<T extends BaseSelectEntry> = Widget_selectMany_state<T>
-export type Widget_selectMany_state<T extends BaseSelectEntry>  = WidgetSerialFields<{ type: 'selectMany', query: string; values: T[] }>
+export type Widget_selectMany_serial<T extends BaseSelectEntry> = WidgetSerialFields<{ type: 'selectMany', query: string; values: T[] }>
 export type Widget_selectMany_output<T extends BaseSelectEntry> = T[]
-export interface Widget_selectMany<T extends BaseSelectEntry> extends WidgetTypeHelpers_OLD<'selectMany', Widget_selectMany_config<T>, Widget_selectMany_serial<T>, Widget_selectMany_state<T>, Widget_selectMany_output<T>> {}
-export class Widget_selectMany<T extends BaseSelectEntry> implements IWidget_OLD<'selectMany', Widget_selectMany_config<T>, Widget_selectMany_serial<T>, Widget_selectMany_state<T>, Widget_selectMany_output<T>> {
-    isVerticalByDefault = false
-    isCollapsible = false
-    id: string
-    type: 'selectMany' = 'selectMany'
-    state: Widget_selectMany_state<T>
+export interface Widget_selectMany<T extends BaseSelectEntry> extends WidgetTypeHelpers_OLD<'selectMany', Widget_selectMany_config<T>, Widget_selectMany_serial<T>, 0, Widget_selectMany_output<T>> {}
+export class Widget_selectMany<T extends BaseSelectEntry> implements IWidget_OLD<'selectMany', Widget_selectMany_config<T>, Widget_selectMany_serial<T>, 0, Widget_selectMany_output<T>> {
+    readonly isVerticalByDefault = false
+    readonly isCollapsible = false
+    readonly id: string
+    readonly type: 'selectMany' = 'selectMany'
+    readonly serial: Widget_selectMany_serial<T>
+
     get choices():T[]{
         const _choices = this.config.choices
         return typeof _choices === 'function' //
@@ -445,44 +445,36 @@ export class Widget_selectMany<T extends BaseSelectEntry> implements IWidget_OLD
         serial?: Widget_selectMany_serial<T>,
     ) {
         this.id = serial?.id ?? nanoid()
-        if (serial) {
-            this.state = {
-                type: 'selectMany',
-                collapsed: serial.collapsed,
-                id: this.id,
-                query: serial.query,
-                values: serial.values,
-            }
-        } else {
-            this.state = {
-                type: 'selectMany',
-                collapsed: config.startCollapsed,
-                id: this.id,
-                query: '', values: config.default ?? [], }
+        this.serial = serial ?? {
+            type: 'selectMany',
+            collapsed: config.startCollapsed,
+            id: this.id,
+            query: '',
+            values: config.default ?? [],
         }
         makeAutoObservable(this)
     }
 
     removeItem = (item: T): void => {
-        if (this.state.values==null) {this.state.values = []; return} // just in case
-        this.state.values = this.state.values.filter((v) => v.id !== item.id) // filter just in case of duplicate
+        if (this.serial.values==null) {this.serial.values = []; return} // just in case
+        this.serial.values = this.serial.values.filter((v) => v.id !== item.id) // filter just in case of duplicate
     }
+
     addItem = (item: T): void => {
-        if (this.state.values==null) {this.state.values = [item]; return} // just in case
-        const i = this.state.values.indexOf(item)
-        if (i < 0) this.state.values.push(item)
+        if (this.serial.values==null) {this.serial.values = [item]; return} // just in case
+        const i = this.serial.values.indexOf(item)
+        if (i < 0) this.serial.values.push(item)
     }
+
     toggleItem = (item: T): void => {
-        if (this.state.values==null) {this.state.values = [item]; return} // just in case
-        const i = this.state.values.indexOf(item)
-        if (i < 0) this.state.values.push(item)
-        else this.state.values = this.state.values.filter((v) => v.id !== item.id) // filter just in case of duplicate
+        if (this.serial.values==null) {this.serial.values = [item]; return} // just in case
+        const i = this.serial.values.indexOf(item)
+        if (i < 0) this.serial.values.push(item)
+        else this.serial.values = this.serial.values.filter((v) => v.id !== item.id) // filter just in case of duplicate
     }
-    get serial(): Widget_selectMany_serial<T> {
-        return this.state //{ type: 'selectMany', id: this.id, query: this.state.query, values: values_ }
-    }
+
     get result(): Widget_selectMany_output<T> {
-        return this.state.values
+        return this.serial.values
     }
 }
 
