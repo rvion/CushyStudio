@@ -45,11 +45,14 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
     const guiR = draft.form
     if (!guiR.success)
         return (
-            <ErrorPanelUI>
-                <b>App failed to load</b>
-                <div>❌ {guiR.message}</div>
-                <div>{stringifyUnknown(guiR.error)}</div>
-            </ErrorPanelUI>
+            <>
+                <DraftHeaderUI draft={draft} />
+                <ErrorPanelUI>
+                    <b>App failed to load</b>
+                    <div>❌ {guiR.message}</div>
+                    <div>{stringifyUnknown(guiR.error)}</div>
+                </ErrorPanelUI>
+            </>
         )
 
     // 5. render form
