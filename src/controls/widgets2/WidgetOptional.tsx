@@ -36,13 +36,18 @@ export type Widget_str_types<T extends Widget> = {
 // STATE
 export interface Widget_optional<T extends Widget> extends WidgetTypeHelpers<Widget_str_types<T>> {}
 export class Widget_optional<T extends Widget> implements IWidget<Widget_str_types<T>> {
-    readonly isVerticalByDefault = false
-    readonly isCollapsible = false
+    readonly isVerticalByDefault = true
+    readonly isCollapsible = true
     readonly id: string
     readonly type: 'optional' = 'optional'
 
     serial: Widget_optional_serial<T>
-    child?: Widget
+    child?: T
+
+    get childOrThrow(): T {
+        if (this.child == null) throw new Error('❌ optional active but child is null')
+        return this.child
+    }
 
     toggle = () => {
         if (this.serial.active) this.setOff()
@@ -89,7 +94,8 @@ export class Widget_optional<T extends Widget> implements IWidget<Widget_str_typ
     }
 
     get result(): Widget_optional_output<T> {
-        return this.serial.active ?? false
+        if (!this.serial.active) return null
+        return this.childOrThrow.result
     }
 }
 

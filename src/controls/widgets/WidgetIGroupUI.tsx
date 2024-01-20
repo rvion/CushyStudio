@@ -105,9 +105,9 @@ export class Widget_group<T extends { [key: string]: Widget }> implements IWidge
 
     get result(): { [k in keyof T]: GetWidgetResult<T[k]> } {
         const out: { [key: string]: any } = {}
-        for (const key in this.values.values) {
+        for (const key in this.values) {
             const subWidget: Widget = bang(this.values[key]) as Widget
-            out[key] = subWidget
+            out[key] = subWidget.result
         }
         return out as any
     }
