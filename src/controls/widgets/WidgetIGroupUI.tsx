@@ -15,7 +15,6 @@ export type Widget_group_config<T extends { [key: string]: Widget }> = WidgetCon
     // default?: boolean
     items: () => T
     topLevel?: boolean
-    verticalLabels?: boolean
 }>
 
 // SERIAL
@@ -67,7 +66,7 @@ export class Widget_group<T extends { [key: string]: Widget }> implements IWidge
 
     enableGroup() {
         this.serial.active = true
-        const prevValues_: { [K in keyof T]?: T[K]['$Serial'] } = this.serial.values_ ?? {}
+        const prevValues_: { [K in keyof T]?: T[K]['$Serial'] } = this.serial.values_
         const _newValues: { [key: string]: Widget } = runWithGlobalForm(this.builder, () => this.config.items())
 
         const childKeys = Object.keys(_newValues) as (keyof T & string)[]
@@ -99,6 +98,7 @@ export class Widget_group<T extends { [key: string]: Widget }> implements IWidge
             collapsed: config.startCollapsed ?? false,
             values_: {} as any,
         }
+        if (this.serial.values_ == null) this.serial.values_ = {}
         this.enableGroup()
         makeAutoObservable(this)
     }
@@ -149,7 +149,6 @@ export const WidgetGroupUI = observer(function WidgetItemsUI_(p: {
                     {groupFields.map(([rootKey, sub], ix) => (
                         <WidgetWithLabelUI //
                             isTopLevel={isTopLevel}
-                            vertical={widget.serial.vertical}
                             key={rootKey}
                             // labelPos={sub.input.labelPos}
                             rootKey={rootKey}

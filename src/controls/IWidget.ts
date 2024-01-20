@@ -56,7 +56,7 @@ export type LabelPos = 'start' | 'end'
 export type WidgetSerialFields<X> = X & {
     id: string
     collapsed?: boolean
-    vertical?: boolean
+    // vertical?: boolean
 }
 
 // do not need to be serializable

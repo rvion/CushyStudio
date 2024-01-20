@@ -22,7 +22,6 @@ const ui_sampler = (form: FormBuilder) =>
     form.group({
         label: '',
         topLevel: true,
-        verticalLabels: true,
         className: 'relative',
         items: () => ({
             source: form.choice({

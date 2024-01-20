@@ -2,15 +2,13 @@ app({
     // name: 'playground-seed-widget',
     ui: (form) => ({
         nesstedGroups: form.group({
-            verticalLabels: true,
             items: () => ({
                 Jack: form.str({ default: 'gold, Knight', group: 'illusration' }),
                 AAAAA: form.group({
-                    verticalLabels: true,
                     items: () => ({
                         Jack: form.str({ default: 'gold, Knight', group: 'illusration' }),
                         foo: form.group({
-                            verticalLabels: true,
+                            layout: 'H',
                             items: () => ({
                                 Jack: form.str({ default: 'gold, Knight', group: 'illusration' }),
                                 Queen: form.str({ default: 'gold, Queen', group: 'illusration' }),

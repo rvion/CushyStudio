@@ -17,7 +17,7 @@ import { ListControlsUI } from './ListControlsUI'
 export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     widget: R.Widget
     rootKey: string
-    vertical?: boolean
+    // verticalLabels?: boolean
     isTopLevel?: boolean
 }) {
     const { rootKey, widget } = p
