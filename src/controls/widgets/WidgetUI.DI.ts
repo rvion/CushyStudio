@@ -10,6 +10,7 @@ import type { Widget_optional } from './optional/WidgetOptional'
 import type { Widget_orbit } from './orbit/WidgetOrbit'
 import type { Widget_enum } from './enum/WidgetEnum'
 import type { Widget_list } from './list/WidgetList'
+import type { Widget_listExt } from './listExt/WidgetListExt'
 
 /**
  * DI (Dependency Injection)
@@ -38,6 +39,6 @@ export let WidgetDI = {
     Widget_group: 0 as any as typeof Widget_group,
     Widget_choices: 0 as any as typeof Widget_choices,
     Widget_enum: 0 as any as typeof Widget_enum,
-    Widget_listExt: 0 as any as typeof R.Widget_listExt,
+    Widget_listExt: 0 as any as typeof Widget_listExt,
     Widget_orbit: 0 as any as typeof Widget_orbit,
 }

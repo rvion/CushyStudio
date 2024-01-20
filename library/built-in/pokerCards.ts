@@ -152,7 +152,7 @@ app({
 
         //===//===//===//===//===//===//===//===//===//===//===//===//===//
         // 4. PROMPT  ----------------------------------------
-        const negP = run_prompt(run, { richPrompt: ui.globalNegative, ckpt, clip })
+        const negP = run_prompt({ richPrompt: ui.globalNegative, ckpt, clip })
         // const emptyLatent = graph.EmptyLatentImage({ width: W, height: H })
         for (const card of cardsSorted) {
             const { col: value, row: suit } = card

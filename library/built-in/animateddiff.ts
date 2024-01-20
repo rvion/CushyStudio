@@ -13,8 +13,8 @@ app({
         timeline: form.timeline({
             width: TOTAL_DURATION,
             height: 2,
-            element: ({ ix }) => ({
-                item: form.prompt({}),
+            element: ({ ix }) => form.prompt({}),
+            initialPosition: ({ ix }) => ({
                 width: 0.25 * TOTAL_DURATION,
                 x: TOTAL_DURATION * (ix / 4),
             }),
@@ -60,14 +60,14 @@ app({
         })
         const text = ui.timeline.items
             .map((entry) => {
-                const tokens = entry.item.tokens
+                const tokens = entry.value.tokens
                 const text = tokens
                     .map((tok) => {
                         if (tok.type === 'text') return tok.text
                         return ''
                     })
                     .join(' ')
-                return `"${entry.x}" : "${text}"`
+                return `"${entry.position.x}" : "${text}"`
             })
             .join(',\n')
         const batchPromptSchedule = graph.BatchPromptSchedule({

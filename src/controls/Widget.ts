@@ -2,6 +2,7 @@
  * this file is an attempt to centralize core widget definition in a single
  * file so it's easy to add any widget in the future
  */
+import type { FC } from 'react'
 import type { SQLWhere } from 'src/db/SQLWhere'
 import type { MediaImageT } from 'src/db/TYPES.gen'
 import type { ComfySchemaL } from 'src/models/Schema'
@@ -15,8 +16,6 @@ import type { AspectRatio, CushySize, CushySizeByRatio, ImageAnswer, ImageAnswer
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
-import { FC } from 'react'
-import { runWithGlobalForm } from 'src/models/_ctx2'
 import { bang } from 'src/utils/misc/bang'
 
 import { WidgetDI } from './widgets/WidgetUI.DI'
@@ -24,13 +23,14 @@ import { WidgetDI } from './widgets/WidgetUI.DI'
 import type { Widget_bool } from './widgets/bool/WidgetBool'
 import type { Widget_choices } from './widgets/choices/WidgetChoices'
 import type { Widget_color } from './widgets/color/WidgetColor'
+import type { Widget_enum } from './widgets/enum/WidgetEnum'
 import type { Widget_group } from './widgets/group/WidgetGroup'
+import type { Widget_list } from './widgets/list/WidgetList'
+import type { Widget_listExt } from './widgets/listExt/WidgetListExt'
 import type { Widget_number } from './widgets/number/WidgetNumber'
 import type { Widget_optional } from './widgets/optional/WidgetOptional'
 import type { Widget_orbit } from './widgets/orbit/WidgetOrbit'
 import type { Widget_string } from './widgets/string/WidgetString'
-import type { Widget_enum } from './widgets/enum/WidgetEnum'
-import type { Widget_list } from './widgets/list/WidgetList'
 
 // Widget is a closed union for added type safety
 export type Widget =
@@ -607,141 +607,6 @@ export class Widget_selectMany<T extends BaseSelectEntry> implements IWidget_OLD
 }
 
 
-
-
-// 🅿️ listExt ==============================================================================
-export type RootExt = {
-    // size
-    width: number,
-    height: number,
-    depth?: number
-
-    // color
-    fill?: string;
-}
-
-export type ItemExt = {
-    // pos
-    x: number;
-    y: number;
-    z: number;
-    // size
-    width: number;
-    height: number;
-    depth: number;
-
-    // scale
-    scaleX?:number;
-    scaleY?:number;
-    scaleZ?:number;
-
-    // color
-    fill?: string;
-
-    // rotation
-    rotation?: number;
-
-    // interraction
-    isSelected?: boolean;
-    isDragging?: boolean;
-    isResizing?: boolean;
-}
-const itemExtDefaults : ItemExt = {x: 50, y: 50, z: 0, width: 50, height: 50, depth: 0 }
-
-type WithExt <T extends Widget> = { item:  T } & ItemExt
-type WithPartialExt <T extends Widget> = { item:  T } & Partial<ItemExt>
-
-export type Widget_listExt_config<T extends Widget>  = WidgetConfigFields<{
-    mode?: 'regional' | 'timeline',
-    /** default: 100 */
-    width: number,
-    /** default: 100 */
-    height: number,
-    element: (size: {ix:number, width:number, height:number}) => WithPartialExt<T>,
-    min?: number,
-    max?:number,
-    defaultLength?:number
-}>
-export type Widget_listExt_serial<T extends Widget> = WidgetSerialFields<{ type: 'listExt', active: true; items_: ({item_: T['$Serial']} & ItemExt)[] } & RootExt>
-export type Widget_listExt_state <T extends Widget> = WidgetSerialFields<{ type: 'listExt', active: true; items:  ({item:  T           } & ItemExt)[] } & RootExt>
-export type Widget_listExt_output<T extends Widget> = RootExt & { items: (ItemExt & {item: T['$Output'] })[] }
-export interface Widget_listExt  <T extends Widget> extends     WidgetTypeHelpers_OLD<'listExt', Widget_listExt_config<T>, Widget_listExt_serial<T>, Widget_listExt_state<T>, Widget_listExt_output<T>> {}
-export class Widget_listExt      <T extends Widget> implements IWidget_OLD<'listExt', Widget_listExt_config<T>, Widget_listExt_serial<T>, Widget_listExt_state<T>, Widget_listExt_output<T>> {
-    isVerticalByDefault = true
-    isCollapsible = true
-    id: string
-    type: 'listExt' = 'listExt'
-    state: Widget_listExt_state<T>
-    private _reference: T
-
-    get items(): WithExt<T>[] { return this.state.items }
-    // INIT -----------------------------------------------------------------------------
-    constructor(
-        public builder: FormBuilder,
-        public schema: ComfySchemaL,
-        public config: Widget_listExt_config<T>,
-        serial?: Widget_listExt_serial<T>,
-    ) {
-        this.id = serial?.id ?? nanoid()
-        this._reference = runWithGlobalForm(this.builder, () => config.element({width:100, height:100, ix: 0}).item)
-        if (serial) {
-            const items:  WithExt<T>[] = serial.items_.map(({item_, ...ext}) => {
-                const item:T = builder._HYDRATE(item_.type, this._reference.config, item_)
-                return {item, ...ext}
-            })
-            this.state = { type: 'listExt', id: this.id, active: serial.active, items, width: serial.width, height: serial.height }
-        } else {
-            const w = config.width ?? 100
-            const h = config.height ?? 100
-            const clamp = (v: number, min: number, max: number) => Math.min(Math.max(v, min), max)
-            const defaultLen = clamp(config.defaultLength ?? 0, config.min ?? 0, config.max ?? 10)
-            const items: WithExt<T>[] = defaultLen
-                ? new Array(defaultLen).fill(0).map((_,ix) => {
-                    const partial: WithPartialExt<T> = config.element({width: w, height: h, ix})
-                    const out : WithExt<T> = Object.assign({}, itemExtDefaults, partial)
-                    return out
-                })
-                : []
-            this.state = { type: 'listExt', id: this.id, active: true, items: items, width: w, height: h, }
-        }
-        makeAutoObservable(this)
-    }
-
-    // METHODS -----------------------------------------------------------------------------
-    addItem() {
-        const newItemPartial = runWithGlobalForm(this.builder, () => this.config.element({width: this.state.width, height: this.state.height, ix: this.state.items.length}))
-        const newItem: WithExt<T> = { ...itemExtDefaults, ...newItemPartial}
-        this.state.items.push(newItem)
-    }
-    removemAllItems = () => this.state.items = this.state.items.slice(0, this.config.min ?? 0)
-    collapseAllItems = () => this.state.items.forEach((i) => i.item.serial.collapsed = true)
-    expandAllItems = () => this.state.items.forEach((i) => i.item.serial.collapsed = false)
-    removeItem = (item: WithExt<T>) => {
-        const i = this.state.items.indexOf(item) // 🔴 dangerous, ref equality fast but error prone
-        if (i >= 0) this.state.items.splice(i, 1)
-    }
-
-    // SERIAL & RESULT ----------------------------------------------------------------------
-    get serial(): Widget_listExt_serial<T> {
-        const items_ = this.state.items.map((i) => {
-            const { item, ...rest } = i
-            return {item_: i.item.serial, ...rest }
-        })
-        return { type: 'listExt', id: this.id, active: this.state.active, items_, width: this.state.width, height: this.state.height }
-    }
-    get result(): Widget_listExt_output<T> {
-        const items = this.state.items.map((i) => ({...i, item: i.item.result }))
-        return {
-            items: items,
-            width: this.state.width,
-            height: this.state.width,
-        }
-    }
-}
-
-
-
-
 WidgetDI.Widget_prompt             = Widget_prompt
 WidgetDI.Widget_seed               = Widget_seed
 WidgetDI.Widget_inlineRun          = Widget_inlineRun
@@ -753,4 +618,3 @@ WidgetDI.Widget_loras              = Widget_loras
 WidgetDI.Widget_image              = Widget_image
 WidgetDI.Widget_selectMany         = Widget_selectMany
 WidgetDI.Widget_selectOne          = Widget_selectOne
-WidgetDI.Widget_listExt            = Widget_listExt

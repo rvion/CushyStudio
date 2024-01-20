@@ -1,24 +1,21 @@
-import type { Runtime } from 'src/runtime/Runtime'
 import type { WidgetPromptOutput } from 'src/widgets/prompter/WidgetPromptUI'
 
-export const run_prompt = (
-    run: Runtime,
-    p: {
-        richPrompt: WidgetPromptOutput
-        /** recommanded, but if left empty, AUTO will be used */
-        clip?: _CLIP
-        /** recommanded, but if left empty, AUTO will be used */
-        ckpt?: _MODEL
+export const run_prompt = (p: {
+    richPrompt: WidgetPromptOutput
+    /** recommanded, but if left empty, AUTO will be used */
+    clip?: _CLIP
+    /** recommanded, but if left empty, AUTO will be used */
+    ckpt?: _MODEL
 
-        outputWildcardsPicked?: boolean
-        seed?: number
-    },
-): {
+    outputWildcardsPicked?: boolean
+    seed?: number
+}): {
     text: string
     clip: _CLIP
     ckpt: _MODEL
     conditionning: _CONDITIONING
 } => {
+    const run = getCurrentRun()
     let text = ''
     const richPrompt = p.richPrompt
     let clip = p.clip ?? run.AUTO

@@ -30,6 +30,7 @@ type SizeAble = {
     max?: number
     step?: number
 }
+
 export const WigetSizeXUI = observer(function WigetSizeXUI_(p: {
     //
     size: SizeAble

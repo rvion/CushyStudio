@@ -14,6 +14,7 @@ import { Widget_optional, type Widget_optional_config } from './widgets/optional
 import { Widget_orbit, type Widget_orbit_config } from './widgets/orbit/WidgetOrbit'
 import { Widget_enum, type Widget_enum_config } from './widgets/enum/WidgetEnum'
 import { Widget_list, type Widget_list_config } from './widgets/list/WidgetList'
+import { Widget_listExt, type Widget_listExt_config } from './widgets/listExt/WidgetListExt'
 
 export class FormBuilder {
     /** (@internal) don't call this yourself */
@@ -111,13 +112,13 @@ export class FormBuilder {
 
     optional = <const T extends W.Widget>(p: Widget_optional_config<T>) => new Widget_optional(this, this.schema, p)
 
-    listExt = <const T extends W.Widget>(p: W.Widget_listExt_config<T>) => new W.Widget_listExt(this, this.schema, p)
+    listExt = <const T extends W.Widget>(p: Widget_listExt_config<T>) => new Widget_listExt(this, this.schema, p)
 
-    timeline = <const T extends W.Widget>(p: W.Widget_listExt_config<T>) =>
-        new W.Widget_listExt(this, this.schema, { mode: 'timeline', ...p })
+    timeline = <const T extends W.Widget>(p: Widget_listExt_config<T>) =>
+        new Widget_listExt(this, this.schema, { mode: 'timeline', ...p })
 
-    regional = <const T extends W.Widget>(p: W.Widget_listExt_config<T>) =>
-        new W.Widget_listExt(this, this.schema, { mode: 'regional', ...p })
+    regional = <const T extends W.Widget>(p: Widget_listExt_config<T>) =>
+        new Widget_listExt(this, this.schema, { mode: 'regional', ...p })
 
     groupOpt = <const T extends { [key: string]: W.Widget }>(p: Widget_group_config<T> & { startActive?: boolean }) =>
         this.optional({
@@ -160,6 +161,7 @@ export class FormBuilder {
         if (type === 'enum') return new Widget_enum(this, this.schema, input, serial)
         if (type === 'list') return new Widget_list(this, this.schema, input, serial)
         if (type === 'orbit') return new Widget_orbit(this, this.schema, input, serial)
+        if (type === 'listExt') return new Widget_listExt(this, this.schema, input, serial)
 
         if (type === 'inlineRun') return new W.Widget_inlineRun(this, this.schema, input, serial)
         if (type === 'seed') return new W.Widget_seed(this, this.schema, input, serial)
@@ -167,7 +169,6 @@ export class FormBuilder {
         if (type === 'prompt') return new W.Widget_prompt(this, this.schema, input, serial)
         if (type === 'loras') return new W.Widget_loras(this, this.schema, input, serial)
         if (type === 'image') return new W.Widget_image(this, this.schema, input, serial)
-        if (type === 'listExt') return new W.Widget_listExt(this, this.schema, input, serial)
         if (type === 'selectOne') return new W.Widget_selectOne(this, this.schema, input, serial)
         if (type === 'selectMany') return new W.Widget_selectMany(this, this.schema, input, serial)
         if (type === 'size') return new W.Widget_size(this, this.schema, input, serial)

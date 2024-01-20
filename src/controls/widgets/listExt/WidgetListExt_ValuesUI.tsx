@@ -1,11 +1,16 @@
-import { observer } from 'mobx-react-lite'
-import { Widget, Widget_listExt } from 'src/controls/Widget'
-import { Button } from 'src/rsuite/shims'
-import { WidgetDI } from './WidgetUI.DI'
+import type { Widget_listExt } from './WidgetListExt'
 
-export const WidgetListExt_ValuesUI = observer(function WidgetListExtValuesUI_<T extends Widget>(p: { req: Widget_listExt<T> }) {
-    const widget = p.req
-    const values = widget.items
+import { observer } from 'mobx-react-lite'
+import { Widget } from 'src/controls/Widget'
+import { Button } from 'src/rsuite/shims'
+import { WidgetDI } from '../WidgetUI.DI'
+
+export const WidgetListExt_ValuesUI = observer(function WidgetListExtValuesUI_<T extends Widget>(p: {
+    //
+    widget: Widget_listExt<T>
+}) {
+    const widget = p.widget
+    const values = widget.entries
     const len = values.length
     const indexWidth = len < 10 ? 1 : len < 100 ? 2 : 3
     const WidgetUI = WidgetDI.WidgetUI
@@ -13,11 +18,12 @@ export const WidgetListExt_ValuesUI = observer(function WidgetListExtValuesUI_<T
     return (
         <div tw='flex flex-col gap-1'>
             {values.map((x, ix) => {
-                const v: Widget = x.item
+                const v = x.widget
+                const proj = x.position
                 return (
                     <div key={v.id} tw='flex items-start'>
                         <div style={{ width: `${indexWidth}rem` }}>{ix}</div>
-                        <input value={x.fill} onChange={(ev) => (x.fill = ev.target.value)} type='color' tw='w-7'></input>
+                        <input value={proj.fill} onChange={(ev) => (proj.fill = ev.target.value)} type='color' tw='w-7'></input>
                         <Button
                             style={{ width: `${indexWidth}rem` }}
                             appearance='subtle'
@@ -29,9 +35,9 @@ export const WidgetListExt_ValuesUI = observer(function WidgetListExtValuesUI_<T
                         <WidgetUI widget={v} />
                         <Button
                             appearance='subtle'
-                            disabled={min ? widget.state.items.length <= min : undefined}
+                            disabled={min ? widget.entries.length <= min : undefined}
                             tw='self-start'
-                            onClick={() => widget.removeItem(x)}
+                            onClick={() => widget.removeItem(v)}
                             size='sm'
                         >
                             X
