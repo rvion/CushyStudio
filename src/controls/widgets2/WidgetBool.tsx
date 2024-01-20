@@ -10,7 +10,7 @@ import { nanoid } from 'nanoid'
 export type Widget_bool_config = WidgetConfigFields<{ default?: boolean }>
 
 // SERIAL
-export type Widget_bool_serial = WidgetSerialFields<{ type: 'bool' }>
+export type Widget_bool_serial = WidgetSerialFields<{ type: 'bool'; active: boolean }>
 
 // OUT
 export type Widget_bool_output = boolean
@@ -28,11 +28,14 @@ export interface Widget_bool extends WidgetTypeHelpers<Widget_str_types> {}
 export class Widget_bool implements IWidget<Widget_str_types> {
     readonly isVerticalByDefault = false
     readonly isCollapsible = false
-    readonly isOptional = true
     readonly id: string
     readonly type: 'bool' = 'bool'
 
     serial: Widget_bool_serial
+
+    setOn = () => (this.serial.active = true)
+    setOff = () => (this.serial.active = false)
+    toggle = () => (this.serial.active = !this.serial.active)
 
     constructor(
         public builder: FormBuilder,
@@ -44,7 +47,7 @@ export class Widget_bool implements IWidget<Widget_str_types> {
         this.serial = serial ?? {
             id: this.id,
             type: 'bool',
-            active: config.default ?? config.startActive,
+            active: config.default ?? false,
             collapsed: config.startCollapsed,
         }
 

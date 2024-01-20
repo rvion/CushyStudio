@@ -24,7 +24,7 @@ export const ui_subform_Tile = () => {
 export const ui_subform_Tile_Preprocessor = (form: FormBuilder) => {
     return form.groupOpt({
         label: 'Tile Preprocessor',
-        default: true,
+        startActive: true,
         items: () => ({
             advanced: form.groupOpt({
                 label: 'Advanced Preprocessor Settings',

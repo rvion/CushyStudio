@@ -1,9 +1,10 @@
 import type { CSSProperties } from 'react'
 import type { FormBuilder } from 'src/controls/FormBuilder'
 import type { Runtime } from 'src/runtime/Runtime'
-import type { Widget, Widget_group } from '../controls/Widget'
+import type { Widget } from '../controls/Widget'
 import type { AppMetadata } from './AppManifest'
 import type { MediaImageL } from 'src/models/MediaImage'
+import type { Widget_group } from 'src/controls/widgets/WidgetIGroupUI'
 
 // ACTIONS ============================================================
 // 1. the main abstraction of cushy are actions.

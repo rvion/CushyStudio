@@ -4,17 +4,25 @@ import { nanoid } from 'nanoid'
 import { ComfySchemaL } from 'src/models/Schema'
 import { FormBuilder } from '../FormBuilder'
 import { IWidget_OLD, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers_OLD } from '../IWidget'
+import { WidgetDI } from '../widgets/WidgetUI.DI'
 
-// 🅿️ color ==============================================================================
+// CONFIG
 export type Widget_color_config = WidgetConfigFields<{ default?: string }>
+
+// SERIAL
 export type Widget_color_serial = WidgetSerialFields<{ type: 'color'; active: true; val: string }>
+
+// OUT
 export type Widget_color_output = string
+
+// TYPES
 export interface Widget_color
     extends WidgetTypeHelpers_OLD<'color', Widget_color_config, Widget_color_serial, any, Widget_color_output> {}
+
+// STATE
 export class Widget_color implements IWidget_OLD<'color', Widget_color_config, Widget_color_serial, any, Widget_color_output> {
     readonly isVerticalByDefault = false
     readonly isCollapsible = false
-    readonly isOptional = false
     readonly id: string
     readonly type: 'color' = 'color'
 
@@ -42,6 +50,10 @@ export class Widget_color implements IWidget_OLD<'color', Widget_color_config, W
     }
 }
 
+// DI
+WidgetDI.Widget_color = Widget_color
+
+// UI
 export const WidgetColorUI = observer(function WidgetColorUI_(p: { widget: Widget_color }) {
     const widget = p.widget
     return (

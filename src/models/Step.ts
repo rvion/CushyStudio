@@ -3,7 +3,6 @@ import type { LiveInstance } from '../db/LiveInstance'
 import type { ComfyWorkflowL } from './ComfyWorkflow'
 import type { ComfyPromptL } from './ComfyPrompt'
 
-import { Widget_group } from 'src/controls/Widget'
 import { SQLITE_false, SQLITE_true } from 'src/db/SQLITE_boolean'
 import { StepT } from 'src/db/TYPES.gen'
 import { Runtime, RuntimeExecutionResult } from '../runtime/Runtime'
@@ -22,6 +21,7 @@ import { ManualPromise } from 'src/utils/misc/ManualPromise'
 import { DraftL } from './Draft'
 import { LiveRefOpt } from 'src/db/LiveRefOpt'
 import { getGlobalRuntimeCtx } from './_ctx2'
+import { Widget_group } from 'src/controls/widgets/WidgetIGroupUI'
 
 export type FormPath = (string | number)[]
 /** a thin wrapper around an app execution */

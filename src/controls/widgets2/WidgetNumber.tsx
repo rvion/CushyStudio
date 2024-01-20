@@ -5,11 +5,11 @@ import { ComfySchemaL } from 'src/models/Schema'
 import { InputNumberUI } from 'src/rsuite/InputNumberUI'
 import { FormBuilder } from '../FormBuilder'
 import { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../IWidget'
+import { WidgetDI } from '../widgets/WidgetUI.DI'
 
 // CONFIG
-export type Widget_number_config<T extends { optional: boolean }> = WidgetConfigFields<{
+export type Widget_number_config = WidgetConfigFields<{
     mode: 'int' | 'float'
-    optional: boolean // T['optional'] (🔶 COMMENTED TO SPEED UP TYPESCRIPT)
     default?: number
     min?: number
     max?: number
@@ -21,24 +21,21 @@ export type Widget_number_config<T extends { optional: boolean }> = WidgetConfig
 export type Widget_number_serial = WidgetSerialFields<{ type: 'number'; val: number }>
 
 // OUT
-export type Widget_number_output<T extends { optional: boolean }> = T['optional'] extends true //
-    ? Maybe<number>
-    : number
+export type Widget_number_output = number
 
 // TYPES
-export type Widget_number_types<T extends { optional: boolean }> = {
+export type Widget_number_types = {
     $Type: 'number'
-    $Input: Widget_number_config<T>
+    $Input: Widget_number_config
     $Serial: Widget_number_serial
-    $Output: Widget_number_output<T>
+    $Output: Widget_number_output
 }
 
 // STATE
-export interface Widget_number<T extends { optional: boolean }> extends WidgetTypeHelpers<Widget_number_types<T>> {}
-export class Widget_number<T extends { optional: boolean }> implements IWidget<Widget_number_types<T>> {
+export interface Widget_number extends WidgetTypeHelpers<Widget_number_types> {}
+export class Widget_number implements IWidget<Widget_number_types> {
     readonly isVerticalByDefault = false
     readonly isCollapsible = false
-    get isOptional() { return this.config.optional ?? false } // prettier-ignore
     readonly id: string
     readonly type: 'number' = 'number'
 
@@ -47,7 +44,7 @@ export class Widget_number<T extends { optional: boolean }> implements IWidget<W
     constructor(
         public readonly builder: FormBuilder,
         public readonly schema: ComfySchemaL,
-        public readonly config: Widget_number_config<T>,
+        public readonly config: Widget_number_config,
         serial?: Widget_number_serial,
     ) {
         this.id = serial?.id ?? nanoid()
@@ -55,9 +52,6 @@ export class Widget_number<T extends { optional: boolean }> implements IWidget<W
             type: 'number',
             collapsed: config.startCollapsed,
             id: this.id,
-            active: config.optional //
-                ? config.startActive ?? false
-                : true,
             val: config.default ?? 0,
         }
 
@@ -67,17 +61,16 @@ export class Widget_number<T extends { optional: boolean }> implements IWidget<W
         })
     }
 
-    get result(): Widget_number_output<T> {
-        if (this.serial.active === false) {
-            if (this.isOptional) return undefined as any
-            return this.serial.val
-        }
+    get result(): Widget_number_output {
         return this.serial.val
     }
 }
 
+// DI
+WidgetDI.Widget_number = Widget_number
+
 // UI
-export const WidgetNumUI = observer(function WidgetNumUI_(p: { widget: Widget_number<any> }) {
+export const WidgetNumUI = observer(function WidgetNumUI_(p: { widget: Widget_number }) {
     const widget = p.widget
     const value = widget.serial.val
     const mode = widget.config.mode

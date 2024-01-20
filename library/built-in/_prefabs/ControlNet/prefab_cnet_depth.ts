@@ -34,7 +34,7 @@ export const ui_subform_Depth_Preprocessor = () => {
     const form = getCurrentForm()
     return form.groupOpt({
         label: 'Depth Preprocessor',
-        default: true,
+        startActive: true,
         items: () => ({
             advanced: form.groupOpt({
                 label: 'Advanced Preprocessor Settings',

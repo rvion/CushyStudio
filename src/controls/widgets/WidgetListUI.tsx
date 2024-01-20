@@ -7,7 +7,7 @@ import { WidgetDI } from './WidgetUI.DI'
 
 export const WidgetListUI = observer(function WidgetListUI_<T extends Widget>(p: { widget: Widget_list<T> }) {
     const widget = p.widget
-    const values = widget.state.items
+    const values = widget.items
     const min = widget.config.min
     const WidgetUI = WidgetDI.WidgetUI
     if (WidgetUI == null) return <Message type='error'>Internal list failure</Message>

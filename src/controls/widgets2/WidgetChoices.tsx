@@ -56,7 +56,6 @@ export interface Widget_choices<T extends BranchDefinitions> extends WidgetTypeH
 export class Widget_choices<T extends BranchDefinitions> implements IWidget<Widget_choices_types<T>> {
     readonly isVerticalByDefault = true
     readonly isCollapsible = true
-    readonly isOptional = false
     readonly id: string
     readonly type: 'choices' = 'choices'
 

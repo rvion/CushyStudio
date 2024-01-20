@@ -5,7 +5,7 @@ import { WidgetDI } from './WidgetUI.DI'
 
 export const WidgetListExt_ValuesUI = observer(function WidgetListExtValuesUI_<T extends Widget>(p: { req: Widget_listExt<T> }) {
     const widget = p.req
-    const values = widget.state.items
+    const values = widget.items
     const len = values.length
     const indexWidth = len < 10 ? 1 : len < 100 ? 2 : 3
     const WidgetUI = WidgetDI.WidgetUI
@@ -13,7 +13,7 @@ export const WidgetListExt_ValuesUI = observer(function WidgetListExtValuesUI_<T
     return (
         <div tw='flex flex-col gap-1'>
             {values.map((x, ix) => {
-                const v = x.item
+                const v: Widget = x.item
                 return (
                     <div key={v.id} tw='flex items-start'>
                         <div style={{ width: `${indexWidth}rem` }}>{ix}</div>

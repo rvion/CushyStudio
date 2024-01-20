@@ -27,7 +27,7 @@ export const ui_subform_OpenPose = () => {
 export const ui_subform_OpenPose_Preprocessor = (form: FormBuilder) => {
     return form.groupOpt({
         label: 'Open Pose Preprocessor',
-        default: true,
+        startActive: true,
         items: () => ({
             advanced: form.groupOpt({
                 label: 'Advanced Preprocessor Settings',

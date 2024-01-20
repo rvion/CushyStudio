@@ -1,3 +1,8 @@
+- stop that crap with optionals at type level => use proper Optional warpper.
+    - make it transparent through the formBuilder
+    - hoist label automagically.
+- properly rewrite group / groupOpt
+
 cnets:
     ☐ better enum widget with filter support (5min)
     ☐ fix bug where dropping images doesn't work (?)

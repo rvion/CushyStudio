@@ -58,19 +58,11 @@ app({
         //     },
         // }),    }),
     }),
-    run: async ({ output_text: print, formResult: form, formSerial }) => {
+    run: async ({ output_text: print, formInstance }, ui) => {
         print('A: ' + 'Hello.')
-        print('B: ' + JSON.stringify(form.dynamicSelectTwo))
-        const itemSelected = formSerial.foos.items_.find((i) => i.id === form.dynamicSelectTwo.id)
-        print('C: ' + JSON.stringify(itemSelected))
-        print(
-            'D: ' +
-                JSON.stringify({
-                    a: itemSelected?.values_.a.val,
-                    b: itemSelected?.values_.b.val,
-                    c: itemSelected?.values_.c.val,
-                }),
-        )
+        print('B: ' + JSON.stringify(ui.dynamicSelectTwo))
+        const itemSelected = formInstance.values.dynamicSelectTwo
+        print('C: ' + JSON.stringify(itemSelected.result))
         print('E: ' + 'Bye.')
     },
 })

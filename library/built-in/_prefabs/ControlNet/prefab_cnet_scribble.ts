@@ -25,7 +25,7 @@ export const ui_subform_Scribble_Preprocessor = () => {
     const form = getCurrentForm()
     return form.groupOpt({
         label: 'Scribble Preprocessor',
-        default: true,
+        startActive: true,
         items: () => ({
             advanced: form.groupOpt({
                 label: 'Advanced Preprocessor Settings',

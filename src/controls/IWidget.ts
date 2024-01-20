@@ -26,7 +26,6 @@ export type WidgetTypeHelpers<K extends $WidgetTypes> = {
 
 export type IWidget_OLD<T, I, X, S, O> = {
     id: string
-    isOptional: boolean
     isVerticalByDefault: boolean
     isCollapsible: boolean
     type: T
@@ -40,7 +39,6 @@ export type IWidget_OLD<T, I, X, S, O> = {
 
 export type IWidget<K extends $WidgetTypes> = {
     id: string
-    isOptional: boolean
     isVerticalByDefault: boolean
     isCollapsible: boolean
     type: K['$Type']
@@ -57,7 +55,6 @@ export type GetWidgetState<Req> = Req extends WidgetTypeHelpers_OLD<any, any, an
 export type LabelPos = 'start' | 'end'
 export type WidgetSerialFields<X> = X & {
     id: string
-    active?: boolean
     collapsed?: boolean
     vertical?: boolean
 }
@@ -72,7 +69,6 @@ export type WidgetConfigFields<X> = X & {
     i18n?: { [key: string]: string }
     className?: string
     startCollapsed?: boolean
-    startActive?: boolean
     showID?: boolean
     recommandedModels?: RecommendedModelDownload
     // summary?: (self: X) => string

@@ -1,4 +1,5 @@
-import type { FormBuilder, Widget_group, Widget_list, Widget_selectOne } from 'src'
+import type { FormBuilder, Widget_list, Widget_selectOne } from 'src'
+import { Widget_group } from 'src/controls/widgets/WidgetIGroupUI'
 import { Widget_choices } from 'src/controls/widgets2/WidgetChoices'
 
 app({

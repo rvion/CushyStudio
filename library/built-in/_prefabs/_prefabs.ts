@@ -24,7 +24,7 @@ export type OutputFor<UIFn extends (form: FormBuilder) => any> = GetWidgetResult
 export const ui_highresfix = (p: { activeByDefault?: true } = {}) => {
     const form = getCurrentForm()
     return form.groupOpt({
-        default: p.activeByDefault,
+        startActive: p.activeByDefault,
         label: 'Upscale Pass (High Res Fix)',
         items: () => ({
             NNLatentUpscale: form.bool({

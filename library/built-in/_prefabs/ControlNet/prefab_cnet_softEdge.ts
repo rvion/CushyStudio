@@ -26,7 +26,7 @@ export const ui_subform_SoftEdge = () => {
 export const ui_subform_SoftEdge_Preprocessor = (form: FormBuilder) => {
     return form.groupOpt({
         label: 'SoftEdge Edge Preprocessor',
-        default: true,
+        startActive: true,
         items: () => ({
             advanced: form.groupOpt({
                 label: 'Advanced Preprocessor Settings',

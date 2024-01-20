@@ -6,7 +6,6 @@ import * as path from 'pathe'
 // import { Cyto } from '../graph/cyto' 🔴🔴
 import { execSync } from 'child_process'
 import fs, { writeFileSync } from 'fs'
-import { Widget_group } from 'src/controls/Widget'
 import { assets } from 'src/utils/assets/assets'
 import { braceExpansion } from 'src/utils/misc/expansion'
 import { IDNaminScheemeInPromptSentToComfyUI } from '../back/IDNaminScheemeInPromptSentToComfyUI'
@@ -35,6 +34,7 @@ import { RuntimeKonva } from './RuntimeKonva'
 import { RuntimeLLM } from './RuntimeLLM'
 import { RuntimeStore } from './RuntimeStore'
 import { RuntimeVideos } from './RuntimeVideo'
+import { Widget_group } from 'src/controls/widgets/WidgetIGroupUI'
 
 export type ImageAndMask = HasSingle_IMAGE & HasSingle_MASK
 

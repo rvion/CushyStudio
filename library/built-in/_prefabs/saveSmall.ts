@@ -2,7 +2,7 @@ export const ui_saveAllImages = () => {
     const form = getCurrentForm()
     return form.groupOpt({
         label: 'Compress',
-        default: true,
+        startActive: true,
         startCollapsed: true,
         items: () => ({
             format: form.selectOne({

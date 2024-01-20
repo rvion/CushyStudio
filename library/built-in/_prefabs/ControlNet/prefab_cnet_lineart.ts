@@ -26,7 +26,7 @@ export const ui_subform_Lineart_Preprocessor = () => {
     const form = getCurrentForm()
     return form.groupOpt({
         label: 'Lineart Preprocessor',
-        default: true,
+        startActive: true,
         items: () => ({
             advanced: form.groupOpt({
                 label: 'Advanced Preprocessor Settings',

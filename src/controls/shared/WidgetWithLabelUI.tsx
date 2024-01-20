@@ -38,34 +38,30 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     const collapsed = widget.serial.collapsed && isCollapsible
     const levelClass = p.isTopLevel ? '_isTopLevel' : '_isNotTopLevel'
 
-    const toggleInfo = {
-        value: widget.serial.active,
-        toggle: () => runInAction(() => (widget.serial.active = !widget.serial.active)),
-        //   onChange: (ev: ChangeEvent<HTMLInputElement>) => {
-        //       req.state.active = ev.target.checked
-        //   },
-    }
-    const showToogle =
-        widget.isOptional || //
-        !widget.serial.active ||
-        widget instanceof KLS.Widget_bool //
+    const toggleInfo =
+        widget instanceof KLS.Widget_bool
+            ? { value: widget.serial.active, toggle: () => runInAction(widget.toggle) }
+            : widget instanceof KLS.Widget_optional
+            ? { value: widget.serial.active, toggle: () => runInAction(widget.toggle) }
+            : null
 
-    let widgetUI =
-        collapsed || widget.type === 'bool' ? null : !widget.serial.active ? null : (
-            <ErrorBoundary FallbackComponent={ErrorBoundaryFallback} onReset={(details) => {}}>
-                <WidgetDI.WidgetUI widget={widget} />
-            </ErrorBoundary>
-        )
+    const showToogle = toggleInfo != null // !widget.serial.active || widget instanceof KLS.Widget_bool //
+
+    let widgetUI = collapsed ? null : (
+        <ErrorBoundary FallbackComponent={ErrorBoundaryFallback} onReset={(details) => {}}>
+            <WidgetDI.WidgetUI widget={widget} />
+        </ErrorBoundary>
+    )
 
     const isCollapsed = widget.serial.collapsed
     const isBoldTitle = p.isTopLevel || isVertical
 
     const showListControls = !isCollapsed && (widget instanceof KLS.Widget_listExt || widget instanceof KLS.Widget_list)
-    const showFoldIndicator = !widget.serial.active || (!widget.serial.collapsed && !widget.isCollapsible)
+    const showFoldIndicator = /*!widget.serial.active ||*/ !widget.serial.collapsed && !widget.isCollapsible
     const showTooltip = tooltip != null
     const showLabel = label !== false
     // widget.type === 'group' ||
-    // widget.type === 'groupOpt' ||
+    // widget.type === 'group' ||
     // widget.type === 'list' ||
     // widget.type === 'choices'
 
@@ -85,7 +81,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
             onClick={() => {
                 if (isCollapsed) return (widget.serial.collapsed = false)
                 if (showToogle) return toggleInfo.toggle()
-                if (!widget.serial.active) return (widget.serial.active = true)
+                // if (!widget.serial.active) return (widget.serial.active = true)
                 widget.serial.collapsed = true
             }}
         >

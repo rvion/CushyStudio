@@ -33,7 +33,7 @@ export const ui_subform_Canny = () => {
 export const ui_subform_Canny_Preprocessor = (form: FormBuilder) => {
     return form.groupOpt({
         label: 'Canny Edge Preprocessor',
-        default: true,
+        startActive: true,
         items: () => ({
             advanced: form.groupOpt({
                 label: 'Advanced Preprocessor Settings',
