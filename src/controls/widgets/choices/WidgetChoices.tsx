@@ -1,12 +1,11 @@
 import type { Widget } from 'src/controls/Widget'
+import type { FormBuilder } from '../../FormBuilder'
+import type { GetWidgetResult, IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../../IWidget'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
-import { ComfySchemaL } from 'src/models/Schema'
 import { runWithGlobalForm } from 'src/models/_ctx2'
 import { toastError } from 'src/utils/misc/toasts'
-import { FormBuilder } from '../../FormBuilder'
-import { GetWidgetResult, IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../../IWidget'
 import { WidgetDI } from '../WidgetUI.DI'
 
 type BranchDefinitions = { [key: string]: () => Widget }
@@ -88,12 +87,25 @@ export class Widget_choices<T extends BranchDefinitions> implements IWidget<Widg
         }
 
         // find all active branches
-        const activeBranches: (keyof T)[] = []
-        runWithGlobalForm(this.builder, () => {
-            for (const [branch, isBranchActive] of Object.entries(this.config.default ?? {})) {
-                if (isBranchActive) this.enableBranch(branch)
+        const allBranches = Object.keys(config.items) as (keyof T & string)[]
+        const def = this.config.default
+        const foo = nanoid(4)
+        for (const branch of allBranches) {
+            const isActive =
+                this.serial.branches[branch] ?? def == null
+                    ? false
+                    : typeof def === 'string' //
+                    ? branch === def
+                    : typeof def === 'object'
+                    ? def?.[branch] ?? false
+                    : null
+            if (isActive) {
+                // console.log(`XX ${foo} 🟢 ${branch} => ${isActive}`)
+                this.enableBranch(branch)
+            } else {
+                // console.log(`XX ${foo} 🔴 ${branch} => ${isActive}`)
             }
-        })
+        }
 
         makeAutoObservable(this)
     }
