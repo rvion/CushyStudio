@@ -17,7 +17,7 @@ type AspectRatio =
 export const WigetSizeUI = observer(function WigetSizeUI_(p: { widget: Widget_size }) {
     return (
         <WigetSizeXUI //
-            size={p.widget.state}
+            size={p.widget.serial}
             bounds={p.widget.config}
         />
     )

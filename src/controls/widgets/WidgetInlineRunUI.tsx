@@ -24,13 +24,13 @@ export const WidgetInlineRunUI = observer(function WidgetInlineRunUI_(p: { widge
                 )
             }
             onClick={() => {
-                p.widget.state.val = true
+                p.widget.serial.val = true
                 draft.setAutostart(false)
                 draft.start()
 
                 // Reset value back to false for future runs
                 setTimeout(() => {
-                    p.widget.state.val = false
+                    p.widget.serial.val = false
                 }, 100)
             }}
             // size={'sm'}

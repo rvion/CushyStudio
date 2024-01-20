@@ -169,11 +169,11 @@ export type Widget_inlineRun_state  = WidgetSerialFields<{ type:'inlineRun', act
 export type Widget_inlineRun_output = boolean
 export interface Widget_inlineRun extends WidgetTypeHelpers_OLD<'inlineRun', Widget_inlineRun_config, Widget_inlineRun_serial, Widget_inlineRun_state, Widget_inlineRun_output> {}
 export class Widget_inlineRun implements IWidget_OLD<'inlineRun', Widget_inlineRun_config, Widget_inlineRun_serial, Widget_inlineRun_state, Widget_inlineRun_output> {
-    isVerticalByDefault = false
-    isCollapsible = false
-    id: string
-    type: 'inlineRun' = 'inlineRun'
-    state: Widget_inlineRun_state
+    readonly isVerticalByDefault = false
+    readonly isCollapsible = false
+    readonly id: string
+    readonly type: 'inlineRun' = 'inlineRun'
+    readonly serial: Widget_inlineRun_state
     constructor(
         public builder: FormBuilder,
         public config: Widget_inlineRun_config,
@@ -184,11 +184,10 @@ export class Widget_inlineRun implements IWidget_OLD<'inlineRun', Widget_inlineR
         }
 
         this.id = serial?.id ?? nanoid()
-        this.state = serial ?? { type: 'inlineRun', collapsed: config.startCollapsed, id: this.id, active: true, val: false, }
+        this.serial = serial ?? { type: 'inlineRun', collapsed: config.startCollapsed, id: this.id, active: true, val: false, }
         makeAutoObservable(this)
     }
-    get serial(): Widget_inlineRun_serial { return this.state }
-    get result(): Widget_inlineRun_output { return this.state.active ? this.state.val : false}
+    get result(): Widget_inlineRun_output { return this.serial.active ? this.serial.val : false}
 }
 
 
@@ -204,11 +203,11 @@ export type Widget_size_state  = WidgetSerialFields<CushySize>
 export type Widget_size_output = CushySize
 export interface Widget_size extends WidgetTypeHelpers_OLD<'size', Widget_size_config, Widget_size_serial, Widget_size_state, Widget_size_output> {}
 export class Widget_size implements IWidget_OLD<'size', Widget_size_config, Widget_size_serial, Widget_size_state, Widget_size_output> {
-    isVerticalByDefault = true
-    isCollapsible = true
-    id: string
-    type: 'size' = 'size'
-    state: Widget_size_state
+    readonly isVerticalByDefault = true
+    readonly isCollapsible = true
+    readonly id: string
+    readonly type: 'size' = 'size'
+    readonly serial: Widget_size_state
     constructor(
         public builder: FormBuilder,
         public config: Widget_size_config,
@@ -216,13 +215,13 @@ export class Widget_size implements IWidget_OLD<'size', Widget_size_config, Widg
     ) {
         this.id = serial?.id ?? nanoid()
         if (serial) {
-            this.state = serial
+            this.serial = serial
         } else {
             const aspectRatio: AspectRatio = config.default?.aspectRatio ?? '1:1'
             const modelType: SDModelType = config.default?.modelType ?? 'SD1.5 512'
             const width = 512 // 🔴
             const height = 512 // 🔴
-            this.state = {
+            this.serial = {
                 type: 'size',
                 id: this.id,
                 aspectRatio,
@@ -233,9 +232,8 @@ export class Widget_size implements IWidget_OLD<'size', Widget_size_config, Widg
         }
         makeAutoObservable(this)
     }
-    get serial(): Widget_size_serial { return this.state }
     get result(): Widget_size_output {
-        return this.state
+        return this.serial
     }
 }
 
