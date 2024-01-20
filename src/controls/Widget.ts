@@ -201,28 +201,31 @@ export type Widget_matrix_cell = {
     col: string
     value: boolean
 }
-export type Widget_matrix_config  = WidgetConfigFields<{ default?: { row: string; col: string }[]; rows: string[]; cols: string[] }>
-export type Widget_matrix_serial = Widget_matrix_state
-export type Widget_matrix_state  = WidgetSerialFields<{ type: 'matrix', active: true; selected: Widget_matrix_cell[] }>
+export type Widget_matrix_config = WidgetConfigFields<{ default?: { row: string; col: string }[]; rows: string[]; cols: string[] }>
+export type Widget_matrix_serial = WidgetSerialFields<{ type: 'matrix', active: true; selected: Widget_matrix_cell[] }>
 export type Widget_matrix_output = Widget_matrix_cell[]
-export interface Widget_matrix extends WidgetTypeHelpers_OLD<'matrix', Widget_matrix_config, Widget_matrix_serial, Widget_matrix_state, Widget_matrix_output> {}
-export class Widget_matrix implements IWidget_OLD<'matrix', Widget_matrix_config, Widget_matrix_serial, Widget_matrix_state, Widget_matrix_output> {
-    isVerticalByDefault = true
-    isCollapsible = true
-    id: string
-    type: 'matrix' = 'matrix'
-    state: Widget_matrix_state
+export interface Widget_matrix extends WidgetTypeHelpers_OLD<'matrix', Widget_matrix_config, Widget_matrix_serial, 0, Widget_matrix_output> {}
+export class Widget_matrix implements IWidget_OLD<'matrix', Widget_matrix_config, Widget_matrix_serial, 0, Widget_matrix_output> {
+    readonly isVerticalByDefault = true
+    readonly isCollapsible = true
+    readonly id: string
+    readonly type: 'matrix' = 'matrix'
+    readonly serial: Widget_matrix_serial
+
     rows: string[]
     cols: string[]
+
     constructor(
         public builder: FormBuilder,
         public config: Widget_matrix_config,
         serial?: Widget_matrix_serial,
     ) {
         this.id = serial?.id ?? nanoid()
-        this.state = serial ?? { type:'matrix', collapsed: config.startCollapsed, id: this.id, active: true, selected: [] }
+        this.serial = serial ?? { type:'matrix', collapsed: config.startCollapsed, id: this.id, active: true, selected: [] }
+
         const rows = config.rows
         const cols = config.cols
+
         // init all cells to false
         for (const [rowIx, row] of rows.entries()) {
             for (const [colIx, col] of cols.entries()) {
@@ -230,7 +233,7 @@ export class Widget_matrix implements IWidget_OLD<'matrix', Widget_matrix_config
             }
         }
         // apply default value
-        const values = this.state.selected
+        const values = this.serial.selected
         if (values)
             for (const v of values) {
                 this.store.set(this.key(rows[v.x], cols[v.y]), v)
@@ -240,18 +243,16 @@ export class Widget_matrix implements IWidget_OLD<'matrix', Widget_matrix_config
         // make observable
         makeAutoObservable(this)
     }
-    get serial(): Widget_matrix_serial { return this.state }
     get result(): Widget_matrix_output {
         // if (!this.state.active) return undefined
-        return this.state.selected
+        return this.serial.selected
     }
 
-    // (((((((((((((((((((((((((((((
     private sep = ' &&& '
     private store = new Map<string, Widget_matrix_cell>()
     private key = (row: string, col: string) => `${row}${this.sep}${col}`
     get allCells() { return Array.from(this.store.values()) } // prettier-ignore
-    UPDATE = () => (this.state.selected = this.RESULT)
+    UPDATE = () => (this.serial.selected = this.RESULT)
     get RESULT() {
         return this.allCells.filter((v) => v.value)
     }
@@ -291,7 +292,6 @@ export class Widget_matrix implements IWidget_OLD<'matrix', Widget_matrix_config
         cell.value = value
         this.UPDATE()
     }
-    // )))))))))))))))))))))))))))))
 }
 
 // 🅿️ loras ==============================================================================
@@ -357,11 +357,12 @@ export type Widget_image_state  = WidgetSerialFields<ImageAnswerForm<'image', tr
 export type Widget_image_output = ImageAnswer
 export interface Widget_image extends WidgetTypeHelpers_OLD<'image', Widget_image_config, Widget_image_serial, Widget_image_state, Widget_image_output> {}
 export class Widget_image implements IWidget_OLD<'image', Widget_image_config, Widget_image_serial, Widget_image_state, Widget_image_output> {
-    isVerticalByDefault = true
-    isCollapsible = true
-    id: string
-    type: 'image' = 'image'
-    serial: Widget_image_state
+    readonly isVerticalByDefault = true
+    readonly isCollapsible = true
+    readonly id: string
+    readonly type: 'image' = 'image'
+    readonly serial: Widget_image_state
+
     constructor(
         public builder: FormBuilder,
         public config: Widget_image_config,
@@ -389,11 +390,11 @@ export type Widget_selectOne_state <T extends BaseSelectEntry>  = WidgetSerialFi
 export type Widget_selectOne_output<T extends BaseSelectEntry> = T
 export interface Widget_selectOne<T>  extends WidgetTypeHelpers_OLD<'selectOne', Widget_selectOne_config<T>, Widget_selectOne_serial<T>, Widget_selectOne_state<T>, Widget_selectOne_output<T>> {}
 export class Widget_selectOne<T extends BaseSelectEntry> implements IWidget_OLD<'selectOne', Widget_selectOne_config<T>, Widget_selectOne_serial<T>, Widget_selectOne_state<T>, Widget_selectOne_output<T>> {
-    public readonly isVerticalByDefault = false
-    public readonly isCollapsible = false
-    public readonly id: string
-    public readonly type: 'selectOne' = 'selectOne'
-    public readonly serial: Widget_selectOne_state<T>
+    readonly isVerticalByDefault = false
+    readonly isCollapsible = false
+    readonly id: string
+    readonly type: 'selectOne' = 'selectOne'
+    readonly serial: Widget_selectOne_state<T>
 
     get choices():T[]{
         const _choices = this.config.choices
