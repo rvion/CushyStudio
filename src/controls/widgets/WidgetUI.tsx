@@ -5,7 +5,8 @@ import { Message } from 'src/rsuite/shims'
 import { exhaust } from '../../utils/misc/ComfyUtils'
 import { WidgetPromptUI } from '../../widgets/prompter/WidgetPromptUI'
 import { WidgetChoicesUI, Widget_choices } from '../widgets2/WidgetChoices'
-import { WidgetStrUI, Widget_str } from '../widgets2/WidgetString'
+import { Widget_string } from './string/WidgetString'
+import { WidgetStringUI } from './string/WidgetStringUI'
 import { WidgetBoolUI, Widget_bool } from '../widgets2/WidgetBool'
 import { WidgetColorUI, Widget_color } from '../widgets2/WidgetColor'
 import { WidgetCustomUI } from './WidgetCustomUI'
@@ -13,7 +14,7 @@ import { WidgetEnumUI, Widget_enum } from '../widgets2/WidgetEnumUI'
 import { WidgetGroupUI, Widget_group } from '../widgets2/WidgetIGroup'
 import { WidgetInlineRunUI } from './WidgetInlineRunUI'
 import { WidgetListExtUI } from './WidgetListExtUI'
-import { WidgetListUI } from './WidgetListUI'
+import { WidgetListUI } from './list/WidgetListUI'
 import { WidgetLorasUI } from './WidgetLorasUI'
 import { WidgetMardownUI } from './WidgetMarkdownUI'
 import { WidgetMatrixUI } from './WidgetMatrixUI'
@@ -26,6 +27,7 @@ import { WidgetSelectOneUI } from './WidgetSelectOneUI'
 import { WigetSizeUI } from './WidgetSizeUI'
 import { WidgetDI } from './WidgetUI.DI'
 import { WidgetOptionalUI, Widget_optional } from '../widgets2/WidgetOptional'
+import { Widget_list } from './list/WidgetList'
 
 /**
  * this widget will then dispatch the individual requests to the appropriate sub-widgets
@@ -41,10 +43,10 @@ export const WidgetUI = observer(function WidgetUI_(p: {
     if (widget == null) return <>NULL</>
     if (widget instanceof R.Widget_seed)       return <WidgetSeedUI        widget={widget} />
     if (widget instanceof Widget_number)       return <WidgetNumUI         widget={widget} />
-    if (widget instanceof Widget_str)          return <WidgetStrUI         widget={widget} />
+    if (widget instanceof Widget_string)       return <WidgetStringUI      widget={widget} />
     if (widget instanceof Widget_optional)     return <WidgetOptionalUI    widget={widget} />
     if (widget instanceof R.Widget_image)      return <WidgetSelectImageUI widget={widget} />
-    if (widget instanceof R.Widget_list)       return <WidgetListUI        widget={widget} />
+    if (widget instanceof Widget_list)         return <WidgetListUI        widget={widget} />
     if (widget instanceof R.Widget_listExt)    return <WidgetListExtUI     widget={widget} />
     if (widget instanceof Widget_group)        return <WidgetGroupUI       widget={widget} />
     if (widget instanceof R.Widget_size)       return <WigetSizeUI         widget={widget} />

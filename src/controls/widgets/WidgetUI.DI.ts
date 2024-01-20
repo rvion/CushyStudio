@@ -1,7 +1,7 @@
 import type { WidgetUI } from './WidgetUI'
 import type * as R from '../Widget'
 import type { Widget_choices } from '../widgets2/WidgetChoices'
-import type { Widget_str } from '../widgets2/WidgetString'
+import type { Widget_string } from './string/WidgetString'
 import type { Widget_bool } from '../widgets2/WidgetBool'
 import type { Widget_number } from '../widgets2/WidgetNumber'
 import type { Widget_color } from '../widgets2/WidgetColor'
@@ -9,6 +9,7 @@ import type { Widget_group } from '../widgets2/WidgetIGroup'
 import type { Widget_optional } from '../widgets2/WidgetOptional'
 import type { Widget_orbit } from '../widgets2/WidgetOrbit'
 import type { Widget_enum } from '../widgets2/WidgetEnumUI'
+import type { Widget_list } from './list/WidgetList'
 
 /**
  * DI (Dependency Injection)
@@ -19,7 +20,7 @@ export let WidgetDI = {
     WidgetUI: 0 as any as typeof WidgetUI,
     Widget_optional: 0 as any as typeof Widget_optional,
     Widget_color: 0 as any as typeof Widget_color,
-    Widget_str: 0 as any as typeof Widget_str,
+    Widget_string: 0 as any as typeof Widget_string,
     Widget_prompt: 0 as any as typeof R.Widget_prompt,
     Widget_seed: 0 as any as typeof R.Widget_seed,
     Widget_number: 0 as any as typeof Widget_number,
@@ -33,7 +34,7 @@ export let WidgetDI = {
     Widget_image: 0 as any as typeof R.Widget_image,
     Widget_selectMany: 0 as any as typeof R.Widget_selectMany,
     Widget_selectOne: 0 as any as typeof R.Widget_selectOne,
-    Widget_list: 0 as any as typeof R.Widget_list,
+    Widget_list: 0 as any as typeof Widget_list,
     Widget_group: 0 as any as typeof Widget_group,
     Widget_choices: 0 as any as typeof Widget_choices,
     Widget_enum: 0 as any as typeof Widget_enum,

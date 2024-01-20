@@ -28,14 +28,15 @@ import type { Widget_group } from './widgets2/WidgetIGroup'
 import type { Widget_number } from './widgets2/WidgetNumber'
 import type { Widget_optional } from './widgets2/WidgetOptional'
 import type { Widget_orbit } from './widgets2/WidgetOrbit'
-import type { Widget_str } from './widgets2/WidgetString'
+import type { Widget_string } from './widgets/string/WidgetString'
 import type { Widget_enum } from './widgets2/WidgetEnumUI'
+import type { Widget_list } from './widgets/list/WidgetList'
 
 // Widget is a closed union for added type safety
 export type Widget =
     | Widget_optional<any>
     | Widget_color
-    | Widget_str
+    | Widget_string
     | Widget_orbit
     | Widget_prompt
     | Widget_seed
@@ -606,75 +607,6 @@ export class Widget_selectMany<T extends BaseSelectEntry> implements IWidget_OLD
 }
 
 
-// 🅿️ list ==============================================================================
-export type Widget_list_config<T extends Widget>  = WidgetConfigFields<{
-    element: (ix:number) => T,
-    min?: number,
-    max?:number,
-    defaultLength?:number
-}>
-export type Widget_list_serial<T extends Widget> = WidgetSerialFields<{ type: 'list', active: true; items_: T['$Serial'][] }>
-export type Widget_list_state<T extends Widget>  = WidgetSerialFields<{ type: 'list', active: true; items: T[] }>
-export type Widget_list_output<T extends Widget> = T['$Output'][]
-export interface Widget_list<T extends Widget> extends WidgetTypeHelpers_OLD<'list', Widget_list_config<T>, Widget_list_serial<T>, Widget_list_state<T>, Widget_list_output<T>> {}
-export class Widget_list<T extends Widget> implements IWidget_OLD<'list', Widget_list_config<T>, Widget_list_serial<T>, Widget_list_state<T>, Widget_list_output<T>> {
-    isVerticalByDefault = true
-    isCollapsible = true
-    id: string
-    type: 'list' = 'list'
-    state: Widget_list_state<T>
-    private _reference: T
-
-    get items(): T[] { return this.state.items }
-    constructor(
-        public builder: FormBuilder,
-        public schema: ComfySchemaL,
-        public config: Widget_list_config<T>,
-        serial?: Widget_list_serial<T>,
-    ) {
-        this.id = serial?.id ?? nanoid()
-        this._reference = runWithGlobalForm(this.builder, () => config.element(0))
-        if (serial) {
-            const items = serial.items_.map((sub_) => builder._HYDRATE(sub_.type, this._reference.config, sub_)) // 🔴 handler filter if wrong type
-            this.state = { type: 'list', id: this.id, active: serial.active, items }
-        } else {
-            const clamp = (v: number, min: number, max: number) => Math.min(Math.max(v, min), max)
-            const defaultLen = clamp(config.defaultLength ?? 0, config.min ?? 0, config.max ?? 10)
-            const items = defaultLen
-                ? runWithGlobalForm(this.builder, () => new Array(defaultLen).fill(0).map((_,ix) => config.element(ix)))
-                : []
-            this.state = {
-                type: 'list',
-                id: this.id,
-                active: true,
-                items: items,
-            }
-        }
-        makeAutoObservable(this)
-    }
-    removemAllItems = () => this.state.items = this.state.items.slice(0, this.config.min ?? 0)
-    collapseAllItems = () => this.state.items.forEach((i) => i.serial.collapsed = true)
-    expandAllItems = () => this.state.items.forEach((i) => i.serial.collapsed = false)
-    removeItem = (item: T) => {
-        const i = this.state.items.indexOf(item)
-        if (i >= 0) this.state.items.splice(i, 1)
-    }
-    moveItem = (oldIndex: number, newIndex: number) => {
-        const favs = this.state.items
-        if (favs == null) return
-        favs.splice(newIndex, 0, favs.splice(oldIndex, 1)[0])
-    }
-    get serial(): Widget_list_serial<T> {
-        const items_ = this.state.items.map((i) => i.serial)
-        return { type: 'list', id: this.id, active: this.state.active, items_ }
-    }
-    get result(): Widget_list_output<T> { return this.state.items.map((i) => i.result) }
-    addItem() {
-        // const _ref = this._reference
-        // const newItem = this.builder.HYDRATE(_ref.type, _ref.input)
-        this.state.items.push(this.config.element(this.state.items.length))
-    }
-}
 
 
 // 🅿️ listExt ==============================================================================
@@ -821,5 +753,4 @@ WidgetDI.Widget_loras              = Widget_loras
 WidgetDI.Widget_image              = Widget_image
 WidgetDI.Widget_selectMany         = Widget_selectMany
 WidgetDI.Widget_selectOne          = Widget_selectOne
-WidgetDI.Widget_list               = Widget_list
 WidgetDI.Widget_listExt            = Widget_listExt

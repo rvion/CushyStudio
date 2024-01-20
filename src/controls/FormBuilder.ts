@@ -8,10 +8,11 @@ import { Widget_bool, type Widget_bool_config } from './widgets2/WidgetBool'
 import { Widget_choices, type Widget_choices_config } from './widgets2/WidgetChoices'
 import { Widget_color, type Widget_color_config } from './widgets2/WidgetColor'
 import { Widget_number, type Widget_number_config } from './widgets2/WidgetNumber'
-import { Widget_str, type Widget_str_config } from './widgets2/WidgetString'
+import { Widget_string, type Widget_string_config } from './widgets/string/WidgetString'
 import { Widget_optional, type Widget_optional_config } from './widgets2/WidgetOptional'
 import { Widget_orbit, type Widget_orbit_config } from './widgets2/WidgetOrbit'
 import { Widget_enum, Widget_enum_config } from './widgets2/WidgetEnumUI'
+import { Widget_list, Widget_list_config } from './widgets/list/WidgetList'
 
 export class FormBuilder {
     /** (@internal) don't call this yourself */
@@ -20,12 +21,12 @@ export class FormBuilder {
     }
 
     // string
-    string = (opts: Widget_str_config) => new Widget_str(this, this.schema, opts)
-    stringOpt = (opts: Widget_str_config & { startActive?: boolean }) =>
+    string = (opts: Widget_string_config) => new Widget_string(this, this.schema, opts)
+    stringOpt = (opts: Widget_string_config & { startActive?: boolean }) =>
         this.optional({
             label: opts.label,
             startActive: opts.startActive,
-            widget: () => new Widget_str(this, this.schema, opts),
+            widget: () => new Widget_string(this, this.schema, opts),
         })
 
     /** @deprecated */
@@ -105,7 +106,7 @@ export class FormBuilder {
         new W.Widget_markdown(this, this.schema, typeof opts === 'string' ? { markdown: opts } : opts)
     custom = <TViewState>(opts: W.Widget_custom_config<TViewState>) => new W.Widget_custom<TViewState>(this, this.schema, opts)
 
-    list = <const T extends W.Widget>(p: W.Widget_list_config<T>) => new W.Widget_list(this, this.schema, p)
+    list = <const T extends W.Widget>(p: Widget_list_config<T>) => new Widget_list(this, this.schema, p)
 
     optional = <const T extends W.Widget>(p: Widget_optional_config<T>) => new Widget_optional(this, this.schema, p)
 
@@ -150,11 +151,14 @@ export class FormBuilder {
     _HYDRATE = (type: W.Widget['type'], input: any, serial?: any): any => {
         if (type === 'optional') return new Widget_optional(this, this.schema, input, serial)
         if (type === 'bool') return new Widget_bool(this, this.schema, input, serial)
-        if (type === 'str') return new Widget_str(this, this.schema, input, serial)
+        if (type === 'str') return new Widget_string(this, this.schema, input, serial)
         if (type === 'choices') return new Widget_choices(this, this.schema, input, serial)
         if (type === 'number') return new Widget_number(this, this.schema, input, serial)
         if (type === 'group') return new Widget_group(this, this.schema, input, serial)
         if (type === 'color') return new Widget_color(this, this.schema, input, serial)
+        if (type === 'enum') return new Widget_enum(this, this.schema, input, serial)
+        if (type === 'list') return new Widget_list(this, this.schema, input, serial)
+        if (type === 'orbit') return new Widget_orbit(this, this.schema, input, serial)
 
         if (type === 'inlineRun') return new W.Widget_inlineRun(this, this.schema, input, serial)
         if (type === 'seed') return new W.Widget_seed(this, this.schema, input, serial)
@@ -162,15 +166,12 @@ export class FormBuilder {
         if (type === 'prompt') return new W.Widget_prompt(this, this.schema, input, serial)
         if (type === 'loras') return new W.Widget_loras(this, this.schema, input, serial)
         if (type === 'image') return new W.Widget_image(this, this.schema, input, serial)
-        if (type === 'enum') return new Widget_enum(this, this.schema, input, serial)
-        if (type === 'list') return new W.Widget_list(this, this.schema, input, serial)
         if (type === 'listExt') return new W.Widget_listExt(this, this.schema, input, serial)
         if (type === 'selectOne') return new W.Widget_selectOne(this, this.schema, input, serial)
         if (type === 'selectMany') return new W.Widget_selectMany(this, this.schema, input, serial)
         if (type === 'size') return new W.Widget_size(this, this.schema, input, serial)
         if (type === 'markdown') return new W.Widget_markdown(this, this.schema, input, serial)
         if (type === 'custom') return new W.Widget_custom(this, this.schema, input, serial)
-        if (type === 'orbit') return new Widget_orbit(this, this.schema, input, serial)
 
         console.log(`🔴 unknown type ${type}`)
         exhaust(type)

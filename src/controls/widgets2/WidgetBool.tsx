@@ -17,7 +17,7 @@ export type Widget_bool_serial = WidgetSerialFields<{ type: 'bool'; active: bool
 export type Widget_bool_output = boolean
 
 // TYPES
-export type Widget_str_types = {
+export type Widget_string_types = {
     $Type: 'bool'
     $Input: Widget_bool_config
     $Serial: Widget_bool_serial
@@ -25,8 +25,8 @@ export type Widget_str_types = {
 }
 
 // STATE
-export interface Widget_bool extends WidgetTypeHelpers<Widget_str_types> {}
-export class Widget_bool implements IWidget<Widget_str_types> {
+export interface Widget_bool extends WidgetTypeHelpers<Widget_string_types> {}
+export class Widget_bool implements IWidget<Widget_string_types> {
     readonly isVerticalByDefault = false
     readonly isCollapsible = false
     readonly id: string

@@ -13,7 +13,7 @@ app({
         // then repeatedly update the value of the items
         for (const _ of [1, 2, 3, 4, 5]) {
             await run.sleep(100)
-            run.formInstance.values.list.state.items.map((i) => {
+            run.formInstance.values.list.items.map((i) => {
                 i.serial.val += 3
             })
         }

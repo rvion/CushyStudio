@@ -1,9 +1,10 @@
 import { observer } from 'mobx-react-lite'
 import { forwardRef } from 'react'
 import SortableList, { SortableItem, SortableKnob } from 'react-easy-sort'
-import { Widget, Widget_list } from 'src/controls/Widget'
+import { Widget } from 'src/controls/Widget'
 import { Message } from 'src/rsuite/shims'
-import { WidgetDI } from './WidgetUI.DI'
+import { WidgetDI } from '../WidgetUI.DI'
+import { Widget_list } from './WidgetList'
 
 export const WidgetListUI = observer(function WidgetListUI_<T extends Widget>(p: { widget: Widget_list<T> }) {
     const widget = p.widget
@@ -39,7 +40,7 @@ export const WidgetListUI = observer(function WidgetListUI_<T extends Widget>(p:
                                     <div
                                         tw={[
                                             'btn btn-sm btn-narrower btn-ghost opacity-50',
-                                            min && widget.state.items.length <= min ? 'btn-disabled' : null,
+                                            min && widget.items.length <= min ? 'btn-disabled' : null,
                                         ]}
                                         onClick={() => widget.removeItem(v)}
                                     >

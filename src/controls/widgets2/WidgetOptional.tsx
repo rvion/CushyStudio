@@ -26,7 +26,7 @@ export type Widget_optional_serial<T extends Widget> = WidgetSerialFields<{
 export type Widget_optional_output<T extends Widget> = Maybe<T['$Output']>
 
 // TYPES
-export type Widget_str_types<T extends Widget> = {
+export type Widget_string_types<T extends Widget> = {
     $Type: 'optional'
     $Input: Widget_optional_config<T>
     $Serial: Widget_optional_serial<T>
@@ -34,8 +34,8 @@ export type Widget_str_types<T extends Widget> = {
 }
 
 // STATE
-export interface Widget_optional<T extends Widget> extends WidgetTypeHelpers<Widget_str_types<T>> {}
-export class Widget_optional<T extends Widget> implements IWidget<Widget_str_types<T>> {
+export interface Widget_optional<T extends Widget> extends WidgetTypeHelpers<Widget_string_types<T>> {}
+export class Widget_optional<T extends Widget> implements IWidget<Widget_string_types<T>> {
     readonly isVerticalByDefault = true
     readonly isCollapsible = true
     readonly id: string
