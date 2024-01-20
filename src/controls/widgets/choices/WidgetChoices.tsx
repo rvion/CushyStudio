@@ -127,7 +127,7 @@ export class Widget_choices<T extends BranchDefinitions> implements IWidget<Widg
         const fn = this.config.items[branch]
         if (fn == null) throw new Error(`❌ Branch "${branch}" has no initializer function`)
 
-        const newItem = fn()
+        const newItem = runWithGlobalForm(this.builder, () => fn())
         const prevBranchSerial = this.serial.values_?.[branch]
         const newType = newItem.type
 
