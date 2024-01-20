@@ -1,15 +1,15 @@
 import type { Widget } from 'src/controls/Widget'
 import type { ComfySchemaL } from 'src/models/Schema'
-import type { FormBuilder } from '../FormBuilder'
-import type { GetWidgetResult, IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../IWidget'
+import type { FormBuilder } from '../../FormBuilder'
+import type { GetWidgetResult, IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../../IWidget'
 
 import { makeAutoObservable } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { nanoid } from 'nanoid'
 import { runWithGlobalForm } from 'src/models/_ctx2'
-import { WidgetWithLabelUI } from '../shared/WidgetWithLabelUI'
+import { WidgetWithLabelUI } from '../../shared/WidgetWithLabelUI'
 import { bang } from 'src/utils/misc/bang'
-import { WidgetDI } from '../widgets/WidgetUI.DI'
+import { WidgetDI } from '../WidgetUI.DI'
 
 // CONFIG
 export type Widget_group_config<T extends { [key: string]: Widget }> = WidgetConfigFields<{

@@ -1,11 +1,9 @@
 import { computed, makeObservable, observable } from 'mobx'
-import { observer } from 'mobx-react-lite'
 import { nanoid } from 'nanoid'
 import { ComfySchemaL } from 'src/models/Schema'
-import { InputNumberUI } from 'src/rsuite/InputNumberUI'
-import { FormBuilder } from '../FormBuilder'
-import { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../IWidget'
-import { WidgetDI } from '../widgets/WidgetUI.DI'
+import { FormBuilder } from '../../FormBuilder'
+import { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../../IWidget'
+import { WidgetDI } from '../WidgetUI.DI'
 
 // CONFIG
 export type Widget_number_config = WidgetConfigFields<{
@@ -68,24 +66,3 @@ export class Widget_number implements IWidget<Widget_number_types> {
 
 // DI
 WidgetDI.Widget_number = Widget_number
-
-// UI
-export const WidgetNumUI = observer(function WidgetNumUI_(p: { widget: Widget_number }) {
-    const widget = p.widget
-    const value = widget.serial.val
-    const mode = widget.config.mode
-    const step = widget.config.step ?? (mode === 'int' ? 1 : 0.1)
-
-    return (
-        <InputNumberUI
-            //
-            mode={mode}
-            value={value}
-            hideSlider={widget.config.hideSlider}
-            max={widget.config.max}
-            min={widget.config.min}
-            step={step}
-            onValueChange={(next) => (widget.serial.val = next)}
-        />
-    )
-})

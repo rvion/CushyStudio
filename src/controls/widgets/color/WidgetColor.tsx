@@ -2,9 +2,9 @@ import { makeAutoObservable } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { nanoid } from 'nanoid'
 import { ComfySchemaL } from 'src/models/Schema'
-import { FormBuilder } from '../FormBuilder'
-import { IWidget_OLD, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers_OLD } from '../IWidget'
-import { WidgetDI } from '../widgets/WidgetUI.DI'
+import { FormBuilder } from '../../FormBuilder'
+import { IWidget_OLD, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers_OLD } from '../../IWidget'
+import { WidgetDI } from '../WidgetUI.DI'
 
 // CONFIG
 export type Widget_color_config = WidgetConfigFields<{ default?: string }>

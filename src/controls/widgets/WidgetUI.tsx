@@ -10,25 +10,28 @@ import { Widget_string } from './string/WidgetString'
 import { WidgetStringUI } from './string/WidgetStringUI'
 import { Widget_bool } from './bool/WidgetBool'
 import { WidgetBoolUI } from './bool/WidgetBoolUI'
-import { WidgetColorUI, Widget_color } from '../widgets2/WidgetColor'
+import { WidgetColorUI, Widget_color } from './color/WidgetColor'
 import { WidgetCustomUI } from './WidgetCustomUI'
-import { WidgetEnumUI, Widget_enum } from '../widgets2/WidgetEnumUI'
-import { WidgetGroupUI, Widget_group } from '../widgets2/WidgetIGroup'
+import { WidgetEnumUI, Widget_enum } from './enum/WidgetEnumUI'
+import { WidgetGroupUI, Widget_group } from './group/WidgetIGroup'
 import { WidgetInlineRunUI } from './WidgetInlineRunUI'
 import { WidgetListExtUI } from './WidgetListExtUI'
 import { WidgetListUI } from './list/WidgetListUI'
 import { WidgetLorasUI } from './WidgetLorasUI'
 import { WidgetMardownUI } from './WidgetMarkdownUI'
 import { WidgetMatrixUI } from './WidgetMatrixUI'
-import { WidgetNumUI, Widget_number } from '../widgets2/WidgetNumber'
-import { WidgetOrbitUI, Widget_orbit } from '../widgets2/WidgetOrbit'
+import { Widget_number } from './number/WidgetNumber'
+import { WidgetNumberUI } from './number/WidgetNumberUI'
+import { Widget_orbit } from './orbit/WidgetOrbit'
+import { WidgetOrbitUI } from './orbit/WidgetOrbitUI'
 import { WidgetSeedUI } from './WidgetSeedUI'
 import { WidgetSelectImageUI } from './WidgetSelectImageUI'
 import { WidgetSelectManyUI } from './WidgetSelectManyUI'
 import { WidgetSelectOneUI } from './WidgetSelectOneUI'
 import { WigetSizeUI } from './WidgetSizeUI'
 import { WidgetDI } from './WidgetUI.DI'
-import { WidgetOptionalUI, Widget_optional } from '../widgets2/WidgetOptional'
+import { Widget_optional } from './optional/WidgetOptional'
+import { WidgetOptionalUI } from './optional/WidgetOptionalUI'
 import { Widget_list } from './list/WidgetList'
 
 /**
@@ -44,7 +47,7 @@ export const WidgetUI = observer(function WidgetUI_(p: {
     const widget = p.widget
     if (widget == null) return <>NULL</>
     if (widget instanceof R.Widget_seed)       return <WidgetSeedUI        widget={widget} />
-    if (widget instanceof Widget_number)       return <WidgetNumUI         widget={widget} />
+    if (widget instanceof Widget_number)       return <WidgetNumberUI         widget={widget} />
     if (widget instanceof Widget_string)       return <WidgetStringUI      widget={widget} />
     if (widget instanceof Widget_optional)     return <WidgetOptionalUI    widget={widget} />
     if (widget instanceof R.Widget_image)      return <WidgetSelectImageUI widget={widget} />

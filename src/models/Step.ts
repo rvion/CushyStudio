@@ -21,7 +21,7 @@ import { ManualPromise } from 'src/utils/misc/ManualPromise'
 import { DraftL } from './Draft'
 import { LiveRefOpt } from 'src/db/LiveRefOpt'
 import { getGlobalRuntimeCtx } from './_ctx2'
-import { Widget_group } from 'src/controls/widgets2/WidgetIGroup'
+import { Widget_group } from 'src/controls/widgets/group/WidgetIGroup'
 
 export type FormPath = (string | number)[]
 /** a thin wrapper around an app execution */

@@ -1,13 +1,11 @@
 import type { ComfySchemaL } from 'src/models/Schema'
-import type { FormBuilder } from '../FormBuilder'
-import type { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../IWidget'
+import type { FormBuilder } from '../../FormBuilder'
+import type { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../../IWidget'
 
 import { computed, makeObservable, observable } from 'mobx'
-import { observer } from 'mobx-react-lite'
 import { nanoid } from 'nanoid'
-import { Widget } from '../Widget'
-import { WidgetUI } from '../widgets/WidgetUI'
-import { WidgetDI } from '../widgets/WidgetUI.DI'
+import { Widget } from '../../Widget'
+import { WidgetDI } from '../WidgetUI.DI'
 
 // CONFIG
 export type Widget_optional_config<T extends Widget> = WidgetConfigFields<{
@@ -101,10 +99,3 @@ export class Widget_optional<T extends Widget> implements IWidget<Widget_string_
 
 // DI
 WidgetDI.Widget_optional = Widget_optional
-
-// UI
-export const WidgetOptionalUI = observer(function WidgetBoolUI_<T extends Widget>(p: { widget: Widget_optional<T> }) {
-    if (!p.widget.serial.active) return null
-    if (p.widget.child == null) return <>❌ ERROR: optional is active but no widget❓</>
-    return <WidgetUI widget={p.widget.child} />
-})

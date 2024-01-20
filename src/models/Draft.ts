@@ -10,7 +10,7 @@ import { SQLITE_true } from 'src/db/SQLITE_boolean'
 import { DraftT } from 'src/db/TYPES.gen'
 import { __FAIL, __OK, type Result } from 'src/types/Either'
 import { CushyAppL } from './CushyApp'
-import { Widget_group } from 'src/controls/widgets2/WidgetIGroup'
+import { Widget_group } from 'src/controls/widgets/group/WidgetIGroup'
 
 export type FormPath = (string | number)[]
 

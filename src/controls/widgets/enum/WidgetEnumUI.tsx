@@ -1,8 +1,8 @@
 import type { CleanedEnumResult } from 'src/types/EnumUtils'
-import type { ComfySchemaL, EnumName, EnumValue } from '../../models/Schema'
-import { EnumDefault, extractDefaultValue } from '../EnumDefault'
-import type { FormBuilder } from '../FormBuilder'
-import type { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../IWidget'
+import type { ComfySchemaL, EnumName, EnumValue } from '../../../models/Schema'
+import { EnumDefault, extractDefaultValue } from '../../EnumDefault'
+import type { FormBuilder } from '../../FormBuilder'
+import type { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../../IWidget'
 
 import { makeAutoObservable } from 'mobx'
 import { observer } from 'mobx-react-lite'
@@ -10,7 +10,7 @@ import { nanoid } from 'nanoid'
 import { SelectUI } from 'src/rsuite/SelectUI'
 import { Popover, Whisper } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
-import { WidgetDI } from '../widgets/WidgetUI.DI'
+import { WidgetDI } from '../WidgetUI.DI'
 
 // CONFIG
 export type Widget_enum_config<T extends KnownEnumNames> = WidgetConfigFields<{
