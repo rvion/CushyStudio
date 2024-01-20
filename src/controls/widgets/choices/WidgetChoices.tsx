@@ -111,7 +111,7 @@ export class Widget_choices<T extends BranchDefinitions> implements IWidget<Widg
         if (!this.children[branch]) throw new Error(`❌ Branch "${branch}" not enabled`)
         delete this.children[branch]
         // delete this.serial.values_[branch] // <- WE NEED TO KEEP THIS ONE UNLESS WE WANT TO DISCARD THE DRAFT
-        delete this.serial.branches[branch]
+        this.serial.branches[branch] = false
     }
 
     enableBranch(branch: keyof T & string) {
