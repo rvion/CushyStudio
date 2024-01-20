@@ -11,6 +11,7 @@ import { DraftT } from 'src/db/TYPES.gen'
 import { __FAIL, __OK, type Result } from 'src/types/Either'
 import { CushyAppL } from './CushyApp'
 import { Widget_group } from 'src/controls/widgets/group/WidgetGroup'
+import { MediaImageL } from './MediaImage'
 
 export type FormPath = (string | number)[]
 
@@ -79,7 +80,11 @@ export class DraftL {
      * a.k.a. "starting the app"
      * a.k.a. "executing the app"
      * */
-    start = (formValueOverride?: Maybe<any>): StepL => {
+    start = (
+        //
+        formValueOverride?: Maybe<any>,
+        imageToStartFrom?: MediaImageL,
+    ): StepL => {
         this.isDirty = false
         // ----------------------------------------
         // 🔴 2023-11-30 rvion:: TEMPORPARY HACKS
@@ -128,7 +133,7 @@ export class DraftL {
             status: Status.New,
         })
         graph.update({ stepID: step.id }) // 🔶🔴
-        step.start({ formInstance: widget })
+        step.start({ formInstance: widget, imageToStartFrom })
         this.lastStarted = step
         void step.finished.then(() => {
             this.checkIfShouldRestart()

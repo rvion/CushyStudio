@@ -274,11 +274,17 @@ export class Runtime<FIELDS extends WidgetDict = any> {
         return createRandomGenerator(`${key}:${seed}`).randomItem(arr)
     }
 
+    imageToStartFrom: Maybe<MediaImageL> = null
+
     /**
      * @internal
      * execute the draft
      */
-    _EXECUTE = async (p: { formInstance: Widget_group<any> }): Promise<RuntimeExecutionResult> => {
+    _EXECUTE = async (p: {
+        //
+        formInstance: Widget_group<any>
+        imageToStartFrom?: Maybe<MediaImageL>
+    }): Promise<RuntimeExecutionResult> => {
         const start = Date.now()
         const executable = this.step.executable
         const appFormInput = this.step.data.formResult
@@ -286,6 +292,7 @@ export class Runtime<FIELDS extends WidgetDict = any> {
         this.formResult = appFormInput
         this.formSerial = appFormSerial
         this.formInstance = p.formInstance
+        this.imageToStartFrom = p.imageToStartFrom
 
         // console.log(`🔴 before: size=${this.graph.nodes.length}`)
         // console.log(`FORM RESULT: data=${JSON.stringify(this.step.data.formResult, null, 3)}`)
@@ -294,7 +301,7 @@ export class Runtime<FIELDS extends WidgetDict = any> {
                 console.log(`❌ action not found`)
                 return { type: 'error', error: 'action not found' }
             }
-            await executable.run(this, appFormInput)
+            await executable.run(this, appFormInput, p.imageToStartFrom)
             console.log(`🔴 after: size=${this.workflow.nodes.length}`)
             console.log('[✅] RUN SUCCESS')
             const duration = Date.now() - start

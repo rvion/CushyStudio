@@ -40,6 +40,7 @@ export class StepL {
          * the live form
          * */
         formInstance: Widget_group<any>
+        imageToStartFrom: Maybe<MediaImageL>
     }) => {
         // ensure we have an executable
         const executable = this.executable

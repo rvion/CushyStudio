@@ -4,7 +4,6 @@ import type { Runtime } from 'src/runtime/Runtime'
 import type { Widget } from '../controls/Widget'
 import type { AppMetadata } from './AppManifest'
 import type { MediaImageL } from 'src/models/MediaImage'
-import type { Widget_group } from 'src/controls/widgets/group/WidgetGroup'
 
 // ACTIONS ============================================================
 // 1. the main abstraction of cushy are actions.
@@ -27,9 +26,15 @@ export type App<FIELDS extends WidgetDict> = {
     ui: (form: FormBuilder) => FIELDS
 
     /** app execution logic */
-    run: (f: Runtime<FIELDS>, r: { [k in keyof FIELDS]: FIELDS[k]['$Output'] }) => void | Promise<void>
+    run: (
+        //
+        runtime: Runtime<FIELDS>,
+        formResult: { [k in keyof FIELDS]: FIELDS[k]['$Output'] },
+        starImage?: Maybe<MediaImageL>,
+    ) => void | Promise<void>
 
-    startFromImage?: (image: MediaImageL, form: Widget_group<FIELDS>) => void
+    /** if set to true, will register drafts to quick action in image context menu */
+    canStartFromImage?: boolean
 
     /** the list of dependencies user can specify */
     metadata?: AppMetadata

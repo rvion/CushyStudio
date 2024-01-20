@@ -58,6 +58,27 @@ export const ImageDropdownMenuUI = observer(function ImageDropdownMenuUI_(p: { i
                     Paint
                 </div>
             </MenuItem>
+            {st.favoriteApps.map((appID) => {
+                const app = st.db.cushy_apps.get(appID)
+                if (app == null) return <>app {appID} not found</>
+                if (app.executable == null) return <>app {app.name} has no executable</>
+                if (!app.executable.canBeStartedFromImage) return null
+                return (
+                    <div key={app.id}>
+                        {app.drafts.map((d) => (
+                            <div
+                                tw='btn btn-sm'
+                                onClick={() => {
+                                    d.start(null, img)
+                                }}
+                                key={d.id}
+                            >
+                                start {d.name}
+                            </div>
+                        ))}
+                    </div>
+                )
+            })}
         </>
     )
 })

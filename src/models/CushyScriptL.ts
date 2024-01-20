@@ -12,7 +12,7 @@ import { CushyAppL } from './CushyApp'
 import { Executable } from './Executable'
 import { runInAction } from 'mobx'
 import { toastInfo } from 'src/utils/misc/toasts'
-import { getCurrentForm, getCurrentRun } from './_ctx2'
+import { getCurrentForm_IMPL, getCurrentRun_IMPL } from './_ctx2'
 // import { LazyValue } from 'src/db/LazyValue'
 
 export interface CushyScriptL extends LiveInstance<CushyScriptT, CushyScriptL> {}
@@ -153,8 +153,8 @@ export class CushyScriptL {
                 registerAppFn,
                 //
                 CUSHY_IMPORT,
-                getCurrentForm,
-                getCurrentRun,
+                getCurrentForm_IMPL,
+                getCurrentRun_IMPL,
             )
 
             // 2.3. return all apps

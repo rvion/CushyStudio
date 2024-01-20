@@ -21,6 +21,7 @@ import { DraftL } from './Draft'
 import { StepL } from './Step'
 import { lookup } from 'mime-types'
 import { asSTRING_orCrash } from 'src/utils/misc/bang'
+import { getCurrentRun_IMPL } from './_ctx2'
 
 export type ImageInfos_ComfyGenerated = {
     comfyHostHttpURL: string
@@ -103,14 +104,20 @@ export class MediaImageL {
         return finalName
     }
 
-    uploadAndloadAsImage = async (graph: ComfyWorkflowL): Promise<LoadImage> => {
+    uploadAndloadAsImage = async (workflow_?: ComfyWorkflowL): Promise<LoadImage> => {
+        const workflow = workflow_ ?? getCurrentRun_IMPL().workflow
         const enumName = await this.uploadAndReturnEnumName()
-        const img = graph.builder.LoadImage({ image: enumName })
+        const img = workflow.builder.LoadImage({ image: enumName })
         return img
     }
-    uploadAndloadAsMask = async (graph: ComfyWorkflowL, channel: Enum_LoadImageMask_channel): Promise<LoadImageMask> => {
+    uploadAndloadAsMask = async (
+        //
+        channel: Enum_LoadImageMask_channel,
+        workflow_?: ComfyWorkflowL,
+    ): Promise<LoadImageMask> => {
+        const workflow = workflow_ ?? getCurrentRun_IMPL().workflow
         const enumName = await this.uploadAndReturnEnumName()
-        const mask: LoadImageMask = graph.builder.LoadImageMask({ image: enumName, channel })
+        const mask: LoadImageMask = workflow.builder.LoadImageMask({ image: enumName, channel })
         return mask
     }
 

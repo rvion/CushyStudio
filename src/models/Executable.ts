@@ -21,6 +21,10 @@ export class Executable {
         return this.def.run
     }
 
+    get canBeStartedFromImage() {
+        return this.def.canStartFromImage ?? false
+    }
+
     get metadata(): Maybe<AppMetadata> {
         return this.def.metadata
     }

@@ -10,7 +10,6 @@ import { run_cnet_IPAdapter, ui_subform_IPAdapter } from './ControlNet/ipAdapter
 import { run_cnet_Scribble, ui_subform_Scribble } from './ControlNet/prefab_cnet_scribble'
 import { run_cnet_Lineart, ui_subform_Lineart } from './ControlNet/prefab_cnet_lineart'
 import { run_cnet_SoftEdge, ui_subform_SoftEdge } from './ControlNet/prefab_cnet_softEdge'
-import { getCurrentForm } from '../../../src/models/_ctx2'
 import { bang } from 'src/utils/misc/bang'
 import { run_cnet_Sketch, ui_subform_Sketch } from './ControlNet/prefab_cnet_sketch'
 import type { SDModelType } from 'src/controls/widgets/size/WidgetSizeTypes'
