@@ -30,7 +30,6 @@ export let WidgetDI = {
     Widget_matrix: 0 as any as typeof R.Widget_matrix,
     Widget_loras: 0 as any as typeof R.Widget_loras,
     Widget_image: 0 as any as typeof R.Widget_image,
-    Widget_imageOpt: 0 as any as typeof R.Widget_imageOpt,
     Widget_selectMany: 0 as any as typeof R.Widget_selectMany,
     Widget_selectOne: 0 as any as typeof R.Widget_selectOne,
     Widget_list: 0 as any as typeof R.Widget_list,

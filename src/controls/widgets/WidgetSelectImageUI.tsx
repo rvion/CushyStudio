@@ -1,7 +1,6 @@
 import { runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
-import { Widget_image, Widget_imageOpt } from 'src/controls/Widget'
-import { Button } from 'src/rsuite/shims'
+import { Widget_image } from 'src/controls/Widget'
 import { useSt } from '../../state/stateContext'
 import { ImageUI } from '../../widgets/galleries/ImageUI'
 import { useImageDrop } from '../../widgets/galleries/dnd'
@@ -13,7 +12,7 @@ enum Tab {
     Scribble = 2,
     Asset = 3,
 }
-export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: { widget: Widget_image | Widget_imageOpt }) {
+export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: { widget: Widget_image }) {
     const widget = p.widget
     const st = useSt()
     const [dropStyle, dropRef] = useImageDrop(st, (i) => {
@@ -34,11 +33,11 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: { w
             {widget.state.imageID != null ? ( //
                 <div tw='flex items-start'>
                     <ImageUI tw='virtualBorder' size={'5rem'} img={draft.db.media_images.getOrThrow(widget.state.imageID)} />
-                    {widget instanceof Widget_imageOpt ? (
+                    {/* {widget instanceof Widget_imageOpt ? (
                         <Button size='sm' onClick={() => (widget.state.active = false)}>
                             X
                         </Button>
-                    ) : null}
+                    ) : null} */}
                 </div>
             ) : (
                 <div>

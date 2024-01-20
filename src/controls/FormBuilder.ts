@@ -60,6 +60,14 @@ export class FormBuilder {
             widget: () => new Widget_number(this, this.schema, { mode: 'float', ...opts }),
         })
 
+    image = (opts: W.Widget_image_config) => new W.Widget_image(this, this.schema, opts)
+    imageOpt = (opts: W.Widget_image_config & { startActive?: boolean }) =>
+        this.optional({
+            label: opts.label,
+            startActive: opts.startActive,
+            widget: () => new W.Widget_image(this, this.schema, opts),
+        })
+
     // --------------------
     color     = (opts: Widget_color_config)       => new Widget_color(this, this.schema, opts) // prettier-ignore
     size      = (opts: W.Widget_size_config)      => new W.Widget_size(this, this.schema, opts) // prettier-ignore
@@ -72,11 +80,10 @@ export class FormBuilder {
 
     inlineRun = (opts: W.Widget_inlineRun_config) => new W.Widget_inlineRun(this, this.schema, opts)
     loras = (opts: W.Widget_loras_config) => new W.Widget_loras(this, this.schema, opts)
-    image = (opts: W.Widget_image_config) => new W.Widget_image(this, this.schema, opts)
+
     markdown = (opts: W.Widget_markdown_config | string) =>
         new W.Widget_markdown(this, this.schema, typeof opts === 'string' ? { markdown: opts } : opts)
     custom = <TViewState>(opts: W.Widget_custom_config<TViewState>) => new W.Widget_custom<TViewState>(this, this.schema, opts)
-    imageOpt = (opts: W.Widget_imageOpt_config) => new W.Widget_imageOpt(this, this.schema, opts)
     enum = <const T extends KnownEnumNames>(p: W.Widget_enum_config<T>) => new W.Widget_enum(this, this.schema, p)
     enumOpt = <const T extends KnownEnumNames>(p: W.Widget_enumOpt_config<T>) => new W.Widget_enumOpt(this, this.schema, p)
     list = <const T extends W.Widget>(p: W.Widget_list_config<T>) => new W.Widget_list(this, this.schema, p)
@@ -137,7 +144,6 @@ export class FormBuilder {
         if (type === 'promptOpt') return new W.Widget_promptOpt(this, this.schema, input, serial)
         if (type === 'loras') return new W.Widget_loras(this, this.schema, input, serial)
         if (type === 'image') return new W.Widget_image(this, this.schema, input, serial)
-        if (type === 'imageOpt') return new W.Widget_imageOpt(this, this.schema, input, serial)
         if (type === 'enum') return new W.Widget_enum(this, this.schema, input, serial)
         if (type === 'enumOpt') return new W.Widget_enumOpt(this, this.schema, input, serial)
         if (type === 'list') return new W.Widget_list(this, this.schema, input, serial)

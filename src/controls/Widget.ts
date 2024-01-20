@@ -55,7 +55,6 @@ export type Widget =
     | Widget_enum<any>
     | Widget_enumOpt<any>
     /* 🗑️ */ | Widget_promptOpt
-    /* 🗑️ */ | Widget_imageOpt
 
 // 🅿️ orbit ==============================================================================
 const inRange = (val: number, min:number,max:number, margin:number=0) => {
@@ -640,41 +639,6 @@ export class Widget_image implements IWidget_OLD<'image', Widget_image_config, W
     }
 }
 
-// 🅿️ imageOpt ==============================================================================
-export type Widget_imageOpt_config  = Widget_image_config // same as image
-export type Widget_imageOpt_serial = Widget_imageOpt_state
-export type Widget_imageOpt_state  = WidgetSerialFields<ImageAnswerForm<'imageOpt', boolean>>
-export type Widget_imageOpt_output = Maybe<ImageAnswer>
-export interface Widget_imageOpt extends WidgetTypeHelpers_OLD<'imageOpt', Widget_imageOpt_config, Widget_imageOpt_serial, Widget_imageOpt_state, Widget_imageOpt_output> {}
-export class Widget_imageOpt implements IWidget_OLD<'imageOpt', Widget_imageOpt_config, Widget_imageOpt_serial, Widget_imageOpt_state, Widget_imageOpt_output> {
-    readonly isVerticalByDefault = false
-    readonly isCollapsible = false
-    readonly id: string
-    readonly type: 'imageOpt' = 'imageOpt'
-    state: Widget_imageOpt_state
-    constructor(
-        public builder: FormBuilder,
-        public schema: ComfySchemaL,
-        public config: Widget_imageOpt_config,
-        serial?: Widget_imageOpt_serial,
-    ) {
-        this.id = serial?.id ?? nanoid()
-        this.state = serial ?? {
-            type: 'imageOpt',
-            collapsed: config.startCollapsed,
-            id: this.id,
-            active: config.defaultActive ?? false,
-            imageID: this.schema.st.defaultImage.id,
-        }
-        makeAutoObservable(this)
-    }
-    get serial(): Widget_imageOpt_serial { return this.state }
-    get result(): Widget_imageOpt_output {
-        return { imageID: this.state.imageID ?? this.schema.st.defaultImage.id }
-
-    }
-}
-
 // 🅿️ selectOne ==============================================================================
 export type BaseSelectEntry = { id: string, label?: string }
 export type Widget_selectOne_config <T extends BaseSelectEntry>  = WidgetConfigFields<{ default?: T; choices: T[] | ((formRoot:Maybe<Widget_group<any>>) => T[]) }>
@@ -1066,11 +1030,10 @@ WidgetDI.Widget_size               = Widget_size
 WidgetDI.Widget_matrix             = Widget_matrix
 WidgetDI.Widget_loras              = Widget_loras
 WidgetDI.Widget_image              = Widget_image
-WidgetDI.Widget_imageOpt           = Widget_imageOpt
 WidgetDI.Widget_selectMany         = Widget_selectMany
 WidgetDI.Widget_selectOne          = Widget_selectOne
 WidgetDI.Widget_list               = Widget_list
-WidgetDI.Widget_group           = Widget_group
+WidgetDI.Widget_group              = Widget_group
 WidgetDI.Widget_choices            = Widget_choices
 WidgetDI.Widget_enum               = Widget_enum
 WidgetDI.Widget_enumOpt            = Widget_enumOpt
