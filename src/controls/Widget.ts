@@ -54,7 +54,6 @@ export type Widget =
     | Widget_choices<any>
     | Widget_enum<any>
     | Widget_enumOpt<any>
-    /* 🗑️ */ | Widget_promptOpt
 
 // 🅿️ orbit ==============================================================================
 const inRange = (val: number, min:number,max:number, margin:number=0) => {
@@ -280,53 +279,6 @@ export class Widget_prompt implements IWidget_OLD<'prompt', Widget_prompt_config
     }
 }
 
-// 🅿️ promptOpt ==============================================================================
-export type Widget_promptOpt_config  = WidgetConfigFields<{ default?: string | WidgetPromptOutput }>
-export type Widget_promptOpt_serial = Widget_promptOpt_state // { type: 'promptOpt'; active: boolean; /* text: string;*/ tokens: PossibleSerializedNodes[] }
-export type Widget_promptOpt_state  = WidgetSerialFields<{ type: 'promptOpt'; active: boolean; /* text: string;*/ tokens: PossibleSerializedNodes[] }>
-export type Widget_promptOpt_output = Maybe<WidgetPromptOutput>
-export interface Widget_promptOpt extends WidgetTypeHelpers_OLD<'promptOpt', Widget_promptOpt_config, Widget_promptOpt_serial, Widget_promptOpt_state, Widget_promptOpt_output> {}
-export class Widget_promptOpt implements IWidget_OLD<'promptOpt', Widget_promptOpt_config, Widget_promptOpt_serial, Widget_promptOpt_state, Widget_promptOpt_output> {
-    readonly isVerticalByDefault = true
-    readonly isCollapsible = true
-    readonly id: string
-    readonly type: 'promptOpt' = 'promptOpt'
-    state: Widget_promptOpt_state
-    constructor(
-        public readonly builder: FormBuilder,
-        public readonly schema: ComfySchemaL,
-        public readonly config: Widget_promptOpt_config,
-        serial?: Widget_promptOpt_serial,
-    ) {
-        this.id = serial?.id ?? nanoid()
-        if (serial) {
-            this.state = serial
-        } else {
-            this.state = {
-                type:'promptOpt',
-                collapsed: config.startCollapsed,
-                id: this.id,
-                active: false,
-                tokens: []
-            }
-            const def = config.default
-            if (def != null) {
-                if (typeof def === 'string') {
-                    this.state.active = true
-                    this.state.tokens = [{ type: 'text', text: def }]
-                }else {
-                    this.state.tokens = def.tokens
-                }
-            }
-        }
-        makeAutoObservable(this)
-    }
-    get serial(): Widget_promptOpt_serial { return this.state }
-    get result(): Widget_promptOpt_output {
-        if (this.state.active === false) return undefined
-        return this.state
-    }
-}
 
 // 🅿️ seed ==============================================================================
 export type Widget_seed_config  = WidgetConfigFields<{ default?: number; defaultMode?: 'randomize' | 'fixed' | 'last', min?: number; max?: number }>
@@ -1021,7 +973,6 @@ export class Widget_enumOpt<T extends KnownEnumNames> implements IWidget_OLD<'en
 
 
 WidgetDI.Widget_prompt             = Widget_prompt
-WidgetDI.Widget_promptOpt          = Widget_promptOpt
 WidgetDI.Widget_seed               = Widget_seed
 WidgetDI.Widget_inlineRun          = Widget_inlineRun
 WidgetDI.Widget_markdown           = Widget_markdown

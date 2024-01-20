@@ -19,7 +19,6 @@ export let WidgetDI = {
     Widget_color: 0 as any as typeof Widget_color,
     Widget_str: 0 as any as typeof Widget_str,
     Widget_prompt: 0 as any as typeof R.Widget_prompt,
-    Widget_promptOpt: 0 as any as typeof R.Widget_promptOpt,
     Widget_seed: 0 as any as typeof R.Widget_seed,
     Widget_number: 0 as any as typeof Widget_number,
     Widget_bool: 0 as any as typeof Widget_bool,

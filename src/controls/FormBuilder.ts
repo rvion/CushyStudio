@@ -69,11 +69,18 @@ export class FormBuilder {
         })
 
     // --------------------
+    prompt    = (opts: W.Widget_prompt_config)    => new W.Widget_prompt(this, this.schema, opts) // prettier-ignore
+    promptOpt = (opts: W.Widget_prompt_config & { startActive?: boolean }) =>
+        this.optional({
+            label: opts.label,
+            startActive: opts.startActive,
+            widget: () => new W.Widget_prompt(this, this.schema, opts),
+        })
+
+    // --------------------
     color     = (opts: Widget_color_config)       => new Widget_color(this, this.schema, opts) // prettier-ignore
     size      = (opts: W.Widget_size_config)      => new W.Widget_size(this, this.schema, opts) // prettier-ignore
     orbit     = (opts: W.Widget_orbit_config)     => new W.Widget_orbit(this, this.schema, opts) // prettier-ignore
-    prompt    = (opts: W.Widget_prompt_config)    => new W.Widget_prompt(this, this.schema, opts) // prettier-ignore
-    promptOpt = (opts: W.Widget_promptOpt_config) => new W.Widget_promptOpt(this, this.schema, opts) // prettier-ignore
     seed      = (opts: W.Widget_seed_config)      => new W.Widget_seed(this, this.schema, opts) // prettier-ignore
 
     matrix = (opts: W.Widget_matrix_config) => new W.Widget_matrix(this, this.schema, opts)
@@ -141,7 +148,6 @@ export class FormBuilder {
         if (type === 'seed') return new W.Widget_seed(this, this.schema, input, serial)
         if (type === 'matrix') return new W.Widget_matrix(this, this.schema, input, serial)
         if (type === 'prompt') return new W.Widget_prompt(this, this.schema, input, serial)
-        if (type === 'promptOpt') return new W.Widget_promptOpt(this, this.schema, input, serial)
         if (type === 'loras') return new W.Widget_loras(this, this.schema, input, serial)
         if (type === 'image') return new W.Widget_image(this, this.schema, input, serial)
         if (type === 'enum') return new W.Widget_enum(this, this.schema, input, serial)

@@ -23,7 +23,7 @@ import { $createWildcardNode, WildcardNode } from './nodes/wildcards/WildcardNod
 // plugins
 import { toJS } from 'mobx'
 import { useMemo } from 'react'
-import { Widget_prompt, Widget_promptOpt } from 'src/controls/Widget'
+import { Widget_prompt } from 'src/controls/Widget'
 import { $createActionNode, ActionNode } from './nodes/actions/ActionNode'
 import { $createUserNode, UserNode } from './nodes/usertags/UserNode'
 import { CopyPastePlugin } from './CopyPastePlugin'
@@ -40,7 +40,7 @@ export type WidgetPromptOutput = {
     tokens: PossibleSerializedNodes[]
 }
 
-export const WidgetPromptUI = observer((p: { widget: Widget_prompt | Widget_promptOpt }) => {
+export const WidgetPromptUI = observer((p: { widget: Widget_prompt }) => {
     const st = useSt()
     const widget = p.widget
     const cs = useMemo(
@@ -160,7 +160,7 @@ export const WidgetPromptUI = observer((p: { widget: Widget_prompt | Widget_prom
 // LexicalOnChangePlugin!
 function onChange(
     //
-    req: Widget_prompt | Widget_promptOpt,
+    req: Widget_prompt,
     editorState: EditorState,
 ) {
     editorState.read(() => {
@@ -171,7 +171,7 @@ function onChange(
         if (txt) {
             // req.state.text = txt
             req.state.tokens = getFinalJSON(editorState).items
-            if (req instanceof Widget_promptOpt) req.state.active = true
+            // if (req instanceof Widget_promptOpt) req.state.active = true
         } else {
             req.state.tokens = getFinalJSON(editorState).items
         }

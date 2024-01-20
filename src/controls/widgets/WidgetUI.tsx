@@ -54,7 +54,6 @@ export const WidgetUI = observer(function WidgetUI_(p: {
     if (widget instanceof Widget_bool)                 return <WidgetBoolUI        widget={widget} />
     if (widget instanceof R.Widget_inlineRun)          return <WidgetInlineRunUI   widget={widget} />
     if (widget instanceof R.Widget_prompt)             return <WidgetPromptUI      widget={widget} />
-    if (widget instanceof R.Widget_promptOpt)          return <WidgetPromptUI      widget={widget} />
     if (widget instanceof R.Widget_loras)              return <WidgetLorasUI       widget={widget} />
     if (widget instanceof Widget_color)                return <WidgetColorUI       widget={widget} />
     if (widget instanceof R.Widget_selectOne)          return <WidgetSelectOneUI   widget={widget} />
