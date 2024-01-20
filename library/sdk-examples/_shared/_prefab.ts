@@ -11,10 +11,10 @@ import type { FormBuilder } from 'src/controls/FormBuilder'
 export const ui_startImage = (form: FormBuilder) =>
     form.group({
         items: () => ({
-            startImage: form.imageOpt({ group: 'latent' }),
-            width: form.int({ default: 512, group: 'latent', step: 128, min: 128, max: 4096 }),
-            height: form.int({ default: 512, group: 'latent', step: 128, min: 128, max: 4096 }),
-            batchSize: form.int({ default: 1, group: 'latent', min: 1, max: 20 }),
+            startImage: form.imageOpt({}),
+            width: form.int({ default: 512, step: 128, min: 128, max: 4096 }),
+            height: form.int({ default: 512, step: 128, min: 128, max: 4096 }),
+            batchSize: form.int({ default: 1, min: 1, max: 20 }),
         }),
     })
 
@@ -26,13 +26,13 @@ export const ui_startImage = (form: FormBuilder) =>
 // EXAMPLE 1. () => ({ a: 1 })
 // EXAMPLE 2. () => ({ a: 1 })
 export const subform_someFields1 = (form: FormBuilder) => ({
-    startImage: form.imageOpt({ group: 'latent' }),
-    width: form.int({ default: 512, group: 'latent', step: 128, min: 128, max: 4096 }),
-    height: form.int({ default: 512, group: 'latent', step: 128, min: 128, max: 4096 }),
-    batchSize: form.int({ default: 1, group: 'latent', min: 1, max: 20 }),
+    startImage: form.imageOpt({}),
+    width: form.int({ default: 512, step: 128, min: 128, max: 4096 }),
+    height: form.int({ default: 512, step: 128, min: 128, max: 4096 }),
+    batchSize: form.int({ default: 1, min: 1, max: 20 }),
 })
 
 export const subform_someFields2 = (form: FormBuilder) => ({
-    X: form.int({ default: 512, group: 'latent', step: 128, min: 128, max: 4096 }),
-    Y: form.int({ default: 512, group: 'latent', step: 128, min: 128, max: 4096 }),
+    X: form.int({ default: 512, step: 128, min: 128, max: 4096 }),
+    Y: form.int({ default: 512, step: 128, min: 128, max: 4096 }),
 })

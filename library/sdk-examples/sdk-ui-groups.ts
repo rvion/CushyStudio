@@ -3,24 +3,24 @@ app({
     ui: (form) => ({
         nesstedGroups: form.group({
             items: () => ({
-                Jack: form.str({ default: 'gold, Knight', group: 'illusration' }),
+                Jack: form.str({ default: 'gold, Knight' }),
                 AAAAA: form.group({
                     items: () => ({
-                        Jack: form.str({ default: 'gold, Knight', group: 'illusration' }),
+                        Jack: form.str({ default: 'gold, Knight' }),
                         foo: form.group({
                             layout: 'H',
                             items: () => ({
-                                Jack: form.str({ default: 'gold, Knight', group: 'illusration' }),
-                                Queen: form.str({ default: 'gold, Queen', group: 'illusration' }),
-                                King: form.str({ default: 'gold, King', group: 'illusration' }),
+                                Jack: form.str({ default: 'gold, Knight' }),
+                                Queen: form.str({ default: 'gold, Queen' }),
+                                King: form.str({ default: 'gold, King' }),
                             }),
                         }),
-                        Queen: form.str({ default: 'gold, Queen', group: 'illusration' }),
-                        King: form.str({ default: 'gold, King', group: 'illusration' }),
+                        Queen: form.str({ default: 'gold, Queen' }),
+                        King: form.str({ default: 'gold, King' }),
                     }),
                 }),
-                Queen: form.str({ default: 'gold, Queen', group: 'illusration' }),
-                King: form.str({ default: 'gold, King', group: 'illusration' }),
+                Queen: form.str({ default: 'gold, Queen' }),
+                King: form.str({ default: 'gold, King' }),
             }),
         }),
     }),

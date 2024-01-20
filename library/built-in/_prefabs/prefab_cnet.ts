@@ -31,7 +31,6 @@ export const ui_cnet = () => {
                         label: 'Controlnet Image',
                         items: () => ({
                             image: form.image({
-                                group: 'Cnet_Image',
                                 tooltip:
                                     'There is currently a bug with multiple controlnets where an image wont allow drop except for the first controlnet in the list. If you add multiple controlnets, then reload using Ctrl+R, it should allow you to drop an image on any of the controlnets.',
                             }),
@@ -68,16 +67,14 @@ export const cnet_ui_common = (form: FormBuilder) => ({
             startAtStepPercent: form.float({ default: 0, min: 0, max: 1, step: 0.1 }),
             endAtStepPercent: form.float({ default: 1, min: 0, max: 1, step: 0.1 }),
             crop: form.enum({
+                label: 'Image Prep Crop mode',
                 enumName: 'Enum_LatentUpscale_crop',
                 default: 'disabled',
-                group: 'ControlNet',
-                label: 'Image Prep Crop mode',
             }),
             upscale_method: form.enum({
+                label: 'Scale method',
                 enumName: 'Enum_ImageScale_upscale_method',
                 default: 'lanczos',
-                group: 'ControlNet',
-                label: 'Scale method',
             }),
         }),
     }),

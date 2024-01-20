@@ -4,14 +4,12 @@ app({
         model: form.enum({
             enumName: 'Enum_CheckpointLoaderSimple_ckpt_name',
             default: 'revAnimated_v122.safetensors',
-            group: 'model',
         }),
-        vae: form.enumOpt({ enumName: 'Enum_VAELoader_vae_name', group: 'model' }),
+        vae: form.enumOpt({ enumName: 'Enum_VAELoader_vae_name' }),
         clipSkip: form.int({
             label: 'Clip Skip',
             tooltip: 'same as ClipSetLastLayer; you can use both positive and negative values',
             default: 0,
-            group: 'model',
         }),
 
         // prompt
@@ -19,20 +17,20 @@ app({
         negative: form.promptOpt({}),
 
         // latent
-        strength: form.float({ default: 0.9, group: 'latent', min: 0, max: 1, step: 0.1 }),
+        strength: form.float({ default: 0.9, min: 0, max: 1, step: 0.1 }),
         cnet: form.enum({ enumName: 'Enum_ControlNetLoader_control_net_name', default: 'control_scribble-fp16.safetensors' }),
-        startImage: form.image({ group: 'latent' }),
-        // width: form.int({ default: 1024, group: 'latent' }),
-        // height: form.int({ default: 1024, group: 'latent' }),
-        batchSize: form.int({ default: 1, group: 'latent', min: 1 }),
+        startImage: form.image({}),
+        // width: form.int({ default: 1024,}),
+        // height: form.int({ default: 1024,}),
+        batchSize: form.int({ default: 1, min: 1 }),
 
         //
-        CFG: form.int({ default: 8, group: 'sampler' }),
-        sampler: form.enum({ enumName: 'Enum_KSampler_sampler_name', default: 'dpmpp_2m_sde', group: 'sampler' }),
-        scheduler: form.enum({ enumName: 'Enum_KSampler_scheduler', default: 'karras', group: 'sampler' }),
-        denoise: form.float({ default: 1, group: 'sampler' }),
-        steps: form.int({ default: 20, group: 'sampler', min: 5, max: 40 }),
-        seed: form.seed({ group: 'sampler' }),
+        CFG: form.int({ default: 8 }),
+        sampler: form.enum({ enumName: 'Enum_KSampler_sampler_name', default: 'dpmpp_2m_sde' }),
+        scheduler: form.enum({ enumName: 'Enum_KSampler_scheduler', default: 'karras' }),
+        denoise: form.float({ default: 1 }),
+        steps: form.int({ default: 20, min: 5, max: 40 }),
+        seed: form.seed({}),
 
         // startImage
         removeBG: form.bool({ default: false }),

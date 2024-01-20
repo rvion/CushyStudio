@@ -23,11 +23,7 @@ app({
             default: [],
         }),
         // [UI] SIZES --------------------------------------
-        size: form.size({
-            //
-            default: { modelType: 'SD1.5 512', aspectRatio: '16:9' },
-            group: 'size',
-        }),
+        size: form.size({ default: { modelType: 'SD1.5 512', aspectRatio: '16:9' } }),
         logoSize: form.int({ default: 120, min: 20, max: 1000 }),
 
         // [UI] MODEL --------------------------------------
@@ -53,19 +49,19 @@ app({
             layout: 'H',
             // className: 'p-2 bg-red-800',
             items: () => ({
-                Jack: form.str({ default: 'gold, Knight', group: 'illusration' }),
-                Queen: form.str({ default: 'gold, Queen', group: 'illusration' }),
-                King: form.str({ default: 'gold, King', group: 'illusration' }),
+                Jack: form.str({ default: 'gold, Knight' }),
+                Queen: form.str({ default: 'gold, Queen' }),
+                King: form.str({ default: 'gold, King' }),
             }),
         }),
 
         // [UI] THEME --------------------------------------
         themes: form.group({
             items: () => ({
-                spades: form.string({ default: 'underwater, sea, fish, tentacles, ocean', group: 'theme' }),
-                hearts: form.string({ default: 'volcanic, lava, rock, fire', group: 'theme' }),
-                clubs: form.string({ default: 'forest, nature, branches, trees', group: 'theme' }),
-                diamonds: form.string({ default: 'snow, ice, mountain, transparent winter', group: 'theme' }),
+                spades: form.string({ default: 'underwater, sea, fish, tentacles, ocean' }),
+                hearts: form.string({ default: 'volcanic, lava, rock, fire' }),
+                clubs: form.string({ default: 'forest, nature, branches, trees' }),
+                diamonds: form.string({ default: 'snow, ice, mountain, transparent winter' }),
             }),
         }),
 
@@ -78,7 +74,7 @@ app({
             }),
         }),
 
-        // theme5: form.string({ default: 'winter', group: 'theme' }),
+        // theme5: form.string({ default: 'winter', }),
 
         // [UI] BORDERS ------------------------------------
         background: form.group({

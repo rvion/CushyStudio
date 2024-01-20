@@ -64,14 +64,12 @@ export type WidgetConfigFields<X> = X & {
     label?: string | false
     // labelPos?: LabelPos
     layout?: 'H' | 'V'
-    group?: string
     tooltip?: string
     i18n?: { [key: string]: string }
     className?: string
     startCollapsed?: boolean
     showID?: boolean
     recommandedModels?: RecommendedModelDownload
-    // summary?: (self: X) => string
     customNodesByTitle?: ComfyUIManagerKnownCustomNode_Title | ComfyUIManagerKnownCustomNode_Title[]
     customNodesByURI?: ComfyUIManagerKnownCustomNode_Files | ComfyUIManagerKnownCustomNode_Files[]
     customNodesByNameInCushy?: KnownInstallableCustomNodeCushyName | KnownInstallableCustomNodeCushyName[]

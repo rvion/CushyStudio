@@ -9,7 +9,7 @@ app({
         preText: form.str({
             default: ' (Masterpiece, best quality:1.2), closeup, close-up, a girl in a forest',
         }),
-        seed: form.intOpt({ group: 'sampler' }),
+        seed: form.intOpt({}),
         timeline: form.timeline({
             width: TOTAL_DURATION,
             height: 2,
@@ -30,7 +30,7 @@ app({
         //     ].join('\n'),
         // }),
         removeBG: form.bool({ default: false }),
-        samplerSteps: form.int({ default: 20, group: 'sampler' }),
+        samplerSteps: form.int({ default: 20 }),
         // frames: form.int({ default: 16, group: 'video' }),
     }),
     run: async (run, ui) => {

@@ -7,11 +7,11 @@ export const ui_latent = () => {
     return form.group({
         label: 'Start from',
         items: () => ({
-            image: form.imageOpt({ group: 'latent' }),
-            batchSize: form.int({ default: 1, group: 'latent', min: 1, max: 8 }),
+            image: form.imageOpt({}),
+            batchSize: form.int({ default: 1, min: 1, max: 8 }),
             size: form.size({}),
-            // width: form.int({ default: 512, group: 'latent', step: 128, min: 128, max: 4096 }),
-            // height: form.int({ default: 768, group: 'latent', step: 128, min: 128, max: 4096 }),
+            // width: form.int({ default: 512,  step: 128, min: 128, max: 4096 }),
+            // height: form.int({ default: 768,  step: 128, min: 128, max: 4096 }),
         }),
     })
 }

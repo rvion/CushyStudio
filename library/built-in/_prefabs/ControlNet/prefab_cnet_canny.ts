@@ -12,6 +12,7 @@ export const ui_subform_Canny = () => {
             ...cnet_ui_common(form),
             preprocessor: ui_subform_Canny_Preprocessor(form),
             cnet_model_name: form.enum({
+                label: 'Model',
                 enumName: 'Enum_ControlNetLoader_control_net_name',
                 default: { value: 'control_v11p_sd15_canny.pth' },
                 recommandedModels: {
@@ -23,8 +24,6 @@ export const ui_subform_Canny = () => {
                         'kohya-ss/ControlNet-LLLite: SDXL Canny Anime',
                     ],
                 },
-                group: 'Controlnet',
-                label: 'Model',
             }),
         }),
     })

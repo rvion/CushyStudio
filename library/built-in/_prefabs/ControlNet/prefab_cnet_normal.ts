@@ -11,11 +11,10 @@ export const ui_subform_Normal = () => {
             ...cnet_ui_common(form),
             preprocessor: ui_subform_Normal_Preprocessor(),
             cnet_model_name: form.enum({
+                label: 'Model',
                 enumName: 'Enum_ControlNetLoader_control_net_name',
                 default: { value: 'control_v11p_sd15_normalbae.pth' },
                 recommandedModels: { knownModel: ['ControlNet-v1-1 (normalbae; fp16)'] },
-                group: 'Controlnet',
-                label: 'Model',
             }),
         }),
     })

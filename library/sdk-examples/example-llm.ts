@@ -14,7 +14,6 @@ app({
         ckpt_name: ui.enum({
             enumName: 'Enum_CheckpointLoaderSimple_ckpt_name',
             default: 'revAnimated_v122.safetensors',
-            group: 'Model',
             label: 'Checkpoint',
         }),
     }),

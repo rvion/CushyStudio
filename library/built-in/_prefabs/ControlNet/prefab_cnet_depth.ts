@@ -12,6 +12,7 @@ export const ui_subform_Depth = () => {
             ...cnet_ui_common(form),
             preprocessor: ui_subform_Depth_Preprocessor(),
             cnet_model_name: form.enum({
+                label: 'Model',
                 enumName: 'Enum_ControlNetLoader_control_net_name',
                 default: { value: 't2iadapter_canny_sd14v1.pth' },
                 recommandedModels: {
@@ -23,8 +24,6 @@ export const ui_subform_Depth = () => {
                         'controlnet-SargeZT/controlnet-sd-xl-1.0-depth-16bit-zoe',
                     ],
                 },
-                group: 'Controlnet',
-                label: 'Model',
             }),
         }),
     })

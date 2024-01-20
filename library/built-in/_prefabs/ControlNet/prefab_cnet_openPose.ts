@@ -12,13 +12,12 @@ export const ui_subform_OpenPose = () => {
             ...cnet_ui_common(form),
             preprocessor: ui_subform_OpenPose_Preprocessor(form),
             cnet_model_name: form.enum({
+                label: 'Model',
                 enumName: 'Enum_ControlNetLoader_control_net_name',
                 default: { value: 't2iadapter_openpose_sd14v1.pth' },
                 recommandedModels: {
                     knownModel: ['T2I-Adapter (openpose)', 'ControlNet-v1-1 (openpose; fp16)', 'SDXL-controlnet: OpenPose (v2)'],
                 },
-                group: 'Controlnet',
-                label: 'Model',
             }),
         }),
     })
@@ -38,16 +37,14 @@ export const ui_subform_OpenPose_Preprocessor = (form: FormBuilder) => {
                     detect_hand: form.bool({ default: true }),
                     useDWPose: form.bool({ default: true }),
                     bbox_detector: form.enum({
+                        label: 'Model',
                         enumName: 'Enum_DWPreprocessor_bbox_detector',
                         default: 'yolox_l.onnx',
-                        group: 'DW Pose',
-                        label: 'Model',
                     }),
                     pose_estimator: form.enum({
+                        label: 'Model',
                         enumName: 'Enum_DWPreprocessor_pose_estimator',
                         default: 'dw-ll_ucoco_384.onnx',
-                        group: 'DW Pose',
-                        label: 'Model',
                     }),
                     // TODO: Add support for auto-modifying the resolution based on other form selections
                     // TODO: Add support for auto-cropping
