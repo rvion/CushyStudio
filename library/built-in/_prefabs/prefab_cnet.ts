@@ -13,7 +13,7 @@ import { run_cnet_SoftEdge, ui_subform_SoftEdge } from './ControlNet/prefab_cnet
 import { getCurrentForm } from '../../../src/models/_ctx2'
 import { bang } from 'src/utils/misc/bang'
 import { run_cnet_Sketch, ui_subform_Sketch } from './ControlNet/prefab_cnet_sketch'
-import type { SDModelType } from 'src/controls/misc/InfoAnswer'
+import type { SDModelType } from 'src/controls/widgets/size/WidgetSizeTypes'
 import { run_cnet_IPAdapterFaceID, ui_IPAdapterFaceID } from './ControlNet/ipAdapter/prefab_ipAdapter_face'
 
 // 🅿️ CNET UI -----------------------------------------------------------

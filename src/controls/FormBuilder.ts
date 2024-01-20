@@ -16,6 +16,7 @@ import { Widget_enum, type Widget_enum_config } from './widgets/enum/WidgetEnum'
 import { Widget_list, type Widget_list_config } from './widgets/list/WidgetList'
 import { Widget_listExt, type Widget_listExt_config } from './widgets/listExt/WidgetListExt'
 import { Widget_prompt, type Widget_prompt_config } from './widgets/prompt/WidgetPrompt'
+import { Widget_size, Widget_size_config } from './widgets/size/WidgetSize'
 
 export class FormBuilder {
     /** (@internal) don't call this yourself */
@@ -96,7 +97,7 @@ export class FormBuilder {
     // --------------------
 
     color     = (opts: Widget_color_config)       => new Widget_color(this, opts) // prettier-ignore
-    size      = (opts: W.Widget_size_config)      => new W.Widget_size(this, opts) // prettier-ignore
+    size      = (opts: Widget_size_config)      => new Widget_size(this, opts) // prettier-ignore
     orbit     = (opts: Widget_orbit_config)     => new Widget_orbit(this, opts) // prettier-ignore
     seed      = (opts: W.Widget_seed_config)      => new W.Widget_seed(this, opts) // prettier-ignore
 
@@ -168,7 +169,7 @@ export class FormBuilder {
         if (type === 'image') return new W.Widget_image(this, input, serial)
         if (type === 'selectOne') return new W.Widget_selectOne(this, input, serial)
         if (type === 'selectMany') return new W.Widget_selectMany(this, input, serial)
-        if (type === 'size') return new W.Widget_size(this, input, serial)
+        if (type === 'size') return new Widget_size(this, input, serial)
         if (type === 'markdown') return new W.Widget_markdown(this, input, serial)
         if (type === 'custom') return new W.Widget_custom(this, input, serial)
 

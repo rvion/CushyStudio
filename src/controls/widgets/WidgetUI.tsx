@@ -31,13 +31,14 @@ import { WidgetSeedUI } from './WidgetSeedUI'
 import { WidgetSelectImageUI } from './WidgetSelectImageUI'
 import { WidgetSelectManyUI } from './WidgetSelectManyUI'
 import { WidgetSelectOneUI } from './WidgetSelectOneUI'
-import { WigetSizeUI } from './WidgetSizeUI'
+import { WigetSizeUI } from './size/WidgetSizeUI'
 import { WidgetDI } from './WidgetUI.DI'
 import { Widget_optional } from './optional/WidgetOptional'
 import { WidgetOptionalUI } from './optional/WidgetOptionalUI'
 import { Widget_list } from './list/WidgetList'
 import { Widget_listExt } from './listExt/WidgetListExt'
 import { Widget_prompt } from './prompt/WidgetPrompt'
+import { Widget_size } from './size/WidgetSize'
 
 /**
  * this widget will then dispatch the individual requests to the appropriate sub-widgets
@@ -59,12 +60,12 @@ export const WidgetUI = observer(function WidgetUI_(p: {
     if (widget instanceof Widget_list)         return <WidgetListUI        widget={widget} />
     if (widget instanceof Widget_listExt)      return <WidgetListExtUI     widget={widget} />
     if (widget instanceof Widget_group)        return <WidgetGroupUI       widget={widget} />
-    if (widget instanceof R.Widget_size)       return <WigetSizeUI         widget={widget} />
+    if (widget instanceof Widget_size)         return <WigetSizeUI         widget={widget} />
     if (widget instanceof Widget_enum)         return <WidgetEnumUI        widget={widget} />
     if (widget instanceof R.Widget_matrix)     return <WidgetMatrixUI      widget={widget} />
     if (widget instanceof Widget_bool)         return <WidgetBoolUI        widget={widget} />
     if (widget instanceof R.Widget_inlineRun)  return <WidgetInlineRunUI   widget={widget} />
-    if (widget instanceof Widget_prompt)     return <WidgetPromptUI        widget={widget} />
+    if (widget instanceof Widget_prompt)       return <WidgetPromptUI      widget={widget} />
     if (widget instanceof R.Widget_loras)      return <WidgetLorasUI       widget={widget} />
     if (widget instanceof Widget_color)        return <WidgetColorUI       widget={widget} />
     if (widget instanceof R.Widget_selectOne)  return <WidgetSelectOneUI   widget={widget} />

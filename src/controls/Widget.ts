@@ -9,7 +9,7 @@ import type { SimplifiedLoraDef } from 'src/presets/SimplifiedLoraDef'
 import type { ItemDataType } from 'src/rsuite/RsuiteTypes'
 import type { FormBuilder } from './FormBuilder'
 import type { IWidget_OLD, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers_OLD } from './IWidget'
-import type { AspectRatio, CushySize, CushySizeByRatio, ImageAnswer, ImageAnswerForm, SDModelType } from './misc/InfoAnswer'
+import type { ImageAnswer, ImageAnswerForm } from './misc/InfoAnswer'
 
 import type { Widget_bool } from './widgets/bool/WidgetBool'
 import type { Widget_choices } from './widgets/choices/WidgetChoices'
@@ -23,6 +23,7 @@ import type { Widget_optional } from './widgets/optional/WidgetOptional'
 import type { Widget_orbit } from './widgets/orbit/WidgetOrbit'
 import type { Widget_string } from './widgets/string/WidgetString'
 import type { Widget_prompt } from './widgets/prompt/WidgetPrompt'
+import type { Widget_size } from './widgets/size/WidgetSize'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -191,51 +192,6 @@ export class Widget_inlineRun implements IWidget_OLD<'inlineRun', Widget_inlineR
 }
 
 
-// 🅿️ size ==============================================================================
-export type Widget_size_config  = WidgetConfigFields<{
-    default?: CushySizeByRatio
-    min?: number
-    max?: number
-    step?: number
-}>
-export type Widget_size_serial = Widget_size_state
-export type Widget_size_state  = WidgetSerialFields<CushySize>
-export type Widget_size_output = CushySize
-export interface Widget_size extends WidgetTypeHelpers_OLD<'size', Widget_size_config, Widget_size_serial, Widget_size_state, Widget_size_output> {}
-export class Widget_size implements IWidget_OLD<'size', Widget_size_config, Widget_size_serial, Widget_size_state, Widget_size_output> {
-    readonly isVerticalByDefault = true
-    readonly isCollapsible = true
-    readonly id: string
-    readonly type: 'size' = 'size'
-    readonly serial: Widget_size_state
-    constructor(
-        public builder: FormBuilder,
-        public config: Widget_size_config,
-        serial?: Widget_size_serial,
-    ) {
-        this.id = serial?.id ?? nanoid()
-        if (serial) {
-            this.serial = serial
-        } else {
-            const aspectRatio: AspectRatio = config.default?.aspectRatio ?? '1:1'
-            const modelType: SDModelType = config.default?.modelType ?? 'SD1.5 512'
-            const width = 512 // 🔴
-            const height = 512 // 🔴
-            this.serial = {
-                type: 'size',
-                id: this.id,
-                aspectRatio,
-                modelType,
-                height,
-                width,
-            }
-        }
-        makeAutoObservable(this)
-    }
-    get result(): Widget_size_output {
-        return this.serial
-    }
-}
 
 // 🅿️ matrix ==============================================================================
 export type Widget_matrix_cell = {
@@ -535,7 +491,6 @@ WidgetDI.Widget_seed               = Widget_seed
 WidgetDI.Widget_inlineRun          = Widget_inlineRun
 WidgetDI.Widget_markdown           = Widget_markdown
 WidgetDI.Widget_custom             = Widget_custom
-WidgetDI.Widget_size               = Widget_size
 WidgetDI.Widget_matrix             = Widget_matrix
 WidgetDI.Widget_loras              = Widget_loras
 WidgetDI.Widget_image              = Widget_image

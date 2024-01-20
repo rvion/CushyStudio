@@ -1,5 +1,7 @@
 import type { WidgetUI } from './WidgetUI'
+
 import type * as R from '../Widget'
+
 import type { Widget_choices } from './choices/WidgetChoices'
 import type { Widget_string } from './string/WidgetString'
 import type { Widget_bool } from './bool/WidgetBool'
@@ -11,7 +13,8 @@ import type { Widget_orbit } from './orbit/WidgetOrbit'
 import type { Widget_enum } from './enum/WidgetEnum'
 import type { Widget_list } from './list/WidgetList'
 import type { Widget_listExt } from './listExt/WidgetListExt'
-import { Widget_prompt } from './prompt/WidgetPrompt'
+import type { Widget_prompt } from './prompt/WidgetPrompt'
+import type { Widget_size } from './size/WidgetSize'
 
 /**
  * DI (Dependency Injection)
@@ -30,7 +33,7 @@ export let WidgetDI = {
     Widget_inlineRun: 0 as any as typeof R.Widget_inlineRun,
     Widget_markdown: 0 as any as typeof R.Widget_markdown,
     Widget_custom: 0 as any as typeof R.Widget_custom,
-    Widget_size: 0 as any as typeof R.Widget_size,
+    Widget_size: 0 as any as typeof Widget_size,
     Widget_matrix: 0 as any as typeof R.Widget_matrix,
     Widget_loras: 0 as any as typeof R.Widget_loras,
     Widget_image: 0 as any as typeof R.Widget_image,
