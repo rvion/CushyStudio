@@ -12,12 +12,12 @@ export const ComboUI = observer(function ComboUI_(p: { theme?: 'dark' | 'light';
                 return (
                     <div key={token}>
                         {keys.map((keyName, ix) => (
-                            <>
+                            <Fragment key={ix}>
                                 <span tw='kbd kbd-sm' key={keyName}>
                                     {keyName}
                                 </span>
                                 {ix !== keys.length - 1 && <span>+</span>}
-                            </>
+                            </Fragment>
                         ))}
                     </div>
                 )

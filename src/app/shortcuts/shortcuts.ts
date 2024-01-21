@@ -46,17 +46,21 @@ export const shortcutsDef: Shortcut<STATE>[] = [
     simpleValidInInput(['mod+k 3'], (st) => st.layout.FOCUS_OR_CREATE('IFrame', { url: 'https://app.posemy.art/' })),
     simpleValidInInput(['mod+k 4'], (st) => st.layout.FOCUS_OR_CREATE('Paint', {})),
     simpleValidInInput(['mod+k 5'], (st) => st.layout.FOCUS_OR_CREATE('IFrame', { url: 'https://unsplash.com/' })),
+
+    // menu settings --------------------------
+    simpleValidInInput(['mod+,'], (st) => st.layout.FOCUS_OR_CREATE('Config', {})),
+    simpleValidInInput(['mod+shift+,'], (st) => st.layout.FOCUS_OR_CREATE('Hosts', {})),
+
     // --------------------------
-    simpleValidInInput(['mod+1', 'ctrl+1', 'mod+p', 'ctrl+p', 'mod+j'], (st) => st.toggleFullLibrary()),
-    simpleValidInInput(['mod+,', 'ctrl+,'], (st) => st.layout.FOCUS_OR_CREATE('Config', {})),
-    simpleValidInInput(['mod+escape', 'ctrl+escape'], (st) => st.closeFullLibrary()),
-    // simpleValidInInput(['mod+2', 'ctrl+2'], (st) => st.layout.addMarketplace()),
-    simpleValidInInput(['mod+3', 'ctrl+3'], (st) => st.layout.FOCUS_OR_CREATE('Paint', {})),
-    simpleValidInInput(['mod+4', 'ctrl+4'], (st) => st.layout.FOCUS_OR_CREATE('ComfyUI', {})),
-    simpleValidInInput(['mod+5', 'ctrl+5'], (st) => st.layout.FOCUS_OR_CREATE('Gallery', {})),
-    simpleValidInInput(['mod+6', 'ctrl+6'], (st) => st.layout.FOCUS_OR_CREATE('Config', {})),
-    simpleValidInInput(['mod+7', 'ctrl+7'], (st) => st.layout.FOCUS_OR_CREATE('Civitai', {})),
-    simpleValidInInput(['mod+8', 'ctrl+8'], (st) => st.layout.FOCUS_OR_CREATE('Hosts', {})),
+    simpleValidInInput(['mod+1', 'mod+p', 'mod+j'], (st) => st.toggleFullLibrary()),
+    simpleValidInInput(['mod+escape'], (st) => st.closeFullLibrary()),
+    // simpleValidInInput(['mod+2'], (st) => st.layout.addMarketplace()),
+    simpleValidInInput(['mod+3'], (st) => st.layout.FOCUS_OR_CREATE('Paint', {})),
+    simpleValidInInput(['mod+4'], (st) => st.layout.FOCUS_OR_CREATE('ComfyUI', {})),
+    simpleValidInInput(['mod+5'], (st) => st.layout.FOCUS_OR_CREATE('Gallery', {})),
+    simpleValidInInput(['mod+6'], (st) => st.layout.FOCUS_OR_CREATE('Config', {})),
+    simpleValidInInput(['mod+7'], (st) => st.layout.FOCUS_OR_CREATE('Civitai', {})),
+    simpleValidInInput(['mod+8'], (st) => st.layout.FOCUS_OR_CREATE('Hosts', {})),
     // simple('mod+x s', (st) => st.auth.stopImpersonating()),
     // simple('mod+x q', (st) => st.auth.logOut()),
 
@@ -64,7 +68,7 @@ export const shortcutsDef: Shortcut<STATE>[] = [
     // { combos: ['t a m'], action: (st) => Trigger.UNMATCHED_CONDITIONS, info: 'Tooggle Automation Menu' },
     // { combos: ['t a p'], action: (st) => Trigger.UNMATCHED_CONDITIONS, info: 'Tooggle Automation Preview' },
     {
-        combos: ['mod+w', 'ctrl+w'],
+        combos: ['mod+w'],
         validInInput: true,
         action: (st) => st.layout.closeCurrentTab(),
         info: 'Tooggle Graph Monitor',
