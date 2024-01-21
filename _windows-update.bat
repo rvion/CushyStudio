@@ -1,5 +1,7 @@
 @echo off
 
+cd /d %~dp0
+
 @REM TODO: close cushy first
 
 ECHO [===================================================]

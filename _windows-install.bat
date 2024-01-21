@@ -5,6 +5,17 @@ setlocal enabledelayedexpansion
 :: Exit with nonzero exit code if anything fails
 set errorlevel=
 
+cd /d %~dp0
+
+net session >nul 2>&1
+if %errorlevel% == 0 (
+    echo This script is running with administrative privileges.
+    echo It is recommended to run this script without such privileges.
+    echo Press Ctrl+C to abort or any other key to continue.
+    pause >nul
+)
+
+
 ECHO [===================================================]
 ECHO Ensuring Node version...
 
