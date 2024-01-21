@@ -20,8 +20,8 @@ export class PanelCanvasState {
 
     // the draggable / resizable selection
     stableData: RectSimple = {
-        x: 100,
-        y: 100,
+        x: 0,
+        y: 0,
         width: 512,
         height: 512,
         scaleX: 1,
