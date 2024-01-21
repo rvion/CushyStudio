@@ -7,7 +7,7 @@ type Ctx = STATE
 
 /** @todo improve to detect shortkey without order */
 export type CushyShortcut = Tagged<string, 'CushyShortcut'> // 'ctrl+k ctrl+shift+i'
-type KeyName = Branded<string, { KeyAllowedInShortcut: true }> // ctrl, shift, win, space, ...
+export type KeyName = Branded<string, { KeyAllowedInShortcut: true }> // ctrl, shift, win, space, ...
 type InputToken = Branded<string, { InputToken: true }> // 'ctrl+k'
 type InputSequence = InputToken[] // ['ctrl+k', 'ctrl+shift+i']
 type KnownCombo<Ctx> = [InputSequence, Shortcut<Ctx>]
