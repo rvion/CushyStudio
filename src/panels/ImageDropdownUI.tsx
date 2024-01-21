@@ -69,6 +69,8 @@ export const ImageDropdownMenuUI = observer(function ImageDropdownMenuUI_(p: { i
                             <div
                                 tw='btn btn-sm'
                                 onClick={() => {
+                                    d.AWAKE()
+                                    st.layout.FOCUS_OR_CREATE('Output', {})
                                     d.start(null, img)
                                 }}
                                 key={d.id}

@@ -15,8 +15,8 @@ app({
         with_u2netp:          form.bool    ({ label: 'u2netp' }),
     }),
 
-    run: async (flow, form, img) => {
-        const graph = flow.nodes
+    run: async (run, form, img) => {
+        const graph = run.nodes
 
         const image = await (() => {
             // case where we start from an image
@@ -24,7 +24,7 @@ app({
 
             // case where we start from the form
             if (form.startImage == null) throw new Error('no image provided')
-            return flow.loadImageAnswer(form.startImage)
+            return run.loadImageAnswer(form.startImage)
         })()
 
         if (form.with_RemBG)            graph.PreviewImage({ images: graph.Image_Remove_Background_$1rembg$2({ image }) }) // prettier-ignore
@@ -36,6 +36,6 @@ app({
         if (form.with_u2net_human_seg)  graph.PreviewImage({ images: graph.Image_Rembg_$1Remove_Background$2({ images: image, model: 'u2net_human_seg',   background_color: 'magenta', }), }) // prettier-ignore
         if (form.with_u2netp)           graph.PreviewImage({ images: graph.Image_Rembg_$1Remove_Background$2({ images: image, model: 'u2netp',            background_color: 'magenta', }), }) // prettier-ignore
 
-        await flow.PROMPT()
+        await run.PROMPT()
     },
 })
