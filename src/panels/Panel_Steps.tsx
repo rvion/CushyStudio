@@ -2,19 +2,26 @@ import { observer } from 'mobx-react-lite'
 import { Slider } from 'src/rsuite/shims'
 import { useSt } from '../state/stateContext'
 import { StepOutputsBodyV1UI, StepOutputsV1UI } from '../outputs/StepOutputsV1UI'
+import { PanelHeaderUI } from './PanelHeader'
+import { InputNumberUI } from 'src/rsuite/InputNumberUI'
 
 export const Panel_Steps = observer(function StepListUI_(p: {}) {
     const st = useSt()
     const steps = st.db.steps.getLastN(st.__TEMPT__maxStepsToShow)
     return (
         <div className='flex flex-col'>
-            <Slider
-                style={{ width: '5rem' }}
-                min={1}
-                max={100}
-                value={st.__TEMPT__maxStepsToShow}
-                onChange={(ev) => (st.__TEMPT__maxStepsToShow = parseInt(ev.target.value, 10))}
-            />
+            <PanelHeaderUI>
+                <div className='line'>
+                    <div>number of items to display</div>
+                    <InputNumberUI
+                        mode='int'
+                        min={1}
+                        max={100}
+                        value={st.__TEMPT__maxStepsToShow}
+                        onValueChange={(next) => (st.__TEMPT__maxStepsToShow = next)}
+                    />
+                </div>
+            </PanelHeaderUI>
             <div className='flex flex-col flex-grow' style={{ overflow: 'auto' }}>
                 {steps.map((step) => (
                     <StepOutputsV1UI key={step.id} step={step} />

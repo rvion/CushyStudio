@@ -1,3 +1,17 @@
+.line {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: .25rem;
+}
+/* semantic stuff ------------ */
+
+.cushy-panel-header {
+    @apply flex overflow-auto gap-2 bg-base-300 w-full flex-shrink-0
+}
+
+/* --------------------------- */
+
 input[type='range']::-webkit-slider-runnable-track { height: 2rem; }
 
 .bg-primary-1 { background-color: oklch(var(--p)/.1); }
