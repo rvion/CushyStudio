@@ -25,7 +25,7 @@ export const MenuDebugUI = observer(function MenuDebugUI_(p: {}) {
             <MenuItem
                 icon={<span className='material-symbols-outlined text-orange-500'>sync</span>}
                 onClick={st.restart}
-                shortcut='CmdOrCtrl+R'
+                shortcut='mod+R'
                 label='Reload'
             />
             <div tw='divider my-0' />
