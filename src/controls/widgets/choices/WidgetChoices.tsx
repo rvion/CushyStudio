@@ -13,7 +13,7 @@ type BranchDefinitions = { [key: string]: () => Widget }
 // CONFIG
 export type Widget_choices_config<T extends BranchDefinitions> = WidgetConfigFields<{
     items: T
-    multi?: boolean
+    multi: boolean
     default?: { [k in keyof T]?: boolean } | keyof T
     placeholder?: string
 }>
@@ -49,6 +49,14 @@ export class Widget_choices<T extends BranchDefinitions> implements IWidget<Widg
 
     children: { [k in keyof T]?: ReturnType<T[k]> } = {}
     serial: Widget_choices_serial<T>
+
+    get firstChoice(): (keyof T & string) | undefined {
+        return this.choices[0]
+    }
+
+    get choices(): (keyof T & string)[] {
+        return Object.keys(this.config.items)
+    }
 
     get activeBranches(): (keyof T & string)[] {
         return Object.keys(this.serial.branches) as any
@@ -89,7 +97,8 @@ export class Widget_choices<T extends BranchDefinitions> implements IWidget<Widg
         // find all active branches
         const allBranches = Object.keys(config.items) as (keyof T & string)[]
         const def = this.config.default
-        const foo = nanoid(4)
+        let hasAtLeastOneBranchActive = false
+        const isMulti = this.config.multi
         for (const branch of allBranches) {
             const isActive =
                 this.serial.branches[branch] ?? def == null
@@ -99,12 +108,17 @@ export class Widget_choices<T extends BranchDefinitions> implements IWidget<Widg
                     : typeof def === 'object'
                     ? def?.[branch] ?? false
                     : null
+
             if (isActive) {
-                // console.log(`XX ${foo} 🟢 ${branch} => ${isActive}`)
+                hasAtLeastOneBranchActive = true
                 this.enableBranch(branch)
-            } else {
-                // console.log(`XX ${foo} 🔴 ${branch} => ${isActive}`)
+                if (!isMulti) break
             }
+        }
+
+        if (!isMulti && !hasAtLeastOneBranchActive) {
+            if (this.firstChoice) this.enableBranch(this.firstChoice)
+            else toastError(`🔴 ChoicesWidget has no active branch`)
         }
 
         makeAutoObservable(this)

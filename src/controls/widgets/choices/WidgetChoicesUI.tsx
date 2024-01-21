@@ -15,7 +15,7 @@ export const WidgetChoicesUI = observer(function WidgetChoicesUI_(p: {
     type Entry = { key: string; value?: Maybe<boolean> }
 
     // choices
-    const choicesStr: string[] = Object.keys(widget.config.items)
+    const choicesStr: string[] = widget.choices
     const choices: Entry[] = choicesStr.map((v) => ({ key: v }))
 
     // values

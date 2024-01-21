@@ -134,9 +134,9 @@ export class FormBuilder {
     selectMany = <const T extends W.BaseSelectEntry>(p: W.Widget_selectMany_config<T>) => new W.Widget_selectMany(this, p)
 
     // Object API-------------
-    choice = <const T extends { [key: string]: () => W.Widget }>(p: Widget_choices_config<T>) =>
+    choice = <const T extends { [key: string]: () => W.Widget }>(p: Omit<Widget_choices_config<T>, 'multi'>) =>
         new Widget_choices(this, { multi: false, ...p })
-    choices = <const T extends { [key: string]: () => W.Widget }>(p: Widget_choices_config<T>) =>
+    choices = <const T extends { [key: string]: () => W.Widget }>(p: Omit<Widget_choices_config<T>, 'multi'>) =>
         new Widget_choices(this, { multi: true, ...p })
 
     _FIX_INDENTATION = _FIX_INDENTATION
