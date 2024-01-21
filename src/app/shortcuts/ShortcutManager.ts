@@ -1,6 +1,7 @@
 import type { KeyboardEvent } from 'react'
 import type { STATE } from 'src/state/state'
 import { Trigger } from './Trigger'
+import { META_NAME, MOD_KEY } from './META_NAME'
 
 type Ctx = STATE
 
@@ -19,9 +20,6 @@ export type Shortcut<Ctx> = {
     validInInput?: boolean
     continueAfterSuccess?: boolean
 }
-
-const MOD_KEY = (process.platform === 'darwin' ? 'cmd' : 'ctrl') as KeyName
-const META_NAME = (process.platform === 'darwin' ? 'cmd' : 'win') as KeyName
 
 export class ShortcutWatcher {
     inputHistory: InputSequence = []

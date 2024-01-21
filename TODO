@@ -7,6 +7,12 @@ Migration guide:
 - in various `form.*Opt` variants: `default` property has been renamed to `startActive`
 - no more `group: string` param in widget configs, it was anyway unused
 
+- change def prompt to
+
+```
+masterpiece, sofa, tree, [color] [adj_beauty] [adj_general] nature, intricate_details, game background, window, magical island, summer, glass
+```
+
 
 ---------------------
 
