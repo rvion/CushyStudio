@@ -38,18 +38,19 @@ export const WidgetChoicesUI = observer(function WidgetChoicesUI_(p: {
                     getLabelText={(v) => v.key}
                     getLabelUI={(v) => (
                         <div tw='flex flex-1 justify-between'>
-                            {/*  */}
                             <div tw='flex-1'>{v.key}</div>
-                            <div
-                                tw='btn btn-square btn-sm'
-                                onClick={(ev) => {
-                                    ev.preventDefault()
-                                    ev.stopPropagation()
-                                    console.log(`[👙] ok`, 1)
-                                }}
-                            >
-                                <span className='material-symbols-outlined'>delete</span>
-                            </div>
+                            {/* 👇 TODO: clean this */}
+                            {v.key in widget.serial.values_ && (
+                                <div
+                                    tw='btn btn-square btn-sm'
+                                    onClick={(ev) => {
+                                        ev.preventDefault()
+                                        ev.stopPropagation()
+                                    }}
+                                >
+                                    <span className='material-symbols-outlined'>delete</span>
+                                </div>
+                            )}
                         </div>
                     )}
                     equalityCheck={(a, b) => a.key === b.key}

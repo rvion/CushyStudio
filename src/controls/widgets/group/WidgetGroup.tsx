@@ -74,7 +74,7 @@ export class Widget_group<T extends { [key: string]: Widget }> implements IWidge
             const newInput = newItem.config
             const newType = newItem.type
             if (prevValue_ && newType === prevValue_.type) {
-                console.log(`[🟢] valid serial for "${key}": (${newType} != ${prevValue_?.type}) `)
+                // console.log(`[🟢] valid serial for "${key}": (${newType} != ${prevValue_?.type}) `)
                 this.values[key] = this.form._HYDRATE(newType, newInput, prevValue_)
             } else {
                 console.log(
