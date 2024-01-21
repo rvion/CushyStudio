@@ -340,7 +340,7 @@ export class CushyLayoutManager {
                     show: true,
                     // selected: 0,
                     children: [
-                        this._add({ panel: 'Steps', props: {}, canClose: false }),
+                        // this._add({ panel: 'Steps', props: {}, canClose: false }),
                         // this._add({ panel: 'LastStep', props: {}, canClose: false }),
                         // this._add({ panel: 'Steps', props: {}, canClose: false }),
                         // this._add({ panel: 'Steps', props: {}, canClose: false }),
@@ -451,6 +451,7 @@ export class CushyLayoutManager {
                         id: 'rightsidePane',
                         type: 'row',
                         weight: 10,
+                        width: 400,
                         children: [
                             {
                                 type: 'tabset',
@@ -470,6 +471,14 @@ export class CushyLayoutManager {
                                     // // this._add({ panel: 'LastLatent', props: {} }),
                                     // // this._persistentTab('Hosts', Widget.Hosts),
                                 ],
+                            },
+                            {
+                                type: 'tabset',
+                                // height: 256,
+                                width: 400,
+                                minWidth: 100,
+                                minHeight: 100,
+                                children: [this._add({ panel: 'Steps', props: {}, canClose: false })],
                             },
                         ],
                     },
