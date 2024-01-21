@@ -2,6 +2,8 @@
 SETLOCAL EnableExtensions
 setlocal enabledelayedexpansion
 
+cd /d %~dp0
+
 :: Exit with nonzero exit code if anything fails
 set errorlevel=
 SET CUSHY_RUN_MODE=dev

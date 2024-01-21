@@ -136,7 +136,7 @@ export class ComfyWorkflowL {
         // return this.nodes.slice().sort((a, b) => b.updatedAt - a.updatedAt)
     }
 
-    findNodeByType = <T extends ComfyNodeType>(nameInCushy: T): Maybe<Requirable[T]> => {
+    findNodeByType = <T extends keyof ComfySetup>(nameInCushy: T): Maybe<ReturnType<ComfySetup[T]>> => {
         return this.nodes.find((n) => n.$schema.nameInCushy === nameInCushy) as any
     }
 

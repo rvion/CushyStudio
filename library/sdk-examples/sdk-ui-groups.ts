@@ -2,27 +2,25 @@ app({
     // name: 'playground-seed-widget',
     ui: (form) => ({
         nesstedGroups: form.group({
-            verticalLabels: true,
             items: () => ({
-                Jack: form.str({ default: 'gold, Knight', group: 'illusration' }),
+                Jack: form.string({ default: 'gold, Knight' }),
                 AAAAA: form.group({
-                    verticalLabels: true,
                     items: () => ({
-                        Jack: form.str({ default: 'gold, Knight', group: 'illusration' }),
+                        Jack: form.string({ default: 'gold, Knight' }),
                         foo: form.group({
-                            verticalLabels: true,
+                            layout: 'H',
                             items: () => ({
-                                Jack: form.str({ default: 'gold, Knight', group: 'illusration' }),
-                                Queen: form.str({ default: 'gold, Queen', group: 'illusration' }),
-                                King: form.str({ default: 'gold, King', group: 'illusration' }),
+                                Jack: form.string({ default: 'gold, Knight' }),
+                                Queen: form.string({ default: 'gold, Queen' }),
+                                King: form.string({ default: 'gold, King' }),
                             }),
                         }),
-                        Queen: form.str({ default: 'gold, Queen', group: 'illusration' }),
-                        King: form.str({ default: 'gold, King', group: 'illusration' }),
+                        Queen: form.string({ default: 'gold, Queen' }),
+                        King: form.string({ default: 'gold, King' }),
                     }),
                 }),
-                Queen: form.str({ default: 'gold, Queen', group: 'illusration' }),
-                King: form.str({ default: 'gold, King', group: 'illusration' }),
+                Queen: form.string({ default: 'gold, Queen' }),
+                King: form.string({ default: 'gold, King' }),
             }),
         }),
     }),

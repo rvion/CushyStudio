@@ -1,20 +1,18 @@
+import type { Widget_list } from '../widgets/list/WidgetList'
+import type { Widget_listExt } from '../widgets/listExt/WidgetListExt'
+
 import { observer } from 'mobx-react-lite'
-import { Widget_list, Widget_listExt } from 'src/controls/Widget'
 import { Button } from 'src/rsuite/shims'
 
-export const ListControlsUI = observer(function ListControlsUI_(p: {
-    //
-    widget: Widget_listExt<any> | Widget_list<any>
-}) {
+export const ListControlsUI = observer(function ListControlsUI_(p: { widget: Widget_listExt<any> | Widget_list<any> }) {
     const widget = p.widget
-    const values = widget.state.items
-    const max = widget.input.max
-    const min = widget.input.min
+    const max = widget.config.max
+    const min = widget.config.min
     return (
         <div tw='sticky top-0 z-[100] w-full'>
             <Button
                 tw='btn-sm join-item btn-ghost btn-square'
-                disabled={max ? widget.state.items.length >= max : undefined}
+                disabled={max ? widget.items.length >= max : undefined}
                 icon={<span className='material-symbols-outlined'>add</span>}
                 onClick={(ev) => {
                     ev.stopPropagation()
@@ -25,7 +23,7 @@ export const ListControlsUI = observer(function ListControlsUI_(p: {
             </Button>
             <Button
                 tw='btn-sm join-item btn-ghost btn-square'
-                disabled={min ? widget.state.items.length <= min : undefined}
+                disabled={min ? widget.items.length <= min : undefined}
                 icon={<span className='material-symbols-outlined'>delete_forever</span>}
                 onClick={(ev) => {
                     ev.stopPropagation()
@@ -52,7 +50,7 @@ export const ListControlsUI = observer(function ListControlsUI_(p: {
             ></Button>
             {/* <Button
                 tw='btn-sm join-item btn-ghost'
-                disabled={max ? req.state.items.length >= max : undefined}
+                disabled={max ? req.items.length >= max : undefined}
                 icon={<span className='material-symbols-outlined'>add</span>}
                 onClick={() => {
                     runInAction(() => {

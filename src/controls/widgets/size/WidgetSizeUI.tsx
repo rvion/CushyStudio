@@ -1,12 +1,13 @@
 import { makeAutoObservable } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { useMemo } from 'react'
-import { Widget_size } from 'src/controls/Widget'
 import { InputNumberUI } from 'src/rsuite/InputNumberUI'
 import { Joined, Toggle } from 'src/rsuite/shims'
 import { parseFloatNoRoundingErr } from 'src/utils/misc/parseFloatNoRoundingErr'
+import { Widget_size } from './WidgetSize'
 
 type ModelType = 'xl' | '1.5' | 'custom'
+
 // prettier-ignore
 type AspectRatio =
     | '1:1'
@@ -17,8 +18,8 @@ type AspectRatio =
 export const WigetSizeUI = observer(function WigetSizeUI_(p: { widget: Widget_size }) {
     return (
         <WigetSizeXUI //
-            size={p.widget.state}
-            bounds={p.widget.input}
+            size={p.widget.serial}
+            bounds={p.widget.config}
         />
     )
 })
@@ -30,6 +31,7 @@ type SizeAble = {
     max?: number
     step?: number
 }
+
 export const WigetSizeXUI = observer(function WigetSizeXUI_(p: {
     //
     size: SizeAble

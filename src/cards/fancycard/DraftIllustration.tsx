@@ -2,6 +2,8 @@ import { observer } from 'mobx-react-lite'
 import { CushyAppL } from 'src/models/CushyApp'
 import { DraftL } from 'src/models/Draft'
 import { AppIllustrationUI } from './AppIllustrationUI'
+import { useImageDrop } from 'src/widgets/galleries/dnd'
+import { useSt } from 'src/state/stateContext'
 
 export const DraftIllustrationUI = observer(function DraftIllustrationUI_(p: {
     className?: string
@@ -9,6 +11,12 @@ export const DraftIllustrationUI = observer(function DraftIllustrationUI_(p: {
     draft: Maybe<DraftL>
     size: string
 }) {
+    const st = useSt()
+    const [dropStyle, dropRef] = useImageDrop(st, (img) => {
+        if (p.draft == null) return
+        img.useAsDraftIllustration(p.draft)
+    })
+
     // 1. no draft
     const draft = p.draft
     if (draft == null)
@@ -24,12 +32,16 @@ export const DraftIllustrationUI = observer(function DraftIllustrationUI_(p: {
 
     // 2. draft with no specific illustration
     if (draft.data.illustration == null) {
-        return <AppIllustrationUI app={draft.app} size={p.size} />
+        return (
+            <div style={dropStyle} ref={dropRef} className='DROP_IMAGE_HANDLER'>
+                <AppIllustrationUI app={draft.app} size={p.size} />
+            </div>
+        )
     }
 
     // 3. show illustration on top
     return (
-        <div className='relative'>
+        <div style={dropStyle} ref={dropRef} className='relative DROP_IMAGE_HANDLER'>
             <div tw='absolute opacity-0 hover:opacity-100' style={{ transition: 'opacity 0.2s' }}>
                 <AppIllustrationUI app={draft.app} size={p.size} />
             </div>

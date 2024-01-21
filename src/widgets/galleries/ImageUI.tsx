@@ -5,6 +5,7 @@ import { Button } from 'src/rsuite/shims'
 import { useSt } from '../../state/stateContext'
 import { useImageDrag } from './dnd'
 import { ImageDropdownMenuUI } from 'src/panels/ImageDropdownUI'
+import { hasMod } from 'src/app/shortcuts/META_NAME'
 
 export const ImageUI = observer(function ImageUI_(p: {
     //
@@ -31,10 +32,27 @@ export const ImageUI = observer(function ImageUI_(p: {
                 width: ImageWidth,
                 height: ImageWidth,
                 opacity,
-                // padding: '0.2rem',
                 borderRadius: '.5rem',
             }}
-            onClick={() => st.layout.FOCUS_OR_CREATE('Image', { imageID: image.id })}
+            onClick={(ev) => {
+                if (hasMod(ev)) {
+                    ev.stopPropagation()
+                    ev.preventDefault()
+                    return st.layout.FOCUS_OR_CREATE('Image', { imageID: image.id })
+                }
+                if (ev.shiftKey) {
+                    ev.stopPropagation()
+                    ev.preventDefault()
+                    return st.layout.FOCUS_OR_CREATE('Canvas', { imgID: image.id })
+                }
+                if (ev.altKey) {
+                    ev.stopPropagation()
+                    ev.preventDefault()
+                    return st.layout.FOCUS_OR_CREATE('Paint', { imgID: image.id })
+                }
+
+                return
+            }}
         />
     )
     // )

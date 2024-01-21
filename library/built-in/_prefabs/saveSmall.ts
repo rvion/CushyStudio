@@ -2,7 +2,7 @@ export const ui_saveAllImages = () => {
     const form = getCurrentForm()
     return form.groupOpt({
         label: 'Compress',
-        default: true,
+        startActive: true,
         startCollapsed: true,
         items: () => ({
             format: form.selectOne({
@@ -62,9 +62,9 @@ export const run_saveAllImages = async (
         let base64Data = dataUrl.replace(/^data:image\/webp;base64,/, '')
 
         // non-integrated with CushyStudio way of saving an image
-        run.fs.mkdirSync('outputs/_b64', { recursive: true })
+        run.Filesystem.mkdirSync('outputs/_b64', { recursive: true })
         const relPath = `outputs/_b64/output-${img.id}.webp` as RelativePath
-        run.fs.writeFileSync(relPath, base64Data, 'base64')
+        run.Filesystem.writeFileSync(relPath, base64Data, 'base64')
 
         // register it on cushy
         const newImg = run.Images.createFromPath(relPath, { promptID: img.prompt?.id })

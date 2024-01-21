@@ -1,4 +1,10 @@
 app({
+    metadata: {
+        author: 'rvion',
+        name: 'Remove Background',
+        description: 'remove background from an image',
+    },
+    canStartFromImage: true,
     // prettier-ignore
     ui: (form) => ({
         // startImage
@@ -14,10 +20,17 @@ app({
         with_u2netp:          form.bool    ({ label: 'u2netp' }),
     }),
 
-    run: async (flow, form) => {
-        const graph = flow.nodes
-        if (form.startImage == null) throw new Error('no image provided')
-        const image = await flow.loadImageAnswer(form.startImage)
+    run: async (run, form, img) => {
+        const graph = run.nodes
+
+        const image = await (() => {
+            // case where we start from an image
+            if (img) return img.uploadAndloadAsImage()
+
+            // case where we start from the form
+            if (form.startImage == null) throw new Error('no image provided')
+            return run.loadImageAnswer(form.startImage)
+        })()
 
         if (form.with_RemBG)            graph.PreviewImage({ images: graph.Image_Remove_Background_$1rembg$2({ image }) }) // prettier-ignore
         if (form.with_ABG)              graph.PreviewImage({ images: graph.Remove_Image_Background_$1abg$2  ({ image }) }) // prettier-ignore
@@ -28,6 +41,6 @@ app({
         if (form.with_u2net_human_seg)  graph.PreviewImage({ images: graph.Image_Rembg_$1Remove_Background$2({ images: image, model: 'u2net_human_seg',   background_color: 'magenta', }), }) // prettier-ignore
         if (form.with_u2netp)           graph.PreviewImage({ images: graph.Image_Rembg_$1Remove_Background$2({ images: image, model: 'u2netp',            background_color: 'magenta', }), }) // prettier-ignore
 
-        await flow.PROMPT()
+        await run.PROMPT()
     },
 })

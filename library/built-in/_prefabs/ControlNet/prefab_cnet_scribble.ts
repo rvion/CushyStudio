@@ -14,7 +14,6 @@ export const ui_subform_Scribble = () => {
                 enumName: 'Enum_ControlNetLoader_control_net_name',
                 default: { value: 'control_v11p_sd15_scribble.pth' },
                 recommandedModels: { knownModel: ['ControlNet-v1-1 (scribble; fp16)'] },
-                group: 'Controlnet',
                 label: 'Model',
             }),
         }),
@@ -25,7 +24,7 @@ export const ui_subform_Scribble_Preprocessor = () => {
     const form = getCurrentForm()
     return form.groupOpt({
         label: 'Scribble Preprocessor',
-        default: true,
+        startActive: true,
         items: () => ({
             advanced: form.groupOpt({
                 label: 'Advanced Preprocessor Settings',
@@ -33,11 +32,11 @@ export const ui_subform_Scribble_Preprocessor = () => {
                     type: form.choice({
                         label: 'Type',
                         default: 'ScribbleLines',
-                        items: () => ({
-                            ScribbleLines: ui_subform_Scribble_Lines(),
-                            FakeScribble: ui_subform_Fake_Scribble_Lines(),
-                            XDOG: ui_subform_Scribble_XDoG_Lines(),
-                        }),
+                        items: {
+                            ScribbleLines: () => ui_subform_Scribble_Lines(),
+                            FakeScribble: () => ui_subform_Fake_Scribble_Lines(),
+                            XDOG: () => ui_subform_Scribble_XDoG_Lines(),
+                        },
                     }),
                     // TODO: Add support for auto-modifying the resolution based on other form selections
                     // TODO: Add support for auto-cropping
@@ -82,10 +81,10 @@ export const ui_subform_Scribble_XDoG_Lines = () => {
 // 🅿️ Scribble RUN ===================================================
 export const run_cnet_Scribble = (
     Scribble: OutputFor<typeof ui_subform_Scribble>,
-    image: IMAGE,
+    image: _IMAGE,
     resolution: 512 | 768 | 1024 = 512,
 ): {
-    image: IMAGE
+    image: _IMAGE
     cnet_name: Enum_ControlNetLoader_control_net_name
 } => {
     const run = getCurrentRun()

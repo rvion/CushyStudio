@@ -10,10 +10,9 @@ import { run_cnet_IPAdapter, ui_subform_IPAdapter } from './ControlNet/ipAdapter
 import { run_cnet_Scribble, ui_subform_Scribble } from './ControlNet/prefab_cnet_scribble'
 import { run_cnet_Lineart, ui_subform_Lineart } from './ControlNet/prefab_cnet_lineart'
 import { run_cnet_SoftEdge, ui_subform_SoftEdge } from './ControlNet/prefab_cnet_softEdge'
-import { getCurrentForm } from '../../../src/models/_ctx2'
 import { bang } from 'src/utils/misc/bang'
 import { run_cnet_Sketch, ui_subform_Sketch } from './ControlNet/prefab_cnet_sketch'
-import type { SDModelType } from 'src/controls/misc/InfoAnswer'
+import type { SDModelType } from 'src/controls/widgets/size/WidgetSizeTypes'
 import { run_cnet_IPAdapterFaceID, ui_IPAdapterFaceID } from './ControlNet/ipAdapter/prefab_ipAdapter_face'
 
 // 🅿️ CNET UI -----------------------------------------------------------
@@ -31,7 +30,6 @@ export const ui_cnet = () => {
                         label: 'Controlnet Image',
                         items: () => ({
                             image: form.image({
-                                group: 'Cnet_Image',
                                 tooltip:
                                     'There is currently a bug with multiple controlnets where an image wont allow drop except for the first controlnet in the list. If you add multiple controlnets, then reload using Ctrl+R, it should allow you to drop an image on any of the controlnets.',
                             }),
@@ -39,19 +37,19 @@ export const ui_cnet = () => {
                             cnets: form.choices({
                                 // label: false, //'Pick Cnets=>',
                                 placeholder: 'ControlNets...',
-                                items: () => ({
-                                    OpenPose: ui_subform_OpenPose(),
-                                    Canny: ui_subform_Canny(),
-                                    Depth: ui_subform_Depth(),
-                                    Normal: ui_subform_Normal(),
-                                    Tile: ui_subform_Tile(),
-                                    IPAdapter: ui_subform_IPAdapter(),
-                                    FaceID: ui_IPAdapterFaceID(),
-                                    Scribble: ui_subform_Scribble(),
-                                    Lineart: ui_subform_Lineart(),
-                                    SoftEdge: ui_subform_SoftEdge(),
-                                    Sketch: ui_subform_Sketch(),
-                                }),
+                                items: {
+                                    OpenPose: () => ui_subform_OpenPose(),
+                                    Canny: () => ui_subform_Canny(),
+                                    Depth: () => ui_subform_Depth(),
+                                    Normal: () => ui_subform_Normal(),
+                                    Tile: () => ui_subform_Tile(),
+                                    IPAdapter: () => ui_subform_IPAdapter(),
+                                    FaceID: () => ui_IPAdapterFaceID(),
+                                    Scribble: () => ui_subform_Scribble(),
+                                    Lineart: () => ui_subform_Lineart(),
+                                    SoftEdge: () => ui_subform_SoftEdge(),
+                                    Sketch: () => ui_subform_Sketch(),
+                                },
                             }),
                         }),
                     }),
@@ -68,16 +66,14 @@ export const cnet_ui_common = (form: FormBuilder) => ({
             startAtStepPercent: form.float({ default: 0, min: 0, max: 1, step: 0.1 }),
             endAtStepPercent: form.float({ default: 1, min: 0, max: 1, step: 0.1 }),
             crop: form.enum({
+                label: 'Image Prep Crop mode',
                 enumName: 'Enum_LatentUpscale_crop',
                 default: 'disabled',
-                group: 'ControlNet',
-                label: 'Image Prep Crop mode',
             }),
             upscale_method: form.enum({
+                label: 'Scale method',
                 enumName: 'Enum_ImageScale_upscale_method',
                 default: 'lanczos',
-                group: 'ControlNet',
-                label: 'Scale method',
             }),
         }),
     }),
@@ -93,8 +89,8 @@ export const cnet_preprocessor_ui_common = (form: FormBuilder) => ({
 export type Cnet_args = {
     positive: _CONDITIONING
     negative: _CONDITIONING
-    width: INT
-    height: INT
+    width: _INT
+    height: _INT
     ckptPos: _MODEL
     modelType: SDModelType
 }
@@ -125,7 +121,7 @@ export const run_cnet = async (opts: OutputFor<typeof ui_cnet>, ctx: Cnet_args) 
                 resolution = 512
         }
         for (const cnetImage of cnetList) {
-            let image: IMAGE = (await run.loadImageAnswer(cnetImage.image))._IMAGE
+            let image: _IMAGE = (await run.loadImageAnswer(cnetImage.image))._IMAGE
             const widthValue = typeof ctx.width === 'number' ? ctx.width : resolution
             const heightValue = typeof ctx.width === 'number' ? ctx.width : resolution
             if (cnetImage.resize) {

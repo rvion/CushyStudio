@@ -24,11 +24,6 @@ export class TreeView {
     }
 
     get nodes() {
-        // if (this.filter) {
-        //     const res = this.module.getNodeAtXPath(this.filter)
-        //     if (Array.isArray(res)) return res
-        //     return [res]
-        // }
         return this.tree.topLevelNodes
     }
 

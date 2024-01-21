@@ -12,11 +12,10 @@ export const ui_subform_Lineart = () => {
             ...cnet_ui_common(form),
             preprocessor: ui_subform_Lineart_Preprocessor(),
             cnet_model_name: form.enum({
+                label: 'Model',
                 enumName: 'Enum_ControlNetLoader_control_net_name',
                 default: { value: 'control_v11p_sd15_lineart.pth' },
                 recommandedModels: { knownModel: ['ControlNet-v1-1 (lineart; fp16)'] },
-                group: 'Controlnet',
-                label: 'Model',
             }),
         }),
     })
@@ -26,7 +25,7 @@ export const ui_subform_Lineart_Preprocessor = () => {
     const form = getCurrentForm()
     return form.groupOpt({
         label: 'Lineart Preprocessor',
-        default: true,
+        startActive: true,
         items: () => ({
             advanced: form.groupOpt({
                 label: 'Advanced Preprocessor Settings',
@@ -34,11 +33,11 @@ export const ui_subform_Lineart_Preprocessor = () => {
                     type: form.choice({
                         label: 'Type',
                         default: 'Realistic',
-                        items: () => ({
-                            Realistic: ui_subform_Lineart_realistic(),
-                            Anime: ui_subform_Lineart_Anime(),
-                            Manga: ui_subform_Lineart_Manga(),
-                        }),
+                        items: {
+                            Realistic: () => ui_subform_Lineart_realistic(),
+                            Anime: () => ui_subform_Lineart_Anime(),
+                            Manga: () => ui_subform_Lineart_Manga(),
+                        },
                     }),
                     // TODO: Add support for auto-modifying the resolution based on other form selections
                     // TODO: Add support for auto-cropping
@@ -82,10 +81,10 @@ export const ui_subform_Lineart_Manga = () => {
 // 🅿️ Lineart RUN ===================================================
 export const run_cnet_Lineart = (
     Lineart: OutputFor<typeof ui_subform_Lineart>,
-    image: IMAGE,
+    image: _IMAGE,
     resolution: 512 | 768 | 1024 = 512,
 ): {
-    image: IMAGE
+    image: _IMAGE
     cnet_name: Enum_ControlNetLoader_control_net_name
 } => {
     const run = getCurrentRun()

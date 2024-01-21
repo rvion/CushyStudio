@@ -12,6 +12,7 @@ export const ui_subform_Canny = () => {
             ...cnet_ui_common(form),
             preprocessor: ui_subform_Canny_Preprocessor(form),
             cnet_model_name: form.enum({
+                label: 'Model',
                 enumName: 'Enum_ControlNetLoader_control_net_name',
                 default: { value: 'control_v11p_sd15_canny.pth' },
                 recommandedModels: {
@@ -23,8 +24,6 @@ export const ui_subform_Canny = () => {
                         'kohya-ss/ControlNet-LLLite: SDXL Canny Anime',
                     ],
                 },
-                group: 'Controlnet',
-                label: 'Model',
             }),
         }),
     })
@@ -33,7 +32,7 @@ export const ui_subform_Canny = () => {
 export const ui_subform_Canny_Preprocessor = (form: FormBuilder) => {
     return form.groupOpt({
         label: 'Canny Edge Preprocessor',
-        default: true,
+        startActive: true,
         items: () => ({
             advanced: form.groupOpt({
                 label: 'Advanced Preprocessor Settings',
@@ -52,10 +51,10 @@ export const ui_subform_Canny_Preprocessor = (form: FormBuilder) => {
 // 🅿️ Canny RUN ===================================================
 export const run_cnet_canny = (
     canny: OutputFor<typeof ui_subform_Canny>,
-    image: IMAGE,
+    image: _IMAGE,
     resolution: 512 | 768 | 1024 = 512,
 ): {
-    image: IMAGE
+    image: _IMAGE
     cnet_name: Enum_ControlNetLoader_control_net_name
 } => {
     const run = getCurrentRun()

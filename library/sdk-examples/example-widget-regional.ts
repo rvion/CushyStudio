@@ -5,7 +5,7 @@ app({
         demo: form.regional({
             height: 512,
             width: 512,
-            element: ({ width: w, height: h }) => ({
+            initialPosition: ({ width: w, height: h }) => ({
                 fill: `#${Math.round(Math.random() * 0xffffff).toString(16)}`,
                 height: 64,
                 width: 64,
@@ -13,7 +13,9 @@ app({
                 x: Math.round(Math.random() * w),
                 y: Math.round(Math.random() * h),
                 z: 1,
-                item: form.group({
+            }),
+            element: ({ width: w, height: h }) =>
+                form.group({
                     items: () => ({
                         prompt: form.prompt({}),
                         mode: form.selectOne({
@@ -21,7 +23,6 @@ app({
                         }),
                     }),
                 }),
-            }),
         }),
         // mainPos: form.prompt({}),
         mainNeg: form.prompt({}),
@@ -38,10 +39,10 @@ app({
         let positive: _CONDITIONING = graph.ConditioningZeroOut({
             conditioning: graph.CLIPTextEncode({ clip: clip, text: '' }),
         })
-        let negative: _CONDITIONING = run_prompt(flow, { richPrompt: form.mainNeg, clip: ckpt, ckpt: ckpt }).conditionning
+        let negative: _CONDITIONING = run_prompt({ richPrompt: form.mainNeg, clip: ckpt, ckpt: ckpt }).conditionning
 
-        for (const x of form.demo.items) {
-            const y = run_prompt(flow, { richPrompt: x.item.prompt, clip: ckpt, ckpt: ckpt })
+        for (const { position: x, value: item } of form.demo.items) {
+            const y = run_prompt({ richPrompt: item.prompt, clip: ckpt, ckpt: ckpt })
             const localConditionning = graph.ConditioningSetArea({
                 conditioning: y.conditionning,
                 height: x.height * (x.scaleX ?? 1),
@@ -52,7 +53,7 @@ app({
             })
 
             positive =
-                x.item.mode.id === 'combine'
+                item.mode.id === 'combine'
                     ? graph.ConditioningCombine({
                           conditioning_1: positive,
                           conditioning_2: localConditionning,

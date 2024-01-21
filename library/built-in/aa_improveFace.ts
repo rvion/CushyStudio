@@ -1,14 +1,19 @@
+import { run_improveFace_fromImage } from './_prefabs/prefab_detailer'
+
 app({
     metadata: {
-        name: 'improve app',
-        description: 'improve app',
+        name: 'improve faxce',
+        description: 'improve face',
     },
-
+    canStartFromImage: true,
     ui: (form) => ({
-        image: form.image({}),
+        prompt: form.prompt({}),
     }),
-    run: async (run, ui) => {},
-    startFromImage: (image, form) => {
-        // form.values.image.state.pick === 'cushy'
+    run: async (run, ui, startImg) => {
+        if (startImg == null) throw new Error('no image provided')
+        run.workflow.builder.CheckpointLoaderSimple({ ckpt_name: 'revAnimated_v122.safetensors' })
+        const img = await startImg.uploadAndloadAsImage()
+        run_improveFace_fromImage(img)
+        await run.PROMPT()
     },
 })

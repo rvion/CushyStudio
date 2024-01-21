@@ -1,14 +1,15 @@
 import { observer } from 'mobx-react-lite'
 import { forwardRef } from 'react'
 import SortableList, { SortableItem, SortableKnob } from 'react-easy-sort'
-import { Widget, Widget_list } from 'src/controls/Widget'
+import { Widget } from 'src/controls/Widget'
 import { Message } from 'src/rsuite/shims'
-import { WidgetDI } from './WidgetUI.DI'
+import { WidgetDI } from '../WidgetUI.DI'
+import { Widget_list } from './WidgetList'
 
 export const WidgetListUI = observer(function WidgetListUI_<T extends Widget>(p: { widget: Widget_list<T> }) {
     const widget = p.widget
-    const values = widget.state.items
-    const min = widget.input.min
+    const values = widget.items
+    const min = widget.config.min
     const WidgetUI = WidgetDI.WidgetUI
     if (WidgetUI == null) return <Message type='error'>Internal list failure</Message>
     // const isCollapsed = widget.state.collapsed ?? false
@@ -21,7 +22,7 @@ export const WidgetListUI = observer(function WidgetListUI_<T extends Widget>(p:
             <SortableList onSortEnd={p.widget.moveItem} className='list' draggedItemClassName='dragged'>
                 <div tw='flex flex-col gap-2'>
                     {values.map((v, ix) => (
-                        <SortableItem key={v.state.id}>
+                        <SortableItem key={v.id}>
                             <div tw='flex flex-col'>
                                 <div tw='flex items-center'>
                                     <SortableKnob>
@@ -29,8 +30,8 @@ export const WidgetListUI = observer(function WidgetListUI_<T extends Widget>(p:
                                     </SortableKnob>
                                     <ListItemCollapseBtnUI req={v} />
                                     <div className='divider my-2 flex-1 border-top'>
-                                        <div id={v.state.id} tw='opacity-20 italic'>
-                                            #{ix}:{v.state.id}
+                                        <div id={v.id} tw='opacity-20 italic'>
+                                            #{ix}:{v.id}
                                         </div>
                                     </div>
                                     {/* {(v.state.collapsed ?? false) && <WidgetUI widget={v} />} */}
@@ -39,7 +40,7 @@ export const WidgetListUI = observer(function WidgetListUI_<T extends Widget>(p:
                                     <div
                                         tw={[
                                             'btn btn-sm btn-narrower btn-ghost opacity-50',
-                                            min && widget.state.items.length <= min ? 'btn-disabled' : null,
+                                            min && widget.items.length <= min ? 'btn-disabled' : null,
                                         ]}
                                         onClick={() => widget.removeItem(v)}
                                     >
@@ -70,7 +71,7 @@ const ListDragHandleUI = forwardRef<HTMLDivElement, { ix: number; widget: Widget
         <div
             tw='btn btn-narrower btn-ghost btn-square btn-sm'
             ref={ref}
-            onClick={() => (v.state.collapsed = !Boolean(v.state.collapsed))}
+            onClick={() => (v.serial.collapsed = !Boolean(v.serial.collapsed))}
         >
             {/* <RevealUI cursor='cursor-move'> */}
             <span className='material-symbols-outlined'>menu</span>
@@ -95,9 +96,9 @@ export const ListItemCollapseBtnUI = observer(function ListItemCollapseBtnUI_(p:
         <div
             tw='btn btn-ghost btn-square btn-sm'
             // style={{ width: `${indexWidth}rem` }}
-            onClick={() => (widget.state.collapsed = !Boolean(widget.state.collapsed))}
+            onClick={() => (widget.serial.collapsed = !Boolean(widget.serial.collapsed))}
         >
-            {widget.state.collapsed ? ( //
+            {widget.serial.collapsed ? ( //
                 <span className='material-symbols-outlined'>keyboard_arrow_right</span>
             ) : (
                 <span className='material-symbols-outlined'>keyboard_arrow_down</span>

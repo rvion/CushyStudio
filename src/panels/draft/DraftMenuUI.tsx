@@ -18,7 +18,6 @@ export const DraftMenuUI = observer(function DraftMenuUI_(p: { title: string; dr
         <Dropdown
             //
             className={p.className}
-            size='sm'
             appearance='subtle'
             startIcon={<span className='material-symbols-outlined'>menu</span>}
             title={p.title} //`${layout}`}

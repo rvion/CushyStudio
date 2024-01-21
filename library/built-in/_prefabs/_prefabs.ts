@@ -24,7 +24,7 @@ export type OutputFor<UIFn extends (form: FormBuilder) => any> = GetWidgetResult
 export const ui_highresfix = (p: { activeByDefault?: true } = {}) => {
     const form = getCurrentForm()
     return form.groupOpt({
-        default: p.activeByDefault,
+        startActive: p.activeByDefault,
         label: 'Upscale Pass (High Res Fix)',
         items: () => ({
             NNLatentUpscale: form.bool({
@@ -48,13 +48,13 @@ export const ui_themes = (form: FormBuilder) =>
             form.group({
                 layout: 'H',
                 items: () => ({
-                    text: form.str({ label: 'Main', textarea: true }), //textarea: true
+                    text: form.string({ label: 'Main', textarea: true }), //textarea: true
                     theme: form.list({
                         element: () =>
                             form.group({
                                 layout: 'V',
                                 items: () => ({
-                                    text: form.str({ label: 'Theme', textarea: true }), //textarea: true
+                                    text: form.string({ label: 'Theme', textarea: true }), //textarea: true
                                 }),
                             }),
                     }),

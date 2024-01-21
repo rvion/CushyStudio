@@ -1,3 +1,32 @@
+/* helpers --------------------- */
+.line {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: .25rem;
+}
+/* semantic stuff -------------- */
+.cushy-panel-header {
+    @apply flex overflow-auto gap-2 bg-base-300 w-full flex-shrink-0
+}
+
+/* KBD-------------------------- */
+/* tweak so it's peresence in dropdown entry doesn't impact height */
+.kbd-sm { min-height: 1.2rem; }
+
+/* ----------------------------- */
+.flexlayout__tabset_tabbar_inner_tab_container  {
+    padding-left: 0px;
+    padding-right: 0px;
+}
+.flexlayout__tab_button {
+    gap: .1rem
+}
+.flexlayout__tabset-selected {
+    background-image: none;
+}
+
+/* --------------------------- */
 input[type='range']::-webkit-slider-runnable-track { height: 2rem; }
 
 .bg-primary-1 { background-color: oklch(var(--p)/.1); }
@@ -8,47 +37,6 @@ input[type='range']::-webkit-slider-runnable-track { height: 2rem; }
 
 .bg-success-1 { background-color: oklch(var(--su)/.1); }
 .bg-success-2 { background-color: oklch(var(--su)/.2); }
-
-.rct-tree-items-container {
-    position: relative;
-}
-.rct-tree-items-container .rct-tree-items-container .rct-tree-item-title-container::after {
-    content: '';
-    position: absolute;
-    top:0;
-    transform: translateX(-3px);
-    bottom: 0;
-    /* left: 10px; */
-    width: 1px;
-    background-color: oklch(var(--b3)) !important;
-}
-.rct-tree-root {
-    color: oklch(var(--bc)) !important;
-    flex-grow: 1;
-    overflow: auto;
-}
-.rct-tree-item-button span.material-symbols-outlined {
-    font-size: 1.4rem;
-}
-.rct-tree-item-button {
-    padding: 0 0 0 1.3rem !important;
-}
-.rct-tree-root.rct-tree-root-focus .rct-tree-item-title-container-focused {
-    background-color: oklch(var(--b2)) !important;
-}
-.rct-tree-item-arrow-path {
-    fill: oklch(var(--bc)) !important;
-}
-
-.rct-tree-item-button:hover {
-    background-color: oklch(var(--b2)) !important;
-    color: oklch(var(--bc)) !important;
-}
-.rct-tree-item-title-container-selected .rct-tree-item-button {
-    background-color: oklch(var(--b3)) !important;
-    color: oklch(var(--bc)) !important;
-
-}
 
 ._SelectPopupUI,
 ._RevealUI {

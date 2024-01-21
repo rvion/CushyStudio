@@ -13,11 +13,13 @@ export const MenuConfigUI = observer(function MenuConfigUI_(p: {}) {
             <MenuItem
                 onClick={() => st.layout.FOCUS_OR_CREATE('Config', {})}
                 icon={<span className='material-symbols-outlined text-purple-500'>settings</span>}
+                shortcut={'mod+,'}
                 label='Config'
             />
             <MenuItem
                 onClick={() => st.layout.FOCUS_OR_CREATE('Hosts', {})}
                 icon={<span className='material-symbols-outlined text-purple-500'>cloud</span>}
+                shortcut={'mod+shift+,'}
                 label='ComfyUI Hosts'
             />
         </Dropdown>

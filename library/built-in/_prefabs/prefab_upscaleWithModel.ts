@@ -1,11 +1,8 @@
-import type { Runtime, Widget_enum, Widget_groupOpt } from 'src'
+import type { ComfyWorkflowBuilder } from 'src/back/NodeBuilder'
 import type { FormBuilder } from 'src/controls/FormBuilder'
 import type { OutputFor } from './_prefabs'
-import type { ComfyWorkflowBuilder } from 'src/back/NodeBuilder'
 
-export const ui_upscaleWithModel = (): Widget_groupOpt<{
-    readonly model: Widget_enum<'Enum_UpscaleModelLoader_model_name'>
-}> => {
+export const ui_upscaleWithModel = () => {
     const form: FormBuilder = getCurrentForm()
     return form.groupOpt({
         label: 'Upscale via Model',

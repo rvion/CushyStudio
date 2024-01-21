@@ -2151,6 +2151,47 @@
         "category": "conditioning/gligen",
         "output_node": false
     },
+    "InpaintModelConditioning": {
+        "input": {
+            "required": {
+                "positive": [
+                    "CONDITIONING"
+                ],
+                "negative": [
+                    "CONDITIONING"
+                ],
+                "vae": [
+                    "VAE"
+                ],
+                "pixels": [
+                    "IMAGE"
+                ],
+                "mask": [
+                    "MASK"
+                ]
+            }
+        },
+        "output": [
+            "CONDITIONING",
+            "CONDITIONING",
+            "LATENT"
+        ],
+        "output_is_list": [
+            false,
+            false,
+            false
+        ],
+        "output_name": [
+            "positive",
+            "negative",
+            "latent"
+        ],
+        "name": "InpaintModelConditioning",
+        "display_name": "InpaintModelConditioning",
+        "description": "",
+        "category": "conditioning/inpaint",
+        "output_node": false
+    },
     "CheckpointLoader": {
         "input": {
             "required": {
@@ -3445,6 +3486,37 @@
         "category": "latent/batch",
         "output_node": false
     },
+    "RebatchImages": {
+        "input": {
+            "required": {
+                "images": [
+                    "IMAGE"
+                ],
+                "batch_size": [
+                    "INT",
+                    {
+                        "default": 1,
+                        "min": 1,
+                        "max": 4096
+                    }
+                ]
+            }
+        },
+        "output": [
+            "IMAGE"
+        ],
+        "output_is_list": [
+            true
+        ],
+        "output_name": [
+            "IMAGE"
+        ],
+        "name": "RebatchImages",
+        "display_name": "Rebatch Images",
+        "description": "",
+        "category": "image/batch",
+        "output_node": false
+    },
     "ModelMergeSimple": {
         "input": {
             "required": {
@@ -3984,7 +4056,7 @@
         "name": "FreeU",
         "display_name": "FreeU",
         "description": "",
-        "category": "_for_testing",
+        "category": "model_patches",
         "output_node": false
     },
     "FreeU_V2": {
@@ -4043,7 +4115,7 @@
         "name": "FreeU_V2",
         "display_name": "FreeU_V2",
         "description": "",
-        "category": "_for_testing",
+        "category": "model_patches",
         "output_node": false
     },
     "SamplerCustom": {
@@ -4133,6 +4205,15 @@
                         "default": 20,
                         "min": 1,
                         "max": 10000
+                    }
+                ],
+                "denoise": [
+                    "FLOAT",
+                    {
+                        "default": 1,
+                        "min": 0,
+                        "max": 1,
+                        "step": 0.01
                     }
                 ]
             }
@@ -4386,6 +4467,15 @@
                         "default": 1,
                         "min": 1,
                         "max": 10
+                    }
+                ],
+                "denoise": [
+                    "FLOAT",
+                    {
+                        "default": 1,
+                        "min": 0,
+                        "max": 1,
+                        "step": 0.01
                     }
                 ]
             }
@@ -4666,7 +4756,7 @@
         "name": "HyperTile",
         "display_name": "HyperTile",
         "description": "",
-        "category": "_for_testing",
+        "category": "model_patches",
         "output_node": false
     },
     "ModelSamplingDiscrete": {
@@ -5210,6 +5300,39 @@
         "category": "sampling/video_models",
         "output_node": false
     },
+    "ImageOnlyCheckpointSave": {
+        "input": {
+            "required": {
+                "model": [
+                    "MODEL"
+                ],
+                "clip_vision": [
+                    "CLIP_VISION"
+                ],
+                "vae": [
+                    "VAE"
+                ],
+                "filename_prefix": [
+                    "STRING",
+                    {
+                        "default": "checkpoints/ComfyUI"
+                    }
+                ]
+            },
+            "hidden": {
+                "prompt": "PROMPT",
+                "extra_pnginfo": "EXTRA_PNGINFO"
+            }
+        },
+        "output": [],
+        "output_is_list": [],
+        "output_name": [],
+        "name": "ImageOnlyCheckpointSave",
+        "display_name": "ImageOnlyCheckpointSave",
+        "description": "",
+        "category": "_for_testing",
+        "output_node": true
+    },
     "SelfAttentionGuidance": {
         "input": {
             "required": {
@@ -5360,6 +5483,152 @@
         "display_name": "StableZero123_Conditioning",
         "description": "",
         "category": "conditioning/3d_models",
+        "output_node": false
+    },
+    "StableZero123_Conditioning_Batched": {
+        "input": {
+            "required": {
+                "clip_vision": [
+                    "CLIP_VISION"
+                ],
+                "init_image": [
+                    "IMAGE"
+                ],
+                "vae": [
+                    "VAE"
+                ],
+                "width": [
+                    "INT",
+                    {
+                        "default": 256,
+                        "min": 16,
+                        "max": 8192,
+                        "step": 8
+                    }
+                ],
+                "height": [
+                    "INT",
+                    {
+                        "default": 256,
+                        "min": 16,
+                        "max": 8192,
+                        "step": 8
+                    }
+                ],
+                "batch_size": [
+                    "INT",
+                    {
+                        "default": 1,
+                        "min": 1,
+                        "max": 4096
+                    }
+                ],
+                "elevation": [
+                    "FLOAT",
+                    {
+                        "default": 0,
+                        "min": -180,
+                        "max": 180
+                    }
+                ],
+                "azimuth": [
+                    "FLOAT",
+                    {
+                        "default": 0,
+                        "min": -180,
+                        "max": 180
+                    }
+                ],
+                "elevation_batch_increment": [
+                    "FLOAT",
+                    {
+                        "default": 0,
+                        "min": -180,
+                        "max": 180
+                    }
+                ],
+                "azimuth_batch_increment": [
+                    "FLOAT",
+                    {
+                        "default": 0,
+                        "min": -180,
+                        "max": 180
+                    }
+                ]
+            }
+        },
+        "output": [
+            "CONDITIONING",
+            "CONDITIONING",
+            "LATENT"
+        ],
+        "output_is_list": [
+            false,
+            false,
+            false
+        ],
+        "output_name": [
+            "positive",
+            "negative",
+            "latent"
+        ],
+        "name": "StableZero123_Conditioning_Batched",
+        "display_name": "StableZero123_Conditioning_Batched",
+        "description": "",
+        "category": "conditioning/3d_models",
+        "output_node": false
+    },
+    "SD_4XUpscale_Conditioning": {
+        "input": {
+            "required": {
+                "images": [
+                    "IMAGE"
+                ],
+                "positive": [
+                    "CONDITIONING"
+                ],
+                "negative": [
+                    "CONDITIONING"
+                ],
+                "scale_ratio": [
+                    "FLOAT",
+                    {
+                        "default": 4,
+                        "min": 0,
+                        "max": 10,
+                        "step": 0.01
+                    }
+                ],
+                "noise_augmentation": [
+                    "FLOAT",
+                    {
+                        "default": 0,
+                        "min": 0,
+                        "max": 1,
+                        "step": 0.001
+                    }
+                ]
+            }
+        },
+        "output": [
+            "CONDITIONING",
+            "CONDITIONING",
+            "LATENT"
+        ],
+        "output_is_list": [
+            false,
+            false,
+            false
+        ],
+        "output_name": [
+            "positive",
+            "negative",
+            "latent"
+        ],
+        "name": "SD_4XUpscale_Conditioning",
+        "display_name": "SD_4XUpscale_Conditioning",
+        "description": "",
+        "category": "conditioning/upscale_diffusion",
         "output_node": false
     }
 }

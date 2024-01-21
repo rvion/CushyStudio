@@ -1,27 +1,29 @@
 app({
     ui: (form) => ({
         steps: form.choices({
-            defaultActiveBranches: {
+            default: {
                 frame: true,
             },
-            items: () => ({
-                frame: form.group({
-                    className: ' p-2 bg-blue-800 rounded-xl',
-                    items: () => ({
-                        seed: form.seed({
-                            default: 12,
-                            defaultMode: 'fixed',
+            items: {
+                frame: () =>
+                    form.group({
+                        className: ' p-2 bg-blue-800 rounded-xl',
+                        items: () => ({
+                            seed: form.seed({
+                                default: 12,
+                                defaultMode: 'fixed',
+                            }),
+                            positive: form.string({}),
                         }),
-                        positive: form.str({}),
                     }),
-                }),
-                portrait: form.group({
-                    className: 'p-2 bg-red-800 ',
-                    items: () => ({
-                        seed: form.seed({}),
+                portrait: () =>
+                    form.group({
+                        className: 'p-2 bg-red-800 ',
+                        items: () => ({
+                            seed: form.seed({}),
+                        }),
                     }),
-                }),
-            }),
+            },
         }),
     }),
 

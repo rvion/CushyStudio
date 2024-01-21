@@ -13,7 +13,7 @@ const MyCustomComponent = observer(function (
         image?: MediaImageID
     }>,
 ) {
-    const value = p.widget.state.value
+    const value = p.widget.serial.value
     const img = value.image ?? p.widget.st().db.media_images.last()
     return (
         <div className='flex flex-col gap-2 virtualBorder p-2'>
@@ -61,6 +61,6 @@ app({
         run.output_text(`You have clicked it ${clickCount ?? 0} times (before resetting)`)
 
         /** 📝 programmatically reset the state from the UI */
-        if (ui.demo.text === 'reset') run.formInstance.state.values.demo.reset()
+        if (ui.demo.text === 'reset') run.formInstance.values.demo.reset()
     },
 })

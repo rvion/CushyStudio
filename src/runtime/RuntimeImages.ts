@@ -1,9 +1,10 @@
+import type { PromptID } from 'src/types/ComfyWsApi'
+import type { Runtime } from './Runtime'
+import type { MediaImageL } from 'src/models/MediaImage'
+import type { ComfyWorkflowL } from 'src/models/ComfyWorkflow'
+
 import { makeAutoObservable } from 'mobx'
-import { MediaImageL } from 'src/models/MediaImage'
 import { createMediaImage_fromDataURI, createMediaImage_fromPath } from 'src/models/createMediaImage_fromWebFile'
-import { PromptID } from 'src/types/ComfyWsApi'
-import { Runtime } from './Runtime'
-import { ComfyWorkflowL } from 'src/models/ComfyWorkflow'
 
 /** namespace for all image-related utils */
 export class RuntimeImages {
@@ -15,7 +16,7 @@ export class RuntimeImages {
     // simple to use functions
     loadAsImage = async (relPathOrDataURL: string, workflow?: ComfyWorkflowL): Promise<LoadImage> => {
         const img = this.createFromDataURLOrPath(relPathOrDataURL)
-        return await img.uploadAndloadAsImage(workflow ?? this.rt.workflow)
+        return await img.uploadAndloadAsImage(workflow)
     }
 
     loadAsMask = async (
@@ -24,7 +25,7 @@ export class RuntimeImages {
         workflow?: ComfyWorkflowL,
     ): Promise<LoadImageMask> => {
         const img = this.createFromDataURLOrPath(relPathOrDataURL)
-        return await img.uploadAndloadAsMask(workflow ?? this.rt.workflow, channel)
+        return await img.uploadAndloadAsMask(channel, workflow)
     }
 
     loadAsEnum = async (relPathOrDataURL: string): Promise<Enum_LoadImage_image> => {
@@ -45,11 +46,11 @@ export class RuntimeImages {
         /** base 64 encoded data URL */
         dataURL: string,
     ): MediaImageL => {
-        return createMediaImage_fromDataURI(this.rt.st, dataURL)
+        return createMediaImage_fromDataURI(this.rt.Cushy, dataURL)
     }
 
     createFromPath = (relPath: string, p: { promptID?: PromptID } = {}): MediaImageL => {
         const stepID = this.rt.step.id
-        return createMediaImage_fromPath(this.rt.st, relPath, { promptID: p.promptID, stepID })
+        return createMediaImage_fromPath(this.rt.Cushy, relPath, { promptID: p.promptID, stepID })
     }
 }

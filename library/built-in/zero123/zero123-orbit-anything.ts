@@ -89,7 +89,7 @@ app({
                 clip: ckpt2,
                 vae: ckpt2,
                 negative: '', // run.formatEmbeddingForComfyUI('EasyNegative'),
-                positive: run_prompt(run, {
+                positive: run_prompt({
                     richPrompt: {
                         tokens: [
                             // inject the english words for the angle

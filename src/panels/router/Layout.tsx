@@ -192,16 +192,6 @@ export class CushyLayoutManager {
         return Trigger.Success
     }
 
-    // add = <K extends Panel>(component: K, props: PropsOf<Panels[K]['widget']>) => {
-    //     const { icon, title } = panels[component].header(props as any)
-    //     this._AddWithProps(
-    //         //
-    //         component,
-    //         `/${component}/${JSON.stringify(props)}`,
-    //         { title: 'CardPicker3UI', ...props },
-    //     )
-    // }
-
     TOGGLE_FULL = <const K extends Panel>(component: K, props: PropsOf<Panels[K]['widget']>) => {
         if (
             this.fullPageComp == null || //
@@ -350,7 +340,7 @@ export class CushyLayoutManager {
                     show: true,
                     // selected: 0,
                     children: [
-                        this._add({ panel: 'Steps', props: {}, canClose: false }),
+                        // this._add({ panel: 'Steps', props: {}, canClose: false }),
                         // this._add({ panel: 'LastStep', props: {}, canClose: false }),
                         // this._add({ panel: 'Steps', props: {}, canClose: false }),
                         // this._add({ panel: 'Steps', props: {}, canClose: false }),
@@ -461,6 +451,7 @@ export class CushyLayoutManager {
                         id: 'rightsidePane',
                         type: 'row',
                         weight: 10,
+                        width: 400,
                         children: [
                             {
                                 type: 'tabset',
@@ -480,6 +471,14 @@ export class CushyLayoutManager {
                                     // // this._add({ panel: 'LastLatent', props: {} }),
                                     // // this._persistentTab('Hosts', Widget.Hosts),
                                 ],
+                            },
+                            {
+                                type: 'tabset',
+                                // height: 256,
+                                width: 400,
+                                minWidth: 100,
+                                minHeight: 100,
+                                children: [this._add({ panel: 'Steps', props: {}, canClose: false })],
                             },
                         ],
                     },

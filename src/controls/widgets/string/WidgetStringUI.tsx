@@ -1,19 +1,20 @@
 import { observer } from 'mobx-react-lite'
-import { Widget_str, Widget_strOpt } from 'src/controls/Widget'
+import { Widget_string } from './WidgetString'
 
-export const WidgetStrUI = observer(function WidgetStrUI_(p: { widget: Widget_str | Widget_strOpt }) {
+// UI
+export const WidgetStringUI = observer(function WidgetStringUI_(p: { widget: Widget_string }) {
     const widget = p.widget
-    const val = widget.state.val
-    if (widget.input.textarea) {
+    const val = widget.result
+    if (widget.config.textarea) {
         return (
             <textarea
                 tw='textarea textarea-bordered textarea-sm w-full'
-                placeholder={widget.input.placeHolder}
+                placeholder={widget.config.placeHolder}
                 rows={2}
                 value={val}
                 onChange={(ev) => {
                     const next = ev.target.value
-                    widget.state.val = next
+                    widget.serial.val = next
                 }}
             />
         )
@@ -21,11 +22,11 @@ export const WidgetStrUI = observer(function WidgetStrUI_(p: { widget: Widget_st
     return (
         <input
             tw='input input-bordered input-sm w-full'
-            placeholder={widget.input.placeHolder}
+            placeholder={widget.config.placeHolder}
             value={val}
             onChange={(ev) => {
                 const next = ev.target.value
-                widget.state.val = next
+                widget.serial.val = next
             }}
         />
     )

@@ -11,13 +11,12 @@ export const ui_subform_SoftEdge = () => {
             ...cnet_ui_common(form),
             preprocessor: ui_subform_SoftEdge_Preprocessor(form),
             cnet_model_name: form.enum({
+                label: 'Model',
                 enumName: 'Enum_ControlNetLoader_control_net_name',
                 default: { value: 'control_v11p_sd15_softedge.pth' },
                 recommandedModels: {
                     knownModel: ['ControlNet-v1-1 (softedge; fp16)', 'controlnet-SargeZT/controlnet-sd-xl-1.0-softedge-dexined'],
                 },
-                group: 'Controlnet',
-                label: 'Model',
             }),
         }),
     })
@@ -26,17 +25,17 @@ export const ui_subform_SoftEdge = () => {
 export const ui_subform_SoftEdge_Preprocessor = (form: FormBuilder) => {
     return form.groupOpt({
         label: 'SoftEdge Edge Preprocessor',
-        default: true,
+        startActive: true,
         items: () => ({
             advanced: form.groupOpt({
                 label: 'Advanced Preprocessor Settings',
                 items: () => ({
                     type: form.choice({
                         label: 'Type',
-                        items: () => ({
-                            HED: ui_subform_SoftEdge_Preprocessor_Options(form),
-                            PiDiNet: ui_subform_SoftEdge_Preprocessor_Options(form),
-                        }),
+                        items: {
+                            HED: () => ui_subform_SoftEdge_Preprocessor_Options(form),
+                            PiDiNet: () => ui_subform_SoftEdge_Preprocessor_Options(form),
+                        },
                     }),
                     // TODO: Add support for auto-modifying the resolution based on other form selections
                     // TODO: Add support for auto-cropping
@@ -59,10 +58,10 @@ export const ui_subform_SoftEdge_Preprocessor_Options = (form: FormBuilder) => {
 // 🅿️ SoftEdge RUN ===================================================
 export const run_cnet_SoftEdge = (
     SoftEdge: OutputFor<typeof ui_subform_SoftEdge>,
-    image: IMAGE,
+    image: _IMAGE,
     resolution: 512 | 768 | 1024 = 512,
 ): {
-    image: IMAGE
+    image: _IMAGE
     cnet_name: Enum_ControlNetLoader_control_net_name
 } => {
     const run = getCurrentRun()

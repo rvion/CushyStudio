@@ -28,9 +28,7 @@ export const TreeUI = observer(function TreeEditorUI_(p: { tree: Tree }) {
                     <div className='flex-1'></div>
                     <div
                         tw='btn btn-square btn-ghost btn-sm shrink-0'
-                        onClick={() => {
-                            st.db.tree_entries.updateAll({ isExpanded: null })
-                        }}
+                        onClick={() => st.db.tree_entries.updateAll({ isExpanded: null })}
                     >
                         <span className='material-symbols-outlined'>unfold_less</span>
                     </div>

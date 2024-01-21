@@ -11,11 +11,10 @@ export const ui_subform_Normal = () => {
             ...cnet_ui_common(form),
             preprocessor: ui_subform_Normal_Preprocessor(),
             cnet_model_name: form.enum({
+                label: 'Model',
                 enumName: 'Enum_ControlNetLoader_control_net_name',
                 default: { value: 'control_v11p_sd15_normalbae.pth' },
                 recommandedModels: { knownModel: ['ControlNet-v1-1 (normalbae; fp16)'] },
-                group: 'Controlnet',
-                label: 'Model',
             }),
         }),
     })
@@ -25,7 +24,7 @@ export const ui_subform_Normal_Preprocessor = () => {
     const form = getCurrentForm()
     return form.groupOpt({
         label: 'Normal Preprocessor',
-        default: true,
+        startActive: true,
         items: () => ({
             advanced: form.groupOpt({
                 label: 'Advanced Preprocessor Settings',
@@ -33,10 +32,10 @@ export const ui_subform_Normal_Preprocessor = () => {
                     type: form.choice({
                         label: 'Type',
                         default: 'MiDaS',
-                        items: () => ({
-                            MiDaS: ui_subform_Normal_Midas(),
-                            bae: ui_subform_Normal_bae(),
-                        }),
+                        items: {
+                            MiDaS: () => ui_subform_Normal_Midas(),
+                            bae: () => ui_subform_Normal_bae(),
+                        },
                     }),
                     // TODO: Add support for auto-modifying the resolution based on other form selections
                     // TODO: Add support for auto-cropping
@@ -71,10 +70,10 @@ export const ui_subform_Normal_bae = () => {
 // 🅿️ Normal RUN ===================================================
 export const run_cnet_Normal = (
     Normal: OutputFor<typeof ui_subform_Normal>,
-    image: IMAGE,
+    image: _IMAGE,
     resolution: 512 | 768 | 1024 = 512,
 ): {
-    image: IMAGE
+    image: _IMAGE
     cnet_name: Enum_ControlNetLoader_control_net_name
 } => {
     const run = getCurrentRun()

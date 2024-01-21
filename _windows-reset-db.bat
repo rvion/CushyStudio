@@ -1,5 +1,7 @@
 @echo off
 
+cd /d %~dp0
+
 @REM setlocal: Ensures that the environment changes are local to the script.
 setlocal
 

@@ -22,10 +22,6 @@ export class ActionNode extends DecoratorNode<ReactNode> {
         this.tag = observable(tag)
     }
 
-    setParam(v: string): void {
-        this.param = v
-    }
-
     static getType(): 'action' {
         return 'action'
     }

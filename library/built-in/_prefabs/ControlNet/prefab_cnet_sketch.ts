@@ -10,10 +10,9 @@ export const ui_subform_Sketch = () => {
         items: () => ({
             ...cnet_ui_common(form),
             cnet_model_name: form.enum({
+                label: 'Model',
                 enumName: 'Enum_ControlNetLoader_control_net_name',
-                default: {
-                    value: 't2iadapter_sketch_sd14v1.pth',
-                },
+                default: { value: 't2iadapter_sketch_sd14v1.pth' },
                 recommandedModels: {
                     knownModel: [
                         'T2I-Adapter (sketch)',
@@ -21,8 +20,6 @@ export const ui_subform_Sketch = () => {
                         'stabilityai/control-lora-sketch-rank256.safetensors',
                     ],
                 },
-                group: 'Controlnet',
-                label: 'Model',
             }),
         }),
     })
@@ -31,9 +28,9 @@ export const ui_subform_Sketch = () => {
 // 🅿️ Sketch RUN ===================================================
 export const run_cnet_Sketch = (
     Sketch: OutputFor<typeof ui_subform_Sketch>,
-    image: IMAGE,
+    image: _IMAGE,
 ): {
-    image: IMAGE
+    image: _IMAGE
     cnet_name: Enum_ControlNetLoader_control_net_name
 } => {
     const run = getCurrentRun()

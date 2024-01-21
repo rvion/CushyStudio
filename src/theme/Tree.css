@@ -13,11 +13,11 @@
 }
 
 ._TreeUI ._line:hover {
-    background: oklch(var(--b3));
+    background: oklch(var(--s)/.3);
 }
 /* ._TreeItemTitle */
 ._TreeUI ._selected {
-    background: oklch(var(--b3));
+    background: oklch(var(--p)/.4);
 }
 
 ._TreeUI ._gutter {

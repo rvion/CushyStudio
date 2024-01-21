@@ -17,13 +17,24 @@
         //
         "declaration": true,
         "emitDeclarationOnly": true,
-        "sourceMap": false,
-        "jsx": "react-jsx",
         "declarationMap": false,
-        "types": [],
+        "sourceMap": false,
         "outDir": "lib",
+        //
+        "jsx": "react-jsx",
+        "baseUrl": ".",
+        "typeRoots": ["src/typings"],
+        "types": [],
         "paths": {
-            "src/*": ["./src/*"]
+            // overrides
+            "nsfwjs": ["src/typings/nsfwjs.d.ts"],
+
+            // emptied
+            "typescript": ["src/typings/empty-types.d.ts"],
+            "webgl2": ["src/typings/empty-types.d.ts"],
+            "@tensorflow/tfjs": ["src/typings/empty-types.d.ts"],
+            "@types/webgl": ["src/typings/empty-types.d.ts"],
+            "@types/webgl-ext": ["src/typings/empty-types.d.ts"]
         }
     },
     "include": ["src/**/*.ts", "schema/global.d.ts"]

@@ -14,7 +14,6 @@ app({
         ckpt_name: ui.enum({
             enumName: 'Enum_CheckpointLoaderSimple_ckpt_name',
             default: 'revAnimated_v122.safetensors',
-            group: 'Model',
             label: 'Checkpoint',
         }),
     }),
@@ -29,7 +28,7 @@ app({
         const llmResult = await sdk.LLM.expandPrompt(ui.topic, ui.llmModel.id)
         const positiveTxt = llmResult.prompt
 
-        sdk.formInstance.state.values.promptFromLlm.input.markdown = positiveTxt
+        sdk.formInstance.values.promptFromLlm.config.markdown = positiveTxt
 
         // generate an image
         const graph = sdk.ComfyUI.create_basicWorkflow({

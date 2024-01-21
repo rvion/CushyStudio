@@ -1,4 +1,5 @@
 schema/global.d.ts
 schema/*
 **/schema/*
+
 src/controls/Widget.ts

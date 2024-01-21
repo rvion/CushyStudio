@@ -5,12 +5,13 @@ import { autorun, reaction, runInAction } from 'mobx'
 import { Status } from 'src/back/Status'
 import { LibraryFile } from 'src/cards/LibraryFile'
 import { FormBuilder } from 'src/controls/FormBuilder'
-import { Widget_group } from 'src/controls/Widget'
 import { LiveRef } from 'src/db/LiveRef'
 import { SQLITE_true } from 'src/db/SQLITE_boolean'
 import { DraftT } from 'src/db/TYPES.gen'
 import { __FAIL, __OK, type Result } from 'src/types/Either'
 import { CushyAppL } from './CushyApp'
+import { Widget_group } from 'src/controls/widgets/group/WidgetGroup'
+import { MediaImageL } from './MediaImage'
 
 export type FormPath = (string | number)[]
 
@@ -79,8 +80,17 @@ export class DraftL {
      * a.k.a. "starting the app"
      * a.k.a. "executing the app"
      * */
-    start = (formValueOverride?: Maybe<any>): StepL => {
+    start = (
+        //
+        formValueOverride?: Maybe<any>,
+        imageToStartFrom?: MediaImageL,
+    ): StepL => {
         this.isDirty = false
+        this.AWAKE()
+
+        // 2024-01-21 should this be here ?
+        this.st.layout.FOCUS_OR_CREATE('Output', {})
+
         // ----------------------------------------
         // 🔴 2023-11-30 rvion:: TEMPORPARY HACKS
         this.st.focusedStepID = null
@@ -128,7 +138,7 @@ export class DraftL {
             status: Status.New,
         })
         graph.update({ stepID: step.id }) // 🔶🔴
-        step.start({ formInstance: widget })
+        step.start({ formInstance: widget, imageToStartFrom })
         this.lastStarted = step
         void step.finished.then(() => {
             this.checkIfShouldRestart()
@@ -160,14 +170,17 @@ export class DraftL {
                 try {
                     const formBuilder = new FormBuilder(this.st.schema)
                     const uiFn = action.ui
-                    const req: Widget_group<any> =
-                        uiFn == null //
-                            ? formBuilder._HYDRATE('group', { topLevel: true, items: () => ({}) }, this.data.appParams)
-                            : formBuilder._HYDRATE('group', { topLevel: true, items: () => uiFn(formBuilder) }, this.data.appParams) // prettier-ignore
-                    /** 👇 HACK; see the comment near the ROOT property definition */
-                    formBuilder._ROOT = req
-                    this.form = __OK(req)
-                    console.log(`[🦊] form: setup`)
+                    runInAction(() => {
+                        const req: Widget_group<any> = formBuilder._HYDRATE(
+                            'group',
+                            { topLevel: true, items: () => uiFn?.(formBuilder) ?? {} },
+                            this.data.appParams,
+                        )
+                        /** 👇 HACK; see the comment near the ROOT property definition */
+                        formBuilder._ROOT = req
+                        this.form = __OK(req)
+                        console.log(`[🦊] form: setup`)
+                    })
                     // subState.unsync()
                 } catch (e) {
                     console.error(e)
@@ -182,7 +195,7 @@ export class DraftL {
         const _2 = autorun(() => {
             const formValue = this.form.value
             if (formValue == null) return null
-            const count = formValue.builder._cache.count // manual mobx invalidation
+            const count = formValue.form._cache.count // manual mobx invalidation
             const _ = JSON.stringify(formValue.serial)
             runInAction(() => {
                 console.log(`[🦊] form: updating`)

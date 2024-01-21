@@ -22,7 +22,7 @@ export class RuntimeHosts {
      * - usefull if you want to manually dispatch things
      * */
     get all(): HostL[] {
-        return this.rt.st.db.hosts.findAll()
+        return this.rt.Cushy.db.hosts.findAll()
     }
 
     /**
@@ -30,6 +30,6 @@ export class RuntimeHosts {
      * by default, prompts are sent to this host
      */
     get main(): HostL {
-        return this.rt.st.mainHost
+        return this.rt.Cushy.mainHost
     }
 }

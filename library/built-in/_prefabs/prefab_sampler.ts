@@ -7,21 +7,19 @@ export const ui_sampler = () => {
     const form: FormBuilder = getCurrentForm()
     return form.group({
         items: () => ({
-            denoise: form.float({ step: 0.01, min: 0, max: 1, default: 1, label: 'Denoise', group: 'KSampler' }),
-            steps: form.int({ default: 20, label: 'Steps', min: 0, group: 'KSampler' }),
-            cfg: form.float({ label: 'CFG', min: 3, max: 20, default: 8, group: 'KSampler' }),
-            seed: form.seed({ group: 'KSampler' }),
+            denoise: form.float({ step: 0.01, min: 0, max: 1, default: 1, label: 'Denoise' }),
+            steps: form.int({ default: 20, label: 'Steps', min: 0 }),
+            cfg: form.float({ label: 'CFG', min: 3, max: 20, default: 8 }),
+            seed: form.seed({}),
             sampler_name: form.enum({
                 label: 'Sampler',
                 enumName: 'Enum_KSampler_sampler_name',
                 default: 'euler',
-                group: 'KSampler',
             }),
             scheduler: form.enum({
                 label: 'Scheduler',
                 enumName: 'Enum_KSampler_scheduler',
                 default: 'karras',
-                group: 'KSampler',
             }),
         }),
     })

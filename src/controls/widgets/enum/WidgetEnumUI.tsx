@@ -1,37 +1,33 @@
+import type { CleanedEnumResult } from 'src/types/EnumUtils'
+import type { EnumName, EnumValue } from '../../../models/Schema'
+import type { Widget_enum } from './WidgetEnum'
+
 import { observer } from 'mobx-react-lite'
-import { Widget_enum, Widget_enumOpt } from 'src/controls/Widget'
 import { SelectUI } from 'src/rsuite/SelectUI'
 import { Popover, Whisper } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
-import { CleanedEnumResult } from 'src/types/EnumUtils'
-import type { EnumName, EnumValue } from '../../models/Schema'
 
-type T = {
-    label: EnumValue
-    value: EnumValue | null
-}[]
+// UI
 
-export const WidgetEnumUI = observer(function WidgetEnumUI_<K extends KnownEnumNames>(p: {
-    widget: Widget_enum<K> | Widget_enumOpt<K>
-}) {
+export const WidgetEnumUI = observer(function WidgetEnumUI_<K extends KnownEnumNames>(p: { widget: Widget_enum<K> }) {
     const widget = p.widget
-    const enumName = widget.input.enumName
-    const isOptional = widget instanceof Widget_enumOpt
+    const enumName = widget.config.enumName
+    const isOptional = false // TODO: hook into parent once parent is accessible from state
     return (
         <>
             {/* <InstallModelBtnUI widget={widget} modelFolderPrefix={} /> */}
             <EnumSelectorUI
                 value={() => widget.status}
-                disabled={!widget.state.active}
+                disabled={!widget.serial.active}
                 isOptional={isOptional}
                 enumName={enumName}
                 // substituteValue={req.status}
                 onChange={(e) => {
                     if (e == null) {
-                        if (isOptional) widget.state.active = false
+                        // if (isOptional) widget.serial.active = false
                         return
                     }
-                    widget.state.val = e as any // 🔴
+                    widget.serial.val = e as any // 🔴
                 }}
             />
         </>
@@ -50,6 +46,7 @@ export const EnumSelectorUI = observer(function EnumSelectorUI_(p: {
     const project = useSt().project
     const schema = project.schema
     const options: EnumValue[] = schema.knownEnumsByName.get(p.enumName)?.values ?? [] // schema.getEnumOptionsForSelectPicker(p.enumName)
+
     // const valueIsValid = (p.value != null || p.isOptional) && options.some((x) => x.value === p.value)
     const value = p.value()
     const hasError = Boolean(value.isSubstitute || value.ENUM_HAS_NO_VALUES)

@@ -129,6 +129,11 @@ export class LiveTable<T extends BaseInstanceFields, L extends LiveInstance<T, L
 
                 // 1. check if update is needed
                 const isSame = Object.keys(changes).every((k) => {
+                    // skip
+                    const change = (changes as any)[k]
+                    if (typeof change === 'object' && change != null) return false
+
+                    // abort if not an object
                     return (this.data as any)[k] === (changes as any)[k]
                 })
                 if (isSame) return // ⏸️ console.log(`✔️ ${this.table.name}#${changes.id} no need to update`) // no need to update

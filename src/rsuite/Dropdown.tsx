@@ -3,26 +3,25 @@ import { ReactNode } from 'react'
 import { RSAppearance, RSSize } from './RsuiteTypes'
 import { RevealUI } from './reveal/RevealUI'
 import { ComboUI } from 'src/app/shortcuts/ComboUI'
+import { CushyShortcut } from 'src/app/shortcuts/ShortcutManager'
 
 export const Dropdown = (p: {
     className?: string
     startIcon?: Maybe<ReactNode>
     title: ReactNode
     appearance?: Maybe<RSAppearance>
-    size?: Maybe<RSSize>
     children: ReactNode
     enableRightClick?: boolean
 }) => (
-    <RevealUI
-        //
-        enableRightClick={p.enableRightClick}
-        disableHover
-        // showDelay={0}
-        // hideDelay={500}
-        className='dropdown'
-        tw={[p.className]}
-    >
-        <label tabIndex={0} tw={[`flex-nowrap btn btn-ghost btn-${p.size ?? 'sm'} px-2`]}>
+    <RevealUI enableRightClick={p.enableRightClick} disableHover className='dropdown' tw={[p.className]}>
+        <label
+            // style={{
+            //     minHeight: '1.5rem',
+            //     height: '1.5rem',
+            // }}
+            tabIndex={0}
+            tw={[`flex-nowrap btn btn-ghost btn-sm px-2`]}
+        >
             <span tw='hidden lg:inline-block'>{p.startIcon}</span>
             {p.title}
         </label>
@@ -41,7 +40,7 @@ export const MenuItem = observer(function DropdownItem_(p: {
     className?: string
     children?: ReactNode
     label?: ReactNode
-    shortcut?: ReactNode
+    shortcut?: CushyShortcut
 }) {
     const { size, label, disabled, icon, children, active, onClick, ...rest } = p
 
@@ -64,11 +63,7 @@ export const MenuItem = observer(function DropdownItem_(p: {
                 {icon ?? null /*<span className='material-symbols-outlined'>spa</span>*/}
                 {label}
                 {children}
-                {p.shortcut ? (
-                    <div tw='ml-auto pl-4 text-xs italic'>
-                        <div tw='kbd'>cmd</div>+<div tw='kbd'>R</div>
-                    </div>
-                ) : null}
+                {p.shortcut ? <div tw='ml-auto pl-2 text-xs italic'>{p.shortcut && <ComboUI combo={p.shortcut} />}</div> : null}
             </div>
         </li>
     )

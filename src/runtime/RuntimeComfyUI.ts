@@ -12,7 +12,7 @@ export class RuntimeComfyUI {
     // ----------------------------------------------------------------------------------------------------
     /** create a new empty ComfyUI workflow */
     create_emptyWorkflow = (): ComfyWorkflowL => {
-        return this.rt.st.db.graphs.create({
+        return this.rt.Cushy.db.graphs.create({
             stepID: this.rt.step.id,
             comfyPromptJSON: {},
             metadata: {},
@@ -30,7 +30,7 @@ export class RuntimeComfyUI {
             denoise?: number
         } = {},
     ): ComfyWorkflowL => {
-        const graph = this.rt.st.db.graphs.create({
+        const graph = this.rt.Cushy.db.graphs.create({
             stepID: this.rt.step.id,
             comfyPromptJSON: {},
             metadata: {},
@@ -69,7 +69,7 @@ export class RuntimeComfyUI {
     // ----------------------------------------------------------------------------------------------------
     /** retrieve the global schema */
     get schema() {
-        return this.rt.st.schema
+        return this.rt.Cushy.schema
     }
 
     /** check if the current connected ComfyUI backend has a given lora by name */

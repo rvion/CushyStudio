@@ -1,14 +1,14 @@
 import { observer } from 'mobx-react-lite'
-import { Widget_color } from 'src/controls/Widget'
+import { Widget_color } from './WidgetColor'
 
 export const WidgetColorUI = observer(function WidgetColorUI_(p: { widget: Widget_color }) {
     const widget = p.widget
     return (
         <div>
             <input //
-                value={widget.state.val}
+                value={widget.serial.val}
                 type='color'
-                onChange={(ev) => (widget.state.val = ev.target.value)}
+                onChange={(ev) => (widget.serial.val = ev.target.value)}
             />
         </div>
     )

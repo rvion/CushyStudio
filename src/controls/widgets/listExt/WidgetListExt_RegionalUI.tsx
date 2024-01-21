@@ -1,19 +1,22 @@
+import type { Widget } from 'src/controls/Widget'
+import type { Widget_listExt } from './WidgetListExt'
+import type { BoardPosition } from './WidgetListExtTypes'
+
 import { observer } from 'mobx-react-lite'
 import * as React from 'react'
 import { Layer, Rect, Stage, Transformer } from 'react-konva'
-import type { ItemExt, Widget, Widget_listExt } from '../Widget'
 
 export const WidgetListExt_RegionalUI = observer(function WidgetListExt_RegionalUI_<T extends Widget>(p: {
-    req: Widget_listExt<T>
+    widget: Widget_listExt<T>
 }) {
-    const widget = p.req
+    const widget = p.widget
 
-    const shapes = widget.state.items
+    const entries = widget.entries
     return (
         <Stage
             //
-            width={widget.state.width}
-            height={widget.state.height}
+            width={widget.serial.width}
+            height={widget.serial.height}
             onContextMenu={(e) => {
                 e.evt.preventDefault()
                 console.log('context menu')
@@ -24,42 +27,14 @@ export const WidgetListExt_RegionalUI = observer(function WidgetListExt_Regional
         >
             <Layer>
                 {/* <Text text='Try to drag a star' /> */}
-                {shapes.map((shape) => (
+                {entries.map(({ position, widget }) => (
                     <RectangleUI
-                        key={`rect-${shape.item.id}`}
-                        onChange={(p) => Object.assign(shape, p)}
-                        isSelected={shape.isSelected}
-                        shape={shape}
+                        key={`rect-${widget.id}`}
+                        onChange={(p) => Object.assign(position, p)}
+                        isSelected={position.isSelected}
+                        shape={position}
                     />
                 ))}
-                {/* {shapes.map((star) => (
-                    <Star
-                        key={`star-${star.item.id}`}
-                        id={star.item.id}
-                        x={star.x}
-                        y={star.y}
-                        scaleX={star.isDragging ? 1.2 : 1}
-                        scaleY={star.isDragging ? 1.2 : 1}
-                        rotation={star.rotation}
-                        numPoints={5}
-                        innerRadius={20}
-                        outerRadius={40}
-                        fill='#89b717'
-                        opacity={0.8}
-                        draggable
-                        shadowColor='black'
-                        shadowBlur={10}
-                        shadowOpacity={0.6}
-                        shadowOffsetX={star.isDragging ? 10 : 5}
-                        shadowOffsetY={star.isDragging ? 10 : 5}
-                        onDragStart={(e) => (star.isDragging = true)}
-                        onDragEnd={(e) => {
-                            star.isDragging = false
-                            star.x = e.target.x()
-                            star.y = e.target.y()
-                        }}
-                    />
-                ))} */}
             </Layer>
         </Stage>
     )
@@ -67,9 +42,9 @@ export const WidgetListExt_RegionalUI = observer(function WidgetListExt_Regional
 
 export const RectangleUI = observer(function RectangleUI_(p: {
     //
-    shape: ItemExt
+    shape: BoardPosition
     isSelected?: boolean
-    onChange: (p: Partial<ItemExt>) => void
+    onChange: (p: Partial<BoardPosition>) => void
 }) {
     const shapeRef = React.useRef<any>()
     const trRef = React.useRef<any>()
@@ -132,3 +107,32 @@ export const RectangleUI = observer(function RectangleUI_(p: {
         </React.Fragment>
     )
 })
+
+//   {/* {shapes.map((star) => (
+//         <Star
+//             key={`star-${star.item.id}`}
+//             id={star.item.id}
+//             x={star.x}
+//             y={star.y}
+//             scaleX={star.isDragging ? 1.2 : 1}
+//             scaleY={star.isDragging ? 1.2 : 1}
+//             rotation={star.rotation}
+//             numPoints={5}
+//             innerRadius={20}
+//             outerRadius={40}
+//             fill='#89b717'
+//             opacity={0.8}
+//             draggable
+//             shadowColor='black'
+//             shadowBlur={10}
+//             shadowOpacity={0.6}
+//             shadowOffsetX={star.isDragging ? 10 : 5}
+//             shadowOffsetY={star.isDragging ? 10 : 5}
+//             onDragStart={(e) => (star.isDragging = true)}
+//             onDragEnd={(e) => {
+//                 star.isDragging = false
+//                 star.x = e.target.x()
+//                 star.y = e.target.y()
+//             }}
+//         />
+//     ))} */}

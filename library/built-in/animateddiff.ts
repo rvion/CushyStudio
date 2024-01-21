@@ -6,15 +6,15 @@ app({
         description: 'Minimalist AnimateDiff example',
     },
     ui: (form) => ({
-        preText: form.str({
+        preText: form.string({
             default: ' (Masterpiece, best quality:1.2), closeup, close-up, a girl in a forest',
         }),
-        seed: form.intOpt({ group: 'sampler' }),
+        seed: form.intOpt({}),
         timeline: form.timeline({
             width: TOTAL_DURATION,
             height: 2,
-            element: ({ ix }) => ({
-                item: form.prompt({}),
+            element: ({ ix }) => form.prompt({}),
+            initialPosition: ({ ix }) => ({
                 width: 0.25 * TOTAL_DURATION,
                 x: TOTAL_DURATION * (ix / 4),
             }),
@@ -30,7 +30,7 @@ app({
         //     ].join('\n'),
         // }),
         removeBG: form.bool({ default: false }),
-        samplerSteps: form.int({ default: 20, group: 'sampler' }),
+        samplerSteps: form.int({ default: 20 }),
         // frames: form.int({ default: 16, group: 'video' }),
     }),
     run: async (run, ui) => {
@@ -60,14 +60,14 @@ app({
         })
         const text = ui.timeline.items
             .map((entry) => {
-                const tokens = entry.item.tokens
+                const tokens = entry.value.tokens
                 const text = tokens
                     .map((tok) => {
                         if (tok.type === 'text') return tok.text
                         return ''
                     })
                     .join(' ')
-                return `"${entry.x}" : "${text}"`
+                return `"${entry.position.x}" : "${text}"`
             })
             .join(',\n')
         const batchPromptSchedule = graph.BatchPromptSchedule({

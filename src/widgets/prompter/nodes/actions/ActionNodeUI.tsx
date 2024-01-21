@@ -1,14 +1,12 @@
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
 import { observer } from 'mobx-react-lite'
-import { Button, Input, Popover, Whisper } from 'src/rsuite/shims'
+import { Button, Popover, Whisper } from 'src/rsuite/shims'
 import { ActionNode } from './ActionNode'
 
 export const ActionNodeUI = observer(function ActionNodeUI_(p: { node: ActionNode }) {
     const node = p.node
     const [editor] = useLexicalComposerContext()
     const def = node.tag
-    let set = node.setParam
-    console.log(set)
     console.log(node, def)
     return (
         <Whisper

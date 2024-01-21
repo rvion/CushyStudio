@@ -253,7 +253,7 @@ export class ComfyNode<
         const val = (this.outputs as any)[i.nameInCushy]
         // console.log(`this[i.name] = ${this.$schema.name}[${i.name}] = ${val}`)
         if (val instanceof ComfyNodeOutput) return val
-        throw new Error(`Expected ${i.nameInCushy} to be a NodeOutput`)
+        throw new Error(`Expected ${i.nameInCushy} to be a ComfyNodeOutput`)
     }
     private _getOutputForTypeOrNull(type: string): ComfyNodeOutput<any> | null {
         const i: Maybe<NodeOutputExt> = this.$schema.outputs.find((i: NodeOutputExt) => i.typeName === type)
@@ -261,6 +261,6 @@ export class ComfyNode<
         const val = (this.outputs as any)[i.nameInCushy]
         if (val == null) return null
         if (val instanceof ComfyNodeOutput) return val
-        throw new Error(`Expected ${i.nameInCushy} to be a NodeOutput`)
+        throw new Error(`Expected ${i.nameInCushy} to be a ComfyNodeOutput`)
     }
 }

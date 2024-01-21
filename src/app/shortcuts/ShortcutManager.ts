@@ -1,20 +1,22 @@
 import type { KeyboardEvent } from 'react'
 import type { STATE } from 'src/state/state'
 import { Trigger } from './Trigger'
+import { META_NAME, MOD_KEY } from './META_NAME'
 
 type Ctx = STATE
 
 /** @todo improve to detect shortkey without order */
-export type Combo = string // 'ctrl+k ctrl+shift+i'
-type InputToken = string // 'ctrl+k'
+export type CushyShortcut = Tagged<string, 'CushyShortcut'> // 'ctrl+k ctrl+shift+i'
+export type KeyName = Branded<string, { KeyAllowedInShortcut: true }> // ctrl, shift, win, space, ...
+type InputToken = Branded<string, { InputToken: true }> // 'ctrl+k'
 type InputSequence = InputToken[] // ['ctrl+k', 'ctrl+shift+i']
 type KnownCombo<Ctx> = [InputSequence, Shortcut<Ctx>]
 
 export type Shortcut<Ctx> = {
+    combos: CushyShortcut[] | true
     info?: string
-    combos: Combo[] | true
     action?: (ctx: Ctx, ev: KeyboardEvent) => Trigger
-    on?: 'keypress' | 'keydown' | 'keyup'
+    // on?: 'keypress' | 'keydown' | 'keyup'
     validInInput?: boolean
     continueAfterSuccess?: boolean
 }
@@ -30,7 +32,10 @@ export class ShortcutWatcher {
         //
         shortcuts: Shortcut<Ctx>[],
         public ctx: Ctx,
-        public conf: { log?: boolean; name?: string } = {},
+        public conf: {
+            log?: boolean
+            name?: string
+        },
     ) {
         this.name = this.conf.name || 'no-name' //shortId()
         this.shortcuts = shortcuts
@@ -42,7 +47,7 @@ export class ShortcutWatcher {
                 continue
             }
             for (const combo of shortcut.combos) {
-                const inputSequence = parseInputSequence(combo)
+                const inputSequence = parseShortcutToInputSequence(combo)
                 this.watchList.push([inputSequence, shortcut])
             }
         }
@@ -68,32 +73,26 @@ export class ShortcutWatcher {
         return inInput
     }
 
-    private inputToken = (ev: KeyboardEvent<HTMLElement>): string => {
-        const inputAccum: string[] = []
-        if (ev.ctrlKey) inputAccum.push('ctrl')
-        if (ev.shiftKey) inputAccum.push('shift')
-        if (ev.altKey) inputAccum.push('alt')
-        if (ev.metaKey) inputAccum.push('meta')
+    private inputToken = (ev: KeyboardEvent<HTMLElement>): InputToken => {
+        const inputAccum: KeyName[] = []
+        if (ev.ctrlKey) inputAccum.push('ctrl' as KeyName)
+        if (ev.shiftKey) inputAccum.push('shift' as KeyName)
+        if (ev.altKey) inputAccum.push('alt' as KeyName)
+        if (ev.metaKey) inputAccum.push(META_NAME)
 
         const key = ev.key
 
-        // if (['Control', 'Shift', 'Alt', 'Meta'].includes(key)) {
-        //     return Trigger.UNMATCHED_CONDITIONS
-        // }
-        //
         if (key) {
-            if (key === ' ') {
-                inputAccum.push('space')
-            } else {
-                inputAccum.push(key.toLowerCase())
-            }
+            if (key === ' ') inputAccum.push('space' as KeyName)
+            else inputAccum.push(key.toLowerCase() as KeyName)
         }
         const input = inputAccum //
-            .sort()
+            .sort(sortKeyNamesFn)
             .join('+')
             .toLowerCase()
-        return input
+        return input as InputToken
     }
+
     processKeyDownEvent = (ev: KeyboardEvent<HTMLElement>): Trigger => {
         // doc: why did I write this ?? => because I get "shift+shift" stuff
         // I could also check just above if (év.ctrlKey && !ev.key==='...')
@@ -178,42 +177,45 @@ export class ShortcutWatcher {
 
 const ENSURE_VOID = (_: never): any => _
 
-export function parseInputSequence(combo: Combo): InputSequence {
-    return combo.split(' ').map(normalizeInput)
+export function parseShortcutToInputSequence(combo: CushyShortcut): InputSequence {
+    return combo.split(' ').map(normalizeInputToken)
 }
 
-// ctrl+shift+a  => a+ctrl+shift
-function normalizeInput(input: InputToken): InputToken {
-    return (
-        input //
-            .split('+')
-            .map(normalizeKey)
-            // .sort((a, b) => {})
-            .sort()
-            .join('+')
-            .toLowerCase()
-    )
+export const normalizeCushyShortcut = (combo: CushyShortcut): CushyShortcut => {
+    return combo.split(' ').map(normalizeInputToken).join(' ')
+}
+// ctrl+shift+a => a+ctrl+shift
+function normalizeInputToken(input: string): InputToken {
+    if (input.includes(' ')) throw new Error(`invalid raw input token: "${input}"`)
+    return input //
+        .split('+')
+        .map(normalizeKey)
+        .sort(sortKeyNamesFn)
+        .join('+')
+        .toLowerCase() as InputToken
 }
 
-function normalizeKey(key: string): string {
-    if (key === 'up') return 'ArrowUp'
-    if (key === 'down') return 'ArrowDown'
-    if (key === 'left') return 'ArrowLeft'
-    if (key === 'right') return 'ArrowRight'
+function normalizeKey(key: string): KeyName {
+    if (key === 'up') return 'ArrowUp' as KeyName
+    if (key === 'down') return 'ArrowDown' as KeyName
+    if (key === 'left') return 'ArrowLeft' as KeyName
+    if (key === 'right') return 'ArrowRight' as KeyName
+    if (key === 'mod') return MOD_KEY
+    if (key === 'meta') return META_NAME
+    return key as KeyName
+}
+
+const keyPriorityWhenSorting = (key: KeyName) => {
+    if (key === 'ctrl') return '__1ctrl'
+    if (key === 'win') return '__1win'
+    if (key === 'cmd') return '__1cmd'
+    if (key === 'shift') return '__2shift'
+    if (key === 'alt') return '__3alt'
     return key
 }
 
-// 2. handle esc special case
-// if (input === 'Escape' && ev.target instanceof HTMLElement) {
-//     // if (inInput) return element.blur()
-//     if (inInput) {
-//         console.log(element, element.parentElement)
-//         if (element.parentElement) {
-//             console.log('focusing parent element')
-//             return element.parentElement.focus()
-//         } else {
-//             return element.blur()
-//         }
-//     }
-// }
-// console.log('combos', this.combos)
+const sortKeyNamesFn = (a: KeyName, b: KeyName): number => {
+    const a1 = keyPriorityWhenSorting(a)
+    const b1 = keyPriorityWhenSorting(b)
+    return a1.localeCompare(b1)
+}

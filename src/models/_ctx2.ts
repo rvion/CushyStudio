@@ -30,7 +30,13 @@ export const runWithGlobalForm = <T>(form: FormBuilder, f: () => T): T => {
     return res
 }
 
-export const getCurrentForm = (): FormBuilder => {
+/**
+ * @internal
+ *
+ * You should probably use `getCurrentForm` instead.
+ * It is magically available in app context, and does not need to be imported.
+ * */
+export const getCurrentForm_IMPL = (): FormBuilder => {
     const globalCtx = getGlobalCtx()
     if (globalCtx.currentForm == null) {
         console.log(`[👙] `, globalCtx)
@@ -50,7 +56,13 @@ export const getGlobalRuntimeCtx = () => {
     return _
 }
 
-export const getCurrentRun = (): Runtime => {
+/**
+ * @internal
+ *
+ * You should probably use `getCurrentRun` instead.
+ * It is magically available in app context, and does not need to be imported.
+ * */
+export const getCurrentRun_IMPL = (): Runtime => {
     const globalCtx = getGlobalRuntimeCtx()
     const ctx = globalCtx.getStore()
     if (ctx == null) throw new Error(`No run in context`)

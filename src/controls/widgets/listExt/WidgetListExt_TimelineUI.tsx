@@ -1,22 +1,31 @@
-import { observer, useLocalObservable } from 'mobx-react-lite'
-import { Widget, Widget_listExt } from 'src/controls/Widget'
+import type { Widget } from 'src/controls/Widget'
+import type { Widget_listExt } from './WidgetListExt'
 
-export const WidgetListExt_TimelineUI = observer(function WidgetTimelineUI_<T extends Widget>(p: { req: Widget_listExt<T> }) {
+import { observer, useLocalObservable } from 'mobx-react-lite'
+
+export const WidgetListExt_TimelineUI = observer(function WidgetTimelineUI_<T extends Widget>(p: {
+    //
+    widget: Widget_listExt<T>
+}) {
     //
     const scale = 20
-    const prs = p.req.state
+    const widget = p.widget
+    const serial = widget.serial
     const uiSt = useLocalObservable(() => ({
         ix: 0,
     }))
     return (
         <div tw='overflow-auto virtualBorder'>
-            <div tw='flex flex-col gap-1' style={{ width: prs.width * scale }}>
-                <div style={{ minHeight: '1rem', width: prs.width * scale }} tw='bg-base-300 timeline-item w-full relative'></div>
-                {prs.items.map((x, ix) => {
+            <div tw='flex flex-col gap-1' style={{ width: serial.width * scale }}>
+                <div
+                    style={{ minHeight: '1rem', width: serial.width * scale }}
+                    tw='bg-base-300 timeline-item w-full relative'
+                ></div>
+                {widget.entries.map(({ position, widget }, ix) => {
                     return (
                         <div
-                            key={x.item.id}
-                            style={{ minHeight: '2rem', width: prs.width * scale }}
+                            key={widget.id}
+                            style={{ minHeight: '2rem', width: serial.width * scale }}
                             tw='bg-base-300 timeline-item w-full relative'
                         >
                             <div
@@ -29,11 +38,11 @@ export const WidgetListExt_TimelineUI = observer(function WidgetTimelineUI_<T ex
                                 style={{
                                     height: '100%',
                                     position: 'absolute',
-                                    width: x.width * scale,
-                                    left: x.x * scale,
+                                    width: position.width * scale,
+                                    left: position.x * scale,
                                 }}
                             >
-                                {JSON.stringify({ duration: x.width, startAt: x.x })}
+                                {JSON.stringify({ duration: position.width, startAt: position.x })}
                             </div>
                         </div>
                     )

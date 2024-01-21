@@ -11,11 +11,10 @@ export const ui_subform_Tile = () => {
             ...cnet_ui_common(form),
             preprocessor: ui_subform_Tile_Preprocessor(form),
             cnet_model_name: form.enum({
+                label: 'Model',
                 enumName: 'Enum_ControlNetLoader_control_net_name',
                 default: { value: 'control_v11f1e_sd15_tile.pth' },
                 recommandedModels: { knownModel: ['ControlNet-v1-1 (tile; fp16; v11u)', 'ControlNet-v1-1 (tile; fp16; v11f1e)'] },
-                group: 'Controlnet',
-                label: 'Model',
             }),
         }),
     })
@@ -24,7 +23,7 @@ export const ui_subform_Tile = () => {
 export const ui_subform_Tile_Preprocessor = (form: FormBuilder) => {
     return form.groupOpt({
         label: 'Tile Preprocessor',
-        default: true,
+        startActive: true,
         items: () => ({
             advanced: form.groupOpt({
                 label: 'Advanced Preprocessor Settings',
@@ -42,10 +41,10 @@ export const ui_subform_Tile_Preprocessor = (form: FormBuilder) => {
 // 🅿️ Tile RUN ===================================================
 export const run_cnet_Tile = (
     Tile: OutputFor<typeof ui_subform_Tile>,
-    image: IMAGE,
+    image: _IMAGE,
     resolution: 512 | 768 | 1024 = 512,
 ): {
-    image: IMAGE
+    image: _IMAGE
     cnet_name: Enum_ControlNetLoader_control_net_name
 } => {
     const run = getCurrentRun()

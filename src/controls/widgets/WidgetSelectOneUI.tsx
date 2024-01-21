@@ -10,18 +10,14 @@ export const WidgetSelectOneUI = observer(function WidgetSelectOneUI_<T extends 
         <SelectUI<T>
             key={widget.id}
             size='sm'
-            getLabelText={(t) => {
-                // const def = typeof (t as any).type === 'string' ? (t as any).type : '<no label>'
-                // def
-                // console.log(`[👙] t`, t)
-                return t.label ?? t.id // ?? def
-            }}
+            getLabelText={(t) => t.label ?? t.id}
             options={() => widget.choices}
-            value={() => widget.state.val}
+            value={() => widget.serial.val}
             onChange={(selectOption) => {
                 if (selectOption == null) {
-                    if (!widget.isOptional) return
-                    widget.state.active = false
+                    // TODO: hook into it's parent if parent is an option block ?
+                    // ⏸️ if (!widget.isOptional) return
+                    // ⏸️ widget.state.active = false
                     return
                 }
                 const next = widget.choices.find((c) => c.id === selectOption.id)
@@ -29,7 +25,7 @@ export const WidgetSelectOneUI = observer(function WidgetSelectOneUI_<T extends 
                     console.log(`❌ WidgetSelectOneUI: could not find choice for ${JSON.stringify(selectOption)}`)
                     return
                 }
-                widget.state.val = next
+                widget.serial.val = next
             }}
         />
     )

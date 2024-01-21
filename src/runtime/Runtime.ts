@@ -6,8 +6,6 @@ import * as path from 'pathe'
 // import { Cyto } from '../graph/cyto' 🔴🔴
 import { execSync } from 'child_process'
 import fs, { writeFileSync } from 'fs'
-import { Widget_group } from 'src/controls/Widget'
-import { assets } from 'src/utils/assets/assets'
 import { braceExpansion } from 'src/utils/misc/expansion'
 import { IDNaminScheemeInPromptSentToComfyUI } from '../back/IDNaminScheemeInPromptSentToComfyUI'
 import { ComfyWorkflowBuilder } from '../back/NodeBuilder'
@@ -22,13 +20,14 @@ import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 
 import child_process from 'child_process'
 import { createRandomGenerator } from 'src/back/random'
+import { Widget_group } from 'src/controls/widgets/group/WidgetGroup'
 import { _formatAsRelativeDateTime } from 'src/updater/_getRelativeTimeString'
 import { Wildcards } from 'src/widgets/prompter/nodes/wildcards/wildcards'
 import { RuntimeApps } from './RuntimeApps'
 import { RuntimeCanvas } from './RuntimeCanvas'
 import { RuntimeColors } from './RuntimeColors'
 import { RuntimeComfyUI } from './RuntimeComfyUI'
-import { RuntimeCushy } from './RuntimeCushy'
+import { RuntimeExtra } from './RuntimeExtra'
 import { RuntimeHosts } from './RuntimeHosts'
 import { RuntimeImages } from './RuntimeImages'
 import { RuntimeKonva } from './RuntimeKonva'
@@ -38,14 +37,10 @@ import { RuntimeVideos } from './RuntimeVideo'
 
 export type ImageAndMask = HasSingle_IMAGE & HasSingle_MASK
 
+// prettier-ignore
 export type RuntimeExecutionResult =
-    | {
-          type: 'success'
-      }
-    | {
-          type: 'error'
-          error: any
-      }
+    | { type: 'success' }
+    | { type: 'error'; error: any }
 
 // 2 nest max
 // run.store.getLocal
@@ -82,12 +77,6 @@ export class Runtime<FIELDS extends WidgetDict = any> {
         return it
     }
 
-    get Cushy(): RuntimeCushy {
-        const it = new RuntimeCushy(this)
-        Object.defineProperty(this, 'Cushy', { value: it })
-        return it
-    }
-
     get LLM(): RuntimeLLM {
         const it = new RuntimeLLM(this)
         Object.defineProperty(this, 'LLM', { value: it })
@@ -103,6 +92,13 @@ export class Runtime<FIELDS extends WidgetDict = any> {
     get Videos(): RuntimeVideos {
         const it = new RuntimeVideos(this)
         Object.defineProperty(this, 'Videos', { value: it })
+        return it
+    }
+
+    /** home for extra stuff */
+    get Extra(): RuntimeExtra {
+        const it = new RuntimeExtra(this)
+        Object.defineProperty(this, 'Extra', { value: it })
         return it
     }
 
@@ -126,6 +122,26 @@ export class Runtime<FIELDS extends WidgetDict = any> {
         return it
     }
 
+    /**
+     * the global CushyStudio app state
+     * Apps should probably never touch this directly.
+     * But also, do what you want. you're a grown up.
+     * */
+    Cushy: STATE
+
+    /**
+     * filesystem library.
+     * your app can do IO.
+     * with great power comes great responsibility.
+     */
+    Filesystem = fs
+
+    /**
+     * path manifulation library;
+     * avoid concateing paths yourself if you want your app
+     */
+    Path = path
+
     isCurrentDraftAutoStartEnabled = (): Maybe<boolean> => {
         return this.step.draft?.shouldAutoStart
     }
@@ -135,7 +151,7 @@ export class Runtime<FIELDS extends WidgetDict = any> {
     }
 
     constructor(public step: StepL) {
-        this.st = step.st
+        this.Cushy = step.st
         this.folder = step.st.outputFolderPath
 
         // ⏸️ this.upload_FileAtAbsolutePath = this.st.uploader.upload_FileAtAbsolutePath.bind(this.st.uploader)
@@ -144,26 +160,6 @@ export class Runtime<FIELDS extends WidgetDict = any> {
         // ⏸️ this.upload_Asset = this.st.uploader.upload_Asset.bind(this.st.uploader)
         // ⏸️ this.upload_Blob = this.st.uploader.upload_Blob.bind(this.st.uploader)
     }
-
-    /**
-     * the global CushyStudio app state
-     * Apps should probably never touch this directly.
-     * But also, do what you want. you're a grown up.
-     * */
-    st: STATE
-
-    /**
-     * filesystem library.
-     * your app can do IO.
-     * with great power comes great responsibility.
-     */
-    fs = fs
-
-    /**
-     * path manifulation library;
-     * avoid concateing paths yourself if you want your app
-     */
-    path = path
 
     /**
      * sub-process creation and manipulation SDK;
@@ -177,7 +173,7 @@ export class Runtime<FIELDS extends WidgetDict = any> {
      * (those are user defined; hover your lora in any rich text prompt to edit them)
      */
     getLoraAssociatedTriggerWords = (loraName: string): Maybe<string> => {
-        return this.st.configFile.value?.loraPrompts?.[loraName]?.text
+        return this.Cushy.configFile.value?.loraPrompts?.[loraName]?.text
     }
 
     // ----------------------------
@@ -219,7 +215,7 @@ export class Runtime<FIELDS extends WidgetDict = any> {
         text?: string | undefined
         url?: string | undefined
     }> => {
-        return this.st.configFile.value?.loraPrompts?.[loraName]
+        return this.Cushy.configFile.value?.loraPrompts?.[loraName]
     }
 
     /** the default app's ComfyUI graph we're manipulating */
@@ -274,11 +270,17 @@ export class Runtime<FIELDS extends WidgetDict = any> {
         return createRandomGenerator(`${key}:${seed}`).randomItem(arr)
     }
 
+    imageToStartFrom: Maybe<MediaImageL> = null
+
     /**
      * @internal
      * execute the draft
      */
-    _EXECUTE = async (p: { formInstance: Widget_group<any> }): Promise<RuntimeExecutionResult> => {
+    _EXECUTE = async (p: {
+        //
+        formInstance: Widget_group<any>
+        imageToStartFrom?: Maybe<MediaImageL>
+    }): Promise<RuntimeExecutionResult> => {
         const start = Date.now()
         const executable = this.step.executable
         const appFormInput = this.step.data.formResult
@@ -286,6 +288,7 @@ export class Runtime<FIELDS extends WidgetDict = any> {
         this.formResult = appFormInput
         this.formSerial = appFormSerial
         this.formInstance = p.formInstance
+        this.imageToStartFrom = p.imageToStartFrom
 
         // console.log(`🔴 before: size=${this.graph.nodes.length}`)
         // console.log(`FORM RESULT: data=${JSON.stringify(this.step.data.formResult, null, 3)}`)
@@ -294,7 +297,7 @@ export class Runtime<FIELDS extends WidgetDict = any> {
                 console.log(`❌ action not found`)
                 return { type: 'error', error: 'action not found' }
             }
-            await executable.run(this, appFormInput)
+            await executable.run(this, appFormInput, p.imageToStartFrom)
             console.log(`🔴 after: size=${this.workflow.nodes.length}`)
             console.log('[✅] RUN SUCCESS')
             const duration = Date.now() - start
@@ -304,7 +307,7 @@ export class Runtime<FIELDS extends WidgetDict = any> {
             // console.error('🌠', (error as any as Error).name)
             // console.error('🌠', (error as any as Error).message)
             // console.error('🌠', 'RUN FAILURE')
-            this.st.db.runtimeErrors.create({
+            this.Cushy.db.runtimeErrors.create({
                 message: error.message ?? 'no-message',
                 infos: error,
                 graphID: this.workflow.id,
@@ -359,7 +362,7 @@ export class Runtime<FIELDS extends WidgetDict = any> {
     }
 
     doesComfyImageExist = async (imageInfo: { type: `input` | `ouput`; subfolder: string; filename: string }) => {
-        return await checkIfComfyImageExists(this.st.getServerHostHTTP(), imageInfo)
+        return await checkIfComfyImageExists(this.Cushy.getServerHostHTTP(), imageInfo)
     }
 
     get generatedImages(): MediaImageL[] {
@@ -378,9 +381,6 @@ export class Runtime<FIELDS extends WidgetDict = any> {
 
     folder: AbsolutePath
 
-    /** list of all built-in assets, with completion for quick demos  */
-    assets = assets
-
     /** quick helper to make your card sleep for a given number fo milisecond */
     sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms))
 
@@ -394,7 +394,7 @@ export class Runtime<FIELDS extends WidgetDict = any> {
 
     /** outputs a gaussian splat asset, accessible at the given URL */
     output_GaussianSplat = (p: { url: string }) => {
-        this.st.db.media_splats.create({
+        this.Cushy.db.media_splats.create({
             url: p.url,
             stepID: this.step.id,
         })
@@ -408,7 +408,7 @@ export class Runtime<FIELDS extends WidgetDict = any> {
         if (image == null) throw new Error(`image not found: ${p.image}`)
         if (depth == null) throw new Error(`image not found: ${p.image}`)
         if (normal == null) throw new Error(`image not found: ${p.image}`)
-        this.st.db.media_3d_displacement.create({
+        this.Cushy.db.media_3d_displacement.create({
             // type: 'displaced-image',
             width: image.data.width ?? 512,
             height: image.data.height ?? 512,
@@ -421,12 +421,12 @@ export class Runtime<FIELDS extends WidgetDict = any> {
 
     /** 🔴 unfinished */
     output_File = async (path: RelativePath, content: string): Promise<void> => {
-        const absPath = this.st.resolve(this.folder, path)
+        const absPath = this.Cushy.resolve(this.folder, path)
         writeFileSync(absPath, content, 'utf-8')
     }
 
     output_HTML = (p: { htmlContent: string; title: string }) => {
-        this.st.db.media_texts.create({
+        this.Cushy.db.media_texts.create({
             kind: 'html',
             title: p.title,
             content: p.htmlContent,
@@ -437,7 +437,7 @@ export class Runtime<FIELDS extends WidgetDict = any> {
     output_Markdown = (p: string | { title: string; markdownContent: string }) => {
         const title = typeof p === 'string' ? '<no-title>' : p.title
         const content = typeof p === 'string' ? p : p.markdownContent
-        return this.st.db.media_texts.create({ kind: 'markdown', title, content, stepID: this.step.id })
+        return this.Cushy.db.media_texts.create({ kind: 'markdown', title, content, stepID: this.step.id })
     }
 
     output_text = (p: { title: string; message: Printable } | string) => {
@@ -517,7 +517,7 @@ export class Runtime<FIELDS extends WidgetDict = any> {
     exec = (comand: string): string => {
         // promisify exec to run the command and collect the output
         this.output_text({ title: 'command', message: '🔥 exec: ' + comand })
-        const cwd = this.st.rootPath
+        const cwd = this.Cushy.rootPath
         console.log('cwd', cwd)
         const res = execSync(comand, { encoding: 'utf-8', cwd })
         return res
@@ -525,7 +525,7 @@ export class Runtime<FIELDS extends WidgetDict = any> {
 
     /** built-in wildcards */
     get wildcards(): Wildcards {
-        return this.st.wildcards
+        return this.Cushy.wildcards
     }
 
     /**
@@ -539,16 +539,16 @@ export class Runtime<FIELDS extends WidgetDict = any> {
     }
 
     loadImageAnswerAsEnum = (ia: ImageAnswer): Promise<Enum_LoadImage_image> => {
-        const img = this.st.db.media_images.getOrThrow(ia.imageID)
+        const img = this.Cushy.db.media_images.getOrThrow(ia.imageID)
         return img.uploadAndReturnEnumName()
     }
 
     loadImageAnswer2 = (ia: ImageAnswer): MediaImageL => {
-        return this.st.db.media_images.getOrThrow(ia.imageID)
+        return this.Cushy.db.media_images.getOrThrow(ia.imageID)
     }
 
     loadImageAnswer = async (ia: ImageAnswer): Promise<ImageAndMask> => {
-        const img = this.st.db.media_images.getOrThrow(ia.imageID)
+        const img = this.Cushy.db.media_images.getOrThrow(ia.imageID)
         return await img.uploadAndloadAsImage(this.workflow)
     }
 
@@ -574,52 +574,6 @@ export class Runtime<FIELDS extends WidgetDict = any> {
         for (let i = start; i < end; i += increment) res.push(i)
         return res
     }
-
-    // ⏸️ // UPLOAD ------------------------------------------------------------------------------------------
-    // ⏸️ /** upload an image present on disk to ComfyUI */
-    // ⏸️ upload_FileAtAbsolutePath: Uploader['upload_FileAtAbsolutePath']
-    // ⏸️
-    // ⏸️ /** upload an image that can be downloaded form a given URL to ComfyUI */
-    // ⏸️ upload_ImageAtURL: Uploader['upload_ImageAtURL']
-    // ⏸️
-    // ⏸️ /** upload an image from dataURL */
-    // ⏸️ upload_dataURL: Uploader['upload_dataURL']
-    // ⏸️
-    // ⏸️ /** upload a deck asset to ComfyUI */
-    // ⏸️ upload_Asset: Uploader['upload_Asset']
-    // ⏸️
-    // ⏸️ /** upload a Blob */
-    // ⏸️ upload_Blob: Uploader['upload_Blob']
-    // ⏸️
-    // ⏸️ // LOAD IMAGE --------------------------------------------------------------------------------------
-    // ⏸️ /** load an image present on disk to ComfyUI */
-    // ⏸️ load_FileAtAbsolutePath = async (absPath: AbsolutePath): Promise<ImageAndMask> => {
-    // ⏸️     const res = await this.st.uploader.upload_FileAtAbsolutePath(absPath)
-    // ⏸️     return this.loadImageAnswer({ type: 'ComfyImage', imageName: res.name })
-    // ⏸️ }
-    // ⏸️
-    // ⏸️ /** load an image that can be downloaded form a given URL to ComfyUI */
-    // ⏸️ load_ImageAtURL = async (url: string): Promise<ImageAndMask> => {
-    // ⏸️     const res = await this.st.uploader.upload_ImageAtURL(url)
-    // ⏸️     return this.loadImageAnswer({ type: 'ComfyImage', imageName: res.name })
-    // ⏸️ }
-    // ⏸️ /** load an image from dataURL */
-    // ⏸️ load_dataURL = async (dataURL: string): Promise<ImageAndMask> => {
-    // ⏸️     const res: ComfyUploadImageResult = await this.st.uploader.upload_dataURL(dataURL)
-    // ⏸️     // this.st.db.images.create({ infos:  })
-    // ⏸️     return this.loadImageAnswer({ type: 'ComfyImage', imageName: res.name })
-    // ⏸️ }
-    // ⏸️
-    // ⏸️ /** load a deck asset to ComfyUI */
-    // ⏸️ load_Asset = async (asset: RelativePath): Promise<ImageAndMask> => {
-    // ⏸️     const res = await this.st.uploader.upload_Asset(asset)
-    // ⏸️     return this.loadImageAnswer({ type: 'ComfyImage', imageName: res.name })
-    // ⏸️ }
-    // ⏸️ /** load a Blob */
-    // ⏸️ load_Blob = async (blob: Blob): Promise<ImageAndMask> => {
-    // ⏸️     const res = await this.st.uploader.upload_Blob(blob)
-    // ⏸️     return this.loadImageAnswer({ type: 'ComfyImage', imageName: res.name })
-    // ⏸️ }
 
     // INTERRACTIONS ------------------------------------------------------------------------------------------
     async PROMPT(p?: {

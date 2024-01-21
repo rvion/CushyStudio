@@ -90,6 +90,7 @@ https://github.com/rvion/CushyStudio/assets/2150990/776b00f5-687e-4043-8dac-34df
     ```sh
     git clone https://github.com/rvion/CushyStudio --depth 1
     cd CushyStudio
+    git remote set-branches origin '*' # so you can switch to dev branch despite the shallow clone
     ```
 
 2. click

@@ -5,6 +5,7 @@ export const AddEquation = _.AddEquation
 export const AddOperation = _.AddOperation
 export const AdditiveAnimationBlendMode = _.AdditiveAnimationBlendMode
 export const AdditiveBlending = _.AdditiveBlending
+export const AgXToneMapping = _.AgXToneMapping
 export const AlphaFormat = _.AlphaFormat
 export const AlwaysCompare = _.AlwaysCompare
 export const AlwaysDepth = _.AlwaysDepth
