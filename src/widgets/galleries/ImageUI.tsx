@@ -35,6 +35,8 @@ export const ImageUI = observer(function ImageUI_(p: {
             }}
             onClick={(ev) => {
                 if (ev.ctrlKey) return st.layout.FOCUS_OR_CREATE('Image', { imageID: image.id })
+                if (ev.shiftKey) return st.layout.FOCUS_OR_CREATE('Canvas', { imgID: image.id })
+                if (ev.altKey) return st.layout.FOCUS_OR_CREATE('Paint', { imgID: image.id })
 
                 return
             }}
