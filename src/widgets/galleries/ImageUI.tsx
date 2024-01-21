@@ -31,10 +31,13 @@ export const ImageUI = observer(function ImageUI_(p: {
                 width: ImageWidth,
                 height: ImageWidth,
                 opacity,
-                // padding: '0.2rem',
                 borderRadius: '.5rem',
             }}
-            onClick={() => st.layout.FOCUS_OR_CREATE('Image', { imageID: image.id })}
+            onClick={(ev) => {
+                if (ev.ctrlKey) return st.layout.FOCUS_OR_CREATE('Image', { imageID: image.id })
+
+                return
+            }}
         />
     )
     // )
