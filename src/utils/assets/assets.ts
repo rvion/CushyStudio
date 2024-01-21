@@ -53,6 +53,7 @@ export const assets = {
     minipaint_images_manifest_48x48_png: mkFile('/minipaint/images/manifest/48x48.png'),
     minipaint_images_manifest_72x72_png: mkFile('/minipaint/images/manifest/72x72.png'),
     minipaint_images_manifest_96x96_png: mkFile('/minipaint/images/manifest/96x96.png'),
+    safety_group1_shard1of1_bin: mkFile('/safety/group1-shard1of1.bin'),
     sparkles_webp: mkFile('/sparkles.webp'),
     typescript_512_png: mkFile('/typescript-512.png'),
 }
