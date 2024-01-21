@@ -21,7 +21,6 @@ export const Panel_Canvas = observer(function Panel_Canvas_(p: {
     //
     imgID?: MediaImageID
 }) {
-    // const action = p.action
     const st = useSt()
     const img0 = st.db.media_images.get(p.imgID!)
     const uist = useMemo(() => {

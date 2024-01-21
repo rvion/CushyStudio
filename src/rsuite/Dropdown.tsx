@@ -63,7 +63,7 @@ export const MenuItem = observer(function DropdownItem_(p: {
                 {icon ?? null /*<span className='material-symbols-outlined'>spa</span>*/}
                 {label}
                 {children}
-                {p.shortcut ? <div tw='ml-auto pl-4 text-xs italic'>{p.shortcut && <ComboUI combo={p.shortcut} />}</div> : null}
+                {p.shortcut ? <div tw='ml-auto pl-2 text-xs italic'>{p.shortcut && <ComboUI combo={p.shortcut} />}</div> : null}
             </div>
         </li>
     )
