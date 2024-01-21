@@ -25,14 +25,14 @@ export const ImageDropdownMenuUI = observer(function ImageDropdownMenuUI_(p: { i
                 icon={<span className='material-symbols-outlined'>settings_overscan</span>}
                 disabled={!img?.absPath}
                 onClick={() => st.layout.FOCUS_OR_CREATE('Image', { imageID: img.id })}
-                shortcut={<ComboUI combo='ctrl+click' />}
+                shortcut={'mod+click'}
             >
                 Open in dedicated panel (ctrl+click)
             </MenuItem>
             <MenuItem
                 icon={<span className='material-symbols-outlined'>center_focus_weak</span>}
                 disabled={!img?.absPath}
-                shortcut={<ComboUI combo='shift+click' />}
+                shortcut={'shift+click'}
                 onClick={() => st.layout.FOCUS_OR_CREATE('Canvas', { imgID: img.id })}
             >
                 start unified Canvas (shift+click)
@@ -40,7 +40,7 @@ export const ImageDropdownMenuUI = observer(function ImageDropdownMenuUI_(p: { i
             <MenuItem
                 icon={<span className='material-symbols-outlined'>center_focus_weak</span>}
                 disabled={!img?.absPath}
-                shortcut={<ComboUI combo='alt+click' />}
+                shortcut={'alt+click'}
                 onClick={() => st.layout.FOCUS_OR_CREATE('Paint', { imgID: img.id })}
             >
                 Paint with MiniPaint (alt+click)

@@ -1,16 +1,27 @@
 import { observer } from 'mobx-react-lite'
-import { Combo, parseInputSequence } from 'src/app/shortcuts/ShortcutManager'
+import { Fragment } from 'react'
+import { CushyShortcut, parseShortcutToInputSequence } from 'src/app/shortcuts/ShortcutManager'
 
-export const ComboUI = observer(function ComboUI_(p: { theme?: 'dark' | 'light'; combo?: Combo }) {
+export const ComboUI = observer(function ComboUI_(p: { theme?: 'dark' | 'light'; combo: CushyShortcut }) {
     if (p.combo == null) return null
-    const tokens = parseInputSequence(p.combo)
+    const iss = parseShortcutToInputSequence(p.combo)
     return (
         <div tw='whitespace-nowrap'>
-            {tokens.map((token) => (
-                <span tw='kbd' key={token}>
-                    {token}
-                </span>
-            ))}
+            {iss.map((token) => {
+                const keys = token.split('+')
+                return (
+                    <Fragment key={token}>
+                        {keys.map((keyName, ix) => (
+                            <>
+                                <span tw='kbd' key={keyName}>
+                                    {keyName}
+                                </span>
+                                {ix !== keys.length - 1 && <span>+</span>}
+                            </>
+                        ))}
+                    </Fragment>
+                )
+            })}
         </div>
     )
 })
