@@ -37,12 +37,12 @@ export class Widget_enum<T extends KnownEnumNames> implements IWidget<Widget_enu
     readonly type: 'enum' = 'enum'
 
     get possibleValues(): EnumValue[] {
-        return this.builder.schema.knownEnumsByName.get(this.config.enumName)?.values ?? []
+        return this.form.schema.knownEnumsByName.get(this.config.enumName)?.values ?? []
     }
 
     serial: Widget_enum_serial<T>
 
-    constructor(public builder: FormBuilder, public config: Widget_enum_config<T>, serial?: Widget_enum_serial<T>) {
+    constructor(public form: FormBuilder, public config: Widget_enum_config<T>, serial?: Widget_enum_serial<T>) {
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? {
             type: 'enum',
@@ -53,7 +53,7 @@ export class Widget_enum<T extends KnownEnumNames> implements IWidget<Widget_enu
         makeAutoObservable(this)
     }
     get status(): CleanedEnumResult<any> {
-        return this.builder.schema.st.fixEnumValue(this.serial.val as any, this.config.enumName, false)
+        return this.form.schema.st.fixEnumValue(this.serial.val as any, this.config.enumName, false)
     }
     get result(): Widget_enum_output<T> {
         return this.status.finalValue

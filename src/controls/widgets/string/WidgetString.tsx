@@ -1,4 +1,3 @@
-import type { ComfySchemaL } from 'src/models/Schema'
 import type { FormBuilder } from '../../FormBuilder'
 import type { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../../IWidget'
 
@@ -6,23 +5,9 @@ import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { WidgetDI } from '../WidgetUI.DI'
 
-// CONFIG
-export type Widget_string_config = WidgetConfigFields<{
-    default?: string
-    textarea?: boolean
-    placeHolder?: string
-}>
-
-// SERIAL
-export type Widget_string_serial = WidgetSerialFields<{
-    type: 'str'
-    val?: string
-}>
-
-// OUT
+export type Widget_string_config = WidgetConfigFields<{ default?: string; textarea?: boolean; placeHolder?: string }>
+export type Widget_string_serial = WidgetSerialFields<{ type: 'str'; val?: string }>
 export type Widget_string_output = string
-
-// TYPES
 export type Widget_string_types = {
     $Type: 'str'
     $Input: Widget_string_config
@@ -45,11 +30,7 @@ export class Widget_string implements IWidget<Widget_string_types> {
 
     serial: Widget_string_serial
 
-    constructor(
-        public readonly builder: FormBuilder,
-        public readonly config: Widget_string_config,
-        serial?: Widget_string_serial,
-    ) {
+    constructor(public readonly form: FormBuilder, public readonly config: Widget_string_config, serial?: Widget_string_serial) {
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? {
             type: 'str',

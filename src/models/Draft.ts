@@ -190,7 +190,7 @@ export class DraftL {
         const _2 = autorun(() => {
             const formValue = this.form.value
             if (formValue == null) return null
-            const count = formValue.builder._cache.count // manual mobx invalidation
+            const count = formValue.form._cache.count // manual mobx invalidation
             const _ = JSON.stringify(formValue.serial)
             runInAction(() => {
                 console.log(`[🦊] form: updating`)

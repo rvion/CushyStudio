@@ -39,11 +39,7 @@ export class Widget_number implements IWidget<Widget_number_types> {
 
     serial: Widget_number_serial
 
-    constructor(
-        public readonly builder: FormBuilder,
-        public readonly config: Widget_number_config,
-        serial?: Widget_number_serial,
-    ) {
+    constructor(public readonly form: FormBuilder, public readonly config: Widget_number_config, serial?: Widget_number_serial) {
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? {
             type: 'number',

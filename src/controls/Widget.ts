@@ -74,11 +74,11 @@ export class Widget_markdown implements IWidget_OLD<'markdown', Widget_markdown_
     get markdown() :string{
         const md= this.config.markdown
         if (typeof md === 'string') return md
-        return md(this.builder._ROOT)
+        return md(this.form._ROOT)
     }
 
     constructor(
-        public builder: FormBuilder,
+        public form: FormBuilder,
         public config: Widget_markdown_config,
         serial?: Widget_markdown_serial,
     ) {
@@ -104,10 +104,10 @@ export class Widget_custom<T> implements IWidget_OLD<'custom', Widget_custom_con
 
     serial: Widget_custom_serial<T>
     Component: Widget_custom_config<T>['Component']
-    st = () => this.builder.schema.st
+    st = () => this.form.schema.st
     reset = () => (this.serial.value = this.config.defaultValue())
     constructor(
-        public builder: FormBuilder,
+        public form: FormBuilder,
         public config: Widget_custom_config<T>,
         serial?: Widget_custom_serial<T>,
     ) {
@@ -140,7 +140,7 @@ export class Widget_seed implements IWidget_OLD<'seed', Widget_seed_config, Widg
     readonly type: 'seed' = 'seed'
     readonly serial: Widget_seed_state
     constructor(
-        public builder: FormBuilder,
+        public form: FormBuilder,
         public config: Widget_seed_config,
         serial?: Widget_seed_serial,
     ) {
@@ -155,7 +155,7 @@ export class Widget_seed implements IWidget_OLD<'seed', Widget_seed_config, Widg
         makeAutoObservable(this)
     }
     get result(): Widget_seed_output {
-        const count = this.builder._cache.count
+        const count = this.form._cache.count
         return this.serial.mode ==='randomize'
             ? Math.floor(Math.random()* 9_999_999)
             : this.serial.val
@@ -176,7 +176,7 @@ export class Widget_inlineRun implements IWidget_OLD<'inlineRun', Widget_inlineR
     readonly type: 'inlineRun' = 'inlineRun'
     readonly serial: Widget_inlineRun_state
     constructor(
-        public builder: FormBuilder,
+        public form: FormBuilder,
         public config: Widget_inlineRun_config,
         serial?: Widget_inlineRun_serial,
     ) {
@@ -216,7 +216,7 @@ export class Widget_matrix implements IWidget_OLD<'matrix', Widget_matrix_config
     cols: string[]
 
     constructor(
-        public builder: FormBuilder,
+        public form: FormBuilder,
         public config: Widget_matrix_config,
         serial?: Widget_matrix_serial,
     ) {
@@ -306,13 +306,13 @@ export class Widget_loras implements IWidget_OLD<'loras', Widget_loras_config, W
     type: 'loras' = 'loras'
     serial: Widget_loras_serial
     constructor(
-        public builder: FormBuilder,
+        public form: FormBuilder,
         public config: Widget_loras_config,
         serial?: Widget_loras_serial,
     ) {
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? { type: 'loras', collapsed: config.startCollapsed, id: this.id, active: true, loras: config.default ?? [] }
-        this.allLoras = builder.schema.getLoras()
+        this.allLoras = form.schema.getLoras()
         for (const lora of this.allLoras) {
             if (lora === 'None') continue
             this._insertLora(lora)
@@ -364,7 +364,7 @@ export class Widget_image implements IWidget_OLD<'image', Widget_image_config, W
     readonly serial: Widget_image_state
 
     constructor(
-        public builder: FormBuilder,
+        public form: FormBuilder,
         public config: Widget_image_config,
         serial?: Widget_image_serial,
     ) {
@@ -373,12 +373,12 @@ export class Widget_image implements IWidget_OLD<'image', Widget_image_config, W
             type: 'image',
             id: this.id,
             active: true,
-            imageID: builder.schema.st.defaultImage.id,
+            imageID: form.schema.st.defaultImage.id,
         }
         makeAutoObservable(this)
     }
     get result(): Widget_image_output {
-        return { imageID: this.serial.imageID ?? this.builder.schema.st.defaultImage.id }
+        return { imageID: this.serial.imageID ?? this.form.schema.st.defaultImage.id }
     }
 }
 
@@ -399,11 +399,11 @@ export class Widget_selectOne<T extends BaseSelectEntry> implements IWidget_OLD<
     get choices():T[]{
         const _choices = this.config.choices
         return typeof _choices === 'function' //
-            ? _choices(this.builder._ROOT)
+            ? _choices(this.form._ROOT)
             : _choices
     }
     constructor(
-        public builder: FormBuilder,
+        public form: FormBuilder,
         public config: Widget_selectOne_config<T>,
         serial?: Widget_selectOne_serial<T>,
     ) {
@@ -437,11 +437,11 @@ export class Widget_selectMany<T extends BaseSelectEntry> implements IWidget_OLD
     get choices():T[]{
         const _choices = this.config.choices
         return typeof _choices === 'function' //
-            ? _choices(this.builder._ROOT)
+            ? _choices(this.form._ROOT)
             : _choices
     }
     constructor(
-        public builder: FormBuilder,
+        public form: FormBuilder,
         public config: Widget_selectMany_config<T>,
         serial?: Widget_selectMany_serial<T>,
     ) {

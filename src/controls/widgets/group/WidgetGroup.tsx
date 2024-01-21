@@ -65,7 +65,7 @@ export class Widget_group<T extends { [key: string]: Widget }> implements IWidge
     enableGroup() {
         this.serial.active = true
         const prevValues_: { [K in keyof T]?: T[K]['$Serial'] } = this.serial.values_
-        const _newValues: { [key: string]: Widget } = runWithGlobalForm(this.builder, () => this.config.items())
+        const _newValues: { [key: string]: Widget } = runWithGlobalForm(this.form, () => this.config.items())
 
         const childKeys = Object.keys(_newValues) as (keyof T & string)[]
         for (const key of childKeys) {
@@ -75,7 +75,7 @@ export class Widget_group<T extends { [key: string]: Widget }> implements IWidge
             const newType = newItem.type
             if (prevValue_ && newType === prevValue_.type) {
                 console.log(`[🟢] valid serial for "${key}": (${newType} != ${prevValue_?.type}) `)
-                this.values[key] = this.builder._HYDRATE(newType, newInput, prevValue_)
+                this.values[key] = this.form._HYDRATE(newType, newInput, prevValue_)
             } else {
                 console.log(
                     `[🔶] invalid serial for "${key}": (${newType} != ${prevValue_?.type}) => using fresh one instead`,
@@ -87,7 +87,7 @@ export class Widget_group<T extends { [key: string]: Widget }> implements IWidge
         }
     }
 
-    constructor(public builder: FormBuilder, public config: Widget_group_config<T>, serial?: Widget_group_serial<T>) {
+    constructor(public form: FormBuilder, public config: Widget_group_config<T>, serial?: Widget_group_serial<T>) {
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? {
             type: 'group',

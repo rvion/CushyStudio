@@ -64,7 +64,7 @@ export class Widget_choices<T extends BranchDefinitions> implements IWidget<Widg
     }
 
     constructor(
-        public readonly builder: FormBuilder,
+        public readonly form: FormBuilder,
         public readonly config: Widget_choices_config<T>,
         serial?: Widget_choices_serial<T>,
     ) {
@@ -134,14 +134,14 @@ export class Widget_choices<T extends BranchDefinitions> implements IWidget<Widg
         const fn = this.config.items[branch]
         if (fn == null) throw new Error(`❌ Branch "${branch}" has no initializer function`)
 
-        const newItem = runWithGlobalForm(this.builder, () => fn())
+        const newItem = runWithGlobalForm(this.form, () => fn())
         const prevBranchSerial = this.serial.values_?.[branch]
         const newType = newItem.type
 
         // prev serial seems compmatible => we use it
         if (prevBranchSerial && newType === prevBranchSerial.type) {
             const newInput = newItem.config
-            this.children[branch] = this.builder._HYDRATE(newType, newInput, prevBranchSerial)
+            this.children[branch] = this.form._HYDRATE(newType, newInput, prevBranchSerial)
         }
         // prev serial is not compatible => we use the fresh one instead
         else {

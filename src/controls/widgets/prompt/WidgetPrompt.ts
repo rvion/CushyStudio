@@ -21,7 +21,7 @@ export class Widget_prompt
     readonly type: 'prompt' = 'prompt'
     readonly serial: Widget_prompt_state
 
-    constructor(public builder: FormBuilder, public config: Widget_prompt_config, serial?: Widget_prompt_serial) {
+    constructor(public form: FormBuilder, public config: Widget_prompt_config, serial?: Widget_prompt_serial) {
         this.id = serial?.id ?? nanoid()
         if (serial) {
             this.serial = serial

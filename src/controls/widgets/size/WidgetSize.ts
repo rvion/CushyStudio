@@ -26,7 +26,7 @@ export class Widget_size
     readonly id: string
     readonly type: 'size' = 'size'
     readonly serial: Widget_size_state
-    constructor(public builder: FormBuilder, public config: Widget_size_config, serial?: Widget_size_serial) {
+    constructor(public form: FormBuilder, public config: Widget_size_config, serial?: Widget_size_serial) {
         this.id = serial?.id ?? nanoid()
         if (serial) {
             this.serial = serial

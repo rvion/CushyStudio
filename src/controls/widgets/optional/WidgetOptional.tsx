@@ -57,7 +57,7 @@ export class Widget_optional<T extends Widget> implements IWidget<Widget_string_
         const fresh = this.config.widget?.()
         const prevSerial = this.serial.child
         if (prevSerial && fresh.type === prevSerial.type) {
-            this.child = this.builder._HYDRATE(prevSerial.type, fresh.config, prevSerial)
+            this.child = this.form._HYDRATE(prevSerial.type, fresh.config, prevSerial)
         } else {
             this.child = fresh
             this.serial.child = fresh?.serial
@@ -70,7 +70,7 @@ export class Widget_optional<T extends Widget> implements IWidget<Widget_string_
         // this.serial.child = undefined
     }
 
-    constructor(public builder: FormBuilder, public config: Widget_optional_config<T>, serial?: Widget_optional_serial<T>) {
+    constructor(public form: FormBuilder, public config: Widget_optional_config<T>, serial?: Widget_optional_serial<T>) {
         this.id = serial?.id ?? nanoid()
         const defaultActive = config.startActive
         this.serial = serial ?? {

@@ -37,7 +37,7 @@ export class Widget_bool implements IWidget<Widget_string_types> {
     setOff = () => (this.serial.active = false)
     toggle = () => (this.serial.active = !this.serial.active)
 
-    constructor(public builder: FormBuilder, public config: Widget_bool_config, serial?: Widget_bool_serial) {
+    constructor(public form: FormBuilder, public config: Widget_bool_config, serial?: Widget_bool_serial) {
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? {
             id: this.id,
