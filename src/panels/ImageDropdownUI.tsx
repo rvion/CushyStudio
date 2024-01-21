@@ -1,5 +1,6 @@
 import { observer } from 'mobx-react-lite'
 import { showItemInFolder, openExternal } from 'src/app/layout/openExternal'
+import { ComboUI } from 'src/app/shortcuts/ComboUI'
 import { MediaImageL } from 'src/models/MediaImage'
 import { Dropdown, MenuItem } from 'src/rsuite/Dropdown'
 import { useSt } from 'src/state/stateContext'
@@ -21,8 +22,32 @@ export const ImageDropdownMenuUI = observer(function ImageDropdownMenuUI_(p: { i
     return (
         <>
             <MenuItem
+                icon={<span className='material-symbols-outlined'>settings_overscan</span>}
+                disabled={!img?.absPath}
+                onClick={() => st.layout.FOCUS_OR_CREATE('Image', { imageID: img.id })}
+                shortcut={<ComboUI combo='ctrl+click' />}
+            >
+                Open in dedicated panel (ctrl+click)
+            </MenuItem>
+            <MenuItem
+                icon={<span className='material-symbols-outlined'>center_focus_weak</span>}
+                disabled={!img?.absPath}
+                shortcut={<ComboUI combo='shift+click' />}
+                onClick={() => st.layout.FOCUS_OR_CREATE('Canvas', { imgID: img.id })}
+            >
+                start unified Canvas (shift+click)
+            </MenuItem>
+            <MenuItem
+                icon={<span className='material-symbols-outlined'>center_focus_weak</span>}
+                disabled={!img?.absPath}
+                shortcut={<ComboUI combo='alt+click' />}
+                onClick={() => st.layout.FOCUS_OR_CREATE('Paint', { imgID: img.id })}
+            >
+                Paint with MiniPaint (alt+click)
+            </MenuItem>
+
+            <MenuItem
                 icon={<span className='material-symbols-outlined'>folder</span>}
-                size='sm'
                 // appearance='subtle'
                 disabled={!img?.absPath}
                 onClick={() => {

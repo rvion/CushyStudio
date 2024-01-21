@@ -6,7 +6,7 @@ import { RevealState, defaultHideDelay, defaultShowDelay } from './RevealState'
 export const RevealUI = observer(function Tooltip_(p: {
     //
     children: [React.ReactNode, React.ReactNode]
-    tooltipWrapperClassName?: string[]
+    tooltipWrapperClassName?: string
     className?: string
     showDelay?: number
     hideDelay?: number
@@ -41,10 +41,8 @@ export const RevealUI = observer(function Tooltip_(p: {
     const tooltip = uist.visible
         ? createPortal(
               <div
-                  tw={[
-                      '_RevealUI card card-bordered bg-base-100 shadow-xl pointer-events-auto',
-                      ...(p.tooltipWrapperClassName ?? []),
-                  ]}
+                  className={p.tooltipWrapperClassName}
+                  tw={['_RevealUI card card-bordered bg-base-100 shadow-xl pointer-events-auto']}
                   onClick={(ev) => {
                       ev.stopPropagation()
                       ev.preventDefault()

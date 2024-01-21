@@ -14,13 +14,15 @@ export const Panel_Gallery = observer(function VerticalGalleryUI_(p: {}) {
             className='flex flex-col bg-base-100 h-full'
             style={{ background: st.configFile.value.galleryBgColor }}
         >
-            <RevealUI tw='flex overflow-auto gap-2 px-2 bg-base-200 w-full flex-shrink-0'>
-                <div tw='btn btn-lg'>
-                    <span className='material-symbols-outlined'>settings</span>
-                    Options
-                </div>
-                <GalleryControlsUI />
-            </RevealUI>
+            <div className='cushy-panel-header'>
+                <RevealUI disableHover>
+                    <div tw='btn btn-sm'>
+                        <span className='material-symbols-outlined'>settings</span>
+                        Options
+                    </div>
+                    <GalleryControlsUI />
+                </RevealUI>
+            </div>
 
             <div className='flex flex-wrap overflow-auto'>
                 {/* <LatentPreviewUI /> */}
