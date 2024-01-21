@@ -11,6 +11,16 @@
 }
 
 /* --------------------------- */
+.flexlayout__tabset_tabbar_inner_tab_container  {
+    padding-left: 0px;
+    padding-right: 0px;
+}
+.flexlayout__tab_button {
+    gap: .1rem
+}
+.flexlayout__tabset-selected {
+    background-image: none;
+}
 
 input[type='range']::-webkit-slider-runnable-track { height: 2rem; }
 
