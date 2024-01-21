@@ -50,6 +50,8 @@ export const Panel_CardPicker3UI = observer(function Panel_CardPicker3UI_(p: {})
                             }}
                             autoFocus
                             placeholder='search'
+                            // auto select text on focus
+                            onFocus={(e) => e.target.select()}
                         />
                     </Joined>
                     <div
