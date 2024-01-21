@@ -39,6 +39,14 @@ export const shortcutsDef: Shortcut<STATE>[] = [
             })
         })
     }),
+    // --------------------------
+    // menu utils:
+    simpleValidInInput(['mod+k 1'], (st) => st.layout.FOCUS_OR_CREATE('Civitai', {})),
+    simpleValidInInput(['mod+k 2'], (st) => st.layout.FOCUS_OR_CREATE('Squoosh', {})),
+    simpleValidInInput(['mod+k 3'], (st) => st.layout.FOCUS_OR_CREATE('IFrame', { url: 'https://app.posemy.art/' })),
+    simpleValidInInput(['mod+k 4'], (st) => st.layout.FOCUS_OR_CREATE('Paint', {})),
+    simpleValidInInput(['mod+k 5'], (st) => st.layout.FOCUS_OR_CREATE('IFrame', { url: 'https://unsplash.com/' })),
+    // --------------------------
     simpleValidInInput(['mod+1', 'ctrl+1', 'mod+p', 'ctrl+p', 'mod+j'], (st) => st.toggleFullLibrary()),
     simpleValidInInput(['mod+,', 'ctrl+,'], (st) => st.layout.FOCUS_OR_CREATE('Config', {})),
     simpleValidInInput(['mod+escape', 'ctrl+escape'], (st) => st.closeFullLibrary()),

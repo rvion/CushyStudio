@@ -6,11 +6,11 @@ export const ComboUI = observer(function ComboUI_(p: { theme?: 'dark' | 'light';
     if (p.combo == null) return null
     const iss = parseShortcutToInputSequence(p.combo)
     return (
-        <div tw='whitespace-nowrap'>
+        <div tw='whitespace-nowrap flex gap-2'>
             {iss.map((token) => {
                 const keys = token.split('+')
                 return (
-                    <Fragment key={token}>
+                    <div key={token}>
                         {keys.map((keyName, ix) => (
                             <>
                                 <span tw='kbd kbd-sm' key={keyName}>
@@ -19,7 +19,7 @@ export const ComboUI = observer(function ComboUI_(p: { theme?: 'dark' | 'light';
                                 {ix !== keys.length - 1 && <span>+</span>}
                             </>
                         ))}
-                    </Fragment>
+                    </div>
                 )
             })}
         </div>
