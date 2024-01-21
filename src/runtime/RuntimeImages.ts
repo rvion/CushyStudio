@@ -46,11 +46,11 @@ export class RuntimeImages {
         /** base 64 encoded data URL */
         dataURL: string,
     ): MediaImageL => {
-        return createMediaImage_fromDataURI(this.rt.st, dataURL)
+        return createMediaImage_fromDataURI(this.rt.Cushy, dataURL)
     }
 
     createFromPath = (relPath: string, p: { promptID?: PromptID } = {}): MediaImageL => {
         const stepID = this.rt.step.id
-        return createMediaImage_fromPath(this.rt.st, relPath, { promptID: p.promptID, stepID })
+        return createMediaImage_fromPath(this.rt.Cushy, relPath, { promptID: p.promptID, stepID })
     }
 }

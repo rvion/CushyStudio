@@ -18,7 +18,7 @@ this is a test
 here are the 300 first chars from the readme:
 
 
-${run.fs.readFileSync('README.md', 'utf-8').slice(0, 300)}
+${run.Filesystem.readFileSync('README.md', 'utf-8').slice(0, 300)}
 
 
 Bye !

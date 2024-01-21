@@ -19,12 +19,12 @@ export class RuntimeLLM {
 
     /** verify key is ready */
     isConfigured = async () => {
-        return !!this.rt.st.configFile.value.OPENROUTER_API_KEY
+        return !!this.rt.Cushy.configFile.value.OPENROUTER_API_KEY
     }
 
     /** geenric function to ask open router anything */
     ask_OpenRouter = async (p: OpenRouterRequest): Promise<OpenRouterResponse> => {
-        return await OpenRouter_ask(this.rt.st.configFile.value.OPENROUTER_API_KEY, p)
+        return await OpenRouter_ask(this.rt.Cushy.configFile.value.OPENROUTER_API_KEY, p)
     }
 
     /** dictionary of all known openrouter models */
@@ -43,7 +43,7 @@ export class RuntimeLLM {
         prompt: string
         llmResponse: OpenRouterResponse
     }> => {
-        const res: OpenRouterResponse = await OpenRouter_ask(this.rt.st.configFile.value.OPENROUTER_API_KEY, {
+        const res: OpenRouterResponse = await OpenRouter_ask(this.rt.Cushy.configFile.value.OPENROUTER_API_KEY, {
             max_tokens: 300,
             model: model,
             messages: [

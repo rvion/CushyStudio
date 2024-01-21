@@ -21,13 +21,14 @@ export const ImageDropdownMenuUI = observer(function ImageDropdownMenuUI_(p: { i
 
     return (
         <>
+            <div className='divider divider-start my-0'>send to</div>
             <MenuItem
                 icon={<span className='material-symbols-outlined'>settings_overscan</span>}
                 disabled={!img?.absPath}
                 onClick={() => st.layout.FOCUS_OR_CREATE('Image', { imageID: img.id })}
                 shortcut={'mod+click'}
             >
-                Open in dedicated panel (ctrl+click)
+                dedicated panel (ctrl+click)
             </MenuItem>
             <MenuItem
                 icon={<span className='material-symbols-outlined'>center_focus_weak</span>}
@@ -35,17 +36,17 @@ export const ImageDropdownMenuUI = observer(function ImageDropdownMenuUI_(p: { i
                 shortcut={'shift+click'}
                 onClick={() => st.layout.FOCUS_OR_CREATE('Canvas', { imgID: img.id })}
             >
-                start unified Canvas (shift+click)
+                unified Canvas (shift+click)
             </MenuItem>
             <MenuItem
-                icon={<span className='material-symbols-outlined'>center_focus_weak</span>}
+                icon={<span className='material-symbols-outlined'>brush</span>}
                 disabled={!img?.absPath}
                 shortcut={'alt+click'}
                 onClick={() => st.layout.FOCUS_OR_CREATE('Paint', { imgID: img.id })}
             >
-                Paint with MiniPaint (alt+click)
+                MiniPaint (alt+click)
             </MenuItem>
-
+            <div className='divider divider-start my-0'>OS</div>
             <MenuItem
                 icon={<span className='material-symbols-outlined'>folder</span>}
                 // appearance='subtle'

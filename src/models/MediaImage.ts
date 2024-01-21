@@ -110,6 +110,7 @@ export class MediaImageL {
         const img = workflow.builder.LoadImage({ image: enumName })
         return img
     }
+
     uploadAndloadAsMask = async (
         //
         channel: Enum_LoadImageMask_channel,

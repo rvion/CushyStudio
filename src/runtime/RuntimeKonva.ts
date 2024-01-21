@@ -104,7 +104,7 @@ export class RuntimeKonva {
         return new Promise((yes, no) => {
             const abspath = isAbsolute(path) //
                 ? path
-                : resolve(this.rt.st.rootPath, path)
+                : resolve(this.rt.Cushy.rootPath, path)
             const img = new Image()
             img.onload = () => yes(img)
             img.onerror = no

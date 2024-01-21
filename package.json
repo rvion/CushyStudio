@@ -34,7 +34,6 @@
         "gen-bins": "electron-builder install-app-deps",
         "gen-manager": "bun src/wiki/_downloadComfyManagerJSONs.ts",
         "gen-assets": "bun src/utils/assets/assets.gen.ts",
-        "gen-lib": "tsc -p tsconfig.doc.json",
         "gen-dts": "tsc -p tsconfig.doc.json",
         "gen-syms": "node src/shell/externals.cjs",
         "gen-doc": "typedoc --excludeInternal --out site/documentation src/back/Runtime.ts src/controls/FormBuilder.ts src/controls/Widget.ts",

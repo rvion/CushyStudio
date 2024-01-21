@@ -7,7 +7,7 @@ import { Runtime } from './Runtime'
 
 /** namespace for all video-related utils */
 export class RuntimeVideos {
-    private st = this.rt.st
+    private st = this.rt.Cushy
     private step = this.rt.step
     private folder = this.rt.folder
 
@@ -21,7 +21,7 @@ export class RuntimeVideos {
         url: string
         filePath?: string
     }) => {
-        this.rt.st.db.media_videos.create({
+        this.rt.Cushy.db.media_videos.create({
             url: p.url,
             absPath: p.filePath,
             stepID: this.rt.step.id,
