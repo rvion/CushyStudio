@@ -25,7 +25,7 @@ export const WidgetChoicesUI = observer(function WidgetChoicesUI_(p: {
     return (
         <div className='_WidgetChoicesUI' tw='relative'>
             <div tw='flex items-start w-full'>
-                {widget.config.multi ? 'MULTI' : 'SINGLE'}
+                {/* {widget.config.multi ? 'MULTI' : 'SINGLE'} */}
                 <SelectUI<Entry>
                     tw='flex-grow'
                     placeholder={p.widget.config.placeholder}
