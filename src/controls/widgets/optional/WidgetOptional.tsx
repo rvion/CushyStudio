@@ -79,7 +79,8 @@ export class Widget_optional<T extends Widget> implements IWidget<Widget_string_
             active: defaultActive ?? false,
             collapsed: config.startCollapsed,
         }
-        if (defaultActive) this.setOn()
+        const isActive = serial?.active ?? defaultActive
+        if (isActive) this.setOn()
         makeObservable(this, {
             serial: observable,
             result: computed,
