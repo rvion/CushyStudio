@@ -78,6 +78,7 @@ export class Widget_choices<T extends BranchDefinitions> implements IWidget<Widg
     ) {
         // ensure ID
         this.id = serial?.id ?? nanoid()
+        // TODO: investigate why this contructor is called so many times (5 times ???)
 
         // basic sanity check because of the recent breaking change
         if (typeof config.items === 'function') {
@@ -97,28 +98,33 @@ export class Widget_choices<T extends BranchDefinitions> implements IWidget<Widg
         // find all active branches
         const allBranches = Object.keys(config.items) as (keyof T & string)[]
         const def = this.config.default
-        let hasAtLeastOneBranchActive = false
         const isMulti = this.config.multi
-        for (const branch of allBranches) {
-            const isActive =
-                this.serial.branches[branch] ?? def == null
-                    ? false
-                    : typeof def === 'string' //
-                    ? branch === def
-                    : typeof def === 'object'
-                    ? def?.[branch] ?? false
-                    : null
 
-            if (isActive) {
-                hasAtLeastOneBranchActive = true
-                this.enableBranch(branch)
-                if (!isMulti) break
+        if (isMulti) {
+            for (const branch of allBranches) {
+                const isActive =
+                    this.serial.branches[branch] ??
+                    (typeof def === 'string' //
+                        ? branch === def
+                        : typeof def === 'object'
+                        ? def?.[branch] ?? false
+                        : null)
+
+                if (isActive) this.enableBranch(branch)
             }
-        }
-
-        if (!isMulti && !hasAtLeastOneBranchActive) {
-            if (this.firstChoice) this.enableBranch(this.firstChoice)
-            else toastError(`🔴 ChoicesWidget has no active branch`)
+        } else {
+            const allBranches = Object.keys(this.config.items)
+            const activeBranch =
+                allBranches.find((x) => this.serial.branches[x]) ??
+                (def == null
+                    ? allBranches[0]
+                    : typeof def === 'string' //
+                    ? def
+                    : typeof def === 'object'
+                    ? Object.entries(def).find(([, v]) => v)?.[0] ?? allBranches[0]
+                    : allBranches[0])
+            if (activeBranch == null) toastError(`❌ No active branch found for single choice widget "${this.config.label}"`)
+            else this.enableBranch(activeBranch)
         }
 
         makeAutoObservable(this)
@@ -137,7 +143,7 @@ export class Widget_choices<T extends BranchDefinitions> implements IWidget<Widg
     }
 
     enableBranch(branch: keyof T & string) {
-        if (this.config.multi !== true) {
+        if (!this.config.multi) {
             for (const key in this.children) {
                 this.disableBranch(key)
             }
