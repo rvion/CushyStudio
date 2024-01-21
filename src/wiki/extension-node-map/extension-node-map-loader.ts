@@ -69,7 +69,7 @@ export const getCustomNodeRegistry = (p?: {
             if (entry1 == null) {
                 customNodeRegistry.byNodeNameInComfy.set(nodeNameInComfy, [enmEntry.url as ComfyUIManagerKnownCustomNode_Files])
             } else {
-                if (p?.check) console.log(`[👙] duplicated node ${nodeNameInComfy}`)
+                // if (p?.check) console.log(`[👙] duplicated node ${nodeNameInComfy}`)
                 entry1.push(enmEntry.url as ComfyUIManagerKnownCustomNode_Files)
             }
 
@@ -79,8 +79,17 @@ export const getCustomNodeRegistry = (p?: {
             if (entry2 == null) {
                 customNodeRegistry.byNodeNameInCushy.set(nodeInCushy, [enmEntry.url as ComfyUIManagerKnownCustomNode_Files])
             } else {
-                if (p?.check) console.log(`[👙] duplicated node ${nodeInCushy}`)
+                // if (p?.check) console.log(`[👙] duplicated node ${nodeInCushy}`)
                 entry2.push(enmEntry.url as ComfyUIManagerKnownCustomNode_Files)
+            }
+        }
+    }
+
+    if (p?.check) {
+        for (const [k, v] of customNodeRegistry.byNodeNameInComfy.entries()) {
+            if (v.length > 1) {
+                console.log(`❌ DUPLICATE: ${k}`)
+                for (const file of v) console.log(`    | ${file}`)
             }
         }
     }
