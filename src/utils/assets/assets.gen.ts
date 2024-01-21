@@ -57,7 +57,14 @@ const moduleExports = [
 // const namedExports = assets.map((i) => ).join('\n')
 
 const targetPath = `src/utils/assets/assets.ts`
-writeFileSync(targetPath, moduleExports, 'utf-8')
 
-console.log(`🟢 done, ${targetPath}`)
-process.exit(0)
+const prevContent = fs.readFileSync(targetPath, 'utf-8')
+if (prevContent === moduleExports) {
+    console.log(`✅ no change to make to ${targetPath}`)
+    process.exit(0)
+} else {
+    console.log(`🚹 changes detected`)
+    writeFileSync(targetPath, moduleExports, 'utf-8')
+    console.log(`🟢 done, ${targetPath}`)
+    process.exit(0)
+}

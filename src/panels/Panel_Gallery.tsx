@@ -1,11 +1,11 @@
 import { observer } from 'mobx-react-lite'
 import { Button, Input, Slider, Toggle } from 'src/rsuite/shims'
 import { parseFloatNoRoundingErr } from 'src/utils/misc/parseFloatNoRoundingErr'
-import { FieldAndLabelUI } from 'src/widgets/misc/FieldAndLabelUI'
 import { useSt } from '../state/stateContext'
 import { ImageUI } from '../widgets/galleries/ImageUI'
 import { OutputPreviewWrapperUI } from 'src/outputs/OutputPreviewWrapperUI'
 import { RevealUI } from 'src/rsuite/reveal/RevealUI'
+import { InputNumberUI } from 'src/rsuite/InputNumberUI'
 
 export const Panel_Gallery = observer(function VerticalGalleryUI_(p: {}) {
     const st = useSt()
@@ -55,6 +55,16 @@ export const LatentPreviewUI = observer(function LatentPreviewUI_(p: {}) {
         />
     )
 })
+
+export const FieldAndLabelUI = observer(function SubtlePanelConfUI_(p: { label: string; children: React.ReactNode }) {
+    return (
+        <div tw='line'>
+            <div tw='text-base-content'>{p.label}</div>
+            {p.children}
+        </div>
+    )
+})
+
 export const GalleryControlsUI = observer(function GalleryControlsUI_(p: { children?: React.ReactNode }) {
     const st = useSt()
     // const preview = st.preview
@@ -62,11 +72,12 @@ export const GalleryControlsUI = observer(function GalleryControlsUI_(p: { child
         <div tw='flex flex-col overflow-auto gap-2 px-2 bg-base-200 w-full flex-shrink-0 min-w-80'>
             {p.children}
             <FieldAndLabelUI label='Size'>
-                <Slider
+                <InputNumberUI
                     style={{ width: '5rem' }}
                     min={32}
                     max={200}
-                    onChange={(ev) => (st.gallerySize = parseFloatNoRoundingErr(ev.target.value))}
+                    mode='int'
+                    onValueChange={(next) => (st.gallerySize = next)}
                     value={st.gallerySize}
                 />
             </FieldAndLabelUI>
