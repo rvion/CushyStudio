@@ -1,4 +1,9 @@
 app({
+    metadata: {
+        author: 'rvion',
+        name: 'Remove Background',
+        description: 'remove background from an image',
+    },
     canStartFromImage: true,
     // prettier-ignore
     ui: (form) => ({
