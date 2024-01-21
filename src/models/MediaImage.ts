@@ -68,8 +68,8 @@ export class MediaImageL {
     get app(): Maybe<CushyAppL> {return this.draft?.app} // prettier-ignore
     get script(): Maybe<CushyScriptL> {return this.app?.script } // prettier-ignore
 
-    useAsDraftIllustration = () => {
-        const draft = this.draft
+    useAsDraftIllustration = (draft_?: DraftL) => {
+        const draft = draft_ ?? this.draft
         if (draft == null) return toastError(`no related draft found`)
         draft.update({ illustration: this.url })
     }
