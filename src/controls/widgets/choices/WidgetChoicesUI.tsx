@@ -24,42 +24,40 @@ export const WidgetChoicesUI = observer(function WidgetChoicesUI_(p: {
 
     return (
         <div className='_WidgetChoicesUI' tw='relative'>
-            <div tw='flex items-start w-full'>
-                {/* {widget.config.multi ? 'MULTI' : 'SINGLE'} */}
-                <SelectUI<Entry>
-                    tw='flex-grow'
-                    placeholder={p.widget.config.placeholder}
-                    value={() =>
-                        Object.entries(widget.serial.branches)
-                            .map(([key, value]) => ({ key, value }))
-                            .filter((x) => x.value)
-                    }
-                    options={() => choices}
-                    getLabelText={(v) => v.key}
-                    getLabelUI={(v) => (
-                        <div tw='flex flex-1 justify-between'>
-                            <div tw='flex-1'>{v.key}</div>
-                            {/* 👇 TODO: clean this */}
-                            {v.key in widget.serial.values_ && (
-                                <div
-                                    tw='btn btn-square btn-sm'
-                                    onClick={(ev) => {
-                                        ev.preventDefault()
-                                        ev.stopPropagation()
-                                    }}
-                                >
-                                    <span className='material-symbols-outlined'>delete</span>
-                                </div>
-                            )}
-                        </div>
-                    )}
-                    equalityCheck={(a, b) => a.key === b.key}
-                    multiple={widget.config.multi ?? false}
-                    closeOnPick={false}
-                    resetQueryOnPick={false}
-                    onChange={(v) => widget.toggleBranch(v.key)}
-                />
-            </div>
+            {/* {widget.config.multi ? 'MULTI' : 'SINGLE'} */}
+            <SelectUI<Entry>
+                tw='flex-grow'
+                placeholder={p.widget.config.placeholder}
+                value={() =>
+                    Object.entries(widget.serial.branches)
+                        .map(([key, value]) => ({ key, value }))
+                        .filter((x) => x.value)
+                }
+                options={() => choices}
+                getLabelText={(v) => v.key}
+                getLabelUI={(v) => (
+                    <div tw='flex flex-1 justify-between'>
+                        <div tw='flex-1'>{v.key}</div>
+                        {/* 👇 TODO: clean this */}
+                        {v.key in widget.serial.values_ && (
+                            <div
+                                tw='btn btn-square btn-sm'
+                                onClick={(ev) => {
+                                    ev.preventDefault()
+                                    ev.stopPropagation()
+                                }}
+                            >
+                                <span className='material-symbols-outlined'>delete</span>
+                            </div>
+                        )}
+                    </div>
+                )}
+                equalityCheck={(a, b) => a.key === b.key}
+                multiple={widget.config.multi ?? false}
+                closeOnPick={false}
+                resetQueryOnPick={false}
+                onChange={(v) => widget.toggleBranch(v.key)}
+            />
             <div tw={[widget.config.layout === 'H' ? 'flex' : null]} className={widget.config.className}>
                 {activeSubwidgets.map((val) => {
                     const subWidget = val.subWidget
