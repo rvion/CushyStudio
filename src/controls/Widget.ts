@@ -384,7 +384,7 @@ export class Widget_image implements IWidget_OLD<'image', Widget_image_config, W
 
 // 🅿️ selectOne ==============================================================================
 export type BaseSelectEntry = { id: string, label?: string }
-export type Widget_selectOne_config <T extends BaseSelectEntry>  = WidgetConfigFields<{ default?: T; choices: T[] | ((formRoot:Maybe<Widget_group<any>>) => T[]) }>
+export type Widget_selectOne_config <T extends BaseSelectEntry>  = WidgetConfigFields<{ default?: T; choices: T[] | ((formRoot:Widget_group<any>) => T[]) }>
 export type Widget_selectOne_serial<T extends BaseSelectEntry> = Widget_selectOne_state<T>
 export type Widget_selectOne_state <T extends BaseSelectEntry>  = WidgetSerialFields<{ type:'selectOne', query: string; val: T }>
 export type Widget_selectOne_output<T extends BaseSelectEntry> = T
@@ -398,6 +398,7 @@ export class Widget_selectOne<T extends BaseSelectEntry> implements IWidget_OLD<
 
     get choices():T[]{
         const _choices = this.config.choices
+        if (this.form._ROOT==null)return []
         return typeof _choices === 'function' //
             ? _choices(this.form._ROOT)
             : _choices
