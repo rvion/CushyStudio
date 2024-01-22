@@ -59,7 +59,7 @@ export class Widget_choices<T extends BranchDefinitions> implements IWidget<Widg
     }
 
     get activeBranches(): (keyof T & string)[] {
-        return Object.keys(this.serial.branches) as any
+        return Object.keys(this.serial.branches).filter((x) => this.serial.branches[x])
     }
 
     get firstActiveBranchName(): (keyof T & string) | undefined {
