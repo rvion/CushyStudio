@@ -12,6 +12,7 @@ import { WidgetUI } from '../../controls/widgets/WidgetUI'
 import { ResultWrapperUI } from '../../widgets/misc/ResultWrapperUI'
 import { draftContext } from '../../widgets/misc/useDraft'
 import { DraftHeaderUI } from './DraftHeaderUI'
+import { MessageInfoUI } from '../MessageUI'
 
 export const Panel_Draft = observer(function Panel_Draft_(p: { draftID: DraftID }) {
     // 1. get draft
@@ -76,6 +77,9 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                 }}
             >
                 <DraftHeaderUI draft={draft} />
+                {draft.shouldAutoStart && (
+                    <MessageInfoUI>AutoStart active: this draft will executet when form change</MessageInfoUI>
+                )}
                 <div tw='pb-80 px-2'>
                     <ResultWrapperUI
                         //
