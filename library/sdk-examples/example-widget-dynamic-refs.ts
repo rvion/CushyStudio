@@ -1,7 +1,7 @@
-import type { FormBuilder, Widget_selectOne } from 'src'
-import { Widget_group } from 'src/controls/widgets/group/WidgetGroup'
-import { Widget_choices } from 'src/controls/widgets/choices/WidgetChoices'
-import { Widget_list } from 'src/controls/widgets/list/WidgetList'
+import type { Widget_selectOne } from 'src'
+import type { Widget_choices } from 'src/controls/widgets/choices/WidgetChoices'
+import type { Widget_group } from 'src/controls/widgets/group/WidgetGroup'
+import type { Widget_list } from 'src/controls/widgets/list/WidgetList'
 
 app({
     ui: (form) => ({
@@ -21,12 +21,12 @@ app({
                                 choices: (formRoot: Widget_group<any>) => {
                                     const steps = formRoot.values.samplerUI as Widget_list<any>
                                     return steps.items.map((choiceWidget: Widget_choices<any>, ix: number) => {
-                                        if (choiceWidget == null) console.log(`[👙] 🔴1 choiceWidget is null`)
+                                        if (choiceWidget == null) console.log(`[🔴] err 1: choiceWidget is null`)
                                         const _selectOne = choiceWidget.firstActiveBranchWidget as Maybe<Widget_selectOne<any>>
-                                        if (_selectOne == null) console.log(`[👙] 🔴 firstActiveBranchWidget is null`, _selectOne)
+                                        if (_selectOne == null) console.log(`[🔴] err 2: firstActiveBranchWidget is null`, _selectOne) // prettier-ignore
                                         const _actualChoice = _selectOne?.result
                                         return {
-                                            id: _selectOne?.id,
+                                            id: _selectOne?.id ?? 'error',
                                             disabled: _actualChoice == null,
                                             name: _selectOne?.type ?? '❌ ERROR',
                                             label: `${ix + 1}th (${choiceWidget.firstActiveBranchName ?? '❓'})`,
@@ -50,5 +50,7 @@ app({
                 }),
         }),
     }),
-    run(f, r) {},
+    run(run, ui) {
+        console.log(`[🟢] done`)
+    },
 })
