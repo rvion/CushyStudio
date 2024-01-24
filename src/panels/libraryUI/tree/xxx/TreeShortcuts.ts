@@ -5,10 +5,6 @@ export type KeyEv = React.KeyboardEvent<HTMLDivElement>
 export const onKeyDownHandlers = (ev: KeyEv, view: TreeView): undefined | (() => void) => {
     if (ev.key === '/') return view.focusFilter
 
-    if (ev.key === 'a') {
-        if (ev.shiftKey) return view.addChild
-        return view.addChildAndFocus
-    }
     // deletion
     if (ev.key === 'Backspace') return view.deleteNodeAndFocusNodeAbove
     if (ev.key === 'Delete') return view.deleteNodeAndFocusNodeBelow

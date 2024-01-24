@@ -34,6 +34,10 @@ const renderNodePath = (path: NodePath): string => {
 
 export interface TreeNode extends IArrayLike {}
 export class TreeNode {
+    scrollIntoView() {
+        document.getElementById(this.id)?.scrollIntoView({ behavior: 'instant', block: 'nearest' })
+    }
+
     get opened() {
         return this.entryL.data.isExpanded ?? false
     }

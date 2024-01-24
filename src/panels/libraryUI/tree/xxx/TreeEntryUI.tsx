@@ -13,6 +13,7 @@ export const TreeEntryUI = observer(function TreeEntryUI_(p: { depth?: number; n
     return (
         <Fragment key={n.id}>
             <div
+                id={n.id}
                 style={{ paddingLeft: `${p.depth ?? 0}rem` }}
                 onClick={() => tv.focus(n)}
                 tw={[

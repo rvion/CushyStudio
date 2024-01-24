@@ -83,24 +83,19 @@ export class TreeView {
         this.at = parent?.nodeBelowInView ?? parent
     }
 
-    addChild = (): TreeNode | undefined => {
-        if (this.at == null) return this.resetCaretPos()
-        console.log(`[👙] TODO`)
-    }
-
-    addChildAndFocus = () => {
-        this.at = this.addChild()
-    }
-
     resetCaretPos = (): undefined => {
         this.at = this.tree.topLevelNodes[0]
+        this.at.scrollIntoView()
         return
     }
 
     moveUp = () => {
         if (this.at == null) return this.resetCaretPos()
         const nextAt = this.at.nodeAboveInView
-        if (nextAt) this.at = nextAt
+        if (nextAt) {
+            this.at = nextAt
+            this.at.scrollIntoView()
+        }
         // console.log(`[👙] ${this.id}.at=`, nextAt?.id, this.at.id)
     }
 
@@ -117,12 +112,16 @@ export class TreeView {
             final = ptr
         }
         this.at = final
+        this.at.scrollIntoView()
     }
 
     moveDown = () => {
         if (this.at == null) return this.resetCaretPos()
         const nextAt = this.at.nodeBelowInView
-        if (nextAt) this.at = nextAt
+        if (nextAt) {
+            this.at = nextAt
+            this.at.scrollIntoView()
+        }
         // console.log(`[👙] ${this.id}.at=`, nextAt?.id, this.at.id)
     }
 
