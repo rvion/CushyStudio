@@ -34,7 +34,6 @@ export class TreeView {
         const at = this.at
         if (at == null) return null
         return {
-            slot: at.slot,
             nodeAboveInTreeview: at.nodeAboveInView?.id,
             nodeBelowInTreeview: at.nodeBelowInView?.id,
             lastDescendant: at.lastDescendant?.id,
@@ -42,9 +41,8 @@ export class TreeView {
             descendant_bfs: at.descendantBFS.map((i) => i.id),
             descendant_dfs: at.descendantDFS.map((i) => i.id),
             depth: at.depth,
-            parent: at.parentId,
-            path: at.path,
-            pathStr: at.pathStr,
+            parent: at.parent?.id,
+            pathStr: at.id,
             siblingsIncludingSelf: at.siblingsIncludingSelf.map((i) => i.id),
             siblingsExcludingSelf: at.siblingsExcludingSelf.map((i) => i.id),
             nextSibling: at.nextSibling?.id,
@@ -68,12 +66,6 @@ export class TreeView {
     }
 
     private onKeyDownHandlers = (ev: KeyEv) => onKeyDownHandlers(ev, this)
-
-    changeKey = () => {
-        if (this.at == null) return this.resetCaretPos()
-        const res = window.prompt('new key', this.at.parentKey)
-        if (res != null) this.at.changeKey(res)
-    }
 
     deleteNodeAndFocusNodeAbove = () => {
         if (this.at == null) return this.resetCaretPos()

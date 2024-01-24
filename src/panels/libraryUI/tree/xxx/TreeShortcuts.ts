@@ -20,7 +20,6 @@ export const onKeyDownHandlers = (ev: KeyEv, view: TreeView): undefined | (() =>
     // ??
     // if (ev.key === 'v') return tree.changeValue
     // rename
-    if (ev.key === 'k') return view.changeKey
     if (ev.key === 'ArrowUp') return view.moveUp
     if (ev.key === 'ArrowDown') return view.moveDown
     if (ev.key === 'ArrowRight') return view.moveRight

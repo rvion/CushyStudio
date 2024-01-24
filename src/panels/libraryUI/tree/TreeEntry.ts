@@ -29,13 +29,6 @@ export type TreeEntryAction = {
     className?: string
 }
 
-// index: TreeItemIndex;
-// children?: Array<TreeItemIndex>;
-// isFolder?: boolean;
-// canMove?: boolean;
-// canRename?: boolean;
-// data: T;
-
 export interface ITreeEntry {
     id: string
     children?: () => string[]
