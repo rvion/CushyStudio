@@ -90,7 +90,8 @@ export class STATE {
         return Date.now()
     })()
 
-    tree: Tree
+    tree1: Tree
+    tree2: Tree
 
     /**
      * global hotReload persistent cache that should survive hot reload
@@ -376,10 +377,13 @@ export class STATE {
         this.standardHost // ensure getters are called at least once so we upsert the two core virtual hosts
 
         this.mainHost.CONNECT()
-        this.tree = new Tree(this, [
+        this.tree1 = new Tree(this, [
             //
             '#favorites',
             '#apps',
+        ])
+        this.tree2 = new Tree(this, [
+            //
             'path#library/built-in',
             'path#library/local',
             'path#library/sdk-examples',

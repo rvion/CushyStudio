@@ -72,4 +72,4 @@ export const panels = {
 }
 
 export type Panels = typeof panels
-export type Panel = keyof Panels
+export type PanelNames = keyof Panels

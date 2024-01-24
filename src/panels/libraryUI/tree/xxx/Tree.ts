@@ -3,9 +3,11 @@ import { STATE } from 'src/state/state'
 import { TreeItemID } from '../TreeEntry'
 import { NodeId, TreeNode } from './TreeNode'
 import { FAIL, VIOLATION } from './utils'
+import { nanoid } from 'nanoid'
 
 export class Tree {
     topLevelNodes: TreeNode[] = []
+    KeyboardNavigableDomNodeID = nanoid()
     constructor(
         //
         public st: STATE,

@@ -62,7 +62,7 @@ export class TreeNode {
         public parent: TreeNode | undefined,
     ) {
         this.id = (parent?.id ?? '') + '/' + ref
-        console.log(`[👙] `, this.id)
+        // console.log(`[👙] `, this.id)
         this.data = buildTreeItem(this.tree.st, this.ref)
         this.entryL = this.tree.st.db.tree_entries.upsert({ id: asTreeEntryID(this.id) })!
         this.tree.indexNode(this)

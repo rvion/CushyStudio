@@ -7,11 +7,11 @@ import { TreeUI } from './libraryUI/tree/xxx/TreeUI'
 
 export const Panel_TreeExplorer = observer(function Panel_TreeExplorer_(p: {}) {
     const st = useSt()
-    const tree = st.tree
     return (
         <div tw='flex flex-grow flex-col overflow-auto h-full'>
             <LibraryHeaderUI />
-            <TreeUI tree={tree} />
+            <TreeUI shortcut='mod+1' title='Current' tw='flex-1 overflow-auto' tree={st.tree1} />
+            <TreeUI shortcut='mod+2' title='Folder' tw='flex-1 overflow-auto' tree={st.tree2} />
         </div>
     )
 })

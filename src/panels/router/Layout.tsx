@@ -11,7 +11,7 @@ import { Trigger } from 'src/app/shortcuts/Trigger'
 
 import { Panel_CardPicker3UI } from 'src/panels/Panel_FullScreenLibrary'
 import { Message } from 'src/rsuite/shims'
-import { Panel, Panels, panels } from './PANELS'
+import { PanelNames, Panels, panels } from './PANELS'
 import { RenderPanelUI } from './RenderPanelUI'
 import { hashJSONObject } from './hash'
 
@@ -98,6 +98,13 @@ export class CushyLayoutManager {
         const tab = this.currentTab
         if (tab == null) return
         this.model.doAction(Actions.updateNodeAttributes(tab.getId(), p))
+    }
+
+    isVisible = (component: PanelNames): boolean => {
+        const node = this.findTabsFor(component)
+        const tab = node[0]
+        if (tab == null) return false
+        return tab.tabNode.isVisible()
     }
 
     currentTabSet: Maybe<FL.TabSetNode> = null
@@ -192,7 +199,7 @@ export class CushyLayoutManager {
         return Trigger.Success
     }
 
-    TOGGLE_FULL = <const K extends Panel>(component: K, props: PropsOf<Panels[K]['widget']>) => {
+    TOGGLE_FULL = <const K extends PanelNames>(component: K, props: PropsOf<Panels[K]['widget']>) => {
         if (
             this.fullPageComp == null || //
             this.fullPageComp.panel !== component
@@ -203,7 +210,7 @@ export class CushyLayoutManager {
         }
     }
 
-    findTabsFor = <K extends Panel>(
+    findTabsFor = <K extends PanelNames>(
         component: K,
     ): {
         //
@@ -227,7 +234,7 @@ export class CushyLayoutManager {
     }
 
     /** practical way to keep a tab properly named (synced with it's content) */
-    syncTabTitle = <const K extends Panel>(
+    syncTabTitle = <const K extends PanelNames>(
         //
         component: K,
         props: PropsOf<Panels[K]['widget']>,
@@ -239,13 +246,13 @@ export class CushyLayoutManager {
         this.model.doAction(Actions.renameTab(tabID, title || component))
     }
 
-    FOCUS_OR_CREATE = <const K extends Panel>(
-        component: K,
-        props: PropsOf<Panels[K]['widget']>,
+    FOCUS_OR_CREATE = <const PanelName extends PanelNames>(
+        panelName: PanelName,
+        panelProps: PropsOf<Panels[PanelName]['widget']>,
         where: 'full' | 'current' | LEFT_PANE_TABSET_T | RIGHT_PANE_TABSET_T = RIGHT_PANE_TABSET_ID,
     ): Maybe<FL.Node> => {
         if (where === 'full') {
-            this.TOGGLE_FULL(component, props)
+            this.TOGGLE_FULL(panelName, panelProps)
             return null
         }
 
@@ -254,42 +261,42 @@ export class CushyLayoutManager {
         if (currentLayout == null) return void console.log('❌ no currentLayout')
 
         // 2. get previous tab
-        const tabID = `/${component}/${hashJSONObject(props ?? {})}`
+        const tabID = `/${panelName}/${hashJSONObject(panelProps ?? {})}`
         let prevTab: FL.TabNode | undefined
         prevTab = this.model.getNodeById(tabID) as FL.TabNode // 🔴 UNSAFE ?
         console.log(`🦊 prevTab for ${tabID}:`, prevTab)
 
         // 3. create tab if not prev type
-        const { icon, title } = panels[component].header(props as any)
+        const { icon, title } = panels[panelName].header(panelProps as any)
         if (prevTab == null) {
             const tabsetIDToAddThePanelTo =
                 where === 'current' //
                     ? this.currentTabSet?.getId() ?? LEFT_PANE_TABSET_ID
                     : where
             const addition = currentLayout.addTabToTabSet(tabsetIDToAddThePanelTo, {
-                component: component,
+                component: panelName,
                 id: tabID,
                 icon: icon,
                 name: title,
-                config: props,
+                config: panelProps,
             })
             prevTab = this.model.getNodeById(tabID) as FL.TabNode // 🔴 UNSAFE ?
             if (prevTab == null) {
-                console.log(`[👙] addition:`, addition, { component, tabID, icon, title, props })
+                console.log(`[👙] addition:`, addition, { component: panelName, tabID, icon, title, props: panelProps })
                 return void console.log('❌ no new tab')
             }
         } else {
-            this.model.doAction(Actions.updateNodeAttributes(tabID, { config: props }))
+            this.model.doAction(Actions.updateNodeAttributes(tabID, { config: panelProps }))
             this.model.doAction(Actions.selectTab(tabID))
         }
 
         // 4. merge props
-        this.model.doAction(Actions.updateNodeAttributes(tabID, props))
+        this.model.doAction(Actions.updateNodeAttributes(tabID, panelProps))
         return prevTab
     }
 
     // 🔴 todo: ensure we correctly pass ids there too
-    private _add = <const K extends Panel>(p: {
+    private _add = <const K extends PanelNames>(p: {
         //
         panel: K
         props: PropsOf<Panels[K]['widget']>
@@ -489,11 +496,11 @@ export class CushyLayoutManager {
         return out
     }
 
-    fullPageComp: Maybe<{ panel: Panel; props: PropsOf<typeof Panel_CardPicker3UI> }> = null
+    fullPageComp: Maybe<{ panel: PanelNames; props: PropsOf<typeof Panel_CardPicker3UI> }> = null
 
     factory = (node: FL.TabNode): React.ReactNode => {
         // 1. get panel name
-        const panel = node.getComponent() as Maybe<Panel>
+        const panel = node.getComponent() as Maybe<PanelNames>
         if (panel == null)
             return (
                 <Message type='error' showIcon>
