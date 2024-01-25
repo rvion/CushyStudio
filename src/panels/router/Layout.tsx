@@ -61,8 +61,8 @@ export class CushyLayoutManager {
     saveCurrentAs = (perspectiveName: string) => {
         const curr: FL.IJsonModel = this.model.toJson()
         this.st.configFile.update((t) => {
-            t.layouts_v11 ??= {}
-            t.layouts_v11[perspectiveName] = curr
+            t.layouts_v12 ??= {}
+            t.layouts_v12[perspectiveName] = curr
         })
     }
 
@@ -70,8 +70,8 @@ export class CushyLayoutManager {
     resetDefault = (): void => this.reset('default')
     reset = (perspectiveName: string): void => {
         this.st.configFile.update((t) => {
-            t.layouts_v11 ??= {}
-            delete t.layouts_v11[perspectiveName]
+            t.layouts_v12 ??= {}
+            delete t.layouts_v12[perspectiveName]
         })
         if (perspectiveName === this.currentPerspectiveName) {
             this.setModel(Model.fromJson(this.build()))
@@ -79,7 +79,7 @@ export class CushyLayoutManager {
     }
 
     constructor(public st: STATE) {
-        const prevLayout = st.configFile.value.layouts_v11?.default
+        const prevLayout = st.configFile.value.layouts_v12?.default
         const json = prevLayout ?? this.build()
         try {
             this.setModel(Model.fromJson(json))
@@ -336,9 +336,9 @@ export class CushyLayoutManager {
                     type: 'border',
                     // size: 250,
                     location: 'left',
-                    // selected: 0,
+                    selected: 0,
                     show: true,
-                    children: [this._add({ panel: 'FileList', props: {}, canClose: false, width: 250 })],
+                    children: [this._add({ panel: 'TreeExplorer', props: {}, canClose: false, width: 250 })],
                 },
                 // RIGHT BORDER
                 {

@@ -30,13 +30,13 @@ const focusTree = (st: STATE, tree: Tree) =>
             if (item == null) return console.log(`[🌲] dom node #${tree.KeyboardNavigableDomNodeID} not found`)
             item.focus()
         }
-        if (st.layout.isVisible('FileList')) {
+        if (st.layout.isVisible('TreeExplorer')) {
             const currentFocous = window.document.activeElement
             const treeAlreadySelected = currentFocous?.id === tree.KeyboardNavigableDomNodeID
-            if (treeAlreadySelected) st.layout.FOCUS_OR_CREATE('FileList', {}) // close the panel
+            if (treeAlreadySelected) st.layout.FOCUS_OR_CREATE('TreeExplorer', {}) // close the panel
             else focusTreeRootIfMounted()
         } else {
-            const node = st.layout.FOCUS_OR_CREATE('FileList', {})
+            const node = st.layout.FOCUS_OR_CREATE('TreeExplorer', {})
             setImmediate((): void => {
                 const isVisible = node?.isVisible()
                 if (!isVisible) return

@@ -36,7 +36,7 @@ export const panels = {
     // apps & marketplace
     Marketplace:         { name: 'Marketplace',         widget: Panel_Marketplace,       header: (p: PropsOf<typeof Panel_Marketplace      >) => ({title: 'Marketplace',         icon: assets.CushyLogo_512_png          }) },
     Deck:                { name: 'Deck',                widget: Panel_ComfyNodeExplorer, header: (p: PropsOf<typeof Panel_ComfyNodeExplorer>) => ({title: 'Deck',                icon: undefined                         }) },
-    FileList:            { name: 'FileList',            widget: Panel_TreeExplorer,           header: (p: PropsOf<typeof Panel_TreeExplorer          >) => ({title: 'FileList',            icon: undefined                         }) },
+    TreeExplorer:        { name: 'TreeExplorer',        widget: Panel_TreeExplorer,      header: (p: PropsOf<typeof Panel_TreeExplorer     >) => ({title: 'FileList',            icon: undefined                         }) },
     Import:              { name: 'Import',              widget: Panel_Import,            header: (p: PropsOf<typeof Panel_Import           >) => ({title: 'Import',              icon: undefined                         }) },
 
     // ComfyUI
