@@ -4,12 +4,12 @@ import { useState } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 import { Message } from 'src/rsuite/shims'
 import { ErrorBoundaryFallback } from 'src/widgets/misc/ErrorBoundary'
-import { Panel, panels } from './PANELS'
+import { PanelNames, panels } from './PANELS'
 
 export const RenderPanelUI = observer(function RenderPanelUI_(p: {
     //
     node?: FL.TabNode
-    panel: Panel
+    panel: PanelNames
     panelProps: any
 }) {
     const { panel, panelProps, node } = p

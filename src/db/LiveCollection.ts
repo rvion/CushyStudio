@@ -8,7 +8,7 @@ import { DEPENDS_ON } from './LiveHelpers'
 export class LiveCollection<L extends LiveInstance<any, any>> {
     constructor(
         public p: {
-            table: () => LiveTable<any, any>
+            table: () => LiveTable<any, any, any>
             where: () => SQLWhere<L['data']>
             options?: SqlFindOptions
             cache?: Maybe<() => boolean>
@@ -25,11 +25,13 @@ export class LiveCollection<L extends LiveInstance<any, any>> {
     get items(): L[] {
         const remoteTable = this.p.table()
         const shouldCache = this.p.cache?.() ?? false
+        const whereX = this.p.where()
         if (!shouldCache) {
             // console.log(`<<< ${remoteTable.name} has size ${remoteTable.liveEntities.size} >>>`)
             DEPENDS_ON(remoteTable.liveEntities.size)
+            for (const key in whereX) DEPENDS_ON(remoteTable.keyUpdates[key])
         }
-        return remoteTable.find(this.p.where(), this.p.options)
+        return remoteTable.find(whereX, this.p.options)
     }
 
     map = <T>(fn: (l: L) => T): T[] => this.items.map(fn)

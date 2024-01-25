@@ -10,7 +10,7 @@ export class LiveRef<
         //
         public owner: LiveInstance<any, any>,
         public key: keyof Owner['data'],
-        public table: () => LiveTable<any, L>,
+        public table: () => LiveTable<any, any, L>,
     ) {}
 
     get id(): L['data']['id'] {

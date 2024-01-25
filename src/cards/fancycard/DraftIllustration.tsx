@@ -46,6 +46,9 @@ export const DraftIllustrationUI = observer(function DraftIllustrationUI_(p: {
                 <AppIllustrationUI app={draft.app} size={p.size} />
             </div>
             <img
+                // onError={(ev) => {
+                // TODO 2024-01-25 rvion: make it so wiping images doesn't break drafts too much
+                // }}
                 className={p.className}
                 loading='lazy'
                 tw={['bg-base-300', 'rounded', p.onClick ? 'cursor-pointer' : null]}

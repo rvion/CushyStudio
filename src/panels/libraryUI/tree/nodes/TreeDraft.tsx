@@ -1,6 +1,6 @@
-import { DraftL } from 'src/models/Draft'
-import { STATE } from 'src/state/state'
-import { ITreeEntry, TreeEntryAction } from '../TreeEntry'
+import type { DraftL } from 'src/models/Draft'
+import type { STATE } from 'src/state/state'
+import type { ITreeEntry, TreeEntryAction } from '../TreeEntry'
 
 export class TreeDraft implements ITreeEntry {
     get id() { return `draft#${this.draft.id}` } // prettier-ignore

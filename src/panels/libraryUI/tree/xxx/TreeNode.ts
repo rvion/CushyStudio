@@ -5,15 +5,14 @@ import { makeAutoObservable } from 'mobx'
 import { SQLITE_false, SQLITE_true } from 'src/db/SQLITE_boolean'
 import { asTreeEntryID } from 'src/db/TYPES.gen'
 import { TreeEntryL } from 'src/models/TreeEntry'
-import { ITreeEntry } from '../TreeEntry'
-import { buildTreeItem } from '../nodes/buildTreeItem'
+import { ITreeElement, ITreeEntry } from '../TreeEntry'
+// import { buildTreeItem } from '../nodes/buildTreeItem'
 import { FAIL } from './utils'
 
 export type NodeId = string
 export type NodeKey = string
 export type NodeKeyKind = 'Property' | 'ArrayIndex' | 'unknown'
 
-export type NodeSlot = `${NodeId}.${NodeKey}`
 export type MoveConflictResolution = 'disambiguate' | 'overwrite' | 'fail'
 export type NodeData = ITreeEntry
 
@@ -35,6 +34,10 @@ const renderNodePath = (path: NodePath): string => {
 
 export interface TreeNode extends IArrayLike {}
 export class TreeNode {
+    scrollIntoView() {
+        document.getElementById(this.id)?.scrollIntoView({ behavior: 'instant', block: 'nearest' })
+    }
+
     get opened() {
         return this.entryL.data.isExpanded ?? false
     }
@@ -50,74 +53,69 @@ export class TreeNode {
         else this.open()
     }
 
-    // select = () => {
-    //     this.tree.view
-    // }
-
     onPrimaryAction = () => this.data.onPrimaryAction?.(this)
     onFocusItem = () => this.data.onFocusItem?.(this)
 
-    parentKey: string
+    data: ITreeEntry
+    id: string
     entryL: TreeEntryL
     constructor(
         //
         public tree: Tree,
-        public data: ITreeEntry,
-        public parentId: NodeId | null,
+        public elem: ITreeElement,
+        public parent: TreeNode | undefined,
     ) {
-        this.parentKey = this.data.id
-        this.entryL = this.tree.st.db.tree_entries.upsert({
-            id: asTreeEntryID(this.data.id),
-        })!
+        const key = elem.key
+        // console.log(`[👙] 🔴REF= ${key}`)
+        this.id = (parent?.id ?? '') + '/' + key
+        // console.log(`[👙] `, this.id)
+        this.entryL = this.tree.st.db.tree_entries.upsert({ id: asTreeEntryID(this.id) })!
         this.tree.indexNode(this)
-        makeAutoObservable(this)
+
+        const ctor = elem.ctor
+        const isRealClass = Boolean(Object.getOwnPropertyDescriptors(ctor).prototype)
+        this.data = isRealClass
+            ? // @ts-ignore
+              new ctor(tree.st, elem.props)
+            : // @ts-ignore
+              ctor(tree.st, elem.props)
+        makeAutoObservable(this, { _children_: false })
     }
 
-    get id() { return this.data.id } // prettier-ignore
     get valid() {
         return true
         // if (this.typeName === 'any') return true
         // return false // TODO
     }
-    get hasChildren(): boolean {
-        return this.children.length > 0
+
+    // intermediary representation
+    get childElements(): ITreeElement[] {
+        return this.data.children?.() ?? []
     }
 
+    get childKeys(): NodeKey[] {
+        return this.childElements.map((i) => i.key)
+    }
+
+    _children_: { [key: string]: TreeNode } = {}
     get children(): TreeNode[] {
         // return []
-        const ids = this.data.children?.() ?? []
+        const childElements = this.childElements
         const out: TreeNode[] = []
-        for (const id of ids) {
-            const node =
-                this.tree.getNodeById(id) ??
-                new TreeNode(
-                    this.tree,
-                    buildTreeItem(this.tree.st, id),
-                    this.id,
-                    // {
-                    //     id,
-                    //     parentId: this.id,
-                    //     parentKey: id,
-                    // }
-                )
-            out.push(node)
+        for (const childElem of childElements) {
+            const childKey = childElem.key
+            // const path = this.id + '/' + childID
+            if (this._children_[childKey]) {
+                out.push(this._children_[childKey])
+            } else {
+                // const childEntry = childElem.ctor(childElem.props)
+                const node = new TreeNode(this.tree, childElem, this)
+                this._children_[childKey] = node
+                out.push(node)
+            }
         }
         return out
         // return this.tree.getChildrenOf(this.data.id)
-    }
-
-    get parent(): TreeNode | undefined {
-        if (this.parentId == null) return
-        return this.tree.getNodeById(this.parentId)
-    }
-
-    get path(): NodePath {
-        if (this.parentId == null) return [this.parentKey]
-        return [this.parentKey, this.parent?.path!]
-    }
-
-    get pathStr(): string {
-        return renderNodePath(this.path)
     }
 
     get depth(): number {
@@ -196,7 +194,7 @@ export class TreeNode {
     }
 
     get isRoot(): boolean {
-        return this.parentId == null
+        return this.parent == null
     }
 
     get root(): TreeNode | undefined {
@@ -243,19 +241,5 @@ export class TreeNode {
         if (this.nextSibling) return this.nextSibling
         let at: TreeNode | undefined = this
         while ((at = at.parent)) if (at.nextSibling) return at.nextSibling
-    }
-
-    get slot(): NodeSlot {
-        return `${this.parentId}.${this.parentKey}`
-    }
-
-    changeKey = (nextParentKey: NodeKey) => {
-        this.tree.changeNodeKey(this, nextParentKey)
-    }
-
-    detach = (): this => {
-        this.parentKey = this.id
-        this.parentId = null
-        return this
     }
 }

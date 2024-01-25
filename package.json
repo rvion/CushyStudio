@@ -56,7 +56,9 @@
         "front:preview": "vite preview",
         "front:inspect": "npx vite-bundle-visualizer",
         "📌 RELEASE": "----------------------------------------------------------------------",
-        "bump": "bump patch --commit=v --tag=v --push"
+        "bump": "bump patch --commit=v --tag=v --push",
+        "diff-with-master-all": "git diff master                   > tmp/diff-with-master-all.diff && code tmp/diff-with-master-all.diff",
+        "diff-with-master-add": "git diff master | grep -Ev '^\\-' > tmp/diff-with-master.diff     && code tmp/diff-with-master.diff"
     },
     "dependencies": {
         "@esbuild-kit/esm-loader": "^2.6.5",
@@ -89,7 +91,6 @@
         "konva": "^9.3.1",
         "lexical": "^0.12.6",
         "lodash.debounce": "^4.0.8",
-        "logfile-service": "^2.3.1",
         "marked": "^11.1.1",
         "mime-types": "^2.1.35",
         "mobx": "^6.12.0",

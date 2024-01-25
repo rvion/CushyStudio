@@ -1,22 +1,29 @@
 import type { STATE } from 'src/state/state'
 import type { LiveDB } from './LiveDB'
-import type { $BaseInstanceFields, BaseInstanceFields, LiveInstance } from './LiveInstance'
+import type { $BaseInstanceFields, BaseInstanceFields, LiveInstance, UpdateOptions } from './LiveInstance'
 
 import { Value, ValueError } from '@sinclair/typebox/value'
-import { action, makeAutoObservable, toJS } from 'mobx'
+import { action, makeAutoObservable, runInAction, toJS } from 'mobx'
 import { nanoid } from 'nanoid'
 import { schemas } from 'src/db/TYPES.gen'
 import { TableInfo } from 'src/db/TYPES_json'
 import { DEPENDS_ON, MERGE_PROTOTYPES } from './LiveHelpers'
 import { SQLWhere, SqlFindOptions, isSqlExpr } from './SQLWhere'
+import { timeStamp } from 'console'
 
 export interface LiveEntityClass<T extends BaseInstanceFields, L> {
     new (...args: any[]): LiveInstance<T, L> & L
 }
 
-export class LiveTable<T extends BaseInstanceFields, L extends LiveInstance<T, L>> {
+export class LiveTable<
+    //
+    T extends BaseInstanceFields,
+    C extends any,
+    L extends LiveInstance<T, L>,
+> {
     private Ktor: LiveEntityClass<T, L>
     liveEntities = new Map<string, L>()
+    keyUpdates: { [key: string]: Timestamp } = {}
     infos: TableInfo = schemas[this.name]
 
     // 🟢 --------------------------------------------------------------------------------
@@ -99,7 +106,7 @@ export class LiveTable<T extends BaseInstanceFields, L extends LiveInstance<T, L
             st!: STATE
 
             /** parent table */
-            table!: LiveTable<T, any>
+            table!: LiveTable<T, any, any>
 
             /** instance data */
             data!: T
@@ -119,71 +126,92 @@ export class LiveTable<T extends BaseInstanceFields, L extends LiveInstance<T, L
             get tableName() { return this.table.name } // prettier-ignore
 
             update_LiveOnly(changes: Partial<T>) {
-                Object.assign(this.data, changes)
+                runInAction(() => {
+                    Object.assign(this.data, changes)
+                })
             }
 
-            update(changes: Partial<T>) {
-                // 0. check that changes is valid
-                if (Array.isArray(changes)) throw new Error('insert does not support arrays')
-                if (typeof changes !== 'object') throw new Error('insert does not support non-objects')
+            update(changes: Partial<T>, options?: UpdateOptions): void {
+                runInAction(() => {
+                    // check that changes is valid
+                    if (Array.isArray(changes)) throw new Error('insert does not support arrays')
+                    if (typeof changes !== 'object') throw new Error('insert does not support non-objects')
 
-                // 1. check if update is needed
-                const isSame = Object.keys(changes).every((k) => {
-                    // skip
-                    const change = (changes as any)[k]
-                    if (typeof change === 'object' && change != null) return false
+                    // 0. track changed keys.
+                    const keysWithChanges: string[] = []
+                    for (const k of Object.keys(changes)) {
+                        // skip
+                        const change = (changes as any)[k]
+                        if (typeof change === 'object' && change != null) {
+                            keysWithChanges.push(k)
+                            continue
+                        }
+                        // abort if not an object
+                        if ((this.data as any)[k] !== (changes as any)[k]) {
+                            keysWithChanges.push(k)
+                            continue
+                        }
+                    }
 
-                    // abort if not an object
-                    return (this.data as any)[k] === (changes as any)[k]
+                    // 1. check if update is needed
+                    const isSame = keysWithChanges.length === 0
+                    if (options?.debug) console.log(`[🔴 DEBUG 🔴] UPDATING ${this.table.name}#${changes.id}`)
+                    if (isSame) {
+                        if (options?.debug) console.log(`[🔴 DEBUG 🔴]✔️ ${this.table.name}#${changes.id} no need to update`) // no need to update
+                        return // ⏸️
+                    }
+                    // 2. store the prev in case we have an onUpdate callback later
+                    const prev = this.onUpdate //
+                        ? JSON.parse(JSON.stringify(this.data))
+                        : undefined
+
+                    // build the sql
+                    const tableInfos = this.table.infos
+                    const presentCols = Object.keys(changes)
+                    const updateSQL = [
+                        `update ${tableInfos.sql_name}`,
+                        `set`,
+                        presentCols.map((c) => `${c} = @${c}`).join(', '),
+                        `where id = @id`,
+                        `returning *`,
+                    ].join(' ')
+
+                    const updatedAt = Date.now()
+                    try {
+                        // prepare sql
+                        const stmt = this.db.db.prepare<Partial<T>>(updateSQL)
+
+                        // dehydrate fields needed to be updated
+                        const updatePayload: any = Object.fromEntries(
+                            Object.entries(changes as any).map(([k, v]) => {
+                                if (Array.isArray(v)) return [k, JSON.stringify(v)]
+                                if (typeof v === 'object' && v != null) return [k, JSON.stringify(v) ?? 'null']
+                                return [k, v]
+                            }),
+                        )
+
+                        // inject id and patch updatedAt
+                        updatePayload.updatedAt = updatedAt
+                        updatePayload.id = this.id
+
+                        if (options?.debug) console.log(`[🔴 DEBUG 🔴] ${updateSQL} ${JSON.stringify(updatePayload)}`)
+                        // update the data
+                        stmt.get(updatePayload) as any as T
+
+                        // assign the changes
+                        // 2023-12-02 rvion: for now, I'm not re-assigning from the returned values
+                        Object.assign(this.data, changes)
+                        this.data.updatedAt = updatedAt
+                        if (options?.debug) console.log(`[🔴 DEBUG 🔴] RESULT: ${JSON.stringify(this.data, null, 3)}`)
+                        this.onUpdate?.(prev, this.data)
+                        for (const k of keysWithChanges) {
+                            this.table.keyUpdates[k] = Date.now()
+                        }
+                    } catch (e) {
+                        console.log(updateSQL)
+                        throw e
+                    }
                 })
-                if (isSame) return // ⏸️ console.log(`✔️ ${this.table.name}#${changes.id} no need to update`) // no need to update
-
-                // 2. store the prev in case we have an onUpdate callback later
-                const prev = this.onUpdate //
-                    ? JSON.parse(JSON.stringify(this.data))
-                    : undefined
-
-                // build the sql
-                const tableInfos = this.table.infos
-                const presentCols = Object.keys(changes)
-                const updateSQL = [
-                    `update ${tableInfos.sql_name}`,
-                    `set`,
-                    presentCols.map((c) => `${c} = @${c}`).join(', '),
-                    `where id = @id`,
-                    `returning *`,
-                ].join(' ')
-
-                const updatedAt = Date.now()
-                try {
-                    // prepare sql
-                    const stmt = this.db.db.prepare<Partial<T>>(updateSQL)
-
-                    // dehydrate fields needed to be updated
-                    const updatePayload: any = Object.fromEntries(
-                        Object.entries(changes as any).map(([k, v]) => {
-                            if (Array.isArray(v)) return [k, JSON.stringify(v)]
-                            if (typeof v === 'object' && v != null) return [k, JSON.stringify(v) ?? 'null']
-                            return [k, v]
-                        }),
-                    )
-
-                    // inject id and patch updatedAt
-                    updatePayload.updatedAt = updatedAt
-                    updatePayload.id = this.id
-
-                    // update the data
-                    stmt.get(updatePayload) as any as T
-
-                    // assign the changes
-                    // 2023-12-02 rvion: for now, I'm not re-assigning from the returned values
-                    Object.assign(this.data, changes)
-                    this.data.updatedAt = updatedAt
-                    this.onUpdate?.(prev, this.data)
-                } catch (e) {
-                    console.log(updateSQL)
-                    throw e
-                }
             }
 
             clone(t?: Partial<T>): T {
@@ -209,7 +237,7 @@ export class LiveTable<T extends BaseInstanceFields, L extends LiveInstance<T, L
                 return this.data
             }
 
-            init(table: LiveTable<T, L>, data: T) {
+            init(table: LiveTable<T, any, L>, data: T) {
                 // console.log(`🔴 INIT`, data)
                 this.db = table.db
                 this.st = table.db.st
@@ -389,9 +417,10 @@ export class LiveTable<T extends BaseInstanceFields, L extends LiveInstance<T, L
         if (whereClause.length > 0) findSQL += ` where ${whereClause.join(' and ')}`
         if (options.limit) findSQL += ` limit ${options.limit}`
 
-        // console.log(`[👙] >>>`, findSQL, whereVars)
+        if (options.debug) console.log(`[🔴 DEBUG 🔴] A >>>`, findSQL, whereVars)
         const stmt = this.db.db.prepare<{ [key: string]: any }>(findSQL)
         const datas: T[] = stmt.all(whereVars).map((data) => this.infos.hydrateJSONFields(data))
+        if (options.debug) console.log(`[🔴 DEBUG 🔴] B >>>`, datas)
         const instances = datas.map((d) => this.getOrCreateInstanceForExistingData(d))
         // ⏸️ console.log(`[🦜] find:`, { findSQL, instances })
         return instances
@@ -440,7 +469,7 @@ export class LiveTable<T extends BaseInstanceFields, L extends LiveInstance<T, L
         }
     }
 
-    upsert = (data: Omit<T, 'createdAt' | 'updatedAt'>): L => {
+    upsert = (data: Omit<C, 'createdAt' | 'updatedAt'> & { id: T['id'] }): L => {
         const id = data.id
         // this.yjsMap.set(nanoid(), data)
         const prev = this.get(id)

@@ -11,7 +11,7 @@ export class LiveFind<
 > {
     constructor(
         public p: {
-            remoteTable: () => LiveTable<T, L>
+            remoteTable: () => LiveTable<T, any, L>
             remoteQuery: () => Partial<T>
             cache?: () => boolean
         },

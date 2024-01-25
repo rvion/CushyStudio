@@ -6,15 +6,16 @@ import { RenderItemTitleUI } from '../RenderItemTitleUI'
 
 export const TreeEntryUI = observer(function TreeEntryUI_(p: { depth?: number; node: TreeNode }) {
     const n = p.node
-    const children = n.children
+    const children = n.childKeys
     const hasChildren = children.length > 0
     const tv = useTreeView()
     const selected = tv.at === n
     return (
         <Fragment key={n.id}>
             <div
+                id={n.id}
                 style={{ paddingLeft: `${p.depth ?? 0}rem` }}
-                onClick={() => tv.focus(n)}
+                onClick={() => tv.setAt(n)}
                 tw={[
                     // 'py-1',
                     // selected ? 'virtualBorder' : null,
@@ -45,7 +46,7 @@ export const TreeEntryUI = observer(function TreeEntryUI_(p: { depth?: number; n
                 <RenderItemTitleUI node={n} />
             </div>
 
-            {children.length && n.opened ? ( //
+            {hasChildren && n.opened ? ( //
                 <div
                     tw='borderLeft'
                     style={{
@@ -54,7 +55,7 @@ export const TreeEntryUI = observer(function TreeEntryUI_(p: { depth?: number; n
                         marginLeft: '.5rem',
                     }}
                 >
-                    {children.map((c) => (
+                    {n.children.map((c) => (
                         <TreeEntryUI /*depth={(p.depth ?? 0) + 1}*/ key={c.id} node={c} />
                     ))}
                 </div>

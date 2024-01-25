@@ -1,7 +1,8 @@
 import type { STATE } from 'src/state/state'
+import type { Tree } from 'src/panels/libraryUI/tree/xxx/Tree'
+
 import { CushyShortcut, Shortcut } from './ShortcutManager'
 import { Trigger } from './Trigger'
-import { TreeUIKeyboardNavigableRootID } from 'src/panels/libraryUI/tree/xxx/TreeUIKeyboardNavigableRootID'
 import { runInAction } from 'mobx'
 
 // ------------------------------------------------------------------------------------
@@ -22,23 +23,35 @@ const simpleValidInInput = (combo: CushyShortcut | CushyShortcut[], action: (fn:
     validInInput: true,
 })
 
+const focusTree = (st: STATE, tree: Tree) =>
+    runInAction(() => {
+        const focusTreeRootIfMounted = () => {
+            const item = window.document.getElementById(tree.KeyboardNavigableDomNodeID)
+            if (item == null) return console.log(`[🌲] dom node #${tree.KeyboardNavigableDomNodeID} not found`)
+            item.focus()
+        }
+        if (st.layout.isVisible('FileList')) {
+            const currentFocous = window.document.activeElement
+            const treeAlreadySelected = currentFocous?.id === tree.KeyboardNavigableDomNodeID
+            if (treeAlreadySelected) st.layout.FOCUS_OR_CREATE('FileList', {}) // close the panel
+            else focusTreeRootIfMounted()
+        } else {
+            const node = st.layout.FOCUS_OR_CREATE('FileList', {})
+            setImmediate((): void => {
+                const isVisible = node?.isVisible()
+                if (!isVisible) return
+                focusTreeRootIfMounted()
+            })
+        }
+    })
+
 // ------------------------------------------------------------------------------------
 // core global shortcuts
 export const shortcutsDef: Shortcut<STATE>[] = [
     // simpleValidInInput('mod+shift+k', (st) => (st.showSuperAdmin = !st.showSuperAdmin)),
     // simpleValidInInput('mod+shift+z', (st) => (st.showSuperAdminBubbles = !st.showSuperAdminBubbles)),
-    simpleValidInInput(['mod+2'], (st) => {
-        runInAction(() => {
-            const node = st.layout.FOCUS_OR_CREATE('FileList', {})
-            setImmediate(() => {
-                const isVisible = node?.isVisible()
-                if (!isVisible) return console.log(`[👙] not visible`)
-                const item = window.document.getElementById(TreeUIKeyboardNavigableRootID)
-                if (item == null) return console.log(`[👙] dom node #${TreeUIKeyboardNavigableRootID} not found`)
-                item.focus()
-            })
-        })
-    }),
+    simpleValidInInput(['mod+1'], (st) => focusTree(st, st.tree1)),
+    simpleValidInInput(['mod+2'], (st) => focusTree(st, st.tree2)),
     // --------------------------
     // menu utils:
     simpleValidInInput(['mod+k 1'], (st) => st.layout.FOCUS_OR_CREATE('Civitai', {})),
@@ -52,7 +65,7 @@ export const shortcutsDef: Shortcut<STATE>[] = [
     simpleValidInInput(['mod+shift+,'], (st) => st.layout.FOCUS_OR_CREATE('Hosts', {})),
 
     // --------------------------
-    simpleValidInInput(['mod+1', 'mod+p', 'mod+j'], (st) => st.toggleFullLibrary()),
+    simpleValidInInput(['mod+p', 'mod+j'], (st) => st.toggleFullLibrary()),
     simpleValidInInput(['mod+escape'], (st) => st.closeFullLibrary()),
     // simpleValidInInput(['mod+2'], (st) => st.layout.addMarketplace()),
     simpleValidInInput(['mod+3'], (st) => st.layout.FOCUS_OR_CREATE('Paint', {})),

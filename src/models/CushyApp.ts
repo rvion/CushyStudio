@@ -4,7 +4,7 @@ import { LibraryFile } from 'src/cards/LibraryFile'
 import { LiveCollection } from 'src/db/LiveCollection'
 import { LiveInstance } from 'src/db/LiveInstance'
 import { LiveRef } from 'src/db/LiveRef'
-import { SQLITE_true } from 'src/db/SQLITE_boolean'
+import { SQLITE_false, SQLITE_true } from 'src/db/SQLITE_boolean'
 import { CushyAppT } from 'src/db/TYPES.gen'
 import { CushyScriptL } from 'src/models/CushyScriptL'
 import { hashArrayBuffer } from 'src/state/hashBlob'
@@ -64,23 +64,16 @@ export class CushyAppL {
         return drafts.length > 0 ? drafts[0] : this.createDraft()
     }
 
+    // favorite system ------------------------------------------------------
     get isFavorite(): boolean {
-        return this.st.configFile.value.favoriteApps?.includes(this.id) ?? false
+        return this.data.isFavorite === SQLITE_true
     }
 
     setFavorite = (fav: boolean) => {
-        const favArray = this.st.configFile.update((f) => {
-            if (f.favoriteApps == null) f.favoriteApps = []
-            const favs = f.favoriteApps
-            if (fav) {
-                if (!favs.includes(this.id)) favs.unshift(this.id)
-            } else {
-                const index = favs.indexOf(this.id)
-                if (index !== -1) favs.splice(index, 1)
-            }
-        })
+        this.update({ isFavorite: fav ? SQLITE_true : SQLITE_false } /* { debug: true } */)
     }
 
+    // ... ------------------------------------------------------
     createDraft = (): DraftL => {
         const title = this.name + ' ' + this._draftsCollection.items.length + 1
         const draft = this.st.db.drafts.create({
