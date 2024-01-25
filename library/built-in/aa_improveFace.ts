@@ -2,7 +2,7 @@ import { run_improveFace_fromImage } from './_prefabs/prefab_detailer'
 
 app({
     metadata: {
-        name: 'improve faxce',
+        name: 'improve face',
         description: 'improve face',
     },
     canStartFromImage: true,
