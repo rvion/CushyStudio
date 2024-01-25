@@ -362,27 +362,6 @@ export class CushyLayoutManager {
                 id: 'rootRow',
                 type: 'row',
                 children: [
-                    // {
-                    //     id: 'menuPane',
-                    //     type: 'row',
-                    //     width: 100,
-                    //     children: [
-                    //         {
-                    //             type: 'tabset',
-                    //             id: MENU_PANE_TABSET_ID,
-                    //             minWidth: 64,
-                    //             minHeight: 150,
-                    //             width: 200,
-                    //             enableClose: false,
-                    //             enableDeleteWhenEmpty: false,
-                    //             children: [
-                    //                 this._add({ panel: 'FileList', props: {}, canClose: false, width: 200 }),
-                    //                 // this._add({ panel: 'CurrentDraft', canClose: false, props: {}, width: 600 })
-                    //             ],
-                    //             enableSingleTabStretch: true,
-                    //         },
-                    //     ],
-                    // },
                     {
                         id: 'leftPane',
                         type: 'row',
@@ -417,41 +396,8 @@ export class CushyLayoutManager {
                                 children: [
                                     this._add({ panel: 'Output', props: {}, canClose: false }),
                                     this._add({ panel: 'Hosts', props: {}, canClose: false }),
-                                    // this._add({ panel: 'Outputs', props: {} }),
-                                    // this._add({ panel: 'Gallery', props: {} }),
                                 ],
                             },
-                            // {
-                            //     type: 'row',
-                            //     height: 300,
-                            //     children: [
-                            //         {
-                            //             type: 'tabset',
-                            //             height: 100,
-                            //             minWidth: 100,
-                            //             minHeight: 100,
-                            //             children: [this._add({ panel: 'Steps', props: {}, canClose: false })],
-                            //         },
-                            // {
-                            //     type: 'tabset',
-                            //     height: 256,
-                            //     minWidth: 100,
-                            //     minHeight: 100,
-                            //     children: [
-                            //         this._add({ panel: 'Gallery', props: {} }),
-                            //         // this._add({ panel: 'LastImage', props: {} }),
-                            //         // // this._add({ panel: 'Steps', props: {}, canClose: false }),
-                            //         // this._add({ panel: 'Outputs', props: {} }),
-                            //         // // this._add({ panel: 'Gallery', props: {} }),
-                            //         // this._add({ panel: 'LastStep', props: {}, canClose: false }),
-                            //         // this._add({ panel: 'Steps', props: {}, canClose: false }),
-                            //         // this._add({ panel: 'LastImage', props: {} }),
-                            //         // // this._add({ panel: 'LastLatent', props: {} }),
-                            //         // // this._persistentTab('Hosts', Widget.Hosts),
-                            //     ],
-                            // },
-                            // ],
-                            // },
                         ],
                     },
                     {
@@ -463,26 +409,15 @@ export class CushyLayoutManager {
                             {
                                 type: 'tabset',
                                 // height: 256,
-                                width: 400,
+                                width: 300,
                                 minWidth: 100,
                                 minHeight: 100,
-                                children: [
-                                    this._add({ panel: 'Gallery', props: {} }),
-                                    // this._add({ panel: 'LastImage', props: {} }),
-                                    // // this._add({ panel: 'Steps', props: {}, canClose: false }),
-                                    // this._add({ panel: 'Outputs', props: {} }),
-                                    // // this._add({ panel: 'Gallery', props: {} }),
-                                    // this._add({ panel: 'LastStep', props: {}, canClose: false }),
-                                    // this._add({ panel: 'Steps', props: {}, canClose: false }),
-                                    // this._add({ panel: 'LastImage', props: {} }),
-                                    // // this._add({ panel: 'LastLatent', props: {} }),
-                                    // // this._persistentTab('Hosts', Widget.Hosts),
-                                ],
+                                children: [this._add({ panel: 'Gallery', props: {} })],
                             },
                             {
                                 type: 'tabset',
                                 // height: 256,
-                                width: 400,
+                                width: 300,
                                 minWidth: 100,
                                 minHeight: 100,
                                 children: [this._add({ panel: 'Steps', props: {}, canClose: false })],
