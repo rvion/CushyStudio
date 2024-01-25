@@ -3,6 +3,7 @@ import type { BaseInstanceFields } from './LiveInstance'
 export type SqlFindOptions = {
     mode?: 'raw'
     limit?: number
+    debug?: boolean
 }
 
 export type SqlExpr = { $like: string }

@@ -5,7 +5,7 @@ import type { LiveTable } from 'src/db/LiveTable'
 import type { AuthL } from 'src/models/Auth'
 
 import { makeAutoObservable, runInAction } from 'mobx'
-import { AuthT, asAuthID } from 'src/db/TYPES.gen'
+import { AuthT, Auth_C, asAuthID } from 'src/db/TYPES.gen'
 import { logger } from './logfile'
 
 export class AuthState {
@@ -26,7 +26,7 @@ export class AuthState {
 
     auth: SupabaseAuthClient
 
-    get authTable(): LiveTable<AuthT, AuthL> {
+    get authTable(): LiveTable<AuthT, Auth_C, AuthL> {
         return this.st.db.auths
     }
 

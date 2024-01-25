@@ -530,6 +530,15 @@ export const migrations: {
             'alter table media_image add column  orientation  int',
         ],
     },
+    {
+        id: 'UiC3lfBf52',
+        name: 'draft and apps can be favorites too',
+        up: [
+            //
+            'alter table draft     add column isFavorite int not null default 0',
+            'alter table cushy_app add column isFavorite int not null default 0',
+        ],
+    },
     // {
     //     id: 'e574c006-daca-4fd0-a51b-73a66b4fbd79',
     //     name: 'create cushy_app table',

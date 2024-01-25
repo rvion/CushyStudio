@@ -42,10 +42,6 @@ export class Library {
         return this.appsFiltered.filter((x) => x.isExample)
     }
 
-    get allFavorites(): CushyAppID[] {
-        return this.st.favoriteApps
-    }
-
     private fileIndex = new Map<RelativePath, LibraryFile>()
 
     // get or create file wrapper

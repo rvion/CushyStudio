@@ -20,7 +20,7 @@ export class TreeFolder implements ITreeEntry<RelativePath> {
         const xxx: ITreeElement<RelativePath>[] = files //
             .filter((e) => !shouldSkip(e))
             .map((file) => {
-                const path = asRelativePath(`${this.path}/${file}`)
+                const relPath = asRelativePath(`${this.path}/${file}`)
                 const x: ITreeElement<RelativePath> = {
                     ctor: (st: STATE, path: RelativePath) => {
                         const stats = statSync(path)
@@ -30,7 +30,7 @@ export class TreeFolder implements ITreeEntry<RelativePath> {
                             : new TreeFile(st, path)
                     },
                     key: file,
-                    props: path,
+                    props: relPath,
                 }
                 return x
             })

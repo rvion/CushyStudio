@@ -61,6 +61,7 @@ import { TreeView } from 'src/panels/libraryUI/tree/xxx/TreeView'
 import { TreeFolder } from 'src/panels/libraryUI/tree/nodes/TreeFolder'
 import { TreeDrafts, TreeFavorite } from 'src/panels/libraryUI/tree/nodes/TreeFavorites'
 import { treeElement } from 'src/panels/libraryUI/tree/TreeEntry'
+import { CushyAppL } from 'src/models/CushyApp'
 
 export class STATE {
     /** hack to help closing prompt completions */
@@ -200,7 +201,15 @@ export class STATE {
 
     //
     get githubUsername(): Maybe<GithubUserName> { return this.configFile.value.githubUsername as Maybe<GithubUserName> } // prettier-ignore
-    get favoriteApps(): CushyAppID[] { return this.configFile.value.favoriteApps ?? [] } // prettier-ignore
+
+    favoriteAppCollection = new LiveCollection<CushyAppL>({
+        table: () => this.db.cushy_apps,
+        where: () => ({ isFavorite: SQLITE_true }),
+        options: { debug: true },
+    })
+    get favoriteApps(): CushyAppL[] {
+        return this.favoriteAppCollection.items
+    }
 
     getConfigValue = <K extends keyof ConfigFile>(k: K) => this.configFile.value[k]
     setConfigValue = <K extends keyof ConfigFile>(k: K, v: ConfigFile[K]) => this.configFile.update({ [k]: v })

@@ -13,6 +13,7 @@ import { Executable } from './Executable'
 import { runInAction } from 'mobx'
 import { toastInfo } from 'src/utils/misc/toasts'
 import { getCurrentForm_IMPL, getCurrentRun_IMPL } from './_ctx2'
+import { SQLITE_false } from 'src/db/SQLITE_boolean'
 // import { LazyValue } from 'src/db/LazyValue'
 
 export interface CushyScriptL extends LiveInstance<CushyScriptT, CushyScriptL> {}
@@ -26,9 +27,13 @@ export class CushyScriptL {
         return asRelativePath(this.data.path)
     }
 
+    get apps_viaDB(): CushyAppL[] {
+        return this._apps_viaDB.items
+    }
+
     /** collection of all apps related to this script in the db */
-    apps_viaDB = new LiveCollection<CushyAppL>({
-        table: () => this.db.cushy_scripts,
+    _apps_viaDB = new LiveCollection<CushyAppL>({
+        table: () => this.db.cushy_apps,
         where: () => ({ scriptID: this.id }),
     })
 
@@ -78,7 +83,10 @@ export class CushyScriptL {
      *  - 3. bumpt lastEvaluatedAt (and lastSuccessfulEvaluation)
      */
     extractApps = () => {
+        console.log(`[👙] extracting apps...`)
+        // debugger
         this._EXECUTABLES = this._EVALUATE_SCRIPT()
+
         runInAction(() => {
             this._apps_viaScript = this._EXECUTABLES!.map((executable): CushyAppL => {
                 const app = this.db.cushy_apps.upsert({

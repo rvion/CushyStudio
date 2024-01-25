@@ -14,7 +14,7 @@ export type BaseInstanceFields = {
 export interface LiveInstance<T extends BaseInstanceFields, L> {
     st: STATE
     db: LiveDB
-    table: LiveTable<T, any>
+    table: LiveTable<T, any, any>
     data: T
     get id(): T['id']
     get createdAt(): T['createdAt']
@@ -24,11 +24,15 @@ export interface LiveInstance<T extends BaseInstanceFields, L> {
     onCreate?: (data: T) => void
     /** called on both hydrate and update (bad; need to be changed ❌) */
     onUpdate?: (prev: Maybe<T>, next: T) => void
-    update: (t: Partial<T>) => void
+    update: (t: Partial<T>, opts?: UpdateOptions) => void
     update_LiveOnly: (t: Partial<T>) => void
     delete: () => void
     toJSON: () => T
-    init(table: LiveTable<T, any>, data: T): void
+    init(table: LiveTable<T, any, any>, data: T): void
     clone(t?: Partial<T>): L
     log(...args: any[]): void
+}
+
+export type UpdateOptions = {
+    debug?: boolean
 }

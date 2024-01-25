@@ -11,9 +11,7 @@ export class TreeFavorite implements ITreeEntry {
     name = 'Favorites'
     constructor(public st: STATE, p: {}) {}
     children = (): ITreeElement<CushyAppID>[] => {
-        return this.st.library.allFavorites.map(
-            (appID): ITreeElement<CushyAppID> => ({ ctor: TreeApp, key: appID, props: appID }),
-        )
+        return this.st.favoriteApps.map((app): ITreeElement<CushyAppID> => ({ ctor: TreeApp, key: app.id, props: app.id }))
     }
 }
 

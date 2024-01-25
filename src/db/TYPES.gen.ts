@@ -17,6 +17,21 @@ export type MigrationsT = {
     sql: string;
 
 }
+
+export type Migrations_C = {
+    /** @default: null, sqlType: TEXT */
+    id?: Maybe<MigrationsID>;
+
+    /** @default: null, sqlType: TEXT */
+    name: string;
+
+    /** @default: null, sqlType: INTEGER */
+    createdAt: number;
+
+    /** @default: null, sqlType: TEXT */
+    sql: string;
+
+}
 export const MigrationsSchema = Type.Object({
     id: Type.Optional(T.Nullable(Type.String())),
     name: Type.String(),
@@ -41,6 +56,24 @@ export const MigrationsFields = {
 
 export const asUsersID = (s: string): UsersID => s as any
 export type UsersT = {
+    /** @default: null, sqlType: INTEGER */
+    id?: Maybe<UsersID>;
+
+    /** @default: null, sqlType: TEXT */
+    firstName: string;
+
+    /** @default: null, sqlType: TEXT */
+    lastName: string;
+
+    /** @default: null, sqlType: TEXT */
+    email: string;
+
+    /** @default: null, sqlType: TEXT */
+    passwordHash: string;
+
+}
+
+export type Users_C = {
     /** @default: null, sqlType: INTEGER */
     id?: Maybe<UsersID>;
 
@@ -102,6 +135,27 @@ export type GraphT = {
     metadata: T.Graph_metadata;
 
 }
+
+export type Graph_C = {
+    /** @default: "hex(randomblob(16))", sqlType: string */
+    id?: GraphID;
+
+    /** @default: "now", sqlType: INTEGER */
+    createdAt?: number;
+
+    /** @default: "now", sqlType: INTEGER */
+    updatedAt?: number;
+
+    /** @default: null, sqlType: json */
+    comfyPromptJSON: T.Graph_comfyPromptJSON;
+
+    /** @default: null, sqlType: TEXT */
+    stepID?: Maybe<StepID>;
+
+    /** @default: "'{}'", sqlType: json */
+    metadata?: T.Graph_metadata;
+
+}
 export const GraphSchema = Type.Object({
     id: Type.String(),
     createdAt: Type.Number(),
@@ -157,6 +211,39 @@ export type DraftT = {
     /** @default: null, sqlType: TEXT */
     illustration?: Maybe<string>;
 
+    /** @default: "0", sqlType: INT */
+    isFavorite: number;
+
+}
+
+export type Draft_C = {
+    /** @default: "hex(randomblob(16))", sqlType: string */
+    id?: DraftID;
+
+    /** @default: "now", sqlType: INTEGER */
+    createdAt?: number;
+
+    /** @default: "now", sqlType: INTEGER */
+    updatedAt?: number;
+
+    /** @default: null, sqlType: TEXT */
+    title?: Maybe<string>;
+
+    /** @default: null, sqlType: json */
+    appParams: T.Draft_appParams;
+
+    /** @default: "1", sqlType: INT */
+    isOpened?: number;
+
+    /** @default: null, sqlType: TEXT */
+    appID: CushyAppID;
+
+    /** @default: null, sqlType: TEXT */
+    illustration?: Maybe<string>;
+
+    /** @default: "0", sqlType: INT */
+    isFavorite?: number;
+
 }
 export const DraftSchema = Type.Object({
     id: Type.String(),
@@ -167,6 +254,7 @@ export const DraftSchema = Type.Object({
     isOpened: Type.Number(),
     appID: Type.String(),
     illustration: Type.Optional(T.Nullable(Type.String())),
+    isFavorite: Type.Number(),
 },{ additionalProperties: false })
 
 export const DraftRefs =[
@@ -186,6 +274,7 @@ export const DraftFields = {
     isOpened: {cid:5,name:'isOpened',type:'INT',notnull:1,dflt_value:'1',pk:0},
     appID: {cid:6,name:'appID',type:'TEXT',notnull:1,dflt_value:null,pk:0},
     illustration: {cid:7,name:'illustration',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    isFavorite: {cid:8,name:'isFavorite',type:'INT',notnull:1,dflt_value:'0',pk:0},
 }
 
 
@@ -220,6 +309,39 @@ export type ProjectT = {
 
     /** @default: "100", sqlType: INT */
     autostartMaxDelay: number;
+
+}
+
+export type Project_C = {
+    /** @default: "hex(randomblob(16))", sqlType: string */
+    id?: ProjectID;
+
+    /** @default: "now", sqlType: INTEGER */
+    createdAt?: number;
+
+    /** @default: "now", sqlType: INTEGER */
+    updatedAt?: number;
+
+    /** @default: null, sqlType: TEXT */
+    name?: Maybe<string>;
+
+    /** @default: null, sqlType: TEXT */
+    rootGraphID: GraphID;
+
+    /** @default: null, sqlType: TEXT */
+    currentApp?: Maybe<string>;
+
+    /** @default: null, sqlType: TEXT */
+    currentDraftID?: Maybe<DraftID>;
+
+    /** @default: "0", sqlType: INT */
+    filterNSFW?: number;
+
+    /** @default: "0", sqlType: INT */
+    autostartDelay?: number;
+
+    /** @default: "100", sqlType: INT */
+    autostartMaxDelay?: number;
 
 }
 export const ProjectSchema = Type.Object({
@@ -285,6 +407,42 @@ export type StepT = {
 
     /** @default: "1", sqlType: INT */
     isExpanded: number;
+
+    /** @default: null, sqlType: TEXT */
+    appID: CushyAppID;
+
+    /** @default: null, sqlType: TEXT */
+    draftID?: Maybe<DraftID>;
+
+}
+
+export type Step_C = {
+    /** @default: "hex(randomblob(16))", sqlType: string */
+    id?: StepID;
+
+    /** @default: "now", sqlType: INTEGER */
+    createdAt?: number;
+
+    /** @default: "now", sqlType: INTEGER */
+    updatedAt?: number;
+
+    /** @default: null, sqlType: TEXT */
+    name?: Maybe<string>;
+
+    /** @default: null, sqlType: json */
+    formResult: T.Step_formResult;
+
+    /** @default: null, sqlType: json */
+    formSerial: T.Step_formSerial;
+
+    /** @default: null, sqlType: TEXT */
+    outputGraphID: GraphID;
+
+    /** @default: null, sqlType: TEXT */
+    status: T.StatusT;
+
+    /** @default: "1", sqlType: INT */
+    isExpanded?: number;
 
     /** @default: null, sqlType: TEXT */
     appID: CushyAppID;
@@ -365,6 +523,33 @@ export type ComfyPromptT = {
     status?: Maybe<T.StatusT>;
 
 }
+
+export type ComfyPrompt_C = {
+    /** @default: "hex(randomblob(16))", sqlType: string */
+    id?: ComfyPromptID;
+
+    /** @default: "now", sqlType: INTEGER */
+    createdAt?: number;
+
+    /** @default: "now", sqlType: INTEGER */
+    updatedAt?: number;
+
+    /** @default: null, sqlType: TEXT */
+    stepID: StepID;
+
+    /** @default: null, sqlType: TEXT */
+    graphID: GraphID;
+
+    /** @default: "0", sqlType: INT */
+    executed?: number;
+
+    /** @default: null, sqlType: json */
+    error?: Maybe<T.ComfyPrompt_error>;
+
+    /** @default: null, sqlType: TEXT */
+    status?: Maybe<T.StatusT>;
+
+}
 export const ComfyPromptSchema = Type.Object({
     id: Type.String(),
     createdAt: Type.Number(),
@@ -409,6 +594,27 @@ export type ComfySchemaT = {
 
     /** @default: "now", sqlType: INTEGER */
     updatedAt: number;
+
+    /** @default: null, sqlType: json */
+    spec: T.ComfySchema_spec;
+
+    /** @default: null, sqlType: json */
+    embeddings: T.ComfySchema_embeddings;
+
+    /** @default: null, sqlType: TEXT */
+    hostID?: Maybe<HostID>;
+
+}
+
+export type ComfySchema_C = {
+    /** @default: "hex(randomblob(16))", sqlType: string */
+    id?: ComfySchemaID;
+
+    /** @default: "now", sqlType: INTEGER */
+    createdAt?: number;
+
+    /** @default: "now", sqlType: INTEGER */
+    updatedAt?: number;
 
     /** @default: null, sqlType: json */
     spec: T.ComfySchema_spec;
@@ -470,6 +676,30 @@ export type MediaTextT = {
     title: string;
 
 }
+
+export type MediaText_C = {
+    /** @default: "hex(randomblob(16))", sqlType: string */
+    id?: MediaTextID;
+
+    /** @default: "now", sqlType: INTEGER */
+    createdAt?: number;
+
+    /** @default: "now", sqlType: INTEGER */
+    updatedAt?: number;
+
+    /** @default: null, sqlType: TEXT */
+    kind: string;
+
+    /** @default: null, sqlType: TEXT */
+    content: string;
+
+    /** @default: null, sqlType: TEXT */
+    stepID?: Maybe<StepID>;
+
+    /** @default: "''", sqlType: TEXT */
+    title?: string;
+
+}
 export const MediaTextSchema = Type.Object({
     id: Type.String(),
     createdAt: Type.Number(),
@@ -508,6 +738,33 @@ export type MediaVideoT = {
 
     /** @default: "now", sqlType: INTEGER */
     updatedAt: number;
+
+    /** @default: null, sqlType: TEXT */
+    absPath?: Maybe<string>;
+
+    /** @default: null, sqlType: TEXT */
+    stepID?: Maybe<StepID>;
+
+    /** @default: null, sqlType: TEXT */
+    promptID?: Maybe<ComfyPromptID>;
+
+    /** @default: null, sqlType: TEXT */
+    filePath?: Maybe<string>;
+
+    /** @default: null, sqlType: TEXT */
+    url: string;
+
+}
+
+export type MediaVideo_C = {
+    /** @default: "hex(randomblob(16))", sqlType: string */
+    id?: MediaVideoID;
+
+    /** @default: "now", sqlType: INTEGER */
+    createdAt?: number;
+
+    /** @default: "now", sqlType: INTEGER */
+    updatedAt?: number;
 
     /** @default: null, sqlType: TEXT */
     absPath?: Maybe<string>;
@@ -566,6 +823,54 @@ export type MediaImageT = {
 
     /** @default: "now", sqlType: INTEGER */
     updatedAt: number;
+
+    /** @default: null, sqlType: INT */
+    star?: Maybe<number>;
+
+    /** @default: null, sqlType: TEXT */
+    promptID?: Maybe<ComfyPromptID>;
+
+    /** @default: null, sqlType: TEXT */
+    stepID?: Maybe<StepID>;
+
+    /** @default: null, sqlType: TEXT */
+    promptNodeID?: Maybe<string>;
+
+    /** @default: null, sqlType: INT */
+    width: number;
+
+    /** @default: null, sqlType: INT */
+    height: number;
+
+    /** @default: null, sqlType: INT */
+    fileSize: number;
+
+    /** @default: null, sqlType: TEXT */
+    hash: string;
+
+    /** @default: null, sqlType: TEXT */
+    path: string;
+
+    /** @default: null, sqlType: json */
+    comfyUIInfos?: Maybe<T.MediaImage_comfyUIInfos>;
+
+    /** @default: null, sqlType: TEXT */
+    type?: Maybe<string>;
+
+    /** @default: null, sqlType: INT */
+    orientation?: Maybe<number>;
+
+}
+
+export type MediaImage_C = {
+    /** @default: "hex(randomblob(16))", sqlType: string */
+    id?: MediaImageID;
+
+    /** @default: "now", sqlType: INTEGER */
+    createdAt?: number;
+
+    /** @default: "now", sqlType: INTEGER */
+    updatedAt?: number;
 
     /** @default: null, sqlType: INT */
     star?: Maybe<number>;
@@ -682,6 +987,39 @@ export type Media3dDisplacementT = {
     promptID?: Maybe<ComfyPromptID>;
 
 }
+
+export type Media3dDisplacement_C = {
+    /** @default: "hex(randomblob(16))", sqlType: string */
+    id?: Media3dDisplacementID;
+
+    /** @default: "now", sqlType: INTEGER */
+    createdAt?: number;
+
+    /** @default: "now", sqlType: INTEGER */
+    updatedAt?: number;
+
+    /** @default: null, sqlType: INT */
+    width?: Maybe<number>;
+
+    /** @default: null, sqlType: INT */
+    height?: Maybe<number>;
+
+    /** @default: null, sqlType: TEXT */
+    image?: Maybe<string>;
+
+    /** @default: null, sqlType: TEXT */
+    depthMap?: Maybe<string>;
+
+    /** @default: null, sqlType: TEXT */
+    normalMap?: Maybe<string>;
+
+    /** @default: null, sqlType: TEXT */
+    stepID?: Maybe<StepID>;
+
+    /** @default: null, sqlType: TEXT */
+    promptID?: Maybe<ComfyPromptID>;
+
+}
 export const Media3dDisplacementSchema = Type.Object({
     id: Type.String(),
     createdAt: Type.Number(),
@@ -727,6 +1065,33 @@ export type RuntimeErrorT = {
 
     /** @default: "now", sqlType: INTEGER */
     updatedAt: number;
+
+    /** @default: null, sqlType: TEXT */
+    message: string;
+
+    /** @default: null, sqlType: json */
+    infos: T.RuntimeError_infos;
+
+    /** @default: null, sqlType: TEXT */
+    promptID?: Maybe<ComfyPromptID>;
+
+    /** @default: null, sqlType: TEXT */
+    graphID?: Maybe<GraphID>;
+
+    /** @default: null, sqlType: TEXT */
+    stepID?: Maybe<StepID>;
+
+}
+
+export type RuntimeError_C = {
+    /** @default: "hex(randomblob(16))", sqlType: string */
+    id?: RuntimeErrorID;
+
+    /** @default: "now", sqlType: INTEGER */
+    createdAt?: number;
+
+    /** @default: "now", sqlType: INTEGER */
+    updatedAt?: number;
 
     /** @default: null, sqlType: TEXT */
     message: string;
@@ -794,6 +1159,24 @@ export type MediaSplatT = {
     url: string;
 
 }
+
+export type MediaSplat_C = {
+    /** @default: "hex(randomblob(16))", sqlType: string */
+    id?: MediaSplatID;
+
+    /** @default: "now", sqlType: INTEGER */
+    createdAt?: number;
+
+    /** @default: "now", sqlType: INTEGER */
+    updatedAt?: number;
+
+    /** @default: null, sqlType: TEXT */
+    stepID?: Maybe<StepID>;
+
+    /** @default: null, sqlType: TEXT */
+    url: string;
+
+}
 export const MediaSplatSchema = Type.Object({
     id: Type.String(),
     createdAt: Type.Number(),
@@ -833,6 +1216,21 @@ export type CustomDataT = {
     json: T.CustomData_json;
 
 }
+
+export type CustomData_C = {
+    /** @default: "hex(randomblob(16))", sqlType: string */
+    id?: CustomDataID;
+
+    /** @default: "now", sqlType: INTEGER */
+    createdAt?: number;
+
+    /** @default: "now", sqlType: INTEGER */
+    updatedAt?: number;
+
+    /** @default: "'{}'", sqlType: json */
+    json?: T.CustomData_json;
+
+}
 export const CustomDataSchema = Type.Object({
     id: Type.String(),
     createdAt: Type.Number(),
@@ -865,6 +1263,33 @@ export type CushyScriptT = {
 
     /** @default: "now", sqlType: INTEGER */
     updatedAt: number;
+
+    /** @default: null, sqlType: TEXT */
+    path: string;
+
+    /** @default: null, sqlType: TEXT */
+    code: string;
+
+    /** @default: null, sqlType: INT */
+    lastEvaluatedAt?: Maybe<number>;
+
+    /** @default: null, sqlType: INT */
+    lastSuccessfulEvaluationAt?: Maybe<number>;
+
+    /** @default: null, sqlType: json */
+    metafile?: Maybe<T.CushyScript_metafile>;
+
+}
+
+export type CushyScript_C = {
+    /** @default: "hex(randomblob(16))", sqlType: string */
+    id?: CushyScriptID;
+
+    /** @default: "now", sqlType: INTEGER */
+    createdAt?: number;
+
+    /** @default: "now", sqlType: INTEGER */
+    updatedAt?: number;
 
     /** @default: null, sqlType: TEXT */
     path: string;
@@ -947,6 +1372,48 @@ export type CushyAppT = {
     /** @default: null, sqlType: INT */
     publishedAt?: Maybe<number>;
 
+    /** @default: "0", sqlType: INT */
+    isFavorite: number;
+
+}
+
+export type CushyApp_C = {
+    /** @default: "hex(randomblob(16))", sqlType: string */
+    id?: CushyAppID;
+
+    /** @default: "now", sqlType: INTEGER */
+    createdAt?: number;
+
+    /** @default: "now", sqlType: INTEGER */
+    updatedAt?: number;
+
+    /** @default: null, sqlType: TEXT */
+    guid?: Maybe<string>;
+
+    /** @default: null, sqlType: TEXT */
+    scriptID: CushyScriptID;
+
+    /** @default: null, sqlType: TEXT */
+    name?: Maybe<string>;
+
+    /** @default: null, sqlType: TEXT */
+    illustration?: Maybe<string>;
+
+    /** @default: null, sqlType: TEXT */
+    description?: Maybe<string>;
+
+    /** @default: null, sqlType: TEXT */
+    tags?: Maybe<string>;
+
+    /** @default: null, sqlType: TEXT */
+    publishedAsUserID?: Maybe<string>;
+
+    /** @default: null, sqlType: INT */
+    publishedAt?: Maybe<number>;
+
+    /** @default: "0", sqlType: INT */
+    isFavorite?: number;
+
 }
 export const CushyAppSchema = Type.Object({
     id: Type.String(),
@@ -960,6 +1427,7 @@ export const CushyAppSchema = Type.Object({
     tags: Type.Optional(T.Nullable(Type.String())),
     publishedAsUserID: Type.Optional(T.Nullable(Type.String())),
     publishedAt: Type.Optional(T.Nullable(Type.Number())),
+    isFavorite: Type.Number(),
 },{ additionalProperties: false })
 
 export const CushyAppRefs =[
@@ -982,6 +1450,7 @@ export const CushyAppFields = {
     tags: {cid:8,name:'tags',type:'TEXT',notnull:0,dflt_value:null,pk:0},
     publishedAsUserID: {cid:9,name:'publishedAsUserID',type:'TEXT',notnull:0,dflt_value:null,pk:0},
     publishedAt: {cid:10,name:'publishedAt',type:'INT',notnull:0,dflt_value:null,pk:0},
+    isFavorite: {cid:11,name:'isFavorite',type:'INT',notnull:1,dflt_value:'0',pk:0},
 }
 
 
@@ -995,6 +1464,39 @@ export type AuthT = {
 
     /** @default: "now", sqlType: INTEGER */
     updatedAt: number;
+
+    /** @default: null, sqlType: TEXT */
+    provider_token?: Maybe<string>;
+
+    /** @default: null, sqlType: TEXT */
+    refresh_token?: Maybe<string>;
+
+    /** @default: null, sqlType: TEXT */
+    token_type?: Maybe<string>;
+
+    /** @default: null, sqlType: TEXT */
+    access_token?: Maybe<string>;
+
+    /** @default: null, sqlType: TEXT */
+    provider_refresh_token?: Maybe<string>;
+
+    /** @default: null, sqlType: INT */
+    expires_at?: Maybe<number>;
+
+    /** @default: null, sqlType: INT */
+    expires_in?: Maybe<number>;
+
+}
+
+export type Auth_C = {
+    /** @default: "hex(randomblob(16))", sqlType: string */
+    id?: AuthID;
+
+    /** @default: "now", sqlType: INTEGER */
+    createdAt?: number;
+
+    /** @default: "now", sqlType: INTEGER */
+    updatedAt?: number;
 
     /** @default: null, sqlType: TEXT */
     provider_token?: Maybe<string>;
@@ -1067,6 +1569,21 @@ export type TreeEntryT = {
     isExpanded?: Maybe<number>;
 
 }
+
+export type TreeEntry_C = {
+    /** @default: "hex(randomblob(16))", sqlType: string */
+    id?: TreeEntryID;
+
+    /** @default: "now", sqlType: INTEGER */
+    createdAt?: number;
+
+    /** @default: "now", sqlType: INTEGER */
+    updatedAt?: number;
+
+    /** @default: null, sqlType: INT */
+    isExpanded?: Maybe<number>;
+
+}
 export const TreeEntrySchema = Type.Object({
     id: Type.String(),
     createdAt: Type.Number(),
@@ -1126,6 +1643,45 @@ export type HostT = {
 
     /** @default: "0", sqlType: INT */
     isReadonly: number;
+
+}
+
+export type Host_C = {
+    /** @default: "hex(randomblob(16))", sqlType: string */
+    id?: HostID;
+
+    /** @default: "now", sqlType: INTEGER */
+    createdAt?: number;
+
+    /** @default: "now", sqlType: INTEGER */
+    updatedAt?: number;
+
+    /** @default: "hex(randomblob(16))", sqlType: TEXT */
+    name?: string;
+
+    /** @default: "\"localhost\"", sqlType: TEXT */
+    hostname?: string;
+
+    /** @default: "8188", sqlType: INT */
+    port?: number;
+
+    /** @default: "0", sqlType: INT */
+    useHttps?: number;
+
+    /** @default: "0", sqlType: INT */
+    isLocal?: number;
+
+    /** @default: null, sqlType: TEXT */
+    absolutePathToComfyUI?: Maybe<string>;
+
+    /** @default: null, sqlType: TEXT */
+    absolutPathToDownloadModelsTo?: Maybe<string>;
+
+    /** @default: "0", sqlType: INT */
+    isVirtual?: number;
+
+    /** @default: "0", sqlType: INT */
+    isReadonly?: number;
 
 }
 export const HostSchema = Type.Object({

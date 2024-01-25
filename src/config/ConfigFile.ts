@@ -22,7 +22,7 @@ export type ConfigFile = {
     preferedFormLayout?: PreferedFormLayout
     ['draft.mockup-mobile']?: boolean
 
-    favoriteApps?: CushyAppID[]
+    // favoriteApps?: CushyAppID[]
     /* list of all comfyUI setup available */
     // comfyUIHosts?: ComfyHostDef[]
 

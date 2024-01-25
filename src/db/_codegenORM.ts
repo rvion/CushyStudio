@@ -73,12 +73,14 @@ export const _codegenORM = (store: {
         //
 
         let typeDecl: string = '\n'
+        let typeDeclCreate: string = '\n'
         let schemaDecl: string = `\n`
         let fieldsDef: string = `\n`
         out2 += `declare type ${jsTableName}ID = Branded<string, { ${jsTableName}ID: true }>\n`
         typeDecl += `export const as${jsTableName}ID = (s: string): ${jsTableName}ID => s as any\n`
         schemaDecl = `export const ${jsTableName}Schema = Type.Object({\n`
         typeDecl += `export type ${jsTableName}T = {\n`
+        typeDeclCreate += `export type ${jsTableName}_C = {\n`
         fieldsDef += `${xxx}\nexport const ${jsTableName}Fields = {\n`
         for (const col of cols) {
             const comment = `/** @default: ${JSON.stringify(col.dflt_value) ?? 'null'}, sqlType: ${col.type} */`
@@ -116,17 +118,22 @@ export const _codegenORM = (store: {
                 ? `    ${col.name}: ${schemaField},\n`
                 : `    ${col.name}: Type.Optional(T.Nullable(${schemaField})),\n`
             const colon = col.notnull ? ':' : '?:'
+            const colonCreate = col.notnull && !col.dflt_value ? ':' : '?:'
             typeDecl += `    ${comment}\n`
+            typeDeclCreate += `    ${comment}\n`
             typeDecl += `    ${col.name}${colon} ${col.notnull ? fieldType : `Maybe<${fieldType}>`};\n\n`
+            typeDeclCreate += `    ${col.name}${colonCreate} ${col.notnull ? fieldType : `Maybe<${fieldType}>`};\n\n`
             fieldsDef += `    ${col.name}: ${JSON5.stringify(col)},\n`
         }
         typeDecl += `}`
+        typeDeclCreate += `}`
         schemaDecl += '},{ additionalProperties: false })'
         fieldsDef += `}\n`
 
         // store.log(typeDecl)
         // out1 += insertFn
         out1 += typeDecl + '\n'
+        out1 += typeDeclCreate + '\n'
         out1 += schemaDecl + '\n'
         out1 += fieldsDef + '\n'
     }

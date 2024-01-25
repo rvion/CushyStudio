@@ -3,7 +3,7 @@ import { ImageStore, ImageStoreT } from 'src/back/ImageStore'
 import { CustomDataL } from 'src/models/CustomData'
 import { Runtime } from './Runtime'
 import { LiveTable } from 'src/db/LiveTable'
-import { CustomDataT } from 'src/db/TYPES.gen'
+import { CustomDataT, CustomData_C } from 'src/db/TYPES.gen'
 import { bang } from 'src/utils/misc/bang'
 import { exhaust } from 'src/utils/misc/ComfyUtils'
 
@@ -11,7 +11,7 @@ export type StoreScope = 'global' | 'app' | 'draft' | 'run'
 
 /** namespace for all store-related utils */
 export class RuntimeStore {
-    private CustomDataTable: LiveTable<CustomDataT, CustomDataL<any>>
+    private CustomDataTable: LiveTable<CustomDataT, CustomData_C, CustomDataL<any>>
     private imageStoresIndex = new Map<string, ImageStore>()
 
     constructor(private rt: Runtime) {

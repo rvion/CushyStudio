@@ -70,16 +70,11 @@ export class TreeFile implements ITreeEntry {
     }
 
     children = (): ITreeElement<CushyAppID>[] => {
-        if (!this.file.hasBeenLoadedAtLeastOnce) return []
-        if (this.file == null) {
-            console.log(`[🔴] TreeFile (${this.path}): FILE is null`)
-            return []
-        }
-        if (this.script == null) {
-            console.log(`[🔴] TreeFile (${this.path}): SCRIPT is null`)
-            return []
-        }
-        const apps = this.script.apps_viaScript
+        // if (!this.file.hasBeenLoadedAtLeastOnce) return []
+        if (this.file == null) { console.log(`[🔴] TreeFile (${this.path}): FILE is null`); return [] } // prettier-ignore
+        if (this.script == null) { console.log(`[🔴] TreeFile (${this.path}): SCRIPT is null`); return [] } // prettier-ignore
+
+        const apps = this.script.apps_viaDB
         if (apps.length === 0) {
             console.log(`[🔴] TreeFile (${this.path}): APPS.length = 0`)
             return []
@@ -88,10 +83,10 @@ export class TreeFile implements ITreeEntry {
         // console.log(`[🟢] TreeFile: found ${apps.length} apps`)
         return [
             //
-            ...apps.map((d) => ({
+            ...apps.map((app) => ({
                 ctor: TreeApp,
-                key: d.id,
-                props: d.id,
+                key: app.id,
+                props: app.id,
             })),
             // ...this.script,
         ]

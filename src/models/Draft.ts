@@ -6,7 +6,7 @@ import { Status } from 'src/back/Status'
 import { LibraryFile } from 'src/cards/LibraryFile'
 import { FormBuilder } from 'src/controls/FormBuilder'
 import { LiveRef } from 'src/db/LiveRef'
-import { SQLITE_true } from 'src/db/SQLITE_boolean'
+import { SQLITE_false, SQLITE_true } from 'src/db/SQLITE_boolean'
 import { DraftT } from 'src/db/TYPES.gen'
 import { __FAIL, __OK, type Result } from 'src/types/Either'
 import { CushyAppL } from './CushyApp'
@@ -43,6 +43,14 @@ export class DraftL {
 
     get name() {
         return this.data.title ?? this.id
+    }
+
+    get isFavorite(): boolean {
+        return this.data.isFavorite === SQLITE_true
+    }
+
+    setFavorite = (fav: boolean) => {
+        this.update({ isFavorite: fav ? SQLITE_true : SQLITE_false })
     }
 
     private autoStartTimer: NodeJS.Timeout | null = null

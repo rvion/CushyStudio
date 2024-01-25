@@ -91,9 +91,7 @@ export const FooooUI = observer(function FooooUI_(p: { img: MediaImageL }) {
     const img = p.img
     return (
         <>
-            {st.favoriteApps.map((appID) => {
-                const app = st.db.cushy_apps.get(appID)
-                if (app == null) return <>app {appID} not found</>
+            {st.favoriteApps.map((app) => {
                 if (app.executable == null) return <>app {app.name} has no executable</>
                 if (!app.executable.canBeStartedFromImage) return null
                 return (
