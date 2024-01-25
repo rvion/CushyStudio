@@ -6,7 +6,7 @@ import { RenderItemTitleUI } from '../RenderItemTitleUI'
 
 export const TreeEntryUI = observer(function TreeEntryUI_(p: { depth?: number; node: TreeNode }) {
     const n = p.node
-    const children = n.childrenIds
+    const children = n.childKeys
     const hasChildren = children.length > 0
     const tv = useTreeView()
     const selected = tv.at === n
@@ -15,7 +15,7 @@ export const TreeEntryUI = observer(function TreeEntryUI_(p: { depth?: number; n
             <div
                 id={n.id}
                 style={{ paddingLeft: `${p.depth ?? 0}rem` }}
-                onClick={() => tv.focus(n)}
+                onClick={() => tv.setAt(n)}
                 tw={[
                     // 'py-1',
                     // selected ? 'virtualBorder' : null,

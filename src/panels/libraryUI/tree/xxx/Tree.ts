@@ -1,6 +1,6 @@
 import { action, makeAutoObservable } from 'mobx'
 import { STATE } from 'src/state/state'
-import { TreeItemID } from '../TreeEntry'
+import { ITreeElement, TreeItemID } from '../TreeEntry'
 import { NodeId, TreeNode } from './TreeNode'
 import { FAIL, VIOLATION } from './utils'
 import { nanoid } from 'nanoid'
@@ -11,7 +11,7 @@ export class Tree {
     constructor(
         //
         public st: STATE,
-        rootNodes: TreeItemID[],
+        rootNodes: ITreeElement[],
     ) {
         for (let uid of rootNodes) {
             this.topLevelNodes.push(new TreeNode(this, uid, undefined))

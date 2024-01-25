@@ -1,24 +1,43 @@
-import { readdirSync } from 'fs'
+import { readdirSync, statSync } from 'fs'
 import { makeAutoObservable } from 'mobx'
 import { basename } from 'pathe'
 import { shouldSkip } from 'src/cards/shouldSkip'
 import { asRelativePath } from 'src/utils/fs/pathUtils'
-import { ITreeEntry, TreeEntryAction } from '../TreeEntry'
+import { ITreeElement, ITreeEntry, TreeEntryAction } from '../TreeEntry'
 import { TreeNode } from '../xxx/TreeNode'
+import { STATE } from 'src/state/state'
+import { TreeFile } from './TreeFile'
 
-export class TreeFolder implements ITreeEntry {
-    constructor(public path: string) {
+export class TreeFolder implements ITreeEntry<RelativePath> {
+    constructor(public st: STATE, public path: RelativePath) {
         makeAutoObservable(this)
     }
     get id(){return `path#${this.path}`} //prettier-ignore
     get name() { return basename(this.path) } // prettier-ignore
 
-    children(): RelativePath[] {
+    children(): ITreeElement<RelativePath>[] {
         const files = readdirSync(this.path)
-        return files //
+        const xxx: ITreeElement<RelativePath>[] = files //
             .filter((e) => !shouldSkip(e))
-            .map((file) => asRelativePath(`path#${this.path}/${file}`))
+            .map((file) => {
+                const path = asRelativePath(`${this.path}/${file}`)
+                const x: ITreeElement<RelativePath> = {
+                    ctor: (st: STATE, path: RelativePath) => {
+                        const stats = statSync(path)
+                        const isFolder = stats.isDirectory()
+                        return isFolder //
+                            ? new TreeFolder(st, path)
+                            : new TreeFile(st, path)
+                    },
+                    key: file,
+                    props: path,
+                }
+                return x
+            })
+        console.log(xxx)
+        return xxx
     }
+
     isFolder = true
 
     onPrimaryAction = (n: TreeNode) => {

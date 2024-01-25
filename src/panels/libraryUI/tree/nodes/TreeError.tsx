@@ -1,5 +1,6 @@
+import type { ITreeEntry } from '../TreeEntry'
+
 import { nanoid } from 'nanoid'
-import { ITreeEntry } from '../TreeEntry'
 
 export class TreeError implements ITreeEntry {
     get id() { return `error#${this.uid}` } // prettier-ignore

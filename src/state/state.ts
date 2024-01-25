@@ -57,6 +57,10 @@ import { getKnownCheckpoints, getKnownModels } from 'src/wiki/modelList'
 import { createMediaImage_fromPath } from 'src/models/createMediaImage_fromWebFile'
 import { assets } from 'src/utils/assets/assets'
 import { Tree } from 'src/panels/libraryUI/tree/xxx/Tree'
+import { TreeView } from 'src/panels/libraryUI/tree/xxx/TreeView'
+import { TreeFolder } from 'src/panels/libraryUI/tree/nodes/TreeFolder'
+import { TreeDrafts, TreeFavorite } from 'src/panels/libraryUI/tree/nodes/TreeFavorites'
+import { treeElement } from 'src/panels/libraryUI/tree/TreeEntry'
 
 export class STATE {
     /** hack to help closing prompt completions */
@@ -91,7 +95,9 @@ export class STATE {
     })()
 
     tree1: Tree
+    tree1View: TreeView
     tree2: Tree
+    tree2View: TreeView
 
     /**
      * global hotReload persistent cache that should survive hot reload
@@ -379,15 +385,24 @@ export class STATE {
         this.mainHost.CONNECT()
         this.tree1 = new Tree(this, [
             //
-            '#favorites',
-            '#apps',
+            treeElement({ key: 'favorites', ctor: TreeFavorite, props: {} }),
+            treeElement({ key: 'drafts', ctor: TreeDrafts, props: {} }),
+            // '#apps',
         ])
+        this.tree1View = new TreeView(this.tree1, {
+            onSelectionChange: (node) => this.tree2,
+        })
         this.tree2 = new Tree(this, [
+            treeElement({ key: 'library', ctor: TreeFolder, props: asRelativePath('library') }),
             //
-            'path#library/built-in',
-            'path#library/local',
-            'path#library/sdk-examples',
+            // 'path#library',
+            // 'path#library/built-in',
+            // 'path#library/local',
+            // 'path#library/sdk-examples',
         ])
+        this.tree2View = new TreeView(this.tree2, {
+            onSelectionChange: (node) => console.log(`[👙] node:`, node?.id),
+        })
 
         makeAutoObservable(this, {
             comfyUIIframeRef: false,

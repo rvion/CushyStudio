@@ -4,8 +4,9 @@ import { cwd } from 'process'
 import { LibraryFile } from 'src/cards/LibraryFile'
 import { STATE } from 'src/state/state'
 import { assets } from 'src/utils/assets/assets'
-import { ITreeEntry, TreeEntryAction } from '../TreeEntry'
+import { ITreeElement, ITreeEntry, TreeEntryAction } from '../TreeEntry'
 import { TreeNode } from '../xxx/TreeNode'
+import { TreeApp } from './TreeApp'
 
 export class TreeFile implements ITreeEntry {
     file: LibraryFile
@@ -17,7 +18,6 @@ export class TreeFile implements ITreeEntry {
     constructor(
         //
         public st: STATE,
-        public id: string,
         public path: RelativePath,
     ) {
         this.file = st.library.getFile(path)
@@ -69,26 +69,30 @@ export class TreeFile implements ITreeEntry {
         n.open()
     }
 
-    children = (): string[] => {
+    children = (): ITreeElement<CushyAppID>[] => {
         if (!this.file.hasBeenLoadedAtLeastOnce) return []
         if (this.file == null) {
-            console.log(`[🔴] TreeFile (${this.id}): FILE is null`)
+            console.log(`[🔴] TreeFile (${this.path}): FILE is null`)
             return []
         }
         if (this.script == null) {
-            console.log(`[🔴] TreeFile (${this.id}): SCRIPT is null`)
+            console.log(`[🔴] TreeFile (${this.path}): SCRIPT is null`)
             return []
         }
         const apps = this.script.apps_viaScript
         if (apps.length === 0) {
-            console.log(`[🔴] TreeFile (${this.id}): APPS.length = 0`)
+            console.log(`[🔴] TreeFile (${this.path}): APPS.length = 0`)
             return []
         }
 
         // console.log(`[🟢] TreeFile: found ${apps.length} apps`)
         return [
             //
-            ...apps.map((d) => `app#${d.id}`),
+            ...apps.map((d) => ({
+                ctor: TreeApp,
+                key: d.id,
+                props: d.id,
+            })),
             // ...this.script,
         ]
     }

@@ -5,8 +5,8 @@ import { makeAutoObservable } from 'mobx'
 import { SQLITE_false, SQLITE_true } from 'src/db/SQLITE_boolean'
 import { asTreeEntryID } from 'src/db/TYPES.gen'
 import { TreeEntryL } from 'src/models/TreeEntry'
-import { ITreeEntry } from '../TreeEntry'
-import { buildTreeItem } from '../nodes/buildTreeItem'
+import { ITreeElement, ITreeEntry } from '../TreeEntry'
+// import { buildTreeItem } from '../nodes/buildTreeItem'
 import { FAIL } from './utils'
 
 export type NodeId = string
@@ -62,14 +62,23 @@ export class TreeNode {
     constructor(
         //
         public tree: Tree,
-        public ref: string,
+        public elem: ITreeElement,
         public parent: TreeNode | undefined,
     ) {
-        this.id = (parent?.id ?? '') + '/' + ref
+        const key = elem.key
+        // console.log(`[👙] 🔴REF= ${key}`)
+        this.id = (parent?.id ?? '') + '/' + key
         // console.log(`[👙] `, this.id)
-        this.data = buildTreeItem(this.tree.st, this.ref)
         this.entryL = this.tree.st.db.tree_entries.upsert({ id: asTreeEntryID(this.id) })!
         this.tree.indexNode(this)
+
+        const ctor = elem.ctor
+        const isRealClass = Boolean(Object.getOwnPropertyDescriptors(ctor).prototype)
+        this.data = isRealClass
+            ? // @ts-ignore
+              new ctor(tree.st, elem.props)
+            : // @ts-ignore
+              ctor(tree.st, elem.props)
         makeAutoObservable(this, { _children_: false })
     }
 
@@ -79,22 +88,29 @@ export class TreeNode {
         // return false // TODO
     }
 
-    get childrenIds(): NodeId[] {
+    // intermediary representation
+    get childElements(): ITreeElement[] {
         return this.data.children?.() ?? []
     }
 
-    _children_: { [ref: string]: TreeNode } = {}
+    get childKeys(): NodeKey[] {
+        return this.childElements.map((i) => i.key)
+    }
+
+    _children_: { [key: string]: TreeNode } = {}
     get children(): TreeNode[] {
         // return []
-        const ids = this.childrenIds
+        const childElements = this.childElements
         const out: TreeNode[] = []
-        for (const childID of ids) {
+        for (const childElem of childElements) {
+            const childKey = childElem.key
             // const path = this.id + '/' + childID
-            if (this._children_[childID]) {
-                out.push(this._children_[childID])
+            if (this._children_[childKey]) {
+                out.push(this._children_[childKey])
             } else {
-                const node = new TreeNode(this.tree, childID, this)
-                this._children_[childID] = node
+                // const childEntry = childElem.ctor(childElem.props)
+                const node = new TreeNode(this.tree, childElem, this)
+                this._children_[childKey] = node
                 out.push(node)
             }
         }

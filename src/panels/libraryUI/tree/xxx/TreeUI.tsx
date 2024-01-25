@@ -9,12 +9,19 @@ import { TreeViewCtx } from './TreeCtx'
 import { TreeEntryUI } from './TreeEntryUI'
 import { TreeView } from './TreeView'
 
-export const TreeUI = observer(function TreeEditorUI_(p: { title?: string; shortcut?: string; className?: string; tree: Tree }) {
+export const TreeUI = observer(function TreeEditorUI_(p: {
+    //
+    title?: string
+    shortcut?: string
+    className?: string
+    tree: TreeView
+}) {
     const st = useSt()
-    const es = useMemo(() => new TreeView(p.tree), [p.tree])
+    // const es = useMemo(() => new TreeView(p.tree), [p.tree])
+    const tv = p.tree
 
     return (
-        <TreeViewCtx.Provider value={es}>
+        <TreeViewCtx.Provider value={tv}>
             <div tw='virtualBorder _TreeUI' className={p.className}>
                 <div tw='flex items-center pl-1 gap-2 bg-primary-1'>
                     {/* <div tw='italic opacity-50'>{es.tree.nodes.length} nodes</div> */}
@@ -36,8 +43,8 @@ export const TreeUI = observer(function TreeEditorUI_(p: { title?: string; short
                         <span className='material-symbols-outlined'>unfold_less</span>
                     </div>
                 </div>
-                <div id={p.tree.KeyboardNavigableDomNodeID} onKeyDown={es.onKeyDown} tabIndex={-1}>
-                    {es.nodes.map((n) => (
+                <div id={tv.tree.KeyboardNavigableDomNodeID} onKeyDown={tv.onKeyDown} tabIndex={-1}>
+                    {tv.nodes.map((n) => (
                         <TreeEntryUI key={n.id} node={n} />
                     ))}
                 </div>

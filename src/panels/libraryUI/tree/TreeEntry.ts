@@ -8,6 +8,7 @@ import type { TreeFolder } from './nodes/TreeFolder'
 
 import type { ReactNode } from 'react'
 import type { TreeNode } from './xxx/TreeNode'
+import { STATE } from 'src/state/state'
 
 export type TreeItemID = string
 
@@ -29,9 +30,17 @@ export type TreeEntryAction = {
     className?: string
 }
 
-export interface ITreeEntry {
-    id: string
-    children?: () => string[]
+export const treeElement = <P>(e: ITreeElement<P>): ITreeElement<P> => e
+
+export type ITreeElement<P = any> = {
+    key: string
+    ctor: { new (st: STATE, p: P): ITreeEntry } | ((st: STATE, p: P) => ITreeEntry)
+    props: P
+}
+
+export interface ITreeEntry<P = any> {
+    // id: string
+    children?: () => ITreeElement[]
     //
     name: string
     icon?: Maybe<string | ReactNode>

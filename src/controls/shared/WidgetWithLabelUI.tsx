@@ -163,35 +163,36 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
             ) : null}
 
             {/* Spacer ------------------------------------ */}
+            <div className='ml-auto flex items-center'>
+                {showListControls ? <ListControlsUI widget={widget} /> : null}
 
-            {showListControls ? <ListControlsUI widget={widget} /> : null}
+                {/* Collapse ONLY Indicator ------------------------------------ */}
+                {showFoldIndicator ? null : (
+                    <span
+                        onClick={(ev) => {
+                            if (!widget.isCollapsible) return
 
-            {/* Collapse ONLY Indicator ------------------------------------ */}
-            {showFoldIndicator ? null : (
-                <span
-                    onClick={(ev) => {
-                        if (!widget.isCollapsible) return
+                            ev.stopPropagation()
+                            ev.preventDefault()
 
-                        ev.stopPropagation()
-                        ev.preventDefault()
-
-                        if (widget.serial.collapsed) {
-                            widget.serial.collapsed = false
-                        } else {
-                            widget.serial.collapsed = true
-                        }
-                    }}
-                    tw='opacity-30 hover:opacity-100 ml-auto'
-                >
-                    {widget.serial.collapsed ? (
-                        <>
-                            <span className='material-symbols-outlined'>keyboard_arrow_right</span>
-                        </>
-                    ) : widget.isCollapsible ? (
-                        /*'▿'*/ <span className='material-symbols-outlined'>keyboard_arrow_down</span>
-                    ) : null}
-                </span>
-            )}
+                            if (widget.serial.collapsed) {
+                                widget.serial.collapsed = false
+                            } else {
+                                widget.serial.collapsed = true
+                            }
+                        }}
+                        tw='opacity-30 hover:opacity-100 ml-auto'
+                    >
+                        {widget.serial.collapsed ? (
+                            <>
+                                <span className='material-symbols-outlined'>keyboard_arrow_right</span>
+                            </>
+                        ) : widget.isCollapsible ? (
+                            /*'▿'*/ <span className='material-symbols-outlined'>keyboard_arrow_down</span>
+                        ) : null}
+                    </span>
+                )}
+            </div>
         </div>
     )
 
