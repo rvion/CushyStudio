@@ -27,7 +27,7 @@ const focusTree = (st: STATE, tree: Tree) =>
     runInAction(() => {
         const focusTreeRootIfMounted = () => {
             const item = window.document.getElementById(tree.KeyboardNavigableDomNodeID)
-            if (item == null) return console.log(`[🟢 🔴] dom node #${tree.KeyboardNavigableDomNodeID} not found`)
+            if (item == null) return console.log(`[🌲] dom node #${tree.KeyboardNavigableDomNodeID} not found`)
             item.focus()
         }
         if (st.layout.isVisible('FileList')) {

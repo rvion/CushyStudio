@@ -66,7 +66,6 @@ export class CushyAppL {
 
     // favorite system ------------------------------------------------------
     get isFavorite(): boolean {
-        console.log(`[👙] APP ${this.id}.isFavorite = ${this.data.isFavorite}`)
         return this.data.isFavorite === SQLITE_true
     }
 

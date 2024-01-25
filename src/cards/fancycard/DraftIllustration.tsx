@@ -47,10 +47,7 @@ export const DraftIllustrationUI = observer(function DraftIllustrationUI_(p: {
             </div>
             <img
                 // onError={(ev) => {
-                //     // if error, replace src = img broken inline svg
-                //     const img = ev.target as HTMLImageElement
-                //     console.log(`[👙]🔴 `, img.naturalWidth)
-                //     if (img.naturalWidth === 0) img.src = 'data:image/svg+xml;utf8,<svg></svg>'
+                // TODO 2024-01-25 rvion: make it so wiping images doesn't break drafts too much
                 // }}
                 className={p.className}
                 loading='lazy'
