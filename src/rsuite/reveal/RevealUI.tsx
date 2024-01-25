@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 import React, { useEffect, useMemo, useRef } from 'react'
 import { createPortal } from 'react-dom'
-import { RevealState, defaultHideDelay, defaultShowDelay } from './RevealState'
+import { Placement, RevealState, defaultHideDelay, defaultShowDelay } from './RevealState'
 
 export const RevealUI = observer(function Tooltip_(p: {
     //
@@ -15,6 +15,7 @@ export const RevealUI = observer(function Tooltip_(p: {
     disableHover?: boolean
     disableClick?: boolean
     style?: React.CSSProperties
+    placement?: Placement
 }) {
     const showDelay = p.showDelay ?? defaultShowDelay
     const hideDelay = p.hideDelay ?? defaultHideDelay
@@ -26,11 +27,11 @@ export const RevealUI = observer(function Tooltip_(p: {
                 showDelay,
                 hideDelay,
                 disableHover,
+                p.placement ?? 'auto',
             ),
         [showDelay, hideDelay, disableHover],
     )
     const ref = useRef<HTMLDivElement>(null)
-
     useEffect(() => {
         if (uist.visible && ref.current) {
             const rect = ref.current.getBoundingClientRect()
@@ -38,6 +39,7 @@ export const RevealUI = observer(function Tooltip_(p: {
         }
     }, [uist.visible])
 
+    const pos = uist.tooltipPosition
     const tooltip = uist.visible
         ? createPortal(
               <div
@@ -50,12 +52,16 @@ export const RevealUI = observer(function Tooltip_(p: {
                   onMouseEnter={uist.onMouseEnterTooltip}
                   onMouseLeave={uist.onMouseLeaveTooltip}
                   onContextMenu={uist.enterAnchor}
+                  // prettier-ignore
                   style={{
                       //   borderTop: uist._lock ? '1px dashed yellow' : undefined,
                       position: 'absolute',
                       zIndex: 99999999,
-                      top: `${uist.tooltipPosition.top}px`,
-                      left: `${uist.tooltipPosition.left}px`,
+                      top:    pos.top    ? `${pos.top}px`    : undefined,
+                      bottom: pos.bottom ? `${pos.bottom}px` : undefined,
+                      left:   pos.left   ? `${pos.left}px`   : undefined,
+                      right:  pos.right  ? `${pos.right}px`  : undefined,
+                      transform: pos.transform,
                       // Adjust positioning as needed
                   }}
               >
