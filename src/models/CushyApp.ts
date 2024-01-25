@@ -80,7 +80,6 @@ export class CushyAppL {
             // @ts-expect-error 🔴
             appParams: {},
             appID: this.id,
-            isOpened: SQLITE_true,
             title: title,
         })
         // pj.st.layout.FOCUS_OR_CREATE('Draft', { draftID: draft.id })

@@ -247,12 +247,12 @@ export class MediaImageL {
     }
 
     // turns this into some clean abstraction
-    _resolve!: (value: this) => void
-    _rejects!: (reason: any) => void
-    finished: Promise<this> = new Promise((resolve, rejects) => {
-        this._resolve = resolve
-        this._rejects = rejects
-    })
+    // _resolve!: (value: this) => void
+    // _rejects!: (reason: any) => void
+    // finished: Promise<this> = new Promise((resolve, rejects) => {
+    //     this._resolve = resolve
+    //     this._rejects = rejects
+    // })
 }
 
 // ⏸️ getSize = async (): Promise<ImageMeta> => {

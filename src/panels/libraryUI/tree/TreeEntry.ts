@@ -1,7 +1,7 @@
 import type { TreeApp } from './nodes/TreeApp'
 import type { TreeDraft } from './nodes/TreeDraft'
 import type { TreeError } from './nodes/TreeError'
-import type { TreeFavorite } from './nodes/TreeFavorites'
+import type { TreeFavoriteApps } from './nodes/TreeFavorites'
 import type { TreeFile } from './nodes/TreeFile'
 import type { TreeFolder } from './nodes/TreeFolder'
 // import type { TreeRoot } from './nodes/TreeRoot'
@@ -19,7 +19,7 @@ export type TreeEntry =
     | TreeDraft
     | TreeApp
     // | TreeRoot
-    | TreeFavorite
+    | TreeFavoriteApps
     | TreeError
 
 export type TreeEntryAction = {

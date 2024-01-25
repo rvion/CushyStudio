@@ -7,6 +7,7 @@ app({
     },
     canStartFromImage: true,
     ui: (form) => ({
+        info: form.markdown(`This app is made to be run from click on an image and sending it to drafts of this app.`),
         prompt: form.prompt({}),
     }),
     run: async (run, ui, startImg) => {

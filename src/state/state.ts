@@ -59,7 +59,7 @@ import { assets } from 'src/utils/assets/assets'
 import { Tree } from 'src/panels/libraryUI/tree/xxx/Tree'
 import { TreeView } from 'src/panels/libraryUI/tree/xxx/TreeView'
 import { TreeFolder } from 'src/panels/libraryUI/tree/nodes/TreeFolder'
-import { TreeDrafts, TreeFavorite } from 'src/panels/libraryUI/tree/nodes/TreeFavorites'
+import { TreeDrafts, TreeFavoriteApps, TreeFavoriteDrafts } from 'src/panels/libraryUI/tree/nodes/TreeFavorites'
 import { treeElement } from 'src/panels/libraryUI/tree/TreeEntry'
 import { CushyAppL } from 'src/models/CushyApp'
 
@@ -202,15 +202,36 @@ export class STATE {
     //
     get githubUsername(): Maybe<GithubUserName> { return this.configFile.value.githubUsername as Maybe<GithubUserName> } // prettier-ignore
 
+    // ---------------------------------------------------
     favoriteAppCollection = new LiveCollection<CushyAppL>({
         table: () => this.db.cushy_apps,
         where: () => ({ isFavorite: SQLITE_true }),
-        /* options: { debug: true }, */
     })
     get favoriteApps(): CushyAppL[] {
         return this.favoriteAppCollection.items
     }
 
+    // ---------------------------------------------------
+    favoriteDraftCollection = new LiveCollection<DraftL>({
+        table: () => this.db.drafts,
+        where: () => ({ isFavorite: SQLITE_true }),
+    })
+    get favoriteDrafts(): DraftL[] {
+        return this.favoriteDraftCollection.items
+    }
+
+    // ---------------------------------------------------
+    allDrafts = new LiveCollection<DraftL>({
+        table: () => this.db.drafts,
+        where: () => ({}),
+    })
+
+    allApps = new LiveCollection<CushyAppL>({
+        table: () => this.db.cushy_apps,
+        where: () => ({}),
+    })
+
+    // ---------------------------------------------------
     getConfigValue = <K extends keyof ConfigFile>(k: K) => this.configFile.value[k]
     setConfigValue = <K extends keyof ConfigFile>(k: K, v: ConfigFile[K]) => this.configFile.update({ [k]: v })
     isConfigValueEq = <K extends keyof ConfigFile>(k: K, val: ConfigFile[K]) => this.configFile.value[k] === val
@@ -275,11 +296,6 @@ export class STATE {
 
     safetyChecker = new SafetyChecker(this)
     draftsFolded = false
-
-    allOpenDrafts = new LiveFind<DraftT, DraftL>({
-        remoteTable: () => this.db.drafts,
-        remoteQuery: () => ({ isOpened: SQLITE_true }),
-    })
 
     fixEnumValue = (
         //
@@ -394,7 +410,8 @@ export class STATE {
         this.mainHost.CONNECT()
         this.tree1 = new Tree(this, [
             //
-            treeElement({ key: 'favorites', ctor: TreeFavorite, props: {} }),
+            treeElement({ key: 'favorite-apps', ctor: TreeFavoriteApps, props: {} }),
+            treeElement({ key: 'favorite-drafts', ctor: TreeFavoriteDrafts, props: {} }),
             treeElement({ key: 'drafts', ctor: TreeDrafts, props: {} }),
             // '#apps',
         ])

@@ -40,6 +40,7 @@ export const Panel_Output = observer(function Panel_Output_(p: {}) {
     const out1 = st.hovered ?? st.focusedStepOutput ?? selectedStep.lastMediaOutput ?? st.db.media_images.last()
     const out2 = null
     // const out3 = selectedStep.currentlyExecutingOutput
+    // if (1 - 1 === 0) return <RevealTestUI />
     return (
         <>
             <div

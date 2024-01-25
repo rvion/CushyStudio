@@ -47,7 +47,8 @@ export class RuntimeVideos {
             return this.step.recordError(`no images to create animation; did you forget to call prompt() first ?`, {})
 
         console.info(`🎥 awaiting all files to be ready locally...`)
-        await Promise.all(images.map((i) => i.finished))
+        // 🔴 TODO 2024-01-25 rvion: ensure all image really are ready
+        // await Promise.all(images.map((i) => i.finished))
         console.info(`🎥 all files are ready locally`)
 
         const outputAbsPath = this.st.cacheFolderPath

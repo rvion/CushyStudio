@@ -1,6 +1,7 @@
 import type { DraftL } from 'src/models/Draft'
 import type { STATE } from 'src/state/state'
 import type { ITreeEntry, TreeEntryAction } from '../TreeEntry'
+import { DraftFavoriteBtnUI } from '../../CardPicker2UI'
 
 export class TreeDraft implements ITreeEntry {
     get id() { return `draft#${this.draft.id}` } // prettier-ignore
@@ -26,6 +27,8 @@ export class TreeDraft implements ITreeEntry {
     }
 
     data: TreeDraft
+
+    extra = () => <DraftFavoriteBtnUI draft={this.draft} />
 
     actions: TreeEntryAction[] = [
         {

@@ -202,9 +202,6 @@ export type DraftT = {
     /** @default: null, sqlType: json */
     appParams: T.Draft_appParams;
 
-    /** @default: "1", sqlType: INT */
-    isOpened: number;
-
     /** @default: null, sqlType: TEXT */
     appID: CushyAppID;
 
@@ -232,9 +229,6 @@ export type Draft_C = {
     /** @default: null, sqlType: json */
     appParams: T.Draft_appParams;
 
-    /** @default: "1", sqlType: INT */
-    isOpened?: number;
-
     /** @default: null, sqlType: TEXT */
     appID: CushyAppID;
 
@@ -251,7 +245,6 @@ export const DraftSchema = Type.Object({
     updatedAt: Type.Number(),
     title: Type.Optional(T.Nullable(Type.String())),
     appParams: T.Draft_appParams_Schema,
-    isOpened: Type.Number(),
     appID: Type.String(),
     illustration: Type.Optional(T.Nullable(Type.String())),
     isFavorite: Type.Number(),
@@ -271,10 +264,9 @@ export const DraftFields = {
     updatedAt: {cid:2,name:'updatedAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
     title: {cid:3,name:'title',type:'TEXT',notnull:0,dflt_value:null,pk:0},
     appParams: {cid:4,name:'appParams',type:'json',notnull:1,dflt_value:null,pk:0},
-    isOpened: {cid:5,name:'isOpened',type:'INT',notnull:1,dflt_value:'1',pk:0},
-    appID: {cid:6,name:'appID',type:'TEXT',notnull:1,dflt_value:null,pk:0},
-    illustration: {cid:7,name:'illustration',type:'TEXT',notnull:0,dflt_value:null,pk:0},
-    isFavorite: {cid:8,name:'isFavorite',type:'INT',notnull:1,dflt_value:'0',pk:0},
+    appID: {cid:5,name:'appID',type:'TEXT',notnull:1,dflt_value:null,pk:0},
+    illustration: {cid:6,name:'illustration',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    isFavorite: {cid:7,name:'isFavorite',type:'INT',notnull:1,dflt_value:'0',pk:0},
 }
 
 
