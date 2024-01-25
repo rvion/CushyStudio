@@ -205,7 +205,7 @@ export class STATE {
     favoriteAppCollection = new LiveCollection<CushyAppL>({
         table: () => this.db.cushy_apps,
         where: () => ({ isFavorite: SQLITE_true }),
-        options: { debug: true },
+        /* options: { debug: true }, */
     })
     get favoriteApps(): CushyAppL[] {
         return this.favoriteAppCollection.items

@@ -71,7 +71,7 @@ export class CushyAppL {
     }
 
     setFavorite = (fav: boolean) => {
-        this.update({ isFavorite: fav ? SQLITE_true : SQLITE_false }, { debug: true })
+        this.update({ isFavorite: fav ? SQLITE_true : SQLITE_false } /* { debug: true } */)
     }
 
     // ... ------------------------------------------------------
