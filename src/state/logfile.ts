@@ -1,3 +1,1 @@
-import { LogfileService } from 'logfile-service'
-
-export const logger = new LogfileService({ tag: 'debug', utc: false, dir: 'logs' })
+export const logger = console
