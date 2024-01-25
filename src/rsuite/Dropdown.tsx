@@ -59,7 +59,7 @@ export const MenuItem = observer(function DropdownItem_(p: {
             ]}
             {...rest}
         >
-            <div className='flex items-center gap-2'>
+            <div className='flex items-center gap-2 whitespace-nowrap'>
                 {icon ?? null /*<span className='material-symbols-outlined'>spa</span>*/}
                 {label}
                 {children}
