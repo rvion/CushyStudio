@@ -9,6 +9,12 @@ app({
     metadata: {
         name: 'zero123-orbit-anything',
         description: 'see anything from any angle; just drop an image, and orbit around it',
+        help: [
+            //
+            `Image must:`,
+            `- have **transparent** background`,
+            `- be **centered** (no parts escaping the frame)'`,
+        ].join('\n'),
     },
     ui: (form) => ({
         orbit: form.orbit({}),

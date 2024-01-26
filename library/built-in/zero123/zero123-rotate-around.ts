@@ -6,6 +6,12 @@ app({
         //
         name: 'Zero123-rotate-around',
         description: 'generate a video of a 3d object rotating around itself',
+        help: [
+            //
+            `Image must:`,
+            `- have **transparent** background`,
+            `- be **centered** (no parts escaping the frame)'`,
+        ].join('\n'),
     },
 
     // interface
