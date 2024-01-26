@@ -6,19 +6,49 @@ import { SelectUI } from 'src/rsuite/SelectUI'
 import { WidgetWithLabelUI } from '../../shared/WidgetWithLabelUI'
 
 // UI
-
 export const WidgetChoicesUI = observer(function WidgetChoicesUI_(p: {
     widget: Widget_choices<{ [key: string]: () => Widget }>
 }) {
+    if (p.widget.config.appearance === 'tab') return <WidgetChoicesTabUI widget={p.widget} />
+    return <WidgetChoicesSelectUI widget={p.widget} />
+})
+
+export const WidgetChoicesTabUI = observer(function WidgetChoicesTabUI_(p: {
+    widget: Widget_choices<{ [key: string]: () => Widget }>
+}) {
     const widget = p.widget
-
     type Entry = { key: string; value?: Maybe<boolean> }
-
-    // choices
     const choicesStr: string[] = widget.choices
     const choices: Entry[] = choicesStr.map((v) => ({ key: v }))
+    const activeSubwidgets = Object.entries(widget.children) //
+        .map(([branch, subWidget]) => ({ branch, subWidget }))
 
-    // values
+    return (
+        <div>
+            <div tw={[widget.config.layout === 'H' ? 'flex' : null]} className={widget.config.className}>
+                {activeSubwidgets.map((val) => {
+                    const subWidget = val.subWidget
+                    if (subWidget == null) return <>❌ error</>
+                    return (
+                        <WidgetWithLabelUI //
+                            key={val.branch}
+                            rootKey={val.branch}
+                            widget={subWidget}
+                        />
+                    )
+                })}
+            </div>
+        </div>
+    )
+})
+
+export const WidgetChoicesSelectUI = observer(function WidgetChoicesSelectUI_(p: {
+    widget: Widget_choices<{ [key: string]: () => Widget }>
+}) {
+    const widget = p.widget
+    type Entry = { key: string; value?: Maybe<boolean> }
+    const choicesStr: string[] = widget.choices
+    const choices: Entry[] = choicesStr.map((v) => ({ key: v }))
     const activeSubwidgets = Object.entries(widget.children) //
         .map(([branch, subWidget]) => ({ branch, subWidget }))
 

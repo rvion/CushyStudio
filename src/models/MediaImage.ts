@@ -104,14 +104,14 @@ export class MediaImageL {
         return finalName
     }
 
-    uploadAndloadAsImage = async (workflow_?: ComfyWorkflowL): Promise<LoadImage> => {
+    loadInWorkflow = async (workflow_?: ComfyWorkflowL): Promise<LoadImage> => {
         const workflow = workflow_ ?? getCurrentRun_IMPL().workflow
         const enumName = await this.uploadAndReturnEnumName()
         const img = workflow.builder.LoadImage({ image: enumName })
         return img
     }
 
-    uploadAndloadAsMask = async (
+    loadInWorkflowAsMask = async (
         //
         channel: Enum_LoadImageMask_channel,
         workflow_?: ComfyWorkflowL,

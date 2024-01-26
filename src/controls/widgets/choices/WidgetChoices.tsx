@@ -16,6 +16,7 @@ export type Widget_choices_config<T extends BranchDefinitions> = WidgetConfigFie
     multi: boolean
     default?: { [k in keyof T]?: boolean } | keyof T
     placeholder?: string
+    appearance?: 'select' | 'tab'
 }>
 
 // SERIAL

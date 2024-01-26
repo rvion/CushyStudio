@@ -24,7 +24,7 @@ app({
 
         const image = await (() => {
             // case where we start from an image
-            if (img) return img.uploadAndloadAsImage()
+            if (img) return img.loadInWorkflow()
 
             // case where we start from the form
             if (form.startImage == null) throw new Error('no image provided')

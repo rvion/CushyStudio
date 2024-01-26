@@ -13,7 +13,7 @@ app({
     run: async (run, ui, startImg) => {
         if (startImg == null) throw new Error('no image provided')
         run.workflow.builder.CheckpointLoaderSimple({ ckpt_name: 'revAnimated_v122.safetensors' })
-        const img = await startImg.uploadAndloadAsImage()
+        const img = await startImg.loadInWorkflow()
         run_improveFace_fromImage(img)
         await run.PROMPT()
     },

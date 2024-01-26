@@ -45,7 +45,7 @@ class AutoCompleteSelectState<T> {
         makeAutoObservable(this, { anchorRef: false })
     }
     onChange = this.p.onChange
-    multiple = this.p.multiple ?? false
+    isMultiSelect = this.p.multiple ?? false
     get options(): T[] {
         return this.p.options?.() ?? [] // replace with actual options logic
     }
@@ -155,8 +155,8 @@ class AutoCompleteSelectState<T> {
         const selectedOption = this.filteredOptions[index]
         if (selectedOption) {
             this.onChange?.(selectedOption, this)
-            const shouldResetQuery = this.p.resetQueryOnPick ?? !this.multiple
-            const shouldCloseMenu = this.p.closeOnPick ?? !this.multiple
+            const shouldResetQuery = this.p.resetQueryOnPick ?? !this.isMultiSelect
+            const shouldCloseMenu = this.p.closeOnPick ?? !this.isMultiSelect
             if (shouldResetQuery) this.searchQuery = ''
             if (shouldCloseMenu) this.closeMenu()
         }
@@ -278,12 +278,22 @@ export const SelectPopupUI = observer(function SelectPopupUI_<T>(p: { s: AutoCom
                         onMouseDown={(ev) => s.onMenuEntryClick(ev, index)}
                     >
                         <div>
-                            <input
-                                onChange={() => {}}
-                                checked={isSelected}
-                                type='checkbox'
-                                tw='checkbox checkbox-primary input-xs'
-                            />
+                            {s.isMultiSelect ? (
+                                <input
+                                    onChange={() => {}}
+                                    checked={isSelected}
+                                    type='checkbox'
+                                    tw='checkbox checkbox-primary input-xs'
+                                />
+                            ) : (
+                                <input //
+                                    type='radio'
+                                    name='radio-1'
+                                    className='radio'
+                                    onChange={() => {}}
+                                    checked={isSelected}
+                                />
+                            )}
                         </div>
                         {/* {isSelected ? '🟢' : null} */}
                         {s.p.getLabelUI //

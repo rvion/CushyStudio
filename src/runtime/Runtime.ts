@@ -14,7 +14,7 @@ import { ComfyNodeOutput } from '../core/Slot'
 import { auto } from '../core/autoValue'
 import { ComfyPromptL } from '../models/ComfyPrompt'
 import { ComfyWorkflowL } from '../models/ComfyWorkflow'
-import { MediaImageL, checkIfComfyImageExists } from '../models/MediaImage'
+import { type MediaImageL, checkIfComfyImageExists } from '../models/MediaImage'
 import { StepL } from '../models/Step'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 
@@ -547,9 +547,13 @@ export class Runtime<FIELDS extends WidgetDict = any> {
         return this.Cushy.db.media_images.getOrThrow(ia.imageID)
     }
 
+    loadImage = (imageID: MediaImageID): MediaImageL => {
+        return this.Cushy.db.media_images.getOrThrow(imageID)
+    }
+
     loadImageAnswer = async (ia: ImageAnswer): Promise<ImageAndMask> => {
         const img = this.Cushy.db.media_images.getOrThrow(ia.imageID)
-        return await img.uploadAndloadAsImage(this.workflow)
+        return await img.loadInWorkflow(this.workflow)
     }
 
     private extractString = (message: Printable): string => {

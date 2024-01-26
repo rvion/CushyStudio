@@ -101,7 +101,7 @@ export async function _drawCard(
         .toDataURL({ width: W, height: H })
 
     return {
-        base: await run.Images.createFromDataURL(dataURL_base).uploadAndloadAsImage(run.workflow),
-        mask: await run.Images.createFromDataURL(dataURL_mask).uploadAndloadAsImage(run.workflow),
+        base: await run.Images.createFromDataURL(dataURL_base).loadInWorkflow(run.workflow),
+        mask: await run.Images.createFromDataURL(dataURL_mask).loadInWorkflow(run.workflow),
     }
 }

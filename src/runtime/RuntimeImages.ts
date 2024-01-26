@@ -16,7 +16,7 @@ export class RuntimeImages {
     // simple to use functions
     loadAsImage = async (relPathOrDataURL: string, workflow?: ComfyWorkflowL): Promise<LoadImage> => {
         const img = this.createFromDataURLOrPath(relPathOrDataURL)
-        return await img.uploadAndloadAsImage(workflow)
+        return await img.loadInWorkflow(workflow)
     }
 
     loadAsMask = async (
@@ -25,7 +25,7 @@ export class RuntimeImages {
         workflow?: ComfyWorkflowL,
     ): Promise<LoadImageMask> => {
         const img = this.createFromDataURLOrPath(relPathOrDataURL)
-        return await img.uploadAndloadAsMask(channel, workflow)
+        return await img.loadInWorkflowAsMask(channel, workflow)
     }
 
     loadAsEnum = async (relPathOrDataURL: string): Promise<Enum_LoadImage_image> => {
