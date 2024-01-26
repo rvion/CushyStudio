@@ -92,21 +92,21 @@ export class TreeView {
 
     private onKeyDownHandlers = (ev: KeyEv) => onKeyDownHandlers(ev, this)
 
-    // ⏸️ deleteNodeAndFocusNodeAbove = () => {
-    // ⏸️     if (this.at == null) return this.resetCaretPos()
-    // ⏸️     const parent = this.at.nodeAboveInView
-    // ⏸️     this.at.delete()
-    // ⏸️     this.setAt(parent)
-    // ⏸️ }
+    deleteNodeAndFocusNodeAbove = () => {
+        if (this.at == null) return this.resetCaretPos()
+        const parent = this.at.nodeAboveInView
+        this.at.delete()
+        this.setAt(parent)
+    }
 
-    // ⏸️ deleteNodeAndFocusNodeBelow = () => {
-    // ⏸️     if (this.at == null) return this.resetCaretPos()
-    // ⏸️     /** node below may be deleted, so we first store the node above
-    // ⏸️      * then after the deletion, retrieve the node below */
-    // ⏸️     let parent = this.at.nodeAboveInView
-    // ⏸️     this.at.delete()
-    // ⏸️     this.setAt(parent?.nodeBelowInView ?? parent)
-    // ⏸️ }
+    deleteNodeAndFocusNodeBelow = () => {
+        if (this.at == null) return this.resetCaretPos()
+        /** node below may be deleted, so we first store the node above
+         * then after the deletion, retrieve the node below */
+        let parent = this.at.nodeAboveInView
+        this.at.delete()
+        this.setAt(parent?.nodeBelowInView ?? parent)
+    }
 
     resetCaretPos = (): undefined => {
         this.setAt(this.tree.topLevelNodes[0])

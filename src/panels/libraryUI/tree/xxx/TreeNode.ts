@@ -135,9 +135,9 @@ export class TreeNode {
     }
 
     /** remove node from module */
-    // ⏸️ delete = () => {
-    // ⏸️     this.tree.deleteNode(this)
-    // ⏸️ }
+    delete = (): boolean => {
+        return this.data.delete?.(this) ?? false
+    }
 
     get siblingsIncludingSelf() {
         if (this.parent == null) return this.tree.topLevelNodes

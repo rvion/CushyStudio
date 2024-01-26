@@ -1,7 +1,9 @@
 import type { DraftL } from 'src/models/Draft'
 import type { STATE } from 'src/state/state'
-import { DraftFavoriteBtnUI } from '../../CardPicker2UI'
 import type { ITreeEntry, TreeEntryAction } from '../TreeEntry'
+
+import { DraftFavoriteBtnUI } from '../../CardPicker2UI'
+import { TreeNode } from '../xxx/TreeNode'
 
 export class TreeDraft implements ITreeEntry {
     get name() { return `${this.draft.name}` } // prettier-ignore
@@ -13,6 +15,7 @@ export class TreeDraft implements ITreeEntry {
 
     isFolder = false
     canRename = true
+
     onPrimaryAction = () => this.draft.openOrFocusTab()
     // icon = (<span>✨</span>)
     get icon() {
@@ -24,8 +27,11 @@ export class TreeDraft implements ITreeEntry {
         // return <span className='material-symbols-outlined'>Draft</span>
     }
 
+    delete = () => {
+        this.draft.delete()
+        return true
+    }
     extra = () => <DraftFavoriteBtnUI draft={this.draft} />
-
     actions: TreeEntryAction[] = [
         {
             name: 'add Draft',

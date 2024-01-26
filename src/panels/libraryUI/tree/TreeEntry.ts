@@ -48,6 +48,13 @@ export interface ITreeEntry<P = any> {
     //
     isOpened?: boolean
 
+    /**
+     * if implemented, will allow user to delete entry via backspace or delete
+     * function must return true if deletion succeeded
+     * function must return false if deletion fail
+     */
+    delete?: (n: TreeNode) => boolean
+
     // entry: Promise<TreeItem<TreeEntry>>
     onPrimaryAction?: (n: TreeNode) => void
     onFocusItem?: (n: TreeNode) => void
