@@ -1,27 +1,23 @@
+import type { STATE } from 'src/state/state'
+
 import { makeAutoObservable } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { createRef, useEffect, useLayoutEffect, useMemo } from 'react'
+import { Media3dDisplacementL } from 'src/models/Media3dDisplacement'
+import { StepL } from 'src/models/Step'
+import { InputNumberUI } from 'src/rsuite/InputNumberUI'
 import { Button, Input, Slider, Toggle } from 'src/rsuite/shims'
+import { useSt } from 'src/state/stateContext'
+import { bang } from 'src/utils/misc/bang'
 import { parseFloatNoRoundingErr } from 'src/utils/misc/parseFloatNoRoundingErr'
 import { FieldAndLabelUI } from 'src/widgets/misc/FieldAndLabelUI'
 import * as THREE from 'three'
-import { Media3dDisplacementL } from 'src/models/Media3dDisplacement'
-import { StepL } from 'src/models/Step'
-import { useSt } from 'src/state/stateContext'
 import { OutputPreviewWrapperUI } from './OutputPreviewWrapperUI'
-import { bang } from 'src/utils/misc/bang'
-import { InputNumberUI } from 'src/rsuite/InputNumberUI'
 // import type { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 
 // const { OrbitControls } = require('three/examples/jsm/controls/OrbitControls')
-import { OrbitControls } from '../panels/3d/controls/OrbitControls'
-import { STATE } from 'src/state/state'
-import { mkdirSync, writeFileSync } from 'fs'
-import path, { dirname, join } from 'path'
-import { nanoid } from 'nanoid'
-import { asRelativePath } from 'src/utils/fs/pathUtils'
-import { warn } from 'console'
 import { createMediaImage_fromDataURI } from 'src/models/createMediaImage_fromWebFile'
+import { OrbitControls } from '../panels/3d/controls/OrbitControls'
 
 export const OutputDisplacementPreviewUI = observer(function OutputImagePreviewUI_(p: {
     step?: Maybe<StepL>

@@ -1,13 +1,13 @@
+☐ compress image must not save the images uncompressed too
+☐ fix virtual paths breaking the "sync view of file explorer"
 
 Migration guide:
 
-
-- `form.str(...)` has been renamed to `form.string(...)`
-- `form.strOpt(...)` has been renamed to `form.stringOpt(...)`
-- in various `form.*Opt` variants: `default` property has been renamed to `startActive`
-- no more `group: string` param in widget configs, it was anyway unused
-
-- change def prompt to
+☐ `form.str(...)` has been renamed to `form.string(...)`
+☐ `form.strOpt(...)` has been renamed to `form.stringOpt(...)`
+☐ in various `form.*Opt` variants: `default` property has been renamed to `startActive`
+☐ no more `group: string` param in widget configs, it was anyway unused
+☐ change def prompt to
 
 ```
 masterpiece, sofa, tree, [color] [adj_beauty] [adj_general] nature, intricate_details, game background, window, magical island, summer, glass
@@ -15,11 +15,13 @@ masterpiece, sofa, tree, [color] [adj_beauty] [adj_general] nature, intricate_de
 
 
 ---------------------
+- emoji to illustration app
 
 - stop that crap with optionals at type level => use proper Optional warpper.
     - make it transparent through the formBuilder
     - hoist label automagically.
 - properly rewrite group / groupOpt
+- duplicating a draft should
 
 cnets:
     ☐ better enum widget with filter support (5min)
@@ -34,6 +36,7 @@ Todo :
     ☐ home page
     ☐ image app
     ☐ runpod serverless
+    ☐ optimize all images ☐ option to reduce image size @started(24-01-26 18:50)
     ☐ disable publish button if not logged in
     ☐ one-click create app
     ☐ disable update button from within the app, and tell people to close cushy and click install
@@ -51,24 +54,23 @@ Todo :
     ☐ warning if custom nodes not installed by default
     ☐ finish full page apps
     ☐ add browser/install page
-    ☐ library page on the website
     ☐ fix sut
     ☐ use any image as draft illustration
     ☐ draft result are too wide by default / should open in bottom panel
     ☐ selectMenu
     ☐ show different from current preset in color
     ☐ click on rich prompt should
-    ☐ finish autorun so it wait for nothing to be running an action change
     ☐ primitive to show that a custom node is required
     ☐ proper model picker action
     ☐ cache action compilation
     ☐ image loader (local files by path)
     ☐ permutations node (possibly hard, possibly easy with lists)
     ☐ code builder:
-    ☐ image drop anywhere in the app
-    ☐ select nodes  => see the corresponding code in realtime
+    ✘ select nodes  => see the corresponding code in realtime @cancelled(24-01-26 18:49)
     ☐ new primitive to add all the primitive inputs instead of having super long names,
-    ☐ optimize all images ☐ option to reduce image size
+    ✔ library page on the website @done(24-01-26 18:49)
+    ✔ finish autorun so it wait for nothing to be running an action change @done(24-01-26 18:49)
+    ✔ image drop anywhere in the app @done(24-01-26 18:48)
     ✔ currentForm() @done(23-12-31 15:38)
     ✔ fix nsfwjs by including the model locally (web host went down) @done(23-12-23 08:54)
     ✔ button to delete draft @done(23-12-31 01:16)

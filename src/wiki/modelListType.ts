@@ -8,24 +8,25 @@ export type ComfyUIManagerKnownModelTypes =
     | "zero123"            // x   1
     | "embeddings"         // x   4
     | "unet"               // x   2
-    | "lora"               // x  10
+    | "lora"               // x  13
     | "unclip"             // x   2
     | "VAE"                // x   4
     | "T2I-Adapter"        // x   7
     | "T2I-Style"          // x   1
     | "controlnet"         // x  33
-    | "clip_vision"        // x   6
+    | "clip_vision"        // x   4
     | "gligen"             // x   1
     | "sam"                // x   3
     | "seecoder"           // x   3
     | "Ultralytics"        // x  16
     | "animatediff"        // x  13
     | "motion lora"        // x   8
-    | "IP-Adapter"         // x  12
+    | "IP-Adapter"         // x  16
     | "PFG"                // x   3
     | "GFPGAN"             // x   1
     | "CodeFormer"         // x   1
     | "facexlib"           // x   4
+    | "photomaker"         // x   1
 
 export type ComfyUIManagerKnownModelNames =
     | "4x_foolhardy_Remacri"
@@ -61,10 +62,8 @@ export type ComfyUIManagerKnownModelNames =
     | "CiaraRowles/temporaldiff-v1-animatediff.ckpt (ComfyUI-AnimateDiff-Evolved)"
     | "CiaraRowles/TemporalNet1XL (1.0)"
     | "CiaraRowles/TemporalNet2"
-    | "CLIPVision model (IP-Adapter) 1.5"
     | "CLIPVision model (IP-Adapter) CLIP-ViT-bigG-14-laion2B-39B-b160k"
     | "CLIPVision model (IP-Adapter) CLIP-ViT-H-14-laion2B-s32B-b79K"
-    | "CLIPVision model (IP-Adapter) XL"
     | "CLIPVision model (openai/clip-vit-large)"
     | "CLIPVision model (stabilityai/clip_vision_g)"
     | "codeformer.pth"
@@ -119,8 +118,15 @@ export type ComfyUIManagerKnownModelNames =
     | "ip-adapter_sdxl.safetensors"
     | "ip-adapter-faceid_sd15_lora.safetensors"
     | "ip-adapter-faceid_sd15.bin"
+    | "ip-adapter-faceid_sdxl_lora.safetensors"
+    | "ip-adapter-faceid_sdxl.bin"
+    | "ip-adapter-faceid-plus_sd15_lora.safetensors"
+    | "ip-adapter-faceid-plus_sd15.bin"
     | "ip-adapter-faceid-plusv2_sd15_lora.safetensors"
     | "ip-adapter-faceid-plusv2_sd15.bin"
+    | "ip-adapter-faceid-plusv2_sdxl_lora.safetensors"
+    | "ip-adapter-faceid-plusv2_sdxl.bin"
+    | "ip-adapter-faceid-portrait_sd15.bin"
     | "ip-adapter-full-face_sd15.safetensors"
     | "ip-adapter-plus_sd15.safetensors"
     | "ip-adapter-plus_sdxl_vit-h.safetensors"
@@ -143,6 +149,7 @@ export type ComfyUIManagerKnownModelNames =
     | "pfg-novel-n10.pt"
     | "pfg-wd14-n10.pt"
     | "pfg-wd15beta2-n10.pt"
+    | "photomaker-v1.bin"
     | "RealESRGAN x2"
     | "RealESRGAN x4"
     | "RestoreFormer"

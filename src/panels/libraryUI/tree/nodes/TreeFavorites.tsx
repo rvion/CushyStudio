@@ -1,11 +1,13 @@
+import type { DraftL } from 'src/models/Draft'
 import type { STATE } from 'src/state/state'
 import type { ITreeElement, ITreeEntry } from '../TreeEntry'
-import type { DraftL } from 'src/models/Draft'
 
-import { TreeApp } from './TreeApp'
-import { TreeDraft } from './TreeDraft'
-import { CushyAppL } from 'src/models/CushyApp'
 import { TreeNode } from '../xxx/TreeNode'
+import { TreeApp } from './TreeApp'
+import { TreeAppFolder } from './TreeAppFolders'
+import { TreeDraft } from './TreeDraft'
+import { TreeDraftFolder } from './TreeDraftFolders'
+import { VirtualFolder } from '../../VirtualHierarchy'
 
 export class TreeFavoriteApps implements ITreeEntry {
     isFolder = true
@@ -29,24 +31,52 @@ export class TreeFavoriteDrafts implements ITreeEntry {
     }
 }
 
-export class TreeDrafts implements ITreeEntry {
+export class TreeAllDrafts implements ITreeEntry {
     isFolder = true
     icon = (<span className='material-symbols-outlined text-blue-500'>palette</span>)
     name = 'All Drafts'
     constructor(public st: STATE, p: {}) {}
     onPrimaryAction = (n: TreeNode) => n.toggle()
-    children = (): ITreeElement<DraftL>[] => {
-        return this.st.allDrafts.items.map((draft): ITreeElement<DraftL> => ({ ctor: TreeDraft, key: draft.id, props: draft }))
+    children = (): ITreeElement<any>[] => {
+        const vh = this.st.virtualDraftHierarchy
+        console.log( `[👙] AAAA`, vh.items.map((i) => i.virtualFolder) ) // prettier-ignore
+        console.log(`[👙] AAAA`, vh.getTopLevelFolders())
+        return [
+            ...vh.getTopLevelFolders().map(
+                (folderPath): ITreeElement<VirtualFolder> => ({
+                    ctor: TreeDraftFolder,
+                    key: folderPath,
+                    props: { folderPath, vh },
+                }),
+            ),
+            ...vh.topLevelItems.map(
+                (draft): ITreeElement<DraftL> => ({
+                    ctor: TreeDraft,
+                    key: draft.id,
+                    props: draft,
+                }),
+            ),
+        ]
     }
 }
 
-export class TreeApps implements ITreeEntry {
+export class TreeAllApps implements ITreeEntry {
     isFolder = true
     icon = (<span className='material-symbols-outlined text-yellow-500'>palette</span>)
     name = 'All Apps'
     constructor(public st: STATE, p: {}) {}
     onPrimaryAction = (n: TreeNode) => n.toggle()
-    children = (): ITreeElement<CushyAppID>[] => {
-        return this.st.allApps.items.map((app): ITreeElement<CushyAppID> => ({ ctor: TreeApp, key: app.id, props: app.id }))
+    children = (): ITreeElement<any>[] => {
+        const vh = this.st.virtualAppHierarchy
+        return [
+            ...vh.getTopLevelFolders().map(
+                (folderPath): ITreeElement<VirtualFolder> => ({
+                    ctor: TreeAppFolder,
+                    key: folderPath,
+                    props: { folderPath, vh },
+                }),
+            ),
+            ...vh.topLevelItems.map((app): ITreeElement<CushyAppID> => ({ ctor: TreeApp, key: app.id, props: app.id })),
+        ]
     }
 }

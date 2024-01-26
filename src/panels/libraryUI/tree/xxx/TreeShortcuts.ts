@@ -6,8 +6,8 @@ export const onKeyDownHandlers = (ev: KeyEv, view: TreeView): undefined | (() =>
     if (ev.key === '/') return view.focusFilter
 
     // deletion
-    if (ev.key === 'Backspace') return view.deleteNodeAndFocusNodeAbove
-    if (ev.key === 'Delete') return view.deleteNodeAndFocusNodeBelow
+    // ⏸️ if (ev.key === 'Backspace') return view.deleteNodeAndFocusNodeAbove
+    // ⏸️ if (ev.key === 'Delete') return view.deleteNodeAndFocusNodeBelow
 
     if (ev.key === 'Enter') return view.at?.onPrimaryAction
     if (ev.key === 'PageUp') return view.movePageUp

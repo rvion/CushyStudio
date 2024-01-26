@@ -47,6 +47,9 @@ export type AppMetadata = {
     /** this description will show-up at the top of the action form */
     description?: string
 
+    /** help text to display (visbble by default) at the top of the draft) */
+    help?: string
+
     /** tags */
     categories?: string[]
 

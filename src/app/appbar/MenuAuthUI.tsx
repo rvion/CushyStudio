@@ -1,8 +1,7 @@
 import { observer } from 'mobx-react-lite'
 import { Dropdown } from 'src/rsuite/Dropdown'
-import { useSt } from '../../state/stateContext'
 import { JsonViewUI } from 'src/widgets/workspace/JsonViewUI'
-import { RevealUI } from 'src/rsuite/reveal/RevealUI'
+import { useSt } from '../../state/stateContext'
 
 export const MenuAuthUI = observer(function MenuAuthUI_(p: {}) {
     const st = useSt()
@@ -18,7 +17,7 @@ export const MenuAuthUI = observer(function MenuAuthUI_(p: {}) {
     ) : (
         'Login'
     )
-    console.log(`[🔑] ui updating: isConnected =`, st.auth.isConnected)
+    console.log(`[🔑 AUTH] ui updating: isConnected =`, st.auth.isConnected)
     return (
         <Dropdown
             // tw={[isConnected ? null : 'text-warning-content bg-warning']}

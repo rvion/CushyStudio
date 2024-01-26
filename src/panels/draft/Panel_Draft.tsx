@@ -1,8 +1,9 @@
+import type { CushyAppL } from 'src/models/CushyApp'
+import type { DraftL } from 'src/models/Draft'
+
 import { toJS } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { useEffect } from 'react'
-import { CushyAppL } from 'src/models/CushyApp'
-import { DraftL } from 'src/models/Draft'
 import { PhoneWrapperUI } from 'src/rsuite/PhoneWrapperUI'
 import { SelectUI } from 'src/rsuite/SelectUI'
 import { Message } from 'src/rsuite/shims'
@@ -80,6 +81,7 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                 {draft.shouldAutoStart && (
                     <MessageInfoUI>AutoStart active: this draft will executet when form change</MessageInfoUI>
                 )}
+                {draft.app.executable?.metadata?.help && <MessageInfoUI>{draft.app.executable?.metadata.help}</MessageInfoUI>}
                 <div tw='pb-80 px-2'>
                     <ResultWrapperUI
                         //

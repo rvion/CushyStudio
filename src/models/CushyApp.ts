@@ -12,6 +12,7 @@ import { toastError, toastSuccess } from 'src/utils/misc/toasts'
 import { generateAvatar } from '../cards/AvatarGenerator'
 import { DraftL } from './Draft'
 import { Executable } from './Executable'
+import { VirtualHierarchy } from 'src/panels/libraryUI/VirtualHierarchy'
 
 export interface CushyAppL extends LiveInstance<CushyAppT, CushyAppL> {}
 export class CushyAppL {
@@ -34,6 +35,12 @@ export class CushyAppL {
         table: () => this.db.drafts,
         where: () => ({ appID: this.id }),
     })
+
+    get virtualFolder(): string {
+        const pieces = this.name.split('/')
+        pieces.pop()
+        return pieces.join('/')
+    }
 
     get drafts(): DraftL[] {
         return this._draftsCollection.items
@@ -58,6 +65,9 @@ export class CushyAppL {
     openLastDraft = () => {
         this.getLastDraft().openOrFocusTab()
     }
+
+    subFolderStructure = new VirtualHierarchy<DraftL>(() => this.drafts)
+    // --------------------------------------------
 
     getLastDraft = (): DraftL => {
         const drafts = this.drafts

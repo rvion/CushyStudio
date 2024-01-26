@@ -1,13 +1,13 @@
-import { mkdir, mkdirSync, readFileSync, writeFileSync } from 'fs'
+import type { STATE } from 'src/state/state'
+
+import { mkdirSync, readFileSync, writeFileSync } from 'fs'
 import { imageMeta } from 'image-meta'
-import { hashArrayBuffer } from 'src/state/hashBlob'
-import { STATE } from 'src/state/state'
-import { nanoid } from 'nanoid'
-import { MediaImageL } from './MediaImage'
-import { extractExtensionFromContentType } from 'src/widgets/misc/extractExtensionFromContentType'
-import { PromptID } from 'src/types/ComfyWsApi'
 import { dirname } from 'pathe'
+import { hashArrayBuffer } from 'src/state/hashBlob'
+import { PromptID } from 'src/types/ComfyWsApi'
 import { toastInfo } from 'src/utils/misc/toasts'
+import { extractExtensionFromContentType } from 'src/widgets/misc/extractExtensionFromContentType'
+import { MediaImageL } from './MediaImage'
 
 type imageCreationOpts = {
     promptID?: PromptID

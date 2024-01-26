@@ -2,7 +2,11 @@ import { exec } from 'child_process'
 import { existsSync } from 'fs'
 import { resolve as pathResolve } from 'pathe'
 
-export async function openInVSCode(workspaceFolderPath: string, filePathWithinWorkspace: string): Promise<void> {
+import { cwd } from 'process'
+
+const workspaceFolderPath = cwd()
+
+export async function openInVSCode(filePathWithinWorkspace: string): Promise<void> {
     return new Promise((resolvePromise, rejectPromise) => {
         // Resolve and check the existence of the workspace and file paths
         const absoluteWorkspacePath = pathResolve(workspaceFolderPath)

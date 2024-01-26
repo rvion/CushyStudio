@@ -1,18 +1,16 @@
 import type { DraftL } from 'src/models/Draft'
 import type { STATE } from 'src/state/state'
-import type { ITreeEntry, TreeEntryAction } from '../TreeEntry'
 import { DraftFavoriteBtnUI } from '../../CardPicker2UI'
+import type { ITreeEntry, TreeEntryAction } from '../TreeEntry'
 
 export class TreeDraft implements ITreeEntry {
-    get id() { return `draft#${this.draft.id}` } // prettier-ignore
     get name() { return `${this.draft.name}` } // prettier-ignore
     constructor(
         //
         public st: STATE,
         public draft: DraftL,
-    ) {
-        this.data = this
-    }
+    ) {}
+
     isFolder = false
     canRename = true
     onPrimaryAction = () => this.draft.openOrFocusTab()
@@ -25,8 +23,6 @@ export class TreeDraft implements ITreeEntry {
         )
         // return <span className='material-symbols-outlined'>Draft</span>
     }
-
-    data: TreeDraft
 
     extra = () => <DraftFavoriteBtnUI draft={this.draft} />
 

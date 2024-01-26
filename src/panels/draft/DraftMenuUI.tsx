@@ -1,12 +1,13 @@
 import type { DraftL } from 'src/models/Draft'
 
 import { observer } from 'mobx-react-lite'
-import { cwd } from 'process'
+
 import { showItemInFolder } from 'src/app/layout/openExternal'
 import { Dropdown, MenuItem } from 'src/rsuite/Dropdown'
 import { Loader } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
 import { openInVSCode } from 'src/utils/electron/openInVsCode'
+import { shorcutKeys, shortcutsDef } from 'src/app/shortcuts/shortcuts'
 
 export const DraftMenuUI = observer(function DraftMenuUI_(p: { title: string; draft: DraftL; className?: string }) {
     const st = useSt()
@@ -45,18 +46,15 @@ export const DraftMenuUI = observer(function DraftMenuUI_(p: { title: string; dr
                 Favorite
             </MenuItem>
             <MenuItem
-                // tw='btn btn-ghost btn-square btn-sm'
+                shortcut={shorcutKeys.duplicateCurrentDraft}
                 icon={<span className='material-symbols-outlined'>content_copy</span>}
-                onClick={() => {
-                    const newDraft = draft.clone()
-                    st.layout.FOCUS_OR_CREATE('Draft', { draftID: newDraft.id }, 'LEFT_PANE_TABSET')
-                }}
+                onClick={() => draft.duplicateAndFocus()}
             >
                 Duplicate Draft
             </MenuItem>
             <MenuItem
                 icon={<span className='material-symbols-outlined'>edit</span>}
-                onClick={() => openInVSCode(cwd(), file?.absPath ?? '')}
+                onClick={() => openInVSCode(file?.absPath ?? '')}
             >
                 Edit App Definition
             </MenuItem>

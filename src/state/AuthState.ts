@@ -9,14 +9,17 @@ import { AuthT, Auth_C, asAuthID } from 'src/db/TYPES.gen'
 import { logger } from './logfile'
 
 export class AuthState {
+    cleanup: Maybe<() => void> = null
     constructor(public st: STATE) {
         this.auth = this.st.supabase.auth
         makeAutoObservable(this)
         void this.tryToRestoreAuthFromDB()
-        this.auth.onAuthStateChange((event, session) => {
-            logger.info(`[🔑 AUTH] 🚂🚂🚂: ${event}`, session)
+        const x = this.auth.onAuthStateChange((event, session) => {
+            logger.info(`[🔑 AUTH] 🟢 received ${event}`)
+            // logger.info(`[🔑 AUTH] 🚂🚂🚂: ${event}`, session)
             if (session != null) this.storeSessionInfoInDB(session)
         })
+        this.cleanup = x.data.subscription.unsubscribe
     }
 
     /** parsed jwt */
@@ -160,7 +163,7 @@ export class AuthState {
             refresh_token: p.refresh_token!,
         })
 
-        logger.info(`[🔑 AUTH] auth result:`, auth)
+        logger.info(`[🔑 AUTH] auth result:` /* auth */)
         if (auth.error) {
             logger.error(`[🔑 AUTH] ❌ failure: ${auth.error}`)
             console.error(`[🔑 AUTH] ❌ failure`, auth.error)
@@ -196,6 +199,6 @@ export class AuthState {
         if (session.refresh_token) payload.refresh_token = session.refresh_token
         if (session.token_type) payload.token_type = session.token_type
         this.authTable.upsert(payload)
-        logger.info(`[🔑 AUTH] ✅ auth saved to DB:`, payload)
+        logger.info(`[🔑 AUTH] ✅ auth saved to DB` /* payload */)
     }
 }

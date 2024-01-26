@@ -31,6 +31,18 @@ export class DraftL {
 
     openOrFocusTab = () => {
         this.st.layout.FOCUS_OR_CREATE('Draft', { draftID: this.id }, 'LEFT_PANE_TABSET')
+        this.st.tree1View.revealAndFocusAtPath(['all-drafts', this.id])
+    }
+
+    duplicateAndFocus() {
+        const newDraft = this.clone()
+        newDraft.openOrFocusTab()
+    }
+    /** if name is 'portrait/SMILING' => 'portrait' */
+    get virtualFolder(): string {
+        const pieces = this.name.split('/')
+        pieces.pop()
+        return pieces.join('/')
     }
 
     get app(): CushyAppL {

@@ -3,11 +3,13 @@ import type { STATE } from 'src/state/state'
 import type { ITreeElement, ITreeEntry, TreeEntryAction } from '../TreeEntry'
 import type { TreeNode } from '../xxx/TreeNode'
 import type { CushyAppL } from 'src/models/CushyApp'
+import type { VirtualFolder } from '../../VirtualHierarchy'
 
 import { observer } from 'mobx-react-lite'
 import { AppFavoriteBtnUI } from '../../CardPicker2UI'
 import { makeAutoObservable } from 'mobx'
 import { TreeDraft } from './TreeDraft'
+import { TreeDraftFolder } from './TreeDraftFolders'
 
 export class TreeApp implements ITreeEntry {
     app?: Maybe<CushyAppL>
@@ -34,14 +36,21 @@ export class TreeApp implements ITreeEntry {
         this.app.createDraft()
     }
 
-    children = (): ITreeElement<DraftL>[] =>
-        this.app?.drafts.map(
-            (draft): ITreeElement<DraftL> => ({
-                ctor: TreeDraft,
-                key: draft.id,
-                props: draft,
-            }),
-        ) ?? []
+    children = (): ITreeElement<any>[] => {
+        const app = this.app
+        if (app == null) return []
+        const vh = app.subFolderStructure
+        return [
+            ...vh.getTopLevelFolders().map(
+                (folderPath): ITreeElement<VirtualFolder> => ({
+                    ctor: TreeDraftFolder,
+                    key: folderPath,
+                    props: { vh, folderPath },
+                }),
+            ),
+            ...vh.topLevelItems.map((draft): ITreeElement<DraftL> => ({ ctor: TreeDraft, key: draft.id, props: draft })),
+        ]
+    }
 
     extra = () => (
         <>

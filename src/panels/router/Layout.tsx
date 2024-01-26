@@ -210,6 +210,26 @@ export class CushyLayoutManager {
         }
     }
 
+    currentTabIs = <K extends PanelNames>(component: K): Maybe<PropsOf<Panels[K]['widget']>> => {
+        const tabPrefix = `/${component}/`
+        const current = this.currentTab
+        if (current == null) {
+            console.log(`❌ currentTabIs(...): current is null`)
+            return null
+        }
+        const type = current.getType()
+        const id = current.getId()
+        if (type !== 'tab') {
+            console.log(`❌ currentTabIs(...): current is not a tab`)
+            return null
+        }
+        if (!id.startsWith(tabPrefix)) {
+            console.log(`❌ currentTabIs(...): "${id}" does not start with ${tabPrefix}`)
+            return null
+        }
+        return (current as FL.TabNode).getConfig() as Maybe<PropsOf<Panels[K]['widget']>>
+    }
+
     findTabsFor = <K extends PanelNames>(
         component: K,
     ): {

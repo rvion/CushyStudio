@@ -1,6 +1,7 @@
 import 'src/models/_ctx3'
 import 'src/models/asyncRuntimeStorage'
 
+import type { TreeNode } from 'src/panels/libraryUI/tree/xxx/TreeNode'
 import type { Wildcards } from 'src/widgets/prompter/nodes/wildcards/wildcards'
 import type { MediaImageL } from '../models/MediaImage'
 import type { ComfyStatus, PromptID, PromptRelated_WsMsg, WsMsg } from '../types/ComfyWsApi'
@@ -26,18 +27,26 @@ import { asAppPath } from 'src/cards/asAppPath'
 import { GithubRepoName } from 'src/cards/githubRepo'
 import { STANDARD_HOST_ID, vIRTUAL_HOST_ID__BASE, vIRTUAL_HOST_ID__FULL } from 'src/config/ComfyHostDef'
 import { LiveCollection } from 'src/db/LiveCollection'
-import { LiveFind } from 'src/db/LiveQuery'
 import { SQLITE_false, SQLITE_true } from 'src/db/SQLITE_boolean'
-import { DraftT, asHostID } from 'src/db/TYPES.gen'
+import { asHostID } from 'src/db/TYPES.gen'
+import { CushyAppL } from 'src/models/CushyApp'
 import { DraftL } from 'src/models/Draft'
 import { HostL } from 'src/models/Host'
 import { ProjectL } from 'src/models/Project'
 import { StepL } from 'src/models/Step'
+import { createMediaImage_fromPath } from 'src/models/createMediaImage_fromWebFile'
+import { treeElement } from 'src/panels/libraryUI/tree/TreeEntry'
+import { TreeAllDrafts, TreeFavoriteApps, TreeFavoriteDrafts } from 'src/panels/libraryUI/tree/nodes/TreeFavorites'
+import { TreeFolder } from 'src/panels/libraryUI/tree/nodes/TreeFolder'
+import { Tree } from 'src/panels/libraryUI/tree/xxx/Tree'
+import { TreeView } from 'src/panels/libraryUI/tree/xxx/TreeView'
+import { SafetyChecker } from 'src/safety/Safety'
 import { Database } from 'src/supa/database.types'
 import { ThemeManager } from 'src/theme/ThemeManager'
 import { CleanedEnumResult } from 'src/types/EnumUtils'
 import { StepOutput } from 'src/types/StepOutput'
 import { UserTags } from 'src/widgets/prompter/nodes/usertags/UserLoader'
+import { getKnownCheckpoints, getKnownModels } from 'src/wiki/modelList'
 import { JsonFile } from '../core/JsonFile'
 import { LiveDB } from '../db/LiveDB'
 import { ComfyImporter } from '../importers/ComfyImporter'
@@ -52,16 +61,9 @@ import { DanbooruTags } from '../widgets/prompter/nodes/booru/BooruLoader'
 import { AuthState } from './AuthState'
 import { Uploader } from './Uploader'
 import { mkSupa } from './supa'
-import { SafetyChecker } from 'src/safety/Safety'
-import { getKnownCheckpoints, getKnownModels } from 'src/wiki/modelList'
-import { createMediaImage_fromPath } from 'src/models/createMediaImage_fromWebFile'
-import { assets } from 'src/utils/assets/assets'
-import { Tree } from 'src/panels/libraryUI/tree/xxx/Tree'
-import { TreeView } from 'src/panels/libraryUI/tree/xxx/TreeView'
-import { TreeFolder } from 'src/panels/libraryUI/tree/nodes/TreeFolder'
-import { TreeDrafts, TreeFavoriteApps, TreeFavoriteDrafts } from 'src/panels/libraryUI/tree/nodes/TreeFavorites'
-import { treeElement } from 'src/panels/libraryUI/tree/TreeEntry'
-import { CushyAppL } from 'src/models/CushyApp'
+import { TreeApp } from 'src/panels/libraryUI/tree/nodes/TreeApp'
+import { TreeDraft } from 'src/panels/libraryUI/tree/nodes/TreeDraft'
+import { VirtualHierarchy } from 'src/panels/libraryUI/VirtualHierarchy'
 
 export class STATE {
     /** hack to help closing prompt completions */
@@ -221,15 +223,23 @@ export class STATE {
     }
 
     // ---------------------------------------------------
-    allDrafts = new LiveCollection<DraftL>({
+    allDraftsCollections = new LiveCollection<DraftL>({
         table: () => this.db.drafts,
         where: () => ({}),
     })
+    get allDrafts(): DraftL[] {
+        return this.allDraftsCollections.items
+    }
+    virtualDraftHierarchy = new VirtualHierarchy(() => this.allDrafts)
 
-    allApps = new LiveCollection<CushyAppL>({
+    allAppsCollectitons = new LiveCollection<CushyAppL>({
         table: () => this.db.cushy_apps,
         where: () => ({}),
     })
+    get allApps(): CushyAppL[] {
+        return this.allAppsCollectitons.items
+    }
+    virtualAppHierarchy = new VirtualHierarchy(() => this.allApps)
 
     // ---------------------------------------------------
     getConfigValue = <K extends keyof ConfigFile>(k: K) => this.configFile.value[k]
@@ -367,10 +377,7 @@ export class STATE {
         console.log('[🛋️] starting Cushy')
         this.cacheFolderPath = this.resolve(this.rootPath, asRelativePath('outputs'))
         this.primarySdkDtsPath = this.resolve(this.rootPath, asRelativePath('schema/global.d.ts'))
-        // this.comfyJSONPath = this.resolve(this.rootPath, asRelativePath('schema/object_info.json'))
-        // this.embeddingsPath = this.resolve(this.rootPath, asRelativePath('schema/embeddings.json'))
         this.outputFolderPath = this.cacheFolderPath // this.resolve(this.cacheFolderPath, asRelativePath('outputs'))
-
         this.libraryFolderPathRel = asRelativePath('library')
         this.libraryFolderPathAbs = this.resolve(this.rootPath, this.libraryFolderPathRel)
 
@@ -381,7 +388,6 @@ export class STATE {
 
         // core instances
         this.db = new LiveDB(this)
-        // this.schema = this.db.schema
         this.supabase = mkSupa()
         this.electronUtils = new ElectronUtils(this)
         this.shortcuts = new ShortcutWatcher(shortcutsDef, this, { name: nanoid() })
@@ -412,11 +418,35 @@ export class STATE {
             //
             treeElement({ key: 'favorite-apps', ctor: TreeFavoriteApps, props: {} }),
             treeElement({ key: 'favorite-drafts', ctor: TreeFavoriteDrafts, props: {} }),
-            treeElement({ key: 'drafts', ctor: TreeDrafts, props: {} }),
+            treeElement({ key: 'all-drafts', ctor: TreeAllDrafts, props: {} }),
             // '#apps',
         ])
         this.tree1View = new TreeView(this.tree1, {
-            onSelectionChange: (node) => this.tree2,
+            onSelectionChange: (node?: TreeNode) => {
+                if (node == null) return
+                console.log(`[🌲] TreeView 1 selection changed to:`, node.path_v2)
+                if (node.data instanceof TreeApp) {
+                    const app = node.data.app
+                    if (app == null) return
+                    const relPath = app.relPath
+                    if (relPath == null) return
+                    const treePath = relPath.split('/')
+                    treePath.push(app.id)
+                    this.tree2View.revealAndFocusAtPath(treePath)
+                }
+
+                if (node.data instanceof TreeDraft) {
+                    const draft = node.data.draft
+                    const app = draft.app
+                    const relPath = app.relPath
+                    if (relPath == null) return
+                    const treePath = relPath.split('/')
+                    treePath.push(app.id)
+                    treePath.push(draft.id)
+                    this.tree2View.revealAndFocusAtPath(treePath)
+                }
+                return
+            },
         })
         this.tree2 = new Tree(this, [
             treeElement({ key: 'library', ctor: TreeFolder, props: asRelativePath('library') }),
@@ -427,7 +457,7 @@ export class STATE {
             // 'path#library/sdk-examples',
         ])
         this.tree2View = new TreeView(this.tree2, {
-            onSelectionChange: (node) => console.log(`[👙] node:`, node?.id),
+            onSelectionChange: (node) => console.log(`[🌲] TreeView 2 selection changed to:`, node?.path_v2),
         })
 
         makeAutoObservable(this, {

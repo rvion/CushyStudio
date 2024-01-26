@@ -32,10 +32,21 @@ const renderNodePath = (path: NodePath): string => {
     return `${renderNodePath(path[1])}/${path[0]}`
 }
 
+export type TreeScrollOptions = {
+    /** defaults to 'instant' */
+    behavior?: ScrollBehavior
+    /** default to 'nearest' */
+    block?: ScrollLogicalPosition
+}
+
 export interface TreeNode extends IArrayLike {}
+
 export class TreeNode {
-    scrollIntoView() {
-        document.getElementById(this.id)?.scrollIntoView({ behavior: 'instant', block: 'nearest' })
+    scrollIntoView(p?: TreeScrollOptions) {
+        document.getElementById(this.id)?.scrollIntoView({
+            behavior: p?.behavior ?? 'instant',
+            block: p?.block ?? 'nearest',
+        })
     }
 
     get opened() {
@@ -70,7 +81,7 @@ export class TreeNode {
         this.id = (parent?.id ?? '') + '/' + key
         // console.log(`[👙] `, this.id)
         this.entryL = this.tree.st.db.tree_entries.upsert({ id: asTreeEntryID(this.id) })!
-        this.tree.indexNode(this)
+        // ⏸️ this.tree.indexNode(this)
 
         const ctor = elem.ctor
         const isRealClass = Boolean(Object.getOwnPropertyDescriptors(ctor).prototype)
@@ -124,9 +135,9 @@ export class TreeNode {
     }
 
     /** remove node from module */
-    delete = () => {
-        this.tree.deleteNode(this)
-    }
+    // ⏸️ delete = () => {
+    // ⏸️     this.tree.deleteNode(this)
+    // ⏸️ }
 
     get siblingsIncludingSelf() {
         if (this.parent == null) return this.tree.topLevelNodes
@@ -207,6 +218,18 @@ export class TreeNode {
 
     get rootOrSelf(): TreeNode {
         return this.root ?? this
+    }
+
+    get path_v1(): NodePath {
+        return this.parent //
+            ? [this.elem.key, this.parent.path_v1]
+            : [this.elem.key]
+    }
+
+    get path_v2(): string[] {
+        return this.parent //
+            ? [...this.parent.path_v2, this.elem.key]
+            : [this.elem.key]
     }
 
     get lastOpenedDescendant(): TreeNode | undefined {

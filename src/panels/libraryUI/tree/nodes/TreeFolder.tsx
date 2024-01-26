@@ -1,11 +1,12 @@
+import type { STATE } from 'src/state/state'
+import type { ITreeElement, ITreeEntry, TreeEntryAction } from '../TreeEntry'
+
 import { readdirSync, statSync } from 'fs'
 import { makeAutoObservable } from 'mobx'
 import { basename } from 'pathe'
 import { shouldSkip } from 'src/cards/shouldSkip'
 import { asRelativePath } from 'src/utils/fs/pathUtils'
-import { ITreeElement, ITreeEntry, TreeEntryAction } from '../TreeEntry'
 import { TreeNode } from '../xxx/TreeNode'
-import { STATE } from 'src/state/state'
 import { TreeFile } from './TreeFile'
 
 export class TreeFolder implements ITreeEntry<RelativePath> {
@@ -34,7 +35,7 @@ export class TreeFolder implements ITreeEntry<RelativePath> {
                 }
                 return x
             })
-        console.log(xxx)
+        // console.log(xxx)
         return xxx
     }
 

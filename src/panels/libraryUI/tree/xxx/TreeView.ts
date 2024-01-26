@@ -3,7 +3,7 @@ import { createRef } from 'react'
 import { makeAutoObservable } from 'mobx'
 
 import { Tree } from './Tree'
-import { TreeNode } from './TreeNode'
+import { TreeNode, TreeScrollOptions } from './TreeNode'
 import { KeyEv, onKeyDownHandlers } from './TreeShortcuts'
 import { nanoid } from 'nanoid'
 
@@ -31,6 +31,25 @@ export class TreeView {
         return this.tree.topLevelNodes
     }
 
+    revealAndFocusAtPath = (path_v2: string[]) => {
+        const [k, ...rest] = path_v2
+
+        // root
+        let at: TreeNode | undefined = this.tree.topLevelNodes.find((i) => i.elem.key === k)
+        if (at == null) return console.log(`[❌] no top level node matching first key "${k}"`)
+        at.open()
+
+        for (const x of rest) {
+            // childs
+            const children: TreeNode[] = at.children
+            at = children.find((i) => i.elem.key === x)
+            if (at == null) return console.log(`[❌] no child node matching key "${x}"`)
+            at.open()
+        }
+
+        this.setAt(at, { block: 'center' })
+    }
+
     // cursor
     at: TreeNode | undefined
 
@@ -54,9 +73,9 @@ export class TreeView {
             firstChild: at.firstChild?.id,
         }
     }
-    setAt = (at: TreeNode | undefined) => {
+    setAt = (at: TreeNode | undefined, p?: TreeScrollOptions) => {
         this.at = at
-        this.at?.scrollIntoView()
+        this.at?.scrollIntoView(p)
         this.conf.onSelectionChange?.(at)
     }
 
@@ -73,21 +92,21 @@ export class TreeView {
 
     private onKeyDownHandlers = (ev: KeyEv) => onKeyDownHandlers(ev, this)
 
-    deleteNodeAndFocusNodeAbove = () => {
-        if (this.at == null) return this.resetCaretPos()
-        const parent = this.at.nodeAboveInView
-        this.at.delete()
-        this.setAt(parent)
-    }
+    // ⏸️ deleteNodeAndFocusNodeAbove = () => {
+    // ⏸️     if (this.at == null) return this.resetCaretPos()
+    // ⏸️     const parent = this.at.nodeAboveInView
+    // ⏸️     this.at.delete()
+    // ⏸️     this.setAt(parent)
+    // ⏸️ }
 
-    deleteNodeAndFocusNodeBelow = () => {
-        if (this.at == null) return this.resetCaretPos()
-        /** node below may be deleted, so we first store the node above
-         * then after the deletion, retrieve the node below */
-        let parent = this.at.nodeAboveInView
-        this.at.delete()
-        this.setAt(parent?.nodeBelowInView ?? parent)
-    }
+    // ⏸️ deleteNodeAndFocusNodeBelow = () => {
+    // ⏸️     if (this.at == null) return this.resetCaretPos()
+    // ⏸️     /** node below may be deleted, so we first store the node above
+    // ⏸️      * then after the deletion, retrieve the node below */
+    // ⏸️     let parent = this.at.nodeAboveInView
+    // ⏸️     this.at.delete()
+    // ⏸️     this.setAt(parent?.nodeBelowInView ?? parent)
+    // ⏸️ }
 
     resetCaretPos = (): undefined => {
         this.setAt(this.tree.topLevelNodes[0])

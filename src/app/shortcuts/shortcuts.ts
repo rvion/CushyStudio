@@ -4,6 +4,7 @@ import type { Tree } from 'src/panels/libraryUI/tree/xxx/Tree'
 import { CushyShortcut, Shortcut } from './ShortcutManager'
 import { Trigger } from './Trigger'
 import { runInAction } from 'mobx'
+import { _duplicateCurrentDraft } from './_duplicateCurrentDraft'
 
 // ------------------------------------------------------------------------------------
 // basic utils
@@ -45,6 +46,11 @@ const focusTree = (st: STATE, tree: Tree) =>
         }
     })
 
+export const shorcutKeys = {
+    openConfigPage: 'mod+,',
+    openHostsPate: 'mod+shift+,',
+    duplicateCurrentDraft: 'mod+shift+d',
+}
 // ------------------------------------------------------------------------------------
 // core global shortcuts
 export const shortcutsDef: Shortcut<STATE>[] = [
@@ -52,6 +58,9 @@ export const shortcutsDef: Shortcut<STATE>[] = [
     // simpleValidInInput('mod+shift+z', (st) => (st.showSuperAdminBubbles = !st.showSuperAdminBubbles)),
     simpleValidInInput(['mod+1'], (st) => focusTree(st, st.tree1)),
     simpleValidInInput(['mod+2'], (st) => focusTree(st, st.tree2)),
+    // --------------------------
+    // draftActions:
+    simpleValidInInput([shorcutKeys.duplicateCurrentDraft], (st) => _duplicateCurrentDraft(st)),
     // --------------------------
     // menu utils:
     simpleValidInInput(['mod+k 1'], (st) => st.layout.FOCUS_OR_CREATE('Civitai', {})),
@@ -61,8 +70,8 @@ export const shortcutsDef: Shortcut<STATE>[] = [
     simpleValidInInput(['mod+k 5'], (st) => st.layout.FOCUS_OR_CREATE('IFrame', { url: 'https://unsplash.com/' })),
 
     // menu settings --------------------------
-    simpleValidInInput(['mod+,'], (st) => st.layout.FOCUS_OR_CREATE('Config', {})),
-    simpleValidInInput(['mod+shift+,'], (st) => st.layout.FOCUS_OR_CREATE('Hosts', {})),
+    simpleValidInInput([shorcutKeys.openConfigPage], (st) => st.layout.FOCUS_OR_CREATE('Config', {})),
+    simpleValidInInput([shorcutKeys.openHostsPate], (st) => st.layout.FOCUS_OR_CREATE('Hosts', {})),
 
     // --------------------------
     simpleValidInInput(['mod+p', 'mod+j'], (st) => st.toggleFullLibrary()),
