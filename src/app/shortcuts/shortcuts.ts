@@ -57,7 +57,7 @@ export const shortcutsDef: Shortcut<STATE>[] = [
     // simpleValidInInput('mod+shift+k', (st) => (st.showSuperAdmin = !st.showSuperAdmin)),
     // simpleValidInInput('mod+shift+z', (st) => (st.showSuperAdminBubbles = !st.showSuperAdminBubbles)),
     simpleValidInInput(['mod+1', 'mod+shift+e', 'mod+b'], (st) => focusTree(st, st.tree1)),
-    simpleValidInInput(['mod+k', 'mod+s'], (st) => st.db.tree_entries.updateAll({ isExpanded: null })),
+    simpleValidInInput(['mod+shift+k'], (st) => st.db.tree_entries.updateAll({ isExpanded: null })),
     simpleValidInInput(['mod+2'], (st) => focusTree(st, st.tree2)),
     // --------------------------
     // draftActions:
