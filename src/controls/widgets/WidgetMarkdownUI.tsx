@@ -8,6 +8,6 @@ export const WidgetMardownUI = observer(function WidgetMardownUI_(p: { widget: W
         <div //
             className='_WidgetMardownUI _MD w-full'
             dangerouslySetInnerHTML={{ __html: marked(widget.markdown) }}
-        ></div>
+        />
     )
 })

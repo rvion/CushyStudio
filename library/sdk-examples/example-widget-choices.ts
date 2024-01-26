@@ -1,4 +1,7 @@
 app({
+    metadata: {
+        help: 'This is an example app to show how to use the `choices` widget. It is not meant to be useful.',
+    },
     ui: (form) => ({
         multiChoice: form.choices({
             items: {

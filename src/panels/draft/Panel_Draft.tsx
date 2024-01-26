@@ -14,6 +14,7 @@ import { ResultWrapperUI } from '../../widgets/misc/ResultWrapperUI'
 import { draftContext } from '../../widgets/misc/useDraft'
 import { DraftHeaderUI } from './DraftHeaderUI'
 import { MessageInfoUI } from '../MessageUI'
+import { marked } from 'marked'
 
 export const Panel_Draft = observer(function Panel_Draft_(p: { draftID: DraftID }) {
     // 1. get draft
@@ -81,7 +82,14 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                 {draft.shouldAutoStart && (
                     <MessageInfoUI>AutoStart active: this draft will executet when form change</MessageInfoUI>
                 )}
-                {draft.app.executable?.metadata?.help && <MessageInfoUI>{draft.app.executable?.metadata.help}</MessageInfoUI>}
+                {draft.app.executable?.metadata?.help && (
+                    <MessageInfoUI>
+                        <div //
+                            className='_WidgetMardownUI _MD w-full'
+                            dangerouslySetInnerHTML={{ __html: marked(draft.app.executable?.metadata.help) }}
+                        />
+                    </MessageInfoUI>
+                )}
                 <div tw='pb-80 px-2'>
                     <ResultWrapperUI
                         //

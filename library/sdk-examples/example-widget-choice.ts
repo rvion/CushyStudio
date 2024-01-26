@@ -1,6 +1,9 @@
 import { exhaust } from 'src/utils/misc/ComfyUtils'
 
 app({
+    metadata: {
+        help: 'This is an example app to show how to use the `choice` widget. It is not meant to be useful.',
+    },
     ui: (form) => ({
         exampleChoice: form.choice({
             items: {
