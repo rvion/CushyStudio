@@ -31,7 +31,7 @@ export class DraftL {
 
     openOrFocusTab = () => {
         this.st.layout.FOCUS_OR_CREATE('Draft', { draftID: this.id }, 'LEFT_PANE_TABSET')
-        this.st.tree1View.revealAndFocusAtPath(['all-drafts', this.id])
+        this.st.tree2View.revealAndFocusAtPath(['all-drafts', this.id])
     }
 
     duplicateAndFocus() {

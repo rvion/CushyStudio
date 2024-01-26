@@ -32,6 +32,7 @@ export const DraftHeaderUI = observer(function DraftHeaderUI_(p: {
                     </div>
                     <RunOrAutorunUI tw='flex-shrink-0' draft={draft} />
                     <div tw='flex items-center'>
+                        <DraftMenuUI tw='w-full' draft={draft} title={app.name} />
                         {/* --------------------------------- */}
                         <PublishAppBtnUI app={app} />
                         {/* --------------------------------- */}
@@ -42,7 +43,6 @@ export const DraftHeaderUI = observer(function DraftHeaderUI_(p: {
                         <div onClick={draft.collapseTopLevelFormEntries} tw='btn btn-square btn-sm join-item'>
                             <span className='material-symbols-outlined'>unfold_less</span>
                         </div>
-                        <DraftMenuUI tw='w-full' draft={draft} title={app.name} />
                     </div>
                 </div>
             </div>

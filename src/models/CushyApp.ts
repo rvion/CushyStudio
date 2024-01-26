@@ -92,7 +92,7 @@ export class CushyAppL {
             appID: this.id,
             title: title,
         })
-        // pj.st.layout.FOCUS_OR_CREATE('Draft', { draftID: draft.id })
+        this.st.layout.FOCUS_OR_CREATE('Draft', { draftID: draft.id }, 'LEFT_PANE_TABSET')
         return draft
     }
 

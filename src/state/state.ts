@@ -36,7 +36,7 @@ import { ProjectL } from 'src/models/Project'
 import { StepL } from 'src/models/Step'
 import { createMediaImage_fromPath } from 'src/models/createMediaImage_fromWebFile'
 import { treeElement } from 'src/panels/libraryUI/tree/TreeEntry'
-import { TreeAllDrafts, TreeFavoriteApps, TreeFavoriteDrafts } from 'src/panels/libraryUI/tree/nodes/TreeFavorites'
+import { TreeAllApps, TreeAllDrafts, TreeFavoriteApps, TreeFavoriteDrafts } from 'src/panels/libraryUI/tree/nodes/TreeFavorites'
 import { TreeFolder } from 'src/panels/libraryUI/tree/nodes/TreeFolder'
 import { Tree } from 'src/panels/libraryUI/tree/xxx/Tree'
 import { TreeView } from 'src/panels/libraryUI/tree/xxx/TreeView'
@@ -419,6 +419,7 @@ export class STATE {
             treeElement({ key: 'favorite-apps', ctor: TreeFavoriteApps, props: {} }),
             treeElement({ key: 'favorite-drafts', ctor: TreeFavoriteDrafts, props: {} }),
             treeElement({ key: 'all-drafts', ctor: TreeAllDrafts, props: {} }),
+            treeElement({ key: 'all-apps', ctor: TreeAllApps, props: {} }),
             // '#apps',
         ])
         this.tree1View = new TreeView(this.tree1, {

@@ -47,7 +47,7 @@ export class TreeView {
             at.open()
         }
 
-        this.setAt(at, { block: 'center' })
+        this.setAt(at, { block: 'nearest' })
     }
 
     // cursor

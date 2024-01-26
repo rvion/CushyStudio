@@ -11,7 +11,7 @@ import { VirtualFolder } from '../../VirtualHierarchy'
 
 export class TreeFavoriteApps implements ITreeEntry {
     isFolder = true
-    icon = (<span className='material-symbols-outlined text-yellow-500'>star</span>)
+    icon = (<span className='material-symbols-outlined _text-yellow-500'>star</span>)
     name = 'Favorite Apps'
     constructor(public st: STATE, p: {}) {}
     onPrimaryAction = (n: TreeNode) => n.toggle()
@@ -22,7 +22,7 @@ export class TreeFavoriteApps implements ITreeEntry {
 
 export class TreeFavoriteDrafts implements ITreeEntry {
     isFolder = true
-    icon = (<span className='material-symbols-outlined text-blue-500'>star</span>)
+    icon = (<span className='material-symbols-outlined _text-blue-500'>star</span>)
     name = 'Favorite Drafts'
     constructor(public st: STATE, p: {}) {}
     onPrimaryAction = (n: TreeNode) => n.toggle()
@@ -33,7 +33,7 @@ export class TreeFavoriteDrafts implements ITreeEntry {
 
 export class TreeAllDrafts implements ITreeEntry {
     isFolder = true
-    icon = (<span className='material-symbols-outlined text-blue-500'>palette</span>)
+    icon = (<span className='material-symbols-outlined _text-blue-500'>palette</span>)
     name = 'All Drafts'
     constructor(public st: STATE, p: {}) {}
     onPrimaryAction = (n: TreeNode) => n.toggle()
@@ -62,7 +62,7 @@ export class TreeAllDrafts implements ITreeEntry {
 
 export class TreeAllApps implements ITreeEntry {
     isFolder = true
-    icon = (<span className='material-symbols-outlined text-yellow-500'>palette</span>)
+    icon = (<span className='material-symbols-outlined _text-yellow-500'>palette</span>)
     name = 'All Apps'
     constructor(public st: STATE, p: {}) {}
     onPrimaryAction = (n: TreeNode) => n.toggle()
