@@ -1,4 +1,4 @@
-import { run_improveFace_fromImage } from './_prefabs/prefab_detailer'
+import { run_improveFace_fromImage } from '../_prefabs/prefab_detailer'
 
 app({
     metadata: {

@@ -401,10 +401,24 @@ export class Runtime<FIELDS extends WidgetDict = any> {
     }
 
     /** output a 3d scene from an image and its displacement and depth maps */
-    output_3dImage = (p: { image: string; depth: string; normal: string }) => {
-        const image = this.generatedImages.find((i) => i.filename.startsWith(p.image))
-        const depth = this.generatedImages.find((i) => i.filename.startsWith(p.depth))
-        const normal = this.generatedImages.find((i) => i.filename.startsWith(p.normal))
+    output_3dImage = (p: {
+        //
+        image: string | MediaImageL
+        depth: string | MediaImageL
+        normal: string | MediaImageL
+    }) => {
+        const getImg = (i: string | MediaImageL): MediaImageL => {
+            if (typeof i === 'string') {
+                const img = this.generatedImages.find((i2) => i2.filename.startsWith(i))
+                if (img == null) throw new Error(`image not found: ${p.image}`)
+                return img
+            } else {
+                return i
+            }
+        }
+        const image = getImg(p.image)
+        const depth = getImg(p.depth)
+        const normal = getImg(p.normal)
         if (image == null) throw new Error(`image not found: ${p.image}`)
         if (depth == null) throw new Error(`image not found: ${p.image}`)
         if (normal == null) throw new Error(`image not found: ${p.image}`)
