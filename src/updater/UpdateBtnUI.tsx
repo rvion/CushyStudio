@@ -9,6 +9,7 @@ import { GitInstallUI } from './GitInstallUI'
 import { UninstallUI } from './GitUninstallUI'
 import { UpdaterErrorUI } from './UpdaterErrorUI'
 import { _formatAsRelativeDateTime } from './_getRelativeTimeString'
+import { MessageInfoUI } from 'src/panels/MessageUI'
 
 export const UpdateBtnUI = observer(function UpdateBtnUI_(p: {
     //
@@ -62,10 +63,11 @@ export const UpdaterDetailsUI = observer(function UpdaterDetailsUI_(p: { updater
     const hasErrors = updater.hasErrors
 
     return (
-        <div tw='menu flex flex-col gap-2'>
+        <div tw='p-1 overflow-auto [max-height:80vh] flex flex-col gap-2'>
             {hasErrors && <Message type='error'>error</Message>}
+            {updater.hasUpdateAvailable && <MessageInfoUI>To update: close cushy and click on the update button</MessageInfoUI>}
             <div>
-                {updater.hasUpdateAvailable ? (
+                {/* {updater.hasUpdateAvailable ? (
                     <Button
                         className='animate-pulse'
                         color='red'
@@ -80,9 +82,8 @@ export const UpdaterDetailsUI = observer(function UpdaterDetailsUI_(p: { updater
                         }}
                     >
                         update
-                        {/* to version {updater.nextVersion} */}
                     </Button>
-                ) : null}
+                ) : null} */}
             </div>
             <UpdaterErrorUI updater={updater} />
 
@@ -111,27 +112,29 @@ export const UpdaterDetailsUI = observer(function UpdaterDetailsUI_(p: { updater
                 >
                     REFRESH
                 </Button>
-                {updater.config.canBeUninstalled ? ( //
+                {/* {updater.config.canBeUninstalled ? ( //
                     <UninstallUI updater={updater} />
-                ) : null}
+                ) : null} */}
             </div>
-            <table tw='table table-zebra-zebra table-xs'>
-                <tbody>
-                    {updater.lastLogs.logs.map((log, i) => (
-                        <tr key={i}>
-                            <td>{_formatAsRelativeDateTime(log.date)}</td>
-                            <td tw='max-w-sm'>{log.msg}</td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-            <div tw='virtualBorder flex flex-wrap items-center'>
+            <div>
+                <table tw='table table-zebra-zebra table-xs'>
+                    <tbody>
+                        {updater.lastLogs.logs.map((log, i) => (
+                            <tr key={i}>
+                                <td>{_formatAsRelativeDateTime(log.date)}</td>
+                                <td tw='max-w-sm'>{log.msg}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+            {/* <div tw='virtualBorder flex flex-wrap items-center'>
                 <span className='material-symbols-outlined'>folder</span> <div>{updater.relPath || 'root'}</div>
             </div>
             <Joined tw='flex gap-2'>
                 <div className='virtualBorder'>#{p.updater.status}</div>
                 <div className='virtualBorder'>action: {p.updater.currentAction ?? 'ø'}</div>
-            </Joined>
+            </Joined> */}
         </div>
     )
 })
