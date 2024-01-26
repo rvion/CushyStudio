@@ -49,7 +49,8 @@ export const HostSchemaIndicatorUI = observer(function HostSchemaIndicatorUI_(p:
                 <div tw='text-xs text-opacity-50'>({size} nodes)</div>
                 {p.host.ws?.isOpen ? null : (
                     <Message showIcon type='warning'>
-                        Is your ComfyUI server running? You config file says it should be accessible at
+                        <div>Is your ComfyUI server running? </div>
+                        <div>You config file says it should be accessible at</div>
                         <div>{host.getServerHostHTTP()}</div>
                         <div>{host.getWSUrl()}</div>
                     </Message>

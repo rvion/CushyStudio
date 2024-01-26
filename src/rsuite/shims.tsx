@@ -217,9 +217,9 @@ export const ProgressLine = observer(function ProgressLine_(p: {
 
 // ------------------------------------------------------------------------
 const messageIcon = (type: MessageType): ReactNode => {
-    if (type === 'error') return <span className='material-symbols-outlined'>error</span>
-    if (type === 'info') return <span className='material-symbols-outlined'>info</span>
-    if (type === 'warning') return <span className='material-symbols-outlined'>warning</span>
+    if (type === 'error') return <span className='material-symbols-outlined !text-xl'>error</span>
+    if (type === 'info') return <span className='material-symbols-outlined !text-xl'>info</span>
+    if (type === 'warning') return <span className='material-symbols-outlined !text-xl'>warning</span>
     exhaust(type)
     return null
 }
@@ -237,14 +237,16 @@ export const Message = observer(function Message_(p: {
             tw={[
                 p.type === 'error' //
                     ? 'bg-error text-error-content'
-                    : 'bg-base text-primary-content',
+                    : p.type === 'warning'
+                    ? 'bg-warning text-warning-content'
+                    : 'bg-base text-base-content',
             ]}
             {...rest}
         >
             {p.header}
             <div
                 //
-                className='flex flex-wrap items-baseline'
+                className='flex flex-wrap items-center gap-2 p-2'
             >
                 {messageIcon(p.type)}
                 <div>{p.children}</div>
