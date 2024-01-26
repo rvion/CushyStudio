@@ -177,8 +177,8 @@ app({
                       samples: latent,
                       crop: 'disabled',
                       upscale_method: 'nearest-exact',
-                      height: ui.latent.size.height * ui.highResFix.scaleFactor,
-                      width: ui.latent.size.width * ui.highResFix.scaleFactor,
+                      height: height * ui.highResFix.scaleFactor,
+                      width: width * ui.highResFix.scaleFactor,
                   })
             latent = latent = run_sampler(
                 run,
