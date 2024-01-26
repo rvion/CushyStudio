@@ -37,8 +37,8 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
                     // width: val.toString().length + 6 + 'ch',
                     width: '5rem',
                 }}
-                // min={req.input.min}
-                // max={req.input.max}
+                min={p.min}
+                max={p.max}
                 step={step}
                 onChange={(ev) => {
                     const next = ev.target.value

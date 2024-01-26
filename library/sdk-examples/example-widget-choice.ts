@@ -1,5 +1,3 @@
-import { exhaust } from 'src/utils/misc/ComfyUtils'
-
 app({
     metadata: {
         help: 'This is an example app to show how to use the `choice` widget. It is not meant to be useful.',
@@ -28,7 +26,7 @@ app({
                     form.group({
                         items: () => ({
                             x: form.markdown({ markdown: '## Hello world' }),
-                            c: form.int({}),
+                            c: form.int({ max: 50 }),
                             d: form.string({}),
                         }),
                     }),
