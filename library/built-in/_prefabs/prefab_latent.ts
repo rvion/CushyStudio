@@ -1,5 +1,4 @@
 import type { FormBuilder } from 'src/controls/FormBuilder'
-import type { ComfyNodeOutput } from 'src/core/Slot'
 import type { OutputFor } from './_prefabs'
 
 export const ui_latent = () => {
@@ -10,8 +9,6 @@ export const ui_latent = () => {
             image: form.imageOpt({}),
             batchSize: form.int({ default: 1, min: 1, max: 8 }),
             size: form.size({}),
-            // width: form.int({ default: 512,  step: 128, min: 128, max: 4096 }),
-            // height: form.int({ default: 768,  step: 128, min: 128, max: 4096 }),
         }),
     })
 }
@@ -23,17 +20,17 @@ export const run_latent = async (p: { opts: OutputFor<typeof ui_latent>; vae: _V
     const opts = p.opts
 
     // misc calculatiosn
-    let width: number | ComfyNodeOutput<'INT'>
-    let height: number | ComfyNodeOutput<'INT'>
+    let width: number
+    let height: number
     let latent: HasSingle_LATENT
 
     // case 1. start form image
     if (opts.image) {
-        const image = await run.loadImageAnswer(opts.image)
+        const _img = run.loadImage(opts.image.imageID)
+        const image = await _img.loadInWorkflow()
         latent = graph.VAEEncode({ pixels: image, vae: p.vae })
-        const size = graph.Image_Size_to_Number({ image: image })
-        width = size.outputs.width_int
-        height = size.outputs.height_int
+        width = _img.width
+        height = _img.height
     }
 
     // case 2. start form empty latent
