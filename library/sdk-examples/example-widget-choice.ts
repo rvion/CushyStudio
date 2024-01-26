@@ -16,6 +16,21 @@ app({
                     }),
             },
         }),
+        exampleChoiceAsTabs: form.choice({
+            appearance: 'tab',
+            items: {
+                image: () => form.image({}),
+                list: () => form.list({ element: () => form.int({}) }),
+                group: () =>
+                    form.group({
+                        items: () => ({
+                            x: form.markdown({ markdown: '## Hello world' }),
+                            c: form.int({}),
+                            d: form.string({}),
+                        }),
+                    }),
+            },
+        }),
     }),
 
     run: async (flow, form) => {

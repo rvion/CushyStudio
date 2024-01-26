@@ -25,6 +25,21 @@ export const WidgetChoicesTabUI = observer(function WidgetChoicesTabUI_(p: {
 
     return (
         <div>
+            <div role='tablist' tw='tabs tabs-boxed'>
+                {choices.map((c) => {
+                    const isSelected = widget.serial.branches[c.key]
+                    return (
+                        <a
+                            onClick={() => widget.toggleBranch(c.key)}
+                            key={c.key}
+                            role='tab'
+                            tw={['tab', isSelected && 'tab-active font-bold']}
+                        >
+                            {c.key}
+                        </a>
+                    )
+                })}
+            </div>
             <div tw={[widget.config.layout === 'H' ? 'flex' : null]} className={widget.config.className}>
                 {activeSubwidgets.map((val) => {
                     const subWidget = val.subWidget

@@ -424,7 +424,7 @@ export class CushyLayoutManager {
                         id: 'rightsidePane',
                         type: 'row',
                         weight: 10,
-                        width: 400,
+                        width: 300,
                         children: [
                             {
                                 type: 'tabset',

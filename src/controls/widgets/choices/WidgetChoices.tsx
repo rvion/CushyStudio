@@ -48,6 +48,9 @@ export class Widget_choices<T extends BranchDefinitions> implements IWidget<Widg
     readonly id: string
     readonly type: 'choices' = 'choices'
 
+    get isMulti() {
+        return this.config.multi
+    }
     children: { [k in keyof T]?: ReturnType<T[k]> } = {}
     serial: Widget_choices_serial<T>
 
