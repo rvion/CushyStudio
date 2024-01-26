@@ -8,9 +8,9 @@ export const RunOrAutorunUI = observer(function RunOrAutorunUI_(p: { className?:
     const draft = p.draft
     const icon = draft.shouldAutoStart ? 'pause' : 'play_arrow'
     return (
-        <div tw='flex join virtualBorder' className={p.className}>
+        <div tw='flex gap-1' className={p.className}>
             <RevealUI disableHover>
-                <div tw='btn btn-sm btn-square'>
+                <div tw='btn btn-sm virtualBorder btn-square'>
                     <span className='material-symbols-outlined'>timer</span>
                 </div>
 
@@ -44,10 +44,11 @@ export const RunOrAutorunUI = observer(function RunOrAutorunUI_(p: { className?:
                 </div>
             </RevealUI>
             <div
-                tw={['btn btn-square btn-sm self-start join-item btn-neutral', draft.shouldAutoStart ? 'btn-active' : null]}
+                tw={['btn btn-sm virtualBorder self-start', draft.shouldAutoStart ? 'btn-active' : null]}
                 // color={draft.shouldAutoStart ? 'green' : undefined}
                 onClick={() => draft.setAutostart(!draft.shouldAutoStart)}
             >
+                Autorun
                 {draft.shouldAutoStart ? (
                     <div className='loading loading-spinner loading-sm' />
                 ) : (
@@ -56,7 +57,7 @@ export const RunOrAutorunUI = observer(function RunOrAutorunUI_(p: { className?:
                 {/* Auto */}
             </div>
             <Button
-                tw='btn-sm join-item btn-primary'
+                tw='btn-sm btn-primary flex-1'
                 className='self-start'
                 icon={<span className='material-symbols-outlined'>{icon}</span>}
                 onClick={() => {

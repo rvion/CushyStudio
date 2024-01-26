@@ -71,7 +71,7 @@ export const GalleryControlsUI = observer(function GalleryControlsUI_(p: { child
     return (
         <div tw='flex flex-col overflow-auto gap-2 px-2 bg-base-200 w-full flex-shrink-0 min-w-80'>
             {p.children}
-            <FieldAndLabelUI label='Size'>
+            <FieldAndLabelUI label='Preview Size'>
                 <InputNumberUI
                     style={{ width: '5rem' }}
                     min={32}
@@ -79,6 +79,16 @@ export const GalleryControlsUI = observer(function GalleryControlsUI_(p: { child
                     mode='int'
                     onValueChange={(next) => (st.gallerySize = next)}
                     value={st.gallerySize}
+                />
+            </FieldAndLabelUI>
+            <FieldAndLabelUI label='Number of items'>
+                <InputNumberUI
+                    style={{ width: '5rem' }}
+                    min={32}
+                    max={200}
+                    mode='int'
+                    onValueChange={(next) => st.configFile.set('galleryMaxImages', next)}
+                    value={st.configFile.get('galleryMaxImages') ?? 50}
                 />
             </FieldAndLabelUI>
             <FieldAndLabelUI label='background'>

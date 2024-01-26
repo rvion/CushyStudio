@@ -3,7 +3,6 @@ import type { STATE } from 'src/state/state'
 import type { ITreeEntry, TreeEntryAction } from '../TreeEntry'
 
 import { DraftFavoriteBtnUI } from '../../CardPicker2UI'
-import { TreeNode } from '../xxx/TreeNode'
 
 export class TreeDraft implements ITreeEntry {
     get name() { return `${this.draft.name}` } // prettier-ignore

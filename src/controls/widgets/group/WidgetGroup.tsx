@@ -14,6 +14,8 @@ export type Widget_group_config<T extends { [key: string]: Widget }> = WidgetCon
     // default?: boolean
     items: () => T
     topLevel?: boolean
+    /** if provided, will be used to show a single line summary on the inline form slot */
+    summary?: (items: T) => string
 }>
 
 // SERIAL

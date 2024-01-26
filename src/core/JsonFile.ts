@@ -40,6 +40,14 @@ export class JsonFile<T extends object> {
         p.fixup?.(this)
     }
 
+    set = <const X extends keyof T>(k: X, v: T[X]) => {
+        this.value[k] = v
+    }
+
+    get = <const X extends keyof T>(k: X): T[X] => {
+        return this.value[k]
+    }
+
     erase = () => {
         console.info(`[💾] CONFIG erasing [${this.fileName}]`)
         rmSync(this._path)
