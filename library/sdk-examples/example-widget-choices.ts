@@ -20,7 +20,7 @@ app({
     }),
 
     run: async (run, form) => {
-        const foo = form.foo
+        const foo = form.multiChoice
         const out: string[] = []
         //                          infered as (number) 👇
         if (foo.testInt != null) out.push(`got a number: ${foo.testInt}`)
