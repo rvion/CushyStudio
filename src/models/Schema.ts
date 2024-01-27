@@ -1,14 +1,14 @@
 import type { ComfyEnumDef, ComfyInputOpts, ComfyNodeSchemaJSON } from '../types/ComfySchemaJSON'
+import type { HostL } from './Host'
+import type { ComfySchemaT } from 'src/db/TYPES.gen'
 
 import { observable, toJS } from 'mobx'
 import { LiveInstance } from 'src/db/LiveInstance'
-import { ComfySchemaT } from 'src/db/TYPES.gen'
 import { ComfyPrimitiveMapping, ComfyPrimitives } from '../core/Primitives'
 import { normalizeJSIdentifier } from '../core/normalizeJSIdentifier'
 import { CodeBuffer } from '../utils/codegen/CodeBuffer'
 import { escapeJSKey } from '../utils/codegen/escapeJSKey'
 import { LiveRef } from 'src/db/LiveRef'
-import { HostL } from './Host'
 
 export type EnumHash = string
 export type EnumName = string

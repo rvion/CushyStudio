@@ -1,7 +1,7 @@
 import type { EnumValue } from 'src/models/Schema'
-import { type ModelInfo } from 'src/wiki/modelList'
-import { type ComfyUIManagerKnownModelNames } from 'src/wiki/modelListType'
-import { Widget_enum_config } from './widgets/enum/WidgetEnum'
+import type { ModelInfo } from 'src/wiki/modelList'
+import type { ComfyUIManagerKnownModelNames } from 'src/wiki/modelListType'
+import type { Widget_enum_config } from './widgets/enum/WidgetEnum'
 
 export const extractDefaultValue = <T extends KnownEnumNames>(input: Widget_enum_config<T>): Maybe<EnumValue> => {
     const def = input.default

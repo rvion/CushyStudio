@@ -1,5 +1,6 @@
+import type { Runtime } from './Runtime'
+
 import { makeAutoObservable } from 'mobx'
-import { Runtime } from './Runtime'
 
 /** namespace for all extra utils */
 export class RuntimeIO {

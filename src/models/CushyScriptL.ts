@@ -1,9 +1,10 @@
+import type { LiveInstance } from '../db/LiveInstance'
+import type { LibraryFile } from 'src/cards/LibraryFile'
+
 import { basename } from 'pathe'
 import { replaceImportsWithSyncImport } from 'src/back/ImportStructure'
 import { App, AppRef, WidgetDict } from 'src/cards/App'
-import type { LiveInstance } from '../db/LiveInstance'
 
-import { LibraryFile } from 'src/cards/LibraryFile'
 import { LiveCollection } from 'src/db/LiveCollection'
 import { CushyScriptT, asCushyAppID } from 'src/db/TYPES.gen'
 import { asRelativePath } from 'src/utils/fs/pathUtils'

@@ -1,7 +1,9 @@
-import { HostL } from 'src/models/Host'
-import { ModelInfo, getModelInfoFinalFilePath } from '../modelList'
+import type { HostL } from 'src/models/Host'
+import type { ModelInfo } from '../modelList'
+import type { PluginInfo } from '../customNodeList'
+
+import { getModelInfoFinalFilePath } from '../modelList'
 import { toastError, toastSuccess } from 'src/utils/misc/toasts'
-import { PluginInfo } from '../customNodeList'
 
 export class ComfyUIManager {
     constructor(public host: HostL) {}

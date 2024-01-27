@@ -1,5 +1,6 @@
+import type { Runtime } from './Runtime'
+
 import { makeAutoObservable } from 'mobx'
-import { Runtime } from './Runtime'
 
 /** namespace for all canvas-related utils */
 export class RuntimeCanvas {

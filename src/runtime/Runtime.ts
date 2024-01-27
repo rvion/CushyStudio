@@ -1,6 +1,7 @@
 import type { WidgetDict } from 'src/cards/App'
 import type { STATE } from 'src/state/state'
 import type { Printable } from '../core/Printable'
+import type { StepL } from '../models/Step'
 
 import * as path from 'pathe'
 // import { Cyto } from '../graph/cyto' 🔴🔴
@@ -14,8 +15,8 @@ import { ComfyNodeOutput } from '../core/Slot'
 import { auto } from '../core/autoValue'
 import { ComfyPromptL } from '../models/ComfyPrompt'
 import { ComfyWorkflowL } from '../models/ComfyWorkflow'
-import { type MediaImageL, checkIfComfyImageExists } from '../models/MediaImage'
-import { StepL } from '../models/Step'
+import { type MediaImageL } from '../models/MediaImage'
+import { checkIfComfyImageExists } from 'src/models/ImageInfos_ComfyGenerated'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 
 import child_process from 'child_process'
