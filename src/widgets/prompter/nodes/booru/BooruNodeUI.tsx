@@ -1,5 +1,6 @@
+import type { BooruNode } from './BooruNode'
+
 import { observer } from 'mobx-react-lite'
-import { BooruNode } from './BooruNode'
 
 export const BooruNodeUI = observer(function BooruNodeUI_(p: { node: BooruNode }) {
     const node = p.node
