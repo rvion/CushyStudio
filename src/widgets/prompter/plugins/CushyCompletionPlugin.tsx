@@ -1,11 +1,12 @@
+import type { CompletionCandidate, CompletionState } from './CompletionProviders'
+
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
 import { LexicalTypeaheadMenuPlugin, MenuOption, MenuTextMatch, TriggerFn } from '@lexical/react/LexicalTypeaheadMenuPlugin'
 import { $getSelection, $isRangeSelection, TextNode } from 'lexical'
 import { observer } from 'mobx-react-lite'
-import { MutableRefObject, useCallback, useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import * as ReactDOM from 'react-dom'
 import { useSt } from '../../../state/stateContext'
-import { CompletionCandidate, CompletionState } from './CompletionProviders'
 
 /** menu entry state */
 export class CompletionOption<T = any> extends MenuOption {

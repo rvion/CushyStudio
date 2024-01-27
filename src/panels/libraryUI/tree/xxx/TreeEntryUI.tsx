@@ -23,8 +23,8 @@ export const TreeEntryUI = observer(function TreeEntryUI_(p: { depth?: number; n
                         _line: true,
                         _hasChildren: hasChildren,
                         _selected: selected,
-                        _opened: n.opened,
-                        _closed: !n.opened,
+                        _opened: n.isOpen,
+                        _closed: !n.isOpen,
                     },
                 ]}
             >
@@ -32,7 +32,7 @@ export const TreeEntryUI = observer(function TreeEntryUI_(p: { depth?: number; n
                 {tv.at?.id} */}
                 {hasChildren ? (
                     <label onClick={() => n.toggle()} className='swap swap-rotate opacity-50'>
-                        {n.opened ? (
+                        {n.isOpen ? (
                             <span className='material-symbols-outlined swap-rotate'>keyboard_arrow_down</span>
                         ) : (
                             <>
@@ -46,7 +46,7 @@ export const TreeEntryUI = observer(function TreeEntryUI_(p: { depth?: number; n
                 <RenderItemTitleUI node={n} />
             </div>
 
-            {hasChildren && n.opened ? ( //
+            {hasChildren && n.isOpen ? ( //
                 <div
                     tw='borderLeft'
                     style={{

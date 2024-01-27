@@ -1,10 +1,11 @@
+import type { LoraNode } from './LoraNode'
+
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
 import { observer } from 'mobx-react-lite'
 import { openExternal } from 'src/app/layout/openExternal'
 import { InputNumberUI } from 'src/rsuite/InputNumberUI'
 import { Button, Input, Popover, Whisper } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
-import { LoraNode } from './LoraNode'
 
 export const LoraNodeUI = observer(function LoraNodeUI_(p: { node: LoraNode }) {
     const node = p.node

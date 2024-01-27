@@ -2,6 +2,7 @@ import type { Metafile, OutputFile } from 'esbuild'
 import type { LiteGraphJSON } from 'src/core/LiteGraph'
 import type { STATE } from 'src/state/state'
 import type { ComfyPromptJSON } from '../types/ComfyPrompt'
+import type { Library } from './Library'
 
 import { readFileSync } from 'fs'
 import { makeAutoObservable } from 'mobx'
@@ -10,7 +11,6 @@ import { asCushyScriptID } from 'src/db/TYPES.gen'
 import { convertLiteGraphToPrompt } from '../core/litegraphToPrompt'
 import { exhaust } from '../utils/misc/ComfyUtils'
 import { getPngMetadataFromUint8Array } from '../utils/png/_getPngMetadata'
-import { Library } from './Library'
 
 import { dirname } from 'pathe'
 import { createEsbuildContextFor } from 'src/compiler/transpiler'
@@ -20,6 +20,7 @@ import { LiveCollection } from 'src/db/LiveCollection'
 import { CushyScriptL } from 'src/models/CushyScriptL'
 import { asAbsolutePath } from 'src/utils/fs/pathUtils'
 import { AppMetadata } from './AppManifest'
+import { ManualPromise } from 'src/utils/misc/ManualPromise'
 
 // prettier-ignore
 export type LoadStrategy =
@@ -35,9 +36,9 @@ type LoadStatus =
     | { type: 'FAILURE', msg?: string }
 
 // prettier-ignore
-type FileLoadResult =
-    | { type: 'cached' }
+export type ScriptExtractionResult =
     | { type: 'failed' }
+    | { type: 'cached', script: CushyScriptL }
     | { type: 'newScript'; script: CushyScriptL }
 
 /**
@@ -91,8 +92,8 @@ export class LibraryFile {
     }
 
     // the first thing to do to load an app is to get the Cushy Script from it.
-    codeJS?: Maybe<string> = null
-    metafile?: Maybe<Metafile> = null
+    private codeJS?: Maybe<string> = null
+    private metafile?: Maybe<Metafile> = null
     script?: Maybe<CushyScriptL> = null
 
     scripts = new LiveCollection<CushyScriptL>({
@@ -106,22 +107,20 @@ export class LibraryFile {
 
     /** load a file trying all compatible strategies */
     successfullLoadStrategies: Maybe<LoadStrategy> = null
-
-    script0: Maybe<CushyScriptL> = null
-
-    isLoading = false
-    hasBeenLoadedAtLeastOnce = false
+    lastSuccessfullExtractedScript: Maybe<CushyScriptL> = null
+    scriptExtractionAttemptedOnce = false
+    currentScriptExtraction: Maybe<ManualPromise<ScriptExtractionResult>> = null
 
     // 🔶 TODO: split into two functions for easier code path understanding from
     // 🔶 other locations.
-    extractScriptFromFile = async (p?: { force?: boolean }): Promise<FileLoadResult> => {
-        // don't load more than once unless manually requested
-        if (this.isLoading) return { type: 'cached' }
-        this.isLoading = true
+    extractScriptFromFile = async (p?: { force?: boolean }): Promise<ScriptExtractionResult> => {
+        // if we're alreay trying to extract => just return the current promise
+        if (this.currentScriptExtraction) return this.currentScriptExtraction
+        this.currentScriptExtraction = new ManualPromise<ScriptExtractionResult>()
 
-        // don't load once already loaded
-        // if (this.loaded.done && !p?.force) return true
-        if (this.hasBeenLoadedAtLeastOnce && !p?.force) return { type: 'cached' }
+        // if already loaded, cool
+        if (this.lastSuccessfullExtractedScript && !p?.force)
+            return { type: 'cached', script: this.lastSuccessfullExtractedScript }
 
         let script: Maybe<CushyScriptL> = null
         // try every strategy in order
@@ -129,7 +128,7 @@ export class LibraryFile {
             const res = await this.loadWithStrategy(strategy)
             if (res.type === 'SUCCESS') {
                 script = res.script
-                this.script0 = res.script
+                this.lastSuccessfullExtractedScript = res.script
                 this.successfullLoadStrategies = strategy
                 // console.log(`[🟢] LibFile: LOAD SUCCESS !`)
                 break
@@ -137,8 +136,8 @@ export class LibraryFile {
         }
 
         // done
-        this.hasBeenLoadedAtLeastOnce = true
-        this.isLoading = false
+        this.scriptExtractionAttemptedOnce = true
+        this.currentScriptExtraction = null
         if (script == null) {
             console.log(`[🔴] LibFile: LOAD FAILURE !`)
             return { type: 'failed' }

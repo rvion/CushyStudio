@@ -1,6 +1,10 @@
 import type { WidgetDict } from 'src/cards/App'
 import type { STATE } from 'src/state/state'
 import type { Printable } from '../core/Printable'
+import type { StepL } from '../models/Step'
+import type { MediaImageL } from '../models/MediaImage'
+import type { ComfyPromptL } from '../models/ComfyPrompt'
+import type { ComfyWorkflowL } from '../models/ComfyWorkflow'
 
 import * as path from 'pathe'
 // import { Cyto } from '../graph/cyto' 🔴🔴
@@ -12,10 +16,7 @@ import { ComfyWorkflowBuilder } from '../back/NodeBuilder'
 import { ImageAnswer } from '../controls/misc/InfoAnswer'
 import { ComfyNodeOutput } from '../core/Slot'
 import { auto } from '../core/autoValue'
-import { ComfyPromptL } from '../models/ComfyPrompt'
-import { ComfyWorkflowL } from '../models/ComfyWorkflow'
-import { type MediaImageL, checkIfComfyImageExists } from '../models/MediaImage'
-import { StepL } from '../models/Step'
+import { checkIfComfyImageExists } from 'src/models/ImageInfos_ComfyGenerated'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 
 import child_process from 'child_process'
@@ -265,6 +266,24 @@ export class Runtime<FIELDS extends WidgetDict = any> {
     /** helper to auto-find an output slot and link use it for this input */
     AUTO = auto
 
+    // ⏭️ /** @experimental */
+    // ⏭️ findNode = <T extends keyof ComfySetup>(
+    // ⏭️     //
+    // ⏭️     nodeName: T,
+    // ⏭️     p: Partial<Parameters<ComfySetup[T]>[0]>,
+    // ⏭️ ): Maybe<ReturnType<ComfySetup[T]>> => {
+    // ⏭️     const workflow = this.workflow
+    // ⏭️     const node = workflow.nodes.find((n) => {
+    // ⏭️         if (n.$schema.nameInCushy !== nodeName) return false
+    // ⏭️         for (const key in p) {
+    // ⏭️             if (JSON.stringify(n.json.inputs[key]) !== JSON.stringify(p[key])) return false
+    // ⏭️         }
+    // ⏭️         return true
+    // ⏭️     })
+    // ⏭️
+    // ⏭️     return null
+    // ⏭️ }
+
     /** helper to chose radomly any item from a list */
     chooseRandomly = <T>(key: string, seed: number, arr: T[]): T => {
         return createRandomGenerator(`${key}:${seed}`).randomItem(arr)
@@ -283,9 +302,10 @@ export class Runtime<FIELDS extends WidgetDict = any> {
     }): Promise<RuntimeExecutionResult> => {
         const start = Date.now()
         const executable = this.step.executable
-        const appFormInput = this.step.data.formResult
+        const formResult = p.formInstance.result
+        // const appFormInput = this.step.data.formResult
         const appFormSerial = this.step.data.formSerial.values_
-        this.formResult = appFormInput
+        this.formResult = formResult as any
         this.formSerial = appFormSerial
         this.formInstance = p.formInstance
         this.imageToStartFrom = p.imageToStartFrom
@@ -297,7 +317,7 @@ export class Runtime<FIELDS extends WidgetDict = any> {
                 console.log(`❌ action not found`)
                 return { type: 'error', error: 'action not found' }
             }
-            await executable.run(this, appFormInput, p.imageToStartFrom)
+            await executable.run(this, formResult, p.imageToStartFrom)
             console.log(`🔴 after: size=${this.workflow.nodes.length}`)
             console.log('[✅] RUN SUCCESS')
             const duration = Date.now() - start

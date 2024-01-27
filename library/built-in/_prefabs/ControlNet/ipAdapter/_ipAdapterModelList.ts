@@ -13,13 +13,13 @@ export const ipAdapterModelList: ComfyUIManagerKnownModelNames[] = [
     'ip-adapter-plus-face_sdxl_vit-h.safetensors',
 ]
 
-export const ipAdapterClipModelList: ComfyUIManagerKnownModelNames[] = [
+export const ipAdapter_faceID_ClipModelList: ComfyUIManagerKnownModelNames[] = [
     //
     'ip-adapter-faceid_sd15.bin',
     'ip-adapter-faceid-plusv2_sd15.bin',
 ]
 
-export const ipAdapterFaceIDLoraList: ComfyUIManagerKnownModelNames[] = [
+export const ipAdapter_faceID_LoraList: ComfyUIManagerKnownModelNames[] = [
     //
     'ip-adapter-faceid_sd15_lora.safetensors',
     'ip-adapter-faceid-plusv2_sd15_lora.safetensors',

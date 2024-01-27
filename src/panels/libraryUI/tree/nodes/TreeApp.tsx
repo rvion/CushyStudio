@@ -31,7 +31,7 @@ export class TreeApp implements ITreeEntry {
 
     onPrimaryAction = (n: TreeNode) => {
         if (this.app == null) return
-        if (!n.opened) n.open()
+        if (!n.isOpen) n.open()
         if (this.app.drafts.length > 0) return
         this.app.createDraft()
     }

@@ -1,10 +1,11 @@
+import type { Runtime } from './Runtime'
+import type { OpenRouterRequest } from 'src/llm/OpenRouter_Request'
+import type { OpenRouterResponse } from 'src/llm/OpenRouter_Response'
+import type { OpenRouter_Models } from 'src/llm/OpenRouter_models'
+
 import { makeAutoObservable } from 'mobx'
-import { Runtime } from './Runtime'
-import { OpenRouterRequest } from 'src/llm/OpenRouter_Request'
-import { OpenRouterResponse } from 'src/llm/OpenRouter_Response'
 import { OpenRouter_ask } from 'src/llm/OpenRouter_ask'
 import { openRouterInfos } from 'src/llm/OpenRouter_infos'
-import { OpenRouter_Models } from 'src/llm/OpenRouter_models'
 
 /** namespace for all store-related utils */
 export class RuntimeLLM {

@@ -1,4 +1,4 @@
-import { STATE } from 'src/state/state'
+import type { STATE } from 'src/state/state'
 import { toastError, toastSuccess } from 'src/utils/misc/toasts'
 
 export const _duplicateCurrentDraft = (st: STATE) => {

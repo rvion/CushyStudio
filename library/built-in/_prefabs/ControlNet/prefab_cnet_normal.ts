@@ -1,5 +1,6 @@
+import type { OutputFor } from '../_prefabs'
+
 import { cnet_preprocessor_ui_common, cnet_ui_common } from '../prefab_cnet'
-import { OutputFor } from '../_prefabs'
 
 // 🅿️ Normal FORM ===================================================
 export const ui_subform_Normal = () => {
@@ -10,10 +11,11 @@ export const ui_subform_Normal = () => {
         items: () => ({
             ...cnet_ui_common(form),
             preprocessor: ui_subform_Normal_Preprocessor(),
-            cnet_model_name: form.enum({
+            cnet_model_name: form.enum.Enum_ControlNetLoader_control_net_name({
                 label: 'Model',
-                enumName: 'Enum_ControlNetLoader_control_net_name',
-                default: { value: 'control_v11p_sd15_normalbae.pth' },
+                default: 'control_v11p_sd15_normalbae.pth' as any,
+                filter: (x) => x.toString().includes('normal'),
+                extraDefaults: ['control_v11p_sd15_normalbae.pth'],
                 recommandedModels: { knownModel: ['ControlNet-v1-1 (normalbae; fp16)'] },
             }),
         }),

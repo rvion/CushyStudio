@@ -11,16 +11,8 @@ export const ui_sampler = () => {
             steps: form.int({ default: 20, label: 'Steps', min: 0 }),
             cfg: form.float({ label: 'CFG', min: 3, max: 20, default: 8 }),
             seed: form.seed({}),
-            sampler_name: form.enum({
-                label: 'Sampler',
-                enumName: 'Enum_KSampler_sampler_name',
-                default: 'euler',
-            }),
-            scheduler: form.enum({
-                label: 'Scheduler',
-                enumName: 'Enum_KSampler_scheduler',
-                default: 'karras',
-            }),
+            sampler_name: form.enum.Enum_KSampler_sampler_name({ label: 'Sampler', default: 'euler' }),
+            scheduler: form.enum.Enum_KSampler_scheduler({ label: 'Scheduler', default: 'karras' }),
         }),
     })
 }

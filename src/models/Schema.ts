@@ -1,14 +1,14 @@
 import type { ComfyEnumDef, ComfyInputOpts, ComfyNodeSchemaJSON } from '../types/ComfySchemaJSON'
+import type { HostL } from './Host'
+import type { ComfySchemaT } from 'src/db/TYPES.gen'
 
 import { observable, toJS } from 'mobx'
 import { LiveInstance } from 'src/db/LiveInstance'
-import { ComfySchemaT } from 'src/db/TYPES.gen'
 import { ComfyPrimitiveMapping, ComfyPrimitives } from '../core/Primitives'
 import { normalizeJSIdentifier } from '../core/normalizeJSIdentifier'
 import { CodeBuffer } from '../utils/codegen/CodeBuffer'
 import { escapeJSKey } from '../utils/codegen/escapeJSKey'
 import { LiveRef } from 'src/db/LiveRef'
-import { HostL } from './Host'
 
 export type EnumHash = string
 export type EnumName = string
@@ -388,7 +388,7 @@ export class ComfySchemaL {
         p(`\n// 1. Requirable --------------------------`)
         p(`export interface Requirable {`)
         const requirables = this.requirables
-        for (const n of requirables) p(`    ${escapeJSKey(n.name)}: ${n.name},`)
+        for (const n of requirables) p(`    ${escapeJSKey(n.name)}: { $Name: ${JSON.stringify(n.name)}, $Value: ${n.name} },`)
         p(`}`)
 
         p(`\n// 2. Embeddings -------------------------------`)
@@ -447,11 +447,14 @@ export class ComfySchemaL {
         }
 
         p(`\n// 6. ENUMS -------------------------------`)
+        const allAcceptableEnums: string[] = []
         for (const e of this.knownEnumsByHash.values()) {
             if (e.values.length > 0) {
+                allAcceptableEnums.push(e.enumNameInCushy)
                 p(`export type ${e.enumNameInCushy} = ${e.values.map((v) => `${JSON.stringify(v)}`).join(' | ')}`)
                 if (e.aliases.length > 0) {
                     for (const alias of e.aliases) {
+                        allAcceptableEnums.push(alias)
                         p(`export type ${alias} = ${e.enumNameInCushy}`)
                     }
                 }
@@ -461,7 +464,8 @@ export class ComfySchemaL {
         }
         // p(`export type KnownEnumNames = {${[...this.knownEnumsByName.keys()].map((e) => `'${e}': ${e}`).join(',\n    ')}}`)
         // p(`export type KnownEnumNames = {${[...this.knownEnumsByName.keys()].map((e) => `'${e}': ${e}`).join(',\n    ')}}`)
-        p(`export type KnownEnumNames = keyof Requirable`)
+        // p(`// export type KnownEnumNames = keyof Requirable // <-- too slow.. 😢`)
+        // p(`export type KnownEnumNames =\n   | ${allAcceptableEnums.map((e) => JSON.stringify(e)).join('\n   | ')}`)
 
         p(`\n// 7. INTERFACES --------------------------`)
         for (const t of slotTypes) {

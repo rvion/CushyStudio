@@ -49,7 +49,7 @@ export class TreeNode {
         })
     }
 
-    get opened() {
+    get isOpen() {
         return this.entryL.data.isExpanded ?? false
     }
     open() {
@@ -60,7 +60,7 @@ export class TreeNode {
         this.entryL.update({ isExpanded: SQLITE_false })
     }
     toggle() {
-        if (this.opened) this.close()
+        if (this.isOpen) this.close()
         else this.open()
     }
 
@@ -235,10 +235,10 @@ export class TreeNode {
     get lastOpenedDescendant(): TreeNode | undefined {
         let at: TreeNode | undefined = this
         let out: TreeNode | undefined
-        if (!at.opened) return
+        if (!at.isOpen) return
         while ((at = at.lastChild)) {
             out = at
-            if (!at.opened) break
+            if (!at.isOpen) break
         }
         return out
     }
@@ -260,7 +260,7 @@ export class TreeNode {
     }
 
     get nodeBelowInView(): TreeNode | undefined {
-        if (this.opened && this.firstChild) return this.firstChild
+        if (this.isOpen && this.firstChild) return this.firstChild
         if (this.nextSibling) return this.nextSibling
         let at: TreeNode | undefined = this
         while ((at = at.parent)) if (at.nextSibling) return at.nextSibling

@@ -1,6 +1,7 @@
+import type { Runtime } from './Runtime'
+import type { HostL } from 'src/models/Host'
+
 import { makeAutoObservable } from 'mobx'
-import { HostL } from 'src/models/Host'
-import { Runtime } from './Runtime'
 
 /** namespace for all host-related utils */
 export class RuntimeHosts {

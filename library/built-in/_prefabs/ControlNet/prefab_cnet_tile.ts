@@ -1,6 +1,7 @@
 import type { FormBuilder } from 'src'
+import type { OutputFor } from '../_prefabs'
+
 import { cnet_preprocessor_ui_common, cnet_ui_common } from '../prefab_cnet'
-import { OutputFor } from '../_prefabs'
 
 // 🅿️ Tile FORM ===================================================
 export const ui_subform_Tile = () => {
@@ -10,10 +11,11 @@ export const ui_subform_Tile = () => {
         items: () => ({
             ...cnet_ui_common(form),
             preprocessor: ui_subform_Tile_Preprocessor(form),
-            cnet_model_name: form.enum({
+            cnet_model_name: form.enum.Enum_ControlNetLoader_control_net_name({
                 label: 'Model',
-                enumName: 'Enum_ControlNetLoader_control_net_name',
-                default: { value: 'control_v11f1e_sd15_tile.pth' },
+                default: 'control_v11u_sd15_tile_fp16.safetensors',
+                filter: (name) => name.toString().includes('_tile'),
+                extraDefaults: ['control_v11f1e_sd15_tile.pth'],
                 recommandedModels: { knownModel: ['ControlNet-v1-1 (tile; fp16; v11u)', 'ControlNet-v1-1 (tile; fp16; v11f1e)'] },
             }),
         }),

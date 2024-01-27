@@ -7,9 +7,7 @@ import { InstallPluginCardUI, PluginInstallStatus } from './InstallPluginCardUI'
 import { QuickHostActionsUI } from './QuickHostActionsUI'
 import { PluginSuggestion, convertToPluginInfoList } from './convertToPluginInfoList'
 
-export const InstallCustomNodeBtnUI = observer(function InstallCustomNodeBtnUI_<K extends KnownEnumNames>(p: {
-    recomandation: CustomNodeRecommandation
-}) {
+export const InstallCustomNodeBtnUI = observer(function InstallCustomNodeBtnUI_(p: { recomandation: CustomNodeRecommandation }) {
     const suggestions: PluginSuggestion[] = convertToPluginInfoList(p)
     if (suggestions.length === 0) return <pre>🔴{JSON.stringify(p)}</pre>
     return (

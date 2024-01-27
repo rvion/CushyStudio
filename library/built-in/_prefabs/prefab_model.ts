@@ -8,13 +8,12 @@ export const ui_model = () => {
     return form.group({
         label: 'AI Model',
         items: () => ({
-            ckpt_name: form.enum({
-                enumName: 'Enum_CheckpointLoaderSimple_ckpt_name',
+            ckpt_name: form.enum.Enum_CheckpointLoaderSimple_ckpt_name({
                 default: 'revAnimated_v122.safetensors',
                 label: 'Checkpoint',
                 recommandedModels: { knownModel: ckpts.map((x) => x.name) },
             }),
-            vae: form.enumOpt({ enumName: 'Enum_VAELoader_vae_name' }),
+            vae: form.enumOpt.Enum_VAELoader_vae_name({}),
             clipSkip: form.intOpt({
                 label: 'Clip Skip',
                 startActive: false,

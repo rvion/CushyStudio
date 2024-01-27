@@ -1,5 +1,6 @@
+import type { Runtime } from './Runtime'
+
 import { makeAutoObservable } from 'mobx'
-import { Runtime } from './Runtime'
 import { ComfyWorkflowL } from 'src/models/ComfyWorkflow'
 import { MediaImageL } from 'src/models/MediaImage'
 

@@ -1,17 +1,11 @@
 import { runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
-import { Widget_image } from 'src/controls/Widget'
-import { useSt } from '../../state/stateContext'
-import { ImageUI } from '../../widgets/galleries/ImageUI'
-import { useImageDrop } from '../../widgets/galleries/dnd'
-import { useDraft } from '../../widgets/misc/useDraft'
+import { useSt } from 'src/state/stateContext'
+import { ImageUI } from 'src/widgets/galleries/ImageUI'
+import { useImageDrop } from 'src/widgets/galleries/dnd'
+import { useDraft } from 'src/widgets/misc/useDraft'
+import { Widget_image } from './WidgetImage'
 
-enum Tab {
-    Cushy = 0,
-    Comfy = 1,
-    Scribble = 2,
-    Asset = 3,
-}
 export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: { widget: Widget_image }) {
     const widget = p.widget
     const st = useSt()

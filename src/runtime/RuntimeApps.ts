@@ -52,9 +52,9 @@ export class RuntimeApps {
             p.draftID ?? `${p.appID}-<sub-draft>`,
             () => ({
                 appID: app.id,
-                // appParams is actually `formSerial`, not `formValue`
+                // appParams is actually `serial`, not `value`
                 // @ts-expect-error 🔴
-                appParams: {}, // 🔴 we can't go from formValue to formSerial
+                formSerial: {}, // 🔴 we can't go from `value` to `serial`
                 title: '<sub-draft>',
             }),
         )

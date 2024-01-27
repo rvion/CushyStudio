@@ -547,6 +547,30 @@ export const migrations: {
             'alter table draft drop column isOpened',
         ],
     },
+    {
+        id: 'hZrIo6_dmO',
+        name: 'rename draft.appParams to draft.serial',
+        up: [
+            //
+            `alter table draft rename column appParams to serial`,
+        ],
+    },
+    {
+        id: 'H86-VhgWVk',
+        name: 'drop column formResult',
+        up: [
+            //
+            `alter table step drop column formResult`,
+        ],
+    },
+    {
+        id: 'XI9-fX8Eqk',
+        name: 'rename draft.serial to draft.formSerial',
+        up: [
+            //
+            `alter table draft rename column serial to formSerial`,
+        ],
+    },
     // {
     //     id: 'e574c006-daca-4fd0-a51b-73a66b4fbd79',
     //     name: 'create cushy_app table',

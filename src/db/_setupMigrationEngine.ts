@@ -1,5 +1,4 @@
-import { default as BetterSqlite3, default as SQL } from 'better-sqlite3'
-import { Store } from './storage'
+import { default as BetterSqlite3 } from 'better-sqlite3'
 
 export type Migration = {
     id: string

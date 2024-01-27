@@ -1,5 +1,6 @@
+import type { EmbeddingNode } from './EmbeddingNode'
+
 import { observer } from 'mobx-react-lite'
-import { EmbeddingNode } from './EmbeddingNode'
 import { RevealUI } from 'src/rsuite/reveal/RevealUI'
 
 export const EmbeddingNodeUI = observer(function EmbeddingNodeUI_(p: { node: EmbeddingNode }) {

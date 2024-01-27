@@ -1,6 +1,7 @@
-import { cnet_preprocessor_ui_common, cnet_ui_common } from '../prefab_cnet'
-import { OutputFor } from '../_prefabs'
+import type { OutputFor } from '../_prefabs'
 import type { FormBuilder } from 'src/controls/FormBuilder'
+
+import { cnet_preprocessor_ui_common, cnet_ui_common } from '../prefab_cnet'
 
 // 🅿️ OPEN POSE FORM ===================================================
 export const ui_subform_OpenPose = () => {
@@ -11,10 +12,10 @@ export const ui_subform_OpenPose = () => {
         items: () => ({
             ...cnet_ui_common(form),
             preprocessor: ui_subform_OpenPose_Preprocessor(form),
-            cnet_model_name: form.enum({
+            cnet_model_name: form.enum.Enum_ControlNetLoader_control_net_name({
                 label: 'Model',
-                enumName: 'Enum_ControlNetLoader_control_net_name',
-                default: { value: 't2iadapter_openpose_sd14v1.pth' },
+                default: 't2iadapter_openpose_sd14v1.pth' as any,
+                extraDefaults: ['t2iadapter_openpose_sd14v1.pth'],
                 recommandedModels: {
                     knownModel: ['T2I-Adapter (openpose)', 'ControlNet-v1-1 (openpose; fp16)', 'SDXL-controlnet: OpenPose (v2)'],
                 },
@@ -36,14 +37,12 @@ export const ui_subform_OpenPose_Preprocessor = (form: FormBuilder) => {
                     detect_face: form.bool({ default: true }),
                     detect_hand: form.bool({ default: true }),
                     useDWPose: form.bool({ default: true }),
-                    bbox_detector: form.enum({
+                    bbox_detector: form.enum.Enum_DWPreprocessor_bbox_detector({
                         label: 'Model',
-                        enumName: 'Enum_DWPreprocessor_bbox_detector',
                         default: 'yolox_l.onnx',
                     }),
-                    pose_estimator: form.enum({
+                    pose_estimator: form.enum.Enum_DWPreprocessor_pose_estimator({
                         label: 'Model',
-                        enumName: 'Enum_DWPreprocessor_pose_estimator',
                         default: 'dw-ll_ucoco_384.onnx',
                     }),
                     // TODO: Add support for auto-modifying the resolution based on other form selections

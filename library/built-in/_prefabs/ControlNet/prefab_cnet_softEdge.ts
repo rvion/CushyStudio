@@ -10,10 +10,10 @@ export const ui_subform_SoftEdge = () => {
         items: () => ({
             ...cnet_ui_common(form),
             preprocessor: ui_subform_SoftEdge_Preprocessor(form),
-            cnet_model_name: form.enum({
+            cnet_model_name: form.enum.Enum_ControlNetLoader_control_net_name({
                 label: 'Model',
-                enumName: 'Enum_ControlNetLoader_control_net_name',
-                default: { value: 'control_v11p_sd15_softedge.pth' },
+                default: 'control_v11p_sd15_softedge.pth' as any,
+                extraDefaults: ['control_v11p_sd15_softedge.pth'],
                 recommandedModels: {
                     knownModel: ['ControlNet-v1-1 (softedge; fp16)', 'controlnet-SargeZT/controlnet-sd-xl-1.0-softedge-dexined'],
                 },

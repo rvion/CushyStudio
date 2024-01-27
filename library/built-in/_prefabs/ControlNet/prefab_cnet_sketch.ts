@@ -9,10 +9,9 @@ export const ui_subform_Sketch = () => {
         customNodesByTitle: 'ComfyUI-Advanced-ControlNet',
         items: () => ({
             ...cnet_ui_common(form),
-            cnet_model_name: form.enum({
+            cnet_model_name: form.enum.Enum_ControlNetLoader_control_net_name({
                 label: 'Model',
-                enumName: 'Enum_ControlNetLoader_control_net_name',
-                default: { value: 't2iadapter_sketch_sd14v1.pth' },
+                default: 't2iadapter_sketch_sd14v1.pth',
                 recommandedModels: {
                     knownModel: [
                         'T2I-Adapter (sketch)',

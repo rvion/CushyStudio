@@ -1,17 +1,17 @@
 import type { LiveInstance } from '../db/LiveInstance'
 import type { StepL } from './Step'
+import type { MediaImageL } from './MediaImage'
+import type { CushyAppL } from './CushyApp'
+import type { LibraryFile } from 'src/cards/LibraryFile'
 
 import { autorun, reaction, runInAction } from 'mobx'
 import { Status } from 'src/back/Status'
-import { LibraryFile } from 'src/cards/LibraryFile'
 import { FormBuilder } from 'src/controls/FormBuilder'
 import { LiveRef } from 'src/db/LiveRef'
 import { SQLITE_false, SQLITE_true } from 'src/db/SQLITE_boolean'
 import { DraftT } from 'src/db/TYPES.gen'
 import { __FAIL, __OK, type Result } from 'src/types/Either'
-import { CushyAppL } from './CushyApp'
 import { Widget_group } from 'src/controls/widgets/group/WidgetGroup'
-import { MediaImageL } from './MediaImage'
 
 export type FormPath = (string | number)[]
 
@@ -148,7 +148,7 @@ export class DraftL {
             //
             appID: this.data.appID,
             draftID: this.data.id,
-            formResult: widget.result,
+            // formResult: widget.result,
             formSerial: widget.serial,
             //
             // parentGraphID: graph.id,
@@ -194,7 +194,7 @@ export class DraftL {
                         const req: Widget_group<any> = formBuilder._HYDRATE(
                             'group',
                             { topLevel: true, items: () => uiFn?.(formBuilder) ?? {} },
-                            this.data.appParams,
+                            this.data.formSerial,
                         )
                         /** 👇 HACK; see the comment near the ROOT property definition */
                         formBuilder._ROOT = req
@@ -219,7 +219,7 @@ export class DraftL {
             const _ = JSON.stringify(formValue.serial)
             runInAction(() => {
                 console.log(`[🦊] form: updating`)
-                this.update({ appParams: formValue.serial })
+                this.update({ formSerial: formValue.serial })
                 this.isDirty = true
                 this.checkIfShouldRestart()
             })

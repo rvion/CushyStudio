@@ -11,10 +11,10 @@ export const ui_subform_Lineart = () => {
         items: () => ({
             ...cnet_ui_common(form),
             preprocessor: ui_subform_Lineart_Preprocessor(),
-            cnet_model_name: form.enum({
+            cnet_model_name: form.enum.Enum_ControlNetLoader_control_net_name({
                 label: 'Model',
-                enumName: 'Enum_ControlNetLoader_control_net_name',
-                default: { value: 'control_v11p_sd15_lineart.pth' },
+                filter: (name) => name.toString().includes('lineart'),
+                default: 'control_v11p_sd15_lineart_fp16.safetensors',
                 recommandedModels: { knownModel: ['ControlNet-v1-1 (lineart; fp16)'] },
             }),
         }),

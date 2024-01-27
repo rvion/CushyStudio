@@ -6,10 +6,13 @@ import type { ComfyPromptJSON } from '../types/ComfyPrompt'
 import type { ApiPromptInput, PromptInfo, WsMsgExecuting, WsMsgExecutionCached, WsMsgProgress } from '../types/ComfyWsApi'
 import type { VisEdges, VisNodes } from '../widgets/misc/VisUI'
 import type { ComfyNodeSchema, ComfySchemaL } from './Schema'
+import type { StepL } from './Step'
+import type { IDNaminScheemeInPromptSentToComfyUI } from 'src/back/IDNaminScheemeInPromptSentToComfyUI'
+import type { GraphT } from 'src/db/TYPES.gen'
+import type { ComfyPromptL } from './ComfyPrompt'
 
 import { marked } from 'marked'
 import { join } from 'pathe'
-import { IDNaminScheemeInPromptSentToComfyUI } from 'src/back/IDNaminScheemeInPromptSentToComfyUI'
 import { ComfyWorkflowBuilder } from '../back/NodeBuilder'
 import { CytoJSON, runAutolayout } from '../core/AutolayoutV2'
 import { comfyColors } from '../core/Colors'
@@ -17,12 +20,9 @@ import { LiteGraphJSON, convertFlowToLiteGraphJSON } from '../core/LiteGraph'
 import { ComfyNode } from '../core/ComfyNode'
 import { asHTMLContent, asMDContent } from '../types/markdown'
 import { asAbsolutePath } from '../utils/fs/pathUtils'
-import { GraphT } from 'src/db/TYPES.gen'
 import { bang } from 'src/utils/misc/bang'
-import { ComfyPromptL } from './ComfyPrompt'
 import { deepCopyNaive } from 'src/utils/misc/ComfyUtils'
 import { InvalidPromptError } from 'src/back/RuntimeError'
-import { StepL } from './Step'
 import { LiveRefOpt } from 'src/db/LiveRefOpt'
 
 export type RunMode = 'fake' | 'real'
@@ -402,7 +402,7 @@ export class ComfyWorkflowL {
 
                     // Cushy metadata
                     cushy_app_id: this.step?.data.appID,
-                    cushy_draft_result: this.step?.data.formResult,
+                    // cushy_draft_result: this.step?.data.formResult,
                     cushy_draft_serial: this.step?.data.formSerial,
                 },
             },

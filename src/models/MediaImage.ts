@@ -1,54 +1,31 @@
 import type { LiveInstance } from '../db/LiveInstance'
+import type { MediaImageT } from 'src/db/TYPES.gen'
+import type { CushyAppL } from './CushyApp'
+import type { CushyScriptL } from './CushyScriptL'
+import type { DraftL } from './Draft'
+import type { StepL } from './Step'
+import type { ComfyNodeMetadata } from 'src/types/ComfyNodeID'
+import type { ComfyNodeJSON } from 'src/types/ComfyPrompt'
+import type { ComfyPromptL } from './ComfyPrompt'
+import type { ComfyWorkflowL } from './ComfyWorkflow'
 
 import { readFileSync } from 'fs'
-import { imageMeta, ImageMeta } from 'image-meta'
+import { lookup } from 'mime-types'
 import { basename, resolve } from 'pathe'
 import { LiveRefOpt } from 'src/db/LiveRefOpt'
-import { MediaImageT } from 'src/db/TYPES.gen'
 import { SafetyResult } from 'src/safety/Safety'
-import { hashArrayBuffer } from 'src/state/hashBlob'
-import { ComfyNodeMetadata } from 'src/types/ComfyNodeID'
-import { ComfyNodeJSON } from 'src/types/ComfyPrompt'
+import { asSTRING_orCrash } from 'src/utils/misc/bang'
 import { ManualPromise } from 'src/utils/misc/ManualPromise'
 import { toastError } from 'src/utils/misc/toasts'
-import { ComfyImageInfo } from '../types/ComfyWsApi'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
-import { ComfyPromptL } from './ComfyPrompt'
-import { ComfyWorkflowL } from './ComfyWorkflow'
-import { CushyAppL } from './CushyApp'
-import { CushyScriptL } from './CushyScriptL'
-import { DraftL } from './Draft'
-import { StepL } from './Step'
-import { lookup } from 'mime-types'
-import { asSTRING_orCrash } from 'src/utils/misc/bang'
 import { getCurrentRun_IMPL } from './_ctx2'
-
-export type ImageInfos_ComfyGenerated = {
-    comfyHostHttpURL: string
-    comfyImageInfo: ComfyImageInfo
-}
-
-export const getComfyURLFromImageInfos = (infos: ImageInfos_ComfyGenerated) => {
-    return infos.comfyHostHttpURL + '/view?' + new URLSearchParams(infos.comfyImageInfo).toString()
-}
-
-export const checkIfComfyImageExists = async (
-    comfyHostHttpURL: string,
-    imageInfo: { type: `input` | `ouput`; subfolder: string; filename: string },
-) => {
-    try {
-        const url = getComfyURLFromImageInfos({ comfyHostHttpURL, comfyImageInfo: imageInfo })
-        console.log(`checkIfComfyImageExists`, { url })
-        const result = await fetch(url, { method: `HEAD` })
-        console.log(`checkIfComfyImageExists result`, { url, result })
-        return result.ok
-    } catch {
-        return false
-    }
-}
 
 export interface MediaImageL extends LiveInstance<MediaImageT, MediaImageL> {}
 export class MediaImageL {
+    get imageID() {
+        return this.id
+    }
+
     /** return the image filename */
     get filename() {
         return basename(this.data.path)

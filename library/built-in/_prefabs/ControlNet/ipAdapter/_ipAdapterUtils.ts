@@ -1,6 +1,5 @@
-import type { ComfyUIManagerKnownModelNames } from 'src/wiki/modelListType'
 import type { FormBuilder } from 'src'
-import { ipAdapterClipModelList } from './_ipAdapterModelList'
+import { ipAdapter_faceID_ClipModelList } from './_ipAdapterModelList'
 
 // 🅿️ IPAdapter Common FORM ===================================================
 export const ui_subform_IPAdapter_common = (form: FormBuilder, defaultStrength: number = 1) => ({
@@ -19,31 +18,13 @@ export const ui_subform_IPAdapter_common = (form: FormBuilder, defaultStrength: 
 
 //🅿️ IPAdapter CLIP Selection ===================================================
 export const ui_ipadapter_CLIPSelection = (form: FormBuilder) => ({
-    clip_name: form.enum({
-        enumName: 'Enum_CLIPVisionLoader_clip_name',
-        default: { value: 'model.safetensors' },
+    clip_name: form.enum.Enum_CLIPVisionLoader_clip_name({
+        default: 'SD1.5\\CLIP-ViT-H-14-laion2B-s32B-b79K.safetensors',
         recommandedModels: {
             modelFolderPrefix: 'models/clip_vision',
-            knownModel: ipAdapterClipModelList,
+            knownModel: ipAdapter_faceID_ClipModelList,
         },
         // default: 'ip-adapter_sd15.safetensors'
         label: 'CLIP Vision Model',
-    }),
-})
-
-//🅿️ IPAdapter Model Selection ===================================================
-export const ui_ipadapter_modelSelection = (
-    form: FormBuilder,
-    defaultModel: Enum_IPAdapterModelLoader_ipadapter_file = 'ip-adapter_sd15.safetensors',
-    knownModels: ComfyUIManagerKnownModelNames | ComfyUIManagerKnownModelNames[] | undefined,
-) => ({
-    cnet_model_name: form.enum({
-        enumName: 'Enum_IPAdapterModelLoader_ipadapter_file',
-        default: { value: defaultModel },
-        recommandedModels: {
-            knownModel: knownModels,
-        },
-        // default: 'ip-adapter_sd15.safetensors'
-        label: 'IP Adapter Model',
     }),
 })

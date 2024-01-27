@@ -1,9 +1,9 @@
 import type { EnumValue } from 'src/models/Schema'
-import { type ModelInfo } from 'src/wiki/modelList'
-import { type ComfyUIManagerKnownModelNames } from 'src/wiki/modelListType'
-import { Widget_enum_config } from './widgets/enum/WidgetEnum'
+import type { ModelInfo } from 'src/wiki/modelList'
+import type { ComfyUIManagerKnownModelNames } from 'src/wiki/modelListType'
+import type { Widget_enum_config } from './widgets/enum/WidgetEnum'
 
-export const extractDefaultValue = <T extends KnownEnumNames>(input: Widget_enum_config<T>): Maybe<EnumValue> => {
+export const extractDefaultValue = (input: Widget_enum_config<any>): Maybe<EnumValue> => {
     const def = input.default
 
     if (def != null) {
@@ -13,8 +13,8 @@ export const extractDefaultValue = <T extends KnownEnumNames>(input: Widget_enum
         if (typeof def === 'number') return def
 
         // case defaultModel
-        const def2 = def as EnumDefault<T>
-        if (def2.value != null) return def2.value as any
+        // ⏸️ const def2 = def as EnumDefault<T>
+        // ⏸️ if (def2.value != null) return def2.value as any
 
         // ⏸️ const entry = Array.isArray(def2) ? def2[0] : def2
         // ⏸️ const knownModels = getKnownModels()
@@ -44,17 +44,17 @@ export type RecommendedModelDownload = {
  * this object is the new value that
  * needs to be given to an enum default.
  */
-export type EnumDefault<T extends KnownEnumNames = any> = {
-    /** 🔶 */
-    value?: Requirable[T] | string
-    /** 🔴 UNIMPLEMENTED */
-    values?: string[]
-    /** 🔶 */
-    /** 🔴 UNIMPLEMENTED */
-    find?: (candidate: string) => number
-    /** 🔴 UNIMPLEMENTED */
-    // customDownloads?: { [modelName: string]: ModelInfo }
-}
+// ⏸️ export type EnumDefault<T extends KnownEnumNames = any> = {
+// ⏸️     /** 🔶 */
+// ⏸️     value?: Requirable[T] | string
+// ⏸️     /** 🔴 UNIMPLEMENTED */
+// ⏸️     values?: string[]
+// ⏸️     /** 🔶 */
+// ⏸️     /** 🔴 UNIMPLEMENTED */
+// ⏸️     find?: (candidate: string) => number
+// ⏸️     /** 🔴 UNIMPLEMENTED */
+// ⏸️     // customDownloads?: { [modelName: string]: ModelInfo }
+// ⏸️ }
 
 /** showcase an example default value with all options filled */
 // const example: EnumDefault<Enum_IPAdapterModelLoader_ipadapter_file> = {

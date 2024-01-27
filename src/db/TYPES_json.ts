@@ -9,7 +9,7 @@ import type { SqlColDef } from './_getAllColumnsForTable'
 
 import type { Status } from 'src/back/Status'
 import type { ComfyNodeID, ComfyNodeMetadata } from 'src/types/ComfyNodeID'
-import { ImageInfos_ComfyGenerated } from 'src/models/MediaImage'
+import { ImageInfos_ComfyGenerated } from 'src/models/ImageInfos_ComfyGenerated'
 import { Widget_group_serial } from 'src/controls/widgets/group/WidgetGroup'
 
 export type StatusT = keyof typeof Status
@@ -29,8 +29,8 @@ export const Graph_metadata_Schema = Type.Record(Type.String(), Type.Any())
 export type Graph_comfyPromptJSON = ComfyPromptJSON
 export const Graph_comfyPromptJSON_Schema = Type.Record(Type.String(), Type.Any())
 
-export type Draft_appParams = Widget_group_serial<any>
-export const Draft_appParams_Schema = Type.Record(Type.String(), Type.Any())
+export type Draft_formSerial = Widget_group_serial<any>
+export const Draft_formSerial_Schema = Type.Record(Type.String(), Type.Any())
 
 export type CustomData_json = any
 export const CustomData_json_Schema = Type.Any()
