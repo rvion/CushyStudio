@@ -44,6 +44,7 @@
     "editor.formatOnSave": true,
     "editor.indentSize": 4,
     "[css]": { "editor.formatOnSave": false },
+
     "[typescriptreact]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
     "[typescript]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
     "[json]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
@@ -70,5 +71,24 @@
     // Turn off tsc task auto detection since we have the necessary tasks as npm scripts
     "typescript.tsc.autoDetect": "off",
     "vsicons.presets.nestjs": true,
-    "mdx.server.enable": false
+    "mdx.server.enable": false,
+
+    // TYPESCRIPT SECTION ----------------------------------------------------------
+    // misc
+    "typescript.tsserver.experimental.enableProjectDiagnostics": false, // replaced by the task
+    "typescript.preferences.preferTypeOnlyAutoImports": true, // should be on
+    "typescript.enablePromptUseWorkspaceTsdk": true,
+
+    // perf
+    "typescript.tsserver.maxTsServerMemory": 8000
+    // "typescript.tsserver.nodePath": ".cushy/node/v18.19.0-darwin-arm64/bin/node",
+    // "editor.inlayHints.enabled": "off"
+    // "editor.semanticHighlighting.enabled": false,
+
+    // debug
+    // "typescript.tsserver.log": "off",
+    // "typescript.tsserver.enableTracing": false,
+
+    // misc
+    // "typescript.tsdk": "node_modules/typescript/lib",
 }
