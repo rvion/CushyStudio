@@ -22,6 +22,10 @@ import { getCurrentRun_IMPL } from './_ctx2'
 
 export interface MediaImageL extends LiveInstance<MediaImageT, MediaImageL> {}
 export class MediaImageL {
+    get imageID() {
+        return this.id
+    }
+
     /** return the image filename */
     get filename() {
         return basename(this.data.path)

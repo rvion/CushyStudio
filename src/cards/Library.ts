@@ -146,7 +146,7 @@ export class Library {
                 for (const app of apps) {
                     const res = app.file.extractScriptFromFile({ force: true }).then((x) => {
                         if (x.type === 'newScript') {
-                            x.script.extractApps()
+                            x.script.evaluateAndUpdateApps()
                         }
                     })
                 }

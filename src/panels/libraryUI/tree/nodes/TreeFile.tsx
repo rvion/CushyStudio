@@ -42,7 +42,7 @@ export class TreeFile implements ITreeEntry {
     }
 
     get script() {
-        return this.file.script0
+        return this.file.lastSuccessfullExtractedScript
     }
 
     // get index(){return `path#${this.path}`} //prettier-ignore
@@ -61,13 +61,18 @@ export class TreeFile implements ITreeEntry {
     ]
 
     onFocusItem = () => {
-        if (this.file.hasBeenLoadedAtLeastOnce) return
+        if (this.file.scriptExtractionAttemptedOnce) return
         this.file.extractScriptFromFile()
     }
 
     onPrimaryAction = (n: TreeNode) => {
         this.file.extractScriptFromFile()
-        n.open()
+        if (!n.isOpen) {
+            n.open()
+            this.script?.evaluateAndUpdateApps()
+        } else {
+            n.close()
+        }
     }
 
     children = (): ITreeElement<CushyAppID>[] => {
@@ -75,7 +80,7 @@ export class TreeFile implements ITreeEntry {
         if (this.file == null) { console.log(`[🔴] TreeFile (${this.path}): FILE is null`); return [] } // prettier-ignore
         if (this.script == null) { console.log(`[🔴] TreeFile (${this.path}): SCRIPT is null`); return [] } // prettier-ignore
 
-        const apps = this.script.apps_viaDB
+        const apps = this.script.apps
         if (apps.length === 0) {
             console.log(`[🔴] TreeFile (${this.path}): APPS.length = 0`)
             return []

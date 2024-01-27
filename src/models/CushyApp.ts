@@ -89,7 +89,7 @@ export class CushyAppL {
         const title = this.name + ' ' + this._draftsCollection.items.length + 1
         const draft = this.st.db.drafts.create({
             // @ts-expect-error 🔴
-            appParams: {},
+            formSerial: {},
             appID: this.id,
             title: title,
         })

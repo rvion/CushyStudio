@@ -200,7 +200,7 @@ export type DraftT = {
     title?: Maybe<string>;
 
     /** @default: null, sqlType: json */
-    appParams: T.Draft_appParams;
+    formSerial: T.Draft_formSerial;
 
     /** @default: null, sqlType: TEXT */
     appID: CushyAppID;
@@ -227,7 +227,7 @@ export type Draft_C = {
     title?: Maybe<string>;
 
     /** @default: null, sqlType: json */
-    appParams: T.Draft_appParams;
+    formSerial: T.Draft_formSerial;
 
     /** @default: null, sqlType: TEXT */
     appID: CushyAppID;
@@ -244,7 +244,7 @@ export const DraftSchema = Type.Object({
     createdAt: Type.Number(),
     updatedAt: Type.Number(),
     title: Type.Optional(T.Nullable(Type.String())),
-    appParams: T.Draft_appParams_Schema,
+    formSerial: T.Draft_formSerial_Schema,
     appID: Type.String(),
     illustration: Type.Optional(T.Nullable(Type.String())),
     isFavorite: Type.Number(),
@@ -263,7 +263,7 @@ export const DraftFields = {
     createdAt: {cid:1,name:'createdAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
     updatedAt: {cid:2,name:'updatedAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
     title: {cid:3,name:'title',type:'TEXT',notnull:0,dflt_value:null,pk:0},
-    appParams: {cid:4,name:'appParams',type:'json',notnull:1,dflt_value:null,pk:0},
+    formSerial: {cid:4,name:'formSerial',type:'json',notnull:1,dflt_value:null,pk:0},
     appID: {cid:5,name:'appID',type:'TEXT',notnull:1,dflt_value:null,pk:0},
     illustration: {cid:6,name:'illustration',type:'TEXT',notnull:0,dflt_value:null,pk:0},
     isFavorite: {cid:7,name:'isFavorite',type:'INT',notnull:1,dflt_value:'0',pk:0},
@@ -386,9 +386,6 @@ export type StepT = {
     name?: Maybe<string>;
 
     /** @default: null, sqlType: json */
-    formResult: T.Step_formResult;
-
-    /** @default: null, sqlType: json */
     formSerial: T.Step_formSerial;
 
     /** @default: null, sqlType: TEXT */
@@ -422,9 +419,6 @@ export type Step_C = {
     name?: Maybe<string>;
 
     /** @default: null, sqlType: json */
-    formResult: T.Step_formResult;
-
-    /** @default: null, sqlType: json */
     formSerial: T.Step_formSerial;
 
     /** @default: null, sqlType: TEXT */
@@ -448,7 +442,6 @@ export const StepSchema = Type.Object({
     createdAt: Type.Number(),
     updatedAt: Type.Number(),
     name: Type.Optional(T.Nullable(Type.String())),
-    formResult: T.Step_formResult_Schema,
     formSerial: T.Step_formSerial_Schema,
     outputGraphID: Type.String(),
     status: Type.String(),
@@ -478,13 +471,12 @@ export const StepFields = {
     createdAt: {cid:1,name:'createdAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
     updatedAt: {cid:2,name:'updatedAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
     name: {cid:3,name:'name',type:'TEXT',notnull:0,dflt_value:null,pk:0},
-    formResult: {cid:4,name:'formResult',type:'json',notnull:1,dflt_value:null,pk:0},
-    formSerial: {cid:5,name:'formSerial',type:'json',notnull:1,dflt_value:null,pk:0},
-    outputGraphID: {cid:6,name:'outputGraphID',type:'TEXT',notnull:1,dflt_value:null,pk:0},
-    status: {cid:7,name:'status',type:'TEXT',notnull:1,dflt_value:null,pk:0},
-    isExpanded: {cid:8,name:'isExpanded',type:'INT',notnull:1,dflt_value:'1',pk:0},
-    appID: {cid:9,name:'appID',type:'TEXT',notnull:1,dflt_value:null,pk:0},
-    draftID: {cid:10,name:'draftID',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    formSerial: {cid:4,name:'formSerial',type:'json',notnull:1,dflt_value:null,pk:0},
+    outputGraphID: {cid:5,name:'outputGraphID',type:'TEXT',notnull:1,dflt_value:null,pk:0},
+    status: {cid:6,name:'status',type:'TEXT',notnull:1,dflt_value:null,pk:0},
+    isExpanded: {cid:7,name:'isExpanded',type:'INT',notnull:1,dflt_value:'1',pk:0},
+    appID: {cid:8,name:'appID',type:'TEXT',notnull:1,dflt_value:null,pk:0},
+    draftID: {cid:9,name:'draftID',type:'TEXT',notnull:0,dflt_value:null,pk:0},
 }
 
 

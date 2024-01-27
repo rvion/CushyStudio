@@ -148,7 +148,7 @@ export class DraftL {
             //
             appID: this.data.appID,
             draftID: this.data.id,
-            formResult: widget.result,
+            // formResult: widget.result,
             formSerial: widget.serial,
             //
             // parentGraphID: graph.id,
@@ -194,7 +194,7 @@ export class DraftL {
                         const req: Widget_group<any> = formBuilder._HYDRATE(
                             'group',
                             { topLevel: true, items: () => uiFn?.(formBuilder) ?? {} },
-                            this.data.appParams,
+                            this.data.formSerial,
                         )
                         /** 👇 HACK; see the comment near the ROOT property definition */
                         formBuilder._ROOT = req
@@ -219,7 +219,7 @@ export class DraftL {
             const _ = JSON.stringify(formValue.serial)
             runInAction(() => {
                 console.log(`[🦊] form: updating`)
-                this.update({ appParams: formValue.serial })
+                this.update({ formSerial: formValue.serial })
                 this.isDirty = true
                 this.checkIfShouldRestart()
             })

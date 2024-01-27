@@ -3,27 +3,25 @@
  * file so it's easy to add any widget in the future
  */
 import type { FC } from 'react'
-import type { SQLWhere } from 'src/db/SQLWhere'
-import type { MediaImageT } from 'src/db/TYPES.gen'
 import type { SimplifiedLoraDef } from 'src/presets/SimplifiedLoraDef'
 import type { ItemDataType } from 'src/rsuite/RsuiteTypes'
 import type { FormBuilder } from './FormBuilder'
 import type { IWidget_OLD, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers_OLD } from './IWidget'
-import type { ImageAnswer, ImageAnswerForm } from './misc/InfoAnswer'
 
 import type { Widget_bool } from './widgets/bool/WidgetBool'
 import type { Widget_choices } from './widgets/choices/WidgetChoices'
 import type { Widget_color } from './widgets/color/WidgetColor'
 import type { Widget_enum } from './widgets/enum/WidgetEnum'
 import type { Widget_group } from './widgets/group/WidgetGroup'
+import type { Widget_image } from './widgets/image/WidgetImage'
 import type { Widget_list } from './widgets/list/WidgetList'
 import type { Widget_listExt } from './widgets/listExt/WidgetListExt'
 import type { Widget_number } from './widgets/number/WidgetNumber'
 import type { Widget_optional } from './widgets/optional/WidgetOptional'
 import type { Widget_orbit } from './widgets/orbit/WidgetOrbit'
-import type { Widget_string } from './widgets/string/WidgetString'
 import type { Widget_prompt } from './widgets/prompt/WidgetPrompt'
 import type { Widget_size } from './widgets/size/WidgetSize'
+import type { Widget_string } from './widgets/string/WidgetString'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -346,42 +344,6 @@ export class Widget_loras implements IWidget_OLD<'loras', Widget_loras_config, W
     }
 }
 
-// 🅿️ image ==============================================================================
-export type Widget_image_config  = WidgetConfigFields<{
-    defaultActive?: boolean
-    suggestionWhere?: SQLWhere<MediaImageT>
-    assetSuggested?: RelativePath
-}>
-export type Widget_image_serial = Widget_image_state
-export type Widget_image_state  = WidgetSerialFields<ImageAnswerForm<'image', true>>
-export type Widget_image_output = ImageAnswer
-export interface Widget_image extends WidgetTypeHelpers_OLD<'image', Widget_image_config, Widget_image_serial, Widget_image_state, Widget_image_output> {}
-export class Widget_image implements IWidget_OLD<'image', Widget_image_config, Widget_image_serial, Widget_image_state, Widget_image_output> {
-    readonly isVerticalByDefault = true
-    readonly isCollapsible = true
-    readonly id: string
-    readonly type: 'image' = 'image'
-    readonly serial: Widget_image_state
-
-    constructor(
-        public form: FormBuilder,
-        public config: Widget_image_config,
-        serial?: Widget_image_serial,
-    ) {
-        this.id = serial?.id ?? nanoid()
-        this.serial = serial ?? {
-            type: 'image',
-            id: this.id,
-            active: true,
-            imageID: form.schema.st.defaultImage.id,
-        }
-        makeAutoObservable(this)
-    }
-    get result(): Widget_image_output {
-        return { imageID: this.serial.imageID ?? this.form.schema.st.defaultImage.id }
-    }
-}
-
 // 🅿️ selectOne ==============================================================================
 export type BaseSelectEntry = { id: string, label?: string }
 export type Widget_selectOne_config <T extends BaseSelectEntry>  = WidgetConfigFields<{ default?: T; choices: T[] | ((formRoot:Widget_group<any>) => T[]) }>
@@ -487,6 +449,5 @@ WidgetDI.Widget_markdown           = Widget_markdown
 WidgetDI.Widget_custom             = Widget_custom
 WidgetDI.Widget_matrix             = Widget_matrix
 WidgetDI.Widget_loras              = Widget_loras
-WidgetDI.Widget_image              = Widget_image
 WidgetDI.Widget_selectMany         = Widget_selectMany
 WidgetDI.Widget_selectOne          = Widget_selectOne

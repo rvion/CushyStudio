@@ -143,7 +143,7 @@ export class TreeView {
         if (this.at == null) return this.resetCaretPos()
         const children = this.at.children
         if (children.length > 0) {
-            if (this.at.opened) return this.setAt(children[0])
+            if (this.at.isOpen) return this.setAt(children[0])
             else return this.at.open()
         }
         return this.moveDown()
@@ -151,7 +151,7 @@ export class TreeView {
 
     moveLeft = () => {
         if (this.at == null) return this.resetCaretPos()
-        if (this.at.opened) return this.at.close()
+        if (this.at.isOpen) return this.at.close()
         if (this.at.parent) return (this.at = this.at.parent)
     }
 }

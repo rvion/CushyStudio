@@ -27,25 +27,28 @@ export class CushyScriptL {
         return asRelativePath(this.data.path)
     }
 
-    get apps_viaDB(): CushyAppL[] {
-        return this._apps_viaDB.items
-    }
-
-    /** collection of all apps related to this script in the db */
-    _apps_viaDB = new LiveCollection<CushyAppL>({
+    private _apps_viaScript: Maybe<CushyAppL[]> = null
+    private _apps_viaDB = new LiveCollection<CushyAppL>({
         table: () => this.db.cushy_apps,
         where: () => ({ scriptID: this.id }),
     })
 
-    /** collection of all apps related to this script currently in the script (no past values) */
-    _apps_viaScript: Maybe<CushyAppL[]> = null
-    get apps_viaScript(): CushyAppL[] {
-        if (this._apps_viaScript == null) this.extractApps()
-        return this._apps_viaScript!
+    get apps(): CushyAppL[] {
+        if (this._apps_viaScript != null) return this._apps_viaScript
+        return this._apps_viaDB.items
     }
 
+    // ⏸️ get apps_viaDB(): CushyAppL[] {
+    // ⏸️     return this._apps_viaDB.items
+    // ⏸️ }
+
+    // ⏸️ get apps_viaScript(): CushyAppL[] {
+    // ⏸️     if (this._apps_viaScript == null) this.extractApps()
+    // ⏸️     return this._apps_viaScript!
+    // ⏸️ }
+
     onHydrate = () => {
-        if (this.data.lastEvaluatedAt == null) this.extractApps()
+        if (this.data.lastEvaluatedAt == null) this.evaluateAndUpdateApps()
     }
 
     get file(): LibraryFile {
@@ -62,7 +65,7 @@ export class CushyScriptL {
     /** cache of extracted apps */
     private _EXECUTABLES: Maybe<Executable[]> = null
     get EXECUTABLES(): Executable[] {
-        if (this._EXECUTABLES == null) return this.extractApps()
+        if (this._EXECUTABLES == null) return this.evaluateAndUpdateApps()
         return this._EXECUTABLES
     }
 
@@ -82,7 +85,7 @@ export class CushyScriptL {
      *  - 2. upsert apps in db
      *  - 3. bumpt lastEvaluatedAt (and lastSuccessfulEvaluation)
      */
-    extractApps = () => {
+    evaluateAndUpdateApps = () => {
         console.log(`[👙] extracting apps...`)
         // debugger
         this._EXECUTABLES = this._EVALUATE_SCRIPT()

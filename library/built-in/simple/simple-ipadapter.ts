@@ -11,11 +11,11 @@ import { run_prompt } from '../_prefabs/prefab_prompt'
 
 app({
     metadata: {
-        name: 'Cushy Diffusion UI',
-        illustration: 'library/built-in/_illustrations/mc.jpg',
-        description: 'A card that contains all the features needed to play with stable diffusion',
+        name: 'Simple IPAdapter Test',
+        description: 'simple ipadapter test',
     },
     ui: (form) => ({
+        ipadapter: ui_ipadapter_standalone(),
         positive: form.prompt({
             default: {
                 tokens: [{ type: 'text', text: 'masterpiece, tree ' }],
@@ -26,7 +26,6 @@ app({
             default: 'bad quality, blurry, low resolution, pixelated, noisy',
         }),
         latent: ui_latent(),
-        ipadapter: ui_ipadapter_standalone(),
     }),
 
     run: async (run, ui) => {
@@ -54,7 +53,14 @@ app({
         // START IMAGE -------------------------------------------------------------------------------
         let { latent, width, height } = await run_latent({ opts: ui.latent, vae })
         if (ui.ipadapter) {
-            const foo = await run_ipadapter_standalone(ui.ipadapter, 0 as any)
+            const foo = await run_ipadapter_standalone(ui.ipadapter, {
+                positive,
+                negative,
+                width: ui.ipadapter.image.width,
+                height: ui.ipadapter.image.height,
+                ckptPos: ckpt,
+                modelType: 'SD1.5 512',
+            })
             // foo
             // graph.
         }

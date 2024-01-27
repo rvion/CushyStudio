@@ -302,9 +302,10 @@ export class Runtime<FIELDS extends WidgetDict = any> {
     }): Promise<RuntimeExecutionResult> => {
         const start = Date.now()
         const executable = this.step.executable
-        const appFormInput = this.step.data.formResult
+        const formResult = p.formInstance.result
+        // const appFormInput = this.step.data.formResult
         const appFormSerial = this.step.data.formSerial.values_
-        this.formResult = appFormInput
+        this.formResult = formResult as any
         this.formSerial = appFormSerial
         this.formInstance = p.formInstance
         this.imageToStartFrom = p.imageToStartFrom
@@ -316,7 +317,7 @@ export class Runtime<FIELDS extends WidgetDict = any> {
                 console.log(`❌ action not found`)
                 return { type: 'error', error: 'action not found' }
             }
-            await executable.run(this, appFormInput, p.imageToStartFrom)
+            await executable.run(this, formResult, p.imageToStartFrom)
             console.log(`🔴 after: size=${this.workflow.nodes.length}`)
             console.log('[✅] RUN SUCCESS')
             const duration = Date.now() - start

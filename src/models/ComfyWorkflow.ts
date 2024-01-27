@@ -402,7 +402,7 @@ export class ComfyWorkflowL {
 
                     // Cushy metadata
                     cushy_app_id: this.step?.data.appID,
-                    cushy_draft_result: this.step?.data.formResult,
+                    // cushy_draft_result: this.step?.data.formResult,
                     cushy_draft_serial: this.step?.data.formSerial,
                 },
             },

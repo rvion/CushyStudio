@@ -28,7 +28,7 @@ import { WidgetNumberUI } from './number/WidgetNumberUI'
 import { Widget_orbit } from './orbit/WidgetOrbit'
 import { WidgetOrbitUI } from './orbit/WidgetOrbitUI'
 import { WidgetSeedUI } from './WidgetSeedUI'
-import { WidgetSelectImageUI } from './WidgetSelectImageUI'
+import { WidgetSelectImageUI } from './image/WidgetImageUI'
 import { WidgetSelectManyUI } from './WidgetSelectManyUI'
 import { WidgetSelectOneUI } from './WidgetSelectOneUI'
 import { WigetSizeUI } from './size/WidgetSizeUI'
@@ -39,6 +39,7 @@ import { Widget_list } from './list/WidgetList'
 import { Widget_listExt } from './listExt/WidgetListExt'
 import { Widget_prompt } from './prompt/WidgetPrompt'
 import { Widget_size } from './size/WidgetSize'
+import { Widget_image } from './image/WidgetImage'
 
 /**
  * this widget will then dispatch the individual requests to the appropriate sub-widgets
@@ -56,7 +57,7 @@ export const WidgetUI = observer(function WidgetUI_(p: {
     if (widget instanceof Widget_number)       return <WidgetNumberUI      widget={widget} />
     if (widget instanceof Widget_string)       return <WidgetStringUI      widget={widget} />
     if (widget instanceof Widget_optional)     return <WidgetOptionalUI    widget={widget} />
-    if (widget instanceof R.Widget_image)      return <WidgetSelectImageUI widget={widget} />
+    if (widget instanceof Widget_image)      return <WidgetSelectImageUI widget={widget} />
     if (widget instanceof Widget_list)         return <WidgetListUI        widget={widget} />
     if (widget instanceof Widget_listExt)      return <WidgetListExtUI     widget={widget} />
     if (widget instanceof Widget_group)        return <WidgetGroupUI       widget={widget} />

@@ -2,7 +2,7 @@ import type { OutputFor } from '../../_prefabs'
 import type { Cnet_args } from '../../prefab_cnet'
 
 import { ipAdapterDoc } from './_ipAdapterDoc'
-import { ipAdapterClipModelList, ipAdapterFaceIDLoraList, ipAdapterModelList } from './_ipAdapterModelList'
+import { ipAdapter_faceID_ClipModelList, ipAdapter_faceID_LoraList, ipAdapterModelList } from './_ipAdapterModelList'
 import { ui_ipadapter_CLIPSelection, ui_subform_IPAdapter_common } from './_ipAdapterUtils'
 import { ui_ipadapter_modelSelection } from './ui_ipadapter_modelSelection'
 
@@ -22,7 +22,7 @@ export const ui_IPAdapterFaceID = () => {
                 form,
                 'ip-adapter-plus-face_sd15.safetensors',
                 // 'ip-adapter-faceid-plus_sd15.bin',
-                ipAdapterClipModelList,
+                ipAdapter_faceID_ClipModelList,
             ),
             lora: form.enum.Enum_Load_Lora_lora_name({
                 // enumName: 'Enum_AV$_CheckpointModelsToParametersPipe_lora_1_name',
@@ -30,7 +30,7 @@ export const ui_IPAdapterFaceID = () => {
                 label: 'Face ID Lora',
                 recommandedModels: {
                     modelFolderPrefix: 'models/lora',
-                    knownModel: ipAdapterFaceIDLoraList,
+                    knownModel: ipAdapter_faceID_LoraList,
                 },
                 tooltip:
                     'Select the same LORA as the model. So for ip-adapter-faceid-plus, select ip-adapter-faceid-plus_sd15_lora',

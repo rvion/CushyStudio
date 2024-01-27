@@ -3,6 +3,8 @@ import { useEffect, useLayoutEffect } from 'react'
 import { IndexAllAppsBtnUI } from './libraryUI/LibraryHeaderUI'
 import { AppCardUI } from 'src/cards/fancycard/AppCardUI'
 import { useSt } from 'src/state/stateContext'
+import { ScriptExtractionResult } from 'src/cards/LibraryFile'
+import { toastError } from 'src/utils/misc/toasts'
 
 export const Panel_Welcome = observer(function Panel_Welcome_(p: {}) {
     useEffect(() => {
@@ -45,11 +47,16 @@ export const StandaloneAppBtnUI = observer(function StandaloneAppBtnUI_(p: { pat
 
     // ensure this app is up-to-date
     useEffect(() => {
-        file.extractScriptFromFile()
+        void (async () => {
+            const res: ScriptExtractionResult = await file.extractScriptFromFile()
+            if (res.type === 'failed') return toastError('default app (SDUI) failed to load')
+            const script = res.script
+            script.evaluateAndUpdateApps()
+        })()
     }, [])
 
     // show script evaluation progress
-    const script0 = file.script0
+    const script0 = file.lastSuccessfullExtractedScript
     if (script0 == null)
         return (
             <div>
@@ -59,7 +66,7 @@ export const StandaloneAppBtnUI = observer(function StandaloneAppBtnUI_(p: { pat
         )
 
     // show app evaluation progress
-    const app = script0.apps_viaScript?.[0]
+    const app = script0.apps?.[0]
     if (app == null) {
         return (
             <div>
