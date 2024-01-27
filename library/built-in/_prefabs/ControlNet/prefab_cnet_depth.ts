@@ -10,10 +10,9 @@ export const ui_subform_Depth = () => {
         items: () => ({
             ...cnet_ui_common(form),
             preprocessor: ui_subform_Depth_Preprocessor(),
-            cnet_model_name: form.enum({
+            cnet_model_name: form.enum.Enum_ControlNetLoader_control_net_name({
                 label: 'Model',
-                enumName: 'Enum_ControlNetLoader_control_net_name',
-                default: { value: 't2iadapter_canny_sd14v1.pth' },
+                default: 't2iadapter_canny_sd14v1.pth',
                 recommandedModels: {
                     knownModel: [
                         'T2I-Adapter (depth)',

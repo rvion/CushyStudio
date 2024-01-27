@@ -2,9 +2,12 @@
 //     run_ipadapter_standalone,
 //     ui_ipadapter_standalone,
 // } from './_prefabs/ControlNet/ipAdapter/prefab_ipAdapter_base_standalone'
-import { run_ipadapter_standalone, ui_ipadapter_standalone } from './_prefabs/ControlNet/ipAdapter/prefab_ipAdapter_base_standalone'
-import { run_latent, ui_latent } from './_prefabs/prefab_latent'
-import { run_prompt } from './_prefabs/prefab_prompt'
+import {
+    run_ipadapter_standalone,
+    ui_ipadapter_standalone,
+} from '../_prefabs/ControlNet/ipAdapter/prefab_ipAdapter_base_standalone'
+import { run_latent, ui_latent } from '../_prefabs/prefab_latent'
+import { run_prompt } from '../_prefabs/prefab_prompt'
 
 app({
     metadata: {
@@ -52,7 +55,7 @@ app({
         let { latent, width, height } = await run_latent({ opts: ui.latent, vae })
         if (ui.ipadapter) {
             const foo = await run_ipadapter_standalone(ui.ipadapter, 0 as any)
-            // foo.
+            // foo
             // graph.
         }
     },

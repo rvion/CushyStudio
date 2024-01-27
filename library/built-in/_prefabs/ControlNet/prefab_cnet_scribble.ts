@@ -10,9 +10,9 @@ export const ui_subform_Scribble = () => {
         items: () => ({
             ...cnet_ui_common(form),
             preprocessor: ui_subform_Scribble_Preprocessor(),
-            cnet_model_name: form.enum({
-                enumName: 'Enum_ControlNetLoader_control_net_name',
-                default: { value: 'control_v11p_sd15_scribble.pth' },
+            cnet_model_name: form.enum.Enum_ControlNetLoader_control_net_name({
+                default: 'control_scribble-fp16.safetensors',
+                extraDefaults: ['control_v11p_sd15_scribble.pth'],
                 recommandedModels: { knownModel: ['ControlNet-v1-1 (scribble; fp16)'] },
                 label: 'Model',
             }),

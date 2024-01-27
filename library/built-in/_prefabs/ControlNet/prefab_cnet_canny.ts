@@ -11,10 +11,9 @@ export const ui_subform_Canny = () => {
         items: () => ({
             ...cnet_ui_common(form),
             preprocessor: ui_subform_Canny_Preprocessor(form),
-            cnet_model_name: form.enum({
+            cnet_model_name: form.enum.Enum_ControlNetLoader_control_net_name({
                 label: 'Model',
-                enumName: 'Enum_ControlNetLoader_control_net_name',
-                default: { value: 'control_v11p_sd15_canny.pth' },
+                default: 'control_v11p_sd15_canny_fp16.safetensors',
                 recommandedModels: {
                     knownModel: [
                         'T2I-Adapter (canny)',

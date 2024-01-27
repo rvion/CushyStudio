@@ -7,8 +7,7 @@ export const ui_upscaleWithModel = () => {
     return form.groupOpt({
         label: 'Upscale via Model',
         items: () => ({
-            model: form.enum({
-                enumName: 'Enum_UpscaleModelLoader_model_name',
+            model: form.enum.Enum_UpscaleModelLoader_model_name({
                 default: '4x-UltraSharp.pth',
             }),
         }),

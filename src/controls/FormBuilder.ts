@@ -17,6 +17,7 @@ import { Widget_list, type Widget_list_config } from './widgets/list/WidgetList'
 import { Widget_listExt, type Widget_listExt_config } from './widgets/listExt/WidgetListExt'
 import { Widget_prompt, type Widget_prompt_config } from './widgets/prompt/WidgetPrompt'
 import { Widget_size, Widget_size_config } from './widgets/size/WidgetSize'
+import { EnumBuilder, EnumBuilderOpt } from './EnumBuilder'
 
 export class FormBuilder {
     /** (@internal) don't call this yourself */
@@ -86,14 +87,15 @@ export class FormBuilder {
 
     // --------------------
 
-    enum = <const T extends KnownEnumNames>(config: Widget_enum_config<T>) => new Widget_enum(this, config)
-    enumOpt = <const T extends KnownEnumNames>(config: Widget_enum_config<T> & { startActive?: boolean }) =>
-        this.optional({
-            label: config.label,
-            startActive: config.startActive,
-            widget: () => new Widget_enum(this, config),
-        })
-
+    // enum = /*<const T extends KnownEnumNames>*/ (config: Widget_enum_config<any, any>) => new Widget_enum(this, config)
+    enum: EnumBuilder = 0 as any /*<const T extends KnownEnumNames>*/
+    enumOpt: EnumBuilderOpt = 0 as any
+    //  <const T extends KnownEnumNames>(config: Widget_enum_config<T> & { startActive?: boolean }) =>
+    //     this.optional({
+    //         label: config.label,
+    //         startActive: config.startActive,
+    //         widget: () => new Widget_enum(this, config),
+    //     })
     // --------------------
 
     color     = (opts: Widget_color_config)       => new Widget_color(this, opts) // prettier-ignore

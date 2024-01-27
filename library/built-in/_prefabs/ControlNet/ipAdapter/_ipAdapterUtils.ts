@@ -18,9 +18,8 @@ export const ui_subform_IPAdapter_common = (form: FormBuilder, defaultStrength: 
 
 //🅿️ IPAdapter CLIP Selection ===================================================
 export const ui_ipadapter_CLIPSelection = (form: FormBuilder) => ({
-    clip_name: form.enum({
-        enumName: 'Enum_CLIPVisionLoader_clip_name',
-        default: { value: 'model.safetensors' },
+    clip_name: form.enum.Enum_CLIPVisionLoader_clip_name({
+        default: 'SD1.5\\CLIP-ViT-H-14-laion2B-s32B-b79K.safetensors',
         recommandedModels: {
             modelFolderPrefix: 'models/clip_vision',
             knownModel: ipAdapterClipModelList,

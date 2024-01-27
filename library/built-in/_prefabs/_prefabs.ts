@@ -77,18 +77,8 @@ export const util_expandBrances = (str: string): string[] => {
     return Array.from(result)
 }
 
-export const ui_vaeName = (form: FormBuilder) =>
-    form.enumOpt({
-        label: 'VAE',
-        enumName: 'Enum_VAELoader_vae_name',
-    })
-
-export const ui_modelName = (form: FormBuilder) =>
-    form.enum({
-        label: 'Checkpoint',
-        enumName: 'Enum_CheckpointLoaderSimple_ckpt_name',
-    })
-
+export const ui_vaeName = (form: FormBuilder) => form.enumOpt.Enum_VAELoader_vae_name({ label: 'VAE' })
+export const ui_modelName = (form: FormBuilder) => form.enum.Enum_CheckpointLoaderSimple_ckpt_name({ label: 'Checkpoint' })
 export const ui_resolutionPicker = (form: FormBuilder) =>
     form.selectOne({
         label: 'Resolution',

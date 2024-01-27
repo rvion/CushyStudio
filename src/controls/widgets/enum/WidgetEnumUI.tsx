@@ -9,7 +9,7 @@ import { useSt } from 'src/state/stateContext'
 
 // UI
 
-export const WidgetEnumUI = observer(function WidgetEnumUI_<K extends KnownEnumNames>(p: { widget: Widget_enum<K> }) {
+export const WidgetEnumUI = observer(function WidgetEnumUI_(p: { widget: Widget_enum<any> }) {
     const widget = p.widget
     const enumName = widget.config.enumName
     const isOptional = false // TODO: hook into parent once parent is accessible from state

@@ -1,5 +1,6 @@
 import type { OutputFor } from './_prefabs'
 import type { FormBuilder } from '../../../src/controls/FormBuilder'
+import type { SDModelType } from 'src/controls/widgets/size/WidgetSizeTypes'
 
 import { run_cnet_openPose, ui_subform_OpenPose } from './ControlNet/prefab_cnet_openPose'
 import { run_cnet_canny, ui_subform_Canny } from './ControlNet/prefab_cnet_canny'
@@ -12,7 +13,6 @@ import { run_cnet_Lineart, ui_subform_Lineart } from './ControlNet/prefab_cnet_l
 import { run_cnet_SoftEdge, ui_subform_SoftEdge } from './ControlNet/prefab_cnet_softEdge'
 import { bang } from 'src/utils/misc/bang'
 import { run_cnet_Sketch, ui_subform_Sketch } from './ControlNet/prefab_cnet_sketch'
-import type { SDModelType } from 'src/controls/widgets/size/WidgetSizeTypes'
 import { run_cnet_IPAdapterFaceID, ui_IPAdapterFaceID } from './ControlNet/ipAdapter/prefab_ipAdapter_face'
 
 // 🅿️ CNET UI -----------------------------------------------------------
@@ -65,16 +65,8 @@ export const cnet_ui_common = (form: FormBuilder) => ({
         items: () => ({
             startAtStepPercent: form.float({ default: 0, min: 0, max: 1, step: 0.1 }),
             endAtStepPercent: form.float({ default: 1, min: 0, max: 1, step: 0.1 }),
-            crop: form.enum({
-                label: 'Image Prep Crop mode',
-                enumName: 'Enum_LatentUpscale_crop',
-                default: 'disabled',
-            }),
-            upscale_method: form.enum({
-                label: 'Scale method',
-                enumName: 'Enum_ImageScale_upscale_method',
-                default: 'lanczos',
-            }),
+            crop: form.enum.Enum_LatentUpscale_crop({ label: 'Image Prep Crop mode', default: 'disabled' }),
+            upscale_method: form.enum.Enum_ImageScale_upscale_method({ label: 'Scale method', default: 'lanczos' }),
         }),
     }),
 })

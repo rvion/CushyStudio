@@ -5,7 +5,7 @@ import { ModelInfo, getKnownModels, getModelInfoEnumName } from 'src/wiki/modelL
 import { RecommendedModelDownload } from '../EnumDefault'
 import { QuickHostActionsUI } from 'src/wiki/ui/QuickHostActionsUI'
 
-export const InstallModelBtnUI = observer(function InstallModelBtnUI_<K extends KnownEnumNames>(p: {
+export const InstallModelBtnUI = observer(function InstallModelBtnUI_(p: {
     // widget: Widget_enum<K> | Widget_enumOpt<K>
     // modelFolderPrefix: string
     models: RecommendedModelDownload

@@ -1,11 +1,8 @@
 app({
     ui: (form) => ({
         // load
-        model: form.enum({
-            enumName: 'Enum_CheckpointLoaderSimple_ckpt_name',
-            default: 'revAnimated_v122.safetensors',
-        }),
-        vae: form.enumOpt({ enumName: 'Enum_VAELoader_vae_name' }),
+        model: form.enum.Enum_CheckpointLoaderSimple_ckpt_name({ default: 'revAnimated_v122.safetensors' }),
+        vae: form.enumOpt.Enum_VAELoader_vae_name({}),
         clipSkip: form.int({
             label: 'Clip Skip',
             tooltip: 'same as ClipSetLastLayer; you can use both positive and negative values',
@@ -18,7 +15,7 @@ app({
 
         // latent
         strength: form.float({ default: 0.9, min: 0, max: 1, step: 0.1 }),
-        cnet: form.enum({ enumName: 'Enum_ControlNetLoader_control_net_name', default: 'control_scribble-fp16.safetensors' }),
+        cnet: form.enum.Enum_ControlNetLoader_control_net_name({ default: 'control_scribble-fp16.safetensors' }),
         startImage: form.image({}),
         // width: form.int({ default: 1024,}),
         // height: form.int({ default: 1024,}),
@@ -26,8 +23,8 @@ app({
 
         //
         CFG: form.int({ default: 8 }),
-        sampler: form.enum({ enumName: 'Enum_KSampler_sampler_name', default: 'dpmpp_2m_sde' }),
-        scheduler: form.enum({ enumName: 'Enum_KSampler_scheduler', default: 'karras' }),
+        sampler: form.enum.Enum_KSampler_sampler_name({ default: 'dpmpp_2m_sde' }),
+        scheduler: form.enum.Enum_KSampler_scheduler({ default: 'karras' }),
         denoise: form.float({ default: 1 }),
         steps: form.int({ default: 20, min: 5, max: 40 }),
         seed: form.seed({}),

@@ -3,26 +3,26 @@ export const ui_improveFace = () => {
     return form.groupOpt({
         customNodesByTitle: 'ComfyUI Impact Pack',
         items: () => ({
-            faces: form.enum({
-                //
-                enumName: 'Enum_UltralyticsDetectorProvider_model_name',
-                default: { value: 'bbox/face_yolov8m.pt' },
+            faces: form.enum.Enum_UltralyticsDetectorProvider_model_name({
+                default: 'bbox/face_yolov8m.pt',
                 recommandedModels: {
                     knownModel: [
                         //
                         'face_yolov8m (bbox)',
                         'face_yolov8n (bbox)',
                         'face_yolov8s (bbox)',
-                        'hand_yolov8n (bbox)',
-                        'hand_yolov8s (bbox)',
                         'face_yolov8n_v2 (bbox)',
                     ],
                 },
             }),
-            eyes: form.enumOpt({
-                //
-                enumName: 'Enum_UltralyticsDetectorProvider_model_name',
+            hands: form.enum.Enum_UltralyticsDetectorProvider_model_name({
+                default: 'bbox/hand_yolov8s.pt',
+                recommandedModels: {
+                    knownModel: ['hand_yolov8n (bbox)', 'hand_yolov8s (bbox)'],
+                },
             }),
+
+            eyes: form.enumOpt.Enum_UltralyticsDetectorProvider_model_name({}),
         }),
     })
 }
