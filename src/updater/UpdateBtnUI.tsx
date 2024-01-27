@@ -1,15 +1,15 @@
+import type { ReactNode } from 'react'
+
 import { observer } from 'mobx-react-lite'
-import { ReactNode } from 'react'
 import { FolderGitStatus } from 'src/cards/FolderGitStatus'
+import { MessageInfoUI } from 'src/panels/MessageUI'
 import { RevealUI } from 'src/rsuite/reveal/RevealUI'
-import { Button, Joined, Loader, Message } from 'src/rsuite/shims'
+import { Button, Loader, Message } from 'src/rsuite/shims'
 import { GitManagedFolder } from 'src/updater/updater'
 import { exhaust } from 'src/utils/misc/ComfyUtils'
 import { GitInstallUI } from './GitInstallUI'
-import { UninstallUI } from './GitUninstallUI'
 import { UpdaterErrorUI } from './UpdaterErrorUI'
 import { _formatAsRelativeDateTime } from './_getRelativeTimeString'
-import { MessageInfoUI } from 'src/panels/MessageUI'
 
 export const UpdateBtnUI = observer(function UpdateBtnUI_(p: {
     //
@@ -33,8 +33,8 @@ export const UpdateBtnUI = observer(function UpdateBtnUI_(p: {
     if (updater.hasUpdateAvailable)
         ANCHOR = (
             <div tw='flex items-center shrink-0' className={p.className}>
-                <span className='indicator-item badge badge-secondary'>new</span>
                 {ANCHOR}
+                <span className='indicator-item badge badge-secondary'>Update Available</span>
             </div>
         )
 
