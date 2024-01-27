@@ -2,7 +2,8 @@ import type { OutputFor } from '../../_prefabs'
 import type { Cnet_args } from '../../prefab_cnet'
 import { ipAdapterDoc } from './_ipAdapterDoc'
 import { ipAdapterClipModelList, ipAdapterFaceIDLoraList, ipAdapterModelList } from './_ipAdapterModelList'
-import { ui_ipadapter_CLIPSelection, ui_ipadapter_modelSelection, ui_subform_IPAdapter_common } from './_ipAdapterUtils'
+import { ui_ipadapter_CLIPSelection, ui_subform_IPAdapter_common } from './_ipAdapterUtils'
+import { ui_ipadapter_modelSelection } from './ui_ipadapter_modelSelection'
 
 // 🅿️ IPAdapter FaceID ===================================================
 export const ui_IPAdapterFaceID = () => {

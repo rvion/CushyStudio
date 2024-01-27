@@ -265,6 +265,24 @@ export class Runtime<FIELDS extends WidgetDict = any> {
     /** helper to auto-find an output slot and link use it for this input */
     AUTO = auto
 
+    // ⏭️ /** @experimental */
+    // ⏭️ findNode = <T extends keyof ComfySetup>(
+    // ⏭️     //
+    // ⏭️     nodeName: T,
+    // ⏭️     p: Partial<Parameters<ComfySetup[T]>[0]>,
+    // ⏭️ ): Maybe<ReturnType<ComfySetup[T]>> => {
+    // ⏭️     const workflow = this.workflow
+    // ⏭️     const node = workflow.nodes.find((n) => {
+    // ⏭️         if (n.$schema.nameInCushy !== nodeName) return false
+    // ⏭️         for (const key in p) {
+    // ⏭️             if (JSON.stringify(n.json.inputs[key]) !== JSON.stringify(p[key])) return false
+    // ⏭️         }
+    // ⏭️         return true
+    // ⏭️     })
+    // ⏭️
+    // ⏭️     return null
+    // ⏭️ }
+
     /** helper to chose radomly any item from a list */
     chooseRandomly = <T>(key: string, seed: number, arr: T[]): T => {
         return createRandomGenerator(`${key}:${seed}`).randomItem(arr)
