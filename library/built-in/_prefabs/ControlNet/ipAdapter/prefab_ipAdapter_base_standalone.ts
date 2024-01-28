@@ -29,31 +29,23 @@ export const run_ipadapter_standalone = async (
 ): Promise<{ ip_adapted_model: _MODEL }> => {
     const run = getCurrentRun()
     const graph = run.nodes
-    if (ui == null) return 0 as any
-    let image: _IMAGE = await run.loadImageAnswer(ui.image)
-    // form.
-    //crop the image to the right size
-    //todo: make these editable
-    image = graph.PrepImageForClipVision({
-        image,
-        interpolation: 'LANCZOS',
-        crop_position: 'center',
-        sharpening: 0,
-    })._IMAGE
 
-    const ip_model = graph.IPAdapterModelLoader({ ipadapter_file: /* ip.cnet_model_name  */ 0 as any })
-    const ip_clip_name = graph.CLIPVisionLoader({ clip_name: /* ip.clip_name  */ 0 as any })
+    let image: _IMAGE = await run.loadImageAnswer(ui.image)
+    image = graph.PrepImageForClipVision({ image, interpolation: 'LANCZOS', crop_position: 'center', sharpening: 0 })
+
+    const ip_model = graph.IPAdapterModelLoader({ ipadapter_file: ui.cnet_model_name })
+    const ip_clip_name = graph.CLIPVisionLoader({ clip_name: ui.clip_name })
     const ip_adapted_model = graph.IPAdapterApply({
         ipadapter: ip_model,
         clip_vision: ip_clip_name,
         image: image,
         model: cnet_args.ckptPos,
-        // weight: ip.strength,
-        // noise: ip.advanced?.noise ?? 0,
         weight_type: 'original',
-        // start_at: ip.advanced?.startAtStepPercent ?? 0,
-        // end_at: ip.advanced?.endAtStepPercent ?? 1,
-        // unfold_batch: ip.advanced?.unfold_batch ?? false,
+        weight: ui.strength,
+        noise: ui.advanced?.noise ?? 0,
+        start_at: ui.advanced?.startAtStepPercent ?? 0,
+        end_at: ui.advanced?.endAtStepPercent ?? 1,
+        unfold_batch: ui.advanced?.unfold_batch ?? false,
     })._MODEL
 
     return { ip_adapted_model }
