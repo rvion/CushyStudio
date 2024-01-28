@@ -135,8 +135,9 @@ export class Widget_choices<T extends BranchDefinitions> implements IWidget<Widg
     }
 
     toggleBranch(branch: keyof T & string) {
-        if (this.children[branch]) this.disableBranch(branch)
-        else this.enableBranch(branch)
+        if (this.children[branch]) {
+            if (this.isMulti) this.disableBranch(branch)
+        } else this.enableBranch(branch)
     }
 
     disableBranch(branch: keyof T & string) {
