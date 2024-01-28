@@ -106,8 +106,8 @@ export class DraftL {
         imageToStartFrom?: MediaImageL,
     ): StepL => {
         this.isDirty = false
+        this.formBuilder._cache.count++
         this.AWAKE()
-
         // 2024-01-21 should this be here ?
         this.st.layout.FOCUS_OR_CREATE('Output', {})
 
