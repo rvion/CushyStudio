@@ -28,7 +28,6 @@ export const WidgetListUI = observer(function WidgetListUI_<T extends Widget>(p:
                                     <SortableKnob>
                                         <ListDragHandleUI widget={v} ix={ix} />
                                     </SortableKnob>
-                                    <ListItemCollapseBtnUI req={v} />
                                     <div className='divider my-2 flex-1 border-top'>
                                         <div id={v.id} tw='opacity-20 italic'>
                                             #{ix}:{v.id}
@@ -46,6 +45,7 @@ export const WidgetListUI = observer(function WidgetListUI_<T extends Widget>(p:
                                     >
                                         <span className='material-symbols-outlined'>delete</span>
                                     </div>
+                                    <ListItemCollapseBtnUI req={v} />
                                 </div>
                                 <WidgetUI widget={v} />
                                 {/* {!(v.state.collapsed ?? false) && (

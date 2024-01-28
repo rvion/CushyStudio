@@ -170,7 +170,13 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                 {/* Collapse ONLY Indicator ------------------------------------ */}
                 {showFoldIndicator ? null : (
                     <span
-                        tw='opacity-30 hover:opacity-100 ml-auto btn btn-sm btn-narrow btn-ghost'
+                        tw={[
+                            //
+                            'opacity-30 hover:opacity-100 ml-auto btn btn-sm btn-ghost',
+                            'btn-square',
+                            // 'btn-narrow'
+                            // 'btn-narrower'
+                        ]}
                         onClick={(ev) => {
                             if (!widget.isCollapsible) return
 
