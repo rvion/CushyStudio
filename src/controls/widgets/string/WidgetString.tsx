@@ -4,6 +4,7 @@ import type { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { WidgetDI } from '../WidgetUI.DI'
+import { hash } from 'ohash'
 
 export type Widget_string_config = WidgetConfigFields<{ default?: string; textarea?: boolean; placeHolder?: string }>
 export type Widget_string_serial = WidgetSerialFields<{ type: 'str'; val?: string }>
@@ -18,6 +19,7 @@ export type Widget_string_types = {
 // STATE
 export interface Widget_string extends WidgetTypeHelpers<Widget_string_types> {}
 export class Widget_string implements IWidget<Widget_string_types> {
+    get serialHash () { return hash(this.result) } // prettier-ignore
     get isVerticalByDefault(): boolean {
         if (this.config.textarea) return true
         return false

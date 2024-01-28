@@ -5,6 +5,7 @@ import { FormBuilder } from '../../FormBuilder'
 import { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../../IWidget'
 import { WidgetDI } from '../WidgetUI.DI'
 import { mkEnglishSummary } from './_orbitUtils'
+import { hash } from 'ohash'
 
 export type OrbitData = {
     azimuth: number
@@ -41,6 +42,7 @@ export type Widget_orbit_types = {
 // STATE
 export interface Widget_orbit extends WidgetTypeHelpers<Widget_orbit_types> {}
 export class Widget_orbit implements IWidget<Widget_orbit_types> {
+    get serialHash () { return hash(this.result) } // prettier-ignore
     isVerticalByDefault = true
     isCollapsible = false
     id: string

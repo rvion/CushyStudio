@@ -28,6 +28,7 @@ import { nanoid } from 'nanoid'
 import { bang } from 'src/utils/misc/bang'
 
 import { WidgetDI } from './widgets/WidgetUI.DI'
+import { hash } from 'ohash'
 
 
 // Widget is a closed union for added type safety
@@ -68,6 +69,7 @@ export class Widget_markdown implements IWidget_OLD<'markdown', Widget_markdown_
     id: string
     type: 'markdown' = 'markdown'
     serial: Widget_markdown_state
+    get serialHash () { return this.id }
 
     get markdown() :string{
         const md= this.config.markdown
@@ -100,6 +102,7 @@ export class Widget_custom<T> implements IWidget_OLD<'custom', Widget_custom_con
     readonly id: string
     readonly type: 'custom' = 'custom'
 
+    get serialHash () { return hash(this.result) }
     serial: Widget_custom_serial<T>
     Component: Widget_custom_config<T>['Component']
     st = () => this.form.schema.st
@@ -137,6 +140,7 @@ export class Widget_seed implements IWidget_OLD<'seed', Widget_seed_config, Widg
     readonly id: string
     readonly type: 'seed' = 'seed'
     readonly serial: Widget_seed_state
+    get serialHash () { return hash(this.result) }
     constructor(
         public form: FormBuilder,
         public config: Widget_seed_config,
@@ -168,6 +172,7 @@ export type Widget_inlineRun_state  = WidgetSerialFields<{ type:'inlineRun', act
 export type Widget_inlineRun_output = boolean
 export interface Widget_inlineRun extends WidgetTypeHelpers_OLD<'inlineRun', Widget_inlineRun_config, Widget_inlineRun_serial, Widget_inlineRun_state, Widget_inlineRun_output> {}
 export class Widget_inlineRun implements IWidget_OLD<'inlineRun', Widget_inlineRun_config, Widget_inlineRun_serial, Widget_inlineRun_state, Widget_inlineRun_output> {
+    get serialHash () { return hash(this.result) }
     readonly isVerticalByDefault = false
     readonly isCollapsible = false
     readonly id: string
@@ -204,6 +209,7 @@ export type Widget_matrix_serial = WidgetSerialFields<{ type: 'matrix', active: 
 export type Widget_matrix_output = Widget_matrix_cell[]
 export interface Widget_matrix extends WidgetTypeHelpers_OLD<'matrix', Widget_matrix_config, Widget_matrix_serial, 0, Widget_matrix_output> {}
 export class Widget_matrix implements IWidget_OLD<'matrix', Widget_matrix_config, Widget_matrix_serial, 0, Widget_matrix_output> {
+    get serialHash () { return hash(this.result) }
     readonly isVerticalByDefault = true
     readonly isCollapsible = true
     readonly id: string
@@ -298,6 +304,7 @@ export type Widget_loras_serial = WidgetSerialFields<{ type: 'loras', active: tr
 export type Widget_loras_output = SimplifiedLoraDef[]
 export interface Widget_loras extends WidgetTypeHelpers_OLD<'loras', Widget_loras_config, Widget_loras_serial, any, Widget_loras_output> {}
 export class Widget_loras implements IWidget_OLD<'loras', Widget_loras_config, Widget_loras_serial, any, Widget_loras_output> {
+    get serialHash () { return hash(this.result) }
     isVerticalByDefault = true
     isCollapsible = true
     id: string
@@ -356,6 +363,7 @@ export type Widget_selectOne_state <T extends BaseSelectEntry>  = WidgetSerialFi
 export type Widget_selectOne_output<T extends BaseSelectEntry> = T
 export interface Widget_selectOne<T>  extends WidgetTypeHelpers_OLD<'selectOne', Widget_selectOne_config<T>, Widget_selectOne_serial<T>, Widget_selectOne_state<T>, Widget_selectOne_output<T>> {}
 export class Widget_selectOne<T extends BaseSelectEntry> implements IWidget_OLD<'selectOne', Widget_selectOne_config<T>, Widget_selectOne_serial<T>, Widget_selectOne_state<T>, Widget_selectOne_output<T>> {
+    get serialHash () { return hash(this.result) }
     readonly isVerticalByDefault = false
     readonly isCollapsible = false
     readonly id: string
@@ -404,6 +412,7 @@ export type Widget_selectMany_serial<T extends BaseSelectEntry> = WidgetSerialFi
 export type Widget_selectMany_output<T extends BaseSelectEntry> = T[]
 export interface Widget_selectMany<T extends BaseSelectEntry> extends WidgetTypeHelpers_OLD<'selectMany', Widget_selectMany_config<T>, Widget_selectMany_serial<T>, 0, Widget_selectMany_output<T>> {}
 export class Widget_selectMany<T extends BaseSelectEntry> implements IWidget_OLD<'selectMany', Widget_selectMany_config<T>, Widget_selectMany_serial<T>, 0, Widget_selectMany_output<T>> {
+    get serialHash () { return hash(this.result) }
     readonly isVerticalByDefault = false
     readonly isCollapsible = false
     readonly id: string

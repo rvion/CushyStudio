@@ -7,6 +7,7 @@ import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { extractDefaultValue } from '../../EnumDefault'
 import { WidgetDI } from '../WidgetUI.DI'
+import { hash } from 'ohash'
 
 // CONFIG
 export type Widget_enum_config<O> = WidgetConfigFields<{
@@ -38,6 +39,7 @@ export class Widget_enum<O> implements IWidget<Widget_enum_types<O>> {
     readonly id: string
     readonly type: 'enum' = 'enum'
 
+    get serialHash () { return hash(this.result) } // prettier-ignore
     get possibleValues(): EnumValue[] {
         return this.form.schema.knownEnumsByName.get(this.config.enumName as any)?.values ?? []
     }

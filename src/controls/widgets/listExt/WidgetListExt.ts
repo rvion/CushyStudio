@@ -9,6 +9,7 @@ import { nanoid } from 'nanoid'
 import { runWithGlobalForm } from 'src/models/_ctx2'
 import { WidgetDI } from '../WidgetUI.DI'
 import { boardDefaultItemShape } from './WidgetListExtTypes'
+import { hash } from 'ohash'
 
 // CONFIG
 export type Widget_listExt_config<T extends Widget> = WidgetConfigFields<{
@@ -49,6 +50,7 @@ export type Widget_listExt_types<T extends Widget> = {
 // STATE
 export interface Widget_listExt<T extends Widget> extends WidgetTypeHelpers<Widget_listExt_types<T>> {}
 export class Widget_listExt<T extends Widget> implements IWidget<Widget_listExt_types<T>> {
+    get serialHash () { return hash(this.result) } // prettier-ignore
     readonly isVerticalByDefault = true
     readonly isCollapsible = true
     readonly id: string

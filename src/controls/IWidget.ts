@@ -28,8 +28,8 @@ export type IWidget_OLD<T, I, X, S, O> = {
     id: string
     isVerticalByDefault: boolean
     isCollapsible: boolean
-    type: T
-    // state: S
+    readonly serialHash: string
+    readonly type: T
     readonly result: O
     readonly serial: X
     readonly form: FormBuilder
@@ -40,7 +40,8 @@ export type IWidget<K extends $WidgetTypes> = {
     id: string
     isVerticalByDefault: boolean
     isCollapsible: boolean
-    type: K['$Type']
+    readonly serialHash: string
+    readonly type: K['$Type']
     readonly result: K['$Output']
     readonly serial: K['$Serial']
     readonly form: FormBuilder

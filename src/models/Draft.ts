@@ -216,7 +216,7 @@ export class DraftL {
             const formValue = this.form.value
             if (formValue == null) return null
             const count = formValue.form._cache.count // manual mobx invalidation
-            const _ = JSON.stringify(formValue.serial)
+            const _ = formValue.serialHash
             runInAction(() => {
                 console.log(`[🦊] form: updating`)
                 this.update({ formSerial: formValue.serial })

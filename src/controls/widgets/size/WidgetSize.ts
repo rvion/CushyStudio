@@ -7,6 +7,7 @@ import type { CushySizeByRatio, CushySize, AspectRatio, SDModelType } from 'src/
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { WidgetDI } from '../WidgetUI.DI'
+import { hash } from 'ohash'
 
 export type Widget_size_config = WidgetConfigFields<{
     default?: CushySizeByRatio
@@ -21,6 +22,7 @@ export interface Widget_size extends WidgetTypeHelpers_OLD<'size', Widget_size_c
 export class Widget_size
     implements IWidget_OLD<'size', Widget_size_config, Widget_size_serial, Widget_size_state, Widget_size_output>
 {
+    get serialHash() { return hash(this.result) } // prettier-ignore
     readonly isVerticalByDefault = true
     readonly isCollapsible = true
     readonly id: string
