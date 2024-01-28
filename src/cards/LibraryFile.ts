@@ -109,21 +109,25 @@ export class LibraryFile {
     successfullLoadStrategies: Maybe<LoadStrategy> = null
     lastSuccessfullExtractedScript: Maybe<CushyScriptL> = null
     scriptExtractionAttemptedOnce = false
-    currentScriptExtraction: Maybe<ManualPromise<ScriptExtractionResult>> = null
+    currentScriptExtractionPromise: Maybe<ManualPromise<ScriptExtractionResult>> = null
 
     // 🔶 TODO: split into two functions for easier code path understanding from
     // 🔶 other locations.
     extractScriptFromFile = async (p?: { force?: boolean }): Promise<ScriptExtractionResult> => {
+        // RACE CONDITIONS PREVENTION:
         // if we're alreay trying to extract => just return the current promise
-        if (this.currentScriptExtraction) return this.currentScriptExtraction
-        this.currentScriptExtraction = new ManualPromise<ScriptExtractionResult>()
+        if (this.currentScriptExtractionPromise) return this.currentScriptExtractionPromise
+        const currentScriptExtractionPromise = new ManualPromise<ScriptExtractionResult>()
+        this.currentScriptExtractionPromise = currentScriptExtractionPromise
 
-        // if already loaded, cool
+        // PERF: if we have alreay attempted extraction once, and if we don't have
+        // any hint that re-trying will yield something different, let's just return
+        // the cached value
         if (this.lastSuccessfullExtractedScript && !p?.force)
             return { type: 'cached', script: this.lastSuccessfullExtractedScript }
 
-        let script: Maybe<CushyScriptL> = null
         // try every strategy in order
+        let script: Maybe<CushyScriptL> = null
         for (const strategy of this.strategies) {
             const res = await this.loadWithStrategy(strategy)
             if (res.type === 'SUCCESS') {
@@ -137,12 +141,17 @@ export class LibraryFile {
 
         // done
         this.scriptExtractionAttemptedOnce = true
-        this.currentScriptExtraction = null
         if (script == null) {
             console.log(`[🔴] LibFile: LOAD FAILURE !`)
-            return { type: 'failed' }
+            const RESULT: ScriptExtractionResult = { type: 'failed' }
+            this.currentScriptExtractionPromise.resolve(RESULT)
+            this.currentScriptExtractionPromise = null
+            return RESULT
         } else {
-            return { type: 'newScript', script }
+            const RESULT: ScriptExtractionResult = { type: 'newScript', script }
+            this.currentScriptExtractionPromise.resolve(RESULT)
+            this.currentScriptExtractionPromise = null
+            return RESULT
         }
     }
 
