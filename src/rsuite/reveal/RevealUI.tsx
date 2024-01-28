@@ -1,36 +1,11 @@
 import { observer } from 'mobx-react-lite'
-import React, { useEffect, useMemo, useRef } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import { createPortal } from 'react-dom'
-import { Placement, RevealState, defaultHideDelay, defaultShowDelay } from './RevealState'
+import { RevealProps } from './RevealProps'
+import { RevealState } from './RevealState'
 
-export const RevealUI = observer(function Tooltip_(p: {
-    //
-    children: [React.ReactNode, React.ReactNode]
-    tooltipWrapperClassName?: string
-    className?: string
-    showDelay?: number
-    hideDelay?: number
-    enableRightClick?: boolean
-    cursor?: string
-    disableHover?: boolean
-    disableClick?: boolean
-    style?: React.CSSProperties
-    placement?: Placement
-}) {
-    const showDelay = p.showDelay ?? defaultShowDelay
-    const hideDelay = p.hideDelay ?? defaultHideDelay
-    const disableHover = p.disableHover ?? false
-    const uist = useMemo(
-        () =>
-            new RevealState(
-                //
-                showDelay,
-                hideDelay,
-                disableHover,
-                p.placement ?? 'auto',
-            ),
-        [showDelay, hideDelay, disableHover],
-    )
+export const RevealUI = observer(function Tooltip_(p: RevealProps) {
+    const uist = useMemo(() => new RevealState(p), [])
     const ref = useRef<HTMLDivElement>(null)
     useEffect(() => {
         if (uist.visible && ref.current) {
@@ -74,7 +49,7 @@ export const RevealUI = observer(function Tooltip_(p: {
 
     return (
         <span //
-            tw={[p.cursor ?? uist.defaultCursor]}
+            tw={uist.defaultCursor}
             className={p.className}
             ref={ref}
             style={p.style}
@@ -82,7 +57,7 @@ export const RevealUI = observer(function Tooltip_(p: {
             onMouseEnter={uist.onMouseEnterAnchor}
             onMouseLeave={uist.onMouseLeaveAnchor}
             onClick={(ev) => {
-                if (p.disableClick) return
+                if (!uist.triggerOnClick) return
                 ev.stopPropagation()
                 ev.preventDefault()
                 if (uist.visible) uist.leaveAnchor()

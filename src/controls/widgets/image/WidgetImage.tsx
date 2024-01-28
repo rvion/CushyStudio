@@ -28,7 +28,7 @@ export type Widget_image_output = MediaImageL
 // STATE
 export interface Widget_image extends WidgetTypeHelpers_OLD<'image', Widget_image_config, Widget_image_serial, 0, Widget_image_output> {} // prettier-ignore
 export class Widget_image implements IWidget_OLD<'image', Widget_image_config, Widget_image_serial, 0, Widget_image_output> {
-    readonly isVerticalByDefault = true
+    readonly isVerticalByDefault = false
     readonly isCollapsible = true
     readonly id: string
     readonly type: 'image' = 'image'

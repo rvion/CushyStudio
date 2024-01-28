@@ -39,7 +39,7 @@ export const UpdateBtnUI = observer(function UpdateBtnUI_(p: {
         )
 
     return (
-        <RevealUI disableHover>
+        <RevealUI>
             {ANCHOR}
             <UpdaterDetailsUI updater={updater} />
         </RevealUI>

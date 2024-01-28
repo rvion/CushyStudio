@@ -119,8 +119,8 @@ export const Panel_CardPicker3UI = observer(function Panel_CardPicker3UI_(p: {})
                                     //
                                     style={{ width: '5rem', height: '5rem' }}
                                     src={app.illustration_url ?? ''}
-                                ></img>
-                                <RevealUI disableHover>
+                                />
+                                <RevealUI>
                                     <div tw='font-bold'>{app.description}</div>
                                     <pre tw='bg-base-300 text-xs overflow-auto'>{JSON.stringify(app, null, 3)}</pre>
                                 </RevealUI>

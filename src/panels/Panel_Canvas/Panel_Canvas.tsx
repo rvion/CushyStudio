@@ -63,7 +63,7 @@ export const Panel_Canvas = observer(function Panel_Canvas_(p: {
                             <span className='material-symbols-outlined'>add</span>
                         </div>
                     </div>
-                    <RevealUI disableHover>
+                    <RevealUI>
                         <div tw='btn btn-sm w-full'>Selection 0</div>
                         <pre>{JSON.stringify(uist.stableData, null, 4)}</pre>
                     </RevealUI>

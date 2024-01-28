@@ -93,7 +93,7 @@ export const ImageActionBarUI = observer(function ImageActionBarUI_(p: { img?: M
                     img.update({ star: next })
                 }}
             />
-            <RevealUI disableHover>
+            <RevealUI>
                 <div>
                     <span className='material-symbols-outlined'>info</span>
                     infos

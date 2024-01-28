@@ -147,7 +147,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
             {/* Tooltip ------------------------------------ */}
             {showTooltip && (
                 <RevealUI>
-                    <div className='btn btn-sm btn-square'>
+                    <div className='btn btn-sm btn-square btn-ghost'>
                         <span className='material-symbols-outlined'>info</span>
                     </div>
                     <Tooltip>{tooltip}</Tooltip>
