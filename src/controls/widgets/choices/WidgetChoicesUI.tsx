@@ -35,7 +35,7 @@ export const WidgetChoicesTabUI = observer(function WidgetChoicesTabUI_(p: {
                             role='tab'
                             tw={['tab', isSelected && 'tab-active font-bold']}
                         >
-                            {c.key}
+                            {makeLabelFromFieldName(c.key)}
                         </a>
                     )
                 })}
