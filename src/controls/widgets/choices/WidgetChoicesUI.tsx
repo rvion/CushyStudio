@@ -25,7 +25,7 @@ export const WidgetChoicesTabUI = observer(function WidgetChoicesTabUI_(p: {
 
     return (
         <div>
-            <div role='tablist' tw='tabs tabs-boxed'>
+            <div role='tablist' tw='tabs tabs-boxed tabs-sm'>
                 {choices.map((c) => {
                     const isSelected = widget.serial.branches[c.key]
                     return (
