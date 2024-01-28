@@ -1,4 +1,3 @@
-import type { ImageAnswerForm } from 'src/controls/misc/InfoAnswer'
 import type { SQLWhere } from 'src/db/SQLWhere'
 import type { MediaImageT } from 'src/db/TYPES.gen'
 import type { FormBuilder } from '../../FormBuilder'
@@ -17,7 +16,11 @@ export type Widget_image_config = WidgetConfigFields<{
 }>
 
 // SERIAL
-export type Widget_image_serial = WidgetSerialFields<ImageAnswerForm<'image', true>>
+export type Widget_image_serial = WidgetSerialFields<{
+    type: 'image'
+    imageID?: Maybe<MediaImageID>
+    imageHash?: string /** for form expiration */
+}>
 
 // OUT
 export type Widget_image_output = MediaImageL
