@@ -346,7 +346,11 @@ export class Widget_loras implements IWidget_OLD<'loras', Widget_loras_config, W
 
 // 🅿️ selectOne ==============================================================================
 export type BaseSelectEntry = { id: string, label?: string }
-export type Widget_selectOne_config <T extends BaseSelectEntry>  = WidgetConfigFields<{ default?: T; choices: T[] | ((formRoot:Widget_group<any>) => T[]) }>
+export type Widget_selectOne_config <T extends BaseSelectEntry>  = WidgetConfigFields<{
+    default?: T;
+    choices: T[] | ((formRoot:Widget_group<any>) => T[]),
+    appearance?: 'select' | 'tab'
+}>
 export type Widget_selectOne_serial<T extends BaseSelectEntry> = Widget_selectOne_state<T>
 export type Widget_selectOne_state <T extends BaseSelectEntry>  = WidgetSerialFields<{ type:'selectOne', query: string; val: T }>
 export type Widget_selectOne_output<T extends BaseSelectEntry> = T
