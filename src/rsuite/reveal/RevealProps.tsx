@@ -4,6 +4,7 @@ import { Placement } from './RevealState'
 export type RevealProps = {
     // components
     children: [React.ReactNode, React.ReactNode]
+    title?: React.ReactNode // only for popup
 
     // placement
     placement?: Placement

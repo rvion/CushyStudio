@@ -40,7 +40,7 @@ export const Panel_CardPicker3UI = observer(function Panel_CardPicker3UI_(p: {})
                                 if (e.key === 'Enter') {
                                     const app = library.appsFiltered[library.selectionCursor]
                                     if (app == null) return
-                                    app.openLastDraft()
+                                    app.openLastOrCreateDraft()
                                     st.closeFullLibrary()
                                 } else if (e.key === 'ArrowDown') {
                                     library.selectionCursor++

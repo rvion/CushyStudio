@@ -42,7 +42,7 @@ export const RevealUI = observer(function Tooltip_(p: RevealProps) {
                       tw='pointer-events-auto absolute w-full h-full flex items-center justify-center z-50'
                   >
                       {/* <ModalShellUI>{p.children[1]}</ModalShellUI> */}
-                      <ModalShellUI title={'Modal'}>{p.children[1]}</ModalShellUI>
+                      <ModalShellUI title={p.title}>{p.children[1]}</ModalShellUI>
                   </div>
               ) : (
                   <div

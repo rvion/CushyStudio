@@ -6,6 +6,7 @@ import { Panel } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
 import { StepOutput_Text } from 'src/types/StepOutput'
 import { OutputPreviewWrapperUI } from './OutputPreviewWrapperUI'
+import { MarkdownUI } from 'src/rsuite/MarkdownUI'
 
 export const OutputTextPreviewUI = observer(function OutputTextPreviewUI_(p: {
     //
@@ -55,7 +56,7 @@ export const OutputTextUI = observer(function OutputTextUI_(p: { step?: Maybe<St
             <Panel className='w-full m-2'>
                 <TabUI tw='w-full'>
                     <div>rendered version</div>
-                    <div className='_MD w-full' dangerouslySetInnerHTML={{ __html: marked(p.output.data.content) }} />
+                    <MarkdownUI tw='w-full' markdown={p.output.data.content} />
                     <div>raw version</div>
                     <pre className='w-full'>{p.output.data.content}</pre>
                 </TabUI>

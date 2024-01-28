@@ -27,7 +27,7 @@ export class CushyScriptL {
         return asRelativePath(this.data.path)
     }
 
-    private _apps_viaScript: Maybe<CushyAppL[]> = null
+    _apps_viaScript: Maybe<CushyAppL[]> = null
     private _apps_viaDB = new LiveCollection<CushyAppL>({
         table: () => this.db.cushy_apps,
         where: () => ({ scriptID: this.id }),
@@ -85,7 +85,7 @@ export class CushyScriptL {
      *  - 2. upsert apps in db
      *  - 3. bumpt lastEvaluatedAt (and lastSuccessfulEvaluation)
      */
-    evaluateAndUpdateApps = () => {
+    evaluateAndUpdateApps = (): Executable[] => {
         console.log(`[👙] extracting apps...`)
         // debugger
         this._EXECUTABLES = this._EVALUATE_SCRIPT()

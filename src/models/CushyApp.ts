@@ -63,14 +63,14 @@ export class CushyAppL {
     }
 
     /** shortcut to open the last draft of the first app defined in this file */
-    openLastDraft = () => {
-        this.getLastDraft().openOrFocusTab()
+    openLastOrCreateDraft = () => {
+        this.getLastOrCreateDraft().openOrFocusTab()
     }
 
     subFolderStructure = new VirtualHierarchy<DraftL>(() => this.drafts)
     // --------------------------------------------
 
-    getLastDraft = (): DraftL => {
+    getLastOrCreateDraft = (): DraftL => {
         const drafts = this.drafts
         return drafts.length > 0 ? drafts[0] : this.createDraft()
     }

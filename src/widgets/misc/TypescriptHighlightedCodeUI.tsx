@@ -7,7 +7,13 @@ import { Button } from 'src/rsuite/shims'
 hljs.registerLanguage('typescript', typescript)
 // hljs.registerLanguage('json', json)
 
-export const TypescriptHighlightedCodeUI = (p: { className?: string; code: string; wrap?: boolean }) => {
+export const TypescriptHighlightedCodeUI = (p: {
+    //
+    tabIndex?: number
+    className?: string
+    code: string
+    wrap?: boolean
+}) => {
     const ref = useRef(null)
     useLayoutEffect(() => {
         const e = ref.current
@@ -18,6 +24,7 @@ export const TypescriptHighlightedCodeUI = (p: { className?: string; code: strin
         <div className='relative'>
             <div className='absolute top-2 right-2'>
                 <Button
+                    tabIndex={p.tabIndex}
                     icon={<span className='material-symbols-outlined'>content_copy</span>}
                     onClick={() => {
                         navigator.clipboard.writeText(p.code)
