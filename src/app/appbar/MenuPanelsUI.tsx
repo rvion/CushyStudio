@@ -15,7 +15,7 @@ export const MenuPanelsUI = observer(function MenuPanelsUI_(p: {}) {
                 onClick={st.layout.resetCurrent}
                 label='Fix Layout'
             />
-            <div className='divider'>Panels</div>
+            <div className='divider my-1'>Panels</div>
             <MenuItem
                 onClick={() => st.layout.FOCUS_OR_CREATE('Output', {})}
                 icon={<span className='material-symbols-outlined text-red-400'>image</span>}
@@ -46,7 +46,20 @@ export const MenuPanelsUI = observer(function MenuPanelsUI_(p: {}) {
                 icon={<span className='material-symbols-outlined text-red-400'>history</span>}
                 label='Last STEP'
             />
-            <div className='divider'>Perspectives</div>
+            <div className='divider my-1'>Layout Navigation</div>
+            <MenuItem
+                onClick={() => st.layout.FOCUS_OR_CREATE('LastStep', {})}
+                icon={<span className='material-symbols-outlined text-red-400'>keyboard_arrow_left</span>}
+                shortcut={'mod+left'}
+                label='Focus previous tab'
+            />
+            <MenuItem
+                onClick={() => st.layout.FOCUS_OR_CREATE('LastStep', {})}
+                icon={<span className='material-symbols-outlined text-red-400'>keyboard_arrow_right</span>}
+                shortcut={'mod+right'}
+                label='Focus next tab'
+            />
+            <div className='divider my-1'>Perspectives</div>
             <MenuItem
                 // onClick={() => st.layout.GO_TO('LastStep', {})}
                 icon={<span className='material-symbols-outlined text-red-400'>history</span>}
