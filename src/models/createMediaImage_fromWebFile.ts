@@ -86,7 +86,7 @@ const _createMediaImage_fromLocalyAvailableImage = (
 
     if (prev) {
         console.log(`[🏞️] updating existing imamge`)
-        toastInfo(`🏞️ updating existing imamge`)
+        // toastInfo(`🏞️ updating existing imamge`)
         prev.update({
             orientation: meta.orientation,
             type: meta.type,
