@@ -101,6 +101,11 @@ export const shortcutsDef: Shortcut<STATE>[] = [
         combos: ['escape'],
         validInInput: true,
         action: (st) => {
+            if (st._popups.length > 0) {
+                const item = st._popups.pop()!
+                item.close()
+                return Trigger.Success
+            }
             if (st.layout.fullPageComp == null) return Trigger.UNMATCHED_CONDITIONS
             st.layout.fullPageComp = null
             return Trigger.Success

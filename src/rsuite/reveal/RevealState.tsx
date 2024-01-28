@@ -5,6 +5,11 @@ export const defaultShowDelay = 100
 export const defaultHideDelay = 300
 
 export type Placement =
+    //
+    | 'popup-sm'
+    | 'popup-xs'
+    | 'popup-lg'
+    //
     | 'top'
     | 'bottom'
     | 'right'
@@ -25,8 +30,9 @@ export type Placement =
     | 'autoHorizontalEnd'
 
 export class RevealState {
+    static nextUID = 1
     static shared: { current: Maybe<RevealState> } = observable({ current: null })
-
+    uid = RevealState.nextUID++
     // ------------------------------------------------
     inAnchor = false
     inTooltip = false
@@ -71,6 +77,11 @@ export class RevealState {
         // prettier-ignore
         this.tooltipPosition = (() => {
             let placement = this.placement
+
+            if (placement == 'popup-xs') return { top: 0, left: 0 }
+            if (placement == 'popup-sm') return { top: 0, left: 0 }
+            if (placement == 'popup-lg') return { top: 0, left: 0 }
+
 
             if (this.placement == 'auto') {
                 placement = (():Placement => {
@@ -131,6 +142,7 @@ export class RevealState {
         this.enterAnchorTimeoutId = setTimeout(this.enterAnchor, this.showDelay)
     }
     onMouseLeaveAnchor = () => {
+        if (this.placement.startsWith('popup')) return
         this._resetAllAnchorTimouts()
         this.leaveAnchorTimeoutId = setTimeout(this.leaveAnchor, this.hideDelay)
     }
@@ -176,6 +188,7 @@ export class RevealState {
         this.enterTooltipTimeoutId = setTimeout(this.enterTooltip, this.showDelay)
     }
     onMouseLeaveTooltip = () => {
+        if (this.placement.startsWith('popup')) return
         // cancer enter
         this._resetAllTooltipTimouts()
         this.leaveTooltipTimeoutId = setTimeout(this.leaveTooltip, this.hideDelay)
