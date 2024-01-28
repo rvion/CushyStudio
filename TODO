@@ -1,18 +1,3 @@
-Video
-
-- getting started (20 seconds)
-- navigating the app (20 sec)
-- SDUI (20 sec)
-- using 3d poser (20 sec)
-- generating 3d image (20 sec)
-- generating video (20 sec)
-- image quick action
-- live painting
-- creating your own apps
-- orbit
-
----------------------
-
 
 ☐ compress image must not save the images uncompressed too
 ☐ fix virtual paths breaking the "sync view of file explorer"
@@ -22,7 +7,7 @@ Video
 masterpiece, sofa, tree, [color] [adj_beauty] [adj_general] nature, intricate_details, game background, window, magical island, summer, glass
 ```
 
-- button to create own app
+✔ button to create own app @done(24-01-28 21:58)
 - improve sdui
 - cleanup libary folder:
 - video

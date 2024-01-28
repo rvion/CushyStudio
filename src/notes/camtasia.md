@@ -1,18 +1,11 @@
+Making video for CushyStudio
 
+## Before recording:
 
-Before recording:
+- cmd+u cmd+1      ("debug" > "fix Layout")
+- cmd+u cmd+2      (change resolution to 1920x1080)
+- cmd+shift+2                  (record screen)
 
-- menu: "debug" > "fix Layout"
-  - TODO: add shorcuts
-- then change resolution to ...
-  - TODO: add shortcuts.
-- cmd+shift+E: start recording
-
-
-## record media:
-
-- cmd+shift+2: record screen
--
 
 ## quick edit
 
