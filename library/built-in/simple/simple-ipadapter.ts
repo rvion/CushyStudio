@@ -54,7 +54,6 @@ app({
             width: IMG.width,
             height: IMG.height,
             ckptPos: ckpt,
-            modelType: 'SD1.5 512',
         })
 
         const imgC = await IMG.loadInWorkflow()

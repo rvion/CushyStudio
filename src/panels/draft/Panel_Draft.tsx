@@ -90,7 +90,7 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                         />
                     </MessageInfoUI>
                 )}
-                <div tw='pb-80 px-2'>
+                <div tw='pb-80 pl-2'>
                     <ResultWrapperUI
                         //
                         res={draft.form}

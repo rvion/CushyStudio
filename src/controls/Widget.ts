@@ -371,10 +371,11 @@ export class Widget_selectOne<T extends BaseSelectEntry> implements IWidget_OLD<
 
     get choices():T[]{
         const _choices = this.config.choices
-        if (this.form._ROOT==null)return []
-        return typeof _choices === 'function' //
-            ? _choices(this.form._ROOT)
-            : _choices
+        if (typeof _choices === 'function'){
+            if (this.form._ROOT==null)return []
+            return _choices(this.form._ROOT)
+        }
+        return  _choices
     }
     constructor(
         public form: FormBuilder,
@@ -390,6 +391,7 @@ export class Widget_selectOne<T extends BaseSelectEntry> implements IWidget_OLD<
             query: '',
             val: config.default ?? choices[0],
         }
+        if (this.serial.val == null && Array.isArray(this.config.choices)) this.serial.val = choices[0]
         makeAutoObservable(this)
     }
     get result(): Widget_selectOne_output<T> { return this.serial.val }

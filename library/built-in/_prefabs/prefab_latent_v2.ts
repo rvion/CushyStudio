@@ -3,7 +3,7 @@ import type { FormBuilder } from 'src/controls/FormBuilder'
 import type { ComfyNodeOutput } from 'src/core/Slot'
 import type { OutputFor } from './_prefabs'
 
-export const ui_latent = (form: FormBuilder) => {
+export const ui_latent_v2 = (form: FormBuilder) => {
     return form.group({
         label: 'Start from',
         items: () => ({
@@ -16,10 +16,10 @@ export const ui_latent = (form: FormBuilder) => {
     })
 }
 
-export const run_latent = async (p: {
+export const run_latent_v2 = async (p: {
     //
     run: Runtime
-    opts: OutputFor<typeof ui_latent>
+    opts: OutputFor<typeof ui_latent_v2>
     vae: _VAE
 }) => {
     // init stuff

@@ -8,21 +8,30 @@ export const WidgetSelectOneUI = observer(function WidgetSelectOneUI_<T extends 
 }) {
     const widget = p.widget
     if (widget.config.appearance === 'tab') {
+        const selected = widget.serial.val
         return (
-            <div role='tablist' tw='tabs tabs-boxed tabs-sm flex-1 flex-wrap'>
-                {widget.choices.map((c) => {
-                    const isSelected = widget.serial.val.id === c.id
-                    return (
-                        <a
-                            onClick={() => (widget.serial.val = c)}
-                            key={c.id}
-                            role='tab'
-                            tw={['tab', isSelected && 'tab-active font-bold']}
-                        >
-                            {c.label ?? makeLabelFromFieldName(c.id)}
-                        </a>
-                    )
-                })}
+            <div>
+                <div role='tablist' tw='tabs tabs-boxed tabs-sm flex-wrap'>
+                    {widget.choices.map((c) => {
+                        const isSelected = selected?.id === c.id
+                        return (
+                            <a
+                                onClick={() => (widget.serial.val = c)}
+                                key={c.id}
+                                role='tab'
+                                tw={['tab', isSelected && 'tab-active font-bold']}
+                            >
+                                {c.label ?? makeLabelFromFieldName(c.id)}
+                            </a>
+                        )
+                    })}
+                </div>
+                {widget.errors && (
+                    <div tw='text-red-500 flex items-center gap-1'>
+                        <span className='material-symbols-outlined'>error</span>
+                        {widget.errors}
+                    </div>
+                )}
             </div>
         )
     }

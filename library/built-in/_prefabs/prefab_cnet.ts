@@ -81,10 +81,9 @@ export const cnet_preprocessor_ui_common = (form: FormBuilder) => ({
 export type Cnet_args = {
     positive: _CONDITIONING
     negative: _CONDITIONING
-    width: _INT
-    height: _INT
+    width: number
+    height: number
     ckptPos: _MODEL
-    modelType: SDModelType
 }
 
 export type Cnet_return = {
@@ -101,29 +100,17 @@ export const run_cnet = async (opts: OutputFor<typeof ui_cnet>, ctx: Cnet_args) 
     let args: Cnet_args = { ...ctx }
 
     if (cnetList) {
-        let resolution: 512 | 768 | 1024
-        switch (args.modelType) {
-            case 'SD1.5 512':
-                resolution = 512
-            case 'SD2.1 768':
-                resolution = 768
-            case 'SDXL 1024':
-                resolution = 1024
-            case 'custom':
-                resolution = 512
-        }
         for (const cnetImage of cnetList) {
             let image: _IMAGE = (await run.loadImageAnswer(cnetImage.image))._IMAGE
-            const widthValue = typeof ctx.width === 'number' ? ctx.width : resolution
-            const heightValue = typeof ctx.width === 'number' ? ctx.width : resolution
-            if (cnetImage.resize) {
-                // console.log('Width: ' + widthValue)
-                // console.log('Width: ' + heightValue)
+            const { width, height } = ctx
+            let resolution = Math.min(width, height)
 
+            // TODO: make configurable
+            if (cnetImage.resize) {
                 const scaledCnetNode = run.nodes.ImageScale({
                     image,
-                    width: widthValue,
-                    height: heightValue,
+                    width,
+                    height,
                     upscale_method: 'lanczos',
                     crop: 'center',
                 })

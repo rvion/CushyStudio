@@ -1,19 +1,25 @@
 import type { FormBuilder } from 'src/controls/FormBuilder'
 import type { OutputFor } from './_prefabs'
 
-export const ui_latent = () => {
+export const ui_latent_v3 = () => {
     const form: FormBuilder = getCurrentForm()
-    return form.group({
+    return form.choice({
+        appearance: 'tab',
         label: 'Start from',
-        items: () => ({
-            image: form.imageOpt({}),
-            batchSize: form.int({ default: 1, min: 1, max: 8 }),
-            size: form.size({}),
-        }),
+        items: {
+            image: () => form.image({}),
+            emptyLatent: () =>
+                form.group({
+                    items: () => ({
+                        batchSize: form.int({ default: 1, min: 1, max: 8 }),
+                        size: form.size({}),
+                    }),
+                }),
+        },
     })
 }
 
-export const run_latent = async (p: { opts: OutputFor<typeof ui_latent>; vae: _VAE }) => {
+export const run_latent_v3 = async (p: { opts: OutputFor<typeof ui_latent_v3>; vae: _VAE }) => {
     // init stuff
     const run = getCurrentRun()
     const graph = run.nodes
@@ -34,14 +40,19 @@ export const run_latent = async (p: { opts: OutputFor<typeof ui_latent>; vae: _V
     }
 
     // case 2. start form empty latent
-    else {
-        width = /* opts.flip ? opts.size.height : */ opts.size.width
-        height = /* opts.flip ? opts.size.width : */ opts.size.height
+    else if (opts.emptyLatent) {
+        width = opts.emptyLatent.size.width
+        height = opts.emptyLatent.size.height
         latent = graph.EmptyLatentImage({
-            batch_size: opts.batchSize ?? 1,
+            batch_size: opts.emptyLatent.batchSize ?? 1,
             height: height,
             width: width,
         })
+    }
+
+    // default case
+    else {
+        throw new Error('no latent')
     }
 
     // return everything
