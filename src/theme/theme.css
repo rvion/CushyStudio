@@ -110,7 +110,7 @@ legend {
 
 .FIELD,
 .FIELDSimple {
-    margin-left: .5rem;
+    /* margin-left: .5rem; */
     padding-left: .5rem;
     border-left: 2px groove oklch(var(--p)/0.5);
     /* border-top-left-radius: .5rem; */
