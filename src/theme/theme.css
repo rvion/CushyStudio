@@ -1,4 +1,8 @@
-/* helpers --------------------- */
+.animated {
+    transition: all 0.2s ease-in-out;
+}
+
+ /* helpers --------------------- */
 .line {
     display: flex;
     flex-direction: row;
