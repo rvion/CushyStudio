@@ -11,7 +11,7 @@ export const WidgetSelectOneUI = observer(function WidgetSelectOneUI_<T extends 
             key={widget.id}
                 tw={[widget.errors && 'rsx-field-error']}
             size='sm'
-            getLabelText={(t) => t.label ?? t.id}
+                getLabelText={(t) => t.label ?? makeLabelFromFieldName(t.id)}
             options={() => widget.choices}
             value={() => widget.serial.val}
             onChange={(selectOption) => {
