@@ -1,4 +1,5 @@
-import { run_improveFace_fromImage } from '../_prefabs/prefab_detailer'
+import { run_refiners_fromImage, ui_refiners } from '../_prefabs/prefab_detailer'
+import { run_model, ui_model } from '../_prefabs/prefab_model'
 
 app({
     metadata: {
@@ -8,13 +9,14 @@ app({
     },
     canStartFromImage: true,
     ui: (form) => ({
-        prompt: form.prompt({}),
+        model: ui_model(),
+        refiners: ui_refiners(),
     }),
     run: async (run, ui, startImg) => {
         if (startImg == null) throw new Error('no image provided')
-        run.workflow.builder.CheckpointLoaderSimple({ ckpt_name: 'revAnimated_v122.safetensors' })
         const img = await startImg.loadInWorkflow()
-        run_improveFace_fromImage(img)
+        run_model(ui.model)
+        run_refiners_fromImage(ui.refiners, img)
         await run.PROMPT()
     },
 })

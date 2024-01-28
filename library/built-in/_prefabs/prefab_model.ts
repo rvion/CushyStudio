@@ -1,4 +1,3 @@
-import { getKnownCheckpoints } from 'src/wiki/modelList'
 import type { OutputFor } from './_prefabs'
 
 // UI -----------------------------------------------------------
@@ -13,49 +12,56 @@ export const ui_model = () => {
                 label: 'Checkpoint',
                 recommandedModels: { knownModel: ckpts.map((x) => x.name) },
             }),
-            vae: form.enumOpt.Enum_VAELoader_vae_name({}),
-            clipSkip: form.intOpt({
-                label: 'Clip Skip',
-                startActive: false,
-                default: 1,
-                min: 1,
-                max: 5,
-            }),
-            freeU: form.bool({ default: false }),
-            civtai_ckpt_air: form.stringOpt({
-                tooltip: 'Civitai checkpoint Air, as found on the civitai Website. It should look like this: 43331@176425',
-                label: 'Civitai Ref',
-                placeHolder: 'e.g. 43331@176425',
+            extra: form.choices({
+                appearance: 'tab',
+                items: {
+                    vae: () => form.enum.Enum_VAELoader_vae_name({}),
+                    clipSkip: () =>
+                        form.int({
+                            label: 'Clip Skip',
+                            default: 1,
+                            min: 1,
+                            max: 5,
+                        }),
+                    freeU: () => form.bool({ default: true }),
+                    civtai_ckpt_air: () =>
+                        form.string({
+                            tooltip:
+                                'Civitai checkpoint Air, as found on the civitai Website. It should look like this: 43331@176425',
+                            label: 'Civitai Ref',
+                            placeHolder: 'e.g. 43331@176425',
+                        }),
+                },
             }),
         }),
     })
 }
 
 // RUN -----------------------------------------------------------
-export const run_model = (p: OutputFor<typeof ui_model>) => {
+export const run_model = (ui: OutputFor<typeof ui_model>) => {
     const run = getCurrentRun()
     const graph = run.nodes
 
     // 1. MODEL
-    const ckptSimple = p.civtai_ckpt_air
+    const ckptSimple = ui.extra.civtai_ckpt_air
         ? graph.CivitAI$_Checkpoint$_Loader({
-              ckpt_name: p.ckpt_name,
-              ckpt_air: p.civtai_ckpt_air,
+              ckpt_name: ui.ckpt_name,
+              ckpt_air: ui.extra.civtai_ckpt_air,
               download_path: 'models\\checkpoints',
           })
-        : graph.CheckpointLoaderSimple({ ckpt_name: p.ckpt_name })
+        : graph.CheckpointLoaderSimple({ ckpt_name: ui.ckpt_name })
     let ckpt: HasSingle_MODEL = ckptSimple
     let clip: HasSingle_CLIP = ckptSimple
 
     // 2. OPTIONAL CUSTOM VAE
     let vae: _VAE = ckptSimple._VAE
-    if (p.vae) vae = graph.VAELoader({ vae_name: p.vae })
+    if (ui.extra.vae) vae = graph.VAELoader({ vae_name: ui.extra.vae })
 
     // 3. OPTIONAL CLIP SKIP
-    if (p.clipSkip) clip = graph.CLIPSetLastLayer({ clip, stop_at_clip_layer: -Math.abs(p.clipSkip) })
+    if (ui.extra.clipSkip) clip = graph.CLIPSetLastLayer({ clip, stop_at_clip_layer: -Math.abs(ui.extra.clipSkip) })
 
     // 4. Optional FreeU
-    if (p.freeU) ckpt = graph.FreeU({ model: ckpt })
+    if (ui.extra.freeU) ckpt = graph.FreeU({ model: ckpt })
 
     return { ckpt, vae, clip }
 }

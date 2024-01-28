@@ -1,7 +1,7 @@
 import { exhaust } from 'src/utils/misc/ComfyUtils'
 import { ui_highresfix } from './_prefabs/_prefabs'
 import { Cnet_args, Cnet_return, run_cnet, ui_cnet } from './_prefabs/prefab_cnet'
-import { run_improveFace_fromImage, ui_improveFace } from './_prefabs/prefab_detailer'
+import { run_refiners_fromImage, ui_refiners } from './_prefabs/prefab_detailer'
 import { run_latent_v3, ui_latent_v3 } from './_prefabs/prefab_latent_v3'
 import { output_demo_summary } from './_prefabs/prefab_markdown'
 import { run_model, ui_model } from './_prefabs/prefab_model'
@@ -58,7 +58,7 @@ app({
         // startImage
         removeBG: form.bool({ default: false }),
 
-        improveFaces: ui_improveFace(),
+        refine: ui_refiners(),
         show3d: form.groupOpt({
             items: () => {
                 return {
@@ -199,8 +199,8 @@ app({
         let finalImage: _IMAGE = graph.VAEDecode({ samples: latent, vae })
 
         // REFINE PASS AFTER ---------------------------------------------------------------------
-        if (ui.improveFaces) {
-            finalImage = run_improveFace_fromImage(finalImage)
+        if (ui.refine) {
+            finalImage = run_refiners_fromImage(ui.refine, finalImage)
             // latent = graph.VAEEncode({ pixels: image, vae })
         }
 
