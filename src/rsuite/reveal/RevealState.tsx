@@ -59,7 +59,7 @@ export class RevealState {
     }
     get showDelay() { return this.p.showDelay ?? defaultShowDelay } // prettier-ignore
     get hideDelay() { return this.p.hideDelay ?? defaultHideDelay } // prettier-ignore
-    get placement() { return this.p.placement ?? 'bottomStart' } // prettier-ignore
+    get placement() { return this.p.placement ?? 'auto' } // prettier-ignore
     // ------------------------------------------------
     constructor(public p: RevealProps) {
         makeAutoObservable(this)
