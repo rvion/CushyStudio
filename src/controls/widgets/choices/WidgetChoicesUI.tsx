@@ -27,18 +27,18 @@ export const WidgetChoicesTabUI = observer(function WidgetChoicesTabUI_(p: {
 
     return (
         <div>
-            <div role='tablist' tw='tabs tabs-boxed tabs-sm'>
+            <div tw='flex flex-wrap gap-1'>
                 {choices.map((c) => {
                     const isSelected = widget.serial.branches[c.key]
                     return (
-                        <a
+                        <div
                             onClick={() => widget.toggleBranch(c.key)}
                             key={c.key}
-                            role='tab'
-                            tw={['tab', isSelected && 'tab-active font-bold']}
+                            tw={['btn btn-sm flex flex-nowrap gap-1 whitespace-nowrap', isSelected ? 'btn-active' : '']}
                         >
+                            <input type='checkbox' checked={isSelected} className='checkbox checkbox-primary checkbox-xs' />
                             {makeLabelFromFieldName(c.key)}
-                        </a>
+                        </div>
                     )
                 })}
             </div>
