@@ -24,14 +24,14 @@ export const TypescriptHighlightedCodeUI = (p: {
         <div className='relative'>
             <div className='absolute top-2 right-2'>
                 <Button
+                    size='sm'
                     tabIndex={p.tabIndex}
                     icon={<span className='material-symbols-outlined'>content_copy</span>}
-                    onClick={() => {
-                        navigator.clipboard.writeText(p.code)
-                    }}
-                ></Button>
+                    onClick={() => navigator.clipboard.writeText(p.code)}
+                />
             </div>
             <code
+                key={p.code}
                 className={'language-typescript text-xs ' + p.className}
                 style={{ whiteSpace: p.wrap ? 'pre-wrap' : 'pre' }}
                 ref={ref}

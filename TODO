@@ -22,6 +22,16 @@ Video
 masterpiece, sofa, tree, [color] [adj_beauty] [adj_general] nature, intricate_details, game background, window, magical island, summer, glass
 ```
 
+- button to create own app
+- improve sdui
+- cleanup libary folder:
+- video
+- more of cushy_app in db
+- preset API
+- fix app
+- QRCode generator
+- make _formBuilder not observable => need engine for model
+- fix random not updating
 
 ---------------------
 form rework:

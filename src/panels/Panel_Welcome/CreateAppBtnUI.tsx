@@ -1,19 +1,30 @@
+import { existsSync, writeFileSync } from 'fs'
 import { observer, useLocalObservable } from 'mobx-react-lite'
-import { RevealUI } from 'src/rsuite/reveal/RevealUI'
-import { FieldAndLabelUI } from '../Panel_Gallery'
-import { TypescriptHighlightedCodeUI } from 'src/widgets/misc/TypescriptHighlightedCodeUI'
-import { MessageInfoUI } from '../MessageUI'
 import { openExternal } from 'src/app/layout/openExternal'
+import { RevealUI } from 'src/rsuite/reveal/RevealUI'
 import { useSt } from 'src/state/stateContext'
-import { writeFileSync } from 'fs'
-import { convertToValidCrossPlatformFileName } from './convertToValidCrossPlatformFileName'
 import { toastError } from 'src/utils/misc/toasts'
+import { TypescriptHighlightedCodeUI } from 'src/widgets/misc/TypescriptHighlightedCodeUI'
+import { MessageErrorUI, MessageInfoUI } from '../MessageUI'
+import { convertToValidCrossPlatformFileName } from './convertToValidCrossPlatformFileName'
 
 export const CreateAllBtnUI = observer(function CreateAllBtnUI_(p: {}) {
     const st = useSt()
     const uist = useLocalObservable(() => ({
         appName: 'my-app',
         description: 'my app description',
+        get fileName() {
+            return convertToValidCrossPlatformFileName(uist.appName)
+        },
+        get relPath(): RelativePath {
+            return `library/local/${convertToValidCrossPlatformFileName(uist.appName)}.ts` as RelativePath
+        },
+        get absPath(): AbsolutePath {
+            return `${st.rootPath}/${uist.relPath}` as AbsolutePath
+        },
+        get hasConflict() {
+            return existsSync(uist.absPath)
+        },
     }))
     return (
         <RevealUI placement='popup-lg' title='Create an app'>
@@ -31,8 +42,9 @@ export const CreateAllBtnUI = observer(function CreateAllBtnUI_(p: {}) {
                                 value={uist.appName}
                                 onChange={(ev) => (uist.appName = ev.target.value)}
                                 type='text'
-                                tw='input input-bordered'
+                                tw={['input input-bordered', uist.hasConflict && 'rsx-field-error']}
                             />
+                            {uist.hasConflict && <MessageErrorUI markdown='File alreay exist' />}
                         </div>
                         <div>
                             <div tw='font-bold'>Description</div>
@@ -45,7 +57,7 @@ export const CreateAllBtnUI = observer(function CreateAllBtnUI_(p: {}) {
                         </div>
                     </div>
                     <div tw='virtualBorder p-2'>
-                        <MessageInfoUI markdown={` This file will be created as  \`./library/local/${uist.appName}.ts\``} />
+                        <MessageInfoUI markdown={` This file will be created as  \`${uist.relPath}\``} />
                         <TypescriptHighlightedCodeUI
                             tabIndex={-1}
                             code={mkAppTemplate({
@@ -57,8 +69,9 @@ export const CreateAllBtnUI = observer(function CreateAllBtnUI_(p: {}) {
                 </div>
                 <div tw='flex'>
                     <button
-                        tw='btn btn-primary ml-auto'
+                        tw={['btn btn-primary ml-auto', uist.hasConflict && 'btn-disabled rsx-field-error']}
                         onClick={async () => {
+                            if (uist.hasConflict) return toastError('file already exist, change app name')
                             //
                             const fname = convertToValidCrossPlatformFileName(uist.appName)
                             const relPath = `library/local/${fname}.ts` as RelativePath
