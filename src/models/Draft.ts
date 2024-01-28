@@ -178,6 +178,15 @@ export class DraftL {
 
     isInitializing = false
     isInitialized = false
+
+    private _formBuilder: Maybe<FormBuilder> = null
+    get formBuilder() {
+        if (this._formBuilder == null) {
+            this._formBuilder = new FormBuilder(this.st.schema)
+        }
+        return this._formBuilder
+    }
+
     AWAKE = () => {
         if (this.isInitializing) return
         if (this.isInitialized) return
@@ -188,7 +197,7 @@ export class DraftL {
                 console.log(`[🦊] form: awakening app ${this.data.appID}`)
                 if (action == null) return
                 try {
-                    const formBuilder = new FormBuilder(this.st.schema)
+                    const formBuilder = this.formBuilder // new FormBuilder(this.st.schema)
                     const uiFn = action.ui
                     runInAction(() => {
                         const req: Widget_group<any> = formBuilder._HYDRATE(
