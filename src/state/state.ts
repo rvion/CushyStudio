@@ -148,6 +148,11 @@ export class STATE {
         this.restart()
     }
 
+    resizeWindowForVideoCapture = () => {
+        const ipcRenderer = window.require('electron').ipcRenderer
+        ipcRenderer.send('resize-for-video-capture')
+    }
+
     partialReset_eraseConfigAndSchemaFiles = () => {
         this.configFile.erase()
         this.typecheckingConfig.erase()

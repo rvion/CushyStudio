@@ -5,6 +5,15 @@ import { CushyShortcut, Shortcut } from './ShortcutManager'
 import { Trigger } from './Trigger'
 import { runInAction } from 'mobx'
 import { _duplicateCurrentDraft } from './_duplicateCurrentDraft'
+import { electron } from 'process'
+
+export const shorcutKeys = {
+    openConfigPage: 'mod+,',
+    openHostsPate: 'mod+shift+,',
+    duplicateCurrentDraft: 'mod+shift+d',
+    resizeWindowForVideoCapture: 'mod+u 1',
+    resetLayout: 'mod+u 2',
+}
 
 // ------------------------------------------------------------------------------------
 // basic utils
@@ -46,14 +55,11 @@ const focusTree = (st: STATE, tree: Tree) =>
         }
     })
 
-export const shorcutKeys = {
-    openConfigPage: 'mod+,',
-    openHostsPate: 'mod+shift+,',
-    duplicateCurrentDraft: 'mod+shift+d',
-}
 // ------------------------------------------------------------------------------------
 // core global shortcuts
 export const shortcutsDef: Shortcut<STATE>[] = [
+    simpleValidInInput(shorcutKeys.resizeWindowForVideoCapture, (st) => st.resizeWindowForVideoCapture()),
+    simpleValidInInput(shorcutKeys.resetLayout, (st) => st.layout.resetCurrent()),
     // simpleValidInInput('mod+shift+k', (st) => (st.showSuperAdmin = !st.showSuperAdmin)),
     // simpleValidInInput('mod+shift+z', (st) => (st.showSuperAdminBubbles = !st.showSuperAdminBubbles)),
     simpleValidInInput(['mod+1', 'mod+shift+e', 'mod+b'], (st) => focusTree(st, st.tree1)),
