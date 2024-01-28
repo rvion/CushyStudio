@@ -54,16 +54,7 @@ export const Panel_CardPicker3UI = observer(function Panel_CardPicker3UI_(p: {})
                             onFocus={(e) => e.target.select()}
                         />
                     </Joined>
-                    <div
-                        tw='btn-sm btn btn-primary'
-                        onClick={async () => {
-                            //
-                            // throw new Error('not implemented; should walk, list all apps, and compile them to executable')
-                            const allFiles = recursivelyFindAppsInFolder(st.library, st.libraryFolderPathAbs)
-                            console.log(`[👙] allFiles:`, allFiles.length)
-                            for (const x of allFiles) await x.extractScriptFromFile()
-                        }}
-                    >
+                    <div tw='btn-sm btn btn-primary' onClick={st.startupFileIndexing}>
                         Index All Apps
                     </div>
                     {/* </div> */}

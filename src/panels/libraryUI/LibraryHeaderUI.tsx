@@ -22,16 +22,7 @@ export const LibraryHeaderUI = observer(function LibraryHeaderUI_(p: {}) {
 export const IndexAllAppsBtnUI = observer(function IndexAllAppsBtnUI_(p: {}) {
     const st = useSt()
     return (
-        <div
-            tw='btn-sm btn btn-primary'
-            onClick={async () => {
-                //
-                // throw new Error('not implemented; should walk, list all apps, and compile them to executable')
-                const allFiles = recursivelyFindAppsInFolder(st.library, st.libraryFolderPathAbs)
-                console.log(`[👙] allFiles:`, allFiles.length)
-                for (const x of allFiles) await x.extractScriptFromFile()
-            }}
-        >
+        <div tw='btn-sm btn btn-primary' onClick={st.startupFileIndexing}>
             Index All Apps
         </div>
     )

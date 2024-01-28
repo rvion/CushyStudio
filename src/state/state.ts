@@ -102,6 +102,10 @@ export class STATE {
     tree2: Tree
     tree2View: TreeView
 
+    startupFileIndexing = async () => {
+        const allFiles = recursivelyFindAppsInFolder(this.library, this.libraryFolderPathAbs)
+        for (const x of allFiles) await x.extractScriptFromFile()
+    }
     /**
      * global hotReload persistent cache that should survive hot reload
      * useful to ensure various singleton stuff (e.g. dbHealth)
