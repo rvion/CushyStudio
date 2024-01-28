@@ -9,6 +9,7 @@ export const WidgetSelectOneUI = observer(function WidgetSelectOneUI_<T extends 
     return (
         <SelectUI<T>
             key={widget.id}
+                tw={[widget.errors && 'rsx-field-error']}
             size='sm'
             getLabelText={(t) => t.label ?? t.id}
             options={() => widget.choices}
@@ -28,5 +29,12 @@ export const WidgetSelectOneUI = observer(function WidgetSelectOneUI_<T extends 
                 widget.serial.val = next
             }}
         />
+            {widget.errors && (
+                <div tw='text-red-500 flex items-center gap-1'>
+                    <span className='material-symbols-outlined'>error</span>
+                    {widget.errors}
+                </div>
+            )}
+        </div>
     )
 })
