@@ -1,4 +1,8 @@
-/* helpers --------------------- */
+.animated {
+    transition: height 0.2s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+ /* helpers --------------------- */
 .line {
     display: flex;
     flex-direction: row;
@@ -37,6 +41,9 @@ input[type='range']::-webkit-slider-runnable-track { height: 2rem; }
 
 .bg-info-1 { background-color: oklch(var(--in)/.1); }
 .bg-info-2 { background-color: oklch(var(--in)/.2); }
+
+.bg-error-1 { background-color: oklch(var(--er)/.1); }
+.bg-error-2 { background-color: oklch(var(--er)/.2); }
 
 .bg-success-1 { background-color: oklch(var(--su)/.1); }
 .bg-success-2 { background-color: oklch(var(--su)/.2); }
@@ -110,7 +117,7 @@ legend {
 
 .FIELD,
 .FIELDSimple {
-    margin-left: .5rem;
+    /* margin-left: .5rem; */
     padding-left: .5rem;
     border-left: 2px groove oklch(var(--p)/0.5);
     /* border-top-left-radius: .5rem; */

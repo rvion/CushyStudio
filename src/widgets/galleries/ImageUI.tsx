@@ -57,7 +57,7 @@ export const ImageUI = observer(function ImageUI_(p: {
     )
     // )
     return (
-        <RevealUI disableHover>
+        <RevealUI>
             <div>{IMG}</div>
             <ul tabIndex={0} tw='shadow menu dropdown-content z-[1] bg-base-100 rounded-box'>
                 <ImageDropdownMenuUI img={image} />

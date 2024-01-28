@@ -4,6 +4,7 @@ import { ComfySchemaL } from 'src/models/Schema'
 import { FormBuilder } from '../../FormBuilder'
 import { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../../IWidget'
 import { WidgetDI } from '../WidgetUI.DI'
+import { hash } from 'ohash'
 
 // CONFIG
 export type Widget_number_config = WidgetConfigFields<{
@@ -32,6 +33,7 @@ export type Widget_number_types = {
 // STATE
 export interface Widget_number extends WidgetTypeHelpers<Widget_number_types> {}
 export class Widget_number implements IWidget<Widget_number_types> {
+    get serialHash () { return hash(this.result) } // prettier-ignore
     readonly isVerticalByDefault = false
     readonly isCollapsible = false
     readonly id: string

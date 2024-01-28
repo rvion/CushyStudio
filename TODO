@@ -1,27 +1,37 @@
+
 ☐ compress image must not save the images uncompressed too
 ☐ fix virtual paths breaking the "sync view of file explorer"
 
-Migration guide:
-
-☐ `form.str(...)` has been renamed to `form.string(...)`
-☐ `form.strOpt(...)` has been renamed to `form.stringOpt(...)`
-☐ in various `form.*Opt` variants: `default` property has been renamed to `startActive`
-☐ no more `group: string` param in widget configs, it was anyway unused
-☐ change def prompt to
 
 ```
 masterpiece, sofa, tree, [color] [adj_beauty] [adj_general] nature, intricate_details, game background, window, magical island, summer, glass
 ```
 
+✔ button to create own app @done(24-01-28 21:58)
+- improve sdui
+- cleanup libary folder:
+- video
+- more of cushy_app in db
+- preset API
+- fix app
+- QRCode generator
+- make _formBuilder not observable => need engine for model
+- fix random not updating
 
 ---------------------
-- emoji to illustration app
+form rework:
+    ✘ emoji to illustration app @cancelled(24-01-28 08:13)
+    ✔ stop that crap with optionals at type level => use proper Optional warpper. @done(24-01-28 08:13)
+        ✔ make it transparent through the formBuilder @done(24-01-28 08:13)
+        ✔ hoist label automagically. @done(24-01-28 08:13)
+    ✔ properly rewrite group / groupOpt @done(24-01-28 08:13)
+    ✔ duplicating a draft should @done(24-01-28 08:13)
+    Migration guide:
+        ✔ `form.str(...)` has been renamed to `form.string(...)` @done(24-01-28 08:14)
+        ✔ `form.strOpt(...)` has been renamed to `form.stringOpt(...)` @done(24-01-28 08:14)
+        ✔ in various `form.*Opt` variants: `default` property has been renamed to `startActive` @done(24-01-28 08:14)
+        ✔ no more `group: string` param in widget configs, it was anyway unused @done(24-01-28 08:14)
 
-- stop that crap with optionals at type level => use proper Optional warpper.
-    - make it transparent through the formBuilder
-    - hoist label automagically.
-- properly rewrite group / groupOpt
-- duplicating a draft should
 
 cnets:
     ☐ better enum widget with filter support (5min)

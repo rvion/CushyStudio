@@ -74,6 +74,10 @@ async function START() {
 
     const { app, BrowserWindow, globalShortcut, ipcMain, session } = require('electron')
 
+    ipcMain.on('resize-for-video-capture', (event, arg) => {
+        const focusedWindow = BrowserWindow.getFocusedWindow()
+        if (focusedWindow) focusedWindow.setSize(1920, 1080)
+    })
     ipcMain.on('toggle-devtools', (event, arg) => {
         const focusedWindow = BrowserWindow.getFocusedWindow()
         if (focusedWindow) focusedWindow.webContents.toggleDevTools()

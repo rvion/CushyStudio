@@ -2,6 +2,7 @@ import { observer } from 'mobx-react-lite'
 import { Dropdown, MenuItem } from 'src/rsuite/Dropdown'
 import { useSt } from '../../state/stateContext'
 import { getDBStats } from 'src/db/getDBStats'
+import { shorcutKeys } from '../shortcuts/shortcuts'
 
 export const MenuDebugUI = observer(function MenuDebugUI_(p: {}) {
     const st = useSt()
@@ -15,7 +16,14 @@ export const MenuDebugUI = observer(function MenuDebugUI_(p: {}) {
             <MenuItem
                 icon={<span className='material-symbols-outlined text-green-500'>panorama_horizontal</span>}
                 onClick={st.layout.resetCurrent}
+                shortcut={shorcutKeys.resetLayout}
                 label='Fix Layout'
+            />
+            <MenuItem
+                icon={<span className='material-symbols-outlined text-green-500'>panorama_horizontal</span>}
+                onClick={st.resizeWindowForVideoCapture}
+                shortcut={shorcutKeys.resizeWindowForVideoCapture}
+                label='set screen size to 1920x1080'
             />
             <MenuItem //
                 icon={<span className='material-symbols-outlined text-green-500'>bug_report</span>}

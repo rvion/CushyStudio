@@ -4,6 +4,7 @@ import type { IWidget_OLD, WidgetConfigFields, WidgetSerialFields, WidgetTypeHel
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { WidgetDI } from '../WidgetUI.DI'
+import { hash } from 'ohash'
 
 // CONFIG
 export type Widget_color_config = WidgetConfigFields<{ default?: string }>
@@ -20,6 +21,7 @@ export interface Widget_color
 
 // STATE
 export class Widget_color implements IWidget_OLD<'color', Widget_color_config, Widget_color_serial, any, Widget_color_output> {
+    get serialHash() { return hash(this.result) } // prettier-ignore
     readonly isVerticalByDefault = false
     readonly isCollapsible = false
     readonly id: string

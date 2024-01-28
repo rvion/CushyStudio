@@ -8,7 +8,7 @@ export const MenuNSFWCheckerUI = observer(function MenuNSFWCheckerUI_(p: {}) {
     const pj = st.project
     const val = pj.filterNSFW
     return (
-        <RevealUI disableClick showDelay={0}>
+        <RevealUI trigger='hover' showDelay={0}>
             <label tw='swap swap-flip text-2xl'>
                 <input
                     type='checkbox'

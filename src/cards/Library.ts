@@ -6,7 +6,7 @@ import Watcher from 'watcher'
 import { makeAutoObservable, action } from 'mobx'
 import { LiveCollection } from 'src/db/LiveCollection'
 import { CushyAppL } from 'src/models/CushyApp'
-import { asAbsolutePath } from 'src/utils/fs/pathUtils'
+import { asAbsolutePath, asRelativePath } from 'src/utils/fs/pathUtils'
 import { LibraryFile } from './LibraryFile'
 import { shouldSkip_duringWatch } from './shouldSkip'
 
@@ -96,14 +96,25 @@ export class Library {
             // 🔶 TODO: handle rename and delete
             // console.log('🟢 1.', event) // => could be any target event: 'add', 'addDir', 'change', 'rename', 'renameDir', 'unlink' or 'unlinkDir'
             if (event === 'change') {
-                const relPath = path.relative(this.st.rootPath, targetPath)
+                const relPath = asRelativePath(path.relative(this.st.rootPath, targetPath))
+
                 console.log(`[👁️] changed: ${relPath}`)
+
+                // if file is outside of the library, we should not care about it.
                 const isInLibrary = relPath.startsWith('library/') || relPath.startsWith('library\\')
                 if (!isInLibrary) return
 
+                // first thing first, lets' just reload the script in the file,
+                // just in case. This should be enough to automatically discover new
+                // scripts when they're added
+                const xxfile = this.getFile(relPath)
+                xxfile.extractScriptFromFile({ force: true })
+
+                // RELOAD ALL APPS from opened drafts
+                // logic is a bit complex, but it seems like a good trade-off
                 const allAppsNeedingUpdate = new Set<CushyAppL>()
-                const allDrafts = st.layout.findTabsFor('Draft')
-                for (const d of allDrafts) {
+                const allDraftTabs = st.layout.findTabsFor('Draft')
+                for (const d of allDraftTabs) {
                     // retrieve the draft from the tab
                     const draft = st.db.drafts.get(d.config.draftID)
                     if (draft == null) {

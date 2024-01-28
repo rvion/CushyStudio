@@ -6,6 +6,7 @@ import type { PossibleSerializedNodes } from 'src/widgets/prompter/plugins/Possi
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { WidgetDI } from '../WidgetUI.DI'
+import { hash } from 'ohash'
 
 export type Widget_prompt_config  = WidgetConfigFields<{ default?: string | WidgetPromptOutput }> // prettier-ignore
 export type Widget_prompt_serial = Widget_prompt_state // prettier-ignore
@@ -15,6 +16,7 @@ export interface Widget_prompt extends WidgetTypeHelpers_OLD<'prompt', Widget_pr
 export class Widget_prompt
     implements IWidget_OLD<'prompt', Widget_prompt_config, Widget_prompt_serial, Widget_prompt_state, Widget_prompt_output>
 {
+    get serialHash() { return hash(this.result) } // prettier-ignore
     readonly isVerticalByDefault = true
     readonly isCollapsible = true
     readonly id: string

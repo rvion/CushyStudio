@@ -106,8 +106,8 @@ export class DraftL {
         imageToStartFrom?: MediaImageL,
     ): StepL => {
         this.isDirty = false
+        this.formBuilder._cache.count++
         this.AWAKE()
-
         // 2024-01-21 should this be here ?
         this.st.layout.FOCUS_OR_CREATE('Output', {})
 
@@ -178,6 +178,15 @@ export class DraftL {
 
     isInitializing = false
     isInitialized = false
+
+    private _formBuilder: Maybe<FormBuilder> = null
+    get formBuilder() {
+        if (this._formBuilder == null) {
+            this._formBuilder = new FormBuilder(this.st.schema)
+        }
+        return this._formBuilder
+    }
+
     AWAKE = () => {
         if (this.isInitializing) return
         if (this.isInitialized) return
@@ -188,7 +197,7 @@ export class DraftL {
                 console.log(`[🦊] form: awakening app ${this.data.appID}`)
                 if (action == null) return
                 try {
-                    const formBuilder = new FormBuilder(this.st.schema)
+                    const formBuilder = this.formBuilder // new FormBuilder(this.st.schema)
                     const uiFn = action.ui
                     runInAction(() => {
                         const req: Widget_group<any> = formBuilder._HYDRATE(
@@ -216,7 +225,7 @@ export class DraftL {
             const formValue = this.form.value
             if (formValue == null) return null
             const count = formValue.form._cache.count // manual mobx invalidation
-            const _ = JSON.stringify(formValue.serial)
+            const _ = formValue.serialHash
             runInAction(() => {
                 console.log(`[🦊] form: updating`)
                 this.update({ formSerial: formValue.serial })

@@ -7,6 +7,7 @@ import { nanoid } from 'nanoid'
 import { runWithGlobalForm } from 'src/models/_ctx2'
 import { toastError } from 'src/utils/misc/toasts'
 import { WidgetDI } from '../WidgetUI.DI'
+import { hash } from 'ohash'
 
 type BranchDefinitions = { [key: string]: () => Widget }
 
@@ -48,6 +49,7 @@ export class Widget_choices<T extends BranchDefinitions> implements IWidget<Widg
     readonly id: string
     readonly type: 'choices' = 'choices'
 
+    get serialHash () { return hash(this.result) } // prettier-ignore
     get isMulti() {
         return this.config.multi
     }
@@ -135,8 +137,9 @@ export class Widget_choices<T extends BranchDefinitions> implements IWidget<Widg
     }
 
     toggleBranch(branch: keyof T & string) {
-        if (this.children[branch]) this.disableBranch(branch)
-        else this.enableBranch(branch)
+        if (this.children[branch]) {
+            if (this.isMulti) this.disableBranch(branch)
+        } else this.enableBranch(branch)
     }
 
     disableBranch(branch: keyof T & string) {

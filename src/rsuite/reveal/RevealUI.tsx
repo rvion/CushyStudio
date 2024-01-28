@@ -1,36 +1,14 @@
 import { observer } from 'mobx-react-lite'
-import React, { useEffect, useMemo, useRef } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import { createPortal } from 'react-dom'
-import { Placement, RevealState, defaultHideDelay, defaultShowDelay } from './RevealState'
+import { RevealProps } from './RevealProps'
+import { RevealState } from './RevealState'
+import { useSt } from 'src/state/stateContext'
+import { ModalShellUI } from './ModalShell'
 
-export const RevealUI = observer(function Tooltip_(p: {
-    //
-    children: [React.ReactNode, React.ReactNode]
-    tooltipWrapperClassName?: string
-    className?: string
-    showDelay?: number
-    hideDelay?: number
-    enableRightClick?: boolean
-    cursor?: string
-    disableHover?: boolean
-    disableClick?: boolean
-    style?: React.CSSProperties
-    placement?: Placement
-}) {
-    const showDelay = p.showDelay ?? defaultShowDelay
-    const hideDelay = p.hideDelay ?? defaultHideDelay
-    const disableHover = p.disableHover ?? false
-    const uist = useMemo(
-        () =>
-            new RevealState(
-                //
-                showDelay,
-                hideDelay,
-                disableHover,
-                p.placement ?? 'auto',
-            ),
-        [showDelay, hideDelay, disableHover],
-    )
+export const RevealUI = observer(function Tooltip_(p: RevealProps) {
+    const uist = useMemo(() => new RevealState(p), [])
+    const st = useSt()
     const ref = useRef<HTMLDivElement>(null)
     useEffect(() => {
         if (uist.visible && ref.current) {
@@ -42,18 +20,43 @@ export const RevealUI = observer(function Tooltip_(p: {
     const pos = uist.tooltipPosition
     const tooltip = uist.visible
         ? createPortal(
-              <div
-                  className={p.tooltipWrapperClassName}
-                  tw={['_RevealUI card card-bordered bg-base-100 shadow-xl pointer-events-auto']}
-                  onClick={(ev) => {
-                      ev.stopPropagation()
-                      ev.preventDefault()
-                  }}
-                  onMouseEnter={uist.onMouseEnterTooltip}
-                  onMouseLeave={uist.onMouseLeaveTooltip}
-                  onContextMenu={uist.enterAnchor}
-                  // prettier-ignore
-                  style={{
+              uist.placement.startsWith('popup') ? (
+                  <div
+                      ref={(e) => {
+                          if (e == null) return st._popups.filter((p) => p !== uist)
+                          st._popups.push(uist)
+                      }}
+                      onKeyUp={(ev) => {
+                          if (ev.key === 'Escape') {
+                              uist.close()
+                              ev.stopPropagation()
+                              ev.preventDefault()
+                          }
+                      }}
+                      onClick={(ev) => {
+                          uist.close()
+                          ev.stopPropagation()
+                          ev.preventDefault()
+                      }}
+                      style={{ zIndex: 99999999, backgroundColor: '#0000003d' }}
+                      tw='pointer-events-auto absolute w-full h-full flex items-center justify-center z-50'
+                  >
+                      {/* <ModalShellUI>{p.children[1]}</ModalShellUI> */}
+                      <ModalShellUI title={p.title}>{p.children[1]}</ModalShellUI>
+                  </div>
+              ) : (
+                  <div
+                      className={p.tooltipWrapperClassName}
+                      tw={['_RevealUI card card-bordered bg-base-100 shadow-xl pointer-events-auto']}
+                      onClick={(ev) => {
+                          ev.stopPropagation()
+                          ev.preventDefault()
+                      }}
+                      onMouseEnter={uist.onMouseEnterTooltip}
+                      onMouseLeave={uist.onMouseLeaveTooltip}
+                      onContextMenu={uist.enterAnchor}
+                      // prettier-ignore
+                      style={{
                       //   borderTop: uist._lock ? '1px dashed yellow' : undefined,
                       position: 'absolute',
                       zIndex: 99999999,
@@ -64,30 +67,34 @@ export const RevealUI = observer(function Tooltip_(p: {
                       transform: pos.transform,
                       // Adjust positioning as needed
                   }}
-              >
-                  {uist._lock ? <span tw='opacity-50 italic text-sm'>locked; right-click to unlock</span> : null}
-                  {p.children[1]}
-              </div>,
+                  >
+                      {uist._lock ? <span tw='opacity-50 italic text-sm'>locked; right-click to unlock</span> : null}
+                      {p.children[1]}
+                  </div>
+              ),
               document.getElementById('tooltip-root')!,
           )
         : null
 
     return (
         <span //
-            tw={[p.cursor ?? uist.defaultCursor]}
+            tw={uist.defaultCursor}
             className={p.className}
             ref={ref}
             style={p.style}
             onContextMenu={uist.toggleLock}
             onMouseEnter={uist.onMouseEnterAnchor}
             onMouseLeave={uist.onMouseLeaveAnchor}
-            onClick={(ev) => {
-                if (p.disableClick) return
-                ev.stopPropagation()
-                ev.preventDefault()
-                if (uist.visible) uist.leaveAnchor()
-                else uist.enterAnchor()
-            }}
+            onClick={
+                uist.triggerOnClick
+                    ? (ev) => {
+                          ev.stopPropagation()
+                          ev.preventDefault()
+                          if (uist.visible) uist.leaveAnchor()
+                          else uist.enterAnchor()
+                      }
+                    : undefined
+            }
         >
             {/* {uist.inAnchor ? '🟢' : '❌'} */}
             {/* {uist.inTooltip ? '🟢' : '❌'} */}

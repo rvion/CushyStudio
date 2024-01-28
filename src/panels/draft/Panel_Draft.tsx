@@ -15,6 +15,7 @@ import { draftContext } from '../../widgets/misc/useDraft'
 import { DraftHeaderUI } from './DraftHeaderUI'
 import { MessageInfoUI } from '../MessageUI'
 import { marked } from 'marked'
+import { MarkdownUI } from 'src/rsuite/MarkdownUI'
 
 export const Panel_Draft = observer(function Panel_Draft_(p: { draftID: DraftID }) {
     // 1. get draft
@@ -84,13 +85,10 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                 )}
                 {draft.app.executable?.metadata?.help && (
                     <MessageInfoUI>
-                        <div //
-                            className='_WidgetMardownUI _MD w-full'
-                            dangerouslySetInnerHTML={{ __html: marked(draft.app.executable?.metadata.help) }}
-                        />
+                        <MarkdownUI tw='_WidgetMardownUI w-full' markdown={draft.app.executable?.metadata.help} />
                     </MessageInfoUI>
                 )}
-                <div tw='pb-80 px-2'>
+                <div tw='pb-80 pl-2'>
                     <ResultWrapperUI
                         //
                         res={draft.form}

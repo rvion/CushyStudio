@@ -2,7 +2,7 @@ import { exhaust } from 'src/utils/misc/ComfyUtils'
 import { ui_highresfix } from './_prefabs/_prefabs'
 import { Cnet_args, Cnet_return, run_cnet, ui_cnet } from './_prefabs/prefab_cnet'
 import { run_improveFace_fromImage, ui_improveFace } from './_prefabs/prefab_detailer'
-import { run_latent, ui_latent } from './_prefabs/prefab_latent'
+import { run_latent_v3, ui_latent_v3 } from './_prefabs/prefab_latent_v3'
 import { output_demo_summary } from './_prefabs/prefab_markdown'
 import { run_model, ui_model } from './_prefabs/prefab_model'
 import { run_prompt } from './_prefabs/prefab_prompt'
@@ -18,6 +18,10 @@ app({
         description: 'A card that contains all the features needed to play with stable diffusion',
     },
     ui: (form) => ({
+        // modelType: form.selectOne({
+        //     appearance: 'tab',
+        //     choices: [{ id: 'SD 1.5' }, { id: 'SDXL' }],
+        // }),
         positive: form.prompt({
             default: {
                 tokens: [
@@ -38,7 +42,7 @@ app({
             default: 'bad quality, blurry, low resolution, pixelated, noisy',
         }),
         model: ui_model(),
-        latent: ui_latent(),
+        latent: ui_latent_v3(),
         sampler: ui_sampler(),
         highResFix: ui_highresfix({ activeByDefault: true }),
         upscale: ui_upscaleWithModel(),
@@ -97,19 +101,12 @@ app({
         let negative = y.conditionning
 
         // START IMAGE -------------------------------------------------------------------------------
-        let { latent, width, height } = await run_latent({ opts: ui.latent, vae })
+        let { latent, width, height } = await run_latent_v3({ opts: ui.latent, vae })
 
         // CNETS -------------------------------------------------------------------------------
         let cnet_out: Cnet_return | undefined
         if (ui.controlnets) {
-            const Cnet_args: Cnet_args = {
-                positive,
-                negative,
-                width,
-                height,
-                ckptPos,
-                modelType: ui.latent.size.modelType,
-            }
+            const Cnet_args: Cnet_args = { positive, negative, width, height, ckptPos }
             cnet_out = await run_cnet(ui.controlnets, Cnet_args)
             positive = cnet_out.cnet_positive
             negative = cnet_out.cnet_negative
@@ -167,19 +164,20 @@ app({
             if (HRF.saveIntermediaryImage) {
                 graph.SaveImage({ images: graph.VAEDecode({ samples: latent, vae }) })
             }
-            latent = HRF.NNLatentUpscale
-                ? graph.NNLatentUpscale({
-                      latent,
-                      version: ui.latent.size.modelType == 'SDXL 1024' ? 'SDXL' : 'SD 1.x',
-                      upscale: HRF.scaleFactor,
-                  })
-                : graph.LatentUpscale({
-                      samples: latent,
-                      crop: 'disabled',
-                      upscale_method: 'nearest-exact',
-                      height: height * ui.highResFix.scaleFactor,
-                      width: width * ui.highResFix.scaleFactor,
-                  })
+            latent =
+                HRF.upscaleMethod.id === 'regular'
+                    ? graph.LatentUpscale({
+                          samples: latent,
+                          crop: 'disabled',
+                          upscale_method: 'nearest-exact',
+                          height: height * ui.highResFix.scaleFactor,
+                          width: width * ui.highResFix.scaleFactor,
+                      })
+                    : graph.NNLatentUpscale({
+                          latent,
+                          version: HRF.upscaleMethod.id == 'Neural XL' ? 'SDXL' : 'SD 1.x',
+                          upscale: HRF.scaleFactor,
+                      })
             latent = latent = run_sampler(
                 run,
                 {

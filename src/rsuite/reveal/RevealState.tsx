@@ -1,9 +1,15 @@
 import { makeAutoObservable, observable, runInAction } from 'mobx'
+import { RevealProps } from './RevealProps'
 
 export const defaultShowDelay = 100
 export const defaultHideDelay = 300
 
 export type Placement =
+    //
+    | 'popup-sm'
+    | 'popup-xs'
+    | 'popup-lg'
+    //
     | 'top'
     | 'bottom'
     | 'right'
@@ -23,15 +29,10 @@ export type Placement =
     | 'autoHorizontalStart'
     | 'autoHorizontalEnd'
 
-const setPosition = (rect: DOMRect, placement: Placement) => {
-    if (placement == 'bottomStart') return { top: rect.bottom, left: rect.left }
-    if (placement == 'bottomEnd') return { top: rect.bottom, left: rect.right }
-    if (placement == 'topStart') return { top: rect.top, left: rect.left }
-}
-
 export class RevealState {
+    static nextUID = 1
     static shared: { current: Maybe<RevealState> } = observable({ current: null })
-
+    uid = RevealState.nextUID++
     // ------------------------------------------------
     inAnchor = false
     inTooltip = false
@@ -49,14 +50,24 @@ export class RevealState {
         this.inTooltip = false
     }
 
+    get triggerOnClick() {
+        return (
+            this.p.trigger == null ||
+            this.p.trigger == 'click' || //
+            this.p.trigger == 'clickAndHover'
+        )
+    }
+    get triggerOnHover() {
+        return (
+            this.p.trigger == 'hover' || //
+            this.p.trigger == 'clickAndHover'
+        )
+    }
+    get showDelay() { return this.p.showDelay ?? defaultShowDelay } // prettier-ignore
+    get hideDelay() { return this.p.hideDelay ?? defaultHideDelay } // prettier-ignore
+    get placement() { return this.p.placement ?? 'auto' } // prettier-ignore
     // ------------------------------------------------
-    constructor(
-        //
-        public showDelay = defaultShowDelay,
-        public hideDelay = defaultHideDelay,
-        public disableHover = false,
-        public placement = 'bottomStart',
-    ) {
+    constructor(public p: RevealProps) {
         makeAutoObservable(this)
     }
 
@@ -66,6 +77,11 @@ export class RevealState {
         // prettier-ignore
         this.tooltipPosition = (() => {
             let placement = this.placement
+
+            if (placement == 'popup-xs') return { top: 0, left: 0 }
+            if (placement == 'popup-sm') return { top: 0, left: 0 }
+            if (placement == 'popup-lg') return { top: 0, left: 0 }
+
 
             if (this.placement == 'auto') {
                 placement = (():Placement => {
@@ -111,7 +127,7 @@ export class RevealState {
 
     // UI --------------------------------------------
     get defaultCursor() {
-        if (this.disableHover) return 'cursor-pointer'
+        if (!this.triggerOnHover) return 'cursor-pointer'
         return 'cursor-help'
     }
 
@@ -120,12 +136,13 @@ export class RevealState {
     leaveAnchorTimeoutId: NodeJS.Timeout | null = null
 
     onMouseEnterAnchor = () => {
+        /* 🔥 */ if (!this.triggerOnHover && !this.visible) return
         /* 🔥 */ if (RevealState.shared.current) return this.enterAnchor()
-        /* 🔥 */ if (this.disableHover && !this.visible) return
         this._resetAllAnchorTimouts()
         this.enterAnchorTimeoutId = setTimeout(this.enterAnchor, this.showDelay)
     }
     onMouseLeaveAnchor = () => {
+        if (this.placement.startsWith('popup')) return
         this._resetAllAnchorTimouts()
         this.leaveAnchorTimeoutId = setTimeout(this.leaveAnchor, this.hideDelay)
     }
@@ -171,6 +188,7 @@ export class RevealState {
         this.enterTooltipTimeoutId = setTimeout(this.enterTooltip, this.showDelay)
     }
     onMouseLeaveTooltip = () => {
+        if (this.placement.startsWith('popup')) return
         // cancer enter
         this._resetAllTooltipTimouts()
         this.leaveTooltipTimeoutId = setTimeout(this.leaveTooltip, this.hideDelay)

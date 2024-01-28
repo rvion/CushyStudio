@@ -1,7 +1,7 @@
 import type { MediaImageL } from 'src/models/MediaImage'
 import type { STATE } from '../state/state'
 
-import { runInAction } from 'mobx'
+import { action, makeObservable, observable, runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { nanoid } from 'nanoid'
 import { useLayoutEffect, useMemo } from 'react'
@@ -18,8 +18,24 @@ class MinipaintState {
     constructor(
         //
         public st: STATE,
-    ) {}
+    ) {
+        makeObservable(this, {
+            autoSave: observable,
+            toggleAutoSave: action,
+        })
+    }
 
+    autoSave: Maybe<NodeJS.Timeout> = null
+    toggleAutoSave() {
+        if (this.autoSave != null) {
+            clearInterval(this.autoSave)
+            this.autoSave = null
+            return
+        }
+        this.autoSave = setInterval(() => {
+            this.saveImage()
+        }, 1000)
+    }
     // { uri: img.comfyURL }
     // { uri: string }
     loadImage(iamgeL: MediaImageL) {
@@ -86,7 +102,6 @@ export const Panel_Minipaint = observer(function PaintUI_(p: { imgID?: MediaImag
     // const action = p.action
     const st = useSt()
     const uist = useMemo(() => new MinipaintState(st), [])
-
     // load image once the widget is ready
     useLayoutEffect(() => {
         if (p.imgID == null) return
@@ -112,6 +127,19 @@ export const Panel_Minipaint = observer(function PaintUI_(p: { imgID?: MediaImag
                     >
                         Save
                     </Button>
+                    <div
+                        tw={['btn btn-sm virtualBorder self-start', uist.autoSave ? 'btn-active' : null]}
+                        // color={uist.autoSave ? 'green' : undefined}
+                        onClick={() => uist.toggleAutoSave()}
+                    >
+                        AutoSave
+                        {uist.autoSave ? (
+                            <div className='loading loading-spinner loading-sm' />
+                        ) : (
+                            <span className='material-symbols-outlined'>repeat</span>
+                        )}
+                        {/* Auto */}
+                    </div>
                     <div>
                         outputs/minipaint/
                         <input

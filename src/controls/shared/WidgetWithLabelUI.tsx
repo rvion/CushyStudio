@@ -13,6 +13,7 @@ import { InstallCustomNodeBtnUI } from '../../wiki/ui/InstallCustomNodeBtnUI'
 import { InstallModelBtnUI } from '../misc/InstallModelBtnUI'
 import { WidgetDI } from '../widgets/WidgetUI.DI'
 import { ListControlsUI } from './ListControlsUI'
+import { AnimatedSizeUI } from '../widgets/choices/AnimatedSizeUI'
 
 export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     widget: R.Widget
@@ -82,7 +83,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                 if (isCollapsed) return (widget.serial.collapsed = false)
                 if (showToogle) return toggleInfo.toggle()
                 // if (!widget.serial.active) return (widget.serial.active = true)
-                widget.serial.collapsed = true
+                // widget.serial.collapsed = true
             }}
         >
             {/* {widget.serial == null ? '🟢' : '🔴'} */}
@@ -147,7 +148,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
             {/* Tooltip ------------------------------------ */}
             {showTooltip && (
                 <RevealUI>
-                    <div className='btn btn-sm btn-square'>
+                    <div className='btn btn-sm btn-square btn-ghost'>
                         <span className='material-symbols-outlined'>info</span>
                     </div>
                     <Tooltip>{tooltip}</Tooltip>
@@ -169,6 +170,13 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                 {/* Collapse ONLY Indicator ------------------------------------ */}
                 {showFoldIndicator ? null : (
                     <span
+                        tw={[
+                            //
+                            'opacity-30 hover:opacity-100 ml-auto btn btn-sm btn-ghost',
+                            'btn-square',
+                            // 'btn-narrow'
+                            // 'btn-narrower'
+                        ]}
                         onClick={(ev) => {
                             if (!widget.isCollapsible) return
 
@@ -181,7 +189,6 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                                 widget.serial.collapsed = true
                             }
                         }}
-                        tw='opacity-30 hover:opacity-100 ml-auto'
                     >
                         {widget.serial.collapsed ? (
                             <>
@@ -222,10 +229,12 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     //     )
     // } else {
     return (
-        <div tw={[isVertical ? '[padding-left:0.3rem] FIELD' : 'FIELDSimple']} className={className} key={rootKey}>
-            {LABEL}
-            {widgetUI}
-        </div>
+        <AnimatedSizeUI>
+            <div tw={[isVertical ? '[padding-left:0.3rem] FIELD' : 'FIELDSimple']} className={className} key={rootKey}>
+                {LABEL}
+                {widgetUI}
+            </div>
+        </AnimatedSizeUI>
     )
     // }
 })

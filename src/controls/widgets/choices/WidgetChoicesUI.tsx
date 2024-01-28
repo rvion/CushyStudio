@@ -4,6 +4,8 @@ import type { Widget_choices } from './WidgetChoices'
 import { observer } from 'mobx-react-lite'
 import { SelectUI } from 'src/rsuite/SelectUI'
 import { WidgetWithLabelUI } from '../../shared/WidgetWithLabelUI'
+import { makeLabelFromFieldName } from 'src/utils/misc/makeLabelFromFieldName'
+import { AnimatedSizeUI } from './AnimatedSizeUI'
 
 // UI
 export const WidgetChoicesUI = observer(function WidgetChoicesUI_(p: {
@@ -25,7 +27,7 @@ export const WidgetChoicesTabUI = observer(function WidgetChoicesTabUI_(p: {
 
     return (
         <div>
-            <div role='tablist' tw='tabs tabs-boxed'>
+            <div role='tablist' tw='tabs tabs-boxed tabs-sm'>
                 {choices.map((c) => {
                     const isSelected = widget.serial.branches[c.key]
                     return (
@@ -35,24 +37,29 @@ export const WidgetChoicesTabUI = observer(function WidgetChoicesTabUI_(p: {
                             role='tab'
                             tw={['tab', isSelected && 'tab-active font-bold']}
                         >
-                            {c.key}
+                            {makeLabelFromFieldName(c.key)}
                         </a>
                     )
                 })}
             </div>
-            <div tw={[widget.config.layout === 'H' ? 'flex' : null]} className={widget.config.className}>
-                {activeSubwidgets.map((val) => {
-                    const subWidget = val.subWidget
-                    if (subWidget == null) return <>❌ error</>
-                    return (
-                        <WidgetWithLabelUI //
-                            key={val.branch}
-                            rootKey={val.branch}
-                            widget={subWidget}
-                        />
-                    )
-                })}
-            </div>
+            <AnimatedSizeUI>
+                <div //
+                    tw={[widget.config.layout === 'H' ? 'flex' : null]}
+                    className={widget.config.className}
+                >
+                    {activeSubwidgets.map((val) => {
+                        const subWidget = val.subWidget
+                        if (subWidget == null) return <>❌ error</>
+                        return (
+                            <WidgetWithLabelUI //
+                                key={val.branch}
+                                rootKey={val.branch}
+                                widget={subWidget}
+                            />
+                        )
+                    })}
+                </div>
+            </AnimatedSizeUI>
         </div>
     )
 })

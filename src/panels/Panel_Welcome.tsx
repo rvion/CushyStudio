@@ -1,12 +1,13 @@
 import { observer } from 'mobx-react-lite'
-import { useEffect, useLayoutEffect } from 'react'
-import { IndexAllAppsBtnUI } from './libraryUI/LibraryHeaderUI'
+import { useEffect } from 'react'
+import { ScriptExtractionResult } from 'src/cards/LibraryFile'
 import { AppCardUI } from 'src/cards/fancycard/AppCardUI'
 import { useSt } from 'src/state/stateContext'
-import { ScriptExtractionResult } from 'src/cards/LibraryFile'
 import { toastError } from 'src/utils/misc/toasts'
+import { CreateAllBtnUI } from './Panel_Welcome/CreateAppBtnUI'
 
 export const Panel_Welcome = observer(function Panel_Welcome_(p: {}) {
+    const st = useSt()
     useEffect(() => {
         // confetti
         void (async () => {
@@ -23,17 +24,39 @@ export const Panel_Welcome = observer(function Panel_Welcome_(p: {}) {
                     Psss. You're early; this app is still in Beta. It update often, and break sometimes. Hope you'll have fun !
                 </div>
                 <div tw='divider mx-8'></div>
-                <div>You can fill your local CushyApp database by indexing all apps in the `./library` folder</div>
-                <IndexAllAppsBtnUI />
+                <div>
+                    1. First thing first, make sure you have some ComfyUI server you can connect to in the
+                    <div onClick={() => st.layout.FOCUS_OR_CREATE('Hosts', {})} className='btn btn-sm btn-primary'>
+                        Hosts
+                        <span className='material-symbols-outlined'>open_in_new</span>
+                    </div>{' '}
+                    panel.
+                    {/* <span tw='italic text-xs'>(🤫 Cushy Cloud is coming soon)</span> */}
+                </div>
+                {/* <div>You can fill your local CushyApp database by indexing all apps in the `./library` folder</div> */}
+                {/* <IndexAllAppsBtnUI /> */}
                 <div tw='divider mx-8'></div>
-                To get started, try those apps ?
+                2. To get started, try those apps ?
                 {['library/built-in/SDUI.ts'].map((path) => (
                     <StandaloneAppBtnUI key={path} path={path as RelativePath} />
                 ))}
                 <div tw='divider mx-8'></div>
                 <div>
-                    Time to create your own app ? Let's GOO ! and if you're feeling lost, check the{' '}
-                    <div tw='btn btn-sm'>SDK examples</div> or the <div tw='btn btn-sm'>Documentation</div> website
+                    <div>
+                        3. Time to create your own app ? It's super-easy. Let's GOO !
+                        <CreateAllBtnUI />
+                    </div>
+                    <div>and if you're feeling lost, check the </div>
+                    <div tw='btn btn-sm'>
+                        SDK examples
+                        <span className='material-symbols-outlined'>open_in_new</span>
+                    </div>{' '}
+                    or the{' '}
+                    <div tw='btn btn-sm'>
+                        Documentation
+                        <span className='material-symbols-outlined'>open_in_new</span>
+                    </div>{' '}
+                    website
                 </div>
             </section>
         </div>

@@ -6,6 +6,8 @@ import type { Wildcards } from 'src/widgets/prompter/nodes/wildcards/wildcards'
 import type { MediaImageL } from '../models/MediaImage'
 import type { ComfyStatus, PromptID, PromptRelated_WsMsg, WsMsg } from '../types/ComfyWsApi'
 import type { CSCriticalError } from '../widgets/CSCriticalError'
+import type { RevealState } from 'src/rsuite/reveal/RevealState'
+import type { ActionTagMethodList } from 'src/cards/App'
 
 import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'fs'
 import { makeAutoObservable } from 'mobx'
@@ -20,7 +22,6 @@ import { PostgrestSingleResponse, SupabaseClient } from '@supabase/supabase-js'
 import { closest } from 'fastest-levenshtein'
 import { ShortcutWatcher } from 'src/app/shortcuts/ShortcutManager'
 import { shortcutsDef } from 'src/app/shortcuts/shortcuts'
-import type { ActionTagMethodList } from 'src/cards/App'
 import { GithubUserName } from 'src/cards/GithubUser'
 import { Library } from 'src/cards/Library'
 import { asAppPath } from 'src/cards/asAppPath'
@@ -64,6 +65,7 @@ import { mkSupa } from './supa'
 import { TreeApp } from 'src/panels/libraryUI/tree/nodes/TreeApp'
 import { TreeDraft } from 'src/panels/libraryUI/tree/nodes/TreeDraft'
 import { VirtualHierarchy } from 'src/panels/libraryUI/VirtualHierarchy'
+import { recursivelyFindAppsInFolder } from 'src/cards/walkLib'
 
 export class STATE {
     /** hack to help closing prompt completions */
@@ -102,6 +104,13 @@ export class STATE {
     tree2: Tree
     tree2View: TreeView
 
+    /** @internal */
+    _popups: RevealState[] = []
+
+    startupFileIndexing = async () => {
+        const allFiles = recursivelyFindAppsInFolder(this.library, this.libraryFolderPathAbs)
+        for (const x of allFiles) await x.extractScriptFromFile()
+    }
     /**
      * global hotReload persistent cache that should survive hot reload
      * useful to ensure various singleton stuff (e.g. dbHealth)
@@ -137,6 +146,11 @@ export class STATE {
         this.typecheckingConfig.erase()
         this.db.erase()
         this.restart()
+    }
+
+    resizeWindowForVideoCapture = () => {
+        const ipcRenderer = window.require('electron').ipcRenderer
+        ipcRenderer.send('resize-for-video-capture')
     }
 
     partialReset_eraseConfigAndSchemaFiles = () => {

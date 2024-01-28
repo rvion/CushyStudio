@@ -4,6 +4,7 @@ import type { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers
 import { computed, makeObservable, observable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { WidgetDI } from '../WidgetUI.DI'
+import { hash } from 'ohash'
 
 // CONFIG
 export type Widget_bool_config = WidgetConfigFields<{ default?: boolean }>
@@ -31,7 +32,7 @@ export class Widget_bool implements IWidget<Widget_string_types> {
     readonly type: 'bool' = 'bool'
 
     serial: Widget_bool_serial
-
+    get serialHash () { return hash(this.result) } // prettier-ignore
     setOn = () => (this.serial.active = true)
     setOff = () => (this.serial.active = false)
     toggle = () => (this.serial.active = !this.serial.active)

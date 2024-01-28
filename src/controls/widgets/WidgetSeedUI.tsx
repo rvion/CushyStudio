@@ -6,10 +6,10 @@ export const WidgetSeedUI = observer(function WidgetSeedUI_(p: { widget: Widget_
     const widget = p.widget
     const val = widget.serial.val
     return (
-        <div tw='flex items-center join virtualBorder'>
+        <div tw='flex-1 flex items-center join virtualBorder'>
             <button
                 type='button'
-                tw={['join-item btn-sm btn-ghost', widget.serial.mode === 'randomize' && 'btn-active']}
+                tw={['flex-1 whitespace-nowrap join-item btn-sm btn-ghost', widget.serial.mode === 'randomize' && 'btn-active']}
                 onClick={() => {
                     widget.serial.mode = 'randomize'
                     widget.serial.active = true
@@ -19,7 +19,7 @@ export const WidgetSeedUI = observer(function WidgetSeedUI_(p: { widget: Widget_
             </button>
             <button
                 type='button'
-                tw={['join-item btn-sm btn-ghost', widget.serial.mode === 'fixed' && 'btn-active']}
+                tw={['flex-1 whitespace-nowrap join-item btn-sm btn-ghost', widget.serial.mode === 'fixed' && 'btn-active']}
                 onClick={() => {
                     widget.serial.mode = 'fixed'
                     widget.serial.active = true

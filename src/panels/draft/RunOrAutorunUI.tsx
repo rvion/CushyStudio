@@ -9,7 +9,7 @@ export const RunOrAutorunUI = observer(function RunOrAutorunUI_(p: { className?:
     const icon = draft.shouldAutoStart ? 'pause' : 'play_arrow'
     return (
         <div tw='flex gap-1' className={p.className}>
-            <RevealUI disableHover>
+            <RevealUI>
                 <div tw='btn btn-sm virtualBorder btn-square'>
                     <span className='material-symbols-outlined'>timer</span>
                 </div>

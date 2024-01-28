@@ -15,7 +15,7 @@ export const Panel_Gallery = observer(function VerticalGalleryUI_(p: {}) {
             style={{ background: st.configFile.value.galleryBgColor }}
         >
             <div className='cushy-panel-header'>
-                <RevealUI disableHover>
+                <RevealUI>
                     <div tw='btn btn-sm'>
                         <span className='material-symbols-outlined'>settings</span>
                         Options

@@ -6,6 +6,7 @@ import { computed, makeObservable, observable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { Widget } from '../../Widget'
 import { WidgetDI } from '../WidgetUI.DI'
+import { hash } from 'ohash'
 
 // CONFIG
 export type Widget_optional_config<T extends Widget> = WidgetConfigFields<{
@@ -34,6 +35,7 @@ export type Widget_string_types<T extends Widget> = {
 // STATE
 export interface Widget_optional<T extends Widget> extends WidgetTypeHelpers<Widget_string_types<T>> {}
 export class Widget_optional<T extends Widget> implements IWidget<Widget_string_types<T>> {
+    get serialHash () { return hash(this.result) } // prettier-ignore
     readonly isVerticalByDefault = true
     readonly isCollapsible = true
     readonly id: string

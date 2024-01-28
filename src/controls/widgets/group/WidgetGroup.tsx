@@ -8,6 +8,7 @@ import { nanoid } from 'nanoid'
 import { runWithGlobalForm } from 'src/models/_ctx2'
 import { bang } from 'src/utils/misc/bang'
 import { WidgetDI } from '../WidgetUI.DI'
+import { hash } from 'ohash'
 
 // CONFIG
 export type Widget_group_config<T extends { [key: string]: Widget }> = WidgetConfigFields<{
@@ -41,6 +42,7 @@ export type Widget_group_types<T extends { [key: string]: Widget }> = {
 // STATE
 export interface Widget_group<T extends { [key: string]: Widget }> extends WidgetTypeHelpers<Widget_group_types<T>> {}
 export class Widget_group<T extends { [key: string]: Widget }> implements IWidget<Widget_group_types<T>> {
+    get serialHash () { return hash(this.result) } // prettier-ignore
     readonly isVerticalByDefault = true
     readonly isCollapsible = true
     readonly id: string

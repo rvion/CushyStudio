@@ -44,7 +44,7 @@ export const ui_subform_Tile_Preprocessor = (form: FormBuilder) => {
 export const run_cnet_Tile = (
     Tile: OutputFor<typeof ui_subform_Tile>,
     image: _IMAGE,
-    resolution: 512 | 768 | 1024 = 512,
+    resolution: number, // 512 | 768 | 1024 = 512,
 ): {
     image: _IMAGE
     cnet_name: Enum_ControlNetLoader_control_net_name

@@ -11,9 +11,8 @@ export const Dropdown = (p: {
     title: ReactNode
     appearance?: Maybe<RSAppearance>
     children: ReactNode
-    enableRightClick?: boolean
 }) => (
-    <RevealUI enableRightClick={p.enableRightClick} disableHover className='dropdown' tw={[p.className]}>
+    <RevealUI className='dropdown' tw={[p.className]}>
         <label
             // style={{
             //     minHeight: '1.5rem',

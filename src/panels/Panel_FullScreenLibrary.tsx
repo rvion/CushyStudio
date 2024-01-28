@@ -40,7 +40,7 @@ export const Panel_CardPicker3UI = observer(function Panel_CardPicker3UI_(p: {})
                                 if (e.key === 'Enter') {
                                     const app = library.appsFiltered[library.selectionCursor]
                                     if (app == null) return
-                                    app.openLastDraft()
+                                    app.openLastOrCreateDraft()
                                     st.closeFullLibrary()
                                 } else if (e.key === 'ArrowDown') {
                                     library.selectionCursor++
@@ -54,16 +54,7 @@ export const Panel_CardPicker3UI = observer(function Panel_CardPicker3UI_(p: {})
                             onFocus={(e) => e.target.select()}
                         />
                     </Joined>
-                    <div
-                        tw='btn-sm btn btn-primary'
-                        onClick={async () => {
-                            //
-                            // throw new Error('not implemented; should walk, list all apps, and compile them to executable')
-                            const allFiles = recursivelyFindAppsInFolder(st.library, st.libraryFolderPathAbs)
-                            console.log(`[👙] allFiles:`, allFiles.length)
-                            for (const x of allFiles) await x.extractScriptFromFile()
-                        }}
-                    >
+                    <div tw='btn-sm btn btn-primary' onClick={st.startupFileIndexing}>
                         Index All Apps
                     </div>
                     {/* </div> */}
@@ -119,8 +110,8 @@ export const Panel_CardPicker3UI = observer(function Panel_CardPicker3UI_(p: {})
                                     //
                                     style={{ width: '5rem', height: '5rem' }}
                                     src={app.illustration_url ?? ''}
-                                ></img>
-                                <RevealUI disableHover>
+                                />
+                                <RevealUI>
                                     <div tw='font-bold'>{app.description}</div>
                                     <pre tw='bg-base-300 text-xs overflow-auto'>{JSON.stringify(app, null, 3)}</pre>
                                 </RevealUI>

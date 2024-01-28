@@ -27,11 +27,18 @@ export const ui_highresfix = (p: { activeByDefault?: true } = {}) => {
         startActive: p.activeByDefault,
         label: 'Upscale Pass (High Res Fix)',
         items: () => ({
-            NNLatentUpscale: form.bool({
+            // NNLatentUpscale: form.bool({
+            //     default: false,
+            //     label: 'NN Latent Upscale?',
+            // }),
+            upscaleMethod: form.selectOne({
+                appearance: 'tab',
+                choices: [{ id: 'regular' }, { id: 'Neural 1.5' }, { id: 'Neural XL' }],
                 customNodesByURI: 'https://github.com/Ttl/ComfyUi_NNLatentUpscale',
-                default: false,
-                label: 'NN Latent Upscale?',
+                tooltip:
+                    'regular upscale add more noise, depend your objective. for a second pass to refine stuff, I think adding noise is better',
             }),
+
             scaleFactor: form.float({ default: 1.5, min: 0.5, max: 8, step: 0.1 }),
             steps: form.int({ default: 15 }),
             denoise: form.float({ min: 0, default: 0.6, max: 1, step: 0.01 }),

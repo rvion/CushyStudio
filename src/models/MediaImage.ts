@@ -205,7 +205,7 @@ export class MediaImageL {
 
     /** ready to be used in image fields */
     get url(): string {
-        return `file://${this.absPath}`
+        return `file://${this.absPath}?hash=${this.data.hash}`
     }
 
     /** absolute path on the machine running CushyStudio */
