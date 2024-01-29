@@ -10,6 +10,7 @@ import { ui_recursive } from './_prefabs/prefab_recursive'
 import { Ctx_sampler, run_sampler, ui_sampler } from './_prefabs/prefab_sampler'
 import { run_upscaleWithModel, ui_upscaleWithModel } from './_prefabs/prefab_upscaleWithModel'
 import { run_saveAllImages, ui_saveAllImages } from './_prefabs/saveSmall'
+import { run_rembg_v1, ui_rembg_v1 } from './_prefabs/prefab_rembg'
 
 app({
     metadata: {
@@ -56,7 +57,7 @@ app({
         }),
         compressImage: ui_saveAllImages(),
         // startImage
-        removeBG: form.bool({ default: false }),
+        removeBG: ui_rembg_v1(),
 
         refine: ui_refiners(),
         show3d: form.groupOpt({
@@ -205,14 +206,7 @@ app({
         }
 
         // REMOVE BACKGROUND ---------------------------------------------------------------------
-        if (ui.removeBG) {
-            finalImage = graph.Image_Rembg_$1Remove_Background$2({
-                images: run.AUTO,
-                model: 'u2net',
-                background_color: 'none',
-            })
-            graph.SaveImage({ images: finalImage })
-        }
+        if (ui.removeBG) run_rembg_v1(ui.removeBG, finalImage)
 
         // SHOW 3D --------------------------------------------------------------------------------
         const show3d = ui.show3d
