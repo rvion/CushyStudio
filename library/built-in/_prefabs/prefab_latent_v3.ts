@@ -6,8 +6,8 @@ export const ui_latent_v3 = () => {
     return form.choice({
         appearance: 'tab',
         label: 'Start from',
+        default: 'emptyLatent',
         items: {
-            image: () => form.image({}),
             emptyLatent: () =>
                 form.group({
                     items: () => ({
@@ -15,6 +15,7 @@ export const ui_latent_v3 = () => {
                         size: form.size({}),
                     }),
                 }),
+            image: () => form.image({}),
         },
     })
 }
