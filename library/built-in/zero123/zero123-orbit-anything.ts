@@ -17,7 +17,7 @@ app({
         ].join('\n'),
     },
     ui: (form) => ({
-        orbit: form.orbit({}),
+        orbit: form.orbit({ recommandedModels: { knownModel: 'stabilityai/Stable Zero123' } }),
         image: form.image({}),
         sndPass: form.groupOpt({
             items: () => ({
