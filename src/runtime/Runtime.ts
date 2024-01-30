@@ -245,7 +245,7 @@ export class Runtime<FIELDS extends WidgetDict = any> {
 
     /** a built-in prefab to quickly
      * add a PreviewImage node to your ComfyUI graph */
-    add_previewImage = (image: HasSingle_IMAGE) => {
+    add_previewImage = (image: _IMAGE) => {
         return this.nodes.PreviewImage({ images: image })
     }
 

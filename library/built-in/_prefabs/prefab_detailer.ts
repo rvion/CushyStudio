@@ -63,6 +63,9 @@ export const run_refiners_fromImage = (
     let image = finalImage
 
     const { faces, hands, eyes } = ui
+    if (faces || hands || eyes) {
+        run.add_previewImage(finalImage)
+    }
     if (faces) {
         const facePrompt = faces.prompt ?? 'perfect face, masterpiece, hightly detailed, sharp details'
         const x = graph.FaceDetailer({
@@ -85,7 +88,8 @@ export const run_refiners_fromImage = (
             // sampler_name: 'ddim',
             // scheduler: 'ddim_uniform',
         })
-        run.add_saveImage(x.outputs.image)
+        // run.add_saveImage(x.outputs.image)
+
         image = x.outputs.image
     }
     if (hands) {
@@ -110,7 +114,7 @@ export const run_refiners_fromImage = (
             // sampler_name: 'ddim',
             // scheduler: 'ddim_uniform',
         })
-        run.add_saveImage(x.outputs.image)
+        // run.add_saveImage(x.outputs.image)
         image = x.outputs.image
     }
     // run.add_saveImage(x.outputs.cropped_refined)

@@ -14,9 +14,10 @@ app({
     }),
     run: async (run, ui, startImg) => {
         if (startImg == null) throw new Error('no image provided')
-        const img = await startImg.loadInWorkflow()
+        let img: _IMAGE = await startImg.loadInWorkflow()
         run_model(ui.model)
-        run_refiners_fromImage(ui.refiners, img)
+        img = run_refiners_fromImage(ui.refiners, img)
+        run.add_previewImage(img)
         await run.PROMPT()
     },
 })
