@@ -61,6 +61,7 @@ app({
 
         refine: ui_refiners(),
         show3d: form.groupOpt({
+            customNodesByNameInCushy: ['Zoe$7DepthMapPreprocessor'],
             items: () => {
                 return {
                     normal: form.selectOne({
