@@ -7,6 +7,7 @@ import { Trigger } from './Trigger'
 import { _duplicateCurrentDraft } from './_duplicateCurrentDraft'
 
 export const shorcutKeys = {
+    collapseAllTree: 'mod+shift+k',
     openConfigPage: 'mod+,',
     openHostsPate: 'mod+shift+,',
     duplicateCurrentDraft: 'mod+shift+d',
@@ -70,7 +71,11 @@ export const shortcutsDef: Shortcut<STATE>[] = [
     // simpleValidInInput('mod+shift+k', (st) => (st.showSuperAdmin = !st.showSuperAdmin)),
     // simpleValidInInput('mod+shift+z', (st) => (st.showSuperAdminBubbles = !st.showSuperAdminBubbles)),
     simpleValidInInput(['mod+1', 'mod+shift+e', 'mod+b'], (st) => focusTree(st, st.tree1)),
-    simpleValidInInput(['mod+shift+k'], (st) => st.db.tree_entries.updateAll({ isExpanded: null })),
+    simpleValidInInput([shorcutKeys.collapseAllTree], (st) => {
+        st.tree1View.resetCaretPos()
+        st.tree2View.resetCaretPos()
+        st.db.tree_entries.updateAll({ isExpanded: null })
+    }),
     simpleValidInInput(['mod+2'], (st) => focusTree(st, st.tree2)),
     // --------------------------
     // draftActions:
