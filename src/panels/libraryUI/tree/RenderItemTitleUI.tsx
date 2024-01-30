@@ -5,7 +5,9 @@ import { TreeNode } from './xxx/TreeNode'
 export const RenderItemTitleUI = observer(function RenderItemTitleUI_(p: { node: TreeNode }) {
     const node = p.node
     const item = node.data
-    let icon = item.icon
+    let icon = node.isOpen //
+        ? item.iconExpanded ?? item.icon
+        : item.icon ?? item.iconExpanded
     if (typeof icon === 'string') {
         icon = <img src={icon} style={{ width: '1.3rem', height: '1.3rem' }} />
         // icon = <span className='material-icons-outlined'>{icon}</span>
