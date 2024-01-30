@@ -5,6 +5,8 @@ import { ComboUI } from 'src/app/shortcuts/ComboUI'
 import { useSt } from 'src/state/stateContext'
 import { TreeViewCtx } from './TreeCtx'
 import { TreeEntryUI } from './TreeEntryUI'
+import { RevealUI } from 'src/rsuite/reveal/RevealUI'
+import { shorcutKeys } from 'src/app/shortcuts/shortcuts'
 
 export const TreeUI = observer(function TreeEditorUI_(p: {
     //
@@ -23,12 +25,17 @@ export const TreeUI = observer(function TreeEditorUI_(p: {
 
                     <div className='flex-1'></div>
                     {p.shortcut && <ComboUI size='xs' combo={p.shortcut} />}
-                    <div
-                        tw='btn btn-square btn-ghost btn-xs shrink-0'
-                        onClick={() => st.db.tree_entries.updateAll({ isExpanded: null })}
-                    >
-                        <span className='material-symbols-outlined'>unfold_less</span>
-                    </div>
+                    <RevealUI trigger={'hover'}>
+                        <div
+                            tw='btn btn-square btn-ghost btn-xs shrink-0'
+                            onClick={() => st.db.tree_entries.updateAll({ isExpanded: null })}
+                        >
+                            <span className='material-symbols-outlined'>unfold_less</span>
+                        </div>
+                        <div tw='flex gap-1 whitespace-nowrap p-2'>
+                            collapse tree: <ComboUI combo={shorcutKeys.collapseAllTree} />
+                        </div>
+                    </RevealUI>
                 </div>
                 <div tw='flex-1 overflow-auto' id={tv.tree.KeyboardNavigableDomNodeID} onKeyDown={tv.onKeyDown} tabIndex={-1}>
                     {tv.nodes.map((n) => (
