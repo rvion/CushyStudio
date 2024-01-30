@@ -81,17 +81,17 @@ export const ImageDropdownMenuUI = observer(function ImageDropdownMenuUI_(p: { i
                 </div>
             </MenuItem>
             <div className='divider divider-start my-0'>send to</div>
-            <FooooUI img={img} />
+            <ImageActionMenu img={img} />
         </>
     )
 })
 
-export const FooooUI = observer(function FooooUI_(p: { img: MediaImageL }) {
+export const ImageActionMenu = observer(function ImageActionMenu_(p: { img: MediaImageL }) {
     const st = useSt()
     const img = p.img
     return (
         <>
-            {st.favoriteApps.map((app) => {
+            {st.allApps.map((app) => {
                 if (app.executable == null) return <>app {app.name} has no executable</>
                 if (!app.executable.canBeStartedFromImage) return null
                 return (
