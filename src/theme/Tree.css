@@ -13,7 +13,8 @@
 }
 
 ._TreeUI ._line:hover {
-    background: oklch(var(--s)/.3);
+    /* background: oklch(var(--s)/.3); */
+    outline: 1px solid oklch(var(--p));
 }
 /* ._TreeItemTitle */
 ._TreeUI ._selected {
