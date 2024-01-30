@@ -1,5 +1,5 @@
-import { run_prompt } from '../_prefabs/prefab_prompt'
-import { run_sampler } from '../_prefabs/prefab_sampler'
+import { run_prompt } from './_prefabs/prefab_prompt'
+import { run_sampler } from './_prefabs/prefab_sampler'
 
 // todo:
 // - optionally remove background
@@ -17,8 +17,8 @@ app({
         ].join('\n'),
     },
     ui: (form) => ({
-        orbit: form.orbit({ recommandedModels: { knownModel: 'stabilityai/Stable Zero123' } }),
         image: form.image({}),
+        orbit: form.orbit({ recommandedModels: { knownModel: 'stabilityai/Stable Zero123' } }),
         sndPass: form.groupOpt({
             items: () => ({
                 positive: form.prompt({}),

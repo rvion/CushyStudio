@@ -1,4 +1,4 @@
-import { ui_rembg_v1 } from './_prefabs/prefab_rembg'
+import { ui_rembg_v1 } from '../_prefabs/prefab_rembg'
 
 app({
     metadata: {
