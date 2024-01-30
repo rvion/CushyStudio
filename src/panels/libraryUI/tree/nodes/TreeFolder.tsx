@@ -18,25 +18,21 @@ export class TreeFolder implements ITreeEntry<RelativePath> {
 
     children(): ITreeElement<RelativePath>[] {
         const files = readdirSync(this.path)
-        const xxx: ITreeElement<RelativePath>[] = files //
-            .filter((e) => !shouldSkip(e))
-            .map((file) => {
-                const relPath = asRelativePath(`${this.path}/${file}`)
-                const x: ITreeElement<RelativePath> = {
-                    ctor: (st: STATE, path: RelativePath) => {
-                        const stats = statSync(path)
-                        const isFolder = stats.isDirectory()
-                        return isFolder //
-                            ? new TreeFolder(st, path)
-                            : new TreeFile(st, path)
-                    },
-                    key: file,
-                    props: relPath,
-                }
-                return x
-            })
-        // console.log(xxx)
-        return xxx
+        const subFolders: ITreeElement<RelativePath>[] = []
+        const subFiles: ITreeElement<RelativePath>[] = []
+        for (const file of files) {
+            if (shouldSkip(file)) continue
+            const relPath = asRelativePath(`${this.path}/${file}`)
+            const stats = statSync(relPath)
+            const isFolder = stats.isDirectory()
+            if (isFolder) subFolders.push({ ctor: TreeFolder, key: file, props: relPath })
+            else subFiles.push({ ctor: TreeFile, key: file, props: relPath })
+        }
+        return [
+            //
+            ...subFolders.sort((a, b) => a.key.localeCompare(b.key)),
+            ...subFiles.sort((a, b) => a.key.localeCompare(b.key)),
+        ]
     }
 
     isFolder = true
