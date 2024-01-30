@@ -354,11 +354,12 @@ export class CushyLayoutManager {
                 // LEFT BORDER
                 {
                     type: 'border',
-                    // size: 250,
+                    // size: 350,
                     location: 'left',
                     selected: 0,
                     show: true,
-                    children: [this._add({ panel: 'TreeExplorer', props: {}, canClose: false, width: 250 })],
+                    children: [this._add({ panel: 'TreeExplorer', props: {}, canClose: false, width: 300 })],
+                    size: 300,
                 },
                 // RIGHT BORDER
                 {
