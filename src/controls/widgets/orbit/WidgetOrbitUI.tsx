@@ -67,7 +67,7 @@ const sides: { color: string; text: string; }[] = [
     { text: 'Top', color: 'green' },
     { text: 'Bottom', color: 'yellow' },
     { text: 'Right', color: 'orange' },
-    { text: 'Left', color: 'purple' },
+    { text: 'Left', color: 'pink' },
 ];
 // https://codesandbox.io/p/sandbox/drei-rendertexture-0z8i2c?file=%2Fsrc%2FApp.js%3A11%2C22
 function Cube() {
