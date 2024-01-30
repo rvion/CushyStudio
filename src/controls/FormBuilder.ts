@@ -126,6 +126,8 @@ export class FormBuilder {
 
     groupOpt = <const T extends { [key: string]: W.Widget }>(p: Widget_group_config<T> & { startActive?: boolean }) =>
         this.optional({
+            label: p.label,
+            customNodesByNameInCushy: p.customNodesByNameInCushy,
             startActive: p.startActive,
             widget: () => this.group(p),
         })
