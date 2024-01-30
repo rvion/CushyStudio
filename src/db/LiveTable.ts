@@ -392,6 +392,14 @@ export class LiveTable<
         return instances
     }
 
+    findOne = (
+        //
+        whereExt: SQLWhere<T>,
+        options: SqlFindOptions = {},
+    ): L | null => {
+        return this.find(whereExt, { ...options, limit: 1 })[0] ?? null
+    }
+
     find = (
         //
         whereExt: SQLWhere<T>,

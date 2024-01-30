@@ -1,6 +1,7 @@
 import type { ComfyWorkflowL } from 'src/models/ComfyWorkflow'
+
 import { observer } from 'mobx-react-lite'
-import { Button, Tooltip, Whisper } from 'src/rsuite/shims'
+import { Button } from 'src/rsuite/shims'
 import { useSt } from '../../state/stateContext'
 
 export const ButtonOpenInComfyUI = observer(function ButtonOpenInComfyUI_(p: { graph: ComfyWorkflowL | GraphID }) {

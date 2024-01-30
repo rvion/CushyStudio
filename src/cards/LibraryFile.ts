@@ -77,8 +77,14 @@ export class LibraryFile {
         return nameLower.includes(searchLower)
     }
 
+    // scripts = new LiveCollection<CushyScriptL>({
+    //     table: () => this.st.db.cushy_scripts,
+    //     where: () => ({ path: this.relPath }),
+    // })
+
     get scriptX(): Maybe<CushyScriptL> {
-        return this.scripts.items[0]
+        return this.st.db.cushy_scripts.get(this.relPath) // script is IS the relPath
+        // return this.st.db.cushy_scripts.findOne({ path: this.relPath })
     }
 
     strategies: LoadStrategy[] = []
@@ -95,11 +101,6 @@ export class LibraryFile {
     private codeJS?: Maybe<string> = null
     private metafile?: Maybe<Metafile> = null
     script?: Maybe<CushyScriptL> = null
-
-    scripts = new LiveCollection<CushyScriptL>({
-        table: () => this.st.db.cushy_scripts,
-        where: () => ({ path: this.relPath }),
-    })
 
     liteGraphJSON?: Maybe<LiteGraphJSON> = null
     promptJSON?: Maybe<ComfyPromptJSON> = null
@@ -338,7 +339,7 @@ export class LibraryFile {
             path: this.relPath,
             metafile: metafile ?? null,
         })
-        this.script = script
+        // this.script = script
         return script
     }
 }

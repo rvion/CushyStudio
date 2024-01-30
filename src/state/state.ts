@@ -479,6 +479,7 @@ export class STATE {
             comfyUIIframeRef: false,
             wildcards: false,
         })
+        this.startupFileIndexing()
         ;(window as any).st = this
     }
 
