@@ -4,15 +4,16 @@ export const ui_rembg_v1 = () => {
     const form = getCurrentForm()
     return form.choices({
         appearance: 'tab',
+        // prettier-ignore
         items: {
-            RemBG: () => form.groupOpt({ label: 'RemBG', items: () => ({}) }),
-            ABG: () => form.groupOpt({ label: 'ABG', items: () => ({}) }),
-            isnetAnime: () => form.bool({ label: 'isnet-anime', default: true }),
-            isnetGeneralUse: () => form.bool({ label: 'isnet-general-use', default: true }),
-            silueta: () => form.bool({ label: 'silueta', default: true }),
-            u2net: () => form.bool({ label: 'u2net', default: true }),
-            u2net_human_seg: () => form.bool({ label: 'u2net_human_seg' }),
-            u2netp: () => form.bool({ label: 'u2netp' }),
+            RemBG:           () => form.group({}),
+            ABG:             () => form.group({}),
+            isnetAnime:      () => form.group({}),
+            isnetGeneralUse: () => form.group({}),
+            silueta:         () => form.group({}),
+            u2net:           () => form.group({}),
+            u2net_human_seg: () => form.group({}),
+            u2netp:          () => form.group({}),
         },
     })
 }
