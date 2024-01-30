@@ -221,17 +221,18 @@ export class DraftL {
         )
 
         // 🔴 dangerous
-        const _2 = autorun(() => {
-            const formValue = this.form.value
-            if (formValue == null) return null
-            const count = formValue.form._cache.count // manual mobx invalidation
-            const _ = formValue.serialHash
-            runInAction(() => {
-                console.log(`[🦊] form: updating`)
-                this.update({ formSerial: formValue.serial })
-                this.isDirty = true
-                this.checkIfShouldRestart()
-            })
+        const _2 = autorun(
+            () => {
+                const rootWidget = this.form.value
+                if (rootWidget == null) return null
+                // const count = formValue.form._cache.count // manual mobx invalidation
+                const _ = rootWidget.serialHash
+                runInAction(() => {
+                    console.log(`[🦊] form: updating`)
+                    this.update({ formSerial: rootWidget.serial })
+                    this.isDirty = true
+                    this.checkIfShouldRestart()
+                })
             },
             { delay: 100 },
         )
