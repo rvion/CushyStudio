@@ -140,7 +140,10 @@ export class Widget_seed implements IWidget_OLD<'seed', Widget_seed_config, Widg
     readonly id: string
     readonly type: 'seed' = 'seed'
     readonly serial: Widget_seed_state
-    get serialHash () { return hash(this.result) }
+    get serialHash () {
+        if (this.serial.mode === 'randomize') return hash(this.serial.mode)
+        return hash(this.result)
+    }
     constructor(
         public form: FormBuilder,
         public config: Widget_seed_config,
