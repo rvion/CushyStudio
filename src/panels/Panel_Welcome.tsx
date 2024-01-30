@@ -37,7 +37,7 @@ export const Panel_Welcome = observer(function Panel_Welcome_(p: {}) {
                 {/* <IndexAllAppsBtnUI /> */}
                 <div tw='divider mx-8'></div>
                 2. To get started, try those apps ?
-                {['library/built-in/SDUI.ts'].map((path) => (
+                {['library/built-in/CushyDiffusion.ts'].map((path) => (
                     <StandaloneAppBtnUI key={path} path={path as RelativePath} />
                 ))}
                 <div tw='divider mx-8'></div>
@@ -72,7 +72,7 @@ export const StandaloneAppBtnUI = observer(function StandaloneAppBtnUI_(p: { pat
     useEffect(() => {
         void (async () => {
             const res: ScriptExtractionResult = await file.extractScriptFromFile()
-            if (res.type === 'failed') return toastError('default app (SDUI) failed to load')
+            if (res.type === 'failed') return toastError('default app (CushyDiffusion) failed to load')
             const script = res.script
             script.evaluateAndUpdateApps()
         })()

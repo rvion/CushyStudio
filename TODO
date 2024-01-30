@@ -8,7 +8,7 @@ masterpiece, sofa, tree, [color] [adj_beauty] [adj_general] nature, intricate_de
 ```
 
 ✔ button to create own app @done(24-01-28 21:58)
-- improve sdui
+- improve CushyDiffusion
 - cleanup libary folder:
 - video
 - more of cushy_app in db

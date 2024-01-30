@@ -1,7 +1,7 @@
 
 - getting started (20 seconds)
 - navigating the app (20 sec)
-- SDUI (20 sec)
+- CushyDiffusion (20 sec)
 - using 3d poser (20 sec)
 - generating 3d image (20 sec)
 - generating video (20 sec)
