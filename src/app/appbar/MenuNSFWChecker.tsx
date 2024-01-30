@@ -1,5 +1,6 @@
 import { observer } from 'mobx-react-lite'
 import { SQLITE_false, SQLITE_true } from 'src/db/SQLITE_boolean'
+import { MessageInfoUI, MessageWarningUI } from 'src/panels/MessageUI'
 import { RevealUI } from 'src/rsuite/reveal/RevealUI'
 import { useSt } from 'src/state/stateContext'
 
@@ -22,9 +23,22 @@ export const MenuNSFWCheckerUI = observer(function MenuNSFWCheckerUI_(p: {}) {
                 <div tw='swap-on'>😇</div>
                 <div tw='swap-off'>😈</div>
             </label>
-            <div>
-                NSFW filter is currently
-                {val ? ' ON' : ' OFF'}
+            <div tw='p-2'>
+                {val ? (
+                    <MessageInfoUI>
+                        <div tw='flex whitespace-nowrap gap-1'>
+                            NSFW filter is currently
+                            <b>ON</b>
+                        </div>
+                    </MessageInfoUI>
+                ) : (
+                    <MessageWarningUI>
+                        <div tw='flex whitespace-nowrap gap-1'>
+                            NSFW filter is currently
+                            <b>OFF</b>
+                        </div>
+                    </MessageWarningUI>
+                )}
             </div>
         </RevealUI>
     )
