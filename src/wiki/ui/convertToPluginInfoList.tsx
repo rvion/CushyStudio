@@ -57,14 +57,14 @@ export const convertToPluginInfoList = (p: { recomandation: CustomNodeRecommanda
         for (const cushyName of cushyNames) {
             const pluginURI = y.byNodeNameInComfy.get(cushyName)
             if (!pluginURI) {
-                console.log(`[🔎] ❌ no CusomNode URI found for nodeName ${cushyName}`)
+                console.log(`[🔎] ❌ no CustomNode URI found for nodeName ${cushyName}`)
                 continue
             }
             const arr = Array.isArray(pluginURI) ? pluginURI : [pluginURI]
             for (const uri of arr) {
                 const pluginInfo = x.byURI.get(uri)
                 if (!pluginInfo) {
-                    console.log(`[🔎] ❌ no CusomNode pack found for uri ${uri}`)
+                    console.log(`[🔎] ❌ no CustomNode pack found for uri ${uri}`)
                     continue
                 }
                 PUSH({ reason: `(node:${cushyName})`, plugin: pluginInfo })
