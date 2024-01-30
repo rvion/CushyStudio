@@ -10,6 +10,7 @@ import type { StepL } from './Step'
 import type { IDNaminScheemeInPromptSentToComfyUI } from 'src/back/IDNaminScheemeInPromptSentToComfyUI'
 import type { GraphT } from 'src/db/TYPES.gen'
 import type { ComfyPromptL } from './ComfyPrompt'
+import type { MouseEvent } from 'react'
 
 import { marked } from 'marked'
 import { join } from 'pathe'
@@ -24,6 +25,7 @@ import { bang } from 'src/utils/misc/bang'
 import { deepCopyNaive } from 'src/utils/misc/ComfyUtils'
 import { InvalidPromptError } from 'src/back/RuntimeError'
 import { LiveRefOpt } from 'src/db/LiveRefOpt'
+import { existsSync, mkdirSync, writeFileSync } from 'fs'
 
 export type RunMode = 'fake' | 'real'
 
@@ -42,6 +44,51 @@ export class ComfyWorkflowL {
     /** number of node in the graph */
     get size(): number {
         return this.nodes.length
+    }
+
+    menuAction_openInFullScreen = async (ev: MouseEvent) => {
+        ev.preventDefault()
+        ev.stopPropagation()
+        const prompt = this.json_workflow()
+        if (prompt == null) return
+        this.st.layout.FOCUS_OR_CREATE('ComfyUI', { litegraphJson: prompt }, 'full')
+    }
+    menuAction_openInTab = async (ev: MouseEvent) => {
+        ev.preventDefault()
+        ev.stopPropagation()
+        const prompt = this.json_workflow()
+        if (prompt == null) return
+        this.st.layout.FOCUS_OR_CREATE('ComfyUI', { litegraphJson: prompt })
+    }
+    menuAction_downloadPrompt = async (ev: MouseEvent) => {
+        ev.preventDefault()
+        ev.stopPropagation()
+        const jsonPrompt = this.json_forPrompt('use_class_name_and_number')
+        // ensure folder exists
+        const folderExists = existsSync(this.cacheFolder)
+        if (!folderExists) mkdirSync(this.cacheFolder, { recursive: true })
+        // save file
+        const path = this.getTargetPromptFilePath()
+        // console.log('>>>🟢', { path })
+        // open folder containing file
+        window.require('electron').shell.openExternal(`file://${path}/..`)
+        writeFileSync(path, JSON.stringify(jsonPrompt, null, 3))
+    }
+
+    menuAction_downloadWorkflow = async (ev: MouseEvent) => {
+        ev.preventDefault()
+        ev.preventDefault()
+        const jsonWorkflow = await this.json_workflow()
+        console.log('>>>🟢', { jsonWorkflow })
+        // ensure folder exists
+        const folderExists = existsSync(this.cacheFolder)
+        if (!folderExists) mkdirSync(this.cacheFolder, { recursive: true })
+        // save file
+        const path = this.getTargetWorkflowFilePath()
+        console.log('>>>🟢', { path })
+        // open folder containing file
+        window.require('electron').shell.openExternal(`file://${path}/..`)
+        writeFileSync(path, JSON.stringify(jsonWorkflow, null, 3))
     }
 
     get comfyPromptJSON() {

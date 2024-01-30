@@ -18,20 +18,7 @@ export const ButtonOpenInComfyUI = observer(function ButtonOpenInComfyUI_(p: { g
                 icon={<span className='material-symbols-outlined'>open_in_new</span>}
                 appearance='ghost'
                 size='sm'
-                onClick={async (ev) => {
-                    ev.preventDefault()
-                    ev.stopPropagation()
-                    const prompt = graph?.json_workflow()
-                    if (prompt == null) return
-                    st.layout.FOCUS_OR_CREATE('ComfyUI', { litegraphJson: prompt })
-                    // st.setAction({ type: 'comfy', json: prompt })
-                    // console.log('>>>🟢', { jsonWorkflow })
-                    // const path = graph.getTargetWorkflowFilePath()
-                    // console.log('>>>🟢', { path })
-                    // // open file
-                    // window.require('electron').shell.openExternal(`file://${path}/..`)
-                    // writeFileSync(path, JSON.stringify(jsonWorkflow, null, 3))
-                }}
+                onClick={graph.menuAction_openInTab}
             >
                 open in ComfyUI Tab
             </Button>
@@ -39,13 +26,7 @@ export const ButtonOpenInComfyUI = observer(function ButtonOpenInComfyUI_(p: { g
                 icon={<span className='material-symbols-outlined'>open_in_full</span>}
                 appearance='ghost'
                 size='sm'
-                onClick={async (ev) => {
-                    ev.preventDefault()
-                    ev.stopPropagation()
-                    const prompt = graph?.json_workflow()
-                    if (prompt == null) return
-                    st.layout.FOCUS_OR_CREATE('ComfyUI', { litegraphJson: prompt }, 'full')
-                }}
+                onClick={graph.menuAction_openInFullScreen}
             >
                 open in ComfyUI FULL
             </Button>
