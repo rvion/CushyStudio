@@ -48,3 +48,27 @@ export const MessageErrorUI = observer(function MessageErrorUI_(p: {
         </div>
     )
 })
+
+export const MessageWarningUI = observer(function MessageWarningUI_(p: {
+    title?: string
+    children?: React.ReactNode
+    markdown?: string
+}) {
+    return (
+        <div tw='virtualBorder p-2 rounded flex items-center gap-2 bg-warning-2'>
+            <span className='material-symbols-outlined'>warning</span>
+            {p.title ? (
+                <div>
+                    <div tw='text-xl w-full font-bold'>{p.title}</div>
+                    {p.children}
+                    <MarkdownUI markdown={p.markdown} />
+                </div>
+            ) : (
+                <>
+                    {p.children}
+                    <MarkdownUI markdown={p.markdown} />
+                </>
+            )}
+        </div>
+    )
+})

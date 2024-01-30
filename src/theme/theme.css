@@ -45,6 +45,9 @@ input[type='range']::-webkit-slider-runnable-track { height: 2rem; }
 .bg-error-1 { background-color: oklch(var(--er)/.1); }
 .bg-error-2 { background-color: oklch(var(--er)/.2); }
 
+.bg-warning-1 { background-color: oklch(var(--wa)/.1); }
+.bg-warning-2 { background-color: oklch(var(--wa)/.2); }
+
 .bg-success-1 { background-color: oklch(var(--su)/.1); }
 .bg-success-2 { background-color: oklch(var(--su)/.2); }
 
