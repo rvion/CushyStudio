@@ -53,7 +53,7 @@ export const Panel_Output = observer(function Panel_Output_(p: {}) {
                 <SideOutputListUI />
                 {/* <MainOutputHistoryUI /> */}
                 {/* <div tw='flex-grow flex flex-row relative'> */}
-                <div tw={['animate-in zoom-in-75', 'flex flex-grow overflow-auto']}>
+                <div tw={[/* 'animate-in zoom-in-75', */ 'flex flex-grow overflow-auto']}>
                     {/*  */}
                     {out1 && <OutputUI output={out1} />}
                 </div>
