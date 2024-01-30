@@ -51,12 +51,15 @@ export class TreeFolder implements ITreeEntry<RelativePath> {
         if (this.path === 'library/local') return [{ name: 'create...', icon: 'add', onClick: () => {}, mode: 'full' }]
         return []
     }
+    get icon() { return <span className='material-symbols-outlined text-yellow-700'>folder</span> } // prettier-ignore
+    get iconExpanded() { return <span className='material-symbols-outlined text-yellow-700'>folder_open</span> } // prettier-ignore
+
     // prettier-ignore
-    get icon() {
-        if (this.path === 'library/installed')            return <span className='material-symbols-outlined text-red-500'>get_app</span>
-        if (this.path === 'library/local')                return <span className='material-symbols-outlined text-blue-500'>privacy_tip</span>
-        if (this.path === 'library/built-in')             return <span className='material-symbols-outlined text-green-500'>apps</span>
-        if (this.path === 'library/sdk-examples')         return <span className='material-symbols-outlined text-green-500'>live_help</span>
-        return <span className='material-symbols-outlined text-base-300'>folder</span>
-    }
+    // get icon() {
+    //     // if (this.path === 'library/installed')            return <span className='material-symbols-outlined text-red-500'>get_app</span>
+    //     // if (this.path === 'library/local')                return <span className='material-symbols-outlined text-blue-500'>privacy_tip</span>
+    //     // if (this.path === 'library/built-in')             return <span className='material-symbols-outlined text-green-500'>apps</span>
+    //     // if (this.path === 'library/sdk-examples')         return <span className='material-symbols-outlined text-green-500'>live_help</span>
+    //     return <span className='material-symbols-outlined text-base-300'>folder</span>
+    // }
 }
