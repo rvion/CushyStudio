@@ -14,9 +14,9 @@ import { run_rembg_v1, ui_rembg_v1 } from './_prefabs/prefab_rembg'
 
 app({
     metadata: {
-        name: 'Cushy Diffusion UI',
+        name: 'Cushy Diffusion',
         illustration: 'library/built-in/_illustrations/mc.jpg',
-        description: 'A card that contains all the features needed to play with stable diffusion',
+        description: 'An example app to play with various stable diffusion technologies',
     },
     ui: (form) => ({
         // modelType: form.selectOne({
