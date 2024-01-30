@@ -366,16 +366,7 @@ export class CushyLayoutManager {
                     location: 'right',
                     show: true,
                     // selected: 0,
-                    children: [
-                        // this._add({ panel: 'Steps', props: {}, canClose: false }),
-                        // this._add({ panel: 'LastStep', props: {}, canClose: false }),
-                        // this._add({ panel: 'Steps', props: {}, canClose: false }),
-                        // this._add({ panel: 'Steps', props: {}, canClose: false }),
-                        // this._add({ panel: 'Gallery', props: {} }),
-                        // this._add({ panel: 'LastImage', props: {} }),
-                        // this._add({ panel: 'Gallery', props: {} }),
-                        // this._add({ panel: 'LastStep', props: {}, canClose: false }),
-                    ],
+                    children: [],
                 },
             ],
             layout: {
