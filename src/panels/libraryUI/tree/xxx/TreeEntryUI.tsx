@@ -50,9 +50,9 @@ export const TreeEntryUI = observer(function TreeEntryUI_(p: { depth?: number; n
                 <div
                     tw='borderLeft'
                     style={{
-                        //
-                        // borderLeft: '1px solid red',
+                        // marginLeft: '.5rem',
                         marginLeft: '.5rem',
+                        paddingLeft: '.5rem',
                     }}
                 >
                     {n.children.map((c) => (
