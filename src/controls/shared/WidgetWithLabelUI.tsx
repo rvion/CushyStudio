@@ -38,7 +38,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     const isCollapsible = widget.isCollapsible
     const collapsed = widget.serial.collapsed && isCollapsible
     const levelClass = p.isTopLevel ? '_isTopLevel' : '_isNotTopLevel'
-
+    if (widget instanceof KLS.Widget_group && Object.keys(widget.values).length === 0) return
     const toggleInfo =
         widget instanceof KLS.Widget_bool
             ? { value: widget.serial.active, toggle: () => runInAction(widget.toggle) }
