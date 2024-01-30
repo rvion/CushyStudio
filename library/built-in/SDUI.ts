@@ -75,13 +75,14 @@ app({
                 }
             },
         }),
-        testStuff: form.groupOpt({
-            items: () => ({
-                reversePositiveAndNegative: form.bool({ default: false }),
-                makeAVideo: form.bool({ default: false }),
-                summary: form.bool({ default: false }),
-                gaussianSplat: form.bool({ default: false }),
-            }),
+        testStuff: form.choices({
+            appearance: 'tab',
+            items: {
+                reversePositiveAndNegative: () => form.group({}),
+                makeAVideo: () => form.group({}),
+                summary: () => form.group({}),
+                gaussianSplat: () => form.group({}),
+            },
         }),
     }),
 
