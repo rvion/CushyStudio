@@ -17,6 +17,8 @@ export class TreeDraftFolder implements ITreeEntry<VirtualFolder> {
     get name() {
         return `${basename(this.vf.folderPath)}`
     }
+    get icon() { return <span className='material-symbols-outlined text-yellow-700'>folder</span> } // prettier-ignore
+    get iconExpanded() { return <span className='material-symbols-outlined text-yellow-700'>folder_open</span> } // prettier-ignore
     onPrimaryAction = (n: TreeNode) => n.toggle()
     children = (): ITreeElement<any>[] => {
         const vh = this.vf.vh
