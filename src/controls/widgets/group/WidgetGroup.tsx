@@ -13,7 +13,7 @@ import { hash } from 'ohash'
 // CONFIG
 export type Widget_group_config<T extends { [key: string]: Widget }> = WidgetConfigFields<{
     // default?: boolean
-    items: () => T
+    items?: () => T
     topLevel?: boolean
     /** if provided, will be used to show a single line summary on the inline form slot */
     summary?: (items: T) => string
@@ -69,7 +69,7 @@ export class Widget_group<T extends { [key: string]: Widget }> implements IWidge
     enableGroup() {
         this.serial.active = true
         const prevValues_: { [K in keyof T]?: T[K]['$Serial'] } = this.serial.values_
-        const _newValues: { [key: string]: Widget } = runWithGlobalForm(this.form, () => this.config.items())
+        const _newValues: { [key: string]: Widget } = runWithGlobalForm(this.form, () => this.config.items?.()) ?? {}
 
         const childKeys = Object.keys(_newValues) as (keyof T & string)[]
         for (const key of childKeys) {
