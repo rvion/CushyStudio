@@ -159,7 +159,9 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
             {p.widget.config.recommandedModels ? <InstallModelBtnUI models={p.widget.config.recommandedModels} /> : null}
 
             {/* Install Custom nodes ------------------------------------ */}
-            {p.widget.config.customNodesByTitle ?? p.widget.config.customNodesByURI ? (
+            {p.widget.config.customNodesByTitle ??
+            p.widget.config.customNodesByURI ??
+            p.widget.config.customNodesByNameInCushy ? (
                 <InstallCustomNodeBtnUI recomandation={p.widget.config} />
             ) : null}
 
