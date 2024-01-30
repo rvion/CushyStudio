@@ -55,7 +55,7 @@ export const convertToPluginInfoList = (p: { recomandation: CustomNodeRecommanda
         const y = getCustomNodeRegistry()
         const cushyNames = Array.isArray(customNodesByNameInCushy) ? customNodesByNameInCushy : [customNodesByNameInCushy]
         for (const cushyName of cushyNames) {
-            const pluginURI = y.byNodeNameInComfy.get(cushyName)
+            const pluginURI = y.byNodeNameInCushy.get(cushyName)
             if (!pluginURI) {
                 console.log(`[🔎] ❌ no CustomNode URI found for nodeName ${cushyName}`)
                 continue
