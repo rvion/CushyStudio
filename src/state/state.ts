@@ -446,6 +446,7 @@ export class STATE {
                     const relPath = app.relPath
                     if (relPath == null) return
                     const treePath = relPath.split('/')
+                    treePath.shift()
                     treePath.push(app.id)
                     this.tree2View.revealAndFocusAtPath(treePath)
                 }
@@ -456,7 +457,9 @@ export class STATE {
                     const relPath = app.relPath
                     if (relPath == null) return
                     const treePath = relPath.split('/')
+                    treePath.shift()
                     treePath.push(app.id)
+                    if (draft.virtualFolder) treePath.push(...draft.virtualFolder.split('/'))
                     treePath.push(draft.id)
                     this.tree2View.revealAndFocusAtPath(treePath)
                 }
@@ -464,7 +467,11 @@ export class STATE {
             },
         })
         this.tree2 = new Tree(this, [
-            treeElement({ key: 'library', ctor: TreeFolder, props: asRelativePath('library') }),
+            // treeElement({ key: 'library', ctor: TreeFolder, props: asRelativePath('library') }),
+            treeElement({ key: 'built-in', ctor: TreeFolder, props: asRelativePath('library/built-in') }),
+            treeElement({ key: 'local', ctor: TreeFolder, props: asRelativePath('library/local') }),
+            treeElement({ key: 'sdk-examples', ctor: TreeFolder, props: asRelativePath('library/sdk-examples') }),
+            treeElement({ key: 'installed', ctor: TreeFolder, props: asRelativePath('library/installed') }),
             //
             // 'path#library',
             // 'path#library/built-in',

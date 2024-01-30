@@ -43,7 +43,10 @@ export class TreeView {
             // childs
             const children: TreeNode[] = at.children
             at = children.find((i) => i.elem.key === x)
-            if (at == null) return console.log(`[❌] no child node matching key "${x}"`)
+            if (at == null)
+                return console.log(
+                    `[❌] no child node matching key "${x}" (available: ${children.map((i) => i.elem.key).join(', ')})`,
+                )
             at.open()
         }
 
