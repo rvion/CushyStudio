@@ -232,7 +232,9 @@ export class DraftL {
                 this.isDirty = true
                 this.checkIfShouldRestart()
             })
-        })
+            },
+            { delay: 100 },
+        )
 
         this.isInitialized = true
         this.isInitializing = false
