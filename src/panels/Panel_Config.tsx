@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 import { ComboUI } from 'src/app/shortcuts/ComboUI'
-import { shorcutKeys } from 'src/app/shortcuts/shortcuts'
+import { KEYS } from 'src/app/shortcuts/shorcutKeys'
 import { InputNumberUI } from 'src/rsuite/InputNumberUI'
 import { FormControl, FormControlLabel, FormHelpText, Toggle } from 'src/rsuite/shims'
 import { openInVSCode } from 'src/utils/electron/openInVsCode'
@@ -91,7 +91,7 @@ export const Panel_Config = observer(function Panel_Config_() {
                     <div className='btn btn-sm' onClick={() => st.layout.FOCUS_OR_CREATE('Hosts', {})}>
                         Open Hosts page
                         <span className='material-symbols-outlined'>desktop_windows</span>
-                        <ComboUI combo={shorcutKeys.openHostsPate} />
+                        <ComboUI combo={KEYS.openPage_Hosts} />
                     </div>
                 </FieldUI>
             </div>

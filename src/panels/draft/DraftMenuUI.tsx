@@ -7,7 +7,8 @@ import { Dropdown, MenuItem } from 'src/rsuite/Dropdown'
 import { Loader } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
 import { openInVSCode } from 'src/utils/electron/openInVsCode'
-import { shorcutKeys, shortcutsDef } from 'src/app/shortcuts/shortcuts'
+import { shortcutsDef } from 'src/app/shortcuts/shortcuts'
+import { KEYS } from 'src/app/shortcuts/shorcutKeys'
 
 export const DraftMenuUI = observer(function DraftMenuUI_(p: { title: string; draft: DraftL; className?: string }) {
     const st = useSt()
@@ -46,7 +47,7 @@ export const DraftMenuUI = observer(function DraftMenuUI_(p: { title: string; dr
                 Favorite
             </MenuItem>
             <MenuItem
-                shortcut={shorcutKeys.duplicateCurrentDraft}
+                shortcut={KEYS.duplicateCurrentDraft}
                 icon={<span className='material-symbols-outlined'>content_copy</span>}
                 onClick={() => draft.duplicateAndFocus()}
             >

@@ -7,7 +7,7 @@ import { UpdateBtnUI } from '../../updater/UpdateBtnUI'
 import { CushyStudioLinkUI } from './AppBarCushyStudioLinkUI'
 import { MenuAuthUI } from './MenuAuthUI'
 import { MenuComfyUI } from './MenuComfyUI'
-import { MenuConfigUI } from './MenuConfigUI'
+import { MenuSettingsUI } from './MenuSettingsUI'
 import { MenuDebugUI } from './MenuDebugUI'
 import { MenuHelpUI } from './MenuHelpUI'
 import { MenuNSFWCheckerUI } from './MenuNSFWChecker'
@@ -28,7 +28,7 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
                 <MenuPanelsUI />
                 <MenuComfyUI />
                 <MenuUtilsUI />
-                <MenuConfigUI />
+                <MenuSettingsUI />
                 <MenuThemeUI />
                 <MenuHelpUI />
                 <MenuDebugUI />

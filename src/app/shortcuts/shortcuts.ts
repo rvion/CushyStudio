@@ -5,15 +5,7 @@ import { runInAction } from 'mobx'
 import { CushyShortcut, Shortcut } from './ShortcutManager'
 import { Trigger } from './Trigger'
 import { _duplicateCurrentDraft } from './_duplicateCurrentDraft'
-
-export const shorcutKeys = {
-    collapseAllTree: 'mod+shift+k',
-    openConfigPage: 'mod+,',
-    openHostsPate: 'mod+shift+,',
-    duplicateCurrentDraft: 'mod+shift+d',
-    resizeWindowForVideoCapture: 'mod+u mod+1',
-    resetLayout: 'mod+u mod+2',
-}
+import { KEYS } from './shorcutKeys'
 
 // ------------------------------------------------------------------------------------
 // basic utils
@@ -22,15 +14,35 @@ const always = (fn: (st: STATE) => any) => (st: STATE) => {
     return Trigger.Success
 }
 
-const simple = (shortcut: CushyShortcut | CushyShortcut[], action: (fn: STATE) => void): Shortcut<STATE> => ({
-    combos: Array.isArray(shortcut) ? shortcut : [shortcut],
-    action: always(action),
-})
+const placholder = (combo: CushyShortcut | CushyShortcut[], info: string, when: string): Shortcut<STATE> => {
+    return {
+        combos: Array.isArray(combo) ? combo : [combo],
+        info,
+        when,
+        validInInput: true,
+        action: () => Trigger.UNMATCHED_CONDITIONS,
+    }
+}
 
-const simpleValidInInput = (combo: CushyShortcut | CushyShortcut[], action: (fn: STATE) => void): Shortcut<STATE> => ({
+const placeholderTree = (combo: CushyShortcut | CushyShortcut[], info: string): Shortcut<STATE> => {
+    return placholder(combo, info, 'in tree')
+}
+
+// const simple = (shortcut: CushyShortcut | CushyShortcut[], info: string, action: (fn: STATE) => void): Shortcut<STATE> => ({
+//     combos: Array.isArray(shortcut) ? shortcut : [shortcut],
+//     action: always(action),
+//     info,
+// })
+
+const simpleValidInInput = (
+    combo: CushyShortcut | CushyShortcut[],
+    info: string,
+    action: (fn: STATE) => void,
+): Shortcut<STATE> => ({
     combos: Array.isArray(combo) ? combo : [combo],
     action: always(action),
     validInInput: true,
+    info: info,
 })
 
 const focusTree = (st: STATE, tree: Tree) =>
@@ -58,67 +70,73 @@ const focusTree = (st: STATE, tree: Tree) =>
 // ------------------------------------------------------------------------------------
 // core global shortcuts
 export const shortcutsDef: Shortcut<STATE>[] = [
-    simpleValidInInput(shorcutKeys.resizeWindowForVideoCapture, (st) => {
+    simpleValidInInput(KEYS.resizeWindowForVideoCapture, 'Resize Window for video capture', (st) => {
         st.resizeWindowForVideoCapture()
         return Trigger.Success
     }),
-    simpleValidInInput(shorcutKeys.resetLayout, (st) => {
+    simpleValidInInput(KEYS.resetLayout, 'Reset layout', (st) => {
         st.layout.resetCurrent()
         // const lastDraft = st.db.drafts.last()
         // if (lastDraft) st.layout.FOCUS_OR_CREATE('Draft', { draftID: lastDraft.id })
         return Trigger.Success
     }),
-    // simpleValidInInput('mod+shift+k', (st) => (st.showSuperAdmin = !st.showSuperAdmin)),
-    // simpleValidInInput('mod+shift+z', (st) => (st.showSuperAdminBubbles = !st.showSuperAdminBubbles)),
-    simpleValidInInput(['mod+1', 'mod+shift+e', 'mod+b'], (st) => focusTree(st, st.tree1)),
-    simpleValidInInput([shorcutKeys.collapseAllTree], (st) => {
+
+    // tree navigation --------------------------------
+    placeholderTree(KEYS.tree_moveUp, 'move up in tree'),
+    placeholderTree(KEYS.tree_moveDown, 'move down in tree'),
+    placeholderTree(KEYS.tree_moveRight, 'unfold item if folded, then move down'),
+    placeholderTree(KEYS.tree_moveLeft, 'fold item if unfolded and movme up'),
+    placeholderTree(KEYS.tree_deleteNodeAndFocusNodeAbove, 'Delete Node And Focus Node Above'),
+    placeholderTree(KEYS.tree_deleteNodeAndFocusNodeBelow, 'Delete Node And Focus Node Below'),
+    placeholderTree(KEYS.tree_onPrimaryAction, 'execute selected tree primary action'),
+    placeholderTree(KEYS.tree_movePageUp, 'move all the way to the top of the tree'),
+    placeholderTree(KEYS.tree_movePageDown, 'move 100 items down in the tree'),
+    // placeholderTree('/', 'focus tree filter (not implemented for now)'),
+
+    // tree -----------------------------------------
+    simpleValidInInput(KEYS.focusAppAndDraftTree, 'focus app tree', (st) => focusTree(st, st.tree1)),
+    simpleValidInInput(KEYS.focusFileExplorerTree, 'focus file explorer (tree)', (st) => focusTree(st, st.tree2)),
+    simpleValidInInput(KEYS.collapseAllTree, 'collapse all tree', (st) => {
         st.tree1View.resetCaretPos()
         st.tree2View.resetCaretPos()
         st.db.tree_entries.updateAll({ isExpanded: null })
         const at = st.tree2View.revealAndFocusAtPath(['built-in'])
         at?.open()
     }),
-    simpleValidInInput(['mod+2'], (st) => focusTree(st, st.tree2)),
-    // --------------------------
-    // draftActions:
-    simpleValidInInput([shorcutKeys.duplicateCurrentDraft], (st) => _duplicateCurrentDraft(st)),
-    // --------------------------
-    // menu utils:
-    simpleValidInInput(['mod+k 1'], (st) => st.layout.FOCUS_OR_CREATE('Civitai', {})),
-    simpleValidInInput(['mod+k 2'], (st) => st.layout.FOCUS_OR_CREATE('Squoosh', {})),
-    simpleValidInInput(['mod+k 3'], (st) => st.layout.FOCUS_OR_CREATE('IFrame', { url: 'https://app.posemy.art/' })),
-    simpleValidInInput(['mod+k 4'], (st) => st.layout.FOCUS_OR_CREATE('Paint', {})),
-    simpleValidInInput(['mod+k 5'], (st) => st.layout.FOCUS_OR_CREATE('IFrame', { url: 'https://unsplash.com/' })),
 
-    // menu settings --------------------------
-    simpleValidInInput([shorcutKeys.openConfigPage], (st) => st.layout.FOCUS_OR_CREATE('Config', {})),
-    simpleValidInInput([shorcutKeys.openHostsPate], (st) => st.layout.FOCUS_OR_CREATE('Hosts', {})),
+    // draftActions: ---------------------------------
+    simpleValidInInput([KEYS.duplicateCurrentDraft], 'duplicate draft', (st) => _duplicateCurrentDraft(st)),
 
-    // --------------------------
-    simpleValidInInput(['mod+p', 'mod+j'], (st) => st.toggleFullLibrary()),
-    simpleValidInInput(['mod+escape'], (st) => st.closeFullLibrary()),
-    // simpleValidInInput(['mod+2'], (st) => st.layout.addMarketplace()),
-    simpleValidInInput(['mod+3'], (st) => st.layout.FOCUS_OR_CREATE('Paint', {})),
-    simpleValidInInput(['mod+4'], (st) => st.layout.FOCUS_OR_CREATE('ComfyUI', {})),
-    simpleValidInInput(['mod+5'], (st) => st.layout.FOCUS_OR_CREATE('Gallery', {})),
-    simpleValidInInput(['mod+6'], (st) => st.layout.FOCUS_OR_CREATE('Config', {})),
-    simpleValidInInput(['mod+7'], (st) => st.layout.FOCUS_OR_CREATE('Civitai', {})),
-    simpleValidInInput(['mod+8'], (st) => st.layout.FOCUS_OR_CREATE('Hosts', {})),
-    // simple('mod+x s', (st) => st.auth.stopImpersonating()),
-    // simple('mod+x q', (st) => st.auth.logOut()),
+    // menu utils: -----------------------------------
+    simpleValidInInput([KEYS.openPage_Civitai],  'open Civitai',    (st) => st.layout.FOCUS_OR_CREATE('Civitai', {})), // prettier-ignore
+    simpleValidInInput([KEYS.openPage_Squoosh],  'open Squoosh',    (st) => st.layout.FOCUS_OR_CREATE('Squoosh', {})), // prettier-ignore
+    simpleValidInInput([KEYS.openPage_Posemy],   'open Posemy.art', (st) => st.layout.FOCUS_OR_CREATE('IFrame', { url: 'https://app.posemy.art/' }), ), // prettier-ignore
+    simpleValidInInput([KEYS.openPage_Paint],    'open Paint',      (st) => st.layout.FOCUS_OR_CREATE('Paint', {})), // prettier-ignore
+    simpleValidInInput([KEYS.openPage_Unsplash], 'open Unsplash',   (st) => st.layout.FOCUS_OR_CREATE('IFrame', { url: 'https://unsplash.com/' }), ), // prettier-ignore
 
-    // T   - Toogle
-    // { combos: ['t a m'], action: (st) => Trigger.UNMATCHED_CONDITIONS, info: 'Tooggle Automation Menu' },
-    // { combos: ['t a p'], action: (st) => Trigger.UNMATCHED_CONDITIONS, info: 'Tooggle Automation Preview' },
+    // menu settings --------------------------------
+    simpleValidInInput([KEYS.openPage_Config],    'open Config',    (st) => st.layout.FOCUS_OR_CREATE('Config', {})), // prettier-ignore
+    simpleValidInInput([KEYS.openPage_Hosts],     'open Hosts',     (st) => st.layout.FOCUS_OR_CREATE('Hosts', {})), // prettier-ignore
+    simpleValidInInput([KEYS.openPage_Shortcuts], 'open Shortcuts', (st) => st.layout.FOCUS_OR_CREATE('Shortcuts', {})), // prettier-ignore
+
+    // misc... --------------------------------------
+    simpleValidInInput([KEYS.openPage_ComfyUI], 'open ComfyUI', (st) => st.layout.FOCUS_OR_CREATE('ComfyUI', {})),
+    simpleValidInInput([KEYS.openPage_Gallery], 'open Gallery', (st) => st.layout.FOCUS_OR_CREATE('Gallery', {})),
+
+    // full screen library  --------------------------
+    simpleValidInInput(['mod+p', 'mod+j'], 'open full screen library', (st) => st.toggleFullLibrary()),
+    simpleValidInInput(['mod+escape'], 'close full screen library', (st) => st.closeFullLibrary()),
+
     {
-        combos: ['mod+w'],
+        combos: [KEYS.closeCurrentTab],
         validInInput: true,
         action: (st) => st.layout.closeCurrentTab(),
-        info: 'Tooggle Graph Monitor',
+        info: 'Close current tab',
     },
 
     {
-        combos: ['escape'],
+        combos: [KEYS.closeDialogOrPopupsOrFullScreenPanel],
+        info: 'Close Dialog, Popups, or Full-Screen Panels',
         validInInput: true,
         action: (st) => {
             if (st._popups.length > 0) {
@@ -130,13 +148,5 @@ export const shortcutsDef: Shortcut<STATE>[] = [
             st.layout.fullPageComp = null
             return Trigger.Success
         },
-        info: 'Close Full-Screen Panel if open',
     },
-
-    // G   - Go
-    // G M - Go Messagerie
-    // { combos: ['g m'], action: (st) => st.router.goTo('CHAT', { inbox: { filter: 'all' } }) }, // Messagerie   | Appbar
-    // { combos: ['g m s'], action: (st) => st.router.goTo('CHAT_NEW', {}) }, //         Messagerie   | Appbar
-    // { combos: 'cmd+k cmd+s', action: () => {} },
-    // { combos: 'cmd+k cmd+s', action: () => {} },
 ]

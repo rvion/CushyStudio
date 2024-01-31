@@ -6,7 +6,7 @@ import { useSt } from 'src/state/stateContext'
 import { TreeViewCtx } from './TreeCtx'
 import { TreeEntryUI } from './TreeEntryUI'
 import { RevealUI } from 'src/rsuite/reveal/RevealUI'
-import { shorcutKeys } from 'src/app/shortcuts/shortcuts'
+import { KEYS } from 'src/app/shortcuts/shorcutKeys'
 
 export const TreeUI = observer(function TreeEditorUI_(p: {
     //
@@ -47,7 +47,7 @@ export const TreeUI = observer(function TreeEditorUI_(p: {
                             <span className='material-symbols-outlined'>unfold_less</span>
                         </div>
                         <div tw='flex gap-1 whitespace-nowrap p-2'>
-                            collapse tree: <ComboUI combo={shorcutKeys.collapseAllTree} />
+                            collapse tree: <ComboUI combo={KEYS.collapseAllTree} />
                         </div>
                     </RevealUI>
                     {/* {FoldBtn} */}

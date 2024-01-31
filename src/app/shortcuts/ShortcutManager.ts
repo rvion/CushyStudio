@@ -13,8 +13,10 @@ type InputSequence = InputToken[] // ['ctrl+k', 'ctrl+shift+i']
 type KnownCombo<Ctx> = [InputSequence, Shortcut<Ctx>]
 
 export type Shortcut<Ctx> = {
-    combos: CushyShortcut[] | true
-    info?: string
+    combos: CushyShortcut[] // | true
+    info: string
+    /** upward context required; nearest takes precedence */
+    when?: string
     action?: (ctx: Ctx, ev: KeyboardEvent) => Trigger
     // on?: 'keypress' | 'keydown' | 'keyup'
     validInInput?: boolean
@@ -41,11 +43,11 @@ export class ShortcutWatcher {
         this.shortcuts = shortcuts
         // 1. unfold shortcuts that have serveral combos and normalize them
         for (const shortcut of shortcuts) {
-            if (shortcut.combos === true) {
-                // combo always match
-                this.alwaysMatch.push(shortcut)
-                continue
-            }
+            // ⏸️ if (shortcut.combos === true) {
+            // ⏸️     // combo always match
+            // ⏸️     this.alwaysMatch.push(shortcut)
+            // ⏸️     continue
+            // ⏸️ }
             for (const combo of shortcut.combos) {
                 const inputSequence = parseShortcutToInputSequence(combo)
                 this.watchList.push([inputSequence, shortcut])
