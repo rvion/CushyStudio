@@ -154,12 +154,15 @@ export class ComfyPromptL {
 
         // target path on disk
         const sf = this.saveFormat
-        const outputRelPath = asRelativePath(
-            sf?.prefix
-                ? join('outputs', sf.prefix, comfyImageInfo.filename)
-                : join('outputs', comfyImageInfo.subfolder, comfyImageInfo.filename),
-        )
-        const absPath = this.st.resolve(this.st.rootPath, outputRelPath)
+        let outputRelPath = sf?.prefix
+            ? join('outputs', sf.prefix, comfyImageInfo.filename)
+            : join('outputs', comfyImageInfo.subfolder, comfyImageInfo.filename)
+
+        if (sf?.format && sf.format !== 'raw') {
+            const extension = sf.format.split('/')[1]
+            outputRelPath += '.' + extension
+        }
+        const absPath = this.st.resolve(this.st.rootPath, asRelativePath(outputRelPath))
         const dir = dirname(absPath)
         mkdirSync(dir, { recursive: true })
 
@@ -183,11 +186,6 @@ export class ComfyPromptL {
             if (!dataUrl.startsWith(prefixToSlice))
                 throw new Error(`❌ dataUrl doesn't start with the expected "${prefixToSlice}"`)
             let base64Data = dataUrl.slice(prefixToSlice.length)
-            // non-integrated with CushyStudio way of saving an image
-            mkdirSync('outputs/_b64', { recursive: true })
-            const extension = sf.format.split('/')[1]
-            // const relPath = `outputs/_b64/output-${comfyImageInfo.filename}.${extension}` as RelativePath
-            // toastInfo(relPath)
             writeFileSync(outputRelPath, base64Data, 'base64')
             imgL = createMediaImage_fromPath(this.st, outputRelPath, imgCreationOpts)
         }
