@@ -43,8 +43,8 @@ cnets:
 Todo :
     ☐ create all nodes at once, then hydrate them after, so all json are ready
     ☐ better error message when node not found
-    ☐ home page
-    ☐ image app
+    ✔ home page @done(24-01-31 13:00)
+    ✔ image app @done(24-01-31 13:00)
     ☐ runpod serverless
     ☐ optimize all images ☐ option to reduce image size @started(24-01-26 18:50)
     ☐ disable publish button if not logged in
