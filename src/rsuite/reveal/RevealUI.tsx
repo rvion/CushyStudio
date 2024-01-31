@@ -68,8 +68,13 @@ export const RevealUI = observer(function Tooltip_(p: RevealProps) {
                       // Adjust positioning as needed
                   }}
                   >
-                      {uist._lock ? <span tw='opacity-50 italic text-sm'>locked; right-click to unlock</span> : null}
                       {p.children[1]}
+                      {uist._lock ? (
+                          <span tw='opacity-50 italic text-sm flex gap-1 items-center justify-center'>
+                              <span className='material-symbols-outlined'>lock</span>
+                              locked; right-click to unlock
+                          </span>
+                      ) : null}
                   </div>
               ),
               document.getElementById('tooltip-root')!,
