@@ -36,6 +36,7 @@ export const ui_cnet = () => {
                             resize: form.bool({ default: true }),
                             cnets: form.choices({
                                 // label: false, //'Pick Cnets=>',
+                                appearance: 'tab',
                                 placeholder: 'ControlNets...',
                                 items: {
                                     OpenPose: () => ui_subform_OpenPose(),
