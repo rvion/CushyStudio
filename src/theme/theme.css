@@ -213,6 +213,9 @@ legend {
     width: 100%;
     border: 2px solid var(--fallback-p,oklch(var(--a)/0.45));
 }
+._MD th {
+    background: oklch(var(--p)/.1);
+}
 ._MD th, ._MD td {
     border-bottom: 1px solid var(--fallback-p,oklch(var(--a)/0.45));
     border-right: 1px solid var(--fallback-p,oklch(var(--a)/0.45));
