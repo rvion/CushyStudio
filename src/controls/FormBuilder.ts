@@ -28,12 +28,13 @@ export class FormBuilder {
     }
 
     // string
-    string = (opts: Widget_string_config) => new Widget_string(this, opts)
-    stringOpt = (opts: Widget_string_config & { startActive?: boolean }) =>
+    string = (config: Widget_string_config) => new Widget_string(this, config)
+    stringOpt = (config: Widget_string_config & { startActive?: boolean }) =>
         this.optional({
-            label: opts.label,
-            startActive: opts.startActive,
-            widget: () => new Widget_string(this, opts),
+            label: config.label,
+            startActive: config.startActive,
+            startCollapsed: config.startCollapsed,
+            widget: () => new Widget_string(this, { ...config, startCollapsed: undefined }),
         })
 
     /** @deprecated */
@@ -51,31 +52,35 @@ export class FormBuilder {
     float     = (opts: Omit<Widget_number_config,'mode'>) => new Widget_number(this, { mode: 'float', ...opts }) // prettier-ignore
     number    = (opts: Omit<Widget_number_config,'mode'>) => new Widget_number(this, { mode: 'float', ...opts }) // prettier-ignore
 
-    intOpt = (opts: Omit<Widget_number_config, 'mode'> & { startActive?: boolean }) =>
+    intOpt = (config: Omit<Widget_number_config, 'mode'> & { startActive?: boolean }) =>
         this.optional({
-            label: opts.label,
-            startActive: opts.startActive,
-            widget: () => new Widget_number(this, { mode: 'int', ...opts }),
+            label: config.label,
+            startActive: config.startActive,
+            startCollapsed: config.startCollapsed,
+            widget: () => new Widget_number(this, { mode: 'int', ...config, startCollapsed: undefined }),
         })
-    floatOpt = (opts: Omit<Widget_number_config, 'mode'> & { startActive?: boolean }) =>
+    floatOpt = (config: Omit<Widget_number_config, 'mode'> & { startActive?: boolean }) =>
         this.optional({
-            label: opts.label,
-            startActive: opts.startActive,
-            widget: () => new Widget_number(this, { mode: 'float', ...opts }),
+            label: config.label,
+            startActive: config.startActive,
+            startCollapsed: config.startCollapsed,
+            widget: () => new Widget_number(this, { mode: 'float', ...config, startCollapsed: undefined }),
         })
-    numberOpt = (opts: Omit<Widget_number_config, 'mode'> & { startActive?: boolean }) =>
+    numberOpt = (config: Omit<Widget_number_config, 'mode'> & { startActive?: boolean }) =>
         this.optional({
-            label: opts.label,
-            startActive: opts.startActive,
-            widget: () => new Widget_number(this, { mode: 'float', ...opts }),
+            label: config.label,
+            startActive: config.startActive,
+            startCollapsed: config.startCollapsed,
+            widget: () => new Widget_number(this, { mode: 'float', ...config, startCollapsed: undefined }),
         })
 
-    image = (opts: Widget_image_config) => new Widget_image(this, opts)
-    imageOpt = (opts: Widget_image_config & { startActive?: boolean }) =>
+    image = (config: Widget_image_config) => new Widget_image(this, config)
+    imageOpt = (config: Widget_image_config & { startActive?: boolean }) =>
         this.optional({
-            label: opts.label,
-            startActive: opts.startActive,
-            widget: () => new Widget_image(this, opts),
+            label: config.label,
+            startActive: config.startActive,
+            startCollapsed: config.startCollapsed,
+            widget: () => new Widget_image(this, { ...config, startCollapsed: undefined }),
         })
 
     // --------------------
@@ -84,7 +89,8 @@ export class FormBuilder {
         this.optional({
             label: config.label,
             startActive: config.startActive,
-            widget: () => new Widget_prompt(this, config),
+            startCollapsed: config.startCollapsed,
+            widget: () => new Widget_prompt(this, { ...config, startCollapsed: undefined }),
         })
 
     // --------------------
@@ -124,12 +130,13 @@ export class FormBuilder {
 
     regional = <const T extends W.Widget>(p: Widget_listExt_config<T>) => new Widget_listExt(this, { mode: 'regional', ...p })
 
-    groupOpt = <const T extends { [key: string]: W.Widget }>(p: Widget_group_config<T> & { startActive?: boolean }) =>
+    groupOpt = <const T extends { [key: string]: W.Widget }>(config: Widget_group_config<T> & { startActive?: boolean }) =>
         this.optional({
-            label: p.label,
-            customNodesByNameInCushy: p.customNodesByNameInCushy,
-            startActive: p.startActive,
-            widget: () => this.group(p),
+            label: config.label,
+            customNodesByNameInCushy: config.customNodesByNameInCushy,
+            startActive: config.startActive,
+            startCollapsed: config.startCollapsed,
+            widget: () => this.group({ ...config, startCollapsed: undefined }),
         })
 
     group = <const T extends { [key: string]: W.Widget }>(p: Widget_group_config<T>) => new Widget_group(this, p)
