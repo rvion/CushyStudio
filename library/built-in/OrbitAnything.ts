@@ -11,6 +11,7 @@ app({
         description: 'see anything from any angle; just drop an image, and orbit around it',
         help: [
             //
+            `This app works great with **autorun** active`,
             `Image must:`,
             `- have **transparent** background`,
             `- be **centered** (no parts escaping the frame)'`,
