@@ -1359,6 +1359,9 @@ export type CushyAppT = {
     /** @default: "0", sqlType: INT */
     isFavorite: number;
 
+    /** @default: null, sqlType: INT */
+    canStartFromImage?: Maybe<number>;
+
 }
 
 export type CushyApp_C = {
@@ -1398,6 +1401,9 @@ export type CushyApp_C = {
     /** @default: "0", sqlType: INT */
     isFavorite?: number;
 
+    /** @default: null, sqlType: INT */
+    canStartFromImage?: Maybe<number>;
+
 }
 export const CushyAppSchema = Type.Object({
     id: Type.String(),
@@ -1412,6 +1418,7 @@ export const CushyAppSchema = Type.Object({
     publishedAsUserID: Type.Optional(T.Nullable(Type.String())),
     publishedAt: Type.Optional(T.Nullable(Type.Number())),
     isFavorite: Type.Number(),
+    canStartFromImage: Type.Optional(T.Nullable(Type.Number())),
 },{ additionalProperties: false })
 
 export const CushyAppRefs =[
@@ -1435,6 +1442,7 @@ export const CushyAppFields = {
     publishedAsUserID: {cid:9,name:'publishedAsUserID',type:'TEXT',notnull:0,dflt_value:null,pk:0},
     publishedAt: {cid:10,name:'publishedAt',type:'INT',notnull:0,dflt_value:null,pk:0},
     isFavorite: {cid:11,name:'isFavorite',type:'INT',notnull:1,dflt_value:'0',pk:0},
+    canStartFromImage: {cid:12,name:'canStartFromImage',type:'INT',notnull:0,dflt_value:null,pk:0},
 }
 
 

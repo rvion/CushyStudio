@@ -571,6 +571,14 @@ export const migrations: {
             `alter table draft rename column serial to formSerial`,
         ],
     },
+    {
+        id: 'rKN8C31HEj',
+        name: 'rename draft.serial to draft.formSerial',
+        up: [
+            //
+            `alter table cushy_app add column canStartFromImage int`,
+        ],
+    },
     // {
     //     id: 'e574c006-daca-4fd0-a51b-73a66b4fbd79',
     //     name: 'create cushy_app table',

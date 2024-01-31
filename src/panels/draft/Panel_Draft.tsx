@@ -3,7 +3,7 @@ import type { DraftL } from 'src/models/Draft'
 
 import { toJS } from 'mobx'
 import { observer } from 'mobx-react-lite'
-import { useEffect } from 'react'
+import { useEffect, useLayoutEffect } from 'react'
 import { PhoneWrapperUI } from 'src/rsuite/PhoneWrapperUI'
 import { SelectUI } from 'src/rsuite/SelectUI'
 import { Message } from 'src/rsuite/shims'
@@ -30,7 +30,7 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
     useEffect(() => draft?.AWAKE(), [draft?.id])
 
     // ensure
-    useEffect(() => {
+    useLayoutEffect(() => {
         if (draft?.name != null) st.layout.syncTabTitle('Draft', { draftID: draft.id }, draft.name)
     }, [draft?.name])
 
@@ -42,7 +42,7 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
     if (app == null) return <ErrorPanelUI>File not found</ErrorPanelUI>
 
     // 3. compiled app
-    const compiledApp = app.executable
+    const compiledApp = app.executable_orExtract
     if (compiledApp == null) return <AppCompilationErrorUI app={app} />
 
     // 4. get form
@@ -83,9 +83,9 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                 {draft.shouldAutoStart && (
                     <MessageInfoUI>AutoStart active: this draft will executet when form change</MessageInfoUI>
                 )}
-                {draft.app.executable?.metadata?.help && (
+                {draft.app.executable_orExtract?.metadata?.help && (
                     <MessageInfoUI>
-                        <MarkdownUI tw='_WidgetMardownUI w-full' markdown={draft.app.executable?.metadata.help} />
+                        <MarkdownUI tw='_WidgetMardownUI w-full' markdown={draft.app.executable_orExtract?.metadata.help} />
                     </MessageInfoUI>
                 )}
                 <div tw='pb-80 pl-2'>

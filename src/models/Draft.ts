@@ -50,7 +50,7 @@ export class DraftL {
     }
 
     get executable() {
-        return this.app.executable
+        return this.app.executable_orExtract
     }
 
     get name() {
@@ -208,7 +208,7 @@ export class DraftL {
                         /** 👇 HACK; see the comment near the ROOT property definition */
                         formBuilder._ROOT = req
                         this.form = __OK(req)
-                        console.log(`[🦊] form: setup`)
+                        console.log(`[🦊] form: setup` /* this.form */)
                     })
                     // subState.unsync()
                 } catch (e) {

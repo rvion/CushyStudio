@@ -93,7 +93,7 @@ export class StepL {
     }
 
     get executable(): Maybe<Executable> {
-        return this.app.executable
+        return this.app.executable_orExtract
     }
 
     get name(): string {

@@ -91,9 +91,7 @@ export const ImageActionMenu = observer(function ImageActionMenu_(p: { img: Medi
     const img = p.img
     return (
         <>
-            {st.allApps.map((app) => {
-                if (app.executable == null) return <>app {app.name} has no executable</>
-                if (!app.executable.canBeStartedFromImage) return null
+            {st.allImageAppsCollectitons.map((app) => {
                 return (
                     <div key={app.id}>
                         {app.drafts.map((d) => (

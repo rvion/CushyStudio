@@ -1,9 +1,9 @@
-import type { CushyScriptL } from './CushyScriptL'
 import type { AppMetadata } from 'src/cards/AppManifest'
+import type { CushyScriptL } from './CushyScriptL'
+import type { App } from 'src/cards/App'
 
-import { App, WidgetDict } from 'src/cards/App'
-import { asCushyAppID } from 'src/db/TYPES.gen'
 import { basename } from 'pathe'
+import { asCushyAppID } from 'src/db/TYPES.gen'
 
 export class Executable {
     constructor(
@@ -21,7 +21,7 @@ export class Executable {
         return this.def.run
     }
 
-    get canBeStartedFromImage() {
+    get canStartFromImage() {
         return this.def.canStartFromImage ?? false
     }
 

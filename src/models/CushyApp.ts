@@ -110,11 +110,11 @@ export class CushyAppL {
         return this.script.getExecutable_orNull(this.id) != null
     }
 
-    get executableOrNull(): Maybe<Executable> {
+    get executable_orNull(): Maybe<Executable> {
         return this.script.getExecutable_orNull(this.id)
     }
 
-    get executable(): Maybe<Executable> {
+    get executable_orExtract(): Maybe<Executable> {
         return this.script.getExecutable_orExtract(this.id)
     }
 
@@ -136,7 +136,7 @@ export class CushyAppL {
         this.isPublishing = true
         try {
             const st = this.st
-            const x = this.executable
+            const x = this.executable_orExtract
 
             // ensure app is compiled
             if (x == null) {
@@ -149,7 +149,7 @@ export class CushyAppL {
                 x.name == null ||
                 x.description == null
             ) {
-                console.error(this.executable?.metadata)
+                console.error(this.executable_orExtract?.metadata)
                 return this.FAIL_prepublish(
                     `missing metadata (${(['illustration', 'name', 'description'] as const)
                         .filter((y) => x[y] == null)
@@ -247,7 +247,7 @@ export class CushyAppL {
                     name: this.name,
                     description: this.description,
                     illustration_url: illustration_url,
-                    tags: this.executable?.tags,
+                    tags: this.executable_orExtract?.tags,
                 })
                 console.log(`[🚀] ✅ ${appUID} published !`, res)
                 toastSuccess(`[🚀] ✅ ${appUID} published !`)
@@ -261,7 +261,7 @@ export class CushyAppL {
                         name: this.name,
                         description: this.description,
                         illustration_url: illustration_url,
-                        tags: this.executable?.tags,
+                        tags: this.executable_orExtract?.tags,
                     })
                     .eq('id', prev.id)
                 console.log(`[🚀] ✅ ${appUID} updated !`, res)

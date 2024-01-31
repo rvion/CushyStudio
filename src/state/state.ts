@@ -241,21 +241,23 @@ export class STATE {
         table: () => this.db.drafts,
         where: () => ({}),
     })
-    get allDrafts(): DraftL[] {
-        return this.allDraftsCollections.items
-    }
+    get allDrafts(): DraftL[] { return this.allDraftsCollections.items } // prettier-ignore
     virtualDraftHierarchy = new VirtualHierarchy(() => this.allDrafts)
-
+    // --------------------------------------------------
     allAppsCollectitons = new LiveCollection<CushyAppL>({
         table: () => this.db.cushy_apps,
         where: () => ({}),
     })
-    get allApps(): CushyAppL[] {
-        return this.allAppsCollectitons.items
-    }
+    get allApps(): CushyAppL[] { return this.allAppsCollectitons.items } // prettier-ignore
     virtualAppHierarchy = new VirtualHierarchy(() => this.allApps)
-
     // ---------------------------------------------------
+    allImageAppsCollectitons = new LiveCollection<CushyAppL>({
+        table: () => this.db.cushy_apps,
+        where: () => ({ canStartFromImage: SQLITE_true }),
+    })
+    get allImageApps(): CushyAppL[] { return this.allImageAppsCollectitons.items } // prettier-ignore
+    // --------------------------------------------------
+
     getConfigValue = <K extends keyof ConfigFile>(k: K) => this.configFile.value[k]
     setConfigValue = <K extends keyof ConfigFile>(k: K, v: ConfigFile[K]) => this.configFile.update({ [k]: v })
     isConfigValueEq = <K extends keyof ConfigFile>(k: K, val: ConfigFile[K]) => this.configFile.value[k] === val
@@ -486,7 +488,7 @@ export class STATE {
             comfyUIIframeRef: false,
             wildcards: false,
         })
-        this.startupFileIndexing()
+        // this.startupFileIndexing()
         ;(window as any).st = this
     }
 

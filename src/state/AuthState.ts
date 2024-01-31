@@ -176,7 +176,7 @@ export class AuthState {
         if (user == null) throw new Error(`[🔑 AUTH] ❌ failure: user is null`)
         if (session == null) throw new Error(`[🔑 AUTH] ❌ failure: session is null`)
 
-        console.log(`[🔑 AUTH] 🟢 success.`) //, session)
+        // console.log(`[🔑 AUTH] 🟢 success.`) //, session)
 
         // ⏸️ const prev = deepCopyNaive(this.st.db.auths.get(asAuthID('current'))?.data)
 
@@ -199,6 +199,6 @@ export class AuthState {
         if (session.refresh_token) payload.refresh_token = session.refresh_token
         if (session.token_type) payload.token_type = session.token_type
         this.authTable.upsert(payload)
-        logger.info(`[🔑 AUTH] ✅ auth saved to DB` /* payload */)
+        // logger.info(`[🔑 AUTH] ✅ auth saved to DB` /* payload */)
     }
 }

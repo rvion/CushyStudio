@@ -14,6 +14,7 @@ import { CUSHY_IMPORT } from '../compiler/CUSHY_IMPORT'
 import { CushyAppL } from './CushyApp'
 import { Executable } from './Executable'
 import { getCurrentForm_IMPL, getCurrentRun_IMPL } from './_ctx2'
+import { SQLITE_false, SQLITE_true } from 'src/db/SQLITE_boolean'
 // import { LazyValue } from 'src/db/LazyValue'
 
 export interface CushyScriptL extends LiveInstance<CushyScriptT, CushyScriptL> {}
@@ -64,12 +65,13 @@ export class CushyScriptL {
     // --------------------------------------------------------------------------------------
     /** cache of extracted apps */
     private _EXECUTABLES: Maybe<Executable[]> = null
-    get EXECUTABLES(): Executable[] {
+    private get EXECUTABLES(): Executable[] {
         if (this._EXECUTABLES == null) return this.evaluateAndUpdateApps()
         return this._EXECUTABLES
     }
 
     getExecutable_orNull(appID: CushyAppID): Maybe<Executable> {
+        //      '_'👇
         return this._EXECUTABLES?.find((executable) => appID === executable.appID)
     }
 
@@ -99,6 +101,7 @@ export class CushyScriptL {
                     illustration: executable.illustration,
                     name: executable.name,
                     tags: executable.tags.join(','),
+                    canStartFromImage: executable.canStartFromImage ? SQLITE_true : SQLITE_false,
                 })
                 return app
             })
