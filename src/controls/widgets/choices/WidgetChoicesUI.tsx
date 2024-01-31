@@ -36,7 +36,12 @@ export const WidgetChoicesTabUI = observer(function WidgetChoicesTabUI_(p: {
                             key={c.key}
                             tw={['btn btn-sm flex flex-nowrap gap-1 whitespace-nowrap', isSelected ? 'btn-active' : '']}
                         >
-                            <input type='checkbox' checked={isSelected} className='checkbox checkbox-primary checkbox-xs' />
+                            <input
+                                type='checkbox'
+                                onChange={() => {}}
+                                checked={isSelected}
+                                className='checkbox checkbox-primary checkbox-xs'
+                            />
                             {makeLabelFromFieldName(c.key)}
                         </div>
                     )
