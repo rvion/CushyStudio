@@ -81,10 +81,11 @@ export class Widget_group<T extends { [key: string]: Widget }> implements IWidge
                 // console.log(`[🟢] valid serial for "${key}": (${newType} != ${prevValue_?.type}) `)
                 this.values[key] = this.form._HYDRATE(newType, newInput, prevValue_)
             } else {
-                console.log(
-                    `[🔶] invalid serial for "${key}": (${newType} != ${prevValue_?.type}) => using fresh one instead`,
-                    prevValues_,
-                )
+                if (prevValue_ != null)
+                    console.log(
+                        `[🔶] invalid serial for "${key}": (${newType} != ${prevValue_?.type}) => using fresh one instead`,
+                        prevValues_,
+                    )
                 this.values[key] = newItem as any
                 this.serial.values_[key] = newItem.serial as any
             }
