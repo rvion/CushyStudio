@@ -124,8 +124,15 @@ export class LibraryFile {
         // PERF: if we have alreay attempted extraction once, and if we don't have
         // any hint that re-trying will yield something different, let's just return
         // the cached value
-        if (this.lastSuccessfullExtractedScript && !p?.force)
-            return { type: 'cached', script: this.lastSuccessfullExtractedScript }
+        if (!p?.force) {
+            // if we have already attempted extraction once during this session, return it
+            if (this.lastSuccessfullExtractedScript) return { type: 'cached', script: this.lastSuccessfullExtractedScript }
+
+            // if we have already attempted extraction once in a previous session, return it
+            const scriptFromDB = this.st.db.cushy_scripts.get(this.relPath)
+            if (scriptFromDB) return { type: 'cached', script: scriptFromDB }
+            console.log(`[🔴] SEEING ${this.relPath} FOR THE FIRST TIME`)
+        }
 
         // try every strategy in order
         let script: Maybe<CushyScriptL> = null
@@ -147,6 +154,12 @@ export class LibraryFile {
             const RESULT: ScriptExtractionResult = { type: 'failed' }
             this.currentScriptExtractionPromise.resolve(RESULT)
             this.currentScriptExtractionPromise = null
+
+            const scriptFromDB = this.st.db.cushy_scripts.get(this.relPath)
+            if (scriptFromDB == null) {
+                this.UPSERT_SCRIPT(`/* ERROR */`)
+            }
+
             return RESULT
         } else {
             const RESULT: ScriptExtractionResult = { type: 'newScript', script }

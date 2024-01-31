@@ -109,6 +109,7 @@ export class STATE {
 
     startupFileIndexing = async () => {
         const allFiles = recursivelyFindAppsInFolder(this.library, this.libraryFolderPathAbs)
+        console.log(`[🔴] ----------> found ${allFiles.length} files`)
         for (const x of allFiles) await x.extractScriptFromFile()
     }
     /**
@@ -488,7 +489,7 @@ export class STATE {
             comfyUIIframeRef: false,
             wildcards: false,
         })
-        // this.startupFileIndexing()
+        this.startupFileIndexing()
         ;(window as any).st = this
     }
 
