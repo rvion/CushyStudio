@@ -2238,6 +2238,16 @@
             "description": "Various quality of life -nodes for ComfyUI, mostly just visual stuff to improve usability."
         },
         {
+            "author": "kijai",
+            "title": "ComfyUI-CCSR",
+            "reference": "https://github.com/kijai/ComfyUI-CCSR",
+            "files": [
+                "https://github.com/kijai/ComfyUI-CCSR"
+            ],
+            "install_type": "git-clone",
+            "description": "ComfyUI- CCSR upscaler node"
+        },
+        {
             "author": "hhhzzyang",
             "title": "Comfyui-Lama",
             "reference": "https://github.com/hhhzzyang/Comfyui_Lama",
@@ -3049,6 +3059,16 @@
             ],
             "install_type": "git-clone",
             "description": "Unofficial implementation of [a/PhotoMaker](https://github.com/TencentARC/PhotoMaker) for ComfyUI"
+        },
+        {
+            "author": "ZHO-ZHO-ZHO",
+            "title": "ComfyUI-Qwen-VL-API",
+            "reference": "https://github.com/ZHO-ZHO-ZHO/ComfyUI-Qwen-VL-API",
+            "files": [
+                "https://github.com/ZHO-ZHO-ZHO/ComfyUI-Qwen-VL-API"
+            ],
+            "install_type": "git-clone",
+            "description": "QWen-VL-Plus & QWen-VL-Max in ComfyUI"
         },
         {
             "author": "kenjiqq",
@@ -4242,7 +4262,7 @@
                 "https://github.com/daniel-lewis-ab/ComfyUI-TTS"
             ],
             "install_type": "git-clone",
-            "description": "A set of TTS nodes for ComfyUI"
+            "description": "Text To Speech (TTS) for ComfyUI"
         },
         {
             "author": "djbielejeski",
@@ -4403,6 +4423,16 @@
             ],
             "install_type": "git-clone",
             "description": "Add a node that outputs width and height of the size selected from the preset (.csv)."
+        },
+        {
+            "author": "nkchocoai",
+            "title": "ComfyUI-PromptUtilities",
+            "reference": "https://github.com/nkchocoai/ComfyUI-PromptUtilities",
+            "files": [
+                "https://github.com/nkchocoai/ComfyUI-PromptUtilities"
+            ],
+            "install_type": "git-clone",
+            "description": "Nodes: Format String, Join String List, Load Preset, Load Preset (Advanced), Const String, Const String (multi line). Add useful nodes related to prompt."
         },
         {
             "author": "JaredTherriault",
@@ -4644,11 +4674,110 @@
             "install_type": "git-clone",
             "description": "Nodes:ImageScore, Loader, Image Processor, Real Image Processor, Fake Image Processor, Text Processor. ComfyUI Nodes for ClipScore"
         },
-
-
-
-
-
+        {
+            "author": "yuvraj108c",
+            "title": "ComfyUI Whisper",
+            "reference": "https://github.com/yuvraj108c/ComfyUI-Whisper",
+            "files": [
+                "https://github.com/yuvraj108c/ComfyUI-Whisper"
+            ],
+            "install_type": "git-clone",
+            "description": "Transcribe audio and add subtitles to videos using Whisper in ComfyUI"
+        },
+        {
+            "author": "blepping",
+            "title": "ComfyUI-bleh",
+            "reference": "https://github.com/blepping/ComfyUI-bleh",
+            "files": [
+                "https://github.com/blepping/ComfyUI-bleh"
+            ],
+            "install_type": "git-clone",
+            "description": "Better TAESD previews, BlehHyperTile."
+        },
+        {
+            "author": "JerryOrbachJr",
+            "title": "ComfyUI-RandomSize",
+            "reference": "https://github.com/JerryOrbachJr/ComfyUI-RandomSize",
+            "files": [
+                "https://github.com/JerryOrbachJr/ComfyUI-RandomSize"
+            ],
+            "install_type": "git-clone",
+            "description": "A ComfyUI custom node that randomly selects a height and width pair from a list in a config file"
+        },
+        {
+            "author": "jamal-alkharrat",
+            "title": "ComfyUI_rotate_image",
+            "reference": "https://github.com/jamal-alkharrat/ComfyUI_rotate_image",
+            "files": [
+                "https://github.com/jamal-alkharrat/ComfyUI_rotate_image"
+            ],
+            "install_type": "git-clone",
+            "description": "ComfyUI Custom Node to Rotate Images, Img2Img node."
+        },
+        {
+            "author": "mape",
+            "title": "mape's ComfyUI Helpers",
+            "reference": "https://github.com/mape/ComfyUI-mape-Helpers",
+            "files": [
+                "https://github.com/mape/ComfyUI-mape-Helpers"
+            ],
+            "install_type": "git-clone",
+            "description": "Multi-monitor image preview, Variable Assigment/Wireless Nodes, Prompt Tweaking, Command Palette, Pinned favourite nodes, Node navigation, Fuzzy search, Node time tracking, Organizing and Error management. For more info visit: [a/https://comfyui.ma.pe/](https://comfyui.ma.pe/)"
+        },
+        {
+            "author": "zhongpei",
+            "title": "Comfyui_image2prompt",
+            "reference": "https://github.com/zhongpei/Comfyui_image2prompt",
+            "files": [
+                "https://github.com/zhongpei/Comfyui_image2prompt"
+            ],
+            "install_type": "git-clone",
+            "description": "Nodes:Image to Text, Loader Image to Text Model."
+        },
+        {
+            "author": "Loewen-Hob",
+            "title": "Rembg Background Removal Node for ComfyUI",
+            "reference": "https://github.com/Loewen-Hob/rembg-comfyui-node-better",
+            "files": [
+                "https://github.com/Loewen-Hob/rembg-comfyui-node-better"
+            ],
+            "install_type": "git-clone",
+            "description": "This custom node is based on the [a/rembg-comfyui-node](https://github.com/Jcd1230/rembg-comfyui-node) but provides additional functionality to select ONNX models."
+        },
+        {
+            "author": "HaydenReeve",
+            "title": "ComfyUI Better Strings",
+            "reference": "https://github.com/HaydenReeve/ComfyUI-Better-Strings",
+            "files": [
+                "https://github.com/HaydenReeve/ComfyUI-Better-Strings"
+            ],
+            "install_type": "git-clone",
+            "description": "Strings should be easy, and simple. This extension aims to provide a set of nodes that make working with strings in ComfyUI a little bit easier."
+        },
+        {
+            "author": "StartHua",
+            "title": "ComfyUI_Seg_VITON",
+            "reference": "https://github.com/StartHua/ComfyUI_Seg_VITON",
+            "files": [
+                "https://github.com/StartHua/ComfyUI_Seg_VITON"
+            ],
+            "install_type": "git-clone",
+            "description": "Nodes:segformer_clothes, segformer_agnostic, segformer_remove_bg, stabel_vition. Through this extension, you can virtually try on clothes on a target person's image."
+        },
+        {
+            "author": "shadowcz007",
+            "title": "comfyui-ultralytics-yolo",
+            "reference": "https://github.com/shadowcz007/comfyui-ultralytics-yolo",
+            "files": [
+                "https://github.com/shadowcz007/comfyui-ultralytics-yolo"
+            ],
+            "install_type": "git-clone",
+            "description": "Nodes:Detect By Label."
+        },
+        
+        
+        
+        
         {
             "author": "Ser-Hilary",
             "title": "SDXL_sizing",
