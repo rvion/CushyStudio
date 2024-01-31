@@ -42,7 +42,7 @@ export class TreeFile implements ITreeEntry {
     }
 
     get script() {
-        return this.file.lastSuccessfullExtractedScript
+        return this.file.script
     }
 
     // get index(){return `path#${this.path}`} //prettier-ignore
@@ -78,9 +78,10 @@ export class TreeFile implements ITreeEntry {
     children = (): ITreeElement<CushyAppID>[] => {
         // if (!this.file.hasBeenLoadedAtLeastOnce) return []
         if (this.file == null) { console.log(`[🔴] TreeFile (${this.path}): FILE is null`); return [] } // prettier-ignore
-        if (this.script == null) { /* console.log(`[🔴] TreeFile (${this.path}): SCRIPT is null`); */ return [] } // prettier-ignore
+        if (this.script == null) { console.log(`[🔴] TreeFile (${this.path}): SCRIPT is null`); return [] } // prettier-ignore
 
         const apps = this.script.apps
+        // console.log(`[👙] 🔴 ${this.path} => ${apps.length}`)
         if (apps.length === 0) {
             console.log(`[🔴] TreeFile (${this.path}): APPS.length = 0`)
             return []

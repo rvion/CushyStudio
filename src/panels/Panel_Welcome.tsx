@@ -79,7 +79,7 @@ export const StandaloneAppBtnUI = observer(function StandaloneAppBtnUI_(p: { pat
     }, [])
 
     // show script evaluation progress
-    const script0 = file.lastSuccessfullExtractedScript
+    const script0 = file.script
     if (script0 == null)
         return (
             <div>

@@ -129,8 +129,8 @@ export class Library {
                     let shouldUpdate = relPath2 === relPath
 
                     // check if the changed file is an indirect dependency of the draft
-                    const scriptX = file?.scriptX
-                    const metafileX = scriptX?.data.metafile
+                    const scriptL = file?.scriptInDB
+                    const metafileX = scriptL?.data.metafile
                     if (!shouldUpdate && metafileX != null) {
                         const draftDeps = Object.keys(metafileX.inputs)
                         // console.log(`[👁️]   | ${draftDeps.join('\n       | ')} `)

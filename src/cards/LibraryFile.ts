@@ -82,7 +82,7 @@ export class LibraryFile {
     //     where: () => ({ path: this.relPath }),
     // })
 
-    get scriptX(): Maybe<CushyScriptL> {
+    get scriptInDB(): Maybe<CushyScriptL> {
         return this.st.db.cushy_scripts.get(this.relPath) // script is IS the relPath
         // return this.st.db.cushy_scripts.findOne({ path: this.relPath })
     }
@@ -100,15 +100,20 @@ export class LibraryFile {
     // the first thing to do to load an app is to get the Cushy Script from it.
     private codeJS?: Maybe<string> = null
     private metafile?: Maybe<Metafile> = null
-    script?: Maybe<CushyScriptL> = null
 
     liteGraphJSON?: Maybe<LiteGraphJSON> = null
     promptJSON?: Maybe<ComfyPromptJSON> = null
     png?: Maybe<AbsolutePath> = null
 
+    get script(): Maybe<CushyScriptL> {
+        if (this.lastSuccessfullExtractedScriptDuringSession) return this.lastSuccessfullExtractedScriptDuringSession
+        if (this.scriptInDB) return this.scriptInDB
+        this.extractScriptFromFile()
+        return null
+    }
     /** load a file trying all compatible strategies */
-    successfullLoadStrategies: Maybe<LoadStrategy> = null
-    lastSuccessfullExtractedScript: Maybe<CushyScriptL> = null
+    private successfullLoadStrategies: Maybe<LoadStrategy> = null
+    private lastSuccessfullExtractedScriptDuringSession: Maybe<CushyScriptL> = null
     scriptExtractionAttemptedOnce = false
     currentScriptExtractionPromise: Maybe<ManualPromise<ScriptExtractionResult>> = null
 
@@ -126,7 +131,8 @@ export class LibraryFile {
         // the cached value
         if (!p?.force) {
             // if we have already attempted extraction once during this session, return it
-            if (this.lastSuccessfullExtractedScript) return { type: 'cached', script: this.lastSuccessfullExtractedScript }
+            if (this.lastSuccessfullExtractedScriptDuringSession)
+                return { type: 'cached', script: this.lastSuccessfullExtractedScriptDuringSession }
 
             // if we have already attempted extraction once in a previous session, return it
             const scriptFromDB = this.st.db.cushy_scripts.get(this.relPath)
@@ -140,7 +146,7 @@ export class LibraryFile {
             const res = await this.loadWithStrategy(strategy)
             if (res.type === 'SUCCESS') {
                 script = res.script
-                this.lastSuccessfullExtractedScript = res.script
+                this.lastSuccessfullExtractedScriptDuringSession = res.script
                 this.successfullLoadStrategies = strategy
                 // console.log(`[🟢] LibFile: LOAD SUCCESS !`)
                 break
