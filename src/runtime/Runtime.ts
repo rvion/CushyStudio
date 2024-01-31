@@ -4,7 +4,7 @@ import type { Printable } from '../core/Printable'
 import type { StepL } from '../models/Step'
 import type { MediaImageL } from '../models/MediaImage'
 import type { ComfyPromptL } from '../models/ComfyPrompt'
-import type { ComfyWorkflowL } from '../models/ComfyWorkflow'
+import type { ComfyWorkflowL, PromptSettings } from '../models/ComfyWorkflow'
 
 import * as path from 'pathe'
 // import { Cyto } from '../graph/cyto' 🔴🔴
@@ -614,12 +614,9 @@ export class Runtime<FIELDS extends WidgetDict = any> {
     }
 
     // INTERRACTIONS ------------------------------------------------------------------------------------------
-    async PROMPT(p?: {
-        /** defaults to numbers */
-        ids?: IDNaminScheemeInPromptSentToComfyUI
-    }): Promise<ComfyPromptL> {
+    async PROMPT(p?: PromptSettings): Promise<ComfyPromptL> {
         console.info('prompt requested')
-        const prompt = await this.workflow.sendPrompt({ idMode: p?.ids })
+        const prompt = await this.workflow.sendPrompt(p)
         await prompt.finished
         return prompt
     }

@@ -9,3 +9,12 @@ declare type Timestamp = Tagged<number, 'Timestamp'>
 declare type RelativePath = Branded<string, { RelativePath: true }>
 declare type AbsolutePath = Branded<string, { AbsolutePath: true }>
 declare type SQLITE_boolean = Branded<number, { SQLITE_boolean: true }>
+
+// --------------
+
+declare type ConvertibleImageFormat = 'image/png' | 'image/jpeg' | 'image/webp' | 'raw'
+declare type ImageSaveFormat = {
+    format: ConvertibleImageFormat
+    prefix?: string
+    quality?: number
+}

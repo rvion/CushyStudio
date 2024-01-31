@@ -5,6 +5,7 @@ import { isAbsolute, resolve } from 'pathe'
 import { makeAutoObservable } from 'mobx'
 import konva from 'konva'
 import { MediaImageL } from 'src/models/MediaImage'
+import { createHTMLImage_fromURL } from '../state/createHTMLImage_fromURL'
 
 /**
  * provide both raw-access to the underling KonvaJS library
@@ -113,17 +114,7 @@ export class RuntimeKonva {
         })
     }
 
-    createHTMLImage_fromURL(
-        /** the same `src` value you would use in an <img /> html node */
-        src: string,
-    ): Promise<HTMLImageElement> {
-        return new Promise((yes, no) => {
-            const img = new Image()
-            img.onload = () => yes(img)
-            img.onerror = no
-            img.src = src
-        })
-    }
+    createHTMLImage_fromURL = createHTMLImage_fromURL
 
     /**
      * @deprecated

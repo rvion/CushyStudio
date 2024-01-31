@@ -9,7 +9,7 @@ import { run_prompt } from './_prefabs/prefab_prompt'
 import { ui_recursive } from './_prefabs/prefab_recursive'
 import { Ctx_sampler, run_sampler, ui_sampler } from './_prefabs/prefab_sampler'
 import { run_upscaleWithModel, ui_upscaleWithModel } from './_prefabs/prefab_upscaleWithModel'
-import { run_saveAllImages, ui_saveAllImages } from './_prefabs/saveSmall'
+import { run_customSave, ui_customSave } from './_prefabs/saveSmall'
 import { run_rembg_v1, ui_rembg_v1 } from './_prefabs/prefab_rembg'
 
 app({
@@ -55,7 +55,7 @@ app({
                 delayBetween: form.int({ tooltip: 'in ms', default: 0 }),
             }),
         }),
-        compressImage: ui_saveAllImages(),
+        customSave: ui_customSave(),
         // startImage
         removeBG: ui_rembg_v1(),
 
@@ -238,15 +238,12 @@ app({
             finalImage = run_upscaleWithModel(ui.upscale, { image: finalImage })
         }
 
-        await run.PROMPT()
+        const saveFormat = run_customSave(ui.customSave)
+        await run.PROMPT({ saveFormat })
 
         if (ui.testStuff?.gaussianSplat) run.output_GaussianSplat({ url: '' })
         if (ui.testStuff?.summary) output_demo_summary(run)
         if (show3d) run.output_3dImage({ image: 'base', depth: 'depth', normal: 'normal' })
-
-        if (ui.compressImage) {
-            run_saveAllImages({ format: 'webp', quality: ui.compressImage.quality })
-        }
 
         // LOOP IF NEED BE -----------------------------------------------------------------------
         const loop = ui.loop
@@ -254,7 +251,7 @@ app({
             const ixes = new Array(ui.loop.batchCount).fill(0).map((_, i) => i)
             for (const i of ixes) {
                 await new Promise((r) => setTimeout(r, loop.delayBetween))
-                await run.PROMPT()
+                await run.PROMPT({ saveFormat })
             }
         }
 

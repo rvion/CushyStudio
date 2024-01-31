@@ -1,17 +1,20 @@
 import type { STATE } from 'src/state/state'
+import type { ComfyNodeID } from 'src/types/ComfyNodeID'
+import type { PromptID } from 'src/types/ComfyWsApi'
+import type { ImageInfos_ComfyGenerated } from './ImageInfos_ComfyGenerated'
 
 import { mkdirSync, readFileSync, writeFileSync } from 'fs'
 import { imageMeta } from 'image-meta'
 import { dirname } from 'pathe'
 import { hashArrayBuffer } from 'src/state/hashBlob'
-import { PromptID } from 'src/types/ComfyWsApi'
-import { toastInfo } from 'src/utils/misc/toasts'
 import { extractExtensionFromContentType } from 'src/widgets/misc/extractExtensionFromContentType'
 import { MediaImageL } from './MediaImage'
 
-type imageCreationOpts = {
+export type ImageCreationOpts = {
     promptID?: PromptID
     stepID?: StepID
+    comfyUIInfos?: ImageInfos_ComfyGenerated
+    promptNodeID?: ComfyNodeID
 }
 
 export const createMediaImage_fromFileObject = async (st: STATE, file: File, subFolder?: string): Promise<MediaImageL> => {
@@ -60,19 +63,19 @@ export const createMediaImage_fromPath = (
     //
     st: STATE,
     relPath: string,
-    opts?: imageCreationOpts,
+    opts?: ImageCreationOpts,
 ): MediaImageL => {
     const buff = readFileSync(relPath)
     return _createMediaImage_fromLocalyAvailableImage(st, relPath, buff, opts)
 }
 
-const _createMediaImage_fromLocalyAvailableImage = (
+export const _createMediaImage_fromLocalyAvailableImage = (
     st: STATE,
     relPath: string,
-    preBuff?: Buffer,
-    opts?: imageCreationOpts,
+    preBuff?: Buffer | ArrayBuffer,
+    opts?: ImageCreationOpts,
 ): MediaImageL => {
-    const buff: Buffer = preBuff ?? readFileSync(relPath)
+    const buff: Buffer | ArrayBuffer = preBuff ?? readFileSync(relPath)
     const uint8arr = new Uint8Array(buff)
     const fileSize = uint8arr.byteLength
     const meta = imageMeta(uint8arr)
@@ -103,14 +106,20 @@ const _createMediaImage_fromLocalyAvailableImage = (
 
     console.log(`[🏞️] create new imamge`)
     return st.db.media_images.create({
+        // base
+        path: relPath,
+        // computed
+        fileSize: fileSize,
+        hash,
+        // from meta
         orientation: meta.orientation,
         type: meta.type,
-        fileSize: fileSize,
         width: meta.width,
         height: meta.height,
-        hash,
-        path: relPath,
+        // origin stuff; from opts
         promptID: opts?.promptID,
         stepID: opts?.stepID,
+        comfyUIInfos: opts?.comfyUIInfos,
+        promptNodeID: opts?.promptNodeID,
     })
 }

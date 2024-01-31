@@ -1,24 +1,30 @@
+import type { Runtime } from 'src/runtime/Runtime'
 import type { LiveInstance } from '../db/LiveInstance'
-import type { StepL } from './Step'
 import type { ComfyImageInfo, PromptRelated_WsMsg, WsMsgExecuted, WsMsgExecuting, WsMsgExecutionError } from '../types/ComfyWsApi'
 import type { ComfyWorkflowL, ProgressReport } from './ComfyWorkflow'
-import type { Runtime } from 'src/runtime/Runtime'
+import type { StepL } from './Step'
 
-import { nanoid } from 'nanoid'
+import { mkdirSync, writeFileSync } from 'fs'
+import { dirname, join } from 'pathe'
+import { SQLITE_true } from 'src/db/SQLITE_boolean'
 import { ComfyPromptT } from 'src/db/TYPES.gen'
+import { createHTMLImage_fromURL } from 'src/state/createHTMLImage_fromURL'
+import { ComfyNodeID } from 'src/types/ComfyNodeID'
+import { asRelativePath } from 'src/utils/fs/pathUtils'
+import { toastInfo } from 'src/utils/misc/toasts'
 import { Status } from '../back/Status'
 import { LiveRef } from '../db/LiveRef'
 import { exhaust } from '../utils/misc/ComfyUtils'
-import { SQLITE_true } from 'src/db/SQLITE_boolean'
-import { imageMeta } from 'image-meta'
-import { hashArrayBuffer } from 'src/state/hashBlob'
-import { asRelativePath } from 'src/utils/fs/pathUtils'
-import { dirname, join } from 'pathe'
-import { ComfyNodeID } from 'src/types/ComfyNodeID'
-import { mkdirSync, writeFileSync } from 'fs'
+import {
+    ImageCreationOpts,
+    _createMediaImage_fromLocalyAvailableImage,
+    createMediaImage_fromPath,
+} from './createMediaImage_fromWebFile'
 
 export interface ComfyPromptL extends LiveInstance<ComfyPromptT, ComfyPromptL> {}
 export class ComfyPromptL {
+    saveFormat: Maybe<ImageSaveFormat> = null
+
     private _resolve!: (value: this) => void
     private _rejects!: (reason: any) => void
     finished: Promise<this> = new Promise((resolve, rejects) => {
@@ -120,6 +126,7 @@ export class ComfyPromptL {
     }
     private pendingPromises: Promise<void>[] = []
 
+    // 🦊
     retrieveImage = async (
         //
         comfyImageInfo: ComfyImageInfo,
@@ -130,49 +137,68 @@ export class ComfyPromptL {
         const promptMeta = this.graph.data.metadata[promptNodeID]
         if (promptNode == null) throw new Error(`❌ invariant violation: promptNode is null`)
 
-        // retrieve the image
+        // get image url from ComfyUI
         const serverURL = this.st.mainHost.getServerHostHTTP()
         const imgUrl = serverURL + '/view?' + new URLSearchParams(comfyImageInfo).toString()
-        const outputRelPath = asRelativePath(join(comfyImageInfo.subfolder, comfyImageInfo.filename))
-        const absPath = this.st.resolve(this.st.outputFolderPath, outputRelPath)
 
-        // download  image
-        const response = await fetch(imgUrl, {
-            headers: { 'Content-Type': 'image/png' },
-            method: 'GET',
-        })
-        const buff = await response.arrayBuffer()
-
-        // compute hash and size
-        const uint8arr = new Uint8Array(buff)
-        const meta = imageMeta(uint8arr)
-        if (meta.width == null) throw new Error(`❌ size.width is null`)
-        if (meta.height == null) throw new Error(`❌ size.height is null`)
-        const hash = hashArrayBuffer(uint8arr)
-        console.log(`[🏞️]`, { ...meta, hash })
-
-        const dir = dirname(absPath)
-        mkdirSync(dir, { recursive: true })
-        writeFileSync(absPath, uint8arr)
-
-        // create the image
-        const imgL = this.db.media_images.create({
-            id: nanoid(),
+        // image metadata
+        const imgCreationOpts: ImageCreationOpts = {
             stepID: this.step.id,
             promptID: this.id,
             promptNodeID: promptNodeID,
-            height: meta.height,
-            width: meta.width,
-            hash: hash,
-            fileSize: uint8arr.byteLength,
-            orientation: meta.orientation,
-            type: meta.type,
-            path: `outputs/${outputRelPath}`,
             comfyUIInfos: {
                 comfyImageInfo: comfyImageInfo,
                 comfyHostHttpURL: this.st.getServerHostHTTP(),
             },
-        })
+        }
+
+        // target path on disk
+        const sf = this.saveFormat
+        const outputRelPath = asRelativePath(
+            sf?.prefix
+                ? join('outputs', sf.prefix, comfyImageInfo.filename)
+                : join('outputs', comfyImageInfo.subfolder, comfyImageInfo.filename),
+        )
+        const absPath = this.st.resolve(this.st.rootPath, outputRelPath)
+        const dir = dirname(absPath)
+        mkdirSync(dir, { recursive: true })
+
+        // ref
+        let imgL
+
+        // RE-ENCODE (COMPRESSED)
+        if (sf && sf.format !== 'raw') {
+            const canvas = document.createElement('canvas')
+            let ctx = canvas.getContext('2d')
+            const imgHtml = await createHTMLImage_fromURL(imgUrl)
+            const width = imgHtml.width
+            const height = imgHtml.height
+            // resize the canvas accordingly
+            canvas.width = width
+            canvas.height = height
+            // paste html image onto your canvas
+            ctx!.drawImage(imgHtml, 0, 0, width, height)
+            let dataUrl = canvas.toDataURL(sf.format, sf.quality)
+            const prefixToSlice = `data:${sf.format};base64,`
+            if (!dataUrl.startsWith(prefixToSlice))
+                throw new Error(`❌ dataUrl doesn't start with the expected "${prefixToSlice}"`)
+            let base64Data = dataUrl.slice(prefixToSlice.length)
+            // non-integrated with CushyStudio way of saving an image
+            mkdirSync('outputs/_b64', { recursive: true })
+            const extension = sf.format.split('/')[1]
+            // const relPath = `outputs/_b64/output-${comfyImageInfo.filename}.${extension}` as RelativePath
+            // toastInfo(relPath)
+            writeFileSync(outputRelPath, base64Data, 'base64')
+            imgL = createMediaImage_fromPath(this.st, outputRelPath, imgCreationOpts)
+        }
+        // SAVE RAW ------------------------------------------------------------------------------------------
+        else {
+            const response = await fetch(imgUrl, { headers: { 'Content-Type': 'image/png' }, method: 'GET' })
+            const buff = await response.arrayBuffer()
+            const uint8arr = new Uint8Array(buff)
+            writeFileSync(absPath, uint8arr)
+            imgL = _createMediaImage_fromLocalyAvailableImage(this.st, outputRelPath, buff, imgCreationOpts)
+        }
 
         if (this.step.runtime && promptMeta.storeAs) {
             this.step.runtime.Store.getImageStore(promptMeta.storeAs).set(imgL)

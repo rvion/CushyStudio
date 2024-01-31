@@ -27,8 +27,17 @@ import { InvalidPromptError } from 'src/back/RuntimeError'
 import { LiveRefOpt } from 'src/db/LiveRefOpt'
 import { existsSync, mkdirSync, writeFileSync } from 'fs'
 
-export type RunMode = 'fake' | 'real'
+export type ProgressReport = {
+    percent: number
+    isDone: boolean
+    countDone: number
+    countTotal: number
+}
 
+export type PromptSettings = {
+    saveFormat?: ImageSaveFormat
+    idMode?: IDNaminScheemeInPromptSentToComfyUI
+}
 /**
  * ComfyWorkflowL
  * - holds the nodes
@@ -427,13 +436,13 @@ export class ComfyWorkflowL {
         return this.stepRef.item
     }
 
-    sendPromptAndWaitUntilDone = async (p?: { idMode?: IDNaminScheemeInPromptSentToComfyUI }) => {
+    sendPromptAndWaitUntilDone = async (p: PromptSettings = {}) => {
         const prompt = await this.sendPrompt(p)
         await prompt.finished
         return prompt
     }
 
-    sendPrompt = async (p: { idMode?: IDNaminScheemeInPromptSentToComfyUI } = {}): Promise<ComfyPromptL> => {
+    sendPrompt = async (p: PromptSettings = {}): Promise<ComfyPromptL> => {
         const step = this.step
         const liveGraph = this
         const currentJSON = deepCopyNaive(liveGraph.json_forPrompt(p.idMode ?? 'use_stringified_numbers_only'))
@@ -488,15 +497,13 @@ export class ComfyWorkflowL {
                 executed: 0,
                 graphID: graph.id,
                 stepID: bang(step).id, // 🔴
+                // quality: p.saveFormat?.quality,
+                // format: p.saveFormat?.format,
             })
+
+            // 🔶 only live while app is running
+            prompt.saveFormat = p.saveFormat
             return prompt
         }
     }
-}
-
-export type ProgressReport = {
-    percent: number
-    isDone: boolean
-    countDone: number
-    countTotal: number
 }
