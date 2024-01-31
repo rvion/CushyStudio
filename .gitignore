@@ -78,3 +78,4 @@ release/main.js
 
 .env
 node-*.tar.gz
+*.sqbpro
