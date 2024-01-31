@@ -318,7 +318,7 @@ export class Runtime<FIELDS extends WidgetDict = any> {
                 return { type: 'error', error: 'action not found' }
             }
             await executable.run(this, formResult, p.imageToStartFrom)
-            console.log(`🔴 after: size=${this.workflow.nodes.length}`)
+            // console.log(`🔴 after: size=${this.workflow.nodes.length}`)
             console.log('[✅] RUN SUCCESS')
             const duration = Date.now() - start
             return { type: 'success' }
