@@ -78,7 +78,7 @@ export class TreeFile implements ITreeEntry {
     children = (): ITreeElement<CushyAppID>[] => {
         // if (!this.file.hasBeenLoadedAtLeastOnce) return []
         if (this.file == null) { console.log(`[🔴] TreeFile (${this.path}): FILE is null`); return [] } // prettier-ignore
-        if (this.script == null) { console.log(`[🔴] TreeFile (${this.path}): SCRIPT is null`); return [] } // prettier-ignore
+        if (this.script == null) { /* console.log(`[🔴] TreeFile (${this.path}): SCRIPT is null`); */ return [] } // prettier-ignore
 
         const apps = this.script.apps
         if (apps.length === 0) {

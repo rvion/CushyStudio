@@ -39,8 +39,8 @@ export class TreeAllDrafts implements ITreeEntry {
     onPrimaryAction = (n: TreeNode) => n.toggle()
     children = (): ITreeElement<any>[] => {
         const vh = this.st.virtualDraftHierarchy
-        console.log( `[👙] AAAA`, vh.items.map((i) => i.virtualFolder) ) // prettier-ignore
-        console.log(`[👙] AAAA`, vh.getTopLevelFolders())
+        // console.log( `[👙] AAAA`, vh.items.map((i) => i.virtualFolder) ) // prettier-ignore
+        // console.log(`[👙] AAAA`, vh.getTopLevelFolders())
         return [
             ...vh.getTopLevelFolders().map(
                 (folderPath): ITreeElement<VirtualFolder> => ({

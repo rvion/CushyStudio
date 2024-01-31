@@ -213,23 +213,9 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
         : `${clsX} __${widget.type} _WidgetWithLabelUI ${levelClass} flex flex-row ${labelGap} ${isCollapsible ? 'items-baseline' : 'items-center'}` // prettier-ignore
 
     if (widgetUI == null) className += ' w-full'
-    if (isVertical && /*WIDGET*/ true) {
+    if (isVertical) {
         widgetUI = <div tw='w-full'>{widgetUI}</div>
-        // return (
-        //     <fieldset className={className} key={rootKey}>
-        //         <legend>{LABEL}</legend>
-        //         {WIDGET}
-        //     </fieldset>
-        // )
     }
-    // if (p.labelPos === 'end') {
-    //     return (
-    //         <div tw='FIELD [padding-left:0.3rem]' className={className} key={rootKey}>
-    //             {WIDGET}
-    //             {LABEL}
-    //         </div>
-    //     )
-    // } else {
     return (
         <AnimatedSizeUI>
             <div tw={[isVertical ? '[padding-left:0.3rem] FIELD' : 'FIELDSimple']} className={className} key={rootKey}>
