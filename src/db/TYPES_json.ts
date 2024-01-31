@@ -9,8 +9,8 @@ import type { SqlColDef } from './_getAllColumnsForTable'
 
 import type { Status } from 'src/back/Status'
 import type { ComfyNodeID, ComfyNodeMetadata } from 'src/types/ComfyNodeID'
-import { ImageInfos_ComfyGenerated } from 'src/models/ImageInfos_ComfyGenerated'
-import { Widget_group_serial } from 'src/controls/widgets/group/WidgetGroup'
+import type { ImageInfos_ComfyGenerated } from 'src/models/ImageInfos_ComfyGenerated'
+import type { Widget_group_serial } from 'src/controls/widgets/group/WidgetGroup'
 
 export type StatusT = keyof typeof Status
 

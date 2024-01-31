@@ -95,6 +95,7 @@ export const _codegenORM = (store: {
                 if (col.name === 'status') return `T.StatusT`
                 // by types
                 if (col.type === 'INT') return 'number'
+                if (col.type === 'float') return 'number'
                 if (col.type === 'INTEGER') return 'number'
                 if (col.type === 'TEXT') return 'string'
                 if (col.type === 'string') return 'string'
@@ -108,6 +109,7 @@ export const _codegenORM = (store: {
                 // by types
                 if (col.type === 'INT') return 'Type.Number()'
                 if (col.type === 'INTEGER') return 'Type.Number()'
+                if (col.type === 'float') return 'Type.Number()'
                 if (col.type === 'TEXT') return 'Type.String()'
                 if (col.type === 'string') return 'Type.String()'
                 if (col.type === 'json') return `T.${jsTableName}_${col.name}_Schema`
