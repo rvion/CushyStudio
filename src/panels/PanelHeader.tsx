@@ -9,7 +9,7 @@ export const PanelHeaderUI = observer(function PanelHeaderUI_(p: { children: Rea
                     <span className='material-symbols-outlined'>settings</span>
                     Options
                 </div>
-                {p.children}
+                <div tw='min-w-96'>{p.children}</div>
             </RevealUI>
         </div>
     )

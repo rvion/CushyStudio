@@ -1,11 +1,11 @@
 import { observer } from 'mobx-react-lite'
+import { OutputPreviewWrapperUI } from 'src/outputs/OutputPreviewWrapperUI'
+import { InputNumberUI } from 'src/rsuite/InputNumberUI'
 import { Button, Input, Slider, Toggle } from 'src/rsuite/shims'
 import { parseFloatNoRoundingErr } from 'src/utils/misc/parseFloatNoRoundingErr'
 import { useSt } from '../state/stateContext'
 import { ImageUI } from '../widgets/galleries/ImageUI'
-import { OutputPreviewWrapperUI } from 'src/outputs/OutputPreviewWrapperUI'
-import { RevealUI } from 'src/rsuite/reveal/RevealUI'
-import { InputNumberUI } from 'src/rsuite/InputNumberUI'
+import { PanelHeaderUI } from './PanelHeader'
 
 export const Panel_Gallery = observer(function VerticalGalleryUI_(p: {}) {
     const st = useSt()
@@ -14,15 +14,9 @@ export const Panel_Gallery = observer(function VerticalGalleryUI_(p: {}) {
             className='flex flex-col bg-base-100 h-full'
             style={{ background: st.configFile.value.galleryBgColor }}
         >
-            <div className='cushy-panel-header'>
-                <RevealUI>
-                    <div tw='btn btn-sm'>
-                        <span className='material-symbols-outlined'>settings</span>
-                        Options
-                    </div>
-                    <GalleryControlsUI />
-                </RevealUI>
-            </div>
+            <PanelHeaderUI>
+                <GalleryControlsUI />
+            </PanelHeaderUI>
 
             <div className='flex flex-wrap overflow-auto'>
                 {/* <LatentPreviewUI /> */}

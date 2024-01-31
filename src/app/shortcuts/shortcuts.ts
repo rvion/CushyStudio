@@ -75,6 +75,8 @@ export const shortcutsDef: Shortcut<STATE>[] = [
         st.tree1View.resetCaretPos()
         st.tree2View.resetCaretPos()
         st.db.tree_entries.updateAll({ isExpanded: null })
+        const at = st.tree2View.revealAndFocusAtPath(['built-in'])
+        at?.open()
     }),
     simpleValidInInput(['mod+2'], (st) => focusTree(st, st.tree2)),
     // --------------------------

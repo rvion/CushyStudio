@@ -67,7 +67,7 @@ export const run_refiners_fromImage = (
         run.add_previewImage(finalImage)
     }
     if (faces) {
-        const facePrompt = faces.prompt ?? 'perfect face, masterpiece, hightly detailed, sharp details'
+        const facePrompt = faces.prompt || 'perfect face, beautiful, masterpiece, hightly detailed, sharp details'
         const x = graph.FaceDetailer({
             image: graph.ImpactImageBatchToImageList({ image: finalImage }),
             bbox_detector: (t) => t.UltralyticsDetectorProvider({ model_name: faces.detector }),
@@ -80,7 +80,7 @@ export const run_refiners_fromImage = (
             sampler_name: 'euler',
             scheduler: 'sgm_uniform',
             positive: graph.CLIPTextEncode({ clip: run.AUTO, text: facePrompt }),
-            negative: run.AUTO,
+            negative: graph.CLIPTextEncode({ clip: run.AUTO, text: 'bad face, bad anatomy, bad details' }),
             sam_detection_hint: 'center-1', // ❓
             sam_mask_hint_use_negative: 'False',
             wildcard: '',
@@ -93,7 +93,7 @@ export const run_refiners_fromImage = (
         image = x.outputs.image
     }
     if (hands) {
-        const handsPrompt = hands.prompt ?? 'perfect hand, perfect anatomy, hightly detailed, sharp details'
+        const handsPrompt = hands.prompt || 'hand, perfect fingers, perfect anatomy, hightly detailed, sharp details'
         const x = graph.FaceDetailer({
             image: graph.ImpactImageBatchToImageList({ image: finalImage }),
             bbox_detector: (t) => t.UltralyticsDetectorProvider({ model_name: hands.detector }),
@@ -106,7 +106,7 @@ export const run_refiners_fromImage = (
             sampler_name: 'euler',
             scheduler: 'sgm_uniform',
             positive: graph.CLIPTextEncode({ clip: run.AUTO, text: handsPrompt }),
-            negative: run.AUTO,
+            negative: graph.CLIPTextEncode({ clip: run.AUTO, text: 'bad hand, bad anatomy, bad details' }),
             sam_detection_hint: 'center-1', // ❓
             sam_mask_hint_use_negative: 'False',
             wildcard: '',
@@ -117,6 +117,11 @@ export const run_refiners_fromImage = (
         // run.add_saveImage(x.outputs.image)
         image = x.outputs.image
     }
+    // if (eyes) {
+    //     const eyesPrompt = eyes.prompt || 'eyes, perfect eyes, perfect anatomy, hightly detailed, sharp details'
+    //     const x = graph.FaceDetailer({
+    // }
+
     // run.add_saveImage(x.outputs.cropped_refined)
     // run.add_saveImage(x.outputs.cropped_enhanced_alpha)
     // run.add_PreviewMask(x._MASK)

@@ -17,14 +17,28 @@ export const TreeUI = observer(function TreeEditorUI_(p: {
 }) {
     const st = useSt()
     const tv = p.treeView
+
+    const FoldBtn = (
+        <div className='btn btn-square btn-ghost btn-xs'>
+            <span className='material-symbols-outlined'>
+                {tv.isFolded ? (
+                    <span className='material-symbols-outlined'>keyboard_arrow_right</span>
+                ) : (
+                    <span className='material-symbols-outlined'>keyboard_arrow_down</span>
+                )}
+            </span>
+        </div>
+    )
+
     return (
         <TreeViewCtx.Provider value={tv}>
             <div tw='_TreeUI flex flex-col virtualBorder' className={p.className}>
-                <div tw='flex items-center gap-1 bg-primary-2'>
-                    {p.title && <div tw='text-sm'>{p.title}</div>}
-
-                    <div className='flex-1'></div>
-                    {p.shortcut && <ComboUI size='xs' combo={p.shortcut} />}
+                <div tw='flex items-center gap-1 bg-primary text-primary-content'>
+                    <div className='flex flex-1 gap-1 items-center' onClick={() => (tv.isFolded = true)}>
+                        {FoldBtn}
+                        {p.title && <div tw='text-sm'>{p.title}</div>}
+                    </div>
+                    {p.shortcut && <ComboUI primary size='xs' combo={p.shortcut} />}
                     <RevealUI trigger={'hover'}>
                         <div
                             tw='btn btn-square btn-ghost btn-xs shrink-0'
@@ -36,6 +50,7 @@ export const TreeUI = observer(function TreeEditorUI_(p: {
                             collapse tree: <ComboUI combo={shorcutKeys.collapseAllTree} />
                         </div>
                     </RevealUI>
+                    {/* {FoldBtn} */}
                 </div>
                 <div tw='flex-1 overflow-auto' id={tv.tree.KeyboardNavigableDomNodeID} onKeyDown={tv.onKeyDown} tabIndex={-1}>
                     {tv.nodes.map((n) => (

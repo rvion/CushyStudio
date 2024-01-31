@@ -9,6 +9,7 @@ import { nanoid } from 'nanoid'
 
 export class TreeView {
     id = nanoid(4)
+    isFolded: boolean = false
     constructor(
         //
         public tree: Tree,
@@ -31,26 +32,30 @@ export class TreeView {
         return this.tree.topLevelNodes
     }
 
-    revealAndFocusAtPath = (path_v2: string[]) => {
+    revealAndFocusAtPath = (path_v2: string[]): Maybe<TreeNode> => {
         const [k, ...rest] = path_v2
 
         // root
         let at: TreeNode | undefined = this.tree.topLevelNodes.find((i) => i.elem.key === k)
-        if (at == null) return console.log(`[❌] no top level node matching first key "${k}"`)
+        if (at == null) {
+            console.log(`[❌] no top level node matching first key "${k}"`)
+            return
+        }
         at.open()
 
         for (const x of rest) {
             // childs
             const children: TreeNode[] = at.children
             at = children.find((i) => i.elem.key === x)
-            if (at == null)
-                return console.log(
-                    `[❌] no child node matching key "${x}" (available: ${children.map((i) => i.elem.key).join(', ')})`,
-                )
+            if (at == null) {
+                console.log(`[❌] no child node matching key "${x}" (available: ${children.map((i) => i.elem.key).join(', ')})`)
+                return
+            }
             at.open()
         }
 
         this.setAt(at, { block: 'nearest' })
+        return at
     }
 
     // cursor

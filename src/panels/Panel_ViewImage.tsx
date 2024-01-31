@@ -81,7 +81,7 @@ export const ImageActionBarUI = observer(function ImageActionBarUI_(p: { img?: M
     const st = useSt()
     const img = p.img
     return (
-        <div tw='flex items-center gap-2 bg-base-200 flex-wrap'>
+        <div tw='flex items-center gap-1 flex-wrap'>
             {/* <FieldAndLabelUI label='Rating'> */}
             <Rate
                 name={img?.id ?? 'latent'}
@@ -94,7 +94,7 @@ export const ImageActionBarUI = observer(function ImageActionBarUI_(p: { img?: M
                 }}
             />
             <RevealUI>
-                <div>
+                <div tw='flex items-center'>
                     <span className='material-symbols-outlined'>info</span>
                     infos
                 </div>
@@ -107,18 +107,12 @@ export const ImageActionBarUI = observer(function ImageActionBarUI_(p: { img?: M
                     <JsonViewUI value={img?.ComfyNode ?? undefined}></JsonViewUI>
                 </div>
             </RevealUI>
-            <div
-                tw='btn btn-sm'
-                onClick={() => {
-                    if (img == null) return
-                    img.openInCanvasEditor()
-                }}
-            >
+            <div tw='btn btn-sm btn-narrow' onClick={() => img?.openInCanvasEditor()}>
                 <span className='material-symbols-outlined'>edit</span>
                 Canvas
             </div>
             <div
-                tw='btn btn-sm'
+                tw='btn btn-sm btn-narrow'
                 onClick={() => {
                     if (img == null) return
                     img.openInImageEditor()
@@ -128,7 +122,7 @@ export const ImageActionBarUI = observer(function ImageActionBarUI_(p: { img?: M
                 Paint
             </div>
             <div
-                tw='btn btn-sm'
+                tw='btn btn-sm btn-narrow'
                 onClick={() => {
                     if (img == null) return
                     st.db.media_images.delete(img.id)
@@ -142,11 +136,12 @@ export const ImageActionBarUI = observer(function ImageActionBarUI_(p: { img?: M
             {img ? <ImageDropdownUI img={img} /> : null}
             {img ? (
                 <>
-                    <div tw='virtualBorder p-1'>{`${img.data.width ?? '?'} x ${img?.data.height ?? '?'}`}</div>
-                    {img.data.fileSize && <div tw='virtualBorder p-1'>{`${formatSize(img.data.fileSize)}`}</div>}
+                    <div tw='virtualBorder p-1 text-sm'>{`${img.data.width ?? '?'} x ${img?.data.height ?? '?'}`}</div>
+                    {img.data.fileSize && <div tw='virtualBorder p-1 text-sm'>{`${formatSize(img.data.fileSize)}`}</div>}
                     <div tw='virtualBorder p-1'>{`${img.data.hash?.slice(0, 5)}...`}</div>
                 </>
             ) : null}
+            {img?.ComfyNodeMetadta?.tag && <div tw='badge badge-primary'>{img?.ComfyNodeMetadta?.tag}</div>}
         </div>
     )
 })

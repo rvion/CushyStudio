@@ -1,5 +1,3 @@
-import { run_sampler } from '../_prefabs/prefab_sampler'
-
 app({
     // metadata for publishing
     metadata: {
