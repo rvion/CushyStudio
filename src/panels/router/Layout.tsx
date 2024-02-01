@@ -31,7 +31,6 @@ const LEFT_PANE_TABSET_ID: LEFT_PANE_TABSET_T = 'LEFT_PANE_TABSET'
 type RIGHT_PANE_TABSET_T = 'RIGHT_PANE_TABSET'
 const RIGHT_PANE_TABSET_ID: RIGHT_PANE_TABSET_T = 'RIGHT_PANE_TABSET'
 
-export const exhaust = (x: never) => x
 const memoryRefByUniqueID = new WeakMap<object, string>()
 export const uniqueIDByMemoryRef = (x: object): string => {
     let id = memoryRefByUniqueID.get(x)

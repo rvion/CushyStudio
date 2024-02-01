@@ -7,6 +7,8 @@ import { useMemo } from 'react'
 import { Input, Joined, Addon } from 'src/rsuite/shims'
 import { getColorForInputNameInComfy, getColorForOutputNameInCushy } from 'src/core/Colors'
 import { useSt } from 'src/state/stateContext'
+import { searchMatches } from 'src/utils/misc/searchMatches'
+import { hash } from 'ohash'
 
 class ComfyNodeExplorerState {
     // globalSearch = ''
@@ -24,9 +26,13 @@ class ComfyNodeExplorerState {
         const OUT: [string, ComfyNodeSchema][] = []
         for (const [_nameInCushy, nodeSchema] of this.nodeEntries) {
             const nameInCushy = _nameInCushy.toLowerCase()
-            if (this.name && !nameInCushy.includes(this.name)) continue
-            if (this.input && !nodeSchema.inputs.some((x) => nameInCushy.includes(this.input))) continue
-            if (this.output && !nodeSchema.outputs.some((x) => x.nameInCushy.includes(this.output))) continue
+            const nameInComfy = nodeSchema.nameInComfy.toLowerCase()
+            if (this.name && !(nameInCushy.includes(this.name) || nameInComfy.includes(this.name))) continue
+            if (this.input) {
+                const matches = nodeSchema.inputs.some((x) => searchMatches(x.nameInComfy, this.input))
+                if (!matches) continue
+            }
+            if (this.output && !nodeSchema.outputs.some((x) => searchMatches(x.nameInComfy, this.output))) continue
             if (this.category && !nodeSchema.category.includes(this.category)) continue
             OUT.push([nameInCushy, nodeSchema])
         }
@@ -39,8 +45,13 @@ export const Panel_ComfyNodeExplorer = observer(function ComfyNodeExplorerUI_(p:
     const search = useMemo(() => new ComfyNodeExplorerState(pj), [])
 
     return (
-        <div className='flex flex-col'>
-            <table cellPadding={0} cellSpacing={0} className='table table-zebra-zebra table-zebra table-sm'>
+        <div className='flex flex-col _MD'>
+            <table
+                //
+                cellPadding={0}
+                cellSpacing={0}
+                className='table table-zebra-zebra table-zebra table-sm'
+            >
                 <thead tw='sticky top-0 z-40'>
                     <tr>
                         <th>
@@ -64,9 +75,12 @@ export const Panel_ComfyNodeExplorer = observer(function ComfyNodeExplorerUI_(p:
                 <tbody>
                     {search.matches.map(([name, node]) => {
                         return (
-                            <tr key={name}>
-                                <td tw='[max-width:10rem] whitespace-pre-wrap'>{name}</td>
-                                <td tw='[max-width:10rem] whitespace-pre-wrap'>
+                            <tr key={name + hash(node)}>
+                                <td tw='whitespace-pre-wrap'>
+                                    {node.nameInComfy}
+                                    {/* {name} */}
+                                </td>
+                                <td tw='whitespace-pre-wrap'>
                                     <div tw='flex flex-wrap gap-0.5'>
                                         {node.inputs.map((i) => (
                                             <span
