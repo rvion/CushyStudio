@@ -2,15 +2,16 @@ import type { STATE } from 'src/state/state'
 import type { VirtualFolder } from '../../VirtualHierarchy'
 import type { ITreeElement, ITreeEntry } from '../TreeEntry'
 import type { TreeNode } from '../xxx/TreeNode'
+import type { CushyAppL } from 'src/models/CushyApp'
 
 import { basename } from 'pathe'
 import { TreeApp } from './TreeApp'
 
-export class TreeAppFolder implements ITreeEntry<VirtualFolder> {
+export class TreeAppFolder implements ITreeEntry<VirtualFolder<CushyAppL>> {
     constructor(
         //
         public st: STATE,
-        public vf: VirtualFolder,
+        public vf: VirtualFolder<CushyAppL>,
     ) {}
 
     get name() {
@@ -22,17 +23,20 @@ export class TreeAppFolder implements ITreeEntry<VirtualFolder> {
     onPrimaryAction = (n: TreeNode) => n.toggle()
     children = (): ITreeElement<any>[] => {
         const vh = this.st.virtualAppHierarchy
-        return [
-            ...vh.getSubFolders(this.vf.folderPath).map(
-                (folderPath): ITreeElement<VirtualFolder> => ({
+        const subFolders = vh
+            .getSubFolders(this.vf.folderPath)
+            .sort()
+            .map(
+                (folderPath): ITreeElement<VirtualFolder<CushyAppL>> => ({
                     ctor: TreeAppFolder,
                     key: folderPath,
                     props: { folderPath, vh },
                 }),
-            ),
-            ...vh
-                .getItemsInFolder(this.vf.folderPath)
-                .map((app): ITreeElement<CushyAppID> => ({ ctor: TreeApp, key: app.id, props: app.id })),
-        ]
+            )
+        const subFiles = vh
+            .getItemsInFolder(this.vf.folderPath)
+            .sort((a, b) => a.name.localeCompare(b.name))
+            .map((app): ITreeElement<CushyAppID> => ({ ctor: TreeApp, key: app.id, props: app.id }))
+        return [...subFolders, ...subFiles]
     }
 }

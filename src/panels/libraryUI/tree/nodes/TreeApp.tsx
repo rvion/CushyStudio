@@ -40,16 +40,20 @@ export class TreeApp implements ITreeEntry {
         const app = this.app
         if (app == null) return []
         const vh = app.subFolderStructure
-        return [
-            ...vh.getTopLevelFolders().map(
-                (folderPath): ITreeElement<VirtualFolder> => ({
+        const subFolders = vh
+            .getTopLevelFolders()
+            .sort()
+            .map(
+                (folderPath): ITreeElement<VirtualFolder<DraftL>> => ({
                     ctor: TreeDraftFolder,
                     key: folderPath,
                     props: { vh, folderPath },
                 }),
-            ),
-            ...vh.topLevelItems.map((draft): ITreeElement<DraftL> => ({ ctor: TreeDraft, key: draft.id, props: draft })),
-        ]
+            )
+        const subFiles = vh.topLevelItems
+            .sort((a, b) => a.name.localeCompare(b.name))
+            .map((draft): ITreeElement<DraftL> => ({ ctor: TreeDraft, key: draft.id, props: draft }))
+        return [...subFolders, ...subFiles]
     }
 
     extra = () => (

@@ -7,11 +7,11 @@ import type { VirtualFolder } from '../../VirtualHierarchy'
 import { basename } from 'pathe'
 import { TreeDraft } from './TreeDraft'
 
-export class TreeDraftFolder implements ITreeEntry<VirtualFolder> {
+export class TreeDraftFolder implements ITreeEntry<VirtualFolder<DraftL>> {
     constructor(
         //
         public st: STATE,
-        public vf: VirtualFolder,
+        public vf: VirtualFolder<DraftL>,
     ) {}
 
     get name() {
@@ -22,21 +22,26 @@ export class TreeDraftFolder implements ITreeEntry<VirtualFolder> {
     onPrimaryAction = (n: TreeNode) => n.toggle()
     children = (): ITreeElement<any>[] => {
         const vh = this.vf.vh
-        return [
-            ...vh.getSubFolders(this.vf.folderPath).map(
-                (folderPath): ITreeElement<VirtualFolder> => ({
+        const subFolders = vh
+            .getSubFolders(this.vf.folderPath)
+            .sort()
+            .map(
+                (folderPath): ITreeElement<VirtualFolder<DraftL>> => ({
                     ctor: TreeDraftFolder,
                     key: folderPath,
                     props: { vh: vh, folderPath },
                 }),
-            ),
-            ...vh.getItemsInFolder(this.vf.folderPath).map(
+            )
+        const subFiles = vh
+            .getItemsInFolder(this.vf.folderPath)
+            .sort((a, b) => a.name.localeCompare(b.name))
+            .map(
                 (draft): ITreeElement<DraftL> => ({
                     ctor: TreeDraft,
                     key: draft.id,
                     props: draft,
                 }),
-            ),
-        ]
+            )
+        return [...subFolders, ...subFiles]
     }
 }

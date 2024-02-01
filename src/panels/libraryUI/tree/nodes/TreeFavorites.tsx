@@ -8,6 +8,7 @@ import { TreeAppFolder } from './TreeAppFolders'
 import { TreeDraft } from './TreeDraft'
 import { TreeDraftFolder } from './TreeDraftFolders'
 import { VirtualFolder } from '../../VirtualHierarchy'
+import { CushyAppL } from 'src/models/CushyApp'
 
 export class TreeFavoriteApps implements ITreeEntry {
     isFolder = true
@@ -39,24 +40,26 @@ export class TreeAllDrafts implements ITreeEntry {
     onPrimaryAction = (n: TreeNode) => n.toggle()
     children = (): ITreeElement<any>[] => {
         const vh = this.st.virtualDraftHierarchy
-        // console.log( `[👙] AAAA`, vh.items.map((i) => i.virtualFolder) ) // prettier-ignore
-        // console.log(`[👙] AAAA`, vh.getTopLevelFolders())
-        return [
-            ...vh.getTopLevelFolders().map(
-                (folderPath): ITreeElement<VirtualFolder> => ({
+        const subFolders = vh
+            .getTopLevelFolders()
+            .sort()
+            .map(
+                (folderPath): ITreeElement<VirtualFolder<DraftL>> => ({
                     ctor: TreeDraftFolder,
                     key: folderPath,
                     props: { folderPath, vh },
                 }),
-            ),
-            ...vh.topLevelItems.map(
+            )
+        const subFiles = vh.topLevelItems
+            .sort((a, b) => a.name.localeCompare(b.name))
+            .map(
                 (draft): ITreeElement<DraftL> => ({
                     ctor: TreeDraft,
                     key: draft.id,
                     props: draft,
                 }),
-            ),
-        ]
+            )
+        return [...subFolders, ...subFiles]
     }
 }
 
@@ -70,7 +73,7 @@ export class TreeAllApps implements ITreeEntry {
         const vh = this.st.virtualAppHierarchy
         return [
             ...vh.getTopLevelFolders().map(
-                (folderPath): ITreeElement<VirtualFolder> => ({
+                (folderPath): ITreeElement<VirtualFolder<CushyAppL>> => ({
                     ctor: TreeAppFolder,
                     key: folderPath,
                     props: { folderPath, vh },

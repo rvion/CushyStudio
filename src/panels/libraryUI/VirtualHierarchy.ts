@@ -1,11 +1,15 @@
-export type VirtualFolder = {
+import { makeAutoObservable } from 'mobx'
+
+export type VirtualFolder<T extends { virtualFolder: string }> = {
     folderPath: string
     // app: CushyAppL
-    vh: VirtualHierarchy<any>
+    vh: VirtualHierarchy<T>
 }
 
 export class VirtualHierarchy<T extends { virtualFolder: string }> {
-    constructor(public getItems: () => T[]) {}
+    constructor(public getItems: () => T[]) {
+        makeAutoObservable(this)
+    }
 
     get items(): T[] {
         return this.getItems()
