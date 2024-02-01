@@ -131,6 +131,15 @@ export class CushyAppL {
         throw new Error([title, howToFix].join('\n'))
     }
 
+    revealInFileExplorer = () => {
+        const relPath = this.relPath
+        if (relPath == null) return
+        const treePath = relPath.split('/')
+        treePath.shift()
+        treePath.push(this.id)
+        this.st.tree2View.revealAndFocusAtPath(treePath)
+    }
+
     publish = async () => {
         if (this.isPublishing) return
         this.isPublishing = true

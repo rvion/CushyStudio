@@ -38,6 +38,19 @@ export class DraftL {
         const newDraft = this.clone()
         newDraft.openOrFocusTab()
     }
+
+    revealInFileExplorer = () => {
+        const app = this.app
+        const relPath = app.relPath
+        if (relPath == null) return
+        const treePath = relPath.split('/')
+        treePath.shift()
+        treePath.push(app.id)
+        if (this.virtualFolder) treePath.push(...this.virtualFolder.split('/'))
+        treePath.push(this.id)
+        this.st.tree2View.revealAndFocusAtPath(treePath)
+    }
+
     /** if name is 'portrait/SMILING' => 'portrait' */
     get virtualFolder(): string {
         const pieces = this.name.split('/')

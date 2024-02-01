@@ -443,29 +443,8 @@ export class STATE {
             onSelectionChange: (node?: TreeNode) => {
                 if (node == null) return
                 console.log(`[🌲] TreeView 1 selection changed to:`, node.path_v2)
-                if (node.data instanceof TreeApp) {
-                    const app = node.data.app
-                    if (app == null) return
-                    const relPath = app.relPath
-                    if (relPath == null) return
-                    const treePath = relPath.split('/')
-                    treePath.shift()
-                    treePath.push(app.id)
-                    this.tree2View.revealAndFocusAtPath(treePath)
-                }
-
-                if (node.data instanceof TreeDraft) {
-                    const draft = node.data.draft
-                    const app = draft.app
-                    const relPath = app.relPath
-                    if (relPath == null) return
-                    const treePath = relPath.split('/')
-                    treePath.shift()
-                    treePath.push(app.id)
-                    if (draft.virtualFolder) treePath.push(...draft.virtualFolder.split('/'))
-                    treePath.push(draft.id)
-                    this.tree2View.revealAndFocusAtPath(treePath)
-                }
+                if (node.data instanceof TreeApp) return node.data.app?.revealInFileExplorer()
+                if (node.data instanceof TreeDraft) return node.data.draft.revealInFileExplorer()
                 return
             },
         })
