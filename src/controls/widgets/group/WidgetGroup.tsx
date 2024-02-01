@@ -65,13 +65,14 @@ export class Widget_group<T extends { [key: string]: Widget }> implements IWidge
     /** the dict of all child widgets */
     values: { [k in keyof T]: T[k] } = {} as any // will be filled during constructor
     serial: Widget_group_serial<T>
-
+    // childKeys: (keyof T & string)[] = []
     enableGroup() {
         this.serial.active = true
         const prevValues_: { [K in keyof T]?: T[K]['$Serial'] } = this.serial.values_
         const _newValues: { [key: string]: Widget } = runWithGlobalForm(this.form, () => this.config.items?.()) ?? {}
 
         const childKeys = Object.keys(_newValues) as (keyof T & string)[]
+        // this.childKeys = childKeys
         for (const key of childKeys) {
             const newItem = _newValues[key]
             const prevValue_ = prevValues_[key]

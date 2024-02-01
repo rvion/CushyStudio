@@ -38,6 +38,7 @@ app({
                 ],
             },
         }),
+        //
         negative: form.prompt({
             startCollapsed: true,
             default: 'bad quality, blurry, low resolution, pixelated, noisy',
@@ -45,21 +46,13 @@ app({
         model: ui_model(),
         latent: ui_latent_v3(),
         sampler: ui_sampler(),
+        refine: ui_refiners(),
         highResFix: ui_highresfix({ activeByDefault: true }),
         upscale: ui_upscaleWithModel(),
-        controlnets: ui_cnet(),
-        recursiveImgToImg: ui_recursive(),
-        loop: form.groupOpt({
-            items: () => ({
-                batchCount: form.int({ default: 1 }),
-                delayBetween: form.int({ tooltip: 'in ms', default: 0 }),
-            }),
-        }),
         customSave: ui_customSave(),
         // startImage
         removeBG: ui_rembg_v1(),
 
-        refine: ui_refiners(),
         show3d: form.groupOpt({
             customNodesByNameInCushy: ['Zoe$7DepthMapPreprocessor'],
             items: () => {
@@ -74,6 +67,14 @@ app({
                     }),
                 }
             },
+        }),
+        controlnets: ui_cnet(),
+        recursiveImgToImg: ui_recursive(),
+        loop: form.groupOpt({
+            items: () => ({
+                batchCount: form.int({ default: 1 }),
+                delayBetween: form.int({ tooltip: 'in ms', default: 0 }),
+            }),
         }),
         testStuff: form.choices({
             appearance: 'tab',

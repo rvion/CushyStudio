@@ -122,7 +122,10 @@ export class LibraryFile {
     extractScriptFromFile = async (p?: { force?: boolean }): Promise<ScriptExtractionResult> => {
         // RACE CONDITIONS PREVENTION:
         // if we're alreay trying to extract => just return the current promise
-        if (this.currentScriptExtractionPromise) return this.currentScriptExtractionPromise
+        if (this.currentScriptExtractionPromise) {
+            console.log(`[🔴] currentScriptExtractionPromise already present`)
+            return this.currentScriptExtractionPromise
+        }
         const currentScriptExtractionPromise = new ManualPromise<ScriptExtractionResult>()
         this.currentScriptExtractionPromise = currentScriptExtractionPromise
 
@@ -131,17 +134,23 @@ export class LibraryFile {
         // the cached value
         if (!p?.force) {
             // if we have already attempted extraction once during this session, return it
-            if (this.lastSuccessfullExtractedScriptDuringSession)
+            if (this.lastSuccessfullExtractedScriptDuringSession) {
+                this.currentScriptExtractionPromise = null
                 return { type: 'cached', script: this.lastSuccessfullExtractedScriptDuringSession }
+            }
 
             // if we have already attempted extraction once in a previous session, return it
             const scriptFromDB = this.st.db.cushy_scripts.get(this.relPath)
-            if (scriptFromDB) return { type: 'cached', script: scriptFromDB }
+            if (scriptFromDB) {
+                this.currentScriptExtractionPromise = null
+                return { type: 'cached', script: scriptFromDB }
+            }
             console.log(`[🔴] SEEING ${this.relPath} FOR THE FIRST TIME`)
         }
 
         // try every strategy in order
         let script: Maybe<CushyScriptL> = null
+        console.log(`[🔴] extracting ${this.relPath}`)
         for (const strategy of this.strategies) {
             const res = await this.loadWithStrategy(strategy)
             if (res.type === 'SUCCESS') {

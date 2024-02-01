@@ -13,6 +13,9 @@ export const WidgetGroupUI = observer(function WidgetItemsUI_(p: {
 }) {
     const widget = p.widget
     const isTopLevel = widget.config.topLevel
+    // Alt
+    // | const groupKeys = widget.childKeys
+    // | const groupFields = groupKeys.map((k) => [k, widget.values[k]])
     const groupFields = Object.entries(widget.values)
     const isHorizontal = widget.config.layout === 'H'
     return (
