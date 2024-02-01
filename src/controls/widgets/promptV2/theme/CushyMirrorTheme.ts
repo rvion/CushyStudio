@@ -20,6 +20,7 @@ export const CushyMirrorTheme = createTheme({
         { tag: t.punctuation, color: 'red' },
         { tag: t.comment, color: '#787b8099' },
         { tag: t.variableName, color: '#0080ff' },
+        { tag: t.heading1, color: '#5c6166', class: 'bg-green-200' },
         { tag: [t.string, t.special(t.brace)], color: 'pink' },
         { tag: t.number, color: '#5c6166' },
         { tag: t.bool, color: '#5c6166' },

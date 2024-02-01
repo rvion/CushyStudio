@@ -12,6 +12,7 @@ let parserWithMetadata = parser.configure({
             Boolean: t.bool,
             // this needs to be red
             WeightedExpression: t.punctuation,
+            Permutations: t.heading1,
             LineComment: t.lineComment,
             '( )': t.paren,
         }),
@@ -21,6 +22,7 @@ let parserWithMetadata = parser.configure({
         foldNodeProp.add({
             Application: foldInside,
             WeightedExpression: foldInside,
+            Permutations: foldInside,
         }),
     ],
 })

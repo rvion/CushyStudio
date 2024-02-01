@@ -4,16 +4,14 @@ expression[@isGroup=Expression] {
   Identifier |
   Number |
   String |
+  Permutations |
   WeightedExpression
-  // Block |
-  // LabeledStatement { Identifier ":" statement } |
-  // ExpressionStatement { expression semi } |
-  // EmptyStatement { ";" }
 }
 
 @skip { space }
 
-WeightedExpression { "(" expression+ ")" }
+WeightedExpression { "(" expression+ (":" Number+)? ")" }
+Permutations { "{" expression+ "}" }
 
 @tokens {
   space { @whitespace+ }

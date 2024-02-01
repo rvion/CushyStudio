@@ -8,32 +8,36 @@ import { isObservableProp, makeAutoObservable } from 'mobx'
 import { useMemo } from 'react'
 import { parser } from './grammar/grammar.parser'
 import { mycustomlanguage } from './grammar/grammar.xxx'
+import { generatePromptCombinations } from './compiler/promptsplit'
 
 class CMPromptState {
     constructor(public widget: Widget_cmprompt) {
         makeAutoObservable(this)
     }
 
-    get text() {
-        return this.widget.serial.val ?? ''
+    // -------------------------
+    get text() { return this.widget.serial.val ?? '' } // prettier-ignore
+    set text(val: string) { this.widget.serial.val = val } // prettier-ignore
+    setText = (text: string) => {
+        console.log(`[👙] `, text)
+        this.text = text
+        console.log(`[👙] this.debug=`, this.debugView)
     }
 
-    set text(val: string) {
-        this.widget.serial.val = val
-    }
-
-    get foo(): Maybe<Tree> {
+    // -------------------------
+    get parsedTree(): Maybe<Tree> {
         console.log(`[👙]`, parser.parse(this.text))
         return parser.parse(this.text)
     }
 
-    get debug() {
-        if (this.foo === null) return null
+    // -------------------------
+    get debugView() {
+        if (this.parsedTree === null) return null
         console.log(`[👙] evaluating 🔶`)
         let OUT: string[] = []
         let self = this
         let depth = 0
-        this.foo!.iterate({
+        this.parsedTree!.iterate({
             leave(nodeType) {
                 depth--
             },
@@ -51,10 +55,9 @@ class CMPromptState {
         return OUT.join('\n')
     }
 
-    setText = (text: string) => {
-        console.log(`[👙] `, text)
-        this.text = text
-        console.log(`[👙] this.debug=`, this.debug)
+    // -------------------------
+    get compiled(): string[] {
+        return generatePromptCombinations(this.text!)
     }
 }
 
@@ -65,6 +68,7 @@ export const WidgetCMPromptUI = observer(function WidgetStringUI_(p: { widget: W
     const uist = useMemo(() => new CMPromptState(widget), [])
     return (
         <div tw='flex flex-col'>
+            editor:
             <CodeMirror
                 value={uist.text}
                 theme={CushyMirrorTheme}
@@ -76,7 +80,10 @@ export const WidgetCMPromptUI = observer(function WidgetStringUI_(p: { widget: W
                 //     state.text = text
                 // }}
             />
-            <pre>{uist.debug}</pre>
+            debug:
+            <pre tw='virtualBorder text-sm bg-base-200'>{uist.debugView}</pre>
+            output:
+            <pre tw='virtualBorder text-sm bg-base-200'>{uist.compiled.join('\n')}</pre>
         </div>
     )
 })

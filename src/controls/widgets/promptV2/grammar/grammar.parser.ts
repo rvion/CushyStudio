@@ -2,17 +2,17 @@
 import {LRParser} from "@lezer/lr"
 export const parser = LRParser.deserialize({
   version: 14,
-  states: "!QOVQPOOOVQPO'#CaOOQO'#Cf'#CfOOQO'#Cb'#CbQVQPOOOeQPO,58{OOQO-E6`-E6`OOQO1G.g1G.g",
-  stateData: "v~OXOS~OQQORQOSQOZPO~OQQORQOSQOZPO[VO~O",
-  goto: "rZPPPPP[bPPPlXQOPSTQSOQTPTUSTXROPST",
-  nodeNames: "⚠ File Identifier Number String WeightedExpression",
-  maxTerm: 12,
+  states: "#SOVQPOOOVQPO'#CaOVQPO'#CbOOQO'#Ch'#ChOOQO'#Cc'#CcQVQPOOOhQPO,58{OoQPO,58|OOQO-E6a-E6aOOQO1G.g1G.gOOQO1G.h1G.hOyQPO1G.hOOQO'#Cd'#CdO!OQPO7+$SOOQO-E6b-E6bOOQO<<Gn<<Gn",
+  stateData: "!W~OZOS~OQRORROSRO]PO_QO~O^XO~PVO`ZOaYO~PVOR[O~OR[Oa_O~O",
+  goto: "!S]PPPPP^^ftPPPz]ROPQTUVQTOQUPQVQVWTUVQ]ZR^]]SOPQTUV",
+  nodeNames: "⚠ File Identifier Number String Permutations WeightedExpression",
+  maxTerm: 17,
   nodeProps: [
-    ["group", -4,2,3,4,5,"Expression"]
+    ["group", -5,2,3,4,5,6,"Expression"]
   ],
   skippedNodes: [0],
-  repeatNodeCount: 1,
-  tokenData: "$[~RaX^!Wpq!Wrs!{xy#jyz#o!Q![#t!c!}#|#R#S#|#T#o#|#y#z!W$f$g!W#BY#BZ!W$IS$I_!W$I|$JO!W$JT$JU!W$KV$KW!W&FU&FV!W~!]YX~X^!Wpq!W#y#z!W$f$g!W#BY#BZ!W$IS$I_!W$I|$JO!W$JT$JU!W$KV$KW!W&FU&FV!W~#OTOr!{rs#_s;'S!{;'S;=`#d<%lO!{~#dOS~~#gP;=`<%l!{~#oOZ~~#tO[~~#yPR~!Q![#t~$RRQ~!c!}#|#R#S#|#T#o#|",
+  repeatNodeCount: 2,
+  tokenData: "$t~RdX^!apq!ars#Uxy#syz#x!Q![#}![!]$V!c!}$[#R#S$[#T#o$[#o#p$j#q#r$o#y#z!a$f$g!a#BY#BZ!a$IS$I_!a$I|$JO!a$JT$JU!a$KV$KW!a&FU&FV!a~!fYZ~X^!apq!a#y#z!a$f$g!a#BY#BZ!a$IS$I_!a$I|$JO!a$JT$JU!a$KV$KW!a&FU&FV!a~#XTOr#Urs#hs;'S#U;'S;=`#m<%lO#U~#mOS~~#pP;=`<%l#U~#xO_~~#}Oa~~$SPR~!Q![#}~$[O`~~$aRQ~!c!}$[#R#S$[#T#o$[~$oO]~~$tO^~",
   tokenizers: [0],
   topRules: {"File":[0,1]},
   tokenPrec: 0

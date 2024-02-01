@@ -4,4 +4,5 @@ export const
   Identifier = 2,
   Number = 3,
   String = 4,
-  WeightedExpression = 5
+  Permutations = 5,
+  WeightedExpression = 6
