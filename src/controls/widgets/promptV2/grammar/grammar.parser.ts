@@ -2,17 +2,17 @@
 import {LRParser} from "@lezer/lr"
 export const parser = LRParser.deserialize({
   version: 14,
-  states: "#SOVQPOOOVQPO'#CaOVQPO'#CbOOQO'#Ch'#ChOOQO'#Cc'#CcQVQPOOOhQPO,58{OoQPO,58|OOQO-E6a-E6aOOQO1G.g1G.gOOQO1G.h1G.hOyQPO1G.hOOQO'#Cd'#CdO!OQPO7+$SOOQO-E6b-E6bOOQO<<Gn<<Gn",
-  stateData: "!W~OZOS~OQRORROSRO]PO_QO~O^XO~PVO`ZOaYO~PVOR[O~OR[Oa_O~O",
-  goto: "!S]PPPPP^^ftPPPz]ROPQTUVQTOQUPQVQVWTUVQ]ZR^]]SOPQTUV",
-  nodeNames: "⚠ File Identifier Number String Permutations WeightedExpression",
-  maxTerm: 17,
+  states: "$nOVQPOOOVQPO'#CaOqQPO'#CbOyQPO'#CdOVQPO'#CfOVQPO'#CgOOQO'#Cm'#CmOOQO'#Ch'#ChQVQPOOO!RQPO,58{OOQO'#Cc'#CcOOQO,58|,58|OOQO'#Ce'#CeOOQO,59O,59OO!YQPO,59QO!dQPO,59ROOQO-E6f-E6fOOQO1G.g1G.gOOQO1G.l1G.lO!nQPO1G.lOOQO1G.m1G.mO!nQPO1G.mOOQO'#Ci'#CiO!sQPO7+$WO!{QPO7+$XOOQO-E6g-E6gOOQO<<Gr<<GrOOQO<<Gs<<Gs",
+  stateData: "#T~O`OS~OQUORUOSUObPOdQOeROfSOiTO~OQYOSYO~OQ[OS[O~OcaO~PVOgcOhbO~PVOgeOjdO~PVORfO~ORfOhjO~ORfOjkO~O",
+  goto: "!kbPPPPPccmcpccs!VPPP!aaUOPSTWX^_RZQR]RQWOQXPQ^SQ_TX`WX^_QgcQheTighaVOPSTWX^_",
+  nodeNames: "⚠ File Identifier Number String Permutations Lora LoraName Wildcards WildcardName LightnendExpression WeightedExpression",
+  maxTerm: 26,
   nodeProps: [
-    ["group", -5,2,3,4,5,6,"Expression"]
+    ["group", -8,2,3,4,5,6,8,10,11,"Expression"]
   ],
   skippedNodes: [0],
   repeatNodeCount: 2,
-  tokenData: "$t~RdX^!apq!ars#Uxy#syz#x!Q![#}![!]$V!c!}$[#R#S$[#T#o$[#o#p$j#q#r$o#y#z!a$f$g!a#BY#BZ!a$IS$I_!a$I|$JO!a$JT$JU!a$KV$KW!a&FU&FV!a~!fYZ~X^!apq!a#y#z!a$f$g!a#BY#BZ!a$IS$I_!a$I|$JO!a$JT$JU!a$KV$KW!a&FU&FV!a~#XTOr#Urs#hs;'S#U;'S;=`#m<%lO#U~#mOS~~#pP;=`<%l#U~#xO_~~#}Oa~~$SPR~!Q![#}~$[O`~~$aRQ~!c!}$[#R#S$[#T#o$[~$oO]~~$tO^~",
+  tokenData: "%l~RiX^!ppq!prs#exy$Syz$Xz{$^!O!P$c!Q![$c![!]$n!b!c$s!c!}$x!}#O%W#P#Q%]#R#S$x#T#o$x#o#p%b#q#r%g#y#z!p$f$g!p#BY#BZ!p$IS$I_!p$I|$JO!p$JT$JU!p$KV$KW!p&FU&FV!p~!uY`~X^!ppq!p#y#z!p$f$g!p#BY#BZ!p$IS$I_!p$I|$JO!p$JT$JU!p$KV$KW!p&FU&FV!p~#hTOr#ers#ws;'S#e;'S;=`#|<%lO#e~#|OS~~$PP;=`<%l#e~$XOi~~$^Oj~~$cOe~~$hQR~!O!P$c!Q![$c~$sOg~~$xOd~~$}RQ~!c!}$x#R#S$x#T#o$x~%]Of~~%bOh~~%gOb~~%lOc~",
   tokenizers: [0],
   topRules: {"File":[0,1]},
   tokenPrec: 0

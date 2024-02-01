@@ -5,4 +5,9 @@ export const
   Number = 3,
   String = 4,
   Permutations = 5,
-  WeightedExpression = 6
+  Lora = 6,
+  LoraName = 7,
+  Wildcards = 8,
+  WildcardName = 9,
+  LightnendExpression = 10,
+  WeightedExpression = 11

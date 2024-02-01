@@ -4,19 +4,34 @@ expression[@isGroup=Expression] {
   Identifier |
   Number |
   String |
+
+  LightnendExpression |
+  WeightedExpression |
+
   Permutations |
-  WeightedExpression
+
+  Lora |
+
+  Wildcards
 }
 
 @skip { space }
 
 WeightedExpression { "(" expression+ (":" Number+)? ")" }
+LightnendExpression { "[" expression+ (":" Number+)? "]" }
+
 Permutations { "{" expression+ "}" }
+
+Lora { "@" LoraName  }
+LoraName { Identifier | String  }
+
+Wildcards { "*" WildcardName }
+WildcardName { Identifier | String  }
 
 @tokens {
   space { @whitespace+ }
   Identifier { $[A-Za-z_]+ }
-  Number { $[0-9]+ }
+  Number { $[0-9.]+ }
   String { '"' !["]* '"' }
   // WeightedExpression {"{}"}
 }

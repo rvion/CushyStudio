@@ -17,10 +17,19 @@ export const CushyMirrorTheme = createTheme({
         gutterForeground: '#8a919966',
     },
     styles: [
-        { tag: t.punctuation, color: 'red' },
         { tag: t.comment, color: '#787b8099' },
         { tag: t.variableName, color: '#0080ff' },
+        // permutations
         { tag: t.heading1, color: '#5c6166', class: 'bg-green-200' },
+        // lora
+        { tag: t.heading2, color: 'blue', class: 'bg-yellow-200' },
+        //LightnendExpression
+        { tag: t.heading3, color: 'red' },
+        // WeightedExpression
+        { tag: t.heading4, color: 'green' },
+        // Wildcards
+        { tag: t.heading5, color: 'orange' },
+
         { tag: [t.string, t.special(t.brace)], color: 'pink' },
         { tag: t.number, color: '#5c6166' },
         { tag: t.bool, color: '#5c6166' },

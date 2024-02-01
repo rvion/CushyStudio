@@ -11,9 +11,12 @@ let parserWithMetadata = parser.configure({
             Identifier: t.variableName,
             Boolean: t.bool,
             // this needs to be red
-            WeightedExpression: t.punctuation,
+            LightnendExpression: t.heading3,
+            WeightedExpression: t.heading4,
             Permutations: t.heading1,
+            Lora: t.heading2,
             LineComment: t.lineComment,
+            Wildcards: t.heading5,
             '( )': t.paren,
         }),
         indentNodeProp.add({

@@ -81,7 +81,7 @@ export const WidgetCMPromptUI = observer(function WidgetStringUI_(p: { widget: W
                 // }}
             />
             debug:
-            <pre tw='virtualBorder text-sm bg-base-200'>{uist.debugView}</pre>
+            <pre tw='virtualBorder text-xs bg-base-200'>{uist.debugView}</pre>
             output:
             <pre tw='virtualBorder text-sm bg-base-200'>{uist.compiled.join('\n')}</pre>
         </div>
