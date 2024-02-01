@@ -34,9 +34,24 @@ export class DraftL {
         this.st.tree2View.revealAndFocusAtPath(['all-drafts', this.id])
     }
 
+    private _duplicateTitle = (input: string): string => {
+        const regex = /(\d+)$/ // Regular expression to match a number at the end of the string
+        const match = input.match(regex) // Check if the string ends with a number
+        if (match) {
+            // If there is a number, increment it
+            const number = parseInt(match[0], 10)
+            return input.replace(regex, (number + 1).toString())
+        } else {
+            // If there is no number, append '-1'
+            return input + '-1'
+        }
+    }
     duplicateAndFocus() {
-        const newDraft = this.clone()
+        const newDraft = this.clone({
+            title: this._duplicateTitle(this.name),
+        })
         newDraft.openOrFocusTab()
+        newDraft.revealInFileExplorer()
     }
 
     revealInFileExplorer = () => {
