@@ -1,0 +1,24 @@
+@top File { expression+ }
+
+expression[@isGroup=Expression] {
+  Identifier |
+  Number |
+  String |
+  WeightedExpression
+  // Block |
+  // LabeledStatement { Identifier ":" statement } |
+  // ExpressionStatement { expression semi } |
+  // EmptyStatement { ";" }
+}
+
+@skip { space }
+
+WeightedExpression { "(" expression+ ")" }
+
+@tokens {
+  space { @whitespace+ }
+  Identifier { $[A-Za-z_]+ }
+  Number { $[0-9]+ }
+  String { '"' !["]* '"' }
+  // WeightedExpression {"{}"}
+}

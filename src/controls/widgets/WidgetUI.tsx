@@ -40,6 +40,8 @@ import { Widget_listExt } from './listExt/WidgetListExt'
 import { Widget_prompt } from './prompt/WidgetPrompt'
 import { Widget_size } from './size/WidgetSize'
 import { Widget_image } from './image/WidgetImage'
+import { WidgetCMPromptUI } from './promptV2/WidgetPromptV2UI'
+import { Widget_cmprompt } from './promptV2/WidgetPromptV2'
 
 /**
  * this widget will then dispatch the individual requests to the appropriate sub-widgets
@@ -57,7 +59,7 @@ export const WidgetUI = observer(function WidgetUI_(p: {
     if (widget instanceof Widget_number)       return <WidgetNumberUI      widget={widget} />
     if (widget instanceof Widget_string)       return <WidgetStringUI      widget={widget} />
     if (widget instanceof Widget_optional)     return <WidgetOptionalUI    widget={widget} />
-    if (widget instanceof Widget_image)      return <WidgetSelectImageUI widget={widget} />
+    if (widget instanceof Widget_image)        return <WidgetSelectImageUI widget={widget} />
     if (widget instanceof Widget_list)         return <WidgetListUI        widget={widget} />
     if (widget instanceof Widget_listExt)      return <WidgetListExtUI     widget={widget} />
     if (widget instanceof Widget_group)        return <WidgetGroupUI       widget={widget} />
@@ -75,6 +77,7 @@ export const WidgetUI = observer(function WidgetUI_(p: {
     if (widget instanceof R.Widget_custom)     return <WidgetCustomUI      widget={widget} />
     if (widget instanceof R.Widget_selectMany) return <WidgetSelectManyUI  widget={widget} />
     if (widget instanceof Widget_orbit)        return <WidgetOrbitUI       widget={widget} />
+    if (widget instanceof Widget_cmprompt)     return <WidgetCMPromptUI    widget={widget} />
 
     exhaust(widget)
     console.log(`🔴`, (widget as any).type, widget)

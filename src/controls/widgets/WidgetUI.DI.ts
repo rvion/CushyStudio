@@ -16,6 +16,7 @@ import type { Widget_listExt } from './listExt/WidgetListExt'
 import type { Widget_prompt } from './prompt/WidgetPrompt'
 import type { Widget_size } from './size/WidgetSize'
 import type { Widget_image } from './image/WidgetImage'
+import { Widget_cmprompt } from './promptV2/WidgetPromptV2'
 
 /**
  * DI (Dependency Injection)
@@ -46,4 +47,5 @@ export let WidgetDI = {
     Widget_enum: 0 as any as typeof Widget_enum,
     Widget_listExt: 0 as any as typeof Widget_listExt,
     Widget_orbit: 0 as any as typeof Widget_orbit,
+    Widget_cmprompt: 0 as any as typeof Widget_cmprompt,
 }

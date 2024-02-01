@@ -29,6 +29,7 @@ import { bang } from 'src/utils/misc/bang'
 
 import { WidgetDI } from './widgets/WidgetUI.DI'
 import { hash } from 'ohash'
+import { Widget_cmprompt } from './widgets/promptV2/WidgetPromptV2'
 
 
 // Widget is a closed union for added type safety
@@ -36,6 +37,7 @@ export type Widget =
     | Widget_optional<any>
     | Widget_color
     | Widget_string
+    | Widget_cmprompt
     | Widget_orbit
     | Widget_prompt
     | Widget_seed
