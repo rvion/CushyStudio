@@ -18,7 +18,7 @@ export const CushyMirrorTheme = createTheme({
     },
     styles: [
         { tag: t.comment, color: '#787b8099' },
-        { tag: t.variableName, color: '#0080ff' },
+        { tag: t.variableName, color: 'blue' },
         // permutations
         { tag: t.heading1, color: '#5c6166', class: 'bg-green-200' },
         // lora
@@ -30,7 +30,8 @@ export const CushyMirrorTheme = createTheme({
         // Wildcards
         { tag: t.heading5, color: 'orange' },
 
-        { tag: [t.string, t.special(t.brace)], color: 'pink' },
+        { tag: [t.string, t.special(t.brace)] },
+
         { tag: t.number, color: '#5c6166' },
         { tag: t.bool, color: '#5c6166' },
         { tag: t.null, color: '#5c6166' },

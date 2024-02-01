@@ -15,6 +15,7 @@ let parserWithMetadata = parser.configure({
             WeightedExpression: t.heading4,
             Permutations: t.heading1,
             Lora: t.heading2,
+            LoraName: t.heading2,
             LineComment: t.lineComment,
             Wildcards: t.heading5,
             '( )': t.paren,
@@ -33,30 +34,10 @@ let parserWithMetadata = parser.configure({
 // ----------------------------------------------------------------
 import { LRLanguage } from '@codemirror/language'
 
-export const exampleLanguage = LRLanguage.define({
+export const PromptLangCore = LRLanguage.define({
     parser: parserWithMetadata,
+    name: 'PromptLang',
     languageData: {
         commentTokens: { line: ';' },
     },
 })
-
-// ----------------------------------------------------------------
-import { completeFromList } from '@codemirror/autocomplete'
-
-export const exampleCompletion = exampleLanguage.data.of({
-    autocomplete: completeFromList([
-        { label: 'defun', type: 'keyword' },
-        { label: 'defvar', type: 'keyword' },
-        { label: 'let', type: 'keyword' },
-        { label: 'cons', type: 'function' },
-        { label: 'car', type: 'function' },
-        { label: 'cdr', type: 'function' },
-    ]),
-})
-
-// ----------------------------------------------------------------
-import { LanguageSupport } from '@codemirror/language'
-
-export function mycustomlanguage() {
-    return new LanguageSupport(exampleLanguage, [exampleCompletion])
-}

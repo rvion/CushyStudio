@@ -7,8 +7,35 @@ import CodeMirror from '@uiw/react-codemirror'
 import { isObservableProp, makeAutoObservable } from 'mobx'
 import { useMemo } from 'react'
 import { parser } from './grammar/grammar.parser'
-import { mycustomlanguage } from './grammar/grammar.xxx'
+import { PromptLangPlugin } from './grammar/PromptLangPlugin'
 import { generatePromptCombinations } from './compiler/promptsplit'
+
+// UI
+export const WidgetCMPromptUI = observer(function WidgetStringUI_(p: { widget: Widget_cmprompt }) {
+    const widget = p.widget
+    const val = widget.result
+    const uist = useMemo(() => new CMPromptState(widget), [])
+    return (
+        <div tw='flex flex-col'>
+            editor:
+            <CodeMirror
+                value={uist.text}
+                theme={CushyMirrorTheme}
+                onChange={uist.setText}
+                height='200px'
+                extensions={[PromptLangPlugin()]}
+                // onUpdate={(view) => {
+                //     const text = view.state.doc.toString()
+                //     state.text = text
+                // }}
+            />
+            debug:
+            <pre tw='virtualBorder text-xs bg-base-200'>{uist.debugView}</pre>
+            output:
+            <pre tw='virtualBorder text-sm bg-base-200'>{uist.compiled.join('\n')}</pre>
+        </div>
+    )
+})
 
 class CMPromptState {
     constructor(public widget: Widget_cmprompt) {
@@ -60,30 +87,3 @@ class CMPromptState {
         return generatePromptCombinations(this.text!)
     }
 }
-
-// UI
-export const WidgetCMPromptUI = observer(function WidgetStringUI_(p: { widget: Widget_cmprompt }) {
-    const widget = p.widget
-    const val = widget.result
-    const uist = useMemo(() => new CMPromptState(widget), [])
-    return (
-        <div tw='flex flex-col'>
-            editor:
-            <CodeMirror
-                value={uist.text}
-                theme={CushyMirrorTheme}
-                onChange={uist.setText}
-                height='200px'
-                extensions={[mycustomlanguage()]}
-                // onUpdate={(view) => {
-                //     const text = view.state.doc.toString()
-                //     state.text = text
-                // }}
-            />
-            debug:
-            <pre tw='virtualBorder text-xs bg-base-200'>{uist.debugView}</pre>
-            output:
-            <pre tw='virtualBorder text-sm bg-base-200'>{uist.compiled.join('\n')}</pre>
-        </div>
-    )
-})
