@@ -1,10 +1,9 @@
-import { parser } from './grammar.parser'
+import { parser } from '../grammar/grammar.parser'
 
 import { foldNodeProp, foldInside, indentNodeProp } from '@codemirror/language'
 import { styleTags, tags as t } from '@lezer/highlight'
 
-// ----------------------------------------------------------------
-let parserWithMetadata = parser.configure({
+export const parserWithMetadata = parser.configure({
     props: [
         styleTags({
             String: t.string,
@@ -15,7 +14,7 @@ let parserWithMetadata = parser.configure({
             WeightedExpression: t.heading4,
             Permutations: t.heading1,
             Lora: t.heading2,
-            LoraName: t.heading2,
+            LoraName: t.bool,
             LineComment: t.lineComment,
             Wildcards: t.heading5,
             '( )': t.paren,
@@ -29,15 +28,4 @@ let parserWithMetadata = parser.configure({
             Permutations: foldInside,
         }),
     ],
-})
-
-// ----------------------------------------------------------------
-import { LRLanguage } from '@codemirror/language'
-
-export const PromptLangCore = LRLanguage.define({
-    parser: parserWithMetadata,
-    name: 'PromptLang',
-    languageData: {
-        commentTokens: { line: ';' },
-    },
 })

@@ -1,34 +1,63 @@
-import { observer } from 'mobx-react-lite'
-import { Widget_cmprompt } from './WidgetPromptV2'
-import { CushyMirrorTheme } from './theme/CushyMirrorTheme'
-
+import { EditorState } from '@codemirror/state'
 import { Tree } from '@lezer/common'
-import CodeMirror from '@uiw/react-codemirror'
-import { isObservableProp, makeAutoObservable } from 'mobx'
-import { useMemo } from 'react'
-import { parser } from './grammar/grammar.parser'
-import { PromptLangPlugin } from './grammar/PromptLangPlugin'
+import { EditorView } from 'codemirror'
+import { makeAutoObservable } from 'mobx'
+import { observer } from 'mobx-react-lite'
+import { createRef, useLayoutEffect, useMemo } from 'react'
+import { PromptKeymap1 } from './cm-lang/COMMANDS'
+import { PromptLang } from './cm-lang/LANG'
 import { generatePromptCombinations } from './compiler/promptsplit'
+import { parser } from './grammar/grammar.parser'
+import { Widget_cmprompt } from './WidgetPromptV2'
+import { basicSetup } from './cm-lang/SETUP'
+import { ComboUI } from 'src/app/shortcuts/ComboUI'
+import { PromptLangNodeName } from './grammar/grammar.types'
+import { useSt } from 'src/state/stateContext'
+import { SimplifiedLoraDef } from 'src/presets/SimplifiedLoraDef'
+import { LoraBoxUI } from 'src/widgets/prompter/nodes/lora/LoraBoxUI'
 
 // UI
 export const WidgetCMPromptUI = observer(function WidgetStringUI_(p: { widget: Widget_cmprompt }) {
+    const st = useSt()
     const widget = p.widget
     const val = widget.result
     const uist = useMemo(() => new CMPromptState(widget), [])
+    useLayoutEffect(() => {
+        if (uist.mountRef.current) {
+            uist.mount(uist.mountRef.current)
+        }
+    }, [])
+
     return (
         <div tw='flex flex-col'>
             editor:
-            <CodeMirror
-                value={uist.text}
-                theme={CushyMirrorTheme}
-                onChange={uist.setText}
-                height='200px'
-                extensions={[PromptLangPlugin()]}
-                // onUpdate={(view) => {
-                //     const text = view.state.doc.toString()
-                //     state.text = text
-                // }}
-            />
+            <div tw='bd p-2' ref={uist.mountRef}></div>
+            <div tw='text-xs italic'>
+                <div tw='flex gap-2'>
+                    weight + :
+                    <ComboUI combo={'mod+j'} />
+                    (or <ComboUI combo={'mod+shift+j'} /> for tiniest scope)
+                </div>
+                <div tw='flex gap-2'>
+                    weight - :
+                    <ComboUI combo={'mod+k'} />
+                    (or <ComboUI combo={'mod+shift+j'} /> for tiniest scope)
+                </div>
+            </div>
+            loras:
+            {uist.loras.map((lname) => {
+                const loradef: SimplifiedLoraDef = {
+                    name: lname as any,
+                    strength_clip: 1,
+                    strength_model: 1,
+                }
+                return (
+                    <div key={lname} tw='bd'>
+                        {lname}
+                        <LoraBoxUI def={loradef} onDelete={() => {}} />
+                    </div>
+                )
+            })}
             debug:
             <pre tw='virtualBorder text-xs bg-base-200'>{uist.debugView}</pre>
             output:
@@ -38,6 +67,29 @@ export const WidgetCMPromptUI = observer(function WidgetStringUI_(p: { widget: W
 })
 
 class CMPromptState {
+    mountRef = createRef<HTMLDivElement>()
+
+    mount = (domNode: HTMLDivElement) => {
+        domNode.innerHTML = ''
+        let state = EditorState.create({
+            doc: this.text,
+
+            extensions: [
+                //
+                EditorView.updateListener.of((ev) => {
+                    const nextText = ev.state.doc.toString()
+                    this.text = nextText
+                }),
+                basicSetup,
+                PromptLang(),
+            ],
+        })
+        let view = new EditorView({
+            state,
+            parent: domNode,
+        })
+    }
+
     constructor(public widget: Widget_cmprompt) {
         makeAutoObservable(this)
     }
@@ -46,35 +98,54 @@ class CMPromptState {
     get text() { return this.widget.serial.val ?? '' } // prettier-ignore
     set text(val: string) { this.widget.serial.val = val } // prettier-ignore
     setText = (text: string) => {
-        console.log(`[👙] `, text)
+        // console.log(`[👙] `, text)
         this.text = text
-        console.log(`[👙] this.debug=`, this.debugView)
+        // console.log(`[👙] this.debug=`, this.debugView)
     }
 
     // -------------------------
     get parsedTree(): Maybe<Tree> {
-        console.log(`[👙]`, parser.parse(this.text))
+        // console.log(`[👙]`, parser.parse(this.text))
         return parser.parse(this.text)
     }
-
+    // -------------------------
+    get loras() {
+        if (this.parsedTree === null) return []
+        const OUT: string[] = []
+        const self = this
+        this.parsedTree?.iterate({
+            enter(node) {
+                console.log(`[👙]`, node)
+                const match: PromptLangNodeName = 'Lora'
+                if (node.name === match) {
+                    OUT.push(self.text.slice(node.from, node.to))
+                }
+            },
+        })
+        return OUT
+    }
     // -------------------------
     get debugView() {
         if (this.parsedTree === null) return null
-        console.log(`[👙] evaluating 🔶`)
+        // console.log(`[👙] evaluating 🔶`)
         let OUT: string[] = []
         let self = this
         let depth = 0
         this.parsedTree!.iterate({
-            leave(nodeType) {
+            leave(node) {
                 depth--
             },
-            enter(nodeType) {
+            enter(node) {
                 depth++
                 OUT.push(
                     [
-                        `${new Array(depth - 1).fill('|   ').join('')}| ${nodeType.name}`,
-                        nodeType.name === 'Identifier' ? JSON.stringify(self.text.slice(nodeType.from, nodeType.to)) : '',
-                        `(${nodeType.from} -> ${nodeType.to})`,
+                        `${new Array(depth - 1).fill('   ').join('')}| ${node.name}`,
+                        node.name === 'Identifier'
+                            ? JSON.stringify(self.text.slice(node.from, node.to))
+                            : node.name === 'String'
+                            ? self.text.slice(node.from, node.to)
+                            : '',
+                        `(${node.from} -> ${node.to})`,
                     ].join(' '),
                 )
             },

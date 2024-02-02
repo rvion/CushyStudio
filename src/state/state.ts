@@ -122,6 +122,7 @@ export class STATE {
         return globalRef.__hotReloadPersistentCache
     }
 
+    hasWildcard = (name: string): boolean => (this.wildcards as { [k: string]: any })[name] != null
     get wildcards(): Wildcards {
         const wcdsPath = this.resolveFromRoot(asRelativePath('src/widgets/prompter/nodes/wildcards/wildcards.json'))
         const wcds = this.readJSON<Wildcards>(wcdsPath)

@@ -17,7 +17,7 @@ masterpiece, sofa, tree, [color] [adj_beauty] [adj_general] nature, intricate_de
 - QRCode generator
 - make _formBuilder not observable => need engine for model
 - fix random not updating
-
+-
 ---------------------
 form rework:
     ✘ emoji to illustration app @cancelled(24-01-28 08:13)
@@ -33,15 +33,42 @@ form rework:
         ✔ no more `group: string` param in widget configs, it was anyway unused @done(24-01-28 08:14)
 
 
+☐ RELEASE AFTER
+        ☐ prompt lang
+        ☐ basic unified canvas
+            ☐ inpainting
+            ☐ outpainting
+            ☐ mask editing
+            ☐ stamp tool
+        ☐ basic documentation website
+        ☐ bug pass
+        ☐ form layout
+        ☐ video
+        ☐ FEATURE FREEZE. NO MORE FEATURES.
+
+
+prompt-lang:
+    ☐ lora tooltip
+    ☐ shortcut to increase/lower weight : ctrl+up/down
+    ☐ autocomption
+        ☐ lora
+        ☐ embeddings
+        ☐ wildcards
+    ☐ tooltips
+        ☐ lora
+
+
 cnets:
     ☐ better enum widget with filter support (5min)
     ☐ fix bug where dropping images doesn't work (?)
     ☐ list UI is just hard to read
     ☐ review how prefabs canons
+    ☐ cut the old docs away
 
 
 Todo :
     ☐ create all nodes at once, then hydrate them after, so all json are ready
+    ☐ add back popout button
     ☐ better error message when node not found
     ☐ runpod serverless
     ☐ disable publish button if not logged in

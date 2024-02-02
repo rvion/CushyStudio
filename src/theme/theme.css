@@ -1,3 +1,11 @@
+.cm-lintRange.cm-lintRange-error {
+    outline: 1px dashed oklch(var(--er));
+    /* color: oklch(var(--er)); */
+}
+
+.bd {
+    border: 2px solid oklch(var(--p))
+}
 .animated {
     transition: height 0.2s cubic-bezier(0.075, 0.82, 0.165, 1);
 }

@@ -124,7 +124,7 @@ export const shortcutsDef: Shortcut<STATE>[] = [
     simpleValidInInput([KEYS.openPage_Gallery], 'open Gallery', (st) => st.layout.FOCUS_OR_CREATE('Gallery', {})),
 
     // full screen library  --------------------------
-    simpleValidInInput(['mod+p', 'mod+j'], 'open full screen library', (st) => st.toggleFullLibrary()),
+    simpleValidInInput([KEYS.openFull_Library], 'open full screen library', (st) => st.toggleFullLibrary()),
     simpleValidInInput(['mod+escape'], 'close full screen library', (st) => st.closeFullLibrary()),
 
     {

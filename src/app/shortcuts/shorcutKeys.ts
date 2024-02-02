@@ -6,6 +6,7 @@ export const KEYS = {
 
     // tree navigation -------------------------------------------------------------------------------
     // navigation -------------------------------------------------------------------------------------
+    openFull_Library:   'mod+p',
     openPage_Config:    'mod+,',
     openPage_Hosts:     'mod+shift+,',
     openPage_Shortcuts: 'mod+k mod+s',

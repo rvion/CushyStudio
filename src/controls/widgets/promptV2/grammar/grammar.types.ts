@@ -1,0 +1,11 @@
+export type PromptLangNodeName =
+    | 'LightnendExpression'
+    | 'WeightedExpression'
+    | 'Permutations'
+    | 'Lora'
+    | 'Wildcards'
+    | 'Separator'
+    | 'Break'
+    | 'Identifier'
+    | 'Number'
+    | 'String'

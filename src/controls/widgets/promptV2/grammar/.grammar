@@ -1,24 +1,28 @@
 @top File { expression+ }
 
 expression[@isGroup=Expression] {
-  Identifier |
-  Number |
-  String |
 
-  LightnendExpression |
+  // LightnendExpression |
   WeightedExpression |
 
   Permutations |
 
   Lora |
+  Wildcards |
 
-  Wildcards
+  Separator |
+  Break |
+
+  Identifier |
+  Number |
+  String
 }
 
 @skip { space }
 
-WeightedExpression { "(" expression+ (":" Number+)? ")" }
-LightnendExpression { "[" expression+ (":" Number+)? "]" }
+
+WeightedExpression { "(" expression+ (":" Number+)? ")x" Number }
+// LightnendExpression { "[" expression+ (":" Number+)? "]" }
 
 Permutations { "{" expression+ "}" }
 
@@ -28,10 +32,15 @@ LoraName { Identifier | String  }
 Wildcards { "*" WildcardName }
 WildcardName { Identifier | String  }
 
+
+
 @tokens {
   space { @whitespace+ }
-  Identifier { $[A-Za-z_]+ }
-  Number { $[0-9.]+ }
+  Break { "break" }
+  Identifier { $[A-Za-z_\\\/]+ }
+  Number { $[0-9.-]+ }
   String { '"' !["]* '"' }
+  Separator { "," }
   // WeightedExpression {"{}"}
+  @precedence { Break, Identifier }
 }
