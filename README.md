@@ -42,7 +42,9 @@ _🔶 NOTICE: CushyStudio is still in development. It updates and breaks often. 
 
 _media 1: CushyStudio_
 
-![](site/static/screenshots/2023-11-20-00-20-41.png)
+![](site/static/screenshots/2024-02-02-10-33-41.png)
+
+![](site/static/screenshots/2024-02-02-example-panels.jpg)
 
 
 _media 2: CushyStudio gallery_
