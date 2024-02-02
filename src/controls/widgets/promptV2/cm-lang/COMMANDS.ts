@@ -14,27 +14,27 @@ export const PromptKeymap1 = () =>
     keymap.of([
         // { key: 'm-s-j', preventDefault: true, run: increaseWeights, },
         // key: 'Alt-ArrowUp',
-        { key: 'm-j', preventDefault: true, run: changeWeight(0.1, ['WeightedExpression', 'Lora', 'Wildcards']) },
-        { key: 'm-k', preventDefault: true, run: changeWeight(-0.1, ['WeightedExpression', 'Lora', 'Wildcards']) },
+        { key: 'm-j', preventDefault: true, run: changeWeights(0.1, ['WeightedExpression', 'Lora', 'Wildcards']) },
+        { key: 'm-k', preventDefault: true, run: changeWeights(-0.1, ['WeightedExpression', 'Lora', 'Wildcards']) },
         // { key: 'm-s-j', preventDefault: true, run: changeWeight(0.1, ['Lora', 'Wildcards']) },
         // { key: 'm-s-k', preventDefault: true, run: changeWeight(-0.1, ['Lora', 'Wildcards']) },
     ])
 
-const changeWeight =
+const changeWeights =
     (amount: number, stopAt: PromptLangNodeName[]) =>
     (view: EditorView): boolean => {
         // const state: EditorState = view.state
         // const text = view.state.doc.toString()
-        const tree = syntaxTree(view.state)
+        // const tree = syntaxTree(view.state)
 
         const ranges = view.state.selection.ranges
         for (const r of ranges) {
-            changeWeightXX(view, r.from, r.to, amount)
+            changeWeight(view, r.from, r.to, amount)
         }
         return true
     }
 
-const changeWeightXX = (
+const changeWeight = (
     //
     view: EditorView,
     from: number,

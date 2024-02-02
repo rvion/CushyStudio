@@ -26,9 +26,11 @@ WeightedExpression { "(" expression+ (":" Number+)? ")x" Number }
 
 Permutations { "{" expression+ "}" }
 
+// LORA
 Lora { "@" LoraName  }
 LoraName { Identifier | String  }
 
+// WILDCARDS
 Wildcards { "*" WildcardName }
 WildcardName { Identifier | String  }
 

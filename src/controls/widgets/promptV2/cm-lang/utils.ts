@@ -1,6 +1,6 @@
+import type { PromptLangNodeName } from '../grammar/grammar.types'
 import type { SyntaxNode } from '@lezer/common'
 import { bang } from 'src/utils/misc/bang'
-import { PromptLangNodeName } from '../grammar/grammar.types'
 
 export const $ancestorsBottomUp = (node: SyntaxNode): SyntaxNode[] => {
     const ancestors = [node]
@@ -8,6 +8,7 @@ export const $ancestorsBottomUp = (node: SyntaxNode): SyntaxNode[] => {
     while (cursor.parent()) ancestors.push(cursor.node)
     return ancestors
 }
+
 export const $ancestorsTopDown = (node: SyntaxNode): SyntaxNode[] => {
     const ancestors = [node]
     const cursor = node.cursor()

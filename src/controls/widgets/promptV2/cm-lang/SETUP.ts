@@ -25,7 +25,9 @@ import { closeBrackets, autocompletion, closeBracketsKeymap, completionKeymap } 
 import { lintKeymap } from '@codemirror/lint'
 import { PromptKeymap1 } from './COMMANDS'
 import { oneDark } from '@codemirror/theme-one-dark'
+import { placeholders } from './DECORATION'
 export const basicSetup = (() => [
+    placeholders,
     oneDark,
     lineNumbers(),
     PromptKeymap1(),
