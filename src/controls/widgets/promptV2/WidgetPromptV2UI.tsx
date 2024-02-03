@@ -115,7 +115,7 @@ class CMPromptState {
         const self = this
         this.parsedTree?.iterate({
             enter(node) {
-                console.log(`[👙]`, node)
+                // console.log(`[👙]`, node)
                 const match: PromptLangNodeName = 'Lora'
                 if (node.name === match) {
                     OUT.push(self.text.slice(node.from, node.to))

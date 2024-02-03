@@ -9,9 +9,12 @@ expression[@isGroup=Expression] {
 
   Lora |
   Wildcards |
+  Embeddings |
 
   Separator |
   Break |
+
+  Comment |
 
   Identifier |
   Number |
@@ -27,6 +30,7 @@ WeightedExpression { "(" expression+ (":" Number+)? ")x" Number }
 Permutations { "{" expression+ "}" }
 
 // LORA
+// Lora { @specialize<Identifier, "lora"> ":" LoraName  }
 Lora { "@" LoraName  }
 LoraName { Identifier | String  }
 
@@ -34,6 +38,9 @@ LoraName { Identifier | String  }
 Wildcards { "*" WildcardName }
 WildcardName { Identifier | String  }
 
+// embeddings
+Embeddings { ">" EmbeddingName }
+EmbeddingName { Identifier | String  }
 
 
 @tokens {
@@ -43,6 +50,7 @@ WildcardName { Identifier | String  }
   Number { $[0-9.-]+ }
   String { '"' !["]* '"' }
   Separator { "," }
+  Comment { ";" ![\n]* }
   // WeightedExpression {"{}"}
-  @precedence { Break, Identifier }
+  @precedence { Comment, Break, Identifier }
 }

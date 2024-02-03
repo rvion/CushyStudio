@@ -10,5 +10,8 @@ export const
   String = 8,
   Wildcards = 9,
   WildcardName = 10,
-  Separator = 11,
-  Break = 12
+  Embeddings = 11,
+  EmbeddingName = 12,
+  Separator = 13,
+  Break = 14,
+  Comment = 15

@@ -28,23 +28,38 @@ const dynamicCompletion: CompletionSource = (context: CompletionContext): Comple
 
     const st: STATE = (window as any).st
     const addWildcards = () => {
-        for (const [key, values] of Object.entries(st.wildcards)) {
+        for (const [wildcard, values] of Object.entries(st.wildcards)) {
             completionsOptions.push({
-                label: `WILDCARD: ${key}`,
+                displayLabel: `WILDCARD: ${wildcard}`,
+                label: wildcard,
                 type: 'keyword',
                 detail: values.join(',').slice(0, 20) + '...',
                 // section: 'wildcards',
-                apply: `*${key} `,
+                apply: `*${wildcard} `,
             })
         }
     }
     const addLoras = () => {
         for (const loraName of st.schema.getLoras()) {
             completionsOptions.push({
-                label: `LORA: ${loraName}`,
+                displayLabel: `LORA: ${loraName}`,
+                label: loraName,
                 type: 'lora',
                 // section: 'lora',
-                apply: `"${loraName}"`,
+                // apply: `lora:"${loraName}"`,
+                apply: `@"${loraName}"`,
+            })
+        }
+    }
+    const addEmbeddings = () => {
+        for (const embeddingName of st.schema.data.embeddings) {
+            completionsOptions.push({
+                displayLabel: `Embeddings: ${embeddingName}`,
+                label: embeddingName,
+                type: 'embedding',
+                // section: 'lora',
+                // apply: `lora:"${embeddingName}"`,
+                apply: `:"${embeddingName}"`,
             })
         }
     }
@@ -55,19 +70,20 @@ const dynamicCompletion: CompletionSource = (context: CompletionContext): Comple
     const to = node.name === 'String' ? node.to - 1 : node.to
 
     const parent = ancestors[1]
-    if (parent) {
-        if (parent.name === 'LoraName') {
-            // console.log(`[👙] parent is`, parent.name, from, to)
-            addLoras()
-        } else {
-            addWildcards()
-            // console.log(`[👙] parent is`, parent.name, from, to)
-        }
-    } else {
-        console.log(`[👙] no meaningful parent`, from, to)
-        addLoras()
-        addWildcards()
-    }
+    // if (parent) {
+    //     if (parent.name === 'LoraName') {
+    //         // console.log(`[👙] parent is`, parent.name, from, to)
+    //         addLoras()
+    //     } else {
+    //         addWildcards()
+    //         // console.log(`[👙] parent is`, parent.name, from, to)
+    //     }
+    // } else {
+    console.log(`[👙] no meaningful parent`, from, to)
+    addLoras()
+    addWildcards()
+    addEmbeddings()
+    // }
 
     return { from, to, options: completionsOptions }
 

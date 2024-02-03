@@ -1,8 +1,8 @@
 export type PromptLangNodeName =
-    | 'LightnendExpression'
     | 'WeightedExpression'
     | 'Permutations'
     | 'Lora'
+    | 'Embedding'
     | 'Wildcards'
     | 'Separator'
     | 'Break'
