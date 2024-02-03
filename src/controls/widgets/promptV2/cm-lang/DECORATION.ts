@@ -1,12 +1,14 @@
 import { syntaxTree } from '@codemirror/language'
 import { Range, RangeSet } from '@codemirror/state'
 import { Decoration, DecorationSet, EditorView, ViewPlugin, ViewUpdate } from '@codemirror/view'
+import { PromptLangNodeName } from '../grammar/grammar.types'
 
 export const placeholders = ViewPlugin.fromClass(
     class {
         placeholders: RangeSet<Decoration> // DecorationSet
         loraMark = Decoration.mark({ class: 'cm-lora' })
         wildcardMark = Decoration.mark({ class: 'cm-wildcard' })
+        embeddingMark = Decoration.mark({ class: 'cm-embedding' })
         weightMark = Decoration.mark({ class: 'cm-WeightedExpression' })
         constructor(view: EditorView) {
             this.placeholders = this.computeDecorations(view)
@@ -20,13 +22,17 @@ export const placeholders = ViewPlugin.fromClass(
             const decorations: Range<Decoration>[] = []
             syntaxTree(view.state).iterate({
                 enter: (ref) => {
-                    if (ref.name == 'Lora') {
+                    const name = ref.name as PromptLangNodeName
+                    if (name == 'Lora') {
                         decorations.push({ from: ref.from, to: ref.to, value: this.loraMark })
                     }
-                    if (ref.name == 'Wildcards') {
+                    if (name == 'Wildcards') {
                         decorations.push({ from: ref.from, to: ref.to, value: this.wildcardMark })
                     }
-                    if (ref.name == 'WeightedExpression') {
+                    if (name == 'Embedding') {
+                        decorations.push({ from: ref.from, to: ref.to, value: this.embeddingMark })
+                    }
+                    if (name == 'WeightedExpression') {
                         decorations.push({ from: ref.from, to: ref.to, value: this.weightMark })
                     }
                 },

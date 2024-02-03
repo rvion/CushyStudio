@@ -9,7 +9,7 @@ expression[@isGroup=Expression] {
 
   Lora |
   Wildcards |
-  Embeddings |
+  Embedding |
 
   Separator |
   Break |
@@ -39,7 +39,7 @@ Wildcards { "*" WildcardName }
 WildcardName { Identifier | String  }
 
 // embeddings
-Embeddings { ":" EmbeddingName }
+Embedding { ":" EmbeddingName }
 EmbeddingName { Identifier | String  }
 
 

@@ -5,8 +5,11 @@
 .cm-lora > * {
     color: cyan;
 }
+.cm-embedding > * {
+    color: rgb(255, 161, 161);
+}
 .cm-wildcard > * {
-    color:  rgb(221, 221, 139)
+    color:  rgb(243, 243, 106)
 }
 .cm-lintRange.cm-lintRange-error {
     outline: 1px dashed oklch(var(--er));

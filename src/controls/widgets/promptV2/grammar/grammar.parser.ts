@@ -5,7 +5,7 @@ export const parser = LRParser.deserialize({
   states: "$hOVQPOOOVQPO'#C^OVQPO'#C`OzQPO'#CaO!SQPO'#CeO![QPO'#CgOOQO'#Cq'#CqOOQO'#Cl'#ClQVQPOOO#UQPO,58xO#`QPO,58zOOQO'#Cb'#CbOOQO,58{,58{OOQO'#Cf'#CfOOQO,59P,59POOQO'#Ch'#ChOOQO,59R,59ROOQO-E6j-E6jO#gQPO1G.dO#lQPO1G.dOOQO1G.f1G.fOOQO7+$O7+$OOOQO'#Cm'#CmO#wQPO7+$OOOQO-E6k-E6kO$PQPO<<GjOOQOAN=UAN=U",
   stateData: "$[~OdOS~ORUOVUOWUO]UO^UO_UOfPOgTOiQOkROlSO~OVZOWZO~OV]OW]O~OV_OW_O~ORUOVUOWUO]UO^UO_UOfPOiQOkROlSO~OgcOhbO~P!dOjdO~PVOReO~ORfOV_OW_O~ORfOhiO~ORjO~O_R^V^~",
   goto: "!gfPPgPggoPPgrguPPPy!XPPP!_]UOPQWXYR[RR^ST`TcQWOQXPQYQVaWXYQgcRhg]VOPQWXY",
-  nodeNames: "⚠ File WeightedExpression Number Permutations Lora LoraName Identifier String Wildcards WildcardName Embeddings EmbeddingName Separator Break Comment",
+  nodeNames: "⚠ File WeightedExpression Number Permutations Lora LoraName Identifier String Wildcards WildcardName Embedding EmbeddingName Separator Break Comment",
   maxTerm: 28,
   nodeProps: [
     ["group", -11,2,3,4,5,7,8,9,11,13,14,15,"Expression"]

@@ -10,7 +10,7 @@ export const
   String = 8,
   Wildcards = 9,
   WildcardName = 10,
-  Embeddings = 11,
+  Embedding = 11,
   EmbeddingName = 12,
   Separator = 13,
   Break = 14,
