@@ -1,0 +1,17 @@
+# Table of contents
+
+* [👋 Getting Started](README.md)
+  * [💡 What is CushyStudio](getting-started/what-is-cushystudio.md)
+  * [✨ Our Features](getting-started/our-features.md)
+  * [🖌 Intro to Generative AI](getting-started/intro-to-generative-ai.md)
+  * [💬 FAQs](getting-started/faqs.md)
+  * [🤝 Community](getting-started/community.md)
+* [🛠 Installation](installation/README.md)
+  * [Windows](installation/windows.md)
+  * [Mac](installation/mac.md)
+  * [Linux](installation/linux.md)
+  * [Cloud](installation/cloud.md)
+  * [ComfyUI](installation/comfyui.md)
+* [🎨 Using CushyStudio](using-cushystudio.md)
+* [⚙ Cushy-SDK](cushy-sdk.md)
+* [WIP - pad](wip-pad.md)
