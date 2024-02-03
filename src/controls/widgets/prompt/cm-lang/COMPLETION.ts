@@ -92,11 +92,7 @@ const dynamicCompletion: CompletionSource = (context: CompletionContext): Comple
     addTags()
     // }
 
-    return {
-        from,
-        to,
-        options: completionsOptions,
-    }
+    return { from, to, options: completionsOptions }
 }
 
 export const PromptComletion1: Extension = autocompletion({

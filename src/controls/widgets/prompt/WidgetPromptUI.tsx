@@ -14,6 +14,7 @@ import { basicSetup } from './cm-lang/SETUP'
 import { generatePromptCombinations } from './compiler/promptsplit'
 import { parser } from './grammar/grammar.parser'
 import { PromptLangNodeName } from './grammar/grammar.types'
+import { openExternal } from 'src/app/layout/openExternal'
 // UI
 export const WidgetPromptUI = observer(function WidgetPromptUI_(p: { widget: Widget_prompt }) {
     const widget = p.widget
@@ -31,14 +32,28 @@ export const WidgetPromptUI = observer(function WidgetPromptUI_(p: { widget: Wid
                     <pre tw='virtualBorder whitespace-pre-wrap text-sm bg-base-200'>{uist.compiled.negativePrompt}</pre>
                     <div tw='text-xs italic'>
                         <div tw='flex gap-2'>
-                            weight + :
+                            increase weights :
                             <ComboUI combo={'mod+j'} />
-                            (or <ComboUI combo={'mod+shift+j'} /> for tiniest scope)
+                            {/* (or <ComboUI combo={'mod+shift+j'} /> for tiniest scope) */}
                         </div>
                         <div tw='flex gap-2'>
-                            weight - :
+                            decrease weights :
                             <ComboUI combo={'mod+k'} />
-                            (or <ComboUI combo={'mod+shift+j'} /> for tiniest scope)
+                            {/* (or <ComboUI combo={'mod+shift+j'} /> for tiniest scope) */}
+                        </div>
+                        <div
+                            tw='cursor-pointer'
+                            onClick={() => openExternal('https://codemirror.net/docs/ref/#commands')}
+                            className='underline'
+                        >
+                            + all the Standard (move around)
+                        </div>
+                        <div
+                            tw='cursor-pointer'
+                            onClick={() => openExternal('https://codemirror.net/docs/ref/#commands')}
+                            className='underline'
+                        >
+                            + Default (comment line, multi-cursors, ...) keymap
                         </div>
                     </div>
                     <pre tw='virtualBorder whitespace-pre-wrap text-xs bg-base-200'>{uist.debugView}</pre>

@@ -27,6 +27,7 @@ import { lintKeymap } from '@codemirror/lint'
 import { PromptKeymap1 } from './COMMANDS'
 import { oneDark } from '@codemirror/theme-one-dark'
 import { placeholders } from './DECORATION'
+
 export const basicSetup = (() => [
     EditorView.lineWrapping,
     placeholders,

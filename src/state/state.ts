@@ -105,10 +105,6 @@ export class STATE {
     tree2: Tree
     tree2View: TreeView
 
-    get tagFileRelPath() {
-        return this.configFile.get('tagFile')
-    }
-
     /** @internal */
     _popups: RevealState[] = []
 
