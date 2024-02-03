@@ -3,6 +3,7 @@ export type PromptLangNodeName =
     | 'WeightedExpression'
     | 'Permutations'
     | 'Lora'
+    | 'Tag'
     | 'Embedding'
     | 'Wildcard'
     | 'Separator'

@@ -2,7 +2,7 @@ import { observer } from 'mobx-react-lite'
 import { ComboUI } from 'src/app/shortcuts/ComboUI'
 import { KEYS } from 'src/app/shortcuts/shorcutKeys'
 import { InputNumberUI } from 'src/rsuite/InputNumberUI'
-import { FormControl, FormControlLabel, FormHelpText, Toggle } from 'src/rsuite/shims'
+import { FormControl, FormHelpText, Toggle } from 'src/rsuite/shims'
 import { openInVSCode } from 'src/utils/electron/openInVsCode'
 import { parseFloatNoRoundingErr } from 'src/utils/misc/parseFloatNoRoundingErr'
 import { SectionTitleUI } from 'src/widgets/workspace/SectionTitle'
@@ -21,8 +21,20 @@ export const Panel_Config = observer(function Panel_Config_() {
                         open <span className='material-symbols-outlined text-sm'>open_in_new</span>
                     </div>
                 </FieldUI>
+                <FieldUI label='Set tags file'>
+                    <input
+                        tw='input input-bordered input-sm w-full'
+                        name='tagFile'
+                        value={config.get('tagFile') ?? 'completions/danbooru.csv'}
+                        onChange={(ev) => {
+                            config.update({ tagFile: ev.target.value })
+                            st.updateTsConfig()
+                        }}
+                    />
+                </FieldUI>
                 <FieldUI label='Your github username'>
-                    <FormControl //
+                    <input //
+                        tw='input input-bordered input-sm w-full'
                         value={config.value.githubUsername}
                         onChange={(ev) => {
                             config.update({ githubUsername: ev.target.value })
@@ -32,7 +44,8 @@ export const Panel_Config = observer(function Panel_Config_() {
                     />
                 </FieldUI>
                 <FieldUI label='Your Cushy CloudGPU api Key'>
-                    <FormControl //
+                    <input //
+                        tw='input input-bordered input-sm w-full'
                         value={config.value.cushyCloudGPUApiKey}
                         onChange={(ev) => {
                             config.update({ cushyCloudGPUApiKey: ev.target.value })
@@ -41,7 +54,6 @@ export const Panel_Config = observer(function Panel_Config_() {
                         name='githubUsername'
                     />
                 </FieldUI>
-
                 <FieldUI label='Gallery Image Size (px)'>
                     <InputNumberUI //
                         placeholder='48'
@@ -58,7 +70,6 @@ export const Panel_Config = observer(function Panel_Config_() {
                         checked={config.value.enableTypeCheckingBuiltInApps ?? false}
                     ></Toggle>
                 </FieldUI>
-
                 <FieldUI label='Check update every X minutes'>
                     <FormControl //
                         type='number'
@@ -105,11 +116,12 @@ export const FieldUI = observer(function FieldUI_(p: {
     required?: boolean
     label?: string
     help?: string
+    className?: string
     children: React.ReactNode
 }) {
     return (
-        <div className='flex gap-2 items-center'>
-            <FormControlLabel>{p.label}</FormControlLabel>
+        <div className={p.className} tw='flex gap-2 items-center'>
+            <label tw='whitespace-nowrap'>{p.label}</label>
             {p.children}
             {p.required && <FormHelpText tw='join-item'>Required</FormHelpText>}
         </div>

@@ -105,6 +105,10 @@ export class STATE {
     tree2: Tree
     tree2View: TreeView
 
+    get tagFileRelPath() {
+        return this.configFile.get('tagFile')
+    }
+
     /** @internal */
     _popups: RevealState[] = []
 
@@ -198,7 +202,7 @@ export class STATE {
     hovered: Maybe<StepOutput> = null
     electronUtils: ElectronUtils
     library: Library
-    danbooru = DanbooruTags.build()
+    danbooru: DanbooruTags
     userTags = UserTags.build()
     actionTags: ActionTagMethodList = []
     importer: ComfyImporter
@@ -438,6 +442,7 @@ export class STATE {
         this.library = new Library(this)
         this.project = this.getProject()
         this.auth = new AuthState(this)
+        this.danbooru = DanbooruTags.build(this)
 
         this.virtualHostBase // ensure getters are called at least once so we upsert the two core virtual hosts
         this.virtualHostFull // ensure getters are called at least once so we upsert the two core virtual hosts

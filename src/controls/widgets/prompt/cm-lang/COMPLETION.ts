@@ -39,6 +39,7 @@ const dynamicCompletion: CompletionSource = (context: CompletionContext): Comple
                 displayLabel: wildcard, // `${noWrap ? wildcard : `"${wildcard}"`}`,
                 label: wildcard,
                 type: 'wildcard',
+                boost: 99,
                 detail: info.slice(0, 20) + '...',
                 apply: noWrap ? `?${wildcard} ` : `?"${wildcard}" `,
             })
@@ -51,6 +52,7 @@ const dynamicCompletion: CompletionSource = (context: CompletionContext): Comple
                 displayLabel: `lora: ${loraName}`,
                 label: loraName,
                 type: 'lora',
+                boost: 99,
                 apply: noWrap ? `@${loraName}` : `@"${loraName}"`,
             })
         }
@@ -61,9 +63,25 @@ const dynamicCompletion: CompletionSource = (context: CompletionContext): Comple
             completionsOptions.push({
                 displayLabel: `${embeddingName}`,
                 detail: 'embedding',
-                label: embeddingName,
+                label: embeddingName.toLowerCase(),
                 type: 'embedding',
+                boost: 99,
                 apply: noWrap ? `:${embeddingName}` : `:"${embeddingName}"`,
+            })
+        }
+    }
+
+    const addTags = () => {
+        for (const tag of st.danbooru.tags) {
+            const tagName = tag.text
+            const noWrap = /^[A-Za-z_]+$/.test(tagName)
+            completionsOptions.push({
+                displayLabel: `${tagName}`,
+                detail: 'tag',
+                boost: -99,
+                label: tagName,
+                type: 'tag',
+                apply: noWrap ? `%${tagName}` : `%"${tagName}"`,
             })
         }
     }
@@ -71,6 +89,7 @@ const dynamicCompletion: CompletionSource = (context: CompletionContext): Comple
     addLoras()
     addWildcards()
     addEmbeddings()
+    addTags()
     // }
 
     return {

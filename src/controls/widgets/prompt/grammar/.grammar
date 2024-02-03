@@ -10,6 +10,7 @@ expression[@isGroup=Expression] {
   Lora |
   Wildcard |
   Embedding |
+  Tag |
 
   Separator |
   Break |
@@ -28,6 +29,9 @@ WeightedExpression { "(" expression+ ")*" Number }
 // LightnendExpression { "[" expression+ (":" Number+)? "]" }
 
 Permutations { "{" expression+ "}" }
+
+Tag { "%" TagName }
+TagName {  Identifier | String }
 
 // LORA
 // Lora { @specialize<Identifier, "lora"> ":" LoraName  }

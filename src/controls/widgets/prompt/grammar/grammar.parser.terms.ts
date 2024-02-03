@@ -12,6 +12,8 @@ export const
   WildcardName = 10,
   Embedding = 11,
   EmbeddingName = 12,
-  Separator = 13,
-  Break = 14,
-  Comment = 15
+  Tag = 13,
+  TagName = 14,
+  Separator = 15,
+  Break = 16,
+  Comment = 17
