@@ -38,14 +38,14 @@ export const compilePrompt = (p: {
         // enter
         (ref: SyntaxNodeRef) => {
             const toktype = ref.name as PromptLangNodeName
-            const _lastChar =
-                weights < 0 //
-                    ? NEG[NEG.length - 1] ?? ''
-                    : POS[POS.length - 1] ?? ''
-            const _space = _lastChar === ' ' ? '' : ' '
             const set = (txt: string) => {
-                if (weights < 0) NEG += txt
-                else POS += txt
+                const lastChar = weights < 0 ? NEG[NEG.length - 1] ?? '' : POS[POS.length - 1] ?? ''
+                const space = txt === ',' ? '' : lastChar === ' ' ? '' : ' '
+                let finalWeight = Math.abs(weights)
+                let finalTxt = finalWeight === 1 ? txt : `(${txt}:${finalWeight})`
+                finalTxt = space + finalTxt
+                if (weights < 0) NEG += finalTxt
+                else POS += finalTxt
             }
 
             if (toktype === 'WeightedExpression') {
@@ -56,27 +56,24 @@ export const compilePrompt = (p: {
             }
 
             if (toktype === 'Identifier') {
-                set(
-                    weights == 1
-                        ? `${_space}${CONTENT.slice(ref.from, ref.to)}`
-                        : `${_space}(${CONTENT.slice(ref.from, ref.to)}:${weights})`,
-                )
+                set(CONTENT.slice(ref.from, ref.to))
+                return false
+            }
+
+            if (toktype === 'Separator') {
+                set(',')
                 return false
             }
 
             if (toktype === 'String') {
-                set(
-                    weights == 1
-                        ? `${_space}${CONTENT.slice(ref.from + 1, ref.to - 1)}`
-                        : `${_space}(${CONTENT.slice(ref.from + 1, ref.to - 1)}:${weights})`,
-                )
+                set(CONTENT.slice(ref.from + 1, ref.to - 1))
                 return false
             }
 
             if (toktype === 'Embedding') {
                 const [from, to] = $getWildcardNamePos(ref)
                 const embeddingName = CONTENT.slice(from, to) as Embeddings
-                set(`${_space}embedding:${embeddingName}`)
+                set(`embedding:${embeddingName}`)
                 return false
             }
 
@@ -90,12 +87,7 @@ export const compilePrompt = (p: {
                 }
                 const picked = st.chooseRandomly(wildcardName, p.seed ?? Math.floor(Math.random() * 99999999), options)
                 if (p.printWildcards) debugText.push(picked)
-
-                set(
-                    weights == 1 //
-                        ? `${_space}${picked}`
-                        : `${_space}(${picked}:${weights})`,
-                )
+                set(picked)
                 return false
             }
 
@@ -113,7 +105,7 @@ export const compilePrompt = (p: {
                 // 🔴})
 
                 const associatedText = st.getLoraAssociatedTriggerWords(loraName)
-                if (associatedText) set(`${_space}${associatedText}`)
+                if (associatedText) set(associatedText)
                 // 🔴 clip = next._CLIP
                 // 🔴 ckpt = next._MODEL
             }

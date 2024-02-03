@@ -1,4 +1,5 @@
 export type PromptLangNodeName =
+    | 'Separator'
     | 'WeightedExpression'
     | 'Permutations'
     | 'Lora'
