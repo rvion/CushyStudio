@@ -103,7 +103,7 @@ export const PromptComletion1: Extension = autocompletion({
     //
     activateOnTyping: true,
     updateSyncTime: 50,
-    closeOnBlur: false,
+    // closeOnBlur: false,
     override: [
         //
         dynamicCompletion,
