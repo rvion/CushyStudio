@@ -79,14 +79,8 @@ class CMPromptState {
             extensions: [
                 //
                 EditorView.updateListener.of((ev) => {
-                    // console.log(`[👙] A`)
                     // const from = ev.state.selection.main.from
                     // const tree = syntaxTree(ev.state)
-                    // console.log($ancestorsTopDown(tree.resolve(from)).map((n) => n.name))
-                    // console.log($ancestorsTopDown(tree.resolve(from, -1)).map((n) => n.name))
-                    // console.log($ancestorsTopDown(tree.resolve(from, 1)).map((n) => n.name))
-                    // console.log($ancestorsTopDown($smartResolve(tree, from)).map((n) => n.name))
-
                     if (ev.docChanged) {
                         const nextText = ev.state.doc.toString()
                         this.text = nextText

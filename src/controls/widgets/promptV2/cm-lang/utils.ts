@@ -1,6 +1,7 @@
 import type { PromptLangNodeName } from '../grammar/grammar.types'
 import type { SyntaxNode } from '@lezer/common'
 import type { Tree } from '@lezer/common'
+
 import { bang } from 'src/utils/misc/bang'
 
 export const $smartResolve = (tree: Tree, at: number): SyntaxNode => {
@@ -45,18 +46,9 @@ export const $commonAncestor = (
     let ancestorsA = $ancestorsTopDown(nodeA)
     let ancestorsB = $ancestorsTopDown(nodeB)
 
-    // console.log(`ancestorsA: ${nodeA.name} | ${ancestorsA.map((a) => a.name).join(' -> ')}`)
-    // console.log(`ancestorsB: ${nodeB.name} | ${ancestorsB.map((a) => a.name).join(' -> ')}`)
     console.log(`ancestorsA: ${ancestorsA.map((a) => a.name).join(' -> ')}`)
     console.log(`ancestorsB: ${ancestorsB.map((a) => a.name).join(' -> ')}`)
 
-    // if (ancestorsA.length > ancestorsB.length) {
-    //     let _ = ancestorsA
-    //     ancestorsA = ancestorsB
-    //     ancestorsB = _
-    // }
-    // console.log(`[👙] nodeA:`, )
-    // console.log(`[👙] nodeB:`, )
     const maxLen = Math.max(ancestorsA.length, ancestorsB.length)
     let commonAncestor: SyntaxNode | undefined = nodeA
     let a: SyntaxNode = bang(ancestorsA[0], `ancestorsA is empty`)
