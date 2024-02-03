@@ -45,10 +45,8 @@ export const $commonAncestor = (
 } => {
     let ancestorsA = $ancestorsTopDown(nodeA)
     let ancestorsB = $ancestorsTopDown(nodeB)
-
-    console.log(`ancestorsA: ${ancestorsA.map((a) => a.name).join(' -> ')}`)
-    console.log(`ancestorsB: ${ancestorsB.map((a) => a.name).join(' -> ')}`)
-
+    // console.log(`ancestorsA: ${ancestorsA.map((a) => a.name).join(' -> ')}`)
+    // console.log(`ancestorsB: ${ancestorsB.map((a) => a.name).join(' -> ')}`)
     const maxLen = Math.max(ancestorsA.length, ancestorsB.length)
     let commonAncestor: SyntaxNode | undefined = nodeA
     let a: SyntaxNode = bang(ancestorsA[0], `ancestorsA is empty`)

@@ -6,15 +6,14 @@ import { observer } from 'mobx-react-lite'
 import { createRef, useLayoutEffect, useMemo } from 'react'
 import { ComboUI } from 'src/app/shortcuts/ComboUI'
 import { SimplifiedLoraDef } from 'src/presets/SimplifiedLoraDef'
-import { LoraBoxUI } from 'src/widgets/prompter/nodes/lora/LoraBoxUI'
-import { Widget_prompt } from './WidgetPrompt'
+import { LoraBoxUI, LoraTextNode } from 'src/widgets/prompter/nodes/lora/LoraBoxUI'
+import { CompiledPrompt, Widget_prompt } from './WidgetPrompt'
 import { PromptLang } from './cm-lang/LANG'
 import { basicSetup } from './cm-lang/SETUP'
 import { generatePromptCombinations } from './compiler/promptsplit'
 import { parser } from './grammar/grammar.parser'
 import { PromptLangNodeName } from './grammar/grammar.types'
-import { run_prompt } from 'library/built-in/_prefabs/prefab_prompt'
-
+import { $extractLoraInfos } from './cm-lang/LINT'
 // UI
 export const WidgetPromptUI = observer(function WidgetPromptUI_(p: { widget: Widget_prompt }) {
     const widget = p.widget
@@ -25,8 +24,9 @@ export const WidgetPromptUI = observer(function WidgetPromptUI_(p: { widget: Wid
 
     return (
         <div tw='flex flex-col'>
-            editor:
             <div tw='bd p-2' ref={uist.mountRef}></div>
+            <pre tw='virtualBorder whitespace-pre-wrap text-sm bg-base-200'>{uist.compiled.positivePrompt}</pre>
+            <pre tw='virtualBorder whitespace-pre-wrap text-sm bg-base-200'>{uist.compiled.negativePrompt}</pre>
             <div tw='text-xs italic'>
                 <div tw='flex gap-2'>
                     weight + :
@@ -39,24 +39,19 @@ export const WidgetPromptUI = observer(function WidgetPromptUI_(p: { widget: Wid
                     (or <ComboUI combo={'mod+shift+j'} /> for tiniest scope)
                 </div>
             </div>
-            loras:
-            {uist.loras.map((lname) => {
-                const loradef: SimplifiedLoraDef = {
-                    name: lname as any,
-                    strength_clip: 1,
-                    strength_model: 1,
-                }
+            <summary tw='text-xs'>
+                <details>
+                    <pre tw='virtualBorder whitespace-pre-wrap text-xs bg-base-200'>{uist.debugView}</pre>
+                </details>
+            </summary>
+            {uist.loras.map((x: LoraTextNode) => {
                 return (
-                    <div key={lname} tw='bd'>
-                        {lname}
-                        <LoraBoxUI def={loradef} onDelete={() => {}} />
+                    <div key={x.name} tw='bd'>
+                        {x.name}
+                        <LoraBoxUI def={x} onDelete={() => {}} />
                     </div>
                 )
             })}
-            debug:
-            <pre tw='virtualBorder whitespace-pre-wrap text-xs bg-base-200'>{uist.debugView}</pre>
-            output:
-            <pre tw='virtualBorder whitespace-pre-wrap text-sm bg-base-200'>{uist.compiled}</pre>
         </div>
     )
 })
@@ -107,17 +102,16 @@ class CMPromptState {
         return parser.parse(this.text)
     }
     // -------------------------
-    get loras() {
+    get loras(): LoraTextNode[] {
         if (this.parsedTree === null) return []
-        const OUT: string[] = []
+        const OUT: LoraTextNode[] = []
         const self = this
         this.parsedTree?.iterate({
-            enter(node) {
-                // console.log(`[👙]`, node)
+            enter(ref) {
                 const match: PromptLangNodeName = 'Lora'
-                if (node.name === match) {
-                    OUT.push(self.text.slice(node.from, node.to))
-                }
+                if (ref.name !== match) return
+                const infos = $extractLoraInfos(self.text, ref)
+                OUT.push(infos)
             },
         })
         return OUT
@@ -156,7 +150,7 @@ class CMPromptState {
         return generatePromptCombinations(this.text!)
     }
 
-    get compiled(): string {
+    get compiled(): CompiledPrompt {
         return this.widget.compile({ onLora: (lora) => {} })
     }
 }

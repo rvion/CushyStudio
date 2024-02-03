@@ -254,7 +254,7 @@ export class DraftL {
                 const rootWidget = this.form.value
                 if (rootWidget == null) return null
                 // const count = formValue.form._cache.count // manual mobx invalidation
-                const _ = rootWidget.serialHash
+                const _ = 0 // rootWidget.serialHash
                 runInAction(() => {
                     console.log(`[🦊] form: updating`)
                     this.update({ formSerial: rootWidget.serial })

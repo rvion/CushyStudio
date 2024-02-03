@@ -23,14 +23,18 @@ app({
         //     appearance: 'tab',
         //     choices: [{ id: 'SD 1.5' }, { id: 'SDXL' }],
         // }),
-        positive: form.prompt({
-            default: 'masterpiece, tree, *color, *3d_term, *adj_beauty, *adj_general, nature, intricate_details',
+        prompt: form.prompt({
+            default: [
+                //
+                'masterpiece, tree, *color, *3d_term, *adj_beauty, *adj_general, nature, intricate_details\n',
+                '(bad quality, blurry, low resolution, pixelated, noisy)*-1',
+            ].join('\n'),
         }),
         //
-        negative: form.prompt({
-            startCollapsed: true,
-            default: 'bad quality, blurry, low resolution, pixelated, noisy',
-        }),
+        // negative: form.prompt({
+        //     startCollapsed: true,
+        //     default: 'bad quality, blurry, low resolution, pixelated, noisy',
+        // }),
         model: ui_model(),
         latent: ui_latent_v3(),
         sampler: ui_sampler(),
@@ -80,17 +84,18 @@ app({
         // MODEL, clip skip, vae, etc. ---------------------------------------------------------------
         let { ckpt, vae, clip } = run_model(ui.model)
 
-        const posPrompt = ui.testStuff?.reversePositiveAndNegative ? ui.negative : ui.positive
-        const negPrompt = ui.testStuff?.reversePositiveAndNegative ? ui.positive : ui.negative
+        // const posPrompt = ui.testStuff?.reversePositiveAndNegative ? ui.negative : ui.positive
+        // const negPrompt = ui.testStuff?.reversePositiveAndNegative ? ui.positive : ui.negative
 
         // RICH PROMPT ENGINE -------- ---------------------------------------------------------------
-        const x = run_prompt({ richPrompt: posPrompt, clip, ckpt, outputWildcardsPicked: true })
+        const x = run_prompt({ richPrompt: ui.prompt, clip, ckpt, outputWildcardsPicked: true })
         const clipPos = x.clip
         let ckptPos = x.ckpt
         let positive = x.conditionning
+        let negative = x.conditionningNeg
 
-        const y = run_prompt({ richPrompt: negPrompt, clip, ckpt, outputWildcardsPicked: true })
-        let negative = y.conditionning
+        // const y = run_prompt({ richPrompt: negPrompt, clip, ckpt, outputWildcardsPicked: true })
+        // let negative = y.conditionning
 
         // START IMAGE -------------------------------------------------------------------------------
         let { latent, width, height } = await run_latent_v3({ opts: ui.latent, vae })

@@ -10,10 +10,10 @@ import { $commonAncestor, $smartResolve } from './utils'
 
 export const PromptKeymap1 = () =>
     keymap.of([
-        { key: 'm-j', preventDefault: true, run: changeWeights(0.1, ['WeightedExpression', 'Lora', 'Wildcards']) },
-        { key: 'm-k', preventDefault: true, run: changeWeights(-0.1, ['WeightedExpression', 'Lora', 'Wildcards']) },
-        // { key: 'm-s-j', preventDefault: true, run: changeWeight(0.1, ['Lora', 'Wildcards']) },
-        // { key: 'm-s-k', preventDefault: true, run: changeWeight(-0.1, ['Lora', 'Wildcards']) },
+        { key: 'm-j', preventDefault: true, run: changeWeights(0.1, ['WeightedExpression', 'Lora', 'Wildcard']) },
+        { key: 'm-k', preventDefault: true, run: changeWeights(-0.1, ['WeightedExpression', 'Lora', 'Wildcard']) },
+        // { key: 'm-s-j', preventDefault: true, run: changeWeight(0.1, ['Lora', 'Wildcard']) },
+        // { key: 'm-s-k', preventDefault: true, run: changeWeight(-0.1, ['Lora', 'Wildcard']) },
         // { key: 'm-s-j', preventDefault: true, run: increaseWeights, },
         // key: 'Alt-ArrowUp',
     ])
@@ -47,7 +47,7 @@ const changeWeight = (
     if (from > to) throw new Error(`❌ from > to`)
     const nodeA = $smartResolve(tree, from)
     const nodeB = $smartResolve(tree, to)
-    const { a, b } = $commonAncestor(nodeA, nodeB, ['WeightedExpression', 'Lora', 'Wildcards'])
+    const { a, b } = $commonAncestor(nodeA, nodeB, ['WeightedExpression', 'Lora', 'Wildcard'])
 
     // increase weights
     if (a === b && a.name === 'WeightedExpression') {

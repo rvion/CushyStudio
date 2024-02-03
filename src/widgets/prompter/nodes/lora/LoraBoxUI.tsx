@@ -1,22 +1,32 @@
-import type { SimplifiedLoraDef } from 'src/presets/SimplifiedLoraDef'
+import type { SyntaxNodeRef } from '@lezer/common'
 import { observer } from 'mobx-react-lite'
 import { openExternal } from 'src/app/layout/openExternal'
 import { InputNumberUI } from 'src/rsuite/InputNumberUI'
 import { Button, Input } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
 
-export const LoraBoxUI = observer(function LoraBoxUI_(p: { onDelete: () => void; def: SimplifiedLoraDef }) {
+export type LoraTextNode = {
+    loraName: Enum_LoraLoader_lora_name
+    strength_clip: number
+    strength_model: number
+    ref: SyntaxNodeRef
+}
+
+export const LoraBoxUI = observer(function LoraBoxUI_(p: {
+    // def: SimplifiedLoraDef
+    def: LoraTextNode
+    onDelete: () => void
+}) {
     const def = p.def
     const st = useSt()
 
-    const loraMetadata = st.configFile.value?.loraPrompts?.[def.name]
+    const loraMetadata = st.configFile.value?.loraPrompts?.[def.loraName]
     const associatedText = loraMetadata?.text ?? ''
     const associatedUrl = loraMetadata?.url ?? ''
-
     return (
         <div>
-            <div key={def.name}>
-                {/* <div className='shrink-0'>{def.name.replace('.safetensors', '')}</div> */}
+            <div key={def.loraName}>
+                {/* <div className='shrink-0'>{lora.name.replace('.safetensors', '')}</div> */}
                 <div className='flex-grow'></div>
                 <div tw='flex gap-1 items-center'>
                     <div tw='w-32'>model strength</div>
@@ -60,8 +70,8 @@ export const LoraBoxUI = observer(function LoraBoxUI_(p: { onDelete: () => void;
                                 if (!prev.loraPrompts) prev.loraPrompts = {}
                                 const lp = prev.loraPrompts
                                 // ensure entry for lora name
-                                let entry = lp[def.name]
-                                if (!entry) entry = lp[def.name] = { text: '' }
+                                let entry = lp[def.loraName]
+                                if (!entry) entry = lp[def.loraName] = { text: '' }
                                 entry.text = nextText
                             })
                         }}
@@ -87,8 +97,8 @@ export const LoraBoxUI = observer(function LoraBoxUI_(p: { onDelete: () => void;
                                 if (!prev.loraPrompts) prev.loraPrompts = {}
                                 const lp = prev.loraPrompts
                                 // ensure entry for lora name
-                                let entry = lp[def.name]
-                                if (!entry) entry = lp[def.name] = { url: '' }
+                                let entry = lp[def.loraName]
+                                if (!entry) entry = lp[def.loraName] = { url: '' }
                                 entry.url = nextURL
                             })
                         }}

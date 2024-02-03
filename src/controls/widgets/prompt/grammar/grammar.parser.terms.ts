@@ -8,7 +8,7 @@ export const
   LoraName = 6,
   Identifier = 7,
   String = 8,
-  Wildcards = 9,
+  Wildcard = 9,
   WildcardName = 10,
   Embedding = 11,
   EmbeddingName = 12,

@@ -26,7 +26,7 @@ export const placeholders = ViewPlugin.fromClass(
                     if (name == 'Lora') {
                         decorations.push({ from: ref.from, to: ref.to, value: this.loraMark })
                     }
-                    if (name == 'Wildcards') {
+                    if (name == 'Wildcard') {
                         decorations.push({ from: ref.from, to: ref.to, value: this.wildcardMark })
                     }
                     if (name == 'Embedding') {

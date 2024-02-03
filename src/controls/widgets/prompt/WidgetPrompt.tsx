@@ -10,6 +10,7 @@ import { WidgetDI } from '../WidgetUI.DI'
 import { hash } from 'ohash'
 import { parser } from './grammar/grammar.parser'
 import { $getWeightNumber, $getWildcardNamePos } from './cm-lang/LINT'
+import { compilePrompt } from './_compile'
 
 export type Widget_prompt_config = WidgetConfigFields<{ default?: string; textarea?: boolean; placeHolder?: string }>
 export type Widget_prompt_serial = WidgetSerialFields<{ type: 'prompt'; val?: string }>
@@ -21,14 +22,17 @@ export type Widget_prompt_types = {
     $Output: Widget_prompt_output
 }
 
+export type CompiledPrompt = {
+    positivePrompt: string
+    negativePrompt: string
+    debugText: string[]
+}
+
 // STATE
 export interface Widget_prompt extends WidgetTypeHelpers<Widget_prompt_types> {}
 export class Widget_prompt implements IWidget<Widget_prompt_types> {
     get serialHash () { return hash(this.result) } // prettier-ignore
-    get isVerticalByDefault(): boolean {
-        if (this.config.textarea) return true
-        return false
-    }
+    isVerticalByDefault = true
 
     get isCollapsible() { return this.config.textarea ?? false } // prettier-ignore
 
@@ -64,100 +68,20 @@ export class Widget_prompt implements IWidget<Widget_prompt_types> {
     }
 
     compile = (p: {
-        /** for wildcards */
+        /** for wildcard */
         seed?: number
         onLora: (lora: Enum_Load_Lora_lora_name) => void
-    }) => {
-        let textOUT = ''
-        // const textToOutput: string[] = []
-        const CONTENT = this.text
-        const st = this.form.schema.st
-        const tree = parser.parse(CONTENT ?? '')
-        const cursor = tree.cursor()
-
-        let weights = 1
-
-        cursor.iterate(
-            // enter
-            (ref: SyntaxNodeRef) => {
-                const toktype = ref.name as PromptLangNodeName
-                const _lastChar = textOUT[textOUT.length - 1] ?? ''
-                const _space = _lastChar === ' ' ? '' : ' '
-                // const TXT = () => CONTENT.slice(node.from, node.to)
-                // TODO: if (toktype === 'booru') text += `${_space}${tok.tag.text}`
-                if (toktype === 'WeightedExpression') {
-                    const [from, to] = $getWeightNumber(ref)
-                    const numberTxt = CONTENT.slice(from, to)
-                    const float = parseFloat(numberTxt)
-                    weights *= float
-                }
-                if (toktype === 'Identifier') {
-                    textOUT +=
-                        weights == 1 //
-                            ? `${_space}${CONTENT.slice(ref.from, ref.to)}`
-                            : `${_space}(${CONTENT.slice(ref.from, ref.to)}:${weights})`
-                    return false
-                }
-                if (toktype === 'String') {
-                    textOUT +=
-                        weights == 1 //
-                            ? `${_space}${CONTENT.slice(ref.from + 1, ref.to - 1)}`
-                            : `${_space}(${CONTENT.slice(ref.from + 1, ref.to - 1)}:${weights})`
-                    return false
-                }
-                if (toktype === 'Embedding') {
-                    const [from, to] = $getWildcardNamePos(ref)
-                    const embeddingName = CONTENT.slice(from, to) as Embeddings
-                    textOUT += `${_space}embedding:${embeddingName}`
-                    return false
-                }
-                if (toktype === 'Wildcards') {
-                    const [from, to] = $getWildcardNamePos(ref)
-                    const wildcardName = CONTENT.slice(from, to)
-                    const options = (st.wildcards as any)[wildcardName]
-                    if (!Array.isArray(options)) {
-                        console.log(`[❌] invalid wildcard`)
-                        return false
-                    }
-                    const picked = st.chooseRandomly(wildcardName, p.seed ?? Math.floor(Math.random() * 99999999), options)
-                    textOUT +=
-                        weights == 1 //
-                            ? `${_space}${picked}`
-                            : `${_space}(${picked}:${weights})`
-                    return false
-                }
-                if (toktype === 'Lora') {
-                    const [from, to] = $getWildcardNamePos(ref)
-                    const loraName = CONTENT.slice(from, to) as Enum_LoraLoader_lora_name
-                    // 🔴
-                    // 🔴const next = run.nodes.LoraLoader({
-                    // 🔴    model: ckpt,
-                    // 🔴    clip: clip,
-                    // 🔴    lora_name: loraName,
-                    // 🔴    strength_clip: weights, // tok.loraDef.strength_clip,
-                    // 🔴    strength_model: weights, // tok.loraDef.strength_model,
-                    // 🔴})
-
-                    const associatedText = st.getLoraAssociatedTriggerWords(loraName)
-                    if (associatedText) textOUT += ` ${associatedText}`
-
-                    // 🔴 clip = next._CLIP
-                    // 🔴 ckpt = next._MODEL
-                }
-            },
-            // leave
-            (ref) => {
-                const toktype = ref.name as PromptLangNodeName
-                if (toktype === 'WeightedExpression') {
-                    const [from, to] = $getWeightNumber(ref)
-                    const numberTxt = CONTENT.slice(from, to)
-                    const float = parseFloat(numberTxt)
-                    weights /= float
-                }
-            },
-        )
-        return textOUT
-    }
+        /** @default true */
+        printWildcards?: boolean
+    }): CompiledPrompt =>
+        compilePrompt({
+            st: this.form.schema.st,
+            text: this.text,
+            //
+            onLora: p.onLora,
+            seed: p.seed,
+            printWildcards: p.printWildcards,
+        })
 }
 
 // DI

@@ -26,7 +26,7 @@ const dynamicCompletion: CompletionSource = (context: CompletionContext): Comple
     const nodeToReplace = x.find(
         (x) =>
             x.name === 'Lora' || //
-            x.name === 'Wildcards' ||
+            x.name === 'Wildcard' ||
             x.name === 'Embedding',
     )
 

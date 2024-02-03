@@ -3,7 +3,7 @@ export type PromptLangNodeName =
     | 'Permutations'
     | 'Lora'
     | 'Embedding'
-    | 'Wildcards'
+    | 'Wildcard'
     | 'Separator'
     | 'Break'
     | 'Identifier'

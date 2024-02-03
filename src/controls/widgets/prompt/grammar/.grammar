@@ -8,7 +8,7 @@ expression[@isGroup=Expression] {
   Permutations |
 
   Lora |
-  Wildcards |
+  Wildcard |
   Embedding |
 
   Separator |
@@ -31,14 +31,14 @@ Permutations { "{" expression+ "}" }
 
 // LORA
 // Lora { @specialize<Identifier, "lora"> ":" LoraName  }
-Lora { "@" LoraName  }
+Lora { "@" LoraName ( "[" Number ("," Number)? "]" )?   }
 LoraName { Identifier | String  }
 
-// WILDCARDS
-Wildcards { "*" WildcardName }
+// WILDCARD
+Wildcard { "*" WildcardName }
 WildcardName { Identifier | String  }
 
-// embeddings
+// EMBEDDING
 Embedding { ":" EmbeddingName }
 EmbeddingName { Identifier | String  }
 

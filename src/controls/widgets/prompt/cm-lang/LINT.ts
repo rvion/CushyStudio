@@ -1,4 +1,4 @@
-import type { SyntaxNodeRef } from '@lezer/common'
+import type { SyntaxNodeRef, SyntaxNode } from '@lezer/common'
 import type { Action } from '@codemirror/lint'
 import type { STATE } from 'src/state/state'
 import type { EditorView } from '@codemirror/view'
@@ -21,8 +21,8 @@ export const PromptLinter1 = linter((view: EditorView) => {
         .cursor()
         .iterate((ref) => {
             const refName = ref.name as PromptLangNodeName
-            if (refName == 'Wildcards') {
-                // | Wildcards  (89 -> 99)
+            if (refName == 'Wildcard') {
+                // | Wildcard  (89 -> 99)
                 //   | WildcardName  (90 -> 99)
                 //     | String "3d_term" (90 -> 99)
                 const [from, to] = $getWildcardNamePos(ref)
@@ -64,10 +64,45 @@ export const PromptLinter1 = linter((view: EditorView) => {
     return diagnostics
 })
 
+export const $extractLoraInfos = (
+    text: string,
+    ref: SyntaxNodeRef,
+): {
+    loraName: Enum_LoraLoader_lora_name
+    strength_clip: number
+    strength_model: number
+    ref: SyntaxNodeRef
+} => {
+    // safety net
+    if (ref.name !== 'Lora') throw new Error(`$extractLoraInfos called with a "${ref.name}" instead of a "Lora"`)
+
+    // get anme
+    const isString = ref.node.firstChild?.firstChild?.name == 'String'
+    const posName = isString ? [ref.from + 2, ref.to - 1] : [ref.from + 1, ref.to]
+    const loraName = text.slice(posName[0], posName[1]) as Enum_LoraLoader_lora_name
+
+    // get weights
+    const numbers = ref.node.getChildren('Number')
+    let strength_clip = 1
+    let strength_model = 1
+    if (numbers.length >= 1) {
+        const node: SyntaxNode = numbers[0]
+        const number = parseFloat(text.slice(node.from, node.to))
+        strength_clip = number
+    }
+    if (numbers.length >= 2) {
+        const node: SyntaxNode = numbers[1]
+        const number = parseFloat(text.slice(node.from, node.to))
+        strength_model = number
+    }
+
+    return { loraName, strength_model, strength_clip, ref: ref }
+}
+
 export const $getWildcardNamePos = (ref: SyntaxNodeRef): [from: number, to: number] => {
     // safety net
-    if (!['Wildcards', 'Lora', 'Embedding'].includes(ref.name))
-        throw new Error(`$getWildcardNamePos called with a node not in ['Wildcards', 'Lora', 'Embedding']`)
+    if (!['Wildcard', 'Lora', 'Embedding'].includes(ref.name))
+        throw new Error(`$getWildcardNamePos called with a node not in ['Wildcard', 'Lora', 'Embedding']`)
 
     // compute pos
     const isString = ref.node.firstChild?.firstChild?.name == 'String'
