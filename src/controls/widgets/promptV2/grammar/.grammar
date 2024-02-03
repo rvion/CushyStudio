@@ -39,18 +39,18 @@ Wildcards { "*" WildcardName }
 WildcardName { Identifier | String  }
 
 // embeddings
-Embeddings { ">" EmbeddingName }
+Embeddings { ":" EmbeddingName }
 EmbeddingName { Identifier | String  }
 
 
 @tokens {
   space { @whitespace+ }
   Break { "break" }
-  Identifier { $[A-Za-z_\\\/]+ }
+  Identifier { $[A-Za-z_]+ }
   Number { $[0-9.-]+ }
   String { '"' !["]* '"' }
   Separator { "," }
   Comment { ";" ![\n]* }
   // WeightedExpression {"{}"}
-  @precedence { Comment, Break, Identifier }
+  @precedence { Comment, Number, Break, Identifier }
 }

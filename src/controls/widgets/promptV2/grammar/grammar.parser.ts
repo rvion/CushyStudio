@@ -2,18 +2,18 @@
 import {LRParser} from "@lezer/lr"
 export const parser = LRParser.deserialize({
   version: 14,
-  states: "$hOVQPOOOVQPO'#C^OVQPO'#C`OzQPO'#CaO!SQPO'#CeO![QPO'#CgOOQO'#Cq'#CqOOQO'#Cl'#ClQVQPOOO!dQPO,58xO!nQPO,58zOOQO'#Cb'#CbOOQO,58{,58{OOQO'#Cf'#CfOOQO,59P,59POOQO'#Ch'#ChOOQO,59R,59ROOQO-E6j-E6jO!uQPO1G.dO!zQPO1G.dOOQO1G.f1G.fOOQO7+$O7+$OOOQO'#Cm'#CmO#PQPO7+$OOOQO-E6k-E6kO#XQPO<<GjOOQOAN=UAN=U",
-  stateData: "#c~OdOS~ORUOVUOWUO]UO^UO_UOfPOiQOkROlSOmTO~OVZOWZO~OV]OW]O~OV_OW_O~OgcOhbO~PVOjdO~PVOReO~ORfO~ORfOhiO~ORjO~O_^V^~",
-  goto: "!ffPPgPggoPPgrguPPPx!WPPP!^]UOPQWXYR[RR^SR`TQWOQXPQYQVaWXYQgcRhg]VOPQWXY",
+  states: "$hOVQPOOOVQPO'#C^OVQPO'#C`OzQPO'#CaO!SQPO'#CeO![QPO'#CgOOQO'#Cq'#CqOOQO'#Cl'#ClQVQPOOO#UQPO,58xO#`QPO,58zOOQO'#Cb'#CbOOQO,58{,58{OOQO'#Cf'#CfOOQO,59P,59POOQO'#Ch'#ChOOQO,59R,59ROOQO-E6j-E6jO#gQPO1G.dO#lQPO1G.dOOQO1G.f1G.fOOQO7+$O7+$OOOQO'#Cm'#CmO#wQPO7+$OOOQO-E6k-E6kO$PQPO<<GjOOQOAN=UAN=U",
+  stateData: "$[~OdOS~ORUOVUOWUO]UO^UO_UOfPOgTOiQOkROlSO~OVZOWZO~OV]OW]O~OV_OW_O~ORUOVUOWUO]UO^UO_UOfPOiQOkROlSO~OgcOhbO~P!dOjdO~PVOReO~ORfOV_OW_O~ORfOhiO~ORjO~O_R^V^~",
+  goto: "!gfPPgPggoPPgrguPPPy!XPPP!_]UOPQWXYR[RR^ST`TcQWOQXPQYQVaWXYQgcRhg]VOPQWXY",
   nodeNames: "⚠ File WeightedExpression Number Permutations Lora LoraName Identifier String Wildcards WildcardName Embeddings EmbeddingName Separator Break Comment",
-  maxTerm: 29,
+  maxTerm: 28,
   nodeProps: [
     ["group", -11,2,3,4,5,7,8,9,11,13,14,15,"Expression"]
   ],
   skippedNodes: [0],
   repeatNodeCount: 2,
-  tokenData: ")g~RoX^#Spq#Srs#wxy$fyz$kz{$v|}${}!O%Q!O!P%Q!P!Q%`!Q![%Q![!]%t!]!^%y!`!a&b!b!c&g!c!}%`#O#P%`#R#S%`#T#U%`#U#V&l#V#o%`#o#p)]#q#r)b#y#z#S$f$g#S#BY#BZ#S$IS$I_#S$I|$JO#S$JT$JU#S$KV$KW#S&FU&FV#S~#XYd~X^#Spq#S#y#z#S$f$g#S#BY#BZ#S$IS$I_#S$I|$JO#S$JT$JU#S$KV$KW#S&FU&FV#S~#zTOr#wrs$Zs;'S#w;'S;=`$`<%lO#w~$`OW~~$cP;=`<%l#w~$kOf~~$nP#l#m$q~$vOh~~${Ol~~%QO]~~%VRR~}!O%Q!O!P%Q!Q![%Q~%eTV~!P!Q%`!c!}%`#O#P%`#R#S%`#T#o%`~%yOg~~&OS_~OY%yZ;'S%y;'S;=`&[<%lO%y~&_P;=`<%l%y~&gOm~~&lOk~~&qVV~!P!Q%`!c!}%`#O#P%`#R#S%`#T#f%`#f#g'W#g#o%`~']VV~!P!Q%`!c!}%`#O#P%`#R#S%`#T#X%`#X#Y'r#Y#o%`~'wUV~!P!Q%`!c!}%`#O#P%`#R#S%`#T#U(Z#U#o%`~(`VV~!P!Q%`!c!}%`#O#P%`#R#S%`#T#_%`#_#`(u#`#o%`~(|T^~V~!P!Q%`!c!}%`#O#P%`#R#S%`#T#o%`~)bOi~~)gOj~",
+  tokenData: "(c~RlX^!ypq!yrs#nxy$]yz$bz{$m|}$r}!O$w!O!P$w!Q![$w![!]%V!]!^%[!b!c%s!c!}%x#R#S%x#T#U%x#U#V&W#V#o%x#o#p(X#q#r(^#y#z!y$f$g!y#BY#BZ!y$IS$I_!y$I|$JO!y$JT$JU!y$KV$KW!y&FU&FV!y~#OYd~X^!ypq!y#y#z!y$f$g!y#BY#BZ!y$IS$I_!y$I|$JO!y$JT$JU!y$KV$KW!y&FU&FV!y~#qTOr#nrs$Qs;'S#n;'S;=`$V<%lO#n~$VOW~~$YP;=`<%l#n~$bOf~~$eP#l#m$h~$mOh~~$rOl~~$wO]~~$|RR~}!O$w!O!P$w!Q![$w~%[Og~~%aS_~OY%[Z;'S%[;'S;=`%m<%lO%[~%pP;=`<%l%[~%xOk~~%}RV~!c!}%x#R#S%x#T#o%x~&]TV~!c!}%x#R#S%x#T#f%x#f#g&l#g#o%x~&qTV~!c!}%x#R#S%x#T#X%x#X#Y'Q#Y#o%x~'VSV~!c!}%x#R#S%x#T#U'c#U#o%x~'hTV~!c!}%x#R#S%x#T#_%x#_#`'w#`#o%x~(OR^~V~!c!}%x#R#S%x#T#o%x~(^Oi~~(cOj~",
   tokenizers: [0],
   topRules: {"File":[0,1]},
-  tokenPrec: 106
+  tokenPrec: 144
 })

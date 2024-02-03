@@ -29,13 +29,15 @@ const dynamicCompletion: CompletionSource = (context: CompletionContext): Comple
     const st: STATE = (window as any).st
     const addWildcards = () => {
         for (const [wildcard, values] of Object.entries(st.wildcards)) {
+            const noWrap = /^[A-Za-z_]+$/.test(wildcard)
+            console.log(`[👙] `, wildcard, noWrap)
             completionsOptions.push({
-                displayLabel: `WILDCARD: ${wildcard}`,
+                displayLabel: `WILDCARD: ${noWrap ? wildcard : `"${wildcard}"`}`,
                 label: wildcard,
                 type: 'keyword',
                 detail: values.join(',').slice(0, 20) + '...',
                 // section: 'wildcards',
-                apply: `*${wildcard} `,
+                apply: noWrap ? `*${wildcard} ` : `*"${wildcard}" `,
             })
         }
     }
@@ -53,13 +55,14 @@ const dynamicCompletion: CompletionSource = (context: CompletionContext): Comple
     }
     const addEmbeddings = () => {
         for (const embeddingName of st.schema.data.embeddings) {
+            const noWrap = /^[A-Za-z_]+$/.test(embeddingName)
             completionsOptions.push({
                 displayLabel: `Embeddings: ${embeddingName}`,
                 label: embeddingName,
                 type: 'embedding',
                 // section: 'lora',
                 // apply: `lora:"${embeddingName}"`,
-                apply: `:"${embeddingName}"`,
+                apply: noWrap ? `:${embeddingName}` : `:"${embeddingName}"`,
             })
         }
     }

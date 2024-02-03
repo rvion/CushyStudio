@@ -9,6 +9,7 @@ import {
     highlightActiveLine,
     keymap,
 } from '@codemirror/view'
+import { EditorView } from '@codemirror/view'
 export { EditorView } from '@codemirror/view'
 import { EditorState } from '@codemirror/state'
 import {
@@ -27,6 +28,7 @@ import { PromptKeymap1 } from './COMMANDS'
 import { oneDark } from '@codemirror/theme-one-dark'
 import { placeholders } from './DECORATION'
 export const basicSetup = (() => [
+    EditorView.lineWrapping,
     placeholders,
     oneDark,
     lineNumbers(),
