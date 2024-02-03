@@ -1,10 +1,12 @@
+import type { SyntaxNodeRef } from '@lezer/common'
 import type { Action } from '@codemirror/lint'
 import type { STATE } from 'src/state/state'
+import type { EditorView } from '@codemirror/view'
+import type { PromptLangNodeName } from '../grammar/grammar.types'
 
 import { syntaxTree } from '@codemirror/language'
 import { Diagnostic, linter } from '@codemirror/lint'
-import { EditorView } from '@codemirror/view'
-import { PromptLangNodeName } from '../grammar/grammar.types'
+import { bang } from 'src/utils/misc/bang'
 
 export const PromptLinter1 = linter((view: EditorView) => {
     let diagnostics: Diagnostic[] = []
@@ -23,8 +25,7 @@ export const PromptLinter1 = linter((view: EditorView) => {
                 // | Wildcards  (89 -> 99)
                 //   | WildcardName  (90 -> 99)
                 //     | String "3d_term" (90 -> 99)
-                const isString = ref.node.firstChild?.firstChild?.name == 'String'
-                const [from, to] = isString ? [ref.from + 2, ref.to - 1] : [ref.from + 1, ref.to]
+                const [from, to] = $getWildcardNamePos(ref)
                 const text = view.state.sliceDoc(from, to)
                 if (st.hasWildcard(text)) return
                 diagnostics.push({
@@ -36,8 +37,7 @@ export const PromptLinter1 = linter((view: EditorView) => {
                 })
             }
             if (refName == 'Lora') {
-                const isString = ref.node.firstChild?.firstChild?.name == 'String'
-                const [from, to] = isString ? [ref.from + 2, ref.to - 1] : [ref.from + 1, ref.to]
+                const [from, to] = $getWildcardNamePos(ref)
                 const text = view.state.sliceDoc(from, to)
                 if (st.schema.hasLora(text)) return
                 diagnostics.push({
@@ -49,8 +49,7 @@ export const PromptLinter1 = linter((view: EditorView) => {
                 })
             }
             if (refName == 'Embedding') {
-                const isString = ref.node.firstChild?.firstChild?.name == 'String'
-                const [from, to] = isString ? [ref.from + 2, ref.to - 1] : [ref.from + 1, ref.to]
+                const [from, to] = $getWildcardNamePos(ref)
                 const text = view.state.sliceDoc(from, to)
                 if (st.schema.hasEmbedding(text)) return
                 diagnostics.push({
@@ -64,3 +63,23 @@ export const PromptLinter1 = linter((view: EditorView) => {
         })
     return diagnostics
 })
+
+export const $getWildcardNamePos = (ref: SyntaxNodeRef): [from: number, to: number] => {
+    // safety net
+    if (!['Wildcards', 'Lora', 'Embedding'].includes(ref.name))
+        throw new Error(`$getWildcardNamePos called with a node not in ['Wildcards', 'Lora', 'Embedding']`)
+
+    // compute pos
+    const isString = ref.node.firstChild?.firstChild?.name == 'String'
+    return isString ? [ref.from + 2, ref.to - 1] : [ref.from + 1, ref.to]
+}
+
+export const $getWeightNumber = (ref: SyntaxNodeRef): [from: number, to: number] => {
+    if (ref.name !== 'WeightedExpression') throw new Error(`❌ $getWeightNumber called with a node not in ['WeightedExpression']`)
+    const number = bang(ref.node.lastChild, '❌ weight expression without weight')
+    if ((number.name as PromptLangNodeName) !== 'Number') {
+        console.log(`❌ Expected a number`)
+        return [0, 0]
+    }
+    return [number.from, number.to]
+}

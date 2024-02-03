@@ -7,15 +7,16 @@ import { createRef, useLayoutEffect, useMemo } from 'react'
 import { ComboUI } from 'src/app/shortcuts/ComboUI'
 import { SimplifiedLoraDef } from 'src/presets/SimplifiedLoraDef'
 import { LoraBoxUI } from 'src/widgets/prompter/nodes/lora/LoraBoxUI'
-import { Widget_cmprompt } from './WidgetPromptV2'
+import { Widget_prompt } from './WidgetPrompt'
 import { PromptLang } from './cm-lang/LANG'
 import { basicSetup } from './cm-lang/SETUP'
 import { generatePromptCombinations } from './compiler/promptsplit'
 import { parser } from './grammar/grammar.parser'
 import { PromptLangNodeName } from './grammar/grammar.types'
+import { run_prompt } from 'library/built-in/_prefabs/prefab_prompt'
 
 // UI
-export const WidgetCMPromptUI = observer(function WidgetStringUI_(p: { widget: Widget_cmprompt }) {
+export const WidgetPromptUI = observer(function WidgetPromptUI_(p: { widget: Widget_prompt }) {
     const widget = p.widget
     const uist = useMemo(() => new CMPromptState(widget), [])
     useLayoutEffect(() => {
@@ -53,9 +54,9 @@ export const WidgetCMPromptUI = observer(function WidgetStringUI_(p: { widget: W
                 )
             })}
             debug:
-            <pre tw='virtualBorder text-xs bg-base-200'>{uist.debugView}</pre>
+            <pre tw='virtualBorder whitespace-pre-wrap text-xs bg-base-200'>{uist.debugView}</pre>
             output:
-            <pre tw='virtualBorder text-sm bg-base-200'>{uist.compiled.join('\n')}</pre>
+            <pre tw='virtualBorder whitespace-pre-wrap text-sm bg-base-200'>{uist.compiled}</pre>
         </div>
     )
 })
@@ -87,7 +88,7 @@ class CMPromptState {
         })
     }
 
-    constructor(public widget: Widget_cmprompt) {
+    constructor(public widget: Widget_prompt) {
         makeAutoObservable(this)
     }
 
@@ -151,7 +152,11 @@ class CMPromptState {
     }
 
     // -------------------------
-    get compiled(): string[] {
+    get compiled2(): string[] {
         return generatePromptCombinations(this.text!)
+    }
+
+    get compiled(): string {
+        return this.widget.compile({ onLora: (lora) => {} })
     }
 }

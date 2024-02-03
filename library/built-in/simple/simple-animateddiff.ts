@@ -60,14 +60,7 @@ app({
         })
         const text = ui.timeline.items
             .map((entry) => {
-                const tokens = entry.value.tokens
-                const text = tokens
-                    .map((tok) => {
-                        if (tok.type === 'text') return tok.text
-                        return ''
-                    })
-                    .join(' ')
-                return `"${entry.position.x}" : "${text}"`
+                return `"${entry.position.x}" : "${entry.value.text}"`
             })
             .join(',\n')
         const batchPromptSchedule = graph.BatchPromptSchedule({

@@ -11,7 +11,7 @@
 /* completion stylign */
 .cm-completionIcon {opacity: 1 !important;}
 /* compltion icons */
-.cm-completionIcon.cm-completionIcon-embedding::before { content: '🔗'; }
+.cm-completionIcon.cm-completionIcon-embedding::before { content: '☎️'; }
 .cm-completionIcon.cm-completionIcon-wildcard::before { content: '🎲'; }
 .cm-completionIcon.cm-completionIcon-lora::before { content: '📘'; }
 

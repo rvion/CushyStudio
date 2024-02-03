@@ -18,7 +18,6 @@ import { Widget_number, type Widget_number_config } from './widgets/number/Widge
 import { Widget_optional, type Widget_optional_config } from './widgets/optional/WidgetOptional'
 import { Widget_orbit, type Widget_orbit_config } from './widgets/orbit/WidgetOrbit'
 import { Widget_prompt, type Widget_prompt_config } from './widgets/prompt/WidgetPrompt'
-import { Widget_cmprompt, type Widget_cmprompt_config } from './widgets/promptV2/WidgetPromptV2'
 import { Widget_size, type Widget_size_config } from './widgets/size/WidgetSize'
 import { Widget_string, type Widget_string_config } from './widgets/string/WidgetString'
 
@@ -29,7 +28,7 @@ export class FormBuilder {
     }
 
     // string
-    promptV2 = (config: Widget_cmprompt_config) => new Widget_cmprompt(this, config)
+    promptV2 = (config: Widget_prompt_config) => new Widget_prompt(this, config)
     string = (config: Widget_string_config) => new Widget_string(this, config)
     stringOpt = (config: Widget_string_config & { startActive?: boolean }) =>
         this.optional({
@@ -167,7 +166,7 @@ export class FormBuilder {
         if (type === 'optional') return new Widget_optional(this, input, serial)
         if (type === 'bool') return new Widget_bool(this, input, serial)
         if (type === 'str') return new Widget_string(this, input, serial)
-        if (type === 'cmprompt') return new Widget_cmprompt(this, input, serial)
+        if (type === 'prompt') return new Widget_prompt(this, input, serial)
         if (type === 'choices') return new Widget_choices(this, input, serial)
         if (type === 'number') return new Widget_number(this, input, serial)
         if (type === 'group') return new Widget_group(this, input, serial)
@@ -180,7 +179,6 @@ export class FormBuilder {
         if (type === 'inlineRun') return new W.Widget_inlineRun(this, input, serial)
         if (type === 'seed') return new W.Widget_seed(this, input, serial)
         if (type === 'matrix') return new W.Widget_matrix(this, input, serial)
-        if (type === 'prompt') return new Widget_prompt(this, input, serial)
         if (type === 'loras') return new W.Widget_loras(this, input, serial)
         if (type === 'image') return new Widget_image(this, input, serial)
         if (type === 'selectOne') return new W.Widget_selectOne(this, input, serial)

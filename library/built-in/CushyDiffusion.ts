@@ -24,19 +24,7 @@ app({
         //     choices: [{ id: 'SD 1.5' }, { id: 'SDXL' }],
         // }),
         positive: form.prompt({
-            default: {
-                tokens: [
-                    { type: 'text', text: 'masterpiece, tree ' },
-                    { type: 'wildcard', payload: 'color', version: 1 },
-                    { type: 'text', text: ' ' },
-                    { type: 'wildcard', payload: '3d_term', version: 1 },
-                    { type: 'text', text: ' ' },
-                    { type: 'wildcard', payload: 'adj_beauty', version: 1 },
-                    { type: 'text', text: ' ' },
-                    { type: 'wildcard', payload: 'adj_general', version: 1 },
-                    { type: 'text', text: ' nature, intricate_details' },
-                ],
-            },
+            default: 'masterpiece, tree, *color, *3d_term, *adj_beauty, *adj_general, nature, intricate_details',
         }),
         //
         negative: form.prompt({

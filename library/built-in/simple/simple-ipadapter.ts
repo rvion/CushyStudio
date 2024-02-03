@@ -10,9 +10,7 @@ app({
         description: 'simple ipadapter test',
     },
     ui: (form) => ({
-        positive: form.prompt({
-            default: { tokens: [{ type: 'text', text: 'masterpiece, tree ' }] },
-        }),
+        positive: form.prompt({ default: 'masterpiece, tree ' }),
         useImageToStart: form.boolean({ default: false }),
         ipadapter: ui_ipadapter_standalone(),
         denoise: form.float({ default: 0, min: 0, max: 1 }),
