@@ -33,12 +33,12 @@ export const WidgetPromptUI = observer(function WidgetPromptUI_(p: { widget: Wid
                     <div tw='text-xs italic'>
                         <div tw='flex gap-2'>
                             increase weights :
-                            <ComboUI combo={'mod+j'} />
+                            <ComboUI combo={'mod+j'} /> or <ComboUI combo={'mod+up'} /> or <ComboUI combo={'alt+up'} />
                             {/* (or <ComboUI combo={'mod+shift+j'} /> for tiniest scope) */}
                         </div>
                         <div tw='flex gap-2'>
                             decrease weights :
-                            <ComboUI combo={'mod+k'} />
+                            <ComboUI combo={'mod+k'} /> or <ComboUI combo={'mod+down'} /> or <ComboUI combo={'alt+down'} />
                             {/* (or <ComboUI combo={'mod+shift+j'} /> for tiniest scope) */}
                         </div>
                         <div

@@ -8,8 +8,13 @@ import { $commonAncestor, $smartResolve } from './utils'
 // https://codemirror.net/docs/ref/#commands.standardKeymap
 // see the https://codemirror.net/examples/decoration/
 
+// TODO: allow to increase / decrease weights by scrolling
 export const PromptKeymap1 = () =>
     keymap.of([
+        { key: 'm-ArrowUp', preventDefault: true, run: changeWeights(0.1, ['WeightedExpression', 'Lora', 'Wildcard']) },
+        { key: 'm-ArrowDown', preventDefault: true, run: changeWeights(-0.1, ['WeightedExpression', 'Lora', 'Wildcard']) },
+        { key: 'a-ArrowUp', preventDefault: true, run: changeWeights(0.1, ['WeightedExpression', 'Lora', 'Wildcard']) },
+        { key: 'a-ArrowDown', preventDefault: true, run: changeWeights(-0.1, ['WeightedExpression', 'Lora', 'Wildcard']) },
         { key: 'm-j', preventDefault: true, run: changeWeights(0.1, ['WeightedExpression', 'Lora', 'Wildcard']) },
         { key: 'm-k', preventDefault: true, run: changeWeights(-0.1, ['WeightedExpression', 'Lora', 'Wildcard']) },
         // { key: 'm-s-j', preventDefault: true, run: changeWeight(0.1, ['Lora', 'Wildcard']) },
