@@ -1,12 +1,10 @@
-import type { EditorState } from '@codemirror/state'
-import type { StateEffect } from '@codemirror/state'
 import type { EditorView } from '@codemirror/view'
 
 import { syntaxTree } from '@codemirror/language'
 import { keymap } from '@codemirror/view'
-import { $commonAncestor } from './utils'
 import { bang } from 'src/utils/misc/bang'
 import { PromptLangNodeName } from '../grammar/grammar.types'
+import { $commonAncestor, $smartResolve } from './utils'
 // https://codemirror.net/docs/ref/#commands.standardKeymap
 // see the https://codemirror.net/examples/decoration/
 
@@ -34,6 +32,10 @@ const changeWeights =
         return true
     }
 
+const formatWeights = (weights: number) => {
+    return weights.toFixed(3).replace(/\.?0+$/, '')
+}
+
 const changeWeight = (
     //
     view: EditorView,
@@ -42,12 +44,10 @@ const changeWeight = (
     amount: number,
 ) => {
     const tree = syntaxTree(view.state)
-
-    console.log(`[👙] -------------------`)
-    const nodeA = tree.resolve(from, 1)
-    const nodeB = tree.resolve(to, -1)
+    if (from > to) throw new Error(`❌ from > to`)
+    const nodeA = $smartResolve(tree, from)
+    const nodeB = $smartResolve(tree, to)
     const { a, b } = $commonAncestor(nodeA, nodeB, ['WeightedExpression', 'Lora', 'Wildcards'])
-    console.log(`[👙] `, a === b, a.name, b.name)
 
     // increase weights
     if (a === b && a.name === 'WeightedExpression') {
@@ -57,17 +57,35 @@ const changeWeight = (
             return
         }
         const numberTxt = view.state.doc.sliceString(number.from, number.to)
-        const float = parseFloat(numberTxt)
-        const float2 = float + amount
-        console.log(`[👙] `, number.name, number.from, number.to)
-        view.dispatch({ changes: [{ from: number.from, to: number.to, insert: float2.toFixed(2) }] })
+        const oldWeights = parseFloat(numberTxt)
+        const newWeights = oldWeights + amount
+
+        // remove weight and ungroup
+        if (newWeights === 1) {
+            view.dispatch({
+                changes: [
+                    // remove the `(`
+                    { from: a.from, to: a.from + 1, insert: `` },
+                    // remove the `)x...`
+                    { from: number.from - 2, to: number.to, insert: `` },
+                ],
+            })
+            return
+        }
+
+        // update the weights
+        view.dispatch({
+            changes: [{ from: number.from, to: number.to, insert: formatWeights(newWeights) }],
+        })
         return
     }
+
     // group and weights
+    const newWeights = formatWeights(1 + amount)
     view.dispatch({
         changes: [
             { from: a.from, to: a.from, insert: `(` },
-            { from: b.to, to: b.to, insert: `)x1.1` },
+            { from: b.to, to: b.to, insert: `)x${newWeights}` },
         ],
     })
 }

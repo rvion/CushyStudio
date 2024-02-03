@@ -74,6 +74,7 @@
         "@lexical/react": "^0.12.6",
         "@lexical/rich-text": "^0.12.6",
         "@lexical/utils": "^0.12.6",
+        "@lezer/common": "^1.2.1",
         "@lezer/generator": "^1.6.0",
         "@lezer/highlight": "^1.2.0",
         "@lezer/lr": "^1.4.0",

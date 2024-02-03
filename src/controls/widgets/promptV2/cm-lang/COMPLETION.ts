@@ -106,6 +106,7 @@ const dynamicCompletion: CompletionSource = (context: CompletionContext): Comple
 export const PromptComletion1: Extension = autocompletion({
     //
     activateOnTyping: true,
+    updateSyncTime: 50,
     override: [
         //
         dynamicCompletion,

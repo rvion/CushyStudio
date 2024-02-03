@@ -7,6 +7,7 @@ export const placeholders = ViewPlugin.fromClass(
         placeholders: RangeSet<Decoration> // DecorationSet
         loraMark = Decoration.mark({ class: 'cm-lora' })
         wildcardMark = Decoration.mark({ class: 'cm-wildcard' })
+        weightMark = Decoration.mark({ class: 'cm-WeightedExpression' })
         constructor(view: EditorView) {
             this.placeholders = this.computeDecorations(view)
         }
@@ -24,6 +25,9 @@ export const placeholders = ViewPlugin.fromClass(
                     }
                     if (ref.name == 'Wildcards') {
                         decorations.push({ from: ref.from, to: ref.to, value: this.wildcardMark })
+                    }
+                    if (ref.name == 'WeightedExpression') {
+                        decorations.push({ from: ref.from, to: ref.to, value: this.weightMark })
                     }
                 },
             })

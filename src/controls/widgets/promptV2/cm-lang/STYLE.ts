@@ -7,16 +7,17 @@ export const parserWithMetadata = parser.configure({
     props: [
         styleTags({
             String: t.string,
-            Identifier: t.variableName,
+            Identifier: t.string,
             Boolean: t.bool,
             // this needs to be red
-            LightnendExpression: t.heading3,
-            WeightedExpression: t.heading4,
+            // LightnendExpression: t.heading3,
+            // WeightedExpression: t.heading4,
             Permutations: t.heading1,
             Lora: t.heading2,
             LoraName: t.bool,
             LineComment: t.lineComment,
             Wildcards: t.heading5,
+            Number: t.number,
             '( )': t.paren,
         }),
         indentNodeProp.add({

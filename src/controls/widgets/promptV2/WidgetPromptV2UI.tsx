@@ -1,3 +1,4 @@
+import { syntaxTree } from '@codemirror/language'
 import { EditorState } from '@codemirror/state'
 import { Tree } from '@lezer/common'
 import { EditorView } from 'codemirror'
@@ -15,6 +16,7 @@ import { PromptLangNodeName } from './grammar/grammar.types'
 import { useSt } from 'src/state/stateContext'
 import { SimplifiedLoraDef } from 'src/presets/SimplifiedLoraDef'
 import { LoraBoxUI } from 'src/widgets/prompter/nodes/lora/LoraBoxUI'
+import { $ancestorsTopDown, $smartResolve } from './cm-lang/utils'
 
 // UI
 export const WidgetCMPromptUI = observer(function WidgetStringUI_(p: { widget: Widget_cmprompt }) {
@@ -77,8 +79,18 @@ class CMPromptState {
             extensions: [
                 //
                 EditorView.updateListener.of((ev) => {
-                    const nextText = ev.state.doc.toString()
-                    this.text = nextText
+                    console.log(`[👙] A`)
+                    const from = ev.state.selection.main.from
+                    const tree = syntaxTree(ev.state)
+                    console.log($ancestorsTopDown(tree.resolve(from)).map((n) => n.name))
+                    console.log($ancestorsTopDown(tree.resolve(from, -1)).map((n) => n.name))
+                    console.log($ancestorsTopDown(tree.resolve(from, 1)).map((n) => n.name))
+                    console.log($ancestorsTopDown($smartResolve(tree, from)).map((n) => n.name))
+
+                    if (ev.docChanged) {
+                        const nextText = ev.state.doc.toString()
+                        this.text = nextText
+                    }
                 }),
                 basicSetup,
                 PromptLang(),
