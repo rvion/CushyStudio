@@ -33,9 +33,8 @@
     /* color: oklch(var(--er)); */
 }
 
-.bd {
-    border: 2px solid oklch(var(--p))
-}
+.bd { border: 2px solid oklch(var(--p)) }
+.bd1 { border: 1px solid oklch(var(--p)) }
 .animated {
     transition: height 0.2s cubic-bezier(0.075, 0.82, 0.165, 1);
 }

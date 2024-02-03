@@ -1,6 +1,7 @@
-import { EditorState } from '@codemirror/state'
-import { Tree } from '@lezer/common'
+import type { Tree } from '@lezer/common'
 import { EditorView } from 'codemirror'
+import { EditorState } from '@codemirror/state'
+
 import { makeAutoObservable } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { createRef, useLayoutEffect, useMemo } from 'react'
@@ -23,23 +24,23 @@ export const WidgetPromptUI = observer(function WidgetPromptUI_(p: { widget: Wid
 
     return (
         <div tw='flex flex-col'>
-            <div tw='bd p-2' ref={uist.mountRef}></div>
-            <pre tw='virtualBorder whitespace-pre-wrap text-sm bg-base-200'>{uist.compiled.positivePrompt}</pre>
-            <pre tw='virtualBorder whitespace-pre-wrap text-sm bg-base-200'>{uist.compiled.negativePrompt}</pre>
-            <div tw='text-xs italic'>
-                <div tw='flex gap-2'>
-                    weight + :
-                    <ComboUI combo={'mod+j'} />
-                    (or <ComboUI combo={'mod+shift+j'} /> for tiniest scope)
-                </div>
-                <div tw='flex gap-2'>
-                    weight - :
-                    <ComboUI combo={'mod+k'} />
-                    (or <ComboUI combo={'mod+shift+j'} /> for tiniest scope)
-                </div>
-            </div>
-            <summary tw='text-xs'>
+            <div tw='bd1' ref={uist.mountRef}></div>
+            <summary tw='text-sm'>
                 <details>
+                    <pre tw='virtualBorder whitespace-pre-wrap text-sm bg-base-200'>{uist.compiled.positivePrompt}</pre>
+                    <pre tw='virtualBorder whitespace-pre-wrap text-sm bg-base-200'>{uist.compiled.negativePrompt}</pre>
+                    <div tw='text-xs italic'>
+                        <div tw='flex gap-2'>
+                            weight + :
+                            <ComboUI combo={'mod+j'} />
+                            (or <ComboUI combo={'mod+shift+j'} /> for tiniest scope)
+                        </div>
+                        <div tw='flex gap-2'>
+                            weight - :
+                            <ComboUI combo={'mod+k'} />
+                            (or <ComboUI combo={'mod+shift+j'} /> for tiniest scope)
+                        </div>
+                    </div>
                     <pre tw='virtualBorder whitespace-pre-wrap text-xs bg-base-200'>{uist.debugView}</pre>
                 </details>
             </summary>

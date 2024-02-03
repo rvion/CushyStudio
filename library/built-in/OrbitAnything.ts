@@ -97,8 +97,8 @@ app({
                 vae: ckpt2,
                 negative: '', // run.formatEmbeddingForComfyUI('EasyNegative'),
                 positive: run_prompt({
-                    richPrompt: { text: ui.orbit.englishSummary + ui.sndPass.positive.text },
-                }).conditionning,
+                    prompt: { text: ui.orbit.englishSummary + ui.sndPass.positive.text },
+                }).positiveConditionning,
             },
         ).latent
 

@@ -1,29 +1,30 @@
 import { compilePrompt } from 'src/controls/widgets/prompt/_compile'
 
 export const run_prompt = (p: {
-    richPrompt: { text: string }
+    prompt: { text: string }
     /** recommanded, but if left empty, AUTO will be used */
     clip?: _CLIP
     /** recommanded, but if left empty, AUTO will be used */
     ckpt?: _MODEL
 
-    outputWildcardsPicked?: boolean
+    printWildcards?: boolean
     seed?: number
 }): {
-    text: string
+    positiveText: string
+    negativeText: string
     clip: _CLIP
     ckpt: _MODEL
-    conditionning: _CONDITIONING
-    conditionningNeg: _CONDITIONING
+    positiveConditionning: _CONDITIONING
+    negativeConditionning: _CONDITIONING
 } => {
     const run = getCurrentRun()
-    const richPrompt = p.richPrompt
+    const richPrompt = p.prompt
     let clip = p.clip ?? run.AUTO
     let ckpt = p.ckpt ?? run.AUTO
     const CX = compilePrompt({
         text: richPrompt.text,
         st: run.Cushy,
-        printWildcards: p.outputWildcardsPicked,
+        printWildcards: p.printWildcards,
         seed: p.seed,
         onLora: (
             //
@@ -43,17 +44,17 @@ export const run_prompt = (p: {
         },
     })
 
-    if (p.outputWildcardsPicked && CX.debugText.length > 0)
-        run.output_text({ title: 'wildcards', message: CX.debugText.join(' ') })
+    if (p.printWildcards && CX.debugText.length > 0) run.output_text({ title: 'wildcards', message: CX.debugText.join(' ') })
 
     return {
-        text: CX.positivePrompt,
+        positiveText: CX.positivePrompt,
+        negativeText: CX.positivePrompt,
         clip,
         ckpt,
-        get conditionning() {
+        get positiveConditionning() {
             return run.nodes.CLIPTextEncode({ clip, text: CX.positivePrompt })
         },
-        get conditionningNeg() {
+        get negativeConditionning() {
             return run.nodes.CLIPTextEncode({ clip, text: CX.negativePrompt })
         },
     }

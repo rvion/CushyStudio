@@ -23,18 +23,19 @@ app({
         //     appearance: 'tab',
         //     choices: [{ id: 'SD 1.5' }, { id: 'SDXL' }],
         // }),
-        prompt: form.prompt({
+        positive: form.prompt({
             default: [
                 //
-                'masterpiece, tree, ?color, ?"3d_term", ?adj_beauty, ?adj_general, (nature)*0.9, (intricate_details)*1.1\n',
-                '(bad quality, blurry, low resolution, pixelated, noisy)*-1',
+                'masterpiece, tree',
+                '?color, ?"3d_term", ?adj_beauty, ?adj_general',
+                '(nature)*0.9, (intricate_details)*1.1',
             ].join('\n'),
         }),
         //
-        // negative: form.prompt({
-        //     startCollapsed: true,
-        //     default: 'bad quality, blurry, low resolution, pixelated, noisy',
-        // }),
+        negative: form.prompt({
+            startCollapsed: true,
+            default: 'bad quality, blurry, low resolution, pixelated, noisy',
+        }),
         model: ui_model(),
         latent: ui_latent_v3(),
         sampler: ui_sampler(),
@@ -84,15 +85,23 @@ app({
         // MODEL, clip skip, vae, etc. ---------------------------------------------------------------
         let { ckpt, vae, clip } = run_model(ui.model)
 
-        // const posPrompt = ui.testStuff?.reversePositiveAndNegative ? ui.negative : ui.positive
-        // const negPrompt = ui.testStuff?.reversePositiveAndNegative ? ui.positive : ui.negative
-
         // RICH PROMPT ENGINE -------- ---------------------------------------------------------------
-        const x = run_prompt({ richPrompt: ui.prompt, clip, ckpt, outputWildcardsPicked: true })
-        const clipPos = x.clip
-        let ckptPos = x.ckpt
-        let positive = x.conditionning
-        let negative = x.conditionningNeg
+        const posPrompt = run_prompt({
+            prompt: ui.positive,
+            clip,
+            ckpt,
+            printWildcards: true,
+        })
+        const clipPos = posPrompt.clip
+        let ckptPos = posPrompt.ckpt
+        let positive = posPrompt.positiveConditionning
+        // let negative = x.conditionningNeg
+
+        const negPrompt = run_prompt({ prompt: ui.negative, clip, ckpt })
+        let negative: _CONDITIONING = graph.CLIPTextEncode({
+            clip,
+            text: negPrompt.positiveText + posPrompt.negativeText,
+        })
 
         // const y = run_prompt({ richPrompt: negPrompt, clip, ckpt, outputWildcardsPicked: true })
         // let negative = y.conditionning

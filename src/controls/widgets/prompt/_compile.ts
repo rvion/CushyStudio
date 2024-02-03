@@ -86,7 +86,7 @@ export const compilePrompt = (p: {
                     return false
                 }
                 const picked = st.chooseRandomly(wildcardName, p.seed ?? Math.floor(Math.random() * 99999999), options)
-                if (p.printWildcards) debugText.push(picked)
+                if (p.printWildcards ?? true) debugText.push(picked)
                 set(picked)
                 return false
             }

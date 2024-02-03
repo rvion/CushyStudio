@@ -35,13 +35,13 @@ app({
         const negPrompt = ui.negative
 
         // RICH PROMPT ENGINE -------- ---------------------------------------------------------------
-        const x = run_prompt({ richPrompt: posPrompt, clip, ckpt, outputWildcardsPicked: true })
+        const x = run_prompt({ prompt: posPrompt, clip, ckpt, printWildcards: true })
         clip = x.clip
         ckpt = x.ckpt
-        let positive = x.conditionning
+        let positive = x.positiveConditionning
 
-        const y = run_prompt({ richPrompt: negPrompt, clip, ckpt, outputWildcardsPicked: true })
-        let negative = y.conditionning
+        const y = run_prompt({ prompt: negPrompt, clip, ckpt, printWildcards: true })
+        let negative = y.positiveConditionning
 
         // START IMAGE -------------------------------------------------------------------------------
         const IMG = ui.ipadapter.image

@@ -39,12 +39,12 @@ app({
         let positive: _CONDITIONING = graph.ConditioningZeroOut({
             conditioning: graph.CLIPTextEncode({ clip: clip, text: '' }),
         })
-        let negative: _CONDITIONING = run_prompt({ richPrompt: form.mainNeg, clip: ckpt, ckpt: ckpt }).conditionning
+        let negative: _CONDITIONING = run_prompt({ prompt: form.mainNeg, clip: ckpt, ckpt: ckpt }).positiveConditionning
 
         for (const { position: x, value: item } of form.demo.items) {
-            const y = run_prompt({ richPrompt: item.prompt, clip: ckpt, ckpt: ckpt })
+            const y = run_prompt({ prompt: item.prompt, clip: ckpt, ckpt: ckpt })
             const localConditionning = graph.ConditioningSetArea({
-                conditioning: y.conditionning,
+                conditioning: y.positiveConditionning,
                 height: x.height * (x.scaleX ?? 1),
                 width: x.width * (x.scaleY ?? 1),
                 x: x.x,
