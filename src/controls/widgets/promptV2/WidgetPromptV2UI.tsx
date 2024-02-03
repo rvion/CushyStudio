@@ -1,33 +1,25 @@
-import { syntaxTree } from '@codemirror/language'
 import { EditorState } from '@codemirror/state'
 import { Tree } from '@lezer/common'
 import { EditorView } from 'codemirror'
 import { makeAutoObservable } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { createRef, useLayoutEffect, useMemo } from 'react'
-import { PromptKeymap1 } from './cm-lang/COMMANDS'
-import { PromptLang } from './cm-lang/LANG'
-import { generatePromptCombinations } from './compiler/promptsplit'
-import { parser } from './grammar/grammar.parser'
-import { Widget_cmprompt } from './WidgetPromptV2'
-import { basicSetup } from './cm-lang/SETUP'
 import { ComboUI } from 'src/app/shortcuts/ComboUI'
-import { PromptLangNodeName } from './grammar/grammar.types'
-import { useSt } from 'src/state/stateContext'
 import { SimplifiedLoraDef } from 'src/presets/SimplifiedLoraDef'
 import { LoraBoxUI } from 'src/widgets/prompter/nodes/lora/LoraBoxUI'
-import { $ancestorsTopDown, $smartResolve } from './cm-lang/utils'
+import { Widget_cmprompt } from './WidgetPromptV2'
+import { PromptLang } from './cm-lang/LANG'
+import { basicSetup } from './cm-lang/SETUP'
+import { generatePromptCombinations } from './compiler/promptsplit'
+import { parser } from './grammar/grammar.parser'
+import { PromptLangNodeName } from './grammar/grammar.types'
 
 // UI
 export const WidgetCMPromptUI = observer(function WidgetStringUI_(p: { widget: Widget_cmprompt }) {
-    const st = useSt()
     const widget = p.widget
-    const val = widget.result
     const uist = useMemo(() => new CMPromptState(widget), [])
     useLayoutEffect(() => {
-        if (uist.mountRef.current) {
-            uist.mount(uist.mountRef.current)
-        }
+        if (uist.mountRef.current) uist.mount(uist.mountRef.current)
     }, [])
 
     return (
@@ -75,7 +67,6 @@ class CMPromptState {
         domNode.innerHTML = ''
         let state = EditorState.create({
             doc: this.text,
-
             extensions: [
                 //
                 EditorView.updateListener.of((ev) => {

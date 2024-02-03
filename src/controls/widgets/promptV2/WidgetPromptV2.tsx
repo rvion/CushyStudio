@@ -3,13 +3,15 @@ import type { FormBuilder } from '../../FormBuilder'
 import type { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../../IWidget'
 
 import { makeAutoObservable } from 'mobx'
+import { Tree } from '@lezer/common'
 import { nanoid } from 'nanoid'
 import { WidgetDI } from '../WidgetUI.DI'
 import { hash } from 'ohash'
+import { parser } from './grammar/grammar.parser'
 
 export type Widget_cmprompt_config = WidgetConfigFields<{ default?: string; textarea?: boolean; placeHolder?: string }>
 export type Widget_cmprompt_serial = WidgetSerialFields<{ type: 'cmprompt'; val?: string }>
-export type Widget_cmprompt_output = string
+export type Widget_cmprompt_output = { text: string; tree: Tree }
 export type Widget_cmprompt_types = {
     $Type: 'cmprompt'
     $Input: Widget_cmprompt_config
@@ -47,8 +49,19 @@ export class Widget_cmprompt implements IWidget<Widget_cmprompt_types> {
         makeAutoObservable(this)
     }
 
+    // the raw unparsed text
+    get text() {
+        return this.serial.val ?? ''
+    }
+    // the parsed tree
+    get ast(): Tree {
+        return parser.parse(this.serial.val ?? '')
+    }
     get result(): Widget_cmprompt_output {
-        return this.serial.val ?? this.config.default ?? ''
+        return {
+            text: this.serial.val ?? this.config.default ?? '',
+            tree: this.ast,
+        }
     }
 }
 

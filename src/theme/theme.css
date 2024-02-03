@@ -1,16 +1,33 @@
-.cm-WeightedExpression .ͼu{
-    color: orange;
-    font-style: italic;
+/* --------------------- */
+.cm-tooltip.cm-completionInfo {
+    max-height: 300px;
+    overflow: auto;
 }
-.cm-lora > * {
-    color: cyan;
+.ͼo .cm-tooltip-autocomplete > ul > li[aria-selected] {
+    background-color: oklch(var(--p));
+    color: oklch(var(--pc));
 }
-.cm-embedding > * {
-    color: rgb(255, 161, 161);
-}
-.cm-wildcard > * {
-    color:  rgb(243, 243, 106)
-}
+
+/* completion stylign */
+.cm-completionIcon {opacity: 1 !important;}
+/* compltion icons */
+.cm-completionIcon.cm-completionIcon-embedding::before { content: '🔗'; }
+.cm-completionIcon.cm-completionIcon-wildcard::before { content: '🎲'; }
+.cm-completionIcon.cm-completionIcon-lora::before { content: '📘'; }
+
+.cm-cushy-completion-for-embedding {color: #ffa1a1;}
+.cm-cushy-completion-for-wildcard  {color: #f3f36a;}
+.cm-cushy-completion-for-lora      {color: #00ccff;}
+
+/* .cm-completionLabel {} */
+.cm-completionDetail { color: #919191 }
+
+/* -------------------- */
+.cm-WeightedExpression .ͼu{ color: orange; font-style: italic; }
+.cm-embedding > * { color: #ffa1a1; }
+.cm-wildcard  > * { color: #f3f36a; }
+.cm-lora      > * { color: #00ccff; }
+
 .cm-lintRange.cm-lintRange-error {
     outline: 1px dashed oklch(var(--er));
     /* color: oklch(var(--er)); */
