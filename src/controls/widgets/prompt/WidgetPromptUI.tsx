@@ -5,15 +5,14 @@ import { makeAutoObservable } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { createRef, useLayoutEffect, useMemo } from 'react'
 import { ComboUI } from 'src/app/shortcuts/ComboUI'
-import { SimplifiedLoraDef } from 'src/presets/SimplifiedLoraDef'
 import { LoraBoxUI, LoraTextNode } from 'src/widgets/prompter/nodes/lora/LoraBoxUI'
 import { CompiledPrompt, Widget_prompt } from './WidgetPrompt'
 import { PromptLang } from './cm-lang/LANG'
+import { $extractLoraInfos } from './cm-lang/LINT'
 import { basicSetup } from './cm-lang/SETUP'
 import { generatePromptCombinations } from './compiler/promptsplit'
 import { parser } from './grammar/grammar.parser'
 import { PromptLangNodeName } from './grammar/grammar.types'
-import { $extractLoraInfos } from './cm-lang/LINT'
 // UI
 export const WidgetPromptUI = observer(function WidgetPromptUI_(p: { widget: Widget_prompt }) {
     const widget = p.widget
@@ -46,8 +45,8 @@ export const WidgetPromptUI = observer(function WidgetPromptUI_(p: { widget: Wid
             </summary>
             {uist.loras.map((x: LoraTextNode) => {
                 return (
-                    <div key={x.name} tw='bd'>
-                        {x.name}
+                    <div key={x.loraName} tw='bd'>
+                        {x.loraName}
                         <LoraBoxUI def={x} onDelete={() => {}} />
                     </div>
                 )

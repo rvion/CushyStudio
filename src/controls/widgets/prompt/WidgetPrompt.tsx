@@ -1,16 +1,13 @@
-import type { PromptLangNodeName } from 'src/controls/widgets/prompt/grammar/grammar.types'
-import type { SyntaxNodeRef } from '@lezer/common'
+import type { Tree } from '@lezer/common'
 import type { FormBuilder } from '../../FormBuilder'
 import type { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../../IWidget'
-import type { Tree } from '@lezer/common'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
-import { WidgetDI } from '../WidgetUI.DI'
 import { hash } from 'ohash'
-import { parser } from './grammar/grammar.parser'
-import { $getWeightNumber, $getWildcardNamePos } from './cm-lang/LINT'
+import { WidgetDI } from '../WidgetUI.DI'
 import { compilePrompt } from './_compile'
+import { parser } from './grammar/grammar.parser'
 
 export type Widget_prompt_config = WidgetConfigFields<{ default?: string; textarea?: boolean; placeHolder?: string }>
 export type Widget_prompt_serial = WidgetSerialFields<{ type: 'prompt'; val?: string }>
@@ -45,6 +42,7 @@ export class Widget_prompt implements IWidget<Widget_prompt_types> {
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? {
             type: 'prompt',
+            val: config.default,
             collapsed: config.startCollapsed,
             id: this.id,
         }

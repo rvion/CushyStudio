@@ -24,7 +24,7 @@ expression[@isGroup=Expression] {
 @skip { space }
 
 
-WeightedExpression { "(" expression+ (":" Number+)? ")x" Number }
+WeightedExpression { "(" expression+ ")*" Number }
 // LightnendExpression { "[" expression+ (":" Number+)? "]" }
 
 Permutations { "{" expression+ "}" }
@@ -35,7 +35,7 @@ Lora { "@" LoraName ( "[" Number ("," Number)? "]" )?   }
 LoraName { Identifier | String  }
 
 // WILDCARD
-Wildcard { "*" WildcardName }
+Wildcard { "?" WildcardName }
 WildcardName { Identifier | String  }
 
 // EMBEDDING

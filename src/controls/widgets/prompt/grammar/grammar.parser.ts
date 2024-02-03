@@ -2,18 +2,18 @@
 import {LRParser} from "@lezer/lr"
 export const parser = LRParser.deserialize({
   version: 14,
-  states: "%^OVQPOOOVQPO'#C^OVQPO'#C`OzQPO'#CaO!SQPO'#CeO![QPO'#CgOOQO'#Cq'#CqOOQO'#Cl'#ClQVQPOOO#UQPO,58xO#`QPO,58zOOQO'#Cb'#CbO#gQPO,58{OOQO'#Cf'#CfOOQO,59P,59POOQO'#Ch'#ChOOQO,59R,59ROOQO-E6j-E6jO$hQPO1G.dO$mQPO1G.dOOQO1G.f1G.fO$xQPO1G.gOOQO7+$O7+$OOOQO'#Cm'#CmO$}QPO7+$OO%VQQO7+$ROOQO-E6k-E6kO%_QPO<<GjOOQO<<Gm<<GmO%dQPO<<GmOOQOAN=UAN=UO%iQPOAN=XOOQOG22sG22s",
-  stateData: "%t~OdOS~ORUOVUOWUO]UO^UO_UOfPOgTOiQOkROoSO~OVZOWZO~OV]OW]O~OV_OW_O~ORUOVUOWUO]UO^UO_UOfPOiQOkROoSO~OgcOhbO~P!dOjdO~PVOleORTaVTaWTa]Ta^Ta_TabTafTagTaiTakTaoTahTajTa~ORfO~ORgOV_OW_O~ORiO~ORgOhkO~OmmOnlO~ORnO~ORoO~OnpO~O_R^V^~",
-  goto: "!gfPPgPggoPPgrguPPPy!XPPP!_]UOPQWXYR[RR^ST`TcQWOQXPQYQVaWXYQhcRjh]VOPQWXY",
+  states: "$hOVQPOOOVQPO'#C^OVQPO'#C`OzQPO'#CaO!SQPO'#CeO![QPO'#CgOOQO'#Cp'#CpOOQO'#Cl'#ClQVQPOOO!dQPO,58xO!kQPO,58zOOQO'#Cb'#CbO!rQPO,58{OOQO'#Cf'#CfOOQO,59P,59POOQO'#Ch'#ChOOQO,59R,59ROOQO-E6j-E6jO#sQPO1G.dOOQO1G.f1G.fO#xQPO1G.gOOQO7+$O7+$OO#}QQO7+$ROOQO<<Gm<<GmO$VQPO<<GmO$[QPOAN=XOOQOG22sG22s",
+  stateData: "$g~OcOS~ORUOVUOWUO]UO^UO_UOePOgQOiROmSOnTO~OVZOWZO~OV]OW]O~OV_OW_O~OfbO~PVOhcO~PVOjdORTaVTaWTa]Ta^Ta_TaaTaeTagTaiTamTanTafTahTa~OReO~ORfO~OkhOlgO~ORiO~OljO~O_R^V^~",
+  goto: "!_ePPfPffnPPfqftPPPwPPP!V]UOPQWXYR[RR^SR`TQWOQXPQYQVaWXY]VOPQWXY",
   nodeNames: "⚠ File WeightedExpression Number Permutations Lora LoraName Identifier String Wildcard WildcardName Embedding EmbeddingName Separator Break Comment",
-  maxTerm: 31,
+  maxTerm: 30,
   nodeProps: [
     ["group", -11,2,3,4,5,7,8,9,11,13,14,15,"Expression"]
   ],
   skippedNodes: [0],
-  repeatNodeCount: 2,
-  tokenData: "(u~RnX^#Ppq#Prs#txy$cyz$hz{$s|}$x}!O%P!O!P%P!Q![%P![!]%_!]!^%d!b!c%{!c!}&Q!}#O&`#P#Q&e#R#S&Q#T#U&Q#U#V&j#V#o&Q#o#p(k#q#r(p#y#z#P$f$g#P#BY#BZ#P$IS$I_#P$I|$JO#P$JT$JU#P$KV$KW#P&FU&FV#P~#UYd~X^#Ppq#P#y#z#P$f$g#P#BY#BZ#P$IS$I_#P$I|$JO#P$JT$JU#P$KV$KW#P&FU&FV#P~#wTOr#trs$Ws;'S#t;'S;=`$]<%lO#t~$]OW~~$`P;=`<%l#t~$hOf~~$kP#l#m$n~$sOh~~$xOo~R%POmQ]P~%URR~}!O%P!O!P%P!Q![%P~%dOg~~%iS_~OY%dZ;'S%d;'S;=`%u<%lO%d~%xP;=`<%l%d~&QOk~~&VRV~!c!}&Q#R#S&Q#T#o&Q~&eOl~~&jOn~~&oTV~!c!}&Q#R#S&Q#T#f&Q#f#g'O#g#o&Q~'TTV~!c!}&Q#R#S&Q#T#X&Q#X#Y'd#Y#o&Q~'iSV~!c!}&Q#R#S&Q#T#U'u#U#o&Q~'zTV~!c!}&Q#R#S&Q#T#_&Q#_#`(Z#`#o&Q~(bR^~V~!c!}&Q#R#S&Q#T#o&Q~(pOi~~(uOj~",
+  repeatNodeCount: 1,
+  tokenData: "(u~RnX^#Ppq#Prs#txy$cyz$h|}$s}!O$z!O!P$z!Q![$z![!]%Y!]!^%_!a!b%v!b!c%{!c!}&Q!}#O&`#P#Q&e#R#S&Q#T#U&Q#U#V&j#V#o&Q#o#p(k#q#r(p#y#z#P$f$g#P#BY#BZ#P$IS$I_#P$I|$JO#P$JT$JU#P$KV$KW#P&FU&FV#P~#UYc~X^#Ppq#P#y#z#P$f$g#P#BY#BZ#P$IS$I_#P$I|$JO#P$JT$JU#P$KV$KW#P&FU&FV#P~#wTOr#trs$Ws;'S#t;'S;=`$]<%lO#t~$]OW~~$`P;=`<%l#t~$hOe~~$kPz{$n~$sOf~R$zOkQ]P~%PRR~}!O$z!O!P$z!Q![$z~%_On~~%dS_~OY%_Z;'S%_;'S;=`%p<%lO%_~%sP;=`<%l%_~%{Om~~&QOi~~&VRV~!c!}&Q#R#S&Q#T#o&Q~&eOj~~&jOl~~&oTV~!c!}&Q#R#S&Q#T#f&Q#f#g'O#g#o&Q~'TTV~!c!}&Q#R#S&Q#T#X&Q#X#Y'd#Y#o&Q~'iSV~!c!}&Q#R#S&Q#T#U'u#U#o&Q~'zTV~!c!}&Q#R#S&Q#T#_&Q#_#`(Z#`#o&Q~(bR^~V~!c!}&Q#R#S&Q#T#o&Q~(pOg~~(uOh~",
   tokenizers: [0, 1],
   topRules: {"File":[0,1]},
-  tokenPrec: 214
+  tokenPrec: 155
 })

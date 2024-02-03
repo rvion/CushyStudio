@@ -40,7 +40,7 @@ const dynamicCompletion: CompletionSource = (context: CompletionContext): Comple
                 label: wildcard,
                 type: 'wildcard',
                 detail: info.slice(0, 20) + '...',
-                apply: noWrap ? `*${wildcard} ` : `*"${wildcard}" `,
+                apply: noWrap ? `?${wildcard} ` : `?"${wildcard}" `,
             })
         }
     }
