@@ -50,18 +50,18 @@ export const $commonAncestor = (
     console.log(`ancestorsA: ${ancestorsA.map((a) => a.name).join(' -> ')}`)
     console.log(`ancestorsB: ${ancestorsB.map((a) => a.name).join(' -> ')}`)
 
-    if (ancestorsA.length > ancestorsB.length) {
-        let _ = ancestorsA
-        ancestorsA = ancestorsB
-        ancestorsB = _
-    }
+    // if (ancestorsA.length > ancestorsB.length) {
+    //     let _ = ancestorsA
+    //     ancestorsA = ancestorsB
+    //     ancestorsB = _
+    // }
     // console.log(`[👙] nodeA:`, )
     // console.log(`[👙] nodeB:`, )
-
+    const maxLen = Math.max(ancestorsA.length, ancestorsB.length)
     let commonAncestor: SyntaxNode | undefined = nodeA
     let a: SyntaxNode = bang(ancestorsA[0], `ancestorsA is empty`)
     let b: SyntaxNode = bang(ancestorsB[0], `ancestorsB is empty`)
-    for (let x = 0; x < ancestorsA.length; x++) {
+    for (let x = 0; x < maxLen; x++) {
         a = bang(ancestorsA[x], `ancestorsA[${x}] is null`)
         b = bang(ancestorsB[x], `ancestorsB[${x}] is null`)
         if (a === b) {

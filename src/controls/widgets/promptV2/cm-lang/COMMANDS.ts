@@ -10,12 +10,12 @@ import { $commonAncestor, $smartResolve } from './utils'
 
 export const PromptKeymap1 = () =>
     keymap.of([
-        // { key: 'm-s-j', preventDefault: true, run: increaseWeights, },
-        // key: 'Alt-ArrowUp',
         { key: 'm-j', preventDefault: true, run: changeWeights(0.1, ['WeightedExpression', 'Lora', 'Wildcards']) },
         { key: 'm-k', preventDefault: true, run: changeWeights(-0.1, ['WeightedExpression', 'Lora', 'Wildcards']) },
         // { key: 'm-s-j', preventDefault: true, run: changeWeight(0.1, ['Lora', 'Wildcards']) },
         // { key: 'm-s-k', preventDefault: true, run: changeWeight(-0.1, ['Lora', 'Wildcards']) },
+        // { key: 'm-s-j', preventDefault: true, run: increaseWeights, },
+        // key: 'Alt-ArrowUp',
     ])
 
 const changeWeights =
@@ -80,6 +80,7 @@ const changeWeight = (
         return
     }
 
+    // console.log(`[👙] D: a(${a.name}:${a.from}->${a.to}) & b(${b.name}:${b.from}->${b.to})`)
     // group and weights
     const newWeights = formatWeights(1 + amount)
     view.dispatch({
@@ -89,25 +90,3 @@ const changeWeight = (
         ],
     })
 }
-
-// export function increaseWeightsV2(view: EditorView) {}
-// export function increaseWeights(view: EditorView) {
-//     // const state: EditorState = view.state
-//     // const text = view.state.doc.toString()
-//     const tree = syntaxTree(view.state)
-
-//     const ranges = view.state.selection.ranges
-//     for (const r of ranges) {
-//         console.log(`[👙] -------------------`)
-//         const nodeA = tree.resolve(r.from, 1)
-//         const nodeB = tree.resolve(r.to, -1)
-//         const { a, b } = $commonAncestor(nodeA, nodeB, ['Lora', 'Wildcards'])
-//         view.dispatch({
-//             changes: [
-//                 { from: a.from, to: a.from, insert: `(` },
-//                 { from: b.to, to: b.to, insert: `)` },
-//             ],
-//         })
-//     }
-//     return true
-// }
