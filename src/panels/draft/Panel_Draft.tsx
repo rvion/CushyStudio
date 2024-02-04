@@ -64,6 +64,7 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
     const defaultContainerStyle = { margin: '0 auto' }
 
     const wrapMobile = st.isConfigValueEq('draft.mockup-mobile', true)
+    const metadata = draft.app.executable_orExtract?.metadata
     // {/* <ActionDraftListUI card={card} /> */}
     const OUT = (
         <draftContext.Provider value={draft} key={draft.id}>
@@ -83,10 +84,15 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                 {draft.shouldAutoStart && (
                     <MessageInfoUI>AutoStart active: this draft will executet when form change</MessageInfoUI>
                 )}
-                {draft.app.executable_orExtract?.metadata?.help && (
+                {metadata?.help && (
                     <MessageInfoUI>
-                        <MarkdownUI tw='_WidgetMardownUI w-full' markdown={draft.app.executable_orExtract?.metadata.help} />
+                        <MarkdownUI tw='_WidgetMardownUI w-full' markdown={metadata.help} />
                     </MessageInfoUI>
+                )}
+                {metadata?.description && (
+                    // <MessageInfoUI>
+                    <MarkdownUI tw='_WidgetMardownUI w-full' markdown={metadata.description} />
+                    // </MessageInfoUI>
                 )}
                 <div tw='pb-80 pl-2'>
                     <ResultWrapperUI
