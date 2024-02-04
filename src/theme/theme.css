@@ -28,6 +28,13 @@
 .cm-wildcard  > * { color: #f3f36a; }
 .cm-lora      > * { color: #00ccff; }
 
+.cm-lint-marker.cm-lint-marker-error {
+    @apply animate-bounce;
+}
+.cm-lezer-syntax-error {
+    @apply animate-pulse;
+    background: oklch(var(--er)/.3);
+}
 .cm-lintRange.cm-lintRange-error {
     outline: 1px dashed oklch(var(--er));
     /* color: oklch(var(--er)); */
