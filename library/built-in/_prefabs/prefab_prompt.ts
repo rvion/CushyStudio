@@ -48,7 +48,7 @@ export const run_prompt = (p: {
 
     return {
         positiveText: CX.positivePrompt,
-        negativeText: CX.positivePrompt,
+        negativeText: CX.negativePrompt,
         clip,
         ckpt,
         get positiveConditionning() {
