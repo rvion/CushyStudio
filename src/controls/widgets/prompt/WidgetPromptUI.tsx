@@ -50,13 +50,7 @@ export const WidgetPromptUI = observer(function WidgetPromptUI_(p: { widget: Wid
                 </details>
             </summary>
             {uist.loras.map((x: LoraTextNode) => {
-                return (
-                    <div key={x.loraName} tw='bd'>
-                        {x.loraName}
-                        {/* {x.ref.name} */}
-                        <LoraBoxUI uist={uist} def={x} onDelete={() => {}} />
-                    </div>
-                )
+                return <LoraBoxUI uist={uist} def={x} onDelete={() => {}} />
             })}
         </div>
     )
