@@ -3,9 +3,9 @@ import type { STATE } from 'src/state/state'
 
 import { Completion, CompletionContext, CompletionResult, CompletionSource, autocompletion } from '@codemirror/autocomplete'
 import { syntaxTree } from '@codemirror/language'
-import { $ancestorsBottomUp, $ancestorsTopDown } from './utils'
 import { PromptLangNodeName } from '../grammar/grammar.types'
 import { isValidPromptLangIdentifier } from './isIdentifier'
+import { $ancestorsBottomUp } from './utils'
 
 // Dynamic completion based on context
 const dynamicCompletion: CompletionSource = (context: CompletionContext): CompletionResult | null => {
@@ -100,8 +100,16 @@ const dynamicCompletion: CompletionSource = (context: CompletionContext): Comple
     console.log(`[👙] leftNodeName=`, leftNodeName, ' => ', validNodeNames.includes(leftNodeName))
     if (!validNodeNames.includes(leftNodeName)) return null
 
-    const from = node.name === 'String' ? node.from + 1 : node.from
-    const to = node.name === 'String' ? node.to - 1 : node.to
+    const from = nodeToReplace //
+        ? nodeToReplace.from
+        : node.name === 'String'
+        ? node.from + 1
+        : node.from
+    const to = nodeToReplace //
+        ? nodeToReplace.to
+        : node.name === 'String'
+        ? node.to - 1
+        : node.to
 
     // console.log(`[👙] no meaningful parent`, from, to)
     if (nodeToReplace == null || nodeToReplace.name === 'Lora') addLoras()
@@ -110,7 +118,17 @@ const dynamicCompletion: CompletionSource = (context: CompletionContext): Comple
     if (nodeToReplace == null || nodeToReplace.name === 'Tag') addTags()
     // }
 
-    return { from, to, options: completionsOptions }
+    const filterFalse =
+        node.name === 'Lora' || //
+        node.name === 'Wildcard' ||
+        node.name === 'Embedding' ||
+        node.name === 'Tag'
+    return {
+        filter: filterFalse ? false : undefined,
+        from,
+        to,
+        options: completionsOptions,
+    }
 }
 
 export const PromptComletion1: Extension = autocompletion({
