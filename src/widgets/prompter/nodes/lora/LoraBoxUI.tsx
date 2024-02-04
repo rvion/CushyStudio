@@ -1,32 +1,37 @@
-import type { SyntaxNodeRef } from '@lezer/common'
 import { observer } from 'mobx-react-lite'
 import { openExternal } from 'src/app/layout/openExternal'
+import { WidgetPromptUISt } from 'src/controls/widgets/prompt/WidgetPromptUISt'
+import { MessageErrorUI } from 'src/panels/MessageUI'
 import { InputNumberUI } from 'src/rsuite/InputNumberUI'
 import { Button, Input } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
 
 export type LoraTextNode = {
-    loraName: Enum_LoraLoader_lora_name
-    strength_clip: number
-    strength_model: number
-    ref: SyntaxNodeRef
+    loraName?: Enum_LoraLoader_lora_name
+    strength_clip?: number
+    strength_model?: number
+    namePos?: { from: number; to: number }
+    num1Pos?: { from: number; to: number }
+    num2Pos?: { from: number; to: number }
 }
 
 export const LoraBoxUI = observer(function LoraBoxUI_(p: {
-    // def: SimplifiedLoraDef
+    //
+    uist: WidgetPromptUISt
     def: LoraTextNode
     onDelete: () => void
 }) {
     const def = p.def
     const st = useSt()
-
-    const loraMetadata = st.configFile.value?.loraPrompts?.[def.loraName]
+    const loraName = def.loraName
+    if (loraName == null) return <MessageErrorUI>error parsing lora</MessageErrorUI>
+    const loraMetadata = st.configFile.value?.loraPrompts?.[loraName]
     const associatedText = loraMetadata?.text ?? ''
     const associatedUrl = loraMetadata?.url ?? ''
+    // const numbers = def.ref.node.getChildren('Number')
     return (
         <div>
-            <div key={def.loraName}>
-                {/* <div className='shrink-0'>{lora.name.replace('.safetensors', '')}</div> */}
+            <div key={loraName}>
                 <div className='flex-grow'></div>
                 <div tw='flex gap-1 items-center'>
                     <div tw='w-32'>model strength</div>
@@ -36,7 +41,27 @@ export const LoraBoxUI = observer(function LoraBoxUI_(p: {
                             step={0.1}
                             min={-2}
                             max={2}
-                            onValueChange={(v) => (def.strength_model = v)}
+                            onValueChange={(v) => {
+                                const num1 = def.num1Pos
+                                if (num1) {
+                                    p.uist.editorView?.dispatch({
+                                        changes: { from: num1.from, to: num1.to, insert: v.toString() },
+                                    })
+                                }
+                                // } else {
+                                //     console.log(`[👙] nonum1`)
+                                // }
+                                // // else {
+                                // //     p.uist.editorView?.dispatch({
+                                // //         changes: {
+                                // //             from: def.ref.from,
+                                // //             to: def.ref.to,
+                                // //             insert: v.toString(),
+                                // //         },
+                                // //     })
+                                // // }
+                                // // def.strength_model = v
+                            }}
                             style={{ width: '4.5rem' }}
                             mode='float'
                         />
@@ -70,8 +95,8 @@ export const LoraBoxUI = observer(function LoraBoxUI_(p: {
                                 if (!prev.loraPrompts) prev.loraPrompts = {}
                                 const lp = prev.loraPrompts
                                 // ensure entry for lora name
-                                let entry = lp[def.loraName]
-                                if (!entry) entry = lp[def.loraName] = { text: '' }
+                                let entry = lp[loraName]
+                                if (!entry) entry = lp[loraName] = { text: '' }
                                 entry.text = nextText
                             })
                         }}
@@ -97,8 +122,8 @@ export const LoraBoxUI = observer(function LoraBoxUI_(p: {
                                 if (!prev.loraPrompts) prev.loraPrompts = {}
                                 const lp = prev.loraPrompts
                                 // ensure entry for lora name
-                                let entry = lp[def.loraName]
-                                if (!entry) entry = lp[def.loraName] = { url: '' }
+                                let entry = lp[loraName]
+                                if (!entry) entry = lp[loraName] = { url: '' }
                                 entry.url = nextURL
                             })
                         }}

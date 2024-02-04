@@ -104,14 +104,12 @@ export const $extractLoraInfos = (
     if (numbers.length >= 1) {
         const node: SyntaxNode = numbers[0]
         num1Pos = { from: node.from, to: node.to }
-        const number = parseFloat(getText(node.from, node.to))
-        strength_clip = number
+        strength_model = parseFloat(getText(node.from, node.to))
     }
     if (numbers.length >= 2) {
         const node: SyntaxNode = numbers[1]
         num2Pos = { from: node.from, to: node.to }
-        const number = parseFloat(getText(node.from, node.to))
-        strength_model = number
+        strength_clip = parseFloat(getText(node.from, node.to))
     }
 
     return { namePos, num1Pos, num2Pos, loraName, strength_model, strength_clip }
