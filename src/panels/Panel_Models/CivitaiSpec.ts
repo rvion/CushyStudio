@@ -1,6 +1,8 @@
 // import fetch from 'node-fetch'
 import { makeAutoObservable } from 'mobx'
 
+// https://github.com/civitai/civitai/wiki/REST-API-Reference#get-apiv1models
+
 // civitai wrapper
 export class Civitai {
     query: string = ''
@@ -101,6 +103,7 @@ type SearchResultItem = {
         }[]
     }[]
 }
+
 type SearchResultMetadata = {
     /*The total number of items available*/
     totalItems: string

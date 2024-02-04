@@ -25,6 +25,7 @@ import { Panel_Script } from '../Panel_Script'
 import { Panel_Import } from '../Panel_Import'
 import { Panel_Canvas } from '../Panel_Canvas/Panel_Canvas'
 import { Panel_Shortcuts } from '../Panel_Shortcuts'
+import { Panel_Models } from '../Panel_Models/Panel_Models'
 
 // prettier-ignore
 export const panels = {
@@ -66,6 +67,7 @@ export const panels = {
 
     // config
     Config:              { name: 'Config',              widget: Panel_Config,            header: (p: PropsOf<typeof Panel_Config           >) => ({title: 'Config',              icon: undefined                         }) },
+    Models:              { name: 'Models',              widget: Panel_Models,            header: (p: PropsOf<typeof Panel_Models           >) => ({title: 'Models',              icon: undefined                         }) },
     Hosts:               { name: 'Hosts',               widget: Panel_ComfyUIHosts,      header: (p: PropsOf<typeof Panel_ComfyUIHosts     >) => ({title: 'Hosts',               icon: undefined                             }) },
     Shortcuts:           { name: 'Shortcuts',           widget: Panel_Shortcuts,         header: (p: PropsOf<typeof Panel_Shortcuts        >) => ({title: 'Shortcuts',           icon: undefined                             }) },
 
