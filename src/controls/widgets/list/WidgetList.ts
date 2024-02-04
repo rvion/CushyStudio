@@ -37,7 +37,9 @@ export type Widget_list_types<T extends Widget> = {
 // STATE
 export interface Widget_list<T extends Widget> extends WidgetTypeHelpers<Widget_list_types<T>> {}
 export class Widget_list<T extends Widget> implements IWidget<Widget_list_types<T>> {
-    get serialHash () { return hash(this.result) } // prettier-ignore
+    get serialHash(): string {
+        return this.items.map((v: Widget) => v.serialHash).join(',')
+    }
     readonly isVerticalByDefault = true
     readonly isCollapsible = true
     readonly id: string

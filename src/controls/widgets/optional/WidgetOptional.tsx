@@ -35,7 +35,10 @@ export type Widget_string_types<T extends Widget> = {
 // STATE
 export interface Widget_optional<T extends Widget> extends WidgetTypeHelpers<Widget_string_types<T>> {}
 export class Widget_optional<T extends Widget> implements IWidget<Widget_string_types<T>> {
-    get serialHash () { return hash(this.result) } // prettier-ignore
+    get serialHash(): string {
+        if (this.serial.active) return this.childOrThrow.serialHash
+        return 'x'
+    }
     readonly isVerticalByDefault = true
     readonly isCollapsible = true
     readonly id: string
