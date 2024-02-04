@@ -1,9 +1,10 @@
 import { observer } from 'mobx-react-lite'
 import { useMemo } from 'react'
-import { Civitai } from './CivitaiSpec'
+import { Civitai, CivitaiSearchResultItem } from './CivitaiSpec'
 
 import { Panel } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
+import { CivitaiResultUI } from './CivitaiResultUI'
 
 export const CivitaiUI = observer(function CivitaiUI_() {
     const civitai = useMemo(() => new Civitai(), [])
@@ -38,61 +39,11 @@ export const CivitaiUI = observer(function CivitaiUI_() {
                         overflow: 'auto',
                     }}
                 >
-                    {civitai.results.items.map((i) => {
-                        const v0 = i.modelVersions[0]
-                        const v0Imgs = v0.images
-                        const img0 = v0Imgs[0]
-                        return (
-                            <div>
-                                {/* <CardHeader>{i.name}</CardHeader> */}
-                                <div>{i.name}</div>
-                                {/* <div>{i.id}</div> */}
-                                <div>{i.modelVersions.length} version</div>
-                                {/* <CardPreview> */}
-                                <img key={img0.url} height={100} width={100} src={img0.url} />
-                                {/* </CardPreview> */}
-                            </div>
-                        )
-                    })}
+                    {civitai.results.items.map((i: CivitaiSearchResultItem) => (
+                        <CivitaiResultUI i={i} />
+                    ))}
                 </div>
             )}
         </Panel>
-    )
-})
-
-// const x = <Panel>
-//     <CardHeader>{i.name}</CardHeader>
-//     <CardPreview>
-//     {/* {i.modelVersions[0].images.map(i => <Image width={200} fit='contain' src={i.url}/>)} */}
-//     </CardPreview >
-//     </Panel>
-// </Panel>
-
-export const CivitaiCardUI = observer(function CivitaiCardUI_(p: {}) {
-    return (
-        <div
-            style={{
-                height: '40rem',
-                // display: 'flex',
-                overflow: 'auto',
-            }}
-        >
-            {civitai.results.items.map((i) => {
-                const v0 = i.modelVersions[0]
-                const v0Imgs = v0.images
-                const img0 = v0Imgs[0]
-                return (
-                    <div>
-                        {/* <CardHeader>{i.name}</CardHeader> */}
-                        <div>{i.name}</div>
-                        {/* <div>{i.id}</div> */}
-                        <div>{i.modelVersions.length} version</div>
-                        {/* <CardPreview> */}
-                        <img key={img0.url} height={100} width={100} src={img0.url} />
-                        {/* </CardPreview> */}
-                    </div>
-                )
-            })}
-        </div>
     )
 })

@@ -7,7 +7,7 @@ import { makeAutoObservable } from 'mobx'
 export class Civitai {
     query: string = ''
 
-    results: Maybe<SearchResult> = null
+    results: Maybe<CivitaiSearchResult> = null
 
     constructor() {
         makeAutoObservable(this)
@@ -28,19 +28,19 @@ export class Civitai {
             // body: Body.json(p),
         })
         // 🔴 ?
-        const x: SearchResult = (await res.json()) as any
+        const x: CivitaiSearchResult = (await res.json()) as any
         // console.log('[CIVITAI] found:', res.data)
         this.results = x
         return x
     }
 }
 
-type SearchResult = {
-    items: SearchResultItem[]
+export type CivitaiSearchResult = {
+    items: CivitaiSearchResultItem[]
     metadata: SearchResultMetadata
 }
 
-type SearchResultItem = {
+export type CivitaiSearchResultItem = {
     /*	The identifier for the model */
     id: number
     /*	The name of the model */
