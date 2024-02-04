@@ -65,6 +65,11 @@ export const compilePrompt = (p: {
                 return false
             }
 
+            if (toktype === 'Number') {
+                set(CONTENT.slice(ref.from, ref.to))
+                return false
+            }
+
             if (toktype === 'String') {
                 set(CONTENT.slice(ref.from + 1, ref.to - 1))
                 return false
