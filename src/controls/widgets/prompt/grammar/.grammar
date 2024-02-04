@@ -50,8 +50,8 @@ EmbeddingName { Identifier | String  }
 @tokens {
   space { @whitespace+ }
   Break { "break" }
-  Identifier { $[A-Za-z_]+ }
-  Number { $[0-9.-]+ }
+  Identifier { ($[A-Za-z0-9._\-] )+ }
+  Number { "-" ?$[0-9.]+ }
   String { '"' !["]* '"' }
   Separator { "," }
   Comment { ";" ![\n]* }
