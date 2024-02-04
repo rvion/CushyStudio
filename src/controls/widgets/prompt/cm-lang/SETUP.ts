@@ -23,7 +23,7 @@ import {
 import { history, defaultKeymap, historyKeymap } from '@codemirror/commands'
 import { highlightSelectionMatches, searchKeymap } from '@codemirror/search'
 import { closeBrackets, autocompletion, closeBracketsKeymap, completionKeymap } from '@codemirror/autocomplete'
-import { lintKeymap } from '@codemirror/lint'
+import { lintKeymap, lintGutter } from '@codemirror/lint'
 import { PromptKeymap1 } from './COMMANDS'
 import { oneDark } from '@codemirror/theme-one-dark'
 import { placeholders } from './DECORATION'
@@ -32,6 +32,7 @@ import { simpleLezerLinter } from './LINT2'
 export const basicSetup = (() => [
     EditorView.lineWrapping,
     simpleLezerLinter(),
+    lintGutter(),
     placeholders,
     oneDark,
     lineNumbers(),
