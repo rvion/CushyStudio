@@ -3,6 +3,7 @@ import type { Action } from '@codemirror/lint'
 import type { STATE } from 'src/state/state'
 import type { EditorView } from '@codemirror/view'
 import type { PromptLangNodeName } from '../grammar/grammar.types'
+import type { LoraTextNode } from 'src/widgets/prompter/nodes/lora/LoraBoxUI'
 
 import { syntaxTree } from '@codemirror/language'
 import { Diagnostic, linter } from '@codemirror/lint'
@@ -38,7 +39,9 @@ export const PromptLinter1 = linter((view: EditorView) => {
             }
             if (refName == 'Lora') {
                 const xx = $extractLoraInfos(view, ref)
-                if (st.schema.hasLora(xx.loraName)) return
+                const loraName = xx.loraName
+                if (loraName == null) return
+                if (st.schema.hasLora(loraName)) return
                 console.log(`[👙] 🟢--`, xx)
                 diagnostics.push({
                     from: ref.from,
@@ -65,23 +68,20 @@ export const PromptLinter1 = linter((view: EditorView) => {
 })
 
 export const $extractLoraInfos = (
+    //
     content: string | EditorView,
     loraNodeRef: SyntaxNodeRef,
-): {
-    loraName: Enum_LoraLoader_lora_name
-    strength_clip: number
-    strength_model: number
-    ref: SyntaxNodeRef
-} => {
+): LoraTextNode => {
     // UTILS ------------------------------------------------------------
     const getText = (from: number, to: number) =>
         typeof content === 'string' //
             ? content.slice(from, to)
             : content.state.sliceDoc(from, to)
-    const ABORT = (err: string) => {
+    const ABORT = (err: string): LoraTextNode => {
         console.log(`[❌ 🔴] LORA AST ERROR: ${err}`)
-        const loraName = 'error' as Enum_LoraLoader_lora_name
-        return { loraName, strength_clip: 1, strength_model: 1, ref: loraNodeRef }
+        // const loraName = 'error' as Enum_LoraLoader_lora_name
+        // console.log(`[👙 UUUUUU] `, loraNodeRef.name)
+        return {}
     }
 
     // NAME ------------------------------------------------------------
@@ -90,27 +90,31 @@ export const $extractLoraInfos = (
     if (nameNode == null) return ABORT('no name node')
     if (nameNode.name !== 'Identifier' && nameNode.name !== 'String') return ABORT('invalid name node')
     const isString = loraNodeRef.node.firstChild?.firstChild?.name == 'String'
-    const posName = isString ? [nameNode.from + 1, nameNode.to - 1] : [nameNode.from, nameNode.to]
-    const loraName = getText(posName[0], posName[1]) as Enum_LoraLoader_lora_name
+    const namePos = isString //
+        ? { from: nameNode.from + 1, to: nameNode.to - 1 }
+        : { from: nameNode.from, to: nameNode.to }
+    const loraName = getText(namePos.from, namePos.to) as Enum_LoraLoader_lora_name
 
     // WEIGHTS ------------------------------------------------------------
     const numbers = loraNodeRef.node.getChildren('Number')
     let strength_clip = 1
     let strength_model = 1
+    let num1Pos: Maybe<{ from: number; to: number }> = undefined
+    let num2Pos: Maybe<{ from: number; to: number }> = undefined
     if (numbers.length >= 1) {
         const node: SyntaxNode = numbers[0]
-        // console.log(`[👙] AAAA`, node.name, getText(node.from, node.to), parseFloat(getText(node.from, node.to)))
-        // if (getText(node.from, node.to).includes('masterpiece')) debugger
+        num1Pos = { from: node.from, to: node.to }
         const number = parseFloat(getText(node.from, node.to))
         strength_clip = number
     }
     if (numbers.length >= 2) {
         const node: SyntaxNode = numbers[1]
+        num2Pos = { from: node.from, to: node.to }
         const number = parseFloat(getText(node.from, node.to))
         strength_model = number
     }
 
-    return { loraName, strength_model, strength_clip, ref: loraNodeRef }
+    return { namePos, num1Pos, num2Pos, loraName, strength_model, strength_clip }
 }
 
 export const $getWildcardNamePos = (ref: SyntaxNodeRef): [from: number, to: number] => {
