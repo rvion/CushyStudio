@@ -4,7 +4,7 @@ import type { SyntaxNodeRef } from '@lezer/common'
 import type { PromptLangNodeName } from './grammar/grammar.types'
 
 import { parser } from './grammar/grammar.parser'
-import { $getWeightNumber, $getWildcardNamePos } from './cm-lang/LINT'
+import { $extractLoraInfos, $getWeightNumber, $getWildcardNamePos } from './cm-lang/LINT'
 
 export const compilePrompt = (p: {
     text: string
@@ -97,10 +97,10 @@ export const compilePrompt = (p: {
             }
 
             if (toktype === 'Lora') {
-                const [from, to] = $getWildcardNamePos(ref)
-                const loraName = CONTENT.slice(from, to) as Enum_LoraLoader_lora_name
-                p.onLora(loraName, weights, weights)
-                // 🔴
+                const infos = $extractLoraInfos(CONTENT, ref)
+                if (!infos.loraName) return false
+                const loraName = infos.loraName
+                p.onLora(loraName, infos.strength_clip ?? 1, infos.strength_model ?? 1)
                 // 🔴const next = run.nodes.LoraLoader({
                 // 🔴    model: ckpt,
                 // 🔴    clip: clip,
