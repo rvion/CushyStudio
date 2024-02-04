@@ -3,12 +3,19 @@ import { parser } from './grammar.parser'
 
 console.log(parser.parse('one 2 "three"').toString())
 
-const test1 = `test (car) defun`
+const test1 = `
+(masterpiece, tree)x-0.8, (*color)x0.6 @"xl\pxll.safetensors"[.2,.8]`
 const parse1 = parser.parse(test1)
 
 parse1.iterate({
     enter(nodeType) {
-        console.log(`[👙] `, nodeType.name, nodeType.from, nodeType.to)
+        const icon =
+            nodeType.name === 'Number' //
+                ? '🔢'
+                : nodeType.name === 'Lora'
+                ? '🔵'
+                : '  '
+        console.log(`[${icon}] `, nodeType.name, nodeType.from, nodeType.to)
         // if () {
         //     console.log(`Error at position ${start}-${end}`)
         // }

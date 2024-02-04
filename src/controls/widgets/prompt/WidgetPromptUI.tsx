@@ -151,6 +151,8 @@ class CMPromptState {
                             ? JSON.stringify(self.text.slice(node.from, node.to))
                             : node.name === 'String'
                             ? self.text.slice(node.from, node.to)
+                            : node.name === 'Number'
+                            ? self.text.slice(node.from, node.to)
                             : '',
                         `(${node.from} -> ${node.to})`,
                     ].join(' '),

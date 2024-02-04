@@ -37,14 +37,14 @@ export const PromptLinter1 = linter((view: EditorView) => {
                 })
             }
             if (refName == 'Lora') {
-                const [from, to] = $getWildcardNamePos(ref)
-                const text = view.state.sliceDoc(from, to)
-                if (st.schema.hasLora(text)) return
+                const xx = $extractLoraInfos(view, ref)
+                if (st.schema.hasLora(xx.loraName)) return
+                console.log(`[👙] 🟢--`, xx)
                 diagnostics.push({
                     from: ref.from,
                     to: ref.to,
                     severity: 'error',
-                    message: `Lora "${text}" does not exist`,
+                    message: `Lora "${xx.loraName}" does not exist (${JSON.stringify(xx.loraName)})`,
                     actions: [removeAction],
                 })
             }
@@ -65,38 +65,52 @@ export const PromptLinter1 = linter((view: EditorView) => {
 })
 
 export const $extractLoraInfos = (
-    text: string,
-    ref: SyntaxNodeRef,
+    content: string | EditorView,
+    loraNodeRef: SyntaxNodeRef,
 ): {
     loraName: Enum_LoraLoader_lora_name
     strength_clip: number
     strength_model: number
     ref: SyntaxNodeRef
 } => {
-    // safety net
-    if (ref.name !== 'Lora') throw new Error(`$extractLoraInfos called with a "${ref.name}" instead of a "Lora"`)
+    // UTILS ------------------------------------------------------------
+    const getText = (from: number, to: number) =>
+        typeof content === 'string' //
+            ? content.slice(from, to)
+            : content.state.sliceDoc(from, to)
+    const ABORT = (err: string) => {
+        console.log(`[❌ 🔴] LORA AST ERROR: ${err}`)
+        const loraName = 'error' as Enum_LoraLoader_lora_name
+        return { loraName, strength_clip: 1, strength_model: 1, ref: loraNodeRef }
+    }
 
-    // get anme
-    const isString = ref.node.firstChild?.firstChild?.name == 'String'
-    const posName = isString ? [ref.from + 2, ref.to - 1] : [ref.from + 1, ref.to]
-    const loraName = text.slice(posName[0], posName[1]) as Enum_LoraLoader_lora_name
+    // NAME ------------------------------------------------------------
+    if (loraNodeRef.name !== 'Lora') return ABORT(`$extractLoraInfos called with a "${loraNodeRef.name}" instead of a "Lora"`)
+    const nameNode = loraNodeRef.node.getChild('LoraName')?.firstChild
+    if (nameNode == null) return ABORT('no name node')
+    if (nameNode.name !== 'Identifier' && nameNode.name !== 'String') return ABORT('invalid name node')
+    const isString = loraNodeRef.node.firstChild?.firstChild?.name == 'String'
+    const posName = isString ? [nameNode.from + 1, nameNode.to - 1] : [nameNode.from, nameNode.to]
+    const loraName = getText(posName[0], posName[1]) as Enum_LoraLoader_lora_name
 
-    // get weights
-    const numbers = ref.node.getChildren('Number')
+    // WEIGHTS ------------------------------------------------------------
+    const numbers = loraNodeRef.node.getChildren('Number')
     let strength_clip = 1
     let strength_model = 1
     if (numbers.length >= 1) {
         const node: SyntaxNode = numbers[0]
-        const number = parseFloat(text.slice(node.from, node.to))
+        // console.log(`[👙] AAAA`, node.name, getText(node.from, node.to), parseFloat(getText(node.from, node.to)))
+        // if (getText(node.from, node.to).includes('masterpiece')) debugger
+        const number = parseFloat(getText(node.from, node.to))
         strength_clip = number
     }
     if (numbers.length >= 2) {
         const node: SyntaxNode = numbers[1]
-        const number = parseFloat(text.slice(node.from, node.to))
+        const number = parseFloat(getText(node.from, node.to))
         strength_model = number
     }
 
-    return { loraName, strength_model, strength_clip, ref: ref }
+    return { loraName, strength_model, strength_clip, ref: loraNodeRef }
 }
 
 export const $getWildcardNamePos = (ref: SyntaxNodeRef): [from: number, to: number] => {
@@ -113,6 +127,7 @@ export const $getWeightNumber = (ref: SyntaxNodeRef): [from: number, to: number]
     if (ref.name !== 'WeightedExpression') throw new Error(`❌ $getWeightNumber called with a node not in ['WeightedExpression']`)
     const number = bang(ref.node.lastChild, '❌ weight expression without weight')
     if ((number.name as PromptLangNodeName) !== 'Number') {
+        // debugger
         console.log(`❌ Expected a number`)
         return [0, 0]
     }
