@@ -1,3 +1,3 @@
-export const isPromptLangIdentifier = (text: string) => {
-    return /^$[A-Za-z0-9._\\\/\-]+$/.test(text)
+export const isValidPromptLangIdentifier = (text: string): boolean => {
+    return /^[A-Za-z0-9._\\\/\-]+$/.test(text)
 }

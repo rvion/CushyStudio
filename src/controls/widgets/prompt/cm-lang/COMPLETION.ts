@@ -3,7 +3,9 @@ import type { STATE } from 'src/state/state'
 
 import { Completion, CompletionContext, CompletionResult, CompletionSource, autocompletion } from '@codemirror/autocomplete'
 import { syntaxTree } from '@codemirror/language'
-import { $ancestorsBottomUp } from './utils'
+import { $ancestorsBottomUp, $ancestorsTopDown } from './utils'
+import { PromptLangNodeName } from '../grammar/grammar.types'
+import { isValidPromptLangIdentifier } from './isIdentifier'
 
 // Dynamic completion based on context
 const dynamicCompletion: CompletionSource = (context: CompletionContext): CompletionResult | null => {
@@ -14,25 +16,25 @@ const dynamicCompletion: CompletionSource = (context: CompletionContext): Comple
 
     // ancestor chain
     const x = $ancestorsBottomUp(node)
-    console.log(`[👙] x`, x.map((x) => x.name)) // prettier-ignore
+    const nodeToReplace = x.find((x) => {
+        const name = x.name as PromptLangNodeName
+        return (
+            name === 'Lora' || //
+            name === 'Wildcard' ||
+            name === 'Embedding' ||
+            name === 'Tag'
+        )
+    })
+
+    console.log(`[🟢] x`, x.map((x) => x.name)) // prettier-ignore
+    console.log(`[🟢] x`, nodeToReplace?.name) // prettier-ignore
 
     // OUTPUT
     let completionsOptions: Completion[] = []
 
-    if (!(node.name === 'String' || node.name === 'Identifier')) return null
-    const from = node.name === 'String' ? node.from + 1 : node.from
-    const to = node.name === 'String' ? node.to - 1 : node.to
-
-    const nodeToReplace = x.find(
-        (x) =>
-            x.name === 'Lora' || //
-            x.name === 'Wildcard' ||
-            x.name === 'Embedding',
-    )
-
     const addWildcards = () => {
         for (const [wildcard, values] of Object.entries(st.wildcards)) {
-            const noWrap = /^[A-Za-z_]+$/.test(wildcard)
+            const noWrap = isValidPromptLangIdentifier(wildcard)
             const info = values.join(', ')
             completionsOptions.push({
                 // info: info,
@@ -47,7 +49,7 @@ const dynamicCompletion: CompletionSource = (context: CompletionContext): Comple
     }
     const addLoras = () => {
         for (const loraName of st.schema.getLoras()) {
-            const noWrap = /^[A-Za-z_]+$/.test(loraName)
+            const noWrap = isValidPromptLangIdentifier(loraName)
             completionsOptions.push({
                 displayLabel: `lora: ${loraName}`,
                 label: loraName,
@@ -59,7 +61,7 @@ const dynamicCompletion: CompletionSource = (context: CompletionContext): Comple
     }
     const addEmbeddings = () => {
         for (const embeddingName of st.schema.data.embeddings) {
-            const noWrap = /^[A-Za-z_]+$/.test(embeddingName)
+            const noWrap = isValidPromptLangIdentifier(embeddingName)
             completionsOptions.push({
                 displayLabel: `${embeddingName}`,
                 detail: 'embedding',
@@ -70,11 +72,10 @@ const dynamicCompletion: CompletionSource = (context: CompletionContext): Comple
             })
         }
     }
-
     const addTags = () => {
         for (const tag of st.danbooru.tags) {
             const tagName = tag.text
-            const noWrap = /^[A-Za-z_]+$/.test(tagName)
+            const noWrap = isValidPromptLangIdentifier(tagName)
             completionsOptions.push({
                 displayLabel: `${tagName}`,
                 detail: 'tag',
@@ -85,11 +86,28 @@ const dynamicCompletion: CompletionSource = (context: CompletionContext): Comple
             })
         }
     }
+
+    const leftNodeName = node.name as PromptLangNodeName
+    const validNodeNames: PromptLangNodeName[] = [
+        //
+        'String',
+        'Identifier',
+        'Lora',
+        'Wildcard',
+        'Embedding',
+        'Tag',
+    ]
+    console.log(`[👙] leftNodeName=`, leftNodeName, ' => ', validNodeNames.includes(leftNodeName))
+    if (!validNodeNames.includes(leftNodeName)) return null
+
+    const from = node.name === 'String' ? node.from + 1 : node.from
+    const to = node.name === 'String' ? node.to - 1 : node.to
+
     // console.log(`[👙] no meaningful parent`, from, to)
-    addLoras()
-    addWildcards()
-    addEmbeddings()
-    addTags()
+    if (nodeToReplace == null || nodeToReplace.name === 'Lora') addLoras()
+    if (nodeToReplace == null || nodeToReplace.name === 'Wildcard') addWildcards()
+    if (nodeToReplace == null || nodeToReplace.name === 'Embedding') addEmbeddings()
+    if (nodeToReplace == null || nodeToReplace.name === 'Tag') addTags()
     // }
 
     return { from, to, options: completionsOptions }

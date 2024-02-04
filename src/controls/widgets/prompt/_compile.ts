@@ -95,7 +95,6 @@ export const compilePrompt = (p: {
                 set(picked)
                 return false
             }
-
             if (toktype === 'Lora') {
                 const infos = $extractLoraInfos(CONTENT, ref)
                 if (!infos.loraName) return false
@@ -110,7 +109,14 @@ export const compilePrompt = (p: {
                 // 🔴})
 
                 const associatedText = st.getLoraAssociatedTriggerWords(loraName)
-                if (associatedText) set(associatedText)
+
+                if (associatedText) {
+                    console.log(`[👙] UUUU: associated text:`, associatedText)
+                    set(associatedText)
+                } else {
+                    console.log(`[👙] UUUU: NO associated text for lora:`, loraName)
+                }
+
                 // 🔴 clip = next._CLIP
                 // 🔴 ckpt = next._MODEL
             }
