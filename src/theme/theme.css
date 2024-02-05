@@ -82,8 +82,88 @@
     background-image: none;
 }
 
-/* --------------------------- */
+/* Slider   --------------------- */
 input[type='range']::-webkit-slider-runnable-track { height: 2rem; }
+
+/* .relative-slider {
+    background-color: #1e1e1e;
+} */
+
+.relative-slider div {
+    /* position: relative; */
+    height: auto;
+    align-items: center;
+}
+
+.relative-slider:hover:not(.active) input[type='range'] {
+    cursor: ew-resize;
+    filter: brightness(1.2);
+    /* background-color: darkgrey; */
+}
+
+.relative-slider:active input[type='range'] {
+    cursor: ew-resize;
+    /* filter: brightness(1.2); */
+    background-color: black;
+}
+
+.relative-slider input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  /* -webkit-appearance: none; */
+    width: 0;
+    height: 0;
+    margin: 0;
+}
+
+.relative-slider input[type=range] {
+    position: absolute
+}
+
+
+.relative-slider input[type=range]::-webkit-slider-runnable-track {
+    color: black;
+}
+
+.relative-slider input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    border: none;
+    height: 0px;
+    width: 0px;
+    /* color: oklch(var(--p)/0.5); */
+}
+
+.relative-slider input[type="range"]::-moz-range-thumb {
+    display: none; /* Hide the handle in Firefox */
+}
+
+.relative-slider input[type="range"]::-ms-thumb {
+    display: none; /* Hide the handle in Microsoft Edge */
+}
+
+.relative-slider input[type="number"] {
+    appearance: textfield;
+    -moz-appearance: textfield; /* Firefox */
+    pointer-events: none;
+    width: 100%;
+    text-align: center;
+    --shadow-color: rgb(0, 0, 0, 0.2);
+    /* TODO(bird_d): This should be moved to be under all text, not just for sliders. */
+    text-shadow: 0px 1px 1px var(--shadow-color), 1px 1px 1px var(--shadow-color), -1px 1px 1px var(--shadow-color);
+    /* background: black !important; */
+    height: auto;
+}
+
+.relative-slider input[type="number"]:focus {
+    outline: none;
+    border-color: transparent;
+}
+
+.relative-slider input[type="number"]::selection {
+    background-color: oklch(var(--p));
+    /* color: rgb(var(--fallback-p)); */
+}
+
+/* /Slider */
 
 .bg-primary-1 { background-color: oklch(var(--p)/.1); }
 .bg-primary-2 { background-color: oklch(var(--p)/.2); }

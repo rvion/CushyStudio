@@ -11,7 +11,7 @@ export const ui_latent_v3 = () => {
             emptyLatent: () =>
                 form.group({
                     items: () => ({
-                        batchSize: form.int({ default: 1, min: 1, max: 8 }),
+                        batchSize: form.int({ step: 1, default: 1, min: 1, max: 8 }),
                         size: form.size({}),
                     }),
                 }),
