@@ -55,7 +55,7 @@ export const DraftMenuUI = observer(function DraftMenuUI_(p: { title: string; dr
             </MenuItem>
             <MenuItem
                 icon={<span className='material-symbols-outlined'>edit</span>}
-                onClick={() => openInVSCode(file?.absPath ?? '')}
+                onClick={() => openInVSCode(st, file?.absPath ?? '')}
             >
                 Edit App Definition
             </MenuItem>
