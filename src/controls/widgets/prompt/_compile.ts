@@ -66,7 +66,7 @@ export const compilePrompt = (p: {
             }
 
             if (toktype === 'Number') {
-                set(CONTENT.slice(ref.from, ref.to))
+                // set(CONTENT.slice(ref.from, ref.to))
                 return false
             }
 
@@ -111,12 +111,12 @@ export const compilePrompt = (p: {
                 const associatedText = st.getLoraAssociatedTriggerWords(loraName)
 
                 if (associatedText) {
-                    console.log(`[👙] UUUU: associated text:`, associatedText)
+                    console.log(`[👙] 🟢`, associatedText)
                     set(associatedText)
                 } else {
                     console.log(`[👙] UUUU: NO associated text for lora:`, loraName)
                 }
-
+                return false
                 // 🔴 clip = next._CLIP
                 // 🔴 ckpt = next._MODEL
             }

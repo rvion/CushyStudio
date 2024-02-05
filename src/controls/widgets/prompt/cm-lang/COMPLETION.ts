@@ -26,8 +26,15 @@ const dynamicCompletion: CompletionSource = (context: CompletionContext): Comple
         )
     })
 
-    console.log(`[🟢] x`, x.map((x) => x.name)) // prettier-ignore
-    console.log(`[🟢] x`, nodeToReplace?.name) // prettier-ignore
+    const onlyHasPrefix =
+        node.name === 'Lora' || //
+        node.name === 'Wildcard' ||
+        node.name === 'Embedding' ||
+        node.name === 'Tag'
+
+    const alreadyhasPrefix = onlyHasPrefix ? false : Boolean(nodeToReplace)
+    // console.log(`[🟢] x`, x.map((x) => x.name)) // prettier-ignore
+    // console.log(`[🟢] x`, nodeToReplace?.name) // prettier-ignore
 
     // OUTPUT
     let completionsOptions: Completion[] = []
@@ -36,39 +43,41 @@ const dynamicCompletion: CompletionSource = (context: CompletionContext): Comple
         for (const [wildcard, values] of Object.entries(st.wildcards)) {
             const noWrap = isValidPromptLangIdentifier(wildcard)
             const info = values.join(', ')
+            const prefix = alreadyhasPrefix ? '' : `?`
             completionsOptions.push({
-                // info: info,
-                displayLabel: wildcard, // `${noWrap ? wildcard : `"${wildcard}"`}`,
+                displayLabel: wildcard,
                 label: wildcard,
                 type: 'wildcard',
                 boost: 99,
                 detail: info.slice(0, 20) + '...',
-                apply: noWrap ? `?${wildcard} ` : `?"${wildcard}" `,
+                apply: noWrap ? `${prefix}${wildcard} ` : `${prefix}"${wildcard}" `,
             })
         }
     }
     const addLoras = () => {
         for (const loraName of st.schema.getLoras()) {
             const noWrap = isValidPromptLangIdentifier(loraName)
+            const prefix = alreadyhasPrefix ? '' : `@`
             completionsOptions.push({
                 displayLabel: `lora: ${loraName}`,
                 label: loraName,
                 type: 'lora',
                 boost: 99,
-                apply: noWrap ? `@${loraName}` : `@"${loraName}"`,
+                apply: noWrap ? `${prefix}${loraName}` : `${prefix}"${loraName}"`,
             })
         }
     }
     const addEmbeddings = () => {
         for (const embeddingName of st.schema.data.embeddings) {
             const noWrap = isValidPromptLangIdentifier(embeddingName)
+            const prefix = alreadyhasPrefix ? '' : `:`
             completionsOptions.push({
                 displayLabel: `${embeddingName}`,
                 detail: 'embedding',
                 label: embeddingName.toLowerCase(),
                 type: 'embedding',
                 boost: 99,
-                apply: noWrap ? `:${embeddingName}` : `:"${embeddingName}"`,
+                apply: noWrap ? `${prefix}${embeddingName}` : `${prefix}"${embeddingName}"`,
             })
         }
     }
@@ -76,13 +85,14 @@ const dynamicCompletion: CompletionSource = (context: CompletionContext): Comple
         for (const tag of st.danbooru.tags) {
             const tagName = tag.text
             const noWrap = isValidPromptLangIdentifier(tagName)
+            const prefix = alreadyhasPrefix ? '' : `%`
             completionsOptions.push({
                 displayLabel: `${tagName}`,
                 detail: 'tag',
                 boost: -99,
                 label: tagName,
                 type: 'tag',
-                apply: noWrap ? `%${tagName}` : `%"${tagName}"`,
+                apply: noWrap ? `${prefix}${tagName}` : `${prefix}"${tagName}"`,
             })
         }
     }
@@ -92,6 +102,7 @@ const dynamicCompletion: CompletionSource = (context: CompletionContext): Comple
         //
         'String',
         'Identifier',
+        //
         'Lora',
         'Wildcard',
         'Embedding',
@@ -100,16 +111,14 @@ const dynamicCompletion: CompletionSource = (context: CompletionContext): Comple
     console.log(`[👙] leftNodeName=`, leftNodeName, ' => ', validNodeNames.includes(leftNodeName))
     if (!validNodeNames.includes(leftNodeName)) return null
 
-    const from = nodeToReplace //
+    const from =
+        /* nodeToReplace //
         ? nodeToReplace.from
-        : node.name === 'String'
-        ? node.from + 1
-        : node.from
-    const to = nodeToReplace //
+        :  */ node.name === 'String' ? node.from + 1 : node.from
+    const to =
+        /* nodeToReplace //
         ? nodeToReplace.to
-        : node.name === 'String'
-        ? node.to - 1
-        : node.to
+        :  */ node.name === 'String' ? node.to - 1 : node.to
 
     // console.log(`[👙] no meaningful parent`, from, to)
     if (nodeToReplace == null || nodeToReplace.name === 'Lora') addLoras()
@@ -118,13 +127,8 @@ const dynamicCompletion: CompletionSource = (context: CompletionContext): Comple
     if (nodeToReplace == null || nodeToReplace.name === 'Tag') addTags()
     // }
 
-    const filterFalse =
-        node.name === 'Lora' || //
-        node.name === 'Wildcard' ||
-        node.name === 'Embedding' ||
-        node.name === 'Tag'
     return {
-        filter: filterFalse ? false : undefined,
+        filter: onlyHasPrefix ? false : true,
         from,
         to,
         options: completionsOptions,

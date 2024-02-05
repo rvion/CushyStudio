@@ -92,9 +92,8 @@ export const LoraBoxUI = observer(function LoraBoxUI_(p: {
                     />
                 </div>
             </div>
-            <div tw='opacity-50 italic'>note: only trigger words will be multiplied</div>
             <div tw='flex gap-1 items-center'>
-                <div tw='w-32'>Associated text</div>
+                <div tw='w-32'>trigger words*</div>
                 <Input
                     //
                     type='text'
@@ -112,7 +111,10 @@ export const LoraBoxUI = observer(function LoraBoxUI_(p: {
                         })
                     }}
                 />
-                <div>* {'<weights>'} </div>
+                <div>x {'<weights>'} </div>
+            </div>
+            <div tw='opacity-50 italic text-xs'>
+                *: only trigger words will be multiplied by weights; to change the lora model and clip strength, use [x,y] syntax
             </div>
 
             <div>
