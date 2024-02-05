@@ -13,6 +13,7 @@ import { Stage } from 'konva/lib/Stage'
 import { Rect } from 'konva/lib/shapes/Rect'
 import { Transformer } from 'konva/lib/shapes/Transformer'
 import { makeAutoObservable } from 'mobx'
+import { MediaImageL } from 'src/models/MediaImage'
 
 export class UnifiedSelection {
     id: string = nanoid()
@@ -82,19 +83,47 @@ export class UnifiedSelection {
         makeAutoObservable(this)
     }
 
-    show = () => {
+    show = (): void => {
         this.live.visible(true)
         this.stable.visible(true)
         this.transform.visible(true)
     }
 
-    hide = () => {
+    hide = (): void => {
         this.live.visible(false)
         this.stable.visible(false)
         this.transform.visible(false)
     }
 
-    saveImage = () => {
+    saveImage = (): Maybe<MediaImageL> => {
+        // 1. get stage
+        const stage = this.live.getStage()
+        if (stage == null) return null
+        // 2. hide select widget
+        this.hide()
+
+        // 🔴 TODO: reset after screen
+        // const prevX = stage.x()
+        // const prevY = stage.y()
+        // const prevScaleX = stage.scaleX()
+        // const prevScaleY = stage.scaleY()
+        // const prevWidth = stage.width()
+        // const prevHeight = stage.height()
+
+        // change the view
+        stage.scale({ x: 1, y: 1 })
+        stage.position({ x: -this.stableData.x, y: -this.stableData.y })
+        stage.size({ width: this.stableData.width, height: this.stableData.height })
+
+        const fullCanvas = stage.toCanvas()
+        const dataURL = fullCanvas.toDataURL()
+        const img = createMediaImage_fromDataURI(this.st, dataURL!, `outputs/canvas/${nanoid()}.png`)
+        this.show()
+        return img
+        // console.log(dataURL)
+    }
+
+    saveImageOld = () => {
         // 1. get stage
         const stage = this.live.getStage()
         if (stage == null) return null

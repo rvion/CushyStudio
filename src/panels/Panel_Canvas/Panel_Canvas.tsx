@@ -62,6 +62,26 @@ export const Panel_Canvas = observer(function Panel_Canvas_(p: {
                     </div>
                 </div>
 
+                <div tw='bd'>
+                    <div
+                        tw='btn btn-primary'
+                        onClick={() => {
+                            //
+                            const draft = st.db.drafts.get('HU3BR0X9yd6qB3rWTH3Dd')
+                            if (draft == null) return toastError('NAH1')
+
+                            const selection = canvas.activeSelection
+                            if (selection == null) return toastError('NAH2')
+
+                            const img = selection.saveImage()
+                            if (img == null) return toastError('NAH3')
+
+                            draft.start(null, img)
+                        }}
+                    >
+                        AMAZE YOURSEF
+                    </div>
+                </div>
                 {/* GRID SIZE */}
                 <div tw='flex gap-1 items-center'>
                     {/*  */}
@@ -70,6 +90,7 @@ export const Panel_Canvas = observer(function Panel_Canvas_(p: {
                     x
                     <input tw='input input-bordered input-sm w-24' type='number' value={canvas.snapSize} />
                 </div>
+
                 {/* SELECTIONS */}
                 <div tw='bd1'>
                     <div tw='flex items-center justify-between'>
@@ -157,21 +178,3 @@ export const Panel_Canvas = observer(function Panel_Canvas_(p: {
         </div>
     )
 })
-
-// 🟢 <Stage
-//     // ⏸️ onContextMenu={(e) => {
-//     // ⏸️     uist.saveImage()
-//     // ⏸️     // e.evt.preventDefault()
-//     // ⏸️     // console.log('context menu')
-//     // ⏸️     // // get image from stage
-//     // ⏸️     // const dataURL = e.target.toDataURL()
-//     // ⏸️     // console.log(dataURL)
-//     // ⏸️ }}
-// >
-
-//     {canvas.selections.map((uniSel) => (
-//         <Layer key={uniSel.id}>
-//             <CanvasSelectionUI key={uniSel.id} uniSel={uniSel} />
-//         </Layer>
-//     ))}
-// </Stage>
