@@ -72,7 +72,7 @@ export const WigetSizeXUI = observer(function WigetSizeXUI_(p: {
                         //
                         min={p.bounds?.min ?? 128}
                         max={p.bounds?.max ?? 4096}
-                        step={p.bounds?.step ?? 256}
+                        step={p.bounds?.step ?? 32}
                         mode='int'
                         tw='join-item'
                         value={uist.width}
@@ -87,7 +87,7 @@ export const WigetSizeXUI = observer(function WigetSizeXUI_(p: {
                         tw='join-item'
                         min={p.bounds?.min ?? 128}
                         max={p.bounds?.max ?? 4096}
-                        step={p.bounds?.step ?? 256}
+                        step={p.bounds?.step ?? 32}
                         hideSlider
                         mode='int'
                         value={uist.height}
