@@ -7,6 +7,7 @@ import { makeAutoObservable } from 'mobx'
 export class Civitai {
     query: string = ''
 
+    selectedResult: Maybe<CivitaiSearchResultItem> = null
     results: Maybe<CivitaiSearchResult> = null
 
     constructor() {
@@ -59,49 +60,53 @@ export type CivitaiSearchResultItem = {
         /* The url of the creators avatar */
         image: string | null
     }
-    modelVersions: {
-        /* The identifier for the model version */
-        id: number
-        /* The name of the model version */
-        name: string
-        /* The description of the model version (usually a changelog) */
-        description: string
-        /* The date in which the version was created */
-        createdAt: Date
-        /* The download url to get the model file for this specific version */
-        downloadUrl: string
-        /* The words used to trigger the model */
-        trainedWords: string[]
+    modelVersions: CivitaiModelVersion[]
+}
 
-        files: {
-            /* The size of the model file*/
-            sizeKb: number
-            /* The format of the file */
-            format: 'pickle' | 'safetensor'
-            /* Status of the pickle scan*/
-            pickleScanResult: 'Pending' | 'Success' | 'Danger' | 'Error'
-            /* Status of the virus scan */
-            virusScanResult: 'Pending' | 'Success' | 'Danger' | 'Error'
-            /** The date in which the file was scanned */
-            scannedAt: Date | null
-            /** If the file is the primary file for the model version */
-            primary: boolean | undefined
-        }[]
-        images: {
-            /** The url for the image */
-            url: string
-            /** Whether or not the image is NSFW (note: if the model is NSFW, treat all images on the model as NSFW) */
-            nsfw: string
-            /** The original width of the image */
-            width: number
-            /** The original height of the image */
-            height: number
-            /** The blurhash of the image */
-            hash: string
-            /** The generation params of the image */
-            meta: object | null
-        }[]
+export type CivitaiModelVersion = {
+    /* The identifier for the model version */
+    id: number
+    /* The name of the model version */
+    name: string
+    /* The description of the model version (usually a changelog) */
+    description: string
+    /* The date in which the version was created */
+    createdAt: Date
+    /* The download url to get the model file for this specific version */
+    downloadUrl: string
+    /* The words used to trigger the model */
+    trainedWords: string[]
+
+    files: {
+        /* The size of the model file*/
+        sizeKb: number
+        /* The format of the file */
+        format: 'pickle' | 'safetensor'
+        /* Status of the pickle scan*/
+        pickleScanResult: 'Pending' | 'Success' | 'Danger' | 'Error'
+        /* Status of the virus scan */
+        virusScanResult: 'Pending' | 'Success' | 'Danger' | 'Error'
+        /** The date in which the file was scanned */
+        scannedAt: Date | null
+        /** If the file is the primary file for the model version */
+        primary: boolean | undefined
     }[]
+    images: ModelImage[]
+}
+
+export type ModelImage = {
+    /** The url for the image */
+    url: string
+    /** Whether or not the image is NSFW (note: if the model is NSFW, treat all images on the model as NSFW) */
+    nsfw: string
+    /** The original width of the image */
+    width: number
+    /** The original height of the image */
+    height: number
+    /** The blurhash of the image */
+    hash: string
+    /** The generation params of the image */
+    meta: object | null
 }
 
 type SearchResultMetadata = {

@@ -8,14 +8,16 @@ import { parseFloatNoRoundingErr } from 'src/utils/misc/parseFloatNoRoundingErr'
 import { SectionTitleUI } from 'src/widgets/workspace/SectionTitle'
 import { useSt } from '../../state/stateContext'
 import { CivitaiUI } from './CivitaiBrowserUI'
+import { useMemo } from 'react'
+import { Civitai } from './CivitaiSpec'
 
 export const Panel_Models = observer(function Panel_Models_() {
     const st = useSt()
-    const config = st.configFile
+    const civitai = useMemo(() => new Civitai(), [])
     return (
-        <div className='flex flex-col gap-2 items-start p-2'>
-            <SectionTitleUI label='CONFIG' className='block' />
-            <CivitaiUI />
+        <div className='flex flex-col gap-2 h-full w-full'>
+            <SectionTitleUI label='CIVITAI' className='block' />
+            <CivitaiUI tw='flex-1' civitai={civitai} />
             {/* <div tw='flex flex-col gap-1'>
                 <FieldUI label='Comfig file path'>
                     <pre tw='bg-base-200 rounded-btn px-2'>{config.path}</pre>

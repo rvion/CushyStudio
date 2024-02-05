@@ -1,6 +1,7 @@
 import { observer } from 'mobx-react-lite'
 import { Dropdown, MenuItem } from 'src/rsuite/Dropdown'
 import { useSt } from '../../state/stateContext'
+import { KEYS } from '../shortcuts/shorcutKeys'
 
 export const MenuPanelsUI = observer(function MenuPanelsUI_(p: {}) {
     const st = useSt()
@@ -24,16 +25,19 @@ export const MenuPanelsUI = observer(function MenuPanelsUI_(p: {}) {
             <MenuItem
                 onClick={() => st.layout.FOCUS_OR_CREATE('Models', {})}
                 icon={<span className='material-symbols-outlined text-red-400'>model_training</span>}
+                shortcut={KEYS.openPage_Models}
                 label='Model Manager'
             />
             <MenuItem
                 onClick={() => st.layout.FOCUS_OR_CREATE('IFrame', { url: 'https://app.posemy.art/' })}
+                shortcut={KEYS.openPage_Posemy}
                 icon={<span className='material-symbols-outlined text-red-400'>brush</span>}
                 label='3d Poser (posemy.art)'
             />
             <MenuItem
                 onClick={() => st.layout.FOCUS_OR_CREATE('Paint', {})}
                 icon={<span className='material-symbols-outlined text-red-400'>brush</span>}
+                shortcut={KEYS.openPage_Paint}
                 label='paint - Minipaint'
             />
             <MenuItem

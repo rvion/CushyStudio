@@ -18,6 +18,7 @@ export const KEYS = {
     openPage_Unsplash:  'mod+k 5',
     openPage_ComfyUI:   'mod+4',
     openPage_Gallery:   'mod+5',
+    openPage_Models:    'mod+6',
 
     // draft actions
     duplicateCurrentDraft: 'mod+shift+d',
