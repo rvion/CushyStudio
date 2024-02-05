@@ -7,6 +7,8 @@ export type PreferedFormLayout = 'mobile' | 'dense' | 'auto'
 export type ConfigFile = {
     /** this will allow you to enable typechecking for folders you manage */
     githubUsername?: string
+    /** @default to './completions/danbooru.csv' */
+    tagFile?: string
 
     OPENROUTER_API_KEY?: string
 

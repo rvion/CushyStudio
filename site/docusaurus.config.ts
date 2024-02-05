@@ -33,12 +33,12 @@ const config: Config = {
         [
             'classic',
             {
-                docs: {
-                    sidebarPath: './sidebars.ts',
-                    // Please change this to your repo.
-                    // Remove this to remove the "edit this page" links.
-                    editUrl: 'https://github.com/rvion/CushyStudio/tree/master/site',
-                },
+                // docs: {
+                //     sidebarPath: './sidebars.ts',
+                //     // Please change this to your repo.
+                //     // Remove this to remove the "edit this page" links.
+                //     editUrl: 'https://github.com/rvion/CushyStudio/tree/master/site',
+                // },
                 blog: {
                     showReadingTime: true,
                     // Please change this to your repo.
@@ -73,13 +73,14 @@ const config: Config = {
                 src: 'img/CushyLogo.png',
             },
             items: [
-                {
-                    type: 'docSidebar',
-                    sidebarId: 'tutorialSidebar',
-                    position: 'left',
-                    label: 'Documentation',
-                },
-                { to: '/blog', label: 'Blog', position: 'left' },
+                // {
+                //     type: 'docSidebar',
+                //     sidebarId: 'tutorialSidebar',
+                //     position: 'left',
+                //     label: 'Documentation',
+                // },
+                { to: 'https://docs.cushystudio.com/', label: 'Documentation', position: 'left' },
+                { to: '/blog', label: 'Blog', position: 'right' },
                 {
                     to: '/published-apps',
                     label: 'App Library',

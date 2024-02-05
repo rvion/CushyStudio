@@ -1,6 +1,9 @@
 /** assertNotNull */
-export const bang = <T>(x: Maybe<T>): T => {
-    if (x == null) throw new Error('bang')
+export const bang = <T>(x: Maybe<T>, msg: string = ''): T => {
+    if (x == null) {
+        console.error(`[🔴] BANG FAILED`, msg)
+        throw new Error('bang')
+    }
     return x
 }
 

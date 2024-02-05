@@ -36,6 +36,7 @@ export type Widget =
     | Widget_optional<any>
     | Widget_color
     | Widget_string
+    | Widget_prompt
     | Widget_orbit
     | Widget_prompt
     | Widget_seed

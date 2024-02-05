@@ -10,7 +10,7 @@ export type ComfyUIManagerKnownModelTypes =
     | "unet"               // x   2
     | "lora"               // x  13
     | "unclip"             // x   2
-    | "VAE"                // x   4
+    | "VAE"                // x   5
     | "T2I-Adapter"        // x   7
     | "T2I-Style"          // x   1
     | "controlnet"         // x  33
@@ -142,6 +142,7 @@ export type ComfyUIManagerKnownModelNames =
     | "LongAnimatediff/lt_long_mm_16_64_frames.ckpt (ComfyUI-AnimateDiff-Evolved)"
     | "LongAnimatediff/lt_long_mm_32_frames.ckpt (ComfyUI-AnimateDiff-Evolved)"
     | "negative_hand Negative Embedding"
+    | "OpenAI Consistency Decoder"
     | "orangemix.vae"
     | "person_yolov8m (segm)"
     | "person_yolov8n (segm)"

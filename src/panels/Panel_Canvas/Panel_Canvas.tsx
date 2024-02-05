@@ -106,7 +106,7 @@ export const Panel_Canvas = observer(function Panel_Canvas_(p: {
                         <Layer key={img?.id}>
                             {/* <Text text='Try to drag a star' /> */}
                             {img?.url ? ( //
-                                <Image draggable image={img.asHTMLImageElement} />
+                                <Image draggable image={img.asHTMLImageElement_noWait} />
                             ) : null}
                             <CanvasSelectionUI uist={uist} />
                         </Layer>

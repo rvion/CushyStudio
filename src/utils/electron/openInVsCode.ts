@@ -3,6 +3,7 @@ import { existsSync } from 'fs'
 import { resolve as pathResolve } from 'pathe'
 
 import { cwd } from 'process'
+import { toastError } from '../misc/toasts'
 
 const workspaceFolderPath = cwd()
 
@@ -12,22 +13,37 @@ export async function openInVSCode(filePathWithinWorkspace: string): Promise<voi
         const absoluteWorkspacePath = pathResolve(workspaceFolderPath)
         const absoluteFilePath = pathResolve(workspaceFolderPath, filePathWithinWorkspace)
 
-        if (!existsSync(absoluteWorkspacePath) || !existsSync(absoluteFilePath)) {
-            rejectPromise(new Error('Provided path(s) do not exist.'))
+        // ensure workspace exist
+        if (!existsSync(absoluteWorkspacePath)) {
+            const errMsg = `Provided path (${absoluteWorkspacePath}) for workspace do not exist.`
+            toastError(errMsg)
+            rejectPromise(new Error(errMsg))
+            return
+        }
+
+        // ensure file exist
+        if (!existsSync(absoluteFilePath)) {
+            const errMsg = `Provided path (${absoluteFilePath}) for file do not exist.`
+            toastError(errMsg)
+            rejectPromise(new Error(errMsg))
             return
         }
 
         // First, open the folder in VSCode
         exec(`code "${absoluteWorkspacePath}"`, (error) => {
             if (error) {
-                rejectPromise(new Error(`Error opening the workspace in VSCode: ${error.message}`))
+                const errMsg = `Error opening the workspace in VSCode: ${error.message}`
+                toastError(errMsg)
+                rejectPromise(new Error(errMsg))
                 return
             }
 
             // Then, focus on the specific file within the workspace
             exec(`code -r "${absoluteFilePath}"`, (error) => {
                 if (error) {
-                    rejectPromise(new Error(`Error opening the file in VSCode: ${error.message}`))
+                    const errMsg = `Error opening the file in VSCode: ${error.message}`
+                    toastError(errMsg)
+                    rejectPromise(new Error(errMsg))
                     return
                 }
 

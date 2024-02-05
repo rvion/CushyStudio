@@ -66,6 +66,7 @@ import { TreeApp } from 'src/panels/libraryUI/tree/nodes/TreeApp'
 import { TreeDraft } from 'src/panels/libraryUI/tree/nodes/TreeDraft'
 import { VirtualHierarchy } from 'src/panels/libraryUI/VirtualHierarchy'
 import { recursivelyFindAppsInFolder } from 'src/cards/walkLib'
+import { createRandomGenerator } from 'src/back/random'
 
 export class STATE {
     /** hack to help closing prompt completions */
@@ -122,6 +123,7 @@ export class STATE {
         return globalRef.__hotReloadPersistentCache
     }
 
+    hasWildcard = (name: string): boolean => (this.wildcards as { [k: string]: any })[name] != null
     get wildcards(): Wildcards {
         const wcdsPath = this.resolveFromRoot(asRelativePath('src/widgets/prompter/nodes/wildcards/wildcards.json'))
         const wcds = this.readJSON<Wildcards>(wcdsPath)
@@ -169,8 +171,19 @@ export class STATE {
 
     // paths
     cacheFolderPath: AbsolutePath
-    // comfyJSONPath: AbsolutePath
-    // embeddingsPath: AbsolutePath
+
+    /**
+     * get the configured trigger words for the given lora
+     * (those are user defined; hover your lora in any rich text prompt to edit them)
+     */
+    getLoraAssociatedTriggerWords = (loraName: string): Maybe<string> => {
+        return this.configFile.value?.loraPrompts?.[loraName]?.text
+    }
+
+    /** helper to chose radomly any item from a list */
+    chooseRandomly = <T>(key: string, seed: number, arr: T[]): T => {
+        return createRandomGenerator(`${key}:${seed}`).randomItem(arr)
+    }
 
     libraryFolderPathAbs: AbsolutePath
     libraryFolderPathRel: RelativePath
@@ -185,7 +198,7 @@ export class STATE {
     hovered: Maybe<StepOutput> = null
     electronUtils: ElectronUtils
     library: Library
-    danbooru = DanbooruTags.build()
+    danbooru: DanbooruTags
     userTags = UserTags.build()
     actionTags: ActionTagMethodList = []
     importer: ComfyImporter
@@ -425,6 +438,7 @@ export class STATE {
         this.library = new Library(this)
         this.project = this.getProject()
         this.auth = new AuthState(this)
+        this.danbooru = DanbooruTags.build(this)
 
         this.virtualHostBase // ensure getters are called at least once so we upsert the two core virtual hosts
         this.virtualHostFull // ensure getters are called at least once so we upsert the two core virtual hosts

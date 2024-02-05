@@ -342,6 +342,7 @@ export class CushyLayoutManager {
     build = (): IJsonModel => {
         const out: IJsonModel = {
             global: {
+                tabEnableFloat: false,
                 splitterSize: 6,
                 tabEnableRename: false,
                 borderEnableAutoHide: true,

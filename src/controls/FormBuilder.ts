@@ -28,6 +28,7 @@ export class FormBuilder {
     }
 
     // string
+    promptV2 = (config: Widget_prompt_config) => new Widget_prompt(this, config)
     string = (config: Widget_string_config) => new Widget_string(this, config)
     stringOpt = (config: Widget_string_config & { startActive?: boolean }) =>
         this.optional({
@@ -165,6 +166,7 @@ export class FormBuilder {
         if (type === 'optional') return new Widget_optional(this, input, serial)
         if (type === 'bool') return new Widget_bool(this, input, serial)
         if (type === 'str') return new Widget_string(this, input, serial)
+        if (type === 'prompt') return new Widget_prompt(this, input, serial)
         if (type === 'choices') return new Widget_choices(this, input, serial)
         if (type === 'number') return new Widget_number(this, input, serial)
         if (type === 'group') return new Widget_group(this, input, serial)
@@ -177,7 +179,6 @@ export class FormBuilder {
         if (type === 'inlineRun') return new W.Widget_inlineRun(this, input, serial)
         if (type === 'seed') return new W.Widget_seed(this, input, serial)
         if (type === 'matrix') return new W.Widget_matrix(this, input, serial)
-        if (type === 'prompt') return new Widget_prompt(this, input, serial)
         if (type === 'loras') return new W.Widget_loras(this, input, serial)
         if (type === 'image') return new Widget_image(this, input, serial)
         if (type === 'selectOne') return new W.Widget_selectOne(this, input, serial)

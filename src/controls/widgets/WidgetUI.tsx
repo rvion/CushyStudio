@@ -3,7 +3,6 @@ import * as R from 'src/controls/Widget'
 import { observer } from 'mobx-react-lite'
 import { Message } from 'src/rsuite/shims'
 import { exhaust } from '../../utils/misc/ComfyUtils'
-import { WidgetPromptUI } from '../../widgets/prompter/WidgetPromptUI'
 import { Widget_choices } from './choices/WidgetChoices'
 import { WidgetChoicesUI } from './choices/WidgetChoicesUI'
 import { Widget_string } from './string/WidgetString'
@@ -40,6 +39,7 @@ import { Widget_listExt } from './listExt/WidgetListExt'
 import { Widget_prompt } from './prompt/WidgetPrompt'
 import { Widget_size } from './size/WidgetSize'
 import { Widget_image } from './image/WidgetImage'
+import { WidgetPromptUI } from './prompt/WidgetPromptUI'
 
 /**
  * this widget will then dispatch the individual requests to the appropriate sub-widgets
@@ -57,7 +57,7 @@ export const WidgetUI = observer(function WidgetUI_(p: {
     if (widget instanceof Widget_number)       return <WidgetNumberUI      widget={widget} />
     if (widget instanceof Widget_string)       return <WidgetStringUI      widget={widget} />
     if (widget instanceof Widget_optional)     return <WidgetOptionalUI    widget={widget} />
-    if (widget instanceof Widget_image)      return <WidgetSelectImageUI widget={widget} />
+    if (widget instanceof Widget_image)        return <WidgetSelectImageUI widget={widget} />
     if (widget instanceof Widget_list)         return <WidgetListUI        widget={widget} />
     if (widget instanceof Widget_listExt)      return <WidgetListExtUI     widget={widget} />
     if (widget instanceof Widget_group)        return <WidgetGroupUI       widget={widget} />

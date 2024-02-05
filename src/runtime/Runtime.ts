@@ -174,7 +174,7 @@ export class Runtime<FIELDS extends WidgetDict = any> {
      * (those are user defined; hover your lora in any rich text prompt to edit them)
      */
     getLoraAssociatedTriggerWords = (loraName: string): Maybe<string> => {
-        return this.Cushy.configFile.value?.loraPrompts?.[loraName]?.text
+        return this.Cushy.getLoraAssociatedTriggerWords(loraName)
     }
 
     // ----------------------------

@@ -24,19 +24,12 @@ app({
         //     choices: [{ id: 'SD 1.5' }, { id: 'SDXL' }],
         // }),
         positive: form.prompt({
-            default: {
-                tokens: [
-                    { type: 'text', text: 'masterpiece, tree ' },
-                    { type: 'wildcard', payload: 'color', version: 1 },
-                    { type: 'text', text: ' ' },
-                    { type: 'wildcard', payload: '3d_term', version: 1 },
-                    { type: 'text', text: ' ' },
-                    { type: 'wildcard', payload: 'adj_beauty', version: 1 },
-                    { type: 'text', text: ' ' },
-                    { type: 'wildcard', payload: 'adj_general', version: 1 },
-                    { type: 'text', text: ' nature, intricate_details' },
-                ],
-            },
+            default: [
+                //
+                'masterpiece, tree',
+                '?color, ?"3d_term", ?adj_beauty, ?adj_general',
+                '(nature)*0.9, (intricate_details)*1.1',
+            ].join('\n'),
         }),
         //
         negative: form.prompt({
@@ -92,17 +85,26 @@ app({
         // MODEL, clip skip, vae, etc. ---------------------------------------------------------------
         let { ckpt, vae, clip } = run_model(ui.model)
 
-        const posPrompt = ui.testStuff?.reversePositiveAndNegative ? ui.negative : ui.positive
-        const negPrompt = ui.testStuff?.reversePositiveAndNegative ? ui.positive : ui.negative
-
         // RICH PROMPT ENGINE -------- ---------------------------------------------------------------
-        const x = run_prompt({ richPrompt: posPrompt, clip, ckpt, outputWildcardsPicked: true })
-        const clipPos = x.clip
-        let ckptPos = x.ckpt
-        let positive = x.conditionning
+        const posPrompt = run_prompt({
+            prompt: ui.positive,
+            clip,
+            ckpt,
+            printWildcards: true,
+        })
+        const clipPos = posPrompt.clip
+        let ckptPos = posPrompt.ckpt
+        let positive = posPrompt.positiveConditionning
+        // let negative = x.conditionningNeg
 
-        const y = run_prompt({ richPrompt: negPrompt, clip, ckpt, outputWildcardsPicked: true })
-        let negative = y.conditionning
+        const negPrompt = run_prompt({ prompt: ui.negative, clip, ckpt })
+        let negative: _CONDITIONING = graph.CLIPTextEncode({
+            clip,
+            text: negPrompt.positiveText + posPrompt.negativeText,
+        })
+
+        // const y = run_prompt({ richPrompt: negPrompt, clip, ckpt, outputWildcardsPicked: true })
+        // let negative = y.conditionning
 
         // START IMAGE -------------------------------------------------------------------------------
         let { latent, width, height } = await run_latent_v3({ opts: ui.latent, vae })

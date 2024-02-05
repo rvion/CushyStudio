@@ -97,14 +97,8 @@ app({
                 vae: ckpt2,
                 negative: '', // run.formatEmbeddingForComfyUI('EasyNegative'),
                 positive: run_prompt({
-                    richPrompt: {
-                        tokens: [
-                            // inject the english words for the angle
-                            { type: 'text', text: ui.orbit.englishSummary },
-                            ...ui.sndPass.positive.tokens,
-                        ],
-                    },
-                }).conditionning,
+                    prompt: { text: ui.orbit.englishSummary + ui.sndPass.positive.text },
+                }).positiveConditionning,
             },
         ).latent
 

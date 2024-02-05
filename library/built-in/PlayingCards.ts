@@ -152,7 +152,7 @@ app({
 
         //===//===//===//===//===//===//===//===//===//===//===//===//===//
         // 4. PROMPT  ----------------------------------------
-        const negP = run_prompt({ richPrompt: ui.globalNegative, ckpt, clip })
+        const negP = run_prompt({ prompt: ui.globalNegative, ckpt, clip })
         // const emptyLatent = graph.EmptyLatentImage({ width: W, height: H })
         for (const card of cardsSorted) {
             const { col: value, row: suit } = card
@@ -168,7 +168,7 @@ app({
 
             const positiveText = `masterpiece, rpg, ${basePrompt}, ${suitColor} of ${suit} color, intricate details, theme of ${theme} and ${ui.generalTheme}, 4k`
             const positive = graph.CLIPTextEncode({ clip, text: positiveText })
-            const negative = negP.conditionning // graph.CLIPTextEncode({ clip, text: negativeText })
+            const negative = negP.positiveConditionning // graph.CLIPTextEncode({ clip, text: negativeText })
             const xxx = foo[`${suit}_${value}`]
             // let latent: _LATENT = suitsBackground.get(suit)! // emptyLatent
             let latent: _LATENT = graph.VAEEncode({ pixels: xxx.base, vae })

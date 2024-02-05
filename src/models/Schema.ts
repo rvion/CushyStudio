@@ -66,6 +66,7 @@ export class ComfySchemaL {
             console.log(`🔴 ${numNodesInSource} != ${numNodesInSchema}`)
         }
     }
+    hasEmbedding = (embedding: string): embedding is EmbeddingName => this.data.embeddings.includes(embedding as EmbeddingName)
     // LORA --------------------------------------------------------------
     /** check if the given lora name is present in the Enum_LoraLoader_lora_name enum */
     hasLora = (loraName: string): boolean => this.getLoras().includes(loraName as Enum_LoraLoader_lora_name)

@@ -1,0 +1,3 @@
+# ⁉ Can Cushy...
+
+\##Place to showcase the powerful use cases of cushy and demonstrating what it can really do. When people ask us if it can solve a specific problem.

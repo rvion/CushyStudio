@@ -19,6 +19,7 @@ import { ManualPromise } from 'src/utils/misc/ManualPromise'
 import { toastError } from 'src/utils/misc/toasts'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { getCurrentRun_IMPL } from './_ctx2'
+import { createHTMLImage_fromURL } from 'src/state/createHTMLImage_fromURL'
 
 export interface MediaImageL extends LiveInstance<MediaImageT, MediaImageL> {}
 export class MediaImageL {
@@ -130,7 +131,11 @@ export class MediaImageL {
         return this.graph?.data.comfyPromptJSON[nodeID]
     }
 
-    get asHTMLImageElement(): HTMLImageElement {
+    asHTMLImageElement_wait = async (): Promise<HTMLImageElement> => {
+        return createHTMLImage_fromURL(this.url)
+    }
+
+    get asHTMLImageElement_noWait(): HTMLImageElement {
         const img: HTMLImageElement = new Image()
         img.src = this.url
         return img
