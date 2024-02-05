@@ -1,19 +1,14 @@
-import { Image, Layer, Stage } from 'react-konva'
-
 import { runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { useMemo } from 'react'
 import { useSt } from '../../state/stateContext'
 
 import * as React from 'react'
+import SortableList, { SortableItem } from 'react-easy-sort'
 import { MediaImageL } from 'src/models/MediaImage'
+import { toastError } from 'src/utils/misc/toasts'
 import { useImageDrop } from 'src/widgets/galleries/dnd'
 import { UnifiedCanvas } from './states/UnifiedCanvas'
-import { onWheelScrollCanvas } from './behaviours/onWheelScrollCanvas'
-import { RevealUI } from 'src/rsuite/reveal/RevealUI'
-import { toastError } from 'src/utils/misc/toasts'
-import { CanvasSelectionUI } from './uis/CanvasSelectionUI'
-import SortableList, { SortableItem } from 'react-easy-sort'
 import { useSize } from './useSize'
 
 // https://github.com/devforth/painterro
@@ -30,14 +25,25 @@ export const Panel_Canvas = observer(function Panel_Canvas_(p: {
     }, [img0])
 
     if (img0 == null) return <>❌ error</>
-    const w = img0.data.width
-    const h = img0.data.width
-    const [dropStyle, dropRef] = useImageDrop(st, (img) => {
-        runInAction(() => canvas.images.push({ img }))
-    })
 
-    const target = React.useRef<HTMLDivElement>(null)
-    const size = useSize(target)
+    // add drop handlers
+    const [dropStyle2, dropRef2] = useImageDrop(st, (img) => runInAction(() => canvas.addMask(img)))
+    const [dropStyle, dropRef] = useImageDrop(st, (img) => runInAction(() => canvas.addImage(img)))
+
+    // auto-resize canvas
+    const size = useSize(canvas.rootRef)
+    React.useEffect(() => {
+        if (size == null) return
+        canvas.stage.width(size.width)
+        canvas.stage.height(size.width)
+    }, [size?.width, size?.height])
+
+    // auto-mount canvas
+    React.useEffect(() => {
+        if (canvas.rootRef.current == null) return
+        canvas.stage.container(canvas.rootRef.current)
+    }, [canvas.rootRef])
+
     return (
         <div
             //
@@ -101,7 +107,7 @@ export const Panel_Canvas = observer(function Panel_Canvas_(p: {
                 </div>
 
                 {/* Masks */}
-                <div tw='bd1'>
+                <div tw='bd1' style={dropStyle2} ref={dropRef2}>
                     <div tw='flex items-center justify-between'>
                         <div>Masks</div>
                         <div
@@ -147,45 +153,25 @@ export const Panel_Canvas = observer(function Panel_Canvas_(p: {
                     </SortableList>
                 </div>
             </div>
-            <div ref={target} tw='flex-1'>
-                <Stage
-                    onWheel={onWheelScrollCanvas()}
-                    width={size?.width ?? img0.width}
-                    height={size?.height ?? img0.height}
-                    // ⏸️ onContextMenu={(e) => {
-                    // ⏸️     uist.saveImage()
-                    // ⏸️     // e.evt.preventDefault()
-                    // ⏸️     // console.log('context menu')
-                    // ⏸️     // // get image from stage
-                    // ⏸️     // const dataURL = e.target.toDataURL()
-                    // ⏸️     // console.log(dataURL)
-                    // ⏸️ }}
-                >
-                    {canvas.images.map(({ img }) => (
-                        <Layer key={img?.id}>
-                            {/* <Text text='Try to drag a star' /> */}
-                            {img?.url ? ( //
-                                <Image draggable image={img.asHTMLImageElement_noWait} />
-                            ) : null}
-                        </Layer>
-                    ))}
-
-                    {canvas.masks.map(({ img }) => (
-                        <Layer key={img?.id}>
-                            {/* <Text text='Try to drag a star' /> */}
-                            {img?.url ? ( //
-                                <Image draggable image={img.asHTMLImageElement_noWait} />
-                            ) : null}
-                        </Layer>
-                    ))}
-
-                    {canvas.selections.map((uniSel) => (
-                        <Layer key={uniSel.id}>
-                            <CanvasSelectionUI key={uniSel.id} uniSel={uniSel} />
-                        </Layer>
-                    ))}
-                </Stage>
-            </div>
+            <div ref={canvas.rootRef} tw='flex-1'></div>
         </div>
     )
 })
+
+// 🟢 <Stage
+//     // ⏸️ onContextMenu={(e) => {
+//     // ⏸️     uist.saveImage()
+//     // ⏸️     // e.evt.preventDefault()
+//     // ⏸️     // console.log('context menu')
+//     // ⏸️     // // get image from stage
+//     // ⏸️     // const dataURL = e.target.toDataURL()
+//     // ⏸️     // console.log(dataURL)
+//     // ⏸️ }}
+// >
+
+//     {canvas.selections.map((uniSel) => (
+//         <Layer key={uniSel.id}>
+//             <CanvasSelectionUI key={uniSel.id} uniSel={uniSel} />
+//         </Layer>
+//     ))}
+// </Stage>

@@ -1,12 +1,18 @@
 import type { Shape } from 'konva/lib/Shape'
+import type { STATE } from 'src/state/state'
 import type { UnifiedCanvas } from './UnifiedCanvas'
-import { nanoid } from 'nanoid'
-import React from 'react'
-import { createMediaImage_fromDataURI } from 'src/models/createMediaImage_fromWebFile'
-import { RectSimple } from '../types/RectSimple'
+import type { RectSimple } from '../types/RectSimple'
 
+import { nanoid } from 'nanoid'
+import { createMediaImage_fromDataURI } from 'src/models/createMediaImage_fromWebFile'
+
+import Konva from 'konva'
+import { Layer } from 'konva/lib/Layer'
+import { KonvaEventObject } from 'konva/lib/Node'
+import { Stage } from 'konva/lib/Stage'
+import { Rect } from 'konva/lib/shapes/Rect'
+import { Transformer } from 'konva/lib/shapes/Transformer'
 import { makeAutoObservable } from 'mobx'
-import { STATE } from 'src/state/state'
 
 export class UnifiedSelection {
     id: string = nanoid()
@@ -27,26 +33,53 @@ export class UnifiedSelection {
     }
 
     // the real current selectio
-    liveData: RectSimple = {
-        ...this.stableData,
-    }
+    liveData: RectSimple = { ...this.stableData }
 
-    refLive = React.createRef<any>()
-    refStable = React.createRef<any>()
-    refTransform = React.createRef<any>()
-
-    get live(): Shape { return this.refLive.current as Shape; } // prettier-ignore
-    get stable(): Shape { return this.refStable.current as Shape; } // prettier-ignore
-    get transform(): Shape { return this.refTransform.current as Shape; } // prettier-ignore
+    layer: Layer
+    live: Shape
+    stable: Shape
+    transform: Transformer
 
     st: STATE
     constructor(public canvas: UnifiedCanvas) {
-        this.st = canvas.st
-        makeAutoObservable(this, {
-            refLive: false,
-            refStable: false,
-            refTransform: false,
+        const stage: Stage = this.canvas.stage
+        this.layer = new Konva.Layer()
+        stage.add(this.layer)
+
+        this.stable = new Rect({
+            opacity: 0.8,
+            stroke: 'blue',
+            strokeWidth: 4,
+            ...this.stableData,
         })
+        this.live = new Rect({
+            opacity: 0.2,
+            strokeWidth: 4,
+            draggable: true,
+            ...this.liveData,
+            // fill={'blue'}
+        })
+        this.live.on('dragend', this.onDragEnd)
+        this.live.on('transformend', this.onTransformEnd)
+        this.live.on('dragmove', this.onDragMove)
+        this.live.on('transform', this.onTransform)
+        this.transform = new Transformer({
+            rotateEnabled: false,
+            flipEnabled: false,
+            keepRatio: false,
+            boundBoxFunc: (oldBox, newBox) => {
+                // limit resize
+                if (Math.abs(newBox.width) < 5 || Math.abs(newBox.height) < 5) {
+                    return oldBox
+                }
+                return newBox
+            },
+            nodes: [this.live],
+        })
+        this.layer.add(this.stable, this.live, this.transform)
+
+        this.st = canvas.st
+        makeAutoObservable(this)
     }
 
     show = () => {
@@ -91,5 +124,47 @@ export class UnifiedSelection {
         createMediaImage_fromDataURI(this.st, dataURL!, `outputs/canvas/${nanoid()}.png`)
         this.show()
         // console.log(dataURL)
+    }
+
+    onDragEnd = (e: KonvaEventObject<MouseEvent>) => {
+        Object.assign(this.liveData, this.stableData)
+        this.live.setAttrs({ ...this.stableData })
+        this.stable.getStage()!.batchDraw()
+    }
+    onTransformEnd = (e: KonvaEventObject<MouseEvent>) => {
+        Object.assign(this.liveData, this.stableData)
+        this.live.setAttrs({ ...this.stableData })
+        this.stable.getStage()!.batchDraw()
+    }
+    onDragMove = (e: KonvaEventObject<MouseEvent>) => {
+        const { stable, live } = this
+        console.log(`[👙] onDragMove`, stable)
+        const xx = Math.round(live.x()! / 64) * 64
+        const yy = Math.round(live.y()! / 64) * 64
+        this.stableData.x = xx
+        this.stableData.y = yy
+        stable.x(xx)
+        stable.y(yy)
+        // e.target.getStage()!.batchDraw()
+        stable.getStage()!.batchDraw()
+    }
+    onTransform = (e: KonvaEventObject<MouseEvent>) => {
+        const { stable, live } = this
+        const { snapSize, snapToGrid } = this.canvas
+
+        console.log(`[👙] onTransform`, stable)
+        const xx = Math.round(live.x()! / 64) * 64
+        const yy = Math.round(live.y()! / 64) * 64
+        const scaleX = live.scaleX()
+        const scaleY = live.scaleY()
+        const ww = Math.round((live.width() * scaleX) / 64) * 64
+        const hh = Math.round((live.height() * scaleY) / 64) * 64
+        console.log(`[👙] WW ${ww} x HH ${hh}`)
+        this.stableData.width = ww
+        this.stableData.height = hh
+        this.stableData.x = xx
+        this.stableData.y = yy
+        stable.setAttrs({ width: ww, height: hh, x: xx, y: yy })
+        stable.getStage()!.batchDraw()
     }
 }
