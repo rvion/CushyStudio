@@ -2,26 +2,29 @@ import { runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import * as React from 'react'
 import { Rect, Transformer } from 'react-konva'
-import { PanelCanvasState } from './PanelCanvasState'
+import { UnifiedSelection } from '../states/UnifiedSelection'
 
-export const CanvasSelectionUI = observer(function CanvasSelectionUI_(p: { uist: PanelCanvasState }) {
-    const uist = p.uist
-    const liveData = uist.liveData
-    const stableData = uist.stableData
+export const CanvasSelectionUI = observer(function CanvasSelectionUI_(p: { uniSel: UnifiedSelection }) {
+    const uniSel = p.uniSel
+    const liveData = uniSel.liveData
+    const stableData = uniSel.stableData
 
     React.useEffect(() => {
         if (true) {
             // we need to attach transformer manually
-            uist.refTransform.current.nodes([uist.refLive.current])
-            uist.refTransform.current.getLayer().batchDraw()
+            if (uniSel.refTransform.current == null) return
+            uniSel.refTransform.current.nodes([uniSel.refLive.current])
+            uniSel.refTransform.current.getLayer().batchDraw()
         }
-    }, [true])
+    }, [true, uniSel.refTransform.current !== null])
+
+    if (!uniSel.isActive) return null
 
     return (
         <React.Fragment>
             <Rect
                 //
-                ref={uist.refStable}
+                ref={uniSel.refStable}
                 opacity={0.8}
                 // fill={'transparent'}
                 stroke={'blue'}
@@ -29,7 +32,7 @@ export const CanvasSelectionUI = observer(function CanvasSelectionUI_(p: { uist:
                 {...stableData}
             />
             <Rect
-                ref={uist.refLive}
+                ref={uniSel.refLive}
                 opacity={0.2}
                 // fill={'blue'}
                 strokeWidth={4}
@@ -37,26 +40,26 @@ export const CanvasSelectionUI = observer(function CanvasSelectionUI_(p: { uist:
                 draggable
                 onDragEnd={(e) => {
                     runInAction(() => {
-                        Object.assign(uist.liveData, uist.stableData)
-                        uist.live.setAttrs({ ...uist.stableData })
-                        uist.stable.getStage()!.batchDraw()
+                        Object.assign(uniSel.liveData, uniSel.stableData)
+                        uniSel.live.setAttrs({ ...uniSel.stableData })
+                        uniSel.stable.getStage()!.batchDraw()
                     })
                 }}
                 onTransformEnd={(e) => {
                     runInAction(() => {
-                        Object.assign(uist.liveData, uist.stableData)
-                        uist.live.setAttrs({ ...uist.stableData })
-                        uist.stable.getStage()!.batchDraw()
+                        Object.assign(uniSel.liveData, uniSel.stableData)
+                        uniSel.live.setAttrs({ ...uniSel.stableData })
+                        uniSel.stable.getStage()!.batchDraw()
                     })
                 }}
                 onDragMove={(e) => {
-                    const { stable, live } = uist
+                    const { stable, live } = uniSel
                     console.log(`[👙] onDragMove`, stable)
                     runInAction(() => {
                         const xx = Math.round(live.x()! / 64) * 64
                         const yy = Math.round(live.y()! / 64) * 64
-                        uist.stableData.x = xx
-                        uist.stableData.y = yy
+                        uniSel.stableData.x = xx
+                        uniSel.stableData.y = yy
                         stable.x(xx)
                         stable.y(yy)
                         // e.target.getStage()!.batchDraw()
@@ -64,7 +67,8 @@ export const CanvasSelectionUI = observer(function CanvasSelectionUI_(p: { uist:
                     })
                 }}
                 onTransform={(e) => {
-                    const { stable, live, snapSize, snapToGrid } = uist
+                    const { stable, live } = uniSel
+                    const { snapSize, snapToGrid } = uniSel.canvas
 
                     console.log(`[👙] onTransform`, stable)
                     const xx = Math.round(live.x()! / 64) * 64
@@ -75,10 +79,10 @@ export const CanvasSelectionUI = observer(function CanvasSelectionUI_(p: { uist:
                     const hh = Math.round((live.height() * scaleY) / 64) * 64
                     console.log(`[👙] WW ${ww} x HH ${hh}`)
                     runInAction(() => {
-                        uist.stableData.width = ww
-                        uist.stableData.height = hh
-                        uist.stableData.x = xx
-                        uist.stableData.y = yy
+                        uniSel.stableData.width = ww
+                        uniSel.stableData.height = hh
+                        uniSel.stableData.x = xx
+                        uniSel.stableData.y = yy
                         stable.setAttrs({ width: ww, height: hh, x: xx, y: yy })
                         stable.getStage()!.batchDraw()
                     })
@@ -88,7 +92,7 @@ export const CanvasSelectionUI = observer(function CanvasSelectionUI_(p: { uist:
                 rotateEnabled={false}
                 flipEnabled={false}
                 keepRatio={false}
-                ref={uist.refTransform}
+                ref={uniSel.refTransform}
                 boundBoxFunc={(oldBox, newBox) => {
                     // limit resize
                     if (Math.abs(newBox.width) < 5 || Math.abs(newBox.height) < 5) {

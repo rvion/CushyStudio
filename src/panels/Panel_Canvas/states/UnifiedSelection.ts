@@ -1,22 +1,20 @@
-import type { STATE } from 'src/state/state'
 import type { Shape } from 'konva/lib/Shape'
-import type { MediaImageL } from 'src/models/MediaImage'
-import type { RectSimple } from './RectSimple'
+import type { UnifiedCanvas } from './UnifiedCanvas'
+import { nanoid } from 'nanoid'
+import React from 'react'
+import { createMediaImage_fromDataURI } from 'src/models/createMediaImage_fromWebFile'
+import { RectSimple } from '../types/RectSimple'
 
 import { makeAutoObservable } from 'mobx'
-import { nanoid } from 'nanoid'
-import * as React from 'react'
-import { createMediaImage_fromDataURI } from 'src/models/createMediaImage_fromWebFile'
+import { STATE } from 'src/state/state'
 
-export class PanelCanvasState {
-    snapToGrid = true
-    snapSize = 64
+export class UnifiedSelection {
+    id: string = nanoid()
+    name: string = nanoid(3)
 
-    // immutable base for calculations
-    readonly base = Object.freeze({
-        width: 512,
-        height: 512,
-    })
+    get isActive(): boolean {
+        return this.canvas.activeSelection === this
+    }
 
     // the draggable / resizable selection
     stableData: RectSimple = {
@@ -41,9 +39,9 @@ export class PanelCanvasState {
     get stable(): Shape { return this.refStable.current as Shape; } // prettier-ignore
     get transform(): Shape { return this.refTransform.current as Shape; } // prettier-ignore
 
-    images: { img: MediaImageL }[]
-    constructor(public st: STATE, baseImage: MediaImageL) {
-        this.images = [{ img: baseImage }]
+    st: STATE
+    constructor(public canvas: UnifiedCanvas) {
+        this.st = canvas.st
         makeAutoObservable(this, {
             refLive: false,
             refStable: false,
@@ -51,13 +49,13 @@ export class PanelCanvasState {
         })
     }
 
-    showSelection = () => {
+    show = () => {
         this.live.visible(true)
         this.stable.visible(true)
         this.transform.visible(true)
     }
 
-    hideSelection = () => {
+    hide = () => {
         this.live.visible(false)
         this.stable.visible(false)
         this.transform.visible(false)
@@ -68,7 +66,7 @@ export class PanelCanvasState {
         const stage = this.live.getStage()
         if (stage == null) return null
         // 2. hide select widget
-        this.hideSelection()
+        this.hide()
         // 3. convert canva to HTMLCanvasElement
         const fullCanvas = stage.toCanvas()
         // 4. create a smaller and cropped stage
@@ -91,7 +89,7 @@ export class PanelCanvasState {
         const dataURL = subCanvas.toDataURL()
         this.live.getStage
         createMediaImage_fromDataURI(this.st, dataURL!, `outputs/canvas/${nanoid()}.png`)
-        this.showSelection()
+        this.show()
         // console.log(dataURL)
     }
 }
