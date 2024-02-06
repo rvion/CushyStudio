@@ -22,7 +22,7 @@ export const LoraBoxUI = observer(function LoraBoxUI_(p: {
     const associatedUrl = loraMetadata?.url ?? ''
     // const numbers = def.ref.node.getChildren('Number')
     return (
-        <div key={loraName} tw='bd1'>
+        <div key={loraName}>
             {node.name}
             <div tw='flex gap-1 items-center'>
                 <div tw='w-32'>model strength</div>

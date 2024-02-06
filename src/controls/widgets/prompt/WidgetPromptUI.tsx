@@ -4,10 +4,10 @@ import { SortableKnob } from 'react-easy-sort'
 import { openExternal } from 'src/app/layout/openExternal'
 import { ComboUI } from 'src/app/shortcuts/ComboUI'
 import { InputNumberUI } from 'src/rsuite/InputNumberUI'
-import { LoraBoxUI } from 'src/widgets/prompter/nodes/lora/LoraBoxUI'
+import { LoraBoxUI } from 'src/controls/widgets/prompt/plugins/PromptPlugin_LoraBoxUI'
 import { Widget_prompt } from './WidgetPrompt'
 import { WidgetPromptUISt } from './WidgetPromptUISt'
-import { PromptPluginReorderTopLevelStuffUI } from './plugins/PromptPluginReorderTopLevelStuffUI'
+import { PromptPluginReorderTopLevelStuffUI } from './plugins/PromptPlugin_ReorderTopLevelStuffUI'
 import { PluginWrapperUI } from './plugins/_PluginWrapperUI'
 // UI
 export const WidgetPromptUI = observer(function WidgetPromptUI_(p: { widget: Widget_prompt }) {
