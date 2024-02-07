@@ -78,6 +78,7 @@ export const WigetSizeXUI = observer(function WigetSizeXUI_(p: {
                         value={uist.width}
                         hideSlider
                         onValueChange={(next) => uist.setWidth(next)}
+                        forceSnap={true}
                         // hideSlider
                     />
                     <div>x</div>
@@ -92,6 +93,7 @@ export const WigetSizeXUI = observer(function WigetSizeXUI_(p: {
                         mode='int'
                         value={uist.height}
                         onValueChange={(next) => uist.setHeight(next)}
+                        forceSnap={true}
                         // hideSlider
                     />
                 </div>

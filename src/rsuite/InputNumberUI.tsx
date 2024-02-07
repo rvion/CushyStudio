@@ -21,10 +21,12 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
     hideSlider?: boolean
     style?: React.CSSProperties
     placeholder?: string
+    forceSnap?: boolean
 }) {
     const val = p.value ?? clamp(1, p.min ?? -Infinity, p.max ?? Infinity)
     const mode = p.mode
     const step = p.step ?? (mode === 'int' ? 1 : 0.1)
+    const forceSnap = p.forceSnap ?? false
     /* Used for making sure you can type whatever you want in to the value, but it gets validated when pressing Enter. */
     const [inputValue, setInputValue] = useState<string>(val.toString())
     /* When editing the number <input> this will make it display inputValue instead of val.*/
@@ -42,6 +44,10 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
         if (isNaN(num) || typeof num != 'number') {
             console.log(`${JSON.stringify(value)} is not a number`)
             return startValue
+        }
+
+        if (forceSnap) {
+            num = mode == 'int' ? Math.round(num / step) * step : parseFloatNoRoundingErr(num, 2)
         }
 
         // Ensure ints are ints
