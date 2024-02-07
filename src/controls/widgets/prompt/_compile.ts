@@ -33,14 +33,13 @@ export const compilePrompt = (p: {
     const CONTENT = p.text
     const st = p.st
     const tree = parser.parse(CONTENT ?? '')
-    const cursor = tree.cursor()
 
-    let weights = 1
-
+    const weightStack = [1]
     prompt.root.iterate(
         // enter
         (node: Prompt_Node) => {
             const toktype = node.$kind
+            const weights = weightStack[weightStack.length - 1]
             const set = (txt: string) => {
                 const lastChar = weights < 0 ? NEG[NEG.length - 1] ?? '' : POS[POS.length - 1] ?? ''
                 const space = txt === ',' ? '' : lastChar === ' ' ? '' : ' '
@@ -52,7 +51,8 @@ export const compilePrompt = (p: {
             }
 
             if (toktype === 'WeightedExpression') {
-                weights *= node.weight
+                weightStack.push(weights * node.weight)
+                // weights *= node.weight
                 return true
             }
 
@@ -121,7 +121,8 @@ export const compilePrompt = (p: {
         // leave
         (node) => {
             if (node.$kind === 'WeightedExpression') {
-                weights /= node.weight
+                // weights /= node.weight
+                weightStack.pop()
             }
         },
     )

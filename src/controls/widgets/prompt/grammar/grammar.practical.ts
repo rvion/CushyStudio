@@ -1,6 +1,6 @@
 import Lezer, { SyntaxNode } from '@lezer/common'
 import { parser } from './grammar.parser'
-import { EditorState } from '@codemirror/state'
+import type { EditorView } from 'codemirror'
 
 type KnownNodeNames = keyof typeof import('./grammar.parser.terms')
 
@@ -73,7 +73,7 @@ export class PromptAST {
         //
         public CONTENT: string,
         /** require if you want to update the text programmatically */
-        public editorState?: EditorState,
+        public editorView?: Maybe<EditorView>,
     ) {
         this.tree = parser.parse(CONTENT)
         let stack: ManagedNode[] = []
@@ -158,8 +158,8 @@ abstract class ManagedNode<Name extends KnownNodeNames = any> {
     printSelfText = () => `"${this.text}"`
 
     setText = (newText: string) => {
-        if (this.expression.editorState == null) throw new Error(`[❌] editorState is not set`)
-        this.expression.editorState.update({
+        if (this.expression.editorView == null) throw new Error(`[❌] editorState is not set`)
+        this.expression.editorView.dispatch({
             changes: [
                 {
                     from: this.from,
@@ -170,8 +170,8 @@ abstract class ManagedNode<Name extends KnownNodeNames = any> {
         })
     }
     appendText = (newText: string) => {
-        if (this.expression.editorState == null) throw new Error(`[❌] editorState is not set`)
-        this.expression.editorState.update({
+        if (this.expression.editorView == null) throw new Error(`[❌] editorState is not set`)
+        this.expression.editorView.dispatch({
             changes: [
                 {
                     from: this.to,

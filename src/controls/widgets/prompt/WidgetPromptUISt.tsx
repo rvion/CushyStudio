@@ -1,6 +1,6 @@
 import { EditorState } from '@codemirror/state'
 import { EditorView } from 'codemirror'
-import { makeAutoObservable } from 'mobx'
+import { makeAutoObservable, observable } from 'mobx'
 import { createRef } from 'react'
 import { CompiledPrompt, Widget_prompt } from './WidgetPrompt'
 import { PromptLang } from './cm-lang/LANG'
@@ -13,7 +13,6 @@ export class WidgetPromptUISt {
     editorView: Maybe<EditorView> = null
     editorState: EditorState
     constructor(public widget: Widget_prompt) {
-        makeAutoObservable(this, { editorView: false })
         this.editorState = EditorState.create({
             doc: this.text,
             extensions: [
@@ -34,11 +33,15 @@ export class WidgetPromptUISt {
         this.editorState.update({
             changes: { from: this.text.length, to: this.text.length, insert: 'ok' },
         })
+        makeAutoObservable(this, {
+            editorView: observable.ref,
+            editorState: observable.ref,
+        })
     }
 
     get text() { return this.widget.serial.val ?? ''; } // prettier-ignore
     set text(val: string) { this.widget.serial.val = val; } // prettier-ignore
-    get ast(): PromptAST { return new PromptAST(this.text, this.editorState) } // prettier-ignore
+    get ast(): PromptAST { return new PromptAST(this.text, this.editorView) } // prettier-ignore
     get loras(): Prompt_Lora[] { return this.ast.findAll('Lora') } // prettier-ignore
     get debugView() { return this.ast.toString() } // prettier-ignore
     get compiled(): CompiledPrompt { return this.widget.compile({ onLora: (lora) => {} }) } // prettier-ignore
@@ -53,5 +56,7 @@ export class WidgetPromptUISt {
     }
 
     // 🔶
-    get compiled2(): string[] { return generatePromptCombinations(this.text!) } // prettier-ignore
+    get compiled2(): string[] {
+        return generatePromptCombinations(this.text!)
+    }
 }

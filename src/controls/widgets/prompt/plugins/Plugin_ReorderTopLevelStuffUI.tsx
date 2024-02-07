@@ -3,12 +3,10 @@ import SortableList, { SortableItem } from 'react-easy-sort'
 import { WidgetPromptUISt } from '../WidgetPromptUISt'
 import { PluginWrapperUI } from './_PluginWrapperUI'
 
-export const PromptPluginReorderTopLevelStuffUI = observer(function PromptPluginReorderTopLevelStuffUI_(p: {
-    uist: WidgetPromptUISt
-}) {
+export const Plugin_ReorderTopLevelStuffUI = observer(function Plugin_ReorderTopLevelStuffUI_(p: { uist: WidgetPromptUISt }) {
     const uist = p.uist
     return (
-        <PluginWrapperUI title='Reorder top level items (drag-and-drop friendly for those without RSI yet)'>
+        <div>
             <SortableList
                 draggedItemClassName='dragged'
                 className='flex gap-1'
@@ -38,6 +36,6 @@ export const PromptPluginReorderTopLevelStuffUI = observer(function PromptPlugin
                     </SortableItem>
                 ))}
             </SortableList>
-        </PluginWrapperUI>
+        </div>
     )
 })
