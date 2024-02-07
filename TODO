@@ -1,3 +1,13 @@
+☐ delete image from right click
+☐ add restart button in the top left scehma appbar blabla for quick comfy restart
+☐ fix the regional widget using the new approach.
+☐ unified canvas
+    ☐ don't force focus output
+    ☐ show latent in the selection
+    ☐ paste back the image as extra layer
+
+--------------
+
 ☐ compress image must not save the images uncompressed too
     ☝️
 ☐ fix virtual paths breaking the "sync view of file explorer"

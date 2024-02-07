@@ -11,3 +11,5 @@ export type PromptLangNodeName =
     | 'Identifier'
     | 'Number'
     | 'String'
+
+export const nodeName = (_: PromptLangNodeName): PromptLangNodeName => _

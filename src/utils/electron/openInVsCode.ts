@@ -1,3 +1,4 @@
+import type { STATE } from 'src/state/state'
 import { exec } from 'child_process'
 import { existsSync } from 'fs'
 import { resolve as pathResolve } from 'pathe'
@@ -7,7 +8,7 @@ import { toastError } from '../misc/toasts'
 
 const workspaceFolderPath = cwd()
 
-export async function openInVSCode(filePathWithinWorkspace: string): Promise<void> {
+export async function openInVSCode(st: STATE, filePathWithinWorkspace: string): Promise<void> {
     return new Promise((resolvePromise, rejectPromise) => {
         // Resolve and check the existence of the workspace and file paths
         const absoluteWorkspacePath = pathResolve(workspaceFolderPath)
@@ -29,8 +30,9 @@ export async function openInVSCode(filePathWithinWorkspace: string): Promise<voi
             return
         }
 
+        const vscodeBinaryName = st.configFile.get('vscodeBinaryName') ?? 'code'
         // First, open the folder in VSCode
-        exec(`code "${absoluteWorkspacePath}"`, (error) => {
+        exec(`${vscodeBinaryName} "${absoluteWorkspacePath}"`, (error) => {
             if (error) {
                 const errMsg = `Error opening the workspace in VSCode: ${error.message}`
                 toastError(errMsg)
@@ -39,7 +41,7 @@ export async function openInVSCode(filePathWithinWorkspace: string): Promise<voi
             }
 
             // Then, focus on the specific file within the workspace
-            exec(`code -r "${absoluteFilePath}"`, (error) => {
+            exec(`${vscodeBinaryName} -r "${absoluteFilePath}"`, (error) => {
                 if (error) {
                     const errMsg = `Error opening the file in VSCode: ${error.message}`
                     toastError(errMsg)

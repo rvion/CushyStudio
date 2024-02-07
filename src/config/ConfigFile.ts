@@ -20,6 +20,9 @@ export type ConfigFile = {
         }
     }
 
+    /** defaults to `code`, but a little bird once told me it could be `codium` */
+    vscodeBinaryName?: string
+
     /** prefer dense form */
     preferedFormLayout?: PreferedFormLayout
     ['draft.mockup-mobile']?: boolean

@@ -2,18 +2,18 @@
 import {LRParser} from "@lezer/lr"
 export const parser = LRParser.deserialize({
   version: 14,
-  states: "$zOVQPOOOVQPO'#C^OVQPO'#C`OzQPO'#CaO!SQPO'#CeO![QPO'#CgO!dQPO'#CiOOQO'#Cr'#CrOOQO'#Cn'#CnQVQPOOO!lQPO,58xO!sQPO,58zOOQO'#Cb'#CbO!zQPO,58{OOQO'#Cf'#CfOOQO,59P,59POOQO'#Ch'#ChOOQO,59R,59ROOQO'#Cj'#CjOOQO,59T,59TOOQO-E6l-E6lO#{QQO1G.dOOQO1G.f1G.fO$QQQO1G.gOOQO7+$O7+$OO$VQQO7+$ROOQO<<Gm<<GmO$_QQO<<GmO$dQPOAN=XOOQOG22sG22s",
-  stateData: "$n~OeOS~OVVOWVO_VO`VOaVOgPOiQOkROoSOpTOqUO~OV[OW[O~OV^OW^O~OV`OW`O~OVbOWbO~OheO~PVOjfO~PVOlgOVTaWTa_Ta`TaaTacTagTaiTakTaoTapTaqTahTajTa~ORhO~ORiO~OmkOnjO~ORlO~OnmO~Oa`V`~",
-  goto: "!dgPPhPhhpPPhshvhyPPP|PPP![]VOPQXYZR]RR_SRaTRcUQXOQYPQZQVdXYZ]WOPQXYZ",
-  nodeNames: "⚠ File WeightedExpression Number Permutations Lora LoraName Identifier String Wildcard WildcardName Embedding EmbeddingName Tag TagName Separator Break Comment",
-  maxTerm: 33,
+  states: "$tQVQPOOOVQPO'#C^OVQPO'#CaOzQPO'#CfO!SQPO'#CgOOQO'#Cp'#CpOOQO'#Cl'#ClQVQPOOOzQPO'#CbOzQPO'#CeO![QPO'#C_O!fQPO,58xO!kQPO,58{OOQO'#C{'#C{OOQO,59Q,59QOOQO'#Ch'#ChOOQO,59R,59ROOQO-E6j-E6jO!pQPO,58|OOQO,59P,59PO#qQQO1G.dOOQO1G.g1G.gO#vQQO1G.hOOQO7+$O7+$OO#{QQO7+$SOOQO<<Gn<<GnO$TQQO<<GnO$YQPOAN=YOOQOG22tG22t",
+  stateData: "$d~OcOS~OVTOWTO]TO^TO_TOePOgQOiWOmXOnROpSO~OV]OW]O~OV_OW_O~OfRXhRX~PVOfdO~OheO~OjfOVUaWUa]Ua^Ua_UaaUaeUagUaiUamUanUapUafUahUa~OSgO~OShO~OkjOliO~OSkO~OllO~O_^V^~",
+  goto: "!npPPqxPqqPPqqq!OPPP!RPPP!^PPPPPPPPPP!eZTOPQVYQZPR[QR`SQVOSYPQTaVYZUOPQVYQ^RQbWRcX",
+  nodeNames: "⚠ Prompt WeightedExpression Content Number Permutations Lora Identifier String Wildcard Embedding Tag TagName Separator Break Comment",
+  maxTerm: 32,
   nodeProps: [
-    ["group", -11,2,4,5,7,8,9,11,13,15,16,17,"Expression"]
+    ["group", -11,2,5,6,7,8,9,10,11,13,14,15,"Expression"]
   ],
   skippedNodes: [0],
   repeatNodeCount: 1,
-  tokenData: ",R~RqX^#Ypq#Yrs#}uv$lxy$qyz$v|}%R}!O%Y!O!P&f!P!Q%w!Q![&f![!]'V!]!^'[!a!b's!b!c'x!c!}%w!}#O'}#O#P%w#P#Q(S#R#S%w#T#U%w#U#V(X#V#o%w#o#p+w#q#r+|#y#z#Y$f$g#Y#BY#BZ#Y$IS$I_#Y$I|$JO#Y$JT$JU#Y$KV$KW#Y&FU&FV#Y~#_Ye~X^#Ypq#Y#y#z#Y$f$g#Y#BY#BZ#Y$IS$I_#Y$I|$JO#Y$JT$JU#Y$KV$KW#Y&FU&FV#Y~$QTOr#}rs$as;'S#};'S;=`$f<%lO#}~$fOW~~$iP;=`<%l#}~$qOq~~$vOg~~$yPz{$|~%ROh~R%YOmQ_PR%_WVP}!O%w!O!P&f!P!Q%w!Q![&f!c!}%w#O#P%w#R#S%w#T#o%wP%|WVP}!O%w!O!P%w!P!Q%w!Q![%w!c!}%w#O#P%w#R#S%w#T#o%wR&mWRQVP}!O%w!O!P&f!P!Q%w!Q![&f!c!}%w#O#P%w#R#S%w#T#o%w~'[Op~~'aSa~OY'[Z;'S'[;'S;=`'m<%lO'[~'pP;=`<%l'[~'xOo~~'}Ok~~(SOl~~(XOn~~(^YVP}!O%w!O!P%w!P!Q%w!Q![%w!c!}%w#O#P%w#R#S%w#T#f%w#f#g(|#g#o%w~)RYVP}!O%w!O!P%w!P!Q%w!Q![%w!c!}%w#O#P%w#R#S%w#T#X%w#X#Y)q#Y#o%w~)vXVP}!O%w!O!P%w!P!Q%w!Q![%w!c!}%w#O#P%w#R#S%w#T#U*c#U#o%w~*hYVP}!O%w!O!P%w!P!Q%w!Q![%w!c!}%w#O#P%w#R#S%w#T#_%w#_#`+W#`#o%w~+_W`~VP}!O%w!O!P%w!P!Q%w!Q![%w!c!}%w#O#P%w#R#S%w#T#o%w~+|Oi~~,ROj~",
+  tokenData: ",R~RqX^#Ypq#Yrs#}uv$lxy$qyz$v|}%R}!O%Y!O!P&f!P!Q%w!Q![&f![!]'V!]!^'[!a!b's!b!c'x!c!}%w!}#O'}#O#P%w#P#Q(S#R#S%w#T#U%w#U#V(X#V#o%w#o#p+w#q#r+|#y#z#Y$f$g#Y#BY#BZ#Y$IS$I_#Y$I|$JO#Y$JT$JU#Y$KV$KW#Y&FU&FV#Y~#_Yc~X^#Ypq#Y#y#z#Y$f$g#Y#BY#BZ#Y$IS$I_#Y$I|$JO#Y$JT$JU#Y$KV$KW#Y&FU&FV#Y~$QTOr#}rs$as;'S#};'S;=`$f<%lO#}~$fOW~~$iP;=`<%l#}~$qOp~~$vOe~~$yPz{$|~%ROf~R%YOkQ]PR%_WVP}!O%w!O!P&f!P!Q%w!Q![&f!c!}%w#O#P%w#R#S%w#T#o%wP%|WVP}!O%w!O!P%w!P!Q%w!Q![%w!c!}%w#O#P%w#R#S%w#T#o%wR&mWSQVP}!O%w!O!P&f!P!Q%w!Q![&f!c!}%w#O#P%w#R#S%w#T#o%w~'[On~~'aS_~OY'[Z;'S'[;'S;=`'m<%lO'[~'pP;=`<%l'[~'xOm~~'}Oi~~(SOj~~(XOl~~(^YVP}!O%w!O!P%w!P!Q%w!Q![%w!c!}%w#O#P%w#R#S%w#T#f%w#f#g(|#g#o%w~)RYVP}!O%w!O!P%w!P!Q%w!Q![%w!c!}%w#O#P%w#R#S%w#T#X%w#X#Y)q#Y#o%w~)vXVP}!O%w!O!P%w!P!Q%w!Q![%w!c!}%w#O#P%w#R#S%w#T#U*c#U#o%w~*hYVP}!O%w!O!P%w!P!Q%w!Q![%w!c!}%w#O#P%w#R#S%w#T#_%w#_#`+W#`#o%w~+_W^~VP}!O%w!O!P%w!P!Q%w!Q![%w!c!}%w#O#P%w#R#S%w#T#o%w~+|Og~~,ROh~",
   tokenizers: [0, 1],
-  topRules: {"File":[0,1]},
-  tokenPrec: 163
+  topRules: {"Prompt":[0,1]},
+  tokenPrec: 153
 })

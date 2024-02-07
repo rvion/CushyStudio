@@ -36,11 +36,19 @@ export const run_latent_v2 = async (p: {
     if (opts.image) {
         const imageRaw = await p.run.loadImageAnswer(opts.image)
         // May need to use a different node for resizing
-        const image = await graph.ImageTransformResizeClip({
-            images: imageRaw,
-            method: `lanczos`,
-            max_width: width,
-            max_height: height,
+        // const image = await graph.ImageTransformResizeClip({
+        //     images: imageRaw,
+        //     method: `lanczos`,
+        //     max_width: width,
+        //     max_height: height,
+        // })
+        const image = await graph.Image_Resize({
+            image: imageRaw,
+            resampling: 'lanczos',
+            resize_width: width,
+            resize_height: height,
+            mode: 'resize',
+            supersample: 'false',
         })
         const size = graph.Image_Size_to_Number({ image })
         width = size.outputs.width_int

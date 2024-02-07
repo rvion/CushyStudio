@@ -1,4 +1,4 @@
-@top File { expression+ }
+@top Prompt { expression* }
 
 expression[@isGroup=Expression] {
   WeightedExpression |
@@ -19,28 +19,26 @@ expression[@isGroup=Expression] {
 
 @skip { space }
 
+Content {expression+ }
+WeightedExpression { "(" Content ")*" Number }
 
-WeightedExpression { "(" expression+ ")*" Number }
-
-Permutations { "{" expression+ "}" }
+Permutations { "{" Content "}" }
 
 Tag { "%" TagName }
 TagName {  Identifier | String }
 
 // LORA
 // Lora { @specialize<Identifier, "lora"> ":" LoraName  }
-Lora { "@" LoraName ( "[" Number ("," Number)? "]" )?   }
-// 🔴 TODO1: make those lowercase, so they don't appear in the final output
-// DOC asays: You'll notice that the example has some terms starting with lowercase letter, and some that are capitalized. This difference is significant. Capitalized rules will show up as nodes in the syntax tree produced by the parser, lower-case rules will not.
-LoraName { Identifier | String  }
+Lora { "@" loraName ( "[" Number ("," Number)? "]" )?   }
+loraName { Identifier | String  }
 
 // WILDCARD
-Wildcard { "?" WildcardName }
-WildcardName { Identifier | String  }
+Wildcard { "?" wildcardName }
+wildcardName { Identifier | String  }
 
 // EMBEDDING
-Embedding { ":" EmbeddingName }
-EmbeddingName { Identifier | String  }
+Embedding { ":" embeddingName }
+embeddingName { Identifier | String  }
 
 
 @tokens {
