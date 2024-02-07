@@ -14,10 +14,11 @@ export type Widget_number_config = WidgetConfigFields<{
     max?: number
     step?: number
     hideSlider?: boolean
+    forceSnap?: boolean
 }>
 
 // SERIAL
-export type Widget_number_serial = WidgetSerialFields<{ type: 'number'; val: number }>
+export type Widget_number_serial = WidgetSerialFields<{ type: 'number'; val: number; forceSnap: boolean }>
 
 // OUT
 export type Widget_number_output = number
@@ -38,6 +39,7 @@ export class Widget_number implements IWidget<Widget_number_types> {
     readonly isCollapsible = false
     readonly id: string
     readonly type: 'number' = 'number'
+    readonly forceSnap: boolean = false
 
     serial: Widget_number_serial
 
@@ -48,6 +50,7 @@ export class Widget_number implements IWidget<Widget_number_types> {
             collapsed: config.startCollapsed,
             id: this.id,
             val: config.default ?? 0,
+            forceSnap: config.forceSnap ?? false,
         }
 
         makeObservable(this, {
