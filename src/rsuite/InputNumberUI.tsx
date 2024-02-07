@@ -1,5 +1,6 @@
+import { observable } from 'mobx'
 import { observer } from 'mobx-react-lite'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { parseFloatNoRoundingErr } from 'src/utils/misc/parseFloatNoRoundingErr'
 
 const clamp = (x: number, min: number, max: number) => Math.max(min, Math.min(max, x))
@@ -32,6 +33,10 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
     /* When editing the number <input> this will make it display inputValue instead of val.*/
     const [isEditing, setEditing] = useState<boolean>(false)
 
+    // make sure we retrieve the `onValueChange` lambda from the latest prop version
+    const [latestProps] = useState(() => observable({ onValueChange: p.onValueChange }))
+    useEffect(() => void (latestProps.onValueChange = p.onValueChange), [p.onValueChange])
+
     const syncValues = (value: number | string) => {
         let num =
             typeof value === 'string' //
@@ -56,7 +61,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
         // Ensure in range
         num = parseFloatNoRoundingErr(clamp(num, p.min ?? -Infinity, p.max ?? Infinity), 2)
 
-        p.onValueChange(num)
+        latestProps.onValueChange(num)
         setInputValue(num.toString())
     }
 
