@@ -44,8 +44,6 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
             return startValue
         }
 
-        num = mode == 'int' ? Math.round(num / step) * step : parseFloatNoRoundingErr(num, 2)
-
         // Ensure ints are ints
         if (mode == 'int') num = Math.round(num)
 
