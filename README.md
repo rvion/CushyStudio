@@ -31,7 +31,7 @@ _🔶 NOTICE: CushyStudio is still in development. It updates and breaks often. 
 
 🚀 **Cushy SDK**: Automate your work or tackle specific use cases by building your own **App**. CushyStudio is packed with power-user tools to support you in building the "app" of your dreams. Once ready, share it with the world through the cushy app library.
 
-☀️ **Cushy Cloud**: A cloud GPU renting service is launching soon so you can play with any demanding app, even on mobile devices. Fair prices to fund the CushyStudio growth, and grow the community. Growing the community includes revenue sharing with app creators when users rent GPU to use their app.
+<!-- ☀️ **Cushy Cloud**: A cloud GPU renting service is launching soon so you can play with any demanding app, even on mobile devices. Fair prices to fund the CushyStudio growth, and grow the community. Growing the community includes revenue sharing with app creators when users rent GPU to use their app. -->
 
 🎓 **Cushy Foundation**: Cushy is made to last. Free and Open source. It builds on proven technologies like [ComfyUI](https://github.com/comfyanonymous/ComfyUI#readme), [Stable Diffusion](https://github.com/Stability-AI/generative-models), [FFmpeg](https://github.com/FFmpeg/FFmpeg#readme), or [ImageMagick](https://github.com/ImageMagick/ImageMagick). It features an extensible core and a professional UI with dockable panes. It is LLM-friendly. The project is early, but I'm (rvion) committed to growing this. If you like this, please, sponsor my work:
 [![](https://img.shields.io/static/v1?label=Sponsor&message=%E2%9D%A4&logo=GitHub&color=%23fe8e86)](https://github.com/sponsors/rvion)
@@ -42,7 +42,9 @@ _🔶 NOTICE: CushyStudio is still in development. It updates and breaks often. 
 
 _media 1: CushyStudio_
 
-![](site/static/screenshots/2023-11-20-00-20-41.png)
+![](site/static/screenshots/2024-02-02-10-33-41.png)
+
+![](site/static/screenshots/2024-02-02-example-panels.jpg)
 
 
 _media 2: CushyStudio gallery_
