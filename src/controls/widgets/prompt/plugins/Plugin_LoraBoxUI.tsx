@@ -14,6 +14,7 @@ export const Plugin_LoraControlsUI = observer(function Plugin_LoraControlsUI_(p:
     const uist = p.uist
     return (
         <>
+            {uist.loras.length === 0 && <div tw='italic text-gray-500'>No loras in prompt</div>}
             {uist.loras.map((x) => {
                 return <LoraBoxUI uist={uist} def={x} onDelete={() => {}} />
             })}
