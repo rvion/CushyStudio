@@ -7,7 +7,21 @@ import { InputNumberUI } from 'src/rsuite/InputNumberUI'
 import { Button, Input } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
 
-export const LoraBoxUI = observer(function LoraBoxUI_(p: {
+export const Plugin_LoraControlsUI = observer(function Plugin_LoraControlsUI_(p: {
+    //
+    uist: WidgetPromptUISt
+}) {
+    const uist = p.uist
+    return (
+        <>
+            {uist.loras.map((x) => {
+                return <LoraBoxUI uist={uist} def={x} onDelete={() => {}} />
+            })}
+        </>
+    )
+})
+
+const LoraBoxUI = observer(function LoraBoxUI_(p: {
     //
     uist: WidgetPromptUISt
     def: Prompt_Lora
