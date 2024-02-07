@@ -214,6 +214,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
 
                             numberInput.select()
                             startValue = val
+                            setInputValue(val.toString())
                             setEditing(true)
 
                             // numberInput.setAttribute('cursor', 'auto')
