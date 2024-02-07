@@ -25,20 +25,18 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
     const val = p.value ?? clamp(1, p.min ?? -Infinity, p.max ?? Infinity)
     const mode = p.mode
     const step = p.step ?? (mode === 'int' ? 1 : 0.1)
-    const valueIsValid = typeof val === 'number' && !isNaN(val)
     /* Used for making sure you can type whatever you want in to the value, but it gets validated when pressing Enter. */
-    const [inputValue, setInputValue] = useState<string>(p.value ? p.value.toString() : '0')
+    const [inputValue, setInputValue] = useState<string>(val.toString())
     /* When editing the number <input> this will make it display inputValue instead of val.*/
     const [isEditing, setEditing] = useState<boolean>(false)
 
-    const syncValues = (value: number) => {
-        p.onValueChange(value)
-        setInputValue(value.toString())
-    }
-
-    const ensureNumber = (value: number) => {
-        // console.log(value / step)
-        let num = mode == 'int' ? Math.round(value / step) * step : parseFloatNoRoundingErr(value, 2)
+    const syncValues = (value: number | string) => {
+        let num =
+            typeof value === 'string' //
+                ? mode == 'int'
+                    ? parseInt(value, 10)
+                    : parseFloat(value)
+                : value
 
         // Ensure is number
         if (isNaN(num) || typeof num != 'number') {
@@ -46,13 +44,16 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
             return startValue
         }
 
+        num = mode == 'int' ? Math.round(num / step) * step : parseFloatNoRoundingErr(num, 2)
+
         // Ensure ints are ints
         if (mode == 'int') num = Math.round(num)
 
         // Ensure in range
         num = parseFloatNoRoundingErr(clamp(num, p.min ?? -Infinity, p.max ?? Infinity), 2)
 
-        return num
+        p.onValueChange(num)
+        setInputValue(num.toString())
     }
 
     const mouseMoveListener = (e: MouseEvent) => {
@@ -77,8 +78,6 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
             num = Math.round(num / inverval) * inverval
         }
 
-        num = ensureNumber(num)
-
         syncValues(num)
     }
 
@@ -90,10 +89,8 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
         }
     }
 
-    const onPointerUp = (e: MouseEvent) => {
-        // console.log('onPointerUp')
+    const onPointerUpListener = (e: MouseEvent) => {
         if (activeSlider && !dragged) {
-            // console.lo('Activating number input')
             let numberInput = activeSlider?.querySelector('input[type="number"') as HTMLInputElement
 
             numberInput.setAttribute('cursor', 'not-allowed')
@@ -104,33 +101,25 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
         }
 
         window.removeEventListener('mousemove', mouseMoveListener, true)
-        window.removeEventListener('pointerup', onPointerUp, true)
+        window.removeEventListener('pointerup', onPointerUpListener, true)
         window.removeEventListener('pointerlockchange', onPointerLockChange, true)
         window.removeEventListener('mousedown', cancelListener, true)
         document.exitPointerLock()
     }
 
     const onPointerLockChange = (e: Event) => {
-        // console.lo('onPointerLockChange')
         const isPointerLocked = document.pointerLockElement === activeSlider
 
-        if (activeSlider && isPointerLocked) {
-            // console.log('onPointerLockChange: IF!!!')
-        } else {
-            // console.log('onPointerLockChange: Else!')
-            syncValues(startValue)
-
+        if (!(activeSlider && isPointerLocked)) {
             window.removeEventListener('mousemove', mouseMoveListener, true)
             window.removeEventListener('mousedown', cancelListener, true)
-        }
 
-        // // console.log(isPointerLocked ? 'Locked!' : 'Not Locked!')
+            syncValues(startValue)
+        }
     }
 
     return (
         <div className='relative-slider' tw='flex-1 select-none'>
-            {/* <button class='relative flex flex-0 btn'>test</button> */}
-            {/* <div tw='w-full h-full bg-white text-white decoration-white' /> */}
             <div tw='flex virtualBorder'>
                 <button
                     tw='btn btn-xs'
@@ -166,30 +155,21 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
                         if (ev.button != 0) {
                             return
                         }
-                        // ev.currentTarget.blur()
 
-                        // console.log('====================================================')
-
+                        /* Begin slider drag */
                         activeSlider = ev.currentTarget
                         startValue = val
                         cumulativeOffset = 0
                         dragged = false
 
                         window.addEventListener('mousemove', mouseMoveListener, true)
-                        window.addEventListener('pointerup', onPointerUp, true)
+                        window.addEventListener('pointerup', onPointerUpListener, true)
                         window.addEventListener('pointerlockchange', onPointerLockChange, true)
                         window.addEventListener('mousedown', cancelListener, true)
 
                         activeSlider?.requestPointerLock()
                     }}
                 >
-                    {/* {valueIsValid ? null : (
-                    <div className='text-red-500'>
-                        Invalid value:
-                        <pre>{JSON.stringify(val)}</pre>
-                    </div>
-                )} */}
-
                     <input //
                         id='sliderNumberInput'
                         type='number'
@@ -208,7 +188,6 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
                             setInputValue(ev?.target.value)
                         }}
                         onFocus={(ev) => {
-                            // console.log('onFocus')
                             let numberInput = ev.currentTarget
                             activeSlider = numberInput.parentElement as HTMLDivElement
 
@@ -216,17 +195,10 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
                             startValue = val
                             setInputValue(val.toString())
                             setEditing(true)
-
-                            // numberInput.setAttribute('cursor', 'auto')
-                            // numberInput.setAttribute('pointer-events', 'auto')
                         }}
                         onBlur={(ev) => {
                             setEditing(false)
-                            // console.log('onBlur')
                             const next = ev.currentTarget.value
-                            let numberInput = ev.currentTarget
-                            // numberInput.setAttribute('cursor', 'not-allowed')
-                            // numberInput.setAttribute('pointer-events', 'none')
                             activeSlider = null
 
                             if (cancelled) {
@@ -235,25 +207,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
                                 return
                             }
 
-                            let num =
-                                typeof next === 'string' //
-                                    ? mode == 'int'
-                                        ? parseInt(next, 10)
-                                        : parseFloat(next)
-                                    : next
-
-                            // ensure is a number
-                            if (isNaN(num) || typeof num != 'number') {
-                                syncValues(startValue)
-                                return console.log(`${JSON.stringify(next)} is not a number`)
-                            }
-
-                            // ensure in range
-                            num = clamp(num, p.min ?? -Infinity, p.max ?? Infinity)
-
-                            // ensure ints are ints
-                            if (mode == 'int') num = Math.round(num)
-                            syncValues(num)
+                            syncValues(ev.currentTarget.value)
                         }}
                         onKeyDown={(ev) => {
                             if (ev.key === 'Enter') {
