@@ -23,6 +23,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
     style?: React.CSSProperties
     placeholder?: string
     forceSnap?: boolean
+    className?: string
 }) {
     const val = p.value ?? clamp(1, p.min ?? -Infinity, p.max ?? Infinity)
     const mode = p.mode
@@ -128,7 +129,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
     }
 
     return (
-        <div className='relative-slider' tw='flex-1 select-none'>
+        <div className={p.className} tw='relative-slider flex-1 select-none'>
             <div tw='flex virtualBorder'>
                 <button
                     tw='btn btn-xs'
