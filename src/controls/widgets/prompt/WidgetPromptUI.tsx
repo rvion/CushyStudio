@@ -11,82 +11,99 @@ import { Plugin_ReorderTopLevelStuffUI } from './plugins/Plugin_ReorderTopLevelS
 import { Plugin_ShortcutsUI } from './plugins/Plugin_ShortcutsUI'
 import { PromptPlugin } from './plugins/PromptPlugin'
 import { PluginWrapperUI } from './plugins/_PluginWrapperUI'
+import { useSt } from 'src/state/stateContext'
 
 // UI
 export const WidgetPromptUI = observer(function WidgetPromptUI_(p: { widget: Widget_prompt }) {
+    const st = useSt()
     const widget = p.widget
     const uist = useMemo(() => new WidgetPromptUISt(widget), [])
     useLayoutEffect(() => {
         if (uist.mountRef.current) uist.mount(uist.mountRef.current)
     }, [])
-
     return (
         <div tw='flex flex-col'>
             {/* HEADERS */}
             <div tw='flex justify-end gap-0.5'>
-                {plugins.map((plugin) => (
-                    <RevealUI trigger='hover' placement='topStart'>
-                        <div tw='btn btn-icon btn-square btn-sm btn-outline text-lg'>
-                            <span className='material-symbols-outlined'>{plugin.icon}</span>
-                        </div>
-                        <div tw='p-2'>
-                            <div tw='font-bold'>{plugin.title}</div>
-                            <div>{plugin.description}</div>
-                        </div>
-                    </RevealUI>
-                ))}
+                {plugins.map((plugin) => {
+                    const active = st.configFile.get(plugin.configKey) ?? false
+                    return (
+                        <RevealUI key={plugin.key} trigger='hover' placement='topEnd'>
+                            <div
+                                onClick={() => st.configFile.set(plugin.configKey, !active)}
+                                tw={[active ? 'btn-active' : null, 'btn btn-icon btn-square btn-sm btn-outline text-lg']}
+                            >
+                                <span className='material-symbols-outlined'>{plugin.icon}</span>
+                            </div>
+                            <div tw='p-2'>
+                                <div tw='font-bold'>{plugin.title}</div>
+                                <div>{plugin.description}</div>
+                            </div>
+                        </RevealUI>
+                    )
+                })}
             </div>
             <div ref={uist.mountRef}></div>
 
             {/* ACTIVE PLUGINS */}
             <div className='flex flex-col gap-1'>
-                {plugins.map((plugin) => (
-                    <PluginWrapperUI plugin={plugin}>
-                        <plugin.Widget uist={uist} />
-                    </PluginWrapperUI>
-                ))}
+                {plugins.map((plugin) => {
+                    const active = st.configFile.get(plugin.configKey) ?? false
+                    if (!active) return null
+                    return (
+                        <PluginWrapperUI key={plugin.key} plugin={plugin}>
+                            <plugin.Widget uist={uist} />
+                        </PluginWrapperUI>
+                    )
+                })}
             </div>
         </div>
     )
 })
 
-const pluginReorder = {
+const pluginReorder: PromptPlugin = {
     key: 'plugin-reorder',
+    configKey: 'showPromptPluginPreview',
     icon: 'format_list_numbered',
     title: 'Reorder',
     description: 'Reorder top level items (drag-and-drop friendly for those without RSI yet)',
     Widget: Plugin_ReorderTopLevelStuffUI,
 }
-const pluginShortcuts = {
+const pluginShortcuts: PromptPlugin = {
     key: 'plugin-shortcuts',
+    configKey: 'showPromptPluginReorder',
     icon: 'keyboard',
     title: 'Keyboard Shortcuts',
     description: 'Increase/Decrease weights, and more',
     Widget: Plugin_ShortcutsUI,
 }
-const pluginWeights = {
+const pluginWeights: PromptPlugin = {
     key: 'plugin-weights',
+    configKey: 'showPromptPluginWeights',
     icon: 'line_weight',
     title: 'Adjust weights',
     description: 'Adjust top-level weights',
     Widget: Plugin_AdjustWeightsUI,
 }
-const pluginPreview = {
+const pluginPreview: PromptPlugin = {
     key: 'plugin-preview',
+    configKey: 'showPromptPluginLora',
     icon: 'preview',
     title: 'Preview Prompt',
     description: 'Preview the prompt that will be sent to ComfyUI',
     Widget: Plugin_PreviewPromptUI,
 }
-const pluginLora = {
+const pluginLora: PromptPlugin = {
     key: 'plugin-lora',
+    configKey: 'showPromptPluginAst',
     icon: 'format_list_numbered',
     title: 'Lora plugin to adjust model_weight, clip_weights, and trigger words',
     description: 'Lora plugin',
     Widget: Plugin_LoraControlsUI,
 }
-const pluginAst = {
+const pluginAst: PromptPlugin = {
     key: 'plugin-ast',
+    configKey: 'showPromptPluginShortcuts',
     icon: 'account_tree',
     title: 'Show Ast',
     description: 'Show the Prompt AST to review if everything is as expected',

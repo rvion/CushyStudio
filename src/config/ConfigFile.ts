@@ -81,6 +81,14 @@ export type ConfigFile = {
     // bad place to store that
     stars?: { [actionPackName: string]: { at: Timestamp; stars: number } }
     packs?: { [actionPackName: string]: { installed: boolean } }
+    // ----------------------
+
+    showPromptPluginPreview?: boolean
+    showPromptPluginReorder?: boolean
+    showPromptPluginWeights?: boolean
+    showPromptPluginLora?: boolean
+    showPromptPluginAst?: boolean
+    showPromptPluginShortcuts?: boolean
 }
 
 export type ReleaseChannels = 'stable' | 'dev'
