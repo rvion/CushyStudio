@@ -1,4 +1,5 @@
 import { observer } from 'mobx-react-lite'
+import { useRef, useState } from 'react'
 import { parseFloatNoRoundingErr } from 'src/utils/misc/parseFloatNoRoundingErr'
 
 const clamp = (x: number, min: number, max: number) => Math.max(min, Math.min(max, x))
@@ -8,7 +9,6 @@ let startValue: number = 0
 let dragged: boolean = false
 let cumulativeOffset = 0
 let activeSlider: HTMLDivElement | null = null
-let tempValue: number = 0
 let cancelled: boolean = false
 
 export const InputNumberUI = observer(function InputNumberUI_(p: {
@@ -26,6 +26,15 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
     const mode = p.mode
     const step = p.step ?? (mode === 'int' ? 1 : 0.1)
     const valueIsValid = typeof val === 'number' && !isNaN(val)
+    /* Used for making sure you can type whatever you want in to the value, but it gets validated when pressing Enter. */
+    const [inputValue, setInputValue] = useState<string>(p.value ? p.value.toString() : '0')
+    /* When editing the number <input> this will make it display inputValue instead of val.*/
+    const [isEditing, setEditing] = useState<boolean>(false)
+
+    const syncValues = (value: number) => {
+        p.onValueChange(value)
+        setInputValue(value.toString())
+    }
 
     const ensureNumber = (value: number) => {
         // console.log(value / step)
@@ -70,8 +79,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
 
         num = ensureNumber(num)
 
-        tempValue = num
-        p.onValueChange(num)
+        syncValues(num)
     }
 
     const cancelListener = (e: MouseEvent) => {
@@ -110,7 +118,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
             // console.log('onPointerLockChange: IF!!!')
         } else {
             // console.log('onPointerLockChange: Else!')
-            p.onValueChange(startValue)
+            syncValues(startValue)
 
             window.removeEventListener('mousemove', mouseMoveListener, true)
             window.removeEventListener('mousedown', cancelListener, true)
@@ -129,7 +137,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
                     onClick={(_) => {
                         let num = val - (mode === 'int' ? step : step * 0.1)
                         num = clamp(num, p.min ?? -Infinity, p.max ?? Infinity)
-                        p.onValueChange(ensureNumber(num))
+                        syncValues(num)
                     }}
                 >
                     ◂
@@ -151,7 +159,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
 
                             num = clamp(num, p.min ?? -Infinity, p.max ?? Infinity)
 
-                            p.onValueChange(num)
+                            syncValues(num)
                         }
                     }}
                     onMouseDown={(ev) => {
@@ -186,7 +194,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
                         id='sliderNumberInput'
                         type='number'
                         tw='input input-sm cursor-not-allowed pointer-events-none'
-                        value={val}
+                        value={isEditing ? inputValue : val}
                         placeholder={p.placeholder}
                         style={{
                             fontFamily: 'monospace',
@@ -197,23 +205,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
                         max={p.max}
                         step={step}
                         onChange={(ev) => {
-                            const next = ev.target.value
-                            // parse value
-                            let num =
-                                typeof next === 'string' //
-                                    ? mode == 'int'
-                                        ? parseInt(next, 10)
-                                        : parseFloat(next)
-                                    : next
-
-                            // ensure ints are ints
-                            // if (mode == 'int') num = Math.round(num)
-                            // console.log(tempValue)
-                            tempValue = num
-                            // console.log(tempValue)
-                            // console.log(val)
-
-                            p.onValueChange(tempValue)
+                            setInputValue(ev?.target.value)
                         }}
                         onFocus={(ev) => {
                             // console.log('onFocus')
@@ -222,12 +214,13 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
 
                             numberInput.select()
                             startValue = val
-                            tempValue = val
+                            setEditing(true)
 
                             // numberInput.setAttribute('cursor', 'auto')
                             // numberInput.setAttribute('pointer-events', 'auto')
                         }}
                         onBlur={(ev) => {
+                            setEditing(false)
                             // console.log('onBlur')
                             const next = ev.currentTarget.value
                             let numberInput = ev.currentTarget
@@ -237,7 +230,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
 
                             if (cancelled) {
                                 cancelled = false
-                                p.onValueChange(startValue)
+                                syncValues(startValue)
                                 return
                             }
 
@@ -250,7 +243,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
 
                             // ensure is a number
                             if (isNaN(num) || typeof num != 'number') {
-                                p.onValueChange(startValue)
+                                syncValues(startValue)
                                 return console.log(`${JSON.stringify(next)} is not a number`)
                             }
 
@@ -259,7 +252,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
 
                             // ensure ints are ints
                             if (mode == 'int') num = Math.round(num)
-                            p.onValueChange(num)
+                            syncValues(num)
                         }}
                         onKeyDown={(ev) => {
                             if (ev.key === 'Enter') {
@@ -287,7 +280,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
                     onClick={(_) => {
                         let num = val + (mode === 'int' ? step : step * 0.1)
                         num = clamp(num, p.min ?? -Infinity, p.max ?? Infinity)
-                        p.onValueChange(ensureNumber(num))
+                        syncValues(num)
                     }}
                 >
                     ▸
