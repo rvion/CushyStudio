@@ -86,10 +86,16 @@
 /* input[type='range']::-webkit-slider-runnable-track { height: 2rem; } */
 
 /* Container holding buttons, range, and number input */
-.relative-slider div {
-    height: auto;
+.relative-slider {
+    --input-number-ui-bg: oklch(var(--p)/.15);
+    border: 1px solid oklch(var(--pc)/.2);
+    border-radius: 5px;
+}
+
+.relative-slider div:first {
     align-items: center;
-    outline: 1px solid oklch(var(--pc)/.1);
+    /* border-radius: 5px !important; */
+    overflow: hidden;
 }
 
 .relative-slider:hover {
@@ -132,31 +138,33 @@ input::-webkit-inner-spin-button {
     display: none; 
 } */
 
-.relative-slider progress[value] {
-    border-radius: 0px;
+.relative-slider progress[value]::-webkit-progress-bar {
+    background-color: var(--input-number-ui-bg);
+    appearance: none;
 }
 
-.relative-slider progress[value]::-webkit-progress-bar {
-    background-color: oklch(var(--p)/0.15);
+.relative-slider:active progress[value]::-webkit-progress-bar {
+    background-color: oklch(var(--b3));
     appearance: none;
-  }
+}
 
 .relative-slider progress[value]::-webkit-progress-value {
     appearance: none;
+    opacity: 100;
     background: oklch(var(--p));
-  }
+}
 
 .relative-slider input[type="number"] {
     appearance: textfield;
     -moz-appearance: textfield; /* Firefox */
     pointer-events: none;
     width: 100%;
-    text-align: center;
     --shadow-color: rgb(0, 0, 0, 0.2);
     /* TODO(bird_d): This should be moved to be under all text, not just for sliders. */
     text-shadow: 0px 1px 1px var(--shadow-color), 1px 1px 1px var(--shadow-color), -1px 1px 1px var(--shadow-color);
     height: auto;
     font-size: 1.1em;
+    border-width: 0px;
 }
 
 .relative-slider input[type="number"]:focus {
@@ -168,20 +176,45 @@ input::-webkit-inner-spin-button {
     background-color: oklch(var(--p));
 }
 
-.relative-slider button {
+.relative-slider button, .relative-slider:active button {
+    display: hidden;
+    opacity: 0;
     border-width: 0px;
+    background-color: oklch(var(--input-number-ui-bg)*1.2);
+    outline-width: 0px;
+}
+
+.relative-slider:hover button {
+    display: unset;
+    opacity: 100;
+    background-color: oklch(var(--pc)/0.5);
+}
+
+.relative-slider button:hover {
+    filter: brightness(1.2)
 }
 
 /* Left decrement button */
 .relative-slider button:nth-child(1) {
     border-top-right-radius: 0px !important;
     border-bottom-right-radius: 0px !important;
+    border-right: 1px solid oklch(var(--pc)/.2);
 }
 
 /* Right decrement button */
 .relative-slider button:nth-child(3) {
     border-top-left-radius: 0px !important;
     border-bottom-left-radius: 0px !important;
+    border-left: 1px solid oklch(var(--pc)/.2);
+}
+
+.relative-slider .text-container {
+    flex: auto;
+    text-align: right;
+    align-content: end;
+    background: transparent !important;
+    border-width: 0px !important;
+    padding-left: 5px;
 }
 
 /* /Slider */
