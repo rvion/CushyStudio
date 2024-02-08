@@ -1,3 +1,14 @@
 {
-    "models": []
+    "models": [
+        {
+            "name": "TEMP_briaai_RMBG-1.4",
+            "type": "controlnet",
+            "base": "SDXL",
+            "save_path": "custom_nodes/ComfyUI-BRIA_AI-RMBG/RMBG-1.4",
+            "description": "<3 stuff",
+            "reference": "https://huggingface.co/briaai/RMBG-1.4",
+            "filename": "model.pth",
+            "url": "https://huggingface.co/briaai/RMBG-1.4/resolve/main/model.pth?download=true"
+        }
+    ]
 }

@@ -62,7 +62,8 @@ export const getKnownPlugins = (p?: {
     let totalPluginSeen = 0
 
     const knownPluginFile: CustomNodeFile = JSON.parse(readFileSync('src/wiki/jsons/custom-node-list.json', 'utf8'))
-    const knownPluginList: PluginInfo[] = knownPluginFile.custom_nodes
+    const knownPluginFileExtra: CustomNodeFile = JSON.parse(readFileSync('src/wiki/jsons/custom-node-list-extra.json', 'utf8'))
+    const knownPluginList: PluginInfo[] = knownPluginFile.custom_nodes.concat(knownPluginFileExtra.custom_nodes)
     knownPlugins = {
         byTitle: new Map(),
         byURI: new Map(),
