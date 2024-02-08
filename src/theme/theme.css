@@ -85,38 +85,33 @@
 /* Slider   --------------------- */
 input[type='range']::-webkit-slider-runnable-track { height: 2rem; }
 
-/* .relative-slider {
-    background-color: #1e1e1e;
-} */
-
+/* Container holding buttons, range, and number input */
 .relative-slider div {
-    /* position: relative; */
     height: auto;
     align-items: center;
+    outline: 1px solid oklch(var(--pc)/.1);
 }
 
-.relative-slider:hover:not(.active) input[type='range'] {
+.relative-slider:hover input[type='range'] {
     cursor: ew-resize;
     filter: brightness(1.2);
-    /* background-color: darkgrey; */
 }
 
 .relative-slider:active input[type='range'] {
     cursor: ew-resize;
-    /* filter: brightness(1.2); */
     background-color: black;
 }
 
 .relative-slider input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
-  /* -webkit-appearance: none; */
     width: 0;
     height: 0;
     margin: 0;
 }
 
 .relative-slider input[type=range] {
-    position: absolute
+    position: absolute;
+    border-radius: 0px;
 }
 
 
@@ -129,7 +124,6 @@ input::-webkit-inner-spin-button {
     border: none;
     height: 0px;
     width: 0px;
-    /* color: oklch(var(--p)/0.5); */
 }
 
 .relative-slider input[type="range"]::-moz-range-thumb {
@@ -149,8 +143,8 @@ input::-webkit-inner-spin-button {
     --shadow-color: rgb(0, 0, 0, 0.2);
     /* TODO(bird_d): This should be moved to be under all text, not just for sliders. */
     text-shadow: 0px 1px 1px var(--shadow-color), 1px 1px 1px var(--shadow-color), -1px 1px 1px var(--shadow-color);
-    /* background: black !important; */
     height: auto;
+    font-size: 14px;
 }
 
 .relative-slider input[type="number"]:focus {
@@ -160,7 +154,22 @@ input::-webkit-inner-spin-button {
 
 .relative-slider input[type="number"]::selection {
     background-color: oklch(var(--p));
-    /* color: rgb(var(--fallback-p)); */
+}
+
+.relative-slider button {
+    border-width: 0px;
+}
+
+/* Left decrement button */
+.relative-slider button:nth-child(1) {
+    border-top-right-radius: 0px !important;
+    border-bottom-right-radius: 0px !important;
+}
+
+/* Right decrement button */
+.relative-slider button:nth-child(3) {
+    border-top-left-radius: 0px !important;
+    border-bottom-left-radius: 0px !important;
 }
 
 /* /Slider */
