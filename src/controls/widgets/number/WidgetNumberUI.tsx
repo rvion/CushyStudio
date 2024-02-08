@@ -20,6 +20,7 @@ export const WidgetNumberUI = observer(function WidgetNumberUI_(p: { widget: Wid
             softMax={widget.config.softMax}
             step={step}
             onValueChange={(next) => (widget.serial.val = next)}
+            forceSnap={widget.config.forceSnap}
         />
     )
 })
