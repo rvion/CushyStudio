@@ -124,7 +124,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
 
     return (
         <div className='relative-slider' tw='flex-1 select-none'>
-            <div tw='flex virtualBorder'>
+            <div tw='rounded-sm flex'>
                 <button
                     tw='btn btn-xs'
                     onClick={(_) => {
@@ -177,7 +177,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
                     <input //
                         id='sliderNumberInput'
                         type='number'
-                        tw='input input-sm cursor-not-allowed pointer-events-none'
+                        tw={'cursor-not-allowed pointer-events-none'}
                         value={isEditing ? inputValue : val}
                         placeholder={p.placeholder}
                         style={{
@@ -222,7 +222,6 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
                             }
                         }}
                     />
-                    {/* <div tw='w-full flex flex-1 bg-white text-white decoration-white' /> */}
                     <input //Setting the value to 0
                         type='range'
                         style={{ zIndex: 1 }}
@@ -231,6 +230,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
                         min={p.min}
                         max={p.max}
                         step={step * 0.01}
+                        readOnly
                     />
                 </div>
                 <button
