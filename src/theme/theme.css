@@ -83,7 +83,7 @@
 }
 
 /* Slider   --------------------- */
-input[type='range']::-webkit-slider-runnable-track { height: 2rem; }
+/* input[type='range']::-webkit-slider-runnable-track { height: 2rem; } */
 
 /* Container holding buttons, range, and number input */
 .relative-slider div {
@@ -92,14 +92,12 @@ input[type='range']::-webkit-slider-runnable-track { height: 2rem; }
     outline: 1px solid oklch(var(--pc)/.1);
 }
 
-.relative-slider:hover input[type='range'] {
+.relative-slider:hover {
     cursor: ew-resize;
-    filter: brightness(1.2);
 }
 
-.relative-slider:active input[type='range'] {
-    cursor: ew-resize;
-    background-color: black;
+.relative-slider div div:hover progress {
+    filter: brightness(1.2);
 }
 
 .relative-slider input::-webkit-outer-spin-button,
@@ -109,7 +107,7 @@ input::-webkit-inner-spin-button {
     margin: 0;
 }
 
-.relative-slider input[type=range] {
+/* .relative-slider input[type=range] {
     position: absolute;
     border-radius: 0px;
 }
@@ -127,12 +125,26 @@ input::-webkit-inner-spin-button {
 }
 
 .relative-slider input[type="range"]::-moz-range-thumb {
-    display: none; /* Hide the handle in Firefox */
+    display: none;
 }
 
 .relative-slider input[type="range"]::-ms-thumb {
-    display: none; /* Hide the handle in Microsoft Edge */
+    display: none; 
+} */
+
+.relative-slider progress[value] {
+    border-radius: 0px;
 }
+
+.relative-slider progress[value]::-webkit-progress-bar {
+    background-color: oklch(var(--p)/0.15);
+    appearance: none;
+  }
+
+.relative-slider progress[value]::-webkit-progress-value {
+    appearance: none;
+    background: oklch(var(--p));
+  }
 
 .relative-slider input[type="number"] {
     appearance: textfield;
@@ -144,7 +156,7 @@ input::-webkit-inner-spin-button {
     /* TODO(bird_d): This should be moved to be under all text, not just for sliders. */
     text-shadow: 0px 1px 1px var(--shadow-color), 1px 1px 1px var(--shadow-color), -1px 1px 1px var(--shadow-color);
     height: auto;
-    font-size: 14px;
+    font-size: 1.1em;
 }
 
 .relative-slider input[type="number"]:focus {

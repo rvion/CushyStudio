@@ -231,7 +231,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
                             }
                         }}
                     />
-                    <input //Setting the value to 0
+                    {/* <input //Setting the value to 0
                         type='range'
                         style={{ zIndex: 1 }}
                         tw='range range-primary cursor-not-allowed pointer-events-none'
@@ -240,7 +240,13 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
                         max={rangeMax}
                         step={step * 0.01}
                         readOnly
-                    />
+                    /> */}
+                    <progress
+                        style={{ zIndex: 1 }}
+                        tw='absolute range range-primary cursor-not-allowed pointer-events-none'
+                        value={p.hideSlider ? 0 : val - rangeMin}
+                        max={rangeMax - rangeMin}
+                    ></progress>
                 </div>
                 <button
                     className='btn btn-xs'
