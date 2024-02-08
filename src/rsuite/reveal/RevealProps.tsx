@@ -1,5 +1,6 @@
+import type { Placement } from './RevealState'
+
 import React from 'react'
-import { Placement } from './RevealState'
 
 export type RevealProps = {
     // components

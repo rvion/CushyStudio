@@ -4,18 +4,17 @@ import type { DraftL } from 'src/models/Draft'
 import { toJS } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { useEffect, useLayoutEffect } from 'react'
+import { WidgetGroupUI } from 'src/controls/widgets/group/WidgetGroupUI'
+import { MarkdownUI } from 'src/rsuite/MarkdownUI'
 import { PhoneWrapperUI } from 'src/rsuite/PhoneWrapperUI'
 import { SelectUI } from 'src/rsuite/SelectUI'
 import { Message } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
 import { stringifyUnknown } from 'src/utils/formatters/stringifyUnknown'
-import { WidgetUI } from '../../controls/widgets/WidgetUI'
 import { ResultWrapperUI } from '../../widgets/misc/ResultWrapperUI'
 import { draftContext } from '../../widgets/misc/useDraft'
-import { DraftHeaderUI } from './DraftHeaderUI'
 import { MessageInfoUI } from '../MessageUI'
-import { marked } from 'marked'
-import { MarkdownUI } from 'src/rsuite/MarkdownUI'
+import { DraftHeaderUI } from './DraftHeaderUI'
 
 export const Panel_Draft = observer(function Panel_Draft_(p: { draftID: DraftID }) {
     // 1. get draft
@@ -98,7 +97,7 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                     <ResultWrapperUI
                         //
                         res={draft.form}
-                        whenValid={(req) => <WidgetUI widget={req} />}
+                        whenValid={(req) => <WidgetGroupUI widget={req} />}
                     />
                 </div>
             </div>

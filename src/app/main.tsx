@@ -12,5 +12,7 @@ import 'src/theme/Tree.css'
 
 import { MainUI } from '../widgets/misc/MainUI'
 
+import 'src/controls/widgets/WidgetUI'
+
 const root = document.getElementById('root') as HTMLElement
 ReactDOM.createRoot(root).render(<MainUI />)

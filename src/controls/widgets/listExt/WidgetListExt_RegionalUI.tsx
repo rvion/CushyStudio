@@ -4,6 +4,7 @@ import type { BoardPosition } from './WidgetListExtTypes'
 
 import { observer } from 'mobx-react-lite'
 import * as React from 'react'
+import { MessageErrorUI } from 'src/panels/MessageUI'
 // import { Layer, Rect, Stage, Transformer } from 'react-konva'
 
 export const WidgetListExt_RegionalUI = observer(function WidgetListExt_RegionalUI_<T extends Widget>(p: {
@@ -12,7 +13,11 @@ export const WidgetListExt_RegionalUI = observer(function WidgetListExt_Regional
     const widget = p.widget
 
     const entries = widget.entries
-    return <>👋</>
+    return (
+        <>
+            <MessageErrorUI>Sorry; Widget Area where you can drag stuff is commented-out for now</MessageErrorUI>
+        </>
+    )
     // return (
     //     <Stage
     //         //

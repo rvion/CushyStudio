@@ -5,7 +5,7 @@ export const ui_latent_v3 = () => {
     const form: FormBuilder = getCurrentForm()
     return form.choice({
         appearance: 'tab',
-        label: 'Start from',
+        label: 'Latent Input',
         default: 'emptyLatent',
         items: {
             emptyLatent: () =>

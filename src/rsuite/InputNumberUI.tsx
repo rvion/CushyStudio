@@ -1,6 +1,6 @@
 import { observable } from 'mobx'
 import { observer } from 'mobx-react-lite'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { parseFloatNoRoundingErr } from 'src/utils/misc/parseFloatNoRoundingErr'
 
 const clamp = (x: number, min: number, max: number) => Math.max(min, Math.min(max, x))
@@ -130,7 +130,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
 
     return (
         <div className={p.className} tw='relative-slider flex-1 select-none'>
-            <div tw='flex virtualBorder'>
+            <div tw='flex'>
                 <button
                     tw='btn btn-xs'
                     onClick={(_) => {

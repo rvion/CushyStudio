@@ -8,6 +8,13 @@ import { QuickHostActionsUI } from './QuickHostActionsUI'
 import { PluginSuggestion, convertToPluginInfoList } from './convertToPluginInfoList'
 
 export const InstallCustomNodeBtnUI = observer(function InstallCustomNodeBtnUI_(p: { recomandation: CustomNodeRecommandation }) {
+    if (
+        p.recomandation.customNodesByTitle == null &&
+        p.recomandation.customNodesByURI == null &&
+        p.recomandation.customNodesByNameInCushy == null
+    )
+        return null
+
     const suggestions: PluginSuggestion[] = convertToPluginInfoList(p)
     if (suggestions.length === 0) return <pre>🔴{JSON.stringify(p)}</pre>
     return (

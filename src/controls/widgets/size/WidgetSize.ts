@@ -8,6 +8,7 @@ import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { WidgetDI } from '../WidgetUI.DI'
 import { hash } from 'ohash'
+import { ResolutionState } from './ResolutionState'
 
 export type Widget_size_config = WidgetConfigFields<{
     default?: CushySizeByRatio
@@ -22,6 +23,12 @@ export interface Widget_size extends WidgetTypeHelpers_OLD<'size', Widget_size_c
 export class Widget_size
     implements IWidget_OLD<'size', Widget_size_config, Widget_size_serial, Widget_size_state, Widget_size_output>
 {
+    get sizeHelper(): ResolutionState {
+        // should only be executed once
+        const state = new ResolutionState(this.serial)
+        Object.defineProperty(this, 'sizeHelper', { value: state })
+        return state
+    }
     get serialHash() { return hash(this.result) } // prettier-ignore
     readonly isVerticalByDefault = true
     readonly isCollapsible = true
@@ -46,7 +53,7 @@ export class Widget_size
                 width,
             }
         }
-        makeAutoObservable(this)
+        makeAutoObservable(this, { sizeHelper: false })
     }
     get result(): Widget_size_output {
         return this.serial
