@@ -162,8 +162,6 @@ input::-webkit-inner-spin-button {
     --shadow-color: rgb(0, 0, 0, 0.2);
     /* TODO(bird_d): This should be moved to be under all text, not just for sliders. */
     text-shadow: 0px 1px 1px var(--shadow-color), 1px 1px 1px var(--shadow-color), -1px 1px 1px var(--shadow-color);
-    height: auto;
-    font-size: 1.1em;
     border-width: 0px;
 }
 
@@ -173,7 +171,7 @@ input::-webkit-inner-spin-button {
 }
 
 .relative-slider input[type="number"]::selection {
-    background-color: oklch(var(--p));
+    background-color: oklch(var(--pc));
 }
 
 .relative-slider button, .relative-slider:active button {
@@ -215,6 +213,7 @@ input::-webkit-inner-spin-button {
     background: transparent !important;
     border-width: 0px !important;
     padding-left: 5px;
+    font-size: 15px;
 }
 
 /* /Slider */
