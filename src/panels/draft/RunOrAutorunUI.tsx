@@ -3,6 +3,7 @@ import type { DraftL } from 'src/models/Draft'
 import { observer } from 'mobx-react-lite'
 import { RevealUI } from 'src/rsuite/reveal/RevealUI'
 import { Button } from 'src/rsuite/shims'
+import { InputNumberUI } from 'src/rsuite/InputNumberUI'
 
 export const RunOrAutorunUI = observer(function RunOrAutorunUI_(p: { className?: string; draft: DraftL }) {
     const draft = p.draft
@@ -16,30 +17,34 @@ export const RunOrAutorunUI = observer(function RunOrAutorunUI_(p: { className?:
 
                 <div tw='p-2'>
                     <div>ms to wait after a change</div>
-                    <input
+                    <InputNumberUI
                         //
+                        mode='int'
                         value={draft.st.project.data.autostartDelay}
-                        onChange={(ev) => {
-                            const val = parseInt(ev.target.value)
-                            if (Number.isNaN(val)) return
-                            draft.st.project.update({ autostartDelay: val })
+                        onValueChange={(value) => {
+                            draft.st.project.update({ autostartDelay: value })
                         }}
                         tw='input input-bordered input-sm'
-                        type='number'
                         placeholder='ms'
+                        min={0}
+                        softMax={5000}
+                        step={250}
+                        hideSlider
                     />
                     <div>max ms to wait before running anyway</div>
-                    <input
+                    <InputNumberUI
                         //
+                        mode='int'
                         value={draft.st.project.data.autostartMaxDelay}
-                        onChange={(ev) => {
-                            const val = parseInt(ev.target.value)
-                            if (Number.isNaN(val)) return
+                        onValueChange={(val) => {
                             draft.st.project.update({ autostartMaxDelay: val })
                         }}
                         tw='input input-bordered input-sm'
-                        type='number'
                         placeholder='ms'
+                        min={0}
+                        softMax={5000}
+                        step={250}
+                        hideSlider
                     />
                 </div>
             </RevealUI>
