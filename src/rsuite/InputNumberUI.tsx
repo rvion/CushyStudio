@@ -18,6 +18,8 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
     step?: number
     min?: number
     max?: number
+    softMin?: number
+    softMax?: number
     hideSlider?: boolean
     style?: React.CSSProperties
     placeholder?: string
@@ -27,12 +29,15 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
     const mode = p.mode
     const step = p.step ?? (mode === 'int' ? 1 : 0.1)
     const forceSnap = p.forceSnap ?? false
+    const rangeMin = p.softMin ?? p.min ?? -Infinity
+    const rangeMax = p.softMax ?? p.max ?? Infinity
+
     /* Used for making sure you can type whatever you want in to the value, but it gets validated when pressing Enter. */
     const [inputValue, setInputValue] = useState<string>(val.toString())
     /* When editing the number <input> this will make it display inputValue instead of val.*/
     const [isEditing, setEditing] = useState<boolean>(false)
 
-    const syncValues = (value: number | string) => {
+    const syncValues = (value: number | string, soft: boolean = false) => {
         let num =
             typeof value === 'string' //
                 ? mode == 'int'
@@ -54,7 +59,11 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
         if (mode == 'int') num = Math.round(num)
 
         // Ensure in range
+        if (soft && startValue <= rangeMax && startValue >= rangeMin) {
+            num = parseFloatNoRoundingErr(clamp(num, rangeMin, rangeMax), 2)
+        } else {
         num = parseFloatNoRoundingErr(clamp(num, p.min ?? -Infinity, p.max ?? Infinity), 2)
+        }
 
         p.onValueChange(num)
         setInputValue(num.toString())
@@ -82,7 +91,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
             num = Math.round(num / inverval) * inverval
         }
 
-        syncValues(num)
+        syncValues(num, true)
     }
 
     const cancelListener = (e: MouseEvent) => {
@@ -128,9 +137,9 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
                 <button
                     tw='btn btn-xs'
                     onClick={(_) => {
+                        startValue = val
                         let num = val - (mode === 'int' ? step : step * 0.1)
-                        num = clamp(num, p.min ?? -Infinity, p.max ?? Infinity)
-                        syncValues(num)
+                        syncValues(num, true)
                     }}
                 >
                     ◂
@@ -227,8 +236,8 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
                         style={{ zIndex: 1 }}
                         tw='range range-primary cursor-not-allowed pointer-events-none'
                         value={p.hideSlider ? 0 : val}
-                        min={p.min}
-                        max={p.max}
+                        min={rangeMin}
+                        max={rangeMax}
                         step={step * 0.01}
                         readOnly
                     />
@@ -237,9 +246,9 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
                     className='btn btn-xs'
                     tw='btn btn-small'
                     onClick={(_) => {
+                        startValue = val
                         let num = val + (mode === 'int' ? step : step * 0.1)
-                        num = clamp(num, p.min ?? -Infinity, p.max ?? Infinity)
-                        syncValues(num)
+                        syncValues(num, true)
                     }}
                 >
                     ▸
