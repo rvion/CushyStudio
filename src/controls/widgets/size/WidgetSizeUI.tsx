@@ -67,7 +67,6 @@ export const WigetSizeXUI = observer(function WigetSizeXUI_(p: {
         <div className='flex flex-col gap-1'>
             <div className='flex flex-col gap-1'>
                 <div tw='flex items-center gap-1'>
-                    <div>W</div>
                     <InputNumberUI
                         //
                         min={p.bounds?.min ?? 128}
@@ -79,10 +78,9 @@ export const WigetSizeXUI = observer(function WigetSizeXUI_(p: {
                         hideSlider
                         onValueChange={(next) => uist.setWidth(next)}
                         forceSnap={true}
-                        // hideSlider
+                        text='Width'
                     />
                     <div>x</div>
-                    <div>H</div>
                     <InputNumberUI
                         //
                         tw='join-item'
@@ -94,7 +92,7 @@ export const WigetSizeXUI = observer(function WigetSizeXUI_(p: {
                         value={uist.height}
                         onValueChange={(next) => uist.setHeight(next)}
                         forceSnap={true}
-                        // hideSlider
+                        text='Height'
                     />
                 </div>
             </div>

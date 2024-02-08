@@ -15,6 +15,7 @@ export type Widget_number_config = WidgetConfigFields<{
     softMin?: number
     softMax?: number
     step?: number
+    text?: string
     hideSlider?: boolean
     forceSnap?: boolean
 }>
