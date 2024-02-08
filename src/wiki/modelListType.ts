@@ -13,7 +13,7 @@ export type ComfyUIManagerKnownModelTypes =
     | "VAE"                // x   5
     | "T2I-Adapter"        // x   7
     | "T2I-Style"          // x   1
-    | "controlnet"         // x  33
+    | "controlnet"         // x  34
     | "clip_vision"        // x   4
     | "gligen"             // x   1
     | "sam"                // x   3
@@ -195,6 +195,7 @@ export type ComfyUIManagerKnownModelNames =
     | "TAESD Encoder"
     | "TAESDXL Decoder"
     | "TAESDXL Encoder"
+    | "TEMP_briaai_RMBG-1.4"
     | "TencentARC/motionctrl.pth"
     | "Theovercomer8's Contrast Fix (SD1.5)"
     | "Theovercomer8's Contrast Fix (SD2.1)"

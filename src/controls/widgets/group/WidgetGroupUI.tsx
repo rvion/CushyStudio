@@ -20,34 +20,18 @@ export const WidgetGroupUI = observer(function WidgetItemsUI_(p: {
     const isHorizontal = widget.config.layout === 'H'
     return (
         <div
-            tw={['flex rounded-box bg-opacity-95 items-start w-full text-base-content']}
-            style={{
-                position: 'relative',
-            }}
+            tw={[isTopLevel ? 'TOP-LEVEL-PANEL' : 'SUB-PANEL', 'flex items-start w-full text-base-content']}
+            style={{ position: 'relative' }}
         >
-            {/* 🟢
-            {widget.serial.collapsed ? 'Coolapsed' : undefined}
-            {groupFields.length}
-            {groupFields.map(([rootKey, sub], ix) => (
-                <div key={rootKey}>{rootKey}</div>
-            ))} */}
             {widget.serial.collapsed ? null : (
                 <div
-                    // style={isTopLevel ? undefined : { border: '1px solid #262626' }}
-                    tw={[
-                        //
-                        '_WidgetGroupUI w-full',
-                        isHorizontal //
-                            ? `flex flex-wrap gap-2`
-                            : `flex flex-col gap-1`,
-                    ]}
+                    tw={['_WidgetGroupUI w-full', isHorizontal ? `flex flex-wrap gap-1` : `flex flex-col gap-1`]}
                     className={widget.config.className}
                 >
                     {groupFields.map(([rootKey, sub], ix) => (
                         <WidgetWithLabelUI //
                             isTopLevel={isTopLevel}
                             key={rootKey}
-                            // labelPos={sub.input.labelPos}
                             rootKey={rootKey}
                             widget={bang(sub)}
                         />

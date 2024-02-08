@@ -1,5 +1,4 @@
 import type { Widget } from 'src/controls/Widget'
-import type { ComfySchemaL } from 'src/models/Schema'
 import type { FormBuilder } from '../../FormBuilder'
 import type { GetWidgetResult, IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../../IWidget'
 
@@ -8,7 +7,6 @@ import { nanoid } from 'nanoid'
 import { runWithGlobalForm } from 'src/models/_ctx2'
 import { bang } from 'src/utils/misc/bang'
 import { WidgetDI } from '../WidgetUI.DI'
-import { hash } from 'ohash'
 
 // CONFIG
 export type Widget_group_config<T extends { [key: string]: Widget }> = WidgetConfigFields<{

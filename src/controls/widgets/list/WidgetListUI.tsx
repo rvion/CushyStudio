@@ -5,10 +5,20 @@ import { Widget } from 'src/controls/Widget'
 import { Message } from 'src/rsuite/shims'
 import { WidgetDI } from '../WidgetUI.DI'
 import { Widget_list } from './WidgetList'
+import { ErrorBoundary } from 'react-error-boundary'
+import { ErrorBoundaryFallback } from 'src/widgets/misc/ErrorBoundary'
+import { ListControlsUI } from 'src/controls/shared/ListControlsUI'
+import type { Widget_listExt } from '../listExt/WidgetListExt'
+
+export const WidgetList_LineUI = observer(function WidgetList_LineUI_<T extends Widget>(p: {
+    widget: Widget_list<T> | Widget_listExt<T>
+}) {
+    return <ListControlsUI widget={p.widget} />
+})
 
 export const WidgetListUI = observer(function WidgetListUI_<T extends Widget>(p: { widget: Widget_list<T> }) {
     const widget = p.widget
-    const values = widget.items
+    const subWidgets = widget.items
     const min = widget.config.min
     const WidgetUI = WidgetDI.WidgetUI
     if (WidgetUI == null) return <Message type='error'>Internal list failure</Message>
@@ -21,34 +31,48 @@ export const WidgetListUI = observer(function WidgetListUI_<T extends Widget>(p:
             {/* <ListControlsUI widget={p.widget} /> */}
             <SortableList onSortEnd={p.widget.moveItem} className='list' draggedItemClassName='dragged'>
                 <div tw='flex flex-col gap-2'>
-                    {values.map((v, ix) => (
-                        <SortableItem key={v.id}>
-                            <div tw='flex flex-col'>
-                                <div tw='flex items-center'>
-                                    <SortableKnob>
-                                        <ListDragHandleUI widget={v} ix={ix} />
-                                    </SortableKnob>
-                                    <div className='divider my-2 flex-1 border-top'>
-                                        <div id={v.id} tw='opacity-20 italic'>
-                                            #{ix}:{v.id}
+                    {subWidgets.map((subWidget, ix) => {
+                        const { WidgetLineUI, WidgetBlockUI } = WidgetDI.WidgetUI(subWidget) // WidgetDI.WidgetUI(widget)
+                        return (
+                            <SortableItem key={subWidget.id}>
+                                <div tw='flex flex-col'>
+                                    <div tw='flex items-center'>
+                                        <SortableKnob>
+                                            <ListDragHandleUI widget={subWidget} ix={ix} />
+                                        </SortableKnob>
+                                        <div className='divider my-2 flex-1 border-top'>
+                                            <div id={subWidget.id} tw='opacity-20 italic'>
+                                                #{ix}:{subWidget.id}
+                                            </div>
                                         </div>
-                                    </div>
-                                    {/* {(v.state.collapsed ?? false) && <WidgetUI widget={v} />} */}
-                                    {/* {!(v.state.collapsed ?? false) && <div tw='flex-1' />} */}
+                                        {WidgetLineUI && (
+                                            <ErrorBoundary FallbackComponent={ErrorBoundaryFallback} onReset={(details) => {}}>
+                                                <WidgetLineUI widget={subWidget} />
+                                            </ErrorBoundary>
+                                        )}
 
-                                    <div
-                                        tw={[
-                                            'btn btn-sm btn-narrower btn-ghost opacity-50',
-                                            min && widget.items.length <= min ? 'btn-disabled' : null,
-                                        ]}
-                                        onClick={() => widget.removeItem(v)}
-                                    >
-                                        <span className='material-symbols-outlined'>delete</span>
+                                        {/* {(v.state.collapsed ?? false) && <WidgetUI widget={v} />} */}
+                                        {/* {!(v.state.collapsed ?? false) && <div tw='flex-1' />} */}
+
+                                        <div
+                                            tw={[
+                                                'btn btn-sm btn-narrower btn-ghost opacity-50',
+                                                min && widget.items.length <= min ? 'btn-disabled' : null,
+                                            ]}
+                                            onClick={() => widget.removeItem(subWidget)}
+                                        >
+                                            <span className='material-symbols-outlined'>delete</span>
+                                        </div>
+                                        <ListItemCollapseBtnUI req={subWidget} />
                                     </div>
-                                    <ListItemCollapseBtnUI req={v} />
-                                </div>
-                                <WidgetUI widget={v} />
-                                {/* {!(v.state.collapsed ?? false) && (
+                                    {WidgetBlockUI && subWidget && (
+                                        <ErrorBoundary FallbackComponent={ErrorBoundaryFallback} onReset={(details) => {}}>
+                                            <div tw='ml-2 pl-2'>
+                                                <WidgetBlockUI widget={subWidget} />
+                                            </div>
+                                        </ErrorBoundary>
+                                    )}
+                                    {/* {!(v.state.collapsed ?? false) && (
                                     <div
                                     // key={v.id}
                                     // tw='border-solid border-2 border-neutral-content'
@@ -56,9 +80,10 @@ export const WidgetListUI = observer(function WidgetListUI_<T extends Widget>(p:
                                         <WidgetUI widget={v} />
                                     </div>
                                 )} */}
-                            </div>
-                        </SortableItem>
-                    ))}
+                                </div>
+                            </SortableItem>
+                        )
+                    })}
                 </div>
             </SortableList>
         </div>

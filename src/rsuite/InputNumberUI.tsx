@@ -1,5 +1,6 @@
+import { observable } from 'mobx'
 import { observer } from 'mobx-react-lite'
-import { useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { parseFloatNoRoundingErr } from 'src/utils/misc/parseFloatNoRoundingErr'
 
 const clamp = (x: number, min: number, max: number) => Math.max(min, Math.min(max, x))
@@ -30,6 +31,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
     style?: React.CSSProperties
     placeholder?: string
     forceSnap?: boolean
+    className?: string
 }) {
     const val = p.value ?? clamp(1, p.min ?? -Infinity, p.max ?? Infinity)
     const mode = p.mode
@@ -42,6 +44,10 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
     const [inputValue, setInputValue] = useState<string>(val.toString())
     /* When editing the number <input> this will make it display inputValue instead of val.*/
     const [isEditing, setEditing] = useState<boolean>(false)
+
+    // make sure we retrieve the `onValueChange` lambda from the latest prop version
+    const [latestProps] = useState(() => observable({ onValueChange: p.onValueChange }))
+    useEffect(() => void (latestProps.onValueChange = p.onValueChange), [p.onValueChange])
 
     const syncValues = (value: number | string, soft: boolean = false) => {
         let num =
@@ -71,7 +77,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
             num = parseFloatNoRoundingErr(clamp(num, p.min ?? -Infinity, p.max ?? Infinity), 2)
         }
 
-        p.onValueChange(num)
+        latestProps.onValueChange(num)
         setInputValue(num.toString())
     }
 
@@ -138,7 +144,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
     }
 
     return (
-        <div className='relative-slider' tw='flex-1 select-none'>
+        <div className={p.className} tw='relative-slider flex-1 select-none'>
             <div tw='relative w-full flex'>
                 <progress
                     style={{ zIndex: 1 }}

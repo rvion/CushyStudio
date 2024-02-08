@@ -1,3 +1,19 @@
+.TOP-LEVEL-PANEL {
+    /* border: 1px solid red; */
+    /* border: 1px solid red; */
+}
+.SUB-PANEL {
+    border-left: 1px solid cyan;
+    padding-left: .3rem;
+}
+.TOP-LEVEL-FIELD {
+    background: oklch(var(--b2));
+    border-left: 1px solid gray;
+}
+.SUB-FIELD {
+    background: #272729;
+}
+
 /* --------------------- */
 .cm-tooltip.cm-completionInfo {
     max-height: 300px;

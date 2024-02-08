@@ -2,8 +2,8 @@ import type { Widget_listExt } from './WidgetListExt'
 
 import { observer } from 'mobx-react-lite'
 import { Widget } from 'src/controls/Widget'
+import { WidgetWithLabelUI } from 'src/controls/shared/WidgetWithLabelUI'
 import { Button } from 'src/rsuite/shims'
-import { WidgetDI } from '../WidgetUI.DI'
 
 export const WidgetListExt_ValuesUI = observer(function WidgetListExtValuesUI_<T extends Widget>(p: {
     //
@@ -13,7 +13,6 @@ export const WidgetListExt_ValuesUI = observer(function WidgetListExtValuesUI_<T
     const values = widget.entries
     const len = values.length
     const indexWidth = len < 10 ? 1 : len < 100 ? 2 : 3
-    const WidgetUI = WidgetDI.WidgetUI
     const min = widget.config.min
     return (
         <div tw='flex flex-col gap-1'>
@@ -32,7 +31,7 @@ export const WidgetListExt_ValuesUI = observer(function WidgetListExtValuesUI_<T
                         >
                             {v.serial.collapsed ? '▸' : '▿'}
                         </Button>
-                        <WidgetUI widget={v} />
+                        <WidgetWithLabelUI rootKey={v.id} widget={v} />
                         <Button
                             appearance='subtle'
                             disabled={min ? widget.entries.length <= min : undefined}

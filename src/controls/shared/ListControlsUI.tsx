@@ -18,9 +18,7 @@ export const ListControlsUI = observer(function ListControlsUI_(p: { widget: Wid
                     ev.stopPropagation()
                     widget.addItem()
                 }}
-            >
-                {/* Add */}
-            </Button>
+            />
             <Button
                 tw='btn-sm join-item btn-ghost btn-square'
                 disabled={min ? widget.items.length <= min : undefined}
@@ -39,7 +37,7 @@ export const ListControlsUI = observer(function ListControlsUI_(p: { widget: Wid
                     ev.stopPropagation()
                     widget.expandAllItems()
                 }}
-            ></Button>
+            />
             <Button
                 tw='btn-sm join-item btn-ghost btn-square'
                 icon={<span className='material-symbols-outlined'>unfold_less</span>}
@@ -47,7 +45,7 @@ export const ListControlsUI = observer(function ListControlsUI_(p: { widget: Wid
                     ev.stopPropagation()
                     widget.collapseAllItems()
                 }}
-            ></Button>
+            />
             {/* <Button
                 tw='btn-sm join-item btn-ghost'
                 disabled={max ? req.items.length >= max : undefined}

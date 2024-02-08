@@ -11,8 +11,8 @@
 
 ☐ compress image must not save the images uncompressed too
     ☝️
-☐ fix virtual paths breaking the "sync view of file explorer"
-☐ fix widget hash not working properly
+✔ fix virtual paths breaking the "sync view of file explorer" @done(24-02-08 23:43)
+✔ fix widget hash not working properly @done(24-02-08 23:43)
 
 ```
 masterpiece, sofa, tree, [color] [adj_beauty] [adj_general] nature, intricate_details, game background, window, magical island, summer, glass
@@ -45,17 +45,17 @@ form rework:
 
 
 ☐ RELEASE AFTER
-        ☐ prompt lang
-        ☐ basic unified canvas
-            ☐ inpainting
-            ☐ outpainting
-            ☐ mask editing
-            ☐ stamp tool
-        ☐ basic documentation website
-        ☐ bug pass
-        ☐ form layout
-        ☐ video
-        ☐ FEATURE FREEZE. NO MORE FEATURES.
+    ☐ prompt lang @started(24-02-08 23:41)
+    ☐ basic unified canvas @started(24-02-08 23:41)
+        ☐ inpainting
+        ☐ outpainting
+        ☐ mask editing
+        ☐ stamp tool
+    ☐ basic documentation website @started(24-02-08 23:41)
+    ☐ bug pass @started(24-02-08 23:42)
+    ☐ form layout @started(24-02-08 23:41)
+    ☐ FEATURE FREEZE. NO MORE FEATURES.
+    ☐ make a 2-minute showcase video
 
 
 prompt-lang:

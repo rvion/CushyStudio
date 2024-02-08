@@ -8,9 +8,11 @@ import { QuickHostActionsUI } from 'src/wiki/ui/QuickHostActionsUI'
 export const InstallModelBtnUI = observer(function InstallModelBtnUI_(p: {
     // widget: Widget_enum<K> | Widget_enumOpt<K>
     // modelFolderPrefix: string
-    models: RecommendedModelDownload
+    models?: RecommendedModelDownload
 }) {
     const st = useSt()
+    if (p.models == null) return null
+
     const x = p.models
     const models = extractDownloadCandidates(x)
     if (models.length === 0) return null

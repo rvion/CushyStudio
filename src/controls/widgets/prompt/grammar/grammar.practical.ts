@@ -293,6 +293,9 @@ export class Prompt_Content extends ManagedNode<'Content'> {
 }
 export class Prompt_WeightedExpression extends ManagedNode<'WeightedExpression'> {
     $kind = 'WeightedExpression' as const
+    get contentText(): string {
+        return this.getChild('Content')?.text ?? ''
+    }
     get weight() {
         return this.getChild('Number')?.number ?? 1
     }
