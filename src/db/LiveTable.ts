@@ -3,7 +3,7 @@ import type { LiveDB } from './LiveDB'
 import type { $BaseInstanceFields, BaseInstanceFields, LiveInstance, UpdateOptions } from './LiveInstance'
 
 import { Value, ValueError } from '@sinclair/typebox/value'
-import { action, makeAutoObservable, runInAction, toJS } from 'mobx'
+import { action, makeAutoObservable, runInAction, toJS, type AnnotationMapEntry } from 'mobx'
 import { nanoid } from 'nanoid'
 import { schemas } from 'src/db/TYPES.gen'
 import { TableInfo } from 'src/db/TYPES_json'
@@ -99,6 +99,8 @@ export class LiveTable<
         this.db._tables.push(this)
 
         const BaseInstanceClass = class implements LiveInstance<T, T> {
+            observabilityConfig?: { [key: string]: AnnotationMapEntry }
+
             /** pointer to the liveDB */
             db!: LiveDB
 
@@ -245,7 +247,7 @@ export class LiveTable<
                 this.data = data
                 this.onHydrate?.(data)
                 this.onUpdate?.(undefined, data)
-                makeAutoObservable(this)
+                makeAutoObservable(this, this.observabilityConfig as any)
             }
 
             log(...args: any[]) {
