@@ -105,6 +105,8 @@ else
 fi
 
 
+export PATH="$EXTRACT_DIR/bin:$PATH"
+
 NPM_BIN_PATH="$EXTRACT_DIR/bin/npm"
 echo "NPM binary path: $NPM_BIN_PATH"
 
