@@ -58,7 +58,7 @@ ECHO Node binary path: %NODE_BIN_PATH%
 
 :: Install dependencies with npm
 ECHO Installing dependencies...
-CALL "%NPM_BIN_PATH%" install
+CALL "%NPM_BIN_PATH%" install --legacy-peer-deps=false
 
 ECHO [===================================================]
 ECHO ensuring binary dependencies are correctly linked...
