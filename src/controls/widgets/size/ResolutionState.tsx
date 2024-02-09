@@ -55,8 +55,6 @@ export class ResolutionState {
     desiredAspectRatio: AspectRatio = 'custom'
 
     constructor(public req: SizeAble) {
-        makeAutoObservable(this)
-
         this.desiredAspectRatio = (() => {
             const ratio = parseFloatNoRoundingErr(this.realAspectRatio, 2)
             // console.log(ratio, parseFloatNoRoundingErr(16 / 9, 2))
@@ -66,6 +64,7 @@ export class ResolutionState {
             if (ratio === parseFloatNoRoundingErr(3 / 2, 2)) return '3:2'
             return 'custom'
         })()
+        makeAutoObservable(this)
     }
 
     setWidth(width: number) {

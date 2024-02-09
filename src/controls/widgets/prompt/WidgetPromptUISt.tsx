@@ -36,6 +36,7 @@ export class WidgetPromptUISt {
         makeAutoObservable(this, {
             editorView: observable.ref,
             editorState: observable.ref,
+            mountRef: false,
         })
     }
 

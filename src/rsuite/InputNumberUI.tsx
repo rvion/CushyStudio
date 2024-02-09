@@ -1,4 +1,4 @@
-import { observable } from 'mobx'
+import { observable, runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { useEffect, useState } from 'react'
 import { parseFloatNoRoundingErr } from 'src/utils/misc/parseFloatNoRoundingErr'
@@ -47,7 +47,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
 
     // make sure we retrieve the `onValueChange` lambda from the latest prop version
     const [latestProps] = useState(() => observable({ onValueChange: p.onValueChange }))
-    useEffect(() => void (latestProps.onValueChange = p.onValueChange), [p.onValueChange])
+    useEffect(() => runInAction(() => void (latestProps.onValueChange = p.onValueChange)), [p.onValueChange])
 
     const syncValues = (value: number | string, soft: boolean = false) => {
         let num =

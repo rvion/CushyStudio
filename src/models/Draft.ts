@@ -207,12 +207,12 @@ export class DraftL {
     isInitializing = false
     isInitialized = false
 
-    private _formBuilder: Maybe<FormBuilder> = null
+    observabilityConfig = { formBuilder: false }
+
     get formBuilder() {
-        if (this._formBuilder == null) {
-            this._formBuilder = new FormBuilder(this.st.schema)
-        }
-        return this._formBuilder
+        const value = new FormBuilder(this.st.schema)
+        Object.defineProperty(this, 'formBuilder', { value })
+        return value
     }
 
     AWAKE = () => {
