@@ -70,6 +70,10 @@ export const compilePrompt = (p: {
                 return false
             }
 
+            if (toktype === 'Break') {
+                set('break')
+            }
+
             if (toktype === 'String') {
                 set(node.content)
                 return false
