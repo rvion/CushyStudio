@@ -22,7 +22,6 @@ const modulesToCache /*: [name:string, path:string][]*/ = [
     ['mobx'             , 'mobx'            ],
     ['cytoscape-klay'   , 'cytoscape-klay'  ],
     ['cytoscape'        , 'cytoscape'       ],
-    ['lexical'          , 'lexical'         ],
     ['@tensorflow/tfjs' , 'tfjs'            ],
     ['nsfwjs'           , 'nsfwjs'          ],
     ['mime-types'       , 'mime-types'      ],
