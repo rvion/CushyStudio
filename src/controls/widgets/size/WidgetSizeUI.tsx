@@ -30,7 +30,7 @@ export const WidgetSizeX_LineUI = observer(function WidgetSize_LineUI_(p: {
 }) {
     const uist = p.sizeHelper
     return (
-        <div className='flex flex-col gap-1'>
+        <div className='flex flex-1 flex-col gap-1'>
             <div tw='flex items-center gap-1'>
                 <div tw='virtualBorder' style={{ width: '2rem', height: '2rem' }}>
                     <div
