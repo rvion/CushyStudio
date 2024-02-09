@@ -57,7 +57,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                 {/* BLOCK */}
                 {WidgetBlockUI && !collapsed && (
                     <ErrorBoundary FallbackComponent={ErrorBoundaryFallback} onReset={(details) => {}}>
-                        <div tw='ml-2 pl-2'>
+                        <div tw='WIDGET-BLOCK'>
                             <WidgetBlockUI widget={widget} />
                         </div>
                     </ErrorBoundary>

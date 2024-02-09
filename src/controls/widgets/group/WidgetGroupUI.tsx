@@ -19,13 +19,14 @@ export const WidgetGroupUI = observer(function WidgetItemsUI_(p: {
     const groupFields = Object.entries(widget.values)
     const isHorizontal = widget.config.layout === 'H'
     return (
-        <div
-            tw={[isTopLevel ? 'TOP-LEVEL-PANEL' : 'SUB-PANEL', 'flex items-start w-full text-base-content']}
-            style={{ position: 'relative' }}
-        >
+        <div tw={['WIDGET-GROUP', 'flex items-start w-full text-base-content']} style={{ position: 'relative' }}>
             {widget.serial.collapsed ? null : (
                 <div
-                    tw={['_WidgetGroupUI w-full', isHorizontal ? `flex flex-wrap gap-1` : `flex flex-col gap-1`]}
+                    tw={[
+                        //
+                        '_WidgetGroupUI w-full',
+                        isHorizontal ? `flex flex-wrap gap-1` : `flex flex-col gap-1.5`,
+                    ]}
                     className={widget.config.className}
                 >
                     {groupFields.map(([rootKey, sub], ix) => (
