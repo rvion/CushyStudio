@@ -25,7 +25,7 @@ export const WidgetGroupUI = observer(function WidgetItemsUI_(p: {
                     tw={[
                         //
                         '_WidgetGroupUI w-full',
-                        isHorizontal ? `flex flex-wrap gap-1` : `flex flex-col gap-1.5`,
+                        isHorizontal ? `flex flex-wrap gap-1` : `flex flex-col gap-1`,
                     ]}
                     className={widget.config.className}
                 >

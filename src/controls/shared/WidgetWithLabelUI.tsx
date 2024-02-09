@@ -33,7 +33,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
             <AnimatedSizeUI>
                 {/* LINE */}
                 <div
-                    tw='flex items-center gap-1'
+                    tw='flex items-center gap-0.5'
                     onClick={() => {
                         if (widget.serial.collapsed) return (widget.serial.collapsed = false)
                         // if (isCollapsible) return toggleInfo.toggle()
@@ -70,21 +70,20 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
 export const Widget_CollapseBtnUI = observer(function Widget_CollapseBtnUI_(p: { widget: R.Widget }) {
     const widget = p.widget
     return (
-        <div className='flex items-center'>
-            <span
-                tw={'opacity-30 hover:opacity-100 ml-auto cursor-pointer'}
-                onClick={(ev) => {
-                    ev.stopPropagation()
-                    ev.preventDefault()
-                    if (widget.serial.collapsed) widget.serial.collapsed = false
-                    else widget.serial.collapsed = true
-                }}
-            >
-                <span className='material-symbols-outlined'>
-                    {widget.serial.collapsed ? 'keyboard_arrow_right' : 'keyboard_arrow_down'}
-                </span>
-            </span>
-        </div>
+        <span
+            tw={'opacity-30 hover:opacity-100 cursor-pointer'}
+            onClick={(ev) => {
+                ev.stopPropagation()
+                ev.preventDefault()
+                if (widget.serial.collapsed) widget.serial.collapsed = false
+                else widget.serial.collapsed = true
+            }}
+            //
+            className='material-symbols-outlined'
+            style={{ lineHeight: '1em' }}
+        >
+            {widget.serial.collapsed ? 'keyboard_arrow_right' : 'keyboard_arrow_down'}
+        </span>
     )
 })
 

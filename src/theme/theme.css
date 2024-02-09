@@ -1,14 +1,15 @@
 /* FORM STYLING ----------------------------------- */
 .WIDGET-BLOCK .WIDGET-GROUP {
-    border-left: 1px solid oklch(var(--p)/.5);
+    border-left: 1px solid oklch(var(--p)/.2);
     padding-left: .3rem;
 }
 .TOP-LEVEL-FIELD {
     background: oklch(var(--b2));
+    border-radius: .3rem;
     /* border-left: 1px solid oklch(var(--b3)); */
 }
 .SUB-FIELD {
-    background: #272729;
+    /* background: #272729; */
 }
 .WIDGET-LINE {
 
@@ -159,7 +160,7 @@ input::-webkit-inner-spin-button {
 }
 
 .relative-slider input[type="range"]::-ms-thumb {
-    display: none; 
+    display: none;
 } */
 
 .relative-slider progress[value]::-webkit-progress-bar {

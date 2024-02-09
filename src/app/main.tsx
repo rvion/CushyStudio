@@ -1,6 +1,7 @@
 import ReactDOM from 'react-dom/client'
 
 import 'src/theme/tw.css'
+// import 'src/theme/fonts.css'
 import 'react-toastify/dist/ReactToastify.css'
 import 'highlight.js/styles/stackoverflow-dark.css'
 import 'src/theme/flexlayout.css'

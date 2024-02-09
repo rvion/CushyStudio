@@ -32,8 +32,8 @@ export const TreeUI = observer(function TreeEditorUI_(p: {
 
     return (
         <TreeViewCtx.Provider value={tv}>
-            <div tw='_TreeUI flex flex-col virtualBorder' className={p.className}>
-                <div tw='flex items-center gap-1 bg-primary text-primary-content'>
+            <div tw='_TreeUI flex flex-col' className={p.className}>
+                <div tw='flex items-center gap-1 bg-base-300'>
                     <div className='flex flex-1 gap-1 items-center' onClick={() => (tv.isFolded = true)}>
                         {FoldBtn}
                         {p.title && <div tw='text-sm'>{p.title}</div>}

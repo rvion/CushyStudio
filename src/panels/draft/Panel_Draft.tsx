@@ -89,11 +89,9 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                     </MessageInfoUI>
                 )}
                 {metadata?.description && (
-                    // <MessageInfoUI>
-                    <MarkdownUI tw='_WidgetMardownUI w-full' markdown={metadata.description} />
-                    // </MessageInfoUI>
+                    <MarkdownUI tw='_WidgetMardownUI italic px-1 text-gray-500 w-full' markdown={metadata.description} />
                 )}
-                <div tw='pb-80 pl-2'>
+                <div tw='pb-80 p-1'>
                     <ResultWrapperUI
                         //
                         res={draft.form}
@@ -129,7 +127,6 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
  * if a workflow need user-supplied infos, it will send an 'ask' request with a list
  * of things it needs to know.
  */
-
 const ErrorPanelUI = observer(function ErrorPanelUI_(p: { children: React.ReactNode }) {
     return (
         <div tw='h-full'>
