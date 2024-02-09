@@ -42,7 +42,6 @@ export const WidgetSizeX_LineUI = observer(function WidgetSize_LineUI_(p: {
                         }}
                     ></div>
                 </div>
-                <div>W</div>
                 <InputNumberUI
                     //
                     min={p.bounds?.min ?? 128}
@@ -54,10 +53,9 @@ export const WidgetSizeX_LineUI = observer(function WidgetSize_LineUI_(p: {
                     hideSlider
                     onValueChange={(next) => uist.setWidth(next)}
                     forceSnap={true}
-                    // hideSlider
+                    text='Width'
                 />
                 <div>x</div>
-                <div>H</div>
                 <InputNumberUI
                     //
                     tw='join-item'
@@ -69,7 +67,7 @@ export const WidgetSizeX_LineUI = observer(function WidgetSize_LineUI_(p: {
                     value={uist.height}
                     onValueChange={(next) => uist.setHeight(next)}
                     forceSnap={true}
-                    // hideSlider
+                    text='Height'
                 />
             </div>
         </div>

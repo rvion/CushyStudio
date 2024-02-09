@@ -12,13 +12,16 @@ export type Widget_number_config = WidgetConfigFields<{
     default?: number
     min?: number
     max?: number
+    softMin?: number
+    softMax?: number
     step?: number
+    text?: string
     hideSlider?: boolean
     forceSnap?: boolean
 }>
 
 // SERIAL
-export type Widget_number_serial = WidgetSerialFields<{ type: 'number'; val: number; forceSnap: boolean }>
+export type Widget_number_serial = WidgetSerialFields<{ type: 'number'; val: number }>
 
 // OUT
 export type Widget_number_output = number
@@ -50,7 +53,6 @@ export class Widget_number implements IWidget<Widget_number_types> {
             collapsed: config.startCollapsed,
             id: this.id,
             val: config.default ?? 0,
-            forceSnap: config.forceSnap ?? false,
         }
 
         makeObservable(this, {

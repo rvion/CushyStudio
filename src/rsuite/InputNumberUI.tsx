@@ -5,6 +5,11 @@ import { parseFloatNoRoundingErr } from 'src/utils/misc/parseFloatNoRoundingErr'
 
 const clamp = (x: number, min: number, max: number) => Math.max(min, Math.min(max, x))
 
+/* TODO LIST:
+ *   - Label
+ *   - Suffix
+ */
+
 /* NOTE(bird_d): Having these here should be fine since only one slider should be dragging/active at a time? */
 let startValue: number = 0
 let dragged: boolean = false
@@ -19,6 +24,9 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
     step?: number
     min?: number
     max?: number
+    softMin?: number
+    softMax?: number
+    text?: string
     hideSlider?: boolean
     style?: React.CSSProperties
     placeholder?: string
@@ -29,6 +37,9 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
     const mode = p.mode
     const step = p.step ?? (mode === 'int' ? 1 : 0.1)
     const forceSnap = p.forceSnap ?? false
+    const rangeMin = p.softMin ?? p.min ?? -Infinity
+    const rangeMax = p.softMax ?? p.max ?? Infinity
+
     /* Used for making sure you can type whatever you want in to the value, but it gets validated when pressing Enter. */
     const [inputValue, setInputValue] = useState<string>(val.toString())
     /* When editing the number <input> this will make it display inputValue instead of val.*/
@@ -38,7 +49,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
     const [latestProps] = useState(() => observable({ onValueChange: p.onValueChange }))
     useEffect(() => void (latestProps.onValueChange = p.onValueChange), [p.onValueChange])
 
-    const syncValues = (value: number | string) => {
+    const syncValues = (value: number | string, soft: boolean = false) => {
         let num =
             typeof value === 'string' //
                 ? mode == 'int'
@@ -60,7 +71,11 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
         if (mode == 'int') num = Math.round(num)
 
         // Ensure in range
-        num = parseFloatNoRoundingErr(clamp(num, p.min ?? -Infinity, p.max ?? Infinity), 2)
+        if (soft && startValue <= rangeMax && startValue >= rangeMin) {
+            num = parseFloatNoRoundingErr(clamp(num, rangeMin, rangeMax), 2)
+        } else {
+            num = parseFloatNoRoundingErr(clamp(num, p.min ?? -Infinity, p.max ?? Infinity), 2)
+        }
 
         latestProps.onValueChange(num)
         setInputValue(num.toString())
@@ -88,7 +103,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
             num = Math.round(num / inverval) * inverval
         }
 
-        syncValues(num)
+        syncValues(num, true)
     }
 
     const cancelListener = (e: MouseEvent) => {
@@ -130,126 +145,150 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
 
     return (
         <div className={p.className} tw='relative-slider flex-1 select-none'>
-            <div tw='flex'>
-                <button
-                    tw='btn btn-xs'
-                    onClick={(_) => {
-                        let num = val - (mode === 'int' ? step : step * 0.1)
-                        num = clamp(num, p.min ?? -Infinity, p.max ?? Infinity)
-                        syncValues(num)
-                    }}
-                >
-                    ◂
-                </button>
-                <div
-                    tw='relative flex flex-1 select-none'
-                    onWheel={(ev) => {
-                        /* NOTE: This could probably divide by the length? But I'm not sure how to get the distance of 1 scroll tick.
-                         * Increment/Decrement using scroll direction. */
-                        if (ev.ctrlKey) {
-                            let num = mode === 'int' ? step * -Math.sign(ev.deltaY) : step * -Math.sign(ev.deltaY) * 0.1
-                            num = val + num
+            <div tw='relative w-full flex'>
+                <progress
+                    style={{ zIndex: 1 }}
+                    tw='range range-primary cursor-not-allowed pointer-events-none'
+                    value={p.hideSlider ? 0 : val - rangeMin}
+                    max={rangeMax - rangeMin}
+                ></progress>
 
-                            if (mode == 'int') {
-                                num = Math.round(num)
-                            } else {
-                                num = parseFloatNoRoundingErr(num, 2)
-                            }
-
-                            num = clamp(num, p.min ?? -Infinity, p.max ?? Infinity)
-
-                            syncValues(num)
-                        }
-                    }}
-                    onMouseDown={(ev) => {
-                        if (ev.button != 0) {
-                            return
-                        }
-
-                        /* Begin slider drag */
-                        activeSlider = ev.currentTarget
-                        startValue = val
-                        cumulativeOffset = 0
-                        dragged = false
-
-                        window.addEventListener('mousemove', mouseMoveListener, true)
-                        window.addEventListener('pointerup', onPointerUpListener, true)
-                        window.addEventListener('pointerlockchange', onPointerLockChange, true)
-                        window.addEventListener('mousedown', cancelListener, true)
-
-                        activeSlider?.requestPointerLock()
-                    }}
-                >
-                    <input //
-                        id='sliderNumberInput'
-                        type='number'
-                        tw='input input-sm cursor-not-allowed pointer-events-none'
-                        value={isEditing ? inputValue : val}
-                        placeholder={p.placeholder}
-                        style={{
-                            fontFamily: 'monospace',
-                            zIndex: 2,
-                            background: 'transparent',
-                        }}
-                        min={p.min}
-                        max={p.max}
-                        step={step}
-                        onChange={(ev) => {
-                            setInputValue(ev?.target.value)
-                        }}
-                        onFocus={(ev) => {
-                            let numberInput = ev.currentTarget
-                            activeSlider = numberInput.parentElement as HTMLDivElement
-
-                            numberInput.select()
+                <div tw='absolute w-full rounded-sm flex'>
+                    <button
+                        tw='btn btn-xs'
+                        style={{ zIndex: 2 }}
+                        onClick={(_) => {
                             startValue = val
-                            setInputValue(val.toString())
-                            setEditing(true)
+                            let num = val - (mode === 'int' ? step : step * 0.1)
+                            syncValues(num, true)
                         }}
-                        onBlur={(ev) => {
-                            setEditing(false)
-                            const next = ev.currentTarget.value
-                            activeSlider = null
+                    >
+                        ◂
+                    </button>
+                    <div
+                        tw='relative flex flex-1 select-none'
+                        onWheel={(ev) => {
+                            /* NOTE: This could probably divide by the length? But I'm not sure how to get the distance of 1 scroll tick.
+                             * Increment/Decrement using scroll direction. */
+                            if (ev.ctrlKey) {
+                                let num = mode === 'int' ? step * -Math.sign(ev.deltaY) : step * -Math.sign(ev.deltaY) * 0.1
+                                num = val + num
 
-                            if (cancelled) {
-                                cancelled = false
-                                syncValues(startValue)
+                                if (mode == 'int') {
+                                    num = Math.round(num)
+                                } else {
+                                    num = parseFloatNoRoundingErr(num, 2)
+                                }
+
+                                num = clamp(num, p.min ?? -Infinity, p.max ?? Infinity)
+
+                                syncValues(num)
+                            }
+                        }}
+                        onMouseDown={(ev) => {
+                            if (ev.button != 0) {
                                 return
                             }
 
-                            syncValues(ev.currentTarget.value)
+                            /* Begin slider drag */
+                            activeSlider = ev.currentTarget
+                            startValue = val
+                            cumulativeOffset = 0
+                            dragged = false
+
+                            window.addEventListener('mousemove', mouseMoveListener, true)
+                            window.addEventListener('pointerup', onPointerUpListener, true)
+                            window.addEventListener('pointerlockchange', onPointerLockChange, true)
+                            window.addEventListener('mousedown', cancelListener, true)
+
+                            activeSlider?.requestPointerLock()
                         }}
-                        onKeyDown={(ev) => {
-                            if (ev.key === 'Enter') {
-                                ev.currentTarget.blur()
-                            } else if (ev.key === 'Escape') {
-                                cancelled = true
-                                ev.currentTarget.blur()
-                            }
-                        }}
-                    />
-                    {/* <div tw='w-full flex flex-1 bg-white text-white decoration-white' /> */}
-                    <input //Setting the value to 0
+                    >
+                        <div className='text-container' tw='flex'>
+                            {p.text ? (
+                                <div tw='primary-content outline-0 border-0 border-transparent z-10 w-full text-left'>
+                                    {p.text}
+                                </div>
+                            ) : (
+                                <></>
+                            )}
+                            <input //
+                                id='sliderNumberInput'
+                                type='number'
+                                tw={
+                                    p.text
+                                        ? 'text-right cursor-not-allowed pointer-events-none'
+                                        : 'text-center cursor-not-allowed pointer-events-none'
+                                }
+                                value={isEditing ? inputValue : val}
+                                placeholder={p.placeholder}
+                                style={{
+                                    fontFamily: 'monospace',
+                                    zIndex: 2,
+                                    background: 'transparent',
+                                }}
+                                min={p.min}
+                                max={p.max}
+                                step={step}
+                                onChange={(ev) => {
+                                    setInputValue(ev?.target.value)
+                                }}
+                                onFocus={(ev) => {
+                                    let numberInput = ev.currentTarget
+                                    activeSlider = numberInput.parentElement as HTMLDivElement
+
+                                    numberInput.select()
+                                    startValue = val
+                                    setInputValue(val.toString())
+                                    setEditing(true)
+                                }}
+                                onBlur={(ev) => {
+                                    setEditing(false)
+                                    const next = ev.currentTarget.value
+                                    activeSlider = null
+
+                                    if (cancelled) {
+                                        cancelled = false
+                                        syncValues(startValue)
+                                        return
+                                    }
+
+                                    syncValues(ev.currentTarget.value)
+                                }}
+                                onKeyDown={(ev) => {
+                                    if (ev.key === 'Enter') {
+                                        ev.currentTarget.blur()
+                                    } else if (ev.key === 'Escape') {
+                                        cancelled = true
+                                        ev.currentTarget.blur()
+                                    }
+                                }}
+                            />
+                        </div>
+                        {/* <input //Setting the value to 0
                         type='range'
                         style={{ zIndex: 1 }}
                         tw='range range-primary cursor-not-allowed pointer-events-none'
                         value={p.hideSlider ? 0 : val}
-                        min={p.min}
-                        max={p.max}
+                        min={rangeMin}
+                        max={rangeMax}
                         step={step * 0.01}
-                    />
+                        readOnly
+                    /> */}
+                    </div>
+                    <button
+                        className='btn btn-xs'
+                        tw='btn btn-small'
+                        style={{ zIndex: 2 }}
+                        onClick={(_) => {
+                            startValue = val
+                            let num = val + (mode === 'int' ? step : step * 0.1)
+                            syncValues(num, true)
+                        }}
+                    >
+                        ▸
+                    </button>
                 </div>
-                <button
-                    className='btn btn-xs'
-                    tw='btn btn-small'
-                    onClick={(_) => {
-                        let num = val + (mode === 'int' ? step : step * 0.1)
-                        num = clamp(num, p.min ?? -Infinity, p.max ?? Infinity)
-                        syncValues(num)
-                    }}
-                >
-                    ▸
-                </button>
             </div>
         </div>
     )

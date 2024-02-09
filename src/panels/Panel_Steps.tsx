@@ -17,6 +17,8 @@ export const Panel_Steps = observer(function StepListUI_(p: {}) {
                         mode='int'
                         min={1}
                         max={100}
+                        softMax={20}
+                        step={1}
                         value={st.__TEMPT__maxStepsToShow}
                         onValueChange={(next) => (st.__TEMPT__maxStepsToShow = next)}
                     />
