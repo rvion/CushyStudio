@@ -39,7 +39,7 @@ const WidgetChoices_TabLineUI = observer(function WidgetChoicesTab_LineUI_(p: {
     const choicesStr: string[] = widget.choices
     const choices: Entry[] = choicesStr.map((v) => ({ key: v }))
     return (
-        <div tw='flex flex-wrap gap-1'>
+        <div tw='ml-auto flex flex-wrap gap-x-1 gap-y-0'>
             {choices.map((c) => {
                 const isSelected = widget.serial.branches[c.key]
                 return (
@@ -48,12 +48,15 @@ const WidgetChoices_TabLineUI = observer(function WidgetChoicesTab_LineUI_(p: {
                         key={c.key}
                         tw={[
                             //
-                            'btn btn-sm btn-narrow flex flex-nowrap gap-1 whitespace-nowrap',
-                            isSelected ? 'btn-primary' : '',
+                            'cursor-pointer',
+                            'px-0.5 rounded flex flex-nowrap gap-0.5 whitespace-nowrap items-center',
+                            // isSelected ? 'bg-primary text-primary-content' : 'bg-base-300',
+                            isSelected ? 'underline' : 'bg-base-300',
                         ]}
                     >
                         <input
                             type='checkbox'
+                            style={{ height: '.8rem', width: '.8rem' }}
                             onChange={() => {}}
                             checked={isSelected}
                             className='checkbox checkbox-primary checkbox-xs'

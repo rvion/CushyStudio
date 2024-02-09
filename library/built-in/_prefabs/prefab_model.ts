@@ -30,7 +30,7 @@ export const ui_model = () => {
                             min: 1,
                             max: 5,
                         }),
-                    freeU: () => form.bool({ default: true }),
+                    freeU: () => form.group({}),
                     civtai_ckpt_air: () =>
                         form.string({
                             tooltip:

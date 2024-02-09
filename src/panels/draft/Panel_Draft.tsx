@@ -92,6 +92,7 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                     <MarkdownUI tw='_WidgetMardownUI italic px-1 text-gray-500 w-full' markdown={metadata.description} />
                 )}
                 <div tw='pb-80 p-1'>
+                    {/* <div tw='p-1'> */}
                     <ResultWrapperUI
                         //
                         res={draft.form}

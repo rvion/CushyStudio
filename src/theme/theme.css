@@ -1,18 +1,22 @@
 /* FORM STYLING ----------------------------------- */
 .WIDGET-BLOCK .WIDGET-GROUP {
-    border-left: 1px solid oklch(var(--p)/.2);
-    padding-left: .3rem;
+    /* border-left: 1px solid oklch(var(--p)/.2); */
+    /* padding: 0 .3rem; */
 }
-.TOP-LEVEL-FIELD {
-    background: oklch(var(--b2));
+.WIDGET-WITH-BLOCK {
+    /* background: oklch(var(--b2)); */
     border-radius: .3rem;
-    /* border-left: 1px solid oklch(var(--b3)); */
+    /* border: 1px solid oklch(var(--b3)); */
+    border-top: 1px solid oklch(var(--p)/.4);
+    border-left: 1px solid oklch(var(--p)/.4);
+    border-right: 1px solid oklch(var(--p)/.4);
+    /* border-bottom: 1px solid oklch(var(--p)/.4); */
 }
 .SUB-FIELD {
     /* background: #272729; */
 }
 .WIDGET-LINE {
-
+    /* padding: .4rem; */
 }
 /* .SUB-FIELD .WIDGET-BLOCK {
     padding-left: .2rem;
@@ -20,6 +24,8 @@
 } */
 .WIDGET-BLOCK {
     margin-left: .6rem;
+    margin-right: .5rem;
+    /* padding: .4rem; */
 }
 
 
@@ -163,6 +169,8 @@ input::-webkit-inner-spin-button {
     display: none;
 } */
 
+input.input-sm {
+    background-color: oklch(var( --p)/.15) !important; }
 .relative-slider progress[value]::-webkit-progress-bar {
     background-color: var(--input-number-ui-bg);
     appearance: none;
@@ -176,7 +184,7 @@ input::-webkit-inner-spin-button {
 .relative-slider progress[value]::-webkit-progress-value {
     appearance: none;
     opacity: 100;
-    background: oklch(var(--p));
+    background: oklch(var(--p)/.4);
 }
 
 .relative-slider input[type="number"] {

@@ -24,7 +24,7 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: { w
         >
             {widget.serial.imageID != null ? ( //
                 <div tw='flex items-start'>
-                    <ImageUI tw='virtualBorder' size={'5rem'} img={draft.db.media_images.getOrThrow(widget.serial.imageID)} />
+                    <ImageUI tw='virtualBorder' size={'2rem'} img={draft.db.media_images.getOrThrow(widget.serial.imageID)} />
                     {/* {widget instanceof Widget_imageOpt ? (
                         <Button size='sm' onClick={() => (widget.state.active = false)}>
                             X

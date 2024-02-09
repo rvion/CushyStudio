@@ -71,7 +71,7 @@ export const WidgetUI = (
     if (widget instanceof Widget_color) return { WidgetLineUI: WidgetColorUI, WidgetBlockUI: undefined }
     if (widget instanceof R.Widget_selectOne) return { WidgetLineUI: WidgetSelectOneUI, WidgetBlockUI: undefined }
     if (widget instanceof Widget_choices) return { WidgetLineUI: WidgetChoices_LineUI, WidgetBlockUI: WidgetChoicesUI }
-    if (widget instanceof R.Widget_markdown) return { WidgetLineUI: WidgetMardownUI, WidgetBlockUI: undefined }
+    if (widget instanceof R.Widget_markdown) return { WidgetLineUI: undefined, WidgetBlockUI: WidgetMardownUI }
     if (widget instanceof R.Widget_custom) return { WidgetLineUI: WidgetCustomUI, WidgetBlockUI: undefined }
     if (widget instanceof R.Widget_selectMany) return { WidgetLineUI: WidgetSelectManyUI, WidgetBlockUI: undefined }
     if (widget instanceof Widget_orbit) return { WidgetLineUI: WidgetOrbitUI, WidgetBlockUI: undefined }

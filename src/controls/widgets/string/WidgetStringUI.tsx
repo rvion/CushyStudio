@@ -21,7 +21,7 @@ export const WidgetStringUI = observer(function WidgetStringUI_(p: { widget: Wid
     }
     return (
         <input
-            tw='input input-bordered input-sm w-full'
+            tw='input input-sm w-full'
             placeholder={widget.config.placeHolder}
             value={val}
             onChange={(ev) => {

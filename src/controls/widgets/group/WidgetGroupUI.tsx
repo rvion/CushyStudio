@@ -29,12 +29,12 @@ export const WidgetGroup_BlockUI = observer(function WidgetGroup_BlockUI_(p: {
         <div tw={['WIDGET-GROUP', 'flex items-start w-full text-base-content']} style={{ position: 'relative' }}>
             {widget.serial.collapsed ? null : (
                 <div
+                    className={widget.config.className}
                     tw={[
                         //
                         '_WidgetGroupUI w-full',
                         isHorizontal ? `flex flex-wrap gap-1` : `flex flex-col gap-1`,
                     ]}
-                    className={widget.config.className}
                 >
                     {groupFields.map(([rootKey, sub], ix) => (
                         <WidgetWithLabelUI //
