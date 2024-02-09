@@ -20,7 +20,7 @@ import { WidgetColorUI } from './color/WidgetColorUI'
 import { Widget_enum } from './enum/WidgetEnum'
 import { WidgetEnumUI } from './enum/WidgetEnumUI'
 import { Widget_group } from './group/WidgetGroup'
-import { WidgetGroupUI } from './group/WidgetGroupUI'
+import { WidgetGroup_BlockUI, WidgetGroup_LineUI } from './group/WidgetGroupUI'
 import { Widget_image } from './image/WidgetImage'
 import { WidgetSelectImageUI } from './image/WidgetImageUI'
 import { Widget_list } from './list/WidgetList'
@@ -60,7 +60,7 @@ export const WidgetUI = (
     if (widget instanceof Widget_image) return { WidgetLineUI: WidgetSelectImageUI, WidgetBlockUI: undefined }
     if (widget instanceof Widget_list) return { WidgetLineUI: WidgetList_LineUI, WidgetBlockUI: WidgetListUI }
     if (widget instanceof Widget_listExt) return { WidgetLineUI: WidgetList_LineUI, WidgetBlockUI: WidgetListExtUI }
-    if (widget instanceof Widget_group) return { WidgetLineUI: undefined, WidgetBlockUI: WidgetGroupUI }
+    if (widget instanceof Widget_group) return { WidgetLineUI: WidgetGroup_LineUI, WidgetBlockUI: WidgetGroup_BlockUI }
     if (widget instanceof Widget_size) return { WidgetLineUI: WigetSize_LineUI, WidgetBlockUI: WigetSize_BlockUI }
     if (widget instanceof Widget_enum) return { WidgetLineUI: WidgetEnumUI, WidgetBlockUI: undefined }
     if (widget instanceof R.Widget_matrix) return { WidgetLineUI: WidgetMatrixUI, WidgetBlockUI: undefined }

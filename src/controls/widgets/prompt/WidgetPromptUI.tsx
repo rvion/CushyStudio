@@ -19,7 +19,7 @@ export const WidgetPrompt_LineUI = observer(function WidgetPrompt_LineUI_(p: { w
     return (
         <div tw='flex flex-1 items-center justify-between'>
             {widget.serial.collapsed ? <div tw='line-clamp-1 italic opacity-50'>{widget.serial.val}</div> : <div></div>}
-            <div tw='flex self-end gap-0.5'>
+            <div tw='flex self-end'>
                 {plugins.map((plugin) => {
                     const active = st.configFile.get(plugin.configKey) ?? false
                     return (

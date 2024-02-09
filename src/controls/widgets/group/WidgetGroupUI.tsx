@@ -6,8 +6,15 @@ import { WidgetWithLabelUI } from '../../shared/WidgetWithLabelUI'
 import { bang } from 'src/utils/misc/bang'
 
 // UI
+export const WidgetGroup_LineUI = observer(function WidgetGroup_LineUI_(p: {
+    //
+    widget: Widget_group<{ [key: string]: Widget }>
+}) {
+    if (!p.widget.serial.collapsed) return null
+    return <div tw='line-clamp-1 italic opacity-50'>{p.widget.summary}</div>
+})
 
-export const WidgetGroupUI = observer(function WidgetItemsUI_(p: {
+export const WidgetGroup_BlockUI = observer(function WidgetGroup_BlockUI_(p: {
     //
     widget: Widget_group<{ [key: string]: Widget }>
 }) {

@@ -6,6 +6,13 @@ export const ui_model = () => {
     const ckpts = form.schema.st.getKnownCheckpoints()
     return form.group({
         label: 'AI Model',
+        summary: (ui) => {
+            let out: string = ui.ckpt_name
+            if (ui.extra.freeU) out += ' + FreeU'
+            if (ui.extra.vae) out += ' + VAE'
+            if (ui.extra.clipSkip) out += ` + ClipSkip(${ui.extra.clipSkip})`
+            return out
+        },
         items: () => ({
             ckpt_name: form.enum.Enum_CheckpointLoaderSimple_ckpt_name({
                 default: 'revAnimated_v122.safetensors',

@@ -14,7 +14,7 @@ export type Widget_group_config<T extends { [key: string]: Widget }> = WidgetCon
     items?: () => T
     topLevel?: boolean
     /** if provided, will be used to show a single line summary on the inline form slot */
-    summary?: (items: T) => string
+    summary?: (items: { [k in keyof T]: GetWidgetResult<T[k]> }) => string
 }>
 
 // SERIAL
@@ -40,6 +40,9 @@ export type Widget_group_types<T extends { [key: string]: Widget }> = {
 // STATE
 export interface Widget_group<T extends { [key: string]: Widget }> extends WidgetTypeHelpers<Widget_group_types<T>> {}
 export class Widget_group<T extends { [key: string]: Widget }> implements IWidget<Widget_group_types<T>> {
+    get summary(): string {
+        return this.config.summary?.(this.result) ?? Object.keys(this.values).length + ' items'
+    }
     get serialHash(): string {
         return Object.values(this.values)
             .map((v: Widget) => v.serialHash)

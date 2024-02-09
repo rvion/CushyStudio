@@ -5,7 +5,7 @@ export const ui_rembg_v1 = () => {
     return form.choices({
         customNodesByTitle: ['TEMP_ComfyUI-BRIA_AI-RMBG'],
         recommandedModels: { knownModel: 'TEMP_briaai_RMBG-1.4' },
-        appearance: 'tab',
+        // appearance: 'tab',
         // prettier-ignore
         items: {
             RemBG:           () => form.group({}),

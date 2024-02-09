@@ -4,7 +4,7 @@ import type { DraftL } from 'src/models/Draft'
 import { toJS } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { useEffect, useLayoutEffect } from 'react'
-import { WidgetGroupUI } from 'src/controls/widgets/group/WidgetGroupUI'
+import { WidgetGroup_BlockUI } from 'src/controls/widgets/group/WidgetGroupUI'
 import { MarkdownUI } from 'src/rsuite/MarkdownUI'
 import { PhoneWrapperUI } from 'src/rsuite/PhoneWrapperUI'
 import { SelectUI } from 'src/rsuite/SelectUI'
@@ -95,7 +95,7 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                     <ResultWrapperUI
                         //
                         res={draft.form}
-                        whenValid={(req) => <WidgetGroupUI widget={req} />}
+                        whenValid={(req) => <WidgetGroup_BlockUI widget={req} />}
                     />
                 </div>
             </div>
