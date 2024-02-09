@@ -9,8 +9,7 @@
 
 --------------
 
-☐ compress image must not save the images uncompressed too
-    ☝️
+✔ compress image must not save the images uncompressed too @done(24-02-09 09:16)
 ✔ fix virtual paths breaking the "sync view of file explorer" @done(24-02-08 23:43)
 ✔ fix widget hash not working properly @done(24-02-08 23:43)
 
@@ -21,11 +20,10 @@ masterpiece, sofa, tree, [color] [adj_beauty] [adj_general] nature, intricate_de
 ✔ button to create own app @done(24-01-28 21:58)
 ✔ improve CushyDiffusion @done(24-02-01 19:07)
 ✔ cleanup libary folder: @done(24-02-01 19:07)
-- video
 ✔ more of cushy_app in db @done(24-02-01 19:07)
 - preset API
-- fix app
-- QRCode generator
+☐ fix app
+✘ QRCode generator @cancelled(24-02-09 09:16)
 - make _formBuilder not observable => need engine for model
 - fix random not updating
 -
