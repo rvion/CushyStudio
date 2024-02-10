@@ -1,56 +1,53 @@
-import type { FormBuilder, Runtime } from 'src'
-import { Cnet_args, cnet_preprocessor_ui_common, cnet_ui_common } from '../prefab_cnet'
-import { OutputFor } from '../_prefabs'
+import { cnet_preprocessor_ui_common, cnet_ui_common } from '../prefab_cnet'
+import type { OutputFor } from '../_prefabs'
+import type { FormBuilder } from 'src'
 
 // 🅿️ Lineart FORM ===================================================
 export const ui_subform_Lineart = () => {
-    const form = getCurrentForm()
+    const form: FormBuilder = getCurrentForm()
     return form.group({
         label: 'Lineart',
         customNodesByTitle: 'ComfyUI-Advanced-ControlNet',
         items: () => ({
             ...cnet_ui_common(form),
             preprocessor: ui_subform_Lineart_Preprocessor(),
-            cnet_model_name: form.enum.Enum_ControlNetLoader_control_net_name({
-                label: 'Model',
-                filter: (name) => name.toString().includes('lineart'),
-                default: 'control_v11p_sd15_lineart_fp16.safetensors',
-                recommandedModels: { knownModel: ['ControlNet-v1-1 (lineart; fp16)'] },
-            }),
-        }),
-    })
-}
-
-export const ui_subform_Lineart_Preprocessor = () => {
-    const form = getCurrentForm()
-    return form.groupOpt({
-        label: 'Lineart Preprocessor',
-        startActive: true,
-        items: () => ({
-            advanced: form.groupOpt({
-                label: 'Advanced Preprocessor Settings',
+            models: form.group({
+                label: 'Select or Download Models',
+                startCollapsed: true,
                 items: () => ({
-                    type: form.choice({
-                        label: 'Type',
-                        default: 'Realistic',
-                        items: {
-                            Realistic: () => ui_subform_Lineart_realistic(),
-                            Anime: () => ui_subform_Lineart_Anime(),
-                            Manga: () => ui_subform_Lineart_Manga(),
-                        },
+                    cnet_model_name: form.enum.Enum_ControlNetLoader_control_net_name({
+                        label: 'Model',
+                        filter: (name) => name.toString().includes('lineart'),
+                        default: 'control_v11p_sd15_lineart.pth',
+                        recommandedModels: { knownModel: ['ControlNet-v1-1 (lineart; fp16)'] },
                     }),
-                    // TODO: Add support for auto-modifying the resolution based on other form selections
-                    // TODO: Add support for auto-cropping
                 }),
             }),
         }),
     })
 }
 
+export const ui_subform_Lineart_Preprocessor = () => {
+    const form: FormBuilder = getCurrentForm()
+    return form.choice({
+        label: 'Lineart Preprocessor',
+        startCollapsed: true,
+        default: 'Realistic',
+        appearance: 'tab',
+        items: {
+            None: () => form.group({}),
+            Realistic: () => ui_subform_Lineart_realistic(),
+            Anime: () => ui_subform_Lineart_Anime(),
+            Manga: () => ui_subform_Lineart_Manga(),
+        },
+    })
+}
+
 export const ui_subform_Lineart_realistic = () => {
-    const form = getCurrentForm()
+    const form: FormBuilder = getCurrentForm()
     return form.group({
-        label: 'Realistic Lineart',
+        label: 'Settings',
+        startCollapsed: true,
         items: () => ({
             ...cnet_preprocessor_ui_common(form),
             coarse: form.bool({ default: false }),
@@ -59,9 +56,10 @@ export const ui_subform_Lineart_realistic = () => {
 }
 
 export const ui_subform_Lineart_Anime = () => {
-    const form = getCurrentForm()
+    const form: FormBuilder = getCurrentForm()
     return form.group({
-        label: 'Anime Lineart',
+        label: 'Settings',
+        startCollapsed: true,
         items: () => ({
             ...cnet_preprocessor_ui_common(form),
         }),
@@ -69,9 +67,10 @@ export const ui_subform_Lineart_Anime = () => {
 }
 
 export const ui_subform_Lineart_Manga = () => {
-    const form = getCurrentForm()
+    const form: FormBuilder = getCurrentForm()
     return form.group({
-        label: 'Mange Lineart',
+        label: 'Settings',
+        startCollapsed: true,
         items: () => ({
             ...cnet_preprocessor_ui_common(form),
         }),
@@ -89,28 +88,28 @@ export const run_cnet_Lineart = (
 } => {
     const run = getCurrentRun()
     const graph = run.nodes
-    const cnet_name = Lineart.cnet_model_name
+    const cnet_name = Lineart.models.cnet_model_name
 
     // PREPROCESSOR - Lineart ===========================================================
     if (Lineart.preprocessor) {
-        if (Lineart.preprocessor.advanced?.type.Anime) {
-            const anime = Lineart.preprocessor.advanced.type.Anime
+        if (Lineart.preprocessor.Anime) {
+            const anime = Lineart.preprocessor.Anime
             image = graph.AnimeLineArtPreprocessor({
                 image: image,
                 resolution: resolution,
             })._IMAGE
             if (anime.saveProcessedImage) graph.SaveImage({ images: image, filename_prefix: 'cnet\\Lineart\\anime' })
             else graph.PreviewImage({ images: image })
-        } else if (Lineart.preprocessor.advanced?.type.Manga) {
-            const manga = Lineart.preprocessor.advanced.type.Manga
+        } else if (Lineart.preprocessor.Manga) {
+            const manga = Lineart.preprocessor.Manga
             image = graph.Manga2Anime$_LineArt$_Preprocessor({
                 image: image,
                 resolution: resolution,
             })._IMAGE
             if (manga.saveProcessedImage) graph.SaveImage({ images: image, filename_prefix: 'cnet\\Lineart\\manga' })
             else graph.PreviewImage({ images: image })
-        } else {
-            const Realistic = Lineart.preprocessor.advanced?.type.Realistic
+        } else if (Lineart.preprocessor.Realistic) {
+            const Realistic = Lineart.preprocessor.Realistic
             image = graph.LineArtPreprocessor({
                 image: image,
                 resolution: resolution,

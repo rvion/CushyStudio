@@ -42,10 +42,10 @@ export const run_ipadapter_standalone = async (
         model: cnet_args.ckptPos,
         weight_type: 'original',
         weight: ui.strength,
-        noise: ui.advanced?.noise ?? 0,
-        start_at: ui.advanced?.startAtStepPercent ?? 0,
-        end_at: ui.advanced?.endAtStepPercent ?? 1,
-        unfold_batch: ui.advanced?.unfold_batch ?? false,
+        noise: ui.settings.noise,
+        start_at: ui.settings.startAtStepPercent,
+        end_at: ui.settings.endAtStepPercent,
+        unfold_batch: ui.settings.unfold_batch,
     })._MODEL
 
     return { ip_adapted_model }

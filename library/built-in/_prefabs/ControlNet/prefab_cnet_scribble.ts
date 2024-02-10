@@ -1,9 +1,10 @@
 import { cnet_preprocessor_ui_common, cnet_ui_common } from '../prefab_cnet'
-import { OutputFor } from '../_prefabs'
+import type { OutputFor } from '../_prefabs'
+import type { FormBuilder } from 'src'
 
 // 🅿️ Scribble FORM ===================================================
 export const ui_subform_Scribble = () => {
-    const form = getCurrentForm()
+    const form: FormBuilder = getCurrentForm()
     return form.group({
         label: 'Scribble',
         customNodesByTitle: 'ComfyUI-Advanced-ControlNet',
@@ -13,6 +14,7 @@ export const ui_subform_Scribble = () => {
             cnet_model_name: form.enum.Enum_ControlNetLoader_control_net_name({
                 default: 'control_scribble-fp16.safetensors',
                 extraDefaults: ['control_v11p_sd15_scribble.pth'],
+                filter: (name) => name.toString().includes('scribble'),
                 recommandedModels: { knownModel: ['ControlNet-v1-1 (scribble; fp16)'] },
                 label: 'Model',
             }),
@@ -22,34 +24,25 @@ export const ui_subform_Scribble = () => {
 
 export const ui_subform_Scribble_Preprocessor = () => {
     const form = getCurrentForm()
-    return form.groupOpt({
+    return form.choice({
         label: 'Scribble Preprocessor',
-        startActive: true,
-        items: () => ({
-            advanced: form.groupOpt({
-                label: 'Advanced Preprocessor Settings',
-                items: () => ({
-                    type: form.choice({
-                        label: 'Type',
-                        default: 'ScribbleLines',
-                        items: {
-                            ScribbleLines: () => ui_subform_Scribble_Lines(),
-                            FakeScribble: () => ui_subform_Fake_Scribble_Lines(),
-                            XDOG: () => ui_subform_Scribble_XDoG_Lines(),
-                        },
-                    }),
-                    // TODO: Add support for auto-modifying the resolution based on other form selections
-                    // TODO: Add support for auto-cropping
-                }),
-            }),
-        }),
+        default: 'ScribbleLines',
+        appearance: 'tab',
+        startCollapsed: true,
+        items: {
+            None: () => form.group({}),
+            ScribbleLines: () => ui_subform_Scribble_Lines(),
+            FakeScribble: () => ui_subform_Fake_Scribble_Lines(),
+            XDOG: () => ui_subform_Scribble_XDoG_Lines(),
+        },
     })
 }
 
 export const ui_subform_Scribble_Lines = () => {
     const form = getCurrentForm()
     return form.group({
-        label: 'Scribble Lines',
+        label: 'Settings',
+        startCollapsed: true,
         items: () => ({
             ...cnet_preprocessor_ui_common(form),
         }),
@@ -59,7 +52,8 @@ export const ui_subform_Scribble_Lines = () => {
 export const ui_subform_Fake_Scribble_Lines = () => {
     const form = getCurrentForm()
     return form.group({
-        label: 'Fake Scribble Lines (aka scribble_hed)',
+        label: 'Settings',
+        startCollapsed: true,
         items: () => ({
             ...cnet_preprocessor_ui_common(form),
             safe: form.bool({ default: true }),
@@ -70,7 +64,8 @@ export const ui_subform_Fake_Scribble_Lines = () => {
 export const ui_subform_Scribble_XDoG_Lines = () => {
     const form = getCurrentForm()
     return form.group({
-        label: 'Scribble XDoG Lines ',
+        label: 'Settings',
+        startCollapsed: true,
         items: () => ({
             ...cnet_preprocessor_ui_common(form),
             threshold: form.int({ default: 32, min: 0, max: 64 }),
@@ -93,8 +88,8 @@ export const run_cnet_Scribble = (
 
     // PREPROCESSOR - Scribble ===========================================================
     if (Scribble.preprocessor) {
-        if (Scribble.preprocessor.advanced?.type.FakeScribble) {
-            const fake = Scribble.preprocessor.advanced?.type.FakeScribble
+        if (Scribble.preprocessor.FakeScribble) {
+            const fake = Scribble.preprocessor.FakeScribble
             image = graph.FakeScribblePreprocessor({
                 image: image,
                 resolution: resolution,
@@ -102,8 +97,8 @@ export const run_cnet_Scribble = (
             })._IMAGE
             if (fake.saveProcessedImage) graph.SaveImage({ images: image, filename_prefix: 'cnet\\Scribble\\fake' })
             else graph.PreviewImage({ images: image })
-        } else if (Scribble.preprocessor.advanced?.type.XDOG) {
-            const xdog = Scribble.preprocessor.advanced.type.XDOG
+        } else if (Scribble.preprocessor.XDOG) {
+            const xdog = Scribble.preprocessor.XDOG
             image = graph.Scribble$_XDoG$_Preprocessor({
                 image: image,
                 resolution: resolution,
@@ -111,13 +106,13 @@ export const run_cnet_Scribble = (
             })._IMAGE
             if (xdog.saveProcessedImage) graph.SaveImage({ images: image, filename_prefix: 'cnet\\Scribble\\xdog' })
             else graph.PreviewImage({ images: image })
-        } else {
-            const scribble = Scribble.preprocessor.advanced?.type.ScribbleLines
+        } else if (Scribble.preprocessor.ScribbleLines) {
+            const scribble = Scribble.preprocessor.ScribbleLines
             image = graph.ScribblePreprocessor({
                 image: image,
                 resolution: resolution,
             })._IMAGE
-            if (scribble?.saveProcessedImage) graph.SaveImage({ images: image, filename_prefix: 'cnet\\Scribble\\scribble' })
+            if (scribble.saveProcessedImage) graph.SaveImage({ images: image, filename_prefix: 'cnet\\Scribble\\scribble' })
             else graph.PreviewImage({ images: image })
         }
     }
