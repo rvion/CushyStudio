@@ -213,9 +213,9 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
                 {/* ANCHOR */}
                 <div //
                     tabIndex={-1}
-                    tw='input input-bordered input-sm w-full overflow-hidden pl-0 flex items-center'
+                    tw='input input-xs w-full overflow-hidden pl-0 flex items-center'
                 >
-                    <div tw='btn btn-square btn-sm mr-1'>
+                    <div tw='btn btn-square btn-xs '>
                         <span className='material-symbols-outlined'>search</span>
                     </div>
                     <div tw='whitespace-nowrap overflow-hidden'>{s.displayValue}</div>

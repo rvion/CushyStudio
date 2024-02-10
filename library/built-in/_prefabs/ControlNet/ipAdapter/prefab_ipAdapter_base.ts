@@ -16,7 +16,7 @@ export const ui_subform_IPAdapter = () => {
             ...ui_subform_IPAdapter_common(form),
             models: form.group({
                 label: 'Select or Download Models',
-                startCollapsed: true,
+                // startCollapsed: true,
                 items: () => ({
                     ...ui_ipadapter_CLIPSelection(form),
                     ...ui_ipadapter_modelSelection(form, 'ip-adapter-faceid-plus_sd15.bin' as any, ipAdapterModelList),

@@ -356,7 +356,7 @@ export class CushyLayoutManager {
                     type: 'border',
                     // size: 350,
                     location: 'left',
-                    selected: 0,
+                    // selected: 0,
                     show: true,
                     children: [this._add({ panel: 'TreeExplorer', props: {}, canClose: false, width: 300 })],
                     size: 300,

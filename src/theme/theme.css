@@ -9,7 +9,8 @@
     /* border: 1px solid oklch(var(--b3)); */
     border-top: 1px solid oklch(var(--p)/.4);
     border-left: 1px solid oklch(var(--p)/.4);
-    border-right: 1px solid oklch(var(--p)/.4);
+    border-right: 1px solid oklch(var(--p)/.2);
+    border-bottom: 1px solid oklch(var(--p)/.2);
     /* border-bottom: 1px solid oklch(var(--p)/.4); */
 }
 .SUB-FIELD {
@@ -25,7 +26,7 @@
 } */
 .WIDGET-BLOCK {
     margin-left: .6rem;
-    margin-right: .5rem;
+    margin-right: .4rem;
     /* padding: .4rem; */
 }
 

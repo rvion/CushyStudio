@@ -1,14 +1,27 @@
-☐ download from the model manager
+☐ filter enum values: highlight + sort
+☐ boolean perperly placed as input
+☐ unify the download model / custom nodes
+    ☐ single button
+    ☐ shown in red if missing
+☐ redo the host management page
+☐ initial install buton from the comfyUI
+☐ error messages
+☐ CushyDiffusion: ip adapter top level
+☐ simplify UI:: panel step for instance, is taking too much space; and gallery is annoyingly placed.
+
+------------------
+
 ☐ delete image from right click
 ☐ add restart button in the top left scehma appbar blabla for quick comfy restart
 ☐ fix the regional widget using the new approach.
 ☐ unified canvas
-    ☐ don't force focus output
-    ☐ show latent in the selection
-    ☐ paste back the image as extra layer
+☐ don't force focus output
+☐ show latent in the selection
+☐ paste back the image as extra layer
 
 --------------
 
+✔ download from the model manager @done(24-02-10 19:06)
 ✔ compress image must not save the images uncompressed too @done(24-02-09 09:16)
 ✔ fix virtual paths breaking the "sync view of file explorer" @done(24-02-08 23:43)
 ✔ fix widget hash not working properly @done(24-02-08 23:43)

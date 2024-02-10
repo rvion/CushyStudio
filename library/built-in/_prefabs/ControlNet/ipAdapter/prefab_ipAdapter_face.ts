@@ -19,7 +19,7 @@ export const ui_IPAdapterFaceID = () => {
             help: form.markdown({ startCollapsed: true, markdown: ipAdapterDoc }),
             models: form.group({
                 label: 'Select or Download Models',
-                startCollapsed: true,
+                // startCollapsed: true,
                 items: () => ({
                     ...ui_ipadapter_CLIPSelection(form),
                     ...ui_ipadapter_modelSelection(

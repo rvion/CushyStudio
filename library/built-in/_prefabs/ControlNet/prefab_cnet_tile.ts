@@ -14,7 +14,7 @@ export const ui_subform_Tile = () => {
             preprocessor: ui_subform_Tile_Preprocessor(),
             models: form.group({
                 label: 'Select or Download Models',
-                startCollapsed: true,
+                // startCollapsed: true,
                 items: () => ({
                     cnet_model_name: form.enum.Enum_ControlNetLoader_control_net_name({
                         label: 'Model',

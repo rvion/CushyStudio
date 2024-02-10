@@ -8,7 +8,6 @@ export const ui_subform_Sketch = () => {
         label: 'Sketch',
         customNodesByTitle: 'ComfyUI-Advanced-ControlNet',
         items: () => ({
-            ...cnet_ui_common(form),
             cnet_model_name: form.enum.Enum_ControlNetLoader_control_net_name({
                 label: 'Model',
                 default: 't2iadapter_sketch_sd14v1.pth',
@@ -20,6 +19,7 @@ export const ui_subform_Sketch = () => {
                     ],
                 },
             }),
+            ...cnet_ui_common(form),
         }),
     })
 }

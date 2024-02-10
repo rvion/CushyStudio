@@ -19,7 +19,7 @@ export const InstallCustomNodeBtnUI = observer(function InstallCustomNodeBtnUI_(
     if (suggestions.length === 0) return <pre>🔴{JSON.stringify(p)}</pre>
     return (
         <RevealUI>
-            <div tw='btn btn-square btn-sm btn-ghost opacity-50'>
+            <div tw='btn btn-square btn-xs btn-ghost opacity-50'>
                 <span className='material-symbols-outlined'>scatter_plot</span>
             </div>
             <InstallableCustomNodeListUI suggestions={suggestions} />

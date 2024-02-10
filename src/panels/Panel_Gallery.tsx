@@ -78,7 +78,7 @@ export const GalleryControlsUI = observer(function GalleryControlsUI_(p: { child
             <FieldAndLabelUI label='Number of items'>
                 <InputNumberUI
                     style={{ width: '5rem' }}
-                    min={32}
+                    min={5}
                     max={200}
                     mode='int'
                     onValueChange={(next) => st.configFile.set('galleryMaxImages', next)}

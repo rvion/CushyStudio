@@ -57,7 +57,7 @@ export class Widget_enum<O> implements IWidget<Widget_enum_types<O>> {
         makeAutoObservable(this)
     }
     get status(): CleanedEnumResult<any> {
-        return this.form.schema.st.fixEnumValue(this.serial.val as any, this.config.enumName, false)
+        return this.form.schema.st.fixEnumValue(this.serial.val as any, this.config.enumName)
     }
     get result(): Widget_enum_output<O> {
         return this.status.finalValue

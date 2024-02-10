@@ -36,6 +36,12 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
             else widget.serial.collapsed = true
         }
     }
+    const LABEL = (
+        <span onClick={onLineClick} style={{ lineHeight: '1rem' }}>
+            {widget.config.label ?? makeLabelFromFieldName(p.rootKey) ?? '...'}
+            {p.widget.config.showID ? <span tw='opacity-50 italic text-sm'>#{p.widget.id.slice(0, 3)}</span> : null}
+        </span>
+    )
     return (
         <div
             tw={[
@@ -68,7 +74,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                                       minWidth: '8rem',
                                       textAlign: 'right',
 
-                                      width: WidgetLineUI ? '30%' : undefined,
+                                      width: WidgetLineUI ? '25%' : undefined,
                                       marginRight: WidgetLineUI ? '0.25rem' : undefined,
                                   }
                         }
@@ -77,12 +83,9 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                         {p.widget.config.recommandedModels && <InstallModelBtnUI models={p.widget.config.recommandedModels} />}
                         <InstallCustomNodeBtnUI recomandation={p.widget.config} />
                         {widget.config.tooltip && <WidgetTooltipUI widget={p.widget} />}
-                        <span onClick={onLineClick} style={{ lineHeight: '1rem' }}>
-                            {widget.config.label ?? makeLabelFromFieldName(p.rootKey) ?? '...'}
-                        </span>
+                        {LABEL}
                         {/* {widget.serial.collapsed ? <span className='material-symbols-outlined'>keyboard_arrow_right</span> : null} */}
                         {/* {widget.serial.collapsed ? '{...}' : null} */}
-                        {p.widget.config.showID ? <span tw='opacity-50 italic text-sm'>#{p.widget.id.slice(0, 3)}</span> : null}
                     </span>
                     {/* )} */}
                     {WidgetLineUI && (
@@ -125,41 +128,9 @@ export const Widget_CollapseBtnUI = observer(function Widget_CollapseBtnUI_(p: {
     )
 })
 
-// export const Widget_LabelUI = observer(function Widget_LabelUI_(p: {
-//     //
-//     rootKey: string
-//     widget: R.Widget
-//     isTopLevel?: boolean
-// }) {
-//     const widget = p.widget
-//     if (widget.config.label == false) return null
-//     // isBoldTitle ? 'text-primary font-medium' : undefined,
-//     // style={
-//     //     true && !isVertical //
-//     //         ? { lineHeight: '2rem', display: 'inline-block' }
-//     //         : { lineHeight: '2rem' }
-//     // }
-//     return (
-//         <span
-//             tw={[
-//                 //
-//                 p.isTopLevel ? 'font-bold' : 'text-base',
-//                 'whitespace-nowrap',
-//                 'flex-none items-center text-primary',
-//                 'min-w-20 text-right mr-1',
-//             ]}
-//         >
-//             {widget.config.label ?? makeLabelFromFieldName(p.rootKey) ?? '...'}
-//             {/* {widget.serial.collapsed ? <span className='material-symbols-outlined'>keyboard_arrow_right</span> : null} */}
-//             {/* {widget.serial.collapsed ? '{...}' : null} */}
-//             {p.widget.config.showID ? <span tw='opacity-50 italic text-sm'>#{p.widget.id.slice(0, 3)}</span> : null}
-//         </span>
-//     )
-// })
-
 export const Widget_ToggleUI = observer(function Widget_ToggleUI_(p: { widget: R.Widget }) {
     const widget = p.widget
-    if (!(widget instanceof KLS.Widget_bool || widget instanceof KLS.Widget_optional)) return null
+    if (!(widget instanceof KLS.Widget_optional)) return null
     const isActive = widget.serial.active
     const toggle = () => runInAction(widget.toggle)
     return (
@@ -188,30 +159,3 @@ export const WidgetTooltipUI = observer(function WidgetTooltipUI_(p: { widget: R
         </RevealUI>
     )
 })
-
-// const st = useSt()
-// let tooltip: Maybe<string> = widget.config.tooltip
-// let label: Maybe<string | false> = widget.config.label ?? makeLabelFromFieldName(rootKey)
-// const isVertical = (() => {
-//     if (p.widget.config.showID) return true
-//     if (st.preferedFormLayout === 'auto') return p.widget.isVerticalByDefault
-//     if (st.preferedFormLayout === 'mobile') return true
-//     if (st.preferedFormLayout === 'dense') return false
-// })()
-// verticalLabels?: boolean
-// const isCollapsed = widget.serial.collapsed
-// const isBoldTitle = p.isTopLevel || isVertical
-// const showListControls = !isCollapsed && (widget instanceof KLS.Widget_listExt || widget instanceof KLS.Widget_list)
-// const showFoldIndicator = /*!widget.serial.active ||*/ !widget.serial.collapsed && !widget.isCollapsible
-// const labelGap = label == false ? '' : 'gap-1'
-// prettier-ignore
-// let className = isVertical //
-//     ? `${clsX} __${widget.type} _WidgetWithLabelUI ${levelClass} flex flex-col items-baseline`
-//     : `${clsX} __${widget.type} _WidgetWithLabelUI ${levelClass} flex flex-row ${labelGap} ${isCollapsible ? 'items-baseline' : 'items-center'}` // prettier-ignore
-// if (widgetUI == null) className += ' w-full'
-// if (isVertical) widgetUI = <div tw='w-full'>{widgetUI}</div>
-
-// const isCollapsible = widget.isCollapsible
-// const levelClass = p.isTopLevel ? '_isTopLevel' : '_isNotTopLevel'
-// const showToogle = toggleInfo != null // !widget.serial.active || widget instanceof KLS.Widget_bool //
-// const clsX = widget.serial.collapsed ? '_COLLAPSED' : ''

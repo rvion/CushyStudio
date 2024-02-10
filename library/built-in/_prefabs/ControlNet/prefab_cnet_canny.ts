@@ -13,7 +13,7 @@ export const ui_subform_Canny = () => {
             preprocessor: ui_subform_Canny_Preprocessor(form),
             models: form.group({
                 label: 'Select or Download Models',
-                startCollapsed: true,
+                // startCollapsed: true,
                 items: () => ({
                     cnet_model_name: form.enum.Enum_ControlNetLoader_control_net_name({
                         label: 'Model',

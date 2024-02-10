@@ -341,14 +341,12 @@ export class STATE {
         //
         candidateValue: Maybe<EnumValue>,
         enumName: string,
-        isOptional: boolean,
     ): CleanedEnumResult<any> => {
         // 0. retrieve enum dev
         const possibleValues = this.schema.knownEnumsByName.get(enumName)?.values ?? []
 
         // 1. when enum is empty
         if (possibleValues.length == 0) {
-            if (isOptional) return { finalValue: null, isSubstitute: candidateValue != null, candidateValue }
             return {
                 finalValue: candidateValue ?? '❌ no value',
                 ENUM_HAS_NO_VALUES: true,
@@ -359,7 +357,6 @@ export class STATE {
 
         // 2. when value is null
         if (candidateValue == null) {
-            if (isOptional) return { finalValue: null, isSubstitute: false, candidateValue }
             return { finalValue: possibleValues[0], isSubstitute: true, candidateValue }
         }
 

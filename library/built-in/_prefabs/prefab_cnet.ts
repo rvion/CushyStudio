@@ -22,7 +22,10 @@ export const ui_cnet = () => {
         label: 'ControlNets',
         tooltip: `Instructional resources:\nhttps://github.com/lllyasviel/ControlNet\nhttps://stable-diffusion-art.com/controlnet/`,
         items: () => ({
-            useControlnetConditioningForUpscalePassIfEnabled: form.bool({ default: false }),
+            applyDuringUpscale: form.bool({
+                tooltip: 'Use the controlnet conditioning for the upscale pass if enabled',
+                default: false,
+            }),
             controlNetList: form.list({
                 // label: false,
                 element: () =>
@@ -191,10 +194,10 @@ export const run_cnet = async (opts: OutputFor<typeof ui_cnet>, ctx: Cnet_args) 
         cnet_negative: args.negative,
 
         // forward either the original or the transformed conditioning
-        post_cnet_positive: opts?.useControlnetConditioningForUpscalePassIfEnabled //
+        post_cnet_positive: opts?.applyDuringUpscale //
             ? args.positive
             : ctx.positive, // generally upscales are cleaner if not controlled
-        post_cnet_negative: opts?.useControlnetConditioningForUpscalePassIfEnabled //
+        post_cnet_negative: opts?.applyDuringUpscale //
             ? args.negative
             : ctx.negative,
     }

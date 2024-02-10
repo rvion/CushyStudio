@@ -40,8 +40,8 @@ export const WidgetListUI = observer(function WidgetListUI_<T extends Widget>(p:
                         const collapsed = subWidget.serial.collapsed ?? false
                         return (
                             <SortableItem key={subWidget.id}>
-                                <div tw='flex flex-col'>
-                                    <div tw='flex items-center'>
+                                <div tw='flex flex-col WIDGET-WITH-BLOCK'>
+                                    <div tw='flex items-center '>
                                         <SortableKnob>
                                             <ListDragHandleUI widget={subWidget} ix={ix} />
                                         </SortableKnob>

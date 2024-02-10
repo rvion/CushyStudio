@@ -64,7 +64,7 @@ export const WidgetUI = (
     if (widget instanceof Widget_size) return { WidgetLineUI: WigetSize_LineUI, WidgetBlockUI: WigetSize_BlockUI }
     if (widget instanceof Widget_enum) return { WidgetLineUI: WidgetEnumUI, WidgetBlockUI: undefined }
     if (widget instanceof R.Widget_matrix) return { WidgetLineUI: WidgetMatrixUI, WidgetBlockUI: undefined }
-    if (widget instanceof Widget_bool) return { WidgetLineUI: undefined, WidgetBlockUI: undefined }
+    if (widget instanceof Widget_bool) return { WidgetLineUI: WidgetBoolUI, WidgetBlockUI: undefined }
     if (widget instanceof R.Widget_inlineRun) return { WidgetLineUI: WidgetInlineRunUI, WidgetBlockUI: undefined }
     if (widget instanceof Widget_prompt) return { WidgetLineUI: WidgetPrompt_LineUI, WidgetBlockUI: WidgetPromptUI }
     if (widget instanceof R.Widget_loras) return { WidgetLineUI: WidgetLorasUI, WidgetBlockUI: undefined }
