@@ -13,6 +13,7 @@
     /* border-bottom: 1px solid oklch(var(--p)/.4); */
 }
 .SUB-FIELD {
+    flex: 1;
     /* background: #272729; */
 }
 .WIDGET-LINE {

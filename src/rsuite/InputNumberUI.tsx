@@ -159,7 +159,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
 
                 <div tw='absolute w-full rounded-sm flex'>
                     <button
-                        tw='btn btn-xs'
+                        tw='btn btn-xs absolute left-0'
                         style={{ zIndex: 2 }}
                         onClick={(_) => {
                             startValue = val
@@ -177,15 +177,8 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
                             if (ev.ctrlKey) {
                                 let num = mode === 'int' ? step * -Math.sign(ev.deltaY) : step * -Math.sign(ev.deltaY) * 0.1
                                 num = val + num
-
-                                if (mode == 'int') {
-                                    num = Math.round(num)
-                                } else {
-                                    num = parseFloatNoRoundingErr(num, 2)
-                                }
-
+                                num = mode == 'int' ? Math.round(num) : parseFloatNoRoundingErr(num, 2)
                                 num = clamp(num, p.min ?? -Infinity, p.max ?? Infinity)
-
                                 syncValues(num)
                             }
                         }}
@@ -213,9 +206,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
                                 <div tw='primary-content outline-0 border-0 border-transparent z-10 w-full text-left'>
                                     {p.text}
                                 </div>
-                            ) : (
-                                <></>
-                            )}
+                            ) : null}
                             <input //
                                 id='sliderNumberInput'
                                 type='number'
@@ -282,7 +273,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
                     </div>
                     <button
                         className='btn btn-xs'
-                        tw='btn btn-small'
+                        tw='btn btn-small absolute right-0'
                         style={{ zIndex: 2 }}
                         onClick={(_) => {
                             startValue = val
