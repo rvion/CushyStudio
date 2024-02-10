@@ -69,7 +69,7 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
         <draftContext.Provider value={draft} key={draft.id}>
             <div
                 style={toJS(containerStyle ?? defaultContainerStyle)}
-                tw={['flex flex-col flex-grow h-full', containerClassName]}
+                tw={['flex flex-col flex-grow h-full', containerClassName, 'bg-base-300 px-2']}
                 onKeyUp={(ev) => {
                     // submit on meta+enter
                     if (ev.key === 'Enter' && (ev.metaKey || ev.ctrlKey)) {

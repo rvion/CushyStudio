@@ -45,6 +45,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     return (
         <div
             tw={[
+                'bg-base-100',
                 //
                 WidgetBlockUI && 'WIDGET-WITH-BLOCK',
                 p.isTopLevel ? 'TOP-LEVEL-FIELD' : 'SUB-FIELD',
