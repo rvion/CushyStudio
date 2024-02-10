@@ -13,7 +13,11 @@ import type { Widget_listExt } from '../listExt/WidgetListExt'
 export const WidgetList_LineUI = observer(function WidgetList_LineUI_<T extends Widget>(p: {
     widget: Widget_list<T> | Widget_listExt<T>
 }) {
-    return <ListControlsUI widget={p.widget} />
+    return (
+        <div tw='ml-auto'>
+            <ListControlsUI widget={p.widget} />
+        </div>
+    )
 })
 
 export const WidgetListUI = observer(function WidgetListUI_<T extends Widget>(p: { widget: Widget_list<T> }) {
@@ -33,6 +37,7 @@ export const WidgetListUI = observer(function WidgetListUI_<T extends Widget>(p:
                 <div tw='flex flex-col gap-2'>
                     {subWidgets.map((subWidget, ix) => {
                         const { WidgetLineUI, WidgetBlockUI } = WidgetDI.WidgetUI(subWidget) // WidgetDI.WidgetUI(widget)
+                        const collapsed = subWidget.serial.collapsed ?? false
                         return (
                             <SortableItem key={subWidget.id}>
                                 <div tw='flex flex-col'>
@@ -40,11 +45,13 @@ export const WidgetListUI = observer(function WidgetListUI_<T extends Widget>(p:
                                         <SortableKnob>
                                             <ListDragHandleUI widget={subWidget} ix={ix} />
                                         </SortableKnob>
-                                        <div className='divider my-2 flex-1 border-top'>
-                                            <div id={subWidget.id} tw='opacity-20 italic'>
-                                                #{ix}:{subWidget.id}
+                                        {p.widget.config.showID ? (
+                                            <div className='divider my-2 flex-1 border-top'>
+                                                <div id={subWidget.id} tw='opacity-20 italic'>
+                                                    #{ix}:{subWidget.id}
+                                                </div>
                                             </div>
-                                        </div>
+                                        ) : null}
                                         {WidgetLineUI && (
                                             <ErrorBoundary FallbackComponent={ErrorBoundaryFallback} onReset={(details) => {}}>
                                                 <WidgetLineUI widget={subWidget} />
@@ -65,7 +72,7 @@ export const WidgetListUI = observer(function WidgetListUI_<T extends Widget>(p:
                                         </div>
                                         <ListItemCollapseBtnUI req={subWidget} />
                                     </div>
-                                    {WidgetBlockUI && subWidget && (
+                                    {WidgetBlockUI && !collapsed && subWidget && (
                                         <ErrorBoundary FallbackComponent={ErrorBoundaryFallback} onReset={(details) => {}}>
                                             <div tw='ml-2 pl-2'>
                                                 <WidgetBlockUI widget={subWidget} />

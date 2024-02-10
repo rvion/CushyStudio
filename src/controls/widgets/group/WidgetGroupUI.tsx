@@ -31,9 +31,10 @@ export const WidgetGroup_BlockUI = observer(function WidgetGroup_BlockUI_(p: {
                 <div
                     className={widget.config.className}
                     tw={[
-                        //
                         '_WidgetGroupUI w-full',
-                        isHorizontal ? `flex flex-wrap gap-1` : `flex flex-col gap-1`,
+                        isHorizontal //
+                            ? `GROUP-HORIZONTAL flex gap-1 flex-wrap`
+                            : `GROUP-VERTICAL   flex gap-1 flex-col`,
                     ]}
                 >
                     {groupFields.map(([rootKey, sub], ix) => (
@@ -41,6 +42,7 @@ export const WidgetGroup_BlockUI = observer(function WidgetGroup_BlockUI_(p: {
                             isTopLevel={isTopLevel}
                             key={rootKey}
                             rootKey={rootKey}
+                            inline={isHorizontal}
                             widget={bang(sub)}
                         />
                     ))}

@@ -7,16 +7,16 @@ app({
     ui: (form) => ({
         samplerUI: form.list({
             label: 'Sampler',
-            showID: true,
+            // showID: true,
             startCollapsed: true,
             defaultLength: 1,
             min: 1,
             element: () =>
                 form.choice({
                     items: {
-                        sampler_output: () =>
+                        sampler_output_abc_asdf: () =>
                             form.selectOne({
-                                showID: true,
+                                // showID: true,
                                 // if choices is a function, the form root is injected as first parameter
                                 choices: (formRoot: Widget_group<any>) => {
                                     const steps = formRoot.values.samplerUI as Widget_list<any>
@@ -36,9 +36,8 @@ app({
                             }),
                         empty_latent: () =>
                             form.group({
-                                label: '',
                                 layout: 'H',
-                                topLevel: true,
+                                // topLevel: true,
                                 items: () => ({
                                     width: form.int({ default: 512, max: 1512, step: 32, hideSlider: true }),
                                     height: form.int({ default: 512, max: 1512, step: 32, hideSlider: true }),

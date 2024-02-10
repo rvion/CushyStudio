@@ -144,7 +144,11 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
     }
 
     return (
-        <div className={p.className} tw='relative-slider flex-1 select-none'>
+        <div
+            //
+            className={p.className}
+            tw='relative-slider flex-1 select-none min-w-16'
+        >
             <div tw='relative w-full flex'>
                 <progress
                     style={{ zIndex: 1 }}

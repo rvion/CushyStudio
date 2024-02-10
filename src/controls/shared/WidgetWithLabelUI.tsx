@@ -18,6 +18,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     widget: R.Widget
     rootKey: string
     isTopLevel?: boolean
+    inline?: boolean
 }) {
     const { rootKey, widget } = p
 
@@ -45,29 +46,43 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                     tw='WIDGET-LINE flex items-center gap-0.5'
                     onClick={() => {
                         if (widget.serial.collapsed) return (widget.serial.collapsed = false)
-                        // if (isCollapsible) return toggleInfo.toggle()
+                        if (isCollapsible) {
+                            if (widget.serial.collapsed) widget.serial.collapsed = false
+                            else widget.serial.collapsed = true
+                        }
                         // if (!widget.serial.active) return (widget.serial.active = true)
                         // widget.serial.collapsed = true
                     }}
                 >
                     {(collapsed || isCollapsible) && <Widget_CollapseBtnUI widget={p.widget} />}
-                    {/* <div tw='absolute'></div> */}
-                    {/* {widget.config.label != false && ( */}
                     <span
                         tw={[
                             //
                             'flex justify-end',
                             p.isTopLevel ? 'font-bold' : 'text-base',
-                            'whitespace-nowrap',
                             'flex-none items-center text-primary',
-                            WidgetBlockUI ? undefined : 'w-32 shrink-0 text-right mr-2',
+                            // 'whitespace-nowrap',
+                            // WidgetBlockUI ? undefined : 'shrink-0 text-right mr-1',
                         ]}
+                        style={
+                            WidgetBlockUI || p.inline
+                                ? undefined
+                                : {
+                                      flexShrink: 0,
+                                      minWidth: '8rem',
+                                      width: '30%',
+                                      textAlign: 'right',
+                                      marginRight: '0.25rem',
+                                  }
+                        }
                     >
                         <Widget_ToggleUI widget={p.widget} />
                         {p.widget.config.recommandedModels && <InstallModelBtnUI models={p.widget.config.recommandedModels} />}
                         <InstallCustomNodeBtnUI recomandation={p.widget.config} />
                         {widget.config.tooltip && <WidgetTooltipUI widget={p.widget} />}
-                        {widget.config.label ?? makeLabelFromFieldName(p.rootKey) ?? '...'}
+                        <span style={{ lineHeight: '1rem' }}>
+                            {widget.config.label ?? makeLabelFromFieldName(p.rootKey) ?? '...'}
+                        </span>
                         {/* {widget.serial.collapsed ? <span className='material-symbols-outlined'>keyboard_arrow_right</span> : null} */}
                         {/* {widget.serial.collapsed ? '{...}' : null} */}
                         {p.widget.config.showID ? <span tw='opacity-50 italic text-sm'>#{p.widget.id.slice(0, 3)}</span> : null}
