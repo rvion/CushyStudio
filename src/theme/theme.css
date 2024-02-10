@@ -132,6 +132,7 @@ body {
 /* Container holding buttons, range, and number input */
 .relative-slider {
     --input-number-ui-bg: oklch(var(--p)/.15);
+    --text-shadow-color: rgb(0, 0, 0, 0.2);
     border: 1px solid oklch(var(--pc)/.2);
     border-radius: 5px;
 }
@@ -201,23 +202,22 @@ input.input {
     background: oklch(var(--p)/.4);
 }
 
-.relative-slider input[type="number"] {
+.relative-slider input[type="text"] {
     appearance: textfield;
     -moz-appearance: textfield; /* Firefox */
     pointer-events: none;
     width: 100%;
-    --shadow-color: rgb(0, 0, 0, 0.2);
-    /* TODO(bird_d): This should be moved to be under all text, not just for sliders. */
-    text-shadow: 0px 1px 1px var(--shadow-color), 1px 1px 1px var(--shadow-color), -1px 1px 1px var(--shadow-color);
+    /* TODO(bird_d): This should be moved to be under all text, not just for number input. */
+    text-shadow: 0px 1px 1px var(--text-shadow-color), 1px 1px 1px var(--text-shadow-color), -1px 1px 1px var(--text-shadow-color);
     border-width: 0px;
 }
 
-.relative-slider input[type="number"]:focus {
+.relative-slider input[type="text"]:focus {
     outline: none;
     border-color: transparent;
 }
 
-.relative-slider input[type="number"]::selection {
+.relative-slider input[type="text"]::selection {
     background-color: oklch(var(--pc));
 }
 

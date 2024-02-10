@@ -119,11 +119,11 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
 
     const onPointerUpListener = (e: MouseEvent) => {
         if (activeSlider && !dragged) {
-            let numberInput = activeSlider?.querySelector('input[type="number"') as HTMLInputElement
+            let textInput = activeSlider?.querySelector('input[type="text"') as HTMLInputElement
 
-            numberInput.setAttribute('cursor', 'not-allowed')
-            numberInput.setAttribute('cursor', 'none')
-            numberInput.focus()
+            textInput.setAttribute('cursor', 'not-allowed')
+            textInput.setAttribute('cursor', 'none')
+            textInput.focus()
         } else {
             activeSlider = null
         }
@@ -211,8 +211,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
                                 </div>
                             ) : null}
                             <input //
-                                id='sliderNumberInput'
-                                type='number'
+                                type='text'
                                 tw={
                                     p.text
                                         ? 'text-right cursor-not-allowed pointer-events-none'
@@ -232,10 +231,10 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
                                     setInputValue(ev?.target.value)
                                 }}
                                 onFocus={(ev) => {
-                                    let numberInput = ev.currentTarget
-                                    activeSlider = numberInput.parentElement as HTMLDivElement
+                                    let textInput = ev.currentTarget
+                                    activeSlider = textInput.parentElement as HTMLDivElement
 
-                                    numberInput.select()
+                                    textInput.select()
                                     startValue = val
                                     setInputValue(val.toString())
                                     setEditing(true)
