@@ -261,6 +261,9 @@ input.input {
     border-width: 0px !important;
     padding-left: 5px;
     font-size: 15px;
+    
+    /* TODO(bird_d): This should be moved to be under all text, not just for number input. */
+    text-shadow: 0px 1px 1px var(--text-shadow-color), 1px 1px 1px var(--text-shadow-color), -1px 1px 1px var(--text-shadow-color);
 }
 
 /* /Slider */

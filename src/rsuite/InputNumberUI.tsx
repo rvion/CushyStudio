@@ -28,6 +28,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
     softMin?: number
     softMax?: number
     text?: string
+    suffix?: string
     hideSlider?: boolean
     style?: React.CSSProperties
     placeholder?: string
@@ -205,7 +206,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
                         }}
                     >
                         <div className='text-container' tw='flex'>
-                            {p.text ? (
+                            {!isEditing && p.text ? (
                                 <div tw='primary-content outline-0 border-0 border-transparent z-10 w-full text-left'>
                                     {p.text}
                                 </div>
@@ -213,7 +214,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
                             <input //
                                 type='text'
                                 tw={
-                                    p.text
+                                    !isEditing && p.text
                                         ? 'text-right cursor-not-allowed pointer-events-none'
                                         : 'text-center cursor-not-allowed pointer-events-none'
                                 }
@@ -261,6 +262,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
                                     }
                                 }}
                             />
+                            {!isEditing && p.suffix ? <div style={{ zIndex: 2 }}>{p.suffix}</div> : <></>}
                         </div>
                         {/* <input //Setting the value to 0
                         type='range'
