@@ -152,6 +152,11 @@ export class ComfySchemaL {
             const nodeNameInCushy = normalizeJSIdentifier(nodeNameInComfy, ' ')
             // console.log('>>', nodeTypeDef.category, nodeNameInCushy)
 
+            if (typeof nodeDef.output === 'string') {
+                console.log(`[❌ ERROR] nodeDef ${nodeDef.name} has an invalid output definition: ${JSON.stringify(nodeDef.output)}`) // prettier-ignore
+                nodeDef.output = []
+            }
+
             const inputs: NodeInputExt[] = []
             const outputs: NodeOutputExt[] = []
             const node = new ComfyNodeSchema(
@@ -172,6 +177,12 @@ export class ComfySchemaL {
             // OUTPUTS ----------------------------------------------------------------------
             const outputNamer: { [key: string]: number } = {}
             // console.info(JSON.stringify(nodeDef.output))
+            // [⏸️ debug] if (typeof nodeDef.output.entries !== 'function') {
+            // [⏸️ debug]     console.log(`[👙] `, nodeDef)
+            // [⏸️ debug]     console.log(`[👙] `, nodeDef.output)
+            // [⏸️ debug]     console.log(`[👙] `, nodeDef.output.entries)
+            // [⏸️ debug]     debugger
+            // [⏸️ debug] }
             for (const [ix, slotType] of nodeDef.output.entries()) {
                 const rawOutputSlotName =
                     nodeDef.output_name[ix] || //
