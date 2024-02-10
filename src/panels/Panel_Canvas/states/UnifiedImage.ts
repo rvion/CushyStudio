@@ -10,6 +10,8 @@ import { Layer } from 'konva/lib/Layer'
 import { Image } from 'konva/lib/shapes/Image'
 
 export class UnifiedImage {
+    hide = () => this.layer.hide()
+    show = () => this.layer.show()
     st: STATE
     layer: Layer
     image: Image

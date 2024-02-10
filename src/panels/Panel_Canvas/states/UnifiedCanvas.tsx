@@ -12,26 +12,28 @@ import { KonvaGrid1 } from './KonvaGrid1'
 import { UnifiedSelection } from './UnifiedSelection'
 import { UnifiedImage } from './UnifiedImage'
 import { UnifiedMask, setupStageForPainting } from './UnifiedMask'
+import { toastError } from 'src/utils/misc/toasts'
 
 export class UnifiedCanvas {
     snapToGrid = true
     snapSize = 64
     rootRef = createRef<HTMLDivElement>()
-
-    activeSelection: UnifiedSelection | null = null
-
-    private _activeMask: UnifiedMask | null = null
-    get activeMask() {
-        return this._activeMask
+    // ---------------------------------------------------
+    undo = () => {
+        const last = this.undoBuffer.pop()
+        if (last == null) return toastError('Nothing to undo')
+        last()
     }
-    set activeMask(mask: UnifiedMask | null) {
+    undoBuffer: (() => void)[] = []
+    // ---------------------------------------------------
+
+    activeSelection: UnifiedSelection
+    private _activeMask: UnifiedMask
+    get activeMask() { return this._activeMask } // prettier-ignore
+    set activeMask(mask: UnifiedMask) {
         this._activeMask = mask
-
-        for (const mask of this.masks) {
-            mask.layer.hide()
-        }
+        for (const mask of this.masks) mask.layer.hide()
         if (mask == null) return
-
         mask.layer.show()
         mask.layer.moveToTop()
     }
@@ -71,15 +73,24 @@ export class UnifiedCanvas {
     grid: KonvaGrid1
     TEMP = document.createElement('div')
     stage: Konva.Stage
+    tempLayer: Konva.Layer
     constructor(public st: STATE, baseImage: MediaImageL) {
         this.stage = new Konva.Stage({ container: this.TEMP, width: 512, height: 512 })
         this.grid = new KonvaGrid1(this)
         this.images = [new UnifiedImage(this, baseImage)]
         this.stage.on('wheel', (e: KonvaEventObject<WheelEvent>) => onWheelScrollCanvas(this, e))
         this.stage.on('mousemove', (e: KonvaEventObject<MouseEvent>) => onMouseMoveCanvas(this, e))
-        this.addSelection()
+        // ------------------------------
+        // to hold the line currently being drawn
+        this.tempLayer = new Konva.Layer()
+        this.tempLayer.opacity(0.5)
+        this.stage.add(this.tempLayer)
+        // ------------------------------
+        const selection = this.addSelection()
+        this.activeSelection = selection
         const mask = this.addMask()
-        this.activeMask = mask
+        this._activeMask = mask
+        // this.activeMask = mask
 
         makeAutoObservable(this)
         setupStageForPainting(this)
@@ -96,7 +107,9 @@ export class UnifiedCanvas {
         return mask
     }
 
-    addSelection = () => {
-        this.selections.push(new UnifiedSelection(this))
+    addSelection = (): UnifiedSelection => {
+        const selection = new UnifiedSelection(this)
+        this.selections.push(selection)
+        return selection
     }
 }

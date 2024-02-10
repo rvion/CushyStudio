@@ -23,6 +23,11 @@ export class UnifiedSelection {
         return this.canvas.activeSelection === this
     }
 
+    get x() { return this.stableData.x } // prettier-ignore
+    get y() { return this.stableData.y } // prettier-ignore
+    get width() { return this.stableData.width } // prettier-ignore
+    get height() { return this.stableData.height } // prettier-ignore
+
     // the draggable / resizable selection
     stableData: RectSimple = {
         x: 0,
@@ -95,65 +100,114 @@ export class UnifiedSelection {
         this.transform.visible(false)
     }
 
-    saveImage = (): Maybe<MediaImageL> => {
+    saveImage = (): Maybe<{ image: MediaImageL; mask: MediaImageL }> => {
+        const C = this.canvas
         // 1. get stage
         const stage = this.live.getStage()
         if (stage == null) return null
         // 2. hide select widget
-        this.hide()
+
+        /* 🔥 */ const prevX = stage.x()
+        /* 🔥 */ const prevY = stage.y()
+        /* 🔥 */ const prevScaleX = stage.scaleX()
+        /* 🔥 */ const prevScaleY = stage.scaleY()
+        /* 🔥 */ const prevWidth = stage.width()
+        /* 🔥 */ const prevHeight = stage.height()
+
+        /* - 1️⃣ */ C.grid.hide()
+        /* - 2️⃣ */ this.hide()
+        /* - 3️⃣ */ C.activeMask.hide() // hide mask
 
         // 🔴 TODO: reset after screen
-        // const prevX = stage.x()
-        // const prevY = stage.y()
-        // const prevScaleX = stage.scaleX()
-        // const prevScaleY = stage.scaleY()
-        // const prevWidth = stage.width()
-        // const prevHeight = stage.height()
 
         // change the view
-        stage.scale({ x: 1, y: 1 })
-        stage.position({ x: -this.stableData.x, y: -this.stableData.y })
-        stage.size({ width: this.stableData.width, height: this.stableData.height })
+        /* 🔥 */ stage.scale({ x: 1, y: 1 })
+        /* 🔥 */ stage.position({ x: -this.stableData.x, y: -this.stableData.y })
+        /* 🔥 */ stage.size({ width: this.stableData.width, height: this.stableData.height })
 
-        const fullCanvas = stage.toCanvas()
-        const dataURL = fullCanvas.toDataURL()
-        const img = createMediaImage_fromDataURI(this.st, dataURL!, `outputs/canvas/${nanoid()}.png`)
-        this.show()
-        return img
+        // 🟢 SAVE IMAGE (4️⃣)
+        const fullCanvas1 = stage.toCanvas()
+        const dataURL1 = fullCanvas1.toDataURL()
+        const image = createMediaImage_fromDataURI(this.st, dataURL1!, `outputs/canvas/${nanoid()}.png`)
+
+        // hide images, keep mask
+        /* + 3️⃣ */ C.activeMask.show()
+        /* - 4️⃣ */ for (const i of C.images) i.hide()
+
+        // 🟢 SAVE CANVAS (3️⃣)
+        /* 🥐 */ C.activeMask.layer.opacity(1)
+        C.activeMask.layer.children.forEach((c) => {
+            ;(c as any).stroke('white')
+        })
+        // C.activeMask.layer
+        //     .add
+        //     // new Konva.Rect({
+        //     //     x: C.activeSelection.x,
+        //     //     y: C.activeSelection.y,
+        //     //     width: C.activeSelection.y,
+        //     //     height: C.activeSelection.y,
+        //     //     fill: 'back',
+        //     // }),
+        //     ()
+        // /* 🥐 */ C.activeMask.layer.draw()
+        /* 🥐 */ C.activeMask.layer.cache()
+
+        const fullCanvas2 = stage.toCanvas()
+        const dataURL2 = fullCanvas2.toDataURL()
+        const mask = createMediaImage_fromDataURI(this.st, dataURL2!, `outputs/canvas/${nanoid()}-mask.png`)
+
+        C.activeMask.layer.children.forEach((c) => {
+            ;(c as any).stroke(C.activeMask.color)
+        })
+        /* 🥐 */ C.activeMask.layer.opacity(0.5)
+        /* 🥐 */ C.activeMask.layer.cache()
+
+        /* + 4️⃣ */ for (const i of C.images) i.show() // restore images
+        /* + 2️⃣ */ this.show() // restore selection
+        /* + 1️⃣ */ C.grid.show() // restore grid
+
+        /* 🔥 */ stage.x(prevX)
+        /* 🔥 */ stage.y(prevY)
+        /* 🔥 */ stage.scaleX(prevScaleX)
+        /* 🔥 */ stage.scaleY(prevScaleY)
+        /* 🔥 */ stage.width(prevWidth)
+        /* 🔥 */ stage.height(prevHeight)
+
+        return { image, mask }
         // console.log(dataURL)
     }
 
-    saveImageOld = () => {
-        // 1. get stage
-        const stage = this.live.getStage()
-        if (stage == null) return null
-        // 2. hide select widget
-        this.hide()
-        // 3. convert canva to HTMLCanvasElement
-        const fullCanvas = stage.toCanvas()
-        // 4. create a smaller and cropped stage
-        const subCanvas = document.createElement('canvas')
-        subCanvas.width = this.stableData.width
-        subCanvas.height = this.stableData.height
-        const subCtx = subCanvas.getContext('2d')!
-        subCtx.drawImage(
-            fullCanvas,
-            this.stableData.x,
-            this.stableData.y,
-            this.stableData.width,
-            this.stableData.height,
-            0,
-            0,
-            this.stableData.width,
-            this.stableData.height,
-        )
-        // 5. convert to dataURL
-        const dataURL = subCanvas.toDataURL()
-        this.live.getStage
-        createMediaImage_fromDataURI(this.st, dataURL!, `outputs/canvas/${nanoid()}.png`)
-        this.show()
-        // console.log(dataURL)
-    }
+    // saveImageOld = () => {
+    //     // 1. get stage
+    //     const stage = this.live.getStage()
+    //     if (stage == null) return null
+    //     // 2. hide select widget
+    //     this.hide()
+    //     // 3. convert canva to HTMLCanvasElement
+    //     const fullCanvas = stage.toCanvas()
+    //     // 4. create a smaller and cropped stage
+    //     const subCanvas = document.createElement('canvas')
+    //     subCanvas.width = this.stableData.width
+    //     subCanvas.height = this.stableData.height
+    //     const subCtx = subCanvas.getContext('2d')!
+    //     subCtx.drawImage(
+    //         fullCanvas,
+    //         this.stableData.x,
+    //         this.stableData.y,
+    //         this.stableData.width,
+    //         this.stableData.height,
+    //         0,
+    //         0,
+    //         this.stableData.width,
+    //         this.stableData.height,
+    //     )
+    //     // 5. convert to dataURL
+    //     const dataURL = subCanvas.toDataURL()
+    //     this.live.getStage
+    //     createMediaImage_fromDataURI(this.st, dataURL!, `outputs/canvas/${nanoid()}.png`)
+    //     this.show()
+    //     // console.log(dataURL)
+    // }
 
     onDragEnd = (e: KonvaEventObject<MouseEvent>) => {
         Object.assign(this.liveData, this.stableData)
