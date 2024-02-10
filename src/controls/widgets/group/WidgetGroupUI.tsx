@@ -6,8 +6,15 @@ import { WidgetWithLabelUI } from '../../shared/WidgetWithLabelUI'
 import { bang } from 'src/utils/misc/bang'
 
 // UI
+export const WidgetGroup_LineUI = observer(function WidgetGroup_LineUI_(p: {
+    //
+    widget: Widget_group<{ [key: string]: Widget }>
+}) {
+    if (!p.widget.serial.collapsed) return null
+    return <div tw='line-clamp-1 italic opacity-50'>{p.widget.summary}</div>
+})
 
-export const WidgetGroupUI = observer(function WidgetItemsUI_(p: {
+export const WidgetGroup_BlockUI = observer(function WidgetGroup_BlockUI_(p: {
     //
     widget: Widget_group<{ [key: string]: Widget }>
 }) {
@@ -19,36 +26,23 @@ export const WidgetGroupUI = observer(function WidgetItemsUI_(p: {
     const groupFields = Object.entries(widget.values)
     const isHorizontal = widget.config.layout === 'H'
     return (
-        <div
-            tw={['flex rounded-box bg-opacity-95 items-start w-full text-base-content']}
-            style={{
-                position: 'relative',
-            }}
-        >
-            {/* 🟢
-            {widget.serial.collapsed ? 'Coolapsed' : undefined}
-            {groupFields.length}
-            {groupFields.map(([rootKey, sub], ix) => (
-                <div key={rootKey}>{rootKey}</div>
-            ))} */}
+        <div tw={['WIDGET-GROUP', 'flex items-start w-full text-base-content']} style={{ position: 'relative' }}>
             {widget.serial.collapsed ? null : (
                 <div
-                    // style={isTopLevel ? undefined : { border: '1px solid #262626' }}
+                    className={widget.config.className}
                     tw={[
-                        //
                         '_WidgetGroupUI w-full',
                         isHorizontal //
-                            ? `flex flex-wrap gap-2`
-                            : `flex flex-col gap-1`,
+                            ? `GROUP-HORIZONTAL flex gap-1 flex-wrap`
+                            : `GROUP-VERTICAL   flex gap-1 flex-col`,
                     ]}
-                    className={widget.config.className}
                 >
                     {groupFields.map(([rootKey, sub], ix) => (
                         <WidgetWithLabelUI //
                             isTopLevel={isTopLevel}
                             key={rootKey}
-                            // labelPos={sub.input.labelPos}
                             rootKey={rootKey}
+                            inline={isHorizontal}
                             widget={bang(sub)}
                         />
                     ))}

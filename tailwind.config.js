@@ -41,6 +41,13 @@ module.exports = {
             },
             // 'dark',
             {
+                dracula: {
+                    ...require('daisyui/src/theming/themes')['dracula'],
+                    primary: '#9FA8DA',
+                    // ...notReallyRound,
+                },
+            },
+            {
                 dark: {
                     ...require('daisyui/src/theming/themes')['dim'],
                     // primary: 'oklch(65.69% 0.196 275.75)',

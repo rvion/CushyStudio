@@ -1,10 +1,9 @@
 import type { STATE } from 'src/state/state'
 import type { CompiledPrompt } from './WidgetPrompt'
-import type { SyntaxNodeRef } from '@lezer/common'
 import type { PromptLangNodeName } from './grammar/grammar.types'
 
 import { parser } from './grammar/grammar.parser'
-import { $extractLoraInfos, $getWeightNumber, $getWildcardNamePos } from './cm-lang/LINT'
+import { PromptAST, Prompt_Node } from './grammar/grammar.practical'
 
 export const compilePrompt = (p: {
     text: string
@@ -24,20 +23,23 @@ export const compilePrompt = (p: {
     let POS = ''
     let NEG = ''
     const debugText: string[] = []
+
+    const prompt = new PromptAST(p.text)
+
+    // ---------------
     // const getLastPositivePromptChar = () => POS[POS.length - 1] ?? ''
     // const getLastNegativePromptChar = () => NEG[NEG.length - 1] ?? ''
     // -----------
     const CONTENT = p.text
     const st = p.st
     const tree = parser.parse(CONTENT ?? '')
-    const cursor = tree.cursor()
 
-    let weights = 1
-
-    cursor.iterate(
+    const weightStack = [1]
+    prompt.root.iterate(
         // enter
-        (ref: SyntaxNodeRef) => {
-            const toktype = ref.name as PromptLangNodeName
+        (node: Prompt_Node) => {
+            const toktype = node.$kind
+            const weights = weightStack[weightStack.length - 1]
             const set = (txt: string) => {
                 const lastChar = weights < 0 ? NEG[NEG.length - 1] ?? '' : POS[POS.length - 1] ?? ''
                 const space = txt === ',' ? '' : lastChar === ' ' ? '' : ' '
@@ -49,14 +51,13 @@ export const compilePrompt = (p: {
             }
 
             if (toktype === 'WeightedExpression') {
-                const [from, to] = $getWeightNumber(ref)
-                const numberTxt = CONTENT.slice(from, to)
-                const float = parseFloat(numberTxt)
-                weights *= float
+                weightStack.push(weights * node.weight)
+                // weights *= node.weight
+                return true
             }
 
             if (toktype === 'Identifier') {
-                set(CONTENT.slice(ref.from, ref.to))
+                set(node.text)
                 return false
             }
 
@@ -66,40 +67,39 @@ export const compilePrompt = (p: {
             }
 
             if (toktype === 'Number') {
-                // set(CONTENT.slice(ref.from, ref.to))
                 return false
             }
 
+            if (toktype === 'Break') {
+                set('break')
+            }
+
             if (toktype === 'String') {
-                set(CONTENT.slice(ref.from + 1, ref.to - 1))
+                set(node.content)
                 return false
             }
 
             if (toktype === 'Embedding') {
-                const [from, to] = $getWildcardNamePos(ref)
-                const embeddingName = CONTENT.slice(from, to) as Embeddings
-                set(`embedding:${embeddingName}`)
+                set(`embedding:${node.name}`)
                 return false
             }
 
             if (toktype === 'Wildcard') {
-                const [from, to] = $getWildcardNamePos(ref)
-                const wildcardName = CONTENT.slice(from, to)
-                const options = (st.wildcards as any)[wildcardName]
+                const options = (st.wildcards as any)[node.name]
                 if (!Array.isArray(options)) {
                     console.log(`[❌] invalid wildcard`)
                     return false
                 }
-                const picked = st.chooseRandomly(wildcardName, p.seed ?? Math.floor(Math.random() * 99999999), options)
+                const picked = st.chooseRandomly(node.name, p.seed ?? Math.floor(Math.random() * 99999999), options)
                 if (p.printWildcards ?? true) debugText.push(picked)
                 set(picked)
                 return false
             }
+
             if (toktype === 'Lora') {
-                const infos = $extractLoraInfos(CONTENT, ref)
-                if (!infos.loraName) return false
-                const loraName = infos.loraName
-                p.onLora(loraName, infos.strength_clip ?? 1, infos.strength_model ?? 1)
+                if (!node.name) return false
+                const loraName = node.name
+                p.onLora(loraName, node.strength_clip ?? 1, node.strength_model ?? 1)
                 // 🔴const next = run.nodes.LoraLoader({
                 // 🔴    model: ckpt,
                 // 🔴    clip: clip,
@@ -120,15 +120,13 @@ export const compilePrompt = (p: {
                 // 🔴 clip = next._CLIP
                 // 🔴 ckpt = next._MODEL
             }
+            return true
         },
         // leave
-        (ref) => {
-            const toktype = ref.name as PromptLangNodeName
-            if (toktype === 'WeightedExpression') {
-                const [from, to] = $getWeightNumber(ref)
-                const numberTxt = CONTENT.slice(from, to)
-                const float = parseFloat(numberTxt)
-                weights /= float
+        (node) => {
+            if (node.$kind === 'WeightedExpression') {
+                // weights /= node.weight
+                weightStack.pop()
             }
         },
     )

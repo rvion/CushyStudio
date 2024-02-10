@@ -11,11 +11,12 @@ export type ThemeName =
     | 'cupcake'
     | 'valentine'
     | 'wireframe'
-    // | 'aqua'
     | 'forest'
-// | 'sunset'
-// | 'luxury'
-// | 'business'
+    | 'dracula'
+//  | 'aqua'
+//  | 'sunset'
+//  | 'luxury'
+//  | 'business'
 
 export class ThemeManager {
     themes: ThemeName[] = [
@@ -24,6 +25,7 @@ export class ThemeManager {
         'dark2',
         'dark3',
         'forest',
+        'dracula',
         //
         'light',
         'light2',

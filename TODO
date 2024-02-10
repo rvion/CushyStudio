@@ -1,7 +1,17 @@
-☐ compress image must not save the images uncompressed too
-    ☝️
-☐ fix virtual paths breaking the "sync view of file explorer"
-☐ fix widget hash not working properly
+☐ download from the model manager
+☐ delete image from right click
+☐ add restart button in the top left scehma appbar blabla for quick comfy restart
+☐ fix the regional widget using the new approach.
+☐ unified canvas
+    ☐ don't force focus output
+    ☐ show latent in the selection
+    ☐ paste back the image as extra layer
+
+--------------
+
+✔ compress image must not save the images uncompressed too @done(24-02-09 09:16)
+✔ fix virtual paths breaking the "sync view of file explorer" @done(24-02-08 23:43)
+✔ fix widget hash not working properly @done(24-02-08 23:43)
 
 ```
 masterpiece, sofa, tree, [color] [adj_beauty] [adj_general] nature, intricate_details, game background, window, magical island, summer, glass
@@ -10,11 +20,10 @@ masterpiece, sofa, tree, [color] [adj_beauty] [adj_general] nature, intricate_de
 ✔ button to create own app @done(24-01-28 21:58)
 ✔ improve CushyDiffusion @done(24-02-01 19:07)
 ✔ cleanup libary folder: @done(24-02-01 19:07)
-- video
 ✔ more of cushy_app in db @done(24-02-01 19:07)
 - preset API
-- fix app
-- QRCode generator
+☐ fix app
+✘ QRCode generator @cancelled(24-02-09 09:16)
 - make _formBuilder not observable => need engine for model
 - fix random not updating
 -
@@ -34,17 +43,17 @@ form rework:
 
 
 ☐ RELEASE AFTER
-        ☐ prompt lang
-        ☐ basic unified canvas
-            ☐ inpainting
-            ☐ outpainting
-            ☐ mask editing
-            ☐ stamp tool
-        ☐ basic documentation website
-        ☐ bug pass
-        ☐ form layout
-        ☐ video
-        ☐ FEATURE FREEZE. NO MORE FEATURES.
+    ☐ prompt lang @started(24-02-08 23:41)
+    ☐ basic unified canvas @started(24-02-08 23:41)
+        ☐ inpainting
+        ☐ outpainting
+        ☐ mask editing
+        ☐ stamp tool
+    ☐ basic documentation website @started(24-02-08 23:41)
+    ☐ bug pass @started(24-02-08 23:42)
+    ☐ form layout @started(24-02-08 23:41)
+    ☐ FEATURE FREEZE. NO MORE FEATURES.
+    ☐ make a 2-minute showcase video
 
 
 prompt-lang:

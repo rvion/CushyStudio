@@ -4,18 +4,17 @@ import type { DraftL } from 'src/models/Draft'
 import { toJS } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { useEffect, useLayoutEffect } from 'react'
+import { WidgetGroup_BlockUI } from 'src/controls/widgets/group/WidgetGroupUI'
+import { MarkdownUI } from 'src/rsuite/MarkdownUI'
 import { PhoneWrapperUI } from 'src/rsuite/PhoneWrapperUI'
 import { SelectUI } from 'src/rsuite/SelectUI'
 import { Message } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
 import { stringifyUnknown } from 'src/utils/formatters/stringifyUnknown'
-import { WidgetUI } from '../../controls/widgets/WidgetUI'
 import { ResultWrapperUI } from '../../widgets/misc/ResultWrapperUI'
 import { draftContext } from '../../widgets/misc/useDraft'
-import { DraftHeaderUI } from './DraftHeaderUI'
 import { MessageInfoUI } from '../MessageUI'
-import { marked } from 'marked'
-import { MarkdownUI } from 'src/rsuite/MarkdownUI'
+import { DraftHeaderUI } from './DraftHeaderUI'
 
 export const Panel_Draft = observer(function Panel_Draft_(p: { draftID: DraftID }) {
     // 1. get draft
@@ -90,15 +89,14 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                     </MessageInfoUI>
                 )}
                 {metadata?.description && (
-                    // <MessageInfoUI>
-                    <MarkdownUI tw='_WidgetMardownUI w-full' markdown={metadata.description} />
-                    // </MessageInfoUI>
+                    <MarkdownUI tw='_WidgetMardownUI italic px-1 text-gray-500 w-full' markdown={metadata.description} />
                 )}
-                <div tw='pb-80 pl-2'>
+                <div tw='pb-80 p-1'>
+                    {/* <div tw='p-1'> */}
                     <ResultWrapperUI
                         //
                         res={draft.form}
-                        whenValid={(req) => <WidgetUI widget={req} />}
+                        whenValid={(req) => <WidgetGroup_BlockUI widget={req} />}
                     />
                 </div>
             </div>
@@ -130,7 +128,6 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
  * if a workflow need user-supplied infos, it will send an 'ask' request with a list
  * of things it needs to know.
  */
-
 const ErrorPanelUI = observer(function ErrorPanelUI_(p: { children: React.ReactNode }) {
     return (
         <div tw='h-full'>

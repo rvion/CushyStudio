@@ -1,4 +1,36 @@
-/* --------------------- */
+/* FORM STYLING ----------------------------------- */
+.WIDGET-BLOCK .WIDGET-GROUP {
+    /* border-left: 1px solid oklch(var(--p)/.2); */
+    /* padding: 0 .3rem; */
+}
+.WIDGET-WITH-BLOCK {
+    /* background: oklch(var(--b2)); */
+    border-radius: .3rem;
+    /* border: 1px solid oklch(var(--b3)); */
+    border-top: 1px solid oklch(var(--p)/.4);
+    border-left: 1px solid oklch(var(--p)/.4);
+    border-right: 1px solid oklch(var(--p)/.4);
+    /* border-bottom: 1px solid oklch(var(--p)/.4); */
+}
+.SUB-FIELD {
+    flex: 1;
+    /* background: #272729; */
+}
+.WIDGET-LINE {
+    /* padding: .4rem; */
+}
+/* .SUB-FIELD .WIDGET-BLOCK {
+    padding-left: .2rem;
+
+} */
+.WIDGET-BLOCK {
+    margin-left: .6rem;
+    margin-right: .5rem;
+    /* padding: .4rem; */
+}
+
+
+/* CODEMIRROR ----------------------------------------- */
 .cm-tooltip.cm-completionInfo {
     max-height: 300px;
     overflow: auto;
@@ -82,8 +114,143 @@
     background-image: none;
 }
 
-/* --------------------------- */
-input[type='range']::-webkit-slider-runnable-track { height: 2rem; }
+/* Slider   --------------------- */
+/* input[type='range']::-webkit-slider-runnable-track { height: 2rem; } */
+
+/* Container holding buttons, range, and number input */
+.relative-slider {
+    --input-number-ui-bg: oklch(var(--p)/.15);
+    border: 1px solid oklch(var(--pc)/.2);
+    border-radius: 5px;
+}
+
+.relative-slider div:first {
+    align-items: center;
+    /* border-radius: 5px !important; */
+    overflow: hidden;
+}
+
+.relative-slider:hover {
+    cursor: ew-resize;
+}
+
+.relative-slider div div:hover progress {
+    filter: brightness(1.2);
+}
+
+.relative-slider input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    width: 0;
+    height: 0;
+    margin: 0;
+}
+
+/* .relative-slider input[type=range] {
+    position: absolute;
+    border-radius: 0px;
+}
+
+
+.relative-slider input[type=range]::-webkit-slider-runnable-track {
+    color: black;
+}
+
+.relative-slider input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    border: none;
+    height: 0px;
+    width: 0px;
+}
+
+.relative-slider input[type="range"]::-moz-range-thumb {
+    display: none;
+}
+
+.relative-slider input[type="range"]::-ms-thumb {
+    display: none;
+} */
+
+input.input-sm {
+    background-color: oklch(var( --p)/.15) !important; }
+.relative-slider progress[value]::-webkit-progress-bar {
+    background-color: var(--input-number-ui-bg);
+    appearance: none;
+}
+
+.relative-slider:active progress[value]::-webkit-progress-bar {
+    background-color: oklch(var(--b3));
+    appearance: none;
+}
+
+.relative-slider progress[value]::-webkit-progress-value {
+    appearance: none;
+    opacity: 100;
+    background: oklch(var(--p)/.4);
+}
+
+.relative-slider input[type="number"] {
+    appearance: textfield;
+    -moz-appearance: textfield; /* Firefox */
+    pointer-events: none;
+    width: 100%;
+    --shadow-color: rgb(0, 0, 0, 0.2);
+    /* TODO(bird_d): This should be moved to be under all text, not just for sliders. */
+    text-shadow: 0px 1px 1px var(--shadow-color), 1px 1px 1px var(--shadow-color), -1px 1px 1px var(--shadow-color);
+    border-width: 0px;
+}
+
+.relative-slider input[type="number"]:focus {
+    outline: none;
+    border-color: transparent;
+}
+
+.relative-slider input[type="number"]::selection {
+    background-color: oklch(var(--pc));
+}
+
+.relative-slider button, .relative-slider:active button {
+    display: hidden;
+    opacity: 0;
+    border-width: 0px;
+    background-color: oklch(var(--input-number-ui-bg)*1.2);
+    outline-width: 0px;
+}
+
+.relative-slider:hover button {
+    display: unset;
+    opacity: 100;
+    background-color: oklch(var(--pc)/0.5);
+}
+
+.relative-slider button:hover {
+    filter: brightness(1.2)
+}
+
+/* Left decrement button */
+.relative-slider button:nth-child(1) {
+    border-top-right-radius: 0px !important;
+    border-bottom-right-radius: 0px !important;
+    border-right: 1px solid oklch(var(--pc)/.2);
+}
+
+/* Right decrement button */
+.relative-slider button:nth-child(3) {
+    border-top-left-radius: 0px !important;
+    border-bottom-left-radius: 0px !important;
+    border-left: 1px solid oklch(var(--pc)/.2);
+}
+
+.relative-slider .text-container {
+    flex: auto;
+    text-align: right;
+    align-content: end;
+    background: transparent !important;
+    border-width: 0px !important;
+    padding-left: 5px;
+    font-size: 15px;
+}
+
+/* /Slider */
 
 .bg-primary-1 { background-color: oklch(var(--p)/.1); }
 .bg-primary-2 { background-color: oklch(var(--p)/.2); }

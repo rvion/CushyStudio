@@ -1,14 +1,9 @@
 import { observer } from 'mobx-react-lite'
-import { ComboUI } from 'src/app/shortcuts/ComboUI'
-import { KEYS } from 'src/app/shortcuts/shorcutKeys'
-import { InputNumberUI } from 'src/rsuite/InputNumberUI'
-import { FormControl, FormHelpText, Toggle } from 'src/rsuite/shims'
-import { openInVSCode } from 'src/utils/electron/openInVsCode'
-import { parseFloatNoRoundingErr } from 'src/utils/misc/parseFloatNoRoundingErr'
+import { useMemo } from 'react'
+import { FormHelpText } from 'src/rsuite/shims'
 import { SectionTitleUI } from 'src/widgets/workspace/SectionTitle'
 import { useSt } from '../../state/stateContext'
 import { CivitaiUI } from './CivitaiBrowserUI'
-import { useMemo } from 'react'
 import { Civitai } from './CivitaiSpec'
 
 export const Panel_Models = observer(function Panel_Models_() {

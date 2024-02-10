@@ -105,6 +105,8 @@ else
 fi
 
 
+export PATH="$EXTRACT_DIR/bin:$PATH"
+
 NPM_BIN_PATH="$EXTRACT_DIR/bin/npm"
 echo "NPM binary path: $NPM_BIN_PATH"
 
@@ -113,7 +115,7 @@ echo "Node binary path: $NODE_BIN_PATH"
 
 # Install dependencies with npm
 echo "Installing dependencies..."
-$NPM_BIN_PATH install
+$NPM_BIN_PATH install --legacy-peer-deps=false
 
 # ensuring binary dependencies are correctly linked across installed
 ./node_modules/.bin/electron-builder install-app-deps

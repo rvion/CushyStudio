@@ -17,7 +17,7 @@ import { run_cnet_IPAdapterFaceID, ui_IPAdapterFaceID } from './ControlNet/ipAda
 
 // 🅿️ CNET UI -----------------------------------------------------------
 export const ui_cnet = () => {
-    const form = getCurrentForm()
+    const form: FormBuilder = getCurrentForm()
     return form.groupOpt({
         label: 'ControlNets',
         tooltip: `Instructional resources:\nhttps://github.com/lllyasviel/ControlNet\nhttps://stable-diffusion-art.com/controlnet/`,
@@ -29,23 +29,20 @@ export const ui_cnet = () => {
                     form.group({
                         label: 'Controlnet Image',
                         items: () => ({
-                            image: form.image({
-                                tooltip:
-                                    'There is currently a bug with multiple controlnets where an image wont allow drop except for the first controlnet in the list. If you add multiple controlnets, then reload using Ctrl+R, it should allow you to drop an image on any of the controlnets.',
-                            }),
+                            image: form.image({}),
                             resize: form.bool({ default: true }),
                             cnets: form.choices({
                                 // label: false, //'Pick Cnets=>',
                                 appearance: 'tab',
                                 placeholder: 'ControlNets...',
                                 items: {
-                                    OpenPose: () => ui_subform_OpenPose(),
+                                    IPAdapter: () => ui_subform_IPAdapter(),
+                                    FaceID: () => ui_IPAdapterFaceID(),
+                                    Pose: () => ui_subform_OpenPose(),
                                     Canny: () => ui_subform_Canny(),
                                     Depth: () => ui_subform_Depth(),
                                     Normal: () => ui_subform_Normal(),
                                     Tile: () => ui_subform_Tile(),
-                                    IPAdapter: () => ui_subform_IPAdapter(),
-                                    FaceID: () => ui_IPAdapterFaceID(),
                                     Scribble: () => ui_subform_Scribble(),
                                     Lineart: () => ui_subform_Lineart(),
                                     SoftEdge: () => ui_subform_SoftEdge(),
@@ -62,7 +59,9 @@ export const ui_cnet = () => {
 // 🅿️ CNET COMMON FORM ===================================================
 export const cnet_ui_common = (form: FormBuilder) => ({
     strength: form.float({ default: 1, min: 0, max: 2, step: 0.1 }),
-    advanced: form.groupOpt({
+    advanced: form.group({
+        startCollapsed: true,
+        label: 'Settings',
         items: () => ({
             startAtStepPercent: form.float({ default: 0, min: 0, max: 1, step: 0.1 }),
             endAtStepPercent: form.float({ default: 1, min: 0, max: 1, step: 0.1 }),
@@ -118,8 +117,7 @@ export const run_cnet = async (opts: OutputFor<typeof ui_cnet>, ctx: Cnet_args) 
                 image = scaledCnetNode._IMAGE
             }
 
-            const { IPAdapter, FaceID, Canny, Depth, Normal, Lineart, OpenPose, Scribble, SoftEdge, Tile, Sketch } =
-                cnetImage.cnets
+            const { IPAdapter, FaceID, Canny, Depth, Normal, Lineart, Pose, Scribble, SoftEdge, Tile, Sketch } = cnetImage.cnets
             // IPAdapter ===========================================================
             if (IPAdapter) {
                 const ip_adapter_result = run_cnet_IPAdapter(IPAdapter, ctx, image)
@@ -136,9 +134,9 @@ export const run_cnet = async (opts: OutputFor<typeof ui_cnet>, ctx: Cnet_args) 
                 _apply_cnet(args, Canny.strength, y.image, y.cnet_name)
             }
             // POSE ===========================================================
-            if (OpenPose) {
-                const y = run_cnet_openPose(OpenPose, image, resolution)
-                _apply_cnet(args, OpenPose.strength, y.image, y.cnet_name)
+            if (Pose) {
+                const y = run_cnet_openPose(Pose, image, resolution)
+                _apply_cnet(args, Pose.strength, y.image, y.cnet_name)
             }
             // DEPTH ===========================================================
             if (Depth) {

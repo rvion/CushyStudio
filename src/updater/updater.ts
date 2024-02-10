@@ -186,7 +186,9 @@ export class GitManagedFolder {
         } catch (e) {
             this.log('❌ updateInfos failed', e)
         } finally {
-            this.currentAction = null
+            runInAction(() => {
+                this.currentAction = null
+            })
         }
     }
 

@@ -60,7 +60,6 @@ export default defineConfig({
             mobx: `${installDir}/src/syms/mobx.js`,
             'cytoscape-klay': `${installDir}/src/syms/cytoscape-klay.js`,
             cytoscape: `${installDir}/src/syms/cytoscape.js`,
-            lexical: `${installDir}/src/syms/lexical.js`,
             '@tensorflow/tfjs': './src/syms/tfjs.js',
 
             // -----------------------------------------------------------------------

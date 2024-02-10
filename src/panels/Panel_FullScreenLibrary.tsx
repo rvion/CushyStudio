@@ -99,6 +99,7 @@ export const Panel_CardPicker3UI = observer(function Panel_CardPicker3UI_(p: {})
                     <Panel_DeckList />
                 </ScrollablePaneUI> */}
                 <ScrollablePaneUI tw='flex-grow'>
+                    {/*
                     <div tw='text-xl text-accent font-bold'>Installed Apps</div>
                     <div>--</div>
                     <div tw='text-xl text-accent font-bold'>App marketplace</div>
@@ -118,6 +119,7 @@ export const Panel_CardPicker3UI = observer(function Panel_CardPicker3UI_(p: {})
                             </div>
                         ))}
                     </div>
+                    */}
                     <div tw='divider'></div>
                     <div tw='text-xl text-accent font-bold'>Built-in Apps</div>
                     <div tw='flex flex-wrap  gap-2'>

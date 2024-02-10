@@ -17,10 +17,12 @@ export const ipAdapter_faceID_ClipModelList: ComfyUIManagerKnownModelNames[] = [
     //
     'ip-adapter-faceid_sd15.bin',
     'ip-adapter-faceid-plusv2_sd15.bin',
+    'ip-adapter-faceid_sdxl.bin',
 ]
 
 export const ipAdapter_faceID_LoraList: ComfyUIManagerKnownModelNames[] = [
     //
     'ip-adapter-faceid_sd15_lora.safetensors',
     'ip-adapter-faceid-plusv2_sd15_lora.safetensors',
+    'ip-adapter-faceid-plusv2_sdxl_lora.safetensors',
 ]

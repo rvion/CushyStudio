@@ -54,8 +54,14 @@ export const DraftMenuUI = observer(function DraftMenuUI_(p: { title: string; dr
                 Duplicate Draft
             </MenuItem>
             <MenuItem
+                icon={<span className='material-symbols-outlined'>content_copy</span>}
+                onClick={() => navigator.clipboard.writeText(draft.id)}
+            >
+                Copy ID ({draft.id})
+            </MenuItem>
+            <MenuItem
                 icon={<span className='material-symbols-outlined'>edit</span>}
-                onClick={() => openInVSCode(file?.absPath ?? '')}
+                onClick={() => openInVSCode(st, file?.absPath ?? '')}
             >
                 Edit App Definition
             </MenuItem>

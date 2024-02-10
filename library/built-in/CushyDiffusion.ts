@@ -16,7 +16,8 @@ app({
     metadata: {
         name: 'Cushy Diffusion',
         illustration: 'library/built-in/_illustrations/mc.jpg',
-        description: 'An example app to play with various stable diffusion technologies',
+        description:
+            'An example app to play with various stable diffusion technologies. Feel free to contribute improvements to it.',
     },
     ui: (form) => ({
         // modelType: form.selectOne({
@@ -27,7 +28,7 @@ app({
             default: [
                 //
                 'masterpiece, tree',
-                '?color, ?"3d_term", ?adj_beauty, ?adj_general',
+                '?color, ?3d_term, ?adj_beauty, ?adj_general',
                 '(nature)*0.9, (intricate_details)*1.1',
             ].join('\n'),
         }),

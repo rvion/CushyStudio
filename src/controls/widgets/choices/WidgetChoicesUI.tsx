@@ -3,50 +3,79 @@ import type { Widget_choices } from './WidgetChoices'
 
 import { observer } from 'mobx-react-lite'
 import { SelectUI } from 'src/rsuite/SelectUI'
-import { WidgetWithLabelUI } from '../../shared/WidgetWithLabelUI'
 import { makeLabelFromFieldName } from 'src/utils/misc/makeLabelFromFieldName'
+import { WidgetWithLabelUI } from '../../shared/WidgetWithLabelUI'
 import { AnimatedSizeUI } from './AnimatedSizeUI'
+
+// UI
+export const WidgetChoices_LineUI = observer(function WidgetChoices_LineUI_(p: {
+    widget: Widget_choices<{ [key: string]: () => Widget }>
+}) {
+    if (p.widget.config.appearance === 'tab') {
+        return <WidgetChoices_TabLineUI widget={p.widget} />
+    } else {
+        return <WidgetChoices_SelectLineUI widget={p.widget} />
+    }
+})
 
 // UI
 export const WidgetChoicesUI = observer(function WidgetChoicesUI_(p: {
     widget: Widget_choices<{ [key: string]: () => Widget }>
 }) {
-    if (p.widget.config.appearance === 'tab') return <WidgetChoicesTabUI widget={p.widget} />
-    return <WidgetChoicesSelectUI widget={p.widget} />
+    if (p.widget.config.appearance === 'tab') {
+        return <WidgetChoicesTabUI widget={p.widget} />
+    } else {
+        return <WidgetChoicesTabUI widget={p.widget} />
+    }
 })
 
-export const WidgetChoicesTabUI = observer(function WidgetChoicesTabUI_(p: {
+// ============================================================================================================
+
+const WidgetChoices_TabLineUI = observer(function WidgetChoicesTab_LineUI_(p: {
     widget: Widget_choices<{ [key: string]: () => Widget }>
 }) {
     const widget = p.widget
     type Entry = { key: string; value?: Maybe<boolean> }
     const choicesStr: string[] = widget.choices
     const choices: Entry[] = choicesStr.map((v) => ({ key: v }))
+    return (
+        <div tw='ml-auto flex flex-wrap gap-x-1 gap-y-0'>
+            {choices.map((c) => {
+                const isSelected = widget.serial.branches[c.key]
+                return (
+                    <div
+                        onClick={() => widget.toggleBranch(c.key)}
+                        key={c.key}
+                        tw={[
+                            //
+                            'cursor-pointer',
+                            'px-0.5 rounded flex flex-nowrap gap-0.5 whitespace-nowrap items-center',
+                            // isSelected ? 'bg-primary text-primary-content' : 'bg-base-300',
+                            isSelected ? 'underline' : 'bg-base-300',
+                        ]}
+                    >
+                        <input
+                            type='checkbox'
+                            style={{ height: '.8rem', width: '.8rem' }}
+                            onChange={() => {}}
+                            checked={isSelected}
+                            className='checkbox checkbox-primary checkbox-xs'
+                        />
+                        {makeLabelFromFieldName(c.key)}
+                    </div>
+                )
+            })}
+        </div>
+    )
+})
+
+const WidgetChoicesTabUI = observer(function WidgetChoicesTabUI_(p: { widget: Widget_choices<{ [key: string]: () => Widget }> }) {
+    const widget = p.widget
     const activeSubwidgets = Object.entries(widget.children) //
         .map(([branch, subWidget]) => ({ branch, subWidget }))
 
     return (
         <div>
-            <div tw='flex flex-wrap gap-1'>
-                {choices.map((c) => {
-                    const isSelected = widget.serial.branches[c.key]
-                    return (
-                        <div
-                            onClick={() => widget.toggleBranch(c.key)}
-                            key={c.key}
-                            tw={['btn btn-sm flex flex-nowrap gap-1 whitespace-nowrap', isSelected ? 'btn-active' : '']}
-                        >
-                            <input
-                                type='checkbox'
-                                onChange={() => {}}
-                                checked={isSelected}
-                                className='checkbox checkbox-primary checkbox-xs'
-                            />
-                            {makeLabelFromFieldName(c.key)}
-                        </div>
-                    )
-                })}
-            </div>
             <AnimatedSizeUI>
                 <div //
                     tw={[widget.config.layout === 'H' ? 'flex' : null]}
@@ -69,16 +98,13 @@ export const WidgetChoicesTabUI = observer(function WidgetChoicesTabUI_(p: {
     )
 })
 
-export const WidgetChoicesSelectUI = observer(function WidgetChoicesSelectUI_(p: {
+export const WidgetChoices_SelectLineUI = observer(function WidgetChoices_SelectLineUI_(p: {
     widget: Widget_choices<{ [key: string]: () => Widget }>
 }) {
     const widget = p.widget
     type Entry = { key: string; value?: Maybe<boolean> }
     const choicesStr: string[] = widget.choices
     const choices: Entry[] = choicesStr.map((v) => ({ key: v }))
-    const activeSubwidgets = Object.entries(widget.children) //
-        .map(([branch, subWidget]) => ({ branch, subWidget }))
-
     return (
         <div className='_WidgetChoicesUI' tw='relative'>
             {/* {widget.config.multi ? 'MULTI' : 'SINGLE'} */}
@@ -115,19 +141,6 @@ export const WidgetChoicesSelectUI = observer(function WidgetChoicesSelectUI_(p:
                 resetQueryOnPick={false}
                 onChange={(v) => widget.toggleBranch(v.key)}
             />
-            <div tw={[widget.config.layout === 'H' ? 'flex' : null]} className={widget.config.className}>
-                {activeSubwidgets.map((val) => {
-                    const subWidget = val.subWidget
-                    if (subWidget == null) return <>❌ error</>
-                    return (
-                        <WidgetWithLabelUI //
-                            key={val.branch}
-                            rootKey={val.branch}
-                            widget={subWidget}
-                        />
-                    )
-                })}
-            </div>
         </div>
     )
 })

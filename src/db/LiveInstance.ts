@@ -1,3 +1,4 @@
+import type { AnnotationMapEntry } from 'mobx'
 import type { LiveDB } from './LiveDB'
 import type { LiveTable } from './LiveTable'
 import type { STATE } from 'src/state/state'
@@ -20,6 +21,7 @@ export interface LiveInstance<T extends BaseInstanceFields, L> {
     get createdAt(): T['createdAt']
     get updatedAt(): T['updatedAt']
     get tableName(): TableNameInDB
+    observabilityConfig?: { [key: string]: AnnotationMapEntry }
     onHydrate?: (data: T) => void
     onCreate?: (data: T) => void
     /** called on both hydrate and update (bad; need to be changed ❌) */

@@ -5,13 +5,13 @@ export const ui_latent_v3 = () => {
     const form: FormBuilder = getCurrentForm()
     return form.choice({
         appearance: 'tab',
-        label: 'Start from',
+        label: 'Latent Input',
         default: 'emptyLatent',
         items: {
             emptyLatent: () =>
                 form.group({
                     items: () => ({
-                        batchSize: form.int({ default: 1, min: 1, max: 8 }),
+                        batchSize: form.int({ step: 1, default: 1, min: 1, max: 8 }),
                         size: form.size({}),
                     }),
                 }),

@@ -1,26 +1,14 @@
-import { exec, execSync } from 'child_process'
-import { parser } from './grammar.parser'
+import { PromptAST } from './grammar.practical'
 
-console.log(parser.parse('one 2 "three"').toString())
-
-const test1 = `@a[1]`
 // (masterpiece, tree)x-0.8, (*color)x0.6 @"xl\pxll.safetensors"[.2,.8]`
-const parse1 = parser.parse(test1)
+const test1 = `@a[1] ?foo (baz, @test[-2,3])*1.2`
+// const start = Date.now()
+const expr = new PromptAST(test1)
+expr.print()
 
-parse1.iterate({
-    enter(nodeType) {
-        const icon =
-            nodeType.name === 'Number' //
-                ? '🔢'
-                : nodeType.name === 'Lora'
-                ? '🔵'
-                : '  '
-        console.log(`[${icon}] `, nodeType.name, nodeType.from, nodeType.to)
-        // if () {
-        //     console.log(`Error at position ${start}-${end}`)
-        // }
-    },
+expr.findAll('Lora').map((l) => {
+    console.log(`lora "${l.name}" has weight ${l.strength_clip} `)
 })
 
-// console.log(`[👙]`, parse1)
-// console.log(`[👙]`, parse1.toString())
+// const end = Date.now()
+// console.log(`[👙]`, end - start, 'ms')

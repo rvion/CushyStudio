@@ -18,7 +18,8 @@
 }
 /* ._TreeItemTitle */
 ._TreeUI ._selected {
-    background: oklch(var(--p)/.4);
+    background: oklch(var(--p)/.2);
+    outline: 1px solid oklch(var(--p)/.5);
 }
 
 ._TreeUI ._gutter {

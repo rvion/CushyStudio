@@ -12,8 +12,12 @@ export type Widget_number_config = WidgetConfigFields<{
     default?: number
     min?: number
     max?: number
+    softMin?: number
+    softMax?: number
     step?: number
+    text?: string
     hideSlider?: boolean
+    forceSnap?: boolean
 }>
 
 // SERIAL
@@ -38,6 +42,7 @@ export class Widget_number implements IWidget<Widget_number_types> {
     readonly isCollapsible = false
     readonly id: string
     readonly type: 'number' = 'number'
+    readonly forceSnap: boolean = false
 
     serial: Widget_number_serial
 

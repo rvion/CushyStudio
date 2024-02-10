@@ -47,25 +47,37 @@ export const MenuComfyUI = observer(function MenuComfyUI_(p: {}) {
                         key={host.id}
                     >
                         <div tw='flex-grow'>{host.data.name}</div>
-                        <div
-                            className='btn btn-xs'
-                            onClick={(ev) => {
-                                ev.preventDefault()
-                                ev.stopPropagation()
-                                st.layout.FOCUS_OR_CREATE('Hosts', { hostID: host.id })
-                            }}
-                        >
-                            <span className='material-symbols-outlined'>settings</span>
-                        </div>
-                        <div
-                            className='btn btn-xs'
-                            onClick={(ev) => {
-                                ev.preventDefault()
-                                ev.stopPropagation()
-                                st.layout.FOCUS_OR_CREATE('ComfyUI', { hostID: host.id }, 'full')
-                            }}
-                        >
-                            <span className='material-symbols-outlined'>open_in_full</span>
+                        <div className='join'>
+                            <div
+                                className='btn btn-xs'
+                                onClick={(ev) => {
+                                    ev.preventDefault()
+                                    ev.stopPropagation()
+                                    st.layout.FOCUS_OR_CREATE('Hosts', {})
+                                }}
+                            >
+                                <span className='material-symbols-outlined'>settings</span>
+                            </div>
+                            <div
+                                className='btn btn-xs'
+                                onClick={(ev) => {
+                                    ev.preventDefault()
+                                    ev.stopPropagation()
+                                    st.layout.FOCUS_OR_CREATE('ComfyUI', {})
+                                }}
+                            >
+                                <span className='material-symbols-outlined'>open_in_browser</span>
+                            </div>
+                            <div
+                                className='btn btn-xs'
+                                onClick={(ev) => {
+                                    ev.preventDefault()
+                                    ev.stopPropagation()
+                                    st.layout.FOCUS_OR_CREATE('ComfyUI', {}, 'full')
+                                }}
+                            >
+                                <span className='material-symbols-outlined'>open_in_full</span>
+                            </div>
                         </div>
                     </MenuItem>
                 )

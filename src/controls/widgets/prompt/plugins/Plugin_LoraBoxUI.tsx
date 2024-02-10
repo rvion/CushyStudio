@@ -1,59 +1,63 @@
 import { observer } from 'mobx-react-lite'
 import { openExternal } from 'src/app/layout/openExternal'
 import { WidgetPromptUISt } from 'src/controls/widgets/prompt/WidgetPromptUISt'
-import { MessageErrorUI, MessageInfoUI } from 'src/panels/MessageUI'
+import { Prompt_Lora } from 'src/controls/widgets/prompt/grammar/grammar.practical'
+import { MessageErrorUI } from 'src/panels/MessageUI'
 import { InputNumberUI } from 'src/rsuite/InputNumberUI'
 import { Button, Input } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
 
-export type LoraTextNode = {
-    loraName?: Enum_LoraLoader_lora_name
-    strength_clip?: number
-    strength_model?: number
-    namePos?: { from: number; to: number }
-    num1Pos?: { from: number; to: number }
-    num2Pos?: { from: number; to: number }
-}
-
-export const LoraBoxUI = observer(function LoraBoxUI_(p: {
+export const Plugin_LoraControlsUI = observer(function Plugin_LoraControlsUI_(p: {
     //
     uist: WidgetPromptUISt
-    def: LoraTextNode
+}) {
+    const uist = p.uist
+    return (
+        <>
+            {uist.loras.length === 0 && <div tw='italic text-gray-500'>No loras in prompt</div>}
+            {uist.loras.map((x) => {
+                return <LoraBoxUI uist={uist} def={x} onDelete={() => {}} />
+            })}
+        </>
+    )
+})
+
+const LoraBoxUI = observer(function LoraBoxUI_(p: {
+    //
+    uist: WidgetPromptUISt
+    def: Prompt_Lora
     onDelete: () => void
 }) {
-    const def = p.def
+    const node = p.def
     const st = useSt()
-    const loraName = def.loraName
+    const loraName = node.name
     if (loraName == null) return <MessageErrorUI>error parsing lora</MessageErrorUI>
     const loraMetadata = st.configFile.value?.loraPrompts?.[loraName]
     const associatedText = loraMetadata?.text ?? ''
     const associatedUrl = loraMetadata?.url ?? ''
     // const numbers = def.ref.node.getChildren('Number')
     return (
-        <div key={loraName} tw='bdl1'>
-            {def.loraName}
+        <div key={loraName}>
+            {node.name}
             <div tw='flex gap-1 items-center'>
                 <div tw='w-32'>model strength</div>
                 <div tw='flex items-center'>
                     <InputNumberUI
-                        value={def.strength_model ?? 1}
+                        value={node.strength_model ?? 1}
                         style={{ width: '4.5rem' }}
                         mode='float'
                         step={0.1}
                         min={-2}
                         max={2}
                         onValueChange={(v) => {
-                            const num1 = def.num1Pos
-                            if (num1) {
-                                p.uist.editorView?.dispatch({
-                                    changes: { from: num1.from, to: num1.to, insert: v.toString() },
-                                })
-                            } else {
-                                if (def.namePos == null) return
+                            const num1 = node.getChild('Number', 0)
+                            if (num1) num1.setNumber(v)
+                            else {
+                                if (node.nameEndsAt == null) return
                                 p.uist.editorView?.dispatch({
                                     changes: {
-                                        from: def.namePos?.to,
-                                        to: def.namePos?.to,
+                                        from: node.nameEndsAt,
+                                        to: node.nameEndsAt,
                                         insert: `[${v.toString()}]`,
                                     },
                                 })
@@ -66,24 +70,22 @@ export const LoraBoxUI = observer(function LoraBoxUI_(p: {
                 <div tw='w-32'>clip strength</div>
                 <div tw='flex items-center'>
                     <InputNumberUI
-                        value={def.strength_clip ?? 1}
+                        value={node.strength_clip ?? 1}
                         style={{ width: '4.5rem' }}
                         mode='float'
                         step={0.1}
                         min={-2}
                         max={2}
                         onValueChange={(v) => {
-                            const num2 = def.num2Pos
-                            if (num2) {
-                                p.uist.editorView?.dispatch({
-                                    changes: { from: num2.from, to: num2.to, insert: v.toString() },
-                                })
-                            } else {
-                                if (def.num1Pos == null) return
+                            const num2 = node.getChild('Number', 1)
+                            if (num2) num2.setNumber(v)
+                            else {
+                                const num1 = node.getChild('Number', 0)
+                                if (num1 == null) return
                                 p.uist.editorView?.dispatch({
                                     changes: {
-                                        from: def.num1Pos?.to,
-                                        to: def.num1Pos?.to,
+                                        from: num1.to,
+                                        to: num1.to,
                                         insert: `,${v.toString()}`,
                                     },
                                 })

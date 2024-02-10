@@ -17,7 +17,7 @@ export const Panel_Config = observer(function Panel_Config_() {
             <div tw='flex flex-col gap-1'>
                 <FieldUI label='Comfig file path'>
                     <pre tw='bg-base-200 rounded-btn px-2'>{config.path}</pre>
-                    <div className='btn btn-sm btn-link' onClick={() => openInVSCode(config.path)}>
+                    <div className='btn btn-sm btn-link' onClick={() => openInVSCode(st, config.path)}>
                         open <span className='material-symbols-outlined text-sm'>open_in_new</span>
                     </div>
                 </FieldUI>
@@ -28,6 +28,17 @@ export const Panel_Config = observer(function Panel_Config_() {
                         value={config.get('tagFile') ?? 'completions/danbooru.csv'}
                         onChange={(ev) => {
                             config.update({ tagFile: ev.target.value })
+                            st.updateTsConfig()
+                        }}
+                    />
+                </FieldUI>
+                <FieldUI label='Set vscode Binary Name (code, codium, ...)'>
+                    <input
+                        tw='input input-bordered input-sm w-full'
+                        name='vscodeBinaryName'
+                        value={config.get('vscodeBinaryName') ?? 'code'}
+                        onChange={(ev) => {
+                            config.update({ vscodeBinaryName: ev.target.value })
                             st.updateTsConfig()
                         }}
                     />

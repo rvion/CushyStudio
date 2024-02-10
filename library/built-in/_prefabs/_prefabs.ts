@@ -39,9 +39,9 @@ export const ui_highresfix = (p: { activeByDefault?: true } = {}) => {
                     'regular upscale add more noise, depend your objective. for a second pass to refine stuff, I think adding noise is better',
             }),
 
-            scaleFactor: form.float({ default: 1.5, min: 0.5, max: 8, step: 0.1 }),
-            steps: form.int({ default: 15 }),
-            denoise: form.float({ min: 0, default: 0.6, max: 1, step: 0.01 }),
+            scaleFactor: form.float({ default: 1.5, min: 0.5, max: 8, step: 1 }),
+            steps: form.int({ default: 15, min: 0, softMax: 100, step: 10 }),
+            denoise: form.float({ min: 0, default: 0.6, max: 1, step: 0.1 }),
             saveIntermediaryImage: form.bool({ default: true }),
             useMainSampler: form.bool({ default: true }),
         }),

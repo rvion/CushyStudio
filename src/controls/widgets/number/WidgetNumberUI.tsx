@@ -16,8 +16,12 @@ export const WidgetNumberUI = observer(function WidgetNumberUI_(p: { widget: Wid
             hideSlider={widget.config.hideSlider}
             max={widget.config.max}
             min={widget.config.min}
+            softMin={widget.config.softMin}
+            softMax={widget.config.softMax}
             step={step}
+            text={widget.config.text}
             onValueChange={(next) => (widget.serial.val = next)}
+            forceSnap={widget.config.forceSnap}
         />
     )
 })

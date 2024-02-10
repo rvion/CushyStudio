@@ -10,6 +10,7 @@ import { runWithGlobalForm } from 'src/models/_ctx2'
 import { WidgetDI } from '../WidgetUI.DI'
 import { boardDefaultItemShape } from './WidgetListExtTypes'
 import { hash } from 'ohash'
+import { ResolutionState } from '../size/ResolutionState'
 
 // CONFIG
 export type Widget_listExt_config<T extends Widget> = WidgetConfigFields<{
@@ -55,6 +56,12 @@ export class Widget_listExt<T extends Widget> implements IWidget<Widget_listExt_
     readonly isCollapsible = true
     readonly id: string
     readonly type: 'listExt' = 'listExt'
+
+    get sizeHelper(): ResolutionState {
+        const state = new ResolutionState(this.serial) // should only be executed once
+        Object.defineProperty(this, 'sizeHelper', { value: state })
+        return state
+    }
 
     entries: { widget: T; position: BoardPosition }[] = []
     serial: Widget_listExt_serial<T>
@@ -106,7 +113,7 @@ export class Widget_listExt<T extends Widget> implements IWidget<Widget_listExt_
         const missingItems = (this.config.min ?? 0) - this.entries.length
         for (let i = 0; i < missingItems; i++) this.addItem()
 
-        makeAutoObservable(this)
+        makeAutoObservable(this, { sizeHelper: false })
     }
 
     // HELPERS =======================================================

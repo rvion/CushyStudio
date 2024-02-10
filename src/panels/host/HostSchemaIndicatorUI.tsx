@@ -16,6 +16,7 @@ export const HostSchemaIndicatorUI = observer(function HostSchemaIndicatorUI_(p:
         <RevealUI showDelay={0}>
             <div tw='flex'>
                 {host.schema == null ? '🔴' : null}
+
                 {/* LAST UPDATE */}
                 {host.schemaUpdateResult ? (
                     host.schemaUpdateResult.type === 'error' ? (
@@ -56,6 +57,9 @@ export const HostSchemaIndicatorUI = observer(function HostSchemaIndicatorUI_(p:
                     </Message>
                 )}
                 <pre>{host.schemaRetrievalLogs.join('\n')}</pre>
+                <div tw='btn btn-sm btn-warning flex-1' onClick={() => host.getComfyUIManager()?.rebootComfyUI()}>
+                    Restart ComfyUI
+                </div>
             </div>
         </RevealUI>
     )

@@ -8,16 +8,18 @@ import { QuickHostActionsUI } from 'src/wiki/ui/QuickHostActionsUI'
 export const InstallModelBtnUI = observer(function InstallModelBtnUI_(p: {
     // widget: Widget_enum<K> | Widget_enumOpt<K>
     // modelFolderPrefix: string
-    models: RecommendedModelDownload
+    models?: RecommendedModelDownload
 }) {
     const st = useSt()
+    if (p.models == null) return null
+
     const x = p.models
     const models = extractDownloadCandidates(x)
     if (models.length === 0) return null
     return (
         <RevealUI>
-            <div tw='btn btn-square btn-sm'>
-                <span className='material-symbols-outlined'>cloud_download</span>
+            <div tw='btn btn-square btn-ghost btn-sm opacity-50'>
+                <span className='material-symbols-outlined'>scatter_plot</span>
             </div>
             <div tw='flex flex-col flex-wrap gap-1'>
                 <QuickHostActionsUI />

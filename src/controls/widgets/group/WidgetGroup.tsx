@@ -1,5 +1,4 @@
 import type { Widget } from 'src/controls/Widget'
-import type { ComfySchemaL } from 'src/models/Schema'
 import type { FormBuilder } from '../../FormBuilder'
 import type { GetWidgetResult, IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../../IWidget'
 
@@ -8,7 +7,6 @@ import { nanoid } from 'nanoid'
 import { runWithGlobalForm } from 'src/models/_ctx2'
 import { bang } from 'src/utils/misc/bang'
 import { WidgetDI } from '../WidgetUI.DI'
-import { hash } from 'ohash'
 
 // CONFIG
 export type Widget_group_config<T extends { [key: string]: Widget }> = WidgetConfigFields<{
@@ -16,7 +14,7 @@ export type Widget_group_config<T extends { [key: string]: Widget }> = WidgetCon
     items?: () => T
     topLevel?: boolean
     /** if provided, will be used to show a single line summary on the inline form slot */
-    summary?: (items: T) => string
+    summary?: (items: { [k in keyof T]: GetWidgetResult<T[k]> }) => string
 }>
 
 // SERIAL
@@ -42,6 +40,9 @@ export type Widget_group_types<T extends { [key: string]: Widget }> = {
 // STATE
 export interface Widget_group<T extends { [key: string]: Widget }> extends WidgetTypeHelpers<Widget_group_types<T>> {}
 export class Widget_group<T extends { [key: string]: Widget }> implements IWidget<Widget_group_types<T>> {
+    get summary(): string {
+        return this.config.summary?.(this.result) ?? Object.keys(this.values).length + ' items'
+    }
     get serialHash(): string {
         return Object.values(this.values)
             .map((v: Widget) => v.serialHash)

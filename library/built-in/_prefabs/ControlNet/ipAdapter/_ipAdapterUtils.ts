@@ -4,10 +4,11 @@ import { ipAdapter_faceID_ClipModelList } from './_ipAdapterModelList'
 // 🅿️ IPAdapter Common FORM ===================================================
 export const ui_subform_IPAdapter_common = (form: FormBuilder, defaultStrength: number = 1) => ({
     strength: form.float({ default: defaultStrength, min: 0, max: 2, step: 0.1 }),
-    crop: form.bool({ default: true }),
-    advanced: form.groupOpt({
-        label: 'Advanced',
+    settings: form.group({
+        label: 'Settings',
+        startCollapsed: true,
         items: () => ({
+            crop: form.bool({ default: true }),
             startAtStepPercent: form.float({ default: 0, min: 0, max: 1, step: 0.1 }),
             endAtStepPercent: form.float({ default: 1, min: 0, max: 1, step: 0.1 }),
             noise: form.float({ default: 0, min: 0, max: 1, step: 0.1 }),
@@ -19,7 +20,7 @@ export const ui_subform_IPAdapter_common = (form: FormBuilder, defaultStrength: 
 //🅿️ IPAdapter CLIP Selection ===================================================
 export const ui_ipadapter_CLIPSelection = (form: FormBuilder) => ({
     clip_name: form.enum.Enum_CLIPVisionLoader_clip_name({
-        default: 'SD1.5\\CLIP-ViT-H-14-laion2B-s32B-b79K.safetensors',
+        default: 'CLIP-ViT-H-14-laion2B-s32B-b79K.safetensors',
         recommandedModels: {
             modelFolderPrefix: 'models/clip_vision',
             knownModel: ipAdapter_faceID_ClipModelList,

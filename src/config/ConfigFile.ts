@@ -20,6 +20,9 @@ export type ConfigFile = {
         }
     }
 
+    /** defaults to `code`, but a little bird once told me it could be `codium` */
+    vscodeBinaryName?: string
+
     /** prefer dense form */
     preferedFormLayout?: PreferedFormLayout
     ['draft.mockup-mobile']?: boolean
@@ -78,6 +81,14 @@ export type ConfigFile = {
     // bad place to store that
     stars?: { [actionPackName: string]: { at: Timestamp; stars: number } }
     packs?: { [actionPackName: string]: { installed: boolean } }
+    // ----------------------
+
+    showPromptPluginPreview?: boolean
+    showPromptPluginReorder?: boolean
+    showPromptPluginWeights?: boolean
+    showPromptPluginLora?: boolean
+    showPromptPluginAst?: boolean
+    showPromptPluginShortcuts?: boolean
 }
 
 export type ReleaseChannels = 'stable' | 'dev'

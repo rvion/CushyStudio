@@ -1,4 +1,3 @@
-import type { ComfySchemaL } from 'src/models/Schema'
 import type { FormBuilder } from '../../FormBuilder'
 import type { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../../IWidget'
 import type { Widget } from '../../Widget'
@@ -7,7 +6,6 @@ import { makeAutoObservable, observable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { runWithGlobalForm } from 'src/models/_ctx2'
 import { WidgetDI } from '../WidgetUI.DI'
-import { hash } from 'ohash'
 
 // CONFIG
 export type Widget_list_config<T extends Widget> = WidgetConfigFields<{
