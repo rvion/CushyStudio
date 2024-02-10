@@ -6,6 +6,9 @@ import type { OutputFor } from './_prefabs'
 export const ui_sampler = () => {
     const form: FormBuilder = getCurrentForm()
     return form.group({
+        summary: (ui) => {
+            return `denoise=${ui.denoise} steps=${ui.steps} cfg=${ui.cfg}`
+        },
         items: () => ({
             denoise: form.float({ step: 0.1, min: 0, max: 1, default: 1, label: 'Denoise' }),
             steps: form.int({ step: 10, default: 20, label: 'Steps', min: 0, softMax: 100 }),
