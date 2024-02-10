@@ -1,6 +1,7 @@
 import { observable, runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { useEffect, useState } from 'react'
+import { useSt } from 'src/state/stateContext'
 import { parseFloatNoRoundingErr } from 'src/utils/misc/parseFloatNoRoundingErr'
 
 const clamp = (x: number, min: number, max: number) => Math.max(min, Math.min(max, x))
@@ -39,6 +40,8 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
     const forceSnap = p.forceSnap ?? false
     const rangeMin = p.softMin ?? p.min ?? -Infinity
     const rangeMax = p.softMax ?? p.max ?? Infinity
+
+    const numberSliderSpeed = useSt().configFile.get('numberSliderSpeed') ?? 1
 
     /* Used for making sure you can type whatever you want in to the value, but it gets validated when pressing Enter. */
     const [inputValue, setInputValue] = useState<string>(val.toString())
@@ -86,7 +89,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
         cumulativeOffset += e.movementX
 
         let precision = (e.shiftKey ? 0.001 : 0.01) * step
-        let offset = cumulativeOffset * precision
+        let offset = numberSliderSpeed * cumulativeOffset * precision
 
         const next = startValue + offset
         // Parse value

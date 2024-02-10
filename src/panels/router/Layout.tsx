@@ -366,8 +366,13 @@ export class CushyLayoutManager {
                     type: 'border',
                     location: 'right',
                     show: true,
-                    // selected: 0,
-                    children: [],
+                    selected: 0,
+                    size: 150,
+                    children: [
+                        //
+                        this._add({ panel: 'Gallery', props: {} }),
+                        this._add({ panel: 'Steps', props: {}, canClose: false }),
+                    ],
                 },
             ],
             layout: {
@@ -377,14 +382,14 @@ export class CushyLayoutManager {
                     {
                         id: 'leftPane',
                         type: 'row',
-                        width: 100,
+                        width: 512,
                         children: [
                             {
                                 type: 'tabset',
                                 id: LEFT_PANE_TABSET_ID,
                                 minWidth: 150,
                                 minHeight: 150,
-                                width: 400,
+                                width: 512,
                                 enableClose: false,
                                 enableDeleteWhenEmpty: false,
                                 children: [this._add({ panel: 'Welcome', props: {}, width: 512 })],
@@ -407,35 +412,35 @@ export class CushyLayoutManager {
                                 selected: 1,
                                 children: [
                                     this._add({ panel: 'Output', props: {}, canClose: false }),
-                                    this._add({ panel: 'Hosts', props: {}, canClose: false }),
+                                    // this._add({ panel: 'Hosts', props: {}, canClose: false }),
                                 ],
                             },
                         ],
                     },
-                    {
-                        id: 'rightsidePane',
-                        type: 'row',
-                        weight: 10,
-                        width: 300,
-                        children: [
-                            {
-                                type: 'tabset',
-                                // height: 256,
-                                width: 300,
-                                minWidth: 100,
-                                minHeight: 100,
-                                children: [this._add({ panel: 'Gallery', props: {} })],
-                            },
-                            {
-                                type: 'tabset',
-                                // height: 256,
-                                width: 300,
-                                minWidth: 100,
-                                minHeight: 100,
-                                children: [this._add({ panel: 'Steps', props: {}, canClose: false })],
-                            },
-                        ],
-                    },
+                    // {
+                    //     id: 'rightsidePane',
+                    //     type: 'row',
+                    //     weight: 10,
+                    //     width: 300,
+                    //     children: [
+                    //         {
+                    //             type: 'tabset',
+                    //             // height: 256,
+                    //             width: 300,
+                    //             minWidth: 100,
+                    //             minHeight: 100,
+                    //             children: [this._add({ panel: 'Gallery', props: {} })],
+                    //         },
+                    //         // {
+                    //         //     type: 'tabset',
+                    //         //     // height: 256,
+                    //         //     width: 300,
+                    //         //     minWidth: 100,
+                    //         //     minHeight: 100,
+                    //         //     children: [this._add({ panel: 'Steps', props: {}, canClose: false })],
+                    //         // },
+                    //     ],
+                    // },
                 ],
             },
         }

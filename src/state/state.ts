@@ -155,6 +155,10 @@ export class STATE {
         const ipcRenderer = window.require('electron').ipcRenderer
         ipcRenderer.send('resize-for-video-capture')
     }
+    resizeWindowForLaptop = () => {
+        const ipcRenderer = window.require('electron').ipcRenderer
+        ipcRenderer.send('resize-for-laptop')
+    }
 
     partialReset_eraseConfigAndSchemaFiles = () => {
         this.configFile.erase()

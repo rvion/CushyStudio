@@ -22,8 +22,9 @@ export const KEYS = {
 
     // draft actions
     duplicateCurrentDraft: 'mod+shift+d',
-    resizeWindowForVideoCapture: 'mod+u mod+1',
-    resetLayout: 'mod+u mod+2',
+    resizeWindowForVideoCapture: 'mod+u mod+2',
+    resizeWindowForLaptop: 'mod+u mod+3',
+    resetLayout: 'mod+u mod+1',
 
     // tree actions
     // global

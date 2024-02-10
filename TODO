@@ -1,5 +1,5 @@
 ☐ filter enum values: highlight + sort
-☐ boolean perperly placed as input
+✔ boolean perperly placed as input @done(24-02-10 20:35)
 ☐ unify the download model / custom nodes
     ☐ single button
     ☐ shown in red if missing
@@ -8,9 +8,6 @@
 ☐ error messages
 ☐ CushyDiffusion: ip adapter top level
 ☐ simplify UI:: panel step for instance, is taking too much space; and gallery is annoyingly placed.
-
-------------------
-
 ☐ delete image from right click
 ☐ add restart button in the top left scehma appbar blabla for quick comfy restart
 ☐ fix the regional widget using the new approach.

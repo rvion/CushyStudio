@@ -74,6 +74,10 @@ export const shortcutsDef: Shortcut<STATE>[] = [
         st.resizeWindowForVideoCapture()
         return Trigger.Success
     }),
+    simpleValidInInput(KEYS.resizeWindowForLaptop, 'Resize Window for video capture', (st) => {
+        st.resizeWindowForLaptop()
+        return Trigger.Success
+    }),
     simpleValidInInput(KEYS.resetLayout, 'Reset layout', (st) => {
         st.layout.resetCurrent()
         // const lastDraft = st.db.drafts.last()

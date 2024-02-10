@@ -31,6 +31,9 @@ export type ConfigFile = {
     /* list of all comfyUI setup available */
     // comfyUIHosts?: ComfyHostDef[]
 
+    /** default: 1 */
+    numberSliderSpeed?: number
+
     mainComfyHostID?: Maybe<HostID>
     enableTypeCheckingBuiltInApps?: boolean
     /** 'light' or 'dark'; default to dark */

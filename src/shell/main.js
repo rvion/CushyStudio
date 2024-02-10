@@ -78,6 +78,10 @@ async function START() {
         const focusedWindow = BrowserWindow.getFocusedWindow()
         if (focusedWindow) focusedWindow.setSize(1920, 1080)
     })
+    ipcMain.on('resize-for-laptop', (event, arg) => {
+        const focusedWindow = BrowserWindow.getFocusedWindow()
+        if (focusedWindow) focusedWindow.setSize(1280, 720)
+    })
     ipcMain.on('toggle-devtools', (event, arg) => {
         const focusedWindow = BrowserWindow.getFocusedWindow()
         if (focusedWindow) focusedWindow.webContents.toggleDevTools()

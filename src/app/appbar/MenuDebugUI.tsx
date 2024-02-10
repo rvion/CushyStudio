@@ -23,7 +23,13 @@ export const MenuDebugUI = observer(function MenuDebugUI_(p: {}) {
                 icon={<span className='material-symbols-outlined text-green-500'>panorama_horizontal</span>}
                 onClick={st.resizeWindowForVideoCapture}
                 shortcut={KEYS.resizeWindowForVideoCapture}
-                label='set screen size to 1920x1080'
+                label='set screen size to 1920 x 1080'
+            />
+            <MenuItem
+                icon={<span className='material-symbols-outlined text-green-500'>panorama_horizontal</span>}
+                onClick={st.resizeWindowForLaptop}
+                shortcut={KEYS.resizeWindowForLaptop}
+                label='set screen size to 1280 x 720'
             />
             <MenuItem //
                 icon={<span className='material-symbols-outlined text-green-500'>bug_report</span>}

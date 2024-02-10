@@ -75,6 +75,17 @@ export const Panel_Config = observer(function Panel_Config_() {
                         onValueChange={(val) => config.update({ galleryImageSize: val })}
                     />
                 </FieldUI>
+                <FieldUI label='Number slider speed multiplier'>
+                    <InputNumberUI //
+                        placeholder='Number slider speed multiplier'
+                        softMin={0.3}
+                        softMax={3}
+                        step={0.1}
+                        value={config.value.numberSliderSpeed ?? 1}
+                        mode='float'
+                        onValueChange={(val) => config.update({ numberSliderSpeed: val })}
+                    />
+                </FieldUI>
                 <FieldUI label='Enable TypeChecking Default Apps'>
                     <Toggle
                         onChange={(t) => config.update({ enableTypeCheckingBuiltInApps: t.target.checked })}
