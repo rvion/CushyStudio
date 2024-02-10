@@ -1,6 +1,11 @@
-import { KonvaEventObject } from 'konva/lib/Node'
+import type { KonvaEventObject } from 'konva/lib/Node'
+import type { UnifiedCanvas } from '../states/UnifiedCanvas'
 
-export const onWheelScrollCanvas = (e: KonvaEventObject<WheelEvent>) => {
+export const onWheelScrollCanvas = (
+    //
+    canvas: UnifiedCanvas,
+    e: KonvaEventObject<WheelEvent>,
+) => {
     const stage = e.target.getStage()
     if (stage == null) return console.warn(`🔶 missing stage`)
     console.log(`[👙] stage`, stage)
@@ -37,6 +42,8 @@ export const onWheelScrollCanvas = (e: KonvaEventObject<WheelEvent>) => {
         x: pointer.x - mousePointTo.x * newScale,
         y: pointer.y - mousePointTo.y * newScale,
     }
+    canvas.infos.canvasX = newPos.x
+    canvas.infos.canvasY = newPos.y
     console.log(`[👙] newPos`, newPos)
     stage.position(newPos)
 }

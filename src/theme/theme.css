@@ -1,3 +1,14 @@
+/*
+@font-face {
+    font-family: 'inter';
+    src: url('/Inter-VariableFont_slnt,wght.ttf') format("truetype-variations");
+    font-weight: 1 999;
+}
+body {
+    font-family: 'inter';
+}
+*/
+
 /* FORM STYLING ----------------------------------- */
 .WIDGET-BLOCK .WIDGET-GROUP {
     /* border-left: 1px solid oklch(var(--p)/.2); */
@@ -171,8 +182,9 @@ input::-webkit-inner-spin-button {
     display: none;
 } */
 
-input.input-sm {
-    background-color: oklch(var( --p)/.15) !important; }
+input.input {
+    background-color: oklch(var( --p)/.15) !important;
+}
 .relative-slider progress[value]::-webkit-progress-bar {
     background-color: var(--input-number-ui-bg);
     appearance: none;

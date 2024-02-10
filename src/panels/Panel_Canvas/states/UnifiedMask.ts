@@ -12,10 +12,13 @@ import { bang } from 'src/utils/misc/bang'
 import { nanoid } from 'nanoid'
 
 export class UnifiedMask {
-    st: STATE
-    layer: Layer
+    readonly st: STATE
+    readonly layer: Layer
+    readonly uid = nanoid(4)
+    name: string = `mask-${this.uid}`
+
     image: Maybe<Image> = null
-    uid = nanoid(4)
+
     constructor(
         //
         public canvas: UnifiedCanvas,
@@ -45,23 +48,31 @@ export class UnifiedMask {
 export const setupStageForPainting = (canvas: UnifiedCanvas) => {
     const stage: Stage = canvas.stage
     stage.on('mousedown touchstart', function (e) {
-        const layer = canvas.activeMask?.layer
-        if (layer == null) return console.log(`[⁉️] paint failed: no canvas.activeMask.layer`)
-        canvas._isPaint = true
-        var pos = stage.getPointerPosition()
+        // 1. ensure pointer
+        var pos = canvas.pointerPosition
         if (pos == null) return console.log(`[⁉️] paint failed: no cursor position`)
-        canvas._lastLine = new Konva.Line({
-            // stroke: '#df4b26',
-            stroke: canvas.maskColor, // 🔴
-            strokeWidth: canvas.maskToolSize,
-            globalCompositeOperation: canvas.maskTool === 'paint' ? 'source-over' : 'destination-out',
-            // round cap for smoother lines
-            lineCap: 'round',
-            lineJoin: 'round',
-            // add point twice, so we have some drawings even on a simple click
-            points: [pos.x, pos.y, pos.x, pos.y],
-        })
-        layer.add(canvas._lastLine)
+
+        if (canvas.mode === 'mask') {
+            // 2. ensure active mask
+            const layer = canvas.activeMask?.layer
+            if (layer == null) return console.log(`[⁉️] paint failed: no canvas.activeMask.layer`)
+
+            // 3. start drawing
+            canvas._isPaint = true
+            canvas._lastLine = new Konva.Line({
+                // stroke: '#df4b26',
+                stroke: canvas.maskColor, // 🔴
+                strokeWidth: canvas.maskToolSize,
+                globalCompositeOperation: canvas.maskTool === 'paint' ? 'source-over' : 'destination-out',
+                // round cap for smoother lines
+                lineCap: 'round',
+                lineJoin: 'round',
+                // add point twice, so we have some drawings even on a simple click
+                points: [pos.x, pos.y, pos.x, pos.y],
+            })
+
+            layer.add(canvas._lastLine)
+        }
     })
 
     stage.on('mouseup touchend', function () {
@@ -78,8 +89,8 @@ export const setupStageForPainting = (canvas: UnifiedCanvas) => {
         const pos__ = stage.getPointerPosition()
         if (pos__ == null) return console.log(`[⁉️] pos is null`)
         const pos = {
-            x: pos__.x + stage.x(),
-            y: pos__.y + stage.y(),
+            x: canvas.infos.viewPointerX,
+            y: canvas.infos.viewPointerY,
         }
         var newPoints = bang(canvas._lastLine).points().concat([pos.x, pos.y])
         bang(canvas._lastLine).points(newPoints)

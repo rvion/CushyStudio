@@ -3,35 +3,35 @@ import Konva from 'konva'
 
 export class KonvaGrid1 {
     constructor(public canvas: UnifiedCanvas) {
+        const cellSize = 64 // stage.width() / xSnaps
         const stage = canvas.stage
-        const layer = new Konva.Layer()
+        const layer = new Konva.Layer({
+            imageSmoothingEnabled: false,
+        })
         stage.add(layer)
 
-        const xSnaps = 10 // Math.round(stage.width() / 100)
-        const ySnaps = 10 // Math.round(stage.height() / 100)
-        const cellWidth = 64 // stage.width() / xSnaps
-        const cellHeight = 64 // stage.height() / ySnaps
-
-        for (var i = 0; i < xSnaps; i++) {
-            layer.add(
-                new Konva.Line({
-                    x: i * cellWidth,
-                    points: [0, 0, 0, stage.height()],
-                    stroke: 'rgba(255, 255, 255, 0.4)',
-                    strokeWidth: 1,
-                }),
-            )
+        const _canvas = document.createElement('canvas')
+        _canvas.width = 200
+        _canvas.height = 200
+        const ctx = _canvas.getContext('2d')!
+        for (var x = 0; x < 200; x++) {
+            for (var y = 0; y < 200; y++) {
+                ctx.fillStyle =
+                    (x + y) % 2 === 0 //
+                        ? '#656565'
+                        : '#404040'
+                ctx.fillRect(x, y, 1, 1)
+            }
         }
 
-        for (var i = 0; i < ySnaps; i++) {
-            layer.add(
-                new Konva.Line({
-                    y: i * cellHeight,
-                    points: [0, 0, stage.width(), 0],
-                    stroke: 'rgba(255, 255, 255, 0.4)',
-                    strokeWidth: 1,
-                }),
-            )
-        }
+        layer.add(
+            new Konva.Image({
+                x: -100 * cellSize,
+                y: -100 * cellSize,
+                image: _canvas,
+                width: 200 * cellSize,
+                height: 200 * cellSize,
+            }),
+        )
     }
 }

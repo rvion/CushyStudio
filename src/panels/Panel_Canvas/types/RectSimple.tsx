@@ -6,3 +6,14 @@ export type RectSimple = {
     scaleX: number
     scaleY: number
 }
+
+export type UnifiedCanvasViewInfos = {
+    canvasX: number
+    canvasY: number
+    viewportPointerX: number
+    viewportPointerY: number
+    viewPointerX: number
+    viewPointerY: number
+    scale: number
+    isDown: boolean
+}
