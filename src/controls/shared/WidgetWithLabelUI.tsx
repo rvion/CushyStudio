@@ -29,6 +29,13 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     if (widget instanceof KLS.Widget_group && Object.keys(widget.values).length === 0) return
     const className = '' // `${clsX} __${widget.type} ${levelClass} flex flex-col items-baseline`
 
+    const onLineClick = () => {
+        if (widget.serial.collapsed) return (widget.serial.collapsed = false)
+        if (isCollapsible) {
+            if (widget.serial.collapsed) widget.serial.collapsed = false
+            else widget.serial.collapsed = true
+        }
+    }
     return (
         <div
             tw={[
@@ -42,18 +49,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
         >
             <AnimatedSizeUI>
                 {/* LINE */}
-                <div
-                    tw='WIDGET-LINE flex items-center gap-0.5'
-                    onClick={() => {
-                        if (widget.serial.collapsed) return (widget.serial.collapsed = false)
-                        if (isCollapsible) {
-                            if (widget.serial.collapsed) widget.serial.collapsed = false
-                            else widget.serial.collapsed = true
-                        }
-                        // if (!widget.serial.active) return (widget.serial.active = true)
-                        // widget.serial.collapsed = true
-                    }}
-                >
+                <div tw='WIDGET-LINE flex items-center gap-0.5'>
                     {(collapsed || isCollapsible) && <Widget_CollapseBtnUI widget={p.widget} />}
                     <span
                         tw={[
@@ -80,7 +76,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                         {p.widget.config.recommandedModels && <InstallModelBtnUI models={p.widget.config.recommandedModels} />}
                         <InstallCustomNodeBtnUI recomandation={p.widget.config} />
                         {widget.config.tooltip && <WidgetTooltipUI widget={p.widget} />}
-                        <span style={{ lineHeight: '1rem' }}>
+                        <span onClick={onLineClick} style={{ lineHeight: '1rem' }}>
                             {widget.config.label ?? makeLabelFromFieldName(p.rootKey) ?? '...'}
                         </span>
                         {/* {widget.serial.collapsed ? <span className='material-symbols-outlined'>keyboard_arrow_right</span> : null} */}
