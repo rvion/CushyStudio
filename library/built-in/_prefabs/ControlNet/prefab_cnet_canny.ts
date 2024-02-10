@@ -4,25 +4,32 @@ import type { FormBuilder } from 'src'
 
 // 🅿️ Canny FORM ===================================================
 export const ui_subform_Canny = () => {
-    const form = getCurrentForm()
+    const form: FormBuilder = getCurrentForm()
     return form.group({
         label: 'Canny',
         customNodesByTitle: 'ComfyUI-Advanced-ControlNet',
         items: () => ({
             ...cnet_ui_common(form),
             preprocessor: ui_subform_Canny_Preprocessor(form),
-            cnet_model_name: form.enum.Enum_ControlNetLoader_control_net_name({
-                label: 'Model',
-                default: 'control_v11p_sd15_canny_fp16.safetensors',
-                recommandedModels: {
-                    knownModel: [
-                        'T2I-Adapter (canny)',
-                        'ControlNet-v1-1 (canny; fp16)',
-                        'stabilityai/control-lora-canny-rank128.safetensors',
-                        'stabilityai/control-lora-canny-rank256.safetensors',
-                        'kohya-ss/ControlNet-LLLite: SDXL Canny Anime',
-                    ],
-                },
+            models: form.group({
+                label: 'Select or Download Models',
+                startCollapsed: true,
+                items: () => ({
+                    cnet_model_name: form.enum.Enum_ControlNetLoader_control_net_name({
+                        label: 'Model',
+                        default: 't2iadapter_canny_sd14v1.pth',
+                        filter: (name) => name.toString().includes('canny'),
+                        recommandedModels: {
+                            knownModel: [
+                                'T2I-Adapter (canny)',
+                                'ControlNet-v1-1 (canny; fp16)',
+                                'stabilityai/control-lora-canny-rank128.safetensors',
+                                'stabilityai/control-lora-canny-rank256.safetensors',
+                                'kohya-ss/ControlNet-LLLite: SDXL Canny Anime',
+                            ],
+                        },
+                    }),
+                }),
             }),
         }),
     })
@@ -32,17 +39,13 @@ export const ui_subform_Canny_Preprocessor = (form: FormBuilder) => {
     return form.groupOpt({
         label: 'Canny Edge Preprocessor',
         startActive: true,
+        startCollapsed: true,
         items: () => ({
-            advanced: form.groupOpt({
-                label: 'Advanced Preprocessor Settings',
-                items: () => ({
-                    ...cnet_preprocessor_ui_common(form),
-                    lowThreshold: form.int({ default: 100, min: 0, max: 200, step: 10 }),
-                    highThreshold: form.int({ default: 200, min: 0, max: 400, step: 10 }),
-                    // TODO: Add support for auto-modifying the resolution based on other form selections
-                    // TODO: Add support for auto-cropping
-                }),
-            }),
+            ...cnet_preprocessor_ui_common(form),
+            lowThreshold: form.int({ default: 100, min: 0, max: 200, step: 10 }),
+            highThreshold: form.int({ default: 200, min: 0, max: 400, step: 10 }),
+            // TODO: Add support for auto-modifying the resolution based on other form selections
+            // TODO: Add support for auto-cropping
         }),
     })
 }
@@ -58,18 +61,18 @@ export const run_cnet_canny = (
 } => {
     const run = getCurrentRun()
     const graph = run.nodes
-    const cnet_name = canny.cnet_model_name
+    const cnet_name = canny.models.cnet_model_name
 
     // PREPROCESSOR - CANNY ===========================================================
     if (canny.preprocessor) {
         var canPP = canny.preprocessor
         image = graph.CannyEdgePreprocessor({
             image: image,
-            low_threshold: canPP.advanced?.lowThreshold ?? 100,
-            high_threshold: canPP.advanced?.highThreshold ?? 200,
+            low_threshold: canPP.lowThreshold,
+            high_threshold: canPP.highThreshold,
             resolution: resolution,
         })._IMAGE
-        if (canPP.advanced?.saveProcessedImage) graph.SaveImage({ images: image, filename_prefix: 'cnet\\canny\\' })
+        if (canPP.saveProcessedImage) graph.SaveImage({ images: image, filename_prefix: 'cnet\\canny\\' })
         else graph.PreviewImage({ images: image })
     }
 

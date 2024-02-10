@@ -13,9 +13,15 @@ export const ui_subform_IPAdapter = () => {
         customNodesByTitle: ['ComfyUI_IPAdapter_plus'],
         items: () => ({
             help: form.markdown({ startCollapsed: true, markdown: ipAdapterDoc }),
-            ...ui_ipadapter_CLIPSelection(form),
-            ...ui_ipadapter_modelSelection(form, 'ip-adapter-faceid-plus_sd15.bin' as any, ipAdapterModelList),
             ...ui_subform_IPAdapter_common(form),
+            models: form.group({
+                label: 'Select or Download Models',
+                startCollapsed: true,
+                items: () => ({
+                    ...ui_ipadapter_CLIPSelection(form),
+                    ...ui_ipadapter_modelSelection(form, 'ip-adapter-faceid-plus_sd15.bin' as any, ipAdapterModelList),
+                }),
+            }),
         }),
     })
 }
@@ -39,19 +45,19 @@ export const run_cnet_IPAdapter = (
         crop_position: 'center',
         sharpening: 0,
     })._IMAGE
-    const ip_model = graph.IPAdapterModelLoader({ ipadapter_file: ip.cnet_model_name })
-    const ip_clip_name = graph.CLIPVisionLoader({ clip_name: ip.clip_name })
+    const ip_model = graph.IPAdapterModelLoader({ ipadapter_file: ip.models.cnet_model_name })
+    const ip_clip_name = graph.CLIPVisionLoader({ clip_name: ip.models.clip_name })
     const ip_adapted_model = graph.IPAdapterApply({
         ipadapter: ip_model,
         clip_vision: ip_clip_name,
         image: image,
         model: cnet_args.ckptPos,
         weight: ip.strength,
-        noise: ip.advanced?.noise ?? 0,
+        noise: ip.settings.noise,
         weight_type: 'original',
-        start_at: ip.advanced?.startAtStepPercent ?? 0,
-        end_at: ip.advanced?.endAtStepPercent ?? 1,
-        unfold_batch: ip.advanced?.unfold_batch ?? false,
+        start_at: ip.settings.startAtStepPercent,
+        end_at: ip.settings.endAtStepPercent,
+        unfold_batch: ip.settings.unfold_batch,
     })._MODEL
 
     return { ip_adapted_model }

@@ -4,12 +4,12 @@ import { cnet_preprocessor_ui_common, cnet_ui_common } from '../prefab_cnet'
 
 // 🅿️ SoftEdge FORM ===================================================
 export const ui_subform_SoftEdge = () => {
-    const form = getCurrentForm()
+    const form: FormBuilder = getCurrentForm()
     return form.group({
         label: 'SoftEdge',
         items: () => ({
             ...cnet_ui_common(form),
-            preprocessor: ui_subform_SoftEdge_Preprocessor(form),
+            preprocessor: ui_subform_SoftEdge_Preprocessor(),
             cnet_model_name: form.enum.Enum_ControlNetLoader_control_net_name({
                 label: 'Model',
                 default: 'control_v11p_sd15_softedge.pth' as any,
@@ -22,32 +22,25 @@ export const ui_subform_SoftEdge = () => {
     })
 }
 
-export const ui_subform_SoftEdge_Preprocessor = (form: FormBuilder) => {
-    return form.groupOpt({
+export const ui_subform_SoftEdge_Preprocessor = () => {
+    const form: FormBuilder = getCurrentForm()
+    return form.choice({
         label: 'SoftEdge Edge Preprocessor',
-        startActive: true,
-        items: () => ({
-            advanced: form.groupOpt({
-                label: 'Advanced Preprocessor Settings',
-                items: () => ({
-                    type: form.choice({
-                        label: 'Type',
-                        items: {
-                            HED: () => ui_subform_SoftEdge_Preprocessor_Options(form),
-                            PiDiNet: () => ui_subform_SoftEdge_Preprocessor_Options(form),
-                        },
-                    }),
-                    // TODO: Add support for auto-modifying the resolution based on other form selections
-                    // TODO: Add support for auto-cropping
-                }),
-            }),
-        }),
+        startCollapsed: true,
+        default: 'HED',
+        appearance: 'tab',
+        items: {
+            None: () => form.group({}),
+            HED: () => ui_subform_SoftEdge_Preprocessor_Options(form),
+            Pidinet: () => ui_subform_SoftEdge_Preprocessor_Options(form),
+        },
     })
 }
 
 export const ui_subform_SoftEdge_Preprocessor_Options = (form: FormBuilder) => {
     return form.group({
-        label: 'SoftEdge Preprocessor',
+        label: 'Settings',
+        startCollapsed: true,
         items: () => ({
             ...cnet_preprocessor_ui_common(form),
             safe: form.bool({ default: false }),
@@ -69,8 +62,8 @@ export const run_cnet_SoftEdge = (
     const cnet_name = SoftEdge.cnet_model_name
 
     // PREPROCESSOR - SoftEdge ===========================================================
-    if (SoftEdge.preprocessor?.advanced?.type.PiDiNet) {
-        var pid = SoftEdge.preprocessor.advanced?.type.PiDiNet
+    if (SoftEdge.preprocessor.Pidinet) {
+        var pid = SoftEdge.preprocessor.Pidinet
         image = graph.PiDiNetPreprocessor({
             image: image,
             resolution: resolution,
@@ -78,8 +71,8 @@ export const run_cnet_SoftEdge = (
         })._IMAGE
         if (pid.saveProcessedImage) graph.SaveImage({ images: image, filename_prefix: 'cnet\\SoftEdge\\pid' })
         else graph.PreviewImage({ images: image })
-    } else {
-        var hed = SoftEdge.preprocessor?.advanced?.type.HED
+    } else if (SoftEdge.preprocessor.HED) {
+        var hed = SoftEdge.preprocessor.HED
         image = graph.HEDPreprocessor({
             image: image,
             resolution: resolution,
