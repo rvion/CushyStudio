@@ -1,9 +1,11 @@
 export const escapeJSKey = (s: string) => {
     if (typeof s !== 'string') {
+        // 🔴 ⁉️
         return 'string'
         // console.log(s)
         // debugger
     }
+    // ❌ probably wrong
     if (!s.match(/^[a-zA-Z_][a-zA-Z0-9_]*$/)) {
         // debugger
         return `"${s}"`
