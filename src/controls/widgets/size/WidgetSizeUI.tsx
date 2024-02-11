@@ -54,6 +54,7 @@ export const WidgetSizeX_LineUI = observer(function WidgetSize_LineUI_(p: {
                     onValueChange={(next) => uist.setWidth(next)}
                     forceSnap={true}
                     text='Width'
+                    suffix='px'
                 />
                 <div>x</div>
                 <InputNumberUI
@@ -68,6 +69,7 @@ export const WidgetSizeX_LineUI = observer(function WidgetSize_LineUI_(p: {
                     onValueChange={(next) => uist.setHeight(next)}
                     forceSnap={true}
                     text='Height'
+                    suffix='px'
                 />
             </div>
         </div>
