@@ -6,11 +6,6 @@ import { parseFloatNoRoundingErr } from 'src/utils/misc/parseFloatNoRoundingErr'
 
 const clamp = (x: number, min: number, max: number) => Math.max(min, Math.min(max, x))
 
-/* TODO LIST:
- *   - Label
- *   - Suffix
- */
-
 /* NOTE(bird_d): Having these here should be fine since only one slider should be dragging/active at a time? */
 let startValue: number = 0
 let dragged: boolean = false
@@ -209,7 +204,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
                                 console.log(
                                     '[InputNumberUI] Obtaining raw mouse input is not supported on this platform. Using processed mouse input, you may need to adjust the number input drag multiplier.',
                                 )
-                            activeSlider?.requestPointerLock()
+                                activeSlider?.requestPointerLock()
                             })
                         }}
                     >

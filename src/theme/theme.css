@@ -131,6 +131,7 @@ body {
 
 /* Container holding buttons, range, and number input */
 .relative-slider {
+    --button-width: 16px;
     --input-number-ui-bg: oklch(var(--p)/.15);
     --text-shadow-color: rgb(0, 0, 0, 0.2);
     border: 1px solid oklch(var(--pc)/.2);
@@ -225,14 +226,16 @@ input.input {
     display: hidden;
     opacity: 0;
     border-width: 0px;
-    background-color: oklch(var(--input-number-ui-bg)*1.2);
-    outline-width: 0px;
+    background-color: oklch(var(--b2));
+    padding: 0px;
+    width: var(--button-width);
+    border-radius: 3px;
 }
 
 .relative-slider:hover button {
     display: unset;
     opacity: 100;
-    background-color: oklch(var(--pc)/0.5);
+    background-color: oklch(var(--b2));
 }
 
 .relative-slider button:hover {
@@ -259,7 +262,7 @@ input.input {
     align-content: end;
     background: transparent !important;
     border-width: 0px !important;
-    padding-left: 5px;
+    padding: 0px calc(var(--button-width) + 2px) 0px calc(var(--button-width) + 2px);
     font-size: 15px;
     
     /* TODO(bird_d): This should be moved to be under all text, not just for number input. */
