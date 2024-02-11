@@ -1,3 +1,7 @@
+---
+description: CushyStudio is packed with features, this page list the major ones
+---
+
 # ✨ CushyStudio Features
 
 ## First-class ComfyUI support
