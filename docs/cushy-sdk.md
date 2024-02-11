@@ -1,4 +1,4 @@
-# ⚙ Cushy-SDK
+# ⚙ CushySDK
 
 \##This page will list the features of the Cushy-SDK, links will be provided to the relevant section such as the full API documentation, zero to hero project, cheatsheet, etc.
 
