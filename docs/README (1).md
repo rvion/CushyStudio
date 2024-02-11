@@ -2,12 +2,6 @@
 
 \##This page will contain a brief introduction, a warning that the software is a beta and to expect many changes over time. We will also explain to the user that the documentation will match feature parity with Cushy and link to the current changelog. _(Maybe this page also will mention the latest features and link directly to the pages about them? TBD)_
 
-{% hint style="warning" %}
-Cushy Studio is currently in beta, undergoing active development, and may have occasional bugs and unfinished features, but we encourage users to provide feedback to help us improve and enhance the platform.
-{% endhint %}
-
-***
-
 ## Current Versions
 
 {% tabs %}

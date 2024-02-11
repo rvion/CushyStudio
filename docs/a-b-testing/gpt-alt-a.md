@@ -1,8 +1,4 @@
-# 🛋 Welcome to Cushy
-
-{% hint style="warning" %}
-CushyDocs are currently undergoing active development, and may have blank pages and unfinished documentation. We encourage users to provide feedback to help us improve and enhance the knowledge base. Let us know if there is a topic that needs to be addressed.
-{% endhint %}
+# GPT  alt A
 
 ## CushyStudio: Simplifying Generative AI
 
@@ -19,29 +15,3 @@ CushyStudio is a versatile, cross-platform tool designed to simplify the use of 
 CushyStudio invites artists, developers, and enthusiasts to explore the boundless possibilities of generative AI art. Our platform is committed to pushing the boundaries of creativity, offering a space where anyone can discover, create, and share their work in the evolving landscape of generative art.
 
 Dive into CushyStudio—where creativity meets simplicity in the world of generative AI.
-
-## Video overview
-
-Got 2 minutes? Check out a video overview of Cushy:
-
-{% hint style="danger" %}
-Place a two minute demo video here that briefly showcases many of the features contained within Cushy and how easy it is to use.
-{% endhint %}
-
-{% hint style="info" %}
-What is Cushy
-{% endhint %}
-
-{% hint style="info" %}
-Why use Cushy
-{% endhint %}
-
-{% hint style="info" %}
-Summary of features
-{% endhint %}
-
-**Inpainting:** Cushy has powerful inpainting functionality. [More info](features/inpainting.md)
-
-{% hint style="info" %}
-Links to other parts of documentation
-{% endhint %}

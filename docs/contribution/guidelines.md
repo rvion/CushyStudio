@@ -6,17 +6,40 @@ description: >-
 
 # Guidelines
 
-## **DOS AND DON’TS**
+***
 
-### Do:
+For simplicity's sake we try our best to adhere to [Google's ](https://developers.google.com/style)developer documentation style guidelines. They are merely guidelines and not strict rules. Feel free to break free from the guidelines when it makes sense. (Even Google suggests this themselves.)
 
+Below we have included any important notes in regards to creating our documentation. You are welcome to ask for advice in our [Discord](https://discord.gg/BaenNsG2zD) if you are unclear about anything.
+
+## Images:
+
+{% hint style="success" %}
+* Images must use unique file names, or they will break conflicting images upon upload. _(This is a quirk with gitbooks.)_
 *
+{% endhint %}
 
-### Don't:
+{% hint style="warning" %}
+* Use image compression if possible to reduce the filesize of images,
+{% endhint %}
 
+{% hint style="danger" %}
+
+{% endhint %}
+
+***
+
+## Text Formatting:
+
+{% hint style="success" %}
 *
+{% endhint %}
 
-## Base style guide
+{% hint style="danger" %}
+*
+{% endhint %}
+
+### Base style guide
 
 We loosely follow the Google Developer documentation styling guidelines,
 
@@ -24,7 +47,7 @@ We loosely follow the Google Developer documentation styling guidelines,
 
 🚧 add link to their guide
 
-## Enhance pages with LLM.
+### Enhance pages with LLM.
 
 * if possible, use this prompt: 🚧
 

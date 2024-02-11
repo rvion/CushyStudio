@@ -20,7 +20,7 @@ Start from the default app, and enhance it to allow for a configurable number of
 
 <div data-full-width="true">
 
-<figure><img src="../.gitbook/assets/image (2) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (2) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 </div>
 
