@@ -17,8 +17,8 @@ export const Plugin_AdjustWeightsUI = observer(function Plugin_AdjustWeightsUI_(
                         onValueChange={(v) => (weighted.weight = v)}
                         mode='float'
                         value={weighted.weight}
-                        min={0}
-                        max={2}
+                        softMin={0}
+                        softMax={2}
                     />
                     <div tw='line-clamp-1 whitespace-nowrap'>{weighted.contentText}</div>
                 </div>
