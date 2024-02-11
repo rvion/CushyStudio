@@ -265,7 +265,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
                                     }
                                 }}
                             />
-                            {!isEditing && p.suffix ? <div style={{ zIndex: 2 }}>{p.suffix}</div> : <></>}
+                            {!isEditing && p.suffix ? <div style={{ zIndex: 2, paddingLeft: 3 }}>{p.suffix}</div> : <></>}
                         </div>
                         {/* <input //Setting the value to 0
                         type='range'
