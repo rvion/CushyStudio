@@ -23,6 +23,7 @@ body {
     border-right: 1px solid oklch(var(--p)/.2);
     border-bottom: 1px solid oklch(var(--p)/.2);
     /* border-bottom: 1px solid oklch(var(--p)/.4); */
+    padding: 2px;
 }
 .SUB-FIELD {
     flex: 1;
@@ -38,6 +39,7 @@ body {
 .WIDGET-BLOCK {
     margin-left: .6rem;
     margin-right: .4rem;
+    margin-top: .1rem;
     /* padding: .4rem; */
 }
 
