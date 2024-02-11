@@ -6,6 +6,16 @@ description: >-
 
 # Guidelines
 
+## **DOS AND DON’TS**
+
+### Do:
+
+*
+
+### Don't:
+
+*
+
 ## Base style guide
 
 We loosely follow the Google Developer documentation styling guidelines,
