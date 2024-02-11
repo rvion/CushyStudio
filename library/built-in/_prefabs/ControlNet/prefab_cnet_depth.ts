@@ -17,6 +17,7 @@ export const ui_subform_Depth = () => {
                 items: () => ({
                     cnet_model_name: form.enum.Enum_ControlNetLoader_control_net_name({
                         label: 'Model',
+                        // @ts-ignore
                         default: 't2iadapter_depth_sd14v1.pth',
                         filter: (name) => name.toString().includes('depth'),
                         recommandedModels: {

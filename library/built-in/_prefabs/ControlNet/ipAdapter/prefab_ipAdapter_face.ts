@@ -24,6 +24,7 @@ export const ui_IPAdapterFaceID = () => {
                     ...ui_ipadapter_CLIPSelection(form),
                     ...ui_ipadapter_modelSelection(
                         form,
+                        // @ts-ignore
                         'ip-adapter-faceid-plusv2_sd15.bin',
                         //'ip-adapter-plus-face_sd15.safetensors',
                         // 'ip-adapter-faceid-plus_sd15.bin',
@@ -31,6 +32,7 @@ export const ui_IPAdapterFaceID = () => {
                     ),
                     lora: form.enum.Enum_Load_Lora_lora_name({
                         // enumName: 'Enum_AV$_CheckpointModelsToParametersPipe_lora_1_name',
+                        // @ts-ignore
                         default: 'ip-adapter-faceid-plusv2_sd15_lora.safetensors',
                         label: 'Face ID Lora',
                         recommandedModels: {

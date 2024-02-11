@@ -18,6 +18,7 @@ export const ui_subform_Lineart = () => {
                     cnet_model_name: form.enum.Enum_ControlNetLoader_control_net_name({
                         label: 'Model',
                         filter: (name) => name.toString().includes('lineart'),
+                        // @ts-ignore
                         default: 'control_v11p_sd15_lineart.pth',
                         recommandedModels: { knownModel: ['ControlNet-v1-1 (lineart; fp16)'] },
                     }),
