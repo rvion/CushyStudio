@@ -32,9 +32,34 @@ export class AutoBuilder {
     constructor(public form: FormBuilder) {
         const st = form.schema.st
         const schema = st.schema
-        for (const enumName of schema.knownEnumsByName.keys()) {
-            Object.defineProperty(this, enumName, {
-                value: (config: any) => new Widget_enum(form, { ...config, enumName }),
+        for (const node of schema.nodes) {
+            Object.defineProperty(this, node.nameInCushy, {
+                value: () =>
+                    form.group({
+                        label: node.nameInComfy,
+                        items: () => {
+                            const items: any = {}
+                            for (const field of node.inputs) {
+                                if (field.isPrimitive) {
+                                    if (field.type === 'boolean') {
+                                        items[field.nameInComfy] = form.bool({
+                                            label: field.nameInComfy,
+                                        })
+                                    } else if (field.type === 'number') {
+                                        items[field.nameInComfy] = form.number({
+                                            label: field.nameInComfy,
+                                        })
+                                    }
+                                } else if (field.isEnum) {
+                                    items[field.nameInComfy] = form.enum['']({
+                                        // label: field.nameInComfy,
+                                        // widget: () => new AutoWidget(field),
+                                    })
+                                }
+                            }
+                            return items
+                        },
+                    }),
             })
         }
     }

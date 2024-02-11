@@ -56,7 +56,8 @@
         "📌 RELEASE": "----------------------------------------------------------------------",
         "bump": "bump patch --commit=v --tag=v --push",
         "diff-with-master-all": "git diff master                   > tmp/diff-with-master-all.diff && code tmp/diff-with-master-all.diff",
-        "diff-with-master-add": "git diff master | grep -Ev '^\\-' > tmp/diff-with-master.diff     && code tmp/diff-with-master.diff"
+        "diff-with-master-add": "git diff master | grep -Ev '^\\-' > tmp/diff-with-master.diff     && code tmp/diff-with-master.diff",
+        "diff-local": "cd library/local && git diff master > doc.diff && code doc.diff"
     },
     "dependencies": {
         "@codemirror/autocomplete": "^6.12.0",
