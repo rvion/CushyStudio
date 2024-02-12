@@ -22,11 +22,6 @@ export const UnifiedCanvasMenuUI = observer(function UnifiedCanvasMenuUI_(p: {})
             >
                 Undo (stack.size={canvas.undoBuffer.length})
             </div>
-
-            {/* DEBUG */}
-            <div className='w-96'>
-                <pre>{JSON.stringify(canvas.infos, null, 3)}</pre>
-            </div>
             {/*  */}
             {/* TOP LEVEL BUTTON */}
             <div tw='bd1'>
@@ -226,6 +221,10 @@ export const UnifiedCanvasMenuUI = observer(function UnifiedCanvasMenuUI_(p: {})
                         )
                     })}
                 </SortableList>
+            </div>
+            {/* DEBUG */}
+            <div className='w-96'>
+                <pre>{JSON.stringify(canvas.infos, null, 3)}</pre>
             </div>
         </div>
     )

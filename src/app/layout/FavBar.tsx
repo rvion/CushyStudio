@@ -54,6 +54,11 @@ export const AppDraftsQuickListUI = observer(function AppDraftsQuickListUI_(p: {
                 </div>
             </div>
             <div tw='grid grid-cols-3'>
+                <div onClick={() => app.createDraft()} tw='btn' style={{ width: '4rem', height: '4rem' }}>
+                    <div>
+                        New <span tw='material-symbols-outlined'>add</span>
+                    </div>
+                </div>
                 {p.app.drafts.map((draft) => (
                     <div key={draft.id}>
                         <DraftIllustrationUI onClick={() => draft.openOrFocusTab()} size='4rem' draft={draft} />
