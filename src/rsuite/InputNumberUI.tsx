@@ -200,6 +200,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
                             /* Fix for low-sensitivity devices, it will get raw input from the mouse instead of the processed input.
                              *  NOTE: This does not work on Linux right now, but when it does get added for Linux, this code should not need to be changed.
                              */
+                            // @ts-ignore 🔴 untyped for me for now; TODO: will have to investigate why
                             activeSlider?.requestPointerLock({ unadjustedMovement: true }).catch((error) => {
                                 console.log(
                                     '[InputNumberUI] Obtaining raw mouse input is not supported on this platform. Using processed mouse input, you may need to adjust the number input drag multiplier.',
