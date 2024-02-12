@@ -42,13 +42,24 @@ export const FavBarUI = observer(function FavBarUI_(p: {
 })
 
 export const AppDraftsQuickListUI = observer(function AppDraftsQuickListUI_(p: { app: CushyAppL }) {
+    const app = p.app
     return (
-        <div tw='grid grid-cols-3'>
-            {p.app.drafts.map((draft) => (
-                <div key={draft.id}>
-                    <DraftIllustrationUI onClick={() => draft.openOrFocusTab()} size='4rem' draft={draft} />
+        <div>
+            <div tw='flex'>
+                <div tw='btn btn-sm w-full' onClick={() => app.setFavorite(!app.isFavorite)}>
+                    <span tw={[app.isFavorite ? 'text-yellow-500' : null]} className='material-symbols-outlined'>
+                        star
+                    </span>
+                    <div>{app.name}</div>
                 </div>
-            ))}
+            </div>
+            <div tw='grid grid-cols-3'>
+                {p.app.drafts.map((draft) => (
+                    <div key={draft.id}>
+                        <DraftIllustrationUI onClick={() => draft.openOrFocusTab()} size='4rem' draft={draft} />
+                    </div>
+                ))}
+            </div>
         </div>
     )
 })
