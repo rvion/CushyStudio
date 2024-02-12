@@ -5,7 +5,7 @@ import { exhaust } from 'src/utils/misc/ComfyUtils'
 import { _FIX_INDENTATION } from '../utils/misc/_FIX_INDENTATION'
 import * as W from './Widget'
 
-import { AutoBuilder } from './AutoBuilder'
+import { AutoBuilder, mkFormAutoBuilder } from './AutoBuilder'
 import { EnumBuilder, EnumBuilderOpt } from './EnumBuilder'
 import { Widget_bool, type Widget_bool_config } from './widgets/bool/WidgetBool'
 import { Widget_choices, type Widget_choices_config } from './widgets/choices/WidgetChoices'
@@ -25,7 +25,7 @@ import { Widget_string, type Widget_string_config } from './widgets/string/Widge
 export class FormBuilder {
     /** (@internal) don't call this yourself */
     constructor(public schema: ComfySchemaL) {
-        makeAutoObservable(this)
+        makeAutoObservable(this, { auto: false })
     }
 
     // string
@@ -98,7 +98,7 @@ export class FormBuilder {
     // --------------------
 
     // enum = /*<const T extends KnownEnumNames>*/ (config: Widget_enum_config<any, any>) => new Widget_enum(this, config)
-    auto = new AutoBuilder(this) /*<const T extends KnownEnumNames>*/
+    auto = mkFormAutoBuilder(this) /*<const T extends KnownEnumNames>*/
     enum = new EnumBuilder(this) /*<const T extends KnownEnumNames>*/
     enumOpt = new EnumBuilderOpt(this)
     //  <const T extends KnownEnumNames>(config: Widget_enum_config<T> & { startActive?: boolean }) =>
