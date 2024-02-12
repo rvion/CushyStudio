@@ -32,13 +32,13 @@ export const Panel_Config = observer(function Panel_Config_() {
                         }}
                     />
                 </FieldUI>
-                <FieldUI label='Set vscode Binary Name (code, codium, ...)'>
+                <FieldUI label='Preferred Text Editor'>
                     <input
                         tw='input input-bordered input-sm w-full'
-                        name='vscodeBinaryName'
-                        value={config.get('vscodeBinaryName') ?? 'code'}
+                        name='preferredTextEditor'
+                        value={config.get('preferredTextEditor') ?? ''}
                         onChange={(ev) => {
-                            config.update({ vscodeBinaryName: ev.target.value })
+                            config.update({ preferredTextEditor: ev.target.value })
                             st.updateTsConfig()
                         }}
                     />
