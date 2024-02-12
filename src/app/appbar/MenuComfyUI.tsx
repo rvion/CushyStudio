@@ -10,7 +10,6 @@ export const MenuComfyUI = observer(function MenuComfyUI_(p: {}) {
             tw={[isConnected ? null : 'text-error-content bg-error']}
             startIcon={<span className='material-symbols-outlined text-blue-400'>account_tree</span>}
             title='ComfyUI'
-            appearance='subtle'
         >
             <MenuItem
                 onClick={() => st.layout.FOCUS_OR_CREATE('ComfyUI', {})}

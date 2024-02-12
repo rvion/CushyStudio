@@ -3,14 +3,13 @@ import type { DraftL } from 'src/models/Draft'
 import { observer } from 'mobx-react-lite'
 
 import { showItemInFolder } from 'src/app/layout/openExternal'
+import { KEYS } from 'src/app/shortcuts/shorcutKeys'
 import { Dropdown, MenuItem } from 'src/rsuite/Dropdown'
 import { Loader } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
 import { openInVSCode } from 'src/utils/electron/openInVsCode'
-import { shortcutsDef } from 'src/app/shortcuts/shortcuts'
-import { KEYS } from 'src/app/shortcuts/shorcutKeys'
 
-export const DraftMenuUI = observer(function DraftMenuUI_(p: { title: string; draft: DraftL; className?: string }) {
+export const DraftMenuActionsUI = observer(function DraftMenuUI_(p: { title: string; draft: DraftL; className?: string }) {
     const st = useSt()
     const draft = p.draft
     const file = draft.file
@@ -20,23 +19,12 @@ export const DraftMenuUI = observer(function DraftMenuUI_(p: { title: string; dr
         <Dropdown
             //
             className={p.className}
-            appearance='subtle'
             startIcon={<span className='material-symbols-outlined'>menu</span>}
-            title={p.title} //`${layout}`}
+            title={'Actions'} //`${layout}`}
         >
             <div tw='divider my-0'></div>
-            {/* <MenuItem
-                // tw='btn btn-ghost btn-square btn-sm'
-                icon={<span className='material-symbols-outlined'>open_in_new</span>}
-                onClick={() => {
-                    st.layout.FOCUS_OR_CREATE('Draft', { draftID: draft.id }, 'LEFT_PANE_TABSET')
-                }}
-            >
-                Open in a new tab
-            </MenuItem> */}
-            {/* duplicate draft btn */}
             <MenuItem
-                active={app.isFavorite}
+                // active={app.isFavorite}
                 onClick={() => app.setFavorite(!app.isFavorite)}
                 icon={
                     <span tw={[app.isFavorite ? 'text-yellow-500' : null]} className='material-symbols-outlined'>
@@ -44,11 +32,23 @@ export const DraftMenuUI = observer(function DraftMenuUI_(p: { title: string; dr
                     </span>
                 }
             >
-                Favorite
+                Favorite App
             </MenuItem>
             <MenuItem
+                // active={draft.isFavorite}
+                onClick={() => draft.setFavorite(!draft.isFavorite)}
+                icon={
+                    <span tw={[draft.isFavorite ? 'text-yellow-500' : null]} className='material-symbols-outlined'>
+                        star
+                    </span>
+                }
+            >
+                Favorite Draft
+            </MenuItem>
+            <div tw='divider my-0'></div>
+            <MenuItem
                 shortcut={KEYS.duplicateCurrentDraft}
-                icon={<span className='material-symbols-outlined'>content_copy</span>}
+                icon={<span className='material-symbols-outlined text-green-500'>content_copy</span>}
                 onClick={() => draft.duplicateAndFocus()}
             >
                 Duplicate Draft
@@ -71,6 +71,16 @@ export const DraftMenuUI = observer(function DraftMenuUI_(p: { title: string; dr
                 icon={<span className='material-symbols-outlined'>open_in_browser</span>}
             >
                 Show Item In Folder
+            </MenuItem>
+            <MenuItem
+                //
+                onClick={() => {
+                    const confirm = window.confirm('Are you sure you want to delete this draft?')
+                    if (confirm) draft.delete()
+                }}
+                icon={<span className='material-symbols-outlined text-red-500'>delete</span>}
+            >
+                Delete
             </MenuItem>
 
             <div tw='divider my-0' />
@@ -103,7 +113,23 @@ export const DraftMenuUI = observer(function DraftMenuUI_(p: { title: string; dr
             >
                 App code
             </MenuItem>
-            <div tw='divider my-0'>UI</div>
+        </Dropdown>
+    )
+})
+
+export const DraftMenuLooksUI = observer(function DraftMenuLookUI_(p: { title: string; draft: DraftL; className?: string }) {
+    const st = useSt()
+    const draft = p.draft
+    const file = draft.file
+    const layout = st.preferedFormLayout
+    const app = draft.app
+    return (
+        <Dropdown
+            className={p.className}
+            // startIcon={<span className='material-symbols-outlined'>looks</span>}
+            title={'UI'} //`${layout}`}
+        >
+            {/* <div tw='divider my-0'>UI</div> */}
             <MenuItem
                 onClick={draft.collapseTopLevelFormEntries}
                 icon={<span className='material-symbols-outlined'>unfold_less</span>}

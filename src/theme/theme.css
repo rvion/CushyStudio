@@ -266,7 +266,7 @@ input.input {
     border-width: 0px !important;
     padding: 0px calc(var(--button-width) + 2px) 0px calc(var(--button-width) + 2px);
     font-size: 15px;
-    
+
     /* TODO(bird_d): This should be moved to be under all text, not just for number input. */
     text-shadow: 0px 1px 1px var(--text-shadow-color), 1px 1px 1px var(--text-shadow-color), -1px 1px 1px var(--text-shadow-color);
 }

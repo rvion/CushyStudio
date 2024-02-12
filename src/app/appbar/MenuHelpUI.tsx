@@ -6,11 +6,7 @@ import { assets } from 'src/utils/assets/assets'
 export const MenuHelpUI = observer(function MenuHelpUI_(p: {}) {
     const st = useSt()
     return (
-        <Dropdown
-            startIcon={<span className='material-symbols-outlined text-purple-500'>help_center</span>}
-            title='Help'
-            appearance='subtle'
-        >
+        <Dropdown startIcon={<span className='material-symbols-outlined text-purple-500'>help_center</span>} title='Help'>
             {/* <MenuItem
                 onClick={() => {
                     window.require('electron').shell.openExternal('https://www.CushyStudio.com/documentation')

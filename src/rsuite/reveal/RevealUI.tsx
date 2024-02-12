@@ -34,6 +34,7 @@ export const RevealUI = observer(function Tooltip_(p: RevealProps) {
                           }
                       }}
                       onClick={(ev) => {
+                          p.onClick?.(ev)
                           uist.close()
                           ev.stopPropagation()
                           ev.preventDefault()

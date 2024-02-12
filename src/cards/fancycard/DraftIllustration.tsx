@@ -9,6 +9,7 @@ export const DraftIllustrationUI = observer(function DraftIllustrationUI_(p: {
     className?: string
     onClick?: () => void
     draft: Maybe<DraftL>
+    revealAppIllustrationOnHover?: boolean
     size: string
 }) {
     const st = useSt()
@@ -42,9 +43,11 @@ export const DraftIllustrationUI = observer(function DraftIllustrationUI_(p: {
     // 3. show illustration on top
     return (
         <div style={dropStyle} ref={dropRef} className='relative DROP_IMAGE_HANDLER'>
-            <div tw='absolute opacity-0 hover:opacity-100' style={{ transition: 'opacity 0.2s' }}>
-                <AppIllustrationUI app={draft.app} size={p.size} />
-            </div>
+            {p.revealAppIllustrationOnHover ? ( //
+                <div tw='absolute opacity-0 hover:opacity-100' style={{ transition: 'opacity 0.2s' }}>
+                    <AppIllustrationUI app={draft.app} size={p.size} />
+                </div>
+            ) : null}
             <img
                 // onError={(ev) => {
                 // TODO 2024-01-25 rvion: make it so wiping images doesn't break drafts too much

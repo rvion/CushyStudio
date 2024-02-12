@@ -7,6 +7,9 @@ import { Trigger } from '../shortcuts/Trigger'
 import { RenderFullPagePanelUI } from 'src/panels/router/RenderFullPagePanelUI'
 import { RevealState } from 'src/rsuite/reveal/RevealState'
 import { runInAction } from 'mobx'
+import { AppIllustrationUI } from 'src/cards/fancycard/AppIllustrationUI'
+import { DraftIllustrationUI } from 'src/cards/fancycard/DraftIllustration'
+import { FavBarUI } from './FavBar'
 
 export const CushyUI = observer(function CushyUI_() {
     const st = useSt()
@@ -66,6 +69,7 @@ export const CushyUI = observer(function CushyUI_() {
             <AppBarUI />
             <RenderFullPagePanelUI />
             <div className='flex flex-grow relative'>
+                <FavBarUI direction='column' />
                 <ProjectUI />
             </div>
         </div>

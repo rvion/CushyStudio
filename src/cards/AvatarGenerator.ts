@@ -33,7 +33,7 @@ export function generateAvatar(
 
     const options = {
         // rgba
-        background: [240, 240, 240, 0],
+        background: [240, 240, 240, 0.2],
         margin: 0.05,
         size: 40,
         saturation: 0.7,

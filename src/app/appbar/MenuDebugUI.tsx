@@ -8,11 +8,7 @@ export const MenuDebugUI = observer(function MenuDebugUI_(p: {}) {
     const st = useSt()
 
     return (
-        <Dropdown
-            appearance='subtle'
-            startIcon={<span className='material-symbols-outlined text-orange-500'>sync</span>}
-            title='Debug'
-        >
+        <Dropdown startIcon={<span className='material-symbols-outlined text-orange-500'>sync</span>} title='Debug'>
             <MenuItem
                 icon={<span className='material-symbols-outlined text-green-500'>panorama_horizontal</span>}
                 onClick={st.layout.resetCurrent}
