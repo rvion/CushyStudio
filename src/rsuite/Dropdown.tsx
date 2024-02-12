@@ -13,14 +13,7 @@ export const Dropdown = (p: {
     children: ReactNode
 }) => (
     <RevealUI className='dropdown' tw={[p.className]}>
-        <label
-            // style={{
-            //     minHeight: '1.5rem',
-            //     height: '1.5rem',
-            // }}
-            tabIndex={0}
-            tw={[`flex-nowrap btn btn-ghost btn-sm px-2`]}
-        >
+        <label tabIndex={0} tw={[`flex-nowrap btn btn-ghost btn-sm py-0 px-1.5`]}>
             <span tw='hidden lg:inline-block'>{p.startIcon}</span>
             {p.title}
         </label>
