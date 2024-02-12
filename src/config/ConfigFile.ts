@@ -20,8 +20,8 @@ export type ConfigFile = {
         }
     }
 
-    /** defaults to `code`, but a little bird once told me it could be `codium` */
-    vscodeBinaryName?: string
+    /** setting this option will make 'Edit App Definition' attempt to use this text editor first, then code/codium, then the system default text editor */
+    preferredTextEditor?: string
 
     /** prefer dense form */
     preferedFormLayout?: PreferedFormLayout
