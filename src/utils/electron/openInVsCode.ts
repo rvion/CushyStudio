@@ -67,7 +67,7 @@ export async function openInVSCode(st: STATE, filePathWithinWorkspace: string): 
 
                 /* Open with preferred editor, or default text editor */
                 try {
-                    let result = await tryEditor(editor, absoluteFilePath)
+                    let result = await tryEditor(command, absoluteFilePath)
                     usingVSCode = false
                     foundWorkingEditor = true
                     break
