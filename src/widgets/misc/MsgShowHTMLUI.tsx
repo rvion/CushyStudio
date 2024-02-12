@@ -86,12 +86,27 @@ export const GraphPreviewUI = observer(function GraphPreviewUI_(p: { graph: Comf
             })}
         </>
     )
+
+    /* Temporary workaround for when the overlay gets stuck so people don't have to restart. */
+    const listenForCancelKey = (ev: KeyboardEvent) => {
+        if (ev.key == 'Escape') {
+            domNode.style.opacity = '0'
+            window.removeEventListener('keydown', listenForCancelKey, true)
+        }
+    }
+
     return (
         <div>
             <canvas
                 ref={canvasRef}
-                onMouseEnter={() => (domNode.style.opacity = '1')}
-                onMouseLeave={() => (domNode.style.opacity = '0')}
+                onMouseEnter={() => {
+                    domNode.style.opacity = '1'
+                    window.addEventListener('keydown', listenForCancelKey, true)
+                }}
+                onMouseLeave={() => {
+                    domNode.style.opacity = '0'
+                    window.removeEventListener('keydown', listenForCancelKey, true)
+                }}
                 style={{ width: '400px', height: '400px', zIndex: 1000 }}
                 id='map'
             ></canvas>
