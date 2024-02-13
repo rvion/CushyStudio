@@ -87,9 +87,18 @@ export const AppDraftsQuickListUI = observer(function AppDraftsQuickListUI_(p: {
                     </div>
                 </div>
             </div>
-            <div className='MENU-CONTENT'>
+            <div className='MENU-CONTENT' tw='flex-col flex gap-1 max-w-md'>
+                {app.description ? (
+                    <div //Description
+                        tw='flex-1 rounded p-1 bg-base-200'
+                    >
+                        {app.description}
+                    </div>
+                ) : (
+                    <></>
+                )}
                 <div //Container
-                    tw='max-h-96 overflow-scroll grid grid-cols-3 gap-2 bg-base-300 p-2 rounded'
+                    tw='flex-1 max-h-96 overflow-scroll grid grid-cols-3 gap-2 bg-base-300 p-2 rounded'
                 >
                     {p.app.drafts.map((draft) => (
                         <div tw='flex brightness-95 cursor-pointer hover:brightness-110 bg-base-200 rounded-md border-base-100 border p-1 justify-center'>
