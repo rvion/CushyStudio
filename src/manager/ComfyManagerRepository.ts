@@ -25,6 +25,14 @@ export class ComfyManagerRepository {
             genTypes?: boolean
         } = {},
     ) {
+        this.plugins_byFile.set('https://github.com/comfyanonymous/ComfyUI' as any, {
+            author: 'comfyanonymous',
+            description: 'built-in',
+            title: 'built-in' as any,
+            files: [],
+            reference: '',
+            install_type: '',
+        })
         _getKnownPlugins(this)
         _getCustomNodeRegistry(this)
         _getKnownModels(this)

@@ -41,25 +41,39 @@ export const _getKnownModels = (
 
     // CODEGEN ------------------------------------------------------------
     if (DB.opts.genTypes) {
-        let out = ''
-        // categories
+        // categories ---------------------------
+        let out1 = ''
         const uniqCategories: { [key: string]: number } = knownModelList.reduce((acc, cur) => {
             if (acc[cur.type] != null) acc[cur.type] += 1
             else acc[cur.type] = 1
             return acc
         }, {} as { [key: string]: number })
-        out += 'export type KnownModel_Type =\n'
+        out1 += 'export type KnownModel_Type =\n'
         for (const [cat, count] of Object.entries(uniqCategories))
-            out += `    | ${JSON.stringify(cat).padEnd(20)} // x ${count.toString().padStart(3)}\n`
-        out += '\n'
+            out1 += `    | ${JSON.stringify(cat).padEnd(20)} // x ${count.toString().padStart(3)}\n`
+        out1 += '\n'
+        writeFileSync('src/manager/model-list/KnownModel_Type.ts', out1 + '\n', 'utf-8')
 
-        // list
+        // categories ---------------------------
+        let out2 = ''
+        const uniqBases: { [key: string]: number } = knownModelList.reduce((acc, cur) => {
+            if (acc[cur.base] != null) acc[cur.base] += 1
+            else acc[cur.base] = 1
+            return acc
+        }, {} as { [key: string]: number })
+        out2 += 'export type KnownModel_Base =\n'
+        for (const [cat, count] of Object.entries(uniqCategories))
+            out2 += `    | ${JSON.stringify(cat).padEnd(20)} // x ${count.toString().padStart(3)}\n`
+        out2 += '\n'
+        writeFileSync('src/manager/model-list/KnownModel_Type.ts', out2 + '\n', 'utf-8')
+
+        // KnownModel_Name ----------------------
+        let out3 = ''
         const sortedModels = knownModelList.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()))
-        out += 'export type KnownModel_Name =\n'
-        for (const modelInfo of sortedModels) out += `    | ${JSON.stringify(modelInfo.name)}\n`
-        out += '\n'
-
-        writeFileSync('src/wiki/modelListType.ts', out + '\n', 'utf-8')
+        out3 += 'export type KnownModel_Name =\n'
+        for (const modelInfo of sortedModels) out3 += `    | ${JSON.stringify(modelInfo.name)}\n`
+        out3 += '\n'
+        writeFileSync('src/manager/model-list/KnownModel_Name.ts', out3 + '\n', 'utf-8')
     }
 
     // INDEXING CHECKS ------------------------------------------------------------

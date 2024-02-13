@@ -21,6 +21,7 @@ export type KnownCustomNode_Title =
     | 'auto nodes layout'
     | 'Auto-MBW'
     | 'avatar-graph-comfyui'
+    | 'Batch Rembg for ComfyUI'
     | "BilboX's ComfyUI Custom Nodes"
     | 'Bmad Nodes'
     | 'braintacles-nodes'

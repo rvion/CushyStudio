@@ -136,6 +136,7 @@ export type KnownCustomNode_File =
     | 'https://github.com/civitai/comfy-nodes'
     | 'https://github.com/Clybius/ComfyUI-Extra-Samplers'
     | 'https://github.com/Clybius/ComfyUI-Latent-Modifiers'
+    | 'https://github.com/comfyanonymous/ComfyUI'
     | 'https://github.com/comfyanonymous/ComfyUI_experiments'
     | 'https://github.com/concarne000/ConCarneNode'
     | 'https://github.com/coreyryanhanson/ComfyQR'

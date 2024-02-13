@@ -54,7 +54,7 @@ export const _getKnownPlugins = (DB: ComfyManagerRepository): void => {
         out1 += 'export type KnownCustomNode_Title =\n'
         for (const pluginTitle of sortedPluginTitles) out1 += `    | ${JSON.stringify(pluginTitle)}\n`
         out1 += '\n'
-        writeFileSync('src/manager/custom-node-list/KnowCustomNode_Title.ts', out1 + '\n', 'utf-8')
+        writeFileSync('src/manager/custom-node-list/KnownCustomNode_Title.ts', out1 + '\n', 'utf-8')
 
         // FileType
         let out2 = ''
