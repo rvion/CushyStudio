@@ -318,6 +318,7 @@ export type KnownCustomNode_File =
     | 'https://github.com/M1kep/KepPromptLang'
     | 'https://github.com/m957ymj75urz/ComfyUI-Custom-Nodes/raw/main/clip-text-encode-split/clip_text_encode_split.py'
     | 'https://github.com/m957ymj75urz/ComfyUI-Custom-Nodes/raw/main/colors/colors.js'
+    | 'https://github.com/Mamaaaamooooo/batchImg-rembg-ComfyUI-nodes'
     | 'https://github.com/ManglerFTW/ComfyI2I'
     | 'https://github.com/mape/ComfyUI-mape-Helpers'
     | 'https://github.com/marhensa/sdxl-recommended-res-calc'
