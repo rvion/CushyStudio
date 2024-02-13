@@ -1,20 +1,19 @@
-import type { LiveInstance } from 'src/db/LiveInstance'
 import type { Requirements } from 'src/controls/IWidget'
+import type { LiveInstance } from 'src/db/LiveInstance'
 import type { ComfySchemaL, EmbeddingName } from './Schema'
+import type { PluginInfo } from 'src/manager/custom-node-list/custom-node-list-types'
+import type { KnownCustomNode_File } from 'src/manager/custom-node-list/KnownCustomNode_File'
+import type { KnownCustomNode_Title } from 'src/manager/custom-node-list/KnownCustomNode_Title'
 
-import { asComfySchemaID, type HostT } from 'src/db/TYPES.gen'
 import { copyFileSync, existsSync, mkdirSync, writeFileSync } from 'fs'
 import { ResilientWebSocketClient } from 'src/back/ResilientWebsocket'
+import { asComfySchemaID, type HostT } from 'src/db/TYPES.gen'
+import { ComfyManager } from 'src/manager/ComfyManager'
 import { extractErrorMessage } from 'src/utils/formatters/extractErrorMessage'
 import { readableStringify } from 'src/utils/formatters/stringifyReadable'
+import { downloadFile } from 'src/utils/fs/downloadFile'
 import { asRelativePath } from 'src/utils/fs/pathUtils'
 import { toastError, toastSuccess } from 'src/utils/misc/toasts'
-import { downloadFile } from 'src/utils/fs/downloadFile'
-import { ComfyManager } from 'src/manager/ComfyManager'
-import { KnownCustomNode_Title } from 'src/manager/custom-node-list/KnownCustomNode_Title'
-import { KnownCustomNode_File } from 'src/manager/custom-node-list/KnownCustomNode_File'
-import { PluginInfo } from 'src/manager/custom-node-list/custom-node-list-types'
-import { exhaust } from 'src/utils/misc/ComfyUtils'
 
 export interface HostL extends LiveInstance<HostT, HostL> {}
 
@@ -29,17 +28,29 @@ export class HostL {
             if (req.optional) continue
             if (req.type === 'customNodesByNameInCushy') {
                 const plugins: PluginInfo[] = repo.plugins_byNodeNameInCushy.get(req.nodeName) ?? []
-                if (!plugins.find((i) => this.manager.isPluginInstalled(i.title))) return false
+                if (!plugins.find((i) => this.manager.isPluginInstalled(i.title))) {
+                    // console.log(`[❌ A] ${JSON.stringify(req)} NOT MATCHED`)
+                    return false
+                }
             } else if (req.type === 'customNodesByTitle') {
                 const plugin: PluginInfo | undefined = repo.plugins_byTitle.get(req.title)
                 if (plugin == null) continue
-                if (!this.manager.isPluginInstalled(plugin.title)) return false
+                if (!this.manager.isPluginInstalled(plugin.title)) {
+                    // console.log(`[❌ B] ${JSON.stringify(req)} NOT MATCHED`)
+                    return false
+                }
             } else if (req.type === 'customNodesByURI') {
                 const plugin: PluginInfo | undefined = repo.plugins_byFile.get(req.uri)
                 if (plugin == null) continue
-                if (!this.manager.isPluginInstalled(plugin.title)) return false
+                if (!this.manager.isPluginInstalled(plugin.title)) {
+                    // console.log(`[❌ C] ${JSON.stringify(req)} NOT MATCHED`)
+                    return false
+                }
             } else if (req.type === 'modelInManager') {
-                if (!this.manager.isModelInstalled(req.modelName)) return false
+                if (!this.manager.isModelInstalled(req.modelName)) {
+                    // console.log(`[❌ D] ${JSON.stringify(req)} NOT MATCHED`)
+                    return false
+                }
             } else {
                 // exhaust(req.type)
             }

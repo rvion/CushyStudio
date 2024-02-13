@@ -66,7 +66,13 @@ export const Panel_InstallRequirementsUI = observer(function Panel_InstallRequir
                         })()}
                     </div>
                 </RevealUI>
-                <div tw='btn btn-sm' onClick={() => host.fetchAndUpdateSchema()}>
+                <div
+                    tw='btn btn-sm'
+                    onClick={() => {
+                        host.fetchAndUpdateSchema()
+                        host.manager.updateHostPluginsAndModels()
+                    }}
+                >
                     Reload Schema
                 </div>
                 <div tw='btn btn-sm' onClick={() => host.manager.rebootComfyUI()}>

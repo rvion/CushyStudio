@@ -9,6 +9,7 @@ import type { KnownCustomNode_Title } from './custom-node-list/KnownCustomNode_T
 
 import { toastError, toastSuccess } from 'src/utils/misc/toasts'
 import type { KnownModel_Name } from './model-list/KnownModel_Name'
+import { makeAutoObservable, observable } from 'mobx'
 
 type HostPluginList = {
     custom_nodes: {
@@ -41,6 +42,12 @@ export class ComfyManager {
     }
 
     constructor(public host: HostL) {
+        makeAutoObservable(this, {
+            host: false,
+            repository: false,
+            modelList: observable.shallow,
+            pluginList: observable.shallow,
+        })
         void this.updateHostPluginsAndModels()
     }
     updateHostPluginsAndModels = async () => {
