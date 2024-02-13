@@ -7,6 +7,7 @@ import { PanelHeaderSmallUI } from 'src/panels/PanelHeader'
 import { GalleryControlsUI } from 'src/panels/Panel_Gallery'
 import { RevealUI } from 'src/rsuite/reveal/RevealUI'
 import { useSt } from 'src/state/stateContext'
+import { useState } from 'react'
 
 export const FavBarUI = observer(function FavBarUI_(p: {
     //
@@ -67,6 +68,16 @@ export const FavBarUI = observer(function FavBarUI_(p: {
 
 export const AppDraftsQuickListUI = observer(function AppDraftsQuickListUI_(p: { app: CushyAppL }) {
     const app = p.app
+
+    const [filterText, setFilterText] = useState<string>('')
+
+    const filteredApps =
+        filterText === ''
+            ? app.drafts
+            : app.drafts.filter((draft) => {
+                  return draft.name.toLowerCase().indexOf(filterText) != -1
+              })
+
     return (
         <div className='MENU-ROOT'>
             <div className='MENU-HEADER'>
@@ -97,19 +108,39 @@ export const AppDraftsQuickListUI = observer(function AppDraftsQuickListUI_(p: {
                 ) : (
                     <></>
                 )}
-                <div //Container
-                    tw='flex-1 max-h-96 overflow-scroll grid grid-cols-3 gap-2 bg-base-300 p-2 rounded'
+                <div //App Grid Container
+                    tw='flex-col bg-base-300 p-2 rounded'
                 >
-                    {p.app.drafts.map((draft) => (
-                        <div tw='flex brightness-95 cursor-pointer hover:brightness-110 bg-base-200 rounded-md border-base-100 border p-1 justify-center'>
-                            <div key={draft.id} onClick={() => draft.openOrFocusTab()}>
-                                <div tw='flex self-center text-center justify-center p-1'>
-                                    <DraftIllustrationUI size='8rem' draft={draft} />
+                    <div //Filter Input
+                        tw='flex rounded pb-2'
+                    >
+                        <input
+                            tw='input-sm w-full bg-base-200 rounded rounded-r-none border border-base-200 border-r-base-300 outline-none focus:border-primary'
+                            value={filterText}
+                            onChange={(ev) => setFilterText(ev.currentTarget.value)}
+                            placeholder='Filter Drafts'
+                        ></input>
+                        <button
+                            tw='btn btn-sm text-center items-center self-center snap-center bg-base-200 p-1'
+                            onClick={(ev) => setFilterText('')}
+                        >
+                            <span className='material-symbols-outlined'>cancel</span>
+                        </button>
+                    </div>
+                    <div //App Grid Container
+                        tw='grid grid-cols-3 gap-2 max-h-96 overflow-scroll'
+                    >
+                        {filteredApps.map((draft) => (
+                            <div tw='flex brightness-95 cursor-pointer hover:brightness-110 bg-base-200 rounded-md border-base-100 border p-1 justify-center'>
+                                <div key={draft.id} onClick={() => draft.openOrFocusTab()}>
+                                    <div tw='flex self-center text-center justify-center p-1'>
+                                        <DraftIllustrationUI size='8rem' draft={draft} />
+                                    </div>
+                                    <div tw='text-center text-sm truncate overflow-clip max-w-32'>{draft.name}</div>
                                 </div>
-                                <div tw='text-center text-sm truncate overflow-clip max-w-32'>{draft.name}</div>
                             </div>
-                        </div>
-                    ))}
+                        ))}
+                    </div>
                 </div>
             </div>
         </div>
