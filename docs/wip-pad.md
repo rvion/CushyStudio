@@ -2,7 +2,7 @@
 description: How do I fix my broken install ?
 ---
 
-# WIP - pad
+# 🔥 Troubleshooting
 
 
 
@@ -25,4 +25,4 @@ description: How do I fix my broken install ?
     * you can delete the config but you'll lose
     * notably the current layout. so if your current layout has a broken tab that crashes cushy, this tab will be reloaded every time; you may want to remove the part about the layout
 
-    <figure><img src=".gitbook/assets/image.png" alt=""><figcaption></figcaption></figure>
+    <figure><img src=".gitbook/assets/image (1) (1) (1).png" alt=""><figcaption></figcaption></figure>

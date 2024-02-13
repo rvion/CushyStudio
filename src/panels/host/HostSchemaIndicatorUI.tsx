@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 import { HostL } from 'src/models/Host'
 import { RevealUI } from 'src/rsuite/reveal/RevealUI'
-import { Loader, Message } from 'src/rsuite/shims'
+import { Message } from 'src/rsuite/shims'
 
 export const HostSchemaIndicatorUI = observer(function HostSchemaIndicatorUI_(p: {
     //
@@ -20,11 +20,11 @@ export const HostSchemaIndicatorUI = observer(function HostSchemaIndicatorUI_(p:
                 {/* LAST UPDATE */}
                 {host.schemaUpdateResult ? (
                     host.schemaUpdateResult.type === 'error' ? (
-                        <div className='btn btn-sm cursor-help'>
+                        <div className='btn btn-sm btn-ghost cursor-help'>
                             <span className='text-error'>history</span>
                         </div>
                     ) : p.showIcon ? (
-                        <div className='btn btn-sm cursor-help'>
+                        <div className='btn btn-sm btn-ghost cursor-help'>
                             {p.showIcon && <span className='material-symbols-outlined text-green-400 '>check_circle</span>}
                         </div>
                     ) : null
@@ -32,13 +32,13 @@ export const HostSchemaIndicatorUI = observer(function HostSchemaIndicatorUI_(p:
 
                 {/* SIZE */}
                 {size === 0 ? (
-                    <div tw='btn btn-sm bg-error text-error-content'>
+                    <div tw='btn btn-sm btn-ghost bg-error text-error-content'>
                         <span className='material-symbols-outlined'>error</span>
                         {host.isUpdatingSchema && <div tw='loading loading-spinner loading-xs' />}
                         <div>empty schema</div>
                     </div>
                 ) : (
-                    <div className='btn btn-sm cursor-help'>
+                    <div className='btn btn-sm btn-ghost cursor-help'>
                         {p.showIcon && <span className='material-symbols-outlined text-green-400 '>check_circle</span>}
                         {host.isUpdatingSchema && <div tw='loading loading-spinner loading-xs' />}
                         <span className='text-success'>Schema</span>
@@ -57,7 +57,7 @@ export const HostSchemaIndicatorUI = observer(function HostSchemaIndicatorUI_(p:
                     </Message>
                 )}
                 <pre>{host.schemaRetrievalLogs.join('\n')}</pre>
-                <div tw='btn btn-sm btn-warning flex-1' onClick={() => host.getComfyUIManager()?.rebootComfyUI()}>
+                <div tw='btn btn-sm btn-warning flex-1' onClick={() => host.manager.rebootComfyUI()}>
                     Restart ComfyUI
                 </div>
             </div>

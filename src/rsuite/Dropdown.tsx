@@ -1,26 +1,13 @@
 import { observer } from 'mobx-react-lite'
 import { ReactNode } from 'react'
-import { RSAppearance, RSSize } from './RsuiteTypes'
-import { RevealUI } from './reveal/RevealUI'
 import { ComboUI } from 'src/app/shortcuts/ComboUI'
 import { CushyShortcut } from 'src/app/shortcuts/ShortcutManager'
+import { RSSize } from './RsuiteTypes'
+import { RevealUI } from './reveal/RevealUI'
 
-export const Dropdown = (p: {
-    className?: string
-    startIcon?: Maybe<ReactNode>
-    title: ReactNode
-    appearance?: Maybe<RSAppearance>
-    children: ReactNode
-}) => (
+export const Dropdown = (p: { className?: string; startIcon?: Maybe<ReactNode>; title: ReactNode; children: ReactNode }) => (
     <RevealUI className='dropdown' tw={[p.className]}>
-        <label
-            // style={{
-            //     minHeight: '1.5rem',
-            //     height: '1.5rem',
-            // }}
-            tabIndex={0}
-            tw={[`flex-nowrap btn btn-ghost btn-sm px-2`]}
-        >
+        <label tabIndex={0} tw={[`flex-nowrap btn btn-ghost btn-sm py-0 px-1.5`]}>
             <span tw='hidden lg:inline-block'>{p.startIcon}</span>
             {p.title}
         </label>

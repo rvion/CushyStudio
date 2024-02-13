@@ -6,11 +6,6 @@ import { parseFloatNoRoundingErr } from 'src/utils/misc/parseFloatNoRoundingErr'
 
 const clamp = (x: number, min: number, max: number) => Math.max(min, Math.min(max, x))
 
-/* TODO LIST:
- *   - Label
- *   - Suffix
- */
-
 /* NOTE(bird_d): Having these here should be fine since only one slider should be dragging/active at a time? */
 let startValue: number = 0
 let dragged: boolean = false
@@ -28,6 +23,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
     softMin?: number
     softMax?: number
     text?: string
+    suffix?: string
     hideSlider?: boolean
     style?: React.CSSProperties
     placeholder?: string
@@ -119,11 +115,11 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
 
     const onPointerUpListener = (e: MouseEvent) => {
         if (activeSlider && !dragged) {
-            let numberInput = activeSlider?.querySelector('input[type="number"') as HTMLInputElement
+            let textInput = activeSlider?.querySelector('input[type="text"') as HTMLInputElement
 
-            numberInput.setAttribute('cursor', 'not-allowed')
-            numberInput.setAttribute('cursor', 'none')
-            numberInput.focus()
+            textInput.setAttribute('cursor', 'not-allowed')
+            textInput.setAttribute('cursor', 'none')
+            textInput.focus()
         } else {
             activeSlider = null
         }
@@ -201,20 +197,28 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
                             window.addEventListener('pointerlockchange', onPointerLockChange, true)
                             window.addEventListener('mousedown', cancelListener, true)
 
-                            activeSlider?.requestPointerLock()
+                            /* Fix for low-sensitivity devices, it will get raw input from the mouse instead of the processed input.
+                             *  NOTE: This does not work on Linux right now, but when it does get added for Linux, this code should not need to be changed.
+                             */
+                            // @ts-ignore 🔴 untyped for me for now; TODO: will have to investigate why
+                            activeSlider?.requestPointerLock({ unadjustedMovement: true }).catch((error) => {
+                                console.log(
+                                    '[InputNumberUI] Obtaining raw mouse input is not supported on this platform. Using processed mouse input, you may need to adjust the number input drag multiplier.',
+                                )
+                                activeSlider?.requestPointerLock()
+                            })
                         }}
                     >
                         <div className='text-container' tw='flex'>
-                            {p.text ? (
+                            {!isEditing && p.text ? (
                                 <div tw='primary-content outline-0 border-0 border-transparent z-10 w-full text-left'>
                                     {p.text}
                                 </div>
                             ) : null}
                             <input //
-                                id='sliderNumberInput'
-                                type='number'
+                                type='text'
                                 tw={
-                                    p.text
+                                    !isEditing && p.text
                                         ? 'text-right cursor-not-allowed pointer-events-none'
                                         : 'text-center cursor-not-allowed pointer-events-none'
                                 }
@@ -232,10 +236,10 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
                                     setInputValue(ev?.target.value)
                                 }}
                                 onFocus={(ev) => {
-                                    let numberInput = ev.currentTarget
-                                    activeSlider = numberInput.parentElement as HTMLDivElement
+                                    let textInput = ev.currentTarget
+                                    activeSlider = textInput.parentElement as HTMLDivElement
 
-                                    numberInput.select()
+                                    textInput.select()
                                     startValue = val
                                     setInputValue(val.toString())
                                     setEditing(true)
@@ -262,6 +266,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
                                     }
                                 }}
                             />
+                            {!isEditing && p.suffix ? <div style={{ zIndex: 2, paddingLeft: 3 }}>{p.suffix}</div> : <></>}
                         </div>
                         {/* <input //Setting the value to 0
                         type='range'

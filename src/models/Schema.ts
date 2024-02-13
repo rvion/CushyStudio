@@ -23,6 +23,7 @@ export type NodeInputExt = {
     type: string
     opts?: ComfyInputOpts
     isPrimitive: boolean
+    isEnum: boolean
     // isEnum: boolean
     required: boolean
     index: number
@@ -276,6 +277,7 @@ export class ComfySchemaL {
                         type: inputTypeNameInCushy,
                         opts: slotOpts,
                         isPrimitive: ComfyPrimitives.includes(inputTypeNameInCushy),
+                        isEnum: this.knownEnumsByName.has(inputTypeNameInCushy),
                         index: node.inputs.length, // 🔴
                     })
                 } else {
@@ -497,6 +499,11 @@ export class ComfySchemaL {
         p(`\n// 8. NODES -------------------------------`)
         for (const n of this.nodes) p(n.codegen())
 
+        p(`\n// 8.2 NODE UI helpers --------------------`)
+        p(`export interface FormHelper {`)
+        for (const n of this.nodes) b.append(n.codegenUI())
+        p(`}`)
+
         p(`\n// 9. INDEX -------------------------------`)
         // p(`export const nodes = {`)
         // for (const n of this.nodes) p(`    ${n.name},`)
@@ -548,6 +555,24 @@ export class ComfyNodeSchema {
         public outputs: NodeOutputExt[],
     ) {
         this.category = this.category.replaceAll('/', '_')
+    }
+
+    codegenUI() {
+        const b = new CodeBuffer()
+        const p = b.w
+        p(`    ${this.nameInCushy}: {`)
+        this.inputs.forEach((i, ix) => {
+            if (i.isPrimitive) {
+                const tsType = ComfyPrimitiveMapping[i.type]
+                if (tsType == null) return console.log(`[🔶] invariant violation`)
+                p(`        ${escapeJSKey(i.nameInComfy)}: { kind: '${tsType}', type: ${tsType} }`)
+            }
+            if (i.isEnum) {
+                p(`        ${escapeJSKey(i.nameInComfy)}: { kind: 'enum', type: ${i.type} }`)
+            }
+        })
+        p(`    }`)
+        return b.content
     }
 
     codegen(): string {

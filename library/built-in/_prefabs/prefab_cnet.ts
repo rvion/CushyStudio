@@ -1,19 +1,18 @@
-import type { OutputFor } from './_prefabs'
 import type { FormBuilder } from '../../../src/controls/FormBuilder'
-import type { SDModelType } from 'src/controls/widgets/size/WidgetSizeTypes'
+import type { OutputFor } from './_prefabs'
 
-import { run_cnet_openPose, ui_subform_OpenPose } from './ControlNet/prefab_cnet_openPose'
+import { bang } from 'src/utils/misc/bang'
+import { run_cnet_IPAdapter, ui_subform_IPAdapter } from './ControlNet/ipAdapter/prefab_ipAdapter_base'
+import { run_cnet_IPAdapterFaceID, ui_IPAdapterFaceID } from './ControlNet/ipAdapter/prefab_ipAdapter_face'
 import { run_cnet_canny, ui_subform_Canny } from './ControlNet/prefab_cnet_canny'
 import { run_cnet_Depth, ui_subform_Depth } from './ControlNet/prefab_cnet_depth'
-import { run_cnet_Normal, ui_subform_Normal } from './ControlNet/prefab_cnet_normal'
-import { ui_subform_Tile, run_cnet_Tile } from './ControlNet/prefab_cnet_tile'
-import { run_cnet_IPAdapter, ui_subform_IPAdapter } from './ControlNet/ipAdapter/prefab_ipAdapter_base'
-import { run_cnet_Scribble, ui_subform_Scribble } from './ControlNet/prefab_cnet_scribble'
 import { run_cnet_Lineart, ui_subform_Lineart } from './ControlNet/prefab_cnet_lineart'
-import { run_cnet_SoftEdge, ui_subform_SoftEdge } from './ControlNet/prefab_cnet_softEdge'
-import { bang } from 'src/utils/misc/bang'
+import { run_cnet_Normal, ui_subform_Normal } from './ControlNet/prefab_cnet_normal'
+import { run_cnet_openPose, ui_subform_OpenPose } from './ControlNet/prefab_cnet_openPose'
+import { run_cnet_Scribble, ui_subform_Scribble } from './ControlNet/prefab_cnet_scribble'
 import { run_cnet_Sketch, ui_subform_Sketch } from './ControlNet/prefab_cnet_sketch'
-import { run_cnet_IPAdapterFaceID, ui_IPAdapterFaceID } from './ControlNet/ipAdapter/prefab_ipAdapter_face'
+import { run_cnet_SoftEdge, ui_subform_SoftEdge } from './ControlNet/prefab_cnet_softEdge'
+import { run_cnet_Tile, ui_subform_Tile } from './ControlNet/prefab_cnet_tile'
 
 // 🅿️ CNET UI -----------------------------------------------------------
 export const ui_cnet = () => {
@@ -21,6 +20,10 @@ export const ui_cnet = () => {
     return form.groupOpt({
         label: 'ControlNets',
         tooltip: `Instructional resources:\nhttps://github.com/lllyasviel/ControlNet\nhttps://stable-diffusion-art.com/controlnet/`,
+        requirements: [
+            //
+            { type: 'customNodesByTitle', title: `ComfyUI's ControlNet Auxiliary Preprocessors` },
+        ],
         items: () => ({
             applyDuringUpscale: form.bool({
                 tooltip: 'Use the controlnet conditioning for the upscale pass if enabled',

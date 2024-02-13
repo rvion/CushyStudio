@@ -8,11 +8,7 @@ export const MenuDebugUI = observer(function MenuDebugUI_(p: {}) {
     const st = useSt()
 
     return (
-        <Dropdown
-            appearance='subtle'
-            startIcon={<span className='material-symbols-outlined text-orange-500'>sync</span>}
-            title='Debug'
-        >
+        <Dropdown startIcon={<span className='material-symbols-outlined text-orange-500'>sync</span>} title='Debug'>
             <MenuItem
                 icon={<span className='material-symbols-outlined text-green-500'>panorama_horizontal</span>}
                 onClick={st.layout.resetCurrent}
@@ -38,11 +34,17 @@ export const MenuDebugUI = observer(function MenuDebugUI_(p: {}) {
             />
             <MenuItem
                 icon={<span className='material-symbols-outlined text-orange-500'>sync</span>}
-                onClick={st.restart}
+                onClick={st.reloadCushyMainWindow}
                 shortcut='mod+R'
                 label='Reload'
             />
             <div tw='divider my-0' />
+            <MenuItem
+                onClick={() => st.layout.FOCUS_OR_CREATE('Playground', {})}
+                icon={<span className='material-symbols-outlined text-yellow-500'>play_for_work</span>}
+            >
+                Show Dev Playground Page
+            </MenuItem>
             <MenuItem
                 onClick={() => getDBStats(st.db)}
                 icon={<span className='material-symbols-outlined text-yellow-500'>account_balance</span>}
@@ -74,7 +76,7 @@ export const MenuDebugUI = observer(function MenuDebugUI_(p: {}) {
                 // tw={[st.db.healthColor]}
                 onClick={() => {
                     st.db.reset()
-                    st.restart()
+                    st.reloadCushyMainWindow()
                 }}
                 icon={<span className='material-symbols-outlined text-red-500'>sync</span>}
             >

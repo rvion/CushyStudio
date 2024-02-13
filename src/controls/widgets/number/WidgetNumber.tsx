@@ -15,6 +15,7 @@ export type Widget_number_config = WidgetConfigFields<{
     softMin?: number
     softMax?: number
     step?: number
+    suffix?: string
     text?: string
     hideSlider?: boolean
     forceSnap?: boolean
@@ -45,6 +46,10 @@ export class Widget_number implements IWidget<Widget_number_types> {
     readonly forceSnap: boolean = false
 
     serial: Widget_number_serial
+
+    readonly defaultValue = this.config.default ?? 0
+    get isChanged() { return this.serial.val !== this.defaultValue } // prettier-ignore
+    reset() { this.serial.val = this.config.default ?? 0 } // prettier-ignore
 
     constructor(public readonly form: FormBuilder, public readonly config: Widget_number_config, serial?: Widget_number_serial) {
         this.id = serial?.id ?? nanoid()

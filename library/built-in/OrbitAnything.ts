@@ -9,6 +9,7 @@ app({
     metadata: {
         name: 'zero123-orbit-anything',
         description: 'see anything from any angle; just drop an image, and orbit around it',
+        illustration: 'library/built-in/_illustrations/app-illustration-orbit-anything.png',
         help: [
             //
             `This app works great with **autorun** active`,
@@ -19,7 +20,7 @@ app({
     },
     ui: (form) => ({
         image: form.image({}),
-        orbit: form.orbit({ recommandedModels: { knownModel: 'stabilityai/Stable Zero123' } }),
+        orbit: form.orbit({ requirements: [{ type: 'modelInManager', modelName: 'stabilityai/Stable Zero123' }] }),
         sndPass: form.groupOpt({
             items: () => ({
                 positive: form.prompt({}),

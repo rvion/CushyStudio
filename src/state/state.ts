@@ -1,13 +1,13 @@
 import 'src/models/_ctx3'
 import 'src/models/asyncRuntimeStorage'
 
+import type { ActionTagMethodList } from 'src/cards/App'
 import type { TreeNode } from 'src/panels/libraryUI/tree/xxx/TreeNode'
+import type { RevealState } from 'src/rsuite/reveal/RevealState'
 import type { Wildcards } from 'src/widgets/prompter/nodes/wildcards/wildcards'
 import type { MediaImageL } from '../models/MediaImage'
 import type { ComfyStatus, PromptID, PromptRelated_WsMsg, WsMsg } from '../types/ComfyWsApi'
 import type { CSCriticalError } from '../widgets/CSCriticalError'
-import type { RevealState } from 'src/rsuite/reveal/RevealState'
-import type { ActionTagMethodList } from 'src/cards/App'
 
 import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'fs'
 import { makeAutoObservable } from 'mobx'
@@ -22,21 +22,27 @@ import { PostgrestSingleResponse, SupabaseClient } from '@supabase/supabase-js'
 import { closest } from 'fastest-levenshtein'
 import { ShortcutWatcher } from 'src/app/shortcuts/ShortcutManager'
 import { shortcutsDef } from 'src/app/shortcuts/shortcuts'
+import { createRandomGenerator } from 'src/back/random'
 import { GithubUserName } from 'src/cards/GithubUser'
 import { Library } from 'src/cards/Library'
 import { asAppPath } from 'src/cards/asAppPath'
 import { GithubRepoName } from 'src/cards/githubRepo'
+import { recursivelyFindAppsInFolder } from 'src/cards/walkLib'
 import { STANDARD_HOST_ID, vIRTUAL_HOST_ID__BASE, vIRTUAL_HOST_ID__FULL } from 'src/config/ComfyHostDef'
 import { LiveCollection } from 'src/db/LiveCollection'
 import { SQLITE_false, SQLITE_true } from 'src/db/SQLITE_boolean'
 import { asHostID } from 'src/db/TYPES.gen'
+import { ComfyManagerRepository } from 'src/manager/ComfyManagerRepository'
 import { CushyAppL } from 'src/models/CushyApp'
 import { DraftL } from 'src/models/Draft'
 import { HostL } from 'src/models/Host'
 import { ProjectL } from 'src/models/Project'
 import { StepL } from 'src/models/Step'
 import { createMediaImage_fromPath } from 'src/models/createMediaImage_fromWebFile'
+import { VirtualHierarchy } from 'src/panels/libraryUI/VirtualHierarchy'
 import { treeElement } from 'src/panels/libraryUI/tree/TreeEntry'
+import { TreeApp } from 'src/panels/libraryUI/tree/nodes/TreeApp'
+import { TreeDraft } from 'src/panels/libraryUI/tree/nodes/TreeDraft'
 import { TreeAllApps, TreeAllDrafts, TreeFavoriteApps, TreeFavoriteDrafts } from 'src/panels/libraryUI/tree/nodes/TreeFavorites'
 import { TreeFolder } from 'src/panels/libraryUI/tree/nodes/TreeFolder'
 import { Tree } from 'src/panels/libraryUI/tree/xxx/Tree'
@@ -46,8 +52,8 @@ import { Database } from 'src/supa/database.types'
 import { ThemeManager } from 'src/theme/ThemeManager'
 import { CleanedEnumResult } from 'src/types/EnumUtils'
 import { StepOutput } from 'src/types/StepOutput'
+import { openInVSCode } from 'src/utils/electron/openInVsCode'
 import { UserTags } from 'src/widgets/prompter/nodes/usertags/UserLoader'
-import { getKnownCheckpoints, getKnownModels } from 'src/wiki/modelList'
 import { JsonFile } from '../core/JsonFile'
 import { LiveDB } from '../db/LiveDB'
 import { ComfyImporter } from '../importers/ComfyImporter'
@@ -62,11 +68,6 @@ import { DanbooruTags } from '../widgets/prompter/nodes/booru/BooruLoader'
 import { AuthState } from './AuthState'
 import { Uploader } from './Uploader'
 import { mkSupa } from './supa'
-import { TreeApp } from 'src/panels/libraryUI/tree/nodes/TreeApp'
-import { TreeDraft } from 'src/panels/libraryUI/tree/nodes/TreeDraft'
-import { VirtualHierarchy } from 'src/panels/libraryUI/VirtualHierarchy'
-import { recursivelyFindAppsInFolder } from 'src/cards/walkLib'
-import { createRandomGenerator } from 'src/back/random'
 
 export class STATE {
     /** hack to help closing prompt completions */
@@ -85,6 +86,7 @@ export class STATE {
     uploader: Uploader
     supabase: SupabaseClient<Database>
     auth: AuthState
+    managerRepository = new ComfyManagerRepository({ check: true, genTypes: false })
 
     _updateTime = () => {
         const now = Date.now()
@@ -137,10 +139,13 @@ export class STATE {
         return def[0]
     }
 
-    getKnownCheckpoints = getKnownCheckpoints
-    getKnownModels = getKnownModels
+    openInVSCode = (filePathWithinWorkspace: RelativePath) => {
+        openInVSCode(this, filePathWithinWorkspace)
+    }
 
-    restart = () => {
+    getKnownCheckpoints = () => this.managerRepository.getKnownCheckpoints()
+
+    reloadCushyMainWindow = () => {
         window.location.reload()
     }
 
@@ -148,7 +153,7 @@ export class STATE {
         this.configFile.erase()
         this.typecheckingConfig.erase()
         this.db.erase()
-        this.restart()
+        this.reloadCushyMainWindow()
     }
 
     resizeWindowForVideoCapture = () => {
@@ -163,7 +168,7 @@ export class STATE {
     partialReset_eraseConfigAndSchemaFiles = () => {
         this.configFile.erase()
         this.typecheckingConfig.erase()
-        this.restart()
+        this.reloadCushyMainWindow()
     }
 
     // main state api

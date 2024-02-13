@@ -9,7 +9,6 @@ export const MenuSettingsUI = observer(function MenuSettingsUI_(p: {}) {
         <Dropdown //
             startIcon={<span className='material-symbols-outlined text-purple-400'>settings</span>}
             title='Settings'
-            appearance='subtle'
         >
             <MenuItem
                 onClick={() => st.layout.FOCUS_OR_CREATE('Config', {})}

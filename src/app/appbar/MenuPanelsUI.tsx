@@ -6,11 +6,7 @@ import { KEYS } from '../shortcuts/shorcutKeys'
 export const MenuPanelsUI = observer(function MenuPanelsUI_(p: {}) {
     const st = useSt()
     return (
-        <Dropdown
-            startIcon={<span className='material-symbols-outlined text-red-400'>image</span>}
-            title='Panels'
-            appearance='subtle'
-        >
+        <Dropdown startIcon={<span className='material-symbols-outlined text-red-400'>image</span>} title='Panels'>
             <MenuItem
                 icon={<span className='material-symbols-outlined text-orange-500'>panorama_horizontal</span>}
                 onClick={st.layout.resetCurrent}

@@ -6,18 +6,17 @@ export const ui_subform_Sketch = () => {
     const form = getCurrentForm()
     return form.group({
         label: 'Sketch',
-        customNodesByTitle: 'ComfyUI-Advanced-ControlNet',
+        requirements: [
+            //
+            { type: 'customNodesByTitle', title: 'ComfyUI-Advanced-ControlNet' },
+            { type: 'modelInManager', modelName: 'T2I-Adapter (sketch)' },
+            { type: 'modelInManager', modelName: 'stabilityai/control-lora-sketch-rank128-metadata.safetensors' },
+            { type: 'modelInManager', modelName: 'stabilityai/control-lora-sketch-rank256.safetensors' },
+        ],
         items: () => ({
             cnet_model_name: form.enum.Enum_ControlNetLoader_control_net_name({
                 label: 'Model',
                 default: 't2iadapter_sketch_sd14v1.pth',
-                recommandedModels: {
-                    knownModel: [
-                        'T2I-Adapter (sketch)',
-                        'stabilityai/control-lora-sketch-rank128-metadata.safetensors',
-                        'stabilityai/control-lora-sketch-rank256.safetensors',
-                    ],
-                },
             }),
             ...cnet_ui_common(form),
         }),

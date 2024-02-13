@@ -8,7 +8,6 @@ export const MenuConfigUI = observer(function MenuConfigUI_(p: {}) {
         <Dropdown //
             startIcon={<span className='material-symbols-outlined text-purple-500'>Library</span>}
             title='Settings'
-            appearance='subtle'
         >
             <MenuItem
                 onClick={() => st.layout.FOCUS_OR_CREATE('Config', {})}

@@ -11,20 +11,18 @@ export const ui_upscaleWithModel = () => {
                 default: '4x-UltraSharp.pth',
             }),
         }),
-        recommandedModels: {
-            knownModel: [
-                // 2x
-                'RealESRGAN x2',
-                // 4x
-                'RealESRGAN x4',
-                '4x-UltraSharp',
-                '4x-AnimeSharp',
-                '4x_foolhardy_Remacri',
-                '4x_NMKD-Siax_200k',
-                // 8x
-                '8x_NMKD-Superscale_150000_G',
-            ],
-        },
+        requirements: [
+            // 2x
+            { type: 'modelInManager', modelName: 'RealESRGAN x2' },
+            // 4x
+            { type: 'modelInManager', modelName: 'RealESRGAN x4' },
+            { type: 'modelInManager', modelName: '4x-UltraSharp' },
+            { type: 'modelInManager', modelName: '4x-AnimeSharp' },
+            { type: 'modelInManager', modelName: '4x_foolhardy_Remacri' },
+            { type: 'modelInManager', modelName: '4x_NMKD-Siax_200k' },
+            // 8x
+            { type: 'modelInManager', modelName: '8x_NMKD-Superscale_150000_G' },
+        ],
     })
 }
 

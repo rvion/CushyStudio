@@ -10,6 +10,8 @@ export type RevealProps = {
     // placement
     placement?: Placement
 
+    onClick?: (ev: React.MouseEvent) => void
+
     // triggers
     showDelay?: number /** only for hover */
     hideDelay?: number /** only for hover */

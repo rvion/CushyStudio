@@ -1,5 +1,6 @@
 import type { OutputFor } from '../_prefabs'
 import type { FormBuilder } from 'src'
+
 import { cnet_preprocessor_ui_common, cnet_ui_common } from '../prefab_cnet'
 
 // 🅿️ Depth FORM ===================================================
@@ -7,7 +8,15 @@ export const ui_subform_Depth = () => {
     const form: FormBuilder = getCurrentForm()
     return form.group({
         label: 'Depth',
-        customNodesByTitle: 'ComfyUI-Advanced-ControlNet',
+        requirements: [
+            //
+            { type: 'customNodesByTitle', title: 'ComfyUI-Advanced-ControlNet' },
+            { type: 'modelInManager', modelName: 'T2I-Adapter (depth)' },
+            { type: 'modelInManager', modelName: 'ControlNet-v1-1 (depth; fp16)' },
+            { type: 'modelInManager', modelName: 'stabilityai/control-lora-depth-rank128.safetensors' },
+            { type: 'modelInManager', modelName: 'stabilityai/control-lora-depth-rank256.safetensors' },
+            { type: 'modelInManager', modelName: 'controlnet-SargeZT/controlnet-sd-xl-1.0-depth-16bit-zoe' },
+        ],
         items: () => ({
             ...cnet_ui_common(form),
             preprocessor: ui_subform_Depth_Preprocessor(),
@@ -17,17 +26,9 @@ export const ui_subform_Depth = () => {
                 items: () => ({
                     cnet_model_name: form.enum.Enum_ControlNetLoader_control_net_name({
                         label: 'Model',
+                        // @ts-ignore
                         default: 't2iadapter_depth_sd14v1.pth',
                         filter: (name) => name.toString().includes('depth'),
-                        recommandedModels: {
-                            knownModel: [
-                                'T2I-Adapter (depth)',
-                                'ControlNet-v1-1 (depth; fp16)',
-                                'stabilityai/control-lora-depth-rank128.safetensors',
-                                'stabilityai/control-lora-depth-rank256.safetensors',
-                                'controlnet-SargeZT/controlnet-sd-xl-1.0-depth-16bit-zoe',
-                            ],
-                        },
                     }),
                 }),
             }),

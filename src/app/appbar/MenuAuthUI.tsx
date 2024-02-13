@@ -23,7 +23,6 @@ export const MenuAuthUI = observer(function MenuAuthUI_(p: {}) {
             // tw={[isConnected ? null : 'text-warning-content bg-warning']}
             startIcon={avatar}
             title={username}
-            appearance='subtle'
         >
             <div tw='flex flex-col'>
                 {st.auth.isConnected ? (

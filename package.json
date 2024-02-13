@@ -33,7 +33,7 @@
         "gen-bins-node": "npm rebuild",
         "gen-supa-types": "supabase gen types typescript --linked > src/supa/database.types.ts",
         "gen-bins": "electron-builder install-app-deps",
-        "gen-manager": "bun src/wiki/_downloadComfyManagerJSONs.ts",
+        "gen-manager": "bun src/manager/_utils/_downloadComfyManagerJSONs.ts",
         "gen-assets": "bun src/utils/assets/assets.gen.ts",
         "gen-dts": "tsc -p tsconfig.doc.json",
         "gen-syms": "node src/shell/externals.cjs",
@@ -56,7 +56,8 @@
         "📌 RELEASE": "----------------------------------------------------------------------",
         "bump": "bump patch --commit=v --tag=v --push",
         "diff-with-master-all": "git diff master                   > tmp/diff-with-master-all.diff && code tmp/diff-with-master-all.diff",
-        "diff-with-master-add": "git diff master | grep -Ev '^\\-' > tmp/diff-with-master.diff     && code tmp/diff-with-master.diff"
+        "diff-with-master-add": "git diff master | grep -Ev '^\\-' > tmp/diff-with-master.diff     && code tmp/diff-with-master.diff",
+        "diff-local": "cd library/local && git diff master > doc.diff && code doc.diff"
     },
     "dependencies": {
         "@codemirror/autocomplete": "^6.12.0",

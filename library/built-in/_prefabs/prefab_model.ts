@@ -3,7 +3,7 @@ import type { OutputFor } from './_prefabs'
 // UI -----------------------------------------------------------
 export const ui_model = () => {
     const form = getCurrentForm()
-    const ckpts = form.schema.st.getKnownCheckpoints()
+    const ckpts = form.schema.st.managerRepository.getKnownCheckpoints()
     return form.group({
         label: 'AI Model',
         summary: (ui) => {
@@ -17,7 +17,7 @@ export const ui_model = () => {
             ckpt_name: form.enum.Enum_CheckpointLoaderSimple_ckpt_name({
                 default: 'revAnimated_v122.safetensors',
                 label: 'Checkpoint',
-                recommandedModels: { knownModel: ckpts.map((x) => x.name) },
+                requirements: ckpts.map((x) => ({ type: 'modelCustom', infos: x })),
             }),
             extra: form.choices({
                 appearance: 'tab',

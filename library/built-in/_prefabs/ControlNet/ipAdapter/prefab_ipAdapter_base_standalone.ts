@@ -11,7 +11,7 @@ export const ui_ipadapter_standalone = () => {
     const form = getCurrentForm()
     return form.group({
         label: 'IPAdapter',
-        customNodesByTitle: ['ComfyUI_IPAdapter_plus'],
+        requirements: [{ type: 'customNodesByTitle', title: 'ComfyUI_IPAdapter_plus' }],
         items: () => ({
             help: form.markdown({ startCollapsed: true, markdown: ipAdapterDoc }),
             image: form.image({ label: 'Image' }),

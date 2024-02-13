@@ -14,24 +14,24 @@ export const HostWebsocketIndicatorUI = observer(function HostWebsocketIndicator
     if (p.host.data.isVirtual)
         return (
             <RevealUI showDelay={0}>
-                <div tw='btn btn-sm text-opacity-25'>WS</div>
+                <div tw='btn btn-sm btn-ghost text-opacity-25'>WS</div>
                 <div tw='p-2'>Not Applicable</div>
             </RevealUI>
         )
     return (
         <RevealUI showDelay={0}>
             {ws == null ? (
-                <div tw='btn btn-sm opacity-50'>
+                <div tw='btn btn-sm btn-ghost opacity-50'>
                     {p.showIcon && <span className='material-symbols-outlined '>cloud_off</span>}
                     <span className=''>WS</span>
                 </div>
             ) : ws?.isOpen ? (
-                <div tw='btn btn-sm'>
+                <div tw='btn btn-sm btn-ghost'>
                     {p.showIcon && <span className='material-symbols-outlined text-green-400 '>check_circle</span>}
                     <span className='text-success'>WS</span>
                 </div>
             ) : (
-                <div tw='btn btn-sm btn-error flex-nowrap'>
+                <div tw='btn btn-sm btn-ghost btn-error flex-nowrap'>
                     <div tw='loading loading-spinner loading-xs' />
                     WS
                 </div>

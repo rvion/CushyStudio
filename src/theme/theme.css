@@ -1,3 +1,6 @@
+#CushyStudio:focus {
+    outline: none;
+}
 /*
 @font-face {
     font-family: 'inter';
@@ -23,13 +26,14 @@ body {
     border-right: 1px solid oklch(var(--p)/.2);
     border-bottom: 1px solid oklch(var(--p)/.2);
     /* border-bottom: 1px solid oklch(var(--p)/.4); */
+    padding: 2px;
 }
 .SUB-FIELD {
     flex: 1;
     /* background: #272729; */
 }
 .WIDGET-LINE {
-    /* padding: .4rem; */
+    padding: .15rem;
 }
 /* .SUB-FIELD .WIDGET-BLOCK {
     padding-left: .2rem;
@@ -38,7 +42,26 @@ body {
 .WIDGET-BLOCK {
     margin-left: .6rem;
     margin-right: .4rem;
+    margin-top: .1rem;
     /* padding: .4rem; */
+}
+
+/* Should be used for right-click/context/pop-up menus */
+.MENU-ROOT {
+    /* padding: 0.5rem; */
+    padding: 4px;
+}
+
+.MENU-HEADER {
+    border-radius: 4px;
+    padding: 0px 4px 0px 4px;
+    display: flex;
+}
+
+.MENU-CONTENT {
+    border-radius: 4px;
+    padding: 4px;
+    /* background: oklch(var(--b3)) */
 }
 
 
@@ -131,7 +154,9 @@ body {
 
 /* Container holding buttons, range, and number input */
 .relative-slider {
+    --button-width: 16px;
     --input-number-ui-bg: oklch(var(--p)/.15);
+    --text-shadow-color: rgb(0, 0, 0, 0.2);
     border: 1px solid oklch(var(--pc)/.2);
     border-radius: 5px;
 }
@@ -201,23 +226,22 @@ input.input {
     background: oklch(var(--p)/.4);
 }
 
-.relative-slider input[type="number"] {
+.relative-slider input[type="text"] {
     appearance: textfield;
     -moz-appearance: textfield; /* Firefox */
     pointer-events: none;
     width: 100%;
-    --shadow-color: rgb(0, 0, 0, 0.2);
-    /* TODO(bird_d): This should be moved to be under all text, not just for sliders. */
-    text-shadow: 0px 1px 1px var(--shadow-color), 1px 1px 1px var(--shadow-color), -1px 1px 1px var(--shadow-color);
+    /* TODO(bird_d): This should be moved to be under all text, not just for number input. */
+    text-shadow: 0px 1px 1px var(--text-shadow-color), 1px 1px 1px var(--text-shadow-color), -1px 1px 1px var(--text-shadow-color);
     border-width: 0px;
 }
 
-.relative-slider input[type="number"]:focus {
+.relative-slider input[type="text"]:focus {
     outline: none;
     border-color: transparent;
 }
 
-.relative-slider input[type="number"]::selection {
+.relative-slider input[type="text"]::selection {
     background-color: oklch(var(--pc));
 }
 
@@ -225,14 +249,16 @@ input.input {
     display: hidden;
     opacity: 0;
     border-width: 0px;
-    background-color: oklch(var(--input-number-ui-bg)*1.2);
-    outline-width: 0px;
+    background-color: oklch(var(--b2));
+    padding: 0px;
+    width: var(--button-width);
+    border-radius: 3px;
 }
 
 .relative-slider:hover button {
     display: unset;
     opacity: 100;
-    background-color: oklch(var(--pc)/0.5);
+    background-color: oklch(var(--b2));
 }
 
 .relative-slider button:hover {
@@ -259,8 +285,11 @@ input.input {
     align-content: end;
     background: transparent !important;
     border-width: 0px !important;
-    padding-left: 5px;
+    padding: 0px calc(var(--button-width) + 2px) 0px calc(var(--button-width) + 2px);
     font-size: 15px;
+
+    /* TODO(bird_d): This should be moved to be under all text, not just for number input. */
+    text-shadow: 0px 1px 1px var(--text-shadow-color), 1px 1px 1px var(--text-shadow-color), -1px 1px 1px var(--text-shadow-color);
 }
 
 /* /Slider */

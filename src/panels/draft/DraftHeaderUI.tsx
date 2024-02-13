@@ -2,7 +2,8 @@ import type { DraftL } from 'src/models/Draft'
 
 import { observer } from 'mobx-react-lite'
 import { DraftIllustrationUI } from 'src/cards/fancycard/DraftIllustration'
-import { DraftMenuUI } from './DraftMenuUI'
+import { DraftMenuActionsUI } from './DraftMenuActionsUI'
+import { DraftMenuLooksUI } from './DraftMenuLooksUI'
 import { PublishAppBtnUI } from './PublishAppBtnUI'
 import { RunOrAutorunUI } from './RunOrAutorunUI'
 
@@ -20,7 +21,7 @@ export const DraftHeaderUI = observer(function DraftHeaderUI_(p: {
             tw='_DraftHeaderUI flex bg-base-300 border-b border-b-base-300 sticky top-0 z-50'
         >
             <div tw='flex gap-1 mt-1 flex-grow relative text-base-content'>
-                <DraftIllustrationUI draft={draft} size='6rem' />
+                <DraftIllustrationUI revealAppIllustrationOnHover draft={draft} size='6rem' />
                 <div tw='flex flex-col gap-1 flex-grow'>
                     <div style={{ height: '2rem' }} className='flex items-center gap-2 justify-between text-sm'>
                         <input
@@ -31,10 +32,12 @@ export const DraftHeaderUI = observer(function DraftHeaderUI_(p: {
                         ></input>
                     </div>
                     <RunOrAutorunUI tw='flex-shrink-0' draft={draft} />
-                    <div tw='flex items-center'>
-                        <DraftMenuUI tw='w-full' draft={draft} title={app.name} />
+                    <div tw='flex'>
+                        <DraftMenuActionsUI draft={draft} title={app.name} />
                         {/* --------------------------------- */}
+                        <div tw='flex-grow'></div>
                         <PublishAppBtnUI app={app} />
+                        <DraftMenuLooksUI draft={draft} title={app.name} />
                         {/* --------------------------------- */}
                         <div onClick={draft.expandTopLevelFormEntries} tw='btn btn-square btn-sm join-item'>
                             <span className='material-symbols-outlined'>unfold_more</span>

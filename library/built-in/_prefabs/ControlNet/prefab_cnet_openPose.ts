@@ -1,5 +1,6 @@
 import type { OutputFor } from '../_prefabs'
 import type { FormBuilder } from 'src'
+
 import { cnet_preprocessor_ui_common, cnet_ui_common } from '../prefab_cnet'
 
 // 🅿️ OPEN POSE FORM ===================================================
@@ -7,7 +8,7 @@ export const ui_subform_OpenPose = () => {
     const form: FormBuilder = getCurrentForm()
     return form.group({
         label: 'Pose',
-        customNodesByTitle: 'ComfyUI-Advanced-ControlNet',
+        requirements: [{ type: 'customNodesByTitle', title: 'ComfyUI-Advanced-ControlNet' }],
         items: () => ({
             ...cnet_ui_common(form),
             preprocessor: ui_subform_OpenPose_Preprocessor(),
@@ -17,6 +18,7 @@ export const ui_subform_OpenPose = () => {
                 items: () => ({
                     cnet_model_name: form.enum.Enum_ControlNetLoader_control_net_name({
                         label: 'Model',
+                        // @ts-ignore
                         default: 't2iadapter_openpose_sd14v1.pth',
                         filter: (name) => name.toString().includes('pose'),
                         extraDefaults: ['t2iadapter_openpose_sd14v1.pth', 'control_v11p_sd15_openpose.pth'],

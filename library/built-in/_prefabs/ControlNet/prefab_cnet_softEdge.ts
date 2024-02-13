@@ -1,5 +1,6 @@
 import type { FormBuilder } from 'src'
 import type { OutputFor } from '../_prefabs'
+
 import { cnet_preprocessor_ui_common, cnet_ui_common } from '../prefab_cnet'
 
 // 🅿️ SoftEdge FORM ===================================================
@@ -7,6 +8,10 @@ export const ui_subform_SoftEdge = () => {
     const form: FormBuilder = getCurrentForm()
     return form.group({
         label: 'SoftEdge',
+        requirements: [
+            { type: 'modelInManager', modelName: 'ControlNet-v1-1 (softedge; fp16)' },
+            { type: 'modelInManager', modelName: 'controlnet-SargeZT/controlnet-sd-xl-1.0-softedge-dexined' },
+        ],
         items: () => ({
             ...cnet_ui_common(form),
             preprocessor: ui_subform_SoftEdge_Preprocessor(),
@@ -14,9 +19,6 @@ export const ui_subform_SoftEdge = () => {
                 label: 'Model',
                 default: 'control_v11p_sd15_softedge.pth' as any,
                 extraDefaults: ['control_v11p_sd15_softedge.pth'],
-                recommandedModels: {
-                    knownModel: ['ControlNet-v1-1 (softedge; fp16)', 'controlnet-SargeZT/controlnet-sd-xl-1.0-softedge-dexined'],
-                },
             }),
         }),
     })

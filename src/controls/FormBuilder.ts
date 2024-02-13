@@ -5,6 +5,7 @@ import { exhaust } from 'src/utils/misc/ComfyUtils'
 import { _FIX_INDENTATION } from '../utils/misc/_FIX_INDENTATION'
 import * as W from './Widget'
 
+import { AutoBuilder, mkFormAutoBuilder } from './AutoBuilder'
 import { EnumBuilder, EnumBuilderOpt } from './EnumBuilder'
 import { Widget_bool, type Widget_bool_config } from './widgets/bool/WidgetBool'
 import { Widget_choices, type Widget_choices_config } from './widgets/choices/WidgetChoices'
@@ -24,7 +25,7 @@ import { Widget_string, type Widget_string_config } from './widgets/string/Widge
 export class FormBuilder {
     /** (@internal) don't call this yourself */
     constructor(public schema: ComfySchemaL) {
-        makeAutoObservable(this)
+        makeAutoObservable(this, { auto: false })
     }
 
     // string
@@ -56,6 +57,7 @@ export class FormBuilder {
     intOpt = (config: Omit<Widget_number_config, 'mode'> & { startActive?: boolean }) =>
         this.optional({
             label: config.label,
+            requirements: config.requirements,
             startActive: config.startActive,
             startCollapsed: config.startCollapsed,
             widget: () => new Widget_number(this, { mode: 'int', ...config, startCollapsed: undefined }),
@@ -63,6 +65,7 @@ export class FormBuilder {
     floatOpt = (config: Omit<Widget_number_config, 'mode'> & { startActive?: boolean }) =>
         this.optional({
             label: config.label,
+            requirements: config.requirements,
             startActive: config.startActive,
             startCollapsed: config.startCollapsed,
             widget: () => new Widget_number(this, { mode: 'float', ...config, startCollapsed: undefined }),
@@ -70,6 +73,7 @@ export class FormBuilder {
     numberOpt = (config: Omit<Widget_number_config, 'mode'> & { startActive?: boolean }) =>
         this.optional({
             label: config.label,
+            requirements: config.requirements,
             startActive: config.startActive,
             startCollapsed: config.startCollapsed,
             widget: () => new Widget_number(this, { mode: 'float', ...config, startCollapsed: undefined }),
@@ -79,6 +83,7 @@ export class FormBuilder {
     imageOpt = (config: Widget_image_config & { startActive?: boolean }) =>
         this.optional({
             label: config.label,
+            requirements: config.requirements,
             startActive: config.startActive,
             startCollapsed: config.startCollapsed,
             widget: () => new Widget_image(this, { ...config, startCollapsed: undefined }),
@@ -89,6 +94,7 @@ export class FormBuilder {
     promptOpt = (config: Widget_prompt_config & { startActive?: boolean }) =>
         this.optional({
             label: config.label,
+            requirements: config.requirements,
             startActive: config.startActive,
             startCollapsed: config.startCollapsed,
             widget: () => new Widget_prompt(this, { ...config, startCollapsed: undefined }),
@@ -97,6 +103,8 @@ export class FormBuilder {
     // --------------------
 
     // enum = /*<const T extends KnownEnumNames>*/ (config: Widget_enum_config<any, any>) => new Widget_enum(this, config)
+    auto = mkFormAutoBuilder(this) /*<const T extends KnownEnumNames>*/
+    autoField = mkFormAutoBuilder(this)
     enum = new EnumBuilder(this) /*<const T extends KnownEnumNames>*/
     enumOpt = new EnumBuilderOpt(this)
     //  <const T extends KnownEnumNames>(config: Widget_enum_config<T> & { startActive?: boolean }) =>
@@ -134,7 +142,7 @@ export class FormBuilder {
     groupOpt = <const T extends { [key: string]: W.Widget }>(config: Widget_group_config<T> & { startActive?: boolean }) =>
         this.optional({
             label: config.label,
-            customNodesByNameInCushy: config.customNodesByNameInCushy,
+            requirements: config.requirements,
             startActive: config.startActive,
             startCollapsed: config.startCollapsed,
             widget: () => this.group({ ...config, startCollapsed: undefined }),

@@ -1,5 +1,6 @@
 import type { OutputFor } from '../_prefabs'
 import type { FormBuilder } from 'src'
+
 import { cnet_preprocessor_ui_common, cnet_ui_common } from '../prefab_cnet'
 
 // 🅿️ Normal FORM ===================================================
@@ -7,7 +8,11 @@ export const ui_subform_Normal = () => {
     const form = getCurrentForm()
     return form.group({
         label: 'Normal',
-        customNodesByTitle: 'ComfyUI-Advanced-ControlNet',
+        requirements: [
+            //
+            { type: 'customNodesByTitle', title: 'ComfyUI-Advanced-ControlNet' },
+            { type: 'modelInManager', modelName: 'ControlNet-v1-1 (normalbae; fp16)' },
+        ],
         items: () => ({
             ...cnet_ui_common(form),
             preprocessor: ui_subform_Normal_Preprocessor(),
@@ -20,7 +25,6 @@ export const ui_subform_Normal = () => {
                         default: 'control_v11p_sd15_normalbae.pth' as any,
                         filter: (x) => x.toString().includes('normal'),
                         extraDefaults: ['control_v11p_sd15_normalbae.pth'],
-                        recommandedModels: { knownModel: ['ControlNet-v1-1 (normalbae; fp16)'] },
                     }),
                 }),
             }),

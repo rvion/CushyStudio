@@ -10,7 +10,7 @@ export const MenuNSFWCheckerUI = observer(function MenuNSFWCheckerUI_(p: {}) {
     const val = pj.filterNSFW
     return (
         <RevealUI trigger='hover' showDelay={0}>
-            <label tw='swap swap-flip text-2xl'>
+            <label tw='swap swap-flip'>
                 <input
                     type='checkbox'
                     checked={val}

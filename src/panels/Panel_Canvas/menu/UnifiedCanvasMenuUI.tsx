@@ -14,9 +14,13 @@ export const UnifiedCanvasMenuUI = observer(function UnifiedCanvasMenuUI_(p: {})
     const [dropStyle2, dropRef2] = useImageDrop(st, (img) => canvas.addMask(img))
     return (
         <div tw='virtualBorder flex flex-col gap-2'>
-            {/* DEBUG */}
-            <div className='w-96'>
-                <pre>{JSON.stringify(canvas.infos, null, 3)}</pre>
+            <div
+                onClick={() => {
+                    canvas.undo()
+                }}
+                className='btn'
+            >
+                Undo (stack.size={canvas.undoBuffer.length})
             </div>
             {/*  */}
             {/* TOP LEVEL BUTTON */}
@@ -31,17 +35,20 @@ export const UnifiedCanvasMenuUI = observer(function UnifiedCanvasMenuUI_(p: {})
                 <div
                     tw='btn btn-primary'
                     onClick={() => {
-                        //
+                        // create
+                        // canvas.activeMask?.saveMask()
+                        const res = canvas.activeSelection.saveImage()
+                        if (res == null) return toastError('❌ FAILED to canvas.activeSelection.saveImage')
+                        const { image, mask } = res
+
+                        // quick check
+                        if (image == null) return toastError('❌ image is null')
+                        if (mask == null) return toastError('❌ mask is null')
+
+                        // showcase
                         const draft = st.db.drafts.get('HU3BR0X9yd6qB3rWTH3Dd')
-                        if (draft == null) return toastError('NAH1')
-
-                        const selection = canvas.activeSelection
-                        if (selection == null) return toastError('NAH2')
-
-                        const img = selection.saveImage()
-                        if (img == null) return toastError('NAH3')
-
-                        draft.start(null, img)
+                        if (draft == null) return toastError('❌ draft(id=HU3BR0X9yd6qB3rWTH3Dd) not found')
+                        draft.start(null, image)
                     }}
                 >
                     AMAZE YOURSEF
@@ -214,6 +221,10 @@ export const UnifiedCanvasMenuUI = observer(function UnifiedCanvasMenuUI_(p: {})
                         )
                     })}
                 </SortableList>
+            </div>
+            {/* DEBUG */}
+            <div className='w-96'>
+                <pre>{JSON.stringify(canvas.infos, null, 3)}</pre>
             </div>
         </div>
     )

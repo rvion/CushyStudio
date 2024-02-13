@@ -1,33 +1,47 @@
-# 👋 Getting Started
-
-\##This page will contain a brief introduction, a warning that the software is a beta and to expect many changes over time. We will also explain to the user that the documentation will match feature parity with Cushy and link to the current changelog. _(Maybe this page also will mention the latest features and link directly to the pages about them? TBD)_
+# 🛋 Welcome to Cushy
 
 {% hint style="warning" %}
-Cushy Studio is currently in beta, undergoing active development, and may have occasional bugs and unfinished features, but we encourage users to provide feedback to help us improve and enhance the platform.
+CushyDocs are currently undergoing active development, and may have blank pages and unfinished documentation. We encourage users to provide feedback to help us improve and enhance the knowledge base. Let us know if there is a topic that needs to be addressed.
 {% endhint %}
 
-***
+## CushyStudio: Simplifying Generative AI
 
-## Current Versions
+CushyStudio is a versatile, cross-platform tool designed to simplify the use of generative AI for creatives and artists of all skill levels. It offers a comprehensive, adaptable environment for creating with generative AI across various mediums such as images, videos, and 3D models. The platform is built to serve both professionals and hobbyists, democratizing artistry by making it accessible to everyone.
 
-{% tabs %}
-{% tab title="Stable" %}
+**Core Features:**
 
-{% endtab %}
+* **Cushy Apps:** At the core of CushyStudio are Cushy Apps—self-contained applications tailored to specific creative tasks. These apps boast user-friendly interfaces that demystify generative art, making it approachable for all users. The Cushy Library houses a wide range of apps, from versatile, general-use applications to niche tools designed for specific artistic endeavors. Users can also contribute their creations to the Cushy App Library, fostering a community of shared resources.
+* **CushySDK:** For those looking to delve deeper, the CushySDK provides an extensive toolkit for custom application development and task automation. This allows for the creation of personalized generative art applications that cater to unique creative visions, offering advanced tools and resources to realize those ideas fully.
+* **User-Friendly Design:** CushyStudio enhances user experience by building on the ComfyUI framework, simplifying its complex node-based system into intuitive, app-like interfaces with menus, sliders, and dialogue boxes. This shift focuses on reducing the time spent navigating complex workflows, allowing more time for creative exploration.
 
-{% tab title="Dev" %}
+**Join the Generative Art Revolution:**
 
-{% endtab %}
-{% endtabs %}
+CushyStudio invites artists, developers, and enthusiasts to explore the boundless possibilities of generative AI art. Our platform is committed to pushing the boundaries of creativity, offering a space where anyone can discover, create, and share their work in the evolving landscape of generative art.
 
-***
+Dive into CushyStudio—where creativity meets simplicity in the world of generative AI.
 
-## Overview
+## Video overview
 
-"Welcome to Cushy Studio, a modern and cross-platform software designed for both play and work with Generative AI Art. Explore and build generative applications for images, videos, and 3D art, ushering in a glimpse of the future.
+Got 2 minutes? Check out a video overview of Cushy:
 
-Cushy Apps are at the core of our platform, offering self-contained, task-oriented applications with user-friendly interfaces that make generative art accessible to everyone. Discover the perfect application tailored to your needs within the extensive Cushy Library, whether it's a versatile, general-purpose app or a highly specialized one designed for specific creative endeavors.
+{% hint style="danger" %}
+Place a two minute demo video here that briefly showcases many of the features contained within Cushy and how easy it is to use.
+{% endhint %}
 
-With the Cushy SDK, you can automate tasks and address niche use cases by creating your custom applications. Cushy Studio provides a suite of power-user tools to help you bring your dream "app" to life. Once your creation is ready, share it with the global creative community through the Cushy App Library.
+{% hint style="info" %}
+What is Cushy
+{% endhint %}
 
-At Cushy Foundation, we are committed to durability and innovation. Our project builds on proven technologies like ComfyUI, Stable Diffusion, FFmpeg, and ImageMagick. Featuring an extensible core and a professional user interface with dockable panes, Cushy is designed with developers and creative professionals in mind, and it is LLM-friendly. While the project is in its early stages, our founder (rvion) is dedicated to its growth. If you appreciate our work, consider sponsoring us to support our mission of advancing generative art."
+{% hint style="info" %}
+Why use Cushy
+{% endhint %}
+
+{% hint style="info" %}
+Summary of features
+{% endhint %}
+
+**Inpainting:** Cushy has powerful inpainting functionality. [More info](features/inpainting.md)
+
+{% hint style="info" %}
+Links to other parts of documentation
+{% endhint %}

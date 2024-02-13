@@ -4,7 +4,10 @@ export const ui_refiners = () => {
     const form = getCurrentForm()
     return form.choices({
         appearance: 'tab',
-        customNodesByTitle: 'ComfyUI Impact Pack',
+        requirements: [
+            //
+            { type: 'customNodesByTitle', title: 'ComfyUI Impact Pack' },
+        ],
         items: {
             faces: () =>
                 form.group({
@@ -12,15 +15,13 @@ export const ui_refiners = () => {
                         prompt: form.string({}),
                         detector: form.enum.Enum_UltralyticsDetectorProvider_model_name({
                             default: 'bbox/face_yolov8m.pt',
-                            recommandedModels: {
-                                knownModel: [
-                                    //
-                                    'face_yolov8m (bbox)',
-                                    'face_yolov8n (bbox)',
-                                    'face_yolov8s (bbox)',
-                                    'face_yolov8n_v2 (bbox)',
-                                ],
-                            },
+                            requirements: [
+                                { type: 'customNodesByTitle', title: 'ComfyUI Impact Pack' },
+                                { type: 'modelInManager', modelName: 'face_yolov8m (bbox)', optional: true },
+                                { type: 'modelInManager', modelName: 'face_yolov8n (bbox)', optional: true },
+                                { type: 'modelInManager', modelName: 'face_yolov8s (bbox)', optional: true },
+                                { type: 'modelInManager', modelName: 'face_yolov8n_v2 (bbox)', optional: true },
+                            ],
                         }),
                     }),
                 }),
@@ -30,9 +31,11 @@ export const ui_refiners = () => {
                         prompt: form.string({}),
                         detector: form.enum.Enum_UltralyticsDetectorProvider_model_name({
                             default: 'bbox/hand_yolov8s.pt',
-                            recommandedModels: {
-                                knownModel: ['hand_yolov8n (bbox)', 'hand_yolov8s (bbox)'],
-                            },
+                            requirements: [
+                                { type: 'customNodesByTitle', title: 'ComfyUI Impact Pack' },
+                                { type: 'modelInManager', modelName: 'hand_yolov8n (bbox)' },
+                                { type: 'modelInManager', modelName: 'hand_yolov8s (bbox)' },
+                            ],
                         }),
                     }),
                 }),
