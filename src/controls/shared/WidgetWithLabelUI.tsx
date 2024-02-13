@@ -80,7 +80,12 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                         }
                     >
                         <Widget_ToggleUI widget={p.widget} />
-                        {p.widget.config.requirements && <InstallRequirementsBtnUI requirements={p.widget.config.requirements} />}
+                        {p.widget.config.requirements && (
+                            <InstallRequirementsBtnUI
+                                active={widget instanceof KLS.Widget_optional ? widget.serial.active : true}
+                                requirements={p.widget.config.requirements}
+                            />
+                        )}
                         {/* <InstallCustomNodeBtnUI recomandation={p.widget.config} /> */}
                         {widget.config.tooltip && <WidgetTooltipUI widget={p.widget} />}
                         {LABEL}

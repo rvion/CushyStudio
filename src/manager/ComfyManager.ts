@@ -41,10 +41,11 @@ export class ComfyManager {
     }
 
     constructor(public host: HostL) {
-        void (async () => {
-            this.pluginList = await this.fetchPluginList()
-            this.modelList = await this.fetchModelList()
-        })()
+        void this.updateHostPluginsAndModels()
+    }
+    updateHostPluginsAndModels = async () => {
+        this.pluginList = await this.fetchPluginList()
+        this.modelList = await this.fetchModelList()
     }
 
     // utils ------------------------------------------------------------------------------
@@ -53,8 +54,11 @@ export class ComfyManager {
     }
 
     // actions ---------------------------------------------------------------------------
+    // @server.PromptServer.instance.routes.get("/manager/reboot")
     rebootComfyUI = async () => {
-        // @server.PromptServer.instance.routes.get("/manager/reboot")
+        // 🔴 bad code
+        setTimeout(() => void this.updateHostPluginsAndModels(), 10_000)
+
         return this.fetchGet('/manager/reboot')
     }
 
@@ -63,6 +67,10 @@ export class ComfyManager {
 
     fetchModelList = (): Promise<HostModelList> => {
         return this.fetchGet<HostModelList>('/externalmodel/getlist?mode=cache')
+    }
+
+    isModelInstalled = (name: KnownModel_Name): boolean => {
+        return this.modelList?.models.some((x) => x.name === name && x.installed === 'True') ?? false
     }
 
     installModel = async (model: ModelInfo) => {
@@ -99,6 +107,11 @@ export class ComfyManager {
                 .map((x) => x.title) ?? []
         )
     }
+
+    isPluginInstalled = (title: KnownCustomNode_Title): boolean => {
+        return this.pluginList?.custom_nodes.some((x) => x.title === title && x.installed === 'True') ?? false
+    }
+
     getPluginStatus = (title: KnownCustomNode_Title): PluginInstallStatus => {
         if (this.pluginList == null) return 'unknown'
         const entry = this.pluginList?.custom_nodes.find((x) => x.title === title)

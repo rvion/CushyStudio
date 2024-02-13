@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
+import { InstallRequirementsBtnUI } from 'src/controls/REQUIREMENTS/Panel_InstallRequirementsUI'
 import { useSt } from 'src/state/stateContext'
 import { MessageInfoUI } from '../MessageUI'
-import { InstallRequirementsBtnUI, Panel_InstallRequirementsUI } from 'src/controls/REQUIREMENTS/Panel_InstallRequirementsUI'
 
 export const Panel_Playground = observer(function Panel_Playground_(p: {}) {
     const st = useSt()
@@ -21,14 +21,15 @@ export const Panel_Playground = observer(function Panel_Playground_(p: {}) {
 
             {/* 👇 PLAYGROUND HERE */}
 
-            <Panel_InstallRequirementsUI
+            <InstallRequirementsBtnUI
+                active
                 requirements={[
-                    { type: 'customNodesByTitle', title: 'ComfyUI-Advanced-ControlNet' },
-                    { type: 'modelInManager', modelName: 'T2I-Adapter (depth)' },
-                    { type: 'modelInManager', modelName: 'ControlNet-v1-1 (depth; fp16)' },
-                    { type: 'modelInManager', modelName: 'stabilityai/control-lora-depth-rank128.safetensors' },
-                    { type: 'modelInManager', modelName: 'stabilityai/control-lora-depth-rank256.safetensors' },
-                    { type: 'modelInManager', modelName: 'controlnet-SargeZT/controlnet-sd-xl-1.0-depth-16bit-zoe' },
+                    // { type: 'customNodesByTitle', title: 'ComfyUI-Advanced-ControlNet' },
+                    // { type: 'modelInManager', modelName: 'T2I-Adapter (depth)' },
+                    // { type: 'modelInManager', modelName: 'ControlNet-v1-1 (depth; fp16)' },
+                    // { type: 'modelInManager', modelName: 'stabilityai/control-lora-depth-rank128.safetensors' },
+                    // { type: 'modelInManager', modelName: 'stabilityai/control-lora-depth-rank256.safetensors' },
+                    // { type: 'modelInManager', modelName: 'controlnet-SargeZT/controlnet-sd-xl-1.0-depth-16bit-zoe' },
 
                     //
                     { type: 'customNodesByNameInCushy', nodeName: '_0246$5Cloud' },

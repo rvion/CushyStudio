@@ -1,6 +1,7 @@
+import type { ModelInfo } from 'src/manager/model-list/model-list-loader-types'
+
 import { observer } from 'mobx-react-lite'
 import { useSt } from 'src/state/stateContext'
-import { ModelInfo } from 'src/manager/model-list/model-list-loader-types'
 
 export const Button_InstalModelViaManagerUI = observer(function Button_InstalModelViaManagerUI_(p: { modelInfo: ModelInfo }) {
     const mi = p.modelInfo
@@ -51,7 +52,7 @@ export const Button_InstalModelViaManagerUI = observer(function Button_InstalMod
                     e.stopPropagation()
                 }}
             >
-                <summary>see all noes</summary>
+                <summary>more...</summary>
                 <div tw='flex gap-1'>
                     {/* <div tw='font-bold'>Author:</div> */}
                     {/* <div tw='opacity-75'>{plugin.author}</div> */}

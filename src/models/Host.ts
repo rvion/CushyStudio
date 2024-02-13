@@ -14,6 +14,7 @@ import { ComfyManager } from 'src/manager/ComfyManager'
 import { KnownCustomNode_Title } from 'src/manager/custom-node-list/KnownCustomNode_Title'
 import { KnownCustomNode_File } from 'src/manager/custom-node-list/KnownCustomNode_File'
 import { PluginInfo } from 'src/manager/custom-node-list/custom-node-list-types'
+import { exhaust } from 'src/utils/misc/ComfyUtils'
 
 export interface HostL extends LiveInstance<HostT, HostL> {}
 
@@ -22,7 +23,27 @@ export class HostL {
     // comfyUIIframeRef = createRef<HTMLIFrameElement>()
 
     matchRequirements = (requirements: Requirements[]): boolean => {
-        return false
+        const manager = this.manager
+        const repo = manager.repository
+        for (const req of requirements) {
+            if (req.type === 'customNodesByNameInCushy') {
+                const plugins: PluginInfo[] = repo.plugins_byNodeNameInCushy.get(req.nodeName) ?? []
+                if (!plugins.find((i) => this.manager.isPluginInstalled(i.title))) return false
+            } else if (req.type === 'customNodesByTitle') {
+                const plugin: PluginInfo | undefined = repo.plugins_byTitle.get(req.title)
+                if (plugin == null) continue
+                if (!this.manager.isPluginInstalled(plugin.title)) return false
+            } else if (req.type === 'customNodesByURI') {
+                const plugin: PluginInfo | undefined = repo.plugins_byFile.get(req.uri)
+                if (plugin == null) continue
+                if (!this.manager.isPluginInstalled(plugin.title)) return false
+            } else if (req.type === 'modelInManager') {
+                if (!this.manager.isModelInstalled(req.modelName)) return false
+            } else {
+                // exhaust(req.type)
+            }
+        }
+        return true
     }
 
     get isReadonly(): boolean {

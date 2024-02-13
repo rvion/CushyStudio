@@ -16,6 +16,7 @@ export const ui_refiners = () => {
                         detector: form.enum.Enum_UltralyticsDetectorProvider_model_name({
                             default: 'bbox/face_yolov8m.pt',
                             requirements: [
+                                { type: 'customNodesByTitle', title: 'ComfyUI Impact Pack' },
                                 { type: 'modelInManager', modelName: 'face_yolov8m (bbox)' },
                                 { type: 'modelInManager', modelName: 'face_yolov8n (bbox)' },
                                 { type: 'modelInManager', modelName: 'face_yolov8s (bbox)' },
@@ -31,6 +32,7 @@ export const ui_refiners = () => {
                         detector: form.enum.Enum_UltralyticsDetectorProvider_model_name({
                             default: 'bbox/hand_yolov8s.pt',
                             requirements: [
+                                { type: 'customNodesByTitle', title: 'ComfyUI Impact Pack' },
                                 { type: 'modelInManager', modelName: 'hand_yolov8n (bbox)' },
                                 { type: 'modelInManager', modelName: 'hand_yolov8s (bbox)' },
                             ],

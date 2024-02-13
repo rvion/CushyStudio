@@ -9,7 +9,10 @@ import { exhaust } from 'src/utils/misc/ComfyUtils'
 import { Button_InstalModelViaManagerUI } from './Button_InstalModelViaManagerUI'
 import { Button_InstallCustomNodeUI } from './Button_InstallCustomNodeUI'
 
-export const InstallRequirementsBtnUI = observer(function InstallRequirementsBtnUI_(p: { requirements: Requirements[] }) {
+export const InstallRequirementsBtnUI = observer(function InstallRequirementsBtnUI_(p: {
+    active: boolean
+    requirements: Requirements[]
+}) {
     const st = useSt()
     if (p.requirements.length == 0) return null
     const rr = p.requirements
@@ -17,14 +20,16 @@ export const InstallRequirementsBtnUI = observer(function InstallRequirementsBtn
         <RevealUI>
             <div
                 tw={[
-                    //
-                    st.mainHost.matchRequirements(rr) ? 'btn-ghost opacity-50' : 'btn-error animate-pulse',
+                    p.active && !st.mainHost.matchRequirements(rr) //
+                        ? 'btn-error animate-pulse'
+                        : 'btn-ghost opacity-50',
                     'btn btn-square btn-xs',
                 ]}
             >
                 <span className='material-symbols-outlined'>scatter_plot</span>
+                {}
             </div>
-            <div tw='[max-width:400px]'>
+            <div tw='[max-width:500px]'>
                 <Panel_InstallRequirementsUI requirements={rr} />
             </div>
         </RevealUI>
@@ -39,10 +44,13 @@ export const Panel_InstallRequirementsUI = observer(function Panel_InstallRequir
     return (
         <div tw='flex flex-col flex-wrap  gap-2 bg-base-300'>
             <div tw='flex gap-1'>
+                {/*
+                TODO: uncomment when implemented
                 <div tw='btn btn-sm flex-1' onClick={() => host.fetchAndUpdateSchema()}>
                     <span className='material-symbols-outlined'>cloud_download</span>
                     Install All
                 </div>
+                */}
                 <RevealUI>
                     <div>See Installed</div>
                     <div tw='max-h-96 overflow-auto'>

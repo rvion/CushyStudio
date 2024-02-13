@@ -23,10 +23,12 @@ export const Button_InstallCustomNodeUI = observer(function Button_InstallCustom
                 <span tw='font-bold whitespace-nowrap text-xl text-blue-500'>
                     <span className='material-symbols-outlined'>account_tree</span>
                 </span>
-                <span className='font-bold text-primary p-1'>NODES: {plugin.title}</span>
-                {renderStatus(pluginStatus)}
+                <div style={{ lineHeight: '1rem' }}>
+                    <span className='font-bold text-primary'>NODES: {plugin.title}</span>
+                </div>
                 {/* {isInstalled ? <span tw='text-green-500'>Installed</span> : <span tw='text-red-500'>Custom Nodes Required</span>} */}
                 <div className='flex-1'></div>
+                {renderStatus(pluginStatus)}
                 {!isInstalled && (
                     <div
                         tw={['btn btn-sm btn-outline btn-sm', action.isRunning ? 'btn-disabled' : null]}
@@ -45,7 +47,7 @@ export const Button_InstallCustomNodeUI = observer(function Button_InstallCustom
                 {/* (via {plugin.install_type}) */}
             </span>
             <details>
-                <summary>see all noes</summary>
+                <summary>more...</summary>
                 <div tw='flex gap-1'>
                     <div tw='font-bold'>Author:</div>
                     <div tw='opacity-75'>{plugin.author}</div>
@@ -61,7 +63,7 @@ export const Button_InstallCustomNodeUI = observer(function Button_InstallCustom
 
 const renderStatus = (status: PluginInstallStatus) => {
     if (status === 'installed') return <span tw='text-green-500'>Installed</span>
-    if (status === 'not-installed') return <span tw='text-red-500'>Custom Nodes Required</span>
+    if (status === 'not-installed') return <span tw='text-red-500'>Required</span>
     if (status === 'update-available') return <span tw='text-yellow-500'>Update Available</span>
     if (status === 'unknown') return <span tw='text-gray-500'>Unknown</span>
     if (status === 'error') return <span tw='text-red-500'>❌ Error (a)</span>

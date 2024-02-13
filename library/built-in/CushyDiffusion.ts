@@ -47,7 +47,11 @@ app({
         removeBG: ui_rembg_v1(),
 
         show3d: form.groupOpt({
-            requirements: [{ type: 'customNodesByNameInCushy', nodeName: 'Zoe$7DepthMapPreprocessor' }],
+            requirements: [
+                //
+                { type: 'customNodesByNameInCushy', nodeName: 'Zoe$7DepthMapPreprocessor' },
+                { type: 'customNodesByNameInCushy', nodeName: 'MarigoldDepthEstimation' },
+            ],
             items: () => {
                 return {
                     normal: form.selectOne({
