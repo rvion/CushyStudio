@@ -143,6 +143,8 @@ export class STATE {
         openInVSCode(this, filePathWithinWorkspace)
     }
 
+    getKnownCheckpoints = () => this.managerRepository.getKnownCheckpoints()
+
     reloadCushyMainWindow = () => {
         window.location.reload()
     }
