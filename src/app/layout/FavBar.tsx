@@ -90,7 +90,7 @@ export const AppDraftsQuickListUI = observer(function AppDraftsQuickListUI_(p: {
             <div className='MENU-CONTENT' tw='flex-col flex gap-1 max-w-md'>
                 {app.description ? (
                     <div //Description
-                        tw='flex-1 rounded p-1 bg-base-200'
+                        tw='flex-1 rounded p-1 italic text-sm'
                     >
                         {app.description}
                     </div>
