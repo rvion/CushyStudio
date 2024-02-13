@@ -2,7 +2,7 @@ import type { PluginInfo } from 'src/manager/custom-node-list/custom-node-list-t
 import type { Requirements } from '../IWidget'
 
 import { observer } from 'mobx-react-lite'
-import { MessageErrorUI } from 'src/panels/MessageUI'
+import { MessageErrorUI, MessageWarningUI } from 'src/panels/MessageUI'
 import { RevealUI } from 'src/rsuite/reveal/RevealUI'
 import { useSt } from 'src/state/stateContext'
 import { exhaust } from 'src/utils/misc/ComfyUtils'
@@ -79,6 +79,7 @@ export const Panel_InstallRequirementsUI = observer(function Panel_InstallRequir
                     Restart ComfyUI
                 </div>
             </div>
+            <MessageWarningUI markdown='this widget is beta; Clicking install does not show progress yet; check your ComfyUI logs' />
             {rr.map((req) => {
                 // ------------------------------------------------
                 if (req.type === 'customNodesByNameInCushy') {
