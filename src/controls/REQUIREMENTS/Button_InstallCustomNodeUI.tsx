@@ -3,11 +3,10 @@ import type { PluginInfo } from 'src/manager/custom-node-list/custom-node-list-t
 import { observer } from 'mobx-react-lite'
 import { useAsyncAction } from 'src/importers/usePromise'
 import { useSt } from 'src/state/stateContext'
-import { PluginInstallStatus } from './PluginInstallStatus'
+import { renderStatus } from './renderStatus'
 
 export const Button_InstallCustomNodeUI = observer(function Button_InstallCustomNodeUI_(p: {
-    //
-    // status: PluginInstallStatus
+    optional: boolean
     reason: string
     plugin: PluginInfo
 }) {
@@ -28,7 +27,7 @@ export const Button_InstallCustomNodeUI = observer(function Button_InstallCustom
                 </div>
                 {/* {isInstalled ? <span tw='text-green-500'>Installed</span> : <span tw='text-red-500'>Custom Nodes Required</span>} */}
                 <div className='flex-1'></div>
-                {renderStatus(pluginStatus)}
+                {renderStatus(pluginStatus, p.optional)}
                 {!isInstalled && (
                     <div
                         tw={['btn btn-sm btn-outline btn-sm', action.isRunning ? 'btn-disabled' : null]}
@@ -60,12 +59,3 @@ export const Button_InstallCustomNodeUI = observer(function Button_InstallCustom
         </div>
     )
 })
-
-const renderStatus = (status: PluginInstallStatus) => {
-    if (status === 'installed') return <span tw='text-green-500'>Installed</span>
-    if (status === 'not-installed') return <span tw='text-red-500'>Required</span>
-    if (status === 'update-available') return <span tw='text-yellow-500'>Update Available</span>
-    if (status === 'unknown') return <span tw='text-gray-500'>Unknown</span>
-    if (status === 'error') return <span tw='text-red-500'>❌ Error (a)</span>
-    return <span tw='text-red-500'>❌ Error (b)</span>
-}

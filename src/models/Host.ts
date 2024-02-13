@@ -26,6 +26,7 @@ export class HostL {
         const manager = this.manager
         const repo = manager.repository
         for (const req of requirements) {
+            if (req.optional) continue
             if (req.type === 'customNodesByNameInCushy') {
                 const plugins: PluginInfo[] = repo.plugins_byNodeNameInCushy.get(req.nodeName) ?? []
                 if (!plugins.find((i) => this.manager.isPluginInstalled(i.title))) return false

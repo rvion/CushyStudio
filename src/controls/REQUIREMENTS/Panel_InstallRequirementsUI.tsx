@@ -52,7 +52,7 @@ export const Panel_InstallRequirementsUI = observer(function Panel_InstallRequir
                 </div>
                 */}
                 <RevealUI>
-                    <div>See Installed</div>
+                    <div tw='btn btn-sm'>See Installed</div>
                     <div tw='max-h-96 overflow-auto'>
                         {(() => {
                             if (manager.pluginList == null) return <div tw='loading loading-spinner'></div>
@@ -66,10 +66,10 @@ export const Panel_InstallRequirementsUI = observer(function Panel_InstallRequir
                         })()}
                     </div>
                 </RevealUI>
-                <div tw='btn btn-sm flex-1' onClick={() => host.fetchAndUpdateSchema()}>
+                <div tw='btn btn-sm' onClick={() => host.fetchAndUpdateSchema()}>
                     Reload Schema
                 </div>
-                <div tw='btn btn-sm flex-1' onClick={() => host.manager.rebootComfyUI()}>
+                <div tw='btn btn-sm' onClick={() => host.manager.rebootComfyUI()}>
                     Restart ComfyUI
                 </div>
             </div>
@@ -79,7 +79,13 @@ export const Panel_InstallRequirementsUI = observer(function Panel_InstallRequir
                     const plugins: PluginInfo[] = repo.plugins_byNodeNameInCushy.get(req.nodeName) ?? []
                     if (plugins.length == 0) return <MessageErrorUI markdown={`node plugin **${req.nodeName}** not found`} />
                     if (plugins.length === 1)
-                        return <Button_InstallCustomNodeUI plugin={plugins[0]} reason='...' /* status='unknown' */ />
+                        return (
+                            <Button_InstallCustomNodeUI
+                                optional={req.optional ?? false}
+                                plugin={plugins[0]}
+                                reason='...' /* status='unknown' */
+                            />
+                        )
                     return (
                         <div tw='bd'>
                             <MessageErrorUI>
@@ -89,7 +95,14 @@ export const Panel_InstallRequirementsUI = observer(function Panel_InstallRequir
                                 </div>
                             </MessageErrorUI>
                             {plugins.map((x) => {
-                                return <Button_InstallCustomNodeUI key={x.title} plugin={x} reason='...' /* status='unknown' */ />
+                                return (
+                                    <Button_InstallCustomNodeUI
+                                        optional={req.optional ?? false}
+                                        key={x.title}
+                                        plugin={x}
+                                        reason='...' /* status='unknown' */
+                                    />
+                                )
                             })}
                         </div>
                     )
@@ -101,7 +114,13 @@ export const Panel_InstallRequirementsUI = observer(function Panel_InstallRequir
                         console.log(`[❌] no plugin found with title "${req.title}"`)
                         return <MessageErrorUI markdown={`no plugin found with title **${req.title}** not found`} />
                     }
-                    return <Button_InstallCustomNodeUI plugin={plugin} reason='...' /* status='unknown' */ />
+                    return (
+                        <Button_InstallCustomNodeUI
+                            optional={req.optional ?? false}
+                            plugin={plugin}
+                            reason='...' /* status='unknown' */
+                        />
+                    )
                 }
 
                 // ------------------------------------------------
@@ -111,14 +130,25 @@ export const Panel_InstallRequirementsUI = observer(function Panel_InstallRequir
                         console.log(`[❌] no plugin found with uri "${req.uri}"`)
                         return <MessageErrorUI markdown={`no plugin found with URI **${req.uri}** not found`} />
                     }
-                    return <Button_InstallCustomNodeUI plugin={plugin} reason='...' /* status='unknown' */ />
+                    return (
+                        <Button_InstallCustomNodeUI
+                            optional={req.optional ?? false}
+                            plugin={plugin}
+                            reason='...' /* status='unknown' */
+                        />
+                    )
                 }
 
                 // ------------------------------------------------
                 // models
                 if (req.type === 'modelCustom') {
                     const modelInfo = req.infos
-                    return <Button_InstalModelViaManagerUI modelInfo={modelInfo} />
+                    return (
+                        <Button_InstalModelViaManagerUI //
+                            optional={req.optional ?? false}
+                            modelInfo={modelInfo}
+                        />
+                    )
                 }
 
                 // ------------------------------------------------
@@ -126,6 +156,7 @@ export const Panel_InstallRequirementsUI = observer(function Panel_InstallRequir
                     // 🔴
                     return (
                         <Button_InstalModelViaManagerUI
+                            optional={req.optional ?? false}
                             modelInfo={{
                                 name: 'negative_hand Negative Embedding',
                                 type: 'embeddings',
@@ -146,7 +177,12 @@ export const Panel_InstallRequirementsUI = observer(function Panel_InstallRequir
                         console.log(`[❌] no model found with name "${req.modelName}"`)
                         return <MessageErrorUI markdown={`no model found with name **${req.modelName}** not found`} />
                     }
-                    return <Button_InstalModelViaManagerUI modelInfo={modelInfo} />
+                    return (
+                        <Button_InstalModelViaManagerUI //
+                            optional={req.optional ?? false}
+                            modelInfo={modelInfo}
+                        />
+                    )
                 }
                 exhaust(req)
 

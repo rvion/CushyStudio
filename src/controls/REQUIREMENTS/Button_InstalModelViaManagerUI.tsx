@@ -2,8 +2,13 @@ import type { ModelInfo } from 'src/manager/model-list/model-list-loader-types'
 
 import { observer } from 'mobx-react-lite'
 import { useSt } from 'src/state/stateContext'
+import { renderStatus } from './renderStatus'
 
-export const Button_InstalModelViaManagerUI = observer(function Button_InstalModelViaManagerUI_(p: { modelInfo: ModelInfo }) {
+export const Button_InstalModelViaManagerUI = observer(function Button_InstalModelViaManagerUI_(p: {
+    //
+    optional: boolean
+    modelInfo: ModelInfo
+}) {
     const mi = p.modelInfo
     const st = useSt()
     const host = st.mainHost
@@ -19,27 +24,30 @@ export const Button_InstalModelViaManagerUI = observer(function Button_InstalMod
                 <div>{modelStatus}</div>
                 {isInstalled ? '✅' : null}
                 <div tw='flex-1'></div>
-                <div
-                    tw='btn btn-sm btn-outline btn-sm'
-                    onClick={async () => {
-                        // 🔴 TODO
-                        // https://github.com/ltdrdata/ComfyUI-Manager/blob/main/js/model-downloader.js#L11
-                        // copy Data-it implementation
-                        // download file
-                        const res = await host.manager.installModel(mi)
-                        if (!res) return
+                {renderStatus(modelStatus, p.optional)}
+                {!isInstalled && (
+                    <div
+                        tw='btn btn-sm btn-outline btn-sm'
+                        onClick={async () => {
+                            // 🔴 TODO
+                            // https://github.com/ltdrdata/ComfyUI-Manager/blob/main/js/model-downloader.js#L11
+                            // copy Data-it implementation
+                            // download file
+                            const res = await host.manager.installModel(mi)
+                            if (!res) return
 
-                        // const res = await host.downloadFileIfMissing(m.url, dlPath)
-                        // retrieve the enum info
-                        // add the new value (BRITTLE)
-                        // ⏸️ const enumInfo = st.schema.knownEnumsByName //
-                        // ⏸️     .get(p.widget.input.enumName)
-                        // ⏸️ enumInfo?.values.push(mi.filename)
-                    }}
-                >
-                    <span className='material-symbols-outlined'>cloud_download</span>
-                    <span>Install</span>
-                </div>
+                            // const res = await host.downloadFileIfMissing(m.url, dlPath)
+                            // retrieve the enum info
+                            // add the new value (BRITTLE)
+                            // ⏸️ const enumInfo = st.schema.knownEnumsByName //
+                            // ⏸️     .get(p.widget.input.enumName)
+                            // ⏸️ enumInfo?.values.push(mi.filename)
+                        }}
+                    >
+                        <span className='material-symbols-outlined'>cloud_download</span>
+                        <span>Install</span>
+                    </div>
+                )}
             </div>
             <span tw='italic text-sm opacity-75 line-clamp-2'>
                 {mi.description}
