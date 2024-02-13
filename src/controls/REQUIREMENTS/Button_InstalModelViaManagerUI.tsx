@@ -6,7 +6,8 @@ export const Button_InstalModelViaManagerUI = observer(function Button_InstalMod
     const mi = p.modelInfo
     const st = useSt()
     const host = st.mainHost
-    const isInstalled = false // 🔴
+    const modelStatus = host.manager.getModelStatus(p.modelInfo.name)
+    const isInstalled = modelStatus === 'installed'
     return (
         <div tw={[isInstalled ? 'bg-success-1' : null, 'flex flex-col virtualBorder p-2 bg-base-100 rounded']}>
             <div tw='flex items-center'>
@@ -14,6 +15,7 @@ export const Button_InstalModelViaManagerUI = observer(function Button_InstalMod
                     <span className='material-symbols-outlined'>model_training</span>
                 </span>
                 <div tw='font-bold'>MODEL: {mi.name}</div>
+                <div>{modelStatus}</div>
                 {isInstalled ? '✅' : null}
                 <div tw='flex-1'></div>
                 <div
@@ -40,9 +42,23 @@ export const Button_InstalModelViaManagerUI = observer(function Button_InstalMod
             </div>
             <span tw='italic text-sm opacity-75 line-clamp-2'>
                 {mi.description}
+
                 {/* TODO: show install method by icon? */}
                 {/* (via {plugin.install_type}) */}
             </span>
+            <details
+                onClick={(e) => {
+                    e.stopPropagation()
+                }}
+            >
+                <summary>see all noes</summary>
+                <div tw='flex gap-1'>
+                    {/* <div tw='font-bold'>Author:</div> */}
+                    {/* <div tw='opacity-75'>{plugin.author}</div> */}
+                    {/* <div>{getCustomNodeRegistry()}</div> */}
+                    <pre>{JSON.stringify(host.manager.modelList, null, 3)}</pre>
+                </div>
+            </details>
         </div>
     )
 })

@@ -109,18 +109,18 @@ export class HostL {
         const manager = this.manager.repository
         const plugin: PluginInfo | undefined = manager.plugins_byFile.get(customNodeFile)
         if (plugin == null) throw new Error(`Unknown custom node for file: "${customNodeFile}"`)
-        return this.manager.installCustomNode(plugin)
+        return this.manager.installPlugin(plugin)
     }
 
     installCustomNodeByTitle = async (customNodeTitle: KnownCustomNode_Title) => {
         const manager = this.manager.repository
         const plugin: PluginInfo | undefined = manager.plugins_byTitle.get(customNodeTitle)
         if (plugin == null) throw new Error(`Unknown custom node for title: "${customNodeTitle}"`)
-        return this.manager.installCustomNode(plugin)
+        return this.manager.installPlugin(plugin)
     }
 
     installCustomNode = async (customNode: PluginInfo) => {
-        return this.manager.installCustomNode(customNode)
+        return this.manager.installPlugin(customNode)
     }
 
     _copyGeneratedSDKToGlobalDTS = (): void => {

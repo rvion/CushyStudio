@@ -47,10 +47,10 @@ export const Panel_InstallRequirementsUI = observer(function Panel_InstallRequir
                     <div>See Installed</div>
                     <div tw='max-h-96 overflow-auto'>
                         {(() => {
-                            if (manager.knownNodeList == null) return <div tw='loading loading-spinner'></div>
+                            if (manager.pluginList == null) return <div tw='loading loading-spinner'></div>
                             return (
                                 <div tw='flex flex-col'>
-                                    {manager.allInstallNodes.map((name) => (
+                                    {manager.titlesOfAllInstalledPlugins.map((name) => (
                                         <div key={name}>{name}</div>
                                     ))}
                                 </div>

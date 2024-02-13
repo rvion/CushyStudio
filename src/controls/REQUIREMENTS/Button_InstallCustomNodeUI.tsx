@@ -14,9 +14,9 @@ export const Button_InstallCustomNodeUI = observer(function Button_InstallCustom
     const st = useSt()
     const { plugin, reason } = p
     const host = st.mainHost
-    const pluginStatus = host.manager.getPluginStatus(p.plugin.title as any)
+    const pluginStatus = host.manager.getPluginStatus(p.plugin.title)
     const isInstalled = pluginStatus === 'installed'
-    const action = useAsyncAction(() => host.manager.installCustomNode(plugin), [])
+    const action = useAsyncAction(() => host.manager.installPlugin(plugin), [])
     return (
         <div tw={[isInstalled ? 'bg-success-1' : null, 'flex flex-col virtualBorder p-2 bg-base-100 rounded']}>
             <div tw='flex items-center'>
