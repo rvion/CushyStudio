@@ -19,24 +19,32 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                 <GalleryControlsUI />
             </PanelHeaderSmallUI>
 
-            <div tw='italic text-sm text-center'>fav apps</div>
-            {st.favoriteApps.map((app) => (
-                <RevealUI trigger='hover' placement='rightStart'>
-                    <AppIllustrationUI size='4rem' app={app} />
-                    <AppDraftsQuickListUI app={app} />
-                </RevealUI>
-            ))}
-            <hr />
-            <div tw='italic text-sm text-center'>fav drafts</div>
-            {st.favoriteDrafts.map((draft) => (
-                <RevealUI trigger='hover' placement='rightStart'>
-                    <DraftIllustrationUI onClick={() => draft.openOrFocusTab()} size='4rem' draft={draft} />
-                    <div>
-                        <div tw='text-xs'>{draft.app.name}</div>
-                        <div tw='text-xs'>{draft.data.title}</div>
+            <div //Panel Content
+                tw='p-2'
+            >
+                <div tw='italic text-sm text-center'>fav apps</div>
+                {st.favoriteApps.map((app) => (
+                    <div tw='pt-1'>
+                        <RevealUI trigger='hover' placement='rightStart'>
+                            <AppIllustrationUI size='4rem' app={app} />
+                            <AppDraftsQuickListUI app={app} />
+                        </RevealUI>
                     </div>
-                </RevealUI>
-            ))}
+                ))}
+                <hr />
+                <div tw='italic text-sm text-center'>fav drafts</div>
+                {st.favoriteDrafts.map((draft) => (
+                    <div tw='pt-1'>
+                        <RevealUI trigger='hover' placement='rightStart'>
+                            <DraftIllustrationUI onClick={() => draft.openOrFocusTab()} size='4rem' draft={draft} />
+                            <div>
+                                <div tw='text-xs'>{draft.app.name}</div>
+                                <div tw='text-xs'>{draft.data.title}</div>
+                            </div>
+                        </RevealUI>
+                    </div>
+                ))}
+            </div>
         </div>
     )
 })
@@ -44,26 +52,40 @@ export const FavBarUI = observer(function FavBarUI_(p: {
 export const AppDraftsQuickListUI = observer(function AppDraftsQuickListUI_(p: { app: CushyAppL }) {
     const app = p.app
     return (
-        <div>
-            <div tw='flex'>
-                <div tw='btn btn-sm w-full' onClick={() => app.setFavorite(!app.isFavorite)}>
-                    <span tw={[app.isFavorite ? 'text-yellow-500' : null]} className='material-symbols-outlined'>
+        <div className='MENU-ROOT'>
+            <div className='MENU-HEADER'>
+                <div tw='btn btn-sm flex-0' onClick={() => app.setFavorite(!app.isFavorite)}>
+                    <span
+                        tw={[app.isFavorite ? 'text-yellow-500' : null] + ' peer-hover:text-red-500'}
+                        className='material-symbols-outlined'
+                    >
                         star
                     </span>
-                    <div>{app.name}</div>
+                </div>
+                <div tw='flex-1 flex-grow text-center bg-base-200 justify-center content-center border-l border-r border-base-100 pt-1'>
+                    {app.name}
+                </div>
+                <div onClick={() => app.createDraft()} tw='btn btn-sm'>
+                    <div>
+                        <span tw='material-symbols-outlined'>add</span>
+                    </div>
                 </div>
             </div>
-            <div tw='grid grid-cols-3'>
-                <div onClick={() => app.createDraft()} tw='btn' style={{ width: '4rem', height: '4rem' }}>
-                    <div>
-                        New <span tw='material-symbols-outlined'>add</span>
-                    </div>
+            <div className='MENU-CONTENT'>
+                <div //Container
+                    tw='max-h-96 overflow-scroll grid grid-cols-3 gap-2 bg-base-300 p-2 rounded'
+                >
+                    {p.app.drafts.map((draft) => (
+                        <div tw='flex brightness-95 cursor-pointer hover:brightness-110 bg-base-200 rounded-md border-base-100 border p-1 justify-center'>
+                            <div key={draft.id} onClick={() => draft.openOrFocusTab()}>
+                                <div tw='flex self-center text-center justify-center p-1'>
+                                    <DraftIllustrationUI size='8rem' draft={draft} />
+                                </div>
+                                <div tw='text-center text-sm truncate overflow-clip max-w-32'>{draft.name}</div>
+                            </div>
+                        </div>
+                    ))}
                 </div>
-                {p.app.drafts.map((draft) => (
-                    <div key={draft.id}>
-                        <DraftIllustrationUI onClick={() => draft.openOrFocusTab()} size='4rem' draft={draft} />
-                    </div>
-                ))}
             </div>
         </div>
     )

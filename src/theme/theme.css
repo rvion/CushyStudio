@@ -33,7 +33,7 @@ body {
     /* background: #272729; */
 }
 .WIDGET-LINE {
-    /* padding: .4rem; */
+    padding: .15rem;
 }
 /* .SUB-FIELD .WIDGET-BLOCK {
     padding-left: .2rem;
@@ -44,6 +44,24 @@ body {
     margin-right: .4rem;
     margin-top: .1rem;
     /* padding: .4rem; */
+}
+
+/* Should be used for right-click/context/pop-up menus */
+.MENU-ROOT {
+    /* padding: 0.5rem; */
+    padding: 4px;
+}
+
+.MENU-HEADER {
+    border-radius: 4px;
+    padding: 0px 4px 0px 4px;
+    display: flex;
+}
+
+.MENU-CONTENT {
+    border-radius: 4px;
+    padding: 4px;
+    /* background: oklch(var(--b3)) */
 }
 
 
