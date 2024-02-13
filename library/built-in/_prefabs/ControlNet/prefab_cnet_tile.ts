@@ -8,7 +8,12 @@ export const ui_subform_Tile = () => {
     const form = getCurrentForm()
     return form.group({
         label: 'Tile',
-        customNodesByTitle: 'ComfyUI-Advanced-ControlNet',
+        requirements: [
+            //
+            { type: 'customNodesByTitle', title: 'ComfyUI-Advanced-ControlNet' },
+            { type: 'modelInManager', modelName: 'ControlNet-v1-1 (tile; fp16; v11u)' },
+            { type: 'modelInManager', modelName: 'ControlNet-v1-1 (tile; fp16; v11f1e)' },
+        ],
         items: () => ({
             ...cnet_ui_common(form),
             preprocessor: ui_subform_Tile_Preprocessor(),
@@ -21,9 +26,6 @@ export const ui_subform_Tile = () => {
                         default: 'control_v11u_sd15_tile_fp16.safetensors',
                         filter: (name) => name.toString().includes('_tile'),
                         extraDefaults: ['control_v11f1e_sd15_tile.pth'],
-                        recommandedModels: {
-                            knownModel: ['ControlNet-v1-1 (tile; fp16; v11u)', 'ControlNet-v1-1 (tile; fp16; v11f1e)'],
-                        },
                     }),
                 }),
             }),

@@ -1,7 +1,6 @@
 import type { LiveInstance } from 'src/db/LiveInstance'
+import type { Requirements } from 'src/controls/IWidget'
 import type { ComfySchemaL, EmbeddingName } from './Schema'
-
-import https from 'https'
 
 import { asComfySchemaID, type HostT } from 'src/db/TYPES.gen'
 import { copyFileSync, existsSync, mkdirSync, writeFileSync } from 'fs'
@@ -11,14 +10,42 @@ import { readableStringify } from 'src/utils/formatters/stringifyReadable'
 import { asRelativePath } from 'src/utils/fs/pathUtils'
 import { toastError, toastSuccess } from 'src/utils/misc/toasts'
 import { downloadFile } from 'src/utils/fs/downloadFile'
-import { ComfyUIManager } from 'src/wiki/api/managerAPI'
-import { ComfyUIManagerKnownCustomNode_Title, ComfyUIManagerKnownCustomNode_Files } from 'src/wiki/customNodeListTypes'
-import { getKnownPlugins, PluginInfo } from 'src/wiki/customNodeList'
+import { ComfyManager } from 'src/manager/ComfyManager'
+import { KnownCustomNode_Title } from 'src/manager/custom-node-list/KnownCustomNode_Title'
+import { KnownCustomNode_File } from 'src/manager/custom-node-list/KnownCustomNode_File'
+import { PluginInfo } from 'src/manager/custom-node-list/custom-node-list-types'
+import { exhaust } from 'src/utils/misc/ComfyUtils'
+
 export interface HostL extends LiveInstance<HostT, HostL> {}
 
 export class HostL {
     // 🔶 can't move frame ref here because no way to override mobx
     // comfyUIIframeRef = createRef<HTMLIFrameElement>()
+
+    matchRequirements = (requirements: Requirements[]): boolean => {
+        const manager = this.manager
+        const repo = manager.repository
+        for (const req of requirements) {
+            if (req.optional) continue
+            if (req.type === 'customNodesByNameInCushy') {
+                const plugins: PluginInfo[] = repo.plugins_byNodeNameInCushy.get(req.nodeName) ?? []
+                if (!plugins.find((i) => this.manager.isPluginInstalled(i.title))) return false
+            } else if (req.type === 'customNodesByTitle') {
+                const plugin: PluginInfo | undefined = repo.plugins_byTitle.get(req.title)
+                if (plugin == null) continue
+                if (!this.manager.isPluginInstalled(plugin.title)) return false
+            } else if (req.type === 'customNodesByURI') {
+                const plugin: PluginInfo | undefined = repo.plugins_byFile.get(req.uri)
+                if (plugin == null) continue
+                if (!this.manager.isPluginInstalled(plugin.title)) return false
+            } else if (req.type === 'modelInManager') {
+                if (!this.manager.isModelInstalled(req.modelName)) return false
+            } else {
+                // exhaust(req.type)
+            }
+        }
+        return true
+    }
 
     get isReadonly(): boolean {
         return this.data.isReadonly ? true : false
@@ -37,10 +64,14 @@ export class HostL {
         )
     }
 
-    private _comfyUIManager: Maybe<ComfyUIManager> = null
-    getComfyUIManager() {
-        if (this._comfyUIManager === null) this._comfyUIManager = new ComfyUIManager(this)
-        return this._comfyUIManager
+    observabilityConfig = {
+        manager: false,
+    }
+
+    get manager() {
+        const manager = new ComfyManager(this)
+        Object.defineProperty(this, 'manager', { value: manager })
+        return manager
     }
 
     // INIT -----------------------------------------------------------------------------
@@ -96,22 +127,22 @@ export class HostL {
         return true
     }
 
-    installCustomNodeByFile = async (customNodeFile: ComfyUIManagerKnownCustomNode_Files) => {
-        const x = getKnownPlugins()
-        const plugin = x.byURI.get(customNodeFile)
+    installCustomNodeByFile = async (customNodeFile: KnownCustomNode_File) => {
+        const manager = this.manager.repository
+        const plugin: PluginInfo | undefined = manager.plugins_byFile.get(customNodeFile)
         if (plugin == null) throw new Error(`Unknown custom node for file: "${customNodeFile}"`)
-        return this.getComfyUIManager()?.installCustomNode(plugin)
+        return this.manager.installPlugin(plugin)
     }
 
-    installCustomNodeByTitle = async (customNodeTitle: ComfyUIManagerKnownCustomNode_Title) => {
-        const x = getKnownPlugins()
-        const plugin = x.byURI.get(customNodeTitle)
+    installCustomNodeByTitle = async (customNodeTitle: KnownCustomNode_Title) => {
+        const manager = this.manager.repository
+        const plugin: PluginInfo | undefined = manager.plugins_byTitle.get(customNodeTitle)
         if (plugin == null) throw new Error(`Unknown custom node for title: "${customNodeTitle}"`)
-        return this.getComfyUIManager()?.installCustomNode(plugin)
+        return this.manager.installPlugin(plugin)
     }
 
     installCustomNode = async (customNode: PluginInfo) => {
-        return this.getComfyUIManager()?.installCustomNode(customNode)
+        return this.manager.installPlugin(customNode)
     }
 
     _copyGeneratedSDKToGlobalDTS = (): void => {

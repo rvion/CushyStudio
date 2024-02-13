@@ -1,6 +1,6 @@
-import type { ComfyUIManagerKnownModelNames } from 'src/wiki/modelListType'
+import type { KnownModel_Name } from 'src/manager/model-list/KnownModel_Name'
 
-export const ipAdapterModelList: ComfyUIManagerKnownModelNames[] = [
+export const ipAdapterModelList: KnownModel_Name[] = [
     'ip-adapter_sd15.safetensors',
     'ip-adapter_sd15_light.safetensors',
     'ip-adapter_sd15_vit-G.safetensors',
@@ -13,14 +13,14 @@ export const ipAdapterModelList: ComfyUIManagerKnownModelNames[] = [
     'ip-adapter-plus-face_sdxl_vit-h.safetensors',
 ]
 
-export const ipAdapter_faceID_ClipModelList: ComfyUIManagerKnownModelNames[] = [
+export const ipAdapter_faceID_ClipModelList: KnownModel_Name[] = [
     //
     'ip-adapter-faceid_sd15.bin',
     'ip-adapter-faceid-plusv2_sd15.bin',
     'ip-adapter-faceid_sdxl.bin',
 ]
 
-export const ipAdapter_faceID_LoraList: ComfyUIManagerKnownModelNames[] = [
+export const ipAdapter_faceID_LoraList: KnownModel_Name[] = [
     //
     'ip-adapter-faceid_sd15_lora.safetensors',
     'ip-adapter-faceid-plusv2_sd15_lora.safetensors',

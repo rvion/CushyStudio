@@ -3,8 +3,10 @@ import type { OutputFor } from './_prefabs'
 export const ui_rembg_v1 = () => {
     const form = getCurrentForm()
     return form.choices({
-        customNodesByTitle: ['TEMP_ComfyUI-BRIA_AI-RMBG'],
-        recommandedModels: { knownModel: 'TEMP_briaai_RMBG-1.4' },
+        requirements: [
+            { type: 'customNodesByTitle', title: 'TEMP_ComfyUI-BRIA_AI-RMBG' },
+            { type: 'modelInManager', modelName: 'TEMP_briaai_RMBG-1.4' },
+        ],
         // appearance: 'tab',
         // prettier-ignore
         items: {

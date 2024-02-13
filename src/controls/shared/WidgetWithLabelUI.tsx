@@ -8,8 +8,7 @@ import { RevealUI } from 'src/rsuite/reveal/RevealUI'
 import { Tooltip } from 'src/rsuite/shims'
 import { makeLabelFromFieldName } from '../../utils/misc/makeLabelFromFieldName'
 import { ErrorBoundaryFallback } from '../../widgets/misc/ErrorBoundary'
-import { InstallCustomNodeBtnUI } from '../../wiki/ui/InstallCustomNodeBtnUI'
-import { InstallModelBtnUI } from '../misc/InstallModelBtnUI'
+import { InstallRequirementsBtnUI } from '../REQUIREMENTS/Panel_InstallRequirementsUI'
 import { WidgetDI } from '../widgets/WidgetUI.DI'
 import { AnimatedSizeUI } from '../widgets/choices/AnimatedSizeUI'
 const KLS = WidgetDI
@@ -61,7 +60,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                     <span
                         tw={[
                             //
-                            'flex justify-end',
+                            'flex justify-end gap-0.5',
                             p.isTopLevel ? 'font-bold' : 'text-base',
                             'flex-none items-center text-primary',
                             // 'whitespace-nowrap',
@@ -81,8 +80,13 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                         }
                     >
                         <Widget_ToggleUI widget={p.widget} />
-                        {p.widget.config.recommandedModels && <InstallModelBtnUI models={p.widget.config.recommandedModels} />}
-                        <InstallCustomNodeBtnUI recomandation={p.widget.config} />
+                        {p.widget.config.requirements && (
+                            <InstallRequirementsBtnUI
+                                active={widget instanceof KLS.Widget_optional ? widget.serial.active : true}
+                                requirements={p.widget.config.requirements}
+                            />
+                        )}
+                        {/* <InstallCustomNodeBtnUI recomandation={p.widget.config} /> */}
                         {widget.config.tooltip && <WidgetTooltipUI widget={p.widget} />}
                         {LABEL}
                         {/* {widget.serial.collapsed ? <span className='material-symbols-outlined'>keyboard_arrow_right</span> : null} */}

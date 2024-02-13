@@ -26,6 +26,7 @@ import { Panel_Import } from '../Panel_Import'
 import { Panel_Canvas } from '../Panel_Canvas/Panel_Canvas'
 import { Panel_Shortcuts } from '../Panel_Shortcuts'
 import { Panel_Models } from '../Panel_Models/Panel_Models'
+import { Panel_Playground } from '../Panel_Playground/Panel_Playground'
 
 // prettier-ignore
 export const panels = {
@@ -58,6 +59,7 @@ export const panels = {
     DraftJsonSerial:     { name: 'DraftJsonSerial',     widget: Panel_DraftJsonSerial,   header: (p: PropsOf<typeof Panel_DraftJsonSerial  >) => ({title: 'DraftJsonSerial',     icon: undefined                         }) },
     Script:              { name: 'Script',              widget: Panel_Script,            header: (p: PropsOf<typeof Panel_Script           >) => ({title: 'Script',              icon: undefined                         }) },
     Welcome:             { name: 'Welcome',             widget: Panel_Welcome,           header: (p: PropsOf<typeof Panel_Welcome          >) => ({title: 'Welcome',             icon: undefined                         }) },
+    Playground:          { name: 'Playground',          widget: Panel_Playground,        header: (p: PropsOf<typeof Panel_Playground       >) => ({title: 'Welcome',             icon: undefined                         }) },
     // DisplacedImage:      { name: 'DisplacedImage',      widget: Panel_3dScene,           header: (p: PropsOf<typeof Panel_3dScene          >) => ({title: 'DisplacedImage',      icon: undefined                      }) },
 
     // utils

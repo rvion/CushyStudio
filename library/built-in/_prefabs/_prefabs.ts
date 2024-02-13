@@ -34,7 +34,7 @@ export const ui_highresfix = (p: { activeByDefault?: true } = {}) => {
             upscaleMethod: form.selectOne({
                 appearance: 'tab',
                 choices: [{ id: 'regular' }, { id: 'Neural 1.5' }, { id: 'Neural XL' }],
-                customNodesByURI: 'https://github.com/Ttl/ComfyUi_NNLatentUpscale',
+                requirements: [{ type: 'customNodesByURI', uri: 'https://github.com/Ttl/ComfyUi_NNLatentUpscale' }],
                 tooltip:
                     'regular upscale add more noise, depend your objective. for a second pass to refine stuff, I think adding noise is better',
             }),

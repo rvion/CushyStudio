@@ -20,7 +20,7 @@ app({
     },
     ui: (form) => ({
         image: form.image({}),
-        orbit: form.orbit({ recommandedModels: { knownModel: 'stabilityai/Stable Zero123' } }),
+        orbit: form.orbit({ requirements: [{ type: 'modelInManager', modelName: 'stabilityai/Stable Zero123' }] }),
         sndPass: form.groupOpt({
             items: () => ({
                 positive: form.prompt({}),

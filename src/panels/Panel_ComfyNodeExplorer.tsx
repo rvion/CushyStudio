@@ -41,9 +41,10 @@ class ComfyNodeExplorerState {
 }
 
 export const Panel_ComfyNodeExplorer = observer(function ComfyNodeExplorerUI_(p: {}) {
-    const pj = useSt().getProject()
+    const st = useSt()
+    const pj = st.getProject()
     const search = useMemo(() => new ComfyNodeExplorerState(pj), [])
-
+    const repo = st.managerRepository
     return (
         <div className='flex flex-col _MD'>
             <table
@@ -58,6 +59,7 @@ export const Panel_ComfyNodeExplorer = observer(function ComfyNodeExplorerUI_(p:
                             <div>name</div>
                             <Input value={search.name} onChange={(ev) => (search.name = ev.target.value)} />
                         </th>
+                        <th>Found in...</th>
                         <th>
                             <div>input</div>
                             <Input value={search.input} onChange={(ev) => (search.input = ev.target.value)} />
@@ -79,6 +81,12 @@ export const Panel_ComfyNodeExplorer = observer(function ComfyNodeExplorerUI_(p:
                                 <td tw='whitespace-pre-wrap'>
                                     {node.nameInComfy}
                                     {/* {name} */}
+                                </td>
+                                <td>
+                                    {repo.plugins_byNodeNameInComfy
+                                        .get(node.nameInComfy)
+                                        ?.map((x) => x.title)
+                                        .join(', ')}
                                 </td>
                                 <td tw='whitespace-pre-wrap'>
                                     <div tw='flex flex-wrap gap-0.5'>

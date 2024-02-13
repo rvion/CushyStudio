@@ -1,22 +1,26 @@
-import { cnet_preprocessor_ui_common, cnet_ui_common } from '../prefab_cnet'
 import type { OutputFor } from '../_prefabs'
 import type { FormBuilder } from 'src'
+
+import { cnet_preprocessor_ui_common, cnet_ui_common } from '../prefab_cnet'
 
 // 🅿️ Scribble FORM ===================================================
 export const ui_subform_Scribble = () => {
     const form: FormBuilder = getCurrentForm()
     return form.group({
         label: 'Scribble',
-        customNodesByTitle: 'ComfyUI-Advanced-ControlNet',
+        requirements: [
+            //
+            { type: 'customNodesByTitle', title: 'ComfyUI-Advanced-ControlNet' },
+            { type: 'modelInManager', modelName: 'ControlNet-v1-1 (scribble; fp16)' },
+        ],
         items: () => ({
             ...cnet_ui_common(form),
             preprocessor: ui_subform_Scribble_Preprocessor(),
             cnet_model_name: form.enum.Enum_ControlNetLoader_control_net_name({
+                label: 'Model',
                 default: 'control_scribble-fp16.safetensors',
                 extraDefaults: ['control_v11p_sd15_scribble.pth'],
                 filter: (name) => name.toString().includes('scribble'),
-                recommandedModels: { knownModel: ['ControlNet-v1-1 (scribble; fp16)'] },
-                label: 'Model',
             }),
         }),
     })
