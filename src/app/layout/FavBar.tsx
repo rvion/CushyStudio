@@ -37,9 +37,25 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                     <div tw='pt-1'>
                         <RevealUI trigger='hover' placement='rightStart'>
                             <DraftIllustrationUI onClick={() => draft.openOrFocusTab()} size='4rem' draft={draft} />
-                            <div>
-                                <div tw='text-xs'>{draft.app.name}</div>
-                                <div tw='text-xs'>{draft.data.title}</div>
+                            <div className='MENU-ROOT'>
+                                <div className='MENU-HEADER'>
+                                    <div //Container
+                                        tw='flex bg-base-200 p-1 rounded w-full'
+                                    >
+                                        <AppIllustrationUI size='2rem' app={draft.app} />
+                                        <div tw='flex-1 text-xs text-center self-center p-2'>{draft.app.name}</div>
+                                    </div>
+                                </div>
+                                <div className='MENU-CONTENT'>
+                                    <div //Container
+                                        tw='flex-column bg-base-300 p-1 rounded text-center items-center'
+                                    >
+                                        <div tw='text-xs'>{draft.data.title}</div>
+                                        <div tw='flex self-center text-center justify-center p-1'>
+                                            <DraftIllustrationUI size='12rem' draft={draft} />
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </RevealUI>
                     </div>
