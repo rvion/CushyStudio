@@ -1,3 +1,4 @@
+// prettier-ignore
 export type KnownCustomNode_Title =
     | "a-person-mask-generator"
     | "A8R8 ComfyUI Nodes"

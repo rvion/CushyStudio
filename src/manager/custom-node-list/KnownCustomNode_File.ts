@@ -1,3 +1,4 @@
+// prettier-ignore
 export type KnownCustomNode_File =
     | ""
     | "https://civitai.com/api/download/models/158997"

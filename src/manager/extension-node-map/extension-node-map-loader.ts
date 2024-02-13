@@ -94,6 +94,7 @@ export const _getCustomNodeRegistry = (DB: ComfyManagerRepository): void => {
         // NameInCushy
         const allCushyNodeNames = [...DB.plugins_byNodeNameInCushy.keys()]
         const sortedCushyNames = allCushyNodeNames.sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()))
+        out += '// prettier-ignore\n'
         out += 'export type KnownCustomNode_CushyName =\n'
         for (const fileName of sortedCushyNames) out += `    | ${JSON.stringify(fileName)}\n`
         out += '\n'

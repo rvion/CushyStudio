@@ -51,6 +51,7 @@ export const _getKnownPlugins = (DB: ComfyManagerRepository): void => {
         // TitleType
         const allTitles = [...DB.plugins_byTitle.keys()]
         const sortedPluginTitles = allTitles.sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()))
+        out1 += '// prettier-ignore\n'
         out1 += 'export type KnownCustomNode_Title =\n'
         for (const pluginTitle of sortedPluginTitles) out1 += `    | ${JSON.stringify(pluginTitle)}\n`
         out1 += '\n'
@@ -60,6 +61,7 @@ export const _getKnownPlugins = (DB: ComfyManagerRepository): void => {
         let out2 = ''
         const allFileNames = [...DB.plugins_byFile.keys()]
         const sortedFileNames = allFileNames.sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()))
+        out2 += '// prettier-ignore\n'
         out2 += 'export type KnownCustomNode_File =\n'
         for (const fileName of sortedFileNames) out2 += `    | ${JSON.stringify(fileName)}\n`
         out2 += '\n'

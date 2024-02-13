@@ -1,3 +1,4 @@
+// prettier-ignore
 export type KnownModel_Base =
     | "SDXL"               // x  34
     | "SD1.x"              // x  25

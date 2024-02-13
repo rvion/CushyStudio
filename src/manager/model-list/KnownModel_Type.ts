@@ -1,3 +1,4 @@
+// prettier-ignore
 export type KnownModel_Type =
     | "TAESD"              // x   4
     | "upscale"            // x   9

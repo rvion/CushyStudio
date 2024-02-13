@@ -1,3 +1,4 @@
+// prettier-ignore
 export type KnownCustomNode_CushyName =
     | "_0246$5Beautify"
     | "_0246$5BoxRange"

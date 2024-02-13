@@ -1,3 +1,4 @@
+// prettier-ignore
 export type KnownModel_Name =
     | "1k3d68.onnx"
     | "2d106det.onnx"

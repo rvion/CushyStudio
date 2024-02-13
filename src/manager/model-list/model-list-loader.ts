@@ -48,6 +48,7 @@ export const _getKnownModels = (
             else acc[cur.type] = 1
             return acc
         }, {} as { [key: string]: number })
+        out1 += `// prettier-ignore\n`
         out1 += 'export type KnownModel_Type =\n'
         for (const [cat, count] of Object.entries(uniqCategories))
             out1 += `    | ${JSON.stringify(cat).padEnd(20)} // x ${count.toString().padStart(3)}\n`
@@ -61,6 +62,7 @@ export const _getKnownModels = (
             else acc[cur.base] = 1
             return acc
         }, {} as { [key: string]: number })
+        out2 += `// prettier-ignore\n`
         out2 += 'export type KnownModel_Base =\n'
         for (const [cat, count] of Object.entries(uniqBases))
             out2 += `    | ${JSON.stringify(cat).padEnd(20)} // x ${count.toString().padStart(3)}\n`
@@ -70,6 +72,7 @@ export const _getKnownModels = (
         // KnownModel_Name ----------------------
         let out3 = ''
         const sortedModels = knownModelList.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()))
+        out3 += `// prettier-ignore\n`
         out3 += 'export type KnownModel_Name =\n'
         for (const modelInfo of sortedModels) out3 += `    | ${JSON.stringify(modelInfo.name)}\n`
         out3 += '\n'
