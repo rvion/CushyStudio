@@ -62,10 +62,10 @@ export const _getKnownModels = (
             return acc
         }, {} as { [key: string]: number })
         out2 += 'export type KnownModel_Base =\n'
-        for (const [cat, count] of Object.entries(uniqCategories))
+        for (const [cat, count] of Object.entries(uniqBases))
             out2 += `    | ${JSON.stringify(cat).padEnd(20)} // x ${count.toString().padStart(3)}\n`
         out2 += '\n'
-        writeFileSync('src/manager/model-list/KnownModel_Type.ts', out2 + '\n', 'utf-8')
+        writeFileSync('src/manager/model-list/KnownModel_Base.ts', out2 + '\n', 'utf-8')
 
         // KnownModel_Name ----------------------
         let out3 = ''
