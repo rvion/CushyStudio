@@ -1,5 +1,6 @@
 import type { STATE } from 'src/state/state'
-import { exec, execSync } from 'child_process'
+
+import { exec } from 'child_process'
 import { existsSync } from 'fs'
 import { resolve as pathResolve } from 'pathe'
 

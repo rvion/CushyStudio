@@ -10,7 +10,7 @@ export const QuickHostActionsUI = observer(function QuickHostActionsUI_(p: { hos
             <div tw='btn btn-sm btn-primary flex-1' onClick={() => host.fetchAndUpdateSchema()}>
                 Reload Schema
             </div>
-            <div tw='btn btn-sm btn-warning flex-1' onClick={() => host.getComfyUIManager()?.rebootComfyUI()}>
+            <div tw='btn btn-sm btn-warning flex-1' onClick={() => host.manager.rebootComfyUI()}>
                 Restart ComfyUI
             </div>
         </div>

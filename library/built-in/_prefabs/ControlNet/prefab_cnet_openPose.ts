@@ -7,7 +7,7 @@ export const ui_subform_OpenPose = () => {
     const form: FormBuilder = getCurrentForm()
     return form.group({
         label: 'Pose',
-        customNodesByTitle: 'ComfyUI-Advanced-ControlNet',
+        requirements: [{ type: 'customNodesByTitle', title: 'ComfyUI-Advanced-ControlNet' }],
         items: () => ({
             ...cnet_ui_common(form),
             preprocessor: ui_subform_OpenPose_Preprocessor(),

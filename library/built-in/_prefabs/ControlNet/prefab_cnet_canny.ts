@@ -7,7 +7,14 @@ export const ui_subform_Canny = () => {
     const form: FormBuilder = getCurrentForm()
     return form.group({
         label: 'Canny',
-        customNodesByTitle: 'ComfyUI-Advanced-ControlNet',
+        requirements: [
+            { type: 'customNodesByTitle', title: 'ComfyUI-Advanced-ControlNet' },
+            { type: 'modelInManager', modelName: 'T2I-Adapter (canny)' },
+            { type: 'modelInManager', modelName: 'ControlNet-v1-1 (canny; fp16)' },
+            { type: 'modelInManager', modelName: 'stabilityai/control-lora-canny-rank128.safetensors' },
+            { type: 'modelInManager', modelName: 'stabilityai/control-lora-canny-rank256.safetensors' },
+            { type: 'modelInManager', modelName: 'kohya-ss/ControlNet-LLLite: SDXL Canny Anime' },
+        ],
         items: () => ({
             ...cnet_ui_common(form),
             preprocessor: ui_subform_Canny_Preprocessor(form),
@@ -19,15 +26,6 @@ export const ui_subform_Canny = () => {
                         label: 'Model',
                         default: 't2iadapter_canny_sd14v1.pth',
                         filter: (name) => name.toString().includes('canny'),
-                        recommandedModels: {
-                            knownModel: [
-                                'T2I-Adapter (canny)',
-                                'ControlNet-v1-1 (canny; fp16)',
-                                'stabilityai/control-lora-canny-rank128.safetensors',
-                                'stabilityai/control-lora-canny-rank256.safetensors',
-                                'kohya-ss/ControlNet-LLLite: SDXL Canny Anime',
-                            ],
-                        },
                     }),
                 }),
             }),

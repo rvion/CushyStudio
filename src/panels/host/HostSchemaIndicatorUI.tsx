@@ -57,7 +57,7 @@ export const HostSchemaIndicatorUI = observer(function HostSchemaIndicatorUI_(p:
                     </Message>
                 )}
                 <pre>{host.schemaRetrievalLogs.join('\n')}</pre>
-                <div tw='btn btn-sm btn-warning flex-1' onClick={() => host.getComfyUIManager()?.rebootComfyUI()}>
+                <div tw='btn btn-sm btn-warning flex-1' onClick={() => host.manager.rebootComfyUI()}>
                     Restart ComfyUI
                 </div>
             </div>

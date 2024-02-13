@@ -9,7 +9,7 @@ app({
     canStartFromImage: true,
     ui: (form) => ({
         normal: form.selectOne({
-            customNodesByNameInCushy: 'MarigoldDepthEstimation',
+            requirements: [{ type: 'customNodesByNameInCushy', nodeName: 'MarigoldDepthEstimation' }],
             default: { id: 'MiDaS' },
             choices: [{ id: 'MiDaS' }, { id: 'BAE' }],
         }),

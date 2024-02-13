@@ -44,11 +44,10 @@ app({
         highResFix: ui_highresfix({ activeByDefault: true }),
         upscale: ui_upscaleWithModel(),
         customSave: ui_customSave(),
-        // startImage
         removeBG: ui_rembg_v1(),
 
         show3d: form.groupOpt({
-            customNodesByNameInCushy: ['Zoe$7DepthMapPreprocessor'],
+            requirements: [{ type: 'customNodesByNameInCushy', nodeName: 'Zoe$7DepthMapPreprocessor' }],
             items: () => {
                 return {
                     normal: form.selectOne({

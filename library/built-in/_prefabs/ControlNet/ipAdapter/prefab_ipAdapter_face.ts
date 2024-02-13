@@ -11,10 +11,7 @@ export const ui_IPAdapterFaceID = () => {
     const form = getCurrentForm()
     return form.group({
         label: 'FaceID IPAdapter',
-        customNodesByTitle: [
-            //
-            'ComfyUI_IPAdapter_plus',
-        ],
+        requirements: [{ type: 'customNodesByTitle', title: 'ComfyUI_IPAdapter_plus' }],
         items: () => ({
             help: form.markdown({ startCollapsed: true, markdown: ipAdapterDoc }),
             models: form.group({

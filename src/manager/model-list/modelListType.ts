@@ -1,8 +1,37 @@
+export type ComfyManager_KnownModelBaseTypes =
+    | "SDXL"
+    | "SD1.x"
+    | "upscale"
+    | "deepbump"
+    | "face_restore"
+    | "SVD"
+    | "zero123"
+    | "SD1.5"
+    | "SD2"
+    | "SD2.1"
+    | "SDXL VAE"
+    | "SD1.5 VAE"
+    | "SD2.1 VAE"
+    | "SSD-1B"
+    | "segmind-vega"
+    | "vit-g"
+    | "ViT-L"
+    | "ViT-H"
+    | "ViT-G"
+    | "SAM"
+    | "SEECODER"
+    | "Ultralytics"
+    | "MotionCtrl"
+    | "GFPGAN"
+    | "CodeFormer"
+    | "facexlib"
+    | "inswapper"
+
 export type ComfyUIManagerKnownModelTypes =
     | "TAESD"              // x   4
     | "upscale"            // x   9
     | "checkpoints"        // x  19
-    | "insightface"        // x   2
+    | "insightface"        // x   7
     | "deepbump"           // x   1
     | "face_restore"       // x   3
     | "zero123"            // x   1
@@ -13,7 +42,7 @@ export type ComfyUIManagerKnownModelTypes =
     | "VAE"                // x   5
     | "T2I-Adapter"        // x   7
     | "T2I-Style"          // x   1
-    | "controlnet"         // x  34
+    | "controlnet"         // x  35
     | "clip_vision"        // x   4
     | "gligen"             // x   1
     | "sam"                // x   3
@@ -27,8 +56,11 @@ export type ComfyUIManagerKnownModelTypes =
     | "CodeFormer"         // x   1
     | "facexlib"           // x   4
     | "photomaker"         // x   1
+    | "instantid"          // x   1
 
 export type ComfyUIManagerKnownModelNames =
+    | "1k3d68.onnx"
+    | "2d106det.onnx"
     | "4x_foolhardy_Remacri"
     | "4x_NMKD-Siax_200k"
     | "4x-AnimeSharp"
@@ -37,29 +69,29 @@ export type ComfyUIManagerKnownModelNames =
     | "AbyssOrangeMix2 (hard)"
     | "AbyssOrangeMix3 A1"
     | "AbyssOrangeMix3 A3"
-    | "AD_Stabilized_Motion/mm-Stabilized_high.pth (ComfyUI-AnimateDiff-Evolved)"
-    | "AD_Stabilized_Motion/mm-Stabilized_mid.pth (ComfyUI-AnimateDiff-Evolved)"
-    | "animatediff/mm_sd_v15_v2.ckpt (ComfyUI-AnimateDiff-Evolved)"
-    | "animatediff/mm_sd_v15.ckpt (ComfyUI-AnimateDiff-Evolved)"
-    | "animatediff/mm_sd_v15.ckpt (comfyui-animatediff)"
-    | "animatediff/mm_sdxl_v10_beta.ckpt (ComfyUI-AnimateDiff-Evolved)"
-    | "animatediff/mmd_sd_v14.ckpt (ComfyUI-AnimateDiff-Evolved)"
-    | "animatediff/mmd_sd_v14.ckpt (comfyui-animatediff)"
-    | "animatediff/v2_lora_PanLeft.ckpt (ComfyUI-AnimateDiff-Evolved)"
-    | "animatediff/v2_lora_PanRight.ckpt (ComfyUI-AnimateDiff-Evolved)"
-    | "animatediff/v2_lora_RollingAnticlockwise.ckpt (ComfyUI-AnimateDiff-Evolved)"
-    | "animatediff/v2_lora_RollingClockwise.ckpt (ComfyUI-AnimateDiff-Evolved)"
-    | "animatediff/v2_lora_TiltDown.ckpt (ComfyUI-AnimateDiff-Evolved)"
-    | "animatediff/v2_lora_TiltUp.ckpt (ComfyUI-AnimateDiff-Evolved)"
-    | "animatediff/v2_lora_ZoomIn.ckpt (ComfyUI-AnimateDiff-Evolved)"
-    | "animatediff/v2_lora_ZoomOut.ckpt (ComfyUI-AnimateDiff-Evolved)"
+    | "AD_Stabilized_Motion/mm-Stabilized_high.pth (ComfyUI-AnimateDiff-Evolved) (Updated path)"
+    | "AD_Stabilized_Motion/mm-Stabilized_mid.pth (ComfyUI-AnimateDiff-Evolved) (Updated path)"
+    | "animatediff/mm_sd_v15_v2.ckpt (ComfyUI-AnimateDiff-Evolved) (Updated path)"
+    | "animatediff/mm_sd_v15.ckpt (ComfyUI-AnimateDiff-Evolved) (Updated path)"
+    | "animatediff/mm_sd_v15.ckpt (comfyui-animatediff) (Updated path)"
+    | "animatediff/mm_sdxl_v10_beta.ckpt (ComfyUI-AnimateDiff-Evolved) (Updated path)"
+    | "animatediff/mmd_sd_v14.ckpt (ComfyUI-AnimateDiff-Evolved) (Updated path)"
+    | "animatediff/mmd_sd_v14.ckpt (comfyui-animatediff) (Updated path)"
+    | "animatediff/v2_lora_PanLeft.ckpt (ComfyUI-AnimateDiff-Evolved) (Updated path)"
+    | "animatediff/v2_lora_PanRight.ckpt (ComfyUI-AnimateDiff-Evolved) (Updated path)"
+    | "animatediff/v2_lora_RollingAnticlockwise.ckpt (ComfyUI-AnimateDiff-Evolved) (Updated path)"
+    | "animatediff/v2_lora_RollingClockwise.ckpt (ComfyUI-AnimateDiff-Evolved) (Updated path)"
+    | "animatediff/v2_lora_TiltDown.ckpt (ComfyUI-AnimateDiff-Evolved) (Updated path)"
+    | "animatediff/v2_lora_TiltUp.ckpt (ComfyUI-AnimateDiff-Evolved) (Updated path)"
+    | "animatediff/v2_lora_ZoomIn.ckpt (ComfyUI-AnimateDiff-Evolved) (Updated path)"
+    | "animatediff/v2_lora_ZoomOut.ckpt (ComfyUI-AnimateDiff-Evolved) (Updated path)"
     | "animatediff/v3_sd15_adapter.ckpt"
-    | "animatediff/v3_sd15_mm.ckpt (ComfyUI-AnimateDiff-Evolved)"
+    | "animatediff/v3_sd15_mm.ckpt (ComfyUI-AnimateDiff-Evolved) (Updated path)"
     | "animatediff/v3_sd15_sparsectrl_rgb.ckpt (ComfyUI-AnimateDiff-Evolved)"
     | "animatediff/v3_sd15_sparsectrl_scribble.ckpt"
     | "Anything v3 (fp16; pruned)"
     | "bad_prompt Negative Embedding"
-    | "CiaraRowles/temporaldiff-v1-animatediff.ckpt (ComfyUI-AnimateDiff-Evolved)"
+    | "CiaraRowles/temporaldiff-v1-animatediff.ckpt (ComfyUI-AnimateDiff-Evolved) (Updated path)"
     | "CiaraRowles/TemporalNet1XL (1.0)"
     | "CiaraRowles/TemporalNet2"
     | "CLIPVision model (IP-Adapter) CLIP-ViT-bigG-14-laion2B-39B-b160k"
@@ -93,6 +125,7 @@ export type ComfyUIManagerKnownModelNames =
     | "detection_Resnet50_Final.pth"
     | "diffusers/stable-diffusion-xl-1.0-inpainting-0.1 (UNET)"
     | "diffusers/stable-diffusion-xl-1.0-inpainting-0.1 (UNET/fp16)"
+    | "diffusion_pytorch_model.safetensors"
     | "EasyNegative"
     | "ESRGAN x4"
     | "face_yolov8m (bbox)"
@@ -101,10 +134,12 @@ export type ComfyUIManagerKnownModelNames =
     | "face_yolov8n_v2 (bbox)"
     | "face_yolov8n-seg2_60.pt (segm)"
     | "face_yolov8s (bbox)"
+    | "genderage.onnx"
     | "GFPGAN 1.3"
     | "GFPGAN 1.4"
     | "GFPGANv1.4.pth"
     | "GLIGEN textbox (fp16; pruned)"
+    | "glintr100.onnx"
     | "hair_yolov8n-seg_60.pt (segm)"
     | "hand_yolov8n (bbox)"
     | "hand_yolov8s (bbox)"
@@ -132,15 +167,16 @@ export type ComfyUIManagerKnownModelNames =
     | "ip-adapter-plus_sdxl_vit-h.safetensors"
     | "ip-adapter-plus-face_sd15.safetensors"
     | "ip-adapter-plus-face_sdxl_vit-h.safetensors"
+    | "ip-adapter.bin"
     | "kl-f8-anime2"
     | "kohya-ss/ControlNet-LLLite: SDXL Canny Anime"
     | "LCM LoRA SD1.5"
     | "LCM LoRA SDXL"
     | "LCM LoRA SSD-1B"
     | "LDSR(Latent Diffusion Super Resolution)"
-    | "LongAnimatediff/lt_long_mm_16_64_frames_v1.1.ckpt (ComfyUI-AnimateDiff-Evolved)"
-    | "LongAnimatediff/lt_long_mm_16_64_frames.ckpt (ComfyUI-AnimateDiff-Evolved)"
-    | "LongAnimatediff/lt_long_mm_32_frames.ckpt (ComfyUI-AnimateDiff-Evolved)"
+    | "LongAnimatediff/lt_long_mm_16_64_frames_v1.1.ckpt (ComfyUI-AnimateDiff-Evolved) (Updated path)"
+    | "LongAnimatediff/lt_long_mm_16_64_frames.ckpt (ComfyUI-AnimateDiff-Evolved) (Updated path)"
+    | "LongAnimatediff/lt_long_mm_32_frames.ckpt (ComfyUI-AnimateDiff-Evolved) (Updated path)"
     | "negative_hand Negative Embedding"
     | "OpenAI Consistency Decoder"
     | "orangemix.vae"
@@ -154,6 +190,7 @@ export type ComfyUIManagerKnownModelNames =
     | "RealESRGAN x2"
     | "RealESRGAN x4"
     | "RestoreFormer"
+    | "scrfd_10g_bnkps.onnx"
     | "sd_xl_base_1.0_0.9vae.safetensors"
     | "sd_xl_base_1.0.safetensors"
     | "sd_xl_offset_example-lora_1.0.safetensors"

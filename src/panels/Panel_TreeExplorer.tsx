@@ -8,7 +8,7 @@ export const Panel_TreeExplorer = observer(function Panel_TreeExplorer_(p: {}) {
     return (
         <div tw='flex flex-grow flex-col overflow-auto h-full'>
             <LibraryHeaderUI />
-            <TreeUI shortcut='mod+1' title='Apps' tw='flex-1 overflow-auto' treeView={st.tree1View} />
+            {/* <TreeUI shortcut='mod+1' title='Apps' tw='flex-1 overflow-auto' treeView={st.tree1View} /> */}
             <TreeUI shortcut='mod+2' title='File Explorer' tw='flex-2 overflow-auto' treeView={st.tree2View} />
         </div>
     )

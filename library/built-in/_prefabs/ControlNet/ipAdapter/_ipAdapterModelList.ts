@@ -1,4 +1,4 @@
-import type { ComfyUIManagerKnownModelNames } from 'src/wiki/modelListType'
+import type { ComfyUIManagerKnownModelNames } from 'src/manager/model-list/modelListType'
 
 export const ipAdapterModelList: ComfyUIManagerKnownModelNames[] = [
     'ip-adapter_sd15.safetensors',

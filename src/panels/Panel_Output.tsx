@@ -7,8 +7,8 @@ import { FieldAndLabelUI } from 'src/widgets/misc/FieldAndLabelUI'
 import { useSt } from '../state/stateContext'
 import { Status } from 'src/back/Status'
 
-const mode: 'H' | 'V' = 1 - 1 == 0 ? 'V' : 'H'
-const dir = mode === 'H' ? 'flex-col' : 'flex-row'
+// const mode: 'H' | 'V' = 1 - 1 == 0 ? 'V' : 'H'
+// const dir = mode === 'H' ? 'flex-col' : 'flex-row'
 
 export const LatentIfLastUI = observer(function LatentIfLastUI_(p: {}) {
     const st = useSt()

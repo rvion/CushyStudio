@@ -1,15 +1,34 @@
 import type { HostL } from 'src/models/Host'
-import type { ModelInfo } from '../modelList'
-import type { PluginInfo } from '../customNodeList'
+import type { ModelInfo } from './model-list/model-list-loader-types'
+import type { PluginInfo } from './custom-node-list/custom-node-list-types'
+import type { KnownCustomNode_CushyName } from './extension-node-map/KnownCustomNode_CushyName'
+import type { PluginInstallStatus } from 'src/controls/REQUIREMENTS/PluginInstallStatus'
+import type { ComfyManagerRepository } from './ComfyManagerRepository'
 
-import { getModelInfoFinalFilePath } from '../modelList'
 import { toastError, toastSuccess } from 'src/utils/misc/toasts'
 
-export class ComfyUIManager {
-    constructor(public host: HostL) {}
+type ManagerNodeList = {
+    custom_nodes: {
+        title: string
+        installed: 'False' | 'True' | 'Update' /* ... */
+    }[]
+    chanel: 'string'
+}
+
+export class ComfyManager {
+    get repository(): ComfyManagerRepository {
+        return this.host.st.managerRepository
+    }
+
+    constructor(public host: HostL) {
+        void (async () => {
+            const res = await this.getNodeList()
+            this.knownNodeList = res
+        })()
+    }
 
     getModelInfoFinalFilePath = (mi: ModelInfo): string => {
-        return getModelInfoFinalFilePath(mi)
+        return this.repository.getModelInfoFinalFilePath(mi)
     }
 
     // downloadModel = async (model: ModelInfo) => {
@@ -28,6 +47,29 @@ export class ComfyUIManager {
         // @server.PromptServer.instance.routes.get("/manager/reboot")
         return this.fetchGet('/manager/reboot')
     }
+
+    knownNodeList: Maybe<ManagerNodeList> = null // hasModel = async (model: ModelInfo) => {
+
+    get allInstallNodes(): string[] {
+        return (
+            this.knownNodeList?.custom_nodes //
+                .filter((x) => x.installed === 'True')
+                .map((x) => x.title) ?? []
+        )
+    }
+
+    getPluginStatus = (title: KnownCustomNode_CushyName): PluginInstallStatus => {
+        const entry = this.knownNodeList?.custom_nodes.find((x) => x.title === title)
+        const status = ((): PluginInstallStatus => {
+            if (!entry) return 'unknown'
+            if (entry?.installed === 'False') return 'not-installed'
+            if (entry?.installed === 'True') return 'installed'
+            if (entry?.installed === 'Update') return 'update-available'
+            return 'error'
+        })()
+        return status
+    }
+    // }
 
     getCachedModels = (): Promise<ModelInfo[]> => {
         return this.fetchGet<ModelInfo[]>('/externalmodel/getlist?mode=cache')
@@ -67,13 +109,7 @@ export class ComfyUIManager {
             ='cache',
         /** @default: true */
         skipUpdate: boolean = true,
-    ): Promise<{
-        custom_nodes: {
-            title: string
-            installed: 'False' | 'True' | 'Update' /* ... */
-        }[]
-        chanel: 'string'
-    }> => {
+    ): Promise<ManagerNodeList> => {
         try {
             const skip_update = skipUpdate ? '&skip_update=true' : ''
             const status = await this.fetchGet(`/customnode/getlist?mode=${mode}${skip_update}`)

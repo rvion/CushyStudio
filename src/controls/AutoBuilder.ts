@@ -1,4 +1,5 @@
 import type { FormBuilder } from './FormBuilder'
+import type { WidgetConfigFields } from './IWidget'
 import type { Widget_bool } from './widgets/bool/WidgetBool'
 
 import { Widget_enum, type Widget_enum_config } from './widgets/enum/WidgetEnum'
@@ -17,7 +18,7 @@ type AutoWidget<T> = T extends { kind: any; type: infer X }
         : T['kind'] extends 'prompt'
         ? Widget_prompt
         : T['kind'] extends 'enum'
-        ? Widget_enum<T['type']>
+        ? Widget_enum<X>
         : any
     : any
 
@@ -31,11 +32,34 @@ export const mkFormAutoBuilder = (form: FormBuilder) => {
     const autoBuilder = new AutoBuilder(form)
     return new Proxy(autoBuilder, {
         get(target, prop, receiver) {
+            // skip symbols
+            if (typeof prop === 'symbol') return (target as any)[prop]
+            if (prop === 'isMobXAtom') return (target as any)[prop]
+            if (prop === 'isMobXReaction') return (target as any)[prop]
+
+            // skip mobx stuff
+            if (prop === 'isMobXComputedValue') return (target as any)[prop]
+
+            // skip public form
+            if (prop === 'form') return (target as any)[prop]
+
+            // known custom nodes
             if (prop in target) {
                 // console.log(`[👗] calling builder for known node: ${prop as any}`)
                 return (target as any)[prop]
-            } else {
+            }
+
+            // unknown custom nodes
+            else {
                 console.log(`[👗] ❌ Unknown property: ${prop as any}`)
+                return () => {
+                    console.log(`[👗] ❌ Unknown property: ${prop as any}`)
+                    return form.markdown({
+                        requirements: [{ type: 'customNodesByNameInCushy', nodeName: prop.toString() as any }],
+                        label: prop.toString(),
+                        markdown: `❌ missing node '${prop.toString()}'`,
+                    })
+                }
             }
         },
     })
@@ -48,9 +72,10 @@ export class AutoBuilder {
         const schema = st.schema
         for (const node of schema.nodes) {
             Object.defineProperty(this, node.nameInCushy, {
-                value: () =>
+                value: (ext?: Partial<WidgetConfigFields<{}>>) =>
                     form.group({
-                        label: node.nameInComfy,
+                        label: ext?.label ?? node.nameInComfy,
+                        // label: node.nameInComfy,
                         items: () => {
                             const items: any = {}
                             for (const field of node.inputs) {
@@ -79,6 +104,26 @@ export class AutoBuilder {
                                         })
                                     }
                                     // number ------------------------------------------
+                                    else if (typeLower === 'text' || typeLower === 'string') {
+                                        // number default -----------
+                                        let def: string | undefined = undefined
+                                        let textarea = opts?.multiline ?? undefined
+
+                                        if (opts?.default != null) {
+                                            if (typeof opts.default !== 'string') {
+                                                console.log(`[👗] ❌ Invalid default for number: ${opts.default}`)
+                                                continue
+                                            }
+                                            def = opts.default
+                                        }
+                                        // number value
+                                        items[field.nameInComfy] = form.string({
+                                            label: field.nameInComfy,
+                                            default: def,
+                                            textarea: textarea,
+                                        })
+                                    }
+                                    // number ------------------------------------------
                                     else if (typeLower === 'number') {
                                         // number default -----------
                                         let def: number | undefined = undefined
@@ -92,6 +137,7 @@ export class AutoBuilder {
                                         // number value
                                         items[field.nameInComfy] = form.number({
                                             label: field.nameInComfy,
+                                            default: def,
                                         })
                                     }
                                     // int ------------------------------------------
@@ -113,7 +159,9 @@ export class AutoBuilder {
                                         items[field.nameInComfy] = form.int({
                                             label: field.nameInComfy,
                                         })
-                                    } else if (typeLower === 'float') {
+                                    }
+                                    // int ------------------------------------------
+                                    else if (typeLower === 'float') {
                                         // float default -----------
                                         let def: number | undefined = undefined
                                         if (opts?.default != null) {
@@ -149,6 +197,11 @@ export class AutoBuilder {
                                 } else {
                                     console.log(`[👗] skipping field type: ${field.type}`)
                                 }
+                            }
+                            if (Object.keys(items).length === 0) {
+                                items['empty'] = form.markdown({
+                                    markdown: `❌ node '${node.nameInComfy}' do not have primitive fields`,
+                                })
                             }
                             return items
                         },

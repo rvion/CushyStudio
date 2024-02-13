@@ -1,8 +1,11 @@
 import type { FormBuilder } from './FormBuilder'
 import type { ComfySchemaL } from 'src/models/Schema'
-import type { ComfyUIManagerKnownCustomNode_Files, ComfyUIManagerKnownCustomNode_Title } from 'src/wiki/customNodeListTypes'
-import type { KnownInstallableCustomNodeCushyName } from 'src/wiki/extension-node-map/extension-node-map-enums'
+import type { KnownCustomNode_Title } from 'src/manager/custom-node-list/KnownCustomNode_Title'
+import type { KnowCustomNode_File } from 'src/manager/custom-node-list/KnowCustomNode_File'
+import type { KnownCustomNode_CushyName } from 'src/manager/extension-node-map/KnownCustomNode_CushyName'
 import type { RecommendedModelDownload } from './EnumDefault'
+import type { ModelInfo } from 'src/manager/model-list/model-list-loader-types'
+import type { ComfyManager_KnownModelBaseTypes, ComfyUIManagerKnownModelNames } from 'src/manager/model-list/modelListType'
 
 export type WidgetTypeHelpers_OLD<T, I, X extends { type: T }, S, O> = {
     $Input: I
@@ -61,22 +64,21 @@ export type WidgetSerialFields<X> = X & {
 // do not need to be serializable
 export type WidgetConfigFields<X> = X & {
     label?: string | false
-    // labelPos?: LabelPos
     layout?: 'H' | 'V'
     tooltip?: string
     i18n?: { [key: string]: string }
     className?: string
     startCollapsed?: boolean
     showID?: boolean
-    recommandedModels?: RecommendedModelDownload
-    customNodesByTitle?: ComfyUIManagerKnownCustomNode_Title | ComfyUIManagerKnownCustomNode_Title[]
-    customNodesByURI?: ComfyUIManagerKnownCustomNode_Files | ComfyUIManagerKnownCustomNode_Files[]
-    customNodesByNameInCushy?: KnownInstallableCustomNodeCushyName | KnownInstallableCustomNodeCushyName[]
-} // & CustomNodeRecommandation
-
-export type CustomNodeRecommandation = {
-    customNodesByTitle?: ComfyUIManagerKnownCustomNode_Title | ComfyUIManagerKnownCustomNode_Title[]
-    customNodesByURI?: ComfyUIManagerKnownCustomNode_Files | ComfyUIManagerKnownCustomNode_Files[]
-    customNodesByNameInCushy?: KnownInstallableCustomNodeCushyName | KnownInstallableCustomNodeCushyName[]
-    // customNodesByNameInComfy?: KnownInstallableCustomNodeComfyName | KnownInstallableCustomNodeComfyName[]
+    requirements?: Requirements[]
 }
+
+export type Requirements =
+    // models
+    | { type: 'modelInCivitai'; civitaiURL: string; optional?: true; base: ComfyManager_KnownModelBaseTypes }
+    | { type: 'modelInManager'; modelName: ComfyUIManagerKnownModelNames; optional?: true }
+    | { type: 'modelCustom'; infos: ModelInfo; optional?: true }
+    // custom nodes
+    | { type: 'customNodesByTitle'; title: KnownCustomNode_Title; optional?: true }
+    | { type: 'customNodesByURI'; uri: KnowCustomNode_File; optional?: true }
+    | { type: 'customNodesByNameInCushy'; nodeName: KnownCustomNode_CushyName; optional?: true }
