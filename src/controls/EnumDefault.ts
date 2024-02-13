@@ -1,6 +1,6 @@
 import type { EnumValue } from 'src/models/Schema'
 import type { ModelInfo } from 'src/manager/model-list/model-list-loader-types'
-import type { ComfyUIManagerKnownModelNames } from 'src/manager/model-list/modelListType'
+import type { KnownModel_Name } from 'src/manager/model-list/KnownModel_Name'
 import type { Widget_enum_config } from './widgets/enum/WidgetEnum'
 
 export const extractDefaultValue = (input: Widget_enum_config<any>): Maybe<EnumValue> => {
@@ -34,8 +34,8 @@ export type RecommendedModelDownload = {
     modelFolderPrefix?: string
     // prettier-ignore
     knownModel?:
-        | ComfyUIManagerKnownModelNames
-        | ComfyUIManagerKnownModelNames[]
+        | KnownModel_Name
+        | KnownModel_Name[]
     customModels?: ModelInfo | ModelInfo[]
 }
 

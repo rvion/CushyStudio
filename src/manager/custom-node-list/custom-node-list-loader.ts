@@ -60,10 +60,10 @@ export const _getKnownPlugins = (DB: ComfyManagerRepository): void => {
         let out2 = ''
         const allFileNames = [...DB.plugins_byFile.keys()]
         const sortedFileNames = allFileNames.sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()))
-        out2 += 'export type KnowCustomNode_File =\n'
+        out2 += 'export type KnownCustomNode_File =\n'
         for (const fileName of sortedFileNames) out2 += `    | ${JSON.stringify(fileName)}\n`
         out2 += '\n'
-        writeFileSync('src/manager/custom-node-list/KnowCustomNode_File.ts', out2 + '\n', 'utf-8')
+        writeFileSync('src/manager/custom-node-list/KnownCustomNode_File.ts', out2 + '\n', 'utf-8')
     }
 
     // INDEXING CHECKS ------------------------------------------------------------

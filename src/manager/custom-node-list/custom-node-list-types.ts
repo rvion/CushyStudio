@@ -1,4 +1,4 @@
-import type { KnowCustomNode_File } from './KnowCustomNode_File'
+import type { KnownCustomNode_File } from './KnownCustomNode_File'
 import type { KnownCustomNode_Title } from './KnownCustomNode_Title'
 
 import { Type } from '@sinclair/typebox'
@@ -6,7 +6,7 @@ import { Type } from '@sinclair/typebox'
 // prettier-ignore
 export type PluginInfo = {
     "title": KnownCustomNode_Title;  // "ComfyUI-Manager",
-    "files": KnowCustomNode_File[];  // ["https://github.com/ltdrdata/ComfyUI-Manager"],
+    "files": KnownCustomNode_File[];  // ["https://github.com/ltdrdata/ComfyUI-Manager"],
     "author": string;                // "Dr.Lt.Data",
     "reference": string;             // "https://github.com/ltdrdata/ComfyUI-Manager",
     "install_type": string;          // "git-clone",

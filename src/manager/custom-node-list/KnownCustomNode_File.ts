@@ -1,4 +1,4 @@
-export type KnowCustomNode_File =
+export type KnownCustomNode_File =
     | ''
     | 'https://civitai.com/api/download/models/158997'
     | 'https://civitai.com/api/download/models/23296'

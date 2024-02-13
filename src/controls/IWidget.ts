@@ -1,11 +1,10 @@
-import type { FormBuilder } from './FormBuilder'
-import type { ComfySchemaL } from 'src/models/Schema'
+import type { KnownCustomNode_File } from 'src/manager/custom-node-list/KnownCustomNode_File'
 import type { KnownCustomNode_Title } from 'src/manager/custom-node-list/KnownCustomNode_Title'
-import type { KnowCustomNode_File } from 'src/manager/custom-node-list/KnowCustomNode_File'
 import type { KnownCustomNode_CushyName } from 'src/manager/extension-node-map/KnownCustomNode_CushyName'
-import type { RecommendedModelDownload } from './EnumDefault'
+import type { ComfyManager_KnownModelBaseTypes } from 'src/manager/model-list/KnownModel_Base'
+import type { KnownModel_Name } from 'src/manager/model-list/KnownModel_Name'
 import type { ModelInfo } from 'src/manager/model-list/model-list-loader-types'
-import type { ComfyManager_KnownModelBaseTypes, ComfyUIManagerKnownModelNames } from 'src/manager/model-list/modelListType'
+import type { FormBuilder } from './FormBuilder'
 
 export type WidgetTypeHelpers_OLD<T, I, X extends { type: T }, S, O> = {
     $Input: I
@@ -76,9 +75,9 @@ export type WidgetConfigFields<X> = X & {
 export type Requirements =
     // models
     | { type: 'modelInCivitai'; civitaiURL: string; optional?: true; base: ComfyManager_KnownModelBaseTypes }
-    | { type: 'modelInManager'; modelName: ComfyUIManagerKnownModelNames; optional?: true }
+    | { type: 'modelInManager'; modelName: KnownModel_Name; optional?: true }
     | { type: 'modelCustom'; infos: ModelInfo; optional?: true }
     // custom nodes
     | { type: 'customNodesByTitle'; title: KnownCustomNode_Title; optional?: true }
-    | { type: 'customNodesByURI'; uri: KnowCustomNode_File; optional?: true }
+    | { type: 'customNodesByURI'; uri: KnownCustomNode_File; optional?: true }
     | { type: 'customNodesByNameInCushy'; nodeName: KnownCustomNode_CushyName; optional?: true }

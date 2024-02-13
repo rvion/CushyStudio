@@ -6,14 +6,14 @@ import { ENMInfos, ENMInfos_Schema, ExtensionNodeMapFile } from './extension-nod
 import { Value, ValueError } from '@sinclair/typebox/value'
 import { readFileSync, writeFileSync } from 'fs'
 import { normalizeJSIdentifier } from 'src/core/normalizeJSIdentifier'
-import { KnowCustomNode_File } from '../custom-node-list/KnowCustomNode_File'
+import { KnownCustomNode_File } from '../custom-node-list/KnownCustomNode_File'
 
 export const _getCustomNodeRegistry = (DB: ComfyManagerRepository): void => {
     let totalCustomNodeSeen = 0
 
     // 1. read file
     const extensionNodeMapFile: ExtensionNodeMapFile = JSON.parse(
-        readFileSync('src/wiki/extension-node-map/extension-node-map.json', 'utf8'),
+        readFileSync('src/manager/extension-node-map/extension-node-map.json', 'utf8'),
     )
 
     // 2. process file into something slightly more practical to use
@@ -51,7 +51,7 @@ export const _getCustomNodeRegistry = (DB: ComfyManagerRepository): void => {
         }
 
         // 3.1 ensure there is a plugin associated to this file
-        const plugin = DB.plugins_byFile.get(enmEntry.url as KnowCustomNode_File)
+        const plugin = DB.plugins_byFile.get(enmEntry.url as KnownCustomNode_File)
         if (plugin == null) throw new Error(`[❌] plugin not found for ${enmEntry.url}`)
 
         // 3.2 ensure we have a list of nodes for this plugin
@@ -123,9 +123,9 @@ export const _getCustomNodeRegistry = (DB: ComfyManagerRepository): void => {
 }
 
 // // need to be an array, because multiple custom nodes can have the same name
-// type CustomNodeURL_by_NodeNameInComfy = Map<NodeNameInComfy, KnowCustomNode_File[]>
-// type CustomNodeURL_by_NodeNameInCushy = Map<NodeNameInCushy, KnowCustomNode_File[]>
-// type CustomNodes_by_PluginTitle = Map<KnowCustomNode_File, NodeNameInCushy[]>
+// type CustomNodeURL_by_NodeNameInComfy = Map<NodeNameInComfy, KnownCustomNode_File[]>
+// type CustomNodeURL_by_NodeNameInCushy = Map<NodeNameInCushy, KnownCustomNode_File[]>
+// type CustomNodes_by_PluginTitle = Map<KnownCustomNode_File, NodeNameInCushy[]>
 
 // type CustomNodeRegistry = {
 //     byNodeNameInComfy: CustomNodeURL_by_NodeNameInComfy

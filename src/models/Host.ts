@@ -12,7 +12,7 @@ import { toastError, toastSuccess } from 'src/utils/misc/toasts'
 import { downloadFile } from 'src/utils/fs/downloadFile'
 import { ComfyManager } from 'src/manager/ComfyManager'
 import { KnownCustomNode_Title } from 'src/manager/custom-node-list/KnownCustomNode_Title'
-import { KnowCustomNode_File } from 'src/manager/custom-node-list/KnowCustomNode_File'
+import { KnownCustomNode_File } from 'src/manager/custom-node-list/KnownCustomNode_File'
 import { PluginInfo } from 'src/manager/custom-node-list/custom-node-list-types'
 
 export interface HostL extends LiveInstance<HostT, HostL> {}
@@ -105,7 +105,7 @@ export class HostL {
         return true
     }
 
-    installCustomNodeByFile = async (customNodeFile: KnowCustomNode_File) => {
+    installCustomNodeByFile = async (customNodeFile: KnownCustomNode_File) => {
         const manager = this.manager.repository
         const plugin: PluginInfo | undefined = manager.plugins_byFile.get(customNodeFile)
         if (plugin == null) throw new Error(`Unknown custom node for file: "${customNodeFile}"`)

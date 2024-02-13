@@ -4,7 +4,7 @@ import { Value, ValueError } from '@sinclair/typebox/value'
 
 // https://github.com/ltdrdata/ComfyUI-Manager/blob/main/model-list.json
 import { readFileSync, writeFileSync } from 'fs'
-import { ComfyUIManagerKnownModelNames } from './modelListType'
+import { KnownModel_Name } from './KnownModel_Name'
 import { ModelInfo, ModelInfo_Schema } from './model-list-loader-types'
 
 export type ModelFile = {
@@ -15,15 +15,15 @@ export const _getKnownModels = (
     DB: ComfyManagerRepository /* {
 } */,
 ): void => {
-    const knownModelsFile: ModelFile = JSON.parse(readFileSync('src/wiki/jsons/model-list.json', 'utf8'))
-    const knownModelsFileExtra: ModelFile = JSON.parse(readFileSync('src/wiki/jsons/model-list.extra.json', 'utf8'))
+    const knownModelsFile: ModelFile = JSON.parse(readFileSync('src/manager/model-list/model-list.json', 'utf8'))
+    const knownModelsFileExtra: ModelFile = JSON.parse(readFileSync('src/manager/model-list/model-list.extra.json', 'utf8'))
     const knownModelList = knownModelsFile.models.concat(knownModelsFileExtra.models)
 
     let hasErrors = false
 
     for (const modelInfo of knownModelList) {
         // INITIALIZATION ------------------------------------------------------------
-        DB.knownModels.set(modelInfo.name as ComfyUIManagerKnownModelNames, modelInfo)
+        DB.knownModels.set(modelInfo.name as KnownModel_Name, modelInfo)
 
         // JSON CHECKS -----------------------------------------------------------
         if (!hasErrors && DB.opts.check) {
@@ -48,14 +48,14 @@ export const _getKnownModels = (
             else acc[cur.type] = 1
             return acc
         }, {} as { [key: string]: number })
-        out += 'export type ComfyUIManagerKnownModelTypes =\n'
+        out += 'export type KnownModel_Type =\n'
         for (const [cat, count] of Object.entries(uniqCategories))
             out += `    | ${JSON.stringify(cat).padEnd(20)} // x ${count.toString().padStart(3)}\n`
         out += '\n'
 
         // list
         const sortedModels = knownModelList.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()))
-        out += 'export type ComfyUIManagerKnownModelNames =\n'
+        out += 'export type KnownModel_Name =\n'
         for (const modelInfo of sortedModels) out += `    | ${JSON.stringify(modelInfo.name)}\n`
         out += '\n'
 

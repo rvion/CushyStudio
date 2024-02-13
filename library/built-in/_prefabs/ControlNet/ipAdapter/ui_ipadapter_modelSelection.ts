@@ -1,4 +1,4 @@
-import type { ComfyUIManagerKnownModelNames } from 'src/manager/model-list/modelListType'
+import type { KnownModel_Name } from 'src/manager/model-list/KnownModel_Name'
 import type { FormBuilder } from 'src'
 
 //🅿️ IPAdapter Model Selection ===================================================
@@ -7,8 +7,8 @@ export const ui_ipadapter_modelSelection = (
     form: FormBuilder,
     defaultModel: Enum_IPAdapterModelLoader_ipadapter_file = 'ip-adapter_sd15.safetensors',
     knownModels:
-        | ComfyUIManagerKnownModelNames //
-        | ComfyUIManagerKnownModelNames[]
+        | KnownModel_Name //
+        | KnownModel_Name[]
         | undefined,
 ) => {
     return {

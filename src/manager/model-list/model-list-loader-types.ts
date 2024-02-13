@@ -1,11 +1,12 @@
 import { Static, Type } from '@sinclair/typebox'
-import { ComfyUIManagerKnownModelNames, ComfyUIManagerKnownModelTypes } from './modelListType'
+import { KnownModel_Name } from './KnownModel_Name'
+import { KnownModel_Type } from './KnownModel_Type'
 
 // prettier-ignore
 
 export type ModelInfo = {
-    "name": ComfyUIManagerKnownModelNames; // e.g. "ip-adapter_sd15_light.safetensors",
-    "type": ComfyUIManagerKnownModelTypes; // e.g. "IP-Adapter",
+    "name": KnownModel_Name; // e.g. "ip-adapter_sd15_light.safetensors",
+    "type": KnownModel_Type; // e.g. "IP-Adapter",
     "base": string; // e.g. "SD1.5",
     "save_path": string; // e.g. "ipadapter",
     "description": string; // e.g. "You can use this model in the [a/ComfyUI IPAdapter plus](https://github.com/cubiq/ComfyUI_IPAdapter_plus) extension.",
