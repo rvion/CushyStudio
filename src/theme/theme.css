@@ -294,6 +294,13 @@ input.input {
 
 /* /Slider */
 
+/* Text Shading */
+/* TODO(bird_d): This should be moved to be under all text, not just for number input. */
+.text-shadow {
+    --text-shadow-color: rgb(0, 0, 0, 0.2);
+    text-shadow: 0px 1px 1px var(--text-shadow-color), 1px 1px 1px var(--text-shadow-color), -1px 1px 1px var(--text-shadow-color);
+}
+
 .bg-primary-1 { background-color: oklch(var(--p)/.1); }
 .bg-primary-2 { background-color: oklch(var(--p)/.2); }
 
