@@ -79,6 +79,8 @@ export class AutoBuilder {
                         items: () => {
                             const items: any = {}
                             for (const field of node.inputs) {
+                                // console.log(`[👗] DEBUG:`, field, field.isPrimitive)
+                                // if (field.nameInComfy === 'seed') debugger
                                 // console.log(
                                 //     [
                                 //         `[👗] [${field.type}] field ${field.nameInComfy}`,
