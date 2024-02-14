@@ -6,6 +6,7 @@ import { SelectUI } from 'src/rsuite/SelectUI'
 import { makeLabelFromFieldName } from 'src/utils/misc/makeLabelFromFieldName'
 import { WidgetWithLabelUI } from '../../shared/WidgetWithLabelUI'
 import { AnimatedSizeUI } from './AnimatedSizeUI'
+import { useState } from 'react'
 
 // UI
 export const WidgetChoices_LineUI = observer(function WidgetChoices_LineUI_(p: {
@@ -38,29 +39,49 @@ const WidgetChoices_TabLineUI = observer(function WidgetChoicesTab_LineUI_(p: {
     type Entry = { key: string; value?: Maybe<boolean> }
     const choicesStr: string[] = widget.choices
     const choices: Entry[] = choicesStr.map((v) => ({ key: v }))
+
+    const [isDragging, setIsDragging] = useState<boolean>(false)
+    const [wasEnabled, setWasEnabled] = useState<boolean>(false)
+
+    const isDraggingListener = (ev: MouseEvent) => {
+        if (ev.button == 0) {
+            setIsDragging(false)
+            window.removeEventListener('mouseup', isDraggingListener, true)
+        }
+    }
+
     return (
-        <div tw='ml-auto flex flex-wrap gap-x-1 gap-y-0'>
+        <div tw='rounded select-none ml-auto flex flex-wrap gap-x-0.5 gap-y-0'>
             {choices.map((c) => {
                 const isSelected = widget.serial.branches[c.key]
                 return (
                     <div
-                        onClick={() => widget.toggleBranch(c.key)}
+                        onMouseDown={(ev) => {
+                            console.log('DOWN!!')
+                            if (ev.button == 0) {
+                                widget.toggleBranch(c.key)
+                                setWasEnabled(!isSelected)
+                                setIsDragging(true)
+                                window.addEventListener('mouseup', isDraggingListener, true)
+                            }
+                        }}
+                        onMouseEnter={(ev) => {
+                            if (isDragging && (wasEnabled != isSelected || !widget.isMulti)) {
+                                widget.toggleBranch(c.key)
+                            }
+                        }}
                         key={c.key}
                         tw={[
                             //
                             'cursor-pointer',
-                            'px-0.5 rounded flex flex-nowrap gap-0.5 whitespace-nowrap items-center',
-                            // isSelected ? 'bg-primary text-primary-content' : 'bg-base-300',
-                            isSelected ? 'underline' : 'bg-base-300',
+                            'rounded text-shadow',
+                            'border px-2 flex flex-nowrap gap-0.5 whitespace-nowrap items-center bg-base-100',
+                            isSelected
+                                ? 'bg-primary text-base-300 border-base-200'
+                                : 'bg-base-200 hover:filter hover:brightness-110 border-base-100',
+                            'border-b-2 border-b-base-300',
                         ]}
                     >
-                        <input
-                            type='checkbox'
-                            style={{ height: '.8rem', width: '.8rem' }}
-                            onChange={() => {}}
-                            checked={isSelected}
-                            className='checkbox checkbox-primary checkbox-xs'
-                        />
                         {makeLabelFromFieldName(c.key)}
                     </div>
                 )
