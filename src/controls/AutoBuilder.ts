@@ -138,6 +138,9 @@ export class AutoBuilder {
                                         items[field.nameInComfy] = form.number({
                                             label: field.nameInComfy,
                                             default: def,
+                                            min: opts?.min ?? undefined,
+                                            max: opts?.max ?? undefined,
+                                            step: opts?.step ?? undefined,
                                         })
                                     }
                                     // int ------------------------------------------
@@ -155,9 +158,9 @@ export class AutoBuilder {
                                         items[field.nameInComfy] = form.int({
                                             label: field.nameInComfy,
                                             default: def,
-                                        })
-                                        items[field.nameInComfy] = form.int({
-                                            label: field.nameInComfy,
+                                            min: opts?.min ?? undefined,
+                                            max: opts?.max ?? undefined,
+                                            step: opts?.step ?? undefined,
                                         })
                                     }
                                     // int ------------------------------------------
