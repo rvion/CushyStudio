@@ -11,7 +11,7 @@ export const WidgetSelectOneUI = observer(function WidgetSelectOneUI_<T extends 
         const selected = widget.serial.val
         return (
             <div>
-                <div role='tablist' tw='tabs tabs-boxed tabs-sm flex-wrap'>
+                <div role='tablist' tw='tabs tabs-boxed tabs-sm flex-wrap text-shadow'>
                     {widget.choices.map((c) => {
                         const isSelected = selected?.id === c.id
                         return (
@@ -19,7 +19,7 @@ export const WidgetSelectOneUI = observer(function WidgetSelectOneUI_<T extends 
                                 onClick={() => (widget.serial.val = c)}
                                 key={c.id}
                                 role='tab'
-                                tw={['tab', isSelected && 'tab-active font-bold']}
+                                tw={['tab', isSelected && 'tab-active']}
                             >
                                 {c.label ?? makeLabelFromFieldName(c.id)}
                             </a>
