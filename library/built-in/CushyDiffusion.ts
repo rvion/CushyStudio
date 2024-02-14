@@ -55,12 +55,18 @@ app({
             items: () => {
                 return {
                     normal: form.selectOne({
-                        default: { id: 'MiDaS' },
-                        choices: [{ id: 'MiDaS' }, { id: 'BAE' }],
+                        tooltip: 'no Normal map may be better, bad model yields bumpy stuff',
+                        default: { id: 'None' },
+                        choices: [{ id: 'MiDaS' }, { id: 'BAE' }, { id: 'None' }],
                     }),
-                    depth: form.selectOne({
-                        default: { id: 'Zoe' },
-                        choices: [{ id: 'MiDaS' }, { id: 'Zoe' }, { id: 'LeReS' }],
+                    depth: form.choice({
+                        default: 'Marigold',
+                        items: {
+                            MiDaS: () => form.group({}),
+                            Zoe: () => form.group({}),
+                            LeReS: () => form.group({}),
+                            Marigold: () => form.auto.MarigoldDepthEstimation(),
+                        },
                     }),
                 }
             },
@@ -221,18 +227,19 @@ app({
         const show3d = ui.show3d
         if (show3d) {
             run.add_saveImage(finalImage, 'base')
-
             const depth = (() => {
-                if (show3d.depth.id === 'MiDaS') return graph.MiDaS$7DepthMapPreprocessor({ image: finalImage })
-                if (show3d.depth.id === 'Zoe') return graph.Zoe$7DepthMapPreprocessor({ image: finalImage })
-                if (show3d.depth.id === 'LeReS') return graph.LeReS$7DepthMapPreprocessor({ image: finalImage })
-                return exhaust(show3d.depth)
+                if (show3d.depth.MiDaS) return graph.MiDaS$7DepthMapPreprocessor({ image: finalImage })
+                if (show3d.depth.Zoe) return graph.Zoe$7DepthMapPreprocessor({ image: finalImage })
+                if (show3d.depth.LeReS) return graph.LeReS$7DepthMapPreprocessor({ image: finalImage })
+                if (show3d.depth.Marigold) return graph.MarigoldDepthEstimation({ image: finalImage })
+                throw new Error('❌ show3d activated, but no depth option choosen')
             })()
             run.add_saveImage(depth, 'depth')
 
             const normal = (() => {
                 if (show3d.normal.id === 'MiDaS') return graph.MiDaS$7NormalMapPreprocessor({ image: finalImage })
                 if (show3d.normal.id === 'BAE') return graph.BAE$7NormalMapPreprocessor({ image: finalImage })
+                if (show3d.normal.id === 'None') return graph.EmptyImage({ color: 0x7f7fff, height: 512, width: 512 })
                 return exhaust(show3d.normal)
             })()
             run.add_saveImage(normal, 'normal')
