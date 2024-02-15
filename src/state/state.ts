@@ -10,7 +10,7 @@ import type { ComfyStatus, PromptID, PromptRelated_WsMsg, WsMsg } from '../types
 import type { CSCriticalError } from '../widgets/CSCriticalError'
 
 import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'fs'
-import { makeAutoObservable } from 'mobx'
+import { makeAutoObservable, observable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { join } from 'pathe'
 import { createRef } from 'react'
@@ -410,6 +410,20 @@ export class STATE {
         /** path of the workspace */
         public rootPath: AbsolutePath,
     ) {
+        //  globally register the state as this ----------------------
+        if ((window as any).CushyObservableCache == null) {
+            ;(window as any).CushyObservableCache = observable({ st: this })
+            ;(window as any).st = this // <- remove this once window.st usage has been cleend
+        } else {
+            ;(window as any).CushyObservableCache.st = this
+            ;(window as any).st = this // <- remove this once window.st usage has been cleend
+        }
+        if ((window as any).cushy == null) {
+            console.log(`[🛋️] WINDOW.CUSHY NOW DEFINED`)
+            Object.defineProperty(window, 'cushy', { get() { return (window as any).CushyObservableCache.st } }) // prettier-ignore
+        }
+
+        // -----------------------------------------------------------
         console.log('[🛋️] starting Cushy')
         this.cacheFolderPath = this.resolve(this.rootPath, asRelativePath('outputs'))
         this.primarySdkDtsPath = this.resolve(this.rootPath, asRelativePath('schema/global.d.ts'))
@@ -489,7 +503,6 @@ export class STATE {
             wildcards: false,
         })
         this.startupFileIndexing()
-        ;(window as any).st = this
     }
 
     get mainComfyHostID(): HostID {

@@ -7,6 +7,7 @@ import { nanoid } from 'nanoid'
 import { runWithGlobalForm } from 'src/models/_ctx2'
 import { bang } from 'src/utils/misc/bang'
 import { WidgetDI } from '../WidgetUI.DI'
+import { toastError } from 'src/utils/misc/toasts'
 
 // CONFIG
 export type Widget_group_config<T extends { [key: string]: Widget }> = WidgetConfigFields<{
@@ -98,15 +99,26 @@ export class Widget_group<T extends { [key: string]: Widget }> implements IWidge
         }
     }
 
-    constructor(public form: FormBuilder, public config: Widget_group_config<T>, serial?: Widget_group_serial<T>) {
-        this.id = serial?.id ?? nanoid()
-        this.serial = serial ?? {
+    private _defaultSerial = (): Widget_group_serial<T> => {
+        return {
             type: 'group',
             id: this.id,
             active: true,
-            collapsed: config.startCollapsed ?? false,
+            collapsed: this.config.startCollapsed ?? false,
             values_: {} as any,
         }
+    }
+    constructor(
+        //
+        public form: FormBuilder,
+        public config: Widget_group_config<T>,
+        serial?: Widget_group_serial<T>,
+    ) {
+        this.id = serial?.id ?? nanoid()
+        this.serial =
+            serial && serial.type === 'group' //
+                ? serial
+                : this._defaultSerial()
         if (this.serial.values_ == null) this.serial.values_ = {}
         this.enableGroup()
         makeAutoObservable(this)

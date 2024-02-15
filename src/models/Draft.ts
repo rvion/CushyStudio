@@ -1,17 +1,17 @@
-import type { LiveInstance } from '../db/LiveInstance'
-import type { StepL } from './Step'
-import type { MediaImageL } from './MediaImage'
-import type { CushyAppL } from './CushyApp'
 import type { LibraryFile } from 'src/cards/LibraryFile'
+import type { LiveInstance } from '../db/LiveInstance'
+import type { CushyAppL } from './CushyApp'
+import type { MediaImageL } from './MediaImage'
+import type { StepL } from './Step'
 
-import { autorun, reaction, runInAction } from 'mobx'
+import { reaction } from 'mobx'
 import { Status } from 'src/back/Status'
-import { FormBuilder } from 'src/controls/FormBuilder'
+import { Form } from 'src/controls/Form'
+import { Widget_group } from 'src/controls/widgets/group/WidgetGroup'
 import { LiveRef } from 'src/db/LiveRef'
 import { SQLITE_false, SQLITE_true } from 'src/db/SQLITE_boolean'
 import { DraftT } from 'src/db/TYPES.gen'
-import { __FAIL, __OK, type Result } from 'src/types/Either'
-import { Widget_group } from 'src/controls/widgets/group/WidgetGroup'
+import { toastError } from 'src/utils/misc/toasts'
 
 export type FormPath = (string | number)[]
 
@@ -22,16 +22,16 @@ export class DraftL {
     shouldAutoStart = false
 
     /** collapse all top-level form entryes */
-    collapseTopLevelFormEntries = () => this.form.value?.collapseAllEntries()
+    collapseTopLevelFormEntries = () => this.form?.root?.collapseAllEntries()
 
     /** expand all top-level form entries */
-    expandTopLevelFormEntries = () => this.form.value?.expandAllEntries()
+    expandTopLevelFormEntries = () => this.form?.root?.expandAllEntries()
 
     appRef = new LiveRef<this, CushyAppL>(this, 'appID', () => this.db.cushy_apps)
 
     openOrFocusTab = () => {
         this.st.layout.FOCUS_OR_CREATE('Draft', { draftID: this.id }, 'LEFT_PANE_TABSET')
-        this.st.tree2View.revealAndFocusAtPath(['all-drafts', this.id])
+        // this.st.tree2View.revealAndFocusAtPath(['all-drafts', this.id])
     }
 
     private _duplicateTitle = (input: string): string => {
@@ -133,8 +133,12 @@ export class DraftL {
         formValueOverride?: Maybe<any>,
         imageToStartFrom?: MediaImageL,
     ): StepL => {
+        if (this.form == null) {
+            toastError('form not loaded yet')
+            throw new Error('❌ form not loaded yet')
+        }
         this.isDirty = false
-        this.formBuilder._cache.count++
+        this.form.formBuilder._cache.count++
         this.AWAKE()
         // 2024-01-21 should this be here ?
         this.st.layout.FOCUS_OR_CREATE('Output', {})
@@ -153,7 +157,7 @@ export class DraftL {
                   result: formValueOverride,
                   serial: {},
               } as any as Widget_group<any>)
-            : this.form.value
+            : this.form.root
 
         if (widget == null) throw new Error('invalid req')
 
@@ -169,20 +173,17 @@ export class DraftL {
         // ⏸️ const builder = req.builder
         // ⏸️ builder._cache.count++ 🔴
 
+        // console.log(`[👙] 🔴`, JSON.stringify(widget.serial))
+        // debugger
         const graph = startGraph.clone()
         // 4. create step
         const step = this.db.steps.create({
             name: this.data.title,
-            //
             appID: this.data.appID,
             draftID: this.data.id,
-            // formResult: widget.result,
             formSerial: widget.serial,
-            //
-            // parentGraphID: graph.id,
             outputGraphID: graph.id,
             isExpanded: SQLITE_true,
-            //
             status: Status.New,
         })
         graph.update({ stepID: step.id }) // 🔶🔴
@@ -194,84 +195,74 @@ export class DraftL {
         return step
     }
 
-    form: Result<Widget_group<any>> = __FAIL('not loaded yet')
+    form: Maybe<Form<any>> = null
 
     get file(): LibraryFile {
         return this.st.library.getFile(this.appRef.item.relPath)
     }
 
-    onHydrate = () => {
-        // console.log(`[🦊] form: hydrating`)
-    }
-
-    isInitializing = false
+    // onHydrate = () => {
+    //     // console.log(`[🦊] form: hydrating`)
+    // }
+    // isInitializing = false
     isInitialized = false
-
-    observabilityConfig = { formBuilder: false }
-
-    get formBuilder() {
-        const value = new FormBuilder(this.st.schema)
-        Object.defineProperty(this, 'formBuilder', { value })
-        return value
-    }
+    // observabilityConfig = { form: false }
+    // get form() {
+    //     const value = new Form()
+    //     Object.defineProperty(this, 'form', { value })
+    //     return value
+    // }
 
     AWAKE = () => {
-        if (this.isInitializing) return
+        // if (this.isInitializing) return
         if (this.isInitialized) return
-        this.isInitializing = true
+        // this.isInitializing = true
         const _1 = reaction(
             () => this.executable,
             (action) => {
                 console.log(`[🦊] form: awakening app ${this.data.appID}`)
                 if (action == null) return
-                try {
-                    const formBuilder = this.formBuilder // new FormBuilder(this.st.schema)
-                    const uiFn = action.ui
-                    runInAction(() => {
-                        const rootWidget: Widget_group<any> = formBuilder._HYDRATE(
-                            'group',
-                            { topLevel: true, items: () => uiFn?.(formBuilder) ?? {} },
-                            this.data.formSerial,
-                        )
-                        /** 👇 HACK; see the comment near the ROOT property definition */
-                        formBuilder._ROOT = rootWidget
-                        this.form = __OK(rootWidget)
-                        console.log(`[🦊] form: setup` /* this.form */)
-                    })
-                    // subState.unsync()
-                } catch (e) {
-                    console.error(e)
-                    this.form = __FAIL('ui function crashed', e)
-                    return
-                }
+                const form = new Form({
+                    ui: action.ui,
+                    initialValue: () => this.data.formSerial,
+                    onChange: (root) => {
+                        console.log(`[👙] UPDATING FORM SERIAL`)
+                        this.update({ formSerial: root.serial })
+                        console.log(`[👙]  => new:`, JSON.stringify(this.data.formSerial.values_))
+                        this.isDirty = true
+                        this.checkIfShouldRestart()
+                    },
+                })
+                form.init()
+                this.form = form
             },
             { fireImmediately: true },
         )
 
         // 🔴 dangerous
-        const _2 = autorun(
-            () => {
-                const rootWidget = this.form.value
-                if (rootWidget == null) return null
-                // const count = formValue.form._cache.count // manual mobx invalidation
-                const _ = rootWidget.serialHash
-                runInAction(() => {
-                    console.log(`[🦊] form: updating`)
-                    this.update({ formSerial: rootWidget.serial })
-                    this.isDirty = true
-                    this.checkIfShouldRestart()
-                })
-            },
-            { delay: 100 },
-        )
+        // const _2 = autorun(
+        //     () => {
+        //         const rootWidget = this.form.value
+        //         if (rootWidget == null) return null
+        //         // const count = formValue.form._cache.count // manual mobx invalidation
+        //         const _ = rootWidget.serialHash
+        //         runInAction(() => {
+        //             console.log(`[🦊] form: updating`)
+        //             this.update({ formSerial: rootWidget.serial })
+        //             this.isDirty = true
+        //             this.checkIfShouldRestart()
+        //         })
+        //     },
+        //     { delay: 100 },
+        // )
 
         this.isInitialized = true
-        this.isInitializing = false
+        // this.isInitializing = false
         return () => {
             _1()
-            _2()
+            // _2()
             this.isInitialized = false
-            this.form = __FAIL('not loaded yet')
+            this.form = null //  __FAIL('not loaded yet')
         }
     }
 }

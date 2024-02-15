@@ -7,7 +7,6 @@ import type { MediaImageL } from '../models/MediaImage'
 import type { StepL } from '../models/Step'
 
 import * as path from 'pathe'
-// import { Cyto } from '../graph/cyto' 🔴🔴
 import { execSync } from 'child_process'
 import fs, { writeFileSync } from 'fs'
 import { checkIfComfyImageExists } from 'src/models/ImageInfos_ComfyGenerated'
