@@ -1,12 +1,12 @@
-import type { FormBuilder } from './FormBuilder'
-import type { WidgetConfigFields } from './IWidget'
-import type { Widget_bool } from './widgets/bool/WidgetBool'
+import type { FormBuilder } from '../FormBuilder'
+import type { WidgetConfigFields } from '../IWidget'
+import type { Widget_bool } from '../widgets/bool/WidgetBool'
 
-import { Widget_enum, type Widget_enum_config } from './widgets/enum/WidgetEnum'
-import { Widget_group } from './widgets/group/WidgetGroup'
-import { Widget_number } from './widgets/number/WidgetNumber'
-import { Widget_prompt } from './widgets/prompt/WidgetPrompt'
-import { Widget_string } from './widgets/string/WidgetString'
+import { Widget_enum, type Widget_enum_config } from '../widgets/enum/WidgetEnum'
+import { Widget_group } from '../widgets/group/WidgetGroup'
+import { Widget_number } from '../widgets/number/WidgetNumber'
+import { Widget_prompt } from '../widgets/prompt/WidgetPrompt'
+import { Widget_string } from '../widgets/string/WidgetString'
 
 type AutoWidget<T> = T extends { kind: any; type: infer X }
     ? T['kind'] extends 'number'

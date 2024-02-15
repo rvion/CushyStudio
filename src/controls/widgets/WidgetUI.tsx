@@ -2,11 +2,11 @@ import * as R from 'src/controls/Widget'
 
 import type { FC } from 'react'
 import { exhaust } from '../../utils/misc/ComfyUtils'
-import { WidgetCustomUI } from './WidgetCustomUI'
-import { WidgetInlineRunUI } from './WidgetInlineRunUI'
-import { WidgetLorasUI } from './WidgetLorasUI'
-import { WidgetMardownUI } from './WidgetMarkdownUI'
-import { WidgetMatrixUI } from './WidgetMatrixUI'
+import { WidgetCustomUI } from './custom/WidgetCustomUI'
+import { WidgetInlineRunUI } from './button/WidgetInlineRunUI'
+import { WidgetLorasUI } from './loras/WidgetLorasUI'
+import { WidgetMardownUI } from './markdown/WidgetMarkdownUI'
+import { WidgetMatrixUI } from './matrix/WidgetMatrixUI'
 import { WidgetSeedUI } from './WidgetSeedUI'
 import { WidgetSelectManyUI } from './WidgetSelectManyUI'
 import { WidgetSelectOneUI } from './WidgetSelectOneUI'
@@ -39,6 +39,7 @@ import { Widget_size } from './size/WidgetSize'
 import { WigetSize_BlockUI, WigetSize_LineUI } from './size/WidgetSizeUI'
 import { Widget_string } from './string/WidgetString'
 import { WidgetStringUI } from './string/WidgetStringUI'
+import { Widget_custom } from './custom/WidgetCustom'
 
 /**
  * this widget will then dispatch the individual requests to the appropriate sub-widgets
@@ -72,7 +73,7 @@ export const WidgetUI = (
     if (widget instanceof R.Widget_selectOne) return { WidgetLineUI: WidgetSelectOneUI, WidgetBlockUI: undefined }
     if (widget instanceof Widget_choices) return { WidgetLineUI: WidgetChoices_LineUI, WidgetBlockUI: WidgetChoicesUI }
     if (widget instanceof R.Widget_markdown) return { WidgetLineUI: undefined, WidgetBlockUI: WidgetMardownUI }
-    if (widget instanceof R.Widget_custom) return { WidgetLineUI: WidgetCustomUI, WidgetBlockUI: undefined }
+    if (widget instanceof Widget_custom) return { WidgetLineUI: WidgetCustomUI, WidgetBlockUI: undefined }
     if (widget instanceof R.Widget_selectMany) return { WidgetLineUI: WidgetSelectManyUI, WidgetBlockUI: undefined }
     if (widget instanceof Widget_orbit) return { WidgetLineUI: WidgetOrbitUI, WidgetBlockUI: undefined }
 

@@ -5,7 +5,7 @@ import type { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
-import { extractDefaultValue } from '../../EnumDefault'
+import { _extractDefaultValue } from './_extractDefaultValue'
 import { WidgetDI } from '../WidgetUI.DI'
 import { hash } from 'ohash'
 
@@ -52,7 +52,7 @@ export class Widget_enum<O> implements IWidget<Widget_enum_types<O>> {
             type: 'enum',
             id: this.id,
             active: true,
-            val: extractDefaultValue(config) ?? (this.possibleValues[0] as any),
+            val: _extractDefaultValue(config) ?? (this.possibleValues[0] as any),
         }
         makeAutoObservable(this)
     }

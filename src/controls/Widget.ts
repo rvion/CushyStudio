@@ -2,7 +2,6 @@
  * this file is an attempt to centralize core widget definition in a single
  * file so it's easy to add any widget in the future
  */
-import type { FC } from 'react'
 import type { SimplifiedLoraDef } from 'src/presets/SimplifiedLoraDef'
 import type { ItemDataType } from 'src/rsuite/RsuiteTypes'
 import type { FormBuilder } from './FormBuilder'
@@ -11,6 +10,7 @@ import type { IWidget_OLD, WidgetConfigFields, WidgetSerialFields, WidgetTypeHel
 import type { Widget_bool } from './widgets/bool/WidgetBool'
 import type { Widget_choices } from './widgets/choices/WidgetChoices'
 import type { Widget_color } from './widgets/color/WidgetColor'
+import type { Widget_custom } from './widgets/custom/WidgetCustom'
 import type { Widget_enum } from './widgets/enum/WidgetEnum'
 import type { Widget_group } from './widgets/group/WidgetGroup'
 import type { Widget_image } from './widgets/image/WidgetImage'
@@ -27,8 +27,8 @@ import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { bang } from 'src/utils/misc/bang'
 
-import { WidgetDI } from './widgets/WidgetUI.DI'
 import { hash } from 'ohash'
+import { WidgetDI } from './widgets/WidgetUI.DI'
 
 
 // Widget is a closed union for added type safety
@@ -91,43 +91,7 @@ export class Widget_markdown implements IWidget_OLD<'markdown', Widget_markdown_
     get result(): Widget_markdown_output { return this.serial }
 }
 
-// 🅿️ custom ==============================================================================
-export type CustomWidgetProps<T> = { widget: Widget_custom<T>; extra: import('./widgets/WidgetCustomUI').UIKit }
-export type Widget_custom_config  <T> = WidgetConfigFields<{ defaultValue: () => T; Component: FC<CustomWidgetProps<T>>}>
-export type Widget_custom_serial<T> = WidgetSerialFields<{ type: 'custom'; active: true; value: T }>
-export type Widget_custom_output<T> = T
-export interface Widget_custom<T> extends WidgetTypeHelpers_OLD<'custom', Widget_custom_config<T>, Widget_custom_serial<T>, any, Widget_custom_output<T>> {}
-export class Widget_custom<T> implements IWidget_OLD<'custom', Widget_custom_config<T>, Widget_custom_serial<T>, any, Widget_custom_output<T>> {
-    readonly isVerticalByDefault = true
-    readonly isCollapsible = true
-    readonly id: string
-    readonly type: 'custom' = 'custom'
 
-    get serialHash () { return hash(this.result) }
-    serial: Widget_custom_serial<T>
-    Component: Widget_custom_config<T>['Component']
-    st = () => this.form.schema.st
-    reset = () => (this.serial.value = this.config.defaultValue())
-    constructor(
-        public form: FormBuilder,
-        public config: Widget_custom_config<T>,
-        serial?: Widget_custom_serial<T>,
-    ) {
-        this.id = serial?.id ?? nanoid()
-        this.Component = config.Component
-        this.serial = serial ?? {
-            type: 'custom',
-            active: true,
-            id: this.id,
-            value: this.config.defaultValue(),
-        }
-
-        makeAutoObservable(this, { Component: false })
-    }
-
-    /** never mutate this field manually, only access to .state */
-    get result(): Widget_custom_output<T> { return this.serial.value }
-}
 
 // 🅿️ seed ==============================================================================
 export type Widget_seed_config  = WidgetConfigFields<{ default?: number; defaultMode?: 'randomize' | 'fixed' | 'last', min?: number; max?: number }>
@@ -472,7 +436,6 @@ export class Widget_selectMany<T extends BaseSelectEntry> implements IWidget_OLD
 WidgetDI.Widget_seed               = Widget_seed
 WidgetDI.Widget_inlineRun          = Widget_inlineRun
 WidgetDI.Widget_markdown           = Widget_markdown
-WidgetDI.Widget_custom             = Widget_custom
 WidgetDI.Widget_matrix             = Widget_matrix
 WidgetDI.Widget_loras              = Widget_loras
 WidgetDI.Widget_selectMany         = Widget_selectMany

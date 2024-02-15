@@ -1,7 +1,6 @@
 /** 📝 This needs to be a .tsx file */
 
-import type { CustomWidgetProps } from 'src'
-
+import type { CustomWidgetProps } from 'src/controls/widgets/custom/WidgetCustom'
 import { observer } from 'mobx-react-lite'
 import { MyCustomComponent2 } from './example-widget-custom-2'
 import Confetti from 'react-confetti'

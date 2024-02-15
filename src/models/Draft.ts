@@ -228,14 +228,14 @@ export class DraftL {
                     const formBuilder = this.formBuilder // new FormBuilder(this.st.schema)
                     const uiFn = action.ui
                     runInAction(() => {
-                        const req: Widget_group<any> = formBuilder._HYDRATE(
+                        const rootWidget: Widget_group<any> = formBuilder._HYDRATE(
                             'group',
                             { topLevel: true, items: () => uiFn?.(formBuilder) ?? {} },
                             this.data.formSerial,
                         )
                         /** 👇 HACK; see the comment near the ROOT property definition */
-                        formBuilder._ROOT = req
-                        this.form = __OK(req)
+                        formBuilder._ROOT = rootWidget
+                        this.form = __OK(rootWidget)
                         console.log(`[🦊] form: setup` /* this.form */)
                     })
                     // subState.unsync()

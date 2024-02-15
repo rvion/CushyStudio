@@ -1,6 +1,10 @@
-import type { FormBuilder } from './FormBuilder'
+/**
+ * this module is here to allow performant type-level apis for enums.
+ * TODO: document the unique challenges this appraoch is solving
+ */
+import type { FormBuilder } from '../FormBuilder'
 
-import { Widget_enum, Widget_enum_config } from './widgets/enum/WidgetEnum'
+import { Widget_enum, Widget_enum_config } from '../widgets/enum/WidgetEnum'
 
 export type IEnumBuilder = {
     [K in keyof Requirable]: (

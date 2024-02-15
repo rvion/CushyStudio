@@ -7,11 +7,10 @@ import { renderStatus } from './renderStatus'
 
 export const Button_InstallCustomNodeUI = observer(function Button_InstallCustomNodeUI_(p: {
     optional: boolean
-    reason: string
     plugin: PluginInfo
 }) {
     const st = useSt()
-    const { plugin, reason } = p
+    const { plugin } = p
     const host = st.mainHost
     const pluginStatus = host.manager.getPluginStatus(p.plugin.title)
     const isInstalled = pluginStatus === 'installed'

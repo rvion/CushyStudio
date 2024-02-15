@@ -5,11 +5,12 @@ import { exhaust } from 'src/utils/misc/ComfyUtils'
 import { _FIX_INDENTATION } from '../utils/misc/_FIX_INDENTATION'
 import * as W from './Widget'
 
-import { AutoBuilder, mkFormAutoBuilder } from './AutoBuilder'
-import { EnumBuilder, EnumBuilderOpt } from './EnumBuilder'
+import { mkFormAutoBuilder } from './builder/AutoBuilder'
+import { EnumBuilder, EnumBuilderOpt } from './builder/EnumBuilder'
 import { Widget_bool, type Widget_bool_config } from './widgets/bool/WidgetBool'
 import { Widget_choices, type Widget_choices_config } from './widgets/choices/WidgetChoices'
 import { Widget_color, type Widget_color_config } from './widgets/color/WidgetColor'
+import { Widget_custom, type Widget_custom_config } from './widgets/custom/WidgetCustom'
 import { Widget_enum } from './widgets/enum/WidgetEnum'
 import { Widget_group, type Widget_group_config } from './widgets/group/WidgetGroup'
 import { Widget_image, type Widget_image_config } from './widgets/image/WidgetImage'
@@ -21,6 +22,8 @@ import { Widget_orbit, type Widget_orbit_config } from './widgets/orbit/WidgetOr
 import { Widget_prompt, type Widget_prompt_config } from './widgets/prompt/WidgetPrompt'
 import { Widget_size, type Widget_size_config } from './widgets/size/WidgetSize'
 import { Widget_string, type Widget_string_config } from './widgets/string/WidgetString'
+
+// export createFormBuilder
 
 export class FormBuilder {
     /** (@internal) don't call this yourself */
@@ -127,7 +130,7 @@ export class FormBuilder {
 
     markdown = (opts: W.Widget_markdown_config | string) =>
         new W.Widget_markdown(this, typeof opts === 'string' ? { markdown: opts } : opts)
-    custom = <TViewState>(opts: W.Widget_custom_config<TViewState>) => new W.Widget_custom<TViewState>(this, opts)
+    custom = <TViewState>(opts: Widget_custom_config<TViewState>) => new Widget_custom<TViewState>(this, opts)
 
     list = <const T extends W.Widget>(p: Widget_list_config<T>) => new Widget_list(this, p)
 
@@ -193,9 +196,10 @@ export class FormBuilder {
         if (type === 'selectMany') return new W.Widget_selectMany(this, input, serial)
         if (type === 'size') return new Widget_size(this, input, serial)
         if (type === 'markdown') return new W.Widget_markdown(this, input, serial)
-        if (type === 'custom') return new W.Widget_custom(this, input, serial)
+        if (type === 'custom') return new Widget_custom(this, input, serial)
 
-        console.log(`🔴 unknown type ${type}`)
+        console.log(`🔴 unknown widget "${type}" in serial.`)
         exhaust(type)
+        return new W.Widget_markdown(this, { markdown: 'unknown widget "${type}" in serial.' })
     }
 }

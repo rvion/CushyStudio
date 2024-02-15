@@ -1,9 +1,7 @@
 import type { EnumValue } from 'src/models/Schema'
-import type { ModelInfo } from 'src/manager/model-list/model-list-loader-types'
-import type { KnownModel_Name } from 'src/manager/model-list/KnownModel_Name'
-import type { Widget_enum_config } from './widgets/enum/WidgetEnum'
+import type { Widget_enum_config } from './WidgetEnum'
 
-export const extractDefaultValue = (input: Widget_enum_config<any>): Maybe<EnumValue> => {
+export const _extractDefaultValue = (input: Widget_enum_config<any>): Maybe<EnumValue> => {
     const def = input.default
 
     if (def != null) {
@@ -28,15 +26,6 @@ export const extractDefaultValue = (input: Widget_enum_config<any>): Maybe<EnumV
 
     // default
     return null
-}
-
-export type RecommendedModelDownload = {
-    modelFolderPrefix?: string
-    // prettier-ignore
-    knownModel?:
-        | KnownModel_Name
-        | KnownModel_Name[]
-    customModels?: ModelInfo | ModelInfo[]
 }
 
 /**

@@ -1,11 +1,10 @@
-import type { ComfySchemaL } from 'src/models/Schema'
 import type { FormBuilder } from '../../FormBuilder'
 import type { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../../IWidget'
 
 import { computed, makeObservable, observable } from 'mobx'
 import { nanoid } from 'nanoid'
-import { WidgetDI } from '../WidgetUI.DI'
 import { hash } from 'ohash'
+import { WidgetDI } from '../WidgetUI.DI'
 
 // CONFIG
 export type Widget_bool_config = WidgetConfigFields<{ default?: boolean }>
