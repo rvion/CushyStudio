@@ -86,7 +86,7 @@ export class STATE {
     uploader: Uploader
     supabase: SupabaseClient<Database>
     auth: AuthState
-    managerRepository = new ComfyManagerRepository({ check: true, genTypes: false })
+    managerRepository = new ComfyManagerRepository({ check: false, genTypes: false })
 
     _updateTime = () => {
         const now = Date.now()

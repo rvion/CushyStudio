@@ -104,7 +104,7 @@ export const _createMediaImage_fromLocalyAvailableImage = (
         return prev
     }
 
-    console.log(`[🏞️] create new imamge`)
+    console.log(`[🏞️] create new image`)
     return st.db.media_images.create({
         // base
         path: relPath,

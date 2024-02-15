@@ -187,7 +187,7 @@ export class AutoBuilder {
                                 }
                                 // ENUMS ------------------------------------------
                                 else if (field.isEnum) {
-                                    console.log(`[👗] 🌈 Enum: ${field.type}`, { field })
+                                    // console.log(`[👗] 🌈 Enum: ${field.type}`, { field })
                                     const enumFn: Maybe<(p: Widget_enum_config<any>) => void> = (form.enum as any)[field.type]
                                     if (enumFn == null) {
                                         console.log(`[👗] ❌ Unknown enum: ${field.type}`)
@@ -200,7 +200,7 @@ export class AutoBuilder {
                                         default: opts?.default,
                                     })
                                 } else {
-                                    console.log(`[👗] skipping field type: ${field.type}`)
+                                    // console.log(`[👗] skipping field type: ${field.type}`)
                                 }
                             }
                             if (Object.keys(items).length === 0) {

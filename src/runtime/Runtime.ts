@@ -429,8 +429,14 @@ export class Runtime<FIELDS extends WidgetDict = any> {
     }) => {
         const getImg = (i: string | MediaImageL): MediaImageL => {
             if (typeof i === 'string') {
-                const img = this.generatedImages.find((i2) => i2.filename.startsWith(i))
-                if (img == null) throw new Error(`image not found: ${p.image}`)
+                const img = this.Store.getImageStore(i).image
+                if (img == null) {
+                    console.log(
+                        `[❌] all generated filenames:`,
+                        this.generatedImages.map((gi) => gi.filename),
+                    )
+                    throw new Error(`no image found with prefix "${i}"`)
+                }
                 return img
             } else {
                 return i
@@ -439,13 +445,9 @@ export class Runtime<FIELDS extends WidgetDict = any> {
         const image = getImg(p.image)
         const depth = getImg(p.depth)
         const normal = getImg(p.normal)
-        if (image == null) throw new Error(`image not found: ${p.image}`)
-        if (depth == null) throw new Error(`image not found: ${p.image}`)
-        if (normal == null) throw new Error(`image not found: ${p.image}`)
         this.Cushy.db.media_3d_displacement.create({
-            // type: 'displaced-image',
-            width: image.data.width ?? 512,
-            height: image.data.height ?? 512,
+            width: image.width,
+            height: image.height,
             image: image.url,
             depthMap: depth.url,
             normalMap: normal.url,

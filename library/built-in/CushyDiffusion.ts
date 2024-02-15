@@ -221,12 +221,15 @@ app({
         }
 
         // REMOVE BACKGROUND ---------------------------------------------------------------------
-        if (ui.removeBG) run_rembg_v1(ui.removeBG, finalImage)
+        if (ui.removeBG) {
+            const sub = run_rembg_v1(ui.removeBG, finalImage)
+            if (sub.length > 0) finalImage = graph.AlphaChanelRemove({ images: sub[0] })
+        }
 
         // SHOW 3D --------------------------------------------------------------------------------
         const show3d = ui.show3d
         if (show3d) {
-            run.add_saveImage(finalImage, 'base')
+            run.add_previewImage(finalImage).storeAs('base')
             const depth = (() => {
                 if (show3d.depth.MiDaS) return graph.MiDaS$7DepthMapPreprocessor({ image: finalImage })
                 if (show3d.depth.Zoe) return graph.Zoe$7DepthMapPreprocessor({ image: finalImage })
@@ -234,7 +237,7 @@ app({
                 if (show3d.depth.Marigold) return graph.MarigoldDepthEstimation({ image: finalImage })
                 throw new Error('❌ show3d activated, but no depth option choosen')
             })()
-            run.add_saveImage(depth, 'depth')
+            run.add_previewImage(depth).storeAs('depth')
 
             const normal = (() => {
                 if (show3d.normal.id === 'MiDaS') return graph.MiDaS$7NormalMapPreprocessor({ image: finalImage })
@@ -242,7 +245,7 @@ app({
                 if (show3d.normal.id === 'None') return graph.EmptyImage({ color: 0x7f7fff, height: 512, width: 512 })
                 return exhaust(show3d.normal)
             })()
-            run.add_saveImage(normal, 'normal')
+            run.add_previewImage(normal).storeAs('normal')
         } else {
             // DECODE --------------------------------------------------------------------------------
             graph.SaveImage({ images: finalImage })

@@ -10,7 +10,6 @@ import { Button, Input, Slider, Toggle } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
 import { bang } from 'src/utils/misc/bang'
 import { parseFloatNoRoundingErr } from 'src/utils/misc/parseFloatNoRoundingErr'
-import { FieldAndLabelUI } from 'src/widgets/misc/FieldAndLabelUI'
 import * as THREE from 'three'
 import { OutputPreviewWrapperUI } from './OutputPreviewWrapperUI'
 // import type { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
@@ -18,6 +17,9 @@ import { OutputPreviewWrapperUI } from './OutputPreviewWrapperUI'
 // const { OrbitControls } = require('three/examples/jsm/controls/OrbitControls')
 import { createMediaImage_fromDataURI } from 'src/models/createMediaImage_fromWebFile'
 import { OrbitControls } from '../panels/3d/controls/OrbitControls'
+import { FieldAndLabelInlineUI } from 'src/widgets/misc/FieldAndLabelUI'
+import { RevealUI } from 'src/rsuite/reveal/RevealUI'
+import { PanelHeaderUI } from 'src/panels/PanelHeader'
 
 export const OutputDisplacementPreviewUI = observer(function OutputImagePreviewUI_(p: {
     step?: Maybe<StepL>
@@ -76,73 +78,68 @@ export const OutputDisplacementUI = observer(function OutputDisplacementUI_(p: {
 
     return (
         <div>
-            <div tw='flex flex-col'>
-                <div tw='flex gap-2 px-2'>
-                    <FieldAndLabelUI label='Points'>
-                        <Toggle checked={state.usePoints} onChange={(e) => (state.usePoints = e.target.checked)} />
-                    </FieldAndLabelUI>
-                    <FieldAndLabelUI label='displacement'>
-                        <InputNumberUI
-                            mode='float'
-                            style={{ width: '5rem' }}
-                            step={0.01}
-                            min={0}
-                            max={5}
-                            value={state.displacementScale}
-                            onValueChange={(next) => {
-                                state.displacementScale = next
-                            }}
-                        />
-                    </FieldAndLabelUI>
-                    <FieldAndLabelUI label='cutout'>
-                        <InputNumberUI
-                            mode='float'
-                            style={{ width: '5rem' }}
-                            min={0}
-                            max={1}
-                            step={0.01}
-                            value={state.cutout}
-                            onValueChange={(next) => {
-                                state.cutout = next
-                            }}
-                        />
-                    </FieldAndLabelUI>
-                </div>
-                <div tw='flex gap-2 px-2'>
-                    <FieldAndLabelUI label='light'>
-                        <Slider
-                            style={{ width: '5rem' }}
-                            min={0}
-                            max={8}
-                            value={state.ambientLightIntensity}
-                            onChange={(ev) => {
-                                const next = parseFloatNoRoundingErr(ev.target.value)
-                                state.ambientLightIntensity = next
-                            }}
-                        />
-                    </FieldAndLabelUI>
-                    <FieldAndLabelUI label='light color'>
-                        <Input
-                            tw='join-item input-xs'
-                            type='color'
-                            style={{ width: '5rem' }}
-                            value={state.ambientLightColor}
-                            onChange={(ev) => {
-                                const next = ev.target.value
-                                const hex = typeof next === 'string' ? parseInt(next.replace('#', ''), 16) : next
-                                state.ambientLightColor = hex
-                            }}
-                        />
-                    </FieldAndLabelUI>
-                    <FieldAndLabelUI label='Symmetric Model'>
-                        <Toggle checked={state.isSymmetric} onChange={(e) => (state.isSymmetric = e.target.checked)} />
-                    </FieldAndLabelUI>
-
-                    <FieldAndLabelUI label='Screenshot'>
-                        <Button onClick={() => state.takeScreenshot(st)}>Take Screenshot</Button>
-                    </FieldAndLabelUI>
-                </div>
-            </div>
+            <PanelHeaderUI>
+                <FieldAndLabelInlineUI label='Points'>
+                    <Toggle checked={state.usePoints} onChange={(e) => (state.usePoints = e.target.checked)} />
+                </FieldAndLabelInlineUI>
+                <FieldAndLabelInlineUI label='displacement'>
+                    <InputNumberUI
+                        mode='float'
+                        style={{ width: '5rem' }}
+                        step={0.01}
+                        min={0}
+                        max={5}
+                        value={state.displacementScale}
+                        onValueChange={(next) => {
+                            state.displacementScale = next
+                        }}
+                    />
+                </FieldAndLabelInlineUI>
+                <FieldAndLabelInlineUI label='cutout'>
+                    <InputNumberUI
+                        mode='float'
+                        style={{ width: '5rem' }}
+                        min={0}
+                        max={1}
+                        step={0.01}
+                        value={state.cutout}
+                        onValueChange={(next) => {
+                            state.cutout = next
+                        }}
+                    />
+                </FieldAndLabelInlineUI>
+                <FieldAndLabelInlineUI label='light'>
+                    <Slider
+                        style={{ width: '5rem' }}
+                        min={0}
+                        max={8}
+                        value={state.ambientLightIntensity}
+                        onChange={(ev) => {
+                            const next = parseFloatNoRoundingErr(ev.target.value)
+                            state.ambientLightIntensity = next
+                        }}
+                    />
+                </FieldAndLabelInlineUI>
+                <FieldAndLabelInlineUI label='light color'>
+                    <Input
+                        tw='join-item input-xs'
+                        type='color'
+                        style={{ width: '5rem' }}
+                        value={state.ambientLightColor}
+                        onChange={(ev) => {
+                            const next = ev.target.value
+                            const hex = typeof next === 'string' ? parseInt(next.replace('#', ''), 16) : next
+                            state.ambientLightColor = hex
+                        }}
+                    />
+                </FieldAndLabelInlineUI>
+                <FieldAndLabelInlineUI label='Symmetric Model'>
+                    <Toggle checked={state.isSymmetric} onChange={(e) => (state.isSymmetric = e.target.checked)} />
+                </FieldAndLabelInlineUI>
+                <FieldAndLabelInlineUI label='Screenshot'>
+                    <Button onClick={() => state.takeScreenshot(st)}>Take Screenshot</Button>
+                </FieldAndLabelInlineUI>
+            </PanelHeaderUI>
             <div ref={state.mountRef} />
         </div>
     )

@@ -81,7 +81,7 @@ export const _getCustomNodeRegistry = (DB: ComfyManagerRepository): void => {
     if (DB.opts.check) {
         for (const [k, v] of DB.plugins_byNodeNameInComfy.entries()) {
             if (v.length > 1) {
-                console.log(`❌ DUPLICATE: ${k}`)
+                if (DB.opts.check) console.log(`❌ DUPLICATE: ${k}`)
                 for (const file of v) console.log(`    | ${file}`)
             }
         }
