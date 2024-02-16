@@ -10,7 +10,7 @@ export const Panel_Gallery = observer(function VerticalGalleryUI_(p: {}) {
     return (
         <div //
             className='flex flex-col bg-base-100 h-full'
-            style={{ background: st.gallery?.galleryBgColor }}
+            style={{ background: st.galleryConf.value.galleryBgColor }}
         >
             <PanelHeaderUI>
                 <GalleryControlsUI />
@@ -20,7 +20,7 @@ export const Panel_Gallery = observer(function VerticalGalleryUI_(p: {}) {
                 {/* <LatentPreviewUI /> */}
                 {st.imageToDisplay.map((img) => (
                     <OutputPreviewWrapperUI //
-                        size={st.gallery?.gallerySize ?? 48}
+                        size={st.galleryConf.get('gallerySize')}
                         key={img.id}
                         output={img}
                     >
@@ -65,7 +65,7 @@ export const GalleryControlsUI = observer(function GalleryControlsUI_(p: { child
     const st = useSt()
     return (
         <div tw='flex flex-col overflow-auto gap-2 px-2 bg-base-200 w-full flex-shrink-0 min-w-80'>
-            <FormUI form={st.galleryForm} />
+            <FormUI form={st.galleryConf} />
         </div>
     )
 })

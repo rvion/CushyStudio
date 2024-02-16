@@ -27,8 +27,13 @@ import { Widget_string, type Widget_string_config } from './widgets/string/Widge
 
 export class FormBuilder {
     /** (@internal) don't call this yourself */
-    constructor(public schema: ComfySchemaL) {
-        makeAutoObservable(this, { auto: false })
+    constructor(public schema: 0 = 0) {
+        makeAutoObservable(this, {
+            auto: false,
+            autoField: false,
+            enum: false,
+            enumOpt: false,
+        })
     }
 
     // string
@@ -106,10 +111,26 @@ export class FormBuilder {
     // --------------------
 
     // enum = /*<const T extends KnownEnumNames>*/ (config: Widget_enum_config<any, any>) => new Widget_enum(this, config)
-    auto = mkFormAutoBuilder(this) /*<const T extends KnownEnumNames>*/
-    autoField = mkFormAutoBuilder(this)
-    enum = new EnumBuilder(this) /*<const T extends KnownEnumNames>*/
-    enumOpt = new EnumBuilderOpt(this)
+    get auto() {
+        const _ = mkFormAutoBuilder(this) /*<const T extends KnownEnumNames>*/
+        Object.defineProperty(this, 'auto', { value: _ })
+        return _
+    }
+    get autoField() {
+        const _ = mkFormAutoBuilder(this)
+        Object.defineProperty(this, 'autoField', { value: _ })
+        return _
+    }
+    get enum() {
+        const _ = new EnumBuilder(this) /*<const T extends KnownEnumNames>*/
+        Object.defineProperty(this, 'enum', { value: _ })
+        return _
+    }
+    get enumOpt() {
+        const _ = new EnumBuilderOpt(this)
+        Object.defineProperty(this, 'enumOpt', { value: _ })
+        return _
+    }
     //  <const T extends KnownEnumNames>(config: Widget_enum_config<T> & { startActive?: boolean }) =>
     //     this.optional({
     //         label: config.label,

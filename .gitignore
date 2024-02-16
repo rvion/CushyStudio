@@ -82,3 +82,4 @@ node-*.tar.gz
 
 
 completions/*
+settings/*.json

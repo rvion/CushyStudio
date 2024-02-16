@@ -21,8 +21,7 @@ export type IEnumBuilderOpt = {
 export interface EnumBuilder extends IEnumBuilder {}
 export class EnumBuilder {
     constructor(public form: FormBuilder) {
-        const st = form.schema.st
-        const schema = st.schema
+        const schema = cushy.schema
         for (const enumName of schema.knownEnumsByName.keys()) {
             Object.defineProperty(this, enumName, {
                 value: (config: any) => new Widget_enum(form, { ...config, enumName }),
@@ -34,8 +33,7 @@ export class EnumBuilder {
 export interface EnumBuilderOpt extends IEnumBuilderOpt {}
 export class EnumBuilderOpt {
     constructor(public form: FormBuilder) {
-        const st = form.schema.st
-        const schema = st.schema
+        const schema = cushy.schema
         for (const enumName of schema.knownEnumsByName.keys()) {
             Object.defineProperty(this, enumName, {
                 value: (config: any) =>

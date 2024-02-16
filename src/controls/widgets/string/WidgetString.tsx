@@ -19,7 +19,7 @@ export type Widget_string_types = {
 // STATE
 export interface Widget_string extends WidgetTypeHelpers<Widget_string_types> {}
 export class Widget_string implements IWidget<Widget_string_types> {
-    get serialHash () { return hash(this.result) } // prettier-ignore
+    get serialHash () { return hash(this.value) } // prettier-ignore
     get isVerticalByDefault(): boolean {
         if (this.config.textarea) return true
         return false
@@ -42,7 +42,7 @@ export class Widget_string implements IWidget<Widget_string_types> {
         makeAutoObservable(this)
     }
 
-    get result(): Widget_string_output {
+    get value(): Widget_string_output {
         return this.serial.val ?? this.config.default ?? ''
     }
 }

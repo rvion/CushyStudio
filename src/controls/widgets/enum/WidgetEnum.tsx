@@ -39,9 +39,9 @@ export class Widget_enum<O> implements IWidget<Widget_enum_types<O>> {
     readonly id: string
     readonly type: 'enum' = 'enum'
 
-    get serialHash () { return hash(this.result) } // prettier-ignore
+    get serialHash () { return hash(this.value) } // prettier-ignore
     get possibleValues(): EnumValue[] {
-        return this.form.schema.knownEnumsByName.get(this.config.enumName as any)?.values ?? []
+        return cushy.schema.knownEnumsByName.get(this.config.enumName as any)?.values ?? []
     }
 
     serial: Widget_enum_serial<O>
@@ -57,9 +57,9 @@ export class Widget_enum<O> implements IWidget<Widget_enum_types<O>> {
         makeAutoObservable(this)
     }
     get status(): CleanedEnumResult<any> {
-        return this.form.schema.st.fixEnumValue(this.serial.val as any, this.config.enumName)
+        return cushy.fixEnumValue(this.serial.val as any, this.config.enumName)
     }
-    get result(): Widget_enum_output<O> {
+    get value(): Widget_enum_output<O> {
         return this.status.finalValue
     }
 }

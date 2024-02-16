@@ -1,29 +1,15 @@
 import { observer } from 'mobx-react-lite'
-import { Form } from 'src/controls/Form'
 import { FormUI } from 'src/controls/FormUI'
-import { readJSON, writeJSON } from 'src/state/jsonUtils'
-
-export const displacementForm = new Form({
-    ui: (form) => ({
-        usePoints: form.boolean({ label: 'Points' }),
-        displacementScale: form.number({ label: 'displacement', min: 0, max: 5, step: 0.01 }),
-        cutout: form.number({ label: 'cutout', min: 0, max: 1, step: 0.01 }),
-        ambientLightIntensity: form.number({ label: 'light', min: 0, max: 8 }),
-        ambientLightColor: form.color({ label: 'light color' }),
-        isSymmetric: form.boolean({ label: 'Symmetric Model' }),
-        takeScreenshot: form.inlineRun({ label: 'Screenshot' }),
-    }),
-    initialValue: () => readJSON('aaaaa.json'),
-    onChange: (form) => writeJSON('aaaaa.json', form.serial),
-})
+import { useSt } from 'src/state/stateContext'
 
 export const DisplacementFooUI = observer(function DisplacementFooUI_(p: {
     /* state: DisplacementState */
 }) {
     // const state =
+    const st = useSt()
     return (
         <div>
-            <FormUI form={displacementForm} />
+            <FormUI form={st.displacementConf} />
             {/* <FieldAndLabelInlineUI label='Points'>
                 <Toggle checked={state.usePoints} onChange={(e) => (state.usePoints = e.target.checked)} />
             </FieldAndLabelInlineUI> */}

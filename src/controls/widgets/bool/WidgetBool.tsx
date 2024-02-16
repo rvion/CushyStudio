@@ -32,7 +32,7 @@ export class Widget_bool implements IWidget<Widget_string_types> {
     readonly type: 'bool' = 'bool'
 
     serial: Widget_bool_serial
-    get serialHash () { return hash(this.result) } // prettier-ignore
+    get serialHash () { return hash(this.value) } // prettier-ignore
     setOn = () => (this.serial.active = true)
     setOff = () => (this.serial.active = false)
     toggle = () => (this.serial.active = !this.serial.active)
@@ -48,11 +48,11 @@ export class Widget_bool implements IWidget<Widget_string_types> {
 
         makeObservable(this, {
             serial: observable,
-            result: computed,
+            value: computed,
         })
     }
 
-    get result(): Widget_bool_output {
+    get value(): Widget_bool_output {
         return this.serial.active ?? false
     }
 }

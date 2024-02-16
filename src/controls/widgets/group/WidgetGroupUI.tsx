@@ -23,7 +23,7 @@ export const WidgetGroup_BlockUI = observer(function WidgetGroup_BlockUI_(p: {
     // Alt
     // | const groupKeys = widget.childKeys
     // | const groupFields = groupKeys.map((k) => [k, widget.values[k]])
-    const groupFields = Object.entries(widget.values)
+    const groupFields = Object.entries(widget.fields)
     const isHorizontal = widget.config.layout === 'H'
     return (
         <div tw={['WIDGET-GROUP', 'flex items-start w-full text-base-content']} style={{ position: 'relative' }}>

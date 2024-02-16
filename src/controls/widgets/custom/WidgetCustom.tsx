@@ -35,11 +35,11 @@ export class Widget_custom<T> implements IWidget<Widget_custom_types<T>> {
     readonly type: 'custom' = 'custom'
 
     get serialHash() {
-        return hash(this.result)
+        return hash(this.value)
     }
     serial: Widget_custom_serial<T>
     Component: Widget_custom_config<T>['Component']
-    st = () => this.form.schema.st
+    st = () => cushy
     reset = () => (this.serial.value = this.config.defaultValue())
     constructor(
         //
@@ -60,7 +60,7 @@ export class Widget_custom<T> implements IWidget<Widget_custom_types<T>> {
     }
 
     /** never mutate this field manually, only access to .state */
-    get result(): Widget_custom_output<T> {
+    get value(): Widget_custom_output<T> {
         return this.serial.value
     }
 }

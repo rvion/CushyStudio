@@ -68,8 +68,7 @@ export const mkFormAutoBuilder = (form: FormBuilder) => {
 export interface AutoBuilder extends IAutoBuilder {}
 export class AutoBuilder {
     constructor(public form: FormBuilder) {
-        const st = form.schema.st
-        const schema = st.schema
+        const schema = cushy.schema
         for (const node of schema.nodes) {
             Object.defineProperty(this, node.nameInCushy, {
                 value: (ext?: Partial<WidgetConfigFields<{}>>) =>
@@ -231,8 +230,7 @@ export class AutoBuilder {
 // export interface AutoBuilderOpt extends IAutoBuilderOpt {}
 // export class AutoBuilderOpt {
 //     constructor(public form: FormBuilder) {
-//         const st = form.schema.st
-//         const schema = st.schema
+//         const schema = cushy.schema
 //         for (const enumName of schema.knownEnumsByName.keys()) {
 //             Object.defineProperty(this, enumName, {
 //                 value: (config: any) =>

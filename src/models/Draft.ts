@@ -201,17 +201,7 @@ export class DraftL {
         return this.st.library.getFile(this.appRef.item.relPath)
     }
 
-    // onHydrate = () => {
-    //     // console.log(`[🦊] form: hydrating`)
-    // }
-    // isInitializing = false
     isInitialized = false
-    // observabilityConfig = { form: false }
-    // get form() {
-    //     const value = new Form()
-    //     Object.defineProperty(this, 'form', { value })
-    //     return value
-    // }
 
     AWAKE = () => {
         // if (this.isInitializing) return
@@ -222,8 +212,8 @@ export class DraftL {
             (action) => {
                 console.log(`[🦊] form: awakening app ${this.data.appID}`)
                 if (action == null) return
-                const form = new Form({
-                    ui: action.ui,
+                this.form = new Form(action.ui, {
+                    name: this.name,
                     initialValue: () => this.data.formSerial,
                     onChange: (root) => {
                         console.log(`[👙] UPDATING draft(${this.id}) SERIAL`)
@@ -233,8 +223,7 @@ export class DraftL {
                         this.checkIfShouldRestart()
                     },
                 })
-                form.init()
-                this.form = form
+                // form.init()
             },
             { fireImmediately: true },
         )

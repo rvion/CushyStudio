@@ -7,7 +7,6 @@ import { nanoid } from 'nanoid'
 import { runWithGlobalForm } from 'src/models/_ctx2'
 import { bang } from 'src/utils/misc/bang'
 import { WidgetDI } from '../WidgetUI.DI'
-import { toastError } from 'src/utils/misc/toasts'
 
 // CONFIG
 export type Widget_group_config<T extends { [key: string]: Widget }> = WidgetConfigFields<{
@@ -42,10 +41,10 @@ export type Widget_group_types<T extends { [key: string]: Widget }> = {
 export interface Widget_group<T extends { [key: string]: Widget }> extends WidgetTypeHelpers<Widget_group_types<T>> {}
 export class Widget_group<T extends { [key: string]: Widget }> implements IWidget<Widget_group_types<T>> {
     get summary(): string {
-        return this.config.summary?.(this.result) ?? Object.keys(this.values).length + ' items'
+        return this.config.summary?.(this.value) ?? Object.keys(this.fields).length + ' items'
     }
     get serialHash(): string {
-        return Object.values(this.values)
+        return Object.values(this.fields)
             .map((v: Widget) => v.serialHash)
             .join(',')
     }
@@ -65,11 +64,14 @@ export class Widget_group<T extends { [key: string]: Widget }> implements IWidge
 
     /** all [key,value] pairs */
     get entries() {
-        return Object.entries(this.values) as [string, any][]
+        return Object.entries(this.fields) as [string, any][]
     }
 
+    at = <K extends keyof T>(key: K): T[K] => this.fields[key]
+    get = <K extends keyof T>(key: K): T[K]['$Output'] => this.fields[key].value
+
     /** the dict of all child widgets */
-    values: { [k in keyof T]: T[k] } = {} as any // will be filled during constructor
+    fields: T /* { [k in keyof T]: T[k] } */ = {} as any // will be filled during constructor
     serial: Widget_group_serial<T>
     // childKeys: (keyof T & string)[] = []
     enableGroup() {
@@ -86,14 +88,14 @@ export class Widget_group<T extends { [key: string]: Widget }> implements IWidge
             const newType = newItem.type
             if (prevValue_ && newType === prevValue_.type) {
                 // console.log(`[🟢] valid serial for "${key}": (${newType} != ${prevValue_?.type}) `)
-                this.values[key] = this.form._HYDRATE(newType, newInput, prevValue_)
+                this.fields[key] = this.form._HYDRATE(newType, newInput, prevValue_)
             } else {
                 if (prevValue_ != null)
                     console.log(
                         `[🔶] invalid serial for "${key}": (${newType} != ${prevValue_?.type}) => using fresh one instead`,
                         prevValues_,
                     )
-                this.values[key] = newItem as any
+                this.fields[key] = newItem as any
                 this.serial.values_[key] = newItem.serial as any
             }
         }
@@ -124,11 +126,11 @@ export class Widget_group<T extends { [key: string]: Widget }> implements IWidge
         makeAutoObservable(this)
     }
 
-    get result(): { [k in keyof T]: GetWidgetResult<T[k]> } {
+    get value(): { [k in keyof T]: GetWidgetResult<T[k]> } {
         const out: { [key: string]: any } = {}
-        for (const key in this.values) {
-            const subWidget: Widget = bang(this.values[key]) as Widget
-            out[key] = subWidget.result
+        for (const key in this.fields) {
+            const subWidget: Widget = bang(this.fields[key]) as Widget
+            out[key] = subWidget.value
         }
         return out as any
     }

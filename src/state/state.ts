@@ -68,8 +68,25 @@ import { DanbooruTags } from '../widgets/prompter/nodes/booru/BooruLoader'
 import { AuthState } from './AuthState'
 import { Uploader } from './Uploader'
 import { mkSupa } from './supa'
+import { Form } from 'src/controls/Form'
+import { readJSON, writeJSON } from './jsonUtils'
 
 export class STATE {
+    __INJECTION__ = (() => {
+        //  globally register the state as this
+        if ((window as any).CushyObservableCache == null) {
+            ;(window as any).CushyObservableCache = observable({ st: this })
+            ;(window as any).st = this // <- remove this once window.st usage has been cleend
+        } else {
+            ;(window as any).CushyObservableCache.st = this
+            ;(window as any).st = this // <- remove this once window.st usage has been cleend
+        }
+        if ((window as any).cushy == null) {
+            console.log(`[🛋️] WINDOW.CUSHY NOW DEFINED`)
+            Object.defineProperty(window, 'cushy', { get() { return (window as any).CushyObservableCache.st } }) // prettier-ignore
+        }
+    })()
+
     /** hack to help closing prompt completions */
     currentPromptFocused: Maybe<HTMLDivElement> = null
 
@@ -217,16 +234,16 @@ export class STATE {
     // get showPreviewInFullScreen() { return this.configFile.value.showPreviewInFullScreen ?? false } // prettier-ignore
     // set showPreviewInFullScreen(v: boolean) { this.configFile.update({ showPreviewInFullScreen: v }) } // prettier-ignore
 
-    get galleryHoverOpacity() { return this.configFile.value.galleryHoverOpacity ?? .9 } // prettier-ignore
-    set galleryHoverOpacity(v: number) { this.configFile.update({ galleryHoverOpacity: v }) } // prettier-ignore
-
-    get preferedFormLayout() { return this.configFile.value.preferedFormLayout ?? 'auto' } // prettier-ignore
-    set preferedFormLayout(v: PreferedFormLayout) { this.configFile.update({ preferedFormLayout: v }) } // prettier-ignore
+    // get galleryHoverOpacity() { return this.configFile.value.galleryHoverOpacity ?? .9 } // prettier-ignore
+    // set galleryHoverOpacity(v: number) { this.configFile.update({ galleryHoverOpacity: v }) } // prettier-ignore
 
     // gallery size
     get gallerySizeStr() { return `${this.gallerySize}px` } // prettier-ignore
-    set gallerySize(v: number) { this.configFile.update({ galleryImageSize: v }) } // prettier-ignore
-    get gallerySize() { return this.configFile.value.galleryImageSize ?? 48 } // prettier-ignore
+    set gallerySize(v: number) { this.galleryConf.fields.gallerySize.value =  v } // prettier-ignore
+    get gallerySize() { return this.galleryConf.get(`gallerySize`) ?? 48 } // prettier-ignore
+
+    get preferedFormLayout() { return this.configFile.value.preferedFormLayout ?? 'auto' } // prettier-ignore
+    set preferedFormLayout(v: PreferedFormLayout) { this.configFile.update({ preferedFormLayout: v }) } // prettier-ignore
 
     // history app size
     get historySizeStr() { return `${this.historySize}px` } // prettier-ignore
@@ -404,25 +421,44 @@ export class STATE {
         })
     }
 
+    displacementConf = new Form(
+        (form) => ({
+            usePoints: form.boolean({ label: 'Points' }),
+            displacementScale: form.number({ label: 'displacement', min: 0, max: 5, step: 0.01 }),
+            cutout: form.number({ label: 'cutout', min: 0, max: 1, step: 0.01 }),
+            ambientLightIntensity: form.number({ label: 'light', min: 0, max: 8 }),
+            ambientLightColor: form.color({ label: 'light color' }),
+            isSymmetric: form.boolean({ label: 'Symmetric Model' }),
+            takeScreenshot: form.inlineRun({ label: 'Screenshot' }),
+        }),
+        {
+            name: 'Displacement Conf',
+            initialValue: () => readJSON('settings/displacement.json'),
+            onChange: (form) => writeJSON('settings/displacement.json', form.serial),
+        },
+    )
+
+    galleryConf = new Form(
+        (f) => ({
+            gallerySize: f.int({ label: 'Preview Size', default: 48, min: 24, step: 8, softMax: 256, max: 1024, tooltip: 'Size of the preview images in px', unit: 'px' }), // prettier-ignore
+            galleryMaxImages: f.int({ label: 'Number of items', min: 10, softMax: 300, default: 50, tooltip: 'Maximum number of images to display', }), // prettier-ignore
+            galleryBgColor: f.color({ label: 'background' }),
+            galleryHoverOpacity: f.number({ label: 'hover opacity', min: 0, max: 1, step: 0.01 }),
+            showPreviewInFullScreen: f.boolean({ label: 'full-screen', tooltip: 'Show the preview in full screen' }),
+        }),
+        {
+            name: 'Gallery Conf',
+            onChange: (form) => writeJSON('settings/gallery.json', form.serial),
+            initialValue: () => readJSON('settings/gallery.json'),
+        },
+    )
+
     project: ProjectL
     primarySdkDtsPath: AbsolutePath
     constructor(
         /** path of the workspace */
         public rootPath: AbsolutePath,
     ) {
-        //  globally register the state as this ----------------------
-        if ((window as any).CushyObservableCache == null) {
-            ;(window as any).CushyObservableCache = observable({ st: this })
-            ;(window as any).st = this // <- remove this once window.st usage has been cleend
-        } else {
-            ;(window as any).CushyObservableCache.st = this
-            ;(window as any).st = this // <- remove this once window.st usage has been cleend
-        }
-        if ((window as any).cushy == null) {
-            console.log(`[🛋️] WINDOW.CUSHY NOW DEFINED`)
-            Object.defineProperty(window, 'cushy', { get() { return (window as any).CushyObservableCache.st } }) // prettier-ignore
-        }
-
         // -----------------------------------------------------------
         console.log('[🛋️] starting Cushy')
         this.cacheFolderPath = this.resolve(this.rootPath, asRelativePath('outputs'))
@@ -719,7 +755,7 @@ export class STATE {
     }
 
     get imageToDisplay(): MediaImageL[] {
-        const maxImages = this.configFile.value.galleryMaxImages ?? 20
+        const maxImages = this.galleryConf.value.galleryMaxImages ?? 20
         return this.db.media_images.getLastN(maxImages)
     }
 
