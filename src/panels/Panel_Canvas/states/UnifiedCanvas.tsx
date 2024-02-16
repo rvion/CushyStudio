@@ -38,8 +38,8 @@ export class UnifiedCanvas {
         mask.layer.moveToTop()
     }
 
-    mode: 'mask' | 'move' = 'move'
-    maskTool: 'paint' | 'erase' = 'paint'
+    tool: 'generate' | 'mask' | 'paint' | 'move' = 'generate'
+    brushMode: 'paint' | 'erase' = 'paint'
     maskColor = 'red'
     maskOpacity = 0.5
     maskToolSize: number = 32
@@ -65,6 +65,32 @@ export class UnifiedCanvas {
         isDown: false,
     }
 
+    onWheel = (e: any) => {
+        //
+    }
+    onKeyDown = (e: any) => {
+        if (e.key === '1') { this.tool = 'generate' ; return } // prettier-ignore
+        if (e.key === '2') { this.tool = 'mask' ; return } // prettier-ignore
+        if (e.key === '3') { this.tool = 'paint' ; return } // prettier-ignore
+        if (e.key === '4') { this.tool = 'move' ; return } // prettier-ignore
+
+        if (e.key === 'z' && (e.ctrlKey || e.metaKey)) {
+            this.undo()
+        }
+        // if (e.keyCode === 37) {
+        //     circle.x(circle.x() - DELTA)
+        // } else if (e.keyCode === 38) {
+        //     circle.y(circle.y() - DELTA)
+        // } else if (e.keyCode === 39) {
+        //     circle.x(circle.x() + DELTA)
+        // } else if (e.keyCode === 40) {
+        //     circle.y(circle.y() + DELTA)
+        // } else {
+        //     return
+        // }
+        e.preventDefault()
+    }
+
     // immutable base for calculations
     readonly base = Object.freeze({ width: 512, height: 512 })
     images: UnifiedImage[]
@@ -76,6 +102,13 @@ export class UnifiedCanvas {
     tempLayer: Konva.Layer
     constructor(public st: STATE, baseImage: MediaImageL) {
         this.stage = new Konva.Stage({ container: this.TEMP, width: 512, height: 512 })
+        // this.stage.on('keydown', (ke) => {
+        //     const e = ke.evt
+        //     console.log(`[👙] e.key`, e.key)
+        //     if (e.key === 'z' && (e.ctrlKey || e.metaKey)) {
+        //         this.undo()
+        //     }
+        // })
         this.grid = new KonvaGrid1(this)
         this.images = [new UnifiedImage(this, baseImage)]
         this.stage.on('wheel', (e: KonvaEventObject<WheelEvent>) => onWheelScrollCanvas(this, e))
@@ -103,7 +136,7 @@ export class UnifiedCanvas {
     addMask = (img?: MediaImageL): UnifiedMask => {
         const mask = new UnifiedMask(this, img)
         this.masks.push(mask)
-        this.mode = 'mask'
+        this.tool = 'mask'
         return mask
     }
 
