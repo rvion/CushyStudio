@@ -11,6 +11,7 @@ import { Ctx_sampler, run_sampler, ui_sampler } from './_prefabs/prefab_sampler'
 import { run_upscaleWithModel, ui_upscaleWithModel } from './_prefabs/prefab_upscaleWithModel'
 import { run_customSave, ui_customSave } from './_prefabs/saveSmall'
 import { run_rembg_v1, ui_rembg_v1 } from './_prefabs/prefab_rembg'
+import { ui_mask } from './_prefabs/prefab_mask'
 
 app({
     metadata: {
@@ -39,6 +40,7 @@ app({
         }),
         model: ui_model(),
         latent: ui_latent_v3(),
+        mask: ui_mask(),
         sampler: ui_sampler(),
         refine: ui_refiners(),
         highResFix: ui_highresfix({ activeByDefault: true }),
@@ -116,8 +118,15 @@ app({
         // const y = run_prompt({ richPrompt: negPrompt, clip, ckpt, outputWildcardsPicked: true })
         // let negative = y.conditionning
 
-        // START IMAGE -------------------------------------------------------------------------------
+        // START IMAGE -------------------------------------------------------------------------
         let { latent, width, height } = await run_latent_v3({ opts: ui.latent, vae })
+
+        // MASK --------------------------------------------------------------------------------
+        let mask: Maybe<_MASK>
+        if (ui.mask.mask) {
+            mask = await ui.mask.mask.image.loadInWorkflowAsMask('alpha')
+            latent = graph.SetLatentNoiseMask({ mask, samples: latent })
+        }
 
         // CNETS -------------------------------------------------------------------------------
         let cnet_out: Cnet_return | undefined
@@ -194,7 +203,8 @@ app({
                           version: HRF.upscaleMethod.id == 'Neural XL' ? 'SDXL' : 'SD 1.x',
                           upscale: HRF.scaleFactor,
                       })
-            latent = latent = run_sampler(
+            if (mask) latent = graph.SetLatentNoiseMask({ mask, samples: latent })
+            latent = run_sampler(
                 run,
                 {
                     seed: ui.sampler.seed,

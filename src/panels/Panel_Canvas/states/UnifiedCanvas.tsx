@@ -13,11 +13,13 @@ import { UnifiedSelection } from './UnifiedSelection'
 import { UnifiedImage } from './UnifiedImage'
 import { UnifiedMask, setupStageForPainting } from './UnifiedMask'
 import { toastError } from 'src/utils/misc/toasts'
+import type { DraftL } from 'src/models/Draft'
 
 export class UnifiedCanvas {
     snapToGrid = true
     snapSize = 64
     rootRef = createRef<HTMLDivElement>()
+    currentDraft: DraftL | null = null
     // ---------------------------------------------------
     undo = () => {
         const last = this.undoBuffer.pop()

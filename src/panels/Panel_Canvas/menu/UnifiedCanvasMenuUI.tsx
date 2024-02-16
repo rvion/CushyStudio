@@ -6,6 +6,8 @@ import { InputNumberUI } from 'src/rsuite/InputNumberUI'
 import { useSt } from 'src/state/stateContext'
 import { useImageDrop } from 'src/widgets/galleries/dnd'
 import { useUnifiedCanvas } from '../UnifiedCanvasCtx'
+import { toastError } from 'src/utils/misc/toasts'
+import { DraftIllustrationUI } from 'src/cards/fancycard/DraftIllustration'
 
 export const UnifiedCanvasMenuUI = observer(function UnifiedCanvasMenuUI_(p: {}) {
     const canvas = useUnifiedCanvas()
@@ -59,7 +61,7 @@ export const UnifiedCanvasMenuUI = observer(function UnifiedCanvasMenuUI_(p: {})
                     <div tw='btn btn-square bd1'>Mask</div>
                 </div>
             </div> */}
-            {/* <div tw='bd'>
+            <div tw='bd'>
                 <div
                     tw='btn btn-primary'
                     onClick={() => {
@@ -81,7 +83,7 @@ export const UnifiedCanvasMenuUI = observer(function UnifiedCanvasMenuUI_(p: {})
                 >
                     AMAZE YOURSEF
                 </div>
-            </div> */}
+            </div>
             <div tw='bd1 p-1'>
                 {/* <div tw='flex items-center gap-2'>
                     Mode:
@@ -270,6 +272,23 @@ export const CanvasToolbarUI = observer(function CanvasToolbarUI_(p: {}) {
                     Move
                     <ComboUI combo='4' />
                 </div>
+            </div>
+            <div tw='flex'>
+                {
+                    /* canvas.tool === 'generate' && */
+                    canvas.st.favoriteDrafts.map((draft) => (
+                        <div tw={[draft === canvas.currentDraft ? 'bd' : null]}>
+                            <DraftIllustrationUI
+                                onClick={() => {
+                                    draft.openOrFocusTab()
+                                    canvas.currentDraft = draft
+                                }}
+                                draft={draft}
+                                size='3rem'
+                            />
+                        </div>
+                    ))
+                }
             </div>
         </div>
     )
