@@ -44,7 +44,7 @@ export class Form<FIELDS extends WidgetDict> {
             const rootWidget: Widget_group<FIELDS> = formBuilder._HYDRATE(
                 'group',
                 { topLevel: true, items: () => this.def.ui?.(formBuilder) ?? {} },
-                this.def.initialValue,
+                initialValue,
             )
             /** 👇 HACK; see the comment near the ROOT property definition */
             formBuilder._ROOT = rootWidget

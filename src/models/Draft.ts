@@ -226,9 +226,9 @@ export class DraftL {
                     ui: action.ui,
                     initialValue: () => this.data.formSerial,
                     onChange: (root) => {
-                        console.log(`[👙] UPDATING FORM SERIAL`)
+                        console.log(`[👙] UPDATING draft(${this.id}) SERIAL`)
                         this.update({ formSerial: root.serial })
-                        console.log(`[👙]  => new:`, JSON.stringify(this.data.formSerial.values_))
+                        console.log(`[👙]  => new:`, JSON.stringify(this.data.formSerial.values_.positive.val))
                         this.isDirty = true
                         this.checkIfShouldRestart()
                     },
@@ -262,6 +262,7 @@ export class DraftL {
             _1()
             // _2()
             this.isInitialized = false
+            this.form?.cleanup?.()
             this.form = null //  __FAIL('not loaded yet')
         }
     }

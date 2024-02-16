@@ -45,14 +45,19 @@ export type ConfigFile = {
     outputPreviewSize?: number
     historyAppSize?: number
     latentPreviewSize?: number
-    /** defaults to 48px */
-    galleryImageSize?: number
-    /** defaults to 50 */
-    galleryMaxImages?: number
-    /** defaults to 50 */
-    galleryBgColor?: string
-    /** opacity of hovered images */
-    galleryHoverOpacity?: number
+
+    // /** defaults to 48px */
+    // galleryImageSize?: number
+
+    // /** defaults to 50 */
+    // galleryMaxImages?: number
+
+    // /** defaults to 50 */
+    // galleryBgColor?: string
+
+    // /** opacity of hovered images */
+    // galleryHoverOpacity?: number
+
     // ---------------------------------------------------------------------------------------
     /** if true, will auto-open devtools on startup */
     preferDevToolsOpen?: boolean

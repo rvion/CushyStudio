@@ -22,7 +22,7 @@ export const Panel_ViewImage = observer(function Panel_ViewImage_(p: {
         ? st.db.media_images.get(p.imageID)
         : st.db.media_images.last()
     const url = img?.url
-    const background = st.configFile.value.galleryBgColor
+    const background = st.gallery?.galleryBgColor
 
     const shouldFilter = st.project.filterNSFW
     const safety =

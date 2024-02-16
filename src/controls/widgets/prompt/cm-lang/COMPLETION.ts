@@ -108,7 +108,7 @@ const dynamicCompletion: CompletionSource = (context: CompletionContext): Comple
         'Embedding',
         'Tag',
     ]
-    console.log(`[👙] leftNodeName=`, leftNodeName, ' => ', validNodeNames.includes(leftNodeName))
+    // console.log(`[👙] leftNodeName=`, leftNodeName, ' => ', validNodeNames.includes(leftNodeName))
     if (!validNodeNames.includes(leftNodeName)) return null
 
     const from =

@@ -23,6 +23,10 @@ export const FavBarUI = observer(function FavBarUI_(p: {
             <div //Panel Content
                 tw='p-2'
             >
+                <div tw='btn btn-square' style={{ width: '4rem', height: '4rem' }}>
+                    <span className='material-symbols-outlined !text-5xl'>folder</span>
+                </div>
+                <hr />
                 <div tw='italic text-sm text-center'>fav apps</div>
                 {st.favoriteApps.map((app) => (
                     <div tw='pt-1' key={app.id}>

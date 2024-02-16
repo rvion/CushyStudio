@@ -119,6 +119,18 @@ export class FormBuilder {
     // --------------------
 
     color     = (opts: Widget_color_config)       => new Widget_color(this, opts) // prettier-ignore
+    colorOpt = <const T extends { [key: string]: W.Widget }>(
+        //
+        config: Widget_color_config & { startActive?: boolean },
+    ) =>
+        this.optional({
+            label: config.label,
+            requirements: config.requirements,
+            startActive: config.startActive,
+            startCollapsed: config.startCollapsed,
+            widget: () => this.color({ ...config, startCollapsed: undefined }),
+        })
+
     size      = (opts: Widget_size_config)      => new Widget_size(this, opts) // prettier-ignore
     orbit     = (opts: Widget_orbit_config)     => new Widget_orbit(this, opts) // prettier-ignore
     seed      = (opts: W.Widget_seed_config)      => new W.Widget_seed(this, opts) // prettier-ignore

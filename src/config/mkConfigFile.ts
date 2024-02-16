@@ -8,10 +8,10 @@ export const mkConfigFile = (): JsonFile<ConfigFile> => {
     return new JsonFile<ConfigFile>({
         path: asAbsolutePath(resolve('CONFIG.json')),
         maxLevel: 3,
-        init: (): ConfigFile => ({
-            mainComfyHostID: STANDARD_HOST_ID,
-            galleryImageSize: 48,
-            theme: 'dark',
-        }),
+        // init: (): ConfigFile => ({
+        //     mainComfyHostID: STANDARD_HOST_ID,
+        //     galleryImageSize: 48,
+        //     theme: 'dark',
+        // }),
     })
 }
