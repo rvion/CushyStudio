@@ -123,17 +123,17 @@ export class Widget_group<T extends { [key: string]: Widget }> implements IWidge
                 : this._defaultSerial()
         if (this.serial.values_ == null) this.serial.values_ = {}
         this.enableGroup()
-        makeAutoObservable(this)
+        makeAutoObservable(this, { value: false })
     }
 
-    get value(): { [k in keyof T]: GetWidgetResult<T[k]> } {
-        const out: { [key: string]: any } = {}
-        for (const key in this.fields) {
-            const subWidget: Widget = bang(this.fields[key]) as Widget
-            out[key] = subWidget.value
-        }
-        return out as any
-    }
+    value: { [k in keyof T]: GetWidgetResult<T[k]> } = new Proxy({} as any, {
+        get: (target, prop) => {
+            if (typeof prop !== 'string') return
+            const subWidget: Widget = this.fields[prop]
+            if (subWidget == null) return
+            return subWidget.value
+        },
+    })
 }
 
 // DI

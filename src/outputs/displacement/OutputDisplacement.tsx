@@ -6,15 +6,18 @@ import { Media3dDisplacementL } from 'src/models/Media3dDisplacement'
 import { StepL } from 'src/models/Step'
 import { useSt } from 'src/state/stateContext'
 import { bang } from 'src/utils/misc/bang'
-import { OutputPreviewWrapperUI } from './OutputPreviewWrapperUI'
+import { OutputPreviewWrapperUI } from '../OutputPreviewWrapperUI'
 // import type { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 
 // const { OrbitControls } = require('three/examples/jsm/controls/OrbitControls')
 import { FormUI } from 'src/controls/FormUI'
 import { createMediaImage_fromDataURI } from 'src/models/createMediaImage_fromWebFile'
 import { PanelHeaderUI } from 'src/panels/PanelHeader'
-import { DisplacementState } from './displacement/DisplacementState'
-import { DisplacementFooUI } from './displacement/DisplacementFormUI'
+import { DisplacementState } from './DisplacementState'
+import { Canvas } from '@react-three/fiber'
+import { OrbitControls } from '@react-three/drei'
+import { Cube } from 'src/controls/widgets/orbit/Cube3D'
+import { DisplacementUI } from './DisplacementUI'
 
 export const OutputDisplacementPreviewUI = observer(function OutputImagePreviewUI_(p: {
     step?: Maybe<StepL>
@@ -67,17 +70,26 @@ export const OutputDisplacementUI = observer(function OutputDisplacementUI_(p: {
         [JSON.stringify(p)],
     )
 
-    useEffect(() => state.cleanup, [state])
-    useLayoutEffect(() => state.mount(), [state])
     const st = useSt()
 
+    const menuConf = st.displacementConf.value.menu
     return (
-        <div>
-            <PanelHeaderUI>
-                <DisplacementFooUI />
-                {/* */}
-            </PanelHeaderUI>
-            <div ref={state.mountRef} />
+        <div tw='relative flex-1 flex flex-col'>
+            {menuConf.right ? (
+                <div tw='absolute top-0 right-0 z-50 bg-base-200 p-2 !w-96'>
+                    <FormUI form={st.displacementConf} />
+                </div>
+            ) : st.displacementConf.get('menu').left ? (
+                <div tw='absolute top-0 left-0 z-50 bg-base-200 p-2 !w-96'>
+                    <FormUI form={st.displacementConf} />
+                </div>
+            ) : (
+                <PanelHeaderUI>
+                    <FormUI form={st.displacementConf} />
+                </PanelHeaderUI>
+            )}
+
+            <DisplacementUI uist={state} />
         </div>
     )
 })

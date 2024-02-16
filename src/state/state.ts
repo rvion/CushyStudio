@@ -423,13 +423,32 @@ export class STATE {
 
     displacementConf = new Form(
         (form) => ({
-            usePoints: form.boolean({ label: 'Points' }),
-            displacementScale: form.number({ label: 'displacement', min: 0, max: 5, step: 0.01 }),
-            cutout: form.number({ label: 'cutout', min: 0, max: 1, step: 0.01 }),
-            ambientLightIntensity: form.number({ label: 'light', min: 0, max: 8 }),
+            camera: form.choice({
+                appearance: 'tab',
+                items: {
+                    orbit: () => form.group({}),
+                    // fly: form.bool({ label: 'Fly' }),
+                    // trackball: form.bool({ label: 'Trackball' }),
+                },
+            }),
+            menu: form.choice({
+                appearance: 'tab',
+                items: {
+                    menu: () => form.group({}),
+                    left: () => form.group({}),
+                    right: () => form.group({}),
+                },
+            }),
+            displacementScale: form.number({ label: 'displacement', min: 0, max: 5, step: 0.01, default: 1 }),
+            cutout: form.number({ label: 'cutout', min: 0, max: 1, step: 0.01, default: 0.08 }),
+            ambientLightIntensity: form.number({ label: 'light', min: 0, max: 8, default: 1.5 }),
             ambientLightColor: form.color({ label: 'light color' }),
             isSymmetric: form.boolean({ label: 'Symmetric Model' }),
             takeScreenshot: form.inlineRun({ label: 'Screenshot' }),
+            metalness: form.float({ min: 0, max: 1 }),
+            roughness: form.float({ min: 0, max: 1 }),
+            skyBox: form.bool({}),
+            usePoints: form.boolean({ label: 'Points', default: false }),
         }),
         {
             name: 'Displacement Conf',
