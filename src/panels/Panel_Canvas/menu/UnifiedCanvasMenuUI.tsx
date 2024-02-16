@@ -160,7 +160,7 @@ export const UnifiedCanvasMenuUI = observer(function UnifiedCanvasMenuUI_(p: {})
                                     //
                                     onValueChange={(e) => {
                                         uniSel.stableData.width = e
-                                        uniSel.onLiveTransformEnd()
+                                        uniSel.applyStableData()
                                     }}
                                     value={uniSel.stableData.width}
                                     mode='int'
@@ -174,7 +174,7 @@ export const UnifiedCanvasMenuUI = observer(function UnifiedCanvasMenuUI_(p: {})
                                     //
                                     onValueChange={(e) => {
                                         uniSel.stableData.width = e
-                                        uniSel.onLiveTransformEnd()
+                                        uniSel.applyStableData()
                                     }}
                                     value={uniSel.stableData.width}
                                     mode='int'

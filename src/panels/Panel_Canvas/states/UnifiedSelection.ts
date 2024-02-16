@@ -12,7 +12,7 @@ import { KonvaEventObject } from 'konva/lib/Node'
 import { Stage } from 'konva/lib/Stage'
 import { Rect } from 'konva/lib/shapes/Rect'
 import { Transformer } from 'konva/lib/shapes/Transformer'
-import { makeAutoObservable } from 'mobx'
+import { makeAutoObservable, reaction } from 'mobx'
 import { MediaImageL } from 'src/models/MediaImage'
 
 export class UnifiedSelection {
@@ -58,16 +58,17 @@ export class UnifiedSelection {
             strokeWidth: 4,
             ...this.stableData,
         })
+
         this.live = new Rect({
             opacity: 0.2,
             stroke: 'red',
             strokeWidth: 4,
-            draggable: true,
+            // draggable: true,
             ...this.liveData,
             // fill={'blue'}
         })
-        this.live.on('dragend', this.onLiveDragEnd)
-        this.live.on('transformend', this.onLiveTransformEnd)
+        this.live.on('dragend', this.applyStableData)
+        this.live.on('transformend', this.applyStableData)
         //
         this.live.on('dragmove', this.onLiveDragMove)
         this.live.on('transform', this.onLiveTransform)
@@ -211,13 +212,7 @@ export class UnifiedSelection {
     //     // console.log(dataURL)
     // }
 
-    onLiveDragEnd = (e?: KonvaEventObject<MouseEvent>) => {
-        Object.assign(this.liveData, this.stableData)
-        this.live.setAttrs({ ...this.stableData })
-        this.stable.setAttrs({ ...this.stableData })
-        this.stable.getStage()!.batchDraw()
-    }
-    onLiveTransformEnd = (e?: KonvaEventObject<MouseEvent>) => {
+    applyStableData = (e?: KonvaEventObject<MouseEvent>) => {
         Object.assign(this.liveData, this.stableData)
         this.live.setAttrs({ ...this.stableData })
         this.stable.setAttrs({ ...this.stableData })
@@ -225,6 +220,7 @@ export class UnifiedSelection {
     }
 
     onLiveDragMove = (e?: KonvaEventObject<MouseEvent>) => {
+        if (this.canvas.tool !== 'generate') return
         const { stable, live } = this
         // console.log(`[👙] onDragMove`, stable)
         const xx = Math.round(live.x()! / 64) * 64
@@ -237,6 +233,7 @@ export class UnifiedSelection {
         stable.getStage()!.batchDraw()
     }
     onLiveTransform = (e?: KonvaEventObject<MouseEvent>) => {
+        if (this.canvas.tool !== 'generate') return
         const { stable, live } = this
         const { snapSize, snapToGrid } = this.canvas
 

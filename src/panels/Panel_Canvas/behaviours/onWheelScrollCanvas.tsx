@@ -11,14 +11,7 @@ export const onWheelScrollCanvas = (
     if (stage == null) return console.warn(`🔶 missing stage`)
     console.log(`[👙] stage`, stage)
 
-    if (canvas.tool === 'generate') {
-        let direction = e.evt.deltaY > 0 ? -1 : 1
-        runInAction(() => {
-            canvas.activeSelection.stableData.width += 128 * direction
-            canvas.activeSelection.stableData.height += 128 * direction
-            canvas.activeSelection.onLiveTransformEnd()
-        })
-    } else {
+    if (e.evt.ctrlKey) {
         const scaleBy = 1.15
         // stop default scrolling
         e.evt.preventDefault()
@@ -56,5 +49,25 @@ export const onWheelScrollCanvas = (
         canvas.infos.canvasY = newPos.y
         console.log(`[👙] newPos`, newPos)
         stage.position(newPos)
+        return
+    }
+
+    if (canvas.tool === 'mask' || canvas.tool === 'paint') {
+        canvas.maskToolSize = Math.max(1, canvas.maskToolSize + e.evt.deltaY / 200)
+        return
+    }
+
+    if (canvas.tool === 'generate') {
+        let direction = e.evt.deltaY > 0 ? -1 : 1
+        runInAction(() => {
+            const sel = canvas.activeSelection
+            const size = canvas.snapSize
+            const data = sel.stableData
+            data.width += 2 * size * direction
+            data.height += 2 * size * direction
+            data.x -= size * direction
+            data.y -= size * direction
+            sel.applyStableData()
+        })
     }
 }

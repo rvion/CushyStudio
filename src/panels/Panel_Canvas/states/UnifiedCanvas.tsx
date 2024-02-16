@@ -40,9 +40,9 @@ export class UnifiedCanvas {
 
     tool: 'generate' | 'mask' | 'paint' | 'move' = 'generate'
     brushMode: 'paint' | 'erase' = 'paint'
+    maskToolSize: number = 32
     maskColor = 'red'
     maskOpacity = 0.5
-    maskToolSize: number = 32
 
     _isPaint = false
     _lastLine: Konva.Line | null = null

@@ -1,5 +1,6 @@
 import type { UnifiedCanvas } from '../states/UnifiedCanvas'
 import type { KonvaEventObject } from 'konva/lib/Node'
+import { snap } from './snap'
 
 export const onMouseMoveCanvas = (uc: UnifiedCanvas, e: KonvaEventObject<MouseEvent>) => {
     const stage = e.target.getStage()
@@ -26,15 +27,11 @@ export const onMouseMoveCanvas = (uc: UnifiedCanvas, e: KonvaEventObject<MouseEv
     }
     if (uc.tool === 'generate') {
         const sel = uc.activeSelection
-        const snap = (val: number) => {
-            const snapSize = uc.snapSize
-            return Math.round(val / snapSize) * snapSize
-        }
         Object.assign(sel.stableData, {
-            x: snap(uc.infos.viewPointerX - sel.stableData.width / 2),
-            y: snap(uc.infos.viewPointerY - sel.stableData.height / 2),
+            x: snap(uc.infos.viewPointerX - sel.stableData.width / 2, uc.snapSize),
+            y: snap(uc.infos.viewPointerY - sel.stableData.height / 2, uc.snapSize),
         })
-        sel.onLiveTransformEnd()
+        sel.applyStableData()
     }
 
     // how to scale? Zoom in? Or zoom out?
