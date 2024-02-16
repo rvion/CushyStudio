@@ -84,7 +84,7 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                     if (ev.key === 'Enter' && (ev.metaKey || ev.ctrlKey)) {
                         ev.preventDefault()
                         ev.stopPropagation()
-                        draft.start()
+                        draft.start({})
                     }
                 }}
             >

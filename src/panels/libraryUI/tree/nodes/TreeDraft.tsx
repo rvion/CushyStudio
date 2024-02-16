@@ -38,7 +38,7 @@ export class TreeDraft implements ITreeEntry {
             mode: 'small',
             onClick: () => {
                 this.draft.AWAKE()
-                this.draft.start()
+                this.draft.start({})
             },
         },
         {

@@ -97,7 +97,7 @@ export class DraftL {
 
     setAutostart(val: boolean) {
         this.shouldAutoStart = val
-        if (val) this.start()
+        if (val) this.start({})
     }
 
     lastStarted: Maybe<StepL> = null
@@ -117,7 +117,7 @@ export class DraftL {
         this.autoStartTimer = setTimeout(() => {
             if (this.lastStarted?.finished.value == null) return console.log(`[⏰] ready to start, but step still running`)
             this.autoStartTimer = null
-            this.start()
+            this.start({})
         }, this.st.project.data.autostartDelay)
         //
     }
@@ -128,11 +128,12 @@ export class DraftL {
      * a.k.a. "starting the app"
      * a.k.a. "executing the app"
      * */
-    start = (
+    start = (p: {
         //
-        formValueOverride?: Maybe<any>,
-        imageToStartFrom?: MediaImageL,
-    ): StepL => {
+        formValueOverride?: Maybe<any>
+        imageToStartFrom?: MediaImageL
+        focusOutput?: boolean
+    }): StepL => {
         if (this.form == null) {
             toastError('form not loaded yet')
             throw new Error('❌ form not loaded yet')
@@ -140,8 +141,11 @@ export class DraftL {
         this.isDirty = false
         this.form.formBuilder._cache.count++
         this.AWAKE()
-        // 2024-01-21 should this be here ?
-        this.st.layout.FOCUS_OR_CREATE('Output', {})
+
+        if (p.focusOutput ?? true) {
+            // 2024-01-21 should this be here ?
+            this.st.layout.FOCUS_OR_CREATE('Output', {})
+        }
 
         // ----------------------------------------
         // 🔴 2023-11-30 rvion:: TEMPORPARY HACKS
@@ -150,11 +154,11 @@ export class DraftL {
         // ----------------------------------------
 
         // 1. ensure req valid (TODO: validate)
-        const widget = formValueOverride
+        const widget = p.formValueOverride
             ? // case of sub-drafts created/started from within a draft
               ({
                   builder: { _cache: { count: 0 } },
-                  result: formValueOverride,
+                  result: p.formValueOverride,
                   serial: {},
               } as any as Widget_group<any>)
             : this.form.root
@@ -187,7 +191,10 @@ export class DraftL {
             status: Status.New,
         })
         graph.update({ stepID: step.id }) // 🔶🔴
-        step.start({ formInstance: widget, imageToStartFrom })
+        step.start({
+            formInstance: widget,
+            imageToStartFrom: p.imageToStartFrom,
+        })
         this.lastStarted = step
         void step.finished.then(() => {
             this.checkIfShouldRestart()

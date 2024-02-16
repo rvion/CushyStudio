@@ -99,7 +99,7 @@ export const ImageActionMenu = observer(function ImageActionMenu_(p: { img: Medi
                                 key={d.id}
                                 className='_MenuItem'
                                 onClick={() => {
-                                    d.start(null, img)
+                                    d.start({ imageToStartFrom: img })
                                 }}
                             >
                                 <div className='flex flex-1 items-center gap-2'>

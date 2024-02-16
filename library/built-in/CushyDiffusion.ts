@@ -92,7 +92,7 @@ app({
         }),
     }),
 
-    run: async (run, ui) => {
+    run: async (run, ui, imgCtx) => {
         const graph = run.nodes
         // MODEL, clip skip, vae, etc. ---------------------------------------------------------------
         let { ckpt, vae, clip } = run_model(ui.model)
@@ -119,11 +119,21 @@ app({
         // let negative = y.conditionning
 
         // START IMAGE -------------------------------------------------------------------------
-        let { latent, width, height } = await run_latent_v3({ opts: ui.latent, vae })
+        let { latent, width, height } = imgCtx
+            ? /* 🔴 */ await (async () => ({
+                  /* 🔴 */ latent: graph.VAEEncode({ pixels: await imgCtx.loadInWorkflow(), vae }),
+                  /* 🔴 */ height: imgCtx.height,
+                  /* 🔴 */ width: imgCtx.width,
+                  /* 🔴 */
+              }))()
+            : await run_latent_v3({ opts: ui.latent, vae })
 
         // MASK --------------------------------------------------------------------------------
         let mask: Maybe<_MASK>
-        if (ui.mask.mask) {
+        if (imgCtx) {
+            /* 🔴 */ mask = await imgCtx.loadInWorkflowAsMask('alpha')
+            /* 🔴 */ latent = graph.SetLatentNoiseMask({ mask, samples: latent })
+        } else if (ui.mask.mask) {
             mask = await ui.mask.mask.image.loadInWorkflowAsMask('alpha')
             latent = graph.SetLatentNoiseMask({ mask, samples: latent })
         }

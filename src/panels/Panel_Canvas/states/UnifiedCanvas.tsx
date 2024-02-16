@@ -115,6 +115,23 @@ export class UnifiedCanvas {
         this.images = [new UnifiedImage(this, baseImage)]
         this.stage.on('wheel', (e: KonvaEventObject<WheelEvent>) => onWheelScrollCanvas(this, e))
         this.stage.on('mousemove', (e: KonvaEventObject<MouseEvent>) => onMouseMoveCanvas(this, e))
+        this.stage.on('mousedown', (e: KonvaEventObject<MouseEvent>) => {
+            console.log(`[👙] hello`)
+            if (this.tool === 'generate') {
+                e.cancelBubble = true
+                e.evt.preventDefault()
+                e.evt.stopPropagation()
+                const res = this.activeSelection.saveImage()
+                if (res == null) return toastError('❌ FAILED to canvas.activeSelection.saveImage')
+                const { image, mask } = res
+                if (image && this.currentDraft) {
+                    this.currentDraft.start({
+                        focusOutput: false,
+                        imageToStartFrom: image,
+                    })
+                }
+            }
+        })
         // ------------------------------
         // to hold the line currently being drawn
         this.tempLayer = new Konva.Layer()

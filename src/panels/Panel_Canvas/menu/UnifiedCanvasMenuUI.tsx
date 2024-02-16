@@ -14,7 +14,7 @@ export const UnifiedCanvasMenuUI = observer(function UnifiedCanvasMenuUI_(p: {})
     const st = useSt()
     const [dropStyle2, dropRef2] = useImageDrop(st, (img) => canvas.addMask(img))
     return (
-        <div tw='virtualBorder flex flex-col gap-1 m-2 bg-base-200 absolute z-50'>
+        <div tw='virtualBorder flex flex-col gap-1 m-2 bg-base-200 absolute right-10 z-50'>
             <CanvasToolbarUI />
             <div>
                 <div onClick={() => canvas.undo()} className='btn btn-sm btn-outline'>
@@ -78,7 +78,7 @@ export const UnifiedCanvasMenuUI = observer(function UnifiedCanvasMenuUI_(p: {})
                         // showcase
                         const draft = st.db.drafts.get('HU3BR0X9yd6qB3rWTH3Dd')
                         if (draft == null) return toastError('❌ draft(id=HU3BR0X9yd6qB3rWTH3Dd) not found')
-                        draft.start(null, image)
+                        draft.start({ imageToStartFrom: image })
                     }}
                 >
                     AMAZE YOURSEF
@@ -112,6 +112,7 @@ export const UnifiedCanvasMenuUI = observer(function UnifiedCanvasMenuUI_(p: {})
                     />
                     px
                 </div>
+                {/*
                 <div tw='flex items-center gap-2'>
                     <ComboUI combo={'mod+m'} /> toggle mode
                 </div>
@@ -124,6 +125,7 @@ export const UnifiedCanvasMenuUI = observer(function UnifiedCanvasMenuUI_(p: {})
                 <div tw='flex items-center gap-2'>
                     <ComboUI combo={'mod+shift+y'} /> decrease tool weight
                 </div>
+                1*/}
             </div>
 
             {/* SELECTIONS */}
