@@ -14,6 +14,7 @@ import { UnifiedImage } from './UnifiedImage'
 import { UnifiedMask, setupStageForPainting } from './UnifiedMask'
 import { toastError } from 'src/utils/misc/toasts'
 import type { DraftL } from 'src/models/Draft'
+import { UnifiedStep } from './UnifiedStep'
 
 export class UnifiedCanvas {
     snapToGrid = true
@@ -96,6 +97,7 @@ export class UnifiedCanvas {
     // immutable base for calculations
     readonly base = Object.freeze({ width: 512, height: 512 })
     images: UnifiedImage[]
+    steps: UnifiedStep[] = []
     masks: UnifiedMask[] = []
     selections: UnifiedSelection[] = []
     grid: KonvaGrid1
@@ -125,10 +127,12 @@ export class UnifiedCanvas {
                 if (res == null) return toastError('❌ FAILED to canvas.activeSelection.saveImage')
                 const { image, mask } = res
                 if (image && this.currentDraft) {
-                    this.currentDraft.start({
+                    const step = this.currentDraft.start({
                         focusOutput: false,
                         imageToStartFrom: image,
                     })
+                    const us = new UnifiedStep(this, step)
+                    this.steps.push(us)
                 }
             }
         })
@@ -137,6 +141,7 @@ export class UnifiedCanvas {
         this.tempLayer = new Konva.Layer()
         this.tempLayer.opacity(0.5)
         this.stage.add(this.tempLayer)
+
         // ------------------------------
         const selection = this.addSelection()
         this.activeSelection = selection

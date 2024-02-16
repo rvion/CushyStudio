@@ -130,10 +130,11 @@ app({
 
         // MASK --------------------------------------------------------------------------------
         let mask: Maybe<_MASK>
-        if (imgCtx) {
-            /* 🔴 */ mask = await imgCtx.loadInWorkflowAsMask('alpha')
-            /* 🔴 */ latent = graph.SetLatentNoiseMask({ mask, samples: latent })
-        } else if (ui.mask.mask) {
+        // if (imgCtx) {
+        //     /* 🔴 */ mask = await imgCtx.loadInWorkflowAsMask('alpha')
+        //     /* 🔴 */ latent = graph.SetLatentNoiseMask({ mask, samples: latent })
+        // } else
+        if (ui.mask.mask) {
             mask = await ui.mask.mask.image.loadInWorkflowAsMask('alpha')
             latent = graph.SetLatentNoiseMask({ mask, samples: latent })
         }
