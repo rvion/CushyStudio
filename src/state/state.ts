@@ -29,6 +29,7 @@ import { asAppPath } from 'src/cards/asAppPath'
 import { GithubRepoName } from 'src/cards/githubRepo'
 import { recursivelyFindAppsInFolder } from 'src/cards/walkLib'
 import { STANDARD_HOST_ID, vIRTUAL_HOST_ID__BASE, vIRTUAL_HOST_ID__FULL } from 'src/config/ComfyHostDef'
+import { Form } from 'src/controls/Form'
 import { LiveCollection } from 'src/db/LiveCollection'
 import { SQLITE_false, SQLITE_true } from 'src/db/SQLITE_boolean'
 import { asHostID } from 'src/db/TYPES.gen'
@@ -67,9 +68,8 @@ import { exhaust } from '../utils/misc/ComfyUtils'
 import { DanbooruTags } from '../widgets/prompter/nodes/booru/BooruLoader'
 import { AuthState } from './AuthState'
 import { Uploader } from './Uploader'
-import { mkSupa } from './supa'
-import { Form } from 'src/controls/Form'
 import { readJSON, writeJSON } from './jsonUtils'
+import { mkSupa } from './supa'
 
 export class STATE {
     __INJECTION__ = (() => {
@@ -425,21 +425,13 @@ export class STATE {
         (form) => ({
             camera: form.choice({
                 appearance: 'tab',
-                items: {
-                    orbit: () => form.group({}),
-                    // fly: form.bool({ label: 'Fly' }),
-                    // trackball: form.bool({ label: 'Trackball' }),
-                },
+                items: { orbit: () => form.group({}), fly: () => form.group({}) /* wasd: () => form.group({}) */ },
             }),
             menu: form.choice({
                 appearance: 'tab',
-                items: {
-                    menu: () => form.group({}),
-                    left: () => form.group({}),
-                    right: () => form.group({}),
-                },
+                items: { menu: () => form.group({}), left: () => form.group({}), right: () => form.group({}) },
             }),
-            displacementScale: form.number({ label: 'displacement', min: 0, max: 5, step: 0.01, default: 1 }),
+            displacementScale: form.number({ label: 'displacement', min: 0, max: 5, step: 0.1, default: 1 }),
             cutout: form.number({ label: 'cutout', min: 0, max: 1, step: 0.01, default: 0.08 }),
             ambientLightIntensity: form.number({ label: 'light', min: 0, max: 8, default: 1.5 }),
             ambientLightColor: form.color({ label: 'light color' }),
@@ -448,6 +440,7 @@ export class STATE {
             metalness: form.float({ min: 0, max: 1 }),
             roughness: form.float({ min: 0, max: 1 }),
             skyBox: form.bool({}),
+            ground: form.bool({}),
             usePoints: form.boolean({ label: 'Points', default: false }),
         }),
         {
