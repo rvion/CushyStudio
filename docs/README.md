@@ -17,7 +17,7 @@ CushyStudio is under active development, so you might encounter incomplete featu
 
 ***
 
-* Try: [installation](installation/ "mention") - [README (1).md](<README (1).md> "mention") - Moving Around
+* Try: [installation](installation/ "mention") - [Getting started](getting-started/README.md "mention") - Moving Around
 * Explore: Apps - Drafts - [prompting](prompting/ "mention") - [unified-canvas.md](features/unified-canvas.md "mention") - [inpainting.md](features/inpainting.md "mention") - [outpainting.md](features/outpainting.md "mention") - Library -&#x20;
 * ComfyUI Integration - Import / export workflow - programmatic workflow  - Multi-host management - Node explorer - Model manager - plugin manager
 * Other Integrations: Civitai - Squoosh - 3d Poser (posemy) - Minipaint - unsplash&#x20;

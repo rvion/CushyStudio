@@ -6,7 +6,7 @@
   * [Inpainting](features/inpainting.md)
   * [Outpainting](features/outpainting.md)
   * [Quick Actions](features/quick-actions.md)
-* [👋 Getting Started](<README (1).md>)
+* [👋 Getting Started](getting-started/README.md)
   * [✨ CushyStudio Features](getting-started/cushystudio-features.md)
   * [🖌 Intro to Generative AI](getting-started/intro-to-generative-ai.md)
   * [💬 FAQs](getting-started/faqs.md)
