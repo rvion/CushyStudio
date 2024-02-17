@@ -1,6 +1,6 @@
 # Table of contents
 
-* [🛋 Welcome to Cushy](README.md)
+* [🛋 CushyStudio](README.md)
 * [🍏 Features](features/README.md)
   * [Unified canvas](features/unified-canvas.md)
   * [Inpainting](features/inpainting.md)
@@ -19,8 +19,8 @@
   * [Install ImageMagick (optional)](installation/install-imagemagick-optional.md)
 * [🎨 Using CushyStudio](using-cushystudio/README.md)
   * [Image Comtext menu](using-cushystudio/image-comtext-menu.md)
-* [🧪 Prompt Widget](prompt-widget/README.md)
-  * [adding Loras](prompt-widget/adding-loras.md)
+* [🧪 Prompting](prompting/README.md)
+  * [adding Loras](prompting/adding-loras.md)
 * [🔥 Troubleshooting](wip-pad.md)
   * [Page 1](troubleshooting/page-1.md)
 * [💡 Creating apps](creating-apps/README.md)
@@ -28,6 +28,7 @@
   * [App Structure](creating-apps/app-structure.md)
   * [Contextual Apps](creating-apps/contextual-apps.md)
   * [For loops](creating-apps/for-loops.md)
+  * [App UI](creating-apps/app-ui.md)
   * [Using ImageMagick in your app](creating-apps/using-imagemagick-in-your-app.md)
 * [⚙ CushySDK](cushy-sdk.md)
 * [🏈 Importing Workflows](importing-workflows.md)
