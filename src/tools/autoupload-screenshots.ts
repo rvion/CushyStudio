@@ -1,6 +1,6 @@
 import chalk from 'chalk'
 import * as X from 'child_process'
-import { existsSync, watch } from 'fs'
+import { existsSync, mkdirSync, watch } from 'fs'
 import { join, relative } from 'pathe'
 import { promisify } from 'util'
 
@@ -10,13 +10,9 @@ console.log(`[👙] echo starting cushy screenshot manager!`)
 const dir = '/Users/loco/S3-1'
 
 const watcher = watch(dir, { recursive: true, persistent: true }, async (event, _filename) => {
-    if (_filename == null) {
-        return console.log(chalk.gray(`skipping null filename`))
-    }
-
-    if (event === 'change') {
-        return console.log(chalk.gray(`skipping change event for ${_filename}`))
-    }
+    if (_filename == null) return console.log(chalk.gray(`skipping null filename`))
+    if (_filename.includes('_converted')) return
+    if (event === 'change') return console.log(chalk.gray(`skipping change event for ${_filename}`))
 
     let filename = _filename
     let path = join(dir, filename)
@@ -30,28 +26,52 @@ const watcher = watch(dir, { recursive: true, persistent: true }, async (event, 
         return console.log(chalk.gray(`skipping webp file ${filename}`))
     }
 
-    if (
-        // re-encode to webp
-        filename.endsWith('.png') ||
-        filename.endsWith('.jpg')
-    ) {
-        console.log(chalk.green(`converting ${filename} to webp...`))
-        const fNameWebp =
-            filename //
-                .split('.')
-                .slice(0, -1)
-                .join('.')
-                .replaceAll(' ', '-')
-                .replaceAll('(', '')
-                .replaceAll(')', '') + '.webp'
-        const pathWebp = join(dir, fNameWebp)
-        await exec(`cwebp -q 85 "${path}" -o "${pathWebp}"`)
-        const oldSize = await exec(`du -sh "${path}"`)
-        const newSize = await exec(`du -sh "${pathWebp}"`)
-        console.log(`size: ${oldSize.stdout} => ${newSize.stdout}`)
-        path = pathWebp
-        filename = fNameWebp
-    }
+    // ⏸️ if (
+    // ⏸️     // re-encode to webp
+    // ⏸️     filename.endsWith('.png') ||
+    // ⏸️     filename.endsWith('.jpg')
+    // ⏸️ ) {
+    // ⏸️     console.log(chalk.green(`converting ${filename} to webp...`))
+    // ⏸️     const fNameWebp =
+    // ⏸️         filename //
+    // ⏸️             .split('.')
+    // ⏸️             .slice(0, -1)
+    // ⏸️             .join('.')
+    // ⏸️             .replaceAll(' ', '-')
+    // ⏸️             .replaceAll('(', '')
+    // ⏸️             .replaceAll(')', '') + '.webp'
+    // ⏸️     const pathWebp = join(dir, fNameWebp)
+    // ⏸️     await exec(`cwebp -q 85 "${path}" -o "${pathWebp}"`)
+    // ⏸️     const oldSize = await exec(`du -sh "${path}"`)
+    // ⏸️     const newSize = await exec(`du -sh "${pathWebp}"`)
+    // ⏸️     console.log(`size: ${oldSize.stdout} => ${newSize.stdout}`)
+    // ⏸️     path = pathWebp
+    // ⏸️     filename = fNameWebp
+    // ⏸️ }
+
+    // ⏸️ if (
+    // ⏸️     // re-encode to webp
+    // ⏸️     filename.endsWith('.png') ||
+    // ⏸️     filename.endsWith('.jpg')
+    // ⏸️ ) {
+    // ⏸️     console.log(chalk.green(`converting ${filename} to jpg...`))
+    // ⏸️     const fNameJpeg =
+    // ⏸️         filename //
+    // ⏸️             .split('.')
+    // ⏸️             .slice(0, -1)
+    // ⏸️             .join('.')
+    // ⏸️             .replaceAll(' ', '-')
+    // ⏸️             .replaceAll('(', '')
+    // ⏸️             .replaceAll(')', '') + '.jpg'
+    // ⏸️     mkdirSync(join(dir, '_converted'), { recursive: true })
+    // ⏸️     const pathJpeg = join(dir, '_converted', fNameJpeg)
+    // ⏸️     await exec(`cjpeg -quality 85 -quant-table 2 -outfile "${pathJpeg}" "${path}"`)
+    // ⏸️     const oldSize = await exec(`du -sh "${path}"`)
+    // ⏸️     const newSize = await exec(`du -sh "${pathJpeg}"`)
+    // ⏸️     console.log(`size: ${oldSize.stdout} => ${newSize.stdout}`)
+    // ⏸️     path = pathJpeg
+    // ⏸️     filename = fNameJpeg
+    // ⏸️ }
 
     const s3Folder = `rvion-screenshots`
     console.log(chalk.green(`uploading ${filename} to digitalocean...`))
@@ -76,6 +96,7 @@ setup:
 
 -------
 brew install rclone
+brew install mozjpeg
 mkdir -p ~/.config/rclone/
 code ~/.config/rclone/rclone.conf
 
@@ -110,5 +131,6 @@ rclone sync /Users/loco/S3-1/ cushy-digitalocean-spaces:test/ --progress
 
 https://github.com/skyzyx/homebrew-webp
 brew install webp
+brew install jpeg
 
 */
