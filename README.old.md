@@ -1,16 +1,19 @@
 <div align="center">
 
-# 🛋️ CushyStudio
+# 1. 🛋️ CushyStudio
 
-### _The **Generative AI Platform** for everyone_
+## 1.1. _The **AI** and **Generative Art** platform for everyone_
 
 <img height="21"  alt="Maturity"     src="https://img.shields.io/badge/status-BETA-yellow" />
 <img height="21" alt="Build Status" src="https://img.shields.io/badge/build-passing-%20brightgreen" />
 <img height="21"  alt="Activity"     src="https://img.shields.io/github/commit-activity/y/rvion/cushystudio" />
-
 <!-- <img height="21"  alt="Sponsors"     src="https://img.shields.io/github/sponsors/rvion" /> -->
 
-<!-- <br /> -->
+
+_🔶 NOTICE: CushyStudio is still in development. It updates and breaks often. We are working hard to make a stable version. Current Focus is on improving the install experience and switching to some real production-ready database 🔶_
+
+
+<br />
 <a href="https://discord.gg/GfAN6hF2ad">
     <img height="21" alt="Join our Discord" src="https://dcbadge.vercel.app/api/server/GfAN6hF2ad?style=flat">
 </a>
@@ -22,42 +25,17 @@
 
 ---
 
-**CushyStudio** is the go-to platform for easy generative AI use, empowering creatives of any level to effortlessly create stunning images, videos, and 3D models.
+🖥️ **Cushy Studio**: A modern and cross-platform software to **Play** and **Work** with Generative AI Art. Explore and build generative Apps. **🌠 Image**, **🎥 Video**, and **🧊 3d**. Welcome to the future.
 
+💎 **Cushy Apps**: Self-contained, use-case-centric applications with dedicated UIs that make generative art simple for everyone. Find the app for you need in the **Cushy Library**, from general-purpose Apps to very specific ones for dedicated use cases.
 
-**What You'll Love:**
+🚀 **Cushy SDK**: Automate your work or tackle specific use cases by building your own **App**. CushyStudio is packed with power-user tools to support you in building the "app" of your dreams. Once ready, share it with the world through the cushy app library.
 
-* **CushyApps**: A collection of visual tools tailored for different artistic tasks. Simplify your AI art creation process and have fun exploring a wide range of versatile to niche tools in the Cushy Library.
+<!-- ☀️ **Cushy Cloud**: A cloud GPU renting service is launching soon so you can play with any demanding app, even on mobile devices. Fair prices to fund the CushyStudio growth, and grow the community. Growing the community includes revenue sharing with app creators when users rent GPU to use their app. -->
 
-* **CushyKit:** Speed up your projects with our extensive toolkit for custom apps development and task automation.  Quickly design interfaces, add custom logic, and access tools like ComfyUI in a user-friendly, preconfigured typescript environment.
+🎓 **Cushy Foundation**: Cushy is made to last. Free and Open source. It builds on proven technologies like [ComfyUI](https://github.com/comfyanonymous/ComfyUI#readme), [Stable Diffusion](https://github.com/Stability-AI/generative-models), [FFmpeg](https://github.com/FFmpeg/FFmpeg#readme), or [ImageMagick](https://github.com/ImageMagick/ImageMagick). It features an extensible core and a professional UI with dockable panes. It is LLM-friendly. The project is early, but I'm (rvion) committed to growing this. If you like this, please, sponsor my work:
+[![](https://img.shields.io/static/v1?label=Sponsor&message=%E2%9D%A4&logo=GitHub&color=%23fe8e86)](https://github.com/sponsors/rvion)
 
-**Dive into the AI Revolution with CushyStudio**. Unleash your creativity, share your projects, and connect with a vibrant community pushing the boundries of generative AI. Experience the fusion of simplicity and innovation.
-
-```diff
-! ⚠️ CushyStudio is under active development, so you might encounter incomplete features or issues due to rapid updates. Your feedback is vital for us to refine and expand the project. Please report any critical problems you find in our discord or open a GitHub issue.
-```
-
-***
-
-* Try: [installation](https://docs.cushystudio.com/installation/ "mention") - [Getting started](https://docs.cushystudio.com/getting-started/ "mention") - Moving Around
-* Explore: Apps - Drafts - [prompting](https://docs.cushystudio.com/prompting/ "mention") - [unified-canvas.md](https://docs.cushystudio.com/features/unified-canvas.md "mention") - [inpainting.md](https://docs.cushystudio.com/features/inpainting.md "mention") - [outpainting.md](https://docs.cushystudio.com/features/outpainting.md "mention") - Library -&#x20;
-* ComfyUI Integration - Import / export workflow - programmatic workflow  - Multi-host management - Node explorer - Model manager - plugin manager
-* Other Integrations: Civitai - Squoosh - 3d Poser (posemy) - Minipaint - unsplash&#x20;
-* Build: [creating-apps](https://docs.cushystudio.com/creating-apps/ "mention") - [app-structure.md](https://docs.cushystudio.com/creating-apps/app-structure.md "mention") - [app-ui.md](https://docs.cushystudio.com/creating-apps/app-ui.md "mention") - [cushy-sdk.md](https://docs.cushystudio.com/cushy-sdk.md "mention")
-* Contribute: &#x20;
-* Connect: Discord - Twitter - Github - Website - [Documentation](https://docs.cushystudio.com/https://docs.cushystudio.com)
-
-
-***
-
-Screenshots
-
-
-<!-- {% hint style="warning" %}
-CushyStudio is under active development, so you might encounter incomplete features or issues due to rapid updates. Your feedback is vital for us to refine and expand the project. Please report any critical problems you find in our discord or open a GitHub issue.
-{% endhint %} -->
-
-![](https://cushy.fra1.cdn.digitaloceanspaces.com/rvion-screenshots/2024-02-18_00-07-15.jpg)
 
 
 ---
