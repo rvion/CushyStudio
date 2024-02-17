@@ -4,17 +4,17 @@ import type { DraftL } from 'src/models/Draft'
 import { toJS } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { useEffect, useLayoutEffect } from 'react'
-import { WidgetGroup_BlockUI } from 'src/controls/widgets/group/WidgetGroupUI'
+import { FormUI } from 'src/controls/FormUI'
 import { MarkdownUI } from 'src/rsuite/MarkdownUI'
 import { PhoneWrapperUI } from 'src/rsuite/PhoneWrapperUI'
 import { SelectUI } from 'src/rsuite/SelectUI'
 import { Message } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
 import { stringifyUnknown } from 'src/utils/formatters/stringifyUnknown'
-import { ResultWrapperUI } from '../../widgets/misc/ResultWrapperUI'
 import { draftContext } from '../../widgets/misc/useDraft'
 import { MessageInfoUI } from '../MessageUI'
 import { DraftHeaderUI } from './DraftHeaderUI'
+import { JsonViewUI } from 'src/widgets/workspace/JsonViewUI'
 
 export const Panel_Draft = observer(function Panel_Draft_(p: { draftID: DraftID }) {
     // 1. get draft
@@ -46,13 +46,22 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
 
     // 4. get form
     const guiR = draft.form
-    if (!guiR.success)
+    if (guiR == null)
+        return (
+            <ErrorPanelUI>
+                {/* <div>{draft.id}</div> */}
+                <div>draft.form is null</div>
+                {/* <div>test: {draft.test}</div> */}
+            </ErrorPanelUI>
+        )
+
+    if (guiR.error)
         return (
             <>
                 <DraftHeaderUI draft={draft} />
                 <ErrorPanelUI>
                     <b>App failed to load</b>
-                    <div>❌ {guiR.message}</div>
+                    <div>❌ {guiR.error}</div>
                     <div>{stringifyUnknown(guiR.error)}</div>
                 </ErrorPanelUI>
             </>
@@ -75,7 +84,7 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                     if (ev.key === 'Enter' && (ev.metaKey || ev.ctrlKey)) {
                         ev.preventDefault()
                         ev.stopPropagation()
-                        draft.start()
+                        draft.start({})
                     }
                 }}
             >
@@ -92,12 +101,14 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                     <MarkdownUI tw='_WidgetMardownUI italic px-1 text-gray-500 w-full' markdown={metadata.description} />
                 )}
                 <div tw='pb-80 p-1'>
-                    {/* <div tw='p-1'> */}
-                    <ResultWrapperUI
-                        //
-                        res={draft.form}
-                        whenValid={(req) => <WidgetGroup_BlockUI widget={req} />}
-                    />
+                    {/* <div>A: {draft.id}</div>
+                    <div>B: {Object.keys(draft.form?.serial ?? {}).join(', ')}</div>
+                    <div>B2: {draft.form?.serial?.type}</div>
+                    <div>C: {draft.form == null ? 'form null' : 'form ok'}</div>
+                    <div>D: {draft.form?.root == null ? 'form root null' : 'form root ok'}</div>
+                    <div>D: {draft.form?.root?.id}</div>
+                    <JsonViewUI value={draft.form?.serial} /> */}
+                    <FormUI key={draft.id} form={draft.form} />
                 </div>
             </div>
         </draftContext.Provider>

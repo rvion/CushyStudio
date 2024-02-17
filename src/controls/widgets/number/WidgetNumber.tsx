@@ -19,6 +19,8 @@ export type Widget_number_config = WidgetConfigFields<{
     text?: string
     hideSlider?: boolean
     forceSnap?: boolean
+    /** used as suffix */
+    unit?: string
 }>
 
 // SERIAL
@@ -38,7 +40,7 @@ export type Widget_number_types = {
 // STATE
 export interface Widget_number extends WidgetTypeHelpers<Widget_number_types> {}
 export class Widget_number implements IWidget<Widget_number_types> {
-    get serialHash () { return hash(this.result) } // prettier-ignore
+    get serialHash () { return hash(this.value) } // prettier-ignore
     readonly isVerticalByDefault = false
     readonly isCollapsible = false
     readonly id: string
@@ -62,11 +64,14 @@ export class Widget_number implements IWidget<Widget_number_types> {
 
         makeObservable(this, {
             serial: observable,
-            result: computed,
+            value: computed,
         })
     }
 
-    get result(): Widget_number_output {
+    set value(val: Widget_number_output) {
+        this.serial.val = val
+    }
+    get value(): Widget_number_output {
         return this.serial.val
     }
 }

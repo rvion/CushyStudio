@@ -10,7 +10,7 @@ import { $ancestorsBottomUp } from './utils'
 // Dynamic completion based on context
 const dynamicCompletion: CompletionSource = (context: CompletionContext): CompletionResult | null => {
     // Get the syntax tree at the current position
-    const st: STATE = (window as any).st
+    const st: STATE = cushy
     const tree = syntaxTree(context.state)
     const node = tree.resolve(context.pos, -1)
 
@@ -108,7 +108,7 @@ const dynamicCompletion: CompletionSource = (context: CompletionContext): Comple
         'Embedding',
         'Tag',
     ]
-    console.log(`[👙] leftNodeName=`, leftNodeName, ' => ', validNodeNames.includes(leftNodeName))
+    // console.log(`[👙] leftNodeName=`, leftNodeName, ' => ', validNodeNames.includes(leftNodeName))
     if (!validNodeNames.includes(leftNodeName)) return null
 
     const from =

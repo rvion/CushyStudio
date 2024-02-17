@@ -49,7 +49,7 @@ export class Widget_choices<T extends BranchDefinitions> implements IWidget<Widg
     readonly id: string
     readonly type: 'choices' = 'choices'
 
-    get serialHash () { return hash(this.result) } // prettier-ignore
+    get serialHash () { return hash(this.value) } // prettier-ignore
     get isMulti() {
         return this.config.multi
     }
@@ -181,11 +181,11 @@ export class Widget_choices<T extends BranchDefinitions> implements IWidget<Widg
     }
 
     /** results, but only for active branches */
-    get result(): Widget_choices_output<T> {
+    get value(): Widget_choices_output<T> {
         const out: { [key: string]: any } = {}
         for (const branch in this.children) {
             // if (this.state.branches[key] !== true) continue
-            out[branch] = this.children[branch]!.result
+            out[branch] = this.children[branch]!.value
         }
         return out as any
     }

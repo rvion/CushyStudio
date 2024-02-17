@@ -1,8 +1,7 @@
 import { observer } from 'mobx-react-lite'
-import { CSSProperties } from 'react'
 import { useDragLayer } from 'react-dnd'
-import { useSt } from '../../state/stateContext'
 import { OutputUI } from 'src/outputs/OutputUI'
+import { useSt } from '../../state/stateContext'
 
 export const GalleryHoveredPreviewUI = observer(function GalleryHoveredPreviewUI_(p: {}) {
     const st = useSt()
@@ -14,35 +13,14 @@ export const GalleryHoveredPreviewUI = observer(function GalleryHoveredPreviewUI
     const hovered = st.hovered
     if (hovered == null) return null
     if (st.showPreviewInPanel) return null
-    // ⏸️ const extraProps: CSSProperties = st.showPreviewInFullScreen
-    // ⏸️     ? {
-    // ⏸️           maxHeight: st.showPreviewInFullScreen ? '95vh' : undefined,
-    // ⏸️           maxWidth: st.showPreviewInFullScreen ? '95vw' : undefined,
-    // ⏸️           width: '95%',
-    // ⏸️       }
-    // ⏸️     : {}
 
     return (
         <div>
-            {/* BACKDROP */}
-            {/* <div
-                style={{
-                    pointerEvents: 'none',
-                    zIndex: 999998,
-                    position: 'absolute',
-                    inset: 0,
-                    bottom: 0,
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    background: '#272727aa',
-                }}
-            ></div> */}
             {/* OVERLAY CONTAINER */}
             <div
                 tw='ml-auto inset-0 text-center'
                 style={{
-                    opacity: st.galleryHoverOpacity,
+                    opacity: st.galleryConf.get('galleryHoverOpacity') ?? 0.9, //.galleryHoverOpacity,
                     boxShadow: '0 0 1rem 0 #ebebebe0',
                     pointerEvents: 'none',
                     position: 'absolute',
@@ -56,35 +34,6 @@ export const GalleryHoveredPreviewUI = observer(function GalleryHoveredPreviewUI
                 }}
             >
                 <OutputUI output={hovered} />
-                {/* METADATA */}
-                {/* <div className='absolute bottom-0 [background:#00000033] text-xs'>
-                    <div className='flex whitespace-nowrap'>URL = {hovered.url}</div>
-                    <div className='flex whitespace-nowrap'>downloaded = {hovered.data.downloaded ? '✅' : '❌'}</div>
-                    <div className='flex whitespace-nowrap'>filename = {hovered.data.imageInfos?.filename ?? 'error'}</div>
-                    <div className='flex whitespace-nowrap'>fpath = {hovered.localAbsolutePath}</div>
-                    <div className='flex whitespace-nowrap'>promptID = {hovered.prompt.id}</div>
-                </div> */}
-                {/* IMAGE */}
-                {/* {hovered.type === 'video' ? (
-                    <video
-                        style={{
-                            objectFit: 'contain',
-                            ...extraProps,
-                        }}
-                        src={hovered.url}
-                        controls
-                        autoPlay
-                        loop
-                    />
-                ) : (
-                    <img
-                        src={hovered.url}
-                        style={{
-                            objectFit: 'contain',
-                            ...extraProps,
-                        }}
-                    />
-                )} */}
             </div>
         </div>
     )

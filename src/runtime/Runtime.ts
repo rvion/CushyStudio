@@ -1,22 +1,19 @@
 import type { WidgetDict } from 'src/cards/App'
 import type { STATE } from 'src/state/state'
 import type { Printable } from '../core/Printable'
-import type { StepL } from '../models/Step'
-import type { MediaImageL } from '../models/MediaImage'
 import type { ComfyPromptL } from '../models/ComfyPrompt'
 import type { ComfyWorkflowL, PromptSettings } from '../models/ComfyWorkflow'
+import type { MediaImageL } from '../models/MediaImage'
+import type { StepL } from '../models/Step'
 
 import * as path from 'pathe'
-// import { Cyto } from '../graph/cyto' 🔴🔴
 import { execSync } from 'child_process'
 import fs, { writeFileSync } from 'fs'
+import { checkIfComfyImageExists } from 'src/models/ImageInfos_ComfyGenerated'
 import { braceExpansion } from 'src/utils/misc/expansion'
-import { IDNaminScheemeInPromptSentToComfyUI } from '../back/IDNaminScheemeInPromptSentToComfyUI'
 import { ComfyWorkflowBuilder } from '../back/NodeBuilder'
-import { ImageAnswer } from '../controls/misc/InfoAnswer'
 import { ComfyNodeOutput } from '../core/Slot'
 import { auto } from '../core/autoValue'
-import { checkIfComfyImageExists } from 'src/models/ImageInfos_ComfyGenerated'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 
 import child_process from 'child_process'
@@ -302,7 +299,7 @@ export class Runtime<FIELDS extends WidgetDict = any> {
     }): Promise<RuntimeExecutionResult> => {
         const start = Date.now()
         const executable = this.step.executable
-        const formResult = p.formInstance.result
+        const formResult = p.formInstance.value
         // const appFormInput = this.step.data.formResult
         const appFormSerial = this.step.data.formSerial.values_
         this.formResult = formResult as any
@@ -429,8 +426,14 @@ export class Runtime<FIELDS extends WidgetDict = any> {
     }) => {
         const getImg = (i: string | MediaImageL): MediaImageL => {
             if (typeof i === 'string') {
-                const img = this.generatedImages.find((i2) => i2.filename.startsWith(i))
-                if (img == null) throw new Error(`image not found: ${p.image}`)
+                const img = this.Store.getImageStore(i).image
+                if (img == null) {
+                    console.log(
+                        `[❌] all generated filenames:`,
+                        this.generatedImages.map((gi) => gi.filename),
+                    )
+                    throw new Error(`no image found with prefix "${i}"`)
+                }
                 return img
             } else {
                 return i
@@ -439,13 +442,9 @@ export class Runtime<FIELDS extends WidgetDict = any> {
         const image = getImg(p.image)
         const depth = getImg(p.depth)
         const normal = getImg(p.normal)
-        if (image == null) throw new Error(`image not found: ${p.image}`)
-        if (depth == null) throw new Error(`image not found: ${p.image}`)
-        if (normal == null) throw new Error(`image not found: ${p.image}`)
         this.Cushy.db.media_3d_displacement.create({
-            // type: 'displaced-image',
-            width: image.data.width ?? 512,
-            height: image.data.height ?? 512,
+            width: image.width,
+            height: image.height,
             image: image.url,
             depthMap: depth.url,
             normalMap: normal.url,
@@ -572,12 +571,12 @@ export class Runtime<FIELDS extends WidgetDict = any> {
         return seed
     }
 
-    loadImageAnswerAsEnum = (ia: ImageAnswer): Promise<Enum_LoadImage_image> => {
+    loadImageAnswerAsEnum = (ia: MediaImageL): Promise<Enum_LoadImage_image> => {
         const img = this.Cushy.db.media_images.getOrThrow(ia.imageID)
         return img.uploadAndReturnEnumName()
     }
 
-    loadImageAnswer2 = (ia: ImageAnswer): MediaImageL => {
+    loadImageAnswer2 = (ia: MediaImageL): MediaImageL => {
         return this.Cushy.db.media_images.getOrThrow(ia.imageID)
     }
 
@@ -585,7 +584,7 @@ export class Runtime<FIELDS extends WidgetDict = any> {
         return this.Cushy.db.media_images.getOrThrow(imageID)
     }
 
-    loadImageAnswer = async (ia: ImageAnswer): Promise<ImageAndMask> => {
+    loadImageAnswer = async (ia: MediaImageL): Promise<ImageAndMask> => {
         const img = this.Cushy.db.media_images.getOrThrow(ia.imageID)
         return await img.loadInWorkflow(this.workflow)
     }

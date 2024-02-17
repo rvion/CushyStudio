@@ -32,7 +32,7 @@ export type IWidget_OLD<T, I, X, S, O> = {
     isCollapsible: boolean
     readonly serialHash: string
     readonly type: T
-    readonly result: O
+    readonly value: O
     readonly serial: X
     readonly form: FormBuilder
     readonly config: WidgetConfigFields<any>
@@ -44,7 +44,7 @@ export type IWidget<K extends $WidgetTypes> = {
     isCollapsible: boolean
     readonly serialHash: string
     readonly type: K['$Type']
-    readonly result: K['$Output']
+    readonly value: K['$Output']
     readonly serial: K['$Serial']
     readonly form: FormBuilder
     readonly config: WidgetConfigFields<any>

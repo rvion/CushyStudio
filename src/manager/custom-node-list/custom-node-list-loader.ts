@@ -36,11 +36,11 @@ export const _getKnownPlugins = (DB: ComfyManagerRepository): void => {
 
         // INITIALIZATION ------------------------------------------------------------
         totalPluginSeen++
-        if (DB.plugins_byTitle.has(plugin.title)) console.log(`❌ plugin.title: "${plugin.title}" is duplicated`)
+        if (DB.opts.check && DB.plugins_byTitle.has(plugin.title)) console.log(`❌ plugin.title: "${plugin.title}" is duplicated`)
         DB.plugins_byTitle.set(plugin.title, plugin)
         for (const pluginURI of plugin.files) {
             totalFileSeen++
-            if (DB.plugins_byFile.has(pluginURI)) console.log(`❌ plugin.file: "${pluginURI}" is duplicated`)
+            if (DB.opts.check && DB.plugins_byFile.has(pluginURI)) console.log(`❌ plugin.file: "${pluginURI}" is duplicated`)
             DB.plugins_byFile.set(pluginURI, plugin)
         }
     }

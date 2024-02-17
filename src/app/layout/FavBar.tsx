@@ -23,11 +23,17 @@ export const FavBarUI = observer(function FavBarUI_(p: {
             <div //Panel Content
                 tw='p-2'
             >
+                <div tw='btn btn-square' style={{ width: '4rem', height: '4rem' }}>
+                    <span className='material-symbols-outlined !text-5xl'>folder</span>
+                </div>
+                <hr />
                 <div tw='italic text-sm text-center'>fav apps</div>
                 {st.favoriteApps.map((app) => (
-                    <div tw='pt-1'>
+                    <div tw='pt-1' key={app.id}>
                         <RevealUI trigger='hover' placement='rightStart'>
-                            <AppIllustrationUI size='4rem' app={app} />
+                            <div tw='rounded' style={{ border: `1px solid oklch(var(--p)/.5)` }}>
+                                <AppIllustrationUI size='4rem' app={app} tw='bor' />
+                            </div>
                             <AppDraftsQuickListUI app={app} />
                         </RevealUI>
                     </div>
@@ -35,9 +41,11 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                 <hr />
                 <div tw='italic text-sm text-center'>fav drafts</div>
                 {st.favoriteDrafts.map((draft) => (
-                    <div tw='pt-1'>
+                    <div tw='pt-1' key={draft.id}>
                         <RevealUI trigger='hover' placement='rightStart'>
-                            <DraftIllustrationUI onClick={() => draft.openOrFocusTab()} size='4rem' draft={draft} />
+                            <div tw='rounded' style={{ border: `1px solid oklch(var(--a)/.5)` }}>
+                                <DraftIllustrationUI onClick={() => draft.openOrFocusTab()} size='4rem' draft={draft} />
+                            </div>
                             <div className='MENU-ROOT'>
                                 <div className='MENU-HEADER'>
                                     <div //Container
@@ -131,7 +139,10 @@ export const AppDraftsQuickListUI = observer(function AppDraftsQuickListUI_(p: {
                         tw='grid grid-cols-3 gap-2 max-h-96 overflow-scroll'
                     >
                         {filteredApps.map((draft) => (
-                            <div tw='flex brightness-95 cursor-pointer hover:brightness-110 bg-base-200 rounded-md border-base-100 border p-1 justify-center'>
+                            <div
+                                key={draft.id}
+                                tw='flex brightness-95 cursor-pointer hover:brightness-110 bg-base-200 rounded-md border-base-100 border p-1 justify-center'
+                            >
                                 <div key={draft.id} onClick={() => draft.openOrFocusTab()}>
                                     <div tw='flex self-center text-center justify-center p-1'>
                                         <DraftIllustrationUI size='8rem' draft={draft} />

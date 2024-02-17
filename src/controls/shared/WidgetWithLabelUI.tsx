@@ -25,7 +25,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     const { WidgetLineUI, WidgetBlockUI } = WidgetDI.WidgetUI(widget) // WidgetDI.WidgetUI(widget)
     const isCollapsible = WidgetBlockUI != null
     const collapsed = widget.serial.collapsed && isCollapsible
-    if (widget instanceof KLS.Widget_group && Object.keys(widget.values).length === 0) return
+    if (widget instanceof KLS.Widget_group && Object.keys(widget.fields).length === 0) return
     const className = '' // `${clsX} __${widget.type} ${levelClass} flex flex-col items-baseline`
 
     const onLineClick = () => {

@@ -26,7 +26,7 @@ export const WidgetInlineRunUI = observer(function WidgetInlineRunUI_(p: { widge
             onClick={() => {
                 p.widget.serial.val = true
                 draft.setAutostart(false)
-                draft.start()
+                draft.start({})
 
                 // Reset value back to false for future runs
                 setTimeout(() => {

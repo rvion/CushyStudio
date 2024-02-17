@@ -29,7 +29,7 @@ export class Widget_size
         Object.defineProperty(this, 'sizeHelper', { value: state })
         return state
     }
-    get serialHash() { return hash(this.result) } // prettier-ignore
+    get serialHash() { return hash(this.value) } // prettier-ignore
     readonly isVerticalByDefault = true
     readonly isCollapsible = true
     readonly id: string
@@ -55,7 +55,7 @@ export class Widget_size
         }
         makeAutoObservable(this, { sizeHelper: false })
     }
-    get result(): Widget_size_output {
+    get value(): Widget_size_output {
         return this.serial
     }
 }

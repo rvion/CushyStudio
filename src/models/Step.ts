@@ -100,6 +100,9 @@ export class StepL {
         return this.data.name ?? this.app.name
     }
 
+    get lastImageOutput(): Maybe<MediaImageL> {
+        return this.images.items[this.images.items.length - 1]
+    }
     get generatedImages(): MediaImageL[] {
         return this.images.items
     }

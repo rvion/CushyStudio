@@ -16,6 +16,7 @@ import type { Widget_listExt } from './listExt/WidgetListExt'
 import type { Widget_prompt } from './prompt/WidgetPrompt'
 import type { Widget_size } from './size/WidgetSize'
 import type { Widget_image } from './image/WidgetImage'
+import type { Widget_custom } from './custom/WidgetCustom'
 
 /**
  * DI (Dependency Injection)
@@ -33,7 +34,7 @@ export let WidgetDI = {
     Widget_bool: 0 as any as typeof Widget_bool,
     Widget_inlineRun: 0 as any as typeof R.Widget_inlineRun,
     Widget_markdown: 0 as any as typeof R.Widget_markdown,
-    Widget_custom: 0 as any as typeof R.Widget_custom,
+    Widget_custom: 0 as any as typeof Widget_custom,
     Widget_size: 0 as any as typeof Widget_size,
     Widget_matrix: 0 as any as typeof R.Widget_matrix,
     Widget_loras: 0 as any as typeof R.Widget_loras,

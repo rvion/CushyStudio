@@ -42,7 +42,7 @@ export type Widget_orbit_types = {
 // STATE
 export interface Widget_orbit extends WidgetTypeHelpers<Widget_orbit_types> {}
 export class Widget_orbit implements IWidget<Widget_orbit_types> {
-    get serialHash () { return hash(this.result) } // prettier-ignore
+    get serialHash () { return hash(this.value) } // prettier-ignore
     isVerticalByDefault = true
     isCollapsible = false
     id: string
@@ -86,7 +86,7 @@ export class Widget_orbit implements IWidget<Widget_orbit_types> {
         }
         makeAutoObservable(this)
     }
-    get result(): Widget_orbit_output {
+    get value(): Widget_orbit_output {
         return {
             azimuth: this.serial.val.azimuth,
             elevation: this.serial.val.elevation,

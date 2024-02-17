@@ -8,6 +8,12 @@ declare global {
             tw?: string | ClassLike[]
         }
     }
+    /*
+    defined on window, using observable cache + getter, to allow hot-reload
+        | Object.defineProperty(window, 'CushyObservableCache' { value: observable({ st: this }) })
+        | Object.defineProperty(window, 'cushy', { get() { return (window as any).st } }) // prettier-ignore
+    */
+    const cushy: import('src/state/state').STATE
 }
 
 declare module 'react' {

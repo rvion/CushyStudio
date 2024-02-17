@@ -5,7 +5,7 @@ import { useSt } from 'src/state/stateContext'
 export const Panel_ViewLatent = observer(function Panel_ViewLatent_(p: {}) {
     const st = useSt()
     const url = st.latentPreview?.url
-    const background = st.configFile.value.galleryBgColor
+    const background = st.galleryConf.value.galleryBgColor
     return (
         <div tw='w-full h-full flex flex-col' style={{ background }}>
             <TransformWrapper centerZoomedOut centerOnInit>

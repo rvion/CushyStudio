@@ -89,10 +89,15 @@ export class ComfyPromptL {
     private onExecuting = (msg: WsMsgExecuting) => {
         this.graph.onExecuting(msg)
         if (msg.data.node == null) {
-            // if (this.step.data.status !== Status.Failure) {
-            //     this.step.update({ status: Status.Success })
-            // }
-            this._finish({ status: 'Success' })
+            // * When `msg.data.node` is null, it means the prompt has nothing
+            //   to execute anymore, so it's done.
+            // * Before marking it finished, we need to wait pending promises.
+            // * Pending promises hold the async post-processing operations
+            //   spawned when receiving outputs.
+            // console.log(`[🔴🔴🔴🔴] ${this.pendingPromises.length} pending Promises`)
+            Promise.all(this.pendingPromises).then(() => {
+                this._finish({ status: 'Success' })
+            })
             return
         }
     }

@@ -1,7 +1,7 @@
+import type { PropsOf } from 'src/panels/router/Layout'
+
 import { observer } from 'mobx-react-lite'
-import { createElement } from 'react'
-import { Widget_custom } from 'src/controls/Widget'
-import { PropsOf } from 'src/panels/router/Layout'
+import { Widget_custom } from './WidgetCustom'
 import { ImageUI } from 'src/widgets/galleries/ImageUI'
 import { JsonViewUI } from 'src/widgets/workspace/JsonViewUI'
 

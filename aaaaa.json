@@ -1,0 +1,45 @@
+{
+  "type": "group",
+  "id": "XXfDLPVfTVTyDL8QR2xrD",
+  "active": true,
+  "collapsed": false,
+  "values_": {
+    "usePoints": {
+      "id": "at6jczyDfaTAGMy-RP_AC",
+      "type": "bool",
+      "active": false
+    },
+    "displacementScale": {
+      "type": "number",
+      "id": "dEdmOyel8yKiP0fUmf_Uk",
+      "val": 1.01
+    },
+    "cutout": {
+      "type": "number",
+      "id": "pQax9rUQa-HrldC9O3Qhf",
+      "val": 0
+    },
+    "ambientLightIntensity": {
+      "type": "number",
+      "id": "LkSrsOnTyqrJFLJIUwxL-",
+      "val": 0
+    },
+    "ambientLightColor": {
+      "type": "color",
+      "id": "8Wl2_GjaO1UFpI02xOvr6",
+      "active": true,
+      "val": ""
+    },
+    "isSymmetric": {
+      "id": "ZOiPBJuR5XAutXDQaI2WS",
+      "type": "bool",
+      "active": false
+    },
+    "takeScreenshot": {
+      "type": "inlineRun",
+      "id": "_9LJxyXzL-eQnEazF6T1e",
+      "active": true,
+      "val": false
+    }
+  }
+}

@@ -155,6 +155,7 @@ export class CushyScriptL {
                 'CUSHY_IMPORT',
                 'getCurrentForm',
                 'getCurrentRun',
+                'cushy',
                 //
                 codJSWithoutWithImportsReplaced,
             )
@@ -169,6 +170,8 @@ export class CushyScriptL {
                 CUSHY_IMPORT,
                 getCurrentForm_IMPL,
                 getCurrentRun_IMPL,
+                //
+                cushy,
             )
 
             // 2.3. return all apps

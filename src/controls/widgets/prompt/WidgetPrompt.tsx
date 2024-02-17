@@ -57,7 +57,7 @@ export class Widget_prompt implements IWidget<Widget_prompt_types> {
     get ast(): Tree {
         return parser.parse(this.serial.val ?? '')
     }
-    get result(): Widget_prompt_output {
+    get value(): Widget_prompt_output {
         return this
         // return {
         //     text: this.serial.val ?? this.config.default ?? '',
@@ -73,7 +73,7 @@ export class Widget_prompt implements IWidget<Widget_prompt_types> {
         printWildcards?: boolean
     }): CompiledPrompt =>
         compilePrompt({
-            st: this.form.schema.st,
+            st: cushy,
             text: this.text,
             //
             onLora: p.onLora,

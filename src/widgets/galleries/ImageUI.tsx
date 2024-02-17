@@ -81,7 +81,7 @@ export const ImageUI = observer(function ImageUI_(p: {
 
 export const PlaceholderImageUI = observer(function PlaceholderImageUI_(p: {}) {
     const st = useSt()
-    const GalleryImageWidth = st.configFile.value.galleryImageSize ?? 48
+    const GalleryImageWidth = st.galleryConf.value.gallerySize
     return (
         <div
             className='scale-in-center'

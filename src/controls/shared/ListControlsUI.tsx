@@ -2,7 +2,6 @@ import type { Widget_list } from '../widgets/list/WidgetList'
 import type { Widget_listExt } from '../widgets/listExt/WidgetListExt'
 
 import { observer } from 'mobx-react-lite'
-import { Button } from 'src/rsuite/shims'
 
 export const ListControlsUI = observer(function ListControlsUI_(p: { widget: Widget_listExt<any> | Widget_list<any> }) {
     const widget = p.widget

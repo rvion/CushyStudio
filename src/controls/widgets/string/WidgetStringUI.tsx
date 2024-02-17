@@ -4,7 +4,7 @@ import { Widget_string } from './WidgetString'
 // UI
 export const WidgetStringUI = observer(function WidgetStringUI_(p: { widget: Widget_string }) {
     const widget = p.widget
-    const val = widget.result
+    const val = widget.value
     if (widget.config.textarea) {
         return (
             <textarea

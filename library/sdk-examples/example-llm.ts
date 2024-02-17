@@ -27,7 +27,7 @@ app({
         const llmResult = await sdk.LLM.expandPrompt(ui.topic, ui.llmModel.id)
         const positiveTxt = llmResult.prompt
 
-        sdk.formInstance.values.promptFromLlm.config.markdown = positiveTxt
+        sdk.formInstance.fields.promptFromLlm.config.markdown = positiveTxt
 
         // generate an image
         const graph = sdk.ComfyUI.create_basicWorkflow({

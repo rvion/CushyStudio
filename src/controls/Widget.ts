@@ -2,7 +2,6 @@
  * this file is an attempt to centralize core widget definition in a single
  * file so it's easy to add any widget in the future
  */
-import type { FC } from 'react'
 import type { SimplifiedLoraDef } from 'src/presets/SimplifiedLoraDef'
 import type { ItemDataType } from 'src/rsuite/RsuiteTypes'
 import type { FormBuilder } from './FormBuilder'
@@ -11,6 +10,7 @@ import type { IWidget_OLD, WidgetConfigFields, WidgetSerialFields, WidgetTypeHel
 import type { Widget_bool } from './widgets/bool/WidgetBool'
 import type { Widget_choices } from './widgets/choices/WidgetChoices'
 import type { Widget_color } from './widgets/color/WidgetColor'
+import type { Widget_custom } from './widgets/custom/WidgetCustom'
 import type { Widget_enum } from './widgets/enum/WidgetEnum'
 import type { Widget_group } from './widgets/group/WidgetGroup'
 import type { Widget_image } from './widgets/image/WidgetImage'
@@ -27,8 +27,8 @@ import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { bang } from 'src/utils/misc/bang'
 
-import { WidgetDI } from './widgets/WidgetUI.DI'
 import { hash } from 'ohash'
+import { WidgetDI } from './widgets/WidgetUI.DI'
 
 
 // Widget is a closed union for added type safety
@@ -88,46 +88,10 @@ export class Widget_markdown implements IWidget_OLD<'markdown', Widget_markdown_
         makeAutoObservable(this)
     }
 
-    get result(): Widget_markdown_output { return this.serial }
+    get value(): Widget_markdown_output { return this.serial }
 }
 
-// 🅿️ custom ==============================================================================
-export type CustomWidgetProps<T> = { widget: Widget_custom<T>; extra: import('./widgets/WidgetCustomUI').UIKit }
-export type Widget_custom_config  <T> = WidgetConfigFields<{ defaultValue: () => T; Component: FC<CustomWidgetProps<T>>}>
-export type Widget_custom_serial<T> = WidgetSerialFields<{ type: 'custom'; active: true; value: T }>
-export type Widget_custom_output<T> = T
-export interface Widget_custom<T> extends WidgetTypeHelpers_OLD<'custom', Widget_custom_config<T>, Widget_custom_serial<T>, any, Widget_custom_output<T>> {}
-export class Widget_custom<T> implements IWidget_OLD<'custom', Widget_custom_config<T>, Widget_custom_serial<T>, any, Widget_custom_output<T>> {
-    readonly isVerticalByDefault = true
-    readonly isCollapsible = true
-    readonly id: string
-    readonly type: 'custom' = 'custom'
 
-    get serialHash () { return hash(this.result) }
-    serial: Widget_custom_serial<T>
-    Component: Widget_custom_config<T>['Component']
-    st = () => this.form.schema.st
-    reset = () => (this.serial.value = this.config.defaultValue())
-    constructor(
-        public form: FormBuilder,
-        public config: Widget_custom_config<T>,
-        serial?: Widget_custom_serial<T>,
-    ) {
-        this.id = serial?.id ?? nanoid()
-        this.Component = config.Component
-        this.serial = serial ?? {
-            type: 'custom',
-            active: true,
-            id: this.id,
-            value: this.config.defaultValue(),
-        }
-
-        makeAutoObservable(this, { Component: false })
-    }
-
-    /** never mutate this field manually, only access to .state */
-    get result(): Widget_custom_output<T> { return this.serial.value }
-}
 
 // 🅿️ seed ==============================================================================
 export type Widget_seed_config  = WidgetConfigFields<{ default?: number; defaultMode?: 'randomize' | 'fixed' | 'last', min?: number; max?: number }>
@@ -143,7 +107,7 @@ export class Widget_seed implements IWidget_OLD<'seed', Widget_seed_config, Widg
     readonly serial: Widget_seed_state
     get serialHash () {
         if (this.serial.mode === 'randomize') return hash(this.serial.mode)
-        return hash(this.result)
+        return hash(this.value)
     }
     constructor(
         public form: FormBuilder,
@@ -160,7 +124,7 @@ export class Widget_seed implements IWidget_OLD<'seed', Widget_seed_config, Widg
         }
         makeAutoObservable(this)
     }
-    get result(): Widget_seed_output {
+    get value(): Widget_seed_output {
         const count = this.form._cache.count
         return this.serial.mode ==='randomize'
             ? Math.floor(Math.random()* 9_999_999)
@@ -176,7 +140,7 @@ export type Widget_inlineRun_state  = WidgetSerialFields<{ type:'inlineRun', act
 export type Widget_inlineRun_output = boolean
 export interface Widget_inlineRun extends WidgetTypeHelpers_OLD<'inlineRun', Widget_inlineRun_config, Widget_inlineRun_serial, Widget_inlineRun_state, Widget_inlineRun_output> {}
 export class Widget_inlineRun implements IWidget_OLD<'inlineRun', Widget_inlineRun_config, Widget_inlineRun_serial, Widget_inlineRun_state, Widget_inlineRun_output> {
-    get serialHash () { return hash(this.result) }
+    get serialHash () { return hash(this.value) }
     readonly isVerticalByDefault = false
     readonly isCollapsible = false
     readonly id: string
@@ -195,7 +159,7 @@ export class Widget_inlineRun implements IWidget_OLD<'inlineRun', Widget_inlineR
         this.serial = serial ?? { type: 'inlineRun', collapsed: config.startCollapsed, id: this.id, active: true, val: false, }
         makeAutoObservable(this)
     }
-    get result(): Widget_inlineRun_output { return this.serial.active ? this.serial.val : false}
+    get value(): Widget_inlineRun_output { return this.serial.active ? this.serial.val : false}
 }
 
 
@@ -213,7 +177,7 @@ export type Widget_matrix_serial = WidgetSerialFields<{ type: 'matrix', active: 
 export type Widget_matrix_output = Widget_matrix_cell[]
 export interface Widget_matrix extends WidgetTypeHelpers_OLD<'matrix', Widget_matrix_config, Widget_matrix_serial, 0, Widget_matrix_output> {}
 export class Widget_matrix implements IWidget_OLD<'matrix', Widget_matrix_config, Widget_matrix_serial, 0, Widget_matrix_output> {
-    get serialHash () { return hash(this.result) }
+    get serialHash () { return hash(this.value) }
     readonly isVerticalByDefault = true
     readonly isCollapsible = true
     readonly id: string
@@ -251,7 +215,7 @@ export class Widget_matrix implements IWidget_OLD<'matrix', Widget_matrix_config
         // make observable
         makeAutoObservable(this)
     }
-    get result(): Widget_matrix_output {
+    get value(): Widget_matrix_output {
         // if (!this.state.active) return undefined
         return this.serial.selected
     }
@@ -308,7 +272,7 @@ export type Widget_loras_serial = WidgetSerialFields<{ type: 'loras', active: tr
 export type Widget_loras_output = SimplifiedLoraDef[]
 export interface Widget_loras extends WidgetTypeHelpers_OLD<'loras', Widget_loras_config, Widget_loras_serial, any, Widget_loras_output> {}
 export class Widget_loras implements IWidget_OLD<'loras', Widget_loras_config, Widget_loras_serial, any, Widget_loras_output> {
-    get serialHash () { return hash(this.result) }
+    get serialHash () { return hash(this.value) }
     isVerticalByDefault = true
     isCollapsible = true
     id: string
@@ -321,7 +285,7 @@ export class Widget_loras implements IWidget_OLD<'loras', Widget_loras_config, W
     ) {
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? { type: 'loras', collapsed: config.startCollapsed, id: this.id, active: true, loras: config.default ?? [] }
-        this.allLoras = form.schema.getLoras()
+        this.allLoras = cushy.schema.getLoras()
         for (const lora of this.allLoras) {
             if (lora === 'None') continue
             this._insertLora(lora)
@@ -329,7 +293,7 @@ export class Widget_loras implements IWidget_OLD<'loras', Widget_loras_config, W
         for (const v of this.serial.loras) this.selectedLoras.set(v.name, v)
         makeAutoObservable(this)
     }
-    get result(): Widget_loras_output {
+    get value(): Widget_loras_output {
         return this.serial.loras
     }
     allLoras: string[]
@@ -367,7 +331,7 @@ export type Widget_selectOne_state <T extends BaseSelectEntry>  = WidgetSerialFi
 export type Widget_selectOne_output<T extends BaseSelectEntry> = T
 export interface Widget_selectOne<T>  extends WidgetTypeHelpers_OLD<'selectOne', Widget_selectOne_config<T>, Widget_selectOne_serial<T>, Widget_selectOne_state<T>, Widget_selectOne_output<T>> {}
 export class Widget_selectOne<T extends BaseSelectEntry> implements IWidget_OLD<'selectOne', Widget_selectOne_config<T>, Widget_selectOne_serial<T>, Widget_selectOne_state<T>, Widget_selectOne_output<T>> {
-    get serialHash () { return hash(this.result) }
+    get serialHash () { return hash(this.value) }
     readonly isVerticalByDefault = false
     readonly isCollapsible = false
     readonly id: string
@@ -406,7 +370,7 @@ export class Widget_selectOne<T extends BaseSelectEntry> implements IWidget_OLD<
         if (this.serial.val == null && Array.isArray(this.config.choices)) this.serial.val = choices[0]
         makeAutoObservable(this)
     }
-    get result(): Widget_selectOne_output<T> { return this.serial.val }
+    get value(): Widget_selectOne_output<T> { return this.serial.val }
 }
 
 
@@ -416,7 +380,7 @@ export type Widget_selectMany_serial<T extends BaseSelectEntry> = WidgetSerialFi
 export type Widget_selectMany_output<T extends BaseSelectEntry> = T[]
 export interface Widget_selectMany<T extends BaseSelectEntry> extends WidgetTypeHelpers_OLD<'selectMany', Widget_selectMany_config<T>, Widget_selectMany_serial<T>, 0, Widget_selectMany_output<T>> {}
 export class Widget_selectMany<T extends BaseSelectEntry> implements IWidget_OLD<'selectMany', Widget_selectMany_config<T>, Widget_selectMany_serial<T>, 0, Widget_selectMany_output<T>> {
-    get serialHash () { return hash(this.result) }
+    get serialHash () { return hash(this.value) }
     readonly isVerticalByDefault = false
     readonly isCollapsible = false
     readonly id: string
@@ -463,7 +427,7 @@ export class Widget_selectMany<T extends BaseSelectEntry> implements IWidget_OLD
         else this.serial.values = this.serial.values.filter((v) => v.id !== item.id) // filter just in case of duplicate
     }
 
-    get result(): Widget_selectMany_output<T> {
+    get value(): Widget_selectMany_output<T> {
         return this.serial.values
     }
 }
@@ -472,7 +436,6 @@ export class Widget_selectMany<T extends BaseSelectEntry> implements IWidget_OLD
 WidgetDI.Widget_seed               = Widget_seed
 WidgetDI.Widget_inlineRun          = Widget_inlineRun
 WidgetDI.Widget_markdown           = Widget_markdown
-WidgetDI.Widget_custom             = Widget_custom
 WidgetDI.Widget_matrix             = Widget_matrix
 WidgetDI.Widget_loras              = Widget_loras
 WidgetDI.Widget_selectMany         = Widget_selectMany

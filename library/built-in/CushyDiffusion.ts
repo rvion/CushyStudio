@@ -11,6 +11,7 @@ import { Ctx_sampler, run_sampler, ui_sampler } from './_prefabs/prefab_sampler'
 import { run_upscaleWithModel, ui_upscaleWithModel } from './_prefabs/prefab_upscaleWithModel'
 import { run_customSave, ui_customSave } from './_prefabs/saveSmall'
 import { run_rembg_v1, ui_rembg_v1 } from './_prefabs/prefab_rembg'
+import { ui_mask } from './_prefabs/prefab_mask'
 
 app({
     metadata: {
@@ -39,6 +40,7 @@ app({
         }),
         model: ui_model(),
         latent: ui_latent_v3(),
+        mask: ui_mask(),
         sampler: ui_sampler(),
         refine: ui_refiners(),
         highResFix: ui_highresfix({ activeByDefault: true }),
@@ -90,7 +92,7 @@ app({
         }),
     }),
 
-    run: async (run, ui) => {
+    run: async (run, ui, imgCtx) => {
         const graph = run.nodes
         // MODEL, clip skip, vae, etc. ---------------------------------------------------------------
         let { ckpt, vae, clip } = run_model(ui.model)
@@ -116,8 +118,26 @@ app({
         // const y = run_prompt({ richPrompt: negPrompt, clip, ckpt, outputWildcardsPicked: true })
         // let negative = y.conditionning
 
-        // START IMAGE -------------------------------------------------------------------------------
-        let { latent, width, height } = await run_latent_v3({ opts: ui.latent, vae })
+        // START IMAGE -------------------------------------------------------------------------
+        let { latent, width, height } = imgCtx
+            ? /* 🔴 */ await (async () => ({
+                  /* 🔴 */ latent: graph.VAEEncode({ pixels: await imgCtx.loadInWorkflow(), vae }),
+                  /* 🔴 */ height: imgCtx.height,
+                  /* 🔴 */ width: imgCtx.width,
+                  /* 🔴 */
+              }))()
+            : await run_latent_v3({ opts: ui.latent, vae })
+
+        // MASK --------------------------------------------------------------------------------
+        let mask: Maybe<_MASK>
+        // if (imgCtx) {
+        //     /* 🔴 */ mask = await imgCtx.loadInWorkflowAsMask('alpha')
+        //     /* 🔴 */ latent = graph.SetLatentNoiseMask({ mask, samples: latent })
+        // } else
+        if (ui.mask.mask) {
+            mask = await ui.mask.mask.image.loadInWorkflowAsMask('alpha')
+            latent = graph.SetLatentNoiseMask({ mask, samples: latent })
+        }
 
         // CNETS -------------------------------------------------------------------------------
         let cnet_out: Cnet_return | undefined
@@ -194,7 +214,8 @@ app({
                           version: HRF.upscaleMethod.id == 'Neural XL' ? 'SDXL' : 'SD 1.x',
                           upscale: HRF.scaleFactor,
                       })
-            latent = latent = run_sampler(
+            if (mask) latent = graph.SetLatentNoiseMask({ mask, samples: latent })
+            latent = run_sampler(
                 run,
                 {
                     seed: ui.sampler.seed,
@@ -221,12 +242,15 @@ app({
         }
 
         // REMOVE BACKGROUND ---------------------------------------------------------------------
-        if (ui.removeBG) run_rembg_v1(ui.removeBG, finalImage)
+        if (ui.removeBG) {
+            const sub = run_rembg_v1(ui.removeBG, finalImage)
+            if (sub.length > 0) finalImage = graph.AlphaChanelRemove({ images: sub[0] })
+        }
 
         // SHOW 3D --------------------------------------------------------------------------------
         const show3d = ui.show3d
         if (show3d) {
-            run.add_saveImage(finalImage, 'base')
+            run.add_previewImage(finalImage).storeAs('base')
             const depth = (() => {
                 if (show3d.depth.MiDaS) return graph.MiDaS$7DepthMapPreprocessor({ image: finalImage })
                 if (show3d.depth.Zoe) return graph.Zoe$7DepthMapPreprocessor({ image: finalImage })
@@ -234,7 +258,7 @@ app({
                 if (show3d.depth.Marigold) return graph.MarigoldDepthEstimation({ image: finalImage })
                 throw new Error('❌ show3d activated, but no depth option choosen')
             })()
-            run.add_saveImage(depth, 'depth')
+            run.add_previewImage(depth).storeAs('depth')
 
             const normal = (() => {
                 if (show3d.normal.id === 'MiDaS') return graph.MiDaS$7NormalMapPreprocessor({ image: finalImage })
@@ -242,7 +266,7 @@ app({
                 if (show3d.normal.id === 'None') return graph.EmptyImage({ color: 0x7f7fff, height: 512, width: 512 })
                 return exhaust(show3d.normal)
             })()
-            run.add_saveImage(normal, 'normal')
+            run.add_previewImage(normal).storeAs('normal')
         } else {
             // DECODE --------------------------------------------------------------------------------
             graph.SaveImage({ images: finalImage })

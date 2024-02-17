@@ -1,12 +1,12 @@
-import type { FormBuilder } from './FormBuilder'
-import type { WidgetConfigFields } from './IWidget'
-import type { Widget_bool } from './widgets/bool/WidgetBool'
+import type { FormBuilder } from '../FormBuilder'
+import type { WidgetConfigFields } from '../IWidget'
+import type { Widget_bool } from '../widgets/bool/WidgetBool'
 
-import { Widget_enum, type Widget_enum_config } from './widgets/enum/WidgetEnum'
-import { Widget_group } from './widgets/group/WidgetGroup'
-import { Widget_number } from './widgets/number/WidgetNumber'
-import { Widget_prompt } from './widgets/prompt/WidgetPrompt'
-import { Widget_string } from './widgets/string/WidgetString'
+import { Widget_enum, type Widget_enum_config } from '../widgets/enum/WidgetEnum'
+import { Widget_group } from '../widgets/group/WidgetGroup'
+import { Widget_number } from '../widgets/number/WidgetNumber'
+import { Widget_prompt } from '../widgets/prompt/WidgetPrompt'
+import { Widget_string } from '../widgets/string/WidgetString'
 
 type AutoWidget<T> = T extends { kind: any; type: infer X }
     ? T['kind'] extends 'number'
@@ -68,8 +68,7 @@ export const mkFormAutoBuilder = (form: FormBuilder) => {
 export interface AutoBuilder extends IAutoBuilder {}
 export class AutoBuilder {
     constructor(public form: FormBuilder) {
-        const st = form.schema.st
-        const schema = st.schema
+        const schema = cushy.schema
         for (const node of schema.nodes) {
             Object.defineProperty(this, node.nameInCushy, {
                 value: (ext?: Partial<WidgetConfigFields<{}>>) =>
@@ -187,7 +186,7 @@ export class AutoBuilder {
                                 }
                                 // ENUMS ------------------------------------------
                                 else if (field.isEnum) {
-                                    console.log(`[👗] 🌈 Enum: ${field.type}`, { field })
+                                    // console.log(`[👗] 🌈 Enum: ${field.type}`, { field })
                                     const enumFn: Maybe<(p: Widget_enum_config<any>) => void> = (form.enum as any)[field.type]
                                     if (enumFn == null) {
                                         console.log(`[👗] ❌ Unknown enum: ${field.type}`)
@@ -200,7 +199,7 @@ export class AutoBuilder {
                                         default: opts?.default,
                                     })
                                 } else {
-                                    console.log(`[👗] skipping field type: ${field.type}`)
+                                    // console.log(`[👗] skipping field type: ${field.type}`)
                                 }
                             }
                             if (Object.keys(items).length === 0) {
@@ -231,8 +230,7 @@ export class AutoBuilder {
 // export interface AutoBuilderOpt extends IAutoBuilderOpt {}
 // export class AutoBuilderOpt {
 //     constructor(public form: FormBuilder) {
-//         const st = form.schema.st
-//         const schema = st.schema
+//         const schema = cushy.schema
 //         for (const enumName of schema.knownEnumsByName.keys()) {
 //             Object.defineProperty(this, enumName, {
 //                 value: (config: any) =>

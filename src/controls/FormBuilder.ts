@@ -5,11 +5,12 @@ import { exhaust } from 'src/utils/misc/ComfyUtils'
 import { _FIX_INDENTATION } from '../utils/misc/_FIX_INDENTATION'
 import * as W from './Widget'
 
-import { AutoBuilder, mkFormAutoBuilder } from './AutoBuilder'
-import { EnumBuilder, EnumBuilderOpt } from './EnumBuilder'
+import { mkFormAutoBuilder } from './builder/AutoBuilder'
+import { EnumBuilder, EnumBuilderOpt } from './builder/EnumBuilder'
 import { Widget_bool, type Widget_bool_config } from './widgets/bool/WidgetBool'
 import { Widget_choices, type Widget_choices_config } from './widgets/choices/WidgetChoices'
 import { Widget_color, type Widget_color_config } from './widgets/color/WidgetColor'
+import { Widget_custom, type Widget_custom_config } from './widgets/custom/WidgetCustom'
 import { Widget_enum } from './widgets/enum/WidgetEnum'
 import { Widget_group, type Widget_group_config } from './widgets/group/WidgetGroup'
 import { Widget_image, type Widget_image_config } from './widgets/image/WidgetImage'
@@ -22,10 +23,17 @@ import { Widget_prompt, type Widget_prompt_config } from './widgets/prompt/Widge
 import { Widget_size, type Widget_size_config } from './widgets/size/WidgetSize'
 import { Widget_string, type Widget_string_config } from './widgets/string/WidgetString'
 
+// export createFormBuilder
+
 export class FormBuilder {
     /** (@internal) don't call this yourself */
-    constructor(public schema: ComfySchemaL) {
-        makeAutoObservable(this, { auto: false })
+    constructor(public schema: 0 = 0) {
+        makeAutoObservable(this, {
+            auto: false,
+            autoField: false,
+            enum: false,
+            enumOpt: false,
+        })
     }
 
     // string
@@ -103,10 +111,26 @@ export class FormBuilder {
     // --------------------
 
     // enum = /*<const T extends KnownEnumNames>*/ (config: Widget_enum_config<any, any>) => new Widget_enum(this, config)
-    auto = mkFormAutoBuilder(this) /*<const T extends KnownEnumNames>*/
-    autoField = mkFormAutoBuilder(this)
-    enum = new EnumBuilder(this) /*<const T extends KnownEnumNames>*/
-    enumOpt = new EnumBuilderOpt(this)
+    get auto() {
+        const _ = mkFormAutoBuilder(this) /*<const T extends KnownEnumNames>*/
+        Object.defineProperty(this, 'auto', { value: _ })
+        return _
+    }
+    get autoField() {
+        const _ = mkFormAutoBuilder(this)
+        Object.defineProperty(this, 'autoField', { value: _ })
+        return _
+    }
+    get enum() {
+        const _ = new EnumBuilder(this) /*<const T extends KnownEnumNames>*/
+        Object.defineProperty(this, 'enum', { value: _ })
+        return _
+    }
+    get enumOpt() {
+        const _ = new EnumBuilderOpt(this)
+        Object.defineProperty(this, 'enumOpt', { value: _ })
+        return _
+    }
     //  <const T extends KnownEnumNames>(config: Widget_enum_config<T> & { startActive?: boolean }) =>
     //     this.optional({
     //         label: config.label,
@@ -116,6 +140,18 @@ export class FormBuilder {
     // --------------------
 
     color     = (opts: Widget_color_config)       => new Widget_color(this, opts) // prettier-ignore
+    colorOpt = <const T extends { [key: string]: W.Widget }>(
+        //
+        config: Widget_color_config & { startActive?: boolean },
+    ) =>
+        this.optional({
+            label: config.label,
+            requirements: config.requirements,
+            startActive: config.startActive,
+            startCollapsed: config.startCollapsed,
+            widget: () => this.color({ ...config, startCollapsed: undefined }),
+        })
+
     size      = (opts: Widget_size_config)      => new Widget_size(this, opts) // prettier-ignore
     orbit     = (opts: Widget_orbit_config)     => new Widget_orbit(this, opts) // prettier-ignore
     seed      = (opts: W.Widget_seed_config)      => new W.Widget_seed(this, opts) // prettier-ignore
@@ -127,7 +163,7 @@ export class FormBuilder {
 
     markdown = (opts: W.Widget_markdown_config | string) =>
         new W.Widget_markdown(this, typeof opts === 'string' ? { markdown: opts } : opts)
-    custom = <TViewState>(opts: W.Widget_custom_config<TViewState>) => new W.Widget_custom<TViewState>(this, opts)
+    custom = <TViewState>(opts: Widget_custom_config<TViewState>) => new Widget_custom<TViewState>(this, opts)
 
     list = <const T extends W.Widget>(p: Widget_list_config<T>) => new Widget_list(this, p)
 
@@ -193,9 +229,10 @@ export class FormBuilder {
         if (type === 'selectMany') return new W.Widget_selectMany(this, input, serial)
         if (type === 'size') return new Widget_size(this, input, serial)
         if (type === 'markdown') return new W.Widget_markdown(this, input, serial)
-        if (type === 'custom') return new W.Widget_custom(this, input, serial)
+        if (type === 'custom') return new Widget_custom(this, input, serial)
 
-        console.log(`🔴 unknown type ${type}`)
+        console.log(`🔴 unknown widget "${type}" in serial.`)
         exhaust(type)
+        return new W.Widget_markdown(this, { markdown: 'unknown widget "${type}" in serial.' })
     }
 }
