@@ -2,7 +2,7 @@ import type { Widget } from 'src/controls/Widget'
 import type { FormBuilder } from '../../FormBuilder'
 import type { GetWidgetResult, IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../../IWidget'
 
-import { makeAutoObservable } from 'mobx'
+import { makeAutoObservable, action } from 'mobx'
 import { nanoid } from 'nanoid'
 import { runWithGlobalForm } from 'src/models/_ctx2'
 import { bang } from 'src/utils/misc/bang'
@@ -123,7 +123,7 @@ export class Widget_group<T extends { [key: string]: Widget }> implements IWidge
                 : this._defaultSerial()
         if (this.serial.values_ == null) this.serial.values_ = {}
         this.enableGroup()
-        makeAutoObservable(this, { value: false })
+        makeAutoObservable(this, { value: false, enableGroup: action })
     }
 
     value: { [k in keyof T]: GetWidgetResult<T[k]> } = new Proxy({} as any, {
