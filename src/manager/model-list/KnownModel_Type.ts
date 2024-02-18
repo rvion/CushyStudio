@@ -8,10 +8,11 @@ export type KnownModel_Type =
     | "face_restore"       // x   3
     | "zero123"            // x   1
     | "embeddings"         // x   4
-    | "unet"               // x   2
+    | "VAE"                // x   6
+    | "unet"               // x  10
+    | "clip"               // x   1
     | "lora"               // x  13
     | "unclip"             // x   2
-    | "VAE"                // x   5
     | "T2I-Adapter"        // x   7
     | "T2I-Style"          // x   1
     | "controlnet"         // x  35

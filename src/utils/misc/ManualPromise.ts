@@ -1,4 +1,4 @@
-import { makeObservable, observable } from 'mobx'
+import { action, makeObservable, observable, runInAction } from 'mobx'
 
 export class ManualPromise<T = any> implements PromiseLike<T> {
     done: boolean = false
@@ -15,29 +15,41 @@ export class ManualPromise<T = any> implements PromiseLike<T> {
         this.logs.push(log)
     }
 
+    setValue = (t: T) => {
+        this.value = t
+    }
+
     constructor(
         //
         public fn?: (self: ManualPromise<T>) => {},
     ) {
         this.promise = new Promise((resolve, reject) => {
             this.resolve = (t: T | PromiseLike<T>) => {
-                this.done = true
-                this.isRunning = false
+                runInAction(() => {
+                    this.done = true
+                    this.isRunning = false
+                })
                 if (isPromise(t)) {
-                    ;(t as Promise<T>).then((final) => (this.value = final))
+                    ;(t as Promise<T>).then((final) => this.setValue(final))
                 } else {
-                    this.value = t as any
+                    this.setValue(t as any)
                 }
                 resolve(t)
             }
             this.reject = (t) => {
-                this.done = true
-                this.isRunning = false
+                runInAction(() => {
+                    this.done = true
+                    this.isRunning = false
+                })
                 reject(t)
             }
         })
         this.then = this.promise.then.bind(this.promise)
-        makeObservable(this, { done: observable, value: observable })
+        makeObservable(this, {
+            done: observable,
+            setValue: action,
+            value: observable,
+        })
     }
 }
 

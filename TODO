@@ -90,9 +90,7 @@ cnets:
 
 
 Todo :
-    ✘ new primitive to add all the primitive inputs instead of having super long names, @cancelled(24-02-18 15:30)
     ☐ create all nodes at once, then hydrate them after, so all json are ready
-    ☐ add back popout button
     ☐ better error message when node not found
     ☐ disable publish button if not logged in
     ☐ improve OuputWrappers to allow to open in side panes
@@ -115,6 +113,8 @@ Todo :
     ☐ image loader (local files by path)
     ☐ permutations node (possibly hard, possibly easy with lists)
     ☐ code builder:
+    ✘ new primitive to add all the primitive inputs instead of having super long names, @cancelled(24-02-18 15:30)
+    ✘ add back popout button @cancelled(24-02-18 15:33)
     ✔ use any image as draft illustration @done(24-02-18 15:30)
     ✘ runpod serverless @cancelled(24-02-18 15:30)
     ✔ one-click create app @done(24-02-18 15:30)

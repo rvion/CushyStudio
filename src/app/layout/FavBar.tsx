@@ -23,14 +23,14 @@ export const FavBarUI = observer(function FavBarUI_(p: {
         <>
             <div
                 //
-                tw='relative flex overflow-auto w-20'
+                tw='relative flex overflow-auto'
                 style={{ flexDirection: p.direction, width: `${size + 8}px` }}
             >
-                <div tw='absolute inset-0 overflow-auto flex flex-col items-center bg-base-300 flex-1 overflow-auto'>
+                <div tw='absolute inset-0 overflow-auto bg-base-300 flex-1 overflow-auto'>
                     <PanelHeaderSmallUI>
                         <FormUI form={conf} />
                     </PanelHeaderSmallUI>
-                    <div>
+                    <div tw='flex flex-col items-center'>
                         <div
                             tw={['btn btn-square', conf.fields.tree.value && 'btn-primary']}
                             style={{ width: sizeStr, height: sizeStr }}
@@ -109,19 +109,17 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                 </div>
             </div>
             {conf.fields.tree.value && (
-                <div id='xx123' tw='overflow-auto w-96'>
-                    <TreeUI autofocus shortcut='mod+2' title='File Explorer' tw='flex-2 overflow-auto' treeView={st.tree2View} />
+                <div tw='relative w-96 flex flex-col overflow-auto'>
+                    <div tw='absolute insert-0 w-96'>
+                        <TreeUI autofocus shortcut='mod+2' title='File Explorer' tw='overflow-auto' treeView={st.tree2View} />
+                    </div>
                 </div>
             )}
             {conf.fields.apps.value && (
-                <div id='xx123' tw='overflow-auto w-96'>
-                    <TreeUI
-                        autofocus
-                        shortcut='mod+1'
-                        title='Apps and Drafts'
-                        tw='flex-2 overflow-auto'
-                        treeView={st.tree1View}
-                    />
+                <div tw='relative w-96 flex flex-col overflow-auto'>
+                    <div tw='absolute insert-0 w-96'>
+                        <TreeUI autofocus shortcut='mod+1' title='Apps and Drafts' tw='overflow-auto' treeView={st.tree1View} />
+                    </div>
                 </div>
             )}
         </>

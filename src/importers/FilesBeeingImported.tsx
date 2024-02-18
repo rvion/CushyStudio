@@ -11,6 +11,11 @@ import { getPngMetadataFromFile } from '../utils/png/_getPngMetadata'
 import { TypescriptHighlightedCodeUI } from '../widgets/misc/TypescriptHighlightedCodeUI'
 import { PromptToCodeOpts } from './ComfyImporter'
 import { usePromise } from './usePromise'
+import { getWebpMetadata } from 'src/utils/png/_getWebpMetadata'
+import { keys } from 'mobx'
+import { MessageInfoUI } from 'src/panels/MessageUI'
+import { writeFileSync } from 'fs'
+import { toastError } from 'src/utils/misc/toasts'
 
 export interface FileListProps {
     files: File[]
@@ -50,20 +55,24 @@ export const ImportedFileUI = observer(function ImportedFileUI_(p: {
     file: File
 }) {
     const file = p.file
-
     const [code, setCode] = useState<string | null>(null)
-
+    const [relPath, setRelPath] = useState<string | null>(`library/local/${file.name}-${Date.now()}.ts`)
     const st = useSt()
-    const isPng = file.name.endsWith('.png')
-    if (!isPng) return <>❌ 0. not a png</>
 
-    const promise = usePromise(() => getPngMetadataFromFile(file), [])
+    const promise = usePromise(() => {
+        if (file.name.endsWith('.png')) return getPngMetadataFromFile(file)
+        if (file.name.endsWith('.webp')) return getWebpMetadata(file)
+        if (file.name.endsWith('.json')) return file.text().then((x) => ({ workflow: x }))
+        return Promise.resolve('NO')
+    }, [])
     const metadata = promise.value
 
     if (metadata == null) return <>loading...</>
+    if (metadata === 'NO') return <>❌0. no metadata</>
+
     const workflowStr = (metadata as { [key: string]: any }).workflow
 
-    if (workflowStr == null) return <>❌1. no workflow in metadata</>
+    if (workflowStr == null) return <>❌1. no workflow in metadata (keys: {JSON.stringify(metadata)})</>
     let workflowJSON: LiteGraphJSON
     try {
         workflowJSON = JSON.parse(workflowStr)
@@ -86,10 +95,10 @@ export const ImportedFileUI = observer(function ImportedFileUI_(p: {
         conf: Partial<PromptToCodeOpts>
     }[] = [
         //
-        { title: 'autoui+id', conf: { preserveId: true, autoUI: true } },
+        { title: 'base', conf: { preserveId: false, autoUI: false } },
         { title: 'autoui', conf: { preserveId: false, autoUI: true } },
         { title: 'base+id', conf: { preserveId: true, autoUI: false } },
-        { title: 'base', conf: { preserveId: false, autoUI: false } },
+        { title: 'autoui+id', conf: { preserveId: true, autoUI: true } },
     ]
     return (
         <Panel className={p.className} tw='bg-base-300 overflow-auto virtua'>
@@ -123,7 +132,32 @@ export const ImportedFileUI = observer(function ImportedFileUI_(p: {
                 ))}
             </div>
 
-            {code && <TypescriptHighlightedCodeUI code={code} />}
+            {code && (
+                <div tw='bd1 m-2'>
+                    <div
+                        onClick={async () => {
+                            // if (uist.hasConflict) return toastError('file already exist, change app name')
+                            const path = `${st.rootPath}/${relPath}`
+                            writeFileSync(path, code, 'utf-8')
+                            const file = st.library.getFile(relPath as RelativePath)
+                            const res = await file.extractScriptFromFile()
+                            if (res.type === 'failed') return toastError('failed to extract script')
+                            const script = res.script
+                            script.evaluateAndUpdateApps()
+                            const apps = script._apps_viaScript
+                            if (apps == null) return toastError('no app found (apps is null)')
+                            if (apps.length === 0) return toastError('no app found (apps.length === 0)')
+                            const firstApp = apps[0]!
+                            firstApp.openLastOrCreateDraft()
+                        }}
+                        tw='btn btn-sm btn-primary'
+                    >
+                        create file
+                    </div>
+                    <MessageInfoUI markdown={` This file will be created as  \`${relPath}\``} />
+                    <TypescriptHighlightedCodeUI code={code} />
+                </div>
+            )}
             {/* {json ? <pre>{JSON.stringify(json.value, null, 4)}</pre> : null} */}
             {/* {Boolean(hasWorkflow) ? '🟢 has workflow' : `🔴 no workflow`} */}
         </Panel>

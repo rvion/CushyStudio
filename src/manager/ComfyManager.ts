@@ -80,14 +80,19 @@ export class ComfyManager {
         return this.modelList?.models.some((x) => x.name === name && x.installed === 'True') ?? false
     }
 
+    modelsBeeingInstalled = new Set<KnownModel_Name>()
+
     installModel = async (model: ModelInfo) => {
         try {
+            this.modelsBeeingInstalled.add(model.name)
             const status = await this.fetchPost('/model/install', model)
+            this.modelsBeeingInstalled.delete(model.name)
             toastSuccess('Model installed')
             return true
         } catch (exception) {
             console.error(`Install failed: ${/*model.title*/ ''} / ${exception}`)
             toastError('Model Installation Failed')
+            this.modelsBeeingInstalled.delete(model.name)
             return false
         }
     }

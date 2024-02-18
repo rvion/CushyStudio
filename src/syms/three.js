@@ -375,7 +375,6 @@ export const TriangleFanDrawMode = _.TriangleFanDrawMode
 export const TriangleStripDrawMode = _.TriangleStripDrawMode
 export const TrianglesDrawMode = _.TrianglesDrawMode
 export const TubeGeometry = _.TubeGeometry
-export const TwoPassDoubleSide = _.TwoPassDoubleSide
 export const UVMapping = _.UVMapping
 export const Uint16BufferAttribute = _.Uint16BufferAttribute
 export const Uint32BufferAttribute = _.Uint32BufferAttribute
