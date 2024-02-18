@@ -68,6 +68,7 @@ export type WidgetConfigFields<X> = X & {
     i18n?: { [key: string]: string }
     className?: string
     startCollapsed?: boolean
+    collapsible?: boolean
     showID?: boolean
     requirements?: Requirements[]
 }

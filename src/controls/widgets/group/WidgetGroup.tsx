@@ -11,6 +11,7 @@ import { WidgetDI } from '../WidgetUI.DI'
 // CONFIG
 export type Widget_group_config<T extends { [key: string]: Widget }> = WidgetConfigFields<{
     // default?: boolean
+    // collapsible?: boolean
     items?: () => T
     topLevel?: boolean
     /** if provided, will be used to show a single line summary on the inline form slot */
@@ -49,7 +50,7 @@ export class Widget_group<T extends { [key: string]: Widget }> implements IWidge
             .join(',')
     }
     readonly isVerticalByDefault = true
-    readonly isCollapsible = true
+    readonly isCollapsible = this.config.collapsible ?? true
     readonly id: string
     readonly type: 'group' = 'group'
 

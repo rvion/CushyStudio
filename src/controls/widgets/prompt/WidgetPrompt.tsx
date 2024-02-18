@@ -31,7 +31,7 @@ export class Widget_prompt implements IWidget<Widget_prompt_types> {
     get serialHash () { return hash(this.serial.val) } // prettier-ignore
     isVerticalByDefault = true
 
-    get isCollapsible() { return this.config.textarea ?? false } // prettier-ignore
+    get isCollapsible() { return this.config.textarea ?? true } // prettier-ignore
 
     readonly id: string
     readonly type: 'prompt' = 'prompt'
