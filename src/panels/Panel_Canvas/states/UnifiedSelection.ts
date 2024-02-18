@@ -14,6 +14,8 @@ import { Rect } from 'konva/lib/shapes/Rect'
 import { Transformer } from 'konva/lib/shapes/Transformer'
 import { makeAutoObservable, reaction } from 'mobx'
 import { MediaImageL } from 'src/models/MediaImage'
+import { toast } from 'react-toastify'
+import { bang } from 'src/utils/misc/bang'
 
 export class UnifiedSelection {
     id: string = nanoid()
@@ -21,6 +23,13 @@ export class UnifiedSelection {
 
     get isActive(): boolean {
         return this.canvas.activeSelection === this
+    }
+
+    remove = () => {
+        if (this.canvas.selections.length === 1) return toast.error(`Can't delete the last selection`)
+        this.layer.destroy()
+        if (this.isActive) this.canvas.activeSelection = bang(this.canvas.selections.find((s) => s !== this))
+        this.canvas.selections = this.canvas.selections.filter((s) => s !== this)
     }
 
     get x() { return this.stableData.x } // prettier-ignore
