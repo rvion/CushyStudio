@@ -41,10 +41,6 @@
         "gen-virtual": "bun src/utils/codegen/gen.initial-schema.ts",
         "js-1": "node --loader ts-node/esm             --experimental-modules    --experimental-specifier-resolution=node",
         "js": "node --loader @esbuild-kit/esm-loader --experimental-vm-modules --experimental-specifier-resolution=node",
-        "📌 WEBSITE": "----------------------------------------------------------------------",
-        "site:install": "cd site && npm install",
-        "site:run": "cd site && npm start",
-        "site:deploy": "cd site && npm run deploy",
         "📌 FRONT": "------------------------------------------------------------------------",
         "build": "node src/shell/build.js",
         "front:shell": "electron src/shell",
@@ -57,7 +53,9 @@
         "bump": "bump patch --commit=v --tag=v --push",
         "diff-with-master-all": "git diff master                   > tmp/diff-with-master-all.diff && code tmp/diff-with-master-all.diff",
         "diff-with-master-add": "git diff master | grep -Ev '^\\-' > tmp/diff-with-master.diff     && code tmp/diff-with-master.diff",
-        "diff-local": "cd library/local && git diff master > doc.diff && code doc.diff"
+        "diff-local": "cd library/local && git diff master > doc.diff && code doc.diff",
+        "📌 UTILS": "----------------------------------------------------------------------",
+        "pics": "bun --watch src/tools/autoupload-screenshots.ts"
     },
     "dependencies": {
         "@codemirror/autocomplete": "^6.12.0",

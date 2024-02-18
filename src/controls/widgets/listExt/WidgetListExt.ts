@@ -51,7 +51,7 @@ export type Widget_listExt_types<T extends Widget> = {
 // STATE
 export interface Widget_listExt<T extends Widget> extends WidgetTypeHelpers<Widget_listExt_types<T>> {}
 export class Widget_listExt<T extends Widget> implements IWidget<Widget_listExt_types<T>> {
-    get serialHash () { return hash(this.result) } // prettier-ignore
+    get serialHash () { return hash(this.value) } // prettier-ignore
     readonly isVerticalByDefault = true
     readonly isCollapsible = true
     readonly id: string
@@ -159,8 +159,8 @@ export class Widget_listExt<T extends Widget> implements IWidget<Widget_listExt_
         }
     }
 
-    get result(): Widget_listExt_output<T> {
-        const items = this.entries.map((i) => ({ position: i.position, value: i.widget.result }))
+    get value(): Widget_listExt_output<T> {
+        const items = this.entries.map((i) => ({ position: i.position, value: i.widget.value }))
         return {
             items: items,
             width: this.serial.width,

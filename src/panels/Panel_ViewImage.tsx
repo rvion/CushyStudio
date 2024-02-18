@@ -2,14 +2,12 @@ import type { MediaImageL } from 'src/models/MediaImage'
 
 import { observer } from 'mobx-react-lite'
 import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch'
-import { Dropdown, MenuItem } from 'src/rsuite/Dropdown'
+import { formatSize } from 'src/db/getDBStats'
 import { RevealUI } from 'src/rsuite/reveal/RevealUI'
 import { Rate } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
 import { assets } from 'src/utils/assets/assets'
 import { JsonViewUI } from 'src/widgets/workspace/JsonViewUI'
-import { openExternal, showItemInFolder } from '../app/layout/openExternal'
-import { formatSize } from 'src/db/getDBStats'
 import { ImageDropdownUI } from './ImageDropdownUI'
 
 export const Panel_ViewImage = observer(function Panel_ViewImage_(p: {
@@ -22,7 +20,7 @@ export const Panel_ViewImage = observer(function Panel_ViewImage_(p: {
         ? st.db.media_images.get(p.imageID)
         : st.db.media_images.last()
     const url = img?.url
-    const background = st.configFile.value.galleryBgColor
+    const background = st.galleryConf.get('galleryBgColor')
 
     const shouldFilter = st.project.filterNSFW
     const safety =

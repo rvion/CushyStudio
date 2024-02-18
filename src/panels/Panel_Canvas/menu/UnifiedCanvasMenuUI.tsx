@@ -4,33 +4,63 @@ import { ComboUI } from 'src/app/shortcuts/ComboUI'
 import { MediaImageL } from 'src/models/MediaImage'
 import { InputNumberUI } from 'src/rsuite/InputNumberUI'
 import { useSt } from 'src/state/stateContext'
-import { toastError } from 'src/utils/misc/toasts'
-import { useUnifiedCanvas } from '../UnifiedCanvasCtx'
 import { useImageDrop } from 'src/widgets/galleries/dnd'
+import { useUnifiedCanvas } from '../UnifiedCanvasCtx'
+import { toastError } from 'src/utils/misc/toasts'
+import { DraftIllustrationUI } from 'src/cards/fancycard/DraftIllustration'
 
 export const UnifiedCanvasMenuUI = observer(function UnifiedCanvasMenuUI_(p: {}) {
     const canvas = useUnifiedCanvas()
     const st = useSt()
     const [dropStyle2, dropRef2] = useImageDrop(st, (img) => canvas.addMask(img))
     return (
-        <div tw='virtualBorder flex flex-col gap-2'>
-            <div
-                onClick={() => {
-                    canvas.undo()
-                }}
-                className='btn'
-            >
-                Undo (stack.size={canvas.undoBuffer.length})
+        <div tw='virtualBorder flex flex-col gap-1 m-2 bg-base-200 absolute right-10 z-50'>
+            <CanvasToolbarUI />
+            <div>
+                <div onClick={() => canvas.undo()} className='btn btn-sm btn-outline'>
+                    Undo (stack.size={canvas.undoBuffer.length})
+                </div>
+            </div>
+            {/* GRID SIZE */}
+            <div tw='bd1 p-1 flex gap-1 items-center'>
+                {/*  */}
+                <input checked tw='checkbox' type='checkbox' />
+                grid snap:
+                <input tw='input input-bordered input-sm w-24' type='number' value={canvas.snapSize} /> px
+                {/* x */}
+                {/* <input tw='input input-bordered input-sm w-24' type='number' value={canvas.snapSize} /> */}
+            </div>
+            {/* TOP LEVEL BUTTON */}
+            <div tw='bd1'>
+                Layers
+                <SortableList onSortEnd={() => {}} className='list' draggedItemClassName='dragged'>
+                    {canvas.images.map((p: { img: MediaImageL }) => {
+                        // const img = p.img
+                        return (
+                            <SortableItem key={p.img.id}>
+                                <div tw='flex'>
+                                    {/*  */}
+                                    <input type='radio' name='radio-1' className='radio' />
+                                    <input type='checkbox' checked className='checkbox' />
+                                    <div tw='btn btn-sm'>{p.img.filename}</div>
+                                    <div className='btn btn-square btn-sm btn-ghost'>
+                                        <span className='material-symbols-outlined'>delete</span>
+                                    </div>
+                                </div>
+                            </SortableItem>
+                        )
+                    })}
+                </SortableList>
             </div>
             {/*  */}
             {/* TOP LEVEL BUTTON */}
-            <div tw='bd1'>
+            {/* <div tw='bd1'>
                 Virtual images for your form
                 <div tw='m-1 flex gap-1'>
                     <div tw='btn btn-square bd1'>Image</div>
                     <div tw='btn btn-square bd1'>Mask</div>
                 </div>
-            </div>
+            </div> */}
             <div tw='bd'>
                 <div
                     tw='btn btn-primary'
@@ -48,86 +78,29 @@ export const UnifiedCanvasMenuUI = observer(function UnifiedCanvasMenuUI_(p: {})
                         // showcase
                         const draft = st.db.drafts.get('HU3BR0X9yd6qB3rWTH3Dd')
                         if (draft == null) return toastError('❌ draft(id=HU3BR0X9yd6qB3rWTH3Dd) not found')
-                        draft.start(null, image)
+                        draft.start({ imageToStartFrom: image })
                     }}
                 >
                     AMAZE YOURSEF
                 </div>
             </div>
-            {/* GRID SIZE */}
-            <div tw='flex gap-1 items-center'>
-                {/*  */}
-                snap:
-                <input tw='input input-bordered input-sm w-24' type='number' value={canvas.snapSize} />
-                x
-                <input tw='input input-bordered input-sm w-24' type='number' value={canvas.snapSize} />
-            </div>
-            {/* SELECTIONS */}
-            <div tw='bd1'>
-                <div tw='flex items-center justify-between'>
-                    Selections
-                    <div tw='btn btn-sm btn-square btn-outline' onClick={canvas.addSelection}>
-                        <span className='material-symbols-outlined'>add</span>
-                    </div>
-                </div>
-                <div tw='w-full bd1 m-1'>
-                    {canvas.selections.map((uniSel) => (
-                        <div key={uniSel.id} className='flex whitespace-nowrap justify-between'>
-                            <div tw='flex gap-1 items-center'>
-                                <input
-                                    type='radio'
-                                    checked={canvas.activeSelection === uniSel}
-                                    onChange={() => (canvas.activeSelection = uniSel)}
-                                    name='active'
-                                    className='radio'
-                                />
-                                <div>Selection 0</div>
-                            </div>
-                            <div
-                                //
-                                tw='btn btn-sm btn-square btn-outline'
-                                onClick={uniSel.saveImage}
-                            >
-                                <span className='material-symbols-outlined'>save</span>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-                {/* <RevealUI>
-    <pre>{JSON.stringify(uist.stableData, null, 4)}</pre>
-</RevealUI> */}
-            </div>
-            <div style={{ border: '1px solid cyan' }}>
-                <div tw='flex items-center gap-2'>
+            <div tw='bd1 p-1'>
+                {/* <div tw='flex items-center gap-2'>
                     Mode:
                     <div
-                        onClick={() => (canvas.mode = 'move')}
-                        tw={['btn btn-sm', canvas.mode === 'move' ? 'btn-primary' : null]}
+                        onClick={() => (canvas.tool = 'move')}
+                        tw={['btn btn-sm', canvas.tool === 'move' ? 'btn-primary' : null]}
                     >
                         Move
                     </div>
                     <div
-                        onClick={() => (canvas.mode = 'mask')}
-                        tw={['btn btn-sm', canvas.mode === 'mask' ? 'btn-primary' : null]}
+                        onClick={() => (canvas.tool = 'mask')}
+                        tw={['btn btn-sm', canvas.tool === 'mask' ? 'btn-primary' : null]}
                     >
                         Mask
                     </div>
-                </div>
-                <div tw='flex items-center gap-2'>
-                    Tool:
-                    <div
-                        onClick={() => (canvas.maskTool = 'paint')}
-                        tw={['btn btn-sm', canvas.maskTool === 'paint' ? 'btn-primary' : null]}
-                    >
-                        Paint
-                    </div>
-                    <div
-                        onClick={() => (canvas.maskTool = 'erase')}
-                        tw={['btn btn-sm', canvas.maskTool === 'erase' ? 'btn-primary' : null]}
-                    >
-                        Mask
-                    </div>
-                </div>
+                </div> */}
+                Brush
                 <div tw='flex items-center gap-2'>
                     size:
                     <InputNumberUI //
@@ -139,6 +112,7 @@ export const UnifiedCanvasMenuUI = observer(function UnifiedCanvasMenuUI_(p: {})
                     />
                     px
                 </div>
+                {/*
                 <div tw='flex items-center gap-2'>
                     <ComboUI combo={'mod+m'} /> toggle mode
                 </div>
@@ -151,9 +125,77 @@ export const UnifiedCanvasMenuUI = observer(function UnifiedCanvasMenuUI_(p: {})
                 <div tw='flex items-center gap-2'>
                     <ComboUI combo={'mod+shift+y'} /> decrease tool weight
                 </div>
+                1*/}
             </div>
+
+            {/* SELECTIONS */}
+            <div tw='bd1 p-1'>
+                <div tw='flex items-center justify-between'>
+                    Selections
+                    <div tw='btn btn-sm btn-square btn-outline' onClick={canvas.addSelection}>
+                        <span className='material-symbols-outlined'>add</span>
+                    </div>
+                </div>
+                <div tw='w-full bd1 m-1'>
+                    {canvas.selections.map((uniSel) => (
+                        <div>
+                            <div key={uniSel.id} className='flex whitespace-nowrap gap-1'>
+                                <div tw='flex gap-0.5 items-center'>
+                                    <input
+                                        type='radio'
+                                        checked={canvas.activeSelection === uniSel}
+                                        onChange={() => (canvas.activeSelection = uniSel)}
+                                        name='active'
+                                        className='radio'
+                                    />
+                                    <div>Selection 0</div>
+                                </div>
+                                <div
+                                    //
+                                    tw='btn btn-sm btn-square btn-outline'
+                                    onClick={uniSel.saveImage}
+                                >
+                                    <span className='material-symbols-outlined'>save</span>
+                                </div>
+                            </div>
+                            <div tw='flex gap-1'>
+                                <div tw='w-16'>width:</div>
+                                <InputNumberUI
+                                    //
+                                    onValueChange={(e) => {
+                                        uniSel.stableData.width = e
+                                        uniSel.applyStableData()
+                                    }}
+                                    value={uniSel.stableData.width}
+                                    mode='int'
+                                    softMin={128}
+                                    softMax={1024}
+                                />
+                            </div>
+                            <div tw='flex gap-1'>
+                                <div tw='w-16'>height:</div>
+                                <InputNumberUI
+                                    //
+                                    onValueChange={(e) => {
+                                        uniSel.stableData.width = e
+                                        uniSel.applyStableData()
+                                    }}
+                                    value={uniSel.stableData.width}
+                                    mode='int'
+                                    softMin={128}
+                                    softMax={1024}
+                                />
+                            </div>
+                        </div>
+                    ))}
+                </div>
+                {/* <RevealUI>
+                    <pre>{JSON.stringify(uist.stableData, null, 4)}</pre>
+                </RevealUI> */}
+            </div>
+
             {/* Masks */}
-            <div tw='bd1' style={dropStyle2} ref={dropRef2}>
+            <div tw='bd1 p-1' style={dropStyle2} ref={dropRef2}>
                 <div tw='flex items-center justify-between'>
                     <div>Masks</div>
                     <div
@@ -200,31 +242,55 @@ export const UnifiedCanvasMenuUI = observer(function UnifiedCanvasMenuUI_(p: {})
                     )
                 })}
             </div>
-            {/* TOP LEVEL BUTTON */}
-            <div tw='bd1'>
-                Images
-                <SortableList onSortEnd={() => {}} className='list' draggedItemClassName='dragged'>
-                    {canvas.images.map((p: { img: MediaImageL }) => {
-                        // const img = p.img
-                        return (
-                            <SortableItem key={p.img.id}>
-                                <div tw='flex'>
-                                    {/*  */}
-                                    <input type='radio' name='radio-1' className='radio' />
-                                    <input type='checkbox' checked className='checkbox' />
-                                    <div tw='btn btn-sm'>{p.img.filename}</div>
-                                    <div className='btn btn-square btn-sm btn-ghost'>
-                                        <span className='material-symbols-outlined'>delete</span>
-                                    </div>
-                                </div>
-                            </SortableItem>
-                        )
-                    })}
-                </SortableList>
-            </div>
             {/* DEBUG */}
-            <div className='w-96'>
+            {/* <div className='w-96'>
                 <pre>{JSON.stringify(canvas.infos, null, 3)}</pre>
+            </div> */}
+        </div>
+    )
+})
+
+export const CanvasToolbarUI = observer(function CanvasToolbarUI_(p: {}) {
+    const canvas = useUnifiedCanvas()
+    return (
+        <div /* tw='absolute top-0 z-50 [left:50%]' */>
+            <div tw='flex items-center bd'>
+                <div
+                    onClick={() => (canvas.tool = 'generate')}
+                    tw={['btn btn-sm', canvas.tool === 'generate' ? 'btn-primary' : null]}
+                >
+                    Generate
+                    <ComboUI combo='1' />
+                </div>
+                <div onClick={() => (canvas.tool = 'mask')} tw={['btn btn-sm', canvas.tool === 'mask' ? 'btn-primary' : null]}>
+                    Mask
+                    <ComboUI combo='2' />
+                </div>
+                <div onClick={() => (canvas.tool = 'paint')} tw={['btn btn-sm', canvas.tool === 'paint' ? 'btn-primary' : null]}>
+                    Paint
+                    <ComboUI combo='2' />
+                </div>
+                <div onClick={() => (canvas.tool = 'move')} tw={['btn btn-sm', canvas.tool === 'move' ? 'btn-primary' : null]}>
+                    Move
+                    <ComboUI combo='4' />
+                </div>
+            </div>
+            <div tw='flex'>
+                {
+                    /* canvas.tool === 'generate' && */
+                    canvas.st.favoriteDrafts.map((draft) => (
+                        <div tw={[draft === canvas.currentDraft ? 'bd' : null]}>
+                            <DraftIllustrationUI
+                                onClick={() => {
+                                    draft.openOrFocusTab()
+                                    canvas.currentDraft = draft
+                                }}
+                                draft={draft}
+                                size='3rem'
+                            />
+                        </div>
+                    ))
+                }
             </div>
         </div>
     )

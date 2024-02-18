@@ -88,13 +88,13 @@ export class Widget_optional<T extends Widget> implements IWidget<Widget_string_
         if (isActive) this.setOn()
         makeObservable(this, {
             serial: observable,
-            result: computed,
+            value: computed,
         })
     }
 
-    get result(): Widget_optional_output<T> {
+    get value(): Widget_optional_output<T> {
         if (!this.serial.active) return null
-        return this.childOrThrow.result
+        return this.childOrThrow.value
     }
 }
 

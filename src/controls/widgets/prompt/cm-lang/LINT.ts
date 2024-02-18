@@ -7,7 +7,7 @@ import { PromptAST } from '../grammar/grammar.practical'
 
 export const PromptLinter1 = linter((view: EditorView) => {
     let diagnostics: Diagnostic[] = []
-    const st: STATE = (window as any).st
+    const st: STATE = cushy
     const removeAction: Action = {
         name: 'Remove',
         apply(view, from, to) {

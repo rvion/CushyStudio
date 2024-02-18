@@ -16,6 +16,7 @@ export const WidgetGroup_LineUI = observer(function WidgetGroup_LineUI_(p: {
 
 export const WidgetGroup_BlockUI = observer(function WidgetGroup_BlockUI_(p: {
     //
+    className?: string
     widget: Widget_group<{ [key: string]: Widget }>
 }) {
     const widget = p.widget
@@ -23,10 +24,14 @@ export const WidgetGroup_BlockUI = observer(function WidgetGroup_BlockUI_(p: {
     // Alt
     // | const groupKeys = widget.childKeys
     // | const groupFields = groupKeys.map((k) => [k, widget.values[k]])
-    const groupFields = Object.entries(widget.values)
+    const groupFields = Object.entries(widget.fields)
     const isHorizontal = widget.config.layout === 'H'
     return (
-        <div tw={['WIDGET-GROUP', 'flex items-start w-full text-base-content']} style={{ position: 'relative' }}>
+        <div
+            className={p.className}
+            tw={['WIDGET-GROUP', 'flex items-start w-full text-base-content']}
+            // style={{ position: 'relative' }}
+        >
             {widget.serial.collapsed ? null : (
                 <div
                     className={widget.config.className}

@@ -13,11 +13,14 @@ import { UnifiedSelection } from './UnifiedSelection'
 import { UnifiedImage } from './UnifiedImage'
 import { UnifiedMask, setupStageForPainting } from './UnifiedMask'
 import { toastError } from 'src/utils/misc/toasts'
+import type { DraftL } from 'src/models/Draft'
+import { UnifiedStep } from './UnifiedStep'
 
 export class UnifiedCanvas {
     snapToGrid = true
     snapSize = 64
     rootRef = createRef<HTMLDivElement>()
+    currentDraft: DraftL | null = null
     // ---------------------------------------------------
     undo = () => {
         const last = this.undoBuffer.pop()
@@ -38,11 +41,11 @@ export class UnifiedCanvas {
         mask.layer.moveToTop()
     }
 
-    mode: 'mask' | 'move' = 'move'
-    maskTool: 'paint' | 'erase' = 'paint'
+    tool: 'generate' | 'mask' | 'paint' | 'move' = 'generate'
+    brushMode: 'paint' | 'erase' = 'paint'
+    maskToolSize: number = 32
     maskColor = 'red'
     maskOpacity = 0.5
-    maskToolSize: number = 32
 
     _isPaint = false
     _lastLine: Konva.Line | null = null
@@ -65,9 +68,36 @@ export class UnifiedCanvas {
         isDown: false,
     }
 
+    onWheel = (e: any) => {
+        //
+    }
+    onKeyDown = (e: any) => {
+        if (e.key === '1') { this.tool = 'generate' ; return } // prettier-ignore
+        if (e.key === '2') { this.tool = 'mask' ; return } // prettier-ignore
+        if (e.key === '3') { this.tool = 'paint' ; return } // prettier-ignore
+        if (e.key === '4') { this.tool = 'move' ; return } // prettier-ignore
+
+        if (e.key === 'z' && (e.ctrlKey || e.metaKey)) {
+            this.undo()
+        }
+        // if (e.keyCode === 37) {
+        //     circle.x(circle.x() - DELTA)
+        // } else if (e.keyCode === 38) {
+        //     circle.y(circle.y() - DELTA)
+        // } else if (e.keyCode === 39) {
+        //     circle.x(circle.x() + DELTA)
+        // } else if (e.keyCode === 40) {
+        //     circle.y(circle.y() + DELTA)
+        // } else {
+        //     return
+        // }
+        e.preventDefault()
+    }
+
     // immutable base for calculations
     readonly base = Object.freeze({ width: 512, height: 512 })
     images: UnifiedImage[]
+    steps: UnifiedStep[] = []
     masks: UnifiedMask[] = []
     selections: UnifiedSelection[] = []
     grid: KonvaGrid1
@@ -76,15 +106,42 @@ export class UnifiedCanvas {
     tempLayer: Konva.Layer
     constructor(public st: STATE, baseImage: MediaImageL) {
         this.stage = new Konva.Stage({ container: this.TEMP, width: 512, height: 512 })
+        // this.stage.on('keydown', (ke) => {
+        //     const e = ke.evt
+        //     console.log(`[👙] e.key`, e.key)
+        //     if (e.key === 'z' && (e.ctrlKey || e.metaKey)) {
+        //         this.undo()
+        //     }
+        // })
         this.grid = new KonvaGrid1(this)
         this.images = [new UnifiedImage(this, baseImage)]
         this.stage.on('wheel', (e: KonvaEventObject<WheelEvent>) => onWheelScrollCanvas(this, e))
         this.stage.on('mousemove', (e: KonvaEventObject<MouseEvent>) => onMouseMoveCanvas(this, e))
+        this.stage.on('mousedown', (e: KonvaEventObject<MouseEvent>) => {
+            console.log(`[👙] hello`)
+            if (this.tool === 'generate') {
+                e.cancelBubble = true
+                e.evt.preventDefault()
+                e.evt.stopPropagation()
+                const res = this.activeSelection.saveImage()
+                if (res == null) return toastError('❌ FAILED to canvas.activeSelection.saveImage')
+                const { image, mask } = res
+                if (image && this.currentDraft) {
+                    const step = this.currentDraft.start({
+                        focusOutput: false,
+                        imageToStartFrom: image,
+                    })
+                    const us = new UnifiedStep(this, step)
+                    this.steps.push(us)
+                }
+            }
+        })
         // ------------------------------
         // to hold the line currently being drawn
         this.tempLayer = new Konva.Layer()
         this.tempLayer.opacity(0.5)
         this.stage.add(this.tempLayer)
+
         // ------------------------------
         const selection = this.addSelection()
         this.activeSelection = selection
@@ -103,7 +160,7 @@ export class UnifiedCanvas {
     addMask = (img?: MediaImageL): UnifiedMask => {
         const mask = new UnifiedMask(this, img)
         this.masks.push(mask)
-        this.mode = 'mask'
+        this.tool = 'mask'
         return mask
     }
 

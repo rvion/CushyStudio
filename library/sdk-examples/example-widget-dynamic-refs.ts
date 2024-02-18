@@ -19,12 +19,12 @@ app({
                                 // showID: true,
                                 // if choices is a function, the form root is injected as first parameter
                                 choices: (formRoot: Widget_group<any>) => {
-                                    const steps = formRoot.values.samplerUI as Widget_list<any>
+                                    const steps = formRoot.fields.samplerUI as Widget_list<any>
                                     return steps.items.map((choiceWidget: Widget_choices<any>, ix: number) => {
                                         if (choiceWidget == null) console.log(`[🔴] err 1: choiceWidget is null`)
                                         const _selectOne = choiceWidget.firstActiveBranchWidget as Maybe<Widget_selectOne<any>>
                                         if (_selectOne == null) console.log(`[🔴] err 2: firstActiveBranchWidget is null`, _selectOne) // prettier-ignore
-                                        const _actualChoice = _selectOne?.result
+                                        const _actualChoice = _selectOne?.value
                                         return {
                                             id: _selectOne?.id ?? 'error',
                                             disabled: _actualChoice == null,

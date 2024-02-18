@@ -62,7 +62,7 @@ export const setupStageForPainting = (canvas: UnifiedCanvas) => {
         var pos = canvas.pointerPosition
         if (pos == null) return console.log(`[⁉️] paint failed: no cursor position`)
 
-        if (canvas.mode === 'mask') {
+        if (canvas.tool === 'mask') {
             const activeMask = canvas.activeMask
             if (activeMask == null) return console.log(`[⁉️] paint failed: no canvas.activeMask.layer`)
             // 2. ensure active mask
@@ -117,7 +117,7 @@ export const setupStageForPainting = (canvas: UnifiedCanvas) => {
 
     // and core function - drawing
     stage.on('mousemove touchmove', function (e) {
-        if (canvas.mode !== 'mask') return
+        if (canvas.tool !== 'mask') return
         if (!canvas._isPaint) return
 
         // prevent scrolling on touch devices

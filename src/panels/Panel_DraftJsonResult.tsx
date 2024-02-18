@@ -6,5 +6,5 @@ export const Panel_DraftJsonResult = observer(function Panel_DraftJsonResult_(p:
     const st = useSt()
     const draft = typeof p.draftID === 'string' ? st.db.drafts.get(p.draftID) : p.draftID
     if (draft == null) return <>🔴 draft with id "{p.draftID}" not found</>
-    return <JsonViewUI value={draft.form.value?.result} />
+    return <JsonViewUI value={draft.form?.value} />
 })

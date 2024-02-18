@@ -45,14 +45,7 @@ export type ConfigFile = {
     outputPreviewSize?: number
     historyAppSize?: number
     latentPreviewSize?: number
-    /** defaults to 48px */
-    galleryImageSize?: number
-    /** defaults to 50 */
-    galleryMaxImages?: number
-    /** defaults to 50 */
-    galleryBgColor?: string
-    /** opacity of hovered images */
-    galleryHoverOpacity?: number
+
     // ---------------------------------------------------------------------------------------
     /** if true, will auto-open devtools on startup */
     preferDevToolsOpen?: boolean
@@ -64,14 +57,6 @@ export type ConfigFile = {
      * possible valules: 'stable' | 'dev'
      */
     releaseChannel?: 'stable' | 'dev'
-
-    /**
-     * if true, hovering any image in the ui will scale the image
-     * so it use all screen real estate rather than be limited by its
-     * base size
-     * @default false
-     */
-    showPreviewInFullScreen?: boolean
 
     /**
      * show hovered preview in the main output panel

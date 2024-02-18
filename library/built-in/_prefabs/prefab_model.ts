@@ -3,7 +3,7 @@ import type { OutputFor } from './_prefabs'
 // UI -----------------------------------------------------------
 export const ui_model = () => {
     const form = getCurrentForm()
-    const ckpts = form.schema.st.managerRepository.getKnownCheckpoints()
+    const ckpts = cushy.managerRepository.getKnownCheckpoints()
     return form.group({
         label: 'AI Model',
         summary: (ui) => {

@@ -1,12 +1,13 @@
 import type { OrbitControls as OrbitControlsT } from 'three/examples/jsm/controls/OrbitControls'
 import type { Widget_orbit } from './WidgetOrbit'
 
-import { OrbitControls, PerspectiveCamera, RenderTexture, Text } from '@react-three/drei'
+import { OrbitControls } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
 import { runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { useRef } from 'react'
 import { clampMod } from './_orbitUtils'
+import { Cube } from './Cube3D'
 
 export const WidgetOrbitUI = observer((p: { widget: Widget_orbit }) => {
     const ref = useRef<any>(null)
@@ -60,38 +61,3 @@ export const WidgetOrbitUI = observer((p: { widget: Widget_orbit }) => {
         </div>
     )
 })
-// prettier-ignore
-const sides: { color: string; text: string; }[] = [
-    { text: 'Front', color: 'red' },
-    { text: 'Back', color: 'cyan' },
-    { text: 'Top', color: 'green' },
-    { text: 'Bottom', color: 'yellow' },
-    { text: 'Right', color: 'orange' },
-    { text: 'Left', color: 'pink' },
-];
-// https://codesandbox.io/p/sandbox/drei-rendertexture-0z8i2c?file=%2Fsrc%2FApp.js%3A11%2C22
-function Cube() {
-    const textRef = useRef<any>()
-    return (
-        <mesh>
-            <boxGeometry />
-            {sides.map((s, ix) => (
-                <meshStandardMaterial key={s.text} attach={`material-${ix}`}>
-                    <RenderTexture attach='map' anisotropy={16}>
-                        <PerspectiveCamera makeDefault manual aspect={1 / 1} position={[0, 0, 5]} />
-                        <color attach='background' args={[s.color]} />
-                        <Text
-                            //
-                            // font={(suspend(inter) as any).default}
-                            ref={textRef}
-                            fontSize={2}
-                            color='#555'
-                        >
-                            {s.text}
-                        </Text>
-                    </RenderTexture>
-                </meshStandardMaterial>
-            ))}
-        </mesh>
-    )
-}

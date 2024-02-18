@@ -74,8 +74,8 @@ export class Widget_list<T extends Widget> implements IWidget<Widget_list_types<
         makeAutoObservable(this)
     }
 
-    get result(): Widget_list_output<T> {
-        return this.items.map((i) => i.result)
+    get value(): Widget_list_output<T> {
+        return this.items.map((i) => i.value)
     }
 
     // HELPERS =======================================================

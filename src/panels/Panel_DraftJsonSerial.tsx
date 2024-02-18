@@ -8,7 +8,7 @@ export const Panel_DraftJsonSerial = observer(function Panel_DraftJsonSerial_(p:
     if (draft == null) return null
     return (
         <div>
-            <JsonViewUI value={draft.form.value?.serial} />
+            <JsonViewUI value={draft.data.formSerial} />
         </div>
     )
 })

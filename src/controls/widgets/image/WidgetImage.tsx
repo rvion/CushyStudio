@@ -31,7 +31,7 @@ export type Widget_image_output = MediaImageL
 // STATE
 export interface Widget_image extends WidgetTypeHelpers_OLD<'image', Widget_image_config, Widget_image_serial, 0, Widget_image_output> {} // prettier-ignore
 export class Widget_image implements IWidget_OLD<'image', Widget_image_config, Widget_image_serial, 0, Widget_image_output> {
-    get serialHash() { return this.result.data.hash } // prettier-ignore
+    get serialHash() { return this.value.data.hash } // prettier-ignore
     readonly isVerticalByDefault = false
     readonly isCollapsible = true
     readonly id: string
@@ -43,12 +43,12 @@ export class Widget_image implements IWidget_OLD<'image', Widget_image_config, W
         this.serial = serial ?? {
             type: 'image',
             id: this.id,
-            imageID: form.schema.st.defaultImage.id,
+            imageID: cushy.defaultImage.id,
         }
         makeAutoObservable(this)
     }
-    get result(): Widget_image_output {
-        return this.form.schema.st.db.media_images.get(this.serial.imageID)!
+    get value(): Widget_image_output {
+        return cushy.db.media_images.get(this.serial.imageID)!
     }
 }
 

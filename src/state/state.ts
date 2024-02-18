@@ -10,7 +10,7 @@ import type { ComfyStatus, PromptID, PromptRelated_WsMsg, WsMsg } from '../types
 import type { CSCriticalError } from '../widgets/CSCriticalError'
 
 import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'fs'
-import { makeAutoObservable } from 'mobx'
+import { makeAutoObservable, observable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { join } from 'pathe'
 import { createRef } from 'react'
@@ -29,6 +29,7 @@ import { asAppPath } from 'src/cards/asAppPath'
 import { GithubRepoName } from 'src/cards/githubRepo'
 import { recursivelyFindAppsInFolder } from 'src/cards/walkLib'
 import { STANDARD_HOST_ID, vIRTUAL_HOST_ID__BASE, vIRTUAL_HOST_ID__FULL } from 'src/config/ComfyHostDef'
+import { Form } from 'src/controls/Form'
 import { LiveCollection } from 'src/db/LiveCollection'
 import { SQLITE_false, SQLITE_true } from 'src/db/SQLITE_boolean'
 import { asHostID } from 'src/db/TYPES.gen'
@@ -67,9 +68,25 @@ import { exhaust } from '../utils/misc/ComfyUtils'
 import { DanbooruTags } from '../widgets/prompter/nodes/booru/BooruLoader'
 import { AuthState } from './AuthState'
 import { Uploader } from './Uploader'
+import { readJSON, writeJSON } from './jsonUtils'
 import { mkSupa } from './supa'
 
 export class STATE {
+    __INJECTION__ = (() => {
+        //  globally register the state as this
+        if ((window as any).CushyObservableCache == null) {
+            ;(window as any).CushyObservableCache = observable({ st: this })
+            ;(window as any).st = this // <- remove this once window.st usage has been cleend
+        } else {
+            ;(window as any).CushyObservableCache.st = this
+            ;(window as any).st = this // <- remove this once window.st usage has been cleend
+        }
+        if ((window as any).cushy == null) {
+            console.log(`[🛋️] WINDOW.CUSHY NOW DEFINED`)
+            Object.defineProperty(window, 'cushy', { get() { return (window as any).CushyObservableCache.st } }) // prettier-ignore
+        }
+    })()
+
     /** hack to help closing prompt completions */
     currentPromptFocused: Maybe<HTMLDivElement> = null
 
@@ -217,16 +234,16 @@ export class STATE {
     // get showPreviewInFullScreen() { return this.configFile.value.showPreviewInFullScreen ?? false } // prettier-ignore
     // set showPreviewInFullScreen(v: boolean) { this.configFile.update({ showPreviewInFullScreen: v }) } // prettier-ignore
 
-    get galleryHoverOpacity() { return this.configFile.value.galleryHoverOpacity ?? .9 } // prettier-ignore
-    set galleryHoverOpacity(v: number) { this.configFile.update({ galleryHoverOpacity: v }) } // prettier-ignore
-
-    get preferedFormLayout() { return this.configFile.value.preferedFormLayout ?? 'auto' } // prettier-ignore
-    set preferedFormLayout(v: PreferedFormLayout) { this.configFile.update({ preferedFormLayout: v }) } // prettier-ignore
+    // get galleryHoverOpacity() { return this.configFile.value.galleryHoverOpacity ?? .9 } // prettier-ignore
+    // set galleryHoverOpacity(v: number) { this.configFile.update({ galleryHoverOpacity: v }) } // prettier-ignore
 
     // gallery size
     get gallerySizeStr() { return `${this.gallerySize}px` } // prettier-ignore
-    set gallerySize(v: number) { this.configFile.update({ galleryImageSize: v }) } // prettier-ignore
-    get gallerySize() { return this.configFile.value.galleryImageSize ?? 48 } // prettier-ignore
+    set gallerySize(v: number) { this.galleryConf.fields.gallerySize.value =  v } // prettier-ignore
+    get gallerySize() { return this.galleryConf.get(`gallerySize`) ?? 48 } // prettier-ignore
+
+    get preferedFormLayout() { return this.configFile.value.preferedFormLayout ?? 'auto' } // prettier-ignore
+    set preferedFormLayout(v: PreferedFormLayout) { this.configFile.update({ preferedFormLayout: v }) } // prettier-ignore
 
     // history app size
     get historySizeStr() { return `${this.historySize}px` } // prettier-ignore
@@ -404,12 +421,57 @@ export class STATE {
         })
     }
 
+    displacementConf = new Form(
+        (form) => ({
+            camera: form.choice({
+                appearance: 'tab',
+                items: { orbit: () => form.group({}), fly: () => form.group({}) /* wasd: () => form.group({}) */ },
+            }),
+            menu: form.choice({
+                appearance: 'tab',
+                items: { menu: () => form.group({}), left: () => form.group({}), right: () => form.group({}) },
+            }),
+            displacementScale: form.number({ label: 'displacement', min: 0, max: 5, step: 0.1, default: 1 }),
+            cutout: form.number({ label: 'cutout', min: 0, max: 1, step: 0.01, default: 0.08 }),
+            ambientLightIntensity: form.number({ label: 'light', min: 0, max: 8, default: 1.5 }),
+            ambientLightColor: form.color({ label: 'light color' }),
+            isSymmetric: form.boolean({ label: 'Symmetric Model' }),
+            takeScreenshot: form.inlineRun({ label: 'Screenshot' }),
+            metalness: form.float({ min: 0, max: 1 }),
+            roughness: form.float({ min: 0, max: 1 }),
+            skyBox: form.bool({}),
+            ground: form.bool({}),
+            usePoints: form.boolean({ label: 'Points', default: false }),
+        }),
+        {
+            name: 'Displacement Conf',
+            initialValue: () => readJSON('settings/displacement.json'),
+            onChange: (form) => writeJSON('settings/displacement.json', form.serial),
+        },
+    )
+
+    galleryConf = new Form(
+        (f) => ({
+            gallerySize: f.int({ label: 'Preview Size', default: 48, min: 24, step: 8, softMax: 256, max: 1024, tooltip: 'Size of the preview images in px', unit: 'px' }), // prettier-ignore
+            galleryMaxImages: f.int({ label: 'Number of items', min: 10, softMax: 300, default: 50, tooltip: 'Maximum number of images to display', }), // prettier-ignore
+            galleryBgColor: f.color({ label: 'background' }),
+            galleryHoverOpacity: f.number({ label: 'hover opacity', min: 0, max: 1, step: 0.01 }),
+            showPreviewInFullScreen: f.boolean({ label: 'full-screen', tooltip: 'Show the preview in full screen' }),
+        }),
+        {
+            name: 'Gallery Conf',
+            onChange: (form) => writeJSON('settings/gallery.json', form.serial),
+            initialValue: () => readJSON('settings/gallery.json'),
+        },
+    )
+
     project: ProjectL
     primarySdkDtsPath: AbsolutePath
     constructor(
         /** path of the workspace */
         public rootPath: AbsolutePath,
     ) {
+        // -----------------------------------------------------------
         console.log('[🛋️] starting Cushy')
         this.cacheFolderPath = this.resolve(this.rootPath, asRelativePath('outputs'))
         this.primarySdkDtsPath = this.resolve(this.rootPath, asRelativePath('schema/global.d.ts'))
@@ -489,7 +551,6 @@ export class STATE {
             wildcards: false,
         })
         this.startupFileIndexing()
-        ;(window as any).st = this
     }
 
     get mainComfyHostID(): HostID {
@@ -706,7 +767,7 @@ export class STATE {
     }
 
     get imageToDisplay(): MediaImageL[] {
-        const maxImages = this.configFile.value.galleryMaxImages ?? 20
+        const maxImages = this.galleryConf.value.galleryMaxImages ?? 20
         return this.db.media_images.getLastN(maxImages)
     }
 

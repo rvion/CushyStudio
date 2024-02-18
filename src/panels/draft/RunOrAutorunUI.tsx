@@ -68,7 +68,7 @@ export const RunOrAutorunUI = observer(function RunOrAutorunUI_(p: { className?:
                 onClick={() => {
                     draft.st.layout.FOCUS_OR_CREATE('Output', {}, 'RIGHT_PANE_TABSET')
                     draft.setAutostart(false)
-                    draft.start()
+                    draft.start({})
                 }}
             >
                 Run

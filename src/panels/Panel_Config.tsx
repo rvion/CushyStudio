@@ -65,7 +65,7 @@ export const Panel_Config = observer(function Panel_Config_() {
                         name='githubUsername'
                     />
                 </FieldUI>
-                <FieldUI label='Gallery Image Size (px)'>
+                {/* <FieldUI label='Gallery Image Size (px)'>
                     <InputNumberUI //
                         placeholder='48'
                         min={16}
@@ -74,7 +74,7 @@ export const Panel_Config = observer(function Panel_Config_() {
                         mode='int'
                         onValueChange={(val) => config.update({ galleryImageSize: val })}
                     />
-                </FieldUI>
+                </FieldUI> */}
                 <FieldUI label='Number slider speed multiplier'>
                     <InputNumberUI //
                         placeholder='Number slider speed multiplier'
