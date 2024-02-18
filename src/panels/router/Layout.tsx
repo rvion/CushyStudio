@@ -309,7 +309,7 @@ export class CushyLayoutManager {
             component: p.panel,
             enableClose: p.canClose ?? true,
             enableRename: false,
-            enableFloat: true,
+            enableFloat: false,
             icon: icon,
         }
     }
@@ -317,7 +317,7 @@ export class CushyLayoutManager {
     build = (): IJsonModel => {
         const out: IJsonModel = {
             global: {
-                tabEnableFloat: true,
+                tabEnableFloat: false,
                 splitterSize: 6,
                 tabEnableRename: false,
                 borderEnableAutoHide: true,
