@@ -40,12 +40,12 @@ export class ResilientWebSocketClient {
 
     reconnectTimeout?: Maybe<NodeJS.Timeout>
 
-    public updateURL(url: string): void {
+    updateURL = (url: string): void => {
         this.url = url
         this.connect()
     }
 
-    public connect(): void {
+    connect = (): void => {
         this.isOpen = false
         const prevWS = this.currentWS
 
