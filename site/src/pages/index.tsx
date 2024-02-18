@@ -1,3 +1,6 @@
+import MDXContent from '@theme/MDXContent'
+// @ts-ignore
+import Readme from './readme.mdx'
 import clsx from 'clsx'
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext'
 import Layout from '@theme/Layout'
@@ -33,10 +36,15 @@ export default function Home(): JSX.Element {
     const { siteConfig } = useDocusaurusContext()
     return (
         <Layout title={`Hello from ${siteConfig.title}`} description='Description will go into a meta tag in <head />'>
-            <HomepageHeader />
-            <main>
+            {/* <HomepageHeader /> */}
+            {/* <MDXContent> */}
+            <div className='container'>
+                <Readme />
+            </div>
+            {/* </MDXContent> */}
+            {/* <main>
                 <HomepageFeatures />
-            </main>
+            </main> */}
         </Layout>
     )
 }

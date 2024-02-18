@@ -33,11 +33,11 @@
 
 **Dive into the AI Revolution with CushyStudio**. Unleash your creativity, share your projects, and connect with a vibrant community pushing the boundries of generative AI. Experience the fusion of simplicity and innovation.
 
-```diff
-! ⚠️ CushyStudio is under active development, so you might encounter incomplete features
-! or issues due to rapid updates. Your feedback is vital for us to refine and expand the project.
-! Please report any critical problems you find in our discord or open a GitHub issue.
-```
+> [!WARNING]
+> ⚠️ CushyStudio is under active development, so you might encounter incomplete features
+> or issues due to rapid updates. Your feedback is vital for us to refine and expand the project.
+> Please report any critical problems you find in our discord or open a GitHub issue.
+
 
 ***
 
@@ -54,10 +54,6 @@
 
 Screenshots and Videos
 
-
-<!-- {% hint style="warning" %}
-CushyStudio is under active development, so you might encounter incomplete features or issues due to rapid updates. Your feedback is vital for us to refine and expand the project. Please report any critical problems you find in our discord or open a GitHub issue.
-{% endhint %} -->
 
 ![](https://cushy.fra1.cdn.digitaloceanspaces.com/rvion-screenshots/2024-02-18_00-07-15.jpg)
 
