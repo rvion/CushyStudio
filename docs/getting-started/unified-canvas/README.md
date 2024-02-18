@@ -1,4 +1,4 @@
-# Unified canvas
+# 😁 Unified canvas
 
 {% hint style="warning" %}
 unfinished

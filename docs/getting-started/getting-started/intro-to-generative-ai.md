@@ -1,4 +1,4 @@
-# 🖌 Intro to Generative AI
+# Intro to Generative AI
 
 \##This might end up being it's own top level section if there is too much information. This page or section will contain:
 

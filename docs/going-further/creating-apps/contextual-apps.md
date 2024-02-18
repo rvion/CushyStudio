@@ -6,7 +6,7 @@ description: >-
 
 # Contextual Apps
 
-Contextual apps allow you start any app (workflow) from an existing image ( [image-comtext-menu.md](../using-cushystudio/image-comtext-menu.md "mention")) or selection ([unified-canvas.md](../features/unified-canvas.md "mention"))
+Contextual apps allow you start any app (workflow) from an existing image ( [image-comtext-menu.md](../../getting-started/cushy-interface/image-comtext-menu.md "mention")) or selection ([unified-canvas](../../getting-started/unified-canvas/ "mention"))
 
 ## Make your app compatible
 
