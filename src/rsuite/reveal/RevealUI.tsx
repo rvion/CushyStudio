@@ -20,7 +20,31 @@ export const RevealUI = observer(function Tooltip_(p: RevealProps) {
     const pos = uist.tooltipPosition
     const tooltip = uist.visible
         ? createPortal(
-              uist.placement.startsWith('popup') ? (
+              uist.placement.startsWith('#') ? (
+                  <div
+                      ref={(e) => {
+                          if (e == null) return st._popups.filter((p) => p !== uist)
+                          st._popups.push(uist)
+                      }}
+                      onKeyUp={(ev) => {
+                          if (ev.key === 'Escape') {
+                              uist.close()
+                              ev.stopPropagation()
+                              ev.preventDefault()
+                          }
+                      }}
+                      onClick={(ev) => {
+                          p.onClick?.(ev)
+                          uist.close()
+                          ev.stopPropagation()
+                          ev.preventDefault()
+                      }}
+                      style={{ zIndex: 99999999, backgroundColor: '#0000003d' }}
+                      tw='pointer-events-auto w-full h-full flex items-center justify-center z-50'
+                  >
+                      {p.children[1]}
+                  </div>
+              ) : uist.placement.startsWith('popup') ? (
                   <div
                       ref={(e) => {
                           if (e == null) return st._popups.filter((p) => p !== uist)
@@ -78,7 +102,11 @@ export const RevealUI = observer(function Tooltip_(p: RevealProps) {
                       ) : null}
                   </div>
               ),
-              document.getElementById('tooltip-root')!,
+              document.getElementById(
+                  p.placement?.startsWith('#') //
+                      ? p.placement.slice(1)
+                      : 'tooltip-root',
+              )!,
           )
         : null
 

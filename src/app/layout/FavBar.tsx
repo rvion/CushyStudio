@@ -1,76 +1,130 @@
 import type { CushyAppL } from 'src/models/CushyApp'
 
 import { observer } from 'mobx-react-lite'
+import { useState } from 'react'
 import { AppIllustrationUI } from 'src/cards/fancycard/AppIllustrationUI'
 import { DraftIllustrationUI } from 'src/cards/fancycard/DraftIllustration'
+import { FormUI } from 'src/controls/FormUI'
 import { PanelHeaderSmallUI } from 'src/panels/PanelHeader'
-import { GalleryControlsUI } from 'src/panels/Panel_Gallery'
 import { RevealUI } from 'src/rsuite/reveal/RevealUI'
 import { useSt } from 'src/state/stateContext'
-import { useState } from 'react'
+import { TreeUI } from 'src/panels/libraryUI/tree/xxx/TreeUI'
+import { runInAction } from 'mobx'
 
 export const FavBarUI = observer(function FavBarUI_(p: {
     //
     direction?: 'row' | 'column'
 }) {
     const st = useSt()
+    const conf = st.sideBarConf
+    const size = conf.fields.size.value
+    const sizeStr = size + 'px'
     return (
-        <div tw='flex gap-1' style={{ flexDirection: p.direction }}>
-            <PanelHeaderSmallUI>
-                <GalleryControlsUI />
-            </PanelHeaderSmallUI>
-
-            <div //Panel Content
-                tw='p-2'
+        <>
+            <div
+                //
+                tw='relative flex overflow-auto w-20'
+                style={{ flexDirection: p.direction, width: `${size + 8}px` }}
             >
-                <div tw='btn btn-square' style={{ width: '4rem', height: '4rem' }}>
-                    <span className='material-symbols-outlined !text-5xl'>folder</span>
-                </div>
-                <hr />
-                <div tw='italic text-sm text-center'>fav apps</div>
-                {st.favoriteApps.map((app) => (
-                    <div tw='pt-1' key={app.id}>
-                        <RevealUI trigger='hover' placement='rightStart'>
-                            <div tw='rounded' style={{ border: `1px solid oklch(var(--p)/.5)` }}>
-                                <AppIllustrationUI size='4rem' app={app} tw='bor' />
-                            </div>
-                            <AppDraftsQuickListUI app={app} />
-                        </RevealUI>
-                    </div>
-                ))}
-                <hr />
-                <div tw='italic text-sm text-center'>fav drafts</div>
-                {st.favoriteDrafts.map((draft) => (
-                    <div tw='pt-1' key={draft.id}>
-                        <RevealUI trigger='hover' placement='rightStart'>
-                            <div tw='rounded' style={{ border: `1px solid oklch(var(--a)/.5)` }}>
-                                <DraftIllustrationUI onClick={() => draft.openOrFocusTab()} size='4rem' draft={draft} />
-                            </div>
-                            <div className='MENU-ROOT'>
-                                <div className='MENU-HEADER'>
-                                    <div //Container
-                                        tw='flex bg-base-200 p-1 rounded w-full'
-                                    >
-                                        <AppIllustrationUI size='2rem' app={draft.app} />
-                                        <div tw='flex-1 text-xs text-center self-center p-2'>{draft.app.name}</div>
+                <div tw='absolute inset-0 overflow-auto flex flex-col items-center bg-base-300 flex-1 overflow-auto'>
+                    <PanelHeaderSmallUI>
+                        <FormUI form={conf} />
+                    </PanelHeaderSmallUI>
+                    <div>
+                        <div
+                            tw={['btn btn-square', conf.fields.tree.value && 'btn-primary']}
+                            style={{ width: sizeStr, height: sizeStr }}
+                            onClick={() =>
+                                runInAction(() => {
+                                    conf.fields.tree.value = !conf.fields.tree.value
+                                    conf.fields.apps.value = false
+                                })
+                            }
+                        >
+                            <span style={{ fontSize: sizeStr }} className='material-symbols-outlined'>
+                                folder_open
+                            </span>
+                        </div>
+                        <div
+                            tw={['btn btn-square', conf.fields.apps.value && 'btn-primary']}
+                            style={{ width: sizeStr, height: sizeStr }}
+                            onClick={() =>
+                                runInAction(() => {
+                                    conf.fields.tree.value = false
+                                    conf.fields.apps.value = !conf.fields.apps.value
+                                })
+                            }
+                        >
+                            <span style={{ fontSize: sizeStr }} className='material-symbols-outlined'>
+                                apps
+                            </span>
+                        </div>
+                        {/* <div tw='italic text-sm text-center'>fav apps</div> */}
+                        {st.favoriteApps.map((app) => (
+                            <div tw='pt-1' key={app.id}>
+                                <RevealUI showDelay={0} trigger='hover' placement='right'>
+                                    <div tw='rounded' style={{ border: `1px solid oklch(var(--s))` }}>
+                                        <AppIllustrationUI size={sizeStr} app={app} tw='bor' />
                                     </div>
-                                </div>
-                                <div className='MENU-CONTENT'>
-                                    <div //Container
-                                        tw='flex-column bg-base-300 p-1 rounded text-center items-center'
-                                    >
-                                        <div tw='text-xs'>{draft.data.title}</div>
-                                        <div tw='flex self-center text-center justify-center p-1'>
-                                            <DraftIllustrationUI size='12rem' draft={draft} />
+                                    <AppDraftsQuickListUI app={app} />
+                                </RevealUI>
+                            </div>
+                        ))}
+                        <hr />
+                        {/* <div tw='italic text-sm text-center'>fav drafts</div> */}
+                        {st.favoriteDrafts.map((draft) => (
+                            <div tw='pt-1' key={draft.id}>
+                                <RevealUI trigger='hover' placement='right'>
+                                    <div tw='rounded' style={{ border: `1px solid oklch(var(--a))` }}>
+                                        <DraftIllustrationUI
+                                            onClick={() => draft.openOrFocusTab()}
+                                            size={sizeStr}
+                                            draft={draft}
+                                        />
+                                    </div>
+                                    <div className='MENU-ROOT'>
+                                        <div className='MENU-HEADER'>
+                                            <div //Container
+                                                tw='flex bg-base-200 p-1 rounded w-full'
+                                            >
+                                                <AppIllustrationUI size='2rem' app={draft.app} />
+                                                <div tw='flex-1 text-xs text-center self-center p-2'>{draft.app.name}</div>
+                                            </div>
+                                        </div>
+                                        <div className='MENU-CONTENT'>
+                                            <div //Container
+                                                tw='flex-column bg-base-300 p-1 rounded text-center items-center'
+                                            >
+                                                <div tw='text-xs'>{draft.data.title}</div>
+                                                <div tw='flex self-center text-center justify-center p-1'>
+                                                    <DraftIllustrationUI size='12rem' draft={draft} />
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                </RevealUI>
                             </div>
-                        </RevealUI>
+                        ))}
                     </div>
-                ))}
+                </div>
             </div>
-        </div>
+            {conf.fields.tree.value && (
+                <div id='xx123' tw='overflow-auto w-96'>
+                    <TreeUI autofocus shortcut='mod+2' title='File Explorer' tw='flex-2 overflow-auto' treeView={st.tree2View} />
+                </div>
+            )}
+            {conf.fields.apps.value && (
+                <div id='xx123' tw='overflow-auto w-96'>
+                    <TreeUI
+                        autofocus
+                        shortcut='mod+1'
+                        title='Apps and Drafts'
+                        tw='flex-2 overflow-auto'
+                        treeView={st.tree1View}
+                    />
+                </div>
+            )}
+        </>
     )
 })
 

@@ -14,6 +14,7 @@ export const TreeUI = observer(function TreeEditorUI_(p: {
     shortcut?: string
     className?: string
     treeView: TreeView
+    autofocus?: boolean
 }) {
     const st = useSt()
     const tv = p.treeView
@@ -52,7 +53,15 @@ export const TreeUI = observer(function TreeEditorUI_(p: {
                     </RevealUI>
                     {/* {FoldBtn} */}
                 </div>
-                <div tw='flex-1 overflow-auto' id={tv.tree.KeyboardNavigableDomNodeID} onKeyDown={tv.onKeyDown} tabIndex={-1}>
+
+                <div
+                    //
+                    tw='flex-1 overflow-auto'
+                    id={tv.tree.KeyboardNavigableDomNodeID}
+                    onKeyDown={tv.onKeyDown}
+                    tabIndex={-1}
+                    autoFocus={p.autofocus}
+                >
                     {tv.nodes.map((n) => (
                         <TreeEntryUI key={n.id} node={n} />
                     ))}

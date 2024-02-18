@@ -421,6 +421,19 @@ export class STATE {
         })
     }
 
+    sideBarConf = new Form(
+        (f) => ({
+            size: f.int({ label: 'size', min: 24, max: 128, default: 48, unit: 'px', step: 4 }),
+            tree: f.bool({}),
+            apps: f.bool({}),
+        }),
+        {
+            name: 'SideBar Conf',
+            initialValue: () => readJSON('settings/sidebar.json'),
+            onChange: (form) => writeJSON('settings/sidebar.json', form.serial),
+        },
+    )
+
     displacementConf = new Form(
         (form) => ({
             camera: form.choice({

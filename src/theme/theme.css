@@ -13,10 +13,10 @@ body {
 */
 
 /* FORM STYLING ----------------------------------- */
-.WIDGET-BLOCK .WIDGET-GROUP {
+/* .WIDGET-BLOCK .WIDGET-GROUP { */
     /* border-left: 1px solid oklch(var(--p)/.2); */
     /* padding: 0 .3rem; */
-}
+/* } */
 .WIDGET-WITH-BLOCK {
     /* background: oklch(var(--b2)); */
     border-radius: .3rem;
@@ -135,6 +135,10 @@ body {
 .kbd-sm { min-height: 1.2rem; }
 
 /* ----------------------------- */
+.flexlayout__tab {
+    display: flex;
+    flex-direction: column;
+}
 /* .flexlayout__tabset-selected {
     border-bottom: 1px solid oklch(var(--p)/0.5);
 } */
