@@ -47,6 +47,13 @@ export const ImageDropdownMenuUI = observer(function ImageDropdownMenuUI_(p: { i
             >
                 MiniPaint (alt+click)
             </MenuItem>
+            <MenuItem
+                icon={<span className='material-symbols-outlined text-red-500'>delete</span>}
+                disabled={!img?.absPath}
+                onClick={() => img.delete()}
+            >
+                delete
+            </MenuItem>
             <div className='divider divider-start my-0'>FileSystem</div>
             <MenuItem
                 icon={<span className='material-symbols-outlined'>folder</span>}
