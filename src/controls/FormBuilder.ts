@@ -37,9 +37,9 @@ export class FormBuilder {
     }
 
     // string
-    promptV2 = (config: Widget_prompt_config) => new Widget_prompt(this, config)
-    string = (config: Widget_string_config) => new Widget_string(this, config)
-    stringOpt = (config: Widget_string_config & { startActive?: boolean }) =>
+    promptV2 = (config: Widget_prompt_config = {}) => new Widget_prompt(this, config)
+    string = (config: Widget_string_config = {}) => new Widget_string(this, config)
+    stringOpt = (config: Widget_string_config & { startActive?: boolean } = {}) =>
         this.optional({
             label: config.label,
             startActive: config.startActive,
