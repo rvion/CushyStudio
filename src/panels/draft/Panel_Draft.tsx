@@ -15,6 +15,7 @@ import { draftContext } from '../../widgets/misc/useDraft'
 import { MessageInfoUI } from '../MessageUI'
 import { DraftHeaderUI } from './DraftHeaderUI'
 import { JsonViewUI } from 'src/widgets/workspace/JsonViewUI'
+import { InstallRequirementsBtnUI } from 'src/controls/REQUIREMENTS/Panel_InstallRequirementsUI'
 
 export const Panel_Draft = observer(function Panel_Draft_(p: { draftID: DraftID }) {
     // 1. get draft
@@ -99,6 +100,9 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                 )}
                 {metadata?.description && (
                     <MarkdownUI tw='_WidgetMardownUI italic px-1 text-gray-500 w-full' markdown={metadata.description} />
+                )}
+                {metadata?.requirements && (
+                    <InstallRequirementsBtnUI label='requirements' active={true} requirements={metadata.requirements} />
                 )}
                 <div tw='pb-10 px-2'>
                     {/* <div>A: {draft.id}</div>
