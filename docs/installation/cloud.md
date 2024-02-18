@@ -1,12 +1,16 @@
 # Install ComfyUI
 
-🚧 explain why we need ComfyUI in one sentence #
+ComfyUI is a toolkit to build Generative AI pipelines and execute them. It is very powerful but have a complex node-graph interface that makes it hard to use.&#x20;
 
-🚧 Install guide for setting up a cloud instance, include links to hosting providers, setup guide per provider, cost, virtual host system specifications, pros and cons to cloud, file synchronization options for uploading and downloading content.&#x20;
+Most CushyStudio Apps build on top of ComfyUI as a backend
+
+You can find install instructions here: [https://github.com/comfyanonymous/ComfyUI?tab=readme-ov-file#installing](https://github.com/comfyanonymous/ComfyUI?tab=readme-ov-file#installing)&#x20;
 
 ## LOCAL (same machine)
 
 if you're on windows or linux and if your local machine has a powerful GPU, installing ComfyUI localy is probably a good idea.
+
+On windows, there is a portable version that should be fairly easi to&#x20;
 
 ### Install from scratch
 
@@ -22,7 +26,9 @@ if you already have a working ComfyUI setup, you can just use-it without any mor
 
 ### Managed ComfyUI
 
-⏳ PLANNED - we're planning to make it easy for cushy to&#x20;
+There are a few services that offer managed ComfyUI instances.
+
+It's not our focus yet, but we may also try to offer managed ComfyUI instances in the future.
 
 {% hint style="info" %}
 contribution welcome ;)
