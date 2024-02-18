@@ -76,11 +76,12 @@ const watcher = watch(dir, { recursive: true, persistent: true }, async (event, 
     const s3Folder = `rvion-screenshots`
     console.log(chalk.green(`uploading ${filename} to digitalocean...`))
     const uploadCommand = `rclone copy "${path}" cushy-digitalocean-spaces:cushy/${s3Folder} --progress`
+    // rclone sync /Users/loco/S3-1/old cushy-digitalocean-spaces:cushy/old --progress
+    // https://cushy.fra1.cdn.digitaloceanspaces.com/old/screenshots/2023-09-29-22-40-45.png
     console.log(chalk.gray(`running: ${uploadCommand}`))
     const { stderr, stdout } = await exec(uploadCommand)
     console.log(`stderr: ${stderr}`)
     console.log(`stdout: ${stdout}`)
-
     // --------
     // const relPath = relative
     const url = `https://cushy.fra1.cdn.digitaloceanspaces.com/${s3Folder}/${filename}`

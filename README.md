@@ -57,4 +57,4 @@ Screenshots and Videos
 
 ![](https://cushy.fra1.cdn.digitaloceanspaces.com/rvion-screenshots/2024-02-18_00-07-15.jpg)
 
-![](site/static/screenshots/2024-02-02-example-panels.jpg)
+![](https://cushy.fra1.cdn.digitaloceanspaces.com/old/screenshots/2024-02-02-example-panels.jpg)
