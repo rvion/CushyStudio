@@ -11,6 +11,7 @@ import { Button_InstallCustomNodeUI } from './Button_InstallCustomNodeUI'
 
 export const InstallRequirementsBtnUI = observer(function InstallRequirementsBtnUI_(p: {
     active: boolean
+    label?: string
     requirements: Requirements[]
 }) {
     const st = useSt()
@@ -23,11 +24,11 @@ export const InstallRequirementsBtnUI = observer(function InstallRequirementsBtn
                     p.active && !st.mainHost.matchRequirements(rr) //
                         ? 'btn-error animate-pulse'
                         : 'btn-ghost opacity-50',
-                    'btn btn-square btn-xs',
+                    p.label ? 'btn btn-sm btn-outline' : 'btn btn-square btn-xs',
                 ]}
             >
                 <span className='material-symbols-outlined'>scatter_plot</span>
-                {}
+                {p.label}
             </div>
             <div tw='[max-width:500px]'>
                 <Panel_InstallRequirementsUI requirements={rr} />
