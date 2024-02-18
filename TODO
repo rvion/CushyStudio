@@ -5,9 +5,9 @@
 ☐ unified canvas
 
 ✔ boolean perperly placed as input @done(24-02-10 20:35)
-☐ unify the download model / custom nodes
-    ☐ single button
-    ☐ shown in red if missing
+✔ unify the download model / custom nodes @done(24-02-18 13:54)
+    ✔ single button @done(24-02-18 13:54)
+    ✔ shown in red if missing @done(24-02-18 13:54)
 ☐ redo the host management page
 ☐ initial install buton from the comfyUI
 ☐ error messages
