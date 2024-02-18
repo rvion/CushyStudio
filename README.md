@@ -39,19 +39,6 @@
 > Please report any critical problems you find in our discord or open a GitHub issue.
 
 
-***
-
-* Try: [installation](https://docs.cushystudio.com/installation/ "mention") - [Getting started](https://docs.cushystudio.com/getting-started/ "mention") - Moving Around
-* Explore: Apps - Drafts - [prompting](https://docs.cushystudio.com/prompting/ "mention") - [unified-canvas.md](https://docs.cushystudio.com/features/unified-canvas.md "mention") - [inpainting.md](https://docs.cushystudio.com/features/inpainting.md "mention") - [outpainting.md](https://docs.cushystudio.com/features/outpainting.md "mention") - Library -&#x20;
-* ComfyUI Integration - Import / export workflow - programmatic workflow  - Multi-host management - Node explorer - Model manager - plugin manager
-* Other Integrations: Civitai - Squoosh - 3d Poser (posemy) - Minipaint - unsplash&#x20;
-* Build: [creating-apps](https://docs.cushystudio.com/creating-apps/ "mention") - [app-structure.md](https://docs.cushystudio.com/creating-apps/app-structure.md "mention") - [app-ui.md](https://docs.cushystudio.com/creating-apps/app-ui.md "mention") - [cushy-sdk.md](https://docs.cushystudio.com/cushy-sdk.md "mention")
-* Contribute: &#x20;
-* Connect: Discord - Twitter - Github - Website - [Documentation](https://docs.cushystudio.com/https://docs.cushystudio.com)
-
-
-***
-
 Screenshots and Videos
 
 
