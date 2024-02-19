@@ -1,6 +1,11 @@
 import { PluginInstallStatus } from './PluginInstallStatus'
 
-export const renderStatus = (status: PluginInstallStatus, optional: boolean, tailwind: string | undefined) => {
+export const renderStatus = (
+    //
+    status: PluginInstallStatus,
+    optional: boolean,
+    tailwind?: string | undefined,
+) => {
     let tw = tailwind ?? ''
     if (status === 'installed') return <span tw={[tw, 'text-green-500']}>Installed</span>
     if (status === 'not-installed') {
