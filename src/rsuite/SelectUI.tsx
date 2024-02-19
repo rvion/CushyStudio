@@ -206,7 +206,7 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
     const s = useMemo(() => new AutoCompleteSelectState(st, p), [])
     return (
         <div
-            tw='flex flex-1 items-center h-full p-0.5'
+            tw='flex flex-1 items-center h-full p-0.5 relative'
             className={p.className}
             ref={s.anchorRef}
             onKeyUp={s.onRealInputKeyUp}
