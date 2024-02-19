@@ -15,13 +15,16 @@ export const ui_model = () => {
         },
         items: () => ({
             ckpt_name: form.enum.Enum_CheckpointLoaderSimple_ckpt_name({
-                default: 'revAnimated_v122.safetensors',
                 label: 'Checkpoint',
                 requirements: ckpts.map((x) => ({ type: 'modelCustom', infos: x })),
             }),
             extra: form.choices({
                 appearance: 'tab',
                 items: {
+                    ckpt_config: () => form.enum.Enum_CheckpointLoader_config_name({
+                        label: 'Config',
+                    }),
+                    rescale_cfg: () => form.auto.RescaleCFG(),
                     vae: () => form.enum.Enum_VAELoader_vae_name({}),
                     clipSkip: () =>
                         form.int({
@@ -50,18 +53,27 @@ export const run_model = (ui: OutputFor<typeof ui_model>) => {
     const graph = run.nodes
 
     // 1. MODEL
-    const ckptSimple = ui.extra.civtai_ckpt_air
-        ? graph.CivitAI$_Checkpoint$_Loader({
-              ckpt_name: ui.ckpt_name,
-              ckpt_air: ui.extra.civtai_ckpt_air,
-              download_path: 'models\\checkpoints',
-          })
-        : graph.CheckpointLoaderSimple({ ckpt_name: ui.ckpt_name })
-    let ckpt: HasSingle_MODEL = ckptSimple
-    let clip: HasSingle_CLIP = ckptSimple
+    let ckptLoader
+    if (ui.extra.ckpt_config) {
+        ckptLoader = graph.CheckpointLoader({
+            ckpt_name: ui.ckpt_name,
+            config_name: ui.extra.ckpt_config,
+        })
+    } else if (ui.extra.civtai_ckpt_air) {
+        ckptLoader = graph.CivitAI$_Checkpoint$_Loader({
+            ckpt_name: ui.ckpt_name,
+            ckpt_air: ui.extra.civtai_ckpt_air,
+            download_path: 'models\\checkpoints',
+        })
+    } else {
+        ckptLoader = graph.CheckpointLoaderSimple({ ckpt_name: ui.ckpt_name })
+    }
+                
+    let ckpt: HasSingle_MODEL = ckptLoader
+    let clip: HasSingle_CLIP = ckptLoader
 
     // 2. OPTIONAL CUSTOM VAE
-    let vae: _VAE = ckptSimple._VAE
+    let vae: _VAE = ckptLoader._VAE
     if (ui.extra.vae) vae = graph.VAELoader({ vae_name: ui.extra.vae })
 
     // 3. OPTIONAL CLIP SKIP
