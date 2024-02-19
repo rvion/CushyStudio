@@ -94,7 +94,7 @@ export const WigetSizeXUI = observer(function WigetSizeXUI_(p: {
     const modelBtn = (model: ModelType) => (
         <button
             type='button'
-            tw={['btn btn-sm join-item', uist.desiredModelType === model && 'btn-primary']}
+            tw={['btn btn-xs join-item', uist.desiredModelType === model && 'btn-primary']}
             onClick={() => uist.setModelType(model)}
         >
             {model}
@@ -102,7 +102,7 @@ export const WigetSizeXUI = observer(function WigetSizeXUI_(p: {
     )
 
     return (
-        <div className='flex flex-col gap-1'>
+        <div className='flex flex-col gap-1 bg-base-300 p-1 rounded-b'>
             <div tw='flex items-start gap-2'>
                 <Joined>
                     {modelBtn('1.5')}
@@ -117,24 +117,32 @@ export const WigetSizeXUI = observer(function WigetSizeXUI_(p: {
                             onChange={(ev) => (uist.flip = ev.target.checked)}
                         />
                     </div> */}
-                <div tw='flex items-center'>
-                    {resoBtn('1:1')}
-                    <button
-                        type='button'
-                        tw={['btn btn-sm join-item', uist.desiredAspectRatio === 'custom' && 'btn-primary']}
-                        onClick={() => uist.setAspectRatio('custom')}
-                    >
-                        ?
-                    </button>
+                <div tw='ml-auto flex items-center'>
+                    <Joined>
+                        {resoBtn('1:1')}
+                        <button
+                            type='button'
+                            tw={['btn btn-xs join-item', uist.desiredAspectRatio === 'custom' && 'btn-primary']}
+                            onClick={() => uist.setAspectRatio('custom')}
+                        >
+                            ?
+                        </button>
+                    </Joined>
                     <div>|</div>
-                    {resoBtn('16:9')}
-                    {resoBtn('9:16')}
+                    <Joined>
+                        {resoBtn('16:9')}
+                        {resoBtn('9:16')}
+                    </Joined>
                     <div>|</div>
-                    {resoBtn('4:3')}
-                    {resoBtn('3:4')}
+                    <Joined>
+                        {resoBtn('4:3')}
+                        {resoBtn('3:4')}
+                    </Joined>
                     <div>|</div>
-                    {resoBtn('3:2')}
-                    {resoBtn('2:3')}
+                    <Joined>
+                        {resoBtn('3:2')}
+                        {resoBtn('2:3')}
+                    </Joined>
                 </div>
             </div>
         </div>
