@@ -10,6 +10,8 @@ export const ui_mask = () => {
             noMask: () => form.group({}),
             mask: () =>
                 form.group({
+                    collapsible: false,
+                    label: false,
                     items: () => ({
                         image: form.image({}),
                         mode: form.enum.Enum_LoadImageMask_channel({}),
