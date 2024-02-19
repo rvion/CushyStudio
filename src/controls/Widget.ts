@@ -351,7 +351,7 @@ export class Widget_selectOne<T extends BaseSelectEntry> implements IWidget_OLD<
         const _choices = this.config.choices
         if (typeof _choices === 'function'){
             if (!this.form.ready) return []
-            if (this.form._ROOT==null)return []
+            if (this.form._ROOT == null) throw new Error('❌ IMPOSSIBLE: this.form._ROOT is null')
             return _choices(this.form._ROOT)
         }
         return  _choices
