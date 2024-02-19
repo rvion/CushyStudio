@@ -10,7 +10,7 @@ import type { ComfyStatus, PromptID, PromptRelated_WsMsg, WsMsg } from '../types
 import type { CSCriticalError } from '../widgets/CSCriticalError'
 
 import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'fs'
-import { makeAutoObservable, observable } from 'mobx'
+import { makeAutoObservable, observable, toJS } from 'mobx'
 import { nanoid } from 'nanoid'
 import { join } from 'pathe'
 import { createRef } from 'react'
@@ -85,6 +85,7 @@ export class STATE {
             console.log(`[🛋️] WINDOW.CUSHY NOW DEFINED`)
             Object.defineProperty(window, 'cushy', { get() { return (window as any).CushyObservableCache.st } }) // prettier-ignore
         }
+        ;(window as any).toJS = toJS
     })()
 
     /** hack to help closing prompt completions */
