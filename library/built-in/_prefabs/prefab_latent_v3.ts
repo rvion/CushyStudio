@@ -8,6 +8,7 @@ export const ui_latent_v3 = () => {
     return form.choice({
         appearance: 'tab',
         default: 'emptyLatent',
+        label: 'Latent Input',
         items: {
             emptyLatent: () =>
                 form.group({
