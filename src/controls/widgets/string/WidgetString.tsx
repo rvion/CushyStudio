@@ -48,6 +48,9 @@ export class Widget_string implements IWidget<Widget_string_types> {
         makeAutoObservable(this)
     }
 
+    set value(next: Widget_string_output) {
+        this.serial.val = next
+    }
     get value(): Widget_string_output {
         return this.serial.val ?? this.config.default ?? ''
     }

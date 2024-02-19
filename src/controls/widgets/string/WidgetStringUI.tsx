@@ -13,8 +13,7 @@ export const WidgetStringUI = observer(function WidgetStringUI_(p: { widget: Wid
                 rows={2}
                 value={val}
                 onChange={(ev) => {
-                    const next = ev.target.value
-                    widget.serial.val = next
+                    widget.value = ev.target.value
                 }}
             />
         )
@@ -27,8 +26,7 @@ export const WidgetStringUI = observer(function WidgetStringUI_(p: { widget: Wid
                 placeholder={widget.config.placeHolder}
                 value={val}
                 onChange={(ev) => {
-                    const next = ev.target.value
-                    widget.serial.val = next
+                    widget.value = ev.target.value
                 }}
             />
             <div
