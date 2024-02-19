@@ -23,6 +23,7 @@ import { Widget_prompt, type Widget_prompt_config } from './widgets/prompt/Widge
 import { Widget_size, type Widget_size_config } from './widgets/size/WidgetSize'
 import { Widget_string, type Widget_string_config } from './widgets/string/WidgetString'
 import { Widget_shared } from './widgets/shared/WidgetShared'
+import { Widget_matrix, type Widget_matrix_config } from './widgets/matrix/WidgetMatrix'
 
 export class FormBuilder {
     /** (@internal) don't call this yourself */
@@ -160,7 +161,7 @@ export class FormBuilder {
     orbit     = (opts: Widget_orbit_config)     => new Widget_orbit(this.form, opts) // prettier-ignore
     seed      = (opts: W.Widget_seed_config)      => new W.Widget_seed(this.form, opts) // prettier-ignore
 
-    matrix = (opts: W.Widget_matrix_config) => new W.Widget_matrix(this.form, opts)
+    matrix = (opts: Widget_matrix_config) => new Widget_matrix(this.form, opts)
 
     inlineRun = (opts: W.Widget_inlineRun_config) => new W.Widget_inlineRun(this.form, opts)
     loras = (opts: W.Widget_loras_config) => new W.Widget_loras(this.form, opts)
@@ -227,7 +228,7 @@ export class FormBuilder {
         if (type === 'listExt'   ) return new   Widget_listExt   (this.form, input, serial)
         if (type === 'inlineRun' ) return new W.Widget_inlineRun (this.form, input, serial)
         if (type === 'seed'      ) return new W.Widget_seed      (this.form, input, serial)
-        if (type === 'matrix'    ) return new W.Widget_matrix    (this.form, input, serial)
+        if (type === 'matrix'    ) return new   Widget_matrix    (this.form, input, serial)
         if (type === 'loras'     ) return new W.Widget_loras     (this.form, input, serial)
         if (type === 'image'     ) return new   Widget_image     (this.form, input, serial)
         if (type === 'selectOne' ) return new W.Widget_selectOne (this.form, input, serial)

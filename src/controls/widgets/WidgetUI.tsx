@@ -7,9 +7,9 @@ import { WidgetInlineRunUI } from './button/WidgetInlineRunUI'
 import { WidgetLorasUI } from './loras/WidgetLorasUI'
 import { WidgetMardownUI } from './markdown/WidgetMarkdownUI'
 import { WidgetMatrixUI } from './matrix/WidgetMatrixUI'
-import { WidgetSeedUI } from './WidgetSeedUI'
-import { WidgetSelectManyUI } from './WidgetSelectManyUI'
-import { WidgetSelectOneUI } from './WidgetSelectOneUI'
+import { WidgetSeedUI } from './seed/WidgetSeedUI'
+import { WidgetSelectManyUI } from './selectMany/WidgetSelectManyUI'
+import { WidgetSelectOneUI } from './selectOne/WidgetSelectOneUI'
 import { WidgetDI } from './WidgetUI.DI'
 import { Widget_bool } from './bool/WidgetBool'
 import { WidgetBoolUI } from './bool/WidgetBoolUI'
@@ -42,6 +42,7 @@ import { WidgetStringUI } from './string/WidgetStringUI'
 import { Widget_custom } from './custom/WidgetCustom'
 import { Widget_shared } from './shared/WidgetShared'
 import { WidgetShared_BlockUI, WidgetShared_LineUI } from './shared/WidgetSharedUI'
+import { Widget_matrix } from './matrix/WidgetMatrix'
 
 /**
  * this widget will then dispatch the individual requests to the appropriate sub-widgets
@@ -67,7 +68,7 @@ export const WidgetUI = (
     if (widget instanceof Widget_group) return { WidgetLineUI: WidgetGroup_LineUI, WidgetBlockUI: WidgetGroup_BlockUI }
     if (widget instanceof Widget_size) return { WidgetLineUI: WigetSize_LineUI, WidgetBlockUI: WigetSize_BlockUI }
     if (widget instanceof Widget_enum) return { WidgetLineUI: WidgetEnumUI, WidgetBlockUI: undefined }
-    if (widget instanceof R.Widget_matrix) return { WidgetLineUI: WidgetMatrixUI, WidgetBlockUI: undefined }
+    if (widget instanceof Widget_matrix) return { WidgetLineUI: WidgetMatrixUI, WidgetBlockUI: undefined }
     if (widget instanceof Widget_bool) return { WidgetLineUI: WidgetBoolUI, WidgetBlockUI: undefined }
     if (widget instanceof R.Widget_inlineRun) return { WidgetLineUI: WidgetInlineRunUI, WidgetBlockUI: undefined }
     if (widget instanceof Widget_prompt) return { WidgetLineUI: WidgetPrompt_LineUI, WidgetBlockUI: WidgetPromptUI }

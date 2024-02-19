@@ -18,6 +18,7 @@ import type { Widget_size } from './size/WidgetSize'
 import type { Widget_image } from './image/WidgetImage'
 import type { Widget_custom } from './custom/WidgetCustom'
 import type { Widget_shared } from './shared/WidgetShared'
+import type { Widget_matrix } from './matrix/WidgetMatrix'
 
 /**
  * DI (Dependency Injection)
@@ -38,7 +39,7 @@ export let WidgetDI = {
     Widget_markdown: 0 as any as typeof R.Widget_markdown,
     Widget_custom: 0 as any as typeof Widget_custom,
     Widget_size: 0 as any as typeof Widget_size,
-    Widget_matrix: 0 as any as typeof R.Widget_matrix,
+    Widget_matrix: 0 as any as typeof Widget_matrix,
     Widget_loras: 0 as any as typeof R.Widget_loras,
     Widget_image: 0 as any as typeof Widget_image,
     Widget_selectMany: 0 as any as typeof R.Widget_selectMany,

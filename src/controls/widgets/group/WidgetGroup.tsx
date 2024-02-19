@@ -1,6 +1,7 @@
 import type { Form } from 'src/controls/Form'
 import type { Widget } from 'src/controls/Widget'
 import type { GetWidgetResult, IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../../IWidget'
+import type { WidgetDict } from 'src/cards/App'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -8,7 +9,7 @@ import { runWithGlobalForm } from 'src/models/_ctx2'
 import { WidgetDI } from '../WidgetUI.DI'
 
 // CONFIG
-export type Widget_group_config<T extends { [key: string]: Widget }> = WidgetConfigFields<{
+export type Widget_group_config<T extends WidgetDict> = WidgetConfigFields<{
     items?: (() => T) | T
     topLevel?: boolean
     /** if provided, will be used to show a single line summary on the inline form slot */
@@ -16,19 +17,19 @@ export type Widget_group_config<T extends { [key: string]: Widget }> = WidgetCon
 }>
 
 // SERIAL
-export type Widget_group_serial<T extends { [key: string]: Widget }> = WidgetSerialFields<{
+export type Widget_group_serial<T extends WidgetDict> = WidgetSerialFields<{
     type: 'group'
     active: boolean
     values_: { [K in keyof T]?: T[K]['$Serial'] }
 }>
 
 // OUT
-export type Widget_group_output<T extends { [key: string]: Widget }> = {
+export type Widget_group_output<T extends WidgetDict> = {
     [k in keyof T]: GetWidgetResult<T[k]>
 }
 
 // TYPES
-export type Widget_group_types<T extends { [key: string]: Widget }> = {
+export type Widget_group_types<T extends WidgetDict> = {
     $Type: 'group'
     $Input: Widget_group_config<T>
     $Serial: Widget_group_serial<T>
@@ -36,8 +37,8 @@ export type Widget_group_types<T extends { [key: string]: Widget }> = {
 }
 
 // STATE
-export interface Widget_group<T extends { [key: string]: Widget }> extends WidgetTypeHelpers<Widget_group_types<T>> {}
-export class Widget_group<T extends { [key: string]: Widget }> implements IWidget<Widget_group_types<T>> {
+export interface Widget_group<T extends WidgetDict> extends WidgetTypeHelpers<Widget_group_types<T>> {}
+export class Widget_group<T extends WidgetDict> implements IWidget<Widget_group_types<T>> {
     get summary(): string {
         return this.config.summary?.(this.value) ?? Object.keys(this.fields).length + ' items'
     }
@@ -109,7 +110,7 @@ export class Widget_group<T extends { [key: string]: Widget }> implements IWidge
         this.serial.active = true
         const prevFieldSerials: { [K in keyof T]?: T[K]['$Serial'] } = this.serial.values_
         const itemsDef = this.config.items
-        const _newValues: { [key: string]: Widget } =
+        const _newValues: WidgetDict =
             typeof itemsDef === 'function' //
                 ? runWithGlobalForm(this.form.builder, itemsDef) ?? {}
                 : itemsDef ?? {}

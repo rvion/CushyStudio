@@ -6,14 +6,21 @@ import { nanoid } from 'nanoid'
 import { WidgetDI } from '../WidgetUI.DI'
 import { hash } from 'ohash'
 
+// CONFIG
 export type Widget_string_config = WidgetConfigFields<{
     default?: string
     textarea?: boolean
     placeHolder?: string
     inputType?: 'text' | 'password' | 'email' | 'tel' | 'url' | 'time' | 'date' | 'datetime-local'
 }>
+
+// SERIAL
 export type Widget_string_serial = WidgetSerialFields<{ type: 'str'; val?: string }>
+
+// OUT
 export type Widget_string_output = string
+
+// TYPES
 export type Widget_string_types = {
     $Type: 'str'
     $Input: Widget_string_config
