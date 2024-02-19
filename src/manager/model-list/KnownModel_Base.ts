@@ -9,6 +9,7 @@ export type KnownModel_Base =
     | "SVD"                // x   2
     | "zero123"            // x   1
     | "SD1.5"              // x  57
+    | "Stable Cascade"     // x  10
     | "SD2"                // x   2
     | "SD2.1"              // x   4
     | "SDXL VAE"           // x   1

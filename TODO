@@ -5,15 +5,15 @@
 ☐ unified canvas
 
 ✔ boolean perperly placed as input @done(24-02-10 20:35)
-☐ unify the download model / custom nodes
-    ☐ single button
-    ☐ shown in red if missing
+✔ unify the download model / custom nodes @done(24-02-18 13:54)
+    ✔ single button @done(24-02-18 13:54)
+    ✔ shown in red if missing @done(24-02-18 13:54)
 ☐ redo the host management page
-☐ initial install buton from the comfyUI
+✔ initial install buton from the comfyUI @done(24-02-18 15:27)
 ☐ error messages
 ☐ CushyDiffusion: ip adapter top level
-☐ delete image from right click
-☐ add restart button in the top left scehma appbar blabla for quick comfy restart
+✔ delete image from right click @done(24-02-18 14:11)
+✔ add restart button in the top left scehma appbar blabla for quick comfy restart @done(24-02-18 14:11)
 ☐ fix the regional widget using the new approach.
 ☐ don't force focus output
 ☐ show latent in the selection
@@ -65,7 +65,7 @@ form rework:
         ☐ stamp tool
     ☐ basic documentation website @started(24-02-08 23:41)
     ☐ bug pass @started(24-02-08 23:42)
-    ☐ form layout @started(24-02-08 23:41)
+    ✔ form layout @started(24-02-08 23:41) @done(24-02-18 15:28) @lasted(1w2d15h47m14s)
     ☐ FEATURE FREEZE. NO MORE FEATURES.
     ☐ make a 2-minute showcase video
 
@@ -91,15 +91,10 @@ cnets:
 
 Todo :
     ☐ create all nodes at once, then hydrate them after, so all json are ready
-    ☐ add back popout button
     ☐ better error message when node not found
-    ☐ runpod serverless
     ☐ disable publish button if not logged in
-    ☐ one-click create app
-    ☐ stuck in ComfyUI
     ☐ improve OuputWrappers to allow to open in side panes
     ☐ safe/unsafe should be option panel
-    ☐ comfyUI node explorer looks bad
     ☐ disable the delete button for virtual-comfyui hosts
     ☐ rich prompt + shift/alt+enter should not accept compltion but insert newline
     ☐ finish website
@@ -108,7 +103,6 @@ Todo :
     ☐ finish full page apps
     ☐ add browser/install page
     ☐ fix sut
-    ☐ use any image as draft illustration
     ☐ draft result are too wide by default / should open in bottom panel
     ☐ selectMenu
     ☐ show different from current preset in color
@@ -119,8 +113,14 @@ Todo :
     ☐ image loader (local files by path)
     ☐ permutations node (possibly hard, possibly easy with lists)
     ☐ code builder:
+    ✘ new primitive to add all the primitive inputs instead of having super long names, @cancelled(24-02-18 15:30)
+    ✘ add back popout button @cancelled(24-02-18 15:33)
+    ✔ use any image as draft illustration @done(24-02-18 15:30)
+    ✘ runpod serverless @cancelled(24-02-18 15:30)
+    ✔ one-click create app @done(24-02-18 15:30)
+    ✔ stuck in ComfyUI @done(24-02-18 15:30)
+    ✘ comfyUI node explorer looks bad @cancelled(24-02-18 15:30)
     ✘ select nodes  => see the corresponding code in realtime @cancelled(24-01-26 18:49)
-    ☐ new primitive to add all the primitive inputs instead of having super long names,
     ✔ better treeview with apps @done(24-02-01 19:11)
     ✔ home page @done(24-01-31 13:00)
     ✔ image app @done(24-01-31 13:00)

@@ -12,7 +12,7 @@ const workspaceFolderPath = cwd()
 /* Probably un-needed function, but this makes sure that we keep the UI non-blocking */
 async function tryEditor(editor: string, filePath: string): Promise<void> {
     return new Promise((resolvePromise, rejectPromise) => {
-        exec(`${editor} ${filePath}`, (error, stdout, stderr) => {
+        exec(`${editor} "${filePath}"`, (error, stdout, stderr) => {
             if (!error) {
                 resolvePromise()
             } else {

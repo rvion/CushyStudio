@@ -1,5 +1,0 @@
-# 🚀 Roadmap
-
-Current iteration:
-
-* Documentation

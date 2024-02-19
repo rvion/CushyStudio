@@ -28,6 +28,8 @@ export type Placement =
     | 'autoVerticalEnd'
     | 'autoHorizontalStart'
     | 'autoHorizontalEnd'
+    //
+    | `#${string}`
 
 export class RevealState {
     static nextUID = 1

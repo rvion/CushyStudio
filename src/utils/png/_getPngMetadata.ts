@@ -11,30 +11,19 @@ export function getPngMetadataFromFile(file: File): Promise<TextChunks> {
     return new Promise<TextChunks>((resolve, reject) => {
         const reader = new FileReader()
         reader.onload = (event) => {
-            console.log('🟢', event)
-            // A. ensure we properly loaded the file
             const res = event.target?.result
-            if (res == null) {
-                // 🔴 showErrorMessage('no reader.onload have no result')
-                return reject('file load error')
-            }
-
+            // A. ensure we properly loaded the file
+            if (res == null) return reject('file load error')
             // B. ensure we don't have a string
-            if (typeof res === 'string') {
-                // 🔴 showErrorMessage('received a string instead of an array buffer')
-                return reject('file load error')
-            }
-
+            if (typeof res === 'string') return reject('file load error')
             // C. Get the PNG data as a Uint8Array
             const pngData = new Uint8Array(res)
-            console.log(`🟢`, pngData)
             const result = getPngMetadataFromUint8Array(pngData)
             if (!result.success) {
                 // 🔴 showErrorMessage(result.value)
                 console.log('🔴', result.value)
                 return reject(result.value)
             }
-            console.log('🟢', result.value)
             resolve(result.value)
         }
 

@@ -4,7 +4,7 @@ import { ScriptExtractionResult } from 'src/cards/LibraryFile'
 import { AppCardUI } from 'src/cards/fancycard/AppCardUI'
 import { useSt } from 'src/state/stateContext'
 import { toastError } from 'src/utils/misc/toasts'
-import { CreateAllBtnUI } from './Panel_Welcome/CreateAppBtnUI'
+import { CreateAppBtnUI } from './Panel_Welcome/CreateAppBtnUI'
 
 export const Panel_Welcome = observer(function Panel_Welcome_(p: {}) {
     const st = useSt()
@@ -44,7 +44,7 @@ export const Panel_Welcome = observer(function Panel_Welcome_(p: {}) {
                 <div>
                     <div>
                         3. Time to create your own app ? It's super-easy. Let's GOO !
-                        <CreateAllBtnUI />
+                        <CreateAppBtnUI />
                     </div>
                     <div>and if you're feeling lost, check the </div>
                     <div tw='btn btn-sm'>

@@ -1,7 +1,8 @@
 import chalk from 'chalk'
 import * as X from 'child_process'
-import { existsSync, mkdirSync, watch } from 'fs'
+import { existsSync, mkdirSync, readFileSync, renameSync, watch } from 'fs'
 import { join, relative } from 'pathe'
+import { hashArrayBuffer } from 'src/state/hashBlob'
 import { promisify } from 'util'
 
 const exec = promisify(X.exec)
@@ -73,9 +74,22 @@ const watcher = watch(dir, { recursive: true, persistent: true }, async (event, 
     // ⏸️     filename = fNameJpeg
     // ⏸️ }
 
-    const s3Folder = `rvion-screenshots`
+    const ext = filename.split('.').pop()
+    const hash = hashArrayBuffer(readFileSync(path))
+    const fnameNoSpace =
+        // filename //
+        //     .split('.')
+        //     .slice(0, -1)
+        //     .join('.')
+        //     .replaceAll(' ', '-')
+        //     .replaceAll('(', '')
+        //     .replaceAll(')', '') +
+        hash + '.' + ext
+    const finalPath = join(dir, '_converted', fnameNoSpace)
+    renameSync(path, finalPath)
+    const s3Folder = `rvion`
     console.log(chalk.green(`uploading ${filename} to digitalocean...`))
-    const uploadCommand = `rclone copy "${path}" cushy-digitalocean-spaces:cushy/${s3Folder} --progress`
+    const uploadCommand = `rclone copy "${finalPath}" cushy-digitalocean-spaces:cushy/${s3Folder} --progress`
     // rclone sync /Users/loco/S3-1/old cushy-digitalocean-spaces:cushy/old --progress
     // https://cushy.fra1.cdn.digitaloceanspaces.com/old/screenshots/2023-09-29-22-40-45.png
     console.log(chalk.gray(`running: ${uploadCommand}`))
@@ -84,7 +98,7 @@ const watcher = watch(dir, { recursive: true, persistent: true }, async (event, 
     console.log(`stdout: ${stdout}`)
     // --------
     // const relPath = relative
-    const url = `https://cushy.fra1.cdn.digitaloceanspaces.com/${s3Folder}/${filename}`
+    const url = `https://cushy.fra1.cdn.digitaloceanspaces.com/${s3Folder}/${fnameNoSpace}`
     console.log(`url: ${chalk.green(`"${url}"`)}`)
     await exec(`echo "${url}" | pbcopy`)
 })

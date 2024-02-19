@@ -1,6 +1,7 @@
 import { observer } from 'mobx-react-lite'
 import { Dropdown, MenuItem } from 'src/rsuite/Dropdown'
 import { useSt } from '../../state/stateContext'
+import type { HostL } from 'src/models/Host'
 
 export const MenuComfyUI = observer(function MenuComfyUI_(p: {}) {
     const st = useSt()
@@ -28,59 +29,63 @@ export const MenuComfyUI = observer(function MenuComfyUI_(p: {}) {
                     label='ComfyUI Hosts'
                 />
             )} */}
-            <div className='divider'>hosts</div>
+            <HostMenuItemUI host={st.mainHost} />
+            <div className='divider'>All hosts</div>
             {st.hosts.map((host) => {
-                const isMain = host.id === st.configFile.value.mainComfyHostID
-                return (
-                    <MenuItem
-                        //
-                        icon={
-                            <span
-                                tw={[isMain ? (isConnected ? 'text-green-500' : 'text-red-500') : null]}
-                                className='material-symbols-outlined'
-                            >
-                                desktop_mac
-                            </span>
-                        }
-                        onClick={() => host.electAsPrimary()}
-                        key={host.id}
-                    >
-                        <div tw='flex-grow'>{host.data.name}</div>
-                        <div className='join'>
-                            <div
-                                className='btn btn-xs'
-                                onClick={(ev) => {
-                                    ev.preventDefault()
-                                    ev.stopPropagation()
-                                    st.layout.FOCUS_OR_CREATE('Hosts', {})
-                                }}
-                            >
-                                <span className='material-symbols-outlined'>settings</span>
-                            </div>
-                            <div
-                                className='btn btn-xs'
-                                onClick={(ev) => {
-                                    ev.preventDefault()
-                                    ev.stopPropagation()
-                                    st.layout.FOCUS_OR_CREATE('ComfyUI', {})
-                                }}
-                            >
-                                <span className='material-symbols-outlined'>open_in_browser</span>
-                            </div>
-                            <div
-                                className='btn btn-xs'
-                                onClick={(ev) => {
-                                    ev.preventDefault()
-                                    ev.stopPropagation()
-                                    st.layout.FOCUS_OR_CREATE('ComfyUI', {}, 'full')
-                                }}
-                            >
-                                <span className='material-symbols-outlined'>open_in_full</span>
-                            </div>
-                        </div>
-                    </MenuItem>
-                )
+                return <HostMenuItemUI key={host.id} host={host} />
             })}
         </Dropdown>
+    )
+})
+
+export const HostMenuItemUI = observer(function HostMenuItemUI_(p: { host: HostL }) {
+    const host = p.host
+    const isMain = host.id === cushy.configFile.value.mainComfyHostID
+    return (
+        <MenuItem
+            icon={
+                <span
+                    tw={[isMain && (cushy.ws?.isOpen ?? false ? 'text-green-500' : 'text-red-500')]}
+                    className='material-symbols-outlined'
+                >
+                    desktop_mac
+                </span>
+            }
+            onClick={() => host.electAsPrimary()}
+        >
+            <div tw='flex-grow'>{host.data.name}</div>
+            <div className='join'>
+                <div
+                    className='btn btn-xs'
+                    onClick={(ev) => {
+                        ev.preventDefault()
+                        ev.stopPropagation()
+                        cushy.layout.FOCUS_OR_CREATE('Hosts', {})
+                    }}
+                >
+                    <span className='material-symbols-outlined'>settings</span>
+                </div>
+                <div
+                    className='btn btn-xs'
+                    onClick={(ev) => {
+                        ev.preventDefault()
+                        ev.stopPropagation()
+                        cushy.layout.FOCUS_OR_CREATE('ComfyUI', {})
+                    }}
+                >
+                    <span className='material-symbols-outlined'>open_in_browser</span>
+                </div>
+                <div
+                    className='btn btn-xs'
+                    onClick={(ev) => {
+                        ev.preventDefault()
+                        ev.stopPropagation()
+                        cushy.layout.FOCUS_OR_CREATE('ComfyUI', {}, 'full')
+                    }}
+                >
+                    <span className='material-symbols-outlined'>open_in_full</span>
+                </div>
+            </div>
+        </MenuItem>
     )
 })

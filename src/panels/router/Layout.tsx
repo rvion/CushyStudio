@@ -129,31 +129,6 @@ export class CushyLayoutManager {
     })
 
     nextPaintIDx = 0
-    openAppInMainPanel = (actionPath: RelativePath) => {
-        throw new Error('not implemented')
-        // const card = this.st.library.getFile(actionPath)
-        // if (card == null) return null /* 🔴 add popup somewhere */
-        // const draft = card.getLastDraft()
-        // this.st.currentDraft = draft
-        // // this.FOCUS_OR_CREATE('Draft', { draftID: draft?.id ?? '❌' }, 'LEFT_PANE_TABSET')
-    }
-
-    openAppInNewPanel = (actionPath: RelativePath) => {
-        throw new Error('not implemented')
-        // const card = this.st.library.getFile(actionPath)
-        // if (card == null) return null /* 🔴 add popup somewhere */
-        // const draft = card.getLastDraft()
-        // this.FOCUS_OR_CREATE('Draft', { draftID: draft?.id ?? '❌' }, 'LEFT_PANE_TABSET')
-    }
-    // addDraft = (p: PropsOf<typeof Panel_Draft>) => {
-    //     const draftID = p.draftID
-    //     const draft = this.st.db.drafts.get(p.draftID)
-    //     const card = draft?.app
-    //     const _img = card?.illustrationPathWithFileProtocol
-    //     const icon = _img?.startsWith('<svg') ? undefined : _img
-    //     const title = card?.displayName ?? 'Draft'
-    //     this.GO_TO(PANELS.Draft, `/draft/${draftID}`, { title, draftID, icon }, 'current')
-    // }
 
     renameTab = (tabID: string, newName: string) => {
         const tab = this.model.getNodeById(tabID)
@@ -334,7 +309,7 @@ export class CushyLayoutManager {
             component: p.panel,
             enableClose: p.canClose ?? true,
             enableRename: false,
-            enableFloat: true,
+            enableFloat: false,
             icon: icon,
         }
     }
@@ -352,15 +327,15 @@ export class CushyLayoutManager {
             },
             borders: [
                 // LEFT BORDER
-                {
-                    type: 'border',
-                    // size: 350,
-                    location: 'left',
-                    // selected: 0,
-                    show: true,
-                    children: [this._add({ panel: 'TreeExplorer', props: {}, canClose: false, width: 300 })],
-                    size: 300,
-                },
+                // {
+                //     type: 'border',
+                //     // size: 350,
+                //     location: 'left',
+                //     // selected: 0,
+                //     show: true,
+                //     children: [this._add({ panel: 'TreeExplorer', props: {}, canClose: false, width: 300 })],
+                //     size: 300,
+                // },
                 // RIGHT BORDER
                 {
                     type: 'border',

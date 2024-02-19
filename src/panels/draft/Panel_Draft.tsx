@@ -15,6 +15,7 @@ import { draftContext } from '../../widgets/misc/useDraft'
 import { MessageInfoUI } from '../MessageUI'
 import { DraftHeaderUI } from './DraftHeaderUI'
 import { JsonViewUI } from 'src/widgets/workspace/JsonViewUI'
+import { InstallRequirementsBtnUI } from 'src/controls/REQUIREMENTS/Panel_InstallRequirementsUI'
 
 export const Panel_Draft = observer(function Panel_Draft_(p: { draftID: DraftID }) {
     // 1. get draft
@@ -78,7 +79,7 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
         <draftContext.Provider value={draft} key={draft.id}>
             <div
                 style={toJS(containerStyle ?? defaultContainerStyle)}
-                tw={['flex flex-col flex-grow h-full', containerClassName, 'bg-base-300 px-2']}
+                tw={['flex-1 flex flex-col', containerClassName, 'bg-base-300']}
                 onKeyUp={(ev) => {
                     // submit on meta+enter
                     if (ev.key === 'Enter' && (ev.metaKey || ev.ctrlKey)) {
@@ -100,7 +101,10 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                 {metadata?.description && (
                     <MarkdownUI tw='_WidgetMardownUI italic px-1 text-gray-500 w-full' markdown={metadata.description} />
                 )}
-                <div tw='pb-80 p-1'>
+                {metadata?.requirements && (
+                    <InstallRequirementsBtnUI label='requirements' active={true} requirements={metadata.requirements} />
+                )}
+                <div tw='pb-10 px-2'>
                     {/* <div>A: {draft.id}</div>
                     <div>B: {Object.keys(draft.form?.serial ?? {}).join(', ')}</div>
                     <div>B2: {draft.form?.serial?.type}</div>

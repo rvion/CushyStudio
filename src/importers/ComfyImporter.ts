@@ -215,7 +215,8 @@ export class ComfyImporter {
                             nameEscaped: escapeJSKey(inputName),
                             default: valueStr,
                         }
-                        uiStuff.push(`${uiVal.nameEscaped}: ${renderUIForInput(uiVal)} /* ${uiVal.schema?.type} */,`)
+                        uiStuff.push(`${uiVal.nameEscaped}: ${renderUIForInput(uiVal)},`)
+                        // uiStuff.push(`${uiVal.nameEscaped}: ${renderUIForInput(uiVal)} /* ${uiVal.schema?.type} */,`)
                         piRun(`${name2}: ${renderAdapterForInput(uiVal, inputGroupName)}, `)
                     } else {
                         piRun(`${name2}: ${jsEscapeStr(draft.valueStr)}, `)
@@ -262,8 +263,7 @@ export class ComfyImporter {
 
             if (x.name === 'seed' && s.type === 'INT') return `${formVarInUIFn}.seed({default: ${jsEscapeStr(x.default)}})`
             if (s.type === 'Enum_LoadImage_image') return `${formVarInUIFn}.image({default: ${jsEscapeStr(x.default)}})`
-            if (s.type.startsWith('Enum_'))
-                return `${formVarInUIFn}.enum({default: ${jsEscapeStr(x.default)}, enumName: ${JSON.stringify(s.type)}})`
+            if (s.type.startsWith('Enum_')) return `${formVarInUIFn}.enum.${s.type}({default: ${jsEscapeStr(x.default)} })`
 
             if (s.type in ComfyPrimitiveMapping) {
                 let builderFnName = (() => {

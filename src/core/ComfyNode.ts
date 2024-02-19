@@ -11,8 +11,8 @@ import { NodeStatusEmojiUI } from './NodeStatusEmojiUI'
 import { ComfyNodeOutput } from './Slot'
 import { auto_ } from './autoValue'
 
-configure({ enforceActions: 'never' })
-// ·configure({ enforceActions: 'always' })
+// configure({ enforceActions: 'never' })
+configure({ enforceActions: 'always' })
 
 type NodeExecutionStatus = 'executing' | 'done' | 'error' | 'waiting' | 'cached' | null
 

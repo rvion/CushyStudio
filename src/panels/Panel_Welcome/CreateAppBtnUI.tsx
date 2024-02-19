@@ -8,7 +8,7 @@ import { TypescriptHighlightedCodeUI } from 'src/widgets/misc/TypescriptHighligh
 import { MessageErrorUI, MessageInfoUI } from '../MessageUI'
 import { convertToValidCrossPlatformFileName } from './convertToValidCrossPlatformFileName'
 
-export const CreateAllBtnUI = observer(function CreateAllBtnUI_(p: {}) {
+export const CreateAppBtnUI = observer(function CreateAppBtnUI_(p: {}) {
     const st = useSt()
     const uist = useLocalObservable(() => ({
         appName: 'my-app',

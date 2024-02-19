@@ -1,27 +1,6 @@
 import { Static, Type } from '@sinclair/typebox'
-// import { Value, ValueError } from '@sinclair/typebox/value'
-// import { Either, resultFailure, resultSuccess } from 'src/types/Either'
-import { optionalString, string } from './schema'
+import type { Requirements } from 'src/controls/IWidget'
 
-// DECK --------------------------------------
-// export type PackageManifest = {
-//     /** package name */
-//     name: string
-
-//     /** author name */
-//     authorName: string
-
-//     /** package summary */
-//     description: string
-
-//     /** relative path from package root to an image */
-//     relativeIconPath?: string
-
-//     /** List of all cards exposed by this deck */
-//     cards?: AppMetadata[]
-// }
-
-// DECK --------------------------------------
 export type AppMetadata = {
     /**
      * app name;
@@ -47,6 +26,7 @@ export type AppMetadata = {
     /** this description will show-up at the top of the action form */
     description?: string
 
+    requirements?: Requirements[]
     /** help text to display (visbble by default) at the top of the draft) */
     help?: string
 
@@ -77,39 +57,10 @@ export const AppMetadataSchema = Type.Object(
         categories: Type.Optional(Type.Array(Type.String())),
         customNodeRequired: Type.Optional(Type.Array(Type.String())),
         author: Type.Optional(Type.String()),
+        requirements: Type.Array(Type.Any()),
     },
     { additionalProperties: false },
 )
 
 /* ✅ */ type _AppMetadataSchemaT = Static<typeof AppMetadataSchema>
 /* ✅ */ const _a2: AppMetadata = 0 as any as _AppMetadataSchemaT
-
-// export const DeckSchema = Type.Object(
-//     {
-//         $schema: optionalString('the schema version'),
-//         name: string('customize your package name'),
-//         authorName: string('customize your author name'),
-//         description: string('short summary of your package'),
-//         relativeIconPath: optionalString('local path to an image in your package that should be used'),
-//         cards: Type.Optional(Type.Array(AppMetadataSchema)),
-//     },
-//     { additionalProperties: false },
-// )
-
-// export const parseDeckManifest = (manifest: unknown): Either<ValueError[], PackageManifest> => {
-//     const errors: ValueError[] = [...Value.Errors(DeckSchema, manifest)]
-//     if (errors.length > 0) {
-//         console.log('[🦊] Invalid Package manifest:', errors)
-//         return resultFailure(errors)
-//     }
-//     return resultSuccess(manifest as PackageManifest)
-//     // return Value.Decode(DeckSchema, manifest)
-// }
-
-/* ✅ */ // type _DeckSchemaT = Static<typeof DeckSchema>
-/* ✅ */ // const _a1: PackageManifest = 0 as any as _DeckSchemaT
-
-// export type ManifestError =
-//     | { type: 'no manifest' }
-//     | { type: 'invalid manifest'; errors: ValueError[] }
-//     | { type: 'crash'; error: unknown }

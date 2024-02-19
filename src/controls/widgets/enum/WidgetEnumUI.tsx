@@ -30,6 +30,13 @@ export const WidgetEnumUI = observer(function WidgetEnumUI_(p: { widget: Widget_
                     widget.serial.val = e as any // 🔴
                 }}
             />
+            <div
+                tw={[widget.isChanged ? undefined : 'btn-disabled opacity-50']}
+                onClick={() => widget.reset()}
+                className='btn btn-xs btn-narrower btn-ghost'
+            >
+                <span className='material-symbols-outlined'>undo</span>
+            </div>
         </>
     )
 })

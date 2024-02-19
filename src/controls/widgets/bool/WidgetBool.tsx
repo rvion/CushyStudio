@@ -55,6 +55,9 @@ export class Widget_bool implements IWidget<Widget_string_types> {
     get value(): Widget_bool_output {
         return this.serial.active ?? false
     }
+    set value(next: Widget_bool_output) {
+        this.serial.active = next
+    }
 }
 
 // DI

@@ -150,6 +150,15 @@ export const UnifiedCanvasMenuUI = observer(function UnifiedCanvasMenuUI_(p: {})
                                     />
                                     <div>Selection 0</div>
                                 </div>
+                                <div className='flex-1'></div>
+                                <div
+                                    //
+                                    tw='btn btn-sm btn-square btn-outline'
+                                    onClick={uniSel.remove}
+                                >
+                                    <span className='material-symbols-outlined'>delete</span>
+                                </div>
+
                                 <div
                                     //
                                     tw='btn btn-sm btn-square btn-outline'
