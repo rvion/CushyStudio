@@ -3,11 +3,12 @@ export type SDModelType =
     | 'SD1.5 512'
     | 'SD2.1 768'
     | 'SDXL 1024'
-    | 'custom'
 
 export type CushySizeByRatio = {
-    modelType: SDModelType
-    aspectRatio: AspectRatio
+    modelType?: SDModelType
+    aspectRatio?: AspectRatio
+    width?: number
+    height?: number
 }
 
 export type CushySize = {

@@ -10,6 +10,16 @@ const notReallyRound = {
     '--btn-focus-scale': '1',
 }
 
+const lightGlobals = {
+    '--text-shadow-color': 'rgb(255, 255, 255, 0.1)',
+    '--text-shadow-color-inv' : 'rgb(0, 0, 0, 0.2)'
+}
+
+const darkGlobals = {
+    '--text-shadow-color': 'rgb(0, 0, 0, 0.2)',
+    '--text-shadow-color-inv' : 'rgb(255, 255, 255, 0.1)'
+}
+
 module.exports = {
     content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}', './library/**/*.{ts,js}'],
     theme: {
@@ -29,6 +39,7 @@ module.exports = {
                     ...require('daisyui/src/theming/themes')['corporate'],
                     'primary-content': 'white',
                     ...notReallyRound,
+                    ...lightGlobals,
                 },
             },
             {
@@ -37,6 +48,7 @@ module.exports = {
                     primary: '#5aa474',
                     'primary-content': 'white',
                     ...notReallyRound,
+                    ...lightGlobals,
                 },
             },
             // 'dark',
@@ -61,12 +73,14 @@ module.exports = {
                     'base-300': '#191c23',
                     'base-content': '#B2CCD6',
                     ...notReallyRound,
+                    ...darkGlobals,
                 },
             },
             {
                 dark2: {
                     ...require('daisyui/src/theming/themes')['dim'],
                     ...notReallyRound,
+                    ...darkGlobals,
                 },
             },
             {
@@ -74,6 +88,7 @@ module.exports = {
                     ...require('daisyui/src/theming/themes')['dark'],
                     primary: '#9FA8DA',
                     ...notReallyRound,
+                    ...darkGlobals,
                 },
             },
             // 'wireframe',
@@ -81,12 +96,14 @@ module.exports = {
                 wireframe: {
                     ...require('daisyui/src/theming/themes')['wireframe'],
                     ...notReallyRound,
+                    ...lightGlobals,
                 },
             },
             {
                 cupcake: {
                     ...require('daisyui/src/theming/themes')['cupcake'],
                     ...notReallyRound,
+                    ...lightGlobals,
                 },
             },
             'aqua',
@@ -94,6 +111,7 @@ module.exports = {
                 valentine: {
                     ...require('daisyui/src/theming/themes')['valentine'],
                     ...notReallyRound,
+                    ...lightGlobals,
                 },
             },
             'sunset',

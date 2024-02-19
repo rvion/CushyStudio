@@ -160,7 +160,7 @@ body {
 .relative-slider {
     --button-width: 16px;
     --input-number-ui-bg: oklch(var(--p)/.15);
-    --text-shadow-color: rgb(0, 0, 0, 0.2);
+    
     border: 1px solid oklch(var(--pc)/.2);
     border-radius: 5px;
 }
@@ -292,17 +292,17 @@ input.input {
     padding: 0px calc(var(--button-width) + 2px) 0px calc(var(--button-width) + 2px);
     font-size: 15px;
 
-    /* TODO(bird_d): This should be moved to be under all text, not just for number input. */
+}
+
+/* //Slider */
+
+/* Text Shading - These are defined in theme.css*/
+.text-shadow {
     text-shadow: 0px 1px 1px var(--text-shadow-color), 1px 1px 1px var(--text-shadow-color), -1px 1px 1px var(--text-shadow-color);
 }
 
-/* /Slider */
-
-/* Text Shading */
-/* TODO(bird_d): This should be moved to be under all text, not just for number input. */
-.text-shadow {
-    --text-shadow-color: rgb(0, 0, 0, 0.2);
-    text-shadow: 0px 1px 1px var(--text-shadow-color), 1px 1px 1px var(--text-shadow-color), -1px 1px 1px var(--text-shadow-color);
+.text-shadow-inv {
+    text-shadow: 0px 1px 1px var(--text-shadow-color-inv), 1px 1px 1px var(--text-shadow-color-inv), -1px 1px 1px var(--text-shadow-color-inv);
 }
 
 .bg-primary-1 { background-color: oklch(var(--p)/.1); }
