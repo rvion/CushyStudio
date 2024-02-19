@@ -1,4 +1,4 @@
-import type { FormBuilder } from '../../FormBuilder'
+import type { Form } from 'src/controls/Form'
 import type { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../../IWidget'
 
 import { computed, makeObservable, observable } from 'mobx'
@@ -44,7 +44,7 @@ export class Widget_shared<T extends Widget> implements IWidget<Widget_string_ty
     shared: T
     constructor(
         //
-        public form: FormBuilder,
+        public form: Form<any>,
         public config: Widget_shared_config<T>,
         serial?: Widget_shared_serial,
     ) {
@@ -59,7 +59,7 @@ export class Widget_shared<T extends Widget> implements IWidget<Widget_string_ty
         const newType = widget.type
         const prevSerial = this.form._ROOT.serial.values_[name]
         if (prevSerial && newType === prevSerial.type) {
-            this.shared = this.form._HYDRATE(newType, newConfig, prevSerial)
+            this.shared = this.form.builder._HYDRATE(newType, newConfig, prevSerial)
         } else {
             if (prevSerial != null) console.log(`[🔶] invalid serial for "${name}": (${newType} != ${prevSerial?.type}) => using fresh one instead`) // prettier-ignore
             this.shared = this.form._ROOT.serial.values_[name] = widget.serial as any

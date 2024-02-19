@@ -1,5 +1,5 @@
 import type { Widget } from 'src/controls/Widget'
-import type { FormBuilder } from '../../FormBuilder'
+import type { Form } from 'src/controls/Form'
 import type { GetWidgetResult, IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../../IWidget'
 
 import { makeAutoObservable } from 'mobx'
@@ -78,7 +78,7 @@ export class Widget_choices<T extends BranchDefinitions> implements IWidget<Widg
     }
 
     constructor(
-        public readonly form: FormBuilder,
+        public readonly form: Form<any>,
         public readonly config: Widget_choices_config<T>,
         serial?: Widget_choices_serial<T>,
     ) {
@@ -161,14 +161,14 @@ export class Widget_choices<T extends BranchDefinitions> implements IWidget<Widg
         const fn = this.config.items[branch]
         if (fn == null) throw new Error(`❌ Branch "${branch}" has no initializer function`)
 
-        const newItem = runWithGlobalForm(this.form, () => fn())
+        const newItem = runWithGlobalForm(this.form.builder, () => fn())
         const prevBranchSerial = this.serial.values_?.[branch]
         const newType = newItem.type
 
         // prev serial seems compmatible => we use it
         if (prevBranchSerial && newType === prevBranchSerial.type) {
             const newInput = newItem.config
-            this.children[branch] = this.form._HYDRATE(newType, newInput, prevBranchSerial)
+            this.children[branch] = this.form.builder._HYDRATE(newType, newInput, prevBranchSerial)
         }
         // prev serial is not compatible => we use the fresh one instead
         else {

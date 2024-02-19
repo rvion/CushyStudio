@@ -238,7 +238,13 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
                     )}
                 </div>
                 <div tw='absolute top-0 left-0 right-0 z-100 '>
-                    <input tw='input input-sm w-full' type='text' value={s.searchQuery} />
+                    <input
+                        //
+                        tw='input input-sm w-full'
+                        type='text'
+                        value={s.searchQuery}
+                        onChange={() => {}}
+                    />
                 </div>
                 {/* TOOLTIP */}
                 {s.isOpen && <SelectPopupUI s={s} />}

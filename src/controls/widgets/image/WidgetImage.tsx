@@ -1,6 +1,6 @@
 import type { SQLWhere } from 'src/db/SQLWhere'
 import type { MediaImageT } from 'src/db/TYPES.gen'
-import type { FormBuilder } from '../../FormBuilder'
+import type { Form } from 'src/controls/Form'
 import type { IWidget_OLD, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers_OLD } from '../../IWidget'
 import type { MediaImageL } from 'src/models/MediaImage'
 
@@ -38,7 +38,7 @@ export class Widget_image implements IWidget_OLD<'image', Widget_image_config, W
     readonly type: 'image' = 'image'
     readonly serial: Widget_image_serial
 
-    constructor(public form: FormBuilder, public config: Widget_image_config, serial?: Widget_image_serial) {
+    constructor(public form: Form<any>, public config: Widget_image_config, serial?: Widget_image_serial) {
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? {
             type: 'image',

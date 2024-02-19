@@ -1,5 +1,5 @@
 import type { Tree } from '@lezer/common'
-import type { FormBuilder } from '../../FormBuilder'
+import type { Form } from 'src/controls/Form'
 import type { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../../IWidget'
 
 import { makeAutoObservable } from 'mobx'
@@ -38,7 +38,12 @@ export class Widget_prompt implements IWidget<Widget_prompt_types> {
 
     serial: Widget_prompt_serial
 
-    constructor(public readonly form: FormBuilder, public readonly config: Widget_prompt_config, serial?: Widget_prompt_serial) {
+    constructor(
+        //
+        public readonly form: Form<any>,
+        public readonly config: Widget_prompt_config,
+        serial?: Widget_prompt_serial,
+    ) {
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? {
             type: 'prompt',

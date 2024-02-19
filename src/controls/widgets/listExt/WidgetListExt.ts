@@ -1,7 +1,6 @@
-import type { FormBuilder } from 'src/controls/FormBuilder'
+import type { Form } from 'src/controls/Form'
 import type { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from 'src/controls/IWidget'
 import type { Widget } from 'src/controls/Widget'
-import type { ComfySchemaL } from 'src/models/Schema'
 import type { BoardPosition } from './WidgetListExtTypes'
 
 import { makeAutoObservable } from 'mobx'
@@ -72,7 +71,7 @@ export class Widget_listExt<T extends Widget> implements IWidget<Widget_listExt_
     }
 
     // INIT -----------------------------------------------------------------------------
-    constructor(public form: FormBuilder, public config: Widget_listExt_config<T>, serial?: Widget_listExt_serial<T>) {
+    constructor(public form: Form<any>, public config: Widget_listExt_config<T>, serial?: Widget_listExt_serial<T>) {
         this.id = serial?.id ?? nanoid()
 
         const w = config.width ?? 100
@@ -91,7 +90,7 @@ export class Widget_listExt<T extends Widget> implements IWidget<Widget_listExt_
         if (this.serial.entries == null) this.serial.entries = []
 
         // reference to check children types
-        const _reference = runWithGlobalForm(this.form, () =>
+        const _reference = runWithGlobalForm(this.form.builder, () =>
             config.element({
                 ix: 0,
                 width: w,
@@ -105,7 +104,7 @@ export class Widget_listExt<T extends Widget> implements IWidget<Widget_listExt_
                 console.log(`[❌] SKIPPING form item because it has an incompatible entry from a previous app definition`)
                 continue
             }
-            const subWidget = form._HYDRATE(subSerial.type, _reference.config, subSerial)
+            const subWidget = form.builder._HYDRATE(subSerial.type, _reference.config, subSerial)
             this.entries.push({ widget: subWidget, position: entry.shape })
         }
 
@@ -134,7 +133,7 @@ export class Widget_listExt<T extends Widget> implements IWidget<Widget_listExt_
             height: this.serial.height,
         })
         const shape: BoardPosition = { ...boardDefaultItemShape, ...partialShape }
-        const item = runWithGlobalForm(this.form, () =>
+        const item = runWithGlobalForm(this.form.builder, () =>
             this.config.element({
                 width: this.serial.width,
                 height: this.serial.height,

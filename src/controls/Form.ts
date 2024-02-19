@@ -7,8 +7,14 @@ import { FormBuilder } from './FormBuilder'
 export class Form<const FIELDS extends WidgetDict> {
     error: Maybe<string> = null
 
-    at = <K extends keyof FIELDS>(key: K): FIELDS[K] => this.root.at(key)
-    get = <K extends keyof FIELDS>(key: K): FIELDS[K]['$Output'] => this.root.get(key)
+    at = <K extends keyof FIELDS>(key: K): FIELDS[K] => {
+        return this.root.at(key)
+    }
+
+    get = <K extends keyof FIELDS>(key: K): FIELDS[K]['$Output'] => {
+        return this.root.get(key)
+    }
+
     get value(): Widget_group_output<FIELDS> {
         return this.root.value
     }
@@ -21,17 +27,21 @@ export class Form<const FIELDS extends WidgetDict> {
         return this.root.fields
     }
 
+    // 🔴 👇 remove that
     get root(): Widget_group<FIELDS> {
         const root = this.init()
         Object.defineProperty(this, 'root', { value: root })
         return root
     }
 
-    get formBuilder() {
+    get builder() {
         const value = new FormBuilder(this)
-        Object.defineProperty(this, 'formBuilder', { value })
+        Object.defineProperty(this, 'builder', { value })
         return value
     }
+
+    /** (@internal) will be set at builer creation, to allow for dyanmic recursive forms */
+    _ROOT!: Widget_group<FIELDS>
 
     constructor(
         public ui: (form: FormBuilder) => FIELDS,
@@ -41,21 +51,27 @@ export class Form<const FIELDS extends WidgetDict> {
             initialValue: () => Maybe<object>
         },
     ) {
-        makeAutoObservable(this, { formBuilder: false, root: false })
+        makeAutoObservable(this, {
+            //
+            builder: false,
+            root: false,
+        })
     }
 
+    ready = false
     private init = (): Widget_group<FIELDS> => {
         console.log(`[🥐] Building form ${this.def.name}`)
         try {
             let initialValue = this.def.initialValue()
             if (initialValue && !isObservable(initialValue)) initialValue = observable(initialValue)
 
-            const formBuilder = this.formBuilder
+            const formBuilder = this.builder
             const rootWidget: Widget_group<FIELDS> = formBuilder._HYDRATE(
                 'group',
                 { topLevel: true, items: () => this.ui?.(formBuilder) ?? {} },
                 initialValue,
             )
+            this.ready = true
             this.error = null
             this.startMonitoring(rootWidget)
             return rootWidget
@@ -63,7 +79,7 @@ export class Form<const FIELDS extends WidgetDict> {
             console.error(`[👙🔴] Building form ${this.def.name} FAILED`, this)
             console.error(e)
             this.error = 'invalid form definition'
-            return this.formBuilder.group({})
+            return this.builder.group({})
         }
     }
 

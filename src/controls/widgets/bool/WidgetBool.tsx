@@ -1,4 +1,4 @@
-import type { FormBuilder } from '../../FormBuilder'
+import type { Form } from 'src/controls/Form'
 import type { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../../IWidget'
 
 import { computed, makeObservable, observable } from 'mobx'
@@ -40,7 +40,7 @@ export class Widget_bool implements IWidget<Widget_string_types> {
     setOff = () => (this.serial.active = false)
     toggle = () => (this.serial.active = !this.serial.active)
 
-    constructor(public form: FormBuilder, public config: Widget_bool_config, serial?: Widget_bool_serial) {
+    constructor(public form: Form<any>, public config: Widget_bool_config, serial?: Widget_bool_serial) {
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? {
             id: this.id,

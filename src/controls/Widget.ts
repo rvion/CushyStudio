@@ -4,7 +4,6 @@
  */
 import type { SimplifiedLoraDef } from 'src/presets/SimplifiedLoraDef'
 import type { ItemDataType } from 'src/rsuite/RsuiteTypes'
-import type { FormBuilder } from './FormBuilder'
 import type { IWidget_OLD, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers_OLD } from './IWidget'
 
 import type { Widget_bool } from './widgets/bool/WidgetBool'
@@ -20,9 +19,10 @@ import type { Widget_number } from './widgets/number/WidgetNumber'
 import type { Widget_optional } from './widgets/optional/WidgetOptional'
 import type { Widget_orbit } from './widgets/orbit/WidgetOrbit'
 import type { Widget_prompt } from './widgets/prompt/WidgetPrompt'
+import type { Widget_shared } from './widgets/shared/WidgetShared'
 import type { Widget_size } from './widgets/size/WidgetSize'
 import type { Widget_string } from './widgets/string/WidgetString'
-import type { Widget_shared } from './widgets/shared/WidgetShared'
+import type { Form } from './Form'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -81,7 +81,7 @@ export class Widget_markdown implements IWidget_OLD<'markdown', Widget_markdown_
     }
 
     constructor(
-        public form: FormBuilder,
+        public form: Form<any>,
         public config: Widget_markdown_config,
         serial?: Widget_markdown_serial,
     ) {
@@ -112,7 +112,7 @@ export class Widget_seed implements IWidget_OLD<'seed', Widget_seed_config, Widg
         return hash(this.value)
     }
     constructor(
-        public form: FormBuilder,
+        public form: Form<any>,
         public config: Widget_seed_config,
         serial?: Widget_seed_serial,
     ) {
@@ -127,7 +127,7 @@ export class Widget_seed implements IWidget_OLD<'seed', Widget_seed_config, Widg
         makeAutoObservable(this)
     }
     get value(): Widget_seed_output {
-        const count = this.form._cache.count
+        const count = this.form.builder._cache.count
         return this.serial.mode ==='randomize'
             ? Math.floor(Math.random()* 9_999_999)
             : this.serial.val
@@ -149,7 +149,7 @@ export class Widget_inlineRun implements IWidget_OLD<'inlineRun', Widget_inlineR
     readonly type: 'inlineRun' = 'inlineRun'
     readonly serial: Widget_inlineRun_state
     constructor(
-        public form: FormBuilder,
+        public form: Form<any>,
         public config: Widget_inlineRun_config,
         serial?: Widget_inlineRun_serial,
     ) {
@@ -190,7 +190,7 @@ export class Widget_matrix implements IWidget_OLD<'matrix', Widget_matrix_config
     cols: string[]
 
     constructor(
-        public form: FormBuilder,
+        public form: Form<any>,
         public config: Widget_matrix_config,
         serial?: Widget_matrix_serial,
     ) {
@@ -281,7 +281,7 @@ export class Widget_loras implements IWidget_OLD<'loras', Widget_loras_config, W
     type: 'loras' = 'loras'
     serial: Widget_loras_serial
     constructor(
-        public form: FormBuilder,
+        public form: Form<any>,
         public config: Widget_loras_config,
         serial?: Widget_loras_serial,
     ) {
@@ -350,13 +350,14 @@ export class Widget_selectOne<T extends BaseSelectEntry> implements IWidget_OLD<
     get choices():T[]{
         const _choices = this.config.choices
         if (typeof _choices === 'function'){
+            if (!this.form.ready) return []
             if (this.form._ROOT==null)return []
             return _choices(this.form._ROOT)
         }
         return  _choices
     }
     constructor(
-        public form: FormBuilder,
+        public form: Form<any>,
         public config: Widget_selectOne_config<T>,
         serial?: Widget_selectOne_serial<T>,
     ) {
@@ -396,7 +397,7 @@ export class Widget_selectMany<T extends BaseSelectEntry> implements IWidget_OLD
             : _choices
     }
     constructor(
-        public form: FormBuilder,
+        public form: Form<any>,
         public config: Widget_selectMany_config<T>,
         serial?: Widget_selectMany_serial<T>,
     ) {

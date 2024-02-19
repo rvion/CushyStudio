@@ -1,8 +1,9 @@
+import type { Form } from 'src/controls/Form'
+import type { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../../IWidget'
+
 import { computed, makeObservable, observable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { hash } from 'ohash'
-import { FormBuilder } from '../../FormBuilder'
-import { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../../IWidget'
 import { WidgetDI } from '../WidgetUI.DI'
 
 // CONFIG
@@ -51,7 +52,7 @@ export class Widget_number implements IWidget<Widget_number_types> {
     get isChanged() { return this.serial.val !== this.defaultValue } // prettier-ignore
     reset = () => { this.serial.val = this.defaultValue } // prettier-ignore
 
-    constructor(public readonly form: FormBuilder, public readonly config: Widget_number_config, serial?: Widget_number_serial) {
+    constructor(public readonly form: Form<any>, public readonly config: Widget_number_config, serial?: Widget_number_serial) {
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? {
             type: 'number',

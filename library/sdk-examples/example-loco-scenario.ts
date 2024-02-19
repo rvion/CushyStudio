@@ -33,6 +33,8 @@ app({
                         items: {
                             ['Calculée']: () =>
                                 ui.group({
+                                    collapsible: false,
+                                    label: false,
                                     items: {
                                         [`D'après la`]: ui.selectOneV2(['Date de création', 'Date de modification']),
                                         offset: ui.int({ label: 'à J+' }),

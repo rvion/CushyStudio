@@ -1,5 +1,4 @@
-import type { ComfySchemaL } from 'src/models/Schema'
-import type { FormBuilder } from '../../FormBuilder'
+import type { Form } from 'src/controls/Form'
 import type { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../../IWidget'
 
 import { computed, makeObservable, observable } from 'mobx'
@@ -62,7 +61,7 @@ export class Widget_optional<T extends Widget> implements IWidget<Widget_string_
         const fresh = this.config.widget?.()
         const prevSerial = this.serial.child
         if (prevSerial && fresh.type === prevSerial.type) {
-            this.child = this.form._HYDRATE(prevSerial.type, fresh.config, prevSerial)
+            this.child = this.form.builder._HYDRATE(prevSerial.type, fresh.config, prevSerial)
         } else {
             this.child = fresh
             this.serial.child = fresh?.serial
@@ -75,7 +74,7 @@ export class Widget_optional<T extends Widget> implements IWidget<Widget_string_
         // this.serial.child = undefined
     }
 
-    constructor(public form: FormBuilder, public config: Widget_optional_config<T>, serial?: Widget_optional_serial<T>) {
+    constructor(public form: Form<any>, public config: Widget_optional_config<T>, serial?: Widget_optional_serial<T>) {
         this.id = serial?.id ?? nanoid()
         const defaultActive = config.startActive
         this.serial = serial ?? {

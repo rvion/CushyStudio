@@ -1,6 +1,7 @@
-import type { Widget_selectOne } from 'src'
+import type { Widget, Widget_selectOne } from 'src'
 import type { Widget_choices } from 'src/controls/widgets/choices/WidgetChoices'
 import type { Widget_group } from 'src/controls/widgets/group/WidgetGroup'
+import type { Widget_image } from 'src/controls/widgets/image/WidgetImage'
 import type { Widget_list } from 'src/controls/widgets/list/WidgetList'
 
 app({
@@ -19,7 +20,19 @@ app({
                                 // showID: true,
                                 // if choices is a function, the form root is injected as first parameter
                                 choices: (formRoot: Widget_group<any>) => {
-                                    const steps = formRoot.fields.samplerUI as Widget_list<any>
+                                    // 🔶 null when the form is not yet fully initialized
+                                    if (formRoot.fields.samplerUI == null) return []
+
+                                    // 🔶 self-referencing => typescript can't infer the type here
+                                    const steps = formRoot.fields.samplerUI as Widget_list<
+                                        Widget_choices<{
+                                            sampler_output_abc_asdf: () => Widget_selectOne<any>
+                                            empty_latent: () => Widget_group<any>
+                                            pick_image: () => Widget_image
+                                        }>
+                                    >
+
+                                    // return a list of items
                                     return steps.items.map((choiceWidget: Widget_choices<any>, ix: number) => {
                                         if (choiceWidget == null) console.log(`[🔴] err 1: choiceWidget is null`)
                                         const _selectOne = choiceWidget.firstActiveBranchWidget as Maybe<Widget_selectOne<any>>

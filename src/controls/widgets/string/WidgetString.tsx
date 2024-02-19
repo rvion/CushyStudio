@@ -1,4 +1,4 @@
-import type { FormBuilder } from '../../FormBuilder'
+import type { Form } from 'src/controls/Form'
 import type { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../../IWidget'
 
 import { makeAutoObservable } from 'mobx'
@@ -38,7 +38,7 @@ export class Widget_string implements IWidget<Widget_string_types> {
     get isChanged() { return this.serial.val !== this.defaultValue } // prettier-ignore
     reset = () => { this.serial.val = this.defaultValue } // prettier-ignore
 
-    constructor(public readonly form: FormBuilder, public readonly config: Widget_string_config, serial?: Widget_string_serial) {
+    constructor(public readonly form: Form<any>, public readonly config: Widget_string_config, serial?: Widget_string_serial) {
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? {
             type: 'str',

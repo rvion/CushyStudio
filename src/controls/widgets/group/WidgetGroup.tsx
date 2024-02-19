@@ -1,11 +1,10 @@
+import type { Form } from 'src/controls/Form'
 import type { Widget } from 'src/controls/Widget'
-import type { FormBuilder } from '../../FormBuilder'
 import type { GetWidgetResult, IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../../IWidget'
 
-import { makeAutoObservable, action } from 'mobx'
+import { action, makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { runWithGlobalForm } from 'src/models/_ctx2'
-import { bang } from 'src/utils/misc/bang'
 import { WidgetDI } from '../WidgetUI.DI'
 
 // CONFIG
@@ -81,7 +80,7 @@ export class Widget_group<T extends { [key: string]: Widget }> implements IWidge
         const itemsDef = this.config.items
         const _newValues: { [key: string]: Widget } =
             typeof itemsDef === 'function' //
-                ? runWithGlobalForm(this.form, itemsDef) ?? {}
+                ? runWithGlobalForm(this.form.builder, itemsDef) ?? {}
                 : itemsDef ?? {}
 
         const childKeys = Object.keys(_newValues) as (keyof T & string)[]
@@ -93,7 +92,7 @@ export class Widget_group<T extends { [key: string]: Widget }> implements IWidge
             const newType = newItem.type
             if (prevFieldSerial && newType === prevFieldSerial.type) {
                 // console.log(`[🟢] valid serial for "${key}": (${newType} != ${prevValue_?.type}) `)
-                this.fields[key] = this.form._HYDRATE(newType, newConfig, prevFieldSerial)
+                this.fields[key] = this.form.builder._HYDRATE(newType, newConfig, prevFieldSerial)
             } else {
                 if (prevFieldSerial != null)
                     console.log(
@@ -120,7 +119,7 @@ export class Widget_group<T extends { [key: string]: Widget }> implements IWidge
     }
     constructor(
         //
-        public form: FormBuilder,
+        public form: Form<any>,
         public config: Widget_group_config<T>,
         serial?: Widget_group_serial<T>,
         /** used to register self as the root, before we start instanciating anything */

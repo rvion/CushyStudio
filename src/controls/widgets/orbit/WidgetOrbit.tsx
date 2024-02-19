@@ -1,8 +1,8 @@
+import type { Form } from 'src/controls/Form'
+import type { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../../IWidget'
+
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
-import { ComfySchemaL } from 'src/models/Schema'
-import { FormBuilder } from '../../FormBuilder'
-import { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../../IWidget'
 import { WidgetDI } from '../WidgetUI.DI'
 import { mkEnglishSummary } from './_orbitUtils'
 import { hash } from 'ohash'
@@ -72,7 +72,7 @@ export class Widget_orbit implements IWidget<Widget_orbit_types> {
 
     serial: Widget_orbit_serial
 
-    constructor(public form: FormBuilder, public config: Widget_orbit_config, serial?: Widget_orbit_serial) {
+    constructor(public form: Form<any>, public config: Widget_orbit_config, serial?: Widget_orbit_serial) {
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? {
             type: 'orbit',
