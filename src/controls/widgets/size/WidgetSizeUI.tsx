@@ -56,7 +56,6 @@ export const WidgetSizeX_LineUI = observer(function WidgetSize_LineUI_(p: {
                     text='Width'
                     suffix='px'
                 />
-                <div>x</div>
                 <InputNumberUI
                     //
                     tw='join-item'
@@ -71,6 +70,23 @@ export const WidgetSizeX_LineUI = observer(function WidgetSize_LineUI_(p: {
                     text='Height'
                     suffix='px'
                 />
+                <button // Aspect Lock button
+                    tw={['btn btn-xs', uist.isAspectRatioLocked && 'bg-primary hover:bg-primary text-primary-content']}
+                    onClick={(ev) => {
+                        uist.isAspectRatioLocked = !uist.isAspectRatioLocked
+                        if (!uist.isAspectRatioLocked) {
+                            return
+                        }
+                        /* Need to snap value if linked */
+                        if (uist.wasHeightAdjustedLast) {
+                            uist.setHeight(uist.height)
+                        } else {
+                            uist.setWidth(uist.width)
+                        }
+                    }}
+                >
+                    <span className='material-symbols-outlined'>{uist.isAspectRatioLocked ? 'link' : 'link_off'}</span>
+                </button>
             </div>
         </div>
     )
@@ -101,7 +117,7 @@ export const WigetSizeXUI = observer(function WigetSizeXUI_(p: {
         </button>
     )
 
-    return (
+    return uist.isAspectRatioLocked ? (
         <div className='flex flex-col gap-1 bg-base-300 p-1 rounded-b'>
             <div tw='flex items-start gap-2'>
                 <Joined>
@@ -118,16 +134,7 @@ export const WigetSizeXUI = observer(function WigetSizeXUI_(p: {
                         />
                     </div> */}
                 <div tw='ml-auto flex items-center'>
-                    <Joined>
-                        {resoBtn('1:1')}
-                        <button
-                            type='button'
-                            tw={['btn btn-xs join-item', uist.desiredAspectRatio === 'custom' && 'btn-primary']}
-                            onClick={() => uist.setAspectRatio('custom')}
-                        >
-                            ?
-                        </button>
-                    </Joined>
+                    <Joined>{resoBtn('1:1')}</Joined>
                     <div>|</div>
                     <Joined>
                         {resoBtn('16:9')}
@@ -146,5 +153,7 @@ export const WigetSizeXUI = observer(function WigetSizeXUI_(p: {
                 </div>
             </div>
         </div>
+    ) : (
+        <></>
     )
 })
