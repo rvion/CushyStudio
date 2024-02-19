@@ -40,6 +40,8 @@ import { WigetSize_BlockUI, WigetSize_LineUI } from './size/WidgetSizeUI'
 import { Widget_string } from './string/WidgetString'
 import { WidgetStringUI } from './string/WidgetStringUI'
 import { Widget_custom } from './custom/WidgetCustom'
+import { Widget_shared } from './shared/WidgetShared'
+import { WidgetShared_BlockUI, WidgetShared_LineUI } from './shared/WidgetSharedUI'
 
 /**
  * this widget will then dispatch the individual requests to the appropriate sub-widgets
@@ -54,6 +56,7 @@ export const WidgetUI = (
 } => {
     if (widget == null) return {}
 
+    if (widget instanceof Widget_shared) return { WidgetLineUI: WidgetShared_LineUI, WidgetBlockUI: WidgetShared_BlockUI }
     if (widget instanceof R.Widget_seed) return { WidgetLineUI: WidgetSeedUI, WidgetBlockUI: undefined }
     if (widget instanceof Widget_number) return { WidgetLineUI: WidgetNumberUI, WidgetBlockUI: undefined }
     if (widget instanceof Widget_string) return { WidgetLineUI: WidgetStringUI, WidgetBlockUI: undefined }

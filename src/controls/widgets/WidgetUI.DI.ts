@@ -17,6 +17,7 @@ import type { Widget_prompt } from './prompt/WidgetPrompt'
 import type { Widget_size } from './size/WidgetSize'
 import type { Widget_image } from './image/WidgetImage'
 import type { Widget_custom } from './custom/WidgetCustom'
+import type { Widget_shared } from './shared/WidgetShared'
 
 /**
  * DI (Dependency Injection)
@@ -25,6 +26,7 @@ import type { Widget_custom } from './custom/WidgetCustom'
  * */
 export let WidgetDI = {
     WidgetUI: 0 as any as typeof WidgetUI,
+    Widget_shared: 0 as any as typeof Widget_shared,
     Widget_optional: 0 as any as typeof Widget_optional,
     Widget_color: 0 as any as typeof Widget_color,
     Widget_string: 0 as any as typeof Widget_string,

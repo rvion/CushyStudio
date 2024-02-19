@@ -28,7 +28,7 @@ export class Form<const FIELDS extends WidgetDict> {
     }
 
     get formBuilder() {
-        const value = new FormBuilder()
+        const value = new FormBuilder(this)
         Object.defineProperty(this, 'formBuilder', { value })
         return value
     }
@@ -56,7 +56,6 @@ export class Form<const FIELDS extends WidgetDict> {
                 { topLevel: true, items: () => this.ui?.(formBuilder) ?? {} },
                 initialValue,
             )
-            formBuilder._ROOT = rootWidget
             this.error = null
             this.startMonitoring(rootWidget)
             return rootWidget

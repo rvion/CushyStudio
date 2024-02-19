@@ -1,4 +1,4 @@
-import type { ComfySchemaL } from 'src/models/Schema'
+import type { Form } from './Form'
 
 import { makeAutoObservable } from 'mobx'
 import { exhaust } from 'src/utils/misc/ComfyUtils'
@@ -22,18 +22,21 @@ import { Widget_orbit, type Widget_orbit_config } from './widgets/orbit/WidgetOr
 import { Widget_prompt, type Widget_prompt_config } from './widgets/prompt/WidgetPrompt'
 import { Widget_size, type Widget_size_config } from './widgets/size/WidgetSize'
 import { Widget_string, type Widget_string_config } from './widgets/string/WidgetString'
-
-// export createFormBuilder
+import { Widget_shared } from './widgets/shared/WidgetShared'
 
 export class FormBuilder {
     /** (@internal) don't call this yourself */
-    constructor(public schema: 0 = 0) {
+    constructor(public form: Form<any>) {
         makeAutoObservable(this, {
             auto: false,
             autoField: false,
             enum: false,
             enumOpt: false,
         })
+    }
+
+    shared = <W extends W.Widget>(baseName: string, widget: W): W => {
+        return new Widget_shared(this, { rootKey: baseName, widget }) as any
     }
 
     // string
@@ -54,13 +57,13 @@ export class FormBuilder {
     strOpt = this.stringOpt
 
     // boolean
-    boolean = (opts: Widget_bool_config) => new Widget_bool(this, opts) // prettier-ignore
-    bool    = (opts: Widget_bool_config) => new Widget_bool(this, opts) // prettier-ignore
+    boolean = (opts: Widget_bool_config = {}) => new Widget_bool(this, opts) // prettier-ignore
+    bool    = (opts: Widget_bool_config = {}) => new Widget_bool(this, opts) // prettier-ignore
 
     // number
-    int       = (opts: Omit<Widget_number_config,'mode'>) => new Widget_number(this, { mode: 'int',   ...opts }) // prettier-ignore
-    float     = (opts: Omit<Widget_number_config,'mode'>) => new Widget_number(this, { mode: 'float', ...opts }) // prettier-ignore
-    number    = (opts: Omit<Widget_number_config,'mode'>) => new Widget_number(this, { mode: 'float', ...opts }) // prettier-ignore
+    int       = (opts: Omit<Widget_number_config, 'mode'> = {}) => new Widget_number(this, { mode: 'int',   ...opts }) // prettier-ignore
+    float     = (opts: Omit<Widget_number_config, 'mode'> = {}) => new Widget_number(this, { mode: 'float', ...opts }) // prettier-ignore
+    number    = (opts: Omit<Widget_number_config, 'mode'> = {}) => new Widget_number(this, { mode: 'float', ...opts }) // prettier-ignore
 
     intOpt = (config: Omit<Widget_number_config, 'mode'> & { startActive?: boolean }) =>
         this.optional({
@@ -87,7 +90,7 @@ export class FormBuilder {
             widget: () => new Widget_number(this, { mode: 'float', ...config, startCollapsed: undefined }),
         })
 
-    image = (config: Widget_image_config) => new Widget_image(this, config)
+    image = (config: Widget_image_config = {}) => new Widget_image(this, config)
     imageOpt = (config: Widget_image_config & { startActive?: boolean }) =>
         this.optional({
             label: config.label,
@@ -206,30 +209,31 @@ export class FormBuilder {
     _ROOT!: Widget_group<any>
 
     /** (@internal) advanced way to restore form state. used internally */
+    // prettier-ignore
     _HYDRATE = (type: W.Widget['type'], input: any, serial?: any): any => {
-        if (type === 'optional') return new Widget_optional(this, input, serial)
-        if (type === 'bool') return new Widget_bool(this, input, serial)
-        if (type === 'str') return new Widget_string(this, input, serial)
-        if (type === 'prompt') return new Widget_prompt(this, input, serial)
-        if (type === 'choices') return new Widget_choices(this, input, serial)
-        if (type === 'number') return new Widget_number(this, input, serial)
-        if (type === 'group') return new Widget_group(this, input, serial)
-        if (type === 'color') return new Widget_color(this, input, serial)
-        if (type === 'enum') return new Widget_enum(this, input, serial)
-        if (type === 'list') return new Widget_list(this, input, serial)
-        if (type === 'orbit') return new Widget_orbit(this, input, serial)
-        if (type === 'listExt') return new Widget_listExt(this, input, serial)
-
-        if (type === 'inlineRun') return new W.Widget_inlineRun(this, input, serial)
-        if (type === 'seed') return new W.Widget_seed(this, input, serial)
-        if (type === 'matrix') return new W.Widget_matrix(this, input, serial)
-        if (type === 'loras') return new W.Widget_loras(this, input, serial)
-        if (type === 'image') return new Widget_image(this, input, serial)
-        if (type === 'selectOne') return new W.Widget_selectOne(this, input, serial)
+        if (type === 'group'     ) return new   Widget_group     (this, input, serial, this._ROOT ? undefined : (x) => { this._ROOT = x })
+        if (type === 'shared'    ) return new   Widget_shared    (this, input, serial)
+        if (type === 'optional'  ) return new   Widget_optional  (this, input, serial)
+        if (type === 'bool'      ) return new   Widget_bool      (this, input, serial)
+        if (type === 'str'       ) return new   Widget_string    (this, input, serial)
+        if (type === 'prompt'    ) return new   Widget_prompt    (this, input, serial)
+        if (type === 'choices'   ) return new   Widget_choices   (this, input, serial)
+        if (type === 'number'    ) return new   Widget_number    (this, input, serial)
+        if (type === 'color'     ) return new   Widget_color     (this, input, serial)
+        if (type === 'enum'      ) return new   Widget_enum      (this, input, serial)
+        if (type === 'list'      ) return new   Widget_list      (this, input, serial)
+        if (type === 'orbit'     ) return new   Widget_orbit     (this, input, serial)
+        if (type === 'listExt'   ) return new   Widget_listExt   (this, input, serial)
+        if (type === 'inlineRun' ) return new W.Widget_inlineRun (this, input, serial)
+        if (type === 'seed'      ) return new W.Widget_seed      (this, input, serial)
+        if (type === 'matrix'    ) return new W.Widget_matrix    (this, input, serial)
+        if (type === 'loras'     ) return new W.Widget_loras     (this, input, serial)
+        if (type === 'image'     ) return new   Widget_image     (this, input, serial)
+        if (type === 'selectOne' ) return new W.Widget_selectOne (this, input, serial)
         if (type === 'selectMany') return new W.Widget_selectMany(this, input, serial)
-        if (type === 'size') return new Widget_size(this, input, serial)
-        if (type === 'markdown') return new W.Widget_markdown(this, input, serial)
-        if (type === 'custom') return new Widget_custom(this, input, serial)
+        if (type === 'size'      ) return new   Widget_size      (this, input, serial)
+        if (type === 'markdown'  ) return new W.Widget_markdown  (this, input, serial)
+        if (type === 'custom'    ) return new   Widget_custom    (this, input, serial)
 
         console.log(`🔴 unknown widget "${type}" in serial.`)
         exhaust(type)

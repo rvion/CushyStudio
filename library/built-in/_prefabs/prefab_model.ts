@@ -23,18 +23,11 @@ export const ui_model = () => {
                 appearance: 'tab',
                 items: {
                     vae: () => form.enum.Enum_VAELoader_vae_name({}),
-                    clipSkip: () =>
-                        form.int({
-                            label: 'Clip Skip',
-                            default: 1,
-                            min: 1,
-                            max: 5,
-                        }),
+                    clipSkip: () => form.int({ label: 'Clip Skip', default: 1, min: 1, max: 5 }),
                     freeU: () => form.group({}),
                     civtai_ckpt_air: () =>
                         form.string({
-                            tooltip:
-                                'Civitai checkpoint Air, as found on the civitai Website. It should look like this: 43331@176425',
+                            tooltip: 'Civitai checkpoint Air, as found on the civitai Website. It should look like this: 43331@176425', // prettier-ignore
                             label: 'Civitai Ref',
                             placeHolder: 'e.g. 43331@176425',
                         }),

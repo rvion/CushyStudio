@@ -3,7 +3,7 @@ import type { OutputFor } from './_prefabs'
 
 export const ui_latent_v3 = () => {
     const form: FormBuilder = getCurrentForm()
-    const batchSize = form.int({ step: 1, default: 1, min: 1, max: 8 })
+    const batchSize = form.shared('batchSize', form.int({ step: 1, default: 1, min: 1, max: 8 }))
 
     return form.choice({
         appearance: 'tab',
@@ -14,20 +14,13 @@ export const ui_latent_v3 = () => {
                 form.group({
                     collapsible: false,
                     label: false,
-                    items: () => ({
-                        batchSize,
-                        _: form.group({ label: 'Dimensions', collapsible: false, items: () => ({}) }),
-                        size: form.size({ label: false }),
-                    }),
+                    items: { batchSize, size: form.size({ label: false }) },
                 }),
             image: () =>
                 form.group({
                     collapsible: false,
                     label: false,
-                    items: () => ({
-                        batchSize,
-                        image: form.image({}),
-                    }),
+                    items: { batchSize, image: form.image() },
                 }),
         },
     })

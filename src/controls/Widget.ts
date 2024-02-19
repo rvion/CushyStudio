@@ -22,6 +22,7 @@ import type { Widget_orbit } from './widgets/orbit/WidgetOrbit'
 import type { Widget_prompt } from './widgets/prompt/WidgetPrompt'
 import type { Widget_size } from './widgets/size/WidgetSize'
 import type { Widget_string } from './widgets/string/WidgetString'
+import type { Widget_shared } from './widgets/shared/WidgetShared'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -33,6 +34,7 @@ import { WidgetDI } from './widgets/WidgetUI.DI'
 
 // Widget is a closed union for added type safety
 export type Widget =
+    | Widget_shared<any>
     | Widget_optional<any>
     | Widget_color
     | Widget_string
