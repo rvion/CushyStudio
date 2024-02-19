@@ -7,7 +7,10 @@ import { hash } from 'ohash'
 import { WidgetDI } from '../WidgetUI.DI'
 
 // CONFIG
-export type Widget_bool_config = WidgetConfigFields<{ default?: boolean }>
+export type Widget_bool_config = WidgetConfigFields<{
+    default?: boolean
+    label2?: string
+}>
 
 // SERIAL
 export type Widget_bool_serial = WidgetSerialFields<{ type: 'bool'; active: boolean }>
