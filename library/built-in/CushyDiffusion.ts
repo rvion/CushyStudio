@@ -97,6 +97,10 @@ app({
         // MODEL, clip skip, vae, etc. ---------------------------------------------------------------
         let { ckpt, vae, clip } = run_model(ui.model)
 
+        if (ui.model.extra.rescale_cfg) {
+            ckpt = graph.RescaleCFG({ model: ckpt, multiplier: ui.model.extra.rescale_cfg.multiplier })
+        }
+
         // RICH PROMPT ENGINE -------- ---------------------------------------------------------------
         const posPrompt = run_prompt({
             prompt: ui.positive,

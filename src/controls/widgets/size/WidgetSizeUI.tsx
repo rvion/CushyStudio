@@ -56,7 +56,6 @@ export const WidgetSizeX_LineUI = observer(function WidgetSize_LineUI_(p: {
                     text='Width'
                     suffix='px'
                 />
-                <div>x</div>
                 <InputNumberUI
                     //
                     tw='join-item'
@@ -71,6 +70,23 @@ export const WidgetSizeX_LineUI = observer(function WidgetSize_LineUI_(p: {
                     text='Height'
                     suffix='px'
                 />
+                <button // Aspect Lock button
+                    tw={['btn btn-xs', uist.isAspectRatioLocked && 'bg-primary hover:bg-primary text-primary-content']}
+                    onClick={(ev) => {
+                        uist.isAspectRatioLocked = !uist.isAspectRatioLocked
+                        if (!uist.isAspectRatioLocked) {
+                            return
+                        }
+                        /* Need to snap value if linked */
+                        if (uist.wasHeightAdjustedLast) {
+                            uist.setHeight(uist.height)
+                        } else {
+                            uist.setWidth(uist.width)
+                        }
+                    }}
+                >
+                    <span className='material-symbols-outlined'>{uist.isAspectRatioLocked ? 'link' : 'link_off'}</span>
+                </button>
             </div>
         </div>
     )
@@ -94,15 +110,15 @@ export const WigetSizeXUI = observer(function WigetSizeXUI_(p: {
     const modelBtn = (model: ModelType) => (
         <button
             type='button'
-            tw={['btn btn-sm join-item', uist.desiredModelType === model && 'btn-primary']}
+            tw={['btn btn-xs join-item', uist.desiredModelType === model && 'btn-primary']}
             onClick={() => uist.setModelType(model)}
         >
             {model}
         </button>
     )
 
-    return (
-        <div className='flex flex-col gap-1'>
+    return uist.isAspectRatioLocked ? (
+        <div className='flex flex-col gap-1 bg-base-300 p-1 rounded-b'>
             <div tw='flex items-start gap-2'>
                 <Joined>
                     {modelBtn('1.5')}
@@ -117,26 +133,27 @@ export const WigetSizeXUI = observer(function WigetSizeXUI_(p: {
                             onChange={(ev) => (uist.flip = ev.target.checked)}
                         />
                     </div> */}
-                <div tw='flex items-center'>
-                    {resoBtn('1:1')}
-                    <button
-                        type='button'
-                        tw={['btn btn-sm join-item', uist.desiredAspectRatio === 'custom' && 'btn-primary']}
-                        onClick={() => uist.setAspectRatio('custom')}
-                    >
-                        ?
-                    </button>
+                <div tw='ml-auto flex items-center'>
+                    <Joined>{resoBtn('1:1')}</Joined>
                     <div>|</div>
-                    {resoBtn('16:9')}
-                    {resoBtn('9:16')}
+                    <Joined>
+                        {resoBtn('16:9')}
+                        {resoBtn('9:16')}
+                    </Joined>
                     <div>|</div>
-                    {resoBtn('4:3')}
-                    {resoBtn('3:4')}
+                    <Joined>
+                        {resoBtn('4:3')}
+                        {resoBtn('3:4')}
+                    </Joined>
                     <div>|</div>
-                    {resoBtn('3:2')}
-                    {resoBtn('2:3')}
+                    <Joined>
+                        {resoBtn('3:2')}
+                        {resoBtn('2:3')}
+                    </Joined>
                 </div>
             </div>
         </div>
+    ) : (
+        <></>
     )
 })

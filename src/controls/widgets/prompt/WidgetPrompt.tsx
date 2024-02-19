@@ -1,5 +1,5 @@
 import type { Tree } from '@lezer/common'
-import type { FormBuilder } from '../../FormBuilder'
+import type { Form } from 'src/controls/Form'
 import type { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../../IWidget'
 
 import { makeAutoObservable } from 'mobx'
@@ -31,14 +31,19 @@ export class Widget_prompt implements IWidget<Widget_prompt_types> {
     get serialHash () { return hash(this.serial.val) } // prettier-ignore
     isVerticalByDefault = true
 
-    get isCollapsible() { return this.config.textarea ?? false } // prettier-ignore
+    get isCollapsible() { return this.config.textarea ?? true } // prettier-ignore
 
     readonly id: string
     readonly type: 'prompt' = 'prompt'
 
     serial: Widget_prompt_serial
 
-    constructor(public readonly form: FormBuilder, public readonly config: Widget_prompt_config, serial?: Widget_prompt_serial) {
+    constructor(
+        //
+        public readonly form: Form<any>,
+        public readonly config: Widget_prompt_config,
+        serial?: Widget_prompt_serial,
+    ) {
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? {
             type: 'prompt',

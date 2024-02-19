@@ -4,7 +4,7 @@ import type { KnownCustomNode_CushyName } from 'src/manager/extension-node-map/K
 import type { KnownModel_Base } from 'src/manager/model-list/KnownModel_Base'
 import type { KnownModel_Name } from 'src/manager/model-list/KnownModel_Name'
 import type { ModelInfo } from 'src/manager/model-list/model-list-loader-types'
-import type { FormBuilder } from './FormBuilder'
+import type { Form } from './Form'
 
 export type WidgetTypeHelpers_OLD<T, I, X extends { type: T }, S, O> = {
     $Input: I
@@ -34,7 +34,7 @@ export type IWidget_OLD<T, I, X, S, O> = {
     readonly type: T
     readonly value: O
     readonly serial: X
-    readonly form: FormBuilder
+    readonly form: Form<any>
     readonly config: WidgetConfigFields<any>
 }
 
@@ -46,7 +46,7 @@ export type IWidget<K extends $WidgetTypes> = {
     readonly type: K['$Type']
     readonly value: K['$Output']
     readonly serial: K['$Serial']
-    readonly form: FormBuilder
+    readonly form: Form<any>
     readonly config: WidgetConfigFields<any>
 }
 
@@ -68,6 +68,7 @@ export type WidgetConfigFields<X> = X & {
     i18n?: { [key: string]: string }
     className?: string
     startCollapsed?: boolean
+    collapsible?: boolean
     showID?: boolean
     requirements?: Requirements[]
 }

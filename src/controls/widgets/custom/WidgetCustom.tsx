@@ -1,5 +1,5 @@
 import type { FC } from 'react'
-import type { FormBuilder } from 'src/controls/FormBuilder'
+import type { Form } from 'src/controls/Form'
 import type { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from 'src/controls/IWidget'
 
 import { makeAutoObservable } from 'mobx'
@@ -43,7 +43,7 @@ export class Widget_custom<T> implements IWidget<Widget_custom_types<T>> {
     reset = () => (this.serial.value = this.config.defaultValue())
     constructor(
         //
-        public form: FormBuilder,
+        public form: Form<any>,
         public config: Widget_custom_config<T>,
         serial?: Widget_custom_serial<T>,
     ) {

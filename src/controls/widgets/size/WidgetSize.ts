@@ -1,6 +1,6 @@
-import type { FormBuilder } from 'src/controls/FormBuilder'
 import type { WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers_OLD, IWidget_OLD } from 'src/controls/IWidget'
 import type { CushySizeByRatio, CushySize, AspectRatio, SDModelType } from 'src/controls/widgets/size/WidgetSizeTypes'
+import type { Form } from 'src/controls/Form'
 
 // import type { AspectRatio, CushySize, CushySizeByRatio, SDModelType } from "./misc/SDModelType"
 
@@ -31,11 +31,11 @@ export class Widget_size
     }
     get serialHash() { return hash(this.value) } // prettier-ignore
     readonly isVerticalByDefault = true
-    readonly isCollapsible = true
+    readonly isCollapsible = this.config.collapsible ?? false
     readonly id: string
     readonly type: 'size' = 'size'
     readonly serial: Widget_size_state
-    constructor(public form: FormBuilder, public config: Widget_size_config, serial?: Widget_size_serial) {
+    constructor(public form: Form<any>, public config: Widget_size_config, serial?: Widget_size_serial) {
         this.id = serial?.id ?? nanoid()
         if (serial) {
             this.serial = serial

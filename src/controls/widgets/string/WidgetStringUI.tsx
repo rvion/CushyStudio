@@ -20,14 +20,24 @@ export const WidgetStringUI = observer(function WidgetStringUI_(p: { widget: Wid
         )
     }
     return (
-        <input
-            tw='input input-sm w-full'
-            placeholder={widget.config.placeHolder}
-            value={val}
-            onChange={(ev) => {
-                const next = ev.target.value
-                widget.serial.val = next
-            }}
-        />
+        <>
+            <input
+                tw='input input-sm w-full'
+                type={widget.config.inputType}
+                placeholder={widget.config.placeHolder}
+                value={val}
+                onChange={(ev) => {
+                    const next = ev.target.value
+                    widget.serial.val = next
+                }}
+            />
+            <div
+                tw={[widget.isChanged ? undefined : 'btn-disabled opacity-50']}
+                onClick={() => widget.reset()}
+                className='btn btn-xs btn-narrower btn-ghost'
+            >
+                <span className='material-symbols-outlined'>undo</span>
+            </div>
+        </>
     )
 })

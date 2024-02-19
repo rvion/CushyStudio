@@ -171,6 +171,11 @@ class AutoCompleteSelectState<T> {
         }
     }
 
+    setNavigationIndex(value: number) {
+        this.updatePosition() // just in case we scrolled
+        this.selectedIndex = value
+    }
+
     handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         this.filterOptions(event.target.value)
         this.updatePosition() // just in case we scrolled
@@ -200,43 +205,45 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
     const st = useSt()
     const s = useMemo(() => new AutoCompleteSelectState(st, p), [])
     return (
-        <div tw='flex flex-1 items-center' className={p.className}>
-            {/* <span tw='btn btn-sm' className='material-symbols-outlined'>
-                search
-            </span> */}
-            <div className='relative flex-1 w-full'>
-                {/* {p.label && (
-                    <span tw='btn btn-sm absolute right-0' className='material-symbols-outlined'>
-                    search
-                    </span>
-                )} */}
+        <div
+            tw='flex flex-1 items-center h-full p-0.5 relative'
+            className={p.className}
+            ref={s.anchorRef}
+            onKeyUp={s.onRealInputKeyUp}
+            onMouseDown={s.onRealWidgetMouseDown}
+            onChange={s.handleInputChange}
+            onKeyDown={s.handleTooltipKeyDown}
+            onFocus={s.openMenu}
+            onBlur={s.onBlur}
+            style={{ background: s.searchQuery === '' ? 'none' : undefined }}
+        >
+            <div className='flex-1'>
                 {/* ANCHOR */}
                 <div //
                     tabIndex={-1}
-                    tw='input input-xs w-full overflow-hidden pl-0 flex items-center'
+                    tw='input input-xs text-sm flex items-center gap-1 bg-transparent p-0 select-none pointer-events-none'
                 >
-                    <div tw='btn btn-square btn-xs '>
-                        <span className='material-symbols-outlined'>search</span>
-                    </div>
-                    <div tw='whitespace-nowrap overflow-hidden'>{s.displayValue}</div>
+                    {s.isOpen ? (
+                        <></>
+                    ) : (
+                        <>
+                            <div tw='btn btn-square btn-xs bg-transparent border-0'>
+                                <span className='material-symbols-outlined'>search</span>
+                            </div>
+                            <div tw='whitespace-nowrap overflow-hidden'>{s.displayValue}</div>
+                            <div tw='btn btn-square btn-xs ml-auto bg-transparent border-0'>
+                                <span className='material-symbols-outlined'>arrow_drop_down</span>
+                            </div>
+                        </>
+                    )}
                 </div>
-                <div tw='absolute top-0 left-0 right-0 z-50'>
+                <div tw='absolute top-0 left-0 right-0 z-100 '>
                     <input
-                        ref={s.anchorRef}
-                        onKeyUp={s.onRealInputKeyUp}
-                        onMouseDown={s.onRealWidgetMouseDown}
-                        onChange={s.handleInputChange}
-                        onKeyDown={s.handleTooltipKeyDown}
-                        onFocus={s.openMenu}
-                        onBlur={s.onBlur}
-                        style={{ background: s.searchQuery === '' ? 'none' : undefined }}
-                        // style={{ opacity: s.searchQuery === '' ? 0 : 1 }}
-                        // style={{ background: 'none' }}
-                        // tw='input input-bordered input-sm w-full'
+                        //
                         tw='input input-sm w-full'
-                        // placeholder={s.displayValue}
                         type='text'
                         value={s.searchQuery}
+                        onChange={() => {}}
                     />
                 </div>
                 {/* TOOLTIP */}
@@ -251,7 +258,8 @@ export const SelectPopupUI = observer(function SelectPopupUI_<T>(p: { s: AutoCom
     return createPortal(
         <ul
             onMouseLeave={s.onTooltipMouseOut}
-            className='_SelectPopupUI p-2 bg-base-100 shadow-2xl max-h-96 overflow-auto'
+            className='_SelectPopupUI p-0.5 bg-base-100 shadow-2xl max-h-96 overflow-auto'
+            tw='rounded-b border-b border-l border-r border-base-300 text-shadow'
             style={{
                 minWidth: s.anchorRef.current?.clientWidth ?? '100%',
                 pointerEvents: 'initial',
@@ -262,7 +270,7 @@ export const SelectPopupUI = observer(function SelectPopupUI_<T>(p: { s: AutoCom
                 // Adjust positioning as needed
             }}
         >
-            {s.filteredOptions.length === 0 ? <li className='p-2'>No results</li> : null}
+            {s.filteredOptions.length === 0 ? <li className='p-1 text-base'>No results</li> : null}
             {s.filteredOptions.map((option, index) => {
                 const isSelected =
                     s.values.find((v) => {
@@ -273,26 +281,26 @@ export const SelectPopupUI = observer(function SelectPopupUI_<T>(p: { s: AutoCom
                     <li
                         key={index}
                         style={{ minWidth: '10rem' }}
-                        className={`p-0.5 hover:bg-base-300 cursor-pointer ${index === s.selectedIndex ? 'bg-base-300' : ''}`}
-                        tw={['flex items-center gap-1']}
+                        className={`active:bg-base-300 cursor-pointer ${index === s.selectedIndex ? 'bg-base-300' : ''}`}
+                        tw={[
+                            'flex items-center gap-1 rounded',
+                            isSelected && 'bg-primary text-primary-content hover:text-neutral-content',
+                        ]}
+                        onMouseEnter={(ev) => {
+                            s.setNavigationIndex(index)
+                        }}
                         onMouseDown={(ev) => s.onMenuEntryClick(ev, index)}
                     >
-                        <div>
+                        <div tw={'rounded p-1 h-6'}>
                             {s.isMultiSelect ? (
                                 <input
                                     onChange={() => {}}
                                     checked={isSelected}
                                     type='checkbox'
-                                    tw='checkbox checkbox-primary input-xs'
+                                    tw='checkbox checkbox-primary checkbox-sm input-xs bg-none'
                                 />
                             ) : (
-                                <input //
-                                    type='radio'
-                                    name='radio-1'
-                                    className='radio'
-                                    onChange={() => {}}
-                                    checked={isSelected}
-                                />
+                                <></>
                             )}
                         </div>
                         {/* {isSelected ? '🟢' : null} */}

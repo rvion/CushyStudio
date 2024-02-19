@@ -23,7 +23,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
 
     if (WidgetDI.WidgetUI == null) return <>WidgetDI.WidgetUI is null</>
     const { WidgetLineUI, WidgetBlockUI } = WidgetDI.WidgetUI(widget) // WidgetDI.WidgetUI(widget)
-    const isCollapsible = WidgetBlockUI != null
+    const isCollapsible = WidgetBlockUI != null && widget.isCollapsible
     const collapsed = widget.serial.collapsed && isCollapsible
     if (widget instanceof KLS.Widget_group && Object.keys(widget.fields).length === 0) return
     const className = '' // `${clsX} __${widget.type} ${levelClass} flex flex-col items-baseline`
@@ -46,7 +46,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
             tw={[
                 'bg-base-100',
                 //
-                WidgetBlockUI && 'WIDGET-WITH-BLOCK',
+                isCollapsible && 'WIDGET-WITH-BLOCK',
                 p.isTopLevel ? 'TOP-LEVEL-FIELD' : 'SUB-FIELD',
                 widget.type,
             ]}
@@ -55,7 +55,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
         >
             <AnimatedSizeUI>
                 {/* LINE */}
-                <div tw='WIDGET-LINE flex items-center gap-0.5'>
+                <div tw={[isCollapsible && 'WIDGET-LINE', 'flex items-center gap-0.5']}>
                     {(collapsed || isCollapsible) && <Widget_CollapseBtnUI widget={p.widget} />}
                     <span
                         tw={[
@@ -103,7 +103,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                 {/* BLOCK */}
                 {WidgetBlockUI && !collapsed && (
                     <ErrorBoundary FallbackComponent={ErrorBoundaryFallback} onReset={(details) => {}}>
-                        <div tw='WIDGET-BLOCK'>
+                        <div tw={[isCollapsible && 'WIDGET-BLOCK']}>
                             <WidgetBlockUI widget={widget} />
                         </div>
                     </ErrorBoundary>

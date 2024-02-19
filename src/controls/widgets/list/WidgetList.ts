@@ -1,4 +1,4 @@
-import type { FormBuilder } from '../../FormBuilder'
+import type { Form } from 'src/controls/Form'
 import type { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../../IWidget'
 import type { Widget } from '../../Widget'
 
@@ -46,7 +46,7 @@ export class Widget_list<T extends Widget> implements IWidget<Widget_list_types<
     items: T[]
     serial: Widget_list_serial<T>
 
-    constructor(public form: FormBuilder, public config: Widget_list_config<T>, serial?: Widget_list_serial<T>) {
+    constructor(public form: Form<any>, public config: Widget_list_config<T>, serial?: Widget_list_serial<T>) {
         this.id = serial?.id ?? nanoid()
 
         // serial
@@ -57,13 +57,16 @@ export class Widget_list<T extends Widget> implements IWidget<Widget_list_types<
 
         // hydrate items
         this.items = []
-        const _reference = runWithGlobalForm(this.form, () => config.element(0))
+        const _reference = runWithGlobalForm(this.form.builder, () => config.element(0))
         for (const subSerial of this.serial.items_) {
-            if (subSerial.type !== _reference.type) {
+            if (
+                subSerial == null || // ⁉️ when can this happen ?
+                subSerial.type !== _reference.type
+            ) {
                 console.log(`[❌] SKIPPING form item because it has an incompatible entry from a previous app definition`)
                 continue
             }
-            const subWidget = form._HYDRATE(subSerial.type, _reference.config, subSerial)
+            const subWidget = form.builder._HYDRATE(subSerial.type, _reference.config, subSerial)
             this.items.push(subWidget)
         }
 
@@ -92,7 +95,7 @@ export class Widget_list<T extends Widget> implements IWidget<Widget_list_types<
     addItem() {
         // const _ref = this._reference
         // const newItem = this.builder.HYDRATE(_ref.type, _ref.input)
-        const element: T = runWithGlobalForm(this.form, () => this.config.element(this.serial.items_.length))
+        const element: T = runWithGlobalForm(this.form.builder, () => this.config.element(this.serial.items_.length))
         this.items.push(element)
         this.serial.items_.push(element.serial)
     }

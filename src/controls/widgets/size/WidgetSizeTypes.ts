@@ -23,6 +23,5 @@ export type ModelType = 'xl' | '1.5' | 'custom'
 // prettier-ignore
 export type AspectRatio =
     | '1:1'
-    | 'custom'
     | '16:9' | '4:3' | '3:2'
     | '9:16' | '3:4' | '2:3'
