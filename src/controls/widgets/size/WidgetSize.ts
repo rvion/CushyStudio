@@ -42,8 +42,8 @@ export class Widget_size
         } else {
             const aspectRatio: AspectRatio = config.default?.aspectRatio ?? '1:1'
             const modelType: SDModelType = config.default?.modelType ?? 'SD1.5 512'
-            const width = 512 // 🔴
-            const height = 512 // 🔴
+            const width = config.default?.width ?? parseInt(modelType.split(' ')[1])
+            const height = config.default?.height ?? parseInt(modelType.split(' ')[1])
             this.serial = {
                 type: 'size',
                 id: this.id,
