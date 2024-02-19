@@ -1,7 +1,7 @@
 import type { Form } from 'src/controls/Form'
 import type { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../../IWidget'
 
-import { computed, makeObservable, observable } from 'mobx'
+import { computed, makeAutoObservable, makeObservable, observable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { Widget } from '../../Widget'
 import { WidgetDI } from '../WidgetUI.DI'
@@ -52,21 +52,29 @@ export class Widget_shared<T extends Widget> implements IWidget<Widget_string_ty
         this.serial = serial ?? { id: this.id, type: 'shared', collapsed: config.startCollapsed }
 
         // ----------------------------------------------
-        const widget = config.widget
+        const newWidget = config.widget
         const name = `__${this.config.rootKey}__`
         // console.log(`[👙] ;-----------, `, name)
-        const newConfig = widget.config
-        const newType = widget.type
+        const newConfig = newWidget.config
+        const newType = newWidget.type
         const prevSerial = this.form._ROOT.serial.values_[name]
         if (prevSerial && newType === prevSerial.type) {
+            // console.warn(`[🤠🟢] Widget_shared: PREV SERIAL IS OK (${JSON.stringify(prevSerial)})`)
             this.shared = this.form.builder._HYDRATE(newType, newConfig, prevSerial)
         } else {
-            if (prevSerial != null) console.log(`[🔶] invalid serial for "${name}": (${newType} != ${prevSerial?.type}) => using fresh one instead`) // prettier-ignore
-            this.shared = this.form._ROOT.serial.values_[name] = widget.serial as any
+            // if (prevSerial == null) console.log(`[🤠🔶] Widget_shared: PREV SERIAL IS NULL`)
+            // if (prevSerial != null) console.log(`[🔶] invalid serial for "${name}": (${newType} != ${prevSerial?.type}) => using fresh one instead`) // prettier-ignore
+            this.shared = newWidget
         }
+        this.form._ROOT.serial.values_[name] = this.shared.serial as any
         // ----------------------------------------------
 
-        makeObservable(this, { serial: observable, value: computed })
+        makeAutoObservable(this)
+        // makeObservable(this, {
+        //     serial: observable,
+        //     shared: observable.ref,
+        //     value: computed,
+        // })
     }
 
     get value(): Widget_shared_output<T> {
