@@ -41,6 +41,7 @@ export class FormBuilder {
 
     // string
     promptV2 = (config: Widget_prompt_config = {}) => new Widget_prompt(this, config)
+    time = (config: Widget_string_config = {}) => new Widget_string(this, { inputType: 'time', ...config })
     string = (config: Widget_string_config = {}) => new Widget_string(this, config)
     stringOpt = (config: Widget_string_config & { startActive?: boolean } = {}) =>
         this.optional({
@@ -191,6 +192,7 @@ export class FormBuilder {
 
     // List API--------------
     selectOne = <const T extends W.BaseSelectEntry>(p: W.Widget_selectOne_config<T>) => new W.Widget_selectOne(this, p)
+    selectOneV2 = <const T extends W.BaseSelectEntry>(p: string[]) => new W.Widget_selectOne(this, { choices: p.map((id) => ({ id })), appearance:'tab' }) // prettier-ignore
 
     selectMany = <const T extends W.BaseSelectEntry>(p: W.Widget_selectMany_config<T>) => new W.Widget_selectMany(this, p)
 
