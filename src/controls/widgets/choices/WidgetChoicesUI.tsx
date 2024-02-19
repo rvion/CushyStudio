@@ -74,11 +74,11 @@ const WidgetChoices_TabLineUI = observer(function WidgetChoicesTab_LineUI_(p: {
                         tw={[
                             //
                             'cursor-pointer',
-                            'rounded text-shadow',
+                            'rounded',
                             'border px-2 flex flex-nowrap gap-0.5 whitespace-nowrap items-center bg-base-100',
                             isSelected
-                                ? 'bg-primary text-base-300 border-base-200'
-                                : 'bg-base-200 hover:filter hover:brightness-110 border-base-100',
+                                ? 'bg-primary text-base-300 border-base-200 text-shadow-inv'
+                                : 'bg-base-200 hover:filter hover:brightness-110 border-base-100 text-shadow',
                             'border-b-2 border-b-base-300',
                         ]}
                     >
