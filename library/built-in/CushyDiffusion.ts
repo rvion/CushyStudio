@@ -64,10 +64,10 @@ app({
                     depth: form.choice({
                         default: 'Marigold',
                         items: {
-                            MiDaS: () => form.group({}),
-                            Zoe: () => form.group({}),
-                            LeReS: () => form.group({}),
-                            Marigold: () => form.auto.MarigoldDepthEstimation(),
+                            MiDaS: form.group(),
+                            Zoe: form.group(),
+                            LeReS: form.group(),
+                            Marigold: form.auto.MarigoldDepthEstimation(),
                         },
                     }),
                 }
@@ -84,10 +84,10 @@ app({
         testStuff: form.choices({
             appearance: 'tab',
             items: {
-                reversePositiveAndNegative: () => form.group({}),
-                makeAVideo: () => form.group({}),
-                summary: () => form.group({}),
-                gaussianSplat: () => form.group({}),
+                reversePositiveAndNegative: form.group(),
+                makeAVideo: form.group(),
+                summary: form.group(),
+                gaussianSplat: form.group(),
             },
         }),
     }),

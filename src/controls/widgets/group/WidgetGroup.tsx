@@ -14,7 +14,7 @@ export type Widget_group_config<T extends WidgetDict> = WidgetConfigFields<{
     items?: (() => T) | T
     topLevel?: boolean
     /** if provided, will be used to show a single line summary on the inline form slot */
-    summary?: (items: { [k in keyof T]: GetWidgetResult<T[k]['$Widget']> }) => string
+    summary?: (items: { [k in keyof T]: GetWidgetResult<T[k]> }) => string
 }>
 
 // SERIAL
@@ -126,13 +126,13 @@ export class Widget_group<T extends WidgetDict> implements IWidget<Widget_group_
             const newConfig = newItem.config
             const newType = newItem.type
             if (prevFieldSerial && newType === prevFieldSerial.type) {
-                if (newType === 'shared') {
-                    // 🔴 BAD 🔴
-                    this.fields[key] = newItem as any
-                } else {
-                    // console.log(`[🟢] valid serial for "${key}": (${newType} === ${prevFieldSerial.type}) `)
-                    this.fields[key] = this.form.builder._HYDRATE(newType, newConfig, prevFieldSerial)
-                }
+                // if (newType === 'shared') {
+                //     // 🔴 BAD 🔴
+                //     this.fields[key] = newItem as any
+                // } else {
+                // console.log(`[🟢] valid serial for "${key}": (${newType} === ${prevFieldSerial.type}) `)
+                this.fields[key] = this.form.builder._HYDRATE(newType, newConfig, prevFieldSerial)
+                // }
             } else {
                 // console.log(`[🟢] invalid serial for "${key}"`)
                 if (prevFieldSerial != null)
@@ -140,8 +140,8 @@ export class Widget_group<T extends WidgetDict> implements IWidget<Widget_group_
                         `[🔶] invalid serial for "${key}": (${newType} != ${prevFieldSerial?.type}) => using fresh one instead`,
                         prevFieldSerials,
                     )
-                this.fields[key] = newItem as any
-                this.serial.values_[key] = newItem.serial as any
+                this.fields[key] = this.form.builder._HYDRATE(newType, newConfig, null)
+                this.serial.values_[key] = this.fields[key].serial
             }
         }
         // we only iterate on the new values => we DON'T WANT to remove the old ones.

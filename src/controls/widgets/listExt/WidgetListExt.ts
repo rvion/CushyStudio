@@ -1,7 +1,7 @@
 import type { Form } from 'src/controls/Form'
 import type { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from 'src/controls/IWidget'
-import type { Widget } from 'src/controls/Widget'
 import type { BoardPosition } from './WidgetListExtTypes'
+import type { Unmounted } from 'src/controls/Prop'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -12,7 +12,7 @@ import { hash } from 'ohash'
 import { ResolutionState } from '../size/ResolutionState'
 
 // CONFIG
-export type Widget_listExt_config<T extends Widget> = WidgetConfigFields<{
+export type Widget_listExt_config<T extends Unmounted> = WidgetConfigFields<{
     element: (p: { ix: number; width: number; height: number }) => T
     min?: number
     max?: number
@@ -24,7 +24,7 @@ export type Widget_listExt_config<T extends Widget> = WidgetConfigFields<{
 }>
 
 // SERIAL
-export type Widget_listExt_serial<T extends Widget> = WidgetSerialFields<{
+export type Widget_listExt_serial<T extends Unmounted> = WidgetSerialFields<{
     type: 'listExt'
     entries: { serial: T['$Serial']; shape: BoardPosition }[]
     width: number
@@ -32,7 +32,7 @@ export type Widget_listExt_serial<T extends Widget> = WidgetSerialFields<{
 }>
 
 // OUT
-export type Widget_listExt_output<T extends Widget> = {
+export type Widget_listExt_output<T extends Unmounted> = {
     items: { value: T['$Output']; position: BoardPosition }[]
     // -----------------------
     width: number
@@ -40,7 +40,7 @@ export type Widget_listExt_output<T extends Widget> = {
 }
 
 // TYPES
-export type Widget_listExt_types<T extends Widget> = {
+export type Widget_listExt_types<T extends Unmounted> = {
     $Type: 'listExt'
     $Input: Widget_listExt_config<T>
     $Serial: Widget_listExt_serial<T>
@@ -48,8 +48,8 @@ export type Widget_listExt_types<T extends Widget> = {
 }
 
 // STATE
-export interface Widget_listExt<T extends Widget> extends WidgetTypeHelpers<Widget_listExt_types<T>> {}
-export class Widget_listExt<T extends Widget> implements IWidget<Widget_listExt_types<T>> {
+export interface Widget_listExt<T extends Unmounted> extends WidgetTypeHelpers<Widget_listExt_types<T>> {}
+export class Widget_listExt<T extends Unmounted> implements IWidget<Widget_listExt_types<T>> {
     get serialHash () { return hash(this.value) } // prettier-ignore
     readonly isVerticalByDefault = true
     readonly isCollapsible = true
@@ -62,11 +62,14 @@ export class Widget_listExt<T extends Widget> implements IWidget<Widget_listExt_
         return state
     }
 
-    entries: { widget: T; position: BoardPosition }[] = []
+    entries: {
+        widget: T['$Widget']
+        position: BoardPosition
+    }[] = []
     serial: Widget_listExt_serial<T>
 
     // for compatibility with Widget_list
-    get items(): T[] {
+    get items(): T['$Widget'][] {
         return this.entries.map((i) => i.widget)
     }
 

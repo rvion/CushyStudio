@@ -49,6 +49,9 @@ export class FormBuilder {
     // string
     promptV2    = (config: Widget_prompt_config = {})                          => new Unmounted<  Widget_prompt             >('prompt'   , config)
     time        = (config: Widget_string_config = {})                          => new Unmounted<  Widget_string             >('str'      , { inputType: 'time', ...config })
+    password    = (config: Widget_string_config = {})                          => new Unmounted<  Widget_string             >('str'      , { inputType: 'password', ...config })
+    email       = (config: Widget_string_config = {})                          => new Unmounted<  Widget_string             >('str'      , { inputType: 'email', ...config })
+    url         = (config: Widget_string_config = {})                          => new Unmounted<  Widget_string             >('str'      , { inputType: 'url', ...config })
     string      = (config: Widget_string_config = {})                          => new Unmounted<  Widget_string             >('str'      , config)
     boolean     = (config: Widget_bool_config = {})                            => new Unmounted<  Widget_bool               >('bool'     , config)
     bool        = (config: Widget_bool_config = {})                            => new Unmounted<  Widget_bool               >('bool'     , config)
@@ -65,15 +68,15 @@ export class FormBuilder {
     float       = (config: Omit<Widget_number_config, 'mode'> = {})            => new Unmounted<  Widget_number             >('number'   , { mode: 'float', ...config })
     number      = (config: Omit<Widget_number_config, 'mode'> = {})            => new Unmounted<  Widget_number             >('number'   , { mode: 'float', ...config })
     custom      = <const TViewState>(config: Widget_custom_config<TViewState>) => new Unmounted<  Widget_custom<TViewState> >('custom'   , config)
-    list        = <const T extends W.Widget>(config: Widget_list_config<T>)    => new Unmounted<  Widget_list<T>            >('list'     , config)
-    listExt     = <const T extends W.Widget>(config: Widget_listExt_config<T>) => new Unmounted<  Widget_listExt<T>         >('listExt'  , config)
-    timeline    = <const T extends W.Widget>(config: Widget_listExt_config<T>) => new Unmounted<  Widget_listExt<T>         >('listExt'  , { mode: 'timeline', ...config })
-    regional    = <const T extends W.Widget>(config: Widget_listExt_config<T>) => new Unmounted<  Widget_listExt<T>         >('listExt'  , { mode: 'regional', ...config })
+    list        = <const T extends Unmounted>(config: Widget_list_config<T>)    => new Unmounted<  Widget_list<T>            >('list'     , config)
+    listExt     = <const T extends Unmounted>(config: Widget_listExt_config<T>) => new Unmounted<  Widget_listExt<T>         >('listExt'  , config)
+    timeline    = <const T extends Unmounted>(config: Widget_listExt_config<T>) => new Unmounted<  Widget_listExt<T>         >('listExt'  , { mode: 'timeline', ...config })
+    regional    = <const T extends Unmounted>(config: Widget_listExt_config<T>) => new Unmounted<  Widget_listExt<T>         >('listExt'  , { mode: 'regional', ...config })
     selectOneV2 = (p: string[])                                                                                   => new Unmounted<W.Widget_selectOne<W.BaseSelectEntry>>('selectOne',  { choices: p.map((id) => ({ id })), appearance:'tab' }) // prettier-ignore
     selectOne   = <const T extends W.BaseSelectEntry>(p: W.Widget_selectOne_config<T>)                            => new Unmounted<W.Widget_selectOne<T>                >('selectOne',  p)
     selectMany  = <const T extends W.BaseSelectEntry>(p: W.Widget_selectMany_config<T>)                           => new Unmounted<W.Widget_selectMany<T>               >('selectMany', p)
-    choice      = <const T extends { [key: string]: () => W.Widget }>(p: Omit<Widget_choices_config<T>, 'multi'>) => new Unmounted<Widget_choices<T>                    >('choices',    { multi: false, ...p })
-    choices     = <const T extends { [key: string]: () => W.Widget }>(p: Omit<Widget_choices_config<T>, 'multi'>) => new Unmounted<Widget_choices<T>                    >('choices',    { multi: true, ...p })
+    choice      = <const T extends { [key: string]: Unmounted }>(p: Omit<Widget_choices_config<T>, 'multi'>) => new Unmounted<Widget_choices<T>                    >('choices',    { multi: false, ...p })
+    choices     = <const T extends { [key: string]: Unmounted }>(p: Omit<Widget_choices_config<T>, 'multi'>) => new Unmounted<Widget_choices<T>                    >('choices',    { multi: true, ...p })
 
 
     // 🔴🔴
@@ -171,7 +174,7 @@ export class FormBuilder {
             widget: this.color({ ...config, startCollapsed: undefined }),
         })
 
-    group = <const T extends WidgetDict>(p: Widget_group_config<T>) => new Unmounted('group', p)
+    group = <const T extends WidgetDict>(p: Widget_group_config<T>={}) => new Unmounted('group', p)
     groupOpt = <const T extends WidgetDict>(config: Widget_group_config<T> & { startActive?: boolean }) =>
         this.optional({
             label: config.label,
@@ -190,6 +193,12 @@ export class FormBuilder {
     /** (@internal) advanced way to restore form state. used internally */
     // prettier-ignore
     _HYDRATE = (type: W.Widget['type'], input: any, serial: any | null): any => {
+        // ensure the serial is compatible
+        if (serial != null && serial.type !== type) {
+            console.log(`[🔶] INVALID SERIAL (expected: ${type}, got: ${serial.type})`)
+            serial = null
+        }
+
         if (type === 'group'     ) return new   Widget_group     (this.form, input, serial, this.form._ROOT ? undefined : (x) => { this.form._ROOT = x })
         if (type === 'shared'    ) return new   Widget_shared    (this.form, input, serial)
         if (type === 'optional'  ) return new   Widget_optional  (this.form, input, serial)

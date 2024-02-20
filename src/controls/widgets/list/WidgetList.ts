@@ -1,6 +1,6 @@
 import type { Form } from 'src/controls/Form'
 import type { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../../IWidget'
-import type { Widget } from '../../Widget'
+import type { Unmounted } from 'src/controls/Prop'
 
 import { makeAutoObservable, observable } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -8,7 +8,7 @@ import { runWithGlobalForm } from 'src/models/_ctx2'
 import { WidgetDI } from '../WidgetUI.DI'
 
 // CONFIG
-export type Widget_list_config<T extends Widget> = WidgetConfigFields<{
+export type Widget_list_config<T extends Unmounted> = WidgetConfigFields<{
     element: (ix: number) => T
     min?: number
     max?: number
@@ -16,16 +16,16 @@ export type Widget_list_config<T extends Widget> = WidgetConfigFields<{
 }>
 
 // SERIAL
-export type Widget_list_serial<T extends Widget> = WidgetSerialFields<{
+export type Widget_list_serial<T extends Unmounted> = WidgetSerialFields<{
     type: 'list'
     items_: T['$Serial'][]
 }>
 
 // OUT
-export type Widget_list_output<T extends Widget> = T['$Output'][]
+export type Widget_list_output<T extends Unmounted> = T['$Output'][]
 
 // TYPES
-export type Widget_list_types<T extends Widget> = {
+export type Widget_list_types<T extends Unmounted> = {
     $Type: 'list'
     $Input: Widget_list_config<T>
     $Serial: Widget_list_serial<T>
@@ -33,17 +33,17 @@ export type Widget_list_types<T extends Widget> = {
 }
 
 // STATE
-export interface Widget_list<T extends Widget> extends WidgetTypeHelpers<Widget_list_types<T>> {}
-export class Widget_list<T extends Widget> implements IWidget<Widget_list_types<T>> {
+export interface Widget_list<T extends Unmounted> extends WidgetTypeHelpers<Widget_list_types<T>> {}
+export class Widget_list<T extends Unmounted> implements IWidget<Widget_list_types<T>> {
     get serialHash(): string {
-        return this.items.map((v: Widget) => v.serialHash).join(',')
+        return this.items.map((v: T['$Widget']) => v.serialHash).join(',')
     }
     readonly isVerticalByDefault = true
     readonly isCollapsible = true
     readonly id: string
     readonly type: 'list' = 'list'
 
-    items: T[]
+    items: T['$Widget'][]
     serial: Widget_list_serial<T>
 
     constructor(public form: Form<any>, public config: Widget_list_config<T>, serial?: Widget_list_serial<T>) {

@@ -40,10 +40,10 @@ export const ui_subform_Lineart_Preprocessor = () => {
         default: 'Realistic',
         appearance: 'tab',
         items: {
-            None: () => form.group({}),
-            Realistic: () => ui_subform_Lineart_realistic(),
-            Anime: () => ui_subform_Lineart_Anime(),
-            Manga: () => ui_subform_Lineart_Manga(),
+            None: form.group(),
+            Realistic: ui_subform_Lineart_realistic(),
+            Anime: ui_subform_Lineart_Anime(),
+            Manga: ui_subform_Lineart_Manga(),
         },
     })
 }

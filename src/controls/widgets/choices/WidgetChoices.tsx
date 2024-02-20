@@ -1,18 +1,15 @@
-import type { Widget } from 'src/controls/Widget'
+import type { WidgetDict } from 'src/cards/App'
 import type { Form } from 'src/controls/Form'
 import type { GetWidgetResult, IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../../IWidget'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
-import { runWithGlobalForm } from 'src/models/_ctx2'
+import { hash } from 'ohash'
 import { toastError } from 'src/utils/misc/toasts'
 import { WidgetDI } from '../WidgetUI.DI'
-import { hash } from 'ohash'
-
-type BranchDefinitions = { [key: string]: () => Widget }
 
 // CONFIG
-export type Widget_choices_config<T extends BranchDefinitions> = WidgetConfigFields<{
+export type Widget_choices_config<T extends WidgetDict> = WidgetConfigFields<{
     items: T
     multi: boolean
     default?: { [k in keyof T]?: boolean } | keyof T
@@ -21,20 +18,20 @@ export type Widget_choices_config<T extends BranchDefinitions> = WidgetConfigFie
 }>
 
 // SERIAL
-export type Widget_choices_serial<T extends BranchDefinitions> = WidgetSerialFields<{
+export type Widget_choices_serial<T extends WidgetDict> = WidgetSerialFields<{
     type: 'choices'
     active: true
     branches: { [k in keyof T]?: boolean }
-    values_: { [k in keyof T]?: ReturnType<T[k]>['$Serial'] }
+    values_: { [k in keyof T]?: T[k]['$Serial'] }
 }>
 
 // OUT
-export type Widget_choices_output<T extends BranchDefinitions> = {
-    [k in keyof T]?: GetWidgetResult<ReturnType<T[k]>>
+export type Widget_choices_output<T extends WidgetDict> = {
+    [k in keyof T]?: GetWidgetResult<T[k]>
 }
 
 // TYPES
-export type Widget_choices_types<T extends BranchDefinitions> = {
+export type Widget_choices_types<T extends WidgetDict> = {
     $Type: 'choices'
     $Input: Widget_choices_config<T>
     $Serial: Widget_choices_serial<T>
@@ -42,8 +39,8 @@ export type Widget_choices_types<T extends BranchDefinitions> = {
 }
 
 // STATE
-export interface Widget_choices<T extends BranchDefinitions> extends WidgetTypeHelpers<Widget_choices_types<T>> {}
-export class Widget_choices<T extends BranchDefinitions> implements IWidget<Widget_choices_types<T>> {
+export interface Widget_choices<T extends WidgetDict> extends WidgetTypeHelpers<Widget_choices_types<T>> {}
+export class Widget_choices<T extends WidgetDict> implements IWidget<Widget_choices_types<T>> {
     readonly isVerticalByDefault = true
     readonly isCollapsible = true
     readonly id: string
@@ -53,7 +50,7 @@ export class Widget_choices<T extends BranchDefinitions> implements IWidget<Widg
     get isMulti() {
         return this.config.multi
     }
-    children: { [k in keyof T]?: ReturnType<T[k]> } = {}
+    children: { [k in keyof T]?: T[k]['widget'] } = {}
     serial: Widget_choices_serial<T>
 
     get firstChoice(): (keyof T & string) | undefined {
@@ -72,7 +69,7 @@ export class Widget_choices<T extends BranchDefinitions> implements IWidget<Widg
         return this.activeBranches[0]
     }
 
-    get firstActiveBranchWidget(): ReturnType<T[keyof T]> | undefined {
+    get firstActiveBranchWidget(): T[keyof T]['$Widget'] | undefined {
         if (this.firstActiveBranchName == null) return undefined
         return this.children[this.firstActiveBranchName]
     }
@@ -158,22 +155,21 @@ export class Widget_choices<T extends BranchDefinitions> implements IWidget<Widg
         if (this.children[branch]) throw new Error(`❌ Branch "${branch}" already enabled`)
         // first: quick safety net to check against schema changes
         // a. re-create an empty item to check it's schema
-        const fn = this.config.items[branch]
-        if (fn == null) throw new Error(`❌ Branch "${branch}" has no initializer function`)
+        const newItem = this.config.items[branch]
+        if (newItem == null) throw new Error(`❌ Branch "${branch}" has no initializer function`)
 
-        const newItem = runWithGlobalForm(this.form.builder, () => fn())
         const prevBranchSerial = this.serial.values_?.[branch]
         const newType = newItem.type
+        const newInput = newItem.config
 
         // prev serial seems compmatible => we use it
         if (prevBranchSerial && newType === prevBranchSerial.type) {
-            const newInput = newItem.config
             this.children[branch] = this.form.builder._HYDRATE(newType, newInput, prevBranchSerial)
         }
         // prev serial is not compatible => we use the fresh one instead
         else {
-            this.serial.values_[branch] = newItem.serial
-            this.children[branch] = newItem as any
+            this.children[branch] = this.form.builder._HYDRATE(newType, newInput, null)
+            this.serial.values_[branch] = this.children[branch]?.serial
         }
 
         // set the active branch as active

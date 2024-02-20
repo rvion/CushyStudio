@@ -5,24 +5,17 @@ app({
                 frame: true,
             },
             items: {
-                frame: () =>
-                    form.group({
-                        className: ' p-2 bg-blue-800 rounded-xl',
-                        items: () => ({
-                            seed: form.seed({
-                                default: 12,
-                                defaultMode: 'fixed',
-                            }),
-                            positive: form.string({}),
-                        }),
+                frame: form.group({
+                    className: ' p-2 bg-blue-800 rounded-xl',
+                    items: () => ({
+                        seed: form.seed({ default: 12, defaultMode: 'fixed' }),
+                        positive: form.string({}),
                     }),
-                portrait: () =>
-                    form.group({
-                        className: 'p-2 bg-red-800 ',
-                        items: () => ({
-                            seed: form.seed({}),
-                        }),
-                    }),
+                }),
+                portrait: form.group({
+                    className: 'p-2 bg-red-800 ',
+                    items: () => ({ seed: form.seed({}) }),
+                }),
             },
         }),
     }),

@@ -41,16 +41,15 @@ export const ui_subform_Tile_Preprocessor = () => {
         default: 'Pyrup',
         appearance: 'tab',
         items: {
-            None: () => form.group({}),
-            Pyrup: () =>
-                form.group({
-                    label: 'Settings',
-                    startCollapsed: true,
-                    items: () => ({
-                        ...cnet_preprocessor_ui_common(form),
-                        pyrup: form.int({ default: 3, min: 0 }),
-                    }),
+            None: form.group(),
+            Pyrup: form.group({
+                label: 'Settings',
+                startCollapsed: true,
+                items: () => ({
+                    ...cnet_preprocessor_ui_common(form),
+                    pyrup: form.int({ default: 3, min: 0 }),
                 }),
+            }),
         },
     })
 }

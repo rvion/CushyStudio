@@ -34,10 +34,10 @@ export const ui_subform_Scribble_Preprocessor = () => {
         appearance: 'tab',
         startCollapsed: true,
         items: {
-            None: () => form.group({}),
-            ScribbleLines: () => ui_subform_Scribble_Lines(),
-            FakeScribble: () => ui_subform_Fake_Scribble_Lines(),
-            XDOG: () => ui_subform_Scribble_XDoG_Lines(),
+            None: form.group(),
+            ScribbleLines: ui_subform_Scribble_Lines(),
+            FakeScribble: ui_subform_Fake_Scribble_Lines(),
+            XDOG: ui_subform_Scribble_XDoG_Lines(),
         },
     })
 }

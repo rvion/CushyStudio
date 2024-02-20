@@ -10,18 +10,16 @@ export const ui_latent_v3 = () => {
         default: 'emptyLatent',
         label: 'Latent Input',
         items: {
-            emptyLatent: () =>
-                form.group({
-                    collapsible: false,
-                    label: false,
-                    items: { batchSize, size: form.size({ label: false }) },
-                }),
-            image: () =>
-                form.group({
-                    collapsible: false,
-                    label: false,
-                    items: { batchSize, image: form.image() },
-                }),
+            emptyLatent: form.group({
+                collapsible: false,
+                label: false,
+                items: { batchSize, size: form.size({ label: false }) },
+            }),
+            image: form.group({
+                collapsible: false,
+                label: false,
+                items: { batchSize, image: form.image() },
+            }),
         },
     })
 }

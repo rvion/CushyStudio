@@ -439,11 +439,11 @@ export class STATE {
         (form) => ({
             camera: form.choice({
                 appearance: 'tab',
-                items: { orbit: () => form.group({}), fly: () => form.group({}) /* wasd: () => form.group({}) */ },
+                items: { orbit: form.group(), fly: form.group({}) /* wasd:  form.group({}) */ },
             }),
             menu: form.choice({
                 appearance: 'tab',
-                items: { menu: () => form.group({}), left: () => form.group({}), right: () => form.group({}) },
+                items: { menu: form.group(), left: form.group(), right: form.group({}) },
             }),
             displacementScale: form.number({ label: 'displacement', min: 0, max: 5, step: 0.1, default: 1 }),
             cutout: form.number({ label: 'cutout', min: 0, max: 1, step: 0.01, default: 0.08 }),

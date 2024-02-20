@@ -1,10 +1,9 @@
 import type { Form } from 'src/controls/Form'
-import type { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../../IWidget'
 import type { Unmounted } from 'src/controls/Prop'
+import type { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../../IWidget'
 
 import { computed, makeObservable, observable } from 'mobx'
 import { nanoid } from 'nanoid'
-import { Widget } from '../../Widget'
 import { WidgetDI } from '../WidgetUI.DI'
 
 // CONFIG
@@ -24,7 +23,7 @@ export type Widget_optional_serial<T extends Unmounted> = WidgetSerialFields<{
 export type Widget_optional_output<T extends Unmounted> = Maybe<T['$Output']>
 
 // TYPES
-export type Widget_string_types<T extends Unmounted> = {
+export type Widget_optional_types<T extends Unmounted> = {
     $Type: 'optional'
     $Input: Widget_optional_config<T>
     $Serial: Widget_optional_serial<T>
@@ -32,8 +31,8 @@ export type Widget_string_types<T extends Unmounted> = {
 }
 
 // STATE
-export interface Widget_optional<T extends Unmounted> extends WidgetTypeHelpers<Widget_string_types<T>> {}
-export class Widget_optional<T extends Unmounted> implements IWidget<Widget_string_types<T>> {
+export interface Widget_optional<T extends Unmounted> extends WidgetTypeHelpers<Widget_optional_types<T>> {}
+export class Widget_optional<T extends Unmounted> implements IWidget<Widget_optional_types<T>> {
     get serialHash(): string {
         if (this.serial.active) return this.childOrThrow.serialHash
         return 'x'
