@@ -95,7 +95,8 @@ export class Widget_list<T extends Unmounted> implements IWidget<Widget_list_typ
     addItem() {
         // const _ref = this._reference
         // const newItem = this.builder.HYDRATE(_ref.type, _ref.input)
-        const element: T = runWithGlobalForm(this.form.builder, () => this.config.element(this.serial.items_.length))
+        const unmounted: T = runWithGlobalForm(this.form.builder, () => this.config.element(this.serial.items_.length))
+        const element = this.form.builder._HYDRATE(unmounted.type, unmounted.config, null)
         this.items.push(element)
         this.serial.items_.push(element.serial)
     }
@@ -106,7 +107,7 @@ export class Widget_list<T extends Unmounted> implements IWidget<Widget_list_typ
         this.items = this.items.slice(0, this.config.min ?? 0)
     }
 
-    removeItem = (item: T) => {
+    removeItem = (item: T['$Widget']) => {
         const i = this.items.indexOf(item)
         if (i >= 0) {
             this.serial.items_.splice(i, 1)

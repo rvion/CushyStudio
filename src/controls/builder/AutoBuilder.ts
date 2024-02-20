@@ -23,9 +23,11 @@ type AutoWidget<T> = T extends { kind: any; type: infer X }
     : any
 
 export type IAutoBuilder = {
-    [K in keyof FormHelper]: () => Widget_group<{
-        [N in keyof FormHelper[K]]: AutoWidget<FormHelper[K][N]>
-    }>
+    [K in keyof FormHelper]: () => Unmounted<
+        Widget_group<{
+            [N in keyof FormHelper[K]]: AutoWidget<FormHelper[K][N]>
+        }>
+    >
 }
 
 export const mkFormAutoBuilder = (form: FormBuilder) => {
