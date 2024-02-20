@@ -181,6 +181,10 @@ input::-webkit-inner-spin-button {
     opacity: 100;
 }
 
+.input-number-ui:hover .inui-foreground {
+    filter: brightness(1.20)
+}
+
 /* //InputNumberUI */
 
 /* Text Shading - These are defined in theme.css*/

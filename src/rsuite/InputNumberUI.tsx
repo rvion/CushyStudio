@@ -151,7 +151,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
                 'input-number-ui custom-roundness',
                 'h-7 flex-1 select-none min-w-16 cursor-ew-resize overflow-clip',
                 'bg-primary/30 border border-base-100 border-b-2 border-b-base-200',
-                !isEditing && 'hover:border-base-200 hover:border-b-base-300',
+                !isEditing && 'hover:border-base-200 hover:border-b-base-300 hover:bg-primary/40',
             ]}
         >
             <div /* Container */ tw={['h-full relative w-full flex', 'border-0']}>
@@ -170,6 +170,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
                     ◂
                 </button>
                 <div /* Slider display */
+                    className='inui-foreground'
                     tw={[!p.hideSlider && !isEditing && 'bg-primary/40']}
                     style={{ width: `${((val - rangeMin) / (rangeMax - rangeMin)) * 100}%` }}
                 />
