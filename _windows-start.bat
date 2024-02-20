@@ -33,12 +33,12 @@ rem ----------------------------------------------------------------------------
 echo Starting Vite with Electron's Node...
 set "PATH=%NODE_INSTALL_DIR%;%PATH%"
 call .\node_modules\.bin\electron --no-sandbox -i src\shell
-IF %ERRORLEVEL% NEQ 0 (
+if not "%ERRORLEVEL%" == "0" (
     echo Starting failed. Did you call install first ?
     pause
     popd
-    EXIT /B 1
+    exit /B 1
 )
 
 popd
-EXIT /B 0
+exit /B 0

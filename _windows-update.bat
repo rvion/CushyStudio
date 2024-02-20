@@ -9,7 +9,7 @@ echo [===================================================]
 echo Checkout master...
 
 call git checkout master
-if ! %ERRORLEVEL% == 0 (
+if not "%ERRORLEVEL%" == "0" (
     echo git checkout master failed
     pause
     popd
@@ -20,7 +20,7 @@ echo [===================================================]
 echo pull latest changes...
 
 call git pull origin master
-if ! %ERRORLEVEL% == 0 (
+if not "%ERRORLEVEL%" == "0" (
     echo git pull origin master failed
     pause
     popd
