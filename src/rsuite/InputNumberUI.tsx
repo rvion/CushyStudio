@@ -142,34 +142,40 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
         }
     }
 
-    return (
-        <div
-            //
-            className={p.className}
-            tw='relative-slider flex-1 select-none min-w-16'
-        >
-            <div tw='relative w-full flex'>
-                <progress
-                    style={{ zIndex: 1 }}
-                    tw='range range-primary cursor-not-allowed pointer-events-none'
-                    value={p.hideSlider ? 0 : val - rangeMin}
-                    max={rangeMax - rangeMin}
-                ></progress>
+    const buttonSize = 4
 
-                <div tw='absolute w-full rounded-sm flex'>
-                    <button
-                        tw='btn btn-xs absolute left-0'
-                        style={{ zIndex: 2 }}
-                        onClick={(_) => {
-                            startValue = val
-                            let num = val - (mode === 'int' ? step : step * 0.1)
-                            syncValues(num, true)
-                        }}
-                    >
-                        ◂
-                    </button>
+    return (
+        <div /* Root */
+            className={p.className}
+            tw={[
+                'input-number-ui custom-roundness',
+                'h-7 flex-1 select-none min-w-16 cursor-ew-resize overflow-clip',
+                'bg-primary/30 border border-base-100 border-b-2 border-b-base-200',
+                !isEditing && 'hover:border-base-200 hover:border-b-base-300',
+            ]}
+        >
+            <div /* Container */ tw={['h-full relative w-full flex', 'border-0']}>
+                <button /* Left Button */
+                    tw={[
+                        'h-full absolute left-0 rounded-none pr-0.5',
+                        `!w-${buttonSize} pb-1 leading-none border border-base-200 opacity-0 bg-base-200 hover:brightness-125`,
+                    ]}
+                    style={{ zIndex: 2 }}
+                    onClick={(_) => {
+                        startValue = val
+                        let num = val - (mode === 'int' ? step : step * 0.1)
+                        syncValues(num, true)
+                    }}
+                >
+                    ◂
+                </button>
+                <div /* Slider display */
+                    tw={[!p.hideSlider && !isEditing && 'bg-primary/40']}
+                    style={{ width: `${((val - rangeMin) / (rangeMax - rangeMin)) * 100}%` }}
+                />
+                <div tw='absolute flex w-full h-full px-1'>
                     <div
-                        tw='relative flex flex-1 select-none'
+                        tw={['relative flex flex-1 select-none']}
                         onWheel={(ev) => {
                             /* NOTE: This could probably divide by the length? But I'm not sure how to get the distance of 1 scroll tick.
                              * Increment/Decrement using scroll direction. */
@@ -182,7 +188,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
                             }
                         }}
                         onMouseDown={(ev) => {
-                            if (ev.button != 0) {
+                            if (isEditing || ev.button != 0) {
                                 return
                             }
 
@@ -209,25 +215,35 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
                             })
                         }}
                     >
-                        <div className='text-container' tw='flex'>
+                        <div /* Text Container */
+                            tw={[`custom-roundness flex-auto flex items-center !px-${buttonSize} text-sm text-shadow`]}
+                        >
                             {!isEditing && p.text ? (
-                                <div tw='primary-content outline-0 border-0 border-transparent z-10 w-full text-left'>
+                                <div /* Inner Label Text - Not shown while editing */
+                                    tw={['outline-0 border-0 border-transparent z-10 w-full text-left']}
+                                >
                                     {p.text}
                                 </div>
                             ) : null}
                             <input //
                                 type='text'
-                                tw={
-                                    !isEditing && p.text
-                                        ? 'text-right cursor-not-allowed pointer-events-none'
-                                        : 'text-center cursor-not-allowed pointer-events-none'
-                                }
+                                draggable='false'
+                                onDragStart={(ev) => {
+                                    /* Prevents drag n drop of selected text, so selecting is easier. */
+                                    ev.preventDefault()
+                                }}
+                                tw={[
+                                    'w-full text-shadow outline-0',
+                                    !isEditing && 'cursor-not-allowed pointer-events-none',
+                                    !isEditing && p.text ? 'text-right' : 'text-center',
+                                ]}
                                 value={isEditing ? inputValue : val}
                                 placeholder={p.placeholder}
                                 style={{
                                     fontFamily: 'monospace',
                                     zIndex: 2,
                                     background: 'transparent',
+                                    MozWindowDragging: 'no-drag',
                                 }}
                                 min={p.min}
                                 max={p.max}
@@ -279,19 +295,21 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
                         readOnly
                     /> */}
                     </div>
-                    <button
-                        className='btn btn-xs'
-                        tw='btn btn-small absolute right-0'
-                        style={{ zIndex: 2 }}
-                        onClick={(_) => {
-                            startValue = val
-                            let num = val + (mode === 'int' ? step : step * 0.1)
-                            syncValues(num, true)
-                        }}
-                    >
-                        ▸
-                    </button>
                 </div>
+                <button /* Right Button */
+                    tw={[
+                        'h-full absolute right-0 pl-0.5',
+                        `!w-${buttonSize} pb-1 leading-none border border-base-200 opacity-0 bg-base-200 hover:brightness-125`,
+                    ]}
+                    style={{ zIndex: 2 }}
+                    onClick={(_) => {
+                        startValue = val
+                        let num = val + (mode === 'int' ? step : step * 0.1)
+                        syncValues(num, true)
+                    }}
+                >
+                    ▸
+                </button>
             </div>
         </div>
     )
