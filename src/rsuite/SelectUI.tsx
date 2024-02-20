@@ -106,6 +106,7 @@ class AutoCompleteSelectState<T> {
     isOpen = false
 
     tooltipPosition = { top: 0, left: 0 }
+    tooltipMaxHeight = 100
     updatePosition = () => {
         const rect = this.anchorRef.current?.getBoundingClientRect()
         if (rect == null) return
@@ -113,6 +114,9 @@ class AutoCompleteSelectState<T> {
             top: rect.bottom + window.scrollY,
             left: rect.left + window.scrollX,
         }
+
+        /* Make sure to not go off-screen */
+        this.tooltipMaxHeight = window.innerHeight - rect.bottom - 8
     }
 
     onTooltipMouseOut = (ev: React.MouseEvent<HTMLUListElement, MouseEvent>) => {
@@ -258,8 +262,8 @@ export const SelectPopupUI = observer(function SelectPopupUI_<T>(p: { s: AutoCom
     return createPortal(
         <ul
             onMouseLeave={s.onTooltipMouseOut}
-            className='_SelectPopupUI p-0.5 bg-base-100 shadow-2xl max-h-96 overflow-auto'
-            tw='rounded-b border-b border-l border-r border-base-300 text-shadow'
+            className='_SelectPopupUI p-0.5 bg-base-100 max-h-96 overflow-auto'
+            tw='flex flex-col gap-0.5 p-1 rounded-b border-b border-l border-r border-base-300'
             style={{
                 minWidth: s.anchorRef.current?.clientWidth ?? '100%',
                 pointerEvents: 'initial',
@@ -267,6 +271,7 @@ export const SelectPopupUI = observer(function SelectPopupUI_<T>(p: { s: AutoCom
                 zIndex: 99999999,
                 top: `${s.tooltipPosition.top}px`,
                 left: `${s.tooltipPosition.left}px`,
+                maxHeight: `${s.tooltipMaxHeight}px`,
                 // Adjust positioning as needed
             }}
         >
@@ -281,17 +286,19 @@ export const SelectPopupUI = observer(function SelectPopupUI_<T>(p: { s: AutoCom
                     <li
                         key={index}
                         style={{ minWidth: '10rem' }}
-                        className={`active:bg-base-300 cursor-pointer ${index === s.selectedIndex ? 'bg-base-300' : ''}`}
+                        className={`active:bg-base-300 cursor-pointer text-shadow ${
+                            index === s.selectedIndex && (isSelected ? '!text-primary-content text-shadow' : 'bg-base-300')
+                        }`}
                         tw={[
                             'flex items-center gap-1 rounded',
-                            isSelected && 'bg-primary text-primary-content hover:text-neutral-content',
+                            isSelected && 'bg-primary text-primary-content hover:text-neutral-content text-shadow-inv',
                         ]}
                         onMouseEnter={(ev) => {
                             s.setNavigationIndex(index)
                         }}
                         onMouseDown={(ev) => s.onMenuEntryClick(ev, index)}
                     >
-                        <div tw={'rounded p-1 h-6'}>
+                        <div tw={'rounded py-3 h-6'}>
                             {s.isMultiSelect ? (
                                 <input
                                     onChange={() => {}}

@@ -214,7 +214,7 @@ input::-webkit-inner-spin-button {
 ._SelectPopupUI,
 ._RevealUI {
     box-shadow:
-        0 5px 15px -5px oklch(var(--p));
+        0 2px 5px -2px oklch(var(--pc));
         /* 0 0 10px 1px oklch(var(--b3)); */
 }
 ._MenuItem > div  {
