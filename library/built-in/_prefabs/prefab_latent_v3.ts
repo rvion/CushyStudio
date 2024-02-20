@@ -14,7 +14,7 @@ export const ui_latent_v3 = () => {
                 form.group({
                     collapsible: false,
                     label: false,
-                    items: { batchSize, size: form.size({ label: false, default: { modelType: 'SDXL 1024' } }) },
+                    items: { batchSize, size: form.size({ label: false }) },
                 }),
             image: () =>
                 form.group({
