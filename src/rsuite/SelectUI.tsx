@@ -260,10 +260,8 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
 export const SelectPopupUI = observer(function SelectPopupUI_<T>(p: { s: AutoCompleteSelectState<T> }) {
     const s = p.s
     return createPortal(
-        <ul
-            onMouseLeave={s.onTooltipMouseOut}
-            className='_SelectPopupUI p-0.5 bg-base-100 max-h-96 overflow-auto'
-            tw='flex flex-col gap-0.5 p-1 rounded-b border-b border-l border-r border-base-300'
+        <div
+            tw={['MENU-ROOT _SelectPopupUI bg-base-100 flex', 'rounded-b border-b border-l border-r border-base-300']}
             style={{
                 minWidth: s.anchorRef.current?.clientWidth ?? '100%',
                 pointerEvents: 'initial',
@@ -275,49 +273,55 @@ export const SelectPopupUI = observer(function SelectPopupUI_<T>(p: { s: AutoCom
                 // Adjust positioning as needed
             }}
         >
-            {s.filteredOptions.length === 0 ? <li className='p-1 text-base'>No results</li> : null}
-            {s.filteredOptions.map((option, index) => {
-                const isSelected =
-                    s.values.find((v) => {
-                        if (s.p.equalityCheck != null) return s.p.equalityCheck(v, option)
-                        return v === option
-                    }) != null
-                return (
-                    <li
-                        key={index}
-                        style={{ minWidth: '10rem' }}
-                        className={`active:bg-base-300 cursor-pointer text-shadow ${
-                            index === s.selectedIndex && (isSelected ? '!text-primary-content text-shadow' : 'bg-base-300')
-                        }`}
-                        tw={[
-                            'flex items-center gap-1 rounded',
-                            isSelected && 'bg-primary text-primary-content hover:text-neutral-content text-shadow-inv',
-                        ]}
-                        onMouseEnter={(ev) => {
-                            s.setNavigationIndex(index)
-                        }}
-                        onMouseDown={(ev) => s.onMenuEntryClick(ev, index)}
-                    >
-                        <div tw={'rounded py-3 h-6'}>
-                            {s.isMultiSelect ? (
-                                <input
-                                    onChange={() => {}}
-                                    checked={isSelected}
-                                    type='checkbox'
-                                    tw='checkbox checkbox-primary checkbox-sm input-xs bg-none'
-                                />
-                            ) : (
-                                <></>
-                            )}
-                        </div>
-                        {/* {isSelected ? '🟢' : null} */}
-                        {s.p.getLabelUI //
-                            ? s.p.getLabelUI(option)
-                            : s.p.getLabelText(option)}
-                    </li>
-                )
-            })}
-        </ul>,
+            <ul
+                onMouseLeave={s.onTooltipMouseOut}
+                className='p-0.5 bg-base-100 max-h-96 overflow-auto'
+                tw='flex flex-col gap-0.5 p-1 w-full'
+            >
+                {s.filteredOptions.length === 0 ? <li className='p-1 text-base'>No results</li> : null}
+                {s.filteredOptions.map((option, index) => {
+                    const isSelected =
+                        s.values.find((v) => {
+                            if (s.p.equalityCheck != null) return s.p.equalityCheck(v, option)
+                            return v === option
+                        }) != null
+                    return (
+                        <li
+                            key={index}
+                            style={{ minWidth: '10rem' }}
+                            className={`active:bg-base-300 cursor-pointer text-shadow ${
+                                index === s.selectedIndex && (isSelected ? '!text-primary-content text-shadow' : 'bg-base-300')
+                            }`}
+                            tw={[
+                                'flex items-center gap-1 rounded',
+                                isSelected && 'bg-primary text-primary-content hover:text-neutral-content text-shadow-inv',
+                            ]}
+                            onMouseEnter={(ev) => {
+                                s.setNavigationIndex(index)
+                            }}
+                            onMouseDown={(ev) => s.onMenuEntryClick(ev, index)}
+                        >
+                            <div tw={'rounded py-3 h-6'}>
+                                {s.isMultiSelect ? (
+                                    <input
+                                        onChange={() => {}}
+                                        checked={isSelected}
+                                        type='checkbox'
+                                        tw='checkbox checkbox-primary checkbox-sm input-xs bg-none'
+                                    />
+                                ) : (
+                                    <></>
+                                )}
+                            </div>
+                            {/* {isSelected ? '🟢' : null} */}
+                            {s.p.getLabelUI //
+                                ? s.p.getLabelUI(option)
+                                : s.p.getLabelText(option)}
+                        </li>
+                    )
+                })}
+            </ul>
+        </div>,
         document.getElementById('tooltip-root')!,
     )
 })
