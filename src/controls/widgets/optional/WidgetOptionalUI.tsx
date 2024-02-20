@@ -15,7 +15,7 @@ export const WidgetOptional_LineUI = observer(function WidgetBoolUI_<T extends U
     return <WidgetLineUI widget={p.widget.child} />
 })
 
-export const WidgetOptional_BlockUI = observer(function WidgetBoolUI_<T extends Widget>(p: { widget: Widget_optional<T> }) {
+export const WidgetOptional_BlockUI = observer(function WidgetBoolUI_<T extends Unmounted>(p: { widget: Widget_optional<T> }) {
     if (!p.widget.serial.active) return null
     if (p.widget.child == null) return <>❌ ERROR: optional is active but no widget❓</>
     if (p.widget.child?.serial.collapsed) return <WidgetWithLabelUI rootKey={'_'} widget={p.widget.child} />

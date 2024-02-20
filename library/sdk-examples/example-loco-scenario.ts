@@ -31,20 +31,19 @@ app({
                         label: 'Date',
                         appearance: 'tab',
                         items: {
-                            ['Calculée']: () =>
-                                ui.group({
-                                    collapsible: false,
-                                    label: false,
-                                    items: {
-                                        [`D'après la`]: ui.selectOneV2(['Date de création', 'Date de modification']),
-                                        offset: ui.int({ label: 'à J+' }),
-                                        // time: ui.int({ label: 'Heure' /* suffix: 'min' */ }),
-                                        heure: ui.time({ default: '10:30' }),
-                                        limit: ui.int({ label: 'Limite /jour', default: 200 }),
-                                    },
-                                }),
-                            onEventRecetption: () => ui.group({}),
-                            fixed: () => ui.group({}),
+                            ['Calculée']: ui.group({
+                                collapsible: false,
+                                label: false,
+                                items: {
+                                    [`D'après la`]: ui.selectOneV2(['Date de création', 'Date de modification']),
+                                    offset: ui.int({ label: 'à J+' }),
+                                    // time: ui.int({ label: 'Heure' /* suffix: 'min' */ }),
+                                    heure: ui.time({ default: '10:30' }),
+                                    limit: ui.int({ label: 'Limite /jour', default: 200 }),
+                                },
+                            }),
+                            onEventRecetption: ui.group({}),
+                            fixed: ui.group({}),
                         },
                     }),
                     allowHolidays: ui.bool({ label2: "Autoriser l'envoi les jours feriés", label: false }),
