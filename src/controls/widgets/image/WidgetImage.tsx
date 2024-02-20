@@ -7,6 +7,7 @@ import type { MediaImageL } from 'src/models/MediaImage'
 import { makeAutoObservable, reaction, runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 import { WidgetDI } from '../WidgetUI.DI'
+import { Unmounted } from 'src/controls/Prop'
 
 // CONFIG
 export type Widget_image_config = WidgetConfigFields<{
@@ -31,6 +32,7 @@ export type Widget_image_output = MediaImageL
 // STATE
 export interface Widget_image extends WidgetTypeHelpers_OLD<'image', Widget_image_config, Widget_image_serial, 0, Widget_image_output> {} // prettier-ignore
 export class Widget_image implements IWidget_OLD<'image', Widget_image_config, Widget_image_serial, 0, Widget_image_output> {
+    static Prop = <T extends Widget_image>(config: Widget_image_config) => new Unmounted('image', config)
     get serialHash() { return this.value.data.hash } // prettier-ignore
     readonly isVerticalByDefault = false
     readonly isCollapsible = true
@@ -38,7 +40,12 @@ export class Widget_image implements IWidget_OLD<'image', Widget_image_config, W
     readonly type: 'image' = 'image'
     readonly serial: Widget_image_serial
 
-    constructor(public form: Form<any>, public config: Widget_image_config, serial?: Widget_image_serial) {
+    constructor(
+        //
+        public form: Form<any>,
+        public config: Widget_image_config,
+        serial?: Widget_image_serial,
+    ) {
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? {
             type: 'image',

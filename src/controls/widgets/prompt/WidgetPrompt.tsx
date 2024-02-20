@@ -9,20 +9,34 @@ import { WidgetDI } from '../WidgetUI.DI'
 import { compilePrompt } from './_compile'
 import { parser } from './grammar/grammar.parser'
 
-export type Widget_prompt_config = WidgetConfigFields<{ default?: string; textarea?: boolean; placeHolder?: string }>
-export type Widget_prompt_serial = WidgetSerialFields<{ type: 'prompt'; val?: string }>
+export type CompiledPrompt = {
+    positivePrompt: string
+    negativePrompt: string
+    debugText: string[]
+}
+
+// CONFIG
+export type Widget_prompt_config = WidgetConfigFields<{
+    default?: string
+    textarea?: boolean
+    placeHolder?: string
+}>
+
+// SERIAL
+export type Widget_prompt_serial = WidgetSerialFields<{
+    type: 'prompt'
+    val?: string
+}>
+
+// OUT
 export type Widget_prompt_output = Widget_prompt // { text: string; tree: Tree }
+
+// TYPES
 export type Widget_prompt_types = {
     $Type: 'prompt'
     $Input: Widget_prompt_config
     $Serial: Widget_prompt_serial
     $Output: Widget_prompt_output
-}
-
-export type CompiledPrompt = {
-    positivePrompt: string
-    negativePrompt: string
-    debugText: string[]
 }
 
 // STATE

@@ -1,30 +1,30 @@
 import type { Form } from 'src/controls/Form'
 import type { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../../IWidget'
+import type { Unmounted } from 'src/controls/Prop'
 
 import { computed, makeObservable, observable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { Widget } from '../../Widget'
 import { WidgetDI } from '../WidgetUI.DI'
-import { hash } from 'ohash'
 
 // CONFIG
-export type Widget_optional_config<T extends Widget> = WidgetConfigFields<{
+export type Widget_optional_config<T extends Unmounted> = WidgetConfigFields<{
     startActive?: boolean
-    widget: () => T
+    widget: T
 }>
 
 // SERIAL
-export type Widget_optional_serial<T extends Widget> = WidgetSerialFields<{
+export type Widget_optional_serial<T extends Unmounted> = WidgetSerialFields<{
     type: 'optional'
     child?: Maybe<T['$Serial']>
     active: boolean
 }>
 
 // OUT
-export type Widget_optional_output<T extends Widget> = Maybe<T['$Output']>
+export type Widget_optional_output<T extends Unmounted> = Maybe<T['$Output']>
 
 // TYPES
-export type Widget_string_types<T extends Widget> = {
+export type Widget_string_types<T extends Unmounted> = {
     $Type: 'optional'
     $Input: Widget_optional_config<T>
     $Serial: Widget_optional_serial<T>
@@ -32,8 +32,8 @@ export type Widget_string_types<T extends Widget> = {
 }
 
 // STATE
-export interface Widget_optional<T extends Widget> extends WidgetTypeHelpers<Widget_string_types<T>> {}
-export class Widget_optional<T extends Widget> implements IWidget<Widget_string_types<T>> {
+export interface Widget_optional<T extends Unmounted> extends WidgetTypeHelpers<Widget_string_types<T>> {}
+export class Widget_optional<T extends Unmounted> implements IWidget<Widget_string_types<T>> {
     get serialHash(): string {
         if (this.serial.active) return this.childOrThrow.serialHash
         return 'x'
@@ -44,9 +44,9 @@ export class Widget_optional<T extends Widget> implements IWidget<Widget_string_
     readonly type: 'optional' = 'optional'
 
     serial: Widget_optional_serial<T>
-    child?: T
+    child?: T['$Widget']
 
-    get childOrThrow(): T {
+    get childOrThrow(): T['$Widget'] {
         if (this.child == null) throw new Error('❌ optional active but child is null')
         return this.child
     }
@@ -58,13 +58,12 @@ export class Widget_optional<T extends Widget> implements IWidget<Widget_string_
 
     setOn = () => {
         this.serial.active = true
-        const fresh = this.config.widget?.()
+        const fresh = this.config.widget
         const prevSerial = this.serial.child
         if (prevSerial && fresh.type === prevSerial.type) {
-            this.child = this.form.builder._HYDRATE(prevSerial.type, fresh.config, prevSerial)
+            this.child = this.form.builder._HYDRATE(fresh.type, fresh.config, prevSerial)
         } else {
-            this.child = fresh
-            this.serial.child = fresh?.serial
+            this.child = this.form.builder._HYDRATE(fresh.type, fresh.config, null)
         }
     }
 

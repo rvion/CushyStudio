@@ -4,6 +4,7 @@ import type { Runtime } from 'src/runtime/Runtime'
 import type { Widget } from '../controls/Widget'
 import type { AppMetadata } from './AppManifest'
 import type { MediaImageL } from 'src/models/MediaImage'
+import type { Unmounted } from 'src/controls/Prop'
 
 // ACTIONS ============================================================
 // 1. the main abstraction of cushy are actions.
@@ -16,7 +17,8 @@ export type GlobalGetCurrentForm = () => FormBuilder
 export type ActionTagMethod = (arg0: string) => string
 export type ActionTagMethodList = Array<{ key: string; method: ActionTagMethod }>
 export type ActionTags = (arg0: ActionTagMethodList) => void
-export type WidgetDict = { [key: string]: Widget }
+// export type WidgetDict = { [key: string]: Widget }
+export type WidgetDict = { [key: string]: Unmounted }
 export type AppRef<F> = { $Output: F; id: CushyAppID }
 
 export type $ExtractFormValueType<FIELDS extends WidgetDict> = { [k in keyof FIELDS]: FIELDS[k]['$Output'] }

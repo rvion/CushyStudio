@@ -7,7 +7,7 @@ import { FormBuilder } from './FormBuilder'
 export class Form<const FIELDS extends WidgetDict> {
     error: Maybe<string> = null
 
-    at = <K extends keyof FIELDS>(key: K): FIELDS[K] => {
+    at = <K extends keyof FIELDS>(key: K): FIELDS[K]['$Widget'] => {
         return this.root.at(key)
     }
 
@@ -23,7 +23,7 @@ export class Form<const FIELDS extends WidgetDict> {
         return this.root.serial
     }
 
-    get fields(): FIELDS {
+    get fields(): { [k in keyof FIELDS]: FIELDS[k]['$Widget'] } {
         return this.root.fields
     }
 
@@ -61,16 +61,12 @@ export class Form<const FIELDS extends WidgetDict> {
     ready = false
     private init = (): Widget_group<FIELDS> => {
         console.log(`[🥐] Building form ${this.def.name}`)
+        const formBuilder = this.builder
+        const rootDef = { topLevel: true, items: () => this.ui?.(formBuilder) ?? {} }
         try {
             let initialValue = this.def.initialValue()
             if (initialValue && !isObservable(initialValue)) initialValue = observable(initialValue)
-
-            const formBuilder = this.builder
-            const rootWidget: Widget_group<FIELDS> = formBuilder._HYDRATE(
-                'group',
-                { topLevel: true, items: () => this.ui?.(formBuilder) ?? {} },
-                initialValue,
-            )
+            const rootWidget: Widget_group<FIELDS> = formBuilder._HYDRATE('group', rootDef, initialValue)
             this.ready = true
             this.error = null
             this.startMonitoring(rootWidget)
@@ -79,7 +75,7 @@ export class Form<const FIELDS extends WidgetDict> {
             console.error(`[👙🔴] Building form ${this.def.name} FAILED`, this)
             console.error(e)
             this.error = 'invalid form definition'
-            return this.builder.group({})
+            return formBuilder._HYDRATE('group', rootDef, null)
         }
     }
 

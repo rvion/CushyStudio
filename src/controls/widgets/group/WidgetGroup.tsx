@@ -7,13 +7,14 @@ import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { runWithGlobalForm } from 'src/models/_ctx2'
 import { WidgetDI } from '../WidgetUI.DI'
+import { Unmounted } from 'src/controls/Prop'
 
 // CONFIG
 export type Widget_group_config<T extends WidgetDict> = WidgetConfigFields<{
     items?: (() => T) | T
     topLevel?: boolean
     /** if provided, will be used to show a single line summary on the inline form slot */
-    summary?: (items: { [k in keyof T]: GetWidgetResult<T[k]> }) => string
+    summary?: (items: { [k in keyof T]: GetWidgetResult<T[k]['$Widget']> }) => string
 }>
 
 // SERIAL
@@ -39,6 +40,8 @@ export type Widget_group_types<T extends WidgetDict> = {
 // STATE
 export interface Widget_group<T extends WidgetDict> extends WidgetTypeHelpers<Widget_group_types<T>> {}
 export class Widget_group<T extends WidgetDict> implements IWidget<Widget_group_types<T>> {
+    static Prop = <T extends WidgetDict>(config: Widget_group_config<T>) => new Unmounted('group', config)
+
     get summary(): string {
         return this.config.summary?.(this.value) ?? Object.keys(this.fields).length + ' items'
     }
@@ -66,11 +69,11 @@ export class Widget_group<T extends WidgetDict> implements IWidget<Widget_group_
         return Object.entries(this.fields) as [string, any][]
     }
 
-    at = <K extends keyof T>(key: K): T[K] => this.fields[key]
+    at = <K extends keyof T>(key: K): T[K]['$Widget'] => this.fields[key]
     get = <K extends keyof T>(key: K): T[K]['$Output'] => this.fields[key].value
 
     /** the dict of all child widgets */
-    fields: T /* { [k in keyof T]: T[k] } */ = {} as any // will be filled during constructor
+    fields: { [k in keyof T]: T[k]['$Widget'] } = {} as any // will be filled during constructor
     serial: Widget_group_serial<T> = {} as any
 
     private _defaultSerial = (): Widget_group_serial<T> => {

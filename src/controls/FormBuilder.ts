@@ -24,7 +24,13 @@ import { Widget_size, type Widget_size_config } from './widgets/size/WidgetSize'
 import { Widget_string, type Widget_string_config } from './widgets/string/WidgetString'
 import { Widget_shared } from './widgets/shared/WidgetShared'
 import { Widget_matrix, type Widget_matrix_config } from './widgets/matrix/WidgetMatrix'
+import { Unmounted } from './Prop'
+import type { WidgetDict } from 'src/cards/App'
 
+const z = 0 as any as FormBuilder
+const zz = z.int()
+
+// prettier-ignore
 export class FormBuilder {
     /** (@internal) don't call this yourself */
     constructor(public form: Form<any>) {
@@ -41,31 +47,44 @@ export class FormBuilder {
     }
 
     // string
-    promptV2 = (config: Widget_prompt_config = {}) => new Widget_prompt(this.form, config)
-    time = (config: Widget_string_config = {}) => new Widget_string(this.form, { inputType: 'time', ...config })
-    string = (config: Widget_string_config = {}) => new Widget_string(this.form, config)
+    promptV2    = (config: Widget_prompt_config = {})                          => new Unmounted<  Widget_prompt             >('prompt'   , config)
+    time        = (config: Widget_string_config = {})                          => new Unmounted<  Widget_string             >('str'      , { inputType: 'time', ...config })
+    string      = (config: Widget_string_config = {})                          => new Unmounted<  Widget_string             >('str'      , config)
+    boolean     = (config: Widget_bool_config = {})                            => new Unmounted<  Widget_bool               >('bool'     , config)
+    bool        = (config: Widget_bool_config = {})                            => new Unmounted<  Widget_bool               >('bool'     , config)
+    size        = (config: Widget_size_config={})                              => new Unmounted<  Widget_size               >('size'     , config)
+    orbit       = (config: Widget_orbit_config={})                             => new Unmounted<  Widget_orbit              >('orbit'    , config)
+    seed        = (config: W.Widget_seed_config={})                            => new Unmounted<W.Widget_seed               >('seed'     , config)
+    matrix      = (config: Widget_matrix_config)                               => new Unmounted<  Widget_matrix             >('matrix'   , config)
+    inlineRun   = (config: W.Widget_inlineRun_config={})                       => new Unmounted<W.Widget_inlineRun          >('inlineRun', config)
+    loras       = (config: W.Widget_loras_config={})                           => new Unmounted<W.Widget_loras              >('loras'    , config)
+    markdown    = (config: W.Widget_markdown_config | string)                  => new Unmounted<W.Widget_markdown           >('markdown' , typeof config === 'string' ? { markdown: config } : config)
+    image       = (config: Widget_image_config = {})                           => new Unmounted<Widget_image                >('image'    , config)
+    prompt      = (config: Widget_prompt_config)                               => new Unmounted<Widget_prompt               >('prompt'   , config)
+    int         = (config: Omit<Widget_number_config, 'mode'> = {})            => new Unmounted<  Widget_number             >('number'   , { mode: 'int', ...config })
+    float       = (config: Omit<Widget_number_config, 'mode'> = {})            => new Unmounted<  Widget_number             >('number'   , { mode: 'float', ...config })
+    number      = (config: Omit<Widget_number_config, 'mode'> = {})            => new Unmounted<  Widget_number             >('number'   , { mode: 'float', ...config })
+    custom      = <const TViewState>(config: Widget_custom_config<TViewState>) => new Unmounted<  Widget_custom<TViewState> >('custom'   , config)
+    list        = <const T extends W.Widget>(config: Widget_list_config<T>)    => new Unmounted<  Widget_list<T>            >('list'     , config)
+    listExt     = <const T extends W.Widget>(config: Widget_listExt_config<T>) => new Unmounted<  Widget_listExt<T>         >('listExt'  , config)
+    timeline    = <const T extends W.Widget>(config: Widget_listExt_config<T>) => new Unmounted<  Widget_listExt<T>         >('listExt'  , { mode: 'timeline', ...config })
+    regional    = <const T extends W.Widget>(config: Widget_listExt_config<T>) => new Unmounted<  Widget_listExt<T>         >('listExt'  , { mode: 'regional', ...config })
+    selectOneV2 = (p: string[])                                                                                   => new Unmounted<W.Widget_selectOne<W.BaseSelectEntry>>('selectOne',  { choices: p.map((id) => ({ id })), appearance:'tab' }) // prettier-ignore
+    selectOne   = <const T extends W.BaseSelectEntry>(p: W.Widget_selectOne_config<T>)                            => new Unmounted<W.Widget_selectOne<T>                >('selectOne',  p)
+    selectMany  = <const T extends W.BaseSelectEntry>(p: W.Widget_selectMany_config<T>)                           => new Unmounted<W.Widget_selectMany<T>               >('selectMany', p)
+    choice      = <const T extends { [key: string]: () => W.Widget }>(p: Omit<Widget_choices_config<T>, 'multi'>) => new Unmounted<Widget_choices<T>                    >('choices',    { multi: false, ...p })
+    choices     = <const T extends { [key: string]: () => W.Widget }>(p: Omit<Widget_choices_config<T>, 'multi'>) => new Unmounted<Widget_choices<T>                    >('choices',    { multi: true, ...p })
+
+
+    // 🔴🔴
+    optional = <const T extends Unmounted>(p: Widget_optional_config<T>) => new Unmounted<Widget_optional<T>>('optional', p)
     stringOpt = (config: Widget_string_config & { startActive?: boolean } = {}) =>
         this.optional({
             label: config.label,
             startActive: config.startActive,
             startCollapsed: config.startCollapsed,
-            widget: () => new Widget_string(this.form, { ...config, startCollapsed: undefined }),
+            widget: this.string({ ...config, startCollapsed: undefined }),
         })
-
-    /** @deprecated */
-    str = this.string
-
-    /** @deprecated */
-    strOpt = this.stringOpt
-
-    // boolean
-    boolean = (opts: Widget_bool_config = {}) => new Widget_bool(this.form, opts) // prettier-ignore
-    bool    = (opts: Widget_bool_config = {}) => new Widget_bool(this.form, opts) // prettier-ignore
-
-    // number
-    int       = (opts: Omit<Widget_number_config, 'mode'> = {}) => new Widget_number(this.form, { mode: 'int',   ...opts }) // prettier-ignore
-    float     = (opts: Omit<Widget_number_config, 'mode'> = {}) => new Widget_number(this.form, { mode: 'float', ...opts }) // prettier-ignore
-    number    = (opts: Omit<Widget_number_config, 'mode'> = {}) => new Widget_number(this.form, { mode: 'float', ...opts }) // prettier-ignore
 
     intOpt = (config: Omit<Widget_number_config, 'mode'> & { startActive?: boolean }) =>
         this.optional({
@@ -73,7 +92,7 @@ export class FormBuilder {
             requirements: config.requirements,
             startActive: config.startActive,
             startCollapsed: config.startCollapsed,
-            widget: () => new Widget_number(this.form, { mode: 'int', ...config, startCollapsed: undefined }),
+            widget: this.number({ ...config, startCollapsed: undefined }),
         })
     floatOpt = (config: Omit<Widget_number_config, 'mode'> & { startActive?: boolean }) =>
         this.optional({
@@ -81,7 +100,7 @@ export class FormBuilder {
             requirements: config.requirements,
             startActive: config.startActive,
             startCollapsed: config.startCollapsed,
-            widget: () => new Widget_number(this.form, { mode: 'float', ...config, startCollapsed: undefined }),
+            widget: this.number({ ...config, startCollapsed: undefined }),
         })
     numberOpt = (config: Omit<Widget_number_config, 'mode'> & { startActive?: boolean }) =>
         this.optional({
@@ -89,28 +108,26 @@ export class FormBuilder {
             requirements: config.requirements,
             startActive: config.startActive,
             startCollapsed: config.startCollapsed,
-            widget: () => new Widget_number(this.form, { mode: 'float', ...config, startCollapsed: undefined }),
+            widget: this.number({ ...config, startCollapsed: undefined }),
         })
 
-    image = (config: Widget_image_config = {}) => new Widget_image(this.form, config)
     imageOpt = (config: Widget_image_config & { startActive?: boolean }) =>
         this.optional({
             label: config.label,
             requirements: config.requirements,
             startActive: config.startActive,
             startCollapsed: config.startCollapsed,
-            widget: () => new Widget_image(this.form, { ...config, startCollapsed: undefined }),
+            widget: this.image({ ...config, startCollapsed: undefined }),
         })
 
     // --------------------
-    prompt = (config: Widget_prompt_config) => new Widget_prompt(this.form, config)
     promptOpt = (config: Widget_prompt_config & { startActive?: boolean }) =>
         this.optional({
             label: config.label,
             requirements: config.requirements,
             startActive: config.startActive,
             startCollapsed: config.startCollapsed,
-            widget: () => new Widget_prompt(this.form, { ...config, startCollapsed: undefined }),
+            widget: this.prompt({ ...config, startCollapsed: undefined }),
         })
 
     // --------------------
@@ -144,67 +161,27 @@ export class FormBuilder {
     //     })
     // --------------------
 
-    color     = (opts: Widget_color_config)       => new Widget_color(this.form, opts) // prettier-ignore
-    colorOpt = <const T extends { [key: string]: W.Widget }>(
-        //
-        config: Widget_color_config & { startActive?: boolean },
-    ) =>
+    color = (opts: Widget_color_config) => new Unmounted<Widget_color>('color', opts)
+    colorOpt = (config: Widget_color_config & { startActive?: boolean }) =>
         this.optional({
             label: config.label,
             requirements: config.requirements,
             startActive: config.startActive,
             startCollapsed: config.startCollapsed,
-            widget: () => this.color({ ...config, startCollapsed: undefined }),
+            widget: this.color({ ...config, startCollapsed: undefined }),
         })
 
-    size      = (opts: Widget_size_config)      => new Widget_size(this.form, opts) // prettier-ignore
-    orbit     = (opts: Widget_orbit_config)     => new Widget_orbit(this.form, opts) // prettier-ignore
-    seed      = (opts: W.Widget_seed_config)      => new W.Widget_seed(this.form, opts) // prettier-ignore
-
-    matrix = (opts: Widget_matrix_config) => new Widget_matrix(this.form, opts)
-
-    inlineRun = (opts: W.Widget_inlineRun_config) => new W.Widget_inlineRun(this.form, opts)
-    loras = (opts: W.Widget_loras_config) => new W.Widget_loras(this.form, opts)
-
-    markdown = (opts: W.Widget_markdown_config | string) =>
-        new W.Widget_markdown(this.form, typeof opts === 'string' ? { markdown: opts } : opts)
-    custom = <TViewState>(opts: Widget_custom_config<TViewState>) => new Widget_custom<TViewState>(this.form, opts)
-
-    list = <const T extends W.Widget>(p: Widget_list_config<T>) => new Widget_list(this.form, p)
-
-    optional = <const T extends W.Widget>(p: Widget_optional_config<T>) => new Widget_optional(this.form, p)
-
-    listExt = <const T extends W.Widget>(p: Widget_listExt_config<T>) => new Widget_listExt(this.form, p)
-
-    timeline = <const T extends W.Widget>(p: Widget_listExt_config<T>) =>
-        new Widget_listExt(this.form, { mode: 'timeline', ...p })
-
-    regional = <const T extends W.Widget>(p: Widget_listExt_config<T>) =>
-        new Widget_listExt(this.form, { mode: 'regional', ...p })
-
-    groupOpt = <const T extends { [key: string]: W.Widget }>(config: Widget_group_config<T> & { startActive?: boolean }) =>
+    group = <const T extends WidgetDict>(p: Widget_group_config<T>) => new Unmounted('group', p)
+    groupOpt = <const T extends WidgetDict>(config: Widget_group_config<T> & { startActive?: boolean }) =>
         this.optional({
             label: config.label,
             requirements: config.requirements,
             startActive: config.startActive,
             startCollapsed: config.startCollapsed,
-            widget: () => this.group({ ...config, startCollapsed: undefined }),
+            widget: this.group({ ...config, startCollapsed: undefined }),
         })
-
-    group = <const T extends { [key: string]: W.Widget }>(p: Widget_group_config<T>) => new Widget_group(this.form, p)
 
     // List API--------------
-    selectOne = <const T extends W.BaseSelectEntry>(p: W.Widget_selectOne_config<T>) => new W.Widget_selectOne(this.form, p)
-    selectOneV2 = <const T extends W.BaseSelectEntry>(p: string[]) => new W.Widget_selectOne(this.form, { choices: p.map((id) => ({ id })), appearance:'tab' }) // prettier-ignore
-
-    selectMany = <const T extends W.BaseSelectEntry>(p: W.Widget_selectMany_config<T>) => new W.Widget_selectMany(this.form, p)
-
-    // Object API-------------
-    choice = <const T extends { [key: string]: () => W.Widget }>(p: Omit<Widget_choices_config<T>, 'multi'>) =>
-        new Widget_choices(this.form, { multi: false, ...p })
-    choices = <const T extends { [key: string]: () => W.Widget }>(p: Omit<Widget_choices_config<T>, 'multi'>) =>
-        new Widget_choices(this.form, { multi: true, ...p })
-
     _FIX_INDENTATION = _FIX_INDENTATION
 
     /** (@internal); */
@@ -212,7 +189,7 @@ export class FormBuilder {
 
     /** (@internal) advanced way to restore form state. used internally */
     // prettier-ignore
-    _HYDRATE = (type: W.Widget['type'], input: any, serial?: any): any => {
+    _HYDRATE = (type: W.Widget['type'], input: any, serial: any | null): any => {
         if (type === 'group'     ) return new   Widget_group     (this.form, input, serial, this.form._ROOT ? undefined : (x) => { this.form._ROOT = x })
         if (type === 'shared'    ) return new   Widget_shared    (this.form, input, serial)
         if (type === 'optional'  ) return new   Widget_optional  (this.form, input, serial)

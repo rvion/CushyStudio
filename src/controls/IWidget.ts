@@ -12,7 +12,7 @@ export type WidgetTypeHelpers_OLD<T, I, X extends { type: T }, S, O> = {
     $Output: O
 }
 
-type $WidgetTypes = {
+export type $WidgetTypes = {
     $Type: any
     $Input: any
     $Serial: any
