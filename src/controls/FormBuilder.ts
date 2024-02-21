@@ -27,9 +27,6 @@ import { Widget_matrix, type Widget_matrix_config } from './widgets/matrix/Widge
 import { Unmounted } from './Prop'
 import type { WidgetDict } from 'src/cards/App'
 
-const z = 0 as any as FormBuilder
-const zz = z.int()
-
 // prettier-ignore
 export class FormBuilder {
     /** (@internal) don't call this yourself */
@@ -47,47 +44,46 @@ export class FormBuilder {
     }
 
     // string
-    promptV2    = (config: Widget_prompt_config = {})                          => new Unmounted<  Widget_prompt             >('prompt'   , config)
-    time        = (config: Widget_string_config = {})                          => new Unmounted<  Widget_string             >('str'      , { inputType: 'time', ...config })
-    password    = (config: Widget_string_config = {})                          => new Unmounted<  Widget_string             >('str'      , { inputType: 'password', ...config })
-    email       = (config: Widget_string_config = {})                          => new Unmounted<  Widget_string             >('str'      , { inputType: 'email', ...config })
-    url         = (config: Widget_string_config = {})                          => new Unmounted<  Widget_string             >('str'      , { inputType: 'url', ...config })
-    string      = (config: Widget_string_config = {})                          => new Unmounted<  Widget_string             >('str'      , config)
-    boolean     = (config: Widget_bool_config = {})                            => new Unmounted<  Widget_bool               >('bool'     , config)
-    bool        = (config: Widget_bool_config = {})                            => new Unmounted<  Widget_bool               >('bool'     , config)
-    size        = (config: Widget_size_config={})                              => new Unmounted<  Widget_size               >('size'     , config)
-    orbit       = (config: Widget_orbit_config={})                             => new Unmounted<  Widget_orbit              >('orbit'    , config)
-    seed        = (config: W.Widget_seed_config={})                            => new Unmounted<W.Widget_seed               >('seed'     , config)
-    matrix      = (config: Widget_matrix_config)                               => new Unmounted<  Widget_matrix             >('matrix'   , config)
-    inlineRun   = (config: W.Widget_inlineRun_config={})                       => new Unmounted<W.Widget_inlineRun          >('inlineRun', config)
-    loras       = (config: W.Widget_loras_config={})                           => new Unmounted<W.Widget_loras              >('loras'    , config)
-    markdown    = (config: W.Widget_markdown_config | string)                  => new Unmounted<W.Widget_markdown           >('markdown' , typeof config === 'string' ? { markdown: config } : config)
-    image       = (config: Widget_image_config = {})                           => new Unmounted<Widget_image                >('image'    , config)
-    prompt      = (config: Widget_prompt_config)                               => new Unmounted<Widget_prompt               >('prompt'   , config)
-    int         = (config: Omit<Widget_number_config, 'mode'> = {})            => new Unmounted<  Widget_number             >('number'   , { mode: 'int', ...config })
-    float       = (config: Omit<Widget_number_config, 'mode'> = {})            => new Unmounted<  Widget_number             >('number'   , { mode: 'float', ...config })
-    number      = (config: Omit<Widget_number_config, 'mode'> = {})            => new Unmounted<  Widget_number             >('number'   , { mode: 'float', ...config })
-    custom      = <const TViewState>(config: Widget_custom_config<TViewState>) => new Unmounted<  Widget_custom<TViewState> >('custom'   , config)
+    promptV2    = (config: Widget_prompt_config = {})                           => new Unmounted<  Widget_prompt             >('prompt'   , config)
+    time        = (config: Widget_string_config = {})                           => new Unmounted<  Widget_string             >('str'      , { inputType: 'time', ...config })
+    password    = (config: Widget_string_config = {})                           => new Unmounted<  Widget_string             >('str'      , { inputType: 'password', ...config })
+    email       = (config: Widget_string_config = {})                           => new Unmounted<  Widget_string             >('str'      , { inputType: 'email', ...config })
+    url         = (config: Widget_string_config = {})                           => new Unmounted<  Widget_string             >('str'      , { inputType: 'url', ...config })
+    string      = (config: Widget_string_config = {})                           => new Unmounted<  Widget_string             >('str'      , config)
+    boolean     = (config: Widget_bool_config = {})                             => new Unmounted<  Widget_bool               >('bool'     , config)
+    bool        = (config: Widget_bool_config = {})                             => new Unmounted<  Widget_bool               >('bool'     , config)
+    size        = (config: Widget_size_config={})                               => new Unmounted<  Widget_size               >('size'     , config)
+    orbit       = (config: Widget_orbit_config={})                              => new Unmounted<  Widget_orbit              >('orbit'    , config)
+    seed        = (config: W.Widget_seed_config={})                             => new Unmounted<W.Widget_seed               >('seed'     , config)
+    color       = (config: Widget_color_config)                                 => new Unmounted<  Widget_color              >('color'    , config)
+    matrix      = (config: Widget_matrix_config)                                => new Unmounted<  Widget_matrix             >('matrix'   , config)
+    inlineRun   = (config: W.Widget_inlineRun_config={})                        => new Unmounted<W.Widget_inlineRun          >('inlineRun', config)
+    loras       = (config: W.Widget_loras_config={})                            => new Unmounted<W.Widget_loras              >('loras'    , config)
+    markdown    = (config: W.Widget_markdown_config | string)                   => new Unmounted<W.Widget_markdown           >('markdown' , typeof config === 'string' ? { markdown: config } : config)
+    image       = (config: Widget_image_config = {})                            => new Unmounted<Widget_image                >('image'    , config)
+    prompt      = (config: Widget_prompt_config)                                => new Unmounted<Widget_prompt               >('prompt'   , config)
+    int         = (config: Omit<Widget_number_config, 'mode'> = {})             => new Unmounted<  Widget_number             >('number'   , { mode: 'int', ...config })
+    float       = (config: Omit<Widget_number_config, 'mode'> = {})             => new Unmounted<  Widget_number             >('number'   , { mode: 'float', ...config })
+    number      = (config: Omit<Widget_number_config, 'mode'> = {})             => new Unmounted<  Widget_number             >('number'   , { mode: 'float', ...config })
+    custom      = <TViewState>(config: Widget_custom_config<TViewState>)        => new Unmounted<  Widget_custom<TViewState> >('custom'   , config)
     list        = <const T extends Unmounted>(config: Widget_list_config<T>)    => new Unmounted<  Widget_list<T>            >('list'     , config)
     listExt     = <const T extends Unmounted>(config: Widget_listExt_config<T>) => new Unmounted<  Widget_listExt<T>         >('listExt'  , config)
     timeline    = <const T extends Unmounted>(config: Widget_listExt_config<T>) => new Unmounted<  Widget_listExt<T>         >('listExt'  , { mode: 'timeline', ...config })
     regional    = <const T extends Unmounted>(config: Widget_listExt_config<T>) => new Unmounted<  Widget_listExt<T>         >('listExt'  , { mode: 'regional', ...config })
     selectOneV2 = (p: string[])                                                                                   => new Unmounted<W.Widget_selectOne<W.BaseSelectEntry>>('selectOne',  { choices: p.map((id) => ({ id })), appearance:'tab' }) // prettier-ignore
-    selectOne   = <const T extends W.BaseSelectEntry>(p: W.Widget_selectOne_config<T>)                            => new Unmounted<W.Widget_selectOne<T>                >('selectOne',  p)
-    selectMany  = <const T extends W.BaseSelectEntry>(p: W.Widget_selectMany_config<T>)                           => new Unmounted<W.Widget_selectMany<T>               >('selectMany', p)
-    choice      = <const T extends { [key: string]: Unmounted }>(p: Omit<Widget_choices_config<T>, 'multi'>) => new Unmounted<Widget_choices<T>                    >('choices',    { multi: false, ...p })
-    choices     = <const T extends { [key: string]: Unmounted }>(p: Omit<Widget_choices_config<T>, 'multi'>) => new Unmounted<Widget_choices<T>                    >('choices',    { multi: true, ...p })
+    selectOne   = <const T extends W.BaseSelectEntry>(config: W.Widget_selectOne_config<T>)                       => new Unmounted<W.Widget_selectOne<T>                >('selectOne',  config)
+    selectMany  = <const T extends W.BaseSelectEntry>(config: W.Widget_selectMany_config<T>)                      => new Unmounted<W.Widget_selectMany<T>               >('selectMany', config)
+    group       = <const T extends WidgetDict>(config: Widget_group_config<T>={})                                 => new Unmounted('group', config)
+    choice      = <const T extends { [key: string]: Unmounted }>(config: Omit<Widget_choices_config<T>, 'multi'>) => new Unmounted<Widget_choices<T>                    >('choices',    { multi: false, ...config })
+    choices     = <const T extends { [key: string]: Unmounted }>(config: Omit<Widget_choices_config<T>, 'multi'>) => new Unmounted<Widget_choices<T>                    >('choices',    { multi: true, ...config })
 
 
     // 🔴🔴
     optional = <const T extends Unmounted>(p: Widget_optional_config<T>) => new Unmounted<Widget_optional<T>>('optional', p)
-    stringOpt = (config: Widget_string_config & { startActive?: boolean } = {}) =>
-        this.optional({
-            label: config.label,
-            startActive: config.startActive,
-            startCollapsed: config.startCollapsed,
-            widget: this.string({ ...config, startCollapsed: undefined }),
-        })
+    stringOpt = (config: Widget_string_config & { startActive?: boolean } = {}) =>{
+        const widget = this.string({ ...config, startCollapsed: undefined })
+        return this.FOO(config, widget)
+    }
 
     intOpt = (config: Omit<Widget_number_config, 'mode'> & { startActive?: boolean }) =>
         this.optional({
@@ -133,6 +129,36 @@ export class FormBuilder {
             widget: this.prompt({ ...config, startCollapsed: undefined }),
         })
 
+
+    colorOpt = (config: Widget_color_config & { startActive?: boolean }) =>
+        this.optional({
+            label: config.label,
+            requirements: config.requirements,
+            startActive: config.startActive,
+            startCollapsed: config.startCollapsed,
+            widget: this.color({ ...config, startCollapsed: undefined }),
+        })
+
+    groupOpt = <const T extends WidgetDict>(config: Widget_group_config<T> & { startActive?: boolean }) =>
+        this.optional({
+            label: config.label,
+            requirements: config.requirements,
+            startActive: config.startActive,
+            startCollapsed: config.startCollapsed,
+            widget: this.group({ ...config, startCollapsed: undefined }),
+        })
+
+    private FOO<T extends Unmounted>(
+        config: T['$Input'] & { startActive?: boolean | undefined }, widget: T) {
+        return this.optional({
+            label: config.label,
+            requirements: config.requirements,
+            startActive: config.startActive,
+            startCollapsed: config.startCollapsed,
+            widget: widget,
+        })
+    }
+
     // --------------------
 
     // enum = /*<const T extends KnownEnumNames>*/ (config: Widget_enum_config<any, any>) => new Widget_enum(this.form, config)
@@ -163,26 +189,6 @@ export class FormBuilder {
     //         widget: () => new Widget_enum(this.form, config),
     //     })
     // --------------------
-
-    color = (opts: Widget_color_config) => new Unmounted<Widget_color>('color', opts)
-    colorOpt = (config: Widget_color_config & { startActive?: boolean }) =>
-        this.optional({
-            label: config.label,
-            requirements: config.requirements,
-            startActive: config.startActive,
-            startCollapsed: config.startCollapsed,
-            widget: this.color({ ...config, startCollapsed: undefined }),
-        })
-
-    group = <const T extends WidgetDict>(p: Widget_group_config<T>={}) => new Unmounted('group', p)
-    groupOpt = <const T extends WidgetDict>(config: Widget_group_config<T> & { startActive?: boolean }) =>
-        this.optional({
-            label: config.label,
-            requirements: config.requirements,
-            startActive: config.startActive,
-            startCollapsed: config.startCollapsed,
-            widget: this.group({ ...config, startCollapsed: undefined }),
-        })
 
     // List API--------------
     _FIX_INDENTATION = _FIX_INDENTATION

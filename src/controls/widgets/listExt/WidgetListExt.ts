@@ -129,22 +129,22 @@ export class Widget_listExt<T extends Unmounted> implements IWidget<Widget_listE
     }
 
     // ADDING ITEMS -------------------------------------------------
+    get width() { return this.serial.width } // prettier-ignore
+    get height() { return this.serial.height } // prettier-ignore
+    get length() { return this.entries.length } // prettier-ignore
     addItem() {
-        const partialShape = this.config.initialPosition({
-            ix: this.entries.length,
-            width: this.serial.width,
-            height: this.serial.height,
-        })
+        const partialShape = this.config.initialPosition({ ix: this.length, width: this.width, height: this.height })
         const shape: BoardPosition = { ...boardDefaultItemShape, ...partialShape }
-        const item = runWithGlobalForm(this.form.builder, () =>
+        const unmounted = runWithGlobalForm(this.form.builder, () =>
             this.config.element({
                 width: this.serial.width,
                 height: this.serial.height,
                 ix: this.entries.length,
             }),
         )
-        this.entries.push({ widget: item, position: shape })
-        this.serial.entries.push({ serial: item.serial, shape: shape })
+        const element = this.form.builder._HYDRATE(unmounted.type, unmounted.config, null)
+        this.entries.push({ widget: element, position: shape })
+        this.serial.entries.push({ serial: element.serial, shape: shape })
     }
 
     // REMOVING ITEMS -------------------------------------------------
@@ -153,7 +153,7 @@ export class Widget_listExt<T extends Unmounted> implements IWidget<Widget_listE
         this.entries = this.entries.slice(0, this.config.min ?? 0)
     }
 
-    removeItem = (item: T) => {
+    removeItem = (item: T['$Widget']) => {
         const i = this.entries.findIndex((i) => i.widget === item)
         if (i >= 0) {
             this.serial.entries.splice(i, 1)

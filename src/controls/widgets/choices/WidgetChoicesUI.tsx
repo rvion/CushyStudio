@@ -51,7 +51,7 @@ const WidgetChoices_TabLineUI = observer(function WidgetChoicesTab_LineUI_(p: { 
                 return (
                     <div
                         onMouseDown={(ev) => {
-                            console.log('DOWN!!')
+                            // console.log('DOWN!!')
                             if (ev.button == 0) {
                                 widget.toggleBranch(c.key)
                                 setWasEnabled(!isSelected)

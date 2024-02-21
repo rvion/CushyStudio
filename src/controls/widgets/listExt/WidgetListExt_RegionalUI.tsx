@@ -5,10 +5,11 @@ import type { BoardPosition } from './WidgetListExtTypes'
 import { observer } from 'mobx-react-lite'
 import * as React from 'react'
 import { MessageErrorUI } from 'src/panels/MessageUI'
+import type { Unmounted } from 'src/controls/Prop'
 // import { Layer, Rect, Stage, Transformer } from 'react-konva'
 
 export const WidgetListExt_RegionalUI = observer(function WidgetListExt_RegionalUI_<T extends Widget>(p: {
-    widget: Widget_listExt<T>
+    widget: Widget_listExt<Unmounted>
 }) {
     const widget = p.widget
 

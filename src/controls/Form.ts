@@ -1,7 +1,7 @@
 import type { WidgetDict } from 'src/cards/App'
 import type { Widget_group, Widget_group_output, Widget_group_serial } from './widgets/group/WidgetGroup'
 
-import { autorun, isObservable, makeAutoObservable, observable, runInAction } from 'mobx'
+import { action, autorun, isObservable, makeAutoObservable, observable, runInAction } from 'mobx'
 import { FormBuilder } from './FormBuilder'
 
 export class Form<const FIELDS extends WidgetDict> {
@@ -55,11 +55,12 @@ export class Form<const FIELDS extends WidgetDict> {
             //
             builder: false,
             root: false,
+            init: action,
         })
     }
 
     ready = false
-    private init = (): Widget_group<FIELDS> => {
+    init = (): Widget_group<FIELDS> => {
         console.log(`[🥐] Building form ${this.def.name}`)
         const formBuilder = this.builder
         const rootDef = { topLevel: true, items: () => this.ui?.(formBuilder) ?? {} }

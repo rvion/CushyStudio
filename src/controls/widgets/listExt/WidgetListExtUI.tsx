@@ -5,8 +5,9 @@ import { Widget_listExt } from './WidgetListExt'
 import { WidgetListExt_RegionalUI } from './WidgetListExt_RegionalUI'
 import { WidgetListExt_TimelineUI } from './WidgetListExt_TimelineUI'
 import { WidgetListExt_ValuesUI } from './WidgetListExt_ValuesUI'
+import type { Unmounted } from 'src/controls/Prop'
 
-export const WidgetListExtUI = observer(function WidgetListExtUI_<T extends Widget>(p: { widget: Widget_listExt<T> }) {
+export const WidgetListExtUI = observer(function WidgetListExtUI_<T extends Unmounted>(p: { widget: Widget_listExt<T> }) {
     const widget = p.widget
     return (
         <div className='_WidgetListExtUI' tw='flex-grow w-full'>

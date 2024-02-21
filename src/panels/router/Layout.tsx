@@ -237,7 +237,9 @@ export class CushyLayoutManager {
         const tabID = `/${component}/${hashJSONObject(props ?? {})}`
         const tab = this.model.getNodeById(tabID)
         if (tab == null) return
-        this.model.doAction(Actions.renameTab(tabID, title || component))
+        runInAction(() => {
+            this.model.doAction(Actions.renameTab(tabID, title || component))
+        })
     }
 
     FOCUS_OR_CREATE = <const PanelName extends PanelNames>(
