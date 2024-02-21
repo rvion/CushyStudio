@@ -33,6 +33,9 @@ export type Widget_string_types<T extends Unmounted> = {
 // STATE
 export interface Widget_shared<T extends Unmounted> extends WidgetTypeHelpers<Widget_string_types<T>> {}
 export class Widget_shared<T extends Unmounted> implements IWidget<Widget_string_types<T>> {
+    // 👇 magically allow type-safe use of Mounted Widget_shared as Unmounted
+    $Widget!: T['$Widget']
+
     get serialHash(): string { return this.config.rootKey } // prettier-ignore
     readonly isVerticalByDefault = true
     readonly isCollapsible = true

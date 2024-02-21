@@ -167,10 +167,13 @@ export class FormBuilder {
         }
 
         if (unmounted instanceof Widget_shared){
-            console.log(`[🤠🔴] `,unmounted)
             return unmounted
             // return new Unmounted(unmounted.type, unmounted.config) as any
             // return unmounted.shared
+        }
+
+        if (!(unmounted instanceof Unmounted)){
+            console.log(`[❌] _HYDRATE received an invalid unmounted widget. This is probably a bug.`)
         }
 
         const type = unmounted.type
