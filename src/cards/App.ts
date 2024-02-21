@@ -1,6 +1,6 @@
 import type { CSSProperties } from 'react'
 import type { FormBuilder } from 'src/controls/FormBuilder'
-import type { Schema } from 'src/controls/Prop'
+import type { Spec } from 'src/controls/Prop'
 import type { MediaImageL } from 'src/models/MediaImage'
 import type { Runtime } from 'src/runtime/Runtime'
 import type { AppMetadata } from './AppManifest'
@@ -18,7 +18,7 @@ export type ActionTagMethod = (arg0: string) => string
 export type ActionTagMethodList = Array<{ key: string; method: ActionTagMethod }>
 export type ActionTags = (arg0: ActionTagMethodList) => void
 export type WidgetDict = { [key: string]: Widget }
-export type SchemaDict = { [key: string]: Schema }
+export type SchemaDict = { [key: string]: Spec }
 export type AppRef<F> = { $Output: F; id: CushyAppID }
 
 export type $ExtractFormValueType<FIELDS extends SchemaDict> = { [k in keyof FIELDS]: FIELDS[k]['$Output'] }

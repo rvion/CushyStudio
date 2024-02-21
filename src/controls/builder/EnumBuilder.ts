@@ -3,20 +3,20 @@
  * TODO: document the unique challenges this appraoch is solving
  */
 import type { Form } from '../Form'
-import { Schema } from '../Prop'
+import { Spec } from '../Prop'
 
 import { Widget_enum, Widget_enum_config } from '../widgets/enum/WidgetEnum'
 
 export type IEnumBuilder = {
     [K in keyof Requirable]: (
         config: Omit<Widget_enum_config<Requirable[K]['$Value']>, 'enumName'>,
-    ) => Schema<Widget_enum<Requirable[K]['$Value']>>
+    ) => Spec<Widget_enum<Requirable[K]['$Value']>>
 }
 
 export type IEnumBuilderOpt = {
     [K in keyof Requirable]: (
         config: Omit<Widget_enum_config<Requirable[K]['$Value']>, 'enumName'> & { startActive?: boolean },
-    ) => Schema<Widget_enum<Requirable[K]['$Value']>>
+    ) => Spec<Widget_enum<Requirable[K]['$Value']>>
 }
 
 export interface EnumBuilder extends IEnumBuilder {}
@@ -25,7 +25,7 @@ export class EnumBuilder {
         const schema = cushy.schema
         for (const enumName of schema.knownEnumsByName.keys()) {
             Object.defineProperty(this, enumName, {
-                value: (config: any) => new Schema('enum', /* form, */ { ...config, enumName }),
+                value: (config: any) => new Spec('enum', /* form, */ { ...config, enumName }),
             })
         }
     }
@@ -41,7 +41,7 @@ export class EnumBuilderOpt {
                     form.builder.optional({
                         label: config.label,
                         startActive: config.startActive,
-                        widget: new Schema('enum', /* form, */ { ...config, enumName }),
+                        widget: new Spec('enum', /* form, */ { ...config, enumName }),
                     }),
             })
         }

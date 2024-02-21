@@ -1,5 +1,5 @@
 import type { Widget_listExt } from '../listExt/WidgetListExt'
-import type { Schema } from 'src/controls/Prop'
+import type { Spec } from 'src/controls/Prop'
 import { observer } from 'mobx-react-lite'
 import { forwardRef } from 'react'
 import SortableList, { SortableItem, SortableKnob } from 'react-easy-sort'
@@ -11,7 +11,7 @@ import { ErrorBoundary } from 'react-error-boundary'
 import { ErrorBoundaryFallback } from 'src/widgets/misc/ErrorBoundary'
 import { ListControlsUI } from 'src/controls/shared/ListControlsUI'
 
-export const WidgetList_LineUI = observer(function WidgetList_LineUI_<T extends Schema>(p: {
+export const WidgetList_LineUI = observer(function WidgetList_LineUI_<T extends Spec>(p: {
     widget: Widget_list<T> | Widget_listExt<T>
 }) {
     return (
@@ -21,16 +21,12 @@ export const WidgetList_LineUI = observer(function WidgetList_LineUI_<T extends 
     )
 })
 
-export const WidgetListUI = observer(function WidgetListUI_<T extends Schema>(p: { widget: Widget_list<T> }) {
+export const WidgetListUI = observer(function WidgetListUI_<T extends Spec>(p: { widget: Widget_list<T> }) {
     const widget = p.widget
     const subWidgets = widget.items
     const min = widget.config.min
     const WidgetUI = WidgetDI.WidgetUI
     if (WidgetUI == null) return <Message type='error'>Internal list failure</Message>
-    // const isCollapsed = widget.state.collapsed ?? false
-    // const isExpanded = !isCollapsed
-    // const len = values.length
-    // const indexWidth = len.toString().length
     return (
         <div className='_WidgetListUI' tw='flex-grow w-full'>
             {/* <ListControlsUI widget={p.widget} /> */}

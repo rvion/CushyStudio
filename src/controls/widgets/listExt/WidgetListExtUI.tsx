@@ -1,4 +1,4 @@
-import type { Schema } from 'src/controls/Prop'
+import type { Spec } from 'src/controls/Prop'
 
 import { observer } from 'mobx-react-lite'
 import { WigetSizeXUI } from '../size/WidgetSizeUI'
@@ -7,7 +7,7 @@ import { WidgetListExt_RegionalUI } from './WidgetListExt_RegionalUI'
 import { WidgetListExt_TimelineUI } from './WidgetListExt_TimelineUI'
 import { WidgetListExt_ValuesUI } from './WidgetListExt_ValuesUI'
 
-export const WidgetListExtUI = observer(function WidgetListExtUI_<T extends Schema>(p: { widget: Widget_listExt<T> }) {
+export const WidgetListExtUI = observer(function WidgetListExtUI_<T extends Spec>(p: { widget: Widget_listExt<T> }) {
     const widget = p.widget
     return (
         <div className='_WidgetListExtUI' tw='flex-grow w-full'>

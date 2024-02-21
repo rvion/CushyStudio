@@ -1,4 +1,5 @@
 import type { Widget, Widget_selectOne } from 'src'
+import type { Spec } from 'src/controls/Prop'
 import type { Widget_choices } from 'src/controls/widgets/choices/WidgetChoices'
 import type { Widget_group } from 'src/controls/widgets/group/WidgetGroup'
 import type { Widget_image } from 'src/controls/widgets/image/WidgetImage'
@@ -23,19 +24,27 @@ app({
                                 if (formRoot.fields.samplerUI == null) return []
 
                                 // 🔶 self-referencing => typescript can't infer the type here
+                                // so to make sure code is correct, we need to cast it to the correct type
+                                // (and yes, types are slighly verbose for now)
                                 const steps = formRoot.fields.samplerUI as Widget_list<
-                                    Widget_choices<{
-                                        sampler_output_abc_asdf: () => Widget_selectOne<any>
-                                        empty_latent: () => Widget_group<any>
-                                        pick_image: () => Widget_image
-                                    }>
+                                    Spec<
+                                        Widget_choices<{
+                                            sampler_output_abc_asdf: Spec<Widget_selectOne<any>>
+                                            empty_latent: Spec<Widget_group<any>>
+                                            pick_image: Spec<Widget_image>
+                                        }>
+                                    >
                                 >
 
                                 // return a list of items
-                                return steps.items.map((choiceWidget: Widget_choices<any>, ix: number) => {
+                                return steps.items.map((choiceWidget, ix: number) => {
+                                    // 🔶 probably useless check now
                                     if (choiceWidget == null) console.log(`[🔴] err 1: choiceWidget is null`)
-                                    const _selectOne = choiceWidget.firstActiveBranchWidget as Maybe<Widget_selectOne<any>>
+
+                                    const _selectOne = choiceWidget.firstActiveBranchWidget
+                                    // 🔶 probably useless check now (bis)
                                     if (_selectOne == null) console.log(`[🔴] err 2: firstActiveBranchWidget is null`, _selectOne) // prettier-ignore
+
                                     const _actualChoice = _selectOne?.value
                                     return {
                                         id: _selectOne?.id ?? 'error',

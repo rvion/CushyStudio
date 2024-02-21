@@ -1,6 +1,6 @@
 import type { FormBuilder } from '../FormBuilder'
 import type { WidgetConfigFields } from '../IWidget'
-import type { Schema } from '../Prop'
+import type { Spec } from '../Prop'
 import type { Widget_bool } from '../widgets/bool/WidgetBool'
 import type { Widget_group } from '../widgets/group/WidgetGroup'
 import type { Widget_number } from '../widgets/number/WidgetNumber'
@@ -10,20 +10,20 @@ import type { Widget_enum, Widget_enum_config } from '../widgets/enum/WidgetEnum
 
 type AutoWidget<T> = T extends { kind: any; type: infer X }
     ? T['kind'] extends 'number'
-        ? Schema<Widget_number>
+        ? Spec<Widget_number>
         : T['kind'] extends 'string'
-        ? Schema<Widget_string>
+        ? Spec<Widget_string>
         : T['kind'] extends 'boolean'
-        ? Schema<Widget_bool>
+        ? Spec<Widget_bool>
         : T['kind'] extends 'prompt'
-        ? Schema<Widget_prompt>
+        ? Spec<Widget_prompt>
         : T['kind'] extends 'enum'
-        ? Schema<Widget_enum<X>>
+        ? Spec<Widget_enum<X>>
         : any
     : any
 
 export type IAutoBuilder = {
-    [K in keyof FormHelper]: () => Schema<
+    [K in keyof FormHelper]: () => Spec<
         Widget_group<{
             [N in keyof FormHelper[K]]: AutoWidget<FormHelper[K][N]>
         }>

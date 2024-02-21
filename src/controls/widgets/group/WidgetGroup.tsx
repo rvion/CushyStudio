@@ -7,7 +7,7 @@ import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { runWithGlobalForm } from 'src/models/_ctx2'
 import { WidgetDI } from '../WidgetUI.DI'
-import { Schema } from 'src/controls/Prop'
+import { Spec } from 'src/controls/Prop'
 
 // CONFIG
 export type Widget_group_config<T extends SchemaDict> = WidgetConfigFields<{
@@ -40,7 +40,7 @@ export type Widget_group_types<T extends SchemaDict> = {
 // STATE
 export interface Widget_group<T extends SchemaDict> extends WidgetTypeHelpers<Widget_group_types<T>> {}
 export class Widget_group<T extends SchemaDict> implements IWidget<Widget_group_types<T>> {
-    static Prop = <T extends SchemaDict>(config: Widget_group_config<T>) => new Schema('group', config)
+    static Prop = <T extends SchemaDict>(config: Widget_group_config<T>) => new Spec('group', config)
 
     get summary(): string {
         return this.config.summary?.(this.value) ?? Object.keys(this.fields).length + ' items'

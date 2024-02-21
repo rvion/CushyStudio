@@ -1,6 +1,6 @@
 import type { Form } from 'src/controls/Form'
 import type { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../../IWidget'
-import type { Schema } from 'src/controls/Prop'
+import type { Spec } from 'src/controls/Prop'
 
 import { makeAutoObservable, observable } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -9,7 +9,7 @@ import { WidgetDI } from '../WidgetUI.DI'
 import type { Widget } from 'src/controls/Widget'
 
 // CONFIG
-export type Widget_list_config<T extends Schema> = WidgetConfigFields<{
+export type Widget_list_config<T extends Spec> = WidgetConfigFields<{
     element: ((ix: number) => T) | T
     min?: number
     max?: number
@@ -17,16 +17,16 @@ export type Widget_list_config<T extends Schema> = WidgetConfigFields<{
 }>
 
 // SERIAL
-export type Widget_list_serial<T extends Schema> = WidgetSerialFields<{
+export type Widget_list_serial<T extends Spec> = WidgetSerialFields<{
     type: 'list'
     items_: T['$Serial'][]
 }>
 
 // OUT
-export type Widget_list_output<T extends Schema> = T['$Output'][]
+export type Widget_list_output<T extends Spec> = T['$Output'][]
 
 // TYPES
-export type Widget_list_types<T extends Schema> = {
+export type Widget_list_types<T extends Spec> = {
     $Type: 'list'
     $Input: Widget_list_config<T>
     $Serial: Widget_list_serial<T>
@@ -34,8 +34,8 @@ export type Widget_list_types<T extends Schema> = {
 }
 
 // STATE
-export interface Widget_list<T extends Schema> extends WidgetTypeHelpers<Widget_list_types<T>> {}
-export class Widget_list<T extends Schema> implements IWidget<Widget_list_types<T>> {
+export interface Widget_list<T extends Spec> extends WidgetTypeHelpers<Widget_list_types<T>> {}
+export class Widget_list<T extends Spec> implements IWidget<Widget_list_types<T>> {
     get serialHash(): string {
         return this.items.map((v) => v.serialHash).join(',')
     }

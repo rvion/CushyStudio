@@ -1,12 +1,12 @@
 import type { Widget_listExt } from './WidgetListExt'
 import type { BoardPosition } from './WidgetListExtTypes'
-import type { Schema } from 'src/controls/Prop'
+import type { Spec } from 'src/controls/Prop'
 
 import { observer } from 'mobx-react-lite'
 import * as React from 'react'
 import { Layer, Rect, Stage, Transformer } from 'react-konva'
 
-export const WidgetListExt_RegionalUI = observer(function WidgetListExt_RegionalUI_<T extends Schema>(p: {
+export const WidgetListExt_RegionalUI = observer(function WidgetListExt_RegionalUI_<T extends Spec>(p: {
     widget: Widget_listExt<T>
 }) {
     const widget = p.widget

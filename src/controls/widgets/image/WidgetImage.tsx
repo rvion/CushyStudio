@@ -7,7 +7,7 @@ import type { MediaImageL } from 'src/models/MediaImage'
 import { makeAutoObservable, reaction, runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 import { WidgetDI } from '../WidgetUI.DI'
-import { Schema } from 'src/controls/Prop'
+import { Spec } from 'src/controls/Prop'
 
 // CONFIG
 export type Widget_image_config = WidgetConfigFields<{
@@ -32,7 +32,7 @@ export type Widget_image_output = MediaImageL
 // STATE
 export interface Widget_image extends WidgetTypeHelpers_OLD<'image', Widget_image_config, Widget_image_serial, 0, Widget_image_output> {} // prettier-ignore
 export class Widget_image implements IWidget_OLD<'image', Widget_image_config, Widget_image_serial, 0, Widget_image_output> {
-    static Prop = <T extends Widget_image>(config: Widget_image_config) => new Schema('image', config)
+    static Prop = <T extends Widget_image>(config: Widget_image_config) => new Spec('image', config)
     get serialHash() { return this.value.data.hash } // prettier-ignore
     readonly isVerticalByDefault = false
     readonly isCollapsible = true

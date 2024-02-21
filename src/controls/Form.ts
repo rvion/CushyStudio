@@ -3,7 +3,7 @@ import type { Widget_group, Widget_group_output, Widget_group_serial } from './w
 
 import { action, autorun, isObservable, makeAutoObservable, observable, runInAction } from 'mobx'
 import { FormBuilder } from './FormBuilder'
-import { Schema } from './Prop'
+import { Spec } from './Prop'
 
 export class Form<const FIELDS extends SchemaDict> {
     error: Maybe<string> = null
@@ -65,7 +65,7 @@ export class Form<const FIELDS extends SchemaDict> {
         console.log(`[🥐] Building form ${this.def.name}`)
         const formBuilder = this.builder
         const rootDef = { topLevel: true, items: () => this.ui?.(formBuilder) ?? {} }
-        const unmounted = new Schema<Widget_group<FIELDS>>('group', rootDef)
+        const unmounted = new Spec<Widget_group<FIELDS>>('group', rootDef)
         try {
             let initialValue = this.def.initialValue()
             if (initialValue && !isObservable(initialValue)) initialValue = observable(initialValue)

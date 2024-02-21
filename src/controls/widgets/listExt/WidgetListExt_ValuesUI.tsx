@@ -1,11 +1,11 @@
-import type { Schema } from 'src/controls/Prop'
+import type { Spec } from 'src/controls/Prop'
 import type { Widget_listExt } from './WidgetListExt'
 
 import { observer } from 'mobx-react-lite'
 import { WidgetWithLabelUI } from 'src/controls/shared/WidgetWithLabelUI'
 import { Button } from 'src/rsuite/shims'
 
-export const WidgetListExt_ValuesUI = observer(function WidgetListExtValuesUI_<T extends Schema>(p: {
+export const WidgetListExt_ValuesUI = observer(function WidgetListExtValuesUI_<T extends Spec>(p: {
     //
     widget: Widget_listExt<T>
 }) {

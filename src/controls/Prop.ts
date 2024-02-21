@@ -1,6 +1,6 @@
 import type { Widget } from './Widget'
 
-export class Schema<W extends Widget = Widget> {
+export class Spec<W extends Widget = Widget> {
     $Widget!: W
     $Type!: W['type']
     $Input!: W['$Input']

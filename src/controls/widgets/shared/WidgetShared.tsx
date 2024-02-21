@@ -1,5 +1,5 @@
 import type { Form } from 'src/controls/Form'
-import type { Schema } from 'src/controls/Prop'
+import type { Spec } from 'src/controls/Prop'
 import type { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../../IWidget'
 
 import { makeAutoObservable } from 'mobx'
@@ -7,7 +7,7 @@ import { nanoid } from 'nanoid'
 import { WidgetDI } from '../WidgetUI.DI'
 
 // CONFIG
-export type Widget_shared_config<T extends Schema> = WidgetConfigFields<{
+export type Widget_shared_config<T extends Spec> = WidgetConfigFields<{
     startActive?: boolean
     /** shared widgets must be registered in the form root group */
     rootKey: string
@@ -20,10 +20,10 @@ export type Widget_shared_serial = WidgetSerialFields<{
 }>
 
 // OUT
-export type Widget_shared_output<T extends Schema> = T['$Output']
+export type Widget_shared_output<T extends Spec> = T['$Output']
 
 // TYPES
-export type Widget_string_types<T extends Schema> = {
+export type Widget_string_types<T extends Spec> = {
     $Type: 'shared'
     $Input: Widget_shared_config<T>
     $Serial: Widget_shared_serial
@@ -31,8 +31,8 @@ export type Widget_string_types<T extends Schema> = {
 }
 
 // STATE
-export interface Widget_shared<T extends Schema> extends WidgetTypeHelpers<Widget_string_types<T>> {}
-export class Widget_shared<T extends Schema> implements IWidget<Widget_string_types<T>> {
+export interface Widget_shared<T extends Spec> extends WidgetTypeHelpers<Widget_string_types<T>> {}
+export class Widget_shared<T extends Spec> implements IWidget<Widget_string_types<T>> {
     // 👇 magically allow type-safe use of Mounted Widget_shared as Unmounted
     $Widget!: T['$Widget']
 

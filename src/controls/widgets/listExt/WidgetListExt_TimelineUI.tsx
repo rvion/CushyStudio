@@ -1,10 +1,10 @@
 import type { Widget } from 'src/controls/Widget'
 import type { Widget_listExt } from './WidgetListExt'
-import type { Schema } from 'src/controls/Prop'
+import type { Spec } from 'src/controls/Prop'
 
 import { observer, useLocalObservable } from 'mobx-react-lite'
 
-export const WidgetListExt_TimelineUI = observer(function WidgetTimelineUI_<T extends Schema>(p: {
+export const WidgetListExt_TimelineUI = observer(function WidgetTimelineUI_<T extends Spec>(p: {
     //
     widget: Widget_listExt<T>
 }) {
