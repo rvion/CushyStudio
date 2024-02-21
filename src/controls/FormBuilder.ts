@@ -1,16 +1,16 @@
 import type { Form } from './Form'
-import type { SchemaDict } from 'src/cards/App'
 import type { Requirements } from './IWidget'
+import type { SchemaDict } from 'src/cards/App'
 
 import { makeAutoObservable } from 'mobx'
 import { exhaust } from 'src/utils/misc/ComfyUtils'
-import { _FIX_INDENTATION } from '../utils/misc/_FIX_INDENTATION'
-import * as W from './Widget'
 
-import { Spec } from './Prop'
+import { _FIX_INDENTATION } from '../utils/misc/_FIX_INDENTATION'
 import { mkFormAutoBuilder } from './builder/AutoBuilder'
 import { EnumBuilder, EnumBuilderOpt } from './builder/EnumBuilder'
+import { Spec } from './Prop'
 import { Widget_bool, type Widget_bool_config } from './widgets/bool/WidgetBool'
+import { Widget_inlineRun, type Widget_inlineRun_config } from './widgets/button/WidgetInlineRun'
 import { Widget_choices, type Widget_choices_config } from './widgets/choices/WidgetChoices'
 import { Widget_color, type Widget_color_config } from './widgets/color/WidgetColor'
 import { Widget_custom, type Widget_custom_config } from './widgets/custom/WidgetCustom'
@@ -19,11 +19,16 @@ import { Widget_group, type Widget_group_config } from './widgets/group/WidgetGr
 import { Widget_image, type Widget_image_config } from './widgets/image/WidgetImage'
 import { Widget_list, type Widget_list_config } from './widgets/list/WidgetList'
 import { Widget_listExt, type Widget_listExt_config } from './widgets/listExt/WidgetListExt'
+import { Widget_loras, type Widget_loras_config } from './widgets/loras/WidgetLora'
+import { Widget_markdown, Widget_markdown_config } from './widgets/markdown/WidgetMarkdown'
 import { Widget_matrix, type Widget_matrix_config } from './widgets/matrix/WidgetMatrix'
 import { Widget_number, type Widget_number_config } from './widgets/number/WidgetNumber'
 import { Widget_optional, type Widget_optional_config } from './widgets/optional/WidgetOptional'
 import { Widget_orbit, type Widget_orbit_config } from './widgets/orbit/WidgetOrbit'
 import { Widget_prompt, type Widget_prompt_config } from './widgets/prompt/WidgetPrompt'
+import { Widget_seed, type Widget_seed_config } from './widgets/seed/WidgetSeed'
+import { Widget_selectMany, type Widget_selectMany_config } from './widgets/selectMany/WidgetSelectMany'
+import { type BaseSelectEntry, Widget_selectOne, type Widget_selectOne_config } from './widgets/selectOne/WidgetSelectOne'
 import { Widget_shared } from './widgets/shared/WidgetShared'
 import { Widget_size, type Widget_size_config } from './widgets/size/WidgetSize'
 import { Widget_string, type Widget_string_config } from './widgets/string/WidgetString'
@@ -40,36 +45,36 @@ export class FormBuilder {
         })
     }
 
-    promptV2    = (config: Widget_prompt_config = {})                                                        => new Spec<  Widget_prompt                      >('prompt'    , config)
-    time        = (config: Widget_string_config = {})                                                        => new Spec<  Widget_string                      >('str'       , { inputType: 'time', ...config })
-    password    = (config: Widget_string_config = {})                                                        => new Spec<  Widget_string                      >('str'       , { inputType: 'password', ...config })
-    email       = (config: Widget_string_config = {})                                                        => new Spec<  Widget_string                      >('str'       , { inputType: 'email', ...config })
-    url         = (config: Widget_string_config = {})                                                        => new Spec<  Widget_string                      >('str'       , { inputType: 'url', ...config })
-    string      = (config: Widget_string_config = {})                                                        => new Spec<  Widget_string                      >('str'       , config)
-    boolean     = (config: Widget_bool_config   = {})                                                        => new Spec<  Widget_bool                        >('bool'      , config)
-    bool        = (config: Widget_bool_config   = {})                                                        => new Spec<  Widget_bool                        >('bool'      , config)
-    size        = (config: Widget_size_config   = {})                                                        => new Spec<  Widget_size                        >('size'      , config)
-    orbit       = (config: Widget_orbit_config  = {})                                                        => new Spec<  Widget_orbit                       >('orbit'     , config)
-    seed        = (config: W.Widget_seed_config = {})                                                        => new Spec<W.Widget_seed                        >('seed'      , config)
-    color       = (config: Widget_color_config  = {})                                                        => new Spec<  Widget_color                       >('color'     , config)
-    matrix      = (config: Widget_matrix_config)                                                             => new Spec<  Widget_matrix                      >('matrix'    , config)
-    inlineRun   = (config: W.Widget_inlineRun_config = {})                                                   => new Spec<W.Widget_inlineRun                   >('inlineRun' , config)
-    button      = (config: W.Widget_inlineRun_config = {})                                                   => new Spec<W.Widget_inlineRun                   >('inlineRun' , config)
-    loras       = (config: W.Widget_loras_config     = {})                                                   => new Spec<W.Widget_loras                       >('loras'     , config)
-    markdown    = (config: W.Widget_markdown_config | string)                                                => new Spec<W.Widget_markdown                    >('markdown'  , typeof config === 'string' ? { markdown: config } : config)
-    image       = (config: Widget_image_config = {})                                                         => new Spec<Widget_image                         >('image'     , config)
-    prompt      = (config: Widget_prompt_config)                                                             => new Spec<Widget_prompt                        >('prompt'    , config)
-    int         = (config: Omit<Widget_number_config, 'mode'> = {})                                          => new Spec<  Widget_number                      >('number'    , { mode: 'int', ...config })
-    float       = (config: Omit<Widget_number_config, 'mode'> = {})                                          => new Spec<  Widget_number                      >('number'    , { mode: 'float', ...config })
-    number      = (config: Omit<Widget_number_config, 'mode'> = {})                                          => new Spec<  Widget_number                      >('number'    , { mode: 'float', ...config })
-    custom      = <TViewState>(config: Widget_custom_config<TViewState>)                                     => new Spec<  Widget_custom<TViewState>          >('custom'    , config)
-    list        = <const T extends Spec>(config: Widget_list_config<T>)                                      => new Spec<  Widget_list<T>                     >('list'      , config)
-    listExt     = <const T extends Spec>(config: Widget_listExt_config<T>)                                   => new Spec<  Widget_listExt<T>                  >('listExt'   , config)
-    timeline    = <const T extends Spec>(config: Widget_listExt_config<T>)                                   => new Spec<  Widget_listExt<T>                  >('listExt'   , { mode: 'timeline', ...config })
-    regional    = <const T extends Spec>(config: Widget_listExt_config<T>)                                   => new Spec<  Widget_listExt<T>                  >('listExt'   , { mode: 'regional', ...config })
-    selectOneV2 = (p: string[])                                                                              => new Spec<W.Widget_selectOne<W.BaseSelectEntry>>('selectOne' , { choices: p.map((id) => ({ id })), appearance:'tab' }) // prettier-ignore
-    selectOne   = <const T extends W.BaseSelectEntry>(config: W.Widget_selectOne_config<T>)                  => new Spec<W.Widget_selectOne<T>                >('selectOne' , config)
-    selectMany  = <const T extends W.BaseSelectEntry>(config: W.Widget_selectMany_config<T>)                 => new Spec<W.Widget_selectMany<T>               >('selectMany', config)
+    promptV2    = (config: Widget_prompt_config = {})                                                        => new Spec<Widget_prompt                      >('prompt'    , config)
+    time        = (config: Widget_string_config = {})                                                        => new Spec<Widget_string                      >('str'       , { inputType: 'time', ...config })
+    password    = (config: Widget_string_config = {})                                                        => new Spec<Widget_string                      >('str'       , { inputType: 'password', ...config })
+    email       = (config: Widget_string_config = {})                                                        => new Spec<Widget_string                      >('str'       , { inputType: 'email', ...config })
+    url         = (config: Widget_string_config = {})                                                        => new Spec<Widget_string                      >('str'       , { inputType: 'url', ...config })
+    string      = (config: Widget_string_config = {})                                                        => new Spec<Widget_string                      >('str'       , config)
+    boolean     = (config: Widget_bool_config   = {})                                                        => new Spec<Widget_bool                        >('bool'      , config)
+    bool        = (config: Widget_bool_config   = {})                                                        => new Spec<Widget_bool                        >('bool'      , config)
+    size        = (config: Widget_size_config   = {})                                                        => new Spec<Widget_size                        >('size'      , config)
+    orbit       = (config: Widget_orbit_config  = {})                                                        => new Spec<Widget_orbit                       >('orbit'     , config)
+    seed        = (config: Widget_seed_config = {})                                                          => new Spec<Widget_seed                        >('seed'      , config)
+    color       = (config: Widget_color_config  = {})                                                        => new Spec<Widget_color                       >('color'     , config)
+    matrix      = (config: Widget_matrix_config)                                                             => new Spec<Widget_matrix                      >('matrix'    , config)
+    inlineRun   = (config: Widget_inlineRun_config = {})                                                     => new Spec<Widget_inlineRun                   >('inlineRun' , config)
+    button      = (config: Widget_inlineRun_config = {})                                                     => new Spec<Widget_inlineRun                   >('inlineRun' , config)
+    loras       = (config: Widget_loras_config     = {})                                                     => new Spec<Widget_loras                       >('loras'     , config)
+    markdown    = (config: Widget_markdown_config | string)                                                  => new Spec<Widget_markdown                  >('markdown'  , typeof config === 'string' ? { markdown: config } : config)
+    image       = (config: Widget_image_config = {})                                                         => new Spec<Widget_image                       >('image'     , config)
+    prompt      = (config: Widget_prompt_config)                                                             => new Spec<Widget_prompt                      >('prompt'    , config)
+    int         = (config: Omit<Widget_number_config, 'mode'> = {})                                          => new Spec<Widget_number                      >('number'    , { mode: 'int', ...config })
+    float       = (config: Omit<Widget_number_config, 'mode'> = {})                                          => new Spec<Widget_number                      >('number'    , { mode: 'float', ...config })
+    number      = (config: Omit<Widget_number_config, 'mode'> = {})                                          => new Spec<Widget_number                      >('number'    , { mode: 'float', ...config })
+    custom      = <TViewState>(config: Widget_custom_config<TViewState>)                                     => new Spec<Widget_custom<TViewState>          >('custom'    , config)
+    list        = <const T extends Spec>(config: Widget_list_config<T>)                                      => new Spec<Widget_list<T>                     >('list'      , config)
+    listExt     = <const T extends Spec>(config: Widget_listExt_config<T>)                                   => new Spec<Widget_listExt<T>                  >('listExt'   , config)
+    timeline    = <const T extends Spec>(config: Widget_listExt_config<T>)                                   => new Spec<Widget_listExt<T>                  >('listExt'   , { mode: 'timeline', ...config })
+    regional    = <const T extends Spec>(config: Widget_listExt_config<T>)                                   => new Spec<Widget_listExt<T>                  >('listExt'   , { mode: 'regional', ...config })
+    selectOneV2 = (p: string[])                                                                              => new Spec<Widget_selectOne<BaseSelectEntry>>('selectOne' , { choices: p.map((id) => ({ id })), appearance:'tab' }) // prettier-ignore
+    selectOne   = <const T extends BaseSelectEntry>(config: Widget_selectOne_config<T>)                      => new Spec<Widget_selectOne<T>                >('selectOne' , config)
+    selectMany  = <const T extends BaseSelectEntry>(config: Widget_selectMany_config<T>)                     => new Spec<Widget_selectMany<T>               >('selectMany', config)
     group       = <const T extends SchemaDict>(config: Widget_group_config<T>={})                            => new Spec<Widget_group<T>                      >('group'     , config)
     choice      = <const T extends { [key: string]: Spec }>(config: Omit<Widget_choices_config<T>, 'multi'>) => new Spec<Widget_choices<T>                    >('choices'   , { multi: false, ...config })
     choices     = <const T extends { [key: string]: Spec }>(config: Omit<Widget_choices_config<T>, 'multi'>) => new Spec<Widget_choices<T>                    >('choices'   , { multi: true, ...config })
@@ -180,32 +185,32 @@ export class FormBuilder {
         const type = unmounted.type
         const config = unmounted.config as any /* impossible to propagate union specification in the switch below */
 
-        if (type === 'group'     ) return new   Widget_group     (this.form, config, serial, this.form._ROOT ? undefined : (x) => { this.form._ROOT = x })
-        if (type === 'shared'    ) return new   Widget_shared    (this.form, config, serial)
-        if (type === 'optional'  ) return new   Widget_optional  (this.form, config, serial)
-        if (type === 'bool'      ) return new   Widget_bool      (this.form, config, serial)
-        if (type === 'str'       ) return new   Widget_string    (this.form, config, serial)
-        if (type === 'prompt'    ) return new   Widget_prompt    (this.form, config, serial)
-        if (type === 'choices'   ) return new   Widget_choices   (this.form, config, serial)
-        if (type === 'number'    ) return new   Widget_number    (this.form, config, serial)
-        if (type === 'color'     ) return new   Widget_color     (this.form, config, serial)
-        if (type === 'enum'      ) return new   Widget_enum      (this.form, config, serial)
-        if (type === 'list'      ) return new   Widget_list      (this.form, config, serial)
-        if (type === 'orbit'     ) return new   Widget_orbit     (this.form, config, serial)
-        if (type === 'listExt'   ) return new   Widget_listExt   (this.form, config, serial)
-        if (type === 'inlineRun' ) return new W.Widget_inlineRun (this.form, config, serial)
-        if (type === 'seed'      ) return new W.Widget_seed      (this.form, config, serial)
-        if (type === 'matrix'    ) return new   Widget_matrix    (this.form, config, serial)
-        if (type === 'loras'     ) return new W.Widget_loras     (this.form, config, serial)
-        if (type === 'image'     ) return new   Widget_image     (this.form, config, serial)
-        if (type === 'selectOne' ) return new W.Widget_selectOne (this.form, config, serial)
-        if (type === 'selectMany') return new W.Widget_selectMany(this.form, config, serial)
-        if (type === 'size'      ) return new   Widget_size      (this.form, config, serial)
-        if (type === 'markdown'  ) return new W.Widget_markdown  (this.form, config, serial)
-        if (type === 'custom'    ) return new   Widget_custom    (this.form, config, serial)
+        if (type === 'group'     ) return new Widget_group     (this.form, config, serial, this.form._ROOT ? undefined : (x) => { this.form._ROOT = x })
+        if (type === 'shared'    ) return new Widget_shared    (this.form, config, serial)
+        if (type === 'optional'  ) return new Widget_optional  (this.form, config, serial)
+        if (type === 'bool'      ) return new Widget_bool      (this.form, config, serial)
+        if (type === 'str'       ) return new Widget_string    (this.form, config, serial)
+        if (type === 'prompt'    ) return new Widget_prompt    (this.form, config, serial)
+        if (type === 'choices'   ) return new Widget_choices   (this.form, config, serial)
+        if (type === 'number'    ) return new Widget_number    (this.form, config, serial)
+        if (type === 'color'     ) return new Widget_color     (this.form, config, serial)
+        if (type === 'enum'      ) return new Widget_enum      (this.form, config, serial)
+        if (type === 'list'      ) return new Widget_list      (this.form, config, serial)
+        if (type === 'orbit'     ) return new Widget_orbit     (this.form, config, serial)
+        if (type === 'listExt'   ) return new Widget_listExt   (this.form, config, serial)
+        if (type === 'inlineRun' ) return new Widget_inlineRun (this.form, config, serial)
+        if (type === 'seed'      ) return new Widget_seed      (this.form, config, serial)
+        if (type === 'matrix'    ) return new Widget_matrix    (this.form, config, serial)
+        if (type === 'loras'     ) return new Widget_loras     (this.form, config, serial)
+        if (type === 'image'     ) return new Widget_image     (this.form, config, serial)
+        if (type === 'selectOne' ) return new Widget_selectOne (this.form, config, serial)
+        if (type === 'selectMany') return new Widget_selectMany(this.form, config, serial)
+        if (type === 'size'      ) return new Widget_size      (this.form, config, serial)
+        if (type === 'markdown'  ) return new Widget_markdown  (this.form, config, serial)
+        if (type === 'custom'    ) return new Widget_custom    (this.form, config, serial)
 
         console.log(`🔴 unknown widget "${type}" in serial.`)
         exhaust(type)
-        return new W.Widget_markdown(this.form, { markdown: 'unknown widget "${type}" in serial.' })
+        return new Widget_markdown(this.form, { markdown: `unknown widget "${type}" in serial.` })
     }
 }

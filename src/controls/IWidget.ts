@@ -1,10 +1,10 @@
+import type { Form } from './Form'
 import type { KnownCustomNode_File } from 'src/manager/custom-node-list/KnownCustomNode_File'
 import type { KnownCustomNode_Title } from 'src/manager/custom-node-list/KnownCustomNode_Title'
 import type { KnownCustomNode_CushyName } from 'src/manager/extension-node-map/KnownCustomNode_CushyName'
 import type { KnownModel_Base } from 'src/manager/model-list/KnownModel_Base'
 import type { KnownModel_Name } from 'src/manager/model-list/KnownModel_Name'
 import type { ModelInfo } from 'src/manager/model-list/model-list-loader-types'
-import type { Form } from './Form'
 
 export type WidgetTypeHelpers_OLD<T, I, X extends { type: T }, S, O> = {
     $Input: I

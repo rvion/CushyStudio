@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite'
-import { Widget_inlineRun } from 'src/controls/Widget'
+import { Widget_inlineRun } from './WidgetInlineRun'
 import { Button } from 'src/rsuite/shims'
 import { useDraft } from 'src/widgets/misc/useDraft'
 
