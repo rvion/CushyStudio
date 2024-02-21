@@ -1,10 +1,11 @@
-import type { Form } from 'src/controls/Form'
 import type { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../../IWidget'
+import type { Form } from 'src/controls/Form'
 import type { Spec } from 'src/controls/Prop'
 
 import { makeAutoObservable, observable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { runWithGlobalForm } from 'src/models/_ctx2'
+
 import { WidgetDI } from '../WidgetUI.DI'
 
 // CONFIG
@@ -49,7 +50,7 @@ export class Widget_list<T extends Spec> implements IWidget<Widget_list_types<T>
         const _schema = this.config.element
         const schema: T =
             typeof _schema === 'function' //
-                ? runWithGlobalForm(this.form.builder, () => _schema(0))
+                ? runWithGlobalForm(this.form.builder, () => _schema(ix))
                 : _schema
         return schema
     }

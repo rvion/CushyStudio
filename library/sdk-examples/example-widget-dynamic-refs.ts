@@ -21,7 +21,6 @@ app({
             x: form.string(),
             listOfStuff,
             listOfRefs: form.list({
-                label: 'Sampler',
                 defaultLength: 3,
                 // min: 1,
                 element: () =>
