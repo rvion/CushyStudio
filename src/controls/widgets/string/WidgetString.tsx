@@ -49,6 +49,7 @@ export class Widget_string implements IWidget<Widget_string_types> {
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? {
             type: 'str',
+            val: this.config.default,
             collapsed: config.startCollapsed,
             id: this.id,
         }
