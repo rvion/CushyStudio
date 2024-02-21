@@ -24,7 +24,7 @@ rem ----------------------------------------------------------------------------
 :: Start Vite using Electron's Node
 echo Starting Cushy in dev mode...
 call .\node_modules\.bin\electron --no-sandbox -i src\shell
-if ! %ERRORLEVEL% eq 0 (
+if not "%ERRORLEVEL%" == "0" (
     echo Starting failed. Did you call install first ?
     pause
     popd
