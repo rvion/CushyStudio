@@ -26,6 +26,7 @@ import { Widget_shared } from './widgets/shared/WidgetShared'
 import { Widget_matrix, type Widget_matrix_config } from './widgets/matrix/WidgetMatrix'
 import { Unmounted } from './Prop'
 import type { WidgetDict } from 'src/cards/App'
+import type { Requirements, SharedWidgetProps } from './IWidget'
 
 // prettier-ignore
 export class FormBuilder {
@@ -39,26 +40,21 @@ export class FormBuilder {
         })
     }
 
-    shared = <W extends W.Widget>(baseName: string, widget: W): Widget_shared<W> => {
-        return new Widget_shared<W>(this.form, { rootKey: baseName, widget }) as any
-    }
-
-    // string
     promptV2    = (config: Widget_prompt_config = {})                           => new Unmounted<  Widget_prompt             >('prompt'   , config)
     time        = (config: Widget_string_config = {})                           => new Unmounted<  Widget_string             >('str'      , { inputType: 'time', ...config })
     password    = (config: Widget_string_config = {})                           => new Unmounted<  Widget_string             >('str'      , { inputType: 'password', ...config })
     email       = (config: Widget_string_config = {})                           => new Unmounted<  Widget_string             >('str'      , { inputType: 'email', ...config })
     url         = (config: Widget_string_config = {})                           => new Unmounted<  Widget_string             >('str'      , { inputType: 'url', ...config })
     string      = (config: Widget_string_config = {})                           => new Unmounted<  Widget_string             >('str'      , config)
-    boolean     = (config: Widget_bool_config = {})                             => new Unmounted<  Widget_bool               >('bool'     , config)
-    bool        = (config: Widget_bool_config = {})                             => new Unmounted<  Widget_bool               >('bool'     , config)
-    size        = (config: Widget_size_config={})                               => new Unmounted<  Widget_size               >('size'     , config)
-    orbit       = (config: Widget_orbit_config={})                              => new Unmounted<  Widget_orbit              >('orbit'    , config)
-    seed        = (config: W.Widget_seed_config={})                             => new Unmounted<W.Widget_seed               >('seed'     , config)
-    color       = (config: Widget_color_config)                                 => new Unmounted<  Widget_color              >('color'    , config)
+    boolean     = (config: Widget_bool_config   = {})                           => new Unmounted<  Widget_bool               >('bool'     , config)
+    bool        = (config: Widget_bool_config   = {})                           => new Unmounted<  Widget_bool               >('bool'     , config)
+    size        = (config: Widget_size_config   = {})                           => new Unmounted<  Widget_size               >('size'     , config)
+    orbit       = (config: Widget_orbit_config  = {})                           => new Unmounted<  Widget_orbit              >('orbit'    , config)
+    seed        = (config: W.Widget_seed_config = {})                           => new Unmounted<W.Widget_seed               >('seed'     , config)
+    color       = (config: Widget_color_config  = {})                           => new Unmounted<  Widget_color              >('color'    , config)
     matrix      = (config: Widget_matrix_config)                                => new Unmounted<  Widget_matrix             >('matrix'   , config)
-    inlineRun   = (config: W.Widget_inlineRun_config={})                        => new Unmounted<W.Widget_inlineRun          >('inlineRun', config)
-    loras       = (config: W.Widget_loras_config={})                            => new Unmounted<W.Widget_loras              >('loras'    , config)
+    inlineRun   = (config: W.Widget_inlineRun_config = {})                      => new Unmounted<W.Widget_inlineRun          >('inlineRun', config)
+    loras       = (config: W.Widget_loras_config     = {})                      => new Unmounted<W.Widget_loras              >('loras'    , config)
     markdown    = (config: W.Widget_markdown_config | string)                   => new Unmounted<W.Widget_markdown           >('markdown' , typeof config === 'string' ? { markdown: config } : config)
     image       = (config: Widget_image_config = {})                            => new Unmounted<Widget_image                >('image'    , config)
     prompt      = (config: Widget_prompt_config)                                => new Unmounted<Widget_prompt               >('prompt'   , config)
@@ -77,85 +73,40 @@ export class FormBuilder {
     choice      = <const T extends { [key: string]: Unmounted }>(config: Omit<Widget_choices_config<T>, 'multi'>) => new Unmounted<Widget_choices<T>                    >('choices',    { multi: false, ...config })
     choices     = <const T extends { [key: string]: Unmounted }>(config: Omit<Widget_choices_config<T>, 'multi'>) => new Unmounted<Widget_choices<T>                    >('choices',    { multi: true, ...config })
 
+    optional    = <const T extends Unmounted>(p: Widget_optional_config<T>) => new Unmounted<Widget_optional<T>>('optional', p)
+    stringOpt   = (config: Widget_string_config & { startActive?: boolean } = {}) => this.wrapOptional(config, this.string)
+    intOpt      = (config: Omit<Widget_number_config, 'mode'> & { startActive?: boolean }) => this.wrapOptional(config, this.number)
+    floatOpt    = (config: Omit<Widget_number_config, 'mode'> & { startActive?: boolean }) => this.wrapOptional(config, this.number)
+    numberOpt   = (config: Omit<Widget_number_config, 'mode'> & { startActive?: boolean }) => this.wrapOptional(config, this.number)
+    imageOpt    = (config: Widget_image_config & { startActive?: boolean }) => this.wrapOptional(config, this.image)
+    promptOpt   = (config: Widget_prompt_config & { startActive?: boolean }) => this.wrapOptional(config,  this.prompt)
+    colorOpt    = (config: Widget_color_config & { startActive?: boolean }) => this.wrapOptional(config,  this.color)
+    groupOpt    = <const T extends WidgetDict>(config: Widget_group_config<T> & { startActive?: boolean }) => this.wrapOptional(config,  this.group)
 
-    // 🔴🔴
-    optional = <const T extends Unmounted>(p: Widget_optional_config<T>) => new Unmounted<Widget_optional<T>>('optional', p)
-    stringOpt = (config: Widget_string_config & { startActive?: boolean } = {}) =>{
-        const widget = this.string({ ...config, startCollapsed: undefined })
-        return this.FOO(config, widget)
+
+
+    shared = <W extends W.Widget>(baseName: string, widget: W): Widget_shared<W> => {
+        return new Widget_shared<W>(this.form, { rootKey: baseName, widget }) as any
     }
 
-    intOpt = (config: Omit<Widget_number_config, 'mode'> & { startActive?: boolean }) =>
-        this.optional({
-            label: config.label,
-            requirements: config.requirements,
-            startActive: config.startActive,
-            startCollapsed: config.startCollapsed,
-            widget: this.number({ ...config, startCollapsed: undefined }),
-        })
-    floatOpt = (config: Omit<Widget_number_config, 'mode'> & { startActive?: boolean }) =>
-        this.optional({
-            label: config.label,
-            requirements: config.requirements,
-            startActive: config.startActive,
-            startCollapsed: config.startCollapsed,
-            widget: this.number({ ...config, startCollapsed: undefined }),
-        })
-    numberOpt = (config: Omit<Widget_number_config, 'mode'> & { startActive?: boolean }) =>
-        this.optional({
-            label: config.label,
-            requirements: config.requirements,
-            startActive: config.startActive,
-            startCollapsed: config.startCollapsed,
-            widget: this.number({ ...config, startCollapsed: undefined }),
-        })
-
-    imageOpt = (config: Widget_image_config & { startActive?: boolean }) =>
-        this.optional({
-            label: config.label,
-            requirements: config.requirements,
-            startActive: config.startActive,
-            startCollapsed: config.startCollapsed,
-            widget: this.image({ ...config, startCollapsed: undefined }),
-        })
-
     // --------------------
-    promptOpt = (config: Widget_prompt_config & { startActive?: boolean }) =>
-        this.optional({
-            label: config.label,
-            requirements: config.requirements,
-            startActive: config.startActive,
-            startCollapsed: config.startCollapsed,
-            widget: this.prompt({ ...config, startCollapsed: undefined }),
-        })
 
-
-    colorOpt = (config: Widget_color_config & { startActive?: boolean }) =>
-        this.optional({
-            label: config.label,
-            requirements: config.requirements,
-            startActive: config.startActive,
-            startCollapsed: config.startCollapsed,
-            widget: this.color({ ...config, startCollapsed: undefined }),
-        })
-
-    groupOpt = <const T extends WidgetDict>(config: Widget_group_config<T> & { startActive?: boolean }) =>
-        this.optional({
-            label: config.label,
-            requirements: config.requirements,
-            startActive: config.startActive,
-            startCollapsed: config.startCollapsed,
-            widget: this.group({ ...config, startCollapsed: undefined }),
-        })
-
-    private FOO<T extends Unmounted>(
-        config: T['$Input'] & { startActive?: boolean | undefined }, widget: T) {
+    private wrapOptional<P extends {
+        // from SharedWidgetProps
+        label?: string | false
+        requirements?: Requirements[]
+        startCollapsed?: boolean
+        // extra for optionality
+        startActive?: boolean,
+    }, T extends Unmounted >(
+        config: P,
+        widgetFn: (config:T['$Input']) => T) {
         return this.optional({
             label: config.label,
             requirements: config.requirements,
             startActive: config.startActive,
             startCollapsed: config.startCollapsed,
-            widget: widget,
+            widget: widgetFn({ ...config, startCollapsed: undefined }),
         })
     }
 

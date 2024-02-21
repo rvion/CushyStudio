@@ -61,7 +61,8 @@ export type WidgetSerialFields<X> = X & {
 }
 
 // do not need to be serializable
-export type WidgetConfigFields<X> = X & {
+export type WidgetConfigFields<X> = X & SharedWidgetProps
+export type SharedWidgetProps = {
     label?: string | false
     layout?: 'H' | 'V'
     tooltip?: string
