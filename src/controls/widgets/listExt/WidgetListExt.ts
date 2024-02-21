@@ -1,7 +1,7 @@
 import type { Form } from 'src/controls/Form'
 import type { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from 'src/controls/IWidget'
 import type { BoardPosition } from './WidgetListExtTypes'
-import type { Unmounted } from 'src/controls/Prop'
+import type { CProperty } from 'src/controls/Prop'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -12,7 +12,7 @@ import { hash } from 'ohash'
 import { ResolutionState } from '../size/ResolutionState'
 
 // CONFIG
-export type Widget_listExt_config<T extends Unmounted> = WidgetConfigFields<{
+export type Widget_listExt_config<T extends CProperty> = WidgetConfigFields<{
     element: (p: { ix: number; width: number; height: number }) => T
     min?: number
     max?: number
@@ -24,7 +24,7 @@ export type Widget_listExt_config<T extends Unmounted> = WidgetConfigFields<{
 }>
 
 // SERIAL
-export type Widget_listExt_serial<T extends Unmounted> = WidgetSerialFields<{
+export type Widget_listExt_serial<T extends CProperty> = WidgetSerialFields<{
     type: 'listExt'
     entries: { serial: T['$Serial']; shape: BoardPosition }[]
     width: number
@@ -32,7 +32,7 @@ export type Widget_listExt_serial<T extends Unmounted> = WidgetSerialFields<{
 }>
 
 // OUT
-export type Widget_listExt_output<T extends Unmounted> = {
+export type Widget_listExt_output<T extends CProperty> = {
     items: { value: T['$Output']; position: BoardPosition }[]
     // -----------------------
     width: number
@@ -40,7 +40,7 @@ export type Widget_listExt_output<T extends Unmounted> = {
 }
 
 // TYPES
-export type Widget_listExt_types<T extends Unmounted> = {
+export type Widget_listExt_types<T extends CProperty> = {
     $Type: 'listExt'
     $Input: Widget_listExt_config<T>
     $Serial: Widget_listExt_serial<T>
@@ -48,8 +48,8 @@ export type Widget_listExt_types<T extends Unmounted> = {
 }
 
 // STATE
-export interface Widget_listExt<T extends Unmounted> extends WidgetTypeHelpers<Widget_listExt_types<T>> {}
-export class Widget_listExt<T extends Unmounted> implements IWidget<Widget_listExt_types<T>> {
+export interface Widget_listExt<T extends CProperty> extends WidgetTypeHelpers<Widget_listExt_types<T>> {}
+export class Widget_listExt<T extends CProperty> implements IWidget<Widget_listExt_types<T>> {
     get serialHash () { return hash(this.value) } // prettier-ignore
     readonly isVerticalByDefault = true
     readonly isCollapsible = true

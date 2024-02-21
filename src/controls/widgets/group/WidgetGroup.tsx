@@ -7,7 +7,7 @@ import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { runWithGlobalForm } from 'src/models/_ctx2'
 import { WidgetDI } from '../WidgetUI.DI'
-import { Unmounted } from 'src/controls/Prop'
+import { CProperty } from 'src/controls/Prop'
 
 // CONFIG
 export type Widget_group_config<T extends WidgetDict> = WidgetConfigFields<{
@@ -40,7 +40,7 @@ export type Widget_group_types<T extends WidgetDict> = {
 // STATE
 export interface Widget_group<T extends WidgetDict> extends WidgetTypeHelpers<Widget_group_types<T>> {}
 export class Widget_group<T extends WidgetDict> implements IWidget<Widget_group_types<T>> {
-    static Prop = <T extends WidgetDict>(config: Widget_group_config<T>) => new Unmounted('group', config)
+    static Prop = <T extends WidgetDict>(config: Widget_group_config<T>) => new CProperty('group', config)
 
     get summary(): string {
         return this.config.summary?.(this.value) ?? Object.keys(this.fields).length + ' items'

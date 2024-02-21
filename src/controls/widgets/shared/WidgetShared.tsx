@@ -1,5 +1,5 @@
 import type { Form } from 'src/controls/Form'
-import type { Unmounted } from 'src/controls/Prop'
+import type { CProperty } from 'src/controls/Prop'
 import type { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../../IWidget'
 
 import { makeAutoObservable } from 'mobx'
@@ -7,7 +7,7 @@ import { nanoid } from 'nanoid'
 import { WidgetDI } from '../WidgetUI.DI'
 
 // CONFIG
-export type Widget_shared_config<T extends Unmounted> = WidgetConfigFields<{
+export type Widget_shared_config<T extends CProperty> = WidgetConfigFields<{
     startActive?: boolean
     /** shared widgets must be registered in the form root group */
     rootKey: string
@@ -20,10 +20,10 @@ export type Widget_shared_serial = WidgetSerialFields<{
 }>
 
 // OUT
-export type Widget_shared_output<T extends Unmounted> = T['$Output']
+export type Widget_shared_output<T extends CProperty> = T['$Output']
 
 // TYPES
-export type Widget_string_types<T extends Unmounted> = {
+export type Widget_string_types<T extends CProperty> = {
     $Type: 'shared'
     $Input: Widget_shared_config<T>
     $Serial: Widget_shared_serial
@@ -31,8 +31,8 @@ export type Widget_string_types<T extends Unmounted> = {
 }
 
 // STATE
-export interface Widget_shared<T extends Unmounted> extends WidgetTypeHelpers<Widget_string_types<T>> {}
-export class Widget_shared<T extends Unmounted> implements IWidget<Widget_string_types<T>> {
+export interface Widget_shared<T extends CProperty> extends WidgetTypeHelpers<Widget_string_types<T>> {}
+export class Widget_shared<T extends CProperty> implements IWidget<Widget_string_types<T>> {
     // 👇 magically allow type-safe use of Mounted Widget_shared as Unmounted
     $Widget!: T['$Widget']
 
@@ -56,30 +56,7 @@ export class Widget_shared<T extends Unmounted> implements IWidget<Widget_string
     ) {
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? { id: this.id, type: 'shared', collapsed: config.startCollapsed }
-
-        // ----------------------------------------------
-        // const newWidget = config.widget
-        // const newType = newWidget.type
-        // const name = `__${this.config.rootKey}__`
-        // const prevSerial = this.form._ROOT.serial.values_[name]
-        // if (prevSerial && newType === prevSerial.type) {
-        //     // console.warn(`[🤠🟢] Widget_shared: PREV SERIAL IS OK (${JSON.stringify(prevSerial)})`)
-        //     this.shared = this.form.builder._HYDRATE(newWidget, prevSerial)
-        // } else {
-        //     // if (prevSerial == null) console.log(`[🤠🔶] Widget_shared: PREV SERIAL IS NULL`)
-        //     // if (prevSerial != null) console.log(`[🔶] invalid serial for "${name}": (${newType} != ${prevSerial?.type}) => using fresh one instead`) // prettier-ignore
-        //     this.shared = this.form.builder._HYDRATE(newWidget, null)
-        // }
-        // this.shared = this.config.widget
-        // this.form._ROOT.serial.values_[name] = this.shared.serial as any
-        // ----------------------------------------------
-
         makeAutoObservable(this)
-        // makeObservable(this, {
-        //     serial: observable,
-        //     shared: observable.ref,
-        //     value: computed,
-        // })
     }
 
     get value(): Widget_shared_output<T> {

@@ -1,6 +1,6 @@
 import type { FormBuilder } from '../FormBuilder'
 import type { WidgetConfigFields } from '../IWidget'
-import type { Unmounted } from '../Prop'
+import type { CProperty } from '../Prop'
 import type { Widget_bool } from '../widgets/bool/WidgetBool'
 import type { Widget_group } from '../widgets/group/WidgetGroup'
 import type { Widget_number } from '../widgets/number/WidgetNumber'
@@ -10,20 +10,20 @@ import type { Widget_enum, Widget_enum_config } from '../widgets/enum/WidgetEnum
 
 type AutoWidget<T> = T extends { kind: any; type: infer X }
     ? T['kind'] extends 'number'
-        ? Unmounted<Widget_number>
+        ? CProperty<Widget_number>
         : T['kind'] extends 'string'
-        ? Unmounted<Widget_string>
+        ? CProperty<Widget_string>
         : T['kind'] extends 'boolean'
-        ? Unmounted<Widget_bool>
+        ? CProperty<Widget_bool>
         : T['kind'] extends 'prompt'
-        ? Unmounted<Widget_prompt>
+        ? CProperty<Widget_prompt>
         : T['kind'] extends 'enum'
-        ? Unmounted<Widget_enum<X>>
+        ? CProperty<Widget_enum<X>>
         : any
     : any
 
 export type IAutoBuilder = {
-    [K in keyof FormHelper]: () => Unmounted<
+    [K in keyof FormHelper]: () => CProperty<
         Widget_group<{
             [N in keyof FormHelper[K]]: AutoWidget<FormHelper[K][N]>
         }>

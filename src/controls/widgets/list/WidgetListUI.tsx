@@ -1,5 +1,5 @@
 import type { Widget_listExt } from '../listExt/WidgetListExt'
-import type { Unmounted } from 'src/controls/Prop'
+import type { CProperty } from 'src/controls/Prop'
 import { observer } from 'mobx-react-lite'
 import { forwardRef } from 'react'
 import SortableList, { SortableItem, SortableKnob } from 'react-easy-sort'
@@ -11,7 +11,7 @@ import { ErrorBoundary } from 'react-error-boundary'
 import { ErrorBoundaryFallback } from 'src/widgets/misc/ErrorBoundary'
 import { ListControlsUI } from 'src/controls/shared/ListControlsUI'
 
-export const WidgetList_LineUI = observer(function WidgetList_LineUI_<T extends Unmounted>(p: {
+export const WidgetList_LineUI = observer(function WidgetList_LineUI_<T extends CProperty>(p: {
     widget: Widget_list<T> | Widget_listExt<T>
 }) {
     return (
@@ -21,7 +21,7 @@ export const WidgetList_LineUI = observer(function WidgetList_LineUI_<T extends 
     )
 })
 
-export const WidgetListUI = observer(function WidgetListUI_<T extends Unmounted>(p: { widget: Widget_list<T> }) {
+export const WidgetListUI = observer(function WidgetListUI_<T extends CProperty>(p: { widget: Widget_list<T> }) {
     const widget = p.widget
     const subWidgets = widget.items
     const min = widget.config.min

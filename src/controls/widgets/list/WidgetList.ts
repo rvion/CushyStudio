@@ -1,6 +1,6 @@
 import type { Form } from 'src/controls/Form'
 import type { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../../IWidget'
-import type { Unmounted } from 'src/controls/Prop'
+import type { CProperty } from 'src/controls/Prop'
 
 import { makeAutoObservable, observable } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -8,7 +8,7 @@ import { runWithGlobalForm } from 'src/models/_ctx2'
 import { WidgetDI } from '../WidgetUI.DI'
 
 // CONFIG
-export type Widget_list_config<T extends Unmounted> = WidgetConfigFields<{
+export type Widget_list_config<T extends CProperty> = WidgetConfigFields<{
     element: (ix: number) => T
     min?: number
     max?: number
@@ -16,16 +16,16 @@ export type Widget_list_config<T extends Unmounted> = WidgetConfigFields<{
 }>
 
 // SERIAL
-export type Widget_list_serial<T extends Unmounted> = WidgetSerialFields<{
+export type Widget_list_serial<T extends CProperty> = WidgetSerialFields<{
     type: 'list'
     items_: T['$Serial'][]
 }>
 
 // OUT
-export type Widget_list_output<T extends Unmounted> = T['$Output'][]
+export type Widget_list_output<T extends CProperty> = T['$Output'][]
 
 // TYPES
-export type Widget_list_types<T extends Unmounted> = {
+export type Widget_list_types<T extends CProperty> = {
     $Type: 'list'
     $Input: Widget_list_config<T>
     $Serial: Widget_list_serial<T>
@@ -33,8 +33,8 @@ export type Widget_list_types<T extends Unmounted> = {
 }
 
 // STATE
-export interface Widget_list<T extends Unmounted> extends WidgetTypeHelpers<Widget_list_types<T>> {}
-export class Widget_list<T extends Unmounted> implements IWidget<Widget_list_types<T>> {
+export interface Widget_list<T extends CProperty> extends WidgetTypeHelpers<Widget_list_types<T>> {}
+export class Widget_list<T extends CProperty> implements IWidget<Widget_list_types<T>> {
     get serialHash(): string {
         return this.items.map((v: T['$Widget']) => v.serialHash).join(',')
     }

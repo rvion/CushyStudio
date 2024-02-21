@@ -1,5 +1,5 @@
 import type { Form } from 'src/controls/Form'
-import type { Unmounted } from 'src/controls/Prop'
+import type { CProperty } from 'src/controls/Prop'
 import type { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../../IWidget'
 
 import { computed, makeObservable, observable } from 'mobx'
@@ -7,23 +7,23 @@ import { nanoid } from 'nanoid'
 import { WidgetDI } from '../WidgetUI.DI'
 
 // CONFIG
-export type Widget_optional_config<T extends Unmounted> = WidgetConfigFields<{
+export type Widget_optional_config<T extends CProperty> = WidgetConfigFields<{
     startActive?: boolean
     widget: T
 }>
 
 // SERIAL
-export type Widget_optional_serial<T extends Unmounted> = WidgetSerialFields<{
+export type Widget_optional_serial<T extends CProperty> = WidgetSerialFields<{
     type: 'optional'
     child?: Maybe<T['$Serial']>
     active: boolean
 }>
 
 // OUT
-export type Widget_optional_output<T extends Unmounted> = Maybe<T['$Output']>
+export type Widget_optional_output<T extends CProperty> = Maybe<T['$Output']>
 
 // TYPES
-export type Widget_optional_types<T extends Unmounted> = {
+export type Widget_optional_types<T extends CProperty> = {
     $Type: 'optional'
     $Input: Widget_optional_config<T>
     $Serial: Widget_optional_serial<T>
@@ -31,8 +31,8 @@ export type Widget_optional_types<T extends Unmounted> = {
 }
 
 // STATE
-export interface Widget_optional<T extends Unmounted> extends WidgetTypeHelpers<Widget_optional_types<T>> {}
-export class Widget_optional<T extends Unmounted> implements IWidget<Widget_optional_types<T>> {
+export interface Widget_optional<T extends CProperty> extends WidgetTypeHelpers<Widget_optional_types<T>> {}
+export class Widget_optional<T extends CProperty> implements IWidget<Widget_optional_types<T>> {
     get serialHash(): string {
         if (this.serial.active) return this.childOrThrow.serialHash
         return 'x'
