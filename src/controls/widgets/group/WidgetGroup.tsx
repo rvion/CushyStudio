@@ -121,26 +121,24 @@ export class Widget_group<T extends WidgetDict> implements IWidget<Widget_group_
         const childKeys = Object.keys(_newValues) as (keyof T & string)[]
         // this.childKeys = childKeys
         for (const key of childKeys) {
-            const newItem = _newValues[key]
+            const unmounted = _newValues[key]
             const prevFieldSerial = prevFieldSerials[key]
-            const newConfig = newItem.config
-            const newType = newItem.type
-            if (prevFieldSerial && newType === prevFieldSerial.type) {
+            if (prevFieldSerial && unmounted.type === prevFieldSerial.type) {
                 // if (newType === 'shared') {
                 //     // 🔴 BAD 🔴
                 //     this.fields[key] = newItem as any
                 // } else {
                 // console.log(`[🟢] valid serial for "${key}": (${newType} === ${prevFieldSerial.type}) `)
-                this.fields[key] = this.form.builder._HYDRATE(newType, newConfig, prevFieldSerial)
+                this.fields[key] = this.form.builder._HYDRATE(unmounted, prevFieldSerial)
                 // }
             } else {
                 // console.log(`[🟢] invalid serial for "${key}"`)
                 if (prevFieldSerial != null)
                     console.log(
-                        `[🔶] invalid serial for "${key}": (${newType} != ${prevFieldSerial?.type}) => using fresh one instead`,
+                        `[🔶] invalid serial for "${key}": (${unmounted.type} != ${prevFieldSerial?.type}) => using fresh one instead`,
                         prevFieldSerials,
                     )
-                this.fields[key] = this.form.builder._HYDRATE(newType, newConfig, null)
+                this.fields[key] = this.form.builder._HYDRATE(unmounted, null)
                 this.serial.values_[key] = this.fields[key].serial
             }
         }

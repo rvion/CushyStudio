@@ -3,6 +3,7 @@ import type { Widget_group, Widget_group_output, Widget_group_serial } from './w
 
 import { action, autorun, isObservable, makeAutoObservable, observable, runInAction } from 'mobx'
 import { FormBuilder } from './FormBuilder'
+import { Unmounted } from './Prop'
 
 export class Form<const FIELDS extends WidgetDict> {
     error: Maybe<string> = null
@@ -64,10 +65,11 @@ export class Form<const FIELDS extends WidgetDict> {
         console.log(`[🥐] Building form ${this.def.name}`)
         const formBuilder = this.builder
         const rootDef = { topLevel: true, items: () => this.ui?.(formBuilder) ?? {} }
+        const unmounted = new Unmounted<Widget_group<FIELDS>>('group', rootDef)
         try {
             let initialValue = this.def.initialValue()
             if (initialValue && !isObservable(initialValue)) initialValue = observable(initialValue)
-            const rootWidget: Widget_group<FIELDS> = formBuilder._HYDRATE('group', rootDef, initialValue)
+            const rootWidget: Widget_group<FIELDS> = formBuilder._HYDRATE(unmounted, initialValue)
             this.ready = true
             this.error = null
             this.startMonitoring(rootWidget)
@@ -76,7 +78,7 @@ export class Form<const FIELDS extends WidgetDict> {
             console.error(`[👙🔴] Building form ${this.def.name} FAILED`, this)
             console.error(e)
             this.error = 'invalid form definition'
-            return formBuilder._HYDRATE('group', rootDef, null)
+            return formBuilder._HYDRATE(unmounted, null)
         }
     }
 

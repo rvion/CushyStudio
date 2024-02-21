@@ -57,12 +57,12 @@ export class Widget_optional<T extends Unmounted> implements IWidget<Widget_opti
 
     setOn = () => {
         this.serial.active = true
-        const fresh = this.config.widget
+        const unmounted = this.config.widget
         const prevSerial = this.serial.child
-        if (prevSerial && fresh.type === prevSerial.type) {
-            this.child = this.form.builder._HYDRATE(fresh.type, fresh.config, prevSerial)
+        if (prevSerial && unmounted.type === prevSerial.type) {
+            this.child = this.form.builder._HYDRATE(unmounted, prevSerial)
         } else {
-            this.child = this.form.builder._HYDRATE(fresh.type, fresh.config, null)
+            this.child = this.form.builder._HYDRATE(unmounted, null)
         }
     }
 

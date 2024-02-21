@@ -155,20 +155,17 @@ export class Widget_choices<T extends WidgetDict> implements IWidget<Widget_choi
         if (this.children[branch]) throw new Error(`❌ Branch "${branch}" already enabled`)
         // first: quick safety net to check against schema changes
         // a. re-create an empty item to check it's schema
-        const newItem = this.config.items[branch]
-        if (newItem == null) throw new Error(`❌ Branch "${branch}" has no initializer function`)
-
-        const prevBranchSerial = this.serial.values_?.[branch]
-        const newType = newItem.type
-        const newInput = newItem.config
+        const unmounted = this.config.items[branch]
+        if (unmounted == null) throw new Error(`❌ Branch "${branch}" has no initializer function`)
 
         // prev serial seems compmatible => we use it
-        if (prevBranchSerial && newType === prevBranchSerial.type) {
-            this.children[branch] = this.form.builder._HYDRATE(newType, newInput, prevBranchSerial)
+        const prevBranchSerial = this.serial.values_?.[branch]
+        if (prevBranchSerial && unmounted.type === prevBranchSerial.type) {
+            this.children[branch] = this.form.builder._HYDRATE(unmounted, prevBranchSerial)
         }
         // prev serial is not compatible => we use the fresh one instead
         else {
-            this.children[branch] = this.form.builder._HYDRATE(newType, newInput, null)
+            this.children[branch] = this.form.builder._HYDRATE(unmounted, null)
             this.serial.values_[branch] = this.children[branch]?.serial
         }
 

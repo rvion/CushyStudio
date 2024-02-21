@@ -15,49 +15,47 @@ app({
             element: () =>
                 form.choice({
                     items: {
-                        sampler_output_abc_asdf: () =>
-                            form.selectOne({
-                                // showID: true,
-                                // if choices is a function, the form root is injected as first parameter
-                                choices: (formRoot: Widget_group<any>) => {
-                                    // 🔶 null when the form is not yet fully initialized
-                                    if (formRoot.fields.samplerUI == null) return []
+                        sampler_output_abc_asdf: form.selectOne({
+                            // showID: true,
+                            // if choices is a function, the form root is injected as first parameter
+                            choices: (formRoot: Widget_group<any>) => {
+                                // 🔶 null when the form is not yet fully initialized
+                                if (formRoot.fields.samplerUI == null) return []
 
-                                    // 🔶 self-referencing => typescript can't infer the type here
-                                    const steps = formRoot.fields.samplerUI as Widget_list<
-                                        Widget_choices<{
-                                            sampler_output_abc_asdf: () => Widget_selectOne<any>
-                                            empty_latent: () => Widget_group<any>
-                                            pick_image: () => Widget_image
-                                        }>
-                                    >
+                                // 🔶 self-referencing => typescript can't infer the type here
+                                const steps = formRoot.fields.samplerUI as Widget_list<
+                                    Widget_choices<{
+                                        sampler_output_abc_asdf: () => Widget_selectOne<any>
+                                        empty_latent: () => Widget_group<any>
+                                        pick_image: () => Widget_image
+                                    }>
+                                >
 
-                                    // return a list of items
-                                    return steps.items.map((choiceWidget: Widget_choices<any>, ix: number) => {
-                                        if (choiceWidget == null) console.log(`[🔴] err 1: choiceWidget is null`)
-                                        const _selectOne = choiceWidget.firstActiveBranchWidget as Maybe<Widget_selectOne<any>>
-                                        if (_selectOne == null) console.log(`[🔴] err 2: firstActiveBranchWidget is null`, _selectOne) // prettier-ignore
-                                        const _actualChoice = _selectOne?.value
-                                        return {
-                                            id: _selectOne?.id ?? 'error',
-                                            disabled: _actualChoice == null,
-                                            name: _selectOne?.type ?? '❌ ERROR',
-                                            label: `${ix + 1}th (${choiceWidget.firstActiveBranchName ?? '❓'})`,
-                                        }
-                                    })
-                                },
+                                // return a list of items
+                                return steps.items.map((choiceWidget: Widget_choices<any>, ix: number) => {
+                                    if (choiceWidget == null) console.log(`[🔴] err 1: choiceWidget is null`)
+                                    const _selectOne = choiceWidget.firstActiveBranchWidget as Maybe<Widget_selectOne<any>>
+                                    if (_selectOne == null) console.log(`[🔴] err 2: firstActiveBranchWidget is null`, _selectOne) // prettier-ignore
+                                    const _actualChoice = _selectOne?.value
+                                    return {
+                                        id: _selectOne?.id ?? 'error',
+                                        disabled: _actualChoice == null,
+                                        name: _selectOne?.type ?? '❌ ERROR',
+                                        label: `${ix + 1}th (${choiceWidget.firstActiveBranchName ?? '❓'})`,
+                                    }
+                                })
+                            },
+                        }),
+                        empty_latent: form.group({
+                            layout: 'H',
+                            // topLevel: true,
+                            items: () => ({
+                                width: form.int({ default: 512, max: 1512, step: 32, hideSlider: true }),
+                                height: form.int({ default: 512, max: 1512, step: 32, hideSlider: true }),
+                                batch: form.int({ default: 1, min: 1, max: 32, hideSlider: true }),
                             }),
-                        empty_latent: () =>
-                            form.group({
-                                layout: 'H',
-                                // topLevel: true,
-                                items: () => ({
-                                    width: form.int({ default: 512, max: 1512, step: 32, hideSlider: true }),
-                                    height: form.int({ default: 512, max: 1512, step: 32, hideSlider: true }),
-                                    batch: form.int({ default: 1, min: 1, max: 32, hideSlider: true }),
-                                }),
-                            }),
-                        pick_image: () => form.image({}),
+                        }),
+                        pick_image: form.image(),
                     },
                 }),
         }),

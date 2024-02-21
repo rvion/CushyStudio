@@ -93,21 +93,14 @@ export class Widget_listExt<T extends Unmounted> implements IWidget<Widget_listE
         if (this.serial.entries == null) this.serial.entries = []
 
         // reference to check children types
-        const _reference = runWithGlobalForm(this.form.builder, () =>
-            config.element({
-                ix: 0,
-                width: w,
-                height: h,
-            }),
-        )
-
+        const unmounted = runWithGlobalForm(this.form.builder, () => config.element({ ix: 0, width: w, height: h }))
         for (const entry of this.serial.entries) {
             const subSerial = entry.serial
-            if (subSerial.type !== _reference.type) {
+            if (subSerial.type !== unmounted.type) {
                 console.log(`[❌] SKIPPING form item because it has an incompatible entry from a previous app definition`)
                 continue
             }
-            const subWidget = form.builder._HYDRATE(subSerial.type, _reference.config, subSerial)
+            const subWidget = form.builder._HYDRATE(unmounted, subSerial)
             this.entries.push({ widget: subWidget, position: entry.shape })
         }
 
@@ -136,13 +129,9 @@ export class Widget_listExt<T extends Unmounted> implements IWidget<Widget_listE
         const partialShape = this.config.initialPosition({ ix: this.length, width: this.width, height: this.height })
         const shape: BoardPosition = { ...boardDefaultItemShape, ...partialShape }
         const unmounted = runWithGlobalForm(this.form.builder, () =>
-            this.config.element({
-                width: this.serial.width,
-                height: this.serial.height,
-                ix: this.entries.length,
-            }),
+            this.config.element({ width: this.width, height: this.height, ix: this.length }),
         )
-        const element = this.form.builder._HYDRATE(unmounted.type, unmounted.config, null)
+        const element = this.form.builder._HYDRATE(unmounted, null)
         this.entries.push({ widget: element, position: shape })
         this.serial.entries.push({ serial: element.serial, shape: shape })
     }

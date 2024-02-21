@@ -54,6 +54,7 @@ export class FormBuilder {
     color       = (config: Widget_color_config  = {})                           => new Unmounted<  Widget_color              >('color'    , config)
     matrix      = (config: Widget_matrix_config)                                => new Unmounted<  Widget_matrix             >('matrix'   , config)
     inlineRun   = (config: W.Widget_inlineRun_config = {})                      => new Unmounted<W.Widget_inlineRun          >('inlineRun', config)
+    button      = (config: W.Widget_inlineRun_config = {})                      => new Unmounted<W.Widget_inlineRun          >('inlineRun', config)
     loras       = (config: W.Widget_loras_config     = {})                      => new Unmounted<W.Widget_loras              >('loras'    , config)
     markdown    = (config: W.Widget_markdown_config | string)                   => new Unmounted<W.Widget_markdown           >('markdown' , typeof config === 'string' ? { markdown: config } : config)
     image       = (config: Widget_image_config = {})                            => new Unmounted<Widget_image                >('image'    , config)
@@ -148,37 +149,42 @@ export class FormBuilder {
     _cache: { count: number } = { count: 0 }
 
     /** (@internal) advanced way to restore form state. used internally */
-    // prettier-ignore
-    _HYDRATE = (type: W.Widget['type'], input: any, serial: any | null): any => {
+    _HYDRATE = <T extends Unmounted>(
+        unmounted: T,
+        serial: any | null
+    ): T['$Widget'] => {
         // ensure the serial is compatible
-        if (serial != null && serial.type !== type) {
-            console.log(`[🔶] INVALID SERIAL (expected: ${type}, got: ${serial.type})`)
+        if (serial != null && serial.type !== unmounted.type) {
+            console.log(`[🔶] INVALID SERIAL (expected: ${unmounted.type}, got: ${serial.type})`)
             serial = null
         }
 
-        if (type === 'group'     ) return new   Widget_group     (this.form, input, serial, this.form._ROOT ? undefined : (x) => { this.form._ROOT = x })
-        if (type === 'shared'    ) return new   Widget_shared    (this.form, input, serial)
-        if (type === 'optional'  ) return new   Widget_optional  (this.form, input, serial)
-        if (type === 'bool'      ) return new   Widget_bool      (this.form, input, serial)
-        if (type === 'str'       ) return new   Widget_string    (this.form, input, serial)
-        if (type === 'prompt'    ) return new   Widget_prompt    (this.form, input, serial)
-        if (type === 'choices'   ) return new   Widget_choices   (this.form, input, serial)
-        if (type === 'number'    ) return new   Widget_number    (this.form, input, serial)
-        if (type === 'color'     ) return new   Widget_color     (this.form, input, serial)
-        if (type === 'enum'      ) return new   Widget_enum      (this.form, input, serial)
-        if (type === 'list'      ) return new   Widget_list      (this.form, input, serial)
-        if (type === 'orbit'     ) return new   Widget_orbit     (this.form, input, serial)
-        if (type === 'listExt'   ) return new   Widget_listExt   (this.form, input, serial)
-        if (type === 'inlineRun' ) return new W.Widget_inlineRun (this.form, input, serial)
-        if (type === 'seed'      ) return new W.Widget_seed      (this.form, input, serial)
-        if (type === 'matrix'    ) return new   Widget_matrix    (this.form, input, serial)
-        if (type === 'loras'     ) return new W.Widget_loras     (this.form, input, serial)
-        if (type === 'image'     ) return new   Widget_image     (this.form, input, serial)
-        if (type === 'selectOne' ) return new W.Widget_selectOne (this.form, input, serial)
-        if (type === 'selectMany') return new W.Widget_selectMany(this.form, input, serial)
-        if (type === 'size'      ) return new   Widget_size      (this.form, input, serial)
-        if (type === 'markdown'  ) return new W.Widget_markdown  (this.form, input, serial)
-        if (type === 'custom'    ) return new   Widget_custom    (this.form, input, serial)
+        const type = unmounted.type
+        const config = unmounted.config as any /* impossible to propagate union specification in the switch below */
+
+        if (type === 'group'     ) return new   Widget_group     (this.form, config, serial, this.form._ROOT ? undefined : (x) => { this.form._ROOT = x })
+        if (type === 'shared'    ) return new   Widget_shared    (this.form, config, serial)
+        if (type === 'optional'  ) return new   Widget_optional  (this.form, config, serial)
+        if (type === 'bool'      ) return new   Widget_bool      (this.form, config, serial)
+        if (type === 'str'       ) return new   Widget_string    (this.form, config, serial)
+        if (type === 'prompt'    ) return new   Widget_prompt    (this.form, config, serial)
+        if (type === 'choices'   ) return new   Widget_choices   (this.form, config, serial)
+        if (type === 'number'    ) return new   Widget_number    (this.form, config, serial)
+        if (type === 'color'     ) return new   Widget_color     (this.form, config, serial)
+        if (type === 'enum'      ) return new   Widget_enum      (this.form, config, serial)
+        if (type === 'list'      ) return new   Widget_list      (this.form, config, serial)
+        if (type === 'orbit'     ) return new   Widget_orbit     (this.form, config, serial)
+        if (type === 'listExt'   ) return new   Widget_listExt   (this.form, config, serial)
+        if (type === 'inlineRun' ) return new W.Widget_inlineRun (this.form, config, serial)
+        if (type === 'seed'      ) return new W.Widget_seed      (this.form, config, serial)
+        if (type === 'matrix'    ) return new   Widget_matrix    (this.form, config, serial)
+        if (type === 'loras'     ) return new W.Widget_loras     (this.form, config, serial)
+        if (type === 'image'     ) return new   Widget_image     (this.form, config, serial)
+        if (type === 'selectOne' ) return new W.Widget_selectOne (this.form, config, serial)
+        if (type === 'selectMany') return new W.Widget_selectMany(this.form, config, serial)
+        if (type === 'size'      ) return new   Widget_size      (this.form, config, serial)
+        if (type === 'markdown'  ) return new W.Widget_markdown  (this.form, config, serial)
+        if (type === 'custom'    ) return new   Widget_custom    (this.form, config, serial)
 
         console.log(`🔴 unknown widget "${type}" in serial.`)
         exhaust(type)
