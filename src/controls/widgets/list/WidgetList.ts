@@ -6,7 +6,6 @@ import { makeAutoObservable, observable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { runWithGlobalForm } from 'src/models/_ctx2'
 import { WidgetDI } from '../WidgetUI.DI'
-import type { Widget } from 'src/controls/Widget'
 
 // CONFIG
 export type Widget_list_config<T extends Spec> = WidgetConfigFields<{
@@ -39,7 +38,6 @@ export class Widget_list<T extends Spec> implements IWidget<Widget_list_types<T>
     get serialHash(): string {
         return this.items.map((v) => v.serialHash).join(',')
     }
-    readonly isVerticalByDefault = true
     readonly isCollapsible = true
     readonly id: string
     readonly type: 'list' = 'list'

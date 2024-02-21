@@ -22,7 +22,6 @@ export interface Widget_color
 // STATE
 export class Widget_color implements IWidget_OLD<'color', Widget_color_config, Widget_color_serial, any, Widget_color_output> {
     get serialHash() { return hash(this.value) } // prettier-ignore
-    readonly isVerticalByDefault = false
     readonly isCollapsible = false
     readonly id: string
     readonly type: 'color' = 'color'

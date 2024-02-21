@@ -36,7 +36,6 @@ export class Widget_matrix implements IWidget_OLD<'matrix', Widget_matrix_config
     get serialHash() {
         return hash(this.value)
     }
-    readonly isVerticalByDefault = true
     readonly isCollapsible = true
     readonly id: string
     readonly type: 'matrix' = 'matrix'

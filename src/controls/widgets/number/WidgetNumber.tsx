@@ -41,7 +41,6 @@ export type Widget_number_types = {
 export interface Widget_number extends WidgetTypeHelpers<Widget_number_types> {}
 export class Widget_number implements IWidget<Widget_number_types> {
     get serialHash () { return hash(this.value) } // prettier-ignore
-    readonly isVerticalByDefault = false
     readonly isCollapsible = false
     readonly id: string
     readonly type: 'number' = 'number'

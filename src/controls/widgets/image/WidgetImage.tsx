@@ -34,7 +34,6 @@ export interface Widget_image extends WidgetTypeHelpers_OLD<'image', Widget_imag
 export class Widget_image implements IWidget_OLD<'image', Widget_image_config, Widget_image_serial, 0, Widget_image_output> {
     static Prop = <T extends Widget_image>(config: Widget_image_config) => new Spec('image', config)
     get serialHash() { return this.value.data.hash } // prettier-ignore
-    readonly isVerticalByDefault = false
     readonly isCollapsible = true
     readonly id: string
     readonly type: 'image' = 'image'

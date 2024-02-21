@@ -13,7 +13,7 @@ import { ResolutionState } from '../size/ResolutionState'
 
 // CONFIG
 export type Widget_listExt_config<T extends Spec> = WidgetConfigFields<{
-    element: (p: { ix: number; width: number; height: number }) => T
+    element: T | ((p: { ix: number; width: number; height: number }) => T)
     min?: number
     max?: number
     defaultLength?: number
@@ -51,7 +51,6 @@ export type Widget_listExt_types<T extends Spec> = {
 export interface Widget_listExt<T extends Spec> extends WidgetTypeHelpers<Widget_listExt_types<T>> {}
 export class Widget_listExt<T extends Spec> implements IWidget<Widget_listExt_types<T>> {
     get serialHash () { return hash(this.value) } // prettier-ignore
-    readonly isVerticalByDefault = true
     readonly isCollapsible = true
     readonly id: string
     readonly type: 'listExt' = 'listExt'
@@ -74,33 +73,41 @@ export class Widget_listExt<T extends Spec> implements IWidget<Widget_listExt_ty
     }
 
     // INIT -----------------------------------------------------------------------------
-    constructor(public form: Form<any>, public config: Widget_listExt_config<T>, serial?: Widget_listExt_serial<T>) {
-        this.id = serial?.id ?? nanoid()
 
-        const w = config.width ?? 100
-        const h = config.height ?? 100
+    get width(): number { return this.serial.width ?? this.config.width ?? 100 } // prettier-ignore
+    get height(): number { return this.serial.height ?? this.config.height ?? 100 } // prettier-ignore
+    // get width() { return this.serial.width } // prettier-ignore
+    // get height() { return this.serial.height } // prettier-ignore
+
+    constructor(
+        //
+        public form: Form<any>,
+        public config: Widget_listExt_config<T>,
+        serial?: Widget_listExt_serial<T>,
+    ) {
+        this.id = serial?.id ?? nanoid()
 
         // serial
         this.serial = serial ?? {
             type: 'listExt',
             id: this.id,
             entries: [],
-            width: w,
-            height: h,
+            width: config.width ?? 100,
+            height: config.height ?? 100,
         }
 
         // minor safety net since all those internal changes
         if (this.serial.entries == null) this.serial.entries = []
 
         // reference to check children types
-        const unmounted = runWithGlobalForm(this.form.builder, () => config.element({ ix: 0, width: w, height: h }))
+        const schema = this.schemaAt(0)
         for (const entry of this.serial.entries) {
             const subSerial = entry.serial
-            if (subSerial.type !== unmounted.type) {
+            if (subSerial.type !== schema.type) {
                 console.log(`[❌] SKIPPING form item because it has an incompatible entry from a previous app definition`)
                 continue
             }
-            const subWidget = form.builder._HYDRATE(unmounted, subSerial)
+            const subWidget = form.builder._HYDRATE(schema, subSerial)
             this.entries.push({ widget: subWidget, position: entry.shape })
         }
 
@@ -109,6 +116,15 @@ export class Widget_listExt<T extends Spec> implements IWidget<Widget_listExt_ty
         for (let i = 0; i < missingItems; i++) this.addItem()
 
         makeAutoObservable(this, { sizeHelper: false })
+    }
+
+    schemaAt = (ix: number): T => {
+        const _schema = this.config.element
+        const schema: T =
+            typeof _schema === 'function' //
+                ? runWithGlobalForm(this.form.builder, () => _schema({ ix, width: this.width, height: this.width }))
+                : _schema
+        return schema
     }
 
     // HELPERS =======================================================
@@ -122,16 +138,12 @@ export class Widget_listExt<T extends Spec> implements IWidget<Widget_listExt_ty
     }
 
     // ADDING ITEMS -------------------------------------------------
-    get width() { return this.serial.width } // prettier-ignore
-    get height() { return this.serial.height } // prettier-ignore
     get length() { return this.entries.length } // prettier-ignore
     addItem() {
         const partialShape = this.config.initialPosition({ ix: this.length, width: this.width, height: this.height })
         const shape: BoardPosition = { ...boardDefaultItemShape, ...partialShape }
-        const unmounted = runWithGlobalForm(this.form.builder, () =>
-            this.config.element({ width: this.width, height: this.height, ix: this.length }),
-        )
-        const element = this.form.builder._HYDRATE(unmounted, null)
+        const spec = this.schemaAt(this.length)
+        const element = this.form.builder._HYDRATE(spec, null)
         this.entries.push({ widget: element, position: shape })
         this.serial.entries.push({ serial: element.serial, shape: shape })
     }

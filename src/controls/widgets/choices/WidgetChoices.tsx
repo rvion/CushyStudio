@@ -41,7 +41,6 @@ export type Widget_choices_types<T extends SchemaDict> = {
 // STATE
 export interface Widget_choices<T extends SchemaDict> extends WidgetTypeHelpers<Widget_choices_types<T>> {}
 export class Widget_choices<T extends SchemaDict> implements IWidget<Widget_choices_types<T>> {
-    readonly isVerticalByDefault = true
     readonly isCollapsible = true
     readonly id: string
     readonly type: 'choices' = 'choices'

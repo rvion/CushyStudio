@@ -29,6 +29,7 @@ export const WidgetSizeX_LineUI = observer(function WidgetSize_LineUI_(p: {
     bounds?: { min?: number; max?: number; step?: number }
 }) {
     const uist = p.sizeHelper
+
     return (
         <div className='flex flex-1 flex-col gap-1'>
             <div tw='flex items-center gap-1'>
@@ -97,6 +98,7 @@ export const WigetSizeXUI = observer(function WigetSizeXUI_(p: {
     bounds?: { min?: number; max?: number; step?: number }
 }) {
     const uist = p.sizeHelper
+    if (uist.isAspectRatioLocked) return null
     const resoBtn = (ar: AspectRatio) => (
         <button
             type='button'
@@ -117,14 +119,13 @@ export const WigetSizeXUI = observer(function WigetSizeXUI_(p: {
         </button>
     )
 
-    return uist.isAspectRatioLocked ? (
+    return (
         <div className='flex flex-col gap-1 bg-base-300 p-1 rounded-b'>
             <div tw='flex items-start gap-2'>
                 <Joined>
                     {modelBtn('1.5')}
                     {modelBtn('xl')}
                 </Joined>
-
                 {/* <div tw='flex items-center'>
                         filp:
                         <Toggle
@@ -153,7 +154,5 @@ export const WigetSizeXUI = observer(function WigetSizeXUI_(p: {
                 </div>
             </div>
         </div>
-    ) : (
-        <></>
     )
 })

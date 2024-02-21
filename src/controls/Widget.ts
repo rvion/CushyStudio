@@ -66,7 +66,6 @@ export type Widget_markdown_state  = WidgetSerialFields<{ type: 'markdown', acti
 export type Widget_markdown_output = { type: 'markdown', active: true }
 export interface Widget_markdown extends WidgetTypeHelpers_OLD<'markdown', Widget_markdown_config, Widget_markdown_serial, Widget_markdown_state, Widget_markdown_output> {}
 export class Widget_markdown implements IWidget_OLD<'markdown', Widget_markdown_config, Widget_markdown_serial, Widget_markdown_state, Widget_markdown_output> {
-    isVerticalByDefault = true
     isCollapsible = true
     id: string
     type: 'markdown' = 'markdown'
@@ -101,7 +100,6 @@ export type Widget_seed_state  = WidgetSerialFields<{ type:'seed', active: true;
 export type Widget_seed_output = number
 export interface Widget_seed extends WidgetTypeHelpers_OLD<'seed', Widget_seed_config, Widget_seed_serial, Widget_seed_state, Widget_seed_output> {}
 export class Widget_seed implements IWidget_OLD<'seed', Widget_seed_config, Widget_seed_serial, Widget_seed_state, Widget_seed_output> {
-    readonly isVerticalByDefault = false
     readonly isCollapsible = false
     readonly id: string
     readonly type: 'seed' = 'seed'
@@ -142,7 +140,6 @@ export type Widget_inlineRun_output = boolean
 export interface Widget_inlineRun extends WidgetTypeHelpers_OLD<'inlineRun', Widget_inlineRun_config, Widget_inlineRun_serial, Widget_inlineRun_state, Widget_inlineRun_output> {}
 export class Widget_inlineRun implements IWidget_OLD<'inlineRun', Widget_inlineRun_config, Widget_inlineRun_serial, Widget_inlineRun_state, Widget_inlineRun_output> {
     get serialHash () { return hash(this.value) }
-    readonly isVerticalByDefault = false
     readonly isCollapsible = false
     readonly id: string
     readonly type: 'inlineRun' = 'inlineRun'
@@ -173,7 +170,6 @@ export type Widget_loras_output = SimplifiedLoraDef[]
 export interface Widget_loras extends WidgetTypeHelpers_OLD<'loras', Widget_loras_config, Widget_loras_serial, any, Widget_loras_output> {}
 export class Widget_loras implements IWidget_OLD<'loras', Widget_loras_config, Widget_loras_serial, any, Widget_loras_output> {
     get serialHash () { return hash(this.value) }
-    isVerticalByDefault = true
     isCollapsible = true
     id: string
     type: 'loras' = 'loras'
@@ -232,7 +228,6 @@ export type Widget_selectOne_output<T extends BaseSelectEntry> = T
 export interface Widget_selectOne<T>  extends WidgetTypeHelpers_OLD<'selectOne', Widget_selectOne_config<T>, Widget_selectOne_serial<T>, Widget_selectOne_state<T>, Widget_selectOne_output<T>> {}
 export class Widget_selectOne<T extends BaseSelectEntry> implements IWidget_OLD<'selectOne', Widget_selectOne_config<T>, Widget_selectOne_serial<T>, Widget_selectOne_state<T>, Widget_selectOne_output<T>> {
     get serialHash () { return hash(this.value) }
-    readonly isVerticalByDefault = false
     readonly isCollapsible = false
     readonly id: string
     readonly type: 'selectOne' = 'selectOne'
@@ -282,7 +277,6 @@ export type Widget_selectMany_output<T extends BaseSelectEntry> = T[]
 export interface Widget_selectMany<T extends BaseSelectEntry> extends WidgetTypeHelpers_OLD<'selectMany', Widget_selectMany_config<T>, Widget_selectMany_serial<T>, 0, Widget_selectMany_output<T>> {}
 export class Widget_selectMany<T extends BaseSelectEntry> implements IWidget_OLD<'selectMany', Widget_selectMany_config<T>, Widget_selectMany_serial<T>, 0, Widget_selectMany_output<T>> {
     get serialHash () { return hash(this.value) }
-    readonly isVerticalByDefault = false
     readonly isCollapsible = false
     readonly id: string
     readonly type: 'selectMany' = 'selectMany'

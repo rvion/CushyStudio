@@ -50,7 +50,6 @@ export class Widget_group<T extends SchemaDict> implements IWidget<Widget_group_
             .map((v: Widget) => v.serialHash)
             .join(',')
     }
-    readonly isVerticalByDefault = true
     readonly isCollapsible = this.config.collapsible ?? true
     readonly id: string
     readonly type: 'group' = 'group'

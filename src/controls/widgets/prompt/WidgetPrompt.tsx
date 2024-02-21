@@ -43,7 +43,6 @@ export type Widget_prompt_types = {
 export interface Widget_prompt extends WidgetTypeHelpers<Widget_prompt_types> {}
 export class Widget_prompt implements IWidget<Widget_prompt_types> {
     get serialHash () { return hash(this.serial.val) } // prettier-ignore
-    isVerticalByDefault = true
 
     get isCollapsible() { return this.config.textarea ?? true } // prettier-ignore
 

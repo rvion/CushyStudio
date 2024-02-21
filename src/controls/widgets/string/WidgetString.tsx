@@ -35,10 +35,6 @@ export class Widget_string implements IWidget<Widget_string_types> {
     readonly type: 'str' = 'str'
     get isCollapsible() { return this.config.textarea ?? false } // prettier-ignore
     get serialHash () { return hash(this.value) } // prettier-ignore
-    get isVerticalByDefault(): boolean {
-        if (this.config.textarea) return true
-        return false
-    }
 
     serial: Widget_string_serial
     readonly defaultValue: string = this.config.default ?? ''

@@ -33,6 +33,12 @@ app({
                 '(nature)*0.9, (intricate_details)*1.1',
             ].join('\n'),
         }),
+        regionalPrompt: form.regional({
+            element: form.prompt({}),
+            height: 512,
+            width: 512,
+            initialPosition: () => ({ x: 0, y: 0 }),
+        }),
         //
         negative: form.prompt({
             startCollapsed: true,

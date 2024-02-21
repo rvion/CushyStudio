@@ -1,10 +1,13 @@
 import type { Form } from './Form'
+import type { SchemaDict } from 'src/cards/App'
+import type { Requirements } from './IWidget'
 
 import { makeAutoObservable } from 'mobx'
 import { exhaust } from 'src/utils/misc/ComfyUtils'
 import { _FIX_INDENTATION } from '../utils/misc/_FIX_INDENTATION'
 import * as W from './Widget'
 
+import { Spec } from './Prop'
 import { mkFormAutoBuilder } from './builder/AutoBuilder'
 import { EnumBuilder, EnumBuilderOpt } from './builder/EnumBuilder'
 import { Widget_bool, type Widget_bool_config } from './widgets/bool/WidgetBool'
@@ -16,17 +19,14 @@ import { Widget_group, type Widget_group_config } from './widgets/group/WidgetGr
 import { Widget_image, type Widget_image_config } from './widgets/image/WidgetImage'
 import { Widget_list, type Widget_list_config } from './widgets/list/WidgetList'
 import { Widget_listExt, type Widget_listExt_config } from './widgets/listExt/WidgetListExt'
+import { Widget_matrix, type Widget_matrix_config } from './widgets/matrix/WidgetMatrix'
 import { Widget_number, type Widget_number_config } from './widgets/number/WidgetNumber'
 import { Widget_optional, type Widget_optional_config } from './widgets/optional/WidgetOptional'
 import { Widget_orbit, type Widget_orbit_config } from './widgets/orbit/WidgetOrbit'
 import { Widget_prompt, type Widget_prompt_config } from './widgets/prompt/WidgetPrompt'
+import { Widget_shared } from './widgets/shared/WidgetShared'
 import { Widget_size, type Widget_size_config } from './widgets/size/WidgetSize'
 import { Widget_string, type Widget_string_config } from './widgets/string/WidgetString'
-import { Widget_shared } from './widgets/shared/WidgetShared'
-import { Widget_matrix, type Widget_matrix_config } from './widgets/matrix/WidgetMatrix'
-import { Spec } from './Prop'
-import type { SchemaDict } from 'src/cards/App'
-import type { Requirements, SharedWidgetProps } from './IWidget'
 
 // prettier-ignore
 export class FormBuilder {

@@ -28,7 +28,6 @@ export type WidgetTypeHelpers<K extends $WidgetTypes> = {
 
 export type IWidget_OLD<T, I, X, S, O> = {
     id: string
-    isVerticalByDefault: boolean
     isCollapsible: boolean
     readonly serialHash: string
     readonly type: T
@@ -40,7 +39,6 @@ export type IWidget_OLD<T, I, X, S, O> = {
 
 export type IWidget<K extends $WidgetTypes> = {
     id: string
-    isVerticalByDefault: boolean
     isCollapsible: boolean
     readonly serialHash: string
     readonly type: K['$Type']

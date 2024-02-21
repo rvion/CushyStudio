@@ -43,7 +43,6 @@ export type Widget_orbit_types = {
 export interface Widget_orbit extends WidgetTypeHelpers<Widget_orbit_types> {}
 export class Widget_orbit implements IWidget<Widget_orbit_types> {
     get serialHash () { return hash(this.value) } // prettier-ignore
-    isVerticalByDefault = true
     isCollapsible = false
     id: string
     type: 'orbit' = 'orbit'

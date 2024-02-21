@@ -37,7 +37,6 @@ export class Widget_optional<T extends Spec> implements IWidget<Widget_optional_
         if (this.serial.active) return this.childOrThrow.serialHash
         return 'x'
     }
-    readonly isVerticalByDefault = true
     readonly isCollapsible = true
     readonly id: string
     readonly type: 'optional' = 'optional'

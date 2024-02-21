@@ -29,7 +29,6 @@ export type Widget_string_types = {
 // STATE
 export interface Widget_bool extends WidgetTypeHelpers<Widget_string_types> {}
 export class Widget_bool implements IWidget<Widget_string_types> {
-    readonly isVerticalByDefault = false
     readonly isCollapsible = false
     readonly id: string
     readonly type: 'bool' = 'bool'
