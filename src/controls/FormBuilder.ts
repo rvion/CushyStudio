@@ -84,10 +84,26 @@ export class FormBuilder {
     colorOpt    = (config: Widget_color_config & { startActive?: boolean }) => this.wrapOptional(config,  this.color)
     groupOpt    = <const T extends WidgetDict>(config: Widget_group_config<T> & { startActive?: boolean }) => this.wrapOptional(config,  this.group)
 
+    /**
+     * Calling this function will mount and instanciate the subform right away
+     * Subform will be register in the root form `group`, using `__${key}__` as the key
+     * This is a core abstraction that enables features like
+     *  - mountting a widget at several places in the form
+     *  - recursive forms
+     *  - dynamic widgets depending on other widgets values
+     * */
+    shared = <W extends Unmounted>(key: string, unmounted: W): Widget_shared<W> => {
+        const name = `__${key}__`
+        const prevSerial = this.form._ROOT.serial.values_[name]
+        let widget
+        if (prevSerial && prevSerial.type === unmounted.type) {
+            widget = this._HYDRATE(unmounted, prevSerial)
+        } else {
+            widget = this._HYDRATE(unmounted, null)
+            this.form._ROOT.serial.values_[name] = widget.serial
+        }
 
-
-    shared = <W extends W.Widget>(baseName: string, widget: W): Widget_shared<W> => {
-        return new Widget_shared<W>(this.form, { rootKey: baseName, widget }) as any
+        return new Widget_shared<W>(this.form, { rootKey: key, widget }) as any
     }
 
     // --------------------
@@ -134,20 +150,11 @@ export class FormBuilder {
         Object.defineProperty(this, 'enumOpt', { value: _ })
         return _
     }
-    //  <const T extends KnownEnumNames>(config: Widget_enum_config<T> & { startActive?: boolean }) =>
-    //     this.optional({
-    //         label: config.label,
-    //         startActive: config.startActive,
-    //         widget: () => new Widget_enum(this.form, config),
-    //     })
-    // --------------------
 
-    // List API--------------
+
     _FIX_INDENTATION = _FIX_INDENTATION
 
-    /** (@internal); */
-    _cache: { count: number } = { count: 0 }
-
+    /** (@internal); */ _cache: { count: number } = { count: 0 }
     /** (@internal) advanced way to restore form state. used internally */
     _HYDRATE = <T extends Unmounted>(
         unmounted: T,
@@ -157,6 +164,13 @@ export class FormBuilder {
         if (serial != null && serial.type !== unmounted.type) {
             console.log(`[🔶] INVALID SERIAL (expected: ${unmounted.type}, got: ${serial.type})`)
             serial = null
+        }
+
+        if (unmounted instanceof Widget_shared){
+            console.log(`[🤠🔴] `,unmounted)
+            return unmounted
+            // return new Unmounted(unmounted.type, unmounted.config) as any
+            // return unmounted.shared
         }
 
         const type = unmounted.type
