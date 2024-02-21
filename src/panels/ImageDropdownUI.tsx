@@ -19,10 +19,17 @@ export const ImageDropdownUI = observer(function ImageDropdownUI_(p: { img: Medi
 export const ImageDropdownMenuUI = observer(function ImageDropdownMenuUI_(p: { img: MediaImageL }) {
     const st = useSt()
     const img = p.img
-
     return (
         <>
             <div className='divider divider-start my-0'>send to</div>
+            <MenuItem
+                icon={<span class='material-symbols-outlined'>content_copy</span>}
+                onClick={async () => {
+                    img.copyToClipboard()
+                }}
+            >
+                clipboard
+            </MenuItem>
             <MenuItem
                 icon={<span className='material-symbols-outlined'>settings_overscan</span>}
                 disabled={!img?.absPath}

@@ -46,6 +46,48 @@ export class MediaImageL {
     get app(): Maybe<CushyAppL> {return this.draft?.app} // prettier-ignore
     get script(): Maybe<CushyScriptL> {return this.app?.script } // prettier-ignore
 
+    copyToClipboard = async () => {
+        const canvas = document.createElement('canvas')
+        const ctx = canvas.getContext('2d')
+
+        const img = new Image()
+        img.src = URL.createObjectURL(this.getAsBlob())
+
+        img.onload = () => {
+            canvas.width = img.width
+            canvas.height = img.height
+            ctx?.drawImage(img, 0, 0)
+
+            const dataUrl = canvas.toDataURL('image/png')
+
+            /* Convert data URL to a Blob */
+            const binary = atob(dataUrl.split(',')[1])
+            const array = new Uint8Array(binary.length)
+            for (let i = 0; i < binary.length; i++) {
+                array[i] = binary.charCodeAt(i)
+            }
+
+            const converted = new Blob([array], { type: 'image/png' })
+
+            navigator.clipboard
+                .write([
+                    new ClipboardItem({
+                        'image/png': converted,
+                    }),
+                ])
+                .then(() => {
+                    console.log('Image copied to clipboard successfully')
+                })
+                .catch((error) => {
+                    console.error('Error copying image to clipboard:', error)
+                })
+        }
+
+        img.onerror = (error) => {
+            console.error('Error loading image:', error)
+        }
+    }
+
     useAsDraftIllustration = (draft_?: DraftL) => {
         const draft = draft_ ?? this.draft
         if (draft == null) return toastError(`no related draft found`)
