@@ -4,9 +4,9 @@ import type { Unmounted } from 'src/controls/Prop'
 
 import { observer, useLocalObservable } from 'mobx-react-lite'
 
-export const WidgetListExt_TimelineUI = observer(function WidgetTimelineUI_<T extends Widget>(p: {
+export const WidgetListExt_TimelineUI = observer(function WidgetTimelineUI_<T extends Unmounted>(p: {
     //
-    widget: Widget_listExt<Unmounted>
+    widget: Widget_listExt<T>
 }) {
     //
     const scale = 20

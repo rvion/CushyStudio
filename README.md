@@ -46,6 +46,14 @@ Screenshots and Videos
 
 ![](https://cushy.fra1.cdn.digitaloceanspaces.com/old/screenshots/2024-02-02-example-panels.jpg)
 
+<!--
+
+screenshot ideas
+- regional prompting
+- model management
+- videos
+- animated-diff
+-->
 
 # Table of contents
 

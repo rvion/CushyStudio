@@ -1,11 +1,11 @@
+import type { Unmounted } from 'src/controls/Prop'
 import type { Widget_listExt } from './WidgetListExt'
 
 import { observer } from 'mobx-react-lite'
-import { Widget } from 'src/controls/Widget'
 import { WidgetWithLabelUI } from 'src/controls/shared/WidgetWithLabelUI'
 import { Button } from 'src/rsuite/shims'
 
-export const WidgetListExt_ValuesUI = observer(function WidgetListExtValuesUI_<T extends Widget>(p: {
+export const WidgetListExt_ValuesUI = observer(function WidgetListExtValuesUI_<T extends Unmounted>(p: {
     //
     widget: Widget_listExt<T>
 }) {
