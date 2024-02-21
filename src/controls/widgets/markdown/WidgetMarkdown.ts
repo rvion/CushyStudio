@@ -32,7 +32,7 @@ export class Widget_markdown implements IWidget<Widget_markdown_types> {
     readonly type: 'markdown' = 'markdown'
     readonly serial: Widget_markdown_serial
 
-    get serialHash() {
+    get serialHash(): string {
         return this.id
     }
 

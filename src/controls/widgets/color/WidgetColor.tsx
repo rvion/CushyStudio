@@ -1,10 +1,11 @@
-import type { Form } from 'src/controls/Form'
 import type { IWidget_OLD, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers_OLD } from '../../IWidget'
+import type { Form } from 'src/controls/Form'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
-import { WidgetDI } from '../WidgetUI.DI'
 import { hash } from 'ohash'
+
+import { WidgetDI } from '../WidgetUI.DI'
 
 // CONFIG
 export type Widget_color_config = WidgetConfigFields<{ default?: string }>
@@ -21,7 +22,9 @@ export interface Widget_color
 
 // STATE
 export class Widget_color implements IWidget_OLD<'color', Widget_color_config, Widget_color_serial, any, Widget_color_output> {
-    get serialHash() { return hash(this.value) } // prettier-ignore
+    get serialHash(): string {
+        return hash(this.value)
+    }
     readonly isCollapsible = false
     readonly id: string
     readonly type: 'color' = 'color'

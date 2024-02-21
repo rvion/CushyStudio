@@ -7,21 +7,11 @@ import { InputNumberUI } from 'src/rsuite/InputNumberUI'
 import { Joined } from 'src/rsuite/shims'
 
 export const WigetSize_BlockUI = observer(function WigetSize_BlockUI_(p: { widget: Widget_size }) {
-    return (
-        <WigetSizeXUI //
-            sizeHelper={p.widget.sizeHelper}
-            bounds={p.widget.config}
-        />
-    )
+    return <WigetSizeXUI sizeHelper={p.widget.sizeHelper} bounds={p.widget.config} />
 })
 
 export const WigetSize_LineUI = observer(function WigetSize_LineUI_(p: { widget: Widget_size }) {
-    return (
-        <WidgetSizeX_LineUI //
-            sizeHelper={p.widget.sizeHelper}
-            bounds={p.widget.config}
-        />
-    )
+    return <WidgetSizeX_LineUI sizeHelper={p.widget.sizeHelper} bounds={p.widget.config} />
 })
 
 export const WidgetSizeX_LineUI = observer(function WidgetSize_LineUI_(p: {
@@ -98,7 +88,7 @@ export const WigetSizeXUI = observer(function WigetSizeXUI_(p: {
     bounds?: { min?: number; max?: number; step?: number }
 }) {
     const uist = p.sizeHelper
-    if (uist.isAspectRatioLocked) return null
+    if (!uist.isAspectRatioLocked) return null
     const resoBtn = (ar: AspectRatio) => (
         <button
             type='button'

@@ -5,6 +5,7 @@ import type { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { hash } from 'ohash'
+
 import { WidgetDI } from '../WidgetUI.DI'
 
 export type CustomWidgetProps<T> = { widget: Widget_custom<T>; extra: import('./WidgetCustomUI').UIKit }
@@ -33,7 +34,7 @@ export class Widget_custom<T> implements IWidget<Widget_custom_types<T>> {
     readonly id: string
     readonly type: 'custom' = 'custom'
 
-    get serialHash() {
+    get serialHash(): string {
         return hash(this.value)
     }
     serial: Widget_custom_serial<T>

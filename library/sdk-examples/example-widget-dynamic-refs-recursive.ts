@@ -1,9 +1,9 @@
-import type { Widget, Widget_selectOne } from 'src'
 import type { Spec } from 'src/controls/Prop'
 import type { Widget_choices } from 'src/controls/widgets/choices/WidgetChoices'
 import type { Widget_group } from 'src/controls/widgets/group/WidgetGroup'
 import type { Widget_image } from 'src/controls/widgets/image/WidgetImage'
 import type { Widget_list } from 'src/controls/widgets/list/WidgetList'
+import type { Widget_selectOne } from 'src/controls/widgets/selectOne/WidgetSelectOne'
 
 app({
     ui: (form) => ({

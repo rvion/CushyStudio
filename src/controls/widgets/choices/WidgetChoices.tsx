@@ -1,11 +1,12 @@
+import type { GetWidgetResult, IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../../IWidget'
 import type { SchemaDict } from 'src/cards/App'
 import type { Form } from 'src/controls/Form'
-import type { GetWidgetResult, IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../../IWidget'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { hash } from 'ohash'
 import { toastError } from 'src/utils/misc/toasts'
+
 import { WidgetDI } from '../WidgetUI.DI'
 
 // CONFIG
@@ -45,7 +46,9 @@ export class Widget_choices<T extends SchemaDict> implements IWidget<Widget_choi
     readonly id: string
     readonly type: 'choices' = 'choices'
 
-    get serialHash () { return hash(this.value) } // prettier-ignore
+    get serialHash(): string {
+        return hash(this.value)
+    }
     get isMulti() {
         return this.config.multi
     }

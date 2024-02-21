@@ -1,9 +1,10 @@
+import type { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../../IWidget'
 import type { Form } from 'src/controls/Form'
 import type { Spec } from 'src/controls/Prop'
-import type { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../../IWidget'
 
 import { computed, makeObservable, observable } from 'mobx'
 import { nanoid } from 'nanoid'
+
 import { WidgetDI } from '../WidgetUI.DI'
 
 // CONFIG
@@ -62,6 +63,7 @@ export class Widget_optional<T extends Spec> implements IWidget<Widget_optional_
             this.child = this.form.builder._HYDRATE(unmounted, prevSerial)
         } else {
             this.child = this.form.builder._HYDRATE(unmounted, null)
+            this.serial.child = this.child.serial
         }
     }
 

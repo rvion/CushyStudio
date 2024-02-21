@@ -1,10 +1,11 @@
+import type { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../../IWidget'
 import type { Tree } from '@lezer/common'
 import type { Form } from 'src/controls/Form'
-import type { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../../IWidget'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { hash } from 'ohash'
+
 import { WidgetDI } from '../WidgetUI.DI'
 import { compilePrompt } from './_compile'
 import { parser } from './grammar/grammar.parser'

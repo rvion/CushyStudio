@@ -1,15 +1,16 @@
+import type { BoardPosition } from './WidgetListExtTypes'
 import type { Form } from 'src/controls/Form'
 import type { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from 'src/controls/IWidget'
-import type { BoardPosition } from './WidgetListExtTypes'
 import type { Spec } from 'src/controls/Prop'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
+import { hash } from 'ohash'
 import { runWithGlobalForm } from 'src/models/_ctx2'
+
+import { ResolutionState } from '../size/ResolutionState'
 import { WidgetDI } from '../WidgetUI.DI'
 import { boardDefaultItemShape } from './WidgetListExtTypes'
-import { hash } from 'ohash'
-import { ResolutionState } from '../size/ResolutionState'
 
 // CONFIG
 export type Widget_listExt_config<T extends Spec> = WidgetConfigFields<{
@@ -50,7 +51,6 @@ export type Widget_listExt_types<T extends Spec> = {
 // STATE
 export interface Widget_listExt<T extends Spec> extends WidgetTypeHelpers<Widget_listExt_types<T>> {}
 export class Widget_listExt<T extends Spec> implements IWidget<Widget_listExt_types<T>> {
-    get serialHash () { return hash(this.value) } // prettier-ignore
     readonly isCollapsible = true
     readonly id: string
     readonly type: 'listExt' = 'listExt'
@@ -61,10 +61,8 @@ export class Widget_listExt<T extends Spec> implements IWidget<Widget_listExt_ty
         return state
     }
 
-    entries: {
-        widget: T['$Widget']
-        position: BoardPosition
-    }[] = []
+    entries: { widget: T['$Widget']; shape: BoardPosition }[] = []
+
     serial: Widget_listExt_serial<T>
 
     // for compatibility with Widget_list
@@ -108,7 +106,7 @@ export class Widget_listExt<T extends Spec> implements IWidget<Widget_listExt_ty
                 continue
             }
             const subWidget = form.builder._HYDRATE(schema, subSerial)
-            this.entries.push({ widget: subWidget, position: entry.shape })
+            this.entries.push({ widget: subWidget, shape: entry.shape })
         }
 
         // add missing items if min specified
@@ -144,7 +142,7 @@ export class Widget_listExt<T extends Spec> implements IWidget<Widget_listExt_ty
         const shape: BoardPosition = { ...boardDefaultItemShape, ...partialShape }
         const spec = this.schemaAt(this.length)
         const element = this.form.builder._HYDRATE(spec, null)
-        this.entries.push({ widget: element, position: shape })
+        this.entries.push({ widget: element, shape: shape })
         this.serial.entries.push({ serial: element.serial, shape: shape })
     }
 
@@ -162,8 +160,23 @@ export class Widget_listExt<T extends Spec> implements IWidget<Widget_listExt_ty
         }
     }
 
+    get serialHash(): string {
+        return hash({
+            items: this.entries.map((i) => ({
+                position: i.shape,
+                value: i.widget.serialHash,
+            })),
+            width: this.serial.width,
+            height: this.serial.width,
+        })
+    }
+
     get value(): Widget_listExt_output<T> {
-        const items = this.entries.map((i) => ({ position: i.position, value: i.widget.value }))
+        const items = this.entries.map((i) => ({
+            position: i.shape,
+            value: i.widget.value,
+        }))
+        console.log(`[🤠] `, items)
         return {
             items: items,
             width: this.serial.width,

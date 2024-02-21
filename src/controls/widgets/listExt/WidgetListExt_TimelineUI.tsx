@@ -1,6 +1,6 @@
-import type { Widget } from 'src/controls/Widget'
 import type { Widget_listExt } from './WidgetListExt'
 import type { Spec } from 'src/controls/Prop'
+import type { Widget } from 'src/controls/Widget'
 
 import { observer, useLocalObservable } from 'mobx-react-lite'
 
@@ -22,7 +22,7 @@ export const WidgetListExt_TimelineUI = observer(function WidgetTimelineUI_<T ex
                     style={{ minHeight: '1rem', width: serial.width * scale }}
                     tw='bg-base-300 timeline-item w-full relative'
                 ></div>
-                {widget.entries.map(({ position, widget }, ix) => {
+                {widget.entries.map(({ shape: position, widget }, ix) => {
                     return (
                         <div
                             key={widget.id}

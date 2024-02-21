@@ -1,6 +1,7 @@
 import type { Spec } from 'src/controls/Prop'
 
 import { observer } from 'mobx-react-lite'
+
 import { WidgetSizeX_LineUI, WigetSizeXUI } from '../size/WidgetSizeUI'
 import { Widget_listExt } from './WidgetListExt'
 import { WidgetListExt_RegionalUI } from './WidgetListExt_RegionalUI'
@@ -25,6 +26,9 @@ export const WidgetListExtUI = observer(function WidgetListExtUI_<T extends Spec
             ) : (
                 <WidgetListExt_RegionalUI widget={widget} />
             )}
+            {/* {p.widget.value.items.map((e) => (
+                <div tw='whitespace-pre-wrap w-96'>{JSON.stringify(e)}</div>
+            ))} */}
             <WidgetListExt_ValuesUI widget={widget} />
         </div>
     )

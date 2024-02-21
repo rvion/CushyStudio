@@ -29,7 +29,7 @@ export type Widget_loras_types = {
 // STATE
 export interface Widget_loras extends WidgetTypeHelpers<Widget_loras_types> {}
 export class Widget_loras implements IWidget<Widget_loras_types> {
-    get serialHash() {
+    get serialHash(): string {
         return hash(this.value)
     }
     isCollapsible = true

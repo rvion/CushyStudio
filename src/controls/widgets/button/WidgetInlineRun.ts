@@ -4,6 +4,7 @@ import type { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { hash } from 'ohash'
+
 import { WidgetDI } from '../WidgetUI.DI'
 
 // CONFIG
@@ -26,7 +27,7 @@ export type Widget_inlineRun_types = {
 // STATE
 export interface Widget_inlineRun extends WidgetTypeHelpers<Widget_inlineRun_types> {}
 export class Widget_inlineRun implements IWidget<Widget_inlineRun_types> {
-    get serialHash() {
+    get serialHash(): string {
         return hash(this.value)
     }
     readonly isCollapsible = false

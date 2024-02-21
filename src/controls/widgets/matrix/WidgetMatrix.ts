@@ -1,9 +1,11 @@
-import type { IWidget_OLD, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers_OLD } from '../../IWidget'
 import type { Form } from '../../Form'
+import type { IWidget_OLD, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers_OLD } from '../../IWidget'
+
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
-import { bang } from 'src/utils/misc/bang'
 import { hash } from 'ohash'
+import { bang } from 'src/utils/misc/bang'
+
 import { WidgetDI } from '../WidgetUI.DI'
 
 export type Widget_matrix_cell = {
@@ -33,7 +35,7 @@ export interface Widget_matrix
 
 // STATE
 export class Widget_matrix implements IWidget_OLD<'matrix', Widget_matrix_config, Widget_matrix_serial, 0, Widget_matrix_output> {
-    get serialHash() {
+    get serialHash(): string {
         return hash(this.value)
     }
     readonly isCollapsible = true
