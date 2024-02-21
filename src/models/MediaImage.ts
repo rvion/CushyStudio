@@ -49,42 +49,39 @@ export class MediaImageL {
     /* XXX: This should only be a stop-gap for a custom solution that isn't hampered by the browser's security capabilities */
     /** Uses browser clipboard API to copy the image to clipboard, will only copy as a PNG and will not include metadata. */
     copyToClipboard = () => {
-        const canvas = document.createElement('canvas')
-        const ctx = canvas.getContext('2d')
+        createHTMLImage_fromURL(URL.createObjectURL(this.getAsBlob()))
+            .then((img) => {
+                const canvas = document.createElement('canvas')
+                const ctx = canvas.getContext('2d')
 
-        const img = new Image()
-        img.src = URL.createObjectURL(this.getAsBlob())
+                canvas.width = img.width
+                canvas.height = img.height
+                ctx?.drawImage(img, 0, 0)
 
-        img.onload = () => {
-            canvas.width = img.width
-            canvas.height = img.height
-            ctx?.drawImage(img, 0, 0)
-
-            canvas.toBlob((blob) => {
-                if (blob == null) {
-                    toastError(`Could not copy image to clipboard: ${blob}`)
-                    return
-                }
-                navigator.clipboard
-                    .write([
-                        new ClipboardItem({
-                            [blob.type]: blob,
-                        }),
-                    ])
-                    .then(() => {
-                        toastInfo('Image copied to clipboard!')
-                    })
-                    .catch((error) => {
-                        toastError(`Could not copy image to clipboard: ${error}`)
-                        console.error('Error copying image to clipboard:', error)
-                    })
+                canvas.toBlob((blob) => {
+                    if (blob == null) {
+                        toastError(`Could not copy image to clipboard: ${blob}`)
+                        return
+                    }
+                    navigator.clipboard
+                        .write([
+                            new ClipboardItem({
+                                [blob.type]: blob,
+                            }),
+                        ])
+                        .then(() => {
+                            toastInfo('Image copied to clipboard!')
+                        })
+                        .catch((error) => {
+                            toastError(`Could not copy image to clipboard: ${error}`)
+                            console.error('Error copying image to clipboard:', error)
+                        })
+                })
             })
-        }
-
-        img.onerror = (error) => {
-            toastError(`Could not copy image to clipboard: ${error}`)
-            console.error('Error loading image:', error)
-        }
+            .catch((error) => {
+                toastError(`Could not copy image to clipboard: ${error}`)
+                console.error('Error loading image:', error)
+            })
     }
 
     useAsDraftIllustration = (draft_?: DraftL) => {
