@@ -24,8 +24,8 @@ import { Widget_size, type Widget_size_config } from './widgets/size/WidgetSize'
 import { Widget_string, type Widget_string_config } from './widgets/string/WidgetString'
 import { Widget_shared } from './widgets/shared/WidgetShared'
 import { Widget_matrix, type Widget_matrix_config } from './widgets/matrix/WidgetMatrix'
-import { CProperty } from './Prop'
-import type { WidgetDict } from 'src/cards/App'
+import { Schema } from './Prop'
+import type { SchemaDict } from 'src/cards/App'
 import type { Requirements, SharedWidgetProps } from './IWidget'
 
 // prettier-ignore
@@ -40,49 +40,49 @@ export class FormBuilder {
         })
     }
 
-    promptV2    = (config: Widget_prompt_config = {})                                                             => new CProperty<  Widget_prompt                      >('prompt'   , config)
-    time        = (config: Widget_string_config = {})                                                             => new CProperty<  Widget_string                      >('str'      , { inputType: 'time', ...config })
-    password    = (config: Widget_string_config = {})                                                             => new CProperty<  Widget_string                      >('str'      , { inputType: 'password', ...config })
-    email       = (config: Widget_string_config = {})                                                             => new CProperty<  Widget_string                      >('str'      , { inputType: 'email', ...config })
-    url         = (config: Widget_string_config = {})                                                             => new CProperty<  Widget_string                      >('str'      , { inputType: 'url', ...config })
-    string      = (config: Widget_string_config = {})                                                             => new CProperty<  Widget_string                      >('str'      , config)
-    boolean     = (config: Widget_bool_config   = {})                                                             => new CProperty<  Widget_bool                        >('bool'     , config)
-    bool        = (config: Widget_bool_config   = {})                                                             => new CProperty<  Widget_bool                        >('bool'     , config)
-    size        = (config: Widget_size_config   = {})                                                             => new CProperty<  Widget_size                        >('size'     , config)
-    orbit       = (config: Widget_orbit_config  = {})                                                             => new CProperty<  Widget_orbit                       >('orbit'    , config)
-    seed        = (config: W.Widget_seed_config = {})                                                             => new CProperty<W.Widget_seed                        >('seed'     , config)
-    color       = (config: Widget_color_config  = {})                                                             => new CProperty<  Widget_color                       >('color'    , config)
-    matrix      = (config: Widget_matrix_config)                                                                  => new CProperty<  Widget_matrix                      >('matrix'   , config)
-    inlineRun   = (config: W.Widget_inlineRun_config = {})                                                        => new CProperty<W.Widget_inlineRun                   >('inlineRun', config)
-    button      = (config: W.Widget_inlineRun_config = {})                                                        => new CProperty<W.Widget_inlineRun                   >('inlineRun', config)
-    loras       = (config: W.Widget_loras_config     = {})                                                        => new CProperty<W.Widget_loras                       >('loras'    , config)
-    markdown    = (config: W.Widget_markdown_config | string)                                                     => new CProperty<W.Widget_markdown                    >('markdown' , typeof config === 'string' ? { markdown: config } : config)
-    image       = (config: Widget_image_config = {})                                                              => new CProperty<Widget_image                         >('image'    , config)
-    prompt      = (config: Widget_prompt_config)                                                                  => new CProperty<Widget_prompt                        >('prompt'   , config)
-    int         = (config: Omit<Widget_number_config, 'mode'> = {})                                               => new CProperty<  Widget_number                      >('number'   , { mode: 'int', ...config })
-    float       = (config: Omit<Widget_number_config, 'mode'> = {})                                               => new CProperty<  Widget_number                      >('number'   , { mode: 'float', ...config })
-    number      = (config: Omit<Widget_number_config, 'mode'> = {})                                               => new CProperty<  Widget_number                      >('number'   , { mode: 'float', ...config })
-    custom      = <TViewState>(config: Widget_custom_config<TViewState>)                                          => new CProperty<  Widget_custom<TViewState>          >('custom'   , config)
-    list        = <const T extends CProperty>(config: Widget_list_config<T>)                                      => new CProperty<  Widget_list<T>                     >('list'     , config)
-    listExt     = <const T extends CProperty>(config: Widget_listExt_config<T>)                                   => new CProperty<  Widget_listExt<T>                  >('listExt'  , config)
-    timeline    = <const T extends CProperty>(config: Widget_listExt_config<T>)                                   => new CProperty<  Widget_listExt<T>                  >('listExt'  , { mode: 'timeline', ...config })
-    regional    = <const T extends CProperty>(config: Widget_listExt_config<T>)                                   => new CProperty<  Widget_listExt<T>                  >('listExt'  , { mode: 'regional', ...config })
-    selectOneV2 = (p: string[])                                                                                   => new CProperty<W.Widget_selectOne<W.BaseSelectEntry>>('selectOne',  { choices: p.map((id) => ({ id })), appearance:'tab' }) // prettier-ignore
-    selectOne   = <const T extends W.BaseSelectEntry>(config: W.Widget_selectOne_config<T>)                       => new CProperty<W.Widget_selectOne<T>                >('selectOne',  config)
-    selectMany  = <const T extends W.BaseSelectEntry>(config: W.Widget_selectMany_config<T>)                      => new CProperty<W.Widget_selectMany<T>               >('selectMany', config)
-    group       = <const T extends WidgetDict>(config: Widget_group_config<T>={})                                 => new CProperty<Widget_group<T>                      >('group', config)
-    choice      = <const T extends { [key: string]: CProperty }>(config: Omit<Widget_choices_config<T>, 'multi'>) => new CProperty<Widget_choices<T>                    >('choices',    { multi: false, ...config })
-    choices     = <const T extends { [key: string]: CProperty }>(config: Omit<Widget_choices_config<T>, 'multi'>) => new CProperty<Widget_choices<T>                    >('choices',    { multi: true, ...config })
+    promptV2    = (config: Widget_prompt_config = {})                                                             => new Schema<  Widget_prompt                      >('prompt'   , config)
+    time        = (config: Widget_string_config = {})                                                             => new Schema<  Widget_string                      >('str'      , { inputType: 'time', ...config })
+    password    = (config: Widget_string_config = {})                                                             => new Schema<  Widget_string                      >('str'      , { inputType: 'password', ...config })
+    email       = (config: Widget_string_config = {})                                                             => new Schema<  Widget_string                      >('str'      , { inputType: 'email', ...config })
+    url         = (config: Widget_string_config = {})                                                             => new Schema<  Widget_string                      >('str'      , { inputType: 'url', ...config })
+    string      = (config: Widget_string_config = {})                                                             => new Schema<  Widget_string                      >('str'      , config)
+    boolean     = (config: Widget_bool_config   = {})                                                             => new Schema<  Widget_bool                        >('bool'     , config)
+    bool        = (config: Widget_bool_config   = {})                                                             => new Schema<  Widget_bool                        >('bool'     , config)
+    size        = (config: Widget_size_config   = {})                                                             => new Schema<  Widget_size                        >('size'     , config)
+    orbit       = (config: Widget_orbit_config  = {})                                                             => new Schema<  Widget_orbit                       >('orbit'    , config)
+    seed        = (config: W.Widget_seed_config = {})                                                             => new Schema<W.Widget_seed                        >('seed'     , config)
+    color       = (config: Widget_color_config  = {})                                                             => new Schema<  Widget_color                       >('color'    , config)
+    matrix      = (config: Widget_matrix_config)                                                                  => new Schema<  Widget_matrix                      >('matrix'   , config)
+    inlineRun   = (config: W.Widget_inlineRun_config = {})                                                        => new Schema<W.Widget_inlineRun                   >('inlineRun', config)
+    button      = (config: W.Widget_inlineRun_config = {})                                                        => new Schema<W.Widget_inlineRun                   >('inlineRun', config)
+    loras       = (config: W.Widget_loras_config     = {})                                                        => new Schema<W.Widget_loras                       >('loras'    , config)
+    markdown    = (config: W.Widget_markdown_config | string)                                                     => new Schema<W.Widget_markdown                    >('markdown' , typeof config === 'string' ? { markdown: config } : config)
+    image       = (config: Widget_image_config = {})                                                              => new Schema<Widget_image                         >('image'    , config)
+    prompt      = (config: Widget_prompt_config)                                                                  => new Schema<Widget_prompt                        >('prompt'   , config)
+    int         = (config: Omit<Widget_number_config, 'mode'> = {})                                               => new Schema<  Widget_number                      >('number'   , { mode: 'int', ...config })
+    float       = (config: Omit<Widget_number_config, 'mode'> = {})                                               => new Schema<  Widget_number                      >('number'   , { mode: 'float', ...config })
+    number      = (config: Omit<Widget_number_config, 'mode'> = {})                                               => new Schema<  Widget_number                      >('number'   , { mode: 'float', ...config })
+    custom      = <TViewState>(config: Widget_custom_config<TViewState>)                                          => new Schema<  Widget_custom<TViewState>          >('custom'   , config)
+    list        = <const T extends Schema>(config: Widget_list_config<T>)                                      => new Schema<  Widget_list<T>                     >('list'     , config)
+    listExt     = <const T extends Schema>(config: Widget_listExt_config<T>)                                   => new Schema<  Widget_listExt<T>                  >('listExt'  , config)
+    timeline    = <const T extends Schema>(config: Widget_listExt_config<T>)                                   => new Schema<  Widget_listExt<T>                  >('listExt'  , { mode: 'timeline', ...config })
+    regional    = <const T extends Schema>(config: Widget_listExt_config<T>)                                   => new Schema<  Widget_listExt<T>                  >('listExt'  , { mode: 'regional', ...config })
+    selectOneV2 = (p: string[])                                                                                   => new Schema<W.Widget_selectOne<W.BaseSelectEntry>>('selectOne',  { choices: p.map((id) => ({ id })), appearance:'tab' }) // prettier-ignore
+    selectOne   = <const T extends W.BaseSelectEntry>(config: W.Widget_selectOne_config<T>)                       => new Schema<W.Widget_selectOne<T>                >('selectOne',  config)
+    selectMany  = <const T extends W.BaseSelectEntry>(config: W.Widget_selectMany_config<T>)                      => new Schema<W.Widget_selectMany<T>               >('selectMany', config)
+    group       = <const T extends SchemaDict>(config: Widget_group_config<T>={})                                 => new Schema<Widget_group<T>                      >('group', config)
+    choice      = <const T extends { [key: string]: Schema }>(config: Omit<Widget_choices_config<T>, 'multi'>) => new Schema<Widget_choices<T>                    >('choices',    { multi: false, ...config })
+    choices     = <const T extends { [key: string]: Schema }>(config: Omit<Widget_choices_config<T>, 'multi'>) => new Schema<Widget_choices<T>                    >('choices',    { multi: true, ...config })
     // optional wrappers
-    optional    = <const T extends CProperty>(p: Widget_optional_config<T>) => new CProperty<Widget_optional<T>>('optional', p)
-    stringOpt   = (config: Widget_string_config                                & { startActive?: boolean } = {}) => this.wrapOptional<CProperty<Widget_string>  >(config, this.string)
-    intOpt      = (config: Omit<Widget_number_config, 'mode'>                  & { startActive?: boolean } = {}) => this.wrapOptional<CProperty<Widget_number>  >(config, this.number)
-    floatOpt    = (config: Omit<Widget_number_config, 'mode'>                  & { startActive?: boolean } = {}) => this.wrapOptional<CProperty<Widget_number>  >(config, this.number)
-    numberOpt   = (config: Omit<Widget_number_config, 'mode'>                  & { startActive?: boolean } = {}) => this.wrapOptional<CProperty<Widget_number>  >(config, this.number)
-    imageOpt    = (config: Widget_image_config                                 & { startActive?: boolean } = {}) => this.wrapOptional<CProperty<Widget_image>   >(config, this.image)
-    promptOpt   = (config: Widget_prompt_config                                & { startActive?: boolean } = {}) => this.wrapOptional<CProperty<Widget_prompt>  >(config, this.prompt)
-    colorOpt    = (config: Widget_color_config                                 & { startActive?: boolean } = {}) => this.wrapOptional<CProperty<Widget_color>   >(config, this.color)
-    groupOpt    = <const T extends WidgetDict>(config: Widget_group_config<T>  & { startActive?: boolean } = {}) => this.wrapOptional<CProperty<Widget_group<T>>>(config, this.group)
+    optional    = <const T extends Schema>(p: Widget_optional_config<T>) => new Schema<Widget_optional<T>>('optional', p)
+    stringOpt   = (config: Widget_string_config                                & { startActive?: boolean } = {}) => this.wrapOptional<Schema<Widget_string>  >(config, this.string)
+    intOpt      = (config: Omit<Widget_number_config, 'mode'>                  & { startActive?: boolean } = {}) => this.wrapOptional<Schema<Widget_number>  >(config, this.number)
+    floatOpt    = (config: Omit<Widget_number_config, 'mode'>                  & { startActive?: boolean } = {}) => this.wrapOptional<Schema<Widget_number>  >(config, this.number)
+    numberOpt   = (config: Omit<Widget_number_config, 'mode'>                  & { startActive?: boolean } = {}) => this.wrapOptional<Schema<Widget_number>  >(config, this.number)
+    imageOpt    = (config: Widget_image_config                                 & { startActive?: boolean } = {}) => this.wrapOptional<Schema<Widget_image>   >(config, this.image)
+    promptOpt   = (config: Widget_prompt_config                                & { startActive?: boolean } = {}) => this.wrapOptional<Schema<Widget_prompt>  >(config, this.prompt)
+    colorOpt    = (config: Widget_color_config                                 & { startActive?: boolean } = {}) => this.wrapOptional<Schema<Widget_color>   >(config, this.color)
+    groupOpt    = <const T extends SchemaDict>(config: Widget_group_config<T>  & { startActive?: boolean } = {}) => this.wrapOptional<Schema<Widget_group<T>>>(config, this.group)
 
     /**
      * Calling this function will mount and instanciate the subform right away
@@ -92,7 +92,7 @@ export class FormBuilder {
      *  - recursive forms
      *  - dynamic widgets depending on other widgets values
      * */
-    shared = <W extends CProperty>(key: string, unmounted: W): Widget_shared<W> => {
+    shared = <W extends Schema>(key: string, unmounted: W): Widget_shared<W> => {
         const name = `__${key}__`
         const prevSerial = this.form._ROOT.serial.values_[name]
         let widget
@@ -108,7 +108,7 @@ export class FormBuilder {
 
     // --------------------
 
-    private wrapOptional<T extends CProperty>(
+    private wrapOptional<T extends Schema>(
         config: {
             // from SharedWidgetProps
             label?: string | false
@@ -157,7 +157,7 @@ export class FormBuilder {
 
     /** (@internal); */ _cache: { count: number } = { count: 0 }
     /** (@internal) advanced way to restore form state. used internally */
-    _HYDRATE = <T extends CProperty>(
+    _HYDRATE = <T extends Schema>(
         unmounted: T,
         serial: any | null
     ): T['$Widget'] => {
@@ -173,7 +173,7 @@ export class FormBuilder {
             // return unmounted.shared
         }
 
-        if (!(unmounted instanceof CProperty)){
+        if (!(unmounted instanceof Schema)){
             console.log(`[❌] _HYDRATE received an invalid unmounted widget. This is probably a bug.`)
         }
 

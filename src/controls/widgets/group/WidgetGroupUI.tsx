@@ -1,5 +1,5 @@
 import type { Widget_group } from './WidgetGroup'
-import type { WidgetDict } from 'src/cards/App'
+import type { SchemaDict } from 'src/cards/App'
 
 import { observer } from 'mobx-react-lite'
 import { WidgetWithLabelUI } from '../../shared/WidgetWithLabelUI'
@@ -8,7 +8,7 @@ import { bang } from 'src/utils/misc/bang'
 // UI
 export const WidgetGroup_LineUI = observer(function WidgetGroup_LineUI_(p: {
     //
-    widget: Widget_group<WidgetDict>
+    widget: Widget_group<SchemaDict>
 }) {
     if (!p.widget.serial.collapsed) return null
     return <div tw='line-clamp-1 italic opacity-50'>{p.widget.summary}</div>
@@ -17,7 +17,7 @@ export const WidgetGroup_LineUI = observer(function WidgetGroup_LineUI_(p: {
 export const WidgetGroup_BlockUI = observer(function WidgetGroup_BlockUI_(p: {
     //
     className?: string
-    widget: Widget_group<WidgetDict>
+    widget: Widget_group<SchemaDict>
 }) {
     const widget = p.widget
     const isTopLevel = widget.config.topLevel

@@ -1,7 +1,7 @@
 import type { Form } from 'src/controls/Form'
 import type { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from 'src/controls/IWidget'
 import type { BoardPosition } from './WidgetListExtTypes'
-import type { CProperty } from 'src/controls/Prop'
+import type { Schema } from 'src/controls/Prop'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -12,7 +12,7 @@ import { hash } from 'ohash'
 import { ResolutionState } from '../size/ResolutionState'
 
 // CONFIG
-export type Widget_listExt_config<T extends CProperty> = WidgetConfigFields<{
+export type Widget_listExt_config<T extends Schema> = WidgetConfigFields<{
     element: (p: { ix: number; width: number; height: number }) => T
     min?: number
     max?: number
@@ -24,7 +24,7 @@ export type Widget_listExt_config<T extends CProperty> = WidgetConfigFields<{
 }>
 
 // SERIAL
-export type Widget_listExt_serial<T extends CProperty> = WidgetSerialFields<{
+export type Widget_listExt_serial<T extends Schema> = WidgetSerialFields<{
     type: 'listExt'
     entries: { serial: T['$Serial']; shape: BoardPosition }[]
     width: number
@@ -32,7 +32,7 @@ export type Widget_listExt_serial<T extends CProperty> = WidgetSerialFields<{
 }>
 
 // OUT
-export type Widget_listExt_output<T extends CProperty> = {
+export type Widget_listExt_output<T extends Schema> = {
     items: { value: T['$Output']; position: BoardPosition }[]
     // -----------------------
     width: number
@@ -40,7 +40,7 @@ export type Widget_listExt_output<T extends CProperty> = {
 }
 
 // TYPES
-export type Widget_listExt_types<T extends CProperty> = {
+export type Widget_listExt_types<T extends Schema> = {
     $Type: 'listExt'
     $Input: Widget_listExt_config<T>
     $Serial: Widget_listExt_serial<T>
@@ -48,8 +48,8 @@ export type Widget_listExt_types<T extends CProperty> = {
 }
 
 // STATE
-export interface Widget_listExt<T extends CProperty> extends WidgetTypeHelpers<Widget_listExt_types<T>> {}
-export class Widget_listExt<T extends CProperty> implements IWidget<Widget_listExt_types<T>> {
+export interface Widget_listExt<T extends Schema> extends WidgetTypeHelpers<Widget_listExt_types<T>> {}
+export class Widget_listExt<T extends Schema> implements IWidget<Widget_listExt_types<T>> {
     get serialHash () { return hash(this.value) } // prettier-ignore
     readonly isVerticalByDefault = true
     readonly isCollapsible = true

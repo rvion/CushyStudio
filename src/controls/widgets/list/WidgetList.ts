@@ -1,31 +1,32 @@
 import type { Form } from 'src/controls/Form'
 import type { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../../IWidget'
-import type { CProperty } from 'src/controls/Prop'
+import type { Schema } from 'src/controls/Prop'
 
 import { makeAutoObservable, observable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { runWithGlobalForm } from 'src/models/_ctx2'
 import { WidgetDI } from '../WidgetUI.DI'
+import type { Widget } from 'src/controls/Widget'
 
 // CONFIG
-export type Widget_list_config<T extends CProperty> = WidgetConfigFields<{
-    element: (ix: number) => T
+export type Widget_list_config<T extends Schema> = WidgetConfigFields<{
+    element: ((ix: number) => T) | T
     min?: number
     max?: number
     defaultLength?: number
 }>
 
 // SERIAL
-export type Widget_list_serial<T extends CProperty> = WidgetSerialFields<{
+export type Widget_list_serial<T extends Schema> = WidgetSerialFields<{
     type: 'list'
     items_: T['$Serial'][]
 }>
 
 // OUT
-export type Widget_list_output<T extends CProperty> = T['$Output'][]
+export type Widget_list_output<T extends Schema> = T['$Output'][]
 
 // TYPES
-export type Widget_list_types<T extends CProperty> = {
+export type Widget_list_types<T extends Schema> = {
     $Type: 'list'
     $Input: Widget_list_config<T>
     $Serial: Widget_list_serial<T>
@@ -33,10 +34,10 @@ export type Widget_list_types<T extends CProperty> = {
 }
 
 // STATE
-export interface Widget_list<T extends CProperty> extends WidgetTypeHelpers<Widget_list_types<T>> {}
-export class Widget_list<T extends CProperty> implements IWidget<Widget_list_types<T>> {
+export interface Widget_list<T extends Schema> extends WidgetTypeHelpers<Widget_list_types<T>> {}
+export class Widget_list<T extends Schema> implements IWidget<Widget_list_types<T>> {
     get serialHash(): string {
-        return this.items.map((v: T['$Widget']) => v.serialHash).join(',')
+        return this.items.map((v) => v.serialHash).join(',')
     }
     readonly isVerticalByDefault = true
     readonly isCollapsible = true
@@ -46,6 +47,14 @@ export class Widget_list<T extends CProperty> implements IWidget<Widget_list_typ
     items: T['$Widget'][]
     serial: Widget_list_serial<T>
 
+    schemaAt = (ix: number): T => {
+        const _schema = this.config.element
+        const schema: T =
+            typeof _schema === 'function' //
+                ? runWithGlobalForm(this.form.builder, () => _schema(0))
+                : _schema
+        return schema
+    }
     constructor(
         //
         public form: Form<any>,
@@ -62,7 +71,7 @@ export class Widget_list<T extends CProperty> implements IWidget<Widget_list_typ
 
         // hydrate items
         this.items = []
-        const unmounted = runWithGlobalForm(this.form.builder, () => config.element(0))
+        const unmounted = this.schemaAt(0) // TODO: evaluate schema in the form loop
         for (const subSerial of this.serial.items_) {
             if (
                 subSerial == null || // ⁉️ when can this happen ?
@@ -98,8 +107,8 @@ export class Widget_list<T extends CProperty> implements IWidget<Widget_list_typ
 
     // ADDING ITEMS -------------------------------------------------
     addItem() {
-        const unmounted: T = runWithGlobalForm(this.form.builder, () => this.config.element(this.serial.items_.length))
-        const element = this.form.builder._HYDRATE(unmounted, null)
+        const schema = this.schemaAt(this.serial.items_.length) // TODO: evaluate schema in the form loop
+        const element = this.form.builder._HYDRATE(schema, null)
         this.items.push(element)
         this.serial.items_.push(element.serial)
     }

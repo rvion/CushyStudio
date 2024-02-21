@@ -1,5 +1,5 @@
 import type { Widget_choices } from './WidgetChoices'
-import type { WidgetDict } from 'src/cards/App'
+import type { SchemaDict } from 'src/cards/App'
 
 import { observer } from 'mobx-react-lite'
 import { SelectUI } from 'src/rsuite/SelectUI'
@@ -9,7 +9,7 @@ import { AnimatedSizeUI } from './AnimatedSizeUI'
 import { useState } from 'react'
 
 // UI
-export const WidgetChoices_LineUI = observer(function WidgetChoices_LineUI_(p: { widget: Widget_choices<WidgetDict> }) {
+export const WidgetChoices_LineUI = observer(function WidgetChoices_LineUI_(p: { widget: Widget_choices<SchemaDict> }) {
     if (p.widget.config.appearance === 'tab') {
         return <WidgetChoices_TabLineUI widget={p.widget} />
     } else {
@@ -18,7 +18,7 @@ export const WidgetChoices_LineUI = observer(function WidgetChoices_LineUI_(p: {
 })
 
 // UI
-export const WidgetChoicesUI = observer(function WidgetChoicesUI_(p: { widget: Widget_choices<WidgetDict> }) {
+export const WidgetChoicesUI = observer(function WidgetChoicesUI_(p: { widget: Widget_choices<SchemaDict> }) {
     if (p.widget.config.appearance === 'tab') {
         return <WidgetChoicesTabUI widget={p.widget} />
     } else {
@@ -28,7 +28,7 @@ export const WidgetChoicesUI = observer(function WidgetChoicesUI_(p: { widget: W
 
 // ============================================================================================================
 
-const WidgetChoices_TabLineUI = observer(function WidgetChoicesTab_LineUI_(p: { widget: Widget_choices<WidgetDict> }) {
+const WidgetChoices_TabLineUI = observer(function WidgetChoicesTab_LineUI_(p: { widget: Widget_choices<SchemaDict> }) {
     const widget = p.widget
     type Entry = { key: string; value?: Maybe<boolean> }
     const choicesStr: string[] = widget.choices
@@ -84,7 +84,7 @@ const WidgetChoices_TabLineUI = observer(function WidgetChoicesTab_LineUI_(p: { 
     )
 })
 
-const WidgetChoicesTabUI = observer(function WidgetChoicesTabUI_(p: { widget: Widget_choices<WidgetDict> }) {
+const WidgetChoicesTabUI = observer(function WidgetChoicesTabUI_(p: { widget: Widget_choices<SchemaDict> }) {
     const widget = p.widget
     const activeSubwidgets = Object.entries(widget.children) //
         .map(([branch, subWidget]) => ({ branch, subWidget }))
@@ -114,7 +114,7 @@ const WidgetChoicesTabUI = observer(function WidgetChoicesTabUI_(p: { widget: Wi
 })
 
 export const WidgetChoices_SelectLineUI = observer(function WidgetChoices_SelectLineUI_(p: {
-    widget: Widget_choices<WidgetDict>
+    widget: Widget_choices<SchemaDict>
 }) {
     const widget = p.widget
     type Entry = { key: string; value?: Maybe<boolean> }

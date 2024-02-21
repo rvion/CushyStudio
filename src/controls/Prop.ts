@@ -1,6 +1,6 @@
 import type { Widget } from './Widget'
 
-export class CProperty<W extends Widget = Widget> {
+export class Schema<W extends Widget = Widget> {
     $Widget!: W
     $Type!: W['type']
     $Input!: W['$Input']

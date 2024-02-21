@@ -1,11 +1,11 @@
-import type { WidgetDict } from 'src/cards/App'
+import type { SchemaDict } from 'src/cards/App'
 import type { Widget_group, Widget_group_output, Widget_group_serial } from './widgets/group/WidgetGroup'
 
 import { action, autorun, isObservable, makeAutoObservable, observable, runInAction } from 'mobx'
 import { FormBuilder } from './FormBuilder'
-import { CProperty } from './Prop'
+import { Schema } from './Prop'
 
-export class Form<const FIELDS extends WidgetDict> {
+export class Form<const FIELDS extends SchemaDict> {
     error: Maybe<string> = null
 
     at = <K extends keyof FIELDS>(key: K): FIELDS[K]['$Widget'] => {
@@ -65,7 +65,7 @@ export class Form<const FIELDS extends WidgetDict> {
         console.log(`[🥐] Building form ${this.def.name}`)
         const formBuilder = this.builder
         const rootDef = { topLevel: true, items: () => this.ui?.(formBuilder) ?? {} }
-        const unmounted = new CProperty<Widget_group<FIELDS>>('group', rootDef)
+        const unmounted = new Schema<Widget_group<FIELDS>>('group', rootDef)
         try {
             let initialValue = this.def.initialValue()
             if (initialValue && !isObservable(initialValue)) initialValue = observable(initialValue)

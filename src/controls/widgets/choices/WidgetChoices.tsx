@@ -1,4 +1,4 @@
-import type { WidgetDict } from 'src/cards/App'
+import type { SchemaDict } from 'src/cards/App'
 import type { Form } from 'src/controls/Form'
 import type { GetWidgetResult, IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../../IWidget'
 
@@ -9,7 +9,7 @@ import { toastError } from 'src/utils/misc/toasts'
 import { WidgetDI } from '../WidgetUI.DI'
 
 // CONFIG
-export type Widget_choices_config<T extends WidgetDict> = WidgetConfigFields<{
+export type Widget_choices_config<T extends SchemaDict> = WidgetConfigFields<{
     items: T
     multi: boolean
     default?: { [k in keyof T]?: boolean } | keyof T
@@ -18,7 +18,7 @@ export type Widget_choices_config<T extends WidgetDict> = WidgetConfigFields<{
 }>
 
 // SERIAL
-export type Widget_choices_serial<T extends WidgetDict> = WidgetSerialFields<{
+export type Widget_choices_serial<T extends SchemaDict> = WidgetSerialFields<{
     type: 'choices'
     active: true
     branches: { [k in keyof T]?: boolean }
@@ -26,12 +26,12 @@ export type Widget_choices_serial<T extends WidgetDict> = WidgetSerialFields<{
 }>
 
 // OUT
-export type Widget_choices_output<T extends WidgetDict> = {
+export type Widget_choices_output<T extends SchemaDict> = {
     [k in keyof T]?: T[k]['$Output']
 }
 
 // TYPES
-export type Widget_choices_types<T extends WidgetDict> = {
+export type Widget_choices_types<T extends SchemaDict> = {
     $Type: 'choices'
     $Input: Widget_choices_config<T>
     $Serial: Widget_choices_serial<T>
@@ -39,8 +39,8 @@ export type Widget_choices_types<T extends WidgetDict> = {
 }
 
 // STATE
-export interface Widget_choices<T extends WidgetDict> extends WidgetTypeHelpers<Widget_choices_types<T>> {}
-export class Widget_choices<T extends WidgetDict> implements IWidget<Widget_choices_types<T>> {
+export interface Widget_choices<T extends SchemaDict> extends WidgetTypeHelpers<Widget_choices_types<T>> {}
+export class Widget_choices<T extends SchemaDict> implements IWidget<Widget_choices_types<T>> {
     readonly isVerticalByDefault = true
     readonly isCollapsible = true
     readonly id: string

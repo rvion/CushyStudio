@@ -1,16 +1,16 @@
 import type { Form } from 'src/controls/Form'
 import type { Widget } from 'src/controls/Widget'
 import type { GetWidgetResult, IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../../IWidget'
-import type { WidgetDict } from 'src/cards/App'
+import type { SchemaDict } from 'src/cards/App'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { runWithGlobalForm } from 'src/models/_ctx2'
 import { WidgetDI } from '../WidgetUI.DI'
-import { CProperty } from 'src/controls/Prop'
+import { Schema } from 'src/controls/Prop'
 
 // CONFIG
-export type Widget_group_config<T extends WidgetDict> = WidgetConfigFields<{
+export type Widget_group_config<T extends SchemaDict> = WidgetConfigFields<{
     items?: (() => T) | T
     topLevel?: boolean
     /** if provided, will be used to show a single line summary on the inline form slot */
@@ -18,19 +18,19 @@ export type Widget_group_config<T extends WidgetDict> = WidgetConfigFields<{
 }>
 
 // SERIAL
-export type Widget_group_serial<T extends WidgetDict> = WidgetSerialFields<{
+export type Widget_group_serial<T extends SchemaDict> = WidgetSerialFields<{
     type: 'group'
     active: boolean
     values_: { [K in keyof T]?: T[K]['$Serial'] }
 }>
 
 // OUT
-export type Widget_group_output<T extends WidgetDict> = {
+export type Widget_group_output<T extends SchemaDict> = {
     [k in keyof T]: GetWidgetResult<T[k]>
 }
 
 // TYPES
-export type Widget_group_types<T extends WidgetDict> = {
+export type Widget_group_types<T extends SchemaDict> = {
     $Type: 'group'
     $Input: Widget_group_config<T>
     $Serial: Widget_group_serial<T>
@@ -38,9 +38,9 @@ export type Widget_group_types<T extends WidgetDict> = {
 }
 
 // STATE
-export interface Widget_group<T extends WidgetDict> extends WidgetTypeHelpers<Widget_group_types<T>> {}
-export class Widget_group<T extends WidgetDict> implements IWidget<Widget_group_types<T>> {
-    static Prop = <T extends WidgetDict>(config: Widget_group_config<T>) => new CProperty('group', config)
+export interface Widget_group<T extends SchemaDict> extends WidgetTypeHelpers<Widget_group_types<T>> {}
+export class Widget_group<T extends SchemaDict> implements IWidget<Widget_group_types<T>> {
+    static Prop = <T extends SchemaDict>(config: Widget_group_config<T>) => new Schema('group', config)
 
     get summary(): string {
         return this.config.summary?.(this.value) ?? Object.keys(this.fields).length + ' items'
@@ -113,7 +113,7 @@ export class Widget_group<T extends WidgetDict> implements IWidget<Widget_group_
         this.serial.active = true
         const prevFieldSerials: { [K in keyof T]?: T[K]['$Serial'] } = this.serial.values_
         const itemsDef = this.config.items
-        const _newValues: WidgetDict =
+        const _newValues: SchemaDict =
             typeof itemsDef === 'function' //
                 ? runWithGlobalForm(this.form.builder, itemsDef) ?? {}
                 : itemsDef ?? {}
