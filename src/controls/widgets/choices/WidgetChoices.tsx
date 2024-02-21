@@ -27,7 +27,7 @@ export type Widget_choices_serial<T extends WidgetDict> = WidgetSerialFields<{
 
 // OUT
 export type Widget_choices_output<T extends WidgetDict> = {
-    [k in keyof T]?: GetWidgetResult<T[k]>
+    [k in keyof T]?: T[k]['$Output']
 }
 
 // TYPES
