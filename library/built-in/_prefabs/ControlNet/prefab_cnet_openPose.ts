@@ -43,37 +43,35 @@ export const ui_subform_OpenPose_Preprocessor = () => {
         startCollapsed: true,
         appearance: 'tab',
         items: {
-            None: () => form.group({}),
-            DWPose: () =>
-                form.group({
-                    label: 'Settings',
-                    startCollapsed: true,
-                    items: () => ({
-                        ...cnet_preprocessor_ui_common(form),
-                        detect_body: form.bool({ default: true }),
-                        detect_face: form.bool({ default: true }),
-                        detect_hand: form.bool({ default: true }),
-                        bbox_detector: form.enum.Enum_DWPreprocessor_bbox_detector({
-                            label: 'Model',
-                            default: 'yolox_l.onnx',
-                        }),
-                        pose_estimator: form.enum.Enum_DWPreprocessor_pose_estimator({
-                            label: 'Model',
-                            default: 'dw-ll_ucoco_384.onnx',
-                        }),
+            None: form.group(),
+            DWPose: form.group({
+                label: 'Settings',
+                startCollapsed: true,
+                items: () => ({
+                    ...cnet_preprocessor_ui_common(form),
+                    detect_body: form.bool({ default: true }),
+                    detect_face: form.bool({ default: true }),
+                    detect_hand: form.bool({ default: true }),
+                    bbox_detector: form.enum.Enum_DWPreprocessor_bbox_detector({
+                        label: 'Model',
+                        default: 'yolox_l.onnx',
+                    }),
+                    pose_estimator: form.enum.Enum_DWPreprocessor_pose_estimator({
+                        label: 'Model',
+                        default: 'dw-ll_ucoco_384.onnx',
                     }),
                 }),
-            OpenPose: () =>
-                form.group({
-                    label: 'Settings',
-                    startCollapsed: true,
-                    items: () => ({
-                        ...cnet_preprocessor_ui_common(form),
-                        detect_body: form.bool({ default: true }),
-                        detect_face: form.bool({ default: true }),
-                        detect_hand: form.bool({ default: true }),
-                    }),
+            }),
+            OpenPose: form.group({
+                label: 'Settings',
+                startCollapsed: true,
+                items: () => ({
+                    ...cnet_preprocessor_ui_common(form),
+                    detect_body: form.bool({ default: true }),
+                    detect_face: form.bool({ default: true }),
+                    detect_hand: form.bool({ default: true }),
                 }),
+            }),
             // TODO: Add support for auto-modifying the resolution based on other form selections
             // TODO: Add support for auto-cropping
         },

@@ -70,7 +70,7 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
 
     // 5. render form
     const { containerClassName, containerStyle } = compiledApp.def ?? {}
-    const defaultContainerStyle = { margin: '0 auto' }
+    const defaultContainerStyle = {} // { margin: '0 auto' }
 
     const wrapMobile = st.isConfigValueEq('draft.mockup-mobile', true)
     const metadata = draft.app.executable_orExtract?.metadata

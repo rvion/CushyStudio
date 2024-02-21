@@ -32,9 +32,9 @@ export const ui_subform_SoftEdge_Preprocessor = () => {
         default: 'HED',
         appearance: 'tab',
         items: {
-            None: () => form.group({}),
-            HED: () => ui_subform_SoftEdge_Preprocessor_Options(form),
-            Pidinet: () => ui_subform_SoftEdge_Preprocessor_Options(form),
+            None: form.group(),
+            HED: ui_subform_SoftEdge_Preprocessor_Options(form),
+            Pidinet: ui_subform_SoftEdge_Preprocessor_Options(form),
         },
     })
 }

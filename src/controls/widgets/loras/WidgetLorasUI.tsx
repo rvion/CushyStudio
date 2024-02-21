@@ -1,5 +1,6 @@
+import type { Widget_loras } from './WidgetLora'
+
 import { observer } from 'mobx-react-lite'
-import { Widget_loras } from 'src/controls/Widget'
 import { InputNumberUI } from 'src/rsuite/InputNumberUI'
 import { Button, MultiCascader } from 'src/rsuite/shims'
 import { parseFloatNoRoundingErr } from 'src/utils/misc/parseFloatNoRoundingErr'

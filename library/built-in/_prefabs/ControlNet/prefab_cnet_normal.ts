@@ -40,9 +40,9 @@ export const ui_subform_Normal_Preprocessor = () => {
         default: 'Midas',
         appearance: 'tab',
         items: {
-            None: () => form.group({}),
-            Midas: () => ui_subform_Normal_Midas(),
-            BAE: () => ui_subform_Normal_bae(),
+            None: form.group(),
+            Midas: ui_subform_Normal_Midas(),
+            BAE: ui_subform_Normal_bae(),
             // TODO: Add support for auto-modifying the resolution based on other form selections
             // TODO: Add support for auto-cropping
         },

@@ -1,4 +1,4 @@
-import type { WidgetDict } from 'src/cards/App'
+import type { SchemaDict } from 'src/cards/App'
 import type { STATE } from 'src/state/state'
 import type { Printable } from '../core/Printable'
 import type { ComfyPromptL } from '../models/ComfyPrompt'
@@ -45,7 +45,7 @@ export type RuntimeExecutionResult =
 // run.store.getGlobal
 
 /** script exeuction instance */
-export class Runtime<FIELDS extends WidgetDict = any> {
+export class Runtime<FIELDS extends SchemaDict = any> {
     get Colors(): RuntimeColors {
         const it = new RuntimeColors(this)
         Object.defineProperty(this, 'Colors', { value: it })

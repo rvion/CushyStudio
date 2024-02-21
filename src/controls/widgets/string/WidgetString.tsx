@@ -1,19 +1,27 @@
-import type { Form } from 'src/controls/Form'
 import type { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../../IWidget'
+import type { Form } from 'src/controls/Form'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
-import { WidgetDI } from '../WidgetUI.DI'
 import { hash } from 'ohash'
 
+import { WidgetDI } from '../WidgetUI.DI'
+
+// CONFIG
 export type Widget_string_config = WidgetConfigFields<{
     default?: string
     textarea?: boolean
     placeHolder?: string
     inputType?: 'text' | 'password' | 'email' | 'tel' | 'url' | 'time' | 'date' | 'datetime-local'
 }>
+
+// SERIAL
 export type Widget_string_serial = WidgetSerialFields<{ type: 'str'; val?: string }>
+
+// OUT
 export type Widget_string_output = string
+
+// TYPES
 export type Widget_string_types = {
     $Type: 'str'
     $Input: Widget_string_config
@@ -28,10 +36,6 @@ export class Widget_string implements IWidget<Widget_string_types> {
     readonly type: 'str' = 'str'
     get isCollapsible() { return this.config.textarea ?? false } // prettier-ignore
     get serialHash () { return hash(this.value) } // prettier-ignore
-    get isVerticalByDefault(): boolean {
-        if (this.config.textarea) return true
-        return false
-    }
 
     serial: Widget_string_serial
     readonly defaultValue: string = this.config.default ?? ''
@@ -42,6 +46,7 @@ export class Widget_string implements IWidget<Widget_string_types> {
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? {
             type: 'str',
+            val: this.config.default,
             collapsed: config.startCollapsed,
             id: this.id,
         }

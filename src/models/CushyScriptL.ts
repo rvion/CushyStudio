@@ -3,7 +3,7 @@ import type { LiveInstance } from '../db/LiveInstance'
 
 import { basename } from 'pathe'
 import { replaceImportsWithSyncImport } from 'src/back/ImportStructure'
-import { App, AppRef, WidgetDict } from 'src/cards/App'
+import { App, AppRef, SchemaDict } from 'src/cards/App'
 
 import { runInAction } from 'mobx'
 import { LiveCollection } from 'src/db/LiveCollection'
@@ -122,12 +122,12 @@ export class CushyScriptL {
     private _EVALUATE_SCRIPT = (): Executable[] => {
         toastInfo(`evaluating script: ${this.relPath}`)
         const codeJS = this.data.code
-        const APPS: App<WidgetDict>[] = []
+        const APPS: App<SchemaDict>[] = []
 
         let appIndex = 0
         // 1. setup DI registering mechanism
         const registerAppFn = (a1: string, a2: App<any>): AppRef<any> => {
-            const app: App<WidgetDict> = typeof a1 !== 'string' ? a1 : a2
+            const app: App<SchemaDict> = typeof a1 !== 'string' ? a1 : a2
             const name = app.metadata?.name ?? basename(this.relPath)
             console.info(`[💙] found action: "${name}"`, { path: this.relPath })
             APPS.push(app)

@@ -1,9 +1,10 @@
-import type { Form } from 'src/controls/Form'
 import type { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../../IWidget'
+import type { Form } from 'src/controls/Form'
 
 import { computed, makeObservable, observable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { hash } from 'ohash'
+
 import { WidgetDI } from '../WidgetUI.DI'
 
 // CONFIG
@@ -29,13 +30,14 @@ export type Widget_string_types = {
 // STATE
 export interface Widget_bool extends WidgetTypeHelpers<Widget_string_types> {}
 export class Widget_bool implements IWidget<Widget_string_types> {
-    readonly isVerticalByDefault = false
     readonly isCollapsible = false
     readonly id: string
     readonly type: 'bool' = 'bool'
 
     serial: Widget_bool_serial
-    get serialHash () { return hash(this.value) } // prettier-ignore
+    get serialHash(): string {
+        return hash(this.value)
+    }
     setOn = () => (this.serial.active = true)
     setOff = () => (this.serial.active = false)
     toggle = () => (this.serial.active = !this.serial.active)

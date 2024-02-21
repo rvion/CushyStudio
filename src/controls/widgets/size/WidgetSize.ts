@@ -30,7 +30,6 @@ export class Widget_size
         return state
     }
     get serialHash() { return hash(this.value) } // prettier-ignore
-    readonly isVerticalByDefault = true
     readonly isCollapsible = this.config.collapsible ?? false
     readonly id: string
     readonly type: 'size' = 'size'

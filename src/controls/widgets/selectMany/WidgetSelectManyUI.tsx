@@ -1,5 +1,7 @@
+import type { BaseSelectEntry } from '../selectOne/WidgetSelectOne'
+import type { Widget_selectMany } from './WidgetSelectMany'
+
 import { observer } from 'mobx-react-lite'
-import { BaseSelectEntry, Widget_selectMany } from 'src/controls/Widget'
 import { SelectUI } from 'src/rsuite/SelectUI'
 
 export const WidgetSelectManyUI = observer(function WidgetSelectOneUI_<T extends BaseSelectEntry>(p: {

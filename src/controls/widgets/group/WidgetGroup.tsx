@@ -1,14 +1,16 @@
 import type { Form } from 'src/controls/Form'
 import type { Widget } from 'src/controls/Widget'
 import type { GetWidgetResult, IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../../IWidget'
+import type { SchemaDict } from 'src/cards/App'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { runWithGlobalForm } from 'src/models/_ctx2'
 import { WidgetDI } from '../WidgetUI.DI'
+import { Spec } from 'src/controls/Prop'
 
 // CONFIG
-export type Widget_group_config<T extends { [key: string]: Widget }> = WidgetConfigFields<{
+export type Widget_group_config<T extends SchemaDict> = WidgetConfigFields<{
     items?: (() => T) | T
     topLevel?: boolean
     /** if provided, will be used to show a single line summary on the inline form slot */
@@ -16,19 +18,19 @@ export type Widget_group_config<T extends { [key: string]: Widget }> = WidgetCon
 }>
 
 // SERIAL
-export type Widget_group_serial<T extends { [key: string]: Widget }> = WidgetSerialFields<{
+export type Widget_group_serial<T extends SchemaDict> = WidgetSerialFields<{
     type: 'group'
     active: boolean
     values_: { [K in keyof T]?: T[K]['$Serial'] }
 }>
 
 // OUT
-export type Widget_group_output<T extends { [key: string]: Widget }> = {
+export type Widget_group_output<T extends SchemaDict> = {
     [k in keyof T]: GetWidgetResult<T[k]>
 }
 
 // TYPES
-export type Widget_group_types<T extends { [key: string]: Widget }> = {
+export type Widget_group_types<T extends SchemaDict> = {
     $Type: 'group'
     $Input: Widget_group_config<T>
     $Serial: Widget_group_serial<T>
@@ -36,8 +38,10 @@ export type Widget_group_types<T extends { [key: string]: Widget }> = {
 }
 
 // STATE
-export interface Widget_group<T extends { [key: string]: Widget }> extends WidgetTypeHelpers<Widget_group_types<T>> {}
-export class Widget_group<T extends { [key: string]: Widget }> implements IWidget<Widget_group_types<T>> {
+export interface Widget_group<T extends SchemaDict> extends WidgetTypeHelpers<Widget_group_types<T>> {}
+export class Widget_group<T extends SchemaDict> implements IWidget<Widget_group_types<T>> {
+    static Prop = <T extends SchemaDict>(config: Widget_group_config<T>) => new Spec('group', config)
+
     get summary(): string {
         return this.config.summary?.(this.value) ?? Object.keys(this.fields).length + ' items'
     }
@@ -46,7 +50,6 @@ export class Widget_group<T extends { [key: string]: Widget }> implements IWidge
             .map((v: Widget) => v.serialHash)
             .join(',')
     }
-    readonly isVerticalByDefault = true
     readonly isCollapsible = this.config.collapsible ?? true
     readonly id: string
     readonly type: 'group' = 'group'
@@ -65,11 +68,11 @@ export class Widget_group<T extends { [key: string]: Widget }> implements IWidge
         return Object.entries(this.fields) as [string, any][]
     }
 
-    at = <K extends keyof T>(key: K): T[K] => this.fields[key]
+    at = <K extends keyof T>(key: K): T[K]['$Widget'] => this.fields[key]
     get = <K extends keyof T>(key: K): T[K]['$Output'] => this.fields[key].value
 
     /** the dict of all child widgets */
-    fields: T /* { [k in keyof T]: T[k] } */ = {} as any // will be filled during constructor
+    fields: { [k in keyof T]: T[k]['$Widget'] } = {} as any // will be filled during constructor
     serial: Widget_group_serial<T> = {} as any
 
     private _defaultSerial = (): Widget_group_serial<T> => {
@@ -109,7 +112,7 @@ export class Widget_group<T extends { [key: string]: Widget }> implements IWidge
         this.serial.active = true
         const prevFieldSerials: { [K in keyof T]?: T[K]['$Serial'] } = this.serial.values_
         const itemsDef = this.config.items
-        const _newValues: { [key: string]: Widget } =
+        const _newValues: SchemaDict =
             typeof itemsDef === 'function' //
                 ? runWithGlobalForm(this.form.builder, itemsDef) ?? {}
                 : itemsDef ?? {}
@@ -117,27 +120,25 @@ export class Widget_group<T extends { [key: string]: Widget }> implements IWidge
         const childKeys = Object.keys(_newValues) as (keyof T & string)[]
         // this.childKeys = childKeys
         for (const key of childKeys) {
-            const newItem = _newValues[key]
+            const unmounted = _newValues[key]
             const prevFieldSerial = prevFieldSerials[key]
-            const newConfig = newItem.config
-            const newType = newItem.type
-            if (prevFieldSerial && newType === prevFieldSerial.type) {
-                if (newType === 'shared') {
-                    // 🔴 BAD 🔴
-                    this.fields[key] = newItem as any
-                } else {
-                    // console.log(`[🟢] valid serial for "${key}": (${newType} === ${prevFieldSerial.type}) `)
-                    this.fields[key] = this.form.builder._HYDRATE(newType, newConfig, prevFieldSerial)
-                }
+            if (prevFieldSerial && unmounted.type === prevFieldSerial.type) {
+                // if (newType === 'shared') {
+                //     // 🔴 BAD 🔴
+                //     this.fields[key] = newItem as any
+                // } else {
+                // console.log(`[🟢] valid serial for "${key}": (${newType} === ${prevFieldSerial.type}) `)
+                this.fields[key] = this.form.builder._HYDRATE(unmounted, prevFieldSerial)
+                // }
             } else {
                 // console.log(`[🟢] invalid serial for "${key}"`)
                 if (prevFieldSerial != null)
                     console.log(
-                        `[🔶] invalid serial for "${key}": (${newType} != ${prevFieldSerial?.type}) => using fresh one instead`,
+                        `[🔶] invalid serial for "${key}": (${unmounted.type} != ${prevFieldSerial?.type}) => using fresh one instead`,
                         prevFieldSerials,
                     )
-                this.fields[key] = newItem as any
-                this.serial.values_[key] = newItem.serial as any
+                this.fields[key] = this.form.builder._HYDRATE(unmounted, null)
+                this.serial.values_[key] = this.fields[key].serial
             }
         }
         // we only iterate on the new values => we DON'T WANT to remove the old ones.
