@@ -6,12 +6,6 @@ import type { KnownModel_Base } from 'src/manager/model-list/KnownModel_Base'
 import type { KnownModel_Name } from 'src/manager/model-list/KnownModel_Name'
 import type { ModelInfo } from 'src/manager/model-list/model-list-loader-types'
 
-export type WidgetTypeHelpers_OLD<T, I, X extends { type: T }, S, O> = {
-    $Input: I
-    $Serial: X
-    $Output: O
-}
-
 export type $WidgetTypes = {
     $Type: any
     $Input: any
@@ -19,14 +13,12 @@ export type $WidgetTypes = {
     $Output: any
 }
 
-export type WidgetTypeHelpers<K extends $WidgetTypes> = {
+export type IWidget<K extends $WidgetTypes> = {
     $Type: K['$Type']
     $Input: K['$Input']
     $Serial: K['$Serial']
     $Output: K['$Output']
-}
 
-export type IWidget<K extends $WidgetTypes> = {
     id: string
     isCollapsible: boolean
     readonly serialHash: string
@@ -37,8 +29,8 @@ export type IWidget<K extends $WidgetTypes> = {
     readonly config: WidgetConfigFields<any>
 }
 
-export type GetWidgetResult<Req> = Req extends WidgetTypeHelpers_OLD<any, any, any, any, infer O> ? O : never
-export type GetWidgetState<Req> = Req extends WidgetTypeHelpers_OLD<any, any, any, infer S, any> ? S : never
+export type GetWidgetResult<Widget> = Widget extends { $Output: infer O } ? O : never
+export type GetWidgetState<Widget> = Widget extends { $Serial: infer S } ? S : never
 
 export type LabelPos = 'start' | 'end'
 export type WidgetSerialFields<X> = X & {

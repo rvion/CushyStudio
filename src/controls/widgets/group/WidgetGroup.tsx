@@ -1,5 +1,5 @@
 import type { Form } from '../../Form'
-import type { GetWidgetResult, IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../../IWidget'
+import type { GetWidgetResult, IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 import type { SchemaDict } from 'src/cards/App'
 import type { Widget } from 'src/controls/Widget'
 

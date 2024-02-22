@@ -1,5 +1,5 @@
 import type { Form } from '../../Form'
-import type { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../../IWidget'
+import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 
 import { computed, makeObservable, observable } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -28,7 +28,7 @@ export type Widget_string_types = {
 }
 
 // STATE
-export interface Widget_bool extends WidgetTypeHelpers<Widget_string_types> {}
+export interface Widget_bool extends Widget_string_types {}
 export class Widget_bool implements IWidget<Widget_string_types> {
     readonly isCollapsible = false
     readonly id: string

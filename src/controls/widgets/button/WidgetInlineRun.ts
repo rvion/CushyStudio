@@ -1,5 +1,5 @@
 import type { Form } from '../../Form'
-import type { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from 'src/controls/IWidget'
+import type { IWidget, WidgetConfigFields, WidgetSerialFields } from 'src/controls/IWidget'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -25,7 +25,7 @@ export type Widget_inlineRun_types = {
 }
 
 // STATE
-export interface Widget_inlineRun extends WidgetTypeHelpers<Widget_inlineRun_types> {}
+export interface Widget_inlineRun extends Widget_inlineRun_types {}
 export class Widget_inlineRun implements IWidget<Widget_inlineRun_types> {
     get serialHash(): string {
         return hash(this.value)

@@ -1,5 +1,5 @@
 import type { Form } from '../../Form'
-import type { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../../IWidget'
+import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 import type { SQLWhere } from 'src/db/SQLWhere'
 import type { MediaImageT } from 'src/db/TYPES.gen'
 import type { MediaImageL } from 'src/models/MediaImage'

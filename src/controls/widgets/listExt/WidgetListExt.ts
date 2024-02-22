@@ -1,6 +1,6 @@
 import type { Form } from '../../Form'
 import type { BoardPosition } from './WidgetListExtTypes'
-import type { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from 'src/controls/IWidget'
+import type { IWidget, WidgetConfigFields, WidgetSerialFields } from 'src/controls/IWidget'
 import type { Spec } from 'src/controls/Prop'
 
 import { makeAutoObservable } from 'mobx'

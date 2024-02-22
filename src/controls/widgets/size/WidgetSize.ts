@@ -1,5 +1,5 @@
 import type { Form } from '../../Form'
-import type { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from 'src/controls/IWidget'
+import type { IWidget, WidgetConfigFields, WidgetSerialFields } from 'src/controls/IWidget'
 import type { AspectRatio, CushySize, CushySizeByRatio, SDModelType } from 'src/controls/widgets/size/WidgetSizeTypes'
 
 import { makeAutoObservable } from 'mobx'

@@ -1,4 +1,4 @@
-import type { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../../IWidget'
+import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 import type { Tree } from '@lezer/common'
 import type { Form } from 'src/controls/Form'
 

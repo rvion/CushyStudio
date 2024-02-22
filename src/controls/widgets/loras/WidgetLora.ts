@@ -1,5 +1,5 @@
 import type { Form } from '../../Form'
-import type { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from 'src/controls/IWidget'
+import type { IWidget, WidgetConfigFields, WidgetSerialFields } from 'src/controls/IWidget'
 import type { SimplifiedLoraDef } from 'src/presets/SimplifiedLoraDef'
 import type { ItemDataType } from 'src/rsuite/RsuiteTypes'
 
