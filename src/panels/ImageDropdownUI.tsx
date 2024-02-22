@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite'
-import { showItemInFolder, openExternal } from 'src/app/layout/openExternal'
+import { openExternal, showItemInFolder } from 'src/app/layout/openExternal'
 import { ComboUI } from 'src/app/shortcuts/ComboUI'
 import { DraftIllustrationUI } from 'src/cards/fancycard/DraftIllustration'
 import { MediaImageL } from 'src/models/MediaImage'
@@ -22,7 +22,7 @@ export const ImageDropdownMenuUI = observer(function ImageDropdownMenuUI_(p: { i
     return (
         <>
             <div className='divider divider-start my-1'>Send to</div>
-            <MenuItem icon={<span class='material-symbols-outlined'>content_copy</span>} onClick={img.copyToClipboard}>
+            <MenuItem icon={<span className='material-symbols-outlined'>content_copy</span>} onClick={img.copyToClipboard}>
                 Clipboard
             </MenuItem>
             <MenuItem
