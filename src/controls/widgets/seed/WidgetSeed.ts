@@ -4,6 +4,7 @@ import type { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { hash } from 'ohash'
+
 import { WidgetDI } from '../WidgetUI.DI'
 
 // CONFIG
@@ -34,7 +35,7 @@ export type Widget_seed_types = {
 }
 
 // STATE
-export interface Widget_seed extends WidgetTypeHelpers<Widget_seed_types> {}
+export interface Widget_seed extends Widget_seed_types {}
 export class Widget_seed implements IWidget<Widget_seed_types> {
     readonly isCollapsible = false
     readonly id: string

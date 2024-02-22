@@ -36,7 +36,7 @@ export type Widget_image_types = {
 }
 
 // STATE
-export interface Widget_image extends WidgetTypeHelpers<Widget_image_types> {} // prettier-ignore
+export interface Widget_image extends Widget_image_types {} // prettier-ignore
 export class Widget_image implements IWidget<Widget_image_types> {
     static Prop = <T extends Widget_image>(config: Widget_image_config) => new Spec('image', config)
     get serialHash() { return this.value.data.hash } // prettier-ignore

@@ -26,17 +26,6 @@ export type WidgetTypeHelpers<K extends $WidgetTypes> = {
     $Output: K['$Output']
 }
 
-export type IWidget_OLD<T, I, X, S, O> = {
-    id: string
-    isCollapsible: boolean
-    readonly serialHash: string
-    readonly type: T
-    readonly value: O
-    readonly serial: X
-    readonly form: Form<any>
-    readonly config: WidgetConfigFields<any>
-}
-
 export type IWidget<K extends $WidgetTypes> = {
     id: string
     isCollapsible: boolean

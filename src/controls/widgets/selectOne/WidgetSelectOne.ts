@@ -32,7 +32,7 @@ export type Widget_selectOne_types<T extends BaseSelectEntry> = {
 }
 
 // STATE
-export interface Widget_selectOne<T> extends WidgetTypeHelpers<Widget_selectOne_types<T>> {}
+export interface Widget_selectOne<T> extends Widget_selectOne_types<T> {}
 export class Widget_selectOne<T extends BaseSelectEntry> implements IWidget<Widget_selectOne_types<T>> {
     get serialHash() {
         return hash(this.value)

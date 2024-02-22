@@ -38,7 +38,7 @@ export type Widget_matrix_types = {
 }
 
 // STATE
-export interface Widget_matrix extends WidgetTypeHelpers<Widget_matrix_types> {}
+export interface Widget_matrix extends Widget_matrix_types {}
 export class Widget_matrix implements IWidget<Widget_matrix_types> {
     get serialHash(): string {
         return hash(this.value)

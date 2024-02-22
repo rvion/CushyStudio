@@ -25,7 +25,7 @@ export type Widget_color_types = {
 }
 
 // STATE
-export interface Widget_color extends WidgetTypeHelpers<Widget_color_types> {}
+export interface Widget_color extends Widget_color_types {}
 export class Widget_color implements IWidget<Widget_color_types> {
     get serialHash(): string {
         return hash(this.value)

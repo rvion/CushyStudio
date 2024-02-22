@@ -34,7 +34,7 @@ export type Widget_list_types<T extends Spec> = {
 }
 
 // STATE
-export interface Widget_list<T extends Spec> extends WidgetTypeHelpers<Widget_list_types<T>> {}
+export interface Widget_list<T extends Spec> extends Widget_list_types<T> {}
 export class Widget_list<T extends Spec> implements IWidget<Widget_list_types<T>> {
     get serialHash(): string {
         return this.items.map((v) => v.serialHash).join(',')

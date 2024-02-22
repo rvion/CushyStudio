@@ -30,7 +30,7 @@ export type Widget_string_types = {
 }
 
 // STATE
-export interface Widget_string extends WidgetTypeHelpers<Widget_string_types> {}
+export interface Widget_string extends Widget_string_types {}
 export class Widget_string implements IWidget<Widget_string_types> {
     readonly id: string
     readonly type: 'str' = 'str'

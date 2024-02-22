@@ -1,6 +1,6 @@
 import type { Form } from '../../Form'
 import type { Widget_group } from '../group/WidgetGroup'
-import type { IWidget, IWidget_OLD, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from 'src/controls/IWidget'
+import type { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from 'src/controls/IWidget'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -25,7 +25,7 @@ export type Widget_markdown_types = {
 }
 
 // STATE
-export interface Widget_markdown extends WidgetTypeHelpers<Widget_markdown_types> {}
+export interface Widget_markdown extends Widget_markdown_types {}
 export class Widget_markdown implements IWidget<Widget_markdown_types> {
     readonly isCollapsible = true
     readonly id: string

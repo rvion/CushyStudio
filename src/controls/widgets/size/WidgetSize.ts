@@ -32,7 +32,7 @@ export type Widget_size_types = {
 }
 
 // STATE
-export interface Widget_size extends WidgetTypeHelpers<Widget_size_types> {} // prettier-ignore
+export interface Widget_size extends Widget_size_types {} // prettier-ignore
 export class Widget_size implements IWidget<Widget_size_types> {
     get sizeHelper(): ResolutionState {
         // should only be executed once
