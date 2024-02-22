@@ -1,5 +1,5 @@
+import type { Form } from '../../Form'
 import type { Widget_group } from '../group/WidgetGroup'
-import type { Form } from 'src/controls/Form'
 import type { IWidget, IWidget_OLD, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from 'src/controls/IWidget'
 
 import { makeAutoObservable } from 'mobx'

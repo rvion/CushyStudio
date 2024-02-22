@@ -1,11 +1,12 @@
-import type { Form } from 'src/controls/Form'
+import type { Form } from '../../Form'
 import type { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../../IWidget'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
+import { hash } from 'ohash'
+
 import { WidgetDI } from '../WidgetUI.DI'
 import { mkEnglishSummary } from './_orbitUtils'
-import { hash } from 'ohash'
 
 export type OrbitData = {
     azimuth: number

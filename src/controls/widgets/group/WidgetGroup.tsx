@@ -1,13 +1,14 @@
-import type { Form } from 'src/controls/Form'
-import type { Widget } from 'src/controls/Widget'
+import type { Form } from '../../Form'
 import type { GetWidgetResult, IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../../IWidget'
 import type { SchemaDict } from 'src/cards/App'
+import type { Widget } from 'src/controls/Widget'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
-import { runWithGlobalForm } from 'src/models/_ctx2'
-import { WidgetDI } from '../WidgetUI.DI'
 import { Spec } from 'src/controls/Prop'
+import { runWithGlobalForm } from 'src/models/_ctx2'
+
+import { WidgetDI } from '../WidgetUI.DI'
 
 // CONFIG
 export type Widget_group_config<T extends SchemaDict> = WidgetConfigFields<{

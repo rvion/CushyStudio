@@ -1,5 +1,5 @@
+import type { Form } from '../../Form'
 import type { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../../IWidget'
-import type { Form } from 'src/controls/Form'
 
 import { computed, makeObservable, observable } from 'mobx'
 import { nanoid } from 'nanoid'

@@ -6,7 +6,7 @@ import type { Spec } from 'src/controls/Prop'
 import { observer, useLocalObservable } from 'mobx-react-lite'
 import * as React from 'react'
 import { Layer, Rect, Stage, Transformer } from 'react-konva'
-import { InputNumberUI } from 'src/rsuite/InputNumberUI'
+import { InputNumberUI } from 'src/controls/widgets/number/InputNumberUI'
 
 export const WidgetListExt_RegionalUI = observer(function WidgetListExt_RegionalUI_<T extends Spec>(p: {
     widget: Widget_listExt<T>

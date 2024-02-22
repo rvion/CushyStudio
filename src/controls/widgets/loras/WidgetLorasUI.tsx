@@ -1,9 +1,10 @@
 import type { Widget_loras } from './WidgetLora'
 
 import { observer } from 'mobx-react-lite'
-import { InputNumberUI } from 'src/rsuite/InputNumberUI'
+import { InputNumberUI } from 'src/controls/widgets/number/InputNumberUI'
 import { Button, MultiCascader } from 'src/rsuite/shims'
 import { parseFloatNoRoundingErr } from 'src/utils/misc/parseFloatNoRoundingErr'
+
 import { useSt } from '../../../state/stateContext'
 
 export const WidgetLorasUI = observer(function LoraWidgetUI_(p: { widget: Widget_loras }) {

@@ -1,13 +1,14 @@
-import type { CleanedEnumResult } from 'src/types/EnumUtils'
 import type { EnumValue } from '../../../models/Schema'
-import type { Form } from 'src/controls/Form'
+import type { Form } from '../../Form'
 import type { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../../IWidget'
+import type { CleanedEnumResult } from 'src/types/EnumUtils'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
-import { _extractDefaultValue } from './_extractDefaultValue'
-import { WidgetDI } from '../WidgetUI.DI'
 import { hash } from 'ohash'
+
+import { WidgetDI } from '../WidgetUI.DI'
+import { _extractDefaultValue } from './_extractDefaultValue'
 
 // CONFIG
 export type Widget_enum_config<O> = WidgetConfigFields<{

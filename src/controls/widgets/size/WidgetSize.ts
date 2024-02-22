@@ -1,13 +1,13 @@
-import type { WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers_OLD, IWidget_OLD } from 'src/controls/IWidget'
-import type { CushySizeByRatio, CushySize, AspectRatio, SDModelType } from 'src/controls/widgets/size/WidgetSizeTypes'
-import type { Form } from 'src/controls/Form'
+import type { Form } from '../../Form'
+import type { IWidget_OLD, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers_OLD } from 'src/controls/IWidget'
+import type { AspectRatio, CushySize, CushySizeByRatio, SDModelType } from 'src/controls/widgets/size/WidgetSizeTypes'
 
 // import type { AspectRatio, CushySize, CushySizeByRatio, SDModelType } from "./misc/SDModelType"
-
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
-import { WidgetDI } from '../WidgetUI.DI'
 import { hash } from 'ohash'
+
+import { WidgetDI } from '../WidgetUI.DI'
 import { ResolutionState } from './ResolutionState'
 
 export type Widget_size_config = WidgetConfigFields<{

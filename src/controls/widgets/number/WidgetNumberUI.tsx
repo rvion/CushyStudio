@@ -1,5 +1,6 @@
 import { observer } from 'mobx-react-lite'
-import { InputNumberUI } from 'src/rsuite/InputNumberUI'
+import { InputNumberUI } from 'src/controls/widgets/number/InputNumberUI'
+
 import { Widget_number } from './WidgetNumber'
 
 export const WidgetNumberUI = observer(function WidgetNumberUI_(p: { widget: Widget_number }) {

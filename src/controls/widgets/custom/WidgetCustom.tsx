@@ -1,5 +1,5 @@
+import type { Form } from '../../Form'
 import type { FC } from 'react'
-import type { Form } from 'src/controls/Form'
 import type { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from 'src/controls/IWidget'
 
 import { makeAutoObservable } from 'mobx'

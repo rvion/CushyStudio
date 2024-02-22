@@ -1,9 +1,10 @@
-import type { Form } from 'src/controls/Form'
-import type { Spec } from 'src/controls/Prop'
+import type { Form } from '../../Form'
 import type { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../../IWidget'
+import type { Spec } from '../../Prop'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
+
 import { WidgetDI } from '../WidgetUI.DI'
 
 // CONFIG
