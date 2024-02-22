@@ -1,5 +1,5 @@
 import type { Form } from '../../Form'
-import type { IWidget_OLD, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers_OLD } from '../../IWidget'
+import type { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../../IWidget'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -17,11 +17,16 @@ export type Widget_color_serial = WidgetSerialFields<{ type: 'color'; active: tr
 export type Widget_color_output = string
 
 // TYPES
-export interface Widget_color
-    extends WidgetTypeHelpers_OLD<'color', Widget_color_config, Widget_color_serial, any, Widget_color_output> {}
+export type Widget_color_types = {
+    $Type: 'color'
+    $Input: Widget_color_config
+    $Serial: Widget_color_serial
+    $Output: Widget_color_output
+}
 
 // STATE
-export class Widget_color implements IWidget_OLD<'color', Widget_color_config, Widget_color_serial, any, Widget_color_output> {
+export interface Widget_color extends WidgetTypeHelpers<Widget_color_types> {}
+export class Widget_color implements IWidget<Widget_color_types> {
     get serialHash(): string {
         return hash(this.value)
     }

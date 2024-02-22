@@ -1,5 +1,5 @@
 import type { Form } from '../../Form'
-import type { IWidget_OLD, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers_OLD } from '../../IWidget'
+import type { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../../IWidget'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -30,11 +30,16 @@ export type Widget_matrix_serial = WidgetSerialFields<{ type: 'matrix'; active: 
 export type Widget_matrix_output = Widget_matrix_cell[]
 
 // TYPES
-export interface Widget_matrix
-    extends WidgetTypeHelpers_OLD<'matrix', Widget_matrix_config, Widget_matrix_serial, 0, Widget_matrix_output> {}
+export type Widget_matrix_types = {
+    $Type: 'matrix'
+    $Input: Widget_matrix_config
+    $Serial: Widget_matrix_serial
+    $Output: Widget_matrix_output
+}
 
 // STATE
-export class Widget_matrix implements IWidget_OLD<'matrix', Widget_matrix_config, Widget_matrix_serial, 0, Widget_matrix_output> {
+export interface Widget_matrix extends WidgetTypeHelpers<Widget_matrix_types> {}
+export class Widget_matrix implements IWidget<Widget_matrix_types> {
     get serialHash(): string {
         return hash(this.value)
     }

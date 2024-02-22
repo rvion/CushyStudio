@@ -1,5 +1,5 @@
 import type { Form } from '../../Form'
-import type { IWidget_OLD, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers_OLD } from '../../IWidget'
+import type { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../../IWidget'
 import type { SQLWhere } from 'src/db/SQLWhere'
 import type { MediaImageT } from 'src/db/TYPES.gen'
 import type { MediaImageL } from 'src/models/MediaImage'
@@ -28,11 +28,16 @@ export type Widget_image_serial = WidgetSerialFields<{
 export type Widget_image_output = MediaImageL
 
 // TYPES
-// ...
+export type Widget_image_types = {
+    $Type: 'image'
+    $Input: Widget_image_config
+    $Serial: Widget_image_serial
+    $Output: Widget_image_output
+}
 
 // STATE
-export interface Widget_image extends WidgetTypeHelpers_OLD<'image', Widget_image_config, Widget_image_serial, 0, Widget_image_output> {} // prettier-ignore
-export class Widget_image implements IWidget_OLD<'image', Widget_image_config, Widget_image_serial, 0, Widget_image_output> {
+export interface Widget_image extends WidgetTypeHelpers<Widget_image_types> {} // prettier-ignore
+export class Widget_image implements IWidget<Widget_image_types> {
     static Prop = <T extends Widget_image>(config: Widget_image_config) => new Spec('image', config)
     get serialHash() { return this.value.data.hash } // prettier-ignore
     readonly isCollapsible = true

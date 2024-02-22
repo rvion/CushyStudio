@@ -1,8 +1,7 @@
 import type { Form } from '../../Form'
-import type { IWidget_OLD, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers_OLD } from 'src/controls/IWidget'
+import type { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from 'src/controls/IWidget'
 import type { AspectRatio, CushySize, CushySizeByRatio, SDModelType } from 'src/controls/widgets/size/WidgetSizeTypes'
 
-// import type { AspectRatio, CushySize, CushySizeByRatio, SDModelType } from "./misc/SDModelType"
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { hash } from 'ohash'
@@ -10,19 +9,31 @@ import { hash } from 'ohash'
 import { WidgetDI } from '../WidgetUI.DI'
 import { ResolutionState } from './ResolutionState'
 
+// CONFIG
 export type Widget_size_config = WidgetConfigFields<{
     default?: CushySizeByRatio
     min?: number
     max?: number
     step?: number
 }>
-export type Widget_size_serial = Widget_size_state // prettier-ignore
-export type Widget_size_state  = WidgetSerialFields<CushySize> // prettier-ignore
+
+// SERIAL
+export type Widget_size_serial = WidgetSerialFields<CushySize>
+
+// OUT
 export type Widget_size_output = CushySize // prettier-ignore
-export interface Widget_size extends WidgetTypeHelpers_OLD<'size', Widget_size_config, Widget_size_serial, Widget_size_state, Widget_size_output> {} // prettier-ignore
-export class Widget_size
-    implements IWidget_OLD<'size', Widget_size_config, Widget_size_serial, Widget_size_state, Widget_size_output>
-{
+
+// TYPES
+export type Widget_size_types = {
+    $Type: 'size'
+    $Input: Widget_size_config
+    $Serial: Widget_size_serial
+    $Output: Widget_size_output
+}
+
+// STATE
+export interface Widget_size extends WidgetTypeHelpers<Widget_size_types> {} // prettier-ignore
+export class Widget_size implements IWidget<Widget_size_types> {
     get sizeHelper(): ResolutionState {
         // should only be executed once
         const state = new ResolutionState(this.serial)
@@ -33,7 +44,7 @@ export class Widget_size
     readonly isCollapsible = this.config.collapsible ?? false
     readonly id: string
     readonly type: 'size' = 'size'
-    readonly serial: Widget_size_state
+    readonly serial: Widget_size_serial
     constructor(public form: Form<any>, public config: Widget_size_config, serial?: Widget_size_serial) {
         this.id = serial?.id ?? nanoid()
         if (serial) {
@@ -59,4 +70,5 @@ export class Widget_size
     }
 }
 
+// DI
 WidgetDI.Widget_size = Widget_size
