@@ -272,6 +272,26 @@
     },
 
     {
+      "name": "stabilityai/comfyui_checkpoints/stable_cascade_stage_b.safetensors",
+      "type": "checkpoints",
+      "base": "Stable Cascade",
+      "save_path": "checkpoints/Stable-Cascade",
+      "description": "[4.55GB] Stable Cascade stage_b checkpoints",
+      "reference": "https://huggingface.co/stabilityai/stable-cascade",
+      "filename": "stable_cascade_stage_b.safetensors",
+      "url": "https://huggingface.co/stabilityai/stable-cascade/resolve/main/comfyui_checkpoints/stable_cascade_stage_b.safetensors"
+    },
+    {
+      "name": "stabilityai/comfyui_checkpoints/stable_cascade_stage_c.safetensors",
+      "type": "checkpoints",
+      "base": "Stable Cascade",
+      "save_path": "checkpoints/Stable-Cascade",
+      "description": "[9.22GB] Stable Cascade stage_c checkpoints",
+      "reference": "https://huggingface.co/stabilityai/stable-cascade",
+      "filename": "stable_cascade_stage_c.safetensors",
+      "url": "https://huggingface.co/stabilityai/stable-cascade/resolve/main/comfyui_checkpoints/stable_cascade_stage_c.safetensors"
+    },
+    {
       "name": "stabilityai/Stable Cascade: stage_a.safetensors (VAE)",
       "type": "VAE",
       "base": "Stable Cascade",
@@ -280,6 +300,16 @@
       "reference": "https://huggingface.co/stabilityai/stable-cascade",
       "filename": "stage_a.safetensors",
       "url": "https://huggingface.co/stabilityai/stable-cascade/resolve/main/stage_a.safetensors"
+    },
+    {
+      "name": "stabilityai/Stable Cascade: effnet_encoder.safetensors (VAE)",
+      "type": "VAE",
+      "base": "Stable Cascade",
+      "save_path": "vae/Stable-Cascade",
+      "description": "[81.5MB] Stable Cascade: effnet_encoder.\nVAE encoder for stage_c latent.",
+      "reference": "https://huggingface.co/stabilityai/stable-cascade",
+      "filename": "effnet_encoder.safetensors",
+      "url": "https://huggingface.co/stabilityai/stable-cascade/resolve/main/effnet_encoder.safetensors"
     },
     {
       "name": "stabilityai/Stable Cascade: stage_b.safetensors (UNET)",
@@ -462,6 +492,39 @@
       "filename": "sd_xl_offset_example-lora_1.0.safetensors",
       "url": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0/resolve/main/sd_xl_offset_example-lora_1.0.safetensors"
     },
+
+    {
+      "name": "SDXL Lightning LoRA (2step)",
+      "type": "lora",
+      "base": "SDXL",
+      "save_path": "loras/SDXL-Lightning",
+      "description": "SDXL Lightning LoRA (2step)",
+      "reference": "https://huggingface.co/ByteDance/SDXL-Lightning",
+      "filename": "sdxl_lightning_2step_lora.safetensors",
+      "url": "https://huggingface.co/ByteDance/SDXL-Lightning/resolve/main/sdxl_lightning_2step_lora.safetensors"
+    },
+    {
+      "name": "SDXL Lightning LoRA (4step)",
+      "type": "lora",
+      "base": "SDXL",
+      "save_path": "loras/SDXL-Lightning",
+      "description": "SDXL Lightning LoRA (4step)",
+      "reference": "https://huggingface.co/ByteDance/SDXL-Lightning",
+      "filename": "sdxl_lightning_4step_lora.safetensors",
+      "url": "https://huggingface.co/ByteDance/SDXL-Lightning/resolve/main/sdxl_lightning_4step_lora.safetensors"
+    },
+    {
+      "name": "SDXL Lightning LoRA (8step)",
+      "type": "lora",
+      "base": "SDXL",
+      "save_path": "loras/SDXL-Lightning",
+      "description": "SDXL Lightning LoRA (8tep)",
+      "reference": "https://huggingface.co/ByteDance/SDXL-Lightning",
+      "filename": "sdxl_lightning_8step_lora.safetensors",
+      "url": "https://huggingface.co/ByteDance/SDXL-Lightning/resolve/main/sdxl_lightning_8step_lora.safetensors"
+    },
+    
+
     {
       "name": "v1-5-pruned-emaonly.ckpt",
       "type": "checkpoints",
@@ -1984,6 +2047,48 @@
       "reference": "https://huggingface.co/InstantX/InstantID",
       "filename": "diffusion_pytorch_model.safetensors",
       "url": "https://huggingface.co/InstantX/InstantID/resolve/main/ControlNetModel/diffusion_pytorch_model.safetensors"
+    },
+
+    {
+      "name": "efficient_sam_s_cpu.jit [ComfyUI-YoloWorld-EfficientSAM]",
+      "type": "efficient_sam",
+      "base": "efficient_sam",
+      "save_path": "custom_nodes/ComfyUI-YoloWorld-EfficientSAM",
+      "description": "Install efficient_sam_s_cpu.jit into ComfyUI-YoloWorld-EfficientSAM",
+      "reference": "https://huggingface.co/camenduru/YoloWorld-EfficientSAM/tree/main",
+      "filename": "efficient_sam_s_cpu.jit",
+      "url": "https://huggingface.co/camenduru/YoloWorld-EfficientSAM/resolve/main/efficient_sam_s_cpu.jit"
+    },
+    {
+      "name": "efficient_sam_s_gpu.jit [ComfyUI-YoloWorld-EfficientSAM]",
+      "type": "efficient_sam",
+      "base": "efficient_sam",
+      "save_path": "custom_nodes/ComfyUI-YoloWorld-EfficientSAM",
+      "description": "Install efficient_sam_s_gpu.jit into ComfyUI-YoloWorld-EfficientSAM",
+      "reference": "https://huggingface.co/camenduru/YoloWorld-EfficientSAM/tree/main",
+      "filename": "efficient_sam_s_gpu.jit",
+      "url": "https://huggingface.co/camenduru/YoloWorld-EfficientSAM/resolve/main/efficient_sam_s_gpu.jit"
+    },
+
+    {
+      "name": "shape_predictor_68_face_landmarks.dat [Face Analysis]",
+      "type": "Shape Predictor",
+      "base": "DLIB",
+      "save_path": "custom_nodes/ComfyUI_FaceAnalysis/dlib",
+      "description": "To use the Face Analysis for ComfyUI custom node, installation of this model is needed.",
+      "reference": "https://huggingface.co/matt3ounstable/dlib_predictor_recognition/tree/main",
+      "filename": "shape_predictor_68_face_landmarks.dat",
+      "url": "https://huggingface.co/matt3ounstable/dlib_predictor_recognition/resolve/main/shape_predictor_68_face_landmarks.dat"
+    },
+    {
+      "name": "dlib_face_recognition_resnet_model_v1.dat [Face Analysis]",
+      "type": "Face Recognition",
+      "base": "DLIB",
+      "save_path": "custom_nodes/ComfyUI_FaceAnalysis/dlib",
+      "description": "To use the Face Analysis for ComfyUI custom node, installation of this model is needed.",
+      "reference": "https://huggingface.co/matt3ounstable/dlib_predictor_recognition/tree/main",
+      "filename": "dlib_face_recognition_resnet_model_v1.dat",
+      "url": "https://huggingface.co/matt3ounstable/dlib_predictor_recognition/resolve/main/dlib_face_recognition_resnet_model_v1.dat"
     }
   ]
 }

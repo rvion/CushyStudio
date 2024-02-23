@@ -1,6 +1,6 @@
 // prettier-ignore
 export type KnownModel_Base =
-    | "SDXL"               // x  34
+    | "SDXL"               // x  37
     | "SD1.x"              // x  25
     | "upscale"            // x  10
     | "inswapper"          // x   7
@@ -9,7 +9,7 @@ export type KnownModel_Base =
     | "SVD"                // x   2
     | "zero123"            // x   1
     | "SD1.5"              // x  57
-    | "Stable Cascade"     // x  10
+    | "Stable Cascade"     // x  13
     | "SD2"                // x   2
     | "SD2.1"              // x   4
     | "SDXL VAE"           // x   1
@@ -28,5 +28,7 @@ export type KnownModel_Base =
     | "GFPGAN"             // x   1
     | "CodeFormer"         // x   1
     | "facexlib"           // x   4
+    | "efficient_sam"      // x   2
+    | "DLIB"               // x   2
 
 
