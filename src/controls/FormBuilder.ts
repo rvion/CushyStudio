@@ -51,6 +51,7 @@ export class FormBuilder {
     email       = (config: Widget_string_config = {})                                                        => new Spec<Widget_string                      >('str'       , { inputType: 'email', ...config })
     url         = (config: Widget_string_config = {})                                                        => new Spec<Widget_string                      >('str'       , { inputType: 'url', ...config })
     string      = (config: Widget_string_config = {})                                                        => new Spec<Widget_string                      >('str'       , config)
+    text        = (config: Widget_string_config = {})                                                        => new Spec<Widget_string                      >('str'       , config)
     boolean     = (config: Widget_bool_config   = {})                                                        => new Spec<Widget_bool                        >('bool'      , config)
     bool        = (config: Widget_bool_config   = {})                                                        => new Spec<Widget_bool                        >('bool'      , config)
     size        = (config: Widget_size_config   = {})                                                        => new Spec<Widget_size                        >('size'      , config)
