@@ -1,9 +1,9 @@
-import type { Spec } from 'src/controls/Prop'
-import type { Widget } from '../../Widget'
-import { WidgetUI } from '../WidgetUI'
 import type { Widget_shared } from './WidgetShared'
+import type { Spec } from 'src/controls/Prop'
 
 import { observer } from 'mobx-react-lite'
+
+import { WidgetUI } from '../WidgetUI'
 
 export const WidgetShared_LineUI = observer(function WidgetBoolUI_<T extends Spec>(p: { widget: Widget_shared<T> }) {
     // if (p.widget.shared.serial.collapsed) return <WidgetWithLabelUI rootKey={p.widget.config.rootKey} widget={p.widget.shared} />

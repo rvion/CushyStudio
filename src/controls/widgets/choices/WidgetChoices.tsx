@@ -1,5 +1,5 @@
 import type { Form } from '../../Form'
-import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { IWidget, SharedWidgetSerial, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 import type { SchemaDict } from 'src/cards/App'
 
 import { makeAutoObservable } from 'mobx'
@@ -163,7 +163,7 @@ export class Widget_choices<T extends SchemaDict> implements IWidget<Widget_choi
         if (schema == null) throw new Error(`❌ Branch "${branch}" has no initializer function`)
 
         // prev serial seems compmatible => we use it
-        const prevBranchSerial = this.serial.values_?.[branch]
+        const prevBranchSerial: Maybe<SharedWidgetSerial> = this.serial.values_?.[branch]
         if (prevBranchSerial && schema.type === prevBranchSerial.type) {
             this.children[branch] = this.form.builder._HYDRATE(schema, prevBranchSerial)
         }

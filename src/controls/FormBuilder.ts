@@ -211,7 +211,7 @@ export class FormBuilder {
         if (type === 'custom'    ) return new Widget_custom    (this.form, config, serial)
 
         console.log(`🔴 unknown widget "${type}" in serial.`)
-        exhaust(type)
+        // exhaust(type)
         return new Widget_markdown(this.form, { markdown: `unknown widget "${type}" in serial.` })
     }
 }

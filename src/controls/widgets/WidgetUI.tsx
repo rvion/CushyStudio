@@ -1,6 +1,5 @@
+import type { IWidget } from '../IWidget'
 import type { FC } from 'react'
-
-import * as R from 'src/controls/Widget'
 
 import { exhaust } from '../../utils/misc/ComfyUtils'
 import { Widget_bool } from './bool/WidgetBool'
@@ -57,7 +56,7 @@ import { WidgetDI } from './WidgetUI.DI'
  */
 
 export const WidgetUI = (
-    widget: R.Widget,
+    widget: IWidget,
 ): {
     WidgetLineUI?: FC<{ widget: any }>
     WidgetBlockUI?: FC<{ widget: any }>
@@ -88,7 +87,7 @@ export const WidgetUI = (
     if (widget instanceof Widget_selectMany) return { WidgetLineUI: WidgetSelectManyUI, WidgetBlockUI: undefined }
     if (widget instanceof Widget_orbit) return { WidgetLineUI: WidgetOrbitUI, WidgetBlockUI: undefined }
 
-    exhaust(widget)
+    // exhaust(widget)
     console.log(`🔴`, (widget as any).type, widget)
     return {}
 }

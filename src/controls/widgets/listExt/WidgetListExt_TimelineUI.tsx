@@ -1,6 +1,5 @@
 import type { Widget_listExt } from './WidgetListExt'
 import type { Spec } from 'src/controls/Prop'
-import type { Widget } from 'src/controls/Widget'
 
 import { observer, useLocalObservable } from 'mobx-react-lite'
 

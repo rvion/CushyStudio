@@ -1,20 +1,21 @@
-import type * as R from 'src/controls/Widget'
-
-import { observer } from 'mobx-react-lite'
+import type { IWidget } from '../IWidget'
 
 import { runInAction } from 'mobx'
+import { observer } from 'mobx-react-lite'
 import { ErrorBoundary } from 'react-error-boundary'
 import { RevealUI } from 'src/rsuite/reveal/RevealUI'
 import { Tooltip } from 'src/rsuite/shims'
+
 import { makeLabelFromFieldName } from '../../utils/misc/makeLabelFromFieldName'
 import { ErrorBoundaryFallback } from '../../widgets/misc/ErrorBoundary'
 import { InstallRequirementsBtnUI } from '../REQUIREMENTS/Panel_InstallRequirementsUI'
-import { WidgetDI } from '../widgets/WidgetUI.DI'
 import { AnimatedSizeUI } from '../widgets/choices/AnimatedSizeUI'
+import { WidgetDI } from '../widgets/WidgetUI.DI'
+
 const KLS = WidgetDI
 
 export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
-    widget: R.Widget
+    widget: IWidget
     rootKey: string
     isTopLevel?: boolean
     inline?: boolean
@@ -113,7 +114,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     )
 })
 
-export const Widget_CollapseBtnUI = observer(function Widget_CollapseBtnUI_(p: { widget: R.Widget }) {
+export const Widget_CollapseBtnUI = observer(function Widget_CollapseBtnUI_(p: { widget: IWidget }) {
     const widget = p.widget
     return (
         <span
@@ -133,7 +134,7 @@ export const Widget_CollapseBtnUI = observer(function Widget_CollapseBtnUI_(p: {
     )
 })
 
-export const Widget_ToggleUI = observer(function Widget_ToggleUI_(p: { widget: R.Widget }) {
+export const Widget_ToggleUI = observer(function Widget_ToggleUI_(p: { widget: IWidget }) {
     const widget = p.widget
     if (!(widget instanceof KLS.Widget_optional)) return null
     const isActive = widget.serial.active
@@ -153,7 +154,7 @@ export const Widget_ToggleUI = observer(function Widget_ToggleUI_(p: { widget: R
     )
 })
 
-export const WidgetTooltipUI = observer(function WidgetTooltipUI_(p: { widget: R.Widget }) {
+export const WidgetTooltipUI = observer(function WidgetTooltipUI_(p: { widget: IWidget }) {
     const widget = p.widget
     return (
         <RevealUI>

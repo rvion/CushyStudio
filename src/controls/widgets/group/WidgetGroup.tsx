@@ -1,7 +1,6 @@
 import type { Form } from '../../Form'
 import type { GetWidgetResult, IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 import type { SchemaDict } from 'src/cards/App'
-import type { Widget } from 'src/controls/Widget'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -48,7 +47,7 @@ export class Widget_group<T extends SchemaDict> implements IWidget<Widget_group_
     }
     get serialHash(): string {
         return Object.values(this.fields)
-            .map((v: Widget) => v.serialHash)
+            .map((v) => v.serialHash)
             .join(',')
     }
     readonly isCollapsible = this.config.collapsible ?? true
@@ -152,7 +151,7 @@ export class Widget_group<T extends SchemaDict> implements IWidget<Widget_group_
     value: { [k in keyof T]: GetWidgetResult<T[k]> } = new Proxy({} as any, {
         get: (target, prop) => {
             if (typeof prop !== 'string') return
-            const subWidget: Widget = this.fields[prop]
+            const subWidget: IWidget = this.fields[prop]
             if (subWidget == null) return
             return subWidget.value
         },

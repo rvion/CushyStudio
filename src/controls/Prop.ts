@@ -1,7 +1,6 @@
 import type { IWidget } from './IWidget'
-import type { Widget } from './Widget'
 
-export class Spec<W extends IWidget<any> = Widget> {
+export class Spec<W extends IWidget = IWidget> {
     $Widget!: W
     $Type!: W['type']
     $Input!: W['$Input']

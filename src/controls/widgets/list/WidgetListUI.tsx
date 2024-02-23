@@ -1,15 +1,17 @@
 import type { Widget_listExt } from '../listExt/WidgetListExt'
+import type { IWidget } from 'src/controls/IWidget'
 import type { Spec } from 'src/controls/Prop'
+
 import { observer } from 'mobx-react-lite'
 import { forwardRef } from 'react'
 import SortableList, { SortableItem, SortableKnob } from 'react-easy-sort'
-import { Widget } from 'src/controls/Widget'
+import { ErrorBoundary } from 'react-error-boundary'
+import { ListControlsUI } from 'src/controls/shared/ListControlsUI'
 import { Message } from 'src/rsuite/shims'
+import { ErrorBoundaryFallback } from 'src/widgets/misc/ErrorBoundary'
+
 import { WidgetDI } from '../WidgetUI.DI'
 import { Widget_list } from './WidgetList'
-import { ErrorBoundary } from 'react-error-boundary'
-import { ErrorBoundaryFallback } from 'src/widgets/misc/ErrorBoundary'
-import { ListControlsUI } from 'src/controls/shared/ListControlsUI'
 
 export const WidgetList_LineUI = observer(function WidgetList_LineUI_<T extends Spec>(p: {
     widget: Widget_list<T> | Widget_listExt<T>
@@ -94,7 +96,7 @@ export const WidgetListUI = observer(function WidgetListUI_<T extends Spec>(p: {
     )
 })
 
-const ListDragHandleUI = forwardRef<HTMLDivElement, { ix: number; widget: Widget }>((props, ref) => {
+const ListDragHandleUI = forwardRef<HTMLDivElement, { ix: number; widget: IWidget }>((props, ref) => {
     const v = props.widget
     return (
         <div
@@ -117,7 +119,7 @@ const ListDragHandleUI = forwardRef<HTMLDivElement, { ix: number; widget: Widget
     )
 })
 
-export const ListItemCollapseBtnUI = observer(function ListItemCollapseBtnUI_(p: { req: Widget }) {
+export const ListItemCollapseBtnUI = observer(function ListItemCollapseBtnUI_(p: { req: IWidget }) {
     const widget = p.req
     const isCollapsible = widget.isCollapsible
     if (!isCollapsible) return null

@@ -1,10 +1,10 @@
-import type { Spec } from 'src/controls/Prop'
-import type { Widget } from '../../Widget'
-import { WidgetUI } from '../WidgetUI'
 import type { Widget_optional } from './WidgetOptional'
+import type { Spec } from 'src/controls/Prop'
 
 import { observer } from 'mobx-react-lite'
 import { WidgetWithLabelUI } from 'src/controls/shared/WidgetWithLabelUI'
+
+import { WidgetUI } from '../WidgetUI'
 
 export const WidgetOptional_LineUI = observer(function WidgetBoolUI_<T extends Spec>(p: { widget: Widget_optional<T> }) {
     if (!p.widget.serial.active) return null

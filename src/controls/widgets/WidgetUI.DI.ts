@@ -1,4 +1,3 @@
-import type * as R from '../Widget'
 import type { Widget_bool } from './bool/WidgetBool'
 import type { Widget_inlineRun } from './button/WidgetInlineRun'
 import type { Widget_choices } from './choices/WidgetChoices'

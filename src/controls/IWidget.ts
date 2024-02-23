@@ -7,13 +7,13 @@ import type { KnownModel_Name } from 'src/manager/model-list/KnownModel_Name'
 import type { ModelInfo } from 'src/manager/model-list/model-list-loader-types'
 
 export type $WidgetTypes = {
-    $Type: any
-    $Input: any
-    $Serial: any
+    $Type: string
+    $Input: SharedWidgetConfig
+    $Serial: SharedWidgetSerial
     $Output: any
 }
 
-export type IWidget<K extends $WidgetTypes> = {
+export type IWidget<K extends $WidgetTypes = $WidgetTypes> = {
     $Type: K['$Type']
     $Input: K['$Input']
     $Serial: K['$Serial']
@@ -33,15 +33,15 @@ export type GetWidgetResult<Widget> = Widget extends { $Output: infer O } ? O : 
 export type GetWidgetState<Widget> = Widget extends { $Serial: infer S } ? S : never
 
 export type LabelPos = 'start' | 'end'
-export type WidgetSerialFields<X> = X & {
+export type SharedWidgetSerial = {
     id: string
+    type: string
     collapsed?: boolean
-    // vertical?: boolean
 }
 
-// do not need to be serializable
-export type WidgetConfigFields<X> = X & SharedWidgetProps
-export type SharedWidgetProps = {
+export type WidgetSerialFields<X> = X & SharedWidgetSerial
+export type WidgetConfigFields<X> = X & SharedWidgetConfig
+export type SharedWidgetConfig = {
     label?: string | false
     layout?: 'H' | 'V'
     tooltip?: string
