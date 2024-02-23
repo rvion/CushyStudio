@@ -7,7 +7,7 @@ import { Panel_ComfyUIHosts } from '../Panel_ComfyUIHosts'
 import { Panel_Config } from '../Panel_Config'
 import { Panel_DraftJsonResult } from '../Panel_DraftJsonResult'
 import { Panel_DraftJsonSerial } from '../Panel_DraftJsonSerial'
-import { Panel_CardPicker3UI } from '../Panel_FullScreenLibrary'
+import { Panel_FullScreenLibrary } from '../Panel_FullScreenLibrary'
 import { Panel_Gallery } from '../Panel_Gallery'
 import { Panel_Iframe } from '../Panel_IFrame'
 import { Panel_Import } from '../Panel_Import'
@@ -51,9 +51,9 @@ export const panels = {
     Steps:               { name: 'Steps',               widget: Panel_Steps,             header: (p: PropsOf<typeof Panel_Steps            >) => ({title: 'Steps',               icon: undefined                         }) },
     LastGraph:           { name: 'LastGraph',           widget: Panel_LastGraph,         header: (p: PropsOf<typeof Panel_LastGraph        >) => ({title: '⏱️ LastGraph',        icon: undefined                         }) },
     LastImage:           { name: 'LastImage',           widget: Panel_ViewImage,         header: (p: PropsOf<typeof Panel_ViewImage        >) => ({title: '⏱️ LastImage',        icon: undefined                         }) },
-    // LastLatent:          { name: 'LastLatent',          widget: Panel_ViewLatent,        header: (p: PropsOf<typeof Panel_ViewLatent       >) => ({title: '⏱️ LastLatent',       icon: undefined                      }) },
+    // LastLatent:       { name: 'LastLatent',          widget: Panel_ViewLatent,        header: (p: PropsOf<typeof Panel_ViewLatent       >) => ({title: '⏱️ LastLatent',       icon: undefined                      }) },
     LastStep:            { name: 'LastStep',            widget: Panel_LastStep,          header: (p: PropsOf<typeof Panel_LastStep         >) => ({title: 'LastStep',            icon: undefined                         }) },
-    CardPicker3UI:       { name: 'CardPicker3UI',       widget: Panel_CardPicker3UI,     header: (p: PropsOf<typeof Panel_CardPicker3UI    >) => ({title: 'CardPicker3UI',       icon: undefined                         }) },
+    FullScreenLibrary:   { name: 'FullScreenLibrary',   widget: Panel_FullScreenLibrary, header: (p: PropsOf<typeof Panel_FullScreenLibrary>) => ({title: 'FullScreenLibrary',   icon: undefined                         }) },
     Draft:               { name: 'Draft',               widget: Panel_Draft,             header: (p: PropsOf<typeof Panel_Draft            >) => ({title: 'Draft',               icon: undefined                         }) },
     DraftJsonResult:     { name: 'DraftJsonResult',     widget: Panel_DraftJsonResult,   header: (p: PropsOf<typeof Panel_DraftJsonResult  >) => ({title: 'DraftJsonResult',     icon: undefined                         }) },
     DraftJsonSerial:     { name: 'DraftJsonSerial',     widget: Panel_DraftJsonSerial,   header: (p: PropsOf<typeof Panel_DraftJsonSerial  >) => ({title: 'DraftJsonSerial',     icon: undefined                         }) },

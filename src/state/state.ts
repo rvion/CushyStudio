@@ -317,13 +317,13 @@ export class STATE {
 
     // showCardPicker: boolean = false
     closeFullLibrary = () => (this.layout.fullPageComp = null)
-    openFullLibrary = () => (this.layout.fullPageComp = { props: {}, panel: 'CardPicker3UI' })
+    openFullLibrary = () => (this.layout.fullPageComp = { props: {}, panel: 'FullScreenLibrary' })
     toggleFullLibrary = () => {
         if (
             this.layout.fullPageComp == null || //
-            this.layout.fullPageComp.panel !== 'CardPicker3UI'
+            this.layout.fullPageComp.panel !== 'FullScreenLibrary'
         ) {
-            this.layout.fullPageComp = { props: {}, panel: 'CardPicker3UI' }
+            this.layout.fullPageComp = { props: {}, panel: 'FullScreenLibrary' }
         } else {
             this.layout.fullPageComp = null
         }
@@ -422,6 +422,19 @@ export class STATE {
         })
     }
 
+    civitaiConf = new Form(
+        (ui) => ({
+            imgSize1: ui.int({ min: 64, max: 1024, step: 64, default: 512 }),
+            imgSize2: ui.int({ min: 64, max: 1024, step: 64, default: 128 }),
+            civitaiApiKey: ui.string({ label: 'API Key' }),
+            // civitaiApiSecret: ui.string({ label: 'API Secret' }),
+        }),
+        {
+            name: 'Civitai Conf',
+            initialValue: () => readJSON('settings/civitai.json'),
+            onChange: (form) => writeJSON('settings/civitai.json', form.serial),
+        },
+    )
     sideBarConf = new Form(
         (f) => ({
             size: f.int({ label: 'size', min: 24, max: 128, default: 48, unit: 'px', step: 4 }),

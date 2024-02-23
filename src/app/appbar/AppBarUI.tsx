@@ -5,6 +5,7 @@ import { HostWebsocketIndicatorUI } from '../../panels/host/HostWebsocketIndicat
 import { useSt } from '../../state/stateContext'
 import { UpdateBtnUI } from '../../updater/UpdateBtnUI'
 import { CushyStudioLinkUI } from './AppBarCushyStudioLinkUI'
+import { MenuAppsUI } from './MenuApps'
 import { MenuAuthUI } from './MenuAuthUI'
 import { MenuComfyUI } from './MenuComfyUI'
 import { MenuDebugUI } from './MenuDebugUI'
@@ -29,6 +30,7 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
                 <MenuPanelsUI />
                 <MenuComfyUI />
                 <MenuUtilsUI />
+                <MenuAppsUI />
                 <MenuSettingsUI />
                 <MenuThemeUI />
                 <MenuHelpUI />

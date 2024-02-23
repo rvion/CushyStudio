@@ -118,6 +118,7 @@ export const shortcutsDef: Shortcut<STATE>[] = [
     simpleValidInInput([KEYS.openPage_Posemy],   'open Posemy.art', (st) => st.layout.FOCUS_OR_CREATE('IFrame', { url: 'https://app.posemy.art/' }), ), // prettier-ignore
     simpleValidInInput([KEYS.openPage_Paint],    'open Paint',      (st) => st.layout.FOCUS_OR_CREATE('Paint', {})), // prettier-ignore
     simpleValidInInput([KEYS.openPage_Unsplash], 'open Unsplash',   (st) => st.layout.FOCUS_OR_CREATE('IFrame', { url: 'https://unsplash.com/' }), ), // prettier-ignore
+    simpleValidInInput([KEYS.openPage_Marketplace], 'open Unsplash',(st) => st.layout.FOCUS_OR_CREATE('Marketplace', { url: 'https://unsplash.com/' }), ), // prettier-ignore
 
     // menu settings --------------------------------
     simpleValidInInput([KEYS.openPage_Config],    'open Config',    (st) => st.layout.FOCUS_OR_CREATE('Config', {})), // prettier-ignore

@@ -7,7 +7,7 @@ import { useSt } from 'src/state/stateContext'
 import { FieldAndLabelUI } from 'src/widgets/misc/FieldAndLabelUI'
 import { ScrollablePaneUI } from 'src/widgets/misc/scrollableArea'
 
-export const Panel_CardPicker3UI = observer(function Panel_CardPicker3UI_(p: {}) {
+export const Panel_FullScreenLibrary = observer(function Panel_CardPicker3UI_(p: {}) {
     const st = useSt()
     const library = st.library
 

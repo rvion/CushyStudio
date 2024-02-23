@@ -11,7 +11,7 @@ import { hashJSONObject } from './hash'
 import { PanelNames, panels, Panels } from './PANELS'
 import { RenderPanelUI } from './RenderPanelUI'
 import { Trigger } from 'src/app/shortcuts/Trigger'
-import { Panel_CardPicker3UI } from 'src/panels/Panel_FullScreenLibrary'
+import { Panel_FullScreenLibrary } from 'src/panels/Panel_FullScreenLibrary'
 import { Message } from 'src/rsuite/shims'
 
 export type PropsOf<T> = T extends FC<infer Props> ? Props : '❌'
@@ -393,30 +393,6 @@ export class CushyLayoutManager {
                             },
                         ],
                     },
-                    // {
-                    //     id: 'rightsidePane',
-                    //     type: 'row',
-                    //     weight: 10,
-                    //     width: 300,
-                    //     children: [
-                    //         {
-                    //             type: 'tabset',
-                    //             // height: 256,
-                    //             width: 300,
-                    //             minWidth: 100,
-                    //             minHeight: 100,
-                    //             children: [this._add({ panel: 'Gallery', props: {} })],
-                    //         },
-                    //         // {
-                    //         //     type: 'tabset',
-                    //         //     // height: 256,
-                    //         //     width: 300,
-                    //         //     minWidth: 100,
-                    //         //     minHeight: 100,
-                    //         //     children: [this._add({ panel: 'Steps', props: {}, canClose: false })],
-                    //         // },
-                    //     ],
-                    // },
                 ],
             },
         }
@@ -424,7 +400,7 @@ export class CushyLayoutManager {
         return out
     }
 
-    fullPageComp: Maybe<{ panel: PanelNames; props: PropsOf<typeof Panel_CardPicker3UI> }> = null
+    fullPageComp: Maybe<{ panel: PanelNames; props: PropsOf<typeof Panel_FullScreenLibrary> }> = null
 
     factory = (node: FL.TabNode): React.ReactNode => {
         // 1. get panel name
