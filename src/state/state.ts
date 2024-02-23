@@ -426,7 +426,8 @@ export class STATE {
         (ui) => ({
             imgSize1: ui.int({ min: 64, max: 1024, step: 64, default: 512 }),
             imgSize2: ui.int({ min: 64, max: 1024, step: 64, default: 128 }),
-            civitaiApiKey: ui.string({ label: 'API Key' }),
+            apiKey: ui.string({ label: 'API Key' }),
+            defaultQuery: ui.string({ label: '(debug) default query' }),
             // civitaiApiSecret: ui.string({ label: 'API Secret' }),
         }),
         {

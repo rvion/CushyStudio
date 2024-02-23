@@ -36,7 +36,7 @@ export class Debounced<T> {
 
 // civitai wrapper
 export class Civitai {
-    query = new Debounced('')
+    query = new Debounced(cushy.civitaiConf.fields.defaultQuery.value ?? '', 300)
     selectedResult: Maybe<CivitaiSearchResultItem> = null
 
     get results(): Maybe<Kwery<CivitaiSearchResult>> {
@@ -109,50 +109,39 @@ export type CivitaiModelVersion = {
     description: string
     /* The date in which the version was created */
     createdAt: Date
+    /* The base model used to train the model */
+    baseModel: string
     /* The download url to get the model file for this specific version */
     downloadUrl: string
     /* The words used to trigger the model */
     trainedWords: string[]
 
-    files: {
-        id: number
-        sizeKB: number
-        name: string
-        type: string // 'Model'
-        metadata: { fp: string; size: string; format: string } //{ fp: 'fp16'; size: 'pruned'; format: 'SafeTensor' }
-        pickleScanResult: Maybe<string> // 'Success'
-        pickleScanMessage: Maybe<string> // 'No Pickle imports'
-        virusScanResult: Maybe<string> // 'Success'
-        virusScanMessage: Maybe<string> // null
-        scannedAt: Maybe<string> // '2024-01-08T04:52:42.578Z'
-        hashes: {
-            [key: string]: string
-            // AutoV1: 'E577480D'
-            // AutoV2: '67AB2FD8EC'
-            // SHA256: '67AB2FD8EC439A89B3FEDB15CC65F54336AF163C7EB5E4F2ACC98F090A29B0B3'
-            // CRC32: 'CFAD6694'
-            // BLAKE3: 'E0BB278C0127A4AC4267498174E0226D6A0A77A636BDF82B770CF05D5B85D3CA'
-            // AutoV3: 'E023C143436DDAEFFAB33359D830E02E26545BBD97D3E28ABFC78A921A33618B'
-        }
-        downloadUrl: string // 'https://civitai.com/api/download/models/290640'
-        primary: boolean // true
-    }[]
-
-    // ⏸️ files: {
-    // ⏸️     /* The size of the model file*/
-    // ⏸️     sizeKB: number
-    // ⏸️     /* The format of the file */
-    // ⏸️     format: 'pickle' | 'safetensor'
-    // ⏸️     /* Status of the pickle scan*/
-    // ⏸️     pickleScanResult: 'Pending' | 'Success' | 'Danger' | 'Error'
-    // ⏸️     /* Status of the virus scan */
-    // ⏸️     virusScanResult: 'Pending' | 'Success' | 'Danger' | 'Error'
-    // ⏸️     /** The date in which the file was scanned */
-    // ⏸️     scannedAt: Date | null
-    // ⏸️     /** If the file is the primary file for the model version */
-    // ⏸️     primary: boolean | undefined
-    // ⏸️ }[]
+    files: CivitaiDownloadableFile[]
     images: ModelImage[]
+}
+
+export type CivitaiDownloadableFile = {
+    id: number
+    sizeKB: number
+    name: string
+    type: 'Model' | 'VAE' | string // 'Model'
+    metadata: { fp: string; size: string; format: string } //{ fp: 'fp16'; size: 'pruned'; format: 'SafeTensor' }
+    pickleScanResult: Maybe<string> // 'Success'
+    pickleScanMessage: Maybe<string> // 'No Pickle imports'
+    virusScanResult: Maybe<string> // 'Success'
+    virusScanMessage: Maybe<string> // null
+    scannedAt: Maybe<string> // '2024-01-08T04:52:42.578Z'
+    hashes: {
+        [key: string]: string
+        // AutoV1: 'E577480D'
+        // AutoV2: '67AB2FD8EC'
+        // SHA256: '67AB2FD8EC439A89B3FEDB15CC65F54336AF163C7EB5E4F2ACC98F090A29B0B3'
+        // CRC32: 'CFAD6694'
+        // BLAKE3: 'E0BB278C0127A4AC4267498174E0226D6A0A77A636BDF82B770CF05D5B85D3CA'
+        // AutoV3: 'E023C143436DDAEFFAB33359D830E02E26545BBD97D3E28ABFC78A921A33618B'
+    }
+    downloadUrl: string // 'https://civitai.com/api/download/models/290640'
+    primary: boolean // true
 }
 
 export type ModelImage = {

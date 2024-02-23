@@ -4,6 +4,8 @@ import { observer, useLocalObservable } from 'mobx-react-lite'
 import { useEffect } from 'react'
 
 import { CivitaiResultVersionUI } from './CivitaiResultVersionUI'
+import { RevealUI } from 'src/rsuite/reveal/RevealUI'
+import { JsonViewUI } from 'src/widgets/workspace/JsonViewUI'
 
 export const CivitaiResultFullUI = observer(function CivitaiResultFullUI_(p: {
     //
@@ -24,6 +26,11 @@ export const CivitaiResultFullUI = observer(function CivitaiResultFullUI_(p: {
             <div tw='flex gap-1 items-baseline'>
                 <div tw='text-2xl font-bold'>{item.name}</div>
                 <div tw='italic opacity-50'>#{item.id}</div>
+                <div tw='flex-1'></div>
+                <RevealUI>
+                    <div tw='btn btn-sm btn'>Show full json</div>
+                    <JsonViewUI value={item} />
+                </RevealUI>
             </div>
 
             {item.nsfw ? <div tw='badge badge-error'>nsfw</div> : null}
@@ -56,7 +63,7 @@ export const CivitaiResultFullUI = observer(function CivitaiResultFullUI_(p: {
             </div>
             <div tw='flex flex-col gap-1'>
                 {/*  */}
-                {selected.version && <CivitaiResultVersionUI key={selected.version.id} v={selected.version} />}
+                {selected.version && <CivitaiResultVersionUI key={selected.version.id} version={selected.version} />}
             </div>
         </div>
     )
