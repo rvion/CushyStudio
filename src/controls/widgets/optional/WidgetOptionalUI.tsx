@@ -4,9 +4,10 @@ import type { Spec } from 'src/controls/Prop'
 import { observer } from 'mobx-react-lite'
 import { WidgetWithLabelUI } from 'src/controls/shared/WidgetWithLabelUI'
 
-import { WidgetUI } from '../WidgetUI'
+import { WidgetDI } from '../WidgetUI.DI'
 
 export const WidgetOptional_LineUI = observer(function WidgetBoolUI_<T extends Spec>(p: { widget: Widget_optional<T> }) {
+    const WidgetUI = WidgetDI.WidgetUI
     if (!p.widget.serial.active) return null
     if (p.widget.child == null) return <>❌ ERROR: optional is active but no widget❓</>
     if (p.widget.child?.serial.collapsed) return <WidgetWithLabelUI rootKey={'_'} widget={p.widget.child} />
@@ -16,6 +17,7 @@ export const WidgetOptional_LineUI = observer(function WidgetBoolUI_<T extends S
 })
 
 export const WidgetOptional_BlockUI = observer(function WidgetBoolUI_<T extends Spec>(p: { widget: Widget_optional<T> }) {
+    const WidgetUI = WidgetDI.WidgetUI
     if (!p.widget.serial.active) return null
     if (p.widget.child == null) return <>❌ ERROR: optional is active but no widget❓</>
     if (p.widget.child?.serial.collapsed) return <WidgetWithLabelUI rootKey={'_'} widget={p.widget.child} />
