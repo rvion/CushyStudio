@@ -1,8 +1,9 @@
-import type { CleanedEnumResult } from 'src/types/EnumUtils'
 import type { EnumName, EnumValue } from '../../../models/Schema'
 import type { Widget_enum } from './WidgetEnum'
+import type { CleanedEnumResult } from 'src/types/EnumUtils'
 
 import { observer } from 'mobx-react-lite'
+
 import { SelectUI } from 'src/rsuite/SelectUI'
 import { Popover, Whisper } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
@@ -58,7 +59,15 @@ export const EnumSelectorUI = observer(function EnumSelectorUI_(p: {
     const value = p.value()
     const hasError = Boolean(value.isSubstitute || value.ENUM_HAS_NO_VALUES)
     return (
-        <div tw='flex-1'>
+        <div
+            tw={[
+                'flex flex-1 rounded h-full overflow-clip text-shadow',
+                'border border-base-100 hover:brightness-110',
+                'hover:border-base-200',
+                'bg-primary/20 border-1',
+                'border-b-2 border-b-base-200 hover:border-b-base-300',
+            ]}
+        >
             <SelectUI //
                 tw={[{ ['rsx-field-error']: hasError }]}
                 size='sm'

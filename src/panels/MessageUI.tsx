@@ -1,4 +1,5 @@
 import { observer } from 'mobx-react-lite'
+
 import { MarkdownUI } from 'src/rsuite/MarkdownUI'
 
 export const MessageInfoUI = observer(function MessageInfoUI_(p: {

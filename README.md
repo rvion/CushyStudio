@@ -39,22 +39,101 @@
 > Please report any critical problems you find in our discord or open a GitHub issue.
 
 
-***
-
-* Try: [installation](https://docs.cushystudio.com/installation/ "mention") - [Getting started](https://docs.cushystudio.com/getting-started/ "mention") - Moving Around
-* Explore: Apps - Drafts - [prompting](https://docs.cushystudio.com/prompting/ "mention") - [unified-canvas.md](https://docs.cushystudio.com/features/unified-canvas.md "mention") - [inpainting.md](https://docs.cushystudio.com/features/inpainting.md "mention") - [outpainting.md](https://docs.cushystudio.com/features/outpainting.md "mention") - Library -&#x20;
-* ComfyUI Integration - Import / export workflow - programmatic workflow  - Multi-host management - Node explorer - Model manager - plugin manager
-* Other Integrations: Civitai - Squoosh - 3d Poser (posemy) - Minipaint - unsplash&#x20;
-* Build: [creating-apps](https://docs.cushystudio.com/creating-apps/ "mention") - [app-structure.md](https://docs.cushystudio.com/creating-apps/app-structure.md "mention") - [app-ui.md](https://docs.cushystudio.com/creating-apps/app-ui.md "mention") - [cushy-sdk.md](https://docs.cushystudio.com/cushy-sdk.md "mention")
-* Contribute: &#x20;
-* Connect: Discord - Twitter - Github - Website - [Documentation](https://docs.cushystudio.com/https://docs.cushystudio.com)
-
-
-***
-
 Screenshots and Videos
 
 
 ![](https://cushy.fra1.cdn.digitaloceanspaces.com/rvion-screenshots/2024-02-18_00-07-15.jpg)
 
 ![](https://cushy.fra1.cdn.digitaloceanspaces.com/old/screenshots/2024-02-02-example-panels.jpg)
+
+<!--
+
+screenshot ideas
+- regional prompting
+- model management
+- videos
+- animated-diff
+-->
+
+# Table of contents
+
+* [🛋 CushyStudio](https://docs.cushystudio.com)
+
+## Getting Started
+
+* [🛠 Installation](https://docs.cushystudio.com/getting-started/installation)
+  * [Installing Cushy](https://docs.cushystudio.com/getting-started/installation/windows)
+  * [Updating Cushy](https://docs.cushystudio.com/getting-started/installation/updating-cushy)
+  * [Installing Modules](https://docs.cushystudio.com/getting-started/installation/installing-modules)
+    * [Install ComfyUI](https://docs.cushystudio.com/getting-started/installation/installing-modules/cloud)
+    * [Install FFMpeg (optional)](https://docs.cushystudio.com/getting-started/installation/installing-modules/install-ffmpeg-optional)
+    * [Installing Models](https://docs.cushystudio.com/getting-started/installation/installing-modules/installing-models)
+    * [Install ImageMagick (optional)](https://docs.cushystudio.com/getting-started/installation/installing-modules/install-imagemagick-optional)
+* [👋 First Steps](https://docs.cushystudio.com/getting-started/getting-started)
+  * [Intro to Generative AI](https://docs.cushystudio.com/getting-started/getting-started/intro-to-generative-ai)
+  * [Making an image](https://docs.cushystudio.com/getting-started/getting-started/making-an-image)
+  * [Coming From...](https://docs.cushystudio.com/getting-started/getting-started/coming-from...)
+* [🎁 Built-in apps](https://docs.cushystudio.com/getting-started/built-in-apps)
+  * [CushyDiffusion](https://docs.cushystudio.com/getting-started/built-in-apps/cushydiffusion)
+  * [Rotate anything](https://docs.cushystudio.com/getting-started/built-in-apps/rotate-anything)
+  * [Cushy Cascade](https://docs.cushystudio.com/getting-started/built-in-apps/cushy-cascade)
+  * [Remove Background](https://docs.cushystudio.com/getting-started/built-in-apps/remove-background)
+  * [Slay the Spire - Art Pack](https://docs.cushystudio.com/getting-started/built-in-apps/slay-the-spire-art-pack)
+  * [Manga Coloring](https://docs.cushystudio.com/getting-started/built-in-apps/manga-coloring)
+* [🚶 Cushy Interface](https://docs.cushystudio.com/getting-started/cushy-interface)
+  * [Minipaint](https://docs.cushystudio.com/getting-started/cushy-interface/minipaint)
+  * [File Explorer](https://docs.cushystudio.com/getting-started/cushy-interface/file-explorer)
+  * [Quick-Civitai](https://docs.cushystudio.com/getting-started/cushy-interface/quick-civitai)
+  * [Iframes](https://docs.cushystudio.com/getting-started/cushy-interface/iframes)
+    * [Minipaint](https://docs.cushystudio.com/getting-started/cushy-interface/iframes/minipaint)
+    * [Civitai](https://docs.cushystudio.com/getting-started/cushy-interface/iframes/civitai)
+  * [Image Comtext menu](https://docs.cushystudio.com/getting-started/cushy-interface/image-comtext-menu)
+* [🍏 Images, Videos, 3d scenes](https://docs.cushystudio.com/getting-started/features)
+  * [Quick Actions](https://docs.cushystudio.com/getting-started/features/quick-actions)
+  * [LLM (Large Language Model)](https://docs.cushystudio.com/getting-started/features/llm)
+* [😁 Unified canvas](https://docs.cushystudio.com/getting-started/unified-canvas)
+  * [Starin](https://docs.cushystudio.com/getting-started/unified-canvas/starin)
+  * [Inpainting](https://docs.cushystudio.com/getting-started/unified-canvas/inpainting)
+  * [Outpainting](https://docs.cushystudio.com/getting-started/unified-canvas/outpainting)
+* [🧪 Prompting](https://docs.cushystudio.com/getting-started/prompting)
+  * [adding Loras](https://docs.cushystudio.com/getting-started/prompting/adding-loras)
+
+## Going further
+
+* [💡 Creating apps](https://docs.cushystudio.com/going-further/creating-apps)
+  * [Creating a new App file](https://docs.cushystudio.com/going-further/creating-apps/creating-a-new-app-file)
+  * [Prefabs](https://docs.cushystudio.com/going-further/creating-apps/prefabs)
+  * [App Structure](https://docs.cushystudio.com/going-further/creating-apps/app-structure)
+  * [Contextual Apps](https://docs.cushystudio.com/going-further/creating-apps/contextual-apps)
+  * [For loops](https://docs.cushystudio.com/going-further/creating-apps/for-loops)
+  * [App UI](https://docs.cushystudio.com/going-further/creating-apps/app-ui)
+  * [Using ImageMagick in your app](https://docs.cushystudio.com/going-further/creating-apps/using-imagemagick-in-your-app)
+* [⚙ CushyKit](https://docs.cushystudio.com/going-further/cushy-sdk)
+* [🏈 Importing from ComfyUI](https://docs.cushystudio.com/going-further/importing-workflows)
+* [🤝 Extending Cushy](https://docs.cushystudio.com/going-further/contribution)
+  * [Setting up VSCode](https://docs.cushystudio.com/going-further/contribution/setting-up-vscode)
+  * [Contributing on the UI](https://docs.cushystudio.com/going-further/contribution/contributing-on-the-ui)
+  * [Database](https://docs.cushystudio.com/going-further/contribution/database)
+  * [Migrations](https://docs.cushystudio.com/going-further/contribution/migrations)
+* [🔥 Troubleshooting](https://docs.cushystudio.com/going-further/wip-pad)
+  * [Page 1](https://docs.cushystudio.com/going-further/wip-pad/page-1)
+
+## Community
+
+* [🤝 Community](https://docs.cushystudio.com/community/community)
+* [💬 FAQs](https://docs.cushystudio.com/community/faqs)
+  * [⁉ Can Cushy...](https://docs.cushystudio.com/community/faqs/can-cushy...)
+* [📰 News](https://docs.cushystudio.com/community/news)
+  * [💬 Blog](https://docs.cushystudio.com/community/news/blog)
+    * [2024-02-18 - creating the website](https://docs.cushystudio.com/community/news/blog/2024-02-18-creating-the-website)
+  * [😁 Changelog](https://docs.cushystudio.com/community/news/changelog)
+  * [🚀 Roadmap](https://docs.cushystudio.com/community/news/roadmap)
+* [🚂 Other Softwares](https://docs.cushystudio.com/community/fast-track)
+  * [Coming from Krita](https://docs.cushystudio.com/community/fast-track/coming-from-krita)
+  * [Coming from A1111](https://docs.cushystudio.com/community/fast-track/coming-from-a1111)
+  * [Coming from ComfyUI](https://docs.cushystudio.com/community/fast-track/coming-from-comfyui)
+  * [Coming from InvokeAI](https://docs.cushystudio.com/community/fast-track/coming-from-invokeai)
+  * [Coming from Fooocus](https://docs.cushystudio.com/community/fast-track/coming-from-fooocus)
+* [Contributing](https://docs.cushystudio.com/community/contributing)
+  * [Supporting the team](https://docs.cushystudio.com/community/contributing/supporting-the-team)
+  * [Writing Docs](https://docs.cushystudio.com/community/contributing/guidelines)

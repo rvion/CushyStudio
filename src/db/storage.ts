@@ -1,9 +1,10 @@
-import { default as BetterSqlite3, default as SQL } from 'better-sqlite3'
+import BetterSqlite3, { default as SQL } from 'better-sqlite3'
+
 import { _applyAllMigrations } from './_applyAllMigrations'
 import { _codegenORM } from './_codegenORM'
 import { _setupMigrationEngine } from './_setupMigrationEngine'
-import { _checkAllMigrationsHaveDifferentIds } from './migrations'
 import { DB_RELATIVE_PATH } from './DB_CONFIG'
+import { _checkAllMigrationsHaveDifferentIds } from './migrations'
 
 let ix = 0
 

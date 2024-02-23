@@ -49,7 +49,7 @@ app({
             Component: MyCustomComponent,
             defaultValue: () => ({
                 clickCount: 0,
-                text: `initial text`,
+                text: `initial text` as string,
             }),
         }),
     }),

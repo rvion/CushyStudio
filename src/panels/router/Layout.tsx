@@ -2,18 +2,17 @@ import type { STATE } from 'src/state/state'
 
 import * as FL from 'flexlayout-react'
 import { Actions, IJsonModel, Layout, Model } from 'flexlayout-react'
-
 import { action, makeAutoObservable, runInAction, toJS } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { nanoid } from 'nanoid'
-import { FC, createElement, createRef } from 'react'
-import { Trigger } from 'src/app/shortcuts/Trigger'
+import { createElement, createRef, FC } from 'react'
 
-import { Panel_CardPicker3UI } from 'src/panels/Panel_FullScreenLibrary'
-import { Message } from 'src/rsuite/shims'
-import { PanelNames, Panels, panels } from './PANELS'
-import { RenderPanelUI } from './RenderPanelUI'
 import { hashJSONObject } from './hash'
+import { PanelNames, panels, Panels } from './PANELS'
+import { RenderPanelUI } from './RenderPanelUI'
+import { Trigger } from 'src/app/shortcuts/Trigger'
+import { Panel_FullScreenLibrary } from 'src/panels/Panel_FullScreenLibrary'
+import { Message } from 'src/rsuite/shims'
 
 export type PropsOf<T> = T extends FC<infer Props> ? Props : '❌'
 
@@ -237,7 +236,9 @@ export class CushyLayoutManager {
         const tabID = `/${component}/${hashJSONObject(props ?? {})}`
         const tab = this.model.getNodeById(tabID)
         if (tab == null) return
-        this.model.doAction(Actions.renameTab(tabID, title || component))
+        runInAction(() => {
+            this.model.doAction(Actions.renameTab(tabID, title || component))
+        })
     }
 
     FOCUS_OR_CREATE = <const PanelName extends PanelNames>(
@@ -392,30 +393,6 @@ export class CushyLayoutManager {
                             },
                         ],
                     },
-                    // {
-                    //     id: 'rightsidePane',
-                    //     type: 'row',
-                    //     weight: 10,
-                    //     width: 300,
-                    //     children: [
-                    //         {
-                    //             type: 'tabset',
-                    //             // height: 256,
-                    //             width: 300,
-                    //             minWidth: 100,
-                    //             minHeight: 100,
-                    //             children: [this._add({ panel: 'Gallery', props: {} })],
-                    //         },
-                    //         // {
-                    //         //     type: 'tabset',
-                    //         //     // height: 256,
-                    //         //     width: 300,
-                    //         //     minWidth: 100,
-                    //         //     minHeight: 100,
-                    //         //     children: [this._add({ panel: 'Steps', props: {}, canClose: false })],
-                    //         // },
-                    //     ],
-                    // },
                 ],
             },
         }
@@ -423,7 +400,7 @@ export class CushyLayoutManager {
         return out
     }
 
-    fullPageComp: Maybe<{ panel: PanelNames; props: PropsOf<typeof Panel_CardPicker3UI> }> = null
+    fullPageComp: Maybe<{ panel: PanelNames; props: PropsOf<typeof Panel_FullScreenLibrary> }> = null
 
     factory = (node: FL.TabNode): React.ReactNode => {
         // 1. get panel name

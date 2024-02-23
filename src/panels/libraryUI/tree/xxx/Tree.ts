@@ -2,6 +2,7 @@ import type { STATE } from 'src/state/state'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
+
 import { ITreeElement } from '../TreeEntry'
 import { TreeNode } from './TreeNode'
 

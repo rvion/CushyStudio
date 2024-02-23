@@ -1,31 +1,33 @@
 import type { FormBuilder } from '../FormBuilder'
 import type { WidgetConfigFields } from '../IWidget'
+import type { Spec } from '../Prop'
 import type { Widget_bool } from '../widgets/bool/WidgetBool'
-
-import { Widget_enum, type Widget_enum_config } from '../widgets/enum/WidgetEnum'
-import { Widget_group } from '../widgets/group/WidgetGroup'
-import { Widget_number } from '../widgets/number/WidgetNumber'
-import { Widget_prompt } from '../widgets/prompt/WidgetPrompt'
-import { Widget_string } from '../widgets/string/WidgetString'
+import type { Widget_enum, Widget_enum_config } from '../widgets/enum/WidgetEnum'
+import type { Widget_group } from '../widgets/group/WidgetGroup'
+import type { Widget_number } from '../widgets/number/WidgetNumber'
+import type { Widget_prompt } from '../widgets/prompt/WidgetPrompt'
+import type { Widget_string } from '../widgets/string/WidgetString'
 
 type AutoWidget<T> = T extends { kind: any; type: infer X }
     ? T['kind'] extends 'number'
-        ? Widget_number
+        ? Spec<Widget_number>
         : T['kind'] extends 'string'
-        ? Widget_string
+        ? Spec<Widget_string>
         : T['kind'] extends 'boolean'
-        ? Widget_bool
+        ? Spec<Widget_bool>
         : T['kind'] extends 'prompt'
-        ? Widget_prompt
+        ? Spec<Widget_prompt>
         : T['kind'] extends 'enum'
-        ? Widget_enum<X>
+        ? Spec<Widget_enum<X>>
         : any
     : any
 
 export type IAutoBuilder = {
-    [K in keyof FormHelper]: () => Widget_group<{
-        [N in keyof FormHelper[K]]: AutoWidget<FormHelper[K][N]>
-    }>
+    [K in keyof FormHelper]: () => Spec<
+        Widget_group<{
+            [N in keyof FormHelper[K]]: AutoWidget<FormHelper[K][N]>
+        }>
+    >
 }
 
 export const mkFormAutoBuilder = (form: FormBuilder) => {
@@ -67,12 +69,12 @@ export const mkFormAutoBuilder = (form: FormBuilder) => {
 
 export interface AutoBuilder extends IAutoBuilder {}
 export class AutoBuilder {
-    constructor(public form: FormBuilder) {
+    constructor(public formBuilder: FormBuilder) {
         const schema = cushy.schema
         for (const node of schema.nodes) {
             Object.defineProperty(this, node.nameInCushy, {
                 value: (ext?: Partial<WidgetConfigFields<{}>>) =>
-                    form.group({
+                    formBuilder.group({
                         label: ext?.label ?? node.nameInComfy,
                         // label: node.nameInComfy,
                         items: () => {
@@ -100,7 +102,7 @@ export class AutoBuilder {
                                     const typeLower = field.type.toLowerCase()
                                     // boolean ------------------------------------------
                                     if (typeLower === 'boolean') {
-                                        items[field.nameInComfy] = form.bool({
+                                        items[field.nameInComfy] = formBuilder.bool({
                                             label: field.nameInComfy,
                                         })
                                     }
@@ -118,7 +120,7 @@ export class AutoBuilder {
                                             def = opts.default
                                         }
                                         // number value
-                                        items[field.nameInComfy] = form.string({
+                                        items[field.nameInComfy] = formBuilder.string({
                                             label: field.nameInComfy,
                                             default: def,
                                             textarea: textarea,
@@ -136,7 +138,7 @@ export class AutoBuilder {
                                             def = opts.default
                                         }
                                         // number value
-                                        items[field.nameInComfy] = form.number({
+                                        items[field.nameInComfy] = formBuilder.number({
                                             label: field.nameInComfy,
                                             default: def,
                                             min: opts?.min ?? undefined,
@@ -156,7 +158,7 @@ export class AutoBuilder {
                                             def = opts.default
                                         }
                                         // int field -----------
-                                        items[field.nameInComfy] = form.int({
+                                        items[field.nameInComfy] = formBuilder.int({
                                             label: field.nameInComfy,
                                             default: def,
                                             min: opts?.min ?? undefined,
@@ -176,7 +178,7 @@ export class AutoBuilder {
                                             def = opts.default
                                         }
                                         // float field -----------
-                                        items[field.nameInComfy] = form.int({
+                                        items[field.nameInComfy] = formBuilder.int({
                                             label: field.nameInComfy,
                                             default: def,
                                         })
@@ -187,7 +189,9 @@ export class AutoBuilder {
                                 // ENUMS ------------------------------------------
                                 else if (field.isEnum) {
                                     // console.log(`[👗] 🌈 Enum: ${field.type}`, { field })
-                                    const enumFn: Maybe<(p: Widget_enum_config<any>) => void> = (form.enum as any)[field.type]
+                                    const enumFn: Maybe<(p: Widget_enum_config<any>) => void> = (formBuilder.enum as any)[
+                                        field.type
+                                    ]
                                     if (enumFn == null) {
                                         console.log(`[👗] ❌ Unknown enum: ${field.type}`)
                                         continue
@@ -203,7 +207,7 @@ export class AutoBuilder {
                                 }
                             }
                             if (Object.keys(items).length === 0) {
-                                items['empty'] = form.markdown({
+                                items['empty'] = formBuilder.markdown({
                                     markdown: `❌ node '${node.nameInComfy}' do not have primitive fields`,
                                 })
                             }

@@ -1,6 +1,0 @@
----
-description: 🚧 inpainting
----
-
-# Inpainting
-

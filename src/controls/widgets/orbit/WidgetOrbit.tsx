@@ -1,11 +1,12 @@
+import type { Form } from '../../Form'
+import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
-import { ComfySchemaL } from 'src/models/Schema'
-import { FormBuilder } from '../../FormBuilder'
-import { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../../IWidget'
+import { hash } from 'ohash'
+
 import { WidgetDI } from '../WidgetUI.DI'
 import { mkEnglishSummary } from './_orbitUtils'
-import { hash } from 'ohash'
 
 export type OrbitData = {
     azimuth: number
@@ -40,10 +41,9 @@ export type Widget_orbit_types = {
 }
 
 // STATE
-export interface Widget_orbit extends WidgetTypeHelpers<Widget_orbit_types> {}
+export interface Widget_orbit extends Widget_orbit_types {}
 export class Widget_orbit implements IWidget<Widget_orbit_types> {
     get serialHash () { return hash(this.value) } // prettier-ignore
-    isVerticalByDefault = true
     isCollapsible = false
     id: string
     type: 'orbit' = 'orbit'
@@ -72,7 +72,7 @@ export class Widget_orbit implements IWidget<Widget_orbit_types> {
 
     serial: Widget_orbit_serial
 
-    constructor(public form: FormBuilder, public config: Widget_orbit_config, serial?: Widget_orbit_serial) {
+    constructor(public form: Form<any>, public config: Widget_orbit_config, serial?: Widget_orbit_serial) {
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? {
             type: 'orbit',

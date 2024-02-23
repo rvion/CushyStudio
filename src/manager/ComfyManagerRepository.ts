@@ -1,14 +1,14 @@
-import type { KnownCustomNode_CushyName } from 'src/manager/extension-node-map/KnownCustomNode_CushyName'
 import type { PluginInfo } from './custom-node-list/custom-node-list-types'
-import type { KnownCustomNode_Title } from './custom-node-list/KnownCustomNode_Title'
 import type { KnownCustomNode_File } from './custom-node-list/KnownCustomNode_File'
-import type { NodeNameInComfy, NodeNameInCushy } from 'src/models/Schema'
-import type { ModelInfo } from './model-list/model-list-loader-types'
+import type { KnownCustomNode_Title } from './custom-node-list/KnownCustomNode_Title'
 import type { KnownModel_Name } from './model-list/KnownModel_Name'
+import type { ModelInfo } from './model-list/model-list-loader-types'
+import type { KnownCustomNode_CushyName } from 'src/manager/extension-node-map/KnownCustomNode_CushyName'
+import type { NodeNameInComfy, NodeNameInCushy } from 'src/models/Schema'
 
-import { _getCustomNodeRegistry } from 'src/manager/extension-node-map/extension-node-map-loader'
 import { _getKnownPlugins } from './custom-node-list/custom-node-list-loader'
 import { _getKnownModels } from './model-list/model-list-loader'
+import { _getCustomNodeRegistry } from 'src/manager/extension-node-map/extension-node-map-loader'
 
 export class ComfyManagerRepository {
     plugins_byTitle = new Map<KnownCustomNode_Title, PluginInfo>()

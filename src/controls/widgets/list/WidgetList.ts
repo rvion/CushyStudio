@@ -1,31 +1,32 @@
-import type { FormBuilder } from '../../FormBuilder'
-import type { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../../IWidget'
-import type { Widget } from '../../Widget'
+import type { Form } from '../../Form'
+import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { Spec } from 'src/controls/Prop'
 
 import { makeAutoObservable, observable } from 'mobx'
 import { nanoid } from 'nanoid'
-import { runWithGlobalForm } from 'src/models/_ctx2'
+
 import { WidgetDI } from '../WidgetUI.DI'
+import { runWithGlobalForm } from 'src/models/_ctx2'
 
 // CONFIG
-export type Widget_list_config<T extends Widget> = WidgetConfigFields<{
-    element: (ix: number) => T
+export type Widget_list_config<T extends Spec> = WidgetConfigFields<{
+    element: ((ix: number) => T) | T
     min?: number
     max?: number
     defaultLength?: number
 }>
 
 // SERIAL
-export type Widget_list_serial<T extends Widget> = WidgetSerialFields<{
+export type Widget_list_serial<T extends Spec> = WidgetSerialFields<{
     type: 'list'
     items_: T['$Serial'][]
 }>
 
 // OUT
-export type Widget_list_output<T extends Widget> = T['$Output'][]
+export type Widget_list_output<T extends Spec> = T['$Output'][]
 
 // TYPES
-export type Widget_list_types<T extends Widget> = {
+export type Widget_list_types<T extends Spec> = {
     $Type: 'list'
     $Input: Widget_list_config<T>
     $Serial: Widget_list_serial<T>
@@ -33,20 +34,32 @@ export type Widget_list_types<T extends Widget> = {
 }
 
 // STATE
-export interface Widget_list<T extends Widget> extends WidgetTypeHelpers<Widget_list_types<T>> {}
-export class Widget_list<T extends Widget> implements IWidget<Widget_list_types<T>> {
+export interface Widget_list<T extends Spec> extends Widget_list_types<T> {}
+export class Widget_list<T extends Spec> implements IWidget<Widget_list_types<T>> {
     get serialHash(): string {
-        return this.items.map((v: Widget) => v.serialHash).join(',')
+        return this.items.map((v) => v.serialHash).join(',')
     }
-    readonly isVerticalByDefault = true
     readonly isCollapsible = true
     readonly id: string
     readonly type: 'list' = 'list'
 
-    items: T[]
+    items: T['$Widget'][]
     serial: Widget_list_serial<T>
 
-    constructor(public form: FormBuilder, public config: Widget_list_config<T>, serial?: Widget_list_serial<T>) {
+    schemaAt = (ix: number): T => {
+        const _schema = this.config.element
+        const schema: T =
+            typeof _schema === 'function' //
+                ? runWithGlobalForm(this.form.builder, () => _schema(ix))
+                : _schema
+        return schema
+    }
+    constructor(
+        //
+        public form: Form<any>,
+        public config: Widget_list_config<T>,
+        serial?: Widget_list_serial<T>,
+    ) {
         this.id = serial?.id ?? nanoid()
 
         // serial
@@ -57,13 +70,16 @@ export class Widget_list<T extends Widget> implements IWidget<Widget_list_types<
 
         // hydrate items
         this.items = []
-        const _reference = runWithGlobalForm(this.form, () => config.element(0))
+        const unmounted = this.schemaAt(0) // TODO: evaluate schema in the form loop
         for (const subSerial of this.serial.items_) {
-            if (subSerial.type !== _reference.type) {
+            if (
+                subSerial == null || // ⁉️ when can this happen ?
+                subSerial.type !== unmounted.type
+            ) {
                 console.log(`[❌] SKIPPING form item because it has an incompatible entry from a previous app definition`)
                 continue
             }
-            const subWidget = form._HYDRATE(subSerial.type, _reference.config, subSerial)
+            const subWidget = form.builder._HYDRATE(unmounted, subSerial)
             this.items.push(subWidget)
         }
 
@@ -90,9 +106,8 @@ export class Widget_list<T extends Widget> implements IWidget<Widget_list_types<
 
     // ADDING ITEMS -------------------------------------------------
     addItem() {
-        // const _ref = this._reference
-        // const newItem = this.builder.HYDRATE(_ref.type, _ref.input)
-        const element: T = runWithGlobalForm(this.form, () => this.config.element(this.serial.items_.length))
+        const schema = this.schemaAt(this.serial.items_.length) // TODO: evaluate schema in the form loop
+        const element = this.form.builder._HYDRATE(schema, null)
         this.items.push(element)
         this.serial.items_.push(element.serial)
     }
@@ -103,7 +118,7 @@ export class Widget_list<T extends Widget> implements IWidget<Widget_list_types<
         this.items = this.items.slice(0, this.config.min ?? 0)
     }
 
-    removeItem = (item: T) => {
+    removeItem = (item: T['$Widget']) => {
         const i = this.items.indexOf(item)
         if (i >= 0) {
             this.serial.items_.splice(i, 1)

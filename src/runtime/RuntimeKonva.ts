@@ -1,11 +1,12 @@
 import type { Runtime } from './Runtime'
 import type { ImageConfig } from 'konva/lib/shapes/Image'
 
-import { isAbsolute, resolve } from 'pathe'
-import { makeAutoObservable } from 'mobx'
 import konva from 'konva'
-import { MediaImageL } from 'src/models/MediaImage'
+import { makeAutoObservable } from 'mobx'
+import { isAbsolute, resolve } from 'pathe'
+
 import { createHTMLImage_fromURL } from '../state/createHTMLImage_fromURL'
+import { MediaImageL } from 'src/models/MediaImage'
 
 /**
  * provide both raw-access to the underling KonvaJS library

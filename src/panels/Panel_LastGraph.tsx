@@ -1,8 +1,9 @@
 import { observer } from 'mobx-react-lite'
-import { useSt } from '../state/stateContext'
-import { GraphPreviewUI } from '../widgets/misc/MsgShowHTMLUI'
 import { ErrorBoundary } from 'react-error-boundary'
+
+import { useSt } from '../state/stateContext'
 import { ErrorBoundaryFallback } from '../widgets/misc/ErrorBoundary'
+import { GraphPreviewUI } from '../widgets/misc/MsgShowHTMLUI'
 
 export const Panel_LastGraph = observer(function Panel_LastGraph_(p: {}) {
     const st = useSt()

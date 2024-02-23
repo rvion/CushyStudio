@@ -1,10 +1,11 @@
+import type { Form } from '../../Form'
 import type { FC } from 'react'
-import type { FormBuilder } from 'src/controls/FormBuilder'
-import type { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from 'src/controls/IWidget'
+import type { IWidget, WidgetConfigFields, WidgetSerialFields } from 'src/controls/IWidget'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { hash } from 'ohash'
+
 import { WidgetDI } from '../WidgetUI.DI'
 
 export type CustomWidgetProps<T> = { widget: Widget_custom<T>; extra: import('./WidgetCustomUI').UIKit }
@@ -27,14 +28,13 @@ export type Widget_custom_types<T> = {
 }
 
 // STATE
-export interface Widget_custom<T> extends WidgetTypeHelpers<Widget_custom_types<T>> {}
+export interface Widget_custom<T> extends Widget_custom_types<T> {}
 export class Widget_custom<T> implements IWidget<Widget_custom_types<T>> {
-    readonly isVerticalByDefault = true
     readonly isCollapsible = true
     readonly id: string
     readonly type: 'custom' = 'custom'
 
-    get serialHash() {
+    get serialHash(): string {
         return hash(this.value)
     }
     serial: Widget_custom_serial<T>
@@ -43,7 +43,7 @@ export class Widget_custom<T> implements IWidget<Widget_custom_types<T>> {
     reset = () => (this.serial.value = this.config.defaultValue())
     constructor(
         //
-        public form: FormBuilder,
+        public form: Form<any>,
         public config: Widget_custom_config<T>,
         serial?: Widget_custom_serial<T>,
     ) {

@@ -1,8 +1,9 @@
 import { observer } from 'mobx-react-lite'
-import { TreeNode } from './TreeNode'
-import { useTreeView } from './TreeCtx'
 import { Fragment } from 'react'
+
 import { RenderItemTitleUI } from '../RenderItemTitleUI'
+import { useTreeView } from './TreeCtx'
+import { TreeNode } from './TreeNode'
 
 export const TreeEntryUI = observer(function TreeEntryUI_(p: { depth?: number; node: TreeNode }) {
     const n = p.node

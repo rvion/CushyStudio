@@ -1,4 +1,5 @@
 import { observer } from 'mobx-react-lite'
+
 import { GitManagedFolder } from './updater'
 import { Button } from 'src/rsuite/shims'
 

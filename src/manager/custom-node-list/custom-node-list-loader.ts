@@ -2,6 +2,7 @@ import type { ComfyManagerRepository } from '../ComfyManagerRepository'
 
 import { Value, ValueError } from '@sinclair/typebox/value'
 import { readFileSync, writeFileSync } from 'fs'
+
 import { CustomNodeFile, CustomNodesInfo_Schema, PluginInfo } from './custom-node-list-types'
 
 export type GetKnownPluginProps = {

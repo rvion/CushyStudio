@@ -1,9 +1,9 @@
 import type { ComfyManagerRepository } from '../ComfyManagerRepository'
 
 import { Value, ValueError } from '@sinclair/typebox/value'
-
 // https://github.com/ltdrdata/ComfyUI-Manager/blob/main/model-list.json
 import { readFileSync, writeFileSync } from 'fs'
+
 import { KnownModel_Name } from './KnownModel_Name'
 import { ModelInfo, ModelInfo_Schema } from './model-list-loader-types'
 
@@ -41,7 +41,7 @@ export const _getKnownModels = (
 
     // CODEGEN ------------------------------------------------------------
     if (DB.opts.genTypes) {
-        // categories ---------------------------
+        // type ---------------------------
         let out1 = ''
         const uniqCategories: { [key: string]: number } = knownModelList.reduce((acc, cur) => {
             if (acc[cur.type] != null) acc[cur.type] += 1
@@ -55,7 +55,21 @@ export const _getKnownModels = (
         out1 += '\n'
         writeFileSync('src/manager/model-list/KnownModel_Type.ts', out1 + '\n', 'utf-8')
 
-        // categories ---------------------------
+        // savepath ---------------------------
+        let out4 = ''
+        const uniqSavePath: { [key: string]: number } = knownModelList.reduce((acc, cur) => {
+            if (acc[cur.save_path] != null) acc[cur.save_path] += 1
+            else acc[cur.save_path] = 1
+            return acc
+        }, {} as { [key: string]: number })
+        out4 += `// prettier-ignore\n`
+        out4 += 'export type KnownModel_SavePath =\n'
+        for (const [cat, count] of Object.entries(uniqSavePath))
+            out4 += `    | ${JSON.stringify(cat).padEnd(50)} // x ${count.toString().padStart(3)}\n`
+        out4 += '\n'
+        writeFileSync('src/manager/model-list/KnownModel_SavePath.ts', out4 + '\n', 'utf-8')
+
+        // base ---------------------------
         let out2 = ''
         const uniqBases: { [key: string]: number } = knownModelList.reduce((acc, cur) => {
             if (acc[cur.base] != null) acc[cur.base] += 1

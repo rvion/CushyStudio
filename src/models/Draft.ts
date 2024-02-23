@@ -1,10 +1,11 @@
-import type { LibraryFile } from 'src/cards/LibraryFile'
 import type { LiveInstance } from '../db/LiveInstance'
 import type { CushyAppL } from './CushyApp'
 import type { MediaImageL } from './MediaImage'
 import type { StepL } from './Step'
+import type { LibraryFile } from 'src/cards/LibraryFile'
 
 import { reaction } from 'mobx'
+
 import { Status } from 'src/back/Status'
 import { Form } from 'src/controls/Form'
 import { Widget_group } from 'src/controls/widgets/group/WidgetGroup'
@@ -139,7 +140,7 @@ export class DraftL {
             throw new Error('❌ form not loaded yet')
         }
         this.isDirty = false
-        this.form.formBuilder._cache.count++
+        this.form.builder._cache.count++
         this.AWAKE()
 
         if (p.focusOutput ?? true) {
@@ -223,9 +224,8 @@ export class DraftL {
                     name: this.name,
                     initialValue: () => this.data.formSerial,
                     onChange: (root) => {
-                        console.log(`[👙] UPDATING draft(${this.id}) SERIAL`)
                         this.update({ formSerial: root.serial })
-                        console.log(`[👙]  => new:`, JSON.stringify(this.data.formSerial.values_.positive.val))
+                        console.log(`[👙] UPDATING draft(${this.id}) SERIAL`)
                         this.isDirty = true
                         this.checkIfShouldRestart()
                     },

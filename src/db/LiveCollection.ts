@@ -1,9 +1,10 @@
 import type { LiveInstance } from './LiveInstance'
 
 import { makeAutoObservable } from 'mobx'
-import { LiveTable } from './LiveTable'
-import { SQLWhere, SqlFindOptions } from './SQLWhere'
+
 import { DEPENDS_ON } from './LiveHelpers'
+import { LiveTable } from './LiveTable'
+import { SqlFindOptions, SQLWhere } from './SQLWhere'
 
 export class LiveCollection<L extends LiveInstance<any, any>> {
     constructor(

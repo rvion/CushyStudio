@@ -1,19 +1,28 @@
 @echo off
 
-cd /d %~dp0
+rem set current working directory to the directory of this script
+pushd "%~dp0"
 
-@REM setlocal: Ensures that the environment changes are local to the script.
+rem setlocal: Ensures that the environment changes are local to the script.
 setlocal
 
-@REM remove src\db\cushy-1.db
-rd src\db\cushy-1.db
-IF %ERRORLEVEL% NEQ 0 (
-    ECHO "removing src\db\cushy-1.db failed"
-    pause
-    EXIT /B 1
+rem remove src\db\cushy-1.db
+if exist ".\src\db\cushy-1.db" (
+    echo Found DB. Deleting.
+    del .\src\db\cushy-1.db
+    if not "%ERRORLEVEL%" == "0" (
+        echo removing src\db\cushy-1.db failed
+        pause
+        popd
+        endlocal
+        exit /B 1
+    )   
+) else (
+    echo Cushy DB does not exist.
 )
 
-@REM SUCCESS
-ECHO ""
-ECHO SUCCESS
+rem SUCCESS
+echo SUCCESS
 pause
+popd
+endlocal

@@ -1,4 +1,5 @@
 import { observer } from 'mobx-react-lite'
+
 import { Popover, Whisper } from 'src/rsuite/shims'
 
 export const DebugUI = observer(function DebugUI_(p: { title: string; children: React.ReactNode }) {

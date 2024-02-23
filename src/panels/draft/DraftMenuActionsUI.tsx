@@ -58,6 +58,13 @@ export const DraftMenuActionsUI = observer(function DraftMenuActionsUI_(p: {
                 Duplicate Draft
             </MenuItem>
             <MenuItem
+                // shortcut={KEYS.duplicateCurrentDraft}
+                icon={<span className='material-symbols-outlined text-green-500'>content_copy</span>}
+                onClick={() => draft.app.createDraft()}
+            >
+                New empty Draft
+            </MenuItem>
+            <MenuItem
                 icon={<span className='material-symbols-outlined'>content_copy</span>}
                 onClick={() => navigator.clipboard.writeText(draft.id)}
             >
@@ -85,6 +92,16 @@ export const DraftMenuActionsUI = observer(function DraftMenuActionsUI_(p: {
                 icon={<span className='material-symbols-outlined text-red-500'>delete</span>}
             >
                 Delete
+            </MenuItem>
+            <MenuItem
+                //
+                onClick={() => {
+                    const confirm = window.confirm('Are you sure you want to delete this draft?')
+                    if (confirm) draft.update({ formSerial: {} as any })
+                }}
+                icon={<span className='material-symbols-outlined text-red-500'>delete</span>}
+            >
+                reset Form
             </MenuItem>
 
             <div tw='divider my-0' />

@@ -1,6 +1,7 @@
 import type { ComfyNode } from '../../core/ComfyNode'
 
 import { observer } from 'mobx-react-lite'
+
 import { comfyColors } from '../../core/Colors'
 
 export const NodeRefUI = observer(function NodeRefUI_(p: {

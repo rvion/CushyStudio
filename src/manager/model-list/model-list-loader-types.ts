@@ -1,14 +1,17 @@
+import type { KnownModel_Base } from './KnownModel_Base'
+import type { KnownModel_Name } from './KnownModel_Name'
+import type { KnownModel_SavePath } from './KnownModel_SavePath'
+import type { KnownModel_Type } from './KnownModel_Type'
+
 import { Static, Type } from '@sinclair/typebox'
-import { KnownModel_Name } from './KnownModel_Name'
-import { KnownModel_Type } from './KnownModel_Type'
 
 // prettier-ignore
 
 export type ModelInfo = {
     "name": KnownModel_Name; // e.g. "ip-adapter_sd15_light.safetensors",
     "type": KnownModel_Type; // e.g. "IP-Adapter",
-    "base": string; // e.g. "SD1.5",
-    "save_path": string; // e.g. "ipadapter",
+    "base": KnownModel_Base; // e.g. "SD1.5",
+    "save_path": KnownModel_SavePath; // e.g. "ipadapter",
     "description": string; // e.g. "You can use this model in the [a/ComfyUI IPAdapter plus](https://github.com/cubiq/ComfyUI_IPAdapter_plus) extension.",
     "reference": string; // e.g. "https://huggingface.co/h94/IP-Adapter",
     "filename": string; // e.g. "ip-adapter_sd15_light.safetensors",
@@ -17,10 +20,10 @@ export type ModelInfo = {
 
 export const ModelInfo_Schema = Type.Object(
     {
-        name: Type.Any(Type.String()),
-        type: Type.Any(Type.String()),
-        base: Type.String(),
-        save_path: Type.String(),
+        name: Type.Any(),
+        type: Type.Any(),
+        base: Type.Any(),
+        save_path: Type.Any(),
         description: Type.String(),
         reference: Type.String(),
         filename: Type.String(),

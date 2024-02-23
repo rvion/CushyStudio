@@ -1,11 +1,12 @@
-import type { OrbitControls as OrbitControlsT } from 'three/examples/jsm/controls/OrbitControls'
 import type { Widget_orbit } from './WidgetOrbit'
+import type { OrbitControls as OrbitControlsT } from 'three/examples/jsm/controls/OrbitControls'
 
 import { OrbitControls } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
 import { runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { useRef } from 'react'
+
 import { clampMod } from './_orbitUtils'
 import { Cube } from './Cube3D'
 

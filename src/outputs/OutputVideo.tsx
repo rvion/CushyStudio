@@ -1,9 +1,10 @@
 import type { MediaVideoL } from 'src/models/MediaVideo'
 
 import { observer } from 'mobx-react-lite'
+
+import { OutputPreviewWrapperUI } from './OutputPreviewWrapperUI'
 import { StepL } from 'src/models/Step'
 import { useSt } from 'src/state/stateContext'
-import { OutputPreviewWrapperUI } from './OutputPreviewWrapperUI'
 
 export const OutputVideoPreviewUI = observer(function OutputImagePreviewUI_(p: { step?: Maybe<StepL>; output: MediaVideoL }) {
     const st = useSt()

@@ -1,15 +1,16 @@
-import type { STATE } from 'src/state/state'
 import type { LiveDB } from './LiveDB'
 import type { $BaseInstanceFields, BaseInstanceFields, LiveInstance, UpdateOptions } from './LiveInstance'
+import type { STATE } from 'src/state/state'
 
 import { Value, ValueError } from '@sinclair/typebox/value'
-import { action, makeAutoObservable, runInAction, toJS, type AnnotationMapEntry } from 'mobx'
+import { timeStamp } from 'console'
+import { action, type AnnotationMapEntry, makeAutoObservable, runInAction, toJS } from 'mobx'
 import { nanoid } from 'nanoid'
+
+import { DEPENDS_ON, MERGE_PROTOTYPES } from './LiveHelpers'
+import { isSqlExpr, SqlFindOptions, SQLWhere } from './SQLWhere'
 import { schemas } from 'src/db/TYPES.gen'
 import { TableInfo } from 'src/db/TYPES_json'
-import { DEPENDS_ON, MERGE_PROTOTYPES } from './LiveHelpers'
-import { SQLWhere, SqlFindOptions, isSqlExpr } from './SQLWhere'
-import { timeStamp } from 'console'
 
 export interface LiveEntityClass<T extends BaseInstanceFields, L> {
     new (...args: any[]): LiveInstance<T, L> & L

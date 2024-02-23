@@ -11,14 +11,15 @@ export const KEYS = {
     openPage_Hosts:     'mod+shift+,',
     openPage_Shortcuts: 'mod+k mod+s',
     //
-    openPage_Civitai:   'mod+k 1',
-    openPage_Squoosh:   'mod+k 2',
-    openPage_Posemy:    'mod+k 3',
-    openPage_Paint:     'mod+k 4',
-    openPage_Unsplash:  'mod+k 5',
-    openPage_ComfyUI:   'mod+4',
-    openPage_Gallery:   'mod+5',
-    openPage_Models:    'mod+6',
+    openPage_Civitai:     'mod+k 1',
+    openPage_Squoosh:     'mod+k 2',
+    openPage_Posemy:      'mod+k 3',
+    openPage_Paint:       'mod+k 4',
+    openPage_Unsplash:    'mod+k 5',
+    openPage_ComfyUI:     'mod+4',
+    openPage_Gallery:     'mod+5',
+    openPage_Models:      'mod+6',
+    openPage_Marketplace: 'mod+7',
 
     // draft actions
     duplicateCurrentDraft: 'mod+shift+d',

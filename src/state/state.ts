@@ -1,60 +1,22 @@
 import 'src/models/_ctx3'
 import 'src/models/asyncRuntimeStorage'
 
+import type { MediaImageL } from '../models/MediaImage'
+import type { ComfyStatus, PromptID, PromptRelated_WsMsg, WsMsg } from '../types/ComfyWsApi'
+import type { CSCriticalError } from '../widgets/CSCriticalError'
 import type { ActionTagMethodList } from 'src/cards/App'
 import type { TreeNode } from 'src/panels/libraryUI/tree/xxx/TreeNode'
 import type { RevealState } from 'src/rsuite/reveal/RevealState'
 import type { Wildcards } from 'src/widgets/prompter/nodes/wildcards/wildcards'
-import type { MediaImageL } from '../models/MediaImage'
-import type { ComfyStatus, PromptID, PromptRelated_WsMsg, WsMsg } from '../types/ComfyWsApi'
-import type { CSCriticalError } from '../widgets/CSCriticalError'
-
-import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'fs'
-import { makeAutoObservable, observable } from 'mobx'
-import { nanoid } from 'nanoid'
-import { join } from 'pathe'
-import { createRef } from 'react'
-import { PreferedFormLayout, type ConfigFile } from 'src/config/ConfigFile'
-import { mkConfigFile } from 'src/config/mkConfigFile'
-import { mandatoryTSConfigIncludes, mkTypescriptConfig, type TsConfigCustom } from '../widgets/TsConfigCustom'
 
 import { PostgrestSingleResponse, SupabaseClient } from '@supabase/supabase-js'
 import { closest } from 'fastest-levenshtein'
-import { ShortcutWatcher } from 'src/app/shortcuts/ShortcutManager'
-import { shortcutsDef } from 'src/app/shortcuts/shortcuts'
-import { createRandomGenerator } from 'src/back/random'
-import { GithubUserName } from 'src/cards/GithubUser'
-import { Library } from 'src/cards/Library'
-import { asAppPath } from 'src/cards/asAppPath'
-import { GithubRepoName } from 'src/cards/githubRepo'
-import { recursivelyFindAppsInFolder } from 'src/cards/walkLib'
-import { STANDARD_HOST_ID, vIRTUAL_HOST_ID__BASE, vIRTUAL_HOST_ID__FULL } from 'src/config/ComfyHostDef'
-import { Form } from 'src/controls/Form'
-import { LiveCollection } from 'src/db/LiveCollection'
-import { SQLITE_false, SQLITE_true } from 'src/db/SQLITE_boolean'
-import { asHostID } from 'src/db/TYPES.gen'
-import { ComfyManagerRepository } from 'src/manager/ComfyManagerRepository'
-import { CushyAppL } from 'src/models/CushyApp'
-import { DraftL } from 'src/models/Draft'
-import { HostL } from 'src/models/Host'
-import { ProjectL } from 'src/models/Project'
-import { StepL } from 'src/models/Step'
-import { createMediaImage_fromPath } from 'src/models/createMediaImage_fromWebFile'
-import { VirtualHierarchy } from 'src/panels/libraryUI/VirtualHierarchy'
-import { treeElement } from 'src/panels/libraryUI/tree/TreeEntry'
-import { TreeApp } from 'src/panels/libraryUI/tree/nodes/TreeApp'
-import { TreeDraft } from 'src/panels/libraryUI/tree/nodes/TreeDraft'
-import { TreeAllApps, TreeAllDrafts, TreeFavoriteApps, TreeFavoriteDrafts } from 'src/panels/libraryUI/tree/nodes/TreeFavorites'
-import { TreeFolder } from 'src/panels/libraryUI/tree/nodes/TreeFolder'
-import { Tree } from 'src/panels/libraryUI/tree/xxx/Tree'
-import { TreeView } from 'src/panels/libraryUI/tree/xxx/TreeView'
-import { SafetyChecker } from 'src/safety/Safety'
-import { Database } from 'src/supa/database.types'
-import { ThemeManager } from 'src/theme/ThemeManager'
-import { CleanedEnumResult } from 'src/types/EnumUtils'
-import { StepOutput } from 'src/types/StepOutput'
-import { openInVSCode } from 'src/utils/electron/openInVsCode'
-import { UserTags } from 'src/widgets/prompter/nodes/usertags/UserLoader'
+import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'fs'
+import { makeAutoObservable, observable, toJS } from 'mobx'
+import { nanoid } from 'nanoid'
+import { join } from 'pathe'
+import { createRef } from 'react'
+
 import { JsonFile } from '../core/JsonFile'
 import { LiveDB } from '../db/LiveDB'
 import { ComfyImporter } from '../importers/ComfyImporter'
@@ -66,10 +28,48 @@ import { ElectronUtils } from '../utils/electron/ElectronUtils'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { exhaust } from '../utils/misc/ComfyUtils'
 import { DanbooruTags } from '../widgets/prompter/nodes/booru/BooruLoader'
+import { mandatoryTSConfigIncludes, mkTypescriptConfig, type TsConfigCustom } from '../widgets/TsConfigCustom'
 import { AuthState } from './AuthState'
-import { Uploader } from './Uploader'
 import { readJSON, writeJSON } from './jsonUtils'
 import { mkSupa } from './supa'
+import { Uploader } from './Uploader'
+import { ShortcutWatcher } from 'src/app/shortcuts/ShortcutManager'
+import { shortcutsDef } from 'src/app/shortcuts/shortcuts'
+import { createRandomGenerator } from 'src/back/random'
+import { asAppPath } from 'src/cards/asAppPath'
+import { GithubRepoName } from 'src/cards/githubRepo'
+import { GithubUserName } from 'src/cards/GithubUser'
+import { Library } from 'src/cards/Library'
+import { recursivelyFindAppsInFolder } from 'src/cards/walkLib'
+import { STANDARD_HOST_ID, vIRTUAL_HOST_ID__BASE, vIRTUAL_HOST_ID__FULL } from 'src/config/ComfyHostDef'
+import { type ConfigFile, PreferedFormLayout } from 'src/config/ConfigFile'
+import { mkConfigFile } from 'src/config/mkConfigFile'
+import { Form } from 'src/controls/Form'
+import { LiveCollection } from 'src/db/LiveCollection'
+import { SQLITE_false, SQLITE_true } from 'src/db/SQLITE_boolean'
+import { asHostID } from 'src/db/TYPES.gen'
+import { ComfyManagerRepository } from 'src/manager/ComfyManagerRepository'
+import { createMediaImage_fromPath } from 'src/models/createMediaImage_fromWebFile'
+import { CushyAppL } from 'src/models/CushyApp'
+import { DraftL } from 'src/models/Draft'
+import { HostL } from 'src/models/Host'
+import { ProjectL } from 'src/models/Project'
+import { StepL } from 'src/models/Step'
+import { TreeApp } from 'src/panels/libraryUI/tree/nodes/TreeApp'
+import { TreeDraft } from 'src/panels/libraryUI/tree/nodes/TreeDraft'
+import { TreeAllApps, TreeAllDrafts, TreeFavoriteApps, TreeFavoriteDrafts } from 'src/panels/libraryUI/tree/nodes/TreeFavorites'
+import { TreeFolder } from 'src/panels/libraryUI/tree/nodes/TreeFolder'
+import { treeElement } from 'src/panels/libraryUI/tree/TreeEntry'
+import { Tree } from 'src/panels/libraryUI/tree/xxx/Tree'
+import { TreeView } from 'src/panels/libraryUI/tree/xxx/TreeView'
+import { VirtualHierarchy } from 'src/panels/libraryUI/VirtualHierarchy'
+import { SafetyChecker } from 'src/safety/Safety'
+import { Database } from 'src/supa/database.types'
+import { ThemeManager } from 'src/theme/ThemeManager'
+import { CleanedEnumResult } from 'src/types/EnumUtils'
+import { StepOutput } from 'src/types/StepOutput'
+import { openInVSCode } from 'src/utils/electron/openInVsCode'
+import { UserTags } from 'src/widgets/prompter/nodes/usertags/UserLoader'
 
 export class STATE {
     __INJECTION__ = (() => {
@@ -85,6 +85,7 @@ export class STATE {
             console.log(`[🛋️] WINDOW.CUSHY NOW DEFINED`)
             Object.defineProperty(window, 'cushy', { get() { return (window as any).CushyObservableCache.st } }) // prettier-ignore
         }
+        ;(window as any).toJS = toJS
     })()
 
     /** hack to help closing prompt completions */
@@ -316,13 +317,13 @@ export class STATE {
 
     // showCardPicker: boolean = false
     closeFullLibrary = () => (this.layout.fullPageComp = null)
-    openFullLibrary = () => (this.layout.fullPageComp = { props: {}, panel: 'CardPicker3UI' })
+    openFullLibrary = () => (this.layout.fullPageComp = { props: {}, panel: 'FullScreenLibrary' })
     toggleFullLibrary = () => {
         if (
             this.layout.fullPageComp == null || //
-            this.layout.fullPageComp.panel !== 'CardPicker3UI'
+            this.layout.fullPageComp.panel !== 'FullScreenLibrary'
         ) {
-            this.layout.fullPageComp = { props: {}, panel: 'CardPicker3UI' }
+            this.layout.fullPageComp = { props: {}, panel: 'FullScreenLibrary' }
         } else {
             this.layout.fullPageComp = null
         }
@@ -421,6 +422,20 @@ export class STATE {
         })
     }
 
+    civitaiConf = new Form(
+        (ui) => ({
+            imgSize1: ui.int({ min: 64, max: 1024, step: 64, default: 512 }),
+            imgSize2: ui.int({ min: 64, max: 1024, step: 64, default: 128 }),
+            apiKey: ui.string({ label: 'API Key' }),
+            defaultQuery: ui.string({ label: '(debug) default query' }),
+            // civitaiApiSecret: ui.string({ label: 'API Secret' }),
+        }),
+        {
+            name: 'Civitai Conf',
+            initialValue: () => readJSON('settings/civitai.json'),
+            onChange: (form) => writeJSON('settings/civitai.json', form.serial),
+        },
+    )
     sideBarConf = new Form(
         (f) => ({
             size: f.int({ label: 'size', min: 24, max: 128, default: 48, unit: 'px', step: 4 }),
@@ -438,11 +453,11 @@ export class STATE {
         (form) => ({
             camera: form.choice({
                 appearance: 'tab',
-                items: { orbit: () => form.group({}), fly: () => form.group({}) /* wasd: () => form.group({}) */ },
+                items: { orbit: form.group(), fly: form.group({}) /* wasd:  form.group({}) */ },
             }),
             menu: form.choice({
                 appearance: 'tab',
-                items: { menu: () => form.group({}), left: () => form.group({}), right: () => form.group({}) },
+                items: { menu: form.group(), left: form.group(), right: form.group({}) },
             }),
             displacementScale: form.number({ label: 'displacement', min: 0, max: 5, step: 0.1, default: 1 }),
             cutout: form.number({ label: 'cutout', min: 0, max: 1, step: 0.01, default: 0.08 }),

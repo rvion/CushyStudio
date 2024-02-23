@@ -1,13 +1,13 @@
+import type { MediaImageL } from 'src/models/MediaImage'
+
 import { observer } from 'mobx-react-lite'
-import { showItemInFolder, openExternal } from 'src/app/layout/openExternal'
-import { ComboUI } from 'src/app/shortcuts/ComboUI'
+
+import { openExternal, showItemInFolder } from 'src/app/layout/openExternal'
 import { DraftIllustrationUI } from 'src/cards/fancycard/DraftIllustration'
-import { MediaImageL } from 'src/models/MediaImage'
 import { Dropdown, MenuItem } from 'src/rsuite/Dropdown'
 import { useSt } from 'src/state/stateContext'
 
 export const ImageDropdownUI = observer(function ImageDropdownUI_(p: { img: MediaImageL }) {
-    const st = useSt()
     const img = p.img
     return (
         <Dropdown title='Actions' startIcon={<span className='material-symbols-outlined'>menu</span>}>
@@ -19,42 +19,38 @@ export const ImageDropdownUI = observer(function ImageDropdownUI_(p: { img: Medi
 export const ImageDropdownMenuUI = observer(function ImageDropdownMenuUI_(p: { img: MediaImageL }) {
     const st = useSt()
     const img = p.img
-
     return (
         <>
-            <div className='divider divider-start my-0'>send to</div>
+            <div className='divider divider-start my-1'>Send to</div>
+            <MenuItem icon={<span className='material-symbols-outlined'>content_copy</span>} onClick={img.copyToClipboard}>
+                Clipboard
+            </MenuItem>
             <MenuItem
                 icon={<span className='material-symbols-outlined'>settings_overscan</span>}
                 disabled={!img?.absPath}
                 onClick={() => st.layout.FOCUS_OR_CREATE('Image', { imageID: img.id })}
-                shortcut={'mod+click'}
+                shortcut='mod+click'
             >
-                dedicated panel (ctrl+click)
+                Dedicated Panel
             </MenuItem>
             <MenuItem
                 icon={<span className='material-symbols-outlined'>center_focus_weak</span>}
                 disabled={!img?.absPath}
-                shortcut={'shift+click'}
+                shortcut='shift+click'
                 onClick={() => st.layout.FOCUS_OR_CREATE('Canvas', { imgID: img.id })}
             >
-                unified Canvas (shift+click)
+                Unified Canvas
             </MenuItem>
             <MenuItem
                 icon={<span className='material-symbols-outlined'>brush</span>}
                 disabled={!img?.absPath}
-                shortcut={'alt+click'}
+                shortcut='alt+click'
                 onClick={() => st.layout.FOCUS_OR_CREATE('Paint', { imgID: img.id })}
             >
-                MiniPaint (alt+click)
+                MiniPaint
             </MenuItem>
-            <MenuItem
-                icon={<span className='material-symbols-outlined text-red-500'>delete</span>}
-                disabled={!img?.absPath}
-                onClick={() => img.delete()}
-            >
-                delete
-            </MenuItem>
-            <div className='divider divider-start my-0'>FileSystem</div>
+
+            <div className='divider divider-start my-1'>FileSystem</div>
             <MenuItem
                 icon={<span className='material-symbols-outlined'>folder</span>}
                 // appearance='subtle'
@@ -64,7 +60,7 @@ export const ImageDropdownMenuUI = observer(function ImageDropdownMenuUI_(p: { i
                     showItemInFolder(img.absPath)
                 }}
             >
-                open folder
+                Open folder
             </MenuItem>
             {/* 3. OPEN FILE ITSELF */}
             <MenuItem
@@ -78,16 +74,23 @@ export const ImageDropdownMenuUI = observer(function ImageDropdownMenuUI_(p: { i
                     openExternal(imgPathWithFileProtocol)
                 }}
             >
-                open
+                Open
             </MenuItem>
-            <div className='divider divider-start my-0'>Draft</div>
+            <div className='divider divider-start my-1'>Draft</div>
             <MenuItem className='_MenuItem' onClick={() => img.useAsDraftIllustration()}>
                 <div className='flex items-center gap-2'>
                     <span className='material-symbols-outlined'>image</span>
-                    Use as draft illustration
+                    Use as Draft Illustration
                 </div>
             </MenuItem>
-            <div className='divider divider-start my-0'>send to</div>
+            <div className='divider divider-start my-0'></div>
+            <MenuItem
+                icon={<span className='material-symbols-outlined text-red-500'>delete</span>}
+                disabled={!img?.absPath}
+                onClick={() => img.delete()}
+            >
+                Delete
+            </MenuItem>
             <ImageActionMenu img={img} />
         </>
     )

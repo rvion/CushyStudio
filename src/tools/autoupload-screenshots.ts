@@ -2,8 +2,9 @@ import chalk from 'chalk'
 import * as X from 'child_process'
 import { existsSync, mkdirSync, readFileSync, renameSync, watch } from 'fs'
 import { join, relative } from 'pathe'
-import { hashArrayBuffer } from 'src/state/hashBlob'
 import { promisify } from 'util'
+
+import { hashArrayBuffer } from 'src/state/hashBlob'
 
 const exec = promisify(X.exec)
 

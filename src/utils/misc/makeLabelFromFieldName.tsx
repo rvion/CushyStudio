@@ -1,4 +1,9 @@
 export function makeLabelFromFieldName(s: string): string {
+    if (typeof s !== 'string') {
+        // debugger
+        // throw new Error(`makeLabelFromFieldName: expected string, got ${typeof s} (${s})`)
+        console.log(`[🔴] makeLabelFromFieldName: expected string, got ${typeof s} (${s})`)
+    }
     if (s == null) return ''
     if (s.length === 0) return s
     s = s.replace(/([a-z])([A-Z])/g, '$1 $2')

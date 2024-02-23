@@ -7,16 +7,17 @@ export const ui_mask = () => {
         label: 'Mask',
         default: 'noMask',
         items: {
-            noMask: () => form.group({}),
-            mask: () =>
-                form.group({
-                    items: () => ({
-                        image: form.image({}),
-                        mode: form.enum.Enum_LoadImageMask_channel({}),
-                        invert: form.bool({}),
-                        // interrogate: form.bool({}),
-                    }),
+            noMask: form.group(),
+            mask: form.group({
+                collapsible: false,
+                label: false,
+                items: () => ({
+                    image: form.image({}),
+                    mode: form.enum.Enum_LoadImageMask_channel({}),
+                    invert: form.bool({}),
+                    // interrogate: form.bool({}),
                 }),
+            }),
         },
     })
 }

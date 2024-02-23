@@ -3,8 +3,8 @@ import type { STATE } from 'src/state/state'
 import { exec } from 'child_process'
 import { existsSync } from 'fs'
 import { resolve as pathResolve } from 'pathe'
-
 import { cwd } from 'process'
+
 import { toastError, toastInfo } from '../misc/toasts'
 
 const workspaceFolderPath = cwd()

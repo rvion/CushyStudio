@@ -1,10 +1,11 @@
 import type { Runtime } from './Runtime'
 
 import { makeAutoObservable } from 'mobx'
+
 import { ImageStore, ImageStoreT } from 'src/back/ImageStore'
-import { CustomDataL } from 'src/models/CustomData'
 import { LiveTable } from 'src/db/LiveTable'
-import { CustomDataT, CustomData_C } from 'src/db/TYPES.gen'
+import { CustomData_C, CustomDataT } from 'src/db/TYPES.gen'
+import { CustomDataL } from 'src/models/CustomData'
 import { bang } from 'src/utils/misc/bang'
 import { exhaust } from 'src/utils/misc/ComfyUtils'
 

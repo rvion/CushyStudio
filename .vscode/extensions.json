@@ -1,5 +1,9 @@
 {
     "recommendations": [
+        // automatically sort imports with types at the top
+        // so it's easy to distinguish between type imports, node_module imports, and local imports
+        "dozerg.tsimportsorter",
+
         // will autoformat your code on save
         // so no more diff hell with contributors
         "esbenp.prettier-vscode",
@@ -9,10 +13,6 @@
 
         // quick related-file swtching
         // configured for tests and other more complex mapping
-        "johnathanludwig.fileswitcher",
-
-        // for mdx support
-        // mostly usefull if you want to write blog posts or edit documentation
-        "unifiedjs.vscode-mdx"
+        "johnathanludwig.fileswitcher"
     ]
 }

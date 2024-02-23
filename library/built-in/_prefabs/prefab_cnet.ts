@@ -1,7 +1,6 @@
 import type { FormBuilder } from '../../../src/controls/FormBuilder'
 import type { OutputFor } from './_prefabs'
 
-import { bang } from 'src/utils/misc/bang'
 import { run_cnet_IPAdapter, ui_subform_IPAdapter } from './ControlNet/ipAdapter/prefab_ipAdapter_base'
 import { run_cnet_IPAdapterFaceID, ui_IPAdapterFaceID } from './ControlNet/ipAdapter/prefab_ipAdapter_face'
 import { run_cnet_canny, ui_subform_Canny } from './ControlNet/prefab_cnet_canny'
@@ -13,6 +12,7 @@ import { run_cnet_Scribble, ui_subform_Scribble } from './ControlNet/prefab_cnet
 import { run_cnet_Sketch, ui_subform_Sketch } from './ControlNet/prefab_cnet_sketch'
 import { run_cnet_SoftEdge, ui_subform_SoftEdge } from './ControlNet/prefab_cnet_softEdge'
 import { run_cnet_Tile, ui_subform_Tile } from './ControlNet/prefab_cnet_tile'
+import { bang } from 'src/utils/misc/bang'
 
 // 🅿️ CNET UI -----------------------------------------------------------
 export const ui_cnet = () => {
@@ -27,6 +27,8 @@ export const ui_cnet = () => {
         items: () => ({
             applyDuringUpscale: form.bool({
                 tooltip: 'Use the controlnet conditioning for the upscale pass if enabled',
+                label2: 'Apply during upscale',
+                label: false,
                 default: false,
             }),
             controlNetList: form.list({
@@ -42,17 +44,17 @@ export const ui_cnet = () => {
                                 appearance: 'tab',
                                 placeholder: 'ControlNets...',
                                 items: {
-                                    IPAdapter: () => ui_subform_IPAdapter(),
-                                    FaceID: () => ui_IPAdapterFaceID(),
-                                    Pose: () => ui_subform_OpenPose(),
-                                    Canny: () => ui_subform_Canny(),
-                                    Depth: () => ui_subform_Depth(),
-                                    Normal: () => ui_subform_Normal(),
-                                    Tile: () => ui_subform_Tile(),
-                                    Scribble: () => ui_subform_Scribble(),
-                                    Lineart: () => ui_subform_Lineart(),
-                                    SoftEdge: () => ui_subform_SoftEdge(),
-                                    Sketch: () => ui_subform_Sketch(),
+                                    IPAdapter: ui_subform_IPAdapter(),
+                                    FaceID: ui_IPAdapterFaceID(),
+                                    Pose: ui_subform_OpenPose(),
+                                    Canny: ui_subform_Canny(),
+                                    Depth: ui_subform_Depth(),
+                                    Normal: ui_subform_Normal(),
+                                    Tile: ui_subform_Tile(),
+                                    Scribble: ui_subform_Scribble(),
+                                    Lineart: ui_subform_Lineart(),
+                                    SoftEdge: ui_subform_SoftEdge(),
+                                    Sketch: ui_subform_Sketch(),
                                 },
                             }),
                         }),

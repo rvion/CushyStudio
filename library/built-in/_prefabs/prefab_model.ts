@@ -21,26 +21,16 @@ export const ui_model = () => {
             extra: form.choices({
                 appearance: 'tab',
                 items: {
-                    ckpt_config: () => form.enum.Enum_CheckpointLoader_config_name({
-                        label: 'Config',
+                    ckpt_config: form.enum.Enum_CheckpointLoader_config_name({ label: 'Config' }),
+                    rescale_cfg: form.auto.RescaleCFG(),
+                    vae: form.enum.Enum_VAELoader_vae_name({}),
+                    clipSkip: form.int({ label: 'Clip Skip', default: 1, min: 1, max: 5 }),
+                    freeU: form.group(),
+                    civtai_ckpt_air: form.string({
+                        tooltip: 'Civitai checkpoint Air, as found on the civitai Website. It should look like this: 43331@176425', // prettier-ignore
+                        label: 'Civitai Ref',
+                        placeHolder: 'e.g. 43331@176425',
                     }),
-                    rescale_cfg: () => form.auto.RescaleCFG(),
-                    vae: () => form.enum.Enum_VAELoader_vae_name({}),
-                    clipSkip: () =>
-                        form.int({
-                            label: 'Clip Skip',
-                            default: 1,
-                            min: 1,
-                            max: 5,
-                        }),
-                    freeU: () => form.group({}),
-                    civtai_ckpt_air: () =>
-                        form.string({
-                            tooltip:
-                                'Civitai checkpoint Air, as found on the civitai Website. It should look like this: 43331@176425',
-                            label: 'Civitai Ref',
-                            placeHolder: 'e.g. 43331@176425',
-                        }),
                 },
             }),
         }),
@@ -68,7 +58,7 @@ export const run_model = (ui: OutputFor<typeof ui_model>) => {
     } else {
         ckptLoader = graph.CheckpointLoaderSimple({ ckpt_name: ui.ckpt_name })
     }
-                
+
     let ckpt: HasSingle_MODEL = ckptLoader
     let clip: HasSingle_CLIP = ckptLoader
 

@@ -1,27 +1,27 @@
+import type { AppMetadata } from './AppManifest'
 import type { CSSProperties } from 'react'
 import type { FormBuilder } from 'src/controls/FormBuilder'
-import type { Runtime } from 'src/runtime/Runtime'
-import type { Widget } from '../controls/Widget'
-import type { AppMetadata } from './AppManifest'
+import type { Spec } from 'src/controls/Prop'
 import type { MediaImageL } from 'src/models/MediaImage'
+import type { Runtime } from 'src/runtime/Runtime'
 
 // ACTIONS ============================================================
 // 1. the main abstraction of cushy are actions.
 /** quick function to help build actions in a type-safe way */
 
 // export const action = <const F extends WidgetDict>(name: string, t: Omit<Action<F>, 'name'>): Action<F> => ({ name, ...t })
-export type GlobalFunctionToDefineAnApp = <const F extends WidgetDict>(t: App<F>) => AppRef<F>
+export type GlobalFunctionToDefineAnApp = <const F extends SchemaDict>(t: App<F>) => AppRef<F>
 export type GlobalGetCurrentRun = () => Runtime
 export type GlobalGetCurrentForm = () => FormBuilder
 export type ActionTagMethod = (arg0: string) => string
 export type ActionTagMethodList = Array<{ key: string; method: ActionTagMethod }>
 export type ActionTags = (arg0: ActionTagMethodList) => void
-export type WidgetDict = { [key: string]: Widget }
+export type SchemaDict = { [key: string]: Spec }
 export type AppRef<F> = { $Output: F; id: CushyAppID }
 
-export type $ExtractFormValueType<FIELDS extends WidgetDict> = { [k in keyof FIELDS]: FIELDS[k]['$Output'] }
+export type $ExtractFormValueType<FIELDS extends SchemaDict> = { [k in keyof FIELDS]: FIELDS[k]['$Output'] }
 
-export type App<FIELDS extends WidgetDict> = {
+export type App<FIELDS extends SchemaDict> = {
     /** app interface (GUI) */
     ui: (form: FormBuilder) => FIELDS
 

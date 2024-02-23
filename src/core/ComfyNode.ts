@@ -3,16 +3,17 @@ import type { ComfyNodeJSON } from '../types/ComfyPrompt'
 import type { NodeProgress } from '../types/ComfyWsApi'
 
 import { configure, extendObservable, makeAutoObservable } from 'mobx'
-import { ReactNode, createElement } from 'react'
+import { createElement, ReactNode } from 'react'
+
 import { ComfyNodeSchema, NodeInputExt, NodeOutputExt } from '../models/Schema'
 import { ComfyNodeID, ComfyNodeMetadata } from '../types/ComfyNodeID'
+import { auto_ } from './autoValue'
 import { comfyColors } from './Colors'
 import { NodeStatusEmojiUI } from './NodeStatusEmojiUI'
 import { ComfyNodeOutput } from './Slot'
-import { auto_ } from './autoValue'
 
-// configure({ enforceActions: 'never' })
-configure({ enforceActions: 'always' })
+configure({ enforceActions: 'never' })
+// configure({ enforceActions: 'always' })
 
 type NodeExecutionStatus = 'executing' | 'done' | 'error' | 'waiting' | 'cached' | null
 

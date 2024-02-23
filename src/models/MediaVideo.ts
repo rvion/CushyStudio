@@ -1,7 +1,7 @@
 import type { LiveInstance } from '../db/LiveInstance'
-import type { MediaVideoT } from 'src/db/TYPES.gen'
-import type { StepL } from './Step'
 import type { ComfyPromptL } from './ComfyPrompt'
+import type { StepL } from './Step'
+import type { MediaVideoT } from 'src/db/TYPES.gen'
 
 import { LiveRefOpt } from 'src/db/LiveRefOpt'
 

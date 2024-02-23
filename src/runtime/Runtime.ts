@@ -1,26 +1,19 @@
-import type { WidgetDict } from 'src/cards/App'
-import type { STATE } from 'src/state/state'
 import type { Printable } from '../core/Printable'
 import type { ComfyPromptL } from '../models/ComfyPrompt'
 import type { ComfyWorkflowL, PromptSettings } from '../models/ComfyWorkflow'
 import type { MediaImageL } from '../models/MediaImage'
 import type { StepL } from '../models/Step'
+import type { SchemaDict } from 'src/cards/App'
+import type { STATE } from 'src/state/state'
 
-import * as path from 'pathe'
-import { execSync } from 'child_process'
+import child_process, { execSync } from 'child_process'
 import fs, { writeFileSync } from 'fs'
-import { checkIfComfyImageExists } from 'src/models/ImageInfos_ComfyGenerated'
-import { braceExpansion } from 'src/utils/misc/expansion'
-import { ComfyWorkflowBuilder } from '../back/NodeBuilder'
-import { ComfyNodeOutput } from '../core/Slot'
-import { auto } from '../core/autoValue'
-import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
+import * as path from 'pathe'
 
-import child_process from 'child_process'
-import { createRandomGenerator } from 'src/back/random'
-import { Widget_group } from 'src/controls/widgets/group/WidgetGroup'
-import { _formatAsRelativeDateTime } from 'src/updater/_getRelativeTimeString'
-import { Wildcards } from 'src/widgets/prompter/nodes/wildcards/wildcards'
+import { ComfyWorkflowBuilder } from '../back/NodeBuilder'
+import { auto } from '../core/autoValue'
+import { ComfyNodeOutput } from '../core/Slot'
+import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { RuntimeApps } from './RuntimeApps'
 import { RuntimeCanvas } from './RuntimeCanvas'
 import { RuntimeColors } from './RuntimeColors'
@@ -32,6 +25,12 @@ import { RuntimeKonva } from './RuntimeKonva'
 import { RuntimeLLM } from './RuntimeLLM'
 import { RuntimeStore } from './RuntimeStore'
 import { RuntimeVideos } from './RuntimeVideo'
+import { createRandomGenerator } from 'src/back/random'
+import { Widget_group } from 'src/controls/widgets/group/WidgetGroup'
+import { checkIfComfyImageExists } from 'src/models/ImageInfos_ComfyGenerated'
+import { _formatAsRelativeDateTime } from 'src/updater/_getRelativeTimeString'
+import { braceExpansion } from 'src/utils/misc/expansion'
+import { Wildcards } from 'src/widgets/prompter/nodes/wildcards/wildcards'
 
 export type ImageAndMask = HasSingle_IMAGE & HasSingle_MASK
 
@@ -45,7 +44,7 @@ export type RuntimeExecutionResult =
 // run.store.getGlobal
 
 /** script exeuction instance */
-export class Runtime<FIELDS extends WidgetDict = any> {
+export class Runtime<FIELDS extends SchemaDict = any> {
     get Colors(): RuntimeColors {
         const it = new RuntimeColors(this)
         Object.defineProperty(this, 'Colors', { value: it })

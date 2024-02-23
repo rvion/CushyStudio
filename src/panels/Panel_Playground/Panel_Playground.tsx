@@ -1,7 +1,8 @@
 import { observer } from 'mobx-react-lite'
+
+import { MessageInfoUI } from '../MessageUI'
 import { InstallRequirementsBtnUI, Panel_InstallRequirementsUI } from 'src/controls/REQUIREMENTS/Panel_InstallRequirementsUI'
 import { useSt } from 'src/state/stateContext'
-import { MessageInfoUI } from '../MessageUI'
 
 export const Panel_Playground = observer(function Panel_Playground_(p: {}) {
     const st = useSt()

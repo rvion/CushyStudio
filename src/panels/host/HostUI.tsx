@@ -1,12 +1,13 @@
 import { runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
-import { HostSchemaIndicatorUI } from 'src/panels/host/HostSchemaIndicatorUI'
-import { HostWebsocketIndicatorUI } from 'src/panels/host/HostWebsocketIndicatorUI'
+
+import { LabelUI } from '../LabelUI'
 import { SQLITE_false, SQLITE_true } from 'src/db/SQLITE_boolean'
 import { HostL } from 'src/models/Host'
+import { HostSchemaIndicatorUI } from 'src/panels/host/HostSchemaIndicatorUI'
+import { HostWebsocketIndicatorUI } from 'src/panels/host/HostWebsocketIndicatorUI'
 import { Joined, Toggle } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
-import { LabelUI } from '../LabelUI'
 
 export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
     const st = useSt()

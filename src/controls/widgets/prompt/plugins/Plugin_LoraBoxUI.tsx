@@ -1,9 +1,10 @@
 import { observer } from 'mobx-react-lite'
+
 import { openExternal } from 'src/app/layout/openExternal'
-import { WidgetPromptUISt } from 'src/controls/widgets/prompt/WidgetPromptUISt'
+import { InputNumberUI } from 'src/controls/widgets/number/InputNumberUI'
 import { Prompt_Lora } from 'src/controls/widgets/prompt/grammar/grammar.practical'
+import { WidgetPromptUISt } from 'src/controls/widgets/prompt/WidgetPromptUISt'
 import { MessageErrorUI } from 'src/panels/MessageUI'
-import { InputNumberUI } from 'src/rsuite/InputNumberUI'
 import { Button, Input } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
 

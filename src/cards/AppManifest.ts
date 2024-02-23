@@ -1,5 +1,6 @@
-import { Static, Type } from '@sinclair/typebox'
 import type { Requirements } from 'src/controls/IWidget'
+
+import { Static, Type } from '@sinclair/typebox'
 
 export type AppMetadata = {
     /**

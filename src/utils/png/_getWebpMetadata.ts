@@ -1,4 +1,4 @@
-import { parseExifData, type ExifData } from './_parseExifData'
+import { type ExifData, parseExifData } from './_parseExifData'
 
 export function getWebpMetadata(file: File): Promise<ExifData> {
     return new Promise<any>((r, reject) => {

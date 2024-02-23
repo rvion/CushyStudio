@@ -1,6 +1,5 @@
 import type { PromptLangNodeName } from '../grammar/grammar.types'
-import type { SyntaxNode } from '@lezer/common'
-import type { Tree } from '@lezer/common'
+import type { SyntaxNode, Tree } from '@lezer/common'
 
 import { bang } from 'src/utils/misc/bang'
 

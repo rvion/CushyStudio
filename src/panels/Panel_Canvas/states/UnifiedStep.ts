@@ -1,14 +1,14 @@
-import type { STATE } from 'src/state/state'
 import type { UnifiedCanvas } from './UnifiedCanvas'
 import type { MediaImageL } from 'src/models/MediaImage'
-
-import { autorun, makeAutoObservable } from 'mobx'
+import type { StepL } from 'src/models/Step'
+import type { STATE } from 'src/state/state'
 
 import Konva from 'konva'
-import { Stage } from 'konva/lib/Stage'
 import { Layer } from 'konva/lib/Layer'
 import { Image } from 'konva/lib/shapes/Image'
-import type { StepL } from 'src/models/Step'
+import { Stage } from 'konva/lib/Stage'
+import { autorun, makeAutoObservable } from 'mobx'
+
 import { createHTMLImage_fromURLNoAwait } from 'src/state/createHTMLImage_fromURL'
 
 export class UnifiedStep {

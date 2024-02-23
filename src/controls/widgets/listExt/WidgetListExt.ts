@@ -1,20 +1,20 @@
-import type { FormBuilder } from 'src/controls/FormBuilder'
-import type { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from 'src/controls/IWidget'
-import type { Widget } from 'src/controls/Widget'
-import type { ComfySchemaL } from 'src/models/Schema'
+import type { Form } from '../../Form'
 import type { BoardPosition } from './WidgetListExtTypes'
+import type { IWidget, WidgetConfigFields, WidgetSerialFields } from 'src/controls/IWidget'
+import type { Spec } from 'src/controls/Prop'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
-import { runWithGlobalForm } from 'src/models/_ctx2'
+import { hash } from 'ohash'
+
+import { ResolutionState } from '../size/ResolutionState'
 import { WidgetDI } from '../WidgetUI.DI'
 import { boardDefaultItemShape } from './WidgetListExtTypes'
-import { hash } from 'ohash'
-import { ResolutionState } from '../size/ResolutionState'
+import { runWithGlobalForm } from 'src/models/_ctx2'
 
 // CONFIG
-export type Widget_listExt_config<T extends Widget> = WidgetConfigFields<{
-    element: (p: { ix: number; width: number; height: number }) => T
+export type Widget_listExt_config<T extends Spec> = WidgetConfigFields<{
+    element: T | ((p: { ix: number; width: number; height: number }) => T)
     min?: number
     max?: number
     defaultLength?: number
@@ -25,7 +25,7 @@ export type Widget_listExt_config<T extends Widget> = WidgetConfigFields<{
 }>
 
 // SERIAL
-export type Widget_listExt_serial<T extends Widget> = WidgetSerialFields<{
+export type Widget_listExt_serial<T extends Spec> = WidgetSerialFields<{
     type: 'listExt'
     entries: { serial: T['$Serial']; shape: BoardPosition }[]
     width: number
@@ -33,7 +33,7 @@ export type Widget_listExt_serial<T extends Widget> = WidgetSerialFields<{
 }>
 
 // OUT
-export type Widget_listExt_output<T extends Widget> = {
+export type Widget_listExt_output<T extends Spec> = {
     items: { value: T['$Output']; position: BoardPosition }[]
     // -----------------------
     width: number
@@ -41,7 +41,7 @@ export type Widget_listExt_output<T extends Widget> = {
 }
 
 // TYPES
-export type Widget_listExt_types<T extends Widget> = {
+export type Widget_listExt_types<T extends Spec> = {
     $Type: 'listExt'
     $Input: Widget_listExt_config<T>
     $Serial: Widget_listExt_serial<T>
@@ -49,10 +49,8 @@ export type Widget_listExt_types<T extends Widget> = {
 }
 
 // STATE
-export interface Widget_listExt<T extends Widget> extends WidgetTypeHelpers<Widget_listExt_types<T>> {}
-export class Widget_listExt<T extends Widget> implements IWidget<Widget_listExt_types<T>> {
-    get serialHash () { return hash(this.value) } // prettier-ignore
-    readonly isVerticalByDefault = true
+export interface Widget_listExt<T extends Spec> extends Widget_listExt_types<T> {}
+export class Widget_listExt<T extends Spec> implements IWidget<Widget_listExt_types<T>> {
     readonly isCollapsible = true
     readonly id: string
     readonly type: 'listExt' = 'listExt'
@@ -63,50 +61,52 @@ export class Widget_listExt<T extends Widget> implements IWidget<Widget_listExt_
         return state
     }
 
-    entries: { widget: T; position: BoardPosition }[] = []
+    entries: { widget: T['$Widget']; shape: BoardPosition }[] = []
+
     serial: Widget_listExt_serial<T>
 
     // for compatibility with Widget_list
-    get items(): T[] {
+    get items(): T['$Widget'][] {
         return this.entries.map((i) => i.widget)
     }
 
     // INIT -----------------------------------------------------------------------------
-    constructor(public form: FormBuilder, public config: Widget_listExt_config<T>, serial?: Widget_listExt_serial<T>) {
-        this.id = serial?.id ?? nanoid()
 
-        const w = config.width ?? 100
-        const h = config.height ?? 100
+    get width(): number { return this.serial.width ?? this.config.width ?? 100 } // prettier-ignore
+    get height(): number { return this.serial.height ?? this.config.height ?? 100 } // prettier-ignore
+    // get width() { return this.serial.width } // prettier-ignore
+    // get height() { return this.serial.height } // prettier-ignore
+
+    constructor(
+        //
+        public form: Form<any>,
+        public config: Widget_listExt_config<T>,
+        serial?: Widget_listExt_serial<T>,
+    ) {
+        this.id = serial?.id ?? nanoid()
 
         // serial
         this.serial = serial ?? {
             type: 'listExt',
             id: this.id,
             entries: [],
-            width: w,
-            height: h,
+            width: config.width ?? 100,
+            height: config.height ?? 100,
         }
 
         // minor safety net since all those internal changes
         if (this.serial.entries == null) this.serial.entries = []
 
         // reference to check children types
-        const _reference = runWithGlobalForm(this.form, () =>
-            config.element({
-                ix: 0,
-                width: w,
-                height: h,
-            }),
-        )
-
+        const schema = this.schemaAt(0)
         for (const entry of this.serial.entries) {
             const subSerial = entry.serial
-            if (subSerial.type !== _reference.type) {
+            if (subSerial.type !== schema.type) {
                 console.log(`[❌] SKIPPING form item because it has an incompatible entry from a previous app definition`)
                 continue
             }
-            const subWidget = form._HYDRATE(subSerial.type, _reference.config, subSerial)
-            this.entries.push({ widget: subWidget, position: entry.shape })
+            const subWidget = form.builder._HYDRATE(schema, subSerial)
+            this.entries.push({ widget: subWidget, shape: entry.shape })
         }
 
         // add missing items if min specified
@@ -114,6 +114,15 @@ export class Widget_listExt<T extends Widget> implements IWidget<Widget_listExt_
         for (let i = 0; i < missingItems; i++) this.addItem()
 
         makeAutoObservable(this, { sizeHelper: false })
+    }
+
+    schemaAt = (ix: number): T => {
+        const _schema = this.config.element
+        const schema: T =
+            typeof _schema === 'function' //
+                ? runWithGlobalForm(this.form.builder, () => _schema({ ix, width: this.width, height: this.width }))
+                : _schema
+        return schema
     }
 
     // HELPERS =======================================================
@@ -127,22 +136,14 @@ export class Widget_listExt<T extends Widget> implements IWidget<Widget_listExt_
     }
 
     // ADDING ITEMS -------------------------------------------------
+    get length() { return this.entries.length } // prettier-ignore
     addItem() {
-        const partialShape = this.config.initialPosition({
-            ix: this.entries.length,
-            width: this.serial.width,
-            height: this.serial.height,
-        })
+        const partialShape = this.config.initialPosition({ ix: this.length, width: this.width, height: this.height })
         const shape: BoardPosition = { ...boardDefaultItemShape, ...partialShape }
-        const item = runWithGlobalForm(this.form, () =>
-            this.config.element({
-                width: this.serial.width,
-                height: this.serial.height,
-                ix: this.entries.length,
-            }),
-        )
-        this.entries.push({ widget: item, position: shape })
-        this.serial.entries.push({ serial: item.serial, shape: shape })
+        const spec = this.schemaAt(this.length)
+        const element = this.form.builder._HYDRATE(spec, null)
+        this.entries.push({ widget: element, shape: shape })
+        this.serial.entries.push({ serial: element.serial, shape: shape })
     }
 
     // REMOVING ITEMS -------------------------------------------------
@@ -151,7 +152,7 @@ export class Widget_listExt<T extends Widget> implements IWidget<Widget_listExt_
         this.entries = this.entries.slice(0, this.config.min ?? 0)
     }
 
-    removeItem = (item: T) => {
+    removeItem = (item: T['$Widget']) => {
         const i = this.entries.findIndex((i) => i.widget === item)
         if (i >= 0) {
             this.serial.entries.splice(i, 1)
@@ -159,8 +160,23 @@ export class Widget_listExt<T extends Widget> implements IWidget<Widget_listExt_
         }
     }
 
+    get serialHash(): string {
+        return hash({
+            items: this.entries.map((i) => ({
+                position: i.shape,
+                value: i.widget.serialHash,
+            })),
+            width: this.serial.width,
+            height: this.serial.width,
+        })
+    }
+
     get value(): Widget_listExt_output<T> {
-        const items = this.entries.map((i) => ({ position: i.position, value: i.widget.value }))
+        const items = this.entries.map((i) => ({
+            position: i.shape,
+            value: i.widget.value,
+        }))
+        console.log(`[🤠] `, items)
         return {
             items: items,
             width: this.serial.width,

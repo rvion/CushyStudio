@@ -1,10 +1,11 @@
+import type { Form } from '../../Form'
+import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+
 import { computed, makeObservable, observable } from 'mobx'
 import { nanoid } from 'nanoid'
-import { ComfySchemaL } from 'src/models/Schema'
-import { FormBuilder } from '../../FormBuilder'
-import { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../../IWidget'
-import { WidgetDI } from '../WidgetUI.DI'
 import { hash } from 'ohash'
+
+import { WidgetDI } from '../WidgetUI.DI'
 
 // CONFIG
 export type Widget_number_config = WidgetConfigFields<{
@@ -38,22 +39,20 @@ export type Widget_number_types = {
 }
 
 // STATE
-export interface Widget_number extends WidgetTypeHelpers<Widget_number_types> {}
+export interface Widget_number extends Widget_number_types {}
 export class Widget_number implements IWidget<Widget_number_types> {
     get serialHash () { return hash(this.value) } // prettier-ignore
-    readonly isVerticalByDefault = false
     readonly isCollapsible = false
     readonly id: string
     readonly type: 'number' = 'number'
     readonly forceSnap: boolean = false
 
     serial: Widget_number_serial
-
-    readonly defaultValue = this.config.default ?? 0
+    readonly defaultValue: number = this.config.default ?? 0
     get isChanged() { return this.serial.val !== this.defaultValue } // prettier-ignore
-    reset() { this.serial.val = this.config.default ?? 0 } // prettier-ignore
+    reset = () => { this.serial.val = this.defaultValue } // prettier-ignore
 
-    constructor(public readonly form: FormBuilder, public readonly config: Widget_number_config, serial?: Widget_number_serial) {
+    constructor(public readonly form: Form<any>, public readonly config: Widget_number_config, serial?: Widget_number_serial) {
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? {
             type: 'number',

@@ -1,6 +1,7 @@
 import type { AspectRatio, ModelType } from './WidgetSizeTypes'
 
 import { makeAutoObservable } from 'mobx'
+
 import { parseFloatNoRoundingErr } from 'src/utils/misc/parseFloatNoRoundingErr'
 
 // ugly hack so I can both
@@ -52,7 +53,9 @@ export class ResolutionState {
     }
 
     desiredModelType: ModelType = '1.5'
-    desiredAspectRatio: AspectRatio = 'custom'
+    desiredAspectRatio: AspectRatio = '1:1'
+    isAspectRatioLocked: boolean = false
+    wasHeightAdjustedLast: boolean = true
 
     constructor(public req: SizeAble) {
         this.desiredAspectRatio = (() => {
@@ -62,21 +65,23 @@ export class ResolutionState {
             if (ratio === parseFloatNoRoundingErr(16 / 9, 2)) return '16:9'
             if (ratio === parseFloatNoRoundingErr(4 / 3, 2)) return '4:3'
             if (ratio === parseFloatNoRoundingErr(3 / 2, 2)) return '3:2'
-            return 'custom'
+            return '1:1'
         })()
         makeAutoObservable(this)
     }
 
     setWidth(width: number) {
         this.width = width
-        if (this.desiredAspectRatio !== 'custom') {
+        this.wasHeightAdjustedLast = false
+        if (this.isAspectRatioLocked) {
             this.updateHeightBasedOnAspectRatio()
         }
     }
 
     setHeight(height: number) {
         this.height = height
-        if (this.desiredAspectRatio !== 'custom') {
+        this.wasHeightAdjustedLast = true
+        if (this.isAspectRatioLocked) {
             this.updateWidthBasedOnAspectRatio()
         }
     }
@@ -100,8 +105,13 @@ export class ResolutionState {
 
     setAspectRatio(aspectRatio: AspectRatio) {
         this.desiredAspectRatio = aspectRatio
-        if (aspectRatio !== 'custom') this.updateWidthBasedOnAspectRatio()
-        this.setModelType(this.desiredModelType)
+        if (this.isAspectRatioLocked) {
+            if (this.wasHeightAdjustedLast) {
+                this.updateWidthBasedOnAspectRatio()
+            } else {
+                this.updateHeightBasedOnAspectRatio()
+            }
+        }
     }
 
     private updateHeightBasedOnAspectRatio() {

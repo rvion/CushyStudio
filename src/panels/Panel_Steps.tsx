@@ -1,9 +1,10 @@
 import { observer } from 'mobx-react-lite'
-import { Slider } from 'src/rsuite/shims'
-import { useSt } from '../state/stateContext'
+
 import { StepOutputsBodyV1UI, StepOutputsV1UI } from '../outputs/StepOutputsV1UI'
+import { useSt } from '../state/stateContext'
 import { PanelHeaderUI } from './PanelHeader'
-import { InputNumberUI } from 'src/rsuite/InputNumberUI'
+import { InputNumberUI } from 'src/controls/widgets/number/InputNumberUI'
+import { Slider } from 'src/rsuite/shims'
 
 export const Panel_Steps = observer(function StepListUI_(p: {}) {
     const st = useSt()

@@ -1,14 +1,22 @@
-import type { WidgetDict } from 'src/cards/App'
 import type { Widget_group, Widget_group_output, Widget_group_serial } from './widgets/group/WidgetGroup'
+import type { SchemaDict } from 'src/cards/App'
 
-import { autorun, isObservable, makeAutoObservable, observable, runInAction } from 'mobx'
+import { action, autorun, isObservable, makeAutoObservable, observable, runInAction } from 'mobx'
+
 import { FormBuilder } from './FormBuilder'
+import { Spec } from './Prop'
 
-export class Form<const FIELDS extends WidgetDict> {
+export class Form<const FIELDS extends SchemaDict> {
     error: Maybe<string> = null
 
-    at = <K extends keyof FIELDS>(key: K): FIELDS[K] => this.root.at(key)
-    get = <K extends keyof FIELDS>(key: K): FIELDS[K]['$Output'] => this.root.get(key)
+    at = <K extends keyof FIELDS>(key: K): FIELDS[K]['$Widget'] => {
+        return this.root.at(key)
+    }
+
+    get = <K extends keyof FIELDS>(key: K): FIELDS[K]['$Output'] => {
+        return this.root.get(key)
+    }
+
     get value(): Widget_group_output<FIELDS> {
         return this.root.value
     }
@@ -17,21 +25,25 @@ export class Form<const FIELDS extends WidgetDict> {
         return this.root.serial
     }
 
-    get fields(): FIELDS {
+    get fields(): { [k in keyof FIELDS]: FIELDS[k]['$Widget'] } {
         return this.root.fields
     }
 
+    // 🔴 👇 remove that
     get root(): Widget_group<FIELDS> {
         const root = this.init()
         Object.defineProperty(this, 'root', { value: root })
         return root
     }
 
-    get formBuilder() {
-        const value = new FormBuilder()
-        Object.defineProperty(this, 'formBuilder', { value })
+    get builder() {
+        const value = new FormBuilder(this)
+        Object.defineProperty(this, 'builder', { value })
         return value
     }
+
+    /** (@internal) will be set at builer creation, to allow for dyanmic recursive forms */
+    _ROOT!: Widget_group<FIELDS>
 
     constructor(
         public ui: (form: FormBuilder) => FIELDS,
@@ -41,22 +53,25 @@ export class Form<const FIELDS extends WidgetDict> {
             initialValue: () => Maybe<object>
         },
     ) {
-        makeAutoObservable(this, { formBuilder: false, root: false })
+        makeAutoObservable(this, {
+            //
+            builder: false,
+            root: false,
+            init: action,
+        })
     }
 
-    private init = (): Widget_group<FIELDS> => {
+    ready = false
+    init = (): Widget_group<FIELDS> => {
         console.log(`[🥐] Building form ${this.def.name}`)
+        const formBuilder = this.builder
+        const rootDef = { topLevel: true, items: () => this.ui?.(formBuilder) ?? {} }
+        const unmounted = new Spec<Widget_group<FIELDS>>('group', rootDef)
         try {
             let initialValue = this.def.initialValue()
             if (initialValue && !isObservable(initialValue)) initialValue = observable(initialValue)
-
-            const formBuilder = this.formBuilder
-            const rootWidget: Widget_group<FIELDS> = formBuilder._HYDRATE(
-                'group',
-                { topLevel: true, items: () => this.ui?.(formBuilder) ?? {} },
-                initialValue,
-            )
-            formBuilder._ROOT = rootWidget
+            const rootWidget: Widget_group<FIELDS> = formBuilder._HYDRATE(unmounted, initialValue)
+            this.ready = true
             this.error = null
             this.startMonitoring(rootWidget)
             return rootWidget
@@ -64,7 +79,7 @@ export class Form<const FIELDS extends WidgetDict> {
             console.error(`[👙🔴] Building form ${this.def.name} FAILED`, this)
             console.error(e)
             this.error = 'invalid form definition'
-            return this.formBuilder.group({})
+            return formBuilder._HYDRATE(unmounted, null)
         }
     }
 

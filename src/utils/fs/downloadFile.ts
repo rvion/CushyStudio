@@ -1,5 +1,5 @@
-import https from 'https'
 import fs, { mkdirSync } from 'fs'
+import https from 'https'
 import { dirname } from 'pathe'
 
 /** Usage example

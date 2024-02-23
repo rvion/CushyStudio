@@ -1,10 +1,11 @@
 import { observer } from 'mobx-react-lite'
 import { useEffect, useMemo, useRef } from 'react'
 import { createPortal } from 'react-dom'
+
+import { ModalShellUI } from './ModalShell'
 import { RevealProps } from './RevealProps'
 import { RevealState } from './RevealState'
 import { useSt } from 'src/state/stateContext'
-import { ModalShellUI } from './ModalShell'
 
 export const RevealUI = observer(function Tooltip_(p: RevealProps) {
     const uist = useMemo(() => new RevealState(p), [])

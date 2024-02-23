@@ -4,18 +4,19 @@ import type { DraftL } from 'src/models/Draft'
 import { toJS } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { useEffect, useLayoutEffect } from 'react'
+
+import { draftContext } from '../../widgets/misc/useDraft'
+import { MessageInfoUI } from '../MessageUI'
+import { DraftHeaderUI } from './DraftHeaderUI'
 import { FormUI } from 'src/controls/FormUI'
+import { InstallRequirementsBtnUI } from 'src/controls/REQUIREMENTS/Panel_InstallRequirementsUI'
 import { MarkdownUI } from 'src/rsuite/MarkdownUI'
 import { PhoneWrapperUI } from 'src/rsuite/PhoneWrapperUI'
 import { SelectUI } from 'src/rsuite/SelectUI'
 import { Message } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
 import { stringifyUnknown } from 'src/utils/formatters/stringifyUnknown'
-import { draftContext } from '../../widgets/misc/useDraft'
-import { MessageInfoUI } from '../MessageUI'
-import { DraftHeaderUI } from './DraftHeaderUI'
 import { JsonViewUI } from 'src/widgets/workspace/JsonViewUI'
-import { InstallRequirementsBtnUI } from 'src/controls/REQUIREMENTS/Panel_InstallRequirementsUI'
 
 export const Panel_Draft = observer(function Panel_Draft_(p: { draftID: DraftID }) {
     // 1. get draft
@@ -70,7 +71,7 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
 
     // 5. render form
     const { containerClassName, containerStyle } = compiledApp.def ?? {}
-    const defaultContainerStyle = { margin: '0 auto' }
+    const defaultContainerStyle = {} // { margin: '0 auto' }
 
     const wrapMobile = st.isConfigValueEq('draft.mockup-mobile', true)
     const metadata = draft.app.executable_orExtract?.metadata

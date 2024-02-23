@@ -1,5 +1,6 @@
-import { makeAutoObservable } from 'mobx'
 import type { STATE } from 'src/state/state'
+
+import { makeAutoObservable } from 'mobx'
 
 // prettier-ignore
 export type ThemeName =

@@ -1,9 +1,10 @@
 import { observer } from 'mobx-react-lite'
-import { FormUI } from 'src/controls/FormUI'
-import { OutputPreviewWrapperUI } from 'src/outputs/OutputPreviewWrapperUI'
+
 import { useSt } from '../state/stateContext'
 import { ImageUI } from '../widgets/galleries/ImageUI'
 import { PanelHeaderUI } from './PanelHeader'
+import { FormUI } from 'src/controls/FormUI'
+import { OutputPreviewWrapperUI } from 'src/outputs/OutputPreviewWrapperUI'
 
 export const Panel_Gallery = observer(function VerticalGalleryUI_(p: {}) {
     const st = useSt()

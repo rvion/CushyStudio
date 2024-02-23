@@ -1,8 +1,9 @@
 import type { ComfyWorkflowL } from 'src/models/ComfyWorkflow'
 
+import { observable, toJS } from 'mobx'
+
 import { ComfyNode } from '../core/ComfyNode'
 import { ComfyNodeMetadata } from 'src/types/ComfyNodeID'
-import { observable, toJS } from 'mobx'
 
 export interface ComfyWorkflowBuilder extends ComfySetup {}
 

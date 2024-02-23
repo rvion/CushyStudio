@@ -1,3 +1,5 @@
+import type { STATE } from 'src/state/state'
+
 import * as fs from 'fs'
 import * as path from 'pathe'
 
@@ -11,7 +13,6 @@ import samplePose6 from './json_inputs/32/006.json'
 import samplePose7 from './json_inputs/32/007.json'
 import samplePose8 from './json_inputs/32/008.json'
 import samplePose9 from './json_inputs/32/009.json'
-import type { STATE } from 'src/state/state'
 
 export class OpenPoseAnimV0 {
     constructor(public workspace: STATE) {}

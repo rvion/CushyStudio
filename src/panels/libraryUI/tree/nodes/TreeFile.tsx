@@ -1,13 +1,14 @@
-import type { STATE } from 'src/state/state'
 import type { TreeNode } from '../xxx/TreeNode'
+import type { STATE } from 'src/state/state'
 
 import { makeAutoObservable } from 'mobx'
 import { basename } from 'pathe'
 import { cwd } from 'process'
-import { LibraryFile } from 'src/cards/LibraryFile'
-import { assets } from 'src/utils/assets/assets'
+
 import { ITreeElement, ITreeEntry, TreeEntryAction } from '../TreeEntry'
 import { TreeApp } from './TreeApp'
+import { LibraryFile } from 'src/cards/LibraryFile'
+import { assets } from 'src/utils/assets/assets'
 
 export class TreeFile implements ITreeEntry {
     file: LibraryFile

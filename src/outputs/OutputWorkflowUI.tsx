@@ -1,6 +1,8 @@
 import type { StepL } from 'src/models/Step'
 
 import { observer } from 'mobx-react-lite'
+
+import { OutputPreviewWrapperUI } from './OutputPreviewWrapperUI'
 import { TabUI } from 'src/app/layout/TabUI'
 import { ComfyWorkflowL } from 'src/models/ComfyWorkflow'
 import { Panel_ComfyUI } from 'src/panels/Panel_ComfyUI'
@@ -10,7 +12,6 @@ import { useSt } from 'src/state/stateContext'
 import { GraphPreviewUI } from 'src/widgets/misc/MsgShowHTMLUI'
 import { ButtonDownloadFilesUI } from 'src/widgets/workspace/ButtonDownloadFilesUI'
 import { ButtonOpenInComfyUI } from 'src/widgets/workspace/ButtonOpenInComfyUI'
-import { OutputPreviewWrapperUI } from './OutputPreviewWrapperUI'
 
 export const OutputWorkflowPreviewUI = observer(function OutputWorkflowUI_(p: { step?: Maybe<StepL>; output: ComfyWorkflowL }) {
     const st = useSt()

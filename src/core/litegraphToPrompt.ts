@@ -1,6 +1,7 @@
+import type { ComfyNodeSchema, ComfySchemaL, NodeInputExt } from '../models/Schema'
 import type { LiteGraphJSON, LiteGraphLink, LiteGraphLinkID, LiteGraphNode, LiteGraphNodeInput } from './LiteGraph'
 import type { ComfyNodeJSON, ComfyPromptJSON } from 'src/types/ComfyPrompt'
-import type { ComfyNodeSchema, NodeInputExt, ComfySchemaL } from '../models/Schema'
+
 import { bang } from '../utils/misc/bang'
 import { howManyWidgetValuesForThisInputType, howManyWidgetValuesForThisSchemaType } from './Primitives'
 

@@ -1,27 +1,31 @@
 @echo off
 
-cd /d %~dp0
+rem set current working directory to the directory of this script
+pushd %~dp0
 
-@REM TODO: close cushy first
+rem TODO: close cushy first
 
-ECHO [===================================================]
-ECHO Checkout master...
+echo [===================================================]
+echo Checkout master...
 
-git checkout master
-IF %ERRORLEVEL% NEQ 0 (
-    ECHO "git checkout master failed"
+call git checkout master
+if not "%ERRORLEVEL%" == "0" (
+    echo git checkout master failed
     pause
-    EXIT /B 1
+    popd
+    exit /B 1
 )
 
-ECHO [===================================================]
-ECHO pull latest changes...
+echo [===================================================]
+echo pull latest changes...
 
-git pull origin master
-IF %ERRORLEVEL% NEQ 0 (
-    ECHO "git pull origin master failed"
+call git pull origin master
+if not "%ERRORLEVEL%" == "0" (
+    echo git pull origin master failed
     pause
-    EXIT /B 1
+    popd
+    exit /B 1
 )
 
-CALL _windows-install.bat
+call _windows-install.bat
+popd

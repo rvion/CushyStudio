@@ -1,7 +1,9 @@
-import { observer } from 'mobx-react-lite'
-import { Dropdown, MenuItem } from 'src/rsuite/Dropdown'
-import { useSt } from '../../state/stateContext'
 import type { HostL } from 'src/models/Host'
+
+import { observer } from 'mobx-react-lite'
+
+import { useSt } from '../../state/stateContext'
+import { Dropdown, MenuItem } from 'src/rsuite/Dropdown'
 
 export const MenuComfyUI = observer(function MenuComfyUI_(p: {}) {
     const st = useSt()

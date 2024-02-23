@@ -1,14 +1,14 @@
 import type { STATE } from 'src/state/state'
 
+import { action, makeAutoObservable } from 'mobx'
 import path from 'pathe'
 import Watcher from 'watcher'
 
-import { makeAutoObservable, action } from 'mobx'
+import { LibraryFile } from './LibraryFile'
+import { shouldSkip_duringWatch } from './shouldSkip'
 import { LiveCollection } from 'src/db/LiveCollection'
 import { CushyAppL } from 'src/models/CushyApp'
 import { asAbsolutePath, asRelativePath } from 'src/utils/fs/pathUtils'
-import { LibraryFile } from './LibraryFile'
-import { shouldSkip_duringWatch } from './shouldSkip'
 
 export class Library {
     query = ''

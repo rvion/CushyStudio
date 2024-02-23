@@ -1,8 +1,8 @@
-import type { STATE } from 'src/state/state'
 import type nsfwjs from 'nsfwjs'
+import type { STATE } from 'src/state/state'
 
-import { ManualPromise } from 'src/utils/misc/ManualPromise'
 import { exhaust } from 'src/utils/misc/ComfyUtils'
+import { ManualPromise } from 'src/utils/misc/ManualPromise'
 
 const nsfwjsImpl = require('nsfwjs') as typeof import('nsfwjs')
 

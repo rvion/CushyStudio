@@ -1,20 +1,21 @@
-import type { LibraryFile } from 'src/cards/LibraryFile'
 import type { LiveInstance } from '../db/LiveInstance'
-
-import { basename } from 'pathe'
-import { replaceImportsWithSyncImport } from 'src/back/ImportStructure'
-import { App, AppRef, WidgetDict } from 'src/cards/App'
+import type { LibraryFile } from 'src/cards/LibraryFile'
 
 import { runInAction } from 'mobx'
-import { LiveCollection } from 'src/db/LiveCollection'
-import { CushyScriptT, asCushyAppID } from 'src/db/TYPES.gen'
-import { asRelativePath } from 'src/utils/fs/pathUtils'
-import { toastInfo } from 'src/utils/misc/toasts'
+import { basename } from 'pathe'
+
 import { CUSHY_IMPORT } from '../compiler/CUSHY_IMPORT'
+import { getCurrentForm_IMPL, getCurrentRun_IMPL } from './_ctx2'
 import { CushyAppL } from './CushyApp'
 import { Executable } from './Executable'
-import { getCurrentForm_IMPL, getCurrentRun_IMPL } from './_ctx2'
+import { replaceImportsWithSyncImport } from 'src/back/ImportStructure'
+import { App, AppRef, SchemaDict } from 'src/cards/App'
+import { LiveCollection } from 'src/db/LiveCollection'
 import { SQLITE_false, SQLITE_true } from 'src/db/SQLITE_boolean'
+import { asCushyAppID, CushyScriptT } from 'src/db/TYPES.gen'
+import { asRelativePath } from 'src/utils/fs/pathUtils'
+import { toastInfo } from 'src/utils/misc/toasts'
+
 // import { LazyValue } from 'src/db/LazyValue'
 
 export interface CushyScriptL extends LiveInstance<CushyScriptT, CushyScriptL> {}
@@ -122,12 +123,12 @@ export class CushyScriptL {
     private _EVALUATE_SCRIPT = (): Executable[] => {
         toastInfo(`evaluating script: ${this.relPath}`)
         const codeJS = this.data.code
-        const APPS: App<WidgetDict>[] = []
+        const APPS: App<SchemaDict>[] = []
 
         let appIndex = 0
         // 1. setup DI registering mechanism
         const registerAppFn = (a1: string, a2: App<any>): AppRef<any> => {
-            const app: App<WidgetDict> = typeof a1 !== 'string' ? a1 : a2
+            const app: App<SchemaDict> = typeof a1 !== 'string' ? a1 : a2
             const name = app.metadata?.name ?? basename(this.relPath)
             console.info(`[💙] found action: "${name}"`, { path: this.relPath })
             APPS.push(app)

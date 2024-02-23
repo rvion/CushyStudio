@@ -1,0 +1,35 @@
+{
+    "root": true,
+    "keepUnused": [".*"],
+    "wrappingStyle": "prettier",
+    "formatExports": false,
+    "groupRules": [{ "importType": true, "regex": ".*" }, {}, "^src/|^[.]"],
+
+    "excludeGlob": ["dist", "doc", "lib", "tmp", "node_modules"],
+    "// notes": {
+        "manual": [
+            "./node_modules/.bin/format-imports --config import-sorter.json -d -e ts src/**/*.ts",
+            "./node_modules/.bin/format-imports --config import-sorter.json -d -e tsx src/**/*.tsx"
+        ],
+        "debug": [
+            "we can have quite readable logs with this line in settings:",
+            "tsImportSorter.configuration.development.enableDebug: true"
+        ],
+        "prettier": [
+            "there is some mysterious undefined error. Therefore the prettier config is fully ignored",
+            "We have to duplicate it here (semi, tabSize...)",
+            "note: trailingCommas: 'always' does not work as expected, it puts comma even when on the same line",
+            "configuration options visible here: https://github.com/daidodo/format-imports/blob/main/schemas/import-sorter.schema.json or here https://github.com/daidodo/format-imports/blob/main/docs/interfaces/Configuration.md or here https://github.com/daidodo/format-imports/blob/main/src/lib/format/config/compose.ts"
+        ],
+        "eslintSupport": [
+            "it only supports .eslintrc.json (not .eslintrc as we previously had)",
+            "for some mysterious reasons, it doesn't manage to load eslint if 'extends: 'prettier'' is there (but we want it there)",
+            "if it's removed, it indeed loads the eslint config (then semi should be set to false etc..)",
+            "but anyway, we don't really want it to use eslint config, so we ignore all the rules, in case it loads (and because it may load a fallback default eslint config even when it fails to load ours)"
+        ]
+    },
+    "hasSemicolon": false,
+    "tabSize": 4,
+    "maxLineLength": 130,
+    "ignoreESLintRules": ".*"
+}

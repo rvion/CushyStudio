@@ -1,7 +1,8 @@
 import { observer } from 'mobx-react-lite'
-import * as React from 'react'
-import { useUnifiedCanvas } from './UnifiedCanvasCtx'
 import { nanoid } from 'nanoid'
+import * as React from 'react'
+
+import { useUnifiedCanvas } from './UnifiedCanvasCtx'
 
 export const GridTilingUI = observer(function GridTilingUI_(p: {}) {
     const infos = useUnifiedCanvas().infos

@@ -4,10 +4,9 @@ import type { TreeError } from './nodes/TreeError'
 import type { TreeFavoriteApps } from './nodes/TreeFavorites'
 import type { TreeFile } from './nodes/TreeFile'
 import type { TreeFolder } from './nodes/TreeFolder'
-// import type { TreeRoot } from './nodes/TreeRoot'
-
-import type { ReactNode } from 'react'
 import type { TreeNode } from './xxx/TreeNode'
+// import type { TreeRoot } from './nodes/TreeRoot'
+import type { ReactNode } from 'react'
 import type { STATE } from 'src/state/state'
 
 export type TreeItemID = string

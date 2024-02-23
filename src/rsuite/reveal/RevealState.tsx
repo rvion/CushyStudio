@@ -1,4 +1,5 @@
 import { makeAutoObservable, observable, runInAction } from 'mobx'
+
 import { RevealProps } from './RevealProps'
 
 export const defaultShowDelay = 100

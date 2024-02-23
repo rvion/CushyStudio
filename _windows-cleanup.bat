@@ -1,22 +1,24 @@
-@REM @echo off: This turns off the command echoing, which makes the script output cleaner.
+@rem @echo off: This turns off the command echoing, which makes the script output cleaner and then you don't need to prefix commands with @
 @echo off
 
-@REM setlocal: Ensures that the environment changes are local to the script.
+rem setlocal: Ensures that the environment changes are local to the script.
 setlocal
+rem set current working directory to the directory of this script
+pushd %~dp0
 
-ECHO [===================================================]
-ECHO deleting node_modules folder...
+echo [===================================================]
+echo deleting node_modules folder...
 
-@REM rd /s /q node_modules:
-@REM Removes the node_modules directory recursively.
-@REM - /s deletes all files and subdirectories,
-@REM - /q does it quietly without prompting for confirmation.
+rem rd /s /q node_modules:
+rem Removes the node_modules directory recursively.
+rem - /s deletes all files and subdirectories,
+rem - /q does it quietly without prompting for confirmation.
 rd /s /q node_modules
 
-ECHO [===================================================]
-ECHO deleting recursively .cushy
+echo [===================================================]
+echo deleting recursively .cushy
 
 rd /s /q .cushy
 
-ECHO SUCCESS
+echo SUCCESS
 pause

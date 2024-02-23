@@ -1,9 +1,9 @@
-import type { STATE } from 'src/state/state'
-import type { CompiledPrompt } from './WidgetPrompt'
 import type { PromptLangNodeName } from './grammar/grammar.types'
+import type { CompiledPrompt } from './WidgetPrompt'
+import type { STATE } from 'src/state/state'
 
 import { parser } from './grammar/grammar.parser'
-import { PromptAST, Prompt_Node } from './grammar/grammar.practical'
+import { Prompt_Node, PromptAST } from './grammar/grammar.practical'
 
 export const compilePrompt = (p: {
     text: string

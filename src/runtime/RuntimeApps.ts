@@ -1,8 +1,9 @@
 import type { CushyAppL } from 'src/models/CushyApp'
 
 import { makeAutoObservable } from 'mobx'
-import { $ExtractFormValueType, AppRef, WidgetDict } from 'src/cards/App'
+
 import { Runtime, RuntimeExecutionResult } from './Runtime'
+import { $ExtractFormValueType, AppRef, SchemaDict } from 'src/cards/App'
 import { SQLITE_false } from 'src/db/SQLITE_boolean'
 
 /** namespace for all Apps-related utils */
@@ -11,7 +12,7 @@ export class RuntimeApps {
         makeAutoObservable(this)
     }
 
-    execute = <const FIELDS extends WidgetDict>(p: {
+    execute = <const FIELDS extends SchemaDict>(p: {
         //
         app: AppRef<FIELDS>
         formValue: $ExtractFormValueType<FIELDS>

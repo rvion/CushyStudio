@@ -1,10 +1,11 @@
 import { runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
-import { useSt } from 'src/state/stateContext'
-import { ImageUI } from 'src/widgets/galleries/ImageUI'
-import { useImageDrop } from 'src/widgets/galleries/dnd'
-import { useDraft } from 'src/widgets/misc/useDraft'
+
 import { Widget_image } from './WidgetImage'
+import { useSt } from 'src/state/stateContext'
+import { useImageDrop } from 'src/widgets/galleries/dnd'
+import { ImageUI } from 'src/widgets/galleries/ImageUI'
+import { useDraft } from 'src/widgets/misc/useDraft'
 
 export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: { widget: Widget_image }) {
     const widget = p.widget
@@ -15,6 +16,7 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: { w
         })
     })
     const draft = useDraft()
+    const image = draft.db.media_images.get(widget.serial.imageID)
     return (
         <div
             style={dropStyle}
@@ -22,9 +24,13 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: { w
             className='DROP_IMAGE_HANDLER'
             tw='_WidgetSelectImageUI flex gap-2 p-1 bg-base-100 border border-dashed border-neutral self-center'
         >
-            {widget.serial.imageID != null ? ( //
-                <div tw='flex items-start'>
-                    <ImageUI tw='virtualBorder' size={'4rem'} img={draft.db.media_images.getOrThrow(widget.serial.imageID)} />
+            {image != null ? ( //
+                <div tw='flex items-start gap-1'>
+                    <ImageUI tw='virtualBorder' size={'5rem'} img={image} />
+                    <div tw='text-sm italic text-gray-500'>
+                        <div>width: {image?.width}</div>
+                        <div>height: {image?.height}</div>
+                    </div>
                     {/* {widget instanceof Widget_imageOpt ? (
                         <Button size='sm' onClick={() => (widget.state.active = false)}>
                             X

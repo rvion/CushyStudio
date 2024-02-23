@@ -1,15 +1,16 @@
 /** 🔶 NAMING DISCLAIMER: I call a "custom node package" => "PLUGIN" */
 
-import type { PluginInstallStatus } from 'src/controls/REQUIREMENTS/PluginInstallStatus'
-import type { HostL } from 'src/models/Host'
 import type { ComfyManagerRepository } from './ComfyManagerRepository'
 import type { PluginInfo } from './custom-node-list/custom-node-list-types'
-import type { ModelInfo } from './model-list/model-list-loader-types'
 import type { KnownCustomNode_Title } from './custom-node-list/KnownCustomNode_Title'
+import type { KnownModel_Name } from './model-list/KnownModel_Name'
+import type { ModelInfo } from './model-list/model-list-loader-types'
+import type { PluginInstallStatus } from 'src/controls/REQUIREMENTS/PluginInstallStatus'
+import type { HostL } from 'src/models/Host'
+
+import { makeAutoObservable, observable } from 'mobx'
 
 import { toastError, toastSuccess } from 'src/utils/misc/toasts'
-import type { KnownModel_Name } from './model-list/KnownModel_Name'
-import { makeAutoObservable, observable } from 'mobx'
 
 type HostPluginList = {
     custom_nodes: {

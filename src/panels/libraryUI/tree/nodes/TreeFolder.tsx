@@ -1,13 +1,14 @@
-import type { STATE } from 'src/state/state'
 import type { ITreeElement, ITreeEntry, TreeEntryAction } from '../TreeEntry'
+import type { STATE } from 'src/state/state'
 
 import { readdirSync, statSync } from 'fs'
 import { makeAutoObservable } from 'mobx'
 import { basename } from 'pathe'
-import { shouldSkip } from 'src/cards/shouldSkip'
-import { asRelativePath } from 'src/utils/fs/pathUtils'
+
 import { TreeNode } from '../xxx/TreeNode'
 import { TreeFile } from './TreeFile'
+import { shouldSkip } from 'src/cards/shouldSkip'
+import { asRelativePath } from 'src/utils/fs/pathUtils'
 
 export class TreeFolder implements ITreeEntry<RelativePath> {
     constructor(public st: STATE, public path: RelativePath) {

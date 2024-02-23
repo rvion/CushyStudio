@@ -1,6 +1,8 @@
-import Lezer, { SyntaxNode } from '@lezer/common'
-import { parser } from './grammar.parser'
 import type { EditorView } from 'codemirror'
+
+import Lezer, { SyntaxNode } from '@lezer/common'
+
+import { parser } from './grammar.parser'
 
 type KnownNodeNames = keyof typeof import('./grammar.parser.terms')
 

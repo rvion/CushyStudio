@@ -1,11 +1,12 @@
+import type { ComfySchemaL, EmbeddingName } from './Schema'
 import type { Requirements } from 'src/controls/IWidget'
 import type { LiveInstance } from 'src/db/LiveInstance'
-import type { ComfySchemaL, EmbeddingName } from './Schema'
 import type { PluginInfo } from 'src/manager/custom-node-list/custom-node-list-types'
 import type { KnownCustomNode_File } from 'src/manager/custom-node-list/KnownCustomNode_File'
 import type { KnownCustomNode_Title } from 'src/manager/custom-node-list/KnownCustomNode_Title'
 
 import { copyFileSync, existsSync, mkdirSync, writeFileSync } from 'fs'
+
 import { ResilientWebSocketClient } from 'src/back/ResilientWebsocket'
 import { asComfySchemaID, type HostT } from 'src/db/TYPES.gen'
 import { ComfyManager } from 'src/manager/ComfyManager'

@@ -3,19 +3,23 @@ import type { OutputFor } from './_prefabs'
 
 export const ui_latent_v3 = () => {
     const form: FormBuilder = getCurrentForm()
+    const batchSize = form.shared('batchSize', form.int({ step: 1, default: 1, min: 1, max: 8 }))
+
     return form.choice({
         appearance: 'tab',
-        label: 'Latent Input',
         default: 'emptyLatent',
+        label: 'Latent Input',
         items: {
-            emptyLatent: () =>
-                form.group({
-                    items: () => ({
-                        batchSize: form.int({ step: 1, default: 1, min: 1, max: 8 }),
-                        size: form.size({}),
-                    }),
-                }),
-            image: () => form.image({}),
+            emptyLatent: form.group({
+                collapsible: false,
+                label: false,
+                items: { batchSize, size: form.size({ label: false }) },
+            }),
+            image: form.group({
+                collapsible: false,
+                label: false,
+                items: { batchSize, image: form.image() },
+            }),
         },
     })
 }
@@ -33,11 +37,18 @@ export const run_latent_v3 = async (p: { opts: OutputFor<typeof ui_latent_v3>; v
 
     // case 1. start form image
     if (opts.image) {
-        const _img = run.loadImage(opts.image.imageID)
+        const _img = run.loadImage(opts.image.image.imageID)
         const image = await _img.loadInWorkflow()
         latent = graph.VAEEncode({ pixels: image, vae: p.vae })
         width = _img.width
         height = _img.height
+
+        if (opts.image.batchSize > 1) {
+            latent = graph.RepeatLatentBatch({
+                samples: latent,
+                amount: opts.image.batchSize,
+            })
+        }
     }
 
     // case 2. start form empty latent

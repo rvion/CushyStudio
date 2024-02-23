@@ -1,31 +1,30 @@
-import type { ComfySchemaL } from 'src/models/Schema'
-import type { FormBuilder } from '../../FormBuilder'
-import type { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../../IWidget'
+import type { Form } from '../../Form'
+import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { Spec } from 'src/controls/Prop'
 
 import { computed, makeObservable, observable } from 'mobx'
 import { nanoid } from 'nanoid'
-import { Widget } from '../../Widget'
+
 import { WidgetDI } from '../WidgetUI.DI'
-import { hash } from 'ohash'
 
 // CONFIG
-export type Widget_optional_config<T extends Widget> = WidgetConfigFields<{
+export type Widget_optional_config<T extends Spec> = WidgetConfigFields<{
     startActive?: boolean
-    widget: () => T
+    widget: T
 }>
 
 // SERIAL
-export type Widget_optional_serial<T extends Widget> = WidgetSerialFields<{
+export type Widget_optional_serial<T extends Spec> = WidgetSerialFields<{
     type: 'optional'
     child?: Maybe<T['$Serial']>
     active: boolean
 }>
 
 // OUT
-export type Widget_optional_output<T extends Widget> = Maybe<T['$Output']>
+export type Widget_optional_output<T extends Spec> = Maybe<T['$Output']>
 
 // TYPES
-export type Widget_string_types<T extends Widget> = {
+export type Widget_optional_types<T extends Spec> = {
     $Type: 'optional'
     $Input: Widget_optional_config<T>
     $Serial: Widget_optional_serial<T>
@@ -33,21 +32,20 @@ export type Widget_string_types<T extends Widget> = {
 }
 
 // STATE
-export interface Widget_optional<T extends Widget> extends WidgetTypeHelpers<Widget_string_types<T>> {}
-export class Widget_optional<T extends Widget> implements IWidget<Widget_string_types<T>> {
+export interface Widget_optional<T extends Spec> extends Widget_optional_types<T> {}
+export class Widget_optional<T extends Spec> implements IWidget<Widget_optional_types<T>> {
     get serialHash(): string {
         if (this.serial.active) return this.childOrThrow.serialHash
         return 'x'
     }
-    readonly isVerticalByDefault = true
     readonly isCollapsible = true
     readonly id: string
     readonly type: 'optional' = 'optional'
 
     serial: Widget_optional_serial<T>
-    child?: T
+    child?: T['$Widget']
 
-    get childOrThrow(): T {
+    get childOrThrow(): T['$Widget'] {
         if (this.child == null) throw new Error('❌ optional active but child is null')
         return this.child
     }
@@ -59,13 +57,13 @@ export class Widget_optional<T extends Widget> implements IWidget<Widget_string_
 
     setOn = () => {
         this.serial.active = true
-        const fresh = this.config.widget?.()
+        const unmounted = this.config.widget
         const prevSerial = this.serial.child
-        if (prevSerial && fresh.type === prevSerial.type) {
-            this.child = this.form._HYDRATE(prevSerial.type, fresh.config, prevSerial)
+        if (prevSerial && unmounted.type === prevSerial.type) {
+            this.child = this.form.builder._HYDRATE(unmounted, prevSerial)
         } else {
-            this.child = fresh
-            this.serial.child = fresh?.serial
+            this.child = this.form.builder._HYDRATE(unmounted, null)
+            this.serial.child = this.child.serial
         }
     }
 
@@ -75,7 +73,7 @@ export class Widget_optional<T extends Widget> implements IWidget<Widget_string_
         // this.serial.child = undefined
     }
 
-    constructor(public form: FormBuilder, public config: Widget_optional_config<T>, serial?: Widget_optional_serial<T>) {
+    constructor(public form: Form<any>, public config: Widget_optional_config<T>, serial?: Widget_optional_serial<T>) {
         this.id = serial?.id ?? nanoid()
         const defaultActive = config.startActive
         this.serial = serial ?? {

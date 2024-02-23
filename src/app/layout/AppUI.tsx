@@ -1,15 +1,16 @@
+import { runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { useEffect, useRef } from 'react'
-import { useSt } from 'src/state/stateContext'
+
 import { AppBarUI } from '../appbar/AppBarUI'
-import { ProjectUI } from './ProjectUI'
 import { Trigger } from '../shortcuts/Trigger'
-import { RenderFullPagePanelUI } from 'src/panels/router/RenderFullPagePanelUI'
-import { RevealState } from 'src/rsuite/reveal/RevealState'
-import { runInAction } from 'mobx'
+import { FavBarUI } from './FavBar'
+import { ProjectUI } from './ProjectUI'
 import { AppIllustrationUI } from 'src/cards/fancycard/AppIllustrationUI'
 import { DraftIllustrationUI } from 'src/cards/fancycard/DraftIllustration'
-import { FavBarUI } from './FavBar'
+import { RenderFullPagePanelUI } from 'src/panels/router/RenderFullPagePanelUI'
+import { RevealState } from 'src/rsuite/reveal/RevealState'
+import { useSt } from 'src/state/stateContext'
 
 export const CushyUI = observer(function CushyUI_() {
     const st = useSt()

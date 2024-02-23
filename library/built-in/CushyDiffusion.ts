@@ -1,17 +1,19 @@
 import { exhaust } from 'src/utils/misc/ComfyUtils'
+
 import { ui_highresfix } from './_prefabs/_prefabs'
 import { Cnet_args, Cnet_return, run_cnet, ui_cnet } from './_prefabs/prefab_cnet'
 import { run_refiners_fromImage, ui_refiners } from './_prefabs/prefab_detailer'
 import { run_latent_v3, ui_latent_v3 } from './_prefabs/prefab_latent_v3'
 import { output_demo_summary } from './_prefabs/prefab_markdown'
+import { ui_mask } from './_prefabs/prefab_mask'
 import { run_model, ui_model } from './_prefabs/prefab_model'
 import { run_prompt } from './_prefabs/prefab_prompt'
 import { ui_recursive } from './_prefabs/prefab_recursive'
+import { run_regionalPrompting_v1, ui_regionalPrompting_v1 } from './_prefabs/prefab_regionalPrompting_v1'
+import { run_rembg_v1, ui_rembg_v1 } from './_prefabs/prefab_rembg'
 import { Ctx_sampler, run_sampler, ui_sampler } from './_prefabs/prefab_sampler'
 import { run_upscaleWithModel, ui_upscaleWithModel } from './_prefabs/prefab_upscaleWithModel'
 import { run_customSave, ui_customSave } from './_prefabs/saveSmall'
-import { run_rembg_v1, ui_rembg_v1 } from './_prefabs/prefab_rembg'
-import { ui_mask } from './_prefabs/prefab_mask'
 
 app({
     metadata: {
@@ -33,7 +35,6 @@ app({
                 '(nature)*0.9, (intricate_details)*1.1',
             ].join('\n'),
         }),
-        //
         negative: form.prompt({
             startCollapsed: true,
             default: 'bad quality, blurry, low resolution, pixelated, noisy',
@@ -64,10 +65,10 @@ app({
                     depth: form.choice({
                         default: 'Marigold',
                         items: {
-                            MiDaS: () => form.group({}),
-                            Zoe: () => form.group({}),
-                            LeReS: () => form.group({}),
-                            Marigold: () => form.auto.MarigoldDepthEstimation(),
+                            MiDaS: form.group(),
+                            Zoe: form.group(),
+                            LeReS: form.group(),
+                            Marigold: form.auto.MarigoldDepthEstimation(),
                         },
                     }),
                 }
@@ -84,10 +85,11 @@ app({
         testStuff: form.choices({
             appearance: 'tab',
             items: {
-                reversePositiveAndNegative: () => form.group({}),
-                makeAVideo: () => form.group({}),
-                summary: () => form.group({}),
-                gaussianSplat: () => form.group({}),
+                regionalPrompt: ui_regionalPrompting_v1(),
+                reversePositiveAndNegative: form.group(),
+                makeAVideo: form.group(),
+                summary: form.group(),
+                gaussianSplat: form.group(),
             },
         }),
     }),
@@ -111,6 +113,10 @@ app({
         const clipPos = posPrompt.clip
         let ckptPos = posPrompt.ckpt
         let positive = posPrompt.positiveConditionning
+
+        if (ui.testStuff.regionalPrompt) {
+            positive = run_regionalPrompting_v1(ui.testStuff.regionalPrompt, { conditionning: positive, clip })
+        }
         // let negative = x.conditionningNeg
 
         const negPrompt = run_prompt({ prompt: ui.negative, clip, ckpt })

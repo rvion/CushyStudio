@@ -1,11 +1,10 @@
-import { createRef } from 'react'
-
 import { makeAutoObservable } from 'mobx'
+import { nanoid } from 'nanoid'
+import { createRef } from 'react'
 
 import { Tree } from './Tree'
 import { TreeNode, TreeScrollOptions } from './TreeNode'
 import { KeyEv, onKeyDownHandlers } from './TreeShortcuts'
-import { nanoid } from 'nanoid'
 
 export class TreeView {
     id = nanoid(4)

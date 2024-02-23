@@ -1,15 +1,15 @@
 import { observer } from 'mobx-react-lite'
+import { useMemo } from 'react'
+
+import { OpenPoseAnimV0 } from './OpenPoseAnimV0'
+import { Button } from 'src/rsuite/shims'
+import { useSt } from 'src/state/stateContext'
 
 const CANVAS_WIDTH = 640
 const CANVAS_HEIGHT = 480
 
 // Get the canvas element from the HTML document
 const canvas = document.getElementById('canvas')
-
-import { useMemo } from 'react'
-import { Button } from 'src/rsuite/shims'
-import { OpenPoseAnimV0 } from './OpenPoseAnimV0'
-import { useSt } from 'src/state/stateContext'
 
 export const OpenPoseViewerUI = observer(function OpenPoseViewerUI_(p: {}) {
     const workspace = useSt()

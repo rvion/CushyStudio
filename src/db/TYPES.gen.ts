@@ -1,6 +1,6 @@
-import * as T from './TYPES_json'
 import { Type } from '@sinclair/typebox'
 
+import * as T from './TYPES_json'
 
 export const asMigrationsID = (s: string): MigrationsID => s as any
 export type MigrationsT = {

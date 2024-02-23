@@ -1,19 +1,20 @@
+import type { DraftL } from './Draft'
+import type { Executable } from './Executable'
 import type { LibraryFile } from 'src/cards/LibraryFile'
 import type { CushyAppT } from 'src/db/TYPES.gen'
 import type { CushyScriptL } from 'src/models/CushyScriptL'
-import type { DraftL } from './Draft'
-import type { Executable } from './Executable'
 
 import { existsSync, readFileSync } from 'fs'
 import { basename, extname, join } from 'pathe'
+
+import { generateAvatar } from '../cards/AvatarGenerator'
 import { LiveCollection } from 'src/db/LiveCollection'
 import { LiveInstance } from 'src/db/LiveInstance'
 import { LiveRef } from 'src/db/LiveRef'
 import { SQLITE_false, SQLITE_true } from 'src/db/SQLITE_boolean'
+import { VirtualHierarchy } from 'src/panels/libraryUI/VirtualHierarchy'
 import { hashArrayBuffer } from 'src/state/hashBlob'
 import { toastError, toastSuccess } from 'src/utils/misc/toasts'
-import { generateAvatar } from '../cards/AvatarGenerator'
-import { VirtualHierarchy } from 'src/panels/libraryUI/VirtualHierarchy'
 
 export interface CushyAppL extends LiveInstance<CushyAppT, CushyAppL> {}
 export class CushyAppL {

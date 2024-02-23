@@ -1,13 +1,14 @@
-import type { CleanedEnumResult } from 'src/types/EnumUtils'
 import type { EnumValue } from '../../../models/Schema'
-import type { FormBuilder } from '../../FormBuilder'
-import type { IWidget, WidgetConfigFields, WidgetSerialFields, WidgetTypeHelpers } from '../../IWidget'
+import type { Form } from '../../Form'
+import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { CleanedEnumResult } from 'src/types/EnumUtils'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
-import { _extractDefaultValue } from './_extractDefaultValue'
-import { WidgetDI } from '../WidgetUI.DI'
 import { hash } from 'ohash'
+
+import { WidgetDI } from '../WidgetUI.DI'
+import { _extractDefaultValue } from './_extractDefaultValue'
 
 // CONFIG
 export type Widget_enum_config<O> = WidgetConfigFields<{
@@ -32,9 +33,8 @@ export type Widget_enum_types<O> = {
 }
 
 // STATE
-export interface Widget_enum<O> extends WidgetTypeHelpers<Widget_enum_types<O>> {}
+export interface Widget_enum<O> extends Widget_enum_types<O> {}
 export class Widget_enum<O> implements IWidget<Widget_enum_types<O>> {
-    readonly isVerticalByDefault = false
     readonly isCollapsible = false
     readonly id: string
     readonly type: 'enum' = 'enum'
@@ -48,7 +48,7 @@ export class Widget_enum<O> implements IWidget<Widget_enum_types<O>> {
 
     serial: Widget_enum_serial<O>
     get defaultValue() { return this.config.default ?? this.possibleValues[0] as any } // prettier-ignore
-    constructor(public form: FormBuilder, public config: Widget_enum_config<O>, serial?: Widget_enum_serial<O>) {
+    constructor(public form: Form<any>, public config: Widget_enum_config<O>, serial?: Widget_enum_serial<O>) {
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? {
             type: 'enum',

@@ -1,13 +1,14 @@
+import type { STATE } from './state'
 import type { ComfyUploadImageResult } from 'src/types/ComfyWsApi'
 
-import path from 'pathe'
 import { readFileSync } from 'fs'
 import { lookup } from 'mime-types'
-import { asSTRING_orCrash } from 'src/utils/misc/bang'
-import type { STATE } from './state'
-import { asAbsolutePath } from 'src/utils/fs/pathUtils'
+import path from 'pathe'
+
 import { hashBlob } from './hashBlob'
 import { MediaImageL } from 'src/models/MediaImage'
+import { asAbsolutePath } from 'src/utils/fs/pathUtils'
+import { asSTRING_orCrash } from 'src/utils/misc/bang'
 
 /** all those functions are kinda legacy */
 export class Uploader {

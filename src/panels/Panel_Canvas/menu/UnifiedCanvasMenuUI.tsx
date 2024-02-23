@@ -1,13 +1,14 @@
 import { observer } from 'mobx-react-lite'
 import SortableList, { SortableItem } from 'react-easy-sort'
-import { ComboUI } from 'src/app/shortcuts/ComboUI'
-import { MediaImageL } from 'src/models/MediaImage'
-import { InputNumberUI } from 'src/rsuite/InputNumberUI'
-import { useSt } from 'src/state/stateContext'
-import { useImageDrop } from 'src/widgets/galleries/dnd'
+
 import { useUnifiedCanvas } from '../UnifiedCanvasCtx'
-import { toastError } from 'src/utils/misc/toasts'
+import { ComboUI } from 'src/app/shortcuts/ComboUI'
 import { DraftIllustrationUI } from 'src/cards/fancycard/DraftIllustration'
+import { InputNumberUI } from 'src/controls/widgets/number/InputNumberUI'
+import { MediaImageL } from 'src/models/MediaImage'
+import { useSt } from 'src/state/stateContext'
+import { toastError } from 'src/utils/misc/toasts'
+import { useImageDrop } from 'src/widgets/galleries/dnd'
 
 export const UnifiedCanvasMenuUI = observer(function UnifiedCanvasMenuUI_(p: {}) {
     const canvas = useUnifiedCanvas()

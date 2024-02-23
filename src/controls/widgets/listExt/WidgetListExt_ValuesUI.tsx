@@ -1,11 +1,12 @@
 import type { Widget_listExt } from './WidgetListExt'
+import type { Spec } from 'src/controls/Prop'
 
 import { observer } from 'mobx-react-lite'
-import { Widget } from 'src/controls/Widget'
+
 import { WidgetWithLabelUI } from 'src/controls/shared/WidgetWithLabelUI'
 import { Button } from 'src/rsuite/shims'
 
-export const WidgetListExt_ValuesUI = observer(function WidgetListExtValuesUI_<T extends Widget>(p: {
+export const WidgetListExt_ValuesUI = observer(function WidgetListExtValuesUI_<T extends Spec>(p: {
     //
     widget: Widget_listExt<T>
 }) {
@@ -18,7 +19,7 @@ export const WidgetListExt_ValuesUI = observer(function WidgetListExtValuesUI_<T
         <div tw='flex flex-col gap-1'>
             {values.map((x, ix) => {
                 const v = x.widget
-                const proj = x.position
+                const proj = x.shape
                 return (
                     <div key={v.id} tw='flex items-start'>
                         <div style={{ width: `${indexWidth}rem` }}>{ix}</div>
