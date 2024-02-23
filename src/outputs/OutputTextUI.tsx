@@ -1,12 +1,13 @@
 import { marked } from 'marked'
 import { observer } from 'mobx-react-lite'
+
+import { OutputPreviewWrapperUI } from './OutputPreviewWrapperUI'
 import { TabUI } from 'src/app/layout/TabUI'
 import { StepL } from 'src/models/Step'
+import { MarkdownUI } from 'src/rsuite/MarkdownUI'
 import { Panel } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
 import { StepOutput_Text } from 'src/types/StepOutput'
-import { OutputPreviewWrapperUI } from './OutputPreviewWrapperUI'
-import { MarkdownUI } from 'src/rsuite/MarkdownUI'
 
 export const OutputTextPreviewUI = observer(function OutputTextPreviewUI_(p: {
     //

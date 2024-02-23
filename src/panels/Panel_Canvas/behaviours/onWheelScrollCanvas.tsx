@@ -1,5 +1,6 @@
-import type { KonvaEventObject } from 'konva/lib/Node'
 import type { UnifiedCanvas } from '../states/UnifiedCanvas'
+import type { KonvaEventObject } from 'konva/lib/Node'
+
 import { runInAction } from 'mobx'
 
 export const onWheelScrollCanvas = (

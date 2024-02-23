@@ -1,8 +1,9 @@
-import type { CytoJSON } from './AutolayoutV2'
 import type { ComfyWorkflowL } from '../models/ComfyWorkflow'
+import type { CytoJSON } from './AutolayoutV2'
 import type { ComfyNode } from './ComfyNode'
 
 import { toJS } from 'mobx'
+
 import { bang } from '../utils/misc/bang'
 
 export type LiteGraphJSON = {

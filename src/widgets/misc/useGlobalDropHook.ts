@@ -1,6 +1,8 @@
+import type { STATE } from 'src/state/state'
+
 import { nanoid } from 'nanoid'
 import { useEffect } from 'react'
-import type { STATE } from 'src/state/state'
+
 import { extractExtensionFromContentType } from './extractExtensionFromContentType'
 
 export const useGlobalDropHook = (st: STATE) => {

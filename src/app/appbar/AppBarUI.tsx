@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite'
-import { assets } from 'src/utils/assets/assets'
+
 import { HostSchemaIndicatorUI } from '../../panels/host/HostSchemaIndicatorUI'
 import { HostWebsocketIndicatorUI } from '../../panels/host/HostWebsocketIndicatorUI'
 import { useSt } from '../../state/stateContext'
@@ -7,13 +7,14 @@ import { UpdateBtnUI } from '../../updater/UpdateBtnUI'
 import { CushyStudioLinkUI } from './AppBarCushyStudioLinkUI'
 import { MenuAuthUI } from './MenuAuthUI'
 import { MenuComfyUI } from './MenuComfyUI'
-import { MenuSettingsUI } from './MenuSettingsUI'
 import { MenuDebugUI } from './MenuDebugUI'
 import { MenuHelpUI } from './MenuHelpUI'
 import { MenuNSFWCheckerUI } from './MenuNSFWChecker'
 import { MenuPanelsUI } from './MenuPanelsUI'
+import { MenuSettingsUI } from './MenuSettingsUI'
 import { MenuThemeUI } from './MenuThemeUI'
 import { MenuUtilsUI } from './MenuUtilsUI'
+import { assets } from 'src/utils/assets/assets'
 
 export const AppBarUI = observer(function AppBarUI_(p: {}) {
     const st = useSt()

@@ -1,8 +1,9 @@
 import { observer } from 'mobx-react-lite'
+
+import { OutputPreviewWrapperUI } from './OutputPreviewWrapperUI'
 import { MediaSplatL } from 'src/models/MediaSplat'
 import { StepL } from 'src/models/Step'
 import { useSt } from 'src/state/stateContext'
-import { OutputPreviewWrapperUI } from './OutputPreviewWrapperUI'
 
 export const OutputSplatPreviewUI = observer(function OutputImagePreviewUI_(p: { step?: Maybe<StepL>; output: MediaSplatL }) {
     const st = useSt()

@@ -1,4 +1,5 @@
 import { observer } from 'mobx-react-lite'
+
 import { Widget_color } from './WidgetColor'
 
 export const WidgetColorUI = observer(function WidgetColorUI_(p: { widget: Widget_color }) {

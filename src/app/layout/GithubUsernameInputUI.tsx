@@ -1,8 +1,9 @@
 import { observer } from 'mobx-react-lite'
 import { ReactNode } from 'react'
-import { Input, Joined, Addon, Popover, Tag, Whisper } from 'src/rsuite/shims'
-import { assets } from 'src/utils/assets/assets'
+
 import { useSt } from '../../state/stateContext'
+import { Addon, Input, Joined, Popover, Tag, Whisper } from 'src/rsuite/shims'
+import { assets } from 'src/utils/assets/assets'
 
 export type RsuiteSize = 'lg' | 'md' | 'sm' | 'xs'
 export const GithubUsernameInputUI = observer(function GithubUsernameInputUI_(p: {

@@ -1,9 +1,9 @@
-import { observer } from 'mobx-react-lite'
-import { MutableRefObject, useEffect, useMemo } from 'react'
-
 // @ts-ignore
 import { observable } from 'mobx'
+import { observer } from 'mobx-react-lite'
+import { MutableRefObject, useEffect, useMemo } from 'react'
 import { createPortal } from 'react-dom'
+
 import { ComfyWorkflowL } from 'src/models/ComfyWorkflow'
 import { renderMinimap } from 'src/widgets/minimap/Minimap'
 

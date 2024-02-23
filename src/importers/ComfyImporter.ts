@@ -1,13 +1,14 @@
-import { CodeBuffer } from '../utils/codegen/CodeBuffer'
-import { ComfyPromptJSON } from '../types/ComfyPrompt'
+import type { STATE } from 'src/state/state'
+
+import { normalizeJSIdentifier } from '../core/normalizeJSIdentifier'
+import { ComfyPrimitiveMapping } from '../core/Primitives'
 import { ComfyNodeSchema, NodeInputExt } from '../models/Schema'
+import { ComfyPromptJSON } from '../types/ComfyPrompt'
+import { CodeBuffer } from '../utils/codegen/CodeBuffer'
+import { asJSAccessor, escapeJSKey } from '../utils/codegen/escapeJSKey'
 import { jsEscapeStr } from '../utils/codegen/jsEscapeStr'
 import { TEdge, toposort } from '../utils/misc/toposort'
-import { normalizeJSIdentifier } from '../core/normalizeJSIdentifier'
-import type { STATE } from 'src/state/state'
-import { asJSAccessor, escapeJSKey } from '../utils/codegen/escapeJSKey'
 import { Namer } from './Namer'
-import { ComfyPrimitiveMapping } from '../core/Primitives'
 
 /** Converts Comfy JSON prompts to ComfyScript code */
 type RuleInput = {

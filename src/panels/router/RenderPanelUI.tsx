@@ -1,10 +1,12 @@
 import type * as FL from 'flexlayout-react'
+
 import { observer } from 'mobx-react-lite'
 import { useState } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
+
+import { PanelNames, panels } from './PANELS'
 import { Message } from 'src/rsuite/shims'
 import { ErrorBoundaryFallback } from 'src/widgets/misc/ErrorBoundary'
-import { PanelNames, panels } from './PANELS'
 
 export const RenderPanelUI = observer(function RenderPanelUI_(p: {
     //

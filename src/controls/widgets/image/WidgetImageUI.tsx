@@ -1,11 +1,11 @@
 import { runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
+
+import { Widget_image } from './WidgetImage'
 import { useSt } from 'src/state/stateContext'
 import { useImageDrop } from 'src/widgets/galleries/dnd'
 import { ImageUI } from 'src/widgets/galleries/ImageUI'
 import { useDraft } from 'src/widgets/misc/useDraft'
-
-import { Widget_image } from './WidgetImage'
 
 export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: { widget: Widget_image }) {
     const widget = p.widget

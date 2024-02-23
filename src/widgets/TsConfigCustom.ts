@@ -1,4 +1,5 @@
 import { resolve } from 'pathe'
+
 import { JsonFile } from '../core/JsonFile'
 import { asAbsolutePath } from '../utils/fs/pathUtils'
 

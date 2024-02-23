@@ -1,33 +1,35 @@
+import { autocompletion, closeBrackets, closeBracketsKeymap, completionKeymap } from '@codemirror/autocomplete'
+import { defaultKeymap, history, historyKeymap } from '@codemirror/commands'
 import {
-    lineNumbers,
-    highlightActiveLineGutter,
-    highlightSpecialChars,
-    drawSelection,
-    dropCursor,
-    rectangularSelection,
-    crosshairCursor,
-    highlightActiveLine,
-    keymap,
-} from '@codemirror/view'
-import { EditorView } from '@codemirror/view'
-export { EditorView } from '@codemirror/view'
-import { EditorState } from '@codemirror/state'
-import {
+    bracketMatching,
+    defaultHighlightStyle,
     foldGutter,
+    foldKeymap,
     indentOnInput,
     syntaxHighlighting,
-    defaultHighlightStyle,
-    bracketMatching,
-    foldKeymap,
 } from '@codemirror/language'
-import { history, defaultKeymap, historyKeymap } from '@codemirror/commands'
+import { lintGutter, lintKeymap } from '@codemirror/lint'
 import { highlightSelectionMatches, searchKeymap } from '@codemirror/search'
-import { closeBrackets, autocompletion, closeBracketsKeymap, completionKeymap } from '@codemirror/autocomplete'
-import { lintKeymap, lintGutter } from '@codemirror/lint'
-import { PromptKeymap1 } from './COMMANDS'
+import { EditorState } from '@codemirror/state'
 import { oneDark } from '@codemirror/theme-one-dark'
+import {
+    crosshairCursor,
+    drawSelection,
+    dropCursor,
+    EditorView,
+    highlightActiveLine,
+    highlightActiveLineGutter,
+    highlightSpecialChars,
+    keymap,
+    lineNumbers,
+    rectangularSelection,
+} from '@codemirror/view'
+
+import { PromptKeymap1 } from './COMMANDS'
 import { placeholders } from './DECORATION'
 import { simpleLezerLinter } from './LINT2'
+
+export { EditorView } from '@codemirror/view'
 
 export const basicSetup = (() => [
     EditorView.lineWrapping,

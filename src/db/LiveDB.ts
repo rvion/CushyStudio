@@ -1,10 +1,19 @@
+import type { STATE } from '../state/state'
 import type * as T from 'src/db/TYPES.gen'
 import type { TableInfo } from 'src/db/TYPES_json'
-import type { STATE } from '../state/state'
 
-import { default as BetterSqlite3, default as SQL } from 'better-sqlite3'
+import BetterSqlite3, { default as SQL } from 'better-sqlite3'
 import { rmSync } from 'fs'
 import { makeAutoObservable } from 'mobx'
+
+import { ComfyPromptL } from '../models/ComfyPrompt'
+import { ComfyWorkflowL } from '../models/ComfyWorkflow'
+import { DraftL } from '../models/Draft'
+import { MediaImageL } from '../models/MediaImage'
+import { ProjectL } from '../models/Project'
+import { ComfySchemaL } from '../models/Schema'
+import { StepL } from '../models/Step'
+import { DB_RELATIVE_PATH } from './DB_CONFIG'
 import { LiveTable } from './LiveTable'
 // models
 import { _applyAllMigrations } from 'src/db/_applyAllMigrations'
@@ -22,14 +31,6 @@ import { MediaTextL } from 'src/models/MediaText'
 import { MediaVideoL } from 'src/models/MediaVideo'
 import { RuntimeErrorL } from 'src/models/RuntimeError'
 import { TreeEntryL } from 'src/models/TreeEntry'
-import { ComfyPromptL } from '../models/ComfyPrompt'
-import { ComfyWorkflowL } from '../models/ComfyWorkflow'
-import { DraftL } from '../models/Draft'
-import { MediaImageL } from '../models/MediaImage'
-import { ProjectL } from '../models/Project'
-import { ComfySchemaL } from '../models/Schema'
-import { StepL } from '../models/Step'
-import { DB_RELATIVE_PATH } from './DB_CONFIG'
 
 export type Indexed<T> = { [id: string]: T }
 

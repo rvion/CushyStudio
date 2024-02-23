@@ -1,9 +1,9 @@
 import type { ComfyManagerRepository } from '../ComfyManagerRepository'
 
 import { Value, ValueError } from '@sinclair/typebox/value'
-
 // https://github.com/ltdrdata/ComfyUI-Manager/blob/main/model-list.json
 import { readFileSync, writeFileSync } from 'fs'
+
 import { KnownModel_Name } from './KnownModel_Name'
 import { ModelInfo, ModelInfo_Schema } from './model-list-loader-types'
 

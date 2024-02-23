@@ -1,6 +1,7 @@
-import { useEffect } from 'react'
 import type { Civitai, CivitaiModelVersion, CivitaiSearchResultItem, ModelImage } from './CivitaiSpec'
+
 import { observer, useLocalObservable } from 'mobx-react-lite'
+import { useEffect } from 'react'
 
 export const CivitaiResultFullUI = observer(function CivitaiResultFullUI_(p: {
     //

@@ -1,5 +1,5 @@
-import type { LiveTable } from './LiveTable'
 import type { LiveInstance } from './LiveInstance'
+import type { LiveTable } from './LiveTable'
 
 export class LiveRefOpt<
     //

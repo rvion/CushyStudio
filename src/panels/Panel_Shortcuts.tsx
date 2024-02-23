@@ -1,9 +1,10 @@
 import { observer } from 'mobx-react-lite'
+
+import { useSt } from '../state/stateContext'
+import { MessageInfoUI } from './MessageUI'
 import { ComboUI } from 'src/app/shortcuts/ComboUI'
 import { FormControlLabel, FormHelpText } from 'src/rsuite/shims'
 import { SectionTitleUI } from 'src/widgets/workspace/SectionTitle'
-import { useSt } from '../state/stateContext'
-import { MessageInfoUI } from './MessageUI'
 
 export const Panel_Shortcuts = observer(function Panel_Shortcuts_() {
     const st = useSt()

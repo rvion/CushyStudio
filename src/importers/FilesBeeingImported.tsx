@@ -1,21 +1,22 @@
 import type { LiteGraphJSON } from 'src/core/LiteGraph'
 import type { ComfyPromptJSON } from 'src/types/ComfyPrompt'
 
+import { writeFileSync } from 'fs'
+import { keys } from 'mobx'
 import { observer, useLocalObservable } from 'mobx-react-lite'
 import { useState } from 'react'
-import { createMediaImage_fromFileObject } from 'src/models/createMediaImage_fromWebFile'
-import { Panel } from 'src/rsuite/shims'
+
 import { convertLiteGraphToPrompt } from '../core/litegraphToPrompt'
 import { useSt } from '../state/stateContext'
 import { getPngMetadataFromFile } from '../utils/png/_getPngMetadata'
 import { TypescriptHighlightedCodeUI } from '../widgets/misc/TypescriptHighlightedCodeUI'
 import { PromptToCodeOpts } from './ComfyImporter'
 import { usePromise } from './usePromise'
-import { getWebpMetadata } from 'src/utils/png/_getWebpMetadata'
-import { keys } from 'mobx'
+import { createMediaImage_fromFileObject } from 'src/models/createMediaImage_fromWebFile'
 import { MessageInfoUI } from 'src/panels/MessageUI'
-import { writeFileSync } from 'fs'
+import { Panel } from 'src/rsuite/shims'
 import { toastError } from 'src/utils/misc/toasts'
+import { getWebpMetadata } from 'src/utils/png/_getWebpMetadata'
 
 export interface FileListProps {
     files: File[]

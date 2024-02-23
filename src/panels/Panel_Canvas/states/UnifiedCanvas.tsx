@@ -1,20 +1,21 @@
 import type { UnifiedCanvasViewInfos } from '../types/RectSimple'
 import type { KonvaEventObject } from 'konva/lib/Node'
+import type { DraftL } from 'src/models/Draft'
 import type { MediaImageL } from 'src/models/MediaImage'
 import type { STATE } from 'src/state/state'
 
 import Konva from 'konva'
 import { makeAutoObservable } from 'mobx'
 import { createRef } from 'react'
-import { onWheelScrollCanvas } from '../behaviours/onWheelScrollCanvas'
+
 import { onMouseMoveCanvas } from '../behaviours/onMouseMoveCanvas'
+import { onWheelScrollCanvas } from '../behaviours/onWheelScrollCanvas'
 import { KonvaGrid1 } from './KonvaGrid1'
-import { UnifiedSelection } from './UnifiedSelection'
 import { UnifiedImage } from './UnifiedImage'
-import { UnifiedMask, setupStageForPainting } from './UnifiedMask'
-import { toastError } from 'src/utils/misc/toasts'
-import type { DraftL } from 'src/models/Draft'
+import { setupStageForPainting, UnifiedMask } from './UnifiedMask'
+import { UnifiedSelection } from './UnifiedSelection'
 import { UnifiedStep } from './UnifiedStep'
+import { toastError } from 'src/utils/misc/toasts'
 
 export class UnifiedCanvas {
     snapToGrid = true

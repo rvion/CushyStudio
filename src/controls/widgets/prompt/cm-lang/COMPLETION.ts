@@ -1,8 +1,9 @@
 import type { Extension } from '@codemirror/state'
 import type { STATE } from 'src/state/state'
 
-import { Completion, CompletionContext, CompletionResult, CompletionSource, autocompletion } from '@codemirror/autocomplete'
+import { autocompletion, Completion, CompletionContext, CompletionResult, CompletionSource } from '@codemirror/autocomplete'
 import { syntaxTree } from '@codemirror/language'
+
 import { PromptLangNodeName } from '../grammar/grammar.types'
 import { isValidPromptLangIdentifier } from './isIdentifier'
 import { $ancestorsBottomUp } from './utils'

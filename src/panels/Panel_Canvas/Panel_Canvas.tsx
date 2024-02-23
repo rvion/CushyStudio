@@ -1,14 +1,14 @@
 import { runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
-import { useMemo } from 'react'
-import { useSt } from '../../state/stateContext'
-
 import * as React from 'react'
-import { useImageDrop } from 'src/widgets/galleries/dnd'
-import { UnifiedCanvasCtx } from './UnifiedCanvasCtx'
+import { useMemo } from 'react'
+
+import { useSt } from '../../state/stateContext'
 import { UnifiedCanvasMenuUI } from './menu/UnifiedCanvasMenuUI'
 import { UnifiedCanvas } from './states/UnifiedCanvas'
+import { UnifiedCanvasCtx } from './UnifiedCanvasCtx'
 import { useSize } from './useSize'
+import { useImageDrop } from 'src/widgets/galleries/dnd'
 
 // https://github.com/devforth/painterro
 export const Panel_Canvas = observer(function Panel_Canvas_(p: {

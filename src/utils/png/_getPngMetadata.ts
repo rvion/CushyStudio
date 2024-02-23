@@ -1,5 +1,5 @@
 // import * as vscode from 'vscode'
-import { resultFailure, Either, resultSuccess } from '../../types/Either'
+import { Either, resultFailure, resultSuccess } from '../../types/Either'
 
 // const showErrorMessage = vscode.window.showErrorMessage
 

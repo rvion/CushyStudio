@@ -1,6 +1,7 @@
 import { statSync } from 'fs'
-import { LiveDB } from './LiveDB'
+
 import { DB_RELATIVE_PATH } from './DB_CONFIG'
+import { LiveDB } from './LiveDB'
 
 export const getDBStats = async (db: LiveDB) => {
     const stmt = db.db.prepare(`select name from sqlite_master where type='table'`)

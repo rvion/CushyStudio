@@ -1,4 +1,5 @@
-import { default as BetterSqlite3, default as SQL } from 'better-sqlite3'
+import BetterSqlite3, { default as SQL } from 'better-sqlite3'
+
 import { _getAllColumnsForTable } from './_getAllColumnsForTable'
 
 export const _makeNotNullable = (

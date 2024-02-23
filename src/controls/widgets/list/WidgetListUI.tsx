@@ -6,12 +6,12 @@ import { observer } from 'mobx-react-lite'
 import { forwardRef } from 'react'
 import SortableList, { SortableItem, SortableKnob } from 'react-easy-sort'
 import { ErrorBoundary } from 'react-error-boundary'
-import { ListControlsUI } from 'src/controls/shared/ListControlsUI'
-import { Message } from 'src/rsuite/shims'
-import { ErrorBoundaryFallback } from 'src/widgets/misc/ErrorBoundary'
 
 import { WidgetDI } from '../WidgetUI.DI'
 import { Widget_list } from './WidgetList'
+import { ListControlsUI } from 'src/controls/shared/ListControlsUI'
+import { Message } from 'src/rsuite/shims'
+import { ErrorBoundaryFallback } from 'src/widgets/misc/ErrorBoundary'
 
 export const WidgetList_LineUI = observer(function WidgetList_LineUI_<T extends Spec>(p: {
     widget: Widget_list<T> | Widget_listExt<T>

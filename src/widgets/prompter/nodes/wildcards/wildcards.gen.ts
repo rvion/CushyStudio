@@ -1,4 +1,5 @@
 import { readdirSync, readFileSync, writeFileSync } from 'fs'
+
 import { CodeBuffer } from 'src/utils/codegen/CodeBuffer'
 
 const files = readdirSync('tmp/wildcards')

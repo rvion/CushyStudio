@@ -1,8 +1,9 @@
-import { default as BetterSqlite3 } from 'better-sqlite3'
+import BetterSqlite3 from 'better-sqlite3'
 import { writeFileSync } from 'fs'
+import JSON5 from 'json5'
+
 import { _getAllColumnsForTable } from './_getAllColumnsForTable'
 import { _getAllForeignKeysForTable } from './_getAllForeignKeysForTable'
-import JSON5 from 'json5'
 
 export const _codegenORM = (store: {
     //

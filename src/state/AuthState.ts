@@ -1,12 +1,13 @@
-import type { Session, User } from '@supabase/supabase-js'
 import type { STATE } from './state'
+import type { Session, User } from '@supabase/supabase-js'
 import type { SupabaseAuthClient } from '@supabase/supabase-js/dist/module/lib/SupabaseAuthClient'
 import type { LiveTable } from 'src/db/LiveTable'
 import type { AuthL } from 'src/models/Auth'
 
 import { makeAutoObservable, runInAction } from 'mobx'
-import { AuthT, Auth_C, asAuthID } from 'src/db/TYPES.gen'
+
 import { logger } from './logfile'
+import { asAuthID, Auth_C, AuthT } from 'src/db/TYPES.gen'
 
 export class AuthState {
     cleanup: Maybe<() => void> = null

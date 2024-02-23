@@ -1,10 +1,11 @@
 import type { PluginInfo } from 'src/manager/custom-node-list/custom-node-list-types'
 
 import { observer } from 'mobx-react-lite'
+import { useState } from 'react'
+
+import { renderStatus } from './renderStatus'
 import { useAsyncAction } from 'src/importers/usePromise'
 import { useSt } from 'src/state/stateContext'
-import { renderStatus } from './renderStatus'
-import { useState } from 'react'
 
 export const Button_InstallCustomNodeUI = observer(function Button_InstallCustomNodeUI_(p: {
     optional: boolean

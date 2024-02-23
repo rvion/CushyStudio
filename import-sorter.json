@@ -3,21 +3,9 @@
     "keepUnused": [".*"],
     "wrappingStyle": "prettier",
     "formatExports": false,
-    "groupRules": [{ "importType": true, "regex": ".*" }, {}, "^[.]"],
-    "excludeGlob": [
-        ".expo",
-        "blueprint-templates",
-        "dist",
-        "doc",
-        "ignored",
-        "lib",
-        "metabase",
-        "node_modules",
-        "src/back/**/static/**/bootstrap*",
-        "src/back/**/static/**/jquery*",
-        "src/front/public/scripts",
-        "tmp"
-    ],
+    "groupRules": [{ "importType": true, "regex": ".*" }, {}, "^src/|^[.]"],
+
+    "excludeGlob": ["dist", "doc", "lib", "tmp", "node_modules"],
     "// notes": {
         "manual": [
             "./node_modules/.bin/format-imports --config import-sorter.json -d -e ts src/**/*.ts",

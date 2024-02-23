@@ -2,6 +2,7 @@ import type { Widget_group } from './WidgetGroup'
 import type { SchemaDict } from 'src/cards/App'
 
 import { observer } from 'mobx-react-lite'
+
 import { WidgetWithLabelUI } from '../../shared/WidgetWithLabelUI'
 import { bang } from 'src/utils/misc/bang'
 

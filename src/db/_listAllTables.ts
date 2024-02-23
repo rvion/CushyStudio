@@ -1,4 +1,4 @@
-import { default as BetterSqlite3 } from 'better-sqlite3'
+import BetterSqlite3 from 'better-sqlite3'
 
 export const _listAllTables = (store: {
     //

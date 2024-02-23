@@ -1,8 +1,9 @@
 import type { BaseInstanceFields, LiveInstance } from './LiveInstance'
 
 import { makeAutoObservable } from 'mobx'
-import { LiveTable } from './LiveTable'
+
 import { DEPENDS_ON } from './LiveHelpers'
+import { LiveTable } from './LiveTable'
 
 export class LiveFind<
     //

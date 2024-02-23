@@ -3,14 +3,14 @@ import type { IWidget } from '../IWidget'
 import { runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { ErrorBoundary } from 'react-error-boundary'
-import { RevealUI } from 'src/rsuite/reveal/RevealUI'
-import { Tooltip } from 'src/rsuite/shims'
 
 import { makeLabelFromFieldName } from '../../utils/misc/makeLabelFromFieldName'
 import { ErrorBoundaryFallback } from '../../widgets/misc/ErrorBoundary'
 import { InstallRequirementsBtnUI } from '../REQUIREMENTS/Panel_InstallRequirementsUI'
 import { AnimatedSizeUI } from '../widgets/choices/AnimatedSizeUI'
 import { WidgetDI } from '../widgets/WidgetUI.DI'
+import { RevealUI } from 'src/rsuite/reveal/RevealUI'
+import { Tooltip } from 'src/rsuite/shims'
 
 const KLS = WidgetDI
 

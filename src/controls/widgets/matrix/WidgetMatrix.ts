@@ -4,9 +4,9 @@ import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWid
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { hash } from 'ohash'
-import { bang } from 'src/utils/misc/bang'
 
 import { WidgetDI } from '../WidgetUI.DI'
+import { bang } from 'src/utils/misc/bang'
 
 export type Widget_matrix_cell = {
     x: number

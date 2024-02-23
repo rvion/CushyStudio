@@ -3,7 +3,6 @@ import type { Requirements } from './IWidget'
 import type { SchemaDict } from 'src/cards/App'
 
 import { makeAutoObservable } from 'mobx'
-import { exhaust } from 'src/utils/misc/ComfyUtils'
 
 import { _FIX_INDENTATION } from '../utils/misc/_FIX_INDENTATION'
 import { mkFormAutoBuilder } from './builder/AutoBuilder'
@@ -32,6 +31,7 @@ import { type BaseSelectEntry, Widget_selectOne, type Widget_selectOne_config } 
 import { Widget_shared } from './widgets/shared/WidgetShared'
 import { Widget_size, type Widget_size_config } from './widgets/size/WidgetSize'
 import { Widget_string, type Widget_string_config } from './widgets/string/WidgetString'
+import { exhaust } from 'src/utils/misc/ComfyUtils'
 
 // prettier-ignore
 export class FormBuilder {

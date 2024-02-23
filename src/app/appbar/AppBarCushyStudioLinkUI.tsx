@@ -1,4 +1,5 @@
 import { observer } from 'mobx-react-lite'
+
 import { Button } from 'src/rsuite/shims'
 import { assets } from 'src/utils/assets/assets'
 

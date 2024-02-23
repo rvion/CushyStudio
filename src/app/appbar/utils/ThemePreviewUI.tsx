@@ -1,4 +1,5 @@
 import { observer } from 'mobx-react-lite'
+
 import { ThemeName } from 'src/theme/ThemeManager'
 
 export const ThemePreviewUI = observer(function ThemePreviewUI_(p: { theme: ThemeName }) {

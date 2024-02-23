@@ -1,6 +1,7 @@
 import { syntaxTree } from '@codemirror/language'
 import { Range, RangeSet } from '@codemirror/state'
 import { Decoration, DecorationSet, EditorView, ViewPlugin, ViewUpdate } from '@codemirror/view'
+
 import { PromptLangNodeName } from '../grammar/grammar.types'
 
 export const placeholders = ViewPlugin.fromClass(

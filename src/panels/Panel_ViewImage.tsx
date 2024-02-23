@@ -2,13 +2,14 @@ import type { MediaImageL } from 'src/models/MediaImage'
 
 import { observer } from 'mobx-react-lite'
 import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch'
+
+import { ImageDropdownUI } from './ImageDropdownUI'
 import { formatSize } from 'src/db/getDBStats'
 import { RevealUI } from 'src/rsuite/reveal/RevealUI'
 import { Rate } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
 import { assets } from 'src/utils/assets/assets'
 import { JsonViewUI } from 'src/widgets/workspace/JsonViewUI'
-import { ImageDropdownUI } from './ImageDropdownUI'
 
 export const Panel_ViewImage = observer(function Panel_ViewImage_(p: {
     //

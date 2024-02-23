@@ -1,6 +1,6 @@
-import { downloadFile } from 'src/utils/fs/downloadFile'
-import { wrapBox } from './_wrapBox'
 import { ComfyManagerRepository } from '../ComfyManagerRepository'
+import { wrapBox } from './_wrapBox'
+import { downloadFile } from 'src/utils/fs/downloadFile'
 
 // import { _getKnownPlugins } from '../custom-node-list/custom-node-list-loader'
 // import { _getCustomNodeRegistry } from '../extension-node-map/extension-node-map-loader'

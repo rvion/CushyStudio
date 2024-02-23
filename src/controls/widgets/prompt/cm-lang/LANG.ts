@@ -1,4 +1,5 @@
-import { LRLanguage, LanguageSupport } from '@codemirror/language'
+import { LanguageSupport, LRLanguage } from '@codemirror/language'
+
 import { PromptComletion1 } from './COMPLETION'
 import { PromptLinter1 } from './LINT'
 import { parserWithMetadata } from './STYLE'

@@ -1,8 +1,9 @@
-import type { CleanedEnumResult } from 'src/types/EnumUtils'
 import type { EnumName, EnumValue } from '../../../models/Schema'
 import type { Widget_enum } from './WidgetEnum'
+import type { CleanedEnumResult } from 'src/types/EnumUtils'
 
 import { observer } from 'mobx-react-lite'
+
 import { SelectUI } from 'src/rsuite/SelectUI'
 import { Popover, Whisper } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'

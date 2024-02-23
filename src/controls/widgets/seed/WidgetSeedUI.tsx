@@ -1,5 +1,7 @@
 import type { Widget_seed } from './WidgetSeed'
+
 import { observer } from 'mobx-react-lite'
+
 import { Button, InputNumberBase } from 'src/rsuite/shims'
 
 export const WidgetSeedUI = observer(function WidgetSeedUI_(p: { widget: Widget_seed }) {

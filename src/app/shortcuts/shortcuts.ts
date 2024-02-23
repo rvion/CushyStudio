@@ -2,10 +2,11 @@ import type { Tree } from 'src/panels/libraryUI/tree/xxx/Tree'
 import type { STATE } from 'src/state/state'
 
 import { runInAction } from 'mobx'
-import { CushyShortcut, Shortcut } from './ShortcutManager'
-import { Trigger } from './Trigger'
+
 import { _duplicateCurrentDraft } from './_duplicateCurrentDraft'
 import { KEYS } from './shorcutKeys'
+import { CushyShortcut, Shortcut } from './ShortcutManager'
+import { Trigger } from './Trigger'
 
 // ------------------------------------------------------------------------------------
 // basic utils

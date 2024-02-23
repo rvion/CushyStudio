@@ -1,10 +1,11 @@
-import type { DraftL } from 'src/models/Draft'
-import type { STATE } from 'src/state/state'
+import type { VirtualFolder } from '../../VirtualHierarchy'
 import type { ITreeElement, ITreeEntry } from '../TreeEntry'
 import type { TreeNode } from '../xxx/TreeNode'
-import type { VirtualFolder } from '../../VirtualHierarchy'
+import type { DraftL } from 'src/models/Draft'
+import type { STATE } from 'src/state/state'
 
 import { basename } from 'pathe'
+
 import { TreeDraft } from './TreeDraft'
 
 export class TreeDraftFolder implements ITreeEntry<VirtualFolder<DraftL>> {

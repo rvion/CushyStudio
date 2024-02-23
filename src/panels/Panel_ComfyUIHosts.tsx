@@ -1,13 +1,14 @@
 import { observer } from 'mobx-react-lite'
 import { nanoid } from 'nanoid'
 import { resolve } from 'pathe'
+
+import { HostUI } from './host/HostUI'
 import { SQLITE_false, SQLITE_true } from 'src/db/SQLITE_boolean'
 import { HostL } from 'src/models/Host'
 import { SelectUI } from 'src/rsuite/SelectUI'
 import { Panel } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
 import { asAbsolutePath } from 'src/utils/fs/pathUtils'
-import { HostUI } from './host/HostUI'
 
 export const Panel_ComfyUIHosts = observer(function Panel_ComfyUIHosts_(p: { hostID?: HostID }) {
     const st = useSt()

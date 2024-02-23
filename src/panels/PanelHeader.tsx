@@ -1,4 +1,5 @@
 import { observer } from 'mobx-react-lite'
+
 import { RevealUI } from 'src/rsuite/reveal/RevealUI'
 
 export const PanelHeaderUI = observer(function PanelHeaderUI_(p: {

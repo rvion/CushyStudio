@@ -1,6 +1,6 @@
 import type { Widget_bool } from './WidgetBool'
-import { runInAction } from 'mobx'
 
+import { runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 
 export const WidgetBoolUI = observer(function WidgetBoolUI_(p: { widget: Widget_bool }) {

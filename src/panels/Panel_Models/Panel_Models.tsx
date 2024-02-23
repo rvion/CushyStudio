@@ -1,10 +1,11 @@
 import { observer } from 'mobx-react-lite'
 import { useMemo } from 'react'
-import { FormHelpText } from 'src/rsuite/shims'
-import { SectionTitleUI } from 'src/widgets/workspace/SectionTitle'
+
 import { useSt } from '../../state/stateContext'
 import { CivitaiUI } from './CivitaiBrowserUI'
 import { Civitai } from './CivitaiSpec'
+import { FormHelpText } from 'src/rsuite/shims'
+import { SectionTitleUI } from 'src/widgets/workspace/SectionTitle'
 
 export const Panel_Models = observer(function Panel_Models_() {
     const st = useSt()

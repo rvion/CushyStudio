@@ -2,11 +2,12 @@ import type { Widget_choices } from './WidgetChoices'
 import type { SchemaDict } from 'src/cards/App'
 
 import { observer } from 'mobx-react-lite'
-import { SelectUI } from 'src/rsuite/SelectUI'
-import { makeLabelFromFieldName } from 'src/utils/misc/makeLabelFromFieldName'
+import { useState } from 'react'
+
 import { WidgetWithLabelUI } from '../../shared/WidgetWithLabelUI'
 import { AnimatedSizeUI } from './AnimatedSizeUI'
-import { useState } from 'react'
+import { SelectUI } from 'src/rsuite/SelectUI'
+import { makeLabelFromFieldName } from 'src/utils/misc/makeLabelFromFieldName'
 
 // UI
 export const WidgetChoices_LineUI = observer(function WidgetChoices_LineUI_(p: { widget: Widget_choices<SchemaDict> }) {

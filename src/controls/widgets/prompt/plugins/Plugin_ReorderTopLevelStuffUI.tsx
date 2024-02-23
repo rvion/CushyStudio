@@ -1,5 +1,6 @@
 import { observer } from 'mobx-react-lite'
 import SortableList, { SortableItem } from 'react-easy-sort'
+
 import { WidgetPromptUISt } from '../WidgetPromptUISt'
 import { PluginWrapperUI } from './_PluginWrapperUI'
 

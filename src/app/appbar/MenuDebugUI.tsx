@@ -1,8 +1,9 @@
 import { observer } from 'mobx-react-lite'
-import { Dropdown, MenuItem } from 'src/rsuite/Dropdown'
+
 import { useSt } from '../../state/stateContext'
-import { getDBStats } from 'src/db/getDBStats'
 import { KEYS } from '../shortcuts/shorcutKeys'
+import { getDBStats } from 'src/db/getDBStats'
+import { Dropdown, MenuItem } from 'src/rsuite/Dropdown'
 
 export const MenuDebugUI = observer(function MenuDebugUI_(p: {}) {
     const st = useSt()

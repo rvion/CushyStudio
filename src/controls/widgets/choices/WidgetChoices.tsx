@@ -5,9 +5,9 @@ import type { SchemaDict } from 'src/cards/App'
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { hash } from 'ohash'
-import { toastError } from 'src/utils/misc/toasts'
 
 import { WidgetDI } from '../WidgetUI.DI'
+import { toastError } from 'src/utils/misc/toasts'
 
 // CONFIG
 export type Widget_choices_config<T extends SchemaDict> = WidgetConfigFields<{

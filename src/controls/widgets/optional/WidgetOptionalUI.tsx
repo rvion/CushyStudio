@@ -2,9 +2,9 @@ import type { Widget_optional } from './WidgetOptional'
 import type { Spec } from 'src/controls/Prop'
 
 import { observer } from 'mobx-react-lite'
-import { WidgetWithLabelUI } from 'src/controls/shared/WidgetWithLabelUI'
 
 import { WidgetDI } from '../WidgetUI.DI'
+import { WidgetWithLabelUI } from 'src/controls/shared/WidgetWithLabelUI'
 
 export const WidgetOptional_LineUI = observer(function WidgetBoolUI_<T extends Spec>(p: { widget: Widget_optional<T> }) {
     const WidgetUI = WidgetDI.WidgetUI

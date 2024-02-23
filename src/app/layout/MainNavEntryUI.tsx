@@ -1,5 +1,6 @@
 import { observer } from 'mobx-react-lite'
 import React, { ReactNode } from 'react'
+
 import { MenuItem } from 'src/rsuite/Dropdown'
 
 export const MainNavEntryUI = observer(function UI_(p: {

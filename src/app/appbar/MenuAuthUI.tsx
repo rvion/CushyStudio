@@ -1,7 +1,8 @@
 import { observer } from 'mobx-react-lite'
+
+import { useSt } from '../../state/stateContext'
 import { Dropdown } from 'src/rsuite/Dropdown'
 import { JsonViewUI } from 'src/widgets/workspace/JsonViewUI'
-import { useSt } from '../../state/stateContext'
 
 export const MenuAuthUI = observer(function MenuAuthUI_(p: {}) {
     const st = useSt()

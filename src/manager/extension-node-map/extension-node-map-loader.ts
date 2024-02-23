@@ -2,11 +2,12 @@ import type { ComfyManagerRepository } from '../ComfyManagerRepository'
 import type { KnownCustomNode_CushyName } from './KnownCustomNode_CushyName'
 import type { NodeNameInComfy } from 'src/models/Schema'
 
-import { ENMInfos, ENMInfos_Schema, ExtensionNodeMapFile } from './extension-node-map-types'
 import { Value, ValueError } from '@sinclair/typebox/value'
 import { readFileSync, writeFileSync } from 'fs'
-import { normalizeJSIdentifier } from 'src/core/normalizeJSIdentifier'
+
 import { KnownCustomNode_File } from '../custom-node-list/KnownCustomNode_File'
+import { ENMInfos, ENMInfos_Schema, ExtensionNodeMapFile } from './extension-node-map-types'
+import { normalizeJSIdentifier } from 'src/core/normalizeJSIdentifier'
 
 export const _getCustomNodeRegistry = (DB: ComfyManagerRepository): void => {
     let totalCustomNodeSeen = 0

@@ -1,4 +1,5 @@
 import { observer } from 'mobx-react-lite'
+
 import { openExternal } from 'src/app/layout/openExternal'
 import { InputNumberUI } from 'src/controls/widgets/number/InputNumberUI'
 import { Prompt_Lora } from 'src/controls/widgets/prompt/grammar/grammar.practical'

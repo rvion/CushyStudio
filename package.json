@@ -141,6 +141,7 @@
         "@types/ws": "^8.5.10",
         "autoprefixer": "^10.4.17",
         "cross-env": "^7.0.3",
+        "format-imports": "^4.0.0",
         "less": "^4.2.0",
         "postcss": "^8.4.31",
         "supabase": "^1.142.2",

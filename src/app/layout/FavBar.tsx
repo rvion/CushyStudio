@@ -1,15 +1,16 @@
 import type { CushyAppL } from 'src/models/CushyApp'
 
+import { runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { useState } from 'react'
+
 import { AppIllustrationUI } from 'src/cards/fancycard/AppIllustrationUI'
 import { DraftIllustrationUI } from 'src/cards/fancycard/DraftIllustration'
 import { FormUI } from 'src/controls/FormUI'
+import { TreeUI } from 'src/panels/libraryUI/tree/xxx/TreeUI'
 import { PanelHeaderSmallUI } from 'src/panels/PanelHeader'
 import { RevealUI } from 'src/rsuite/reveal/RevealUI'
 import { useSt } from 'src/state/stateContext'
-import { TreeUI } from 'src/panels/libraryUI/tree/xxx/TreeUI'
-import { runInAction } from 'mobx'
 
 export const FavBarUI = observer(function FavBarUI_(p: {
     //

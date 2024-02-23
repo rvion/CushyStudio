@@ -1,6 +1,5 @@
-import { CSSProperties, ReactElement, ReactNode, useEffect, useState } from 'react'
-
 import { observer } from 'mobx-react-lite'
+import { CSSProperties, ReactElement, ReactNode, useEffect, useState } from 'react'
 
 type TabBody = () => ReactElement | null
 type Tab = {

@@ -1,10 +1,11 @@
 import { makeAutoObservable } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { createRef, useEffect, useLayoutEffect, useMemo } from 'react'
+import * as THREE from 'three'
+
 import { Slider, Toggle } from 'src/rsuite/shims'
 import { parseFloatNoRoundingErr } from 'src/utils/misc/parseFloatNoRoundingErr'
 import { FieldAndLabelUI } from 'src/widgets/misc/FieldAndLabelUI'
-import * as THREE from 'three'
 
 const { OrbitControls } = await import('three/examples/jsm/controls/OrbitControls')
 

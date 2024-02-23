@@ -2,11 +2,12 @@ import { EditorState } from '@codemirror/state'
 import { EditorView } from 'codemirror'
 import { makeAutoObservable, observable } from 'mobx'
 import { createRef } from 'react'
-import { CompiledPrompt, Widget_prompt } from './WidgetPrompt'
+
 import { PromptLang } from './cm-lang/LANG'
 import { basicSetup } from './cm-lang/SETUP'
 import { generatePromptCombinations } from './compiler/promptsplit'
-import { PromptAST, Prompt_Lora } from './grammar/grammar.practical'
+import { Prompt_Lora, PromptAST } from './grammar/grammar.practical'
+import { CompiledPrompt, Widget_prompt } from './WidgetPrompt'
 
 export class WidgetPromptUISt {
     mountRef = createRef<HTMLDivElement>()

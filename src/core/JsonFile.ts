@@ -1,12 +1,12 @@
-import JSON5 from 'json5'
-
 import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'fs'
+import JSON5 from 'json5'
 import { makeAutoObservable } from 'mobx'
 import { basename, dirname, join } from 'pathe'
 
 import { readableStringify } from '../utils/formatters/stringifyReadable'
-import { bang } from '../utils/misc/bang'
 import { asAbsolutePath } from '../utils/fs/pathUtils'
+import { bang } from '../utils/misc/bang'
+
 // import { ZodSchema } from 'zod'
 
 export type PersistedJSONInfo<T extends object> = {

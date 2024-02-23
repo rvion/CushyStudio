@@ -1,9 +1,9 @@
 import { observer } from 'mobx-react-lite'
-import { StepL } from 'src/models/Step'
-import { StepOutput_Image } from 'src/types/StepOutput'
-import { OutputPreviewWrapperUI } from './OutputPreviewWrapperUI'
 
+import { OutputPreviewWrapperUI } from './OutputPreviewWrapperUI'
+import { StepL } from 'src/models/Step'
 import { Panel_ViewImage } from 'src/panels/Panel_ViewImage'
+import { StepOutput_Image } from 'src/types/StepOutput'
 import { ImageUI } from 'src/widgets/galleries/ImageUI'
 
 export const OutputImagePreviewUI = observer(function OutputImagePreviewUI_(p: {

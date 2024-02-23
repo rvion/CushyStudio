@@ -2,18 +2,17 @@ import type { STATE } from 'src/state/state'
 
 import * as FL from 'flexlayout-react'
 import { Actions, IJsonModel, Layout, Model } from 'flexlayout-react'
-
 import { action, makeAutoObservable, runInAction, toJS } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { nanoid } from 'nanoid'
-import { FC, createElement, createRef } from 'react'
-import { Trigger } from 'src/app/shortcuts/Trigger'
+import { createElement, createRef, FC } from 'react'
 
+import { hashJSONObject } from './hash'
+import { PanelNames, panels, Panels } from './PANELS'
+import { RenderPanelUI } from './RenderPanelUI'
+import { Trigger } from 'src/app/shortcuts/Trigger'
 import { Panel_CardPicker3UI } from 'src/panels/Panel_FullScreenLibrary'
 import { Message } from 'src/rsuite/shims'
-import { PanelNames, Panels, panels } from './PANELS'
-import { RenderPanelUI } from './RenderPanelUI'
-import { hashJSONObject } from './hash'
 
 export type PropsOf<T> = T extends FC<infer Props> ? Props : '❌'
 

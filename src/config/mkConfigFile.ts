@@ -1,9 +1,10 @@
 import type { ConfigFile } from './ConfigFile'
 
 import { resolve } from 'pathe'
-import { asAbsolutePath } from 'src/utils/fs/pathUtils'
+
 import { JsonFile } from '../core/JsonFile'
 import { STANDARD_HOST_ID } from './ComfyHostDef'
+import { asAbsolutePath } from 'src/utils/fs/pathUtils'
 
 export const mkConfigFile = (): JsonFile<ConfigFile> => {
     return new JsonFile<ConfigFile>({

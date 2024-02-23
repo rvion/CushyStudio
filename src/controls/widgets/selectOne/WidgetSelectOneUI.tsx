@@ -1,6 +1,7 @@
 import type { BaseSelectEntry, Widget_selectOne } from './WidgetSelectOne'
 
 import { observer } from 'mobx-react-lite'
+
 import { SelectUI } from 'src/rsuite/SelectUI'
 import { makeLabelFromFieldName } from 'src/utils/misc/makeLabelFromFieldName'
 

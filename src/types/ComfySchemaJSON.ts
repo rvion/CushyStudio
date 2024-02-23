@@ -6,7 +6,7 @@
 // RAW -----------------------------------------------------------------
 /** type of the file sent by the backend at /object_info */
 
-import { ZodType, z } from 'zod'
+import { z, ZodType } from 'zod'
 
 // --------------------------------------------------------------------
 export const ComfySchemaJSON_zod: ZodType<ComfySchemaJSON> = z.record(z.lazy(() => ComfyNodeSchemaJSON_zod))

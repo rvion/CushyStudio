@@ -1,6 +1,7 @@
 import { makeAutoObservable } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import React, { createRef, useMemo } from 'react'
+
 import { Button } from 'src/rsuite/shims'
 
 type Pos2d = { x: number; y: number }

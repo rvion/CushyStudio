@@ -1,4 +1,5 @@
 import { Static, Type } from '@sinclair/typebox'
+
 import { NodeNameInComfy } from 'src/models/Schema'
 
 // FILE TYPE ------------------------------------------------------------------------

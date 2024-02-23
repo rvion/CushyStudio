@@ -1,8 +1,10 @@
+import type { DisplacementState } from './DisplacementState'
+
 import { CameraControls, OrbitControls, useTexture } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
 import { observer } from 'mobx-react-lite'
 import { type MeshStandardMaterial } from 'three'
-import type { DisplacementState } from './DisplacementState'
+
 import { Ground3D } from './Ground3d'
 import { SkyBox3D } from './SkyBox3D'
 

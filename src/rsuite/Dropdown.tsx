@@ -1,9 +1,10 @@
 import { observer } from 'mobx-react-lite'
 import { ReactNode } from 'react'
+
+import { RevealUI } from './reveal/RevealUI'
+import { RSSize } from './RsuiteTypes'
 import { ComboUI } from 'src/app/shortcuts/ComboUI'
 import { CushyShortcut } from 'src/app/shortcuts/ShortcutManager'
-import { RSSize } from './RsuiteTypes'
-import { RevealUI } from './reveal/RevealUI'
 
 export const Dropdown = (p: { className?: string; startIcon?: Maybe<ReactNode>; title: ReactNode; children: ReactNode }) => (
     <RevealUI className='dropdown' tw={[p.className]}>

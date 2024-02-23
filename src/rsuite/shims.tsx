@@ -1,8 +1,9 @@
 import { observer } from 'mobx-react-lite'
 import { ReactNode } from 'react'
+
 import { RevealUI } from './reveal/RevealUI'
+import { RSAppearance, RSSize } from './RsuiteTypes'
 import { exhaust } from 'src/utils/misc/ComfyUtils'
-import { RSSize, RSAppearance } from './RsuiteTypes'
 
 // form
 export const FormHelpText = (p: any) => <div {...p}></div>

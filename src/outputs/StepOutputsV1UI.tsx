@@ -1,10 +1,11 @@
 import type { StepL } from 'src/models/Step'
 
 import { observer } from 'mobx-react-lite'
-import { FoldIconUI } from 'src/cards/FoldIconUI'
+
 import { _formatPreviewDate } from '../utils/formatters/_formatPreviewDate'
 import { OutputPreviewUI } from './OutputUI'
 import { StepOutputsHeaderV2UI } from './StepOutputsV2UI'
+import { FoldIconUI } from 'src/cards/FoldIconUI'
 
 export const StepOutputsV1UI = observer(function StepOutputsV1UI_(p: { step: StepL }) {
     const step = p.step

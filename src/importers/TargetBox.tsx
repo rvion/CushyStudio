@@ -1,8 +1,10 @@
-import { observer } from 'mobx-react-lite'
-import { useCallback, type CSSProperties, type FC, ReactNode } from 'react'
 import type { DropTargetMonitor } from 'react-dnd'
+
+import { observer } from 'mobx-react-lite'
+import { type CSSProperties, type FC, ReactNode, useCallback } from 'react'
 import { useDrop } from 'react-dnd'
 import { NativeTypes } from 'react-dnd-html5-backend'
+
 import { useSt } from 'src/state/stateContext'
 
 export const TargetBox = observer((p: { children?: ReactNode }) => {

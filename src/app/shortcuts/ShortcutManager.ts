@@ -1,7 +1,8 @@
 import type { KeyboardEvent } from 'react'
 import type { STATE } from 'src/state/state'
-import { Trigger } from './Trigger'
+
 import { META_NAME, MOD_KEY } from './META_NAME'
+import { Trigger } from './Trigger'
 
 type Ctx = STATE
 

@@ -4,10 +4,10 @@ import type { SchemaDict } from 'src/cards/App'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
-import { Spec } from 'src/controls/Prop'
-import { runWithGlobalForm } from 'src/models/_ctx2'
 
 import { WidgetDI } from '../WidgetUI.DI'
+import { Spec } from 'src/controls/Prop'
+import { runWithGlobalForm } from 'src/models/_ctx2'
 
 // CONFIG
 export type Widget_group_config<T extends SchemaDict> = WidgetConfigFields<{

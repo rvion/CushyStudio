@@ -1,7 +1,8 @@
-import type { SchemaDict } from 'src/cards/App'
 import type { Widget_group, Widget_group_output, Widget_group_serial } from './widgets/group/WidgetGroup'
+import type { SchemaDict } from 'src/cards/App'
 
 import { action, autorun, isObservable, makeAutoObservable, observable, runInAction } from 'mobx'
+
 import { FormBuilder } from './FormBuilder'
 import { Spec } from './Prop'
 

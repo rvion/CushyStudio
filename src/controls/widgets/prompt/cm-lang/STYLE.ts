@@ -1,7 +1,7 @@
-import { parser } from '../grammar/grammar.parser'
-
-import { foldNodeProp, foldInside, indentNodeProp } from '@codemirror/language'
+import { foldInside, foldNodeProp, indentNodeProp } from '@codemirror/language'
 import { styleTags, tags as t } from '@lezer/highlight'
+
+import { parser } from '../grammar/grammar.parser'
 
 export const parserWithMetadata = parser.configure({
     props: [

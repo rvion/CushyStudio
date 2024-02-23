@@ -3,8 +3,8 @@
  * TODO: document the unique challenges this appraoch is solving
  */
 import type { Form } from '../Form'
-import { Spec } from '../Prop'
 
+import { Spec } from '../Prop'
 import { Widget_enum, Widget_enum_config } from '../widgets/enum/WidgetEnum'
 
 export type IEnumBuilder = {

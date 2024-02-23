@@ -5,13 +5,14 @@ import { existsSync, lstatSync, mkdirSync, statSync, utimesSync } from 'fs'
 import { makeAutoObservable, runInAction } from 'mobx'
 import { join, relative } from 'pathe'
 import simpleGit, { SimpleGit } from 'simple-git'
+
+import { FolderGitStatus } from '../cards/FolderGitStatus'
+import { deleteDirectoryRecursive } from '../utils/fs/deleteDirectoryRecursive'
+import { _formatAsRelativeDateTime } from './_getRelativeTimeString'
+import { LogFifo } from './LogFIFO'
+import { GithubRepoName } from 'src/cards/githubRepo'
 import { GithubUserName } from 'src/cards/GithubUser'
 import { asRelativePath } from 'src/utils/fs/pathUtils'
-import { deleteDirectoryRecursive } from '../utils/fs/deleteDirectoryRecursive'
-import { GithubRepoName } from 'src/cards/githubRepo'
-import { FolderGitStatus } from '../cards/FolderGitStatus'
-import { LogFifo } from './LogFIFO'
-import { _formatAsRelativeDateTime } from './_getRelativeTimeString'
 
 type ManagedFolderConfig = {
     /** current working directory */

@@ -1,4 +1,5 @@
 import { observer } from 'mobx-react-lite'
+
 import { Message } from 'src/rsuite/shims'
 import { Result } from 'src/types/Either'
 

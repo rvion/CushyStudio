@@ -1,5 +1,5 @@
-import type { MouseEvent } from 'react'
 import type { KeyName } from './ShortcutManager'
+import type { MouseEvent } from 'react'
 
 const platform = process.platform
 

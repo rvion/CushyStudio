@@ -3,6 +3,7 @@ import type { Widget_size } from './WidgetSize'
 import type { AspectRatio, ModelType } from './WidgetSizeTypes'
 
 import { observer } from 'mobx-react-lite'
+
 import { InputNumberUI } from 'src/controls/widgets/number/InputNumberUI'
 import { Joined } from 'src/rsuite/shims'
 

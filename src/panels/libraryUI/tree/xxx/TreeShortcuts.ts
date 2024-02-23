@@ -1,5 +1,6 @@
-import { KEYS } from 'src/app/shortcuts/shorcutKeys'
 import type { TreeView } from './TreeView'
+
+import { KEYS } from 'src/app/shortcuts/shorcutKeys'
 
 export type KeyEv = React.KeyboardEvent<HTMLDivElement>
 

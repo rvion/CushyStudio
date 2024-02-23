@@ -1,16 +1,15 @@
-import { TObject, TSchema, Type } from '@sinclair/typebox'
-
+import type { SqlColDef } from './_getAllColumnsForTable'
 import type { Metafile } from 'esbuild'
+import type { Status } from 'src/back/Status'
+import type { Widget_group_serial } from 'src/controls/widgets/group/WidgetGroup'
+import type { ImageInfos_ComfyGenerated } from 'src/models/ImageInfos_ComfyGenerated'
 import type { EmbeddingName } from 'src/models/Schema'
+import type { ComfyNodeID, ComfyNodeMetadata } from 'src/types/ComfyNodeID'
 import type { ComfyPromptJSON } from 'src/types/ComfyPrompt'
 import type { ComfySchemaJSON } from 'src/types/ComfySchemaJSON'
 import type { WsMsgExecutionError } from 'src/types/ComfyWsApi'
-import type { SqlColDef } from './_getAllColumnsForTable'
 
-import type { Status } from 'src/back/Status'
-import type { ComfyNodeID, ComfyNodeMetadata } from 'src/types/ComfyNodeID'
-import type { ImageInfos_ComfyGenerated } from 'src/models/ImageInfos_ComfyGenerated'
-import type { Widget_group_serial } from 'src/controls/widgets/group/WidgetGroup'
+import { TObject, TSchema, Type } from '@sinclair/typebox'
 
 export type StatusT = keyof typeof Status
 

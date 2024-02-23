@@ -2,6 +2,7 @@ import type { STATE } from 'src/state/state'
 
 import { existsSync, mkdirSync, writeFileSync } from 'fs'
 import { makeAutoObservable } from 'mobx'
+
 import { asRelativePath } from 'src/utils/fs/pathUtils'
 
 // --------------------------------------------------------------------------------

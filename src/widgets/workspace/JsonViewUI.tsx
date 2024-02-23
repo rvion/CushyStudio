@@ -1,6 +1,5 @@
 import JsonView from '@uiw/react-json-view'
 // import JsonViewEditor from '@uiw/react-json-view/editor'
-
 import { lightTheme } from '@uiw/react-json-view/light'
 // import { darkTheme } from '@uiw/react-json-view/dark'
 // import { nordTheme } from '@uiw/react-json-view/esm/theme/nord'
@@ -10,10 +9,10 @@ import { lightTheme } from '@uiw/react-json-view/light'
 // import { gruvboxTheme } from '@uiw/react-json-view/esm/theme/gruvbox'
 // import { monokaiTheme } from '@uiw/react-json-view/esm/theme/monokai'
 // import { basicTheme } from '@uiw/react-json-view/esm/theme/basic'
-
 // import { TriangleArrow } from '@uiw/react-json-view/triangle-arrow'
 // import { TriangleSolidArrow } from '@uiw/react-json-view/triangle-solid-arrow'
 import { observer } from 'mobx-react-lite'
+
 import { useSt } from 'src/state/stateContext'
 
 export const JsonViewUI = observer(function JsonViewUI_(p: { value?: Maybe<object> }) {

@@ -1,12 +1,13 @@
 import type { ComfyWorkflowL } from 'src/models/ComfyWorkflow'
 
 import { observer } from 'mobx-react-lite'
-import { Panel, Popover, ProgressLine, Whisper } from 'src/rsuite/shims'
+
 import { NodeRefUI } from '../misc/NodeRefUI'
 import { JSONHighlightedCodeUI } from '../misc/TypescriptHighlightedCodeUI'
 import { ButtonDownloadFilesUI } from './ButtonDownloadFilesUI'
 import { ButtonOpenInComfyUI } from './ButtonOpenInComfyUI'
 import { RevealUI } from 'src/rsuite/reveal/RevealUI'
+import { Panel, Popover, ProgressLine, Whisper } from 'src/rsuite/shims'
 
 export const GraphSummaryUI = observer(function GraphSummaryUI_(p: { graph: ComfyWorkflowL }) {
     const graph = p.graph

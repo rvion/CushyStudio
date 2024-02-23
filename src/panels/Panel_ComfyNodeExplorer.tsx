@@ -3,12 +3,13 @@ import type { ComfyNodeSchema } from 'src/models/Schema'
 
 import { makeAutoObservable } from 'mobx'
 import { observer } from 'mobx-react-lite'
+import { hash } from 'ohash'
 import { useMemo } from 'react'
-import { Input, Joined, Addon } from 'src/rsuite/shims'
+
 import { getColorForInputNameInComfy, getColorForOutputNameInCushy } from 'src/core/Colors'
+import { Addon, Input, Joined } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
 import { searchMatches } from 'src/utils/misc/searchMatches'
-import { hash } from 'ohash'
 
 class ComfyNodeExplorerState {
     // globalSearch = ''

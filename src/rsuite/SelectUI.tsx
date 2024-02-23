@@ -1,13 +1,14 @@
-import type { STATE } from 'src/state/state'
 import type { RSSize } from './RsuiteTypes'
+import type { STATE } from 'src/state/state'
 
 import { makeAutoObservable } from 'mobx'
 import { observer } from 'mobx-react-lite'
+import { nanoid } from 'nanoid'
 import React, { ReactNode, useMemo, useRef } from 'react'
+import { createPortal } from 'react-dom'
+
 import { useSt } from 'src/state/stateContext'
 import { searchMatches } from 'src/utils/misc/searchMatches'
-import { createPortal } from 'react-dom'
-import { nanoid } from 'nanoid'
 
 type SelectProps<T> = {
     label?: string

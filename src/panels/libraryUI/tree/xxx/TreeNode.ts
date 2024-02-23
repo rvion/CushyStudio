@@ -2,12 +2,12 @@ import type { Tree } from './Tree'
 
 import { makeAutoObservable } from 'mobx'
 
-import { SQLITE_false, SQLITE_true } from 'src/db/SQLITE_boolean'
-import { asTreeEntryID } from 'src/db/TYPES.gen'
-import { TreeEntryL } from 'src/models/TreeEntry'
 import { ITreeElement, ITreeEntry } from '../TreeEntry'
 // import { buildTreeItem } from '../nodes/buildTreeItem'
 import { FAIL } from './utils'
+import { SQLITE_false, SQLITE_true } from 'src/db/SQLITE_boolean'
+import { asTreeEntryID } from 'src/db/TYPES.gen'
+import { TreeEntryL } from 'src/models/TreeEntry'
 
 export type NodeId = string
 export type NodeKey = string

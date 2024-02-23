@@ -4,9 +4,9 @@ import type { Spec } from 'src/controls/Prop'
 
 import { makeAutoObservable, observable } from 'mobx'
 import { nanoid } from 'nanoid'
-import { runWithGlobalForm } from 'src/models/_ctx2'
 
 import { WidgetDI } from '../WidgetUI.DI'
+import { runWithGlobalForm } from 'src/models/_ctx2'
 
 // CONFIG
 export type Widget_list_config<T extends Spec> = WidgetConfigFields<{

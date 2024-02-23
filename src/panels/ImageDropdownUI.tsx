@@ -1,6 +1,7 @@
 import type { MediaImageL } from 'src/models/MediaImage'
 
 import { observer } from 'mobx-react-lite'
+
 import { openExternal, showItemInFolder } from 'src/app/layout/openExternal'
 import { DraftIllustrationUI } from 'src/cards/fancycard/DraftIllustration'
 import { Dropdown, MenuItem } from 'src/rsuite/Dropdown'

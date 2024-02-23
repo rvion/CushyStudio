@@ -2,6 +2,7 @@ import type { Widget_listExt } from './WidgetListExt'
 import type { Spec } from 'src/controls/Prop'
 
 import { observer } from 'mobx-react-lite'
+
 import { WidgetWithLabelUI } from 'src/controls/shared/WidgetWithLabelUI'
 import { Button } from 'src/rsuite/shims'
 

@@ -1,6 +1,7 @@
 import type { AspectRatio, ModelType } from './WidgetSizeTypes'
 
 import { makeAutoObservable } from 'mobx'
+
 import { parseFloatNoRoundingErr } from 'src/utils/misc/parseFloatNoRoundingErr'
 
 // ugly hack so I can both

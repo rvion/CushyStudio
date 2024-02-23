@@ -3,6 +3,7 @@ import type { EditorView } from '@codemirror/view'
 import type { STATE } from 'src/state/state'
 
 import { Diagnostic, linter } from '@codemirror/lint'
+
 import { PromptAST } from '../grammar/grammar.practical'
 
 export const PromptLinter1 = linter((view: EditorView) => {

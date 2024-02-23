@@ -6,9 +6,9 @@ import type { MediaImageL } from 'src/models/MediaImage'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
-import { Spec } from 'src/controls/Prop'
 
 import { WidgetDI } from '../WidgetUI.DI'
+import { Spec } from 'src/controls/Prop'
 
 // CONFIG
 export type Widget_image_config = WidgetConfigFields<{

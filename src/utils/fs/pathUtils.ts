@@ -1,5 +1,6 @@
-export * as pathe from 'pathe'
 import * as pathe from 'pathe'
+
+export * as pathe from 'pathe'
 
 /** brand a path as an absolute path after basic checks */
 export const asAbsolutePath = (path: string): AbsolutePath => {

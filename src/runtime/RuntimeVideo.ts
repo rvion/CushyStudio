@@ -3,6 +3,7 @@ import type { MediaImageL } from 'src/models/MediaImage'
 
 import { makeAutoObservable } from 'mobx'
 import path from 'pathe'
+
 import { createMP4FromImages } from 'src/utils/ffmpeg/ffmpegScripts'
 import { asAbsolutePath } from 'src/utils/fs/pathUtils'
 
