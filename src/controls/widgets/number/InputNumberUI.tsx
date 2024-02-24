@@ -34,6 +34,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
     const val = p.value ?? clamp(1, p.min ?? -Infinity, p.max ?? Infinity)
     const mode = p.mode
     const step = p.step ?? (mode === 'int' ? 1 : 0.1)
+    const decimalPoints = Math.ceil(-Math.log10(step))
     const forceSnap = p.forceSnap ?? false
     const rangeMin = p.softMin ?? p.min ?? -Infinity
     const rangeMax = p.softMax ?? p.max ?? Infinity
@@ -64,7 +65,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
         }
 
         if (forceSnap) {
-            num = mode == 'int' ? Math.round(num / step) * step : parseFloatNoRoundingErr(num, 2)
+            num = mode == 'int' ? Math.round(num / step) * step : parseFloatNoRoundingErr(num, decimalPoints)
         }
 
         // Ensure ints are ints
@@ -72,9 +73,9 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
 
         // Ensure in range
         if (soft && startValue <= rangeMax && startValue >= rangeMin) {
-            num = parseFloatNoRoundingErr(clamp(num, rangeMin, rangeMax), 2)
+            num = parseFloatNoRoundingErr(clamp(num, rangeMin, rangeMax), decimalPoints)
         } else {
-            num = parseFloatNoRoundingErr(clamp(num, p.min ?? -Infinity, p.max ?? Infinity), 2)
+            num = parseFloatNoRoundingErr(clamp(num, p.min ?? -Infinity, p.max ?? Infinity), decimalPoints)
         }
 
         latestProps.onValueChange(num)
@@ -94,7 +95,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
             typeof next === 'string' //
                 ? mode == 'int'
                     ? parseInt(next, 10)
-                    : parseFloatNoRoundingErr(next, 2)
+                    : parseFloatNoRoundingErr(next, decimalPoints)
                 : next
 
         // Snapping
@@ -184,7 +185,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
                             if (ev.ctrlKey) {
                                 let num = mode === 'int' ? step * -Math.sign(ev.deltaY) : step * -Math.sign(ev.deltaY) * 0.1
                                 num = val + num
-                                num = mode == 'int' ? Math.round(num) : parseFloatNoRoundingErr(num, 2)
+                                num = mode == 'int' ? Math.round(num) : parseFloatNoRoundingErr(num, decimalPoints)
                                 num = clamp(num, p.min ?? -Infinity, p.max ?? Infinity)
                                 syncValues(num)
                             }
