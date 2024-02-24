@@ -37,7 +37,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
         }
     }
     const LABEL = (
-        <span onClick={onLineClick} style={{ lineHeight: '1rem' }}>
+        <span onClick={onLineClick} style={{ lineHeight: '1.5rem' }}>
             {widget.config.label ?? makeLabelFromFieldName(p.rootKey) ?? '...'}
             {p.widget.config.showID ? <span tw='opacity-50 italic text-sm'>#{p.widget.id.slice(0, 3)}</span> : null}
         </span>
