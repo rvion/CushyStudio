@@ -34,6 +34,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
     const val = p.value ?? clamp(1, p.min ?? -Infinity, p.max ?? Infinity)
     const mode = p.mode
     const step = p.step ?? (mode === 'int' ? 1 : 0.1)
+    const decimalPoints = Math.ceil(-Math.log10(step))
     const forceSnap = p.forceSnap ?? false
     const rangeMin = p.softMin ?? p.min ?? -Infinity
     const rangeMax = p.softMax ?? p.max ?? Infinity
@@ -49,13 +50,15 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
     const [latestProps] = useState(() => observable({ onValueChange: p.onValueChange }))
     useEffect(() => runInAction(() => void (latestProps.onValueChange = p.onValueChange)), [p.onValueChange])
 
-    const syncValues = (value: number | string, soft: boolean = false) => {
+    const syncValues = (value: number | string, roundingModifier = 1, soft: boolean = false) => {
         let num =
             typeof value === 'string' //
                 ? mode == 'int'
                     ? parseInt(value, 10)
                     : parseFloat(value)
                 : value
+
+        const decimalPointsPrecise = Math.ceil(-Math.log10(step * roundingModifier))
 
         // Ensure is number
         if (isNaN(num) || typeof num != 'number') {
@@ -64,7 +67,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
         }
 
         if (forceSnap) {
-            num = mode == 'int' ? Math.round(num / step) * step : parseFloatNoRoundingErr(num, 2)
+            num = mode == 'int' ? Math.round(num / step) * step : parseFloatNoRoundingErr(num, decimalPointsPrecise)
         }
 
         // Ensure ints are ints
@@ -72,9 +75,9 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
 
         // Ensure in range
         if (soft && startValue <= rangeMax && startValue >= rangeMin) {
-            num = parseFloatNoRoundingErr(clamp(num, rangeMin, rangeMax), 2)
+            num = parseFloatNoRoundingErr(clamp(num, rangeMin, rangeMax), decimalPointsPrecise)
         } else {
-            num = parseFloatNoRoundingErr(clamp(num, p.min ?? -Infinity, p.max ?? Infinity), 2)
+            num = parseFloatNoRoundingErr(clamp(num, p.min ?? -Infinity, p.max ?? Infinity), decimalPointsPrecise)
         }
 
         latestProps.onValueChange(num)
@@ -94,7 +97,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
             typeof next === 'string' //
                 ? mode == 'int'
                     ? parseInt(next, 10)
-                    : parseFloatNoRoundingErr(next, 2)
+                    : parseFloatNoRoundingErr(next, decimalPoints)
                 : next
 
         // Snapping
@@ -103,7 +106,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
             num = Math.round(num / inverval) * inverval
         }
 
-        syncValues(num, true)
+        syncValues(num, e.shiftKey ? 0.01 : 1, true)
     }
 
     const cancelListener = (e: MouseEvent) => {
@@ -165,7 +168,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
                     onClick={(_) => {
                         startValue = val
                         let num = val - (mode === 'int' ? step : step * 0.1)
-                        syncValues(num, true)
+                        syncValues(num, 1, true)
                     }}
                 >
                     ◂
@@ -184,7 +187,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
                             if (ev.ctrlKey) {
                                 let num = mode === 'int' ? step * -Math.sign(ev.deltaY) : step * -Math.sign(ev.deltaY) * 0.1
                                 num = val + num
-                                num = mode == 'int' ? Math.round(num) : parseFloatNoRoundingErr(num, 2)
+                                num = mode == 'int' ? Math.round(num) : parseFloatNoRoundingErr(num, decimalPoints)
                                 num = clamp(num, p.min ?? -Infinity, p.max ?? Infinity)
                                 syncValues(num)
                             }
@@ -273,7 +276,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
                                         return
                                     }
 
-                                    syncValues(ev.currentTarget.value)
+                                    syncValues(ev.currentTarget.value, 0.001)
                                 }}
                                 onKeyDown={(ev) => {
                                     if (ev.key === 'Enter') {
@@ -307,7 +310,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
                     onClick={(_) => {
                         startValue = val
                         let num = val + (mode === 'int' ? step : step * 0.1)
-                        syncValues(num, true)
+                        syncValues(num, 1, true)
                     }}
                 >
                     ▸

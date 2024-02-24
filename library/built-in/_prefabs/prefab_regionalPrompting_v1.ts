@@ -7,7 +7,7 @@ export const ui_regionalPrompting_v1 = () => {
             items: {
                 prompt: form.prompt({}),
                 strength: form.number({ default: 1, min: 0, max: 2, step: 0.1 }),
-                mode: form.enum.Enum_ConditioningBlend_blending_mode({}),
+                // mode: form.enum.Enum_ConditioningBlend_blending_mode({}),
             },
         }),
         height: 512,

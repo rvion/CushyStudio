@@ -461,6 +461,7 @@ export class STATE {
             }),
             displacementScale: form.number({ label: 'displacement', min: 0, max: 5, step: 0.1, default: 1 }),
             cutout: form.number({ label: 'cutout', min: 0, max: 1, step: 0.01, default: 0.08 }),
+            removeBackground: form.number({ label: 'remove bg', min: 0, max: 1, step: 0.01, default: 0.2 }),
             ambientLightIntensity: form.number({ label: 'light', min: 0, max: 8, default: 1.5 }),
             ambientLightColor: form.color({ label: 'light color' }),
             isSymmetric: form.boolean({ label: 'Symmetric Model' }),
