@@ -58,6 +58,15 @@ export const HostSchemaIndicatorUI = observer(function HostSchemaIndicatorUI_(p:
                     </Message>
                 )}
                 <pre>{host.schemaRetrievalLogs.join('\n')}</pre>
+                <div
+                    tw='btn btn-sm'
+                    onClick={() => {
+                        host.fetchAndUpdateSchema()
+                        host.manager.updateHostPluginsAndModels()
+                    }}
+                >
+                    Reload Schema
+                </div>
                 <div tw='btn btn-sm btn-warning flex-1' onClick={() => host.manager.rebootComfyUI()}>
                     Restart ComfyUI
                 </div>
