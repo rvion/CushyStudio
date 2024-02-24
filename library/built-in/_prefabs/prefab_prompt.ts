@@ -14,8 +14,8 @@ export const run_prompt = (p: {
     negativeText: string
     clip: _CLIP
     ckpt: _MODEL
-    positiveConditionning: _CONDITIONING
-    negativeConditionning: _CONDITIONING
+    readonly positiveConditionning: _CONDITIONING
+    readonly negativeConditionning: _CONDITIONING
 } => {
     const run = getCurrentRun()
     const richPrompt = p.prompt
