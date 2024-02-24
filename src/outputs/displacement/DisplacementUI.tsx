@@ -47,8 +47,12 @@ export const DisplacementUI2 = observer(function DisplacementUI2_(p: { uist: Dis
                     normalMap={normalMap}
                     metalness={conf.metalness.value}
                     roughness={conf.roughness.value}
+                    userData={{
+                        cutout: { value: conf.cutout },
+                        removeBackground: { value: conf.removeBackground },
+                    }}
                     onBeforeCompile={function (this: MeshStandardMaterial, x) {
-                        uist.onBeforeCompile(x, conf.cutout)
+                        uist.onBeforeCompile(x, conf.cutout, conf.removeBackground)
                     }}
                     // attach='material'
                     // color='hotpink'
