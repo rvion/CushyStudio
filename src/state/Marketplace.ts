@@ -8,7 +8,8 @@ import { Debounced } from 'src/panels/Panel_Models/CivitaiSpec'
 import { Kwery } from 'src/utils/misc/Kwery'
 
 type SupaPublishedApp = Database['public']['Tables']['published_apps']['Row']
-type SupaUser = Database['auth']['Tables']['users']['Row']
+// type SupaUser = Database['auth']['Tables']['users']['Row']
+
 export class Marketplace {
     constructor(public st: STATE) {
         makeAutoObservable(this)
@@ -19,15 +20,15 @@ export class Marketplace {
 
     getUserInfoViaAuth = (user_id: string) => {}
 
-    getUserInfoViaDB = (user_id: string) =>
-        Kwery.get('getUserInfo', { user_id }, async () => {
-            const x: PostgrestSingleResponse<SupaUser[]> = await this.st.supabase
-                .schema('auth') //
-                .from('users')
-                .select('*')
-                .eq('id', user_id)
-            return x.data?.[0]
-        })
+    getUserInfoViaDB = (user_id: string) => 0
+    // Kwery.get('getUserInfo', { user_id }, async () => {
+    //     const x: PostgrestSingleResponse<SupaUser[]> = await this.st.supabase
+    //         .schema('auth') //
+    //         .from('users')
+    //         .select('*')
+    //         .eq('id', user_id)
+    //     return x.data?.[0]
+    // })
 
     publishedApps = () =>
         Kwery.get(
