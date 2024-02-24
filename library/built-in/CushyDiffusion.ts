@@ -1,4 +1,5 @@
 import { exhaust } from 'src/utils/misc/ComfyUtils'
+import { run_advancedPrompt, ui_advancedPrompt } from 'library/built-in/_prefabs/prefab_promptsWithButtons'
 
 import { ui_highresfix } from './_prefabs/_prefabs'
 import { Cnet_args, Cnet_return, run_cnet, ui_cnet } from './_prefabs/prefab_cnet'
@@ -90,6 +91,7 @@ app({
                 makeAVideo: form.group(),
                 summary: form.group(),
                 gaussianSplat: form.group(),
+                promtPlus: ui_advancedPrompt(),
             },
         }),
     }),
@@ -112,7 +114,9 @@ app({
         })
         const clipPos = posPrompt.clip
         let ckptPos = posPrompt.ckpt
-        let positive = posPrompt.positiveConditionning
+        let finalText = posPrompt.positiveText
+        if (ui.testStuff.promtPlus) finalText += run_advancedPrompt(ui.testStuff.promtPlus)
+        let positive: _CONDITIONING = graph.CLIPTextEncode({ clip: clipPos, text: finalText })
 
         if (ui.testStuff.regionalPrompt) {
             positive = run_regionalPrompting_v1(ui.testStuff.regionalPrompt, { conditionning: positive, clip })
