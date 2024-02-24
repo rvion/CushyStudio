@@ -11,9 +11,9 @@ export const Panel_FullScreenLibrary = observer(function Panel_CardPicker3UI_(p:
     const st = useSt()
     const library = st.library
 
-    useEffect(() => {
-        st.fetchAllPublishedApps()
-    }, [])
+    // useEffect(() => {
+    //     st.fetchAllPublishedApps()
+    // }, [])
 
     return (
         <div tw='relative h-full flex-grow flex flex-col'>

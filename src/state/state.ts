@@ -31,6 +31,7 @@ import { DanbooruTags } from '../widgets/prompter/nodes/booru/BooruLoader'
 import { mandatoryTSConfigIncludes, mkTypescriptConfig, type TsConfigCustom } from '../widgets/TsConfigCustom'
 import { AuthState } from './AuthState'
 import { readJSON, writeJSON } from './jsonUtils'
+import { Marketplace } from './Marketplace'
 import { mkSupa } from './supa'
 import { Uploader } from './Uploader'
 import { ShortcutWatcher } from 'src/app/shortcuts/ShortcutManager'
@@ -69,6 +70,7 @@ import { ThemeManager } from 'src/theme/ThemeManager'
 import { CleanedEnumResult } from 'src/types/EnumUtils'
 import { StepOutput } from 'src/types/StepOutput'
 import { openInVSCode } from 'src/utils/electron/openInVsCode'
+import { Kwery } from 'src/utils/misc/Kwery'
 import { UserTags } from 'src/widgets/prompter/nodes/usertags/UserLoader'
 
 export class STATE {
@@ -308,12 +310,7 @@ export class STATE {
 
     droppedFiles: File[] = []
 
-    _allPublishedApps: Maybe<PostgrestSingleResponse<Database['public']['Tables']['published_apps']['Row'][]>> = null
-    fetchAllPublishedApps = async () => {
-        const x = await this.supabase.from('published_apps').select('*')
-        this._allPublishedApps = x
-        return x
-    }
+    // _allPublishedApps: Maybe<> = null
 
     // showCardPicker: boolean = false
     closeFullLibrary = () => (this.layout.fullPageComp = null)
@@ -496,6 +493,7 @@ export class STATE {
 
     project: ProjectL
     primarySdkDtsPath: AbsolutePath
+    marketplace: Marketplace
     constructor(
         /** path of the workspace */
         public rootPath: AbsolutePath,
@@ -516,6 +514,7 @@ export class STATE {
         // core instances
         this.db = new LiveDB(this)
         this.supabase = mkSupa()
+        this.marketplace = new Marketplace(this)
         this.electronUtils = new ElectronUtils(this)
         this.shortcuts = new ShortcutWatcher(shortcutsDef, this, { name: nanoid() })
         console.log(`[🛋️] ${this.shortcuts.shortcuts.length} shortcuts loaded`)
