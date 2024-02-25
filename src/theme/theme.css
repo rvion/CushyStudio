@@ -1,5 +1,10 @@
 #root {
     --roundness: 5px;
+    --input-height: 28px;
+}
+
+.WIDGET-FIELD {
+    height: var(--input-height);
 }
 
 .custom-roundness {
