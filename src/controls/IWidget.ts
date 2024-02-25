@@ -27,6 +27,7 @@ export type IWidget<K extends $WidgetTypes = $WidgetTypes> = {
     readonly serial: K['$Serial']
     readonly form: Form<any>
     readonly config: K['$Input'] // WidgetConfigFields<any>
+    // FULLY_CUSTOM_RENDER?: boolean
 }
 
 export type GetWidgetResult<Widget> = Widget extends { $Output: infer O } ? O : never

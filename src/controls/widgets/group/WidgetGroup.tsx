@@ -15,8 +15,12 @@ import { runWithGlobalForm } from 'src/models/_ctx2'
 export type Widget_group_config<T extends SchemaDict> = WidgetConfigFields<{
     items?: (() => T) | T
     topLevel?: boolean
+    // header?: (self: Widget_group<T>) => (keyof T)[]
     /** if provided, will be used to show a single line summary on the inline form slot */
     summary?: (items: { [k in keyof T]: GetWidgetResult<T[k]> }) => string
+    // ------------------------------------------------
+    // header?: (self: Widget_group<T>) => GroupLayout<T>[]
+    // body?: (self: Widget_group<T>) => (`.${keyof T & string}` | `#${string}`)[]
 }>
 
 // SERIAL

@@ -1,6 +1,7 @@
 import type { Form } from '../../Form'
 import type { FC } from 'react'
 import type { IWidget, WidgetConfigFields, WidgetSerialFields } from 'src/controls/IWidget'
+import type { Spec } from 'src/controls/Prop'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -11,7 +12,11 @@ import { WidgetDI } from '../WidgetUI.DI'
 export type CustomWidgetProps<T> = { widget: Widget_custom<T>; extra: import('./WidgetCustomUI').UIKit }
 
 // CONFIG
-export type Widget_custom_config<T> = WidgetConfigFields<{ defaultValue: () => T; Component: FC<CustomWidgetProps<T>> }>
+export type Widget_custom_config<T> = WidgetConfigFields<{
+    defaultValue: () => T
+    subTree?: () => Spec
+    Component: FC<CustomWidgetProps<T>>
+}>
 
 // SERIAL
 export type Widget_custom_serial<T> = WidgetSerialFields<{ type: 'custom'; active: true; value: T }>
