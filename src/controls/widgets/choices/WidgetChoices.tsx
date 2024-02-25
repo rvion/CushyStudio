@@ -7,6 +7,7 @@ import { nanoid } from 'nanoid'
 import { hash } from 'ohash'
 
 import { WidgetDI } from '../WidgetUI.DI'
+import { makeLabelFromFieldName } from 'src/utils/misc/makeLabelFromFieldName'
 import { toastError } from 'src/utils/misc/toasts'
 
 // CONFIG
@@ -64,6 +65,15 @@ export class Widget_choices<T extends SchemaDict> implements IWidget<Widget_choi
 
     get choices(): (keyof T & string)[] {
         return Object.keys(this.config.items)
+    }
+    get choicesWithLabels(): { key: keyof T & string; label: string }[] {
+        return Object.entries(this.config.items).map(([key, value]) => ({
+            key,
+            // note:
+            // if child.config.label === false => makeLabelFromFieldName(key)
+            // if child.config.label === '' => makeLabelFromFieldName(key)
+            label: value.config.label || makeLabelFromFieldName(key),
+        }))
     }
 
     get activeBranches(): (keyof T & string)[] {
