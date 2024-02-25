@@ -92,7 +92,7 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
             >
                 <DraftHeaderUI draft={draft} />
                 {draft.shouldAutoStart && (
-                    <MessageInfoUI>AutoStart active: this draft will executet when form change</MessageInfoUI>
+                    <MessageInfoUI>Autorun active: this draft will execute when the form changes</MessageInfoUI>
                 )}
                 {metadata?.help && (
                     <MessageInfoUI>
