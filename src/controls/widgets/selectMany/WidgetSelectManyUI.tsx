@@ -14,6 +14,7 @@ export const WidgetSelectManyUI = observer(function WidgetSelectOneUI_<T extends
             size='sm'
             multiple
             getLabelText={(t) => t.label ?? t.id}
+            getLabelUI={(t) => t.label ?? t.id}
             options={() => widget.choices}
             value={() => widget.serial.values}
             onChange={(selectOption) => widget.toggleItem(selectOption)}
