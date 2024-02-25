@@ -7,6 +7,10 @@
     height: var(--input-height);
 }
 
+.WIDGET-FIELD *::selection {
+    background-color: oklch(var(--pc));
+}
+
 .custom-roundness {
     border-radius: var(--roundness);
 }
@@ -176,10 +180,6 @@ input::-webkit-inner-spin-button {
     width: 0;
     height: 0;
     margin: 0;
-}
-
-.input-number-ui input[type="text"]::selection {
-    background-color: oklch(var(--pc));
 }
 
 .input-number-ui:hover button {
