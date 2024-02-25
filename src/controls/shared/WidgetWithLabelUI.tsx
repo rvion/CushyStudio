@@ -1,5 +1,6 @@
 import type { IWidget } from '../IWidget'
 import type { Widget_optional } from '../widgets/optional/WidgetOptional'
+import type { CSSProperties } from 'react'
 
 import { runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
@@ -9,7 +10,7 @@ import { makeLabelFromFieldName } from '../../utils/misc/makeLabelFromFieldName'
 import { ErrorBoundaryFallback } from '../../widgets/misc/ErrorBoundary'
 import { InstallRequirementsBtnUI } from '../REQUIREMENTS/Panel_InstallRequirementsUI'
 import { AnimatedSizeUI } from '../widgets/choices/AnimatedSizeUI'
-import { WidgetDI } from '../widgets/WidgetUI.DI'
+import { isWidgetOptional, WidgetDI } from '../widgets/WidgetUI.DI'
 import { checkIfWidgetIsCollapsible } from './checkIfWidgetIsCollapsible'
 import { getActualWidgetToDisplay } from './getActualWidgetToDisplay'
 import { RevealUI } from 'src/rsuite/reveal/RevealUI'
@@ -26,6 +27,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     const rootKey = p.rootKey
     const originalWidget = p.widget
     const widget = getActualWidgetToDisplay(originalWidget)
+    const isDisabled = isWidgetOptional(originalWidget) && !originalWidget.serial.active
 
     if (WidgetDI.WidgetUI == null) return <>WidgetDI.WidgetUI is null</>
     const { WidgetLineUI, WidgetBlockUI } = WidgetDI.WidgetUI(widget) // WidgetDI.WidgetUI(widget)
@@ -47,6 +49,10 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
             {widget.config.showID ? <span tw='opacity-50 italic text-sm'>#{widget.id.slice(0, 3)}</span> : null}
         </span>
     )
+    const styleDISABLED: CSSProperties | undefined = isDisabled
+        ? { pointerEvents: 'none', opacity: 0.3, backgroundColor: 'rgba(0,0,0,0.05)' }
+        : undefined
+
     return (
         <div
             tw={[
@@ -66,8 +72,9 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                         tw={[
                             //
                             'flex justify-end gap-0.5',
-                            p.isTopLevel ? 'font-bold' : 'text-base',
-                            'flex-none items-center text-primary',
+                            p.isTopLevel && !isDisabled ? 'font-bold' : 'text-base',
+                            'flex-none items-center',
+                            isDisabled ? undefined : 'text-primary',
                             // 'whitespace-nowrap',
                             // WidgetBlockUI ? undefined : 'shrink-0 text-right mr-1',
                         ]}
@@ -99,16 +106,18 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                     </span>
                     {/* )} */}
                     {WidgetLineUI && (
-                        <ErrorBoundary FallbackComponent={ErrorBoundaryFallback} onReset={(details) => {}}>
-                            <WidgetLineUI widget={widget} />
-                        </ErrorBoundary>
+                        <div tw='flex items-center gap-0.5' style={styleDISABLED}>
+                            <ErrorBoundary FallbackComponent={ErrorBoundaryFallback} onReset={(details) => {}}>
+                                <WidgetLineUI widget={widget} />
+                            </ErrorBoundary>
+                        </div>
                     )}
                 </div>
 
                 {/* BLOCK */}
                 {WidgetBlockUI && !isCollapsed && (
                     <ErrorBoundary FallbackComponent={ErrorBoundaryFallback} onReset={(details) => {}}>
-                        <div tw={[isCollapsible && 'WIDGET-BLOCK']}>
+                        <div style={styleDISABLED} tw={[isCollapsible && 'WIDGET-BLOCK']}>
                             <WidgetBlockUI widget={widget} />
                         </div>
                     </ErrorBoundary>
