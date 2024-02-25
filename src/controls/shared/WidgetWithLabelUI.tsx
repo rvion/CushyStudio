@@ -57,7 +57,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
         >
             <AnimatedSizeUI>
                 {/* LINE */}
-                <div tw={[isCollapsible && 'WIDGET-LINE', 'flex items-center gap-0.5']}>
+                <div tw={[WidgetBlockUI && 'WIDGET-LINE', 'flex items-center gap-0.5']}>
                     {(collapsed || isCollapsible) && <Widget_CollapseBtnUI widget={p.widget} />}
                     <span
                         tw={[
