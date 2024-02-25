@@ -23,7 +23,7 @@ export const ui_model = () => {
                 items: {
                     ckpt_config: form.enum.Enum_CheckpointLoader_config_name({ label: 'Config' }),
                     rescale_cfg: form.auto.RescaleCFG(),
-                    vae: form.enum.Enum_VAELoader_vae_name({}),
+                    vae: form.enum.Enum_VAELoader_vae_name(),
                     clipSkip: form.int({ label: 'Clip Skip', default: 1, min: 1, max: 5 }),
                     freeU: form.group(),
                     civtai_ckpt_air: form.string({
