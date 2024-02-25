@@ -40,7 +40,7 @@ export class Widget_optional<T extends Spec> implements IWidget<Widget_optional_
     }
     get hasBlock(): boolean {
         if (this.child == null) return false
-        return true
+        return this.child.hasBlock
     }
     readonly id: string
     readonly type: 'optional' = 'optional'
