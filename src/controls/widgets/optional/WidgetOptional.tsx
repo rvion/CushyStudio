@@ -46,7 +46,7 @@ export class Widget_optional<T extends Spec = Spec> implements IWidget<Widget_op
     readonly type: 'optional' = 'optional'
 
     serial: Widget_optional_serial<T>
-    child?: T['$Widget']
+    child!: T['$Widget']
 
     get childOrThrow(): T['$Widget'] {
         if (this.child == null) throw new Error('❌ optional active but child is null')
@@ -63,7 +63,7 @@ export class Widget_optional<T extends Spec = Spec> implements IWidget<Widget_op
      *  - child subtree will be always be instanciated
      *   👉 makes POSSIBLE to display the grayed out widgets
      * */
-    INIT_MODE: 'LAZY' | 'EAGER' = 'EAGER'
+    // ⏸️ INIT_MODE: 'LAZY' | 'EAGER' = 'EAGER'
 
     toggle = () => {
         if (this.serial.active) this.setOff()
@@ -77,7 +77,7 @@ export class Widget_optional<T extends Spec = Spec> implements IWidget<Widget_op
 
     setOff = () => {
         this.serial.active = false
-        if (this.INIT_MODE === 'LAZY') this.child = undefined
+        // ⏸️ if (this.INIT_MODE === 'LAZY') this.child = undefined
     }
 
     private _ensureChildIsHydrated = () => {
@@ -103,7 +103,8 @@ export class Widget_optional<T extends Spec = Spec> implements IWidget<Widget_op
         }
         const isActive = serial?.active ?? defaultActive
         if (isActive) this.setOn()
-        if (this.INIT_MODE === 'EAGER') this._ensureChildIsHydrated()
+        // ⏸️ if (this.INIT_MODE === 'EAGER') this._ensureChildIsHydrated()
+        this._ensureChildIsHydrated()
         makeObservable(this, {
             serial: observable,
             value: computed,

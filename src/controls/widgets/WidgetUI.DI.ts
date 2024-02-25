@@ -54,3 +54,9 @@ export let WidgetDI = {
     Widget_listExt /*    */: 0 as any as typeof Widget_listExt,
     Widget_orbit /*      */: 0 as any as typeof Widget_orbit,
 }
+
+// help with DI, and help around some typescript bug not able to narrow types
+// in conditional when instance of is used with a ctor stored in a dictionary
+export const isWidgetChoice = (widget: any): widget is Widget_choices => widget.type === 'choices'
+export const isWidgetOptional = (widget: any): widget is Widget_optional => widget.type === 'optional'
+export const isWidgetShared = (widget: any): widget is Widget_shared => widget.type === 'shared'

@@ -11,7 +11,7 @@ import { makeLabelFromFieldName } from 'src/utils/misc/makeLabelFromFieldName'
 import { toastError } from 'src/utils/misc/toasts'
 
 // CONFIG
-export type Widget_choices_config<T extends SchemaDict> = WidgetConfigFields<{
+export type Widget_choices_config<T extends SchemaDict = SchemaDict> = WidgetConfigFields<{
     items: T
     multi: boolean
     default?: { [k in keyof T]?: boolean } | keyof T
@@ -20,7 +20,7 @@ export type Widget_choices_config<T extends SchemaDict> = WidgetConfigFields<{
 }>
 
 // SERIAL
-export type Widget_choices_serial<T extends SchemaDict> = WidgetSerialFields<{
+export type Widget_choices_serial<T extends SchemaDict = SchemaDict> = WidgetSerialFields<{
     type: 'choices'
     active: true
     branches: { [k in keyof T]?: boolean }
@@ -28,12 +28,12 @@ export type Widget_choices_serial<T extends SchemaDict> = WidgetSerialFields<{
 }>
 
 // OUT
-export type Widget_choices_output<T extends SchemaDict> = {
+export type Widget_choices_output<T extends SchemaDict = SchemaDict> = {
     [k in keyof T]?: T[k]['$Output']
 }
 
 // TYPES
-export type Widget_choices_types<T extends SchemaDict> = {
+export type Widget_choices_types<T extends SchemaDict = SchemaDict> = {
     $Type: 'choices'
     $Input: Widget_choices_config<T>
     $Serial: Widget_choices_serial<T>
@@ -41,8 +41,8 @@ export type Widget_choices_types<T extends SchemaDict> = {
 }
 
 // STATE
-export interface Widget_choices<T extends SchemaDict> extends Widget_choices_types<T> {}
-export class Widget_choices<T extends SchemaDict> implements IWidget<Widget_choices_types<T>> {
+export interface Widget_choices<T extends SchemaDict = SchemaDict> extends Widget_choices_types<T> {}
+export class Widget_choices<T extends SchemaDict = SchemaDict> implements IWidget<Widget_choices_types<T>> {
     get hasBlock() {
         if (this.activeBranches.length > 0) return true
         return false
