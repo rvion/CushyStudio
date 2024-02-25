@@ -31,7 +31,6 @@ import { WidgetMatrixUI } from './matrix/WidgetMatrixUI'
 import { Widget_number } from './number/WidgetNumber'
 import { WidgetNumberUI } from './number/WidgetNumberUI'
 import { Widget_optional } from './optional/WidgetOptional'
-import { WidgetOptional_BlockUI, WidgetOptional_LineUI } from './optional/WidgetOptionalUI'
 import { Widget_orbit } from './orbit/WidgetOrbit'
 import { WidgetOrbitUI } from './orbit/WidgetOrbitUI'
 import { Widget_prompt } from './prompt/WidgetPrompt'
@@ -43,7 +42,6 @@ import { WidgetSelectManyUI } from './selectMany/WidgetSelectManyUI'
 import { Widget_selectOne } from './selectOne/WidgetSelectOne'
 import { WidgetSelectOneUI } from './selectOne/WidgetSelectOneUI'
 import { Widget_shared } from './shared/WidgetShared'
-import { WidgetShared_BlockUI, WidgetShared_LineUI } from './shared/WidgetSharedUI'
 import { Widget_size } from './size/WidgetSize'
 import { WigetSize_BlockUI, WigetSize_LineUI } from './size/WidgetSizeUI'
 import { Widget_string } from './string/WidgetString'
@@ -63,7 +61,6 @@ export const WidgetUI = (
 } => {
     if (widget == null) return {}
 
-    if (widget instanceof Widget_shared)      return { WidgetLineUI: WidgetShared_LineUI,   WidgetBlockUI: WidgetShared_BlockUI }
     if (widget instanceof Widget_seed)        return { WidgetLineUI: WidgetSeedUI,          WidgetBlockUI: undefined }
     if (widget instanceof Widget_number)      return { WidgetLineUI: WidgetNumberUI,        WidgetBlockUI: undefined }
     if (widget instanceof Widget_string)      return { WidgetLineUI: WidgetStringUI,        WidgetBlockUI: undefined }
@@ -85,8 +82,12 @@ export const WidgetUI = (
     if (widget instanceof Widget_custom)      return { WidgetLineUI: WidgetCustomUI,        WidgetBlockUI: undefined }
     if (widget instanceof Widget_selectMany)  return { WidgetLineUI: WidgetSelectManyUI,    WidgetBlockUI: undefined }
     if (widget instanceof Widget_orbit)       return { WidgetLineUI: WidgetOrbitUI,         WidgetBlockUI: undefined }
+
+    // Non-UI form nodes
     if (widget instanceof Widget_optional)    return { WidgetLineUI: undefined,             WidgetBlockUI: undefined }
+    if (widget instanceof Widget_shared)      return { WidgetLineUI: undefined,             WidgetBlockUI: undefined }
     // if (widget instanceof Widget_optional) return { WidgetLineUI: WidgetOptional_LineUI, WidgetBlockUI: WidgetOptional_BlockUI }
+    // if (widget instanceof Widget_shared)      return { WidgetLineUI: WidgetShared_LineUI,   WidgetBlockUI: WidgetShared_BlockUI }
 
     // exhaust(widget)
     console.log(`🔴`, (widget as any).type, widget)
