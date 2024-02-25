@@ -43,7 +43,7 @@ const WidgetChoices_TabLineUI = observer(function WidgetChoicesTab_LineUI_(p: { 
     }
 
     return (
-        <div tw='rounded select-none ml-auto flex flex-wrap gap-x-0.5 gap-y-0'>
+        <div tw='rounded select-none ml-auto justify-end flex flex-wrap gap-x-0.5 gap-y-0'>
             {choices.map((c) => {
                 const isSelected = widget.serial.branches[c.key]
                 return (
