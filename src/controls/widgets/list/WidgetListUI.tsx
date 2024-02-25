@@ -35,7 +35,7 @@ export const WidgetListUI = observer(function WidgetListUI_<T extends Spec>(p: {
             <SortableList onSortEnd={p.widget.moveItem} className='list' draggedItemClassName='dragged'>
                 <div tw='flex flex-col gap-2'>
                     {subWidgets.map((subWidget, ix) => {
-                        const { WidgetLineUI, WidgetBlockUI } = WidgetDI.WidgetUI(subWidget) // WidgetDI.WidgetUI(widget)
+                        const { WidgetHeaderUI, WidgetBodyUI } = WidgetDI.WidgetUI(subWidget) // WidgetDI.WidgetUI(widget)
                         const collapsed = subWidget.serial.collapsed ?? false
                         return (
                             <SortableItem key={subWidget.id}>
@@ -51,9 +51,9 @@ export const WidgetListUI = observer(function WidgetListUI_<T extends Spec>(p: {
                                                 </div>
                                             </div>
                                         ) : null}
-                                        {WidgetLineUI && (
+                                        {WidgetHeaderUI && (
                                             <ErrorBoundary FallbackComponent={ErrorBoundaryFallback} onReset={(details) => {}}>
-                                                <WidgetLineUI widget={subWidget} />
+                                                <WidgetHeaderUI widget={subWidget} />
                                             </ErrorBoundary>
                                         )}
 
@@ -71,10 +71,10 @@ export const WidgetListUI = observer(function WidgetListUI_<T extends Spec>(p: {
                                         </div>
                                         <ListItemCollapseBtnUI req={subWidget} />
                                     </div>
-                                    {WidgetBlockUI && !collapsed && subWidget && (
+                                    {WidgetBodyUI && !collapsed && subWidget && (
                                         <ErrorBoundary FallbackComponent={ErrorBoundaryFallback} onReset={(details) => {}}>
                                             <div tw='ml-2 pl-2'>
-                                                <WidgetBlockUI widget={subWidget} />
+                                                <WidgetBodyUI widget={subWidget} />
                                             </div>
                                         </ErrorBoundary>
                                     )}
