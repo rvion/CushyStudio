@@ -51,7 +51,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
             tw={[
                 'bg-base-100',
                 //
-                isCollapsible && 'WIDGET-WITH-BLOCK',
+                isCollapsible && 'WIDGET-GROUP-BORDERED',
                 p.isTopLevel ? 'TOP-LEVEL-FIELD' : 'SUB-FIELD',
                 widget.type,
             ]}

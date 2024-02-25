@@ -25,7 +25,7 @@ body {
     /* border-left: 1px solid oklch(var(--p)/.2); */
     /* padding: 0 .3rem; */
 /* } */
-.WIDGET-WITH-BLOCK {
+.WIDGET-GROUP-BORDERED {
     /* background: oklch(var(--b2)); */
     border-radius: .3rem;
     /* border: 1px solid oklch(var(--b3)); */
