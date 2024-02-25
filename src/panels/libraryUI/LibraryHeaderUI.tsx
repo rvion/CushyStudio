@@ -28,3 +28,11 @@ export const IndexAllAppsBtnUI = observer(function IndexAllAppsBtnUI_(p: {}) {
         </div>
     )
 })
+export const ForceUpdateAllAppsBtnUI = observer(function IndexAllAppsBtnUI_(p: {}) {
+    const st = useSt()
+    return (
+        <div tw='btn-sm btn btn-primary' onClick={st.forceRefreshAllApps}>
+            Index All Apps
+        </div>
+    )
+})

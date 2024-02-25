@@ -135,6 +135,12 @@ export class STATE {
         console.log(`[🔴] ----------> found ${allFiles.length} files`)
         for (const x of allFiles) await x.extractScriptFromFile()
     }
+
+    forceRefreshAllApps = async () => {
+        const allFiles = recursivelyFindAppsInFolder(this.library, this.libraryFolderPathAbs)
+        console.log(`[🔴] ----------> found ${allFiles.length} files`)
+        for (const x of allFiles) await x.extractScriptFromFile({ force: true })
+    }
     /**
      * global hotReload persistent cache that should survive hot reload
      * useful to ensure various singleton stuff (e.g. dbHealth)
