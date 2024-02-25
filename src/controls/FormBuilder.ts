@@ -131,6 +131,7 @@ export class FormBuilder {
             startCollapsed?: boolean
             // extra for optionality
             startActive?: boolean,
+            collapsible?: boolean,
             // ... plus every other config param
         },
         widgetFn: (config:T['$Input']) => T) {
@@ -139,6 +140,7 @@ export class FormBuilder {
             requirements: config.requirements,
             startActive: config.startActive,
             startCollapsed: config.startCollapsed,
+            collapsible: config.collapsible ?? true,
             widget: widgetFn({ ...config, startCollapsed: undefined }),
         })
     }

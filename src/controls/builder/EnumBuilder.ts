@@ -15,7 +15,7 @@ export type IEnumBuilder = {
 
 export type IEnumBuilderOpt = {
     [K in keyof Requirable]: (
-        config: Omit<Widget_enum_config<Requirable[K]['$Value']>, 'enumName'> & { startActive?: boolean },
+        config: Omit<Widget_enum_config<Requirable[K]['$Value']>, 'enumName'> & { startActive?: boolean; collapsible?: boolean },
     ) => Spec<Widget_enum<Requirable[K]['$Value']>>
 }
 
@@ -41,6 +41,7 @@ export class EnumBuilderOpt {
                     form.builder.optional({
                         label: config.label,
                         startActive: config.startActive,
+                        collapsible: config.collapsible,
                         widget: new Spec('enum', /* form, */ { ...config, enumName }),
                     }),
             })

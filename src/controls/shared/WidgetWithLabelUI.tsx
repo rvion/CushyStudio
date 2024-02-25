@@ -11,6 +11,7 @@ import { AnimatedSizeUI } from '../widgets/choices/AnimatedSizeUI'
 import { WidgetDI } from '../widgets/WidgetUI.DI'
 import { RevealUI } from 'src/rsuite/reveal/RevealUI'
 import { Tooltip } from 'src/rsuite/shims'
+import { useState } from 'react'
 
 const KLS = WidgetDI
 
@@ -37,7 +38,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
         }
     }
     const LABEL = (
-        <span onClick={onLineClick} style={{ lineHeight: '1rem' }}>
+        <span tw={[p.widget instanceof KLS.Widget_optional && ' pr-1']} onClick={onLineClick} style={{ lineHeight: '1rem' }}>
             {widget.config.label ?? makeLabelFromFieldName(p.rootKey) ?? '...'}
             {p.widget.config.showID ? <span tw='opacity-50 italic text-sm'>#{p.widget.id.slice(0, 3)}</span> : null}
         </span>
@@ -68,19 +69,18 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                             // WidgetBlockUI ? undefined : 'shrink-0 text-right mr-1',
                         ]}
                         style={
-                            WidgetBlockUI || p.inline
+                            (WidgetBlockUI || p.inline) && p.widget && isCollapsible
                                 ? undefined
                                 : {
                                       flexShrink: 0,
                                       minWidth: '8rem',
                                       textAlign: 'right',
 
-                                      width: WidgetLineUI ? '25%' : undefined,
+                                      width: WidgetLineUI ? '35%' : undefined,
                                       marginRight: WidgetLineUI ? '0.25rem' : undefined,
                                   }
                         }
                     >
-                        <Widget_ToggleUI widget={p.widget} />
                         {p.widget.config.requirements && (
                             <InstallRequirementsBtnUI
                                 active={widget instanceof KLS.Widget_optional ? widget.serial.active : true}
@@ -90,6 +90,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                         {/* <InstallCustomNodeBtnUI recomandation={p.widget.config} /> */}
                         {widget.config.tooltip && <WidgetTooltipUI widget={p.widget} />}
                         {LABEL}
+                        <Widget_ToggleUI widget={p.widget} />
                         {/* {widget.serial.collapsed ? <span className='material-symbols-outlined'>keyboard_arrow_right</span> : null} */}
                         {/* {widget.serial.collapsed ? '{...}' : null} */}
                     </span>
@@ -134,23 +135,45 @@ export const Widget_CollapseBtnUI = observer(function Widget_CollapseBtnUI_(p: {
     )
 })
 
+let isDragging = false
+let wasEnabled = false
+
 export const Widget_ToggleUI = observer(function Widget_ToggleUI_(p: { widget: IWidget }) {
     const widget = p.widget
     if (!(widget instanceof KLS.Widget_optional)) return null
     const isActive = widget.serial.active
     const toggle = () => runInAction(widget.toggle)
+    const setOn = () => runInAction(widget.setOn)
+    const setOff = () => runInAction(widget.setOff)
+
+    const isDraggingListener = (ev: MouseEvent) => {
+        if (ev.button == 0) {
+            isDragging = false
+            window.removeEventListener('mouseup', isDraggingListener, true)
+        }
+    }
+
     return (
-        <div
-            style={{ width: '1.3rem', height: '1.3rem' }}
-            tw={[isActive ? 'bg-primary' : null, 'virtualBorder', 'rounded mr-1', 'cursor-pointer']}
+        <input
+            type='checkbox'
+            checked={isActive}
+            tw={['checkbox checkbox-primary']}
             tabIndex={-1}
-            onClick={(ev) => {
-                ev.stopPropagation()
-                toggle()
+            onMouseDown={(ev) => {
+                if (ev.button == 0) {
+                    ev.stopPropagation()
+                    toggle()
+                    isDragging = true
+                    wasEnabled = !isActive
+                    window.addEventListener('mouseup', isDraggingListener, true)
+                }
             }}
-        >
-            {isActive ? <span className='material-symbols-outlined text-primary-content'>check</span> : null}
-        </div>
+            onMouseEnter={(ev) => {
+                if (isDragging) {
+                    wasEnabled ? setOn() : setOff()
+                }
+            }}
+        />
     )
 })
 

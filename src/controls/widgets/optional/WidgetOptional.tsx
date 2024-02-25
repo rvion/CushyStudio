@@ -10,6 +10,7 @@ import { WidgetDI } from '../WidgetUI.DI'
 // CONFIG
 export type Widget_optional_config<T extends Spec> = WidgetConfigFields<{
     startActive?: boolean
+    collapsible?: boolean
     widget: T
 }>
 
@@ -38,7 +39,7 @@ export class Widget_optional<T extends Spec> implements IWidget<Widget_optional_
         if (this.serial.active) return this.childOrThrow.serialHash
         return 'x'
     }
-    readonly isCollapsible = true
+    readonly isCollapsible = this.config.collapsible ?? true
     readonly id: string
     readonly type: 'optional' = 'optional'
 
@@ -57,20 +58,10 @@ export class Widget_optional<T extends Spec> implements IWidget<Widget_optional_
 
     setOn = () => {
         this.serial.active = true
-        const unmounted = this.config.widget
-        const prevSerial = this.serial.child
-        if (prevSerial && unmounted.type === prevSerial.type) {
-            this.child = this.form.builder._HYDRATE(unmounted, prevSerial)
-        } else {
-            this.child = this.form.builder._HYDRATE(unmounted, null)
-            this.serial.child = this.child.serial
-        }
     }
 
     setOff = () => {
         this.serial.active = false
-        this.child = undefined
-        // this.serial.child = undefined
     }
 
     constructor(public form: Form<any>, public config: Widget_optional_config<T>, serial?: Widget_optional_serial<T>) {
@@ -84,6 +75,16 @@ export class Widget_optional<T extends Spec> implements IWidget<Widget_optional_
         }
         const isActive = serial?.active ?? defaultActive
         if (isActive) this.setOn()
+
+        const unmounted = this.config.widget
+        const prevSerial = this.serial.child
+        if (prevSerial && unmounted.type === prevSerial.type) {
+            this.child = this.form.builder._HYDRATE(unmounted, prevSerial)
+        } else {
+            this.child = this.form.builder._HYDRATE(unmounted, null)
+            this.serial.child = this.child.serial
+        }
+
         makeObservable(this, {
             serial: observable,
             value: computed,

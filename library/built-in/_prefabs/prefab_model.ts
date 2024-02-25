@@ -18,15 +18,15 @@ export const ui_model = () => {
                 label: 'Checkpoint',
                 requirements: ckpts.map((x) => ({ type: 'modelCustom', infos: x })),
             }),
+            checkpointConfig: form.enumOpt.Enum_CheckpointLoader_config_name({ label: 'Config', collapsible: false }),
             extra: form.choices({
                 appearance: 'tab',
                 items: {
-                    ckpt_config: form.enum.Enum_CheckpointLoader_config_name({ label: 'Config' }),
-                    rescale_cfg: form.auto.RescaleCFG(),
+                    rescaleCFG: form.float({ min: 0, max: 2, softMax: 1, default: 0.75 }),
                     vae: form.enum.Enum_VAELoader_vae_name({}),
                     clipSkip: form.int({ label: 'Clip Skip', default: 1, min: 1, max: 5 }),
                     freeU: form.group(),
-                    civtai_ckpt_air: form.string({
+                    civitai_ckpt_air: form.string({
                         tooltip: 'Civitai checkpoint Air, as found on the civitai Website. It should look like this: 43331@176425', // prettier-ignore
                         label: 'Civitai Ref',
                         placeHolder: 'e.g. 43331@176425',
@@ -44,15 +44,15 @@ export const run_model = (ui: OutputFor<typeof ui_model>) => {
 
     // 1. MODEL
     let ckptLoader
-    if (ui.extra.ckpt_config) {
+    if (ui.checkpointConfig) {
         ckptLoader = graph.CheckpointLoader({
             ckpt_name: ui.ckpt_name,
-            config_name: ui.extra.ckpt_config,
+            config_name: ui.checkpointConfig,
         })
-    } else if (ui.extra.civtai_ckpt_air) {
+    } else if (ui.extra.civitai_ckpt_air) {
         ckptLoader = graph.CivitAI$_Checkpoint$_Loader({
             ckpt_name: ui.ckpt_name,
-            ckpt_air: ui.extra.civtai_ckpt_air,
+            ckpt_air: ui.extra.civitai_ckpt_air,
             download_path: 'models\\checkpoints',
         })
     } else {
@@ -71,6 +71,11 @@ export const run_model = (ui: OutputFor<typeof ui_model>) => {
 
     // 4. Optional FreeU
     if (ui.extra.freeU) ckpt = graph.FreeU({ model: ckpt })
+
+    /* Rescale CFG */
+    if (ui.extra.rescaleCFG) {
+        ckpt = graph.RescaleCFG({ model: ckpt, multiplier: ui.extra.rescaleCFG })
+    }
 
     return { ckpt, vae, clip }
 }
