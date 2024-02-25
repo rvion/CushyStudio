@@ -48,9 +48,11 @@ export type SharedWidgetConfig = {
     i18n?: { [key: string]: string }
     className?: string
     startCollapsed?: boolean
-    awaysExpanded?: true
     showID?: boolean
     requirements?: Requirements[]
+    // options to disable certain UI features
+    awaysExpanded?: true
+    neverBordered?: true
 }
 
 export type Requirements =

@@ -30,10 +30,14 @@ app({
                     at: ui.choice({
                         label: 'Date',
                         appearance: 'tab',
+                        neverBordered: true,
                         items: {
                             ['Calculée']: ui.group({
+                                // having both `awaysExpanded` and `label` true skip the label part
+                                neverBordered: true,
                                 awaysExpanded: true,
                                 label: false,
+
                                 items: {
                                     [`D'après la`]: ui.selectOneV2(['Date de création', 'Date de modification']),
                                     offset: ui.int({ label: 'à J+' }),

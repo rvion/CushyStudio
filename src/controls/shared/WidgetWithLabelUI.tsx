@@ -40,6 +40,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
         if (widget.serial.collapsed) return (widget.serial.collapsed = false)
         if (isCollapsible && !widget.serial.collapsed) widget.serial.collapsed = true
     }
+    const showBorder = widget.config.neverBordered ? false : widget.hasBlock
     const LABEL = (
         <span onClick={onLineClick} style={{ lineHeight: '1rem' }}>
             {widget.config.label ?? makeLabelFromFieldName(p.rootKey) ?? '...'}
@@ -51,7 +52,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
             tw={[
                 'bg-base-100',
                 //
-                isCollapsible && 'WIDGET-GROUP-BORDERED',
+                showBorder && 'WIDGET-GROUP-BORDERED',
                 p.isTopLevel ? 'TOP-LEVEL-FIELD' : 'SUB-FIELD',
                 widget.type,
             ]}
