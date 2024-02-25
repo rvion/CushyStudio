@@ -54,7 +54,7 @@ import { WidgetDI } from './WidgetUI.DI'
  * this widget will then dispatch the individual requests to the appropriate sub-widgets
  * collect the responses and submit them to the back once completed and valid.
  */
-
+// prettier-ignore
 export const WidgetUI = (
     widget: IWidget,
 ): {
@@ -63,29 +63,30 @@ export const WidgetUI = (
 } => {
     if (widget == null) return {}
 
-    if (widget instanceof Widget_shared) return { WidgetLineUI: WidgetShared_LineUI, WidgetBlockUI: WidgetShared_BlockUI }
-    if (widget instanceof Widget_seed) return { WidgetLineUI: WidgetSeedUI, WidgetBlockUI: undefined }
-    if (widget instanceof Widget_number) return { WidgetLineUI: WidgetNumberUI, WidgetBlockUI: undefined }
-    if (widget instanceof Widget_string) return { WidgetLineUI: WidgetStringUI, WidgetBlockUI: undefined }
-    if (widget instanceof Widget_optional) return { WidgetLineUI: WidgetOptional_LineUI, WidgetBlockUI: WidgetOptional_BlockUI }
-    if (widget instanceof Widget_image) return { WidgetLineUI: WidgetSelectImageUI, WidgetBlockUI: undefined }
-    if (widget instanceof Widget_list) return { WidgetLineUI: WidgetList_LineUI, WidgetBlockUI: WidgetListUI }
-    if (widget instanceof Widget_listExt) return { WidgetLineUI: WidgetList_LineUI, WidgetBlockUI: WidgetListExtUI }
-    if (widget instanceof Widget_group) return { WidgetLineUI: WidgetGroup_LineUI, WidgetBlockUI: WidgetGroup_BlockUI }
-    if (widget instanceof Widget_size) return { WidgetLineUI: WigetSize_LineUI, WidgetBlockUI: WigetSize_BlockUI }
-    if (widget instanceof Widget_enum) return { WidgetLineUI: WidgetEnumUI, WidgetBlockUI: undefined }
-    if (widget instanceof Widget_matrix) return { WidgetLineUI: WidgetMatrixUI, WidgetBlockUI: undefined }
-    if (widget instanceof Widget_bool) return { WidgetLineUI: WidgetBoolUI, WidgetBlockUI: undefined }
-    if (widget instanceof Widget_inlineRun) return { WidgetLineUI: WidgetInlineRunUI, WidgetBlockUI: undefined }
-    if (widget instanceof Widget_prompt) return { WidgetLineUI: WidgetPrompt_LineUI, WidgetBlockUI: WidgetPromptUI }
-    if (widget instanceof Widget_loras) return { WidgetLineUI: WidgetLorasUI, WidgetBlockUI: undefined }
-    if (widget instanceof Widget_color) return { WidgetLineUI: WidgetColorUI, WidgetBlockUI: undefined }
-    if (widget instanceof Widget_selectOne) return { WidgetLineUI: WidgetSelectOneUI, WidgetBlockUI: undefined }
-    if (widget instanceof Widget_choices) return { WidgetLineUI: WidgetChoices_LineUI, WidgetBlockUI: WidgetChoicesUI }
-    if (widget instanceof Widget_markdown) return { WidgetLineUI: undefined, WidgetBlockUI: WidgetMardownUI }
-    if (widget instanceof Widget_custom) return { WidgetLineUI: WidgetCustomUI, WidgetBlockUI: undefined }
-    if (widget instanceof Widget_selectMany) return { WidgetLineUI: WidgetSelectManyUI, WidgetBlockUI: undefined }
-    if (widget instanceof Widget_orbit) return { WidgetLineUI: WidgetOrbitUI, WidgetBlockUI: undefined }
+    if (widget instanceof Widget_shared)      return { WidgetLineUI: WidgetShared_LineUI,   WidgetBlockUI: WidgetShared_BlockUI }
+    if (widget instanceof Widget_seed)        return { WidgetLineUI: WidgetSeedUI,          WidgetBlockUI: undefined }
+    if (widget instanceof Widget_number)      return { WidgetLineUI: WidgetNumberUI,        WidgetBlockUI: undefined }
+    if (widget instanceof Widget_string)      return { WidgetLineUI: WidgetStringUI,        WidgetBlockUI: undefined }
+    if (widget instanceof Widget_image)       return { WidgetLineUI: WidgetSelectImageUI,   WidgetBlockUI: undefined }
+    if (widget instanceof Widget_list)        return { WidgetLineUI: WidgetList_LineUI,     WidgetBlockUI: WidgetListUI }
+    if (widget instanceof Widget_listExt)     return { WidgetLineUI: WidgetList_LineUI,     WidgetBlockUI: WidgetListExtUI }
+    if (widget instanceof Widget_group)       return { WidgetLineUI: WidgetGroup_LineUI,    WidgetBlockUI: WidgetGroup_BlockUI }
+    if (widget instanceof Widget_size)        return { WidgetLineUI: WigetSize_LineUI,      WidgetBlockUI: WigetSize_BlockUI }
+    if (widget instanceof Widget_enum)        return { WidgetLineUI: WidgetEnumUI,          WidgetBlockUI: undefined }
+    if (widget instanceof Widget_matrix)      return { WidgetLineUI: WidgetMatrixUI,        WidgetBlockUI: undefined }
+    if (widget instanceof Widget_bool)        return { WidgetLineUI: WidgetBoolUI,          WidgetBlockUI: undefined }
+    if (widget instanceof Widget_inlineRun)   return { WidgetLineUI: WidgetInlineRunUI,     WidgetBlockUI: undefined }
+    if (widget instanceof Widget_prompt)      return { WidgetLineUI: WidgetPrompt_LineUI,   WidgetBlockUI: WidgetPromptUI }
+    if (widget instanceof Widget_loras)       return { WidgetLineUI: WidgetLorasUI,         WidgetBlockUI: undefined }
+    if (widget instanceof Widget_color)       return { WidgetLineUI: WidgetColorUI,         WidgetBlockUI: undefined }
+    if (widget instanceof Widget_selectOne)   return { WidgetLineUI: WidgetSelectOneUI,     WidgetBlockUI: undefined }
+    if (widget instanceof Widget_choices)     return { WidgetLineUI: WidgetChoices_LineUI,  WidgetBlockUI: WidgetChoicesUI }
+    if (widget instanceof Widget_markdown)    return { WidgetLineUI: undefined,             WidgetBlockUI: WidgetMardownUI }
+    if (widget instanceof Widget_custom)      return { WidgetLineUI: WidgetCustomUI,        WidgetBlockUI: undefined }
+    if (widget instanceof Widget_selectMany)  return { WidgetLineUI: WidgetSelectManyUI,    WidgetBlockUI: undefined }
+    if (widget instanceof Widget_orbit)       return { WidgetLineUI: WidgetOrbitUI,         WidgetBlockUI: undefined }
+    if (widget instanceof Widget_optional)    return { WidgetLineUI: undefined,             WidgetBlockUI: undefined }
+    // if (widget instanceof Widget_optional) return { WidgetLineUI: WidgetOptional_LineUI, WidgetBlockUI: WidgetOptional_BlockUI }
 
     // exhaust(widget)
     console.log(`🔴`, (widget as any).type, widget)

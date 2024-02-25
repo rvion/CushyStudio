@@ -1,4 +1,5 @@
 import type { IWidget } from '../IWidget'
+import type { Widget_optional } from '../widgets/optional/WidgetOptional'
 
 import { runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
@@ -9,6 +10,8 @@ import { ErrorBoundaryFallback } from '../../widgets/misc/ErrorBoundary'
 import { InstallRequirementsBtnUI } from '../REQUIREMENTS/Panel_InstallRequirementsUI'
 import { AnimatedSizeUI } from '../widgets/choices/AnimatedSizeUI'
 import { WidgetDI } from '../widgets/WidgetUI.DI'
+import { checkIfWidgetIsCollapsible } from './checkIfWidgetIsCollapsible'
+import { getActualWidgetToDisplay } from './getActualWidgetToDisplay'
 import { RevealUI } from 'src/rsuite/reveal/RevealUI'
 import { Tooltip } from 'src/rsuite/shims'
 
@@ -20,17 +23,14 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     isTopLevel?: boolean
     inline?: boolean
 }) {
-    const { rootKey, widget } = p
+    const rootKey = p.rootKey
+    const originalWidget = p.widget
+    const widget = getActualWidgetToDisplay(originalWidget)
 
     if (WidgetDI.WidgetUI == null) return <>WidgetDI.WidgetUI is null</>
     const { WidgetLineUI, WidgetBlockUI } = WidgetDI.WidgetUI(widget) // WidgetDI.WidgetUI(widget)
 
-    const isCollapsible: boolean = (() => {
-        if (widget.config.awaysExpanded) return false //
-        if (WidgetBlockUI == null) return false
-        if (!widget.hasBlock) return false
-        return true
-    })()
+    const isCollapsible: boolean = checkIfWidgetIsCollapsible(widget)
     const isCollapsed = widget.serial.collapsed && isCollapsible
 
     if (widget instanceof KLS.Widget_group && Object.keys(widget.fields).length === 0) return
@@ -44,14 +44,13 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     const LABEL = (
         <span onClick={onLineClick} style={{ lineHeight: '1rem' }}>
             {widget.config.label ?? makeLabelFromFieldName(p.rootKey) ?? '...'}
-            {p.widget.config.showID ? <span tw='opacity-50 italic text-sm'>#{p.widget.id.slice(0, 3)}</span> : null}
+            {widget.config.showID ? <span tw='opacity-50 italic text-sm'>#{widget.id.slice(0, 3)}</span> : null}
         </span>
     )
     return (
         <div
             tw={[
                 'bg-base-100',
-                //
                 showBorder && 'WIDGET-GROUP-BORDERED',
                 p.isTopLevel ? 'TOP-LEVEL-FIELD' : 'SUB-FIELD',
                 widget.type,
@@ -62,7 +61,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
             <AnimatedSizeUI>
                 {/* LINE */}
                 <div tw={[isCollapsible && 'WIDGET-LINE', 'flex items-center gap-0.5']}>
-                    {(isCollapsed || isCollapsible) && <Widget_CollapseBtnUI widget={p.widget} />}
+                    {(isCollapsed || isCollapsible) && <Widget_CollapseBtnUI widget={widget} />}
                     <span
                         tw={[
                             //
@@ -85,15 +84,15 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                                   }
                         }
                     >
-                        <Widget_ToggleUI widget={p.widget} />
-                        {p.widget.config.requirements && (
+                        <Widget_ToggleUI widget={originalWidget} />
+                        {widget.config.requirements && (
                             <InstallRequirementsBtnUI
                                 active={widget instanceof KLS.Widget_optional ? widget.serial.active : true}
-                                requirements={p.widget.config.requirements}
+                                requirements={widget.config.requirements}
                             />
                         )}
-                        {/* <InstallCustomNodeBtnUI recomandation={p.widget.config} /> */}
-                        {widget.config.tooltip && <WidgetTooltipUI widget={p.widget} />}
+                        {/* <InstallCustomNodeBtnUI recomandation={widget.config} /> */}
+                        {widget.config.tooltip && <WidgetTooltipUI widget={widget} />}
                         {LABEL}
                         {/* {widget.serial.collapsed ? <span className='material-symbols-outlined'>keyboard_arrow_right</span> : null} */}
                         {/* {widget.serial.collapsed ? '{...}' : null} */}
@@ -140,10 +139,10 @@ export const Widget_CollapseBtnUI = observer(function Widget_CollapseBtnUI_(p: {
 })
 
 export const Widget_ToggleUI = observer(function Widget_ToggleUI_(p: { widget: IWidget }) {
-    const widget = p.widget
-    if (!(widget instanceof KLS.Widget_optional)) return null
+    if (!(p.widget instanceof KLS.Widget_optional)) return null
+    const widget = p.widget as Widget_optional
+
     const isActive = widget.serial.active
-    const toggle = () => runInAction(widget.toggle)
     return (
         <div
             style={{ width: '1.3rem', height: '1.3rem' }}
@@ -151,7 +150,13 @@ export const Widget_ToggleUI = observer(function Widget_ToggleUI_(p: { widget: I
             tabIndex={-1}
             onClick={(ev) => {
                 ev.stopPropagation()
-                toggle()
+                runInAction(() => {
+                    widget.toggle()
+                    if (widget.child) {
+                        if (widget.serial.active) widget.child.serial.collapsed = false
+                        else widget.child.serial.collapsed = true
+                    }
+                })
             }}
         >
             {isActive ? <span className='material-symbols-outlined text-primary-content'>check</span> : null}

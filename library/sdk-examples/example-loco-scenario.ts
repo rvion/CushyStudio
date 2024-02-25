@@ -32,11 +32,11 @@ app({
                         appearance: 'tab',
                         neverBordered: true,
                         items: {
-                            ['Calculée']: ui.group({
+                            computed: ui.group({
                                 // having both `awaysExpanded` and `label` true skip the label part
                                 neverBordered: true,
                                 awaysExpanded: true,
-                                label: false,
+                                label: 'Calculée',
 
                                 items: {
                                     [`D'après la`]: ui.selectOneV2(['Date de création', 'Date de modification']),
