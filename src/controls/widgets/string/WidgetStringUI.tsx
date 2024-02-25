@@ -43,9 +43,6 @@ export const WidgetStringUI = observer(function WidgetStringUI_(p: { widget: Wid
                 onMouseDown={(ev) => {
                     if (ev.button == 1) {
                         let textInput = ev.currentTarget.querySelector('input[type="text"') as HTMLInputElement
-
-                        textInput.setAttribute('cursor', 'not-allowed')
-                        textInput.setAttribute('cursor', 'none')
                         textInput.focus()
                     }
                 }}
@@ -56,7 +53,6 @@ export const WidgetStringUI = observer(function WidgetStringUI_(p: { widget: Wid
                     placeholder={widget.config.placeHolder}
                     value={isEditing ? inputValue : val}
                     onChange={(ev) => {
-                        // widget.value = ev.target.value
                         setInputValue(ev.target.value)
                     }}
                     onDragStart={(ev) => {
@@ -64,17 +60,16 @@ export const WidgetStringUI = observer(function WidgetStringUI_(p: { widget: Wid
                         ev.preventDefault()
                     }}
                     onFocus={(ev) => {
+                        setEditing(true)
                         let textInput = ev.currentTarget
 
                         textInput.select()
                         startValue = val
                         setInputValue(val.toString())
-                        setEditing(true)
                     }}
                     onBlur={(ev) => {
                         setEditing(false)
                         const next = ev.currentTarget.value
-                        // activeSlider = null
 
                         if (cancelled) {
                             cancelled = false
