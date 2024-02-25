@@ -53,15 +53,24 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
     const [latestProps] = useState(() => observable({ onValueChange: p.onValueChange }))
     useEffect(() => runInAction(() => void (latestProps.onValueChange = p.onValueChange)), [p.onValueChange])
 
-    const syncValues = (value: number | string, roundingModifier = 1, soft: boolean = false) => {
+    const syncValues = (
+        value: number | string,
+        {
+            soft = false,
+            roundingModifier = 1,
+            skipRounding = false,
+        }: {
+            soft?: boolean
+            roundingModifier?: number
+            skipRounding?: boolean
+        } = {},
+    ) => {
         let num =
             typeof value === 'string' //
                 ? mode == 'int'
                     ? parseInt(value, 10)
                     : parseFloat(value)
                 : value
-
-        const roundingPrecise = Math.ceil(-Math.log10(step * 0.01 * roundingModifier))
 
         // Ensure is number
         if (isNaN(num) || typeof num != 'number') {
@@ -70,7 +79,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
         }
 
         if (forceSnap) {
-            num = mode == 'int' ? Math.round(num / step) * step : parseFloatNoRoundingErr(num, roundingPrecise)
+            num = mode == 'int' ? Math.round(num / step) * step : num
         }
 
         // Ensure ints are ints
@@ -78,9 +87,14 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
 
         // Ensure in range
         if (soft && startValue <= rangeMax && startValue >= rangeMin) {
-            num = parseFloatNoRoundingErr(clamp(num, rangeMin, rangeMax), roundingPrecise)
+            num = clamp(num, rangeMin, rangeMax)
         } else {
-            num = parseFloatNoRoundingErr(clamp(num, p.min ?? -Infinity, p.max ?? Infinity), roundingPrecise)
+            num = clamp(num, p.min ?? -Infinity, p.max ?? Infinity)
+        }
+
+        if (!skipRounding) {
+            const roundingPrecise = Math.ceil(-Math.log10(step * 0.01 * roundingModifier))
+            num = parseFloatNoRoundingErr(num, roundingPrecise)
         }
 
         latestProps.onValueChange(num)
@@ -118,7 +132,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
         lastShiftState = e.shiftKey
         lastControlState = e.ctrlKey
         lastValue = num
-        syncValues(num, e.shiftKey ? 0.01 : 1, true)
+        syncValues(num, { soft: true, roundingModifier: e.shiftKey ? 0.01 : 1 })
     }
 
     const cancelListener = (e: MouseEvent) => {
@@ -180,7 +194,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
                     onClick={(_) => {
                         startValue = val
                         let num = val - (mode === 'int' ? step : step * 0.1)
-                        syncValues(num, 1, true)
+                        syncValues(num, { soft: true })
                     }}
                 >
                     ◂
@@ -288,7 +302,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
                                         return
                                     }
 
-                                    syncValues(ev.currentTarget.value, 0.000001)
+                                    syncValues(ev.currentTarget.value, { skipRounding: true })
                                 }}
                                 onKeyDown={(ev) => {
                                     if (ev.key === 'Enter') {
@@ -322,7 +336,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
                     onClick={(_) => {
                         startValue = val
                         let num = val + (mode === 'int' ? step : step * 0.1)
-                        syncValues(num, 1, true)
+                        syncValues(num, { soft: true })
                     }}
                 >
                     ▸
