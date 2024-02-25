@@ -178,8 +178,9 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
         <div /* Root */
             className={p.className}
             tw={[
+                'WIDGET-FIELD',
                 'input-number-ui custom-roundness',
-                'h-7 flex-1 select-none min-w-16 cursor-ew-resize overflow-clip',
+                'flex-1 select-none min-w-16 cursor-ew-resize overflow-clip',
                 'bg-primary/30 border border-base-100 border-b-2 border-b-base-200',
                 !isEditing && 'hover:border-base-200 hover:border-b-base-300 hover:bg-primary/40',
             ]}
