@@ -30,7 +30,7 @@ export type Widget_custom_types<T> = {
 // STATE
 export interface Widget_custom<T> extends Widget_custom_types<T> {}
 export class Widget_custom<T> implements IWidget<Widget_custom_types<T>> {
-    readonly isCollapsible = true
+    readonly hasBlock = true
     readonly id: string
     readonly type: 'custom' = 'custom'
 

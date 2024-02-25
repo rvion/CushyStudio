@@ -50,7 +50,9 @@ export class Widget_group<T extends SchemaDict> implements IWidget<Widget_group_
             .map((v) => v.serialHash)
             .join(',')
     }
-    readonly isCollapsible = this.config.collapsible ?? true
+    get hasBlock() {
+        return Object.keys(this.fields).length > 0
+    }
     readonly id: string
     readonly type: 'group' = 'group'
 
@@ -104,7 +106,7 @@ export class Widget_group<T extends SchemaDict> implements IWidget<Widget_group_
 
         // safety nets
         /* 💊 */ if (this.serial.values_ == null) this.serial.values_ = {}
-        /* 💊 */ if (this.config.collapsible === false) this.serial.collapsed = undefined
+        /* 💊 */ if (this.config.awaysExpanded) this.serial.collapsed = undefined
 
         // allow to store ref to the object right away
         preHydrate?.(this)

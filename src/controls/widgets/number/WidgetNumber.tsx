@@ -42,7 +42,7 @@ export type Widget_number_types = {
 export interface Widget_number extends Widget_number_types {}
 export class Widget_number implements IWidget<Widget_number_types> {
     get serialHash () { return hash(this.value) } // prettier-ignore
-    readonly isCollapsible = false
+    readonly hasBlock = false
     readonly id: string
     readonly type: 'number' = 'number'
     readonly forceSnap: boolean = false

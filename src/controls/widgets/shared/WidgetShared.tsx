@@ -38,7 +38,7 @@ export class Widget_shared<T extends Spec> implements IWidget<Widget_string_type
     $Widget!: T['$Widget']
 
     get serialHash(): string { return this.config.rootKey } // prettier-ignore
-    readonly isCollapsible = true
+    readonly hasBlock = true
     readonly id: string
     readonly type: 'shared' = 'shared'
 

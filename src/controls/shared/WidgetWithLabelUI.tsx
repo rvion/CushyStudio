@@ -24,17 +24,21 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
 
     if (WidgetDI.WidgetUI == null) return <>WidgetDI.WidgetUI is null</>
     const { WidgetLineUI, WidgetBlockUI } = WidgetDI.WidgetUI(widget) // WidgetDI.WidgetUI(widget)
-    const isCollapsible = WidgetBlockUI != null && widget.isCollapsible
-    const collapsed = widget.serial.collapsed && isCollapsible
+
+    const isCollapsible: boolean = (() => {
+        if (widget.config.awaysExpanded) return false //
+        if (WidgetBlockUI == null) return false
+        if (!widget.hasBlock) return false
+        return true
+    })()
+    const isCollapsed = widget.serial.collapsed && isCollapsible
+
     if (widget instanceof KLS.Widget_group && Object.keys(widget.fields).length === 0) return
     const className = '' // `${clsX} __${widget.type} ${levelClass} flex flex-col items-baseline`
 
     const onLineClick = () => {
         if (widget.serial.collapsed) return (widget.serial.collapsed = false)
-        if (isCollapsible) {
-            if (widget.serial.collapsed) widget.serial.collapsed = false
-            else widget.serial.collapsed = true
-        }
+        if (isCollapsible && !widget.serial.collapsed) widget.serial.collapsed = true
     }
     const LABEL = (
         <span onClick={onLineClick} style={{ lineHeight: '1rem' }}>
@@ -57,7 +61,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
             <AnimatedSizeUI>
                 {/* LINE */}
                 <div tw={[isCollapsible && 'WIDGET-LINE', 'flex items-center gap-0.5']}>
-                    {(collapsed || isCollapsible) && <Widget_CollapseBtnUI widget={p.widget} />}
+                    {(isCollapsed || isCollapsible) && <Widget_CollapseBtnUI widget={p.widget} />}
                     <span
                         tw={[
                             //
@@ -102,7 +106,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                 </div>
 
                 {/* BLOCK */}
-                {WidgetBlockUI && !collapsed && (
+                {WidgetBlockUI && !isCollapsed && (
                     <ErrorBoundary FallbackComponent={ErrorBoundaryFallback} onReset={(details) => {}}>
                         <div tw={[isCollapsible && 'WIDGET-BLOCK']}>
                             <WidgetBlockUI widget={widget} />

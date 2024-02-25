@@ -20,7 +20,7 @@ export type IWidget<K extends $WidgetTypes = $WidgetTypes> = {
     $Output: K['$Output']
 
     id: string
-    isCollapsible: boolean
+    hasBlock: boolean
     readonly serialHash: string
     readonly type: K['$Type']
     readonly value: K['$Output']
@@ -48,7 +48,7 @@ export type SharedWidgetConfig = {
     i18n?: { [key: string]: string }
     className?: string
     startCollapsed?: boolean
-    collapsible?: boolean
+    awaysExpanded?: true
     showID?: boolean
     requirements?: Requirements[]
 }

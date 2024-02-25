@@ -19,7 +19,6 @@ export type CompiledPrompt = {
 // CONFIG
 export type Widget_prompt_config = WidgetConfigFields<{
     default?: string
-    textarea?: boolean
     placeHolder?: string
 }>
 
@@ -45,7 +44,7 @@ export interface Widget_prompt extends Widget_prompt_types {}
 export class Widget_prompt implements IWidget<Widget_prompt_types> {
     get serialHash () { return hash(this.serial.val) } // prettier-ignore
 
-    get isCollapsible() { return this.config.textarea ?? true } // prettier-ignore
+    get hasBlock() { return true } // prettier-ignore
 
     readonly id: string
     readonly type: 'prompt' = 'prompt'
