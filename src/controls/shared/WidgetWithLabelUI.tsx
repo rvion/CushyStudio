@@ -84,7 +84,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                                       minWidth: '8rem',
                                       textAlign: 'right',
 
-                                      width: WidgetLineUI ? '25%' : undefined,
+                                      width: WidgetLineUI ? '35%' : undefined,
                                       marginRight: WidgetLineUI ? '0.25rem' : undefined,
                                   }
                         }
