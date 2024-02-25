@@ -72,5 +72,10 @@ export const run_model = (ui: OutputFor<typeof ui_model>) => {
     // 4. Optional FreeU
     if (ui.extra.freeU) ckpt = graph.FreeU({ model: ckpt })
 
+    /* Rescale CFG */
+    if (ui.extra.rescaleCFG) {
+        ckpt = graph.RescaleCFG({ model: ckpt, multiplier: ui.extra.rescaleCFG })
+    }
+
     return { ckpt, vae, clip }
 }
