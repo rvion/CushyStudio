@@ -94,13 +94,11 @@ export class FormBuilder {
     intOpt      = (config: Omit<Widget_number_config, 'mode'>                   & { startActive?: boolean } = {}) => this.wrapOptional<Spec<Widget_number>    >({ collapsible: false, ...config }, this.number)
     floatOpt    = (config: Omit<Widget_number_config, 'mode'>                   & { startActive?: boolean } = {}) => this.wrapOptional<Spec<Widget_number>    >({ collapsible: false, ...config }, this.number)
     numberOpt   = (config: Omit<Widget_number_config, 'mode'>                   & { startActive?: boolean } = {}) => this.wrapOptional<Spec<Widget_number>    >({ collapsible: false, ...config }, this.number)
-    imageOpt    = (config: Widget_image_config                                  & { startActive?: boolean } = {}) => this.wrapOptional<Spec<Widget_image>     >({ collapsible: true, ...config }, this.image)
-    promptOpt   = (config: Widget_prompt_config                                 & { startActive?: boolean } = {}) => this.wrapOptional<Spec<Widget_prompt>    >({ collapsible: true, ...config }, this.prompt)
-    colorOpt    = (config: Widget_color_config                                  & { startActive?: boolean } = {}) => this.wrapOptional<Spec<Widget_color>     >({ collapsible: true, ...config }, this.color)
-    groupOpt    = <const T extends SchemaDict>(config: Widget_group_config<T>   & { startActive?: boolean } = {}) => this.wrapOptional<Spec<Widget_group<T>>  >({ collapsible: true, ...config }, this.group)
-    regionalOpt = <const T extends Spec>      (config: Widget_listExt_config<T> & { startActive?: boolean }     ) => this.wrapOptional<Spec<Widget_listExt<T>>>({ collapsible: true, ...config }, this.regional)
-
-    /**
+    imageOpt    = (config: Widget_image_config                                  & { startActive?: boolean } = {}) => this.wrapOptional<Spec<Widget_image>     >({ collapsible: true,  ...config }, this.image)
+    promptOpt   = (config: Widget_prompt_config                                 & { startActive?: boolean } = {}) => this.wrapOptional<Spec<Widget_prompt>    >({ collapsible: true,  ...config }, this.prompt)
+    colorOpt    = (config: Widget_color_config                                  & { startActive?: boolean } = {}) => this.wrapOptional<Spec<Widget_color>     >({ collapsible: true,  ...config }, this.color)
+    groupOpt    = <const T extends SchemaDict>(config: Widget_group_config<T>   & { startActive?: boolean } = {}) => this.wrapOptional<Spec<Widget_group<T>>  >({ collapsible: true,  ...config }, this.group)
+    regionalOpt = <const T extends Spec>      (config: Widget_listExt_config<T> & { startActive?: boolean }     ) => this.wrapOptional<Spec<Widget_listExt<T>>>({ collapsible: true,  ...config }, this.regional)    /**
      * Calling this function will mount and instanciate the subform right away
      * Subform will be register in the root form `group`, using `__${key}__` as the key
      * This is a core abstraction that enables features like
