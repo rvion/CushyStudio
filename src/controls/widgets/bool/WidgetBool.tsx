@@ -30,7 +30,7 @@ export type Widget_string_types = {
 // STATE
 export interface Widget_bool extends Widget_string_types {}
 export class Widget_bool implements IWidget<Widget_string_types> {
-    readonly isCollapsible = false
+    readonly hasBlock = false
     readonly id: string
     readonly type: 'bool' = 'bool'
 

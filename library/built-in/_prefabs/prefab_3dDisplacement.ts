@@ -20,6 +20,7 @@ export const ui_3dDisplacement = () => {
                 }),
                 depth: form.choice({
                     default: 'Marigold',
+                    appearance: 'tab',
                     items: {
                         MiDaS: form.group(),
                         Zoe: form.group(),

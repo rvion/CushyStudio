@@ -7,10 +7,11 @@ import { nanoid } from 'nanoid'
 import { hash } from 'ohash'
 
 import { WidgetDI } from '../WidgetUI.DI'
+import { makeLabelFromFieldName } from 'src/utils/misc/makeLabelFromFieldName'
 import { toastError } from 'src/utils/misc/toasts'
 
 // CONFIG
-export type Widget_choices_config<T extends SchemaDict> = WidgetConfigFields<{
+export type Widget_choices_config<T extends SchemaDict = SchemaDict> = WidgetConfigFields<{
     items: T
     multi: boolean
     default?: { [k in keyof T]?: boolean } | keyof T
@@ -19,7 +20,7 @@ export type Widget_choices_config<T extends SchemaDict> = WidgetConfigFields<{
 }>
 
 // SERIAL
-export type Widget_choices_serial<T extends SchemaDict> = WidgetSerialFields<{
+export type Widget_choices_serial<T extends SchemaDict = SchemaDict> = WidgetSerialFields<{
     type: 'choices'
     active: true
     branches: { [k in keyof T]?: boolean }
@@ -27,12 +28,12 @@ export type Widget_choices_serial<T extends SchemaDict> = WidgetSerialFields<{
 }>
 
 // OUT
-export type Widget_choices_output<T extends SchemaDict> = {
+export type Widget_choices_output<T extends SchemaDict = SchemaDict> = {
     [k in keyof T]?: T[k]['$Output']
 }
 
 // TYPES
-export type Widget_choices_types<T extends SchemaDict> = {
+export type Widget_choices_types<T extends SchemaDict = SchemaDict> = {
     $Type: 'choices'
     $Input: Widget_choices_config<T>
     $Serial: Widget_choices_serial<T>
@@ -40,9 +41,13 @@ export type Widget_choices_types<T extends SchemaDict> = {
 }
 
 // STATE
-export interface Widget_choices<T extends SchemaDict> extends Widget_choices_types<T> {}
-export class Widget_choices<T extends SchemaDict> implements IWidget<Widget_choices_types<T>> {
-    readonly isCollapsible = true
+export interface Widget_choices<T extends SchemaDict = SchemaDict> extends Widget_choices_types<T> {}
+export class Widget_choices<T extends SchemaDict = SchemaDict> implements IWidget<Widget_choices_types<T>> {
+    get hasBlock() {
+        return true
+        // if (this.activeBranches.length > 0) return true
+        // return false
+    }
     readonly id: string
     readonly type: 'choices' = 'choices'
 
@@ -61,6 +66,15 @@ export class Widget_choices<T extends SchemaDict> implements IWidget<Widget_choi
 
     get choices(): (keyof T & string)[] {
         return Object.keys(this.config.items)
+    }
+    get choicesWithLabels(): { key: keyof T & string; label: string }[] {
+        return Object.entries(this.config.items).map(([key, value]) => ({
+            key,
+            // note:
+            // if child.config.label === false => makeLabelFromFieldName(key)
+            // if child.config.label === '' => makeLabelFromFieldName(key)
+            label: value.config.label || makeLabelFromFieldName(key),
+        }))
     }
 
     get activeBranches(): (keyof T & string)[] {

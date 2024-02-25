@@ -30,7 +30,7 @@ export class Widget_color implements IWidget<Widget_color_types> {
     get serialHash(): string {
         return hash(this.value)
     }
-    readonly isCollapsible = false
+    readonly hasBlock = false
     readonly id: string
     readonly type: 'color' = 'color'
 

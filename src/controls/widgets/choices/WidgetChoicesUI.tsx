@@ -31,10 +31,7 @@ export const WidgetChoicesUI = observer(function WidgetChoicesUI_(p: { widget: W
 
 const WidgetChoices_TabLineUI = observer(function WidgetChoicesTab_LineUI_(p: { widget: Widget_choices<SchemaDict> }) {
     const widget = p.widget
-    type Entry = { key: string; value?: Maybe<boolean> }
-    const choicesStr: string[] = widget.choices
-    const choices: Entry[] = choicesStr.map((v) => ({ key: v }))
-
+    const choices = widget.choicesWithLabels // choicesStr.map((v) => ({ key: v }))
     const [isDragging, setIsDragging] = useState<boolean>(false)
     const [wasEnabled, setWasEnabled] = useState<boolean>(false)
 
@@ -46,7 +43,7 @@ const WidgetChoices_TabLineUI = observer(function WidgetChoicesTab_LineUI_(p: { 
     }
 
     return (
-        <div tw='rounded select-none ml-auto flex flex-wrap gap-x-0.5 gap-y-0'>
+        <div tw='rounded select-none ml-auto justify-end flex flex-wrap gap-x-0.5 gap-y-0'>
             {choices.map((c) => {
                 const isSelected = widget.serial.branches[c.key]
                 return (
@@ -77,7 +74,7 @@ const WidgetChoices_TabLineUI = observer(function WidgetChoicesTab_LineUI_(p: { 
                             'border-b-2 border-b-base-300',
                         ]}
                     >
-                        {makeLabelFromFieldName(c.key)}
+                        {makeLabelFromFieldName(c.label)}
                     </div>
                 )
             })}

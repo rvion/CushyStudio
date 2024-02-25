@@ -27,7 +27,7 @@ export type Widget_markdown_types = {
 // STATE
 export interface Widget_markdown extends Widget_markdown_types {}
 export class Widget_markdown implements IWidget<Widget_markdown_types> {
-    readonly isCollapsible = true
+    readonly hasBlock = true
     readonly id: string
     readonly type: 'markdown' = 'markdown'
     readonly serial: Widget_markdown_serial

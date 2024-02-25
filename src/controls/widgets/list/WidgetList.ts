@@ -39,7 +39,7 @@ export class Widget_list<T extends Spec> implements IWidget<Widget_list_types<T>
     get serialHash(): string {
         return this.items.map((v) => v.serialHash).join(',')
     }
-    readonly isCollapsible = true
+    get hasBlock(): boolean { return this.items.length > 0 } // prettier-ignore
     readonly id: string
     readonly type: 'list' = 'list'
 

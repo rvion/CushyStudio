@@ -88,6 +88,8 @@ export class FormBuilder {
         requirements: spec.config.requirements,
         startActive: startActive,
         startCollapsed: spec.config.startCollapsed,
+        awaysExpanded: spec.config.awaysExpanded,
+        neverBordered: spec.config.neverBordered,
     })
     stringOpt   = (config: Widget_string_config                                 & { startActive?: boolean } = {}) => this.wrapOptional<Spec<Widget_string>    >(config, this.string)
     intOpt      = (config: Omit<Widget_number_config, 'mode'>                   & { startActive?: boolean } = {}) => this.wrapOptional<Spec<Widget_number>    >(config, this.number)

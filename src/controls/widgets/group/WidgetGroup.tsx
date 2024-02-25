@@ -7,6 +7,8 @@ import { nanoid } from 'nanoid'
 
 import { WidgetDI } from '../WidgetUI.DI'
 import { Spec } from 'src/controls/Prop'
+import { checkIfWidgetIsCollapsible } from 'src/controls/shared/checkIfWidgetIsCollapsible'
+import { getActualWidgetToDisplay } from 'src/controls/shared/getActualWidgetToDisplay'
 import { runWithGlobalForm } from 'src/models/_ctx2'
 
 // CONFIG
@@ -43,29 +45,37 @@ export class Widget_group<T extends SchemaDict> implements IWidget<Widget_group_
     static Prop = <T extends SchemaDict>(config: Widget_group_config<T>) => new Spec('group', config)
 
     get summary(): string {
-        return this.config.summary?.(this.value) ?? Object.keys(this.fields).length + ' items'
+        return this.config.summary?.(this.value) ?? Object.keys(this.fields).length + ' fields'
     }
     get serialHash(): string {
         return Object.values(this.fields)
             .map((v) => v.serialHash)
             .join(',')
     }
-    readonly isCollapsible = this.config.collapsible ?? true
+    get hasBlock() {
+        return Object.keys(this.fields).length > 0
+    }
     readonly id: string
     readonly type: 'group' = 'group'
 
     collapseAllEntries = () => {
-        for (const [key, item] of this.entries) {
-            if (item.isCollapsible && item.serial.active) item.serial.collapsed = true
+        for (const [key, _item] of this.entries) {
+            const item = getActualWidgetToDisplay(_item)
+            if (item.serial.collapsed) continue
+            const isCollapsible = checkIfWidgetIsCollapsible(item)
+            if (isCollapsible) item.serial.collapsed = true
         }
     }
     expandAllEntries = () => {
-        for (const [key, item] of this.entries) item.serial.collapsed = undefined
+        for (const [key, _item] of this.entries) {
+            const item = getActualWidgetToDisplay(_item)
+            item.serial.collapsed = undefined
+        }
     }
 
     /** all [key,value] pairs */
     get entries() {
-        return Object.entries(this.fields) as [string, any][]
+        return Object.entries(this.fields) as [string, IWidget][]
     }
 
     at = <K extends keyof T>(key: K): T[K]['$Widget'] => this.fields[key]
@@ -104,7 +114,7 @@ export class Widget_group<T extends SchemaDict> implements IWidget<Widget_group_
 
         // safety nets
         /* 💊 */ if (this.serial.values_ == null) this.serial.values_ = {}
-        /* 💊 */ if (this.config.collapsible === false) this.serial.collapsed = undefined
+        /* 💊 */ if (this.config.awaysExpanded) this.serial.collapsed = undefined
 
         // allow to store ref to the object right away
         preHydrate?.(this)

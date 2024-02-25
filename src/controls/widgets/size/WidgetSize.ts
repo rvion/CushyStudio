@@ -41,7 +41,10 @@ export class Widget_size implements IWidget<Widget_size_types> {
         return state
     }
     get serialHash() { return hash(this.value) } // prettier-ignore
-    readonly isCollapsible = this.config.collapsible ?? false
+    get hasBlock() {
+        if (this.sizeHelper.isAspectRatioLocked) return true
+        return false
+    }
     readonly id: string
     readonly type: 'size' = 'size'
     readonly serial: Widget_size_serial

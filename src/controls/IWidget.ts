@@ -20,13 +20,13 @@ export type IWidget<K extends $WidgetTypes = $WidgetTypes> = {
     $Output: K['$Output']
 
     id: string
-    isCollapsible: boolean
+    hasBlock: boolean
     readonly serialHash: string
     readonly type: K['$Type']
     readonly value: K['$Output']
     readonly serial: K['$Serial']
     readonly form: Form<any>
-    readonly config: WidgetConfigFields<any>
+    readonly config: K['$Input'] // WidgetConfigFields<any>
 }
 
 export type GetWidgetResult<Widget> = Widget extends { $Output: infer O } ? O : never
@@ -48,9 +48,11 @@ export type SharedWidgetConfig = {
     i18n?: { [key: string]: string }
     className?: string
     startCollapsed?: boolean
-    collapsible?: boolean
     showID?: boolean
     requirements?: Requirements[]
+    // options to disable certain UI features
+    awaysExpanded?: true
+    neverBordered?: true
 }
 
 export type Requirements =

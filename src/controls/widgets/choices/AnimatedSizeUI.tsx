@@ -2,7 +2,7 @@ import { runInAction } from 'mobx'
 import { observer, useLocalObservable } from 'mobx-react-lite'
 import { ReactNode } from 'react'
 
-export const AnimatedSizeUI = observer(function AnimatedSizeUI_(p: { children?: ReactNode }) {
+export const AnimatedSizeUI = observer(function AnimatedSizeUI_(p: { className?: string; children?: ReactNode }) {
     const size = useLocalObservable(() => ({
         observer: new ResizeObserver((e, obs) => {
             runInAction(() => {
@@ -18,7 +18,7 @@ export const AnimatedSizeUI = observer(function AnimatedSizeUI_(p: { children?: 
     const ro = size.observer
 
     return (
-        <div tw='animated overflow-hidden' style={{ height: `${size.height}px` }}>
+        <div className={p.className} tw='animated overflow-hidden' style={{ height: `${size.height}px` }}>
             <div
                 ref={(e) => {
                     if (e == null) return ro.disconnect()

@@ -8,7 +8,7 @@ import { nanoid } from 'nanoid'
 import { WidgetDI } from '../WidgetUI.DI'
 
 // CONFIG
-export type Widget_shared_config<T extends Spec> = WidgetConfigFields<{
+export type Widget_shared_config<T extends Spec = Spec> = WidgetConfigFields<{
     startActive?: boolean
     /** shared widgets must be registered in the form root group */
     rootKey: string
@@ -21,10 +21,10 @@ export type Widget_shared_serial = WidgetSerialFields<{
 }>
 
 // OUT
-export type Widget_shared_output<T extends Spec> = T['$Output']
+export type Widget_shared_output<T extends Spec = Spec> = T['$Output']
 
 // TYPES
-export type Widget_string_types<T extends Spec> = {
+export type Widget_string_types<T extends Spec = Spec> = {
     $Type: 'shared'
     $Input: Widget_shared_config<T>
     $Serial: Widget_shared_serial
@@ -32,13 +32,15 @@ export type Widget_string_types<T extends Spec> = {
 }
 
 // STATE
-export interface Widget_shared<T extends Spec> extends Widget_string_types<T> {}
-export class Widget_shared<T extends Spec> implements IWidget<Widget_string_types<T>> {
+export interface Widget_shared<T extends Spec = Spec> extends Widget_string_types<T> {}
+export class Widget_shared<T extends Spec = Spec> implements IWidget<Widget_string_types<T>> {
     // 👇 magically allow type-safe use of Mounted Widget_shared as Unmounted
     $Widget!: T['$Widget']
 
     get serialHash(): string { return this.config.rootKey } // prettier-ignore
-    readonly isCollapsible = true
+    get hasBlock(): boolean {
+        return this.shared.hasBlock
+    }
     readonly id: string
     readonly type: 'shared' = 'shared'
 

@@ -51,7 +51,7 @@ export type Widget_listExt_types<T extends Spec> = {
 // STATE
 export interface Widget_listExt<T extends Spec> extends Widget_listExt_types<T> {}
 export class Widget_listExt<T extends Spec> implements IWidget<Widget_listExt_types<T>> {
-    readonly isCollapsible = true
+    readonly hasBlock = true
     readonly id: string
     readonly type: 'listExt' = 'listExt'
 

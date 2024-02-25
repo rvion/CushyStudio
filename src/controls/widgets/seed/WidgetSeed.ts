@@ -37,7 +37,7 @@ export type Widget_seed_types = {
 // STATE
 export interface Widget_seed extends Widget_seed_types {}
 export class Widget_seed implements IWidget<Widget_seed_types> {
-    readonly isCollapsible = false
+    readonly hasBlock = false
     readonly id: string
     readonly type: 'seed' = 'seed'
     readonly serial: Widget_seed_serial
