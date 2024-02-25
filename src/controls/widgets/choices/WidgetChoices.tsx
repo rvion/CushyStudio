@@ -44,8 +44,9 @@ export type Widget_choices_types<T extends SchemaDict = SchemaDict> = {
 export interface Widget_choices<T extends SchemaDict = SchemaDict> extends Widget_choices_types<T> {}
 export class Widget_choices<T extends SchemaDict = SchemaDict> implements IWidget<Widget_choices_types<T>> {
     get hasBlock() {
-        if (this.activeBranches.length > 0) return true
-        return false
+        return true
+        // if (this.activeBranches.length > 0) return true
+        // return false
     }
     readonly id: string
     readonly type: 'choices' = 'choices'
