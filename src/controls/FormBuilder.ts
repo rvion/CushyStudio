@@ -127,10 +127,10 @@ export class FormBuilder {
             // from SharedWidgetProps
             label?: string | false
             requirements?: Requirements[]
-            collapsible?: boolean
             startCollapsed?: boolean
             // extra for optionality
             startActive?: boolean
+            collapsible?: boolean
             // ... plus every other config param
         },
         widgetFn: (config:T['$Input']) => T) {
