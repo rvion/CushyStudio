@@ -1,10 +1,10 @@
 import type { IWidget } from '../IWidget'
 
-import { WidgetDI } from '../widgets/WidgetUI.DI'
+import { isWidgetOptional, isWidgetShared } from '../widgets/WidgetUI.DI'
 
 /** allow to handle shared and optionals */
-export function getActualWidgetToDisplay(originalWidget: IWidget) {
-    if (originalWidget instanceof WidgetDI.Widget_optional) return originalWidget.child
-    if (originalWidget instanceof WidgetDI.Widget_shared) return originalWidget.shared
+export function getActualWidgetToDisplay(originalWidget: IWidget): IWidget {
+    if (isWidgetOptional(originalWidget)) return originalWidget.child
+    if (isWidgetShared(originalWidget)) return originalWidget.shared
     return originalWidget
 }
