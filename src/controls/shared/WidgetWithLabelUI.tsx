@@ -22,28 +22,56 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     rootKey: string
     isTopLevel?: boolean
     inline?: boolean
+    /**
+     * override the label (false to force disable the label)
+     * some widget like `choice`, already display the selected header in their own way
+     * so they may want to skip the label.
+     * */
+    label?: string | false
 }) {
     const rootKey = p.rootKey
     const originalWidget = p.widget
     const widget = getActualWidgetToDisplay(originalWidget)
     const isDisabled = isWidgetOptional(originalWidget) && !originalWidget.serial.active
 
-    const WidgetHeaderUI = widget.HeaderUI // WidgetDI.WidgetUI(widget)
-    const WidgetBodyUI = widget.BodyUI // WidgetDI.WidgetUI(widget)
+    const HeaderUI = widget.HeaderUI // WidgetDI.WidgetUI(widget)
+    const BodyUI = widget.BodyUI // WidgetDI.WidgetUI(widget)
 
     const isCollapsible: boolean = checkIfWidgetIsCollapsible(widget)
-    const isCollapsed = widget.serial.collapsed && isCollapsible
+    const isCollapsed = (widget.serial.collapsed ?? isDisabled) && isCollapsible
 
-    if (widget instanceof KLS.Widget_group && Object.keys(widget.fields).length === 0) return
+    // 👇 we can't do that, cause those groups may have requirements
+    // ⏸️ if (widget instanceof KLS.Widget_group && Object.keys(widget.fields).length === 0) return
 
-    const onLineClick = () => {
+    const onLabelClick = () => {
         if (widget.serial.collapsed) return (widget.serial.collapsed = false)
-        if (isCollapsible && !widget.serial.collapsed) widget.serial.collapsed = true
+        if (isCollapsible && !widget.serial.collapsed) return (widget.serial.collapsed = true)
+        if (!isCollapsible && isWidgetOptional(originalWidget)) return originalWidget.toggle()
     }
-    const showBorder = widget.config.neverBordered ? false : widget.hasBlock
+
+    const showBorder = (() => {
+        // if app author manually specify they want no border, then we respect that
+        if (widget.config.border != null) return widget.config.border
+        // if the widget ovveride the default border => we respect that
+        if (widget.border != null) return widget.border
+        // if the widget do NOT have a body => we do not show the border
+        if (widget.BodyUI == null) return false
+        // default case when we have a body => we show the border
+        return true
+    })()
+
+    const labelText: string | false = (() => {
+        // if parent widget wants to override the label (or disable it with false), we accept
+        if (p.label != null) return p.label
+        // if widget defines it's own label (or disable it with false), we accept
+        if (widget.config.label != null) return widget.config.label
+        // if parent told use which `key` this sub-widget was mounted to, we use that to derive a label
+        return makeLabelFromFieldName(p.rootKey)
+    })()
+
     const LABEL = (
-        <span onClick={onLineClick} style={{ lineHeight: '1rem' }}>
-            {widget.config.label ?? makeLabelFromFieldName(p.rootKey) ?? '...'}
+        <span onClick={onLabelClick} style={{ lineHeight: '1rem' }}>
+            {labelText}
             {widget.config.showID ? <span tw='opacity-50 italic text-sm'>#{widget.id.slice(0, 3)}</span> : null}
         </span>
     )
@@ -67,8 +95,9 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                     (label, collapse button, toggle button, tooltip, etc.)
                     Only way to have it completely disabled is to have no label, no tooltip, no requirements, etc.
                 */}
-                <div tw={[isCollapsible && 'WIDGET-LINE', 'flex items-center gap-0.5']}>
+                <div tw={['flex items-center gap-0.5']}>
                     {(isCollapsed || isCollapsible) && <Widget_CollapseBtnUI widget={widget} />}
+                    {/* isCollapsible:{isCollapsible ? '🟢' : '❌'} */}
                     <span
                         tw={[
                             'flex justify-end gap-0.5',
@@ -77,19 +106,19 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                             isDisabled ? undefined : 'text-primary',
                         ]}
                         style={
-                            WidgetBodyUI || p.inline
+                            BodyUI || p.inline
                                 ? undefined
                                 : {
                                       flexShrink: 0,
                                       minWidth: '8rem',
                                       textAlign: 'right',
 
-                                      width: WidgetHeaderUI ? '35%' : undefined,
-                                      marginRight: WidgetHeaderUI ? '0.25rem' : undefined,
+                                      width: HeaderUI ? '35%' : undefined,
+                                      marginRight: HeaderUI ? '0.25rem' : undefined,
                                   }
                         }
                     >
-                        <Widget_ToggleUI widget={originalWidget} />
+                        {BodyUI && <Widget_ToggleUI widget={originalWidget} />}
                         {widget.config.requirements && (
                             <InstallRequirementsBtnUI
                                 active={widget instanceof KLS.Widget_optional ? widget.serial.active : true}
@@ -98,22 +127,23 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                         )}
                         {widget.config.tooltip && <WidgetTooltipUI widget={widget} />}
                         {LABEL}
+                        {!BodyUI && <Widget_ToggleUI widget={originalWidget} />}
                     </span>
                     {/* )} */}
-                    {WidgetHeaderUI && (
+                    {HeaderUI && (
                         <div tw='flex items-center gap-0.5 flex-1' style={styleDISABLED}>
                             <ErrorBoundary FallbackComponent={ErrorBoundaryFallback} onReset={(details) => {}}>
-                                <WidgetHeaderUI widget={widget} />
+                                <HeaderUI widget={widget} />
                             </ErrorBoundary>
                         </div>
                     )}
                 </div>
 
                 {/* BLOCK */}
-                {WidgetBodyUI && !isCollapsed && (
+                {BodyUI && !isCollapsed && (
                     <ErrorBoundary FallbackComponent={ErrorBoundaryFallback} onReset={(details) => {}}>
                         <div style={styleDISABLED} tw={[isCollapsible && 'WIDGET-BLOCK']}>
-                            <WidgetBodyUI widget={widget} />
+                            <BodyUI widget={widget} />
                         </div>
                     </ErrorBoundary>
                 )}

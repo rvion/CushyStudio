@@ -47,19 +47,17 @@ export interface Widget_choices<T extends SchemaDict = SchemaDict> extends Widge
 export class Widget_choices<T extends SchemaDict = SchemaDict> implements IWidget<Widget_choices_types<T>> {
     HeaderUI = WidgetChoices_HeaderUI
     BodyUI = WidgetChoices_BodyUI
-    get hasBlock() {
-        return true
-        // if (this.activeBranches.length > 0) return true
-        // return false
-    }
     readonly id: string
     readonly type: 'choices' = 'choices'
 
     get serialHash(): string {
         return hash(this.value)
     }
-    get isMulti() {
+    get isMulti(): boolean {
         return this.config.multi
+    }
+    get isSingle(): boolean {
+        return !this.config.multi
     }
     children: { [k in keyof T]?: T[k]['widget'] } = {}
     serial: Widget_choices_serial<T>

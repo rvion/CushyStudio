@@ -47,7 +47,6 @@ export class Widget_matrix implements IWidget<Widget_matrix_types> {
     get serialHash(): string {
         return hash(this.value)
     }
-    readonly hasBlock = true
     readonly id: string
     readonly type: 'matrix' = 'matrix'
     readonly serial: Widget_matrix_serial

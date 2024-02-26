@@ -58,3 +58,4 @@ export let WidgetDI = {
 export const isWidgetChoice = (widget: any): widget is Widget_choices => widget.type === 'choices'
 export const isWidgetOptional = (widget: any): widget is Widget_optional => widget.type === 'optional'
 export const isWidgetShared = (widget: any): widget is Widget_shared => widget.type === 'shared'
+export const isWidgetGroup = (widget: any): widget is Widget_group<any> => widget.type === 'group'

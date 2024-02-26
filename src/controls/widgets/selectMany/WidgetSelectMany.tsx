@@ -43,7 +43,6 @@ export class Widget_selectMany<T extends BaseSelectEntry> implements IWidget<Wid
     get serialHash() {
         return hash(this.value)
     }
-    readonly hasBlock = false
     readonly id: string
     readonly type: 'selectMany' = 'selectMany'
     readonly serial: Widget_selectMany_serial<T>

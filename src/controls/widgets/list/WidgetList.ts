@@ -39,11 +39,13 @@ export type Widget_list_types<T extends Spec> = {
 export interface Widget_list<T extends Spec> extends Widget_list_types<T> {}
 export class Widget_list<T extends Spec> implements IWidget<Widget_list_types<T>> {
     HeaderUI = WidgetList_LineUI
-    BodyUI = WidgetListUI
+    get BodyUI() {
+        if (this.items.length === 0) return
+        return WidgetListUI
+    }
     get serialHash(): string {
         return this.items.map((v) => v.serialHash).join(',')
     }
-    get hasBlock(): boolean { return this.items.length > 0 } // prettier-ignore
     readonly id: string
     readonly type: 'list' = 'list'
 

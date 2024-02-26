@@ -41,7 +41,6 @@ export class Widget_selectOne<T extends BaseSelectEntry> implements IWidget<Widg
     get serialHash() {
         return hash(this.value)
     }
-    readonly hasBlock = false
     readonly id: string
     readonly type: 'selectOne' = 'selectOne'
     readonly serial: Widget_selectOne_serial<T>

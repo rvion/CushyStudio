@@ -52,6 +52,7 @@ export class FormBuilder {
     url         = (config: Widget_string_config = {})                                                        => new Spec<Widget_string                      >('str'       , { inputType: 'url', ...config })
     string      = (config: Widget_string_config = {})                                                        => new Spec<Widget_string                      >('str'       , config)
     text        = (config: Widget_string_config = {})                                                        => new Spec<Widget_string                      >('str'       , config)
+    textarea    = (config: Widget_string_config = {})                                                        => new Spec<Widget_string                      >('str'       , { textarea: true, ...config })
     boolean     = (config: Widget_bool_config   = {})                                                        => new Spec<Widget_bool                        >('bool'      , config)
     bool        = (config: Widget_bool_config   = {})                                                        => new Spec<Widget_bool                        >('bool'      , config)
     size        = (config: Widget_size_config   = {})                                                        => new Spec<Widget_size                        >('size'      , config)
@@ -89,8 +90,8 @@ export class FormBuilder {
         requirements: spec.config.requirements,
         startActive: startActive,
         startCollapsed: spec.config.startCollapsed,
-        awaysExpanded: spec.config.awaysExpanded,
-        neverBordered: spec.config.neverBordered,
+        collapsed: spec.config.collapsed,
+        border: spec.config.border,
     })
     stringOpt   = (config: Widget_string_config                                 & { startActive?: boolean } = {}) => this.wrapOptional<Spec<Widget_string>    >(config, this.string)
     intOpt      = (config: Omit<Widget_number_config, 'mode'>                   & { startActive?: boolean } = {}) => this.wrapOptional<Spec<Widget_number>    >(config, this.number)

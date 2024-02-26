@@ -11,15 +11,13 @@ export const ui_latent_v3 = () => {
         label: 'Latent Input',
         items: {
             emptyLatent: form.group({
-                awaysExpanded: true,
-                neverBordered: true,
-                label: false,
-                items: { batchSize, size: form.size({ label: false, awaysExpanded: true, neverBordered: true }) },
+                collapsed: false,
+                border: false,
+                items: { batchSize, size: form.size({ label: false, collapsed: false, border: false }) },
             }),
             image: form.group({
-                awaysExpanded: true,
-                neverBordered: true,
-                label: false,
+                collapsed: false,
+                border: false,
                 items: { batchSize, image: form.image() },
             }),
         },

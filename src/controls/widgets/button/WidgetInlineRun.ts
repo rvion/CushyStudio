@@ -34,7 +34,6 @@ export class Widget_inlineRun implements IWidget<Widget_inlineRun_types> {
     get serialHash(): string {
         return hash(this.value)
     }
-    readonly hasBlock = false
     readonly id: string
     readonly type: 'inlineRun' = 'inlineRun'
     readonly serial: Widget_inlineRun_serial

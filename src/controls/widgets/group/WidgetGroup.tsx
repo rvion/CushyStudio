@@ -49,7 +49,10 @@ export type Widget_group_types<T extends SchemaDict> = {
 export interface Widget_group<T extends SchemaDict> extends Widget_group_types<T> {}
 export class Widget_group<T extends SchemaDict> implements IWidget<Widget_group_types<T>> {
     HeaderUI = WidgetGroup_LineUI
-    BodyUI = WidgetGroup_BlockUI
+    get BodyUI() {
+        if (Object.keys(this.fields).length === 0) return
+        return WidgetGroup_BlockUI
+    }
     static Prop = <T extends SchemaDict>(config: Widget_group_config<T>) => new Spec('group', config)
 
     get summary(): string {
@@ -59,9 +62,6 @@ export class Widget_group<T extends SchemaDict> implements IWidget<Widget_group_
         return Object.values(this.fields)
             .map((v) => v.serialHash)
             .join(',')
-    }
-    get hasBlock() {
-        return Object.keys(this.fields).length > 0
     }
     readonly id: string
     readonly type: 'group' = 'group'
@@ -98,7 +98,7 @@ export class Widget_group<T extends SchemaDict> implements IWidget<Widget_group_
             type: 'group',
             id: this.id,
             active: true,
-            collapsed: this.config.startCollapsed ?? false,
+            collapsed: this.config.startCollapsed,
             values_: {} as any,
         }
     }
@@ -122,7 +122,7 @@ export class Widget_group<T extends SchemaDict> implements IWidget<Widget_group_
 
         // safety nets
         /* 💊 */ if (this.serial.values_ == null) this.serial.values_ = {}
-        /* 💊 */ if (this.config.awaysExpanded) this.serial.collapsed = undefined
+        /* 💊 */ if (this.config.collapsed) this.serial.collapsed = undefined
 
         // allow to store ref to the object right away
         preHydrate?.(this)

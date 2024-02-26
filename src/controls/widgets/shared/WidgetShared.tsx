@@ -43,10 +43,6 @@ export class Widget_shared<T extends Spec = Spec> implements IWidget<Widget_stri
     $Widget!: T['$Widget']
 
     get serialHash(): string { return this.config.rootKey } // prettier-ignore
-    get hasBlock(): boolean {
-        return this.shared.hasBlock
-    }
-
     serial: Widget_shared_serial
 
     get shared(): T['$Widget'] {

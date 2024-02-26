@@ -17,7 +17,7 @@ app({
             template: ui.prompt({ label: 'Template par défaut' }),
             signature: ui.group({
                 label: false,
-                awaysExpanded: true,
+                collapsed: false,
                 items: {
                     signature: ui.string({ label: 'Signature par défaut' }),
                     assigner: ui.selectOneV2(['Assigner', 'Ne pas assigner']),
@@ -25,17 +25,17 @@ app({
             }),
             date: ui.group({
                 label: false,
-                awaysExpanded: true,
+                collapsed: false,
                 items: {
                     at: ui.choice({
                         label: 'Date',
                         appearance: 'tab',
-                        neverBordered: true,
+                        border: false,
                         items: {
                             computed: ui.group({
-                                // having both `awaysExpanded` and `label` true skip the label part
-                                neverBordered: true,
-                                awaysExpanded: true,
+                                // having both `collapsed` and `label` false skip the whole label line
+                                border: false,
+                                collapsed: false,
                                 label: 'Calculée',
 
                                 items: {
@@ -54,6 +54,17 @@ app({
                     canInterrupt: ui.bool({ label2: 'Peut interrompre une conversation', label: false }),
                     allowNight: ui.bool({ label2: "Autoriser l'envoi la nuit (24h/24)", label: false }),
                     allowProcessed: ui.bool({ label2: "Autoriser l'envoi pour les conversations traitées", label: false }),
+                },
+            }),
+            test: ui.group({
+                items: {
+                    aaa1: ui.textarea(),
+                    aaa2: ui.intOpt(),
+                    aaa3: ui.intOpt(),
+                    aaa4: ui.intOpt(),
+                    aaa5: ui.intOpt(),
+                    aaa6: ui.intOpt(),
+                    aaa7: ui.intOpt(),
                 },
             }),
             audience: ui.group({

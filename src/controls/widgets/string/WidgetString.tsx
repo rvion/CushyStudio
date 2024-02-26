@@ -6,7 +6,7 @@ import { nanoid } from 'nanoid'
 import { hash } from 'ohash'
 
 import { WidgetDI } from '../WidgetUI.DI'
-import { WidgetStringUI } from './WidgetStringUI'
+import { WidgetString_HeaderUI, WidgetString_TextareaBodyUI, WidgetString_TextareaHeaderUI } from './WidgetStringUI'
 
 // CONFIG
 export type Widget_string_config = WidgetConfigFields<{
@@ -34,11 +34,17 @@ export type Widget_string_types = {
 // STATE
 export interface Widget_string extends Widget_string_types {}
 export class Widget_string implements IWidget<Widget_string_types> {
-    HeaderUI = WidgetStringUI
-    BodyUI = undefined
+    get HeaderUI() {
+        if (this.config.textarea) return WidgetString_TextareaHeaderUI
+        else return WidgetString_HeaderUI
+    }
+    get BodyUI() {
+        if (this.config.textarea) return WidgetString_TextareaBodyUI
+        return undefined
+    }
+    readonly border = false
     readonly id: string
     readonly type: 'str' = 'str'
-    get hasBlock() { return this.config.textarea ?? false } // prettier-ignore
     get serialHash () { return hash(this.value) } // prettier-ignore
 
     serial: Widget_string_serial
