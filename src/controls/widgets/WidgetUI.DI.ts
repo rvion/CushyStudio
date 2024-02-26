@@ -21,7 +21,6 @@ import type { Widget_selectOne } from './selectOne/WidgetSelectOne'
 import type { Widget_shared } from './shared/WidgetShared'
 import type { Widget_size } from './size/WidgetSize'
 import type { Widget_string } from './string/WidgetString'
-import type { WidgetUI } from './WidgetUI'
 
 /**
  * DI (Dependency Injection)
@@ -29,7 +28,6 @@ import type { WidgetUI } from './WidgetUI'
  * regardless of circular dependencies.
  * */
 export let WidgetDI = {
-    WidgetUI /*          */: 0 as any as typeof WidgetUI,
     Widget_shared /*     */: 0 as any as typeof Widget_shared,
     Widget_optional /*   */: 0 as any as typeof Widget_optional,
     Widget_color /*      */: 0 as any as typeof Widget_color,

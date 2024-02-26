@@ -29,11 +29,16 @@ export type Widget_string_types<T extends Spec = Spec> = {
     $Input: Widget_shared_config<T>
     $Serial: Widget_shared_serial
     $Output: Widget_shared_output<T>
+    $Widget: Spec['$Widget']
 }
 
 // STATE
 export interface Widget_shared<T extends Spec = Spec> extends Widget_string_types<T> {}
 export class Widget_shared<T extends Spec = Spec> implements IWidget<Widget_string_types<T>> {
+    readonly id: string
+    readonly type: 'shared' = 'shared'
+    readonly HeaderUI = undefined
+    readonly BodyUI = undefined
     // 👇 magically allow type-safe use of Mounted Widget_shared as Unmounted
     $Widget!: T['$Widget']
 
@@ -41,8 +46,6 @@ export class Widget_shared<T extends Spec = Spec> implements IWidget<Widget_stri
     get hasBlock(): boolean {
         return this.shared.hasBlock
     }
-    readonly id: string
-    readonly type: 'shared' = 'shared'
 
     serial: Widget_shared_serial
 
