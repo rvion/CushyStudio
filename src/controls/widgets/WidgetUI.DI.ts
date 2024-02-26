@@ -28,7 +28,6 @@ import type { Widget_string } from './string/WidgetString'
  * regardless of circular dependencies.
  * */
 export let WidgetDI = {
-    WidgetUI /*          */: 0,
     Widget_shared /*     */: 0 as any as typeof Widget_shared,
     Widget_optional /*   */: 0 as any as typeof Widget_optional,
     Widget_color /*      */: 0 as any as typeof Widget_color,
