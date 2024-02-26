@@ -12,11 +12,13 @@ export const ui_latent_v3 = () => {
         items: {
             emptyLatent: form.group({
                 awaysExpanded: true,
+                neverBordered: true,
                 label: false,
-                items: { batchSize, size: form.size({ label: false }) },
+                items: { batchSize, size: form.size({ label: false, awaysExpanded: true, neverBordered: true }) },
             }),
             image: form.group({
                 awaysExpanded: true,
+                neverBordered: true,
                 label: false,
                 items: { batchSize, image: form.image() },
             }),
