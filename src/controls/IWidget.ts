@@ -50,16 +50,47 @@ export type SharedWidgetSerial = {
 export type WidgetSerialFields<X> = X & SharedWidgetSerial
 export type WidgetConfigFields<X> = X & SharedWidgetConfig
 export type SharedWidgetConfig = {
+    /**
+     * The label to display.
+     * If none provided, the parent key is going to be converted as label.
+     * - use false to disable
+     * - use "" for an emtpy string label
+     */
     label?: string | false
+
+    /** The layout direction, H for 'horizontal' or V for 'vertical' */
     layout?: 'H' | 'V'
+
+    /** if provided, will dispaly a tooltip when hovering over the label */
     tooltip?: string
-    i18n?: { [key: string]: string }
+
+    /**
+     * Will be injected around the widget;
+     * Allow you to customize look and feel a bit without having
+     * to use custom widgets
+     * */
+
     className?: string
-    startCollapsed?: boolean
+
+    /**
+     * [DEBUG FEATURE] show the ID right after the label
+     * may be usefull when debugging dynamic widgets referencing themselves.
+     */
     showID?: boolean
+
+    /** The widget requirements */
     requirements?: Requirements[]
-    // options to disable certain UI features
+
+    /**
+     * override the default `collapsed` status
+     * only taken into account when widget is collapsible
+     */
+    startCollapsed?: boolean
+
+    /** if false, the widget will always be expanded */
     collapsed?: false
+
+    /** if provided, override the default logic to decide if the widget need to be bordered */
     border?: boolean
 }
 
