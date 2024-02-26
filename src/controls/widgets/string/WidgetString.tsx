@@ -34,7 +34,8 @@ export interface Widget_string extends Widget_string_types {}
 export class Widget_string implements IWidget<Widget_string_types> {
     readonly id: string
     readonly type: 'str' = 'str'
-    get hasBlock() { return this.config.textarea ?? false } // prettier-ignore
+    // get hasBlock() { return this.config.textarea ?? false } // prettier-ignore
+    get hasBlock() { return false } // prettier-ignore
     get serialHash () { return hash(this.value) } // prettier-ignore
 
     serial: Widget_string_serial
