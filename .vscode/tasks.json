@@ -9,7 +9,7 @@
             "type": "process",
             "options": { "env": { "NODE_OPTIONS": "--max-old-space-size=8192" } },
             "command": "./node_modules/.bin/tsc",
-            "args": ["--watch", "--noEmit"],
+            "args": ["--watch", "--noEmit", "--preserveWatchOutput", "--incremental"],
             "isBackground": true,
             "problemMatcher": "$tsc-watch",
             "presentation": { "reveal": "never" },
