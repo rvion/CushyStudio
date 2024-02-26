@@ -89,7 +89,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                                   }
                         }
                     >
-                        {isCollapsible && <Widget_ToggleUI widget={originalWidget} />}
+                        {WidgetBlockUI && <Widget_ToggleUI widget={originalWidget} />}
                         {widget.config.requirements && (
                             <InstallRequirementsBtnUI
                                 active={widget instanceof KLS.Widget_optional ? widget.serial.active : true}
@@ -98,7 +98,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                         )}
                         {widget.config.tooltip && <WidgetTooltipUI widget={widget} />}
                         {LABEL}
-                        {!isCollapsible && <Widget_ToggleUI widget={originalWidget} />}
+                        {!WidgetBlockUI && <Widget_ToggleUI widget={originalWidget} />}
                     </span>
                     {/* )} */}
                     {WidgetLineUI && (
