@@ -32,7 +32,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     const { WidgetLineUI, WidgetBlockUI } = WidgetDI.WidgetUI(widget) // WidgetDI.WidgetUI(widget)
 
     const isCollapsible: boolean = checkIfWidgetIsCollapsible(widget)
-    const isCollapsed = widget.serial.collapsed && isCollapsible
+    const isCollapsed = (widget.serial.collapsed ?? isDisabled) && isCollapsible
 
     if (widget instanceof KLS.Widget_group && Object.keys(widget.fields).length === 0) return
 

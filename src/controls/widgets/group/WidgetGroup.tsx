@@ -90,7 +90,7 @@ export class Widget_group<T extends SchemaDict> implements IWidget<Widget_group_
             type: 'group',
             id: this.id,
             active: true,
-            collapsed: this.config.startCollapsed ?? false,
+            collapsed: this.config.startCollapsed,
             values_: {} as any,
         }
     }
