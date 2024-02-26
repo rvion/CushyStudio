@@ -9,6 +9,7 @@ import { hash } from 'ohash'
 import { WidgetDI } from '../WidgetUI.DI'
 import { compilePrompt } from './_compile'
 import { parser } from './grammar/grammar.parser'
+import { WidgetPrompt_LineUI, WidgetPromptUI } from './WidgetPromptUI'
 
 export type CompiledPrompt = {
     positivePrompt: string
@@ -37,15 +38,16 @@ export type Widget_prompt_types = {
     $Input: Widget_prompt_config
     $Serial: Widget_prompt_serial
     $Output: Widget_prompt_output
+    $Widget: Widget_prompt
 }
 
 // STATE
 export interface Widget_prompt extends Widget_prompt_types {}
 export class Widget_prompt implements IWidget<Widget_prompt_types> {
+    WidgetHeaderUI = WidgetPrompt_LineUI
+    WidgetBodyUI = WidgetPromptUI
     get serialHash () { return hash(this.serial.val) } // prettier-ignore
-
     get hasBlock() { return true } // prettier-ignore
-
     readonly id: string
     readonly type: 'prompt' = 'prompt'
 

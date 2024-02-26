@@ -35,7 +35,7 @@ export const WidgetListUI = observer(function WidgetListUI_<T extends Spec>(p: {
             <SortableList onSortEnd={p.widget.moveItem} className='list' draggedItemClassName='dragged'>
                 <div tw='flex flex-col gap-2'>
                     {subWidgets.map((subWidget, ix) => {
-                        const { WidgetHeaderUI, WidgetBodyUI } = WidgetDI.WidgetUI(subWidget) // WidgetDI.WidgetUI(widget)
+                        const { WidgetHeaderUI, WidgetBodyUI } = subWidget // WidgetDI.WidgetUI(widget)
                         const collapsed = subWidget.serial.collapsed ?? false
                         return (
                             <SortableItem key={subWidget.id}>

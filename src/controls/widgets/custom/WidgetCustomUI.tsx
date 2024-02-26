@@ -7,7 +7,7 @@ import { Widget_custom } from './WidgetCustom'
 import { ImageUI } from 'src/widgets/galleries/ImageUI'
 import { JsonViewUI } from 'src/widgets/workspace/JsonViewUI'
 
-export const WidgetCustomUI = observer(function WidgetCustomUI_(p: { widget: Widget_custom<unknown> }) {
+export const WidgetCustom_HeaderUI = observer(function WidgetCustom_HeaderUI_<T>(p: { widget: Widget_custom<T> }) {
     const widget = p.widget
     return <widget.config.Component widget={widget} extra={_commonUIComponents} />
 })

@@ -8,6 +8,7 @@ import { nanoid } from 'nanoid'
 import { hash } from 'ohash'
 
 import { WidgetDI } from '../WidgetUI.DI'
+import { WidgetCustom_HeaderUI } from './WidgetCustomUI'
 
 export type CustomWidgetProps<T> = { widget: Widget_custom<T>; extra: import('./WidgetCustomUI').UIKit }
 
@@ -30,11 +31,14 @@ export type Widget_custom_types<T> = {
     $Input: Widget_custom_config<T>
     $Serial: Widget_custom_serial<T>
     $Output: Widget_custom_output<T>
+    $Widget: Widget_custom<T>
 }
 
 // STATE
 export interface Widget_custom<T> extends Widget_custom_types<T> {}
 export class Widget_custom<T> implements IWidget<Widget_custom_types<T>> {
+    WidgetHeaderUI = WidgetCustom_HeaderUI
+    WidgetBodyUI = undefined
     readonly hasBlock = true
     readonly id: string
     readonly type: 'custom' = 'custom'

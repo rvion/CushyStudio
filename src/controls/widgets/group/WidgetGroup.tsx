@@ -6,6 +6,7 @@ import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 
 import { WidgetDI } from '../WidgetUI.DI'
+import { WidgetGroup_BlockUI, WidgetGroup_LineUI } from './WidgetGroupUI'
 import { Spec } from 'src/controls/Prop'
 import { checkIfWidgetIsCollapsible } from 'src/controls/shared/checkIfWidgetIsCollapsible'
 import { getActualWidgetToDisplay } from 'src/controls/shared/getActualWidgetToDisplay'
@@ -41,11 +42,14 @@ export type Widget_group_types<T extends SchemaDict> = {
     $Input: Widget_group_config<T>
     $Serial: Widget_group_serial<T>
     $Output: Widget_group_output<T>
+    $Widget: Widget_group<T>
 }
 
 // STATE
 export interface Widget_group<T extends SchemaDict> extends Widget_group_types<T> {}
 export class Widget_group<T extends SchemaDict> implements IWidget<Widget_group_types<T>> {
+    WidgetHeaderUI = WidgetGroup_LineUI
+    WidgetBodyUI = WidgetGroup_BlockUI
     static Prop = <T extends SchemaDict>(config: Widget_group_config<T>) => new Spec('group', config)
 
     get summary(): string {
