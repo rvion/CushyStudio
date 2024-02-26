@@ -39,8 +39,8 @@ export type Widget_seed_types = {
 // STATE
 export interface Widget_seed extends Widget_seed_types {}
 export class Widget_seed implements IWidget<Widget_seed_types> {
-    WidgetHeaderUI = WidgetSeedUI
-    WidgetBodyUI = undefined
+    HeaderUI = WidgetSeedUI
+    BodyUI = undefined
     readonly hasBlock = false
     readonly id: string
     readonly type: 'seed' = 'seed'

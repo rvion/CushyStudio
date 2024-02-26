@@ -34,8 +34,8 @@ export type Widget_string_types = {
 // STATE
 export interface Widget_string extends Widget_string_types {}
 export class Widget_string implements IWidget<Widget_string_types> {
-    WidgetHeaderUI = WidgetStringUI
-    WidgetBodyUI = undefined
+    HeaderUI = WidgetStringUI
+    BodyUI = undefined
     readonly id: string
     readonly type: 'str' = 'str'
     get hasBlock() { return this.config.textarea ?? false } // prettier-ignore

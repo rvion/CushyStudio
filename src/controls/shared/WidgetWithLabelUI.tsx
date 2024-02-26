@@ -28,10 +28,8 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     const widget = getActualWidgetToDisplay(originalWidget)
     const isDisabled = isWidgetOptional(originalWidget) && !originalWidget.serial.active
 
-    // if (WidgetDI.WidgetUI == null) return <>WidgetDI.WidgetUI is null</>
-    // const { WidgetHeaderUI, WidgetBodyUI } = widget // WidgetDI.WidgetUI(widget)
-    const WidgetHeaderUI = widget.WidgetHeaderUI // WidgetDI.WidgetUI(widget)
-    const WidgetBodyUI = widget.WidgetBodyUI // WidgetDI.WidgetUI(widget)
+    const WidgetHeaderUI = widget.HeaderUI // WidgetDI.WidgetUI(widget)
+    const WidgetBodyUI = widget.BodyUI // WidgetDI.WidgetUI(widget)
 
     const isCollapsible: boolean = checkIfWidgetIsCollapsible(widget)
     const isCollapsed = widget.serial.collapsed && isCollapsible

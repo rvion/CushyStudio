@@ -45,8 +45,8 @@ export type Widget_orbit_types = {
 // STATE
 export interface Widget_orbit extends Widget_orbit_types {}
 export class Widget_orbit implements IWidget<Widget_orbit_types> {
-    WidgetHeaderUI = WidgetOrbitUI
-    WidgetBodyUI = undefined
+    HeaderUI = WidgetOrbitUI
+    BodyUI = undefined
     get serialHash () { return hash(this.value) } // prettier-ignore
     hasBlock = false
     id: string

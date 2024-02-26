@@ -44,8 +44,8 @@ export type Widget_prompt_types = {
 // STATE
 export interface Widget_prompt extends Widget_prompt_types {}
 export class Widget_prompt implements IWidget<Widget_prompt_types> {
-    WidgetHeaderUI = WidgetPrompt_LineUI
-    WidgetBodyUI = WidgetPromptUI
+    HeaderUI = WidgetPrompt_LineUI
+    BodyUI = WidgetPromptUI
     get serialHash () { return hash(this.serial.val) } // prettier-ignore
     get hasBlock() { return true } // prettier-ignore
     readonly id: string

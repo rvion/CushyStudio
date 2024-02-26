@@ -37,8 +37,8 @@ export type Widget_enum_types<O> = {
 // STATE
 export interface Widget_enum<O> extends Widget_enum_types<O> {}
 export class Widget_enum<O> implements IWidget<Widget_enum_types<O>> {
-    WidgetHeaderUI = WidgetEnumUI
-    WidgetBodyUI = undefined
+    HeaderUI = WidgetEnumUI
+    BodyUI = undefined
     readonly hasBlock = false
     readonly id: string
     readonly type: 'enum' = 'enum'

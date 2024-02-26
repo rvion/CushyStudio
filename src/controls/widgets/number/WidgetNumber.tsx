@@ -43,8 +43,8 @@ export type Widget_number_types = {
 // STATE
 export interface Widget_number extends Widget_number_types {}
 export class Widget_number implements IWidget<Widget_number_types> {
-    WidgetHeaderUI = WidgetNumberUI
-    WidgetBodyUI = undefined
+    HeaderUI = WidgetNumberUI
+    BodyUI = undefined
     get serialHash () { return hash(this.value) } // prettier-ignore
     readonly hasBlock = false
     readonly id: string

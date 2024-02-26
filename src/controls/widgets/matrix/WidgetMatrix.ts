@@ -42,8 +42,8 @@ export type Widget_matrix_types = {
 // STATE
 export interface Widget_matrix extends Widget_matrix_types {}
 export class Widget_matrix implements IWidget<Widget_matrix_types> {
-    WidgetHeaderUI = WidgetMatrixUI
-    WidgetBodyUI = undefined
+    HeaderUI = WidgetMatrixUI
+    BodyUI = undefined
     get serialHash(): string {
         return hash(this.value)
     }

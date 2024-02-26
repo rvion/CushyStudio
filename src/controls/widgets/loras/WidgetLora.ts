@@ -31,8 +31,8 @@ export type Widget_loras_types = {
 // STATE
 export interface Widget_loras extends Widget_loras_types {}
 export class Widget_loras implements IWidget<Widget_loras_types> {
-    WidgetHeaderUI = WidgetLorasUI
-    WidgetBodyUI = undefined
+    HeaderUI = WidgetLorasUI
+    BodyUI = undefined
     get serialHash(): string {
         return hash(this.value)
     }

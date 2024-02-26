@@ -36,8 +36,8 @@ export type Widget_size_types = {
 // STATE
 export interface Widget_size extends Widget_size_types {} // prettier-ignore
 export class Widget_size implements IWidget<Widget_size_types> {
-    WidgetHeaderUI = WigetSize_LineUI
-    WidgetBodyUI = WigetSize_BlockUI
+    HeaderUI = WigetSize_LineUI
+    BodyUI = WigetSize_BlockUI
     get sizeHelper(): ResolutionState {
         // should only be executed once
         const state = new ResolutionState(this.serial)

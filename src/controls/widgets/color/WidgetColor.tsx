@@ -29,8 +29,8 @@ export type Widget_color_types = {
 // STATE
 export interface Widget_color extends Widget_color_types {}
 export class Widget_color implements IWidget<Widget_color_types> {
-    WidgetHeaderUI = WidgetColorUI
-    WidgetBodyUI = undefined
+    HeaderUI = WidgetColorUI
+    BodyUI = undefined
     get serialHash(): string {
         return hash(this.value)
     }

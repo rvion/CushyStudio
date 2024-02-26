@@ -35,8 +35,8 @@ export type Widget_optional_types<T extends Spec = Spec> = {
 // STATE
 export interface Widget_optional<T extends Spec = Spec> extends Widget_optional_types<T> {}
 export class Widget_optional<T extends Spec = Spec> implements IWidget<Widget_optional_types<T>> {
-    WidgetHeaderUI = undefined
-    WidgetBodyUI = undefined
+    HeaderUI = undefined
+    BodyUI = undefined
     get serialHash(): string {
         if (this.serial.active) return this.childOrThrow.serialHash
         return 'x'

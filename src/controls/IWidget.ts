@@ -31,8 +31,8 @@ export type IWidget<K extends $WidgetTypes = $WidgetTypes> = {
     readonly form: Form<any>
     readonly config: K['$Input'] // WidgetConfigFields<any>
 
-    WidgetHeaderUI: FC<{ widget: K['$Widget'] }> | undefined
-    WidgetBodyUI: FC<{ widget: K['$Widget'] }> | undefined
+    HeaderUI: FC<{ widget: K['$Widget'] }> | undefined
+    BodyUI: FC<{ widget: K['$Widget'] }> | undefined
     // FULLY_CUSTOM_RENDER?: boolean
 }
 

@@ -29,8 +29,8 @@ export type Widget_inlineRun_types = {
 // STATE
 export interface Widget_inlineRun extends Widget_inlineRun_types {}
 export class Widget_inlineRun implements IWidget<Widget_inlineRun_types> {
-    WidgetHeaderUI = WidgetInlineRunUI
-    WidgetBodyUI = undefined
+    HeaderUI = WidgetInlineRunUI
+    BodyUI = undefined
     get serialHash(): string {
         return hash(this.value)
     }

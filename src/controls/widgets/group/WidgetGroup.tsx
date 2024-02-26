@@ -48,8 +48,8 @@ export type Widget_group_types<T extends SchemaDict> = {
 // STATE
 export interface Widget_group<T extends SchemaDict> extends Widget_group_types<T> {}
 export class Widget_group<T extends SchemaDict> implements IWidget<Widget_group_types<T>> {
-    WidgetHeaderUI = WidgetGroup_LineUI
-    WidgetBodyUI = WidgetGroup_BlockUI
+    HeaderUI = WidgetGroup_LineUI
+    BodyUI = WidgetGroup_BlockUI
     static Prop = <T extends SchemaDict>(config: Widget_group_config<T>) => new Spec('group', config)
 
     get summary(): string {

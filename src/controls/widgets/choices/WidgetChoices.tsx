@@ -45,8 +45,8 @@ export type Widget_choices_types<T extends SchemaDict = SchemaDict> = {
 // STATE
 export interface Widget_choices<T extends SchemaDict = SchemaDict> extends Widget_choices_types<T> {}
 export class Widget_choices<T extends SchemaDict = SchemaDict> implements IWidget<Widget_choices_types<T>> {
-    WidgetHeaderUI = WidgetChoices_HeaderUI
-    WidgetBodyUI = WidgetChoices_BodyUI
+    HeaderUI = WidgetChoices_HeaderUI
+    BodyUI = WidgetChoices_BodyUI
     get hasBlock() {
         return true
         // if (this.activeBranches.length > 0) return true

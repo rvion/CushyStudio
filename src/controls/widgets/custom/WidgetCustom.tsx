@@ -37,8 +37,8 @@ export type Widget_custom_types<T> = {
 // STATE
 export interface Widget_custom<T> extends Widget_custom_types<T> {}
 export class Widget_custom<T> implements IWidget<Widget_custom_types<T>> {
-    WidgetHeaderUI = WidgetCustom_HeaderUI
-    WidgetBodyUI = undefined
+    HeaderUI = WidgetCustom_HeaderUI
+    BodyUI = undefined
     readonly hasBlock = true
     readonly id: string
     readonly type: 'custom' = 'custom'

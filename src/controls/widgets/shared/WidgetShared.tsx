@@ -37,8 +37,8 @@ export interface Widget_shared<T extends Spec = Spec> extends Widget_string_type
 export class Widget_shared<T extends Spec = Spec> implements IWidget<Widget_string_types<T>> {
     readonly id: string
     readonly type: 'shared' = 'shared'
-    readonly WidgetHeaderUI = undefined
-    readonly WidgetBodyUI = undefined
+    readonly HeaderUI = undefined
+    readonly BodyUI = undefined
     // 👇 magically allow type-safe use of Mounted Widget_shared as Unmounted
     $Widget!: T['$Widget']
 
