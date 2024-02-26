@@ -7,6 +7,7 @@ import { nanoid } from 'nanoid'
 import { hash } from 'ohash'
 
 import { WidgetDI } from '../WidgetUI.DI'
+import { WidgetSelectOneUI } from './WidgetSelectOneUI'
 
 export type BaseSelectEntry = { id: string; label?: string }
 
@@ -29,11 +30,14 @@ export type Widget_selectOne_types<T extends BaseSelectEntry> = {
     $Input: Widget_selectOne_config<T>
     $Serial: Widget_selectOne_serial<T>
     $Output: Widget_selectOne_output<T>
+    $Widget: Widget_selectOne<T>
 }
 
 // STATE
 export interface Widget_selectOne<T> extends Widget_selectOne_types<T> {}
 export class Widget_selectOne<T extends BaseSelectEntry> implements IWidget<Widget_selectOne_types<T>> {
+    HeaderUI = WidgetSelectOneUI
+    BodyUI = undefined
     get serialHash() {
         return hash(this.value)
     }

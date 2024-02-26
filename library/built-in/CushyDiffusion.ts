@@ -62,7 +62,7 @@ app({
             appearance: 'tab',
             items: {
                 regionalPrompt: ui_regionalPrompting_v1(),
-                reversePositiveAndNegative: form.group(),
+                reversePositiveAndNegative: form.group({ label: 'swap +/-' }),
                 makeAVideo: form.group(),
                 summary: form.group(),
                 gaussianSplat: form.group(),

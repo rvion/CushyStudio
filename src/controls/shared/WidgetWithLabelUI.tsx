@@ -28,8 +28,8 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     const widget = getActualWidgetToDisplay(originalWidget)
     const isDisabled = isWidgetOptional(originalWidget) && !originalWidget.serial.active
 
-    if (WidgetDI.WidgetUI == null) return <>WidgetDI.WidgetUI is null</>
-    const { WidgetLineUI, WidgetBlockUI } = WidgetDI.WidgetUI(widget) // WidgetDI.WidgetUI(widget)
+    const WidgetHeaderUI = widget.HeaderUI // WidgetDI.WidgetUI(widget)
+    const WidgetBodyUI = widget.BodyUI // WidgetDI.WidgetUI(widget)
 
     const isCollapsible: boolean = checkIfWidgetIsCollapsible(widget)
     const isCollapsed = (widget.serial.collapsed ?? isDisabled) && isCollapsible
@@ -77,15 +77,15 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                             isDisabled ? undefined : 'text-primary',
                         ]}
                         style={
-                            WidgetBlockUI || p.inline
+                            WidgetBodyUI || p.inline
                                 ? undefined
                                 : {
                                       flexShrink: 0,
                                       minWidth: '8rem',
                                       textAlign: 'right',
 
-                                      width: WidgetLineUI ? '35%' : undefined,
-                                      marginRight: WidgetLineUI ? '0.25rem' : undefined,
+                                      width: WidgetHeaderUI ? '35%' : undefined,
+                                      marginRight: WidgetHeaderUI ? '0.25rem' : undefined,
                                   }
                         }
                     >
@@ -101,20 +101,20 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                         {!WidgetBlockUI && <Widget_ToggleUI widget={originalWidget} />}
                     </span>
                     {/* )} */}
-                    {WidgetLineUI && (
+                    {WidgetHeaderUI && (
                         <div tw='flex items-center gap-0.5 flex-1' style={styleDISABLED}>
                             <ErrorBoundary FallbackComponent={ErrorBoundaryFallback} onReset={(details) => {}}>
-                                <WidgetLineUI widget={widget} />
+                                <WidgetHeaderUI widget={widget} />
                             </ErrorBoundary>
                         </div>
                     )}
                 </div>
 
                 {/* BLOCK */}
-                {WidgetBlockUI && !isCollapsed && (
+                {WidgetBodyUI && !isCollapsed && (
                     <ErrorBoundary FallbackComponent={ErrorBoundaryFallback} onReset={(details) => {}}>
                         <div style={styleDISABLED} tw={[isCollapsible && 'WIDGET-BLOCK']}>
-                            <WidgetBlockUI widget={widget} />
+                            <WidgetBodyUI widget={widget} />
                         </div>
                     </ErrorBoundary>
                 )}

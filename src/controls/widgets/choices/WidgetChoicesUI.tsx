@@ -10,26 +10,49 @@ import { SelectUI } from 'src/rsuite/SelectUI'
 import { makeLabelFromFieldName } from 'src/utils/misc/makeLabelFromFieldName'
 
 // UI
-export const WidgetChoices_LineUI = observer(function WidgetChoices_LineUI_(p: { widget: Widget_choices<SchemaDict> }) {
-    if (p.widget.config.appearance === 'tab') {
-        return <WidgetChoices_TabLineUI widget={p.widget} />
-    } else {
-        return <WidgetChoices_SelectLineUI widget={p.widget} />
-    }
+export const WidgetChoices_HeaderUI = observer(function WidgetChoices_LineUI_<T extends SchemaDict>(p: {
+    widget: Widget_choices<T>
+}) {
+    if (p.widget.config.appearance === 'tab') return <WidgetChoices_TabHeaderUI widget={p.widget} />
+    else return <WidgetChoices_SelectHeaderUI widget={p.widget} />
 })
 
-// UI
-export const WidgetChoicesUI = observer(function WidgetChoicesUI_(p: { widget: Widget_choices<SchemaDict> }) {
-    if (p.widget.config.appearance === 'tab') {
-        return <WidgetChoicesTabUI widget={p.widget} />
-    } else {
-        return <WidgetChoicesTabUI widget={p.widget} />
-    }
+export const WidgetChoices_BodyUI = observer(function WidgetChoices_BodyUI_<T extends SchemaDict>(p: {
+    widget: Widget_choices<T>
+}) {
+    const widget = p.widget
+    const activeSubwidgets = Object.entries(widget.children) //
+        .map(([branch, subWidget]) => ({ branch, subWidget }))
+
+    return (
+        <div>
+            <AnimatedSizeUI>
+                <div //
+                    tw={[widget.config.layout === 'H' ? 'flex' : null]}
+                    className={widget.config.className}
+                >
+                    {activeSubwidgets.map((val) => {
+                        const subWidget = val.subWidget
+                        if (subWidget == null) return <>❌ error</>
+                        return (
+                            <WidgetWithLabelUI //
+                                key={val.branch}
+                                rootKey={val.branch}
+                                widget={subWidget}
+                            />
+                        )
+                    })}
+                </div>
+            </AnimatedSizeUI>
+        </div>
+    )
 })
 
 // ============================================================================================================
 
-const WidgetChoices_TabLineUI = observer(function WidgetChoicesTab_LineUI_(p: { widget: Widget_choices<SchemaDict> }) {
+const WidgetChoices_TabHeaderUI = observer(function WidgetChoicesTab_LineUI_<T extends SchemaDict>(p: {
+    widget: Widget_choices<T>
+}) {
     const widget = p.widget
     const choices = widget.choicesWithLabels // choicesStr.map((v) => ({ key: v }))
     const [isDragging, setIsDragging] = useState<boolean>(false)
@@ -82,37 +105,8 @@ const WidgetChoices_TabLineUI = observer(function WidgetChoicesTab_LineUI_(p: { 
     )
 })
 
-const WidgetChoicesTabUI = observer(function WidgetChoicesTabUI_(p: { widget: Widget_choices<SchemaDict> }) {
-    const widget = p.widget
-    const activeSubwidgets = Object.entries(widget.children) //
-        .map(([branch, subWidget]) => ({ branch, subWidget }))
-
-    return (
-        <div>
-            <AnimatedSizeUI>
-                <div //
-                    tw={[widget.config.layout === 'H' ? 'flex' : null]}
-                    className={widget.config.className}
-                >
-                    {activeSubwidgets.map((val) => {
-                        const subWidget = val.subWidget
-                        if (subWidget == null) return <>❌ error</>
-                        return (
-                            <WidgetWithLabelUI //
-                                key={val.branch}
-                                rootKey={val.branch}
-                                widget={subWidget}
-                            />
-                        )
-                    })}
-                </div>
-            </AnimatedSizeUI>
-        </div>
-    )
-})
-
-export const WidgetChoices_SelectLineUI = observer(function WidgetChoices_SelectLineUI_(p: {
-    widget: Widget_choices<SchemaDict>
+export const WidgetChoices_SelectHeaderUI = observer(function WidgetChoices_SelectLineUI_<T extends SchemaDict>(p: {
+    widget: Widget_choices<T>
 }) {
     const widget = p.widget
     type Entry = { key: string; value?: Maybe<boolean> }

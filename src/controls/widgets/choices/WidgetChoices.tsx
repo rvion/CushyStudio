@@ -7,6 +7,7 @@ import { nanoid } from 'nanoid'
 import { hash } from 'ohash'
 
 import { WidgetDI } from '../WidgetUI.DI'
+import { WidgetChoices_BodyUI, WidgetChoices_HeaderUI } from './WidgetChoicesUI'
 import { makeLabelFromFieldName } from 'src/utils/misc/makeLabelFromFieldName'
 import { toastError } from 'src/utils/misc/toasts'
 
@@ -38,11 +39,14 @@ export type Widget_choices_types<T extends SchemaDict = SchemaDict> = {
     $Input: Widget_choices_config<T>
     $Serial: Widget_choices_serial<T>
     $Output: Widget_choices_output<T>
+    $Widget: Widget_choices<T>
 }
 
 // STATE
 export interface Widget_choices<T extends SchemaDict = SchemaDict> extends Widget_choices_types<T> {}
 export class Widget_choices<T extends SchemaDict = SchemaDict> implements IWidget<Widget_choices_types<T>> {
+    HeaderUI = WidgetChoices_HeaderUI
+    BodyUI = WidgetChoices_BodyUI
     get hasBlock() {
         return true
         // if (this.activeBranches.length > 0) return true

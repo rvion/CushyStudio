@@ -38,6 +38,20 @@
 > or issues due to rapid updates. Your feedback is vital for us to refine and expand the project.
 > Please report any critical problems you find in our discord or open a GitHub issue.
 
+-----------
+
+## QuickStart guide:
+
+1. Have [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) installed
+2. Clone this repository with git
+    ```sh
+    git clone https://github.com/rvion/CushyStudio
+    cd CushyStudio
+    ```
+3. Install with `_windows_INSTALL.bat` or `_mac-linux-install.sh`
+4. Start with `_mac-linux-start.sh` or `_windows-start.bat`
+
+----------
 
 Screenshots and Videos
 

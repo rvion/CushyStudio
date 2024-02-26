@@ -1,4 +1,5 @@
 import type { Form } from './Form'
+import type { FC } from 'react'
 import type { KnownCustomNode_File } from 'src/manager/custom-node-list/KnownCustomNode_File'
 import type { KnownCustomNode_Title } from 'src/manager/custom-node-list/KnownCustomNode_Title'
 import type { KnownCustomNode_CushyName } from 'src/manager/extension-node-map/KnownCustomNode_CushyName'
@@ -11,6 +12,7 @@ export type $WidgetTypes = {
     $Input: SharedWidgetConfig
     $Serial: SharedWidgetSerial
     $Output: any
+    $Widget: any
 }
 
 export type IWidget<K extends $WidgetTypes = $WidgetTypes> = {
@@ -18,6 +20,7 @@ export type IWidget<K extends $WidgetTypes = $WidgetTypes> = {
     $Input: K['$Input']
     $Serial: K['$Serial']
     $Output: K['$Output']
+    $Widget: K['$Widget']
 
     id: string
     hasBlock: boolean
@@ -27,6 +30,10 @@ export type IWidget<K extends $WidgetTypes = $WidgetTypes> = {
     readonly serial: K['$Serial']
     readonly form: Form<any>
     readonly config: K['$Input'] // WidgetConfigFields<any>
+
+    HeaderUI: FC<{ widget: K['$Widget'] }> | undefined
+    BodyUI: FC<{ widget: K['$Widget'] }> | undefined
+    // FULLY_CUSTOM_RENDER?: boolean
 }
 
 export type GetWidgetResult<Widget> = Widget extends { $Output: infer O } ? O : never
