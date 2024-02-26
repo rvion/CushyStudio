@@ -17,7 +17,7 @@ app({
             template: ui.prompt({ label: 'Template par défaut' }),
             signature: ui.group({
                 label: false,
-                awaysExpanded: true,
+                alwaysExpanded: true,
                 items: {
                     signature: ui.string({ label: 'Signature par défaut' }),
                     assigner: ui.selectOneV2(['Assigner', 'Ne pas assigner']),
@@ -25,7 +25,7 @@ app({
             }),
             date: ui.group({
                 label: false,
-                awaysExpanded: true,
+                alwaysExpanded: true,
                 items: {
                     at: ui.choice({
                         label: 'Date',
@@ -33,9 +33,9 @@ app({
                         neverBordered: true,
                         items: {
                             computed: ui.group({
-                                // having both `awaysExpanded` and `label` true skip the label part
+                                // having both `alwaysExpanded` and `label` true skip the label part
                                 neverBordered: true,
-                                awaysExpanded: true,
+                                alwaysExpanded: true,
                                 label: 'Calculée',
 
                                 items: {

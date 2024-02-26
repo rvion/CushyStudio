@@ -51,7 +51,7 @@ export type SharedWidgetConfig = {
     showID?: boolean
     requirements?: Requirements[]
     // options to disable certain UI features
-    awaysExpanded?: true
+    alwaysExpanded?: true
     neverBordered?: true
 }
 

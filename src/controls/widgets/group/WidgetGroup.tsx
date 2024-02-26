@@ -114,7 +114,7 @@ export class Widget_group<T extends SchemaDict> implements IWidget<Widget_group_
 
         // safety nets
         /* 💊 */ if (this.serial.values_ == null) this.serial.values_ = {}
-        /* 💊 */ if (this.config.awaysExpanded) this.serial.collapsed = undefined
+        /* 💊 */ if (this.config.alwaysExpanded) this.serial.collapsed = undefined
 
         // allow to store ref to the object right away
         preHydrate?.(this)
