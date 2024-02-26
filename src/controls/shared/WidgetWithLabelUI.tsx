@@ -67,7 +67,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                     (label, collapse button, toggle button, tooltip, etc.)
                     Only way to have it completely disabled is to have no label, no tooltip, no requirements, etc.
                 */}
-                <div tw={[isCollapsible && 'WIDGET-LINE', 'flex items-center gap-0.5']}>
+                <div tw={[WidgetBlockUI && 'WIDGET-LINE', 'flex items-center gap-0.5']}>
                     {(isCollapsed || isCollapsible) && <Widget_CollapseBtnUI widget={widget} />}
                     <span
                         tw={[
