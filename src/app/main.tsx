@@ -6,7 +6,6 @@ import 'src/theme/flexlayout.css'
 import 'src/theme/index.css'
 import 'src/theme/theme.css'
 import 'src/theme/Tree.css'
-import 'src/controls/widgets/WidgetUI'
 
 import ReactDOM from 'react-dom/client'
 

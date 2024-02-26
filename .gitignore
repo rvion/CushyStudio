@@ -80,3 +80,6 @@ node-*.tar.gz
 
 completions/*
 settings/*.json
+
+tsconfig.tsbuildinfo
+.tsbuildinfo

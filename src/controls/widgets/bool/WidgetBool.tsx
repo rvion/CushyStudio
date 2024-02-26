@@ -6,6 +6,7 @@ import { nanoid } from 'nanoid'
 import { hash } from 'ohash'
 
 import { WidgetDI } from '../WidgetUI.DI'
+import { WidgetBoolUI } from './WidgetBoolUI'
 
 // CONFIG
 export type Widget_bool_config = WidgetConfigFields<{
@@ -25,12 +26,14 @@ export type Widget_string_types = {
     $Input: Widget_bool_config
     $Serial: Widget_bool_serial
     $Output: Widget_bool_output
+    $Widget: Widget_bool
 }
 
 // STATE
 export interface Widget_bool extends Widget_string_types {}
 export class Widget_bool implements IWidget<Widget_string_types> {
-    readonly hasBlock = false
+    HeaderUI = WidgetBoolUI
+    BodyUI = undefined
     readonly id: string
     readonly type: 'bool' = 'bool'
 

@@ -52,17 +52,19 @@ export class FormBuilder {
     url         = (config: Widget_string_config = {})                                                        => new Spec<Widget_string                      >('str'       , { inputType: 'url', ...config })
     string      = (config: Widget_string_config = {})                                                        => new Spec<Widget_string                      >('str'       , config)
     text        = (config: Widget_string_config = {})                                                        => new Spec<Widget_string                      >('str'       , config)
+    textarea    = (config: Widget_string_config = {})                                                        => new Spec<Widget_string                      >('str'       , { textarea: true, ...config })
     boolean     = (config: Widget_bool_config   = {})                                                        => new Spec<Widget_bool                        >('bool'      , config)
     bool        = (config: Widget_bool_config   = {})                                                        => new Spec<Widget_bool                        >('bool'      , config)
     size        = (config: Widget_size_config   = {})                                                        => new Spec<Widget_size                        >('size'      , config)
     orbit       = (config: Widget_orbit_config  = {})                                                        => new Spec<Widget_orbit                       >('orbit'     , config)
-    seed        = (config: Widget_seed_config = {})                                                          => new Spec<Widget_seed                        >('seed'      , config)
+    seed        = (config: Widget_seed_config   = {})                                                        => new Spec<Widget_seed                        >('seed'      , config)
     color       = (config: Widget_color_config  = {})                                                        => new Spec<Widget_color                       >('color'     , config)
+    colorV2     = (config: Widget_string_config = {})                                                        => new Spec<Widget_string                      >('str'       , { inputType: 'color', ...config })
     matrix      = (config: Widget_matrix_config)                                                             => new Spec<Widget_matrix                      >('matrix'    , config)
     inlineRun   = (config: Widget_inlineRun_config = {})                                                     => new Spec<Widget_inlineRun                   >('inlineRun' , config)
     button      = (config: Widget_inlineRun_config = {})                                                     => new Spec<Widget_inlineRun                   >('inlineRun' , config)
     loras       = (config: Widget_loras_config     = {})                                                     => new Spec<Widget_loras                       >('loras'     , config)
-    markdown    = (config: Widget_markdown_config | string)                                                  => new Spec<Widget_markdown                  >('markdown'  , typeof config === 'string' ? { markdown: config } : config)
+    markdown    = (config: Widget_markdown_config | string)                                                  => new Spec<Widget_markdown                    >('markdown'  , typeof config === 'string' ? { markdown: config } : config)
     image       = (config: Widget_image_config = {})                                                         => new Spec<Widget_image                       >('image'     , config)
     prompt      = (config: Widget_prompt_config)                                                             => new Spec<Widget_prompt                      >('prompt'    , config)
     int         = (config: Omit<Widget_number_config, 'mode'> = {})                                          => new Spec<Widget_number                      >('number'    , { mode: 'int', ...config })
@@ -88,8 +90,8 @@ export class FormBuilder {
         requirements: spec.config.requirements,
         startActive: startActive,
         startCollapsed: spec.config.startCollapsed,
-        awaysExpanded: spec.config.awaysExpanded,
-        neverBordered: spec.config.neverBordered,
+        collapsed: spec.config.collapsed,
+        border: spec.config.border,
     })
     stringOpt   = (config: Widget_string_config                                 & { startActive?: boolean } = {}) => this.wrapOptional<Spec<Widget_string>    >(config, this.string)
     intOpt      = (config: Omit<Widget_number_config, 'mode'>                   & { startActive?: boolean } = {}) => this.wrapOptional<Spec<Widget_number>    >(config, this.number)

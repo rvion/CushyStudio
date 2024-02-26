@@ -6,6 +6,7 @@ import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 
 import { WidgetDI } from '../WidgetUI.DI'
+import { WidgetMardownUI } from './WidgetMarkdownUI'
 
 // CONFIG
 export type Widget_markdown_config = WidgetConfigFields<{ markdown: string | ((formRoot: Widget_group<any>) => string) }>
@@ -22,12 +23,14 @@ export type Widget_markdown_types = {
     $Input: Widget_markdown_config
     $Serial: Widget_markdown_serial
     $Output: Widget_markdown_output
+    $Widget: Widget_markdown
 }
 
 // STATE
 export interface Widget_markdown extends Widget_markdown_types {}
 export class Widget_markdown implements IWidget<Widget_markdown_types> {
-    readonly hasBlock = true
+    HeaderUI = undefined
+    BodyUI = WidgetMardownUI
     readonly id: string
     readonly type: 'markdown' = 'markdown'
     readonly serial: Widget_markdown_serial

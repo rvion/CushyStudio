@@ -6,6 +6,7 @@ import { makeAutoObservable, observable } from 'mobx'
 import { nanoid } from 'nanoid'
 
 import { WidgetDI } from '../WidgetUI.DI'
+import { WidgetList_LineUI, WidgetListUI } from './WidgetListUI'
 import { runWithGlobalForm } from 'src/models/_ctx2'
 
 // CONFIG
@@ -31,15 +32,20 @@ export type Widget_list_types<T extends Spec> = {
     $Input: Widget_list_config<T>
     $Serial: Widget_list_serial<T>
     $Output: Widget_list_output<T>
+    $Widget: Widget_list<T>
 }
 
 // STATE
 export interface Widget_list<T extends Spec> extends Widget_list_types<T> {}
 export class Widget_list<T extends Spec> implements IWidget<Widget_list_types<T>> {
+    HeaderUI = WidgetList_LineUI
+    get BodyUI() {
+        if (this.items.length === 0) return
+        return WidgetListUI
+    }
     get serialHash(): string {
         return this.items.map((v) => v.serialHash).join(',')
     }
-    get hasBlock(): boolean { return this.items.length > 0 } // prettier-ignore
     readonly id: string
     readonly type: 'list' = 'list'
 

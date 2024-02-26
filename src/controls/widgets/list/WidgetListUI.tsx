@@ -7,10 +7,8 @@ import { forwardRef } from 'react'
 import SortableList, { SortableItem, SortableKnob } from 'react-easy-sort'
 import { ErrorBoundary } from 'react-error-boundary'
 
-import { WidgetDI } from '../WidgetUI.DI'
 import { Widget_list } from './WidgetList'
 import { ListControlsUI } from 'src/controls/shared/ListControlsUI'
-import { Message } from 'src/rsuite/shims'
 import { ErrorBoundaryFallback } from 'src/widgets/misc/ErrorBoundary'
 
 export const WidgetList_LineUI = observer(function WidgetList_LineUI_<T extends Spec>(p: {
@@ -27,15 +25,13 @@ export const WidgetListUI = observer(function WidgetListUI_<T extends Spec>(p: {
     const widget = p.widget
     const subWidgets = widget.items
     const min = widget.config.min
-    const WidgetUI = WidgetDI.WidgetUI
-    if (WidgetUI == null) return <Message type='error'>Internal list failure</Message>
     return (
         <div className='_WidgetListUI' tw='flex-grow w-full'>
             {/* <ListControlsUI widget={p.widget} /> */}
             <SortableList onSortEnd={p.widget.moveItem} className='list' draggedItemClassName='dragged'>
                 <div tw='flex flex-col gap-2'>
                     {subWidgets.map((subWidget, ix) => {
-                        const { WidgetLineUI, WidgetBlockUI } = WidgetDI.WidgetUI(subWidget) // WidgetDI.WidgetUI(widget)
+                        const { HeaderUI: WidgetHeaderUI, BodyUI: WidgetBodyUI } = subWidget // WidgetDI.WidgetUI(widget)
                         const collapsed = subWidget.serial.collapsed ?? false
                         return (
                             <SortableItem key={subWidget.id}>
@@ -51,9 +47,9 @@ export const WidgetListUI = observer(function WidgetListUI_<T extends Spec>(p: {
                                                 </div>
                                             </div>
                                         ) : null}
-                                        {WidgetLineUI && (
+                                        {WidgetHeaderUI && (
                                             <ErrorBoundary FallbackComponent={ErrorBoundaryFallback} onReset={(details) => {}}>
-                                                <WidgetLineUI widget={subWidget} />
+                                                <WidgetHeaderUI widget={subWidget} />
                                             </ErrorBoundary>
                                         )}
 
@@ -71,10 +67,10 @@ export const WidgetListUI = observer(function WidgetListUI_<T extends Spec>(p: {
                                         </div>
                                         <ListItemCollapseBtnUI req={subWidget} />
                                     </div>
-                                    {WidgetBlockUI && !collapsed && subWidget && (
+                                    {WidgetBodyUI && !collapsed && subWidget && (
                                         <ErrorBoundary FallbackComponent={ErrorBoundaryFallback} onReset={(details) => {}}>
                                             <div tw='ml-2 pl-2'>
-                                                <WidgetBlockUI widget={subWidget} />
+                                                <WidgetBodyUI widget={subWidget} />
                                             </div>
                                         </ErrorBoundary>
                                     )}
@@ -121,7 +117,7 @@ const ListDragHandleUI = forwardRef<HTMLDivElement, { ix: number; widget: IWidge
 
 export const ListItemCollapseBtnUI = observer(function ListItemCollapseBtnUI_(p: { req: IWidget }) {
     const widget = p.req
-    const isCollapsible = widget.hasBlock
+    const isCollapsible = widget.BodyUI
     if (!isCollapsible) return null
     return (
         <div

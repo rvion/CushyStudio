@@ -8,6 +8,7 @@ import { nanoid } from 'nanoid'
 import { hash } from 'ohash'
 
 import { WidgetDI } from '../WidgetUI.DI'
+import { WidgetSelectManyUI } from './WidgetSelectManyUI'
 
 // CONFIG
 export type Widget_selectMany_config<T extends BaseSelectEntry> = WidgetConfigFields<{
@@ -31,15 +32,17 @@ export type Widget_selectMany_types<T extends BaseSelectEntry> = {
     $Input: Widget_selectMany_config<T>
     $Serial: Widget_selectMany_serial<T>
     $Output: Widget_selectMany_output<T>
+    $Widget: Widget_selectMany<T>
 }
 
 // STATE
 export interface Widget_selectMany<T extends BaseSelectEntry> extends Widget_selectMany_types<T> {}
 export class Widget_selectMany<T extends BaseSelectEntry> implements IWidget<Widget_selectMany_types<T>> {
+    HeaderUI = WidgetSelectManyUI
+    BodyUI = undefined
     get serialHash() {
         return hash(this.value)
     }
-    readonly hasBlock = false
     readonly id: string
     readonly type: 'selectMany' = 'selectMany'
     readonly serial: Widget_selectMany_serial<T>

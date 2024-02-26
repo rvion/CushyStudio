@@ -7,6 +7,7 @@ import { nanoid } from 'nanoid'
 import { hash } from 'ohash'
 
 import { WidgetDI } from '../WidgetUI.DI'
+import { WidgetChoices_BodyUI, WidgetChoices_HeaderUI } from './WidgetChoicesUI'
 import { makeLabelFromFieldName } from 'src/utils/misc/makeLabelFromFieldName'
 import { toastError } from 'src/utils/misc/toasts'
 
@@ -38,24 +39,25 @@ export type Widget_choices_types<T extends SchemaDict = SchemaDict> = {
     $Input: Widget_choices_config<T>
     $Serial: Widget_choices_serial<T>
     $Output: Widget_choices_output<T>
+    $Widget: Widget_choices<T>
 }
 
 // STATE
 export interface Widget_choices<T extends SchemaDict = SchemaDict> extends Widget_choices_types<T> {}
 export class Widget_choices<T extends SchemaDict = SchemaDict> implements IWidget<Widget_choices_types<T>> {
-    get hasBlock() {
-        return true
-        // if (this.activeBranches.length > 0) return true
-        // return false
-    }
+    HeaderUI = WidgetChoices_HeaderUI
+    BodyUI = WidgetChoices_BodyUI
     readonly id: string
     readonly type: 'choices' = 'choices'
 
     get serialHash(): string {
         return hash(this.value)
     }
-    get isMulti() {
+    get isMulti(): boolean {
         return this.config.multi
+    }
+    get isSingle(): boolean {
+        return !this.config.multi
     }
     children: { [k in keyof T]?: T[k]['widget'] } = {}
     serial: Widget_choices_serial<T>

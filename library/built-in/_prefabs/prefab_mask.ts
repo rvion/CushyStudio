@@ -9,7 +9,7 @@ export const ui_mask = () => {
         items: {
             noMask: form.group(),
             mask: form.group({
-                awaysExpanded: true,
+                collapsed: false,
                 label: false,
                 items: () => ({
                     image: form.image({}),
