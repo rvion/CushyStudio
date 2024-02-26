@@ -35,6 +35,14 @@ export const ImageUI = observer(function ImageUI_(p: {
                 opacity,
                 borderRadius: '.5rem',
             }}
+            onMouseDown={(ev) => {
+                // Middle Mouse
+                if (ev.button == 1) {
+                    ev.stopPropagation()
+                    ev.preventDefault()
+                    return st.layout.FOCUS_OR_CREATE('Image', { imageID: image.id })
+                }
+            }}
             onClick={(ev) => {
                 if (hasMod(ev)) {
                     ev.stopPropagation()
