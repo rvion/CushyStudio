@@ -59,6 +59,12 @@ app({
             test: ui.group({
                 items: {
                     aaa1: ui.textarea(),
+                    aaa2: ui.intOpt(),
+                    aaa3: ui.intOpt(),
+                    aaa4: ui.intOpt(),
+                    aaa5: ui.intOpt(),
+                    aaa6: ui.intOpt(),
+                    aaa7: ui.intOpt(),
                 },
             }),
             audience: ui.group({

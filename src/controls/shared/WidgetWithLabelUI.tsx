@@ -43,9 +43,10 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     // 👇 we can't do that, cause those groups may have requirements
     // ⏸️ if (widget instanceof KLS.Widget_group && Object.keys(widget.fields).length === 0) return
 
-    const onLineClick = () => {
+    const onLabelClick = () => {
         if (widget.serial.collapsed) return (widget.serial.collapsed = false)
-        if (isCollapsible && !widget.serial.collapsed) widget.serial.collapsed = true
+        if (isCollapsible && !widget.serial.collapsed) return (widget.serial.collapsed = true)
+        if (!isCollapsible && isWidgetOptional(originalWidget)) return originalWidget.toggle()
     }
 
     const showBorder = (() => {
@@ -69,7 +70,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     })()
 
     const LABEL = (
-        <span onClick={onLineClick} style={{ lineHeight: '1rem' }}>
+        <span onClick={onLabelClick} style={{ lineHeight: '1rem' }}>
             {labelText}
             {widget.config.showID ? <span tw='opacity-50 italic text-sm'>#{widget.id.slice(0, 3)}</span> : null}
         </span>

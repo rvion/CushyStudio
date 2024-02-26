@@ -64,6 +64,13 @@ export class Widget_optional<T extends Spec = Spec> implements IWidget<Widget_op
      * */
     // ⏸️ INIT_MODE: 'LAZY' | 'EAGER' = 'EAGER'
 
+    toggleAndUpdateChildCollapsedState = () => {
+        this.toggle()
+        if (this.child) {
+            if (this.serial.active) this.child.serial.collapsed = false
+            else this.child.serial.collapsed = true
+        }
+    }
     toggle = () => {
         if (this.serial.active) this.setOff()
         else this.setOn()

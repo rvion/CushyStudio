@@ -21,9 +21,10 @@ export const WidgetString_TextareaBodyUI = observer(function WidgetString_Textar
     const val = widget.value
     return (
         <textarea
+            style={{ lineHeight: '1.3rem' }}
             tw='textarea textarea-bordered textarea-sm w-full '
             placeholder={widget.config.placeHolder}
-            rows={2}
+            rows={3}
             value={val}
             onChange={(ev) => {
                 widget.value = ev.target.value
