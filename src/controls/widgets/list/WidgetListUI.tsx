@@ -117,7 +117,7 @@ const ListDragHandleUI = forwardRef<HTMLDivElement, { ix: number; widget: IWidge
 
 export const ListItemCollapseBtnUI = observer(function ListItemCollapseBtnUI_(p: { req: IWidget }) {
     const widget = p.req
-    const isCollapsible = widget.hasBlock
+    const isCollapsible = widget.BodyUI
     if (!isCollapsible) return null
     return (
         <div

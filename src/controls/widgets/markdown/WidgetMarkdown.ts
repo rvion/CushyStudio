@@ -31,7 +31,6 @@ export interface Widget_markdown extends Widget_markdown_types {}
 export class Widget_markdown implements IWidget<Widget_markdown_types> {
     HeaderUI = undefined
     BodyUI = WidgetMardownUI
-    readonly hasBlock = true
     readonly id: string
     readonly type: 'markdown' = 'markdown'
     readonly serial: Widget_markdown_serial

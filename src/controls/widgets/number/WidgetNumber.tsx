@@ -46,7 +46,6 @@ export class Widget_number implements IWidget<Widget_number_types> {
     HeaderUI = WidgetNumberUI
     BodyUI = undefined
     get serialHash () { return hash(this.value) } // prettier-ignore
-    readonly hasBlock = false
     readonly id: string
     readonly type: 'number' = 'number'
     readonly forceSnap: boolean = false

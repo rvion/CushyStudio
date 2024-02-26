@@ -48,7 +48,6 @@ export class Widget_orbit implements IWidget<Widget_orbit_types> {
     HeaderUI = WidgetOrbitUI
     BodyUI = undefined
     get serialHash () { return hash(this.value) } // prettier-ignore
-    hasBlock = false
     id: string
     type: 'orbit' = 'orbit'
 

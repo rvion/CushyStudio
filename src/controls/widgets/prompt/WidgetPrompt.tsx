@@ -47,7 +47,6 @@ export class Widget_prompt implements IWidget<Widget_prompt_types> {
     HeaderUI = WidgetPrompt_LineUI
     BodyUI = WidgetPromptUI
     get serialHash () { return hash(this.serial.val) } // prettier-ignore
-    get hasBlock() { return true } // prettier-ignore
     readonly id: string
     readonly type: 'prompt' = 'prompt'
 

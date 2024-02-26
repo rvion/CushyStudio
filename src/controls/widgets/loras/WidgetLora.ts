@@ -36,7 +36,6 @@ export class Widget_loras implements IWidget<Widget_loras_types> {
     get serialHash(): string {
         return hash(this.value)
     }
-    hasBlock = true
     id: string
     type: 'loras' = 'loras'
     serial: Widget_loras_serial

@@ -23,7 +23,6 @@ export type IWidget<K extends $WidgetTypes = $WidgetTypes> = {
     $Widget: K['$Widget']
 
     id: string
-    hasBlock: boolean
     readonly serialHash: string
     readonly type: K['$Type']
     readonly value: K['$Output']
@@ -31,6 +30,8 @@ export type IWidget<K extends $WidgetTypes = $WidgetTypes> = {
     readonly form: Form<any>
     readonly config: K['$Input'] // WidgetConfigFields<any>
 
+    /** if specified, override the default algorithm to decide if we should have borders */
+    border?: boolean
     HeaderUI: FC<{ widget: K['$Widget'] }> | undefined
     BodyUI: FC<{ widget: K['$Widget'] }> | undefined
     // FULLY_CUSTOM_RENDER?: boolean
@@ -58,8 +59,8 @@ export type SharedWidgetConfig = {
     showID?: boolean
     requirements?: Requirements[]
     // options to disable certain UI features
-    alwaysExpanded?: true
-    neverBordered?: true
+    collapsed?: false
+    border?: boolean
 }
 
 export type Requirements =

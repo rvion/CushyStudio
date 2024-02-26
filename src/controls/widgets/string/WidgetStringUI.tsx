@@ -1,32 +1,44 @@
 import { observer } from 'mobx-react-lite'
+import { useState } from 'react'
 
 import { Widget_string } from './WidgetString'
-import { useState } from 'react'
 
 let startValue = ''
 let cancelled = false
 
-// UI
-export const WidgetStringUI = observer(function WidgetStringUI_(p: { widget: Widget_string }) {
+// Textarea HEADER
+export const WidgetString_TextareaHeaderUI = observer(function WidgetString_TextareaHeaderUI_(p: { widget: Widget_string }) {
+    const widget = p.widget
+    if (!widget.config.textarea) return null
+    if (!p.widget.serial.collapsed) return null
+    return <div tw='line-clamp-1 italic opacity-50'>{p.widget.value}</div>
+})
+
+// Textarea BODY
+export const WidgetString_TextareaBodyUI = observer(function WidgetString_TextareaBodyUI_(p: { widget: Widget_string }) {
+    const widget = p.widget
+    if (!widget.config.textarea) return null
+    const val = widget.value
+    return (
+        <textarea
+            tw='textarea textarea-bordered textarea-sm w-full '
+            placeholder={widget.config.placeHolder}
+            rows={2}
+            value={val}
+            onChange={(ev) => {
+                widget.value = ev.target.value
+            }}
+        />
+    )
+})
+
+// string HEADER
+export const WidgetString_HeaderUI = observer(function WidgetStringUI_(p: { widget: Widget_string }) {
     const widget = p.widget
     const val = widget.value
 
     const [inputValue, setInputValue] = useState<string>(val.toString())
     const [isEditing, setEditing] = useState<boolean>(false)
-
-    if (widget.config.textarea) {
-        return (
-            <textarea
-                tw='textarea textarea-bordered textarea-sm w-full '
-                placeholder={widget.config.placeHolder}
-                rows={2}
-                value={val}
-                onChange={(ev) => {
-                    widget.value = ev.target.value
-                }}
-            />
-        )
-    }
     return (
         <>
             <div

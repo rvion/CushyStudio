@@ -56,7 +56,6 @@ export interface Widget_listExt<T extends Spec> extends Widget_listExt_types<T> 
 export class Widget_listExt<T extends Spec> implements IWidget<Widget_listExt_types<T>> {
     HeaderUI = WidgetList_LineUI
     BodyUI = WidgetListExtUI
-    readonly hasBlock = true
     readonly id: string
     readonly type: 'listExt' = 'listExt'
 

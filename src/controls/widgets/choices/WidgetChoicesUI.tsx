@@ -39,6 +39,7 @@ export const WidgetChoices_BodyUI = observer(function WidgetChoices_BodyUI_<T ex
                                 key={val.branch}
                                 rootKey={val.branch}
                                 widget={subWidget}
+                                label={widget.isSingle ? false : undefined}
                             />
                         )
                     })}

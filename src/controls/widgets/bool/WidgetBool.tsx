@@ -34,7 +34,6 @@ export interface Widget_bool extends Widget_string_types {}
 export class Widget_bool implements IWidget<Widget_string_types> {
     HeaderUI = WidgetBoolUI
     BodyUI = undefined
-    readonly hasBlock = false
     readonly id: string
     readonly type: 'bool' = 'bool'
 
