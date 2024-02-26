@@ -172,14 +172,13 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
         }
     }
 
-    const buttonSize = 4
-
     return (
         <div /* Root */
             className={p.className}
             tw={[
+                'WIDGET-FIELD',
                 'input-number-ui custom-roundness',
-                'h-7 flex-1 select-none min-w-16 cursor-ew-resize overflow-clip',
+                'flex-1 select-none min-w-16 cursor-ew-resize overflow-clip',
                 'bg-primary/30 border border-base-100 border-b-2 border-b-base-200',
                 !isEditing && 'hover:border-base-200 hover:border-b-base-300 hover:bg-primary/40',
             ]}
@@ -188,7 +187,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
                 <button /* Left Button */
                     tw={[
                         'h-full absolute left-0 rounded-none pr-0.5',
-                        `!w-${buttonSize} pb-1 leading-none border border-base-200 opacity-0 bg-base-200 hover:brightness-125`,
+                        `w-4 pb-0.5 leading-none border border-base-200 opacity-0 bg-base-200 hover:brightness-125`,
                     ]}
                     style={{ zIndex: 2 }}
                     onClick={(_) => {
@@ -204,7 +203,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
                     tw={[!p.hideSlider && !isEditing && 'bg-primary/40']}
                     style={{ width: `${((val - rangeMin) / (rangeMax - rangeMin)) * 100}%` }}
                 />
-                <div tw='absolute flex w-full h-full px-1'>
+                <div tw='absolute flex w-full h-full px-2'>
                     <div
                         tw={['relative flex flex-1 select-none']}
                         onWheel={(ev) => {
@@ -246,9 +245,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
                             })
                         }}
                     >
-                        <div /* Text Container */
-                            tw={[`custom-roundness flex-auto flex items-center !px-${buttonSize} text-sm text-shadow`]}
-                        >
+                        <div /* Text Container */ tw={[`custom-roundness flex-auto flex items-center px-3 text-sm text-shadow`]}>
                             {!isEditing && p.text ? (
                                 <div /* Inner Label Text - Not shown while editing */
                                     tw={['outline-0 border-0 border-transparent z-10 w-full text-left']}
@@ -330,7 +327,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
                 <button /* Right Button */
                     tw={[
                         'h-full absolute right-0 pl-0.5',
-                        `!w-${buttonSize} pb-1 leading-none border border-base-200 opacity-0 bg-base-200 hover:brightness-125`,
+                        `w-4 pb-0.5 leading-none border border-base-200 opacity-0 bg-base-200 hover:brightness-125`,
                     ]}
                     style={{ zIndex: 2 }}
                     onClick={(_) => {

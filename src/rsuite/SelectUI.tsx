@@ -83,7 +83,7 @@ class AutoCompleteSelectState<T> {
                     : value.map((i) => {
                           const label = this.p.getLabelText(i)
                           return (
-                              <div key={label} tw='badge badge-primary'>
+                              <div key={label} tw='badge badge-primary text-shadow-inv'>
                                   {label}
                               </div>
                           )
@@ -210,8 +210,16 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
     const st = useSt()
     const s = useMemo(() => new AutoCompleteSelectState(st, p), [])
     return (
-        <div
-            tw='flex flex-1 items-center h-full p-0.5 relative'
+        <div /* Container/Root */
+            tw={[
+                'WIDGET-FIELD',
+                'flex flex-1 items-center p-0.5 relative',
+                'rounded overflow-clip text-shadow',
+                'border border-base-100 hover:brightness-110',
+                'hover:border-base-200',
+                'bg-primary/20 border-1',
+                'border-b-2 border-b-base-200 hover:border-b-base-300',
+            ]}
             className={p.className}
             ref={s.anchorRef}
             onKeyUp={s.onRealInputKeyUp}
@@ -222,11 +230,16 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
             onBlur={s.onBlur}
             style={{ background: s.searchQuery === '' ? 'none' : undefined }}
         >
-            <div className='flex-1'>
+            <div className='flex-1 h-full '>
                 {/* ANCHOR */}
                 <div //
                     tabIndex={-1}
-                    tw='input input-xs text-sm flex items-center gap-1 bg-transparent p-0 select-none pointer-events-none'
+                    tw={[
+                        'input input-xs text-sm',
+                        'flex items-center gap-1',
+                        'p-0 h-full bg-transparent',
+                        'select-none pointer-events-none overflow-clip',
+                    ]}
                 >
                     {s.isOpen ? (
                         <></>
@@ -242,10 +255,10 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
                         </>
                     )}
                 </div>
-                <div tw='absolute top-0 left-0 right-0 z-100 '>
+                <div tw='absolute top-0 left-0 right-0 z-100 h-full'>
                     <input
                         //
-                        tw='input input-sm w-full'
+                        tw='input input-sm w-full h-full !outline-none'
                         type='text'
                         value={s.searchQuery}
                         onChange={() => {}}
@@ -295,29 +308,34 @@ export const SelectPopupUI = observer(function SelectPopupUI_<T>(p: { s: AutoCom
                             }`}
                             tw={[
                                 'flex items-center gap-1 rounded',
-                                isSelected && 'bg-primary text-primary-content hover:text-neutral-content text-shadow-inv',
+                                'h-full',
+                                isSelected &&
+                                    'bg-primary text-primary-content hover:text-neutral-content text-shadow-inv active:bg-primary',
                             ]}
                             onMouseEnter={(ev) => {
                                 s.setNavigationIndex(index)
                             }}
                             onMouseDown={(ev) => s.onMenuEntryClick(ev, index)}
                         >
-                            <div tw={'rounded py-3 h-6'}>
+                            <div tw={'rounded flex pl-1'}>
                                 {s.isMultiSelect ? (
                                     <input
-                                        onChange={() => {}}
-                                        checked={isSelected}
                                         type='checkbox'
-                                        tw='checkbox checkbox-primary checkbox-sm input-xs bg-none'
+                                        checked={isSelected}
+                                        tw={['flex-1 checkbox checkbox-primary w-5 h-5']}
+                                        tabIndex={-1}
+                                        readOnly
                                     />
                                 ) : (
                                     <></>
                                 )}
                             </div>
                             {/* {isSelected ? '🟢' : null} */}
-                            {s.p.getLabelUI //
-                                ? s.p.getLabelUI(option)
-                                : s.p.getLabelText(option)}
+                            <div tw='flex h-full w-full items-center' style={{ height: '28px' }}>
+                                {s.p.getLabelUI //
+                                    ? s.p.getLabelUI(option)
+                                    : s.p.getLabelText(option)}
+                            </div>
                         </li>
                     )
                 })}

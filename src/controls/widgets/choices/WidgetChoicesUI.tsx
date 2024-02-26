@@ -135,7 +135,7 @@ export const WidgetChoices_SelectLineUI = observer(function WidgetChoices_Select
                     <div tw='flex flex-1 justify-between'>
                         <div tw='flex-1'>{v.key}</div>
                         {/* 👇 TODO: clean this */}
-                        {v.key in widget.serial.values_ && (
+                        {/* {v.key in widget.serial.values_ && (
                             <div
                                 tw='btn btn-square btn-sm'
                                 onClick={(ev) => {
@@ -145,7 +145,7 @@ export const WidgetChoices_SelectLineUI = observer(function WidgetChoices_Select
                             >
                                 <span className='material-symbols-outlined'>delete</span>
                             </div>
-                        )}
+                        )} */}
                     </div>
                 )}
                 equalityCheck={(a, b) => a.key === b.key}

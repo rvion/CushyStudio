@@ -20,65 +20,100 @@ export const WidgetSizeX_LineUI = observer(function WidgetSize_LineUI_(p: {
     bounds?: { min?: number; max?: number; step?: number }
 }) {
     const uist = p.sizeHelper
+    const ratioDisplaySize = 26
 
     return (
         <div className='flex flex-1 flex-col gap-1'>
             <div tw='flex items-center gap-1'>
-                <div tw='virtualBorder' style={{ width: '2rem', height: '2rem' }}>
-                    <div
-                        tw='bg-primary'
-                        style={{
-                            //
-                            width: uist.height < uist.width ? '2rem' : `${(uist.width / uist.height) * 2}rem`,
-                            height: uist.height < uist.width ? `${(uist.height / uist.width) * 2}rem` : '2rem',
-                        }}
-                    ></div>
-                </div>
-                <InputNumberUI
-                    //
-                    min={p.bounds?.min ?? 128}
-                    max={p.bounds?.max ?? 4096}
-                    step={p.bounds?.step ?? 32}
-                    mode='int'
-                    tw='join-item'
-                    value={uist.width}
-                    hideSlider
-                    onValueChange={(next) => uist.setWidth(next)}
-                    forceSnap={true}
-                    text='Width'
-                    suffix='px'
-                />
-                <InputNumberUI
-                    //
-                    tw='join-item'
-                    min={p.bounds?.min ?? 128}
-                    max={p.bounds?.max ?? 4096}
-                    step={p.bounds?.step ?? 32}
-                    hideSlider
-                    mode='int'
-                    value={uist.height}
-                    onValueChange={(next) => uist.setHeight(next)}
-                    forceSnap={true}
-                    text='Height'
-                    suffix='px'
-                />
-                <button // Aspect Lock button
-                    tw={['btn btn-xs', uist.isAspectRatioLocked && 'bg-primary hover:bg-primary text-primary-content']}
-                    onClick={(ev) => {
-                        uist.isAspectRatioLocked = !uist.isAspectRatioLocked
-                        if (!uist.isAspectRatioLocked) {
-                            return
-                        }
-                        /* Need to snap value if linked */
-                        if (uist.wasHeightAdjustedLast) {
-                            uist.setHeight(uist.height)
-                        } else {
-                            uist.setWidth(uist.width)
-                        }
-                    }}
+                <div // Extra div because gap-1 will eat in to the child's width for SOME reason
                 >
-                    <span className='material-symbols-outlined'>{uist.isAspectRatioLocked ? 'link' : 'link_off'}</span>
-                </button>
+                    <div // Aspect ratio display background
+                        tw={[
+                            //
+                            'flex rounded-sm virtualBorder bg-base-300',
+                            'overflow-clip',
+                            'items-center justify-center',
+                        ]}
+                        style={{ width: `${ratioDisplaySize}px`, height: `${ratioDisplaySize}px` }}
+                    >
+                        <div // Aspect ratio display foreground
+                            tw='relative bg-primary'
+                            style={{
+                                //
+                                width: '100%',
+                                height: '100%',
+                                // Use transform here because it works with floats and will not cause popping/mis-alignments.
+                                transform: `
+                                scaleX(${
+                                    uist.width < uist.height
+                                        ? Math.round((uist.width / uist.height) * ratioDisplaySize) / ratioDisplaySize
+                                        : '1'
+                                })
+                                scaleY(${
+                                    uist.height < uist.width
+                                        ? Math.round((uist.height / uist.width) * ratioDisplaySize) / ratioDisplaySize
+                                        : '1'
+                                })`,
+                            }}
+                        ></div>
+                    </div>
+                </div>
+                <div //Joined container
+                    tw={[
+                        'WIDGET-FIELD w-full h-full flex items-center join rounded gap-0.5 overflow-clip',
+                        'border border-base-100 border-b-base-200',
+                        'border-b-2 hover:border-base-200 hover:border-b-base-300',
+                    ]}
+                >
+                    <InputNumberUI
+                        //
+                        min={p.bounds?.min ?? 128}
+                        max={p.bounds?.max ?? 4096}
+                        step={p.bounds?.step ?? 32}
+                        mode='int'
+                        tw='join-item !border-none'
+                        value={uist.width}
+                        hideSlider
+                        onValueChange={(next) => uist.setWidth(next)}
+                        forceSnap={true}
+                        text='Width'
+                        suffix='px'
+                    />
+                    <InputNumberUI
+                        //
+                        tw='join-item !border-none'
+                        min={p.bounds?.min ?? 128}
+                        max={p.bounds?.max ?? 4096}
+                        step={p.bounds?.step ?? 32}
+                        hideSlider
+                        mode='int'
+                        value={uist.height}
+                        onValueChange={(next) => uist.setHeight(next)}
+                        forceSnap={true}
+                        text='Height'
+                        suffix='px'
+                    />
+                    <button // Aspect Lock button
+                        tw={[
+                            'btn btn-xs h-8 rounded-none join-item !border-none !outline-none',
+                            uist.isAspectRatioLocked && 'bg-primary hover:bg-primary text-primary-content !border-none',
+                        ]}
+                        onClick={(ev) => {
+                            uist.isAspectRatioLocked = !uist.isAspectRatioLocked
+                            if (!uist.isAspectRatioLocked) {
+                                return
+                            }
+                            // Need to snap value if linked
+                            if (uist.wasHeightAdjustedLast) {
+                                uist.setHeight(uist.height)
+                            } else {
+                                uist.setWidth(uist.width)
+                            }
+                        }}
+                    >
+                        <span className='material-symbols-outlined'>{uist.isAspectRatioLocked ? 'link' : 'link_off'}</span>
+                    </button>
+                </div>
             </div>
         </div>
     )
@@ -111,7 +146,7 @@ export const WigetSizeXUI = observer(function WigetSizeXUI_(p: {
     )
 
     return (
-        <div className='flex flex-col gap-1 bg-base-300 p-1 rounded-b'>
+        <div className='flex flex-col gap-1 bg-base-300 p-1 mt-0.5 rounded-b'>
             <div tw='flex items-start gap-2'>
                 <Joined>
                     {modelBtn('1.5')}
