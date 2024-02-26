@@ -40,8 +40,15 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     const isCollapsible: boolean = checkIfWidgetIsCollapsible(widget)
     const isCollapsed = (widget.serial.collapsed ?? isDisabled) && isCollapsible
 
-    // 👇 we can't do that, cause those groups may have requirements
-    // ⏸️ if (widget instanceof KLS.Widget_group && Object.keys(widget.fields).length === 0) return
+    // ------------------------------------------------------------
+    const k = widget
+    if (
+        k instanceof KLS.Widget_group && //
+        Object.keys(k.fields).length === 0 &&
+        k.config.requirements == null
+    )
+        return
+    // ------------------------------------------------------------
 
     const onLabelClick = () => {
         if (widget.serial.collapsed) return (widget.serial.collapsed = false)
@@ -75,6 +82,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
             {widget.config.showID ? <span tw='opacity-50 italic text-sm'>#{widget.id.slice(0, 3)}</span> : null}
         </span>
     )
+
     const styleDISABLED: CSSProperties | undefined = isDisabled
         ? { pointerEvents: 'none', opacity: 0.3, backgroundColor: 'rgba(0,0,0,0.05)' }
         : undefined
