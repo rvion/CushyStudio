@@ -112,6 +112,14 @@ export class CushyLayoutManager {
         console.log('[💠] Rendering Layout')
         return (
             <Layout //
+                onAuxMouseClick={(node, event) => {
+                    // Middle Mouse to close tab
+                    if (event.button == 1 && node instanceof FL.TabNode) {
+                        if (node.isEnableClose()) {
+                            this.closeTab(node.getId())
+                        }
+                    }
+                }}
                 onModelChange={(model) => {
                     runInAction(() => {
                         this.currentTabSet = model.getActiveTabset()
