@@ -17,6 +17,7 @@ export const Widget_ToggleUI = observer(function Widget_ToggleUI_(p: { widget: I
             expand={false}
             onValueChange={(value) => {
                 widget.serial.active = value
+                widget.UpdateChildCollapsedState()
             }}
         ></InputBoolUI>
     )
