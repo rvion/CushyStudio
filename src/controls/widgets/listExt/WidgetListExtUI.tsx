@@ -1,4 +1,4 @@
-import type { Spec } from 'src/controls/Prop'
+import type { Spec } from 'src/controls/Spec'
 
 import { observer } from 'mobx-react-lite'
 

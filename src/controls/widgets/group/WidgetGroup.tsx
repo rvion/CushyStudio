@@ -7,9 +7,9 @@ import { nanoid } from 'nanoid'
 
 import { WidgetDI } from '../WidgetUI.DI'
 import { WidgetGroup_BlockUI, WidgetGroup_LineUI } from './WidgetGroupUI'
-import { Spec } from 'src/controls/Prop'
 import { checkIfWidgetIsCollapsible } from 'src/controls/shared/checkIfWidgetIsCollapsible'
 import { getActualWidgetToDisplay } from 'src/controls/shared/getActualWidgetToDisplay'
+import { Spec } from 'src/controls/Spec'
 import { runWithGlobalForm } from 'src/models/_ctx2'
 
 // CONFIG

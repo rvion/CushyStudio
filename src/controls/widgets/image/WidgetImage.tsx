@@ -9,7 +9,7 @@ import { nanoid } from 'nanoid'
 
 import { WidgetDI } from '../WidgetUI.DI'
 import { WidgetSelectImageUI } from './WidgetImageUI'
-import { Spec } from 'src/controls/Prop'
+import { Spec } from 'src/controls/Spec'
 
 // CONFIG
 export type Widget_image_config = WidgetConfigFields<{

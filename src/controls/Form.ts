@@ -4,7 +4,7 @@ import type { SchemaDict } from 'src/cards/App'
 import { action, autorun, isObservable, makeAutoObservable, observable, runInAction } from 'mobx'
 
 import { FormBuilder } from './FormBuilder'
-import { Spec } from './Prop'
+import { Spec } from './Spec'
 
 export class Form<const FIELDS extends SchemaDict> {
     error: Maybe<string> = null

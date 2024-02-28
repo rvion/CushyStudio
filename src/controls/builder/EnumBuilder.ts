@@ -4,7 +4,7 @@
  */
 import type { Form } from '../Form'
 
-import { Spec } from '../Prop'
+import { Spec } from '../Spec'
 import { Widget_enum, Widget_enum_config } from '../widgets/enum/WidgetEnum'
 
 export type IEnumBuilder = {

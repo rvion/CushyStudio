@@ -1,6 +1,6 @@
 import type { Widget_listExt } from '../listExt/WidgetListExt'
 import type { IWidget } from 'src/controls/IWidget'
-import type { Spec } from 'src/controls/Prop'
+import type { Spec } from 'src/controls/Spec'
 
 import { observer } from 'mobx-react-lite'
 import { forwardRef } from 'react'

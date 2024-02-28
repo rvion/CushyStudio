@@ -1,7 +1,7 @@
 import type { Form } from '../../Form'
 import type { BoardPosition } from './WidgetListExtTypes'
 import type { IWidget, WidgetConfigFields, WidgetSerialFields } from 'src/controls/IWidget'
-import type { Spec } from 'src/controls/Prop'
+import type { Spec } from 'src/controls/Spec'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'

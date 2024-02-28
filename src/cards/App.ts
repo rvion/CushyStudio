@@ -1,7 +1,7 @@
 import type { AppMetadata } from './AppManifest'
 import type { CSSProperties } from 'react'
 import type { FormBuilder } from 'src/controls/FormBuilder'
-import type { Spec } from 'src/controls/Prop'
+import type { Spec } from 'src/controls/Spec'
 import type { MediaImageL } from 'src/models/MediaImage'
 import type { Runtime } from 'src/runtime/Runtime'
 

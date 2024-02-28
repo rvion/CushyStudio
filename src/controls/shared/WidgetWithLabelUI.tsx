@@ -37,13 +37,14 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     const widget = getActualWidgetToDisplay(originalWidget)
     const isDisabled = isWidgetOptional(originalWidget) && !originalWidget.serial.active
 
-    const HeaderUI = widget.HeaderUI // WidgetDI.WidgetUI(widget)
-    const BodyUI = widget.BodyUI // WidgetDI.WidgetUI(widget)
+    const HeaderUI = widget.HeaderUI
+    const BodyUI = widget.BodyUI
 
     const isCollapsible: boolean = checkIfWidgetIsCollapsible(widget)
     const isCollapsed = (widget.serial.collapsed ?? isDisabled) && isCollapsible
 
     // ------------------------------------------------------------
+    // quick hack to prevent showing emtpy groups when there is literally nothing interesting to show
     const k = widget
     if (
         k instanceof KLS.Widget_group && //
@@ -54,15 +55,18 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     // ------------------------------------------------------------
 
     const onLabelClick = () => {
+        // if the widget is collapsed, clicking on the label should expand it
         if (widget.serial.collapsed) return (widget.serial.collapsed = false)
+        // if the widget can be collapsed, and is expanded, clicking on the label should collapse it
         if (isCollapsible && !widget.serial.collapsed) return (widget.serial.collapsed = true)
+        // if the widget is not collapsible, and is optional, clicking on the label should toggle it
         if (!isCollapsible && isWidgetOptional(originalWidget)) return originalWidget.toggle()
     }
 
     const showBorder = (() => {
         // if app author manually specify they want no border, then we respect that
         if (widget.config.border != null) return widget.config.border
-        // if the widget ovveride the default border => we respect that
+        // if the widget override the default border => we respect that
         if (widget.border != null) return widget.border
         // if the widget do NOT have a body => we do not show the border
         if (widget.BodyUI == null) return false
