@@ -1,5 +1,5 @@
-import type { Widget_list } from '../widgets/list/WidgetList'
-import type { Widget_listExt } from '../widgets/listExt/WidgetListExt'
+import type { Widget_listExt } from '../listExt/WidgetListExt'
+import type { Widget_list } from './WidgetList'
 
 import { observer } from 'mobx-react-lite'
 
@@ -10,7 +10,13 @@ export const ListControlsUI = observer(function ListControlsUI_(p: { widget: Wid
     const canAdd = max ? widget.items.length < max : true
     const canClear = min ? widget.items.length > min : true
     return (
-        <div tw='sticky top-0 flex gap-1 z-[50] w-full'>
+        <div
+            tw='sticky top-0 flex gap-1 z-[50] w-full'
+            onMouseDown={(ev) => {
+                ev.preventDefault()
+                ev.stopPropagation()
+            }}
+        >
             <div
                 tw={[!canAdd && 'btn-disabled', 'btn btn-xs btn-narrow btn-ghost']}
                 onClick={(ev) => {
