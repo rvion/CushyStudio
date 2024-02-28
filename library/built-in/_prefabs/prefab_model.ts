@@ -28,6 +28,7 @@ export const ui_model = () => {
                     clipSkip: form.int({ label: 'Clip Skip', default: 1, min: 1, max: 5 }),
                     freeU: form.group(),
                     civitai_ckpt_air: form.string({
+                        requirements: [{ type: 'customNodesByNameInCushy', nodeName: 'CivitAI$_Checkpoint$_Loader' }],
                         tooltip: 'Civitai checkpoint Air, as found on the civitai Website. It should look like this: 43331@176425', // prettier-ignore
                         label: 'Civitai Ref',
                         placeHolder: 'e.g. 43331@176425',
