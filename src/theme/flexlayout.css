@@ -32,9 +32,9 @@
   --color-border-tab-selected-background: oklch(var(--b1));
   --color-border-tab-unselected-background: transparent;
 
-  --color-splitter: oklch(var(--b3));
-  --color-splitter-hover: oklch(var(--b3));
-  --color-splitter-drag: oklch(var(--b3));
+  --color-splitter: oklch(var(--b2));
+  --color-splitter-hover: oklch(var(--p)/.4);
+  --color-splitter-drag: oklch(var(--p));
   --color-drag-rect-border: oklch(var(--b3));
   --color-drag-rect-background: oklch(var(--b3));
   --color-drag-rect: oklch(var(--b1));
