@@ -7,7 +7,7 @@ import { makeAutoObservable } from 'mobx'
 import { _FIX_INDENTATION } from '../utils/misc/_FIX_INDENTATION'
 import { mkFormAutoBuilder } from './builder/AutoBuilder'
 import { EnumBuilder, EnumBuilderOpt } from './builder/EnumBuilder'
-import { Spec } from './Spec'
+import { type ISpec, Spec } from './Spec'
 import { Widget_bool, type Widget_bool_config } from './widgets/bool/WidgetBool'
 import { Widget_inlineRun, type Widget_inlineRun_config } from './widgets/button/WidgetInlineRun'
 import { Widget_choices, type Widget_choices_config } from './widgets/choices/WidgetChoices'
@@ -83,24 +83,34 @@ export class FormBuilder {
     choices     = <const T extends { [key: string]: Spec }>(config: Omit<Widget_choices_config<T>, 'multi'>) => new Spec<Widget_choices<T>                  >('choices'   , { multi: true, ...config })
     // optional wrappers
     optional    = <const T extends Spec>(p: Widget_optional_config<T>) => new Spec<Widget_optional<T>>('optional', p)
-    /** a more practical function to make widget optionals */
-    optional2   = <const T extends Spec>(spec: T, startActive: boolean = false) => new Spec<Widget_optional<Spec<T['$Widget']>>>('optional', {
-        widget: spec,
-        label: spec.config.label,
-        requirements: spec.config.requirements,
-        startActive: startActive,
-        startCollapsed: spec.config.startCollapsed,
-        collapsed: spec.config.collapsed,
-        border: spec.config.border,
-    })
+
+    // /** a more practical function to make widget optionals */
+    // optional2   = <const T extends Spec>(spec: T, startActive: boolean = false) => new Spec<Widget_optional<Spec<T['$Widget']>>>('optional', {
+    //     widget: spec,
+    //     startActive: startActive,
+    //     label: spec.config.label,
+    //     requirements: spec.config.requirements,
+    //     startCollapsed: spec.config.startCollapsed,
+    //     collapsed: spec.config.collapsed,
+    //     border: spec.config.border,
+    // })
+    /** @deprecated : use `.string(...).optional` instead */
     stringOpt   = (config: Widget_string_config                                 & { startActive?: boolean } = {}) => this.wrapOptional<Spec<Widget_string>    >(config, this.string)
+    /** @deprecated : use `.int(...).optional` instead */
     intOpt      = (config: Omit<Widget_number_config, 'mode'>                   & { startActive?: boolean } = {}) => this.wrapOptional<Spec<Widget_number>    >(config, this.number)
+    /** @deprecated : use `.float(...).optional` instead */
     floatOpt    = (config: Omit<Widget_number_config, 'mode'>                   & { startActive?: boolean } = {}) => this.wrapOptional<Spec<Widget_number>    >(config, this.number)
+    /** @deprecated : use `.number(...).optional` instead */
     numberOpt   = (config: Omit<Widget_number_config, 'mode'>                   & { startActive?: boolean } = {}) => this.wrapOptional<Spec<Widget_number>    >(config, this.number)
+    /** @deprecated : use `.image(...).optional` instead */
     imageOpt    = (config: Widget_image_config                                  & { startActive?: boolean } = {}) => this.wrapOptional<Spec<Widget_image>     >(config, this.image)
+    /** @deprecated : use `.prompt(...).optional` instead */
     promptOpt   = (config: Widget_prompt_config                                 & { startActive?: boolean } = {}) => this.wrapOptional<Spec<Widget_prompt>    >(config, this.prompt)
+    /** @deprecated : use `.color(...).optional` instead */
     colorOpt    = (config: Widget_color_config                                  & { startActive?: boolean } = {}) => this.wrapOptional<Spec<Widget_color>     >(config, this.color)
+    /** @deprecated : use `.group(...).optional` instead */
     groupOpt    = <const T extends SchemaDict>(config: Widget_group_config<T>   & { startActive?: boolean } = {}) => this.wrapOptional<Spec<Widget_group<T>>  >(config, this.group)
+    /** @deprecated : use `.regional(...).optional` instead */
     regionalOpt = <const T extends Spec>      (config: Widget_listExt_config<T> & { startActive?: boolean }     ) => this.wrapOptional<Spec<Widget_listExt<T>>>(config, this.regional)
 
     /**
@@ -176,7 +186,7 @@ export class FormBuilder {
 
     /** (@internal); */ _cache: { count: number } = { count: 0 }
     /** (@internal) advanced way to restore form state. used internally */
-    _HYDRATE = <T extends Spec>(
+    _HYDRATE = <T extends ISpec>(
         unmounted: T,
         serial: any | null
     ): T['$Widget'] => {

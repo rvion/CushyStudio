@@ -1,6 +1,6 @@
 app({
     ui: (ui) => ({
-        a: ui.optional2(ui.int()),
+        a: ui.int().optional(),
         b: ui.intOpt(),
         c: ui.groupOpt({
             items: {

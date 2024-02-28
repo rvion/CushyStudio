@@ -49,7 +49,7 @@ app({
         upscale: ui_upscaleWithModel(),
         customSave: ui_customSave(),
         removeBG: ui_rembg_v1(),
-        show3d: form.optional2(ui_3dDisplacement()),
+        show3d: ui_3dDisplacement().optional(),
         controlnets: ui_cnet(),
         recursiveImgToImg: ui_recursive(),
         loop: form.groupOpt({

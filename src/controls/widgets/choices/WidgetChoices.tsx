@@ -59,7 +59,7 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> implements IWidge
     get isSingle(): boolean {
         return !this.config.multi
     }
-    children: { [k in keyof T]?: T[k]['widget'] } = {}
+    children: { [k in keyof T]?: T[k]['$Widget'] } = {}
     serial: Widget_choices_serial<T>
 
     get firstChoice(): (keyof T & string) | undefined {

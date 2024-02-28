@@ -59,9 +59,9 @@ app({
             test: ui.group({
                 items: {
                     aaa1: ui.textarea(),
-                    aaa2: ui.intOpt(),
-                    aaa3: ui.intOpt(),
-                    aaa4: ui.intOpt(),
+                    aaa2: ui.int().optional(),
+                    aaa3: ui.int().optional(),
+                    aaa4: ui.int().optional(),
                     aaa5: ui.intOpt(),
                     aaa6: ui.intOpt(),
                     aaa7: ui.intOpt(),
