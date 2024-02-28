@@ -16,6 +16,7 @@
 
 #### APPS & Prefabs:
 - prefab_model > civitai_ckpt_air: add civitai custom node as requirement
+- new sdk example for booleans (`library/sdk-examples/ui-booleans.ts`)
 
 ## 2024-02-27 ([PR](https://github.com/rvion/CushyStudio/pull/178))
 
