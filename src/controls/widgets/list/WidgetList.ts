@@ -49,6 +49,7 @@ export class Widget_list<T extends Spec> implements IWidget<Widget_list_types<T>
     readonly id: string
     readonly type: 'list' = 'list'
 
+    get length() { return this.items.length } // prettier-ignore
     items: T['$Widget'][]
     serial: Widget_list_serial<T>
 
