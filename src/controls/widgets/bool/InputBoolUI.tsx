@@ -12,7 +12,7 @@ export const InputBoolUI = observer(function InputBoolUI_(p: {
     expand?: boolean
     icon?: string
     text?: string
-    onValueChange: (next: boolean) => void
+    onValueChange?: (next: boolean) => void
 }) {
     const isActive = p.active ?? false
     const display = p.display ?? 'check'
@@ -41,16 +41,24 @@ export const InputBoolUI = observer(function InputBoolUI_(p: {
             tabIndex={-1}
             onMouseDown={(ev) => {
                 if (ev.button == 0) {
-                    p.onValueChange(!isActive)
-                    ev.stopPropagation()
-
                     wasEnabled = !isActive
                     isDragging = true
+
+                    ev.stopPropagation()
                     window.addEventListener('mouseup', isDraggingListener, true)
+
+                    if (!p.onValueChange) {
+                        return
+                    }
+                    p.onValueChange(!isActive)
                 }
             }}
             onMouseEnter={(ev) => {
                 if (isDragging) {
+                    if (!p.onValueChange) {
+                        return
+                    }
+
                     p.onValueChange(wasEnabled)
                 }
             }}
