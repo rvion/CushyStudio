@@ -2,12 +2,11 @@ import type { Widget_choices } from './WidgetChoices'
 import type { SchemaDict } from 'src/cards/App'
 
 import { observer } from 'mobx-react-lite'
-import { useState } from 'react'
 
 import { WidgetWithLabelUI } from '../../shared/WidgetWithLabelUI'
 import { AnimatedSizeUI } from './AnimatedSizeUI'
 import { SelectUI } from 'src/rsuite/SelectUI'
-import { makeLabelFromFieldName } from 'src/utils/misc/makeLabelFromFieldName'
+import { InputBoolUI } from '../bool/InputBoolUI'
 
 // UI
 export const WidgetChoices_HeaderUI = observer(function WidgetChoices_LineUI_<T extends SchemaDict>(p: {
@@ -56,50 +55,22 @@ const WidgetChoices_TabHeaderUI = observer(function WidgetChoicesTab_LineUI_<T e
 }) {
     const widget = p.widget
     const choices = widget.choicesWithLabels // choicesStr.map((v) => ({ key: v }))
-    const [isDragging, setIsDragging] = useState<boolean>(false)
-    const [wasEnabled, setWasEnabled] = useState<boolean>(false)
-
-    const isDraggingListener = (ev: MouseEvent) => {
-        if (ev.button == 0) {
-            setIsDragging(false)
-            window.removeEventListener('mouseup', isDraggingListener, true)
-        }
-    }
 
     return (
         <div tw='rounded select-none ml-auto justify-end flex flex-wrap gap-x-0.5 gap-y-0'>
             {choices.map((c) => {
                 const isSelected = widget.serial.branches[c.key]
                 return (
-                    <div
-                        onMouseDown={(ev) => {
-                            // console.log('DOWN!!')
-                            if (ev.button == 0) {
-                                widget.toggleBranch(c.key)
-                                setWasEnabled(!isSelected)
-                                setIsDragging(true)
-                                window.addEventListener('mouseup', isDraggingListener, true)
-                            }
-                        }}
-                        onMouseEnter={(ev) => {
-                            if (isDragging && (wasEnabled != isSelected || !widget.isMulti)) {
+                    <InputBoolUI
+                        active={isSelected}
+                        display='button'
+                        text={c.label}
+                        onValueChange={(value) => {
+                            if (value != isSelected) {
                                 widget.toggleBranch(c.key)
                             }
                         }}
-                        key={c.key}
-                        tw={[
-                            //
-                            'cursor-pointer',
-                            'rounded',
-                            'border px-2 flex flex-nowrap gap-0.5 whitespace-nowrap items-center bg-base-100',
-                            isSelected
-                                ? 'bg-primary text-base-300 border-base-200 text-shadow-inv'
-                                : 'bg-base-200 hover:filter hover:brightness-110 border-base-100 text-shadow',
-                            'border-b-2 border-b-base-300',
-                        ]}
-                    >
-                        {makeLabelFromFieldName(c.label)}
-                    </div>
+                    ></InputBoolUI>
                 )
             })}
         </div>

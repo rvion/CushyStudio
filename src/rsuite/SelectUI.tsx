@@ -9,6 +9,7 @@ import { createPortal } from 'react-dom'
 
 import { useSt } from 'src/state/stateContext'
 import { searchMatches } from 'src/utils/misc/searchMatches'
+import { InputBoolUI } from 'src/controls/widgets/bool/InputBoolUI'
 
 type SelectProps<T> = {
     label?: string
@@ -45,11 +46,16 @@ class AutoCompleteSelectState<T> {
     constructor(public st: STATE, public p: SelectProps<T>) {
         makeAutoObservable(this, { anchorRef: false })
     }
+
     onChange = this.p.onChange
     isMultiSelect = this.p.multiple ?? false
+
     get options(): T[] {
         return this.p.options?.() ?? [] // replace with actual options logic
     }
+
+    searchQuery = ''
+
     get filteredOptions() {
         if (this.searchQuery === '') return this.options
         return this.options.filter((p) => {
@@ -57,7 +63,6 @@ class AutoCompleteSelectState<T> {
             return searchMatches(label, this.searchQuery)
         })
     }
-    searchQuery = ''
 
     /** currently selected value */
     get value(): Maybe<T | T[]> {
@@ -103,11 +108,15 @@ class AutoCompleteSelectState<T> {
     }
 
     anchorRef = React.createRef<HTMLInputElement>()
+    popupRef = React.createRef<HTMLDivElement>()
     selectedIndex = 0
     isOpen = false
+    isDragging = false
+    wasEnabled = false
 
     tooltipPosition = { top: 0, left: 0 }
     tooltipMaxHeight = 100
+
     updatePosition = () => {
         const rect = this.anchorRef.current?.getBoundingClientRect()
         if (rect == null) return
@@ -120,25 +129,27 @@ class AutoCompleteSelectState<T> {
         this.tooltipMaxHeight = window.innerHeight - rect.bottom - 8
     }
 
-    onTooltipMouseOut = (ev: React.MouseEvent<HTMLUListElement, MouseEvent>) => {
-        // ev.preventDefault()
-        // ev.stopPropagation()
-        this.closeMenu()
-    }
     onRealWidgetMouseDown = (ev: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
         // ev.preventDefault()
         // ev.stopPropagation()
         this.openMenu()
     }
+
     openMenu = () => {
         this.isOpen = true
         this.updatePosition()
+        window.addEventListener('mousemove', this.MouseMoveTooFar, true)
     }
 
     closeMenu() {
         this.isOpen = false
         this.selectedIndex = 0
         this.searchQuery = ''
+        this.isDragging = false
+
+        // Text cursor should only show when menu is open
+        this.anchorRef?.current?.querySelector('input')?.blur()
+        window.removeEventListener('mousemove', this.MouseMoveTooFar, true)
     }
 
     filterOptions(inputValue: string) {
@@ -184,6 +195,35 @@ class AutoCompleteSelectState<T> {
     handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         this.filterOptions(event.target.value)
         this.updatePosition() // just in case we scrolled
+    }
+
+    // Close pop-up if too far outside
+    MouseMoveTooFar = (event: MouseEvent) => {
+        let popup = this.popupRef?.current
+        let anchor = this.anchorRef?.current
+
+        if (!popup || !anchor) {
+            return
+        }
+
+        const x = event.clientX
+        const y = event.clientY
+
+        // XXX: Should probably be scaled by UI scale
+        const maxDistance = 75
+
+        if (
+            // left
+            popup.offsetLeft - x > maxDistance ||
+            // top
+            popup.offsetTop - y > maxDistance ||
+            // right
+            x - (popup.offsetLeft + popup.offsetWidth) > maxDistance ||
+            // bottom
+            y - (popup.offsetTop + popup.offsetHeight) > maxDistance
+        ) {
+            this.closeMenu()
+        }
     }
 
     onBlur = () => {
@@ -273,9 +313,23 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
 
 export const SelectPopupUI = observer(function SelectPopupUI_<T>(p: { s: AutoCompleteSelectState<T> }) {
     const s = p.s
+
+    const isDraggingListener = (ev: MouseEvent) => {
+        if (ev.button != 0) {
+            return
+        }
+
+        s.isDragging = false
+        window.removeEventListener('mouseup', isDraggingListener, true)
+    }
+
     return createPortal(
         <div
-            tw={['MENU-ROOT _SelectPopupUI bg-base-100 flex', 'rounded-b border-b border-l border-r border-base-300']}
+            ref={s.popupRef}
+            tw={[
+                'MENU-ROOT _SelectPopupUI bg-base-100 flex',
+                'rounded-b border-b border-l border-r border-base-300 overflow-auto',
+            ]}
             style={{
                 minWidth: s.anchorRef.current?.clientWidth ?? '100%',
                 pointerEvents: 'initial',
@@ -284,61 +338,73 @@ export const SelectPopupUI = observer(function SelectPopupUI_<T>(p: { s: AutoCom
                 top: `${s.tooltipPosition.top}px`,
                 left: `${s.tooltipPosition.left}px`,
                 maxHeight: `${s.tooltipMaxHeight}px`,
+
                 // Adjust positioning as needed
             }}
+            // Prevent close when clicking the pop-up frame. There are also small gaps between the buttons where this becomes an issue.
+            onMouseDown={(ev) => {
+                ev.preventDefault()
+                ev.stopPropagation()
+            }}
         >
-            <ul
-                onMouseLeave={s.onTooltipMouseOut}
-                className='p-0.5 bg-base-100 max-h-96 overflow-auto'
-                tw='flex flex-col gap-0.5 p-1 w-full'
-            >
-                {s.filteredOptions.length === 0 ? <li className='p-1 text-base'>No results</li> : null}
-                {s.filteredOptions.map((option, index) => {
-                    const isSelected =
-                        s.values.find((v) => {
-                            if (s.p.equalityCheck != null) return s.p.equalityCheck(v, option)
-                            return v === option
-                        }) != null
-                    return (
-                        <li
-                            key={index}
-                            style={{ minWidth: '10rem' }}
-                            className={`active:bg-base-300 cursor-pointer text-shadow ${
-                                index === s.selectedIndex && (isSelected ? '!text-primary-content text-shadow' : 'bg-base-300')
-                            }`}
-                            tw={[
-                                'flex items-center gap-1 rounded',
-                                'h-full',
-                                isSelected &&
-                                    'bg-primary text-primary-content hover:text-neutral-content text-shadow-inv active:bg-primary',
-                            ]}
-                            onMouseEnter={(ev) => {
-                                s.setNavigationIndex(index)
-                            }}
-                            onMouseDown={(ev) => s.onMenuEntryClick(ev, index)}
-                        >
-                            <div tw={'rounded flex pl-1'}>
-                                {s.isMultiSelect ? (
-                                    <input
-                                        type='checkbox'
-                                        checked={isSelected}
-                                        tw={['flex-1 checkbox checkbox-primary w-5 h-5']}
-                                        tabIndex={-1}
-                                        readOnly
-                                    />
-                                ) : (
-                                    <></>
-                                )}
-                            </div>
-                            {/* {isSelected ? '🟢' : null} */}
-                            <div tw='flex h-full w-full items-center' style={{ height: '28px' }}>
-                                {s.p.getLabelUI //
-                                    ? s.p.getLabelUI(option)
-                                    : s.p.getLabelText(option)}
-                            </div>
-                        </li>
-                    )
-                })}
+            <ul className='bg-base-100 max-h-96' tw='flex-col w-full'>
+                {
+                    // No results
+                    s.filteredOptions.length === 0 ? <li className='WIDGET-FIELD text-base'>No results</li> : null
+                }
+                {
+                    // Entries
+                    s.filteredOptions.map((option, index) => {
+                        const isSelected =
+                            s.values.find((v) => {
+                                if (s.p.equalityCheck != null) return s.p.equalityCheck(v, option)
+                                return v === option
+                            }) != null
+                        return (
+                            <li // Fake gaps by padding <li> to make sure you can't click inbetween visual gaps
+                                key={index}
+                                style={{ minWidth: '10rem' }}
+                                tw={['flex rounded py-0.5', 'h-auto']}
+                                onMouseEnter={(ev) => {
+                                    s.setNavigationIndex(index)
+                                    if (!s.isDragging || isSelected == s.wasEnabled) {
+                                        return
+                                    }
+                                    s.onMenuEntryClick(ev, index)
+                                }}
+                                onMouseDown={(ev) => {
+                                    if (ev.button != 0) {
+                                        return
+                                    }
+                                    s.isDragging = true
+                                    s.wasEnabled = !isSelected
+                                    s.onMenuEntryClick(ev, index)
+
+                                    window.addEventListener('mouseup', isDraggingListener, true)
+                                }}
+                            >
+                                <div
+                                    tw={[
+                                        'WIDGET-FIELD pl-0.5 flex w-full items-center rounded',
+                                        'active:bg-base-300 cursor-default text-shadow',
+                                        index === s.selectedIndex &&
+                                            (isSelected ? '!text-primary-content text-shadow' : 'bg-base-300'),
+                                        !isSelected && 'active:bg-base-100',
+                                        isSelected &&
+                                            'bg-primary text-primary-content hover:text-neutral-content text-shadow-inv active:bg-primary',
+                                    ]}
+                                >
+                                    {s.isMultiSelect ? <InputBoolUI active={isSelected} expand={false}></InputBoolUI> : <></>}
+                                    <div tw='pl-0.5 flex h-full w-full items-center'>
+                                        {s.p.getLabelUI //
+                                            ? s.p.getLabelUI(option)
+                                            : s.p.getLabelText(option)}
+                                    </div>
+                                </div>
+                            </li>
+                        )
+                    })
+                }
             </ul>
         </div>,
         document.getElementById('tooltip-root')!,

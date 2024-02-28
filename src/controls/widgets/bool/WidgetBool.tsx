@@ -8,10 +8,43 @@ import { hash } from 'ohash'
 import { WidgetDI } from '../WidgetUI.DI'
 import { WidgetBoolUI } from './WidgetBoolUI'
 
-// CONFIG
+/**
+ * Bool Config
+ * @property {string} label2 - test
+ */
 export type Widget_bool_config = WidgetConfigFields<{
     default?: boolean
+
     label2?: string
+
+    /** Text to display, drawn by the widget itself. */
+    text?: string
+
+    /**
+     * The display style of the widget.
+     * - `check `: Shows a simple checkbox.
+     * - `button`: Shows a toggle-able button.
+     *
+     *  Defaults to 'check'
+     */
+    display?: 'check' | 'button'
+
+    /** Whether or not to expand the widget to take up as much space as possible
+     *
+     *      If `display` is 'check'
+     *          undefined and true will expand
+     *          false will disable expansion
+     *
+     *      If `display` is 'button'
+     *          undefined and false will not expand
+     *          true will enable expansion
+     */
+    expand?: boolean
+
+    /** Set the icon of the button
+     *  - Uses "material-symbols-outlined" as the icon set
+     */
+    icon?: string | undefined
 }>
 
 // SERIAL
