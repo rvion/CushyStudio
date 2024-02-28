@@ -17,6 +17,9 @@ import { WidgetTooltipUI } from './WidgetTooltipUI'
 
 export const KLS = WidgetDI
 
+let isDragging = false
+let wasEnabled = false
+
 export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     widget: IWidget
     rootKey: string
@@ -77,7 +80,8 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     })()
 
     const LABEL = (
-        <span onClick={onLabelClick} style={{ lineHeight: '1rem' }}>
+        // <span onClick={onLabelClick} style={{ lineHeight: '1rem' }}>
+        <span style={{ lineHeight: '1rem' }}>
             {labelText}
             {widget.config.showID ? <span tw='opacity-50 italic text-sm'>#{widget.id.slice(0, 3)}</span> : null}
         </span>
@@ -86,6 +90,13 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     const styleDISABLED: CSSProperties | undefined = isDisabled
         ? { pointerEvents: 'none', opacity: 0.3, backgroundColor: 'rgba(0,0,0,0.05)' }
         : undefined
+
+    const isDraggingListener = (ev: MouseEvent) => {
+        if (ev.button == 0) {
+            isDragging = false
+            window.removeEventListener('mouseup', isDraggingListener, true)
+        }
+    }
 
     return (
         <div
@@ -103,8 +114,34 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                     (label, collapse button, toggle button, tooltip, etc.)
                     Only way to have it completely disabled is to have no label, no tooltip, no requirements, etc.
                 */}
-                <div tw={['flex items-center gap-0.5']}>
-                    {(isCollapsed || isCollapsible) && <Widget_CollapseBtnUI widget={widget} />}
+                <div
+                    tw={['flex items-center gap-0.5 select-none']}
+                    /* Have the whole header able to collapse the panel, any actual buttons in the header should prevent this themselves.
+                     * Also will continue to expand/collapse any panel that is hovered over while dragging. */
+                    onMouseDown={(ev) => {
+                        if (ev.button != 0) {
+                            return
+                        }
+
+                        isDragging = true
+                        window.addEventListener('mouseup', isDraggingListener, true)
+
+                        wasEnabled = !widget.serial.collapsed
+                        widget.serial.collapsed = wasEnabled
+                    }}
+                    onMouseEnter={(ev) => {
+                        if (!isDragging) {
+                            return
+                        }
+
+                        widget.serial.collapsed = wasEnabled
+                    }}
+                >
+                    {(isCollapsed || isCollapsible) && (
+                        <span className='WIDGET-COLLAPSE-BTN material-symbols-outlined opacity-70 hover:opacity-100'>
+                            {isCollapsed ? 'chevron_right' : 'expand_more'}
+                        </span>
+                    )}
                     {/* isCollapsible:{isCollapsible ? '🟢' : '❌'} */}
                     <span
                         tw={[
