@@ -10,6 +10,18 @@ import { toastError } from 'src/utils/misc/toasts'
 import { TypescriptHighlightedCodeUI } from 'src/widgets/misc/TypescriptHighlightedCodeUI'
 
 export const CreateAppBtnUI = observer(function CreateAppBtnUI_(p: {}) {
+    return (
+        <RevealUI placement='popup-lg' title='Create an app'>
+            <div tw='btn btn-sm btn-accent'>
+                Create My App
+                <span className='material-symbols-outlined'>open_in_new</span>
+            </div>
+            <CreateAppPopupUI />
+        </RevealUI>
+    )
+})
+
+export const CreateAppPopupUI = observer(function CreateAppPopupUI_(p: {}) {
     const st = useSt()
     const uist = useLocalObservable(() => ({
         appName: 'my-app',
@@ -27,75 +39,70 @@ export const CreateAppBtnUI = observer(function CreateAppBtnUI_(p: {}) {
             return existsSync(uist.absPath)
         },
     }))
+
     return (
-        <RevealUI placement='popup-lg' title='Create an app'>
-            <div tw='btn btn-sm btn-accent'>
-                create My app
-                <span className='material-symbols-outlined'>open_in_new</span>
-            </div>
-            <div tw='flex flex-col gap-2'>
-                <div tw='flex gap-1'>
-                    <div tw='flex flex-col gap-2'>
-                        <div>
-                            <div tw='font-bold'>App name</div>
-                            <input
-                                autoFocus
-                                value={uist.appName}
-                                onChange={(ev) => (uist.appName = ev.target.value)}
-                                type='text'
-                                tw={['input input-bordered', uist.hasConflict && 'rsx-field-error']}
-                            />
-                            {uist.hasConflict && <MessageErrorUI markdown='File alreay exist' />}
-                        </div>
-                        <div>
-                            <div tw='font-bold'>Description</div>
-                            <input
-                                value={uist.description}
-                                onChange={(ev) => (uist.description = ev.target.value)}
-                                type='text'
-                                tw='input input-bordered'
-                            />
-                        </div>
+        <div tw='flex flex-col gap-2'>
+            <div tw='flex gap-1'>
+                <div tw='flex flex-col gap-2'>
+                    <div>
+                        <div tw='font-bold'>App name</div>
+                        <input
+                            autoFocus
+                            value={uist.appName}
+                            onChange={(ev) => (uist.appName = ev.target.value)}
+                            type='text'
+                            tw={['input input-bordered', uist.hasConflict && 'rsx-field-error']}
+                        />
+                        {uist.hasConflict && <MessageErrorUI markdown='File alreay exist' />}
                     </div>
-                    <div tw='virtualBorder p-2'>
-                        <MessageInfoUI markdown={` This file will be created as  \`${uist.relPath}\``} />
-                        <TypescriptHighlightedCodeUI
-                            tabIndex={-1}
-                            code={mkAppTemplate({
-                                description: uist.description,
-                                name: uist.appName,
-                            })}
+                    <div>
+                        <div tw='font-bold'>Description</div>
+                        <input
+                            value={uist.description}
+                            onChange={(ev) => (uist.description = ev.target.value)}
+                            type='text'
+                            tw='input input-bordered'
                         />
                     </div>
                 </div>
-                <div tw='flex'>
-                    <button
-                        tw={['btn btn-primary ml-auto', uist.hasConflict && 'btn-disabled rsx-field-error']}
-                        onClick={async () => {
-                            if (uist.hasConflict) return toastError('file already exist, change app name')
-                            //
-                            const fname = convertToValidCrossPlatformFileName(uist.appName)
-                            const relPath = `library/local/${fname}.ts` as RelativePath
-                            const path = `${st.rootPath}/${relPath}`
-                            writeFileSync(path, mkAppTemplate({ name: uist.appName, description: uist.description }), 'utf-8')
-                            const file = st.library.getFile(relPath)
-                            const res = await file.extractScriptFromFile()
-                            if (res.type === 'failed') return toastError('failed to extract script')
-                            const script = res.script
-                            await script.evaluateAndUpdateApps()
-                            const apps = script._apps_viaScript
-                            if (apps == null) return toastError('no app found (apps is null)')
-                            if (apps.length === 0) return toastError('no app found (apps.length === 0)')
-                            const firstApp = apps[0]!
-                            firstApp.openLastOrCreateDraft()
-                        }}
-                    >
-                        Create
-                    </button>
+                <div tw='virtualBorder p-2'>
+                    <MessageInfoUI markdown={` This file will be created as  \`${uist.relPath}\``} />
+                    <TypescriptHighlightedCodeUI
+                        tabIndex={-1}
+                        code={mkAppTemplate({
+                            description: uist.description,
+                            name: uist.appName,
+                        })}
+                    />
                 </div>
-                <IntroTxt />
             </div>
-        </RevealUI>
+            <div tw='flex'>
+                <button
+                    tw={['btn btn-primary ml-auto', uist.hasConflict && 'btn-disabled rsx-field-error']}
+                    onClick={async () => {
+                        if (uist.hasConflict) return toastError('file already exist, change app name')
+                        //
+                        const fname = convertToValidCrossPlatformFileName(uist.appName)
+                        const relPath = `library/local/${fname}.ts` as RelativePath
+                        const path = `${st.rootPath}/${relPath}`
+                        writeFileSync(path, mkAppTemplate({ name: uist.appName, description: uist.description }), 'utf-8')
+                        const file = st.library.getFile(relPath)
+                        const res = await file.extractScriptFromFile()
+                        if (res.type === 'failed') return toastError('failed to extract script')
+                        const script = res.script
+                        await script.evaluateAndUpdateApps()
+                        const apps = script._apps_viaScript
+                        if (apps == null) return toastError('no app found (apps is null)')
+                        if (apps.length === 0) return toastError('no app found (apps.length === 0)')
+                        const firstApp = apps[0]!
+                        firstApp.openLastOrCreateDraft()
+                    }}
+                >
+                    Create
+                </button>
+            </div>
+            <IntroTxt />
+        </div>
     )
 })
 
