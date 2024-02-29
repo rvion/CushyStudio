@@ -154,7 +154,7 @@ class AutoCompleteSelectState<T> {
         this.isDragging = false
 
         // Text cursor should only show when menu is open
-        this.anchorRef?.current?.querySelector('input')?.blur()
+        // this.anchorRef?.current?.querySelector('input')?.blur()
         window.removeEventListener('mousemove', this.MouseMoveTooFar, true)
     }
 
@@ -170,7 +170,7 @@ class AutoCompleteSelectState<T> {
         ev.preventDefault()
         ev.stopPropagation()
         this.selectOption(index)
-        this.anchorRef.current?.focus()
+        this.inputRef.current?.focus()
     }
 
     selectOption(index: number) {
@@ -255,7 +255,7 @@ class AutoCompleteSelectState<T> {
         }
         if (ev.key === 'Escape') {
             this.closeMenu()
-            this.anchorRef.current?.focus()
+            // this.anchorRef.current?.focus()
             ev.preventDefault()
             ev.stopPropagation()
             return
