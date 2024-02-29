@@ -31,9 +31,15 @@ type SelectProps<T> = {
     cleanable?: boolean
     hideValue?: boolean
     className?: string
-    /** @default: false if multi-select, true if single select */
+    /**
+     * @default: false
+     * (previous default before 2024-02-29: false if multi-select, true if single select)
+     */
     closeOnPick?: boolean
-    /** @default: false if multi-select, true if single select */
+    /**
+     * @default: false
+     * (previous default before 2024-02-29: false if multi-select, true if single select)
+     */
     resetQueryOnPick?: boolean
 }
 
@@ -359,62 +365,60 @@ export const SelectPopupUI = observer(function SelectPopupUI_<T>(p: { s: AutoCom
             }}
         >
             <ul className='bg-base-100 max-h-96' tw='flex-col w-full'>
+                {/* list of all values */}
                 <li>
                     <div tw='overflow-hidden'>{s.displayValue}</div>
                 </li>
-                {
-                    // No results
-                    s.filteredOptions.length === 0 ? <li className='WIDGET-FIELD text-base'>No results</li> : null
-                }
-                {
-                    // Entries
-                    s.filteredOptions.map((option, index) => {
-                        const isSelected =
-                            s.values.find((v) => {
-                                if (s.p.equalityCheck != null) return s.p.equalityCheck(v, option)
-                                return v === option
-                            }) != null
-                        return (
-                            <li // Fake gaps by padding <li> to make sure you can't click inbetween visual gaps
-                                key={index}
-                                style={{ minWidth: '10rem' }}
-                                tw={['flex rounded py-0.5', 'h-auto']}
-                                onMouseEnter={(ev) => {
-                                    s.setNavigationIndex(index)
-                                    if (!s.isDragging || isSelected == s.wasEnabled) return
-                                    s.onMenuEntryClick(ev, index)
-                                }}
-                                onMouseDown={(ev) => {
-                                    if (ev.button != 0) return
-                                    s.isDragging = true
-                                    s.wasEnabled = !isSelected
-                                    s.onMenuEntryClick(ev, index)
-                                    window.addEventListener('mouseup', isDraggingListener, true)
-                                }}
+                {/* No results */}
+                {s.filteredOptions.length === 0 ? <li className='WIDGET-FIELD text-base'>No results</li> : null}
+
+                {/* Entries */}
+                {s.filteredOptions.map((option, index) => {
+                    const isSelected =
+                        s.values.find((v) => {
+                            if (s.p.equalityCheck != null) return s.p.equalityCheck(v, option)
+                            return v === option
+                        }) != null
+                    return (
+                        <li // Fake gaps by padding <li> to make sure you can't click inbetween visual gaps
+                            key={index}
+                            style={{ minWidth: '10rem' }}
+                            tw={['flex rounded py-0.5', 'h-auto']}
+                            onMouseEnter={(ev) => {
+                                s.setNavigationIndex(index)
+                                if (!s.isDragging || isSelected == s.wasEnabled) return
+                                s.onMenuEntryClick(ev, index)
+                            }}
+                            onMouseDown={(ev) => {
+                                if (ev.button != 0) return
+                                s.isDragging = true
+                                s.wasEnabled = !isSelected
+                                s.onMenuEntryClick(ev, index)
+                                window.addEventListener('mouseup', isDraggingListener, true)
+                            }}
+                        >
+                            <div
+                                tw={[
+                                    'WIDGET-FIELD pl-0.5 flex w-full items-center rounded',
+                                    'active:bg-base-300 cursor-default text-shadow',
+                                    index === s.selectedIndex ? 'bg-base-300' : null,
+                                    /* index === s.selectedIndex && */
+                                    // isSelected ? '!text-primary-content text-shadow' : 'bg-base-300',
+                                    // !isSelected && 'active:bg-base-100',
+                                    // isSelected && 'bg-primary text-primary-content hover:text-neutral-content text-shadow-inv active:bg-primary', // prettier-ignore
+                                ]}
                             >
-                                <div
-                                    tw={[
-                                        'WIDGET-FIELD pl-0.5 flex w-full items-center rounded',
-                                        'active:bg-base-300 cursor-default text-shadow',
-                                        index === s.selectedIndex ? 'bg-base-300' : null,
-                                        /* index === s.selectedIndex && */
-                                        // isSelected ? '!text-primary-content text-shadow' : 'bg-base-300',
-                                        // !isSelected && 'active:bg-base-100',
-                                        // isSelected && 'bg-primary text-primary-content hover:text-neutral-content text-shadow-inv active:bg-primary', // prettier-ignore
-                                    ]}
-                                >
-                                    {/* {s.isMultiSelect ? <InputBoolUI active={isSelected} expand={false}></InputBoolUI> : <></>} */}
-                                    <InputBoolUI active={isSelected} expand={false}></InputBoolUI>
-                                    <div tw='pl-0.5 flex h-full w-full items-center'>
-                                        {s.p.getLabelUI //
-                                            ? s.p.getLabelUI(option)
-                                            : s.p.getLabelText(option)}
-                                    </div>
+                                {/* {s.isMultiSelect ? <InputBoolUI active={isSelected} expand={false}></InputBoolUI> : <></>} */}
+                                <InputBoolUI active={isSelected} expand={false}></InputBoolUI>
+                                <div tw='pl-0.5 flex h-full w-full items-center'>
+                                    {s.p.getLabelUI //
+                                        ? s.p.getLabelUI(option)
+                                        : s.p.getLabelText(option)}
                                 </div>
-                            </li>
-                        )
-                    })
-                }
+                            </div>
+                        </li>
+                    )
+                })}
             </ul>
         </div>,
         document.getElementById('tooltip-root')!,

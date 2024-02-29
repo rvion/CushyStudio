@@ -11,6 +11,7 @@ import { AnimatedSizeUI } from '../widgets/choices/AnimatedSizeUI'
 import { isWidgetOptional, WidgetDI } from '../widgets/WidgetUI.DI'
 import { checkIfWidgetIsCollapsible } from './checkIfWidgetIsCollapsible'
 import { getActualWidgetToDisplay } from './getActualWidgetToDisplay'
+import { getBorderStatusForWidget } from './getBorderStatusForWidget'
 import { Widget_ToggleUI } from './Widget_ToggleUI'
 import { WidgetTooltipUI } from './WidgetTooltipUI'
 
@@ -62,16 +63,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
         if (!isCollapsible && isWidgetOptional(originalWidget)) return originalWidget.toggle()
     }
 
-    const showBorder = (() => {
-        // if app author manually specify they want no border, then we respect that
-        if (widget.config.border != null) return widget.config.border
-        // if the widget override the default border => we respect that
-        if (widget.border != null) return widget.border
-        // if the widget do NOT have a body => we do not show the border
-        if (widget.BodyUI == null) return false
-        // default case when we have a body => we show the border
-        return true
-    })()
+    const showBorder = getBorderStatusForWidget(widget)
 
     const labelText: string | false = (() => {
         // if parent widget wants to override the label (or disable it with false), we accept
@@ -119,24 +111,25 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                 */}
                 <div
                     tw={['flex items-center gap-0.5 select-none']}
-                    /* Have the whole header able to collapse the panel, any actual buttons in the header should prevent this themselves.
-                     * Also will continue to expand/collapse any panel that is hovered over while dragging. */
+                    /*
+                     * bird_d:
+                     *  | Have the whole header able to collapse the panel,
+                     *  | any actual buttons in the header should prevent this themselves.
+                     *  | Also will continue to expand/collapse any panel that is hovered over while dragging.
+                     * 2024-02-29 rvion: this broke 3/4 widgets who did not preventDefault in their header;
+                     *  | may cause more problems later; not sure how to make this sligtly safer / easy to test.
+                     * */
                     onMouseDown={(ev) => {
-                        if (ev.button != 0) {
-                            return
-                        }
-
+                        if (ev.button != 0) return
                         isDragging = true
                         window.addEventListener('mouseup', isDraggingListener, true)
-
                         wasEnabled = !widget.serial.collapsed
                         widget.serial.collapsed = wasEnabled
                     }}
+                    // 2024-02-29 rvion: not quite sure this is the right logic now
+                    // | do we want to call the now usused `onLabelClick()` function instead (defined above)
                     onMouseEnter={(ev) => {
-                        if (!isDragging) {
-                            return
-                        }
-
+                        if (!isDragging) return
                         widget.serial.collapsed = wasEnabled
                     }}
                 >
@@ -145,7 +138,6 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                             {isCollapsed ? 'chevron_right' : 'expand_more'}
                         </span>
                     )}
-                    {/* isCollapsible:{isCollapsible ? '🟢' : '❌'} */}
                     <span
                         tw={[
                             'flex justify-end gap-0.5',
@@ -177,7 +169,6 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                         {LABEL}
                         {!BodyUI && <Widget_ToggleUI widget={originalWidget} />}
                     </span>
-                    {/* )} */}
                     {HeaderUI && (
                         <div tw='flex items-center gap-0.5 flex-1' style={styleDISABLED}>
                             <ErrorBoundary FallbackComponent={ErrorBoundaryFallback} onReset={(details) => {}}>
