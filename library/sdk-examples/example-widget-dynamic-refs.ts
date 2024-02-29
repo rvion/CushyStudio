@@ -42,6 +42,14 @@ app({
                     choices: (x) => listOfStuff.shared.items.map((item, ix) => ({ id: item.serial.id, label: item.value })),
                 }),
             }),
+            refs5: ui.list({
+                defaultLength: 1,
+                element: ui.selectMany({
+                    label: 'dynamic-test',
+                    appearance: 'tab',
+                    choices: (x) => listOfStuff.shared.items.map((item, ix) => ({ id: item.serial.id, label: item.value })),
+                }),
+            }),
         }
     },
     run(run, ui) {

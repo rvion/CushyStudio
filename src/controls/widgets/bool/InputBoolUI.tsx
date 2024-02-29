@@ -12,6 +12,7 @@ export const InputBoolUI = observer(function InputBoolUI_(p: {
     expand?: boolean
     icon?: string
     text?: string
+    className?: string
     onValueChange?: (next: boolean) => void
 }) {
     const isActive = p.active ?? false
@@ -29,6 +30,7 @@ export const InputBoolUI = observer(function InputBoolUI_(p: {
 
     return (
         <div // Container
+            className={p.className}
             tw={[
                 'WIDGET-FIELD select-none',
                 'flex items-center',
@@ -43,24 +45,16 @@ export const InputBoolUI = observer(function InputBoolUI_(p: {
                 if (ev.button == 0) {
                     wasEnabled = !isActive
                     isDragging = true
-
                     ev.stopPropagation()
                     window.addEventListener('mouseup', isDraggingListener, true)
-
-                    if (!p.onValueChange) {
-                        return
-                    }
+                    if (!p.onValueChange) return
                     p.onValueChange(!isActive)
                 }
             }}
             onMouseEnter={(ev) => {
-                if (isDragging) {
-                    if (!p.onValueChange) {
-                        return
-                    }
-
-                    p.onValueChange(wasEnabled)
-                }
+                if (!isDragging) return
+                if (!p.onValueChange) return
+                p.onValueChange(wasEnabled)
             }}
         >
             {display == 'check' ? (

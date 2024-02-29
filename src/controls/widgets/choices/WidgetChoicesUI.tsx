@@ -4,9 +4,9 @@ import type { SchemaDict } from 'src/cards/App'
 import { observer } from 'mobx-react-lite'
 
 import { WidgetWithLabelUI } from '../../shared/WidgetWithLabelUI'
+import { InputBoolUI } from '../bool/InputBoolUI'
 import { AnimatedSizeUI } from './AnimatedSizeUI'
 import { SelectUI } from 'src/rsuite/SelectUI'
-import { InputBoolUI } from '../bool/InputBoolUI'
 
 // UI
 export const WidgetChoices_HeaderUI = observer(function WidgetChoices_LineUI_<T extends SchemaDict>(p: {
@@ -86,7 +86,6 @@ export const WidgetChoices_SelectHeaderUI = observer(function WidgetChoices_Sele
     const choices: Entry[] = choicesStr.map((v) => ({ key: v }))
     return (
         <div className='_WidgetChoicesUI' tw='relative'>
-            {/* {widget.config.multi ? 'MULTI' : 'SINGLE'} */}
             <SelectUI<Entry>
                 tw='flex-grow'
                 placeholder={p.widget.config.placeholder}
