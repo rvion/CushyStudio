@@ -220,6 +220,8 @@ export class DraftL {
             (action) => {
                 console.log(`[🦊] form: awakening app ${this.data.appID}`)
                 if (action == null) return
+                if (this.form) this.form.cleanup?.()
+
                 this.form = new Form(action.ui, {
                     name: this.name,
                     initialValue: () => this.data.formSerial,
