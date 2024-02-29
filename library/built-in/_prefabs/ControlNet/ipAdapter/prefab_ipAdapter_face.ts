@@ -27,7 +27,7 @@ export const ui_IPAdapterFaceID = () => {
                         // 'ip-adapter-faceid-plus_sd15.bin',
                         ipAdapter_faceID_ClipModelList,
                     ),
-                    lora: form.enum.Enum_Load_Lora_lora_name({
+                    lora: form.enum.Enum_LoraLoader_lora_name({
                         // enumName: 'Enum_AV$_CheckpointModelsToParametersPipe_lora_1_name',
                         // @ts-ignore
                         default: 'ip-adapter-faceid-plusv2_sd15_lora.safetensors',
@@ -75,7 +75,7 @@ export const run_cnet_IPAdapterFaceID = (
     const ip = IPAdapter
 
     let ckpt = cnet_args.ckptPos
-    ckpt = graph.Load_Lora({
+    ckpt = graph.LoraLoader({
         model: ckpt,
         clip: run.AUTO,
         strength_clip: ip.lora_strength,

@@ -9,8 +9,10 @@ export const ui_model = () => {
         summary: (ui) => {
             let out: string = ui.ckpt_name
             if (ui.extra.freeU) out += ' + FreeU'
+            if (ui.extra.freeUv2) out += ' + FreeUv2'
             if (ui.extra.vae) out += ' + VAE'
             if (ui.extra.clipSkip) out += ` + ClipSkip(${ui.extra.clipSkip})`
+            if (ui.extra.sag) out += ` + SAG(${ui.extra.sag.scale}/${ui.extra.sag.blur_sigma})`
             return out
         },
         items: () => ({
@@ -28,6 +30,15 @@ export const ui_model = () => {
                     vae: form.enum.Enum_VAELoader_vae_name(),
                     clipSkip: form.int({ label: 'Clip Skip', default: 1, min: 1, max: 5 }),
                     freeU: form.group(),
+                    freeUv2: form.group(),
+                    sag: form.group({
+                        startCollapsed: true,
+                        tooltip: 'Self Attention Guidance can improve image quality but runs slower',
+                        items: {
+                            scale: form.float({ default: 0.5, step: 0.1, min: -2.0, max: 5.0 }),
+                            blur_sigma: form.float({ default: 2.0, step: 0.1, min: 0, max: 10.0 }),
+                        },
+                    }),
                     civitai_ckpt_air: form.string({
                         requirements: [{ type: 'customNodesByNameInCushy', nodeName: 'CivitAI$_Checkpoint$_Loader' }],
                         tooltip: 'Civitai checkpoint Air, as found on the civitai Website. It should look like this: 43331@176425', // prettier-ignore
@@ -73,7 +84,13 @@ export const run_model = (ui: OutputFor<typeof ui_model>) => {
     if (ui.extra.clipSkip) clip = graph.CLIPSetLastLayer({ clip, stop_at_clip_layer: -Math.abs(ui.extra.clipSkip) })
 
     // 4. Optional FreeU
-    if (ui.extra.freeU) ckpt = graph.FreeU({ model: ckpt })
+    if (ui.extra.freeUv2) ckpt = graph.FreeU$_V2({ model: ckpt })
+    else if (ui.extra.freeU) ckpt = graph.FreeU({ model: ckpt })
+
+    // 5. Optional SAG - Self Attention Guidance
+    if (ui.extra.sag) {
+        ckpt = graph.SelfAttentionGuidance({ scale: ui.extra.sag.scale, blur_sigma: ui.extra.sag.blur_sigma, model: ckpt })
+    }
 
     /* Rescale CFG */
     if (ui.extra.rescaleCFG) {
