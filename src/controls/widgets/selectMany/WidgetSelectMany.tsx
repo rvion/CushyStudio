@@ -53,6 +53,19 @@ export class Widget_selectMany<T extends BaseSelectEntry> implements IWidget<Wid
             ? _choices(this.form._ROOT)
             : _choices
     }
+
+    get errors(): Maybe<string[]> {
+        if (this.serial.values == null) return null
+        let errors: string[] = []
+        for (const value of this.serial.values) {
+            if (!this.choices.find((choice) => choice.id === value.id)) {
+                errors.push(`value ${value.id} (label: ${value.label}) not in choices`)
+            }
+        }
+        if (errors.length > 0) return errors
+        return null
+    }
+
     constructor(
         //
         public form: Form<any>,

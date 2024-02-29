@@ -6,7 +6,7 @@ import { makeAutoObservable, observable } from 'mobx'
 import { nanoid } from 'nanoid'
 
 import { WidgetDI } from '../WidgetUI.DI'
-import { WidgetList_LineUI, WidgetListUI } from './WidgetListUI'
+import { WidgetList_BodyUI, WidgetList_LineUI } from './WidgetListUI'
 import { runWithGlobalForm } from 'src/models/_ctx2'
 
 // CONFIG
@@ -41,7 +41,7 @@ export class Widget_list<T extends Spec> implements IWidget<Widget_list_types<T>
     HeaderUI = WidgetList_LineUI
     get BodyUI() {
         // if (this.items.length === 0) return
-        return WidgetListUI
+        return WidgetList_BodyUI
     }
     get serialHash(): string {
         return this.items.map((v) => v.serialHash).join(',')

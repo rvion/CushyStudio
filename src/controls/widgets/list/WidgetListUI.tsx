@@ -22,13 +22,12 @@ export const WidgetList_LineUI = observer(function WidgetList_LineUI_<T extends 
     )
 })
 
-export const WidgetListUI = observer(function WidgetListUI_<T extends Spec>(p: { widget: Widget_list<T> }) {
+export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends Spec>(p: { widget: Widget_list<T> }) {
     const widget = p.widget
     const subWidgets = widget.items
     const min = widget.config.min
     return (
         <div className='_WidgetListUI' tw='flex-grow w-full'>
-            {/* <ListControlsUI widget={p.widget} /> */}
             <SortableList onSortEnd={p.widget.moveItem} className='list' draggedItemClassName='dragged'>
                 <div tw='flex flex-col gap-0.5'>
                     {subWidgets.map((subWidget, ix) => {
@@ -38,9 +37,12 @@ export const WidgetListUI = observer(function WidgetListUI_<T extends Spec>(p: {
                             <SortableItem key={subWidget.id}>
                                 <div tw={['flex flex-col', getBorderStatusForWidget(subWidget) && 'WIDGET-GROUP-BORDERED']}>
                                     <div tw='flex items-center '>
+                                        {/* drag and fold knob */}
                                         <SortableKnob>
                                             <ListDragHandleUI widget={subWidget} ix={ix} />
                                         </SortableKnob>
+
+                                        {/* debug id */}
                                         {p.widget.config.showID ? (
                                             <div className='divider flex-1 border-top'>
                                                 <div id={subWidget.id} tw='opacity-20 italic'>
@@ -48,13 +50,14 @@ export const WidgetListUI = observer(function WidgetListUI_<T extends Spec>(p: {
                                                 </div>
                                             </div>
                                         ) : null}
+
+                                        {/* inline header part */}
                                         {WidgetHeaderUI && (
                                             <ErrorBoundary FallbackComponent={ErrorBoundaryFallback} onReset={(details) => {}}>
                                                 <WidgetHeaderUI widget={subWidget} />
                                             </ErrorBoundary>
                                         )}
-                                        {/* {(v.state.collapsed ?? false) && <WidgetUI widget={v} />} */}
-                                        {/* {!(v.state.collapsed ?? false) && <div tw='flex-1' />} */}
+                                        {/* delete btn */}
                                         <div
                                             tw={[
                                                 'btn btn-sm btn-narrower btn-ghost opacity-50',
@@ -64,6 +67,7 @@ export const WidgetListUI = observer(function WidgetListUI_<T extends Spec>(p: {
                                         >
                                             <span className='material-symbols-outlined'>delete</span>
                                         </div>
+                                        {/* collapse indicator */}
                                         <ListItemCollapseBtnUI req={subWidget} />
                                     </div>
                                     {WidgetBodyUI && !collapsed && subWidget && (
@@ -73,14 +77,6 @@ export const WidgetListUI = observer(function WidgetListUI_<T extends Spec>(p: {
                                             </div>
                                         </ErrorBoundary>
                                     )}
-                                    {/* {!(v.state.collapsed ?? false) && (
-                                    <div
-                                    // key={v.id}
-                                    // tw='border-solid border-2 border-neutral-content'
-                                    >
-                                        <WidgetUI widget={v} />
-                                    </div>
-                                )} */}
                                 </div>
                             </SortableItem>
                         )

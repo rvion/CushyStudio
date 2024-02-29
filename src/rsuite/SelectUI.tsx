@@ -48,6 +48,7 @@ class AutoCompleteSelectState<T> {
         makeAutoObservable(this, {
             popupRef: false,
             anchorRef: false,
+            inputRef: false,
         })
     }
 
@@ -112,6 +113,7 @@ class AutoCompleteSelectState<T> {
     }
 
     anchorRef = React.createRef<HTMLInputElement>()
+    inputRef = React.createRef<HTMLInputElement>()
     popupRef = React.createRef<HTMLDivElement>()
     selectedIndex = 0
     isOpen = false
@@ -206,33 +208,34 @@ class AutoCompleteSelectState<T> {
     // | this code was a good idea; but it's really
     // | not pleasant when working mostly with keyboard and using tab to open selects.
     // | as soon as the moouse move just one pixel, popup close.
-    // |  =>  commenting it out in the meantime
+    // |  =>  commenting it out until we find a solution confortable in all cases
     MouseMoveTooFar = (event: MouseEvent) => {
-        let popup = this.popupRef?.current
-        let anchor = this.anchorRef?.current
-
-        if (!popup || !anchor) {
-            return
-        }
-
-        const x = event.clientX
-        const y = event.clientY
-
-        // XXX: Should probably be scaled by UI scale
-        const maxDistance = 75
-
-        if (
-            // left
-            popup.offsetLeft - x > maxDistance ||
-            // top
-            popup.offsetTop - y > maxDistance ||
-            // right
-            x - (popup.offsetLeft + popup.offsetWidth) > maxDistance ||
-            // bottom
-            y - (popup.offsetTop + popup.offsetHeight) > maxDistance
-        ) {
-            this.closeMenu()
-        }
+        return
+        // ⏸️ let popup = this.popupRef?.current
+        // ⏸️ let anchor = this.anchorRef?.current
+        // ⏸️
+        // ⏸️ if (!popup || !anchor) {
+        // ⏸️     return
+        // ⏸️ }
+        // ⏸️
+        // ⏸️ const x = event.clientX
+        // ⏸️ const y = event.clientY
+        // ⏸️
+        // ⏸️ // XXX: Should probably be scaled by UI scale
+        // ⏸️ const maxDistance = 75
+        // ⏸️
+        // ⏸️ if (
+        // ⏸️     // left
+        // ⏸️     popup.offsetLeft - x > maxDistance ||
+        // ⏸️     // top
+        // ⏸️     popup.offsetTop - y > maxDistance ||
+        // ⏸️     // right
+        // ⏸️     x - (popup.offsetLeft + popup.offsetWidth) > maxDistance ||
+        // ⏸️     // bottom
+        // ⏸️     y - (popup.offsetTop + popup.offsetHeight) > maxDistance
+        // ⏸️ ) {
+        // ⏸️     this.closeMenu()
+        // ⏸️ }
     }
 
     onBlur = () => this.closeMenu()
@@ -315,6 +318,7 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
                     </div> */}
                     <input
                         //
+                        ref={s.inputRef}
                         tw='input input-sm w-full h-full !outline-none'
                         type='text'
                         value={s.searchQuery}
