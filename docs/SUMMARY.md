@@ -6,8 +6,8 @@
 
 * [🛠️ Installation](getting-started/installation/README.md)
   * [Installing Cushy](getting-started/installation/windows.md)
-  * [Scripts](getting-started/installation/scripts.md)
   * [Updating Cushy](getting-started/installation/updating-cushy.md)
+  * [Scripts](getting-started/installation/scripts.md)
   * [Installing Modules](getting-started/installation/installing-modules/README.md)
     * [Install ComfyUI](getting-started/installation/installing-modules/cloud.md)
     * [Install FFMpeg (optional)](getting-started/installation/installing-modules/install-ffmpeg-optional.md)

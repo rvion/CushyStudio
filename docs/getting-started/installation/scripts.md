@@ -1,13 +1,10 @@
 # Scripts
 
-Cushy comes with a set of top-level scripts that handle most install / update / cleanup operations.\
-Those scripts should work without any requirements
+Within the CushyStudio directory you will have these scripts to aid you with installation or maintenance, here is a brief overview of their functionality.&#x20;
 
-## Built-in scripts:
-
-* \_windows-cleanup.bat
-* \_windows-install.bat
-* \_windows-reset-db.bat
-* \_windows-start-dev.bat
-* \_windows-start.bat
-* \_windows-update.bat
+* \_\[platform]-cleanup:
+* \_\[platform]-install:
+* \_\[platform]-reset-db:
+* \_\[platform]-start-dev:
+* \_\[platform]-start:
+* \_\[platform]-update:

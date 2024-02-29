@@ -1,30 +1,22 @@
 # Updating Cushy
 
-CushyStudio update itself easily.&#x20;
+CushyStudio updates itself effortlessly. To update:
 
-To update,&#x20;
+1. **Close CushyStudio:** Ensure CushyStudio is closed before proceeding with the update.
+2. **Run the Update Script for Your Platform:**
+   * For Mac and Linux, execute: `_mac-linux-update.sh`.
+   * For Windows, run: `_windows-update.bat`.
 
-1. close CushyStudio,&#x20;
-2. Run the update script for your platform.&#x20;
+#### Risks When Updating
 
-## Risks when updating
+When updating, consider the following risks:
 
-### Broken migrations ?
+* **Broken Migrations:** On every startup, CushyStudio applies new changes to its database, including all migrations. A backup feature will be implemented soon to ensure you never lose your drafts or prompts.
+* **App Incompatibility:** CushyKit is designed to be robust to breaking changes. Your custom apps should never lose their drafts. However, after an update, you may need to update your custom apps. Sometimes, a built-in app will also be updated.
 
-On every startup, Cushy will apply new changes to it's database (apply all migrations).\
-⏳ Some kind of backup will be implemented soon to ensure you never loose your drafts / prompts.
+#### Updating Manually
 
-### App incompatibility ?
+When updating manually (e.g., with a git pull or checking out a branch), follow these steps:
 
-CushyKit is designed in a way that makes apps robust to breaking changes.
-
-Your custom apps should never loose their drafts. \
-You may have to update your custom apps after an update
-
-But sometimes, a built-in app will be update
-
-## Updating manually
-
-When updating, be sure to run the `update script` so everything is properly updated.
-
-If you're manually updating with a git pull, or checking a branch, you will need to run the `install` script to have
+* Run the update script to ensure everything is properly updated.
+* If you're updating manually with a git pull or checking out a branch, you will need to run the install script to install all dependencies correctly.
