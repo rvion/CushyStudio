@@ -62,7 +62,6 @@ export const EnumSelectorUI = observer(function EnumSelectorUI_(p: {
         <div tw={['w-full h-full']}>
             <SelectUI //
                 tw={[{ ['rsx-field-error']: hasError }]}
-                size='sm'
                 disabled={p.disabled}
                 cleanable={p.isOptional}
                 options={() => options}

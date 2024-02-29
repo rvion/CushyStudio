@@ -11,7 +11,6 @@ import { AnimatedSizeUI } from '../widgets/choices/AnimatedSizeUI'
 import { isWidgetOptional, WidgetDI } from '../widgets/WidgetUI.DI'
 import { checkIfWidgetIsCollapsible } from './checkIfWidgetIsCollapsible'
 import { getActualWidgetToDisplay } from './getActualWidgetToDisplay'
-import { Widget_CollapseBtnUI } from './Widget_CollapseBtnUI'
 import { Widget_ToggleUI } from './Widget_ToggleUI'
 import { WidgetTooltipUI } from './WidgetTooltipUI'
 

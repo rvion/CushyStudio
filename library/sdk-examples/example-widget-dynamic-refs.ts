@@ -9,7 +9,7 @@ app({
             'test1',
             form.list({
                 label: 'Sampler',
-                defaultLength: 3,
+                defaultLength: 2,
                 // min: 1,
                 element: (i: number) => form.string({ default: `hello ${i}` }),
             }),
@@ -19,19 +19,18 @@ app({
             x: form.string(),
             listOfStuff,
             listOfRefs: form.list({
-                defaultLength: 3,
-                element: () =>
-                    form.selectOne({
-                        label: 'dynamic-test',
-                        choices: (x) => {
-                            const CHOICES = listOfStuff.shared.items.map((item, ix) => ({
-                                id: item.serial.id,
-                                label: item.value,
-                            }))
-                            console.log(`[🤠] ready`, CHOICES)
-                            return CHOICES
-                        },
-                    }),
+                defaultLength: 1,
+                element: form.selectOne({
+                    label: 'dynamic-test',
+                    choices: (x) => listOfStuff.shared.items.map((item, ix) => ({ id: item.serial.id, label: item.value })),
+                }),
+            }),
+            listOfRefs2: form.list({
+                defaultLength: 1,
+                element: form.selectMany({
+                    label: 'dynamic-test',
+                    choices: (x) => listOfStuff.shared.items.map((item, ix) => ({ id: item.serial.id, label: item.value })),
+                }),
             }),
         }
     },

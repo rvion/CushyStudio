@@ -11,7 +11,6 @@ export const WidgetSelectManyUI = observer(function WidgetSelectOneUI_<T extends
     const widget = p.widget
     return (
         <SelectUI<T>
-            size='sm'
             multiple
             getLabelText={(t) => t.label ?? t.id}
             getLabelUI={(t) => t.label ?? t.id}

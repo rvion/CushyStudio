@@ -173,6 +173,7 @@ body {
     background-image: none;
 }
 
+.input,
 input.input {
     background-color: oklch(var( --p)/.15) !important;
 }

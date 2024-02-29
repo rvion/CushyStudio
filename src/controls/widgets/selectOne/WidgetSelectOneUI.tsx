@@ -42,7 +42,6 @@ export const WidgetSelectOneUI = observer(function WidgetSelectOneUI_<T extends 
             <SelectUI<T>
                 key={widget.id}
                 tw={[widget.errors && 'rsx-field-error']}
-                size='sm'
                 getLabelText={(t) => t.label ?? makeLabelFromFieldName(t.id)}
                 options={() => widget.choices}
                 equalityCheck={(a, b) => a.id === b.id}
