@@ -11,6 +11,7 @@ import { DraftIllustrationUI } from 'src/cards/fancycard/DraftIllustration'
 import { RenderFullPagePanelUI } from 'src/panels/router/RenderFullPagePanelUI'
 import { RevealState } from 'src/rsuite/reveal/RevealState'
 import { useSt } from 'src/state/stateContext'
+import { GlobalSearchUI } from 'src/utils/electron/globalSearchUI'
 
 export const CushyUI = observer(function CushyUI_() {
     const st = useSt()
@@ -67,6 +68,7 @@ export const CushyUI = observer(function CushyUI_() {
             tw={['col grow h100 text-base-content']}
         >
             <div id='tooltip-root' tw='pointer-events-none absolute inset-0 w-full h-full'></div>
+            <GlobalSearchUI />
             <AppBarUI />
             <RenderFullPagePanelUI />
             <div className='flex flex-grow relative'>

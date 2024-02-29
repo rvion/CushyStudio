@@ -25,6 +25,7 @@ import { ComfySchemaL, EnumValue } from '../models/Schema'
 import { CushyLayoutManager } from '../panels/router/Layout'
 import { GitManagedFolder } from '../updater/updater'
 import { ElectronUtils } from '../utils/electron/ElectronUtils'
+import { SearchManager } from '../utils/electron/findInPage'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { exhaust } from '../utils/misc/ComfyUtils'
 import { DanbooruTags } from '../widgets/prompter/nodes/booru/BooruLoader'
@@ -35,7 +36,7 @@ import { Marketplace } from './Marketplace'
 import { mkSupa } from './supa'
 import { Uploader } from './Uploader'
 import { ShortcutWatcher } from 'src/app/shortcuts/ShortcutManager'
-import { shortcutsDef } from 'src/app/shortcuts/shortcuts'
+import { allCommands } from 'src/app/shortcuts/shortcuts'
 import { createRandomGenerator } from 'src/back/random'
 import { asAppPath } from 'src/cards/asAppPath'
 import { GithubRepoName } from 'src/cards/githubRepo'
@@ -70,10 +71,10 @@ import { ThemeManager } from 'src/theme/ThemeManager'
 import { CleanedEnumResult } from 'src/types/EnumUtils'
 import { StepOutput } from 'src/types/StepOutput'
 import { openInVSCode } from 'src/utils/electron/openInVsCode'
-import { Kwery } from 'src/utils/misc/Kwery'
 import { UserTags } from 'src/widgets/prompter/nodes/usertags/UserLoader'
 
 export class STATE {
+    // LEAVE THIS AT THE TOP OF THIS CLASS
     __INJECTION__ = (() => {
         //  globally register the state as this
         if ((window as any).CushyObservableCache == null) {
@@ -87,7 +88,9 @@ export class STATE {
             console.log(`[🛋️] WINDOW.CUSHY NOW DEFINED`)
             Object.defineProperty(window, 'cushy', { get() { return (window as any).CushyObservableCache.st } }) // prettier-ignore
         }
-        ;(window as any).toJS = toJS
+        if ((window as any).toJS == null) {
+            ;(window as any).toJS = toJS
+        }
     })()
 
     /** hack to help closing prompt completions */
@@ -107,6 +110,7 @@ export class STATE {
     supabase: SupabaseClient<Database>
     auth: AuthState
     managerRepository = new ComfyManagerRepository({ check: false, genTypes: false })
+    search: SearchManager = new SearchManager(this)
 
     _updateTime = () => {
         const now = Date.now()
@@ -522,7 +526,7 @@ export class STATE {
         this.supabase = mkSupa()
         this.marketplace = new Marketplace(this)
         this.electronUtils = new ElectronUtils(this)
-        this.shortcuts = new ShortcutWatcher(shortcutsDef, this, { name: nanoid() })
+        this.shortcuts = new ShortcutWatcher(allCommands, this, { name: nanoid() })
         console.log(`[🛋️] ${this.shortcuts.shortcuts.length} shortcuts loaded`)
         this.uploader = new Uploader(this)
         this.layout = new CushyLayoutManager(this)

@@ -5,7 +5,7 @@ import { runInAction } from 'mobx'
 
 import { _duplicateCurrentDraft } from './_duplicateCurrentDraft'
 import { KEYS } from './shorcutKeys'
-import { CushyShortcut, Shortcut } from './ShortcutManager'
+import { Command, CushyShortcut } from './ShortcutManager'
 import { Trigger } from './Trigger'
 
 // ------------------------------------------------------------------------------------
@@ -15,7 +15,7 @@ const always = (fn: (st: STATE) => any) => (st: STATE) => {
     return Trigger.Success
 }
 
-const placholder = (combo: CushyShortcut | CushyShortcut[], info: string, when: string): Shortcut<STATE> => {
+const placholder = (combo: CushyShortcut | CushyShortcut[], info: string, when: string): Command<STATE> => {
     return {
         combos: Array.isArray(combo) ? combo : [combo],
         info,
@@ -25,7 +25,7 @@ const placholder = (combo: CushyShortcut | CushyShortcut[], info: string, when: 
     }
 }
 
-const placeholderTree = (combo: CushyShortcut | CushyShortcut[], info: string): Shortcut<STATE> => {
+const placeholderTree = (combo: CushyShortcut | CushyShortcut[], info: string): Command<STATE> => {
     return placholder(combo, info, 'in tree')
 }
 
@@ -39,7 +39,7 @@ const simpleValidInInput = (
     combo: CushyShortcut | CushyShortcut[],
     info: string,
     action: (fn: STATE) => void,
-): Shortcut<STATE> => ({
+): Command<STATE> => ({
     combos: Array.isArray(combo) ? combo : [combo],
     action: always(action),
     validInInput: true,
@@ -70,7 +70,12 @@ const focusTree = (st: STATE, tree: Tree) =>
 
 // ------------------------------------------------------------------------------------
 // core global shortcuts
-export const shortcutsDef: Shortcut<STATE>[] = [
+export const allCommands: Command<STATE>[] = [
+    simpleValidInInput(KEYS.search, 'search string globally in window', (st) => {
+        if (st.search.active) st.search.active = false
+        else st.search.active = true
+        return Trigger.Success
+    }),
     simpleValidInInput(KEYS.resizeWindowForVideoCapture, 'Resize Window for video capture', (st) => {
         st.resizeWindowForVideoCapture()
         return Trigger.Success

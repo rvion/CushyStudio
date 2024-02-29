@@ -11,9 +11,9 @@ export type CushyShortcut = Tagged<string, 'CushyShortcut'> // 'ctrl+k ctrl+shif
 export type KeyName = Branded<string, { KeyAllowedInShortcut: true }> // ctrl, shift, win, space, ...
 type InputToken = Branded<string, { InputToken: true }> // 'ctrl+k'
 type InputSequence = InputToken[] // ['ctrl+k', 'ctrl+shift+i']
-type KnownCombo<Ctx> = [InputSequence, Shortcut<Ctx>]
+type KnownCombo<Ctx> = [InputSequence, Command<Ctx>]
 
-export type Shortcut<Ctx> = {
+export type Command<Ctx> = {
     combos: CushyShortcut[] // | true
     info: string
     /** upward context required; nearest takes precedence */
@@ -26,14 +26,14 @@ export type Shortcut<Ctx> = {
 
 export class ShortcutWatcher {
     inputHistory: InputSequence = []
-    alwaysMatch: Shortcut<Ctx>[] = []
+    alwaysMatch: Command<Ctx>[] = []
     watchList: KnownCombo<Ctx>[] = []
-    shortcuts: Shortcut<Ctx>[]
+    shortcuts: Command<Ctx>[]
 
     name: string
     constructor(
         //
-        shortcuts: Shortcut<Ctx>[],
+        shortcuts: Command<Ctx>[],
         public ctx: Ctx,
         public conf: {
             log?: boolean
@@ -145,7 +145,7 @@ export class ShortcutWatcher {
 
     tryToRun = (
         //
-        s: Shortcut<Ctx>,
+        s: Command<Ctx>,
         ev: KeyboardEvent<HTMLElement>,
     ): boolean => {
         // if (s.action == null) return // asume terminal

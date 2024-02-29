@@ -4,7 +4,7 @@ import type { Database } from 'src/supa/database.types'
 
 import { makeAutoObservable } from 'mobx'
 
-import { Debounced } from 'src/panels/Panel_Models/CivitaiSpec'
+import { Debounced } from 'src/utils/misc/Debounced'
 import { Kwery } from 'src/utils/misc/Kwery'
 
 type SupaPublishedApp = Database['public']['Tables']['published_apps']['Row']
