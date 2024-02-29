@@ -1,5 +1,3 @@
-import { compilePrompt } from 'src/controls/widgets/prompt/_compile'
-
 export const run_prompt = (p: {
     prompt: { text: string }
     /** recommanded, but if left empty, AUTO will be used */
@@ -21,9 +19,8 @@ export const run_prompt = (p: {
     const richPrompt = p.prompt
     let clip = p.clip ?? run.AUTO
     let ckpt = p.ckpt ?? run.AUTO
-    const CX = compilePrompt({
+    const CX = run.compilePrompt({
         text: richPrompt.text,
-        st: run.Cushy,
         printWildcards: p.printWildcards,
         seed: p.seed,
         onLora: (
