@@ -9,6 +9,7 @@ export const ui_model = () => {
         summary: (ui) => {
             let out: string = ui.ckpt_name
             if (ui.extra.freeU) out += ' + FreeU'
+            if (ui.extra.freeUv2) out += ' + FreeUv2'
             if (ui.extra.vae) out += ' + VAE'
             if (ui.extra.clipSkip) out += ` + ClipSkip(${ui.extra.clipSkip})`
             return out
@@ -27,6 +28,7 @@ export const ui_model = () => {
                     vae: form.enum.Enum_VAELoader_vae_name(),
                     clipSkip: form.int({ label: 'Clip Skip', default: 1, min: 1, max: 5 }),
                     freeU: form.group(),
+                    freeUv2: form.group(),
                     civitai_ckpt_air: form.string({
                         requirements: [{ type: 'customNodesByNameInCushy', nodeName: 'CivitAI$_Checkpoint$_Loader' }],
                         tooltip: 'Civitai checkpoint Air, as found on the civitai Website. It should look like this: 43331@176425', // prettier-ignore
@@ -72,7 +74,8 @@ export const run_model = (ui: OutputFor<typeof ui_model>) => {
     if (ui.extra.clipSkip) clip = graph.CLIPSetLastLayer({ clip, stop_at_clip_layer: -Math.abs(ui.extra.clipSkip) })
 
     // 4. Optional FreeU
-    if (ui.extra.freeU) ckpt = graph.FreeU({ model: ckpt })
+    if (ui.extra.freeUv2) ckpt = graph.FreeU$_V2({ model: ckpt })
+    else if (ui.extra.freeU) ckpt = graph.FreeU({ model: ckpt })
 
     /* Rescale CFG */
     if (ui.extra.rescaleCFG) {
