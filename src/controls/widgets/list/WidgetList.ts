@@ -77,20 +77,28 @@ export class Widget_list<T extends Spec> implements IWidget<Widget_list_types<T>
 
         // hydrate items
         this.items = []
-        const unmounted = this.schemaAt(0) // TODO: evaluate schema in the form loop
-        for (const subSerial of this.serial.items_) {
-            if (
-                subSerial == null || // ⁉️ when can this happen ?
-                subSerial.type !== unmounted.type
-            ) {
-                console.log(`[❌] SKIPPING form item because it has an incompatible entry from a previous app definition`)
-                continue
+
+        // 1. add default item (only when serial was null)
+        if (serial == null && this.config.defaultLength != null) {
+            for (let i = 0; i < this.config.defaultLength; i++) this.addItem()
+        }
+        // 2. pre-existing serial => rehydrate items
+        else {
+            const unmounted = this.schemaAt(0) // TODO: evaluate schema in the form loop
+            for (const subSerial of this.serial.items_) {
+                if (
+                    subSerial == null || // ⁉️ when can this happen ?
+                    subSerial.type !== unmounted.type
+                ) {
+                    console.log(`[❌] SKIPPING form item because it has an incompatible entry from a previous app definition`)
+                    continue
+                }
+                const subWidget = form.builder._HYDRATE(unmounted, subSerial)
+                this.items.push(subWidget)
             }
-            const subWidget = form.builder._HYDRATE(unmounted, subSerial)
-            this.items.push(subWidget)
         }
 
-        // add missing items if min specified
+        // 3. add missing items if min specified
         const missingItems = (this.config.min ?? 0) - this.items.length
         for (let i = 0; i < missingItems; i++) this.addItem()
 

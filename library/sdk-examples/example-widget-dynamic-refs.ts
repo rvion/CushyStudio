@@ -1,5 +1,3 @@
-import { isObservable, isObservableProp } from 'mobx'
-
 app({
     metadata: {
         help: 'This is an example app to show how you can reference dynamically items from a list',
@@ -22,7 +20,6 @@ app({
             listOfStuff,
             listOfRefs: form.list({
                 defaultLength: 3,
-                // min: 1,
                 element: () =>
                     form.selectOne({
                         label: 'dynamic-test',
