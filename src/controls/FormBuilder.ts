@@ -65,6 +65,7 @@ export class FormBuilder {
     button      = (config: Widget_inlineRun_config = {})                                                     => new Spec<Widget_inlineRun                   >('inlineRun' , config)
     loras       = (config: Widget_loras_config     = {})                                                     => new Spec<Widget_loras                       >('loras'     , config)
     markdown    = (config: Widget_markdown_config | string)                                                  => new Spec<Widget_markdown                    >('markdown'  , typeof config === 'string' ? { markdown: config } : config)
+    header      = (config: Widget_markdown_config | string)                                                  => new Spec<Widget_markdown                    >('markdown'  , typeof config === 'string' ? { markdown: config, header: true } : { header: true, ...config })
     image       = (config: Widget_image_config = {})                                                         => new Spec<Widget_image                       >('image'     , config)
     prompt      = (config: Widget_prompt_config)                                                             => new Spec<Widget_prompt                      >('prompt'    , config)
     int         = (config: Omit<Widget_number_config, 'mode'> = {})                                          => new Spec<Widget_number                      >('number'    , { mode: 'int', ...config })
@@ -75,7 +76,7 @@ export class FormBuilder {
     listExt     = <const T extends Spec>(config: Widget_listExt_config<T>)                                   => new Spec<Widget_listExt<T>                  >('listExt'   , config)
     timeline    = <const T extends Spec>(config: Widget_listExt_config<T>)                                   => new Spec<Widget_listExt<T>                  >('listExt'   , { mode: 'timeline', ...config })
     regional    = <const T extends Spec>(config: Widget_listExt_config<T>)                                   => new Spec<Widget_listExt<T>                  >('listExt'   , { mode: 'regional', ...config })
-    selectOneV2 = (p: string[])                                                                              => new Spec<Widget_selectOne<BaseSelectEntry>>('selectOne' , { choices: p.map((id) => ({ id })), appearance:'tab' }) // prettier-ignore
+    selectOneV2 = (p: string[])                                                                              => new Spec<Widget_selectOne<BaseSelectEntry>  >('selectOne' , { choices: p.map((id) => ({ id })), appearance:'tab' }) // prettier-ignore
     selectOne   = <const T extends BaseSelectEntry>(config: Widget_selectOne_config<T>)                      => new Spec<Widget_selectOne<T>                >('selectOne' , config)
     selectMany  = <const T extends BaseSelectEntry>(config: Widget_selectMany_config<T>)                     => new Spec<Widget_selectMany<T>               >('selectMany', config)
     group       = <const T extends SchemaDict>(config: Widget_group_config<T>={})                            => new Spec<Widget_group<T>                    >('group'     , config)

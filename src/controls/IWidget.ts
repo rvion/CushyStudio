@@ -32,6 +32,8 @@ export type IWidget<K extends $WidgetTypes = $WidgetTypes> = {
 
     /** if specified, override the default algorithm to decide if we should have borders */
     border?: boolean
+    /** if specified, override the default algorithm to decide if we should have label aligned */
+    alignLabel?: boolean
     HeaderUI: FC<{ widget: K['$Widget'] }> | undefined
     BodyUI: FC<{ widget: K['$Widget'] }> | undefined
     // FULLY_CUSTOM_RENDER?: boolean
@@ -92,6 +94,9 @@ export type SharedWidgetConfig = {
 
     /** if provided, override the default logic to decide if the widget need to be bordered */
     border?: boolean
+
+    /** if provided, override the default logic to decide if the widget need to be bordered */
+    alignLabel?: boolean
 }
 
 export type Requirements =

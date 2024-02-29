@@ -21,6 +21,7 @@ export const ui_model = () => {
             checkpointConfig: form.enumOpt.Enum_CheckpointLoader_config_name({ label: 'Config' }),
             extra: form.choices({
                 border: false,
+                label: false,
                 appearance: 'tab',
                 items: {
                     rescaleCFG: form.float({ min: 0, max: 2, softMax: 1, default: 0.75 }),

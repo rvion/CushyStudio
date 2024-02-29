@@ -48,7 +48,7 @@ export const WidgetGroup_BlockUI = observer(function WidgetGroup_BlockUI_<T exte
                             isTopLevel={isTopLevel}
                             key={rootKey}
                             rootKey={rootKey}
-                            inline={isHorizontal}
+                            alignLabel={isHorizontal ? false : undefined}
                             widget={bang(sub)}
                         />
                     ))}

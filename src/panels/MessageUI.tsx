@@ -6,9 +6,10 @@ export const MessageInfoUI = observer(function MessageInfoUI_(p: {
     title?: string
     children?: React.ReactNode
     markdown?: string
+    className?: string
 }) {
     return (
-        <div tw='virtualBorder p-2 rounded flex items-center gap-2 bg-info-2'>
+        <div className={p.className} tw='virtualBorder p-1 rounded flex items-center gap-2 bg-info-2'>
             <span className='material-symbols-outlined'>info</span>
             {p.title ? (
                 <div>
@@ -32,7 +33,7 @@ export const MessageErrorUI = observer(function MessageErrorUI_(p: {
     markdown?: string
 }) {
     return (
-        <div tw='virtualBorder p-2 rounded flex items-center gap-2 bg-error-2'>
+        <div tw='virtualBorder p-1 rounded flex items-center gap-2 bg-error-2'>
             <span className='material-symbols-outlined'>error</span>
             {p.title ? (
                 <div>
@@ -56,7 +57,7 @@ export const MessageWarningUI = observer(function MessageWarningUI_(p: {
     markdown?: string
 }) {
     return (
-        <div tw='virtualBorder p-2 rounded flex items-center gap-2 bg-warning-2'>
+        <div tw='virtualBorder p-1 rounded flex items-center gap-2 bg-warning-2'>
             <span className='material-symbols-outlined'>warning</span>
             {p.title ? (
                 <div>

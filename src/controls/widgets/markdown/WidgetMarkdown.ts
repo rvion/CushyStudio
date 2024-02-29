@@ -9,13 +9,19 @@ import { WidgetDI } from '../WidgetUI.DI'
 import { WidgetMardownUI } from './WidgetMarkdownUI'
 
 // CONFIG
-export type Widget_markdown_config = WidgetConfigFields<{ markdown: string | ((formRoot: Widget_group<any>) => string) }>
+export type Widget_markdown_config = WidgetConfigFields<{
+    markdown: string | ((formRoot: Widget_group<any>) => string)
+    header?: boolean
+}>
 
 // SERIAL
-export type Widget_markdown_serial = WidgetSerialFields<{ type: 'markdown'; active: true }>
+export type Widget_markdown_serial = WidgetSerialFields<{
+    type: 'markdown'
+    active: true
+}>
 
 // OUT
-export type Widget_markdown_output = { type: 'markdown'; active: true }
+export type Widget_markdown_output = { type: 'markdown' }
 
 // TYPES
 export type Widget_markdown_types = {
@@ -29,8 +35,17 @@ export type Widget_markdown_types = {
 // STATE
 export interface Widget_markdown extends Widget_markdown_types {}
 export class Widget_markdown implements IWidget<Widget_markdown_types> {
-    HeaderUI = undefined
-    BodyUI = WidgetMardownUI
+    get HeaderUI() {
+        if (this.config.header) return WidgetMardownUI
+        return undefined
+    }
+    get BodyUI() {
+        if (this.config.header) return undefined
+        return WidgetMardownUI
+    }
+    get alignLabel() {
+        if (this.config.label === false) return false
+    }
     readonly id: string
     readonly type: 'markdown' = 'markdown'
     readonly serial: Widget_markdown_serial

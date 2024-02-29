@@ -7,8 +7,8 @@ import { nanoid } from 'nanoid'
 
 import { WidgetDI } from '../WidgetUI.DI'
 import { WidgetGroup_BlockUI, WidgetGroup_LineUI } from './WidgetGroupUI'
-import { checkIfWidgetIsCollapsible } from 'src/controls/shared/checkIfWidgetIsCollapsible'
 import { getActualWidgetToDisplay } from 'src/controls/shared/getActualWidgetToDisplay'
+import { getIfWidgetIsCollapsible } from 'src/controls/shared/getIfWidgetIsCollapsible'
 import { Spec } from 'src/controls/Spec'
 import { runWithGlobalForm } from 'src/models/_ctx2'
 
@@ -70,7 +70,7 @@ export class Widget_group<T extends SchemaDict> implements IWidget<Widget_group_
         for (const [key, _item] of this.entries) {
             const item = getActualWidgetToDisplay(_item)
             if (item.serial.collapsed) continue
-            const isCollapsible = checkIfWidgetIsCollapsible(item)
+            const isCollapsible = getIfWidgetIsCollapsible(item)
             if (isCollapsible) item.serial.collapsed = true
         }
     }

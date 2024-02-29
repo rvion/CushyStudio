@@ -9,9 +9,10 @@ import { ErrorBoundaryFallback } from '../../widgets/misc/ErrorBoundary'
 import { InstallRequirementsBtnUI } from '../REQUIREMENTS/Panel_InstallRequirementsUI'
 import { AnimatedSizeUI } from '../widgets/choices/AnimatedSizeUI'
 import { isWidgetOptional, WidgetDI } from '../widgets/WidgetUI.DI'
-import { checkIfWidgetIsCollapsible } from './checkIfWidgetIsCollapsible'
 import { getActualWidgetToDisplay } from './getActualWidgetToDisplay'
 import { getBorderStatusForWidget } from './getBorderStatusForWidget'
+import { getIfWidgetIsCollapsible } from './getIfWidgetIsCollapsible'
+import { getIfWidgetNeedAlignedLabel } from './getIfWidgetNeedAlignedLabel'
 import { Widget_ToggleUI } from './Widget_ToggleUI'
 import { WidgetTooltipUI } from './WidgetTooltipUI'
 
@@ -24,7 +25,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     widget: IWidget
     rootKey: string
     isTopLevel?: boolean
-    inline?: boolean
+    alignLabel?: boolean
     /**
      * override the label (false to force disable the label)
      * some widget like `choice`, already display the selected header in their own way
@@ -40,9 +41,10 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     const HeaderUI = widget.HeaderUI
     const BodyUI = widget.BodyUI
 
-    const isCollapsible: boolean = checkIfWidgetIsCollapsible(widget)
+    const isCollapsible: boolean = getIfWidgetIsCollapsible(widget)
     const isCollapsed = (widget.serial.collapsed ?? isDisabled) && isCollapsible
 
+    const alignLabel = p.alignLabel ?? getIfWidgetNeedAlignedLabel(widget)
     // ------------------------------------------------------------
     // quick hack to prevent showing emtpy groups when there is literally nothing interesting to show
     const k = widget
@@ -133,40 +135,43 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                         widget.serial.collapsed = wasEnabled
                     }}
                 >
-                    {(isCollapsed || isCollapsible) && (
-                        <span className='WIDGET-COLLAPSE-BTN material-symbols-outlined opacity-70 hover:opacity-100'>
-                            {isCollapsed ? 'chevron_right' : 'expand_more'}
-                        </span>
-                    )}
                     <span
                         tw={[
-                            'flex justify-end gap-0.5',
+                            'flex justify-end gap-0.5 flex-none items-center shrink-0',
                             p.isTopLevel && !isDisabled ? 'font-bold' : 'text-base',
-                            'flex-none items-center',
                             isDisabled ? undefined : 'text-primary',
                         ]}
                         style={
-                            BodyUI || p.inline
-                                ? undefined
-                                : {
-                                      flexShrink: 0,
-                                      minWidth: '8rem',
+                            alignLabel
+                                ? {
                                       textAlign: 'right',
-
-                                      width: HeaderUI ? '35%' : undefined,
-                                      marginRight: HeaderUI ? '0.25rem' : undefined,
+                                      minWidth: '8rem',
+                                      width: alignLabel && HeaderUI ? '35%' : undefined,
+                                      marginRight: alignLabel && HeaderUI ? '0.25rem' : undefined,
                                   }
+                                : undefined
                         }
                     >
+                        {/* COLLAPSE */}
+                        {(isCollapsed || isCollapsible) && (
+                            <span className='WIDGET-COLLAPSE-BTN material-symbols-outlined opacity-70 hover:opacity-100'>
+                                {isCollapsed ? 'chevron_right' : 'expand_more'}
+                            </span>
+                        )}
+                        {/* TOGGLE BEFORE */}
                         {BodyUI && <Widget_ToggleUI widget={originalWidget} />}
+                        {/* REQUIREMENTS  */}
                         {widget.config.requirements && (
                             <InstallRequirementsBtnUI
                                 active={widget instanceof KLS.Widget_optional ? widget.serial.active : true}
                                 requirements={widget.config.requirements}
                             />
                         )}
+                        {/* TOOLTIPS  */}
                         {widget.config.tooltip && <WidgetTooltipUI widget={widget} />}
+                        {/* LABEL  */}
                         {LABEL}
+                        {/* TOOGLE (after)  */}
                         {!BodyUI && <Widget_ToggleUI widget={originalWidget} />}
                     </span>
                     {HeaderUI && (
