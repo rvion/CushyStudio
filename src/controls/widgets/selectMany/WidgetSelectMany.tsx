@@ -53,7 +53,12 @@ export class Widget_selectMany<T extends BaseSelectEntry> implements IWidget<Wid
             ? _choices(this.form._ROOT)
             : _choices
     }
-    constructor(public form: Form<any>, public config: Widget_selectMany_config<T>, serial?: Widget_selectMany_serial<T>) {
+    constructor(
+        //
+        public form: Form<any>,
+        public config: Widget_selectMany_config<T>,
+        serial?: Widget_selectMany_serial<T>,
+    ) {
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? {
             type: 'selectMany',
@@ -87,7 +92,7 @@ export class Widget_selectMany<T extends BaseSelectEntry> implements IWidget<Wid
             this.serial.values = [item]
             return
         } // just in case
-        const i = this.serial.values.indexOf(item)
+        const i = this.serial.values.findIndex((i) => i.id === item.id)
         if (i < 0) this.serial.values.push(item)
         else this.serial.values = this.serial.values.filter((v) => v.id !== item.id) // filter just in case of duplicate
     }

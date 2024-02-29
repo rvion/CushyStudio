@@ -45,6 +45,7 @@ export const WidgetSelectOneUI = observer(function WidgetSelectOneUI_<T extends 
                 size='sm'
                 getLabelText={(t) => t.label ?? makeLabelFromFieldName(t.id)}
                 options={() => widget.choices}
+                equalityCheck={(a, b) => a.id === b.id}
                 value={() => widget.serial.val}
                 onChange={(selectOption) => {
                     if (selectOption == null) {

@@ -61,7 +61,12 @@ export class Widget_selectOne<T extends BaseSelectEntry> implements IWidget<Widg
         }
         return _choices
     }
-    constructor(public form: Form<any>, public config: Widget_selectOne_config<T>, serial?: Widget_selectOne_serial<T>) {
+    constructor(
+        //
+        public form: Form<any>,
+        public config: Widget_selectOne_config<T>,
+        serial?: Widget_selectOne_serial<T>,
+    ) {
         this.id = serial?.id ?? nanoid()
         const choices = this.choices
         this.serial = serial ?? {
