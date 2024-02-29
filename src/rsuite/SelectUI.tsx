@@ -118,6 +118,7 @@ class AutoCompleteSelectState<T> {
     selectedIndex = 0
     isOpen = false
     isDragging = false
+    isFocused = false
     wasEnabled = false
 
     tooltipPosition = { top: 0, left: 0 }
@@ -149,6 +150,7 @@ class AutoCompleteSelectState<T> {
 
     closeMenu() {
         this.isOpen = false
+        this.isFocused = false
         this.selectedIndex = 0
         this.searchQuery = ''
         this.isDragging = false
@@ -161,6 +163,9 @@ class AutoCompleteSelectState<T> {
     filterOptions(inputValue: string) {
         this.searchQuery = inputValue
         this.isOpen = true
+        /* Could maybe try to keep to the highlighted option from before filter? (Not the index, but the actual option)
+         * This is just easier for now, and I think it's better honestly. It's more predictable behavior for the user. */
+        this.setNavigationIndex(0)
         // Logic to filter options based on input value
         // Update this.filteredOptions accordingly
     }
@@ -260,6 +265,13 @@ class AutoCompleteSelectState<T> {
             ev.stopPropagation()
             return
         }
+
+        if (!this.isOpen) {
+            this.openMenu()
+            this.setNavigationIndex(0)
+            ev.preventDefault()
+            ev.stopPropagation()
+        }
     }
 }
 
@@ -284,7 +296,12 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
             onMouseDown={s.onRealWidgetMouseDown}
             onChange={s.handleInputChange}
             onKeyDown={s.handleTooltipKeyDown}
-            onFocus={s.openMenu}
+            onFocus={(ev) => {
+                s.isFocused = true
+                if (ev.relatedTarget != null && !(ev.relatedTarget instanceof Window)) {
+                    s.openMenu()
+                }
+            }}
             onBlur={s.onBlur}
             style={{ background: s.searchQuery === '' ? 'none' : undefined }}
         >
@@ -299,7 +316,7 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
                         'select-none pointer-events-none overflow-clip',
                     ]}
                 >
-                    {s.isOpen ? null : (
+                    {s.isOpen || s.isFocused ? null : (
                         <>
                             <div tw='btn btn-square btn-xs bg-transparent border-0'>
                                 <span className='material-symbols-outlined'>search</span>
