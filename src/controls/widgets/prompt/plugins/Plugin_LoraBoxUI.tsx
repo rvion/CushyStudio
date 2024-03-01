@@ -42,16 +42,17 @@ const LoraBoxUI = observer(function LoraBoxUI_(p: {
     return (
         <div key={loraName} tw='bg-base-100 rounded p-2'>
             <div //Header
-                tw='flex w-full h-10 border-b pb-2 items-center border-base-200 mb-2'
+                tw='flex w-full h-10 border-b pb-2 items-center border-base-200 mb-2 pl-2'
             >
                 {node.name}
                 <div tw='flex-0 flex-grow'></div>
-                <Button //
+                {/* Hiding from user until this does something so it doesn't confuse them. */}
+                {/* <Button //
                     size='xs'
                     icon={<span className='material-symbols-outlined'>delete_forever</span>}
                     onClick={p.onDelete}
                     tw='h-full'
-                />
+                /> */}
             </div>
             <div tw='flex gap-1 items-center'>
                 <div tw='w-32 text-end'>Model Strength</div>
