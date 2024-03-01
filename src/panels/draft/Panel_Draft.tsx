@@ -64,6 +64,7 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
             <>
                 <DraftHeaderUI draft={draft} />
                 <ErrorPanelUI>
+                    <RecompileUI app={draft.app} />
                     <b>App failed to load</b>
                     <div>❌ {guiR.error}</div>
                     <div>{stringifyUnknown(guiR.error)}</div>
