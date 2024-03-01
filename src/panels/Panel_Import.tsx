@@ -41,9 +41,18 @@ export const Panel_Import = observer(function Panel_Import_(p: {}) {
                     </div>
                 ))}
             </div>
-            <div tw='relative w-96 h-96 virtualBorder'>
+            {st.droppedFiles.length == 0 ? (
+                <div tw='flex items-center w-full h-auto p-10 justify-center text-center'>
+                    <div tw='flex-1 flex-grow opacity-50 w-full h-full select-none'>
+                        Drag a file or an image from a web browser on to CushyStudio to import it.
+                    </div>
+                </div>
+            ) : (
+                <></>
+            )}
+            {/* <div tw='relative w-96 h-96 virtualBorder'>
                 <TargetBox />
-            </div>
+            </div> */}
         </div>
     )
 })
