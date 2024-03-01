@@ -14,6 +14,7 @@ import { App, AppRef, SchemaDict } from 'src/cards/App'
 import { LiveCollection } from 'src/db/LiveCollection'
 import { SQLITE_false, SQLITE_true } from 'src/db/SQLITE_boolean'
 import { asCushyAppID, CushyScriptT } from 'src/db/TYPES.gen'
+import { extractErrorMessage } from 'src/utils/formatters/extractErrorMessage'
 import { asRelativePath } from 'src/utils/fs/pathUtils'
 import { toastInfo } from 'src/utils/misc/toasts'
 
@@ -69,32 +70,40 @@ export class CushyScriptL {
     }
 
     _isOutOfDate = (): { needRecompile: boolean; reason: string } => {
-        const lastExtractedAt = this.data.lastExtractedAt
-        // 1. no lastExtractedAt => ❌ need recompile
-        if (lastExtractedAt == null) return { needRecompile: true, reason: 'missing lastExtractedAt' }
+        try {
+            // 1. no lastExtractedAt => ❌ need recompile
+            const lastExtractedAt = this.data.lastExtractedAt
+            if (lastExtractedAt == null) return { needRecompile: true, reason: 'missing lastExtractedAt' }
 
-        // 2. entrypoint more recent
-        const relPath = statSync(this.relPath)
-        if (relPath.mtime.getTime() > lastExtractedAt)
-            return { needRecompile: true, reason: `file ${this.relPath} modified since last compile` }
+            // 2. entrypoint more recent
+            const relPath = statSync(this.relPath)
+            if (relPath.mtime.getTime() > lastExtractedAt)
+                return { needRecompile: true, reason: `file ${this.relPath} modified since last compile` }
 
-        // 3. any deps more recent
-        const deps = this.data.metafile?.inputs
-        if (deps) {
-            const inputs = Object.keys(deps)
-            for (const input of inputs) {
-                const inputStats = statSync(input)
-                if (inputStats.mtime.getTime() > lastExtractedAt) {
-                    return {
-                        needRecompile: true,
-                        reason: `dependency ${input} modified since last compile`,
+            // 3. any deps more recent
+            const deps = this.data.metafile?.inputs
+            if (deps) {
+                const inputs = Object.keys(deps)
+                for (const input of inputs) {
+                    const inputStats = statSync(input)
+                    if (inputStats.mtime.getTime() > lastExtractedAt) {
+                        return {
+                            needRecompile: true,
+                            reason: `dependency ${input} modified since last compile`,
+                        }
                     }
                 }
             }
-        }
-        return {
-            needRecompile: false,
-            reason: 'lastExtractedAt + no legacy deps',
+            return {
+                needRecompile: false,
+                reason: 'lastExtractedAt + no legacy deps',
+            }
+        } catch (e) {
+            // 4. crash (e.g. file does not exist anymore) => need recompile
+            return {
+                needRecompile: true,
+                reason: `error checking dependencies: ${extractErrorMessage(e)}`,
+            }
         }
     }
     // --------------------------------------------------------------------------------------
