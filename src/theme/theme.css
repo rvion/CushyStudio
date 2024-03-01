@@ -84,6 +84,15 @@ body {
     /* background: oklch(var(--b3)) */
 }
 
+/* PanelHeaderUI */
+.CSHY-panel-header {
+    height: calc(var(--input-height) + 8px);
+}
+
+.CSHY-panel-header-item {
+    height: var(--input-height);
+    min-height: var(--input-height);
+}
 
 /* CODEMIRROR ----------------------------------------- */
 .cm-tooltip.cm-completionInfo {
