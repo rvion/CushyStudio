@@ -16,7 +16,7 @@ export const HeaderUI = observer(function HeaderUI_(p: { children?: ReactNode })
         <div // Container
             // This may be good to pass in the future? I don't think this really needs to/should be modifiable though.
             // className={p.className}
-            tw={['h-10', 'flex select-none w-full h-full', 'items-center p-1', 'bg-base-300']}
+            tw={['h-10', 'flex select-none w-full', 'items-center p-1', 'bg-base-300']}
         >
             {p.children ?? <></>}
         </div>
