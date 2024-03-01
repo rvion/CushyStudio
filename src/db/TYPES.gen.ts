@@ -1,6 +1,6 @@
+import * as T from './TYPES_json'
 import { Type } from '@sinclair/typebox'
 
-import * as T from './TYPES_json'
 
 export const asMigrationsID = (s: string): MigrationsID => s as any
 export type MigrationsT = {
@@ -1263,6 +1263,9 @@ export type CushyScriptT = {
     /** @default: null, sqlType: json */
     metafile?: Maybe<T.CushyScript_metafile>;
 
+    /** @default: null, sqlType: INT */
+    lastExtractedAt?: Maybe<number>;
+
 }
 
 export type CushyScript_C = {
@@ -1290,6 +1293,9 @@ export type CushyScript_C = {
     /** @default: null, sqlType: json */
     metafile?: Maybe<T.CushyScript_metafile>;
 
+    /** @default: null, sqlType: INT */
+    lastExtractedAt?: Maybe<number>;
+
 }
 export const CushyScriptSchema = Type.Object({
     id: Type.String(),
@@ -1300,6 +1306,7 @@ export const CushyScriptSchema = Type.Object({
     lastEvaluatedAt: Type.Optional(T.Nullable(Type.Number())),
     lastSuccessfulEvaluationAt: Type.Optional(T.Nullable(Type.Number())),
     metafile: Type.Optional(T.Nullable(T.CushyScript_metafile_Schema)),
+    lastExtractedAt: Type.Optional(T.Nullable(Type.Number())),
 },{ additionalProperties: false })
 
 export const CushyScriptRefs =[
@@ -1318,6 +1325,7 @@ export const CushyScriptFields = {
     lastEvaluatedAt: {cid:5,name:'lastEvaluatedAt',type:'INT',notnull:0,dflt_value:null,pk:0},
     lastSuccessfulEvaluationAt: {cid:6,name:'lastSuccessfulEvaluationAt',type:'INT',notnull:0,dflt_value:null,pk:0},
     metafile: {cid:7,name:'metafile',type:'json',notnull:0,dflt_value:null,pk:0},
+    lastExtractedAt: {cid:8,name:'lastExtractedAt',type:'INT',notnull:0,dflt_value:null,pk:0},
 }
 
 

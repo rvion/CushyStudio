@@ -85,7 +85,7 @@ export class STATE {
             ;(window as any).st = this // <- remove this once window.st usage has been cleend
         }
         if ((window as any).cushy == null) {
-            console.log(`[🛋️] WINDOW.CUSHY NOW DEFINED`)
+            console.log(`[🛋️] window.cushy now defined`)
             Object.defineProperty(window, 'cushy', { get() { return (window as any).CushyObservableCache.st } }) // prettier-ignore
         }
         if ((window as any).toJS == null) {
@@ -136,14 +136,14 @@ export class STATE {
 
     startupFileIndexing = async () => {
         const allFiles = recursivelyFindAppsInFolder(this.library, this.libraryFolderPathAbs)
-        console.log(`[🔴] ----------> found ${allFiles.length} files`)
+        console.log(`[🚧] startupFileIndexing: found ${allFiles.length} files`)
         for (const x of allFiles) await x.extractScriptFromFile()
     }
 
     forceRefreshAllApps = async () => {
         const allFiles = recursivelyFindAppsInFolder(this.library, this.libraryFolderPathAbs)
-        console.log(`[🔴] ----------> found ${allFiles.length} files`)
-        for (const x of allFiles) await x.extractScriptFromFile({ force: true })
+        console.log(`[🚧] forceRefreshAllApps: found ${allFiles.length} files`)
+        for (const x of allFiles) await x.extractScriptFromFileAndUpdateApps({ force: true })
     }
     /**
      * global hotReload persistent cache that should survive hot reload

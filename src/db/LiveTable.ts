@@ -272,7 +272,7 @@ export class LiveTable<
     private stmt_lastN = this.db.prepareAll<number, T>(this.infos, `select * from ${this.name} order by createdAt desc limit ?`)
     getLastN = (amount: number): L[] => {
         DEPENDS_ON(this.liveEntities.size)
-        console.log(`[👙] coucou`, this.liveEntities.size)
+        // console.log(`[👙] coucou`, this.liveEntities.size)
         const ts = this.stmt_lastN(amount)
         return ts.map((data) => this.getOrCreateInstanceForExistingData(data))
     }

@@ -111,9 +111,9 @@ export class CushyAppL {
         return this.script.getExecutable_orNull(this.id) != null
     }
 
-    get executable_orNull(): Maybe<Executable> {
-        return this.script.getExecutable_orNull(this.id)
-    }
+    // ⏸️ get executable_orNull(): Maybe<Executable> {
+    // ⏸️     return this.script.getExecutable_orNull(this.id)
+    // ⏸️ }
 
     get executable_orExtract(): Maybe<Executable> {
         return this.script.getExecutable_orExtract(this.id)

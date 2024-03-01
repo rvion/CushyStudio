@@ -8,6 +8,7 @@ import { useEffect, useLayoutEffect } from 'react'
 import { draftContext } from '../../widgets/misc/useDraft'
 import { MessageInfoUI } from '../MessageUI'
 import { DraftHeaderUI } from './DraftHeaderUI'
+import { RecompileUI } from './RecompileUI'
 import { FormUI } from 'src/controls/FormUI'
 import { InstallRequirementsBtnUI } from 'src/controls/REQUIREMENTS/Panel_InstallRequirementsUI'
 import { MarkdownUI } from 'src/rsuite/MarkdownUI'
@@ -28,6 +29,7 @@ export const Panel_Draft = observer(function Panel_Draft_(p: { draftID: DraftID 
 export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> }) {
     const st = useSt()
     const draft = p.draft
+
     useEffect(() => draft?.AWAKE(), [draft?.id])
 
     // ensure
@@ -78,6 +80,7 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
     // {/* <ActionDraftListUI card={card} /> */}
     const OUT = (
         <draftContext.Provider value={draft} key={draft.id}>
+            <RecompileUI app={draft.app} />
             <div
                 style={toJS(containerStyle ?? defaultContainerStyle)}
                 tw={['flex-1 flex flex-col gap-1 px-2', containerClassName, 'bg-base-300']}
@@ -146,42 +149,10 @@ const ErrorPanelUI = observer(function ErrorPanelUI_(p: { children: React.ReactN
 })
 
 export const AppCompilationErrorUI = observer(function AppCompilationErrorUI_(p: { app: CushyAppL }) {
-    // const app = p.app
     return (
         <ErrorPanelUI>
-            <h3 tw='text-red-600'>invalid action</h3>
-            {/* <Message showIcon type='info'>
-                <div>loading strategies attempted:</div>
-                <ul>
-                    {card.strategies.map((u) => (
-                        <li key={u}>{u}</li>
-                    ))}
-                </ul>
-            </Message> */}
-            {/* {card.errors.map((e, ix) => {
-                return (
-                    <Message key={ix} showIcon type='error' header={e.title}>
-                        {typeof e.details === 'string' ? (
-                            <pre>{e.details}</pre>
-                        ) : isError(e.details) ? (
-                            <div>
-                                <pre>
-                                    <b>name</b> {e.details.name}
-                                </pre>
-                                <pre>
-                                    <b>message</b> {e.details.message}
-                                </pre>
-                                <pre>
-                                    <b>stack</b> {e.details.stack}
-                                </pre>
-                            </div>
-                        ) : (
-                            <pre>{JSON.stringify(e.details, null, 3)}</pre>
-                        )}
-                    </Message>
-                )
-            })} */}
-            {/* <pre tw='text-red-600'>❌ errors: {JSON.stringify(card.errors, null, 2)}</pre> */}
+            <h3 tw='text-red-600'>invalid app</h3>
+            <RecompileUI app={p.app} />
         </ErrorPanelUI>
     )
 })

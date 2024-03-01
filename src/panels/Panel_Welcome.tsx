@@ -75,14 +75,7 @@ export const StandaloneAppBtnUI = observer(function StandaloneAppBtnUI_(p: { pat
     const file = st.library.getFile(path)
 
     // ensure this app is up-to-date
-    useEffect(() => {
-        void (async () => {
-            const res: ScriptExtractionResult = await file.extractScriptFromFile()
-            if (res.type === 'failed') return toastError('default app (CushyDiffusion) failed to load')
-            const script = res.script
-            script.evaluateAndUpdateApps()
-        })()
-    }, [])
+    useEffect(() => void file.extractScriptFromFileAndUpdateApps(), [])
 
     // show script evaluation progress
     const script0 = file.script

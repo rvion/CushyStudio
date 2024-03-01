@@ -1,6 +1,7 @@
 import type { LiveInstance } from '../db/LiveInstance'
 import type { LibraryFile } from 'src/cards/LibraryFile'
 
+import { fstat, fstatSync, readFileSync, statSync } from 'fs'
 import { runInAction } from 'mobx'
 import { basename } from 'pathe'
 
@@ -63,13 +64,46 @@ export class CushyScriptL {
         return LoadStatus.FAILURE
     }
 
+    get isOutOfDate(): { needRecompile: boolean; reason: string } {
+        return this._isOutOfDate()
+    }
+
+    _isOutOfDate = (): { needRecompile: boolean; reason: string } => {
+        const lastExtractedAt = this.data.lastExtractedAt
+        // 1. no lastExtractedAt => ❌ need recompile
+        if (lastExtractedAt == null) return { needRecompile: true, reason: 'missing lastExtractedAt' }
+
+        // 2. entrypoint more recent
+        const relPath = statSync(this.relPath)
+        if (relPath.mtime.getTime() > lastExtractedAt)
+            return { needRecompile: true, reason: `file ${this.relPath} modified since last compile` }
+
+        // 3. any deps more recent
+        const deps = this.data.metafile?.inputs
+        if (deps) {
+            const inputs = Object.keys(deps)
+            for (const input of inputs) {
+                const inputStats = statSync(input)
+                if (inputStats.mtime.getTime() > lastExtractedAt) {
+                    return {
+                        needRecompile: true,
+                        reason: `dependency ${input} modified since last compile`,
+                    }
+                }
+            }
+        }
+        return {
+            needRecompile: false,
+            reason: 'lastExtractedAt + no legacy deps',
+        }
+    }
     // --------------------------------------------------------------------------------------
     /** cache of extracted apps */
     private _EXECUTABLES: Maybe<Executable[]> = null
-    private get EXECUTABLES(): Executable[] {
-        if (this._EXECUTABLES == null) return this.evaluateAndUpdateApps()
-        return this._EXECUTABLES
-    }
+    // private get EXECUTABLES(): Executable[] {
+    //     if (this._EXECUTABLES == null) return this.evaluateAndUpdateApps()
+    //     return this._EXECUTABLES
+    // }
 
     getExecutable_orNull(appID: CushyAppID): Maybe<Executable> {
         //      '_'👇
@@ -78,7 +112,9 @@ export class CushyScriptL {
 
     /** more costly variation of getExecutable_orNull */
     getExecutable_orExtract(appID: CushyAppID): Maybe<Executable> {
-        return this.EXECUTABLES.find((executable) => appID === executable.appID)
+        if (this._EXECUTABLES) return this._EXECUTABLES.find((executable) => appID === executable.appID)
+        this.evaluateAndUpdateApps()
+        return this._EXECUTABLES!.find((executable) => appID === executable.appID)
     }
 
     // --------------------------------------------------------------------------------------
@@ -121,7 +157,7 @@ export class CushyScriptL {
      * returns [] on script execution failure
      * */
     private _EVALUATE_SCRIPT = (): Executable[] => {
-        toastInfo(`evaluating script: ${this.relPath}`)
+        // toastInfo(`evaluating script: ${this.relPath}`)
         const codeJS = this.data.code
         const APPS: App<SchemaDict>[] = []
 

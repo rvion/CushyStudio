@@ -1,16 +1,14 @@
+import type { OutputFor } from './_prefabs'
 import type { ComfyWorkflowBuilder } from 'src/back/NodeBuilder'
 import type { FormBuilder } from 'src/controls/FormBuilder'
-import type { OutputFor } from './_prefabs'
 
 export const ui_upscaleWithModel = () => {
-    const form: FormBuilder = getCurrentForm()
-    return form.groupOpt({
+    const ui: FormBuilder = getCurrentForm()
+    return ui.groupOpt({
         label: 'Upscale via Model',
-        items: () => ({
-            model: form.enum.Enum_UpscaleModelLoader_model_name({
-                default: '4x-UltraSharp.pth',
-            }),
-        }),
+        items: {
+            model: ui.enum.Enum_UpscaleModelLoader_model_name({ default: '4x-UltraSharp.pth' }),
+        },
         requirements: [
             // 2x
             { type: 'modelInManager', modelName: 'RealESRGAN x2' },

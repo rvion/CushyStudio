@@ -62,6 +62,7 @@ const WidgetChoices_TabHeaderUI = observer(function WidgetChoicesTab_LineUI_<T e
                 const isSelected = widget.serial.branches[c.key]
                 return (
                     <InputBoolUI
+                        key={c.key}
                         active={isSelected}
                         display='button'
                         text={c.label}

@@ -234,7 +234,7 @@ export class HostL {
     ws: Maybe<ResilientWebSocketClient> = null
 
     initWebsocket = () => {
-        console.log('[👢] WEBSOCKET: starting client to ComfyUI')
+        console.log(`[👢] WEBSOCKET: starting client to ComfyUI host ${this.data.name}`)
         this.ws = new ResilientWebSocketClient({
             onConnectOrReconnect: () => this.fetchAndUpdateSchema(),
             onMessage: this.st.onMessage,
