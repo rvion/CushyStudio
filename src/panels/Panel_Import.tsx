@@ -3,21 +3,28 @@ import { observer } from 'mobx-react-lite'
 import { useSt } from '../state/stateContext'
 import { ImportAsImageUI, ImportedFileUI } from 'src/importers/FilesBeeingImported'
 import { TargetBox } from 'src/importers/TargetBox'
+import { HeaderUI } from 'src/controls/widgets/header/HeaderUI'
+import { SeparatorUI } from 'src/controls/widgets/separator/SeparatorUI'
 
 export const Panel_Import = observer(function Panel_Import_(p: {}) {
     const st = useSt()
 
     return (
         <div tw='w-full h-full'>
-            <div tw='flex flex-col gap-3 m-3'>
+            <HeaderUI>
+                <SeparatorUI />
+                {/* Putting clear items button on the right because actions that remove things should be separated in some way from other things to prevent mis-clicks. */}
                 <div
                     onClick={() => {
                         st.droppedFiles.splice(0)
                     }}
                     tw='btn btn-sm  btn-warning'
                 >
-                    clear
+                    <span className='material-symbols-outlined'>backspace</span>
+                    Clear Items
                 </div>
+            </HeaderUI>
+            <div tw='flex flex-col gap-3 m-3'>
                 {st.droppedFiles.map((file, ix) => (
                     <div key={file.name} tw='card card-bordered p-2 bg-base-200'>
                         <div tw='card-title'>Imported file</div>
