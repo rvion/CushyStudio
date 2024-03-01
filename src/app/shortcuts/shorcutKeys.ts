@@ -1,5 +1,6 @@
 // prettier-ignore
 export const KEYS = {
+    search: 'mod+f',
     // misc
     closeCurrentTab: 'mod+w',
     closeDialogOrPopupsOrFullScreenPanel: 'escape',

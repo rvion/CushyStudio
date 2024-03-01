@@ -1,5 +1,5 @@
-import type { FormBuilder } from 'src/controls/FormBuilder'
 import type { OutputFor } from './_prefabs'
+import type { FormBuilder } from 'src/controls/FormBuilder'
 
 export const ui_latent_v3 = () => {
     const form: FormBuilder = getCurrentForm()
@@ -11,13 +11,13 @@ export const ui_latent_v3 = () => {
         label: 'Latent Input',
         items: {
             emptyLatent: form.group({
-                collapsible: false,
-                label: false,
-                items: { batchSize, size: form.size({ label: false }) },
+                collapsed: false,
+                border: false,
+                items: { batchSize, size: form.size({ label: false, collapsed: false, border: false }) },
             }),
             image: form.group({
-                collapsible: false,
-                label: false,
+                collapsed: false,
+                border: false,
                 items: { batchSize, image: form.image() },
             }),
         },

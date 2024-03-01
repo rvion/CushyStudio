@@ -12,7 +12,7 @@ export const MenuAppsUI = observer(function MenuAppsUI_(p: {}) {
             title='Apps'
         >
             <MenuItem
-                onClick={() => st.layout.FOCUS_OR_CREATE('Marketplace', {})}
+                onClick={() => st.layout.FOCUS_OR_CREATE('Marketplace', {}, 'RIGHT_PANE_TABSET')}
                 icon={<span className='material-symbols-outlined'>cloud_download</span>}
                 shortcut={KEYS.openPage_Marketplace}
                 label='Civitai'

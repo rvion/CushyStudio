@@ -6,15 +6,22 @@ import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 
 import { WidgetDI } from '../WidgetUI.DI'
-import { Spec } from 'src/controls/Prop'
+import { WidgetGroup_BlockUI, WidgetGroup_LineUI } from './WidgetGroupUI'
+import { getActualWidgetToDisplay } from 'src/controls/shared/getActualWidgetToDisplay'
+import { getIfWidgetIsCollapsible } from 'src/controls/shared/getIfWidgetIsCollapsible'
+import { Spec } from 'src/controls/Spec'
 import { runWithGlobalForm } from 'src/models/_ctx2'
 
 // CONFIG
 export type Widget_group_config<T extends SchemaDict> = WidgetConfigFields<{
     items?: (() => T) | T
     topLevel?: boolean
+    // header?: (self: Widget_group<T>) => (keyof T)[]
     /** if provided, will be used to show a single line summary on the inline form slot */
     summary?: (items: { [k in keyof T]: GetWidgetResult<T[k]> }) => string
+    // ------------------------------------------------
+    // header?: (self: Widget_group<T>) => GroupLayout<T>[]
+    // body?: (self: Widget_group<T>) => (`.${keyof T & string}` | `#${string}`)[]
 }>
 
 // SERIAL
@@ -35,37 +42,48 @@ export type Widget_group_types<T extends SchemaDict> = {
     $Input: Widget_group_config<T>
     $Serial: Widget_group_serial<T>
     $Output: Widget_group_output<T>
+    $Widget: Widget_group<T>
 }
 
 // STATE
 export interface Widget_group<T extends SchemaDict> extends Widget_group_types<T> {}
 export class Widget_group<T extends SchemaDict> implements IWidget<Widget_group_types<T>> {
+    HeaderUI = WidgetGroup_LineUI
+    get BodyUI() {
+        if (Object.keys(this.fields).length === 0) return
+        return WidgetGroup_BlockUI
+    }
     static Prop = <T extends SchemaDict>(config: Widget_group_config<T>) => new Spec('group', config)
 
     get summary(): string {
-        return this.config.summary?.(this.value) ?? Object.keys(this.fields).length + ' items'
+        return this.config.summary?.(this.value) ?? Object.keys(this.fields).length + ' fields'
     }
     get serialHash(): string {
         return Object.values(this.fields)
             .map((v) => v.serialHash)
             .join(',')
     }
-    readonly isCollapsible = this.config.collapsible ?? true
     readonly id: string
     readonly type: 'group' = 'group'
 
     collapseAllEntries = () => {
-        for (const [key, item] of this.entries) {
-            if (item.isCollapsible && item.serial.active) item.serial.collapsed = true
+        for (const [key, _item] of this.entries) {
+            const item = getActualWidgetToDisplay(_item)
+            if (item.serial.collapsed) continue
+            const isCollapsible = getIfWidgetIsCollapsible(item)
+            if (isCollapsible) item.serial.collapsed = true
         }
     }
     expandAllEntries = () => {
-        for (const [key, item] of this.entries) item.serial.collapsed = undefined
+        for (const [key, _item] of this.entries) {
+            const item = getActualWidgetToDisplay(_item)
+            item.serial.collapsed = undefined
+        }
     }
 
     /** all [key,value] pairs */
     get entries() {
-        return Object.entries(this.fields) as [string, any][]
+        return Object.entries(this.fields) as [string, IWidget][]
     }
 
     at = <K extends keyof T>(key: K): T[K]['$Widget'] => this.fields[key]
@@ -80,7 +98,7 @@ export class Widget_group<T extends SchemaDict> implements IWidget<Widget_group_
             type: 'group',
             id: this.id,
             active: true,
-            collapsed: this.config.startCollapsed ?? false,
+            collapsed: this.config.startCollapsed,
             values_: {} as any,
         }
     }
@@ -104,7 +122,7 @@ export class Widget_group<T extends SchemaDict> implements IWidget<Widget_group_
 
         // safety nets
         /* 💊 */ if (this.serial.values_ == null) this.serial.values_ = {}
-        /* 💊 */ if (this.config.collapsible === false) this.serial.collapsed = undefined
+        /* 💊 */ if (this.config.collapsed) this.serial.collapsed = undefined
 
         // allow to store ref to the object right away
         preHydrate?.(this)

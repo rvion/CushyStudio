@@ -1,6 +1,7 @@
-import { exhaust } from 'src/utils/misc/ComfyUtils'
+import { run_advancedPrompt, ui_advancedPrompt } from 'library/built-in/_prefabs/prefab_promptsWithButtons'
 
 import { ui_highresfix } from './_prefabs/_prefabs'
+import { run_Dispacement1, run_Dispacement2, ui_3dDisplacement } from './_prefabs/prefab_3dDisplacement'
 import { Cnet_args, Cnet_return, run_cnet, ui_cnet } from './_prefabs/prefab_cnet'
 import { run_refiners_fromImage, ui_refiners } from './_prefabs/prefab_detailer'
 import { run_latent_v3, ui_latent_v3 } from './_prefabs/prefab_latent_v3'
@@ -48,32 +49,7 @@ app({
         upscale: ui_upscaleWithModel(),
         customSave: ui_customSave(),
         removeBG: ui_rembg_v1(),
-
-        show3d: form.groupOpt({
-            requirements: [
-                //
-                { type: 'customNodesByNameInCushy', nodeName: 'Zoe$7DepthMapPreprocessor' },
-                { type: 'customNodesByNameInCushy', nodeName: 'MarigoldDepthEstimation' },
-            ],
-            items: () => {
-                return {
-                    normal: form.selectOne({
-                        tooltip: 'no Normal map may be better, bad model yields bumpy stuff',
-                        default: { id: 'None' },
-                        choices: [{ id: 'MiDaS' }, { id: 'BAE' }, { id: 'None' }],
-                    }),
-                    depth: form.choice({
-                        default: 'Marigold',
-                        items: {
-                            MiDaS: form.group(),
-                            Zoe: form.group(),
-                            LeReS: form.group(),
-                            Marigold: form.auto.MarigoldDepthEstimation(),
-                        },
-                    }),
-                }
-            },
-        }),
+        show3d: ui_3dDisplacement().optional(),
         controlnets: ui_cnet(),
         recursiveImgToImg: ui_recursive(),
         loop: form.groupOpt({
@@ -86,10 +62,11 @@ app({
             appearance: 'tab',
             items: {
                 regionalPrompt: ui_regionalPrompting_v1(),
-                reversePositiveAndNegative: form.group(),
+                reversePositiveAndNegative: form.group({ label: 'swap +/-' }),
                 makeAVideo: form.group(),
                 summary: form.group(),
                 gaussianSplat: form.group(),
+                promtPlus: ui_advancedPrompt(),
             },
         }),
     }),
@@ -98,10 +75,6 @@ app({
         const graph = run.nodes
         // MODEL, clip skip, vae, etc. ---------------------------------------------------------------
         let { ckpt, vae, clip } = run_model(ui.model)
-
-        if (ui.model.extra.rescale_cfg) {
-            ckpt = graph.RescaleCFG({ model: ckpt, multiplier: ui.model.extra.rescale_cfg.multiplier })
-        }
 
         // RICH PROMPT ENGINE -------- ---------------------------------------------------------------
         const posPrompt = run_prompt({
@@ -112,7 +85,9 @@ app({
         })
         const clipPos = posPrompt.clip
         let ckptPos = posPrompt.ckpt
-        let positive = posPrompt.positiveConditionning
+        let finalText = posPrompt.positiveText
+        if (ui.testStuff.promtPlus) finalText += run_advancedPrompt(ui.testStuff.promtPlus)
+        let positive: _CONDITIONING = graph.CLIPTextEncode({ clip: clipPos, text: finalText })
 
         if (ui.testStuff.regionalPrompt) {
             positive = run_regionalPrompting_v1(ui.testStuff.regionalPrompt, { conditionning: positive, clip })
@@ -257,41 +232,20 @@ app({
             if (sub.length > 0) finalImage = graph.AlphaChanelRemove({ images: sub[0] })
         }
 
-        // SHOW 3D --------------------------------------------------------------------------------
+        // SHOW 3D -------------------------------------------------------------------------------
         const show3d = ui.show3d
-        if (show3d) {
-            run.add_previewImage(finalImage).storeAs('base')
-            const depth = (() => {
-                if (show3d.depth.MiDaS) return graph.MiDaS$7DepthMapPreprocessor({ image: finalImage })
-                if (show3d.depth.Zoe) return graph.Zoe$7DepthMapPreprocessor({ image: finalImage })
-                if (show3d.depth.LeReS) return graph.LeReS$7DepthMapPreprocessor({ image: finalImage })
-                if (show3d.depth.Marigold) return graph.MarigoldDepthEstimation({ image: finalImage })
-                throw new Error('❌ show3d activated, but no depth option choosen')
-            })()
-            run.add_previewImage(depth).storeAs('depth')
+        if (show3d) run_Dispacement1(show3d, finalImage)
+        else graph.SaveImage({ images: finalImage })
 
-            const normal = (() => {
-                if (show3d.normal.id === 'MiDaS') return graph.MiDaS$7NormalMapPreprocessor({ image: finalImage })
-                if (show3d.normal.id === 'BAE') return graph.BAE$7NormalMapPreprocessor({ image: finalImage })
-                if (show3d.normal.id === 'None') return graph.EmptyImage({ color: 0x7f7fff, height: 512, width: 512 })
-                return exhaust(show3d.normal)
-            })()
-            run.add_previewImage(normal).storeAs('normal')
-        } else {
-            // DECODE --------------------------------------------------------------------------------
-            graph.SaveImage({ images: finalImage })
-        }
-
-        if (ui.upscale) {
-            finalImage = run_upscaleWithModel(ui.upscale, { image: finalImage })
-        }
+        // UPSCALE with upscale model ------------------------------------------------------------
+        if (ui.upscale) finalImage = run_upscaleWithModel(ui.upscale, { image: finalImage })
 
         const saveFormat = run_customSave(ui.customSave)
         await run.PROMPT({ saveFormat })
 
         if (ui.testStuff?.gaussianSplat) run.output_GaussianSplat({ url: '' })
         if (ui.testStuff?.summary) output_demo_summary(run)
-        if (show3d) run.output_3dImage({ image: 'base', depth: 'depth', normal: 'normal' })
+        if (show3d) run_Dispacement2('base')
 
         // LOOP IF NEED BE -----------------------------------------------------------------------
         const loop = ui.loop

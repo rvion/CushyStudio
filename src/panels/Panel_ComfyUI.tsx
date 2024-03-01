@@ -41,7 +41,6 @@ export const Panel_ComfyUI = observer(function Panel_ComfyUI_(p: {
         if (app == null) return console.log('❌ error loading app')
         // await new Promise((resolve) => setTimeout(resolve, 4000))
         // console.log('🟢', app)
-        // ;(window as any).cf = iframe
         // const json
         // y.app.handleFile
         const flowJson = toJS(p.litegraphJson)
@@ -59,8 +58,6 @@ export const Panel_ComfyUI = observer(function Panel_ComfyUI_(p: {
             app.loadGraphData(toJS(flowJson))
         }
         // for debug purpose, onw may want to uncomment next two lines
-        // ;(window as any).x = toJS(flowJson)
-        // ;(window as any).app = app
     }
 
     useLayoutEffect(() => {

@@ -32,6 +32,18 @@ export class RuntimeLLM {
     /** dictionary of all known openrouter models */
     allModels = openRouterInfos
 
+    defaultSystemPrompt = [
+        //
+        `You are an assistant in charge of writing a prompt to be submitted to a stable distribution ai image generative pipeline.`,
+        `Write a prompt describing the user submited topic in a way that will help the ai generate a relevant image.`,
+        `Your answer must be arond 500 chars in length`,
+        `Start with most important words describing the prompt`,
+        `Include lots of adjective and adverbs. no full sentences. remove useless words`,
+        `try to include a long list of comma separated words.`,
+        'Once main keywords are in, if you still have character to add, include vaiours beauty or artsy words',
+        `ONLY answer with the prompt itself. DO NOT answer anything else. No Hello, no thanks, no signature, no nothing.`,
+    ].join('\n')
+
     /** turn any simple request into an LLM */
     expandPrompt = async (
         /** description / instruction of  */
@@ -41,6 +53,7 @@ export class RuntimeLLM {
          * 🔶 may not be up-to-date; last updated on 2023-12-03
          * */
         model: OpenRouter_Models = 'openai/gpt-3.5-turbo-instruct',
+        systemPrompt: string = this.defaultSystemPrompt,
     ): Promise<{
         prompt: string
         llmResponse: OpenRouterResponse
@@ -51,17 +64,7 @@ export class RuntimeLLM {
             messages: [
                 {
                     role: 'system',
-                    content: [
-                        //
-                        `You are an assistant in charge of writing a prompt to be submitted to a stable distribution ai image generative pipeline.`,
-                        `Write a prompt describing the user submited topic in a way that will help the ai generate a relevant image.`,
-                        `Your answer must be arond 500 chars in length`,
-                        `Start with most important words describing the prompt`,
-                        `Include lots of adjective and adverbs. no full sentences. remove useless words`,
-                        `try to include a long list of comma separated words.`,
-                        'Once main keywords are in, if you still have character to add, include vaiours beauty or artsy words',
-                        `ONLY answer with the prompt itself. DO NOT answer anything else. No Hello, no thanks, no signature, no nothing.`,
-                    ].join('\n'),
+                    content: systemPrompt,
                 },
                 {
                     role: 'user',

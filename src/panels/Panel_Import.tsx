@@ -10,6 +10,14 @@ export const Panel_Import = observer(function Panel_Import_(p: {}) {
     return (
         <div tw='w-full h-full'>
             <div tw='flex flex-col gap-3 m-3'>
+                <div
+                    onClick={() => {
+                        st.droppedFiles.splice(0)
+                    }}
+                    tw='btn btn-sm  btn-warning'
+                >
+                    clear
+                </div>
                 {st.droppedFiles.map((file, ix) => (
                     <div key={file.name} tw='card card-bordered p-2 bg-base-200'>
                         <div tw='card-title'>Imported file</div>

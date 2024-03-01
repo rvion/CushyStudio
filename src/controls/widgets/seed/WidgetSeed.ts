@@ -6,6 +6,7 @@ import { nanoid } from 'nanoid'
 import { hash } from 'ohash'
 
 import { WidgetDI } from '../WidgetUI.DI'
+import { WidgetSeedUI } from './WidgetSeedUI'
 
 // CONFIG
 export type Widget_seed_config = WidgetConfigFields<{
@@ -32,12 +33,14 @@ export type Widget_seed_types = {
     $Input: Widget_seed_config
     $Serial: Widget_seed_serial
     $Output: Widget_seed_output
+    $Widget: Widget_seed
 }
 
 // STATE
 export interface Widget_seed extends Widget_seed_types {}
 export class Widget_seed implements IWidget<Widget_seed_types> {
-    readonly isCollapsible = false
+    HeaderUI = WidgetSeedUI
+    BodyUI = undefined
     readonly id: string
     readonly type: 'seed' = 'seed'
     readonly serial: Widget_seed_serial

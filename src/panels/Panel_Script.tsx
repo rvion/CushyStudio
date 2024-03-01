@@ -1,5 +1,6 @@
 import { observer } from 'mobx-react-lite'
 
+import { TabUI } from 'src/app/layout/TabUI'
 import { useSt } from 'src/state/stateContext'
 import { _formatAsRelativeDateTime } from 'src/updater/_getRelativeTimeString'
 import { ErrorScreenUI } from 'src/widgets/misc/ErrorScreenUI'
@@ -25,7 +26,12 @@ export const Panel_Script = observer(function Panel_Script_(p: { scriptID: Cushy
             <div>created at: {_formatAsRelativeDateTime(script.createdAt)}</div>
             <div>updated at: {_formatAsRelativeDateTime(script.updatedAt)}</div>
             <div>extracted from: {script.relPath}</div>
-            <TypescriptHighlightedCodeUI code={script.data.code}></TypescriptHighlightedCodeUI>
+            <TabUI>
+                <div>text</div>
+                <pre tw='bg-base-200 text-xs font-mono'>{script.data.code}</pre>
+                <div>code</div>
+                <TypescriptHighlightedCodeUI code={script.data.code}></TypescriptHighlightedCodeUI>
+            </TabUI>
         </div>
     )
 })

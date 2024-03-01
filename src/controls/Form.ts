@@ -4,7 +4,7 @@ import type { SchemaDict } from 'src/cards/App'
 import { action, autorun, isObservable, makeAutoObservable, observable, runInAction } from 'mobx'
 
 import { FormBuilder } from './FormBuilder'
-import { Spec } from './Prop'
+import { Spec } from './Spec'
 
 export class Form<const FIELDS extends SchemaDict> {
     error: Maybe<string> = null
@@ -49,8 +49,8 @@ export class Form<const FIELDS extends SchemaDict> {
         public ui: (form: FormBuilder) => FIELDS,
         public def: {
             name: string
-            onChange: (form: Widget_group<FIELDS>) => void
-            initialValue: () => Maybe<object>
+            onChange?: (form: Widget_group<FIELDS>) => void
+            initialValue?: () => Maybe<object>
         },
     ) {
         makeAutoObservable(this, {
@@ -68,7 +68,7 @@ export class Form<const FIELDS extends SchemaDict> {
         const rootDef = { topLevel: true, items: () => this.ui?.(formBuilder) ?? {} }
         const unmounted = new Spec<Widget_group<FIELDS>>('group', rootDef)
         try {
-            let initialValue = this.def.initialValue()
+            let initialValue = this.def.initialValue?.()
             if (initialValue && !isObservable(initialValue)) initialValue = observable(initialValue)
             const rootWidget: Widget_group<FIELDS> = formBuilder._HYDRATE(unmounted, initialValue)
             this.ready = true
@@ -92,7 +92,7 @@ export class Form<const FIELDS extends SchemaDict> {
                 const _ = root.serialHash
                 runInAction(() => {
                     console.log(`[🦊] form: updating`)
-                    this.def.onChange(root)
+                    this.def.onChange?.(root)
                 })
             },
             { delay: 100 },

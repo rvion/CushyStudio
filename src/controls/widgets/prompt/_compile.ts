@@ -1,4 +1,3 @@
-import type { PromptLangNodeName } from './grammar/grammar.types'
 import type { CompiledPrompt } from './WidgetPrompt'
 import type { STATE } from 'src/state/state'
 

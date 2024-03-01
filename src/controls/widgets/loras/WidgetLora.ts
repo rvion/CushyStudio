@@ -8,6 +8,7 @@ import { nanoid } from 'nanoid'
 import { hash } from 'ohash'
 
 import { WidgetDI } from '../WidgetUI.DI'
+import { WidgetLorasUI } from './WidgetLorasUI'
 
 // CONFIG
 export type Widget_loras_config = WidgetConfigFields<{ default?: SimplifiedLoraDef[] }>
@@ -24,15 +25,17 @@ export type Widget_loras_types = {
     $Input: Widget_loras_config
     $Serial: Widget_loras_serial
     $Output: Widget_loras_output
+    $Widget: Widget_loras
 }
 
 // STATE
 export interface Widget_loras extends Widget_loras_types {}
 export class Widget_loras implements IWidget<Widget_loras_types> {
+    HeaderUI = WidgetLorasUI
+    BodyUI = undefined
     get serialHash(): string {
         return hash(this.value)
     }
-    isCollapsible = true
     id: string
     type: 'loras' = 'loras'
     serial: Widget_loras_serial

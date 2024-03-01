@@ -21,7 +21,6 @@ import type { Widget_selectOne } from './selectOne/WidgetSelectOne'
 import type { Widget_shared } from './shared/WidgetShared'
 import type { Widget_size } from './size/WidgetSize'
 import type { Widget_string } from './string/WidgetString'
-import type { WidgetUI } from './WidgetUI'
 
 /**
  * DI (Dependency Injection)
@@ -29,7 +28,6 @@ import type { WidgetUI } from './WidgetUI'
  * regardless of circular dependencies.
  * */
 export let WidgetDI = {
-    WidgetUI /*          */: 0 as any as typeof WidgetUI,
     Widget_shared /*     */: 0 as any as typeof Widget_shared,
     Widget_optional /*   */: 0 as any as typeof Widget_optional,
     Widget_color /*      */: 0 as any as typeof Widget_color,
@@ -54,3 +52,10 @@ export let WidgetDI = {
     Widget_listExt /*    */: 0 as any as typeof Widget_listExt,
     Widget_orbit /*      */: 0 as any as typeof Widget_orbit,
 }
+
+// help with DI, and help around some typescript bug not able to narrow types
+// in conditional when instance of is used with a ctor stored in a dictionary
+export const isWidgetChoice = (widget: any): widget is Widget_choices => widget.type === 'choices'
+export const isWidgetOptional = (widget: any): widget is Widget_optional => widget.type === 'optional'
+export const isWidgetShared = (widget: any): widget is Widget_shared => widget.type === 'shared'
+export const isWidgetGroup = (widget: any): widget is Widget_group<any> => widget.type === 'group'

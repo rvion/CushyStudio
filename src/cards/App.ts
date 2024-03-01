@@ -1,7 +1,7 @@
 import type { AppMetadata } from './AppManifest'
 import type { CSSProperties } from 'react'
 import type { FormBuilder } from 'src/controls/FormBuilder'
-import type { Spec } from 'src/controls/Prop'
+import type { ISpec } from 'src/controls/Spec'
 import type { MediaImageL } from 'src/models/MediaImage'
 import type { Runtime } from 'src/runtime/Runtime'
 
@@ -16,7 +16,7 @@ export type GlobalGetCurrentForm = () => FormBuilder
 export type ActionTagMethod = (arg0: string) => string
 export type ActionTagMethodList = Array<{ key: string; method: ActionTagMethod }>
 export type ActionTags = (arg0: ActionTagMethodList) => void
-export type SchemaDict = { [key: string]: Spec }
+export type SchemaDict = { [key: string]: ISpec }
 export type AppRef<F> = { $Output: F; id: CushyAppID }
 
 export type $ExtractFormValueType<FIELDS extends SchemaDict> = { [k in keyof FIELDS]: FIELDS[k]['$Output'] }

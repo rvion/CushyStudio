@@ -1,11 +1,12 @@
 import type { Form } from '../../Form'
 import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
-import type { Spec } from 'src/controls/Prop'
+import type { Spec } from 'src/controls/Spec'
 
 import { makeAutoObservable, observable } from 'mobx'
 import { nanoid } from 'nanoid'
 
 import { WidgetDI } from '../WidgetUI.DI'
+import { WidgetList_BodyUI, WidgetList_LineUI } from './WidgetListUI'
 import { runWithGlobalForm } from 'src/models/_ctx2'
 
 // CONFIG
@@ -31,18 +32,24 @@ export type Widget_list_types<T extends Spec> = {
     $Input: Widget_list_config<T>
     $Serial: Widget_list_serial<T>
     $Output: Widget_list_output<T>
+    $Widget: Widget_list<T>
 }
 
 // STATE
 export interface Widget_list<T extends Spec> extends Widget_list_types<T> {}
 export class Widget_list<T extends Spec> implements IWidget<Widget_list_types<T>> {
+    HeaderUI = WidgetList_LineUI
+    get BodyUI() {
+        // if (this.items.length === 0) return
+        return WidgetList_BodyUI
+    }
     get serialHash(): string {
         return this.items.map((v) => v.serialHash).join(',')
     }
-    readonly isCollapsible = true
     readonly id: string
     readonly type: 'list' = 'list'
 
+    get length() { return this.items.length } // prettier-ignore
     items: T['$Widget'][]
     serial: Widget_list_serial<T>
 
@@ -70,20 +77,28 @@ export class Widget_list<T extends Spec> implements IWidget<Widget_list_types<T>
 
         // hydrate items
         this.items = []
-        const unmounted = this.schemaAt(0) // TODO: evaluate schema in the form loop
-        for (const subSerial of this.serial.items_) {
-            if (
-                subSerial == null || // ⁉️ when can this happen ?
-                subSerial.type !== unmounted.type
-            ) {
-                console.log(`[❌] SKIPPING form item because it has an incompatible entry from a previous app definition`)
-                continue
+
+        // 1. add default item (only when serial was null)
+        if (serial == null && this.config.defaultLength != null) {
+            for (let i = 0; i < this.config.defaultLength; i++) this.addItem()
+        }
+        // 2. pre-existing serial => rehydrate items
+        else {
+            const unmounted = this.schemaAt(0) // TODO: evaluate schema in the form loop
+            for (const subSerial of this.serial.items_) {
+                if (
+                    subSerial == null || // ⁉️ when can this happen ?
+                    subSerial.type !== unmounted.type
+                ) {
+                    console.log(`[❌] SKIPPING form item because it has an incompatible entry from a previous app definition`)
+                    continue
+                }
+                const subWidget = form.builder._HYDRATE(unmounted, subSerial)
+                this.items.push(subWidget)
             }
-            const subWidget = form.builder._HYDRATE(unmounted, subSerial)
-            this.items.push(subWidget)
         }
 
-        // add missing items if min specified
+        // 3. add missing items if min specified
         const missingItems = (this.config.min ?? 0) - this.items.length
         for (let i = 0; i < missingItems; i++) this.addItem()
 

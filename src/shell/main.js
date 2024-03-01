@@ -78,6 +78,19 @@ async function START() {
         const focusedWindow = BrowserWindow.getFocusedWindow()
         if (focusedWindow) focusedWindow.setSize(1920, 1080)
     })
+
+    ipcMain.on('search-stop', (event, arg) => {
+        console.log(`[🔎] search-stop received with arg:`, arg)
+        webContents.stopFindInPage('clearSelection')
+    })
+    ipcMain.on('search-start', (event, arg, options) => {
+        console.log(`[🔎] search-start received with query:`, arg, options)
+        if (arg.length < 2) return
+        const focusedWindow = BrowserWindow.getFocusedWindow()
+        if (focusedWindow == null) return console.log(`[🔎] ❌ no focusedWindow`)
+        const webContents = focusedWindow.webContents
+        webContents.findInPage(arg, options)
+    })
     ipcMain.on('resize-for-laptop', (event, arg) => {
         const focusedWindow = BrowserWindow.getFocusedWindow()
         if (focusedWindow) focusedWindow.setSize(1280, 720)
@@ -132,6 +145,12 @@ async function START() {
             },
         })
 
+        mainWindow.webContents.on('found-in-page', function (event, result) {
+            if (result.finalUpdate) {
+                mainWindow.webContents.send('search-result', result)
+                // console.log(`[🤠] final update. result =`, result)
+            }
+        })
         // ------------------------------------------------------------
         // https://github.com/electron/electron/pull/573
         //remove X-Frame-Options headers on all incoming requests.

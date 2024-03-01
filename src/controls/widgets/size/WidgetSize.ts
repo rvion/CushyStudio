@@ -8,6 +8,7 @@ import { hash } from 'ohash'
 
 import { WidgetDI } from '../WidgetUI.DI'
 import { ResolutionState } from './ResolutionState'
+import { WigetSize_BlockUI, WigetSize_LineUI } from './WidgetSizeUI'
 
 // CONFIG
 export type Widget_size_config = WidgetConfigFields<{
@@ -29,11 +30,14 @@ export type Widget_size_types = {
     $Input: Widget_size_config
     $Serial: Widget_size_serial
     $Output: Widget_size_output
+    $Widget: Widget_size
 }
 
 // STATE
 export interface Widget_size extends Widget_size_types {} // prettier-ignore
 export class Widget_size implements IWidget<Widget_size_types> {
+    HeaderUI = WigetSize_LineUI
+    BodyUI = WigetSize_BlockUI
     get sizeHelper(): ResolutionState {
         // should only be executed once
         const state = new ResolutionState(this.serial)
@@ -41,7 +45,10 @@ export class Widget_size implements IWidget<Widget_size_types> {
         return state
     }
     get serialHash() { return hash(this.value) } // prettier-ignore
-    readonly isCollapsible = this.config.collapsible ?? false
+    get hasBody() {
+        if (this.sizeHelper.isAspectRatioLocked) return true
+        return false
+    }
     readonly id: string
     readonly type: 'size' = 'size'
     readonly serial: Widget_size_serial

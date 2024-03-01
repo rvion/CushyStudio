@@ -19,6 +19,7 @@ import { asCushyScriptID } from 'src/db/TYPES.gen'
 import { CushyScriptL } from 'src/models/CushyScriptL'
 import { asAbsolutePath } from 'src/utils/fs/pathUtils'
 import { ManualPromise } from 'src/utils/misc/ManualPromise'
+import { toastError } from 'src/utils/misc/toasts'
 
 // prettier-ignore
 export type LoadStrategy =
@@ -114,6 +115,17 @@ export class LibraryFile {
     private lastSuccessfullExtractedScriptDuringSession: Maybe<CushyScriptL> = null
     scriptExtractionAttemptedOnce = false
     currentScriptExtractionPromise: Maybe<ManualPromise<ScriptExtractionResult>> = null
+
+    extractScriptFromFileAndUpdateApps = async (p?: { force?: boolean }): Promise<ScriptExtractionResult> => {
+        const res: ScriptExtractionResult = await this.extractScriptFromFile(p)
+        if (res.type === 'failed') {
+            toastError(`${this.relPath} failed to load`)
+            return res
+        }
+        const script = res.script
+        script.evaluateAndUpdateApps()
+        return res
+    }
 
     // 🔶 TODO: split into two functions for easier code path understanding from
     // 🔶 other locations.
@@ -364,6 +376,7 @@ export class LibraryFile {
             code: codeJS,
             path: this.relPath,
             metafile: metafile ?? null,
+            lastExtractedAt: Date.now(),
         })
         // this.script = script
         return script

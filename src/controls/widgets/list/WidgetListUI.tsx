@@ -1,16 +1,15 @@
 import type { Widget_listExt } from '../listExt/WidgetListExt'
 import type { IWidget } from 'src/controls/IWidget'
-import type { Spec } from 'src/controls/Prop'
+import type { Spec } from 'src/controls/Spec'
 
 import { observer } from 'mobx-react-lite'
 import { forwardRef } from 'react'
 import SortableList, { SortableItem, SortableKnob } from 'react-easy-sort'
 import { ErrorBoundary } from 'react-error-boundary'
 
-import { WidgetDI } from '../WidgetUI.DI'
 import { Widget_list } from './WidgetList'
-import { ListControlsUI } from 'src/controls/shared/ListControlsUI'
-import { Message } from 'src/rsuite/shims'
+import { getBorderStatusForWidget } from 'src/controls/shared/getBorderStatusForWidget'
+import { ListControlsUI } from 'src/controls/widgets/list/ListControlsUI'
 import { ErrorBoundaryFallback } from 'src/widgets/misc/ErrorBoundary'
 
 export const WidgetList_LineUI = observer(function WidgetList_LineUI_<T extends Spec>(p: {
@@ -23,43 +22,42 @@ export const WidgetList_LineUI = observer(function WidgetList_LineUI_<T extends 
     )
 })
 
-export const WidgetListUI = observer(function WidgetListUI_<T extends Spec>(p: { widget: Widget_list<T> }) {
+export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends Spec>(p: { widget: Widget_list<T> }) {
     const widget = p.widget
     const subWidgets = widget.items
     const min = widget.config.min
-    const WidgetUI = WidgetDI.WidgetUI
-    if (WidgetUI == null) return <Message type='error'>Internal list failure</Message>
     return (
         <div className='_WidgetListUI' tw='flex-grow w-full'>
-            {/* <ListControlsUI widget={p.widget} /> */}
             <SortableList onSortEnd={p.widget.moveItem} className='list' draggedItemClassName='dragged'>
-                <div tw='flex flex-col gap-2'>
+                <div tw='flex flex-col gap-0.5'>
                     {subWidgets.map((subWidget, ix) => {
-                        const { WidgetLineUI, WidgetBlockUI } = WidgetDI.WidgetUI(subWidget) // WidgetDI.WidgetUI(widget)
+                        const { HeaderUI: WidgetHeaderUI, BodyUI: WidgetBodyUI } = subWidget // WidgetDI.WidgetUI(widget)
                         const collapsed = subWidget.serial.collapsed ?? false
                         return (
                             <SortableItem key={subWidget.id}>
-                                <div tw='flex flex-col WIDGET-WITH-BLOCK'>
+                                <div tw={['flex flex-col', getBorderStatusForWidget(subWidget) && 'WIDGET-GROUP-BORDERED']}>
                                     <div tw='flex items-center '>
+                                        {/* drag and fold knob */}
                                         <SortableKnob>
                                             <ListDragHandleUI widget={subWidget} ix={ix} />
                                         </SortableKnob>
+
+                                        {/* debug id */}
                                         {p.widget.config.showID ? (
-                                            <div className='divider my-2 flex-1 border-top'>
+                                            <div className='divider flex-1 border-top'>
                                                 <div id={subWidget.id} tw='opacity-20 italic'>
                                                     #{ix}:{subWidget.id}
                                                 </div>
                                             </div>
                                         ) : null}
-                                        {WidgetLineUI && (
+
+                                        {/* inline header part */}
+                                        {WidgetHeaderUI && (
                                             <ErrorBoundary FallbackComponent={ErrorBoundaryFallback} onReset={(details) => {}}>
-                                                <WidgetLineUI widget={subWidget} />
+                                                <WidgetHeaderUI widget={subWidget} />
                                             </ErrorBoundary>
                                         )}
-
-                                        {/* {(v.state.collapsed ?? false) && <WidgetUI widget={v} />} */}
-                                        {/* {!(v.state.collapsed ?? false) && <div tw='flex-1' />} */}
-
+                                        {/* delete btn */}
                                         <div
                                             tw={[
                                                 'btn btn-sm btn-narrower btn-ghost opacity-50',
@@ -69,23 +67,16 @@ export const WidgetListUI = observer(function WidgetListUI_<T extends Spec>(p: {
                                         >
                                             <span className='material-symbols-outlined'>delete</span>
                                         </div>
+                                        {/* collapse indicator */}
                                         <ListItemCollapseBtnUI req={subWidget} />
                                     </div>
-                                    {WidgetBlockUI && !collapsed && subWidget && (
+                                    {WidgetBodyUI && !collapsed && subWidget && (
                                         <ErrorBoundary FallbackComponent={ErrorBoundaryFallback} onReset={(details) => {}}>
                                             <div tw='ml-2 pl-2'>
-                                                <WidgetBlockUI widget={subWidget} />
+                                                <WidgetBodyUI widget={subWidget} />
                                             </div>
                                         </ErrorBoundary>
                                     )}
-                                    {/* {!(v.state.collapsed ?? false) && (
-                                    <div
-                                    // key={v.id}
-                                    // tw='border-solid border-2 border-neutral-content'
-                                    >
-                                        <WidgetUI widget={v} />
-                                    </div>
-                                )} */}
                                 </div>
                             </SortableItem>
                         )
@@ -100,7 +91,7 @@ const ListDragHandleUI = forwardRef<HTMLDivElement, { ix: number; widget: IWidge
     const v = props.widget
     return (
         <div
-            tw='btn btn-narrower btn-ghost btn-square btn-sm'
+            tw='btn btn-narrower btn-ghost btn-square btn-xs'
             ref={ref}
             onClick={() => (v.serial.collapsed = !Boolean(v.serial.collapsed))}
         >
@@ -121,7 +112,7 @@ const ListDragHandleUI = forwardRef<HTMLDivElement, { ix: number; widget: IWidge
 
 export const ListItemCollapseBtnUI = observer(function ListItemCollapseBtnUI_(p: { req: IWidget }) {
     const widget = p.req
-    const isCollapsible = widget.isCollapsible
+    const isCollapsible = widget.BodyUI
     if (!isCollapsible) return null
     return (
         <div

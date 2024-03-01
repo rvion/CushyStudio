@@ -9,16 +9,16 @@ import { bang } from 'src/utils/misc/bang'
 // UI
 export const WidgetGroup_LineUI = observer(function WidgetGroup_LineUI_(p: {
     //
-    widget: Widget_group<SchemaDict>
+    widget: Widget_group<any>
 }) {
     if (!p.widget.serial.collapsed) return null
     return <div tw='line-clamp-1 italic opacity-50'>{p.widget.summary}</div>
 })
 
-export const WidgetGroup_BlockUI = observer(function WidgetGroup_BlockUI_(p: {
+export const WidgetGroup_BlockUI = observer(function WidgetGroup_BlockUI_<T extends SchemaDict>(p: {
     //
     className?: string
-    widget: Widget_group<SchemaDict>
+    widget: Widget_group<T>
 }) {
     const widget = p.widget
     const isTopLevel = widget.config.topLevel
@@ -48,7 +48,7 @@ export const WidgetGroup_BlockUI = observer(function WidgetGroup_BlockUI_(p: {
                             isTopLevel={isTopLevel}
                             key={rootKey}
                             rootKey={rootKey}
-                            inline={isHorizontal}
+                            alignLabel={isHorizontal ? false : undefined}
                             widget={bang(sub)}
                         />
                     ))}

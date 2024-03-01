@@ -4,18 +4,18 @@
  */
 import type { Form } from '../Form'
 
-import { Spec } from '../Prop'
+import { Spec } from '../Spec'
 import { Widget_enum, Widget_enum_config } from '../widgets/enum/WidgetEnum'
 
 export type IEnumBuilder = {
     [K in keyof Requirable]: (
-        config: Omit<Widget_enum_config<Requirable[K]['$Value']>, 'enumName'>,
+        config?: Omit<Widget_enum_config<Requirable[K]['$Value']>, 'enumName'>,
     ) => Spec<Widget_enum<Requirable[K]['$Value']>>
 }
 
 export type IEnumBuilderOpt = {
     [K in keyof Requirable]: (
-        config: Omit<Widget_enum_config<Requirable[K]['$Value']>, 'enumName'> & { startActive?: boolean },
+        config?: Omit<Widget_enum_config<Requirable[K]['$Value']>, 'enumName'> & { startActive?: boolean },
     ) => Spec<Widget_enum<Requirable[K]['$Value']>>
 }
 
@@ -25,7 +25,7 @@ export class EnumBuilder {
         const schema = cushy.schema
         for (const enumName of schema.knownEnumsByName.keys()) {
             Object.defineProperty(this, enumName, {
-                value: (config: any) => new Spec('enum', /* form, */ { ...config, enumName }),
+                value: (config: any = {}) => new Spec('enum', /* form, */ { ...config, enumName }),
             })
         }
     }
@@ -37,7 +37,7 @@ export class EnumBuilderOpt {
         const schema = cushy.schema
         for (const enumName of schema.knownEnumsByName.keys()) {
             Object.defineProperty(this, enumName, {
-                value: (config: any) =>
+                value: (config: any = {}) =>
                     form.builder.optional({
                         label: config.label,
                         startActive: config.startActive,

@@ -1,13 +1,13 @@
-import type { Runtime } from 'src/runtime/Runtime'
-import type { FormBuilder } from 'src/controls/FormBuilder'
 import type { OutputFor } from './_prefabs'
+import type { FormBuilder } from 'src/controls/FormBuilder'
+import type { Runtime } from 'src/runtime/Runtime'
 
 // UI -----------------------------------------------------------
 export const ui_sampler = () => {
     const form: FormBuilder = getCurrentForm()
     return form.group({
         summary: (ui) => {
-            return `denoise=${ui.denoise} steps=${ui.steps} cfg=${ui.cfg}`
+            return `denoise:${ui.denoise} steps:${ui.steps} cfg:${ui.cfg}`
         },
         items: () => ({
             denoise: form.float({ step: 0.1, min: 0, max: 1, default: 1, label: 'Denoise' }),

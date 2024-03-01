@@ -15,6 +15,7 @@ import { usePromise } from './usePromise'
 import { createMediaImage_fromFileObject } from 'src/models/createMediaImage_fromWebFile'
 import { MessageInfoUI } from 'src/panels/MessageUI'
 import { Panel } from 'src/rsuite/shims'
+import { extractErrorMessage } from 'src/utils/formatters/extractErrorMessage'
 import { toastError } from 'src/utils/misc/toasts'
 import { getWebpMetadata } from 'src/utils/png/_getWebpMetadata'
 
@@ -86,7 +87,7 @@ export const ImportedFileUI = observer(function ImportedFileUI_(p: {
         promptJSON = convertLiteGraphToPrompt(st.schema, workflowJSON)
     } catch (error) {
         console.log(error)
-        return <>❌3. cannot convert LiteGraph To Prompt</>
+        return <>❌3. cannot convert LiteGraph To Prompt {extractErrorMessage(error)}</>
     }
 
     // const json = rawJson?.value ? JSON.parse(rawJson.value) : null

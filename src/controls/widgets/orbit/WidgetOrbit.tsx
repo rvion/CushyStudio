@@ -7,6 +7,7 @@ import { hash } from 'ohash'
 
 import { WidgetDI } from '../WidgetUI.DI'
 import { mkEnglishSummary } from './_orbitUtils'
+import { WidgetOrbitUI } from './WidgetOrbitUI'
 
 export type OrbitData = {
     azimuth: number
@@ -38,13 +39,15 @@ export type Widget_orbit_types = {
     $Input: Widget_orbit_config
     $Serial: Widget_orbit_serial
     $Output: Widget_orbit_output
+    $Widget: Widget_orbit
 }
 
 // STATE
 export interface Widget_orbit extends Widget_orbit_types {}
 export class Widget_orbit implements IWidget<Widget_orbit_types> {
+    HeaderUI = WidgetOrbitUI
+    BodyUI = undefined
     get serialHash () { return hash(this.value) } // prettier-ignore
-    isCollapsible = false
     id: string
     type: 'orbit' = 'orbit'
 

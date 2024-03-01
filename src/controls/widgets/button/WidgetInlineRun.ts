@@ -6,6 +6,7 @@ import { nanoid } from 'nanoid'
 import { hash } from 'ohash'
 
 import { WidgetDI } from '../WidgetUI.DI'
+import { WidgetInlineRunUI } from './WidgetInlineRunUI'
 
 // CONFIG
 export type Widget_inlineRun_config = WidgetConfigFields<{ text?: string; kind?: `primary` | `special` | `warning` }>
@@ -22,15 +23,17 @@ export type Widget_inlineRun_types = {
     $Input: Widget_inlineRun_config
     $Serial: Widget_inlineRun_serial
     $Output: Widget_inlineRun_output
+    $Widget: Widget_inlineRun
 }
 
 // STATE
 export interface Widget_inlineRun extends Widget_inlineRun_types {}
 export class Widget_inlineRun implements IWidget<Widget_inlineRun_types> {
+    HeaderUI = WidgetInlineRunUI
+    BodyUI = undefined
     get serialHash(): string {
         return hash(this.value)
     }
-    readonly isCollapsible = false
     readonly id: string
     readonly type: 'inlineRun' = 'inlineRun'
     readonly serial: Widget_inlineRun_serial

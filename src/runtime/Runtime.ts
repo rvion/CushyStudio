@@ -27,6 +27,7 @@ import { RuntimeStore } from './RuntimeStore'
 import { RuntimeVideos } from './RuntimeVideo'
 import { createRandomGenerator } from 'src/back/random'
 import { Widget_group } from 'src/controls/widgets/group/WidgetGroup'
+import { compilePrompt } from 'src/controls/widgets/prompt/_compile'
 import { checkIfComfyImageExists } from 'src/models/ImageInfos_ComfyGenerated'
 import { _formatAsRelativeDateTime } from 'src/updater/_getRelativeTimeString'
 import { braceExpansion } from 'src/utils/misc/expansion'
@@ -146,6 +147,26 @@ export class Runtime<FIELDS extends SchemaDict = any> {
     isCurrentDraftDirty(): Maybe<boolean> {
         return this.step.draft?.isDirty
     }
+
+    compilePrompt = (p: {
+        text: string
+        seed?: number /** for wildcard */
+        onLora: (
+            //
+            lora: Enum_LoraLoader_lora_name,
+            strength_clip: number,
+            strength_model: number,
+        ) => void
+        /** @default true */
+        printWildcards?: boolean
+    }) =>
+        compilePrompt({
+            text: p.text,
+            st: this.Cushy,
+            seed: p.seed,
+            onLora: p.onLora,
+            printWildcards: p.printWildcards ?? true,
+        })
 
     constructor(public step: StepL) {
         this.Cushy = step.st

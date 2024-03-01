@@ -1,6 +1,6 @@
 import type { IWidget } from '../IWidget'
+import type { CSSProperties } from 'react'
 
-import { runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { ErrorBoundary } from 'react-error-boundary'
 
@@ -8,160 +8,190 @@ import { makeLabelFromFieldName } from '../../utils/misc/makeLabelFromFieldName'
 import { ErrorBoundaryFallback } from '../../widgets/misc/ErrorBoundary'
 import { InstallRequirementsBtnUI } from '../REQUIREMENTS/Panel_InstallRequirementsUI'
 import { AnimatedSizeUI } from '../widgets/choices/AnimatedSizeUI'
-import { WidgetDI } from '../widgets/WidgetUI.DI'
-import { RevealUI } from 'src/rsuite/reveal/RevealUI'
-import { Tooltip } from 'src/rsuite/shims'
+import { isWidgetOptional, WidgetDI } from '../widgets/WidgetUI.DI'
+import { getActualWidgetToDisplay } from './getActualWidgetToDisplay'
+import { getBorderStatusForWidget } from './getBorderStatusForWidget'
+import { getIfWidgetIsCollapsible } from './getIfWidgetIsCollapsible'
+import { getIfWidgetNeedAlignedLabel } from './getIfWidgetNeedAlignedLabel'
+import { Widget_ToggleUI } from './Widget_ToggleUI'
+import { WidgetTooltipUI } from './WidgetTooltipUI'
 
-const KLS = WidgetDI
+export const KLS = WidgetDI
+
+let isDragging = false
+let wasEnabled = false
 
 export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     widget: IWidget
     rootKey: string
     isTopLevel?: boolean
-    inline?: boolean
+    alignLabel?: boolean
+    /**
+     * override the label (false to force disable the label)
+     * some widget like `choice`, already display the selected header in their own way
+     * so they may want to skip the label.
+     * */
+    label?: string | false
 }) {
-    const { rootKey, widget } = p
+    const rootKey = p.rootKey
+    const originalWidget = p.widget
+    const widget = getActualWidgetToDisplay(originalWidget)
+    const isDisabled = isWidgetOptional(originalWidget) && !originalWidget.serial.active
 
-    if (WidgetDI.WidgetUI == null) return <>WidgetDI.WidgetUI is null</>
-    const { WidgetLineUI, WidgetBlockUI } = WidgetDI.WidgetUI(widget) // WidgetDI.WidgetUI(widget)
-    const isCollapsible = WidgetBlockUI != null && widget.isCollapsible
-    const collapsed = widget.serial.collapsed && isCollapsible
-    if (widget instanceof KLS.Widget_group && Object.keys(widget.fields).length === 0) return
-    const className = '' // `${clsX} __${widget.type} ${levelClass} flex flex-col items-baseline`
+    const HeaderUI = widget.HeaderUI
+    const BodyUI = widget.BodyUI
 
-    const onLineClick = () => {
+    const isCollapsible: boolean = getIfWidgetIsCollapsible(widget)
+    const isCollapsed = (widget.serial.collapsed ?? isDisabled) && isCollapsible
+
+    const alignLabel = p.alignLabel ?? getIfWidgetNeedAlignedLabel(widget)
+    // ------------------------------------------------------------
+    // quick hack to prevent showing emtpy groups when there is literally nothing interesting to show
+    const k = widget
+    if (
+        k instanceof KLS.Widget_group && //
+        Object.keys(k.fields).length === 0 &&
+        k.config.requirements == null
+    )
+        return
+    // ------------------------------------------------------------
+
+    const onLabelClick = () => {
+        // if the widget is collapsed, clicking on the label should expand it
         if (widget.serial.collapsed) return (widget.serial.collapsed = false)
-        if (isCollapsible) {
-            if (widget.serial.collapsed) widget.serial.collapsed = false
-            else widget.serial.collapsed = true
-        }
+        // if the widget can be collapsed, and is expanded, clicking on the label should collapse it
+        if (isCollapsible && !widget.serial.collapsed) return (widget.serial.collapsed = true)
+        // if the widget is not collapsible, and is optional, clicking on the label should toggle it
+        if (!isCollapsible && isWidgetOptional(originalWidget)) return originalWidget.toggle()
     }
+
+    const showBorder = getBorderStatusForWidget(widget)
+
+    const labelText: string | false = (() => {
+        // if parent widget wants to override the label (or disable it with false), we accept
+        if (p.label != null) return p.label
+        // if widget defines it's own label (or disable it with false), we accept
+        if (widget.config.label != null) return widget.config.label
+        // if parent told use which `key` this sub-widget was mounted to, we use that to derive a label
+        return makeLabelFromFieldName(p.rootKey)
+    })()
+
     const LABEL = (
-        <span onClick={onLineClick} style={{ lineHeight: '1rem' }}>
-            {widget.config.label ?? makeLabelFromFieldName(p.rootKey) ?? '...'}
-            {p.widget.config.showID ? <span tw='opacity-50 italic text-sm'>#{p.widget.id.slice(0, 3)}</span> : null}
+        // <span onClick={onLabelClick} style={{ lineHeight: '1rem' }}>
+        <span style={{ lineHeight: '1rem' }}>
+            {labelText}
+            {widget.config.showID ? <span tw='opacity-50 italic text-sm'>#{widget.id.slice(0, 3)}</span> : null}
         </span>
     )
+
+    const styleDISABLED: CSSProperties | undefined = isDisabled
+        ? { pointerEvents: 'none', opacity: 0.3, backgroundColor: 'rgba(0,0,0,0.05)' }
+        : undefined
+
+    const isDraggingListener = (ev: MouseEvent) => {
+        if (ev.button == 0) {
+            isDragging = false
+            window.removeEventListener('mouseup', isDraggingListener, true)
+        }
+    }
+
     return (
         <div
+            key={rootKey}
             tw={[
                 'bg-base-100',
-                //
-                isCollapsible && 'WIDGET-WITH-BLOCK',
+                showBorder && 'WIDGET-GROUP-BORDERED',
                 p.isTopLevel ? 'TOP-LEVEL-FIELD' : 'SUB-FIELD',
                 widget.type,
             ]}
-            className={className}
-            key={rootKey}
         >
             <AnimatedSizeUI>
-                {/* LINE */}
-                <div tw={[isCollapsible && 'WIDGET-LINE', 'flex items-center gap-0.5']}>
-                    {(collapsed || isCollapsible) && <Widget_CollapseBtnUI widget={p.widget} />}
+                {/*
+                    LINE part
+                    (label, collapse button, toggle button, tooltip, etc.)
+                    Only way to have it completely disabled is to have no label, no tooltip, no requirements, etc.
+                */}
+                <div
+                    tw={['flex items-center gap-0.5 select-none']}
+                    /*
+                     * bird_d:
+                     *  | Have the whole header able to collapse the panel,
+                     *  | any actual buttons in the header should prevent this themselves.
+                     *  | Also will continue to expand/collapse any panel that is hovered over while dragging.
+                     * 2024-02-29 rvion: this broke 3/4 widgets who did not preventDefault in their header;
+                     *  | may cause more problems later; not sure how to make this sligtly safer / easy to test.
+                     * */
+                    onMouseDown={(ev) => {
+                        if (ev.button != 0) return
+                        isDragging = true
+                        window.addEventListener('mouseup', isDraggingListener, true)
+                        wasEnabled = !widget.serial.collapsed
+                        widget.serial.collapsed = wasEnabled
+                    }}
+                    // 2024-02-29 rvion: not quite sure this is the right logic now
+                    // | do we want to call the now usused `onLabelClick()` function instead (defined above)
+                    onMouseEnter={(ev) => {
+                        if (!isDragging) return
+                        widget.serial.collapsed = wasEnabled
+                    }}
+                >
                     <span
                         tw={[
-                            //
-                            'flex justify-end gap-0.5',
-                            p.isTopLevel ? 'font-bold' : 'text-base',
-                            'flex-none items-center text-primary',
-                            // 'whitespace-nowrap',
-                            // WidgetBlockUI ? undefined : 'shrink-0 text-right mr-1',
+                            'flex justify-end gap-0.5 flex-none items-center shrink-0',
+                            p.isTopLevel && !isDisabled ? 'font-bold' : 'text-base',
+                            isDisabled ? undefined : 'text-primary',
                         ]}
                         style={
-                            WidgetBlockUI || p.inline
-                                ? undefined
-                                : {
-                                      flexShrink: 0,
-                                      minWidth: '8rem',
+                            alignLabel
+                                ? {
                                       textAlign: 'right',
-
-                                      width: WidgetLineUI ? '25%' : undefined,
-                                      marginRight: WidgetLineUI ? '0.25rem' : undefined,
+                                      minWidth: '8rem',
+                                      width: alignLabel && HeaderUI ? '35%' : undefined,
+                                      marginRight: alignLabel && HeaderUI ? '0.25rem' : undefined,
                                   }
+                                : undefined
                         }
                     >
-                        <Widget_ToggleUI widget={p.widget} />
-                        {p.widget.config.requirements && (
+                        {/* COLLAPSE */}
+                        {(isCollapsed || isCollapsible) && (
+                            <span className='WIDGET-COLLAPSE-BTN material-symbols-outlined opacity-70 hover:opacity-100'>
+                                {isCollapsed ? 'chevron_right' : 'expand_more'}
+                            </span>
+                        )}
+                        {/* TOGGLE BEFORE */}
+                        {BodyUI && <Widget_ToggleUI widget={originalWidget} />}
+                        {/* REQUIREMENTS  */}
+                        {widget.config.requirements && (
                             <InstallRequirementsBtnUI
                                 active={widget instanceof KLS.Widget_optional ? widget.serial.active : true}
-                                requirements={p.widget.config.requirements}
+                                requirements={widget.config.requirements}
                             />
                         )}
-                        {/* <InstallCustomNodeBtnUI recomandation={p.widget.config} /> */}
-                        {widget.config.tooltip && <WidgetTooltipUI widget={p.widget} />}
+                        {/* TOOLTIPS  */}
+                        {widget.config.tooltip && <WidgetTooltipUI widget={widget} />}
+                        {/* LABEL  */}
                         {LABEL}
-                        {/* {widget.serial.collapsed ? <span className='material-symbols-outlined'>keyboard_arrow_right</span> : null} */}
-                        {/* {widget.serial.collapsed ? '{...}' : null} */}
+                        {/* TOOGLE (after)  */}
+                        {!BodyUI && <Widget_ToggleUI widget={originalWidget} />}
                     </span>
-                    {/* )} */}
-                    {WidgetLineUI && (
-                        <ErrorBoundary FallbackComponent={ErrorBoundaryFallback} onReset={(details) => {}}>
-                            <WidgetLineUI widget={widget} />
-                        </ErrorBoundary>
+                    {HeaderUI && (
+                        <div tw='flex items-center gap-0.5 flex-1' style={styleDISABLED}>
+                            <ErrorBoundary FallbackComponent={ErrorBoundaryFallback} onReset={(details) => {}}>
+                                <HeaderUI widget={widget} />
+                            </ErrorBoundary>
+                        </div>
                     )}
                 </div>
 
                 {/* BLOCK */}
-                {WidgetBlockUI && !collapsed && (
+                {BodyUI && !isCollapsed && (
                     <ErrorBoundary FallbackComponent={ErrorBoundaryFallback} onReset={(details) => {}}>
-                        <div tw={[isCollapsible && 'WIDGET-BLOCK']}>
-                            <WidgetBlockUI widget={widget} />
+                        <div style={styleDISABLED} tw={[isCollapsible && 'WIDGET-BLOCK']}>
+                            <BodyUI widget={widget} />
                         </div>
                     </ErrorBoundary>
                 )}
             </AnimatedSizeUI>
         </div>
-    )
-})
-
-export const Widget_CollapseBtnUI = observer(function Widget_CollapseBtnUI_(p: { widget: IWidget }) {
-    const widget = p.widget
-    return (
-        <span
-            tw={'opacity-30 hover:opacity-100 cursor-pointer'}
-            onClick={(ev) => {
-                ev.stopPropagation()
-                ev.preventDefault()
-                if (widget.serial.collapsed) widget.serial.collapsed = false
-                else widget.serial.collapsed = true
-            }}
-            //
-            className='material-symbols-outlined'
-            style={{ lineHeight: '1em' }}
-        >
-            {widget.serial.collapsed ? 'keyboard_arrow_right' : 'keyboard_arrow_down'}
-        </span>
-    )
-})
-
-export const Widget_ToggleUI = observer(function Widget_ToggleUI_(p: { widget: IWidget }) {
-    const widget = p.widget
-    if (!(widget instanceof KLS.Widget_optional)) return null
-    const isActive = widget.serial.active
-    const toggle = () => runInAction(widget.toggle)
-    return (
-        <div
-            style={{ width: '1.3rem', height: '1.3rem' }}
-            tw={[isActive ? 'bg-primary' : null, 'virtualBorder', 'rounded mr-1', 'cursor-pointer']}
-            tabIndex={-1}
-            onClick={(ev) => {
-                ev.stopPropagation()
-                toggle()
-            }}
-        >
-            {isActive ? <span className='material-symbols-outlined text-primary-content'>check</span> : null}
-        </div>
-    )
-})
-
-export const WidgetTooltipUI = observer(function WidgetTooltipUI_(p: { widget: IWidget }) {
-    const widget = p.widget
-    return (
-        <RevealUI>
-            <div className='btn btn-sm btn-square btn-ghost'>
-                <span className='material-symbols-outlined'>info</span>
-            </div>
-            <Tooltip>{widget.config.tooltip}</Tooltip>
-        </RevealUI>
     )
 })

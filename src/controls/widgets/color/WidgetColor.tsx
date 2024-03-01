@@ -6,6 +6,7 @@ import { nanoid } from 'nanoid'
 import { hash } from 'ohash'
 
 import { WidgetDI } from '../WidgetUI.DI'
+import { WidgetColorUI } from './WidgetColorUI'
 
 // CONFIG
 export type Widget_color_config = WidgetConfigFields<{ default?: string }>
@@ -22,15 +23,17 @@ export type Widget_color_types = {
     $Input: Widget_color_config
     $Serial: Widget_color_serial
     $Output: Widget_color_output
+    $Widget: Widget_color
 }
 
 // STATE
 export interface Widget_color extends Widget_color_types {}
 export class Widget_color implements IWidget<Widget_color_types> {
+    HeaderUI = WidgetColorUI
+    BodyUI = undefined
     get serialHash(): string {
         return hash(this.value)
     }
-    readonly isCollapsible = false
     readonly id: string
     readonly type: 'color' = 'color'
 

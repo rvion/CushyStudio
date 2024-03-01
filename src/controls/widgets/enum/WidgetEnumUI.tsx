@@ -59,18 +59,9 @@ export const EnumSelectorUI = observer(function EnumSelectorUI_(p: {
     const value = p.value()
     const hasError = Boolean(value.isSubstitute || value.ENUM_HAS_NO_VALUES)
     return (
-        <div
-            tw={[
-                'flex flex-1 rounded h-full overflow-clip text-shadow',
-                'border border-base-100 hover:brightness-110',
-                'hover:border-base-200',
-                'bg-primary/20 border-1',
-                'border-b-2 border-b-base-200 hover:border-b-base-300',
-            ]}
-        >
+        <div tw={['w-full h-full']}>
             <SelectUI //
                 tw={[{ ['rsx-field-error']: hasError }]}
-                size='sm'
                 disabled={p.disabled}
                 cleanable={p.isOptional}
                 options={() => options}

@@ -25,16 +25,18 @@ import { ComfySchemaL, EnumValue } from '../models/Schema'
 import { CushyLayoutManager } from '../panels/router/Layout'
 import { GitManagedFolder } from '../updater/updater'
 import { ElectronUtils } from '../utils/electron/ElectronUtils'
+import { SearchManager } from '../utils/electron/findInPage'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { exhaust } from '../utils/misc/ComfyUtils'
 import { DanbooruTags } from '../widgets/prompter/nodes/booru/BooruLoader'
 import { mandatoryTSConfigIncludes, mkTypescriptConfig, type TsConfigCustom } from '../widgets/TsConfigCustom'
 import { AuthState } from './AuthState'
 import { readJSON, writeJSON } from './jsonUtils'
+import { Marketplace } from './Marketplace'
 import { mkSupa } from './supa'
 import { Uploader } from './Uploader'
 import { ShortcutWatcher } from 'src/app/shortcuts/ShortcutManager'
-import { shortcutsDef } from 'src/app/shortcuts/shortcuts'
+import { allCommands } from 'src/app/shortcuts/shortcuts'
 import { createRandomGenerator } from 'src/back/random'
 import { asAppPath } from 'src/cards/asAppPath'
 import { GithubRepoName } from 'src/cards/githubRepo'
@@ -72,6 +74,7 @@ import { openInVSCode } from 'src/utils/electron/openInVsCode'
 import { UserTags } from 'src/widgets/prompter/nodes/usertags/UserLoader'
 
 export class STATE {
+    // LEAVE THIS AT THE TOP OF THIS CLASS
     __INJECTION__ = (() => {
         //  globally register the state as this
         if ((window as any).CushyObservableCache == null) {
@@ -82,10 +85,12 @@ export class STATE {
             ;(window as any).st = this // <- remove this once window.st usage has been cleend
         }
         if ((window as any).cushy == null) {
-            console.log(`[🛋️] WINDOW.CUSHY NOW DEFINED`)
+            console.log(`[🛋️] window.cushy now defined`)
             Object.defineProperty(window, 'cushy', { get() { return (window as any).CushyObservableCache.st } }) // prettier-ignore
         }
-        ;(window as any).toJS = toJS
+        if ((window as any).toJS == null) {
+            ;(window as any).toJS = toJS
+        }
     })()
 
     /** hack to help closing prompt completions */
@@ -105,6 +110,7 @@ export class STATE {
     supabase: SupabaseClient<Database>
     auth: AuthState
     managerRepository = new ComfyManagerRepository({ check: false, genTypes: false })
+    search: SearchManager = new SearchManager(this)
 
     _updateTime = () => {
         const now = Date.now()
@@ -130,8 +136,14 @@ export class STATE {
 
     startupFileIndexing = async () => {
         const allFiles = recursivelyFindAppsInFolder(this.library, this.libraryFolderPathAbs)
-        console.log(`[🔴] ----------> found ${allFiles.length} files`)
+        console.log(`[🚧] startupFileIndexing: found ${allFiles.length} files`)
         for (const x of allFiles) await x.extractScriptFromFile()
+    }
+
+    forceRefreshAllApps = async () => {
+        const allFiles = recursivelyFindAppsInFolder(this.library, this.libraryFolderPathAbs)
+        console.log(`[🚧] forceRefreshAllApps: found ${allFiles.length} files`)
+        for (const x of allFiles) await x.extractScriptFromFileAndUpdateApps({ force: true })
     }
     /**
      * global hotReload persistent cache that should survive hot reload
@@ -308,12 +320,7 @@ export class STATE {
 
     droppedFiles: File[] = []
 
-    _allPublishedApps: Maybe<PostgrestSingleResponse<Database['public']['Tables']['published_apps']['Row'][]>> = null
-    fetchAllPublishedApps = async () => {
-        const x = await this.supabase.from('published_apps').select('*')
-        this._allPublishedApps = x
-        return x
-    }
+    // _allPublishedApps: Maybe<> = null
 
     // showCardPicker: boolean = false
     closeFullLibrary = () => (this.layout.fullPageComp = null)
@@ -461,6 +468,7 @@ export class STATE {
             }),
             displacementScale: form.number({ label: 'displacement', min: 0, max: 5, step: 0.1, default: 1 }),
             cutout: form.number({ label: 'cutout', min: 0, max: 1, step: 0.01, default: 0.08 }),
+            removeBackground: form.number({ label: 'remove bg', min: 0, max: 1, step: 0.01, default: 0.2 }),
             ambientLightIntensity: form.number({ label: 'light', min: 0, max: 8, default: 1.5 }),
             ambientLightColor: form.color({ label: 'light color' }),
             isSymmetric: form.boolean({ label: 'Symmetric Model' }),
@@ -495,6 +503,7 @@ export class STATE {
 
     project: ProjectL
     primarySdkDtsPath: AbsolutePath
+    marketplace: Marketplace
     constructor(
         /** path of the workspace */
         public rootPath: AbsolutePath,
@@ -515,8 +524,9 @@ export class STATE {
         // core instances
         this.db = new LiveDB(this)
         this.supabase = mkSupa()
+        this.marketplace = new Marketplace(this)
         this.electronUtils = new ElectronUtils(this)
-        this.shortcuts = new ShortcutWatcher(shortcutsDef, this, { name: nanoid() })
+        this.shortcuts = new ShortcutWatcher(allCommands, this, { name: nanoid() })
         console.log(`[🛋️] ${this.shortcuts.shortcuts.length} shortcuts loaded`)
         this.uploader = new Uploader(this)
         this.layout = new CushyLayoutManager(this)

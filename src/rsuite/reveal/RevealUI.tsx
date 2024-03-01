@@ -74,6 +74,13 @@ export const RevealUI = observer(function Tooltip_(p: RevealProps) {
                   <div
                       className={p.tooltipWrapperClassName}
                       tw={['_RevealUI card card-bordered bg-base-100 shadow-xl pointer-events-auto']}
+                      // 👇 ❌ [break the dropdown]
+                      // ⏸️   onMouseDown={(ev) => {
+                      // ⏸️       p.onClick?.(ev)
+                      // ⏸️       uist.close()
+                      // ⏸️       ev.stopPropagation()
+                      // ⏸️       ev.preventDefault()
+                      // ⏸️   }}
                       onClick={(ev) => {
                           ev.stopPropagation()
                           ev.preventDefault()
@@ -120,6 +127,10 @@ export const RevealUI = observer(function Tooltip_(p: RevealProps) {
             onContextMenu={uist.toggleLock}
             onMouseEnter={uist.onMouseEnterAnchor}
             onMouseLeave={uist.onMouseLeaveAnchor}
+            // ⏸️ onMouseDown={(ev) => {
+            // ⏸️     ev.stopPropagation()
+            // ⏸️     ev.preventDefault()
+            // ⏸️ }}
             onClick={
                 uist.triggerOnClick
                     ? (ev) => {

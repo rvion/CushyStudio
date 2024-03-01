@@ -6,6 +6,7 @@ import { nanoid } from 'nanoid'
 import { hash } from 'ohash'
 
 import { WidgetDI } from '../WidgetUI.DI'
+import { WidgetMatrixUI } from './WidgetMatrixUI'
 import { bang } from 'src/utils/misc/bang'
 
 export type Widget_matrix_cell = {
@@ -35,15 +36,17 @@ export type Widget_matrix_types = {
     $Input: Widget_matrix_config
     $Serial: Widget_matrix_serial
     $Output: Widget_matrix_output
+    $Widget: Widget_matrix
 }
 
 // STATE
 export interface Widget_matrix extends Widget_matrix_types {}
 export class Widget_matrix implements IWidget<Widget_matrix_types> {
+    HeaderUI = WidgetMatrixUI
+    BodyUI = undefined
     get serialHash(): string {
         return hash(this.value)
     }
-    readonly isCollapsible = true
     readonly id: string
     readonly type: 'matrix' = 'matrix'
     readonly serial: Widget_matrix_serial

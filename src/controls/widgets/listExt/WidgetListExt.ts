@@ -1,15 +1,17 @@
 import type { Form } from '../../Form'
 import type { BoardPosition } from './WidgetListExtTypes'
 import type { IWidget, WidgetConfigFields, WidgetSerialFields } from 'src/controls/IWidget'
-import type { Spec } from 'src/controls/Prop'
+import type { Spec } from 'src/controls/Spec'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { hash } from 'ohash'
 
+import { WidgetList_LineUI } from '../list/WidgetListUI'
 import { ResolutionState } from '../size/ResolutionState'
 import { WidgetDI } from '../WidgetUI.DI'
 import { boardDefaultItemShape } from './WidgetListExtTypes'
+import { WidgetListExtUI } from './WidgetListExtUI'
 import { runWithGlobalForm } from 'src/models/_ctx2'
 
 // CONFIG
@@ -46,12 +48,14 @@ export type Widget_listExt_types<T extends Spec> = {
     $Input: Widget_listExt_config<T>
     $Serial: Widget_listExt_serial<T>
     $Output: Widget_listExt_output<T>
+    $Widget: Widget_listExt<T>
 }
 
 // STATE
 export interface Widget_listExt<T extends Spec> extends Widget_listExt_types<T> {}
 export class Widget_listExt<T extends Spec> implements IWidget<Widget_listExt_types<T>> {
-    readonly isCollapsible = true
+    HeaderUI = WidgetList_LineUI
+    BodyUI = WidgetListExtUI
     readonly id: string
     readonly type: 'listExt' = 'listExt'
 

@@ -1,6 +1,10 @@
 ☐ filter enum values: highlight + sort
 ☐ auto-ui
 
+
+☐ header (instead of line)
+☐ body (instead of block)
+
 // ?
 ☐ unified canvas
 
@@ -285,3 +289,12 @@ misc:
     ✔ add shortcut system @done(23-10-24 21:08)
         ✔ fix cmd+w not working by default due to electron registering global shortcuts @done(23-11-08 21:01)
         ✔ fix cmd+w closing the top-level window for bad reasons @done(23-11-10 18:22)
+
+--------------------
+
+https://cushy.fra1.cdn.digitaloceanspaces.com/rvion/6MDKAn1sLhBrqjQqpeNZP7XqYhsX3bsNMGX7YABk4w.jpg
+- custom allow subtrees
+- widget should be able to render themsemves
+
+
+blender scenes act as top-level form trees (in the shared scenantic)

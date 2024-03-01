@@ -8,7 +8,8 @@ import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 
 import { WidgetDI } from '../WidgetUI.DI'
-import { Spec } from 'src/controls/Prop'
+import { WidgetSelectImageUI } from './WidgetImageUI'
+import { Spec } from 'src/controls/Spec'
 
 // CONFIG
 export type Widget_image_config = WidgetConfigFields<{
@@ -33,14 +34,16 @@ export type Widget_image_types = {
     $Input: Widget_image_config
     $Serial: Widget_image_serial
     $Output: Widget_image_output
+    $Widget: Widget_image
 }
 
 // STATE
 export interface Widget_image extends Widget_image_types {} // prettier-ignore
 export class Widget_image implements IWidget<Widget_image_types> {
+    HeaderUI = WidgetSelectImageUI
+    BodyUI = undefined
     static Prop = <T extends Widget_image>(config: Widget_image_config) => new Spec('image', config)
     get serialHash() { return this.value.data.hash } // prettier-ignore
-    readonly isCollapsible = true
     readonly id: string
     readonly type: 'image' = 'image'
     readonly serial: Widget_image_serial

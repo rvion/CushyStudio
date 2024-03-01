@@ -1,6 +1,7 @@
 import { observer } from 'mobx-react-lite'
 import { useEffect } from 'react'
 
+import { ForceUpdateAllAppsBtnUI, IndexAllAppsBtnUI } from './libraryUI/LibraryHeaderUI'
 import { CreateAppBtnUI } from './Panel_Welcome/CreateAppBtnUI'
 import { AppCardUI } from 'src/cards/fancycard/AppCardUI'
 import { ScriptExtractionResult } from 'src/cards/LibraryFile'
@@ -25,6 +26,10 @@ export const Panel_Welcome = observer(function Panel_Welcome_(p: {}) {
                     Psss. You're early; this app is still in Beta. It update often, and break sometimes. Hope you'll have fun !
                 </div>
                 <div tw='divider mx-8'></div>
+                <div tw='flex gap-1'>
+                    <IndexAllAppsBtnUI />
+                    <ForceUpdateAllAppsBtnUI />
+                </div>
                 <div>
                     1. First thing first, make sure you have some ComfyUI server you can connect to in the
                     <div onClick={() => st.layout.FOCUS_OR_CREATE('Hosts', {})} className='btn btn-sm btn-primary'>
@@ -70,14 +75,7 @@ export const StandaloneAppBtnUI = observer(function StandaloneAppBtnUI_(p: { pat
     const file = st.library.getFile(path)
 
     // ensure this app is up-to-date
-    useEffect(() => {
-        void (async () => {
-            const res: ScriptExtractionResult = await file.extractScriptFromFile()
-            if (res.type === 'failed') return toastError('default app (CushyDiffusion) failed to load')
-            const script = res.script
-            script.evaluateAndUpdateApps()
-        })()
-    }, [])
+    useEffect(() => void file.extractScriptFromFileAndUpdateApps(), [])
 
     // show script evaluation progress
     const script0 = file.script

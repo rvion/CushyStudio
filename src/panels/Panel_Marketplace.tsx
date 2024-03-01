@@ -1,19 +1,78 @@
 import { observer } from 'mobx-react-lite'
 
-import { Button } from 'src/rsuite/shims'
+import { CreateAppBtnUI } from './Panel_Welcome/CreateAppBtnUI'
+import { RevealUI } from 'src/rsuite/reveal/RevealUI'
 import { useSt } from 'src/state/stateContext'
+import { JsonViewUI } from 'src/widgets/workspace/JsonViewUI'
 
 // import { ActionPackStarsUI } from '../cards/DeckStarsUI'
 
 export const Panel_Marketplace = observer(function Panel_Marketplace_(p: {}) {
     const st = useSt()
+    // const form = useMemo(
+    //     () =>
+    //         new Form(
+    //             (ui) => ({
+    //                 query: ui.string(),
+    //                 installed: ui.bool(),
+    //             }),
+    //             { name: 'marketplace-form' },
+    //         ),
+    //     [],
+    // )
+    const mkp = st.marketplace
+    const published = mkp.publishedApps()
+    const selected = mkp.selectedApp
     return (
         <div>
-            <div tw='p-2'>
-                <Button onClick={() => {}} appearance='ghost' color='green' tw='w-full self-start'>
-                    Create action
-                </Button>
+            <div tw='p-2 flex gap-2'>
+                <input
+                    value={mkp.query.value}
+                    onChange={(e) => (mkp.query.value = e.target.value)}
+                    placeholder='Search'
+                    type='text'
+                    tw='input input-sm'
+                />
+                <div className='flex-1'></div>
+                <CreateAppBtnUI />
+                {/* <FormUI form={form} /> */}
             </div>
+            <div className='flex gap-1'>
+                <div tw=''>
+                    {published.ui((x) => (
+                        <div tw='flex flex-col gap-1'>
+                            {x.data?.map((d) => (
+                                <div tw='btn btn-sm' key={d.id}>
+                                    <img src='' alt='' />
+                                    <div>
+                                        <div>{d.name}</div>
+                                        {/* 🔴 TODO: creator profile */}
+                                        {/* <div>
+                                            by{' '}
+                                            {mkp.getUserInfoViaDB(d.user_id).ui((z) => (
+                                                <RevealUI>
+                                                    <div>{z?.id}</div>
+                                                    <JsonViewUI value={z} />
+                                                </RevealUI>
+                                            ))}
+                                        </div> */}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    ))}
+                </div>
+                <div>
+                    {/* {published.ui((x) => (
+                        <div>
+                            {x.data?.map((d) => (
+                                <div key={d.name}>{d.name}</div>
+                            ))}
+                        </div>
+                    ))} */}
+                </div>
+            </div>
+            🟢
             {/* {st.library.decks.map((pkg) => (
                 <ErrorBoundary key={pkg.github} FallbackComponent={ErrorBoundaryFallback}>
                     <ActionPackUI key={pkg.github} pkg={pkg} />

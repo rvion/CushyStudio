@@ -14,7 +14,7 @@ export class TreeFile implements ITreeEntry {
     file: LibraryFile
 
     onExpand = async () => {
-        await this.file.extractScriptFromFile()
+        await this.file.extractScriptFromFileAndUpdateApps()
     }
 
     constructor(

@@ -8,6 +8,7 @@ import { AppIllustrationUI } from 'src/cards/fancycard/AppIllustrationUI'
 import { DraftIllustrationUI } from 'src/cards/fancycard/DraftIllustration'
 import { FormUI } from 'src/controls/FormUI'
 import { TreeUI } from 'src/panels/libraryUI/tree/xxx/TreeUI'
+import { CreateAppPopupUI } from 'src/panels/Panel_Welcome/CreateAppBtnUI'
 import { PanelHeaderSmallUI } from 'src/panels/PanelHeader'
 import { RevealUI } from 'src/rsuite/reveal/RevealUI'
 import { useSt } from 'src/state/stateContext'
@@ -32,6 +33,14 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                         <FormUI form={conf} />
                     </PanelHeaderSmallUI>
                     <div tw='flex flex-col items-center'>
+                        <RevealUI placement='popup-lg'>
+                            <div tw={['btn btn-square']} style={{ width: sizeStr, height: sizeStr }}>
+                                <span style={{ fontSize: sizeStr }} className='material-symbols-outlined'>
+                                    add
+                                </span>
+                            </div>
+                            <CreateAppPopupUI />
+                        </RevealUI>
                         <div
                             tw={['btn btn-square', conf.fields.tree.value && 'btn-primary']}
                             style={{ width: sizeStr, height: sizeStr }}

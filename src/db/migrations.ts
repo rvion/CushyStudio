@@ -579,6 +579,14 @@ export const migrations: {
             `alter table cushy_app add column canStartFromImage int`,
         ],
     },
+    {
+        id: 'b6W8cWEVgR',
+        name: 'add script.lastExtractedAt',
+        up: [
+            //
+            `alter table cushy_script add column lastExtractedAt int`,
+        ],
+    },
     // {
     //     id: 'e574c006-daca-4fd0-a51b-73a66b4fbd79',
     //     name: 'create cushy_app table',

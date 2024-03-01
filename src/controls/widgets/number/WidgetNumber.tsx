@@ -6,6 +6,7 @@ import { nanoid } from 'nanoid'
 import { hash } from 'ohash'
 
 import { WidgetDI } from '../WidgetUI.DI'
+import { WidgetNumberUI } from './WidgetNumberUI'
 
 // CONFIG
 export type Widget_number_config = WidgetConfigFields<{
@@ -36,13 +37,15 @@ export type Widget_number_types = {
     $Input: Widget_number_config
     $Serial: Widget_number_serial
     $Output: Widget_number_output
+    $Widget: Widget_number
 }
 
 // STATE
 export interface Widget_number extends Widget_number_types {}
 export class Widget_number implements IWidget<Widget_number_types> {
+    HeaderUI = WidgetNumberUI
+    BodyUI = undefined
     get serialHash () { return hash(this.value) } // prettier-ignore
-    readonly isCollapsible = false
     readonly id: string
     readonly type: 'number' = 'number'
     readonly forceSnap: boolean = false

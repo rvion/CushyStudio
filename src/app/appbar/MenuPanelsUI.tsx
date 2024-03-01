@@ -9,6 +9,11 @@ export const MenuPanelsUI = observer(function MenuPanelsUI_(p: {}) {
     return (
         <Dropdown startIcon={<span className='material-symbols-outlined text-red-400'>image</span>} title='Panels'>
             <MenuItem
+                onClick={() => st.layout.FOCUS_OR_CREATE('Welcome', {}, 'LEFT_PANE_TABSET')}
+                icon={<span className='material-symbols-outlined text-red-400'>image</span>}
+                label='Welcome'
+            />
+            <MenuItem
                 icon={<span className='material-symbols-outlined text-orange-500'>panorama_horizontal</span>}
                 onClick={st.layout.resetCurrent}
                 label='Fix Layout'

@@ -26,7 +26,6 @@ export const WidgetNumberUI = observer(function WidgetNumberUI_(p: { widget: Wid
                 onValueChange={(next) => (widget.serial.val = next)}
                 forceSnap={widget.config.forceSnap}
             />
-
             <div
                 tw={[widget.isChanged ? undefined : 'btn-disabled opacity-50']}
                 onClick={() => widget.reset()}

@@ -1,12 +1,13 @@
 # Table of contents
 
-* [🛋 CushyStudio](README.md)
+* [🛋️ CushyStudio](README.md)
 
 ## Getting Started
 
-* [🛠 Installation](getting-started/installation/README.md)
+* [🛠️ Installation](getting-started/installation/README.md)
   * [Installing Cushy](getting-started/installation/windows.md)
   * [Updating Cushy](getting-started/installation/updating-cushy.md)
+  * [Scripts](getting-started/installation/scripts.md)
   * [Installing Modules](getting-started/installation/installing-modules/README.md)
     * [Install ComfyUI](getting-started/installation/installing-modules/cloud.md)
     * [Install FFMpeg (optional)](getting-started/installation/installing-modules/install-ffmpeg-optional.md)
@@ -24,6 +25,8 @@
   * [Slay the Spire - Art Pack](getting-started/built-in-apps/slay-the-spire-art-pack.md)
   * [Manga Coloring](getting-started/built-in-apps/manga-coloring.md)
 * [🚶 Cushy Interface](getting-started/cushy-interface/README.md)
+  * [Draft Panel](getting-started/cushy-interface/draft-panel.md)
+  * [Welcome Panel](getting-started/cushy-interface/welcome-panel.md)
   * [Minipaint](getting-started/cushy-interface/minipaint.md)
   * [File Explorer](getting-started/cushy-interface/file-explorer.md)
   * [Quick-Civitai](getting-started/cushy-interface/quick-civitai.md)
@@ -51,11 +54,12 @@
   * [For loops](going-further/creating-apps/for-loops.md)
   * [App UI](going-further/creating-apps/app-ui.md)
   * [Using ImageMagick in your app](going-further/creating-apps/using-imagemagick-in-your-app.md)
-* [⚙ CushyKit](going-further/cushy-sdk.md)
+* [⚙️ CushyKit](going-further/cushy-sdk.md)
 * [🏈 Importing from ComfyUI](going-further/importing-workflows.md)
-* [🤝 Extending Cushy](going-further/contribution/README.md)
+* [🤝 Woking on Cushy](going-further/contribution/README.md)
   * [Setting up VSCode](going-further/contribution/setting-up-vscode.md)
   * [Contributing on the UI](going-further/contribution/contributing-on-the-ui.md)
+  * [Contributing on top-level scripts](going-further/contribution/contributing-on-top-level-scripts.md)
   * [Database](going-further/contribution/database.md)
   * [Migrations](going-further/contribution/migrations.md)
 * [🔥 Troubleshooting](going-further/wip-pad/README.md)
@@ -65,12 +69,12 @@
 
 * [🤝 Community](community/community.md)
 * [💬 FAQs](community/faqs/README.md)
-  * [⁉ Can Cushy...](community/faqs/can-cushy....md)
-* [📰 News](community/news/README.md)
-  * [💬 Blog](community/news/blog/README.md)
-    * [2024-02-18 - creating the website](community/news/blog/2024-02-18-creating-the-website.md)
-  * [😁 Changelog](community/news/changelog.md)
-  * [🚀 Roadmap](community/news/roadmap.md)
+  * [⁉️ Can Cushy...](community/faqs/can-cushy....md)
+* [📰 News](community/news.md)
+* [😁 Changelog](community/changelog.md)
+* [🚀 Roadmap](community/roadmap.md)
+* [💬 Blog](community/blog/README.md)
+  * [2024-02-18 - creating the website](community/blog/2024-02-18-creating-the-website.md)
 * [🚂 Other Softwares](community/fast-track/README.md)
   * [Coming from Krita](community/fast-track/coming-from-krita.md)
   * [Coming from A1111](community/fast-track/coming-from-a1111.md)
@@ -84,7 +88,7 @@
 ## TEMP
 
 * [✨ CushyStudio Features](temp/cushystudio-features.md)
-* [🛋 TEMPORARY](temp/a-b-testing/README.md)
+* [🛋️ TEMPORARY](temp/a-b-testing/README.md)
   * [Manual](temp/a-b-testing/manual.md)
   * [GPT alt A](temp/a-b-testing/gpt-alt-a.md)
   * [GPT alt B](temp/a-b-testing/gpt-alt-b.md)

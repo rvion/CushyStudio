@@ -8,11 +8,14 @@ import { parseFloatNoRoundingErr } from 'src/utils/misc/parseFloatNoRoundingErr'
 const clamp = (x: number, min: number, max: number) => Math.max(min, Math.min(max, x))
 
 /* NOTE(bird_d): Having these here should be fine since only one slider should be dragging/active at a time? */
-let startValue: number = 0
-let dragged: boolean = false
+let startValue = 0
+let dragged = false
 let cumulativeOffset = 0
+let lastShiftState = false
+let lastControlState = false
+let lastValue = 0
 let activeSlider: HTMLDivElement | null = null
-let cancelled: boolean = false
+let cancelled = false
 
 export const InputNumberUI = observer(function InputNumberUI_(p: {
     value?: Maybe<number>
@@ -34,6 +37,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
     const val = p.value ?? clamp(1, p.min ?? -Infinity, p.max ?? Infinity)
     const mode = p.mode
     const step = p.step ?? (mode === 'int' ? 1 : 0.1)
+    const rounding = Math.ceil(-Math.log10(step * 0.01))
     const forceSnap = p.forceSnap ?? false
     const rangeMin = p.softMin ?? p.min ?? -Infinity
     const rangeMax = p.softMax ?? p.max ?? Infinity
@@ -49,7 +53,18 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
     const [latestProps] = useState(() => observable({ onValueChange: p.onValueChange }))
     useEffect(() => runInAction(() => void (latestProps.onValueChange = p.onValueChange)), [p.onValueChange])
 
-    const syncValues = (value: number | string, soft: boolean = false) => {
+    const syncValues = (
+        value: number | string,
+        {
+            soft = false,
+            roundingModifier = 1,
+            skipRounding = false,
+        }: {
+            soft?: boolean
+            roundingModifier?: number
+            skipRounding?: boolean
+        } = {},
+    ) => {
         let num =
             typeof value === 'string' //
                 ? mode == 'int'
@@ -64,7 +79,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
         }
 
         if (forceSnap) {
-            num = mode == 'int' ? Math.round(num / step) * step : parseFloatNoRoundingErr(num, 2)
+            num = mode == 'int' ? Math.round(num / step) * step : num
         }
 
         // Ensure ints are ints
@@ -72,9 +87,14 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
 
         // Ensure in range
         if (soft && startValue <= rangeMax && startValue >= rangeMin) {
-            num = parseFloatNoRoundingErr(clamp(num, rangeMin, rangeMax), 2)
+            num = clamp(num, rangeMin, rangeMax)
         } else {
-            num = parseFloatNoRoundingErr(clamp(num, p.min ?? -Infinity, p.max ?? Infinity), 2)
+            num = clamp(num, p.min ?? -Infinity, p.max ?? Infinity)
+        }
+
+        if (!skipRounding) {
+            const roundingPrecise = Math.ceil(-Math.log10(step * 0.01 * roundingModifier))
+            num = parseFloatNoRoundingErr(num, roundingPrecise)
         }
 
         latestProps.onValueChange(num)
@@ -82,6 +102,12 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
     }
 
     const mouseMoveListener = (e: MouseEvent) => {
+        // reset origin if change shift or control key while drag (to let already applied changes remain)
+        if (dragged && (lastShiftState !== e.shiftKey || lastControlState !== e.ctrlKey)) {
+            startValue = lastValue
+            cumulativeOffset = 0
+        }
+
         dragged = true
         cumulativeOffset += e.movementX
 
@@ -94,7 +120,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
             typeof next === 'string' //
                 ? mode == 'int'
                     ? parseInt(next, 10)
-                    : parseFloatNoRoundingErr(next, 2)
+                    : parseFloatNoRoundingErr(next, rounding)
                 : next
 
         // Snapping
@@ -103,7 +129,10 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
             num = Math.round(num / inverval) * inverval
         }
 
-        syncValues(num, true)
+        lastShiftState = e.shiftKey
+        lastControlState = e.ctrlKey
+        lastValue = num
+        syncValues(num, { soft: true, roundingModifier: e.shiftKey ? 0.01 : 1 })
     }
 
     const cancelListener = (e: MouseEvent) => {
@@ -143,14 +172,13 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
         }
     }
 
-    const buttonSize = 4
-
     return (
         <div /* Root */
             className={p.className}
             tw={[
+                'WIDGET-FIELD',
                 'input-number-ui custom-roundness',
-                'h-7 flex-1 select-none min-w-16 cursor-ew-resize overflow-clip',
+                'flex-1 select-none min-w-16 cursor-ew-resize overflow-clip',
                 'bg-primary/30 border border-base-100 border-b-2 border-b-base-200',
                 !isEditing && 'hover:border-base-200 hover:border-b-base-300 hover:bg-primary/40',
             ]}
@@ -159,13 +187,13 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
                 <button /* Left Button */
                     tw={[
                         'h-full absolute left-0 rounded-none pr-0.5',
-                        `!w-${buttonSize} pb-1 leading-none border border-base-200 opacity-0 bg-base-200 hover:brightness-125`,
+                        `w-4 pb-0.5 leading-none border border-base-200 opacity-0 bg-base-200 hover:brightness-125`,
                     ]}
                     style={{ zIndex: 2 }}
                     onClick={(_) => {
                         startValue = val
                         let num = val - (mode === 'int' ? step : step * 0.1)
-                        syncValues(num, true)
+                        syncValues(num, { soft: true })
                     }}
                 >
                     ◂
@@ -175,7 +203,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
                     tw={[!p.hideSlider && !isEditing && 'bg-primary/40']}
                     style={{ width: `${((val - rangeMin) / (rangeMax - rangeMin)) * 100}%` }}
                 />
-                <div tw='absolute flex w-full h-full px-1'>
+                <div tw='absolute flex w-full h-full px-2'>
                     <div
                         tw={['relative flex flex-1 select-none']}
                         onWheel={(ev) => {
@@ -184,7 +212,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
                             if (ev.ctrlKey) {
                                 let num = mode === 'int' ? step * -Math.sign(ev.deltaY) : step * -Math.sign(ev.deltaY) * 0.1
                                 num = val + num
-                                num = mode == 'int' ? Math.round(num) : parseFloatNoRoundingErr(num, 2)
+                                num = mode == 'int' ? Math.round(num) : parseFloatNoRoundingErr(num, rounding)
                                 num = clamp(num, p.min ?? -Infinity, p.max ?? Infinity)
                                 syncValues(num)
                             }
@@ -217,9 +245,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
                             })
                         }}
                     >
-                        <div /* Text Container */
-                            tw={[`custom-roundness flex-auto flex items-center !px-${buttonSize} text-sm text-shadow`]}
-                        >
+                        <div /* Text Container */ tw={[`custom-roundness flex-auto flex items-center px-3 text-sm text-shadow`]}>
                             {!isEditing && p.text ? (
                                 <div /* Inner Label Text - Not shown while editing */
                                     tw={['outline-0 border-0 border-transparent z-10 w-full text-left']}
@@ -273,7 +299,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
                                         return
                                     }
 
-                                    syncValues(ev.currentTarget.value)
+                                    syncValues(ev.currentTarget.value, { skipRounding: true })
                                 }}
                                 onKeyDown={(ev) => {
                                     if (ev.key === 'Enter') {
@@ -301,13 +327,13 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
                 <button /* Right Button */
                     tw={[
                         'h-full absolute right-0 pl-0.5',
-                        `!w-${buttonSize} pb-1 leading-none border border-base-200 opacity-0 bg-base-200 hover:brightness-125`,
+                        `w-4 pb-0.5 leading-none border border-base-200 opacity-0 bg-base-200 hover:brightness-125`,
                     ]}
                     style={{ zIndex: 2 }}
                     onClick={(_) => {
                         startValue = val
                         let num = val + (mode === 'int' ? step : step * 0.1)
-                        syncValues(num, true)
+                        syncValues(num, { soft: true })
                     }}
                 >
                     ▸

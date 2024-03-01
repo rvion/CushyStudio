@@ -9,6 +9,7 @@ import { hash } from 'ohash'
 
 import { WidgetDI } from '../WidgetUI.DI'
 import { _extractDefaultValue } from './_extractDefaultValue'
+import { WidgetEnumUI } from './WidgetEnumUI'
 
 // CONFIG
 export type Widget_enum_config<O> = WidgetConfigFields<{
@@ -30,12 +31,14 @@ export type Widget_enum_types<O> = {
     $Input: Widget_enum_config<O>
     $Serial: Widget_enum_serial<O>
     $Output: Widget_enum_output<O>
+    $Widget: Widget_enum<O>
 }
 
 // STATE
 export interface Widget_enum<O> extends Widget_enum_types<O> {}
 export class Widget_enum<O> implements IWidget<Widget_enum_types<O>> {
-    readonly isCollapsible = false
+    HeaderUI = WidgetEnumUI
+    BodyUI = undefined
     readonly id: string
     readonly type: 'enum' = 'enum'
 

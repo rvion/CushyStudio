@@ -23,7 +23,7 @@ export const InstallRequirementsBtnUI = observer(function InstallRequirementsBtn
             <div
                 tw={[
                     p.active && !st.mainHost.matchRequirements(rr) //
-                        ? 'btn-error animate-pulse'
+                        ? 'btn-ghost text-red-500'
                         : 'btn-ghost opacity-50',
                     p.label ? 'btn btn-sm btn-outline' : 'btn btn-square btn-xs',
                 ]}

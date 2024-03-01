@@ -14,6 +14,7 @@ export class DisplacementState {
         shader: THREE.WebGLProgramParametersWithUniforms,
         // mat: any,
         cutout: { value: number },
+        removeBackground: { value: number },
         // val: number,
         // shader: THREE.ShaderMaterial,
         // cutout: any,
@@ -21,13 +22,18 @@ export class DisplacementState {
         console.log(`[👙] mat1`, cutout)
         // console.log(`[👙] mat2`, mat.userData.cutout)
         shader.uniforms.cutout = cutout // mat.userData.cutout //{ value: 0.3 }
+        shader.uniforms.removeBackground = removeBackground
+
         // shader.uniforms.cutout = mat.userData.cutout
         shader.vertexShader = shader.vertexShader
             .replace(
                 `void main() {`,
-                `varying float vTransformDiff;
-                 uniform float cutout;
-                 void main() {`,
+                `
+                varying float vTransformDiff;
+                varying float vDisplacement;
+                uniform float cutout;
+                uniform float removeBackground;
+                void main() {`,
             )
             .replace(
                 `#include <displacementmap_vertex>`,
@@ -50,6 +56,7 @@ export class DisplacementState {
                 vec3 transformDiffY = normalize(objectNormal) * vec3(diffY * displacementScale + displacementBias);
 
                 vTransformDiff = max(length(transformDiffX), length(transformDiffY));
+                vDisplacement = texture2D(displacementMap, vDisplacementMapUv).x;
                     `,
             )
 
@@ -57,8 +64,10 @@ export class DisplacementState {
             .replace(
                 `void main() {`,
                 `varying float vTransformDiff;
-                 uniform float cutout;
-                 void main() {`,
+                varying float vDisplacement;
+                uniform float cutout;
+                uniform float removeBackground;
+                void main() {`,
             )
             .replace(
                 `#include <dithering_fragment>`,
@@ -70,6 +79,13 @@ export class DisplacementState {
 
                 // Discard fragments if vTransformDiff is above a cutoff
                 if (vTransformDiff > cutout) {
+                    // gl_FragColor = vec4(0.0,1.0,0.0, 1.0);
+                    // gl_FragColor = vec4(0.0,1.0,0.0, 0.0);
+                    discard;
+                }
+                
+                // Discard fragments for background
+                if (vDisplacement < removeBackground) {
                     // gl_FragColor = vec4(0.0,1.0,0.0, 1.0);
                     // gl_FragColor = vec4(0.0,1.0,0.0, 0.0);
                     discard;

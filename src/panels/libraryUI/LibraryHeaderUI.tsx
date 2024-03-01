@@ -5,7 +5,6 @@ import { recursivelyFindAppsInFolder } from 'src/cards/walkLib'
 
 export const LibraryHeaderUI = observer(function LibraryHeaderUI_(p: {}) {
     const st = useSt()
-    const library = st.library
     return (
         <div tw='flex w-full'>
             <IndexAllAppsBtnUI />
@@ -25,6 +24,14 @@ export const IndexAllAppsBtnUI = observer(function IndexAllAppsBtnUI_(p: {}) {
     return (
         <div tw='btn-sm btn btn-primary' onClick={st.startupFileIndexing}>
             Index All Apps
+        </div>
+    )
+})
+export const ForceUpdateAllAppsBtnUI = observer(function IndexAllAppsBtnUI_(p: {}) {
+    const st = useSt()
+    return (
+        <div tw='btn-sm btn btn-warning' onClick={st.forceRefreshAllApps}>
+            Force-Recompile All Apps
         </div>
     )
 })

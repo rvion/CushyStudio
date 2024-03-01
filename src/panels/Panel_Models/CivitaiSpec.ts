@@ -1,41 +1,11 @@
-// import fetch from 'node-fetch'
 import { makeAutoObservable } from 'mobx'
 
+import { Debounced } from '../../utils/misc/Debounced'
 import { Kwery } from 'src/utils/misc/Kwery'
-
-// https://github.com/civitai/civitai/wiki/REST-API-Reference#get-apiv1models
-
-export class Debounced<T> {
-    constructor(
-        //
-        private _value: T,
-        public delay: number = 700 /* ms */,
-    ) {
-        makeAutoObservable(this)
-    }
-
-    private _debouncedValue: T = this._value
-    get debouncedValue(): T {
-        return this._debouncedValue
-    }
-
-    get value(): T { return this._value } // prettier-ignore
-    set value(v: T) {
-        this._value = v
-        this.setDebouncedValue(v)
-    }
-
-    _timer: any = null
-    setDebouncedValue = (v: T) => {
-        clearTimeout(this._timer)
-        this._timer = setTimeout(() => {
-            this._debouncedValue = this._value
-        }, 300)
-    }
-}
 
 // civitai wrapper
 export class Civitai {
+    // https://github.com/civitai/civitai/wiki/REST-API-Reference#get-apiv1models
     query = new Debounced(cushy.civitaiConf.fields.defaultQuery.value ?? '', 300)
     selectedResult: Maybe<CivitaiSearchResultItem> = null
 
