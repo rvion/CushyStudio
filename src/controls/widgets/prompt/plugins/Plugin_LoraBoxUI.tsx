@@ -38,16 +38,7 @@ const LoraBoxUI = observer(function LoraBoxUI_(p: {
     const loraMetadata = st.configFile.value?.loraPrompts?.[loraName]
     const associatedText = loraMetadata?.text ?? ''
     const associatedUrl = loraMetadata?.url ?? ''
-    // const weightedExpression =
-    const weighted = p.uist.ast.findAll('WeightedExpression').find((weighted) => {
-        let text = weighted.contentText
-        if (text.length == 0 || text.charAt(0) != '@') {
-            return false
-        }
-        return weighted.contentText.indexOf(`@${loraName}`) > -1
-    })
 
-    // const numbers = def.ref.node.getChildren('Number')
     return (
         <div key={loraName} tw='bg-base-100 rounded p-2'>
             <div //Header
@@ -63,7 +54,7 @@ const LoraBoxUI = observer(function LoraBoxUI_(p: {
                 />
             </div>
             <div tw='flex gap-1 items-center'>
-                <div tw='w-32'>Model Strength</div>
+                <div tw='w-32 text-end'>Model Strength</div>
                 <div tw='flex flex-grow items-center'>
                     <InputNumberUI
                         value={node.strength_model ?? 1}
@@ -90,7 +81,7 @@ const LoraBoxUI = observer(function LoraBoxUI_(p: {
                 </div>
             </div>
             <div tw='flex gap-1 items-center'>
-                <div tw='w-32'>Clip Strength</div>
+                <div tw='w-32 text-end'>Clip Strength</div>
                 <div tw='flex flex-grow items-center'>
                     <InputNumberUI
                         value={node.strength_clip ?? 1}
@@ -118,11 +109,11 @@ const LoraBoxUI = observer(function LoraBoxUI_(p: {
                 </div>
             </div>
             <div tw='flex gap-1 items-center'>
-                <div tw='w-32'>Trigger Words*</div>
-                <div tw='flex flex-grow join'>
+                <div tw='w-32 text-end'>Trigger Words*</div>
+                <div tw='flex flex-grow'>
                     <Input
                         //
-                        tw='WIDGET-FIELD rounded join-item'
+                        tw='WIDGET-FIELD flex-grow rounded'
                         type='text'
                         value={associatedText}
                         onChange={(ev) => {
@@ -138,7 +129,8 @@ const LoraBoxUI = observer(function LoraBoxUI_(p: {
                             })
                         }}
                     />
-                    <InputNumberUI //
+                    {/* TODO: Once a way to get/set weighted expressions from lora's cleanly we should re-add this. */}
+                    {/* <InputNumberUI //
                         tw='join-item'
                         value={weighted?.weight ?? 1.0}
                         mode='float'
@@ -151,6 +143,7 @@ const LoraBoxUI = observer(function LoraBoxUI_(p: {
                             if (weighted) {
                                 weighted.weight = v
                             } else {
+                                // Call change for right side first, since calling left side would change the position.
                                 p.uist.editorView?.dispatch({
                                     changes: {
                                         from: node.to,
@@ -168,14 +161,15 @@ const LoraBoxUI = observer(function LoraBoxUI_(p: {
                                 })
                             }
                         }}
-                    ></InputNumberUI>
+                    ></InputNumberUI> */}
                 </div>
             </div>
             <div tw='opacity-50 italic text-xs'>
                 *: Only trigger words will be multiplied by weights; to change the lora model and clip strength, use [x,y] syntax
             </div>
-            <div>
+            <div tw='WIDGET-field flex rounded truncate'>
                 <Button
+                    tw='w-32 justify-end text-neutral-content'
                     size='sm'
                     onClick={() => openExternal(associatedUrl)}
                     appearance='link'
@@ -184,7 +178,7 @@ const LoraBoxUI = observer(function LoraBoxUI_(p: {
                     Associated URL
                 </Button>
                 <Input
-                    tw='WIDGET-FIELD  rounded'
+                    tw='WIDGET-FIELD flex-grow  rounded'
                     type='text'
                     value={associatedUrl}
                     onChange={(ev) => {
