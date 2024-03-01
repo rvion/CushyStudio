@@ -14,6 +14,7 @@ export const onMouseMoveCanvas = (uc: UnifiedCanvas, e: KonvaEventObject<MouseEv
         // stop default scrolling
         e.evt.preventDefault()
 
+        // update cursor infos -----------------------------------------
         var scale = stage.scaleX()
         var pointer = stage.getPointerPosition()
         if (pointer == null) return console.log(`[❌] nope`)
@@ -29,6 +30,8 @@ export const onMouseMoveCanvas = (uc: UnifiedCanvas, e: KonvaEventObject<MouseEv
             isDown: e.evt.buttons === 1,
             scale: scale,
         }
+
+        // if generate: handle selection -----------------------------------------
         if (uc.tool === 'generate') {
             const sel = uc.activeSelection
             Object.assign(sel.stableData, {
@@ -36,6 +39,13 @@ export const onMouseMoveCanvas = (uc: UnifiedCanvas, e: KonvaEventObject<MouseEv
                 y: snap(uc.infos.viewPointerY - sel.stableData.height / 2, uc.snapSize),
             })
             sel.applyStableData()
+        }
+
+        // if paint -----------------------------------------
+        if (uc.tool === 'paint' || uc.tool === 'mask') {
+            uc.brush //
+                .x(uc.infos.viewPointerX)
+                .y(uc.infos.viewPointerY)
         }
 
         // how to scale? Zoom in? Or zoom out?
