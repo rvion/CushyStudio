@@ -334,7 +334,7 @@ export class Runtime<FIELDS extends SchemaDict = any> {
                 console.log(`❌ action not found`)
                 return { type: 'error', error: 'action not found' }
             }
-            await executable.run(this, formResult, p.imageToStartFrom)
+            await executable.run(this, formResult, { image: p.imageToStartFrom })
             // console.log(`🔴 after: size=${this.workflow.nodes.length}`)
             console.log('[✅] RUN SUCCESS')
             const duration = Date.now() - start

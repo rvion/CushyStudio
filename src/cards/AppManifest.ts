@@ -1,4 +1,4 @@
-import type { Requirements } from 'src/controls/IWidget'
+import type { Requirements } from 'src/controls/REQUIREMENTS/Requirements'
 
 import { Static, Type } from '@sinclair/typebox'
 

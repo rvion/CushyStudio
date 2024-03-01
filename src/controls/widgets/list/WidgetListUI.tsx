@@ -11,6 +11,8 @@ import { Widget_list } from './WidgetList'
 import { getBorderStatusForWidget } from 'src/controls/shared/getBorderStatusForWidget'
 import { ListControlsUI } from 'src/controls/widgets/list/ListControlsUI'
 import { ErrorBoundaryFallback } from 'src/widgets/misc/ErrorBoundary'
+import { getActualWidgetToDisplay } from 'src/controls/shared/getActualWidgetToDisplay'
+import { Widget_ToggleUI } from 'src/controls/shared/Widget_ToggleUI'
 
 export const WidgetList_LineUI = observer(function WidgetList_LineUI_<T extends Spec>(p: {
     widget: Widget_list<T> | Widget_listExt<T>
@@ -30,7 +32,9 @@ export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends 
         <div className='_WidgetListUI' tw='flex-grow w-full'>
             <SortableList onSortEnd={p.widget.moveItem} className='list' draggedItemClassName='dragged'>
                 <div tw='flex flex-col gap-0.5'>
-                    {subWidgets.map((subWidget, ix) => {
+                    {subWidgets.map((xxsubWidget, ix) => {
+                        const originalWidget = xxsubWidget
+                        const subWidget = getActualWidgetToDisplay(xxsubWidget)
                         const { HeaderUI: WidgetHeaderUI, BodyUI: WidgetBodyUI } = subWidget // WidgetDI.WidgetUI(widget)
                         const collapsed = subWidget.serial.collapsed ?? false
                         return (
@@ -41,7 +45,7 @@ export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends 
                                         <SortableKnob>
                                             <ListDragHandleUI widget={subWidget} ix={ix} />
                                         </SortableKnob>
-
+                                        <Widget_ToggleUI widget={originalWidget} />
                                         {/* debug id */}
                                         {p.widget.config.showID ? (
                                             <div className='divider flex-1 border-top'>
@@ -50,7 +54,6 @@ export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends 
                                                 </div>
                                             </div>
                                         ) : null}
-
                                         {/* inline header part */}
                                         {WidgetHeaderUI && (
                                             <ErrorBoundary FallbackComponent={ErrorBoundaryFallback} onReset={(details) => {}}>
@@ -59,11 +62,11 @@ export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends 
                                         )}
                                         {/* delete btn */}
                                         <div
+                                            onClick={() => widget.removeItem(originalWidget)}
                                             tw={[
                                                 'btn btn-sm btn-narrower btn-ghost opacity-50',
                                                 min && widget.items.length <= min ? 'btn-disabled' : null,
                                             ]}
-                                            onClick={() => widget.removeItem(subWidget)}
                                         >
                                             <span className='material-symbols-outlined'>delete</span>
                                         </div>

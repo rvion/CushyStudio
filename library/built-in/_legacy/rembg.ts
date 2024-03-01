@@ -12,12 +12,12 @@ app({
         models: ui_rembg_v1(),
     }),
 
-    run: async (run, form, img) => {
+    run: async (run, form, ctx) => {
         const graph = run.nodes
 
         const image = await (() => {
             // case where we start from an image
-            if (img) return img.loadInWorkflow()
+            if (ctx.image) return ctx.image.loadInWorkflow()
 
             // case where we start from the form
             if (form.startImage == null) throw new Error('no image provided')

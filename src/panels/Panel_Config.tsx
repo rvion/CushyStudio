@@ -8,6 +8,8 @@ import { FormControl, FormHelpText, Toggle } from 'src/rsuite/shims'
 import { openInVSCode } from 'src/utils/electron/openInVsCode'
 import { parseFloatNoRoundingErr } from 'src/utils/misc/parseFloatNoRoundingErr'
 import { SectionTitleUI } from 'src/widgets/workspace/SectionTitle'
+import type { FormBuilder } from 'src/controls/FormBuilder'
+import { FormUI } from 'src/controls/FormUI'
 
 export const Panel_Config = observer(function Panel_Config_() {
     const st = useSt()
@@ -15,6 +17,7 @@ export const Panel_Config = observer(function Panel_Config_() {
     return (
         <div className='flex flex-col gap-2 items-start p-2'>
             <SectionTitleUI label='CONFIG' className='block' />
+            <FormUI form={cushy.globalConf} />
             <div tw='flex flex-col gap-1'>
                 <FieldUI label='Comfig file path'>
                     <pre tw='bg-base-200 rounded-btn px-2'>{config.path}</pre>
@@ -53,38 +56,6 @@ export const Panel_Config = observer(function Panel_Config_() {
                             st.updateTsConfig()
                         }}
                         name='githubUsername'
-                    />
-                </FieldUI>
-                <FieldUI label='Your Cushy CloudGPU api Key'>
-                    <input //
-                        tw='input input-bordered input-sm w-full'
-                        value={config.value.cushyCloudGPUApiKey}
-                        onChange={(ev) => {
-                            config.update({ cushyCloudGPUApiKey: ev.target.value })
-                            st.updateTsConfig()
-                        }}
-                        name='githubUsername'
-                    />
-                </FieldUI>
-                {/* <FieldUI label='Gallery Image Size (px)'>
-                    <InputNumberUI //
-                        placeholder='48'
-                        min={16}
-                        max={256}
-                        value={config.value.galleryImageSize ?? 48}
-                        mode='int'
-                        onValueChange={(val) => config.update({ galleryImageSize: val })}
-                    />
-                </FieldUI> */}
-                <FieldUI label='Number slider speed multiplier'>
-                    <InputNumberUI //
-                        placeholder='Number slider speed multiplier'
-                        softMin={0.3}
-                        softMax={3}
-                        step={0.1}
-                        value={config.value.numberSliderSpeed ?? 1}
-                        mode='float'
-                        onValueChange={(val) => config.update({ numberSliderSpeed: val })}
                     />
                 </FieldUI>
                 <FieldUI label='Enable TypeChecking Default Apps'>

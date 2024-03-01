@@ -1,3 +1,10 @@
+
+☐ better import (cleaner)
+    ☐ no subfield selection if non-ambiguous
+    ☐ don't crash on missing nodes
+☐ blender like forms (render method mixin no form nodes)
+
+-----------
 ☐ filter enum values: highlight + sort
 ☐ auto-ui
 

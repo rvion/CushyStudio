@@ -1,6 +1,7 @@
 import type { AppMetadata } from './AppManifest'
 import type { CSSProperties } from 'react'
 import type { FormBuilder } from 'src/controls/FormBuilder'
+import type { Requirements } from 'src/controls/REQUIREMENTS/Requirements'
 import type { ISpec } from 'src/controls/Spec'
 import type { MediaImageL } from 'src/models/MediaImage'
 import type { Runtime } from 'src/runtime/Runtime'
@@ -18,8 +19,12 @@ export type ActionTagMethodList = Array<{ key: string; method: ActionTagMethod }
 export type ActionTags = (arg0: ActionTagMethodList) => void
 export type SchemaDict = { [key: string]: ISpec }
 export type AppRef<F> = { $Output: F; id: CushyAppID }
-
 export type $ExtractFormValueType<FIELDS extends SchemaDict> = { [k in keyof FIELDS]: FIELDS[k]['$Output'] }
+export type RunStartContext = {
+    //
+    image?: Maybe<MediaImageL>
+    mask?: Maybe<MediaImageL>
+}
 
 export type App<FIELDS extends SchemaDict> = {
     /** app interface (GUI) */
@@ -30,8 +35,11 @@ export type App<FIELDS extends SchemaDict> = {
         //
         runtime: Runtime<FIELDS>,
         formResult: { [k in keyof FIELDS]: FIELDS[k]['$Output'] },
-        starImage?: Maybe<MediaImageL>,
+        context: RunStartContext,
     ) => void | Promise<void>
+
+    /** The widget requirements */
+    requirements?: Requirements[]
 
     /** if set to true, will register drafts to quick action in image context menu */
     canStartFromImage?: boolean
@@ -45,8 +53,6 @@ export type App<FIELDS extends SchemaDict> = {
     containerStyle?: CSSProperties
 
     // HELP ============================================================
-    /** dependencies of your action */
-    customNodeRequired?: string[]
     /** help text to show user when using their card */
     help?: string
 }

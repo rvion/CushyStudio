@@ -191,10 +191,10 @@ export const UnifiedCanvasMenuUI = observer(function UnifiedCanvasMenuUI_(p: {})
                                 <InputNumberUI
                                     //
                                     onValueChange={(e) => {
-                                        uniSel.stableData.width = e
+                                        uniSel.stableData.height = e
                                         uniSel.applyStableData()
                                     }}
-                                    value={uniSel.stableData.width}
+                                    value={uniSel.stableData.height}
                                     mode='int'
                                     softMin={128}
                                     softMax={1024}

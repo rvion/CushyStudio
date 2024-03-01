@@ -42,7 +42,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
     const rangeMin = p.softMin ?? p.min ?? -Infinity
     const rangeMax = p.softMax ?? p.max ?? Infinity
 
-    const numberSliderSpeed = useSt().configFile.get('numberSliderSpeed') ?? 1
+    const numberSliderSpeed = cushy.globalConf.fields.forms.fields.numberSliderSpeed.value ?? 1
 
     /* Used for making sure you can type whatever you want in to the value, but it gets validated when pressing Enter. */
     const [inputValue, setInputValue] = useState<string>(val.toString())

@@ -24,8 +24,6 @@ export type ConfigFile = {
     /** setting this option will make 'Edit App Definition' attempt to use this text editor first, then code/codium, then the system default text editor */
     preferredTextEditor?: string
 
-    /** prefer dense form */
-    preferedFormLayout?: PreferedFormLayout
     ['draft.mockup-mobile']?: boolean
 
     // favoriteApps?: CushyAppID[]
@@ -33,7 +31,7 @@ export type ConfigFile = {
     // comfyUIHosts?: ComfyHostDef[]
 
     /** default: 1 */
-    numberSliderSpeed?: number
+    // numberSliderSpeed?: number
 
     mainComfyHostID?: Maybe<HostID>
     enableTypeCheckingBuiltInApps?: boolean

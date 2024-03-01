@@ -1,5 +1,5 @@
 import type { ComfySchemaL, EmbeddingName } from './Schema'
-import type { Requirements } from 'src/controls/IWidget'
+import type { Requirements } from 'src/controls/REQUIREMENTS/Requirements'
 import type { LiveInstance } from 'src/db/LiveInstance'
 import type { PluginInfo } from 'src/manager/custom-node-list/custom-node-list-types'
 import type { KnownCustomNode_File } from 'src/manager/custom-node-list/KnownCustomNode_File'

@@ -71,7 +71,7 @@ app({
         }),
     }),
 
-    run: async (run, ui, imgCtx) => {
+    run: async (run, ui, ctx) => {
         const graph = run.nodes
         // MODEL, clip skip, vae, etc. ---------------------------------------------------------------
         let { ckpt, vae, clip } = run_model(ui.model)
@@ -104,6 +104,7 @@ app({
         // let negative = y.conditionning
 
         // START IMAGE -------------------------------------------------------------------------
+        const imgCtx = ctx?.image
         let { latent, width, height } = imgCtx
             ? /* 🔴 */ await (async () => ({
                   /* 🔴 */ latent: graph.VAEEncode({ pixels: await imgCtx.loadInWorkflow(), vae }),
@@ -239,7 +240,6 @@ app({
 
         // UPSCALE with upscale model ------------------------------------------------------------
         if (ui.upscale) finalImage = run_upscaleWithModel(ui.upscale, { image: finalImage })
-
         const saveFormat = run_customSave(ui.customSave)
         await run.PROMPT({ saveFormat })
 

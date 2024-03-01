@@ -1,4 +1,4 @@
-import type { Requirements } from '../IWidget'
+import type { Requirements } from './Requirements'
 import type { PluginInfo } from 'src/manager/custom-node-list/custom-node-list-types'
 
 import { observer } from 'mobx-react-lite'
@@ -100,7 +100,11 @@ export const Panel_InstallRequirementsUI = observer(function Panel_InstallRequir
                                 </MessageErrorUI>
                                 {plugins.map((x) => {
                                     return (
-                                        <Button_InstallCustomNodeUI optional={req.optional ?? false} key={x.title} plugin={x} />
+                                        <Button_InstallCustomNodeUI //
+                                            optional={req.optional ?? false}
+                                            key={x.title}
+                                            plugin={x}
+                                        />
                                     )
                                 })}
                             </div>

@@ -84,19 +84,26 @@ export class UnifiedCanvas {
     })
 
     enable_generate = () => {
+        this.selectLayer.show()
         this.tool = 'generate'
         this.disable_mask()
         this.disable_paint()
         this.disable_move()
     }
-    disable_generate = () => {}
+    disable_generate = () => {
+        this.selectLayer.hide()
+        // this.selections
+    }
     enable_mask = () => {
+        this.tempLayer.show()
         this.tool = 'mask'
         this.disable_generate()
         this.disable_paint()
         this.disable_move()
     }
-    disable_mask = () => {}
+    disable_mask = () => {
+        this.tempLayer.hide()
+    }
     enable_paint = () => {
         this.tool = 'paint'
         this.disable_generate()
@@ -113,11 +120,10 @@ export class UnifiedCanvas {
     disable_move = () => {}
 
     onKeyDown = (e: any) => {
-        if (e.key === '1') { this.tool = 'generate' ; return } // prettier-ignore
-        if (e.key === '2') { this.tool = 'mask' ; return } // prettier-ignore
-        if (e.key === '3') { this.tool = 'paint' ; return } // prettier-ignore
-        if (e.key === '4') { this.tool = 'move' ; return } // prettier-ignore
-
+        if (e.key === '1') return this.enable_generate()
+        if (e.key === '2') return this.enable_mask()
+        if (e.key === '3') return this.enable_paint()
+        if (e.key === '4') return this.enable_move()
         if (e.key === 'z' && (e.ctrlKey || e.metaKey)) {
             this.undo()
         }
@@ -148,6 +154,7 @@ export class UnifiedCanvas {
     gridLayer: Konva.Layer
     tempLayer: Konva.Layer
     imageLayer: Konva.Layer
+    selectLayer: Konva.Layer
 
     constructor(public st: STATE, baseImage: MediaImageL) {
         // core layers
@@ -155,7 +162,8 @@ export class UnifiedCanvas {
         this.gridLayer = new Konva.Layer({ imageSmoothingEnabled: false })
         this.imageLayer = new Konva.Layer()
         this.tempLayer = new Konva.Layer()
-        this.stage.add(this.gridLayer, this.imageLayer, this.tempLayer)
+        this.selectLayer = new Konva.Layer()
+        this.stage.add(this.gridLayer, this.imageLayer, this.tempLayer, this.selectLayer)
 
         // ------------------------------
         // to hold the line currently being drawn

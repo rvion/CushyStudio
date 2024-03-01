@@ -16,6 +16,7 @@ import { toast } from 'react-toastify'
 import { createMediaImage_fromDataURI } from 'src/models/createMediaImage_fromWebFile'
 import { MediaImageL } from 'src/models/MediaImage'
 import { bang } from 'src/utils/misc/bang'
+import type { Group } from 'konva/lib/Group'
 
 export class UnifiedSelection {
     id: string = nanoid()
@@ -27,7 +28,7 @@ export class UnifiedSelection {
 
     remove = () => {
         if (this.canvas.selections.length === 1) return toast.error(`Can't delete the last selection`)
-        this.layer.destroy()
+        this.group.destroy()
         if (this.isActive) this.canvas.activeSelection = bang(this.canvas.selections.find((s) => s !== this))
         this.canvas.selections = this.canvas.selections.filter((s) => s !== this)
     }
@@ -50,35 +51,19 @@ export class UnifiedSelection {
     // the real current selectio
     liveData: RectSimple = { ...this.stableData }
 
-    layer: Layer
+    st: STATE
+    group: Group
     live: Shape
     stable: Shape
     transform: Transformer
 
-    st: STATE
     constructor(public canvas: UnifiedCanvas) {
-        const stage: Stage = this.canvas.stage
-        this.layer = new Konva.Layer()
-        stage.add(this.layer)
-
-        this.stable = new Rect({
-            opacity: 0.8,
-            stroke: 'blue',
-            strokeWidth: 4,
-            ...this.stableData,
-        })
-
-        this.live = new Rect({
-            opacity: 0.2,
-            stroke: 'red',
-            strokeWidth: 4,
-            // draggable: true,
-            ...this.liveData,
-            // fill={'blue'}
-        })
+        this.group = new Konva.Group()
+        canvas.selectLayer.add(this.group)
+        this.stable = new Rect({ opacity: 0.8, stroke: 'blue', strokeWidth: 4, ...this.stableData })
+        this.live = new Rect({ opacity: 0.2, stroke: 'red', strokeWidth: 4, ...this.liveData })
         this.live.on('dragend', this.applyStableData)
         this.live.on('transformend', this.applyStableData)
-        //
         this.live.on('dragmove', this.onLiveDragMove)
         this.live.on('transform', this.onLiveTransform)
         this.transform = new Transformer({
@@ -94,7 +79,7 @@ export class UnifiedSelection {
             },
             nodes: [this.live],
         })
-        this.layer.add(this.stable, this.live, this.transform)
+        this.group.add(this.stable, this.live, this.transform)
 
         this.st = canvas.st
         makeAutoObservable(this)

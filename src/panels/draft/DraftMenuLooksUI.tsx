@@ -9,7 +9,6 @@ export const DraftMenuLooksUI = observer(function DraftMenuLookUI_(p: { title: s
     const st = useSt()
     const draft = p.draft
     const file = draft.file
-    const layout = st.preferedFormLayout
     const app = draft.app
     return (
         <Dropdown
@@ -37,7 +36,7 @@ export const DraftMenuLooksUI = observer(function DraftMenuLookUI_(p: { title: s
                 </MenuItem>
             )}
             <div tw='divider my-0' />
-            <MenuItem
+            {/* <MenuItem
                 icon={<span className='material-symbols-outlined'>open_with</span>}
                 onClick={() => (st.preferedFormLayout = 'auto')}
                 active={layout == 'auto'}
@@ -58,7 +57,7 @@ export const DraftMenuLooksUI = observer(function DraftMenuLookUI_(p: { title: s
                 active={layout == 'mobile'}
             >
                 Expanded Layout
-            </MenuItem>
+            </MenuItem> */}
             <div tw='divider my-0' />
             <MenuItem
                 icon={<span className='material-symbols-outlined'>mobile_screen_share</span>}

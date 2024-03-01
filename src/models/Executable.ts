@@ -1,6 +1,7 @@
 import type { CushyScriptL } from './CushyScriptL'
 import type { App } from 'src/cards/App'
 import type { AppMetadata } from 'src/cards/AppManifest'
+import type { Requirements } from 'src/controls/REQUIREMENTS/Requirements'
 
 import { basename } from 'pathe'
 
@@ -22,7 +23,11 @@ export class Executable {
         return this.def.run
     }
 
-    get canStartFromImage() {
+    get requirements(): Maybe<Requirements[]> {
+        return this.def.requirements
+    }
+
+    get canStartFromImage(): boolean {
         return this.def.canStartFromImage ?? false
     }
 

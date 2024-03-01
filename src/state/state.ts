@@ -255,9 +255,6 @@ export class STATE {
     set gallerySize(v: number) { this.galleryConf.fields.gallerySize.value =  v } // prettier-ignore
     get gallerySize() { return this.galleryConf.get(`gallerySize`) ?? 48 } // prettier-ignore
 
-    get preferedFormLayout() { return this.configFile.value.preferedFormLayout ?? 'auto' } // prettier-ignore
-    set preferedFormLayout(v: PreferedFormLayout) { this.configFile.update({ preferedFormLayout: v }) } // prettier-ignore
-
     // history app size
     get historySizeStr() { return `${this.historySize}px` } // prettier-ignore
     set historySize(v: number) { this.configFile.update({ historyAppSize: v }) } // prettier-ignore
@@ -429,6 +426,34 @@ export class STATE {
         })
     }
 
+    globalConf = new Form(
+        (ui) => ({
+            githubUsername: ui.string({ tooltip: `this will allow you to enable typechecking for folders you manage` }),
+            promptAutocompletion: ui.group({
+                items: {
+                    tagFiles: ui.list({
+                        defaultLength: 1,
+                        element: ui.string({ default: './completions/danbooru.csv' }).optional(),
+                    }),
+                },
+            }),
+            LLM: ui.group({
+                items: {
+                    OpenRouterApiKey: ui.string({ label: 'OpenRooter API KEY' }),
+                },
+            }),
+            forms: ui.group({
+                items: {
+                    numberSliderSpeed: ui.float({ min: 0.3, max: 5, step: 0.1 }),
+                },
+            }),
+        }),
+        {
+            name: 'Global Conf',
+            initialValue: () => readJSON('settings/global.json'),
+            onChange: (form) => writeJSON('settings/global.json', form.serial),
+        },
+    )
     civitaiConf = new Form(
         (ui) => ({
             imgSize1: ui.int({ min: 64, max: 1024, step: 64, default: 512 }),

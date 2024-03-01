@@ -98,6 +98,13 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                 {draft.shouldAutoStart && (
                     <MessageInfoUI>Autorun active: this draft will execute when the form changes</MessageInfoUI>
                 )}
+                {draft.app.executable_orExtract?.requirements ? (
+                    <InstallRequirementsBtnUI
+                        label='requirements'
+                        active={true}
+                        requirements={draft.app.executable_orExtract.requirements}
+                    />
+                ) : null}
                 {metadata?.help && (
                     <MessageInfoUI>
                         <MarkdownUI tw='_WidgetMardownUI w-full' markdown={metadata.help} />

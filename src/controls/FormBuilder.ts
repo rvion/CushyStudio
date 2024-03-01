@@ -1,5 +1,5 @@
 import type { Form } from './Form'
-import type { Requirements } from './IWidget'
+import type { Requirements } from './REQUIREMENTS/Requirements'
 import type { SchemaDict } from 'src/cards/App'
 
 import { makeAutoObservable } from 'mobx'

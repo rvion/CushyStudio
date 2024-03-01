@@ -12,8 +12,9 @@ app({
         model: ui_model(),
         refiners: ui_refiners(),
     }),
-    //                  👇👇👇👇👇
-    run: async (run, ui, startImg) => {
+    //                  👇👇
+    run: async (run, ui, ctx) => {
+        const startImg = ctx.image
         if (startImg == null) throw new Error('no image provided')
         let img: _IMAGE = await startImg.loadInWorkflow()
         run_model(ui.model)

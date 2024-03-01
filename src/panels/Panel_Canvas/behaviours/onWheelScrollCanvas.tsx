@@ -2,6 +2,7 @@ import type { UnifiedCanvas } from '../states/UnifiedCanvas'
 import type { KonvaEventObject } from 'konva/lib/Node'
 
 import { runInAction } from 'mobx'
+import { clamp } from 'src/controls/widgets/bool/clamp'
 
 export const onWheelScrollCanvas = (
     //
@@ -54,7 +55,7 @@ export const onWheelScrollCanvas = (
     }
 
     if (canvas.tool === 'mask' || canvas.tool === 'paint') {
-        const newSize = Math.max(1, canvas.maskToolSize + e.evt.deltaY / 200)
+        const newSize = Math.round(clamp(Math.max(1, canvas.maskToolSize + e.evt.deltaY / 100), 10, 256))
         canvas.maskToolSize = newSize
         canvas.brush.radius(newSize / 2)
         // canvas.brush.strokeWidth(newSize)
