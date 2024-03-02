@@ -1,8 +1,7 @@
-import { observable, runInAction } from 'mobx'
+import { makeAutoObservable, runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo } from 'react'
 
-import { useSt } from 'src/state/stateContext'
 import { parseFloatNoRoundingErr } from 'src/utils/misc/parseFloatNoRoundingErr'
 
 const clamp = (x: number, min: number, max: number) => Math.max(min, Math.min(max, x))
@@ -17,7 +16,7 @@ let lastValue = 0
 let activeSlider: HTMLDivElement | null = null
 let cancelled = false
 
-export const InputNumberUI = observer(function InputNumberUI_(p: {
+type InputNumberProps = {
     value?: Maybe<number>
     mode: 'int' | 'float'
     onValueChange: (next: number) => void
@@ -28,46 +27,49 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
     softMax?: number
     text?: string
     suffix?: string
+    debug?: string
     hideSlider?: boolean
     style?: React.CSSProperties
     placeholder?: string
     forceSnap?: boolean
     className?: string
-}) {
-    const val = p.value ?? clamp(1, p.min ?? -Infinity, p.max ?? Infinity)
-    const mode = p.mode
-    const step = p.step ?? (mode === 'int' ? 1 : 0.1)
-    const rounding = Math.ceil(-Math.log10(step * 0.01))
-    const forceSnap = p.forceSnap ?? false
-    const rangeMin = p.softMin ?? p.min ?? -Infinity
-    const rangeMax = p.softMax ?? p.max ?? Infinity
+}
 
-    const numberSliderSpeed = useSt().configFile.get('numberSliderSpeed') ?? 1
+/** this class will be instanciated ONCE in every InputNumberUI, (local the the InputNumberUI) */
+class InputNumberStableState {
+    constructor(public props: InputNumberProps) {
+        // this `makeAutoObservable` will make all getters defined below be `computed` properties
+        // they will update their value when props change so all functions always work with up-to-date values
+        makeAutoObservable(this)
+    }
+
+    get value() { return this.props.value ?? clamp(1, this.props.min ?? -Infinity, this.props.max ?? Infinity) } // prettier-ignore
+    get mode() { return this.props.mode } // prettier-ignore
+    get step() { return this.props.step ?? (this.mode === 'int' ? 1 : 0.1) } // prettier-ignore
+    get rounding() { return Math.ceil(-Math.log10(this.step * 0.01)) } // prettier-ignore
+    get forceSnap() { return this.props.forceSnap ?? false } // prettier-ignore
+    get rangeMin() { return this.props.softMin ?? this.props.min ?? -Infinity } // prettier-ignore
+    get rangeMax() { return this.props.softMax ?? this.props.max ?? Infinity } // prettier-ignore
+    get numberSliderSpeed() { return cushy.configFile.get('numberSliderSpeed') ?? 1 } // prettier-ignore
+    get isInteger() { return this.mode === 'int' } // prettier-ignore
 
     /* Used for making sure you can type whatever you want in to the value, but it gets validated when pressing Enter. */
-    const [inputValue, setInputValue] = useState<string>(val.toString())
+    inputValue: string = this.value.toString()
+
     /* When editing the number <input> this will make it display inputValue instead of val.*/
-    const [isEditing, setEditing] = useState<boolean>(false)
+    isEditing: boolean = false
 
-    // make sure we retrieve the `onValueChange` lambda from the latest prop version
-    const [latestProps] = useState(() => observable({ onValueChange: p.onValueChange }))
-    useEffect(() => runInAction(() => void (latestProps.onValueChange = p.onValueChange)), [p.onValueChange])
-
-    const syncValues = (
+    syncValues = (
+        //
         value: number | string,
-        {
-            soft = false,
-            roundingModifier = 1,
-            skipRounding = false,
-        }: {
-            soft?: boolean
-            roundingModifier?: number
-            skipRounding?: boolean
-        } = {},
+        opts: { soft?: boolean; roundingModifier?: number; skipRounding?: boolean } = {},
     ) => {
+        const soft = opts.soft ?? false
+        const roundingModifier = opts.roundingModifier ?? 1
+        const skipRounding = opts.skipRounding ?? false
         let num =
             typeof value === 'string' //
-                ? mode == 'int'
+                ? this.mode == 'int'
                     ? parseInt(value, 10)
                     : parseFloat(value)
                 : value
@@ -78,30 +80,36 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
             return startValue
         }
 
-        if (forceSnap) {
-            num = mode == 'int' ? Math.round(num / step) * step : num
+        // snap integer value ?? (🔴 probably wrong logic here; why only ints ?)
+        if (this.forceSnap) {
+            num =
+                this.mode == 'int' //
+                    ? Math.round(num / this.step) * this.step
+                    : num
         }
 
-        // Ensure ints are ints
-        if (mode == 'int') num = Math.round(num)
+        // Ensure value is integer if mode === 'int'
+        if (this.mode === 'int') num = Math.round(num)
 
-        // Ensure in range
-        if (soft && startValue <= rangeMax && startValue >= rangeMin) {
-            num = clamp(num, rangeMin, rangeMax)
+        // Ensure value in range
+        if (soft && startValue <= this.rangeMax && startValue >= this.rangeMin) {
+            num = clamp(num, this.rangeMin, this.rangeMax)
         } else {
-            num = clamp(num, p.min ?? -Infinity, p.max ?? Infinity)
+            num = clamp(num, this.props.min ?? -Infinity, this.props.max ?? Infinity)
         }
 
+        // ...
         if (!skipRounding) {
-            const roundingPrecise = Math.ceil(-Math.log10(step * 0.01 * roundingModifier))
+            const roundingPrecise = Math.ceil(-Math.log10(this.step * 0.01 * roundingModifier))
             num = parseFloatNoRoundingErr(num, roundingPrecise)
         }
 
-        latestProps.onValueChange(num)
-        setInputValue(num.toString())
+        // console.log(`[onValueChange] (${reason}) p.debug = ${this.props.debug} | NEW = ${num}`)
+        this.props.onValueChange(num)
+        this.inputValue = num.toString()
     }
 
-    const mouseMoveListener = (e: MouseEvent) => {
+    mouseMoveListener = (e: MouseEvent) => {
         // reset origin if change shift or control key while drag (to let already applied changes remain)
         if (dragged && (lastShiftState !== e.shiftKey || lastControlState !== e.ctrlKey)) {
             startValue = lastValue
@@ -111,31 +119,31 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
         dragged = true
         cumulativeOffset += e.movementX
 
-        let precision = (e.shiftKey ? 0.001 : 0.01) * step
-        let offset = numberSliderSpeed * cumulativeOffset * precision
+        let precision = (e.shiftKey ? 0.001 : 0.01) * this.step
+        let offset = this.numberSliderSpeed * cumulativeOffset * precision
 
         const next = startValue + offset
         // Parse value
         let num =
             typeof next === 'string' //
-                ? mode == 'int'
+                ? this.mode == 'int'
                     ? parseInt(next, 10)
-                    : parseFloatNoRoundingErr(next, rounding)
+                    : parseFloatNoRoundingErr(next, this.rounding)
                 : next
 
         // Snapping
         if (e.ctrlKey) {
-            const inverval = e.shiftKey ? 0.1 * step : step
+            const inverval = e.shiftKey ? 0.1 * this.step : this.step
             num = Math.round(num / inverval) * inverval
         }
 
         lastShiftState = e.shiftKey
         lastControlState = e.ctrlKey
         lastValue = num
-        syncValues(num, { soft: true, roundingModifier: e.shiftKey ? 0.01 : 1 })
+        this.syncValues(num, { soft: true, roundingModifier: e.shiftKey ? 0.01 : 1 })
     }
 
-    const cancelListener = (e: MouseEvent) => {
+    cancelListener = (e: MouseEvent) => {
         // Right click
         if (e.button == 2) {
             activeSlider = null
@@ -143,10 +151,9 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
         }
     }
 
-    const onPointerUpListener = (e: MouseEvent) => {
+    onPointerUpListener = (/* e: MouseEvent */) => {
         if (activeSlider && !dragged) {
             let textInput = activeSlider?.querySelector('input[type="text"') as HTMLInputElement
-
             textInput.setAttribute('cursor', 'not-allowed')
             textInput.setAttribute('cursor', 'none')
             textInput.focus()
@@ -154,23 +161,42 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
             activeSlider = null
         }
 
-        window.removeEventListener('mousemove', mouseMoveListener, true)
-        window.removeEventListener('pointerup', onPointerUpListener, true)
-        window.removeEventListener('pointerlockchange', onPointerLockChange, true)
-        window.removeEventListener('mousedown', cancelListener, true)
+        // pointer
+        window.removeEventListener('pointerup', this.onPointerUpListener, true)
+        window.removeEventListener('pointerlockchange', this.onPointerLockChange, true)
+        // mouse
+        window.removeEventListener('mousemove', this.mouseMoveListener, true)
+        window.removeEventListener('mousedown', this.cancelListener, true)
+        // lock
         document.exitPointerLock()
     }
 
-    const onPointerLockChange = (e: Event) => {
+    onPointerLockChange = (e: Event) => {
         const isPointerLocked = document.pointerLockElement === activeSlider
 
         if (!(activeSlider && isPointerLocked)) {
-            window.removeEventListener('mousemove', mouseMoveListener, true)
-            window.removeEventListener('mousedown', cancelListener, true)
-
-            syncValues(startValue)
+            window.removeEventListener('mousemove', this.mouseMoveListener, true)
+            window.removeEventListener('mousedown', this.cancelListener, true)
+            this.syncValues(startValue)
         }
     }
+}
+
+export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProps) {
+    // create stable state, that we can programmatically mutate witout caring about stale references
+    const uist = useMemo(() => new InputNumberStableState(p), [])
+
+    // ensure new properties that could change during lifetime of the component stays up-to-date in the stable state.
+    runInAction(() => Object.assign(uist.props, p))
+
+    // ensure any unmounting of this component will properly clean-up
+    useEffect(() => uist.onPointerUpListener, [])
+
+    // to minimize diff with previous code
+    const val = uist.value
+    const step = uist.step
+    const rounding = uist.rounding
+    const isEditing = uist.isEditing
 
     return (
         <div /* Root */
@@ -192,8 +218,8 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
                     style={{ zIndex: 2 }}
                     onClick={(_) => {
                         startValue = val
-                        let num = val - (mode === 'int' ? step : step * 0.1)
-                        syncValues(num, { soft: true })
+                        let num = val - (uist.isInteger ? step : step * 0.1)
+                        uist.syncValues(num, { soft: true })
                     }}
                 >
                     ◂
@@ -201,7 +227,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
                 <div /* Slider display */
                     className='inui-foreground'
                     tw={[!p.hideSlider && !isEditing && 'bg-primary/40']}
-                    style={{ width: `${((val - rangeMin) / (rangeMax - rangeMin)) * 100}%` }}
+                    style={{ width: `${((val - uist.rangeMin) / (uist.rangeMax - uist.rangeMin)) * 100}%` }}
                 />
                 <div tw='absolute flex w-full h-full px-2'>
                     <div
@@ -210,17 +236,15 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
                             /* NOTE: This could probably divide by the length? But I'm not sure how to get the distance of 1 scroll tick.
                              * Increment/Decrement using scroll direction. */
                             if (ev.ctrlKey) {
-                                let num = mode === 'int' ? step * -Math.sign(ev.deltaY) : step * -Math.sign(ev.deltaY) * 0.1
+                                let num = uist.isInteger ? step * -Math.sign(ev.deltaY) : step * -Math.sign(ev.deltaY) * 0.1
                                 num = val + num
-                                num = mode == 'int' ? Math.round(num) : parseFloatNoRoundingErr(num, rounding)
+                                num = uist.isInteger ? Math.round(num) : parseFloatNoRoundingErr(num, rounding)
                                 num = clamp(num, p.min ?? -Infinity, p.max ?? Infinity)
-                                syncValues(num)
+                                uist.syncValues(num, undefined)
                             }
                         }}
                         onMouseDown={(ev) => {
-                            if (isEditing || ev.button != 0) {
-                                return
-                            }
+                            if (isEditing || ev.button != 0) return
 
                             /* Begin slider drag */
                             activeSlider = ev.currentTarget
@@ -228,10 +252,10 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
                             cumulativeOffset = 0
                             dragged = false
 
-                            window.addEventListener('mousemove', mouseMoveListener, true)
-                            window.addEventListener('pointerup', onPointerUpListener, true)
-                            window.addEventListener('pointerlockchange', onPointerLockChange, true)
-                            window.addEventListener('mousedown', cancelListener, true)
+                            window.addEventListener('mousemove', uist.mouseMoveListener, true)
+                            window.addEventListener('pointerup', uist.onPointerUpListener, true)
+                            window.addEventListener('pointerlockchange', uist.onPointerLockChange, true)
+                            window.addEventListener('mousedown', uist.cancelListener, true)
 
                             /* Fix for low-sensitivity devices, it will get raw input from the mouse instead of the processed input.
                              *  NOTE: This does not work on Linux right now, but when it does get added for Linux, this code should not need to be changed.
@@ -256,16 +280,13 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
                             <input //
                                 type='text'
                                 draggable='false'
-                                onDragStart={(ev) => {
-                                    /* Prevents drag n drop of selected text, so selecting is easier. */
-                                    ev.preventDefault()
-                                }}
+                                onDragStart={(ev) => ev.preventDefault()} // Prevents drag n drop of selected text, so selecting is easier.
                                 tw={[
                                     'w-full text-shadow outline-0',
                                     !isEditing && 'cursor-not-allowed pointer-events-none',
                                     !isEditing && p.text ? 'text-right' : 'text-center',
                                 ]}
-                                value={isEditing ? inputValue : val}
+                                value={isEditing ? uist.inputValue : val}
                                 placeholder={p.placeholder}
                                 style={{
                                     fontFamily: 'monospace',
@@ -277,29 +298,26 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
                                 max={p.max}
                                 step={step}
                                 onChange={(ev) => {
-                                    setInputValue(ev?.target.value)
+                                    uist.inputValue = ev?.target.value
                                 }}
                                 onFocus={(ev) => {
                                     let textInput = ev.currentTarget
                                     activeSlider = textInput.parentElement as HTMLDivElement
-
                                     textInput.select()
                                     startValue = val
-                                    setInputValue(val.toString())
-                                    setEditing(true)
+                                    uist.inputValue = val.toString()
+                                    uist.isEditing = true
                                 }}
                                 onBlur={(ev) => {
-                                    setEditing(false)
+                                    uist.isEditing = false
                                     const next = ev.currentTarget.value
                                     activeSlider = null
-
                                     if (cancelled) {
                                         cancelled = false
-                                        syncValues(startValue)
+                                        uist.syncValues(startValue, undefined)
                                         return
                                     }
-
-                                    syncValues(ev.currentTarget.value, { skipRounding: true })
+                                    uist.syncValues(ev.currentTarget.value, { skipRounding: true })
                                 }}
                                 onKeyDown={(ev) => {
                                     if (ev.key === 'Enter') {
@@ -312,18 +330,10 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
                             />
                             {!isEditing && p.suffix ? <div style={{ zIndex: 2, paddingLeft: 3 }}>{p.suffix}</div> : <></>}
                         </div>
-                        {/* <input //Setting the value to 0
-                        type='range'
-                        style={{ zIndex: 1 }}
-                        tw='range range-primary cursor-not-allowed pointer-events-none'
-                        value={p.hideSlider ? 0 : val}
-                        min={rangeMin}
-                        max={rangeMax}
-                        step={step * 0.01}
-                        readOnly
-                    /> */}
                     </div>
                 </div>
+
+                {/* RESET ------------------------------------------------------------------------------------------- */}
                 <button /* Right Button */
                     tw={[
                         'h-full absolute right-0 pl-0.5',
@@ -332,8 +342,8 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
                     style={{ zIndex: 2 }}
                     onClick={(_) => {
                         startValue = val
-                        let num = val + (mode === 'int' ? step : step * 0.1)
-                        syncValues(num, { soft: true })
+                        let num = val + (uist.isInteger ? step : step * 0.1)
+                        uist.syncValues(num, { soft: true })
                     }}
                 >
                     ▸
