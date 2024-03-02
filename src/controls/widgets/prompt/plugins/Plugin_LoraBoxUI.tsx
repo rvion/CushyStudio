@@ -18,7 +18,12 @@ export const Plugin_LoraControlsUI = observer(function Plugin_LoraControlsUI_(p:
             {uist.loras.length === 0 && <div tw='italic text-gray-500'>No loras in prompt</div>}
             <div tw='flex flex-col p-1 gap-1'>
                 {uist.loras.map((loraASTNode, ix) => (
-                    <LoraBoxUI key={`${loraASTNode.name}-${ix}`} uist={uist} loraASTNode={loraASTNode} onDelete={() => {}} />
+                    <LoraBoxUI //
+                        key={`${loraASTNode.name}-${ix}`}
+                        uist={uist}
+                        loraASTNode={loraASTNode}
+                        onDelete={() => loraASTNode.remove()}
+                    />
                 ))}
             </div>
         </>
