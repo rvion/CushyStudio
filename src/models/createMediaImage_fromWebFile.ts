@@ -91,6 +91,7 @@ export const _createMediaImage_fromLocalyAvailableImage = (
     const buff: Buffer | ArrayBuffer = preBuff ?? readFileSync(relPath)
     const uint8arr = new Uint8Array(buff)
     const fileSize = uint8arr.byteLength
+    // 🔴 meta shouldn't be computed there; probably very inneficient
     const meta = imageMeta(uint8arr)
     if (meta.width == null) throw new Error(`❌ size.width is null`)
     if (meta.height == null) throw new Error(`❌ size.height is null`)
@@ -101,6 +102,15 @@ export const _createMediaImage_fromLocalyAvailableImage = (
     const prev = prevs[0]
 
     if (prev) {
+        if (prev.data.hash === hash) {
+            // 🔴 do we really want to do that ?
+            console.log(`[🏞️] exact same imamge; updating promptID and stepID`)
+            prev.update({
+                promptID: opts?.promptID ?? prev.data.promptID,
+                stepID: opts?.stepID ?? prev.data.stepID,
+            })
+            return prev
+        }
         console.log(`[🏞️] updating existing imamge`)
         // toastInfo(`🏞️ updating existing imamge`)
         prev.update({

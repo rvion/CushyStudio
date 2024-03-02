@@ -62,14 +62,8 @@ export class RuntimeLLM {
             max_tokens: 300,
             model: model,
             messages: [
-                {
-                    role: 'system',
-                    content: systemPrompt,
-                },
-                {
-                    role: 'user',
-                    content: basePrompt,
-                },
+                { role: 'system', content: systemPrompt },
+                { role: 'user', content: basePrompt },
                 // { role: 'user', content: 'Who are you?' },
             ],
         })
