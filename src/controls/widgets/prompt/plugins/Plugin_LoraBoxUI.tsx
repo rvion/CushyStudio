@@ -17,9 +17,9 @@ export const Plugin_LoraControlsUI = observer(function Plugin_LoraControlsUI_(p:
         <>
             {uist.loras.length === 0 && <div tw='italic text-gray-500'>No loras in prompt</div>}
             <div tw='flex flex-col p-1 gap-1'>
-                {uist.loras.map((x) => {
-                    return <LoraBoxUI key={x.from} uist={uist} def={x} onDelete={() => {}} />
-                })}
+                {uist.loras.map((loraASTNode, ix) => (
+                    <LoraBoxUI key={`${loraASTNode.name}-${ix}`} uist={uist} loraASTNode={loraASTNode} onDelete={() => {}} />
+                ))}
             </div>
         </>
     )
@@ -28,28 +28,21 @@ export const Plugin_LoraControlsUI = observer(function Plugin_LoraControlsUI_(p:
 const LoraBoxUI = observer(function LoraBoxUI_(p: {
     //
     uist: WidgetPromptUISt
-    def: Prompt_Lora
+    loraASTNode: Prompt_Lora
     onDelete: () => void
 }) {
-    const node = p.def
+    const node = p.loraASTNode
     const st = useSt()
     const loraName = node.name
     if (loraName == null) return <MessageErrorUI>error parsing lora</MessageErrorUI>
     const loraMetadata = st.configFile.value?.loraPrompts?.[loraName]
     const associatedText = loraMetadata?.text ?? ''
     const associatedUrl = loraMetadata?.url ?? ''
-    // const weightedExpression =
-    const weighted = p.uist.ast.findAll('WeightedExpression').find((weighted) => {
-        let text = weighted.contentText
-        if (text.length == 0 || text.charAt(0) != '@') {
-            return false
-        }
-        return weighted.contentText.indexOf(`@${loraName}`) > -1
-    })
+    const weighted = p.loraASTNode.firstAncestor('WeightedExpression')
 
     // const numbers = def.ref.node.getChildren('Number')
     return (
-        <div key={loraName} tw='bg-base-100 rounded p-2'>
+        <div tw='bg-base-100 rounded p-2'>
             <div //Header
                 tw='flex w-full h-10 border-b pb-2 items-center border-base-200 mb-2'
             >
@@ -78,11 +71,7 @@ const LoraBoxUI = observer(function LoraBoxUI_(p: {
                             else {
                                 if (node.nameEndsAt == null) return
                                 p.uist.editorView?.dispatch({
-                                    changes: {
-                                        from: node.nameEndsAt,
-                                        to: node.nameEndsAt,
-                                        insert: `[${v.toString()}]`,
-                                    },
+                                    changes: { from: node.nameEndsAt, to: node.nameEndsAt, insert: `[${v.toString()}]` },
                                 })
                             }
                         }}
@@ -147,28 +136,10 @@ const LoraBoxUI = observer(function LoraBoxUI_(p: {
                         max={2}
                         hideSlider
                         onValueChange={(v) => {
-                            // Change weight, or add WeightedExpression if there is none.
-                            if (weighted) {
-                                weighted.weight = v
-                            } else {
-                                p.uist.editorView?.dispatch({
-                                    changes: {
-                                        from: node.to,
-                                        to: node.to,
-                                        insert: `)*${v}`,
-                                    },
-                                })
-
-                                p.uist.editorView?.dispatch({
-                                    changes: {
-                                        from: node.from,
-                                        to: node.from,
-                                        insert: '(',
-                                    },
-                                })
-                            }
+                            if (weighted) weighted.weight = v
+                            else node.wrapWithWeighted(v)
                         }}
-                    ></InputNumberUI>
+                    />
                 </div>
             </div>
             <div tw='opacity-50 italic text-xs'>
