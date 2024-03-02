@@ -2,6 +2,7 @@ import type { EditorView } from 'codemirror'
 
 import Lezer, { SyntaxNode } from '@lezer/common'
 
+// import { nanoid } from 'nanoid'
 import { parser } from './grammar.parser'
 
 type KnownNodeNames = keyof typeof import('./grammar.parser.terms')
@@ -105,6 +106,17 @@ export class PromptAST {
 // ----------------------------------------
 // base node wrapper
 abstract class ManagedNode<Name extends KnownNodeNames = any> {
+    // uid = nanoid()
+
+    /** retrieve the closest ancestor of given class */
+    firstAncestor = <T extends KnownNodeNames>(kind: T): Maybe<CLASSES[T]> => {
+        let current: Maybe<ManagedNode> = this
+        while (current) {
+            if (current.$kind === kind) return current as Maybe<CLASSES[T]>
+            current = current.parent
+        }
+        return null
+    }
     abstract $kind: Name
     get from() {
         return this.node.from
