@@ -234,7 +234,7 @@ export class MediaImageL {
     /** return as web `Blob` */
     getAsBlob(): Blob {
         const filePath = this.data.path
-        const mime = asSTRING_orCrash(lookup(filePath))
+        const mime = asSTRING_orCrash(lookup(filePath), '❌ invalid mime type')
         const blob = new Blob([readFileSync(filePath)], { type: mime })
         return blob
     }
@@ -242,7 +242,7 @@ export class MediaImageL {
     /** return as web `File` */
     getAsFile(): File {
         const filePath = this.data.path
-        const mime = asSTRING_orCrash(lookup(filePath))
+        const mime = asSTRING_orCrash(lookup(filePath), '❌ invalid mime type')
         const file = new File([readFileSync(filePath)], basename(filePath), { type: mime })
         return file
     }
