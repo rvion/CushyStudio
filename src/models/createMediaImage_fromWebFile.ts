@@ -33,7 +33,13 @@ export const createMediaImage_fromBlobObject = async (st: STATE, blob: Blob, rel
     return _createMediaImage_fromLocalyAvailableImage(st, relPath, buff)
 }
 
-export const createMediaImage_fromDataURI = (st: STATE, dataURI: string, subFolder?: string): MediaImageL => {
+export const createMediaImage_fromDataURI = (
+    //
+    st: STATE,
+    dataURI: string,
+    subFolder?: string,
+    opts?: ImageCreationOpts,
+): MediaImageL => {
     mkdirSync(`outputs/${subFolder}/`, { recursive: true })
     // type: 'data:image/png;base64,' => 'png
     const contentType = dataURI.split(';')[0].split(':')[1]
@@ -57,7 +63,7 @@ export const createMediaImage_fromDataURI = (st: STATE, dataURI: string, subFold
     const fName = hash + ext
     const relPath = `outputs/${subFolder}/${fName}` as RelativePath
     writeFileSync(relPath, buff)
-    return _createMediaImage_fromLocalyAvailableImage(st, relPath, buff)
+    return _createMediaImage_fromLocalyAvailableImage(st, relPath, buff, opts)
 }
 
 export const createMediaImage_fromPath = (
