@@ -8,6 +8,8 @@ import { MessageErrorUI } from 'src/panels/MessageUI'
 import { Button, Input } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
 
+// TODO: Once it is possible to get the modifier key's states, holding shift when pressing the trash button should not trim whitespace/commas
+
 export const Plugin_LoraControlsUI = observer(function Plugin_LoraControlsUI_(p: {
     //
     uist: WidgetPromptUISt
@@ -19,19 +21,34 @@ export const Plugin_LoraControlsUI = observer(function Plugin_LoraControlsUI_(p:
             <div tw='flex flex-col p-1 gap-1'>
                 {uist.loras.map((loraASTNode, ix) => {
                     const weighted = loraASTNode.firstAncestor('WeightedExpression')
+                    const isOnlyLora = weighted?.contentText == loraASTNode?.text
 
                     return (
                         <LoraBoxUI //
                             key={`${loraASTNode.name}-${ix}`}
                             uist={uist}
                             loraASTNode={loraASTNode}
-                            weightedASTNode={weighted}
+                            weightedASTNode={isOnlyLora ? weighted : null}
                             onDelete={() => {
-                                if (weighted) {
+                                let from = loraASTNode.from
+                                // Delete surrounding "()*val" if exists and only contains the lora, otherwise remove only lora
+                                if (weighted && isOnlyLora) {
                                     weighted.remove()
+                                    from = weighted.from
                                 } else {
                                     loraASTNode.remove()
                                 }
+
+                                // Clean-up trailing white-space/commas
+                                const text = uist.text.slice(from)
+                                uist.editorView?.dispatch({
+                                    changes: {
+                                        //
+                                        from,
+                                        to: from + text.length - text.replace(/^[,\s]+/, '').length,
+                                        insert: '',
+                                    },
+                                })
                             }}
                         />
                     )
