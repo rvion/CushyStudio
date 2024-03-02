@@ -8,6 +8,7 @@ import type { STATE } from 'src/state/state'
 
 import child_process, { execSync } from 'child_process'
 import fs, { writeFileSync } from 'fs'
+import { hash } from 'ohash'
 import * as path from 'pathe'
 
 import { ComfyWorkflowBuilder } from '../back/NodeBuilder'
@@ -143,6 +144,8 @@ export class Runtime<FIELDS extends SchemaDict = any> {
     isCurrentDraftAutoStartEnabled = (): Maybe<boolean> => {
         return this.step.draft?.shouldAutoStart
     }
+
+    hash = (s: string): string => hash(s)
 
     isCurrentDraftDirty(): Maybe<boolean> {
         return this.step.draft?.isDirty
