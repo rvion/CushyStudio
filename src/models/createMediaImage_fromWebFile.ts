@@ -24,13 +24,19 @@ export const createMediaImage_fromFileObject = async (st: STATE, file: File, sub
     return createMediaImage_fromBlobObject(st, file, relPath)
 }
 
-export const createMediaImage_fromBlobObject = async (st: STATE, blob: Blob, relPath: string): Promise<MediaImageL> => {
+export const createMediaImage_fromBlobObject = async (
+    //
+    st: STATE,
+    blob: Blob,
+    relPath: string,
+    opts?: ImageCreationOpts,
+): Promise<MediaImageL> => {
     console.log(`[🌠] createMediaImage_fromBlobObject`)
     const dir = dirname(relPath)
     mkdirSync(dir, { recursive: true })
     const buff: Buffer = await blob.arrayBuffer().then((x) => Buffer.from(x))
     writeFileSync(relPath, buff)
-    return _createMediaImage_fromLocalyAvailableImage(st, relPath, buff)
+    return _createMediaImage_fromLocalyAvailableImage(st, relPath, buff, opts)
 }
 
 export const createMediaImage_fromDataURI = (
