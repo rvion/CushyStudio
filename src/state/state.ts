@@ -409,6 +409,11 @@ export class STATE {
     comfyUIIframeRef = createRef<HTMLIFrameElement>()
     expandNodes: boolean = false
 
+    showConfettiAndBringFun = async () => {
+        const confetti = (await import('https://cdn.skypack.dev/canvas-confetti' as any)).default
+        confetti()
+    }
+
     updateTsConfig = () => {
         console.log(`[🍻] FIXUP TSConfig`)
         const mandatory = mandatoryTSConfigIncludes
