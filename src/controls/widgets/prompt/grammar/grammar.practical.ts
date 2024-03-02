@@ -117,6 +117,14 @@ abstract class ManagedNode<Name extends KnownNodeNames = any> {
         }
         return null
     }
+
+    wrapWithWeighted = (weight: number) => {
+        this.expression.editorView?.dispatch(
+            { changes: { from: this.to, to: this.to, insert: `)*${weight}` } },
+            { changes: { from: this.from, to: this.from, insert: '(' } },
+        )
+    }
+
     abstract $kind: Name
     get from() {
         return this.node.from
