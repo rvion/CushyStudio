@@ -16,6 +16,7 @@ const modulesToCache /*: [name:string, path:string][]*/ = [
     ['cluster'          , 'cluster'         ],
     ['https'            , 'https'           ],
     ['async_hooks'      , 'async_hooks'     ],
+    ['crypto'           , 'crypto'          ],
 
     // misc heavy libs ----------------
     ['three'            , 'three'           ],

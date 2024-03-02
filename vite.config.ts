@@ -98,6 +98,8 @@ export default defineConfig({
             'node:events': `${installDir}/src/syms/events.js`,
             /* */ async_hooks: `${installDir}/src/syms/async_hooks.js`,
             'node:async_hooks': `${installDir}/src/syms/async_hooks.js`,
+            /* */ crypto: `${installDir}/src/syms/crypto.js`,
+            'node:crypto': `${installDir}/src/syms/crypto.js`,
         },
     },
 })

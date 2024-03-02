@@ -1,11 +1,11 @@
-import { sha256base64 } from 'ohash'
+import crypto from 'crypto'
 
 export const hashBlob = async (blob: Blob): Promise<string> => {
     const buffer = await blob.arrayBuffer()
-    return hashArrayBuffer(buffer)
+    return crypto.createHash('sha1').update(Buffer.from(buffer)).digest('base64')
 }
 
 export const hashArrayBuffer = (buffer: ArrayBuffer): string => {
-    const b64 = Buffer.from(buffer).toString('base64')
-    return sha256base64(b64)
+    const data = Buffer.from(buffer)
+    return crypto.createHash('sha1').update(data).digest('base64')
 }
