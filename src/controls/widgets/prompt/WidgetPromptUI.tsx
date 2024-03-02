@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite'
-import { useLayoutEffect, useMemo } from 'react'
+import { useEffect, useLayoutEffect, useMemo } from 'react'
 
 import { PluginWrapperUI } from './plugins/_PluginWrapperUI'
 import { Plugin_AdjustWeightsUI } from './plugins/Plugin_AdjustWeights'
@@ -59,6 +59,16 @@ export const WidgetPromptUI = observer(function WidgetPromptUI_(p: { widget: Wid
     useLayoutEffect(() => {
         if (uist.mountRef.current) uist.mount(uist.mountRef.current)
     }, [])
+
+    // widget prompt uses codemirror, and codemirror manage its internal state itsef.
+    // making the widget "uncontrolled". Usual automagical mobx-reactivity may not always apply.
+    // To allow CodeMirror editor to react to external value changes, we need to use an effect
+    // that track external changes, and update the editor.
+    useEffect(() => {
+        if (widget._valueUpdatedViaAPIAt == null) return
+        uist.replaceTextBy(widget.text)
+    }, [widget._valueUpdatedViaAPIAt])
+
     return (
         <div
             tw='flex flex-col'

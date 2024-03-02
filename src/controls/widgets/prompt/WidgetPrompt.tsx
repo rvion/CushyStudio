@@ -1,5 +1,6 @@
 import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 import type { Tree } from '@lezer/common'
+import type { Timestamp } from 'src/cards/Timestamp'
 import type { Form } from 'src/controls/Form'
 
 import { makeAutoObservable } from 'mobx'
@@ -66,6 +67,19 @@ export class Widget_prompt implements IWidget<Widget_prompt_types> {
             id: this.id,
         }
         makeAutoObservable(this)
+    }
+
+    // sentinel value so we know when to trigger update effect in the UI to update
+    // codemirror uncontrolled component
+    _valueUpdatedViaAPIAt: Maybe<Timestamp> = null
+
+    set text(next: string) {
+        // widget prompt uses codemirror, and codemirror manage its internal state itsef.
+        // making the widget "uncontrolled". Usual automagical mobx-reactivity may not always apply.
+        // To allow CodeMirror editor to react to external value changes, we need to use an effect in the UI.
+        // To know when to run the effect, we update `valueUpdatedViaAPIAt` here to trigger the effect.
+        this._valueUpdatedViaAPIAt = Date.now() as Timestamp
+        this.serial.val = next
     }
 
     // the raw unparsed text
