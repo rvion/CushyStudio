@@ -118,6 +118,11 @@ abstract class ManagedNode<Name extends KnownNodeNames = any> {
         return null
     }
 
+    /** remove the node, replace it's content by '' */
+    remove = () => {
+        this.expression.editorView?.dispatch({ changes: { from: this.from, to: this.to, insert: '' } })
+    }
+
     wrapWithWeighted = (weight: number) => {
         this.expression.editorView?.dispatch(
             { changes: { from: this.to, to: this.to, insert: `)*${weight}` } },
