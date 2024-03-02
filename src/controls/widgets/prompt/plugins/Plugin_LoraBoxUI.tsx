@@ -2,11 +2,13 @@ import { observer } from 'mobx-react-lite'
 
 import { openExternal } from 'src/app/layout/openExternal'
 import { InputNumberUI } from 'src/controls/widgets/number/InputNumberUI'
-import { Prompt_Lora } from 'src/controls/widgets/prompt/grammar/grammar.practical'
+import { Prompt_Lora, Prompt_WeightedExpression } from 'src/controls/widgets/prompt/grammar/grammar.practical'
 import { WidgetPromptUISt } from 'src/controls/widgets/prompt/WidgetPromptUISt'
 import { MessageErrorUI } from 'src/panels/MessageUI'
 import { Button, Input } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
+
+// TODO: Once it is possible to get the modifier key's states, holding shift when pressing the trash button should not trim whitespace/commas
 
 export const Plugin_LoraControlsUI = observer(function Plugin_LoraControlsUI_(p: {
     //
@@ -17,14 +19,40 @@ export const Plugin_LoraControlsUI = observer(function Plugin_LoraControlsUI_(p:
         <>
             {uist.loras.length === 0 && <div tw='italic text-gray-500'>No loras in prompt</div>}
             <div tw='flex flex-col p-1 gap-1'>
-                {uist.loras.map((loraASTNode, ix) => (
-                    <LoraBoxUI //
-                        key={`${loraASTNode.name}-${ix}`}
-                        uist={uist}
-                        loraASTNode={loraASTNode}
-                        onDelete={() => loraASTNode.remove()}
-                    />
-                ))}
+                {uist.loras.map((loraASTNode, ix) => {
+                    const weighted = loraASTNode.firstAncestor('WeightedExpression')
+                    const isOnlyLora = weighted?.contentText == loraASTNode?.text
+
+                    return (
+                        <LoraBoxUI //
+                            key={`${loraASTNode.name}-${ix}`}
+                            uist={uist}
+                            loraASTNode={loraASTNode}
+                            weightedASTNode={isOnlyLora ? weighted : null}
+                            onDelete={() => {
+                                let from = loraASTNode.from
+                                // Delete surrounding "()*val" if exists and only contains the lora, otherwise remove only lora
+                                if (weighted && isOnlyLora) {
+                                    weighted.remove()
+                                    from = weighted.from
+                                } else {
+                                    loraASTNode.remove()
+                                }
+
+                                // Clean-up trailing white-space/commas
+                                const text = uist.text.slice(from)
+                                uist.editorView?.dispatch({
+                                    changes: {
+                                        //
+                                        from,
+                                        to: from + text.length - text.replace(/^[,\s]+/, '').length,
+                                        insert: '',
+                                    },
+                                })
+                            }}
+                        />
+                    )
+                })}
             </div>
         </>
     )
@@ -34,6 +62,7 @@ const LoraBoxUI = observer(function LoraBoxUI_(p: {
     //
     uist: WidgetPromptUISt
     loraASTNode: Prompt_Lora
+    weightedASTNode: Maybe<Prompt_WeightedExpression>
     onDelete: () => void
 }) {
     const node = p.loraASTNode
@@ -43,7 +72,7 @@ const LoraBoxUI = observer(function LoraBoxUI_(p: {
     const loraMetadata = st.configFile.value?.loraPrompts?.[loraName]
     const associatedText = loraMetadata?.text ?? ''
     const associatedUrl = loraMetadata?.url ?? ''
-    const weighted = p.loraASTNode.firstAncestor('WeightedExpression')
+    const weighted = p.weightedASTNode
 
     // const numbers = def.ref.node.getChildren('Number')
     return (
