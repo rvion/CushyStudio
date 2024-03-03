@@ -46,13 +46,7 @@ app({
         // START IMAGE -------------------------------------------------------------------------------
         const IMG = ui.ipadapter.image
 
-        const xx = await run_ipadapter_standalone(ui.ipadapter, {
-            positive,
-            negative,
-            width: IMG.width,
-            height: IMG.height,
-            ckptPos: ckpt,
-        })
+        const xx = await run_ipadapter_standalone(ui.ipadapter, ckpt)
 
         const imgC = await IMG.loadInWorkflow()
         const img = graph.VAEDecode({
