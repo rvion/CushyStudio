@@ -3,12 +3,12 @@ export type KnownModel_Base =
     | "SDXL"               // x  37
     | "SD1.x"              // x  25
     | "upscale"            // x  10
-    | "inswapper"          // x   7
+    | "inswapper"          // x  12
     | "deepbump"           // x   1
     | "face_restore"       // x   3
     | "SVD"                // x   2
     | "zero123"            // x   1
-    | "SD1.5"              // x  57
+    | "SD1.5"              // x  60
     | "Stable Cascade"     // x  13
     | "SD2"                // x   2
     | "SD2.1"              // x   4

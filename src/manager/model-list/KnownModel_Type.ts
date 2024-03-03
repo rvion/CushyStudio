@@ -3,7 +3,7 @@ export type KnownModel_Type =
     | "TAESD"              // x   4
     | "upscale"            // x   9
     | "checkpoints"        // x  21
-    | "insightface"        // x   7
+    | "insightface"        // x  12
     | "deepbump"           // x   1
     | "face_restore"       // x   3
     | "zero123"            // x   1
@@ -33,5 +33,6 @@ export type KnownModel_Type =
     | "efficient_sam"      // x   2
     | "Shape Predictor"    // x   1
     | "Face Recognition"   // x   1
+    | "InstanceDiffusion"  // x   3
 
 

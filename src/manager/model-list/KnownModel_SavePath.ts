@@ -46,4 +46,10 @@ export type KnownModel_SavePath =
     | "controlnet/instantid"                             // x   1
     | "custom_nodes/ComfyUI-YoloWorld-EfficientSAM"      // x   2
     | "custom_nodes/ComfyUI_FaceAnalysis/dlib"           // x   2
-    | "custom_nodes/ComfyUI-BRIA_AI-RMBG/RMBG-1.4" // x   1
+    | "instance_models/fuser_models"                     // x   1
+    | "instance_models/positionnet_models"               // x   1
+    | "instance_models/scaleu_models"                    // x   1
+    | "insightface/models/buffalo_l"                     // x   5
+    | "custom_nodes/ComfyUI-BRIA_AI-RMBG/RMBG-1.4"       // x   1
+
+
