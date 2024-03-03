@@ -204,6 +204,13 @@ export class ComfyPromptL {
             imgL = _createMediaImage_fromLocalyAvailableImage(this.st, outputRelPath, buff, imgCreationOpts)
         }
 
+        // apply tags --------------------------------------------------------------------------------
+        const tags: string[] = imgL.data.tags?.split(',') ?? []
+        if (promptMeta.tag) tags.push(promptMeta.tag)
+        if (promptMeta.tags) tags.push(...promptMeta.tags)
+        if (tags.length) imgL.update({ tags: tags.join(',') })
+
+        // update store --------------------------------------------------------------------------------
         if (this.step.runtime && promptMeta.storeAs) {
             this.step.runtime.Store.getImageStore(promptMeta.storeAs).set(imgL)
         }

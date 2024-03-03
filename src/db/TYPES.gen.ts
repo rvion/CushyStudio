@@ -844,6 +844,9 @@ export type MediaImageT = {
     /** @default: null, sqlType: INT */
     orientation?: Maybe<number>;
 
+    /** @default: null, sqlType: string */
+    tags?: Maybe<string>;
+
 }
 
 export type MediaImage_C = {
@@ -892,6 +895,9 @@ export type MediaImage_C = {
     /** @default: null, sqlType: INT */
     orientation?: Maybe<number>;
 
+    /** @default: null, sqlType: string */
+    tags?: Maybe<string>;
+
 }
 export const MediaImageSchema = Type.Object({
     id: Type.String(),
@@ -909,6 +915,7 @@ export const MediaImageSchema = Type.Object({
     comfyUIInfos: Type.Optional(T.Nullable(T.MediaImage_comfyUIInfos_Schema)),
     type: Type.Optional(T.Nullable(Type.String())),
     orientation: Type.Optional(T.Nullable(Type.Number())),
+    tags: Type.Optional(T.Nullable(Type.String())),
 },{ additionalProperties: false })
 
 export const MediaImageRefs =[
@@ -935,6 +942,7 @@ export const MediaImageFields = {
     comfyUIInfos: {cid:12,name:'comfyUIInfos',type:'json',notnull:0,dflt_value:null,pk:0},
     type: {cid:13,name:'type',type:'TEXT',notnull:0,dflt_value:null,pk:0},
     orientation: {cid:14,name:'orientation',type:'INT',notnull:0,dflt_value:null,pk:0},
+    tags: {cid:15,name:'tags',type:'string',notnull:0,dflt_value:null,pk:0},
 }
 
 

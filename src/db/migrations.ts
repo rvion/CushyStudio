@@ -587,6 +587,12 @@ export const migrations: {
             `alter table cushy_script add column lastExtractedAt int`,
         ],
     },
+
+    {
+        id: 'EhzHiGrpxx',
+        name: 'add media_image.tags',
+        up: [`alter table media_image add column tags string`],
+    },
     // {
     //     id: 'e574c006-daca-4fd0-a51b-73a66b4fbd79',
     //     name: 'create cushy_app table',
