@@ -5,6 +5,7 @@ import { InputNumberUI } from 'src/controls/widgets/number/InputNumberUI'
 import { Prompt_Lora, Prompt_WeightedExpression } from 'src/controls/widgets/prompt/grammar/grammar.practical'
 import { WidgetPromptUISt } from 'src/controls/widgets/prompt/WidgetPromptUISt'
 import { MessageErrorUI } from 'src/panels/MessageUI'
+import { SelectUI } from 'src/rsuite/SelectUI'
 import { Button, Input } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
 
@@ -80,15 +81,37 @@ const LoraBoxUI = observer(function LoraBoxUI_(p: {
             <div //Header
                 tw='flex w-full h-10 border-b pb-2 items-center border-base-200 mb-2'
             >
-                {node.name}
-                <div tw='flex-0 flex-grow'></div>
-                <Button //
-                    size='xs'
-                    icon={<span className='material-symbols-outlined'>delete_forever</span>}
-                    onClick={p.onDelete}
-                    tw='h-full'
-                />
+                <div //Join Lora selection and Delete Button
+                    tw='flex-1 join'
+                >
+                    <SelectUI
+                        tw='join-item'
+                        value={() => loraName}
+                        options={() => st.schema.getLoras()}
+                        onChange={(val) => {
+                            node.nameNode?.setText(val)
+                            // p.uist.editorView?.dispatch({
+                            //     changes: {
+                            //         from: node.from,
+                            //         to: node.to,
+                            //         insert: val.indexOf(' ') > -1 ? `@"${val}"` : `@${val}`,
+                            //     },
+                            // })
+                        }}
+                        getLabelText={(t): string => {
+                            return t
+                        }}
+                        getLabelUI={(v) => <div>{v}</div>}
+                    />
+                    <Button //
+                        tw='WIDGET-FIELD join-item w-8'
+                        size='xs'
+                        icon={<span className='material-symbols-outlined'>delete_forever</span>}
+                        onClick={p.onDelete}
+                    />
+                </div>
             </div>
+            {/* {node.name} */}
             <div tw='flex gap-1 items-center'>
                 <div tw='w-32'>Model Strength</div>
                 <div tw='flex flex-grow items-center'>
