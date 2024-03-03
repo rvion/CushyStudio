@@ -1,6 +1,7 @@
 import type { Form } from './Form'
 import type { Requirements } from './IWidget'
 import type { SchemaDict } from 'src/cards/App'
+import type { OpenRouter_Models } from 'src/llm/OpenRouter_models'
 
 import { makeAutoObservable } from 'mobx'
 
@@ -31,6 +32,7 @@ import { type BaseSelectEntry, Widget_selectOne, type Widget_selectOne_config } 
 import { Widget_shared } from './widgets/shared/WidgetShared'
 import { Widget_size, type Widget_size_config } from './widgets/size/WidgetSize'
 import { Widget_string, type Widget_string_config } from './widgets/string/WidgetString'
+import { openRouterInfos } from 'src/llm/OpenRouter_infos'
 
 // prettier-ignore
 export class FormBuilder {
@@ -83,6 +85,11 @@ export class FormBuilder {
     choices     = <const T extends { [key: string]: Spec }>(config: Omit<Widget_choices_config<T>, 'multi'>) => new Spec<Widget_choices<T>                  >('choices'   , { multi: true, ...config })
     // optional wrappers
     optional    = <const T extends Spec>(p: Widget_optional_config<T>) => new Spec<Widget_optional<T>>('optional', p)
+    llmModel = (p:{default?: OpenRouter_Models}={}) => {
+        const choices = Object.entries(openRouterInfos).map(([id, info]) => ({ id: id as OpenRouter_Models, label: info.name }))
+        const def = choices ? choices.find(c => c.id===p.default) : undefined
+        return this.selectOne({ default: def, choices, }
+    )}
 
     /** @deprecated ; if you need this widget, you should copy paste that into a prefab */
     inlineRun   = (config: Widget_button_config = {})                                                        => new Spec<Widget_button                   >('button' , {
