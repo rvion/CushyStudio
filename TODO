@@ -1,6 +1,8 @@
 ☐ filter enum values: highlight + sort
 ☐ auto-ui
-
+☐ make adding optional / removing optional recoverable by smartly
+    ☐ reusing the draft
+    ☐ picking subdraft when optional instead of X
 
 ☐ header (instead of line)
 ☐ body (instead of block)
