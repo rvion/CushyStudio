@@ -1,4 +1,3 @@
-export const locoTenants = [
     { id: 'redacted', label: `redacted` },
     { id: 'redacted', label: `redacted` },
     { id: 'redacted', label: `redacted` },
@@ -326,4 +325,5 @@ export const locoTenants = [
     { id: 'redacted', label: `redacted` },
     { id: 'redacted', label: `redacted` },
     { id: 'redacted', label: `redacted` },
+export const locoLocations = [
 ]

@@ -15,7 +15,7 @@ export const LocoChartUI = observer(function LocoChartUI_(p: LocoChartProps) {
             echarts={locoCharts}
             theme={p.theme}
             option={p.options}
-            style={{ height: '80vh', width: '100%' }}
+            style={{ height: '20rem', width: '100%' }}
         />
     )
 })
