@@ -34,6 +34,11 @@ export class ComfyNode<
         this.meta.tag = tagName
         return this
     }
+    addTag = (tag: string) => {
+        if (this.meta.tags == null) this.meta.tags = [tag]
+        else this.meta.tags.push(tag)
+        return this
+    }
     // ---------------------------------------
 
     // artifacts: _WsMsgExecutedData[] = []
