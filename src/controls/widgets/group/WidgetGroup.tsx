@@ -6,13 +6,14 @@ import type { SchemaDict } from 'src/controls/Spec'
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { WidgetDI } from '../WidgetUI.DI'
+import { WidgetDI, isWidgetOptional } from '../WidgetUI.DI'
 import { WidgetGroup_BlockUI, WidgetGroup_LineUI } from './WidgetGroupUI'
 import { applyWidgetMixinV2 } from 'src/controls/Mixins'
 import { getActualWidgetToDisplay } from 'src/controls/shared/getActualWidgetToDisplay'
 import { getIfWidgetIsCollapsible } from 'src/controls/shared/getIfWidgetIsCollapsible'
 import { Spec } from 'src/controls/Spec'
 import { runWithGlobalForm } from 'src/models/_ctx2'
+import type { Widget_optional } from '../optional/WidgetOptional'
 
 // CONFIG
 export type Widget_group_config<T extends SchemaDict> = WidgetConfigFields<
@@ -84,6 +85,10 @@ export class Widget_group<T extends SchemaDict> implements IWidget<Widget_group_
     /** all [key,value] pairs */
     get entries() {
         return Object.entries(this.fields) as [string, IWidget][]
+    }
+
+    get optionalFields(): [string, Widget_optional][] {
+        return Object.entries(this.fields).filter(([key, item]) => isWidgetOptional(item)) as [string, Widget_optional][]
     }
 
     at = <K extends keyof T>(key: K): T[K]['$Widget'] => this.fields[key]
