@@ -4,6 +4,7 @@ import 'src/models/asyncRuntimeStorage'
 import type { MediaImageL } from '../models/MediaImage'
 import type { ComfyStatus, PromptID, PromptRelated_WsMsg, WsMsg } from '../types/ComfyWsApi'
 import type { CSCriticalError } from '../widgets/CSCriticalError'
+import type { SelectQueryBuilder } from 'kysely'
 import type { ActionTagMethodList } from 'src/cards/App'
 import type { TreeNode } from 'src/panels/libraryUI/tree/xxx/TreeNode'
 import type { RevealState } from 'src/rsuite/reveal/RevealState'
@@ -49,7 +50,7 @@ import { mkConfigFile } from 'src/config/mkConfigFile'
 import { Form } from 'src/controls/Form'
 import { LiveCollection } from 'src/db/LiveCollection'
 import { SQLITE_false, SQLITE_true } from 'src/db/SQLITE_boolean'
-import { asHostID, type TABLES } from 'src/db/TYPES.gen'
+import { asHostID, type KyselyTables, type TABLES } from 'src/db/TYPES.gen'
 import { ComfyManagerRepository } from 'src/manager/ComfyManagerRepository'
 import { createMediaImage_fromPath } from 'src/models/createMediaImage_fromWebFile'
 import { CushyAppL } from 'src/models/CushyApp'
@@ -809,13 +810,32 @@ export class STATE {
         return this.db.steps.last()
     }
 
-    galleryFilter: Maybe<string> = null
-    get imageToDisplay(): MediaImageL[] {
-        const maxImages = this.galleryConf.value.galleryMaxImages ?? 20
-        // let query =
-        // const stmt = this.db.db.prepare(`select * from media_image order by createdAt desc limit ? where tags like ?`)
-        // this.db.prepareAll(this.infos, `select * from ${this.name} order by createdAt desc limit ?`)
-        return this.db.media_images.getLastN(maxImages)
+    // get imageToDisplayold(): MediaImageL[] {
+    //     const maxImages = this.galleryConf.value.galleryMaxImages ?? 20
+    //     // let query =
+    //     // const stmt = this.db.db.prepare(`select * from media_image order by createdAt desc limit ? where tags like ?`)
+    //     // this.db.prepareAll(this.infos, `select * from ${this.name} order by createdAt desc limit ?`)
+    //     return this.db.media_images.getLastN(maxImages)
+    // }
+
+    galleryFilterTag: Maybe<string> = null
+    galleryFilterAppName: Maybe<{ id: CushyAppID; name?: Maybe<string> }> = null
+    get imageToDisplay() {
+        return this.db.media_images.live((query) => {
+            let x = query
+                .orderBy('media_image.createdAt', 'desc')
+                .limit(this.galleryConf.value.galleryMaxImages ?? 20)
+                .select('media_image.id')
+
+            if (this.galleryFilterTag) x = x.where('media_image.tags', 'like', '%' + this.galleryFilterTag + '%')
+            if (this.galleryFilterAppName) {
+                x = x
+                    .innerJoin('step', 'media_image.stepID', 'step.id')
+                    .innerJoin('cushy_app', 'cushy_app.id', 'step.appID')
+                    .where('cushy_app.id', 'in', [this.galleryFilterAppName.id])
+            }
+            return x.compile()
+        })
     }
 
     // FILESYSTEM UTILS --------------------------------------------------------------------

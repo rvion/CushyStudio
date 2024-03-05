@@ -5,6 +5,7 @@ import { ImageUI } from '../widgets/galleries/ImageUI'
 import { PanelHeaderUI } from './PanelHeader'
 import { FormUI } from 'src/controls/FormUI'
 import { OutputPreviewWrapperUI } from 'src/outputs/OutputPreviewWrapperUI'
+import { SelectUI } from 'src/rsuite/SelectUI'
 
 export const Panel_Gallery = observer(function VerticalGalleryUI_(p: {}) {
     const st = useSt()
@@ -16,29 +17,43 @@ export const Panel_Gallery = observer(function VerticalGalleryUI_(p: {}) {
             <PanelHeaderUI>
                 <GalleryControlsUI />
             </PanelHeaderUI>
-            <input
-                tw='input my-0.5'
-                placeholder='filter (unfinished)'
-                value={cushy.galleryFilter ?? ''}
-                type='text'
-                onChange={(x) => {
-                    const next = x.target.value
-                    if (!next) cushy.galleryFilter = null
-                    else cushy.galleryFilter = next
-                }}
-            />
+            <div tw='flex gap-1'>
+                <input
+                    tw='input my-0.5 input-xs'
+                    placeholder='filter (unfinished)'
+                    value={cushy.galleryFilterTag ?? ''}
+                    type='text'
+                    onChange={(x) => {
+                        const next = x.target.value
+                        if (!next) cushy.galleryFilterTag = null
+                        else cushy.galleryFilterTag = next
+                    }}
+                />
+                <SelectUI
+                    key='45'
+                    label='app'
+                    options={() => cushy.db.cushy_apps.live((q) => q.select(['id', 'name']).compile()).all}
+                    getLabelText={(i) => i.name ?? 'unnamed'}
+                    value={() => cushy.galleryFilterAppName}
+                    equalityCheck={(a, b) => a.id === b.id}
+                    onChange={(next) => (cushy.galleryFilterAppName = next)}
+                />
+            </div>
 
             <div className='flex flex-wrap overflow-auto'>
                 {/* <LatentPreviewUI /> */}
-                {st.imageToDisplay.map((img) => (
-                    <OutputPreviewWrapperUI //
-                        size={st.galleryConf.get('gallerySize')}
-                        key={img.id}
-                        output={img}
-                    >
-                        <ImageUI img={img} />
-                    </OutputPreviewWrapperUI>
-                ))}
+                {st.imageToDisplay.all.map((img_) => {
+                    const img = st.db.media_images.get(img_.id)!
+                    return (
+                        <OutputPreviewWrapperUI //
+                            size={st.galleryConf.get('gallerySize')}
+                            key={img.id}
+                            output={img}
+                        >
+                            <ImageUI img={img} />
+                        </OutputPreviewWrapperUI>
+                    )
+                })}
             </div>
         </div>
     )
