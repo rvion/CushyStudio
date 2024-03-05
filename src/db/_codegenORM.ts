@@ -13,6 +13,7 @@ export const _codegenORM = (store: {
     const db = store.db
 
     let out1 = ''
+    out1 += `import { ColumnType, Generated, Insertable, JSONColumnType, Selectable, Updateable } from 'kysely'\n`
     out1 += `import * as T from './TYPES_json'\n`
     out1 += `import { Type } from '@sinclair/typebox'\n`
     out1 += `\n`
@@ -74,19 +75,24 @@ export const _codegenORM = (store: {
         //
 
         let typeDecl: string = '\n'
-        let typeDeclCreate: string = '\n'
+        // let typeDeclCreate: string = '\n'
         let schemaDecl: string = `\n`
         let fieldsDef: string = `\n`
         out2 += `declare type ${jsTableName}ID = Branded<string, { ${jsTableName}ID: true }>\n`
         typeDecl += `export const as${jsTableName}ID = (s: string): ${jsTableName}ID => s as any\n`
         schemaDecl = `export const ${jsTableName}Schema = Type.Object({\n`
-        typeDecl += `export type ${jsTableName}T = {\n`
-        typeDeclCreate += `export type ${jsTableName}_C = {\n`
+        typeDecl += `export type ${jsTableName}Table = {\n`
+        // typeDeclCreate += `export type ${jsTableName}_C = {\n`
         fieldsDef += `${xxx}\nexport const ${jsTableName}Fields = {\n`
         for (const col of cols) {
             const comment = `/** @default: ${JSON.stringify(col.dflt_value) ?? 'null'}, sqlType: ${col.type} */`
-
+            const isGenerated =
+                col.name === 'createdAt' || //
+                col.name === 'updatedAt' ||
+                col.dflt_value != null
             const fieldType = (() => {
+                if (col.name === 'createdAt') return `number`
+                if (col.name === 'updatedAt') return `number`
                 // foreign keys
                 const hasFK = fks.find((fk) => fk.from === col.name)
                 if (hasFK != null) return `${convertTableNameToJSName(hasFK.table)}ID`
@@ -100,7 +106,11 @@ export const _codegenORM = (store: {
                 if (col.type === 'INTEGER') return 'number'
                 if (col.type === 'TEXT') return 'string'
                 if (col.type === 'string') return 'string'
-                if (col.type === 'json') return `T.${jsTableName}_${col.name}`
+
+                // 🔶 the `JSONColumnType` makes update / insert use string instead of T
+                // if (col.type === 'json') return `JSONColumnType<T.${jsTableName}_${col.name}>`
+                if (col.type === 'json') return `ColumnType<T.${jsTableName}_${col.name}>`
+
                 throw new Error(`unknown type '${col.type}' in ${jsTableName}.${col.name}`)
             })()
 
@@ -123,20 +133,29 @@ export const _codegenORM = (store: {
             const colon = col.notnull ? ':' : '?:'
             const colonCreate = col.notnull && !col.dflt_value ? ':' : '?:'
             typeDecl += `    ${comment}\n`
-            typeDeclCreate += `    ${comment}\n`
-            typeDecl += `    ${col.name}${colon} ${col.notnull ? fieldType : `Maybe<${fieldType}>`};\n\n`
-            typeDeclCreate += `    ${col.name}${colonCreate} ${col.notnull ? fieldType : `Maybe<${fieldType}>`};\n\n`
+            // typeDeclCreate += `    ${comment}\n`
+            let TYPE = col.notnull //
+                ? fieldType
+                : `Maybe<${fieldType}>`
+            if (isGenerated) TYPE = `Generated<${TYPE}>`
+            typeDecl += `    ${col.name}${colon} ${TYPE};\n`
+            // typeDeclCreate += `    ${col.name}${colonCreate} ${col.notnull ? fieldType : `Maybe<${fieldType}>`};\n\n`
             fieldsDef += `    ${col.name}: ${JSON5.stringify(col)},\n`
         }
-        typeDecl += `}`
-        typeDeclCreate += `}`
+        typeDecl += `}\n`
+        // typeDecl += `export type ${jsTableName} = Selectable<${jsTableName}Table>`
+        typeDecl += `export type New${jsTableName} = Insertable<${jsTableName}Table>\n`
+        typeDecl += `export type ${jsTableName}Update = Updateable<${jsTableName}Table>`
+
+        // typeDeclCreate += `}`
         schemaDecl += '},{ additionalProperties: false })'
         fieldsDef += `}\n`
 
         // store.log(typeDecl)
         // out1 += insertFn
         out1 += typeDecl + '\n'
-        out1 += typeDeclCreate + '\n'
+        out1 += `export type ${jsTableName}T = Selectable<${jsTableName}Table>\n`
+        // out1 += typeDeclCreate + '\n'
         out1 += schemaDecl + '\n'
         out1 += fieldsDef + '\n'
     }

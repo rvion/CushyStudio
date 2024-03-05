@@ -1,3 +1,4 @@
+import type { TABLES } from 'src/db/TYPES.gen'
 import type { STATE } from 'src/state/state'
 
 import { action, makeAutoObservable } from 'mobx'
@@ -18,7 +19,7 @@ export class Library {
     imageSize = '11rem'
     selectionCursor = 0
 
-    private appsC = new LiveCollection<CushyAppL>({
+    private appsC = new LiveCollection<TABLES['cushy_app']>({
         where: () => {
             return { id: { $like: `%${this.query}%` } }
         },

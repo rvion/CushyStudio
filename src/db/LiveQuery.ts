@@ -1,34 +1,32 @@
-import type { BaseInstanceFields, LiveInstance } from './LiveInstance'
+import type { TableInfo } from './TYPES_json'
+import type { Statement } from 'better-sqlite3'
+import type { CompiledQuery } from 'kysely'
 
-import { makeAutoObservable } from 'mobx'
+// 🔴 WIP
+export type Simplify<T> = { [KeyType in keyof T]: Simplify<T[KeyType]> & {} }
 
-import { DEPENDS_ON } from './LiveHelpers'
-import { LiveTable } from './LiveTable'
+// 🔴 WIP
+export type Simplify2<T> = { [KeyType in keyof T]: T[KeyType] & {} }
 
-export class LiveFind<
-    //
-    T extends BaseInstanceFields,
-    L extends LiveInstance<T, L>,
-> {
+export class LiveSQL<T> {
+    stmt: Statement<unknown[]> | null = null //  0 as any // Statement<T[]>
     constructor(
-        public p: {
-            remoteTable: () => LiveTable<T, any, L>
-            remoteQuery: () => Partial<T>
-            cache?: () => boolean
-        },
+        //
+        public table: TableInfo,
+        public query: CompiledQuery<T>,
     ) {
-        makeAutoObservable(this)
-    }
-
-    get items(): L[] {
-        const remoteTable = this.p.remoteTable()
-        const shouldCache = this.p.cache?.() ?? false
-        if (!shouldCache) {
-            // console.log(`<<< ${remoteTable.name} has size ${remoteTable.liveEntities.size} >>>`)
-            DEPENDS_ON(remoteTable.liveEntities.size)
+        try {
+            this.stmt = cushy.db.db.prepare(this.query.sql)
+        } catch (e) {
+            console.error(`[🤠] SQL`, this.query.sql)
+            console.error(`[🤠] SQL ❌ error`, e)
         }
-        return remoteTable.find(this.p.remoteQuery())
+        console.log(`[🤠] `, query.sql, this.query.parameters)
     }
 
-    map = <T>(fn: (l: L) => T): T[] => this.items.map(fn)
+    get all(): T[] {
+        if (this.stmt == null) return []
+        const x = this.stmt.all(this.query.parameters)
+        return x as any[]
+    }
 }

@@ -1,6 +1,6 @@
 import type { ComfyEnumDef, ComfyInputOpts, ComfyNodeSchemaJSON } from '../types/ComfySchemaJSON'
 import type { HostL } from './Host'
-import type { ComfySchemaT } from 'src/db/TYPES.gen'
+import type { ComfySchemaT, ComfySchemaTable, TABLES } from 'src/db/TYPES.gen'
 
 import { observable, toJS } from 'mobx'
 
@@ -45,8 +45,7 @@ export type EnumInfo = {
     aliases: string[]
 }
 
-export interface ComfySchemaL extends LiveInstance<ComfySchemaT, ComfySchemaL> {}
-
+export interface ComfySchemaL extends LiveInstance<TABLES['comfy_schema']> {}
 export class ComfySchemaL {
     /**
      * return the number of nodes in your current schema

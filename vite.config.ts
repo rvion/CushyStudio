@@ -67,7 +67,10 @@ export default defineConfig({
 
             // -----------------------------------------------------------------------
             // injected node modules
-            // check the `src/syms/_.cjs`
+            // 🔶 modifications must be kept in sync between :
+            //     | ./src/shell/build.js
+            //     | ./vite.config.ts
+            //     | ./src/shell/externals.cjs
             /* */ assert: `${installDir}/src/syms/assert.js`,
             'node:assert': `${installDir}/src/syms/assert.js`,
             /* */ url: `${installDir}/src/syms/url.js`,

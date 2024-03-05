@@ -5,7 +5,7 @@ import type { CushyAppL } from './CushyApp'
 import type { CushyScriptL } from './CushyScriptL'
 import type { DraftL } from './Draft'
 import type { StepL } from './Step'
-import type { MediaImageT } from 'src/db/TYPES.gen'
+import type { TABLES } from 'src/db/TYPES.gen'
 import type { ComfyNodeMetadata } from 'src/types/ComfyNodeID'
 import type { ComfyNodeJSON } from 'src/types/ComfyPrompt'
 
@@ -22,7 +22,7 @@ import { asSTRING_orCrash } from 'src/utils/misc/bang'
 import { ManualPromise } from 'src/utils/misc/ManualPromise'
 import { toastError, toastInfo } from 'src/utils/misc/toasts'
 
-export interface MediaImageL extends LiveInstance<MediaImageT, MediaImageL> {}
+export interface MediaImageL extends LiveInstance<TABLES['media_image']> {}
 export class MediaImageL {
     get imageID() {
         return this.id

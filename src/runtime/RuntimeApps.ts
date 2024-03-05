@@ -4,7 +4,6 @@ import { makeAutoObservable } from 'mobx'
 
 import { Runtime, RuntimeExecutionResult } from './Runtime'
 import { $ExtractFormValueType, AppRef, SchemaDict } from 'src/cards/App'
-import { SQLITE_false } from 'src/db/SQLITE_boolean'
 
 /** namespace for all Apps-related utils */
 export class RuntimeApps {

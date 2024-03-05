@@ -19,7 +19,11 @@ export type Widget_selectOne_config<T extends BaseSelectEntry> = WidgetConfigFie
 }>
 
 // SERIAL
-export type Widget_selectOne_serial<T extends BaseSelectEntry> = WidgetSerialFields<{ type: 'selectOne'; query: string; val: T }>
+export type Widget_selectOne_serial<T extends BaseSelectEntry> = WidgetSerialFields<{
+    type: 'selectOne'
+    query: string
+    val: T
+}>
 
 // OUT
 export type Widget_selectOne_output<T extends BaseSelectEntry> = T
