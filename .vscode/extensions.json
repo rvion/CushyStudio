@@ -19,6 +19,9 @@
         // configured for tests and other more complex mapping
         "johnathanludwig.fileswitcher",
 
+        // VeRy PoWeRfUl !!.!..!!
+        "wmaurer.change-case",
+
         // found in a screeshot of @ricklove, looks great
         "YoavBls.pretty-ts-errors"
     ]
