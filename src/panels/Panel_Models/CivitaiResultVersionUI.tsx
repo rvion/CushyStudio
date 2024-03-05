@@ -6,6 +6,7 @@ import type { ModelInfo } from 'src/manager/model-list/model-list-loader-types'
 import JsonView from '@uiw/react-json-view'
 import { observer, useLocalObservable } from 'mobx-react-lite'
 
+import { CivitaiWarningAPIKeyMissingUI } from './CivitaiWarningAPIKeyMissingUI'
 import { formatSize } from 'src/db/getDBStats'
 import { RevealUI } from 'src/rsuite/reveal/RevealUI'
 import { JsonViewUI } from 'src/widgets/workspace/JsonViewUI'
@@ -21,6 +22,7 @@ export const CivitaiResultVersionUI = observer(function CivitaiResultVersionUI_(
     const img = uist.image
     const size1 = `${cushy.civitaiConf.fields.imgSize1.value}px`
     const size2 = `${cushy.civitaiConf.fields.imgSize2.value}px`
+    const apiKey = cushy.civitaiConf.fields.apiKey.value
     return (
         <div tw='flex flex-col gap-1'>
             <RevealUI>
@@ -64,7 +66,9 @@ export const CivitaiResultVersionUI = observer(function CivitaiResultVersionUI_(
                                     if (file.type === 'VAE') return 'VAE'
                                     return 'checkpoints'
                                 })(),
-                                url: file.downloadUrl,
+                                url: apiKey
+                                    ? `${file.downloadUrl}${file.downloadUrl.includes('?') ? '&' : '?'}token=${apiKey}`
+                                    : file.downloadUrl,
                             }
                             const isBeeingInstalled = cushy.mainHost.manager.modelsBeeingInstalled.has(mi.name as any)
                             return (
@@ -86,11 +90,12 @@ export const CivitaiResultVersionUI = observer(function CivitaiResultVersionUI_(
                                             <span className='material-symbols-outlined'>download</span>
                                             Download
                                         </div>
-                                        <RevealUI>
-                                            <div tw='btn btn-sm btn-outline'>ComfyManager?</div>
-                                            <JsonViewUI value={mi} />
-                                        </RevealUI>
                                     </div>
+                                    {apiKey ? null : <CivitaiWarningAPIKeyMissingUI />}
+                                    <RevealUI>
+                                        <div tw='btn btn-sm btn-link'>show ComfyManager payload</div>
+                                        <JsonViewUI value={mi} />
+                                    </RevealUI>
                                     <div tw='text-sm'>url: {file.downloadUrl}</div>
                                     {/* <div tw='text-sm'>{f.scannedAt}</div> */}
                                     <div tw='text-sm underline'>{formatSize(file.sizeKB * 1000)}</div>
