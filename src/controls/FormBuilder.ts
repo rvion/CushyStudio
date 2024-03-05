@@ -47,6 +47,8 @@ export class FormBuilder {
     }
 
     time        = (config: Widget_string_config = {})                                                        => new Spec<Widget_string                      >('str'       , { inputType: 'time', ...config })
+    date        = (config: Widget_string_config = {})                                                        => new Spec<Widget_string                      >('str'       , { inputType: 'date', ...config })
+    datetime    = (config: Widget_string_config = {})                                                        => new Spec<Widget_string                      >('str'       , { inputType: 'datetime-local', ...config })
     password    = (config: Widget_string_config = {})                                                        => new Spec<Widget_string                      >('str'       , { inputType: 'password', ...config })
     email       = (config: Widget_string_config = {})                                                        => new Spec<Widget_string                      >('str'       , { inputType: 'email', ...config })
     url         = (config: Widget_string_config = {})                                                        => new Spec<Widget_string                      >('str'       , { inputType: 'url', ...config })
