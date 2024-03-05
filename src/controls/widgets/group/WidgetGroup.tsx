@@ -167,14 +167,23 @@ export class Widget_group<T extends SchemaDict> implements IWidget<Widget_group_
         makeAutoObservable(this, { value: false })
     }
 
-    value: { [k in keyof T]: GetWidgetResult<T[k]> } = new Proxy({} as any, {
-        get: (target, prop) => {
-            if (typeof prop !== 'string') return
-            const subWidget: IWidget = this.fields[prop]
-            if (subWidget == null) return
-            return subWidget.value
-        },
-    })
+    // temporary function
+    get value(): { [k in keyof T]: GetWidgetResult<T[k]> } {
+        const result: any = {}
+        for (const [key, item] of this.entries) {
+            result[key] = item.value
+        }
+        return result
+    }
+
+    // value: { [k in keyof T]: GetWidgetResult<T[k]> } = new Proxy({} as any, {
+    //     get: (target, prop) => {
+    //         if (typeof prop !== 'string') return
+    //         const subWidget: IWidget = this.fields[prop]
+    //         if (subWidget == null) return
+    //         return subWidget.value
+    //     },
+    // })
 }
 
 // DI
