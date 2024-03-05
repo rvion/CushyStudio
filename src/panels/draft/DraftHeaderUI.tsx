@@ -3,6 +3,7 @@ import type { DraftL } from 'src/models/Draft'
 import { observer } from 'mobx-react-lite'
 
 import { DraftMenuActionsUI } from './DraftMenuActionsUI'
+import { DraftMenuJumpUI } from './DraftMenuJump'
 import { DraftMenuLooksUI } from './DraftMenuLooksUI'
 import { PublishAppBtnUI } from './PublishAppBtnUI'
 import { RunOrAutorunUI } from './RunOrAutorunUI'
@@ -34,7 +35,8 @@ export const DraftHeaderUI = observer(function DraftHeaderUI_(p: {
                     </div>
                     <RunOrAutorunUI tw='flex-shrink-0' draft={draft} />
                     <div tw='flex'>
-                        <DraftMenuActionsUI draft={draft} title={app.name} />
+                        <DraftMenuActionsUI draft={draft} title={'Actions' /* app.name */} />
+                        <DraftMenuJumpUI draft={draft} title='Drafts' />
                         {/* --------------------------------- */}
                         <div tw='flex-grow'></div>
                         <PublishAppBtnUI app={app} />
