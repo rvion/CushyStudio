@@ -70,8 +70,11 @@ async function buildJS() {
             src: './src',
 
             // -----------------------------------------------------------------------
+            // 🔶 modifications must be kept in sync between :
+            //     | ./src/shell/build.js
+            //     | ./vite.config.ts
+            //     | ./src/shell/externals.cjs
             // injected node modules
-            // check the `src/syms/_.cjs`
             /* */ assert: `./src/syms/assert.js`,
             'node:assert': `./src/syms/assert.js`,
             /* */ url: `./src/syms/url.js`,
@@ -102,6 +105,8 @@ async function buildJS() {
             'node:events': `./src/syms/events.js`,
             /* */ async_hooks: `./src/syms/async_hooks.js`,
             'node:async_hooks': `./src/syms/async_hooks.js`,
+            /* */ crypto: `./src/syms/crypto.js`,
+            'node:crypto': `./src/syms/crypto.js`,
         },
         // external: [
         //     'assert',
