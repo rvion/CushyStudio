@@ -1,4 +1,4 @@
-import { observer } from 'mobx-react-lite'
+import { observer, useLocalObservable } from 'mobx-react-lite'
 
 import { useSt } from '../state/stateContext'
 import { ImageUI } from '../widgets/galleries/ImageUI'
@@ -16,6 +16,17 @@ export const Panel_Gallery = observer(function VerticalGalleryUI_(p: {}) {
             <PanelHeaderUI>
                 <GalleryControlsUI />
             </PanelHeaderUI>
+            <input
+                tw='input my-0.5'
+                placeholder='filter (unfinished)'
+                value={cushy.galleryFilter ?? ''}
+                type='text'
+                onChange={(x) => {
+                    const next = x.target.value
+                    if (!next) cushy.galleryFilter = null
+                    else cushy.galleryFilter = next
+                }}
+            />
 
             <div className='flex flex-wrap overflow-auto'>
                 {/* <LatentPreviewUI /> */}

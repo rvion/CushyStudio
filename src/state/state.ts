@@ -809,8 +809,12 @@ export class STATE {
         return this.db.steps.last()
     }
 
+    galleryFilter: Maybe<string> = null
     get imageToDisplay(): MediaImageL[] {
         const maxImages = this.galleryConf.value.galleryMaxImages ?? 20
+        // let query =
+        // const stmt = this.db.db.prepare(`select * from media_image order by createdAt desc limit ? where tags like ?`)
+        // this.db.prepareAll(this.infos, `select * from ${this.name} order by createdAt desc limit ?`)
         return this.db.media_images.getLastN(maxImages)
     }
 
