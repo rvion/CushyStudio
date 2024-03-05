@@ -31,12 +31,17 @@ export const Panel_Gallery = observer(function VerticalGalleryUI_(p: {}) {
                 />
                 <SelectUI
                     key='45'
+                    placeholder='filter by app'
                     label='app'
                     options={() => cushy.db.cushy_apps.live((q) => q.select(['id', 'name']).compile()).all}
                     getLabelText={(i) => i.name ?? 'unnamed'}
                     value={() => cushy.galleryFilterAppName}
                     equalityCheck={(a, b) => a.id === b.id}
-                    onChange={(next) => (cushy.galleryFilterAppName = next)}
+                    onChange={(next) => {
+                        if (cushy.galleryFilterAppName?.id === next.id) cushy.galleryFilterAppName = null
+                        else cushy.galleryFilterAppName = next
+                    }}
+                    cleanable
                 />
             </div>
 
