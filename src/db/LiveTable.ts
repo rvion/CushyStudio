@@ -1,6 +1,6 @@
 import type { LiveDB } from './LiveDB'
 import type { $BaseInstanceFields, LiveInstance, UpdateOptions } from './LiveInstance'
-import type { SelectQueryBuilder, Updateable } from 'kysely'
+import type { CompiledQuery, SelectQueryBuilder, Updateable } from 'kysely'
 import type { STATE } from 'src/state/state'
 
 import { Value, ValueError } from '@sinclair/typebox/value'
@@ -8,6 +8,7 @@ import { action, type AnnotationMapEntry, makeAutoObservable, runInAction, toJS 
 import { nanoid } from 'nanoid'
 
 import { DEPENDS_ON, MERGE_PROTOTYPES } from './LiveHelpers'
+import { LiveSQL } from './LiveQuery'
 import { isSqlExpr, SqlFindOptions, SQLWhere } from './SQLWhere'
 import { dbxx } from 'src/DB'
 import { type KyselyTables, schemas } from 'src/db/TYPES.gen'
@@ -18,8 +19,12 @@ export interface LiveEntityClass<TABLE extends TableInfo> {
 }
 
 export class LiveTable<TABLE extends TableInfo<keyof KyselyTables>> {
-    query: SelectQueryBuilder<KyselyTables, TABLE['$TableName'], {}> = dbxx.selectFrom(this.name)
-    query2: SelectQueryBuilder<KyselyTables, any, {}> = dbxx.selectFrom(this.name)
+    live = <T>(fn: (x: SelectQueryBuilder<KyselyTables, TABLE['$TableName'], {}>) => CompiledQuery<T>) => {
+        return new LiveSQL<T>(this.infos, fn(this.query1))
+    }
+    query1: SelectQueryBuilder<KyselyTables, TABLE['$TableName'], {}> = dbxx.selectFrom(this.name)
+    // ⏸️ query2: SelectQueryBuilder<KyselyTables, any, {}> = dbxx.selectFrom(this.name)
+    // ⏸️ query3: SelectQueryBuilder<KyselyTables, TABLE['$TableName'], TABLE['$T']> = dbxx.selectFrom(this.name).selectAll() as any
 
     private Ktor: LiveEntityClass<TABLE>
     liveEntities = new Map<string, TABLE['$L']>()

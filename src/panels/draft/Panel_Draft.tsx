@@ -17,7 +17,6 @@ import { SelectUI } from 'src/rsuite/SelectUI'
 import { Message } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
 import { stringifyUnknown } from 'src/utils/formatters/stringifyUnknown'
-import { JsonViewUI } from 'src/widgets/workspace/JsonViewUI'
 
 export const Panel_Draft = observer(function Panel_Draft_(p: { draftID: DraftID }) {
     // 1. get draft
