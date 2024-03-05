@@ -1,34 +1,31 @@
-import type { BaseInstanceFields, LiveInstance } from './LiveInstance'
+// import type { TableInfo } from './TYPES_json'
+// import type { Selectable } from 'kysely'
 
-import { makeAutoObservable } from 'mobx'
+// import { makeAutoObservable } from 'mobx'
 
-import { DEPENDS_ON } from './LiveHelpers'
-import { LiveTable } from './LiveTable'
+// import { DEPENDS_ON } from './LiveHelpers'
+// import { LiveTable } from './LiveTable'
 
-export class LiveFind<
-    //
-    T extends BaseInstanceFields,
-    L extends LiveInstance<T, L>,
-> {
-    constructor(
-        public p: {
-            remoteTable: () => LiveTable<T, any, L>
-            remoteQuery: () => Partial<T>
-            cache?: () => boolean
-        },
-    ) {
-        makeAutoObservable(this)
-    }
+// export class LiveFind<TABLE extends TableInfo> {
+//     constructor(
+//         public p: {
+//             remoteTable: () => LiveTable<TABLE>
+//             remoteQuery: () => Partial<Selectable<TABLE>>
+//             cache?: () => boolean
+//         },
+//     ) {
+//         makeAutoObservable(this)
+//     }
 
-    get items(): L[] {
-        const remoteTable = this.p.remoteTable()
-        const shouldCache = this.p.cache?.() ?? false
-        if (!shouldCache) {
-            // console.log(`<<< ${remoteTable.name} has size ${remoteTable.liveEntities.size} >>>`)
-            DEPENDS_ON(remoteTable.liveEntities.size)
-        }
-        return remoteTable.find(this.p.remoteQuery())
-    }
+//     get items(): TABLE['$L'][] {
+//         const remoteTable = this.p.remoteTable()
+//         const shouldCache = this.p.cache?.() ?? false
+//         if (!shouldCache) {
+//             // console.log(`<<< ${remoteTable.name} has size ${remoteTable.liveEntities.size} >>>`)
+//             DEPENDS_ON(remoteTable.liveEntities.size)
+//         }
+//         return remoteTable.find(this.p.remoteQuery())
+//     }
 
-    map = <T>(fn: (l: L) => T): T[] => this.items.map(fn)
-}
+//     map = <T>(fn: (l: TABLE['$L']) => T): T[] => this.items.map(fn)
+// }

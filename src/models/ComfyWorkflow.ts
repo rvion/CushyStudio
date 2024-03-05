@@ -9,7 +9,7 @@ import type { StepL } from './Step'
 import type { MouseEvent } from 'react'
 import type { IDNaminScheemeInPromptSentToComfyUI } from 'src/back/IDNaminScheemeInPromptSentToComfyUI'
 import type { LiveInstance } from 'src/db/LiveInstance'
-import type { GraphT } from 'src/db/TYPES.gen'
+import type { GraphT, TABLES } from 'src/db/TYPES.gen'
 import type { HTMLContent, MDContent } from 'src/types/markdown'
 
 import { existsSync, mkdirSync, writeFileSync } from 'fs'
@@ -49,7 +49,7 @@ export type PromptSettings = {
 
 export const GraphIDCache = new Map<string, number>()
 
-export interface ComfyWorkflowL extends LiveInstance<GraphT, ComfyWorkflowL> {}
+export interface ComfyWorkflowL extends LiveInstance<TABLES['graph']> {}
 export class ComfyWorkflowL {
     /** number of node in the graph */
     get size(): number {

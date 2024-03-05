@@ -13,8 +13,6 @@ import { exhaust } from '../utils/misc/ComfyUtils'
 import { getPngMetadataFromUint8Array } from '../utils/png/_getPngMetadata'
 import { AppMetadata } from './AppManifest'
 import { createEsbuildContextFor } from 'src/compiler/transpiler'
-// @ts-ignore
-import { LiveCollection } from 'src/db/LiveCollection'
 import { asCushyScriptID } from 'src/db/TYPES.gen'
 import { CushyScriptL } from 'src/models/CushyScriptL'
 import { asAbsolutePath } from 'src/utils/fs/pathUtils'

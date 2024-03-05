@@ -44,16 +44,47 @@ export class RuntimeLLM {
         `ONLY answer with the prompt itself. DO NOT answer anything else. No Hello, no thanks, no signature, no nothing.`,
     ].join('\n')
 
-    /** turn any simple request into an LLM */
+    simpleSystemPrompt = [
+        //
+        `You are an assistant in charge of writing a prompt to be submitted to a stable distribution ai image generative pipeline.`,
+        `Write a prompt describing the user submited topic in a way that will help the ai generate a relevant image.`,
+        `Start with most important words describing the prompt`,
+        `ONLY answer with the prompt itself. DO NOT answer anything else. No Hello, no thanks, no signature, no nothing.`,
+    ].join('\n')
+
+    simpleSystemPromptList = [
+        //
+        `You are an assistant in charge of writing a prompt to be submitted to a stable distribution ai image generative pipeline.`,
+        `Write a prompt describing the user submited topic in a way that will help the ai generate a relevant image.`,
+        `Start with most important words describing the prompt`,
+        `ONLY answer with the prompt itself. DO NOT answer anything else. No Hello, no thanks, no signature, no nothing.`,
+        `Answer must be a list of COMA-SEPARATED words (or 2-3 words), no full sentences.`,
+        `Wrap the most important words with parenthesis: (like this)`,
+        `try to include a long list of comma separated words.`,
+    ].join('\n')
+
+    /** turn any simple prompt into a better one by asking a LLM to rewrite it */
     expandPrompt = async (
-        /** description / instruction of  */
-        basePrompt: string,
+        userRequest: string,
+        model: OpenRouter_Models = 'openai/gpt-3.5-turbo-instruct',
+        systemPrompt: string = this.defaultSystemPrompt,
+    ): Promise<{
+        prompt: string
+        llmResponse: OpenRouterResponse
+    }> => {
+        return this.runSystemPrompt(model, systemPrompt, userRequest)
+    }
+
+    runSystemPrompt = async (
         /**
          * the list of all openRouter models available
          * 🔶 may not be up-to-date; last updated on 2023-12-03
          * */
         model: OpenRouter_Models = 'openai/gpt-3.5-turbo-instruct',
+        /** master prompt that define how to answer the user request */
         systemPrompt: string = this.defaultSystemPrompt,
+        /** description / instruction of  */
+        userRequest: string,
     ): Promise<{
         prompt: string
         llmResponse: OpenRouterResponse
@@ -63,7 +94,7 @@ export class RuntimeLLM {
             model: model,
             messages: [
                 { role: 'system', content: systemPrompt },
-                { role: 'user', content: basePrompt },
+                { role: 'user', content: userRequest },
                 // { role: 'user', content: 'Who are you?' },
             ],
         })

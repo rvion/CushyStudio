@@ -11,13 +11,13 @@ import { Form } from 'src/controls/Form'
 import { Widget_group } from 'src/controls/widgets/group/WidgetGroup'
 import { LiveRef } from 'src/db/LiveRef'
 import { SQLITE_false, SQLITE_true } from 'src/db/SQLITE_boolean'
-import { DraftT } from 'src/db/TYPES.gen'
+import { DraftT, type DraftTable, type TABLES } from 'src/db/TYPES.gen'
 import { toastError } from 'src/utils/misc/toasts'
 
 export type FormPath = (string | number)[]
 
 /** a thin wrapper around a single Draft somewhere in a .ts file */
-export interface DraftL extends LiveInstance<DraftT, DraftL> {}
+export interface DraftL extends LiveInstance<TABLES['draft']> {}
 export class DraftL {
     // 🔴 HACKY
     shouldAutoStart = false
