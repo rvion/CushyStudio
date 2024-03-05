@@ -4,12 +4,12 @@ import type { ComfyPromptJSON } from '../types/ComfyPrompt'
 import type { ApiPromptInput, PromptInfo, WsMsgExecuting, WsMsgExecutionCached, WsMsgProgress } from '../types/ComfyWsApi'
 import type { VisEdges, VisNodes } from '../widgets/misc/VisUI'
 import type { ComfyPromptL } from './ComfyPrompt'
-import type { ComfyNodeSchema, ComfySchemaL } from './Schema'
+import type { ComfyNodeSchema, ComfySchemaL } from './ComfySchema'
 import type { StepL } from './Step'
 import type { MouseEvent } from 'react'
 import type { IDNaminScheemeInPromptSentToComfyUI } from 'src/back/IDNaminScheemeInPromptSentToComfyUI'
 import type { LiveInstance } from 'src/db/LiveInstance'
-import type { GraphT, TABLES } from 'src/db/TYPES.gen'
+import type { ComfyWorkflowT, TABLES } from 'src/db/TYPES.gen'
 import type { HTMLContent, MDContent } from 'src/types/markdown'
 
 import { existsSync, mkdirSync, writeFileSync } from 'fs'
@@ -49,7 +49,7 @@ export type PromptSettings = {
 
 export const GraphIDCache = new Map<string, number>()
 
-export interface ComfyWorkflowL extends LiveInstance<TABLES['graph']> {}
+export interface ComfyWorkflowL extends LiveInstance<TABLES['comfy_workflow']> {}
 export class ComfyWorkflowL {
     /** number of node in the graph */
     get size(): number {
@@ -127,7 +127,7 @@ export class ComfyWorkflowL {
         return this._builder
     }
 
-    onUpdate = (prev: Maybe<GraphT>, next: GraphT) => {
+    onUpdate = (prev: Maybe<ComfyWorkflowT>, next: ComfyWorkflowT) => {
         const prevSize = this.size
         if (prev != null) {
             this.nodes = []
@@ -476,7 +476,7 @@ export class ComfyWorkflowL {
         // this.update({ comfyPromptJSON: currentJSON })
         // -------------------------------------------------
 
-        const graph = this.st.db.graphs.create({
+        const graph = this.st.db.comfy_workflow.create({
             //
             comfyPromptJSON: currentJSON,
             metadata: this.data.metadata,

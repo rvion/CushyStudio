@@ -1,4 +1,4 @@
-import type { ComfySchemaL, EmbeddingName } from './Schema'
+import type { ComfySchemaL, EmbeddingName } from './ComfySchema'
 import type { Requirements } from 'src/controls/IWidget'
 import type { LiveInstance } from 'src/db/LiveInstance'
 import type { PluginInfo } from 'src/manager/custom-node-list/custom-node-list-types'

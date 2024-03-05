@@ -14,7 +14,7 @@ export class RuntimeComfyUI {
     // ----------------------------------------------------------------------------------------------------
     /** create a new empty ComfyUI workflow */
     create_emptyWorkflow = (): ComfyWorkflowL => {
-        return this.rt.Cushy.db.graphs.create({
+        return this.rt.Cushy.db.comfy_workflow.create({
             stepID: this.rt.step.id,
             comfyPromptJSON: {},
             metadata: {},
@@ -32,7 +32,7 @@ export class RuntimeComfyUI {
             denoise?: number
         } = {},
     ): ComfyWorkflowL => {
-        const graph = this.rt.Cushy.db.graphs.create({
+        const graph = this.rt.Cushy.db.comfy_workflow.create({
             stepID: this.rt.step.id,
             comfyPromptJSON: {},
             metadata: {},

@@ -60,7 +60,7 @@ export class ComfyPromptL {
     get step(){ return this.stepRef.item } // prettier-ignore
 
     // link to grah
-    graphRef = new LiveRef<this, ComfyWorkflowL>(this, 'graphID', () => this.db.graphs)
+    graphRef = new LiveRef<this, ComfyWorkflowL>(this, 'graphID', () => this.db.comfy_workflow)
     get graph() { return this.graphRef.item } // prettier-ignore
 
     onPromptRelatedMessage = (msg: PromptRelated_WsMsg) => {

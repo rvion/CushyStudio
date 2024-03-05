@@ -1,6 +1,6 @@
 import type { ComfyEnumDef, ComfyInputOpts, ComfyNodeSchemaJSON } from '../types/ComfySchemaJSON'
 import type { HostL } from './Host'
-import type { ComfySchemaT, ComfySchemaTable, TABLES } from 'src/db/TYPES.gen'
+import type { TABLES } from 'src/db/TYPES.gen'
 
 import { observable, toJS } from 'mobx'
 

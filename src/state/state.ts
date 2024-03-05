@@ -21,8 +21,8 @@ import { createRef } from 'react'
 import { JsonFile } from '../core/JsonFile'
 import { LiveDB } from '../db/LiveDB'
 import { ComfyImporter } from '../importers/ComfyImporter'
+import { ComfySchemaL, EnumValue } from '../models/ComfySchema'
 import { ComfyWorkflowL } from '../models/ComfyWorkflow'
-import { ComfySchemaL, EnumValue } from '../models/Schema'
 import { CushyLayoutManager } from '../panels/router/Layout'
 import { GitManagedFolder } from '../updater/updater'
 import { ElectronUtils } from '../utils/electron/ElectronUtils'
@@ -350,7 +350,7 @@ export class STATE {
             return this.db.projects.firstOrCrash()
         }
         console.log(`[🛋️] creating project`)
-        const initialGraph = this.db.graphs.create({ comfyPromptJSON: {}, metadata: {} })
+        const initialGraph = this.db.comfy_workflow.create({ comfyPromptJSON: {}, metadata: {} })
         const defaultAppPath = asAppPath('library/CushyStudio/default/SDUI.ts')
         // const initialDraft = this.db.drafts.create({
         //     appParams: {},

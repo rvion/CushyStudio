@@ -1,8 +1,9 @@
 import type { AuthL } from 'src/models/Auth'
 import type { ComfyPromptL } from 'src/models/ComfyPrompt'
+import type { ComfySchemaL } from 'src/models/ComfySchema'
 import type { ComfyWorkflowL } from 'src/models/ComfyWorkflow'
 import type { CushyAppL } from 'src/models/CushyApp'
-import type { CushyScriptL } from 'src/models/CushyScriptL'
+import type { CushyScriptL } from 'src/models/CushyScript'
 import type { CustomDataL } from 'src/models/CustomData'
 import type { DraftL } from 'src/models/Draft'
 import type { HostL } from 'src/models/Host'
@@ -13,7 +14,6 @@ import type { MediaTextL } from 'src/models/MediaText'
 import type { MediaVideoL } from 'src/models/MediaVideo'
 import type { ProjectL } from 'src/models/Project'
 import type { RuntimeErrorL } from 'src/models/RuntimeError'
-import type { ComfySchemaL } from 'src/models/Schema'
 import type { StepL } from 'src/models/Step'
 import type { TreeEntryL } from 'src/models/TreeEntry'
 
@@ -22,117 +22,45 @@ import { Generated, Insertable, Selectable, Updateable } from 'kysely'
 
 import * as T from './TYPES_json'
 
-export const asMigrationsID = (s: string): MigrationsID => s as any
-export type MigrationsTable = {
-    /** @default: null, sqlType: TEXT */
-    id?: Maybe<MigrationsID>
-    /** @default: null, sqlType: TEXT */
-    name: string
-    /** @default: null, sqlType: INTEGER */
-    createdAt: Generated<number>
-    /** @default: null, sqlType: TEXT */
-    sql: string
-}
-export type NewMigrations = Insertable<MigrationsTable>
-export type MigrationsUpdate = Updateable<MigrationsTable>
-export type MigrationsT = Selectable<MigrationsTable>
-export const MigrationsSchema = Type.Object(
-    {
-        id: Type.Optional(T.Nullable(Type.String())),
-        name: Type.String(),
-        createdAt: Type.Number(),
-        sql: Type.String(),
-    },
-    { additionalProperties: false },
-)
-
-export const MigrationsRefs = []
-export const MigrationsBackRefs = []
-
-export const MigrationsFields = {
-    id: { cid: 0, name: 'id', type: 'TEXT', notnull: 0, dflt_value: null, pk: 1 },
-    name: { cid: 1, name: 'name', type: 'TEXT', notnull: 1, dflt_value: null, pk: 0 },
-    createdAt: { cid: 2, name: 'createdAt', type: 'INTEGER', notnull: 1, dflt_value: null, pk: 0 },
-    sql: { cid: 3, name: 'sql', type: 'TEXT', notnull: 1, dflt_value: null, pk: 0 },
-}
-
-export const asUsersID = (s: string): UsersID => s as any
-export type UsersTable = {
-    /** @default: null, sqlType: INTEGER */
-    id?: Maybe<UsersID>
-    /** @default: null, sqlType: TEXT */
-    firstName: string
-    /** @default: null, sqlType: TEXT */
-    lastName: string
-    /** @default: null, sqlType: TEXT */
-    email: string
-    /** @default: null, sqlType: TEXT */
-    passwordHash: string
-}
-export type NewUsers = Insertable<UsersTable>
-export type UsersUpdate = Updateable<UsersTable>
-export type UsersT = Selectable<UsersTable>
-export const UsersSchema = Type.Object(
-    {
-        id: Type.Optional(T.Nullable(Type.Number())),
-        firstName: Type.String(),
-        lastName: Type.String(),
-        email: Type.String(),
-        passwordHash: Type.String(),
-    },
-    { additionalProperties: false },
-)
-
-export const UsersRefs = []
-export const UsersBackRefs = []
-
-export const UsersFields = {
-    id: { cid: 0, name: 'id', type: 'INTEGER', notnull: 0, dflt_value: null, pk: 1 },
-    firstName: { cid: 1, name: 'firstName', type: 'TEXT', notnull: 1, dflt_value: null, pk: 0 },
-    lastName: { cid: 2, name: 'lastName', type: 'TEXT', notnull: 1, dflt_value: null, pk: 0 },
-    email: { cid: 3, name: 'email', type: 'TEXT', notnull: 1, dflt_value: null, pk: 0 },
-    passwordHash: { cid: 4, name: 'passwordHash', type: 'TEXT', notnull: 1, dflt_value: null, pk: 0 },
-}
-
-export const asGraphID = (s: string): GraphID => s as any
-export type GraphTable = {
+export const asComfyWorkflowID = (s: string): ComfyWorkflowID => s as any
+export type ComfyWorkflowTable = {
     /** @default: "hex(randomblob(16))", sqlType: string */
-    id: Generated<GraphID>
+    id: Generated<ComfyWorkflowID>
     /** @default: "now", sqlType: INTEGER */
     createdAt: Generated<number>
     /** @default: "now", sqlType: INTEGER */
     updatedAt: Generated<number>
     /** @default: null, sqlType: json */
-    comfyPromptJSON: T.Graph_comfyPromptJSON
+    comfyPromptJSON: T.ComfyWorkflow_comfyPromptJSON
     /** @default: null, sqlType: TEXT */
     stepID?: Maybe<StepID>
     /** @default: "'{}'", sqlType: json */
-    metadata: Generated<T.Graph_metadata>
+    metadata: Generated<T.ComfyWorkflow_metadata>
 }
-export type NewGraph = Insertable<GraphTable>
-export type GraphUpdate = Updateable<GraphTable>
-export type GraphT = Selectable<GraphTable>
-export const GraphSchema = Type.Object(
+export type NewComfyWorkflow = Insertable<ComfyWorkflowTable>
+export type ComfyWorkflowUpdate = Updateable<ComfyWorkflowTable>
+export type ComfyWorkflowT = Selectable<ComfyWorkflowTable>
+export const ComfyWorkflowSchema = Type.Object(
     {
         id: Type.String(),
         createdAt: Type.Number(),
         updatedAt: Type.Number(),
-        comfyPromptJSON: T.Graph_comfyPromptJSON_Schema,
+        comfyPromptJSON: T.ComfyWorkflow_comfyPromptJSON_Schema,
         stepID: Type.Optional(T.Nullable(Type.String())),
-        metadata: T.Graph_metadata_Schema,
+        metadata: T.ComfyWorkflow_metadata_Schema,
     },
     { additionalProperties: false },
 )
 
-export const GraphRefs = [{ fromTable: 'graph', fromField: 'stepID', toTable: 'step', tofield: 'id' }]
-export const GraphBackRefs = [
-    { fromTable: 'project', fromField: 'rootGraphID', toTable: 'graph', tofield: 'id' },
-    { fromTable: 'step', fromField: 'outputGraphID', toTable: 'graph', tofield: 'id' },
-    { fromTable: 'comfy_prompt', fromField: 'graphID', toTable: 'graph', tofield: 'id' },
-    { fromTable: 'runtime_error', fromField: 'graphID', toTable: 'graph', tofield: 'id' },
+export const ComfyWorkflowRefs = [{ fromTable: 'comfy_workflow', fromField: 'stepID', toTable: 'step', tofield: 'id' }]
+export const ComfyWorkflowBackRefs = [
+    { fromTable: 'project', fromField: 'rootGraphID', toTable: 'comfy_workflow', tofield: 'id' },
+    { fromTable: 'step', fromField: 'outputGraphID', toTable: 'comfy_workflow', tofield: 'id' },
+    { fromTable: 'comfy_prompt', fromField: 'graphID', toTable: 'comfy_workflow', tofield: 'id' },
+    { fromTable: 'runtime_error', fromField: 'graphID', toTable: 'comfy_workflow', tofield: 'id' },
 ]
 
-export const GraphFields = {
+export const ComfyWorkflowFields = {
     id: { cid: 0, name: 'id', type: 'string', notnull: 1, dflt_value: 'hex(randomblob(16))', pk: 1 },
     createdAt: { cid: 1, name: 'createdAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
     updatedAt: { cid: 2, name: 'updatedAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
@@ -159,6 +87,8 @@ export type DraftTable = {
     illustration?: Maybe<string>
     /** @default: "0", sqlType: INT */
     isFavorite: Generated<number>
+    /** @default: null, sqlType: INT */
+    lastRunAt?: Maybe<number>
 }
 export type NewDraft = Insertable<DraftTable>
 export type DraftUpdate = Updateable<DraftTable>
@@ -173,6 +103,7 @@ export const DraftSchema = Type.Object(
         appID: Type.String(),
         illustration: Type.Optional(T.Nullable(Type.String())),
         isFavorite: Type.Number(),
+        lastRunAt: Type.Optional(T.Nullable(Type.Number())),
     },
     { additionalProperties: false },
 )
@@ -192,6 +123,7 @@ export const DraftFields = {
     appID: { cid: 5, name: 'appID', type: 'TEXT', notnull: 1, dflt_value: null, pk: 0 },
     illustration: { cid: 6, name: 'illustration', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
     isFavorite: { cid: 7, name: 'isFavorite', type: 'INT', notnull: 1, dflt_value: '0', pk: 0 },
+    lastRunAt: { cid: 8, name: 'lastRunAt', type: 'INT', notnull: 0, dflt_value: null, pk: 0 },
 }
 
 export const asProjectID = (s: string): ProjectID => s as any
@@ -205,7 +137,7 @@ export type ProjectTable = {
     /** @default: null, sqlType: TEXT */
     name?: Maybe<string>
     /** @default: null, sqlType: TEXT */
-    rootGraphID: GraphID
+    rootGraphID: ComfyWorkflowID
     /** @default: null, sqlType: TEXT */
     currentApp?: Maybe<string>
     /** @default: null, sqlType: TEXT */
@@ -238,7 +170,7 @@ export const ProjectSchema = Type.Object(
 
 export const ProjectRefs = [
     { fromTable: 'project', fromField: 'currentDraftID', toTable: 'draft', tofield: 'id' },
-    { fromTable: 'project', fromField: 'rootGraphID', toTable: 'graph', tofield: 'id' },
+    { fromTable: 'project', fromField: 'rootGraphID', toTable: 'comfy_workflow', tofield: 'id' },
 ]
 export const ProjectBackRefs = []
 
@@ -268,7 +200,7 @@ export type StepTable = {
     /** @default: null, sqlType: json */
     formSerial: T.Step_formSerial
     /** @default: null, sqlType: TEXT */
-    outputGraphID: GraphID
+    outputGraphID: ComfyWorkflowID
     /** @default: null, sqlType: TEXT */
     status: T.StatusT
     /** @default: "1", sqlType: INT */
@@ -300,10 +232,10 @@ export const StepSchema = Type.Object(
 export const StepRefs = [
     { fromTable: 'step', fromField: 'draftID', toTable: 'draft', tofield: 'id' },
     { fromTable: 'step', fromField: 'appID', toTable: 'cushy_app', tofield: 'id' },
-    { fromTable: 'step', fromField: 'outputGraphID', toTable: 'graph', tofield: 'id' },
+    { fromTable: 'step', fromField: 'outputGraphID', toTable: 'comfy_workflow', tofield: 'id' },
 ]
 export const StepBackRefs = [
-    { fromTable: 'graph', fromField: 'stepID', toTable: 'step', tofield: 'id' },
+    { fromTable: 'comfy_workflow', fromField: 'stepID', toTable: 'step', tofield: 'id' },
     { fromTable: 'comfy_prompt', fromField: 'stepID', toTable: 'step', tofield: 'id' },
     { fromTable: 'media_text', fromField: 'stepID', toTable: 'step', tofield: 'id' },
     { fromTable: 'media_video', fromField: 'stepID', toTable: 'step', tofield: 'id' },
@@ -337,7 +269,7 @@ export type ComfyPromptTable = {
     /** @default: null, sqlType: TEXT */
     stepID: StepID
     /** @default: null, sqlType: TEXT */
-    graphID: GraphID
+    graphID: ComfyWorkflowID
     /** @default: "0", sqlType: INT */
     executed: Generated<number>
     /** @default: null, sqlType: json */
@@ -363,7 +295,7 @@ export const ComfyPromptSchema = Type.Object(
 )
 
 export const ComfyPromptRefs = [
-    { fromTable: 'comfy_prompt', fromField: 'graphID', toTable: 'graph', tofield: 'id' },
+    { fromTable: 'comfy_prompt', fromField: 'graphID', toTable: 'comfy_workflow', tofield: 'id' },
     { fromTable: 'comfy_prompt', fromField: 'stepID', toTable: 'step', tofield: 'id' },
 ]
 export const ComfyPromptBackRefs = [
@@ -686,7 +618,7 @@ export type RuntimeErrorTable = {
     /** @default: null, sqlType: TEXT */
     promptID?: Maybe<ComfyPromptID>
     /** @default: null, sqlType: TEXT */
-    graphID?: Maybe<GraphID>
+    graphID?: Maybe<ComfyWorkflowID>
     /** @default: null, sqlType: TEXT */
     stepID?: Maybe<StepID>
 }
@@ -709,7 +641,7 @@ export const RuntimeErrorSchema = Type.Object(
 
 export const RuntimeErrorRefs = [
     { fromTable: 'runtime_error', fromField: 'stepID', toTable: 'step', tofield: 'id' },
-    { fromTable: 'runtime_error', fromField: 'graphID', toTable: 'graph', tofield: 'id' },
+    { fromTable: 'runtime_error', fromField: 'graphID', toTable: 'comfy_workflow', tofield: 'id' },
     { fromTable: 'runtime_error', fromField: 'promptID', toTable: 'comfy_prompt', tofield: 'id' },
 ]
 export const RuntimeErrorBackRefs = []
@@ -879,6 +811,8 @@ export type CushyAppTable = {
     isFavorite: Generated<number>
     /** @default: null, sqlType: INT */
     canStartFromImage?: Maybe<number>
+    /** @default: null, sqlType: INT */
+    lastRunAt?: Maybe<number>
 }
 export type NewCushyApp = Insertable<CushyAppTable>
 export type CushyAppUpdate = Updateable<CushyAppTable>
@@ -898,6 +832,7 @@ export const CushyAppSchema = Type.Object(
         publishedAt: Type.Optional(T.Nullable(Type.Number())),
         isFavorite: Type.Number(),
         canStartFromImage: Type.Optional(T.Nullable(Type.Number())),
+        lastRunAt: Type.Optional(T.Nullable(Type.Number())),
     },
     { additionalProperties: false },
 )
@@ -922,6 +857,7 @@ export const CushyAppFields = {
     publishedAt: { cid: 10, name: 'publishedAt', type: 'INT', notnull: 0, dflt_value: null, pk: 0 },
     isFavorite: { cid: 11, name: 'isFavorite', type: 'INT', notnull: 1, dflt_value: '0', pk: 0 },
     canStartFromImage: { cid: 12, name: 'canStartFromImage', type: 'INT', notnull: 0, dflt_value: null, pk: 0 },
+    lastRunAt: { cid: 13, name: 'lastRunAt', type: 'INT', notnull: 0, dflt_value: null, pk: 0 },
 }
 
 export const asAuthID = (s: string): AuthID => s as any
@@ -1090,31 +1026,13 @@ export const HostFields = {
 }
 
 // prettier-ignore
-export const TABLE_migrations = new T.TableInfo<'migrations', /* MigrationsT */ any, any, NewMigrations, MigrationsUpdate, MigrationsID>(
-    'migrations',
-    'Migrations',
-    MigrationsFields,
-    MigrationsSchema,
-    MigrationsRefs,
-    MigrationsBackRefs,
-)
-// prettier-ignore
-export const TABLE_users = new T.TableInfo<'users', /* UsersT */ any, any, NewUsers, UsersUpdate, UsersID>(
-    'users',
-    'Users',
-    UsersFields,
-    UsersSchema,
-    UsersRefs,
-    UsersBackRefs,
-)
-// prettier-ignore
-export const TABLE_graph = new T.TableInfo<'graph', GraphT, ComfyWorkflowL, NewGraph, GraphUpdate, GraphID>(
-    'graph',
-    'Graph',
-    GraphFields,
-    GraphSchema,
-    GraphRefs,
-    GraphBackRefs,
+export const TABLE_comfy_workflow = new T.TableInfo<'comfy_workflow', ComfyWorkflowT, ComfyWorkflowL, NewComfyWorkflow, ComfyWorkflowUpdate, ComfyWorkflowID>(
+    'comfy_workflow',
+    'ComfyWorkflow',
+    ComfyWorkflowFields,
+    ComfyWorkflowSchema,
+    ComfyWorkflowRefs,
+    ComfyWorkflowBackRefs,
 )
 // prettier-ignore
 export const TABLE_draft = new T.TableInfo<'draft', DraftT, DraftL, NewDraft, DraftUpdate, DraftID>(
@@ -1189,22 +1107,22 @@ export const TABLE_media_image = new T.TableInfo<'media_image', MediaImageT, Med
     MediaImageBackRefs,
 )
 // prettier-ignore
-export const TABLE_media_3d_displacement = new T.TableInfo<'media_3d_displacement', Media3dDisplacementT, Media3dDisplacementL, NewMedia3dDisplacement, Media3dDisplacementUpdate, Media3dDisplacementID >(
+export const TABLE_media_3d_displacement = new T.TableInfo<'media_3d_displacement', Media3dDisplacementT, Media3dDisplacementL, NewMedia3dDisplacement, Media3dDisplacementUpdate, Media3dDisplacementID>(
     'media_3d_displacement',
     'Media3dDisplacement',
     Media3dDisplacementFields,
     Media3dDisplacementSchema,
     Media3dDisplacementRefs,
     Media3dDisplacementBackRefs,
-    )
+)
 // prettier-ignore
-export const TABLE_runtime_error  = new T.TableInfo<'runtime_error', RuntimeErrorT, RuntimeErrorL, NewRuntimeError, RuntimeErrorUpdate, RuntimeErrorID>(
+export const TABLE_runtime_error = new T.TableInfo<'runtime_error', RuntimeErrorT, RuntimeErrorL, NewRuntimeError, RuntimeErrorUpdate, RuntimeErrorID>(
     'runtime_error',
     'RuntimeError',
     RuntimeErrorFields,
     RuntimeErrorSchema,
     RuntimeErrorRefs,
-    RuntimeErrorBackRefs
+    RuntimeErrorBackRefs,
 )
 // prettier-ignore
 export const TABLE_media_splat = new T.TableInfo<'media_splat', MediaSplatT, MediaSplatL, NewMediaSplat, MediaSplatUpdate, MediaSplatID>(
@@ -1271,34 +1189,30 @@ export const TABLE_host = new T.TableInfo<'host', HostT, HostL, NewHost, HostUpd
 )
 
 export type TABLES = typeof schemas
+
 // prettier-ignore
 export const schemas = {
-    migrations:            TABLE_migrations,
-    users:                 TABLE_users,
-    graph:                 TABLE_graph,
-    draft:                 TABLE_draft,
-    project:               TABLE_project,
-    step:                  TABLE_step,
-    comfy_prompt:          TABLE_comfy_prompt,
-    comfy_schema:          TABLE_comfy_schema,
-    media_text:            TABLE_media_text,
-    media_video:           TABLE_media_video,
-    media_image:           TABLE_media_image,
+    comfy_workflow       : TABLE_comfy_workflow,
+    draft                : TABLE_draft,
+    project              : TABLE_project,
+    step                 : TABLE_step,
+    comfy_prompt         : TABLE_comfy_prompt,
+    comfy_schema         : TABLE_comfy_schema,
+    media_text           : TABLE_media_text,
+    media_video          : TABLE_media_video,
+    media_image          : TABLE_media_image,
     media_3d_displacement: TABLE_media_3d_displacement,
-    runtime_error:         TABLE_runtime_error,
-    media_splat:           TABLE_media_splat,
-    custom_data:           TABLE_custom_data,
-    cushy_script:          TABLE_cushy_script,
-    cushy_app:             TABLE_cushy_app,
-    auth:                  TABLE_auth,
-    tree_entry:            TABLE_tree_entry,
-    host:                  TABLE_host,
+    runtime_error        : TABLE_runtime_error,
+    media_splat          : TABLE_media_splat,
+    custom_data          : TABLE_custom_data,
+    cushy_script         : TABLE_cushy_script,
+    cushy_app            : TABLE_cushy_app,
+    auth                 : TABLE_auth,
+    tree_entry           : TABLE_tree_entry,
+    host                 : TABLE_host,
 }
-
 export type KyselyTables = {
-    migrations: MigrationsTable
-    users: UsersTable
-    graph: GraphTable
+    comfy_workflow: ComfyWorkflowTable
     draft: DraftTable
     project: ProjectTable
     step: StepTable

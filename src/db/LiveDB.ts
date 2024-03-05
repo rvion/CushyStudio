@@ -7,11 +7,11 @@ import { rmSync } from 'fs'
 import { makeAutoObservable } from 'mobx'
 
 import { ComfyPromptL } from '../models/ComfyPrompt'
+import { ComfySchemaL } from '../models/ComfySchema'
 import { ComfyWorkflowL } from '../models/ComfyWorkflow'
 import { DraftL } from '../models/Draft'
 import { MediaImageL } from '../models/MediaImage'
 import { ProjectL } from '../models/Project'
-import { ComfySchemaL } from '../models/Schema'
 import { StepL } from '../models/Step'
 import { DB_RELATIVE_PATH } from './DB_CONFIG'
 import { LiveTable } from './LiveTable'
@@ -21,7 +21,7 @@ import { _setupMigrationEngine } from 'src/db/_setupMigrationEngine'
 import { _checkAllMigrationsHaveDifferentIds } from 'src/db/migrations'
 import { AuthL } from 'src/models/Auth'
 import { CushyAppL } from 'src/models/CushyApp'
-import { CushyScriptL } from 'src/models/CushyScriptL'
+import { CushyScriptL } from 'src/models/CushyScript'
 import { CustomDataL } from 'src/models/CustomData'
 import { HostL } from 'src/models/Host'
 import { Media3dDisplacementL } from 'src/models/Media3dDisplacement'
@@ -54,7 +54,7 @@ export class LiveDB {
     tree_entries:          LiveTable<T.TABLES['tree_entry']           > // prettier-ignore
     runtimeErrors:         LiveTable<T.TABLES['runtime_error']        > // prettier-ignore
     drafts:                LiveTable<T.TABLES['draft']                > // prettier-ignore
-    graphs:                LiveTable<T.TABLES['graph']                > // prettier-ignore
+    comfy_workflow:        LiveTable<T.TABLES['comfy_workflow']       > // prettier-ignore
     steps:                 LiveTable<T.TABLES['step']                 > // prettier-ignore
     auths:                 LiveTable<T.TABLES['auth']                 > // prettier-ignore
 
@@ -96,7 +96,7 @@ export class LiveDB {
             this.tree_entries =          new LiveTable<T.TABLES['tree_entry']           >(this, 'tree_entry'           , '🖼️', TreeEntryL)
             this.runtimeErrors =         new LiveTable<T.TABLES['runtime_error']        >(this, 'runtime_error'        , '❌', RuntimeErrorL)
             this.drafts =                new LiveTable<T.TABLES['draft']                >(this, 'draft'                , '📝', DraftL)
-            this.graphs =                new LiveTable<T.TABLES['graph']                >(this, 'graph'                , '📊', ComfyWorkflowL)
+            this.comfy_workflow =        new LiveTable<T.TABLES['comfy_workflow']       >(this, 'comfy_workflow'       , '📊', ComfyWorkflowL)
             this.steps =                 new LiveTable<T.TABLES['step']                 >(this, 'step'                 , '🚶‍♂️', StepL)
             this.auths =                 new LiveTable<T.TABLES['auth']                 >(this, 'auth'                 , '🚶‍♂️', AuthL)
 

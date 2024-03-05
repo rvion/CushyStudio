@@ -7,7 +7,7 @@ import { GraphPreviewUI } from '../widgets/misc/MsgShowHTMLUI'
 
 export const Panel_LastGraph = observer(function Panel_LastGraph_(p: {}) {
     const st = useSt()
-    const lastGraph = st.db.graphs.last()
+    const lastGraph = st.db.comfy_workflow.last()
     return (
         <div>
             {lastGraph && (

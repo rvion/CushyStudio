@@ -5,7 +5,7 @@ import type { NodeProgress } from '../types/ComfyWsApi'
 import { configure, extendObservable, makeAutoObservable } from 'mobx'
 import { createElement, ReactNode } from 'react'
 
-import { ComfyNodeSchema, NodeInputExt, NodeOutputExt } from '../models/Schema'
+import { ComfyNodeSchema, NodeInputExt, NodeOutputExt } from '../models/ComfySchema'
 import { ComfyNodeID, ComfyNodeMetadata } from '../types/ComfyNodeID'
 import { auto_ } from './autoValue'
 import { comfyColors } from './Colors'

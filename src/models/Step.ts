@@ -107,7 +107,7 @@ export class StepL {
         return this.images.items
     }
 
-    outputWorkflow = new LiveRef<this, ComfyWorkflowL>(this, 'outputGraphID', () => this.db.graphs)
+    outputWorkflow = new LiveRef<this, ComfyWorkflowL>(this, 'outputGraphID', () => this.db.comfy_workflow)
 
     private _CACHE_INVARIANT = null // () => this.data.status !== Status.Running
 
@@ -116,7 +116,7 @@ export class StepL {
     videos =          new LiveCollection<TABLES['media_video']>          ({table: () => this.db.media_videos,          where: () => ({stepID:this.id}), cache: this._CACHE_INVARIANT}) // prettier-ignore
     displacements =   new LiveCollection<TABLES['media_3d_displacement']>({table: () => this.db.media_3d_displacement, where: () => ({stepID:this.id}), cache: this._CACHE_INVARIANT}) // prettier-ignore
     splats =          new LiveCollection<TABLES['media_splat']>          ({table: () => this.db.media_splats,          where: () => ({stepID:this.id}), cache: this._CACHE_INVARIANT}) // prettier-ignore
-    comfy_workflows = new LiveCollection<TABLES['graph']>                ({table: () => this.db.graphs,                where: () => ({stepID:this.id}), cache: this._CACHE_INVARIANT}) // prettier-ignore
+    comfy_workflows = new LiveCollection<TABLES['comfy_workflow']>       ({table: () => this.db.comfy_workflow,        where: () => ({stepID:this.id}), cache: this._CACHE_INVARIANT}) // prettier-ignore
     comfy_prompts =   new LiveCollection<TABLES['comfy_prompt']>         ({table: () => this.db.comfy_prompts,         where: () => ({stepID:this.id}), cache: this._CACHE_INVARIANT}) // prettier-ignore
     runtimeErrors =   new LiveCollection<TABLES['runtime_error']>        ({table: () => this.db.runtimeErrors,         where: () => ({stepID:this.id}), cache: this._CACHE_INVARIANT}) // prettier-ignore
 

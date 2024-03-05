@@ -1,4 +1,4 @@
-import type { EnumValue } from '../../../models/Schema'
+import type { EnumValue } from '../../../models/ComfySchema'
 import type { Form } from '../../Form'
 import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 import type { CleanedEnumResult } from 'src/types/EnumUtils'

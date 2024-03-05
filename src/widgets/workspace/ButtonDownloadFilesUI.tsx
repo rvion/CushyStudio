@@ -7,13 +7,13 @@ import { Button } from 'src/rsuite/shims'
 
 export const ButtonDownloadFilesUI = observer(function ButtonDownloadFilesUI_(p: {
     //
-    graph: ComfyWorkflowL | GraphID
+    graph: ComfyWorkflowL | ComfyWorkflowID
 }) {
     let graphOrGraphID = p.graph
     const st = useSt()
     const graph =
         typeof graphOrGraphID === 'string' //
-            ? st.db.graphs.getOrThrow(graphOrGraphID)
+            ? st.db.comfy_workflow.getOrThrow(graphOrGraphID)
             : graphOrGraphID
 
     return (
