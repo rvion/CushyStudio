@@ -22,9 +22,10 @@ export const MainUI = observer(() => {
         <stContext.Provider value={st}>
             <ToastContainer />
             <DndProvider backend={HTML5Backend}>
-                <TargetBox>
-                    <CushyUI />
-                </TargetBox>
+                {/* Do not import twice */}
+                {/* <TargetBox> */}
+                <CushyUI />
+                {/* </TargetBox> */}
             </DndProvider>
         </stContext.Provider>
     )

@@ -34,9 +34,9 @@ export const Panel_Import = observer(function Panel_Import_(p: {}) {
                     </div>
                 ))}
             </div>
-            <div tw='relative w-96 h-96 virtualBorder'>
+            {/* <div tw='relative w-96 h-96 virtualBorder'>
                 <TargetBox />
-            </div>
+            </div> */}
         </div>
     )
 })
