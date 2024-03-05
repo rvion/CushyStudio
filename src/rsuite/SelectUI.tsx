@@ -340,6 +340,7 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
                     </div> */}
                     <input
                         //
+                        placeholder={s.isOpen ? p.placeholder : undefined}
                         ref={s.inputRef}
                         tw='input input-sm w-full h-full !outline-none'
                         type='text'
