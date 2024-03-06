@@ -5,6 +5,7 @@
 
 .WIDGET-FIELD {
     height: var(--input-height);
+    min-height: var(--input-height);
 }
 
 .WIDGET-FIELD *::selection {
@@ -87,11 +88,6 @@ body {
 /* PanelHeaderUI */
 .CSHY-panel-header {
     height: calc(var(--input-height) + 8px);
-}
-
-.CSHY-panel-header-item {
-    height: var(--input-height);
-    min-height: var(--input-height);
 }
 
 /* CODEMIRROR ----------------------------------------- */

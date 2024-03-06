@@ -55,7 +55,7 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                 <div tw='absolute inset-0 overflow-auto bg-base-300 flex-1 select-none'>
                     <PanelHeaderUI>
                         <SeparatorUI />
-                        <RevealUI style={{ width: `${size + 8}px` }}>
+                        <RevealUI tw='WIDGET-FIELD' style={{ width: `${size + 8}px` }}>
                             <div tw='btn btn-sm rounded w-full'>
                                 <span className='material-symbols-outlined'>settings</span>
                                 {/* {p'Options'} */}

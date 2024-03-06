@@ -18,7 +18,7 @@ export const Panel_Gallery = observer(function VerticalGalleryUI_(p: {}) {
         >
             <PanelHeaderUI>
                 <SeparatorUI />
-                <RevealUI>
+                <RevealUI tw='WIDGET-FIELD' title='Gallery Options'>
                     <div tw='flex px-1 cursor-default bg-base-200 rounded w-full h-full items-center justify-center hover:brightness-125 border border-base-100'>
                         <span className='material-symbols-outlined'>settings</span>
                         <span className='material-symbols-outlined'>expand_more</span>
