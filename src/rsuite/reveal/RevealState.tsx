@@ -11,6 +11,17 @@ export class RevealState {
     static shared: { current: Maybe<RevealState> } = observable({ current: null }, { current: observable.ref })
     uid = RevealState.nextUID++
 
+    constructor(public p: RevealProps) {
+        // 2024-03-06 YIKES !!
+        // | Reveal UI was causing
+        // |
+        // | 📈 const stop = spy((ev) => {
+        // | 📈     console.log(`[🤠] ev`, ev)
+        // | 📈 })
+        makeAutoObservable(this, { uid: false, p: false })
+        // | 📈 stop()
+    }
+
     // ------------------------------------------------
     inAnchor = false
     inTooltip = false
@@ -44,10 +55,6 @@ export class RevealState {
     get showDelay() { return this.p.showDelay ?? defaultShowDelay } // prettier-ignore
     get hideDelay() { return this.p.hideDelay ?? defaultHideDelay } // prettier-ignore
     get placement() { return this.p.placement ?? 'auto' } // prettier-ignore
-    // ------------------------------------------------
-    constructor(public p: RevealProps) {
-        makeAutoObservable(this)
-    }
 
     // position --------------------------------------------
     tooltipPosition: any = { top: 0, left: 0 }
