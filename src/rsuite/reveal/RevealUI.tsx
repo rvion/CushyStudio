@@ -128,10 +128,6 @@ export const RevealUI = observer(function RevealUI_(p: RevealProps) {
             onContextMenu={uist.toggleLock}
             onMouseEnter={uist.onMouseEnterAnchor}
             onMouseLeave={uist.onMouseLeaveAnchor}
-            // ⏸️ onMouseDown={(ev) => {
-            // ⏸️     ev.stopPropagation()
-            // ⏸️     ev.preventDefault()
-            // ⏸️ }}
             onClick={
                 uist.triggerOnClick
                     ? (ev) => {
@@ -143,13 +139,7 @@ export const RevealUI = observer(function RevealUI_(p: RevealProps) {
                     : undefined
             }
         >
-            {/* {uist.inAnchor ? '🟢' : '❌'} */}
-            {/* {uist.inTooltip ? '🟢' : '❌'} */}
-            {/* {uist.enterAnchorTimeoutId ? '🟢1' : ''} */}
-            {/* {uist.leaveAnchorTimeoutId ? '❌1' : ''} */}
             {p.children[0]}
-            {/* {uist.enterTooltipTimeoutId ? '🟢2' : ''} */}
-            {/* {uist.leaveTooltipTimeoutId ? '❌2' : ''} */}
             {tooltip}
         </span>
     )
