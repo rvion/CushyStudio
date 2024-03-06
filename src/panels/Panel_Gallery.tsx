@@ -20,7 +20,19 @@ export const Panel_Gallery = observer(function VerticalGalleryUI_(p: {}) {
             <div tw='flex gap-1'>
                 <input
                     tw='input my-0.5 input-xs'
-                    placeholder='filter (unfinished)'
+                    placeholder='filename'
+                    value={cushy.galleryFilterPath ?? ''}
+                    type='text'
+                    onChange={(x) => {
+                        const next = x.target.value
+                        if (!next) cushy.galleryFilterPath = null
+                        else cushy.galleryFilterPath = next
+                    }}
+                />
+
+                <input
+                    tw='input my-0.5 input-xs'
+                    placeholder='tags'
                     value={cushy.galleryFilterTag ?? ''}
                     type='text'
                     onChange={(x) => {

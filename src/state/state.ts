@@ -818,6 +818,7 @@ export class STATE {
     //     return this.db.media_images.getLastN(maxImages)
     // }
 
+    galleryFilterPath: Maybe<string> = null
     galleryFilterTag: Maybe<string> = null
     galleryFilterAppName: Maybe<{ id: CushyAppID; name?: Maybe<string> }> = null
     get imageToDisplay() {
@@ -827,6 +828,7 @@ export class STATE {
                 .limit(this.galleryConf.value.galleryMaxImages ?? 20)
                 .select('media_image.id')
 
+            if (this.galleryFilterPath) x = x.where('media_image.path', 'like', '%' + this.galleryFilterPath + '%')
             if (this.galleryFilterTag) x = x.where('media_image.tags', 'like', '%' + this.galleryFilterTag + '%')
             if (this.galleryFilterAppName) {
                 x = x
