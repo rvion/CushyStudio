@@ -78,6 +78,10 @@ export class Widget_bool implements IWidget<Widget_string_types> {
     setOff = () => (this.serial.active = false)
     toggle = () => (this.serial.active = !this.serial.active)
 
+    readonly defaultValue: boolean = this.config.default ?? false
+    get isChanged() { return this.serial.active !== this.defaultValue } // prettier-ignore
+    reset = () => { this.serial.active = this.defaultValue } // prettier-ignore
+
     constructor(public form: Form<any>, public config: Widget_bool_config, serial?: Widget_bool_serial) {
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? {
