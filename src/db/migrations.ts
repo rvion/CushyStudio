@@ -609,7 +609,16 @@ export const migrations: {
             //
             `drop table users`,
             `ALTER TABLE graph RENAME TO comfy_workflow`,
-            `ALTER table migrations add column updatedAt integer not null default now`,
+            `ALTER TABLE migrations add column updatedAt integer not null default now`,
+        ],
+    },
+    {
+        id: 'A-IVxHT8_Q',
+        name: 'misc indexes',
+        up: [
+            `CREATE INDEX idx__media_image__createdAt ON media_image(createdAt);`,
+            `CREATE INDEX idx__cushy_app__lastRunAt ON cushy_app(lastRunAt);`,
+            `CREATE INDEX idx__draft__lastRunAt ON draft(lastRunAt);`,
         ],
     },
     // {
