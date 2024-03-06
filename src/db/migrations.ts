@@ -622,8 +622,13 @@ export const migrations: {
         ],
     },
     // {
-    //     id: 'e574c006-daca-4fd0-a51b-73a66b4fbd79',
-    //     name: 'create cushy_app table',
-    //     up: ['drop table cushy_app'],
+    //     id: 'nL-l_DcsOF',
+    //     name: 'image thumbnail',
+    //     up: [`alter table media_image add column thumbnail BLOB`],
     // },
+    {
+        id: 'dOSsFFrq4c',
+        name: 'image thumbnail',
+        up: [`alter table media_image add column thumbnail text`],
+    },
 ]

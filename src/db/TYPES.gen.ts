@@ -491,6 +491,8 @@ export type MediaImageTable = {
     orientation?: Maybe<number>
     /** @default: null, sqlType: string */
     tags?: Maybe<string>
+    /** @default: null, sqlType: TEXT */
+    thumbnail?: Maybe<string>
 }
 export type NewMediaImage = Insertable<MediaImageTable>
 export type MediaImageUpdate = Updateable<MediaImageTable>
@@ -513,6 +515,7 @@ export const MediaImageSchema = Type.Object(
         type: Type.Optional(T.Nullable(Type.String())),
         orientation: Type.Optional(T.Nullable(Type.Number())),
         tags: Type.Optional(T.Nullable(Type.String())),
+        thumbnail: Type.Optional(T.Nullable(Type.String())),
     },
     { additionalProperties: false },
 )
@@ -540,6 +543,7 @@ export const MediaImageFields = {
     type: { cid: 13, name: 'type', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
     orientation: { cid: 14, name: 'orientation', type: 'INT', notnull: 0, dflt_value: null, pk: 0 },
     tags: { cid: 15, name: 'tags', type: 'string', notnull: 0, dflt_value: null, pk: 0 },
+    thumbnail: { cid: 16, name: 'thumbnail', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
 }
 
 export const asMedia3dDisplacementID = (s: string): Media3dDisplacementID => s as any
