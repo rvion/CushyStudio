@@ -122,6 +122,7 @@
         "react-konva": "^18.2.10",
         "react-toastify": "^10.0.4",
         "react-zoom-pan-pinch": "^3.4.2",
+        "sharp": "^0.33.2",
         "simple-git": "^3.22.0",
         "tailwindcss-animate": "^1.0.7",
         "three": "^0.161.0",

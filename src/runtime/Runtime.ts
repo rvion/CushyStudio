@@ -24,6 +24,7 @@ import { RuntimeHosts } from './RuntimeHosts'
 import { RuntimeImages } from './RuntimeImages'
 import { RuntimeKonva } from './RuntimeKonva'
 import { RuntimeLLM } from './RuntimeLLM'
+import { RuntimeSharp } from './RuntimeSharp'
 import { RuntimeStore } from './RuntimeStore'
 import { RuntimeVideos } from './RuntimeVideo'
 import { createRandomGenerator } from 'src/back/random'
@@ -102,12 +103,22 @@ export class Runtime<FIELDS extends SchemaDict = any> {
     }
 
     /**
-     * SDK to programmatically build images
+     * SDK to programmatically build images using a scene graph
      * using the KonvaJS library (layers, filters, effects, etc.)
      */
     get Konva(): RuntimeKonva {
         const it = new RuntimeKonva(this)
         Object.defineProperty(this, 'Konva', { value: it })
+        return it
+    }
+
+    /**
+     * fast and efficient image manipulation SDK
+     * better than Konva for quick actions (bad, resize, etc.)
+     * */
+    get Sharp(): RuntimeSharp {
+        const it = new RuntimeSharp(this)
+        Object.defineProperty(this, 'Sharp', { value: it })
         return it
     }
 
