@@ -88,6 +88,17 @@ body {
 /* PanelHeaderUI */
 .CSHY-panel-header {
     height: calc(var(--input-height) + 8px);
+
+    overflow-x: scroll;
+    overflow-y: hidden;
+
+    -ms-overflow-style: none;
+    overflow: -moz-scrollbars-none;
+    scrollbar-width: none;
+}
+
+.CSHY-panel-header::-webkit-scrollbar {
+    display: none;
 }
 
 /* CODEMIRROR ----------------------------------------- */

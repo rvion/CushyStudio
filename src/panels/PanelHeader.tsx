@@ -19,6 +19,12 @@ export const PanelHeaderUI = observer(function PanelHeaderUI_(p: { children?: Re
             // This may be good to pass in the future? I don't think this really needs to/should be modifiable though.
             // className={p.className}
             tw={['CSHY-panel-header', 'flex select-none w-full', 'items-center p-1', 'bg-base-300']}
+            onWheel={(event) => {
+                event.currentTarget.scrollLeft += event.deltaY
+
+                event.preventDefault()
+                event.stopPropagation()
+            }}
         >
             {p.children ?? <></>}
         </div>
