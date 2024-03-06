@@ -126,6 +126,7 @@
         "simple-git": "^3.22.0",
         "tailwindcss-animate": "^1.0.7",
         "three": "^0.161.0",
+        "thumbhash": "^0.1.1",
         "typedoc": "^0.25.8",
         "typescript": "^5.3.3",
         "watcher": "^2.3.0",
