@@ -11,7 +11,7 @@ import { useSt } from 'src/state/stateContext'
 import { assets } from 'src/utils/assets/assets'
 import { JsonViewUI } from 'src/widgets/workspace/JsonViewUI'
 import { PanelHeaderUI } from './PanelHeader'
-import { SeparatorUI } from 'src/controls/widgets/separator/SeparatorUI'
+import { SpacerUI } from 'src/controls/widgets/spacer/SpacerUI'
 
 export const Panel_ViewImage = observer(function Panel_ViewImage_(p: {
     //
@@ -125,7 +125,7 @@ export const ImageActionBarUI = observer(function ImageActionBarUI_(p: { img?: M
 
             {img ? <ImageDropdownUI tw='WIDGET-FIELD' img={img} /> : null}
 
-            <SeparatorUI />
+            <SpacerUI />
 
             {/* Image Info Button */}
             <RevealUI tw='bg-base-200 hover:brightness-125 rounded text-shadow'>

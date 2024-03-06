@@ -19,7 +19,7 @@ import { PanelHeaderUI } from 'src/panels/PanelHeader'
 import { useSt } from 'src/state/stateContext'
 import { bang } from 'src/utils/misc/bang'
 import { RevealUI } from 'src/rsuite/reveal/RevealUI'
-import { SeparatorUI } from 'src/controls/widgets/separator/SeparatorUI'
+import { SpacerUI } from 'src/controls/widgets/spacer/SpacerUI'
 
 export const OutputDisplacementPreviewUI = observer(function OutputImagePreviewUI_(p: {
     step?: Maybe<StepL>
@@ -87,7 +87,7 @@ export const OutputDisplacementUI = observer(function OutputDisplacementUI_(p: {
                 </div>
             ) : (
                 <PanelHeaderUI>
-                    <SeparatorUI />
+                    <SpacerUI />
                     <RevealUI tw='WIDGET-FIELD' title='Displacement Options'>
                         <div tw='flex px-1 cursor-default bg-base-200 rounded w-full h-full items-center justify-center hover:brightness-125 border border-base-100'>
                             <span className='material-symbols-outlined'>settings</span>

@@ -12,7 +12,7 @@ import { CreateAppPopupUI } from 'src/panels/Panel_Welcome/CreateAppBtnUI'
 import { PanelHeaderUI } from 'src/panels/PanelHeader'
 import { RevealUI } from 'src/rsuite/reveal/RevealUI'
 import { useSt } from 'src/state/stateContext'
-import { SeparatorUI } from 'src/controls/widgets/separator/SeparatorUI'
+import { SpacerUI } from 'src/controls/widgets/spacer/SpacerUI'
 
 // Could give this an option be collapsible in the future?
 /** Re-usable container to keep a consistent style around groups of buttons */
@@ -54,7 +54,7 @@ export const FavBarUI = observer(function FavBarUI_(p: {
             >
                 <div tw='absolute inset-0 overflow-auto bg-base-300 flex-1 select-none'>
                     <PanelHeaderUI>
-                        <SeparatorUI />
+                        <SpacerUI />
                         <RevealUI tw='WIDGET-FIELD' title='Favorite Bar Options' style={{ width: `${size + 8}px` }}>
                             <div tw='btn btn-sm rounded w-full'>
                                 <span className='material-symbols-outlined'>settings</span>
@@ -63,7 +63,7 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                                 <FormUI form={conf} />
                             </div>
                         </RevealUI>
-                        <SeparatorUI />
+                        <SpacerUI />
                     </PanelHeaderUI>
                     <div tw='flex flex-col items-center'>
                         <FavBarContainer>

@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite'
 import { useSt } from '../state/stateContext'
 import { ImportAsImageUI, ImportedFileUI } from 'src/importers/FilesBeeingImported'
 import { TargetBox } from 'src/importers/TargetBox'
-import { SeparatorUI } from 'src/controls/widgets/separator/SeparatorUI'
+import { SpacerUI } from 'src/controls/widgets/spacer/SpacerUI'
 import { PanelHeaderUI } from './PanelHeader'
 
 export const Panel_Import = observer(function Panel_Import_(p: {}) {
@@ -12,7 +12,7 @@ export const Panel_Import = observer(function Panel_Import_(p: {}) {
     return (
         <div tw='w-full h-full'>
             <PanelHeaderUI>
-                <SeparatorUI />
+                <SpacerUI />
                 {/* Putting clear items button on the right because actions that remove things should be separated in some way from other things to prevent mis-clicks. */}
                 <div
                     onClick={() => {

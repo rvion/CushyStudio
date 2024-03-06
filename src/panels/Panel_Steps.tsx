@@ -4,7 +4,7 @@ import { StepOutputsBodyV1UI, StepOutputsV1UI } from '../outputs/StepOutputsV1UI
 import { useSt } from '../state/stateContext'
 import { PanelHeaderUI } from './PanelHeader'
 import { InputNumberUI } from 'src/controls/widgets/number/InputNumberUI'
-import { SeparatorUI } from 'src/controls/widgets/separator/SeparatorUI'
+import { SpacerUI } from 'src/controls/widgets/spacer/SpacerUI'
 import { RevealUI } from 'src/rsuite/reveal/RevealUI'
 
 export const Panel_Steps = observer(function StepListUI_(p: {}) {
@@ -13,7 +13,7 @@ export const Panel_Steps = observer(function StepListUI_(p: {}) {
     return (
         <div className='flex flex-col overflow-hidden'>
             <PanelHeaderUI>
-                <SeparatorUI />
+                <SpacerUI />
                 <RevealUI tw='WIDGET-FIELD' title='Step Options'>
                     <div tw='flex px-1 cursor-default bg-base-200 rounded w-full h-full items-center justify-center hover:brightness-125 border border-base-100'>
                         <span className='material-symbols-outlined'>settings</span>
