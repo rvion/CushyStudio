@@ -44,6 +44,16 @@ export class CushyAppL {
         return pieces.join('/')
     }
 
+    // 🔴 todo: finish + reactivity
+    get drafts2() {
+        return this.db.drafts.live((c) =>
+            c //
+                .where('appID', '=', this.id)
+                .orderBy('lastRunAt', 'desc')
+                .select(['id', 'title', 'lastRunAt'])
+                .compile(),
+        )
+    }
     get drafts(): DraftL[] {
         return this._draftsCollection.items
     }
