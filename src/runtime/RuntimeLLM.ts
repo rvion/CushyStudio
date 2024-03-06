@@ -52,13 +52,24 @@ export class RuntimeLLM {
         `ONLY answer with the prompt itself. DO NOT answer anything else. No Hello, no thanks, no signature, no nothing.`,
     ].join('\n')
 
-    simpleSystemPromptList = [
+    simpleSystemPromptKeywordList = [
         //
         `You are an assistant in charge of writing a prompt to be submitted to a stable distribution ai image generative pipeline.`,
         `Write a prompt describing the user submited topic in a way that will help the ai generate a relevant image.`,
         `Start with most important words describing the prompt`,
         `ONLY answer with the prompt itself. DO NOT answer anything else. No Hello, no thanks, no signature, no nothing.`,
         `Answer must be a list of COMA-SEPARATED words (or 2-3 words), no full sentences.`,
+        `Wrap the most important words with parenthesis: (like this)`,
+        `try to include a long list of comma separated words.`,
+    ].join('\n')
+
+    simpleSystemPromptNaturalLanguage = [
+        //
+        `You are an assistant in charge of writing a prompt to be submitted to a stable distribution ai image generative pipeline.`,
+        `Write a prompt describing the user submited topic in a way that will help the ai generate a relevant image.`,
+        `Start with most important words describing the prompt`,
+        `ONLY answer with the prompt itself. DO NOT answer anything else. No Hello, no thanks, no signature, no nothing.`,
+        `Answer must be done in natural passive sentences. No imperative. No direct order. No instruction. just descriptions of scene`,
         `Wrap the most important words with parenthesis: (like this)`,
         `try to include a long list of comma separated words.`,
     ].join('\n')
