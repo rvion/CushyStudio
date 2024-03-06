@@ -29,7 +29,7 @@ export const WidgetSelectOne_TabUI = observer(function WidgetSelectOne_TabUI_<T 
                             key={c.id}
                             active={isSelected}
                             display='button'
-                            text={c.label}
+                            text={c.label ?? c.id}
                             onValueChange={(value) => {
                                 if (value != isSelected) {
                                     widget.serial.val = c
