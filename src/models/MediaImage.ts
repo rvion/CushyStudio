@@ -207,6 +207,14 @@ export class MediaImageL {
         return this
     }
 
+    /** remove image tag */
+    removeTag = (...tagsToRemove: string[]): this => {
+        if (this.data.tags == null) return this
+        const tags = new Set(this.data.tags.split(','))
+        for (const tag of tagsToRemove) tags.delete(tag)
+        this.update({ tags: [...tags].join(',') })
+        return this
+    }
 
     /** get tags as string list (de-duplicated) */
     get tags(): string[] {
