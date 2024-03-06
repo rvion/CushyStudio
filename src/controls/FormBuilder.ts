@@ -71,6 +71,8 @@ export class FormBuilder {
     prompt      = (config: Widget_prompt_config = {})                                                        => new Spec<Widget_prompt                      >('prompt'    , config)
     promptV2    = (config: Widget_prompt_config = {})                                                        => new Spec<Widget_prompt                      >('prompt'    , config)
     int         = (config: Omit<Widget_number_config, 'mode'> = {})                                          => new Spec<Widget_number                      >('number'    , { mode: 'int', ...config })
+    /** int, default: 100, step: 10, min: 1, max: 100, suffix: '%', */
+    percent     = (config: Omit<Widget_number_config, 'mode'> = {})                                          => new Spec<Widget_number                      >('number'    , { mode: 'int', default: 100, step: 10, min: 1, max: 100, suffix: '%', ...config })
     float       = (config: Omit<Widget_number_config, 'mode'> = {})                                          => new Spec<Widget_number                      >('number'    , { mode: 'float', ...config })
     number      = (config: Omit<Widget_number_config, 'mode'> = {})                                          => new Spec<Widget_number                      >('number'    , { mode: 'float', ...config })
     custom      = <TViewState>(config: Widget_custom_config<TViewState>)                                     => new Spec<Widget_custom<TViewState>          >('custom'    , config)
