@@ -8,7 +8,7 @@ export const defaultHideDelay = 300
 
 export class RevealState {
     static nextUID = 1
-    static shared: { current: Maybe<RevealState> } = observable({ current: null })
+    static shared: { current: Maybe<RevealState> } = observable({ current: null }, { current: observable.ref })
     uid = RevealState.nextUID++
 
     // ------------------------------------------------
