@@ -21,12 +21,17 @@ export class LiveSQL<T> {
             console.error(`[🤠] SQL`, this.query.sql)
             console.error(`[🤠] SQL ❌ error`, e)
         }
-        console.log(`[🤠] `, query.sql, this.query.parameters)
+        // console.log(`[🤠] `, query.sql, this.query.parameters)
     }
 
     get all(): T[] {
+        // const precision timers
         if (this.stmt == null) return []
+        const A = process.hrtime.bigint()
         const x = this.stmt.all(this.query.parameters)
+        const B = process.hrtime.bigint()
+        const ms = Number(B - A) / 1_000_000
+        console.log(`[⚡️] SQL`, this.query.sql, this.query.parameters, `took`, ms, 'ms')
         return x as any[]
     }
     map = <R>(f: (t: T) => R): R[] => this.all.map(f)
