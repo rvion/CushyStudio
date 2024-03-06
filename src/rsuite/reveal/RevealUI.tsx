@@ -7,10 +7,11 @@ import { RevealProps } from './RevealProps'
 import { RevealState } from './RevealState'
 import { useSt } from 'src/state/stateContext'
 
-export const RevealUI = observer(function Tooltip_(p: RevealProps) {
+export const RevealUI = observer(function RevealUI_(p: RevealProps) {
     const uist = useMemo(() => new RevealState(p), [])
     const st = useSt()
     const ref = useRef<HTMLDivElement>(null)
+
     useEffect(() => {
         if (uist.visible && ref.current) {
             const rect = ref.current.getBoundingClientRect()
