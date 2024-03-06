@@ -125,6 +125,7 @@ export const _codegenORM = (store: {
                 if (col.type === 'INTEGER') return 'number'
                 if (col.type === 'TEXT') return 'string'
                 if (col.type === 'string') return 'string'
+                if (col.type === 'BLOB') return 'Uint8Array'
 
                 // 🔶 the `JSONColumnType` makes update / insert use string instead of T
                 // if (col.type === 'json') return `JSONColumnType<T.${jsTableName}_${col.name}>`
@@ -143,6 +144,7 @@ export const _codegenORM = (store: {
                 if (col.type === 'float') return 'Type.Number()'
                 if (col.type === 'TEXT') return 'Type.String()'
                 if (col.type === 'string') return 'Type.String()'
+                if (col.type === 'BLOB') return 'Type.Uint8Array()'
                 if (col.type === 'json') return `T.${jsTableName}_${col.name}_Schema`
                 throw new Error(`unknown type '${col.type}' in ${jsTableName}.${col.name}`)
             })()

@@ -200,6 +200,7 @@ export class LiveTable<TABLE extends TableInfo<keyof KyselyTables>> {
                         // dehydrate fields needed to be updated
                         const updatePayload: any = Object.fromEntries(
                             Object.entries(changes as any).map(([k, v]) => {
+                                if (v instanceof Uint8Array) return [k, v]
                                 if (Array.isArray(v)) return [k, JSON.stringify(v)]
                                 if (typeof v === 'object' && v != null) return [k, JSON.stringify(v) ?? 'null']
                                 return [k, v]
