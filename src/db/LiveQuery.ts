@@ -29,4 +29,5 @@ export class LiveSQL<T> {
         const x = this.stmt.all(this.query.parameters)
         return x as any[]
     }
+    map = <R>(f: (t: T) => R): R[] => this.all.map(f)
 }
