@@ -93,7 +93,12 @@ class AutoCompleteSelectState<T> {
                 : value.map((i) => {
                       const label = this.p.getLabelText(i)
                       return (
-                          <div key={label} tw='badge badge-primary text-shadow-inv'>
+                          <div
+                              tw='badge badge-primary text-shadow-inv cursor-not-allowed'
+                              key={label}
+                              // hack to allow to unselect quickly selected items
+                              onClick={() => this.p.onChange?.(i, this)}
+                          >
                               {label}
                           </div>
                       )

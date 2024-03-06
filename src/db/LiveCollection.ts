@@ -1,4 +1,4 @@
-import type { LiveInstance } from './LiveInstance'
+import type { TableInfo } from './TYPES_json'
 
 import { makeAutoObservable } from 'mobx'
 
@@ -6,11 +6,11 @@ import { DEPENDS_ON } from './LiveHelpers'
 import { LiveTable } from './LiveTable'
 import { SqlFindOptions, SQLWhere } from './SQLWhere'
 
-export class LiveCollection<L extends LiveInstance<any, any>> {
+export class LiveCollection<TABLE extends TableInfo> {
     constructor(
         public p: {
-            table: () => LiveTable<any, any, any>
-            where: () => SQLWhere<L['data']>
+            table: () => LiveTable<TABLE>
+            where: () => SQLWhere<TABLE['$T']>
             options?: SqlFindOptions
             cache?: Maybe<() => boolean>
         },
@@ -18,12 +18,7 @@ export class LiveCollection<L extends LiveInstance<any, any>> {
         makeAutoObservable(this)
     }
 
-    /** debug string for pretty printing */
-    // get debugStr() {
-    //     return `LiveCollection: ${this.owner.table.name}<<-${this.remoteTable.name}`
-    // }
-
-    get items(): L[] {
+    get items(): TABLE['$L'][] {
         const remoteTable = this.p.table()
         const shouldCache = this.p.cache?.() ?? false
         const whereX = this.p.where()
@@ -35,7 +30,7 @@ export class LiveCollection<L extends LiveInstance<any, any>> {
         return remoteTable.find(whereX, this.p.options)
     }
 
-    map = <T>(fn: (l: L) => T): T[] => this.items.map(fn)
+    map = <T>(fn: (l: TABLE['$L']) => T): T[] => this.items.map(fn)
 
     get length(): number {
         return this.items.length

@@ -1,4 +1,6 @@
 import type { SqlColDef } from './_getAllColumnsForTable'
+import type { BaseInstanceFields } from './LiveInstance'
+import type { KyselyTables } from './TYPES.gen'
 import type { Metafile } from 'esbuild'
 import type { Status } from 'src/back/Status'
 import type { Widget_group_serial } from 'src/controls/widgets/group/WidgetGroup'
@@ -12,7 +14,7 @@ import type { WsMsgExecutionError } from 'src/types/ComfyWsApi'
 import { TObject, TSchema, Type } from '@sinclair/typebox'
 
 export type StatusT = keyof typeof Status
-
+// export type JSONColumnType< =
 export const Nullable = <T extends TSchema>(schema: T) => Type.Union([schema, Type.Null(), Type.Undefined()])
 
 export type CushyScript_metafile = Metafile
@@ -40,7 +42,7 @@ export const Step_formResult_Schema = Type.Record(Type.String(), Type.Any())
 export type Step_formSerial = Maybe<any>
 export const Step_formSerial_Schema = Type.Record(Type.String(), Type.Any())
 
-export type ComfyPrompt_error = Maybe<WsMsgExecutionError>
+export type ComfyPrompt_error = WsMsgExecutionError
 export const ComfyPrompt_error_Schema = Type.Record(Type.String(), Type.Any())
 
 export type ComfySchema_spec = ComfySchemaJSON
@@ -57,12 +59,27 @@ export const RuntimeError_infos_Schema = Type.Record(Type.String(), Type.Any())
 
 export type DBRef = { fromTable: string; fromField: string; toTable: string; tofield: string }
 
-export class TableInfo<T = any> {
+export class TableInfo<
+    //
+    TableName extends keyof KyselyTables = any,
+    T extends BaseInstanceFields = BaseInstanceFields,
+    L = any,
+    N = any,
+    U = any,
+    ID = any,
+> {
+    $TableName!: TableName
+    $T!: T
+    $L!: L
+    $N!: N
+    $Update!: U
+    $ID!: ID
+
     cols: SqlColDef[]
     // insertSQL: string
     constructor(
         //
-        public sql_name: string,
+        public sql_name: TableName,
         public ts_name: string,
         public fields: { [fieldName: string]: SqlColDef },
         public schema: TObject<any>,

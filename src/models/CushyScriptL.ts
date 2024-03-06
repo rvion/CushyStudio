@@ -1,7 +1,7 @@
 import type { LiveInstance } from '../db/LiveInstance'
 import type { LibraryFile } from 'src/cards/LibraryFile'
 
-import { fstat, fstatSync, readFileSync, statSync } from 'fs'
+import { statSync } from 'fs'
 import { runInAction } from 'mobx'
 import { basename } from 'pathe'
 
@@ -13,13 +13,13 @@ import { replaceImportsWithSyncImport } from 'src/back/ImportStructure'
 import { App, AppRef, SchemaDict } from 'src/cards/App'
 import { LiveCollection } from 'src/db/LiveCollection'
 import { SQLITE_false, SQLITE_true } from 'src/db/SQLITE_boolean'
-import { asCushyAppID, CushyScriptT } from 'src/db/TYPES.gen'
+import { asCushyAppID, type CushyScriptTable, type TABLES } from 'src/db/TYPES.gen'
+import { extractErrorMessage } from 'src/utils/formatters/extractErrorMessage'
 import { asRelativePath } from 'src/utils/fs/pathUtils'
-import { toastInfo } from 'src/utils/misc/toasts'
 
 // import { LazyValue } from 'src/db/LazyValue'
 
-export interface CushyScriptL extends LiveInstance<CushyScriptT, CushyScriptL> {}
+export interface CushyScriptL extends LiveInstance<TABLES['cushy_script']> {}
 export class CushyScriptL {
     // get firstApp(): Maybe<CushyAppL> {
     //     return this.apps[0]
@@ -31,7 +31,7 @@ export class CushyScriptL {
     }
 
     _apps_viaScript: Maybe<CushyAppL[]> = null
-    private _apps_viaDB = new LiveCollection<CushyAppL>({
+    private _apps_viaDB = new LiveCollection<TABLES['cushy_app']>({
         table: () => this.db.cushy_apps,
         where: () => ({ scriptID: this.id }),
     })
@@ -69,32 +69,40 @@ export class CushyScriptL {
     }
 
     _isOutOfDate = (): { needRecompile: boolean; reason: string } => {
-        const lastExtractedAt = this.data.lastExtractedAt
-        // 1. no lastExtractedAt => ❌ need recompile
-        if (lastExtractedAt == null) return { needRecompile: true, reason: 'missing lastExtractedAt' }
+        try {
+            // 1. no lastExtractedAt => ❌ need recompile
+            const lastExtractedAt = this.data.lastExtractedAt
+            if (lastExtractedAt == null) return { needRecompile: true, reason: 'missing lastExtractedAt' }
 
-        // 2. entrypoint more recent
-        const relPath = statSync(this.relPath)
-        if (relPath.mtime.getTime() > lastExtractedAt)
-            return { needRecompile: true, reason: `file ${this.relPath} modified since last compile` }
+            // 2. entrypoint more recent
+            const relPath = statSync(this.relPath)
+            if (relPath.mtime.getTime() > lastExtractedAt)
+                return { needRecompile: true, reason: `file ${this.relPath} modified since last compile` }
 
-        // 3. any deps more recent
-        const deps = this.data.metafile?.inputs
-        if (deps) {
-            const inputs = Object.keys(deps)
-            for (const input of inputs) {
-                const inputStats = statSync(input)
-                if (inputStats.mtime.getTime() > lastExtractedAt) {
-                    return {
-                        needRecompile: true,
-                        reason: `dependency ${input} modified since last compile`,
+            // 3. any deps more recent
+            const deps = this.data.metafile?.inputs
+            if (deps) {
+                const inputs = Object.keys(deps)
+                for (const input of inputs) {
+                    const inputStats = statSync(input)
+                    if (inputStats.mtime.getTime() > lastExtractedAt) {
+                        return {
+                            needRecompile: true,
+                            reason: `dependency ${input} modified since last compile`,
+                        }
                     }
                 }
             }
-        }
-        return {
-            needRecompile: false,
-            reason: 'lastExtractedAt + no legacy deps',
+            return {
+                needRecompile: false,
+                reason: 'lastExtractedAt + no legacy deps',
+            }
+        } catch (e) {
+            // 4. crash (e.g. file does not exist anymore) => need recompile
+            return {
+                needRecompile: true,
+                reason: `error checking dependencies: ${extractErrorMessage(e)}`,
+            }
         }
     }
     // --------------------------------------------------------------------------------------

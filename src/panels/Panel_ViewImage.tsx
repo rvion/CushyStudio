@@ -141,6 +141,11 @@ export const ImageActionBarUI = observer(function ImageActionBarUI_(p: { img?: M
                 </>
             ) : null}
             {img?.ComfyNodeMetadta?.tag && <div tw='badge badge-primary'>{img?.ComfyNodeMetadta?.tag}</div>}
+            {img?.tags.map((t) => (
+                <div key={t} tw='italic'>
+                    #{t}
+                </div>
+            ))}
         </div>
     )
 })

@@ -1,20 +1,21 @@
 import type { LiveInstance } from './LiveInstance'
 import type { LiveTable } from './LiveTable'
+import type { TableInfo } from './TYPES_json'
 
 export class LiveRefOpt<
     //
-    Owner extends LiveInstance<any, any>,
-    L extends LiveInstance<any, any>,
+    Owner extends LiveInstance<any>,
+    L extends LiveInstance<any>,
 > {
     constructor(
         //
-        public owner: LiveInstance<any, any>,
+        public owner: Owner,
         public key: keyof Owner['data'],
-        public table: () => LiveTable<any, any, L>,
+        public table: () => LiveTable<TableInfo<any, any, L>>,
     ) {}
 
-    get id(): Maybe<L['data']['id']> {
-        return this.owner.data[this.key]
+    get id(): Maybe<L['id']> {
+        return (this.owner.data as any)[this.key]
     }
 
     /** unsafe version of item, that crashes if item not found */
@@ -30,7 +31,7 @@ export class LiveRefOpt<
     }
 
     /** debug string for pretty printing */
-    get debugStr() {
+    get debugStr(): string {
         return `LiveRefOpt: ${this.owner.table.name}->${this.table().name}(${this.id})`
     }
 }

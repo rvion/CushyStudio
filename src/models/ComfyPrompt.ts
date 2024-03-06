@@ -16,13 +16,12 @@ import {
     ImageCreationOpts,
 } from './createMediaImage_fromWebFile'
 import { SQLITE_true } from 'src/db/SQLITE_boolean'
-import { ComfyPromptT } from 'src/db/TYPES.gen'
+import { ComfyPromptT, type ComfyPromptUpdate, type TABLES } from 'src/db/TYPES.gen'
 import { createHTMLImage_fromURL } from 'src/state/createHTMLImage_fromURL'
 import { ComfyNodeID } from 'src/types/ComfyNodeID'
 import { asRelativePath } from 'src/utils/fs/pathUtils'
-import { toastInfo } from 'src/utils/misc/toasts'
 
-export interface ComfyPromptL extends LiveInstance<ComfyPromptT, ComfyPromptL> {}
+export interface ComfyPromptL extends LiveInstance<TABLES['comfy_prompt']> {}
 export class ComfyPromptL {
     saveFormat: Maybe<ImageSaveFormat> = null
 
@@ -35,7 +34,8 @@ export class ComfyPromptL {
 
     notifyEmptyPrompt = () => console.log('🔶 No work to do')
 
-    onCreate = (data: ComfyPromptT) => {
+    onCreate = () => {
+        const data: ComfyPromptT = this.data
         const pending = this.st._pendingMsgs.get(data.id)
         if (pending == null) return
         this.log(`🟢 onCreate: ${pending.length} pending messages`)
@@ -204,17 +204,20 @@ export class ComfyPromptL {
             imgL = _createMediaImage_fromLocalyAvailableImage(this.st, outputRelPath, buff, imgCreationOpts)
         }
 
+        // apply tags --------------------------------------------------------------------------------
+        const tags: string[] = imgL.data.tags?.split(',') ?? []
+        if (promptMeta.tag) tags.push(promptMeta.tag)
+        if (promptMeta.tags) tags.push(...promptMeta.tags)
+        if (tags.length) imgL.update({ tags: tags.join(',') })
+
+        // update store --------------------------------------------------------------------------------
         if (this.step.runtime && promptMeta.storeAs) {
             this.step.runtime.Store.getImageStore(promptMeta.storeAs).set(imgL)
         }
     }
 
-    /** outputs are both stored in ScriptStep_prompt, and on ScriptExecution */
-    // private outputs: WsMsgExecuted[] = []
-    // images: ImageL[] = []
-
     /** finish this step */
-    private _finish = async (p: Pick<ComfyPromptT, 'status' | 'error'>) => {
+    private _finish = async (p: Pick<ComfyPromptUpdate, 'status' | 'error'>) => {
         this.update({ ...p, executed: SQLITE_true })
         await Promise.all(this.pendingPromises)
         if (this._resolve == null) throw new Error('❌ invariant violation: ScriptStep_prompt.resolve is null.')

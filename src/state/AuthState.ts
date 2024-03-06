@@ -2,12 +2,11 @@ import type { STATE } from './state'
 import type { Session, User } from '@supabase/supabase-js'
 import type { SupabaseAuthClient } from '@supabase/supabase-js/dist/module/lib/SupabaseAuthClient'
 import type { LiveTable } from 'src/db/LiveTable'
-import type { AuthL } from 'src/models/Auth'
 
 import { makeAutoObservable, runInAction } from 'mobx'
 
 import { logger } from './logfile'
-import { asAuthID, Auth_C, AuthT } from 'src/db/TYPES.gen'
+import { asAuthID, type NewAuth, type TABLES } from 'src/db/TYPES.gen'
 
 export class AuthState {
     cleanup: Maybe<() => void> = null
@@ -30,7 +29,7 @@ export class AuthState {
 
     auth: SupabaseAuthClient
 
-    get authTable(): LiveTable<AuthT, Auth_C, AuthL> {
+    get authTable(): LiveTable<TABLES['auth']> {
         return this.st.db.auths
     }
 
@@ -189,9 +188,7 @@ export class AuthState {
     }
 
     storeSessionInfoInDB = (session: Session) => {
-        const payload: Omit<AuthT, 'createdAt' | 'updatedAt'> = {
-            id: asAuthID('current'),
-        }
+        const payload: NewAuth & { id: AuthID } = { id: asAuthID('current') }
         if (session.access_token) payload.access_token = session.access_token
         if (session.expires_at) payload.expires_at = session.expires_at
         if (session.expires_in) payload.expires_in = session.expires_in

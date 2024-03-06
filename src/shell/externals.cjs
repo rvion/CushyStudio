@@ -1,3 +1,8 @@
+// 🔶 modifications must be kept in sync between :
+//     | ./src/shell/build.js
+//     | ./vite.config.ts
+//     | ./src/shell/externals.cjs
+
 // prettier-ignore
 const modulesToCache /*: [name:string, path:string][]*/ = [
     // node --------------------------
@@ -16,6 +21,7 @@ const modulesToCache /*: [name:string, path:string][]*/ = [
     ['cluster'          , 'cluster'         ],
     ['https'            , 'https'           ],
     ['async_hooks'      , 'async_hooks'     ],
+    ['crypto'           , 'crypto'          ],
 
     // misc heavy libs ----------------
     ['three'            , 'three'           ],

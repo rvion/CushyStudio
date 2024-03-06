@@ -1,10 +1,8 @@
 import { observer } from 'mobx-react-lite'
-import { nanoid } from 'nanoid'
 import { resolve } from 'pathe'
 
 import { HostUI } from './host/HostUI'
-import { SQLITE_false, SQLITE_true } from 'src/db/SQLITE_boolean'
-import { HostL } from 'src/models/Host'
+import { SQLITE_false } from 'src/db/SQLITE_boolean'
 import { SelectUI } from 'src/rsuite/SelectUI'
 import { Panel } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'

@@ -1,5 +1,5 @@
 import type { Widget_bool } from './bool/WidgetBool'
-import type { Widget_inlineRun } from './button/WidgetInlineRun'
+import type { Widget_button } from './button/WidgetButton'
 import type { Widget_choices } from './choices/WidgetChoices'
 import type { Widget_color } from './color/WidgetColor'
 import type { Widget_custom } from './custom/WidgetCustom'
@@ -36,7 +36,7 @@ export let WidgetDI = {
     Widget_seed /*       */: 0 as any as typeof Widget_seed,
     Widget_number /*     */: 0 as any as typeof Widget_number,
     Widget_bool /*       */: 0 as any as typeof Widget_bool,
-    Widget_inlineRun /*  */: 0 as any as typeof Widget_inlineRun,
+    Widget_button /*     */: 0 as any as typeof Widget_button,
     Widget_markdown /*   */: 0 as any as typeof Widget_markdown,
     Widget_custom /*     */: 0 as any as typeof Widget_custom,
     Widget_size /*       */: 0 as any as typeof Widget_size,

@@ -3,18 +3,11 @@ import type { UnifiedCanvas } from './UnifiedCanvas'
 import Konva from 'konva'
 
 export class KonvaGrid1 {
-    hide = () => this.layer.hide()
-    show = () => this.layer.show()
-    layer: Konva.Layer
+    hide = () => this.image.hide()
+    show = () => this.image.show()
+    image: Konva.Image
     constructor(public canvas: UnifiedCanvas) {
-        const cellSize = 64 // stage.width() / xSnaps
-        const stage = canvas.stage
-        const layer = new Konva.Layer({
-            imageSmoothingEnabled: false,
-        })
-        this.layer = layer
-        stage.add(layer)
-
+        const cellSize = 64
         const _canvas = document.createElement('canvas')
         _canvas.width = 200
         _canvas.height = 200
@@ -28,15 +21,13 @@ export class KonvaGrid1 {
                 ctx.fillRect(x, y, 1, 1)
             }
         }
-
-        layer.add(
-            new Konva.Image({
-                x: -100 * cellSize,
-                y: -100 * cellSize,
-                image: _canvas,
-                width: 200 * cellSize,
-                height: 200 * cellSize,
-            }),
-        )
+        this.image = new Konva.Image({
+            x: -100 * cellSize,
+            y: -100 * cellSize,
+            image: _canvas,
+            width: 200 * cellSize,
+            height: 200 * cellSize,
+        })
+        canvas.gridLayer.add(this.image)
     }
 }

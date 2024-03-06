@@ -4,8 +4,13 @@ import type { MediaImageL } from 'src/models/MediaImage'
 import type { PromptID } from 'src/types/ComfyWsApi'
 
 import { makeAutoObservable } from 'mobx'
+import { hash } from 'ohash'
 
-import { createMediaImage_fromDataURI, createMediaImage_fromPath } from 'src/models/createMediaImage_fromWebFile'
+import {
+    createMediaImage_fromBlobObject,
+    createMediaImage_fromDataURI,
+    createMediaImage_fromPath,
+} from 'src/models/createMediaImage_fromWebFile'
 
 /** namespace for all image-related utils */
 export class RuntimeImages {
@@ -43,15 +48,24 @@ export class RuntimeImages {
             : this.createFromPath(relPathOrDataURL)
     }
 
+    createFromURL = async (url: string): Promise<MediaImageL> => {
+        const filename = url.split('/').pop() ?? 'unknown' // 🔴 bad code here
+        const blob: Blob = await fetch(url).then((x) => x.blob())
+        const stepID: StepID = this.rt.step.id
+        return createMediaImage_fromBlobObject(cushy, blob, `outputs/imported/${filename}`, { stepID })
+    }
+
     createFromDataURL = (
         /** base 64 encoded data URL */
         dataURL: string,
+        p: { promptID?: PromptID } = {},
     ): MediaImageL => {
-        return createMediaImage_fromDataURI(this.rt.Cushy, dataURL)
+        const stepID: StepID = this.rt.step.id
+        return createMediaImage_fromDataURI(this.rt.Cushy, dataURL, undefined, { promptID: p.promptID, stepID })
     }
 
     createFromPath = (relPath: string, p: { promptID?: PromptID } = {}): MediaImageL => {
-        const stepID = this.rt.step.id
+        const stepID: StepID = this.rt.step.id
         return createMediaImage_fromPath(this.rt.Cushy, relPath, { promptID: p.promptID, stepID })
     }
 }

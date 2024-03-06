@@ -2,6 +2,7 @@ import type { BaseSelectEntry, Widget_selectOne } from './WidgetSelectOne'
 
 import { observer } from 'mobx-react-lite'
 
+import { InputBoolUI } from '../bool/InputBoolUI'
 import { SelectUI } from 'src/rsuite/SelectUI'
 import { makeLabelFromFieldName } from 'src/utils/misc/makeLabelFromFieldName'
 
@@ -20,18 +21,21 @@ export const WidgetSelectOne_TabUI = observer(function WidgetSelectOne_TabUI_<T 
     const selected = widget.serial.val
     return (
         <div>
-            <div role='tablist' tw='tabs tabs-boxed tabs-sm flex-wrap'>
+            <div tw='rounded select-none ml-auto justify-end flex flex-wrap gap-x-0.5 gap-y-0'>
                 {widget.choices.map((c) => {
                     const isSelected = selected?.id === c.id
                     return (
-                        <a
-                            onClick={() => (widget.serial.val = c)}
+                        <InputBoolUI
                             key={c.id}
-                            role='tab'
-                            tw={['tab', isSelected ? 'tab-active text-shadow-inv' : 'text-shadow']}
-                        >
-                            {c.label ?? makeLabelFromFieldName(c.id)}
-                        </a>
+                            active={isSelected}
+                            display='button'
+                            text={c.label}
+                            onValueChange={(value) => {
+                                if (value != isSelected) {
+                                    widget.serial.val = c
+                                }
+                            }}
+                        ></InputBoolUI>
                     )
                 })}
             </div>

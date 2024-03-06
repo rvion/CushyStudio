@@ -1,7 +1,7 @@
 import type { DraftL } from './Draft'
 import type { Executable } from './Executable'
 import type { LibraryFile } from 'src/cards/LibraryFile'
-import type { CushyAppT } from 'src/db/TYPES.gen'
+import type { TABLES } from 'src/db/TYPES.gen'
 import type { CushyScriptL } from 'src/models/CushyScriptL'
 
 import { existsSync, readFileSync } from 'fs'
@@ -16,7 +16,7 @@ import { VirtualHierarchy } from 'src/panels/libraryUI/VirtualHierarchy'
 import { hashArrayBuffer } from 'src/state/hashBlob'
 import { toastError, toastSuccess } from 'src/utils/misc/toasts'
 
-export interface CushyAppL extends LiveInstance<CushyAppT, CushyAppL> {}
+export interface CushyAppL extends LiveInstance<TABLES['cushy_app']> {}
 export class CushyAppL {
     // linked scripts
     private _scriptL: LiveRef<this, CushyScriptL> = new LiveRef(this, 'scriptID', () => this.db.cushy_scripts)
@@ -33,7 +33,7 @@ export class CushyAppL {
     }
 
     // link drafts
-    private _draftsCollection = new LiveCollection<DraftL>({
+    private _draftsCollection = new LiveCollection<TABLES['draft']>({
         table: () => this.db.drafts,
         where: () => ({ appID: this.id }),
     })

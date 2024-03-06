@@ -57,7 +57,7 @@ export const Panel_Canvas = observer(function Panel_Canvas_(p: {
             onKeyDown={canvas.onKeyDown}
             onWheel={canvas.onWheel}
             ref={containerRef}
-            className='flex flex-1 w-full h-full bd'
+            className='flex flex-1 w-full h-full overflow-hidden'
         >
             <UnifiedCanvasCtx.Provider value={canvas}>
                 <UnifiedCanvasMenuUI />

@@ -10,7 +10,7 @@ export const onWheelScrollCanvas = (
 ) => {
     const stage = e.target.getStage()
     if (stage == null) return console.warn(`🔶 missing stage`)
-    console.log(`[👙] stage`, stage)
+    // console.log(`[👙] stage`, stage)
 
     if (e.evt.ctrlKey) {
         const scaleBy = 1.15
@@ -54,7 +54,10 @@ export const onWheelScrollCanvas = (
     }
 
     if (canvas.tool === 'mask' || canvas.tool === 'paint') {
-        canvas.maskToolSize = Math.max(1, canvas.maskToolSize + e.evt.deltaY / 200)
+        const newSize = Math.max(1, canvas.maskToolSize + e.evt.deltaY / 200)
+        canvas.maskToolSize = newSize
+        canvas.brush.radius(newSize / 2)
+        // canvas.brush.strokeWidth(newSize)
         return
     }
 

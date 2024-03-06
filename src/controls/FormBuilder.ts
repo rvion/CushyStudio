@@ -1,6 +1,7 @@
 import type { Form } from './Form'
 import type { Requirements } from './IWidget'
 import type { SchemaDict } from 'src/cards/App'
+import type { OpenRouter_Models } from 'src/llm/OpenRouter_models'
 
 import { makeAutoObservable } from 'mobx'
 
@@ -9,7 +10,7 @@ import { mkFormAutoBuilder } from './builder/AutoBuilder'
 import { EnumBuilder, EnumBuilderOpt } from './builder/EnumBuilder'
 import { type ISpec, Spec } from './Spec'
 import { Widget_bool, type Widget_bool_config } from './widgets/bool/WidgetBool'
-import { Widget_inlineRun, type Widget_inlineRun_config } from './widgets/button/WidgetInlineRun'
+import { Widget_button, type Widget_button_config } from './widgets/button/WidgetButton'
 import { Widget_choices, type Widget_choices_config } from './widgets/choices/WidgetChoices'
 import { Widget_color, type Widget_color_config } from './widgets/color/WidgetColor'
 import { Widget_custom, type Widget_custom_config } from './widgets/custom/WidgetCustom'
@@ -31,7 +32,7 @@ import { type BaseSelectEntry, Widget_selectOne, type Widget_selectOne_config } 
 import { Widget_shared } from './widgets/shared/WidgetShared'
 import { Widget_size, type Widget_size_config } from './widgets/size/WidgetSize'
 import { Widget_string, type Widget_string_config } from './widgets/string/WidgetString'
-import { exhaust } from 'src/utils/misc/ComfyUtils'
+import { openRouterInfos } from 'src/llm/OpenRouter_infos'
 
 // prettier-ignore
 export class FormBuilder {
@@ -45,8 +46,9 @@ export class FormBuilder {
         })
     }
 
-    promptV2    = (config: Widget_prompt_config = {})                                                        => new Spec<Widget_prompt                      >('prompt'    , config)
     time        = (config: Widget_string_config = {})                                                        => new Spec<Widget_string                      >('str'       , { inputType: 'time', ...config })
+    date        = (config: Widget_string_config = {})                                                        => new Spec<Widget_string                      >('str'       , { inputType: 'date', ...config })
+    datetime    = (config: Widget_string_config = {})                                                        => new Spec<Widget_string                      >('str'       , { inputType: 'datetime-local', ...config })
     password    = (config: Widget_string_config = {})                                                        => new Spec<Widget_string                      >('str'       , { inputType: 'password', ...config })
     email       = (config: Widget_string_config = {})                                                        => new Spec<Widget_string                      >('str'       , { inputType: 'email', ...config })
     url         = (config: Widget_string_config = {})                                                        => new Spec<Widget_string                      >('str'       , { inputType: 'url', ...config })
@@ -61,13 +63,13 @@ export class FormBuilder {
     color       = (config: Widget_color_config  = {})                                                        => new Spec<Widget_color                       >('color'     , config)
     colorV2     = (config: Widget_string_config = {})                                                        => new Spec<Widget_string                      >('str'       , { inputType: 'color', ...config })
     matrix      = (config: Widget_matrix_config)                                                             => new Spec<Widget_matrix                      >('matrix'    , config)
-    inlineRun   = (config: Widget_inlineRun_config = {})                                                     => new Spec<Widget_inlineRun                   >('inlineRun' , config)
-    button      = (config: Widget_inlineRun_config = {})                                                     => new Spec<Widget_inlineRun                   >('inlineRun' , config)
+    button      = (config: Widget_button_config = {})                                                        => new Spec<Widget_button                      >('button'    , config)
     loras       = (config: Widget_loras_config     = {})                                                     => new Spec<Widget_loras                       >('loras'     , config)
     markdown    = (config: Widget_markdown_config | string)                                                  => new Spec<Widget_markdown                    >('markdown'  , typeof config === 'string' ? { markdown: config } : config)
     header      = (config: Widget_markdown_config | string)                                                  => new Spec<Widget_markdown                    >('markdown'  , typeof config === 'string' ? { markdown: config, header: true } : { header: true, ...config })
     image       = (config: Widget_image_config = {})                                                         => new Spec<Widget_image                       >('image'     , config)
-    prompt      = (config: Widget_prompt_config)                                                             => new Spec<Widget_prompt                      >('prompt'    , config)
+    prompt      = (config: Widget_prompt_config = {})                                                        => new Spec<Widget_prompt                      >('prompt'    , config)
+    promptV2    = (config: Widget_prompt_config = {})                                                        => new Spec<Widget_prompt                      >('prompt'    , config)
     int         = (config: Omit<Widget_number_config, 'mode'> = {})                                          => new Spec<Widget_number                      >('number'    , { mode: 'int', ...config })
     float       = (config: Omit<Widget_number_config, 'mode'> = {})                                          => new Spec<Widget_number                      >('number'    , { mode: 'float', ...config })
     number      = (config: Omit<Widget_number_config, 'mode'> = {})                                          => new Spec<Widget_number                      >('number'    , { mode: 'float', ...config })
@@ -76,14 +78,35 @@ export class FormBuilder {
     listExt     = <const T extends Spec>(config: Widget_listExt_config<T>)                                   => new Spec<Widget_listExt<T>                  >('listExt'   , config)
     timeline    = <const T extends Spec>(config: Widget_listExt_config<T>)                                   => new Spec<Widget_listExt<T>                  >('listExt'   , { mode: 'timeline', ...config })
     regional    = <const T extends Spec>(config: Widget_listExt_config<T>)                                   => new Spec<Widget_listExt<T>                  >('listExt'   , { mode: 'regional', ...config })
-    selectOneV2 = (p: string[])                                                                              => new Spec<Widget_selectOne<BaseSelectEntry>  >('selectOne' , { choices: p.map((id) => ({ id })), appearance:'tab' }) // prettier-ignore
+    selectOneV2 = (p: string[])                                                                              => new Spec<Widget_selectOne<BaseSelectEntry>  >('selectOne' , { choices: p.map((id) => ({ id, label: id })), appearance:'tab' }) // prettier-ignore
     selectOne   = <const T extends BaseSelectEntry>(config: Widget_selectOne_config<T>)                      => new Spec<Widget_selectOne<T>                >('selectOne' , config)
     selectMany  = <const T extends BaseSelectEntry>(config: Widget_selectMany_config<T>)                     => new Spec<Widget_selectMany<T>               >('selectMany', config)
     group       = <const T extends SchemaDict>(config: Widget_group_config<T>={})                            => new Spec<Widget_group<T>                    >('group'     , config)
+    fields      = <const T extends SchemaDict>(fields: T, config: Omit<Widget_group_config<T>,'items'>={})   => new Spec<Widget_group<T>                    >('group'     , { items: fields, ...config })
     choice      = <const T extends { [key: string]: Spec }>(config: Omit<Widget_choices_config<T>, 'multi'>) => new Spec<Widget_choices<T>                  >('choices'   , { multi: false, ...config })
     choices     = <const T extends { [key: string]: Spec }>(config: Omit<Widget_choices_config<T>, 'multi'>) => new Spec<Widget_choices<T>                  >('choices'   , { multi: true, ...config })
     // optional wrappers
     optional    = <const T extends Spec>(p: Widget_optional_config<T>) => new Spec<Widget_optional<T>>('optional', p)
+    llmModel = (p:{default?: OpenRouter_Models}={}) => {
+        const choices = Object.entries(openRouterInfos).map(([id, info]) => ({ id: id as OpenRouter_Models, label: info.name }))
+        const def = choices ? choices.find(c => c.id===p.default) : undefined
+        return this.selectOne({ default: def, choices, }
+    )}
+
+    /** @deprecated ; if you need this widget, you should copy paste that into a prefab */
+    inlineRun   = (config: Widget_button_config = {})                                                        => new Spec<Widget_button                   >('button' , {
+        onClick: (p) => {
+            p.widget.serial.val = true
+            p.draft.setAutostart(false)
+            p.draft.start({})
+            setTimeout(() => p.widget.serial.val = false, 100) // Reset value back to false for future runs
+        },
+        icon: (p) => {
+            if (p.draft.shouldAutoStart) return 'pause'
+            return 'play_arrow'
+        },
+        ...config
+    })
 
     // /** a more practical function to make widget optionals */
     // optional2   = <const T extends Spec>(spec: T, startActive: boolean = false) => new Spec<Widget_optional<Spec<T['$Widget']>>>('optional', {
@@ -223,7 +246,7 @@ export class FormBuilder {
         if (type === 'list'      ) return new Widget_list      (this.form, config, serial)
         if (type === 'orbit'     ) return new Widget_orbit     (this.form, config, serial)
         if (type === 'listExt'   ) return new Widget_listExt   (this.form, config, serial)
-        if (type === 'inlineRun' ) return new Widget_inlineRun (this.form, config, serial)
+        if (type === 'button'    ) return new Widget_button    (this.form, config, serial)
         if (type === 'seed'      ) return new Widget_seed      (this.form, config, serial)
         if (type === 'matrix'    ) return new Widget_matrix    (this.form, config, serial)
         if (type === 'loras'     ) return new Widget_loras     (this.form, config, serial)

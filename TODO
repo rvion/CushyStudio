@@ -1,6 +1,11 @@
+☐ https://github.com/WiseLibs/better-sqlite3/issues/262
+☐ lastUpdateAt on forms.
+☐ fold button when no label.
 ☐ filter enum values: highlight + sort
 ☐ auto-ui
-
+☐ make adding optional / removing optional recoverable by smartly
+    ☐ reusing the draft
+    ☐ picking subdraft when optional instead of X
 
 ☐ header (instead of line)
 ☐ body (instead of block)

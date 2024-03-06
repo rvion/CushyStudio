@@ -20,14 +20,14 @@ import { RuntimeErrorL } from './RuntimeError'
 import { Widget_group } from 'src/controls/widgets/group/WidgetGroup'
 import { LiveRefOpt } from 'src/db/LiveRefOpt'
 import { SQLITE_false, SQLITE_true } from 'src/db/SQLITE_boolean'
-import { StepT } from 'src/db/TYPES.gen'
+import { StepT, type StepTable, type TABLES } from 'src/db/TYPES.gen'
 import { ManualPromise } from 'src/utils/misc/ManualPromise'
 
 export type FormPath = (string | number)[]
 /** a thin wrapper around an app execution */
-export interface StepL extends LiveInstance<StepT, StepL> {}
+export interface StepL extends LiveInstance<TABLES['step']> {}
 export class StepL {
-    draftL = new LiveRefOpt<this, DraftL>(this, 'draftID', () => this.db.drafts)
+    draftL = new LiveRefOpt<StepL, DraftL>(this, 'draftID', () => this.db.drafts)
     get draft(): Maybe<DraftL> {
         return this.draftL.item
     }
@@ -111,14 +111,14 @@ export class StepL {
 
     private _CACHE_INVARIANT = null // () => this.data.status !== Status.Running
 
-    texts =           new LiveCollection<MediaTextL>          ({table: () => this.db.media_texts,           where: () => ({stepID:this.id}), cache: this._CACHE_INVARIANT}) // prettier-ignore
-    images =          new LiveCollection<MediaImageL>         ({table: () => this.db.media_images,          where: () => ({stepID:this.id}), cache: this._CACHE_INVARIANT}) // prettier-ignore
-    videos =          new LiveCollection<MediaVideoL>         ({table: () => this.db.media_videos,          where: () => ({stepID:this.id}), cache: this._CACHE_INVARIANT}) // prettier-ignore
-    displacements =   new LiveCollection<Media3dDisplacementL>({table: () => this.db.media_3d_displacement, where: () => ({stepID:this.id}), cache: this._CACHE_INVARIANT}) // prettier-ignore
-    splats =          new LiveCollection<MediaSplatL>         ({table: () => this.db.media_splats,          where: () => ({stepID:this.id}), cache: this._CACHE_INVARIANT}) // prettier-ignore
-    comfy_workflows = new LiveCollection<ComfyWorkflowL>      ({table: () => this.db.graphs,                where: () => ({stepID:this.id}), cache: this._CACHE_INVARIANT}) // prettier-ignore
-    comfy_prompts =   new LiveCollection<ComfyPromptL>        ({table: () => this.db.comfy_prompts,         where: () => ({stepID:this.id}), cache: this._CACHE_INVARIANT}) // prettier-ignore
-    runtimeErrors =   new LiveCollection<RuntimeErrorL>       ({table: () => this.db.runtimeErrors,         where: () => ({stepID:this.id}), cache: this._CACHE_INVARIANT}) // prettier-ignore
+    texts =           new LiveCollection<TABLES['media_text']>           ({table: () => this.db.media_texts,           where: () => ({stepID:this.id}), cache: this._CACHE_INVARIANT}) // prettier-ignore
+    images =          new LiveCollection<TABLES['media_image']>          ({table: () => this.db.media_images,          where: () => ({stepID:this.id}), cache: this._CACHE_INVARIANT}) // prettier-ignore
+    videos =          new LiveCollection<TABLES['media_video']>          ({table: () => this.db.media_videos,          where: () => ({stepID:this.id}), cache: this._CACHE_INVARIANT}) // prettier-ignore
+    displacements =   new LiveCollection<TABLES['media_3d_displacement']>({table: () => this.db.media_3d_displacement, where: () => ({stepID:this.id}), cache: this._CACHE_INVARIANT}) // prettier-ignore
+    splats =          new LiveCollection<TABLES['media_splat']>          ({table: () => this.db.media_splats,          where: () => ({stepID:this.id}), cache: this._CACHE_INVARIANT}) // prettier-ignore
+    comfy_workflows = new LiveCollection<TABLES['graph']>                ({table: () => this.db.graphs,                where: () => ({stepID:this.id}), cache: this._CACHE_INVARIANT}) // prettier-ignore
+    comfy_prompts =   new LiveCollection<TABLES['comfy_prompt']>         ({table: () => this.db.comfy_prompts,         where: () => ({stepID:this.id}), cache: this._CACHE_INVARIANT}) // prettier-ignore
+    runtimeErrors =   new LiveCollection<TABLES['runtime_error']>        ({table: () => this.db.runtimeErrors,         where: () => ({stepID:this.id}), cache: this._CACHE_INVARIANT}) // prettier-ignore
 
     get currentlyExecutingOutput(): Maybe<StepOutput> {
         return this.comfy_prompts.items.find((p: ComfyPromptL) => !p.data.executed)

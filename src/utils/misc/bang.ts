@@ -22,7 +22,7 @@ export function ASSERT_STRING(a: any): a is string {
     if (typeof a !== 'string') throw new Error('❌ not a string')
     return true
 }
-export function asSTRING_orCrash(a: any): string {
-    if (typeof a !== 'string') throw new Error('❌ not a string')
+export function asSTRING_orCrash(a: any, errMsg: string = '❌ not a string'): string {
+    if (typeof a !== 'string') throw new Error(errMsg)
     return a
 }

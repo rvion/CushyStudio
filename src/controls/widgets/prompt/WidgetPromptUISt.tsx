@@ -13,6 +13,12 @@ export class WidgetPromptUISt {
     mountRef = createRef<HTMLDivElement>()
     editorView: Maybe<EditorView> = null
     editorState: EditorState
+
+    replaceTextBy = (nextText: string) => {
+        this.editorView?.dispatch({
+            changes: { from: 0, to: this.text.length, insert: nextText },
+        })
+    }
     constructor(public widget: Widget_prompt) {
         this.editorState = EditorState.create({
             doc: this.text,

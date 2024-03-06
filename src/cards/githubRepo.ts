@@ -5,9 +5,6 @@
 // import { makeAutoObservable } from 'mobx'
 // import { asRelativePath } from 'src/utils/fs/pathUtils'
 // import { GithubUser } from './GithubUser'
-
-export type Timestamp = Branded<number, { Timestamp: true }>
-
 // --------------------------------------------------------------------------------
 // export type GithubRepoData = {
 //     fetchedAt: Timestamp

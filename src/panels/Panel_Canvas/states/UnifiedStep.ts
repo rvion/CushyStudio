@@ -18,6 +18,7 @@ export class UnifiedStep {
     layer: Layer
     image: Image
     area: Konva.Rect
+
     constructor(
         //
         public canvas: UnifiedCanvas,
@@ -53,11 +54,7 @@ export class UnifiedStep {
 
         autorun(() => {
             const x = step.lastImageOutput
-            if (x) {
-                img.src = x.url
-            } else {
-                img.src = this.st.latentPreview!.url
-            }
+            img.src = x?.url ?? this.st.latentPreview!.url
             this.image.visible(true)
             this.image._requestDraw()
         })

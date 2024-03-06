@@ -378,10 +378,17 @@ legend {
 }
 
 
+._MD code{
+    border: 1px solid oklch(var(--p)/.2);
+    display: block;
+    background-color: oklch(var(--p)/.1);
+    padding: .5rem;
+    overflow: auto;
+    white-space: pre-wrap;
+}
 ._MD code,
 ._MD pre {
-    background-color: oklch(var(--p)/.2);
-    padding: .5rem;
+    font-style: italic;
 }
 
 ._MD table {

@@ -4,19 +4,11 @@ import { useEffect } from 'react'
 import { ForceUpdateAllAppsBtnUI, IndexAllAppsBtnUI } from './libraryUI/LibraryHeaderUI'
 import { CreateAppBtnUI } from './Panel_Welcome/CreateAppBtnUI'
 import { AppCardUI } from 'src/cards/fancycard/AppCardUI'
-import { ScriptExtractionResult } from 'src/cards/LibraryFile'
 import { useSt } from 'src/state/stateContext'
-import { toastError } from 'src/utils/misc/toasts'
 
 export const Panel_Welcome = observer(function Panel_Welcome_(p: {}) {
     const st = useSt()
-    useEffect(() => {
-        // confetti
-        void (async () => {
-            const confetti = (await import('https://cdn.skypack.dev/canvas-confetti' as any)).default
-            confetti()
-        })()
-    })
+    useEffect(() => void cushy.showConfettiAndBringFun())
 
     return (
         <div tw='relative'>
