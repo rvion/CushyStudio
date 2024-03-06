@@ -445,9 +445,21 @@ export class STATE {
     )
     sideBarConf = new Form(
         (f) => ({
-            size: f.int({ label: 'size', min: 24, max: 128, default: 48, unit: 'px', step: 4 }),
-            tree: f.bool({}),
-            apps: f.bool({}),
+            size: f.int({ label: false, alignLabel: false, text: 'Size', min: 24, max: 128, default: 48, suffix: 'px', step: 4 }),
+            appIcons: f
+                .int({
+                    label: false,
+                    alignLabel: false,
+                    text: 'App Icons',
+                    default: 100,
+                    step: 10,
+                    min: 1,
+                    max: 100,
+                    suffix: '%',
+                })
+                .optional(true),
+            tree: f.bool({ label: false, alignLabel: false, text: 'File Tree', display: 'button', expand: true, icon: 'folder' }),
+            apps: f.bool({ label: false, alignLabel: false, text: 'App Tree', display: 'button', expand: true, icon: 'apps' }),
         }),
         {
             name: 'SideBar Conf',
