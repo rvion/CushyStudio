@@ -6,6 +6,8 @@ import { PanelHeaderUI } from './PanelHeader'
 import { FormUI } from 'src/controls/FormUI'
 import { OutputPreviewWrapperUI } from 'src/outputs/OutputPreviewWrapperUI'
 import { SelectUI } from 'src/rsuite/SelectUI'
+import { SeparatorUI } from 'src/controls/widgets/separator/SeparatorUI'
+import { RevealUI } from 'src/rsuite/reveal/RevealUI'
 
 export const Panel_Gallery = observer(function VerticalGalleryUI_(p: {}) {
     const st = useSt()
@@ -15,7 +17,14 @@ export const Panel_Gallery = observer(function VerticalGalleryUI_(p: {}) {
             style={{ background: st.galleryConf.value.galleryBgColor }}
         >
             <PanelHeaderUI>
-                <GalleryControlsUI />
+                <SeparatorUI />
+                <RevealUI>
+                    <div tw='flex px-1 cursor-default bg-base-200 rounded w-full h-full items-center justify-center hover:brightness-125 border border-base-100'>
+                        <span className='material-symbols-outlined'>settings</span>
+                        <span className='material-symbols-outlined'>expand_more</span>
+                    </div>
+                    <GalleryControlsUI />
+                </RevealUI>
             </PanelHeaderUI>
             <div tw='flex gap-1'>
                 <input
