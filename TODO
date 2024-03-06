@@ -1,8 +1,8 @@
-☐ fix codegen with new template
-☐ proper Tab
-☐ lastRunAt
+✔ fix codegen with new template @done(24-03-05 23:30)
 ☐ recent Apps
 ☐ recentDrafts
+☐ proper Tab
+☐ lastRunAt
 ☐ https://github.com/WiseLibs/better-sqlite3/issues/262
 ☐ lastUpdateAt on forms.
 ☐ fold button when no label.
