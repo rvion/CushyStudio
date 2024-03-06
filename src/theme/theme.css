@@ -88,6 +88,7 @@ body {
 /* PanelHeaderUI */
 .CSHY-panel-header {
     height: calc(var(--input-height) + 8px);
+    min-height: calc(var(--input-height) + 8px);
 
     overflow-x: scroll;
     overflow-y: hidden;
