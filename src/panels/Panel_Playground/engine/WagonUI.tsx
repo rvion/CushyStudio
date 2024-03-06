@@ -41,10 +41,13 @@ export const WagonUI = observer(function Panel_Playground_<FIELDS extends Schema
     return (
         <div>
             <div tw='divider'>
-                FORM <Button onClick={() => (uiSt.kweryCache = Date.now())}></Button>
+                FORM
+                <Button onClick={() => (uiSt.kweryCache = Date.now())}>
+                    <span className='material-symbols-outlined text-orange-500'>sync</span>
+                </Button>
             </div>
             <div tw='flex gap-1'>
-                <div style={{ width: '50rem' }}>
+                <div style={{ width: '30rem' }}>
                     <div
                         tw='btn btn-primary btn-sm'
                         onClick={() => {
@@ -59,18 +62,20 @@ export const WagonUI = observer(function Panel_Playground_<FIELDS extends Schema
                         <pre>{readableStringify(form.value, form.value.stringifyMaxLevel)}</pre>
                     </div>
                 </div>
-                {wtf.ui(({ result: { chartOpts, sql, data }, elapsedMs }) => {
+                {wtf.ui(({ result: { chartOpts, sql, res }, elapsedMs }) => {
                     const key = hash(chartOpts)
                     return (
                         <div tw='flex flex-col overflow-auto'>
-                            <LocoChartUI key={key} theme='dark' options={chartOpts} />
+                            {chartOpts != null ? <LocoChartUI key={key} theme='dark' options={chartOpts} /> : null}
                             <h3 tw='text-primary'>SQL:</h3>
                             <div tw='overflow-auto'>
                                 <pre tw='whitespace-pre-wrap'>{sql}</pre>
                             </div>
                             <h3 tw='text-primary'>DATA (⏱️ {elapsedMs} ms):</h3>
                             <div tw='overflow-hidden'>
-                                <pre tw='whitespace-pre-wrap'>{readableStringify(data, form.value.stringifyMaxLevel)}</pre>
+                                <pre tw='whitespace-pre-wrap'>
+                                    {readableStringify('err' in res ? res.err : res.data, form.value.stringifyMaxLevel)}
+                                </pre>
                             </div>
                         </div>
                     )

@@ -33,12 +33,14 @@ out: {yyyy, MM, COUNT, avgRating, location }[]
 // */
 
 export const ui_selectData_pivot = (ui: FormBuilder) => {
-    const gmbColumnUI = ui.selectOne({ choices: gmbCols, border: false })
-    const fn1 = ui
-        .selectOne({ border: false, choices: [{ id: 'avg' }, { id: 'count' }, { id: 'to_char' }, { id: 'YYYY-MM' }] })
-        .optional()
+    // const shared = ui.shared('foo', ui.string())
+    const gmbColumnUI = (key: string) => {
+        const colName = ui.shared(`${key}-col`, ui.selectOne({ choices: gmbCols, border: false }))
+        const as = ui.string({ label: 'as' })
+        return ui.fields({ colName, as }, { layout: 'H', label: false })
+    }
     const order = ui.selectOne({ border: false, choices: [{ id: 'asc' }, { id: 'desc' }] }) // .optional()
-    const fn2 = ui
+    const fn = ui
         .choice({
             appearance: 'tab',
             items: {
@@ -50,60 +52,92 @@ export const ui_selectData_pivot = (ui: FormBuilder) => {
             },
         })
         .optional()
-    const condition = ui
-        .choice({
-            // appearance: 'tab',
-            items: {
-                greaterThan: ui.fields({ value: ui.string() }),
-                lowerThan: ui.string(),
-                between: ui.fields({ from: ui.string(), to: ui.string() }),
-                equal: ui.string(),
-            },
-        })
-        .optional()
+    const condition = ui.choice({
+        appearance: 'tab',
+        items: {
+            eq: ui.fields({ value: ui.string() }, { label: '=' }),
+            gt: ui.fields({ value: ui.string() }, { label: '>' }),
+            gte: ui.fields({ value: ui.string() }, { label: '>=' }),
+            lt: ui.fields({ value: ui.string() }, { label: '<' }),
+            lte: ui.fields({ value: ui.string() }, { label: '<=' }),
+            between: ui.fields({ from: ui.string(), to: ui.string() }, { label: '>_<' }),
+        },
+    })
 
-    //         WHERE
-    //   (
-    //     "public"."location"."created_at" >= DATE_TRUNC('month', (NOW() + INTERVAL '-12 month'))
-    //   )
+    const values = ui.shared(
+        'values',
+        ui.list({
+            label: '🔢 Values',
+            element: (ix) =>
+                ui.fields(
+                    { column: gmbColumnUI(`values-${ix}`), fn: fn },
+                    { layout: 'V', border: false, summary: (items) => items.column.colName.id },
+                ),
+        }),
+    )
 
-    //    AND (
-    //     "public"."location"."created_at" < DATE_TRUNC('month', NOW())
-    //   )
+    const cols = ui.shared(
+        'cols',
+        ui.list({
+            label: '🚦 Cols',
+            element: (ix) =>
+                ui.fields(
+                    { column: gmbColumnUI(`cols-${ix}`), fn: fn, order },
+                    { layout: 'V', border: false, summary: (items) => items.column.colName.id },
+                ),
+        }),
+    )
+
+    const xAxis = ui.list({
+        label: '📊 Abcisses',
+        element: (ix) =>
+            ui.fields(
+                {
+                    category: ui.selectOne({ choices: (['value', 'category', 'time', 'log'] as const).map((id) => ({ id })) }),
+                    dataKey: ui.selectOne({ choices: () => cols.shared.value.map((v) => ({ id: v.column.as })) }),
+                },
+                { layout: 'H' },
+            ),
+    })
+
     return ui.fields(
         {
-            location: ui.selectOne({ choices: locoLocations }),
-            // join: ui.selectOne({ choices: [{ id: 'location' }, { id: 'gmb' }] }).list(),
-            table: ui.selectOne({ choices: [{ id: 'location' }, { id: 'gmb_review' }] }),
-            rows: ui
-                .fields(
-                    { column: gmbColumnUI, fn: fn2, order },
-                    { layout: 'V', border: false, summary: (items) => items.column.id },
-                )
-                .list(),
+            xAxis,
 
-            cols: ui
-                .fields(
-                    { column: gmbColumnUI, fn: fn2, order },
-                    {
-                        layout: 'V',
-                        border: false,
-                        summary: (items) => items.column.id,
-                    },
-                )
-                .list(),
-            values: ui
-                .fields({ column: gmbColumnUI, fn: fn2 }, { layout: 'V', border: false, summary: (items) => items.column.id })
-                .list(),
-            filters: ui
-                .fields(
-                    { column: gmbColumnUI, fn: fn2, condition },
-                    {
-                        /* layout: 'H', */
-                        summary: (items) => items.column.id,
-                    },
-                )
-                .list(),
+            series: ui.list({
+                label: '📊 Series',
+                element: (ix) =>
+                    ui.fields({
+                        type: ui.selectOne({ choices: [{ id: 'bar' }, { id: 'line' }] }),
+                        name: ui.string({}),
+                        dataKey: ui.selectOne({ choices: () => values.shared.value.map((v) => ({ id: v.column.as })) }),
+                    }),
+            }),
+
+            location: ui.selectOne({ choices: locoLocations }),
+
+            table: ui.selectOne({ choices: [{ id: 'gmb_review' }] }),
+
+            rows: ui.list({
+                label: '🚥 Rows',
+                element: (ix) =>
+                    ui.fields(
+                        { column: gmbColumnUI(`rows-${ix}`), fn: fn, order },
+                        { layout: 'V', border: false, summary: (items) => items.column.colName.id },
+                    ),
+            }),
+
+            cols,
+            values,
+
+            filters: ui.list({
+                label: '🔍 Filters',
+                element: (ix) =>
+                    ui.fields(
+                        { column: gmbColumnUI(`filters-${ix}`), fn: fn, condition },
+                        { summary: (items) => items.column.colName.id },
+                    ),
+            }),
 
             // -------------------
             // groupBy: ui.selectMany({ choices: gmbCols /* appearance: 'tab' */ }),
@@ -133,28 +167,29 @@ export const ui_selectData_pivot = (ui: FormBuilder) => {
 }
 
 type SelectDataT = ReturnType<typeof ui_selectData_pivot>['$Output']
-export type Simplify<T> = { [KeyType in keyof T]: Simplify<T[KeyType]> & {} }
 
-export const run_selectData_pivot = async (ui: SelectDataT): Promise<{ data: any[]; sql: string }> => {
+export const run_selectData_pivot = async (
+    ui: SelectDataT,
+): Promise<{ res: { data: any[] } | { err: any }; sql: string; series: SelectDataT['series']; xAxis: SelectDataT['xAxis'] }> => {
     const selectExpr: string[] = []
     const groups: string[] = []
     const where: string[] = []
     const orders: string[] = []
 
     for (const row of ui.rows) {
-        const expr = sqlExpr(row.column, row.fn)
-        selectExpr.push(expr)
-        groups.push(expr)
-        orders.push(`${expr} ${row.order.id}`)
+        const { alias } = sqlExpr(row.column, row.fn)
+        groups.push(alias)
+        orders.push(`${alias} ${row.order.id}`)
     }
     for (const col of ui.cols) {
-        const expr = sqlExpr(col.column, col.fn)
-        selectExpr.push(expr)
-        groups.push(expr)
-        orders.push(`${expr} ${col.order.id}`)
+        const ex = sqlExpr(col.column, col.fn)
+        selectExpr.push(ex.full)
+        groups.push(ex.alias)
+        orders.push(`${ex.alias} ${col.order.id}`)
     }
     for (const val of ui.values) {
-        selectExpr.push(sqlExpr(val.column, val.fn))
+        const { full } = sqlExpr(val.column, val.fn)
+        selectExpr.push(full)
     }
     for (const filter of ui.filters) {
         where.push(filterExpr(filter))
@@ -180,41 +215,40 @@ export const run_selectData_pivot = async (ui: SelectDataT): Promise<{ data: any
     //     .orderBy(to_char(gmb_created_at, 'YYYY-MM'))
     //     .orderBy(YOLO)
 
-    const data = await Kwery.get(JSON.stringify(ui), { sql }, () =>
+    const res = await Kwery.get(JSON.stringify(ui), { sql }, () =>
         fetch('http://localhost:8000/EXECUTE-SQL', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ sql }),
         }).then((res) => res.json()),
     )
-    return { data, sql }
+    return { res, sql, series: ui.series, xAxis: ui.xAxis }
 
     function sqlExpr(
         //
         col: SelectDataT['cols' | 'rows'][number]['column'],
         fn: SelectDataT['cols' | 'rows'][number]['fn'],
-    ): string {
-        const expr = `${ui.table.id}.${col.id}`
-        if (fn == null) return expr
-        if (fn.to_char != null) return `to_char(${expr}, '${fn.to_char.format}')`
-        if (fn.avg != null) return `avg(${expr})`
-        if (fn.count != null) return `count(${expr})`
-        if (fn.custom != null) return fn.custom.template.replace('?', expr)
-        if (fn.YYYYMM) return 'todo'
-        return '🔴 TODO'
+    ): { expr: string; alias: string; full: string } {
+        const path = `${ui.table.id}.${col.colName.id}`
+        const expr = (() => {
+            if (fn == null) return path
+            if (fn.to_char != null) return `to_char(${path}, '${fn.to_char.format}')`
+            if (fn.avg != null) return `avg(${path})`
+            if (fn.count != null) return `count(${path})`
+            if (fn.custom != null) return fn.custom.template.replace('?', path)
+            if (fn.YYYYMM) return 'todo'
+            return '🔴 TODO'
+        })()
+        return { expr, alias: col.as || expr, full: col.as ? `${expr} as ${col.as}` : expr }
     }
 
-    function filterExpr(
-        //
-        filter: Simplify<SelectDataT['filters'][number]>,
-    ): string {
-        const expr = sqlExpr(filter.column, filter.fn)
-        if (filter.condition == null) return expr
+    function filterExpr(filter: SelectDataT['filters'][number]): string {
+        const { alias } = sqlExpr(filter.column, filter.fn)
         if (filter.condition.between != null)
-            return `${expr} between ${filter.condition.between.from} and ${filter.condition.between.to}`
-        if (filter.condition.equal != null) return `${expr} = ${filter.condition.equal}`
-        if (filter.condition.greaterThan != null) return `${expr} > ${filter.condition.greaterThan.value}`
-        if (filter.condition.lowerThan != null) return `${expr} < ${filter.condition.lowerThan}`
+            return `${alias} between ${filter.condition.between.from} and ${filter.condition.between.to}`
+        if (filter.condition.eq != null) return `${alias} = ${filter.condition.eq.value}`
+        if (filter.condition.gt != null) return `${alias} > ${filter.condition.gt.value}`
+        if (filter.condition.lt != null) return `${alias} < ${filter.condition.lt.value}`
         return '🔴 TODO'
     }
 }

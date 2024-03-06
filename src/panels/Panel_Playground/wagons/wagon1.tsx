@@ -7,37 +7,46 @@ export const wagon1 = defineWagon({
     ui: (ui) => {
         return {
             title: ui.text({}),
-            // name: ui.string(),
-            style: ui.selectOneV2(['bar', 'line']),
             data: ui_selectData_pivot(ui),
         }
     },
     run: async (ui) => {
-        const { data, sql } = await run_selectData_pivot(ui.data)
+        const { res, series, sql, xAxis } = await run_selectData_pivot(ui.data)
 
         return {
-            data,
+            res,
             sql,
-            chartOpts: {
-                title: { text: ui.title, left: 'left' },
-                legend: {},
-                tooltip: {},
-                xAxis: { type: 'category' },
-                yAxis: [{}, {}],
-                series: [
-                    {
-                        type: ui.style.id as 'bar' | 'line',
-                        name: 'Count',
-                        data: data.map((row) => row.count),
-                    },
-                    {
-                        type: 'line' as const, // ui.style.id as 'bar' | 'line',
-                        name: 'Average',
-                        data: data.map((row) => row.avg),
-                        yAxisIndex: 1,
-                    },
-                ],
-            },
+            chartOpts:
+                'err' in res
+                    ? null
+                    : {
+                          title: { text: ui.title, left: 'left' },
+                          legend: {},
+                          tooltip: {},
+                          xAxis: xAxis.map((x) => ({
+                              type: x.category.id,
+                              data: res.data.map((row) => row[x.dataKey.id]),
+                          })),
+                          yAxis: [{}, {}],
+                          series: series.map((s) => ({
+                              type: s.type.id,
+                              name: s.name,
+                              data: res.data.map((row) => row[s.dataKey.id]),
+                          })),
+                          // series: [
+                          //     {
+                          //         type: ui.style.id as 'bar' | 'line',
+                          //         name: 'Count',
+                          //         data: data.map((row) => row.count),
+                          //     },
+                          //     {
+                          //         type: 'line' as const, // ui.style.id as 'bar' | 'line',
+                          //         name: 'Average',
+                          //         data: data.map((row) => row.avg),
+                          //         yAxisIndex: 1,
+                          //     },
+                          // ],
+                      },
         }
     },
 })
