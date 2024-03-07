@@ -26,8 +26,6 @@ const modulesToCache /*: [name:string, path:string][]*/ = [
     // misc heavy libs ----------------
     ['three'            , 'three'           ],
     ['mobx'             , 'mobx'            ],
-    ['cytoscape-klay'   , 'cytoscape-klay'  ],
-    ['cytoscape'        , 'cytoscape'       ],
     ['@tensorflow/tfjs' , 'tfjs'            ],
     ['nsfwjs'           , 'nsfwjs'          ],
     ['mime-types'       , 'mime-types'      ],

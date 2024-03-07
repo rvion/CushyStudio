@@ -1,4 +1,3 @@
-import type { Cyto } from '../core/AutolayoutV1'
 import type { ComfyNodeID, ComfyNodeMetadata } from '../types/ComfyNodeID'
 import type { ComfyPromptJSON } from '../types/ComfyPrompt'
 import type { ApiPromptInput, PromptInfo, WsMsgExecuting, WsMsgExecutionCached, WsMsgProgress } from '../types/ComfyWsApi'
@@ -6,6 +5,7 @@ import type { VisEdges, VisNodes } from '../widgets/misc/VisUI'
 import type { ComfyPromptL } from './ComfyPrompt'
 import type { ComfyNodeSchema, ComfySchemaL } from './ComfySchema'
 import type { StepL } from './Step'
+import type { ElkNode } from 'elkjs'
 import type { MouseEvent } from 'react'
 import type { IDNaminScheemeInPromptSentToComfyUI } from 'src/back/IDNaminScheemeInPromptSentToComfyUI'
 import type { LiveInstance } from 'src/db/LiveInstance'
@@ -17,7 +17,7 @@ import { marked } from 'marked'
 import { join } from 'pathe'
 
 import { ComfyWorkflowBuilder } from '../back/NodeBuilder'
-import { CytoJSON, runAutolayout } from '../core/AutolayoutV2'
+import { runAutolayout } from '../core/AutolayoutV2'
 import { comfyColors } from '../core/Colors'
 import { ComfyNode } from '../core/ComfyNode'
 import { convertFlowToLiteGraphJSON, LiteGraphJSON } from '../core/LiteGraph'
@@ -59,14 +59,14 @@ export class ComfyWorkflowL {
     menuAction_openInFullScreen = async (ev: MouseEvent) => {
         ev.preventDefault()
         ev.stopPropagation()
-        const prompt = this.json_workflow()
+        const prompt = await this.json_workflow()
         if (prompt == null) return
         this.st.layout.FOCUS_OR_CREATE('ComfyUI', { litegraphJson: prompt }, 'full')
     }
     menuAction_openInTab = async (ev: MouseEvent) => {
         ev.preventDefault()
         ev.stopPropagation()
-        const prompt = this.json_workflow()
+        const prompt = await this.json_workflow()
         if (prompt == null) return
         this.st.layout.FOCUS_OR_CREATE('ComfyUI', { litegraphJson: prompt })
     }
@@ -144,9 +144,6 @@ export class ComfyWorkflowL {
         // }
     }
 
-    /** cytoscape instance to live update graph */
-    cyto?: Cyto
-
     get summary1(): string[] {
         return this.nodes.map((n) => n.$schema.nameInCushy)
     }
@@ -172,7 +169,7 @@ export class ComfyWorkflowL {
         this.data.metadata[node.uid] = node.meta
         this.nodesIndex.set(node.uid, node)
         this.nodes.push(node)
-        this.cyto?.trackNode(node)
+        // this.cyto?.trackNode(node)
         // this.graph.run.cyto.addNode(this)
     }
 
@@ -225,12 +222,12 @@ export class ComfyWorkflowL {
         return out
     }
 
-    get json_cyto(): CytoJSON {
+    get json_cyto(): Promise<ElkNode> {
         const cytoJSON = runAutolayout(this)
         return cytoJSON
     }
 
-    get json_cyto_small(): CytoJSON {
+    get json_cyto_small(): Promise<ElkNode> {
         const PX = 15
         const cytoJSON = runAutolayout(this, {
             width: (node) => {
@@ -258,8 +255,8 @@ export class ComfyWorkflowL {
         return cytoJSON
     }
 
-    json_workflow = (): LiteGraphJSON => {
-        const cytoJSON = this.json_cyto
+    json_workflow = async (): Promise<LiteGraphJSON> => {
+        const cytoJSON = await this.json_cyto
         const liteGraphJSON = convertFlowToLiteGraphJSON(this, cytoJSON)
         return liteGraphJSON
         // this.st.writeTextFile(workflowJSONPath, JSON.stringify(liteGraphJSON, null, 4))

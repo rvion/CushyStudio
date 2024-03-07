@@ -58,8 +58,6 @@ export default defineConfig({
             // -----------------------------------------------------------------------
             three: `${installDir}/src/syms/three.js`,
             mobx: `${installDir}/src/syms/mobx.js`,
-            'cytoscape-klay': `${installDir}/src/syms/cytoscape-klay.js`,
-            cytoscape: `${installDir}/src/syms/cytoscape.js`,
             '@tensorflow/tfjs': './src/syms/tfjs.js',
 
             // -----------------------------------------------------------------------

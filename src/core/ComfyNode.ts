@@ -64,16 +64,10 @@ export class ComfyNode<
 
     /** update a node */
     set(p: Partial<ComfyNode_input>) {
-        const cyto = this.graph.cyto
         for (const [key, value] of Object.entries(p)) {
             const next = this.serializeValue(key, value)
             const prev = this.json.inputs[key]
             if (next === prev) continue
-            // 🔴
-            if (cyto && Array.isArray(next) && Array.isArray(prev)) {
-                cyto?.removeEdge(`${prev[0]}-${key}->${this.uid}`)
-                cyto?.addEdge({ sourceUID: next[0], targetUID: this.uid, input: key })
-            }
             this.json.inputs[key] = next as any // 🔴
         }
         // 🔴 wrong resonsibility
@@ -84,7 +78,6 @@ export class ComfyNode<
         return comfyColors[this.$schema.category] ?? '#aaa'
     }
 
-    // static X: number = 1
     uidNumber: number
     $outputs: ComfyNodeOutput<any>[] = []
     outputs: ComfyNode_output

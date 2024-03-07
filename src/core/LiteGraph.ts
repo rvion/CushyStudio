@@ -1,6 +1,6 @@
 import type { ComfyWorkflowL } from '../models/ComfyWorkflow'
-import type { CytoJSON } from './AutolayoutV2'
 import type { ComfyNode } from './ComfyNode'
+import type { ElkNode } from 'elkjs'
 
 import { toJS } from 'mobx'
 
@@ -17,13 +17,14 @@ export type LiteGraphJSON = {
     version: 0.4
 }
 
+// prettier-ignore
 export type LiteGraphLink = [
-    linkId: LiteGraphLinkID, //  9, // linkId
-    fromNodeId: number, //       8, // fromNodeId
-    fromNodeOutputIx: number, // 0, // fromNodeOutputIx
-    toNodeId: number, //         9, // toNodeId
-    toNodeInputIx: number, //    0, // toNodeInputIx
-    linkType: string, //         "IMAGE" // type
+    linkId: LiteGraphLinkID , // 9,      - linkId
+    fromNodeId: number      , // 8,      - fromNodeId
+    fromNodeOutputIx: number, // 0,      - fromNodeOutputIx
+    toNodeId: number        , // 9,      - toNodeId
+    toNodeInputIx: number   , // 0,      - toNodeInputIx
+    linkType: string        , // IMAGE"  - type
 ]
 
 export type LiteGraphLinkID = Branded<number, { LiteGraphLinkID: true }>
@@ -70,22 +71,28 @@ export type LiteGraphNode = {
     widgets_values: any[]
 }
 
-export const convertFlowToLiteGraphJSON = (graph: ComfyWorkflowL, cytoJSON?: CytoJSON): LiteGraphJSON => {
+export const convertFlowToLiteGraphJSON = (graph: ComfyWorkflowL, cytoJSON?: ElkNode): LiteGraphJSON => {
     const ctx = new LiteGraphCtx(graph)
     const last_node_id = Math.max(...graph.nodes.map((n) => n.uidNumber))
     // const last_node_id = graph.nodes[graph.nodes.length - 1].uid
     console.groupCollapsed('convertNodeToLiteGraphNode')
-    const xxx = graph.nodes.map((n) => convertNodeToLiteGraphNode(ctx, n))
+    const xxx = graph.nodes.map((comfyNode) => ({
+        liteGraphNode: convertNodeToLiteGraphNode(ctx, comfyNode),
+        comfyNode,
+    }))
     console.groupEnd()
-    const nodes = xxx.map((n) => n.node)
-    // console.log('🐙 1', nodes)
-    // console.log( '🐙 2', cytoJSON!.elements.nodes.map((a) => a.data), )
-    for (const n of nodes) {
+    for (const xx of xxx) {
+        const n = xx.liteGraphNode
+        const originalUID = xx.comfyNode.uid
         if (cytoJSON) {
-            const pos = cytoJSON.elements.nodes.find((a) => parseInt(a.data.id, 10) === n.id)
+            const pos = bang(cytoJSON.children).find((a) => a.id === originalUID)
+            // const pos = bang(cytoJSON.children).find((a) => parseInt(a.id, 10) === n.id)
+            // console.log(`[🤠] elk: AAA:`, originalUID, `(${n.id})`)
+            // console.log(`[🤠] elk: BBB:`, bang(cytoJSON.children).map((x) => x.id)) // prettier-ignore
+
             if (pos) {
-                n.pos[0] = pos.position.x
-                n.pos[1] = pos.position.y
+                n.pos[0] = bang(pos.x)
+                n.pos[1] = bang(pos.y)
             } else {
                 console.log('❌ no pos', n)
             }
@@ -97,7 +104,7 @@ export const convertFlowToLiteGraphJSON = (graph: ComfyWorkflowL, cytoJSON?: Cyt
     return {
         last_node_id,
         last_link_id: ctx.nextLinkId,
-        nodes, // : xxx.map((n) => n.node),
+        nodes: xxx.map((n) => n.liteGraphNode),
         links: ctx.links,
         config: {},
         extra: {},
@@ -106,13 +113,9 @@ export const convertFlowToLiteGraphJSON = (graph: ComfyWorkflowL, cytoJSON?: Cyt
     }
 }
 
-const convertNodeToLiteGraphNode = (
-    ctx: LiteGraphCtx,
-    node: ComfyNode<any>,
-): { node: LiteGraphNode; incomingLinks: LiteGraphLink[] } => {
+const convertNodeToLiteGraphNode = (ctx: LiteGraphCtx, node: ComfyNode<any>): LiteGraphNode => {
     const inputs: LiteGraphNodeInput[] = []
     const widgets_values: any[] = []
-    const incomingLinks: LiteGraphLink[] = []
     for (const ipt of node.$schema.inputs) {
         // if for adding the randomisation is: is it an INT and is it called seed or noise_seed
         const raw = node.serializeValue(ipt.nameInComfy, node.json.inputs[ipt.nameInComfy])
@@ -123,17 +126,8 @@ const convertNodeToLiteGraphNode = (
             inputs.push({
                 name: ipt.nameInComfy,
                 type: ipt.type,
-                link: ctx.allocateLink(
-                    //
-                    // parseInt(raw[0], 10),
-                    nodeUidNumber,
-                    raw[1],
-                    node.uidNumber,
-                    asLiteGraphSlotIndex(ipt.index),
-                    ipt.type,
-                ),
+                link: ctx.allocateLink(nodeUidNumber, raw[1], node.uidNumber, asLiteGraphSlotIndex(ipt.index), ipt.type),
             })
-            // incomingLinks.push(link)
         } else {
             widgets_values.push(raw)
         }
@@ -151,16 +145,13 @@ const convertNodeToLiteGraphNode = (
         }),
     )
     return {
-        incomingLinks,
-        node: {
-            type: node.$schema.nameInComfy,
-            id: node.uidNumber,
-            inputs,
-            outputs,
-            pos: [0, 0],
-            size: [node.width, node.height],
-            widgets_values,
-        },
+        type: node.$schema.nameInComfy,
+        id: node.uidNumber,
+        inputs,
+        outputs,
+        pos: [0, 0],
+        size: [node.width, node.height],
+        widgets_values,
     }
 }
 
