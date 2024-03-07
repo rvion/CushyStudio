@@ -32,10 +32,11 @@ out: {yyyy, MM, COUNT, avgRating, location }[]
 //  .orderBy(YOLO)
 // */
 
+type SelectDataT = ReturnType<typeof ui_selectData_pivot>['$Output']
 export const ui_selectData_pivot = (ui: FormBuilder) => {
     // const shared = ui.shared('foo', ui.string())
     const gmbColumnUI = (key: string) => {
-        const colName = ui.shared(`${key}-col`, ui.selectOne({ choices: gmbCols, border: false }))
+        const colName = ui.shared(`${key}-col`, ui.selectOne({ choices: gmbCols, border: false, label: 'data' }))
         const as = ui.string({ label: 'as' })
         return ui.fields({ colName, as }, { layout: 'H', label: false })
     }
@@ -88,38 +89,14 @@ export const ui_selectData_pivot = (ui: FormBuilder) => {
         }),
     )
 
-    const xAxis = ui.list({
-        label: '📊 Abcisses',
-        element: (ix) =>
-            ui.fields(
-                {
-                    category: ui.selectOne({ choices: (['value', 'category', 'time', 'log'] as const).map((id) => ({ id })) }),
-                    dataKey: ui.selectOne({ choices: () => cols.shared.value.map((v) => ({ id: v.column.as })) }),
-                },
-                { layout: 'H' },
-            ),
-    })
-
     return ui.fields(
         {
-            xAxis,
-
-            series: ui.list({
-                label: '📊 Series',
-                element: (ix) =>
-                    ui.fields({
-                        type: ui.selectOne({ choices: [{ id: 'bar' }, { id: 'line' }] }),
-                        name: ui.string({}),
-                        dataKey: ui.selectOne({ choices: () => values.shared.value.map((v) => ({ id: v.column.as })) }),
-                    }),
-            }),
-
             location: ui.selectOne({ choices: locoLocations }),
 
             table: ui.selectOne({ choices: [{ id: 'gmb_review' }] }),
 
             rows: ui.list({
-                label: '🚥 Rows',
+                label: '🚥 Lignes',
                 element: (ix) =>
                     ui.fields(
                         { column: gmbColumnUI(`rows-${ix}`), fn: fn, order },
@@ -138,39 +115,12 @@ export const ui_selectData_pivot = (ui: FormBuilder) => {
                         { summary: (items) => items.column.colName.id },
                     ),
             }),
-
-            // -------------------
-            // groupBy: ui.selectMany({ choices: gmbCols /* appearance: 'tab' */ }),
-            // orderBy: ui.fields(
-            //     {
-            //         field: ui.selectMany({ choices: gmbCols /* appearance: 'tab' */ }),
-            //         order: ui.selectOne({ choices: [{ id: 'asc' }, { id: 'desc' }] }),
-            //         nulls: ui.selectOne({ choices: [{ id: 'first' }, { id: 'last' }] }),
-            //     },
-            //     { layout: 'H' },
-            // ),
-            // whereBetween: ui.fields({ from: ui.date(), to: ui.date() }).optional(),
-            // whereBetween: ui
-            //     .choice({
-            //         appearance: 'tab',
-            //         items: {
-            //             customRange: ui.fields({ from: ui.string(), to: ui.string() }),
-            //             lastYear: ui.group({}),
-            //         },
-            //     })
-            //     .optional(),
-            // avg: ui.selectOne({ choices: gmbCols }).optional(),
-            // whereBetween: ui.time().optional(),
         },
         { border: false },
     )
 }
 
-type SelectDataT = ReturnType<typeof ui_selectData_pivot>['$Output']
-
-export const run_selectData_pivot = async (
-    ui: SelectDataT,
-): Promise<{ res: { data: any[] } | { err: any }; sql: string; series: SelectDataT['series']; xAxis: SelectDataT['xAxis'] }> => {
+export const run_selectData_pivot = async (ui: SelectDataT): Promise<{ res: { data: any[] } | { err: any }; sql: string }> => {
     const selectExpr: string[] = []
     const groups: string[] = []
     const where: string[] = []
@@ -204,17 +154,6 @@ export const run_selectData_pivot = async (
         order by ${orders.join(', ')}
     `
 
-    // const json = knex .select([
-    //         knex.raw('to_char(gmb_created_at, 'YYYY-MM') as YOLO'),
-    //     ])
-    //     .whereBetween('gmb_created_at', [startingDate, new Date()])
-    //     .avg('rating as overall_rating')     // 🔶 TCD VALUES
-    //     .count('* as reviews_total_count')
-    //     .groupBy(to_char(gmb_created_at, 'YYYY-MM'))          // 🔶 TCD COLS
-    //     .groupBy(YOLO)          // 🔶 TCD COLS
-    //     .orderBy(to_char(gmb_created_at, 'YYYY-MM'))
-    //     .orderBy(YOLO)
-
     const res = await Kwery.get(JSON.stringify(ui), { sql }, () =>
         fetch('http://localhost:8000/EXECUTE-SQL', {
             method: 'POST',
@@ -222,7 +161,7 @@ export const run_selectData_pivot = async (
             body: JSON.stringify({ sql }),
         }).then((res) => res.json()),
     )
-    return { res, sql, series: ui.series, xAxis: ui.xAxis }
+    return { res, sql }
 
     function sqlExpr(
         //
