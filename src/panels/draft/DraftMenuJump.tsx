@@ -38,7 +38,7 @@ const DraftListUI = observer(function DraftListUI_(p: { app: CushyAppL }) {
                         }}
                     >
                         <div tw='flex items-center'>{title ?? id}</div>
-                        <div tw='ml-auto'>{_formatAsRelativeDateTime(lastRunAt)}</div>
+                        <div tw='ml-auto text-xs italic text-gray-500'>{_formatAsRelativeDateTime(lastRunAt)}</div>
                     </MenuItem>
                 )
             })}
