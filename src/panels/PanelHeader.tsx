@@ -22,7 +22,6 @@ export const PanelHeaderUI = observer(function PanelHeaderUI_(p: { children?: Re
             onWheel={(event) => {
                 event.currentTarget.scrollLeft += event.deltaY
 
-                event.preventDefault()
                 event.stopPropagation()
             }}
         >
