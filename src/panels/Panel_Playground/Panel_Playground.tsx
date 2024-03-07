@@ -3,25 +3,89 @@ import { observer } from 'mobx-react-lite'
 import { MessageInfoUI } from '../MessageUI'
 import { InstallRequirementsBtnUI, Panel_InstallRequirementsUI } from 'src/controls/REQUIREMENTS/Panel_InstallRequirementsUI'
 import { useSt } from 'src/state/stateContext'
+import { PanelHeaderUI } from '../PanelHeader'
+import { FormUI } from 'src/controls/FormUI'
+import { Form } from 'src/controls/Form'
+import { readJSON, writeJSON } from 'src/state/jsonUtils'
+
+export const Header_Playground = new Form(
+    (ui) => ({
+        header: ui.group({
+            label: false,
+            alignLabel: false,
+            layout: 'H',
+            border: false,
+            collapsed: false,
+            items: {
+                mode: ui.choice({
+                    layout: 'H',
+                    label: false,
+                    alignLabel: false,
+                    border: false,
+                    collapsed: false,
+
+                    items: {
+                        requirements: ui.group(),
+                        registeredForms: ui.group(),
+                        scratchPad: ui.group(),
+                    },
+                }),
+                // PlaygroundRequirementsHeader equivalent here when mode == requirements
+                _: ui.spacer(),
+                // Add option menu here, example:
+                // menuButton: ui.menu({formId: "MENU_PLAYGROUND_CONFIG"}),
+            },
+        }),
+    }),
+    {
+        name: 'Playground Conf',
+        initialValue: () => readJSON('settings/playground_config.json'),
+        onChange: (form) => writeJSON('settings/playground_config.json', form.serial),
+    },
+)
 
 export const Panel_Playground = observer(function Panel_Playground_(p: {}) {
     const st = useSt()
     const relPathToThisPage = 'src/panels/Panel_Playground/Panel_Playground.tsx' as RelativePath
+    const mode = st.playgroundHeader.fields.header.fields.mode
+
     return (
-        <div>
-            <h1>Dev Playground - a place for contributor to hack around the codebase</h1>
-            <MessageInfoUI>
-                <div tw='inline text-sm'>
-                    <span>page defined in </span>
-                    <span onClick={() => st.openInVSCode(relPathToThisPage)} tw='cursor-pointer text-info underline'>
-                        {relPathToThisPage}
-                    </span>{' '}
-                    <span>Do not commit changes in this file.</span>
-                </div>
-            </MessageInfoUI>
+        <>
+            <PanelHeaderUI>
+                <FormUI form={st.playgroundHeader} />
+                {mode.value.requirements && <PlaygroundRequirementsHeader />}
+            </PanelHeaderUI>
+            <div tw='px-1 bg-base-300'>
+                <MessageInfoUI>
+                    <div tw='inline text-sm overflow-clip'>
+                        <span>Use this panel as a scratchpad by modifying </span>
+                        <span tw='rounded bg-error-2 px-1'>PlaygroundScratchPad</span>
+                        <span> in </span>
+                        <span onClick={() => st.openInVSCode(relPathToThisPage)} tw='cursor-pointer text-info underline'>
+                            {relPathToThisPage}
+                        </span>{' '}
+                        <span>Do not commit changes in this file unless specifically adding functionality to it.</span>
+                    </div>
+                </MessageInfoUI>
+            </div>
+            <div tw='h-full overflow-auto'>
+                {/* 👇 PLAYGROUND HERE */}
+                {mode.value.requirements && <PlaygroundRequirements />}
+                {mode.value.registeredForms && <PlaygroundRegisteredForms />}
+                {mode.value.scratchPad && <PlaygroundScratchPad />}
+            </div>
+        </>
+    )
+})
 
-            {/* 👇 PLAYGROUND HERE */}
+/** Freely modify this as you like, then pick the "Scratch Pad" option in the top left. Do not commit changes made to this. */
+const PlaygroundScratchPad = observer(function PlaygroundScratchPad_(p: {}) {
+    return <div tw='bg-base-300 h-full'></div>
+})
 
+const PlaygroundRequirementsHeader = observer(function PlaygroundRequirements_(p: {}) {
+    return (
+        <>
             {/* stuff to test how it looks like when in button form */}
             <InstallRequirementsBtnUI
                 active
@@ -45,7 +109,13 @@ export const Panel_Playground = observer(function Panel_Playground_(p: {}) {
                     { type: 'modelInManager', modelName: 'stabilityai/stable-diffusion-x4-upscaler' },
                 ]}
             />
+        </>
+    )
+})
 
+const PlaygroundRequirements = observer(function PlaygroundRequirements_(p: {}) {
+    return (
+        <div tw='flex-col'>
             {/* stuff to test how the panel look like when unfolded */}
             <Panel_InstallRequirementsUI
                 requirements={[
@@ -68,6 +138,23 @@ export const Panel_Playground = observer(function Panel_Playground_(p: {}) {
                     { type: 'modelInManager', modelName: 'stabilityai/stable-diffusion-x4-upscaler' },
                 ]}
             />
+        </div>
+    )
+})
+
+/** This will allow devs to view re-usable forms once the form registering system is implemented */
+const PlaygroundRegisteredForms = observer(function PlaygroundRequirements_(p: {}) {
+    const st = useSt()
+    return (
+        <div tw='h-full bg-base-300 p-1'>
+            <div tw='p-1 rounded bg-base-100 border border-primary/30'>
+                <div tw='w-full items-center text-center'>
+                    <p>Currently Unused</p>
+                </div>
+                <div tw='w-full my-1 rounded bg-neutral-content' style={{ height: '1px', minHeight: '1px' }} />
+                {/* TODO: Should get a registered form by id and display it. */}
+                <FormUI form={st.sideBarConf} />
+            </div>
         </div>
     )
 })
