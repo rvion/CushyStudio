@@ -22,7 +22,7 @@ export const runAutolayout = async (
     const edges: ElkExtendedEdge[] = []
     console.log(`[👙] runAutoLayout with ${graph.nodes.length} nodes`)
     for (const node of graph.nodes) {
-        console.log(`[🤠] elk[build] node(id=${node.uid} | ${node.uidNumber})`)
+        // console.log(`[🤠] elk[build] node(id=${node.uid} | ${node.uidNumber})`)
         nodes.push({
             id: node.uid,
             width: p?.width?.(node) ?? node.width * 1.2,
