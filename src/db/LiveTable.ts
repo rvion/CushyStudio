@@ -1,6 +1,6 @@
 import type { LiveDB } from './LiveDB'
 import type { $BaseInstanceFields, LiveInstance, UpdateOptions } from './LiveInstance'
-import type { CompiledQuery, SelectQueryBuilder, Updateable } from 'kysely'
+import type { CompiledQuery, SelectQueryBuilder } from 'kysely'
 import type { STATE } from 'src/state/state'
 
 import { Value, ValueError } from '@sinclair/typebox/value'
@@ -9,6 +9,7 @@ import { nanoid } from 'nanoid'
 
 import { DEPENDS_ON, MERGE_PROTOTYPES } from './LiveHelpers'
 import { LiveSQL } from './LiveQuery'
+import { quickBench } from './quickBench'
 import { isSqlExpr, SqlFindOptions, SQLWhere } from './SQLWhere'
 import { dbxx } from 'src/DB'
 import { type KyselyTables, schemas } from 'src/db/TYPES.gen'
@@ -256,6 +257,7 @@ export class LiveTable<TABLE extends TableInfo<keyof KyselyTables>> {
 
             init(table: LiveTable<TABLE>, data: TABLE['$T']) {
                 // console.log(`🔴 INIT`, data)
+                /* 🚝 */ const startTime = process.hrtime()
                 this.db = table.db
                 this.st = table.db.st
                 this.table = table
@@ -263,6 +265,9 @@ export class LiveTable<TABLE extends TableInfo<keyof KyselyTables>> {
                 this.onHydrate?.(/* data */)
                 this.onUpdate?.(undefined, data)
                 makeAutoObservable(this, this.observabilityConfig as any)
+                /* 🚝 */ const endTime = process.hrtime(startTime)
+                /* 🚝 */ const ms = endTime[1] / 1000000
+                /* 🚝 */ quickBench.addStats(`init:${table.name}`, ms)
             }
 
             log(...args: any[]) {

@@ -49,6 +49,7 @@ import { type ConfigFile, PreferedFormLayout } from 'src/config/ConfigFile'
 import { mkConfigFile } from 'src/config/mkConfigFile'
 import { Form } from 'src/controls/Form'
 import { LiveCollection } from 'src/db/LiveCollection'
+import { quickBench } from 'src/db/quickBench'
 import { SQLITE_false, SQLITE_true } from 'src/db/SQLITE_boolean'
 import { asHostID, type KyselyTables, type TABLES } from 'src/db/TYPES.gen'
 import { ComfyManagerRepository } from 'src/manager/ComfyManagerRepository'
@@ -595,6 +596,7 @@ export class STATE {
             wildcards: false,
         })
         this.startupFileIndexing()
+        setTimeout(() => quickBench.printAllStats(), 1000)
     }
 
     get mainComfyHostID(): HostID {
