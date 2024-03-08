@@ -20,6 +20,7 @@ import type { Widget_selectMany } from './selectMany/WidgetSelectMany'
 import type { Widget_selectOne } from './selectOne/WidgetSelectOne'
 import type { Widget_shared } from './shared/WidgetShared'
 import type { Widget_size } from './size/WidgetSize'
+import type { Widget_spacer } from './spacer/WidgetSpacer'
 import type { Widget_string } from './string/WidgetString'
 
 /**
@@ -40,6 +41,7 @@ export let WidgetDI = {
     Widget_markdown /*   */: 0 as any as typeof Widget_markdown,
     Widget_custom /*     */: 0 as any as typeof Widget_custom,
     Widget_size /*       */: 0 as any as typeof Widget_size,
+    Widget_spacer /*     */: 0 as any as typeof Widget_spacer,
     Widget_matrix /*     */: 0 as any as typeof Widget_matrix,
     Widget_loras /*      */: 0 as any as typeof Widget_loras,
     Widget_image /*      */: 0 as any as typeof Widget_image,

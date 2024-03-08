@@ -33,6 +33,7 @@ import { Widget_shared } from './widgets/shared/WidgetShared'
 import { Widget_size, type Widget_size_config } from './widgets/size/WidgetSize'
 import { Widget_string, type Widget_string_config } from './widgets/string/WidgetString'
 import { openRouterInfos } from 'src/llm/OpenRouter_infos'
+import { Widget_spacer, Widget_spacer_config } from './widgets/spacer/WidgetSpacer'
 
 // prettier-ignore
 export class FormBuilder {
@@ -58,6 +59,7 @@ export class FormBuilder {
     boolean     = (config: Widget_bool_config   = {})                                                        => new Spec<Widget_bool                        >('bool'      , config)
     bool        = (config: Widget_bool_config   = {})                                                        => new Spec<Widget_bool                        >('bool'      , config)
     size        = (config: Widget_size_config   = {})                                                        => new Spec<Widget_size                        >('size'      , config)
+    spacer      = (config: Widget_spacer_config = {})                                                        => new Spec<Widget_spacer                      >('spacer'    , {alignLabel: false, label:false, collapsed:false, border: false})
     orbit       = (config: Widget_orbit_config  = {})                                                        => new Spec<Widget_orbit                       >('orbit'     , config)
     seed        = (config: Widget_seed_config   = {})                                                        => new Spec<Widget_seed                        >('seed'      , config)
     color       = (config: Widget_color_config  = {})                                                        => new Spec<Widget_color                       >('color'     , config)
@@ -256,6 +258,7 @@ export class FormBuilder {
         if (type === 'selectOne' ) return new Widget_selectOne (this.form, config, serial)
         if (type === 'selectMany') return new Widget_selectMany(this.form, config, serial)
         if (type === 'size'      ) return new Widget_size      (this.form, config, serial)
+        if (type === 'spacer'    ) return new Widget_spacer    (this.form, config, serial)
         if (type === 'markdown'  ) return new Widget_markdown  (this.form, config, serial)
         if (type === 'custom'    ) return new Widget_custom    (this.form, config, serial)
 
