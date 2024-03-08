@@ -26,10 +26,13 @@ export type CompiledPrompt = {
 }
 
 // CONFIG
-export type Widget_prompt_config = WidgetConfigFields<{
-    default?: string
-    placeHolder?: string
-}>
+export type Widget_prompt_config = WidgetConfigFields<
+    {
+        default?: string
+        placeHolder?: string
+    },
+    Widget_prompt_types
+>
 
 // SERIAL
 export type Widget_prompt_serial = WidgetSerialFields<{
@@ -52,8 +55,8 @@ export type Widget_prompt_types = {
 // STATE
 export interface Widget_prompt extends Widget_prompt_types, IWidgetMixins {}
 export class Widget_prompt implements IWidget<Widget_prompt_types> {
-    HeaderUI = WidgetPrompt_LineUI
-    BodyUI = WidgetPromptUI
+    DefaultHeaderUI = WidgetPrompt_LineUI
+    DefaultBodyUI = WidgetPromptUI
     get serialHash () { return hash(this.serial.val) } // prettier-ignore
     readonly id: string
     readonly type: 'prompt' = 'prompt'

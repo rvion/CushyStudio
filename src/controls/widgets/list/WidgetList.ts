@@ -12,12 +12,15 @@ import { applyWidgetMixinV2 } from 'src/controls/Mixins'
 import { runWithGlobalForm } from 'src/models/_ctx2'
 
 // CONFIG
-export type Widget_list_config<T extends Spec> = WidgetConfigFields<{
-    element: ((ix: number) => T) | T
-    min?: number
-    max?: number
-    defaultLength?: number
-}>
+export type Widget_list_config<T extends Spec> = WidgetConfigFields<
+    {
+        element: ((ix: number) => T) | T
+        min?: number
+        max?: number
+        defaultLength?: number
+    },
+    Widget_list_types<T>
+>
 
 // SERIAL
 export type Widget_list_serial<T extends Spec> = WidgetSerialFields<{
@@ -40,8 +43,8 @@ export type Widget_list_types<T extends Spec> = {
 // STATE
 export interface Widget_list<T extends Spec> extends Widget_list_types<T>, IWidgetMixins {}
 export class Widget_list<T extends Spec> implements IWidget<Widget_list_types<T>> {
-    HeaderUI = WidgetList_LineUI
-    get BodyUI() {
+    DefaultHeaderUI = WidgetList_LineUI
+    get DefaultBodyUI() {
         // if (this.items.length === 0) return
         return WidgetList_BodyUI
     }

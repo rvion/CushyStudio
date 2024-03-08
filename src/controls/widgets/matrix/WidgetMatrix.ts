@@ -20,11 +20,14 @@ export type Widget_matrix_cell = {
 }
 
 // CONFIG
-export type Widget_matrix_config = WidgetConfigFields<{
-    default?: { row: string; col: string }[]
-    rows: string[]
-    cols: string[]
-}>
+export type Widget_matrix_config = WidgetConfigFields<
+    {
+        default?: { row: string; col: string }[]
+        rows: string[]
+        cols: string[]
+    },
+    Widget_matrix_types
+>
 
 // SERIAL
 export type Widget_matrix_serial = WidgetSerialFields<{ type: 'matrix'; active: true; selected: Widget_matrix_cell[] }>
@@ -44,8 +47,8 @@ export type Widget_matrix_types = {
 // STATE
 export interface Widget_matrix extends Widget_matrix_types, IWidgetMixins {}
 export class Widget_matrix implements IWidget<Widget_matrix_types> {
-    HeaderUI = WidgetMatrixUI
-    BodyUI = undefined
+    DefaultHeaderUI = WidgetMatrixUI
+    DefaultBodyUI = undefined
     get serialHash(): string {
         return hash(this.value)
     }

@@ -16,12 +16,15 @@ export type Widget_button_context = {
 }
 
 // CONFIG
-export type Widget_button_config = WidgetConfigFields<{
-    text?: string
-    kind?: `primary` | `special` | `warning`
-    icon?: (ctx: Widget_button_context) => string
-    onClick?: (ctx: Widget_button_context) => void
-}>
+export type Widget_button_config = WidgetConfigFields<
+    {
+        text?: string
+        kind?: `primary` | `special` | `warning`
+        icon?: (ctx: Widget_button_context) => string
+        onClick?: (ctx: Widget_button_context) => void
+    },
+    Widget_button_types
+>
 
 // SERIAL
 export type Widget_button_serial = WidgetSerialFields<{
@@ -45,8 +48,8 @@ export type Widget_button_types = {
 // STATE
 export interface Widget_button extends Widget_button_types, IWidgetMixins {}
 export class Widget_button implements IWidget<Widget_button_types> {
-    HeaderUI = WidgetInlineRunUI
-    BodyUI = undefined
+    DefaultHeaderUI = WidgetInlineRunUI
+    DefaultBodyUI = undefined
     get serialHash(): string {
         return hash(this.value)
     }

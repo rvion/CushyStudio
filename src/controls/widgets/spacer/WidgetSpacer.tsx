@@ -14,7 +14,7 @@ import { applyWidgetMixinV2 } from 'src/controls/Mixins'
  * Bool Config
  * @property {string} label2 - test
  */
-export type Widget_spacer_config = WidgetConfigFields<{}>
+export type Widget_spacer_config = WidgetConfigFields<{}, Widget_shared_types>
 
 // SERIAL
 export type Widget_spacer_serial = WidgetSerialFields<{ type: 'spacer' }>
@@ -23,7 +23,7 @@ export type Widget_spacer_serial = WidgetSerialFields<{ type: 'spacer' }>
 export type Widget_spacer_output = boolean
 
 // TYPES
-export type Widget_string_types = {
+export type Widget_shared_types = {
     $Type: 'spacer'
     $Input: Widget_spacer_config
     $Serial: Widget_spacer_serial
@@ -32,10 +32,10 @@ export type Widget_string_types = {
 }
 
 // STATE
-export interface Widget_spacer extends Widget_string_types, IWidgetMixins {}
-export class Widget_spacer implements IWidget<Widget_string_types> {
-    HeaderUI = WidgetSpacerUI
-    BodyUI = undefined
+export interface Widget_spacer extends Widget_shared_types, IWidgetMixins {}
+export class Widget_spacer implements IWidget<Widget_shared_types> {
+    DefaultHeaderUI = WidgetSpacerUI
+    DefaultBodyUI = undefined
     readonly id: string
     readonly type: 'spacer' = 'spacer'
     serial: Widget_spacer_serial

@@ -31,7 +31,7 @@ export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends 
             <SortableList onSortEnd={p.widget.moveItem} className='list' draggedItemClassName='dragged'>
                 <div tw='flex flex-col gap-0.5'>
                     {subWidgets.map((subWidget, ix) => {
-                        const { HeaderUI: WidgetHeaderUI, BodyUI: WidgetBodyUI } = subWidget // WidgetDI.WidgetUI(widget)
+                        const { DefaultHeaderUI: WidgetHeaderUI, DefaultBodyUI: WidgetBodyUI } = subWidget // WidgetDI.WidgetUI(widget)
                         const collapsed = subWidget.serial.collapsed ?? false
                         return (
                             <SortableItem key={subWidget.id}>
@@ -112,7 +112,7 @@ const ListDragHandleUI = forwardRef<HTMLDivElement, { ix: number; widget: IWidge
 
 export const ListItemCollapseBtnUI = observer(function ListItemCollapseBtnUI_(p: { req: IWidget }) {
     const widget = p.req
-    const isCollapsible = widget.BodyUI
+    const isCollapsible = widget.DefaultBodyUI
     if (!isCollapsible) return null
     return (
         <div

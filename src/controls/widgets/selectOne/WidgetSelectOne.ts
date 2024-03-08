@@ -13,11 +13,14 @@ import { applyWidgetMixinV2 } from 'src/controls/Mixins'
 export type BaseSelectEntry = { id: string; label?: string }
 
 // CONFIG
-export type Widget_selectOne_config<T extends BaseSelectEntry> = WidgetConfigFields<{
-    default?: T
-    choices: T[] | ((formRoot: Widget_group<any>) => T[])
-    appearance?: 'select' | 'tab'
-}>
+export type Widget_selectOne_config<T extends BaseSelectEntry> = WidgetConfigFields<
+    {
+        default?: T
+        choices: T[] | ((formRoot: Widget_group<any>) => T[])
+        appearance?: 'select' | 'tab'
+    },
+    Widget_selectOne_types<T>
+>
 
 // SERIAL
 export type Widget_selectOne_serial<T extends BaseSelectEntry> = WidgetSerialFields<{
@@ -41,8 +44,8 @@ export type Widget_selectOne_types<T extends BaseSelectEntry> = {
 // STATE
 export interface Widget_selectOne<T> extends Widget_selectOne_types<T>, IWidgetMixins {}
 export class Widget_selectOne<T extends BaseSelectEntry> implements IWidget<Widget_selectOne_types<T>> {
-    HeaderUI = WidgetSelectOneUI
-    BodyUI = undefined
+    DefaultHeaderUI = WidgetSelectOneUI
+    DefaultBodyUI = undefined
     get serialHash() {
         return hash(this.value)
     }

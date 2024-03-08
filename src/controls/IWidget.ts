@@ -9,7 +9,7 @@ import type { ModelInfo } from 'src/manager/model-list/model-list-loader-types'
 
 export type $WidgetTypes = {
     $Type: string
-    $Input: SharedWidgetConfig
+    $Input: SharedWidgetConfig<any>
     $Serial: SharedWidgetSerial
     $Output: any
     $Widget: any
@@ -37,10 +37,10 @@ export interface IWidget<K extends $WidgetTypes = $WidgetTypes> extends IWidgetM
     alignLabel?: boolean
 
     /** default header UI */
-    readonly HeaderUI: FC<{ widget: K['$Widget'] }> | undefined
+    readonly DefaultHeaderUI: FC<{ widget: K['$Widget'] }> | undefined
 
     /** default body UI */
-    readonly BodyUI: FC<{ widget: K['$Widget'] }> | undefined
+    readonly DefaultBodyUI: FC<{ widget: K['$Widget'] }> | undefined
 }
 
 /**
@@ -51,6 +51,8 @@ export type IWidgetMixins = {
     ui(): JSX.Element
     body(): JSX.Element | undefined
     header(): JSX.Element | undefined
+    defaultBody(): JSX.Element | undefined
+    defaultHeader(): JSX.Element | undefined
     test: number
 }
 
@@ -65,8 +67,14 @@ export type SharedWidgetSerial = {
 }
 
 export type WidgetSerialFields<X> = X & SharedWidgetSerial
-export type WidgetConfigFields<X> = X & SharedWidgetConfig
-export type SharedWidgetConfig = {
+export type WidgetConfigFields<X, T extends $WidgetTypes> = X & SharedWidgetConfig<T>
+export type SharedWidgetConfig<T extends $WidgetTypes> = {
+    /** allow to specify custom headers */
+    header?: null | ((p: { widget: T['$Widget'] }) => JSX.Element)
+
+    /** allow to specify custom body */
+    body?: null | ((p: { widget: T['$Widget'] }) => JSX.Element)
+
     /**
      * The label to display.
      * If none provided, the parent key is going to be converted as label.

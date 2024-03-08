@@ -15,16 +15,14 @@ import { Spec } from 'src/controls/Spec'
 import { runWithGlobalForm } from 'src/models/_ctx2'
 
 // CONFIG
-export type Widget_group_config<T extends SchemaDict> = WidgetConfigFields<{
-    items?: (() => T) | T
-    topLevel?: boolean
-    // header?: (self: Widget_group<T>) => (keyof T)[]
-    /** if provided, will be used to show a single line summary on the inline form slot */
-    summary?: (items: { [k in keyof T]: GetWidgetResult<T[k]> }) => string
-    // ------------------------------------------------
-    // header?: (self: Widget_group<T>) => GroupLayout<T>[]
-    // body?: (self: Widget_group<T>) => (`.${keyof T & string}` | `#${string}`)[]
-}>
+export type Widget_group_config<T extends SchemaDict> = WidgetConfigFields<
+    {
+        items?: (() => T) | T
+        topLevel?: boolean
+        summary?: (items: { [k in keyof T]: GetWidgetResult<T[k]> }) => string
+    },
+    Widget_group_types<T>
+>
 
 // SERIAL
 export type Widget_group_serial<T extends SchemaDict> = WidgetSerialFields<{
@@ -50,8 +48,8 @@ export type Widget_group_types<T extends SchemaDict> = {
 // STATE
 export interface Widget_group<T extends SchemaDict> extends Widget_group_types<T>, IWidgetMixins {}
 export class Widget_group<T extends SchemaDict> implements IWidget<Widget_group_types<T>> {
-    HeaderUI = WidgetGroup_LineUI
-    get BodyUI() {
+    DefaultHeaderUI = WidgetGroup_LineUI
+    get DefaultBodyUI() {
         if (Object.keys(this.fields).length === 0) return
         return WidgetGroup_BlockUI
     }

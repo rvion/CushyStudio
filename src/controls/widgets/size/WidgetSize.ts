@@ -12,12 +12,15 @@ import { WigetSize_BlockUI, WigetSize_LineUI } from './WidgetSizeUI'
 import { applyWidgetMixinV2 } from 'src/controls/Mixins'
 
 // CONFIG
-export type Widget_size_config = WidgetConfigFields<{
-    default?: CushySizeByRatio
-    min?: number
-    max?: number
-    step?: number
-}>
+export type Widget_size_config = WidgetConfigFields<
+    {
+        default?: CushySizeByRatio
+        min?: number
+        max?: number
+        step?: number
+    },
+    Widget_size_types
+>
 
 // SERIAL
 export type Widget_size_serial = WidgetSerialFields<CushySize>
@@ -37,8 +40,8 @@ export type Widget_size_types = {
 // STATE
 export interface Widget_size extends Widget_size_types, IWidgetMixins {} // prettier-ignore
 export class Widget_size implements IWidget<Widget_size_types> {
-    HeaderUI = WigetSize_LineUI
-    BodyUI = WigetSize_BlockUI
+    DefaultHeaderUI = WigetSize_LineUI
+    DefaultBodyUI = WigetSize_BlockUI
     get sizeHelper(): ResolutionState {
         // should only be executed once
         const state = new ResolutionState(this.serial)

@@ -12,11 +12,14 @@ import { WidgetSelectManyUI } from './WidgetSelectManyUI'
 import { applyWidgetMixinV2 } from 'src/controls/Mixins'
 
 // CONFIG
-export type Widget_selectMany_config<T extends BaseSelectEntry> = WidgetConfigFields<{
-    default?: T[]
-    choices: T[] | ((formRoot: Maybe<Widget_group<any>>) => T[])
-    appearance?: 'select' | 'tab'
-}>
+export type Widget_selectMany_config<T extends BaseSelectEntry> = WidgetConfigFields<
+    {
+        default?: T[]
+        choices: T[] | ((formRoot: Maybe<Widget_group<any>>) => T[])
+        appearance?: 'select' | 'tab'
+    },
+    Widget_selectMany_types<T>
+>
 
 // SERIAL
 export type Widget_selectMany_serial<T extends BaseSelectEntry> = WidgetSerialFields<{
@@ -40,8 +43,8 @@ export type Widget_selectMany_types<T extends BaseSelectEntry> = {
 // STATE
 export interface Widget_selectMany<T extends BaseSelectEntry> extends Widget_selectMany_types<T>, IWidgetMixins {}
 export class Widget_selectMany<T extends BaseSelectEntry> implements IWidget<Widget_selectMany_types<T>> {
-    HeaderUI = WidgetSelectManyUI
-    BodyUI = undefined
+    DefaultHeaderUI = WidgetSelectManyUI
+    DefaultBodyUI = undefined
     get serialHash() {
         return hash(this.value)
     }

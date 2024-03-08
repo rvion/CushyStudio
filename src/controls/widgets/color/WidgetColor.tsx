@@ -11,7 +11,7 @@ import { WidgetColorUI } from './WidgetColorUI'
 import { applyWidgetMixinV2 } from 'src/controls/Mixins'
 
 // CONFIG
-export type Widget_color_config = WidgetConfigFields<{ default?: string }>
+export type Widget_color_config = WidgetConfigFields<{ default?: string }, Widget_color_types>
 
 // SERIAL
 export type Widget_color_serial = WidgetSerialFields<{ type: 'color'; active: true; val: string }>
@@ -31,8 +31,8 @@ export type Widget_color_types = {
 // STATE
 export interface Widget_color extends Widget_color_types, IWidgetMixins {}
 export class Widget_color implements IWidget<Widget_color_types> {
-    HeaderUI = WidgetColorUI
-    BodyUI = undefined
+    DefaultHeaderUI = WidgetColorUI
+    DefaultBodyUI = undefined
     get serialHash(): string {
         return hash(this.value)
     }

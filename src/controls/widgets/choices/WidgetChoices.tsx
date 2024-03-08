@@ -14,14 +14,17 @@ import { makeLabelFromFieldName } from 'src/utils/misc/makeLabelFromFieldName'
 import { toastError } from 'src/utils/misc/toasts'
 
 // CONFIG
-export type Widget_choices_config<T extends SchemaDict = SchemaDict> = WidgetConfigFields<{
-    expand?: boolean
-    items: T
-    multi: boolean
-    default?: { [k in keyof T]?: boolean } | keyof T
-    placeholder?: string
-    appearance?: 'select' | 'tab'
-}>
+export type Widget_choices_config<T extends SchemaDict = SchemaDict> = WidgetConfigFields<
+    {
+        expand?: boolean
+        items: T
+        multi: boolean
+        default?: { [k in keyof T]?: boolean } | keyof T
+        placeholder?: string
+        appearance?: 'select' | 'tab'
+    },
+    Widget_choices_types<T>
+>
 
 // SERIAL
 export type Widget_choices_serial<T extends SchemaDict = SchemaDict> = WidgetSerialFields<{
@@ -48,8 +51,8 @@ export type Widget_choices_types<T extends SchemaDict = SchemaDict> = {
 // STATE
 export interface Widget_choices<T extends SchemaDict = SchemaDict> extends Widget_choices_types<T>, IWidgetMixins {}
 export class Widget_choices<T extends SchemaDict = SchemaDict> implements IWidget<Widget_choices_types<T>> {
-    HeaderUI = WidgetChoices_HeaderUI
-    BodyUI = WidgetChoices_BodyUI
+    DefaultHeaderUI = WidgetChoices_HeaderUI
+    DefaultBodyUI = WidgetChoices_BodyUI
     readonly id: string
     readonly type: 'choices' = 'choices'
     readonly expand: boolean = this.config.expand ?? false

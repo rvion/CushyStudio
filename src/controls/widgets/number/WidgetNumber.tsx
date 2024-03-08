@@ -11,21 +11,24 @@ import { WidgetNumberUI } from './WidgetNumberUI'
 import { applyWidgetMixinV2 } from 'src/controls/Mixins'
 
 // CONFIG
-export type Widget_number_config = WidgetConfigFields<{
-    mode: 'int' | 'float'
-    default?: number
-    min?: number
-    max?: number
-    softMin?: number
-    softMax?: number
-    step?: number
-    suffix?: string
-    text?: string
-    hideSlider?: boolean
-    forceSnap?: boolean
-    /** used as suffix */
-    unit?: string
-}>
+export type Widget_number_config = WidgetConfigFields<
+    {
+        mode: 'int' | 'float'
+        default?: number
+        min?: number
+        max?: number
+        softMin?: number
+        softMax?: number
+        step?: number
+        suffix?: string
+        text?: string
+        hideSlider?: boolean
+        forceSnap?: boolean
+        /** used as suffix */
+        unit?: string
+    },
+    Widget_number_types
+>
 
 // SERIAL
 export type Widget_number_serial = WidgetSerialFields<{ type: 'number'; val: number }>
@@ -45,8 +48,8 @@ export type Widget_number_types = {
 // STATE
 export interface Widget_number extends Widget_number_types, IWidgetMixins {}
 export class Widget_number implements IWidget<Widget_number_types> {
-    HeaderUI = WidgetNumberUI
-    BodyUI = undefined
+    DefaultHeaderUI = WidgetNumberUI
+    DefaultBodyUI = undefined
     get serialHash () { return hash(this.value) } // prettier-ignore
     readonly id: string
     readonly type: 'number' = 'number'

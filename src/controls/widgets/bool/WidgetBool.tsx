@@ -14,40 +14,43 @@ import { applyWidgetMixinV2 } from 'src/controls/Mixins'
  * Bool Config
  * @property {string} label2 - test
  */
-export type Widget_bool_config = WidgetConfigFields<{
-    default?: boolean
+export type Widget_bool_config = WidgetConfigFields<
+    {
+        default?: boolean
 
-    label2?: string
+        label2?: string
 
-    /** Text to display, drawn by the widget itself. */
-    text?: string
+        /** Text to display, drawn by the widget itself. */
+        text?: string
 
-    /**
-     * The display style of the widget.
-     * - `check `: Shows a simple checkbox.
-     * - `button`: Shows a toggle-able button.
-     *
-     *  Defaults to 'check'
-     */
-    display?: 'check' | 'button'
+        /**
+         * The display style of the widget.
+         * - `check `: Shows a simple checkbox.
+         * - `button`: Shows a toggle-able button.
+         *
+         *  Defaults to 'check'
+         */
+        display?: 'check' | 'button'
 
-    /** Whether or not to expand the widget to take up as much space as possible
-     *
-     *      If `display` is 'check'
-     *          undefined and true will expand
-     *          false will disable expansion
-     *
-     *      If `display` is 'button'
-     *          undefined and false will not expand
-     *          true will enable expansion
-     */
-    expand?: boolean
+        /** Whether or not to expand the widget to take up as much space as possible
+         *
+         *      If `display` is 'check'
+         *          undefined and true will expand
+         *          false will disable expansion
+         *
+         *      If `display` is 'button'
+         *          undefined and false will not expand
+         *          true will enable expansion
+         */
+        expand?: boolean
 
-    /** Set the icon of the button
-     *  - Uses "material-symbols-outlined" as the icon set
-     */
-    icon?: string | undefined
-}>
+        /** Set the icon of the button
+         *  - Uses "material-symbols-outlined" as the icon set
+         */
+        icon?: string | undefined
+    },
+    Widget_bool_types
+>
 
 // SERIAL
 export type Widget_bool_serial = WidgetSerialFields<{ type: 'bool'; active: boolean }>
@@ -56,7 +59,7 @@ export type Widget_bool_serial = WidgetSerialFields<{ type: 'bool'; active: bool
 export type Widget_bool_output = boolean
 
 // TYPES
-export type Widget_string_types = {
+export type Widget_bool_types = {
     $Type: 'bool'
     $Input: Widget_bool_config
     $Serial: Widget_bool_serial
@@ -65,10 +68,10 @@ export type Widget_string_types = {
 }
 
 // STATE
-export interface Widget_bool extends Widget_string_types, IWidgetMixins {}
-export class Widget_bool implements IWidget<Widget_string_types> {
-    HeaderUI = WidgetBoolUI
-    BodyUI = undefined
+export interface Widget_bool extends Widget_bool_types, IWidgetMixins {}
+export class Widget_bool implements IWidget<Widget_bool_types> {
+    DefaultHeaderUI = WidgetBoolUI
+    DefaultBodyUI = undefined
     readonly id: string
     readonly type: 'bool' = 'bool'
 

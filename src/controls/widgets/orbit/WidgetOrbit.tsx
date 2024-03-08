@@ -17,9 +17,7 @@ export type OrbitData = {
 }
 
 // CONFIG
-export type Widget_orbit_config = WidgetConfigFields<{
-    default?: Partial<OrbitData>
-}>
+export type Widget_orbit_config = WidgetConfigFields<{ default?: Partial<OrbitData> }, Widget_orbit_types>
 
 // SERIAL
 export type Widget_orbit_serial = WidgetSerialFields<{
@@ -47,8 +45,8 @@ export type Widget_orbit_types = {
 // STATE
 export interface Widget_orbit extends Widget_orbit_types, IWidgetMixins {}
 export class Widget_orbit implements IWidget<Widget_orbit_types> {
-    HeaderUI = WidgetOrbitUI
-    BodyUI = undefined
+    DefaultHeaderUI = WidgetOrbitUI
+    DefaultBodyUI = undefined
     get serialHash () { return hash(this.value) } // prettier-ignore
     id: string
     type: 'orbit' = 'orbit'

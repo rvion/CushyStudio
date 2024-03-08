@@ -31,9 +31,9 @@ import { Widget_selectMany, type Widget_selectMany_config } from './widgets/sele
 import { type BaseSelectEntry, Widget_selectOne, type Widget_selectOne_config } from './widgets/selectOne/WidgetSelectOne'
 import { Widget_shared } from './widgets/shared/WidgetShared'
 import { Widget_size, type Widget_size_config } from './widgets/size/WidgetSize'
+import { Widget_spacer, Widget_spacer_config } from './widgets/spacer/WidgetSpacer'
 import { Widget_string, type Widget_string_config } from './widgets/string/WidgetString'
 import { openRouterInfos } from 'src/llm/OpenRouter_infos'
-import { Widget_spacer, Widget_spacer_config } from './widgets/spacer/WidgetSpacer'
 
 // prettier-ignore
 export class FormBuilder {
@@ -68,7 +68,7 @@ export class FormBuilder {
     button      = (config: Widget_button_config = {})                                                        => new Spec<Widget_button                      >('button'    , config)
     loras       = (config: Widget_loras_config     = {})                                                     => new Spec<Widget_loras                       >('loras'     , config)
     markdown    = (config: Widget_markdown_config | string)                                                  => new Spec<Widget_markdown                    >('markdown'  , typeof config === 'string' ? { markdown: config } : config)
-    header      = (config: Widget_markdown_config | string)                                                  => new Spec<Widget_markdown                    >('markdown'  , typeof config === 'string' ? { markdown: config, header: true } : { header: true, ...config })
+    header      = (config: Widget_markdown_config | string)                                                  => new Spec<Widget_markdown                    >('markdown'  , typeof config === 'string' ? { markdown: config, inHeader: true, label: false } : { inHeader: true, label: false, alignLabel: false, ...config })
     image       = (config: Widget_image_config = {})                                                         => new Spec<Widget_image                       >('image'     , config)
     prompt      = (config: Widget_prompt_config = {})                                                        => new Spec<Widget_prompt                      >('prompt'    , config)
     promptV2    = (config: Widget_prompt_config = {})                                                        => new Spec<Widget_prompt                      >('prompt'    , config)

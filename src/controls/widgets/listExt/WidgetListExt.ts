@@ -16,16 +16,19 @@ import { applyWidgetMixinV2 } from 'src/controls/Mixins'
 import { runWithGlobalForm } from 'src/models/_ctx2'
 
 // CONFIG
-export type Widget_listExt_config<T extends Spec> = WidgetConfigFields<{
-    element: T | ((p: { ix: number; width: number; height: number }) => T)
-    min?: number
-    max?: number
-    defaultLength?: number
-    initialPosition: (size: { ix: number; width: number; height: number }) => Partial<BoardPosition>
-    mode?: 'regional' | 'timeline'
-    width: number /** default: 100 */
-    height: number /** default: 100 */
-}>
+export type Widget_listExt_config<T extends Spec> = WidgetConfigFields<
+    {
+        element: T | ((p: { ix: number; width: number; height: number }) => T)
+        min?: number
+        max?: number
+        defaultLength?: number
+        initialPosition: (size: { ix: number; width: number; height: number }) => Partial<BoardPosition>
+        mode?: 'regional' | 'timeline'
+        width: number /** default: 100 */
+        height: number /** default: 100 */
+    },
+    Widget_listExt_types<T>
+>
 
 // SERIAL
 export type Widget_listExt_serial<T extends Spec> = WidgetSerialFields<{
@@ -55,8 +58,8 @@ export type Widget_listExt_types<T extends Spec> = {
 // STATE
 export interface Widget_listExt<T extends Spec> extends Widget_listExt_types<T>, IWidgetMixins {}
 export class Widget_listExt<T extends Spec> implements IWidget<Widget_listExt_types<T>> {
-    HeaderUI = WidgetList_LineUI
-    BodyUI = WidgetListExtUI
+    DefaultHeaderUI = WidgetList_LineUI
+    DefaultBodyUI = WidgetListExtUI
     readonly id: string
     readonly type: 'listExt' = 'listExt'
 

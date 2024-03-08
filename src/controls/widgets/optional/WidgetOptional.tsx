@@ -10,10 +10,13 @@ import { WidgetDI } from '../WidgetUI.DI'
 import { applyWidgetMixinV2 } from 'src/controls/Mixins'
 
 // CONFIG
-export type Widget_optional_config<T extends Spec = Spec> = WidgetConfigFields<{
-    startActive?: boolean
-    widget: T
-}>
+export type Widget_optional_config<T extends Spec = Spec> = WidgetConfigFields<
+    {
+        startActive?: boolean
+        widget: T
+    },
+    Widget_optional_types<T>
+>
 
 // SERIAL
 export type Widget_optional_serial<T extends Spec = Spec> = WidgetSerialFields<{
@@ -37,8 +40,8 @@ export type Widget_optional_types<T extends Spec = Spec> = {
 // STATE
 export interface Widget_optional<T extends Spec = Spec> extends Widget_optional_types<T>, IWidgetMixins {}
 export class Widget_optional<T extends Spec = Spec> implements IWidget<Widget_optional_types<T>> {
-    HeaderUI = undefined
-    BodyUI = undefined
+    DefaultHeaderUI = undefined
+    DefaultBodyUI = undefined
     get serialHash(): string {
         if (this.serial.active) return this.childOrThrow.serialHash
         return 'x'

@@ -12,7 +12,7 @@ import { WidgetLorasUI } from './WidgetLorasUI'
 import { applyWidgetMixinV2 } from 'src/controls/Mixins'
 
 // CONFIG
-export type Widget_loras_config = WidgetConfigFields<{ default?: SimplifiedLoraDef[] }>
+export type Widget_loras_config = WidgetConfigFields<{ default?: SimplifiedLoraDef[] }, Widget_loras_types>
 
 // SERIAL
 export type Widget_loras_serial = WidgetSerialFields<{ type: 'loras'; active: true; loras: SimplifiedLoraDef[] }>
@@ -32,8 +32,8 @@ export type Widget_loras_types = {
 // STATE
 export interface Widget_loras extends Widget_loras_types, IWidgetMixins {}
 export class Widget_loras implements IWidget<Widget_loras_types> {
-    HeaderUI = WidgetLorasUI
-    BodyUI = undefined
+    DefaultHeaderUI = WidgetLorasUI
+    DefaultBodyUI = undefined
     get serialHash(): string {
         return hash(this.value)
     }
