@@ -13,8 +13,13 @@ import { parser } from './grammar/grammar.parser'
 import { WidgetPrompt_LineUI, WidgetPromptUI } from './WidgetPromptUI'
 
 export type CompiledPrompt = {
-    positivePrompt: string
-    negativePrompt: string
+    /** e.g. "score_9 score_8 BREAK foo bar baz" */
+    promptIncludingBreaks: string
+    /**
+     * only filled when prompt has `break`s
+     * will return list of break-separated subprompts
+     * e.g. ["score_9 score_8"], ["foo bar baz"]" */
+    subPrompts: string[]
     debugText: string[]
 }
 

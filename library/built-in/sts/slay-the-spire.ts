@@ -60,7 +60,7 @@ app({
         const isXL = ui.mode.id === 'xl'
         const height = isXL ? H * 3 : H
         const width = isXL ? W * 3 : W
-        const negativeText = ui.negative.compile({ onLora: () => {} }).positivePrompt
+        const negativeText = ui.negative.compile({ onLora: () => {} }).promptIncludingBreaks
         const charX = run_prompt({ prompt: ui.character, ckpt })
 
         // list of stuff to run once the generation is done
@@ -100,7 +100,7 @@ app({
                 `I need to illustrate my ${kind} skills`,
                 `The name of the skill is ${x.Name}. and does read like that: "{${simplifiedDescription}}".`,
                 `The illustration must illustrate the effect of the skill.`,
-                `for context, the player is a ${charX.positiveText}. but the image must focus on the skill, not the character`,
+                `for context, the player is a ${charX.promptIncludingBreaks}. but the image must focus on the skill, not the character`,
                 `The prompt must be less than 400 letters`,
             ].join('\n')
             const llmCacheKey = run.hash(ui.llmModel.id + llmRequest)
@@ -110,8 +110,8 @@ app({
                 prompt = res.prompt
                 store.update({ json: { ...storedPrompts, [llmCacheKey]: prompt } })
             }
-            const prefix = ui.promptPrefix ? run_prompt({ prompt: ui.promptPrefix, ckpt, clip }).positiveText : ''
-            const suffix = ui.promptSuffix ? run_prompt({ prompt: ui.promptSuffix, ckpt, clip }).positiveText : ''
+            const prefix = ui.promptPrefix ? run_prompt({ prompt: ui.promptPrefix, ckpt, clip }).promptIncludingBreaks : ''
+            const suffix = ui.promptSuffix ? run_prompt({ prompt: ui.promptSuffix, ckpt, clip }).promptIncludingBreaks : ''
             prompt = prefix ? `${prefix}, (${x.Name} skill:1.1),  ${prompt}` : prompt
             prompt = suffix ? `${prompt}, ${suffix}` : prompt
             run.output_Markdown(
