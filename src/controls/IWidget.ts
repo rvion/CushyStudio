@@ -15,14 +15,14 @@ export type $WidgetTypes = {
     $Widget: any
 }
 
-export type IWidget<K extends $WidgetTypes = $WidgetTypes> = {
+export interface IWidget<K extends $WidgetTypes = $WidgetTypes> extends IWidgetMixins {
     $Type: K['$Type']
     $Input: K['$Input']
     $Serial: K['$Serial']
     $Output: K['$Output']
     $Widget: K['$Widget']
 
-    id: string
+    readonly id: string
     readonly serialHash: string
     readonly type: K['$Type']
     readonly value: K['$Output']
@@ -32,11 +32,26 @@ export type IWidget<K extends $WidgetTypes = $WidgetTypes> = {
 
     /** if specified, override the default algorithm to decide if we should have borders */
     border?: boolean
+
     /** if specified, override the default algorithm to decide if we should have label aligned */
     alignLabel?: boolean
-    HeaderUI: FC<{ widget: K['$Widget'] }> | undefined
-    BodyUI: FC<{ widget: K['$Widget'] }> | undefined
-    // FULLY_CUSTOM_RENDER?: boolean
+
+    /** default header UI */
+    readonly HeaderUI: FC<{ widget: K['$Widget'] }> | undefined
+
+    /** default body UI */
+    readonly BodyUI: FC<{ widget: K['$Widget'] }> | undefined
+}
+
+/**
+ * those will be dynamically injected via calling `applyWidgetMixinV2(this)`
+ * right before the makeAutoObservable(this) call
+ */
+export type IWidgetMixins = {
+    ui(): JSX.Element
+    body(): JSX.Element | undefined
+    header(): JSX.Element | undefined
+    test: number
 }
 
 export type GetWidgetResult<Widget> = Widget extends { $Output: infer O } ? O : never

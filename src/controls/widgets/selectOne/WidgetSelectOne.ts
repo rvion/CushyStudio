@@ -1,6 +1,6 @@
 import type { Widget_group } from '../group/WidgetGroup'
 import type { Form } from 'src/controls/Form'
-import type { IWidget, WidgetConfigFields, WidgetSerialFields } from 'src/controls/IWidget'
+import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from 'src/controls/IWidget'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -8,6 +8,7 @@ import { hash } from 'ohash'
 
 import { WidgetDI } from '../WidgetUI.DI'
 import { WidgetSelectOneUI } from './WidgetSelectOneUI'
+import { applyWidgetMixinV2 } from 'src/controls/Mixins'
 
 export type BaseSelectEntry = { id: string; label?: string }
 
@@ -38,7 +39,7 @@ export type Widget_selectOne_types<T extends BaseSelectEntry> = {
 }
 
 // STATE
-export interface Widget_selectOne<T> extends Widget_selectOne_types<T> {}
+export interface Widget_selectOne<T> extends Widget_selectOne_types<T>, IWidgetMixins {}
 export class Widget_selectOne<T extends BaseSelectEntry> implements IWidget<Widget_selectOne_types<T>> {
     HeaderUI = WidgetSelectOneUI
     BodyUI = undefined
@@ -81,6 +82,7 @@ export class Widget_selectOne<T extends BaseSelectEntry> implements IWidget<Widg
             val: config.default ?? choices[0],
         }
         if (this.serial.val == null && Array.isArray(this.config.choices)) this.serial.val = choices[0]
+        applyWidgetMixinV2(this)
         makeAutoObservable(this)
     }
     get value(): Widget_selectOne_output<T> {

@@ -1,12 +1,14 @@
 import type { Form } from '../../Form'
-import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { IWidget } from 'src/controls/IWidget'
 
-import { computed, makeObservable, observable } from 'mobx'
+import { computed, makeAutoObservable, observable, runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 import { hash } from 'ohash'
 
 import { WidgetDI } from '../WidgetUI.DI'
 import { WidgetBoolUI } from './WidgetBoolUI'
+import { applyWidgetMixinV2 } from 'src/controls/Mixins'
 
 /**
  * Bool Config
@@ -63,7 +65,7 @@ export type Widget_string_types = {
 }
 
 // STATE
-export interface Widget_bool extends Widget_string_types {}
+export interface Widget_bool extends Widget_string_types, IWidgetMixins {}
 export class Widget_bool implements IWidget<Widget_string_types> {
     HeaderUI = WidgetBoolUI
     BodyUI = undefined
@@ -82,7 +84,12 @@ export class Widget_bool implements IWidget<Widget_string_types> {
     get isChanged() { return this.serial.active !== this.defaultValue } // prettier-ignore
     reset = () => { this.serial.active = this.defaultValue } // prettier-ignore
 
-    constructor(public form: Form<any>, public config: Widget_bool_config, serial?: Widget_bool_serial) {
+    constructor(
+        //
+        public form: Form<any>,
+        public config: Widget_bool_config,
+        serial?: Widget_bool_serial,
+    ) {
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? {
             id: this.id,
@@ -91,7 +98,8 @@ export class Widget_bool implements IWidget<Widget_string_types> {
             collapsed: config.startCollapsed,
         }
 
-        makeObservable(this, {
+        applyWidgetMixinV2(this)
+        makeAutoObservable(this, {
             serial: observable,
             value: computed,
         })
@@ -101,7 +109,9 @@ export class Widget_bool implements IWidget<Widget_string_types> {
         return this.serial.active ?? false
     }
     set value(next: Widget_bool_output) {
-        this.serial.active = next
+        runInAction(() => {
+            this.serial.active = next
+        })
     }
 }
 

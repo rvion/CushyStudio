@@ -1,12 +1,14 @@
 import type { Form } from '../../Form'
-import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { IWidget } from 'src/controls/IWidget'
 
-import { computed, makeObservable, observable } from 'mobx'
+import { makeObservable, observable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { hash } from 'ohash'
 
 import { WidgetDI } from '../WidgetUI.DI'
 import { WidgetSpacerUI } from './WidgetSpacerUI'
+import { applyWidgetMixinV2 } from 'src/controls/Mixins'
 
 /**
  * Bool Config
@@ -30,7 +32,7 @@ export type Widget_string_types = {
 }
 
 // STATE
-export interface Widget_spacer extends Widget_string_types {}
+export interface Widget_spacer extends Widget_string_types, IWidgetMixins {}
 export class Widget_spacer implements IWidget<Widget_string_types> {
     HeaderUI = WidgetSpacerUI
     BodyUI = undefined
@@ -42,7 +44,12 @@ export class Widget_spacer implements IWidget<Widget_string_types> {
         return hash(-1)
     }
 
-    constructor(public form: Form<any>, public config: Widget_spacer_config, serial?: Widget_spacer_serial) {
+    constructor(
+        //
+        public form: Form<any>,
+        public config: Widget_spacer_config,
+        serial?: Widget_spacer_serial,
+    ) {
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? {
             id: this.id,
@@ -50,9 +57,8 @@ export class Widget_spacer implements IWidget<Widget_string_types> {
             collapsed: false,
         }
 
-        makeObservable(this, {
-            serial: observable,
-        })
+        applyWidgetMixinV2(this)
+        makeObservable(this, { serial: observable })
     }
 
     get value() {

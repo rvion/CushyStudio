@@ -1,7 +1,7 @@
 import type { Widget_group } from '../group/WidgetGroup'
 import type { BaseSelectEntry } from '../selectOne/WidgetSelectOne'
 import type { Form } from 'src/controls/Form'
-import type { IWidget, WidgetConfigFields, WidgetSerialFields } from 'src/controls/IWidget'
+import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from 'src/controls/IWidget'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -9,6 +9,7 @@ import { hash } from 'ohash'
 
 import { WidgetDI } from '../WidgetUI.DI'
 import { WidgetSelectManyUI } from './WidgetSelectManyUI'
+import { applyWidgetMixinV2 } from 'src/controls/Mixins'
 
 // CONFIG
 export type Widget_selectMany_config<T extends BaseSelectEntry> = WidgetConfigFields<{
@@ -37,7 +38,7 @@ export type Widget_selectMany_types<T extends BaseSelectEntry> = {
 }
 
 // STATE
-export interface Widget_selectMany<T extends BaseSelectEntry> extends Widget_selectMany_types<T> {}
+export interface Widget_selectMany<T extends BaseSelectEntry> extends Widget_selectMany_types<T>, IWidgetMixins {}
 export class Widget_selectMany<T extends BaseSelectEntry> implements IWidget<Widget_selectMany_types<T>> {
     HeaderUI = WidgetSelectManyUI
     BodyUI = undefined
@@ -81,6 +82,7 @@ export class Widget_selectMany<T extends BaseSelectEntry> implements IWidget<Wid
             query: '',
             values: config.default ?? [],
         }
+        applyWidgetMixinV2(this)
         makeAutoObservable(this)
     }
 

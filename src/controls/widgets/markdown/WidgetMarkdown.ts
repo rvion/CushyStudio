@@ -1,12 +1,13 @@
 import type { Form } from '../../Form'
 import type { Widget_group } from '../group/WidgetGroup'
-import type { IWidget, WidgetConfigFields, WidgetSerialFields } from 'src/controls/IWidget'
+import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from 'src/controls/IWidget'
 
-import { makeAutoObservable } from 'mobx'
+import { computed, makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 
 import { WidgetDI } from '../WidgetUI.DI'
 import { WidgetMardownUI } from './WidgetMarkdownUI'
+import { applyWidgetMixinV2 } from 'src/controls/Mixins'
 
 // CONFIG
 export type Widget_markdown_config = WidgetConfigFields<{
@@ -33,7 +34,7 @@ export type Widget_markdown_types = {
 }
 
 // STATE
-export interface Widget_markdown extends Widget_markdown_types {}
+export interface Widget_markdown extends Widget_markdown_types, IWidgetMixins {}
 export class Widget_markdown implements IWidget<Widget_markdown_types> {
     get HeaderUI() {
         if (this.config.header) return WidgetMardownUI
@@ -63,6 +64,7 @@ export class Widget_markdown implements IWidget<Widget_markdown_types> {
     constructor(public form: Form<any>, public config: Widget_markdown_config, serial?: Widget_markdown_serial) {
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? { type: 'markdown', collapsed: config.startCollapsed, active: true, id: this.id }
+        applyWidgetMixinV2(this)
         makeAutoObservable(this)
     }
 

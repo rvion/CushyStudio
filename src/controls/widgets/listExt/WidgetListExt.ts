@@ -1,6 +1,6 @@
 import type { Form } from '../../Form'
 import type { BoardPosition } from './WidgetListExtTypes'
-import type { IWidget, WidgetConfigFields, WidgetSerialFields } from 'src/controls/IWidget'
+import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from 'src/controls/IWidget'
 import type { Spec } from 'src/controls/Spec'
 
 import { makeAutoObservable } from 'mobx'
@@ -12,6 +12,7 @@ import { ResolutionState } from '../size/ResolutionState'
 import { WidgetDI } from '../WidgetUI.DI'
 import { boardDefaultItemShape } from './WidgetListExtTypes'
 import { WidgetListExtUI } from './WidgetListExtUI'
+import { applyWidgetMixinV2 } from 'src/controls/Mixins'
 import { runWithGlobalForm } from 'src/models/_ctx2'
 
 // CONFIG
@@ -52,7 +53,7 @@ export type Widget_listExt_types<T extends Spec> = {
 }
 
 // STATE
-export interface Widget_listExt<T extends Spec> extends Widget_listExt_types<T> {}
+export interface Widget_listExt<T extends Spec> extends Widget_listExt_types<T>, IWidgetMixins {}
 export class Widget_listExt<T extends Spec> implements IWidget<Widget_listExt_types<T>> {
     HeaderUI = WidgetList_LineUI
     BodyUI = WidgetListExtUI
@@ -117,6 +118,7 @@ export class Widget_listExt<T extends Spec> implements IWidget<Widget_listExt_ty
         const missingItems = (this.config.min ?? 0) - this.entries.length
         for (let i = 0; i < missingItems; i++) this.addItem()
 
+        applyWidgetMixinV2(this)
         makeAutoObservable(this, { sizeHelper: false })
     }
 

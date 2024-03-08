@@ -1,12 +1,14 @@
 import type { Form } from '../../Form'
-import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { IWidget } from 'src/controls/IWidget'
 
-import { makeAutoObservable } from 'mobx'
+import { computed, makeAutoObservable, observable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { hash } from 'ohash'
 
 import { WidgetDI } from '../WidgetUI.DI'
 import { WidgetColorUI } from './WidgetColorUI'
+import { applyWidgetMixinV2 } from 'src/controls/Mixins'
 
 // CONFIG
 export type Widget_color_config = WidgetConfigFields<{ default?: string }>
@@ -27,7 +29,7 @@ export type Widget_color_types = {
 }
 
 // STATE
-export interface Widget_color extends Widget_color_types {}
+export interface Widget_color extends Widget_color_types, IWidgetMixins {}
 export class Widget_color implements IWidget<Widget_color_types> {
     HeaderUI = WidgetColorUI
     BodyUI = undefined
@@ -39,7 +41,12 @@ export class Widget_color implements IWidget<Widget_color_types> {
 
     serial: Widget_color_serial
 
-    constructor(public readonly form: Form<any>, public readonly config: Widget_color_config, serial?: Widget_color_serial) {
+    constructor(
+        //
+        public readonly form: Form<any>,
+        public readonly config: Widget_color_config,
+        serial?: Widget_color_serial,
+    ) {
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? {
             type: 'color',
@@ -48,6 +55,7 @@ export class Widget_color implements IWidget<Widget_color_types> {
             active: true,
             val: config.default ?? '',
         }
+        applyWidgetMixinV2(this)
         makeAutoObservable(this)
     }
 

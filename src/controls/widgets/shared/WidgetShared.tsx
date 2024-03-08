@@ -1,11 +1,13 @@
 import type { Form } from '../../Form'
-import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 import type { Spec } from '../../Spec'
+import type { IWidget } from 'src/controls/IWidget'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 
 import { WidgetDI } from '../WidgetUI.DI'
+import { applyWidgetMixinV2 } from 'src/controls/Mixins'
 
 // CONFIG
 export type Widget_shared_config<T extends Spec = Spec> = WidgetConfigFields<{
@@ -33,7 +35,7 @@ export type Widget_string_types<T extends Spec = Spec> = {
 }
 
 // STATE
-export interface Widget_shared<T extends Spec = Spec> extends Widget_string_types<T> {}
+export interface Widget_shared<T extends Spec = Spec> extends Widget_string_types<T>, IWidgetMixins {}
 export class Widget_shared<T extends Spec = Spec> implements IWidget<Widget_string_types<T>> {
     readonly id: string
     readonly type: 'shared' = 'shared'
@@ -57,6 +59,7 @@ export class Widget_shared<T extends Spec = Spec> implements IWidget<Widget_stri
     ) {
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? { id: this.id, type: 'shared', collapsed: config.startCollapsed }
+        applyWidgetMixinV2(this)
         makeAutoObservable(this)
     }
 

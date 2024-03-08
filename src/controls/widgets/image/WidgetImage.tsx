@@ -1,5 +1,6 @@
 import type { Form } from '../../Form'
-import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { IWidget } from 'src/controls/IWidget'
 import type { SQLWhere } from 'src/db/SQLWhere'
 import type { MediaImageT } from 'src/db/TYPES.gen'
 import type { MediaImageL } from 'src/models/MediaImage'
@@ -9,6 +10,7 @@ import { nanoid } from 'nanoid'
 
 import { WidgetDI } from '../WidgetUI.DI'
 import { WidgetSelectImageUI } from './WidgetImageUI'
+import { applyWidgetMixinV2 } from 'src/controls/Mixins'
 import { Spec } from 'src/controls/Spec'
 
 // CONFIG
@@ -38,7 +40,7 @@ export type Widget_image_types = {
 }
 
 // STATE
-export interface Widget_image extends Widget_image_types {} // prettier-ignore
+export interface Widget_image extends Widget_image_types, IWidgetMixins {} // prettier-ignore
 export class Widget_image implements IWidget<Widget_image_types> {
     HeaderUI = WidgetSelectImageUI
     BodyUI = undefined
@@ -60,6 +62,7 @@ export class Widget_image implements IWidget<Widget_image_types> {
             id: this.id,
             imageID: cushy.defaultImage.id,
         }
+        applyWidgetMixinV2(this)
         makeAutoObservable(this)
     }
     get value(): Widget_image_output {

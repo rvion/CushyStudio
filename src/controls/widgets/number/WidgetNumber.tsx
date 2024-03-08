@@ -1,5 +1,6 @@
 import type { Form } from '../../Form'
-import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { IWidget } from 'src/controls/IWidget'
 
 import { computed, makeObservable, observable } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -7,6 +8,7 @@ import { hash } from 'ohash'
 
 import { WidgetDI } from '../WidgetUI.DI'
 import { WidgetNumberUI } from './WidgetNumberUI'
+import { applyWidgetMixinV2 } from 'src/controls/Mixins'
 
 // CONFIG
 export type Widget_number_config = WidgetConfigFields<{
@@ -41,7 +43,7 @@ export type Widget_number_types = {
 }
 
 // STATE
-export interface Widget_number extends Widget_number_types {}
+export interface Widget_number extends Widget_number_types, IWidgetMixins {}
 export class Widget_number implements IWidget<Widget_number_types> {
     HeaderUI = WidgetNumberUI
     BodyUI = undefined
@@ -55,7 +57,12 @@ export class Widget_number implements IWidget<Widget_number_types> {
     get isChanged() { return this.serial.val !== this.defaultValue } // prettier-ignore
     reset = () => { this.serial.val = this.defaultValue } // prettier-ignore
 
-    constructor(public readonly form: Form<any>, public readonly config: Widget_number_config, serial?: Widget_number_serial) {
+    constructor(
+        //
+        public readonly form: Form<any>,
+        public readonly config: Widget_number_config,
+        serial?: Widget_number_serial,
+    ) {
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? {
             type: 'number',
@@ -64,6 +71,7 @@ export class Widget_number implements IWidget<Widget_number_types> {
             val: config.default ?? 0,
         }
 
+        applyWidgetMixinV2(this)
         makeObservable(this, {
             serial: observable,
             value: computed,

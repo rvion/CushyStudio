@@ -1,5 +1,5 @@
 import type { Form } from '../../Form'
-import type { IWidget, WidgetConfigFields, WidgetSerialFields } from 'src/controls/IWidget'
+import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from 'src/controls/IWidget'
 import type { SimplifiedLoraDef } from 'src/presets/SimplifiedLoraDef'
 import type { ItemDataType } from 'src/rsuite/RsuiteTypes'
 
@@ -9,6 +9,7 @@ import { hash } from 'ohash'
 
 import { WidgetDI } from '../WidgetUI.DI'
 import { WidgetLorasUI } from './WidgetLorasUI'
+import { applyWidgetMixinV2 } from 'src/controls/Mixins'
 
 // CONFIG
 export type Widget_loras_config = WidgetConfigFields<{ default?: SimplifiedLoraDef[] }>
@@ -29,7 +30,7 @@ export type Widget_loras_types = {
 }
 
 // STATE
-export interface Widget_loras extends Widget_loras_types {}
+export interface Widget_loras extends Widget_loras_types, IWidgetMixins {}
 export class Widget_loras implements IWidget<Widget_loras_types> {
     HeaderUI = WidgetLorasUI
     BodyUI = undefined
@@ -54,6 +55,7 @@ export class Widget_loras implements IWidget<Widget_loras_types> {
             this._insertLora(lora)
         }
         for (const v of this.serial.loras) this.selectedLoras.set(v.name, v)
+        applyWidgetMixinV2(this)
         makeAutoObservable(this)
     }
     get value(): Widget_loras_output {

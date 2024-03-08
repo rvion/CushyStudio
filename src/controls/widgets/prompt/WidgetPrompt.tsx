@@ -1,7 +1,8 @@
-import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 import type { Tree } from '@lezer/common'
 import type { Timestamp } from 'src/cards/Timestamp'
 import type { Form } from 'src/controls/Form'
+import type { IWidget } from 'src/controls/IWidget'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -11,6 +12,7 @@ import { WidgetDI } from '../WidgetUI.DI'
 import { compilePrompt } from './_compile'
 import { parser } from './grammar/grammar.parser'
 import { WidgetPrompt_LineUI, WidgetPromptUI } from './WidgetPromptUI'
+import { applyWidgetMixinV2 } from 'src/controls/Mixins'
 
 export type CompiledPrompt = {
     /** e.g. "score_9 score_8 BREAK foo bar baz" */
@@ -48,7 +50,7 @@ export type Widget_prompt_types = {
 }
 
 // STATE
-export interface Widget_prompt extends Widget_prompt_types {}
+export interface Widget_prompt extends Widget_prompt_types, IWidgetMixins {}
 export class Widget_prompt implements IWidget<Widget_prompt_types> {
     HeaderUI = WidgetPrompt_LineUI
     BodyUI = WidgetPromptUI
@@ -71,6 +73,7 @@ export class Widget_prompt implements IWidget<Widget_prompt_types> {
             collapsed: config.startCollapsed,
             id: this.id,
         }
+        applyWidgetMixinV2(this)
         makeAutoObservable(this)
     }
 

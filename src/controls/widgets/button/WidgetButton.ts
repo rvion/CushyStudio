@@ -1,5 +1,5 @@
 import type { Form } from '../../Form'
-import type { IWidget, WidgetConfigFields, WidgetSerialFields } from 'src/controls/IWidget'
+import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from 'src/controls/IWidget'
 import type { DraftL } from 'src/models/Draft'
 
 import { makeAutoObservable } from 'mobx'
@@ -8,6 +8,7 @@ import { hash } from 'ohash'
 
 import { WidgetDI } from '../WidgetUI.DI'
 import { WidgetInlineRunUI } from './WidgetButtonUI'
+import { applyWidgetMixinV2 } from 'src/controls/Mixins'
 
 export type Widget_button_context = {
     draft: DraftL
@@ -42,7 +43,7 @@ export type Widget_button_types = {
 }
 
 // STATE
-export interface Widget_button extends Widget_button_types {}
+export interface Widget_button extends Widget_button_types, IWidgetMixins {}
 export class Widget_button implements IWidget<Widget_button_types> {
     HeaderUI = WidgetInlineRunUI
     BodyUI = undefined
@@ -52,7 +53,12 @@ export class Widget_button implements IWidget<Widget_button_types> {
     readonly id: string
     readonly type: 'button' = 'button'
     readonly serial: Widget_button_serial
-    constructor(public form: Form<any>, public config: Widget_button_config, serial?: Widget_button_serial) {
+    constructor(
+        //
+        public form: Form<any>,
+        public config: Widget_button_config,
+        serial?: Widget_button_serial,
+    ) {
         if (config.text) {
             config.label = config.label ?? ` `
         }
@@ -65,8 +71,10 @@ export class Widget_button implements IWidget<Widget_button_types> {
             active: true,
             val: false,
         }
+        applyWidgetMixinV2(this)
         makeAutoObservable(this)
     }
+
     get value(): Widget_button_output {
         return this.serial.active ? this.serial.val : false
     }

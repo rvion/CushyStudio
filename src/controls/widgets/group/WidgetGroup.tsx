@@ -1,12 +1,14 @@
 import type { Form } from '../../Form'
-import type { GetWidgetResult, IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { GetWidgetResult, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 import type { SchemaDict } from 'src/cards/App'
+import type { IWidget } from 'src/controls/IWidget'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 
 import { WidgetDI } from '../WidgetUI.DI'
 import { WidgetGroup_BlockUI, WidgetGroup_LineUI } from './WidgetGroupUI'
+import { applyWidgetMixinV2 } from 'src/controls/Mixins'
 import { getActualWidgetToDisplay } from 'src/controls/shared/getActualWidgetToDisplay'
 import { getIfWidgetIsCollapsible } from 'src/controls/shared/getIfWidgetIsCollapsible'
 import { Spec } from 'src/controls/Spec'
@@ -46,7 +48,7 @@ export type Widget_group_types<T extends SchemaDict> = {
 }
 
 // STATE
-export interface Widget_group<T extends SchemaDict> extends Widget_group_types<T> {}
+export interface Widget_group<T extends SchemaDict> extends Widget_group_types<T>, IWidgetMixins {}
 export class Widget_group<T extends SchemaDict> implements IWidget<Widget_group_types<T>> {
     HeaderUI = WidgetGroup_LineUI
     get BodyUI() {
@@ -163,6 +165,7 @@ export class Widget_group<T extends SchemaDict> implements IWidget<Widget_group_
         // we keep the old values in case those are just temporarilly removed, or in case
         // those will be lazily added later though global usage
 
+        applyWidgetMixinV2(this)
         makeAutoObservable(this, { value: false })
     }
 
