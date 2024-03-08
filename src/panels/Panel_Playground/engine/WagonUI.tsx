@@ -47,7 +47,7 @@ export const WagonUI = observer(function Panel_Playground_<FIELDS extends Schema
                 </Button>
             </div>
             <div tw='flex gap-1'>
-                <div style={{ width: '30rem' }}>
+                <div style={{ width: '40rem', resize: 'both' }}>
                     <div
                         tw='btn btn-primary btn-sm'
                         onClick={() => {
@@ -60,6 +60,10 @@ export const WagonUI = observer(function Panel_Playground_<FIELDS extends Schema
                     <h3 tw='text-primary'>JSON:</h3>
                     <div tw='flex-1 overflow-auto'>
                         <pre>{readableStringify(form.value, form.value.stringifyMaxLevel)}</pre>
+                    </div>
+                    <h3 tw='text-primary'>SERIAL:</h3>
+                    <div tw='flex-1 overflow-auto'>
+                        <pre>{readableStringify(form.serial, form.value.stringifyMaxLevel)}</pre>
                     </div>
                 </div>
                 {wtf.ui(({ result: { chartOpts, sql, res }, elapsedMs }) => {

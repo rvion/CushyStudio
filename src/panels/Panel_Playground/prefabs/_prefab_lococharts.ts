@@ -3,8 +3,8 @@ import type { LocoChartsOpts } from '../charts/locoCharts'
 
 export type LocoChartsBuilderProps = {
     dataKeys: {
-        columns: string[]
-        values: string[]
+        columns: () => string[]
+        values: () => string[]
     }
 }
 
@@ -16,11 +16,28 @@ export const ui_lococharts = (ui: FormBuilder, p: LocoChartsBuilderProps) => {
             ui.fields(
                 {
                     category: ui.selectOne({ choices: (['value', 'category', 'time', 'log'] as const).map((id) => ({ id })) }),
-                    dataKey: ui.selectOne({ choices: () => p.dataKeys.columns.map((c) => ({ id: c })) }),
+                    dataKey: ui.selectOne({
+                        choices: () => p.dataKeys.columns().map((c) => ({ id: c })),
+                    }),
                 },
                 { layout: 'H' },
             ),
     })
+    const yAxis = ui.shared(
+        'charts-y-axis',
+        ui.list({
+            label: '📊 Ordonnées',
+            element: (ix) =>
+                ui.fields(
+                    {
+                        category: ui.selectOne({
+                            choices: (['value', 'category', 'time', 'log'] as const).map((id) => ({ id })),
+                        }),
+                    },
+                    { layout: 'H' },
+                ),
+        }),
+    )
 
     const series = ui.list({
         label: '📊 Series',
@@ -28,7 +45,12 @@ export const ui_lococharts = (ui: FormBuilder, p: LocoChartsBuilderProps) => {
             ui.fields({
                 type: ui.selectOne({ choices: [{ id: 'bar' }, { id: 'line' }] }),
                 name: ui.string({}),
-                dataKey: ui.selectOne({ choices: () => p.dataKeys.values.map((c) => ({ id: c })) }),
+                dataKey: ui.selectOne({
+                    choices: () => p.dataKeys.values().map((c) => ({ id: c })),
+                }),
+                yAxisIndex: ui
+                    .selectOne({ choices: () => yAxis.shared.value.map((_, ix) => ({ id: ix.toString() })) })
+                    .optional(),
             }),
     })
 
@@ -36,6 +58,7 @@ export const ui_lococharts = (ui: FormBuilder, p: LocoChartsBuilderProps) => {
         {
             title: ui.string({}),
             xAxis,
+            yAxis,
             series,
         },
         { border: false },
@@ -51,20 +74,22 @@ export const run_lococharts = (ui: LocoChartsT, data: any[]): LocoChartsOpts => 
             ui.xAxis.length === 0
                 ? {}
                 : ui.xAxis.map((x) => {
-                      const xx = data.map((row) => row[x.dataKey.id]).sort()
+                      //  const xx = data.map((row) => row[x.dataKey.id]).sort()
                       return {
-                          type: 'time', //x.category.id,
-                          min: xx[0],
-                          max: xx[xx.length - 1],
-                          //   data: res.data.map((row) => row[x.dataKey.id]),
-                          //   min
+                          type: x.category.id,
                       }
                   }),
-        yAxis: [{}, {}],
+        yAxis:
+            ui.yAxis.length === 0
+                ? {}
+                : ui.yAxis.map((y) => ({
+                      //  type: y.category.id,
+                  })),
         series: ui.series.map((s) => ({
             type: s.type.id,
             name: s.name,
             data: data.map((row) => [row[ui.xAxis[0].dataKey.id], row[s.dataKey.id]]),
+            yAxisIndex: parseInt(s.yAxisIndex?.id ?? '0'),
         })),
         // series: [
         //     {
