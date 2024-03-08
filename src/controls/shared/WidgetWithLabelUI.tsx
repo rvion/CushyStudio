@@ -8,7 +8,7 @@ import { makeLabelFromFieldName } from '../../utils/misc/makeLabelFromFieldName'
 import { ErrorBoundaryFallback } from '../../widgets/misc/ErrorBoundary'
 import { InstallRequirementsBtnUI } from '../REQUIREMENTS/Panel_InstallRequirementsUI'
 import { AnimatedSizeUI } from '../widgets/choices/AnimatedSizeUI'
-import { isWidgetOptional, WidgetDI } from '../widgets/WidgetUI.DI'
+import { isWidgetChoice, isWidgetGroup, isWidgetList, isWidgetOptional, isWidgetPrompt, WidgetDI } from '../widgets/WidgetUI.DI'
 import { getActualWidgetToDisplay } from './getActualWidgetToDisplay'
 import { getBorderStatusForWidget } from './getBorderStatusForWidget'
 import { getIfWidgetIsCollapsible } from './getIfWidgetIsCollapsible'
@@ -95,11 +95,19 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
         }
     }
 
+    const needsBackground =
+        (isWidgetGroup(k) || //
+            isWidgetChoice(k) ||
+            isWidgetPrompt(k) ||
+            isWidgetList(k)) &&
+        (isCollapsible || showBorder)
+
     return (
         <div
             key={rootKey}
             tw={[
-                'bg-base-100',
+                //
+                needsBackground && 'bg-base-100',
                 showBorder && 'WIDGET-GROUP-BORDERED',
                 p.isTopLevel ? 'TOP-LEVEL-FIELD' : 'SUB-FIELD',
                 widget.type,
