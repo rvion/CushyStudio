@@ -1,3 +1,5 @@
+import type { Widget_prompt } from './WidgetPrompt'
+
 import { observer } from 'mobx-react-lite'
 import { useEffect, useLayoutEffect, useMemo } from 'react'
 
@@ -8,7 +10,6 @@ import { Plugin_PreviewPromptUI } from './plugins/Plugin_PreviewUI'
 import { Plugin_ReorderTopLevelStuffUI } from './plugins/Plugin_ReorderTopLevelStuffUI'
 import { Plugin_ShortcutsUI } from './plugins/Plugin_ShortcutsUI'
 import { PromptPlugin } from './plugins/PromptPlugin'
-import { Widget_prompt } from './WidgetPrompt'
 import { WidgetPromptUISt } from './WidgetPromptUISt'
 import { Plugin_LoraControlsUI } from 'src/controls/widgets/prompt/plugins/Plugin_LoraBoxUI'
 import { RevealUI } from 'src/rsuite/reveal/RevealUI'

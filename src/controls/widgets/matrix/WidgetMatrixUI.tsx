@@ -1,6 +1,6 @@
-import { observer } from 'mobx-react-lite'
+import type { Widget_matrix } from 'src/controls/widgets/matrix/WidgetMatrix'
 
-import { Widget_matrix } from 'src/controls/widgets/matrix/WidgetMatrix'
+import { observer } from 'mobx-react-lite'
 
 export const WidgetMatrixUI = observer(function WidgetStrUI_(p: { widget: Widget_matrix }) {
     const widget = p.widget

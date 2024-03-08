@@ -1,7 +1,7 @@
+import type { Widget_string } from './WidgetString'
+
 import { observer } from 'mobx-react-lite'
 import { useState } from 'react'
-
-import { Widget_string } from './WidgetString'
 
 let startValue = ''
 let cancelled = false

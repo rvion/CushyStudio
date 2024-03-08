@@ -1,7 +1,8 @@
+import type { Widget_image } from './WidgetImage'
+
 import { runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 
-import { Widget_image } from './WidgetImage'
 import { useSt } from 'src/state/stateContext'
 import { useImageDrop } from 'src/widgets/galleries/dnd'
 import { ImageUI } from 'src/widgets/galleries/ImageUI'

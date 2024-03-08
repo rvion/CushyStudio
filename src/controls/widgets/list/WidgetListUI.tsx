@@ -1,4 +1,5 @@
 import type { Widget_listExt } from '../listExt/WidgetListExt'
+import type { Widget_list } from './WidgetList'
 import type { IWidget } from 'src/controls/IWidget'
 import type { Spec } from 'src/controls/Spec'
 
@@ -7,7 +8,6 @@ import { forwardRef } from 'react'
 import SortableList, { SortableItem, SortableKnob } from 'react-easy-sort'
 import { ErrorBoundary } from 'react-error-boundary'
 
-import { Widget_list } from './WidgetList'
 import { getBorderStatusForWidget } from 'src/controls/shared/getBorderStatusForWidget'
 import { ListControlsUI } from 'src/controls/widgets/list/ListControlsUI'
 import { ErrorBoundaryFallback } from 'src/widgets/misc/ErrorBoundary'
