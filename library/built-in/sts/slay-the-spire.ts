@@ -58,9 +58,8 @@ app({
         let { ckpt, clip, vae } = run_model(ui.model)
         if (ui.ipadapter) ckpt = (await run_ipadapter_standalone(ui.ipadapter, ckpt)).ip_adapted_model
         const isXL = ui.mode.id === 'xl'
-        const height = isXL ? H * 2 : H
-        const width = isXL ? W * 2 : W
-        let latent: _LATENT = graph.EmptyLatentImage({ height, width })
+        const height = isXL ? H * 3 : H
+        const width = isXL ? W * 3 : W
         const negativeText = ui.negative.compile({ onLora: () => {} }).positivePrompt
         const charX = run_prompt({ prompt: ui.character, ckpt })
 
@@ -68,13 +67,14 @@ app({
         const AFTERGENERATION: (() => void)[] = []
 
         const store = run.Store.getOrCreate<Record<string, string>>({
-            key: 'card-descriptions-5',
+            key: 'card-descriptions-7',
             scope: 'global',
             makeDefaultValue: () => ({}),
         })
 
         let startingSeed = ui.seed
         for (const x of allCards) {
+            let latent: _LATENT = graph.EmptyLatentImage({ height, width })
             if (AFTERGENERATION.length >= ui.max) break
             // if cards are manually specified, only use those
             if (ui.cards.length > 0) {
@@ -106,7 +106,7 @@ app({
             const llmCacheKey = run.hash(ui.llmModel.id + llmRequest)
             let prompt: string = storedPrompts[llmCacheKey] ?? ''
             if (prompt === '') {
-                const res = await run.LLM.expandPrompt(llmRequest, ui.llmModel.id, run.LLM.simpleSystemPromptList)
+                const res = await run.LLM.expandPrompt(llmRequest, ui.llmModel.id, run.LLM.simpleSystemPromptNaturalLanguage)
                 prompt = res.prompt
                 store.update({ json: { ...storedPrompts, [llmCacheKey]: prompt } })
             }
@@ -125,7 +125,7 @@ app({
                 latent_image: latent,
                 cfg: 8,
                 model: charX.ckpt,
-                sampler_name: 'ddim',
+                sampler_name: 'euler_ancestral',
                 scheduler: 'karras',
                 positive: positiveCond,
                 negative: negativeCond,
@@ -141,7 +141,7 @@ app({
 
             // post processing
             let image: _IMAGE = graph.VAEDecode({ samples: latent, vae })
-            if (ui.secondPass || isXL) image = graph.Image_Resize({ image: image, rescale_factor: 0.5, mode: 'rescale', resampling: 'lanczos', supersample: 'false', }) // prettier-ignore
+            if (ui.secondPass || isXL) image = graph.Image_Resize({ image: image, rescale_factor: 0.33, mode: 'rescale', resampling: 'lanczos', supersample: 'false', }) // prettier-ignore
             const maskL = await run.Images.createFromURL(bang(stsAssets[`mask-${kind}`]))
             let maskImg = await maskL.loadInWorkflow() //.loadInWorkflowAsMask('alpha')
             // image = graph.ImageCrop({ image, x: 0, y: 0, width: 500, height: 380 })
