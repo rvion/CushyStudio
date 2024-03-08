@@ -512,6 +512,14 @@ export class STATE {
             galleryBgColor: f.color({ label: 'background' }),
             galleryHoverOpacity: f.number({ label: 'hover opacity', min: 0, max: 1, step: 0.01 }),
             showPreviewInFullScreen: f.boolean({ label: 'full-screen', tooltip: 'Show the preview in full screen' }),
+            onlyShowBlurryThumbnails: f.boolean({
+                alignLabel: false,
+                text: 'Only Show Blurry Thumbnails',
+                expand: true,
+                display: 'button',
+                icon: 'lock',
+                label: false,
+            }),
         }),
         {
             name: 'Gallery Conf',

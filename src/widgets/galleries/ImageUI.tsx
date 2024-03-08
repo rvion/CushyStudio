@@ -25,7 +25,11 @@ export const ImageUI = observer(function ImageUI_(p: {
     const IMG = (
         <img
             className={p.className}
-            src={image.url}
+            src={
+                st.galleryConf.fields.onlyShowBlurryThumbnails.value //
+                    ? image.thumbnail
+                    : image.url
+            }
             ref={dragRef}
             loading='lazy'
             style={{
