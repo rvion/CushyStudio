@@ -13,6 +13,7 @@ import { toastError } from 'src/utils/misc/toasts'
 
 // CONFIG
 export type Widget_choices_config<T extends SchemaDict = SchemaDict> = WidgetConfigFields<{
+    expand?: boolean
     items: T
     multi: boolean
     default?: { [k in keyof T]?: boolean } | keyof T
@@ -49,6 +50,7 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> implements IWidge
     BodyUI = WidgetChoices_BodyUI
     readonly id: string
     readonly type: 'choices' = 'choices'
+    readonly expand: boolean = this.config.expand ?? false
 
     get serialHash(): string {
         return hash(this.value)

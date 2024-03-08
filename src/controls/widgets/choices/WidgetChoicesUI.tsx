@@ -86,7 +86,13 @@ export const WidgetChoices_SelectHeaderUI = observer(function WidgetChoices_Sele
     const choicesStr: string[] = widget.choices
     const choices: Entry[] = choicesStr.map((v) => ({ key: v }))
     return (
-        <div className='_WidgetChoicesUI' tw='relative'>
+        <div
+            tw={[
+                //
+                'relative',
+                p.widget.expand || p.widget.config.alignLabel ? 'w-full' : 'w-64',
+            ]}
+        >
             <SelectUI<Entry>
                 tw='flex-grow'
                 placeholder={p.widget.config.placeholder}

@@ -5,6 +5,7 @@
 
 .WIDGET-FIELD {
     height: var(--input-height);
+    min-height: var(--input-height);
 }
 
 .WIDGET-FIELD *::selection {
@@ -84,6 +85,22 @@ body {
     /* background: oklch(var(--b3)) */
 }
 
+/* PanelHeaderUI */
+.CSHY-panel-header {
+    height: calc(var(--input-height) + 8px);
+    min-height: calc(var(--input-height) + 8px);
+
+    overflow-x: scroll;
+    overflow-y: hidden;
+
+    -ms-overflow-style: none;
+    overflow: -moz-scrollbars-none;
+    scrollbar-width: none;
+}
+
+.CSHY-panel-header::-webkit-scrollbar {
+    display: none;
+}
 
 /* CODEMIRROR ----------------------------------------- */
 .cm-tooltip.cm-completionInfo {

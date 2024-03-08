@@ -101,6 +101,14 @@ export const RevealUI = observer(function Tooltip_(p: RevealProps) {
                       // Adjust positioning as needed
                   }}
                   >
+                      {p.title ? (
+                          <div tw='px-2'>
+                              <div tw='py-0.5'>{p.title}</div>
+                              <div tw='w-full rounded bg-neutral-content' style={{ height: '1px' }}></div>
+                          </div>
+                      ) : (
+                          <></>
+                      )}
                       {p.children[1]}
                       {uist._lock ? (
                           <span tw='opacity-50 italic text-sm flex gap-1 items-center justify-center'>
