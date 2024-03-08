@@ -64,6 +64,8 @@ export const _codegenORM = (store: {
             })
         }
     }
+
+    const LiveDBSubKeys: string[] = []
     for (const table of tables) {
         const jsTableName = convertTableNameToJSName(table.name)
         const fks = _getAllForeignKeysForTable(db, table.name)
@@ -104,6 +106,7 @@ export const _codegenORM = (store: {
         // typeDeclCreate += `export type ${jsTableName}_C = {\n`
         fieldsDef += `${xxx}\nexport const ${jsTableName}Fields = {\n`
         for (const col of cols) {
+            LiveDBSubKeys.push(`'${table.name}.${col.name}'`)
             const comment = `/** @default: ${JSON.stringify(col.dflt_value) ?? 'null'}, sqlType: ${col.type} */`
             const isGenerated =
                 col.name === 'createdAt' || //
@@ -209,7 +212,9 @@ export const _codegenORM = (store: {
         const jsName = convertTableNameToJSName(table.name)
         out1 += `    ${table.name}: ${jsName}Table\n`
     }
-    out1 += '}'
+    out1 += '}\n'
+
+    out1 += `export type LiveDBSubKeys = ${LiveDBSubKeys.join(' | ')}\n`
 
     // console.log(out1)
     writeFileSync('src/db/TYPES.gen.ts', out1)
@@ -225,9 +230,9 @@ const convertTableNameToJSName = (tableName: string) => {
     return out
 }
 
-const toJSKey = (s: string): string => {
-    const jsObjectKeyReg = /^[a-zA-Z_$][0-9a-zA-Z_$]*$/g
-    const isValidJSObjectKey = jsObjectKeyReg.test(s)
-    if (isValidJSObjectKey) return s
-    return JSON.stringify(s)
-}
+// const toJSKey = (s: string): string => {
+//     const jsObjectKeyReg = /^[a-zA-Z_$][0-9a-zA-Z_$]*$/g
+//     const isValidJSObjectKey = jsObjectKeyReg.test(s)
+//     if (isValidJSObjectKey) return s
+//     return JSON.stringify(s)
+// }
