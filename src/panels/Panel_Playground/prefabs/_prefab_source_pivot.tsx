@@ -35,8 +35,8 @@ out: {yyyy, MM, COUNT, avgRating, location }[]
 type SelectDataT = ReturnType<typeof ui_selectData_pivot>['$Output']
 export const ui_selectData_pivot = (ui: FormBuilder) => {
     // const shared = ui.shared('foo', ui.string())
-    const gmbColumnUI = (key: string) => {
-        const colName = ui.shared(`${key}-col`, ui.selectOne({ choices: gmbCols, border: false, label: 'data' }))
+    const gmbColumnUI = () => {
+        const colName = ui.selectOne({ choices: gmbCols, border: false, label: 'data' })
         const as = ui.string({ label: 'as' })
         return ui.fields({ colName, as }, { layout: 'H', label: false })
     }
@@ -49,7 +49,7 @@ export const ui_selectData_pivot = (ui: FormBuilder) => {
                 count: ui.group(),
                 to_char: ui.fields({ format: ui.string() }),
                 custom: ui.fields({ template: ui.string() }, { tooltip: 'use ? to embed the column value' }),
-                YYYYMM: ui.group(),
+                YYYYMM: ui.group({ label: 'YYYY-MM' }),
             },
         })
         .optional()
@@ -71,7 +71,7 @@ export const ui_selectData_pivot = (ui: FormBuilder) => {
             label: '🔢 Values',
             element: (ix) =>
                 ui.fields(
-                    { column: gmbColumnUI(`values-${ix}`), fn: fn },
+                    { column: gmbColumnUI(), fn: fn },
                     { layout: 'V', border: false, summary: (items) => items.column.colName.id },
                 ),
         }),
@@ -83,7 +83,7 @@ export const ui_selectData_pivot = (ui: FormBuilder) => {
             label: '🚦 Cols',
             element: (ix) =>
                 ui.fields(
-                    { column: gmbColumnUI(`cols-${ix}`), fn: fn, order },
+                    { column: gmbColumnUI(), fn: fn, order },
                     { layout: 'V', border: false, summary: (items) => items.column.colName.id },
                 ),
         }),
@@ -99,7 +99,7 @@ export const ui_selectData_pivot = (ui: FormBuilder) => {
                 label: '🚥 Lignes',
                 element: (ix) =>
                     ui.fields(
-                        { column: gmbColumnUI(`rows-${ix}`), fn: fn, order },
+                        { column: gmbColumnUI(), fn: fn, order },
                         { layout: 'V', border: false, summary: (items) => items.column.colName.id },
                     ),
             }),
@@ -110,10 +110,7 @@ export const ui_selectData_pivot = (ui: FormBuilder) => {
             filters: ui.list({
                 label: '🔍 Filters',
                 element: (ix) =>
-                    ui.fields(
-                        { column: gmbColumnUI(`filters-${ix}`), fn: fn, condition },
-                        { summary: (items) => items.column.colName.id },
-                    ),
+                    ui.fields({ column: gmbColumnUI(), fn: fn, condition }, { summary: (items) => items.column.colName.id }),
             }),
         },
         { border: false },
@@ -175,7 +172,7 @@ export const run_selectData_pivot = async (ui: SelectDataT): Promise<{ res: { da
             if (fn.avg != null) return `avg(${path})`
             if (fn.count != null) return `count(${path})`
             if (fn.custom != null) return fn.custom.template.replace('?', path)
-            if (fn.YYYYMM) return 'todo'
+            if (fn.YYYYMM) return `to_char(${path}, 'YYYY-MM')`
             return '🔴 TODO'
         })()
         return { expr, alias: col.as || expr, full: col.as ? `${expr} as ${col.as}` : expr }
