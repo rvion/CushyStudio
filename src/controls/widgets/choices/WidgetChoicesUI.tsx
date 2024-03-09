@@ -92,6 +92,10 @@ export const WidgetChoices_SelectHeaderUI = observer(function WidgetChoices_Sele
                 'relative',
                 p.widget.expand || p.widget.config.alignLabel ? 'w-full' : 'w-64',
             ]}
+            onMouseDown={(ev) => {
+                ev.preventDefault()
+                ev.stopPropagation()
+            }}
         >
             <SelectUI<Entry>
                 tw='flex-grow'
