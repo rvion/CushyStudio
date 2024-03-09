@@ -39,8 +39,7 @@ type SelectProps<T> = {
     hideValue?: boolean
     className?: string
     /**
-     * @default: false
-     * (previous default before 2024-02-29: false if multi-select, true if single select)
+     * @default: false if multi-select, true if single select
      */
     closeOnPick?: boolean
     /**
@@ -227,7 +226,7 @@ class AutoCompleteSelectState<T> {
         if (selectedOption) {
             this.p.onChange?.(selectedOption, this)
             const shouldResetQuery = this.p.resetQueryOnPick ?? false // !this.isMultiSelect
-            const shouldCloseMenu = this.p.closeOnPick ?? false // !this.isMultiSelect
+            const shouldCloseMenu = this.p.closeOnPick ?? !this.isMultiSelect
             if (shouldResetQuery) this.searchQuery = ''
             if (shouldCloseMenu) this.closeMenu()
         }
