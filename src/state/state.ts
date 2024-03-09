@@ -73,7 +73,7 @@ import { CleanedEnumResult } from 'src/types/EnumUtils'
 import { StepOutput } from 'src/types/StepOutput'
 import { openInVSCode } from 'src/utils/electron/openInVsCode'
 import { UserTags } from 'src/widgets/prompter/nodes/usertags/UserLoader'
-import { Header_Playground } from 'src/panels/Panel_Playground/Panel_Playground'
+import { FORM_PlaygroundWidgetDisplay, Header_Playground } from 'src/panels/Panel_Playground/Panel_Playground'
 
 export class STATE {
     // LEAVE THIS AT THE TOP OF THIS CLASS
@@ -477,6 +477,7 @@ export class STATE {
 
     /* TODO: This should be in a separate register_internal_forms file probably, along with any other headers we register in the future. After we can register them that is. */
     playgroundHeader = Header_Playground
+    playgroundWidgetDisplay = FORM_PlaygroundWidgetDisplay
 
     displacementConf = new Form(
         (form) => ({
