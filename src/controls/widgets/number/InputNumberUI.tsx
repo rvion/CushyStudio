@@ -215,6 +215,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
                         'h-full absolute left-0 rounded-none pr-0.5',
                         `w-4 pb-0.5 leading-none border border-base-200 opacity-0 bg-base-200 hover:brightness-125`,
                     ]}
+                    tabIndex={-1}
                     style={{ zIndex: 2 }}
                     onClick={(_) => {
                         startValue = val
@@ -339,6 +340,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
                         'h-full absolute right-0 pl-0.5',
                         `w-4 pb-0.5 leading-none border border-base-200 opacity-0 bg-base-200 hover:brightness-125`,
                     ]}
+                    tabIndex={-1}
                     style={{ zIndex: 2 }}
                     onClick={(_) => {
                         startValue = val
