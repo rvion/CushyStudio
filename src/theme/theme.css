@@ -47,7 +47,11 @@ body {
     padding: 2px;
 }
 
-.WIDGET-GROUP-BORDERED:hover .WIDGET-COLLAPSE-BTN {
+/* .WIDGET-GROUP-BORDERED:hover .WIDGET-COLLAPSE-BTN {
+    opacity: 100% !important;
+} */
+
+.COLLAPSE-PASSTHROUGH:hover .WIDGET-COLLAPSE-BTN {
     opacity: 100% !important;
 }
 

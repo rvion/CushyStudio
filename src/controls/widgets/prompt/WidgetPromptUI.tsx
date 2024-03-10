@@ -18,8 +18,12 @@ export const WidgetPrompt_LineUI = observer(function WidgetPrompt_LineUI_(p: { w
     const st = useSt()
     const widget = p.widget
     return (
-        <div tw='flex flex-1 items-center justify-between'>
-            {widget.serial.collapsed ? <div tw='line-clamp-1 italic opacity-50'>{widget.serial.val}</div> : <div></div>}
+        <div tw='COLLAPSE-PASSTHROUGH flex flex-1 items-center justify-between'>
+            {widget.serial.collapsed ? (
+                <div tw='COLLAPSE-PASSTHROUGH line-clamp-1 italic opacity-50'>{widget.serial.val}</div>
+            ) : (
+                <div></div>
+            )}
             <div
                 tw='flex self-end'
                 onMouseDown={(ev) => {
