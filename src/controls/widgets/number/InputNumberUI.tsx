@@ -1,5 +1,6 @@
 import { makeAutoObservable, runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
+import React from 'react'
 import { useEffect, useMemo } from 'react'
 
 import { parseFloatNoRoundingErr } from 'src/utils/misc/parseFloatNoRoundingErr'
@@ -59,6 +60,8 @@ class InputNumberStableState {
     /* When editing the number <input> this will make it display inputValue instead of val.*/
     isEditing: boolean = false
 
+    inputRef = React.createRef<HTMLInputElement>()
+
     syncValues = (
         //
         value: number | string,
@@ -107,6 +110,18 @@ class InputNumberStableState {
         // console.log(`[onValueChange] (${reason}) p.debug = ${this.props.debug} | NEW = ${num}`)
         this.props.onValueChange(num)
         this.inputValue = num.toString()
+    }
+
+    increment = () => {
+        startValue = this.value
+        let num = this.value + (this.isInteger ? this.step : this.step * 0.1)
+        this.syncValues(num, { soft: true })
+    }
+
+    decrement = () => {
+        startValue = this.value
+        let num = this.value - (this.isInteger ? this.step : this.step * 0.1)
+        this.syncValues(num, { soft: true })
     }
 
     mouseMoveListener = (e: MouseEvent) => {
@@ -217,11 +232,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
                     ]}
                     tabIndex={-1}
                     style={{ zIndex: 2 }}
-                    onClick={(_) => {
-                        startValue = val
-                        let num = val - (uist.isInteger ? step : step * 0.1)
-                        uist.syncValues(num, { soft: true })
-                    }}
+                    onClick={uist.decrement}
                 >
                     ◂
                 </button>
@@ -281,6 +292,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
                             <input //
                                 type='text'
                                 draggable='false'
+                                ref={uist.inputRef}
                                 onDragStart={(ev) => ev.preventDefault()} // Prevents drag n drop of selected text, so selecting is easier.
                                 tw={[
                                     'w-full text-shadow outline-0',
@@ -327,6 +339,18 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
                                         cancelled = true
                                         ev.currentTarget.blur()
                                     }
+
+                                    /* Since we removed tabbing to buttons, we want up and down to increment/decrement.
+                                     * I don't think people actually use up and down to maneuver to the beginning/end of a single line, more likely using home/end so this should be fine. */
+                                    if (uist.isEditing) {
+                                        if (ev.key === 'ArrowUp') {
+                                            uist.increment()
+                                            ev.preventDefault()
+                                        } else if (ev.key === 'ArrowDown') {
+                                            uist.decrement()
+                                            ev.preventDefault()
+                                        }
+                                    }
                                 }}
                             />
                             {!isEditing && p.suffix ? <div style={{ zIndex: 2, paddingLeft: 3 }}>{p.suffix}</div> : <></>}
@@ -342,11 +366,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
                     ]}
                     tabIndex={-1}
                     style={{ zIndex: 2 }}
-                    onClick={(_) => {
-                        startValue = val
-                        let num = val + (uist.isInteger ? step : step * 0.1)
-                        uist.syncValues(num, { soft: true })
-                    }}
+                    onClick={uist.increment}
                 >
                     ▸
                 </button>
