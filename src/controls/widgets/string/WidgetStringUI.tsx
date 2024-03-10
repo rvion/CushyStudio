@@ -1,7 +1,8 @@
 import { observer } from 'mobx-react-lite'
-import { useState } from 'react'
+import { ReactElement, useState } from 'react'
 
 import { Widget_string } from './WidgetString'
+import { ClassLike } from 'src/utils/custom-jsx/global'
 
 let startValue = ''
 let cancelled = false
@@ -38,8 +39,23 @@ export const WidgetString_HeaderUI = observer(function WidgetStringUI_(p: { widg
     const widget = p.widget
     const val = widget.value
 
-    const [inputValue, setInputValue] = useState<string>(val.toString())
-    const [isEditing, setEditing] = useState<boolean>(false)
+    let inputTailwind: string | ClassLike[] | undefined
+    let visualHelper: ReactElement<any, any> | undefined
+    let highlight = true
+
+    switch (widget.config.inputType) {
+        case 'color':
+            inputTailwind = 'absolute w-full h-full opacity-0'
+            visualHelper = <div tw='w-full h-full' style={{ background: val }} />
+            highlight = false
+            break
+        default:
+            inputTailwind = 'input input-sm w-full h-full !outline-none text-shadow'
+            break
+    }
+
+    // console.log('[WidgetString] - val: ', val)
+
     return (
         <>
             <div
@@ -48,10 +64,11 @@ export const WidgetString_HeaderUI = observer(function WidgetStringUI_(p: { widg
                     'h-full w-full',
                     'flex flex-1 items-center relative',
                     'rounded overflow-clip text-shadow',
-                    'border border-base-100 hover:border-base-200',
-                    'hover:brightness-110',
+                    'border border-base-100 hover:border-base-300',
+                    highlight && 'hover:brightness-110',
                     'bg-primary/5',
                     'border-b-2 border-b-base-200 hover:border-b-base-300',
+                    'p-0 m-0',
                 ]}
                 onMouseDown={(ev) => {
                     if (ev.button == 1) {
@@ -60,37 +77,33 @@ export const WidgetString_HeaderUI = observer(function WidgetStringUI_(p: { widg
                     }
                 }}
             >
+                {visualHelper && visualHelper}
                 <input
-                    tw='input input-sm w-full h-full !outline-none text-shadow'
+                    tw={inputTailwind}
                     type={widget.config.inputType}
                     placeholder={widget.config.placeHolder}
-                    value={isEditing ? inputValue : val}
+                    value={val}
                     onChange={(ev) => {
-                        setInputValue(ev.target.value)
+                        p.widget.value = ev.currentTarget.value
                     }}
+                    /* Prevents drag n drop of selected text, so selecting is easier. */
                     onDragStart={(ev) => {
-                        /* Prevents drag n drop of selected text, so selecting is easier. */
                         ev.preventDefault()
                     }}
                     onFocus={(ev) => {
-                        setEditing(true)
                         let textInput = ev.currentTarget
 
                         textInput.select()
                         startValue = val
-                        setInputValue(val.toString())
                     }}
                     onBlur={(ev) => {
-                        setEditing(false)
-                        const next = ev.currentTarget.value
-
                         if (cancelled) {
                             cancelled = false
                             p.widget.value = startValue
                             return
                         }
 
-                        p.widget.value = inputValue
+                        p.widget.value = ev.currentTarget.value
                     }}
                     onKeyDown={(ev) => {
                         if (ev.key === 'Enter') {
