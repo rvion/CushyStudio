@@ -231,31 +231,6 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
                     uist.syncValues(num, undefined)
                 }
             }}
-            onMouseDown={(ev) => {
-                if (isEditing || ev.button != 0) return
-
-                /* Begin slider drag */
-                activeSlider = ev.currentTarget
-                startValue = val
-                cumulativeOffset = 0
-                dragged = false
-
-                window.addEventListener('mousemove', uist.mouseMoveListener, true)
-                window.addEventListener('pointerup', uist.onPointerUpListener, true)
-                window.addEventListener('pointerlockchange', uist.onPointerLockChange, true)
-                window.addEventListener('mousedown', uist.cancelListener, true)
-
-                /* Fix for low-sensitivity devices, it will get raw input from the mouse instead of the processed input.
-                 *  NOTE: This does not work on Linux right now, but when it does get added for Linux, this code should not need to be changed.
-                 */
-                // @ts-ignore 🔴 untyped for me for now; TODO: will have to investigate why
-                activeSlider?.requestPointerLock({ unadjustedMovement: true }).catch((error) => {
-                    console.log(
-                        '[InputNumberUI] Obtaining raw mouse input is not supported on this platform. Using processed mouse input, you may need to adjust the number input drag multiplier.',
-                    )
-                    activeSlider?.requestPointerLock()
-                })
-            }}
         >
             <div /* Slider display */
                 className='inui-foreground'
@@ -285,6 +260,31 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
                         //
                         `flex px-1 items-center justify-center text-sm text-shadow truncate z-20`,
                     ]}
+                    onMouseDown={(ev) => {
+                        if (isEditing || ev.button != 0) return
+
+                        /* Begin slider drag */
+                        activeSlider = ev.currentTarget
+                        startValue = val
+                        cumulativeOffset = 0
+                        dragged = false
+
+                        window.addEventListener('mousemove', uist.mouseMoveListener, true)
+                        window.addEventListener('pointerup', uist.onPointerUpListener, true)
+                        window.addEventListener('pointerlockchange', uist.onPointerLockChange, true)
+                        window.addEventListener('mousedown', uist.cancelListener, true)
+
+                        /* Fix for low-sensitivity devices, it will get raw input from the mouse instead of the processed input.
+                         *  NOTE: This does not work on Linux right now, but when it does get added for Linux, this code should not need to be changed.
+                         */
+                        // @ts-ignore 🔴 untyped for me for now; TODO: will have to investigate why
+                        activeSlider?.requestPointerLock({ unadjustedMovement: true }).catch((error) => {
+                            console.log(
+                                '[InputNumberUI] Obtaining raw mouse input is not supported on this platform. Using processed mouse input, you may need to adjust the number input drag multiplier.',
+                            )
+                            activeSlider?.requestPointerLock()
+                        })
+                    }}
                 >
                     <input //
                         type='text'
