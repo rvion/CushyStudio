@@ -133,7 +133,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                      *  | This should workaround widgets not preventing their own event.
                      * */
                     onMouseDown={(ev) => {
-                        if (ev.button != 0 || !BodyUI) return
+                        if (ev.button != 0 || !isCollapsible) return
                         const target = ev.target as HTMLElement
                         if (!target.classList.contains('COLLAPSE-PASSTHROUGH')) return
                         isDragging = true
@@ -148,7 +148,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                      * */
 
                     onMouseMove={(ev) => {
-                        if (!isDragging) return
+                        if (!isDragging || !isCollapsible) return
                         widget.serial.collapsed = wasEnabled
                     }}
                 >
