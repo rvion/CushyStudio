@@ -17,6 +17,15 @@ import { bang } from 'src/utils/misc/bang'
 // 🅿️ CNET UI -----------------------------------------------------------
 export const ui_cnet = () => {
     const form: FormBuilder = getCurrentForm()
+    const applyDuringUpscale = form
+        .bool({
+            tooltip: 'Use the controlnet conditioning for the upscale pass if enabled',
+            label2: 'Apply during upscale',
+            label: false,
+            default: false,
+        })
+        .shared('applyDuringUpscale')
+
     return form.groupOpt({
         label: 'ControlNets',
         tooltip: `Instructional resources:\nhttps://github.com/lllyasviel/ControlNet\nhttps://stable-diffusion-art.com/controlnet/`,
@@ -25,12 +34,7 @@ export const ui_cnet = () => {
             { type: 'customNodesByTitle', title: `ComfyUI's ControlNet Auxiliary Preprocessors` },
         ],
         items: () => ({
-            applyDuringUpscale: form.bool({
-                tooltip: 'Use the controlnet conditioning for the upscale pass if enabled',
-                label2: 'Apply during upscale',
-                label: false,
-                default: false,
-            }),
+            applyDuringUpscale: applyDuringUpscale.hidden(), // so value is accessible at runtime
             controlNetList: form.list({
                 // label: false,
                 element: () =>
@@ -39,6 +43,7 @@ export const ui_cnet = () => {
                         items: () => ({
                             image: form.image({}),
                             resize: form.bool({ default: true }),
+                            applyDuringUpscale: applyDuringUpscale,
                             cnets: form.choices({
                                 // label: false, //'Pick Cnets=>',
                                 label: false,
@@ -84,7 +89,7 @@ export const cnet_ui_common = (form: FormBuilder) => ({
 
 export const cnet_preprocessor_ui_common = (form: FormBuilder) => ({
     //preview: form.inlineRun({ text: 'Preview', kind: 'special' }),
-    saveProcessedImage: form.bool({ default: false }),
+    saveProcessedImage: form.bool({ default: false, expand: true, label: 'Save image' }),
     //resolution: form.int({ default: 512, min: 512, max: 1024, step: 512 }),
 })
 
@@ -105,7 +110,11 @@ export type Cnet_return = {
     ckpt_return: _MODEL
 }
 
-export const run_cnet = async (opts: OutputFor<typeof ui_cnet>, ctx: Cnet_args) => {
+export const run_cnet = async (
+    //
+    opts: OutputFor<typeof ui_cnet>,
+    ctx: Cnet_args,
+) => {
     const run = getCurrentRun()
     const cnetList = opts?.controlNetList
     let args: Cnet_args = { ...ctx }

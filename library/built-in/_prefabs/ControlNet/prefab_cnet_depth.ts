@@ -20,17 +20,11 @@ export const ui_subform_Depth = () => {
         items: () => ({
             ...cnet_ui_common(form),
             preprocessor: ui_subform_Depth_Preprocessor(),
-            models: form.group({
-                label: 'Select or Download Models',
-                // startCollapsed: true,
-                items: () => ({
-                    cnet_model_name: form.enum.Enum_ControlNetLoader_control_net_name({
-                        label: 'Model',
-                        // @ts-ignore
-                        default: 't2iadapter_depth_sd14v1.pth',
-                        filter: (name) => name.toString().includes('depth'),
-                    }),
-                }),
+            cnet_model_name: form.enum.Enum_ControlNetLoader_control_net_name({
+                label: 'Model',
+                // @ts-ignore
+                default: 't2iadapter_depth_sd14v1.pth',
+                filter: (name) => name.toString().includes('depth'),
             }),
         }),
     })
@@ -40,7 +34,6 @@ export const ui_subform_Depth_Preprocessor = () => {
     const form: FormBuilder = getCurrentForm()
     return form.choice({
         label: 'Depth Preprocessor',
-        startCollapsed: true,
         default: 'Midas',
         appearance: 'tab',
         items: {
@@ -57,8 +50,11 @@ export const ui_subform_Depth_Preprocessor = () => {
 export const ui_subform_Depth_Midas = () => {
     const form: FormBuilder = getCurrentForm()
     return form.group({
-        label: 'Settings',
-        startCollapsed: true,
+        label: 'Midas',
+        // startCollapsed: true,
+        header: null,
+        collapsed: false,
+        border: false,
         items: () => ({
             ...cnet_preprocessor_ui_common(form),
             a_value: form.float({ default: 6.28, min: 0, max: 12.48 }),
@@ -70,8 +66,8 @@ export const ui_subform_Depth_Midas = () => {
 export const ui_subform_Depth_LeReS = () => {
     const form: FormBuilder = getCurrentForm()
     return form.group({
-        label: 'Settings',
-        startCollapsed: true,
+        label: 'LeReS',
+        // startCollapsed: true,
         items: () => ({
             ...cnet_preprocessor_ui_common(form),
             rm_nearest: form.float({ default: 0.0 }),
@@ -84,8 +80,8 @@ export const ui_subform_Depth_LeReS = () => {
 export const ui_subform_Depth_Zoe = () => {
     const form: FormBuilder = getCurrentForm()
     return form.group({
-        label: 'Settings',
-        startCollapsed: true,
+        label: 'Zoe',
+        // startCollapsed: true,
         items: () => ({
             ...cnet_preprocessor_ui_common(form),
         }),
@@ -103,7 +99,7 @@ export const run_cnet_Depth = (
 } => {
     const run = getCurrentRun()
     const graph = run.nodes
-    const cnet_name = Depth.models.cnet_model_name
+    const cnet_name = Depth.cnet_model_name
 
     // PREPROCESSOR - Depth ===========================================================
     if (Depth.preprocessor) {
