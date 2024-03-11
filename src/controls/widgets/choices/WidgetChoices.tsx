@@ -22,6 +22,7 @@ export type Widget_choices_config<T extends SchemaDict = SchemaDict> = WidgetCon
         default?: { [k in keyof T]?: boolean } | keyof T
         placeholder?: string
         appearance?: 'select' | 'tab'
+        justify?: 'start' | 'center' | 'end'
     },
     Widget_choices_types<T>
 >

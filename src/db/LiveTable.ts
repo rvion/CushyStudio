@@ -10,7 +10,7 @@ import { nanoid } from 'nanoid'
 import { DEPENDS_ON, MERGE_PROTOTYPES } from './LiveHelpers'
 import { quickBench } from './quickBench'
 import { SqlFindOptions } from './SQLWhere'
-import { dbxx } from 'src/DB'
+import { kysely } from 'src/DB'
 import { type KyselyTables, type LiveDBSubKeys, schemas } from 'src/db/TYPES.gen'
 import { TableInfo } from 'src/db/TYPES_json'
 
@@ -56,8 +56,8 @@ export class LiveTable<TABLE extends TableInfo<keyof KyselyTables>> {
         return x as any[] // return the result
     }
 
-    query1: SelectQueryBuilder<KyselyTables, TABLE['$TableName'], TABLE['$T']> = dbxx.selectFrom(this.name).selectAll(this.name)
-    query2: SelectQueryBuilder<KyselyTables, TABLE['$TableName'], /*    */ {}> = dbxx.selectFrom(this.name).selectAll(this.name)
+    query1: SelectQueryBuilder<KyselyTables, TABLE['$TableName'], TABLE['$T']> = kysely.selectFrom(this.name).selectAll(this.name)
+    query2: SelectQueryBuilder<KyselyTables, TABLE['$TableName'], /*    */ {}> = kysely.selectFrom(this.name).selectAll(this.name)
     // ⏸️ query2: SelectQueryBuilder<KyselyTables, any, {}> = dbxx.selectFrom(this.name)
     // ⏸️ query3: SelectQueryBuilder<KyselyTables, TABLE['$TableName'], TABLE['$T']> = dbxx.selectFrom(this.name).selectAll() as any
 
@@ -253,7 +253,7 @@ export class LiveTable<TABLE extends TableInfo<keyof KyselyTables>> {
                         stmt.get(updatePayload) as any as TABLE['$T']
                         const B = process.hrtime.bigint() // TIMER end
                         const ms = Number(B - A) / 1_000_000
-                        console.log(`[🚧] SQL [${ms.toFixed(3)}ms]`, updateSQL, updatePayload) // debug
+                        console.log(`[🚧] SQL [${ms.toFixed(3)}ms]`, updateSQL, { updatePayload }) // debug
 
                         // assign the changes
                         // 2023-12-02 rvion: for now, I'm not re-assigning from the returned values

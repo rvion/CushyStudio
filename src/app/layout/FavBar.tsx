@@ -7,12 +7,12 @@ import { ReactNode, useState } from 'react'
 import { AppIllustrationUI } from 'src/cards/fancycard/AppIllustrationUI'
 import { DraftIllustrationUI } from 'src/cards/fancycard/DraftIllustration'
 import { FormUI } from 'src/controls/FormUI'
+import { SpacerUI } from 'src/controls/widgets/spacer/SpacerUI'
 import { TreeUI } from 'src/panels/libraryUI/tree/xxx/TreeUI'
 import { CreateAppPopupUI } from 'src/panels/Panel_Welcome/CreateAppBtnUI'
 import { PanelHeaderUI } from 'src/panels/PanelHeader'
 import { RevealUI } from 'src/rsuite/reveal/RevealUI'
 import { useSt } from 'src/state/stateContext'
-import { SpacerUI } from 'src/controls/widgets/spacer/SpacerUI'
 
 // Could give this an option be collapsible in the future?
 /** Re-usable container to keep a consistent style around groups of buttons */
@@ -226,9 +226,7 @@ export const AppDraftsQuickListUI = observer(function AppDraftsQuickListUI_(p: {
                     >
                         {app.description}
                     </div>
-                ) : (
-                    <></>
-                )}
+                ) : null}
                 <div //App Grid Container
                     tw='flex-col bg-base-300 p-2 rounded'
                 >

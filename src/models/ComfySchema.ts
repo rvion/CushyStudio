@@ -125,7 +125,7 @@ export class ComfySchemaL {
 
     /** on update is called automatically by live instances */
     onUpdate() {
-        this.log(`updating schema (${this.id})`)
+        this.log(`updating schema #${this.id}`)
         // reset spec
         // this.spec = this.data.spec
         // this.embeddings = this.data.embeddings

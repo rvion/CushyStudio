@@ -1,14 +1,16 @@
 import { observer } from 'mobx-react-lite'
+import { useLayoutEffect } from 'react'
 
 import { MessageInfoUI } from '../MessageUI'
 import { PanelHeaderUI } from '../PanelHeader'
+import { FORM_PlaygroundWidgetDisplay } from './FORM_PlaygroundWidgetDisplay'
 import { Form } from 'src/controls/Form'
 import { FormUI } from 'src/controls/FormUI'
 import { InstallRequirementsBtnUI, Panel_InstallRequirementsUI } from 'src/controls/REQUIREMENTS/Panel_InstallRequirementsUI'
 import { readJSON, writeJSON } from 'src/state/jsonUtils'
 import { useSt } from 'src/state/stateContext'
 
-export const Header_Playground = new Form(
+const Header_Playground = new Form(
     (ui) => ({
         // header: ui.group({
         //     // label: false,
@@ -20,11 +22,12 @@ export const Header_Playground = new Form(
         mode: ui.choice({
             appearance: 'tab',
             layout: 'H',
-            // label: false,
+            label: false,
             alignLabel: false,
             border: false,
             collapsed: false,
             default: 'scratchPad',
+            justify: 'start',
             items: {
                 requirements: ui.group(),
                 registeredForms: ui.group(),
@@ -49,12 +52,16 @@ export const Header_Playground = new Form(
 export const Panel_Playground = observer(function Panel_Playground_(p: {}) {
     const st = useSt()
     const relPathToThisPage = 'src/panels/Panel_Playground/Panel_Playground.tsx' as RelativePath
-    const mode = st.playgroundHeader.fields.mode
+    const mode = Header_Playground.fields.mode
+
+    useLayoutEffect(() => {
+        cushy.layout.syncTabTitle('Playground', {}, 'DevPlayground')
+    }, [])
 
     return (
         <>
             <PanelHeaderUI>
-                <FormUI form={st.playgroundHeader} />
+                <FormUI form={Header_Playground} />
                 {mode.value.requirements && <PlaygroundRequirementsHeader />}
             </PanelHeaderUI>
             <div tw='px-1 bg-base-300'>
@@ -166,7 +173,7 @@ const PlaygroundWidgetDisplay = observer(function PlaygroundRequirements_(p: {})
     const st = useSt()
     return (
         <div tw='h-full bg-base-300 p-1 overflow-auto'>
-            <FormUI form={st.playgroundWidgetDisplay} />
+            <FormUI form={FORM_PlaygroundWidgetDisplay} />
         </div>
     )
 })

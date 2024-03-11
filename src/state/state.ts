@@ -66,7 +66,7 @@ import { Tree } from 'src/panels/libraryUI/tree/xxx/Tree'
 import { TreeView } from 'src/panels/libraryUI/tree/xxx/TreeView'
 import { VirtualHierarchy } from 'src/panels/libraryUI/VirtualHierarchy'
 import { FORM_PlaygroundWidgetDisplay } from 'src/panels/Panel_Playground/FORM_PlaygroundWidgetDisplay'
-import { Header_Playground } from 'src/panels/Panel_Playground/Panel_Playground'
+// import { Header_Playground } from 'src/panels/Panel_Playground/Panel_Playground'
 import { SafetyChecker } from 'src/safety/Safety'
 import { Database } from 'src/supa/database.types'
 import { ThemeManager } from 'src/theme/ThemeManager'
@@ -449,8 +449,8 @@ export class STATE {
     )
 
     /* TODO: This should be in a separate register_internal_forms file probably, along with any other headers we register in the future. After we can register them that is. */
-    playgroundHeader = Header_Playground
-    playgroundWidgetDisplay = FORM_PlaygroundWidgetDisplay
+    // playgroundHeader = Header_Playground
+    // playgroundWidgetDisplay = FORM_PlaygroundWidgetDisplay
 
     displacementConf = new Form(
         (form) => ({
@@ -513,7 +513,7 @@ export class STATE {
         public rootPath: AbsolutePath,
     ) {
         // -----------------------------------------------------------
-        console.log('[🛋️] starting Cushy')
+        // console.log('[🛋️] starting Cushy')
         this.cacheFolderPath = this.resolve(this.rootPath, asRelativePath('outputs'))
         this.primarySdkDtsPath = this.resolve(this.rootPath, asRelativePath('schema/global.d.ts'))
         this.outputFolderPath = this.cacheFolderPath // this.resolve(this.cacheFolderPath, asRelativePath('outputs'))

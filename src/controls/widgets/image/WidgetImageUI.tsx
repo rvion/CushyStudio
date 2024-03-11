@@ -23,7 +23,7 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: { w
             style={dropStyle}
             ref={dropRef}
             className='DROP_IMAGE_HANDLER'
-            tw='_WidgetSelectImageUI flex gap-2 p-1 bg-base-100 border border-dashed border-neutral self-center'
+            tw='_WidgetSelectImageUI flex gap-2 p-1 bg-base-100 self-center'
         >
             {image != null ? ( //
                 <div tw='flex items-start gap-1'>

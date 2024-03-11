@@ -41,7 +41,10 @@ export const ui_cnet = () => {
                             resize: form.bool({ default: true }),
                             cnets: form.choices({
                                 // label: false, //'Pick Cnets=>',
+                                label: false,
+                                border: false,
                                 appearance: 'tab',
+                                // justify: 'left',
                                 placeholder: 'ControlNets...',
                                 items: {
                                     IPAdapter: ui_subform_IPAdapter(),

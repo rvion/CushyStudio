@@ -15,7 +15,6 @@ import { TargetBox } from 'src/importers/TargetBox'
 const path = asAbsolutePath(process.cwd())
 
 export const MainUI = observer(() => {
-    console.log(`[🛋️] rendering CushyStudio`)
     const st = useMemo(() => runInAction(() => new STATE(path)), [])
     useGlobalDropHook(st)
     return (
