@@ -9,20 +9,20 @@ import type { ModelInfo } from 'src/manager/model-list/model-list-loader-types'
 
 export type $WidgetTypes = {
     $Type: string
-    $Input: SharedWidgetConfig
+    $Input: SharedWidgetConfig<any>
     $Serial: SharedWidgetSerial
     $Output: any
     $Widget: any
 }
 
-export type IWidget<K extends $WidgetTypes = $WidgetTypes> = {
+export interface IWidget<K extends $WidgetTypes = $WidgetTypes> extends IWidgetMixins {
     $Type: K['$Type']
     $Input: K['$Input']
     $Serial: K['$Serial']
     $Output: K['$Output']
     $Widget: K['$Widget']
 
-    id: string
+    readonly id: string
     readonly serialHash: string
     readonly type: K['$Type']
     readonly value: K['$Output']
@@ -32,11 +32,28 @@ export type IWidget<K extends $WidgetTypes = $WidgetTypes> = {
 
     /** if specified, override the default algorithm to decide if we should have borders */
     border?: boolean
+
     /** if specified, override the default algorithm to decide if we should have label aligned */
     alignLabel?: boolean
-    HeaderUI: FC<{ widget: K['$Widget'] }> | undefined
-    BodyUI: FC<{ widget: K['$Widget'] }> | undefined
-    // FULLY_CUSTOM_RENDER?: boolean
+
+    /** default header UI */
+    readonly DefaultHeaderUI: FC<{ widget: K['$Widget'] }> | undefined
+
+    /** default body UI */
+    readonly DefaultBodyUI: FC<{ widget: K['$Widget'] }> | undefined
+}
+
+/**
+ * those will be dynamically injected via calling `applyWidgetMixinV2(this)`
+ * right before the makeAutoObservable(this) call
+ */
+export type IWidgetMixins = {
+    ui(): JSX.Element
+    body(): JSX.Element | undefined
+    header(): JSX.Element | undefined
+    defaultBody(): JSX.Element | undefined
+    defaultHeader(): JSX.Element | undefined
+    test: number
 }
 
 export type GetWidgetResult<Widget> = Widget extends { $Output: infer O } ? O : never
@@ -50,8 +67,14 @@ export type SharedWidgetSerial = {
 }
 
 export type WidgetSerialFields<X> = X & SharedWidgetSerial
-export type WidgetConfigFields<X> = X & SharedWidgetConfig
-export type SharedWidgetConfig = {
+export type WidgetConfigFields<X, T extends $WidgetTypes> = X & SharedWidgetConfig<T>
+export type SharedWidgetConfig<T extends $WidgetTypes> = {
+    /** allow to specify custom headers */
+    header?: null | ((p: { widget: T['$Widget'] }) => JSX.Element)
+
+    /** allow to specify custom body */
+    body?: null | ((p: { widget: T['$Widget'] }) => JSX.Element)
+
     /**
      * The label to display.
      * If none provided, the parent key is going to be converted as label.
@@ -97,6 +120,9 @@ export type SharedWidgetConfig = {
 
     /** if provided, override the default logic to decide if the widget need to be bordered */
     alignLabel?: boolean
+
+    /** if provided, widget will be hidden */
+    hidden?: boolean
 }
 
 export type Requirements =

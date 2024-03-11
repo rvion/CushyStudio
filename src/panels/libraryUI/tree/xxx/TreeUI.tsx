@@ -44,7 +44,7 @@ export const TreeUI = observer(function TreeEditorUI_(p: {
                     <RevealUI trigger={'hover'}>
                         <div
                             tw='btn btn-square btn-ghost btn-xs shrink-0'
-                            onClick={() => st.db.tree_entries.updateAll({ isExpanded: null })}
+                            onClick={() => st.db.tree_entry.updateAll({ isExpanded: null })}
                         >
                             <span className='material-symbols-outlined'>unfold_less</span>
                         </div>

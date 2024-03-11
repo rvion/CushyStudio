@@ -1,9 +1,9 @@
+import type { Widget_custom } from './WidgetCustom'
 import type { PropsOf } from 'src/panels/router/Layout'
 
 import { observer } from 'mobx-react-lite'
 
 import { InputNumberUI } from '../number/InputNumberUI'
-import { Widget_custom } from './WidgetCustom'
 import { ImageUI } from 'src/widgets/galleries/ImageUI'
 import { JsonViewUI } from 'src/widgets/workspace/JsonViewUI'
 

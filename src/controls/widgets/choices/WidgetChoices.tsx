@@ -1,6 +1,7 @@
 import type { Form } from '../../Form'
-import type { IWidget, SharedWidgetSerial, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { IWidgetMixins, SharedWidgetSerial, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 import type { SchemaDict } from 'src/cards/App'
+import type { IWidget } from 'src/controls/IWidget'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -8,18 +9,25 @@ import { hash } from 'ohash'
 
 import { WidgetDI } from '../WidgetUI.DI'
 import { WidgetChoices_BodyUI, WidgetChoices_HeaderUI } from './WidgetChoicesUI'
+import { applyWidgetMixinV2 } from 'src/controls/Mixins'
 import { makeLabelFromFieldName } from 'src/utils/misc/makeLabelFromFieldName'
 import { toastError } from 'src/utils/misc/toasts'
 
+export type TabPositionConfig = 'start' | 'center' | 'end'
+
 // CONFIG
-export type Widget_choices_config<T extends SchemaDict = SchemaDict> = WidgetConfigFields<{
-    expand?: boolean
-    items: T
-    multi: boolean
-    default?: { [k in keyof T]?: boolean } | keyof T
-    placeholder?: string
-    appearance?: 'select' | 'tab'
-}>
+export type Widget_choices_config<T extends SchemaDict = SchemaDict> = WidgetConfigFields<
+    {
+        expand?: boolean
+        items: T
+        multi: boolean
+        default?: { [k in keyof T]?: boolean } | keyof T
+        placeholder?: string
+        appearance?: 'select' | 'tab'
+        tabPosition?: TabPositionConfig
+    },
+    Widget_choices_types<T>
+>
 
 // SERIAL
 export type Widget_choices_serial<T extends SchemaDict = SchemaDict> = WidgetSerialFields<{
@@ -44,10 +52,10 @@ export type Widget_choices_types<T extends SchemaDict = SchemaDict> = {
 }
 
 // STATE
-export interface Widget_choices<T extends SchemaDict = SchemaDict> extends Widget_choices_types<T> {}
+export interface Widget_choices<T extends SchemaDict = SchemaDict> extends Widget_choices_types<T>, IWidgetMixins {}
 export class Widget_choices<T extends SchemaDict = SchemaDict> implements IWidget<Widget_choices_types<T>> {
-    HeaderUI = WidgetChoices_HeaderUI
-    BodyUI = WidgetChoices_BodyUI
+    DefaultHeaderUI = WidgetChoices_HeaderUI
+    DefaultBodyUI = WidgetChoices_BodyUI
     readonly id: string
     readonly type: 'choices' = 'choices'
     readonly expand: boolean = this.config.expand ?? false
@@ -150,6 +158,7 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> implements IWidge
             else this.enableBranch(activeBranch)
         }
 
+        applyWidgetMixinV2(this)
         makeAutoObservable(this)
     }
 

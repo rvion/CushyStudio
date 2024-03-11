@@ -24,6 +24,7 @@ import { RuntimeHosts } from './RuntimeHosts'
 import { RuntimeImages } from './RuntimeImages'
 import { RuntimeKonva } from './RuntimeKonva'
 import { RuntimeLLM } from './RuntimeLLM'
+import { RuntimeSharp } from './RuntimeSharp'
 import { RuntimeStore } from './RuntimeStore'
 import { RuntimeVideos } from './RuntimeVideo'
 import { createRandomGenerator } from 'src/back/random'
@@ -102,12 +103,22 @@ export class Runtime<FIELDS extends SchemaDict = any> {
     }
 
     /**
-     * SDK to programmatically build images
+     * SDK to programmatically build images using a scene graph
      * using the KonvaJS library (layers, filters, effects, etc.)
      */
     get Konva(): RuntimeKonva {
         const it = new RuntimeKonva(this)
         Object.defineProperty(this, 'Konva', { value: it })
+        return it
+    }
+
+    /**
+     * fast and efficient image manipulation SDK
+     * better than Konva for quick actions (bad, resize, etc.)
+     * */
+    get Sharp(): RuntimeSharp {
+        const it = new RuntimeSharp(this)
+        Object.defineProperty(this, 'Sharp', { value: it })
         return it
     }
 
@@ -347,7 +358,7 @@ export class Runtime<FIELDS extends SchemaDict = any> {
             // console.error('🌠', (error as any as Error).name)
             // console.error('🌠', (error as any as Error).message)
             // console.error('🌠', 'RUN FAILURE')
-            this.Cushy.db.runtimeErrors.create({
+            this.Cushy.db.runtime_error.create({
                 message: error.message ?? 'no-message',
                 infos: error,
                 graphID: this.workflow.id,
@@ -434,7 +445,7 @@ export class Runtime<FIELDS extends SchemaDict = any> {
 
     /** outputs a gaussian splat asset, accessible at the given URL */
     output_GaussianSplat = (p: { url: string }) => {
-        this.Cushy.db.media_splats.create({
+        this.Cushy.db.media_splat.create({
             url: p.url,
             stepID: this.step.id,
         })
@@ -482,7 +493,7 @@ export class Runtime<FIELDS extends SchemaDict = any> {
     }
 
     output_HTML = (p: { htmlContent: string; title: string }) => {
-        this.Cushy.db.media_texts.create({
+        this.Cushy.db.media_text.create({
             kind: 'html',
             title: p.title,
             content: p.htmlContent,
@@ -493,14 +504,14 @@ export class Runtime<FIELDS extends SchemaDict = any> {
     output_Markdown = (p: string | { title: string; markdownContent: string }) => {
         const title = typeof p === 'string' ? '<no-title>' : p.title
         const content = typeof p === 'string' ? p : p.markdownContent
-        return this.Cushy.db.media_texts.create({ kind: 'markdown', title, content, stepID: this.step.id })
+        return this.Cushy.db.media_text.create({ kind: 'markdown', title, content, stepID: this.step.id })
     }
 
     output_text = (p: { title: string; message: Printable } | string) => {
         const [title, message] = typeof p === 'string' ? ['<no-title>', p] : [p.title, p.message]
         let msg = this.extractString(message)
         console.info(msg)
-        return this.step.db.media_texts.create({
+        return this.step.db.media_text.create({
             kind: 'text',
             title: title,
             content: msg,
@@ -595,20 +606,20 @@ export class Runtime<FIELDS extends SchemaDict = any> {
     }
 
     loadImageAnswerAsEnum = (ia: MediaImageL): Promise<Enum_LoadImage_image> => {
-        const img = this.Cushy.db.media_images.getOrThrow(ia.imageID)
+        const img = this.Cushy.db.media_image.getOrThrow(ia.imageID)
         return img.uploadAndReturnEnumName()
     }
 
     loadImageAnswer2 = (ia: MediaImageL): MediaImageL => {
-        return this.Cushy.db.media_images.getOrThrow(ia.imageID)
+        return this.Cushy.db.media_image.getOrThrow(ia.imageID)
     }
 
     loadImage = (imageID: MediaImageID): MediaImageL => {
-        return this.Cushy.db.media_images.getOrThrow(imageID)
+        return this.Cushy.db.media_image.getOrThrow(imageID)
     }
 
     loadImageAnswer = async (ia: MediaImageL): Promise<ImageAndMask> => {
-        const img = this.Cushy.db.media_images.getOrThrow(ia.imageID)
+        const img = this.Cushy.db.media_image.getOrThrow(ia.imageID)
         return await img.loadInWorkflow(this.workflow)
     }
 

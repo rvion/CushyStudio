@@ -13,7 +13,7 @@ import { FieldAndLabelUI } from 'src/widgets/misc/FieldAndLabelUI'
 
 export const LatentIfLastUI = observer(function LatentIfLastUI_(p: {}) {
     const st = useSt()
-    const lastImage = st.db.media_images.last()
+    const lastImage = st.db.media_image.last()
     const latent = st.latentPreview
     if (latent == null) return null
     if (lastImage == null || latent.receivedAt > lastImage.createdAt) {
@@ -38,7 +38,7 @@ export const Panel_Output = observer(function Panel_Output_(p: {}) {
     const st = useSt()
     const selectedStep = st.focusedStepL
     if (selectedStep == null) return null
-    const out1 = st.hovered ?? st.focusedStepOutput ?? selectedStep.lastMediaOutput ?? st.db.media_images.last()
+    const out1 = st.hovered ?? st.focusedStepOutput ?? selectedStep.lastMediaOutput ?? st.db.media_image.last()
     const out2 = null
     // const out3 = selectedStep.currentlyExecutingOutput
     // if (1 - 1 === 0) return <RevealTestUI />

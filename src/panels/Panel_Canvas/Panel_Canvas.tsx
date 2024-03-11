@@ -17,7 +17,7 @@ export const Panel_Canvas = observer(function Panel_Canvas_(p: {
 }) {
     const st = useSt()
     const containerRef = React.useRef<HTMLDivElement>(null)
-    const img0 = st.db.media_images.get(p.imgID!)
+    const img0 = st.db.media_image.get(p.imgID!)
     const canvas = useMemo(() => {
         if (img0 == null) throw new Error('img0 is null')
         return new UnifiedCanvas(st, img0)

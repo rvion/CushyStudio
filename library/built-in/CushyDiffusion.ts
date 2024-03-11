@@ -77,6 +77,9 @@ app({
         let { ckpt, vae, clip } = run_model(ui.model)
 
         // RICH PROMPT ENGINE -------- ---------------------------------------------------------------
+        let positiveText = ui.positive.text
+        if (ui.testStuff.promtPlus) positiveText += run_advancedPrompt(ui.testStuff.promtPlus)
+
         const posPrompt = run_prompt({
             prompt: ui.positive,
             clip,
@@ -85,9 +88,8 @@ app({
         })
         const clipPos = posPrompt.clip
         let ckptPos = posPrompt.ckpt
-        let finalText = posPrompt.positiveText
-        if (ui.testStuff.promtPlus) finalText += run_advancedPrompt(ui.testStuff.promtPlus)
-        let positive: _CONDITIONING = graph.CLIPTextEncode({ clip: clipPos, text: finalText })
+        // let finalText = posPrompt.promptIncludingBreaks
+        let positive: _CONDITIONING = posPrompt.conditioning // graph.CLIPTextEncode({ clip: clipPos, text: finalText })
 
         if (ui.testStuff.regionalPrompt) {
             positive = run_regionalPrompting_v1(ui.testStuff.regionalPrompt, { conditionning: positive, clip })
@@ -97,7 +99,7 @@ app({
         const negPrompt = run_prompt({ prompt: ui.negative, clip, ckpt })
         let negative: _CONDITIONING = graph.CLIPTextEncode({
             clip,
-            text: negPrompt.positiveText + posPrompt.negativeText,
+            text: negPrompt.promptIncludingBreaks /* + posPrompt.negativeText */,
         })
 
         // const y = run_prompt({ richPrompt: negPrompt, clip, ckpt, outputWildcardsPicked: true })

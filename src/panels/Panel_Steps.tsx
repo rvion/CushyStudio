@@ -9,7 +9,7 @@ import { RevealUI } from 'src/rsuite/reveal/RevealUI'
 
 export const Panel_Steps = observer(function StepListUI_(p: {}) {
     const st = useSt()
-    const steps = st.db.steps.getLastN(st.__TEMPT__maxStepsToShow)
+    const steps = st.db.step.getLastN(st.__TEMPT__maxStepsToShow)
     return (
         <div className='flex flex-col overflow-hidden bg-base-300 h-full'>
             <PanelHeaderUI>
@@ -44,7 +44,7 @@ export const Panel_Steps = observer(function StepListUI_(p: {}) {
 
 export const Panel_LastStep = observer(function StepListUI_(p: {}) {
     const st = useSt()
-    const lastStep = st.db.steps.last()
+    const lastStep = st.db.step.last()
     if (lastStep == null) return null
     return (
         <div className='flex flex-col'>

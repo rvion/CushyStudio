@@ -1,6 +1,6 @@
 import type { LiveDB } from './LiveDB'
 import type { $BaseInstanceFields, LiveInstance, UpdateOptions } from './LiveInstance'
-import type { CompiledQuery, SelectQueryBuilder, Updateable } from 'kysely'
+import type { CompiledQuery, SelectQueryBuilder } from 'kysely'
 import type { STATE } from 'src/state/state'
 
 import { Value, ValueError } from '@sinclair/typebox/value'
@@ -8,10 +8,10 @@ import { action, type AnnotationMapEntry, makeAutoObservable, runInAction, toJS 
 import { nanoid } from 'nanoid'
 
 import { DEPENDS_ON, MERGE_PROTOTYPES } from './LiveHelpers'
-import { LiveSQL } from './LiveQuery'
-import { isSqlExpr, SqlFindOptions, SQLWhere } from './SQLWhere'
-import { dbxx } from 'src/DB'
-import { type KyselyTables, schemas } from 'src/db/TYPES.gen'
+import { quickBench } from './quickBench'
+import { SqlFindOptions } from './SQLWhere'
+import { kysely } from 'src/DB'
+import { type KyselyTables, type LiveDBSubKeys, schemas } from 'src/db/TYPES.gen'
 import { TableInfo } from 'src/db/TYPES_json'
 
 export interface LiveEntityClass<TABLE extends TableInfo> {
@@ -19,17 +19,51 @@ export interface LiveEntityClass<TABLE extends TableInfo> {
 }
 
 export class LiveTable<TABLE extends TableInfo<keyof KyselyTables>> {
-    live = <T>(fn: (x: SelectQueryBuilder<KyselyTables, TABLE['$TableName'], {}>) => CompiledQuery<T>) => {
-        return new LiveSQL<T>(this.infos, fn(this.query1))
+    select = (
+        fn: (
+            x: SelectQueryBuilder<KyselyTables, TABLE['$TableName'], TABLE['$T']>,
+        ) => SelectQueryBuilder<any, any, TABLE['$T']> = (x) => x,
+        subscriptions?: LiveDBSubKeys[],
+    ): TABLE['$L'][] => {
+        const query = fn(this.query1).compile() // finalize the kysely query
+        const stmt = cushy.db.db.prepare(query.sql) // prepare the statement
+        if (stmt == null) return []
+        cushy.db.subscribeToKeys([this.schema.sql_name])
+        if (subscriptions) cushy.db.subscribeToKeys(subscriptions) // make sure this getter will re-run when any of the deps change
+        const A = process.hrtime.bigint() // TIMER start
+        const x = stmt.all(query.parameters) // execute the statement
+        const B = process.hrtime.bigint() // TIMER end
+        const ms = Number(B - A) / 1_000_000
+        console.log(`[🚧] SQL [${ms.toFixed(3)}ms]`, query.sql, query.parameters) // debug
+        const hydrated = x.map((data) => this.schema.hydrateJSONFields_crashOnMissingData(data)) // hydrate results
+        const instances = hydrated.map((d) => this.getOrCreateInstanceForExistingData(d)) // create instances
+        return instances
     }
-    query1: SelectQueryBuilder<KyselyTables, TABLE['$TableName'], {}> = dbxx.selectFrom(this.name)
+
+    selectRaw = <T>(
+        fn: (x: SelectQueryBuilder<KyselyTables, TABLE['$TableName'], {}>) => SelectQueryBuilder<any, any, T>,
+        subscriptions?: LiveDBSubKeys[],
+    ): T[] => {
+        const query = fn(this.query1).compile() // finalize the kysely query
+        const stmt = cushy.db.db.prepare(query.sql) // prepare the statement
+        if (stmt == null) return []
+        if (subscriptions) cushy.db.subscribeToKeys(subscriptions) // make sure this getter will re-run when any of the deps change
+        const A = process.hrtime.bigint() // TIMER start
+        const x = stmt.all(query.parameters) // execute the statement
+        const B = process.hrtime.bigint() // TIMER end
+        const ms = Number(B - A) / 1_000_000
+        console.log(`[🚧] SQL [${ms.toFixed(3)}ms]`, query.sql, query.parameters) // debug
+        return x as any[] // return the result
+    }
+
+    query1: SelectQueryBuilder<KyselyTables, TABLE['$TableName'], TABLE['$T']> = kysely.selectFrom(this.name).selectAll(this.name)
+    query2: SelectQueryBuilder<KyselyTables, TABLE['$TableName'], /*    */ {}> = kysely.selectFrom(this.name).selectAll(this.name)
     // ⏸️ query2: SelectQueryBuilder<KyselyTables, any, {}> = dbxx.selectFrom(this.name)
     // ⏸️ query3: SelectQueryBuilder<KyselyTables, TABLE['$TableName'], TABLE['$T']> = dbxx.selectFrom(this.name).selectAll() as any
 
     private Ktor: LiveEntityClass<TABLE>
     liveEntities = new Map<string, TABLE['$L']>()
-    keyUpdates: { [key: string]: Timestamp } = {}
-    infos: TABLE = schemas[this.name] as any
+    schema: TABLE = schemas[this.name] as any
     $DATA!: TABLE['$T']
     // 🟢 --------------------------------------------------------------------------------
 
@@ -55,7 +89,7 @@ export class LiveTable<TABLE extends TableInfo<keyof KyselyTables>> {
 
     // 🟢 --------------------------------------------------------------------------------
     /** return first entity from table, or null if table is empty */
-    stmt_first = this.db.compileSelectOne_<TABLE>(this.infos, `select * from ${this.name} order by createdAt asc limit 1`)
+    stmt_first = this.db.compileSelectOne_<TABLE>(this.schema, `select * from ${this.name} order by createdAt asc limit 1`)
     first = (): Maybe<TABLE['$L']> => {
         const data = this.stmt_first()
         // 2023-11-30 rvion:
@@ -76,7 +110,7 @@ export class LiveTable<TABLE extends TableInfo<keyof KyselyTables>> {
 
     // 🟢 --------------------------------------------------------------------------------
     /** return last entity from table, or null if table is empty */
-    stmt_last = this.db.compileSelectOne_<TABLE>(this.infos, `select * from ${this.name} order by createdAt desc limit 1`)
+    stmt_last = this.db.compileSelectOne_<TABLE>(this.schema, `select * from ${this.name} order by createdAt desc limit 1`)
     last = (): Maybe<TABLE['$L']> => {
         const data = this.stmt_last()
         DEPENDS_ON(this.liveEntities.size)
@@ -96,6 +130,7 @@ export class LiveTable<TABLE extends TableInfo<keyof KyselyTables>> {
     constructor(
         //
         public db: LiveDB,
+
         public name: TableNameInDB,
         public emoji: string,
         public InstanceClass: LiveEntityClass<TABLE>,
@@ -182,8 +217,9 @@ export class LiveTable<TABLE extends TableInfo<keyof KyselyTables>> {
                         : undefined
 
                     // build the sql
-                    const tableInfos = this.table.infos
+                    const tableInfos = this.table.schema
                     const presentCols = Object.keys(changes)
+                    presentCols.push('updatedAt')
                     const updateSQL = [
                         `update ${tableInfos.sql_name}`,
                         `set`,
@@ -200,6 +236,7 @@ export class LiveTable<TABLE extends TableInfo<keyof KyselyTables>> {
                         // dehydrate fields needed to be updated
                         const updatePayload: any = Object.fromEntries(
                             Object.entries(changes as any).map(([k, v]) => {
+                                if (v instanceof Uint8Array) return [k, v]
                                 if (Array.isArray(v)) return [k, JSON.stringify(v)]
                                 if (typeof v === 'object' && v != null) return [k, JSON.stringify(v) ?? 'null']
                                 return [k, v]
@@ -212,7 +249,11 @@ export class LiveTable<TABLE extends TableInfo<keyof KyselyTables>> {
 
                         if (options?.debug) console.log(`[🔴 DEBUG 🔴] ${updateSQL} ${JSON.stringify(updatePayload)}`)
                         // update the data
+                        const A = process.hrtime.bigint() // TIMER start
                         stmt.get(updatePayload) as any as TABLE['$T']
+                        const B = process.hrtime.bigint() // TIMER end
+                        const ms = Number(B - A) / 1_000_000
+                        console.log(`[🚧] SQL [${ms.toFixed(3)}ms]`, updateSQL, { updatePayload }) // debug
 
                         // assign the changes
                         // 2023-12-02 rvion: for now, I'm not re-assigning from the returned values
@@ -221,7 +262,7 @@ export class LiveTable<TABLE extends TableInfo<keyof KyselyTables>> {
                         if (options?.debug) console.log(`[🔴 DEBUG 🔴] RESULT: ${JSON.stringify(this.data, null, 3)}`)
                         this.onUpdate?.(prev, this.data)
                         for (const k of keysWithChanges) {
-                            this.table.keyUpdates[k] = Date.now()
+                            this.db.bump(`${this.table.name}.${k}` as LiveDBSubKeys)
                         }
                     } catch (e) {
                         console.log(updateSQL)
@@ -255,6 +296,7 @@ export class LiveTable<TABLE extends TableInfo<keyof KyselyTables>> {
 
             init(table: LiveTable<TABLE>, data: TABLE['$T']) {
                 // console.log(`🔴 INIT`, data)
+                /* 🚝 */ const startTime = process.hrtime()
                 this.db = table.db
                 this.st = table.db.st
                 this.table = table
@@ -262,6 +304,9 @@ export class LiveTable<TABLE extends TableInfo<keyof KyselyTables>> {
                 this.onHydrate?.(/* data */)
                 this.onUpdate?.(undefined, data)
                 makeAutoObservable(this, this.observabilityConfig as any)
+                /* 🚝 */ const endTime = process.hrtime(startTime)
+                /* 🚝 */ const ms = endTime[1] / 1000000
+                /* 🚝 */ quickBench.addStats(`init:${table.name}`, ms)
             }
 
             log(...args: any[]) {
@@ -283,7 +328,7 @@ export class LiveTable<TABLE extends TableInfo<keyof KyselyTables>> {
 
     // UTILITIES -----------------------------------------------------------------------
     private SKL_getLastN = this.db.compileSelectMany<number, TABLE>( //
-        this.infos,
+        this.schema,
         `select * from ${this.name} order by createdAt desc limit ?`,
     )
     getLastN = (amount: number): TABLE['$L'][] => {
@@ -302,7 +347,7 @@ export class LiveTable<TABLE extends TableInfo<keyof KyselyTables>> {
 
     // UTILITIES -----------------------------------------------------------------------
 
-    private stmt_getByID = this.db.compileSelectOne<string, TABLE>(this.infos, `select * from ${this.name} where id = ?`)
+    private stmt_getByID = this.db.compileSelectOne<string, TABLE>(this.schema, `select * from ${this.name} where id = ?`)
     get = (id: Maybe<string>): Maybe<TABLE['$L']> => {
         // if (id === 'main-schema') debugger
         if (id == null) return null
@@ -352,7 +397,7 @@ export class LiveTable<TABLE extends TableInfo<keyof KyselyTables>> {
     delete = (id: string) => {
         const sql = `delete from ${this.name} where id = ?`
         try {
-            this.infos.backrefs.forEach((backref) => {
+            this.schema.backrefs.forEach((backref) => {
                 const softCascadeSQL = `update ${backref.fromTable} set ${backref.fromField} = null where ${backref.fromField} = ?`
                 console.log(`[🗑️] cascade `, softCascadeSQL, id)
                 const stmt = this.db.db.prepare(softCascadeSQL)
@@ -395,39 +440,41 @@ export class LiveTable<TABLE extends TableInfo<keyof KyselyTables>> {
 
     findAll = (): TABLE['$L'][] => {
         const stmt = this.db.db.prepare(`select * from ${this.name}`)
-        const datas: TABLE['$T'][] = stmt.all().map((data) => this.infos.hydrateJSONFields(data))
+        const datas: TABLE['$T'][] = stmt.all().map((data) => this.schema.hydrateJSONFields_crashOnMissingData(data))
         const instances = datas.map((d) => this.getOrCreateInstanceForExistingData(d))
         return instances
     }
 
     find = (
         //
-        whereExt: SQLWhere<TABLE['$T']>,
+        queryFn: (x: SelectQueryBuilder<KyselyTables, TABLE['$TableName'], {}>) => CompiledQuery<TABLE['$T']>,
         options: SqlFindOptions = {},
     ): TABLE['$L'][] => {
-        let whereClause: string[] = []
-        let whereVars: { [key: string]: any } = {}
-
-        Object.entries(whereExt).forEach(([k, v]) => {
-            if (isSqlExpr(v)) {
-                if ('$like' in v) {
-                    whereVars[k] = v.$like
-                    whereClause.push(`${k} like @${k}`)
-                } else {
-                    throw new Error(`[👙] 🔴`)
-                }
-            } else {
-                whereVars[k] = v
-                whereClause.push(`${k} = @${k}`)
-            }
-        })
-        let findSQL = `select * from ${this.name}`
-        if (whereClause.length > 0) findSQL += ` where ${whereClause.join(' and ')}`
-        if (options.limit) findSQL += ` limit ${options.limit}`
-
-        if (options.debug) console.log(`[🔴 DEBUG 🔴] A >>>`, findSQL, whereVars)
-        const stmt = this.db.db.prepare<{ [key: string]: any }>(findSQL)
-        const datas: TABLE['$T'][] = stmt.all(whereVars).map((data) => this.infos.hydrateJSONFields(data))
+        // let whereClause: string[] = []
+        // let whereVars: { [key: string]: any } = {}
+        // Object.entries(whereExt).forEach(([k, v]) => {
+        //     if (isSqlExpr(v)) {
+        //         if ('$like' in v) {
+        //             whereVars[k] = v.$like
+        //             whereClause.push(`${k} like @${k}`)
+        //         } else {
+        //             throw new Error(`[👙] 🔴`)
+        //         }
+        //     } else {
+        //         whereVars[k] = v
+        //         whereClause.push(`${k} = @${k}`)
+        //     }
+        // })
+        // let findSQL = `select * from ${this.name}`
+        // if (whereClause.length > 0) findSQL += ` where ${whereClause.join(' and ')}`
+        // if (options.limit) findSQL += ` limit ${options.limit}`
+        // if (options.debug) console.log(`[🔴 DEBUG 🔴] A >>>`, findSQL, whereVars)
+        // const stmt = this.db.db.prepare<{ [key: string]: any }>(findSQL)
+        const query = queryFn(this.query1)
+        const stmt = cushy.db.db.prepare<{ [key: string]: any }>(query.sql)
+        const datas: TABLE['$T'][] = stmt
+            .all(query.parameters)
+            .map((data) => this.schema.hydrateJSONFields_crashOnMissingData(data))
         if (options.debug) console.log(`[🔴 DEBUG 🔴] B >>>`, datas)
         const instances = datas.map((d) => this.getOrCreateInstanceForExistingData(d))
         // ⏸️ console.log(`[🦜] find:`, { findSQL, instances })
@@ -440,7 +487,7 @@ export class LiveTable<TABLE extends TableInfo<keyof KyselyTables>> {
         if (typeof row !== 'object') throw new Error('insert does not support non-objects')
 
         // build the sql
-        const tableInfos = this.infos
+        const tableInfos = this.schema
         const presentCols = Object.keys(row)
         const insertSQL = [
             `insert into ${tableInfos.sql_name}`,
@@ -467,7 +514,7 @@ export class LiveTable<TABLE extends TableInfo<keyof KyselyTables>> {
             const data = stmt.get(insertPayload) as any as TABLE['$T']
 
             // re-hydrate the resulting json (necessary for default json values in the DB)
-            this.infos.hydrateJSONFields(data)
+            this.schema.hydrateJSONFields_crashOnMissingData(data)
 
             // return the instance
             return this._createInstance(data)
@@ -538,7 +585,7 @@ export class LiveTable<TABLE extends TableInfo<keyof KyselyTables>> {
     _createInstance = (data: TABLE['$T']): TABLE['$L'] => {
         const instance = new this.Ktor()
         // TYPE CHECKING --------------------
-        const schema = this.infos.schema
+        const schema = this.schema.schema
         const valid = Value.Check(schema, data)
         if (!valid) {
             const errors: ValueError[] = [...Value.Errors(schema, data)]
@@ -549,6 +596,7 @@ export class LiveTable<TABLE extends TableInfo<keyof KyselyTables>> {
         // --------------------
         instance.init(this, data)
         this.liveEntities.set(data.id, instance)
+        this.db.bump(this.name as LiveDBSubKeys)
         return instance
     }
 }

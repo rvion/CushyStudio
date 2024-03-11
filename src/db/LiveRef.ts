@@ -1,5 +1,6 @@
 import type { LiveInstance } from './LiveInstance'
 import type { LiveTable } from './LiveTable'
+import type { TableName } from './TYPES.gen'
 
 export class LiveRef<
     //
@@ -10,8 +11,12 @@ export class LiveRef<
         //
         public owner: Owner,
         public key: keyof Owner['data'],
-        public table: () => LiveTable<any>,
+        public tableName: TableName,
     ) {}
+
+    get table() {
+        return cushy.db[this.tableName] as LiveTable<any>
+    }
 
     get id(): L['data']['id'] {
         return (this.owner.data as any)[this.key]
@@ -24,6 +29,6 @@ export class LiveRef<
 
     get item(): L {
         // const db = this.owner.db
-        return this.table().getOrThrow(this.id)
+        return this.table.getOrThrow(this.id)
     }
 }

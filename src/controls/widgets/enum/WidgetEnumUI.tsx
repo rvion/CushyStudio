@@ -1,4 +1,4 @@
-import type { EnumName, EnumValue } from '../../../models/Schema'
+import type { EnumName, EnumValue } from '../../../models/ComfySchema'
 import type { Widget_enum } from './WidgetEnum'
 import type { CleanedEnumResult } from 'src/types/EnumUtils'
 

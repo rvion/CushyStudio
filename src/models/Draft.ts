@@ -3,15 +3,15 @@ import type { CushyAppL } from './CushyApp'
 import type { MediaImageL } from './MediaImage'
 import type { StepL } from './Step'
 import type { LibraryFile } from 'src/cards/LibraryFile'
+import type { Widget_group } from 'src/controls/widgets/group/WidgetGroup'
+import type { TABLES } from 'src/db/TYPES.gen'
 
 import { reaction } from 'mobx'
 
 import { Status } from 'src/back/Status'
 import { Form } from 'src/controls/Form'
-import { Widget_group } from 'src/controls/widgets/group/WidgetGroup'
 import { LiveRef } from 'src/db/LiveRef'
 import { SQLITE_false, SQLITE_true } from 'src/db/SQLITE_boolean'
-import { DraftT, type DraftTable, type TABLES } from 'src/db/TYPES.gen'
 import { toastError } from 'src/utils/misc/toasts'
 
 export type FormPath = (string | number)[]
@@ -28,7 +28,7 @@ export class DraftL {
     /** expand all top-level form entries */
     expandTopLevelFormEntries = () => this.form?.root?.expandAllEntries()
 
-    appRef = new LiveRef<this, CushyAppL>(this, 'appID', () => this.db.cushy_apps)
+    appRef = new LiveRef<this, CushyAppL>(this, 'appID', 'cushy_app')
 
     openOrFocusTab = () => {
         this.st.layout.FOCUS_OR_CREATE('Draft', { draftID: this.id }, 'LEFT_PANE_TABSET')
@@ -143,6 +143,10 @@ export class DraftL {
         this.form.builder._cache.count++
         this.AWAKE()
 
+        // update
+        this.update({ lastRunAt: Date.now() })
+        this.app.update({ lastRunAt: Date.now() })
+
         if (p.focusOutput ?? true) {
             // 2024-01-21 should this be here ?
             this.st.layout.FOCUS_OR_CREATE('Output', {})
@@ -182,7 +186,7 @@ export class DraftL {
         // debugger
         const graph = startGraph.clone()
         // 4. create step
-        const step = this.db.steps.create({
+        const step = this.db.step.create({
             name: this.data.title,
             appID: this.data.appID,
             draftID: this.data.id,

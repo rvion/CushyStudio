@@ -4,8 +4,8 @@ import type { KyselyTables } from './TYPES.gen'
 import type { Metafile } from 'esbuild'
 import type { Status } from 'src/back/Status'
 import type { Widget_group_serial } from 'src/controls/widgets/group/WidgetGroup'
+import type { EmbeddingName } from 'src/models/ComfySchema'
 import type { ImageInfos_ComfyGenerated } from 'src/models/ImageInfos_ComfyGenerated'
-import type { EmbeddingName } from 'src/models/Schema'
 import type { ComfyNodeID, ComfyNodeMetadata } from 'src/types/ComfyNodeID'
 import type { ComfyPromptJSON } from 'src/types/ComfyPrompt'
 import type { ComfySchemaJSON } from 'src/types/ComfySchemaJSON'
@@ -24,11 +24,11 @@ export type CushyScript_metafile = Metafile
 // }
 export const CushyScript_metafile_Schema = Type.Record(Type.String(), Type.Any())
 
-export type Graph_metadata = { [key: ComfyNodeID]: ComfyNodeMetadata }
-export const Graph_metadata_Schema = Type.Record(Type.String(), Type.Any())
+export type ComfyWorkflow_metadata = { [key: ComfyNodeID]: ComfyNodeMetadata }
+export const ComfyWorkflow_metadata_Schema = Type.Record(Type.String(), Type.Any())
 
-export type Graph_comfyPromptJSON = ComfyPromptJSON
-export const Graph_comfyPromptJSON_Schema = Type.Record(Type.String(), Type.Any())
+export type ComfyWorkflow_comfyPromptJSON = ComfyPromptJSON
+export const ComfyWorkflow_comfyPromptJSON_Schema = Type.Record(Type.String(), Type.Any())
 
 export type Draft_formSerial = Widget_group_serial<any>
 export const Draft_formSerial_Schema = Type.Record(Type.String(), Type.Any())
@@ -95,7 +95,19 @@ export class TableInfo<
         // ].join(' ')
     }
 
-    hydrateJSONFields = (data: any): T => {
+    // TODO: use
+    hydrateJSONFields_skipMissingData = (data: any): T => {
+        if (data == null) debugger
+        for (const col of this.cols) {
+            if (col.type !== 'json') continue
+            const rawCol = data[col.name]
+            if (rawCol == null) continue
+            data[col.name] = JSON.parse(rawCol)
+        }
+        return data
+    }
+
+    hydrateJSONFields_crashOnMissingData = (data: any): T => {
         if (data == null) debugger
         for (const col of this.cols) {
             if (col.type !== 'json') continue

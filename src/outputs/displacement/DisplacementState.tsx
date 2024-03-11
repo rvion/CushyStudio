@@ -7,7 +7,7 @@ import * as THREE from 'three'
 
 export class DisplacementState {
     constructor(public p: Panel_DisplacementProps) {}
-
+    canvasRef = createRef<HTMLCanvasElement>()
     materialRef = createRef<THREE.MeshStandardMaterial>()
     onBeforeCompile = (
         //
@@ -83,7 +83,7 @@ export class DisplacementState {
                     // gl_FragColor = vec4(0.0,1.0,0.0, 0.0);
                     discard;
                 }
-                
+
                 // Discard fragments for background
                 if (vDisplacement < removeBackground) {
                     // gl_FragColor = vec4(0.0,1.0,0.0, 1.0);

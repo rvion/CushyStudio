@@ -1,6 +1,6 @@
 import type { ComfyEnumDef, ComfyInputOpts, ComfyNodeSchemaJSON } from '../types/ComfySchemaJSON'
 import type { HostL } from './Host'
-import type { ComfySchemaT, ComfySchemaTable, TABLES } from 'src/db/TYPES.gen'
+import type { TABLES } from 'src/db/TYPES.gen'
 
 import { observable, toJS } from 'mobx'
 
@@ -119,18 +119,13 @@ export class ComfySchemaL {
         // this.onUpdate()
     }
 
-    hostRef = new LiveRef<this, HostL>(
-        //
-        this,
-        'hostID',
-        () => this.db.hosts,
-    )
+    hostRef = new LiveRef<this, HostL>(this, 'hostID', 'host')
     // get host(): HostL { return this.hostRef.item } // prettier-ignore
     // get hostName(): string { return this.hostRef.item.data.name } // prettier-ignore
 
     /** on update is called automatically by live instances */
     onUpdate() {
-        this.log(`updating schema (${this.id})`)
+        this.log(`updating schema #${this.id}`)
         // reset spec
         // this.spec = this.data.spec
         // this.embeddings = this.data.embeddings
@@ -379,12 +374,12 @@ export class ComfySchemaL {
         p('')
         p(`declare global {`)
         p(``)
-        p(`/** @deprecated use the global 'app' function instead to register an app */`)
-        p(`const action: GlobalFunctionToDefineAnApp`)
-        p(``)
-        p(`/** @deprecated use the global 'app' function instead to register an app */`)
-        p(`const card: GlobalFunctionToDefineAnApp`)
-        p(``)
+        // p(`/** @deprecated use the global 'app' function instead to register an app */`)
+        // p(`const action: GlobalFunctionToDefineAnApp`)
+        // p(``)
+        // p(`/** @deprecated use the global 'app' function instead to register an app */`)
+        // p(`const card: GlobalFunctionToDefineAnApp`)
+        // p(``)
         p(`const app: GlobalFunctionToDefineAnApp`)
         p(`const getCurrentForm: GlobalGetCurrentForm`)
         p(`const getCurrentRun: GlobalGetCurrentRun`)

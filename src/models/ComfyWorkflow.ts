@@ -1,15 +1,15 @@
-import type { Cyto } from '../core/AutolayoutV1'
 import type { ComfyNodeID, ComfyNodeMetadata } from '../types/ComfyNodeID'
 import type { ComfyPromptJSON } from '../types/ComfyPrompt'
 import type { ApiPromptInput, PromptInfo, WsMsgExecuting, WsMsgExecutionCached, WsMsgProgress } from '../types/ComfyWsApi'
 import type { VisEdges, VisNodes } from '../widgets/misc/VisUI'
 import type { ComfyPromptL } from './ComfyPrompt'
-import type { ComfyNodeSchema, ComfySchemaL } from './Schema'
+import type { ComfyNodeSchema, ComfySchemaL } from './ComfySchema'
 import type { StepL } from './Step'
+import type { ElkNode } from 'elkjs'
 import type { MouseEvent } from 'react'
 import type { IDNaminScheemeInPromptSentToComfyUI } from 'src/back/IDNaminScheemeInPromptSentToComfyUI'
 import type { LiveInstance } from 'src/db/LiveInstance'
-import type { GraphT, TABLES } from 'src/db/TYPES.gen'
+import type { ComfyWorkflowT, TABLES } from 'src/db/TYPES.gen'
 import type { HTMLContent, MDContent } from 'src/types/markdown'
 
 import { existsSync, mkdirSync, writeFileSync } from 'fs'
@@ -17,7 +17,7 @@ import { marked } from 'marked'
 import { join } from 'pathe'
 
 import { ComfyWorkflowBuilder } from '../back/NodeBuilder'
-import { CytoJSON, runAutolayout } from '../core/AutolayoutV2'
+import { runAutolayout } from '../core/AutolayoutV2'
 import { comfyColors } from '../core/Colors'
 import { ComfyNode } from '../core/ComfyNode'
 import { convertFlowToLiteGraphJSON, LiteGraphJSON } from '../core/LiteGraph'
@@ -49,7 +49,7 @@ export type PromptSettings = {
 
 export const GraphIDCache = new Map<string, number>()
 
-export interface ComfyWorkflowL extends LiveInstance<TABLES['graph']> {}
+export interface ComfyWorkflowL extends LiveInstance<TABLES['comfy_workflow']> {}
 export class ComfyWorkflowL {
     /** number of node in the graph */
     get size(): number {
@@ -59,14 +59,14 @@ export class ComfyWorkflowL {
     menuAction_openInFullScreen = async (ev: MouseEvent) => {
         ev.preventDefault()
         ev.stopPropagation()
-        const prompt = this.json_workflow()
+        const prompt = await this.json_workflow()
         if (prompt == null) return
         this.st.layout.FOCUS_OR_CREATE('ComfyUI', { litegraphJson: prompt }, 'full')
     }
     menuAction_openInTab = async (ev: MouseEvent) => {
         ev.preventDefault()
         ev.stopPropagation()
-        const prompt = this.json_workflow()
+        const prompt = await this.json_workflow()
         if (prompt == null) return
         this.st.layout.FOCUS_OR_CREATE('ComfyUI', { litegraphJson: prompt })
     }
@@ -127,7 +127,7 @@ export class ComfyWorkflowL {
         return this._builder
     }
 
-    onUpdate = (prev: Maybe<GraphT>, next: GraphT) => {
+    onUpdate = (prev: Maybe<ComfyWorkflowT>, next: ComfyWorkflowT) => {
         const prevSize = this.size
         if (prev != null) {
             this.nodes = []
@@ -143,9 +143,6 @@ export class ComfyWorkflowL {
         //     console.log(`[👙] GRAPH.onUpdate`, prev, next, this.nodes.length)
         // }
     }
-
-    /** cytoscape instance to live update graph */
-    cyto?: Cyto
 
     get summary1(): string[] {
         return this.nodes.map((n) => n.$schema.nameInCushy)
@@ -172,7 +169,7 @@ export class ComfyWorkflowL {
         this.data.metadata[node.uid] = node.meta
         this.nodesIndex.set(node.uid, node)
         this.nodes.push(node)
-        this.cyto?.trackNode(node)
+        // this.cyto?.trackNode(node)
         // this.graph.run.cyto.addNode(this)
     }
 
@@ -225,12 +222,12 @@ export class ComfyWorkflowL {
         return out
     }
 
-    get json_cyto(): CytoJSON {
+    get json_cyto(): Promise<ElkNode> {
         const cytoJSON = runAutolayout(this)
         return cytoJSON
     }
 
-    get json_cyto_small(): CytoJSON {
+    get json_cyto_small(): Promise<ElkNode> {
         const PX = 15
         const cytoJSON = runAutolayout(this, {
             width: (node) => {
@@ -258,8 +255,8 @@ export class ComfyWorkflowL {
         return cytoJSON
     }
 
-    json_workflow = (): LiteGraphJSON => {
-        const cytoJSON = this.json_cyto
+    json_workflow = async (): Promise<LiteGraphJSON> => {
+        const cytoJSON = await this.json_cyto
         const liteGraphJSON = convertFlowToLiteGraphJSON(this, cytoJSON)
         return liteGraphJSON
         // this.st.writeTextFile(workflowJSONPath, JSON.stringify(liteGraphJSON, null, 4))
@@ -430,7 +427,7 @@ export class ComfyWorkflowL {
     // ------------------------
 
     /** workflows are created by steps (app/draft/step) */
-    stepRef = new LiveRefOpt<this, StepL>(this, 'stepID', () => this.st.db.steps)
+    stepRef = new LiveRefOpt<this, StepL>(this, 'stepID', 'step')
 
     /** workflows are created by steps (app/draft/step) */
     get step(): Maybe<StepL> {
@@ -476,7 +473,7 @@ export class ComfyWorkflowL {
         // this.update({ comfyPromptJSON: currentJSON })
         // -------------------------------------------------
 
-        const graph = this.st.db.graphs.create({
+        const graph = this.st.db.comfy_workflow.create({
             //
             comfyPromptJSON: currentJSON,
             metadata: this.data.metadata,
@@ -493,7 +490,7 @@ export class ComfyWorkflowL {
             const err = new InvalidPromptError('ComfyUI Prompt request failed', graph, prompmtInfo)
             return Promise.reject(err)
         } else {
-            const prompt = this.st.db.comfy_prompts.create({
+            const prompt = this.st.db.comfy_prompt.create({
                 id: prompmtInfo.prompt_id,
                 executed: 0,
                 graphID: graph.id,

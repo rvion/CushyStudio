@@ -1,4 +1,3 @@
-import type { TABLES } from 'src/db/TYPES.gen'
 import type { STATE } from 'src/state/state'
 
 import { action, makeAutoObservable } from 'mobx'
@@ -7,7 +6,6 @@ import Watcher from 'watcher'
 
 import { LibraryFile } from './LibraryFile'
 import { shouldSkip_duringWatch } from './shouldSkip'
-import { LiveCollection } from 'src/db/LiveCollection'
 import { CushyAppL } from 'src/models/CushyApp'
 import { asAbsolutePath, asRelativePath } from 'src/utils/fs/pathUtils'
 
@@ -19,16 +17,9 @@ export class Library {
     imageSize = '11rem'
     selectionCursor = 0
 
-    private appsC = new LiveCollection<TABLES['cushy_app']>({
-        where: () => {
-            return { id: { $like: `%${this.query}%` } }
-        },
-        table: () => this.st.db.cushy_apps,
-        options: { limit: 100 },
-    })
-
     get appsFiltered(): CushyAppL[] {
-        return this.appsC.items
+        return this.st.db.cushy_app //
+            .select((q) => q.where('id', 'like', `%${this.query}%`).limit(100), ['cushy_app'])
     }
 
     get appsFilteredBuiltIn(): CushyAppL[] {
@@ -117,7 +108,7 @@ export class Library {
                 const allDraftTabs = st.layout.findTabsFor('Draft')
                 for (const d of allDraftTabs) {
                     // retrieve the draft from the tab
-                    const draft = st.db.drafts.get(d.config.draftID)
+                    const draft = st.db.draft.get(d.config.draftID)
                     if (draft == null) {
                         console.error(`[👙] missing draft ${d.config.draftID}; SKIPPING...`)
                         continue

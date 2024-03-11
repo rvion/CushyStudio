@@ -4,13 +4,12 @@ import 'src/models/asyncRuntimeStorage'
 import type { MediaImageL } from '../models/MediaImage'
 import type { ComfyStatus, PromptID, PromptRelated_WsMsg, WsMsg } from '../types/ComfyWsApi'
 import type { CSCriticalError } from '../widgets/CSCriticalError'
-import type { SelectQueryBuilder } from 'kysely'
 import type { ActionTagMethodList } from 'src/cards/App'
 import type { TreeNode } from 'src/panels/libraryUI/tree/xxx/TreeNode'
 import type { RevealState } from 'src/rsuite/reveal/RevealState'
 import type { Wildcards } from 'src/widgets/prompter/nodes/wildcards/wildcards'
 
-import { PostgrestSingleResponse, SupabaseClient } from '@supabase/supabase-js'
+import { SupabaseClient } from '@supabase/supabase-js'
 import { closest } from 'fastest-levenshtein'
 import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'fs'
 import { makeAutoObservable, observable, toJS } from 'mobx'
@@ -21,8 +20,8 @@ import { createRef } from 'react'
 import { JsonFile } from '../core/JsonFile'
 import { LiveDB } from '../db/LiveDB'
 import { ComfyImporter } from '../importers/ComfyImporter'
+import { ComfySchemaL, EnumValue } from '../models/ComfySchema'
 import { ComfyWorkflowL } from '../models/ComfyWorkflow'
-import { ComfySchemaL, EnumValue } from '../models/Schema'
 import { CushyLayoutManager } from '../panels/router/Layout'
 import { GitManagedFolder } from '../updater/updater'
 import { ElectronUtils } from '../utils/electron/ElectronUtils'
@@ -48,9 +47,9 @@ import { STANDARD_HOST_ID, vIRTUAL_HOST_ID__BASE, vIRTUAL_HOST_ID__FULL } from '
 import { type ConfigFile, PreferedFormLayout } from 'src/config/ConfigFile'
 import { mkConfigFile } from 'src/config/mkConfigFile'
 import { Form } from 'src/controls/Form'
-import { LiveCollection } from 'src/db/LiveCollection'
+import { quickBench } from 'src/db/quickBench'
 import { SQLITE_false, SQLITE_true } from 'src/db/SQLITE_boolean'
-import { asHostID, type KyselyTables, type TABLES } from 'src/db/TYPES.gen'
+import { asHostID, type TABLES } from 'src/db/TYPES.gen'
 import { ComfyManagerRepository } from 'src/manager/ComfyManagerRepository'
 import { createMediaImage_fromPath } from 'src/models/createMediaImage_fromWebFile'
 import { CushyAppL } from 'src/models/CushyApp'
@@ -66,6 +65,8 @@ import { treeElement } from 'src/panels/libraryUI/tree/TreeEntry'
 import { Tree } from 'src/panels/libraryUI/tree/xxx/Tree'
 import { TreeView } from 'src/panels/libraryUI/tree/xxx/TreeView'
 import { VirtualHierarchy } from 'src/panels/libraryUI/VirtualHierarchy'
+import { FORM_PlaygroundWidgetDisplay } from 'src/panels/Panel_Playground/FORM_PlaygroundWidgetDisplay'
+// import { Header_Playground } from 'src/panels/Panel_Playground/Panel_Playground'
 import { SafetyChecker } from 'src/safety/Safety'
 import { Database } from 'src/supa/database.types'
 import { ThemeManager } from 'src/theme/ThemeManager'
@@ -73,7 +74,6 @@ import { CleanedEnumResult } from 'src/types/EnumUtils'
 import { StepOutput } from 'src/types/StepOutput'
 import { openInVSCode } from 'src/utils/electron/openInVsCode'
 import { UserTags } from 'src/widgets/prompter/nodes/usertags/UserLoader'
-import { FORM_PlaygroundWidgetDisplay, Header_Playground } from 'src/panels/Panel_Playground/Panel_Playground'
 
 export class STATE {
     // LEAVE THIS AT THE TOP OF THIS CLASS
@@ -166,7 +166,8 @@ export class STATE {
     }
 
     get defaultImage(): MediaImageL {
-        const def = this.db.media_images.find({ path: 'public/CushyLogo-512.png' }, { limit: 1 })
+        const def = this.db.media_image.select((t) => t.where('path', '=', 'public/CushyLogo-512.png').limit(1))
+        // const def = this.db.media_images.find({ path: 'public/CushyLogo-512.png' }, { limit: 1 })
         if (def[0] == null) return createMediaImage_fromPath(this, 'public/CushyLogo-512.png')
         return def[0]
     }
@@ -274,43 +275,15 @@ export class STATE {
     get githubUsername(): Maybe<GithubUserName> { return this.configFile.value.githubUsername as Maybe<GithubUserName> } // prettier-ignore
 
     // ---------------------------------------------------
-    favoriteAppCollection = new LiveCollection<TABLES['cushy_app']>({
-        table: () => this.db.cushy_apps,
-        where: () => ({ isFavorite: SQLITE_true }),
-    })
-    get favoriteApps(): CushyAppL[] {
-        return this.favoriteAppCollection.items
-    }
+    get favoriteApps(): CushyAppL[] { return this.db.cushy_app.select((q) => q.where('isFavorite', '=', SQLITE_true), ['cushy_app.isFavorite']) } // prettier-ignore
+    get favoriteDrafts(): DraftL[] { return this.db.draft.select((q) => q.where('isFavorite', '=', SQLITE_true), ['draft.isFavorite']) } // prettier-ignore
+    get allDrafts(): DraftL[] { return this.db.draft.select() } // prettier-ignore
+    get allApps(): CushyAppL[] { return this.db.cushy_app.select() } // prettier-ignore
+    get allImageApps(): CushyAppL[] { return this.db.cushy_app.select(q => q.where('canStartFromImage','=', SQLITE_true)) } // prettier-ignore
 
-    // ---------------------------------------------------
-    favoriteDraftCollection = new LiveCollection<TABLES['draft']>({
-        table: () => this.db.drafts,
-        where: () => ({ isFavorite: SQLITE_true }),
-    })
-    get favoriteDrafts(): DraftL[] {
-        return this.favoriteDraftCollection.items
-    }
-
-    // ---------------------------------------------------
-    allDraftsCollections = new LiveCollection<TABLES['draft']>({
-        table: () => this.db.drafts,
-        where: () => ({}),
-    })
-    get allDrafts(): DraftL[] { return this.allDraftsCollections.items } // prettier-ignore
     virtualDraftHierarchy = new VirtualHierarchy(() => this.allDrafts)
-    // --------------------------------------------------
-    allAppsCollectitons = new LiveCollection<TABLES['cushy_app']>({
-        table: () => this.db.cushy_apps,
-        where: () => ({}),
-    })
-    get allApps(): CushyAppL[] { return this.allAppsCollectitons.items } // prettier-ignore
     virtualAppHierarchy = new VirtualHierarchy(() => this.allApps)
     // ---------------------------------------------------
-    allImageAppsCollectitons = new LiveCollection<TABLES['cushy_app']>({
-        table: () => this.db.cushy_apps,
-        where: () => ({ canStartFromImage: SQLITE_true }),
-    })
-    get allImageApps(): CushyAppL[] { return this.allImageAppsCollectitons.items } // prettier-ignore
     // --------------------------------------------------
 
     getConfigValue = <K extends keyof ConfigFile>(k: K) => this.configFile.value[k]
@@ -347,11 +320,11 @@ export class STATE {
     }
 
     getProject = (): ProjectL => {
-        if (this.db.projects.size > 0) {
-            return this.db.projects.firstOrCrash()
+        if (this.db.project.size > 0) {
+            return this.db.project.firstOrCrash()
         }
         console.log(`[🛋️] creating project`)
-        const initialGraph = this.db.graphs.create({ comfyPromptJSON: {}, metadata: {} })
+        const initialGraph = this.db.comfy_workflow.create({ comfyPromptJSON: {}, metadata: {} })
         const defaultAppPath = asAppPath('library/CushyStudio/default/SDUI.ts')
         // const initialDraft = this.db.drafts.create({
         //     appParams: {},
@@ -359,7 +332,7 @@ export class STATE {
         //     appPath: defaultAppPath,
         //     isOpened: SQLITE_true,
         // })
-        const project = this.db.projects.create({
+        const project = this.db.project.create({
             rootGraphID: initialGraph.id,
             name: 'new project',
             currentApp: defaultAppPath,
@@ -476,8 +449,8 @@ export class STATE {
     )
 
     /* TODO: This should be in a separate register_internal_forms file probably, along with any other headers we register in the future. After we can register them that is. */
-    playgroundHeader = Header_Playground
-    playgroundWidgetDisplay = FORM_PlaygroundWidgetDisplay
+    // playgroundHeader = Header_Playground
+    // playgroundWidgetDisplay = FORM_PlaygroundWidgetDisplay
 
     displacementConf = new Form(
         (form) => ({
@@ -516,6 +489,14 @@ export class STATE {
             galleryBgColor: f.color({ label: 'background' }),
             galleryHoverOpacity: f.number({ label: 'hover opacity', min: 0, max: 1, step: 0.01 }),
             showPreviewInFullScreen: f.boolean({ label: 'full-screen', tooltip: 'Show the preview in full screen' }),
+            onlyShowBlurryThumbnails: f.boolean({
+                alignLabel: false,
+                text: 'Only Show Blurry Thumbnails',
+                expand: true,
+                display: 'button',
+                icon: 'lock',
+                label: false,
+            }),
         }),
         {
             name: 'Gallery Conf',
@@ -532,7 +513,7 @@ export class STATE {
         public rootPath: AbsolutePath,
     ) {
         // -----------------------------------------------------------
-        console.log('[🛋️] starting Cushy')
+        // console.log('[🛋️] starting Cushy')
         this.cacheFolderPath = this.resolve(this.rootPath, asRelativePath('outputs'))
         this.primarySdkDtsPath = this.resolve(this.rootPath, asRelativePath('schema/global.d.ts'))
         this.outputFolderPath = this.cacheFolderPath // this.resolve(this.cacheFolderPath, asRelativePath('outputs'))
@@ -612,6 +593,7 @@ export class STATE {
             wildcards: false,
         })
         this.startupFileIndexing()
+        setTimeout(() => quickBench.printAllStats(), 1000)
     }
 
     get mainComfyHostID(): HostID {
@@ -622,7 +604,7 @@ export class STATE {
     }
 
     get virtualHostBase(): HostL {
-        return this.db.hosts.upsert({
+        return this.db.host.upsert({
             id: asHostID(vIRTUAL_HOST_ID__BASE),
             hostname: 'localhost',
             useHttps: SQLITE_false,
@@ -635,7 +617,7 @@ export class STATE {
     }
 
     get standardHost(): HostL {
-        return this.db.hosts.upsert({
+        return this.db.host.upsert({
             id: asHostID(STANDARD_HOST_ID),
             hostname: 'localhost',
             useHttps: SQLITE_false,
@@ -648,7 +630,7 @@ export class STATE {
     }
 
     get virtualHostFull(): HostL {
-        return this.db.hosts.upsert({
+        return this.db.host.upsert({
             id: asHostID(vIRTUAL_HOST_ID__FULL),
             hostname: 'localhost',
             useHttps: SQLITE_false,
@@ -682,14 +664,13 @@ export class STATE {
         return this.mainHost.ws
     }
 
-    hosts = new LiveCollection<TABLES['host']>({
-        table: () => this.db.hosts,
-        where: () => ({}),
-    })
+    get hosts() {
+        return this.db.host.select()
+    }
 
     /** main host */
     get mainHost(): HostL {
-        const selectedHost = this.db.hosts.get(this.mainComfyHostID)
+        const selectedHost = this.db.host.get(this.mainComfyHostID)
         return selectedHost ?? this.virtualHostBase
     }
 
@@ -707,7 +688,7 @@ export class STATE {
     private activePromptID: PromptID | null = null
     temporize = (prompt_id: PromptID, msg: PromptRelated_WsMsg) => {
         this.activePromptID = prompt_id
-        const prompt = this.db.comfy_prompts.get(prompt_id)
+        const prompt = this.db.comfy_prompt.get(prompt_id)
 
         // case 1. no prompt yet => just store the messages
         if (prompt == null) {
@@ -823,8 +804,8 @@ export class STATE {
     focusedStepOutput: Maybe<StepOutput> = null
     focusedStepID: Maybe<StepID> = null
     get focusedStepL(): Maybe<StepL> {
-        if (this.focusedStepID) return this.db.steps.get(this.focusedStepID) ?? this.db.steps.last()
-        return this.db.steps.last()
+        if (this.focusedStepID) return this.db.step.get(this.focusedStepID) ?? this.db.step.last()
+        return this.db.step.last()
     }
 
     // get imageToDisplayold(): MediaImageL[] {
@@ -835,24 +816,29 @@ export class STATE {
     //     return this.db.media_images.getLastN(maxImages)
     // }
 
+    galleryFilterPath: Maybe<string> = null
     galleryFilterTag: Maybe<string> = null
     galleryFilterAppName: Maybe<{ id: CushyAppID; name?: Maybe<string> }> = null
     get imageToDisplay() {
-        return this.db.media_images.live((query) => {
-            let x = query
-                .orderBy('media_image.createdAt', 'desc')
-                .limit(this.galleryConf.value.galleryMaxImages ?? 20)
-                .select('media_image.id')
+        return this.db.media_image.select(
+            (query) => {
+                let x = query
+                    .orderBy('media_image.updatedAt', 'desc')
+                    .limit(this.galleryConf.value.galleryMaxImages ?? 20)
+                    .select('media_image.id')
 
-            if (this.galleryFilterTag) x = x.where('media_image.tags', 'like', '%' + this.galleryFilterTag + '%')
-            if (this.galleryFilterAppName) {
-                x = x
-                    .innerJoin('step', 'media_image.stepID', 'step.id')
-                    .innerJoin('cushy_app', 'cushy_app.id', 'step.appID')
-                    .where('cushy_app.id', 'in', [this.galleryFilterAppName.id])
-            }
-            return x.compile()
-        })
+                if (this.galleryFilterPath) x = x.where('media_image.path', 'like', '%' + this.galleryFilterPath + '%')
+                if (this.galleryFilterTag) x = x.where('media_image.tags', 'like', '%' + this.galleryFilterTag + '%')
+                if (this.galleryFilterAppName) {
+                    x = x
+                        .innerJoin('step', 'media_image.stepID', 'step.id')
+                        .innerJoin('cushy_app', 'cushy_app.id', 'step.appID')
+                        .where('cushy_app.id', 'in', [this.galleryFilterAppName.id])
+                }
+                return x
+            },
+            ['media_image.id'],
+        )
     }
 
     // FILESYSTEM UTILS --------------------------------------------------------------------

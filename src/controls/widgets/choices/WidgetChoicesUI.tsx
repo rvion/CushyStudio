@@ -55,9 +55,18 @@ const WidgetChoices_TabHeaderUI = observer(function WidgetChoicesTab_LineUI_<T e
 }) {
     const widget = p.widget
     const choices = widget.choicesWithLabels // choicesStr.map((v) => ({ key: v }))
-
     return (
-        <div tw='rounded select-none ml-auto justify-end flex flex-wrap gap-x-0.5 gap-y-0'>
+        <div
+            style={{
+                justifyContent:
+                    widget.config.tabPosition === 'start' //
+                        ? 'flex-start'
+                        : widget.config.tabPosition === 'center'
+                        ? 'center'
+                        : 'flex-end',
+            }}
+            tw='rounded select-none flex flex-1 flex-wrap gap-x-0.5 gap-y-0'
+        >
             {choices.map((c) => {
                 const isSelected = widget.serial.branches[c.key]
                 return (

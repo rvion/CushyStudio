@@ -98,7 +98,8 @@ export const _createMediaImage_fromLocalyAvailableImage = (
     const hash = hashArrayBuffer(uint8arr)
     console.log(`[🏞️]`, { ...meta, hash })
 
-    const prevs = st.db.media_images.find({ path: relPath }, { limit: 1 })
+    // const prevs = st.db.media_image.find({ path: relPath }, { limit: 1 })
+    const prevs = st.db.media_image.select((q) => q.where('path', '=', relPath).limit(1))
     const prev = prevs[0]
 
     if (prev) {
@@ -111,7 +112,7 @@ export const _createMediaImage_fromLocalyAvailableImage = (
             })
             return prev
         }
-        console.log(`[🏞️] updating existing imamge`)
+        console.log(`[🏞️] updating existing image (${relPath})`)
         // toastInfo(`🏞️ updating existing imamge`)
         prev.update({
             orientation: meta.orientation,
@@ -128,7 +129,7 @@ export const _createMediaImage_fromLocalyAvailableImage = (
     }
 
     console.log(`[🏞️] create new image`)
-    return st.db.media_images.create({
+    return st.db.media_image.create({
         // base
         path: relPath,
         // computed

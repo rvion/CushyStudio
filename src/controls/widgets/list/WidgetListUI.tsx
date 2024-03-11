@@ -1,4 +1,5 @@
 import type { Widget_listExt } from '../listExt/WidgetListExt'
+import type { Widget_list } from './WidgetList'
 import type { IWidget } from 'src/controls/IWidget'
 import type { Spec } from 'src/controls/Spec'
 
@@ -7,7 +8,6 @@ import { forwardRef } from 'react'
 import SortableList, { SortableItem, SortableKnob } from 'react-easy-sort'
 import { ErrorBoundary } from 'react-error-boundary'
 
-import { Widget_list } from './WidgetList'
 import { getBorderStatusForWidget } from 'src/controls/shared/getBorderStatusForWidget'
 import { ListControlsUI } from 'src/controls/widgets/list/ListControlsUI'
 import { ErrorBoundaryFallback } from 'src/widgets/misc/ErrorBoundary'
@@ -16,8 +16,11 @@ export const WidgetList_LineUI = observer(function WidgetList_LineUI_<T extends 
     widget: Widget_list<T> | Widget_listExt<T>
 }) {
     return (
-        <div tw='ml-auto'>
-            <ListControlsUI widget={p.widget} />
+        <div tw='flex flex-1 items-center'>
+            <div tw='text-sm text-gray-500 italic'>{p.widget.length} itms</div>
+            <div tw='ml-auto'>
+                <ListControlsUI widget={p.widget} />
+            </div>
         </div>
     )
 })
@@ -31,7 +34,7 @@ export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends 
             <SortableList onSortEnd={p.widget.moveItem} className='list' draggedItemClassName='dragged'>
                 <div tw='flex flex-col gap-0.5'>
                     {subWidgets.map((subWidget, ix) => {
-                        const { HeaderUI: WidgetHeaderUI, BodyUI: WidgetBodyUI } = subWidget // WidgetDI.WidgetUI(widget)
+                        const { DefaultHeaderUI: WidgetHeaderUI, DefaultBodyUI: WidgetBodyUI } = subWidget // WidgetDI.WidgetUI(widget)
                         const collapsed = subWidget.serial.collapsed ?? false
                         return (
                             <SortableItem key={subWidget.id}>
@@ -112,7 +115,7 @@ const ListDragHandleUI = forwardRef<HTMLDivElement, { ix: number; widget: IWidge
 
 export const ListItemCollapseBtnUI = observer(function ListItemCollapseBtnUI_(p: { req: IWidget }) {
     const widget = p.req
-    const isCollapsible = widget.BodyUI
+    const isCollapsible = widget.DefaultBodyUI
     if (!isCollapsible) return null
     return (
         <div

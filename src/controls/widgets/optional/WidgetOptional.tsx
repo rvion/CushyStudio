@@ -1,17 +1,22 @@
 import type { Form } from '../../Form'
-import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { IWidget } from 'src/controls/IWidget'
 import type { Spec } from 'src/controls/Spec'
 
 import { computed, makeObservable, observable } from 'mobx'
 import { nanoid } from 'nanoid'
 
 import { WidgetDI } from '../WidgetUI.DI'
+import { applyWidgetMixinV2 } from 'src/controls/Mixins'
 
 // CONFIG
-export type Widget_optional_config<T extends Spec = Spec> = WidgetConfigFields<{
-    startActive?: boolean
-    widget: T
-}>
+export type Widget_optional_config<T extends Spec = Spec> = WidgetConfigFields<
+    {
+        startActive?: boolean
+        widget: T
+    },
+    Widget_optional_types<T>
+>
 
 // SERIAL
 export type Widget_optional_serial<T extends Spec = Spec> = WidgetSerialFields<{
@@ -33,10 +38,10 @@ export type Widget_optional_types<T extends Spec = Spec> = {
 }
 
 // STATE
-export interface Widget_optional<T extends Spec = Spec> extends Widget_optional_types<T> {}
+export interface Widget_optional<T extends Spec = Spec> extends Widget_optional_types<T>, IWidgetMixins {}
 export class Widget_optional<T extends Spec = Spec> implements IWidget<Widget_optional_types<T>> {
-    HeaderUI = undefined
-    BodyUI = undefined
+    DefaultHeaderUI = undefined
+    DefaultBodyUI = undefined
     get serialHash(): string {
         if (this.serial.active) return this.childOrThrow.serialHash
         return 'x'
@@ -97,7 +102,12 @@ export class Widget_optional<T extends Spec = Spec> implements IWidget<Widget_op
         }
     }
 
-    constructor(public form: Form<any>, public config: Widget_optional_config<T>, serial?: Widget_optional_serial<T>) {
+    constructor(
+        //
+        public form: Form<any>,
+        public config: Widget_optional_config<T>,
+        serial?: Widget_optional_serial<T>,
+    ) {
         this.id = serial?.id ?? nanoid()
         const defaultActive = config.startActive
         this.serial = serial ?? {
@@ -110,6 +120,7 @@ export class Widget_optional<T extends Spec = Spec> implements IWidget<Widget_op
         if (isActive) this.setOn()
         // ⏸️ if (this.INIT_MODE === 'EAGER') this._ensureChildIsHydrated()
         this._ensureChildIsHydrated()
+        applyWidgetMixinV2(this)
         makeObservable(this, {
             serial: observable,
             value: computed,

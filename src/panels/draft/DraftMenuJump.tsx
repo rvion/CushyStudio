@@ -1,8 +1,10 @@
+import type { CushyAppL } from 'src/models/CushyApp'
 import type { DraftL } from 'src/models/Draft'
 
 import { observer } from 'mobx-react-lite'
 
 import { Dropdown, MenuItem } from 'src/rsuite/Dropdown'
+import { _formatAsRelativeDateTime } from 'src/updater/_getRelativeTimeString'
 
 export const DraftMenuJumpUI = observer(function DraftMenuJumpUI_(p: {
     //
@@ -10,8 +12,6 @@ export const DraftMenuJumpUI = observer(function DraftMenuJumpUI_(p: {
     draft: DraftL
     className?: string
 }) {
-    const draft = p.draft
-    const app = draft.app
     return (
         <Dropdown
             //
@@ -19,13 +19,28 @@ export const DraftMenuJumpUI = observer(function DraftMenuJumpUI_(p: {
             startIcon={<span className='material-symbols-outlined'>menu</span>}
             title={'Drafts'} //`${layout}`}
         >
-            <div tw='divider my-0'></div>
-            {/* 🔴 PERF: TODO: make that lazyly instanciated. */}
-            {app.drafts.map((d) => (
-                <MenuItem key={d.id} onClick={() => d.openOrFocusTab()}>
-                    {d.name}
-                </MenuItem>
-            ))}
+            <DraftListUI app={p.draft.app} />
         </Dropdown>
+    )
+})
+
+const DraftListUI = observer(function DraftListUI_(p: { app: CushyAppL }) {
+    return (
+        <div>
+            {p.app.lastExecutedDrafts.map(({ id, title, lastRunAt }) => {
+                return (
+                    <MenuItem
+                        key={id}
+                        onClick={() => {
+                            const draft = cushy.db.draft.getOrThrow(id)
+                            draft.openOrFocusTab()
+                        }}
+                    >
+                        <div tw='flex items-center'>{title ?? id}</div>
+                        <div tw='ml-auto text-xs italic text-gray-500'>{_formatAsRelativeDateTime(lastRunAt)}</div>
+                    </MenuItem>
+                )
+            })}
+        </div>
     )
 })

@@ -1,42 +1,46 @@
 import { observer } from 'mobx-react-lite'
+import { useLayoutEffect } from 'react'
 
 import { MessageInfoUI } from '../MessageUI'
-import { InstallRequirementsBtnUI, Panel_InstallRequirementsUI } from 'src/controls/REQUIREMENTS/Panel_InstallRequirementsUI'
-import { useSt } from 'src/state/stateContext'
 import { PanelHeaderUI } from '../PanelHeader'
-import { FormUI } from 'src/controls/FormUI'
+import { FORM_PlaygroundWidgetDisplay } from './FORM_PlaygroundWidgetDisplay'
 import { Form } from 'src/controls/Form'
+import { FormUI } from 'src/controls/FormUI'
+import { InstallRequirementsBtnUI, Panel_InstallRequirementsUI } from 'src/controls/REQUIREMENTS/Panel_InstallRequirementsUI'
 import { readJSON, writeJSON } from 'src/state/jsonUtils'
+import { useSt } from 'src/state/stateContext'
 
-export const Header_Playground = new Form(
+const Header_Playground = new Form(
     (ui) => ({
-        header: ui.group({
+        // header: ui.group({
+        //     // label: false,
+        //     alignLabel: false,
+        //     layout: 'H',
+        //     border: false,
+        //     collapsed: false,
+        //     items: {
+        mode: ui.choice({
+            appearance: 'tab',
+            layout: 'H',
             label: false,
             alignLabel: false,
-            layout: 'H',
             border: false,
             collapsed: false,
+            default: 'scratchPad',
+            tabPosition: 'start',
             items: {
-                mode: ui.choice({
-                    layout: 'H',
-                    label: false,
-                    alignLabel: false,
-                    border: false,
-                    collapsed: false,
-                    default: 'scratchPad',
-                    items: {
-                        requirements: ui.group(),
-                        registeredForms: ui.group(),
-                        widgetShowcase: ui.group(),
-                        scratchPad: ui.group(),
-                    },
-                }),
-                // PlaygroundRequirementsHeader equivalent here when mode == requirements
-                _: ui.spacer(),
-                // Add option menu here, example:
-                // menuButton: ui.menu({formId: "MENU_PLAYGROUND_CONFIG"}),
+                requirements: ui.group(),
+                registeredForms: ui.group(),
+                widgetShowcase: ui.group(),
+                scratchPad: ui.group(),
             },
         }),
+        //         // PlaygroundRequirementsHeader equivalent here when mode == requirements
+        //         _: ui.spacer(),
+        //         // Add option menu here, example:
+        //         // menuButton: ui.menu({formId: "MENU_PLAYGROUND_CONFIG"}),
+        //     },
+        // }),
     }),
     {
         name: 'Playground Conf',
@@ -48,12 +52,16 @@ export const Header_Playground = new Form(
 export const Panel_Playground = observer(function Panel_Playground_(p: {}) {
     const st = useSt()
     const relPathToThisPage = 'src/panels/Panel_Playground/Panel_Playground.tsx' as RelativePath
-    const mode = st.playgroundHeader.fields.header.fields.mode
+    const mode = Header_Playground.fields.mode
+
+    useLayoutEffect(() => {
+        cushy.layout.syncTabTitle('Playground', {}, 'DevPlayground')
+    }, [])
 
     return (
         <>
             <PanelHeaderUI>
-                <FormUI form={st.playgroundHeader} />
+                <FormUI form={Header_Playground} />
                 {mode.value.requirements && <PlaygroundRequirementsHeader />}
             </PanelHeaderUI>
             <div tw='px-1 bg-base-300'>
@@ -165,217 +173,7 @@ const PlaygroundWidgetDisplay = observer(function PlaygroundRequirements_(p: {})
     const st = useSt()
     return (
         <div tw='h-full bg-base-300 p-1 overflow-auto'>
-            <FormUI form={st.playgroundWidgetDisplay} />
+            <FormUI form={FORM_PlaygroundWidgetDisplay} />
         </div>
     )
 })
-export const FORM_PlaygroundWidgetDisplayss = new Form(
-    (ui) => {
-        return { test: ui.bool() }
-    },
-    {
-        name: 'Playground Conf',
-        initialValue: () => readJSON('settings/playground_form_display.json'),
-        onChange: (form) => writeJSON('settings/playground_form_display.json', form.serial),
-    },
-)
-
-export const FORM_PlaygroundWidgetDisplay = new Form(
-    (ui) => {
-        const booleanForm = {
-            check: ui.bool({}),
-            checkLabel: ui.bool({
-                label: false,
-                text: 'Check Label',
-            }),
-            checkLabelIcon: ui.bool({
-                label: false,
-                text: 'Check Label',
-                icon: 'save',
-            }),
-            toggleButton: ui.bool({
-                label: '',
-                text: 'Toggle Button',
-                display: 'button',
-            }),
-            toggleButtonIcon: ui.bool({
-                label: false,
-                text: 'Toggle Button Icon',
-                display: 'button',
-                icon: 'check_box',
-            }),
-            toggleButtonExpand: ui.bool({
-                label: '',
-                text: 'Toggle Button Expand',
-                display: 'button',
-                expand: true,
-            }),
-            toggleButtonExpandIcon: ui.bool({
-                label: '',
-                text: 'Toggle Button Expand',
-                display: 'button',
-                expand: true,
-                icon: 'check_box',
-            }),
-        }
-
-        const intForm = {
-            int: ui.int(),
-            intConstrained: ui.int({ min: 0, max: 100, step: 10 }),
-            intConstrainedSoft: ui.int({ min: 0, max: 100, softMax: 10, step: 10 }),
-            intSuffix: ui.int({ min: 0, max: 100, step: 10, suffix: 'px' }),
-            intLabel: ui.int({ label: false, text: 'Inner Label', min: 0, max: 100, step: 10 }),
-            intLabelSuffix: ui.int({ label: false, text: 'Inner Label Suffix', min: 0, max: 100, step: 10, suffix: 'px' }),
-        }
-
-        const floatForm = {
-            float: ui.float(),
-            floatConstrained: ui.float({ min: 0, max: 100, step: 10 }),
-            floatConstrainedSoft: ui.float({ min: 0, max: 100, softMax: 10, step: 10 }),
-            floatSuffix: ui.float({ min: 0, max: 100, step: 10, suffix: 'px' }),
-            floatLabel: ui.float({ label: false, text: 'Inner Label', min: 0, max: 100, step: 10 }),
-            floatLabelSuffix: ui.float({ label: false, text: 'Inner Label Suffix', min: 0, max: 100, step: 10, suffix: 'px' }),
-        }
-
-        const dateForm = {
-            date: ui.date(),
-            dateTime: ui.datetime(),
-        }
-
-        const emailForm = {
-            email: ui.email(),
-        }
-
-        const enumForm = {
-            choice: ui.fields({
-                enumSelection: ui.choice({
-                    items: Object.fromEntries(Object.entries(ui.enum).map(([key]) => [key, ui.group()])),
-                }),
-            }),
-        }
-
-        const groupForm = {
-            test: ui.group(),
-        }
-
-        const choiceForm = {
-            choice: ui.choice({
-                label: 'Choice',
-                items: { choiceOne: ui.group(), choiceTwo: ui.group(), choiceThree: ui.group() },
-            }),
-            choices: ui.choices({
-                label: 'Choices',
-                items: { choiceOne: ui.group(), choiceTwo: ui.group(), choiceThree: ui.group() },
-            }),
-        }
-
-        return {
-            boolean: ui.group({
-                startCollapsed: true,
-                items: {
-                    aligned: ui.group({
-                        border: false,
-                        items: booleanForm,
-                    }),
-                    notAligned: ui.group({
-                        border: false,
-                        alignLabel: false,
-                        items: booleanForm,
-                    }),
-                },
-            }),
-
-            int: ui.group({
-                startCollapsed: true,
-                items: {
-                    aligned: ui.group({
-                        border: false,
-                        items: intForm,
-                    }),
-                    notAligned: ui.group({
-                        border: false,
-                        alignLabel: false,
-                        items: intForm,
-                    }),
-                },
-            }),
-
-            float: ui.group({
-                startCollapsed: true,
-                items: {
-                    aligned: ui.group({
-                        border: false,
-                        items: floatForm,
-                    }),
-                    notAligned: ui.group({
-                        border: false,
-                        alignLabel: false,
-                        items: floatForm,
-                    }),
-                },
-            }),
-
-            button: ui.group({
-                startCollapsed: true,
-                items: { button: ui.button() },
-            }),
-
-            color: ui.group({
-                startCollapsed: true,
-                items: {
-                    v1: ui.group({
-                        border: false,
-                        items: { color: ui.color({}), colorN: ui.color({ label: false, alignLabel: false }) },
-                    }),
-                    v2: ui.group({
-                        border: false,
-                        items: { color: ui.colorV2({}), colorN: ui.colorV2({ label: false, alignLabel: false }) },
-                    }),
-                },
-            }),
-
-            date: ui.group({
-                items: {
-                    aligned: ui.group({
-                        border: false,
-                        items: dateForm,
-                    }),
-                    notAligned: ui.group({
-                        border: false,
-                        alignLabel: false,
-                        items: dateForm,
-                    }),
-                },
-            }),
-
-            email: ui.group({
-                items: {
-                    aligned: ui.group({ border: false, items: emailForm }),
-                    notAligned: ui.group({ border: false, alignLabel: false, items: emailForm }),
-                },
-            }),
-
-            enum: ui.group({
-                items: { aligned: ui.group({ border: false, items: enumForm }) },
-            }),
-
-            group: ui.group({
-                items: {
-                    group: ui.group({ items: { inside: ui.float() } }),
-                    groupNoAlign: ui.group({ alignLabel: false, items: { inside: ui.float() } }),
-                    groupNoBorder: ui.group({ border: false, items: { inside: ui.float() } }),
-                    groupNoCollapse: ui.group({ collapsed: false, items: { inside: ui.float() } }),
-                },
-            }),
-
-            test: ui.choice({
-                items: choiceForm,
-            }),
-        }
-    },
-    {
-        name: 'Playground Widget Showcase',
-        initialValue: () => readJSON('settings/playground_form_display.json'),
-        onChange: (form) => writeJSON('settings/playground_form_display.json', form.serial),
-    },
-)

@@ -23,7 +23,7 @@ export class RuntimeHosts {
      * - usefull if you want to manually dispatch things
      * */
     get all(): HostL[] {
-        return this.rt.Cushy.db.hosts.findAll()
+        return this.rt.Cushy.db.host.findAll()
     }
 
     /**

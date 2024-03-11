@@ -26,10 +26,10 @@ export class ImageStore {
     }
     //  ------------------- getters
     get image(): Maybe<MediaImageL> {
-        return this.store.st.db.media_images.get(this.imageID)
+        return this.store.st.db.media_image.get(this.imageID)
     }
     get imageOrCrash(): MediaImageL {
-        return this.store.st.db.media_images.getOrThrow(this.imageID!)
+        return this.store.st.db.media_image.getOrThrow(this.imageID!)
     }
     get data(): ImageStoreT {
         return this.store.get()

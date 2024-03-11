@@ -45,19 +45,17 @@ export const ui_subform_Scribble_Preprocessor = () => {
 export const ui_subform_Scribble_Lines = () => {
     const form = getCurrentForm()
     return form.group({
-        label: 'Settings',
-        startCollapsed: true,
-        items: () => ({
-            ...cnet_preprocessor_ui_common(form),
-        }),
+        label: 'Scribble Lines',
+        // startCollapsed: true,
+        items: () => cnet_preprocessor_ui_common(form),
     })
 }
 
 export const ui_subform_Fake_Scribble_Lines = () => {
     const form = getCurrentForm()
     return form.group({
-        label: 'Settings',
-        startCollapsed: true,
+        label: 'Fake Scribble',
+        // startCollapsed: true,
         items: () => ({
             ...cnet_preprocessor_ui_common(form),
             safe: form.bool({ default: true }),
@@ -68,8 +66,8 @@ export const ui_subform_Fake_Scribble_Lines = () => {
 export const ui_subform_Scribble_XDoG_Lines = () => {
     const form = getCurrentForm()
     return form.group({
-        label: 'Settings',
-        startCollapsed: true,
+        label: 'Scribble_XDoG_Lines',
+        // startCollapsed: true,
         items: () => ({
             ...cnet_preprocessor_ui_common(form),
             threshold: form.int({ default: 32, min: 0, max: 64 }),

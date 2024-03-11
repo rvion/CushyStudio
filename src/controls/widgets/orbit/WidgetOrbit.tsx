@@ -1,5 +1,6 @@
 import type { Form } from '../../Form'
-import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { IWidget } from 'src/controls/IWidget'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -8,6 +9,7 @@ import { hash } from 'ohash'
 import { WidgetDI } from '../WidgetUI.DI'
 import { mkEnglishSummary } from './_orbitUtils'
 import { WidgetOrbitUI } from './WidgetOrbitUI'
+import { applyWidgetMixinV2 } from 'src/controls/Mixins'
 
 export type OrbitData = {
     azimuth: number
@@ -15,9 +17,7 @@ export type OrbitData = {
 }
 
 // CONFIG
-export type Widget_orbit_config = WidgetConfigFields<{
-    default?: Partial<OrbitData>
-}>
+export type Widget_orbit_config = WidgetConfigFields<{ default?: Partial<OrbitData> }, Widget_orbit_types>
 
 // SERIAL
 export type Widget_orbit_serial = WidgetSerialFields<{
@@ -43,10 +43,10 @@ export type Widget_orbit_types = {
 }
 
 // STATE
-export interface Widget_orbit extends Widget_orbit_types {}
+export interface Widget_orbit extends Widget_orbit_types, IWidgetMixins {}
 export class Widget_orbit implements IWidget<Widget_orbit_types> {
-    HeaderUI = WidgetOrbitUI
-    BodyUI = undefined
+    DefaultHeaderUI = WidgetOrbitUI
+    DefaultBodyUI = undefined
     get serialHash () { return hash(this.value) } // prettier-ignore
     id: string
     type: 'orbit' = 'orbit'
@@ -75,7 +75,12 @@ export class Widget_orbit implements IWidget<Widget_orbit_types> {
 
     serial: Widget_orbit_serial
 
-    constructor(public form: Form<any>, public config: Widget_orbit_config, serial?: Widget_orbit_serial) {
+    constructor(
+        //
+        public form: Form<any>,
+        public config: Widget_orbit_config,
+        serial?: Widget_orbit_serial,
+    ) {
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? {
             type: 'orbit',
@@ -87,6 +92,7 @@ export class Widget_orbit implements IWidget<Widget_orbit_types> {
             },
             id: this.id,
         }
+        applyWidgetMixinV2(this)
         makeAutoObservable(this)
     }
     get value(): Widget_orbit_output {

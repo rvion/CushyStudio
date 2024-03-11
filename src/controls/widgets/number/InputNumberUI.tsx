@@ -1,7 +1,6 @@
 import { makeAutoObservable, runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
-import React from 'react'
-import { useEffect, useMemo } from 'react'
+import React, { useEffect, useMemo } from 'react'
 
 import { parseFloatNoRoundingErr } from 'src/utils/misc/parseFloatNoRoundingErr'
 
@@ -348,6 +347,11 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
                                 } else if (ev.key === 'ArrowDown') {
                                     uist.decrement()
                                     ev.preventDefault()
+                                } else {
+                                    // 2024-03-11 rvion: we just stop propagation here,
+                                    // | just in case parents (e.g. unified canvas) have
+                                    // | dedicated shortcuts for single letter or singler digit key
+                                    ev.stopPropagation()
                                 }
                             }
                         }}

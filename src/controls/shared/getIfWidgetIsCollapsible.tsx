@@ -2,7 +2,7 @@ import type { IWidget } from '../IWidget'
 
 export const getIfWidgetIsCollapsible = (widget: IWidget): boolean => {
     if (widget.config.collapsed != null) return widget.config.collapsed //
-    if (!widget.BodyUI) return false
+    if (!widget.DefaultBodyUI) return false // 🔴 <-- probably a mistake here
     if (widget.config.label === false) return false
 
     // 🔶 commenting this check because it should be handled by the widget.hasBlock already

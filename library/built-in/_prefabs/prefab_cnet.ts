@@ -17,51 +17,59 @@ import { bang } from 'src/utils/misc/bang'
 // 🅿️ CNET UI -----------------------------------------------------------
 export const ui_cnet = () => {
     const form: FormBuilder = getCurrentForm()
-    return form.groupOpt({
+    const applyDuringUpscale = form
+        .bool({
+            tooltip: 'Use the controlnet conditioning for the upscale pass if enabled',
+            label2: 'Apply during upscale',
+            label: false,
+            default: false,
+        })
+        .shared('applyDuringUpscale')
+
+    const cnetList = form.list({
         label: 'ControlNets',
         tooltip: `Instructional resources:\nhttps://github.com/lllyasviel/ControlNet\nhttps://stable-diffusion-art.com/controlnet/`,
-        requirements: [
-            //
-            { type: 'customNodesByTitle', title: `ComfyUI's ControlNet Auxiliary Preprocessors` },
-        ],
-        items: () => ({
-            applyDuringUpscale: form.bool({
-                tooltip: 'Use the controlnet conditioning for the upscale pass if enabled',
-                label2: 'Apply during upscale',
-                label: false,
-                default: false,
-            }),
-            controlNetList: form.list({
-                // label: false,
-                element: () =>
-                    form.group({
-                        label: 'Controlnet Image',
-                        items: () => ({
-                            image: form.image({}),
-                            resize: form.bool({ default: true }),
-                            cnets: form.choices({
-                                // label: false, //'Pick Cnets=>',
-                                appearance: 'tab',
-                                placeholder: 'ControlNets...',
-                                items: {
-                                    IPAdapter: ui_subform_IPAdapter(),
-                                    FaceID: ui_IPAdapterFaceID(),
-                                    Pose: ui_subform_OpenPose(),
-                                    Canny: ui_subform_Canny(),
-                                    Depth: ui_subform_Depth(),
-                                    Normal: ui_subform_Normal(),
-                                    Tile: ui_subform_Tile(),
-                                    Scribble: ui_subform_Scribble(),
-                                    Lineart: ui_subform_Lineart(),
-                                    SoftEdge: ui_subform_SoftEdge(),
-                                    Sketch: ui_subform_Sketch(),
-                                },
-                            }),
-                        }),
+        requirements: [{ type: 'customNodesByTitle', title: `ComfyUI's ControlNet Auxiliary Preprocessors` }],
+        // label: false,
+        element: () =>
+            form.group({
+                label: 'Controlnet Image',
+                items: () => ({
+                    image: form.image({}),
+                    resize: form.bool({ default: true }),
+                    applyDuringUpscale: applyDuringUpscale,
+                    cnets: form.choices({
+                        // label: false, //'Pick Cnets=>',
+                        label: false,
+                        border: false,
+                        appearance: 'tab',
+                        // justify: 'left',
+                        placeholder: 'ControlNets...',
+                        items: {
+                            IPAdapter: ui_subform_IPAdapter(),
+                            FaceID: ui_IPAdapterFaceID(),
+                            Pose: ui_subform_OpenPose(),
+                            Canny: ui_subform_Canny(),
+                            Depth: ui_subform_Depth(),
+                            Normal: ui_subform_Normal(),
+                            Tile: ui_subform_Tile(),
+                            Scribble: ui_subform_Scribble(),
+                            Lineart: ui_subform_Lineart(),
+                            SoftEdge: ui_subform_SoftEdge(),
+                            Sketch: ui_subform_Sketch(),
+                        },
                     }),
+                }),
             }),
-        }),
     })
+    return cnetList
+    // return form.groupOpt({
+
+    //     items: () => ({
+    //         applyDuringUpscale: applyDuringUpscale.hidden(), // so value is accessible at runtime
+    //         controlNetList: cnetList,
+    //     }),
+    // })
 }
 
 // 🅿️ CNET COMMON FORM ===================================================
@@ -81,7 +89,7 @@ export const cnet_ui_common = (form: FormBuilder) => ({
 
 export const cnet_preprocessor_ui_common = (form: FormBuilder) => ({
     //preview: form.inlineRun({ text: 'Preview', kind: 'special' }),
-    saveProcessedImage: form.bool({ default: false }),
+    saveProcessedImage: form.bool({ default: false, expand: true, label: 'Save image' }),
     //resolution: form.int({ default: 512, min: 512, max: 1024, step: 512 }),
 })
 
@@ -102,9 +110,13 @@ export type Cnet_return = {
     ckpt_return: _MODEL
 }
 
-export const run_cnet = async (opts: OutputFor<typeof ui_cnet>, ctx: Cnet_args) => {
+export const run_cnet = async (
+    //
+    opts: OutputFor<typeof ui_cnet>,
+    ctx: Cnet_args,
+) => {
     const run = getCurrentRun()
-    const cnetList = opts?.controlNetList
+    const cnetList = opts // opts?.controlNetList
     let args: Cnet_args = { ...ctx }
 
     if (cnetList) {
@@ -139,47 +151,65 @@ export const run_cnet = async (opts: OutputFor<typeof ui_cnet>, ctx: Cnet_args) 
             // CANNY ===========================================================
             if (Canny) {
                 const y = run_cnet_canny(Canny, image, resolution)
-                _apply_cnet(args, Canny.strength, y.image, y.cnet_name)
+                const startAt = Canny.advanced.startAtStepPercent
+                const endAt = Canny.advanced.endAtStepPercent
+                _apply_cnet(args, Canny.strength, startAt, endAt, y.image, y.cnet_name)
             }
             // POSE ===========================================================
             if (Pose) {
                 const y = run_cnet_openPose(Pose, image, resolution)
-                _apply_cnet(args, Pose.strength, y.image, y.cnet_name)
+                const startAt = Pose.advanced.startAtStepPercent
+                const endAt = Pose.advanced.endAtStepPercent
+                _apply_cnet(args, Pose.strength, startAt, endAt, y.image, y.cnet_name)
             }
             // DEPTH ===========================================================
             if (Depth) {
                 const y = run_cnet_Depth(Depth, image, resolution)
-                _apply_cnet(args, Depth.strength, y.image, y.cnet_name)
+                const startAt = Depth.advanced.startAtStepPercent
+                const endAt = Depth.advanced.endAtStepPercent
+                _apply_cnet(args, Depth.strength, startAt, endAt, y.image, y.cnet_name)
             }
             // Normal ===========================================================
             if (Normal) {
                 const y = run_cnet_Normal(Normal, image, resolution)
-                _apply_cnet(args, Normal.strength, y.image, y.cnet_name)
+                const startAt = Normal.advanced.startAtStepPercent
+                const endAt = Normal.advanced.endAtStepPercent
+                _apply_cnet(args, Normal.strength, startAt, endAt, y.image, y.cnet_name)
             }
             // Tile ===========================================================
             if (Tile) {
                 const y = run_cnet_Tile(Tile, image, resolution)
-                _apply_cnet(args, Tile.strength, y.image, y.cnet_name)
+                const startAt = Tile.advanced.startAtStepPercent
+                const endAt = Tile.advanced.endAtStepPercent
+                _apply_cnet(args, Tile.strength, startAt, endAt, y.image, y.cnet_name)
             }
             // Scribble ===========================================================
             if (Scribble) {
                 const y = run_cnet_Scribble(Scribble, image, resolution)
-                _apply_cnet(args, Scribble.strength, y.image, y.cnet_name)
+                const startAt = Scribble.advanced.startAtStepPercent
+                const endAt = Scribble.advanced.endAtStepPercent
+                _apply_cnet(args, Scribble.strength, startAt, endAt, y.image, y.cnet_name)
             }
             // Lineart ===========================================================
             if (Lineart) {
                 const y = run_cnet_Lineart(Lineart, image, resolution)
-                _apply_cnet(args, Lineart.strength, y.image, y.cnet_name)
+                const startAt = Lineart.advanced.startAtStepPercent
+                const endAt = Lineart.advanced.endAtStepPercent
+                _apply_cnet(args, Lineart.strength, startAt, endAt, y.image, y.cnet_name)
             }
             // SoftEdge ===========================================================
             if (SoftEdge) {
                 const y = run_cnet_SoftEdge(SoftEdge, image, resolution)
-                _apply_cnet(args, SoftEdge.strength, y.image, y.cnet_name)
+                const startAt = SoftEdge.advanced.startAtStepPercent
+                const endAt = SoftEdge.advanced.endAtStepPercent
+                _apply_cnet(args, SoftEdge.strength, startAt, endAt, y.image, y.cnet_name)
             }
             // Sketch ===========================================================
             if (Sketch) {
                 const y = run_cnet_Sketch(Sketch, image)
-                _apply_cnet(args, Sketch.strength, y.image, y.cnet_name)
+                const startAt = Sketch.advanced.startAtStepPercent
+                const endAt = Sketch.advanced.endAtStepPercent
+                _apply_cnet(args, Sketch.strength, startAt, endAt, y.image, y.cnet_name)
             }
             // MLSD ===========================================================
             // Reference (do we need this? it is basically ipadapter) ===========================================================
@@ -199,10 +229,10 @@ export const run_cnet = async (opts: OutputFor<typeof ui_cnet>, ctx: Cnet_args) 
         cnet_negative: args.negative,
 
         // forward either the original or the transformed conditioning
-        post_cnet_positive: opts?.applyDuringUpscale //
+        post_cnet_positive: opts?.[0]?.applyDuringUpscale //
             ? args.positive
             : ctx.positive, // generally upscales are cleaner if not controlled
-        post_cnet_negative: opts?.applyDuringUpscale //
+        post_cnet_negative: opts?.[0]?.applyDuringUpscale //
             ? args.negative
             : ctx.negative,
     }
@@ -212,6 +242,8 @@ const _apply_cnet = (
     args: Cnet_args,
     //
     strength: number,
+    startPct: number,
+    endPct: number,
     image: _IMAGE,
     cnet_name: Enum_ControlNetLoader_control_net_name,
 ) => {
@@ -226,6 +258,8 @@ const _apply_cnet = (
             model: run.AUTO,
             control_net_name: /* 🔴 */ bang(cnet_name),
         }),
+        start_percent: startPct,
+        end_percent: endPct,
     })
     args.positive = cnet_node.outputs.positive
     args.negative = cnet_node.outputs.negative

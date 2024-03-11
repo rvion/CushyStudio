@@ -1,5 +1,6 @@
-import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 import type { Form } from 'src/controls/Form'
+import type { IWidget } from 'src/controls/IWidget'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -7,14 +8,18 @@ import { hash } from 'ohash'
 
 import { WidgetDI } from '../WidgetUI.DI'
 import { WidgetString_HeaderUI, WidgetString_TextareaBodyUI, WidgetString_TextareaHeaderUI } from './WidgetStringUI'
+import { applyWidgetMixinV2 } from 'src/controls/Mixins'
 
 // CONFIG
-export type Widget_string_config = WidgetConfigFields<{
-    default?: string
-    textarea?: boolean
-    placeHolder?: string
-    inputType?: 'text' | 'password' | 'email' | 'tel' | 'url' | 'time' | 'date' | 'datetime-local' | 'color'
-}>
+export type Widget_string_config = WidgetConfigFields<
+    {
+        default?: string
+        textarea?: boolean
+        placeHolder?: string
+        inputType?: 'text' | 'password' | 'email' | 'tel' | 'url' | 'time' | 'date' | 'datetime-local' | 'color'
+    },
+    Widget_string_types
+>
 
 // SERIAL
 export type Widget_string_serial = WidgetSerialFields<{ type: 'str'; val?: string }>
@@ -32,13 +37,13 @@ export type Widget_string_types = {
 }
 
 // STATE
-export interface Widget_string extends Widget_string_types {}
+export interface Widget_string extends Widget_string_types, IWidgetMixins {}
 export class Widget_string implements IWidget<Widget_string_types> {
-    get HeaderUI() {
+    get DefaultHeaderUI() {
         if (this.config.textarea) return WidgetString_TextareaHeaderUI
         else return WidgetString_HeaderUI
     }
-    get BodyUI() {
+    get DefaultBodyUI() {
         if (this.config.textarea) return WidgetString_TextareaBodyUI
         return undefined
     }
@@ -60,6 +65,7 @@ export class Widget_string implements IWidget<Widget_string_types> {
             collapsed: config.startCollapsed,
             id: this.id,
         }
+        applyWidgetMixinV2(this)
         makeAutoObservable(this)
     }
 

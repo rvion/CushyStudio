@@ -1,5 +1,5 @@
 import type { Form } from '../../Form'
-import type { IWidget, WidgetConfigFields, WidgetSerialFields } from 'src/controls/IWidget'
+import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from 'src/controls/IWidget'
 import type { AspectRatio, CushySize, CushySizeByRatio, SDModelType } from 'src/controls/widgets/size/WidgetSizeTypes'
 
 import { makeAutoObservable } from 'mobx'
@@ -9,14 +9,18 @@ import { hash } from 'ohash'
 import { WidgetDI } from '../WidgetUI.DI'
 import { ResolutionState } from './ResolutionState'
 import { WigetSize_BlockUI, WigetSize_LineUI } from './WidgetSizeUI'
+import { applyWidgetMixinV2 } from 'src/controls/Mixins'
 
 // CONFIG
-export type Widget_size_config = WidgetConfigFields<{
-    default?: CushySizeByRatio
-    min?: number
-    max?: number
-    step?: number
-}>
+export type Widget_size_config = WidgetConfigFields<
+    {
+        default?: CushySizeByRatio
+        min?: number
+        max?: number
+        step?: number
+    },
+    Widget_size_types
+>
 
 // SERIAL
 export type Widget_size_serial = WidgetSerialFields<CushySize>
@@ -34,10 +38,10 @@ export type Widget_size_types = {
 }
 
 // STATE
-export interface Widget_size extends Widget_size_types {} // prettier-ignore
+export interface Widget_size extends Widget_size_types, IWidgetMixins {} // prettier-ignore
 export class Widget_size implements IWidget<Widget_size_types> {
-    HeaderUI = WigetSize_LineUI
-    BodyUI = WigetSize_BlockUI
+    DefaultHeaderUI = WigetSize_LineUI
+    DefaultBodyUI = WigetSize_BlockUI
     get sizeHelper(): ResolutionState {
         // should only be executed once
         const state = new ResolutionState(this.serial)
@@ -70,6 +74,7 @@ export class Widget_size implements IWidget<Widget_size_types> {
                 width,
             }
         }
+        applyWidgetMixinV2(this)
         makeAutoObservable(this, { sizeHelper: false })
     }
     get value(): Widget_size_output {
