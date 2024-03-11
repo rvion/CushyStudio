@@ -28,7 +28,7 @@ export class DraftL {
     /** expand all top-level form entries */
     expandTopLevelFormEntries = () => this.form?.root?.expandAllEntries()
 
-    appRef = new LiveRef<this, CushyAppL>(this, 'appID', () => this.db.cushy_apps)
+    appRef = new LiveRef<this, CushyAppL>(this, 'appID', 'cushy_app')
 
     openOrFocusTab = () => {
         this.st.layout.FOCUS_OR_CREATE('Draft', { draftID: this.id }, 'LEFT_PANE_TABSET')
@@ -186,7 +186,7 @@ export class DraftL {
         // debugger
         const graph = startGraph.clone()
         // 4. create step
-        const step = this.db.steps.create({
+        const step = this.db.step.create({
             name: this.data.title,
             appID: this.data.appID,
             draftID: this.data.id,

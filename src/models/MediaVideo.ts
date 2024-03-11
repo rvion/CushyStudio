@@ -7,8 +7,8 @@ import { LiveRefOpt } from 'src/db/LiveRefOpt'
 
 export interface MediaVideoL extends LiveInstance<TABLES['media_video']> {}
 export class MediaVideoL {
-    step = new LiveRefOpt<this, StepL>(this, 'stepID', () => this.db.steps)
-    prompt = new LiveRefOpt<this, ComfyPromptL>(this, 'promptID', () => this.db.comfy_prompts)
+    step = new LiveRefOpt<this, StepL>(this, 'stepID', 'step')
+    prompt = new LiveRefOpt<this, ComfyPromptL>(this, 'promptID', 'comfy_prompt')
 
     get url() {
         return this.data.url

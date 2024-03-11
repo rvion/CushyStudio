@@ -27,13 +27,12 @@ export const DraftMenuJumpUI = observer(function DraftMenuJumpUI_(p: {
 const DraftListUI = observer(function DraftListUI_(p: { app: CushyAppL }) {
     return (
         <div>
-            {/* 🔴 PERF: TODO: make that lazyly instanciated. */}
-            {p.app.drafts2.map(({ id, title, lastRunAt }) => {
+            {p.app.lastExecutedDrafts.map(({ id, title, lastRunAt }) => {
                 return (
                     <MenuItem
                         key={id}
                         onClick={() => {
-                            const draft = cushy.db.drafts.getOrThrow(id)
+                            const draft = cushy.db.draft.getOrThrow(id)
                             draft.openOrFocusTab()
                         }}
                     >

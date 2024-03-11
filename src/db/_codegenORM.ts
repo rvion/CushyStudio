@@ -215,6 +215,7 @@ export const _codegenORM = (store: {
     out1 += '}\n'
 
     out1 += `export type LiveDBSubKeys = ${LiveDBSubKeys.join(' | ')}\n`
+    out1 += `export const liveDBSubKeys = new Set([${LiveDBSubKeys.join(', ')}]) // prettier-ignore \n`
 
     // console.log(out1)
     writeFileSync('src/db/TYPES.gen.ts', out1)

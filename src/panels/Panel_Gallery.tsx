@@ -4,10 +4,10 @@ import { useSt } from '../state/stateContext'
 import { ImageUI } from '../widgets/galleries/ImageUI'
 import { PanelHeaderUI } from './PanelHeader'
 import { FormUI } from 'src/controls/FormUI'
-import { OutputPreviewWrapperUI } from 'src/outputs/OutputPreviewWrapperUI'
-import { SelectUI } from 'src/rsuite/SelectUI'
 import { SpacerUI } from 'src/controls/widgets/spacer/SpacerUI'
+import { OutputPreviewWrapperUI } from 'src/outputs/OutputPreviewWrapperUI'
 import { RevealUI } from 'src/rsuite/reveal/RevealUI'
+import { SelectUI } from 'src/rsuite/SelectUI'
 
 export const Panel_Gallery = observer(function VerticalGalleryUI_(p: {}) {
     const st = useSt()
@@ -54,7 +54,7 @@ export const Panel_Gallery = observer(function VerticalGalleryUI_(p: {}) {
                     key='45'
                     placeholder='filter by app'
                     label='app'
-                    options={() => cushy.db.cushy_apps.live((q) => q.select(['id', 'name']).compile()).all}
+                    options={() => cushy.db.cushy_app.selectRaw((q) => q.select(['id', 'name']))}
                     getLabelText={(i) => i.name ?? 'unnamed'}
                     value={() => cushy.galleryFilterAppName}
                     equalityCheck={(a, b) => a.id === b.id}
@@ -69,7 +69,7 @@ export const Panel_Gallery = observer(function VerticalGalleryUI_(p: {}) {
             <div className='flex flex-wrap overflow-auto'>
                 {/* <LatentPreviewUI /> */}
                 {st.imageToDisplay.all.map((img_) => {
-                    const img = st.db.media_images.get(img_.id)!
+                    const img = st.db.media_image.get(img_.id)!
                     return (
                         <OutputPreviewWrapperUI //
                             size={st.galleryConf.get('gallerySize')}

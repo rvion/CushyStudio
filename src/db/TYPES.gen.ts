@@ -1194,6 +1194,8 @@ export const TABLE_host = new T.TableInfo<'host', HostT, HostL, NewHost, HostUpd
 
 export type TABLES = typeof schemas
 
+export type TableName = keyof TABLES
+
 // prettier-ignore
 export const schemas = {
     comfy_workflow       : TABLE_comfy_workflow,
@@ -1235,8 +1237,48 @@ export type KyselyTables = {
     tree_entry: TreeEntryTable
     host: HostTable
 }
+// export type TableName =
+//     | 'comfy_workflow'
+//     | 'draft'
+//     | 'project'
+//     | 'step'
+//     | 'comfy_prompt'
+//     | 'comfy_schema'
+//     | 'media_text'
+//     | 'media_video'
+//     | 'media_image'
+//     | 'media_3d_displacement'
+//     | 'runtime_error'
+//     | 'media_splat'
+//     | 'custom_data'
+//     | 'cushy_script'
+//     | 'cushy_app'
+//     | 'auth'
+//     | 'tree_entry'
+//     | 'host'
+
 export type LiveDBSubKeys =
+    // tables
+    | 'comfy_workflow'
+    | 'draft'
+    | 'project'
+    | 'step'
+    | 'comfy_prompt'
+    | 'comfy_schema'
+    | 'media_text'
+    | 'media_video'
+    | 'media_image'
+    | 'media_3d_displacement'
+    | 'runtime_error'
+    | 'media_splat'
+    | 'custom_data'
+    | 'cushy_script'
+    | 'cushy_app'
+    | 'auth'
+    | 'tree_entry'
+    | 'host'
     | 'comfy_workflow.id'
+    // columns
     | 'comfy_workflow.createdAt'
     | 'comfy_workflow.updatedAt'
     | 'comfy_workflow.comfyPromptJSON'
@@ -1393,3 +1435,4 @@ export type LiveDBSubKeys =
     | 'host.absolutPathToDownloadModelsTo'
     | 'host.isVirtual'
     | 'host.isReadonly'
+export const liveDBSubKeys = new Set(['comfy_workflow.id', 'comfy_workflow.createdAt', 'comfy_workflow.updatedAt', 'comfy_workflow.comfyPromptJSON', 'comfy_workflow.stepID', 'comfy_workflow.metadata', 'draft.id', 'draft.createdAt', 'draft.updatedAt', 'draft.title', 'draft.formSerial', 'draft.appID', 'draft.illustration', 'draft.isFavorite', 'draft.lastRunAt', 'project.id', 'project.createdAt', 'project.updatedAt', 'project.name', 'project.rootGraphID', 'project.currentApp', 'project.currentDraftID', 'project.filterNSFW', 'project.autostartDelay', 'project.autostartMaxDelay', 'step.id', 'step.createdAt', 'step.updatedAt', 'step.name', 'step.formSerial', 'step.outputGraphID', 'step.status', 'step.isExpanded', 'step.appID', 'step.draftID', 'comfy_prompt.id', 'comfy_prompt.createdAt', 'comfy_prompt.updatedAt', 'comfy_prompt.stepID', 'comfy_prompt.graphID', 'comfy_prompt.executed', 'comfy_prompt.error', 'comfy_prompt.status', 'comfy_schema.id', 'comfy_schema.createdAt', 'comfy_schema.updatedAt', 'comfy_schema.spec', 'comfy_schema.embeddings', 'comfy_schema.hostID', 'media_text.id', 'media_text.createdAt', 'media_text.updatedAt', 'media_text.kind', 'media_text.content', 'media_text.stepID', 'media_text.title', 'media_video.id', 'media_video.createdAt', 'media_video.updatedAt', 'media_video.absPath', 'media_video.stepID', 'media_video.promptID', 'media_video.filePath', 'media_video.url', 'media_image.id', 'media_image.createdAt', 'media_image.updatedAt', 'media_image.star', 'media_image.promptID', 'media_image.stepID', 'media_image.promptNodeID', 'media_image.width', 'media_image.height', 'media_image.fileSize', 'media_image.hash', 'media_image.path', 'media_image.comfyUIInfos', 'media_image.type', 'media_image.orientation', 'media_image.tags', 'media_image.thumbnail', 'media_3d_displacement.id', 'media_3d_displacement.createdAt', 'media_3d_displacement.updatedAt', 'media_3d_displacement.width', 'media_3d_displacement.height', 'media_3d_displacement.image', 'media_3d_displacement.depthMap', 'media_3d_displacement.normalMap', 'media_3d_displacement.stepID', 'media_3d_displacement.promptID', 'runtime_error.id', 'runtime_error.createdAt', 'runtime_error.updatedAt', 'runtime_error.message', 'runtime_error.infos', 'runtime_error.promptID', 'runtime_error.graphID', 'runtime_error.stepID', 'media_splat.id', 'media_splat.createdAt', 'media_splat.updatedAt', 'media_splat.stepID', 'media_splat.url', 'custom_data.id', 'custom_data.createdAt', 'custom_data.updatedAt', 'custom_data.json', 'cushy_script.id', 'cushy_script.createdAt', 'cushy_script.updatedAt', 'cushy_script.path', 'cushy_script.code', 'cushy_script.lastEvaluatedAt', 'cushy_script.lastSuccessfulEvaluationAt', 'cushy_script.metafile', 'cushy_script.lastExtractedAt', 'cushy_app.id', 'cushy_app.createdAt', 'cushy_app.updatedAt', 'cushy_app.guid', 'cushy_app.scriptID', 'cushy_app.name', 'cushy_app.illustration', 'cushy_app.description', 'cushy_app.tags', 'cushy_app.publishedAsUserID', 'cushy_app.publishedAt', 'cushy_app.isFavorite', 'cushy_app.canStartFromImage', 'cushy_app.lastRunAt', 'auth.id', 'auth.createdAt', 'auth.updatedAt', 'auth.provider_token', 'auth.refresh_token', 'auth.token_type', 'auth.access_token', 'auth.provider_refresh_token', 'auth.expires_at', 'auth.expires_in', 'tree_entry.id', 'tree_entry.createdAt', 'tree_entry.updatedAt', 'tree_entry.isExpanded', 'host.id', 'host.createdAt', 'host.updatedAt', 'host.name', 'host.hostname', 'host.port', 'host.useHttps', 'host.isLocal', 'host.absolutePathToComfyUI', 'host.absolutPathToDownloadModelsTo', 'host.isVirtual', 'host.isReadonly']) // prettier-ignore

@@ -11,9 +11,8 @@ import { CushyAppL } from './CushyApp'
 import { Executable } from './Executable'
 import { replaceImportsWithSyncImport } from 'src/back/ImportStructure'
 import { App, AppRef, SchemaDict } from 'src/cards/App'
-import { LiveCollection } from 'src/db/LiveCollection'
 import { SQLITE_false, SQLITE_true } from 'src/db/SQLITE_boolean'
-import { asCushyAppID, type CushyScriptTable, type TABLES } from 'src/db/TYPES.gen'
+import { asCushyAppID, type TABLES } from 'src/db/TYPES.gen'
 import { extractErrorMessage } from 'src/utils/formatters/extractErrorMessage'
 import { asRelativePath } from 'src/utils/fs/pathUtils'
 
@@ -31,14 +30,17 @@ export class CushyScriptL {
     }
 
     _apps_viaScript: Maybe<CushyAppL[]> = null
-    private _apps_viaDB = new LiveCollection<TABLES['cushy_app']>({
-        table: () => this.db.cushy_apps,
-        where: () => ({ scriptID: this.id }),
-    })
+    get _apps_viaDB() {
+        return cushy.db.cushy_app.select((q) => q.where('scriptID', '=', this.id), ['cushy_script'])
+    }
+    // private _apps_viaDB = new LiveCollection<TABLES['cushy_app']>({
+    //     table: () => this.db.cushy_app,
+    //     where: () => ({ scriptID: this.id }),
+    // })
 
     get apps(): CushyAppL[] {
         if (this._apps_viaScript != null) return this._apps_viaScript
-        return this._apps_viaDB.items
+        return this._apps_viaDB
     }
 
     // ⏸️ get apps_viaDB(): CushyAppL[] {
@@ -139,7 +141,7 @@ export class CushyScriptL {
 
         runInAction(() => {
             this._apps_viaScript = this._EXECUTABLES!.map((executable): CushyAppL => {
-                const app = this.db.cushy_apps.upsert({
+                const app = this.db.cushy_app.upsert({
                     id: executable.appID,
                     scriptID: this.id,
                     description: executable.description,

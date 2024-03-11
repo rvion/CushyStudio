@@ -119,12 +119,7 @@ export class ComfySchemaL {
         // this.onUpdate()
     }
 
-    hostRef = new LiveRef<this, HostL>(
-        //
-        this,
-        'hostID',
-        () => this.db.hosts,
-    )
+    hostRef = new LiveRef<this, HostL>(this, 'hostID', 'host')
     // get host(): HostL { return this.hostRef.item } // prettier-ignore
     // get hostName(): string { return this.hostRef.item.data.name } // prettier-ignore
 

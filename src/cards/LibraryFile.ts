@@ -80,7 +80,7 @@ export class LibraryFile {
     // })
 
     get scriptInDB(): Maybe<CushyScriptL> {
-        return this.st.db.cushy_scripts.get(this.relPath) // script is IS the relPath
+        return this.st.db.cushy_script.get(this.relPath) // script is IS the relPath
         // return this.st.db.cushy_scripts.findOne({ path: this.relPath })
     }
 
@@ -148,7 +148,7 @@ export class LibraryFile {
             }
 
             // if we have already attempted extraction once in a previous session, return it
-            const scriptFromDB = this.st.db.cushy_scripts.get(this.relPath)
+            const scriptFromDB = this.st.db.cushy_script.get(this.relPath)
             if (scriptFromDB) {
                 this.currentScriptExtractionPromise = null
                 return { type: 'cached', script: scriptFromDB }
@@ -178,7 +178,7 @@ export class LibraryFile {
             this.currentScriptExtractionPromise.resolve(RESULT)
             this.currentScriptExtractionPromise = null
 
-            const scriptFromDB = this.st.db.cushy_scripts.get(this.relPath)
+            const scriptFromDB = this.st.db.cushy_script.get(this.relPath)
             if (scriptFromDB == null) {
                 this.UPSERT_SCRIPT(`/* ERROR */`)
             }
@@ -369,7 +369,7 @@ export class LibraryFile {
         console.groupCollapsed(`[👙] script extracted for ${this.relPath}`)
         console.log(codeJS)
         console.groupEnd()
-        const script = this.st.db.cushy_scripts.upsert({
+        const script = this.st.db.cushy_script.upsert({
             id: asCushyScriptID(this.relPath),
             code: codeJS,
             path: this.relPath,

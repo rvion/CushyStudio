@@ -9,7 +9,7 @@ export const _duplicateCurrentDraft = (st: STATE) => {
         console.log(`❌ _duplicateCurrentDraft failed: current tab is not Draft`)
         return
     }
-    const draft = st.db.drafts.get(DraftPanelProps.draftID)
+    const draft = st.db.draft.get(DraftPanelProps.draftID)
     if (draft == null) return console.log(`❌ _duplicateCurrentDraft failed: draft is null`)
 
     draft.duplicateAndFocus()

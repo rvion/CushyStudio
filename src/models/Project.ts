@@ -14,8 +14,8 @@ export const asProjectID = (s: string): ProjectID => s as any
 /** a thin wrapper around a single Project somewhere in a .ts file */
 export interface ProjectL extends LiveInstance<TABLES['project']> {}
 export class ProjectL {
-    rootGraph = new LiveRef<this, ComfyWorkflowL>(this, 'rootGraphID', () => this.db.comfy_workflow)
-    draft = new LiveRefOpt<this, DraftL>(this, 'currentDraftID', () => this.db.drafts)
+    rootGraph = new LiveRef<this, ComfyWorkflowL>(this, 'rootGraphID', 'comfy_workflow')
+    draft = new LiveRefOpt<this, DraftL>(this, 'currentDraftID', 'draft')
 
     get filterNSFW(): boolean {
         return this.data.filterNSFW ? true : false

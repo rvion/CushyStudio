@@ -6,5 +6,5 @@ import { LiveRefOpt } from 'src/db/LiveRefOpt'
 
 export interface MediaTextL extends LiveInstance<TABLES['media_text']> {}
 export class MediaTextL {
-    step = new LiveRefOpt<this, StepL>(this, 'stepID', () => this.db.steps)
+    step = new LiveRefOpt<this, StepL>(this, 'stepID', 'step')
 }

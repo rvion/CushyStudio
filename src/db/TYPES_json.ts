@@ -95,7 +95,19 @@ export class TableInfo<
         // ].join(' ')
     }
 
-    hydrateJSONFields = (data: any): T => {
+    // TODO: use
+    hydrateJSONFields_skipMissingData = (data: any): T => {
+        if (data == null) debugger
+        for (const col of this.cols) {
+            if (col.type !== 'json') continue
+            const rawCol = data[col.name]
+            if (rawCol == null) continue
+            data[col.name] = JSON.parse(rawCol)
+        }
+        return data
+    }
+
+    hydrateJSONFields_crashOnMissingData = (data: any): T => {
         if (data == null) debugger
         for (const col of this.cols) {
             if (col.type !== 'json') continue

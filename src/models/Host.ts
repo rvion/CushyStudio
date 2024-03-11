@@ -104,7 +104,7 @@ export class HostL {
         this.embeddingsPath = this.st.resolve(this.fileCacheFolder, asRelativePath(`embeddings.json`))
         this.sdkDTSPath = this.st.resolve(this.fileCacheFolder, asRelativePath(`sdk.dts.txt`))
         const associatedSchemaID = asComfySchemaID(this.id)
-        this.schema = this.st.db.comfy_schemas.getOrCreate(associatedSchemaID, () => ({
+        this.schema = this.st.db.comfy_schema.getOrCreate(associatedSchemaID, () => ({
             id: associatedSchemaID,
             embeddings: [],
             spec: {},

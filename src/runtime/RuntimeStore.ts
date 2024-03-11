@@ -18,7 +18,7 @@ export class RuntimeStore {
     private imageStoresIndex = new Map<string, ImageStore>()
 
     constructor(private rt: Runtime) {
-        this.CustomDataTable = rt.Cushy.db.custom_datas
+        this.CustomDataTable = rt.Cushy.db.custom_data
         makeAutoObservable(this)
     }
 

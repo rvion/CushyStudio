@@ -427,7 +427,7 @@ export class ComfyWorkflowL {
     // ------------------------
 
     /** workflows are created by steps (app/draft/step) */
-    stepRef = new LiveRefOpt<this, StepL>(this, 'stepID', () => this.st.db.steps)
+    stepRef = new LiveRefOpt<this, StepL>(this, 'stepID', 'step')
 
     /** workflows are created by steps (app/draft/step) */
     get step(): Maybe<StepL> {
@@ -490,7 +490,7 @@ export class ComfyWorkflowL {
             const err = new InvalidPromptError('ComfyUI Prompt request failed', graph, prompmtInfo)
             return Promise.reject(err)
         } else {
-            const prompt = this.st.db.comfy_prompts.create({
+            const prompt = this.st.db.comfy_prompt.create({
                 id: prompmtInfo.prompt_id,
                 executed: 0,
                 graphID: graph.id,

@@ -56,11 +56,11 @@ export class ComfyPromptL {
     }
 
     // link to step
-    stepRef = new LiveRef<this, StepL>(this, 'stepID', () => this.db.steps)
+    stepRef = new LiveRef<this, StepL>(this, 'stepID', 'step')
     get step(){ return this.stepRef.item } // prettier-ignore
 
     // link to grah
-    graphRef = new LiveRef<this, ComfyWorkflowL>(this, 'graphID', () => this.db.comfy_workflow)
+    graphRef = new LiveRef<this, ComfyWorkflowL>(this, 'graphID', 'comfy_workflow')
     get graph() { return this.graphRef.item } // prettier-ignore
 
     onPromptRelatedMessage = (msg: PromptRelated_WsMsg) => {
@@ -104,7 +104,7 @@ export class ComfyPromptL {
     }
     private onError = (msg: WsMsgExecutionError) => {
         console.error(msg)
-        this.db.runtimeErrors.create({
+        this.db.runtime_error.create({
             message: 'Prompt failed',
             infos: msg,
             promptID: this.id,

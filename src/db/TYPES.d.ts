@@ -1,4 +1,3 @@
-
 declare type TableNameInDB =
     | 'comfy_workflow'
     | 'draft'
@@ -33,7 +32,7 @@ declare type RuntimeErrorID = Branded<string, { RuntimeErrorID: true }>
 declare type MediaSplatID = Branded<string, { MediaSplatID: true }>
 declare type CustomDataID = Branded<string, { CustomDataID: true }>
 declare type CushyScriptID = Branded<string, { CushyScriptID: true }>
-declare type CushyAppID = Branded<string, { CushyAppID: true }>
+declare type CushyAppID = Tagged<string, { CushyAppID: true }>
 declare type AuthID = Branded<string, { AuthID: true }>
 declare type TreeEntryID = Branded<string, { TreeEntryID: true }>
 declare type HostID = Branded<string, { HostID: true }>

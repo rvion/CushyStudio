@@ -17,7 +17,7 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: { w
         })
     })
     const draft = useDraft()
-    const image = draft.db.media_images.get(widget.serial.imageID)
+    const image = draft.db.media_image.get(widget.serial.imageID)
     return (
         <div
             style={dropStyle}

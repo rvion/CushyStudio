@@ -106,7 +106,7 @@ export const Panel_Minipaint = observer(function PaintUI_(p: { imgID?: MediaImag
     // load image once the widget is ready
     useLayoutEffect(() => {
         if (p.imgID == null) return
-        const img: MediaImageL = st.db.media_images.getOrThrow(p.imgID)
+        const img: MediaImageL = st.db.media_image.getOrThrow(p.imgID)
         setTimeout(() => uist.loadImage(img), 100)
     }, [p.imgID])
 

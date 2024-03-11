@@ -69,7 +69,7 @@ export class Widget_image implements IWidget<Widget_image_types> {
         makeAutoObservable(this)
     }
     get value(): Widget_image_output {
-        return cushy.db.media_images.get(this.serial.imageID)!
+        return cushy.db.media_image.get(this.serial.imageID)!
     }
 }
 
