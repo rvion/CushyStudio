@@ -16,8 +16,11 @@ export const WidgetList_LineUI = observer(function WidgetList_LineUI_<T extends 
     widget: Widget_list<T> | Widget_listExt<T>
 }) {
     return (
-        <div tw='ml-auto'>
-            <ListControlsUI widget={p.widget} />
+        <div tw='flex flex-1 items-center'>
+            <div tw='text-sm text-gray-500 italic'>{p.widget.length} itms</div>
+            <div tw='ml-auto'>
+                <ListControlsUI widget={p.widget} />
+            </div>
         </div>
     )
 })

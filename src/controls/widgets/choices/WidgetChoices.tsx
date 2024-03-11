@@ -13,6 +13,8 @@ import { applyWidgetMixinV2 } from 'src/controls/Mixins'
 import { makeLabelFromFieldName } from 'src/utils/misc/makeLabelFromFieldName'
 import { toastError } from 'src/utils/misc/toasts'
 
+export type TabPositionConfig = 'start' | 'center' | 'end'
+
 // CONFIG
 export type Widget_choices_config<T extends SchemaDict = SchemaDict> = WidgetConfigFields<
     {
@@ -22,7 +24,7 @@ export type Widget_choices_config<T extends SchemaDict = SchemaDict> = WidgetCon
         default?: { [k in keyof T]?: boolean } | keyof T
         placeholder?: string
         appearance?: 'select' | 'tab'
-        justify?: 'start' | 'center' | 'end'
+        tabPosition?: TabPositionConfig
     },
     Widget_choices_types<T>
 >

@@ -67,13 +67,15 @@ export class FormBuilder {
     matrix      = (config: Widget_matrix_config)                                                             => new Spec<Widget_matrix                      >('matrix'    , config)
     button      = (config: Widget_button_config = {})                                                        => new Spec<Widget_button                      >('button'    , config)
     loras       = (config: Widget_loras_config     = {})                                                     => new Spec<Widget_loras                       >('loras'     , config)
+    /** variants: `header` */
     markdown    = (config: Widget_markdown_config | string)                                                  => new Spec<Widget_markdown                    >('markdown'  , typeof config === 'string' ? { markdown: config } : config)
+    /** [markdown variant]: inline=true, label=false */
     header      = (config: Widget_markdown_config | string)                                                  => new Spec<Widget_markdown                    >('markdown'  , typeof config === 'string' ? { markdown: config, inHeader: true, label: false } : { inHeader: true, label: false, alignLabel: false, ...config })
     image       = (config: Widget_image_config = {})                                                         => new Spec<Widget_image                       >('image'     , config)
     prompt      = (config: Widget_prompt_config = {})                                                        => new Spec<Widget_prompt                      >('prompt'    , config)
     promptV2    = (config: Widget_prompt_config = {})                                                        => new Spec<Widget_prompt                      >('prompt'    , config)
     int         = (config: Omit<Widget_number_config, 'mode'> = {})                                          => new Spec<Widget_number                      >('number'    , { mode: 'int', ...config })
-    /** int, default: 100, step: 10, min: 1, max: 100, suffix: '%', */
+    /** [number variant] precent = mode=int, default=100, step=10, min=1, max=100, suffix='%', */
     percent     = (config: Omit<Widget_number_config, 'mode'> = {})                                          => new Spec<Widget_number                      >('number'    , { mode: 'int', default: 100, step: 10, min: 1, max: 100, suffix: '%', ...config })
     float       = (config: Omit<Widget_number_config, 'mode'> = {})                                          => new Spec<Widget_number                      >('number'    , { mode: 'float', ...config })
     number      = (config: Omit<Widget_number_config, 'mode'> = {})                                          => new Spec<Widget_number                      >('number'    , { mode: 'float', ...config })
@@ -85,10 +87,17 @@ export class FormBuilder {
     selectOneV2 = (p: string[])                                                                              => new Spec<Widget_selectOne<BaseSelectEntry>  >('selectOne' , { choices: p.map((id) => ({ id, label: id })), appearance:'tab' }) // prettier-ignore
     selectOne   = <const T extends BaseSelectEntry>(config: Widget_selectOne_config<T>)                      => new Spec<Widget_selectOne<T>                >('selectOne' , config)
     selectMany  = <const T extends BaseSelectEntry>(config: Widget_selectMany_config<T>)                     => new Spec<Widget_selectMany<T>               >('selectMany', config)
+    /** see also: `fields` for a more practical api */
     group       = <const T extends SchemaDict>(config: Widget_group_config<T>={})                            => new Spec<Widget_group<T>                    >('group'     , config)
     fields      = <const T extends SchemaDict>(fields: T, config: Omit<Widget_group_config<T>,'items'>={})   => new Spec<Widget_group<T>                    >('group'     , { items: fields, ...config })
     choice      = <const T extends { [key: string]: Spec }>(config: Omit<Widget_choices_config<T>, 'multi'>) => new Spec<Widget_choices<T>                  >('choices'   , { multi: false, ...config })
     choices     = <const T extends { [key: string]: Spec }>(config: Omit<Widget_choices_config<T>, 'multi'>) => new Spec<Widget_choices<T>                  >('choices'   , { multi: true, ...config })
+    ok          = <const T extends SchemaDict>(config: Widget_group_config<T>={})                            => new Spec<Widget_group<T>                    >('group'     , config)
+    /** simple choice alternative api */
+    tabs        = <const T extends { [key: string]: Spec }>(
+        items: Widget_choices_config<T>['items'],
+        config: Omit<Widget_choices_config<T>, 'multi'| 'items'>={}
+    ) => new Spec<Widget_choices<T>>('choices', { items, multi: false, ...config, appearance: 'tab' })
     // optional wrappers
     optional    = <const T extends Spec>(p: Widget_optional_config<T>) => new Spec<Widget_optional<T>>('optional', p)
     llmModel = (p:{default?: OpenRouter_Models}={}) => {

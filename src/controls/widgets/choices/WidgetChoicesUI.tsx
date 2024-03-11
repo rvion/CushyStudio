@@ -59,9 +59,9 @@ const WidgetChoices_TabHeaderUI = observer(function WidgetChoicesTab_LineUI_<T e
         <div
             style={{
                 justifyContent:
-                    widget.config.justify === 'start' //
+                    widget.config.tabPosition === 'start' //
                         ? 'flex-start'
-                        : widget.config.justify === 'center'
+                        : widget.config.tabPosition === 'center'
                         ? 'center'
                         : 'flex-end',
             }}

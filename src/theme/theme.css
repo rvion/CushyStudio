@@ -19,6 +19,10 @@
 #CushyStudio:focus {
     outline: none;
 }
+
+.subtle {
+    @apply text-sm text-gray-500 italic;
+}
 /*
 @font-face {
     font-family: 'inter';

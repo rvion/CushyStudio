@@ -27,7 +27,7 @@ const Header_Playground = new Form(
             border: false,
             collapsed: false,
             default: 'scratchPad',
-            justify: 'start',
+            tabPosition: 'start',
             items: {
                 requirements: ui.group(),
                 registeredForms: ui.group(),
