@@ -34,7 +34,7 @@ export class LiveTable<TABLE extends TableInfo<keyof KyselyTables>> {
         const x = stmt.all(query.parameters) // execute the statement
         const B = process.hrtime.bigint() // TIMER end
         const ms = Number(B - A) / 1_000_000
-        console.log(`[⚡️] SQL`, query.sql, query.parameters, `took`, ms, 'ms') // debug
+        console.log(`[🚧] SQL [${ms.toFixed(3)}ms]`, query.sql, query.parameters) // debug
         const hydrated = x.map((data) => this.schema.hydrateJSONFields_crashOnMissingData(data)) // hydrate results
         const instances = hydrated.map((d) => this.getOrCreateInstanceForExistingData(d)) // create instances
         return instances
@@ -52,7 +52,7 @@ export class LiveTable<TABLE extends TableInfo<keyof KyselyTables>> {
         const x = stmt.all(query.parameters) // execute the statement
         const B = process.hrtime.bigint() // TIMER end
         const ms = Number(B - A) / 1_000_000
-        console.log(`[⚡️] SQL`, query.sql, query.parameters, `took`, ms, 'ms') // debug
+        console.log(`[🚧] SQL [${ms.toFixed(3)}ms]`, query.sql, query.parameters) // debug
         return x as any[] // return the result
     }
 

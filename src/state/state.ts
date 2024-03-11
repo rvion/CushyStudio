@@ -65,7 +65,7 @@ import { treeElement } from 'src/panels/libraryUI/tree/TreeEntry'
 import { Tree } from 'src/panels/libraryUI/tree/xxx/Tree'
 import { TreeView } from 'src/panels/libraryUI/tree/xxx/TreeView'
 import { VirtualHierarchy } from 'src/panels/libraryUI/VirtualHierarchy'
-import { Header_Playground } from 'src/panels/Panel_Playground/Panel_Playground'
+import { FORM_PlaygroundWidgetDisplay, Header_Playground } from 'src/panels/Panel_Playground/Panel_Playground'
 import { SafetyChecker } from 'src/safety/Safety'
 import { Database } from 'src/supa/database.types'
 import { ThemeManager } from 'src/theme/ThemeManager'
@@ -73,8 +73,6 @@ import { CleanedEnumResult } from 'src/types/EnumUtils'
 import { StepOutput } from 'src/types/StepOutput'
 import { openInVSCode } from 'src/utils/electron/openInVsCode'
 import { UserTags } from 'src/widgets/prompter/nodes/usertags/UserLoader'
-import { FORM_PlaygroundWidgetDisplay, Header_Playground } from 'src/panels/Panel_Playground/Panel_Playground'
-
 
 export class STATE {
     // LEAVE THIS AT THE TOP OF THIS CLASS
