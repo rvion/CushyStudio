@@ -26,50 +26,50 @@ export const ui_cnet = () => {
         })
         .shared('applyDuringUpscale')
 
-    return form.groupOpt({
+    const cnetList = form.list({
         label: 'ControlNets',
         tooltip: `Instructional resources:\nhttps://github.com/lllyasviel/ControlNet\nhttps://stable-diffusion-art.com/controlnet/`,
-        requirements: [
-            //
-            { type: 'customNodesByTitle', title: `ComfyUI's ControlNet Auxiliary Preprocessors` },
-        ],
-        items: () => ({
-            applyDuringUpscale: applyDuringUpscale.hidden(), // so value is accessible at runtime
-            controlNetList: form.list({
-                // label: false,
-                element: () =>
-                    form.group({
-                        label: 'Controlnet Image',
-                        items: () => ({
-                            image: form.image({}),
-                            resize: form.bool({ default: true }),
-                            applyDuringUpscale: applyDuringUpscale,
-                            cnets: form.choices({
-                                // label: false, //'Pick Cnets=>',
-                                label: false,
-                                border: false,
-                                appearance: 'tab',
-                                // justify: 'left',
-                                placeholder: 'ControlNets...',
-                                items: {
-                                    IPAdapter: ui_subform_IPAdapter(),
-                                    FaceID: ui_IPAdapterFaceID(),
-                                    Pose: ui_subform_OpenPose(),
-                                    Canny: ui_subform_Canny(),
-                                    Depth: ui_subform_Depth(),
-                                    Normal: ui_subform_Normal(),
-                                    Tile: ui_subform_Tile(),
-                                    Scribble: ui_subform_Scribble(),
-                                    Lineart: ui_subform_Lineart(),
-                                    SoftEdge: ui_subform_SoftEdge(),
-                                    Sketch: ui_subform_Sketch(),
-                                },
-                            }),
-                        }),
+        requirements: [{ type: 'customNodesByTitle', title: `ComfyUI's ControlNet Auxiliary Preprocessors` }],
+        // label: false,
+        element: () =>
+            form.group({
+                label: 'Controlnet Image',
+                items: () => ({
+                    image: form.image({}),
+                    resize: form.bool({ default: true }),
+                    applyDuringUpscale: applyDuringUpscale,
+                    cnets: form.choices({
+                        // label: false, //'Pick Cnets=>',
+                        label: false,
+                        border: false,
+                        appearance: 'tab',
+                        // justify: 'left',
+                        placeholder: 'ControlNets...',
+                        items: {
+                            IPAdapter: ui_subform_IPAdapter(),
+                            FaceID: ui_IPAdapterFaceID(),
+                            Pose: ui_subform_OpenPose(),
+                            Canny: ui_subform_Canny(),
+                            Depth: ui_subform_Depth(),
+                            Normal: ui_subform_Normal(),
+                            Tile: ui_subform_Tile(),
+                            Scribble: ui_subform_Scribble(),
+                            Lineart: ui_subform_Lineart(),
+                            SoftEdge: ui_subform_SoftEdge(),
+                            Sketch: ui_subform_Sketch(),
+                        },
                     }),
+                }),
             }),
-        }),
     })
+    return cnetList
+    // return form.groupOpt({
+
+    //     items: () => ({
+    //         applyDuringUpscale: applyDuringUpscale.hidden(), // so value is accessible at runtime
+    //         controlNetList: cnetList,
+    //     }),
+    // })
 }
 
 // 🅿️ CNET COMMON FORM ===================================================
@@ -116,7 +116,7 @@ export const run_cnet = async (
     ctx: Cnet_args,
 ) => {
     const run = getCurrentRun()
-    const cnetList = opts?.controlNetList
+    const cnetList = opts // opts?.controlNetList
     let args: Cnet_args = { ...ctx }
 
     if (cnetList) {
@@ -229,10 +229,10 @@ export const run_cnet = async (
         cnet_negative: args.negative,
 
         // forward either the original or the transformed conditioning
-        post_cnet_positive: opts?.applyDuringUpscale //
+        post_cnet_positive: opts?.[0]?.applyDuringUpscale //
             ? args.positive
             : ctx.positive, // generally upscales are cleaner if not controlled
-        post_cnet_negative: opts?.applyDuringUpscale //
+        post_cnet_negative: opts?.[0]?.applyDuringUpscale //
             ? args.negative
             : ctx.negative,
     }
