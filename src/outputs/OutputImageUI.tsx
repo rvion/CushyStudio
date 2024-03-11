@@ -13,7 +13,7 @@ export const OutputImagePreviewUI = observer(function OutputImagePreviewUI_(p: {
     const image = p.output
     return (
         <OutputPreviewWrapperUI output={p.output}>
-            <ImageUI img={p.output} size='100%' />
+            <ImageUI tw='!rounded-none cursor-default' img={p.output} size='100%' />
             {/* <img
                 src={image.url}
                 loading='lazy'

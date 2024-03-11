@@ -13,7 +13,7 @@ export const Panel_Gallery = observer(function VerticalGalleryUI_(p: {}) {
     const st = useSt()
     return (
         <div //
-            className='flex flex-col bg-base-100 h-full'
+            className='flex flex-col bg-base-00 h-full'
             style={{ background: st.galleryConf.value.galleryBgColor }}
         >
             <PanelHeaderUI>
@@ -49,7 +49,7 @@ export const Panel_Gallery = observer(function VerticalGalleryUI_(p: {}) {
                 />
             </div>
 
-            <div className='flex flex-wrap overflow-auto'>
+            <div className='flex flex-wrap overflow-auto bg-base-300'>
                 {/* <LatentPreviewUI /> */}
                 {st.imageToDisplay.all.map((img_) => {
                     const img = st.db.media_images.get(img_.id)!
@@ -59,7 +59,7 @@ export const Panel_Gallery = observer(function VerticalGalleryUI_(p: {}) {
                             key={img.id}
                             output={img}
                         >
-                            <ImageUI img={img} />
+                            <ImageUI tw='!rounded-none cursor-default' img={img} />
                         </OutputPreviewWrapperUI>
                     )
                 })}

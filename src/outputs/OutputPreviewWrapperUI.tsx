@@ -23,8 +23,7 @@ export const OutputPreviewWrapperUI = observer(function OutputPreviewWrapperUI_(
         <ErrorBoundary FallbackComponent={ErrorBoundaryFallback} onReset={(details) => {}}>
             <div
                 // STYLE
-                tw='rounded cursor-pointer overflow-hidden'
-                className='virtualBorder shrink-0'
+                tw='rounded overflow-clip border border-base-300 hover:border-primary hover:brightness-110 box-content'
                 style={{ width: sizeStr, height: sizeStr }}
                 // LOGIC
                 onClick={() => runInAction(() => (st.focusedStepOutput = p.output))}
