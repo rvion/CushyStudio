@@ -142,47 +142,65 @@ export const run_cnet = async (opts: OutputFor<typeof ui_cnet>, ctx: Cnet_args) 
             // CANNY ===========================================================
             if (Canny) {
                 const y = run_cnet_canny(Canny, image, resolution)
-                _apply_cnet(args, Canny.strength, y.image, y.cnet_name)
+                const startAt = Canny.advanced.startAtStepPercent
+                const endAt = Canny.advanced.endAtStepPercent
+                _apply_cnet(args, Canny.strength, startAt, endAt, y.image, y.cnet_name)
             }
             // POSE ===========================================================
             if (Pose) {
                 const y = run_cnet_openPose(Pose, image, resolution)
-                _apply_cnet(args, Pose.strength, y.image, y.cnet_name)
+                const startAt = Pose.advanced.startAtStepPercent
+                const endAt = Pose.advanced.endAtStepPercent
+                _apply_cnet(args, Pose.strength, startAt, endAt, y.image, y.cnet_name)
             }
             // DEPTH ===========================================================
             if (Depth) {
                 const y = run_cnet_Depth(Depth, image, resolution)
-                _apply_cnet(args, Depth.strength, y.image, y.cnet_name)
+                const startAt = Depth.advanced.startAtStepPercent
+                const endAt = Depth.advanced.endAtStepPercent
+                _apply_cnet(args, Depth.strength, startAt, endAt, y.image, y.cnet_name)
             }
             // Normal ===========================================================
             if (Normal) {
                 const y = run_cnet_Normal(Normal, image, resolution)
-                _apply_cnet(args, Normal.strength, y.image, y.cnet_name)
+                const startAt = Normal.advanced.startAtStepPercent
+                const endAt = Normal.advanced.endAtStepPercent
+                _apply_cnet(args, Normal.strength, startAt, endAt, y.image, y.cnet_name)
             }
             // Tile ===========================================================
             if (Tile) {
                 const y = run_cnet_Tile(Tile, image, resolution)
-                _apply_cnet(args, Tile.strength, y.image, y.cnet_name)
+                const startAt = Tile.advanced.startAtStepPercent
+                const endAt = Tile.advanced.endAtStepPercent
+                _apply_cnet(args, Tile.strength, startAt, endAt, y.image, y.cnet_name)
             }
             // Scribble ===========================================================
             if (Scribble) {
                 const y = run_cnet_Scribble(Scribble, image, resolution)
-                _apply_cnet(args, Scribble.strength, y.image, y.cnet_name)
+                const startAt = Scribble.advanced.startAtStepPercent
+                const endAt = Scribble.advanced.endAtStepPercent
+                _apply_cnet(args, Scribble.strength, startAt, endAt, y.image, y.cnet_name)
             }
             // Lineart ===========================================================
             if (Lineart) {
                 const y = run_cnet_Lineart(Lineart, image, resolution)
-                _apply_cnet(args, Lineart.strength, y.image, y.cnet_name)
+                const startAt = Lineart.advanced.startAtStepPercent
+                const endAt = Lineart.advanced.endAtStepPercent
+                _apply_cnet(args, Lineart.strength, startAt, endAt, y.image, y.cnet_name)
             }
             // SoftEdge ===========================================================
             if (SoftEdge) {
                 const y = run_cnet_SoftEdge(SoftEdge, image, resolution)
-                _apply_cnet(args, SoftEdge.strength, y.image, y.cnet_name)
+                const startAt = SoftEdge.advanced.startAtStepPercent
+                const endAt = SoftEdge.advanced.endAtStepPercent
+                _apply_cnet(args, SoftEdge.strength, startAt, endAt, y.image, y.cnet_name)
             }
             // Sketch ===========================================================
             if (Sketch) {
                 const y = run_cnet_Sketch(Sketch, image)
-                _apply_cnet(args, Sketch.strength, y.image, y.cnet_name)
+                const startAt = Sketch.advanced.startAtStepPercent
+                const endAt = Sketch.advanced.endAtStepPercent
+                _apply_cnet(args, Sketch.strength, startAt, endAt, y.image, y.cnet_name)
             }
             // MLSD ===========================================================
             // Reference (do we need this? it is basically ipadapter) ===========================================================
@@ -215,6 +233,8 @@ const _apply_cnet = (
     args: Cnet_args,
     //
     strength: number,
+    startPct: number,
+    endPct: number,
     image: _IMAGE,
     cnet_name: Enum_ControlNetLoader_control_net_name,
 ) => {
@@ -229,6 +249,8 @@ const _apply_cnet = (
             model: run.AUTO,
             control_net_name: /* 🔴 */ bang(cnet_name),
         }),
+        start_percent: startPct,
+        end_percent: endPct,
     })
     args.positive = cnet_node.outputs.positive
     args.negative = cnet_node.outputs.negative
