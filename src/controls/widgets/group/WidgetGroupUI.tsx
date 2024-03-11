@@ -12,7 +12,11 @@ export const WidgetGroup_LineUI = observer(function WidgetGroup_LineUI_(p: {
     widget: Widget_group<any>
 }) {
     if (!p.widget.serial.collapsed) return null
-    return <div tw='line-clamp-1 italic opacity-50'>{p.widget.summary}</div>
+    return (
+        <div className='COLLAPSE-PASSTHROUGH' tw='line-clamp-1 italic opacity-50'>
+            {p.widget.summary}
+        </div>
+    )
 })
 
 export const WidgetGroup_BlockUI = observer(function WidgetGroup_BlockUI_<T extends SchemaDict>(p: {

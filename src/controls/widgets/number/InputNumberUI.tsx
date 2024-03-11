@@ -1,5 +1,6 @@
 import { makeAutoObservable, runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
+import React from 'react'
 import { useEffect, useMemo } from 'react'
 
 import { parseFloatNoRoundingErr } from 'src/utils/misc/parseFloatNoRoundingErr'
@@ -59,6 +60,8 @@ class InputNumberStableState {
     /* When editing the number <input> this will make it display inputValue instead of val.*/
     isEditing: boolean = false
 
+    inputRef = React.createRef<HTMLInputElement>()
+
     syncValues = (
         //
         value: number | string,
@@ -109,6 +112,18 @@ class InputNumberStableState {
         this.inputValue = num.toString()
     }
 
+    increment = () => {
+        startValue = this.value
+        let num = this.value + (this.isInteger ? this.step : this.step * 0.1)
+        this.syncValues(num, { soft: true })
+    }
+
+    decrement = () => {
+        startValue = this.value
+        let num = this.value - (this.isInteger ? this.step : this.step * 0.1)
+        this.syncValues(num, { soft: true })
+    }
+
     mouseMoveListener = (e: MouseEvent) => {
         // reset origin if change shift or control key while drag (to let already applied changes remain)
         if (dragged && (lastShiftState !== e.shiftKey || lastControlState !== e.ctrlKey)) {
@@ -153,10 +168,7 @@ class InputNumberStableState {
 
     onPointerUpListener = (/* e: MouseEvent */) => {
         if (activeSlider && !dragged) {
-            let textInput = activeSlider?.querySelector('input[type="text"') as HTMLInputElement
-            textInput.setAttribute('cursor', 'not-allowed')
-            textInput.setAttribute('cursor', 'none')
-            textInput.focus()
+            this.inputRef.current?.focus()
         } else {
             activeSlider = null
         }
@@ -202,151 +214,169 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
         <div /* Root */
             className={p.className}
             tw={[
-                'WIDGET-FIELD',
+                'WIDGET-FIELD relative',
                 'input-number-ui custom-roundness',
                 'flex-1 select-none min-w-16 cursor-ew-resize overflow-clip',
                 'bg-primary/30 border border-base-100 border-b-2 border-b-base-200',
                 !isEditing && 'hover:border-base-200 hover:border-b-base-300 hover:bg-primary/40',
             ]}
+            onWheel={(ev) => {
+                /* NOTE: This could probably divide by the length? But I'm not sure how to get the distance of 1 scroll tick.
+                 * Increment/Decrement using scroll direction. */
+                if (ev.ctrlKey) {
+                    let num = uist.isInteger ? step * -Math.sign(ev.deltaY) : step * -Math.sign(ev.deltaY) * 0.1
+                    num = val + num
+                    num = uist.isInteger ? Math.round(num) : parseFloatNoRoundingErr(num, rounding)
+                    num = clamp(num, p.min ?? -Infinity, p.max ?? Infinity)
+                    uist.syncValues(num, undefined)
+                }
+            }}
         >
-            <div /* Container */ tw={['h-full relative w-full flex', 'border-0']}>
+            <div /* Slider display */
+                className='inui-foreground'
+                tw={[
+                    //
+                    'absolute left-0 WIDGET-FIELD',
+                    !p.hideSlider && !isEditing && 'bg-primary/40',
+                    'z-10',
+                ]}
+                style={{ width: `${((val - uist.rangeMin) / (uist.rangeMax - uist.rangeMin)) * 100}%` }}
+            />
+
+            <div tw='grid w-full h-full items-center z-20' style={{ gridTemplateColumns: '16px 1fr 16px' }}>
                 <button /* Left Button */
                     tw={[
-                        'h-full absolute left-0 rounded-none pr-0.5',
-                        `w-4 pb-0.5 leading-none border border-base-200 opacity-0 bg-base-200 hover:brightness-125`,
+                        'h-full flex rounded-none text-center justify-center items-center z-20',
+                        `border border-base-200 opacity-0 bg-base-200 hover:brightness-125`,
                     ]}
-                    style={{ zIndex: 2 }}
-                    onClick={(_) => {
+                    tabIndex={-1}
+                    onClick={uist.decrement}
+                >
+                    <span className='material-symbols-outlined'>arrow_left</span>
+                </button>
+
+                <div /* Text Container */
+                    tw={[
+                        //
+                        `flex px-1 items-center justify-center text-sm text-shadow truncate z-20`,
+                    ]}
+                    onMouseDown={(ev) => {
+                        if (isEditing || ev.button != 0) return
+
+                        /* Begin slider drag */
+                        activeSlider = ev.currentTarget
                         startValue = val
-                        let num = val - (uist.isInteger ? step : step * 0.1)
-                        uist.syncValues(num, { soft: true })
+                        cumulativeOffset = 0
+                        dragged = false
+
+                        window.addEventListener('mousemove', uist.mouseMoveListener, true)
+                        window.addEventListener('pointerup', uist.onPointerUpListener, true)
+                        window.addEventListener('pointerlockchange', uist.onPointerLockChange, true)
+                        window.addEventListener('mousedown', uist.cancelListener, true)
+
+                        /* Fix for low-sensitivity devices, it will get raw input from the mouse instead of the processed input.
+                         *  NOTE: This does not work on Linux right now, but when it does get added for Linux, this code should not need to be changed.
+                         */
+                        // @ts-ignore 🔴 untyped for me for now; TODO: will have to investigate why
+                        activeSlider?.requestPointerLock({ unadjustedMovement: true }).catch((error) => {
+                            console.log(
+                                '[InputNumberUI] Obtaining raw mouse input is not supported on this platform. Using processed mouse input, you may need to adjust the number input drag multiplier.',
+                            )
+                            activeSlider?.requestPointerLock()
+                        })
                     }}
                 >
-                    ◂
-                </button>
-                <div /* Slider display */
-                    className='inui-foreground'
-                    tw={[!p.hideSlider && !isEditing && 'bg-primary/40']}
-                    style={{ width: `${((val - uist.rangeMin) / (uist.rangeMax - uist.rangeMin)) * 100}%` }}
-                />
-                <div tw='absolute flex w-full h-full px-2'>
-                    <div
-                        tw={['relative flex flex-1 select-none']}
-                        onWheel={(ev) => {
-                            /* NOTE: This could probably divide by the length? But I'm not sure how to get the distance of 1 scroll tick.
-                             * Increment/Decrement using scroll direction. */
-                            if (ev.ctrlKey) {
-                                let num = uist.isInteger ? step * -Math.sign(ev.deltaY) : step * -Math.sign(ev.deltaY) * 0.1
-                                num = val + num
-                                num = uist.isInteger ? Math.round(num) : parseFloatNoRoundingErr(num, rounding)
-                                num = clamp(num, p.min ?? -Infinity, p.max ?? Infinity)
-                                uist.syncValues(num, undefined)
+                    <input //
+                        type='text'
+                        draggable='false'
+                        ref={uist.inputRef}
+                        onDragStart={(ev) => ev.preventDefault()} // Prevents drag n drop of selected text, so selecting is easier.
+                        tw={[
+                            'text-shadow outline-0',
+                            /* `absolute opacity-0` is a bit of a hack around not being able to figure out why the input kept taking up so much width.
+                             * Can't use `hidden` here because it messes up focusing. */
+                            !isEditing && 'cursor-not-allowed pointer-events-none absolute opacity-0',
+                            !isEditing && p.text ? 'text-right' : 'text-center',
+                        ]}
+                        value={isEditing ? uist.inputValue : val}
+                        placeholder={p.placeholder}
+                        style={{
+                            fontFamily: 'monospace',
+                            zIndex: 2,
+                            background: 'transparent',
+                            MozWindowDragging: 'no-drag',
+                        }}
+                        min={p.min}
+                        max={p.max}
+                        step={step}
+                        onChange={(ev) => {
+                            uist.inputValue = ev?.target.value
+                        }}
+                        onFocus={(ev) => {
+                            let textInput = ev.currentTarget
+                            activeSlider = textInput.parentElement as HTMLDivElement
+                            textInput.select()
+                            startValue = val
+                            uist.inputValue = val.toString()
+                            uist.isEditing = true
+                        }}
+                        onBlur={(ev) => {
+                            uist.isEditing = false
+                            const next = ev.currentTarget.value
+                            activeSlider = null
+                            if (cancelled) {
+                                cancelled = false
+                                uist.syncValues(startValue, undefined)
+                                return
+                            }
+                            uist.syncValues(ev.currentTarget.value, { skipRounding: true })
+                        }}
+                        onKeyDown={(ev) => {
+                            if (ev.key === 'Enter') {
+                                ev.currentTarget.blur()
+                            } else if (ev.key === 'Escape') {
+                                cancelled = true
+                                ev.currentTarget.blur()
+                            }
+
+                            /* Since we removed tabbing to buttons, we want up and down to increment/decrement.
+                             * I don't think people actually use up and down to maneuver to the beginning/end of a single line, more likely using home/end so this should be fine. */
+                            if (uist.isEditing) {
+                                if (ev.key === 'ArrowUp') {
+                                    uist.increment()
+                                    ev.preventDefault()
+                                } else if (ev.key === 'ArrowDown') {
+                                    uist.decrement()
+                                    ev.preventDefault()
+                                }
                             }
                         }}
-                        onMouseDown={(ev) => {
-                            if (isEditing || ev.button != 0) return
-
-                            /* Begin slider drag */
-                            activeSlider = ev.currentTarget
-                            startValue = val
-                            cumulativeOffset = 0
-                            dragged = false
-
-                            window.addEventListener('mousemove', uist.mouseMoveListener, true)
-                            window.addEventListener('pointerup', uist.onPointerUpListener, true)
-                            window.addEventListener('pointerlockchange', uist.onPointerLockChange, true)
-                            window.addEventListener('mousedown', uist.cancelListener, true)
-
-                            /* Fix for low-sensitivity devices, it will get raw input from the mouse instead of the processed input.
-                             *  NOTE: This does not work on Linux right now, but when it does get added for Linux, this code should not need to be changed.
-                             */
-                            // @ts-ignore 🔴 untyped for me for now; TODO: will have to investigate why
-                            activeSlider?.requestPointerLock({ unadjustedMovement: true }).catch((error) => {
-                                console.log(
-                                    '[InputNumberUI] Obtaining raw mouse input is not supported on this platform. Using processed mouse input, you may need to adjust the number input drag multiplier.',
-                                )
-                                activeSlider?.requestPointerLock()
-                            })
-                        }}
-                    >
-                        <div /* Text Container */ tw={[`custom-roundness flex-auto flex items-center px-3 text-sm text-shadow`]}>
-                            {!isEditing && p.text ? (
+                    />
+                    {!isEditing && (
+                        <>
+                            {p.text && (
                                 <div /* Inner Label Text - Not shown while editing */
-                                    tw={['outline-0 border-0 border-transparent z-10 w-full text-left']}
+                                    tw={['w-full pr-1 outline-0 border-0 border-transparent z-10 text-left truncate']}
                                 >
                                     {p.text}
                                 </div>
-                            ) : null}
-                            <input //
-                                type='text'
-                                draggable='false'
-                                onDragStart={(ev) => ev.preventDefault()} // Prevents drag n drop of selected text, so selecting is easier.
-                                tw={[
-                                    'w-full text-shadow outline-0',
-                                    !isEditing && 'cursor-not-allowed pointer-events-none',
-                                    !isEditing && p.text ? 'text-right' : 'text-center',
-                                ]}
-                                value={isEditing ? uist.inputValue : val}
-                                placeholder={p.placeholder}
-                                style={{
-                                    fontFamily: 'monospace',
-                                    zIndex: 2,
-                                    background: 'transparent',
-                                    MozWindowDragging: 'no-drag',
-                                }}
-                                min={p.min}
-                                max={p.max}
-                                step={step}
-                                onChange={(ev) => {
-                                    uist.inputValue = ev?.target.value
-                                }}
-                                onFocus={(ev) => {
-                                    let textInput = ev.currentTarget
-                                    activeSlider = textInput.parentElement as HTMLDivElement
-                                    textInput.select()
-                                    startValue = val
-                                    uist.inputValue = val.toString()
-                                    uist.isEditing = true
-                                }}
-                                onBlur={(ev) => {
-                                    uist.isEditing = false
-                                    const next = ev.currentTarget.value
-                                    activeSlider = null
-                                    if (cancelled) {
-                                        cancelled = false
-                                        uist.syncValues(startValue, undefined)
-                                        return
-                                    }
-                                    uist.syncValues(ev.currentTarget.value, { skipRounding: true })
-                                }}
-                                onKeyDown={(ev) => {
-                                    if (ev.key === 'Enter') {
-                                        ev.currentTarget.blur()
-                                    } else if (ev.key === 'Escape') {
-                                        cancelled = true
-                                        ev.currentTarget.blur()
-                                    }
-                                }}
-                            />
-                            {!isEditing && p.suffix ? <div style={{ zIndex: 2, paddingLeft: 3 }}>{p.suffix}</div> : <></>}
-                        </div>
-                    </div>
+                            )}
+                            {/* I couldn't make the input not take up a ton of space so I'm just using this when we're not editing now. */}
+                            <div style={{ fontFamily: 'monospace' }}>{p.value}</div>
+                            {!isEditing && p.suffix ? <div tw='pl-0.5'>{p.suffix}</div> : <></>}
+                        </>
+                    )}
                 </div>
 
-                {/* RESET ------------------------------------------------------------------------------------------- */}
                 <button /* Right Button */
                     tw={[
-                        'h-full absolute right-0 pl-0.5',
-                        `w-4 pb-0.5 leading-none border border-base-200 opacity-0 bg-base-200 hover:brightness-125`,
+                        'h-full flex rounded-none text-center justify-center items-center z-20',
+                        `border border-base-200 opacity-0 bg-base-200 hover:brightness-125`,
                     ]}
-                    style={{ zIndex: 2 }}
-                    onClick={(_) => {
-                        startValue = val
-                        let num = val + (uist.isInteger ? step : step * 0.1)
-                        uist.syncValues(num, { soft: true })
-                    }}
+                    tabIndex={-1}
+                    onClick={uist.increment}
                 >
-                    ▸
+                    <span className='material-symbols-outlined'>arrow_right</span>
                 </button>
             </div>
         </div>

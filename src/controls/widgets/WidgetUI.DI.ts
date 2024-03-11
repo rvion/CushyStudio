@@ -59,5 +59,7 @@ export let WidgetDI = {
 // in conditional when instance of is used with a ctor stored in a dictionary
 export const isWidgetChoice = (widget: any): widget is Widget_choices => widget.type === 'choices'
 export const isWidgetOptional = (widget: any): widget is Widget_optional => widget.type === 'optional'
+export const isWidgetPrompt = (widget: any): widget is Widget_prompt => widget.type === 'prompt'
 export const isWidgetShared = (widget: any): widget is Widget_shared => widget.type === 'shared'
 export const isWidgetGroup = (widget: any): widget is Widget_group<any> => widget.type === 'group'
+export const isWidgetList = (widget: any): widget is Widget_list<any> => widget.type === 'list'

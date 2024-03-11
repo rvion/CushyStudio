@@ -8,7 +8,7 @@ import { makeLabelFromFieldName } from '../../utils/misc/makeLabelFromFieldName'
 import { ErrorBoundaryFallback } from '../../widgets/misc/ErrorBoundary'
 import { InstallRequirementsBtnUI } from '../REQUIREMENTS/Panel_InstallRequirementsUI'
 import { AnimatedSizeUI } from '../widgets/choices/AnimatedSizeUI'
-import { isWidgetOptional, WidgetDI } from '../widgets/WidgetUI.DI'
+import { isWidgetChoice, isWidgetGroup, isWidgetList, isWidgetOptional, isWidgetPrompt, WidgetDI } from '../widgets/WidgetUI.DI'
 import { getActualWidgetToDisplay } from './getActualWidgetToDisplay'
 import { getBorderStatusForWidget } from './getBorderStatusForWidget'
 import { getIfWidgetIsCollapsible } from './getIfWidgetIsCollapsible'
@@ -78,7 +78,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
 
     const LABEL = (
         // <span onClick={onLabelClick} style={{ lineHeight: '1rem' }}>
-        <span style={{ lineHeight: '1rem' }}>
+        <span className='COLLAPSE-PASSTHROUGH' style={{ lineHeight: '1rem' }}>
             {labelText}
             {widget.config.showID ? <span tw='opacity-50 italic text-sm'>#{widget.id.slice(0, 3)}</span> : null}
         </span>
@@ -95,11 +95,19 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
         }
     }
 
+    const needsBackground =
+        (isWidgetGroup(k) || //
+            isWidgetChoice(k) ||
+            isWidgetPrompt(k) ||
+            isWidgetList(k)) &&
+        (isCollapsible || showBorder)
+
     return (
         <div
             key={rootKey}
             tw={[
-                'bg-base-100',
+                //
+                needsBackground && 'bg-base-100',
                 showBorder && 'WIDGET-GROUP-BORDERED',
                 p.isTopLevel ? 'TOP-LEVEL-FIELD' : 'SUB-FIELD',
                 widget.type,
@@ -112,6 +120,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                     Only way to have it completely disabled is to have no label, no tooltip, no requirements, etc.
                 */}
                 <div
+                    className='WIDGET-HEADER COLLAPSE-PASSTHROUGH'
                     tw={['flex items-center gap-0.5 select-none']}
                     /*
                      * bird_d:
@@ -120,18 +129,26 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                      *  | Also will continue to expand/collapse any panel that is hovered over while dragging.
                      * 2024-02-29 rvion: this broke 3/4 widgets who did not preventDefault in their header;
                      *  | may cause more problems later; not sure how to make this sligtly safer / easy to test.
+                     * 2024-03-10 bird_d: I added a COLLAPSE-PASSTHROUGH className. So things have to opt-in now.
+                     *  | This should workaround widgets not preventing their own event.
                      * */
                     onMouseDown={(ev) => {
-                        if (ev.button != 0) return
+                        if (ev.button != 0 || !isCollapsible) return
+                        const target = ev.target as HTMLElement
+                        if (!target.classList.contains('COLLAPSE-PASSTHROUGH')) return
                         isDragging = true
                         window.addEventListener('mouseup', isDraggingListener, true)
                         wasEnabled = !widget.serial.collapsed
                         widget.serial.collapsed = wasEnabled
                     }}
-                    // 2024-02-29 rvion: not quite sure this is the right logic now
-                    // | do we want to call the now usused `onLabelClick()` function instead (defined above)
-                    onMouseEnter={(ev) => {
-                        if (!isDragging) return
+                    /* 2024-02-29 rvion: not quite sure this is the right logic now
+                     * | do we want to call the now usused `onLabelClick()` function instead (defined above)
+                     * 2024-03-10 bird_d: The switch to onMouseMove should make this feel a lot better.
+                     * | It shouldn't continue to close panels while holding the click as the ui moves out from under the user.
+                     * */
+
+                    onMouseMove={(ev) => {
+                        if (!isDragging || !isCollapsible) return
                         widget.serial.collapsed = wasEnabled
                     }}
                 >
@@ -154,7 +171,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                     >
                         {/* COLLAPSE */}
                         {(isCollapsed || isCollapsible) && (
-                            <span className='WIDGET-COLLAPSE-BTN material-symbols-outlined opacity-70 hover:opacity-100'>
+                            <span className='WIDGET-COLLAPSE-BTN COLLAPSE-PASSTHROUGH material-symbols-outlined opacity-70 hover:opacity-100'>
                                 {isCollapsed ? 'chevron_right' : 'expand_more'}
                             </span>
                         )}
@@ -175,7 +192,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                         {!BodyUI && <Widget_ToggleUI widget={originalWidget} />}
                     </span>
                     {HeaderUI && (
-                        <div tw='flex items-center gap-0.5 flex-1' style={styleDISABLED}>
+                        <div className='COLLAPSE-PASSTHROUGH' tw='flex items-center gap-0.5 flex-1' style={styleDISABLED}>
                             <ErrorBoundary FallbackComponent={ErrorBoundaryFallback} onReset={(details) => {}}>
                                 {HeaderUI}
                             </ErrorBoundary>
