@@ -31,6 +31,7 @@ async function build() {
     process.exit(0)
 }
 
+process.env.NODE_ENV = 'production'
 async function buildJS() {
     console.log(`[BUILD] 1. build js`)
     const shouldMinify = args.includes('mini') || args.includes('minify')
@@ -38,6 +39,11 @@ async function buildJS() {
     else console.log(`[BUILD] (NO minify)`)
 
     const res = await esbuild.build({
+        // https://github.com/evanw/esbuild/issues/2377#issuecomment-1178426065
+        define: {
+            'process.env.NODE_ENV': '"production"',
+        },
+        // entryPoints: ['src/app/main.tsx'],
         entryPoints: ['src/app/main.tsx'],
         bundle: true,
         minify: shouldMinify,
