@@ -5,12 +5,11 @@ import { observer, useLocalObservable } from 'mobx-react-lite'
 import { useMemo } from 'react'
 import { Form } from 'src/controls/Form'
 import { FormUI } from 'src/controls/FormUI'
-import { readJSON, writeJSON } from 'src/state/jsonUtils'
-import { LocoChartUI } from '../charts/LocoChartsUI'
-import { readableStringify } from 'src/utils/formatters/stringifyReadable'
-import { hash } from 'ohash'
-import { Kwery } from 'src/utils/misc/Kwery'
 import { Button } from 'src/rsuite/shims'
+import { readJSON, writeJSON } from 'src/state/jsonUtils'
+import { readableStringify } from 'src/utils/formatters/stringifyReadable'
+import { Kwery } from 'src/utils/misc/Kwery'
+import { LocoChartUI } from '../charts/LocoChartsUI'
 
 export const WagonUI = observer(function Panel_Playground_<FIELDS extends SchemaDict>(p: { wagon: Wagon<FIELDS> }) {
     const wagon = p.wagon
@@ -39,14 +38,14 @@ export const WagonUI = observer(function Panel_Playground_<FIELDS extends Schema
     })
 
     return (
-        <div>
+        <>
             <div tw='divider'>
-                FORM
+                🚂💨💨💨
                 <Button onClick={() => (uiSt.kweryCache = Date.now())}>
                     <span className='material-symbols-outlined text-orange-500'>sync</span>
                 </Button>
             </div>
-            <div tw='flex gap-1'>
+            <div tw='flex gap-1 overflow-auto'>
                 <div style={{ width: '40rem', resize: 'both' }}>
                     <div
                         tw='btn btn-primary btn-sm'
@@ -67,10 +66,9 @@ export const WagonUI = observer(function Panel_Playground_<FIELDS extends Schema
                     </div>
                 </div>
                 {wtf.ui(({ result: { chartOpts, sql, res }, elapsedMs }) => {
-                    const key = hash(chartOpts)
                     return (
-                        <div tw='flex flex-col overflow-auto'>
-                            {chartOpts != null ? <LocoChartUI key={key} theme='dark' options={chartOpts} /> : null}
+                        <div tw='overflow-auto sticky top-0'>
+                            {chartOpts != null ? <LocoChartUI dev theme='dark' options={chartOpts} /> : null}
                             <h3 tw='text-primary'>SQL:</h3>
                             <div tw='overflow-auto'>
                                 <pre tw='whitespace-pre-wrap'>{sql}</pre>
@@ -87,6 +85,6 @@ export const WagonUI = observer(function Panel_Playground_<FIELDS extends Schema
             </div>
             {/* <JsonViewUI value={form.value} /> */}
             {/* <pre>{JSON.stringify(form.root.valueEager, null, 2)}</pre> */}
-        </div>
+        </>
     )
 })

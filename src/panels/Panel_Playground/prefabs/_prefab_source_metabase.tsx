@@ -1,7 +1,6 @@
 import type { FormBuilder } from 'src/controls/FormBuilder'
 import { Kwery } from 'src/utils/misc/Kwery'
 import { gmbCols } from './_prefab_columns'
-import { readableStringify } from 'src/utils/formatters/stringifyReadable'
 import { locoLocations } from './_prefab_locoUtil1'
 
 /*
@@ -67,30 +66,6 @@ export const ui_selectData_metabase = (ui: FormBuilder) => {
         label: false,
         layout: 'H', // ?????? not working
     })
-
-    const values = ui.shared(
-        'values',
-        ui.list({
-            label: '🔢 Values',
-            element: (ix) =>
-                ui.fields(
-                    { column: gmbColumnUI(), fn: fn },
-                    { layout: 'V', border: false, summary: (items) => items.column.colName.id },
-                ),
-        }),
-    )
-
-    const cols = ui.shared(
-        'cols',
-        ui.list({
-            label: '🚦 Cols',
-            element: (ix) =>
-                ui.fields(
-                    { column: gmbColumnUI(), fn: fn, order },
-                    { layout: 'V', border: false, summary: (items) => items.column.colName.id },
-                ),
-        }),
-    )
 
     const joinKind = ui.selectOne({
         choices: (['inner join', 'left outer join', 'right outer join', 'full outer join'] as const).map((id) => ({ id })),

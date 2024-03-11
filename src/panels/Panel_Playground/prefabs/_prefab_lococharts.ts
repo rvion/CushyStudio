@@ -69,7 +69,7 @@ export const run_lococharts = (ui: LocoChartsT, data: any[]): LocoChartsOpts => 
     return {
         title: { text: ui.title, left: 'left' },
         legend: {},
-        tooltip: { trigger: 'axis' },
+        tooltip: { trigger: 'axis', axisPointer: { type: 'cross' } },
         xAxis:
             ui.xAxis.length === 0
                 ? {}
@@ -83,7 +83,7 @@ export const run_lococharts = (ui: LocoChartsT, data: any[]): LocoChartsOpts => 
             ui.yAxis.length === 0
                 ? {}
                 : ui.yAxis.map((y) => ({
-                      //  type: y.category.id,
+                      type: y.category.id,
                   })),
         series: ui.series.map((s) => ({
             type: s.type.id,
@@ -91,18 +91,5 @@ export const run_lococharts = (ui: LocoChartsT, data: any[]): LocoChartsOpts => 
             data: data.map((row) => [row[ui.xAxis[0].dataKey.id], row[s.dataKey.id]]),
             yAxisIndex: parseInt(s.yAxisIndex?.id ?? '0'),
         })),
-        // series: [
-        //     {
-        //         type: ui.style.id as 'bar' | 'line',
-        //         name: 'Count',
-        //         data: data.map((row) => row.count),
-        //     },
-        //     {
-        //         type: 'line' as const, // ui.style.id as 'bar' | 'line',
-        //         name: 'Average',
-        //         data: data.map((row) => row.avg),
-        //         yAxisIndex: 1,
-        //     },
-        // ],
     }
 }
