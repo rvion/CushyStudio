@@ -33,6 +33,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
      * */
     label?: string | false
 }) {
+    if (p.widget.config.hidden) return null
     const rootKey = p.rootKey
     const originalWidget = p.widget
     const widget = getActualWidgetToDisplay(originalWidget)

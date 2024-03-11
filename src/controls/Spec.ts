@@ -1,6 +1,9 @@
 import type { IWidget } from './IWidget'
 import type { Widget_list, Widget_list_config } from './widgets/list/WidgetList'
 import type { Widget_optional } from './widgets/optional/WidgetOptional'
+import type { Widget_shared } from './widgets/shared/WidgetShared'
+
+import { getCurrentForm_IMPL } from 'src/models/_ctx2'
 
 export interface ISpec<W extends IWidget = IWidget> {
     $Widget: W
@@ -43,4 +46,6 @@ export class Spec<W extends IWidget = IWidget> {
             collapsed: this.config.collapsed,
             border: this.config.border,
         })
+    /** clone the spec, and patch the cloned config to make it hidden */
+    hidden = () => new Spec(this.type, { ...this.config, hidden: true }, this.widget)
 }

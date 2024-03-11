@@ -12,7 +12,6 @@ import { applyWidgetMixinV2 } from 'src/controls/Mixins'
 // CONFIG
 export type Widget_shared_config<T extends Spec = Spec> = WidgetConfigFields<
     {
-        startActive?: boolean
         /** shared widgets must be registered in the form root group */
         rootKey: string
         widget: T['$Widget']
@@ -53,6 +52,8 @@ export class Widget_shared<T extends Spec = Spec> implements IWidget<Widget_shar
     get shared(): T['$Widget'] {
         return this.config.widget
     }
+
+    hidden = () => new Widget_shared<T>(this.form, { ...this.config, hidden: true }, this.serial)
 
     constructor(
         //

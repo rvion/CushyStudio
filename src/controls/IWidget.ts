@@ -120,6 +120,9 @@ export type SharedWidgetConfig<T extends $WidgetTypes> = {
 
     /** if provided, override the default logic to decide if the widget need to be bordered */
     alignLabel?: boolean
+
+    /** if provided, widget will be hidden */
+    hidden?: boolean
 }
 
 export type Requirements =
