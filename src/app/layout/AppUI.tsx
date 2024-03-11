@@ -71,7 +71,7 @@ export const CushyUI = observer(function CushyUI_() {
             <GlobalSearchUI />
             <AppBarUI />
             <RenderFullPagePanelUI />
-            <div className='flex flex-grow relative'>
+            <div className='flex flex-grow relative overflow-clip'>
                 <FavBarUI direction='column' />
                 <ProjectUI />
             </div>
