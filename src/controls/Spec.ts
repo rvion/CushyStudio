@@ -26,9 +26,13 @@ export class Spec<W extends IWidget = IWidget> {
         //
         public readonly type: W['type'],
         public readonly config: W['$Input'],
-        /** if specified, bypass the instanciation completely */
-        public widget?: W,
-    ) {}
+    ) {
+        // 2024-03-11 rvion: this was added to properly support "shared" specs;
+        //          | but it turns out we can just live without any shared spec,
+        //          | and only work with instanciated Widget_shared directly
+        // ⏸️ /** if specified, bypass the instanciation completely */
+        // ⏸️ public widget?: W,
+    }
 
     /** wrap widget spec to list stuff */
     list = <const T extends Spec>(config: Omit<Widget_list_config<T>, 'element'> = {}) =>
@@ -47,8 +51,8 @@ export class Spec<W extends IWidget = IWidget> {
             border: this.config.border,
         })
 
-    shared = <W extends Spec>(key: string): Widget_shared<this> => getCurrentForm_IMPL().shared(key, this)
+    shared = (key: string): Widget_shared<this> => getCurrentForm_IMPL().shared(key, this)
 
     /** clone the spec, and patch the cloned config to make it hidden */
-    hidden = () => new Spec(this.type, { ...this.config, hidden: true }, this.widget)
+    hidden = () => new Spec(this.type, { ...this.config, hidden: true })
 }

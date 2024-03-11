@@ -36,10 +36,10 @@ export const mkFormAutoBuilder = (form: FormBuilder) => {
         get(target, prop, receiver) {
             // skip symbols
             if (typeof prop === 'symbol') return (target as any)[prop]
-            if (prop === 'isMobXAtom') return (target as any)[prop]
-            if (prop === 'isMobXReaction') return (target as any)[prop]
 
             // skip mobx stuff
+            if (prop === 'isMobXAtom') return (target as any)[prop]
+            if (prop === 'isMobXReaction') return (target as any)[prop]
             if (prop === 'isMobXComputedValue') return (target as any)[prop]
 
             // skip public form
