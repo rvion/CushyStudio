@@ -236,9 +236,16 @@ export class FormBuilder {
 
         const type = unmounted.type
         const config = unmounted.config as any /* impossible to propagate union specification in the switch below */
-
         if (type === 'group'     ) return new Widget_group     (this.form, config, serial, this.form._ROOT ? undefined : (x) => { this.form._ROOT = x })
-        if (type === 'shared'    ) return new Widget_shared    (this.form, config, serial)
+        if (type === 'shared'    ) {
+            // turns out we should only work with Widget_shared directly, so we should be safe
+            // to simply not support Spec<shared>
+            throw new Error(`[❌] For now, Shared_Widget have been design to bypass spec hydratation completely.`)
+            // option 1:
+            // ⏸️ return new Widget_shared    (this.form, config, serial)
+            // option 2:
+            // ⏸️ return config.widget
+        }
         if (type === 'optional'  ) return new Widget_optional  (this.form, config, serial)
         if (type === 'bool'      ) return new Widget_bool      (this.form, config, serial)
         if (type === 'str'       ) return new Widget_string    (this.form, config, serial)
