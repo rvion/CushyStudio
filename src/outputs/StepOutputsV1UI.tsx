@@ -5,16 +5,18 @@ import { observer } from 'mobx-react-lite'
 import { _formatPreviewDate } from '../utils/formatters/_formatPreviewDate'
 import { OutputPreviewUI } from './OutputUI'
 import { StepOutputsHeaderV2UI } from './StepOutputsV2UI'
-import { FoldIconUI } from 'src/cards/FoldIconUI'
+import { useSt } from 'src/state/stateContext'
 
 export const StepOutputsV1UI = observer(function StepOutputsV1UI_(p: { step: StepL }) {
+    const st = useSt()
     const step = p.step
-    const isExpanded = step.expanded
-    if (!isExpanded) return <StepOutputsHeaderV1UI className='py-2' step={step} />
+    const showSingle = st.__TEMPT__maxStepsToShow == 1
+    const isExpanded = step.expanded || showSingle
+    if (!isExpanded) return <StepOutputsHeaderV1UI tw='border-b-2 border-b-base-300' className='py-2' step={step} />
     if (isExpanded)
         return (
-            <div>
-                <StepOutputsHeaderV1UI className='py-2' step={step} />
+            <div tw='border-b-2 border-b-base-300'>
+                {showSingle ? <></> : <StepOutputsHeaderV1UI className='py-2' step={step} />}
                 <StepOutputsBodyV1UI step={step} />
             </div>
         )
@@ -26,15 +28,21 @@ export const StepOutputsHeaderV1UI = observer(function StepOutputsV1HeaderUI_(p:
         <div
             tw={[
                 //
-                'bg-base-200',
+                'bg-base-100',
                 'flex items-center',
-                'cursor-pointer text-xs text-opacity-50 hover:bg-base-200',
+                'cursor-pointer text-xs text-opacity-50 hover:brightness-125 text-shadow',
                 p.className,
             ]}
             onClick={() => (step.expanded = !step.expanded)}
-            style={{ borderTop: '1px solid #2d2d2d' }}
+            onMouseDown={(ev) => {
+                if (ev.button != 0) {
+                    return
+                }
+            }}
+            // style={{ borderTop: '1px solid #2d2d2d' }}
         >
-            <FoldIconUI val={step.expanded} />
+            {/* <FoldIconUI val={step.expanded} /> */}
+            <span className='material-symbols-outlined'>{!step.expanded ? 'chevron_right' : 'expand_more'}</span>
             <b>{step.name ?? step.name}</b>
             <div tw='flex-grow'></div>
             <div className='text-xs opacity-50'>{_formatPreviewDate(new Date(step.createdAt))}</div>
@@ -45,7 +53,7 @@ export const StepOutputsHeaderV1UI = observer(function StepOutputsV1HeaderUI_(p:
 export const StepOutputsBodyV1UI = observer(function StepBodyUI_(p: { step: StepL }) {
     const step = p.step
     return (
-        <div className='flex flex-wrap'>
+        <div className='flex flex-wrap bg-base-300'>
             {step && <StepOutputsHeaderV2UI step={step} />}
             {step.outputs?.map((output, ix) => (
                 <OutputPreviewUI key={ix} step={step} output={output} />

@@ -11,7 +11,7 @@ export const Panel_Steps = observer(function StepListUI_(p: {}) {
     const st = useSt()
     const steps = st.db.steps.getLastN(st.__TEMPT__maxStepsToShow)
     return (
-        <div className='flex flex-col overflow-hidden'>
+        <div className='flex flex-col overflow-hidden bg-base-300 h-full'>
             <PanelHeaderUI>
                 <SpacerUI />
                 <RevealUI tw='WIDGET-FIELD' title='Step Options'>
@@ -33,7 +33,7 @@ export const Panel_Steps = observer(function StepListUI_(p: {}) {
                     </div>
                 </RevealUI>
             </PanelHeaderUI>
-            <div className='flex flex-col flex-grow' style={{ overflow: 'auto' }}>
+            <div className='flex flex-col flex-grow bg-base-300 select-none' style={{ overflow: 'auto' }}>
                 {steps.map((step) => (
                     <StepOutputsV1UI key={step.id} step={step} />
                 ))}
