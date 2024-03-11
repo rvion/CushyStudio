@@ -1,7 +1,6 @@
 import type { LiveDB } from './LiveDB'
 import type { LiveTable } from './LiveTable'
 import type { TableInfo } from './TYPES_json'
-import type { Generated, Selectable, Updateable } from 'kysely'
 import type { AnnotationMapEntry } from 'mobx'
 import type { STATE } from 'src/state/state'
 
