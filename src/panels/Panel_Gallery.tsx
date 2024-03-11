@@ -68,7 +68,7 @@ export const Panel_Gallery = observer(function VerticalGalleryUI_(p: {}) {
 
             <div className='flex flex-wrap overflow-auto'>
                 {/* <LatentPreviewUI /> */}
-                {st.imageToDisplay.all.map((img_) => {
+                {st.imageToDisplay.map((img_) => {
                     const img = st.db.media_image.get(img_.id)!
                     return (
                         <OutputPreviewWrapperUI //
