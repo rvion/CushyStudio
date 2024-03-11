@@ -65,7 +65,8 @@ import { treeElement } from 'src/panels/libraryUI/tree/TreeEntry'
 import { Tree } from 'src/panels/libraryUI/tree/xxx/Tree'
 import { TreeView } from 'src/panels/libraryUI/tree/xxx/TreeView'
 import { VirtualHierarchy } from 'src/panels/libraryUI/VirtualHierarchy'
-import { FORM_PlaygroundWidgetDisplay, Header_Playground } from 'src/panels/Panel_Playground/Panel_Playground'
+import { FORM_PlaygroundWidgetDisplay } from 'src/panels/Panel_Playground/FORM_PlaygroundWidgetDisplay'
+import { Header_Playground } from 'src/panels/Panel_Playground/Panel_Playground'
 import { SafetyChecker } from 'src/safety/Safety'
 import { Database } from 'src/supa/database.types'
 import { ThemeManager } from 'src/theme/ThemeManager'
@@ -822,7 +823,7 @@ export class STATE {
         return this.db.media_image.select(
             (query) => {
                 let x = query
-                    .orderBy('media_image.createdAt', 'desc')
+                    .orderBy('media_image.updatedAt', 'desc')
                     .limit(this.galleryConf.value.galleryMaxImages ?? 20)
                     .select('media_image.id')
 

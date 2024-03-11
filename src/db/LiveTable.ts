@@ -219,6 +219,7 @@ export class LiveTable<TABLE extends TableInfo<keyof KyselyTables>> {
                     // build the sql
                     const tableInfos = this.table.schema
                     const presentCols = Object.keys(changes)
+                    presentCols.push('updatedAt')
                     const updateSQL = [
                         `update ${tableInfos.sql_name}`,
                         `set`,
@@ -248,7 +249,11 @@ export class LiveTable<TABLE extends TableInfo<keyof KyselyTables>> {
 
                         if (options?.debug) console.log(`[🔴 DEBUG 🔴] ${updateSQL} ${JSON.stringify(updatePayload)}`)
                         // update the data
+                        const A = process.hrtime.bigint() // TIMER start
                         stmt.get(updatePayload) as any as TABLE['$T']
+                        const B = process.hrtime.bigint() // TIMER end
+                        const ms = Number(B - A) / 1_000_000
+                        console.log(`[🚧] SQL [${ms.toFixed(3)}ms]`, updateSQL, updatePayload) // debug
 
                         // assign the changes
                         // 2023-12-02 rvion: for now, I'm not re-assigning from the returned values

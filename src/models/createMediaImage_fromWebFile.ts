@@ -112,7 +112,7 @@ export const _createMediaImage_fromLocalyAvailableImage = (
             })
             return prev
         }
-        console.log(`[🏞️] updating existing imamge`)
+        console.log(`[🏞️] updating existing image (${relPath})`)
         // toastInfo(`🏞️ updating existing imamge`)
         prev.update({
             orientation: meta.orientation,

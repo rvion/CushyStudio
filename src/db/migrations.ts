@@ -631,4 +631,19 @@ export const migrations: {
         name: 'image thumbnail',
         up: [`alter table media_image add column thumbnail text`],
     },
+    {
+        id: 'LA3WzwiPEs',
+        name: 'misc indexes',
+        up: [
+            `CREATE INDEX idx__media_image__updatedAt ON media_image(updatedAt DESC);`,
+            `CREATE INDEX idx__media_text__stepID ON media_text(stepID);`,
+            `CREATE INDEX idx__media_image__stepID ON media_image(stepID);`,
+            `CREATE INDEX idx__media_video__stepID ON media_video(stepID);`,
+            `CREATE INDEX idx__media_3d_displacement__stepID ON media_3d_displacement(stepID);`,
+            `CREATE INDEX idx__media_splat__stepID ON media_splat(stepID);`,
+            `CREATE INDEX idx__comfy_workflow__stepID ON comfy_workflow(stepID);`,
+            `CREATE INDEX idx__comfy_prompt__stepID ON comfy_prompt(stepID);`,
+            `CREATE INDEX idx__runtime_error__stepID ON runtime_error(stepID);`,
+        ],
+    },
 ]
