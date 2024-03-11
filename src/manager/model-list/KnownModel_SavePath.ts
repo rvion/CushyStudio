@@ -1,7 +1,7 @@
 // prettier-ignore
 export type KnownModel_SavePath =
     | "vae_approx"                                       // x   4
-    | "default"                                          // x  71
+    | "default"                                          // x  82
     | "upscale_models/ldsr"                              // x   1
     | "checkpoints/upscale"                              // x   1
     | "insightface"                                      // x   2
@@ -25,7 +25,7 @@ export type KnownModel_SavePath =
     | "controlnet/TemporalNet1XL"                        // x   1
     | "clip_vision"                                      // x   4
     | "custom_nodes/ControlNet-LLLite-ComfyUI/models"    // x   1
-    | "sams"                                             // x   3
+    | "sams"                                             // x   6
     | "seecoders"                                        // x   3
     | "ultralytics/bbox"                                 // x   6
     | "ultralytics/segm"                                 // x  10
@@ -50,6 +50,8 @@ export type KnownModel_SavePath =
     | "instance_models/positionnet_models"               // x   1
     | "instance_models/scaleu_models"                    // x   1
     | "insightface/models/buffalo_l"                     // x   5
+    | "blip"                                             // x   1
+    | "groundingdino"                                    // x   2
     | "custom_nodes/ComfyUI-BRIA_AI-RMBG/RMBG-1.4"       // x   1
 
 

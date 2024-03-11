@@ -17,11 +17,12 @@ export type KnownModel_Base =
     | "SD2.1 VAE"          // x   1
     | "SSD-1B"             // x   2
     | "segmind-vega"       // x   2
+    | "SDXL 1.0"           // x  11
     | "vit-g"              // x   1
     | "ViT-L"              // x   1
     | "ViT-H"              // x   1
     | "ViT-G"              // x   1
-    | "SAM"                // x   3
+    | "SAM"                // x   6
     | "SEECODER"           // x   3
     | "Ultralytics"        // x  16
     | "MotionCtrl"         // x   1
@@ -30,5 +31,7 @@ export type KnownModel_Base =
     | "facexlib"           // x   4
     | "efficient_sam"      // x   2
     | "DLIB"               // x   2
+    | "blip_model"         // x   1
+    | "DINO"               // x   2
 
 

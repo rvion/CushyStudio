@@ -13,12 +13,12 @@ export type KnownModel_Type =
     | "clip"               // x   1
     | "lora"               // x  16
     | "unclip"             // x   2
-    | "T2I-Adapter"        // x   7
+    | "T2I-Adapter"        // x  18
     | "T2I-Style"          // x   1
     | "controlnet"         // x  35
     | "clip_vision"        // x   4
     | "gligen"             // x   1
-    | "sam"                // x   3
+    | "sam"                // x   6
     | "seecoder"           // x   3
     | "Ultralytics"        // x  16
     | "animatediff"        // x  13
@@ -34,5 +34,7 @@ export type KnownModel_Type =
     | "Shape Predictor"    // x   1
     | "Face Recognition"   // x   1
     | "InstanceDiffusion"  // x   3
+    | "BLIP_MODEL"         // x   1
+    | "GroundingDINO"      // x   2
 
 
