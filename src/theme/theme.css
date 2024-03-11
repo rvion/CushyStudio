@@ -420,3 +420,30 @@ legend {
     border-bottom: 1px solid var(--fallback-p,oklch(var(--a)/0.45));
     border-right: 1px solid var(--fallback-p,oklch(var(--a)/0.45));
 }
+
+/* ------- Helpers and Various Fixes ------- */
+
+/*#region*/ /* Hide Scrollbar */
+/* Useful for very narrow places where a scrollbar will take up a ton of space */
+.hide-horizontal-scroll::-webkit-scrollbar, .hide-vertical-scroll::-webkit-scrollbar {
+    height:0px;
+    width: 0px;
+    display: none !important;
+}
+
+.hide-horizontal-scroll {
+    overflow-x: scroll;
+    overflow-y: hidden;
+}
+
+.hide-vertical-scroll {
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+.hide-horizontal-scroll, .hide-vertical-scroll {
+    -ms-overflow-style: none;
+    overflow: -moz-scrollbars-none;
+    scrollbar-width: none;
+}
+/*#endregion*/ /* Hide Scrollbar */
