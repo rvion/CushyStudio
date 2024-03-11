@@ -71,6 +71,7 @@ async function buildJS() {
             '@tensorflow/tfjs': './src/syms/tfjs.js',
             nsfwjs: './src/syms/nsfwjs.js',
             'mime-types': './src/syms/mime-types.js',
+            elkjs: './src/syms/elkjs.js',
 
             // -----------------------------------------------------------------------
             src: './src',

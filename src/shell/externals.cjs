@@ -1,7 +1,7 @@
 // 🔶 modifications must be kept in sync between :
 //     | ./src/shell/build.js
-//     | ./vite.config.ts
 //     | ./src/shell/externals.cjs
+//     | ./vite.config.ts
 
 // prettier-ignore
 const modulesToCache /*: [name:string, path:string][]*/ = [
@@ -24,6 +24,7 @@ const modulesToCache /*: [name:string, path:string][]*/ = [
     ['crypto'           , 'crypto'          ],
 
     // misc heavy libs ----------------
+    ['elkjs'            , 'elkjs'           ],
     ['three'            , 'three'           ],
     ['mobx'             , 'mobx'            ],
     ['@tensorflow/tfjs' , 'tfjs'            ],
@@ -36,6 +37,9 @@ for (const [pt, x] of modulesToCache) {
     const symbols = Object.keys(require(pt))
     let output = `const _ = window.require('${pt}')\n`
     output += `export default _\n`
-    for (const sym of symbols) output += `export const ${sym} = _.${sym}\n`
+    for (const sym of symbols) {
+        if (sym === 'default') continue
+        output += `export const ${sym} = _.${sym}\n`
+    }
     fs.writeFileSync(`src/syms/${x}.js`, output)
 }
