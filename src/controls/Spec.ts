@@ -46,6 +46,9 @@ export class Spec<W extends IWidget = IWidget> {
             collapsed: this.config.collapsed,
             border: this.config.border,
         })
+
+    shared = <W extends Spec>(key: string): Widget_shared<this> => getCurrentForm_IMPL().shared(key, this)
+
     /** clone the spec, and patch the cloned config to make it hidden */
     hidden = () => new Spec(this.type, { ...this.config, hidden: true }, this.widget)
 }
