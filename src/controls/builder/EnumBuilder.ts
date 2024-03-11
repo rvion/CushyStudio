@@ -22,28 +22,62 @@ export type IEnumBuilderOpt = {
 export interface EnumBuilder extends IEnumBuilder {}
 export class EnumBuilder {
     constructor(public form: Form<any>) {
-        const schema = cushy.schema
-        for (const enumName of schema.knownEnumsByName.keys()) {
-            Object.defineProperty(this, enumName, {
-                value: (config: any = {}) => new Spec('enum', /* form, */ { ...config, enumName }),
-            })
-        }
+        return new Proxy(this, {
+            get(target, prop) {
+                // skip symbols
+                if (typeof prop === 'symbol') return (target as any)[prop]
+
+                // skip self methods
+                if (prop in target) return (target as any)[prop]
+
+                // skip mobx stuff
+                if (prop === 'isMobXAtom') return (target as any)[prop]
+                if (prop === 'isMobXReaction') return (target as any)[prop]
+                if (prop === 'isMobXComputedValue') return (target as any)[prop]
+
+                // retrieve the schema
+                const enumName = prop
+                const schema = cushy.schema
+                const enumSchema = schema.knownEnumsByName.get(enumName)
+                if (enumSchema == null) { throw new Error(`unknown enum: ${enumName}`) } // prettier-ignore
+
+                // return the builder
+                return (config: any = {}) => new Spec('enum', /* form, */ { ...config, enumName })
+            },
+        })
     }
 }
 
 export interface EnumBuilderOpt extends IEnumBuilderOpt {}
 export class EnumBuilderOpt {
     constructor(public form: Form<any>) {
-        const schema = cushy.schema
-        for (const enumName of schema.knownEnumsByName.keys()) {
-            Object.defineProperty(this, enumName, {
-                value: (config: any = {}) =>
+        return new Proxy(this, {
+            get(target, prop) {
+                // skip symbols
+                if (typeof prop === 'symbol') return (target as any)[prop]
+
+                // skip self methods
+                if (prop in target) return (target as any)[prop]
+
+                // skip mobx stuff
+                if (prop === 'isMobXAtom') return (target as any)[prop]
+                if (prop === 'isMobXReaction') return (target as any)[prop]
+                if (prop === 'isMobXComputedValue') return (target as any)[prop]
+
+                // retrieve the schema
+                const enumName = prop
+                const schema = cushy.schema
+                const enumSchema = schema.knownEnumsByName.get(enumName)
+                if (enumSchema == null) { throw new Error(`unknown enum: ${enumName}`) } // prettier-ignore
+
+                // return the builder
+                return (config: any = {}) =>
                     form.builder.optional({
                         label: config.label,
                         startActive: config.startActive,
                         widget: new Spec('enum', /* form, */ { ...config, enumName }),
-                    }),
-            })
-        }
+                    })
+            },
+        })
     }
 }
