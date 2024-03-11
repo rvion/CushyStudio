@@ -8,7 +8,7 @@ import { LiveRef } from '../db/LiveRef'
 
 export interface RuntimeErrorL extends LiveInstance<TABLES['runtime_error']> {}
 export class RuntimeErrorL {
-    prompt = new LiveRef<this, ComfyPromptL>(this, 'promptID', () => this.db.comfy_prompts)
-    graph = new LiveRef<this, ComfyWorkflowL>(this, 'graphID', () => this.db.graphs)
-    step = new LiveRef<this, StepL>(this, 'stepID', () => this.db.steps)
+    prompt = new LiveRef<this, ComfyPromptL>(this, 'promptID', 'comfy_prompt')
+    graph = new LiveRef<this, ComfyWorkflowL>(this, 'graphID', 'comfy_workflow')
+    step = new LiveRef<this, StepL>(this, 'stepID', 'step')
 }

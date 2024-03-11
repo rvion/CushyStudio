@@ -1,16 +1,16 @@
 import type { DisplacementState } from './DisplacementState'
+import type { MeshStandardMaterial } from 'three'
 
 import { CameraControls, OrbitControls, useTexture } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
 import { observer } from 'mobx-react-lite'
-import { type MeshStandardMaterial } from 'three'
 
 import { Ground3D } from './Ground3d'
 import { SkyBox3D } from './SkyBox3D'
 
 export const DisplacementUI = observer(function DisplacementUI_(p: { uist: DisplacementState }) {
     return (
-        <Canvas tw='flex-1' camera={{ fov: 10 }}>
+        <Canvas ref={p.uist.canvasRef} tw='flex-1' camera={{ fov: 10 }}>
             <DisplacementUI2 uist={p.uist} />
         </Canvas>
     )

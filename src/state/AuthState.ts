@@ -30,7 +30,7 @@ export class AuthState {
     auth: SupabaseAuthClient
 
     get authTable(): LiveTable<TABLES['auth']> {
-        return this.st.db.auths
+        return this.st.db.auth
     }
 
     get isConnected() {
@@ -64,7 +64,7 @@ export class AuthState {
 
     tryToRestoreAuthFromDB = async () => {
         logger.info(`[🔑 AUTH] restoring session from DB...`)
-        const prevAuth = this.st.db.auths.get(asAuthID('current'))
+        const prevAuth = this.st.db.auth.get(asAuthID('current'))
         if (prevAuth == null) return
         await this.authFrom({
             access_token: prevAuth.data.access_token!,

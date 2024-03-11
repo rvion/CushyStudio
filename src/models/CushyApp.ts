@@ -2,13 +2,12 @@ import type { DraftL } from './Draft'
 import type { Executable } from './Executable'
 import type { LibraryFile } from 'src/cards/LibraryFile'
 import type { TABLES } from 'src/db/TYPES.gen'
-import type { CushyScriptL } from 'src/models/CushyScriptL'
+import type { CushyScriptL } from 'src/models/CushyScript'
 
 import { existsSync, readFileSync } from 'fs'
 import { basename, extname, join } from 'pathe'
 
 import { generateAvatar } from '../cards/AvatarGenerator'
-import { LiveCollection } from 'src/db/LiveCollection'
 import { LiveInstance } from 'src/db/LiveInstance'
 import { LiveRef } from 'src/db/LiveRef'
 import { SQLITE_false, SQLITE_true } from 'src/db/SQLITE_boolean'
@@ -19,7 +18,7 @@ import { toastError, toastSuccess } from 'src/utils/misc/toasts'
 export interface CushyAppL extends LiveInstance<TABLES['cushy_app']> {}
 export class CushyAppL {
     // linked scripts
-    private _scriptL: LiveRef<this, CushyScriptL> = new LiveRef(this, 'scriptID', () => this.db.cushy_scripts)
+    private _scriptL: LiveRef<this, CushyScriptL> = new LiveRef(this, 'scriptID', 'cushy_script')
     get script() {
         return this._scriptL.item
     }
@@ -32,11 +31,9 @@ export class CushyAppL {
         return true
     }
 
-    // link drafts
-    private _draftsCollection = new LiveCollection<TABLES['draft']>({
-        table: () => this.db.drafts,
-        where: () => ({ appID: this.id }),
-    })
+    get drafts(): DraftL[] {
+        return cushy.db.draft.select((q) => q.where('appID', '=', this.id))
+    }
 
     get virtualFolder(): string {
         const pieces = this.name.split('/')
@@ -44,8 +41,19 @@ export class CushyAppL {
         return pieces.join('/')
     }
 
-    get drafts(): DraftL[] {
-        return this._draftsCollection.items
+    get lastExecutedDrafts(): {
+        id: DraftID
+        title: Maybe<string>
+        lastRunAt: Maybe<number>
+    }[] {
+        return this.db.draft.selectRaw(
+            (query) =>
+                query
+                    .where('appID', '=', this.id) //
+                    .orderBy('lastRunAt', 'desc')
+                    .select(['id', 'title', 'lastRunAt']),
+            ['draft.lastRunAt', 'draft.appID'],
+        )
     }
 
     /** true if in the library/local folder */
@@ -85,10 +93,14 @@ export class CushyAppL {
         this.update({ isFavorite: fav ? SQLITE_true : SQLITE_false } /* { debug: true } */)
     }
 
-    // ... ------------------------------------------------------
+    // ------------------------------------------------------
+    get draftCount(): number {
+        return this.drafts.length
+    }
+
     createDraft = (): DraftL => {
-        const title = this.name + ' ' + this._draftsCollection.items.length + 1
-        const draft = this.st.db.drafts.create({
+        const title = this.name + ' ' + this.draftCount + 1
+        const draft = this.st.db.draft.create({
             // @ts-expect-error 🔴
             formSerial: {},
             appID: this.id,

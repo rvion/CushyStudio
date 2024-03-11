@@ -19,8 +19,13 @@ export const compilePrompt = (p: {
     printWildcards?: boolean
 }): CompiledPrompt => {
     // -----------
-    let POS = ''
-    let NEG = ''
+    const subPrompts: string[] = []
+    let BUFF = ''
+    const BREAK = () => {
+        subPrompts.push(BUFF)
+        BUFF = ''
+    }
+    // ⏸️ let NEG = ''
     const debugText: string[] = []
 
     const prompt = new PromptAST(p.text)
@@ -29,9 +34,9 @@ export const compilePrompt = (p: {
     // const getLastPositivePromptChar = () => POS[POS.length - 1] ?? ''
     // const getLastNegativePromptChar = () => NEG[NEG.length - 1] ?? ''
     // -----------
-    const CONTENT = p.text
+    // ⏸️ const CONTENT = p.text
     const st = p.st
-    const tree = parser.parse(CONTENT ?? '')
+    // ⏸️ const tree = parser.parse(CONTENT ?? '')
 
     const weightStack = [1]
     prompt.root.iterate(
@@ -40,48 +45,33 @@ export const compilePrompt = (p: {
             const toktype = node.$kind
             const weights = weightStack[weightStack.length - 1]
             const set = (txt: string) => {
-                const lastChar = weights < 0 ? NEG[NEG.length - 1] ?? '' : POS[POS.length - 1] ?? ''
+                const lastChar =
+                    //  ⏸️ weights < 0
+                    //  ⏸️     ? NEG[NEG.length - 1] ?? ''
+                    //  ⏸️     : POS[POS.length - 1] ?? ''
+                    BUFF[BUFF.length - 1] ?? ''
+
                 const space = txt === ',' ? '' : lastChar === ' ' ? '' : ' '
                 let finalWeight = Math.abs(weights)
                 let finalTxt = finalWeight === 1 ? txt : `(${txt}:${finalWeight})`
                 finalTxt = space + finalTxt
-                if (weights < 0) NEG += finalTxt
-                else POS += finalTxt
+                // ⏸️ if (weights < 0) NEG += finalTxt
+                // ⏸️ else POS += finalTxt
+                BUFF += finalTxt
+                // CURR += finalTxt
             }
 
             if (toktype === 'WeightedExpression') {
                 weightStack.push(weights * node.weight)
-                // weights *= node.weight
                 return true
             }
 
-            if (toktype === 'Identifier') {
-                set(node.text)
-                return false
-            }
-
-            if (toktype === 'Separator') {
-                set(',')
-                return false
-            }
-
-            if (toktype === 'Number') {
-                return false
-            }
-
-            if (toktype === 'Break') {
-                set('break')
-            }
-
-            if (toktype === 'String') {
-                set(node.content)
-                return false
-            }
-
-            if (toktype === 'Embedding') {
-                set(`embedding:${node.name}`)
-                return false
-            }
+            if (toktype === 'Identifier') { set(node.text) ;                return false } // prettier-ignore
+            if (toktype === 'Separator')  { set(',') ;                      return false } // prettier-ignore
+            if (toktype === 'Number')     {                                 return false } // prettier-ignore
+            if (toktype === 'String')     { set(node.content) ;             return false } // prettier-ignore
+            if (toktype === 'Embedding')  { set(`embedding:${node.name}`) ; return false } // prettier-ignore
+            if (toktype === 'Break')      { BREAK() } // prettier-ignore
 
             if (toktype === 'Wildcard') {
                 const options = (st.wildcards as any)[node.name]
@@ -129,9 +119,11 @@ export const compilePrompt = (p: {
             }
         },
     )
+
+    BREAK()
     return {
         debugText,
-        negativePrompt: NEG,
-        positivePrompt: POS,
+        promptIncludingBreaks: subPrompts.join(' BREAK '),
+        subPrompts,
     }
 }

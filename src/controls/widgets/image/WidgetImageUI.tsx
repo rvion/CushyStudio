@@ -1,7 +1,8 @@
+import type { Widget_image } from './WidgetImage'
+
 import { runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 
-import { Widget_image } from './WidgetImage'
 import { useSt } from 'src/state/stateContext'
 import { useImageDrop } from 'src/widgets/galleries/dnd'
 import { ImageUI } from 'src/widgets/galleries/ImageUI'
@@ -16,7 +17,7 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: { w
         })
     })
     const draft = useDraft()
-    const image = draft.db.media_images.get(widget.serial.imageID)
+    const image = draft.db.media_image.get(widget.serial.imageID)
     return (
         <div
             style={dropStyle}

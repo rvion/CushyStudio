@@ -73,7 +73,7 @@ export class AutoBuilder {
         const schema = cushy.schema
         for (const node of schema.nodes) {
             Object.defineProperty(this, node.nameInCushy, {
-                value: (ext?: Partial<WidgetConfigFields<{}>>) =>
+                value: (ext?: Partial<WidgetConfigFields<{}, any>>) =>
                     formBuilder.group({
                         label: ext?.label ?? node.nameInComfy,
                         // label: node.nameInComfy,

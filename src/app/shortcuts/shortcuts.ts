@@ -109,7 +109,7 @@ export const allCommands: Command<STATE>[] = [
     simpleValidInInput(KEYS.collapseAllTree, 'collapse all tree', (st) => {
         st.tree1View.resetCaretPos()
         st.tree2View.resetCaretPos()
-        st.db.tree_entries.updateAll({ isExpanded: null })
+        st.db.tree_entry.updateAll({ isExpanded: null })
         const at = st.tree2View.revealAndFocusAtPath(['built-in'])
         at?.open()
     }),

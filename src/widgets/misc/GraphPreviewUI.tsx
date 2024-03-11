@@ -5,13 +5,16 @@ import { MutableRefObject, useEffect, useMemo } from 'react'
 import { createPortal } from 'react-dom'
 
 import { ComfyWorkflowL } from 'src/models/ComfyWorkflow'
+import { bang } from 'src/utils/misc/bang'
+import { Kwery } from 'src/utils/misc/Kwery'
 import { renderMinimap } from 'src/widgets/minimap/Minimap'
 
 export const useObservableRef = <T extends any>() => useMemo(() => observable({ current: null } as MutableRefObject<T>), [])
 
 export const GraphPreviewUI = observer(function GraphPreviewUI_(p: { graph: ComfyWorkflowL }) {
     const graph = p.graph
-    const cyto = graph.json_cyto_small
+    const cytoK = Kwery.get('cyto', { graphId: graph.id }, () => graph.json_cyto_small)
+    const cyto = cytoK.value
     const canvasRef = useObservableRef<HTMLCanvasElement>()
     const elMap = canvasRef.current
     // 1. trigger cyto update (🔶 this is asynchronous)
@@ -39,34 +42,35 @@ export const GraphPreviewUI = observer(function GraphPreviewUI_(p: { graph: Comf
 
     const domNode = document.getElementById('hovered-graph')
     if (domNode == null) return '❌ domNode is null'
-    if (cyto.elements.nodes == null) return `❌ cyto.elements.nodes is null`
+    if (cyto == null) return '❌'
+    if (cyto.children == null) return `❌ cyto.children is null`
 
     const fullGraph = (
         <>
-            {/* {cyto.elements.nodes.length} */}
-            {cyto.elements.nodes.map((n) => {
-                const node = graph.getNode(n.data.originalID)
+            {/* {cyto.children.length} */}
+            {cyto.children.map((n) => {
+                const node = graph.getNode(n.id)
                 if (node == null) return
                 return (
                     <div
                         className='node virtualBorder bg-base-100'
-                        key={n.data.id}
+                        key={n.id}
                         style={{
                             fontFamily: 'monospace',
                             fontWeight: '15px',
                             lineHeight: '15px',
                             position: 'absolute',
-                            top: n.position.y,
-                            left: n.position.x,
-                            width: n.data.width,
-                            height: n.data.height,
+                            top: bang(n.y),
+                            left: bang(n.x),
+                            width: bang(n.width),
+                            height: bang(n.height),
                             // padding: 10,
                             // overflow: 'hidden',
                             // background: '#aaa',
                         }}
                     >
                         <div tw='bg-primary text-primary-content overflow-hidden whitespace-nowrap overflow-ellipsis'>
-                            {node.$schema.nameInComfy} [{n.data.id}]
+                            {node.$schema.nameInComfy} [{n.id}]
                         </div>
                         {/* <div>{n.data.width}</div> */}
                         <div>

@@ -58,23 +58,23 @@ app({
         let { ckpt, clip, vae } = run_model(ui.model)
         if (ui.ipadapter) ckpt = (await run_ipadapter_standalone(ui.ipadapter, ckpt)).ip_adapted_model
         const isXL = ui.mode.id === 'xl'
-        const height = isXL ? H * 2 : H
-        const width = isXL ? W * 2 : W
-        let latent: _LATENT = graph.EmptyLatentImage({ height, width })
-        const negativeText = ui.negative.compile({ onLora: () => {} }).positivePrompt
+        const height = isXL ? H * 3 : H
+        const width = isXL ? W * 3 : W
+        const negativeText = ui.negative.compile({ onLora: () => {} }).promptIncludingBreaks
         const charX = run_prompt({ prompt: ui.character, ckpt })
 
         // list of stuff to run once the generation is done
         const AFTERGENERATION: (() => void)[] = []
 
         const store = run.Store.getOrCreate<Record<string, string>>({
-            key: 'card-descriptions-5',
+            key: 'card-descriptions-7',
             scope: 'global',
             makeDefaultValue: () => ({}),
         })
 
         let startingSeed = ui.seed
         for (const x of allCards) {
+            let latent: _LATENT = graph.EmptyLatentImage({ height, width })
             if (AFTERGENERATION.length >= ui.max) break
             // if cards are manually specified, only use those
             if (ui.cards.length > 0) {
@@ -100,18 +100,18 @@ app({
                 `I need to illustrate my ${kind} skills`,
                 `The name of the skill is ${x.Name}. and does read like that: "{${simplifiedDescription}}".`,
                 `The illustration must illustrate the effect of the skill.`,
-                `for context, the player is a ${charX.positiveText}. but the image must focus on the skill, not the character`,
+                `for context, the player is a ${charX.promptIncludingBreaks}. but the image must focus on the skill, not the character`,
                 `The prompt must be less than 400 letters`,
             ].join('\n')
             const llmCacheKey = run.hash(ui.llmModel.id + llmRequest)
             let prompt: string = storedPrompts[llmCacheKey] ?? ''
             if (prompt === '') {
-                const res = await run.LLM.expandPrompt(llmRequest, ui.llmModel.id, run.LLM.simpleSystemPromptList)
+                const res = await run.LLM.expandPrompt(llmRequest, ui.llmModel.id, run.LLM.simpleSystemPromptNaturalLanguage)
                 prompt = res.prompt
                 store.update({ json: { ...storedPrompts, [llmCacheKey]: prompt } })
             }
-            const prefix = ui.promptPrefix ? run_prompt({ prompt: ui.promptPrefix, ckpt, clip }).positiveText : ''
-            const suffix = ui.promptSuffix ? run_prompt({ prompt: ui.promptSuffix, ckpt, clip }).positiveText : ''
+            const prefix = ui.promptPrefix ? run_prompt({ prompt: ui.promptPrefix, ckpt, clip }).promptIncludingBreaks : ''
+            const suffix = ui.promptSuffix ? run_prompt({ prompt: ui.promptSuffix, ckpt, clip }).promptIncludingBreaks : ''
             prompt = prefix ? `${prefix}, (${x.Name} skill:1.1),  ${prompt}` : prompt
             prompt = suffix ? `${prompt}, ${suffix}` : prompt
             run.output_Markdown(
@@ -125,7 +125,7 @@ app({
                 latent_image: latent,
                 cfg: 8,
                 model: charX.ckpt,
-                sampler_name: 'ddim',
+                sampler_name: 'euler_ancestral',
                 scheduler: 'karras',
                 positive: positiveCond,
                 negative: negativeCond,
@@ -141,7 +141,7 @@ app({
 
             // post processing
             let image: _IMAGE = graph.VAEDecode({ samples: latent, vae })
-            if (ui.secondPass || isXL) image = graph.Image_Resize({ image: image, rescale_factor: 0.5, mode: 'rescale', resampling: 'lanczos', supersample: 'false', }) // prettier-ignore
+            if (ui.secondPass || isXL) image = graph.Image_Resize({ image: image, rescale_factor: 0.33, mode: 'rescale', resampling: 'lanczos', supersample: 'false', }) // prettier-ignore
             const maskL = await run.Images.createFromURL(bang(stsAssets[`mask-${kind}`]))
             let maskImg = await maskL.loadInWorkflow() //.loadInWorkflowAsMask('alpha')
             // image = graph.ImageCrop({ image, x: 0, y: 0, width: 500, height: 380 })

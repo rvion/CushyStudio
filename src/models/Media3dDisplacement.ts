@@ -6,6 +6,5 @@ import { LiveRefOpt } from 'src/db/LiveRefOpt'
 
 export interface Media3dDisplacementL extends LiveInstance<TABLES['media_3d_displacement']> {}
 export class Media3dDisplacementL {
-    // currentView ...
-    step = new LiveRefOpt<this, StepL>(this, 'stepID', () => this.db.steps)
+    step = new LiveRefOpt<this, StepL>(this, 'stepID', 'step')
 }

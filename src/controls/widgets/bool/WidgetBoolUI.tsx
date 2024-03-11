@@ -1,11 +1,12 @@
 import type { Widget_bool } from './WidgetBool'
 
-import { runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
+
 import { InputBoolUI } from './InputBoolUI'
 
-let isDragging = false
-let wasEnabled = false
+// import { runInAction } from 'mobx'
+// let isDragging = false
+// let wasEnabled = false
 
 export const WidgetBoolUI = observer(function WidgetBoolUI_(p: { widget: Widget_bool }) {
     const widget = p.widget
@@ -16,13 +17,22 @@ export const WidgetBoolUI = observer(function WidgetBoolUI_(p: { widget: Widget_
     }
 
     return (
-        <InputBoolUI //
-            active={widget.serial.active}
-            display={widget.config.display}
-            expand={widget.config.expand}
-            icon={widget.config.icon}
-            text={label}
-            onValueChange={(value) => (widget.serial.active = value)}
-        ></InputBoolUI>
+        <>
+            <InputBoolUI //
+                active={widget.serial.active}
+                display={widget.config.display}
+                expand={widget.config.expand}
+                icon={widget.config.icon}
+                text={label}
+                onValueChange={(value) => (widget.serial.active = value)}
+            />
+            <div
+                tw={[widget.isChanged ? undefined : 'btn-disabled opacity-50']}
+                onClick={() => widget.reset()}
+                className='btn btn-xs btn-narrower btn-ghost'
+            >
+                <span className='material-symbols-outlined'>undo</span>
+            </div>
+        </>
     )
 })

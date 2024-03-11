@@ -15,7 +15,7 @@ export const ImageUI = observer(function ImageUI_(p: {
     className?: string
 }) {
     const st = useSt()
-    const image = typeof p.img === 'string' ? st.db.media_images.get(p.img) : p.img
+    const image = typeof p.img === 'string' ? st.db.media_image.get(p.img) : p.img
 
     const ImageWidth = p.size ?? st.gallerySizeStr
     const [{ opacity }, dragRef] = useImageDrag(image! /* 🔴 */)
@@ -25,7 +25,11 @@ export const ImageUI = observer(function ImageUI_(p: {
     const IMG = (
         <img
             className={p.className}
-            src={image.url}
+            src={
+                st.galleryConf.fields.onlyShowBlurryThumbnails.value //
+                    ? image.thumbnail
+                    : image.url
+            }
             ref={dragRef}
             loading='lazy'
             style={{

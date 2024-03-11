@@ -1,23 +1,28 @@
-import type { EnumValue } from '../../../models/Schema'
+import type { EnumValue } from '../../../models/ComfySchema'
 import type { Form } from '../../Form'
-import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { IWidget } from 'src/controls/IWidget'
 import type { CleanedEnumResult } from 'src/types/EnumUtils'
 
-import { makeAutoObservable } from 'mobx'
+import { action, computed, makeAutoObservable, observable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { hash } from 'ohash'
 
 import { WidgetDI } from '../WidgetUI.DI'
 import { _extractDefaultValue } from './_extractDefaultValue'
 import { WidgetEnumUI } from './WidgetEnumUI'
+import { applyWidgetMixinV2 } from 'src/controls/Mixins'
 
 // CONFIG
-export type Widget_enum_config<O> = WidgetConfigFields<{
-    enumName: string
-    default?: O //Requirable[T] | EnumDefault<T>
-    extraDefaults?: string[]
-    filter?: (v: EnumValue) => boolean
-}>
+export type Widget_enum_config<O> = WidgetConfigFields<
+    {
+        enumName: string
+        default?: O //Requirable[T] | EnumDefault<T>
+        extraDefaults?: string[]
+        filter?: (v: EnumValue) => boolean
+    },
+    Widget_enum_types<O>
+>
 
 // SERIAL
 export type Widget_enum_serial<O> = WidgetSerialFields<{ type: 'enum'; active: true; val: O }>
@@ -35,10 +40,10 @@ export type Widget_enum_types<O> = {
 }
 
 // STATE
-export interface Widget_enum<O> extends Widget_enum_types<O> {}
+export interface Widget_enum<O> extends Widget_enum_types<O>, IWidgetMixins {}
 export class Widget_enum<O> implements IWidget<Widget_enum_types<O>> {
-    HeaderUI = WidgetEnumUI
-    BodyUI = undefined
+    DefaultHeaderUI = WidgetEnumUI
+    DefaultBodyUI = undefined
     readonly id: string
     readonly type: 'enum' = 'enum'
 
@@ -59,6 +64,7 @@ export class Widget_enum<O> implements IWidget<Widget_enum_types<O>> {
             active: true,
             val: _extractDefaultValue(config) ?? (this.possibleValues[0] as any),
         }
+        applyWidgetMixinV2(this)
         makeAutoObservable(this)
     }
     get status(): CleanedEnumResult<any> {

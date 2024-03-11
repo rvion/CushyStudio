@@ -38,10 +38,10 @@ app({
         const x = run_prompt({ prompt: posPrompt, clip, ckpt, printWildcards: true })
         clip = x.clip
         ckpt = x.ckpt
-        let positive = x.positiveConditionning
+        let positive = x.conditioning
 
         const y = run_prompt({ prompt: negPrompt, clip, ckpt, printWildcards: true })
-        let negative = y.positiveConditionning
+        let negative = y.conditioning
 
         // START IMAGE -------------------------------------------------------------------------------
         const IMG = ui.ipadapter.image

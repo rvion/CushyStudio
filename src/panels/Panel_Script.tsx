@@ -8,7 +8,7 @@ import { TypescriptHighlightedCodeUI } from 'src/widgets/misc/TypescriptHighligh
 
 export const Panel_Script = observer(function Panel_Script_(p: { scriptID: CushyScriptID }) {
     const st = useSt()
-    const script = st.db.cushy_scripts.get(p.scriptID)
+    const script = st.db.cushy_script.get(p.scriptID)
 
     if (script == null) {
         return (

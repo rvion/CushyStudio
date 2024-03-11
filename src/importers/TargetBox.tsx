@@ -52,7 +52,7 @@ export const TargetBox = observer((p: { children?: ReactNode }) => {
     return (
         <div
             //
-            tw={[isActive ? 'animate-pulse' : null, 'h-full w-full']}
+            tw={[/* isActive ? 'animate-pulse' : null, */ 'h-full w-full']}
             ref={drop}
             // style={style}
         >
