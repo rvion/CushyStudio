@@ -14,7 +14,7 @@ export const Panel_ComfyUI = observer(function Panel_ComfyUI_(p: {
     hostID?: HostID
 }) {
     const st = useSt()
-    const host = st.db.hosts.get(p.hostID) ?? st.mainHost
+    const host = st.db.host.get(p.hostID) ?? st.mainHost
     const url = host.getServerHostHTTP()
 
     const loadFn = async () => {

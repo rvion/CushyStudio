@@ -46,8 +46,8 @@ export class RuntimeApps {
          */
         draftID?: string
     }): Promise<RuntimeExecutionResult> => {
-        const app: CushyAppL = this.rt.Cushy.db.cushy_apps.getOrThrow(p.appID)
-        const draft = this.rt.Cushy.db.drafts.getOrCreate(
+        const app: CushyAppL = this.rt.Cushy.db.cushy_app.getOrThrow(p.appID)
+        const draft = this.rt.Cushy.db.draft.getOrCreate(
             //
             p.draftID ?? `${p.appID}-<sub-draft>`,
             () => ({

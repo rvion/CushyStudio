@@ -38,8 +38,8 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     const widget = getActualWidgetToDisplay(originalWidget)
     const isDisabled = isWidgetOptional(originalWidget) && !originalWidget.serial.active
 
-    const HeaderUI = widget.HeaderUI
-    const BodyUI = widget.BodyUI
+    const HeaderUI = widget.header()
+    const BodyUI = widget.body()
 
     const isCollapsible: boolean = getIfWidgetIsCollapsible(widget)
     const isCollapsed = (widget.serial.collapsed ?? isDisabled) && isCollapsible
@@ -194,7 +194,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                     {HeaderUI && (
                         <div className='COLLAPSE-PASSTHROUGH' tw='flex items-center gap-0.5 flex-1' style={styleDISABLED}>
                             <ErrorBoundary FallbackComponent={ErrorBoundaryFallback} onReset={(details) => {}}>
-                                <HeaderUI widget={widget} />
+                                {HeaderUI}
                             </ErrorBoundary>
                         </div>
                     )}
@@ -204,7 +204,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                 {BodyUI && !isCollapsed && (
                     <ErrorBoundary FallbackComponent={ErrorBoundaryFallback} onReset={(details) => {}}>
                         <div style={styleDISABLED} tw={[isCollapsible && 'WIDGET-BLOCK']}>
-                            <BodyUI widget={widget} />
+                            {BodyUI}
                         </div>
                     </ErrorBoundary>
                 )}

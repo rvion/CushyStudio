@@ -1,28 +1,28 @@
 import type { Form } from '../../Form'
-import type { GetWidgetResult, IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { GetWidgetResult, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 import type { SchemaDict } from 'src/cards/App'
+import type { IWidget } from 'src/controls/IWidget'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 
 import { WidgetDI } from '../WidgetUI.DI'
 import { WidgetGroup_BlockUI, WidgetGroup_LineUI } from './WidgetGroupUI'
+import { applyWidgetMixinV2 } from 'src/controls/Mixins'
 import { getActualWidgetToDisplay } from 'src/controls/shared/getActualWidgetToDisplay'
 import { getIfWidgetIsCollapsible } from 'src/controls/shared/getIfWidgetIsCollapsible'
 import { Spec } from 'src/controls/Spec'
 import { runWithGlobalForm } from 'src/models/_ctx2'
 
 // CONFIG
-export type Widget_group_config<T extends SchemaDict> = WidgetConfigFields<{
-    items?: (() => T) | T
-    topLevel?: boolean
-    // header?: (self: Widget_group<T>) => (keyof T)[]
-    /** if provided, will be used to show a single line summary on the inline form slot */
-    summary?: (items: { [k in keyof T]: GetWidgetResult<T[k]> }) => string
-    // ------------------------------------------------
-    // header?: (self: Widget_group<T>) => GroupLayout<T>[]
-    // body?: (self: Widget_group<T>) => (`.${keyof T & string}` | `#${string}`)[]
-}>
+export type Widget_group_config<T extends SchemaDict> = WidgetConfigFields<
+    {
+        items?: (() => T) | T
+        topLevel?: boolean
+        summary?: (items: { [k in keyof T]: GetWidgetResult<T[k]> }) => string
+    },
+    Widget_group_types<T>
+>
 
 // SERIAL
 export type Widget_group_serial<T extends SchemaDict> = WidgetSerialFields<{
@@ -46,10 +46,10 @@ export type Widget_group_types<T extends SchemaDict> = {
 }
 
 // STATE
-export interface Widget_group<T extends SchemaDict> extends Widget_group_types<T> {}
+export interface Widget_group<T extends SchemaDict> extends Widget_group_types<T>, IWidgetMixins {}
 export class Widget_group<T extends SchemaDict> implements IWidget<Widget_group_types<T>> {
-    HeaderUI = WidgetGroup_LineUI
-    get BodyUI() {
+    DefaultHeaderUI = WidgetGroup_LineUI
+    get DefaultBodyUI() {
         if (Object.keys(this.fields).length === 0) return
         return WidgetGroup_BlockUI
     }
@@ -163,6 +163,7 @@ export class Widget_group<T extends SchemaDict> implements IWidget<Widget_group_
         // we keep the old values in case those are just temporarilly removed, or in case
         // those will be lazily added later though global usage
 
+        applyWidgetMixinV2(this)
         makeAutoObservable(this, { value: false })
     }
 

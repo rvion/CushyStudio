@@ -1,23 +1,27 @@
 import type { Form } from '../../Form'
 import type { FC } from 'react'
-import type { IWidget, WidgetConfigFields, WidgetSerialFields } from 'src/controls/IWidget'
+import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from 'src/controls/IWidget'
 import type { Spec } from 'src/controls/Spec'
 
-import { makeAutoObservable } from 'mobx'
+import { action, computed, makeAutoObservable, observable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { hash } from 'ohash'
 
 import { WidgetDI } from '../WidgetUI.DI'
 import { WidgetCustom_HeaderUI } from './WidgetCustomUI'
+import { applyWidgetMixinV2 } from 'src/controls/Mixins'
 
 export type CustomWidgetProps<T> = { widget: Widget_custom<T>; extra: import('./WidgetCustomUI').UIKit }
 
 // CONFIG
-export type Widget_custom_config<T> = WidgetConfigFields<{
-    defaultValue: () => T
-    subTree?: () => Spec
-    Component: FC<CustomWidgetProps<T>>
-}>
+export type Widget_custom_config<T> = WidgetConfigFields<
+    {
+        defaultValue: () => T
+        subTree?: () => Spec
+        Component: FC<CustomWidgetProps<T>>
+    },
+    Widget_custom_types<T>
+>
 
 // SERIAL
 export type Widget_custom_serial<T> = WidgetSerialFields<{ type: 'custom'; active: true; value: T }>
@@ -35,10 +39,10 @@ export type Widget_custom_types<T> = {
 }
 
 // STATE
-export interface Widget_custom<T> extends Widget_custom_types<T> {}
+export interface Widget_custom<T> extends Widget_custom_types<T>, IWidgetMixins {}
 export class Widget_custom<T> implements IWidget<Widget_custom_types<T>> {
-    HeaderUI = WidgetCustom_HeaderUI
-    BodyUI = undefined
+    DefaultHeaderUI = WidgetCustom_HeaderUI
+    DefaultBodyUI = undefined
     readonly id: string
     readonly type: 'custom' = 'custom'
 
@@ -64,6 +68,7 @@ export class Widget_custom<T> implements IWidget<Widget_custom_types<T>> {
             value: this.config.defaultValue(),
         }
 
+        applyWidgetMixinV2(this)
         makeAutoObservable(this, { Component: false })
     }
 

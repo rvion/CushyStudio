@@ -4,8 +4,6 @@ import type { STATE } from 'src/state/state'
 import { exhaust } from 'src/utils/misc/ComfyUtils'
 import { ManualPromise } from 'src/utils/misc/ManualPromise'
 
-const nsfwjsImpl = require('nsfwjs') as typeof import('nsfwjs')
-
 export type SafetyRating = nsfwjs.predictionType
 export type SafetyResult = {
     isSafe: boolean
@@ -20,6 +18,7 @@ export class SafetyChecker {
 
     isSafe = (url: string): ManualPromise<SafetyResult> => {
         if (!this.loaded) {
+            const nsfwjsImpl = require('nsfwjs') as typeof import('nsfwjs')
             this.loaded = true
             this.model = nsfwjsImpl.load('/safety/')
             this.model.then(() => console.log(`[🙈] model loaded`))

@@ -1,5 +1,5 @@
+import type { ComfyNodeSchema } from 'src/models/ComfySchema'
 import type { ProjectL } from 'src/models/Project'
-import type { ComfyNodeSchema } from 'src/models/Schema'
 
 import { makeAutoObservable } from 'mobx'
 import { observer } from 'mobx-react-lite'

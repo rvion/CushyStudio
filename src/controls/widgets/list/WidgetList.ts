@@ -1,5 +1,6 @@
 import type { Form } from '../../Form'
-import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { IWidget } from 'src/controls/IWidget'
 import type { Spec } from 'src/controls/Spec'
 
 import { makeAutoObservable, observable } from 'mobx'
@@ -7,15 +8,19 @@ import { nanoid } from 'nanoid'
 
 import { WidgetDI } from '../WidgetUI.DI'
 import { WidgetList_BodyUI, WidgetList_LineUI } from './WidgetListUI'
+import { applyWidgetMixinV2 } from 'src/controls/Mixins'
 import { runWithGlobalForm } from 'src/models/_ctx2'
 
 // CONFIG
-export type Widget_list_config<T extends Spec> = WidgetConfigFields<{
-    element: ((ix: number) => T) | T
-    min?: number
-    max?: number
-    defaultLength?: number
-}>
+export type Widget_list_config<T extends Spec> = WidgetConfigFields<
+    {
+        element: ((ix: number) => T) | T
+        min?: number
+        max?: number
+        defaultLength?: number
+    },
+    Widget_list_types<T>
+>
 
 // SERIAL
 export type Widget_list_serial<T extends Spec> = WidgetSerialFields<{
@@ -36,10 +41,10 @@ export type Widget_list_types<T extends Spec> = {
 }
 
 // STATE
-export interface Widget_list<T extends Spec> extends Widget_list_types<T> {}
+export interface Widget_list<T extends Spec> extends Widget_list_types<T>, IWidgetMixins {}
 export class Widget_list<T extends Spec> implements IWidget<Widget_list_types<T>> {
-    HeaderUI = WidgetList_LineUI
-    get BodyUI() {
+    DefaultHeaderUI = WidgetList_LineUI
+    get DefaultBodyUI() {
         // if (this.items.length === 0) return
         return WidgetList_BodyUI
     }
@@ -102,6 +107,7 @@ export class Widget_list<T extends Spec> implements IWidget<Widget_list_types<T>
         const missingItems = (this.config.min ?? 0) - this.items.length
         for (let i = 0; i < missingItems; i++) this.addItem()
 
+        applyWidgetMixinV2(this)
         makeAutoObservable(this)
     }
 

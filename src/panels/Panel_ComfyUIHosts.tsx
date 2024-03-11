@@ -10,7 +10,7 @@ import { asAbsolutePath } from 'src/utils/fs/pathUtils'
 
 export const Panel_ComfyUIHosts = observer(function Panel_ComfyUIHosts_(p: { hostID?: HostID }) {
     const st = useSt()
-    const allHosts = st.hosts.items
+    const allHosts = st.hosts
     const mainHost = st.mainHost
 
     return (
@@ -70,7 +70,7 @@ export const AddHostBtnUI = observer(function AddHostBtnUI_(p: {}) {
             tw='btn-sm btn btn-primary'
             onClick={() => {
                 st.configFile.update(() => {
-                    st.db.hosts.create({
+                    st.db.host.create({
                         hostname: '192.168.1.19',
                         port: 8188,
                         name: '192.168.1.19',

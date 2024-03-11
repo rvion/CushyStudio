@@ -12,19 +12,26 @@ export const _codegenORM = (store: {
 }) => {
     const db = store.db
 
+    // 1. get all tables
+    const stmt = db.prepare(`select name from sqlite_master where type='table'`)
+    const tables = stmt.all().filter((x: any) => x.name != 'migrations') as { name: string }[]
+    store.log(`found tables ${tables.map((r) => r.name)}`)
+
     let out1 = ''
-    out1 += `import { ColumnType, Generated, Insertable, JSONColumnType, Selectable, Updateable } from 'kysely'\n`
-    out1 += `import * as T from './TYPES_json'\n`
+    const tableSortedAlphabetically = tables.slice().sort((a, b) => a.name.localeCompare(b.name))
+    for (const table of tableSortedAlphabetically) {
+        const jsName = convertTableNameToJSName(table.name)
+        out1 += `import type { ${jsName}L } from 'src/models/${jsName}'\n`
+    }
+    out1 += `\n`
     out1 += `import { Type } from '@sinclair/typebox'\n`
+    out1 += `import { Generated, Insertable, Selectable, Updateable } from 'kysely'\n`
+    out1 += `\n`
+    out1 += `import * as T from './TYPES_json'\n`
     out1 += `\n`
 
     let out2 = `` // global typedef
     // let out3 = '' // schema
-
-    // 1. get all tables
-    const stmt = db.prepare(`select name from sqlite_master where type='table'`)
-    const tables = stmt.all() as { name: string }[]
-    store.log(`found tables ${tables.map((r) => r.name)}`)
 
     let tableNames = '\n'
     tableNames += 'declare type TableNameInDB =\n'
@@ -57,34 +64,49 @@ export const _codegenORM = (store: {
             })
         }
     }
+
+    const LiveDBSubKeys: string[] = []
     for (const table of tables) {
         const jsTableName = convertTableNameToJSName(table.name)
         const fks = _getAllForeignKeysForTable(db, table.name)
         const cols = _getAllColumnsForTable(db, table.name)
 
+        const tableRefs = refs.get(table.name) ?? []
+        const tableBackRefs = backRefs.get(table.name) ?? []
         const xxx =
             [
-                `export const ${jsTableName}Refs =[`,
-                (refs.get(table.name) ?? []).map((fk) => `    ${JSON.stringify(fk)}`).join(',\n'),
-                ']',
-                `export const ${jsTableName}BackRefs =[`,
-                (backRefs.get(table.name) ?? []).map((fk) => `    ${JSON.stringify(fk)}`).join(',\n'),
-                ']',
+                tableRefs.length
+                    ? [
+                          //
+                          `export const ${jsTableName}Refs = [`,
+                          tableRefs.map((fk) => `    ${JSON5.stringify(fk)}`).join(',\n'),
+                          ']',
+                      ].join('\n')
+                    : `export const ${jsTableName}Refs = []`,
+                tableBackRefs.length
+                    ? [
+                          //
+                          `export const ${jsTableName}BackRefs = [`,
+                          tableBackRefs.map((fk) => `    ${JSON5.stringify(fk)}`).join(',\n'),
+                          ']',
+                      ].join('\n')
+                    : `export const ${jsTableName}BackRefs = []`,
             ].join('\n') + '\n'
         console.log(`[👙] `, xxx)
         //
 
-        let typeDecl: string = '\n'
+        let typeDecl: string = '' // '\n'
         // let typeDeclCreate: string = '\n'
         let schemaDecl: string = `\n`
         let fieldsDef: string = `\n`
         out2 += `declare type ${jsTableName}ID = Branded<string, { ${jsTableName}ID: true }>\n`
         typeDecl += `export const as${jsTableName}ID = (s: string): ${jsTableName}ID => s as any\n`
-        schemaDecl = `export const ${jsTableName}Schema = Type.Object({\n`
+        schemaDecl = `export const ${jsTableName}Schema = Type.Object(\n    {\n`
         typeDecl += `export type ${jsTableName}Table = {\n`
         // typeDeclCreate += `export type ${jsTableName}_C = {\n`
         fieldsDef += `${xxx}\nexport const ${jsTableName}Fields = {\n`
         for (const col of cols) {
+            LiveDBSubKeys.push(`'${table.name}.${col.name}'`)
             const comment = `/** @default: ${JSON.stringify(col.dflt_value) ?? 'null'}, sqlType: ${col.type} */`
             const isGenerated =
                 col.name === 'createdAt' || //
@@ -106,10 +128,12 @@ export const _codegenORM = (store: {
                 if (col.type === 'INTEGER') return 'number'
                 if (col.type === 'TEXT') return 'string'
                 if (col.type === 'string') return 'string'
+                if (col.type === 'BLOB') return 'Uint8Array'
 
                 // 🔶 the `JSONColumnType` makes update / insert use string instead of T
                 // if (col.type === 'json') return `JSONColumnType<T.${jsTableName}_${col.name}>`
-                if (col.type === 'json') return `ColumnType<T.${jsTableName}_${col.name}>`
+                // if (col.type === 'json') return `ColumnType<T.${jsTableName}_${col.name}>`
+                if (col.type === 'json') return `T.${jsTableName}_${col.name}`
 
                 throw new Error(`unknown type '${col.type}' in ${jsTableName}.${col.name}`)
             })()
@@ -123,13 +147,14 @@ export const _codegenORM = (store: {
                 if (col.type === 'float') return 'Type.Number()'
                 if (col.type === 'TEXT') return 'Type.String()'
                 if (col.type === 'string') return 'Type.String()'
+                if (col.type === 'BLOB') return 'Type.Uint8Array()'
                 if (col.type === 'json') return `T.${jsTableName}_${col.name}_Schema`
                 throw new Error(`unknown type '${col.type}' in ${jsTableName}.${col.name}`)
             })()
 
             schemaDecl += col.notnull //
-                ? `    ${col.name}: ${schemaField},\n`
-                : `    ${col.name}: Type.Optional(T.Nullable(${schemaField})),\n`
+                ? `        ${col.name}: ${schemaField},\n`
+                : `        ${col.name}: Type.Optional(T.Nullable(${schemaField})),\n`
             const colon = col.notnull ? ':' : '?:'
             const colonCreate = col.notnull && !col.dflt_value ? ':' : '?:'
             typeDecl += `    ${comment}\n`
@@ -138,7 +163,7 @@ export const _codegenORM = (store: {
                 ? fieldType
                 : `Maybe<${fieldType}>`
             if (isGenerated) TYPE = `Generated<${TYPE}>`
-            typeDecl += `    ${col.name}${colon} ${TYPE};\n`
+            typeDecl += `    ${col.name}${colon} ${TYPE}\n`
             // typeDeclCreate += `    ${col.name}${colonCreate} ${col.notnull ? fieldType : `Maybe<${fieldType}>`};\n\n`
             fieldsDef += `    ${col.name}: ${JSON5.stringify(col)},\n`
         }
@@ -148,7 +173,7 @@ export const _codegenORM = (store: {
         typeDecl += `export type ${jsTableName}Update = Updateable<${jsTableName}Table>`
 
         // typeDeclCreate += `}`
-        schemaDecl += '},{ additionalProperties: false })'
+        schemaDecl += '    },\n    { additionalProperties: false },\n)'
         fieldsDef += `}\n`
 
         // store.log(typeDecl)
@@ -160,19 +185,37 @@ export const _codegenORM = (store: {
         out1 += fieldsDef + '\n'
     }
 
-    out1 += '\nexport const schemas = {\n'
     for (const table of tables) {
-        out1 += `    ${table.name}: new T.TableInfo(\n`
-        out1 += `        '${table.name}',\n`
-        out1 += `        '${convertTableNameToJSName(table.name)}',\n`
-        out1 += `        ${convertTableNameToJSName(table.name)}Fields,\n`
-        out1 += `        ${convertTableNameToJSName(table.name)}Schema,\n`
-        out1 += `        ${convertTableNameToJSName(table.name)}Refs,\n`
-        out1 += `        ${convertTableNameToJSName(table.name)}BackRefs,\n`
+        const jsName = convertTableNameToJSName(table.name)
+        out1 += `// prettier-ignore\n`
+        out1 += `export const TABLE_${table.name} = new T.TableInfo<'${table.name}', ${jsName}T, ${jsName}L, New${jsName}, ${jsName}Update, ${jsName}ID>(\n`
+        out1 += `    '${table.name}',\n`
+        out1 += `    '${jsName}',\n`
+        out1 += `    ${jsName}Fields,\n`
+        out1 += `    ${jsName}Schema,\n`
+        out1 += `    ${jsName}Refs,\n`
+        out1 += `    ${jsName}BackRefs,\n`
         // out1 += `        insert${convertTableNameToJSName(table.name)}SQL,\n`
-        out1 += `    ),\n`
+        out1 += `)\n`
+    }
+    out1 += '\nexport type TABLES = typeof schemas\n\n'
+
+    out1 += '// prettier-ignore\n'
+    out1 += 'export const schemas = {\n'
+    for (const table of tables) {
+        out1 += `    ${table.name.padEnd(21)}: TABLE_${table.name},\n`
     }
     out1 += '}'
+
+    out1 += '\nexport type KyselyTables = {\n'
+    for (const table of tables) {
+        const jsName = convertTableNameToJSName(table.name)
+        out1 += `    ${table.name}: ${jsName}Table\n`
+    }
+    out1 += '}\n'
+
+    out1 += `export type LiveDBSubKeys = ${LiveDBSubKeys.join(' | ')}\n`
+    out1 += `export const liveDBSubKeys = new Set([${LiveDBSubKeys.join(', ')}]) // prettier-ignore \n`
 
     // console.log(out1)
     writeFileSync('src/db/TYPES.gen.ts', out1)
@@ -187,3 +230,10 @@ const convertTableNameToJSName = (tableName: string) => {
     out = out[0].toUpperCase() + out.slice(1)
     return out
 }
+
+// const toJSKey = (s: string): string => {
+//     const jsObjectKeyReg = /^[a-zA-Z_$][0-9a-zA-Z_$]*$/g
+//     const isValidJSObjectKey = jsObjectKeyReg.test(s)
+//     if (isValidJSObjectKey) return s
+//     return JSON.stringify(s)
+// }

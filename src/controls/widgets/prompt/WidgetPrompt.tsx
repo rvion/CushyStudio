@@ -1,7 +1,8 @@
-import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 import type { Tree } from '@lezer/common'
 import type { Timestamp } from 'src/cards/Timestamp'
 import type { Form } from 'src/controls/Form'
+import type { IWidget } from 'src/controls/IWidget'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -11,18 +12,27 @@ import { WidgetDI } from '../WidgetUI.DI'
 import { compilePrompt } from './_compile'
 import { parser } from './grammar/grammar.parser'
 import { WidgetPrompt_LineUI, WidgetPromptUI } from './WidgetPromptUI'
+import { applyWidgetMixinV2 } from 'src/controls/Mixins'
 
 export type CompiledPrompt = {
-    positivePrompt: string
-    negativePrompt: string
+    /** e.g. "score_9 score_8 BREAK foo bar baz" */
+    promptIncludingBreaks: string
+    /**
+     * only filled when prompt has `break`s
+     * will return list of break-separated subprompts
+     * e.g. ["score_9 score_8"], ["foo bar baz"]" */
+    subPrompts: string[]
     debugText: string[]
 }
 
 // CONFIG
-export type Widget_prompt_config = WidgetConfigFields<{
-    default?: string
-    placeHolder?: string
-}>
+export type Widget_prompt_config = WidgetConfigFields<
+    {
+        default?: string
+        placeHolder?: string
+    },
+    Widget_prompt_types
+>
 
 // SERIAL
 export type Widget_prompt_serial = WidgetSerialFields<{
@@ -43,10 +53,10 @@ export type Widget_prompt_types = {
 }
 
 // STATE
-export interface Widget_prompt extends Widget_prompt_types {}
+export interface Widget_prompt extends Widget_prompt_types, IWidgetMixins {}
 export class Widget_prompt implements IWidget<Widget_prompt_types> {
-    HeaderUI = WidgetPrompt_LineUI
-    BodyUI = WidgetPromptUI
+    DefaultHeaderUI = WidgetPrompt_LineUI
+    DefaultBodyUI = WidgetPromptUI
     get serialHash () { return hash(this.serial.val) } // prettier-ignore
     readonly id: string
     readonly type: 'prompt' = 'prompt'
@@ -66,6 +76,7 @@ export class Widget_prompt implements IWidget<Widget_prompt_types> {
             collapsed: config.startCollapsed,
             id: this.id,
         }
+        applyWidgetMixinV2(this)
         makeAutoObservable(this)
     }
 

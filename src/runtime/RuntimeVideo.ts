@@ -23,7 +23,7 @@ export class RuntimeVideos {
         url: string
         filePath?: string
     }) => {
-        this.rt.Cushy.db.media_videos.create({
+        this.rt.Cushy.db.media_video.create({
             url: p.url,
             absPath: p.filePath,
             stepID: this.rt.step.id,
@@ -67,14 +67,14 @@ export class RuntimeVideos {
         const allAbsPaths = images.map((i) => i.absPath).filter((p) => p != null) as AbsolutePath[]
         const ffmpegComandInfos = await createMP4FromImages(allAbsPaths, targetVideoAbsPath, inputFPS, cwd, opts)
         if (ffmpegComandInfos) {
-            this.st.db.media_texts.create({
+            this.st.db.media_text.create({
                 kind: 'markdown',
                 title: 'Video creation summary',
                 stepID: this.step.id,
                 content: mkFfmpegSummary(ffmpegComandInfos),
             })
         }
-        this.st.db.media_videos.create({
+        this.st.db.media_video.create({
             url: `file://${targetVideoAbsPath}`,
             absPath: targetVideoAbsPath,
             stepID: this.step.id,

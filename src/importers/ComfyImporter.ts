@@ -2,7 +2,7 @@ import type { STATE } from 'src/state/state'
 
 import { normalizeJSIdentifier } from '../core/normalizeJSIdentifier'
 import { ComfyPrimitiveMapping } from '../core/Primitives'
-import { ComfyNodeSchema, NodeInputExt } from '../models/Schema'
+import { ComfyNodeSchema, NodeInputExt } from '../models/ComfySchema'
 import { ComfyPromptJSON } from '../types/ComfyPrompt'
 import { CodeBuffer } from '../utils/codegen/CodeBuffer'
 import { asJSAccessor, escapeJSKey } from '../utils/codegen/escapeJSKey'

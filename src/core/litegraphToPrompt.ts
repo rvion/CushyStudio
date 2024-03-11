@@ -1,4 +1,4 @@
-import type { ComfyNodeSchema, ComfySchemaL, NodeInputExt } from '../models/Schema'
+import type { ComfyNodeSchema, ComfySchemaL, NodeInputExt } from '../models/ComfySchema'
 import type { LiteGraphJSON, LiteGraphLink, LiteGraphLinkID, LiteGraphNode, LiteGraphNodeInput } from './LiteGraph'
 import type { ComfyNodeJSON, ComfyPromptJSON } from 'src/types/ComfyPrompt'
 

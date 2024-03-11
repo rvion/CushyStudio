@@ -1,4 +1,4 @@
-import type { ComfySchemaL, EmbeddingName } from './Schema'
+import type { ComfySchemaL, EmbeddingName } from './ComfySchema'
 import type { Requirements } from 'src/controls/IWidget'
 import type { LiveInstance } from 'src/db/LiveInstance'
 import type { PluginInfo } from 'src/manager/custom-node-list/custom-node-list-types'
@@ -104,7 +104,7 @@ export class HostL {
         this.embeddingsPath = this.st.resolve(this.fileCacheFolder, asRelativePath(`embeddings.json`))
         this.sdkDTSPath = this.st.resolve(this.fileCacheFolder, asRelativePath(`sdk.dts.txt`))
         const associatedSchemaID = asComfySchemaID(this.id)
-        this.schema = this.st.db.comfy_schemas.getOrCreate(associatedSchemaID, () => ({
+        this.schema = this.st.db.comfy_schema.getOrCreate(associatedSchemaID, () => ({
             id: associatedSchemaID,
             embeddings: [],
             spec: {},

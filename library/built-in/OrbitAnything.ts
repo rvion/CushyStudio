@@ -99,7 +99,7 @@ app({
                 negative: '', // run.formatEmbeddingForComfyUI('EasyNegative'),
                 positive: run_prompt({
                     prompt: { text: ui.orbit.englishSummary + ui.sndPass.positive.text },
-                }).positiveConditionning,
+                }).conditioning,
             },
         ).latent
 

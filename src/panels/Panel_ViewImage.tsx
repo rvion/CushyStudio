@@ -4,14 +4,14 @@ import { observer } from 'mobx-react-lite'
 import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch'
 
 import { ImageDropdownUI } from './ImageDropdownUI'
+import { PanelHeaderUI } from './PanelHeader'
+import { SpacerUI } from 'src/controls/widgets/spacer/SpacerUI'
 import { formatSize } from 'src/db/getDBStats'
 import { RevealUI } from 'src/rsuite/reveal/RevealUI'
 import { Rate } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
 import { assets } from 'src/utils/assets/assets'
 import { JsonViewUI } from 'src/widgets/workspace/JsonViewUI'
-import { PanelHeaderUI } from './PanelHeader'
-import { SpacerUI } from 'src/controls/widgets/spacer/SpacerUI'
 
 export const Panel_ViewImage = observer(function Panel_ViewImage_(p: {
     //
@@ -20,8 +20,8 @@ export const Panel_ViewImage = observer(function Panel_ViewImage_(p: {
 }) {
     const st = useSt()
     const img: Maybe<MediaImageL> = p.imageID //
-        ? st.db.media_images.get(p.imageID)
-        : st.db.media_images.last()
+        ? st.db.media_image.get(p.imageID)
+        : st.db.media_image.last()
     const url = img?.url
     const background = st.galleryConf.get('galleryBgColor')
 
@@ -169,7 +169,7 @@ export const ImageActionBarUI = observer(function ImageActionBarUI_(p: { img?: M
                 tw='WIDGET flex px-1 cursor-default bg-warning text-warning-content rounded h-full items-center justify-center hover:brightness-110 border border-base-100 text-shadow-inv text-sm'
                 onClick={() => {
                     if (img == null) return
-                    st.db.media_images.delete(img.id)
+                    st.db.media_image.delete(img.id)
                 }}
             >
                 <span className='material-symbols-outlined'>delete_forever</span>

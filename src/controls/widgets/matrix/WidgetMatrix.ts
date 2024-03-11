@@ -1,5 +1,6 @@
 import type { Form } from '../../Form'
-import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { IWidget } from 'src/controls/IWidget'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -7,6 +8,7 @@ import { hash } from 'ohash'
 
 import { WidgetDI } from '../WidgetUI.DI'
 import { WidgetMatrixUI } from './WidgetMatrixUI'
+import { applyWidgetMixinV2 } from 'src/controls/Mixins'
 import { bang } from 'src/utils/misc/bang'
 
 export type Widget_matrix_cell = {
@@ -18,11 +20,14 @@ export type Widget_matrix_cell = {
 }
 
 // CONFIG
-export type Widget_matrix_config = WidgetConfigFields<{
-    default?: { row: string; col: string }[]
-    rows: string[]
-    cols: string[]
-}>
+export type Widget_matrix_config = WidgetConfigFields<
+    {
+        default?: { row: string; col: string }[]
+        rows: string[]
+        cols: string[]
+    },
+    Widget_matrix_types
+>
 
 // SERIAL
 export type Widget_matrix_serial = WidgetSerialFields<{ type: 'matrix'; active: true; selected: Widget_matrix_cell[] }>
@@ -40,10 +45,10 @@ export type Widget_matrix_types = {
 }
 
 // STATE
-export interface Widget_matrix extends Widget_matrix_types {}
+export interface Widget_matrix extends Widget_matrix_types, IWidgetMixins {}
 export class Widget_matrix implements IWidget<Widget_matrix_types> {
-    HeaderUI = WidgetMatrixUI
-    BodyUI = undefined
+    DefaultHeaderUI = WidgetMatrixUI
+    DefaultBodyUI = undefined
     get serialHash(): string {
         return hash(this.value)
     }
@@ -54,7 +59,12 @@ export class Widget_matrix implements IWidget<Widget_matrix_types> {
     rows: string[]
     cols: string[]
 
-    constructor(public form: Form<any>, public config: Widget_matrix_config, serial?: Widget_matrix_serial) {
+    constructor(
+        //
+        public form: Form<any>,
+        public config: Widget_matrix_config,
+        serial?: Widget_matrix_serial,
+    ) {
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? { type: 'matrix', collapsed: config.startCollapsed, id: this.id, active: true, selected: [] }
 
@@ -76,6 +86,7 @@ export class Widget_matrix implements IWidget<Widget_matrix_types> {
         this.rows = config.rows
         this.cols = config.cols
         // make observable
+        applyWidgetMixinV2(this)
         makeAutoObservable(this)
     }
     get value(): Widget_matrix_output {

@@ -1,6 +1,6 @@
 import type { LiveInstance } from '../db/LiveInstance'
+import type { ComfySchemaL } from './ComfySchema'
 import type { ComfyWorkflowL } from './ComfyWorkflow'
-import type { ComfySchemaL } from './Schema'
 import type { TABLES } from 'src/db/TYPES.gen'
 
 import { LiveRef } from '../db/LiveRef'
@@ -14,8 +14,8 @@ export const asProjectID = (s: string): ProjectID => s as any
 /** a thin wrapper around a single Project somewhere in a .ts file */
 export interface ProjectL extends LiveInstance<TABLES['project']> {}
 export class ProjectL {
-    rootGraph = new LiveRef<this, ComfyWorkflowL>(this, 'rootGraphID', () => this.db.graphs)
-    draft = new LiveRefOpt<this, DraftL>(this, 'currentDraftID', () => this.db.drafts)
+    rootGraph = new LiveRef<this, ComfyWorkflowL>(this, 'rootGraphID', 'comfy_workflow')
+    draft = new LiveRefOpt<this, DraftL>(this, 'currentDraftID', 'draft')
 
     get filterNSFW(): boolean {
         return this.data.filterNSFW ? true : false

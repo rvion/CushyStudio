@@ -19,7 +19,7 @@ export class TreeApp implements ITreeEntry {
         public st: STATE,
         public appID: CushyAppID, // public app: CushyAppL,
     ) {
-        this.app = st.db.cushy_apps.get(appID)
+        this.app = st.db.cushy_app.get(appID)
         makeAutoObservable(this)
     }
 

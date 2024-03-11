@@ -5,7 +5,8 @@
  * using Intl.RelativeTimeFormat
  */
 
-export function _formatAsRelativeDateTime(date: Date | number, lang = navigator.language): string {
+export function _formatAsRelativeDateTime(date: Date | number | null | undefined, lang = navigator.language): string {
+    if (date == null) return ''
     // Allow dates or times to be passed
     const timeMs = typeof date === 'number' ? date : date.getTime()
 

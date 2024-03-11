@@ -1,9 +1,11 @@
 /** 📝 This needs to be a .tsx file */
 
 import type { CustomWidgetProps } from 'src/controls/widgets/custom/WidgetCustom'
+
 import { observer } from 'mobx-react-lite'
-import { MyCustomComponent2 } from './example-widget-custom-2'
 import Confetti from 'react-confetti'
+
+import { MyCustomComponent2 } from './example-widget-custom-2'
 
 const MyCustomComponent = observer(function (
     p: CustomWidgetProps<{
@@ -13,7 +15,7 @@ const MyCustomComponent = observer(function (
     }>,
 ) {
     const value = p.widget.serial.value
-    const img = value.image ?? cushy.db.media_images.last()
+    const img = value.image ?? cushy.db.media_image.last()
     return (
         <div className='flex flex-col gap-2 virtualBorder p-2'>
             {/* Text Input -------------------------------------------------------- */}

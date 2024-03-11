@@ -1,8 +1,9 @@
 import type { AuthL } from 'src/models/Auth'
 import type { ComfyPromptL } from 'src/models/ComfyPrompt'
+import type { ComfySchemaL } from 'src/models/ComfySchema'
 import type { ComfyWorkflowL } from 'src/models/ComfyWorkflow'
 import type { CushyAppL } from 'src/models/CushyApp'
-import type { CushyScriptL } from 'src/models/CushyScriptL'
+import type { CushyScriptL } from 'src/models/CushyScript'
 import type { CustomDataL } from 'src/models/CustomData'
 import type { DraftL } from 'src/models/Draft'
 import type { HostL } from 'src/models/Host'
@@ -13,7 +14,6 @@ import type { MediaTextL } from 'src/models/MediaText'
 import type { MediaVideoL } from 'src/models/MediaVideo'
 import type { ProjectL } from 'src/models/Project'
 import type { RuntimeErrorL } from 'src/models/RuntimeError'
-import type { ComfySchemaL } from 'src/models/Schema'
 import type { StepL } from 'src/models/Step'
 import type { TreeEntryL } from 'src/models/TreeEntry'
 
@@ -22,117 +22,45 @@ import { Generated, Insertable, Selectable, Updateable } from 'kysely'
 
 import * as T from './TYPES_json'
 
-export const asMigrationsID = (s: string): MigrationsID => s as any
-export type MigrationsTable = {
-    /** @default: null, sqlType: TEXT */
-    id?: Maybe<MigrationsID>
-    /** @default: null, sqlType: TEXT */
-    name: string
-    /** @default: null, sqlType: INTEGER */
-    createdAt: Generated<number>
-    /** @default: null, sqlType: TEXT */
-    sql: string
-}
-export type NewMigrations = Insertable<MigrationsTable>
-export type MigrationsUpdate = Updateable<MigrationsTable>
-export type MigrationsT = Selectable<MigrationsTable>
-export const MigrationsSchema = Type.Object(
-    {
-        id: Type.Optional(T.Nullable(Type.String())),
-        name: Type.String(),
-        createdAt: Type.Number(),
-        sql: Type.String(),
-    },
-    { additionalProperties: false },
-)
-
-export const MigrationsRefs = []
-export const MigrationsBackRefs = []
-
-export const MigrationsFields = {
-    id: { cid: 0, name: 'id', type: 'TEXT', notnull: 0, dflt_value: null, pk: 1 },
-    name: { cid: 1, name: 'name', type: 'TEXT', notnull: 1, dflt_value: null, pk: 0 },
-    createdAt: { cid: 2, name: 'createdAt', type: 'INTEGER', notnull: 1, dflt_value: null, pk: 0 },
-    sql: { cid: 3, name: 'sql', type: 'TEXT', notnull: 1, dflt_value: null, pk: 0 },
-}
-
-export const asUsersID = (s: string): UsersID => s as any
-export type UsersTable = {
-    /** @default: null, sqlType: INTEGER */
-    id?: Maybe<UsersID>
-    /** @default: null, sqlType: TEXT */
-    firstName: string
-    /** @default: null, sqlType: TEXT */
-    lastName: string
-    /** @default: null, sqlType: TEXT */
-    email: string
-    /** @default: null, sqlType: TEXT */
-    passwordHash: string
-}
-export type NewUsers = Insertable<UsersTable>
-export type UsersUpdate = Updateable<UsersTable>
-export type UsersT = Selectable<UsersTable>
-export const UsersSchema = Type.Object(
-    {
-        id: Type.Optional(T.Nullable(Type.Number())),
-        firstName: Type.String(),
-        lastName: Type.String(),
-        email: Type.String(),
-        passwordHash: Type.String(),
-    },
-    { additionalProperties: false },
-)
-
-export const UsersRefs = []
-export const UsersBackRefs = []
-
-export const UsersFields = {
-    id: { cid: 0, name: 'id', type: 'INTEGER', notnull: 0, dflt_value: null, pk: 1 },
-    firstName: { cid: 1, name: 'firstName', type: 'TEXT', notnull: 1, dflt_value: null, pk: 0 },
-    lastName: { cid: 2, name: 'lastName', type: 'TEXT', notnull: 1, dflt_value: null, pk: 0 },
-    email: { cid: 3, name: 'email', type: 'TEXT', notnull: 1, dflt_value: null, pk: 0 },
-    passwordHash: { cid: 4, name: 'passwordHash', type: 'TEXT', notnull: 1, dflt_value: null, pk: 0 },
-}
-
-export const asGraphID = (s: string): GraphID => s as any
-export type GraphTable = {
+export const asComfyWorkflowID = (s: string): ComfyWorkflowID => s as any
+export type ComfyWorkflowTable = {
     /** @default: "hex(randomblob(16))", sqlType: string */
-    id: Generated<GraphID>
+    id: Generated<ComfyWorkflowID>
     /** @default: "now", sqlType: INTEGER */
     createdAt: Generated<number>
     /** @default: "now", sqlType: INTEGER */
     updatedAt: Generated<number>
     /** @default: null, sqlType: json */
-    comfyPromptJSON: T.Graph_comfyPromptJSON
+    comfyPromptJSON: T.ComfyWorkflow_comfyPromptJSON
     /** @default: null, sqlType: TEXT */
     stepID?: Maybe<StepID>
     /** @default: "'{}'", sqlType: json */
-    metadata: Generated<T.Graph_metadata>
+    metadata: Generated<T.ComfyWorkflow_metadata>
 }
-export type NewGraph = Insertable<GraphTable>
-export type GraphUpdate = Updateable<GraphTable>
-export type GraphT = Selectable<GraphTable>
-export const GraphSchema = Type.Object(
+export type NewComfyWorkflow = Insertable<ComfyWorkflowTable>
+export type ComfyWorkflowUpdate = Updateable<ComfyWorkflowTable>
+export type ComfyWorkflowT = Selectable<ComfyWorkflowTable>
+export const ComfyWorkflowSchema = Type.Object(
     {
         id: Type.String(),
         createdAt: Type.Number(),
         updatedAt: Type.Number(),
-        comfyPromptJSON: T.Graph_comfyPromptJSON_Schema,
+        comfyPromptJSON: T.ComfyWorkflow_comfyPromptJSON_Schema,
         stepID: Type.Optional(T.Nullable(Type.String())),
-        metadata: T.Graph_metadata_Schema,
+        metadata: T.ComfyWorkflow_metadata_Schema,
     },
     { additionalProperties: false },
 )
 
-export const GraphRefs = [{ fromTable: 'graph', fromField: 'stepID', toTable: 'step', tofield: 'id' }]
-export const GraphBackRefs = [
-    { fromTable: 'project', fromField: 'rootGraphID', toTable: 'graph', tofield: 'id' },
-    { fromTable: 'step', fromField: 'outputGraphID', toTable: 'graph', tofield: 'id' },
-    { fromTable: 'comfy_prompt', fromField: 'graphID', toTable: 'graph', tofield: 'id' },
-    { fromTable: 'runtime_error', fromField: 'graphID', toTable: 'graph', tofield: 'id' },
+export const ComfyWorkflowRefs = [{ fromTable: 'comfy_workflow', fromField: 'stepID', toTable: 'step', tofield: 'id' }]
+export const ComfyWorkflowBackRefs = [
+    { fromTable: 'project', fromField: 'rootGraphID', toTable: 'comfy_workflow', tofield: 'id' },
+    { fromTable: 'step', fromField: 'outputGraphID', toTable: 'comfy_workflow', tofield: 'id' },
+    { fromTable: 'comfy_prompt', fromField: 'graphID', toTable: 'comfy_workflow', tofield: 'id' },
+    { fromTable: 'runtime_error', fromField: 'graphID', toTable: 'comfy_workflow', tofield: 'id' },
 ]
 
-export const GraphFields = {
+export const ComfyWorkflowFields = {
     id: { cid: 0, name: 'id', type: 'string', notnull: 1, dflt_value: 'hex(randomblob(16))', pk: 1 },
     createdAt: { cid: 1, name: 'createdAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
     updatedAt: { cid: 2, name: 'updatedAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
@@ -159,6 +87,8 @@ export type DraftTable = {
     illustration?: Maybe<string>
     /** @default: "0", sqlType: INT */
     isFavorite: Generated<number>
+    /** @default: null, sqlType: INT */
+    lastRunAt?: Maybe<number>
 }
 export type NewDraft = Insertable<DraftTable>
 export type DraftUpdate = Updateable<DraftTable>
@@ -173,6 +103,7 @@ export const DraftSchema = Type.Object(
         appID: Type.String(),
         illustration: Type.Optional(T.Nullable(Type.String())),
         isFavorite: Type.Number(),
+        lastRunAt: Type.Optional(T.Nullable(Type.Number())),
     },
     { additionalProperties: false },
 )
@@ -192,6 +123,7 @@ export const DraftFields = {
     appID: { cid: 5, name: 'appID', type: 'TEXT', notnull: 1, dflt_value: null, pk: 0 },
     illustration: { cid: 6, name: 'illustration', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
     isFavorite: { cid: 7, name: 'isFavorite', type: 'INT', notnull: 1, dflt_value: '0', pk: 0 },
+    lastRunAt: { cid: 8, name: 'lastRunAt', type: 'INT', notnull: 0, dflt_value: null, pk: 0 },
 }
 
 export const asProjectID = (s: string): ProjectID => s as any
@@ -205,7 +137,7 @@ export type ProjectTable = {
     /** @default: null, sqlType: TEXT */
     name?: Maybe<string>
     /** @default: null, sqlType: TEXT */
-    rootGraphID: GraphID
+    rootGraphID: ComfyWorkflowID
     /** @default: null, sqlType: TEXT */
     currentApp?: Maybe<string>
     /** @default: null, sqlType: TEXT */
@@ -238,7 +170,7 @@ export const ProjectSchema = Type.Object(
 
 export const ProjectRefs = [
     { fromTable: 'project', fromField: 'currentDraftID', toTable: 'draft', tofield: 'id' },
-    { fromTable: 'project', fromField: 'rootGraphID', toTable: 'graph', tofield: 'id' },
+    { fromTable: 'project', fromField: 'rootGraphID', toTable: 'comfy_workflow', tofield: 'id' },
 ]
 export const ProjectBackRefs = []
 
@@ -268,7 +200,7 @@ export type StepTable = {
     /** @default: null, sqlType: json */
     formSerial: T.Step_formSerial
     /** @default: null, sqlType: TEXT */
-    outputGraphID: GraphID
+    outputGraphID: ComfyWorkflowID
     /** @default: null, sqlType: TEXT */
     status: T.StatusT
     /** @default: "1", sqlType: INT */
@@ -300,10 +232,10 @@ export const StepSchema = Type.Object(
 export const StepRefs = [
     { fromTable: 'step', fromField: 'draftID', toTable: 'draft', tofield: 'id' },
     { fromTable: 'step', fromField: 'appID', toTable: 'cushy_app', tofield: 'id' },
-    { fromTable: 'step', fromField: 'outputGraphID', toTable: 'graph', tofield: 'id' },
+    { fromTable: 'step', fromField: 'outputGraphID', toTable: 'comfy_workflow', tofield: 'id' },
 ]
 export const StepBackRefs = [
-    { fromTable: 'graph', fromField: 'stepID', toTable: 'step', tofield: 'id' },
+    { fromTable: 'comfy_workflow', fromField: 'stepID', toTable: 'step', tofield: 'id' },
     { fromTable: 'comfy_prompt', fromField: 'stepID', toTable: 'step', tofield: 'id' },
     { fromTable: 'media_text', fromField: 'stepID', toTable: 'step', tofield: 'id' },
     { fromTable: 'media_video', fromField: 'stepID', toTable: 'step', tofield: 'id' },
@@ -337,7 +269,7 @@ export type ComfyPromptTable = {
     /** @default: null, sqlType: TEXT */
     stepID: StepID
     /** @default: null, sqlType: TEXT */
-    graphID: GraphID
+    graphID: ComfyWorkflowID
     /** @default: "0", sqlType: INT */
     executed: Generated<number>
     /** @default: null, sqlType: json */
@@ -363,7 +295,7 @@ export const ComfyPromptSchema = Type.Object(
 )
 
 export const ComfyPromptRefs = [
-    { fromTable: 'comfy_prompt', fromField: 'graphID', toTable: 'graph', tofield: 'id' },
+    { fromTable: 'comfy_prompt', fromField: 'graphID', toTable: 'comfy_workflow', tofield: 'id' },
     { fromTable: 'comfy_prompt', fromField: 'stepID', toTable: 'step', tofield: 'id' },
 ]
 export const ComfyPromptBackRefs = [
@@ -559,6 +491,8 @@ export type MediaImageTable = {
     orientation?: Maybe<number>
     /** @default: null, sqlType: string */
     tags?: Maybe<string>
+    /** @default: null, sqlType: TEXT */
+    thumbnail?: Maybe<string>
 }
 export type NewMediaImage = Insertable<MediaImageTable>
 export type MediaImageUpdate = Updateable<MediaImageTable>
@@ -581,6 +515,7 @@ export const MediaImageSchema = Type.Object(
         type: Type.Optional(T.Nullable(Type.String())),
         orientation: Type.Optional(T.Nullable(Type.Number())),
         tags: Type.Optional(T.Nullable(Type.String())),
+        thumbnail: Type.Optional(T.Nullable(Type.String())),
     },
     { additionalProperties: false },
 )
@@ -608,6 +543,7 @@ export const MediaImageFields = {
     type: { cid: 13, name: 'type', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
     orientation: { cid: 14, name: 'orientation', type: 'INT', notnull: 0, dflt_value: null, pk: 0 },
     tags: { cid: 15, name: 'tags', type: 'string', notnull: 0, dflt_value: null, pk: 0 },
+    thumbnail: { cid: 16, name: 'thumbnail', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
 }
 
 export const asMedia3dDisplacementID = (s: string): Media3dDisplacementID => s as any
@@ -686,7 +622,7 @@ export type RuntimeErrorTable = {
     /** @default: null, sqlType: TEXT */
     promptID?: Maybe<ComfyPromptID>
     /** @default: null, sqlType: TEXT */
-    graphID?: Maybe<GraphID>
+    graphID?: Maybe<ComfyWorkflowID>
     /** @default: null, sqlType: TEXT */
     stepID?: Maybe<StepID>
 }
@@ -709,7 +645,7 @@ export const RuntimeErrorSchema = Type.Object(
 
 export const RuntimeErrorRefs = [
     { fromTable: 'runtime_error', fromField: 'stepID', toTable: 'step', tofield: 'id' },
-    { fromTable: 'runtime_error', fromField: 'graphID', toTable: 'graph', tofield: 'id' },
+    { fromTable: 'runtime_error', fromField: 'graphID', toTable: 'comfy_workflow', tofield: 'id' },
     { fromTable: 'runtime_error', fromField: 'promptID', toTable: 'comfy_prompt', tofield: 'id' },
 ]
 export const RuntimeErrorBackRefs = []
@@ -879,6 +815,8 @@ export type CushyAppTable = {
     isFavorite: Generated<number>
     /** @default: null, sqlType: INT */
     canStartFromImage?: Maybe<number>
+    /** @default: null, sqlType: INT */
+    lastRunAt?: Maybe<number>
 }
 export type NewCushyApp = Insertable<CushyAppTable>
 export type CushyAppUpdate = Updateable<CushyAppTable>
@@ -898,6 +836,7 @@ export const CushyAppSchema = Type.Object(
         publishedAt: Type.Optional(T.Nullable(Type.Number())),
         isFavorite: Type.Number(),
         canStartFromImage: Type.Optional(T.Nullable(Type.Number())),
+        lastRunAt: Type.Optional(T.Nullable(Type.Number())),
     },
     { additionalProperties: false },
 )
@@ -922,6 +861,7 @@ export const CushyAppFields = {
     publishedAt: { cid: 10, name: 'publishedAt', type: 'INT', notnull: 0, dflt_value: null, pk: 0 },
     isFavorite: { cid: 11, name: 'isFavorite', type: 'INT', notnull: 1, dflt_value: '0', pk: 0 },
     canStartFromImage: { cid: 12, name: 'canStartFromImage', type: 'INT', notnull: 0, dflt_value: null, pk: 0 },
+    lastRunAt: { cid: 13, name: 'lastRunAt', type: 'INT', notnull: 0, dflt_value: null, pk: 0 },
 }
 
 export const asAuthID = (s: string): AuthID => s as any
@@ -1090,31 +1030,13 @@ export const HostFields = {
 }
 
 // prettier-ignore
-export const TABLE_migrations = new T.TableInfo<'migrations', /* MigrationsT */ any, any, NewMigrations, MigrationsUpdate, MigrationsID>(
-    'migrations',
-    'Migrations',
-    MigrationsFields,
-    MigrationsSchema,
-    MigrationsRefs,
-    MigrationsBackRefs,
-)
-// prettier-ignore
-export const TABLE_users = new T.TableInfo<'users', /* UsersT */ any, any, NewUsers, UsersUpdate, UsersID>(
-    'users',
-    'Users',
-    UsersFields,
-    UsersSchema,
-    UsersRefs,
-    UsersBackRefs,
-)
-// prettier-ignore
-export const TABLE_graph = new T.TableInfo<'graph', GraphT, ComfyWorkflowL, NewGraph, GraphUpdate, GraphID>(
-    'graph',
-    'Graph',
-    GraphFields,
-    GraphSchema,
-    GraphRefs,
-    GraphBackRefs,
+export const TABLE_comfy_workflow = new T.TableInfo<'comfy_workflow', ComfyWorkflowT, ComfyWorkflowL, NewComfyWorkflow, ComfyWorkflowUpdate, ComfyWorkflowID>(
+    'comfy_workflow',
+    'ComfyWorkflow',
+    ComfyWorkflowFields,
+    ComfyWorkflowSchema,
+    ComfyWorkflowRefs,
+    ComfyWorkflowBackRefs,
 )
 // prettier-ignore
 export const TABLE_draft = new T.TableInfo<'draft', DraftT, DraftL, NewDraft, DraftUpdate, DraftID>(
@@ -1189,22 +1111,22 @@ export const TABLE_media_image = new T.TableInfo<'media_image', MediaImageT, Med
     MediaImageBackRefs,
 )
 // prettier-ignore
-export const TABLE_media_3d_displacement = new T.TableInfo<'media_3d_displacement', Media3dDisplacementT, Media3dDisplacementL, NewMedia3dDisplacement, Media3dDisplacementUpdate, Media3dDisplacementID >(
+export const TABLE_media_3d_displacement = new T.TableInfo<'media_3d_displacement', Media3dDisplacementT, Media3dDisplacementL, NewMedia3dDisplacement, Media3dDisplacementUpdate, Media3dDisplacementID>(
     'media_3d_displacement',
     'Media3dDisplacement',
     Media3dDisplacementFields,
     Media3dDisplacementSchema,
     Media3dDisplacementRefs,
     Media3dDisplacementBackRefs,
-    )
+)
 // prettier-ignore
-export const TABLE_runtime_error  = new T.TableInfo<'runtime_error', RuntimeErrorT, RuntimeErrorL, NewRuntimeError, RuntimeErrorUpdate, RuntimeErrorID>(
+export const TABLE_runtime_error = new T.TableInfo<'runtime_error', RuntimeErrorT, RuntimeErrorL, NewRuntimeError, RuntimeErrorUpdate, RuntimeErrorID>(
     'runtime_error',
     'RuntimeError',
     RuntimeErrorFields,
     RuntimeErrorSchema,
     RuntimeErrorRefs,
-    RuntimeErrorBackRefs
+    RuntimeErrorBackRefs,
 )
 // prettier-ignore
 export const TABLE_media_splat = new T.TableInfo<'media_splat', MediaSplatT, MediaSplatL, NewMediaSplat, MediaSplatUpdate, MediaSplatID>(
@@ -1271,34 +1193,32 @@ export const TABLE_host = new T.TableInfo<'host', HostT, HostL, NewHost, HostUpd
 )
 
 export type TABLES = typeof schemas
+
+export type TableName = keyof TABLES
+
 // prettier-ignore
 export const schemas = {
-    migrations:            TABLE_migrations,
-    users:                 TABLE_users,
-    graph:                 TABLE_graph,
-    draft:                 TABLE_draft,
-    project:               TABLE_project,
-    step:                  TABLE_step,
-    comfy_prompt:          TABLE_comfy_prompt,
-    comfy_schema:          TABLE_comfy_schema,
-    media_text:            TABLE_media_text,
-    media_video:           TABLE_media_video,
-    media_image:           TABLE_media_image,
+    comfy_workflow       : TABLE_comfy_workflow,
+    draft                : TABLE_draft,
+    project              : TABLE_project,
+    step                 : TABLE_step,
+    comfy_prompt         : TABLE_comfy_prompt,
+    comfy_schema         : TABLE_comfy_schema,
+    media_text           : TABLE_media_text,
+    media_video          : TABLE_media_video,
+    media_image          : TABLE_media_image,
     media_3d_displacement: TABLE_media_3d_displacement,
-    runtime_error:         TABLE_runtime_error,
-    media_splat:           TABLE_media_splat,
-    custom_data:           TABLE_custom_data,
-    cushy_script:          TABLE_cushy_script,
-    cushy_app:             TABLE_cushy_app,
-    auth:                  TABLE_auth,
-    tree_entry:            TABLE_tree_entry,
-    host:                  TABLE_host,
+    runtime_error        : TABLE_runtime_error,
+    media_splat          : TABLE_media_splat,
+    custom_data          : TABLE_custom_data,
+    cushy_script         : TABLE_cushy_script,
+    cushy_app            : TABLE_cushy_app,
+    auth                 : TABLE_auth,
+    tree_entry           : TABLE_tree_entry,
+    host                 : TABLE_host,
 }
-
 export type KyselyTables = {
-    migrations: MigrationsTable
-    users: UsersTable
-    graph: GraphTable
+    comfy_workflow: ComfyWorkflowTable
     draft: DraftTable
     project: ProjectTable
     step: StepTable
@@ -1317,3 +1237,202 @@ export type KyselyTables = {
     tree_entry: TreeEntryTable
     host: HostTable
 }
+// export type TableName =
+//     | 'comfy_workflow'
+//     | 'draft'
+//     | 'project'
+//     | 'step'
+//     | 'comfy_prompt'
+//     | 'comfy_schema'
+//     | 'media_text'
+//     | 'media_video'
+//     | 'media_image'
+//     | 'media_3d_displacement'
+//     | 'runtime_error'
+//     | 'media_splat'
+//     | 'custom_data'
+//     | 'cushy_script'
+//     | 'cushy_app'
+//     | 'auth'
+//     | 'tree_entry'
+//     | 'host'
+
+export type LiveDBSubKeys =
+    // tables
+    | 'comfy_workflow'
+    | 'draft'
+    | 'project'
+    | 'step'
+    | 'comfy_prompt'
+    | 'comfy_schema'
+    | 'media_text'
+    | 'media_video'
+    | 'media_image'
+    | 'media_3d_displacement'
+    | 'runtime_error'
+    | 'media_splat'
+    | 'custom_data'
+    | 'cushy_script'
+    | 'cushy_app'
+    | 'auth'
+    | 'tree_entry'
+    | 'host'
+    | 'comfy_workflow.id'
+    // columns
+    | 'comfy_workflow.createdAt'
+    | 'comfy_workflow.updatedAt'
+    | 'comfy_workflow.comfyPromptJSON'
+    | 'comfy_workflow.stepID'
+    | 'comfy_workflow.metadata'
+    | 'draft.id'
+    | 'draft.createdAt'
+    | 'draft.updatedAt'
+    | 'draft.title'
+    | 'draft.formSerial'
+    | 'draft.appID'
+    | 'draft.illustration'
+    | 'draft.isFavorite'
+    | 'draft.lastRunAt'
+    | 'project.id'
+    | 'project.createdAt'
+    | 'project.updatedAt'
+    | 'project.name'
+    | 'project.rootGraphID'
+    | 'project.currentApp'
+    | 'project.currentDraftID'
+    | 'project.filterNSFW'
+    | 'project.autostartDelay'
+    | 'project.autostartMaxDelay'
+    | 'step.id'
+    | 'step.createdAt'
+    | 'step.updatedAt'
+    | 'step.name'
+    | 'step.formSerial'
+    | 'step.outputGraphID'
+    | 'step.status'
+    | 'step.isExpanded'
+    | 'step.appID'
+    | 'step.draftID'
+    | 'comfy_prompt.id'
+    | 'comfy_prompt.createdAt'
+    | 'comfy_prompt.updatedAt'
+    | 'comfy_prompt.stepID'
+    | 'comfy_prompt.graphID'
+    | 'comfy_prompt.executed'
+    | 'comfy_prompt.error'
+    | 'comfy_prompt.status'
+    | 'comfy_schema.id'
+    | 'comfy_schema.createdAt'
+    | 'comfy_schema.updatedAt'
+    | 'comfy_schema.spec'
+    | 'comfy_schema.embeddings'
+    | 'comfy_schema.hostID'
+    | 'media_text.id'
+    | 'media_text.createdAt'
+    | 'media_text.updatedAt'
+    | 'media_text.kind'
+    | 'media_text.content'
+    | 'media_text.stepID'
+    | 'media_text.title'
+    | 'media_video.id'
+    | 'media_video.createdAt'
+    | 'media_video.updatedAt'
+    | 'media_video.absPath'
+    | 'media_video.stepID'
+    | 'media_video.promptID'
+    | 'media_video.filePath'
+    | 'media_video.url'
+    | 'media_image.id'
+    | 'media_image.createdAt'
+    | 'media_image.updatedAt'
+    | 'media_image.star'
+    | 'media_image.promptID'
+    | 'media_image.stepID'
+    | 'media_image.promptNodeID'
+    | 'media_image.width'
+    | 'media_image.height'
+    | 'media_image.fileSize'
+    | 'media_image.hash'
+    | 'media_image.path'
+    | 'media_image.comfyUIInfos'
+    | 'media_image.type'
+    | 'media_image.orientation'
+    | 'media_image.tags'
+    | 'media_image.thumbnail'
+    | 'media_3d_displacement.id'
+    | 'media_3d_displacement.createdAt'
+    | 'media_3d_displacement.updatedAt'
+    | 'media_3d_displacement.width'
+    | 'media_3d_displacement.height'
+    | 'media_3d_displacement.image'
+    | 'media_3d_displacement.depthMap'
+    | 'media_3d_displacement.normalMap'
+    | 'media_3d_displacement.stepID'
+    | 'media_3d_displacement.promptID'
+    | 'runtime_error.id'
+    | 'runtime_error.createdAt'
+    | 'runtime_error.updatedAt'
+    | 'runtime_error.message'
+    | 'runtime_error.infos'
+    | 'runtime_error.promptID'
+    | 'runtime_error.graphID'
+    | 'runtime_error.stepID'
+    | 'media_splat.id'
+    | 'media_splat.createdAt'
+    | 'media_splat.updatedAt'
+    | 'media_splat.stepID'
+    | 'media_splat.url'
+    | 'custom_data.id'
+    | 'custom_data.createdAt'
+    | 'custom_data.updatedAt'
+    | 'custom_data.json'
+    | 'cushy_script.id'
+    | 'cushy_script.createdAt'
+    | 'cushy_script.updatedAt'
+    | 'cushy_script.path'
+    | 'cushy_script.code'
+    | 'cushy_script.lastEvaluatedAt'
+    | 'cushy_script.lastSuccessfulEvaluationAt'
+    | 'cushy_script.metafile'
+    | 'cushy_script.lastExtractedAt'
+    | 'cushy_app.id'
+    | 'cushy_app.createdAt'
+    | 'cushy_app.updatedAt'
+    | 'cushy_app.guid'
+    | 'cushy_app.scriptID'
+    | 'cushy_app.name'
+    | 'cushy_app.illustration'
+    | 'cushy_app.description'
+    | 'cushy_app.tags'
+    | 'cushy_app.publishedAsUserID'
+    | 'cushy_app.publishedAt'
+    | 'cushy_app.isFavorite'
+    | 'cushy_app.canStartFromImage'
+    | 'cushy_app.lastRunAt'
+    | 'auth.id'
+    | 'auth.createdAt'
+    | 'auth.updatedAt'
+    | 'auth.provider_token'
+    | 'auth.refresh_token'
+    | 'auth.token_type'
+    | 'auth.access_token'
+    | 'auth.provider_refresh_token'
+    | 'auth.expires_at'
+    | 'auth.expires_in'
+    | 'tree_entry.id'
+    | 'tree_entry.createdAt'
+    | 'tree_entry.updatedAt'
+    | 'tree_entry.isExpanded'
+    | 'host.id'
+    | 'host.createdAt'
+    | 'host.updatedAt'
+    | 'host.name'
+    | 'host.hostname'
+    | 'host.port'
+    | 'host.useHttps'
+    | 'host.isLocal'
+    | 'host.absolutePathToComfyUI'
+    | 'host.absolutPathToDownloadModelsTo'
+    | 'host.isVirtual'
+    | 'host.isReadonly'
+export const liveDBSubKeys = new Set(['comfy_workflow', 'draft', 'project', 'step', 'comfy_prompt', 'comfy_schema', 'media_text', 'media_video', 'media_image', 'media_3d_displacement', 'runtime_error', 'media_splat', 'custom_data', 'cushy_script', 'cushy_app', 'auth', 'tree_entry', 'host', 'comfy_workflow.id', 'comfy_workflow.id', 'comfy_workflow.createdAt', 'comfy_workflow.updatedAt', 'comfy_workflow.comfyPromptJSON', 'comfy_workflow.stepID', 'comfy_workflow.metadata', 'draft.id', 'draft.createdAt', 'draft.updatedAt', 'draft.title', 'draft.formSerial', 'draft.appID', 'draft.illustration', 'draft.isFavorite', 'draft.lastRunAt', 'project.id', 'project.createdAt', 'project.updatedAt', 'project.name', 'project.rootGraphID', 'project.currentApp', 'project.currentDraftID', 'project.filterNSFW', 'project.autostartDelay', 'project.autostartMaxDelay', 'step.id', 'step.createdAt', 'step.updatedAt', 'step.name', 'step.formSerial', 'step.outputGraphID', 'step.status', 'step.isExpanded', 'step.appID', 'step.draftID', 'comfy_prompt.id', 'comfy_prompt.createdAt', 'comfy_prompt.updatedAt', 'comfy_prompt.stepID', 'comfy_prompt.graphID', 'comfy_prompt.executed', 'comfy_prompt.error', 'comfy_prompt.status', 'comfy_schema.id', 'comfy_schema.createdAt', 'comfy_schema.updatedAt', 'comfy_schema.spec', 'comfy_schema.embeddings', 'comfy_schema.hostID', 'media_text.id', 'media_text.createdAt', 'media_text.updatedAt', 'media_text.kind', 'media_text.content', 'media_text.stepID', 'media_text.title', 'media_video.id', 'media_video.createdAt', 'media_video.updatedAt', 'media_video.absPath', 'media_video.stepID', 'media_video.promptID', 'media_video.filePath', 'media_video.url', 'media_image.id', 'media_image.createdAt', 'media_image.updatedAt', 'media_image.star', 'media_image.promptID', 'media_image.stepID', 'media_image.promptNodeID', 'media_image.width', 'media_image.height', 'media_image.fileSize', 'media_image.hash', 'media_image.path', 'media_image.comfyUIInfos', 'media_image.type', 'media_image.orientation', 'media_image.tags', 'media_image.thumbnail', 'media_3d_displacement.id', 'media_3d_displacement.createdAt', 'media_3d_displacement.updatedAt', 'media_3d_displacement.width', 'media_3d_displacement.height', 'media_3d_displacement.image', 'media_3d_displacement.depthMap', 'media_3d_displacement.normalMap', 'media_3d_displacement.stepID', 'media_3d_displacement.promptID', 'runtime_error.id', 'runtime_error.createdAt', 'runtime_error.updatedAt', 'runtime_error.message', 'runtime_error.infos', 'runtime_error.promptID', 'runtime_error.graphID', 'runtime_error.stepID', 'media_splat.id', 'media_splat.createdAt', 'media_splat.updatedAt', 'media_splat.stepID', 'media_splat.url', 'custom_data.id', 'custom_data.createdAt', 'custom_data.updatedAt', 'custom_data.json', 'cushy_script.id', 'cushy_script.createdAt', 'cushy_script.updatedAt', 'cushy_script.path', 'cushy_script.code', 'cushy_script.lastEvaluatedAt', 'cushy_script.lastSuccessfulEvaluationAt', 'cushy_script.metafile', 'cushy_script.lastExtractedAt', 'cushy_app.id', 'cushy_app.createdAt', 'cushy_app.updatedAt', 'cushy_app.guid', 'cushy_app.scriptID', 'cushy_app.name', 'cushy_app.illustration', 'cushy_app.description', 'cushy_app.tags', 'cushy_app.publishedAsUserID', 'cushy_app.publishedAt', 'cushy_app.isFavorite', 'cushy_app.canStartFromImage', 'cushy_app.lastRunAt', 'auth.id', 'auth.createdAt', 'auth.updatedAt', 'auth.provider_token', 'auth.refresh_token', 'auth.token_type', 'auth.access_token', 'auth.provider_refresh_token', 'auth.expires_at', 'auth.expires_in', 'tree_entry.id', 'tree_entry.createdAt', 'tree_entry.updatedAt', 'tree_entry.isExpanded', 'host.id', 'host.createdAt', 'host.updatedAt', 'host.name', 'host.hostname', 'host.port', 'host.useHttps', 'host.isLocal', 'host.absolutePathToComfyUI', 'host.absolutPathToDownloadModelsTo', 'host.isVirtual', 'host.isReadonly']) // prettier-ignore
