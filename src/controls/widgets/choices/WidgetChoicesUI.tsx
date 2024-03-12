@@ -1,5 +1,5 @@
 import type { Widget_choices } from './WidgetChoices'
-import type { SchemaDict } from 'src/cards/App'
+import type { SchemaDict } from 'src/controls/Spec'
 
 import { observer } from 'mobx-react-lite'
 

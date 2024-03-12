@@ -1,7 +1,7 @@
 import type { Form } from '../../Form'
 import type { GetWidgetResult, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
-import type { SchemaDict } from 'src/cards/App'
 import type { IWidget } from 'src/controls/IWidget'
+import type { SchemaDict } from 'src/controls/Spec'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'

@@ -5,6 +5,7 @@ import type { Widget_shared } from './widgets/shared/WidgetShared'
 
 import { getCurrentForm_IMPL } from 'src/models/_ctx2'
 
+export type SchemaDict = { [key: string]: ISpec }
 export interface ISpec<W extends IWidget = IWidget> {
     $Widget: W
     $Type: W['type']
