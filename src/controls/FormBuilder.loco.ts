@@ -1,13 +1,10 @@
+import type { Form } from './Form'
 import type { Requirements } from './IWidget'
 import type { OpenRouter_Models } from 'src/llm/OpenRouter_models'
 
 import { makeAutoObservable } from 'mobx'
 
 import { _FIX_INDENTATION } from '../utils/misc/_FIX_INDENTATION'
-import { mkFormAutoBuilder } from './builder/AutoBuilder'
-import { EnumBuilder, EnumBuilderOpt } from './builder/EnumBuilder'
-import { Form, type IFormBuilder } from './Form'
-import { FormManager } from './FormManager'
 import { type ISpec, type SchemaDict, Spec } from './Spec'
 import { Widget_bool, type Widget_bool_config } from './widgets/bool/WidgetBool'
 import { Widget_button, type Widget_button_config } from './widgets/button/WidgetButton'
@@ -36,16 +33,12 @@ import { Widget_string, type Widget_string_config } from './widgets/string/Widge
 import { openRouterInfos } from 'src/llm/OpenRouter_infos'
 
 // prettier-ignore
-export class FormBuilder implements IFormBuilder {
+export class FormBuilder_Loco {
     /** (@internal) don't call this yourself */
-    constructor(
-        public form: Form<any, FormBuilder>
-    ) {
+    constructor(public form: Form<any, FormBuilder_Loco>) {
         makeAutoObservable(this, {
-            auto: false,
-            autoField: false,
-            enum: false,
-            enumOpt: false,
+            // enum: false,
+            // enumOpt: false,
         })
     }
 
@@ -108,49 +101,6 @@ export class FormBuilder implements IFormBuilder {
         return this.selectOne({ default: def, choices, }
     )}
 
-    /** @deprecated ; if you need this widget, you should copy paste that into a prefab */
-    inlineRun   = (config: Widget_button_config = {})                                                        => new Spec<Widget_button                   >('button' , {
-        onClick: (p) => {
-            p.widget.serial.val = true
-            p.draft.setAutostart(false)
-            p.draft.start({})
-            setTimeout(() => p.widget.serial.val = false, 100) // Reset value back to false for future runs
-        },
-        icon: (p) => {
-            if (p.draft.shouldAutoStart) return 'pause'
-            return 'play_arrow'
-        },
-        ...config
-    })
-
-    // /** a more practical function to make widget optionals */
-    // optional2   = <const T extends Spec>(spec: T, startActive: boolean = false) => new Spec<Widget_optional<Spec<T['$Widget']>>>('optional', {
-    //     widget: spec,
-    //     startActive: startActive,
-    //     label: spec.config.label,
-    //     requirements: spec.config.requirements,
-    //     startCollapsed: spec.config.startCollapsed,
-    //     collapsed: spec.config.collapsed,
-    //     border: spec.config.border,
-    // })
-    /** @deprecated : use `.string(...).optional` instead */
-    stringOpt   = (config: Widget_string_config                                 & { startActive?: boolean } = {}) => this.wrapOptional<Spec<Widget_string>    >(config, this.string)
-    /** @deprecated : use `.int(...).optional` instead */
-    intOpt      = (config: Omit<Widget_number_config, 'mode'>                   & { startActive?: boolean } = {}) => this.wrapOptional<Spec<Widget_number>    >(config, this.number)
-    /** @deprecated : use `.float(...).optional` instead */
-    floatOpt    = (config: Omit<Widget_number_config, 'mode'>                   & { startActive?: boolean } = {}) => this.wrapOptional<Spec<Widget_number>    >(config, this.number)
-    /** @deprecated : use `.number(...).optional` instead */
-    numberOpt   = (config: Omit<Widget_number_config, 'mode'>                   & { startActive?: boolean } = {}) => this.wrapOptional<Spec<Widget_number>    >(config, this.number)
-    /** @deprecated : use `.image(...).optional` instead */
-    imageOpt    = (config: Widget_image_config                                  & { startActive?: boolean } = {}) => this.wrapOptional<Spec<Widget_image>     >(config, this.image)
-    /** @deprecated : use `.prompt(...).optional` instead */
-    promptOpt   = (config: Widget_prompt_config                                 & { startActive?: boolean } = {}) => this.wrapOptional<Spec<Widget_prompt>    >(config, this.prompt)
-    /** @deprecated : use `.color(...).optional` instead */
-    colorOpt    = (config: Widget_color_config                                  & { startActive?: boolean } = {}) => this.wrapOptional<Spec<Widget_color>     >(config, this.color)
-    /** @deprecated : use `.group(...).optional` instead */
-    groupOpt    = <const T extends SchemaDict>(config: Widget_group_config<T>   & { startActive?: boolean } = {}) => this.wrapOptional<Spec<Widget_group<T>>  >(config, this.group)
-    /** @deprecated : use `.regional(...).optional` instead */
-    regionalOpt = <const T extends Spec>      (config: Widget_listExt_config<T> & { startActive?: boolean }     ) => this.wrapOptional<Spec<Widget_listExt<T>>>(config, this.regional)
 
     /**
      * Calling this function will mount and instanciate the subform right away
@@ -199,26 +149,27 @@ export class FormBuilder implements IFormBuilder {
     // --------------------
 
     // enum = /*<const T extends KnownEnumNames>*/ (config: Widget_enum_config<any, any>) => new Widget_enum(this.form, config)
-    get auto() {
-        const _ = mkFormAutoBuilder(this) /*<const T extends KnownEnumNames>*/
-        Object.defineProperty(this, 'auto', { value: _ })
-        return _
-    }
-    get autoField() {
-        const _ = mkFormAutoBuilder(this)
-        Object.defineProperty(this, 'autoField', { value: _ })
-        return _
-    }
-    get enum() {
-        const _ = new EnumBuilder(this.form) /*<const T extends KnownEnumNames>*/
-        Object.defineProperty(this, 'enum', { value: _ })
-        return _
-    }
-    get enumOpt() {
-        const _ = new EnumBuilderOpt(this.form)
-        Object.defineProperty(this, 'enumOpt', { value: _ })
-        return _
-    }
+    // ❌ get auto() {
+    // ❌     const _ = mkFormAutoBuilder(this) /*<const T extends KnownEnumNames>*/
+    // ❌     Object.defineProperty(this, 'auto', { value: _ })
+    // ❌     return _
+    // ❌ }
+    // ❌ get autoField() {
+    // ❌     const _ = mkFormAutoBuilder(this)
+    // ❌     Object.defineProperty(this, 'autoField', { value: _ })
+    // ❌     return _
+    // ❌ }
+
+    // ⏸️ get enum() {
+    // ⏸️     const _ = new EnumBuilder(this.form) /*<const T extends KnownEnumNames>*/
+    // ⏸️     Object.defineProperty(this, 'enum', { value: _ })
+    // ⏸️     return _
+    // ⏸️ }
+    // ⏸️ get enumOpt() {
+    // ⏸️     const _ = new EnumBuilderOpt(this.form)
+    // ⏸️     Object.defineProperty(this, 'enumOpt', { value: _ })
+    // ⏸️     return _
+    // ⏸️ }
 
 
     _FIX_INDENTATION = _FIX_INDENTATION
@@ -285,5 +236,3 @@ export class FormBuilder implements IFormBuilder {
         return new Widget_markdown(this.form, { markdown: `unknown widget "${type}" in serial.` })
     }
 }
-
-export const CushyFormManager = new FormManager<FormBuilder>(FormBuilder)

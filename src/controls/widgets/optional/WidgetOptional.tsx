@@ -104,7 +104,7 @@ export class Widget_optional<T extends Spec = Spec> implements IWidget<Widget_op
 
     constructor(
         //
-        public form: Form<any>,
+        public form: Form<any, any>,
         public config: Widget_optional_config<T>,
         serial?: Widget_optional_serial<T>,
     ) {

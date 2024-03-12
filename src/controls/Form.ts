@@ -1,12 +1,34 @@
-import type { SchemaDict } from './Spec'
+import type { FormManager } from './FormManager'
+import type { $WidgetTypes, IWidget } from './IWidget'
+import type { ISpec, SchemaDict } from './Spec'
 import type { Widget_group, Widget_group_output, Widget_group_serial } from './widgets/group/WidgetGroup'
+import type { Widget_optional, Widget_optional_config } from './widgets/optional/WidgetOptional'
+import type { Widget_shared } from './widgets/shared/WidgetShared'
 
 import { action, autorun, isObservable, makeAutoObservable, observable, runInAction } from 'mobx'
 
-import { FormBuilder } from './FormBuilder'
+// import { FormBuilder } from './FormBuilder.cushy'
 import { Spec } from './Spec'
 
-export class Form<const FIELDS extends SchemaDict> {
+export interface IFormBuilder {
+    //
+    _cache: { count: number }
+    _HYDRATE: <T extends ISpec>(unmounted: T, serial: any | null) => T['$Widget']
+    optional: <const T extends Spec<IWidget<$WidgetTypes>>>(p: Widget_optional_config<T>) => Spec<Widget_optional<T>>
+    shared: <W extends Spec<IWidget<$WidgetTypes>>>(key: string, unmounted: W) => Widget_shared<W>
+}
+
+export type FormProperties<FIELDS extends SchemaDict> = {
+    name: string
+    onChange?: (form: Widget_group<FIELDS>) => void
+    initialValue?: () => Maybe<object>
+}
+
+export class Form<
+    //
+    const FIELDS extends SchemaDict,
+    const MyFormBuilder extends IFormBuilder = IFormBuilder,
+> {
     error: Maybe<string> = null
 
     at = <K extends keyof FIELDS>(key: K): FIELDS[K]['$Widget'] => {
@@ -36,26 +58,26 @@ export class Form<const FIELDS extends SchemaDict> {
         return root
     }
 
-    get builder() {
-        const value = new FormBuilder(this)
-        Object.defineProperty(this, 'builder', { value })
-        return value
-    }
+    builder: MyFormBuilder
+    // get builder(): Builder {
+    //     const value = new FormBuilder(this)
+    //     Object.defineProperty(this, 'builder', { value })
+    //     return value
+    // }
 
     /** (@internal) will be set at builer creation, to allow for dyanmic recursive forms */
     _ROOT!: Widget_group<FIELDS>
 
     constructor(
-        public ui: (form: FormBuilder) => FIELDS,
-        public def: {
-            name: string
-            onChange?: (form: Widget_group<FIELDS>) => void
-            initialValue?: () => Maybe<object>
-        },
+        // public builderFn: (self: Form<FIELDS, Builder>) => Builder,
+        public manager: FormManager<MyFormBuilder>,
+        public ui: (form: MyFormBuilder) => FIELDS,
+        public def: FormProperties<FIELDS>,
     ) {
+        this.builder = manager.getBuilder(this)
         makeAutoObservable(this, {
             //
-            builder: false,
+            // builder: false,
             root: false,
             init: action,
         })

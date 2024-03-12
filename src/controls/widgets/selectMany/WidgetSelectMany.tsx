@@ -73,7 +73,7 @@ export class Widget_selectMany<T extends BaseSelectEntry> implements IWidget<Wid
 
     constructor(
         //
-        public form: Form<any>,
+        public form: Form<any, any>,
         public config: Widget_selectMany_config<T>,
         serial?: Widget_selectMany_serial<T>,
     ) {

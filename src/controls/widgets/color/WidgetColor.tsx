@@ -2,7 +2,7 @@ import type { Form } from '../../Form'
 import type { IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 import type { IWidget } from 'src/controls/IWidget'
 
-import { computed, makeAutoObservable, observable } from 'mobx'
+import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { hash } from 'ohash'
 
@@ -43,7 +43,7 @@ export class Widget_color implements IWidget<Widget_color_types> {
 
     constructor(
         //
-        public readonly form: Form<any>,
+        public readonly form: Form<any, any>,
         public readonly config: Widget_color_config,
         serial?: Widget_color_serial,
     ) {

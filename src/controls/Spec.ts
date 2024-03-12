@@ -36,8 +36,9 @@ export class Spec<W extends IWidget = IWidget> {
     }
 
     /** wrap widget spec to list stuff */
-    list = <const T extends Spec>(config: Omit<Widget_list_config<T>, 'element'> = {}) =>
+    list = (config: Omit<Widget_list_config<any>, 'element'> = {}): Spec<Widget_list<this>> =>
         new Spec<Widget_list<this>>('list', {
+            ...config,
             element: this,
         })
 

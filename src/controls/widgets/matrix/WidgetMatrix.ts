@@ -61,7 +61,7 @@ export class Widget_matrix implements IWidget<Widget_matrix_types> {
 
     constructor(
         //
-        public form: Form<any>,
+        public form: Form<any, any>,
         public config: Widget_matrix_config,
         serial?: Widget_matrix_serial,
     ) {

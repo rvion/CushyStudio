@@ -89,7 +89,7 @@ export class Widget_bool implements IWidget<Widget_bool_types> {
 
     constructor(
         //
-        public form: Form<any>,
+        public form: Form<any, any>,
         public config: Widget_bool_config,
         serial?: Widget_bool_serial,
     ) {

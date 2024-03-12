@@ -64,7 +64,7 @@ export class Widget_markdown implements IWidget<Widget_markdown_types> {
         return md(this.form._ROOT)
     }
 
-    constructor(public form: Form<any>, public config: Widget_markdown_config, serial?: Widget_markdown_serial) {
+    constructor(public form: Form<any, any>, public config: Widget_markdown_config, serial?: Widget_markdown_serial) {
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? { type: 'markdown', collapsed: config.startCollapsed, active: true, id: this.id }
         applyWidgetMixinV2(this)

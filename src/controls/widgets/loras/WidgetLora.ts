@@ -40,7 +40,7 @@ export class Widget_loras implements IWidget<Widget_loras_types> {
     id: string
     type: 'loras' = 'loras'
     serial: Widget_loras_serial
-    constructor(public form: Form<any>, public config: Widget_loras_config, serial?: Widget_loras_serial) {
+    constructor(public form: Form<any, any>, public config: Widget_loras_config, serial?: Widget_loras_serial) {
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? {
             type: 'loras',

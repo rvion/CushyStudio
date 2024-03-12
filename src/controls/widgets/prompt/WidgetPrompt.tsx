@@ -65,7 +65,7 @@ export class Widget_prompt implements IWidget<Widget_prompt_types> {
 
     constructor(
         //
-        public readonly form: Form<any>,
+        public readonly form: Form<any, any>,
         public readonly config: Widget_prompt_config,
         serial?: Widget_prompt_serial,
     ) {

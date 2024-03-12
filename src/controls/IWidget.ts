@@ -27,7 +27,7 @@ export interface IWidget<K extends $WidgetTypes = $WidgetTypes> extends IWidgetM
     readonly type: K['$Type']
     readonly value: K['$Output']
     readonly serial: K['$Serial']
-    readonly form: Form<any>
+    readonly form: Form<any, any>
     readonly config: K['$Input'] // WidgetConfigFields<any>
 
     /** if specified, override the default algorithm to decide if we should have borders */

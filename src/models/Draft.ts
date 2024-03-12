@@ -10,6 +10,7 @@ import { reaction } from 'mobx'
 
 import { Status } from 'src/back/Status'
 import { Form } from 'src/controls/Form'
+import { CushyFormManager, type FormBuilder } from 'src/controls/FormBuilder'
 import { LiveRef } from 'src/db/LiveRef'
 import { SQLITE_false, SQLITE_true } from 'src/db/SQLITE_boolean'
 import { toastError } from 'src/utils/misc/toasts'
@@ -207,7 +208,7 @@ export class DraftL {
         return step
     }
 
-    form: Maybe<Form<any>> = null
+    form: Maybe<Form<any, FormBuilder>> = null
 
     get file(): LibraryFile {
         return this.st.library.getFile(this.appRef.item.relPath)
@@ -226,7 +227,7 @@ export class DraftL {
                 if (action == null) return
                 if (this.form) this.form.cleanup?.()
 
-                this.form = new Form(action.ui, {
+                this.form = CushyFormManager.form(action.ui, {
                     name: this.name,
                     initialValue: () => this.data.formSerial,
                     onChange: (root) => {

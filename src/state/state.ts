@@ -47,6 +47,7 @@ import { STANDARD_HOST_ID, vIRTUAL_HOST_ID__BASE, vIRTUAL_HOST_ID__FULL } from '
 import { type ConfigFile, PreferedFormLayout } from 'src/config/ConfigFile'
 import { mkConfigFile } from 'src/config/mkConfigFile'
 import { Form } from 'src/controls/Form'
+import { CushyFormManager } from 'src/controls/FormBuilder'
 import { quickBench } from 'src/db/quickBench'
 import { SQLITE_false, SQLITE_true } from 'src/db/SQLITE_boolean'
 import { asHostID, type TABLES } from 'src/db/TYPES.gen'
@@ -409,7 +410,7 @@ export class STATE {
         })
     }
 
-    civitaiConf = new Form(
+    civitaiConf = CushyFormManager.form(
         (ui) => ({
             imgSize1: ui.int({ min: 64, max: 1024, step: 64, default: 512 }),
             imgSize2: ui.int({ min: 64, max: 1024, step: 64, default: 128 }),
@@ -423,7 +424,7 @@ export class STATE {
             onChange: (form) => writeJSON('settings/civitai.json', form.serial),
         },
     )
-    sideBarConf = new Form(
+    sideBarConf = CushyFormManager.form(
         (f) => ({
             size: f.int({ label: false, alignLabel: false, text: 'Size', min: 24, max: 128, default: 48, suffix: 'px', step: 4 }),
             appIcons: f
@@ -452,7 +453,7 @@ export class STATE {
     // playgroundHeader = Header_Playground
     // playgroundWidgetDisplay = FORM_PlaygroundWidgetDisplay
 
-    displacementConf = new Form(
+    displacementConf = CushyFormManager.form(
         (form) => ({
             camera: form.choice({
                 appearance: 'tab',
@@ -482,7 +483,7 @@ export class STATE {
         },
     )
 
-    galleryConf = new Form(
+    galleryConf = CushyFormManager.form(
         (f) => ({
             gallerySize: f.int({ label: 'Preview Size', default: 48, min: 24, step: 8, softMax: 512, max: 1024, tooltip: 'Size of the preview images in px', unit: 'px' }), // prettier-ignore
             galleryMaxImages: f.int({ label: 'Number of items', min: 10, softMax: 300, default: 50, tooltip: 'Maximum number of images to display', }), // prettier-ignore

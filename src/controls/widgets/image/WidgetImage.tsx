@@ -55,7 +55,7 @@ export class Widget_image implements IWidget<Widget_image_types> {
 
     constructor(
         //
-        public form: Form<any>,
+        public form: Form<any, any>,
         public config: Widget_image_config,
         serial?: Widget_image_serial,
     ) {

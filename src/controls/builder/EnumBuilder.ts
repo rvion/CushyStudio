@@ -2,7 +2,8 @@
  * this module is here to allow performant type-level apis for enums.
  * TODO: document the unique challenges this appraoch is solving
  */
-import type { Form } from '../Form'
+import type { Form, IFormBuilder } from '../Form'
+import type { FormBuilder } from '../FormBuilder'
 
 import { Spec } from '../Spec'
 import { Widget_enum, Widget_enum_config } from '../widgets/enum/WidgetEnum'
@@ -21,7 +22,7 @@ export type IEnumBuilderOpt = {
 
 export interface EnumBuilder extends IEnumBuilder {}
 export class EnumBuilder {
-    constructor(public form: Form<any>) {
+    constructor(public form: Form<any, any>) {
         return new Proxy(this, {
             get(target, prop) {
                 // skip symbols
@@ -50,7 +51,7 @@ export class EnumBuilder {
 
 export interface EnumBuilderOpt extends IEnumBuilderOpt {}
 export class EnumBuilderOpt {
-    constructor(public form: Form<any>) {
+    constructor(public form: Form<any, FormBuilder>) {
         return new Proxy(this, {
             get(target, prop) {
                 // skip symbols

@@ -71,7 +71,7 @@ export class Widget_selectOne<T extends BaseSelectEntry> implements IWidget<Widg
     }
     constructor(
         //
-        public form: Form<any>,
+        public form: Form<any, any>,
         public config: Widget_selectOne_config<T>,
         serial?: Widget_selectOne_serial<T>,
     ) {

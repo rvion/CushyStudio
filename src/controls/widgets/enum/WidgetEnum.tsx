@@ -56,7 +56,7 @@ export class Widget_enum<O> implements IWidget<Widget_enum_types<O>> {
 
     serial: Widget_enum_serial<O>
     get defaultValue() { return this.config.default ?? this.possibleValues[0] as any } // prettier-ignore
-    constructor(public form: Form<any>, public config: Widget_enum_config<O>, serial?: Widget_enum_serial<O>) {
+    constructor(public form: Form<any, any>, public config: Widget_enum_config<O>, serial?: Widget_enum_serial<O>) {
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? {
             type: 'enum',

@@ -56,7 +56,7 @@ export class Widget_size implements IWidget<Widget_size_types> {
     readonly id: string
     readonly type: 'size' = 'size'
     readonly serial: Widget_size_serial
-    constructor(public form: Form<any>, public config: Widget_size_config, serial?: Widget_size_serial) {
+    constructor(public form: Form<any, any>, public config: Widget_size_config, serial?: Widget_size_serial) {
         this.id = serial?.id ?? nanoid()
         if (serial) {
             this.serial = serial

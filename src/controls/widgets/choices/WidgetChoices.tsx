@@ -103,7 +103,7 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> implements IWidge
     }
 
     constructor(
-        public readonly form: Form<any>,
+        public readonly form: Form<any, any>,
         public readonly config: Widget_choices_config<T>,
         serial?: Widget_choices_serial<T>,
     ) {

@@ -104,7 +104,7 @@ export class Widget_group<T extends SchemaDict> implements IWidget<Widget_group_
     }
     constructor(
         //
-        public form: Form<any>,
+        public form: Form<any, any>,
         public config: Widget_group_config<T>,
         serial?: Widget_group_serial<T>,
         /** used to register self as the root, before we start instanciating anything */

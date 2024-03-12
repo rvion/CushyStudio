@@ -46,7 +46,7 @@ export class Widget_spacer implements IWidget<Widget_shared_types> {
 
     constructor(
         //
-        public form: Form<any>,
+        public form: Form<any, any>,
         public config: Widget_spacer_config,
         serial?: Widget_spacer_serial,
     ) {

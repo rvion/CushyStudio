@@ -87,7 +87,7 @@ export class Widget_listExt<T extends Spec> implements IWidget<Widget_listExt_ty
 
     constructor(
         //
-        public form: Form<any>,
+        public form: Form<any, any>,
         public config: Widget_listExt_config<T>,
         serial?: Widget_listExt_serial<T>,
     ) {

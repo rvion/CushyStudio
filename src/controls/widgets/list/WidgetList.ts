@@ -68,7 +68,7 @@ export class Widget_list<T extends Spec> implements IWidget<Widget_list_types<T>
     }
     constructor(
         //
-        public form: Form<any>,
+        public form: Form<any, any>,
         public config: Widget_list_config<T>,
         serial?: Widget_list_serial<T>,
     ) {

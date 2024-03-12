@@ -57,7 +57,7 @@ export class Widget_shared<T extends Spec = Spec> implements IWidget<Widget_shar
 
     constructor(
         //
-        public form: Form<any>,
+        public form: Form<any, any>,
         public config: Widget_shared_config<T>,
         serial?: Widget_shared_serial,
     ) {

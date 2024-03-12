@@ -52,7 +52,7 @@ export class Widget_seed implements IWidget<Widget_seed_types> {
         if (this.serial.mode === 'randomize') return hash(this.serial.mode)
         return hash(this.value)
     }
-    constructor(public form: Form<any>, public config: Widget_seed_config, serial?: Widget_seed_serial) {
+    constructor(public form: Form<any, any>, public config: Widget_seed_config, serial?: Widget_seed_serial) {
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? {
             type: 'seed',
