@@ -170,7 +170,8 @@ export class FormBuilder implements IFormBuilder {
             widget = this._HYDRATE(unmounted, null)
             this.form._ROOT.serial.values_[name] = widget.serial
         }
-
+        // 2024-03-12 rvion: do we store the widget, or the widgetshared instead 2 lines below ? not sure yet.
+        this.form.knownShared.set(key, widget)
         return new Widget_shared<W>(this.form, { rootKey: key, widget }) as any
     }
 

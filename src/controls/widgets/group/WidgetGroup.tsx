@@ -60,7 +60,7 @@ export class Widget_group<T extends SchemaDict> implements IWidget<Widget_group_
     }
     get serialHash(): string {
         return Object.values(this.fields)
-            .map((v) => v.serialHash)
+            .map((v: IWidget) => v.serialHash)
             .join(',')
     }
     readonly id: string

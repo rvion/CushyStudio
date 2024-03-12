@@ -68,6 +68,8 @@ export class Form<
     /** (@internal) will be set at builer creation, to allow for dyanmic recursive forms */
     _ROOT!: Widget_group<FIELDS>
 
+    knownShared = new Map<string /* rootKey */, IWidget>()
+
     constructor(
         // public builderFn: (self: Form<FIELDS, Builder>) => Builder,
         public manager: FormManager<MyFormBuilder>,
@@ -112,6 +114,7 @@ export class Form<
             () => {
                 // const count = formValue.form._cache.count // manual mobx invalidation
                 const _ = root.serialHash
+                for (const shared of this.knownShared.values()) shared.serialHash
                 runInAction(() => {
                     console.log(`[🦊] form: updating`)
                     this.def.onChange?.(root)

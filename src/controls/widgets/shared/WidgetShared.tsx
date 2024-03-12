@@ -46,7 +46,7 @@ export class Widget_shared<T extends Spec = Spec> implements IWidget<Widget_shar
     // 👇 magically allow type-safe use of Mounted Widget_shared as Unmounted
     $Widget!: T['$Widget']
 
-    get serialHash(): string { return this.config.rootKey } // prettier-ignore
+    get serialHash(): string { return this.shared.serialHash } // prettier-ignore
     serial: Widget_shared_serial
 
     get shared(): T['$Widget'] {
