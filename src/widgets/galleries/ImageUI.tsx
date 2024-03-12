@@ -7,6 +7,7 @@ import { useImageDrag } from './dnd'
 import { hasMod } from 'src/app/shortcuts/META_NAME'
 import { ImageDropdownMenuUI } from 'src/panels/ImageDropdownUI'
 import { RevealUI } from 'src/rsuite/reveal/RevealUI'
+import { PathLike, existsSync } from 'fs'
 
 export const ImageUI = observer(function ImageUI_(p: {
     //
@@ -70,8 +71,14 @@ export const ImageUI = observer(function ImageUI_(p: {
     )
     // )
     return (
-        <RevealUI>
-            <div>{IMG}</div>
+        <RevealUI tw='flex w-full h-full items-center'>
+            {!image ? (
+                <ImageErrorDisplayUI className='hover:border-transparent' icon={'database'} />
+            ) : image.existsLocally && !existsSync(image?.absPath as PathLike) ? (
+                <ImageErrorDisplayUI className='hover:border-transparent' icon={'folder'} />
+            ) : (
+                <div>{IMG}</div>
+            )}
             <ul tabIndex={0} tw='shadow menu dropdown-content z-[1] bg-base-100 rounded-box'>
                 <ImageDropdownMenuUI img={image} />
             </ul>
@@ -90,6 +97,30 @@ export const ImageUI = observer(function ImageUI_(p: {
                 </li>
             </ul> */}
         </RevealUI>
+    )
+})
+
+export const ImageErrorDisplayUI = observer(function ImageErrorDisplayUI_(p: {
+    className?: string
+    icon: string
+    size?: string
+}) {
+    return (
+        <div
+            className={p.className}
+            tw='relative rounded flex flex-col w-full h-full border border-error border-dotted items-center justify-center bg-error/5 text-error'
+        >
+            <div tw='flex relative text-sm' style={{ fontSize: p.size ?? 'inherit' }}>
+                <span className='material-symbols-outlined'>scan_delete</span>
+            </div>
+            <div tw='absolute top-0 right-0 -translate-x-0.5 translate-y-0.5' style={{ fontSize: '0px' }}>
+                {p.icon && (
+                    <span className='material-symbols-outlined' style={{ fontSize: '12px' }}>
+                        {p.icon}
+                    </span>
+                )}
+            </div>
+        </div>
     )
 })
 
