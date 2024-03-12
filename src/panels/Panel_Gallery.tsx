@@ -17,56 +17,57 @@ export const Panel_Gallery = observer(function VerticalGalleryUI_(p: {}) {
             style={{ background: st.galleryConf.value.galleryBgColor }}
         >
             <PanelHeaderUI>
-                <SpacerUI />
-                <RevealUI tw='WIDGET-FIELD' title='Gallery Options'>
-                    <div tw='flex px-1 cursor-default bg-base-200 rounded w-full h-full items-center justify-center hover:brightness-125 border border-base-100'>
-                        <span className='material-symbols-outlined'>settings</span>
-                        <span className='material-symbols-outlined'>expand_more</span>
+                <div tw='flex gap-1 w-full items-center'>
+                    <input
+                        tw='WIDGET-FIELD input input-xs'
+                        placeholder='filename'
+                        value={cushy.galleryFilterPath ?? ''}
+                        type='text'
+                        onChange={(x) => {
+                            const next = x.target.value
+                            if (!next) cushy.galleryFilterPath = null
+                            else cushy.galleryFilterPath = next
+                        }}
+                    />
+
+                    <input
+                        tw='WIDGET-FIELD input input-xs'
+                        placeholder='tags'
+                        value={cushy.galleryFilterTag ?? ''}
+                        type='text'
+                        onChange={(x) => {
+                            const next = x.target.value
+                            if (!next) cushy.galleryFilterTag = null
+                            else cushy.galleryFilterTag = next
+                        }}
+                    />
+                    <div tw='flex-1'>
+                        <SelectUI
+                            key='45'
+                            placeholder='filter by app'
+                            label='app'
+                            options={() => cushy.db.cushy_app.selectRaw((q) => q.select(['id', 'name']))}
+                            getLabelText={(i) => i.name ?? 'unnamed'}
+                            value={() => cushy.galleryFilterAppName}
+                            equalityCheck={(a, b) => a.id === b.id}
+                            onChange={(next) => {
+                                if (cushy.galleryFilterAppName?.id === next.id) cushy.galleryFilterAppName = null
+                                else cushy.galleryFilterAppName = next
+                            }}
+                            cleanable
+                        />
                     </div>
-                    <GalleryControlsUI />
-                </RevealUI>
+                    {/* <SpacerUI /> */}
+                    <RevealUI tw='WIDGET-FIELD' title='Gallery Options'>
+                        <div tw='flex px-1 cursor-default bg-base-200 rounded w-full h-full items-center justify-center hover:brightness-125 border border-base-100'>
+                            <span className='material-symbols-outlined'>settings</span>
+                            <span className='material-symbols-outlined'>expand_more</span>
+                        </div>
+                        <GalleryControlsUI />
+                    </RevealUI>
+                </div>
             </PanelHeaderUI>
-            <div tw='flex gap-1'>
-                <input
-                    tw='input my-0.5 input-xs'
-                    placeholder='filename'
-                    value={cushy.galleryFilterPath ?? ''}
-                    type='text'
-                    onChange={(x) => {
-                        const next = x.target.value
-                        if (!next) cushy.galleryFilterPath = null
-                        else cushy.galleryFilterPath = next
-                    }}
-                />
-
-                <input
-                    tw='input my-0.5 input-xs'
-                    placeholder='tags'
-                    value={cushy.galleryFilterTag ?? ''}
-                    type='text'
-                    onChange={(x) => {
-                        const next = x.target.value
-                        if (!next) cushy.galleryFilterTag = null
-                        else cushy.galleryFilterTag = next
-                    }}
-                />
-                <SelectUI
-                    key='45'
-                    placeholder='filter by app'
-                    label='app'
-                    options={() => cushy.db.cushy_app.selectRaw((q) => q.select(['id', 'name']))}
-                    getLabelText={(i) => i.name ?? 'unnamed'}
-                    value={() => cushy.galleryFilterAppName}
-                    equalityCheck={(a, b) => a.id === b.id}
-                    onChange={(next) => {
-                        if (cushy.galleryFilterAppName?.id === next.id) cushy.galleryFilterAppName = null
-                        else cushy.galleryFilterAppName = next
-                    }}
-                    cleanable
-                />
-            </div>
-
-            <div className='flex flex-wrap overflow-auto bg-base-300'>
+            <div className='flex flex-wrap overflow-auto bg-neutral'>
                 {/* <LatentPreviewUI /> */}
                 {st.imageToDisplay.map((img_) => {
                     const img = st.db.media_image.get(img_.id)!
