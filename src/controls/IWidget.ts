@@ -53,7 +53,7 @@ export type IWidgetMixins = {
     header(): JSX.Element | undefined
     defaultBody(): JSX.Element | undefined
     defaultHeader(): JSX.Element | undefined
-    test: number
+    // test: number
 }
 
 export type GetWidgetResult<Widget> = Widget extends { $Output: infer O } ? O : never
