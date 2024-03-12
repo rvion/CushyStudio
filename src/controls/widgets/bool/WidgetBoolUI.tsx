@@ -3,6 +3,7 @@ import type { Widget_bool } from './WidgetBool'
 import { observer } from 'mobx-react-lite'
 
 import { InputBoolUI } from './InputBoolUI'
+import { SpacerUI } from '../spacer/SpacerUI'
 
 // import { runInAction } from 'mobx'
 // let isDragging = false
@@ -17,7 +18,7 @@ export const WidgetBoolUI = observer(function WidgetBoolUI_(p: { widget: Widget_
     }
 
     return (
-        <>
+        <div tw='flex w-full h-full '>
             <InputBoolUI //
                 active={widget.serial.active}
                 display={widget.config.display}
@@ -26,6 +27,8 @@ export const WidgetBoolUI = observer(function WidgetBoolUI_(p: { widget: Widget_
                 text={label}
                 onValueChange={(value) => (widget.serial.active = value)}
             />
+
+            <SpacerUI />
             <div
                 tw={[widget.isChanged ? undefined : 'btn-disabled opacity-50']}
                 onClick={() => widget.reset()}
@@ -33,6 +36,6 @@ export const WidgetBoolUI = observer(function WidgetBoolUI_(p: { widget: Widget_
             >
                 <span className='material-symbols-outlined'>undo</span>
             </div>
-        </>
+        </div>
     )
 })
