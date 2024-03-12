@@ -108,7 +108,7 @@ export const ImageErrorDisplayUI = observer(function ImageErrorDisplayUI_(p: {
     return (
         <div
             className={p.className}
-            tw='relative rounded flex flex-col w-full h-full border border-error border-dotted items-center justify-center bg-error/5 text-error'
+            tw='relative rounded flex flex-col w-full h-full border border-error border-dotted items-center justify-center bg-error/5 text-error select-none pointer-events-none'
         >
             <div tw='flex relative text-sm' style={{ fontSize: p.size ?? 'inherit' }}>
                 <span className='material-symbols-outlined'>scan_delete</span>
