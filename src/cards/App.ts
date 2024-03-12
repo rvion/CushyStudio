@@ -23,14 +23,14 @@ export type $ExtractFormValueType<FIELDS extends SchemaDict> = { [k in keyof FIE
 
 export type App<FIELDS extends SchemaDict> = {
     /** app interface (GUI) */
-    ui: (form: FormBuilder) => FIELDS
+    ui: (ui: FormBuilder) => FIELDS
 
     /** app execution logic */
     run: (
         //
         runtime: Runtime<FIELDS>,
-        formResult: { [k in keyof FIELDS]: FIELDS[k]['$Output'] },
-        starImage?: Maybe<MediaImageL>,
+        ui: { [k in keyof FIELDS]: FIELDS[k]['$Output'] },
+        startImage?: Maybe<MediaImageL>,
     ) => void | Promise<void>
 
     /** if set to true, will register drafts to quick action in image context menu */

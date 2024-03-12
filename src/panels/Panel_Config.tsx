@@ -1,19 +1,50 @@
 import { observer } from 'mobx-react-lite'
 
 import { useSt } from '../state/stateContext'
+import { MessageInfoUI } from './MessageUI'
 import { ComboUI } from 'src/app/shortcuts/ComboUI'
 import { KEYS } from 'src/app/shortcuts/shorcutKeys'
+import { Form } from 'src/controls/Form'
+import { FormUI } from 'src/controls/FormUI'
 import { InputNumberUI } from 'src/controls/widgets/number/InputNumberUI'
 import { FormControl, FormHelpText, Toggle } from 'src/rsuite/shims'
+import { readJSON, writeJSON } from 'src/state/jsonUtils'
 import { openInVSCode } from 'src/utils/electron/openInVsCode'
 import { parseFloatNoRoundingErr } from 'src/utils/misc/parseFloatNoRoundingErr'
 import { SectionTitleUI } from 'src/widgets/workspace/SectionTitle'
+
+const configForm = new Form(
+    (ui) => {
+        return {
+            // tagFile: ui.string({ default: 'completions/danbooru.csv' }),
+            // preferredTextEditor: ui.string({ default: '' }),
+            // githubUsername: ui.string({ default: '' }),
+            // cushyCloudGPUApiKey: ui.string({ default: '' }),
+            // galleryImageSize: ui.float({ default: 48, min: 16, max: 256 }),
+            // numberSliderSpeed: ui.float({ default: 1, min: 0.3, max: 3, step: 0.1 }),
+            // enableTypeCheckingBuiltInApps: ui.bool({ default: false }),
+            // checkUpdateEveryMinutes: ui.float({ default: 5, min: 0.5 }),
+            OPENROUTER_API_KEY: ui.string({ default: '' }),
+        }
+    },
+    {
+        name: 'config',
+        initialValue: () => readJSON('settings/config-v2.json'),
+        onChange: (form) => writeJSON('settings/config-v2.json', form.serial),
+    },
+)
 
 export const Panel_Config = observer(function Panel_Config_() {
     const st = useSt()
     const config = st.configFile
     return (
         <div className='flex flex-col gap-2 items-start p-2'>
+            <MessageInfoUI tw='w-full'>
+                <div tw='w-full'>
+                    <div>TODO: move form to this:</div>
+                    <FormUI form={configForm} />
+                </div>
+            </MessageInfoUI>
             <SectionTitleUI label='CONFIG' className='block' />
             <div tw='flex flex-col gap-1'>
                 <FieldUI label='Comfig file path'>

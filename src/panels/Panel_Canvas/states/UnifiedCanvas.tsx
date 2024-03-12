@@ -1,5 +1,6 @@
 import type { UnifiedCanvasViewInfos } from '../types/RectSimple'
 import type { KonvaEventObject } from 'konva/lib/Node'
+import type { TabPositionConfig } from 'src/controls/widgets/choices/WidgetChoices'
 import type { DraftL } from 'src/models/Draft'
 import type { MediaImageL } from 'src/models/MediaImage'
 import type { STATE } from 'src/state/state'
@@ -17,13 +18,58 @@ import { UnifiedImage } from './UnifiedImage'
 import { UnifiedMask } from './UnifiedMask'
 import { UnifiedSelection } from './UnifiedSelection'
 import { UnifiedStep } from './UnifiedStep'
+import { Form } from 'src/controls/Form'
+import { readJSON, writeJSON } from 'src/state/jsonUtils'
 import { toastError } from 'src/utils/misc/toasts'
 
+const tabPosition: TabPositionConfig = 'start'
 export class UnifiedCanvas {
     snapToGrid = true
-    snapSize = 64
+    get snapSize():number { return this.form.fields.gridSnap.value ?? 64} // prettier-ignore
     rootRef = createRef<HTMLDivElement>()
     currentDraft: DraftL | null = null
+
+    /** snapshot an app call intent */
+    getIntent = () => ({})
+
+    form = new Form(
+        (ui) => ({
+            maskMode: ui.tabs(
+                {
+                    inpaintMask: ui.ok({ label: 'Mask' }),
+                    inpaintNotMask: ui.ok({ label: 'Not Mask' }),
+                },
+                { label: 'Select', alignLabel: false, tabPosition },
+            ),
+            maskBlur: ui.int({ min: 0, max: 32 }),
+            maskContent: ui.tabs(
+                {
+                    fill: ui.ok(),
+                    original: ui.ok(),
+                    latentNoise: ui.ok(),
+                    latentNothing: ui.ok(),
+                    lamaCleaner: ui.ok(),
+                },
+                { label: 'Content', alignLabel: false, tabPosition },
+            ),
+            area: ui.tabs(
+                {
+                    all: ui.ok(),
+                    maskedOnly: ui.fields({
+                        padding: ui.int({ min: 0, max: 1024, default: 32 }),
+                        maskContent: ui.ok(),
+                    }),
+                },
+                { label: 'Inpaint Area', alignLabel: false, tabPosition },
+            ),
+            gridSnap: ui.int({ min: 16, max: 256, default: 128 }).optional(),
+        }),
+        {
+            name: 'Unified canvas',
+            initialValue: () => readJSON('settings/unified-canvas.json'),
+            onChange: (form) => writeJSON('settings/unified-canvas.json', form.serial),
+        },
+    )
     // ---------------------------------------------------
     undo = () => {
         const last = this.undoBuffer.pop()

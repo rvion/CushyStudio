@@ -4,10 +4,12 @@ import { observer } from 'mobx-react-lite'
 import SortableList, { SortableItem } from 'react-easy-sort'
 
 import { useUnifiedCanvas } from '../UnifiedCanvasCtx'
-import { ComboUI } from 'src/app/shortcuts/ComboUI'
-import { DraftIllustrationUI } from 'src/cards/fancycard/DraftIllustration'
+import { CanvasAppListUI } from './CanvasAppListUI'
+import { CanvasToolbarUI } from './CanvasToolbarUI'
+import { RecentDrafMenuEntriesUI } from 'src/app/appbar/MenuApps'
+import { FormUI } from 'src/controls/FormUI'
 import { InputNumberUI } from 'src/controls/widgets/number/InputNumberUI'
-import { MediaImageL } from 'src/models/MediaImage'
+import { Dropdown } from 'src/rsuite/Dropdown'
 import { useSt } from 'src/state/stateContext'
 import { useImageDrop } from 'src/widgets/galleries/dnd'
 
@@ -16,29 +18,15 @@ export const UnifiedCanvasMenuUI = observer(function UnifiedCanvasMenuUI_(p: {})
     const st = useSt()
     const [dropStyle2, dropRef2] = useImageDrop(st, (img) => canvas.addMask(img))
     return (
-        <div tw='flex flex-col gap-1 bg-base-200 w-80 absolute right-2 top-2 z-50'>
+        // 💬 2024-03-11 rvion: I think I prefer the menu on the left, so the mouse have to travel less
+        <div tw='flex flex-col gap-1 bg-base-100 w-96 absolute left-2 top-2 z-50'>
             <CanvasToolbarUI />
-            <div>
-                <div onClick={() => canvas.undo()} className='btn btn-sm btn-outline'>
-                    Undo (stack.size={canvas.undoBuffer.length})
-                </div>
-            </div>
-            {/* GRID SIZE */}
-            <div tw='bd1 p-1 flex gap-1 items-center'>
-                {/*  */}
-                <input checked tw='checkbox' type='checkbox' />
-                grid snap:
-                <InputNumberUI
-                    mode='int'
-                    min={32}
-                    step={4}
-                    onValueChange={(next) => (canvas.snapSize = next)}
-                    suffix='px'
-                    value={canvas.snapSize}
-                />
-                {/* x */}
-                {/* <input tw='input input-bordered input-sm w-24' type='number' value={canvas.snapSize} /> */}
-            </div>
+            <CanvasAppListUI />
+            <Dropdown title={'apps'}>
+                <RecentDrafMenuEntriesUI />
+            </Dropdown>
+            <FormUI form={canvas.form} />
+            <CanvasUndoIndicatorUI />
             {/* TOP LEVEL BUTTON */}
             <div tw='bd1'>
                 Layers
@@ -264,47 +252,13 @@ export const UnifiedCanvasMenuUI = observer(function UnifiedCanvasMenuUI_(p: {})
     )
 })
 
-export const CanvasToolbarUI = observer(function CanvasToolbarUI_(p: {}) {
+export const CanvasUndoIndicatorUI = observer(function CanvasUndoIndicatorUI_(p: {}) {
     const canvas = useUnifiedCanvas()
     return (
-        <div /* tw='absolute top-0 z-50 [left:50%]' */>
-            <div tw='flex items-center'>
-                <div
-                    onClick={() => canvas.enable_generate()}
-                    tw={['btn btn-xs', canvas.tool === 'generate' ? 'btn-primary' : null]}
-                >
-                    Generate
-                    <ComboUI combo='1' />
-                </div>
-                <div onClick={() => canvas.enable_mask()} tw={['btn btn-xs', canvas.tool === 'mask' ? 'btn-primary' : null]}>
-                    Mask
-                    <ComboUI combo='2' />
-                </div>
-                <div onClick={() => canvas.enable_paint()} tw={['btn btn-xs', canvas.tool === 'paint' ? 'btn-primary' : null]}>
-                    Paint
-                    <ComboUI combo='2' />
-                </div>
-                <div onClick={() => canvas.enable_move()} tw={['btn btn-xs', canvas.tool === 'move' ? 'btn-primary' : null]}>
-                    Move
-                    <ComboUI combo='4' />
-                </div>
-            </div>
-            <div tw='flex'>
-                {
-                    /* canvas.tool === 'generate' && */
-                    canvas.st.favoriteDrafts.map((draft) => (
-                        <div tw={[draft === canvas.currentDraft ? 'bd' : null]}>
-                            <DraftIllustrationUI
-                                onClick={() => {
-                                    draft.openOrFocusTab()
-                                    canvas.currentDraft = draft
-                                }}
-                                draft={draft}
-                                size='3rem'
-                            />
-                        </div>
-                    ))
-                }
+        <div>
+            <div onClick={() => canvas.undo()} className='btn btn-sm btn-narrower'>
+                <span className='material-symbols-outlined'>undo</span>
+                <div tw='subtle'>{canvas.undoBuffer.length}</div>
             </div>
         </div>
     )

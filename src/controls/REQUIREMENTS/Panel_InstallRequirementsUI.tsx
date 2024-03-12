@@ -81,7 +81,7 @@ export const Panel_InstallRequirementsUI = observer(function Panel_InstallRequir
                     Restart ComfyUI
                 </div>
             </div>
-            <MessageWarningUI markdown='this widget is beta; Clicking install does not show progress yet; check your ComfyUI logs' />
+            {/* <MessageWarningUI markdown='this widget is beta; Clicking install does not show progress yet; check your ComfyUI logs' /> */}
             <div tw='flex flex-col overflow-scroll gap-2'>
                 {rr.map((req) => {
                     // ------------------------------------------------
