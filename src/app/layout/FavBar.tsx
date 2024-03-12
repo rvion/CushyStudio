@@ -13,6 +13,8 @@ import { CreateAppPopupUI } from 'src/panels/Panel_Welcome/CreateAppBtnUI'
 import { PanelHeaderUI } from 'src/panels/PanelHeader'
 import { RevealUI } from 'src/rsuite/reveal/RevealUI'
 import { useSt } from 'src/state/stateContext'
+import { CachedResizedImage } from 'src/rsuite/CachedResizedImageUI'
+import { fileURLToPath } from 'url'
 
 // Could give this an option be collapsible in the future?
 /** Re-usable container to keep a consistent style around groups of buttons */
@@ -142,11 +144,19 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                                                         tw='relative cursor-default hover:brightness-125'
                                                         onClick={() => draft.openOrFocusTab()}
                                                     >
-                                                        <DraftIllustrationUI
-                                                            className={'!rounded-none'}
-                                                            size={sizeStr}
-                                                            draft={draft}
-                                                        />
+                                                        {draft.data.illustration ? (
+                                                            <CachedResizedImage
+                                                                style={{ width: size, height: size }}
+                                                                filePath={fileURLToPath(draft.data.illustration)}
+                                                                size={size}
+                                                            />
+                                                        ) : (
+                                                            <DraftIllustrationUI
+                                                                className={'!rounded-none'}
+                                                                size={sizeStr}
+                                                                draft={draft}
+                                                            />
+                                                        )}
                                                         {appIcons.value && (
                                                             <div style={{ opacity: appIcons.value * 0.01 }}>
                                                                 <AppIllustrationUI
