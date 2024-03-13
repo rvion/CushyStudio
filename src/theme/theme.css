@@ -451,3 +451,21 @@ legend {
     scrollbar-width: none;
 }
 /*#endregion*/ /* Hide Scrollbar */
+
+/* Operator Input blocker */
+#input-blocker {
+    /* position: fixed; */
+    top: 0;
+    left: 0;
+    /* width: 100%; */
+    /* height: 100%; */
+    /* background-color: transparent; */
+    /* pointer-events: none; */
+    z-index: 99999999999;
+    /* background: red; */
+}
+
+.input-blocker-active {
+    display: unset;
+
+}

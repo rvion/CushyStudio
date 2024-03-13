@@ -16,6 +16,9 @@ import { GlobalSearchUI } from 'src/utils/electron/globalSearchUI'
 export const CushyUI = observer(function CushyUI_() {
     const st = useSt()
     const appRef = useRef<HTMLDivElement>(null)
+
+    st.operators.useEffect(st, appRef)
+
     useEffect(() => {
         const current = appRef.current
         if (current == null) return
@@ -67,6 +70,7 @@ export const CushyUI = observer(function CushyUI_() {
             ref={appRef}
             tw={['col grow h100 text-base-content']}
         >
+            <div id='input-blocker' tw='absolute w-full h-full hidden bg-red-400/35 overflow-clip' />
             <div id='tooltip-root' tw='pointer-events-none absolute inset-0 w-full h-full'></div>
             <GlobalSearchUI />
             <AppBarUI />
