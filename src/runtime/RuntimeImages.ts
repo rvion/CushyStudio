@@ -4,7 +4,6 @@ import type { MediaImageL } from 'src/models/MediaImage'
 import type { PromptID } from 'src/types/ComfyWsApi'
 
 import { makeAutoObservable } from 'mobx'
-import { hash } from 'ohash'
 
 import {
     createMediaImage_fromBlobObject,
