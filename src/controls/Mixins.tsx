@@ -15,8 +15,6 @@ const ensureObserver = <T extends null | undefined | FC<any>>(fn: T): T => {
 }
 
 const mixin: IWidgetMixins = {
-    // test: 78,
-
     ui(this: IWidget): JSX.Element {
         return <WidgetWithLabelUI widget={this} rootKey='_' />
     },
