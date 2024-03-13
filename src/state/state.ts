@@ -74,6 +74,7 @@ import { CleanedEnumResult } from 'src/types/EnumUtils'
 import { StepOutput } from 'src/types/StepOutput'
 import { openInVSCode } from 'src/utils/electron/openInVsCode'
 import { UserTags } from 'src/widgets/prompter/nodes/usertags/UserLoader'
+import { OperatorManager } from 'src/app/operators/OperatorManager'
 
 export class STATE {
     // LEAVE THIS AT THE TOP OF THIS CLASS
@@ -107,6 +108,7 @@ export class STATE {
     layout: CushyLayoutManager
     uid = nanoid() // front uid to fix hot reload
     db: LiveDB // core data
+    operators: OperatorManager
     shortcuts: ShortcutWatcher
     uploader: Uploader
     supabase: SupabaseClient<Database>
@@ -531,6 +533,7 @@ export class STATE {
         this.marketplace = new Marketplace(this)
         this.electronUtils = new ElectronUtils(this)
         this.shortcuts = new ShortcutWatcher(allCommands, this, { name: nanoid() })
+        this.operators = new OperatorManager()
         console.log(`[🛋️] ${this.shortcuts.shortcuts.length} shortcuts loaded`)
         this.uploader = new Uploader(this)
         this.layout = new CushyLayoutManager(this)

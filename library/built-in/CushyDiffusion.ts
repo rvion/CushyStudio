@@ -15,6 +15,7 @@ import { run_rembg_v1, ui_rembg_v1 } from './_prefabs/prefab_rembg'
 import { Ctx_sampler, run_sampler, ui_sampler } from './_prefabs/prefab_sampler'
 import { run_upscaleWithModel, ui_upscaleWithModel } from './_prefabs/prefab_upscaleWithModel'
 import { run_customSave, ui_customSave } from './_prefabs/saveSmall'
+import { useSt } from 'src/state/stateContext'
 
 app({
     metadata: {
