@@ -8,7 +8,6 @@ import type { Widget_group } from './group/WidgetGroup'
 import type { Widget_image } from './image/WidgetImage'
 import type { Widget_list } from './list/WidgetList'
 import type { Widget_listExt } from './listExt/WidgetListExt'
-import type { Widget_loras } from './loras/WidgetLora'
 import type { Widget_markdown } from './markdown/WidgetMarkdown'
 import type { Widget_matrix } from './matrix/WidgetMatrix'
 import type { Widget_number } from './number/WidgetNumber'
@@ -43,7 +42,6 @@ export let WidgetDI = {
     Widget_size /*       */: 0 as any as typeof Widget_size,
     Widget_spacer /*     */: 0 as any as typeof Widget_spacer,
     Widget_matrix /*     */: 0 as any as typeof Widget_matrix,
-    Widget_loras /*      */: 0 as any as typeof Widget_loras,
     Widget_image /*      */: 0 as any as typeof Widget_image,
     Widget_selectMany /* */: 0 as any as typeof Widget_selectMany,
     Widget_selectOne /*  */: 0 as any as typeof Widget_selectOne,

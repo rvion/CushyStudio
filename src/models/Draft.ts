@@ -149,7 +149,7 @@ export class DraftL {
         this.app.update({ lastRunAt: Date.now() })
 
         if (p.focusOutput ?? true) {
-            // 2024-01-21 should this be here ?
+            // 💬 2024-01-21 should this be here ?
             this.st.layout.FOCUS_OR_CREATE('Output', {})
         }
 
@@ -225,12 +225,14 @@ export class DraftL {
             (action) => {
                 console.log(`[🦊] form: awakening app ${this.data.appID}`)
                 if (action == null) return
-                if (this.form) this.form.cleanup?.()
+                // 💬 2024-03-13 hopefully this is not needed anymore now that
+                // | we're no longer using reactions
+                // if (this.form) this.form.cleanup?.()
 
                 this.form = CushyFormManager.form(action.ui, {
                     name: this.name,
                     initialValue: () => this.data.formSerial,
-                    onChange: (root) => {
+                    onSerialChange: (root) => {
                         this.update({ formSerial: root.serial })
                         console.log(`[👙] UPDATING draft(${this.id}) SERIAL`)
                         this.isDirty = true
@@ -265,7 +267,7 @@ export class DraftL {
             _1()
             // _2()
             this.isInitialized = false
-            this.form?.cleanup?.()
+            // this.form?.cleanup?.() // 🔶
             this.form = null //  __FAIL('not loaded yet')
         }
     }

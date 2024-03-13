@@ -68,11 +68,36 @@ export interface IWidget<K extends $WidgetTypes = $WidgetTypes> extends IWidgetM
  * base widget, you're expected to do that too.
  */
 export type IWidgetMixins = {
+    // UI ------------------------------------------------------
+    // value stuff
     ui(): JSX.Element
     body(): JSX.Element | undefined
     header(): JSX.Element | undefined
     defaultBody(): JSX.Element | undefined
     defaultHeader(): JSX.Element | undefined
+
+    // FOLD ----------------------------------------------------
+    setCollapsed(
+        /** true: collapse; false: expanded */
+        val: boolean | undefined,
+    ): void
+
+    /** toggle widget fold <-> unfolded */
+    toggleCollapsed(): void
+
+    // BUMP ----------------------------------------------------
+    /**
+     * Notify form that the value has been udpated
+     * (and bump serial.lastUpdatedAt to Date.now())
+     * 👉 Every widget must call this when value has been updated
+     * */
+    bumpValue(): void
+
+    /**
+     * Notify form that a non-value serial has been udpated
+     * 👉 every widget must call this when non-value serial has been updated
+     * */
+    bumpSerial(): void
 }
 
 /** 🔶 2024-03-13 rvion: TODO: remove that function; use ['$Value'] instead */
@@ -86,7 +111,9 @@ export type SharedWidgetSerial = {
     id: string
     type: string
     collapsed?: boolean
-    lastUpdatedAt: number
+    lastUpdatedAt?: number
+    /** unused internally, here so you can add whatever you want inside */
+    custom?: any
 }
 
 export type WidgetSerialFields<X> = X & SharedWidgetSerial

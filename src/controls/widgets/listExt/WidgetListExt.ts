@@ -38,7 +38,7 @@ export type Widget_listExt_serial<T extends Spec> = WidgetSerialFields<{
     height: number
 }>
 
-// OUT
+// VALUE
 export type Widget_listExt_output<T extends Spec> = {
     items: { value: T['$Value']; position: BoardPosition }[]
     // -----------------------
@@ -156,7 +156,7 @@ export class Widget_listExt<T extends Spec> implements IWidget<Widget_listExt_ty
     }
 
     // REMOVING ITEMS -------------------------------------------------
-    removemAllItems = () => {
+    removeAllItems = () => {
         this.serial.entries = this.serial.entries.slice(0, this.config.min ?? 0)
         this.entries = this.entries.slice(0, this.config.min ?? 0)
     }

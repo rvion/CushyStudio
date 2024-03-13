@@ -252,7 +252,7 @@ class AutoCompleteSelectState<T> {
     }
 
     // Close pop-up if too far outside
-    // 2024-02-29 rvion:
+    // 💬 2024-02-29 rvion:
     // | this code was a good idea; but it's really
     // | not pleasant when working mostly with keyboard and using tab to open selects.
     // | as soon as the moouse move just one pixel, popup close.

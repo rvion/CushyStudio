@@ -33,15 +33,15 @@ export type Widget_button_serial = WidgetSerialFields<{
     val: boolean
 }>
 
-// OUT
-export type Widget_button_output = boolean
+// VALUE
+export type Widget_button_value = boolean
 
 // TYPES
 export type Widget_button_types = {
     $Type: 'button'
     $Config: Widget_button_config
     $Serial: Widget_button_serial
-    $Value: Widget_button_output
+    $Value: Widget_button_value
     $Widget: Widget_button
 }
 
@@ -78,7 +78,7 @@ export class Widget_button implements IWidget<Widget_button_types> {
         makeAutoObservable(this)
     }
 
-    get value(): Widget_button_output {
+    get value(): Widget_button_value {
         return this.serial.active ? this.serial.val : false
     }
 }

@@ -29,7 +29,7 @@ export type Widget_selectOne_serial<T extends BaseSelectEntry> = WidgetSerialFie
     val: T
 }>
 
-// OUT
+// VALUE
 export type Widget_selectOne_output<T extends BaseSelectEntry> = T
 
 // TYPES

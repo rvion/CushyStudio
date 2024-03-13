@@ -1,7 +1,6 @@
 import type { IWidget, IWidgetMixins } from './IWidget'
 import type { FC } from 'react'
 
-import { extendObservable } from 'mobx'
 import { observer } from 'mobx-react-lite'
 
 import { WidgetWithLabelUI } from './shared/WidgetWithLabelUI'
@@ -14,7 +13,38 @@ const ensureObserver = <T extends null | undefined | FC<any>>(fn: T): T => {
     return FmtUI
 }
 
+/**
+ * Widget Mixin immplementation (see `IWidgetMixins` for documentation)
+ *
+ * /!\ Mixin method documentation should go in on the type `IWidgetMixins`
+ * directly (in file `src/controls/IWidget.ts`). comments here won't be
+ * displayed to users.
+ *
+ */
 const mixin: IWidgetMixins = {
+    // BUMP ----------------------------------------------------
+    bumpSerial(this: IWidget) {
+        this.form.serialChanged(this)
+    },
+
+    bumpValue(this: IWidget) {
+        this.serial.lastUpdatedAt = Date.now() as Timestamp
+        this.form.valueChanged(this)
+    },
+
+    // FOLD ----------------------------------------------------
+    setCollapsed(this: IWidget, val?: boolean) {
+        if (this.serial.collapsed === val) return
+        this.serial.collapsed = val
+        this.form.serialChanged(this)
+    },
+
+    toggleCollapsed(this: IWidget) {
+        this.serial.collapsed = !this.serial.collapsed
+        this.form.serialChanged(this)
+    },
+
+    // UI ----------------------------------------------------
     ui(this: IWidget): JSX.Element {
         return <WidgetWithLabelUI widget={this} rootKey='_' />
     },
@@ -49,10 +79,10 @@ const mixin: IWidgetMixins = {
 }
 
 // v1 ------------------------------------------------------
-/** @deprecated */
-export const applyWidgetMixin = (self: IWidget) => {
-    extendObservable(self, mixin)
-}
+// ⏸️ /** @deprecated */
+// ⏸️ export const applyWidgetMixin = (self: IWidget) => {
+// ⏸️     extendObservable(self, mixin)
+// ⏸️ }
 
 // v2 ------------------------------------------------------
 const descriptors = Object.getOwnPropertyDescriptors(mixin)

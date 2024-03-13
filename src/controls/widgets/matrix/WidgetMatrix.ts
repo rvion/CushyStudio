@@ -32,15 +32,15 @@ export type Widget_matrix_config = WidgetConfigFields<
 // SERIAL
 export type Widget_matrix_serial = WidgetSerialFields<{ type: 'matrix'; active: true; selected: Widget_matrix_cell[] }>
 
-// OUT
-export type Widget_matrix_output = Widget_matrix_cell[]
+// VALUE
+export type Widget_matrix_value = Widget_matrix_cell[]
 
 // TYPES
 export type Widget_matrix_types = {
     $Type: 'matrix'
     $Config: Widget_matrix_config
     $Serial: Widget_matrix_serial
-    $Value: Widget_matrix_output
+    $Value: Widget_matrix_value
     $Widget: Widget_matrix
 }
 
@@ -58,6 +58,8 @@ export class Widget_matrix implements IWidget<Widget_matrix_types> {
 
     rows: string[]
     cols: string[]
+
+    alignLabel = false
 
     constructor(
         //
@@ -89,7 +91,7 @@ export class Widget_matrix implements IWidget<Widget_matrix_types> {
         applyWidgetMixinV2(this)
         makeAutoObservable(this)
     }
-    get value(): Widget_matrix_output {
+    get value(): Widget_matrix_value {
         // if (!this.state.active) return undefined
         return this.serial.selected
     }
@@ -98,7 +100,11 @@ export class Widget_matrix implements IWidget<Widget_matrix_types> {
     private store = new Map<string, Widget_matrix_cell>()
     private key = (row: string, col: string) => `${row}${this.sep}${col}`
     get allCells() { return Array.from(this.store.values()); } // prettier-ignore
-    UPDATE = () => (this.serial.selected = this.RESULT)
+
+    UPDATE = () => {
+        this.serial.selected = this.RESULT
+        this.bumpValue() // only place to call bumpValue
+    }
     get RESULT() {
         return this.allCells.filter((v) => v.value)
     }

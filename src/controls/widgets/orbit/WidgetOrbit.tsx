@@ -7,7 +7,7 @@ import { nanoid } from 'nanoid'
 import { hash } from 'ohash'
 
 import { WidgetDI } from '../WidgetUI.DI'
-import { mkEnglishSummary } from './_orbitUtils'
+import { clampMod, mkEnglishSummary } from './_orbitUtils'
 import { WidgetOrbitUI } from './WidgetOrbitUI'
 import { applyWidgetMixinV2 } from 'src/controls/Mixins'
 
@@ -23,11 +23,11 @@ export type Widget_orbit_config = WidgetConfigFields<{ default?: Partial<OrbitDa
 export type Widget_orbit_serial = WidgetSerialFields<{
     type: 'orbit'
     active: true
-    val: OrbitData
+    value: OrbitData
 }>
 
-// OUT
-export type Widget_orbit_output = {
+// VALUE
+export type Widget_orbit_value = {
     azimuth: number
     elevation: number
     englishSummary: string
@@ -38,7 +38,7 @@ export type Widget_orbit_types = {
     $Type: 'orbit'
     $Config: Widget_orbit_config
     $Serial: Widget_orbit_serial
-    $Value: Widget_orbit_output
+    $Value: Widget_orbit_value
     $Widget: Widget_orbit
 }
 
@@ -53,19 +53,19 @@ export class Widget_orbit implements IWidget<Widget_orbit_types> {
 
     /** reset azimuth and elevation */
     reset = () => {
-        this.serial.val.azimuth = this.config.default?.azimuth ?? 0
-        this.serial.val.elevation = this.config.default?.elevation ?? 0
+        this.serial.value.azimuth = this.config.default?.azimuth ?? 0
+        this.serial.value.elevation = this.config.default?.elevation ?? 0
     }
 
     /** practical to add to your textual prompt */
     get englishSummary() {
-        return mkEnglishSummary(this.serial.val.azimuth, this.serial.val.elevation)
+        return mkEnglishSummary(this.serial.value.azimuth, this.serial.value.elevation)
     }
 
     get euler() {
         const radius = 5
-        const azimuthRad = this.serial.val.azimuth * (Math.PI / 180)
-        const elevationRad = this.serial.val.elevation * (Math.PI / 180)
+        const azimuthRad = this.serial.value.azimuth * (Math.PI / 180)
+        const elevationRad = this.serial.value.elevation * (Math.PI / 180)
         const x = radius * Math.cos(elevationRad) * Math.sin(azimuthRad)
         const y = radius * Math.cos(elevationRad) * Math.cos(azimuthRad)
         const z = radius * Math.sin(elevationRad)
@@ -86,7 +86,7 @@ export class Widget_orbit implements IWidget<Widget_orbit_types> {
             type: 'orbit',
             collapsed: config.startCollapsed,
             active: true,
-            val: {
+            value: {
                 azimuth: config.default?.azimuth ?? 0,
                 elevation: config.default?.elevation ?? 0,
             },
@@ -95,10 +95,17 @@ export class Widget_orbit implements IWidget<Widget_orbit_types> {
         applyWidgetMixinV2(this)
         makeAutoObservable(this)
     }
-    get value(): Widget_orbit_output {
+
+    // x: Partial<number> = 0
+    setForZero123 = (p: { azimuth_rad: number; elevation_rad: number }) => {
+        this.serial.value.azimuth = clampMod(-90 + p.azimuth_rad * (180 / Math.PI), -180, 180)
+        this.serial.value.elevation = clampMod(90 - p.elevation_rad * (180 / Math.PI), -180, 180) // (Math.PI / 4 - curr.getPolarAngle()) * (180 / Math.PI)
+    }
+
+    get value(): Widget_orbit_value {
         return {
-            azimuth: this.serial.val.azimuth,
-            elevation: this.serial.val.elevation,
+            azimuth: this.serial.value.azimuth,
+            elevation: this.serial.value.elevation,
             englishSummary: this.englishSummary,
         }
     }

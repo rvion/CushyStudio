@@ -17,27 +17,27 @@ export const WidgetListExt_ValuesUI = observer(function WidgetListExtValuesUI_<T
     const min = widget.config.min
     return (
         <div tw='flex flex-col gap-1'>
-            {values.map((x, ix) => {
-                const v = x.widget
-                const proj = x.shape
+            {values.map((sub, ix) => {
+                const subWidget = sub.widget
+                const proj = sub.shape
                 return (
-                    <div key={v.id} tw='flex items-start'>
+                    <div key={subWidget.id} tw='flex items-start'>
                         <div style={{ width: `${indexWidth}rem` }}>{ix}</div>
                         <input value={proj.fill} onChange={(ev) => (proj.fill = ev.target.value)} type='color' tw='w-7'></input>
                         <Button
                             style={{ width: `${indexWidth}rem` }}
                             appearance='subtle'
                             size='sm'
-                            onClick={() => (v.serial.collapsed = !Boolean(v.serial.collapsed))}
+                            onClick={() => subWidget.setCollapsed(!Boolean(subWidget.serial.collapsed))}
                         >
-                            {v.serial.collapsed ? '▸' : '▿'}
+                            {subWidget.serial.collapsed ? '▸' : '▿'}
                         </Button>
-                        <WidgetWithLabelUI rootKey={v.id} widget={v} />
+                        <WidgetWithLabelUI rootKey={subWidget.id} widget={subWidget} />
                         <Button
                             appearance='subtle'
                             disabled={min ? widget.entries.length <= min : undefined}
                             tw='self-start'
-                            onClick={() => widget.removeItem(v)}
+                            onClick={() => widget.removeItem(subWidget)}
                             size='sm'
                         >
                             X

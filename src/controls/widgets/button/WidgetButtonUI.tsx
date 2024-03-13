@@ -1,5 +1,6 @@
 import type { Widget_button, Widget_button_context } from './WidgetButton'
 
+import { runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 
 import { Button } from 'src/rsuite/shims'
@@ -21,7 +22,7 @@ export const WidgetInlineRunUI = observer(function WidgetInlineRunUI_(p: { widge
             ]}
             className='self-start'
             icon={icon && <span className='material-symbols-outlined'>{icon}</span>}
-            onClick={() => p.widget.config.onClick?.(context)}
+            onClick={() => runInAction(() => p.widget.config.onClick?.(context))}
         >
             {p.widget.config.text ?? `Run`}
         </Button>

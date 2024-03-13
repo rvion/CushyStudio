@@ -45,7 +45,7 @@ const Header_Playground = CushyFormManager.form(
     {
         name: 'Playground Conf',
         initialValue: () => readJSON('settings/playground_config.json'),
-        onChange: (form) => writeJSON('settings/playground_config.json', form.serial),
+        onSerialChange: (form) => writeJSON('settings/playground_config.json', form.serial),
     },
 )
 

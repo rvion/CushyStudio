@@ -24,15 +24,15 @@ export type Widget_string_config = WidgetConfigFields<
 // SERIAL
 export type Widget_string_serial = WidgetSerialFields<{ type: 'str'; val?: string }>
 
-// OUT
-export type Widget_string_output = string
+// VALUE
+export type Widget_string_value = string
 
 // TYPES
 export type Widget_string_types = {
     $Type: 'str'
     $Config: Widget_string_config
     $Serial: Widget_string_serial
-    $Value: Widget_string_output
+    $Value: Widget_string_value
     $Widget: Widget_string
 }
 
@@ -74,11 +74,11 @@ export class Widget_string implements IWidget<Widget_string_types> {
         makeAutoObservable(this)
     }
 
-    set value(next: Widget_string_output) {
+    set value(next: Widget_string_value) {
         // this.form.
         this.serial.val = next
     }
-    get value(): Widget_string_output {
+    get value(): Widget_string_value {
         return this.serial.val ?? this.config.default ?? ''
     }
 }

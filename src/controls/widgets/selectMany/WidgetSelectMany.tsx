@@ -28,7 +28,7 @@ export type Widget_selectMany_serial<T extends BaseSelectEntry> = WidgetSerialFi
     values: T[]
 }>
 
-// OUT
+// VALUE
 export type Widget_selectMany_output<T extends BaseSelectEntry> = T[]
 
 // TYPES

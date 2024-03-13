@@ -28,7 +28,7 @@ export class Spec<W extends IWidget = IWidget> {
         public readonly type: W['type'],
         public readonly config: W['$Config'],
     ) {
-        // 2024-03-11 rvion: this was added to properly support "shared" specs;
+        // 💬 2024-03-11 rvion: this was added to properly support "shared" specs;
         //          | but it turns out we can just live without any shared spec,
         //          | and only work with instanciated Widget_shared directly
         // ⏸️ /** if specified, bypass the instanciation completely */

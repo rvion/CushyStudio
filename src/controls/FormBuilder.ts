@@ -1,4 +1,6 @@
+import type { IFormBuilder } from './Form'
 import type { Requirements } from './IWidget'
+import type { ISpec, SchemaDict } from './Spec'
 import type { OpenRouter_Models } from 'src/llm/OpenRouter_models'
 
 import { makeAutoObservable } from 'mobx'
@@ -6,9 +8,9 @@ import { makeAutoObservable } from 'mobx'
 import { _FIX_INDENTATION } from '../utils/misc/_FIX_INDENTATION'
 import { mkFormAutoBuilder } from './builder/AutoBuilder'
 import { EnumBuilder, EnumBuilderOpt } from './builder/EnumBuilder'
-import { Form, type IFormBuilder } from './Form'
+import { Form } from './Form'
 import { FormManager } from './FormManager'
-import { type ISpec, type SchemaDict, Spec } from './Spec'
+import { Spec } from './Spec'
 import { Widget_bool, type Widget_bool_config } from './widgets/bool/WidgetBool'
 import { Widget_button, type Widget_button_config } from './widgets/button/WidgetButton'
 import { Widget_choices, type Widget_choices_config } from './widgets/choices/WidgetChoices'
@@ -19,7 +21,6 @@ import { Widget_group, type Widget_group_config } from './widgets/group/WidgetGr
 import { Widget_image, type Widget_image_config } from './widgets/image/WidgetImage'
 import { Widget_list, type Widget_list_config } from './widgets/list/WidgetList'
 import { Widget_listExt, type Widget_listExt_config } from './widgets/listExt/WidgetListExt'
-import { Widget_loras, type Widget_loras_config } from './widgets/loras/WidgetLora'
 import { Widget_markdown, Widget_markdown_config } from './widgets/markdown/WidgetMarkdown'
 import { Widget_matrix, type Widget_matrix_config } from './widgets/matrix/WidgetMatrix'
 import { Widget_number, type Widget_number_config } from './widgets/number/WidgetNumber'
@@ -68,7 +69,6 @@ export class FormBuilder implements IFormBuilder {
     colorV2     = (config: Widget_string_config = {})                                                        => new Spec<Widget_string                      >('str'       , { inputType: 'color', ...config })
     matrix      = (config: Widget_matrix_config)                                                             => new Spec<Widget_matrix                      >('matrix'    , config)
     button      = (config: Widget_button_config = {})                                                        => new Spec<Widget_button                      >('button'    , config)
-    loras       = (config: Widget_loras_config     = {})                                                     => new Spec<Widget_loras                       >('loras'     , config)
     /** variants: `header` */
     markdown    = (config: Widget_markdown_config | string)                                                  => new Spec<Widget_markdown                    >('markdown'  , typeof config === 'string' ? { markdown: config } : config)
     /** [markdown variant]: inline=true, label=false */
@@ -170,7 +170,7 @@ export class FormBuilder implements IFormBuilder {
             widget = this._HYDRATE(unmounted, null)
             this.form._ROOT.serial.values_[name] = widget.serial
         }
-        // 2024-03-12 rvion: do we store the widget, or the widgetshared instead 2 lines below ? not sure yet.
+        // 💬 2024-03-12 rvion: do we store the widget, or the widgetshared instead 2 lines below ? not sure yet.
         this.form.knownShared.set(key, widget)
         return new Widget_shared<W>(this.form, { rootKey: key, widget }) as any
     }
@@ -272,7 +272,6 @@ export class FormBuilder implements IFormBuilder {
         if (type === 'button'    ) return new Widget_button    (this.form, config, serial)
         if (type === 'seed'      ) return new Widget_seed      (this.form, config, serial)
         if (type === 'matrix'    ) return new Widget_matrix    (this.form, config, serial)
-        if (type === 'loras'     ) return new Widget_loras     (this.form, config, serial)
         if (type === 'image'     ) return new Widget_image     (this.form, config, serial)
         if (type === 'selectOne' ) return new Widget_selectOne (this.form, config, serial)
         if (type === 'selectMany') return new Widget_selectMany(this.form, config, serial)

@@ -37,8 +37,8 @@ export type Widget_choices_serial<T extends SchemaDict = SchemaDict> = WidgetSer
     values_: { [k in keyof T]?: T[k]['$Serial'] }
 }>
 
-// OUT
-export type Widget_choices_output<T extends SchemaDict = SchemaDict> = {
+// VALUE
+export type Widget_choices_value<T extends SchemaDict = SchemaDict> = {
     [k in keyof T]?: T[k]['$Value']
 }
 
@@ -47,7 +47,7 @@ export type Widget_choices_types<T extends SchemaDict = SchemaDict> = {
     $Type: 'choices'
     $Config: Widget_choices_config<T>
     $Serial: Widget_choices_serial<T>
-    $Value: Widget_choices_output<T>
+    $Value: Widget_choices_value<T>
     $Widget: Widget_choices<T>
 }
 
@@ -205,7 +205,7 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> implements IWidge
     }
 
     /** results, but only for active branches */
-    get value(): Widget_choices_output<T> {
+    get value(): Widget_choices_value<T> {
         const out: { [key: string]: any } = {}
         for (const branch in this.children) {
             // if (this.state.branches[key] !== true) continue

@@ -1,13 +1,12 @@
 import type { FormManager } from './FormManager'
 import type { $WidgetTypes, IWidget } from './IWidget'
 import type { ISpec, SchemaDict } from './Spec'
-import type { Widget_group, Widget_group_output, Widget_group_serial } from './widgets/group/WidgetGroup'
+import type { Widget_group, Widget_group_serial, Widget_group_value } from './widgets/group/WidgetGroup'
 import type { Widget_optional, Widget_optional_config } from './widgets/optional/WidgetOptional'
 import type { Widget_shared } from './widgets/shared/WidgetShared'
 
-import { action, autorun, isObservable, makeAutoObservable, observable, runInAction } from 'mobx'
+import { action, isObservable, makeAutoObservable, observable } from 'mobx'
 
-// import { FormBuilder } from './FormBuilder.cushy'
 import { Spec } from './Spec'
 
 export interface IFormBuilder {
@@ -20,7 +19,8 @@ export interface IFormBuilder {
 
 export type FormProperties<FIELDS extends SchemaDict> = {
     name: string
-    onChange?: (form: Widget_group<FIELDS>) => void
+    onSerialChange?: (form: Widget_group<FIELDS>) => void
+    onValueChange?: (form: Widget_group<FIELDS>) => void
     initialValue?: () => Maybe<object>
 }
 
@@ -39,7 +39,7 @@ export class Form<
         return this.root.get(key)
     }
 
-    get value(): Widget_group_output<FIELDS> {
+    get value(): Widget_group_value<FIELDS> {
         return this.root.value
     }
 
@@ -58,6 +58,49 @@ export class Form<
         return root
     }
 
+    // Change tracking ------------------------------------
+    private valueLastUpdatedAt: Timestamp = 0
+    private serialLastUpdatedAt: Timestamp = 0
+
+    /** every widget node must call this function once it's value change */
+    valueChanged = (widget: IWidget) => {
+        this.valueLastUpdatedAt = Date.now()
+        this.serialChanged(widget)
+    }
+
+    /** every widget node must call this function once it's serial changed */
+    serialChanged = (_widget: IWidget) => {
+        this.serialLastUpdatedAt = Date.now()
+    }
+
+    valueUpdatedAt?: Timestamp
+    formUpdatedAt?: Timestamp
+
+    // 💬 2024-03-13 rvion:
+    // | change tracking used to be done though autorun + tracking the transitive serialHash
+    // | (see below) but this approaches has performances problems; so now, we're letting
+    // | widgets manually "ping" the root form
+    // |
+    // | ```ts
+    // | cleanup?: () => void
+    // | private startMonitoring = (root: Widget_group<FIELDS>) => {
+    // |     this.cleanup = autorun(
+    // |         () => {
+    // |             // const count = formValue.form._cache.count // manual mobx invalidation
+    // |             const _ = root.serialHash
+    // |             for (const shared of this.knownShared.values()) shared.serialHash
+    // |             runInAction(() => {
+    // |                 console.log(`[🦊] form: updating`)
+    // |                 this.formConfig.onSerialChange?.(root)
+    // |             })
+    // |         },
+    // |         { delay: 100 },
+    // |     )
+    // | }
+    // | ```
+
+    // ---------------------------------------------------
+
     builder: MyFormBuilder
     // get builder(): Builder {
     //     const value = new FormBuilder(this)
@@ -74,7 +117,7 @@ export class Form<
         // public builderFn: (self: Form<FIELDS, Builder>) => Builder,
         public manager: FormManager<MyFormBuilder>,
         public ui: (form: MyFormBuilder) => FIELDS,
-        public def: FormProperties<FIELDS>,
+        public formConfig: FormProperties<FIELDS>,
     ) {
         this.builder = manager.getBuilder(this)
         makeAutoObservable(this, {
@@ -87,40 +130,23 @@ export class Form<
 
     ready = false
     init = (): Widget_group<FIELDS> => {
-        console.log(`[🥐] Building form ${this.def.name}`)
+        console.log(`[🥐] Building form ${this.formConfig.name}`)
         const formBuilder = this.builder
         const rootDef = { topLevel: true, items: () => this.ui?.(formBuilder) ?? {} }
         const unmounted = new Spec<Widget_group<FIELDS>>('group', rootDef)
         try {
-            let initialValue = this.def.initialValue?.()
+            let initialValue = this.formConfig.initialValue?.()
             if (initialValue && !isObservable(initialValue)) initialValue = observable(initialValue)
             const rootWidget: Widget_group<FIELDS> = formBuilder._HYDRATE(unmounted, initialValue)
             this.ready = true
             this.error = null
-            this.startMonitoring(rootWidget)
+            // this.startMonitoring(rootWidget)
             return rootWidget
         } catch (e) {
-            console.error(`[👙🔴] Building form ${this.def.name} FAILED`, this)
+            console.error(`[👙🔴] Building form ${this.formConfig.name} FAILED`, this)
             console.error(e)
             this.error = 'invalid form definition'
             return formBuilder._HYDRATE(unmounted, null)
         }
-    }
-
-    cleanup?: () => void
-
-    private startMonitoring = (root: Widget_group<FIELDS>) => {
-        this.cleanup = autorun(
-            () => {
-                // const count = formValue.form._cache.count // manual mobx invalidation
-                const _ = root.serialHash
-                for (const shared of this.knownShared.values()) shared.serialHash
-                runInAction(() => {
-                    console.log(`[🦊] form: updating`)
-                    this.def.onChange?.(root)
-                })
-            },
-            { delay: 100 },
-        )
     }
 }
