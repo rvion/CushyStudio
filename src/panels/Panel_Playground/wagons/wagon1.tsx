@@ -4,7 +4,7 @@ import { run_lococharts, ui_lococharts } from '../prefabs/_prefab_lococharts'
 import { run_selectData_knex, ui_selectData_knex } from '../prefabs/_prefab_source_knex'
 import { run_selectData_metabase, ui_selectData_metabase } from '../prefabs/_prefab_source_metabase'
 import { run_selectData_pivot, ui_selectData_pivot } from '../prefabs/_prefab_source_pivot'
-import { run_selectData_prql, ui_selectData_prql } from '../prefabs/_prefab_source_prql'
+import { prefab_prql } from '../prefabs/_prefab_source_prql'
 import { Kwery } from 'src/utils/misc/Kwery'
 
 export const wagon1 = defineWagon({
@@ -21,7 +21,7 @@ export const wagon1 = defineWagon({
                     pivot: ui_selectData_pivot(ui),
                     metabase: ui_selectData_metabase(ui),
                     'knex 🚧': ui_selectData_knex(ui),
-                    prql: ui_selectData_prql(ui),
+                    prql: prefab_prql.ui(ui),
                 },
             }),
         )
@@ -54,7 +54,7 @@ export const wagon1 = defineWagon({
             if (dm.metabase != null) return run_selectData_metabase(dm.metabase)
             if (dm.pivot != null) return run_selectData_pivot(dm.pivot)
             if (dm['knex 🚧'] != null) return run_selectData_knex(dm['knex 🚧'])
-            if (dm.prql != null) return run_selectData_prql(dm.prql)
+            if (dm.prql != null) return prefab_prql.run(dm.prql)
             throw 'At least one data method should be selected'
         })()
 
