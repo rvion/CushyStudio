@@ -177,11 +177,17 @@ export class CushyScriptL {
         const registerAppFn = (a1: string, a2: App<any>): AppRef<any> => {
             const app: App<SchemaDict> = typeof a1 !== 'string' ? a1 : a2
             const name = app.metadata?.name ?? basename(this.relPath)
-            console.info(`[💙] found app: "${name}"`, { path: this.relPath })
-            APPS.push(app)
             const appID = asCushyAppID(this.relPath + ':' + appIndex++) // 🔴 SUPER UNSAFE
-            // console.log(`[👙] >> appID==`, appID)
-            return { $Output: 0 as any, id: appID }
+            console.info(`[💙] found app: "${name}"`, { path: this.relPath, appID })
+            APPS.push(app)
+            return {
+                id: appID,
+                /**
+                 * this is a virtual property; only here so app refs can carry the
+                 * type-level form information.
+                 */
+                $FIELDS: 0 as any,
+            }
         }
 
         // 2. eval file to extract actions

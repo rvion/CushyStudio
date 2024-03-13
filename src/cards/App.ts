@@ -5,10 +5,6 @@ import type { ISpec, SchemaDict } from 'src/controls/Spec'
 import type { MediaImageL } from 'src/models/MediaImage'
 import type { Runtime } from 'src/runtime/Runtime'
 
-// ACTIONS ============================================================
-// 1. the main abstraction of cushy are actions.
-/** quick function to help build actions in a type-safe way */
-
 // export const action = <const F extends WidgetDict>(name: string, t: Omit<Action<F>, 'name'>): Action<F> => ({ name, ...t })
 /* 🛋️ */ export type GlobalFunctionToDefineAnApp = <const F extends SchemaDict>(t: App<F>) => AppRef<F>
 /* 🛋️ */ export type GlobalGetCurrentRun = () => Runtime
@@ -20,7 +16,12 @@ import type { Runtime } from 'src/runtime/Runtime'
 
 export type ActionTags = (arg0: ActionTagMethodList) => void
 
-export type AppRef<F> = { $Output: F; id: CushyAppID }
+export type AppRef<FIELDS> = {
+    /** this is a virtual property; only here so app refs can carry the type-level form information. */
+    $FIELDS: FIELDS
+    /** app ID */
+    id: CushyAppID
+}
 
 export type $ExtractFormValueType<FIELDS extends SchemaDict> = { [k in keyof FIELDS]: FIELDS[k]['$Value'] }
 
