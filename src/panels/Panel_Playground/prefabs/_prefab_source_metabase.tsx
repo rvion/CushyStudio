@@ -1,6 +1,5 @@
 import type { FormBuilder } from 'src/controls/FormBuilder'
-import { Kwery } from 'src/utils/misc/Kwery'
-import { gmbCols } from './_prefab_columns'
+import { TABLES } from './_prefab_columns'
 import { locoLocations } from './_prefab_locoUtil1'
 
 /*
@@ -25,7 +24,7 @@ export const ui_selectData_metabase = (ui: FormBuilder) => {
     const tables = () => ui.selectOne({ choices: [{ id: 'location' }, { id: 'gmb_review' }], label: false })
 
     const gmbColumnUI = () => {
-        const colName = ui.selectOne({ choices: gmbCols, border: false, label: 'data' })
+        const colName = ui.selectOne({ choices: TABLES.gmb_review.cols, border: false, label: 'data' })
         const as = ui.string({ label: 'as' })
         return ui.fields({ colName, as }, { layout: 'H', label: false, border: false })
     }
@@ -128,7 +127,7 @@ export const ui_selectData_metabase = (ui: FormBuilder) => {
     )
 }
 
-export const run_selectData_metabase = async (ui: SelectDataT): Promise<{ res: { data: any[] } | { err: any }; sql: string }> => {
+export const run_selectData_metabase = (ui: SelectDataT): { sql: string } => {
     const selectExpr: string[] = []
     const groups: string[] = []
     const where: string[] = []
@@ -166,14 +165,7 @@ export const run_selectData_metabase = async (ui: SelectDataT): Promise<{ res: {
         order by ${orders.join(', ')}
     `
 
-    const res = await Kwery.get(JSON.stringify(ui), { sql }, () =>
-        fetch('http://localhost:8000/EXECUTE-SQL', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ sql }),
-        }).then((res) => res.json()),
-    )
-    return { res, sql }
+    return { sql }
 
     function sqlExpr(
         //

@@ -31,6 +31,8 @@ import { Widget_size, type Widget_size_config } from './widgets/size/WidgetSize'
 import { Widget_spacer, Widget_spacer_config } from './widgets/spacer/WidgetSpacer'
 import { Widget_string, type Widget_string_config } from './widgets/string/WidgetString'
 import { openRouterInfos } from 'src/llm/OpenRouter_infos'
+import type { FormBuilder } from './FormBuilder'
+import { FormManager } from './FormManager'
 
 // prettier-ignore
 export class FormBuilder_Loco {
@@ -236,3 +238,5 @@ export class FormBuilder_Loco {
         return new Widget_markdown(this.form, { markdown: `unknown widget "${type}" in serial.` })
     }
 }
+
+export const LocoFormManager = new FormManager<FormBuilder_Loco>(FormBuilder_Loco)

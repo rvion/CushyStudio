@@ -86,8 +86,8 @@
         "cytoscape": "^3.28.1",
         "cytoscape-klay": "^3.1.4",
         "daisyui": "^4.7.2",
-        "echarts-for-react": "^3.0.2",
         "echarts-do-not-import-directly": "npm:echarts@^5.5.0",
+        "echarts-for-react": "^3.0.2",
         "electron": "^28.2.2",
         "electron-builder": "^24.9.1",
         "elkjs": "^0.9.2",
@@ -112,6 +112,7 @@
         "pathe": "^1.1.2",
         "plist": "^3.1.0",
         "postcss": "^*",
+        "prql-js": "^0.11.3",
         "rcedit": "^4.0.1",
         "react": "^18.2.0",
         "react-beautiful-dnd": "^13.1.1",
@@ -152,7 +153,8 @@
         "postcss": "^8.4.31",
         "supabase": "^1.148.6",
         "tailwindcss": "^3.4.1",
-        "vite": "^5.1.5"
+        "vite": "^5.1.5",
+        "vite-plugin-wasm": "^3.3.0"
     },
     "pnpm": {
         "patchedDependencies": {

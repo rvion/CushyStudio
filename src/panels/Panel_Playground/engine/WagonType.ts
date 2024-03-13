@@ -1,5 +1,5 @@
-import type { SchemaDict } from 'src/cards/App'
 import type { FormBuilder } from 'src/controls/FormBuilder'
+import type { SchemaDict } from 'src/controls/Spec'
 import type { LocoChartsOpts } from '../charts/locoCharts'
 
 export type Wagon<FIELDS extends SchemaDict> = {
@@ -9,7 +9,8 @@ export type Wagon<FIELDS extends SchemaDict> = {
     run: (ui: { [k in keyof FIELDS]: FIELDS[k]['$Output'] }) => Promise<{
         chartOpts: Maybe<LocoChartsOpts>
         sql: string
-        res: { data: any[] } | { err: any }
+        prql?: string
+        response: { data: any[] } | { err: any }
     }>
 }
 
