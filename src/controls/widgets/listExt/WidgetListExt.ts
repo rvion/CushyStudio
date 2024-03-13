@@ -40,7 +40,7 @@ export type Widget_listExt_serial<T extends Spec> = WidgetSerialFields<{
 
 // OUT
 export type Widget_listExt_output<T extends Spec> = {
-    items: { value: T['$Output']; position: BoardPosition }[]
+    items: { value: T['$Value']; position: BoardPosition }[]
     // -----------------------
     width: number
     height: number
@@ -51,7 +51,7 @@ export type Widget_listExt_types<T extends Spec> = {
     $Type: 'listExt'
     $Input: Widget_listExt_config<T>
     $Serial: Widget_listExt_serial<T>
-    $Output: Widget_listExt_output<T>
+    $Value: Widget_listExt_output<T>
     $Widget: Widget_listExt<T>
 }
 

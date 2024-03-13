@@ -11,7 +11,7 @@ export type $WidgetTypes = {
     $Type: string
     $Input: SharedWidgetConfig<any>
     $Serial: SharedWidgetSerial
-    $Output: any
+    $Value: any
     $Widget: any
 }
 
@@ -19,13 +19,13 @@ export interface IWidget<K extends $WidgetTypes = $WidgetTypes> extends IWidgetM
     $Type: K['$Type']
     $Input: K['$Input']
     $Serial: K['$Serial']
-    $Output: K['$Output']
+    $Value: K['$Value']
     $Widget: K['$Widget']
 
     readonly id: string
     readonly serialHash: string
     readonly type: K['$Type']
-    readonly value: K['$Output']
+    readonly value: K['$Value']
     readonly serial: K['$Serial']
     readonly form: Form<any, any>
     readonly config: K['$Input'] // WidgetConfigFields<any>
@@ -56,7 +56,7 @@ export type IWidgetMixins = {
     // test: number
 }
 
-export type GetWidgetResult<Widget> = Widget extends { $Output: infer O } ? O : never
+export type GetWidgetResult<Widget> = Widget extends { $Value: infer O } ? O : never
 export type GetWidgetState<Widget> = Widget extends { $Serial: infer S } ? S : never
 
 export type LabelPos = 'start' | 'end'

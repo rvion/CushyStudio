@@ -25,7 +25,7 @@ export type Widget_loras_types = {
     $Type: 'loras'
     $Input: Widget_loras_config
     $Serial: Widget_loras_serial
-    $Output: Widget_loras_output
+    $Value: Widget_loras_output
     $Widget: Widget_loras
 }
 

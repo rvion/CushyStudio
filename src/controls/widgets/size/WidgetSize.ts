@@ -33,7 +33,7 @@ export type Widget_size_types = {
     $Type: 'size'
     $Input: Widget_size_config
     $Serial: Widget_size_serial
-    $Output: Widget_size_output
+    $Value: Widget_size_output
     $Widget: Widget_size
 }
 

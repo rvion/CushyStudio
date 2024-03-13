@@ -35,7 +35,7 @@ export class Form<
         return this.root.at(key)
     }
 
-    get = <K extends keyof FIELDS>(key: K): FIELDS[K]['$Output'] => {
+    get = <K extends keyof FIELDS>(key: K): FIELDS[K]['$Value'] => {
         return this.root.get(key)
     }
 

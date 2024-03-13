@@ -29,14 +29,14 @@ export type Widget_list_serial<T extends Spec> = WidgetSerialFields<{
 }>
 
 // OUT
-export type Widget_list_output<T extends Spec> = T['$Output'][]
+export type Widget_list_output<T extends Spec> = T['$Value'][]
 
 // TYPES
 export type Widget_list_types<T extends Spec> = {
     $Type: 'list'
     $Input: Widget_list_config<T>
     $Serial: Widget_list_serial<T>
-    $Output: Widget_list_output<T>
+    $Value: Widget_list_output<T>
     $Widget: Widget_list<T>
 }
 

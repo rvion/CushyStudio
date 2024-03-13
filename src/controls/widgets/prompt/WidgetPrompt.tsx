@@ -48,7 +48,7 @@ export type Widget_prompt_types = {
     $Type: 'prompt'
     $Input: Widget_prompt_config
     $Serial: Widget_prompt_serial
-    $Output: Widget_prompt_output
+    $Value: Widget_prompt_output
     $Widget: Widget_prompt
 }
 

@@ -22,7 +22,7 @@ export type ActionTags = (arg0: ActionTagMethodList) => void
 
 export type AppRef<F> = { $Output: F; id: CushyAppID }
 
-export type $ExtractFormValueType<FIELDS extends SchemaDict> = { [k in keyof FIELDS]: FIELDS[k]['$Output'] }
+export type $ExtractFormValueType<FIELDS extends SchemaDict> = { [k in keyof FIELDS]: FIELDS[k]['$Value'] }
 
 export type App<FIELDS extends SchemaDict> = {
     /** app interface (GUI) */
@@ -32,7 +32,7 @@ export type App<FIELDS extends SchemaDict> = {
     run: (
         //
         runtime: Runtime<FIELDS>,
-        formResult: { [k in keyof FIELDS]: FIELDS[k]['$Output'] },
+        formResult: { [k in keyof FIELDS]: FIELDS[k]['$Value'] },
         starImage?: Maybe<MediaImageL>,
     ) => void | Promise<void>
 

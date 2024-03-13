@@ -34,7 +34,7 @@ export type Widget_custom_types<T> = {
     $Type: 'custom'
     $Input: Widget_custom_config<T>
     $Serial: Widget_custom_serial<T>
-    $Output: Widget_custom_output<T>
+    $Value: Widget_custom_output<T>
     $Widget: Widget_custom<T>
 }
 

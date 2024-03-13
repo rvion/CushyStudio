@@ -41,7 +41,7 @@ export type Widget_group_types<T extends SchemaDict> = {
     $Type: 'group'
     $Input: Widget_group_config<T>
     $Serial: Widget_group_serial<T>
-    $Output: Widget_group_output<T>
+    $Value: Widget_group_output<T>
     $Widget: Widget_group<T>
 }
 
@@ -87,7 +87,7 @@ export class Widget_group<T extends SchemaDict> implements IWidget<Widget_group_
     }
 
     at = <K extends keyof T>(key: K): T[K]['$Widget'] => this.fields[key]
-    get = <K extends keyof T>(key: K): T[K]['$Output'] => this.fields[key].value
+    get = <K extends keyof T>(key: K): T[K]['$Value'] => this.fields[key].value
 
     /** the dict of all child widgets */
     fields: { [k in keyof T]: T[k]['$Widget'] } = {} as any // will be filled during constructor

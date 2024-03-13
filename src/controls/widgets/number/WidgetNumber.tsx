@@ -41,7 +41,7 @@ export type Widget_number_types = {
     $Type: 'number'
     $Input: Widget_number_config
     $Serial: Widget_number_serial
-    $Output: Widget_number_output
+    $Value: Widget_number_output
     $Widget: Widget_number
 }
 

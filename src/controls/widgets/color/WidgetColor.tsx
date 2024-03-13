@@ -24,7 +24,7 @@ export type Widget_color_types = {
     $Type: 'color'
     $Input: Widget_color_config
     $Serial: Widget_color_serial
-    $Output: Widget_color_output
+    $Value: Widget_color_output
     $Widget: Widget_color
 }
 

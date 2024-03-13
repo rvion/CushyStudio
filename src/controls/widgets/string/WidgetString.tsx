@@ -32,7 +32,7 @@ export type Widget_string_types = {
     $Type: 'str'
     $Input: Widget_string_config
     $Serial: Widget_string_serial
-    $Output: Widget_string_output
+    $Value: Widget_string_output
     $Widget: Widget_string
 }
 
@@ -75,6 +75,7 @@ export class Widget_string implements IWidget<Widget_string_types> {
     }
 
     set value(next: Widget_string_output) {
+        // this.form.
         this.serial.val = next
     }
     get value(): Widget_string_output {

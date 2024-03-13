@@ -37,7 +37,7 @@ export type Widget_selectOne_types<T extends BaseSelectEntry> = {
     $Type: 'selectOne'
     $Input: Widget_selectOne_config<T>
     $Serial: Widget_selectOne_serial<T>
-    $Output: Widget_selectOne_output<T>
+    $Value: Widget_selectOne_output<T>
     $Widget: Widget_selectOne<T>
 }
 

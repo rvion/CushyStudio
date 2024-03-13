@@ -38,7 +38,7 @@ export type Widget_image_types = {
     $Type: 'image'
     $Input: Widget_image_config
     $Serial: Widget_image_serial
-    $Output: Widget_image_output
+    $Value: Widget_image_output
     $Widget: Widget_image
 }
 

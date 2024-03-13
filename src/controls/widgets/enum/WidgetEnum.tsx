@@ -35,7 +35,7 @@ export type Widget_enum_types<O> = {
     $Type: 'enum'
     $Input: Widget_enum_config<O>
     $Serial: Widget_enum_serial<O>
-    $Output: Widget_enum_output<O>
+    $Value: Widget_enum_output<O>
     $Widget: Widget_enum<O>
 }
 

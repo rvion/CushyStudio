@@ -36,7 +36,7 @@ export type Widget_seed_types = {
     $Type: 'seed'
     $Input: Widget_seed_config
     $Serial: Widget_seed_serial
-    $Output: Widget_seed_output
+    $Value: Widget_seed_output
     $Widget: Widget_seed
 }
 

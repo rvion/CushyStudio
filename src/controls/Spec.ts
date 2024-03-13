@@ -11,7 +11,7 @@ export interface ISpec<W extends IWidget = IWidget> {
     $Type: W['type']
     $Input: W['$Input']
     $Serial: W['$Serial']
-    $Output: W['$Output']
+    $Value: W['$Value']
     type: W['type']
     config: W['$Input']
 }
@@ -21,7 +21,7 @@ export class Spec<W extends IWidget = IWidget> {
     $Type!: W['type']
     $Input!: W['$Input']
     $Serial!: W['$Serial']
-    $Output!: W['$Output']
+    $Value!: W['$Value']
 
     constructor(
         //
