@@ -32,7 +32,12 @@ export const wagon1 = defineWagon({
             if (dataM.pivot != null) return dataM.pivot.cols.map((c) => c.column.as)
             if (dataM['knex 🚧'] != null)
                 return dataM['knex 🚧'].summarizes.flatMap((s) => (s.by == null ? [] : [s.by.column.as]))
-            if (dataM.prql != null) return []
+            if (dataM.prql != null)
+                return dataM.prql.pipeline.flatMap(({ stmt }) => {
+                    if (stmt.derive != null) return stmt.derive.map((d) => d.expr.name)
+                    if (stmt.group != null) return stmt.group.agg.map((a) => a.name)
+                    return []
+                })
             throw 'unreachable'
         }
         const values = () => {
@@ -40,7 +45,12 @@ export const wagon1 = defineWagon({
             if (dataM.metabase != null) return dataM.metabase.summarizes.map((s) => s.agg.column.as)
             if (dataM.pivot != null) return dataM.pivot.values.map((c) => c.column.as)
             if (dataM['knex 🚧'] != null) return dataM['knex 🚧'].summarizes.map((s) => s.agg.column.as)
-            if (dataM.prql != null) return []
+            if (dataM.prql != null)
+                return dataM.prql.pipeline.flatMap(({ stmt }) => {
+                    if (stmt.derive != null) return stmt.derive.map((d) => d.expr.name)
+                    if (stmt.group != null) return stmt.group.agg.map((a) => a.name)
+                    return []
+                })
             throw 'unreachable'
         }
 

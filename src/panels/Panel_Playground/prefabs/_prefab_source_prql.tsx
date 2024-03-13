@@ -9,7 +9,7 @@ export const prefab_prql = prefab({
     ui: (ui) => {
         const from = prefab_from.ui(ui)
         const location = ui.selectOne({ choices: locoLocations })
-        const pipeline = prefab_pipelineStmt.ui(ui).list({ label: '🔧 Pipeline', border: false })
+        const pipeline = prefab_pipeline.ui(ui)
 
         return ui.fields({ from, location, pipeline }, { border: false })
     },
@@ -17,7 +17,7 @@ export const prefab_prql = prefab({
         const prql = [
             prefab_from.run(ui.from),
             `filter location_id == '${ui.location.id}'`,
-            ui.pipeline.map(prefab_pipelineStmt.run).join('\n'),
+            prefab_pipeline.run(ui.pipeline),
         ].join('\n')
 
         return { prql }
@@ -34,114 +34,254 @@ const prefab_from = prefabShared({
     run: (ui) => `from ${ui.id}`,
 })
 
-const prefab_pipelineStmt = prefab({
-    ui: (ui) => {
-        const filter = ui.text({ label: 'filter', alignLabel: false })
-
-        return ui.choice({
-            appearance: 'tab',
-            items: {
-                derive: prefab_derive.ui(ui),
-                filter,
-                group: prefab_group.ui(ui),
-                // derive,
-                // aggregate,
-            },
-            // border: false,
-            tabPosition: 'center',
-            collapsed: false,
-            layout: 'H',
+const prefab_pipeline = prefabShared({
+    key: 'prql-pipeline',
+    ui: (ui: FormBuilder) => {
+        return ui.list({
+            label: '🔧 Pipeline',
+            element: (ix) =>
+                // 🔴 (shouldn't have to wrap in a group)
+                ui.group({
+                    items: {
+                        stmt: ui
+                            .choice({
+                                appearance: 'tab',
+                                items: {
+                                    derive: prefab_derive.ui(ui, ix),
+                                    filter: prefab_filter.ui(ui, ix),
+                                    group: prefab_group.ui(ui, ix),
+                                    // derive,
+                                    // aggregate,
+                                },
+                                // border: false,
+                                tabPosition: 'center',
+                                collapsed: false,
+                                layout: 'H',
+                                label: false,
+                                border: false,
+                            })
+                            .shared(`pipeline-stmt-${ix}`),
+                    },
+                    summary: ({ stmt }) => {
+                        if (stmt.derive != null) return `derive ${stmt.derive.map((d) => d.expr.name).join(', ')}`
+                        if (stmt.filter != null) return `filter ...`
+                        if (stmt.group != null) return `group by ${stmt.group.by}`
+                        return '???'
+                    },
+                }),
         })
     },
     run: (ui): string => {
-        if (ui.derive != null) return prefab_derive.run(ui.derive)
-        if (ui.filter != null) return `filter (${ui.filter})`
-        if (ui.group != null) return prefab_group.run(ui.group)
-        return '🔴 TODO'
-    },
-})
-
-const prefab_group = prefab({
-    ui: (ui) => {
-        return ui.fields(
-            {
-                by: ui.text({ label: 'group by', alignLabel: false }).hidden(),
-                agg: prefab_namedExpression.ui(ui).list(),
-            },
-            { header: (p) => <>{p.widget.fields.by.header()}</>, border: false, collapsed: false },
-        )
-    },
-    run: (ui) => {
-        return [
-            `group {${ui.by}} (`,
-            '  aggregate {',
-            ...ui.agg.map((c) => '    ' + prefab_namedExpression.run(c)),
-            '  }',
-            ')',
-        ].join('\n')
+        return ui
+            .map((g) => {
+                const stmt = g.stmt
+                if (stmt.derive != null) return prefab_derive.run(stmt.derive)
+                if (stmt.filter != null) return prefab_filter.run(stmt.filter)
+                if (stmt.group != null) return prefab_group.run(stmt.group)
+                return '🔴 TODO'
+            })
+            .join('\n')
     },
 })
 
 const prefab_derive = prefab({
-    ui: (ui) => {
-        return ui
-            .choice({
-                label: 'derive',
-                appearance: 'tab',
-                tabPosition: 'start',
-                items: {
-                    // column,
-                    named_expression: prefab_namedExpression.ui(ui),
-                },
-            })
-            .list()
+    ui: (ui, ix: number) => {
+        return ui.fields({ expr: prefab_namedExpr.ui(ui, ix) }).list({ label: 'derive' })
     },
     run: (ui) => {
         return [
             'derive {',
-            ...ui.map((c) => {
-                if (c.named_expression != null) return '  ' + prefab_namedExpression.run(c.named_expression)
-                return '  🔴 TODO'
+            ...ui.map(({ expr }) => {
+                return `  ${prefab_namedExpr.run(expr)},`
             }),
             '}',
         ].join('\n')
     },
 })
 
-const prefab_namedExpression = prefab({
-    ui: (ui) => {
-        const expr = ui.fields(
-            {
-                col: ui.selectOne({
-                    choices: () => TABLES[prefab_from.shared(ui).id].cols,
-                    label: false,
-                    alignLabel: false,
-                }),
-                pipeline: ui.list({
-                    element: (ix) => ui.text({ label: '|' /* does not show ???? */ }),
-                    label: '|',
-                    collapsed: false,
-                    // header: () => <div tw='ml-1'>|</div>,
-                }),
-            },
-            { label: '=', border: false },
-        )
+const prefab_filter = prefab({
+    ui: (ui, ix: number) => {
+        return ui.fields({ filter: prefab_expr.ui(ui, ix) })
+    },
+    run: (ui) => `filter (${prefab_expr.run(ui.filter)})`,
+})
 
+const prefab_group = prefab({
+    ui: (ui, ix: number) => {
+        return ui.fields(
+            {
+                by: ui.text({ label: 'group by', alignLabel: false }).hidden(),
+                // agg: prefab_namedExpression.ui(ui, ix).list(),
+                agg: prefab_namedExpr.ui(ui, ix).list(),
+            },
+            {
+                label: 'group',
+                border: false,
+                collapsed: false,
+                header: (p) => <>{p.widget.fields.by.header()}</>,
+            },
+        )
+    },
+    run: (ui) => {
+        return [
+            //
+            `group {${ui.by}} (`,
+            '  aggregate {',
+            ...ui.agg.map((c) => `    ${prefab_namedExpr.run(c)},`),
+            '  }',
+            ')',
+        ].join('\n')
+    },
+})
+
+const prefab_namedExpr = prefab({
+    ui: (ui, ix: number) => {
         return ui.fields(
             {
                 name: ui.text({ alignLabel: false, label: false }),
-                expr,
+                expr: prefab_expr.ui(ui, ix),
             },
-            { label: 'expr', collapsed: false, border: false },
+            { label: false, collapsed: false, border: false },
         )
     },
     run: (ui) => {
         const { name, expr } = ui
-        const pipelinedExpr = [expr.col.id]
-        for (const pipe of expr.pipeline) {
-            pipelinedExpr.push(pipe)
+        return `${name} = ${prefab_expr.run(expr)}`
+    },
+})
+
+const prefab_expr = prefab({
+    ui: (ui, ix: number) => {
+        const syms = () => {
+            const previousSymbols: string[] = []
+            for (let i = 0; i < ix; i++) {
+                type PipelineStmt = ReturnType<typeof prefab_pipeline.ui>['$Output'][number]['stmt']
+                const stmt = ui.form.knownShared.get(`pipeline-stmt-${i}`)?.value as PipelineStmt | null
+                if (stmt == null) continue
+
+                if (stmt.group != null) previousSymbols.push(...stmt.group.agg.map((c) => c.name))
+                if (stmt.derive != null) previousSymbols.push(...stmt.derive.map((c) => c.expr.name))
+            }
+            return previousSymbols.map((id) => ({ id }))
         }
-        return `${name} = ${pipelinedExpr.join(' | ')},`
+
+        return ui.fields(
+            {
+                data: ui.choice({
+                    label: false,
+                    border: false,
+                    appearance: 'tab',
+                    tabPosition: 'start',
+                    items: {
+                        col: ui.selectOne({
+                            choices: () => TABLES[prefab_from.shared(ui).id].cols,
+                            label: false,
+                            alignLabel: false,
+                        }),
+                        symbol: ui.selectOne({
+                            choices: syms,
+                            alignLabel: false,
+                        }),
+                    },
+                    layout: 'H', // ?????????
+                }),
+                pipeline: prefab_op.ui(ui).list({
+                    label: '|',
+                    collapsed: false,
+                }),
+            },
+            { label: '=', border: false, layout: 'H' },
+        )
+    },
+    run: (ui) => {
+        const pipelinedExpr = [
+            //
+            ui.data.col?.id ?? ui.data.symbol!.id,
+            ...ui.pipeline.map(prefab_op.run),
+        ]
+        return `${pipelinedExpr.join(' | ')}`
+    },
+})
+
+const prefab_op = prefab({
+    ui: (ui) => {
+        return ui.choice({
+            items: {
+                // 🔴 LABELS ????
+                'agg.min': ui.group(),
+                'agg.max': ui.group(),
+                'agg.sum': ui.group(),
+                'agg.average': ui.group(),
+                'agg.stddev': ui.group(),
+                'agg.all': ui.group(),
+                'agg.any': ui.group(),
+                'agg.concat_array': ui.group(),
+                'agg.count': ui.group(),
+
+                'math.abs': ui.group(),
+                'math.floor': ui.group(),
+                'math.ceil': ui.group(),
+                // 'math.pi': ui.group(),
+                'math.exp': ui.group(),
+                'math.ln': ui.group(),
+                'math.log10': ui.group(),
+                'math.log': ui.fields({ base: ui.number() }, { border: false, collapsed: false, alignLabel: false }),
+                'math.sqrt': ui.group(),
+                'math.degrees': ui.group(),
+                'math.radians': ui.group(),
+                'math.cos': ui.group(),
+                'math.acos': ui.group(),
+                'math.sin': ui.group(),
+                'math.asin': ui.group(),
+                'math.tan': ui.group(),
+                'math.atan': ui.group(),
+                'math.pow': ui.fields({ exponent: ui.number() }, { border: false, collapsed: false, alignLabel: false }),
+                'math.round': ui.fields({ precision: ui.number() }, { border: false, collapsed: false, alignLabel: false }),
+
+                'date.to_text': ui.fields({ format: ui.string() }, { border: false, collapsed: false, alignLabel: false }),
+
+                custom: ui.fields({ template: ui.string() }, { border: false, collapsed: false, alignLabel: false }),
+            },
+            label: false,
+            border: false,
+        })
+    },
+    run: (ui) => {
+        if (ui['agg.min'] != null) return 'min'
+        if (ui['agg.max'] != null) return 'max'
+        if (ui['agg.sum'] != null) return 'sum'
+        if (ui['agg.average'] != null) return 'average'
+        if (ui['agg.stddev'] != null) return 'stddev'
+        if (ui['agg.all'] != null) return 'all'
+        if (ui['agg.any'] != null) return 'any'
+        if (ui['agg.concat_array'] != null) return 'concat_array'
+        if (ui['agg.count'] != null) return 'count'
+
+        if (ui['math.abs'] != null) return 'math.abs'
+        if (ui['math.floor'] != null) return 'math.floor'
+        if (ui['math.ceil'] != null) return 'math.ceil'
+        // if (ui['math.pi'] != null) return 'math.pi'
+        if (ui['math.exp'] != null) return 'math.exp'
+        if (ui['math.ln'] != null) return 'math.ln'
+        if (ui['math.log10'] != null) return 'math.log10'
+        if (ui['math.log'] != null) return `math.log ${ui['math.log'].base}`
+        if (ui['math.sqrt'] != null) return 'math.sqrt'
+        if (ui['math.degrees'] != null) return 'math.degrees'
+        if (ui['math.radians'] != null) return 'math.radians'
+        if (ui['math.cos'] != null) return 'math.cos'
+        if (ui['math.acos'] != null) return 'math.acos'
+        if (ui['math.sin'] != null) return 'math.sin'
+        if (ui['math.asin'] != null) return 'math.asin'
+        if (ui['math.tan'] != null) return 'math.tan'
+        if (ui['math.atan'] != null) return 'math.atan'
+        if (ui['math.pow'] != null) return `math.pow ${ui['math.pow'].exponent}`
+        if (ui['math.round'] != null) return `math.round ${ui['math.round'].precision}`
+
+        if (ui['date.to_text'] != null) return `date.to_text '${ui['date.to_text'].format}'`
+
+        if (ui.custom != null) return ui.custom.template
+
+        return '🔴 TODO'
     },
 })
 
@@ -166,6 +306,6 @@ function prefabShared<Form extends Spec, Args extends any[], R>(p: //
     return {
         ui: (ui, ...args) => p.ui(ui, ...args).shared(p.key),
         run: p.run,
-        shared: (_: FormBuilder) => _.form.knownShared.get(p.key)!.value as Form['$Output'],
+        shared: (_: FormBuilder) => _.form.knownShared.get(p.key)?.value as Form['$Output'],
     }
 }
