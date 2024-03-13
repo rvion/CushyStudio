@@ -46,7 +46,7 @@ export type Widget_prompt_output = Widget_prompt // { text: string; tree: Tree }
 // TYPES
 export type Widget_prompt_types = {
     $Type: 'prompt'
-    $Input: Widget_prompt_config
+    $Config: Widget_prompt_config
     $Serial: Widget_prompt_serial
     $Value: Widget_prompt_output
     $Widget: Widget_prompt

@@ -39,7 +39,7 @@ export type Widget_button_output = boolean
 // TYPES
 export type Widget_button_types = {
     $Type: 'button'
-    $Input: Widget_button_config
+    $Config: Widget_button_config
     $Serial: Widget_button_serial
     $Value: Widget_button_output
     $Widget: Widget_button

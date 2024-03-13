@@ -34,7 +34,7 @@ export type Widget_list_output<T extends Spec> = T['$Value'][]
 // TYPES
 export type Widget_list_types<T extends Spec> = {
     $Type: 'list'
-    $Input: Widget_list_config<T>
+    $Config: Widget_list_config<T>
     $Serial: Widget_list_serial<T>
     $Value: Widget_list_output<T>
     $Widget: Widget_list<T>

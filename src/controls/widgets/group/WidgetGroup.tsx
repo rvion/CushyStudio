@@ -39,7 +39,7 @@ export type Widget_group_output<T extends SchemaDict> = {
 // TYPES
 export type Widget_group_types<T extends SchemaDict> = {
     $Type: 'group'
-    $Input: Widget_group_config<T>
+    $Config: Widget_group_config<T>
     $Serial: Widget_group_serial<T>
     $Value: Widget_group_output<T>
     $Widget: Widget_group<T>

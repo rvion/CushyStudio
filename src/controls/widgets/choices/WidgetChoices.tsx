@@ -45,7 +45,7 @@ export type Widget_choices_output<T extends SchemaDict = SchemaDict> = {
 // TYPES
 export type Widget_choices_types<T extends SchemaDict = SchemaDict> = {
     $Type: 'choices'
-    $Input: Widget_choices_config<T>
+    $Config: Widget_choices_config<T>
     $Serial: Widget_choices_serial<T>
     $Value: Widget_choices_output<T>
     $Widget: Widget_choices<T>

@@ -38,7 +38,7 @@ export type Widget_matrix_output = Widget_matrix_cell[]
 // TYPES
 export type Widget_matrix_types = {
     $Type: 'matrix'
-    $Input: Widget_matrix_config
+    $Config: Widget_matrix_config
     $Serial: Widget_matrix_serial
     $Value: Widget_matrix_output
     $Widget: Widget_matrix

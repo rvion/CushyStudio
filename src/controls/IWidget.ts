@@ -9,7 +9,7 @@ import type { ModelInfo } from 'src/manager/model-list/model-list-loader-types'
 
 export type $WidgetTypes = {
     $Type: string
-    $Input: SharedWidgetConfig<any>
+    $Config: SharedWidgetConfig<any>
     $Serial: SharedWidgetSerial
     $Value: any
     $Widget: any
@@ -17,7 +17,7 @@ export type $WidgetTypes = {
 
 export interface IWidget<K extends $WidgetTypes = $WidgetTypes> extends IWidgetMixins {
     $Type: K['$Type']
-    $Input: K['$Input']
+    $Config: K['$Config']
     $Serial: K['$Serial']
     $Value: K['$Value']
     $Widget: K['$Widget']
@@ -28,7 +28,7 @@ export interface IWidget<K extends $WidgetTypes = $WidgetTypes> extends IWidgetM
     readonly value: K['$Value']
     readonly serial: K['$Serial']
     readonly form: Form<any, any>
-    readonly config: K['$Input'] // WidgetConfigFields<any>
+    readonly config: K['$Config'] // WidgetConfigFields<any>
 
     /** if specified, override the default algorithm to decide if we should have borders */
     border?: boolean

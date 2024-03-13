@@ -31,7 +31,7 @@ export type Widget_optional_output<T extends Spec = Spec> = Maybe<T['$Value']>
 // TYPES
 export type Widget_optional_types<T extends Spec = Spec> = {
     $Type: 'optional'
-    $Input: Widget_optional_config<T>
+    $Config: Widget_optional_config<T>
     $Serial: Widget_optional_serial<T>
     $Value: Widget_optional_output<T>
     $Widget: Widget_optional_output<T>

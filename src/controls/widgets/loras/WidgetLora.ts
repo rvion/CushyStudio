@@ -23,7 +23,7 @@ export type Widget_loras_output = SimplifiedLoraDef[]
 // TYPES
 export type Widget_loras_types = {
     $Type: 'loras'
-    $Input: Widget_loras_config
+    $Config: Widget_loras_config
     $Serial: Widget_loras_serial
     $Value: Widget_loras_output
     $Widget: Widget_loras

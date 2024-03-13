@@ -187,7 +187,7 @@ export class FormBuilder implements IFormBuilder {
             startActive?: boolean,
             // ... plus every other config param
         },
-        widgetFn: (config:T['$Input']) => T) {
+        widgetFn: (config:T['$Config']) => T) {
         return this.optional({
             label: config.label,
             requirements: config.requirements,

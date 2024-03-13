@@ -34,7 +34,7 @@ export type Widget_selectMany_output<T extends BaseSelectEntry> = T[]
 // TYPES
 export type Widget_selectMany_types<T extends BaseSelectEntry> = {
     $Type: 'selectMany'
-    $Input: Widget_selectMany_config<T>
+    $Config: Widget_selectMany_config<T>
     $Serial: Widget_selectMany_serial<T>
     $Value: Widget_selectMany_output<T>
     $Widget: Widget_selectMany<T>

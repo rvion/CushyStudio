@@ -30,7 +30,7 @@ export type Widget_string_output = string
 // TYPES
 export type Widget_string_types = {
     $Type: 'str'
-    $Input: Widget_string_config
+    $Config: Widget_string_config
     $Serial: Widget_string_serial
     $Value: Widget_string_output
     $Widget: Widget_string

@@ -32,7 +32,7 @@ export type Widget_custom_output<T> = T
 // TYPES
 export type Widget_custom_types<T> = {
     $Type: 'custom'
-    $Input: Widget_custom_config<T>
+    $Config: Widget_custom_config<T>
     $Serial: Widget_custom_serial<T>
     $Value: Widget_custom_output<T>
     $Widget: Widget_custom<T>

@@ -25,7 +25,7 @@ export type Widget_spacer_output = boolean
 // TYPES
 export type Widget_shared_types = {
     $Type: 'spacer'
-    $Input: Widget_spacer_config
+    $Config: Widget_spacer_config
     $Serial: Widget_spacer_serial
     $Value: Widget_spacer_output
     $Widget: Widget_spacer

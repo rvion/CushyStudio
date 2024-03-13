@@ -30,7 +30,7 @@ export type Widget_shared_output<T extends Spec = Spec> = T['$Value']
 // TYPES
 export type Widget_shared_types<T extends Spec = Spec> = {
     $Type: 'shared'
-    $Input: Widget_shared_config<T>
+    $Config: Widget_shared_config<T>
     $Serial: Widget_shared_serial
     $Value: Widget_shared_output<T>
     $Widget: Spec['$Widget']

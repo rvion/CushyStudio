@@ -31,7 +31,7 @@ export type Widget_size_output = CushySize // prettier-ignore
 // TYPES
 export type Widget_size_types = {
     $Type: 'size'
-    $Input: Widget_size_config
+    $Config: Widget_size_config
     $Serial: Widget_size_serial
     $Value: Widget_size_output
     $Widget: Widget_size

@@ -36,7 +36,7 @@ export type Widget_orbit_output = {
 // TYPES
 export type Widget_orbit_types = {
     $Type: 'orbit'
-    $Input: Widget_orbit_config
+    $Config: Widget_orbit_config
     $Serial: Widget_orbit_serial
     $Value: Widget_orbit_output
     $Widget: Widget_orbit

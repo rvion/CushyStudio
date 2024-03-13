@@ -49,7 +49,7 @@ export type Widget_listExt_output<T extends Spec> = {
 // TYPES
 export type Widget_listExt_types<T extends Spec> = {
     $Type: 'listExt'
-    $Input: Widget_listExt_config<T>
+    $Config: Widget_listExt_config<T>
     $Serial: Widget_listExt_serial<T>
     $Value: Widget_listExt_output<T>
     $Widget: Widget_listExt<T>

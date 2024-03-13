@@ -30,7 +30,7 @@ export type Widget_markdown_output = { type: 'markdown' }
 // TYPES
 export type Widget_markdown_types = {
     $Type: 'markdown'
-    $Input: Widget_markdown_config
+    $Config: Widget_markdown_config
     $Serial: Widget_markdown_serial
     $Value: Widget_markdown_output
     $Widget: Widget_markdown

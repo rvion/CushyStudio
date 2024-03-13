@@ -36,7 +36,7 @@ export type Widget_image_output = MediaImageL
 // TYPES
 export type Widget_image_types = {
     $Type: 'image'
-    $Input: Widget_image_config
+    $Config: Widget_image_config
     $Serial: Widget_image_serial
     $Value: Widget_image_output
     $Widget: Widget_image
