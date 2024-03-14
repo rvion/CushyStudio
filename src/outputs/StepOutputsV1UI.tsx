@@ -12,11 +12,11 @@ export const StepOutputsV1UI = observer(function StepOutputsV1UI_(p: { step: Ste
     const step = p.step
     const showSingle = st.__TEMPT__maxStepsToShow == 1
     const isExpanded = step.expanded || showSingle
-    if (!isExpanded) return <StepOutputsHeaderV1UI tw='border-b-2 border-b-base-300' className='py-2' step={step} />
+    if (!isExpanded) return <StepOutputsHeaderV1UI tw='border-b-2 border-b-base-300' className='py-1.5' step={step} />
     if (isExpanded)
         return (
             <div tw='border-b-2 border-b-base-300'>
-                {showSingle ? <></> : <StepOutputsHeaderV1UI className='py-2' step={step} />}
+                {showSingle ? <></> : <StepOutputsHeaderV1UI className='py-1.5' step={step} />}
                 <StepOutputsBodyV1UI step={step} />
             </div>
         )
@@ -43,9 +43,9 @@ export const StepOutputsHeaderV1UI = observer(function StepOutputsV1HeaderUI_(p:
         >
             {/* <FoldIconUI val={step.expanded} /> */}
             <span className='material-symbols-outlined'>{!step.expanded ? 'chevron_right' : 'expand_more'}</span>
-            <b>{step.name ?? step.name}</b>
+            <div tw='truncate'>{step.name ?? step.name}</div>
             <div tw='flex-grow'></div>
-            <div className='text-xs opacity-50'>{_formatPreviewDate(new Date(step.createdAt))}</div>
+            <div className='text-xs opacity-50 truncate'>{_formatPreviewDate(new Date(step.createdAt))}</div>
         </div>
     )
 })
