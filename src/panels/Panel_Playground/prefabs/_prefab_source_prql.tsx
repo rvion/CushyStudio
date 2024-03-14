@@ -1,10 +1,11 @@
 import type { FormBuilder } from 'src/controls/FormBuilder'
 import type { Spec } from 'src/controls/Spec'
+import type { BaseSelectEntry } from 'src/controls/widgets/selectOne/WidgetSelectOne'
 import type { Widget_shared } from 'src/controls/widgets/shared/WidgetShared'
 
+import { bang } from 'src/utils/misc/bang'
 import { TABLES, TABLE_NAMES } from './_prefab_columns'
 import { locoLocations } from './_prefab_locoUtil1'
-import { bang } from 'src/utils/misc/bang'
 
 export const prefab_prql = prefab({
     ui: (ui) => {
@@ -38,32 +39,31 @@ const prefab_from = prefabShared({
 const prefab_pipeline = prefabShared({
     key: 'prql-pipeline',
     ui: (ui: FormBuilder) => {
-        return ui.list({
-            label: '🔧 Pipeline',
-            element: (ix) =>
-                ui.choice({
-                    appearance: 'tab',
-                    items: {
-                        derive: prefab_derive.ui(ui, ix),
-                        filter: prefab_filter.ui(ui, ix),
-                        group: prefab_group.ui(ui, ix),
-                        // derive,
-                        // aggregate,
-                    },
-                    // border: false,
-                    tabPosition: 'center',
-                    collapsed: false,
-                    layout: 'H',
-                    label: false,
-                    border: false,
-                }),
-            // summary: ({ stmt }) => {
-            //     if (stmt.derive != null) return `derive ${stmt.derive.map((d) => d.expr.name).join(', ')}`
-            //     if (stmt.filter != null) return `filter ${stmt.filter.data.col?.id ?? stmt.filter.data.symbol?.id}`
-            //     if (stmt.group != null) return `group by ${stmt.group.by.data.col?.id ?? stmt.group.by.data.symbol?.id}`
-            //     return '???'
-            // },
-        })
+        return ui
+            .choice({
+                appearance: 'tab',
+                items: {
+                    derive: prefab_derive.ui(ui),
+                    filter: prefab_filter.ui(ui),
+                    group: prefab_group.ui(ui),
+                    join: prefab_join.ui(ui),
+                    // aggregate,
+                },
+                tabPosition: 'center',
+                collapsed: false,
+                layout: 'H',
+                label: false,
+                border: false,
+            })
+            .list({
+                label: '🔧 Pipeline',
+                // summary: ({ stmt }) => {
+                //     if (stmt.derive != null) return `derive ${stmt.derive.map((d) => d.expr.name).join(', ')}`
+                //     if (stmt.filter != null) return `filter ${stmt.filter.data.col?.id ?? stmt.filter.data.symbol?.id}`
+                //     if (stmt.group != null) return `group by ${stmt.group.by.data.col?.id ?? stmt.group.by.data.symbol?.id}`
+                //     return '???'
+                // },
+            })
     },
     run: (ui): string => {
         return ui
@@ -78,35 +78,32 @@ const prefab_pipeline = prefabShared({
 })
 
 const prefab_derive = prefab({
-    ui: (ui, ix: number) => {
-        return ui
-            .fields({ expr: prefab_namedExpr.ui(ui, ix) }) //
-            .list({ label: 'derive', border: false, min: 1 })
+    ui: (ui) => {
+        return ui.fields({ expr: prefab_namedExpr.ui(ui) }, { collapsed: false, label: 'derive' })
     },
     run: (ui) => {
         return [
+            //
             'derive {',
-            ...ui.map(({ expr }) => {
-                return `  ${prefab_namedExpr.run(expr)},`
-            }),
+            `  ${prefab_namedExpr.run(ui.expr)},`,
             '}',
         ].join('\n')
     },
 })
 
 const prefab_filter = prefab({
-    ui: (ui, ix: number) => {
-        return prefab_expr.ui(ui, ix)
+    ui: (ui) => {
+        return ui.fields({ expr: prefab_expr.ui(ui) }, { label: 'filter' })
     },
-    run: (ui) => `filter (${prefab_expr.run(ui)})`,
+    run: (ui) => `filter (${prefab_expr.run(ui.expr)})`,
 })
 
 const prefab_group = prefab({
-    ui: (ui, ix: number) => {
+    ui: (ui) => {
         return ui.fields(
             {
-                by: prefab_expr.ui(ui, ix),
-                agg: prefab_namedExpr.ui(ui, ix).list(),
+                by: prefab_expr.ui(ui),
+                agg: prefab_namedExpr.ui(ui).list(),
             },
             {
                 label: 'group',
@@ -128,14 +125,45 @@ const prefab_group = prefab({
     },
 })
 
+const prefab_join = prefab({
+    ui: (ui) => {
+        const table = ui.selectOne({
+            choices: TABLE_NAMES.map((label) => ({ id: label })),
+            label: 'table',
+        })
+
+        return ui.fields(
+            {
+                side: ui.selectOne({
+                    appearance: 'tab',
+                    default: { id: 'left' },
+                    choices: ['inner', 'left', 'right', 'full'].map((id) => ({ id })),
+                    label: false,
+                }),
+                table,
+                left: ui.selectOne<BaseSelectEntry>({
+                    choices: (_, self) => {
+                        const thisTable = (self.parent! as any).fields.table as (typeof table)['$Widget']
+                        return TABLES[thisTable.value.id].cols
+                    },
+                }),
+            },
+            { label: 'join', collapsed: false, border: false, layout: 'H' },
+        )
+    },
+    run: (ui) => {
+        return `join side:${ui.side} ${ui.table} ()`
+    },
+})
+
 const prefab_namedExpr = prefab({
-    ui: (ui, ix: number) => {
+    ui: (ui) => {
         return ui.fields(
             {
                 name: ui.text({ alignLabel: false, label: false }),
-                expr: prefab_expr.ui(ui, ix),
+                expr: prefab_expr.ui(ui),
             },
-            { label: false, collapsed: false, border: false },
+            { label: false, collapsed: false, border: false, layout: 'H' },
         )
     },
     run: (ui) => {
@@ -145,61 +173,43 @@ const prefab_namedExpr = prefab({
 })
 
 const prefab_expr = prefab({
-    ui: (ui, ix: number) => {
-        const syms = () => {
-            const previousSymbols: string[] = []
-            const pipeline = prefab_pipeline.shared(ui)
-            for (let i = 0; i < ix; i++) {
-                const stmt = pipeline[i]
-                console.log('🚂🚂🚂🚂', ix, stmt)
-                // const stmt = ui.form.knownShared.get(`pipeline-stmt-${i}`)?.value as PipelineStmt | null
-                if (stmt == null) continue
-
-                if (stmt.group != null) previousSymbols.push(...stmt.group.agg.map((c) => c.name))
-                if (stmt.derive != null) previousSymbols.push(...stmt.derive.map((c) => c.expr.name))
-            }
-            return previousSymbols.map((id) => ({ id }))
-        }
-
+    ui: (ui) => {
         return ui.fields(
             {
-                data: ui.choice({
-                    label: false,
-                    border: false,
-                    appearance: 'tab',
-                    tabPosition: 'start',
-                    items: {
-                        col: ui.selectOne({
-                            choices: () => TABLES[prefab_from.shared(ui).id].cols,
-                            label: false,
-                            alignLabel: false,
-                        }),
-                        symbol: ui.selectOne({
-                            choices: syms,
-                            alignLabel: false,
-                        }),
+                data: ui.selectOne<BaseSelectEntry>({
+                    choices: (_, self) => {
+                        const previousSymbols: string[] = []
+                        const pipelineWidget = prefab_pipeline.shared(ui)
+                        const stmtIx = pipelineWidget.findItemIndexContaining(self) ?? 0
+
+                        for (let i = 0; i < stmtIx; i++) {
+                            const stmt = pipelineWidget.value.at(i)
+                            if (stmt == null) continue
+                            if (stmt.group != null) previousSymbols.push(...stmt.group.agg.map((c) => c.name))
+                            if (stmt.derive != null) previousSymbols.push(stmt.derive.expr.name)
+                        }
+                        return [
+                            ...previousSymbols.map((id) => ({ id, label: `${id} (derived)` })),
+                            ...TABLES[prefab_from.shared(ui).value.id].cols,
+                        ]
                     },
-                    body: null,
-                    header: (p) => (
-                        <div tw='flex gap-1'>
-                            <span>{p.widget.defaultHeader()}</span>
-                            {p.widget.defaultBody()}
-                        </div>
-                    ),
+                    alignLabel: false,
+                    label: '=',
                 }),
+
                 pipeline: prefab_op.ui(ui).list({
                     label: '|',
                     collapsed: false,
                     border: false,
                 }),
             },
-            { label: false, border: false, layout: 'H' },
+            { label: false, border: false },
         )
     },
     run: (ui) => {
         const pipelinedExpr = [
             //
-            ui.data.col?.id ?? ui.data.symbol!.id,
+            ui.data.id,
             ...ui.pipeline.map(prefab_op.run),
         ]
         return `${pipelinedExpr.join(' | ')}`
@@ -208,46 +218,56 @@ const prefab_expr = prefab({
 
 const prefab_op = prefab({
     ui: (ui) => {
-        return ui.choice({
-            items: {
-                // 🔴 LABELS ????
-                'agg.min': ui.group({ label: 'foo' }),
-                'agg.max': ui.group(),
-                'agg.sum': ui.group(),
-                'agg.average': ui.group(),
-                'agg.stddev': ui.group(),
-                'agg.all': ui.group(),
-                'agg.any': ui.group(),
-                'agg.concat_array': ui.group(),
-                'agg.count': ui.group(),
+        return ui.choiceV2(
+            {
+                'agg.min': ui.group({ label: 'min' }),
+                'agg.max': ui.group({ label: 'max' }),
+                'agg.sum': ui.group({ label: 'sum' }),
+                'agg.average': ui.group({ label: 'average' }),
+                'agg.stddev': ui.group({ label: 'stddev' }),
+                'agg.all': ui.group({ label: 'all' }),
+                'agg.any': ui.group({ label: 'any' }),
+                'agg.concat_array': ui.group({ label: 'concat array' }),
+                'agg.count': ui.group({ label: 'count' }),
 
-                'math.abs': ui.group(),
-                'math.floor': ui.group(),
-                'math.ceil': ui.group(),
+                'math.abs': ui.group({ label: 'abs' }),
+                'math.floor': ui.group({ label: 'floor' }),
+                'math.ceil': ui.group({ label: 'ceil' }),
                 // 'math.pi': ui.group(),
-                'math.exp': ui.group(),
-                'math.ln': ui.group(),
-                'math.log10': ui.group(),
-                'math.log': ui.fields({ base: ui.number() }, { border: false, collapsed: false, alignLabel: false }),
-                'math.sqrt': ui.group(),
-                'math.degrees': ui.group(),
-                'math.radians': ui.group(),
-                'math.cos': ui.group(),
-                'math.acos': ui.group(),
-                'math.sin': ui.group(),
-                'math.asin': ui.group(),
-                'math.tan': ui.group(),
-                'math.atan': ui.group(),
-                'math.pow': ui.fields({ exponent: ui.number() }, { border: false, collapsed: false, alignLabel: false }),
-                'math.round': ui.fields({ precision: ui.int() }, { border: false, collapsed: false, alignLabel: false }),
+                'math.exp': ui.group({ label: 'exp' }),
+                'math.ln': ui.group({ label: 'ln' }),
+                'math.log10': ui.group({ label: 'log10' }),
+                'math.log': ui.fields(
+                    { base: ui.number() },
+                    { border: false, collapsed: false, alignLabel: false, label: 'log' },
+                ),
+                'math.sqrt': ui.group({ label: 'sqrt' }),
+                'math.degrees': ui.group({ label: 'degrees' }),
+                'math.radians': ui.group({ label: 'radians' }),
+                'math.cos': ui.group({ label: 'cos' }),
+                'math.acos': ui.group({ label: 'acos' }),
+                'math.sin': ui.group({ label: 'sin' }),
+                'math.asin': ui.group({ label: 'asin' }),
+                'math.tan': ui.group({ label: 'tan' }),
+                'math.atan': ui.group({ label: 'atan' }),
+                'math.pow': ui.fields(
+                    { exponent: ui.number() },
+                    { border: false, collapsed: false, alignLabel: false, label: 'pow' },
+                ),
+                'math.round': ui.fields(
+                    { precision: ui.int() },
+                    { border: false, collapsed: false, alignLabel: false, label: 'round' },
+                ),
 
-                'date.to_text': ui.fields({ format: ui.string() }, { border: false, collapsed: false, alignLabel: false }),
+                'date.to_text': ui.fields(
+                    { format: ui.string() },
+                    { border: false, collapsed: false, alignLabel: false, layout: 'H' },
+                ),
 
                 custom: ui.fields({ template: ui.string() }, { border: false, collapsed: false, alignLabel: false }),
             },
-            label: false,
-            border: false,
-        })
+            { label: false, border: false, layout: 'H' },
+        )
     },
     run: (ui) => {
         if (ui['agg.min'] != null) return 'min'
@@ -304,14 +324,14 @@ function prefabShared<Form extends Spec, Args extends any[], R>(p: //
 }): {
     ui: (_: FormBuilder, ...args: Args) => Widget_shared<Form>
     run: typeof p.run
-    shared: (_: FormBuilder) => Form['$Value']
+    shared: (_: FormBuilder) => Form['$Widget']
 } {
     return {
         ui: (ui, ...args) => p.ui(ui, ...args).shared(p.key),
         run: p.run,
         shared: (_: FormBuilder) => {
             let widget: Form['$Widget'] = bang(_.form.knownShared.get(p.key), `Shared widget '${p.key}' not accessible`)
-            return widget.value
+            return widget
         },
     }
 }
