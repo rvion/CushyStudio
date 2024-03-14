@@ -646,4 +646,9 @@ export const migrations: {
             `CREATE INDEX idx__runtime_error__stepID ON runtime_error(stepID);`,
         ],
     },
+    {
+        id: 'mUIqGBGrSF88',
+        name: 'fix img hashes',
+        up: [`update media_image set thumbnail = null`],
+    },
 ]
