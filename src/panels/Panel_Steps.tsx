@@ -1,11 +1,12 @@
 import { observer } from 'mobx-react-lite'
 
-import { StepOutputsBodyV1UI, StepOutputsV1UI } from '../outputs/StepOutputsV1UI'
+import { StepOutputsBodyV1UI, StepOutputsHeaderV1UI, StepOutputsV1UI } from '../outputs/StepOutputsV1UI'
 import { useSt } from '../state/stateContext'
 import { PanelHeaderUI } from './PanelHeader'
 import { InputNumberUI } from 'src/controls/widgets/number/InputNumberUI'
 import { SpacerUI } from 'src/controls/widgets/spacer/SpacerUI'
 import { RevealUI } from 'src/rsuite/reveal/RevealUI'
+import { _formatPreviewDate } from 'src/utils/formatters/_formatPreviewDate'
 
 export const Panel_Steps = observer(function StepListUI_(p: {}) {
     const st = useSt()
@@ -13,6 +14,12 @@ export const Panel_Steps = observer(function StepListUI_(p: {}) {
     return (
         <div className='flex flex-col overflow-hidden bg-base-300 h-full'>
             <PanelHeaderUI>
+                {steps.length == 1 && (
+                    <div tw='flex text-sm text-shadow flex-grow px-1'>
+                        <div tw='line-clamp-1'>{steps[0].name}</div>
+                        <div tw='flex-grow' /> <div tw='opacity-50'>{_formatPreviewDate(new Date(steps[0].createdAt))}</div>
+                    </div>
+                )}
                 <SpacerUI />
                 <RevealUI tw='WIDGET-FIELD' title='Step Options'>
                     <div tw='flex px-1 cursor-default bg-base-200 rounded w-full h-full items-center justify-center hover:brightness-125 border border-base-100'>
