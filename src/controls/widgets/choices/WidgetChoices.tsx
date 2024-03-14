@@ -80,12 +80,12 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> implements IWidge
         return Object.keys(this.config.items)
     }
     get choicesWithLabels(): { key: keyof T & string; label: string }[] {
-        return Object.entries(this.config.items).map(([key, value]) => ({
+        return Object.entries(this.config.items).map(([key, spec]) => ({
             key,
             // note:
             // if child.config.label === false => makeLabelFromFieldName(key)
             // if child.config.label === '' => makeLabelFromFieldName(key)
-            label: value.config.label || makeLabelFromFieldName(key),
+            label: spec.config.label || makeLabelFromFieldName(key),
         }))
     }
 
