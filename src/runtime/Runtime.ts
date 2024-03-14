@@ -7,8 +7,8 @@ import type { SchemaDict } from 'src/controls/Spec'
 import type { STATE } from 'src/state/state'
 
 import child_process, { execSync } from 'child_process'
+import { createHash } from 'crypto'
 import fs, { writeFileSync } from 'fs'
-import { hash } from 'ohash'
 import * as path from 'pathe'
 
 import { ComfyWorkflowBuilder } from '../back/NodeBuilder'
@@ -156,7 +156,10 @@ export class Runtime<FIELDS extends SchemaDict = any> {
         return this.step.draft?.shouldAutoStart
     }
 
-    hash = (s: string): string => hash(s)
+    /** fast md5 string hash using node built-in crypto api */
+    hash = (s: string): string => {
+        return createHash('md5').update(s).digest('hex')
+    }
 
     isCurrentDraftDirty(): Maybe<boolean> {
         return this.step.draft?.isDirty
