@@ -16,8 +16,13 @@ import { applyWidgetMixinV2 } from 'src/controls/Mixins'
  */
 export type Widget_bool_config = WidgetConfigFields<
     {
+        /**
+         * default value; true or false
+         * @default: false
+         */
         default?: boolean
 
+        /** (legacy ?) Label to display to the right of the widget. */
         label2?: string
 
         /** Text to display, drawn by the widget itself. */
@@ -55,15 +60,15 @@ export type Widget_bool_config = WidgetConfigFields<
 // SERIAL
 export type Widget_bool_serial = WidgetSerialFields<{ type: 'bool'; active: boolean }>
 
-// OUT
-export type Widget_bool_output = boolean
+// VALUE
+export type Widget_bool_value = boolean
 
 // TYPES
 export type Widget_bool_types = {
     $Type: 'bool'
-    $Input: Widget_bool_config
+    $Config: Widget_bool_config
     $Serial: Widget_bool_serial
-    $Output: Widget_bool_output
+    $Value: Widget_bool_value
     $Widget: Widget_bool
 }
 
@@ -79,13 +84,14 @@ export class Widget_bool implements IWidget<Widget_bool_types> {
     get serialHash(): string {
         return hash(this.value)
     }
-    setOn = () => (this.serial.active = true)
-    setOff = () => (this.serial.active = false)
-    toggle = () => (this.serial.active = !this.serial.active)
+
+    setOn = () => (this.value = true)
+    setOff = () => (this.value = false)
+    toggle = () => (this.value = !this.value)
 
     readonly defaultValue: boolean = this.config.default ?? false
-    get isChanged() { return this.serial.active !== this.defaultValue } // prettier-ignore
-    reset = () => { this.serial.active = this.defaultValue } // prettier-ignore
+    get isChanged() { return this.value !== this.defaultValue } // prettier-ignore
+    reset = () => (this.value = this.defaultValue)
 
     constructor(
         //
@@ -108,12 +114,14 @@ export class Widget_bool implements IWidget<Widget_bool_types> {
         })
     }
 
-    get value(): Widget_bool_output {
+    get value(): Widget_bool_value {
         return this.serial.active ?? false
     }
-    set value(next: Widget_bool_output) {
+    set value(next: Widget_bool_value) {
+        if (this.serial.active === next) return
         runInAction(() => {
             this.serial.active = next
+            this.bumpValue()
         })
     }
 }

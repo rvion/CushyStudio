@@ -24,11 +24,8 @@ export const WidgetEnumUI = observer(function WidgetEnumUI_(p: { widget: Widget_
                 enumName={enumName}
                 // substituteValue={req.status}
                 onChange={(e) => {
-                    if (e == null) {
-                        // if (isOptional) widget.serial.active = false
-                        return
-                    }
-                    widget.serial.val = e as any // 🔴
+                    if (e == null) return // ❓
+                    widget.value = e
                 }}
             />
             <div

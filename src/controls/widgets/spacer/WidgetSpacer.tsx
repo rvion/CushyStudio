@@ -19,15 +19,15 @@ export type Widget_spacer_config = WidgetConfigFields<{}, Widget_shared_types>
 // SERIAL
 export type Widget_spacer_serial = WidgetSerialFields<{ type: 'spacer' }>
 
-// OUT
-export type Widget_spacer_output = boolean
+// VALUE
+export type Widget_spacer_value = boolean
 
 // TYPES
 export type Widget_shared_types = {
     $Type: 'spacer'
-    $Input: Widget_spacer_config
+    $Config: Widget_spacer_config
     $Serial: Widget_spacer_serial
-    $Output: Widget_spacer_output
+    $Value: Widget_spacer_value
     $Widget: Widget_spacer
 }
 

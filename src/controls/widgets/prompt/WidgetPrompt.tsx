@@ -40,15 +40,15 @@ export type Widget_prompt_serial = WidgetSerialFields<{
     val?: string
 }>
 
-// OUT
-export type Widget_prompt_output = Widget_prompt // { text: string; tree: Tree }
+// VALUE
+export type Widget_prompt_value = Widget_prompt // { text: string; tree: Tree }
 
 // TYPES
 export type Widget_prompt_types = {
     $Type: 'prompt'
-    $Input: Widget_prompt_config
+    $Config: Widget_prompt_config
     $Serial: Widget_prompt_serial
-    $Output: Widget_prompt_output
+    $Value: Widget_prompt_value
     $Widget: Widget_prompt
 }
 
@@ -101,7 +101,7 @@ export class Widget_prompt implements IWidget<Widget_prompt_types> {
     get ast(): Tree {
         return parser.parse(this.serial.val ?? '')
     }
-    get value(): Widget_prompt_output {
+    get value(): Widget_prompt_value {
         return this
         // return {
         //     text: this.serial.val ?? this.config.default ?? '',

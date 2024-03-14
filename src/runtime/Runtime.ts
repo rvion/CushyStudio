@@ -214,7 +214,7 @@ export class Runtime<FIELDS extends SchemaDict = any> {
      * the main value sent to your app as context.
      * Most apps only need this value.
      */
-    formResult!: { [k in keyof FIELDS]: FIELDS[k]['$Output'] }
+    formResult!: { [k in keyof FIELDS]: FIELDS[k]['$Value'] }
 
     /**
      * the extended json form value including internal state

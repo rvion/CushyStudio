@@ -25,15 +25,15 @@ export type Widget_size_config = WidgetConfigFields<
 // SERIAL
 export type Widget_size_serial = WidgetSerialFields<CushySize>
 
-// OUT
-export type Widget_size_output = CushySize // prettier-ignore
+// VALUE
+export type Widget_size_value = CushySize // prettier-ignore
 
 // TYPES
 export type Widget_size_types = {
     $Type: 'size'
-    $Input: Widget_size_config
+    $Config: Widget_size_config
     $Serial: Widget_size_serial
-    $Output: Widget_size_output
+    $Value: Widget_size_value
     $Widget: Widget_size
 }
 
@@ -77,7 +77,7 @@ export class Widget_size implements IWidget<Widget_size_types> {
         applyWidgetMixinV2(this)
         makeAutoObservable(this, { sizeHelper: false })
     }
-    get value(): Widget_size_output {
+    get value(): Widget_size_value {
         return this.serial
     }
 }

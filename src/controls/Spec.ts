@@ -9,26 +9,26 @@ export type SchemaDict = { [key: string]: ISpec }
 export interface ISpec<W extends IWidget = IWidget> {
     $Widget: W
     $Type: W['type']
-    $Input: W['$Input']
+    $Config: W['$Config']
     $Serial: W['$Serial']
-    $Output: W['$Output']
+    $Value: W['$Value']
     type: W['type']
-    config: W['$Input']
+    config: W['$Config']
 }
 
 export class Spec<W extends IWidget = IWidget> {
     $Widget!: W
     $Type!: W['type']
-    $Input!: W['$Input']
+    $Config!: W['$Config']
     $Serial!: W['$Serial']
-    $Output!: W['$Output']
+    $Value!: W['$Value']
 
     constructor(
         //
         public readonly type: W['type'],
-        public readonly config: W['$Input'],
+        public readonly config: W['$Config'],
     ) {
-        // 2024-03-11 rvion: this was added to properly support "shared" specs;
+        // 💬 2024-03-11 rvion: this was added to properly support "shared" specs;
         //          | but it turns out we can just live without any shared spec,
         //          | and only work with instanciated Widget_shared directly
         // ⏸️ /** if specified, bypass the instanciation completely */

@@ -24,15 +24,15 @@ export type Widget_markdown_serial = WidgetSerialFields<{
     active: true
 }>
 
-// OUT
-export type Widget_markdown_output = { type: 'markdown' }
+// VALUE
+export type Widget_markdown_value = { type: 'markdown' }
 
 // TYPES
 export type Widget_markdown_types = {
     $Type: 'markdown'
-    $Input: Widget_markdown_config
+    $Config: Widget_markdown_config
     $Serial: Widget_markdown_serial
-    $Output: Widget_markdown_output
+    $Value: Widget_markdown_value
     $Widget: Widget_markdown
 }
 
@@ -71,7 +71,7 @@ export class Widget_markdown implements IWidget<Widget_markdown_types> {
         makeAutoObservable(this)
     }
 
-    get value(): Widget_markdown_output {
+    get value(): Widget_markdown_value {
         return this.serial
     }
 }

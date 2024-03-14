@@ -24,15 +24,15 @@ export type Widget_shared_serial = WidgetSerialFields<{
     type: 'shared'
 }>
 
-// OUT
-export type Widget_shared_output<T extends Spec = Spec> = T['$Output']
+// VALUE
+export type Widget_shared_value<T extends Spec = Spec> = T['$Value']
 
 // TYPES
 export type Widget_shared_types<T extends Spec = Spec> = {
     $Type: 'shared'
-    $Input: Widget_shared_config<T>
+    $Config: Widget_shared_config<T>
     $Serial: Widget_shared_serial
-    $Output: Widget_shared_output<T>
+    $Value: Widget_shared_value<T>
     $Widget: Spec['$Widget']
 }
 
@@ -67,7 +67,7 @@ export class Widget_shared<T extends Spec = Spec> implements IWidget<Widget_shar
         makeAutoObservable(this)
     }
 
-    get value(): Widget_shared_output<T> {
+    get value(): Widget_shared_value<T> {
         return this.config.widget.value
     }
 }

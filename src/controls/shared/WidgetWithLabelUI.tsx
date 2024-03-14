@@ -57,14 +57,14 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
         return
     // ------------------------------------------------------------
 
-    const onLabelClick = () => {
-        // if the widget is collapsed, clicking on the label should expand it
-        if (widget.serial.collapsed) return (widget.serial.collapsed = false)
-        // if the widget can be collapsed, and is expanded, clicking on the label should collapse it
-        if (isCollapsible && !widget.serial.collapsed) return (widget.serial.collapsed = true)
-        // if the widget is not collapsible, and is optional, clicking on the label should toggle it
-        if (!isCollapsible && isWidgetOptional(originalWidget)) return originalWidget.toggle()
-    }
+    // ⏸️ const onLabelClick = () => {
+    // ⏸️     // if the widget is collapsed, clicking on the label should expand it
+    // ⏸️     if (widget.serial.collapsed) return widget.setCollapsed(false)
+    // ⏸️     // if the widget can be collapsed, and is expanded, clicking on the label should collapse it
+    // ⏸️     if (isCollapsible && !widget.serial.collapsed) return widget.setCollapsed(true)
+    // ⏸️     // if the widget is not collapsible, and is optional, clicking on the label should toggle it
+    // ⏸️     if (!isCollapsible && isWidgetOptional(originalWidget)) return originalWidget.toggle()
+    // ⏸️ }
 
     const showBorder = getBorderStatusForWidget(widget)
 
@@ -140,7 +140,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                         isDragging = true
                         window.addEventListener('mouseup', isDraggingListener, true)
                         wasEnabled = !widget.serial.collapsed
-                        widget.serial.collapsed = wasEnabled
+                        widget.setCollapsed(wasEnabled)
                     }}
                     /* 2024-02-29 rvion: not quite sure this is the right logic now
                      * | do we want to call the now usused `onLabelClick()` function instead (defined above)
@@ -150,7 +150,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
 
                     onMouseMove={(ev) => {
                         if (!isDragging || !isCollapsible) return
-                        widget.serial.collapsed = wasEnabled
+                        widget.setCollapsed(wasEnabled)
                     }}
                 >
                     <span

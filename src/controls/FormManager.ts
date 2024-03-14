@@ -30,13 +30,3 @@ export class FormManager<MyFormBuilder extends IFormBuilder> {
         return form
     }
 }
-
-// class WidgetModule<Config> {}
-//
-// class FOO<KnownWidgets> {
-//     register<T extends {
-//         $type: any;
-//         $Widget:any;
-//         ctor: ();
-//     }>(widget: T): T['$Widget'] {}
-// }

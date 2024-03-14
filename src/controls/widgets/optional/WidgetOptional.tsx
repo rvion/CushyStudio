@@ -25,16 +25,16 @@ export type Widget_optional_serial<T extends Spec = Spec> = WidgetSerialFields<{
     active: boolean
 }>
 
-// OUT
-export type Widget_optional_output<T extends Spec = Spec> = Maybe<T['$Output']>
+// VALUE
+export type Widget_optional_value<T extends Spec = Spec> = Maybe<T['$Value']>
 
 // TYPES
 export type Widget_optional_types<T extends Spec = Spec> = {
     $Type: 'optional'
-    $Input: Widget_optional_config<T>
+    $Config: Widget_optional_config<T>
     $Serial: Widget_optional_serial<T>
-    $Output: Widget_optional_output<T>
-    $Widget: Widget_optional_output<T>
+    $Value: Widget_optional_value<T>
+    $Widget: Widget_optional_value<T>
 }
 
 // STATE
@@ -57,37 +57,14 @@ export class Widget_optional<T extends Spec = Spec> implements IWidget<Widget_op
         return this.child
     }
 
-    /**
-     * if LAZY:
-     *  - child subtree will only be instanciated when checkbox turned on
-     *  - child subtree will be destroyed when checkbox is turned off
-     *   👉 makes IMPOSSIBLE to display the grayed out widgets
-     *
-     * if EAGER:
-     *  - child subtree will be always be instanciated
-     *   👉 makes POSSIBLE to display the grayed out widgets
-     * */
-    // ⏸️ INIT_MODE: 'LAZY' | 'EAGER' = 'EAGER'
+    setActive = (value: boolean) => {
+        if (this.serial.active === value) return
+        this.serial.active = value
+        this.bumpValue()
 
-    UpdateChildCollapsedState = () => {
-        if (this.child) {
-            if (this.serial.active) this.child.serial.collapsed = false
-            else this.child.serial.collapsed = true
-        }
-    }
-    toggle = () => {
-        if (this.serial.active) this.setOff()
-        else this.setOn()
-    }
-
-    setOn = () => {
-        this.serial.active = true
-        this._ensureChildIsHydrated()
-    }
-
-    setOff = () => {
-        this.serial.active = false
-        // ⏸️ if (this.INIT_MODE === 'LAZY') this.child = undefined
+        // update child collapsed state if need be
+        if (value) this.child.setCollapsed(false)
+        else this.child.setCollapsed(true)
     }
 
     private _ensureChildIsHydrated = () => {
@@ -116,18 +93,18 @@ export class Widget_optional<T extends Spec = Spec> implements IWidget<Widget_op
             active: defaultActive ?? false,
             collapsed: config.startCollapsed,
         }
+
+        // meh
         const isActive = serial?.active ?? defaultActive
-        if (isActive) this.setOn()
+        if (isActive) this.serial.active = true
+
         // ⏸️ if (this.INIT_MODE === 'EAGER') this._ensureChildIsHydrated()
         this._ensureChildIsHydrated()
         applyWidgetMixinV2(this)
-        makeObservable(this, {
-            serial: observable,
-            value: computed,
-        })
+        makeObservable(this, { serial: observable, value: computed })
     }
 
-    get value(): Widget_optional_output<T> {
+    get value(): Widget_optional_value<T> {
         if (!this.serial.active) return null
         return this.childOrThrow.value
     }

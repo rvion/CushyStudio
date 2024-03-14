@@ -28,15 +28,15 @@ export type Widget_list_serial<T extends Spec> = WidgetSerialFields<{
     items_: T['$Serial'][]
 }>
 
-// OUT
-export type Widget_list_output<T extends Spec> = T['$Output'][]
+// VALUE
+export type Widget_list_value<T extends Spec> = T['$Value'][]
 
 // TYPES
 export type Widget_list_types<T extends Spec> = {
     $Type: 'list'
-    $Input: Widget_list_config<T>
+    $Config: Widget_list_config<T>
     $Serial: Widget_list_serial<T>
-    $Output: Widget_list_output<T>
+    $Value: Widget_list_value<T>
     $Widget: Widget_list<T>
 }
 
@@ -66,6 +66,7 @@ export class Widget_list<T extends Spec> implements IWidget<Widget_list_types<T>
                 : _schema
         return schema
     }
+
     constructor(
         //
         public form: Form<any, any>,
@@ -111,7 +112,7 @@ export class Widget_list<T extends Spec> implements IWidget<Widget_list_types<T>
         makeAutoObservable(this)
     }
 
-    get value(): Widget_list_output<T> {
+    get value(): Widget_list_value<T> {
         return this.items.map((i) => i.value)
     }
 
@@ -125,36 +126,73 @@ export class Widget_list<T extends Spec> implements IWidget<Widget_list_types<T>
         this.items.forEach((i) => (i.serial.collapsed = false))
     }
 
-    // ADDING ITEMS -------------------------------------------------
-    addItem() {
-        const schema = this.schemaAt(this.serial.items_.length) // TODO: evaluate schema in the form loop
-        const element = this.form.builder._HYDRATE(schema, null)
-        this.items.push(element)
-        this.serial.items_.push(element.serial)
+    // ERRORS --------------------------------------------------------
+    get errors(): string[] {
+        let out: string[] = []
+        if (this.config.min != null && this.length < this.config.min) {
+            out.push(`List is too short`)
+        }
+        if (this.config.max != null && this.length > this.config.max) {
+            out.push(`List is too long`)
+        }
+        return out
     }
 
-    // REMOVING ITEMS -------------------------------------------------
-    removemAllItems = () => {
-        this.serial.items_ = this.serial.items_.slice(0, this.config.min ?? 0)
-        this.items = this.items.slice(0, this.config.min ?? 0)
+    // ADDING ITEMS -------------------------------------------------
+    addItem() {
+        // ensure list is not at max len already
+        if (this.config.max != null && this.items.length >= this.config.max)
+            return console.log(`[🔶] list.addItem: list is already at max length`)
+        // create new item
+        const schema = this.schemaAt(this.serial.items_.length) // TODO: evaluate schema in the form loop
+        const element = this.form.builder._HYDRATE(schema, null)
+        // insert item
+        this.items.push(element)
+        this.serial.items_.push(element.serial)
+        this.bumpValue()
+    }
+
+    // REMOVING ITEMS ------------------------------------------------
+    removeAllItems = () => {
+        // ensure list is not empty
+        if (this.length === 0) return console.log(`[🔶] list.removeAllItems: list is already empty`)
+        // ensure list is not at min len already
+        const minLen = this.config.min ?? 0
+        if (this.length <= minLen) return console.log(`[🔶] list.removeAllItems: list is already at min lenght`)
+        // remove all items
+        this.serial.items_ = this.serial.items_.slice(0, minLen)
+        this.items = this.items.slice(0, minLen)
+        this.bumpValue()
     }
 
     removeItem = (item: T['$Widget']) => {
+        // ensure item is in the list
         const i = this.items.indexOf(item)
-        if (i >= 0) {
-            this.serial.items_.splice(i, 1)
-            this.items.splice(i, 1)
-        }
+        if (i === -1) return console.log(`[🔶] list.removeItem: item not found`)
+        // remove item
+        this.serial.items_.splice(i, 1)
+        this.items.splice(i, 1)
+        this.bumpValue()
     }
 
     // MOVING ITEMS ---------------------------------------------------
-    moveItem = (oldIndex: number, newIndex: number) => {
+    moveItem = (
+        //
+        oldIndex: number,
+        newIndex: number,
+    ) => {
+        if (oldIndex === newIndex) return console.log(`[🔶] list.moveItem: oldIndex === newIndex`)
+        if (oldIndex < 0 || oldIndex >= this.length) return console.log(`[🔶] list.moveItem: oldIndex out of bounds`)
+        if (newIndex < 0 || newIndex >= this.length) return console.log(`[🔶] list.moveItem: newIndex out of bounds`)
+
         // serials
         const serials = this.serial.items_
         serials.splice(newIndex, 0, serials.splice(oldIndex, 1)[0])
+
         // instances
         const instances = this.items
         instances.splice(newIndex, 0, instances.splice(oldIndex, 1)[0])
+        this.bumpValue()
     }
 }
 

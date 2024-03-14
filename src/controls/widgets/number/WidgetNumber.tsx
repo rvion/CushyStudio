@@ -2,7 +2,7 @@ import type { Form } from '../../Form'
 import type { IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 import type { IWidget } from 'src/controls/IWidget'
 
-import { computed, makeObservable, observable } from 'mobx'
+import { computed, makeObservable, observable, runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 import { hash } from 'ohash'
 
@@ -33,15 +33,15 @@ export type Widget_number_config = WidgetConfigFields<
 // SERIAL
 export type Widget_number_serial = WidgetSerialFields<{ type: 'number'; val: number }>
 
-// OUT
-export type Widget_number_output = number
+// VALUE
+export type Widget_number_value = number
 
 // TYPES
 export type Widget_number_types = {
     $Type: 'number'
-    $Input: Widget_number_config
+    $Config: Widget_number_config
     $Serial: Widget_number_serial
-    $Output: Widget_number_output
+    $Value: Widget_number_value
     $Widget: Widget_number
 }
 
@@ -58,7 +58,10 @@ export class Widget_number implements IWidget<Widget_number_types> {
     serial: Widget_number_serial
     readonly defaultValue: number = this.config.default ?? 0
     get isChanged() { return this.serial.val !== this.defaultValue } // prettier-ignore
-    reset = () => { this.serial.val = this.defaultValue } // prettier-ignore
+    reset = () => {
+        if (this.serial.val === this.defaultValue) return
+        this.value = this.defaultValue
+    }
 
     constructor(
         //
@@ -81,10 +84,14 @@ export class Widget_number implements IWidget<Widget_number_types> {
         })
     }
 
-    set value(val: Widget_number_output) {
-        this.serial.val = val
+    set value(next: Widget_number_value) {
+        if (this.serial.val === next) return
+        runInAction(() => {
+            this.serial.val = next
+            this.bumpValue()
+        })
     }
-    get value(): Widget_number_output {
+    get value(): Widget_number_value {
         return this.serial.val
     }
 }

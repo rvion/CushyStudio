@@ -71,7 +71,7 @@ export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends 
                                             <span className='material-symbols-outlined'>delete</span>
                                         </div>
                                         {/* collapse indicator */}
-                                        <ListItemCollapseBtnUI req={subWidget} />
+                                        <ListItemCollapseBtnUI widget={subWidget} />
                                     </div>
                                     {WidgetBodyUI && !collapsed && subWidget && (
                                         <ErrorBoundary FallbackComponent={ErrorBoundaryFallback} onReset={(details) => {}}>
@@ -90,14 +90,10 @@ export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends 
     )
 })
 
-const ListDragHandleUI = forwardRef<HTMLDivElement, { ix: number; widget: IWidget }>((props, ref) => {
-    const v = props.widget
+const ListDragHandleUI = forwardRef<HTMLDivElement, { ix: number; widget: IWidget }>((p, ref) => {
+    const widget = p.widget
     return (
-        <div
-            tw='btn btn-narrower btn-ghost btn-square btn-xs'
-            ref={ref}
-            onClick={() => (v.serial.collapsed = !Boolean(v.serial.collapsed))}
-        >
+        <div tw='btn btn-narrower btn-ghost btn-square btn-xs' ref={ref} onClick={() => widget.toggleCollapsed()}>
             {/* <RevealUI cursor='cursor-move'> */}
             <span className='material-symbols-outlined'>menu</span>
             {/* <div tw='btn btn-sm btn-narrower btn-ghost opacity-50'>
@@ -113,15 +109,15 @@ const ListDragHandleUI = forwardRef<HTMLDivElement, { ix: number; widget: IWidge
     )
 })
 
-export const ListItemCollapseBtnUI = observer(function ListItemCollapseBtnUI_(p: { req: IWidget }) {
-    const widget = p.req
+export const ListItemCollapseBtnUI = observer(function ListItemCollapseBtnUI_(p: { widget: IWidget }) {
+    const widget = p.widget
     const isCollapsible = widget.DefaultBodyUI
     if (!isCollapsible) return null
     return (
         <div
             tw='btn btn-ghost btn-square btn-sm'
             // style={{ width: `${indexWidth}rem` }}
-            onClick={() => (widget.serial.collapsed = !Boolean(widget.serial.collapsed))}
+            onClick={() => widget.toggleCollapsed()}
         >
             {widget.serial.collapsed ? ( //
                 <span className='material-symbols-outlined'>keyboard_arrow_right</span>

@@ -23,20 +23,19 @@ export type Widget_seed_config = WidgetConfigFields<
 // SERIAL
 export type Widget_seed_serial = WidgetSerialFields<{
     type: 'seed'
-    active: true
     val: number
     mode: 'randomize' | 'fixed' | 'last'
 }>
 
-// OUT
-export type Widget_seed_output = number
+// VALUE
+export type Widget_seed_value = number
 
 // TYPES
 export type Widget_seed_types = {
     $Type: 'seed'
-    $Input: Widget_seed_config
+    $Config: Widget_seed_config
     $Serial: Widget_seed_serial
-    $Output: Widget_seed_output
+    $Value: Widget_seed_value
     $Widget: Widget_seed
 }
 
@@ -52,19 +51,38 @@ export class Widget_seed implements IWidget<Widget_seed_types> {
         if (this.serial.mode === 'randomize') return hash(this.serial.mode)
         return hash(this.value)
     }
+
+    setToFixed = (val?: number) => {
+        if (this.serial.mode === 'fixed') return
+        this.serial.mode = 'fixed'
+        if (val) this.serial.val = val
+        this.bumpValue()
+    }
+
+    setToRandomize = () => {
+        if (this.serial.mode === 'randomize') return
+        this.serial.mode = 'randomize'
+        this.bumpValue()
+    }
+
+    setValue = (val: number) => {
+        this.serial.val = val
+        this.bumpValue()
+    }
+
     constructor(public form: Form<any, any>, public config: Widget_seed_config, serial?: Widget_seed_serial) {
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? {
             type: 'seed',
             id: this.id,
-            active: true,
             val: config.default ?? 0,
             mode: config.defaultMode ?? 'randomize',
         }
         applyWidgetMixinV2(this)
         makeAutoObservable(this)
     }
-    get value(): Widget_seed_output {
+
+    get value(): Widget_seed_value {
         const count = this.form.builder._cache.count
         return this.serial.mode === 'randomize' ? Math.floor(Math.random() * 9_999_999) : this.serial.val
     }

@@ -3,7 +3,7 @@ import type { FC } from 'react'
 import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from 'src/controls/IWidget'
 import type { Spec } from 'src/controls/Spec'
 
-import { action, computed, makeAutoObservable, observable } from 'mobx'
+import { makeAutoObservable, runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 import { hash } from 'ohash'
 
@@ -26,15 +26,15 @@ export type Widget_custom_config<T> = WidgetConfigFields<
 // SERIAL
 export type Widget_custom_serial<T> = WidgetSerialFields<{ type: 'custom'; active: true; value: T }>
 
-// OUT
-export type Widget_custom_output<T> = T
+// VALUE
+export type Widget_custom_value<T> = T
 
 // TYPES
 export type Widget_custom_types<T> = {
     $Type: 'custom'
-    $Input: Widget_custom_config<T>
+    $Config: Widget_custom_config<T>
     $Serial: Widget_custom_serial<T>
-    $Output: Widget_custom_output<T>
+    $Value: Widget_custom_value<T>
     $Widget: Widget_custom<T>
 }
 
@@ -52,7 +52,7 @@ export class Widget_custom<T> implements IWidget<Widget_custom_types<T>> {
     serial: Widget_custom_serial<T>
     Component: Widget_custom_config<T>['Component']
     st = () => cushy
-    reset = () => (this.serial.value = this.config.defaultValue())
+    reset = () => (this.value = this.config.defaultValue())
     constructor(
         //
         public form: Form<any, any>,
@@ -73,8 +73,15 @@ export class Widget_custom<T> implements IWidget<Widget_custom_types<T>> {
     }
 
     /** never mutate this field manually, only access to .state */
-    get value(): Widget_custom_output<T> {
+    get value(): Widget_custom_value<T> {
         return this.serial.value
+    }
+    set value(next: Widget_custom_value<T>) {
+        if (this.serial.value === next) return
+        runInAction(() => {
+            this.serial.value = next
+            this.bumpValue()
+        })
     }
 }
 

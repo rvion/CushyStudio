@@ -421,7 +421,7 @@ export class STATE {
         {
             name: 'Civitai Conf',
             initialValue: () => readJSON('settings/civitai.json'),
-            onChange: (form) => writeJSON('settings/civitai.json', form.serial),
+            onSerialChange: (form) => writeJSON('settings/civitai.json', form.serial),
         },
     )
     sideBarConf = CushyFormManager.form(
@@ -445,7 +445,7 @@ export class STATE {
         {
             name: 'SideBar Conf',
             initialValue: () => readJSON('settings/sidebar.json'),
-            onChange: (form) => writeJSON('settings/sidebar.json', form.serial),
+            onSerialChange: (form) => writeJSON('settings/sidebar.json', form.serial),
         },
     )
 
@@ -479,7 +479,7 @@ export class STATE {
         {
             name: 'Displacement Conf',
             initialValue: () => readJSON('settings/displacement.json'),
-            onChange: (form) => writeJSON('settings/displacement.json', form.serial),
+            onSerialChange: (form) => writeJSON('settings/displacement.json', form.serial),
         },
     )
 
@@ -501,7 +501,7 @@ export class STATE {
         }),
         {
             name: 'Gallery Conf',
-            onChange: (form) => writeJSON('settings/gallery.json', form.serial),
+            onSerialChange: (form) => writeJSON('settings/gallery.json', form.serial),
             initialValue: () => readJSON('settings/gallery.json'),
         },
     )
