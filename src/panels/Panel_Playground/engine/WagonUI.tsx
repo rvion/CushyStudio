@@ -108,11 +108,11 @@ export const WagonUI = observer(function Panel_Playground_<FIELDS extends Schema
                                 <pre tw='whitespace-pre-wrap'>{sql}</pre>
                             </div>
                             <h3 tw='text-primary'>DATA (⏱️ {elapsedMs} ms):</h3>
-                            <div tw='overflow-hidden'>
+                            {/* <div tw='overflow-hidden'>
                                 <pre tw='whitespace-pre-wrap'>
                                     {readableStringify('err' in res ? res.err : res.data, form.value.stringifyMaxLevel)}
                                 </pre>
-                            </div>
+                            </div> */}
                         </div>
                     )
                 })}

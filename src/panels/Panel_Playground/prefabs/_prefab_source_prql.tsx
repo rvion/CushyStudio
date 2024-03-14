@@ -4,6 +4,7 @@ import type { Widget_shared } from 'src/controls/widgets/shared/WidgetShared'
 
 import { TABLES, TABLE_NAMES } from './_prefab_columns'
 import { locoLocations } from './_prefab_locoUtil1'
+import { bang } from 'src/utils/misc/bang'
 
 export const prefab_prql = prefab({
     ui: (ui) => {
@@ -40,41 +41,33 @@ const prefab_pipeline = prefabShared({
         return ui.list({
             label: '🔧 Pipeline',
             element: (ix) =>
-                // 🔴 (shouldn't have to wrap in a group)
-                ui.group({
+                ui.choice({
+                    appearance: 'tab',
                     items: {
-                        stmt: ui
-                            .choice({
-                                appearance: 'tab',
-                                items: {
-                                    derive: prefab_derive.ui(ui, ix),
-                                    filter: prefab_filter.ui(ui, ix),
-                                    group: prefab_group.ui(ui, ix),
-                                    // derive,
-                                    // aggregate,
-                                },
-                                // border: false,
-                                tabPosition: 'center',
-                                collapsed: false,
-                                layout: 'H',
-                                label: false,
-                                border: false,
-                            })
-                            .shared(`pipeline-stmt-${ix}`),
+                        derive: prefab_derive.ui(ui, ix),
+                        filter: prefab_filter.ui(ui, ix),
+                        group: prefab_group.ui(ui, ix),
+                        // derive,
+                        // aggregate,
                     },
-                    summary: ({ stmt }) => {
-                        if (stmt.derive != null) return `derive ${stmt.derive.map((d) => d.expr.name).join(', ')}`
-                        if (stmt.filter != null) return `filter ...`
-                        if (stmt.group != null) return `group by ${stmt.group.by}`
-                        return '???'
-                    },
+                    // border: false,
+                    tabPosition: 'center',
+                    collapsed: false,
+                    layout: 'H',
+                    label: false,
+                    border: false,
                 }),
+            // summary: ({ stmt }) => {
+            //     if (stmt.derive != null) return `derive ${stmt.derive.map((d) => d.expr.name).join(', ')}`
+            //     if (stmt.filter != null) return `filter ${stmt.filter.data.col?.id ?? stmt.filter.data.symbol?.id}`
+            //     if (stmt.group != null) return `group by ${stmt.group.by.data.col?.id ?? stmt.group.by.data.symbol?.id}`
+            //     return '???'
+            // },
         })
     },
     run: (ui): string => {
         return ui
-            .map((g) => {
-                const stmt = g.stmt
+            .map((stmt) => {
                 if (stmt.derive != null) return prefab_derive.run(stmt.derive)
                 if (stmt.filter != null) return prefab_filter.run(stmt.filter)
                 if (stmt.group != null) return prefab_group.run(stmt.group)
@@ -86,7 +79,9 @@ const prefab_pipeline = prefabShared({
 
 const prefab_derive = prefab({
     ui: (ui, ix: number) => {
-        return ui.fields({ expr: prefab_namedExpr.ui(ui, ix) }).list({ label: 'derive' })
+        return ui
+            .fields({ expr: prefab_namedExpr.ui(ui, ix) }) //
+            .list({ label: 'derive', border: false, min: 1 })
     },
     run: (ui) => {
         return [
@@ -101,17 +96,16 @@ const prefab_derive = prefab({
 
 const prefab_filter = prefab({
     ui: (ui, ix: number) => {
-        return ui.fields({ filter: prefab_expr.ui(ui, ix) })
+        return prefab_expr.ui(ui, ix)
     },
-    run: (ui) => `filter (${prefab_expr.run(ui.filter)})`,
+    run: (ui) => `filter (${prefab_expr.run(ui)})`,
 })
 
 const prefab_group = prefab({
     ui: (ui, ix: number) => {
         return ui.fields(
             {
-                by: ui.text({ label: 'group by', alignLabel: false }).hidden(),
-                // agg: prefab_namedExpression.ui(ui, ix).list(),
+                by: prefab_expr.ui(ui, ix),
                 agg: prefab_namedExpr.ui(ui, ix).list(),
             },
             {
@@ -125,7 +119,7 @@ const prefab_group = prefab({
     run: (ui) => {
         return [
             //
-            `group {${ui.by}} (`,
+            `group {${prefab_expr.run(ui.by)}} (`,
             '  aggregate {',
             ...ui.agg.map((c) => `    ${prefab_namedExpr.run(c)},`),
             '  }',
@@ -154,9 +148,11 @@ const prefab_expr = prefab({
     ui: (ui, ix: number) => {
         const syms = () => {
             const previousSymbols: string[] = []
+            const pipeline = prefab_pipeline.shared(ui)
             for (let i = 0; i < ix; i++) {
-                type PipelineStmt = ReturnType<typeof prefab_pipeline.ui>['$Output'][number]['stmt']
-                const stmt = ui.form.knownShared.get(`pipeline-stmt-${i}`)?.value as PipelineStmt | null
+                const stmt = pipeline[i]
+                console.log('🚂🚂🚂🚂', ix, stmt)
+                // const stmt = ui.form.knownShared.get(`pipeline-stmt-${i}`)?.value as PipelineStmt | null
                 if (stmt == null) continue
 
                 if (stmt.group != null) previousSymbols.push(...stmt.group.agg.map((c) => c.name))
@@ -183,14 +179,21 @@ const prefab_expr = prefab({
                             alignLabel: false,
                         }),
                     },
-                    layout: 'H', // ?????????
+                    body: null,
+                    header: (p) => (
+                        <div tw='flex gap-1'>
+                            <span>{p.widget.defaultHeader()}</span>
+                            {p.widget.defaultBody()}
+                        </div>
+                    ),
                 }),
                 pipeline: prefab_op.ui(ui).list({
                     label: '|',
                     collapsed: false,
+                    border: false,
                 }),
             },
-            { label: '=', border: false, layout: 'H' },
+            { label: false, border: false, layout: 'H' },
         )
     },
     run: (ui) => {
@@ -208,7 +211,7 @@ const prefab_op = prefab({
         return ui.choice({
             items: {
                 // 🔴 LABELS ????
-                'agg.min': ui.group(),
+                'agg.min': ui.group({ label: 'foo' }),
                 'agg.max': ui.group(),
                 'agg.sum': ui.group(),
                 'agg.average': ui.group(),
@@ -236,7 +239,7 @@ const prefab_op = prefab({
                 'math.tan': ui.group(),
                 'math.atan': ui.group(),
                 'math.pow': ui.fields({ exponent: ui.number() }, { border: false, collapsed: false, alignLabel: false }),
-                'math.round': ui.fields({ precision: ui.number() }, { border: false, collapsed: false, alignLabel: false }),
+                'math.round': ui.fields({ precision: ui.int() }, { border: false, collapsed: false, alignLabel: false }),
 
                 'date.to_text': ui.fields({ format: ui.string() }, { border: false, collapsed: false, alignLabel: false }),
 
@@ -306,6 +309,9 @@ function prefabShared<Form extends Spec, Args extends any[], R>(p: //
     return {
         ui: (ui, ...args) => p.ui(ui, ...args).shared(p.key),
         run: p.run,
-        shared: (_: FormBuilder) => _.form.knownShared.get(p.key)?.value as Form['$Output'],
+        shared: (_: FormBuilder) => {
+            let widget: Form['$Widget'] = bang(_.form.knownShared.get(p.key), `Shared widget '${p.key}' not accessible`)
+            return widget.value
+        },
     }
 }
