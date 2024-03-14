@@ -84,4 +84,5 @@ export class Widget_button implements IWidget<Widget_button_types> {
     }
 }
 
+// DI
 WidgetDI.Widget_button = Widget_button
