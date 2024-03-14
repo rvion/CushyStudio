@@ -3,7 +3,7 @@ import type { IWidget, Requirements } from './IWidget'
 import type { ISpec, SchemaDict } from './Spec'
 import type { OpenRouter_Models } from 'src/llm/OpenRouter_models'
 
-import { makeAutoObservable } from 'mobx'
+import { makeAutoObservable, runInAction } from 'mobx'
 
 import { _FIX_INDENTATION } from '../utils/misc/_FIX_INDENTATION'
 import { mkFormAutoBuilder } from './builder/AutoBuilder'
@@ -111,12 +111,14 @@ export class FormBuilder implements IFormBuilder {
 
     /** @deprecated ; if you need this widget, you should copy paste that into a prefab */
     inlineRun   = (config: Widget_button_config = {})                                                        => new Spec<Widget_button                   >('button' , {
-        onClick: (p) => {
-            p.widget.serial.val = true
+        onClick: (p) => runInAction(() => {
+            if (p.widget.value === true) return
+            p.widget.value = true
             p.draft.setAutostart(false)
             p.draft.start({})
-            setTimeout(() => p.widget.serial.val = false, 100) // Reset value back to false for future runs
-        },
+            setTimeout(() => p.widget.value = false, 100) // Reset value back to false for future runs
+            p.widget.bumpValue()
+        }),
         icon: (p) => {
             if (p.draft.shouldAutoStart) return 'pause'
             return 'play_arrow'

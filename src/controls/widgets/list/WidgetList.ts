@@ -130,11 +130,11 @@ export class Widget_list<T extends Spec> implements IWidget<Widget_list_types<T>
     // HELPERS =======================================================
     // FOLDING -------------------------------------------------------
     collapseAllItems = () => {
-        this.items.forEach((i) => (i.serial.collapsed = true))
+        for (const i of this.items) i.setCollapsed(true)
     }
 
     expandAllItems = () => {
-        this.items.forEach((i) => (i.serial.collapsed = false))
+        for (const i of this.items) i.setCollapsed(false)
     }
 
     // ERRORS --------------------------------------------------------
