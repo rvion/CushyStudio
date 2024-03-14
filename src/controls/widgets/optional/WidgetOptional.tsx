@@ -63,6 +63,10 @@ export class Widget_optional<T extends Spec = Spec> implements IWidget<Widget_op
         else this.child.setCollapsed(true)
     }
 
+    /**
+     * as of 2024-03-14, this is only called in the constructor
+     * TODO: inline ?
+     */
     private _ensureChildIsHydrated = () => {
         if (this.child) return
         const spec = this.config.widget

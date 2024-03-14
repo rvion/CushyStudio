@@ -48,8 +48,11 @@ export class WidgetPromptUISt {
         })
     }
 
+    // get/set
     get text() { return this.widget.serial.val ?? ''; } // prettier-ignore
     set text(val: string) { this.widget.setText_INTERNAL(val); } // prettier-ignore
+
+    // computed
     get ast(): PromptAST { return new PromptAST(this.text, this.editorView) } // prettier-ignore
     get loras(): Prompt_Lora[] { return this.ast.findAll('Lora') } // prettier-ignore
     get debugView() { return this.ast.toString() } // prettier-ignore

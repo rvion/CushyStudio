@@ -33,6 +33,7 @@ export const WidgetSelectOne_TabUI = observer(function WidgetSelectOne_TabUI_<T 
                             onValueChange={(value) => {
                                 if (value != isSelected) {
                                     widget.serial.val = c
+                                    widget.bumpValue() // 🔴 WIP
                                 }
                             }}
                         ></InputBoolUI>
