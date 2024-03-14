@@ -295,7 +295,7 @@ export class MediaImageL {
     }
 
     // https://evanw.github.io/thumbhash/
-    _mkThumbnail = async (): Promise</* { binary: Uint8Array; url: string } */ string> => {
+    _mkThumbhash = async (): Promise</* { binary: Uint8Array; url: string } */ string> => {
         const image = sharp(this.absPath).resize(100, 100, { fit: 'inside' })
         const { data, info } = await image.ensureAlpha().raw().toBuffer({ resolveWithObject: true })
         const binaryThumbHash = rgbaToThumbHash(info.width, info.height, data)
@@ -306,9 +306,9 @@ export class MediaImageL {
         return placeholderURL
     }
 
-    get thumbnail(): string {
+    get thumbhash(): string {
         if (this.data.thumbnail && this.data.thumbnail.startsWith('data:')) return this.data.thumbnail
-        void this._mkThumbnail().then((url) => this.update({ thumbnail: url }))
+        void this._mkThumbhash().then((url) => this.update({ thumbnail: url }))
         return ''
     }
 
