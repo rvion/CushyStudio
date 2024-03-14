@@ -6,10 +6,10 @@ import { PanelHeaderUI } from '../PanelHeader'
 import { CivitaiUI } from './CivitaiBrowserUI'
 import { Civitai } from './CivitaiSpec'
 import { FormUI } from 'src/controls/FormUI'
+import { SpacerUI } from 'src/controls/widgets/spacer/SpacerUI'
+import { RevealUI } from 'src/rsuite/reveal/RevealUI'
 import { FormHelpText } from 'src/rsuite/shims'
 import { SectionTitleUI } from 'src/widgets/workspace/SectionTitle'
-import { RevealUI } from 'src/rsuite/reveal/RevealUI'
-import { SpacerUI } from 'src/controls/widgets/spacer/SpacerUI'
 
 export const Panel_Models = observer(function Panel_Models_() {
     const st = useSt()
