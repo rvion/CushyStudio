@@ -29,7 +29,7 @@ export const StepOutputsHeaderV1UI = observer(function StepOutputsV1HeaderUI_(p:
             tw={[
                 //
                 'bg-base-100',
-                'flex items-center',
+                'flex items-center px-1',
                 'cursor-pointer text-xs text-opacity-50 hover:brightness-125 text-shadow',
                 p.className,
             ]}
