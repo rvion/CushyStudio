@@ -27,8 +27,8 @@ const mixin: IWidgetMixins = {
     },
 
     defaultBody(this: IWidget): JSX.Element | undefined {
-        if (this.DefaultHeaderUI == null) return
-        return <this.DefaultHeaderUI widget={this} />
+        if (this.DefaultBodyUI == null) return
+        return <this.DefaultBodyUI widget={this} />
     },
 
     header(this: IWidget): JSX.Element | undefined {
