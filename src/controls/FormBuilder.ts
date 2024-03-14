@@ -86,7 +86,7 @@ export class FormBuilder implements IFormBuilder {
     listExt     = <const T extends Spec>(config: Widget_listExt_config<T>)                                   => new Spec<Widget_listExt<T>                  >('listExt'   , config)
     timeline    = <const T extends Spec>(config: Widget_listExt_config<T>)                                   => new Spec<Widget_listExt<T>                  >('listExt'   , { mode: 'timeline', ...config })
     regional    = <const T extends Spec>(config: Widget_listExt_config<T>)                                   => new Spec<Widget_listExt<T>                  >('listExt'   , { mode: 'regional', ...config })
-    selectOneV2 = <const T extends string>(p: T[])                                                           => new Spec<Widget_selectOne<BaseSelectEntry<T>>>('selectOne', { choices: p.map((id) => ({ id, label: id })), appearance:'tab' }) // prettier-ignore
+    selectOneV2 = <const T extends string>(p: T[], config: Omit<Widget_selectOne_config<BaseSelectEntry<T>>,'choices'>={})                                    => new Spec<Widget_selectOne<BaseSelectEntry<T>>>('selectOne', { choices: p.map((id) => ({ id, label: id })), appearance:'tab', ...config }) // prettier-ignore
     selectOne   = <const T extends BaseSelectEntry>(config: Widget_selectOne_config<T>)                      => new Spec<Widget_selectOne<T>                >('selectOne' , config)
     selectMany  = <const T extends BaseSelectEntry>(config: Widget_selectMany_config<T>)                     => new Spec<Widget_selectMany<T>               >('selectMany', config)
     /** see also: `fields` for a more practical api */
