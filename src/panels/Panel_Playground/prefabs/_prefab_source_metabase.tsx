@@ -19,7 +19,7 @@ value / groupBy
 
 */
 
-type SelectDataT = ReturnType<typeof ui_selectData_metabase>['$Output']
+type SelectDataT = ReturnType<typeof ui_selectData_metabase>['$Value']
 export const ui_selectData_metabase = (ui: FormBuilder) => {
     const tables = () => ui.selectOne({ choices: [{ id: 'location' }, { id: 'gmb_review' }], label: false })
 

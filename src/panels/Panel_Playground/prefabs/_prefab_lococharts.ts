@@ -8,7 +8,7 @@ export type LocoChartsBuilderProps = {
     }
 }
 
-type LocoChartsT = ReturnType<typeof ui_lococharts>['$Output']
+type LocoChartsT = ReturnType<typeof ui_lococharts>['$Value']
 export const ui_lococharts = (ui: FormBuilder, p: LocoChartsBuilderProps) => {
     const xAxis = ui.list({
         label: '📊 Abcisses',

@@ -6,7 +6,7 @@ export type Wagon<FIELDS extends SchemaDict> = {
     uid: string
     title: string
     ui: (form: FormBuilder) => FIELDS
-    run: (ui: { [k in keyof FIELDS]: FIELDS[k]['$Output'] }) => Promise<{
+    run: (ui: { [k in keyof FIELDS]: FIELDS[k]['$Value'] }) => Promise<{
         chartOpts: Maybe<LocoChartsOpts>
         sql: string
         prql?: string

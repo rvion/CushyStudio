@@ -18,7 +18,7 @@ import { locoLocations } from './_prefab_locoUtil1'
  .orderBy(['year', 'month'])
 */
 
-type SelectDataT = ReturnType<typeof ui_selectData_knex>['$Output']
+type SelectDataT = ReturnType<typeof ui_selectData_knex>['$Value']
 export const ui_selectData_knex = (ui: FormBuilder) => {
     const tables = () => ui.selectOne({ choices: [{ id: 'location' }, { id: 'gmb_review' }], label: false })
 

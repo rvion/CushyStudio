@@ -10,19 +10,7 @@ import { readableStringify } from 'src/utils/formatters/stringifyReadable'
 import { Kwery } from 'src/utils/misc/Kwery'
 import { LocoChartUI } from '../charts/LocoChartsUI'
 
-import { CompileOptions, compile } from 'prql-js/dist/bundler'
 import { CushyFormManager } from 'src/controls/FormBuilder'
-
-const safeCompile = (code: string): string => {
-    const opts = new CompileOptions()
-    opts.signature_comment = false
-    opts.target = 'sql.postgres'
-    try {
-        return compile(code, opts) ?? ''
-    } catch (err: any) {
-        return err.message
-    }
-}
 
 export const WagonUI = observer(function Panel_Playground_<FIELDS extends SchemaDict>(p: { wagon: Wagon<FIELDS> }) {
     const wagon = p.wagon
@@ -37,7 +25,7 @@ export const WagonUI = observer(function Panel_Playground_<FIELDS extends Schema
                 {
                     name: wagon.title,
                     initialValue: () => readJSON(`loco/${wagon.uid}.json`),
-                    onChange: (form) => writeJSON(`loco/${wagon.uid}.json`, form.serial),
+                    onSerialChange: (form) => writeJSON(`loco/${wagon.uid}.json`, form.serial),
                 },
             ),
         [wagon],

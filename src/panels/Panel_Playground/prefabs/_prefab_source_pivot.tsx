@@ -31,7 +31,7 @@ out: {yyyy, MM, COUNT, avgRating, location }[]
 //  .orderBy(YOLO)
 // */
 
-type SelectDataT = ReturnType<typeof ui_selectData_pivot>['$Output']
+type SelectDataT = ReturnType<typeof ui_selectData_pivot>['$Value']
 export const ui_selectData_pivot = (ui: FormBuilder) => {
     // const shared = ui.shared('foo', ui.string())
     const gmbColumnUI = () => {

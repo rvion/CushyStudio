@@ -291,7 +291,7 @@ const prefab_op = prefab({
 function prefab<Form extends Spec, Args extends any[], R>(p: //
 {
     ui: (_: FormBuilder, ...args: Args) => Form
-    run: (_: Form['$Output']) => R
+    run: (_: Form['$Value']) => R
 }): typeof p {
     return p
 }
@@ -300,11 +300,11 @@ function prefabShared<Form extends Spec, Args extends any[], R>(p: //
 {
     key: string
     ui: (_: FormBuilder, ...args: Args) => Form
-    run: (_: Form['$Output']) => R
+    run: (_: Form['$Value']) => R
 }): {
     ui: (_: FormBuilder, ...args: Args) => Widget_shared<Form>
     run: typeof p.run
-    shared: (_: FormBuilder) => Form['$Output']
+    shared: (_: FormBuilder) => Form['$Value']
 } {
     return {
         ui: (ui, ...args) => p.ui(ui, ...args).shared(p.key),
