@@ -13,7 +13,7 @@ import { debounce } from 'src/utils/misc/debounce'
 export interface IFormBuilder {
     //
     _cache: { count: number }
-    _HYDRATE: <T extends ISpec>(unmounted: T, serial: any | null) => T['$Widget']
+    _HYDRATE: <T extends ISpec>(self: IWidget | null, unmounted: T, serial: any | null) => T['$Widget']
     optional: <const T extends Spec<IWidget<$WidgetTypes>>>(p: Widget_optional_config<T>) => Spec<Widget_optional<T>>
     shared: <W extends Spec<IWidget<$WidgetTypes>>>(key: string, unmounted: W) => Widget_shared<W>
 }
@@ -27,8 +27,8 @@ export type FormProperties<FIELDS extends SchemaDict> = {
 
 export class Form<
     //
-    const FIELDS extends SchemaDict,
-    const MyFormBuilder extends IFormBuilder = IFormBuilder,
+    const FIELDS extends SchemaDict = SchemaDict,
+    const out MyFormBuilder extends IFormBuilder = IFormBuilder,
 > {
     error: Maybe<string> = null
 
@@ -127,8 +127,8 @@ export class Form<
 
     constructor(
         // public builderFn: (self: Form<FIELDS, Builder>) => Builder,
-        public manager: FormManager<MyFormBuilder>,
-        public ui: (form: MyFormBuilder) => FIELDS,
+        public manager: FormManager<any>,
+        public ui: (form: IFormBuilder) => FIELDS,
         public formConfig: FormProperties<FIELDS>,
     ) {
         this.builder = manager.getBuilder(this)
@@ -149,7 +149,7 @@ export class Form<
         try {
             let initialValue = this.formConfig.initialValue?.()
             if (initialValue && !isObservable(initialValue)) initialValue = observable(initialValue)
-            const rootWidget: Widget_group<FIELDS> = formBuilder._HYDRATE(unmounted, initialValue)
+            const rootWidget: Widget_group<FIELDS> = formBuilder._HYDRATE(null, unmounted, initialValue)
             this.ready = true
             this.error = null
             // this.startMonitoring(rootWidget)
@@ -158,7 +158,7 @@ export class Form<
             console.error(`[👙🔴] Building form ${this.formConfig.name} FAILED`, this)
             console.error(e)
             this.error = 'invalid form definition'
-            return formBuilder._HYDRATE(unmounted, null)
+            return formBuilder._HYDRATE(null, unmounted, null)
         }
     }
 }

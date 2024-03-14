@@ -9,9 +9,9 @@ import { Form, FormProperties, IFormBuilder } from './Form'
  * to avoid problem with hot-reload, export an instance from a module directly and use it from there.
  */
 export class FormManager<MyFormBuilder extends IFormBuilder> {
-    constructor(public builderCtor: { new (form: Form<any, MyFormBuilder>): MyFormBuilder }) {}
+    constructor(public builderCtor: { new (form: Form<SchemaDict, MyFormBuilder>): MyFormBuilder }) {}
 
-    _builders = new WeakMap<Form<any, any>, MyFormBuilder>()
+    _builders = new WeakMap<Form, MyFormBuilder>()
 
     getBuilder = (form: Form<any, any>): MyFormBuilder => {
         const prev = this._builders.get(form)
@@ -26,7 +26,7 @@ export class FormManager<MyFormBuilder extends IFormBuilder> {
         ui: (form: MyFormBuilder) => FIELDS,
         formProperties: FormProperties<FIELDS>,
     ): Form<FIELDS, MyFormBuilder> => {
-        const form = new Form<FIELDS, MyFormBuilder>(this, ui, formProperties)
+        const form = new Form<FIELDS, MyFormBuilder>(this, ui as any /* 🔴 */, formProperties)
         return form
     }
 }

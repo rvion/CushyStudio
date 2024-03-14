@@ -70,7 +70,13 @@ export class Widget_seed implements IWidget<Widget_seed_types> {
         this.bumpValue()
     }
 
-    constructor(public form: Form<any, any>, public config: Widget_seed_config, serial?: Widget_seed_serial) {
+    constructor(
+        //
+        public readonly form: Form,
+        public readonly parent: IWidget | null,
+        public config: Widget_seed_config,
+        serial?: Widget_seed_serial,
+    ) {
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? {
             type: 'seed',

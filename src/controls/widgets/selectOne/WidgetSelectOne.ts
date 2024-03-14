@@ -16,7 +16,7 @@ export type BaseSelectEntry = { id: string; label?: string }
 export type Widget_selectOne_config<T extends BaseSelectEntry> = WidgetConfigFields<
     {
         default?: T
-        choices: T[] | ((formRoot: Widget_group<any>) => T[])
+        choices: T[] | ((formRoot: Widget_group<any>, self: Widget_selectOne<T>) => T[])
         appearance?: 'select' | 'tab'
     },
     Widget_selectOne_types<T>
@@ -65,13 +65,14 @@ export class Widget_selectOne<T extends BaseSelectEntry> implements IWidget<Widg
         if (typeof _choices === 'function') {
             if (!this.form.ready) return []
             if (this.form._ROOT == null) throw new Error('❌ IMPOSSIBLE: this.form._ROOT is null')
-            return _choices(this.form._ROOT)
+            return _choices(this.form._ROOT, this)
         }
         return _choices
     }
     constructor(
         //
-        public form: Form<any, any>,
+        public readonly form: Form,
+        public readonly parent: IWidget | null,
         public config: Widget_selectOne_config<T>,
         serial?: Widget_selectOne_serial<T>,
     ) {

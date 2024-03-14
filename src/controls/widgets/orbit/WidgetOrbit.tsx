@@ -77,7 +77,8 @@ export class Widget_orbit implements IWidget<Widget_orbit_types> {
 
     constructor(
         //
-        public form: Form<any, any>,
+        public readonly form: Form,
+        public readonly parent: IWidget | null,
         public config: Widget_orbit_config,
         serial?: Widget_orbit_serial,
     ) {

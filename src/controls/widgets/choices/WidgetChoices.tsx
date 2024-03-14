@@ -103,7 +103,9 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> implements IWidge
     }
 
     constructor(
-        public readonly form: Form<any, any>,
+        //
+        public readonly form: Form,
+        public readonly parent: IWidget | null,
         public readonly config: Widget_choices_config<T>,
         serial?: Widget_choices_serial<T>,
     ) {
@@ -192,11 +194,11 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> implements IWidge
         // prev serial seems compmatible => we use it
         const prevBranchSerial: Maybe<SharedWidgetSerial> = this.serial.values_?.[branch]
         if (prevBranchSerial && schema.type === prevBranchSerial.type) {
-            this.children[branch] = this.form.builder._HYDRATE(schema, prevBranchSerial)
+            this.children[branch] = this.form.builder._HYDRATE(this, schema, prevBranchSerial)
         }
         // prev serial is not compatible => we use the fresh one instead
         else {
-            this.children[branch] = this.form.builder._HYDRATE(schema, null)
+            this.children[branch] = this.form.builder._HYDRATE(this, schema, null)
             this.serial.values_[branch] = this.children[branch]?.serial
         }
 
