@@ -10,7 +10,7 @@ import { WidgetDI } from '../WidgetUI.DI'
 import { WidgetSelectOneUI } from './WidgetSelectOneUI'
 import { applyWidgetMixinV2 } from 'src/controls/Mixins'
 
-export type BaseSelectEntry = { id: string; label?: string }
+export type BaseSelectEntry<T = string> = { id: T; label?: string }
 
 // CONFIG
 export type Widget_selectOne_config<T extends BaseSelectEntry> = WidgetConfigFields<
