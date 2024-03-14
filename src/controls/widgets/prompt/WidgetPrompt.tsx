@@ -92,6 +92,7 @@ export class Widget_prompt implements IWidget<Widget_prompt_types> {
         // To know when to run the effect, we update `valueUpdatedViaAPIAt` here to trigger the effect.
         this._valueUpdatedViaAPIAt = Date.now() as Timestamp
         this.serial.val = next
+        this.bumpValue()
     }
 
     // the raw unparsed text
