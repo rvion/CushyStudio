@@ -85,6 +85,12 @@ export class Widget_prompt implements IWidget<Widget_prompt_types> {
     // codemirror uncontrolled component
     _valueUpdatedViaAPIAt: Maybe<Timestamp> = null
 
+    setText_INTERNAL = (next: string) => {
+        if (this.serial.val === next) return
+        this.serial.val = next
+        this.bumpValue()
+    }
+
     set text(next: string) {
         if (this.serial.val === next) return
         // widget prompt uses codemirror, and codemirror manage its internal state itsef.
