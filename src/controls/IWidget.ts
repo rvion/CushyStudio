@@ -46,7 +46,10 @@ export interface IWidget<K extends $WidgetTypes = $WidgetTypes> extends IWidgetM
     readonly serial: K['$Serial']
 
     /** root form this widget has benn registered to */
-    readonly form: Form<any, any>
+    readonly form: Form
+
+    /** parent widget of this widget, if any */
+    readonly parent: IWidget | null
 
     /** if specified by the widget, override the default algorithm to decide if the widget shouldhave borders */
     border?: boolean
@@ -173,6 +176,9 @@ export type SharedWidgetConfig<T extends $WidgetTypes> = {
 
     /** if provided, widget will be hidden */
     hidden?: boolean
+
+    /** unused internally, here so you can add whatever you want inside */
+    custom?: any
 }
 
 /**

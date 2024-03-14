@@ -1,5 +1,5 @@
 import type { IFormBuilder } from './Form'
-import type { Requirements } from './IWidget'
+import type { IWidget, Requirements } from './IWidget'
 import type { ISpec, SchemaDict } from './Spec'
 import type { OpenRouter_Models } from 'src/llm/OpenRouter_models'
 
@@ -40,7 +40,7 @@ import { openRouterInfos } from 'src/llm/OpenRouter_infos'
 export class FormBuilder implements IFormBuilder {
     /** (@internal) don't call this yourself */
     constructor(
-        public form: Form<any, FormBuilder>
+        public form: Form<SchemaDict, FormBuilder>
     ) {
         makeAutoObservable(this, {
             auto: false,
@@ -93,6 +93,7 @@ export class FormBuilder implements IFormBuilder {
     group       = <const T extends SchemaDict>(config: Widget_group_config<T>={})                            => new Spec<Widget_group<T>                    >('group'     , config)
     fields      = <const T extends SchemaDict>(fields: T, config: Omit<Widget_group_config<T>,'items'>={})   => new Spec<Widget_group<T>                    >('group'     , { items: fields, ...config })
     choice      = <const T extends { [key: string]: Spec }>(config: Omit<Widget_choices_config<T>, 'multi'>) => new Spec<Widget_choices<T>                  >('choices'   , { multi: false, ...config })
+    choiceV2    = <const T extends { [key: string]: Spec }>(items: Widget_choices_config<T>['items'], config: Omit<Widget_choices_config<T>, 'multi' | 'items'>) => new Spec<Widget_choices<T>                  >('choices'   , { multi: false, items, ...config })
     choices     = <const T extends { [key: string]: Spec }>(config: Omit<Widget_choices_config<T>, 'multi'>) => new Spec<Widget_choices<T>                  >('choices'   , { multi: true, ...config })
     ok          = <const T extends SchemaDict>(config: Widget_group_config<T>={})                            => new Spec<Widget_group<T>                    >('group'     , config)
     /** simple choice alternative api */
@@ -165,14 +166,14 @@ export class FormBuilder implements IFormBuilder {
         const prevSerial = this.form._ROOT.serial.values_[name]
         let widget
         if (prevSerial && prevSerial.type === unmounted.type) {
-            widget = this._HYDRATE(unmounted, prevSerial)
+            widget = this._HYDRATE(null, unmounted, prevSerial)
         } else {
-            widget = this._HYDRATE(unmounted, null)
+            widget = this._HYDRATE(null, unmounted, null)
             this.form._ROOT.serial.values_[name] = widget.serial
         }
         // 💬 2024-03-12 rvion: do we store the widget, or the widgetshared instead 2 lines below ? not sure yet.
         this.form.knownShared.set(key, widget)
-        return new Widget_shared<W>(this.form, { rootKey: key, widget }) as any
+        return new Widget_shared<W>(this.form, null, { rootKey: key, widget }) as any
     }
 
     // --------------------
@@ -227,6 +228,7 @@ export class FormBuilder implements IFormBuilder {
     /** (@internal); */ _cache: { count: number } = { count: 0 }
     /** (@internal) advanced way to restore form state. used internally */
     _HYDRATE = <T extends ISpec>(
+        parent: IWidget | null,
         unmounted: T,
         serial: any | null
     ): T['$Widget'] => {
@@ -248,7 +250,7 @@ export class FormBuilder implements IFormBuilder {
 
         const type = unmounted.type
         const config = unmounted.config as any /* impossible to propagate union specification in the switch below */
-        if (type === 'group'     ) return new Widget_group     (this.form, config, serial, this.form._ROOT ? undefined : (x) => { this.form._ROOT = x })
+        if (type === 'group'     ) return new Widget_group     (this.form, parent, config, serial, this.form._ROOT ? undefined : (x) => { this.form._ROOT = x })
         if (type === 'shared'    ) {
             // turns out we should only work with Widget_shared directly, so we should be safe
             // to simply not support Spec<shared>
@@ -258,31 +260,31 @@ export class FormBuilder implements IFormBuilder {
             // option 2:
             // ⏸️ return config.widget
         }
-        if (type === 'optional'  ) return new Widget_optional  (this.form, config, serial)
-        if (type === 'bool'      ) return new Widget_bool      (this.form, config, serial)
-        if (type === 'str'       ) return new Widget_string    (this.form, config, serial)
-        if (type === 'prompt'    ) return new Widget_prompt    (this.form, config, serial)
-        if (type === 'choices'   ) return new Widget_choices   (this.form, config, serial)
-        if (type === 'number'    ) return new Widget_number    (this.form, config, serial)
-        if (type === 'color'     ) return new Widget_color     (this.form, config, serial)
-        if (type === 'enum'      ) return new Widget_enum      (this.form, config, serial)
-        if (type === 'list'      ) return new Widget_list      (this.form, config, serial)
-        if (type === 'orbit'     ) return new Widget_orbit     (this.form, config, serial)
-        if (type === 'listExt'   ) return new Widget_listExt   (this.form, config, serial)
-        if (type === 'button'    ) return new Widget_button    (this.form, config, serial)
-        if (type === 'seed'      ) return new Widget_seed      (this.form, config, serial)
-        if (type === 'matrix'    ) return new Widget_matrix    (this.form, config, serial)
-        if (type === 'image'     ) return new Widget_image     (this.form, config, serial)
-        if (type === 'selectOne' ) return new Widget_selectOne (this.form, config, serial)
-        if (type === 'selectMany') return new Widget_selectMany(this.form, config, serial)
-        if (type === 'size'      ) return new Widget_size      (this.form, config, serial)
-        if (type === 'spacer'    ) return new Widget_spacer    (this.form, config, serial)
-        if (type === 'markdown'  ) return new Widget_markdown  (this.form, config, serial)
-        if (type === 'custom'    ) return new Widget_custom    (this.form, config, serial)
+        if (type === 'optional'  ) return new Widget_optional  (this.form, parent, config, serial)
+        if (type === 'bool'      ) return new Widget_bool      (this.form, parent, config, serial)
+        if (type === 'str'       ) return new Widget_string    (this.form, parent, config, serial)
+        if (type === 'prompt'    ) return new Widget_prompt    (this.form, parent, config, serial)
+        if (type === 'choices'   ) return new Widget_choices   (this.form, parent, config, serial)
+        if (type === 'number'    ) return new Widget_number    (this.form, parent, config, serial)
+        if (type === 'color'     ) return new Widget_color     (this.form, parent, config, serial)
+        if (type === 'enum'      ) return new Widget_enum      (this.form, parent, config, serial)
+        if (type === 'list'      ) return new Widget_list      (this.form, parent, config, serial)
+        if (type === 'orbit'     ) return new Widget_orbit     (this.form, parent, config, serial)
+        if (type === 'listExt'   ) return new Widget_listExt   (this.form, parent, config, serial)
+        if (type === 'button'    ) return new Widget_button    (this.form, parent, config, serial)
+        if (type === 'seed'      ) return new Widget_seed      (this.form, parent, config, serial)
+        if (type === 'matrix'    ) return new Widget_matrix    (this.form, parent, config, serial)
+        if (type === 'image'     ) return new Widget_image     (this.form, parent, config, serial)
+        if (type === 'selectOne' ) return new Widget_selectOne (this.form, parent, config, serial)
+        if (type === 'selectMany') return new Widget_selectMany(this.form, parent, config, serial)
+        if (type === 'size'      ) return new Widget_size      (this.form, parent, config, serial)
+        if (type === 'spacer'    ) return new Widget_spacer    (this.form, parent, config, serial)
+        if (type === 'markdown'  ) return new Widget_markdown  (this.form, parent, config, serial)
+        if (type === 'custom'    ) return new Widget_custom    (this.form, parent, config, serial)
 
         console.log(`🔴 unknown widget "${type}" in serial.`)
         // exhaust(type)
-        return new Widget_markdown(this.form, { markdown: `unknown widget "${type}" in serial.` })
+        return new Widget_markdown(this.form, parent, { markdown: `unknown widget "${type}" in serial.` })
     }
 }
 

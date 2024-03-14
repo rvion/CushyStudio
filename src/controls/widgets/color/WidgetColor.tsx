@@ -51,7 +51,8 @@ export class Widget_color implements IWidget<Widget_color_types> {
 
     constructor(
         //
-        public readonly form: Form<any, any>,
+        public readonly form: Form,
+        public readonly parent: IWidget | null,
         public readonly config: Widget_color_config,
         serial?: Widget_color_serial,
     ) {

@@ -53,11 +53,13 @@ export class Widget_shared<T extends Spec = Spec> implements IWidget<Widget_shar
         return this.config.widget
     }
 
-    hidden = () => new Widget_shared<T>(this.form, { ...this.config, hidden: true }, this.serial)
+    // 🔴
+    hidden = () => new Widget_shared<T>(this.form, null, { ...this.config, hidden: true }, this.serial)
 
     constructor(
         //
-        public form: Form<any, any>,
+        public readonly form: Form,
+        public readonly parent: IWidget | null,
         public config: Widget_shared_config<T>,
         serial?: Widget_shared_serial,
     ) {

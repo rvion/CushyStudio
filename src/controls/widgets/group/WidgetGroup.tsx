@@ -1,4 +1,4 @@
-import type { Form } from '../../Form'
+import type { Form, IFormBuilder } from '../../Form'
 import type { GetWidgetResult, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 import type { IWidget } from 'src/controls/IWidget'
 import type { SchemaDict } from 'src/controls/Spec'
@@ -102,7 +102,8 @@ export class Widget_group<T extends SchemaDict> implements IWidget<Widget_group_
     }
     constructor(
         //
-        public form: Form<any, any>,
+        public readonly form: Form,
+        public readonly parent: IWidget | null,
         public config: Widget_group_config<T>,
         serial?: Widget_group_serial<T>,
         /** used to register self as the root, before we start instanciating anything */
@@ -143,7 +144,7 @@ export class Widget_group<T extends SchemaDict> implements IWidget<Widget_group_
                 //     this.fields[key] = newItem as any
                 // } else {
                 // console.log(`[🟢] valid serial for "${key}": (${newType} === ${prevFieldSerial.type}) `)
-                this.fields[key] = this.form.builder._HYDRATE(unmounted, prevFieldSerial)
+                this.fields[key] = this.form.builder._HYDRATE(this, unmounted, prevFieldSerial)
                 // }
             } else {
                 // console.log(`[🟢] invalid serial for "${key}"`)
@@ -152,7 +153,7 @@ export class Widget_group<T extends SchemaDict> implements IWidget<Widget_group_
                         `[🔶] invalid serial for "${key}": (${unmounted.type} != ${prevFieldSerial?.type}) => using fresh one instead`,
                         prevFieldSerials,
                     )
-                this.fields[key] = this.form.builder._HYDRATE(unmounted, null)
+                this.fields[key] = this.form.builder._HYDRATE(this, unmounted, null)
                 this.serial.values_[key] = this.fields[key].serial
             }
         }

@@ -58,7 +58,8 @@ export class Widget_button implements IWidget<Widget_button_types> {
     readonly serial: Widget_button_serial
     constructor(
         //
-        public form: Form<any, any>,
+        public readonly form: Form,
+        public readonly parent: IWidget | null,
         public config: Widget_button_config,
         serial?: Widget_button_serial,
     ) {

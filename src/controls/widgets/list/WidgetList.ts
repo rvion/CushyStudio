@@ -1,7 +1,7 @@
-import type { Form } from '../../Form'
+import type { Form, IFormBuilder } from '../../Form'
 import type { IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 import type { IWidget } from 'src/controls/IWidget'
-import type { Spec } from 'src/controls/Spec'
+import type { SchemaDict, Spec } from 'src/controls/Spec'
 
 import { makeAutoObservable, observable } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -58,6 +58,19 @@ export class Widget_list<T extends Spec> implements IWidget<Widget_list_types<T>
     items: T['$Widget'][]
     serial: Widget_list_serial<T>
 
+    findItemIndexContaining = (from: IWidget): number | null => {
+        let at = from as IWidget | null
+        let child = at
+        while (at != null) {
+            at = at.parent
+            if (at === this) {
+                return this.items.indexOf(child as T['$Widget'])
+            }
+            child = at
+        }
+        return null
+    }
+
     schemaAt = (ix: number): T => {
         const _schema = this.config.element
         const schema: T =
@@ -69,7 +82,8 @@ export class Widget_list<T extends Spec> implements IWidget<Widget_list_types<T>
 
     constructor(
         //
-        public form: Form<any, any>,
+        public readonly form: Form,
+        public readonly parent: IWidget | null,
         public config: Widget_list_config<T>,
         serial?: Widget_list_serial<T>,
     ) {
@@ -86,7 +100,7 @@ export class Widget_list<T extends Spec> implements IWidget<Widget_list_types<T>
 
         // 1. add default item (only when serial was null)
         if (serial == null && this.config.defaultLength != null) {
-            for (let i = 0; i < this.config.defaultLength; i++) this.addItem()
+            for (let i = 0; i < this.config.defaultLength; i++) this.addItem({ skipBump: true })
         }
         // 2. pre-existing serial => rehydrate items
         else {
@@ -99,14 +113,14 @@ export class Widget_list<T extends Spec> implements IWidget<Widget_list_types<T>
                     console.log(`[❌] SKIPPING form item because it has an incompatible entry from a previous app definition`)
                     continue
                 }
-                const subWidget = form.builder._HYDRATE(unmounted, subSerial)
+                const subWidget = form.builder._HYDRATE(this, unmounted, subSerial)
                 this.items.push(subWidget)
             }
         }
 
         // 3. add missing items if min specified
         const missingItems = (this.config.min ?? 0) - this.items.length
-        for (let i = 0; i < missingItems; i++) this.addItem()
+        for (let i = 0; i < missingItems; i++) this.addItem({ skipBump: true })
 
         applyWidgetMixinV2(this)
         makeAutoObservable(this)
@@ -139,17 +153,17 @@ export class Widget_list<T extends Spec> implements IWidget<Widget_list_types<T>
     }
 
     // ADDING ITEMS -------------------------------------------------
-    addItem() {
+    addItem(p?: { skipBump?: true } /* 🔴 Annoying special case in the list's ctor */) {
         // ensure list is not at max len already
         if (this.config.max != null && this.items.length >= this.config.max)
             return console.log(`[🔶] list.addItem: list is already at max length`)
         // create new item
         const schema = this.schemaAt(this.serial.items_.length) // TODO: evaluate schema in the form loop
-        const element = this.form.builder._HYDRATE(schema, null)
+        const element = this.form.builder._HYDRATE(this, schema, null)
         // insert item
         this.items.push(element)
         this.serial.items_.push(element.serial)
-        this.bumpValue()
+        if (!p?.skipBump) this.bumpValue()
     }
 
     // REMOVING ITEMS ------------------------------------------------

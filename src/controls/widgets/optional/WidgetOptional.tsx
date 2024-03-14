@@ -72,16 +72,17 @@ export class Widget_optional<T extends Spec = Spec> implements IWidget<Widget_op
         const spec = this.config.widget
         const prevSerial = this.serial.child
         if (prevSerial && spec.type === prevSerial.type) {
-            this.child = this.form.builder._HYDRATE(spec, prevSerial)
+            this.child = this.form.builder._HYDRATE(this, spec, prevSerial)
         } else {
-            this.child = this.form.builder._HYDRATE(spec, null)
+            this.child = this.form.builder._HYDRATE(this, spec, null)
             this.serial.child = this.child.serial
         }
     }
 
     constructor(
         //
-        public form: Form<any, any>,
+        public readonly form: Form,
+        public readonly parent: IWidget | null,
         public config: Widget_optional_config<T>,
         serial?: Widget_optional_serial<T>,
     ) {

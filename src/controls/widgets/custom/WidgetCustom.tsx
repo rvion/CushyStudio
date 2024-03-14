@@ -55,7 +55,8 @@ export class Widget_custom<T> implements IWidget<Widget_custom_types<T>> {
     reset = () => (this.value = this.config.defaultValue())
     constructor(
         //
-        public form: Form<any, any>,
+        public readonly form: Form,
+        public readonly parent: IWidget | null,
         public config: Widget_custom_config<T>,
         serial?: Widget_custom_serial<T>,
     ) {

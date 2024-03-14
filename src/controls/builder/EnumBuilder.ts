@@ -22,7 +22,7 @@ export type IEnumBuilderOpt = {
 
 export interface EnumBuilder extends IEnumBuilder {}
 export class EnumBuilder {
-    constructor(public form: Form<any, any>) {
+    constructor(public form: Form) {
         return new Proxy(this, {
             get(target, prop) {
                 // skip symbols

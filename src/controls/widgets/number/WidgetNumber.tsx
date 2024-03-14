@@ -65,7 +65,8 @@ export class Widget_number implements IWidget<Widget_number_types> {
 
     constructor(
         //
-        public readonly form: Form<any, any>,
+        public readonly form: Form,
+        public readonly parent: IWidget | null,
         public readonly config: Widget_number_config,
         serial?: Widget_number_serial,
     ) {

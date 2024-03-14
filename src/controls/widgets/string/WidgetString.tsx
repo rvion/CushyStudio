@@ -59,7 +59,8 @@ export class Widget_string implements IWidget<Widget_string_types> {
 
     constructor(
         //
-        public readonly form: Form<any, any>,
+        public readonly form: Form,
+        public readonly parent: IWidget | null,
         public readonly config: Widget_string_config,
         serial?: Widget_string_serial,
     ) {
