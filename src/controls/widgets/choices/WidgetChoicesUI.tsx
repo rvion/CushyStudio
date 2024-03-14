@@ -91,9 +91,8 @@ export const WidgetChoices_SelectHeaderUI = observer(function WidgetChoices_Sele
     widget: Widget_choices<T>
 }) {
     const widget = p.widget
-    type Entry = { key: string; value?: Maybe<boolean> }
-    const choicesStr: string[] = widget.choices
-    const choices: Entry[] = choicesStr.map((v) => ({ key: v }))
+    type Entry = { key: string; label: string }
+    const choices: Entry[] = widget.choicesWithLabels
     return (
         <div
             tw={[
@@ -111,14 +110,14 @@ export const WidgetChoices_SelectHeaderUI = observer(function WidgetChoices_Sele
                 placeholder={p.widget.config.placeholder}
                 value={() =>
                     Object.entries(widget.serial.branches)
-                        .map(([key, value]) => ({ key, value }))
-                        .filter((x) => x.value)
+                        .filter(([_, value]) => value)
+                        .map(([key, _]) => ({ key, label: choices.find((v) => v.key === key)?.label ?? key }))
                 }
                 options={() => choices}
-                getLabelText={(v) => v.key}
+                getLabelText={(v) => v.label}
                 getLabelUI={(v) => (
                     <div tw='flex flex-1 justify-between'>
-                        <div tw='flex-1'>{v.key}</div>
+                        <div tw='flex-1'>{v.label}</div>
                         {/* 👇 TODO: clean this */}
                         {/* {v.key in widget.serial.values_ && (
                             <div
