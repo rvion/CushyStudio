@@ -49,6 +49,7 @@ export const Panel_Output = observer(function Panel_Output_(p: {}) {
                     //
                     'flex flex-col',
                     'flex-grow h-full w-full',
+                    'overflow-clip', // Make sure scrollbar doesn't encompass entire panel, only where it makes sense.
                 ]}
             >
                 <SideOutputListUI />
