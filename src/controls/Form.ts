@@ -8,6 +8,7 @@ import type { Widget_shared } from './widgets/shared/WidgetShared'
 import { action, isObservable, makeAutoObservable, observable } from 'mobx'
 
 import { Spec } from './Spec'
+import { debounce } from 'src/utils/misc/debounce'
 
 export interface IFormBuilder {
     //
