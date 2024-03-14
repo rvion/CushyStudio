@@ -62,15 +62,26 @@ export class Form<
     private valueLastUpdatedAt: Timestamp = 0
     private serialLastUpdatedAt: Timestamp = 0
 
+    private _onSerialChange = this.formConfig.onSerialChange //
+        ? debounce(this.formConfig.onSerialChange, 200)
+        : null
+
+    private _onValueChange = this.formConfig.onValueChange //
+        ? debounce(this.formConfig.onValueChange, 200)
+        : null
+
     /** every widget node must call this function once it's value change */
     valueChanged = (widget: IWidget) => {
         this.valueLastUpdatedAt = Date.now()
         this.serialChanged(widget)
+        console.log(`[🦊] value changed`)
+        this._onValueChange?.(this.root)
     }
 
     /** every widget node must call this function once it's serial changed */
     serialChanged = (_widget: IWidget) => {
         this.serialLastUpdatedAt = Date.now()
+        this._onSerialChange?.(this.root)
     }
 
     valueUpdatedAt?: Timestamp
