@@ -42,10 +42,6 @@ export interface Widget_optional<T extends Spec = Spec> extends Widget_optional_
 export class Widget_optional<T extends Spec = Spec> implements IWidget<Widget_optional_types<T>> {
     DefaultHeaderUI = undefined
     DefaultBodyUI = undefined
-    get serialHash(): string {
-        if (this.serial.active) return this.childOrThrow.serialHash
-        return 'x'
-    }
     readonly id: string
     readonly type: 'optional' = 'optional'
 

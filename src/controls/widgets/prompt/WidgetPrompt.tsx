@@ -6,7 +6,6 @@ import type { IWidget } from 'src/controls/IWidget'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
-import { hash } from 'ohash'
 
 import { WidgetDI } from '../WidgetUI.DI'
 import { compilePrompt } from './_compile'
@@ -57,7 +56,6 @@ export interface Widget_prompt extends Widget_prompt_types, IWidgetMixins {}
 export class Widget_prompt implements IWidget<Widget_prompt_types> {
     DefaultHeaderUI = WidgetPrompt_LineUI
     DefaultBodyUI = WidgetPromptUI
-    get serialHash () { return hash(this.serial.val) } // prettier-ignore
     readonly id: string
     readonly type: 'prompt' = 'prompt'
 

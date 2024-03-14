@@ -4,7 +4,6 @@ import type { IWidget } from 'src/controls/IWidget'
 
 import { computed, makeAutoObservable, observable, runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
-import { hash } from 'ohash'
 
 import { WidgetDI } from '../WidgetUI.DI'
 import { WidgetBoolUI } from './WidgetBoolUI'
@@ -81,9 +80,6 @@ export class Widget_bool implements IWidget<Widget_bool_types> {
     readonly type: 'bool' = 'bool'
 
     serial: Widget_bool_serial
-    get serialHash(): string {
-        return hash(this.value)
-    }
 
     setOn = () => (this.value = true)
     setOff = () => (this.value = false)

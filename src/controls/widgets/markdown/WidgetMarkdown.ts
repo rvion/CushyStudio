@@ -54,10 +54,6 @@ export class Widget_markdown implements IWidget<Widget_markdown_types> {
     readonly type: 'markdown' = 'markdown'
     readonly serial: Widget_markdown_serial
 
-    get serialHash(): string {
-        return this.id
-    }
-
     get markdown(): string {
         const md = this.config.markdown
         if (typeof md === 'string') return md

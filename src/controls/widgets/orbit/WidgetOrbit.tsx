@@ -4,7 +4,6 @@ import type { IWidget } from 'src/controls/IWidget'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
-import { hash } from 'ohash'
 
 import { WidgetDI } from '../WidgetUI.DI'
 import { clampMod, mkEnglishSummary } from './_orbitUtils'
@@ -47,7 +46,6 @@ export interface Widget_orbit extends Widget_orbit_types, IWidgetMixins {}
 export class Widget_orbit implements IWidget<Widget_orbit_types> {
     DefaultHeaderUI = WidgetOrbitUI
     DefaultBodyUI = undefined
-    get serialHash () { return hash(this.value) } // prettier-ignore
     id: string
     type: 'orbit' = 'orbit'
 

@@ -48,9 +48,6 @@ export class Widget_list<T extends Spec> implements IWidget<Widget_list_types<T>
         // if (this.items.length === 0) return
         return WidgetList_BodyUI
     }
-    get serialHash(): string {
-        return this.items.map((v) => v.serialHash).join(',')
-    }
     readonly id: string
     readonly type: 'list' = 'list'
 

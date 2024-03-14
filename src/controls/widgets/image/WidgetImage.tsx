@@ -48,7 +48,6 @@ export class Widget_image implements IWidget<Widget_image_types> {
     DefaultHeaderUI = WidgetSelectImageUI
     DefaultBodyUI = undefined
     static Prop = <T extends Widget_image>(config: Widget_image_config) => new Spec('image', config)
-    get serialHash() { return this.value.data.hash } // prettier-ignore
     readonly id: string
     readonly type: 'image' = 'image'
     readonly serial: Widget_image_serial

@@ -5,7 +5,6 @@ import type { Spec } from 'src/controls/Spec'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
-import { hash } from 'ohash'
 
 import { WidgetList_LineUI } from '../list/WidgetListUI'
 import { ResolutionState } from '../size/ResolutionState'
@@ -168,17 +167,6 @@ export class Widget_listExt<T extends Spec> implements IWidget<Widget_listExt_ty
             this.serial.entries.splice(i, 1)
             this.entries.splice(i, 1)
         }
-    }
-
-    get serialHash(): string {
-        return hash({
-            items: this.entries.map((i) => ({
-                position: i.shape,
-                value: i.widget.serialHash,
-            })),
-            width: this.serial.width,
-            height: this.serial.width,
-        })
     }
 
     get value(): Widget_listExt_output<T> {

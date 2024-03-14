@@ -4,7 +4,6 @@ import type { IWidget } from 'src/controls/IWidget'
 
 import { makeObservable, observable } from 'mobx'
 import { nanoid } from 'nanoid'
-import { hash } from 'ohash'
 
 import { WidgetDI } from '../WidgetUI.DI'
 import { WidgetSpacerUI } from './WidgetSpacerUI'
@@ -39,10 +38,6 @@ export class Widget_spacer implements IWidget<Widget_shared_types> {
     readonly id: string
     readonly type: 'spacer' = 'spacer'
     serial: Widget_spacer_serial
-
-    get serialHash(): string {
-        return hash(-1)
-    }
 
     constructor(
         //

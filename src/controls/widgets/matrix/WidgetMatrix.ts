@@ -4,7 +4,6 @@ import type { IWidget } from 'src/controls/IWidget'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
-import { hash } from 'ohash'
 
 import { WidgetDI } from '../WidgetUI.DI'
 import { WidgetMatrixUI } from './WidgetMatrixUI'
@@ -49,9 +48,6 @@ export interface Widget_matrix extends Widget_matrix_types, IWidgetMixins {}
 export class Widget_matrix implements IWidget<Widget_matrix_types> {
     DefaultHeaderUI = WidgetMatrixUI
     DefaultBodyUI = undefined
-    get serialHash(): string {
-        return hash(this.value)
-    }
     readonly id: string
     readonly type: 'matrix' = 'matrix'
     readonly serial: Widget_matrix_serial

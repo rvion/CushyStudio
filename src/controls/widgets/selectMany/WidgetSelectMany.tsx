@@ -5,7 +5,6 @@ import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } f
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
-import { hash } from 'ohash'
 
 import { WidgetDI } from '../WidgetUI.DI'
 import { WidgetSelectManyUI } from './WidgetSelectManyUI'
@@ -45,9 +44,6 @@ export interface Widget_selectMany<T extends BaseSelectEntry> extends Widget_sel
 export class Widget_selectMany<T extends BaseSelectEntry> implements IWidget<Widget_selectMany_types<T>> {
     DefaultHeaderUI = WidgetSelectManyUI
     DefaultBodyUI = undefined
-    get serialHash() {
-        return hash(this.value)
-    }
     readonly id: string
     readonly type: 'selectMany' = 'selectMany'
     readonly serial: Widget_selectMany_serial<T>

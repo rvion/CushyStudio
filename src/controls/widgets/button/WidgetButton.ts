@@ -4,7 +4,6 @@ import type { DraftL } from 'src/models/Draft'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
-import { hash } from 'ohash'
 
 import { WidgetDI } from '../WidgetUI.DI'
 import { WidgetInlineRunUI } from './WidgetButtonUI'
@@ -50,9 +49,6 @@ export interface Widget_button extends Widget_button_types, IWidgetMixins {}
 export class Widget_button implements IWidget<Widget_button_types> {
     DefaultHeaderUI = WidgetInlineRunUI
     DefaultBodyUI = undefined
-    get serialHash(): string {
-        return hash(this.value)
-    }
     readonly id: string
     readonly type: 'button' = 'button'
     readonly serial: Widget_button_serial

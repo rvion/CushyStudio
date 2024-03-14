@@ -57,11 +57,6 @@ export class Widget_group<T extends SchemaDict> implements IWidget<Widget_group_
     get summary(): string {
         return this.config.summary?.(this.value) ?? Object.keys(this.fields).length + ' fields'
     }
-    get serialHash(): string {
-        return Object.values(this.fields)
-            .map((v: IWidget) => v.serialHash)
-            .join(',')
-    }
     readonly id: string
     readonly type: 'group' = 'group'
 

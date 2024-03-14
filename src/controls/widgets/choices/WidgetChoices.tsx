@@ -5,7 +5,6 @@ import type { SchemaDict } from 'src/controls/Spec'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
-import { hash } from 'ohash'
 
 import { WidgetDI } from '../WidgetUI.DI'
 import { WidgetChoices_BodyUI, WidgetChoices_HeaderUI } from './WidgetChoicesUI'
@@ -60,9 +59,6 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> implements IWidge
     readonly type: 'choices' = 'choices'
     readonly expand: boolean = this.config.expand ?? false
 
-    get serialHash(): string {
-        return hash(this.value)
-    }
     get isMulti(): boolean {
         return this.config.multi
     }

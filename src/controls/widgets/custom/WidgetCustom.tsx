@@ -5,7 +5,6 @@ import type { Spec } from 'src/controls/Spec'
 
 import { makeAutoObservable, runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
-import { hash } from 'ohash'
 
 import { WidgetDI } from '../WidgetUI.DI'
 import { WidgetCustom_HeaderUI } from './WidgetCustomUI'
@@ -46,9 +45,6 @@ export class Widget_custom<T> implements IWidget<Widget_custom_types<T>> {
     readonly id: string
     readonly type: 'custom' = 'custom'
 
-    get serialHash(): string {
-        return hash(this.value)
-    }
     serial: Widget_custom_serial<T>
     Component: Widget_custom_config<T>['Component']
     st = () => cushy
