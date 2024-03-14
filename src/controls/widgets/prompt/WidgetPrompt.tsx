@@ -86,6 +86,7 @@ export class Widget_prompt implements IWidget<Widget_prompt_types> {
     _valueUpdatedViaAPIAt: Maybe<Timestamp> = null
 
     set text(next: string) {
+        if (this.serial.val === next) return
         // widget prompt uses codemirror, and codemirror manage its internal state itsef.
         // making the widget "uncontrolled". Usual automagical mobx-reactivity may not always apply.
         // To allow CodeMirror editor to react to external value changes, we need to use an effect in the UI.
