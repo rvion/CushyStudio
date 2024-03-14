@@ -45,10 +45,10 @@ export const FavBarUI = observer(function FavBarUI_(p: {
     return (
         <>
             <div
-                tw='relative flex flex-col border-primary/10 border-r box-content'
+                tw='relative flex flex-col border-primary/10 border-r box-content overflow-hidden'
                 style={{ flexDirection: p.direction, width: `${size + 18}px`, scrollBehavior: 'inherit' }}
             >
-                <div tw='flex flex-col inset-0 bg-base-300 flex-1 select-none overflow-clip'>
+                <div tw='flex flex-col inset-0 bg-base-300 flex-1 select-none overflow-hidden'>
                     <PanelHeaderUI>
                         <SpacerUI />
                         <RevealUI tw='WIDGET-FIELD w-full' title='Favorite Bar Options' style={{ width: `${size + 8}px` }}>
@@ -63,12 +63,9 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                         <SpacerUI />
                     </PanelHeaderUI>
                     {/* Lot of divs, but it makes it so the scrolling container is rounded on the inside. */}
-                    <div tw='hide-vertical-scroll w-full h-full flex flex-col items-center rounded overflow-clip pb-1'>
-                        <div
-                            tw='hide-vertical-scroll rounded items-center justify-center overflow-clip'
-                            style={{ scrollBehavior: 'inherit' }}
-                        >
-                            <div tw='h-full items-center flex flex-col gap-1'>
+                    <div tw='w-full flex flex-col items-center rounded pb-1 overflow-hidden'>
+                        <div tw='rounded items-center justify-center overflow-hidden'>
+                            <div tw='hide-vertical-scroll h-full items-center flex flex-col gap-1 overflow-scroll'>
                                 <FavBarContainer>
                                     <RevealUI tw='hover:brightness-125' placement='popup-lg'>
                                         <span
