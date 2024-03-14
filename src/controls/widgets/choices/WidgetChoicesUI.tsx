@@ -4,8 +4,8 @@ import type { SchemaDict } from 'src/controls/Spec'
 import { observer } from 'mobx-react-lite'
 
 import { WidgetWithLabelUI } from '../../shared/WidgetWithLabelUI'
+import { AnimatedSizeUI } from '../../utils/AnimatedSizeUI'
 import { InputBoolUI } from '../bool/InputBoolUI'
-import { AnimatedSizeUI } from './AnimatedSizeUI'
 import { SelectUI } from 'src/rsuite/SelectUI'
 
 // UI
