@@ -1,4 +1,3 @@
-// 🔴 broken because things are not going though
 import type { AspectRatio, ModelType } from './WidgetSizeTypes'
 
 import { makeAutoObservable } from 'mobx'
@@ -13,9 +12,6 @@ import { parseFloatNoRoundingErr } from 'src/utils/misc/parseFloatNoRoundingErr'
 export type SizeAble = {
     width: number
     height: number
-    min?: number
-    max?: number
-    step?: number
 }
 
 export class ResolutionState {
@@ -27,31 +23,17 @@ export class ResolutionState {
         if (model === '1.4') return { width: 512, height: 512 }
         return { width: this.width, height: this.height }
     }
-    _flip: boolean = false
-    get flip(): boolean {
-        return this._flip
-    }
-    set flip(next: boolean) {
-        const same = this._flip === next
-        if (same) return
-        this._flip = next
+
+    flip = () => {
         const prevWidth = this.width
-        const prevHeight = this.height
-        this.width = prevHeight
-        this.height = prevWidth
+        this.req.width = this.height
+        this.req.height = prevWidth
     }
-    get width(): number {
-        return this.req.width
-    }
-    get height(): number {
-        return this.req.height
-    }
-    set width(next: number) {
-        this.req.width = next
-    }
-    set height(next: number) {
-        this.req.height = next
-    }
+
+    get width(): number { return this.req.width } // prettier-ignore
+    get height(): number { return this.req.height } // prettier-ignore
+    set width(next: number) { this.req.width = next } // prettier-ignore
+    set height(next: number) { this.req.height = next } // prettier-ignore
 
     desiredModelType: ModelType = '1.5'
     desiredAspectRatio: AspectRatio = '1:1'
@@ -106,13 +88,13 @@ export class ResolutionState {
 
     setAspectRatio(aspectRatio: AspectRatio) {
         this.desiredAspectRatio = aspectRatio
-        if (this.isAspectRatioLocked) {
-            if (this.wasHeightAdjustedLast) {
-                this.updateWidthBasedOnAspectRatio()
-            } else {
-                this.updateHeightBasedOnAspectRatio()
-            }
+        // if (this.isAspectRatioLocked) {
+        if (this.wasHeightAdjustedLast) {
+            this.updateWidthBasedOnAspectRatio()
+        } else {
+            this.updateHeightBasedOnAspectRatio()
         }
+        // }
     }
 
     private updateHeightBasedOnAspectRatio() {

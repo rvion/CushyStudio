@@ -52,7 +52,10 @@ export const WidgetListExt_RegionalUI = observer(function WidgetListExt_Regional
                         {entries.map(({ shape, widget }) => (
                             <RectangleUI
                                 key={`rect-${widget.id}`}
-                                onChange={(p) => Object.assign(shape, p)}
+                                onChange={(p) => {
+                                    Object.assign(shape, p)
+                                    widget.bumpValue()
+                                }}
                                 isSelected={shape.isSelected}
                                 shape={shape}
                             />

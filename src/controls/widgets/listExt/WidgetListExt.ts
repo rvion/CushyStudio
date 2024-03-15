@@ -3,7 +3,7 @@ import type { BoardPosition } from './WidgetListExtTypes'
 import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from 'src/controls/IWidget'
 import type { Spec } from 'src/controls/Spec'
 
-import { makeAutoObservable } from 'mobx'
+import { makeAutoObservable, runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
 import { WidgetList_LineUI } from '../list/WidgetListUI'
@@ -59,11 +59,30 @@ export interface Widget_listExt<T extends Spec> extends Widget_listExt_types<T>,
 export class Widget_listExt<T extends Spec> implements IWidget<Widget_listExt_types<T>> {
     DefaultHeaderUI = WidgetList_LineUI
     DefaultBodyUI = WidgetListExtUI
+
     readonly id: string
     readonly type: 'listExt' = 'listExt'
 
+    get width(): number { return this.serial.width ?? this.config.width ?? 100 } // prettier-ignore
+    get height(): number { return this.serial.height ?? this.config.height ?? 100 } // prettier-ignore
+    // get width() { return this.serial.width } // prettier-ignore
+    // get height() { return this.serial.height } // prettier-ignore
+    set width(next: number) {
+        if (next === this.serial.width) return
+        runInAction(() => {
+            this.serial.width = next
+            this.bumpValue()
+        })
+    }
+    set height(next: number) {
+        if (next === this.serial.height) return
+        runInAction(() => {
+            this.serial.height = next
+            this.bumpValue()
+        })
+    }
     get sizeHelper(): ResolutionState {
-        const state = new ResolutionState(this.serial) // should only be executed once
+        const state = new ResolutionState(this) // should only be executed once
         Object.defineProperty(this, 'sizeHelper', { value: state })
         return state
     }
@@ -82,11 +101,6 @@ export class Widget_listExt<T extends Spec> implements IWidget<Widget_listExt_ty
     }
 
     // INIT -----------------------------------------------------------------------------
-
-    get width(): number { return this.serial.width ?? this.config.width ?? 100 } // prettier-ignore
-    get height(): number { return this.serial.height ?? this.config.height ?? 100 } // prettier-ignore
-    // get width() { return this.serial.width } // prettier-ignore
-    // get height() { return this.serial.height } // prettier-ignore
 
     constructor(
         //
