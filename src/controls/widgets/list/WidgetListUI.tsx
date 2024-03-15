@@ -34,7 +34,9 @@ export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends 
             <SortableList onSortEnd={p.widget.moveItem} className='list' draggedItemClassName='dragged'>
                 <div tw='flex flex-col gap-0.5'>
                     {subWidgets.map((subWidget, ix) => {
-                        const { DefaultHeaderUI: WidgetHeaderUI, DefaultBodyUI: WidgetBodyUI } = subWidget // WidgetDI.WidgetUI(widget)
+                        const widgetHeader = subWidget.header()
+                        const widgetBody = subWidget.body()
+                        // const { DefaultHeaderUI: WidgetHeaderUI, DefaultBodyUI: WidgetBodyUI } = subWidget // WidgetDI.WidgetUI(widget)
                         const collapsed = subWidget.serial.collapsed ?? false
                         return (
                             <SortableItem key={subWidget.id}>
@@ -55,9 +57,10 @@ export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends 
                                         ) : null}
 
                                         {/* inline header part */}
-                                        {WidgetHeaderUI && (
+                                        {widgetHeader && (
                                             <ErrorBoundary FallbackComponent={ErrorBoundaryFallback} onReset={(details) => {}}>
-                                                <WidgetHeaderUI widget={subWidget} />
+                                                {/* <WidgetHeaderUI widget={subWidget} /> */}
+                                                {widgetHeader}
                                             </ErrorBoundary>
                                         )}
                                         {/* delete btn */}
@@ -73,10 +76,11 @@ export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends 
                                         {/* collapse indicator */}
                                         <ListItemCollapseBtnUI widget={subWidget} />
                                     </div>
-                                    {WidgetBodyUI && !collapsed && subWidget && (
+                                    {widgetBody && !collapsed && subWidget && (
                                         <ErrorBoundary FallbackComponent={ErrorBoundaryFallback} onReset={(details) => {}}>
                                             <div tw='ml-2 pl-2'>
-                                                <WidgetBodyUI widget={subWidget} />
+                                                {/* <WidgetBodyUI widget={subWidget} /> */}
+                                                {widgetBody}
                                             </div>
                                         </ErrorBoundary>
                                     )}
