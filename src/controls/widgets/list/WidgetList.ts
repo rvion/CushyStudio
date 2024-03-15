@@ -58,8 +58,8 @@ export class Widget_list<T extends Spec> implements IWidget<Widget_list_types<T>
     items: T['$Widget'][]
     serial: Widget_list_serial<T>
 
-    findItemIndexContaining = (from: IWidget): number | null => {
-        let at = from as IWidget | null
+    findItemIndexContaining = (widget: IWidget): number | null => {
+        let at = widget as IWidget | null
         let child = at
         while (at != null) {
             at = at.parent
