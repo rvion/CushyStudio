@@ -43,7 +43,7 @@ export const ui_lococharts = (ui: FormBuilder, p: LocoChartsBuilderProps) => {
         label: '📊 Series',
         element: (ix) =>
             ui.fields({
-                type: ui.selectOne({ choices: [{ id: 'bar' }, { id: 'line' }] }),
+                type: ui.selectOne({ choices: [{ id: 'bar' }, { id: 'line' }, { id: 'scatter' }] }),
                 name: ui.string({}),
                 dataKey: ui.selectOne({
                     choices: () => p.dataKeys.values().map((c) => ({ id: c })),
@@ -51,6 +51,7 @@ export const ui_lococharts = (ui: FormBuilder, p: LocoChartsBuilderProps) => {
                 yAxisIndex: ui
                     .selectOne({ choices: () => yAxis.shared.value.map((_, ix) => ({ id: ix.toString() })) })
                     .optional(),
+                color: ui.color().optional(),
             }),
     })
 
@@ -73,12 +74,9 @@ export const run_lococharts = (ui: LocoChartsT, data: any[]): LocoChartsOpts => 
         xAxis:
             ui.xAxis.length === 0
                 ? {}
-                : ui.xAxis.map((x) => {
-                      //  const xx = data.map((row) => row[x.dataKey.id]).sort()
-                      return {
-                          type: x.category.id,
-                      }
-                  }),
+                : ui.xAxis.map((x) => ({
+                      type: x.category.id,
+                  })),
         yAxis:
             ui.yAxis.length === 0
                 ? {}
@@ -88,8 +86,19 @@ export const run_lococharts = (ui: LocoChartsT, data: any[]): LocoChartsOpts => 
         series: ui.series.map((s) => ({
             type: s.type.id,
             name: s.name,
+            color: s.color ?? undefined,
             data: data.map((row) => [row[ui.xAxis[0].dataKey.id], row[s.dataKey.id]]),
             yAxisIndex: parseInt(s.yAxisIndex?.id ?? '0'),
         })),
+        // toolbox: {
+        //     feature: {
+        //         dataZoom: {
+        //             yAxisIndex: 'none',
+        //         },
+        //         restore: {},
+        //         saveAsImage: {},
+        //     },
+        // },
+        // dataZoom: [{ type: 'inside' }, { type: 'slider' }],
     }
 }

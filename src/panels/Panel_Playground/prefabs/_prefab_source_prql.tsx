@@ -49,11 +49,19 @@ const prefab_pipeline = prefabShared({
                     join: prefab_join.ui(ui),
                     sort: prefab_sort.ui(ui),
                 },
-                tabPosition: 'center',
+                tabPosition: 'start',
                 collapsed: false,
                 layout: 'H',
                 label: false,
-                border: false,
+                // border: false,
+                header: (p) => (
+                    <div tw='flex flex-1 gap-4'>
+                        <h1 tw='text-xl text-blue-300 uppercase bg-slate-700 rounded px-2 mx-0.5 min-w-24'>
+                            {p.widget.firstActiveBranchName}
+                        </h1>
+                        {p.widget.defaultHeader()}
+                    </div>
+                ),
             })
             .list({
                 label: '🔧 Pipeline',
@@ -197,15 +205,16 @@ const prefab_sort = prefab({
                     by: prefab_expr.ui(ui),
                     order: ui.selectOne({
                         choices: [
-                            { id: '+', label: 'asc' },
-                            { id: '-', label: 'desc' },
+                            { id: '+', label: '⬆️' },
+                            { id: '-', label: '⬇️' },
                         ],
                         label: false,
+                        appearance: 'tab',
                     }),
                 },
-                { label: 'sort', collapsed: false, border: false, layout: 'H' },
+                { collapsed: false, border: false, layout: 'H' },
             )
-            .list({ min: 1 })
+            .list({ min: 1, label: 'sort' })
     },
     run: (ui) => {
         const sorts = ui.map((sort) => `${sort.order.id}${prefab_expr.run(sort.by)}`)

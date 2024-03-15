@@ -46,7 +46,7 @@ const LOCO_CHARTS_EXTS = [
     //  ext<T.PieSeriesOption>(Charts.PieChart),
     // ext<T.RadarSeriesOption>(Charts.RadarChart),
     //  ext<T.SankeySeriesOption>(Charts.SankeyChart),
-    // ext<T.ScatterSeriesOption>(Charts.ScatterChart),
+    ext<T.ScatterSeriesOption>(Charts.ScatterChart),
     // ext<T.SunburstSeriesOption>(Charts.SunburstChart),
     // ext<T.ThemeRiverSeriesOption>(Charts.ThemeRiverChart),
     // ext<T.TreeSeriesOption>(Charts.TreeChart),

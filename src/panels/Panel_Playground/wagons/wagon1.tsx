@@ -57,7 +57,7 @@ export const wagon1 = defineWagon({
 
         const chart = ui_lococharts(ui, { dataKeys: { columns, values } })
 
-        return { dataMethods, chart }
+        return { dataMethods, _1: ui.header('## --------------'), chart }
     },
     run: async (ui) => {
         const code = (() => {
