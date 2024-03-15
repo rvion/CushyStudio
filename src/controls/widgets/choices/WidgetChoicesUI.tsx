@@ -4,8 +4,8 @@ import type { SchemaDict } from 'src/controls/Spec'
 import { observer } from 'mobx-react-lite'
 
 import { WidgetWithLabelUI } from '../../shared/WidgetWithLabelUI'
+import { AnimatedSizeUI } from '../../utils/AnimatedSizeUI'
 import { InputBoolUI } from '../bool/InputBoolUI'
-import { AnimatedSizeUI } from './AnimatedSizeUI'
 import { SelectUI } from 'src/rsuite/SelectUI'
 
 // UI
@@ -63,6 +63,8 @@ const WidgetChoices_TabHeaderUI = observer(function WidgetChoicesTab_LineUI_<T e
                         ? 'flex-start'
                         : widget.config.tabPosition === 'center'
                         ? 'center'
+                        : widget.config.tabPosition === 'end'
+                        ? 'flex-end'
                         : 'flex-end',
             }}
             tw='rounded select-none flex flex-1 flex-wrap gap-x-0.5 gap-y-0'

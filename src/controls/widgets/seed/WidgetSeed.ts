@@ -3,7 +3,6 @@ import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } f
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
-import { hash } from 'ohash'
 
 import { WidgetDI } from '../WidgetUI.DI'
 import { WidgetSeedUI } from './WidgetSeedUI'
@@ -47,10 +46,6 @@ export class Widget_seed implements IWidget<Widget_seed_types> {
     readonly id: string
     readonly type: 'seed' = 'seed'
     readonly serial: Widget_seed_serial
-    get serialHash() {
-        if (this.serial.mode === 'randomize') return hash(this.serial.mode)
-        return hash(this.value)
-    }
 
     setToFixed = (val?: number) => {
         if (this.serial.mode === 'fixed') return

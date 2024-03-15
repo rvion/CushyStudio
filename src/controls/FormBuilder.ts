@@ -3,7 +3,7 @@ import type { IWidget, Requirements } from './IWidget'
 import type { ISpec, SchemaDict } from './Spec'
 import type { OpenRouter_Models } from 'src/llm/OpenRouter_models'
 
-import { makeAutoObservable } from 'mobx'
+import { makeAutoObservable, runInAction } from 'mobx'
 
 import { _FIX_INDENTATION } from '../utils/misc/_FIX_INDENTATION'
 import { mkFormAutoBuilder } from './builder/AutoBuilder'
@@ -86,7 +86,7 @@ export class FormBuilder implements IFormBuilder {
     listExt     = <const T extends Spec>(config: Widget_listExt_config<T>)                                   => new Spec<Widget_listExt<T>                  >('listExt'   , config)
     timeline    = <const T extends Spec>(config: Widget_listExt_config<T>)                                   => new Spec<Widget_listExt<T>                  >('listExt'   , { mode: 'timeline', ...config })
     regional    = <const T extends Spec>(config: Widget_listExt_config<T>)                                   => new Spec<Widget_listExt<T>                  >('listExt'   , { mode: 'regional', ...config })
-    selectOneV2 = (p: string[])                                                                              => new Spec<Widget_selectOne<BaseSelectEntry>  >('selectOne' , { choices: p.map((id) => ({ id, label: id })), appearance:'tab' }) // prettier-ignore
+    selectOneV2 = <const T extends string>(p: T[], config: Omit<Widget_selectOne_config<BaseSelectEntry<T>>,'choices'>={})                                    => new Spec<Widget_selectOne<BaseSelectEntry<T>>>('selectOne', { choices: p.map((id) => ({ id, label: id })), appearance:'tab', ...config }) // prettier-ignore
     selectOne   = <const T extends BaseSelectEntry>(config: Widget_selectOne_config<T>)                      => new Spec<Widget_selectOne<T>                >('selectOne' , config)
     selectMany  = <const T extends BaseSelectEntry>(config: Widget_selectMany_config<T>)                     => new Spec<Widget_selectMany<T>               >('selectMany', config)
     /** see also: `fields` for a more practical api */
@@ -111,12 +111,14 @@ export class FormBuilder implements IFormBuilder {
 
     /** @deprecated ; if you need this widget, you should copy paste that into a prefab */
     inlineRun   = (config: Widget_button_config = {})                                                        => new Spec<Widget_button                   >('button' , {
-        onClick: (p) => {
-            p.widget.serial.val = true
+        onClick: (p) => runInAction(() => {
+            if (p.widget.value === true) return
+            p.widget.value = true
             p.draft.setAutostart(false)
             p.draft.start({})
-            setTimeout(() => p.widget.serial.val = false, 100) // Reset value back to false for future runs
-        },
+            setTimeout(() => p.widget.value = false, 100) // Reset value back to false for future runs
+            p.widget.bumpValue()
+        }),
         icon: (p) => {
             if (p.draft.shouldAutoStart) return 'pause'
             return 'play_arrow'
@@ -170,6 +172,10 @@ export class FormBuilder implements IFormBuilder {
         } else {
             widget = this._HYDRATE(null, unmounted, null)
             this.form._ROOT.serial.values_[name] = widget.serial
+            // 💬 2024-03-15 rvion: no bump needed here, because this is done
+            // at creation time; not during regular runtime
+            // ❌ this.form._ROOT.bumpValue()
+
         }
         // 💬 2024-03-12 rvion: do we store the widget, or the widgetshared instead 2 lines below ? not sure yet.
         this.form.knownShared.set(key, widget)

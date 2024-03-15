@@ -1,10 +1,10 @@
+// 🔴 WIP BROKEN TODO: bump
 import type { Form } from '../../Form'
 import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from 'src/controls/IWidget'
 import type { AspectRatio, CushySize, CushySizeByRatio, SDModelType } from 'src/controls/widgets/size/WidgetSizeTypes'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
-import { hash } from 'ohash'
 
 import { WidgetDI } from '../WidgetUI.DI'
 import { ResolutionState } from './ResolutionState'
@@ -48,7 +48,6 @@ export class Widget_size implements IWidget<Widget_size_types> {
         Object.defineProperty(this, 'sizeHelper', { value: state })
         return state
     }
-    get serialHash() { return hash(this.value) } // prettier-ignore
     get hasBody() {
         if (this.sizeHelper.isAspectRatioLocked) return true
         return false

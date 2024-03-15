@@ -4,7 +4,6 @@ import type { IWidget } from 'src/controls/IWidget'
 
 import { makeAutoObservable, runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
-import { hash } from 'ohash'
 
 import { WidgetDI } from '../WidgetUI.DI'
 import { WidgetColorUI } from './WidgetColorUI'
@@ -37,9 +36,6 @@ export interface Widget_color extends Widget_color_types, IWidgetMixins {}
 export class Widget_color implements IWidget<Widget_color_types> {
     DefaultHeaderUI = WidgetColorUI
     DefaultBodyUI = undefined
-    get serialHash(): string {
-        return hash(this.value)
-    }
     readonly id: string
     readonly type: 'color' = 'color'
 

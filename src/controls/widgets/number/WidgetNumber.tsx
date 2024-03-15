@@ -4,7 +4,6 @@ import type { IWidget } from 'src/controls/IWidget'
 
 import { computed, makeObservable, observable, runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
-import { hash } from 'ohash'
 
 import { WidgetDI } from '../WidgetUI.DI'
 import { WidgetNumberUI } from './WidgetNumberUI'
@@ -50,7 +49,6 @@ export interface Widget_number extends Widget_number_types, IWidgetMixins {}
 export class Widget_number implements IWidget<Widget_number_types> {
     DefaultHeaderUI = WidgetNumberUI
     DefaultBodyUI = undefined
-    get serialHash () { return hash(this.value) } // prettier-ignore
     readonly id: string
     readonly type: 'number' = 'number'
     readonly forceSnap: boolean = false

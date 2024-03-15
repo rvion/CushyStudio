@@ -6,7 +6,6 @@ import type { CleanedEnumResult } from 'src/types/EnumUtils'
 
 import { action, computed, makeAutoObservable, observable, runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
-import { hash } from 'ohash'
 
 import { WidgetDI } from '../WidgetUI.DI'
 import { _extractDefaultValue } from './_extractDefaultValue'
@@ -53,7 +52,6 @@ export class Widget_enum<O> implements IWidget<Widget_enum_types<O>> {
 
     get isChanged() { return this.serial.val !== this.config.default } // prettier-ignore
     reset = () => { this.value = this.defaultValue } // prettier-ignore
-    get serialHash () { return hash(this.value) } // prettier-ignore
     get possibleValues(): EnumValue[] {
         return cushy.schema.knownEnumsByName.get(this.config.enumName as any)?.values ?? []
     }

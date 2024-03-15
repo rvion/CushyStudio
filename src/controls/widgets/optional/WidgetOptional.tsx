@@ -42,10 +42,6 @@ export interface Widget_optional<T extends Spec = Spec> extends Widget_optional_
 export class Widget_optional<T extends Spec = Spec> implements IWidget<Widget_optional_types<T>> {
     DefaultHeaderUI = undefined
     DefaultBodyUI = undefined
-    get serialHash(): string {
-        if (this.serial.active) return this.childOrThrow.serialHash
-        return 'x'
-    }
     readonly id: string
     readonly type: 'optional' = 'optional'
 
@@ -67,6 +63,10 @@ export class Widget_optional<T extends Spec = Spec> implements IWidget<Widget_op
         else this.child.setCollapsed(true)
     }
 
+    /**
+     * as of 2024-03-14, this is only called in the constructor
+     * TODO: inline ?
+     */
     private _ensureChildIsHydrated = () => {
         if (this.child) return
         const spec = this.config.widget

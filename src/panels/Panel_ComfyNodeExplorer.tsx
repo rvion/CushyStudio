@@ -3,11 +3,10 @@ import type { ProjectL } from 'src/models/Project'
 
 import { makeAutoObservable } from 'mobx'
 import { observer } from 'mobx-react-lite'
-import { hash } from 'ohash'
 import { useMemo } from 'react'
 
 import { getColorForInputNameInComfy, getColorForOutputNameInCushy } from 'src/core/Colors'
-import { Addon, Input, Joined } from 'src/rsuite/shims'
+import { Input } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
 import { searchMatches } from 'src/utils/misc/searchMatches'
 
@@ -76,9 +75,9 @@ export const Panel_ComfyNodeExplorer = observer(function ComfyNodeExplorerUI_(p:
                     </tr>
                 </thead>
                 <tbody>
-                    {search.matches.map(([name, node]) => {
+                    {search.matches.map(([name, node], ix) => {
                         return (
-                            <tr key={name + hash(node)}>
+                            <tr key={`${name}#${ix}`}>
                                 <td tw='whitespace-pre-wrap'>
                                     {node.nameInComfy}
                                     {/* {name} */}

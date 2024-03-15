@@ -6,7 +6,6 @@ import type { IWidget } from 'src/controls/IWidget'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
-import { hash } from 'ohash'
 
 import { WidgetDI } from '../WidgetUI.DI'
 import { compilePrompt } from './_compile'
@@ -57,7 +56,6 @@ export interface Widget_prompt extends Widget_prompt_types, IWidgetMixins {}
 export class Widget_prompt implements IWidget<Widget_prompt_types> {
     DefaultHeaderUI = WidgetPrompt_LineUI
     DefaultBodyUI = WidgetPromptUI
-    get serialHash () { return hash(this.serial.val) } // prettier-ignore
     readonly id: string
     readonly type: 'prompt' = 'prompt'
 
@@ -85,13 +83,21 @@ export class Widget_prompt implements IWidget<Widget_prompt_types> {
     // codemirror uncontrolled component
     _valueUpdatedViaAPIAt: Maybe<Timestamp> = null
 
+    setText_INTERNAL = (next: string) => {
+        if (this.serial.val === next) return
+        this.serial.val = next
+        this.bumpValue()
+    }
+
     set text(next: string) {
+        if (this.serial.val === next) return
         // widget prompt uses codemirror, and codemirror manage its internal state itsef.
         // making the widget "uncontrolled". Usual automagical mobx-reactivity may not always apply.
         // To allow CodeMirror editor to react to external value changes, we need to use an effect in the UI.
         // To know when to run the effect, we update `valueUpdatedViaAPIAt` here to trigger the effect.
         this._valueUpdatedViaAPIAt = Date.now() as Timestamp
         this.serial.val = next
+        this.bumpValue()
     }
 
     // the raw unparsed text

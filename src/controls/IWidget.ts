@@ -30,9 +30,6 @@ export interface IWidget<K extends $WidgetTypes = $WidgetTypes> extends IWidgetM
     /** unique ID; each node in the form tree has one; persisted in serial */
     readonly id: string
 
-    /** temporary hack; will get removed soon */
-    readonly serialHash: string
-
     /** widget type; can be used instead of `instanceof` to known which wiget it is */
     readonly type: K['$Type']
 

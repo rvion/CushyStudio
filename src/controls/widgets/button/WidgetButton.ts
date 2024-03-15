@@ -2,9 +2,8 @@ import type { Form } from '../../Form'
 import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from 'src/controls/IWidget'
 import type { DraftL } from 'src/models/Draft'
 
-import { makeAutoObservable } from 'mobx'
+import { makeAutoObservable, runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
-import { hash } from 'ohash'
 
 import { WidgetDI } from '../WidgetUI.DI'
 import { WidgetInlineRunUI } from './WidgetButtonUI'
@@ -29,7 +28,6 @@ export type Widget_button_config = WidgetConfigFields<
 // SERIAL
 export type Widget_button_serial = WidgetSerialFields<{
     type: 'button'
-    active: true
     val: boolean
 }>
 
@@ -50,9 +48,6 @@ export interface Widget_button extends Widget_button_types, IWidgetMixins {}
 export class Widget_button implements IWidget<Widget_button_types> {
     DefaultHeaderUI = WidgetInlineRunUI
     DefaultBodyUI = undefined
-    get serialHash(): string {
-        return hash(this.value)
-    }
     readonly id: string
     readonly type: 'button' = 'button'
     readonly serial: Widget_button_serial
@@ -72,7 +67,6 @@ export class Widget_button implements IWidget<Widget_button_types> {
             type: 'button',
             collapsed: config.startCollapsed,
             id: this.id,
-            active: true,
             val: false,
         }
         applyWidgetMixinV2(this)
@@ -80,8 +74,16 @@ export class Widget_button implements IWidget<Widget_button_types> {
     }
 
     get value(): Widget_button_value {
-        return this.serial.active ? this.serial.val : false
+        return this.serial.val
+    }
+    set value(next: boolean) {
+        if (this.serial.val === next) return
+        runInAction(() => {
+            this.serial.val = next
+            this.bumpValue()
+        })
     }
 }
 
+// DI
 WidgetDI.Widget_button = Widget_button

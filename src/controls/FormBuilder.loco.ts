@@ -1,5 +1,5 @@
-import type { Form } from './Form'
-import type { Requirements } from './IWidget'
+import type { Form, IFormBuilder } from './Form'
+import type { IWidget, Requirements } from './IWidget'
 import type { OpenRouter_Models } from 'src/llm/OpenRouter_models'
 
 import { makeAutoObservable } from 'mobx'
@@ -19,7 +19,6 @@ import { Widget_markdown, Widget_markdown_config } from './widgets/markdown/Widg
 import { Widget_matrix, type Widget_matrix_config } from './widgets/matrix/WidgetMatrix'
 import { Widget_number, type Widget_number_config } from './widgets/number/WidgetNumber'
 import { Widget_optional, type Widget_optional_config } from './widgets/optional/WidgetOptional'
-import { Widget_prompt, type Widget_prompt_config } from './widgets/prompt/WidgetPrompt'
 import { Widget_seed, type Widget_seed_config } from './widgets/seed/WidgetSeed'
 import { Widget_selectMany, type Widget_selectMany_config } from './widgets/selectMany/WidgetSelectMany'
 import { type BaseSelectEntry, Widget_selectOne, type Widget_selectOne_config } from './widgets/selectOne/WidgetSelectOne'
@@ -32,9 +31,9 @@ import type { FormBuilder } from './FormBuilder'
 import { FormManager } from './FormManager'
 
 // prettier-ignore
-export class FormBuilder_Loco {
+export class FormBuilder_Loco implements IFormBuilder {
     /** (@internal) don't call this yourself */
-    constructor(public form: Form<any, FormBuilder_Loco>) {
+    constructor(public form: Form<SchemaDict, FormBuilder_Loco>) {
         makeAutoObservable(this, {
             // enum: false,
             // enumOpt: false,
@@ -64,8 +63,6 @@ export class FormBuilder_Loco {
     /** [markdown variant]: inline=true, label=false */
     header      = (config: Widget_markdown_config | string)                                                  => new Spec<Widget_markdown                    >('markdown'  , typeof config === 'string' ? { markdown: config, inHeader: true, label: false } : { inHeader: true, label: false, alignLabel: false, ...config })
     image       = (config: Widget_image_config = {})                                                         => new Spec<Widget_image                       >('image'     , config)
-    prompt      = (config: Widget_prompt_config = {})                                                        => new Spec<Widget_prompt                      >('prompt'    , config)
-    promptV2    = (config: Widget_prompt_config = {})                                                        => new Spec<Widget_prompt                      >('prompt'    , config)
     int         = (config: Omit<Widget_number_config, 'mode'> = {})                                          => new Spec<Widget_number                      >('number'    , { mode: 'int', ...config })
     /** [number variant] precent = mode=int, default=100, step=10, min=1, max=100, suffix='%', */
     percent     = (config: Omit<Widget_number_config, 'mode'> = {})                                          => new Spec<Widget_number                      >('number'    , { mode: 'int', default: 100, step: 10, min: 1, max: 100, suffix: '%', ...config })
@@ -109,13 +106,17 @@ export class FormBuilder_Loco {
         const prevSerial = this.form._ROOT.serial.values_[name]
         let widget
         if (prevSerial && prevSerial.type === unmounted.type) {
-            widget = this._HYDRATE(unmounted, prevSerial)
+            widget = this._HYDRATE(null, unmounted, prevSerial)
         } else {
-            widget = this._HYDRATE(unmounted, null)
+            widget = this._HYDRATE(null, unmounted, null)
             this.form._ROOT.serial.values_[name] = widget.serial
+            // 💬 2024-03-15 rvion: no bump needed here, because this is done
+            // at creation time; not during regular runtime
+            // ❌ this.form._ROOT.bumpValue()
+
         }
 
-        return new Widget_shared<W>(this.form, { rootKey: key, widget }) as any
+        return new Widget_shared<W>(this.form, null, { rootKey: key, widget }) as any
     }
 
     // --------------------
@@ -171,6 +172,7 @@ export class FormBuilder_Loco {
     /** (@internal); */ _cache: { count: number } = { count: 0 }
     /** (@internal) advanced way to restore form state. used internally */
     _HYDRATE = <T extends ISpec>(
+        parent: IWidget | null,
         unmounted: T,
         serial: any | null
     ): T['$Widget'] => {
@@ -192,7 +194,7 @@ export class FormBuilder_Loco {
 
         const type = unmounted.type
         const config = unmounted.config as any /* impossible to propagate union specification in the switch below */
-        if (type === 'group'     ) return new Widget_group     (this.form, config, serial, this.form._ROOT ? undefined : (x) => { this.form._ROOT = x })
+        if (type === 'group'     ) return new Widget_group     (this.form, parent, config, serial, this.form._ROOT ? undefined : (x) => { this.form._ROOT = x })
         if (type === 'shared'    ) {
             // turns out we should only work with Widget_shared directly, so we should be safe
             // to simply not support Spec<shared>
@@ -202,29 +204,28 @@ export class FormBuilder_Loco {
             // option 2:
             // ⏸️ return config.widget
         }
-        if (type === 'optional'  ) return new Widget_optional  (this.form, config, serial)
-        if (type === 'bool'      ) return new Widget_bool      (this.form, config, serial)
-        if (type === 'str'       ) return new Widget_string    (this.form, config, serial)
-        if (type === 'prompt'    ) return new Widget_prompt    (this.form, config, serial)
-        if (type === 'choices'   ) return new Widget_choices   (this.form, config, serial)
-        if (type === 'number'    ) return new Widget_number    (this.form, config, serial)
-        if (type === 'color'     ) return new Widget_color     (this.form, config, serial)
-        if (type === 'enum'      ) return new Widget_enum      (this.form, config, serial)
-        if (type === 'list'      ) return new Widget_list      (this.form, config, serial)
-        if (type === 'button'    ) return new Widget_button    (this.form, config, serial)
-        if (type === 'seed'      ) return new Widget_seed      (this.form, config, serial)
-        if (type === 'matrix'    ) return new Widget_matrix    (this.form, config, serial)
-        if (type === 'image'     ) return new Widget_image     (this.form, config, serial)
-        if (type === 'selectOne' ) return new Widget_selectOne (this.form, config, serial)
-        if (type === 'selectMany') return new Widget_selectMany(this.form, config, serial)
-        if (type === 'size'      ) return new Widget_size      (this.form, config, serial)
-        if (type === 'spacer'    ) return new Widget_spacer    (this.form, config, serial)
-        if (type === 'markdown'  ) return new Widget_markdown  (this.form, config, serial)
-        if (type === 'custom'    ) return new Widget_custom    (this.form, config, serial)
+        if (type === 'optional'  ) return new Widget_optional  (this.form, parent, config, serial)
+        if (type === 'bool'      ) return new Widget_bool      (this.form, parent, config, serial)
+        if (type === 'str'       ) return new Widget_string    (this.form, parent, config, serial)
+        if (type === 'choices'   ) return new Widget_choices   (this.form, parent, config, serial)
+        if (type === 'number'    ) return new Widget_number    (this.form, parent, config, serial)
+        if (type === 'color'     ) return new Widget_color     (this.form, parent, config, serial)
+        if (type === 'enum'      ) return new Widget_enum      (this.form, parent, config, serial)
+        if (type === 'list'      ) return new Widget_list      (this.form, parent, config, serial)
+        if (type === 'button'    ) return new Widget_button    (this.form, parent, config, serial)
+        if (type === 'seed'      ) return new Widget_seed      (this.form, parent, config, serial)
+        if (type === 'matrix'    ) return new Widget_matrix    (this.form, parent, config, serial)
+        if (type === 'image'     ) return new Widget_image     (this.form, parent, config, serial)
+        if (type === 'selectOne' ) return new Widget_selectOne (this.form, parent, config, serial)
+        if (type === 'selectMany') return new Widget_selectMany(this.form, parent, config, serial)
+        if (type === 'size'      ) return new Widget_size      (this.form, parent, config, serial)
+        if (type === 'spacer'    ) return new Widget_spacer    (this.form, parent, config, serial)
+        if (type === 'markdown'  ) return new Widget_markdown  (this.form, parent, config, serial)
+        if (type === 'custom'    ) return new Widget_custom    (this.form, parent, config, serial)
 
         console.log(`🔴 unknown widget "${type}" in serial.`)
         // exhaust(type)
-        return new Widget_markdown(this.form, { markdown: `unknown widget "${type}" in serial.` })
+        return new Widget_markdown(this.form, parent, { markdown: `unknown widget "${type}" in serial.` })
     }
 }
 

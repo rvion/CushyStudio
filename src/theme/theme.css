@@ -48,7 +48,7 @@ body {
     border-right: 1px solid oklch(var(--p)/.2);
     border-bottom: 1px solid oklch(var(--p)/.2);
     /* border-bottom: 1px solid oklch(var(--p)/.4); */
-    padding: 2px;
+    /* padding: 2px; */
 }
 
 /* .WIDGET-GROUP-BORDERED:hover .WIDGET-COLLAPSE-BTN {

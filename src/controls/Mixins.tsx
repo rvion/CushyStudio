@@ -27,6 +27,8 @@ const mixin: IWidgetMixins = {
         this.form.serialChanged(this)
     },
 
+    // 💬 2024-03-15 rvion: use this regexp to quickly review manual serial set patterns
+    // | `serial\.[a-zA-Z_]+(\[[a-zA-Z_]+\])? = `
     bumpValue(this: IWidget) {
         this.serial.lastUpdatedAt = Date.now() as Timestamp
         this.form.valueChanged(this)

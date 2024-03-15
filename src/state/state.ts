@@ -485,6 +485,9 @@ export class STATE {
 
     galleryConf = CushyFormManager.form(
         (f) => ({
+            defaultSort: f.selectOneV2(['createdAt', 'updatedAt'] as const, {
+                default: { id: 'createdAt', label: 'Created At' },
+            }),
             gallerySize: f.int({ label: 'Preview Size', default: 48, min: 24, step: 8, softMax: 512, max: 1024, tooltip: 'Size of the preview images in px', unit: 'px' }), // prettier-ignore
             galleryMaxImages: f.int({ label: 'Number of items', min: 10, softMax: 300, default: 50, tooltip: 'Maximum number of images to display', }), // prettier-ignore
             galleryBgColor: f.color({ label: 'background' }),
@@ -821,12 +824,15 @@ export class STATE {
     galleryFilterTag: Maybe<string> = null
     galleryFilterAppName: Maybe<{ id: CushyAppID; name?: Maybe<string> }> = null
     get imageToDisplay() {
+        const conf = this.galleryConf.value
         return this.db.media_image.select(
             (query) => {
-                let x = query
-                    .orderBy('media_image.updatedAt', 'desc')
-                    .limit(this.galleryConf.value.galleryMaxImages ?? 20)
-                    .select('media_image.id')
+                let x =
+                    conf.defaultSort.id === 'createdAt'
+                        ? query.orderBy('media_image.createdAt', 'desc')
+                        : query.orderBy('media_image.updatedAt', 'desc')
+
+                x = x.limit(this.galleryConf.value.galleryMaxImages ?? 20).select('media_image.id')
 
                 if (this.galleryFilterPath) x = x.where('media_image.path', 'like', '%' + this.galleryFilterPath + '%')
                 if (this.galleryFilterTag) x = x.where('media_image.tags', 'like', '%' + this.galleryFilterTag + '%')
