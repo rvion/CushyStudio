@@ -5,6 +5,7 @@ import { observer } from 'mobx-react-lite'
 
 import { WidgetWithLabelUI } from '../../shared/WidgetWithLabelUI'
 import { bang } from 'src/utils/misc/bang'
+import { InputBoolUI } from '../bool/InputBoolUI'
 
 // UI
 export const WidgetGroup_LineUI = observer(function WidgetGroup_LineUI_(p: {
@@ -12,11 +13,27 @@ export const WidgetGroup_LineUI = observer(function WidgetGroup_LineUI_(p: {
     widget: Widget_group<any>
 }) {
     if (!p.widget.serial.collapsed) return null
-    return (
-        <div className='COLLAPSE-PASSTHROUGH' tw='line-clamp-1 italic opacity-50'>
-            {p.widget.summary}
-        </div>
-    )
+    // return (
+    //     <div tw='rounded select-none ml-auto justify-end flex flex-wrap gap-x-0.5 gap-y-0'>
+    //         {p.widget.optionalFields.map(([key, sub]) => {
+    //             const isSelected = sub.serial.active
+    //             return (
+    //                 <InputBoolUI
+    //                     key={key}
+    //                     active={isSelected}
+    //                     display='button'
+    //                     text={key}
+    //                     onValueChange={(value) => {
+    //                         if (value != isSelected) {
+    //                             sub.serial.active = true
+    //                         }
+    //                     }}
+    //                 ></InputBoolUI>
+    //             )
+    //         })}
+    //     </div>
+    // )
+    return <div tw='line-clamp-1 italic opacity-50'>{p.widget.summary}</div>
 })
 
 export const WidgetGroup_BlockUI = observer(function WidgetGroup_BlockUI_<T extends SchemaDict>(p: {

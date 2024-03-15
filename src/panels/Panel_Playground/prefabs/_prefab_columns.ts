@@ -1,0 +1,33 @@
+import type { BaseSelectEntry } from 'src/controls/widgets/selectOne/WidgetSelectOne'
+
+// prettier-ignore
+export const gmbCols :BaseSelectEntry[] = [
+    {id:'redacted',                    label:'redacted'},
+    {id:'redacted',            label:'redacted'},
+    {id:'redacted',           label:'redacted'},
+    {id:'redacted',           label:'redacted'},
+    {id:'redacted',   label:'redacted'},
+    {id:'redacted',                label:'redacted'},
+    {id:'redacted',               label:'redacted'},
+    {id:'redacted',            label:'redacted'},
+    {id:'redacted',               label:'redacted'},
+    {id:'redacted',              label:'redacted'},
+    {id:'redacted',          label:'redacted'},
+    {id:'redacted',        label:'redacted'},
+    {id:'redacted', label:'redacted'},
+    {id:'redacted',       label:'redacted'},
+    {id:'redacted',      label:'redacted'},
+    {id:'redacted',      label:'redacted'},
+    {id:'redacted',       label:'redacted'},
+    {id:'redacted',       label:'redacted'},
+    {id:'redacted',            label:'redacted'},
+    {id:'redacted',            label:'redacted'},
+    {id:'redacted',                label:'redacted'},
+    {id:'redacted',            label:'redacted'},
+    {id:'redacted',                label:'redacted'},
+    {id:'redacted',   label:'redacted'},
+    {id:'redacted', label:'redacted'},
+    {id:'redacted',            label:'redacted'},
+    {id:'redacted',  label:'redacted'},
+    {id:'redacted',  label:'redacted'},
+]
