@@ -50,6 +50,13 @@ export class Widget_string implements IWidget<Widget_string_types> {
     readonly id: string
     readonly type: 'str' = 'str'
 
+    // --------------
+    inputValue: string = ''
+    setInputValue = (next: string) => (this.inputValue = next)
+    isEditing: boolean = false
+    setEditing = (next: boolean) => (this.isEditing = next)
+    // --------------
+
     serial: Widget_string_serial
     readonly defaultValue: string = this.config.default ?? ''
     get isChanged() { return this.serial.val !== this.defaultValue } // prettier-ignore
