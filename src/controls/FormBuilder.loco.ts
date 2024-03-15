@@ -108,6 +108,10 @@ export class FormBuilder_Loco implements IFormBuilder {
         } else {
             widget = this._HYDRATE(null, unmounted, null)
             this.form._ROOT.serial.values_[name] = widget.serial
+            // 💬 2024-03-15 rvion: no bump needed here, because this is done
+            // at creation time; not during regular runtime
+            // ❌ this.form._ROOT.bumpValue()
+
         }
 
         return new Widget_shared<W>(this.form, null, { rootKey: key, widget }) as any

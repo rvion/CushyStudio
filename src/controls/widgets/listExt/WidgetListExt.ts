@@ -163,9 +163,11 @@ export class Widget_listExt<T extends Spec> implements IWidget<Widget_listExt_ty
     removeAllItems = () => {
         // ensure list is not empty
         if (this.length === 0) return console.log(`[🔶] listExt.removeAllItems: list is already empty`)
+
         // ensure list is not at min len already
         const minLen = this.config.min ?? 0
         if (this.length <= minLen) return console.log(`[🔶] listExt.removeAllItems: list is already at min lenght`)
+
         // remove all items
         this.serial.entries = this.serial.entries.slice(0, minLen)
         this.entries = this.entries.slice(0, minLen)

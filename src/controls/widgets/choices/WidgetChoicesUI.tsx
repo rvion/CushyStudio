@@ -63,6 +63,8 @@ const WidgetChoices_TabHeaderUI = observer(function WidgetChoicesTab_LineUI_<T e
                         ? 'flex-start'
                         : widget.config.tabPosition === 'center'
                         ? 'center'
+                        : widget.config.tabPosition === 'end'
+                        ? 'flex-end'
                         : 'flex-end',
             }}
             tw='rounded select-none flex flex-1 flex-wrap gap-x-0.5 gap-y-0'
