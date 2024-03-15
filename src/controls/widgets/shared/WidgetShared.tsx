@@ -24,15 +24,15 @@ export type Widget_shared_serial = WidgetSerialFields<{
     type: 'shared'
 }>
 
-// OUT
-export type Widget_shared_output<T extends Spec = Spec> = T['$Output']
+// VALUE
+export type Widget_shared_value<T extends Spec = Spec> = T['$Value']
 
 // TYPES
 export type Widget_shared_types<T extends Spec = Spec> = {
     $Type: 'shared'
-    $Input: Widget_shared_config<T>
+    $Config: Widget_shared_config<T>
     $Serial: Widget_shared_serial
-    $Output: Widget_shared_output<T>
+    $Value: Widget_shared_value<T>
     $Widget: Spec['$Widget']
 }
 
@@ -46,18 +46,19 @@ export class Widget_shared<T extends Spec = Spec> implements IWidget<Widget_shar
     // 👇 magically allow type-safe use of Mounted Widget_shared as Unmounted
     $Widget!: T['$Widget']
 
-    get serialHash(): string { return this.config.rootKey } // prettier-ignore
     serial: Widget_shared_serial
 
     get shared(): T['$Widget'] {
         return this.config.widget
     }
 
-    hidden = () => new Widget_shared<T>(this.form, { ...this.config, hidden: true }, this.serial)
+    // 🔴
+    hidden = () => new Widget_shared<T>(this.form, null, { ...this.config, hidden: true }, this.serial)
 
     constructor(
         //
-        public form: Form<any>,
+        public readonly form: Form,
+        public readonly parent: IWidget | null,
         public config: Widget_shared_config<T>,
         serial?: Widget_shared_serial,
     ) {
@@ -67,7 +68,7 @@ export class Widget_shared<T extends Spec = Spec> implements IWidget<Widget_shar
         makeAutoObservable(this)
     }
 
-    get value(): Widget_shared_output<T> {
+    get value(): Widget_shared_value<T> {
         return this.config.widget.value
     }
 }

@@ -254,7 +254,7 @@ export class Prompt_Lora extends ManagedNode<'Lora'> {
         // prettier-ignore
         return (
             this.getChild('Identifier')?.text ?? //
-            this.getChild('String')?.text ??
+            this.getChild('String')?.content ??
             ''
         ) as Enum_LoraLoader_lora_name
     }
@@ -280,7 +280,7 @@ export class Prompt_Embedding extends ManagedNode<'Embedding'> {
     get name(): string {
         return (
             this.getChild('Identifier')?.text ?? //
-            this.getChild('String')?.text ??
+            this.getChild('String')?.content ??
             ''
         )
     }
@@ -290,7 +290,7 @@ export class Prompt_Wildcard extends ManagedNode<'Wildcard'> {
     get name(): string {
         return (
             this.getChild('Identifier')?.text ?? //
-            this.getChild('String')?.text ??
+            this.getChild('String')?.content ??
             ''
         )
     }

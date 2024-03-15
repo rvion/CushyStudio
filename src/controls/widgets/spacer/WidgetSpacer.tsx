@@ -4,7 +4,6 @@ import type { IWidget } from 'src/controls/IWidget'
 
 import { makeObservable, observable } from 'mobx'
 import { nanoid } from 'nanoid'
-import { hash } from 'ohash'
 
 import { WidgetDI } from '../WidgetUI.DI'
 import { WidgetSpacerUI } from './WidgetSpacerUI'
@@ -19,15 +18,15 @@ export type Widget_spacer_config = WidgetConfigFields<{}, Widget_shared_types>
 // SERIAL
 export type Widget_spacer_serial = WidgetSerialFields<{ type: 'spacer' }>
 
-// OUT
-export type Widget_spacer_output = boolean
+// VALUE
+export type Widget_spacer_value = boolean
 
 // TYPES
 export type Widget_shared_types = {
     $Type: 'spacer'
-    $Input: Widget_spacer_config
+    $Config: Widget_spacer_config
     $Serial: Widget_spacer_serial
-    $Output: Widget_spacer_output
+    $Value: Widget_spacer_value
     $Widget: Widget_spacer
 }
 
@@ -40,13 +39,10 @@ export class Widget_spacer implements IWidget<Widget_shared_types> {
     readonly type: 'spacer' = 'spacer'
     serial: Widget_spacer_serial
 
-    get serialHash(): string {
-        return hash(-1)
-    }
-
     constructor(
         //
-        public form: Form<any>,
+        public readonly form: Form,
+        public readonly parent: IWidget | null,
         public config: Widget_spacer_config,
         serial?: Widget_spacer_serial,
     ) {

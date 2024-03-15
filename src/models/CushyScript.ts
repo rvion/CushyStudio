@@ -1,5 +1,6 @@
 import type { LiveInstance } from '../db/LiveInstance'
 import type { LibraryFile } from 'src/cards/LibraryFile'
+import type { SchemaDict } from 'src/controls/Spec'
 
 import { statSync } from 'fs'
 import { runInAction } from 'mobx'
@@ -10,7 +11,7 @@ import { getCurrentForm_IMPL, getCurrentRun_IMPL } from './_ctx2'
 import { CushyAppL } from './CushyApp'
 import { Executable } from './Executable'
 import { replaceImportsWithSyncImport } from 'src/back/ImportStructure'
-import { App, AppRef, SchemaDict } from 'src/cards/App'
+import { App, AppRef } from 'src/cards/App'
 import { SQLITE_false, SQLITE_true } from 'src/db/SQLITE_boolean'
 import { asCushyAppID, type TABLES } from 'src/db/TYPES.gen'
 import { extractErrorMessage } from 'src/utils/formatters/extractErrorMessage'
@@ -176,11 +177,17 @@ export class CushyScriptL {
         const registerAppFn = (a1: string, a2: App<any>): AppRef<any> => {
             const app: App<SchemaDict> = typeof a1 !== 'string' ? a1 : a2
             const name = app.metadata?.name ?? basename(this.relPath)
-            console.info(`[💙] found action: "${name}"`, { path: this.relPath })
-            APPS.push(app)
             const appID = asCushyAppID(this.relPath + ':' + appIndex++) // 🔴 SUPER UNSAFE
-            // console.log(`[👙] >> appID==`, appID)
-            return { $Output: 0 as any, id: appID }
+            console.info(`[💙] found app: "${name}"`, { path: this.relPath, appID })
+            APPS.push(app)
+            return {
+                id: appID,
+                /**
+                 * this is a virtual property; only here so app refs can carry the
+                 * type-level form information.
+                 */
+                $FIELDS: 0 as any,
+            }
         }
 
         // 2. eval file to extract actions

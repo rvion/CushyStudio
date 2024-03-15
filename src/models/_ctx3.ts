@@ -1,11 +1,11 @@
-import { nanoid } from 'nanoid'
+import type { IFormBuilder } from 'src/controls/Form'
+import type { Runtime } from 'src/runtime/Runtime'
 
-import { FormBuilder } from 'src/controls/FormBuilder'
-import { Runtime } from 'src/runtime/Runtime'
+import { nanoid } from 'nanoid'
 
 export class GlobalCtx {
     id = nanoid()
-    currentForm: Maybe<FormBuilder> = null
+    currentForm: Maybe<IFormBuilder> = null
     currentRun: Maybe<Runtime> = null
 }
 

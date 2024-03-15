@@ -37,9 +37,7 @@ export const WidgetString_TextareaBodyUI = observer(function WidgetString_Textar
 export const WidgetString_HeaderUI = observer(function WidgetStringUI_(p: { widget: Widget_string }) {
     const widget = p.widget
     const val = widget.value
-
-    const [inputValue, setInputValue] = useState<string>(val.toString())
-    const [isEditing, setEditing] = useState<boolean>(false)
+    const { inputValue, setInputValue, isEditing, setEditing } = widget
     return (
         <>
             <div
@@ -75,7 +73,6 @@ export const WidgetString_HeaderUI = observer(function WidgetStringUI_(p: { widg
                     onFocus={(ev) => {
                         setEditing(true)
                         let textInput = ev.currentTarget
-
                         textInput.select()
                         startValue = val
                         setInputValue(val.toString())

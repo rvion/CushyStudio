@@ -1,7 +1,7 @@
-import type { Form } from '../../Form'
+import type { Form, IFormBuilder } from '../../Form'
 import type { GetWidgetResult, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
-import type { SchemaDict } from 'src/cards/App'
 import type { IWidget } from 'src/controls/IWidget'
+import type { SchemaDict } from 'src/controls/Spec'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -27,21 +27,20 @@ export type Widget_group_config<T extends SchemaDict> = WidgetConfigFields<
 // SERIAL
 export type Widget_group_serial<T extends SchemaDict> = WidgetSerialFields<{
     type: 'group'
-    active: boolean
     values_: { [K in keyof T]?: T[K]['$Serial'] }
 }>
 
-// OUT
-export type Widget_group_output<T extends SchemaDict> = {
+// VALUE
+export type Widget_group_value<T extends SchemaDict> = {
     [k in keyof T]: GetWidgetResult<T[k]>
 }
 
 // TYPES
 export type Widget_group_types<T extends SchemaDict> = {
     $Type: 'group'
-    $Input: Widget_group_config<T>
+    $Config: Widget_group_config<T>
     $Serial: Widget_group_serial<T>
-    $Output: Widget_group_output<T>
+    $Value: Widget_group_value<T>
     $Widget: Widget_group<T>
 }
 
@@ -56,12 +55,8 @@ export class Widget_group<T extends SchemaDict> implements IWidget<Widget_group_
     static Prop = <T extends SchemaDict>(config: Widget_group_config<T>) => new Spec('group', config)
 
     get summary(): string {
-        return this.config.summary?.(this.value) ?? Object.keys(this.fields).length + ' fields'
-    }
-    get serialHash(): string {
-        return Object.values(this.fields)
-            .map((v) => v.serialHash)
-            .join(',')
+        return this.config.summary?.(this.value) ?? ''
+        // return this.config.summary?.(this.value) ?? Object.keys(this.fields).length + ' fields'
     }
     readonly id: string
     readonly type: 'group' = 'group'
@@ -71,13 +66,13 @@ export class Widget_group<T extends SchemaDict> implements IWidget<Widget_group_
             const item = getActualWidgetToDisplay(_item)
             if (item.serial.collapsed) continue
             const isCollapsible = getIfWidgetIsCollapsible(item)
-            if (isCollapsible) item.serial.collapsed = true
+            if (isCollapsible) item.setCollapsed(true)
         }
     }
     expandAllEntries = () => {
         for (const [key, _item] of this.entries) {
             const item = getActualWidgetToDisplay(_item)
-            item.serial.collapsed = undefined
+            item.setCollapsed(undefined)
         }
     }
 
@@ -87,7 +82,7 @@ export class Widget_group<T extends SchemaDict> implements IWidget<Widget_group_
     }
 
     at = <K extends keyof T>(key: K): T[K]['$Widget'] => this.fields[key]
-    get = <K extends keyof T>(key: K): T[K]['$Output'] => this.fields[key].value
+    get = <K extends keyof T>(key: K): T[K]['$Value'] => this.fields[key].value
 
     /** the dict of all child widgets */
     fields: { [k in keyof T]: T[k]['$Widget'] } = {} as any // will be filled during constructor
@@ -97,14 +92,14 @@ export class Widget_group<T extends SchemaDict> implements IWidget<Widget_group_
         return {
             type: 'group',
             id: this.id,
-            active: true,
             collapsed: this.config.startCollapsed,
             values_: {} as any,
         }
     }
     constructor(
         //
-        public form: Form<any>,
+        public readonly form: Form,
+        public readonly parent: IWidget | null,
         public config: Widget_group_config<T>,
         serial?: Widget_group_serial<T>,
         /** used to register self as the root, before we start instanciating anything */
@@ -122,12 +117,11 @@ export class Widget_group<T extends SchemaDict> implements IWidget<Widget_group_
 
         // safety nets
         /* 💊 */ if (this.serial.values_ == null) this.serial.values_ = {}
-        /* 💊 */ if (this.config.collapsed) this.serial.collapsed = undefined
+        // /* 💊 */ if (this.config.collapsed) this.serial.collapsed = undefined
 
         // allow to store ref to the object right away
         preHydrate?.(this)
 
-        this.serial.active = true
         const prevFieldSerials: { [K in keyof T]?: T[K]['$Serial'] } = this.serial.values_
         const itemsDef = this.config.items
         const _newValues: SchemaDict =
@@ -146,7 +140,7 @@ export class Widget_group<T extends SchemaDict> implements IWidget<Widget_group_
                 //     this.fields[key] = newItem as any
                 // } else {
                 // console.log(`[🟢] valid serial for "${key}": (${newType} === ${prevFieldSerial.type}) `)
-                this.fields[key] = this.form.builder._HYDRATE(unmounted, prevFieldSerial)
+                this.fields[key] = this.form.builder._HYDRATE(this, unmounted, prevFieldSerial)
                 // }
             } else {
                 // console.log(`[🟢] invalid serial for "${key}"`)
@@ -155,7 +149,7 @@ export class Widget_group<T extends SchemaDict> implements IWidget<Widget_group_
                         `[🔶] invalid serial for "${key}": (${unmounted.type} != ${prevFieldSerial?.type}) => using fresh one instead`,
                         prevFieldSerials,
                     )
-                this.fields[key] = this.form.builder._HYDRATE(unmounted, null)
+                this.fields[key] = this.form.builder._HYDRATE(this, unmounted, null)
                 this.serial.values_[key] = this.fields[key].serial
             }
         }
@@ -175,6 +169,8 @@ export class Widget_group<T extends SchemaDict> implements IWidget<Widget_group_
             return subWidget.value
         },
     })
+
+    // 💬 2024-03-13 rvion: no setter for groups; groups can not be set; only their child can
 }
 
 // DI

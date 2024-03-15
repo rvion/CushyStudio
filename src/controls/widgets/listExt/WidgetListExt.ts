@@ -3,9 +3,8 @@ import type { BoardPosition } from './WidgetListExtTypes'
 import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from 'src/controls/IWidget'
 import type { Spec } from 'src/controls/Spec'
 
-import { makeAutoObservable } from 'mobx'
+import { makeAutoObservable, runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
-import { hash } from 'ohash'
 
 import { WidgetList_LineUI } from '../list/WidgetListUI'
 import { ResolutionState } from '../size/ResolutionState'
@@ -38,9 +37,9 @@ export type Widget_listExt_serial<T extends Spec> = WidgetSerialFields<{
     height: number
 }>
 
-// OUT
+// VALUE
 export type Widget_listExt_output<T extends Spec> = {
-    items: { value: T['$Output']; position: BoardPosition }[]
+    items: { value: T['$Value']; position: BoardPosition }[]
     // -----------------------
     width: number
     height: number
@@ -49,9 +48,9 @@ export type Widget_listExt_output<T extends Spec> = {
 // TYPES
 export type Widget_listExt_types<T extends Spec> = {
     $Type: 'listExt'
-    $Input: Widget_listExt_config<T>
+    $Config: Widget_listExt_config<T>
     $Serial: Widget_listExt_serial<T>
-    $Output: Widget_listExt_output<T>
+    $Value: Widget_listExt_output<T>
     $Widget: Widget_listExt<T>
 }
 
@@ -60,11 +59,30 @@ export interface Widget_listExt<T extends Spec> extends Widget_listExt_types<T>,
 export class Widget_listExt<T extends Spec> implements IWidget<Widget_listExt_types<T>> {
     DefaultHeaderUI = WidgetList_LineUI
     DefaultBodyUI = WidgetListExtUI
+
     readonly id: string
     readonly type: 'listExt' = 'listExt'
 
+    get width(): number { return this.serial.width ?? this.config.width ?? 100 } // prettier-ignore
+    get height(): number { return this.serial.height ?? this.config.height ?? 100 } // prettier-ignore
+    // get width() { return this.serial.width } // prettier-ignore
+    // get height() { return this.serial.height } // prettier-ignore
+    set width(next: number) {
+        if (next === this.serial.width) return
+        runInAction(() => {
+            this.serial.width = next
+            this.bumpValue()
+        })
+    }
+    set height(next: number) {
+        if (next === this.serial.height) return
+        runInAction(() => {
+            this.serial.height = next
+            this.bumpValue()
+        })
+    }
     get sizeHelper(): ResolutionState {
-        const state = new ResolutionState(this.serial) // should only be executed once
+        const state = new ResolutionState(this) // should only be executed once
         Object.defineProperty(this, 'sizeHelper', { value: state })
         return state
     }
@@ -78,16 +96,16 @@ export class Widget_listExt<T extends Spec> implements IWidget<Widget_listExt_ty
         return this.entries.map((i) => i.widget)
     }
 
-    // INIT -----------------------------------------------------------------------------
+    get length(): number {
+        return this.entries.length
+    }
 
-    get width(): number { return this.serial.width ?? this.config.width ?? 100 } // prettier-ignore
-    get height(): number { return this.serial.height ?? this.config.height ?? 100 } // prettier-ignore
-    // get width() { return this.serial.width } // prettier-ignore
-    // get height() { return this.serial.height } // prettier-ignore
+    // INIT -----------------------------------------------------------------------------
 
     constructor(
         //
-        public form: Form<any>,
+        public readonly form: Form,
+        public readonly parent: IWidget | null,
         public config: Widget_listExt_config<T>,
         serial?: Widget_listExt_serial<T>,
     ) {
@@ -113,13 +131,13 @@ export class Widget_listExt<T extends Spec> implements IWidget<Widget_listExt_ty
                 console.log(`[❌] SKIPPING form item because it has an incompatible entry from a previous app definition`)
                 continue
             }
-            const subWidget = form.builder._HYDRATE(schema, subSerial)
+            const subWidget = form.builder._HYDRATE(this, schema, subSerial)
             this.entries.push({ widget: subWidget, shape: entry.shape })
         }
 
         // add missing items if min specified
         const missingItems = (this.config.min ?? 0) - this.entries.length
-        for (let i = 0; i < missingItems; i++) this.addItem()
+        for (let i = 0; i < missingItems; i++) this.addItem({ skipBump: true })
 
         applyWidgetMixinV2(this)
         makeAutoObservable(this, { sizeHelper: false })
@@ -136,48 +154,48 @@ export class Widget_listExt<T extends Spec> implements IWidget<Widget_listExt_ty
 
     // HELPERS =======================================================
     // FOLDING -------------------------------------------------------
-    collapseAllItems = () => {
-        this.entries.forEach((i) => (i.widget.serial.collapsed = true))
+    collapseAllItems = (): void => {
+        for (const i of this.entries) i.widget.setCollapsed(true)
     }
 
-    expandAllItems = () => {
-        this.entries.forEach((i) => (i.widget.serial.collapsed = false))
+    expandAllItems = (): void => {
+        for (const i of this.entries) i.widget.setCollapsed(false)
     }
 
     // ADDING ITEMS -------------------------------------------------
-    get length() { return this.entries.length } // prettier-ignore
-    addItem() {
+    addItem(p?: { skipBump?: true } /* 🔴 Annoying special case in the list's ctor */) {
         const partialShape = this.config.initialPosition({ ix: this.length, width: this.width, height: this.height })
         const shape: BoardPosition = { ...boardDefaultItemShape, ...partialShape }
         const spec = this.schemaAt(this.length)
-        const element = this.form.builder._HYDRATE(spec, null)
+        const element = this.form.builder._HYDRATE(this, spec, null)
         this.entries.push({ widget: element, shape: shape })
         this.serial.entries.push({ serial: element.serial, shape: shape })
+        if (!p?.skipBump) this.bumpValue()
     }
 
     // REMOVING ITEMS -------------------------------------------------
-    removemAllItems = () => {
-        this.serial.entries = this.serial.entries.slice(0, this.config.min ?? 0)
-        this.entries = this.entries.slice(0, this.config.min ?? 0)
+    removeAllItems = () => {
+        // ensure list is not empty
+        if (this.length === 0) return console.log(`[🔶] listExt.removeAllItems: list is already empty`)
+
+        // ensure list is not at min len already
+        const minLen = this.config.min ?? 0
+        if (this.length <= minLen) return console.log(`[🔶] listExt.removeAllItems: list is already at min lenght`)
+
+        // remove all items
+        this.serial.entries = this.serial.entries.slice(0, minLen)
+        this.entries = this.entries.slice(0, minLen)
+        this.bumpValue()
     }
 
     removeItem = (item: T['$Widget']) => {
+        // ensure item is in the list
         const i = this.entries.findIndex((i) => i.widget === item)
-        if (i >= 0) {
-            this.serial.entries.splice(i, 1)
-            this.entries.splice(i, 1)
-        }
-    }
-
-    get serialHash(): string {
-        return hash({
-            items: this.entries.map((i) => ({
-                position: i.shape,
-                value: i.widget.serialHash,
-            })),
-            width: this.serial.width,
-            height: this.serial.width,
-        })
+        if (i < 0) return console.log(`[🔶] listExt.removeItem: item not found`)
+        // remove item
+        this.serial.entries.splice(i, 1)
+        this.entries.splice(i, 1)
+        this.bumpValue()
     }
 
     get value(): Widget_listExt_output<T> {

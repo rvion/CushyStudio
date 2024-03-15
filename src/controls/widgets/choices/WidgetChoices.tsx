@@ -1,11 +1,10 @@
 import type { Form } from '../../Form'
 import type { IWidgetMixins, SharedWidgetSerial, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
-import type { SchemaDict } from 'src/cards/App'
 import type { IWidget } from 'src/controls/IWidget'
+import type { SchemaDict } from 'src/controls/Spec'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
-import { hash } from 'ohash'
 
 import { WidgetDI } from '../WidgetUI.DI'
 import { WidgetChoices_BodyUI, WidgetChoices_HeaderUI } from './WidgetChoicesUI'
@@ -37,17 +36,17 @@ export type Widget_choices_serial<T extends SchemaDict = SchemaDict> = WidgetSer
     values_: { [k in keyof T]?: T[k]['$Serial'] }
 }>
 
-// OUT
-export type Widget_choices_output<T extends SchemaDict = SchemaDict> = {
-    [k in keyof T]?: T[k]['$Output']
+// VALUE
+export type Widget_choices_value<T extends SchemaDict = SchemaDict> = {
+    [k in keyof T]?: T[k]['$Value']
 }
 
 // TYPES
 export type Widget_choices_types<T extends SchemaDict = SchemaDict> = {
     $Type: 'choices'
-    $Input: Widget_choices_config<T>
+    $Config: Widget_choices_config<T>
     $Serial: Widget_choices_serial<T>
-    $Output: Widget_choices_output<T>
+    $Value: Widget_choices_value<T>
     $Widget: Widget_choices<T>
 }
 
@@ -60,9 +59,6 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> implements IWidge
     readonly type: 'choices' = 'choices'
     readonly expand: boolean = this.config.expand ?? false
 
-    get serialHash(): string {
-        return hash(this.value)
-    }
     get isMulti(): boolean {
         return this.config.multi
     }
@@ -79,16 +75,18 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> implements IWidge
     get choices(): (keyof T & string)[] {
         return Object.keys(this.config.items)
     }
+
     get choicesWithLabels(): { key: keyof T & string; label: string }[] {
-        return Object.entries(this.config.items).map(([key, value]) => ({
+        return Object.entries(this.config.items).map(([key, spec]) => ({
             key,
             // note:
             // if child.config.label === false => makeLabelFromFieldName(key)
             // if child.config.label === '' => makeLabelFromFieldName(key)
-            label: value.config.label || makeLabelFromFieldName(key),
+            label: spec.config.label || makeLabelFromFieldName(key),
         }))
     }
 
+    /** array of all active branch keys */
     get activeBranches(): (keyof T & string)[] {
         return Object.keys(this.serial.branches).filter((x) => this.serial.branches[x])
     }
@@ -103,7 +101,9 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> implements IWidge
     }
 
     constructor(
-        public readonly form: Form<any>,
+        //
+        public readonly form: Form,
+        public readonly parent: IWidget | null,
         public readonly config: Widget_choices_config<T>,
         serial?: Widget_choices_serial<T>,
     ) {
@@ -141,7 +141,7 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> implements IWidge
                         ? def?.[branch] ?? false
                         : null)
 
-                if (isActive) this.enableBranch(branch)
+                if (isActive) this.enableBranch(branch, { skipBump: true })
             }
         } else {
             const allBranches = Object.keys(this.config.items)
@@ -155,7 +155,7 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> implements IWidge
                     ? Object.entries(def).find(([, v]) => v)?.[0] ?? allBranches[0]
                     : allBranches[0])
             if (activeBranch == null) toastError(`❌ No active branch found for single choice widget "${this.config.label}"`)
-            else this.enableBranch(activeBranch)
+            else this.enableBranch(activeBranch, { skipBump: true })
         }
 
         applyWidgetMixinV2(this)
@@ -163,19 +163,25 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> implements IWidge
     }
 
     toggleBranch(branch: keyof T & string) {
+        // 💬 2024-03-15 rvion: no need to bumpValue in this function;
+        // | it's handled by enableBranch and disableBranch themselves.
         if (this.children[branch]) {
             if (this.isMulti) this.disableBranch(branch)
         } else this.enableBranch(branch)
     }
 
-    disableBranch(branch: keyof T & string) {
+    disableBranch(branch: keyof T & string, p?: { skipBump?: boolean }) {
+        // ensure branch to disable is active
         if (!this.children[branch]) throw new Error(`❌ Branch "${branch}" not enabled`)
+
+        // remove children
         delete this.children[branch]
         // delete this.serial.values_[branch] // <- WE NEED TO KEEP THIS ONE UNLESS WE WANT TO DISCARD THE DRAFT
         this.serial.branches[branch] = false
+        if (!p?.skipBump) this.bumpValue()
     }
 
-    enableBranch(branch: keyof T & string) {
+    enableBranch(branch: keyof T & string, p?: { skipBump?: boolean }) {
         if (!this.config.multi) {
             for (const key in this.children) {
                 this.disableBranch(key)
@@ -192,20 +198,21 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> implements IWidge
         // prev serial seems compmatible => we use it
         const prevBranchSerial: Maybe<SharedWidgetSerial> = this.serial.values_?.[branch]
         if (prevBranchSerial && schema.type === prevBranchSerial.type) {
-            this.children[branch] = this.form.builder._HYDRATE(schema, prevBranchSerial)
+            this.children[branch] = this.form.builder._HYDRATE(this, schema, prevBranchSerial)
         }
         // prev serial is not compatible => we use the fresh one instead
         else {
-            this.children[branch] = this.form.builder._HYDRATE(schema, null)
+            this.children[branch] = this.form.builder._HYDRATE(this, schema, null)
             this.serial.values_[branch] = this.children[branch]?.serial
         }
 
         // set the active branch as active
         this.serial.branches[branch] = true
+        if (!p?.skipBump) this.bumpValue()
     }
 
     /** results, but only for active branches */
-    get value(): Widget_choices_output<T> {
+    get value(): Widget_choices_value<T> {
         const out: { [key: string]: any } = {}
         for (const branch in this.children) {
             // if (this.state.branches[key] !== true) continue

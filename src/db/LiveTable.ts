@@ -3,7 +3,8 @@ import type { $BaseInstanceFields, LiveInstance, UpdateOptions } from './LiveIns
 import type { CompiledQuery, SelectQueryBuilder } from 'kysely'
 import type { STATE } from 'src/state/state'
 
-import { Value, ValueError } from '@sinclair/typebox/value'
+// 2024-03-14 commented serial checks for now
+// import { Value, ValueError } from '@sinclair/typebox/value'
 import { action, type AnnotationMapEntry, makeAutoObservable, runInAction, toJS } from 'mobx'
 import { nanoid } from 'nanoid'
 
@@ -585,14 +586,14 @@ export class LiveTable<TABLE extends TableInfo<keyof KyselyTables>> {
     _createInstance = (data: TABLE['$T']): TABLE['$L'] => {
         const instance = new this.Ktor()
         // TYPE CHECKING --------------------
-        const schema = this.schema.schema
-        const valid = Value.Check(schema, data)
-        if (!valid) {
-            const errors: ValueError[] = [...Value.Errors(schema, data)]
-            console.log('❌', this.name)
-            for (const i of errors) console.log(`❌`, JSON.stringify(i))
-            // debugger
-        }
+        // /* ⏸️ */ const schema = this.schema.schema
+        // /* ⏸️ */ const valid = Value.Check(schema, data)
+        // /* ⏸️ */ if (!valid) {
+        // /* ⏸️ */     const errors: ValueError[] = [...Value.Errors(schema, data)]
+        // /* ⏸️ */     console.log('❌', this.name)
+        // /* ⏸️ */     for (const i of errors) console.log(`❌`, JSON.stringify(i))
+        // /* ⏸️ */     // debugger
+        // /* ⏸️ */ }
         // --------------------
         instance.init(this, data)
         this.liveEntities.set(data.id, instance)

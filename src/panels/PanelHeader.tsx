@@ -25,7 +25,7 @@ export const PanelHeaderUI = observer(function PanelHeaderUI_(p: { children?: Re
                 event.stopPropagation()
             }}
         >
-            {p.children ?? <></>}
+            {p.children}
         </div>
     )
 })

@@ -7,30 +7,48 @@ import type { KnownModel_Base } from 'src/manager/model-list/KnownModel_Base'
 import type { KnownModel_Name } from 'src/manager/model-list/KnownModel_Name'
 import type { ModelInfo } from 'src/manager/model-list/model-list-loader-types'
 
+/**
+ * base widget type; default type-level param when we work with unknown widget
+ * still allow to use SharedConfig properties, and SharedSerial properties
+ * */
 export type $WidgetTypes = {
     $Type: string
-    $Input: SharedWidgetConfig<any>
+    $Config: SharedWidgetConfig<any>
     $Serial: SharedWidgetSerial
-    $Output: any
+    $Value: any
     $Widget: any
 }
 
+// prettier-ignore
 export interface IWidget<K extends $WidgetTypes = $WidgetTypes> extends IWidgetMixins {
-    $Type: K['$Type']
-    $Input: K['$Input']
-    $Serial: K['$Serial']
-    $Output: K['$Output']
-    $Widget: K['$Widget']
+    $Type  : K['$Type']   /** type only properties; do not use directly; used to make typings good and fast */
+    $Config: K['$Config'] /** type only properties; do not use directly; used to make typings good and fast */
+    $Serial: K['$Serial'] /** type only properties; do not use directly; used to make typings good and fast */
+    $Value : K['$Value']  /** type only properties; do not use directly; used to make typings good and fast */
+    $Widget: K['$Widget'] /** type only properties; do not use directly; used to make typings good and fast */
 
+    /** unique ID; each node in the form tree has one; persisted in serial */
     readonly id: string
-    readonly serialHash: string
-    readonly type: K['$Type']
-    readonly value: K['$Output']
-    readonly serial: K['$Serial']
-    readonly form: Form<any>
-    readonly config: K['$Input'] // WidgetConfigFields<any>
 
-    /** if specified, override the default algorithm to decide if we should have borders */
+    /** widget type; can be used instead of `instanceof` to known which wiget it is */
+    readonly type: K['$Type']
+
+    /** the provided config  */
+    readonly config: K['$Config']
+
+    /** wiget value is the simple/easy-to-use representation of that widget  */
+    readonly value: K['$Value']
+
+    /** wiget serial is the full serialized representation of that widget  */
+    readonly serial: K['$Serial']
+
+    /** root form this widget has benn registered to */
+    readonly form: Form
+
+    /** parent widget of this widget, if any */
+    readonly parent: IWidget | null
+
+    /** if specified by the widget, override the default algorithm to decide if the widget shouldhave borders */
     border?: boolean
 
     /** if specified, override the default algorithm to decide if we should have label aligned */
@@ -44,26 +62,58 @@ export interface IWidget<K extends $WidgetTypes = $WidgetTypes> extends IWidgetM
 }
 
 /**
- * those will be dynamically injected via calling `applyWidgetMixinV2(this)`
- * right before the makeAutoObservable(this) call
+ * those properties will be dynamically injected in every widget
+ * by calling `applyWidgetMixinV2(this)` in the constructor,
+ * Before the makeAutoObservable(this) call. If you're adding a new
+ * base widget, you're expected to do that too.
  */
 export type IWidgetMixins = {
+    // UI ------------------------------------------------------
+    // value stuff
     ui(): JSX.Element
     body(): JSX.Element | undefined
     header(): JSX.Element | undefined
     defaultBody(): JSX.Element | undefined
     defaultHeader(): JSX.Element | undefined
-    test: number
+
+    // FOLD ----------------------------------------------------
+    setCollapsed(
+        /** true: collapse; false: expanded */
+        val: boolean | undefined,
+    ): void
+
+    /** toggle widget fold <-> unfolded */
+    toggleCollapsed(): void
+
+    // BUMP ----------------------------------------------------
+    /**
+     * Notify form that the value has been udpated
+     * (and bump serial.lastUpdatedAt to Date.now())
+     * 👉 Every widget must call this when value has been updated
+     * */
+    bumpValue(): void
+
+    /**
+     * Notify form that a non-value serial has been udpated
+     * 👉 every widget must call this when non-value serial has been updated
+     * */
+    bumpSerial(): void
 }
 
-export type GetWidgetResult<Widget> = Widget extends { $Output: infer O } ? O : never
-export type GetWidgetState<Widget> = Widget extends { $Serial: infer S } ? S : never
+/** 🔶 2024-03-13 rvion: TODO: remove that function; use ['$Value'] instead */
+export type GetWidgetResult<Widget> = Widget extends { $Value: infer Value } ? Value : never
 
-export type LabelPos = 'start' | 'end'
+/** 🔶 2024-03-13 rvion: TODO: remove that function; use ['$Serial'] instead */
+export type GetWidgetState<Widget> = Widget extends { $Serial: infer Serial } ? Serial : never
+
+/** common properties we expect to see in a widget serial */
 export type SharedWidgetSerial = {
     id: string
     type: string
     collapsed?: boolean
+    lastUpdatedAt?: number
+    /** unused internally, here so you can add whatever you want inside */
+    custom?: any
 }
 
 export type WidgetSerialFields<X> = X & SharedWidgetSerial
@@ -123,13 +173,22 @@ export type SharedWidgetConfig<T extends $WidgetTypes> = {
 
     /** if provided, widget will be hidden */
     hidden?: boolean
+
+    /** unused internally, here so you can add whatever you want inside */
+    custom?: any
 }
 
+/**
+ * cushy-specific types to allow
+ * 2024-03-13 rvion: TODO: split outside of this file, add a new type-level config for
+ * project-specific FormNode metadata
+ */
 export type Requirements =
     // models
     | { type: 'modelInCivitai'; civitaiURL: string; optional?: true; base: KnownModel_Base }
     | { type: 'modelInManager'; modelName: KnownModel_Name; optional?: true }
     | { type: 'modelCustom'; infos: ModelInfo; optional?: true }
+
     // custom nodes
     | { type: 'customNodesByTitle'; title: KnownCustomNode_Title; optional?: true }
     | { type: 'customNodesByURI'; uri: KnownCustomNode_File; optional?: true }

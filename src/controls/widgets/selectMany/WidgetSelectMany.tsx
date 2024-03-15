@@ -5,7 +5,6 @@ import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } f
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
-import { hash } from 'ohash'
 
 import { WidgetDI } from '../WidgetUI.DI'
 import { WidgetSelectManyUI } from './WidgetSelectManyUI'
@@ -28,15 +27,15 @@ export type Widget_selectMany_serial<T extends BaseSelectEntry> = WidgetSerialFi
     values: T[]
 }>
 
-// OUT
+// VALUE
 export type Widget_selectMany_output<T extends BaseSelectEntry> = T[]
 
 // TYPES
 export type Widget_selectMany_types<T extends BaseSelectEntry> = {
     $Type: 'selectMany'
-    $Input: Widget_selectMany_config<T>
+    $Config: Widget_selectMany_config<T>
     $Serial: Widget_selectMany_serial<T>
-    $Output: Widget_selectMany_output<T>
+    $Value: Widget_selectMany_output<T>
     $Widget: Widget_selectMany<T>
 }
 
@@ -45,9 +44,7 @@ export interface Widget_selectMany<T extends BaseSelectEntry> extends Widget_sel
 export class Widget_selectMany<T extends BaseSelectEntry> implements IWidget<Widget_selectMany_types<T>> {
     DefaultHeaderUI = WidgetSelectManyUI
     DefaultBodyUI = undefined
-    get serialHash() {
-        return hash(this.value)
-    }
+
     readonly id: string
     readonly type: 'selectMany' = 'selectMany'
     readonly serial: Widget_selectMany_serial<T>
@@ -73,7 +70,8 @@ export class Widget_selectMany<T extends BaseSelectEntry> implements IWidget<Wid
 
     constructor(
         //
-        public form: Form<any>,
+        public readonly form: Form,
+        public readonly parent: IWidget | null,
         public config: Widget_selectMany_config<T>,
         serial?: Widget_selectMany_serial<T>,
     ) {
@@ -85,35 +83,43 @@ export class Widget_selectMany<T extends BaseSelectEntry> implements IWidget<Wid
             query: '',
             values: config.default ?? [],
         }
+        /* 💊 */ if (this.serial.values == null) this.serial.values = []
         applyWidgetMixinV2(this)
         makeAutoObservable(this)
     }
 
+    /** un-select given item */
     removeItem = (item: T): void => {
-        if (this.serial.values == null) {
-            this.serial.values = []
-            return
-        } // just in case
+        // ensure item was selected
+        const indexOf = this.serial.values.findIndex((i) => i.id === item.id)
+        if (indexOf < 0) return console.log(`[🔶] WidgetSelectMany.removeItem: item not found`)
+
+        // remove it
         this.serial.values = this.serial.values.filter((v) => v.id !== item.id) // filter just in case of duplicate
+        this.bumpValue()
     }
 
+    /** select given item */
     addItem = (item: T): void => {
-        if (this.serial.values == null) {
-            this.serial.values = [item]
-            return
-        } // just in case
+        // ensure item is not selected yet
         const i = this.serial.values.indexOf(item)
-        if (i < 0) this.serial.values.push(item)
+        if (i >= 0) return console.log(`[🔶] WidgetSelectMany.addItem: item already in list`)
+
+        // insert & bump
+        this.serial.values.push(item)
+        this.bumpValue()
     }
 
+    /** select item if item was not selected, un-select if item was selected */
     toggleItem = (item: T): void => {
-        if (this.serial.values == null) {
-            this.serial.values = [item]
-            return
-        } // just in case
         const i = this.serial.values.findIndex((i) => i.id === item.id)
-        if (i < 0) this.serial.values.push(item)
-        else this.serial.values = this.serial.values.filter((v) => v.id !== item.id) // filter just in case of duplicate
+        if (i < 0) {
+            this.serial.values.push(item)
+            this.bumpValue()
+        } else {
+            this.serial.values = this.serial.values.filter((v) => v.id !== item.id) // filter just in case of duplicate
+            this.bumpValue()
+        }
     }
 
     get value(): Widget_selectMany_output<T> {

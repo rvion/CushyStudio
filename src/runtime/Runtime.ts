@@ -3,12 +3,12 @@ import type { ComfyPromptL } from '../models/ComfyPrompt'
 import type { ComfyWorkflowL, PromptSettings } from '../models/ComfyWorkflow'
 import type { MediaImageL } from '../models/MediaImage'
 import type { StepL } from '../models/Step'
-import type { SchemaDict } from 'src/cards/App'
+import type { SchemaDict } from 'src/controls/Spec'
 import type { STATE } from 'src/state/state'
 
 import child_process, { execSync } from 'child_process'
+import { createHash } from 'crypto'
 import fs, { writeFileSync } from 'fs'
-import { hash } from 'ohash'
 import * as path from 'pathe'
 
 import { ComfyWorkflowBuilder } from '../back/NodeBuilder'
@@ -156,7 +156,10 @@ export class Runtime<FIELDS extends SchemaDict = any> {
         return this.step.draft?.shouldAutoStart
     }
 
-    hash = (s: string): string => hash(s)
+    /** fast md5 string hash using node built-in crypto api */
+    hash = (s: string): string => {
+        return createHash('md5').update(s).digest('hex')
+    }
 
     isCurrentDraftDirty(): Maybe<boolean> {
         return this.step.draft?.isDirty
@@ -214,7 +217,7 @@ export class Runtime<FIELDS extends SchemaDict = any> {
      * the main value sent to your app as context.
      * Most apps only need this value.
      */
-    formResult!: { [k in keyof FIELDS]: FIELDS[k]['$Output'] }
+    formResult!: { [k in keyof FIELDS]: FIELDS[k]['$Value'] }
 
     /**
      * the extended json form value including internal state

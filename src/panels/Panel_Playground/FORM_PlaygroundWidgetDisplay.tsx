@@ -1,7 +1,7 @@
-import { Form } from 'src/controls/Form'
+import { CushyFormManager } from 'src/controls/FormBuilder'
 import { readJSON, writeJSON } from 'src/state/jsonUtils'
 
-export const FORM_PlaygroundWidgetDisplay = new Form(
+export const FORM_PlaygroundWidgetDisplay = CushyFormManager.form(
     (ui) => {
         const booleanForm = {
             check: ui.bool({}),
@@ -197,6 +197,6 @@ export const FORM_PlaygroundWidgetDisplay = new Form(
     {
         name: 'Playground Widget Showcase',
         initialValue: () => readJSON('settings/playground_form_display.json'),
-        onChange: (form) => writeJSON('settings/playground_form_display.json', form.serial),
+        onSerialChange: (form) => writeJSON('settings/playground_form_display.json', form.serial),
     },
 )

@@ -4,13 +4,13 @@ import { useLayoutEffect } from 'react'
 import { MessageInfoUI } from '../MessageUI'
 import { PanelHeaderUI } from '../PanelHeader'
 import { FORM_PlaygroundWidgetDisplay } from './FORM_PlaygroundWidgetDisplay'
-import { Form } from 'src/controls/Form'
+import { CushyFormManager } from 'src/controls/FormBuilder'
 import { FormUI } from 'src/controls/FormUI'
 import { InstallRequirementsBtnUI, Panel_InstallRequirementsUI } from 'src/controls/REQUIREMENTS/Panel_InstallRequirementsUI'
 import { readJSON, writeJSON } from 'src/state/jsonUtils'
 import { useSt } from 'src/state/stateContext'
 
-const Header_Playground = new Form(
+const Header_Playground = CushyFormManager.form(
     (ui) => ({
         // header: ui.group({
         //     // label: false,
@@ -45,7 +45,7 @@ const Header_Playground = new Form(
     {
         name: 'Playground Conf',
         initialValue: () => readJSON('settings/playground_config.json'),
-        onChange: (form) => writeJSON('settings/playground_config.json', form.serial),
+        onSerialChange: (form) => writeJSON('settings/playground_config.json', form.serial),
     },
 )
 

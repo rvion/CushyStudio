@@ -47,6 +47,7 @@ import { STANDARD_HOST_ID, vIRTUAL_HOST_ID__BASE, vIRTUAL_HOST_ID__FULL } from '
 import { type ConfigFile, PreferedFormLayout } from 'src/config/ConfigFile'
 import { mkConfigFile } from 'src/config/mkConfigFile'
 import { Form } from 'src/controls/Form'
+import { CushyFormManager } from 'src/controls/FormBuilder'
 import { quickBench } from 'src/db/quickBench'
 import { SQLITE_false, SQLITE_true } from 'src/db/SQLITE_boolean'
 import { asHostID, type TABLES } from 'src/db/TYPES.gen'
@@ -409,7 +410,7 @@ export class STATE {
         })
     }
 
-    civitaiConf = new Form(
+    civitaiConf = CushyFormManager.form(
         (ui) => ({
             imgSize1: ui.int({ min: 64, max: 1024, step: 64, default: 512 }),
             imgSize2: ui.int({ min: 64, max: 1024, step: 64, default: 128 }),
@@ -420,10 +421,10 @@ export class STATE {
         {
             name: 'Civitai Conf',
             initialValue: () => readJSON('settings/civitai.json'),
-            onChange: (form) => writeJSON('settings/civitai.json', form.serial),
+            onSerialChange: (form) => writeJSON('settings/civitai.json', form.serial),
         },
     )
-    sideBarConf = new Form(
+    sideBarConf = CushyFormManager.form(
         (f) => ({
             size: f.int({ label: false, alignLabel: false, text: 'Size', min: 24, max: 128, default: 48, suffix: 'px', step: 4 }),
             appIcons: f
@@ -444,7 +445,7 @@ export class STATE {
         {
             name: 'SideBar Conf',
             initialValue: () => readJSON('settings/sidebar.json'),
-            onChange: (form) => writeJSON('settings/sidebar.json', form.serial),
+            onSerialChange: (form) => writeJSON('settings/sidebar.json', form.serial),
         },
     )
 
@@ -452,7 +453,7 @@ export class STATE {
     // playgroundHeader = Header_Playground
     // playgroundWidgetDisplay = FORM_PlaygroundWidgetDisplay
 
-    displacementConf = new Form(
+    displacementConf = CushyFormManager.form(
         (form) => ({
             camera: form.choice({
                 appearance: 'tab',
@@ -478,12 +479,15 @@ export class STATE {
         {
             name: 'Displacement Conf',
             initialValue: () => readJSON('settings/displacement.json'),
-            onChange: (form) => writeJSON('settings/displacement.json', form.serial),
+            onSerialChange: (form) => writeJSON('settings/displacement.json', form.serial),
         },
     )
 
-    galleryConf = new Form(
+    galleryConf = CushyFormManager.form(
         (f) => ({
+            defaultSort: f.selectOneV2(['createdAt', 'updatedAt'] as const, {
+                default: { id: 'createdAt', label: 'Created At' },
+            }),
             gallerySize: f.int({ label: 'Preview Size', default: 48, min: 24, step: 8, softMax: 512, max: 1024, tooltip: 'Size of the preview images in px', unit: 'px' }), // prettier-ignore
             galleryMaxImages: f.int({ label: 'Number of items', min: 10, softMax: 300, default: 50, tooltip: 'Maximum number of images to display', }), // prettier-ignore
             galleryBgColor: f.color({ label: 'background' }),
@@ -500,7 +504,7 @@ export class STATE {
         }),
         {
             name: 'Gallery Conf',
-            onChange: (form) => writeJSON('settings/gallery.json', form.serial),
+            onSerialChange: (form) => writeJSON('settings/gallery.json', form.serial),
             initialValue: () => readJSON('settings/gallery.json'),
         },
     )
@@ -820,12 +824,15 @@ export class STATE {
     galleryFilterTag: Maybe<string> = null
     galleryFilterAppName: Maybe<{ id: CushyAppID; name?: Maybe<string> }> = null
     get imageToDisplay() {
+        const conf = this.galleryConf.value
         return this.db.media_image.select(
             (query) => {
-                let x = query
-                    .orderBy('media_image.updatedAt', 'desc')
-                    .limit(this.galleryConf.value.galleryMaxImages ?? 20)
-                    .select('media_image.id')
+                let x =
+                    conf.defaultSort.id === 'createdAt'
+                        ? query.orderBy('media_image.createdAt', 'desc')
+                        : query.orderBy('media_image.updatedAt', 'desc')
+
+                x = x.limit(this.galleryConf.value.galleryMaxImages ?? 20).select('media_image.id')
 
                 if (this.galleryFilterPath) x = x.where('media_image.path', 'like', '%' + this.galleryFilterPath + '%')
                 if (this.galleryFilterTag) x = x.where('media_image.tags', 'like', '%' + this.galleryFilterTag + '%')

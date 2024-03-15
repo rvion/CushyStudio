@@ -1,7 +1,7 @@
-import type { Form } from '../../Form'
+import type { Form, IFormBuilder } from '../../Form'
 import type { IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 import type { IWidget } from 'src/controls/IWidget'
-import type { Spec } from 'src/controls/Spec'
+import type { SchemaDict, Spec } from 'src/controls/Spec'
 
 import { makeAutoObservable, observable } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -28,15 +28,15 @@ export type Widget_list_serial<T extends Spec> = WidgetSerialFields<{
     items_: T['$Serial'][]
 }>
 
-// OUT
-export type Widget_list_output<T extends Spec> = T['$Output'][]
+// VALUE
+export type Widget_list_value<T extends Spec> = T['$Value'][]
 
 // TYPES
 export type Widget_list_types<T extends Spec> = {
     $Type: 'list'
-    $Input: Widget_list_config<T>
+    $Config: Widget_list_config<T>
     $Serial: Widget_list_serial<T>
-    $Output: Widget_list_output<T>
+    $Value: Widget_list_value<T>
     $Widget: Widget_list<T>
 }
 
@@ -48,15 +48,25 @@ export class Widget_list<T extends Spec> implements IWidget<Widget_list_types<T>
         // if (this.items.length === 0) return
         return WidgetList_BodyUI
     }
-    get serialHash(): string {
-        return this.items.map((v) => v.serialHash).join(',')
-    }
     readonly id: string
     readonly type: 'list' = 'list'
 
     get length() { return this.items.length } // prettier-ignore
     items: T['$Widget'][]
     serial: Widget_list_serial<T>
+
+    findItemIndexContaining = (widget: IWidget): number | null => {
+        let at = widget as IWidget | null
+        let child = at
+        while (at != null) {
+            at = at.parent
+            if (at === this) {
+                return this.items.indexOf(child as T['$Widget'])
+            }
+            child = at
+        }
+        return null
+    }
 
     schemaAt = (ix: number): T => {
         const _schema = this.config.element
@@ -66,9 +76,11 @@ export class Widget_list<T extends Spec> implements IWidget<Widget_list_types<T>
                 : _schema
         return schema
     }
+
     constructor(
         //
-        public form: Form<any>,
+        public readonly form: Form,
+        public readonly parent: IWidget | null,
         public config: Widget_list_config<T>,
         serial?: Widget_list_serial<T>,
     ) {
@@ -85,7 +97,7 @@ export class Widget_list<T extends Spec> implements IWidget<Widget_list_types<T>
 
         // 1. add default item (only when serial was null)
         if (serial == null && this.config.defaultLength != null) {
-            for (let i = 0; i < this.config.defaultLength; i++) this.addItem()
+            for (let i = 0; i < this.config.defaultLength; i++) this.addItem({ skipBump: true })
         }
         // 2. pre-existing serial => rehydrate items
         else {
@@ -98,63 +110,100 @@ export class Widget_list<T extends Spec> implements IWidget<Widget_list_types<T>
                     console.log(`[❌] SKIPPING form item because it has an incompatible entry from a previous app definition`)
                     continue
                 }
-                const subWidget = form.builder._HYDRATE(unmounted, subSerial)
+                const subWidget = form.builder._HYDRATE(this, unmounted, subSerial)
                 this.items.push(subWidget)
             }
         }
 
         // 3. add missing items if min specified
         const missingItems = (this.config.min ?? 0) - this.items.length
-        for (let i = 0; i < missingItems; i++) this.addItem()
+        for (let i = 0; i < missingItems; i++) this.addItem({ skipBump: true })
 
         applyWidgetMixinV2(this)
         makeAutoObservable(this)
     }
 
-    get value(): Widget_list_output<T> {
+    get value(): Widget_list_value<T> {
         return this.items.map((i) => i.value)
     }
 
     // HELPERS =======================================================
     // FOLDING -------------------------------------------------------
     collapseAllItems = () => {
-        this.items.forEach((i) => (i.serial.collapsed = true))
+        for (const i of this.items) i.setCollapsed(true)
     }
 
     expandAllItems = () => {
-        this.items.forEach((i) => (i.serial.collapsed = false))
+        for (const i of this.items) i.setCollapsed(false)
+    }
+
+    // ERRORS --------------------------------------------------------
+    get errors(): string[] {
+        let out: string[] = []
+        if (this.config.min != null && this.length < this.config.min) {
+            out.push(`List is too short`)
+        }
+        if (this.config.max != null && this.length > this.config.max) {
+            out.push(`List is too long`)
+        }
+        return out
     }
 
     // ADDING ITEMS -------------------------------------------------
-    addItem() {
+    addItem(p?: { skipBump?: true } /* 🔴 Annoying special case in the list's ctor */) {
+        // ensure list is not at max len already
+        if (this.config.max != null && this.items.length >= this.config.max)
+            return console.log(`[🔶] list.addItem: list is already at max length`)
+        // create new item
         const schema = this.schemaAt(this.serial.items_.length) // TODO: evaluate schema in the form loop
-        const element = this.form.builder._HYDRATE(schema, null)
+        const element = this.form.builder._HYDRATE(this, schema, null)
+        // insert item
         this.items.push(element)
         this.serial.items_.push(element.serial)
+        if (!p?.skipBump) this.bumpValue()
     }
 
-    // REMOVING ITEMS -------------------------------------------------
-    removemAllItems = () => {
-        this.serial.items_ = this.serial.items_.slice(0, this.config.min ?? 0)
-        this.items = this.items.slice(0, this.config.min ?? 0)
+    // REMOVING ITEMS ------------------------------------------------
+    removeAllItems = () => {
+        // ensure list is not empty
+        if (this.length === 0) return console.log(`[🔶] list.removeAllItems: list is already empty`)
+        // ensure list is not at min len already
+        const minLen = this.config.min ?? 0
+        if (this.length <= minLen) return console.log(`[🔶] list.removeAllItems: list is already at min lenght`)
+        // remove all items
+        this.serial.items_ = this.serial.items_.slice(0, minLen)
+        this.items = this.items.slice(0, minLen)
+        this.bumpValue()
     }
 
     removeItem = (item: T['$Widget']) => {
+        // ensure item is in the list
         const i = this.items.indexOf(item)
-        if (i >= 0) {
-            this.serial.items_.splice(i, 1)
-            this.items.splice(i, 1)
-        }
+        if (i === -1) return console.log(`[🔶] list.removeItem: item not found`)
+        // remove item
+        this.serial.items_.splice(i, 1)
+        this.items.splice(i, 1)
+        this.bumpValue()
     }
 
     // MOVING ITEMS ---------------------------------------------------
-    moveItem = (oldIndex: number, newIndex: number) => {
+    moveItem = (
+        //
+        oldIndex: number,
+        newIndex: number,
+    ) => {
+        if (oldIndex === newIndex) return console.log(`[🔶] list.moveItem: oldIndex === newIndex`)
+        if (oldIndex < 0 || oldIndex >= this.length) return console.log(`[🔶] list.moveItem: oldIndex out of bounds`)
+        if (newIndex < 0 || newIndex >= this.length) return console.log(`[🔶] list.moveItem: newIndex out of bounds`)
+
         // serials
         const serials = this.serial.items_
         serials.splice(newIndex, 0, serials.splice(oldIndex, 1)[0])
+
         // instances
         const instances = this.items
         instances.splice(newIndex, 0, instances.splice(oldIndex, 1)[0])
+        this.bumpValue()
     }
 }
 

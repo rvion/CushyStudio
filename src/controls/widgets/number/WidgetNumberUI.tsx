@@ -24,7 +24,7 @@ export const WidgetNumberUI = observer(function WidgetNumberUI_(p: { widget: Wid
                 step={step}
                 suffix={widget.config.suffix}
                 text={widget.config.text}
-                onValueChange={(next) => (widget.serial.val = next)}
+                onValueChange={(next) => (widget.value = next)}
                 forceSnap={widget.config.forceSnap}
             />
             <div

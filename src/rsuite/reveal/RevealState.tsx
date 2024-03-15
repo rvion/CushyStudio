@@ -12,7 +12,7 @@ export class RevealState {
     uid = RevealState.nextUID++
 
     constructor(public p: RevealProps) {
-        // 2024-03-06 YIKES !!
+        // 💬 2024-03-06 YIKES !!
         // | Reveal UI was causing
         // |
         // | 📈 const stop = spy((ev) => {

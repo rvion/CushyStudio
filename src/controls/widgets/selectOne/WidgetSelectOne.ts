@@ -2,21 +2,20 @@ import type { Widget_group } from '../group/WidgetGroup'
 import type { Form } from 'src/controls/Form'
 import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from 'src/controls/IWidget'
 
-import { makeAutoObservable } from 'mobx'
+import { makeAutoObservable, runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
-import { hash } from 'ohash'
 
 import { WidgetDI } from '../WidgetUI.DI'
 import { WidgetSelectOneUI } from './WidgetSelectOneUI'
 import { applyWidgetMixinV2 } from 'src/controls/Mixins'
 
-export type BaseSelectEntry = { id: string; label?: string }
+export type BaseSelectEntry<T = string> = { id: T; label?: string }
 
 // CONFIG
 export type Widget_selectOne_config<T extends BaseSelectEntry> = WidgetConfigFields<
     {
         default?: T
-        choices: T[] | ((formRoot: Widget_group<any>) => T[])
+        choices: T[] | ((formRoot: Widget_group<any>, self: Widget_selectOne<T>) => T[])
         appearance?: 'select' | 'tab'
     },
     Widget_selectOne_types<T>
@@ -29,15 +28,15 @@ export type Widget_selectOne_serial<T extends BaseSelectEntry> = WidgetSerialFie
     val: T
 }>
 
-// OUT
+// VALUE
 export type Widget_selectOne_output<T extends BaseSelectEntry> = T
 
 // TYPES
 export type Widget_selectOne_types<T extends BaseSelectEntry> = {
     $Type: 'selectOne'
-    $Input: Widget_selectOne_config<T>
+    $Config: Widget_selectOne_config<T>
     $Serial: Widget_selectOne_serial<T>
-    $Output: Widget_selectOne_output<T>
+    $Value: Widget_selectOne_output<T>
     $Widget: Widget_selectOne<T>
 }
 
@@ -46,9 +45,7 @@ export interface Widget_selectOne<T> extends Widget_selectOne_types<T>, IWidgetM
 export class Widget_selectOne<T extends BaseSelectEntry> implements IWidget<Widget_selectOne_types<T>> {
     DefaultHeaderUI = WidgetSelectOneUI
     DefaultBodyUI = undefined
-    get serialHash() {
-        return hash(this.value)
-    }
+
     readonly id: string
     readonly type: 'selectOne' = 'selectOne'
     readonly serial: Widget_selectOne_serial<T>
@@ -65,13 +62,15 @@ export class Widget_selectOne<T extends BaseSelectEntry> implements IWidget<Widg
         if (typeof _choices === 'function') {
             if (!this.form.ready) return []
             if (this.form._ROOT == null) throw new Error('❌ IMPOSSIBLE: this.form._ROOT is null')
-            return _choices(this.form._ROOT)
+            return _choices(this.form._ROOT, this)
         }
         return _choices
     }
+
     constructor(
         //
-        public form: Form<any>,
+        public readonly form: Form,
+        public readonly parent: IWidget | null,
         public config: Widget_selectOne_config<T>,
         serial?: Widget_selectOne_serial<T>,
     ) {
@@ -87,6 +86,14 @@ export class Widget_selectOne<T extends BaseSelectEntry> implements IWidget<Widg
         if (this.serial.val == null && Array.isArray(this.config.choices)) this.serial.val = choices[0]
         applyWidgetMixinV2(this)
         makeAutoObservable(this)
+    }
+
+    set value(next: Widget_selectOne_output<T>) {
+        if (this.serial.val === next) return
+        runInAction(() => {
+            this.serial.val = next
+            this.bumpValue()
+        })
     }
     get value(): Widget_selectOne_output<T> {
         return this.serial.val
