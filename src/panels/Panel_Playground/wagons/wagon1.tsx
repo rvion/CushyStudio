@@ -16,11 +16,12 @@ export const wagon1 = defineWagon({
             ui.choice({
                 label: 'Data',
                 appearance: 'tab',
+                tabPosition: 'start',
                 border: false,
                 items: {
+                    'knex 🚧': ui_selectData_knex(ui),
                     pivot: ui_selectData_pivot(ui),
                     metabase: ui_selectData_metabase(ui),
-                    'knex 🚧': ui_selectData_knex(ui),
                     prql: prefab_prql.ui(ui),
                 },
             }),
@@ -34,8 +35,8 @@ export const wagon1 = defineWagon({
                 return dataM['knex 🚧'].summarizes.flatMap((s) => (s.by == null ? [] : [s.by.column.as]))
             if (dataM.prql != null)
                 return dataM.prql.pipeline.flatMap((stmt) => {
-                    if (stmt.derive != null) return stmt.derive.map((d) => d.expr.name)
-                    if (stmt.group != null) return stmt.group.agg.map((a) => a.name)
+                    if (stmt.derive != null) return stmt.derive.expr.name
+                    if (stmt.group != null) return stmt.group.aggregate.map((a) => a.name)
                     return []
                 })
             throw 'unreachable'
@@ -47,8 +48,8 @@ export const wagon1 = defineWagon({
             if (dataM['knex 🚧'] != null) return dataM['knex 🚧'].summarizes.map((s) => s.agg.column.as)
             if (dataM.prql != null)
                 return dataM.prql.pipeline.flatMap((stmt) => {
-                    if (stmt.derive != null) return stmt.derive.map((d) => d.expr.name)
-                    if (stmt.group != null) return stmt.group.agg.map((a) => a.name)
+                    if (stmt.derive != null) return stmt.derive.expr.name
+                    if (stmt.group != null) return stmt.group.aggregate.map((a) => a.name)
                     return []
                 })
             throw 'unreachable'
