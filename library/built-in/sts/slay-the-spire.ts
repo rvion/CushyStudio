@@ -3,8 +3,6 @@
  * For the slay-the-spire game
  */
 
-import type { OpenRouter_Models } from 'src/llm/OpenRouter_models'
-
 import {
     run_ipadapter_standalone,
     ui_ipadapter_standalone,
@@ -74,7 +72,6 @@ app({
 
         let startingSeed = ui.seed
         for (const x of allCards) {
-            let latent: _LATENT = graph.EmptyLatentImage({ height, width })
             if (AFTERGENERATION.length >= ui.max) break
             // if cards are manually specified, only use those
             if (ui.cards.length > 0) {
@@ -120,6 +117,7 @@ app({
             const positiveCond = graph.CLIPTextEncode({ clip, text: prompt })
             const negativeCond = graph.CLIPTextEncode({ clip, text: negativeText })
             const seed = startingSeed++
+            let latent: _LATENT = graph.EmptyLatentImage({ height, width })
             latent = graph.KSampler({
                 seed,
                 latent_image: latent,
