@@ -5,6 +5,7 @@ import { MutableRefObject, useEffect, useMemo } from 'react'
 import { createPortal } from 'react-dom'
 
 import { DrawWorkflowUI } from './DrawWorkflowUI'
+import { useCursorLockMove } from './useCursorLockMove'
 import { ComfyWorkflowL } from 'src/models/ComfyWorkflow'
 
 // import { renderMinimap } from 'src/widgets/minimap/Minimap'
@@ -15,7 +16,7 @@ export const GraphPreviewUI = observer(function GraphPreviewUI_(p: { graph: Comf
     const workflow = p.graph
     const canvasRef = useObservableRef<HTMLCanvasElement>()
     const canvas = canvasRef.current
-
+    const { dx, dy, isDragging, props } = useCursorLockMove()
     useEffect(() => {
         if (workflow == null) /* */ return console.log('❌ no graph yet')
         if (canvas == null) /*   */ return console.log('❌ no canvas yet')
@@ -69,6 +70,7 @@ export const GraphPreviewUI = observer(function GraphPreviewUI_(p: { graph: Comf
             <canvas
                 id='map'
                 ref={canvasRef}
+                {...props}
                 style={{ width: '100px', height: '100px', zIndex: 1000, border: '1px solid blue' }}
                 // onMouseOverCapture={}
                 onMouseEnter={() => {
@@ -80,7 +82,13 @@ export const GraphPreviewUI = observer(function GraphPreviewUI_(p: { graph: Comf
                     window.removeEventListener('keydown', listenForCancelKey, true)
                 }}
             />
-            {createPortal(<DrawWorkflowUI workflow={workflow} />, domNode)}
+            {createPortal(
+                <DrawWorkflowUI //
+                    offset={isDragging ? { x: dx, y: dy } : undefined}
+                    workflow={workflow}
+                />,
+                domNode,
+            )}
         </div>
     )
 })

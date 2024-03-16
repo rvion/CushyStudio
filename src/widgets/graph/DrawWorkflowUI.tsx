@@ -1,7 +1,7 @@
 import type { NodePort } from 'src/core/ComfyNode'
 
 import { observer } from 'mobx-react-lite'
-import { Fragment } from 'react'
+import { Fragment, useEffect, useRef } from 'react'
 
 import { NodeSlotSize } from './NodeSlotSize'
 import { ComfyWorkflowL } from 'src/models/ComfyWorkflow'
@@ -13,21 +13,37 @@ export const DrawWorkflowUI = observer(function DrawWorkflowUI_(p: {
     //
     spline?: number
     workflow: ComfyWorkflowL
+    offset?: { x: number; y: number }
 }) {
     const wflow = p.workflow
     const INportsById = new Map<string, NodePort>()
     const OUTportsById = new Map<string, NodePort>()
-    // let totalWidth = 0
-    // let totalHeight = 0
     for (const node of wflow.nodes) {
         for (const port of node.incomingPorts) INportsById.set(port.id, port)
         for (const port of node.outgoingPorts) OUTportsById.set(port.id, port)
-        // totalHeight = Math.max(totalHeight, node.y + node.height)
-        // totalWidth = Math.max(totalWidth, node.x + node.width)
     }
+    const ref = useRef<HTMLDivElement>(null)
+    useEffect(() => {
+        if (ref.current == null) return
+        if (p.offset) {
+            console.log(`[🤠] `, { left: p.offset.x, top: p.offset.y })
+            ref.current.scrollTo({
+                left: p.offset.x,
+                top: p.offset.y,
+                behavior: 'instant',
+            })
+            return
+        }
+
+        ref.current.scrollTo({
+            left: wflow.currentExecutingNode?.x,
+            top: wflow.currentExecutingNode?.y,
+            behavior: 'smooth',
+        })
+    }, [wflow.currentExecutingNode?.uid, p.offset?.x, p.offset?.y])
 
     return (
-        <Fragment>
+        <div tw='relative overflow-auto flex-1 h-full w-full' ref={ref}>
             {wflow.nodes.map((node) => {
                 if (node == null) return
                 const pgr = node.progressReport
@@ -161,6 +177,6 @@ export const DrawWorkflowUI = observer(function DrawWorkflowUI_(p: {
                     </Fragment>
                 )
             })}
-        </Fragment>
+        </div>
     )
 })
