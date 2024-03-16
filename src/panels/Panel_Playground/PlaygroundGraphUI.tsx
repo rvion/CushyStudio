@@ -10,14 +10,16 @@ import { DrawWorkflowUI } from 'src/widgets/graph/DrawWorkflowUI'
 
 export const PlaygroundGraphUI = observer(function PlaygroundGraphUI_(p: {}) {
     const workflow = cushy.db.comfy_workflow.last()!
-    const form = CushyFormManager.useForm((ui) => ({
-        spline: ui.float({ min: 0.5, max: 4, default: 2 }),
-        vsep: ui.int({ min: 0, max: 100, default: 20 }),
-        hsep: ui.int({ min: 0, max: 100, default: 20 }),
-    }))
-    const fv = form.value
-    const update = () => workflow.RUNLAYOUT({ node_hsep: fv.hsep, node_vsep: fv.vsep })
-    useEffect(update, [fv.hsep, fv.vsep, workflow.id])
+    // const form = CushyFormManager.useForm((ui) => ({
+    //     spline: ui.float({ min: 0.5, max: 4, default: 2 }),
+    //     vsep: ui.int({ min: 0, max: 100, default: 20 }),
+    //     hsep: ui.int({ min: 0, max: 100, default: 20 }),
+    // }))
+    const form = cushy.graphConf
+    // const fv = form.value
+    const update = () => workflow.RUNLAYOUT(cushy.autolayoutOpts)
+    useEffect(update, [JSON.stringify(cushy.autolayoutOpts), workflow.id])
+
     return (
         <div tw='h-full'>
             <PanelHeaderUI>

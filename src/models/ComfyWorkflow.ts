@@ -451,9 +451,8 @@ export class ComfyWorkflowL {
 
     sendPrompt = async (p: PromptSettings = {}): Promise<ComfyPromptL> => {
         const step = this.step
-        const liveGraph = this
-        const currentJSON = deepCopyNaive(liveGraph.json_forPrompt(p.idMode ?? 'use_stringified_numbers_only'))
-        const debugWorkflow = liveGraph.json_workflow()
+        const currentJSON = deepCopyNaive(this.json_forPrompt(p.idMode ?? 'use_stringified_numbers_only'))
+        const debugWorkflow = this.json_workflow()
         console.info('checkpoint:' + JSON.stringify(currentJSON))
 
         const out: ApiPromptInput = {
@@ -488,6 +487,7 @@ export class ComfyWorkflowL {
             metadata: this.data.metadata,
             stepID: step?.id,
         })
+        graph.RUNLAYOUT(cushy.autolayoutOpts)
         const res = await fetch(promptEndpoint, {
             method: 'POST',
             body: JSON.stringify(out),

@@ -410,6 +410,22 @@ export class STATE {
         })
     }
 
+    get autolayoutOpts() {
+        const fv = this.graphConf.value
+        return { node_hsep: fv.hsep, node_vsep: fv.vsep }
+    }
+    graphConf = CushyFormManager.form(
+        (ui) => ({
+            spline: ui.float({ min: 0.5, max: 4, default: 2 }),
+            vsep: ui.int({ min: 0, max: 100, default: 20 }),
+            hsep: ui.int({ min: 0, max: 100, default: 20 }),
+        }),
+        {
+            name: 'Graph Visualisation',
+            initialValue: () => readJSON('settings/graph-visualization.json'),
+            onSerialChange: (form) => writeJSON('settings/graph-visualization.json', form.serial),
+        },
+    )
     civitaiConf = CushyFormManager.form(
         (ui) => ({
             imgSize1: ui.int({ min: 64, max: 1024, step: 64, default: 512 }),

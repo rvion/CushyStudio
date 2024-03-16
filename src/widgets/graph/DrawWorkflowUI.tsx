@@ -26,7 +26,7 @@ export const DrawWorkflowUI = observer(function DrawWorkflowUI_(p: {
     useEffect(() => {
         if (ref.current == null) return
         if (p.offset) {
-            console.log(`[🤠] `, { left: p.offset.x, top: p.offset.y })
+            // console.log(`[🤠] `, { left: p.offset.x, top: p.offset.y })
             ref.current.scrollTo({
                 left: p.offset.x,
                 top: p.offset.y,
