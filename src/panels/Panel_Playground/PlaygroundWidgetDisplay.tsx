@@ -1,5 +1,18 @@
+import { observer } from 'mobx-react-lite'
+
 import { CushyFormManager } from 'src/controls/FormBuilder'
+import { FormUI } from 'src/controls/FormUI'
 import { readJSON, writeJSON } from 'src/state/jsonUtils'
+import { useSt } from 'src/state/stateContext'
+
+export const PlaygroundWidgetDisplay = observer(function PlaygroundRequirements_(p: {}) {
+    const st = useSt()
+    return (
+        <div tw='h-full bg-base-300 p-1 overflow-auto'>
+            <FormUI form={FORM_PlaygroundWidgetDisplay} />
+        </div>
+    )
+})
 
 export const FORM_PlaygroundWidgetDisplay = CushyFormManager.form(
     (ui) => {

@@ -10,7 +10,7 @@ import { MenuItem } from 'src/rsuite/Dropdown'
 import { RevealUI } from 'src/rsuite/reveal/RevealUI'
 import { useSt } from 'src/state/stateContext'
 import { Kwery } from 'src/utils/misc/Kwery'
-import { GraphPreviewUI } from 'src/widgets/misc/GraphPreviewUI'
+import { GraphPreviewUI } from 'src/widgets/graph/GraphPreviewUI'
 import { ButtonDownloadFilesUI } from 'src/widgets/workspace/ButtonDownloadFilesUI'
 import { ButtonOpenInComfyUI } from 'src/widgets/workspace/ButtonOpenInComfyUI'
 
@@ -72,27 +72,26 @@ export const OutputWorkflowPreviewUI = observer(function OutputWorkflowUI_(p: { 
 
 export const OutputWorkflowUI = observer(function OutputWorkflowUI_(p: { step?: Maybe<StepL>; output: ComfyWorkflowL }) {
     const graph = p.output
-    const litegraphK = Kwery.get('cyto', { id: graph.id }, () => graph?.json_workflow())
+    // const litegraphK = Kwery.get('cyto', { id: graph.id }, () => graph?.json_workflow())
     return (
-        <TabUI tw='w-full h-full'>
-            <div>Simple View</div>
-            <div tw='w-full h-full'>
-                <div>
+        // <TabUI tw='w-full h-full'>
+        // <div>Simple View</div>
+        <div tw='w-full h-full'>
+            {/* <div>
                     <ButtonDownloadFilesUI graph={graph} />
                     <ButtonOpenInComfyUI graph={graph} />
-                </div>
-
-                <div tw='text-sm italic opacity-50'>graphID: {graph.id}</div>
-                <GraphPreviewUI graph={graph} />
-            </div>
-            <div>ComfyUI</div>
-            {litegraphK.ui((json) => (
-                <Panel_ComfyUI //
-                    tw='w-full h-full'
-                    litegraphJson={json}
-                />
-            ))}
-        </TabUI>
+                </div> */}
+            <div tw='text-sm italic opacity-50'>graphID: {graph.id}</div>
+            <GraphPreviewUI graph={graph} />
+        </div>
+        // {/* <div>ComfyUI</div>
+        // {litegraphK.ui((json) => (
+        //     <Panel_ComfyUI //
+        //         tw='w-full h-full'
+        //         litegraphJson={json}
+        //     />
+        // ))} */}
+        // </TabUI>
     )
 })
 
