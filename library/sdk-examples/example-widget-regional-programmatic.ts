@@ -4,7 +4,7 @@ import { openRouterInfos } from 'src/llm/OpenRouter_infos'
 
 app({
     metadata: {
-        name: 'my-appw',
+        name: 'example prompt programmatic',
         description: 'my app description',
     },
     ui: (ui) => ({
