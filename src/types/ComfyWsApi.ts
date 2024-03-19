@@ -16,6 +16,7 @@ export type WsMsg =
     | WsMsgExecuted
     | WsMsgExecutionCached
     | WsMsgExecutionError
+    | WSMsgManagerFeedback
 
 export type WsMsgStatus = { type: 'status'; data: { sid?: string; status: ComfyStatus } }
 
@@ -34,6 +35,14 @@ export type WsMsgExecuting = { type: 'executing'; data: _WSMsgExecutingData }
 export type WsMsgProgress = { type: 'progress'; data: NodeProgress } // 🔶 this one lacks a prompt_id
 export type WsMsgExecuted = { type: 'executed'; data: _WsMsgExecutedData }
 export type WsMsgExecutionError = { type: 'execution_error'; data: _WsMsgExecutionErrorData }
+
+// added on 2024-03-19:
+// comfy manager inject a custom node called "Terminal Log (Manager)"
+// https://cushy.fra1.cdn.digitaloceanspaces.com/rvion/085b8c1fcf33d4d4a9d970163acd6d53201b2a89.jpg
+// this node allow to dislay logs without having to connect to the remote instance
+// as of 2024-03-19, payload looks like this:
+// {"type": "manager-terminal-feedback", "data": {"data": "#read_workflow_json_files_all"}}
+export type WSMsgManagerFeedback = { type: 'manager-terminal-feedback'; data: { data: string } }
 
 export type _WsMsgExecutionStartData = { prompt_id: PromptID }
 export type _WsMsgExecutionCachedData = { nodes: ComfyNodeID[]; prompt_id: PromptID }

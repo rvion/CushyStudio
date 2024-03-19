@@ -14,22 +14,27 @@ export const Panel_Steps = observer(function StepListUI_(p: {}) {
         <div className='flex flex-col overflow-hidden'>
             <PanelHeaderUI>
                 <SpacerUI />
-                <RevealUI tw='WIDGET-FIELD' title='Step Options'>
+                <RevealUI
+                    tw='WIDGET-FIELD'
+                    title='Step Options'
+                    content={() => (
+                        <div tw='w-64 p-2' className='line'>
+                            <InputNumberUI
+                                mode='int'
+                                min={1}
+                                max={100}
+                                softMax={20}
+                                step={1}
+                                text='Items'
+                                value={st.__TEMPT__maxStepsToShow}
+                                onValueChange={(next) => (st.__TEMPT__maxStepsToShow = next)}
+                            />
+                        </div>
+                    )}
+                >
                     <div tw='flex px-1 cursor-default bg-base-200 rounded w-full h-full items-center justify-center hover:brightness-125 border border-base-100'>
                         <span className='material-symbols-outlined'>settings</span>
                         <span className='material-symbols-outlined'>expand_more</span>
-                    </div>
-                    <div tw='w-64 p-2' className='line'>
-                        <InputNumberUI
-                            mode='int'
-                            min={1}
-                            max={100}
-                            softMax={20}
-                            step={1}
-                            text='Items'
-                            value={st.__TEMPT__maxStepsToShow}
-                            onValueChange={(next) => (st.__TEMPT__maxStepsToShow = next)}
-                        />
                     </div>
                 </RevealUI>
             </PanelHeaderUI>

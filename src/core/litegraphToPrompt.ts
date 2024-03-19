@@ -85,7 +85,7 @@ export const convertLiteGraphToPrompt = (
 
             let offset = 0
             // new logic:
-            // 1 insert all values found in the node, regardless of the schema
+            // 1. insert all values found in the node, regardless of the schema
             // 2. then insert all values or default from the schema
 
             // 2. By Schema -----------------------------------------------------

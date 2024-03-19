@@ -81,31 +81,35 @@ export const SideOutputListUI = observer(function SideOutputListUI_(p: {}) {
     const size = st.historySizeStr
     return (
         <div tw={'flex flex-wrap gap-0.5 p-1 overflow-auto flex-shrink-0 bg-base-300 items-center max-h-[50%]'}>
-            <RevealUI tw='self-start'>
+            <RevealUI
+                tw='self-start'
+                content={() => (
+                    <div tw='flex flex-col gap-1 p-2 shadow-xl'>
+                        <FieldAndLabelUI label='Output Preview Size (px)'>
+                            <InputNumberUI
+                                style={{ width: '5rem' }}
+                                mode={'int'}
+                                min={32}
+                                max={200}
+                                onValueChange={(next) => (st.historySize = next)}
+                                value={st.historySize}
+                            />
+                        </FieldAndLabelUI>
+                        <FieldAndLabelUI label='Latent Size (%)'>
+                            <InputNumberUI
+                                style={{ width: '5rem' }}
+                                mode={'int'}
+                                min={3}
+                                max={100}
+                                onValueChange={(next) => (st.latentSize = next)}
+                                value={st.latentSize}
+                            />
+                        </FieldAndLabelUI>
+                    </div>
+                )}
+            >
                 <div style={{ width: size, height: size, lineHeight: size }} tw='btn h-full'>
                     <span className='material-symbols-outlined'>settings</span>
-                </div>
-                <div tw='flex flex-col gap-1 p-2 shadow-xl'>
-                    <FieldAndLabelUI label='Output Preview Size (px)'>
-                        <InputNumberUI
-                            style={{ width: '5rem' }}
-                            mode={'int'}
-                            min={32}
-                            max={200}
-                            onValueChange={(next) => (st.historySize = next)}
-                            value={st.historySize}
-                        />
-                    </FieldAndLabelUI>
-                    <FieldAndLabelUI label='Latent Size (%)'>
-                        <InputNumberUI
-                            style={{ width: '5rem' }}
-                            mode={'int'}
-                            min={3}
-                            max={100}
-                            onValueChange={(next) => (st.latentSize = next)}
-                            value={st.latentSize}
-                        />
-                    </FieldAndLabelUI>
                 </div>
             </RevealUI>
             {step?.finalStatus === Status.Running && (

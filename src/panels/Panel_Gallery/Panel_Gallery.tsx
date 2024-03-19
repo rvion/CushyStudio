@@ -27,13 +27,18 @@ export const GalleryPreferences = observer(function FooUI_(p: {}) {
     return (
         <PanelHeaderUI>
             <SpacerUI />
-            <RevealUI tw='WIDGET-FIELD' title='Gallery Options'>
+            <RevealUI
+                tw='WIDGET-FIELD'
+                title='Gallery Options'
+                content={() => (
+                    <div style={{ width: '500px' }} tw='flex-shrink-0'>
+                        <FormUI form={cushy.galleryConf} />
+                    </div>
+                )}
+            >
                 <div tw='flex px-1 cursor-default bg-base-200 rounded w-full h-full items-center justify-center hover:brightness-125 border border-base-100'>
                     <span className='material-symbols-outlined'>settings</span>
                     <span className='material-symbols-outlined'>expand_more</span>
-                </div>
-                <div style={{ width: '500px' }} tw='flex-shrink-0'>
-                    <FormUI form={cushy.galleryConf} />
                 </div>
             </RevealUI>
         </PanelHeaderUI>

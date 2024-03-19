@@ -14,7 +14,35 @@ export const HostSchemaIndicatorUI = observer(function HostSchemaIndicatorUI_(p:
     const size = host.schema?.size ?? 0
     const sizeTxt = p.showSize ? <div tw='text-xs text-opacity-50'>({size} nodes)</div> : null
     return (
-        <RevealUI showDelay={0}>
+        <RevealUI
+            showDelay={0}
+            content={() => (
+                <div tw='menu'>
+                    <div tw='text-xs text-opacity-50'>({size} nodes)</div>
+                    {p.host.ws?.isOpen ? null : (
+                        <Message showIcon type='warning'>
+                            <div>Is your ComfyUI server running? </div>
+                            <div>You config file says it should be accessible at</div>
+                            <div>{host.getServerHostHTTP()}</div>
+                            <div>{host.getWSUrl()}</div>
+                        </Message>
+                    )}
+                    <pre>{host.schemaRetrievalLogs.join('\n')}</pre>
+                    <div
+                        tw='btn btn-sm'
+                        onClick={() => {
+                            host.fetchAndUpdateSchema()
+                            host.manager.updateHostPluginsAndModels()
+                        }}
+                    >
+                        Reload Schema
+                    </div>
+                    <div tw='btn btn-sm btn-warning flex-1' onClick={() => host.manager.rebootComfyUI()}>
+                        Restart ComfyUI
+                    </div>
+                </div>
+            )}
+        >
             <div tw='flex'>
                 {host.schema == null ? '🔴' : null}
 
@@ -46,30 +74,6 @@ export const HostSchemaIndicatorUI = observer(function HostSchemaIndicatorUI_(p:
                         {sizeTxt}
                     </div>
                 )}
-            </div>
-            <div tw='menu'>
-                <div tw='text-xs text-opacity-50'>({size} nodes)</div>
-                {p.host.ws?.isOpen ? null : (
-                    <Message showIcon type='warning'>
-                        <div>Is your ComfyUI server running? </div>
-                        <div>You config file says it should be accessible at</div>
-                        <div>{host.getServerHostHTTP()}</div>
-                        <div>{host.getWSUrl()}</div>
-                    </Message>
-                )}
-                <pre>{host.schemaRetrievalLogs.join('\n')}</pre>
-                <div
-                    tw='btn btn-sm'
-                    onClick={() => {
-                        host.fetchAndUpdateSchema()
-                        host.manager.updateHostPluginsAndModels()
-                    }}
-                >
-                    Reload Schema
-                </div>
-                <div tw='btn btn-sm btn-warning flex-1' onClick={() => host.manager.rebootComfyUI()}>
-                    Restart ComfyUI
-                </div>
             </div>
         </RevealUI>
     )

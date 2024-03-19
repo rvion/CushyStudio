@@ -34,7 +34,7 @@ export const RevealUI = observer(function RevealUI_(p: RevealProps) {
             uist.setPosition(rect)
         }
     }, [uist?.visible])
-
+    const content = p.children
     const tooltip = mkTooltip(uist)
     return (
         <span //
@@ -55,7 +55,7 @@ export const RevealUI = observer(function RevealUI_(p: RevealProps) {
                 else uist.enterAnchor()
             }}
         >
-            {p.children[0]}
+            {content}
             {tooltip}
         </span>
     )
@@ -77,6 +77,8 @@ const mkTooltip = (uist: RevealState | null) => {
 
     const pos = uist.tooltipPosition
     const p = uist.p
+
+    const hiddenContent = p.content()
 
     const revealedContent = uist.placement.startsWith('#') ? (
         <div
@@ -100,7 +102,7 @@ const mkTooltip = (uist: RevealState | null) => {
             style={{ zIndex: 99999999, backgroundColor: '#0000003d' }}
             tw='pointer-events-auto w-full h-full flex items-center justify-center z-50'
         >
-            {p.children[1]}
+            {hiddenContent}
         </div>
     ) : uist.placement.startsWith('popup') ? (
         <div
@@ -124,7 +126,7 @@ const mkTooltip = (uist: RevealState | null) => {
             style={{ zIndex: 99999999, backgroundColor: '#0000003d' }}
             tw='pointer-events-auto absolute w-full h-full flex items-center justify-center z-50'
         >
-            <ModalShellUI title={p.title}>{p.children[1]}</ModalShellUI>
+            <ModalShellUI title={p.title}>{hiddenContent}</ModalShellUI>
         </div>
     ) : (
         <div
@@ -165,7 +167,7 @@ const mkTooltip = (uist: RevealState | null) => {
             ) : (
                 <></>
             )}
-            {p.children[1]}
+            {hiddenContent}
             {uist._lock ? (
                 <span tw='opacity-50 italic text-sm flex gap-1 items-center justify-center'>
                     <span className='material-symbols-outlined'>lock</span>

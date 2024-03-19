@@ -27,9 +27,8 @@ export const CivitaiResultFullUI = observer(function CivitaiResultFullUI_(p: {
                 <div tw='text-2xl font-bold'>{item.name}</div>
                 <div tw='italic opacity-50'>#{item.id}</div>
                 <div tw='flex-1'></div>
-                <RevealUI>
+                <RevealUI content={() => <JsonViewUI value={item} />}>
                     <div tw='btn btn-sm btn'>Show full json</div>
-                    <JsonViewUI value={item} />
                 </RevealUI>
             </div>
 

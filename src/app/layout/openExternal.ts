@@ -16,4 +16,9 @@ export const showItemInFolder = (stuff: string) => {
     console.log(`opening ${stuff} folder: ${dirname(stuff)}`)
     getElectronSheel().openExternal(`file://${dirname(stuff)}`, { activate: true })
 }
+
+export const openFolderInOS = (folderAbsPath: AbsolutePath) => {
+    console.log(`opening ${folderAbsPath} folder: ${folderAbsPath}`)
+    getElectronSheel().openExternal(`file://${folderAbsPath}`, { activate: true })
+}
 export const getElectronSheel = () => window.require('electron').shell as ElectronShell

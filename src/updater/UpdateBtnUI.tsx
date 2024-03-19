@@ -39,12 +39,7 @@ export const UpdateBtnUI = observer(function UpdateBtnUI_(p: {
             </div>
         )
 
-    return (
-        <RevealUI>
-            {ANCHOR}
-            <UpdaterDetailsUI updater={updater} />
-        </RevealUI>
-    )
+    return <RevealUI content={() => <UpdaterDetailsUI updater={updater} />}>{ANCHOR}</RevealUI>
 })
 
 export const UpdaterAnchorUI = observer(function UpdaterAnchorUI_(p: { updater: GitManagedFolder }) {

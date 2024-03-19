@@ -726,7 +726,7 @@ export class STATE {
         blob: Blob
         url: string
     }> = null
-    onMessage = (e: MessageEvent) => {
+    onMessage = (e: MessageEvent, host: HostL) => {
         if (e.data instanceof ArrayBuffer) {
             // 🔴 console.log('[👢] WEBSOCKET: received ArrayBuffer', e.data)
             const view = new DataView(e.data)
@@ -784,6 +784,10 @@ export class STATE {
             return
         }
 
+        if (msg.type === 'manager-terminal-feedback') {
+            host.addLog(msg.data.data)
+            return
+        }
         exhaust(msg)
         console.log('❌', 'Unknown message:', msg)
         throw new Error('Unknown message type: ' + JSON.stringify(msg))

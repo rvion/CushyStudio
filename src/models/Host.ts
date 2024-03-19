@@ -59,6 +59,29 @@ export class HostL {
         return true
     }
 
+    // Rotating srever logs --------------------------------------------
+    private wantLog: boolean = true
+    enableServerLogs = () => {
+        this.wantLog = true
+        this.manager.configureLogging(this.wantLog)
+    }
+    disableServerLogs = () => {
+        this.wantLog = false
+        this.manager.configureLogging(this.wantLog)
+    }
+    toggleServerLogs = () => {
+        this.wantLog = !this.wantLog
+        this.manager.configureLogging(this.wantLog)
+    }
+    maxLogs = 200
+    serverLogs: { at: string; content: string; id: number }[] = []
+    logId: number = 0
+    addLog = (content: string) => {
+        if (this.serverLogs.length > this.maxLogs) this.serverLogs.shift()
+        const d = new Date().toISOString().slice(11, 19)
+        this.serverLogs.push({ content, id: this.logId++, at: d })
+    }
+
     get isReadonly(): boolean {
         return this.data.isReadonly ? true : false
     }
@@ -184,10 +207,10 @@ export class HostL {
         this.schemaRetrievalLogs.splice(0, this.schemaRetrievalLogs.length)
     }
 
-    addLog = (...args: any[]) => {
-        this.schemaRetrievalLogs.push(args.join(' '))
-        console.info('[🐱] CONFY:', ...args)
-    }
+    // addLog = (...args: any[]) => {
+    //     this.schemaRetrievalLogs.push(args.join(' '))
+    //     console.info('[🐱] CONFY:', ...args)
+    // }
 
     // STARTING -----------------------------------------------------------------------------
     get isConnected() {
@@ -237,7 +260,7 @@ export class HostL {
         console.log(`[👢] WEBSOCKET: starting client to ComfyUI host ${this.data.name}`)
         this.ws = new ResilientWebSocketClient({
             onConnectOrReconnect: () => this.fetchAndUpdateSchema(),
-            onMessage: this.st.onMessage,
+            onMessage: (e: MessageEvent) => this.st.onMessage(e, this),
             url: this.getWSUrl,
             onClose: () => {},
         })

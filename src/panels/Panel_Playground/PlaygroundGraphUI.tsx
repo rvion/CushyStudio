@@ -26,11 +26,14 @@ export const PlaygroundGraphUI = observer(function PlaygroundGraphUI_(p: {}) {
                     update
                 </div>
                 <SpacerUI />
-                <RevealUI>
+                <RevealUI
+                    content={() => (
+                        <div style={{ width: '500px' }}>
+                            <FormUI form={form} />
+                        </div>
+                    )}
+                >
                     <div>config</div>
-                    <div style={{ width: '500px' }}>
-                        <FormUI form={form} />
-                    </div>
                 </RevealUI>
             </PanelHeaderUI>
             <DrawWorkflowUI spline={form.value.spline} workflow={workflow} />

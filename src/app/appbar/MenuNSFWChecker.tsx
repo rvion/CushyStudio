@@ -10,7 +10,7 @@ export const MenuNSFWCheckerUI = observer(function MenuNSFWCheckerUI_(p: {}) {
     const pj = st.project
     const val = pj.filterNSFW
     return (
-        <RevealUI trigger='hover' showDelay={0}>
+        <RevealUI trigger='hover' showDelay={0} content={() => <NSFWToggleUI />}>
             <label tw='swap swap-flip'>
                 <input
                     type='checkbox'
@@ -24,23 +24,29 @@ export const MenuNSFWCheckerUI = observer(function MenuNSFWCheckerUI_(p: {}) {
                 <div tw='swap-on'>😇</div>
                 <div tw='swap-off'>😈</div>
             </label>
-            <div tw='p-2'>
-                {val ? (
-                    <MessageInfoUI>
-                        <div tw='flex whitespace-nowrap gap-1'>
-                            NSFW filter is currently
-                            <b>ON</b>
-                        </div>
-                    </MessageInfoUI>
-                ) : (
-                    <MessageWarningUI>
-                        <div tw='flex whitespace-nowrap gap-1'>
-                            NSFW filter is currently
-                            <b>OFF</b>
-                        </div>
-                    </MessageWarningUI>
-                )}
-            </div>
         </RevealUI>
+    )
+})
+
+export const NSFWToggleUI = observer(function NSFWToggleUI_(p: {}) {
+    const val: boolean = cushy.project.filterNSFW
+    return (
+        <div tw='p-2'>
+            {val ? (
+                <MessageInfoUI>
+                    <div tw='flex whitespace-nowrap gap-1'>
+                        NSFW filter is currently
+                        <b>ON</b>
+                    </div>
+                </MessageInfoUI>
+            ) : (
+                <MessageWarningUI>
+                    <div tw='flex whitespace-nowrap gap-1'>
+                        NSFW filter is currently
+                        <b>OFF</b>
+                    </div>
+                </MessageWarningUI>
+            )}
+        </div>
     )
 })

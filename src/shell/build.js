@@ -65,8 +65,8 @@ async function buildJS() {
             // -----------------------------------------------------------------------
             three: './src/syms/three.js',
             mobx: './src/syms/mobx.js',
-            '@tensorflow/tfjs': './src/syms/tfjs.js',
             nsfwjs: './src/syms/nsfwjs.js',
+            '@tensorflow/tfjs': './src/syms/tfjs.js',
             'mime-types': './src/syms/mime-types.js',
 
             // -----------------------------------------------------------------------

@@ -19,7 +19,13 @@ export const InstallRequirementsBtnUI = observer(function InstallRequirementsBtn
     if (p.requirements.length == 0) return null
     const rr = p.requirements
     return (
-        <RevealUI>
+        <RevealUI
+            content={() => (
+                <div tw='[max-width:500px]'>
+                    <Panel_InstallRequirementsUI requirements={rr} />
+                </div>
+            )}
+        >
             <div
                 tw={[
                     p.active && !st.mainHost.matchRequirements(rr) //
@@ -30,9 +36,6 @@ export const InstallRequirementsBtnUI = observer(function InstallRequirementsBtn
             >
                 <span className='material-symbols-outlined'>scatter_plot</span>
                 {p.label}
-            </div>
-            <div tw='[max-width:500px]'>
-                <Panel_InstallRequirementsUI requirements={rr} />
             </div>
         </RevealUI>
     )
@@ -53,20 +56,23 @@ export const Panel_InstallRequirementsUI = observer(function Panel_InstallRequir
                     Install All
                 </div>
                 */}
-                <RevealUI>
+                <RevealUI
+                    content={() => (
+                        <div tw='max-h-96 overflow-auto'>
+                            {(() => {
+                                if (manager.pluginList == null) return <div tw='loading loading-spinner'></div>
+                                return (
+                                    <div tw='flex flex-col'>
+                                        {manager.titlesOfAllInstalledPlugins.map((name) => (
+                                            <div key={name}>{name}</div>
+                                        ))}
+                                    </div>
+                                )
+                            })()}
+                        </div>
+                    )}
+                >
                     <div tw='btn btn-sm'>See Installed</div>
-                    <div tw='max-h-96 overflow-auto'>
-                        {(() => {
-                            if (manager.pluginList == null) return <div tw='loading loading-spinner'></div>
-                            return (
-                                <div tw='flex flex-col'>
-                                    {manager.titlesOfAllInstalledPlugins.map((name) => (
-                                        <div key={name}>{name}</div>
-                                    ))}
-                                </div>
-                            )
-                        })()}
-                    </div>
                 </RevealUI>
                 <div
                     tw='btn btn-sm'

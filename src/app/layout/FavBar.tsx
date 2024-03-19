@@ -55,12 +55,18 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                 <div tw='absolute inset-0 overflow-auto bg-base-300 flex-1 select-none'>
                     <PanelHeaderUI>
                         <SpacerUI />
-                        <RevealUI tw='WIDGET-FIELD' title='Favorite Bar Options' style={{ width: `${size + 8}px` }}>
+                        <RevealUI
+                            tw='WIDGET-FIELD'
+                            title='Favorite Bar Options'
+                            style={{ width: `${size + 8}px` }}
+                            content={() => (
+                                <div tw='p-2 w-72'>
+                                    <FormUI form={conf} />
+                                </div>
+                            )}
+                        >
                             <div tw='btn btn-sm rounded w-full'>
                                 <span className='material-symbols-outlined'>settings</span>
-                            </div>
-                            <div tw='p-2 w-72'>
-                                <FormUI form={conf} />
                             </div>
                         </RevealUI>
                         <SpacerUI />
@@ -68,13 +74,15 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                     <div tw='flex flex-col items-center'>
                         <FavBarContainer>
                             {/* Need to set height for this for some reason, or else it will introduce some extra. */}
-                            <RevealUI tw='hover:brightness-125' style={{ height: sizeStr }} placement='popup-lg'>
-                                {/* <div tw={['btn btn-square']} style={{ width: sizeStr, height: sizeStr }}> */}
+                            <RevealUI
+                                tw='hover:brightness-125'
+                                style={{ height: sizeStr }}
+                                placement='popup-lg'
+                                content={() => <CreateAppPopupUI />}
+                            >
                                 <span style={{ fontSize: sizeStr }} className='material-symbols-outlined'>
                                     add
                                 </span>
-                                {/* </div> */}
-                                <CreateAppPopupUI />
                             </RevealUI>
                             <div tw='w-full my-0.5 h-0.5 bg-neutral-content rounded'></div>
                             <div
@@ -113,9 +121,13 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                             <FavBarContainer icon='apps'>
                                 {st.favoriteApps.map((app) => (
                                     <div key={app.id}>
-                                        <RevealUI showDelay={0} trigger='hover' placement='right'>
+                                        <RevealUI
+                                            showDelay={0}
+                                            trigger='hover'
+                                            placement='right'
+                                            content={() => <AppDraftsQuickListUI app={app} />}
+                                        >
                                             <AppIllustrationUI size={sizeStr} app={app} tw='border border-base-300' />
-                                            <AppDraftsQuickListUI app={app} />
                                         </RevealUI>
                                     </div>
                                 ))}
@@ -125,7 +137,35 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                             <FavBarContainer icon='history_edu'>
                                 {st.favoriteDrafts.map((draft) => (
                                     <div key={draft.id}>
-                                        <RevealUI className='' trigger='hover' placement='right'>
+                                        <RevealUI
+                                            className=''
+                                            trigger='hover'
+                                            placement='right'
+                                            content={() => (
+                                                <div className='MENU-ROOT'>
+                                                    <div className='MENU-HEADER'>
+                                                        <div //Container
+                                                            tw='flex bg-base-200 p-1 rounded w-full'
+                                                        >
+                                                            <AppIllustrationUI size='2rem' app={draft.app} />
+                                                            <div tw='flex-1 text-xs text-center self-center p-2'>
+                                                                {draft.app.name}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div className='MENU-CONTENT'>
+                                                        <div //Container
+                                                            tw='flex-column bg-base-300 p-1 rounded text-center items-center'
+                                                        >
+                                                            <div tw='text-xs'>{draft.data.title}</div>
+                                                            <div tw='flex self-center text-center justify-center p-1'>
+                                                                <DraftIllustrationUI size='12rem' draft={draft} />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            )}
+                                        >
                                             <div tw='relative' onClick={() => draft.openOrFocusTab()}>
                                                 <DraftIllustrationUI size={sizeStr} draft={draft} tw='border border-base-300' />
                                                 {appIcons.value && (
@@ -138,28 +178,6 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                                                         />
                                                     </div>
                                                 )}
-                                            </div>
-                                            <div className='MENU-ROOT'>
-                                                <div className='MENU-HEADER'>
-                                                    <div //Container
-                                                        tw='flex bg-base-200 p-1 rounded w-full'
-                                                    >
-                                                        <AppIllustrationUI size='2rem' app={draft.app} />
-                                                        <div tw='flex-1 text-xs text-center self-center p-2'>
-                                                            {draft.app.name}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className='MENU-CONTENT'>
-                                                    <div //Container
-                                                        tw='flex-column bg-base-300 p-1 rounded text-center items-center'
-                                                    >
-                                                        <div tw='text-xs'>{draft.data.title}</div>
-                                                        <div tw='flex self-center text-center justify-center p-1'>
-                                                            <DraftIllustrationUI size='12rem' draft={draft} />
-                                                        </div>
-                                                    </div>
-                                                </div>
                                             </div>
                                         </RevealUI>
                                     </div>

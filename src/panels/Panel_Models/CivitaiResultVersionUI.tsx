@@ -1,13 +1,9 @@
 import type { CivitaiModelVersion } from './CivitaiSpec'
-import type { KnownModel_Base } from 'src/manager/model-list/KnownModel_Base'
-import type { KnownModel_Type } from 'src/manager/model-list/KnownModel_Type'
-import type { ModelInfo } from 'src/manager/model-list/model-list-loader-types'
 
 // import JsonView from '@uiw/react-json-view'
 import { observer, useLocalObservable } from 'mobx-react-lite'
 
-import { CivitaiWarningAPIKeyMissingUI } from './CivitaiWarningAPIKeyMissingUI'
-import { formatSize } from 'src/db/getDBStats'
+import { CivitaiDownloadableFileUI } from './CivitaiDownloadableFileUI'
 import { RevealUI } from 'src/rsuite/reveal/RevealUI'
 // import { noImage } from 'src/widgets/galleries/noImage'
 import { JsonViewUI } from 'src/widgets/workspace/JsonViewUI'
@@ -24,7 +20,6 @@ export const CivitaiResultVersionUI = observer(function CivitaiResultVersionUI_(
     const imgUrl = img?.url // ?? noImage
     const size1 = `${cushy.civitaiConf.fields.imgSize1.value}px`
     const size2 = `${cushy.civitaiConf.fields.imgSize2.value}px`
-    const apiKey = cushy.civitaiConf.fields.apiKey.value
 
     return (
         <div tw='flex flex-col gap-1'>
@@ -36,82 +31,34 @@ export const CivitaiResultVersionUI = observer(function CivitaiResultVersionUI_(
                     src={imgUrl}
                 />
                 <div tw='flex flex-col flex-1'>
-                    <div tw='text-xl font-bold'>{version.name}</div>
-                    <div>{version.baseModel}</div>
-                    <div>
-                        <RevealUI>
+                    <div // key infos
+                        tw='flex gap-2'
+                    >
+                        <div tw='badge badge-lg badge-neutral'>version={version.name}</div>
+                        <div tw='badge badge-lg badge-neutral'>baseModel={version.baseModel}</div>
+                        <RevealUI tw='ml-auto' content={() => <JsonViewUI value={p.version} />}>
                             <div tw='btn btn-xs btn-outline'>Show version json</div>
-                            <JsonViewUI value={p.version} />
                         </RevealUI>
                     </div>
-
-                    <div>
+                    <div tw='flex flex-col gap-1'>
                         {version.description && (
                             <div tw='text-sm' dangerouslySetInnerHTML={{ __html: version.description }}></div>
                         )}
                         {/* {modelVersion.downloadUrl} */}
-                        <h3>Files</h3>
-                        {version.files.map((file, ix) => {
-                            const mi: ModelInfo = {
-                                description: version.description,
-                                name: version.name as any,
-                                filename: file.name,
-                                reference: version.downloadUrl,
-                                base: ((): KnownModel_Base => {
-                                    // 🔴 TODO: support all knowns Civitai input types
-                                    if (version.baseModel === 'SDXL 1.0') return 'SDXL'
-                                    if (version.baseModel === 'SD 1.5') return 'SD1.5'
-                                    return 'SD1.x'
-                                })(),
-                                save_path: 'default',
-                                type: ((): KnownModel_Type => {
-                                    // 🔴 TODO: support all knowns Civitai input types
-                                    if (file.type === 'Model') return 'checkpoints'
-                                    if (file.type === 'VAE') return 'VAE'
-                                    return 'checkpoints'
-                                })(),
-                                url: apiKey
-                                    ? `${file.downloadUrl}${file.downloadUrl.includes('?') ? '&' : '?'}token=${apiKey}`
-                                    : file.downloadUrl,
-                            }
-                            const isBeeingInstalled = cushy.mainHost.manager.modelsBeeingInstalled.has(mi.name as any)
-                            return (
-                                <div key={ix} tw='bd1'>
-                                    <div tw='flex items-center gap-1'>
-                                        {file.primary && <div tw='badge badge-primary'>primary</div>}
-                                        <div tw='font-bold'>{file.name}</div>
-                                    </div>
-                                    <div tw='flex'>
-                                        <div
-                                            tw={[
-                                                //
-                                                'btn btn-primary btn-sm',
-                                                isBeeingInstalled && 'btn-disabled',
-                                            ]}
-                                            onClick={() => cushy.mainHost.manager.installModel(mi)}
-                                        >
-                                            {isBeeingInstalled && <div tw='loading loading-spinner'></div>}
-                                            <span className='material-symbols-outlined'>download</span>
-                                            Download
-                                        </div>
-                                    </div>
-                                    {apiKey ? null : <CivitaiWarningAPIKeyMissingUI />}
-                                    <RevealUI>
-                                        <div tw='btn btn-sm btn-link'>show ComfyManager payload</div>
-                                        <JsonViewUI value={mi} />
-                                    </RevealUI>
-                                    <div tw='text-sm'>url: {file.downloadUrl}</div>
-                                    {/* <div tw='text-sm'>{f.scannedAt}</div> */}
-                                    <div tw='text-sm underline'>{formatSize(file.sizeKB * 1000)}</div>
-                                    {/* <div tw='text-sm'>pikle scan: {f.pickleScanResult}</div> */}
-                                    {/* <div tw='text-sm'>virus scan: {f.virusScanResult}</div> */}
-                                    <RevealUI>
-                                        <div tw='btn btn-sm btn'>File json</div>
-                                        <JsonViewUI value={file} />
-                                    </RevealUI>
-                                </div>
-                            )
-                        })}
+                        <div // trigger words infos
+                            tw='flex items-center flex-gap'
+                        >
+                            Trigger words:
+                            <div tw='text-sm'>
+                                {version.trainedWords.map((w) => (
+                                    <div tw='kbd'>{w}</div>
+                                ))}
+                            </div>
+                        </div>
+                        {/* <h3>Files</h3> */}
+                        {version.files.map((file, ix) => (
+                            <CivitaiDownloadableFileUI version={version} key={ix} file={file} />
+                        ))}
                     </div>
                 </div>
                 {/* {v.trainedWords && <div tw='text-sm'>{v.trainedWords}</div>} */}

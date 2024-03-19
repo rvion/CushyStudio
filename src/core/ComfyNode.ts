@@ -11,7 +11,7 @@ import { auto_ } from './autoValue'
 import { comfyColors } from './Colors'
 import { NodeStatusEmojiUI } from './NodeStatusEmojiUI'
 import { ComfyNodeOutput } from './Slot'
-import { nodeLineHeight, NodeSlotOffset, NodeSlotSize, NodeSlotVSep } from 'src/widgets/graph/NodeSlotSize'
+import { nodeLineHeight, NodeSlotSize, NodeSlotVSep, NodeTitleHeight } from 'src/widgets/graph/NodeSlotSize'
 
 configure({ enforceActions: 'never' })
 // configure({ enforceActions: 'always' })
@@ -215,7 +215,11 @@ export class ComfyNode<
                 height: NodeSlotSize,
                 type: o.type,
                 x: this.x + this.width, // + NodeSlotSize / 2,
-                y: this.y + nodeLineHeight / 2 + NodeSlotOffset + ix * (NodeSlotSize + NodeSlotVSep), // e.fromSlotIx * 10,
+                y:
+                    this.y + //             start
+                    NodeTitleHeight + //    title
+                    ix * nodeLineHeight + // e.fromSlotIx * 10,
+                    nodeLineHeight / 2, //
             }),
         )
     }
@@ -229,7 +233,11 @@ export class ComfyNode<
                 label: e.inputName,
                 type: e.type,
                 x: this.x, // - NodeSlotSize / 2,
-                y: this.y + nodeLineHeight / 2 + NodeSlotOffset + ix * (NodeSlotSize + NodeSlotVSep), // e.fromSlotIx * 10,
+                y:
+                    this.y + // start
+                    NodeTitleHeight + // title
+                    ix * nodeLineHeight + // e.fromSlotIx * 10,
+                    nodeLineHeight / 2,
             }),
         )
     }
@@ -258,7 +266,7 @@ export class ComfyNode<
         const headerCount = Math.max(inputLen, outputLen)
 
         // max height since some nodes have many invisible inputs
-        return (this.primitivesCount() + headerCount + 1) * 20
+        return (this.primitivesCount() + headerCount + 1) * nodeLineHeight
     }
 
     serializeValue(field: string, value: unknown): unknown {

@@ -19,13 +19,18 @@ export const Panel_Models = observer(function Panel_Models_() {
             <SectionTitleUI label='CIVITAI' className='block'>
                 <PanelHeaderUI>
                     <SpacerUI />
-                    <RevealUI tw='WIDGET-FIELD' title='CIVITAI Options'>
+                    <RevealUI
+                        tw='WIDGET-FIELD'
+                        title='CIVITAI Options'
+                        content={() => (
+                            <div tw='p-1'>
+                                <FormUI form={st.civitaiConf} />
+                            </div>
+                        )}
+                    >
                         <div tw='flex px-1 cursor-default bg-base-200 rounded w-full h-full items-center justify-center hover:brightness-125 border border-base-100'>
                             <span className='material-symbols-outlined'>settings</span>
                             <span className='material-symbols-outlined'>expand_more</span>
-                        </div>
-                        <div tw='p-1'>
-                            <FormUI form={st.civitaiConf} />
                         </div>
                     </RevealUI>
                 </PanelHeaderUI>
