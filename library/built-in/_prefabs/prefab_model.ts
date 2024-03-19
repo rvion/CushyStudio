@@ -52,7 +52,13 @@ export const ui_model = () => {
 }
 
 // RUN -----------------------------------------------------------
-export const run_model = (ui: OutputFor<typeof ui_model>) => {
+export const run_model = (
+    ui: OutputFor<typeof ui_model>,
+): {
+    ckpt: _MODEL
+    vae: _VAE
+    clip: _CLIP
+} => {
     const run = getCurrentRun()
     const graph = run.nodes
 

@@ -2,6 +2,7 @@ import type { EditorView } from 'codemirror'
 
 import Lezer, { SyntaxNode } from '@lezer/common'
 
+// import { nanoid } from 'nanoid'
 import { parser } from './grammar.parser'
 
 type KnownNodeNames = keyof typeof import('./grammar.parser.terms')
@@ -105,6 +106,30 @@ export class PromptAST {
 // ----------------------------------------
 // base node wrapper
 abstract class ManagedNode<Name extends KnownNodeNames = any> {
+    // uid = nanoid()
+
+    /** retrieve the closest ancestor of given class */
+    firstAncestor = <T extends KnownNodeNames>(kind: T): Maybe<CLASSES[T]> => {
+        let current: Maybe<ManagedNode> = this
+        while (current) {
+            if (current.$kind === kind) return current as Maybe<CLASSES[T]>
+            current = current.parent
+        }
+        return null
+    }
+
+    /** remove the node, replace it's content by '' */
+    remove = () => {
+        this.expression.editorView?.dispatch({ changes: { from: this.from, to: this.to, insert: '' } })
+    }
+
+    wrapWithWeighted = (weight: number) => {
+        this.expression.editorView?.dispatch(
+            { changes: { from: this.to, to: this.to, insert: `)*${weight}` } },
+            { changes: { from: this.from, to: this.from, insert: '(' } },
+        )
+    }
+
     abstract $kind: Name
     get from() {
         return this.node.from
@@ -229,7 +254,7 @@ export class Prompt_Lora extends ManagedNode<'Lora'> {
         // prettier-ignore
         return (
             this.getChild('Identifier')?.text ?? //
-            this.getChild('String')?.text ??
+            this.getChild('String')?.content ??
             ''
         ) as Enum_LoraLoader_lora_name
     }
@@ -255,7 +280,7 @@ export class Prompt_Embedding extends ManagedNode<'Embedding'> {
     get name(): string {
         return (
             this.getChild('Identifier')?.text ?? //
-            this.getChild('String')?.text ??
+            this.getChild('String')?.content ??
             ''
         )
     }
@@ -265,7 +290,7 @@ export class Prompt_Wildcard extends ManagedNode<'Wildcard'> {
     get name(): string {
         return (
             this.getChild('Identifier')?.text ?? //
-            this.getChild('String')?.text ??
+            this.getChild('String')?.content ??
             ''
         )
     }

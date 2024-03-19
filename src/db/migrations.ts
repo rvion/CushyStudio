@@ -587,9 +587,72 @@ export const migrations: {
             `alter table cushy_script add column lastExtractedAt int`,
         ],
     },
+
+    {
+        id: 'EhzHiGrpxx',
+        name: 'add media_image.tags',
+        up: [`alter table media_image add column tags string`],
+    },
+    {
+        id: 'l81PwC-3ae',
+        name: 'add cushy_app.lastRun',
+        up: [
+            //
+            `alter table cushy_app add column lastRunAt int`,
+            `alter table draft add column lastRunAt int`,
+        ],
+    },
+    {
+        id: '88-YAEXU5O',
+        name: 'cleanup and consistency fix',
+        up: [
+            //
+            `drop table users`,
+            `ALTER TABLE graph RENAME TO comfy_workflow`,
+            `ALTER TABLE migrations add column updatedAt integer not null default now`,
+        ],
+    },
+    {
+        id: 'A-IVxHT8_Q',
+        name: 'misc indexes',
+        up: [
+            `CREATE INDEX idx__media_image__createdAt ON media_image(createdAt);`,
+            `CREATE INDEX idx__cushy_app__lastRunAt ON cushy_app(lastRunAt);`,
+            `CREATE INDEX idx__draft__lastRunAt ON draft(lastRunAt);`,
+        ],
+    },
     // {
-    //     id: 'e574c006-daca-4fd0-a51b-73a66b4fbd79',
-    //     name: 'create cushy_app table',
-    //     up: ['drop table cushy_app'],
+    //     id: 'nL-l_DcsOF',
+    //     name: 'image thumbnail',
+    //     up: [`alter table media_image add column thumbnail BLOB`],
     // },
+    {
+        id: 'dOSsFFrq4c',
+        name: 'image thumbnail',
+        up: [`alter table media_image add column thumbnail text`],
+    },
+    {
+        id: 'LA3WzwiPEs',
+        name: 'misc indexes',
+        up: [
+            `CREATE INDEX idx__media_image__updatedAt ON media_image(updatedAt DESC);`,
+            `CREATE INDEX idx__media_text__stepID ON media_text(stepID);`,
+            `CREATE INDEX idx__media_image__stepID ON media_image(stepID);`,
+            `CREATE INDEX idx__media_video__stepID ON media_video(stepID);`,
+            `CREATE INDEX idx__media_3d_displacement__stepID ON media_3d_displacement(stepID);`,
+            `CREATE INDEX idx__media_splat__stepID ON media_splat(stepID);`,
+            `CREATE INDEX idx__comfy_workflow__stepID ON comfy_workflow(stepID);`,
+            `CREATE INDEX idx__comfy_prompt__stepID ON comfy_prompt(stepID);`,
+            `CREATE INDEX idx__runtime_error__stepID ON runtime_error(stepID);`,
+        ],
+    },
+    {
+        id: 'mUIqGBGrSF88',
+        name: 'fix img hashes',
+        up: [`update media_image set thumbnail = null`],
+    },
+    // {
+    //     id: 'mUIqGBGrSF88',
+    //     name: 'fix img hashes',
+    //     up: _createTable('lora_infos', [`name text, civitai json`]),    },
 ]

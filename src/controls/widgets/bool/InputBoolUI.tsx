@@ -1,7 +1,4 @@
-import { runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
-
-const clamp = (x: number, min: number, max: number) => Math.max(min, Math.min(max, x))
 
 let isDragging = false
 let wasEnabled = false

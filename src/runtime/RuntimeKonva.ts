@@ -23,6 +23,11 @@ export class RuntimeKonva {
         return new this.Konva.Image({ image: img, ...opts })
     }
 
+    Image_fromURL = async (url: string, opts?: Omit<ImageConfig, 'image'>): Promise<konva.Image> => {
+        const img = await this.createHTMLImage_fromURL(url)
+        return new this.Konva.Image({ image: img, ...opts })
+    }
+
     convertLayerToDataURL = (layer: konva.Layer): string => {
         layer.draw()
         const b64 = layer.toDataURL()

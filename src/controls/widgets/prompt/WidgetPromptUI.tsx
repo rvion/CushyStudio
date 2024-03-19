@@ -1,5 +1,7 @@
+import type { Widget_prompt } from './WidgetPrompt'
+
 import { observer } from 'mobx-react-lite'
-import { useLayoutEffect, useMemo } from 'react'
+import { useEffect, useLayoutEffect, useMemo } from 'react'
 
 import { PluginWrapperUI } from './plugins/_PluginWrapperUI'
 import { Plugin_AdjustWeightsUI } from './plugins/Plugin_AdjustWeights'
@@ -8,7 +10,6 @@ import { Plugin_PreviewPromptUI } from './plugins/Plugin_PreviewUI'
 import { Plugin_ReorderTopLevelStuffUI } from './plugins/Plugin_ReorderTopLevelStuffUI'
 import { Plugin_ShortcutsUI } from './plugins/Plugin_ShortcutsUI'
 import { PromptPlugin } from './plugins/PromptPlugin'
-import { Widget_prompt } from './WidgetPrompt'
 import { WidgetPromptUISt } from './WidgetPromptUISt'
 import { Plugin_LoraControlsUI } from 'src/controls/widgets/prompt/plugins/Plugin_LoraBoxUI'
 import { RevealUI } from 'src/rsuite/reveal/RevealUI'
@@ -18,8 +19,12 @@ export const WidgetPrompt_LineUI = observer(function WidgetPrompt_LineUI_(p: { w
     const st = useSt()
     const widget = p.widget
     return (
-        <div tw='flex flex-1 items-center justify-between'>
-            {widget.serial.collapsed ? <div tw='line-clamp-1 italic opacity-50'>{widget.serial.val}</div> : <div></div>}
+        <div tw='COLLAPSE-PASSTHROUGH flex flex-1 items-center justify-between'>
+            {widget.serial.collapsed ? (
+                <div tw='COLLAPSE-PASSTHROUGH line-clamp-1 italic opacity-50'>{widget.serial.val}</div>
+            ) : (
+                <div></div>
+            )}
             <div
                 tw='flex self-end'
                 onMouseDown={(ev) => {
@@ -30,7 +35,17 @@ export const WidgetPrompt_LineUI = observer(function WidgetPrompt_LineUI_(p: { w
                 {plugins.map((plugin) => {
                     const active = st.configFile.get(plugin.configKey) ?? false
                     return (
-                        <RevealUI key={plugin.key} trigger='hover' placement='topEnd'>
+                        <RevealUI
+                            key={plugin.key}
+                            trigger='hover'
+                            placement='topEnd'
+                            content={() => (
+                                <div tw='p-2'>
+                                    <div tw='whitespace-nowrap font-bold'>{plugin.title}</div>
+                                    <div tw='whitespace-nowrap'>{plugin.description}</div>
+                                </div>
+                            )}
+                        >
                             <div
                                 onClick={() => st.configFile.set(plugin.configKey, !active)}
                                 tw={[
@@ -39,10 +54,6 @@ export const WidgetPrompt_LineUI = observer(function WidgetPrompt_LineUI_(p: { w
                                 ]}
                             >
                                 <span className='material-symbols-outlined'>{plugin.icon}</span>
-                            </div>
-                            <div tw='p-2'>
-                                <div tw='whitespace-nowrap font-bold'>{plugin.title}</div>
-                                <div tw='whitespace-nowrap'>{plugin.description}</div>
                             </div>
                         </RevealUI>
                     )
@@ -59,6 +70,16 @@ export const WidgetPromptUI = observer(function WidgetPromptUI_(p: { widget: Wid
     useLayoutEffect(() => {
         if (uist.mountRef.current) uist.mount(uist.mountRef.current)
     }, [])
+
+    // widget prompt uses codemirror, and codemirror manage its internal state itsef.
+    // making the widget "uncontrolled". Usual automagical mobx-reactivity may not always apply.
+    // To allow CodeMirror editor to react to external value changes, we need to use an effect
+    // that track external changes, and update the editor.
+    useEffect(() => {
+        if (widget._valueUpdatedViaAPIAt == null) return
+        uist.replaceTextBy(widget.text)
+    }, [widget._valueUpdatedViaAPIAt])
+
     return (
         <div
             tw='flex flex-col'

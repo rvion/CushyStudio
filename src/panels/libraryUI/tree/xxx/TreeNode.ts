@@ -80,7 +80,7 @@ export class TreeNode {
         // console.log(`[👙] 🔴REF= ${key}`)
         this.id = (parent?.id ?? '') + '/' + key
         // console.log(`[👙] `, this.id)
-        this.entryL = this.tree.st.db.tree_entries.upsert({ id: asTreeEntryID(this.id) })!
+        this.entryL = this.tree.st.db.tree_entry.upsert({ id: asTreeEntryID(this.id) })!
         // ⏸️ this.tree.indexNode(this)
 
         const ctor = elem.ctor
@@ -116,8 +116,9 @@ export class TreeNode {
         for (const childElem of childElements) {
             const childKey = childElem.key
             // const path = this.id + '/' + childID
-            if (this._children_[childKey]) {
-                out.push(this._children_[childKey])
+            const child = this._children_[childKey]
+            if (child) {
+                out.push(child!)
             } else {
                 // const childEntry = childElem.ctor(childElem.props)
                 const node = new TreeNode(this.tree, childElem, this)

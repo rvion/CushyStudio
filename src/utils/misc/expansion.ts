@@ -1,9 +1,7 @@
 export function braceExpansion(str: string): string[] {
     const matches = str.match(/{([^{}]+)}/)
-    if (!matches) {
-        return [str]
-    }
-    const parts = matches[1].split(',')
+    if (!matches) return [str]
+    const parts = matches[1]!.split(',')
     const result: Set<string> = new Set()
     for (const part of parts) {
         const expanded = braceExpansion(str.replace(matches[0], part))

@@ -1,4 +1,4 @@
-import type { ComfyNodeSchema, ComfySchemaL, NodeInputExt } from '../models/Schema'
+import type { ComfyNodeSchema, ComfySchemaL, NodeInputExt } from '../models/ComfySchema'
 import type { LiteGraphJSON, LiteGraphLink, LiteGraphLinkID, LiteGraphNode, LiteGraphNodeInput } from './LiteGraph'
 import type { ComfyNodeJSON, ComfyPromptJSON } from 'src/types/ComfyPrompt'
 
@@ -73,7 +73,7 @@ export const convertLiteGraphToPrompt = (
 
             const fieldNamesWithLinks = new Set((node?.inputs ?? []).map((i) => i.name))
             const nodeTypeName = node.type
-            const nodeSchema: ComfyNodeSchema = schema.nodesByNameInComfy[nodeTypeName]
+            const nodeSchema: ComfyNodeSchema = bang(schema.nodesByNameInComfy[nodeTypeName])
             if (nodeSchema == null) {
                 LOG(`❌ missing schema for: ${nodeTypeName}`)
                 LOG(`❌ node causing a crash:`, { node })
@@ -85,7 +85,7 @@ export const convertLiteGraphToPrompt = (
 
             let offset = 0
             // new logic:
-            // 1 insert all values found in the node, regardless of the schema
+            // 1. insert all values found in the node, regardless of the schema
             // 2. then insert all values or default from the schema
 
             // 2. By Schema -----------------------------------------------------
@@ -128,7 +128,7 @@ export const convertLiteGraphToPrompt = (
                 let max = 100
                 while ((parent == null || parent.node.type === 'Reroute') && max-- > 0) {
                     if (parent != null) LOG(`${FIELD_PREFIX} 🔥 ${ipt.name}... skipping reroute`)
-                    const linkId = parent?.node.inputs?.[0].link ?? ipt.link
+                    const linkId = bang(parent?.node.inputs?.[0]).link ?? ipt.link
                     if (linkId == null) {
                         LOG(`${FIELD_PREFIX} [🔶 WARN] node ${node.id}(${node.type}) has an empty input slot`)
                         continue INPT

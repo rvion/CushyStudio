@@ -3,21 +3,22 @@ import type { CushyAppL } from './CushyApp'
 import type { MediaImageL } from './MediaImage'
 import type { StepL } from './Step'
 import type { LibraryFile } from 'src/cards/LibraryFile'
+import type { Widget_group } from 'src/controls/widgets/group/WidgetGroup'
+import type { TABLES } from 'src/db/TYPES.gen'
 
 import { reaction } from 'mobx'
 
 import { Status } from 'src/back/Status'
 import { Form } from 'src/controls/Form'
-import { Widget_group } from 'src/controls/widgets/group/WidgetGroup'
+import { CushyFormManager, type FormBuilder } from 'src/controls/FormBuilder'
 import { LiveRef } from 'src/db/LiveRef'
 import { SQLITE_false, SQLITE_true } from 'src/db/SQLITE_boolean'
-import { DraftT } from 'src/db/TYPES.gen'
 import { toastError } from 'src/utils/misc/toasts'
 
 export type FormPath = (string | number)[]
 
 /** a thin wrapper around a single Draft somewhere in a .ts file */
-export interface DraftL extends LiveInstance<DraftT, DraftL> {}
+export interface DraftL extends LiveInstance<TABLES['draft']> {}
 export class DraftL {
     // 🔴 HACKY
     shouldAutoStart = false
@@ -28,7 +29,7 @@ export class DraftL {
     /** expand all top-level form entries */
     expandTopLevelFormEntries = () => this.form?.root?.expandAllEntries()
 
-    appRef = new LiveRef<this, CushyAppL>(this, 'appID', () => this.db.cushy_apps)
+    appRef = new LiveRef<this, CushyAppL>(this, 'appID', 'cushy_app')
 
     openOrFocusTab = () => {
         this.st.layout.FOCUS_OR_CREATE('Draft', { draftID: this.id }, 'LEFT_PANE_TABSET')
@@ -143,8 +144,12 @@ export class DraftL {
         this.form.builder._cache.count++
         this.AWAKE()
 
+        // update
+        this.update({ lastRunAt: Date.now() })
+        this.app.update({ lastRunAt: Date.now() })
+
         if (p.focusOutput ?? true) {
-            // 2024-01-21 should this be here ?
+            // 💬 2024-01-21 should this be here ?
             this.st.layout.FOCUS_OR_CREATE('Output', {})
         }
 
@@ -182,7 +187,7 @@ export class DraftL {
         // debugger
         const graph = startGraph.clone()
         // 4. create step
-        const step = this.db.steps.create({
+        const step = this.db.step.create({
             name: this.data.title,
             appID: this.data.appID,
             draftID: this.data.id,
@@ -203,7 +208,7 @@ export class DraftL {
         return step
     }
 
-    form: Maybe<Form<any>> = null
+    form: Maybe<Form<any, FormBuilder>> = null
 
     get file(): LibraryFile {
         return this.st.library.getFile(this.appRef.item.relPath)
@@ -220,12 +225,14 @@ export class DraftL {
             (action) => {
                 console.log(`[🦊] form: awakening app ${this.data.appID}`)
                 if (action == null) return
-                if (this.form) this.form.cleanup?.()
+                // 💬 2024-03-13 hopefully this is not needed anymore now that
+                // | we're no longer using reactions
+                // if (this.form) this.form.cleanup?.()
 
-                this.form = new Form(action.ui, {
+                this.form = CushyFormManager.form(action.ui, {
                     name: this.name,
                     initialValue: () => this.data.formSerial,
-                    onChange: (root) => {
+                    onSerialChange: (root) => {
                         this.update({ formSerial: root.serial })
                         console.log(`[👙] UPDATING draft(${this.id}) SERIAL`)
                         this.isDirty = true
@@ -260,7 +267,7 @@ export class DraftL {
             _1()
             // _2()
             this.isInitialized = false
-            this.form?.cleanup?.()
+            // this.form?.cleanup?.() // 🔶
             this.form = null //  __FAIL('not loaded yet')
         }
     }

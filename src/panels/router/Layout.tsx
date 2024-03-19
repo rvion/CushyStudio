@@ -120,6 +120,9 @@ export class CushyLayoutManager {
                         }
                     }
                 }}
+                /* This is more responsive and better for stuff like the gallery, where you may want to match the size of the panel to the size of the images.
+                 * Click => Dragging => Unclick is very annoying when you want something a specific way and need to see the changes quickly. */
+                realtimeResize
                 onModelChange={(model) => {
                     runInAction(() => {
                         this.currentTabSet = model.getActiveTabset()

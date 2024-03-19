@@ -3,6 +3,7 @@ import type { HostL } from 'src/models/Host'
 import { observer } from 'mobx-react-lite'
 
 import { useSt } from '../../state/stateContext'
+import { openExternal, openFolderInOS, showItemInFolder } from '../layout/openExternal'
 import { Dropdown, MenuItem } from 'src/rsuite/Dropdown'
 
 export const MenuComfyUI = observer(function MenuComfyUI_(p: {}) {
@@ -31,7 +32,7 @@ export const MenuComfyUI = observer(function MenuComfyUI_(p: {}) {
                     label='ComfyUI Hosts'
                 />
             )} */}
-            <HostMenuItemUI host={st.mainHost} />
+            <HostMenuItemUI host={st.mainHost} showID />
             <div className='divider'>All hosts</div>
             {st.hosts.map((host) => {
                 return <HostMenuItemUI key={host.id} host={host} />
@@ -40,7 +41,7 @@ export const MenuComfyUI = observer(function MenuComfyUI_(p: {}) {
     )
 })
 
-export const HostMenuItemUI = observer(function HostMenuItemUI_(p: { host: HostL }) {
+export const HostMenuItemUI = observer(function HostMenuItemUI_(p: { host: HostL; showID?: boolean }) {
     const host = p.host
     const isMain = host.id === cushy.configFile.value.mainComfyHostID
     return (
@@ -55,7 +56,24 @@ export const HostMenuItemUI = observer(function HostMenuItemUI_(p: { host: HostL
             }
             onClick={() => host.electAsPrimary()}
         >
-            <div tw='flex-grow'>{host.data.name}</div>
+            <div tw='flex-grow'>
+                <div>{host.data.name}</div>
+                {p.showID && (
+                    <div tw='opacity-50 text-xs'>
+                        {host.id}
+                        <div
+                            className='btn btn-xs'
+                            onClick={(ev) => {
+                                ev.stopPropagation()
+                                ev.preventDefault()
+                                openFolderInOS(`${cushy.rootPath}/schema/hosts/${host.id}` as AbsolutePath)
+                            }}
+                        >
+                            <span className='material-symbols-outlined'>open_in_new</span>
+                        </div>
+                    </div>
+                )}
+            </div>
             <div className='join'>
                 <div
                     className='btn btn-xs'

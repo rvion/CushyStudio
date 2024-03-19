@@ -7,14 +7,19 @@ import { ComboUI } from 'src/app/shortcuts/ComboUI'
 import { CushyShortcut } from 'src/app/shortcuts/ShortcutManager'
 
 export const Dropdown = (p: { className?: string; startIcon?: Maybe<ReactNode>; title: ReactNode; children: ReactNode }) => (
-    <RevealUI className='dropdown' tw={[p.className]}>
+    <RevealUI
+        className='dropdown'
+        tw={[p.className]}
+        content={() => (
+            <ul tabIndex={0} tw='shadow menu dropdown-content z-[1] bg-base-100 rounded-box'>
+                {p.children}
+            </ul>
+        )}
+    >
         <label tabIndex={0} tw={[`flex-nowrap btn btn-ghost btn-sm py-0 px-1.5`]}>
             <span tw='hidden lg:inline-block'>{p.startIcon}</span>
             {p.title}
         </label>
-        <ul tabIndex={0} tw='shadow menu dropdown-content z-[1] bg-base-100 rounded-box'>
-            {p.children}
-        </ul>
     </RevealUI>
 )
 

@@ -6,7 +6,7 @@ export const getBorderStatusForWidget = (widget: IWidget): boolean => {
     // if the widget override the default border => we respect that
     if (widget.border != null) return widget.border
     // if the widget do NOT have a body => we do not show the border
-    if (widget.BodyUI == null) return false
+    if (widget.DefaultBodyUI == null) return false // 🔴 <-- probably a mistake here
     // default case when we have a body => we show the border
     return true
 }

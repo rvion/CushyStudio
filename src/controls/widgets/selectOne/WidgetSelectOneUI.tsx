@@ -2,6 +2,7 @@ import type { BaseSelectEntry, Widget_selectOne } from './WidgetSelectOne'
 
 import { observer } from 'mobx-react-lite'
 
+import { InputBoolUI } from '../bool/InputBoolUI'
 import { SelectUI } from 'src/rsuite/SelectUI'
 import { makeLabelFromFieldName } from 'src/utils/misc/makeLabelFromFieldName'
 
@@ -20,18 +21,20 @@ export const WidgetSelectOne_TabUI = observer(function WidgetSelectOne_TabUI_<T 
     const selected = widget.serial.val
     return (
         <div>
-            <div role='tablist' tw='tabs tabs-boxed tabs-sm flex-wrap'>
+            <div tw='rounded select-none ml-auto justify-end flex flex-wrap gap-x-0.5 gap-y-0'>
                 {widget.choices.map((c) => {
                     const isSelected = selected?.id === c.id
                     return (
-                        <a
-                            onClick={() => (widget.serial.val = c)}
+                        <InputBoolUI
                             key={c.id}
-                            role='tab'
-                            tw={['tab', isSelected ? 'tab-active text-shadow-inv' : 'text-shadow']}
-                        >
-                            {c.label ?? makeLabelFromFieldName(c.id)}
-                        </a>
+                            active={isSelected}
+                            display='button'
+                            text={c.label ?? c.id}
+                            onValueChange={(value) => {
+                                if (value === isSelected) return
+                                widget.value = c
+                            }}
+                        />
                     )
                 })}
             </div>
@@ -60,7 +63,7 @@ export const WidgetSelectOne_SelectUI = observer(function WidgetSelectOne_Select
                 value={() => widget.serial.val}
                 onChange={(selectOption) => {
                     if (selectOption == null) {
-                        // TODO: hook into it's parent if parent is an option block ?
+                        // TODO?: hook into it's parent if parent is an option block ?
                         // ⏸️ if (!widget.isOptional) return
                         // ⏸️ widget.state.active = false
                         return
@@ -70,7 +73,7 @@ export const WidgetSelectOne_SelectUI = observer(function WidgetSelectOne_Select
                         console.log(`❌ WidgetSelectOneUI: could not find choice for ${JSON.stringify(selectOption)}`)
                         return
                     }
-                    widget.serial.val = next
+                    widget.value = next
                 }}
             />
             {widget.errors && (

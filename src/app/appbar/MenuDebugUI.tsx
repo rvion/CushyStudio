@@ -3,6 +3,7 @@ import { observer } from 'mobx-react-lite'
 import { useSt } from '../../state/stateContext'
 import { KEYS } from '../shortcuts/shorcutKeys'
 import { getDBStats } from 'src/db/getDBStats'
+import { quickBench } from 'src/db/quickBench'
 import { Dropdown, MenuItem } from 'src/rsuite/Dropdown'
 
 export const MenuDebugUI = observer(function MenuDebugUI_(p: {}) {
@@ -51,6 +52,12 @@ export const MenuDebugUI = observer(function MenuDebugUI_(p: {}) {
                 icon={<span className='material-symbols-outlined text-yellow-500'>account_balance</span>}
             >
                 print DB stats
+            </MenuItem>
+            <MenuItem
+                onClick={() => quickBench.printAllStats()}
+                icon={<span className='material-symbols-outlined text-yellow-500'>account_balance</span>}
+            >
+                print QuickBench stats
             </MenuItem>
             <MenuItem
                 onClick={st.auth.__testCB}

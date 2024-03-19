@@ -9,6 +9,13 @@ import { InputBoolUI } from 'src/controls/widgets/bool/InputBoolUI'
 import { useSt } from 'src/state/stateContext'
 import { searchMatches } from 'src/utils/misc/searchMatches'
 
+interface ToolTipPosition {
+    top: number | undefined
+    bottom: number | undefined
+    left: number | undefined
+    right: number | undefined
+}
+
 type SelectProps<T> = {
     label?: string
     /** callback when a new option is added */
@@ -32,8 +39,7 @@ type SelectProps<T> = {
     hideValue?: boolean
     className?: string
     /**
-     * @default: false
-     * (previous default before 2024-02-29: false if multi-select, true if single select)
+     * @default: false if multi-select, true if single select
      */
     closeOnPick?: boolean
     /**
@@ -93,7 +99,12 @@ class AutoCompleteSelectState<T> {
                 : value.map((i) => {
                       const label = this.p.getLabelText(i)
                       return (
-                          <div key={label} tw='badge badge-primary text-shadow-inv'>
+                          <div
+                              tw='badge badge-primary text-shadow-inv cursor-not-allowed line-clamp-1'
+                              key={label}
+                              // hack to allow to unselect quickly selected items
+                              onClick={() => this.p.onChange?.(i, this)}
+                          >
                               {label}
                           </div>
                       )
@@ -120,31 +131,62 @@ class AutoCompleteSelectState<T> {
     isDragging = false
     isFocused = false
     wasEnabled = false
+    hasMouseEntered = false
 
-    tooltipPosition = { top: 0, left: 0 }
+    tooltipPosition: ToolTipPosition = { top: undefined, bottom: undefined, left: undefined, right: undefined }
     tooltipMaxHeight = 100
 
     updatePosition = () => {
         const rect = this.anchorRef.current?.getBoundingClientRect()
         if (rect == null) return
+
+        /* Default anchoring is to favor bottom-left */
         this.tooltipPosition = {
             top: rect.bottom + window.scrollY,
             left: rect.left + window.scrollX,
+            right: undefined,
+            bottom: undefined,
         }
 
-        /* Make sure to not go off-screen */
-        this.tooltipMaxHeight = window.innerHeight - rect.bottom - 8
+        /* Which direction has more space? */
+        const onBottom = window.innerHeight * 0.5 < (rect.top + rect.bottom) * 0.5
+        const onLeft = window.innerWidth * 0.5 < (rect.left + rect.right) * 0.5
+
+        /* Make sure pop-up always fits within screen, but isn't too large */
+        this.tooltipMaxHeight = (window.innerHeight - rect.bottom) * 0.99
+
+        const inputHeight = parseInt(window.getComputedStyle(document.body).getPropertyValue('--input-height'))
+        /* Add 1.25 in case of headers, needs to be done properly by getting if there's a title when moving this to RevealUI. */
+        const desiredHeight = Math.min(this.options.length * inputHeight * 1.25)
+        const bottomSpace = window.innerHeight - rect.bottom
+
+        /* Make sure pop-up never goes off-screen vertically, preferring to go on the bottom if there is space. */
+        if (onBottom && desiredHeight > bottomSpace) {
+            /* This probably doesn't take in to account the fact that the browser's menu bar cuts off the top. */
+            this.tooltipMaxHeight = rect.top * 0.99
+
+            this.tooltipPosition.top = undefined
+            this.tooltipPosition.bottom = window.innerHeight - rect.top
+        }
+
+        /* Make sure pop-up never goes off-screen horizontally.  */
+        if (onLeft) {
+            this.tooltipPosition.left = undefined
+            this.tooltipPosition.right = window.innerWidth - rect.right
+        }
     }
 
     onRealWidgetMouseDown = (ev: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
         // ev.preventDefault()
         // ev.stopPropagation()
+        this.hasMouseEntered = true
         this.openMenu()
     }
 
     openMenu = () => {
         this.isOpen = true
         this.updatePosition()
+        this.inputRef.current?.focus()
         window.addEventListener('mousemove', this.MouseMoveTooFar, true)
     }
 
@@ -154,6 +196,7 @@ class AutoCompleteSelectState<T> {
         this.selectedIndex = 0
         this.searchQuery = ''
         this.isDragging = false
+        this.hasMouseEntered = false
 
         // Text cursor should only show when menu is open
         // this.anchorRef?.current?.querySelector('input')?.blur()
@@ -183,7 +226,7 @@ class AutoCompleteSelectState<T> {
         if (selectedOption) {
             this.p.onChange?.(selectedOption, this)
             const shouldResetQuery = this.p.resetQueryOnPick ?? false // !this.isMultiSelect
-            const shouldCloseMenu = this.p.closeOnPick ?? false // !this.isMultiSelect
+            const shouldCloseMenu = this.p.closeOnPick ?? !this.isMultiSelect
             if (shouldResetQuery) this.searchQuery = ''
             if (shouldCloseMenu) this.closeMenu()
         }
@@ -209,38 +252,37 @@ class AutoCompleteSelectState<T> {
     }
 
     // Close pop-up if too far outside
-    // 2024-02-29 rvion:
+    // 💬 2024-02-29 rvion:
     // | this code was a good idea; but it's really
     // | not pleasant when working mostly with keyboard and using tab to open selects.
     // | as soon as the moouse move just one pixel, popup close.
     // |  =>  commenting it out until we find a solution confortable in all cases
     MouseMoveTooFar = (event: MouseEvent) => {
-        return
-        // ⏸️ let popup = this.popupRef?.current
-        // ⏸️ let anchor = this.anchorRef?.current
-        // ⏸️
-        // ⏸️ if (!popup || !anchor) {
-        // ⏸️     return
-        // ⏸️ }
-        // ⏸️
-        // ⏸️ const x = event.clientX
-        // ⏸️ const y = event.clientY
-        // ⏸️
-        // ⏸️ // XXX: Should probably be scaled by UI scale
-        // ⏸️ const maxDistance = 75
-        // ⏸️
-        // ⏸️ if (
-        // ⏸️     // left
-        // ⏸️     popup.offsetLeft - x > maxDistance ||
-        // ⏸️     // top
-        // ⏸️     popup.offsetTop - y > maxDistance ||
-        // ⏸️     // right
-        // ⏸️     x - (popup.offsetLeft + popup.offsetWidth) > maxDistance ||
-        // ⏸️     // bottom
-        // ⏸️     y - (popup.offsetTop + popup.offsetHeight) > maxDistance
-        // ⏸️ ) {
-        // ⏸️     this.closeMenu()
-        // ⏸️ }
+        let popup = this.popupRef?.current
+        let anchor = this.anchorRef?.current
+
+        if (!popup || !anchor || !this.hasMouseEntered) {
+            return
+        }
+
+        const x = event.clientX
+        const y = event.clientY
+
+        // XXX: Should probably be scaled by UI scale
+        const maxDistance = 75
+
+        if (
+            // left
+            popup.offsetLeft - x > maxDistance ||
+            // top
+            popup.offsetTop - y > maxDistance ||
+            // right
+            x - (popup.offsetLeft + popup.offsetWidth) > maxDistance ||
+            // bottom
+            y - (popup.offsetTop + popup.offsetHeight) > maxDistance
+        ) {
+            this.closeMenu()
+        }
     }
 
     onBlur = () => this.closeMenu()
@@ -317,33 +359,35 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
                     ]}
                 >
                     {s.isOpen || s.isFocused ? null : (
-                        <>
+                        /* Using grid here to make sure that inner text will truncate instead of pushing the right-most icon out of the container. */
+                        <div tw='grid w-full items-center' style={{ gridTemplateColumns: '24px 1fr 24px' }}>
                             <div tw='btn btn-square btn-xs bg-transparent border-0'>
-                                <span className='material-symbols-outlined'>search</span>
+                                <span className='prefix material-symbols-outlined'>search</span>
                             </div>
-                            <div tw='whitespace-nowrap overflow-hidden'>{s.displayValue}</div>
+                            <div tw='overflow-hidden'>{s.displayValue}</div>
                             <div tw='btn btn-square btn-xs ml-auto bg-transparent border-0'>
-                                <span className='material-symbols-outlined'>arrow_drop_down</span>
+                                <span className='suffix material-symbols-outlined ml-auto'>arrow_drop_down</span>
                             </div>
-                        </>
+                        </div>
                     )}
                 </div>
                 <div tw='absolute top-0 left-0 right-0 z-50 h-full'>
-                    {/* it's important for the input to be here so tabulation flow normally */}
+                    {/* it's important for the input to be here so tabulation flow normally */}
                     {/* <div tw='btn btn-square btn-xs bg-transparent border-0'>
                         <span className='material-symbols-outlined'>search</span>
                     </div> */}
                     <input
                         //
+                        placeholder={s.isOpen ? p.placeholder : undefined}
                         ref={s.inputRef}
                         tw='input input-sm w-full h-full !outline-none'
                         type='text'
                         value={s.searchQuery}
                         onChange={() => {}}
                     />
-                    <div tw='btn btn-square btn-xs ml-auto bg-transparent border-0'>
+                    {/* <div tw='btn btn-square btn-xs ml-auto bg-transparent border-0'>
                         <span className='material-symbols-outlined'>arrow_drop_down</span>
-                    </div>
+                    </div> */}
                 </div>
                 {/* TOOLTIP */}
                 {s.isOpen && <SelectPopupUI s={s} />}
@@ -366,15 +410,19 @@ export const SelectPopupUI = observer(function SelectPopupUI_<T>(p: { s: AutoCom
             ref={s.popupRef}
             tw={[
                 'MENU-ROOT _SelectPopupUI bg-base-100 flex',
-                'rounded-b border-b border-l border-r border-base-300 overflow-auto',
+                'border-l border-r border-base-300 overflow-auto',
+                s.tooltipPosition.bottom ? 'rounded-t border-t' : 'rounded-b border-b',
             ]}
             style={{
                 minWidth: s.anchorRef.current?.clientWidth ?? '100%',
+                maxWidth: window.innerWidth - (s.tooltipPosition.left ? s.tooltipPosition.left : s.tooltipPosition.right ?? 0),
                 pointerEvents: 'initial',
                 position: 'absolute',
                 zIndex: 99999999,
-                top: `${s.tooltipPosition.top}px`,
-                left: `${s.tooltipPosition.left}px`,
+                top: s.tooltipPosition.top ? `${s.tooltipPosition.top}px` : 'unset',
+                bottom: s.tooltipPosition.bottom ? `${s.tooltipPosition.bottom}px` : 'unset',
+                left: s.tooltipPosition.left ? `${s.tooltipPosition.left}px` : 'unset',
+                right: s.tooltipPosition.right ? `${s.tooltipPosition.right}px` : 'unset',
                 maxHeight: `${s.tooltipMaxHeight}px`,
 
                 // Adjust positioning as needed
@@ -383,6 +431,11 @@ export const SelectPopupUI = observer(function SelectPopupUI_<T>(p: { s: AutoCom
             onMouseDown={(ev) => {
                 ev.preventDefault()
                 ev.stopPropagation()
+            }}
+            onMouseEnter={(ev) => {
+                if (s.isOpen) {
+                    s.hasMouseEntered = true
+                }
             }}
         >
             <ul className='bg-base-100 max-h-96' tw='flex-col w-full'>
@@ -420,7 +473,7 @@ export const SelectPopupUI = observer(function SelectPopupUI_<T>(p: { s: AutoCom
                         >
                             <div
                                 tw={[
-                                    'WIDGET-FIELD pl-0.5 flex w-full items-center rounded',
+                                    'WIDGET-FIELD pl-0.5 flex w-full items-center rounded overflow-auto',
                                     'active:bg-base-300 cursor-default text-shadow',
                                     index === s.selectedIndex ? 'bg-base-300' : null,
                                     /* index === s.selectedIndex && */
@@ -431,7 +484,7 @@ export const SelectPopupUI = observer(function SelectPopupUI_<T>(p: { s: AutoCom
                             >
                                 {/* {s.isMultiSelect ? <InputBoolUI active={isSelected} expand={false}></InputBoolUI> : <></>} */}
                                 <InputBoolUI active={isSelected} expand={false}></InputBoolUI>
-                                <div tw='pl-0.5 flex h-full w-full items-center'>
+                                <div tw='pl-0.5 flex h-full items-center truncate'>
                                     {s.p.getLabelUI //
                                         ? s.p.getLabelUI(option)
                                         : s.p.getLabelText(option)}

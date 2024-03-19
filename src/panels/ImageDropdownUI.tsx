@@ -101,7 +101,7 @@ export const ImageActionMenu = observer(function ImageActionMenu_(p: { img: Medi
     const img = p.img
     return (
         <>
-            {st.allImageAppsCollectitons.map((app) => {
+            {st.allImageApps.map((app) => {
                 return (
                     <div key={app.id}>
                         {app.drafts.map((d) => (

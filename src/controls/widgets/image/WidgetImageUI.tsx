@@ -1,28 +1,24 @@
-import { runInAction } from 'mobx'
+import type { Widget_image } from './WidgetImage'
+
 import { observer } from 'mobx-react-lite'
 
-import { Widget_image } from './WidgetImage'
 import { useSt } from 'src/state/stateContext'
 import { useImageDrop } from 'src/widgets/galleries/dnd'
 import { ImageUI } from 'src/widgets/galleries/ImageUI'
-import { useDraft } from 'src/widgets/misc/useDraft'
 
 export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: { widget: Widget_image }) {
     const widget = p.widget
     const st = useSt()
-    const [dropStyle, dropRef] = useImageDrop(st, (i) => {
-        runInAction(() => {
-            widget.serial.imageID = i.id
-        })
+    const [dropStyle, dropRef] = useImageDrop(st, (imageL) => {
+        widget.value = imageL
     })
-    const draft = useDraft()
-    const image = draft.db.media_images.get(widget.serial.imageID)
+    const image = widget.value
     return (
         <div
             style={dropStyle}
             ref={dropRef}
             className='DROP_IMAGE_HANDLER'
-            tw='_WidgetSelectImageUI flex gap-2 p-1 bg-base-100 border border-dashed border-neutral self-center'
+            tw='_WidgetSelectImageUI flex gap-2 p-1 bg-base-100 self-center'
         >
             {image != null ? ( //
                 <div tw='flex items-start gap-1'>

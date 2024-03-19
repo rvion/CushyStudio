@@ -32,7 +32,7 @@ export const ListControlsUI = observer(function ListControlsUI_(p: { widget: Wid
                 onClick={(ev) => {
                     if (!canClear) return
                     ev.stopPropagation()
-                    widget.removemAllItems()
+                    widget.removeAllItems()
                 }}
             >
                 <span className='material-symbols-outlined'>delete_forever</span>

@@ -1,4 +1,4 @@
-import type { ComfySchemaL, EmbeddingName } from './Schema'
+import type { ComfySchemaL, EmbeddingName } from './ComfySchema'
 import type { Requirements } from 'src/controls/IWidget'
 import type { LiveInstance } from 'src/db/LiveInstance'
 import type { PluginInfo } from 'src/manager/custom-node-list/custom-node-list-types'
@@ -8,7 +8,7 @@ import type { KnownCustomNode_Title } from 'src/manager/custom-node-list/KnownCu
 import { copyFileSync, existsSync, mkdirSync, writeFileSync } from 'fs'
 
 import { ResilientWebSocketClient } from 'src/back/ResilientWebsocket'
-import { asComfySchemaID, type HostT } from 'src/db/TYPES.gen'
+import { asComfySchemaID, type TABLES } from 'src/db/TYPES.gen'
 import { ComfyManager } from 'src/manager/ComfyManager'
 import { extractErrorMessage } from 'src/utils/formatters/extractErrorMessage'
 import { readableStringify } from 'src/utils/formatters/stringifyReadable'
@@ -16,7 +16,7 @@ import { downloadFile } from 'src/utils/fs/downloadFile'
 import { asRelativePath } from 'src/utils/fs/pathUtils'
 import { toastError, toastSuccess } from 'src/utils/misc/toasts'
 
-export interface HostL extends LiveInstance<HostT, HostL> {}
+export interface HostL extends LiveInstance<TABLES['host']> {}
 
 export class HostL {
     // 🔶 can't move frame ref here because no way to override mobx
@@ -57,6 +57,29 @@ export class HostL {
             }
         }
         return true
+    }
+
+    // Rotating srever logs --------------------------------------------
+    private wantLog: boolean = true
+    enableServerLogs = () => {
+        this.wantLog = true
+        this.manager.configureLogging(this.wantLog)
+    }
+    disableServerLogs = () => {
+        this.wantLog = false
+        this.manager.configureLogging(this.wantLog)
+    }
+    toggleServerLogs = () => {
+        this.wantLog = !this.wantLog
+        this.manager.configureLogging(this.wantLog)
+    }
+    maxLogs = 200
+    serverLogs: { at: string; content: string; id: number }[] = []
+    logId: number = 0
+    addLog = (content: string) => {
+        if (this.serverLogs.length > this.maxLogs) this.serverLogs.shift()
+        const d = new Date().toISOString().slice(11, 19)
+        this.serverLogs.push({ content, id: this.logId++, at: d })
     }
 
     get isReadonly(): boolean {
@@ -104,7 +127,7 @@ export class HostL {
         this.embeddingsPath = this.st.resolve(this.fileCacheFolder, asRelativePath(`embeddings.json`))
         this.sdkDTSPath = this.st.resolve(this.fileCacheFolder, asRelativePath(`sdk.dts.txt`))
         const associatedSchemaID = asComfySchemaID(this.id)
-        this.schema = this.st.db.comfy_schemas.getOrCreate(associatedSchemaID, () => ({
+        this.schema = this.st.db.comfy_schema.getOrCreate(associatedSchemaID, () => ({
             id: associatedSchemaID,
             embeddings: [],
             spec: {},
@@ -184,10 +207,10 @@ export class HostL {
         this.schemaRetrievalLogs.splice(0, this.schemaRetrievalLogs.length)
     }
 
-    addLog = (...args: any[]) => {
-        this.schemaRetrievalLogs.push(args.join(' '))
-        console.info('[🐱] CONFY:', ...args)
-    }
+    // addLog = (...args: any[]) => {
+    //     this.schemaRetrievalLogs.push(args.join(' '))
+    //     console.info('[🐱] CONFY:', ...args)
+    // }
 
     // STARTING -----------------------------------------------------------------------------
     get isConnected() {
@@ -237,7 +260,7 @@ export class HostL {
         console.log(`[👢] WEBSOCKET: starting client to ComfyUI host ${this.data.name}`)
         this.ws = new ResilientWebSocketClient({
             onConnectOrReconnect: () => this.fetchAndUpdateSchema(),
-            onMessage: this.st.onMessage,
+            onMessage: (e: MessageEvent) => this.st.onMessage(e, this),
             url: this.getWSUrl,
             onClose: () => {},
         })

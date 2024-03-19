@@ -51,8 +51,8 @@ export const ui_subform_Lineart_Preprocessor = () => {
 export const ui_subform_Lineart_realistic = () => {
     const form: FormBuilder = getCurrentForm()
     return form.group({
-        label: 'Settings',
-        startCollapsed: true,
+        // label: 'Settings',
+        // startCollapsed: true,
         items: () => ({
             ...cnet_preprocessor_ui_common(form),
             coarse: form.bool({ default: false }),
@@ -63,8 +63,8 @@ export const ui_subform_Lineart_realistic = () => {
 export const ui_subform_Lineart_Anime = () => {
     const form: FormBuilder = getCurrentForm()
     return form.group({
-        label: 'Settings',
-        startCollapsed: true,
+        // label: 'Settings',
+        // startCollapsed: true,
         items: () => ({
             ...cnet_preprocessor_ui_common(form),
         }),
@@ -74,8 +74,8 @@ export const ui_subform_Lineart_Anime = () => {
 export const ui_subform_Lineart_Manga = () => {
     const form: FormBuilder = getCurrentForm()
     return form.group({
-        label: 'Settings',
-        startCollapsed: true,
+        // label: 'Settings',
+        // startCollapsed: true,
         items: () => ({
             ...cnet_preprocessor_ui_common(form),
         }),

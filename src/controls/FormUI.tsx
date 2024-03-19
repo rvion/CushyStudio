@@ -8,7 +8,7 @@ import { MessageErrorUI } from 'src/panels/MessageUI'
 export const FormUI = observer(function FormUI_(p: {
     //
     className?: string
-    form: Maybe<Form<any>>
+    form: Maybe<Form<any, any>>
 }) {
     const form = p.form
     if (form == null) return <MessageErrorUI markdown={`form is not yet initialized`} />

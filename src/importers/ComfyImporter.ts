@@ -2,13 +2,14 @@ import type { STATE } from 'src/state/state'
 
 import { normalizeJSIdentifier } from '../core/normalizeJSIdentifier'
 import { ComfyPrimitiveMapping } from '../core/Primitives'
-import { ComfyNodeSchema, NodeInputExt } from '../models/Schema'
+import { ComfyNodeSchema, NodeInputExt } from '../models/ComfySchema'
 import { ComfyPromptJSON } from '../types/ComfyPrompt'
 import { CodeBuffer } from '../utils/codegen/CodeBuffer'
 import { asJSAccessor, escapeJSKey } from '../utils/codegen/escapeJSKey'
 import { jsEscapeStr } from '../utils/codegen/jsEscapeStr'
 import { TEdge, toposort } from '../utils/misc/toposort'
 import { Namer } from './Namer'
+import { bang } from 'src/utils/misc/bang'
 
 /** Converts Comfy JSON prompts to ComfyScript code */
 type RuleInput = {
@@ -68,7 +69,7 @@ export class ComfyImporter {
     ): string => {
         if (nodeType === 'CheckpointLoaderSimple') return this.finalizeName('ckpt')
         if (nameOfInputsItsPluggedInto.length === 1) {
-            return this.finalizeName(nameOfInputsItsPluggedInto[0])
+            return this.finalizeName(bang(nameOfInputsItsPluggedInto[0]))
         }
         return this.finalizeName(nodeType)
     }
@@ -86,7 +87,7 @@ export class ComfyImporter {
     private smartDownCase = (x: string) => {
         const isAllCaps = x === x.toUpperCase()
         if (isAllCaps) return x.toLowerCase()
-        return x[0].toLowerCase() + x.slice(1)
+        return bang(x[0]).toLowerCase() + x.slice(1)
     }
 
     /** trim useless suffixes, like _name */
@@ -147,14 +148,14 @@ export class ComfyImporter {
 
         for (const nodeID of sortedNodes) {
             // @ts-ignore
-            const node = flow[nodeID]
+            const node = flow[nodeID]!
             const classType = normalizeJSIdentifier(node.class_type, ' ')
             const varName = this.mkVarNameForNodeType(classType, []) //`${classType}_${nodeID}`
 
             generatedName.set(nodeID, varName)
-            const schema: ComfyNodeSchema =
+            const schema: Maybe<ComfyNodeSchema> =
                 this.st.schema.nodesByNameInCushy[classType] ?? //
-                this.st.schema.nodesByNameInCushy[this.knownAliaes[classType]]
+                this.st.schema.nodesByNameInCushy[this.knownAliaes[classType]!]
             if (schema == null) {
                 const msg = `schema not found for ${classType}`
                 console.error('🔥', msg)

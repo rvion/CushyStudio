@@ -83,3 +83,5 @@ settings/*.json
 
 tsconfig.tsbuildinfo
 .tsbuildinfo
+
+src/tools/cushy-screenshots-logs.txt

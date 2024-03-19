@@ -1,14 +1,15 @@
-import type { Placement } from './RevealState'
+import type { RevealPlacement } from './RevealPlacement'
 
-import React from 'react'
+import React, { type FC } from 'react'
 
 export type RevealProps = {
     // components
-    children: [React.ReactNode, React.ReactNode]
+    content: () => React.ReactNode
+    children: React.ReactNode //, React.ReactNode]
     title?: React.ReactNode // only for popup
 
     // placement
-    placement?: Placement
+    placement?: RevealPlacement
 
     onClick?: (ev: React.MouseEvent) => void
 

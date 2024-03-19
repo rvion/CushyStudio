@@ -10,9 +10,11 @@ import { createRef } from 'react'
 
 import { onMouseMoveCanvas } from '../behaviours/onMouseMoveCanvas'
 import { onWheelScrollCanvas } from '../behaviours/onWheelScrollCanvas'
+import { setupStageForPainting } from '../behaviours/setupStageForPainting'
 import { KonvaGrid1 } from './KonvaGrid1'
+import { UnifiedCanvasBrushMode, UnifiedCanvasTool } from './UnifiedCanvasTool'
 import { UnifiedImage } from './UnifiedImage'
-import { setupStageForPainting, UnifiedMask } from './UnifiedMask'
+import { UnifiedMask } from './UnifiedMask'
 import { UnifiedSelection } from './UnifiedSelection'
 import { UnifiedStep } from './UnifiedStep'
 import { toastError } from 'src/utils/misc/toasts'
@@ -42,13 +44,13 @@ export class UnifiedCanvas {
         mask.layer.moveToTop()
     }
 
-    tool: 'generate' | 'mask' | 'paint' | 'move' = 'generate'
-    brushMode: 'paint' | 'erase' = 'paint'
+    tool: UnifiedCanvasTool = 'generate'
+    brushMode: UnifiedCanvasBrushMode = 'paint'
     maskToolSize: number = 32
     maskColor = 'red'
     maskOpacity = 0.5
 
-    _isPaint = false
+    // _isPaint = false
     _lastLine: Konva.Line | null = null
 
     get pointerPosition() {
@@ -72,6 +74,44 @@ export class UnifiedCanvas {
     onWheel = (e: any) => {
         //
     }
+
+    brush = new Konva.Circle({
+        fill: this.brushMode === 'paint' ? 'black' : 'white',
+        stroke: 'black',
+        // strokeWidth: this.maskToolSize,
+        radius: this.maskToolSize / 2,
+        opacity: this.maskOpacity,
+    })
+
+    enable_generate = () => {
+        this.tool = 'generate'
+        this.disable_mask()
+        this.disable_paint()
+        this.disable_move()
+    }
+    disable_generate = () => {}
+    enable_mask = () => {
+        this.tool = 'mask'
+        this.disable_generate()
+        this.disable_paint()
+        this.disable_move()
+    }
+    disable_mask = () => {}
+    enable_paint = () => {
+        this.tool = 'paint'
+        this.disable_generate()
+        this.disable_mask()
+        this.disable_move()
+    }
+    disable_paint = () => {}
+    enable_move = () => {
+        this.tool = 'move'
+        this.disable_generate()
+        this.disable_mask()
+        this.disable_paint()
+    }
+    disable_move = () => {}
+
     onKeyDown = (e: any) => {
         if (e.key === '1') { this.tool = 'generate' ; return } // prettier-ignore
         if (e.key === '2') { this.tool = 'mask' ; return } // prettier-ignore
@@ -103,47 +143,32 @@ export class UnifiedCanvas {
     selections: UnifiedSelection[] = []
     grid: KonvaGrid1
     TEMP = document.createElement('div')
+
     stage: Konva.Stage
+    gridLayer: Konva.Layer
     tempLayer: Konva.Layer
+    imageLayer: Konva.Layer
+
     constructor(public st: STATE, baseImage: MediaImageL) {
+        // core layers
         this.stage = new Konva.Stage({ container: this.TEMP, width: 512, height: 512 })
-        // this.stage.on('keydown', (ke) => {
-        //     const e = ke.evt
-        //     console.log(`[👙] e.key`, e.key)
-        //     if (e.key === 'z' && (e.ctrlKey || e.metaKey)) {
-        //         this.undo()
-        //     }
-        // })
+        this.gridLayer = new Konva.Layer({ imageSmoothingEnabled: false })
+        this.imageLayer = new Konva.Layer()
+        this.tempLayer = new Konva.Layer()
+        this.stage.add(this.gridLayer, this.imageLayer, this.tempLayer)
+
+        // ------------------------------
+        // to hold the line currently being drawn
         this.grid = new KonvaGrid1(this)
+        this.tempLayer.opacity(0.5)
+        this.tempLayer.add(this.brush)
+
         this.images = [new UnifiedImage(this, baseImage)]
         this.stage.on('wheel', (e: KonvaEventObject<WheelEvent>) => onWheelScrollCanvas(this, e))
         this.stage.on('mousemove', (e: KonvaEventObject<MouseEvent>) => onMouseMoveCanvas(this, e))
-        this.stage.on('mousedown', (e: KonvaEventObject<MouseEvent>) => {
-            console.log(`[👙] hello`)
-            if (this.tool === 'generate') {
-                e.cancelBubble = true
-                e.evt.preventDefault()
-                e.evt.stopPropagation()
-                const res = this.activeSelection.saveImage()
-                if (res == null) return toastError('❌ FAILED to canvas.activeSelection.saveImage')
-                const { image, mask } = res
-                if (image && this.currentDraft) {
-                    const step = this.currentDraft.start({
-                        focusOutput: false,
-                        imageToStartFrom: image,
-                    })
-                    const us = new UnifiedStep(this, step)
-                    this.steps.push(us)
-                }
-            }
-        })
-        // ------------------------------
-        // to hold the line currently being drawn
-        this.tempLayer = new Konva.Layer()
-        this.tempLayer.opacity(0.5)
-        this.stage.add(this.tempLayer)
 
         // ------------------------------
+
         const selection = this.addSelection()
         this.activeSelection = selection
         const mask = this.addMask()

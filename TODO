@@ -1,6 +1,26 @@
+☐ add back the live update of string values
+    ☐ current system forbid usage as dynamic search
+    ☐ annoying when we expect the string to update live at different areas
+☐ tab between widget int does not work properly (extra jump somewhere in the middle, have to press tab more than once)
+    ☐ int do not work properly
+    ☐ https://cushy.fra1.cdn.digitaloceanspaces.com/rvion/76a67a6a40edffde772bfd345703fc62c0146963.jpg
+☐ missing focus around text and input
+    ☐ tabbing between widgets is hard to do becase we don't have any visual clues anymore
+    ☐ https://cushy.fra1.cdn.digitaloceanspaces.com/rvion/76a67a6a40edffde772bfd345703fc62c0146963.jpg
+
+✔ fix codegen with new template @done(24-03-05 23:30)
+☐ recent Apps
+☐ recentDrafts
+☐ proper Tab
+☐ lastRunAt
+☐ https://github.com/WiseLibs/better-sqlite3/issues/262
+☐ lastUpdateAt on forms.
+☐ fold button when no label.
 ☐ filter enum values: highlight + sort
 ☐ auto-ui
-
+☐ make adding optional / removing optional recoverable by smartly
+    ☐ reusing the draft
+    ☐ picking subdraft when optional instead of X
 
 ☐ header (instead of line)
 ☐ body (instead of block)

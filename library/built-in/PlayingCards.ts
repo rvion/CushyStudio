@@ -1,12 +1,14 @@
-import { ImageAndMask } from 'src'
 import type { FormBuilder } from 'src/controls/FormBuilder'
+
+import { toJS } from 'mobx'
+import { ImageAndMask } from 'src'
+
 import { CardSuit, CardValue } from './_PlayingCards/_cardLayouts'
 import { _drawCard } from './_PlayingCards/_drawCard'
-import { toJS } from 'mobx'
 import { ui_highresfix } from './_prefabs/_prefabs'
 import { run_model, ui_model } from './_prefabs/prefab_model'
-import { run_sampler, ui_sampler } from './_prefabs/prefab_sampler'
 import { run_prompt } from './_prefabs/prefab_prompt'
+import { run_sampler, ui_sampler } from './_prefabs/prefab_sampler'
 
 app({
     metadata: {
@@ -168,8 +170,8 @@ app({
 
             const positiveText = `masterpiece, rpg, ${basePrompt}, ${suitColor} of ${suit} color, intricate details, theme of ${theme} and ${ui.generalTheme}, 4k`
             const positive = graph.CLIPTextEncode({ clip, text: positiveText })
-            const negative = negP.positiveConditionning // graph.CLIPTextEncode({ clip, text: negativeText })
-            const xxx = foo[`${suit}_${value}`]
+            const negative = negP.conditioning // graph.CLIPTextEncode({ clip, text: negativeText })
+            const xxx = foo[`${suit}_${value}`]!
             // let latent: _LATENT = suitsBackground.get(suit)! // emptyLatent
             let latent: _LATENT = graph.VAEEncode({ pixels: xxx.base, vae })
             latent = graph.SetLatentNoiseMask({

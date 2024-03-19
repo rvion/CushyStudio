@@ -1,10 +1,11 @@
-#root {
+:root {
     --roundness: 5px;
     --input-height: 28px;
 }
 
 .WIDGET-FIELD {
     height: var(--input-height);
+    min-height: var(--input-height);
 }
 
 .WIDGET-FIELD *::selection {
@@ -17,6 +18,10 @@
 
 #CushyStudio:focus {
     outline: none;
+}
+
+.subtle {
+    @apply text-sm text-gray-500 italic;
 }
 /*
 @font-face {
@@ -43,10 +48,14 @@ body {
     border-right: 1px solid oklch(var(--p)/.2);
     border-bottom: 1px solid oklch(var(--p)/.2);
     /* border-bottom: 1px solid oklch(var(--p)/.4); */
-    padding: 2px;
+    /* padding: 2px; */
 }
 
-.WIDGET-GROUP-BORDERED:hover .WIDGET-COLLAPSE-BTN {
+/* .WIDGET-GROUP-BORDERED:hover .WIDGET-COLLAPSE-BTN {
+    opacity: 100% !important;
+} */
+
+.COLLAPSE-PASSTHROUGH:hover .WIDGET-COLLAPSE-BTN {
     opacity: 100% !important;
 }
 
@@ -84,6 +93,22 @@ body {
     /* background: oklch(var(--b3)) */
 }
 
+/* PanelHeaderUI */
+.CSHY-panel-header {
+    height: calc(var(--input-height) + 8px);
+    min-height: calc(var(--input-height) + 8px);
+
+    overflow-x: scroll;
+    overflow-y: hidden;
+
+    -ms-overflow-style: none;
+    overflow: -moz-scrollbars-none;
+    scrollbar-width: none;
+}
+
+.CSHY-panel-header::-webkit-scrollbar {
+    display: none;
+}
 
 /* CODEMIRROR ----------------------------------------- */
 .cm-tooltip.cm-completionInfo {
@@ -193,6 +218,12 @@ input::-webkit-inner-spin-button {
 
 .input-number-ui:hover .inui-foreground {
     filter: brightness(1.20)
+}
+
+.input-number-ui .input[type=text] {
+    min-width: none;
+    max-width: 100%;
+    height: 200px !important;
 }
 
 /* //InputNumberUI */
@@ -369,10 +400,17 @@ legend {
 }
 
 
+._MD code{
+    border: 1px solid oklch(var(--p)/.2);
+    display: block;
+    background-color: oklch(var(--p)/.1);
+    padding: .5rem;
+    overflow: auto;
+    white-space: pre-wrap;
+}
 ._MD code,
 ._MD pre {
-    background-color: oklch(var(--p)/.2);
-    padding: .5rem;
+    font-style: italic;
 }
 
 ._MD table {

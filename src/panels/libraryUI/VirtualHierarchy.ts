@@ -35,7 +35,7 @@ export class VirtualHierarchy<T extends { virtualFolder: string }> {
             if (pieces.length === 0) continue
             const fisrtPiece = pieces[0]
             if (fisrtPiece === '') continue
-            subFolders.add(fisrtPiece)
+            subFolders.add(fisrtPiece!)
         }
         // console.log(`[🟢] ${Array.from(subFolders)}`)
         return Array.from(subFolders)

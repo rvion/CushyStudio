@@ -50,7 +50,7 @@ const expandNestedBraces = (combination: string): string[] => {
     if (!matches) {
         return [combination]
     } else {
-        const parts = matches[1].split(/(?<!\\),/).map((part) => part.replace(/\\,/g, ','))
+        const parts = matches[1]!.split(/(?<!\\),/).map((part) => part.replace(/\\,/g, ','))
         const result: Set<string> = new Set()
         for (const part of parts) {
             const expanded = expandBraces(combination.replace(matches[0], part))
@@ -69,7 +69,7 @@ function replaceWithRandomWord(input: string): string {
     const regex = /<([^<>]+)>/g
     let match
     while ((match = regex.exec(input)) !== null) {
-        let replacement = match[1]
+        let replacement = match[1]!
         // Check for nested replacements
         if (/<([^<>]+)>/.test(replacement)) {
             replacement = replaceWithRandomWord(replacement)

@@ -1,3 +1,5 @@
+import type { CompiledPrompt, Widget_prompt } from './WidgetPrompt'
+
 import { EditorState } from '@codemirror/state'
 import { EditorView } from 'codemirror'
 import { makeAutoObservable, observable } from 'mobx'
@@ -7,12 +9,17 @@ import { PromptLang } from './cm-lang/LANG'
 import { basicSetup } from './cm-lang/SETUP'
 import { generatePromptCombinations } from './compiler/promptsplit'
 import { Prompt_Lora, PromptAST } from './grammar/grammar.practical'
-import { CompiledPrompt, Widget_prompt } from './WidgetPrompt'
 
 export class WidgetPromptUISt {
     mountRef = createRef<HTMLDivElement>()
     editorView: Maybe<EditorView> = null
     editorState: EditorState
+
+    replaceTextBy = (nextText: string) => {
+        this.editorView?.dispatch({
+            changes: { from: 0, to: this.editorView.state.doc.length, insert: nextText },
+        })
+    }
     constructor(public widget: Widget_prompt) {
         this.editorState = EditorState.create({
             doc: this.text,
@@ -41,8 +48,11 @@ export class WidgetPromptUISt {
         })
     }
 
+    // get/set
     get text() { return this.widget.serial.val ?? ''; } // prettier-ignore
-    set text(val: string) { this.widget.serial.val = val; } // prettier-ignore
+    set text(val: string) { this.widget.setText_INTERNAL(val); } // prettier-ignore
+
+    // computed
     get ast(): PromptAST { return new PromptAST(this.text, this.editorView) } // prettier-ignore
     get loras(): Prompt_Lora[] { return this.ast.findAll('Lora') } // prettier-ignore
     get debugView() { return this.ast.toString() } // prettier-ignore

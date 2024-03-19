@@ -58,16 +58,19 @@ export default defineConfig({
             // -----------------------------------------------------------------------
             three: `${installDir}/src/syms/three.js`,
             mobx: `${installDir}/src/syms/mobx.js`,
-            'cytoscape-klay': `${installDir}/src/syms/cytoscape-klay.js`,
-            cytoscape: `${installDir}/src/syms/cytoscape.js`,
-            '@tensorflow/tfjs': './src/syms/tfjs.js',
+            nsfwjs: `${installDir}/src/syms/nsfwjs.js`,
+            '@tensorflow/tfjs': `${installDir}/src/syms/tfjs.js`,
+            'mime-types': `${installDir}/src/syms/mime-types.js`,
 
             // -----------------------------------------------------------------------
             src: `${installDir}/src`,
 
             // -----------------------------------------------------------------------
             // injected node modules
-            // check the `src/syms/_.cjs`
+            // 🔶 modifications must be kept in sync between :
+            //     | ./src/shell/build.js
+            //     | ./vite.config.ts
+            //     | ./src/shell/externals.cjs
             /* */ assert: `${installDir}/src/syms/assert.js`,
             'node:assert': `${installDir}/src/syms/assert.js`,
             /* */ url: `${installDir}/src/syms/url.js`,
@@ -98,6 +101,8 @@ export default defineConfig({
             'node:events': `${installDir}/src/syms/events.js`,
             /* */ async_hooks: `${installDir}/src/syms/async_hooks.js`,
             'node:async_hooks': `${installDir}/src/syms/async_hooks.js`,
+            /* */ crypto: `${installDir}/src/syms/crypto.js`,
+            'node:crypto': `${installDir}/src/syms/crypto.js`,
         },
     },
 })

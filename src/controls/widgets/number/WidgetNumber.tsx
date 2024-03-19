@@ -1,51 +1,54 @@
 import type { Form } from '../../Form'
-import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { IWidget } from 'src/controls/IWidget'
 
-import { computed, makeObservable, observable } from 'mobx'
+import { computed, makeObservable, observable, runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
-import { hash } from 'ohash'
 
 import { WidgetDI } from '../WidgetUI.DI'
 import { WidgetNumberUI } from './WidgetNumberUI'
+import { applyWidgetMixinV2 } from 'src/controls/Mixins'
 
 // CONFIG
-export type Widget_number_config = WidgetConfigFields<{
-    mode: 'int' | 'float'
-    default?: number
-    min?: number
-    max?: number
-    softMin?: number
-    softMax?: number
-    step?: number
-    suffix?: string
-    text?: string
-    hideSlider?: boolean
-    forceSnap?: boolean
-    /** used as suffix */
-    unit?: string
-}>
+export type Widget_number_config = WidgetConfigFields<
+    {
+        mode: 'int' | 'float'
+        default?: number
+        min?: number
+        max?: number
+        softMin?: number
+        softMax?: number
+        step?: number
+        suffix?: string
+        text?: string
+        hideSlider?: boolean
+        forceSnap?: boolean
+        /** used as suffix */
+        unit?: string
+    },
+    Widget_number_types
+>
 
 // SERIAL
 export type Widget_number_serial = WidgetSerialFields<{ type: 'number'; val: number }>
 
-// OUT
-export type Widget_number_output = number
+// VALUE
+export type Widget_number_value = number
 
 // TYPES
 export type Widget_number_types = {
     $Type: 'number'
-    $Input: Widget_number_config
+    $Config: Widget_number_config
     $Serial: Widget_number_serial
-    $Output: Widget_number_output
+    $Value: Widget_number_value
     $Widget: Widget_number
 }
 
 // STATE
-export interface Widget_number extends Widget_number_types {}
+export interface Widget_number extends Widget_number_types, IWidgetMixins {}
 export class Widget_number implements IWidget<Widget_number_types> {
-    HeaderUI = WidgetNumberUI
-    BodyUI = undefined
-    get serialHash () { return hash(this.value) } // prettier-ignore
+    DefaultHeaderUI = WidgetNumberUI
+    DefaultBodyUI = undefined
     readonly id: string
     readonly type: 'number' = 'number'
     readonly forceSnap: boolean = false
@@ -53,9 +56,18 @@ export class Widget_number implements IWidget<Widget_number_types> {
     serial: Widget_number_serial
     readonly defaultValue: number = this.config.default ?? 0
     get isChanged() { return this.serial.val !== this.defaultValue } // prettier-ignore
-    reset = () => { this.serial.val = this.defaultValue } // prettier-ignore
+    reset = () => {
+        if (this.serial.val === this.defaultValue) return
+        this.value = this.defaultValue
+    }
 
-    constructor(public readonly form: Form<any>, public readonly config: Widget_number_config, serial?: Widget_number_serial) {
+    constructor(
+        //
+        public readonly form: Form,
+        public readonly parent: IWidget | null,
+        public readonly config: Widget_number_config,
+        serial?: Widget_number_serial,
+    ) {
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? {
             type: 'number',
@@ -64,16 +76,21 @@ export class Widget_number implements IWidget<Widget_number_types> {
             val: config.default ?? 0,
         }
 
+        applyWidgetMixinV2(this)
         makeObservable(this, {
             serial: observable,
             value: computed,
         })
     }
 
-    set value(val: Widget_number_output) {
-        this.serial.val = val
+    set value(next: Widget_number_value) {
+        if (this.serial.val === next) return
+        runInAction(() => {
+            this.serial.val = next
+            this.bumpValue()
+        })
     }
-    get value(): Widget_number_output {
+    get value(): Widget_number_value {
         return this.serial.val
     }
 }

@@ -4,6 +4,10 @@
         // so it's easy to distinguish between type imports, node_module imports, and local imports
         "dozerg.tsimportsorter",
 
+        // allow to preview assets in the gutter.
+        // https://cushy.fra1.cdn.digitaloceanspaces.com/rvion/Ezg5iUTAbKCoyt0qaKd6htp2z4NbOmlFKqyNhOJ4I4.jpg
+        "kisstkondoros.vscode-gutter-preview",
+
         // will autoformat your code on save
         // so no more diff hell with contributors
         "esbenp.prettier-vscode",
@@ -14,6 +18,9 @@
         // quick related-file swtching
         // configured for tests and other more complex mapping
         "johnathanludwig.fileswitcher",
+
+        // VeRy PoWeRfUl !!.!..!!
+        "wmaurer.change-case",
 
         // found in a screeshot of @ricklove, looks great
         "YoavBls.pretty-ts-errors"

@@ -1,3 +1,5 @@
+import type { UnifiedImage } from '../states/UnifiedImage'
+
 import { observer } from 'mobx-react-lite'
 import SortableList, { SortableItem } from 'react-easy-sort'
 
@@ -7,7 +9,6 @@ import { DraftIllustrationUI } from 'src/cards/fancycard/DraftIllustration'
 import { InputNumberUI } from 'src/controls/widgets/number/InputNumberUI'
 import { MediaImageL } from 'src/models/MediaImage'
 import { useSt } from 'src/state/stateContext'
-import { toastError } from 'src/utils/misc/toasts'
 import { useImageDrop } from 'src/widgets/galleries/dnd'
 
 export const UnifiedCanvasMenuUI = observer(function UnifiedCanvasMenuUI_(p: {}) {
@@ -15,7 +16,7 @@ export const UnifiedCanvasMenuUI = observer(function UnifiedCanvasMenuUI_(p: {})
     const st = useSt()
     const [dropStyle2, dropRef2] = useImageDrop(st, (img) => canvas.addMask(img))
     return (
-        <div tw='virtualBorder flex flex-col gap-1 m-2 bg-base-200 absolute right-10 z-50'>
+        <div tw='flex flex-col gap-1 bg-base-200 w-80 absolute right-2 top-2 z-50'>
             <CanvasToolbarUI />
             <div>
                 <div onClick={() => canvas.undo()} className='btn btn-sm btn-outline'>
@@ -27,7 +28,14 @@ export const UnifiedCanvasMenuUI = observer(function UnifiedCanvasMenuUI_(p: {})
                 {/*  */}
                 <input checked tw='checkbox' type='checkbox' />
                 grid snap:
-                <input tw='input input-bordered input-sm w-24' type='number' value={canvas.snapSize} /> px
+                <InputNumberUI
+                    mode='int'
+                    min={32}
+                    step={4}
+                    onValueChange={(next) => (canvas.snapSize = next)}
+                    suffix='px'
+                    value={canvas.snapSize}
+                />
                 {/* x */}
                 {/* <input tw='input input-bordered input-sm w-24' type='number' value={canvas.snapSize} /> */}
             </div>
@@ -35,18 +43,18 @@ export const UnifiedCanvasMenuUI = observer(function UnifiedCanvasMenuUI_(p: {})
             <div tw='bd1'>
                 Layers
                 <SortableList onSortEnd={() => {}} className='list' draggedItemClassName='dragged'>
-                    {canvas.images.map((p: { img: MediaImageL }) => {
+                    {canvas.images.map((p: UnifiedImage) => {
                         // const img = p.img
                         return (
                             <SortableItem key={p.img.id}>
-                                <div tw='flex'>
+                                <div tw='flex items-center'>
                                     {/*  */}
-                                    <input type='radio' name='radio-1' className='radio' />
-                                    <input type='checkbox' checked className='checkbox' />
-                                    <div tw='btn btn-sm'>{p.img.filename}</div>
-                                    <div className='btn btn-square btn-sm btn-ghost'>
+                                    <div onClick={() => p.remove()} className='btn btn-square btn-sm btn-ghost'>
                                         <span className='material-symbols-outlined'>delete</span>
                                     </div>
+                                    {/* <input type='radio' name='radio-1' className='radio' /> */}
+                                    <input type='checkbox' checked tw='checkbox checkbox-xs' />
+                                    <div tw='btn btn-sm'>{p.img.filename}</div>
                                 </div>
                             </SortableItem>
                         )
@@ -62,7 +70,7 @@ export const UnifiedCanvasMenuUI = observer(function UnifiedCanvasMenuUI_(p: {})
                     <div tw='btn btn-square bd1'>Mask</div>
                 </div>
             </div> */}
-            <div tw='bd'>
+            {/* <div tw='bd'>
                 <div
                     tw='btn btn-primary'
                     onClick={() => {
@@ -84,7 +92,7 @@ export const UnifiedCanvasMenuUI = observer(function UnifiedCanvasMenuUI_(p: {})
                 >
                     AMAZE YOURSEF
                 </div>
-            </div>
+            </div> */}
             <div tw='bd1 p-1'>
                 {/* <div tw='flex items-center gap-2'>
                     Mode:
@@ -152,11 +160,7 @@ export const UnifiedCanvasMenuUI = observer(function UnifiedCanvasMenuUI_(p: {})
                                     <div>Selection 0</div>
                                 </div>
                                 <div className='flex-1'></div>
-                                <div
-                                    //
-                                    tw='btn btn-sm btn-square btn-outline'
-                                    onClick={uniSel.remove}
-                                >
+                                <div tw='btn btn-sm btn-square btn-outline' onClick={uniSel.remove}>
                                     <span className='material-symbols-outlined'>delete</span>
                                 </div>
 
@@ -264,23 +268,23 @@ export const CanvasToolbarUI = observer(function CanvasToolbarUI_(p: {}) {
     const canvas = useUnifiedCanvas()
     return (
         <div /* tw='absolute top-0 z-50 [left:50%]' */>
-            <div tw='flex items-center bd'>
+            <div tw='flex items-center'>
                 <div
-                    onClick={() => (canvas.tool = 'generate')}
-                    tw={['btn btn-sm', canvas.tool === 'generate' ? 'btn-primary' : null]}
+                    onClick={() => canvas.enable_generate()}
+                    tw={['btn btn-xs', canvas.tool === 'generate' ? 'btn-primary' : null]}
                 >
                     Generate
                     <ComboUI combo='1' />
                 </div>
-                <div onClick={() => (canvas.tool = 'mask')} tw={['btn btn-sm', canvas.tool === 'mask' ? 'btn-primary' : null]}>
+                <div onClick={() => canvas.enable_mask()} tw={['btn btn-xs', canvas.tool === 'mask' ? 'btn-primary' : null]}>
                     Mask
                     <ComboUI combo='2' />
                 </div>
-                <div onClick={() => (canvas.tool = 'paint')} tw={['btn btn-sm', canvas.tool === 'paint' ? 'btn-primary' : null]}>
+                <div onClick={() => canvas.enable_paint()} tw={['btn btn-xs', canvas.tool === 'paint' ? 'btn-primary' : null]}>
                     Paint
                     <ComboUI combo='2' />
                 </div>
-                <div onClick={() => (canvas.tool = 'move')} tw={['btn btn-sm', canvas.tool === 'move' ? 'btn-primary' : null]}>
+                <div onClick={() => canvas.enable_move()} tw={['btn btn-xs', canvas.tool === 'move' ? 'btn-primary' : null]}>
                     Move
                     <ComboUI combo='4' />
                 </div>

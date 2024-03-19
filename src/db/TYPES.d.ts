@@ -1,8 +1,5 @@
-
 declare type TableNameInDB =
-    | 'migrations'
-    | 'users'
-    | 'graph'
+    | 'comfy_workflow'
     | 'draft'
     | 'project'
     | 'step'
@@ -21,9 +18,7 @@ declare type TableNameInDB =
     | 'tree_entry'
     | 'host'
 
-declare type MigrationsID = Branded<string, { MigrationsID: true }>
-declare type UsersID = Branded<string, { UsersID: true }>
-declare type GraphID = Branded<string, { GraphID: true }>
+declare type ComfyWorkflowID = Branded<string, { ComfyWorkflowID: true }>
 declare type DraftID = Branded<string, { DraftID: true }>
 declare type ProjectID = Branded<string, { ProjectID: true }>
 declare type StepID = Branded<string, { StepID: true }>
@@ -37,7 +32,7 @@ declare type RuntimeErrorID = Branded<string, { RuntimeErrorID: true }>
 declare type MediaSplatID = Branded<string, { MediaSplatID: true }>
 declare type CustomDataID = Branded<string, { CustomDataID: true }>
 declare type CushyScriptID = Branded<string, { CushyScriptID: true }>
-declare type CushyAppID = Branded<string, { CushyAppID: true }>
+declare type CushyAppID = Tagged<string, { CushyAppID: true }>
 declare type AuthID = Branded<string, { AuthID: true }>
 declare type TreeEntryID = Branded<string, { TreeEntryID: true }>
 declare type HostID = Branded<string, { HostID: true }>

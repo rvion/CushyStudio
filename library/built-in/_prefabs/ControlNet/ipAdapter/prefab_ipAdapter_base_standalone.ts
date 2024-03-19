@@ -15,6 +15,7 @@ export const ui_ipadapter_standalone = () => {
         items: () => ({
             help: form.markdown({ startCollapsed: true, markdown: ipAdapterDoc }),
             image: form.image({ label: 'Image' }),
+            extra: form.list({ label: 'Extra', element: form.image({ label: 'Image' }) }),
             ...ui_ipadapter_CLIPSelection(form),
             ...ui_ipadapter_modelSelection(form, 'ip-adapter-plus_sd15.safetensors', ipAdapterModelList),
             ...ui_subform_IPAdapter_common(form),
@@ -25,21 +26,29 @@ export const ui_ipadapter_standalone = () => {
 // 🅿️ IPAdapter RUN ===================================================
 export const run_ipadapter_standalone = async (
     ui: OutputFor<typeof ui_ipadapter_standalone>,
-    cnet_args: Cnet_args,
+    ckpt: _MODEL,
 ): Promise<{ ip_adapted_model: _MODEL }> => {
     const run = getCurrentRun()
     const graph = run.nodes
 
     let image: _IMAGE = await run.loadImageAnswer(ui.image)
     image = graph.PrepImageForClipVision({ image, interpolation: 'LANCZOS', crop_position: 'center', sharpening: 0 })
-
+    for (const ex of ui.extra) {
+        let image2 = graph.PrepImageForClipVision({
+            image: await run.loadImageAnswer(ex),
+            interpolation: 'LANCZOS',
+            crop_position: 'center',
+            sharpening: 0,
+        })
+        image = graph.ImageBatch({ image1: image, image2 })
+    }
     const ip_model = graph.IPAdapterModelLoader({ ipadapter_file: ui.cnet_model_name })
     const ip_clip_name = graph.CLIPVisionLoader({ clip_name: ui.clip_name })
     const ip_adapted_model = graph.IPAdapterApply({
         ipadapter: ip_model,
         clip_vision: ip_clip_name,
         image: image,
-        model: cnet_args.ckptPos,
+        model: ckpt,
         weight_type: 'original',
         weight: ui.strength,
         noise: ui.settings.noise,

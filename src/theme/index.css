@@ -191,10 +191,6 @@ hr {
 .rv-tooltip-container:hover { display: relative;}
 .rv-tooltip-container:hover .rv-tooltip {display: block; position: absolute; background: #333333; z-index: 9999;}
 
-._WidgetChoicesUI {
-    width: 100%;
-}
-
 #CushyStudio.light ._WidgetWithLabelUI._isNotTopLevel {
     background-color: #eeeeee68;
 }

@@ -1,84 +1,101 @@
 import type { Form } from '../../Form'
-import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { IWidget } from 'src/controls/IWidget'
 
-import { computed, makeObservable, observable } from 'mobx'
+import { computed, makeAutoObservable, observable, runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
-import { hash } from 'ohash'
 
 import { WidgetDI } from '../WidgetUI.DI'
 import { WidgetBoolUI } from './WidgetBoolUI'
+import { applyWidgetMixinV2 } from 'src/controls/Mixins'
 
 /**
  * Bool Config
  * @property {string} label2 - test
  */
-export type Widget_bool_config = WidgetConfigFields<{
-    default?: boolean
+export type Widget_bool_config = WidgetConfigFields<
+    {
+        /**
+         * default value; true or false
+         * @default: false
+         */
+        default?: boolean
 
-    label2?: string
+        /** (legacy ?) Label to display to the right of the widget. */
+        label2?: string
 
-    /** Text to display, drawn by the widget itself. */
-    text?: string
+        /** Text to display, drawn by the widget itself. */
+        text?: string
 
-    /**
-     * The display style of the widget.
-     * - `check `: Shows a simple checkbox.
-     * - `button`: Shows a toggle-able button.
-     *
-     *  Defaults to 'check'
-     */
-    display?: 'check' | 'button'
+        /**
+         * The display style of the widget.
+         * - `check `: Shows a simple checkbox.
+         * - `button`: Shows a toggle-able button.
+         *
+         *  Defaults to 'check'
+         */
+        display?: 'check' | 'button'
 
-    /** Whether or not to expand the widget to take up as much space as possible
-     *
-     *      If `display` is 'check'
-     *          undefined and true will expand
-     *          false will disable expansion
-     *
-     *      If `display` is 'button'
-     *          undefined and false will not expand
-     *          true will enable expansion
-     */
-    expand?: boolean
+        /** Whether or not to expand the widget to take up as much space as possible
+         *
+         *      If `display` is 'check'
+         *          undefined and true will expand
+         *          false will disable expansion
+         *
+         *      If `display` is 'button'
+         *          undefined and false will not expand
+         *          true will enable expansion
+         */
+        expand?: boolean
 
-    /** Set the icon of the button
-     *  - Uses "material-symbols-outlined" as the icon set
-     */
-    icon?: string | undefined
-}>
+        /** Set the icon of the button
+         *  - Uses "material-symbols-outlined" as the icon set
+         */
+        icon?: string | undefined
+    },
+    Widget_bool_types
+>
 
 // SERIAL
 export type Widget_bool_serial = WidgetSerialFields<{ type: 'bool'; active: boolean }>
 
-// OUT
-export type Widget_bool_output = boolean
+// VALUE
+export type Widget_bool_value = boolean
 
 // TYPES
-export type Widget_string_types = {
+export type Widget_bool_types = {
     $Type: 'bool'
-    $Input: Widget_bool_config
+    $Config: Widget_bool_config
     $Serial: Widget_bool_serial
-    $Output: Widget_bool_output
+    $Value: Widget_bool_value
     $Widget: Widget_bool
 }
 
 // STATE
-export interface Widget_bool extends Widget_string_types {}
-export class Widget_bool implements IWidget<Widget_string_types> {
-    HeaderUI = WidgetBoolUI
-    BodyUI = undefined
+export interface Widget_bool extends Widget_bool_types, IWidgetMixins {}
+export class Widget_bool implements IWidget<Widget_bool_types> {
+    DefaultHeaderUI = WidgetBoolUI
+    DefaultBodyUI = undefined
     readonly id: string
     readonly type: 'bool' = 'bool'
 
     serial: Widget_bool_serial
-    get serialHash(): string {
-        return hash(this.value)
-    }
-    setOn = () => (this.serial.active = true)
-    setOff = () => (this.serial.active = false)
-    toggle = () => (this.serial.active = !this.serial.active)
 
-    constructor(public form: Form<any>, public config: Widget_bool_config, serial?: Widget_bool_serial) {
+    setOn = () => (this.value = true)
+    setOff = () => (this.value = false)
+    toggle = () => (this.value = !this.value)
+
+    readonly defaultValue: boolean = this.config.default ?? false
+    get isChanged() { return this.value !== this.defaultValue } // prettier-ignore
+    reset = () => (this.value = this.defaultValue)
+
+    constructor(
+        //
+        public readonly form: Form,
+        public readonly parent: IWidget | null,
+        public config: Widget_bool_config,
+        serial?: Widget_bool_serial,
+    ) {
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? {
             id: this.id,
@@ -87,17 +104,22 @@ export class Widget_bool implements IWidget<Widget_string_types> {
             collapsed: config.startCollapsed,
         }
 
-        makeObservable(this, {
+        applyWidgetMixinV2(this)
+        makeAutoObservable(this, {
             serial: observable,
             value: computed,
         })
     }
 
-    get value(): Widget_bool_output {
+    get value(): Widget_bool_value {
         return this.serial.active ?? false
     }
-    set value(next: Widget_bool_output) {
-        this.serial.active = next
+    set value(next: Widget_bool_value) {
+        if (this.serial.active === next) return
+        runInAction(() => {
+            this.serial.active = next
+            this.bumpValue()
+        })
     }
 }
 

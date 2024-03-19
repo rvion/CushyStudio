@@ -1,10 +1,10 @@
 import type { GlobalCtx } from './_ctx3'
 import type { AsyncRuntimeStorage } from './asyncRuntimeStorage'
+import type { IFormBuilder } from 'src/controls/Form'
 /**
  * 🔶 THIS MODULE MUST NOT IMPORT ANYTHING (only types allowed).
  * 🔶 IT WILL BE INCLUDED IN MOST PREFABS.
  */
-import type { FormBuilder } from 'src/controls/FormBuilder'
 import type { Runtime } from 'src/runtime/Runtime'
 
 const getGlobalCtx = () => {
@@ -16,7 +16,7 @@ const getGlobalCtx = () => {
     return _
 }
 /** every function that may potentially call prefab form needs to be wrapped with that */
-export const runWithGlobalForm = <T>(form: FormBuilder, f: () => T): T => {
+export const runWithGlobalForm = <T>(form: IFormBuilder, f: () => T): T => {
     const globalCtx = getGlobalCtx()
 
     // same form, no need to do anything
@@ -33,10 +33,15 @@ export const runWithGlobalForm = <T>(form: FormBuilder, f: () => T): T => {
 /**
  * @internal
  *
- * You should probably use `getCurrentForm` instead.
+ * You need to use `getCurrentForm` instead if building a CushyApp.
  * It is magically available in app context, and does not need to be imported.
+ *
+ * 2024-03-12 rvion: now that form library is going to be usable outside of cushy
+ *   | type here must be generic (IFormBuilder) => but it's ok, cause it's going
+ *   | to be properly typed soon
+ *
  * */
-export const getCurrentForm_IMPL = (): FormBuilder => {
+export const getCurrentForm_IMPL = (): IFormBuilder => {
     const globalCtx = getGlobalCtx()
     if (globalCtx.currentForm == null) {
         console.log(`[👙] `, globalCtx)

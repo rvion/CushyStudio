@@ -1,3 +1,8 @@
+// 🔶 modifications must be kept in sync between :
+//     | ./src/shell/build.js
+//     | ./src/shell/externals.cjs
+//     | ./vite.config.ts
+
 // prettier-ignore
 const modulesToCache /*: [name:string, path:string][]*/ = [
     // node --------------------------
@@ -16,14 +21,13 @@ const modulesToCache /*: [name:string, path:string][]*/ = [
     ['cluster'          , 'cluster'         ],
     ['https'            , 'https'           ],
     ['async_hooks'      , 'async_hooks'     ],
+    ['crypto'           , 'crypto'          ],
 
     // misc heavy libs ----------------
     ['three'            , 'three'           ],
     ['mobx'             , 'mobx'            ],
-    ['cytoscape-klay'   , 'cytoscape-klay'  ],
-    ['cytoscape'        , 'cytoscape'       ],
-    ['@tensorflow/tfjs' , 'tfjs'            ],
     ['nsfwjs'           , 'nsfwjs'          ],
+    ['@tensorflow/tfjs' , 'tfjs'            ],
     ['mime-types'       , 'mime-types'      ],
 ]
 
@@ -32,6 +36,9 @@ for (const [pt, x] of modulesToCache) {
     const symbols = Object.keys(require(pt))
     let output = `const _ = window.require('${pt}')\n`
     output += `export default _\n`
-    for (const sym of symbols) output += `export const ${sym} = _.${sym}\n`
+    for (const sym of symbols) {
+        if (sym === 'default') continue
+        output += `export const ${sym} = _.${sym}\n`
+    }
     fs.writeFileSync(`src/syms/${x}.js`, output)
 }

@@ -1,11 +1,13 @@
-import { observer } from 'mobx-react-lite'
+import type { Widget_matrix } from 'src/controls/widgets/matrix/WidgetMatrix'
 
-import { Widget_matrix } from 'src/controls/widgets/matrix/WidgetMatrix'
+import { observer } from 'mobx-react-lite'
 
 export const WidgetMatrixUI = observer(function WidgetStrUI_(p: { widget: Widget_matrix }) {
     const widget = p.widget
     const cols = widget.cols
     const rows = widget.rows
+    if (cols.length === 0) return <div>❌ no cols</div>
+    if (rows.length === 0) return <div>❌ no rows</div>
     // const collapsed = widget.state.collapsed
     // if (collapsed)
     //     return (
@@ -33,7 +35,7 @@ export const WidgetMatrixUI = observer(function WidgetStrUI_(p: { widget: Widget
                                 //
                                 className='bg-base-200 virtualBorder'
                                 key={ix}
-                                onClick={() => widget.setCol(col, !widget.get(rows[0], col).value)}
+                                onClick={() => widget.setCol(col, !widget.get(rows[0]!, col).value)}
                             >
                                 {col}
                             </th>
@@ -45,7 +47,7 @@ export const WidgetMatrixUI = observer(function WidgetStrUI_(p: { widget: Widget
                         <tr key={rowIx} className='p-0 m-0'>
                             <td
                                 //
-                                onClick={() => widget.setRow(row, !widget.get(row, cols[0]).value)}
+                                onClick={() => widget.setRow(row, !widget.get(row, cols[0]!).value)}
                                 className='bg-base-302 virtualBorder cursor-pointer'
                             >
                                 {row}

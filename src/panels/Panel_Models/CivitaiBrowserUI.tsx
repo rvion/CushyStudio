@@ -9,10 +9,13 @@ export const CivitaiUI = observer(function CivitaiUI_(p: { className?: string; c
     return (
         <div tw='flex flex-col overflow-auto' className={p.className}>
             <div tw='flex flex-1 overflow-auto'>
-                {/* LIST */}
-                <div tw='flex flex-col'>
-                    {/* SEARCH */}
-                    <div className='row gap'>
+                <div // LEFT-COLUMN (search + search results)
+                    tw='flex flex-col'
+                    style={{ borderRight: '1px solid #aaa' }}
+                >
+                    <div // SEARCH
+                        className='row gap'
+                    >
                         <div className='join m-1'>
                             <input
                                 tw='input input-bordered input-sm'
@@ -22,8 +25,9 @@ export const CivitaiUI = observer(function CivitaiUI_(p: { className?: string; c
                             />
                         </div>
                     </div>
-                    <div tw='flex flex-col flex-initial overflow-auto'>
-                        {/* RESULS */}
+                    <div //RESULS
+                        tw='flex flex-col flex-initial overflow-auto'
+                    >
                         {civitai.results?.ui((x) =>
                             x.items.map((i: CivitaiSearchResultItem) => (
                                 <CivitaiResultCardUI key={i.id} civitai={civitai} item={i} />
@@ -31,8 +35,8 @@ export const CivitaiUI = observer(function CivitaiUI_(p: { className?: string; c
                         )}
                     </div>
                 </div>
-                {/* DETAILS */}
-                <div tw=''>
+                <div //DETAILS
+                >
                     {civitai.selectedResult && ( //
                         <CivitaiResultFullUI civitai={civitai} item={civitai.selectedResult} />
                     )}

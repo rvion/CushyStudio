@@ -14,7 +14,7 @@ export class RuntimeComfyUI {
     // ----------------------------------------------------------------------------------------------------
     /** create a new empty ComfyUI workflow */
     create_emptyWorkflow = (): ComfyWorkflowL => {
-        return this.rt.Cushy.db.graphs.create({
+        return this.rt.Cushy.db.comfy_workflow.create({
             stepID: this.rt.step.id,
             comfyPromptJSON: {},
             metadata: {},
@@ -32,7 +32,7 @@ export class RuntimeComfyUI {
             denoise?: number
         } = {},
     ): ComfyWorkflowL => {
-        const graph = this.rt.Cushy.db.graphs.create({
+        const graph = this.rt.Cushy.db.comfy_workflow.create({
             stepID: this.rt.step.id,
             comfyPromptJSON: {},
             metadata: {},
@@ -98,6 +98,6 @@ export class RuntimeComfyUI {
         if (this.allCheckpoints.length == 0) throw new Error(`❌ no ComfUI checkpoints available at all`)
         if (this.allCheckpoints.includes('revAnimated_v122.safetensors')) return 'revAnimated_v122.safetensors'
         if (this.allCheckpoints.includes('lyriel_v15.safetensors')) return 'lyriel_v15.safetensors'
-        return this.allCheckpoints[0]
+        return this.allCheckpoints[0]!
     }
 }

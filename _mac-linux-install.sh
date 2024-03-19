@@ -134,6 +134,7 @@ fi
 
 # Build the release folder
 ./node_modules/.bin/electron -i src/shell/build.js js css
+# ./node_modules/.bin/electron -i src/shell/build-formlib.js js css
 
 # Done
 echo "🟢 cushy-install.sh completed successfully."
