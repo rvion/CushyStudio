@@ -27,13 +27,13 @@ export const CivitaiResultFullUI = observer(function CivitaiResultFullUI_(p: {
                 <div tw='text-2xl font-bold'>{item.name}</div>
                 <div tw='italic opacity-50'>#{item.id}</div>
                 <div tw='badge badge-lg bg-yellow-600 text-black'>{item.type}</div>
+                {item.nsfw ? <div tw='badge badge-lg badge-error'>nsfw</div> : null}
                 <div tw='flex-1'></div>
                 <RevealUI content={() => <JsonViewUI value={item} />}>
                     <div tw='btn btn-sm btn'>Show full json</div>
                 </RevealUI>
             </div>
 
-            {item.nsfw ? <div tw='badge badge-error'>nsfw</div> : null}
             {item.tags ? (
                 <div tw='flex flex-wrap gap-1'>
                     {item.tags.map((tag) => (

@@ -2,6 +2,8 @@ import type { Civitai, CivitaiModelVersion, CivitaiSearchResultItem } from './Ci
 
 import { observer } from 'mobx-react-lite'
 
+import { RevealUI } from 'src/rsuite/reveal/RevealUI'
+
 export const CivitaiResultCardUI = observer(function CivitaiResultCardUI_(p: {
     //
     civitai: Civitai
@@ -35,15 +37,46 @@ export const CivitaiResultCardUI = observer(function CivitaiResultCardUI_(p: {
                 )}
                 <div>
                     <div tw='font-bold'>{item.name}</div>
-                    <div tw='opacity-50 text-sm'>{item.modelVersions.length} version</div>
-                    {item.nsfw ? <div tw='badge badge-accent'>nsfw</div> : null}
+                    <div tw='flex items-center gap-1'>
+                        <div tw='opacity-50 text-sm'>{item.modelVersions.length} version</div>
+                        <div tw='flex-1'></div>
+                        <div
+                            tw={[
+                                'badge badge-sm text-black',
+                                item.type === 'Checkpoint'
+                                    ? 'bg-yellow-600'
+                                    : item.type === 'LORA'
+                                    ? 'bg-blue-500'
+                                    : 'bg-green-400',
+                            ]}
+                        >
+                            {item.type}
+                        </div>
+                        {item.nsfw ? <div tw='badge badge-sm badge-error'>nsfw</div> : null}
+                    </div>
                     {item.tags ? (
                         <div tw='flex flex-wrap gap-1'>
-                            {item.tags.map((tag) => (
+                            {item.tags.slice(0, 10).map((tag) => (
                                 <div key={tag} tw='badge badge-neutral badge-sm'>
                                     {tag}
                                 </div>
                             ))}
+                            {item.tags.length > 10 ? (
+                                <RevealUI
+                                    trigger='hover'
+                                    content={() => (
+                                        <div>
+                                            {item.tags.slice(10).map((tag) => (
+                                                <div key={tag} tw='badge badge-neutral badge-sm'>
+                                                    {tag}
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
+                                >
+                                    <div tw='badge badge-neutral badge-sm font-bold'>+{item.tags.length - 10} more</div>
+                                </RevealUI>
+                            ) : null}
                         </div>
                     ) : null}
                 </div>
