@@ -651,4 +651,8 @@ export const migrations: {
         name: 'fix img hashes',
         up: [`update media_image set thumbnail = null`],
     },
+    // {
+    //     id: 'mUIqGBGrSF88',
+    //     name: 'fix img hashes',
+    //     up: _createTable('lora_infos', [`name text, civitai json`]),    },
 ]

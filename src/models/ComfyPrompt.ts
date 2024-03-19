@@ -139,8 +139,8 @@ export class ComfyPromptL {
         promptNodeID: ComfyNodeID,
     ) => {
         // retrieve the node
-        const promptNode = this.graph.data.comfyPromptJSON[promptNodeID]
-        const promptMeta = this.graph.data.metadata[promptNodeID]
+        const promptNode = this.graph.data.comfyPromptJSON[promptNodeID]!
+        const promptMeta = this.graph.data.metadata[promptNodeID]!
         if (promptNode == null) throw new Error(`❌ invariant violation: promptNode is null`)
 
         // get image url from ComfyUI

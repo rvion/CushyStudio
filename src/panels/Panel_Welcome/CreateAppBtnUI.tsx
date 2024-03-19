@@ -11,12 +11,11 @@ import { TypescriptHighlightedCodeUI } from 'src/widgets/misc/TypescriptHighligh
 
 export const CreateAppBtnUI = observer(function CreateAppBtnUI_(p: {}) {
     return (
-        <RevealUI placement='popup-lg' title='Create an app'>
+        <RevealUI placement='popup-lg' title='Create an app' content={() => <CreateAppPopupUI />}>
             <div tw='btn btn-sm btn-accent'>
                 Create My App
                 <span className='material-symbols-outlined'>open_in_new</span>
             </div>
-            <CreateAppPopupUI />
         </RevealUI>
     )
 })

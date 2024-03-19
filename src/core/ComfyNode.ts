@@ -1,4 +1,4 @@
-import type { ComfyWorkflowL } from '../models/ComfyWorkflow'
+import type { ComfyWorkflowL, ProgressReport } from '../models/ComfyWorkflow'
 import type { ComfyNodeJSON } from '../types/ComfyPrompt'
 import type { NodeProgress } from '../types/ComfyWsApi'
 
@@ -11,12 +11,21 @@ import { auto_ } from './autoValue'
 import { comfyColors } from './Colors'
 import { NodeStatusEmojiUI } from './NodeStatusEmojiUI'
 import { ComfyNodeOutput } from './Slot'
+import { nodeLineHeight, NodeSlotSize, NodeSlotVSep, NodeTitleHeight } from 'src/widgets/graph/NodeSlotSize'
 
 configure({ enforceActions: 'never' })
 // configure({ enforceActions: 'always' })
 
 type NodeExecutionStatus = 'executing' | 'done' | 'error' | 'waiting' | 'cached' | null
-
+export type NodePort = {
+    id: string
+    label: string
+    width: number
+    height: number
+    type: string
+    x: number
+    y: number
+}
 /** ComfyNode
  * - correspond to a signal in the graph
  * - belongs to a script
@@ -30,10 +39,12 @@ export class ComfyNode<
         this.meta.storeAs = storeName
         return this
     }
+
     tag = (tagName: string) => {
         this.meta.tag = tagName
         return this
     }
+
     addTag = (tag: string) => {
         if (this.meta.tags == null) this.meta.tags = [tag]
         else this.meta.tags.push(tag)
@@ -41,12 +52,25 @@ export class ComfyNode<
     }
     // ---------------------------------------
 
-    // artifacts: _WsMsgExecutedData[] = []
-    // images: GeneratedImage[] = []
-    progressRatio: number = 0
-    progress: NodeProgress | null = null
-    $schema: ComfyNodeSchema
+    /** reported though websocket by ComfyUI */
     status: NodeExecutionStatus = null
+
+    /** last raw progress message reported by comfy */
+    progress: NodeProgress | null = null
+
+    /**
+     * updated on websocket progress report from the progress property just above
+     * between [0, 1]
+     * */
+    progressRatio: number = 0
+
+    get progressReport(): ProgressReport {
+        const percent = this.status === 'done' ? 100 : this.progressRatio * 100
+        const isDone = this.status === 'done'
+        return { percent, isDone, countDone: this.progressRatio * 100, countTotal: 100 }
+    }
+
+    $schema: ComfyNodeSchema
     updatedAt: number = Date.now()
     json: ComfyNodeJSON
 
@@ -82,6 +106,7 @@ export class ComfyNode<
     $outputs: ComfyNodeOutput<any>[] = []
     outputs: ComfyNode_output
     uidPrefixed: string
+
     constructor(
         //
         public graph: ComfyWorkflowL,
@@ -96,7 +121,7 @@ export class ComfyNode<
         // console.log('CONSTRUCTING', xxx.class_type, uid)
 
         // this.uidNumber = parseInt(uid) // 🔴 ugly
-        this.$schema = graph.schema.nodesByNameInComfy[jsonExt.class_type]
+        this.$schema = graph.schema.nodesByNameInComfy[jsonExt.class_type]!
         if (this.$schema == null) {
             console.log(`❌ available nodes:`, Object.keys(graph.schema.nodesByNameInComfy).join(','))
             throw new Error(`❌ no schema found for node "${jsonExt.class_type}"`)
@@ -170,34 +195,78 @@ export class ComfyNode<
         return primitives
     }
 
-    _incomingEdges(): { from: ComfyNodeID; inputName: string }[] {
-        const incomingEdges: { from: ComfyNodeID; inputName: string }[] = []
+    // return the list of nodes that feed into this node
+    get parents(): ComfyNode<any>[] {
+        return this._incomingNodes().map((id) => this.graph.getNode(id)!)
+    }
+    // get children(): ComfyNode<any>[] {
+    //     return this._incomingNodes().map((id) => this.graph.getNode(id)!)
+    // }
+
+    x = 0
+    y = 0
+    col = 0
+    get outgoingPorts() {
+        return this.$outputs.map(
+            (o, ix): NodePort => ({
+                id: this.uid + '#' + o.slotIx,
+                label: o.type,
+                width: NodeSlotSize,
+                height: NodeSlotSize,
+                type: o.type,
+                x: this.x + this.width, // + NodeSlotSize / 2,
+                y:
+                    this.y + //             start
+                    NodeTitleHeight + //    title
+                    ix * nodeLineHeight + // e.fromSlotIx * 10,
+                    nodeLineHeight / 2, //
+            }),
+        )
+    }
+
+    get incomingPorts() {
+        return this._incomingEdges().map(
+            (e, ix): NodePort => ({
+                id: this.uid + '<-' + e.from + '#' + e.fromSlotIx,
+                width: NodeSlotSize,
+                height: NodeSlotSize,
+                label: e.inputName,
+                type: e.type,
+                x: this.x, // - NodeSlotSize / 2,
+                y:
+                    this.y + // start
+                    NodeTitleHeight + // title
+                    ix * nodeLineHeight + // e.fromSlotIx * 10,
+                    nodeLineHeight / 2,
+            }),
+        )
+    }
+
+    _incomingEdges(): { from: ComfyNodeID; inputName: string; type: string; fromSlotIx: number }[] {
+        const incomingEdges: { from: ComfyNodeID; inputName: string; fromSlotIx: number; type: string }[] = []
         for (const [inputName, val] of Object.entries(this.inputs)) {
             if (val instanceof Array) {
-                const [from, _slotIx] = val
-                incomingEdges.push({ from, inputName })
+                const [from, _slotIx] = val as [ComfyNodeID, number]
+                const type = this.graph.getNode(from)?.$outputs[_slotIx]?.type
+                incomingEdges.push({ from, inputName, fromSlotIx: _slotIx, type })
             }
         }
         return incomingEdges
     }
 
-    // dimensions for autolayout algorithm
-    get width() { return 300 } // prettier-ignore
-    get height() {
-        const inputHeights = this.$schema.inputs.map((i) => {
-            if (i.opts == null) return 30
-            const opts = typeof i.opts === 'object' ? i.opts : {}
-            return opts?.multiline ? 40 : 30
-        })
-        const total = inputHeights.reduce((a, b) => a + b, 0)
+    primitivesCount(): number {
+        return Object.values(this.inputs).filter((val) => !(val instanceof Array)).length
+    }
 
-        const outputHeights = this.$schema.outputs.map((i) => {
-            return 30
-        })
-        const totalOutputs = outputHeights.reduce((a, b) => a + b, 0)
+    // dimensions for autolayout algorithm
+    get width() { return 200 } // prettier-ignore
+    get height() {
+        const inputLen = this._incomingEdges().length
+        const outputLen = this.$schema.outputs.length
+        const headerCount = Math.max(inputLen, outputLen)
 
         // max height since some nodes have many invisible inputs
-        return Math.min(1000, Math.max(total + 30, totalOutputs + 30))
+        return (this.primitivesCount() + headerCount + 1) * nodeLineHeight
     }
 
     serializeValue(field: string, value: unknown): unknown {

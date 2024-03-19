@@ -1,6 +1,8 @@
 import * as csv from '@fast-csv/parse'
 import { createReadStream } from 'fs'
 
+import { bang } from 'src/utils/misc/bang'
+
 export type UserTag = {
     key: string
     value: string
@@ -15,7 +17,7 @@ export class UserTags {
 
     tags: UserTag[] = []
 
-    parseRow = (data: string[]): UserTag => ({ key: data[0], value: data[1] })
+    parseRow = (data: string[]): UserTag => ({ key: bang(data[0]), value: bang(data[1]) })
 
     private constructor() {
         if (UserTags._instance) throw new Error('UserTags is a singleton')

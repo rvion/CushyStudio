@@ -320,7 +320,7 @@ export class Runtime<FIELDS extends SchemaDict = any> {
 
     /** helper to chose radomly any item from a list */
     chooseRandomly = <T>(key: string, seed: number, arr: T[]): T => {
-        return createRandomGenerator(`${key}:${seed}`).randomItem(arr)
+        return createRandomGenerator(`${key}:${seed}`).randomItem(arr)!
     }
 
     imageToStartFrom: Maybe<MediaImageL> = null

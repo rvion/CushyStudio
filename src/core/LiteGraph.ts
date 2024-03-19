@@ -1,6 +1,5 @@
 import type { ComfyWorkflowL } from '../models/ComfyWorkflow'
 import type { ComfyNode } from './ComfyNode'
-import type { ElkNode } from 'elkjs'
 
 import { toJS } from 'mobx'
 
@@ -71,7 +70,7 @@ export type LiteGraphNode = {
     widgets_values: any[]
 }
 
-export const convertFlowToLiteGraphJSON = (graph: ComfyWorkflowL, cytoJSON?: ElkNode): LiteGraphJSON => {
+export const convertFlowToLiteGraphJSON = (graph: ComfyWorkflowL): LiteGraphJSON => {
     const ctx = new LiteGraphCtx(graph)
     const last_node_id = Math.max(...graph.nodes.map((n) => n.uidNumber))
     // const last_node_id = graph.nodes[graph.nodes.length - 1].uid
@@ -83,20 +82,8 @@ export const convertFlowToLiteGraphJSON = (graph: ComfyWorkflowL, cytoJSON?: Elk
     console.groupEnd()
     for (const xx of xxx) {
         const n = xx.liteGraphNode
-        const originalUID = xx.comfyNode.uid
-        if (cytoJSON) {
-            const pos = bang(cytoJSON.children).find((a) => a.id === originalUID)
-            // const pos = bang(cytoJSON.children).find((a) => parseInt(a.id, 10) === n.id)
-            // console.log(`[🤠] elk: AAA:`, originalUID, `(${n.id})`)
-            // console.log(`[🤠] elk: BBB:`, bang(cytoJSON.children).map((x) => x.id)) // prettier-ignore
-
-            if (pos) {
-                n.pos[0] = bang(pos.x)
-                n.pos[1] = bang(pos.y)
-            } else {
-                console.log('❌ no pos', n)
-            }
-        }
+        n.pos[0] = bang(xx.comfyNode.x)
+        n.pos[1] = bang(xx.comfyNode.y)
         for (const o of n.outputs) {
             o.links = ctx.links.filter((l) => l[3] === n.id && l[4] === o.slot_index).map((l) => l[0])
         }

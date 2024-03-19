@@ -11,7 +11,7 @@ export const normalizeJSIdentifier = (
     preferedSeparatorToKeepReadable: ' ' | '_',
 ) => {
     let out = ''
-    if (name.length > 0 && '0123456789'.includes(name[0])) out += '_'
+    if (name.length > 0 && '0123456789'.includes(name[0]!)) out += '_'
     for (const char of name) out += mapChar(char, preferedSeparatorToKeepReadable)
     return out
 }

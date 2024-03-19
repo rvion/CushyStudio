@@ -147,9 +147,9 @@ function hsl2rgb(
     const x = [(b += s *= b < 0.5 ? b : 1 - b), b - (h % 1) * s * 2, (b -= s *= 2), b, b + (h % 1) * s, b + s]
 
     return {
-        red: Math.round(x[~~h % 6] * 255),
-        green: Math.round(x[(h | 16) % 6] * 255),
-        blue: Math.round(x[(h | 8) % 6] * 255),
+        red: Math.round(x[~~h % 6]! * 255),
+        green: Math.round(x[(h | 16) % 6]! * 255),
+        blue: Math.round(x[(h | 8) % 6]! * 255),
     }
 }
 

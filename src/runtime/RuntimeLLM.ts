@@ -110,7 +110,7 @@ export class RuntimeLLM {
             ],
         })
         if (res.choices.length === 0) throw new Error('no choices in response')
-        const msg0 = res.choices[0].message
+        const msg0 = res.choices[0]!.message
         if (msg0 == null) throw new Error('choice 0 is null')
         if (typeof msg0 === 'string') throw new Error('choice 0 seems to be an error')
         return {

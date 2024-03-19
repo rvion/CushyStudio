@@ -65,13 +65,9 @@ async function buildJS() {
             // -----------------------------------------------------------------------
             three: './src/syms/three.js',
             mobx: './src/syms/mobx.js',
-            'cytoscape-klay': './src/syms/cytoscape-klay.js',
-            cytoscape: './src/syms/cytoscape.js',
-            lexical: './src/syms/lexical.js',
-            '@tensorflow/tfjs': './src/syms/tfjs.js',
             nsfwjs: './src/syms/nsfwjs.js',
+            '@tensorflow/tfjs': './src/syms/tfjs.js',
             'mime-types': './src/syms/mime-types.js',
-            elkjs: './src/syms/elkjs.js',
 
             // -----------------------------------------------------------------------
             src: './src',

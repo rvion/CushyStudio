@@ -38,12 +38,13 @@ function parseImportStatements(code: string): ImportStructure[] {
         const [_, defaultImport, namedImportsPart, moduleName] = match
 
         const namedImports: { [key: string]: string } = {}
-        namedImportsPart.split(',').forEach((namedImport) => {
+        namedImportsPart!.split(',').forEach((namedImport) => {
             const parts = namedImport.trim().split(/\s+as\s+/)
-            namedImports[parts[0]] = parts[1] || parts[0]
+            const parts0 = parts[0]!
+            namedImports[parts0] = parts[1] || parts0
         })
 
-        result.push({ moduleName, defaultImport, namedImports })
+        result.push({ moduleName: moduleName!, defaultImport, namedImports })
     }
 
     return result

@@ -57,9 +57,10 @@ export default defineConfig({
         alias: {
             // -----------------------------------------------------------------------
             three: `${installDir}/src/syms/three.js`,
-            elkjs: `${installDir}/src/syms/elkjs.js`,
             mobx: `${installDir}/src/syms/mobx.js`,
-            '@tensorflow/tfjs': './src/syms/tfjs.js',
+            nsfwjs: `${installDir}/src/syms/nsfwjs.js`,
+            '@tensorflow/tfjs': `${installDir}/src/syms/tfjs.js`,
+            'mime-types': `${installDir}/src/syms/mime-types.js`,
 
             // -----------------------------------------------------------------------
             src: `${installDir}/src`,

@@ -55,11 +55,14 @@ export const ImageUI = observer(function ImageUI_(p: {
         />
     )
     return (
-        <RevealUI>
+        <RevealUI
+            content={() => (
+                <ul tabIndex={0} tw='shadow menu dropdown-content z-[1] bg-base-100 rounded-box'>
+                    <ImageDropdownMenuUI img={image} />
+                </ul>
+            )}
+        >
             {IMG}
-            <ul tabIndex={0} tw='shadow menu dropdown-content z-[1] bg-base-100 rounded-box'>
-                <ImageDropdownMenuUI img={image} />
-            </ul>
         </RevealUI>
     )
 })

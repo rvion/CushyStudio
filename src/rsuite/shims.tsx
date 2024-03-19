@@ -156,12 +156,8 @@ export const Whisper = (p: {
     placement?: string
     speaker: ReactNode
     children: ReactNode
-}) => (
-    <RevealUI>
-        {p.children}
-        {p.speaker}
-    </RevealUI>
-)
+}) => <RevealUI content={() => p.speaker}>{p.children}</RevealUI>
+
 export const Speaker = (p: any) => <span {...p}></span>
 export const Popover = (p: any) => <span {...p}></span>
 export const Tooltip = (p: any) => <span {...p}></span>

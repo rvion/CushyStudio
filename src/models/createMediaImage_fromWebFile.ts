@@ -9,6 +9,7 @@ import { dirname } from 'pathe'
 
 import { MediaImageL } from './MediaImage'
 import { hashArrayBuffer } from 'src/state/hashBlob'
+import { bang } from 'src/utils/misc/bang'
 import { extractExtensionFromContentType } from 'src/widgets/misc/extractExtensionFromContentType'
 
 export type ImageCreationOpts = {
@@ -48,7 +49,7 @@ export const createMediaImage_fromDataURI = (
 ): MediaImageL => {
     mkdirSync(`outputs/${subFolder}/`, { recursive: true })
     // type: 'data:image/png;base64,' => 'png
-    const contentType = dataURI.split(';')[0].split(':')[1]
+    const contentType = bang(dataURI.split(';')[0]).split(':')[1]
     if (contentType == null) throw new Error(`❌ dataURI mediaType is null`)
     if (contentType.length === 0) throw new Error(`❌ dataURI mediaType is empty`)
     if (contentType === 'text/plain') throw new Error(`❌ dataURI mediaType is text/plain`)

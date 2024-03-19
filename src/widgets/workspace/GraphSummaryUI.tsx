@@ -26,9 +26,9 @@ export const GraphSummaryUI = observer(function GraphSummaryUI_(p: { graph: Comf
                 {graph.nodesByUpdatedAt.map((n, ix) => (
                     <div key={n.uid} className='flex items-center gap-0.5'>
                         {/* {n.status ?? '❓'} */}
-                        <RevealUI>
+                        <RevealUI content={() => <JSONHighlightedCodeUI code={JSON.stringify(n.json, null, 3)} />}>
                             <span>{n.statusEmoji}</span>
-                            <JSONHighlightedCodeUI code={JSON.stringify(n.json, null, 3)} />
+
                             {/* <span className='material-symbols-outlined'>info</span> */}
                         </RevealUI>
                         <NodeRefUI size={1.1} label={ix.toString()} node={n} />

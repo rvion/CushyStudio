@@ -128,7 +128,19 @@ export const ImageActionBarUI = observer(function ImageActionBarUI_(p: { img?: M
             <SpacerUI />
 
             {/* Image Info Button */}
-            <RevealUI tw='bg-base-200 hover:brightness-125 rounded text-shadow'>
+            <RevealUI
+                tw='bg-base-200 hover:brightness-125 rounded text-shadow'
+                content={() => (
+                    <div>
+                        <div>Data</div>
+                        <JsonViewUI value={img?.data}></JsonViewUI>
+                        <div>meta</div>
+                        <JsonViewUI value={img?.ComfyNodeMetadta ?? undefined}></JsonViewUI>
+                        <div>node</div>
+                        <JsonViewUI value={img?.ComfyNode ?? undefined}></JsonViewUI>
+                    </div>
+                )}
+            >
                 <div tw='WIDGET-FIELD flex px-2 cursor-default rounded items-center justify-center border border-base-100 text-sm'>
                     <span className='material-symbols-outlined'>info</span>
 
@@ -152,14 +164,6 @@ export const ImageActionBarUI = observer(function ImageActionBarUI_(p: { img?: M
                             #{t}
                         </div>
                     ))}
-                </div>
-                <div>
-                    <div>Data</div>
-                    <JsonViewUI value={img?.data}></JsonViewUI>
-                    <div>meta</div>
-                    <JsonViewUI value={img?.ComfyNodeMetadta ?? undefined}></JsonViewUI>
-                    <div>node</div>
-                    <JsonViewUI value={img?.ComfyNode ?? undefined}></JsonViewUI>
                 </div>
             </RevealUI>
 

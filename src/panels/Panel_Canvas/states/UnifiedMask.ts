@@ -9,9 +9,8 @@ import { Stage } from 'konva/lib/Stage'
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 
+import { randomColor } from './randomColor'
 import { createMediaImage_fromDataURI } from 'src/models/createMediaImage_fromWebFile'
-
-const randomColor = () => '#' + Math.floor(Math.random() * 16777215).toString(16)
 
 export class UnifiedMask {
     hide = () => this.layer.hide()

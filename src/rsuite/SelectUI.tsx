@@ -372,7 +372,7 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
                     )}
                 </div>
                 <div tw='absolute top-0 left-0 right-0 z-50 h-full'>
-                    {/* it's important for the input to be here so tabulation flow normally */}
+                    {/* it's important for the input to be here so tabulation flow normally */}
                     {/* <div tw='btn btn-square btn-xs bg-transparent border-0'>
                         <span className='material-symbols-outlined'>search</span>
                     </div> */}

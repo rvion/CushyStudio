@@ -17,7 +17,7 @@ export class WidgetPromptUISt {
 
     replaceTextBy = (nextText: string) => {
         this.editorView?.dispatch({
-            changes: { from: 0, to: this.text.length, insert: nextText },
+            changes: { from: 0, to: this.editorView.state.doc.length, insert: nextText },
         })
     }
     constructor(public widget: Widget_prompt) {

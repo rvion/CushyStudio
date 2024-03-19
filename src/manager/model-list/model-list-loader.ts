@@ -53,6 +53,10 @@ export const _getKnownModels = (
         for (const [cat, count] of Object.entries(uniqCategories))
             out1 += `    | ${JSON.stringify(cat).padEnd(20)} // x ${count.toString().padStart(3)}\n`
         out1 += '\n'
+        out1 += 'export const knownModel_Type: KnownModel_Type[] = [\n'
+        for (const [cat, count] of Object.entries(uniqCategories))
+            out1 += `    ${JSON.stringify(cat).padEnd(20)},  // x ${count.toString().padStart(3)}\n`
+        out1 += ']\n'
         writeFileSync('src/manager/model-list/KnownModel_Type.ts', out1 + '\n', 'utf-8')
 
         // savepath ---------------------------
@@ -67,6 +71,10 @@ export const _getKnownModels = (
         for (const [cat, count] of Object.entries(uniqSavePath))
             out4 += `    | ${JSON.stringify(cat).padEnd(50)} // x ${count.toString().padStart(3)}\n`
         out4 += '\n'
+        out4 += 'export const knownModel_SavePath: KnownModel_SavePath[] = [\n'
+        for (const [cat, count] of Object.entries(uniqSavePath))
+            out4 += `    ${JSON.stringify(cat).padEnd(50)},  // x ${count.toString().padStart(3)}\n`
+        out4 += ']\n'
         writeFileSync('src/manager/model-list/KnownModel_SavePath.ts', out4 + '\n', 'utf-8')
 
         // base ---------------------------
@@ -81,6 +89,10 @@ export const _getKnownModels = (
         for (const [cat, count] of Object.entries(uniqBases))
             out2 += `    | ${JSON.stringify(cat).padEnd(20)} // x ${count.toString().padStart(3)}\n`
         out2 += '\n'
+        out2 += 'export const knownModel_Base: KnownModel_Base[] = [\n'
+        for (const [cat, count] of Object.entries(uniqBases))
+            out2 += `    ${JSON.stringify(cat).padEnd(20)},  // x ${count.toString().padStart(3)}\n`
+        out2 += ']\n'
         writeFileSync('src/manager/model-list/KnownModel_Base.ts', out2 + '\n', 'utf-8')
 
         // KnownModel_Name ----------------------

@@ -1,6 +1,8 @@
 import { runInAction } from 'mobx'
 import { useLocalObservable } from 'mobx-react-lite'
 
+import { bang } from 'src/utils/misc/bang'
+
 type RefFn = (e: HTMLDivElement | null) => void
 type DynamicSize = {
     width: Maybe<number>
@@ -12,9 +14,10 @@ export const useSizeOf = (): { refFn: RefFn; size: DynamicSize } => {
     const size = useLocalObservable(
         (): DynamicSize => ({
             observer: new ResizeObserver((e, obs) => {
+                const e0 = bang(e[0])
                 runInAction(() => {
-                    const width = e[0].contentRect.width
-                    const height = e[0].contentRect.height
+                    const width = e0.contentRect.width
+                    const height = e0.contentRect.height
                     size.width = width
                     size.height = height
                 })

@@ -157,6 +157,15 @@ export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
                 <div tw='flex'>
                     <div tw='italic text-xs text-opacity-50'>id: {host.id}</div>
                 </div>
+                <div
+                    className='btn'
+                    onClick={async () => {
+                        const res = await host.manager.configureLogging(true)
+                        console.log(`[🤠] res=`, res)
+                    }}
+                >
+                    test
+                </div>
             </div>
             {/* <div tw='divider m-1'></div> */}
             {/* <div tw='font-bold under'>Status</div> */}

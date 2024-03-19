@@ -1,5 +1,7 @@
 import type { SchemaDict } from './Spec'
 
+import { type DependencyList, useMemo } from 'react'
+
 import { Form, FormProperties, IFormBuilder } from './Form'
 
 /**
@@ -24,9 +26,21 @@ export class FormManager<MyFormBuilder extends IFormBuilder> {
     form = <FIELDS extends SchemaDict>(
         //
         ui: (form: MyFormBuilder) => FIELDS,
-        formProperties: FormProperties<FIELDS>,
+        formProperties: FormProperties<FIELDS> = { name: 'unnamed' },
     ): Form<FIELDS, MyFormBuilder> => {
         const form = new Form<FIELDS, MyFormBuilder>(this, ui as any /* 🔴 */, formProperties)
         return form
+    }
+
+    useForm = <FIELDS extends SchemaDict>(
+        //
+        ui: (form: MyFormBuilder) => FIELDS,
+        formProperties: FormProperties<FIELDS> = { name: 'unnamed' },
+        deps: DependencyList = [],
+    ): Form<FIELDS, MyFormBuilder> => {
+        return useMemo(() => {
+            const form = new Form<FIELDS, MyFormBuilder>(this, ui as any /* 🔴 */, formProperties)
+            return form
+        }, deps)
     }
 }

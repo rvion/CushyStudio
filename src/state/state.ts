@@ -66,7 +66,7 @@ import { treeElement } from 'src/panels/libraryUI/tree/TreeEntry'
 import { Tree } from 'src/panels/libraryUI/tree/xxx/Tree'
 import { TreeView } from 'src/panels/libraryUI/tree/xxx/TreeView'
 import { VirtualHierarchy } from 'src/panels/libraryUI/VirtualHierarchy'
-import { FORM_PlaygroundWidgetDisplay } from 'src/panels/Panel_Playground/FORM_PlaygroundWidgetDisplay'
+import { FORM_PlaygroundWidgetDisplay } from 'src/panels/Panel_Playground/PlaygroundWidgetDisplay'
 // import { Header_Playground } from 'src/panels/Panel_Playground/Panel_Playground'
 import { SafetyChecker } from 'src/safety/Safety'
 import { Database } from 'src/supa/database.types'
@@ -225,7 +225,7 @@ export class STATE {
 
     /** helper to chose radomly any item from a list */
     chooseRandomly = <T>(key: string, seed: number, arr: T[]): T => {
-        return createRandomGenerator(`${key}:${seed}`).randomItem(arr)
+        return createRandomGenerator(`${key}:${seed}`).randomItem(arr)!
     }
 
     libraryFolderPathAbs: AbsolutePath
@@ -410,6 +410,22 @@ export class STATE {
         })
     }
 
+    get autolayoutOpts() {
+        const fv = this.graphConf.value
+        return { node_hsep: fv.hsep, node_vsep: fv.vsep }
+    }
+    graphConf = CushyFormManager.form(
+        (ui) => ({
+            spline: ui.float({ min: 0.5, max: 4, default: 2 }),
+            vsep: ui.int({ min: 0, max: 100, default: 20 }),
+            hsep: ui.int({ min: 0, max: 100, default: 20 }),
+        }),
+        {
+            name: 'Graph Visualisation',
+            initialValue: () => readJSON('settings/graph-visualization.json'),
+            onSerialChange: (form) => writeJSON('settings/graph-visualization.json', form.serial),
+        },
+    )
     civitaiConf = CushyFormManager.form(
         (ui) => ({
             imgSize1: ui.int({ min: 64, max: 1024, step: 64, default: 512 }),
@@ -710,7 +726,7 @@ export class STATE {
         blob: Blob
         url: string
     }> = null
-    onMessage = (e: MessageEvent) => {
+    onMessage = (e: MessageEvent, host: HostL) => {
         if (e.data instanceof ArrayBuffer) {
             // 🔴 console.log('[👢] WEBSOCKET: received ArrayBuffer', e.data)
             const view = new DataView(e.data)
@@ -768,6 +784,10 @@ export class STATE {
             return
         }
 
+        if (msg.type === 'manager-terminal-feedback') {
+            host.addLog(msg.data.data)
+            return
+        }
         exhaust(msg)
         console.log('❌', 'Unknown message:', msg)
         throw new Error('Unknown message type: ' + JSON.stringify(msg))

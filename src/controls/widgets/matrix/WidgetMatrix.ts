@@ -80,7 +80,7 @@ export class Widget_matrix implements IWidget<Widget_matrix_types> {
         const values = this.serial.selected
         if (values)
             for (const v of values) {
-                this.store.set(this.key(rows[v.x], cols[v.y]), v)
+                this.store.set(this.key(rows[v.x]!, cols[v.y]!), v)
             }
         this.rows = config.rows
         this.cols = config.cols

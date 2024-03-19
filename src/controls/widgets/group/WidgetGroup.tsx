@@ -1,4 +1,4 @@
-import type { Form, IFormBuilder } from '../../Form'
+import type { Form } from '../../Form'
 import type { GetWidgetResult, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 import type { IWidget } from 'src/controls/IWidget'
 import type { SchemaDict } from 'src/controls/Spec'
@@ -13,6 +13,7 @@ import { getActualWidgetToDisplay } from 'src/controls/shared/getActualWidgetToD
 import { getIfWidgetIsCollapsible } from 'src/controls/shared/getIfWidgetIsCollapsible'
 import { Spec } from 'src/controls/Spec'
 import { runWithGlobalForm } from 'src/models/_ctx2'
+import { bang } from 'src/utils/misc/bang'
 
 // CONFIG
 export type Widget_group_config<T extends SchemaDict> = WidgetConfigFields<
@@ -132,7 +133,7 @@ export class Widget_group<T extends SchemaDict> implements IWidget<Widget_group_
         const childKeys = Object.keys(_newValues) as (keyof T & string)[]
         // this.childKeys = childKeys
         for (const key of childKeys) {
-            const unmounted = _newValues[key]
+            const unmounted = bang(_newValues[key])
             const prevFieldSerial = prevFieldSerials[key]
             if (prevFieldSerial && unmounted.type === prevFieldSerial.type) {
                 // if (newType === 'shared') {
@@ -164,7 +165,7 @@ export class Widget_group<T extends SchemaDict> implements IWidget<Widget_group_
     value: { [k in keyof T]: GetWidgetResult<T[k]> } = new Proxy({} as any, {
         get: (target, prop) => {
             if (typeof prop !== 'string') return
-            const subWidget: IWidget = this.fields[prop]
+            const subWidget: IWidget = this.fields[prop]!
             if (subWidget == null) return
             return subWidget.value
         },

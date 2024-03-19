@@ -81,9 +81,9 @@ export class Widget_selectOne<T extends BaseSelectEntry> implements IWidget<Widg
             collapsed: config.startCollapsed,
             id: this.id,
             query: '',
-            val: config.default ?? choices[0],
+            val: config.default ?? choices[0]!,
         }
-        if (this.serial.val == null && Array.isArray(this.config.choices)) this.serial.val = choices[0]
+        if (this.serial.val == null && Array.isArray(this.config.choices)) this.serial.val = choices[0]!
         applyWidgetMixinV2(this)
         makeAutoObservable(this)
     }

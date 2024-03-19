@@ -81,7 +81,7 @@ export class CushyAppL {
 
     getLastOrCreateDraft = (): DraftL => {
         const drafts = this.drafts
-        return drafts.length > 0 ? drafts[0] : this.createDraft()
+        return drafts.length > 0 ? drafts[0]! : this.createDraft()
     }
 
     // favorite system ------------------------------------------------------

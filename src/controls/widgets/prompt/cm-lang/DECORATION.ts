@@ -19,7 +19,7 @@ export const placeholders = ViewPlugin.fromClass(
             this.placeholders = this.computeDecorations(update.view)
         }
 
-        private computeDecorations(view: EditorView): DecorationSet {
+        computeDecorations(view: EditorView): DecorationSet {
             const decorations: Range<Decoration>[] = []
             syntaxTree(view.state).iterate({
                 enter: (ref) => {

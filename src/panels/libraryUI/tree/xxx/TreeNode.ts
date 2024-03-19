@@ -116,8 +116,9 @@ export class TreeNode {
         for (const childElem of childElements) {
             const childKey = childElem.key
             // const path = this.id + '/' + childID
-            if (this._children_[childKey]) {
-                out.push(this._children_[childKey])
+            const child = this._children_[childKey]
+            if (child) {
+                out.push(child!)
             } else {
                 // const childEntry = childElem.ctor(childElem.props)
                 const node = new TreeNode(this.tree, childElem, this)
