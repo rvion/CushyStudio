@@ -1,14 +1,16 @@
-import type { CivitaiModelVersion } from './CivitaiSpec'
+import type { CivitaiModelVersion, CivitaiSearchResultItem } from './CivitaiSpec'
 
-// import JsonView from '@uiw/react-json-view'
 import { observer, useLocalObservable } from 'mobx-react-lite'
 
 import { CivitaiDownloadableFileUI } from './CivitaiDownloadableFileUI'
 import { RevealUI } from 'src/rsuite/reveal/RevealUI'
-// import { noImage } from 'src/widgets/galleries/noImage'
 import { JsonViewUI } from 'src/widgets/workspace/JsonViewUI'
 
-export const CivitaiResultVersionUI = observer(function CivitaiResultVersionUI_(p: { version: CivitaiModelVersion }) {
+export const CivitaiResultVersionUI = observer(function CivitaiResultVersionUI_(p: {
+    //
+    entry: CivitaiSearchResultItem
+    version: CivitaiModelVersion
+}) {
     const version = p.version
     const uist = useLocalObservable(() => ({
         ix: 0,
@@ -57,7 +59,12 @@ export const CivitaiResultVersionUI = observer(function CivitaiResultVersionUI_(
                         </div>
                         {/* <h3>Files</h3> */}
                         {version.files.map((file, ix) => (
-                            <CivitaiDownloadableFileUI version={version} key={ix} file={file} />
+                            <CivitaiDownloadableFileUI //
+                                entry={p.entry}
+                                version={version}
+                                key={ix}
+                                file={file}
+                            />
                         ))}
                     </div>
                 </div>

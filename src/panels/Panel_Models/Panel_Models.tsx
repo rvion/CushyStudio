@@ -9,6 +9,7 @@ import { FormUI } from 'src/controls/FormUI'
 import { SpacerUI } from 'src/controls/widgets/spacer/SpacerUI'
 import { RevealUI } from 'src/rsuite/reveal/RevealUI'
 import { FormHelpText } from 'src/rsuite/shims'
+import { assets } from 'src/utils/assets/assets'
 import { SectionTitleUI } from 'src/widgets/workspace/SectionTitle'
 
 export const Panel_Models = observer(function Panel_Models_() {
@@ -16,7 +17,15 @@ export const Panel_Models = observer(function Panel_Models_() {
     const civitai = useMemo(() => new Civitai(), [])
     return (
         <div className='flex flex-col gap-2 h-full w-full'>
-            <SectionTitleUI label='CIVITAI' className='block'>
+            <SectionTitleUI
+                label={
+                    <div tw='flex'>
+                        <img tw='h-8 w-8' src={assets.CivitaiLogo_png} alt='Civitai logo' />
+                        CIVITAI
+                    </div>
+                }
+                className='block'
+            >
                 <PanelHeaderUI>
                     <SpacerUI />
                     <RevealUI

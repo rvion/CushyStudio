@@ -12,7 +12,7 @@ export const CivitaiResultFullUI = observer(function CivitaiResultFullUI_(p: {
     civitai: Civitai
     item: CivitaiSearchResultItem
 }) {
-    const item = p.item
+    const item: CivitaiSearchResultItem = p.item
     const selected = useLocalObservable(() => ({
         version: item.modelVersions[0] as Maybe<CivitaiModelVersion>,
         //
@@ -26,6 +26,7 @@ export const CivitaiResultFullUI = observer(function CivitaiResultFullUI_(p: {
             <div tw='flex gap-1 items-baseline'>
                 <div tw='text-2xl font-bold'>{item.name}</div>
                 <div tw='italic opacity-50'>#{item.id}</div>
+                <div tw='badge badge-lg bg-yellow-600 text-black'>{item.type}</div>
                 <div tw='flex-1'></div>
                 <RevealUI content={() => <JsonViewUI value={item} />}>
                     <div tw='btn btn-sm btn'>Show full json</div>
@@ -36,7 +37,9 @@ export const CivitaiResultFullUI = observer(function CivitaiResultFullUI_(p: {
             {item.tags ? (
                 <div tw='flex flex-wrap gap-1'>
                     {item.tags.map((tag) => (
-                        <div tw='badge badge-neutral badge-sm'>{tag}</div>
+                        <div key={tag} tw='badge badge-neutral badge-sm'>
+                            {tag}
+                        </div>
                     ))}
                 </div>
             ) : null}
@@ -66,7 +69,13 @@ export const CivitaiResultFullUI = observer(function CivitaiResultFullUI_(p: {
             <div //selected version
                 tw='flex flex-col gap-1'
             >
-                {selected.version && <CivitaiResultVersionUI key={selected.version.id} version={selected.version} />}
+                {selected.version && (
+                    <CivitaiResultVersionUI //
+                        key={selected.version.id}
+                        entry={item}
+                        version={selected.version}
+                    />
+                )}
             </div>
         </div>
     )

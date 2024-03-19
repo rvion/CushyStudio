@@ -1,8 +1,9 @@
-import type { CivitaiDownloadableFile, CivitaiModelVersion } from './CivitaiSpec'
+import type { CivitaiDownloadableFile, CivitaiModelVersion, CivitaiSearchResultItem } from './CivitaiSpec'
 import type { ModelInfo } from 'src/manager/model-list/model-list-loader-types'
 
 import { observer, useLocalObservable } from 'mobx-react-lite'
 
+import { MessageWarningUI } from '../MessageUI'
 import { CivitaiWarningAPIKeyMissingUI } from './CivitaiWarningAPIKeyMissingUI'
 import { formatSize } from 'src/db/getDBStats'
 import { knownModel_Base, type KnownModel_Base } from 'src/manager/model-list/KnownModel_Base'
@@ -12,44 +13,61 @@ import { RevealUI } from 'src/rsuite/reveal/RevealUI'
 import { SelectUI } from 'src/rsuite/SelectUI'
 import { JsonViewUI } from 'src/widgets/workspace/JsonViewUI'
 
-export const CivitaiDownloadableFileUI = observer(function CivitaiDownloadableFileUI_(p: {
+const detectBase = ({ version }: CivitaiDownloadableFileProps): Maybe<KnownModel_Base> => {
+    // 🔴 TODO: support all knowns Civitai input types
+    if (version.baseModel === 'SDXL 1.0') return 'SDXL'
+    if (version.baseModel === 'SD 1.5') return 'SD1.5'
+    return
+}
+
+const detectType = (p: CivitaiDownloadableFileProps): Maybe<KnownModel_Type> => {
+    // 🔴 TODO: support all knowns Civitai input types
+    if (p.entry.type === 'LORA') return 'lora'
+    if (p.entry.type === 'Checkpoint') return 'checkpoints'
+    // if (p.file.type === 'Model') return 'checkpoints'
+    // if (p.file.type === 'VAE') return 'VAE'
+    return
+}
+
+type CivitaiDownloadableFileProps = {
     //
+    entry: CivitaiSearchResultItem
     version: CivitaiModelVersion
     file: CivitaiDownloadableFile
-}) {
+}
+
+export const CivitaiDownloadableFileUI = observer(function CivitaiDownloadableFileUI_(p: CivitaiDownloadableFileProps) {
     const file: CivitaiDownloadableFile = p.file
     const version: CivitaiModelVersion = p.version
     const apiKey = cushy.civitaiConf.fields.apiKey.value
-    const uist = useLocalObservable(() => ({
-        base: ((): KnownModel_Base => {
-            // 🔴 TODO: support all knowns Civitai input types
-            if (version.baseModel === 'SDXL 1.0') return 'SDXL'
-            if (version.baseModel === 'SD 1.5') return 'SD1.5'
-            console.log(`[❌ MISSING CIVITAI to MANAGER rule] unknown base: ${version.baseModel}`)
-            return 'SD1.x'
-        })(),
-        type: ((): KnownModel_Type => {
-            // 🔴 TODO: support all knowns Civitai input types
-            if (file.type === 'Model') return 'checkpoints'
-            if (file.type === 'VAE') return 'VAE'
-            console.log(`[❌ MISSING CIVITAI to MANAGER rule] unknown type: ${version.baseModel}`)
-            return 'checkpoints'
-        })(),
-        save_path: 'default' as KnownModel_SavePath,
-    }))
+    const detectedBase = detectBase(p)
+    const detectedType = detectType(p)
+
+    const uist = useLocalObservable(
+        (): {
+            base: KnownModel_Base
+            type: KnownModel_Type
+            save_path: KnownModel_SavePath
+        } => ({
+            base: detectedBase ?? 'SD1.x',
+            type: detectedType ?? 'checkpoints',
+            save_path: 'default',
+        }),
+    )
     const mi: ModelInfo = {
         description: version.description,
         name: version.name as any,
         filename: file.name,
         reference: version.downloadUrl,
         base: uist.base,
-        save_path: 'default',
         type: uist.type,
+        save_path: uist.save_path,
         url: apiKey ? `${file.downloadUrl}${file.downloadUrl.includes('?') ? '&' : '?'}token=${apiKey}` : file.downloadUrl,
     }
     const isBeeingInstalled = cushy.mainHost.manager.modelsBeeingInstalled.has(mi.name as any)
     return (
         <div tw='bd1'>
+            <div tw='badge badge-lg badge-neutral'>type={file.type}</div>
             <div // File name
                 tw='flex items-center gap-1'
             >
@@ -66,25 +84,31 @@ export const CivitaiDownloadableFileUI = observer(function CivitaiDownloadableFi
                 {file.primary && <div tw='badge badge-primary'>primary</div>}
             </div>
             <div tw='bd1 m-2'>
-                <div tw='flex'>
+                <div tw='flex flex-col'>
                     <SelectUI // manually override base
+                        label='base model'
                         value={() => uist.base}
                         options={() => knownModel_Base}
                         onChange={(v) => (uist.base = v)}
                         getLabelText={(v) => v}
                     />
                     <SelectUI // manually override type
+                        label='Model Type'
                         onChange={(v) => (uist.type = v as any)}
                         getLabelText={(v) => v}
                         value={() => uist.type}
                         options={() => knownModel_Type}
                     />
+
                     <SelectUI // manually override save path info
+                        label='Save Strategy'
                         onChange={(v) => (uist.save_path = v as any)}
                         getLabelText={(v) => v}
                         options={() => knownModel_SavePath}
                         value={() => uist.save_path}
                     />
+                    {detectedBase == null ? <MessageWarningUI markdown={errMsg(p, 'Base')} /> : null}
+                    {detectedType == null ? <MessageWarningUI markdown={errMsg(p, 'Type')} /> : null}
                 </div>
                 <div tw='flex'>
                     <div // Download button
@@ -112,3 +136,10 @@ export const CivitaiDownloadableFileUI = observer(function CivitaiDownloadableFi
         </div>
     )
 })
+
+const errMsg = (p: CivitaiDownloadableFileProps, prefix: string) =>
+    [
+        `**${prefix}** MAY be wrong;`,
+        `Case missing (resource-type=${p.entry.type}, baseModel=${p.version.baseModel}, file.type=${p.file.type})`,
+        `Please add missing case in \`src/panels/Panel_Models/CivitaiDownloadableFileUI.tsx\` file`,
+    ].join('\n\n')
