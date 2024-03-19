@@ -98,6 +98,6 @@ export class RuntimeComfyUI {
         if (this.allCheckpoints.length == 0) throw new Error(`❌ no ComfUI checkpoints available at all`)
         if (this.allCheckpoints.includes('revAnimated_v122.safetensors')) return 'revAnimated_v122.safetensors'
         if (this.allCheckpoints.includes('lyriel_v15.safetensors')) return 'lyriel_v15.safetensors'
-        return this.allCheckpoints[0]
+        return this.allCheckpoints[0]!
     }
 }

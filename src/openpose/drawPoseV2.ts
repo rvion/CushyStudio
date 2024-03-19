@@ -80,19 +80,19 @@ export function drawOpenPoseBones(
         for (const bone of boneIndices) {
             j++
             const [start, end] = bone
-            const x1 = keypoints[start * 3]
-            const y1 = keypoints[start * 3 + 1]
-            const score1 = keypoints[start * 3 + 2]
+            const x1 = keypoints[start! * 3]!
+            const y1 = keypoints[start! * 3 + 1]!
+            const score1 = keypoints[start! * 3 + 2]
 
-            const x2 = keypoints[end * 3]
-            const y2 = keypoints[end * 3 + 1]
-            const score2 = keypoints[end * 3 + 2]
+            const x2 = keypoints[end! * 3]!
+            const y2 = keypoints[end! * 3 + 1]!
+            const score2 = keypoints[end! * 3 + 2]
 
             if (score1 == 0 || score2 == 0) {
                 continue
             }
 
-            ctx.strokeStyle = convertHexToRGBA(boneColors[j], animationAlpha)
+            ctx.strokeStyle = convertHexToRGBA(boneColors[j]!, animationAlpha)
             ctx.lineWidth = BONE_THICKNESS
 
             // Draw the bone
@@ -101,7 +101,7 @@ export function drawOpenPoseBones(
             ctx.lineTo(x2, y2)
             ctx.stroke()
 
-            const JOINT_COLOR = convertHexToRGBA(boneColors[j], animationAlpha)
+            const JOINT_COLOR = convertHexToRGBA(boneColors[j]!, animationAlpha)
             // Draw the joints at the start and end of the bone
             ctx.beginPath()
             ctx.arc(x1, y1, BONE_THICKNESS / 2, 0, 2 * Math.PI)

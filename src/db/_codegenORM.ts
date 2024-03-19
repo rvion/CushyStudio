@@ -4,6 +4,7 @@ import JSON5 from 'json5'
 
 import { _getAllColumnsForTable } from './_getAllColumnsForTable'
 import { _getAllForeignKeysForTable } from './_getAllForeignKeysForTable'
+import { bang } from 'src/utils/misc/bang'
 
 export const _codegenORM = (store: {
     //
@@ -227,7 +228,7 @@ export const _codegenORM = (store: {
 
 const convertTableNameToJSName = (tableName: string) => {
     let out = tableName.replace(/_(.)/g, (m, p1) => p1.toUpperCase())
-    out = out[0].toUpperCase() + out.slice(1)
+    out = bang(out[0]).toUpperCase() + out.slice(1)
     return out
 }
 

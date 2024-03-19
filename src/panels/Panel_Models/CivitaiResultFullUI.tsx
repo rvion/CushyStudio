@@ -42,27 +42,31 @@ export const CivitaiResultFullUI = observer(function CivitaiResultFullUI_(p: {
                 </div>
             ) : null}
 
-            <div //
+            <div // top description
                 tw='line-clamp-3 text-sm'
                 dangerouslySetInnerHTML={{ __html: item.description }}
-            ></div>
+            />
 
-            <div tw='flex flex-wrap gap-0.5'>
+            <div // list of all versions
+                tw='flex flex-wrap gap-0.5'
+            >
                 {item.modelVersions.map((version: CivitaiModelVersion) => (
                     <div
                         key={version.id}
-                        tw={['btn', selected.version === version ? 'btn-primary' : 'btn-outline']}
+                        tw={['btn btn-narrow', selected.version === version ? 'btn-primary' : 'btn-outline']}
                         onClick={() => {
                             selected.version = version
                         }}
                     >
-                        <img style={{ width: '2rem', height: '2rem' }} src={version.images[0]?.url} />
+                        <img style={{ width: '3rem', height: '3rem', objectFit: 'contain' }} src={version.images[0]?.url} />
                         <span>{version.name}</span>
                     </div>
                 ))}
             </div>
-            <div tw='flex flex-col gap-1'>
-                {/*  */}
+
+            <div //selected version
+                tw='flex flex-col gap-1'
+            >
                 {selected.version && <CivitaiResultVersionUI key={selected.version.id} version={selected.version} />}
             </div>
         </div>

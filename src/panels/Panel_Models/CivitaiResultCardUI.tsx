@@ -1,4 +1,4 @@
-import type { Civitai, CivitaiSearchResultItem } from './CivitaiSpec'
+import type { Civitai, CivitaiModelVersion, CivitaiSearchResultItem } from './CivitaiSpec'
 
 import { observer } from 'mobx-react-lite'
 
@@ -8,9 +8,9 @@ export const CivitaiResultCardUI = observer(function CivitaiResultCardUI_(p: {
     item: CivitaiSearchResultItem
 }) {
     const item = p.item
-    const v0 = item.modelVersions[0]
-    const v0Imgs = v0.images
-    const img0 = v0Imgs[0]
+    const v0: Maybe<CivitaiModelVersion> = item.modelVersions[0]
+    const v0Imgs = v0?.images
+    const img0 = v0Imgs?.[0]
     const active = p.civitai.selectedResult === item
     return (
         <div
@@ -24,13 +24,15 @@ export const CivitaiResultCardUI = observer(function CivitaiResultCardUI_(p: {
             ]}
         >
             <div tw={['flex gap-0.5']}>
-                <img
-                    //
-                    style={{ width: '100px', height: '100px', objectFit: 'contain' }}
-                    tw='flex-none'
-                    key={img0.url}
-                    src={img0.url}
-                />
+                {img0 && (
+                    <img
+                        //
+                        style={{ width: '100px', height: '100px', objectFit: 'contain' }}
+                        tw='flex-none'
+                        key={img0.url}
+                        src={img0.url}
+                    />
+                )}
                 <div>
                     <div tw='font-bold'>{item.name}</div>
                     <div tw='opacity-50 text-sm'>{item.modelVersions.length} version</div>
@@ -38,7 +40,9 @@ export const CivitaiResultCardUI = observer(function CivitaiResultCardUI_(p: {
                     {item.tags ? (
                         <div tw='flex flex-wrap gap-1'>
                             {item.tags.map((tag) => (
-                                <div tw='badge badge-neutral badge-sm'>{tag}</div>
+                                <div key={tag} tw='badge badge-neutral badge-sm'>
+                                    {tag}
+                                </div>
                             ))}
                         </div>
                     ) : null}

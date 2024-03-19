@@ -3,12 +3,13 @@ import type { KnownModel_Base } from 'src/manager/model-list/KnownModel_Base'
 import type { KnownModel_Type } from 'src/manager/model-list/KnownModel_Type'
 import type { ModelInfo } from 'src/manager/model-list/model-list-loader-types'
 
-import JsonView from '@uiw/react-json-view'
+// import JsonView from '@uiw/react-json-view'
 import { observer, useLocalObservable } from 'mobx-react-lite'
 
 import { CivitaiWarningAPIKeyMissingUI } from './CivitaiWarningAPIKeyMissingUI'
 import { formatSize } from 'src/db/getDBStats'
 import { RevealUI } from 'src/rsuite/reveal/RevealUI'
+// import { noImage } from 'src/widgets/galleries/noImage'
 import { JsonViewUI } from 'src/widgets/workspace/JsonViewUI'
 
 export const CivitaiResultVersionUI = observer(function CivitaiResultVersionUI_(p: { version: CivitaiModelVersion }) {
@@ -20,27 +21,30 @@ export const CivitaiResultVersionUI = observer(function CivitaiResultVersionUI_(
         },
     }))
     const img = uist.image
+    const imgUrl = img?.url // ?? noImage
     const size1 = `${cushy.civitaiConf.fields.imgSize1.value}px`
     const size2 = `${cushy.civitaiConf.fields.imgSize2.value}px`
     const apiKey = cushy.civitaiConf.fields.apiKey.value
+
     return (
         <div tw='flex flex-col gap-1'>
-            <RevealUI>
-                <div tw='btn btn-sm btn'>Show verion json</div>
-                <JsonViewUI value={p.version} />
-            </RevealUI>
-
             <div key={version.id} tw='flex gap-1'>
                 <img
                     //
                     loading='lazy'
-                    style={{ width: size1, height: size1 }}
-                    key={img.url}
-                    src={img.url}
+                    style={{ width: size1, height: size1, objectFit: 'contain' }}
+                    src={imgUrl}
                 />
                 <div tw='flex flex-col flex-1'>
                     <div tw='text-xl font-bold'>{version.name}</div>
                     <div>{version.baseModel}</div>
+                    <div>
+                        <RevealUI>
+                            <div tw='btn btn-xs btn-outline'>Show version json</div>
+                            <JsonViewUI value={p.version} />
+                        </RevealUI>
+                    </div>
+
                     <div>
                         {version.description && (
                             <div tw='text-sm' dangerouslySetInnerHTML={{ __html: version.description }}></div>
@@ -118,7 +122,7 @@ export const CivitaiResultVersionUI = observer(function CivitaiResultVersionUI_(
                         //
                         onMouseEnter={() => (uist.ix = ix)}
                         loading='lazy'
-                        style={{ width: size2, height: size2 }}
+                        style={{ width: size2, height: size2, objectFit: 'contain' }}
                         key={img.url}
                         src={img.url}
                     />

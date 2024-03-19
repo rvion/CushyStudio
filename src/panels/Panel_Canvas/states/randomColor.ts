@@ -6,41 +6,30 @@ export const randomColorHsv = () => {
     return `hsv(${h},${s}%,${v}%)`
 }
 export const randomNiceColor = (seed: string = '') => {
-    // console.log(`[🤠] SEED=`, seed)
     const seedNumb = [...seed].reduce((acc, char) => acc + char.charCodeAt(0), 0)
+    // prettier-ignore
     const cols = [
-        '#e6194b',
-        '#3cb44b',
-        '#ffe119',
-        '#4363d8',
-        '#f58231',
-        '#911eb4',
-        '#46f0f0',
-        '#f032e6',
-        '#bcf60c',
-        '#fabebe',
-        '#008080',
-        '#e6beff',
-        '#9a6324',
-        '#fffac8',
-        '#800000',
-        '#aaffc3',
-        '#808000',
-        '#ffd8b1',
-        '#000075',
-        '#808080',
-        // '#ffffff',
-        // '#000000',
+        '#e6194b', '#3cb44b', '#ffe119', '#4363d8', '#f58231', '#911eb4', '#46f0f0',
+        '#f032e6', '#bcf60c', '#fabebe', '#008080', '#e6beff', '#9a6324', '#fffac8',
+        '#800000', '#aaffc3', '#808000', '#ffd8b1', '#000075', '#808080',
+        // '#ffffff', // '#000000',
     ]
     return cols[seedNumb % cols.length]
 }
-export const randomColorHSVNice = (seed: string) => {
-    const h = [...seed].reduce((acc, char) => acc + char.charCodeAt(0), 0) % 360
-    const s = 90 //+ Math.floor(Math.random() * 10)
-    const v = 60 //+ Math.floor(Math.random() * 10)
-    // return `hsv(${h},${s}%,${v}%)`
-    const [r, g, b] = hsvToRgb(h, s, v)
-    return `rgb(${r},${g},${b})`
+
+export const randomColorHSLNice = (seed: string) => {
+    // prettier-ignore
+    const seedNumb
+        = seed === 'IMAGE' ? 12
+        : seed === 'CONDITIONING' ? 180
+        : seed === 'MODEL' ? 200
+        : seed === 'CLIP' ? 40
+        : seed === 'VAE' ? 80
+        : [...seed].reduce((acc, char) => acc + char.charCodeAt(0), 0)
+    const h = seedNumb % 360
+    const s = 100
+    const l = 50
+    return `hsl(${h},${s}%,${l}%)`
 }
 
 const hsvToRgb = (h: number, s: number, v: number): [number, number, number] => {

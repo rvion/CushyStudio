@@ -7,6 +7,7 @@ import type { ComfyNodeSchema, ComfySchemaL } from './ComfySchema'
 import type { StepL } from './Step'
 import type { MouseEvent } from 'react'
 import type { IDNaminScheemeInPromptSentToComfyUI } from 'src/back/IDNaminScheemeInPromptSentToComfyUI'
+import type { ComfyNodeOutput } from 'src/core/Slot'
 import type { LiveInstance } from 'src/db/LiveInstance'
 import type { ComfyWorkflowT, TABLES } from 'src/db/TYPES.gen'
 import type { HTMLContent, MDContent } from 'src/types/markdown'
@@ -369,7 +370,7 @@ export class ComfyWorkflowL {
         const edges: VisEdges[] = []
         if (json == null) return { nodes: [], edges: [] }
         for (const [uid, node] of Object.entries(json)) {
-            const schema: ComfyNodeSchema = schemas.nodesByNameInComfy[node.class_type]
+            const schema: ComfyNodeSchema = bang(schemas.nodesByNameInComfy[node.class_type], `unknown node ${node.class_type}`)
             const color = comfyColors[schema.category]
             nodes.push({ id: uid, label: node.class_type, color, font: { color: 'white' }, shape: 'box' })
             for (const [name, val] of Object.entries(node.inputs)) {
@@ -413,7 +414,7 @@ export class ComfyWorkflowL {
                 node.col,
                 node.parents.map((p) => [p.col, p.$schema.nameInComfy]),
             )
-            if (cols[node.col]) cols[node.col].push(node)
+            if (cols[node.col]) cols[node.col]!.push(node)
             else cols[node.col] = [node]
         }
 
@@ -425,7 +426,7 @@ export class ComfyWorkflowL {
         for (const col of cols) {
             if (col == null) continue
             let colWidth = 0
-            let currNodeY = 0
+            let currNodeY = 32
             const nodesSorted = col.toSorted((a, b) => b.height - a.height)
             for (const node of nodesSorted) {
                 colWidth = Math.max(colWidth, node.width)

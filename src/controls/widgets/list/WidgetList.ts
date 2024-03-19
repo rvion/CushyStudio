@@ -1,7 +1,7 @@
-import type { Form, IFormBuilder } from '../../Form'
+import type { Form } from '../../Form'
 import type { IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 import type { IWidget } from 'src/controls/IWidget'
-import type { SchemaDict, Spec } from 'src/controls/Spec'
+import type { Spec } from 'src/controls/Spec'
 
 import { makeAutoObservable, observable } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -10,6 +10,7 @@ import { WidgetDI } from '../WidgetUI.DI'
 import { WidgetList_BodyUI, WidgetList_LineUI } from './WidgetListUI'
 import { applyWidgetMixinV2 } from 'src/controls/Mixins'
 import { runWithGlobalForm } from 'src/models/_ctx2'
+import { bang } from 'src/utils/misc/bang'
 
 // CONFIG
 export type Widget_list_config<T extends Spec> = WidgetConfigFields<
@@ -198,11 +199,11 @@ export class Widget_list<T extends Spec> implements IWidget<Widget_list_types<T>
 
         // serials
         const serials = this.serial.items_
-        serials.splice(newIndex, 0, serials.splice(oldIndex, 1)[0])
+        serials.splice(newIndex, 0, bang(serials.splice(oldIndex, 1)[0]))
 
         // instances
         const instances = this.items
-        instances.splice(newIndex, 0, instances.splice(oldIndex, 1)[0])
+        instances.splice(newIndex, 0, bang(instances.splice(oldIndex, 1)[0]))
         this.bumpValue()
     }
 }

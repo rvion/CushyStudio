@@ -11,7 +11,7 @@ import { auto_ } from './autoValue'
 import { comfyColors } from './Colors'
 import { NodeStatusEmojiUI } from './NodeStatusEmojiUI'
 import { ComfyNodeOutput } from './Slot'
-import { NodeSlotOffset, NodeSlotSize, NodeSlotVSep } from 'src/widgets/graph/NodeSlotSize'
+import { nodeLineHeight, NodeSlotOffset, NodeSlotSize, NodeSlotVSep } from 'src/widgets/graph/NodeSlotSize'
 
 configure({ enforceActions: 'never' })
 // configure({ enforceActions: 'always' })
@@ -106,7 +106,7 @@ export class ComfyNode<
     $outputs: ComfyNodeOutput<any>[] = []
     outputs: ComfyNode_output
     uidPrefixed: string
-    slotByIx = new Map<number, ComfyNodeOutput<any>>()
+
     constructor(
         //
         public graph: ComfyWorkflowL,
@@ -121,7 +121,7 @@ export class ComfyNode<
         // console.log('CONSTRUCTING', xxx.class_type, uid)
 
         // this.uidNumber = parseInt(uid) // 🔴 ugly
-        this.$schema = graph.schema.nodesByNameInComfy[jsonExt.class_type]
+        this.$schema = graph.schema.nodesByNameInComfy[jsonExt.class_type]!
         if (this.$schema == null) {
             console.log(`❌ available nodes:`, Object.keys(graph.schema.nodesByNameInComfy).join(','))
             throw new Error(`❌ no schema found for node "${jsonExt.class_type}"`)
@@ -141,7 +141,6 @@ export class ComfyNode<
         const outputs: { [key: string]: any } = {}
         for (const x of this.$schema.outputs) {
             const output = new ComfyNodeOutput(this, ix++, x.nameInCushy)
-            this.slotByIx.set(output.slotIx, output)
             outputs[x.nameInCushy] = output
             this.$outputs.push(output)
             // console.log(`  - .${x.nameInCushy} as ComfyNodeOutput(${ix})`)
@@ -216,7 +215,7 @@ export class ComfyNode<
                 height: NodeSlotSize,
                 type: o.type,
                 x: this.x + this.width, // + NodeSlotSize / 2,
-                y: this.y + NodeSlotOffset + ix * (NodeSlotSize + NodeSlotVSep), // e.fromSlotIx * 10,
+                y: this.y + nodeLineHeight / 2 + NodeSlotOffset + ix * (NodeSlotSize + NodeSlotVSep), // e.fromSlotIx * 10,
             }),
         )
     }
@@ -230,7 +229,7 @@ export class ComfyNode<
                 label: e.inputName,
                 type: e.type,
                 x: this.x, // - NodeSlotSize / 2,
-                y: this.y + NodeSlotOffset + ix * (NodeSlotSize + NodeSlotVSep), // e.fromSlotIx * 10,
+                y: this.y + nodeLineHeight / 2 + NodeSlotOffset + ix * (NodeSlotSize + NodeSlotVSep), // e.fromSlotIx * 10,
             }),
         )
     }
@@ -240,7 +239,7 @@ export class ComfyNode<
         for (const [inputName, val] of Object.entries(this.inputs)) {
             if (val instanceof Array) {
                 const [from, _slotIx] = val as [ComfyNodeID, number]
-                const type = this.slotByIx.get(_slotIx)?.type
+                const type = this.graph.getNode(from)?.$outputs[_slotIx]?.type
                 incomingEdges.push({ from, inputName, fromSlotIx: _slotIx, type })
             }
         }

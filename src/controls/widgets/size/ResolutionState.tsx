@@ -99,11 +99,11 @@ export class ResolutionState {
 
     private updateHeightBasedOnAspectRatio() {
         const [widthRatio, heightRatio] = this.desiredAspectRatio.split(':').map(Number)
-        this.height = Math.round(this.width * (heightRatio / widthRatio))
+        this.height = Math.round(this.width * (heightRatio! / widthRatio!))
     }
 
     private updateWidthBasedOnAspectRatio() {
         const [widthRatio, heightRatio] = this.desiredAspectRatio.split(':').map(Number)
-        this.width = Math.round(this.height * (widthRatio / heightRatio))
+        this.width = Math.round(this.height * (widthRatio! / heightRatio!))
     }
 }

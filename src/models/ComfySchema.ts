@@ -430,7 +430,7 @@ export class ComfySchemaL {
         // for (const [tp, nns] of Object.entries(this.nodesByProduction)) {
         // }
         for (const tp of slotTypes) {
-            const producingNodes: string[] = this.nodesByProduction[tp.comfyType]
+            const producingNodes: Maybe<string[]> = this.nodesByProduction[tp.comfyType]
             if (producingNodes)
                 p(
                     `export interface CanProduce_${tp.comfyType} extends Pick<ComfySetup, ${producingNodes

@@ -171,7 +171,7 @@ app({
             const positiveText = `masterpiece, rpg, ${basePrompt}, ${suitColor} of ${suit} color, intricate details, theme of ${theme} and ${ui.generalTheme}, 4k`
             const positive = graph.CLIPTextEncode({ clip, text: positiveText })
             const negative = negP.conditioning // graph.CLIPTextEncode({ clip, text: negativeText })
-            const xxx = foo[`${suit}_${value}`]
+            const xxx = foo[`${suit}_${value}`]!
             // let latent: _LATENT = suitsBackground.get(suit)! // emptyLatent
             let latent: _LATENT = graph.VAEEncode({ pixels: xxx.base, vae })
             latent = graph.SetLatentNoiseMask({

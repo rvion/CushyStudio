@@ -41,10 +41,10 @@ app({
     run: async (run, ui) => {
         const regional = run.formInstance.fields.regionalPrompt
         regional.addItem()
-        regional.entries[0].shape.width = 256
-        regional.entries[0].shape.height = 256
-        regional.entries[0].shape.x = 0
-        regional.entries[0].shape.y = 128
-        regional.entries[0].widget.fields.prompt.text = `Set to dynamic prompt at ${Date.now()}`
+        regional.entries[0]!.shape.width = 256
+        regional.entries[0]!.shape.height = 256
+        regional.entries[0]!.shape.x = 0
+        regional.entries[0]!.shape.y = 128
+        regional.entries[0]!.widget.fields.prompt.text = `Set to dynamic prompt at ${Date.now()}`
     },
 })

@@ -5,7 +5,7 @@ import { Fragment, useEffect, useRef } from 'react'
 
 import { NodeSlotSize } from './NodeSlotSize'
 import { ComfyWorkflowL } from 'src/models/ComfyWorkflow'
-import { randomNiceColor } from 'src/panels/Panel_Canvas/states/randomColor'
+import { randomColorHSLNice, randomNiceColor } from 'src/panels/Panel_Canvas/states/randomColor'
 import { ProgressLine } from 'src/rsuite/shims'
 import { bang } from 'src/utils/misc/bang'
 
@@ -23,6 +23,7 @@ export const DrawWorkflowUI = observer(function DrawWorkflowUI_(p: {
         for (const port of node.outgoingPorts) OUTportsById.set(port.id, port)
     }
     const ref = useRef<HTMLDivElement>(null)
+    const colorFn = randomColorHSLNice // randomNiceColor
     useEffect(() => {
         if (ref.current == null) return
         if (p.offset) {
@@ -49,7 +50,7 @@ export const DrawWorkflowUI = observer(function DrawWorkflowUI_(p: {
                 const pgr = node.progressReport
 
                 return (
-                    <Fragment>
+                    <Fragment key={node.uid}>
                         {/* INCOMING EDGES */}
                         {node._incomingEdges().map((e, ix) => {
                             const start = OUTportsById.get(`${e.from}#${e.fromSlotIx}`)!
@@ -60,22 +61,23 @@ export const DrawWorkflowUI = observer(function DrawWorkflowUI_(p: {
                             pathBasic += ` ${end.x - dx2} ${end.y}`
                             pathBasic += ` ${end.x} ${end.y}`
                             const path = pathBasic //path2WithCubicBezier
-                            const color = randomNiceColor(start.label)
+                            const color = colorFn(start.type)
                             const stroke = color
                             return (
                                 <svg //
+                                    key={ix}
                                     style={{ position: 'absolute', top: 0, left: 0, zIndex: 99 }}
                                     width={wflow.width ?? '100%'}
                                     height={wflow.height ?? '100%'}
                                 >
-                                    <path d={path} stroke={stroke} stroke-width='3' fill='none' />
+                                    <path d={path} stroke={stroke} strokeWidth='4' fill='none' />
                                 </svg>
                             )
                         })}
 
                         {/* PORTS IN  */}
                         {node.incomingPorts?.map((p) => {
-                            const color = randomNiceColor(p.type)
+                            const color = colorFn(p.type)
                             return (
                                 <div
                                     tw='absolute'
@@ -83,6 +85,8 @@ export const DrawWorkflowUI = observer(function DrawWorkflowUI_(p: {
                                     style={{
                                         // borderRadius: '50%',
                                         zIndex: 995,
+                                        border: '1px solid gray',
+                                        borderRadius: '50%',
                                         top: p.y - NodeSlotSize / 2,
                                         left: p.x - NodeSlotSize / 2,
                                         background: color,
@@ -95,13 +99,14 @@ export const DrawWorkflowUI = observer(function DrawWorkflowUI_(p: {
 
                         {/* PORTS OUT */}
                         {node.outgoingPorts?.map((p) => {
-                            const color = randomNiceColor(p.type)
+                            const color = colorFn(p.type)
                             return (
                                 <div
                                     key={p.id}
                                     tw='absolute'
                                     style={{
-                                        // borderRadius: '50%',
+                                        border: '1px solid gray',
+                                        borderRadius: '50%',
                                         zIndex: 995,
                                         top: p.y - NodeSlotSize / 2,
                                         left: p.x - NodeSlotSize / 2,
@@ -114,9 +119,10 @@ export const DrawWorkflowUI = observer(function DrawWorkflowUI_(p: {
                         })}
                         {/* ACTUAL NODE */}
                         <div
-                            className='node bg-base-200 rounded-xl bd'
+                            className='node bg-base-200 rounded'
                             key={node.uid}
                             style={{
+                                border: '1px solid #4c4c4c',
                                 zIndex: 991,
                                 fontWeight: '20px',
                                 lineHeight: '20px',
@@ -127,48 +133,44 @@ export const DrawWorkflowUI = observer(function DrawWorkflowUI_(p: {
                                 height: bang(node.height),
                             }}
                         >
-                            {/* PROGRESS */}
-                            {/* {node.progressRatio} */}
-                            {/* {node.status} */}
-                            {/* {node.isExecuting ? (
-                                <ProgressLine status={pgr.isDone ? 'success' : 'active'} percent={pgr.percent} />
-                            ) : null} */}
-                            <ProgressLine status={pgr?.isDone ? 'success' : 'active'} percent={pgr?.percent} />
+                            <ProgressLine
+                                tw='absolute -top-2 !p-0'
+                                status={pgr?.isDone ? 'success' : 'active'}
+                                percent={pgr?.percent}
+                            />
 
                             <div
                                 style={{ height: '20px' }}
-                                tw='bg-primary text-primary-content overflow-hidden whitespace-nowrap overflow-ellipsis'
+                                tw='bg-primary/20 overflow-hidden whitespace-nowrap overflow-ellipsis'
                             >
                                 {node.$schema.nameInComfy} [{node.uid}]
                             </div>
-                            {/* <div>{n.data.width}</div> */}
-                            <div>
-                                <div tw='flex gap-1 justify-between' /* style={{ borderBottom: '1px solid gray' }} */>
+                            <div tw='text-sm px-2'>
+                                <div tw='flex justify-between' /* style={{ borderBottom: '1px solid gray' }} */>
                                     <div>
                                         {node._incomingEdges().map((ie) => (
-                                            <div style={{ height: '20px' }} key={ie.inputName}>
+                                            <div tw='truncate overflow-hidden' style={{ height: '20px' }} key={ie.inputName}>
                                                 {ie.inputName} {/* {'<-'} [{ie.from}] */}
                                             </div>
                                         ))}
                                     </div>
-                                    <div
-                                        style={{ height: '20px' }}
-                                        /* style={{ borderLeft: '1px solid gray' }} */
-                                    >
+                                    <div tw='overflow-hidden'>
                                         {node.$outputs.map((ie) => (
-                                            <div key={ie.slotIx}>{(ie.type as string).toLowerCase()}</div>
+                                            <div tw='truncate' style={{ height: '20px' }} key={ie.slotIx}>
+                                                {(ie.type as string).toLowerCase()}
+                                            </div>
                                         ))}
                                     </div>
                                 </div>
                                 {node._primitives().map((ie) => (
                                     <div //
                                         key={ie.inputName}
-                                        style={{ height: '20px', border: '1px solid #424242' }}
-                                        tw='overflow-hidden whitespace-nowrap overflow-ellipsis bg-base-100 rounded-xl'
+                                        style={{ height: '20px' }}
+                                        tw='overflow-hidden whitespace-nowrap overflow-ellipsis'
                                     >
                                         <div tw='flex'>
                                             <div>{ie.inputName}:</div>
-                                            <div tw='ml-auto'>{ie.value}</div>
+                                            <div tw='ml-auto'>{JSON.stringify(ie.value)}</div>
                                         </div>
                                     </div>
                                 ))}

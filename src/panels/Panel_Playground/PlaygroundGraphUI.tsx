@@ -2,7 +2,6 @@ import { observer } from 'mobx-react-lite'
 import { useEffect } from 'react'
 
 import { PanelHeaderUI } from '../PanelHeader'
-import { CushyFormManager } from 'src/controls/FormBuilder'
 import { FormUI } from 'src/controls/FormUI'
 import { SpacerUI } from 'src/controls/widgets/spacer/SpacerUI'
 import { RevealUI } from 'src/rsuite/reveal/RevealUI'

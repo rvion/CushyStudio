@@ -36,11 +36,10 @@ export const GraphPreviewUI = observer(function GraphPreviewUI_(p: { graph: Comf
                     x.status === 'cached'    ? 'yellow'     :
                     x.status === 'done'      ? 'lightgreen' :
                     x.status === 'error'     ? 'red'        :
-                    x.status === 'executing' ? 'blue'       :
-                    x.status === 'waiting'   ? 'gray'       :
-                    x.status ===  null       ? 'gray'       :
+                    x.status === 'executing' ? 'pink'       :
+                    x.status === 'waiting'   ? 'blue'       :
+                    x.status ===  null       ? 'blue'       :
                     'purple'
-                console.log(`[🤠] `, x.status)
                 ctx.fillRect(
                     //
                     x.x * ratio,
@@ -49,8 +48,8 @@ export const GraphPreviewUI = observer(function GraphPreviewUI_(p: { graph: Comf
                     x.height * ratio,
                 )
             }
-            return del
         })
+        return del
     }, [workflow, canvasRef.current])
 
     const domNode = document.getElementById('hovered-graph')

@@ -31,10 +31,17 @@ export class DanbooruTags {
     // aliases: Record<string, number> = {}
 
     parseRow = (data: string[]): DanbooruTag => {
+        if (
+            data[0] == null || //
+            data[1] == null ||
+            data[2] == null
+        ) {
+            console.log(`🔶 invalid danbooru tag row: ${data}`)
+        }
         return {
-            text: data[0],
-            category: parseInt(data[1]),
-            count: parseInt(data[2]),
+            text: data[0] ?? '❌ unknown',
+            category: parseInt(data[1] ?? '❌ unknown'),
+            count: parseInt(data[2] ?? '0'),
             aliases: data[3]?.split(',') ?? [],
         }
     }

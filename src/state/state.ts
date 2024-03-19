@@ -225,7 +225,7 @@ export class STATE {
 
     /** helper to chose radomly any item from a list */
     chooseRandomly = <T>(key: string, seed: number, arr: T[]): T => {
-        return createRandomGenerator(`${key}:${seed}`).randomItem(arr)
+        return createRandomGenerator(`${key}:${seed}`).randomItem(arr)!
     }
 
     libraryFolderPathAbs: AbsolutePath

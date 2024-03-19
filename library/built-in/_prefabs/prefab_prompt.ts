@@ -49,11 +49,11 @@ export const run_prompt = (p: {
         ckpt,
         get conditioning() {
             if (CX.subPrompts.length > 1) {
-                let start: _CONDITIONING = run.nodes.CLIPTextEncode({ clip, text: CX.subPrompts[0] })
+                let start: _CONDITIONING = run.nodes.CLIPTextEncode({ clip, text: CX.subPrompts[0]! })
                 for (let i = 1; i < CX.subPrompts.length; i++) {
                     start = run.nodes.ConditioningConcat({
                         conditioning_from: start,
-                        conditioning_to: run.nodes.CLIPTextEncode({ clip, text: CX.subPrompts[i] }),
+                        conditioning_to: run.nodes.CLIPTextEncode({ clip, text: CX.subPrompts[i]! }),
                     })
                 }
                 return start
