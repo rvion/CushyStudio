@@ -1,4 +1,4 @@
-import type { STATE } from 'src/state/state'
+import type { STATE } from '../../state/state'
 
 import * as FL from 'flexlayout-react'
 import { Actions, IJsonModel, Layout, Model } from 'flexlayout-react'
@@ -10,9 +10,9 @@ import { createElement, createRef, FC } from 'react'
 import { hashJSONObject } from './hash'
 import { PanelNames, panels, Panels } from './PANELS'
 import { RenderPanelUI } from './RenderPanelUI'
-import { Trigger } from 'src/app/shortcuts/Trigger'
-import { Panel_FullScreenLibrary } from 'src/panels/Panel_FullScreenLibrary'
-import { Message } from 'src/rsuite/shims'
+import { Trigger } from '../../app/shortcuts/Trigger'
+import { Panel_FullScreenLibrary } from '../Panel_FullScreenLibrary'
+import { Message } from '../../rsuite/shims'
 
 export type PropsOf<T> = T extends FC<infer Props> ? Props : '❌'
 

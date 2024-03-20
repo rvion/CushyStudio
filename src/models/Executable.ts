@@ -1,6 +1,6 @@
 import type { CushyScriptL } from './CushyScript'
-import type { App } from 'src/cards/App'
-import type { AppMetadata } from 'src/cards/AppManifest'
+import type { App } from '../cards/App'
+import type { AppMetadata } from '../cards/AppManifest'
 
 import { basename } from 'pathe'
 

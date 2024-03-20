@@ -27,7 +27,7 @@ import { Panel_TreeExplorer } from '../Panel_TreeExplorer'
 import { Panel_TypeDoc } from '../Panel_TypeDoc'
 import { Panel_ViewImage } from '../Panel_ViewImage'
 import { Panel_Welcome } from '../Panel_Welcome'
-import { assets } from 'src/utils/assets/assets'
+import { assets } from '../../utils/assets/assets'
 
 // prettier-ignore
 export const panels = {

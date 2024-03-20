@@ -1,11 +1,11 @@
 import type { Form } from './Form'
 import type { FC } from 'react'
-import type { KnownCustomNode_File } from 'src/manager/custom-node-list/KnownCustomNode_File'
-import type { KnownCustomNode_Title } from 'src/manager/custom-node-list/KnownCustomNode_Title'
-import type { KnownCustomNode_CushyName } from 'src/manager/extension-node-map/KnownCustomNode_CushyName'
-import type { KnownModel_Base } from 'src/manager/model-list/KnownModel_Base'
-import type { KnownModel_Name } from 'src/manager/model-list/KnownModel_Name'
-import type { ModelInfo } from 'src/manager/model-list/model-list-loader-types'
+import type { KnownCustomNode_File } from '../manager/custom-node-list/KnownCustomNode_File'
+import type { KnownCustomNode_Title } from '../manager/custom-node-list/KnownCustomNode_Title'
+import type { KnownCustomNode_CushyName } from '../manager/extension-node-map/KnownCustomNode_CushyName'
+import type { KnownModel_Base } from '../manager/model-list/KnownModel_Base'
+import type { KnownModel_Name } from '../manager/model-list/KnownModel_Name'
+import type { ModelInfo } from '../manager/model-list/model-list-loader-types'
 
 /**
  * base widget type; default type-level param when we work with unknown widget

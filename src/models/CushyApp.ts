@@ -1,8 +1,8 @@
 import type { DraftL } from './Draft'
 import type { Executable } from './Executable'
-import type { LibraryFile } from 'src/cards/LibraryFile'
-import type { TABLES } from 'src/db/TYPES.gen'
-import type { CushyScriptL } from 'src/models/CushyScript'
+import type { LibraryFile } from '../cards/LibraryFile'
+import type { TABLES } from '../db/TYPES.gen'
+import type { CushyScriptL } from './CushyScript'
 
 import { existsSync, readFileSync } from 'fs'
 import { basename, extname, join } from 'pathe'

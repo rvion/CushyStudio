@@ -1,6 +1,6 @@
 import type { Runtime, RuntimeExecutionResult } from './Runtime'
-import type { SchemaDict } from 'src/controls/Spec'
-import type { CushyAppL } from 'src/models/CushyApp'
+import type { SchemaDict } from '../controls/Spec'
+import type { CushyAppL } from '../models/CushyApp'
 
 import { makeAutoObservable } from 'mobx'
 

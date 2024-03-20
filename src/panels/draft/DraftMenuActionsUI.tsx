@@ -1,13 +1,13 @@
-import type { DraftL } from 'src/models/Draft'
+import type { DraftL } from '../../models/Draft'
 
 import { observer } from 'mobx-react-lite'
 
-import { showItemInFolder } from 'src/app/layout/openExternal'
-import { KEYS } from 'src/app/shortcuts/shorcutKeys'
-import { Dropdown, MenuItem } from 'src/rsuite/Dropdown'
-import { Loader } from 'src/rsuite/shims'
-import { useSt } from 'src/state/stateContext'
-import { openInVSCode } from 'src/utils/electron/openInVsCode'
+import { showItemInFolder } from '../../app/layout/openExternal'
+import { KEYS } from '../../app/shortcuts/shorcutKeys'
+import { Dropdown, MenuItem } from '../../rsuite/Dropdown'
+import { Loader } from '../../rsuite/shims'
+import { useSt } from '../../state/stateContext'
+import { openInVSCode } from '../../utils/electron/openInVsCode'
 
 export const DraftMenuActionsUI = observer(function DraftMenuActionsUI_(p: {
     //

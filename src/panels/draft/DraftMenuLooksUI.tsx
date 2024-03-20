@@ -1,9 +1,9 @@
-import type { DraftL } from 'src/models/Draft'
+import type { DraftL } from '../../models/Draft'
 
 import { observer } from 'mobx-react-lite'
 
-import { Dropdown, MenuItem } from 'src/rsuite/Dropdown'
-import { useSt } from 'src/state/stateContext'
+import { Dropdown, MenuItem } from '../../rsuite/Dropdown'
+import { useSt } from '../../state/stateContext'
 
 export const DraftMenuLooksUI = observer(function DraftMenuLookUI_(p: { title: string; draft: DraftL; className?: string }) {
     const st = useSt()

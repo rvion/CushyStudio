@@ -3,11 +3,11 @@ import { observer, useLocalObservable } from 'mobx-react-lite'
 
 import { MessageErrorUI, MessageInfoUI } from '../MessageUI'
 import { convertToValidCrossPlatformFileName } from './convertToValidCrossPlatformFileName'
-import { openExternal } from 'src/app/layout/openExternal'
-import { RevealUI } from 'src/rsuite/reveal/RevealUI'
-import { useSt } from 'src/state/stateContext'
-import { toastError } from 'src/utils/misc/toasts'
-import { TypescriptHighlightedCodeUI } from 'src/widgets/misc/TypescriptHighlightedCodeUI'
+import { openExternal } from '../../app/layout/openExternal'
+import { RevealUI } from '../../rsuite/reveal/RevealUI'
+import { useSt } from '../../state/stateContext'
+import { toastError } from '../../utils/misc/toasts'
+import { TypescriptHighlightedCodeUI } from '../../widgets/misc/TypescriptHighlightedCodeUI'
 
 export const CreateAppBtnUI = observer(function CreateAppBtnUI_(p: {}) {
     return (

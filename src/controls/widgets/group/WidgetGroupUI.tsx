@@ -1,10 +1,10 @@
 import type { Widget_group } from './WidgetGroup'
-import type { SchemaDict } from 'src/controls/Spec'
+import type { SchemaDict } from '../../Spec'
 
 import { observer } from 'mobx-react-lite'
 
 import { WidgetWithLabelUI } from '../../shared/WidgetWithLabelUI'
-import { bang } from 'src/utils/misc/bang'
+import { bang } from '../../../utils/misc/bang'
 
 // UI
 export const WidgetGroup_LineUI = observer(function WidgetGroup_LineUI_(p: {

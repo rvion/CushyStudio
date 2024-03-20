@@ -4,8 +4,8 @@ import { observer, useLocalObservable } from 'mobx-react-lite'
 import { useEffect } from 'react'
 
 import { CivitaiResultVersionUI } from './CivitaiResultVersionUI'
-import { RevealUI } from 'src/rsuite/reveal/RevealUI'
-import { JsonViewUI } from 'src/widgets/workspace/JsonViewUI'
+import { RevealUI } from '../../rsuite/reveal/RevealUI'
+import { JsonViewUI } from '../../widgets/workspace/JsonViewUI'
 
 export const CivitaiResultFullUI = observer(function CivitaiResultFullUI_(p: {
     //

@@ -1,16 +1,16 @@
 import type { Form } from '../../Form'
 import type { IWidgetMixins, SharedWidgetSerial, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
-import type { IWidget } from 'src/controls/IWidget'
-import type { SchemaDict } from 'src/controls/Spec'
+import type { IWidget } from '../../IWidget'
+import type { SchemaDict } from '../../Spec'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 
 import { WidgetDI } from '../WidgetUI.DI'
 import { WidgetChoices_BodyUI, WidgetChoices_HeaderUI } from './WidgetChoicesUI'
-import { applyWidgetMixinV2 } from 'src/controls/Mixins'
-import { makeLabelFromFieldName } from 'src/utils/misc/makeLabelFromFieldName'
-import { toastError } from 'src/utils/misc/toasts'
+import { applyWidgetMixinV2 } from '../../Mixins'
+import { makeLabelFromFieldName } from '../../../utils/misc/makeLabelFromFieldName'
+import { toastError } from '../../../utils/misc/toasts'
 
 export type TabPositionConfig = 'start' | 'center' | 'end'
 

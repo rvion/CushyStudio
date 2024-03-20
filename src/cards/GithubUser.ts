@@ -1,4 +1,4 @@
-import type { STATE } from 'src/state/state'
+import type { STATE } from '../state/state'
 
 import { existsSync, mkdirSync, writeFileSync } from 'fs'
 import { makeAutoObservable } from 'mobx'

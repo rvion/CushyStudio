@@ -1,7 +1,7 @@
 import type { ImageInfos_ComfyGenerated } from './ImageInfos_ComfyGenerated'
-import type { STATE } from 'src/state/state'
-import type { ComfyNodeID } from 'src/types/ComfyNodeID'
-import type { PromptID } from 'src/types/ComfyWsApi'
+import type { STATE } from '../state/state'
+import type { ComfyNodeID } from '../types/ComfyNodeID'
+import type { PromptID } from '../types/ComfyWsApi'
 
 import { mkdirSync, readFileSync, writeFileSync } from 'fs'
 import { imageMeta } from 'image-meta'

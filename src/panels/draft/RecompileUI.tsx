@@ -1,9 +1,9 @@
-import type { CushyAppL } from 'src/models/CushyApp'
+import type { CushyAppL } from '../../models/CushyApp'
 
 import { observer } from 'mobx-react-lite'
 
 import { MessageWarningUI } from '../MessageUI'
-import { _formatAsRelativeDateTime } from 'src/updater/_getRelativeTimeString'
+import { _formatAsRelativeDateTime } from '../../updater/_getRelativeTimeString'
 
 export const RecompileUI = observer(function RecompileUI_(p: { app: CushyAppL }) {
     const app = p.app

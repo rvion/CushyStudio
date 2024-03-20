@@ -1,4 +1,4 @@
-import type { Widget_matrix } from 'src/controls/widgets/matrix/WidgetMatrix'
+import type { Widget_matrix } from './WidgetMatrix'
 
 import { observer } from 'mobx-react-lite'
 

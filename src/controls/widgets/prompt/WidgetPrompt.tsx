@@ -1,8 +1,8 @@
 import type { IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 import type { Tree } from '@lezer/common'
-import type { Timestamp } from 'src/cards/Timestamp'
-import type { Form } from 'src/controls/Form'
-import type { IWidget } from 'src/controls/IWidget'
+import type { Timestamp } from '../../../cards/Timestamp'
+import type { Form } from '../../Form'
+import type { IWidget } from '../../IWidget'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -11,7 +11,7 @@ import { WidgetDI } from '../WidgetUI.DI'
 import { compilePrompt } from './_compile'
 import { parser } from './grammar/grammar.parser'
 import { WidgetPrompt_LineUI, WidgetPromptUI } from './WidgetPromptUI'
-import { applyWidgetMixinV2 } from 'src/controls/Mixins'
+import { applyWidgetMixinV2 } from '../../Mixins'
 
 export type CompiledPrompt = {
     /** e.g. "score_9 score_8 BREAK foo bar baz" */

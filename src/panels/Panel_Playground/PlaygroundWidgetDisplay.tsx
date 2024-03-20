@@ -1,9 +1,9 @@
 import { observer } from 'mobx-react-lite'
 
-import { CushyFormManager } from 'src/controls/FormBuilder'
-import { FormUI } from 'src/controls/FormUI'
-import { readJSON, writeJSON } from 'src/state/jsonUtils'
-import { useSt } from 'src/state/stateContext'
+import { CushyFormManager } from '../../controls/FormBuilder'
+import { FormUI } from '../../controls/FormUI'
+import { readJSON, writeJSON } from '../../state/jsonUtils'
+import { useSt } from '../../state/stateContext'
 
 export const PlaygroundWidgetDisplay = observer(function PlaygroundRequirements_(p: {}) {
     const st = useSt()

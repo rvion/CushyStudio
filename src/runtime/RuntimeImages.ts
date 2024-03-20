@@ -1,7 +1,7 @@
 import type { Runtime } from './Runtime'
-import type { ComfyWorkflowL } from 'src/models/ComfyWorkflow'
-import type { MediaImageL } from 'src/models/MediaImage'
-import type { PromptID } from 'src/types/ComfyWsApi'
+import type { ComfyWorkflowL } from '../models/ComfyWorkflow'
+import type { MediaImageL } from '../models/MediaImage'
+import type { PromptID } from '../types/ComfyWsApi'
 
 import { makeAutoObservable } from 'mobx'
 

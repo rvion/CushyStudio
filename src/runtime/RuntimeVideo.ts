@@ -1,5 +1,5 @@
 import type { Runtime } from './Runtime'
-import type { MediaImageL } from 'src/models/MediaImage'
+import type { MediaImageL } from '../models/MediaImage'
 
 import { makeAutoObservable } from 'mobx'
 import path from 'pathe'

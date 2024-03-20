@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 
 import { RenderPanelUI } from './RenderPanelUI'
-import { useSt } from 'src/state/stateContext'
+import { useSt } from '../../state/stateContext'
 
 export const RenderFullPagePanelUI = observer(function RenderFullPagePanelUI_(p: {}) {
     const st = useSt()

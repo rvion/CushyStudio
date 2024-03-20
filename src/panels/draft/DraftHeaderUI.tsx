@@ -1,4 +1,4 @@
-import type { DraftL } from 'src/models/Draft'
+import type { DraftL } from '../../models/Draft'
 
 import { observer } from 'mobx-react-lite'
 
@@ -7,7 +7,7 @@ import { DraftMenuJumpUI } from './DraftMenuJump'
 import { DraftMenuLooksUI } from './DraftMenuLooksUI'
 import { PublishAppBtnUI } from './PublishAppBtnUI'
 import { RunOrAutorunUI } from './RunOrAutorunUI'
-import { DraftIllustrationUI } from 'src/cards/fancycard/DraftIllustration'
+import { DraftIllustrationUI } from '../../cards/fancycard/DraftIllustration'
 
 export const DraftHeaderUI = observer(function DraftHeaderUI_(p: {
     //

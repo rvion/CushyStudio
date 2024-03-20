@@ -1,6 +1,6 @@
 import type { LiveInstance } from '../db/LiveInstance'
-import type { LibraryFile } from 'src/cards/LibraryFile'
-import type { SchemaDict } from 'src/controls/Spec'
+import type { LibraryFile } from '../cards/LibraryFile'
+import type { SchemaDict } from '../controls/Spec'
 
 import { statSync } from 'fs'
 import { runInAction } from 'mobx'

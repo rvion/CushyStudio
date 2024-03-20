@@ -2,12 +2,12 @@ import { marked } from 'marked'
 import { observer } from 'mobx-react-lite'
 
 import { OutputPreviewWrapperUI } from './OutputPreviewWrapperUI'
-import { TabUI } from 'src/app/layout/TabUI'
-import { StepL } from 'src/models/Step'
-import { MarkdownUI } from 'src/rsuite/MarkdownUI'
-import { Panel } from 'src/rsuite/shims'
-import { useSt } from 'src/state/stateContext'
-import { StepOutput_Text } from 'src/types/StepOutput'
+import { TabUI } from '../app/layout/TabUI'
+import { StepL } from '../models/Step'
+import { MarkdownUI } from '../rsuite/MarkdownUI'
+import { Panel } from '../rsuite/shims'
+import { useSt } from '../state/stateContext'
+import { StepOutput_Text } from '../types/StepOutput'
 
 export const OutputTextPreviewUI = observer(function OutputTextPreviewUI_(p: {
     //

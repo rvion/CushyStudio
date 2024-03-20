@@ -1,17 +1,17 @@
 import type { Form } from '../../Form'
 import type { IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
-import type { IWidget } from 'src/controls/IWidget'
-import type { SQLWhere } from 'src/db/SQLWhere'
-import type { MediaImageT } from 'src/db/TYPES.gen'
-import type { MediaImageL } from 'src/models/MediaImage'
+import type { IWidget } from '../../IWidget'
+import type { SQLWhere } from '../../../db/SQLWhere'
+import type { MediaImageT } from '../../../db/TYPES.gen'
+import type { MediaImageL } from '../../../models/MediaImage'
 
 import { makeAutoObservable, runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
 import { WidgetDI } from '../WidgetUI.DI'
 import { WidgetSelectImageUI } from './WidgetImageUI'
-import { applyWidgetMixinV2 } from 'src/controls/Mixins'
-import { Spec } from 'src/controls/Spec'
+import { applyWidgetMixinV2 } from '../../Mixins'
+import { Spec } from '../../Spec'
 
 // CONFIG
 export type Widget_image_config = WidgetConfigFields<

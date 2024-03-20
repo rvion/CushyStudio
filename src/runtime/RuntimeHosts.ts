@@ -1,5 +1,5 @@
 import type { Runtime } from './Runtime'
-import type { HostL } from 'src/models/Host'
+import type { HostL } from '../models/Host'
 
 import { makeAutoObservable } from 'mobx'
 

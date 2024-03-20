@@ -1,9 +1,9 @@
-// import type { StepL } from 'src/models/Step'
+// import type { StepL } from '../models/Step'
 // import { observer } from 'mobx-react-lite'
-// import { Message, Panel } from 'src/rsuite/shims'
+// import { Message, Panel } from '../rsuite/shims'
 // import { ButtonDownloadFilesUI } from '../widgets/workspace/ButtonDownloadFilesUI'
 // import { ButtonOpenInComfyUI } from '../widgets/workspace/ButtonOpenInComfyUI'
-// import { StepOutput_ExecutionError } from 'src/types/StepOutput'
+// import { StepOutput_ExecutionError } from '../types/StepOutput'
 
 // export const OutputExecutionErrorUI = observer(function OutputExecutionErrorUI_(p: {
 //     step: StepL

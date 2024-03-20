@@ -1,6 +1,6 @@
 import type { Form } from '../../Form'
-import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from 'src/controls/IWidget'
-import type { DraftL } from 'src/models/Draft'
+import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { DraftL } from '../../../models/Draft'
 
 import { makeAutoObservable, runInAction } from 'mobx'
 import { nanoid } from 'nanoid'

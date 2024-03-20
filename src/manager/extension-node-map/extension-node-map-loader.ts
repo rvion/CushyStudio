@@ -1,6 +1,6 @@
 import type { ComfyManagerRepository } from '../ComfyManagerRepository'
 import type { KnownCustomNode_CushyName } from './KnownCustomNode_CushyName'
-import type { NodeNameInComfy } from 'src/models/ComfySchema'
+import type { NodeNameInComfy } from '../../models/ComfySchema'
 
 import { Value, ValueError } from '@sinclair/typebox/value'
 import { readFileSync, writeFileSync } from 'fs'

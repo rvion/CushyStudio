@@ -1,19 +1,19 @@
 import type { Form } from '../../Form'
 import type { GetWidgetResult, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
-import type { IWidget } from 'src/controls/IWidget'
-import type { SchemaDict } from 'src/controls/Spec'
+import type { IWidget } from '../../IWidget'
+import type { SchemaDict } from '../../Spec'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 
 import { WidgetDI } from '../WidgetUI.DI'
 import { WidgetGroup_BlockUI, WidgetGroup_LineUI } from './WidgetGroupUI'
-import { applyWidgetMixinV2 } from 'src/controls/Mixins'
-import { getActualWidgetToDisplay } from 'src/controls/shared/getActualWidgetToDisplay'
-import { getIfWidgetIsCollapsible } from 'src/controls/shared/getIfWidgetIsCollapsible'
-import { Spec } from 'src/controls/Spec'
-import { runWithGlobalForm } from 'src/models/_ctx2'
-import { bang } from 'src/utils/misc/bang'
+import { applyWidgetMixinV2 } from '../../Mixins'
+import { getActualWidgetToDisplay } from '../../shared/getActualWidgetToDisplay'
+import { getIfWidgetIsCollapsible } from '../../shared/getIfWidgetIsCollapsible'
+import { Spec } from '../../Spec'
+import { runWithGlobalForm } from '../../../models/_ctx2'
+import { bang } from '../../../utils/misc/bang'
 
 // CONFIG
 export type Widget_group_config<T extends SchemaDict> = WidgetConfigFields<

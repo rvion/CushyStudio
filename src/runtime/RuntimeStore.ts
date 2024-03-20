@@ -1,8 +1,8 @@
 import type { Runtime } from './Runtime'
-import type { ImageStoreT } from 'src/back/ImageStore'
-import type { LiveTable } from 'src/db/LiveTable'
-import type { TABLES } from 'src/db/TYPES.gen'
-import type { CustomDataL } from 'src/models/CustomData'
+import type { ImageStoreT } from '../back/ImageStore'
+import type { LiveTable } from '../db/LiveTable'
+import type { TABLES } from '../db/TYPES.gen'
+import type { CustomDataL } from '../models/CustomData'
 
 import { makeAutoObservable } from 'mobx'
 

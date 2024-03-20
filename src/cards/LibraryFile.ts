@@ -1,8 +1,8 @@
 import type { ComfyPromptJSON } from '../types/ComfyPrompt'
 import type { Library } from './Library'
 import type { Metafile, OutputFile } from 'esbuild'
-import type { LiteGraphJSON } from 'src/core/LiteGraph'
-import type { STATE } from 'src/state/state'
+import type { LiteGraphJSON } from '../core/LiteGraph'
+import type { STATE } from '../state/state'
 
 import { readFileSync } from 'fs'
 import { makeAutoObservable } from 'mobx'

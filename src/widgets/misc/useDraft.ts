@@ -1,4 +1,4 @@
-import type { DraftL } from 'src/models/Draft'
+import type { DraftL } from '../../models/Draft'
 
 import React from 'react'
 

@@ -3,9 +3,9 @@ import { observer } from 'mobx-react-lite'
 import { StepOutputsBodyV1UI, StepOutputsV1UI } from '../outputs/StepOutputsV1UI'
 import { useSt } from '../state/stateContext'
 import { PanelHeaderUI } from './PanelHeader'
-import { InputNumberUI } from 'src/controls/widgets/number/InputNumberUI'
-import { SpacerUI } from 'src/controls/widgets/spacer/SpacerUI'
-import { RevealUI } from 'src/rsuite/reveal/RevealUI'
+import { InputNumberUI } from '../controls/widgets/number/InputNumberUI'
+import { SpacerUI } from '../controls/widgets/spacer/SpacerUI'
+import { RevealUI } from '../rsuite/reveal/RevealUI'
 
 export const Panel_Steps = observer(function StepListUI_(p: {}) {
     const st = useSt()

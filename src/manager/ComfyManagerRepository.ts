@@ -3,8 +3,8 @@ import type { KnownCustomNode_File } from './custom-node-list/KnownCustomNode_Fi
 import type { KnownCustomNode_Title } from './custom-node-list/KnownCustomNode_Title'
 import type { KnownModel_Name } from './model-list/KnownModel_Name'
 import type { ModelInfo } from './model-list/model-list-loader-types'
-import type { KnownCustomNode_CushyName } from 'src/manager/extension-node-map/KnownCustomNode_CushyName'
-import type { NodeNameInComfy, NodeNameInCushy } from 'src/models/ComfySchema'
+import type { KnownCustomNode_CushyName } from './extension-node-map/KnownCustomNode_CushyName'
+import type { NodeNameInComfy, NodeNameInCushy } from '../models/ComfySchema'
 
 import { _getKnownPlugins } from './custom-node-list/custom-node-list-loader'
 import { _getKnownModels } from './model-list/model-list-loader'

@@ -1,10 +1,10 @@
 import { observer } from 'mobx-react-lite'
 
-import { TabUI } from 'src/app/layout/TabUI'
-import { useSt } from 'src/state/stateContext'
-import { _formatAsRelativeDateTime } from 'src/updater/_getRelativeTimeString'
-import { ErrorScreenUI } from 'src/widgets/misc/ErrorScreenUI'
-import { TypescriptHighlightedCodeUI } from 'src/widgets/misc/TypescriptHighlightedCodeUI'
+import { TabUI } from '../app/layout/TabUI'
+import { useSt } from '../state/stateContext'
+import { _formatAsRelativeDateTime } from '../updater/_getRelativeTimeString'
+import { ErrorScreenUI } from '../widgets/misc/ErrorScreenUI'
+import { TypescriptHighlightedCodeUI } from '../widgets/misc/TypescriptHighlightedCodeUI'
 
 export const Panel_Script = observer(function Panel_Script_(p: { scriptID: CushyScriptID }) {
     const st = useSt()

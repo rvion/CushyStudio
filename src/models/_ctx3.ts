@@ -1,5 +1,5 @@
-import type { IFormBuilder } from 'src/controls/Form'
-import type { Runtime } from 'src/runtime/Runtime'
+import type { IFormBuilder } from '../controls/Form'
+import type { Runtime } from '../runtime/Runtime'
 
 import { nanoid } from 'nanoid'
 

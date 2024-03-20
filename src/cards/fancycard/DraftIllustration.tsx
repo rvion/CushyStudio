@@ -1,10 +1,10 @@
-import type { DraftL } from 'src/models/Draft'
+import type { DraftL } from '../../models/Draft'
 
 import { observer } from 'mobx-react-lite'
 
 import { AppIllustrationUI } from './AppIllustrationUI'
-import { useSt } from 'src/state/stateContext'
-import { useImageDrop } from 'src/widgets/galleries/dnd'
+import { useSt } from '../../state/stateContext'
+import { useImageDrop } from '../../widgets/galleries/dnd'
 
 export const DraftIllustrationUI = observer(function DraftIllustrationUI_(p: {
     className?: string

@@ -1,9 +1,9 @@
 import { observer } from 'mobx-react-lite'
 
 import { useSt } from '../state/stateContext'
-import { ImportAsImageUI, ImportedFileUI } from 'src/importers/FilesBeeingImported'
-import { TargetBox } from 'src/importers/TargetBox'
-import { SpacerUI } from 'src/controls/widgets/spacer/SpacerUI'
+import { ImportAsImageUI, ImportedFileUI } from '../importers/FilesBeeingImported'
+import { TargetBox } from '../importers/TargetBox'
+import { SpacerUI } from '../controls/widgets/spacer/SpacerUI'
 import { PanelHeaderUI } from './PanelHeader'
 
 export const Panel_Import = observer(function Panel_Import_(p: {}) {

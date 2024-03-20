@@ -1,4 +1,4 @@
-// import type { RelativePath } from 'src/utils/fs/BrandedPaths'
+// import type { RelativePath } from '../utils/fs/BrandedPaths'
 // import type { STATE } from '../state/state'
 
 // import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs'

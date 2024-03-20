@@ -1,5 +1,5 @@
 import type nsfwjs from 'nsfwjs'
-import type { STATE } from 'src/state/state'
+import type { STATE } from '../state/state'
 
 import { bang } from '../utils/misc/bang'
 import { exhaust } from '../utils/misc/ComfyUtils'

@@ -2,8 +2,8 @@ import { observer } from 'mobx-react-lite'
 
 import { useSt } from '../../state/stateContext'
 import { KEYS } from '../shortcuts/shorcutKeys'
-import { Dropdown, MenuItem } from 'src/rsuite/Dropdown'
-import { assets } from 'src/utils/assets/assets'
+import { Dropdown, MenuItem } from '../../rsuite/Dropdown'
+import { assets } from '../../utils/assets/assets'
 
 export const MenuUtilsUI = observer(function MenuUtilsUI_(p: {}) {
     const st = useSt()

@@ -1,6 +1,6 @@
-// import type { StepL } from 'src/models/Step'
+// import type { StepL } from '../models/Step'
 // import { observer } from 'mobx-react-lite'
-// import { StepOutput_GUI } from 'src/types/StepOutput'
+// import { StepOutput_GUI } from '../types/StepOutput'
 // import { OutputWrapperUI } from './OutputWrapperUI'
 // import { OutputPreviewWrapperUI } from './OutputPreviewWrapperUI'
 

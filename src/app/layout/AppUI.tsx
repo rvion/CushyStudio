@@ -6,12 +6,12 @@ import { AppBarUI } from '../appbar/AppBarUI'
 import { Trigger } from '../shortcuts/Trigger'
 import { FavBarUI } from './FavBar'
 import { ProjectUI } from './ProjectUI'
-import { AppIllustrationUI } from 'src/cards/fancycard/AppIllustrationUI'
-import { DraftIllustrationUI } from 'src/cards/fancycard/DraftIllustration'
-import { RenderFullPagePanelUI } from 'src/panels/router/RenderFullPagePanelUI'
-import { RevealState } from 'src/rsuite/reveal/RevealState'
-import { useSt } from 'src/state/stateContext'
-import { GlobalSearchUI } from 'src/utils/electron/globalSearchUI'
+import { AppIllustrationUI } from '../../cards/fancycard/AppIllustrationUI'
+import { DraftIllustrationUI } from '../../cards/fancycard/DraftIllustration'
+import { RenderFullPagePanelUI } from '../../panels/router/RenderFullPagePanelUI'
+import { RevealState } from '../../rsuite/reveal/RevealState'
+import { useSt } from '../../state/stateContext'
+import { GlobalSearchUI } from '../../utils/electron/globalSearchUI'
 
 export const CushyUI = observer(function CushyUI_() {
     const st = useSt()

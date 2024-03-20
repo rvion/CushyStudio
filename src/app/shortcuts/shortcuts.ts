@@ -1,5 +1,5 @@
-import type { Tree } from 'src/panels/libraryUI/tree/xxx/Tree'
-import type { STATE } from 'src/state/state'
+import type { Tree } from '../../panels/libraryUI/tree/xxx/Tree'
+import type { STATE } from '../../state/state'
 
 import { runInAction } from 'mobx'
 

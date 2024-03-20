@@ -1,6 +1,6 @@
 import type { Action } from '@codemirror/lint'
 import type { EditorView } from '@codemirror/view'
-import type { STATE } from 'src/state/state'
+import type { STATE } from '../../../../state/state'
 
 import { Diagnostic, linter } from '@codemirror/lint'
 

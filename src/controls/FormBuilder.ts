@@ -1,7 +1,7 @@
 import type { IFormBuilder } from './Form'
 import type { IWidget, Requirements } from './IWidget'
 import type { ISpec, SchemaDict } from './Spec'
-import type { OpenRouter_Models } from 'src/llm/OpenRouter_models'
+import type { OpenRouter_Models } from '../llm/OpenRouter_models'
 
 import { makeAutoObservable, runInAction } from 'mobx'
 

@@ -2,10 +2,10 @@ import { observer } from 'mobx-react-lite'
 
 import { useSt } from '../../state/stateContext'
 import { KEYS } from '../shortcuts/shorcutKeys'
-import { AppIllustrationUI } from 'src/cards/fancycard/AppIllustrationUI'
-import { DraftIllustrationUI } from 'src/cards/fancycard/DraftIllustration'
-import { Dropdown, MenuItem } from 'src/rsuite/Dropdown'
-import { _formatAsRelativeDateTime } from 'src/updater/_getRelativeTimeString'
+import { AppIllustrationUI } from '../../cards/fancycard/AppIllustrationUI'
+import { DraftIllustrationUI } from '../../cards/fancycard/DraftIllustration'
+import { Dropdown, MenuItem } from '../../rsuite/Dropdown'
+import { _formatAsRelativeDateTime } from '../../updater/_getRelativeTimeString'
 
 export const MenuAppsUI = observer(function MenuAppsUI_(p: {}) {
     const st = useSt()

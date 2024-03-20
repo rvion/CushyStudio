@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 
 import { CreateAppBtnUI } from './Panel_Welcome/CreateAppBtnUI'
-import { useSt } from 'src/state/stateContext'
+import { useSt } from '../state/stateContext'
 
 // import { ActionPackStarsUI } from '../cards/DeckStarsUI'
 

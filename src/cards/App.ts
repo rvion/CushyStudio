@@ -1,9 +1,9 @@
 import type { AppMetadata } from './AppManifest'
 import type { CSSProperties } from 'react'
-import type { FormBuilder } from 'src/controls/FormBuilder'
-import type { ISpec, SchemaDict } from 'src/controls/Spec'
-import type { MediaImageL } from 'src/models/MediaImage'
-import type { Runtime } from 'src/runtime/Runtime'
+import type { FormBuilder } from '../controls/FormBuilder'
+import type { ISpec, SchemaDict } from '../controls/Spec'
+import type { MediaImageL } from '../models/MediaImage'
+import type { Runtime } from '../runtime/Runtime'
 
 // export const action = <const F extends WidgetDict>(name: string, t: Omit<Action<F>, 'name'>): Action<F> => ({ name, ...t })
 /* 🛋️ */ export type GlobalFunctionToDefineAnApp = <const F extends SchemaDict>(t: App<F>) => AppRef<F>

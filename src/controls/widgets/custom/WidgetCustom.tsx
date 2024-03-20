@@ -1,14 +1,14 @@
 import type { Form } from '../../Form'
 import type { FC } from 'react'
-import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from 'src/controls/IWidget'
-import type { Spec } from 'src/controls/Spec'
+import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { Spec } from '../../Spec'
 
 import { makeAutoObservable, runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
 import { WidgetDI } from '../WidgetUI.DI'
 import { WidgetCustom_HeaderUI } from './WidgetCustomUI'
-import { applyWidgetMixinV2 } from 'src/controls/Mixins'
+import { applyWidgetMixinV2 } from '../../Mixins'
 
 export type CustomWidgetProps<T> = { widget: Widget_custom<T>; extra: import('./WidgetCustomUI').UIKit }
 

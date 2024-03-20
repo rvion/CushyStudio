@@ -3,8 +3,8 @@ import type { Widget_button, Widget_button_context } from './WidgetButton'
 import { runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 
-import { Button } from 'src/rsuite/shims'
-import { useDraft } from 'src/widgets/misc/useDraft'
+import { Button } from '../../../rsuite/shims'
+import { useDraft } from '../../../widgets/misc/useDraft'
 
 export const WidgetInlineRunUI = observer(function WidgetInlineRunUI_(p: { widget: Widget_button }) {
     const draft = useDraft()

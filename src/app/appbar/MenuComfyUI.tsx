@@ -1,10 +1,10 @@
-import type { HostL } from 'src/models/Host'
+import type { HostL } from '../../models/Host'
 
 import { observer } from 'mobx-react-lite'
 
 import { useSt } from '../../state/stateContext'
 import { openExternal, openFolderInOS, showItemInFolder } from '../layout/openExternal'
-import { Dropdown, MenuItem } from 'src/rsuite/Dropdown'
+import { Dropdown, MenuItem } from '../../rsuite/Dropdown'
 
 export const MenuComfyUI = observer(function MenuComfyUI_(p: {}) {
     const st = useSt()

@@ -1,13 +1,13 @@
-import type { STATE } from 'src/state/state'
+import type { STATE } from '../state/state'
 
 import { makeAutoObservable } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import React, { ReactNode, useMemo } from 'react'
 import { createPortal } from 'react-dom'
 
-import { InputBoolUI } from 'src/controls/widgets/bool/InputBoolUI'
-import { useSt } from 'src/state/stateContext'
-import { searchMatches } from 'src/utils/misc/searchMatches'
+import { InputBoolUI } from '../controls/widgets/bool/InputBoolUI'
+import { useSt } from '../state/stateContext'
+import { searchMatches } from '../utils/misc/searchMatches'
 
 interface ToolTipPosition {
     top: number | undefined

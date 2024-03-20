@@ -2,7 +2,7 @@
 
 // import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
 // import { observer } from 'mobx-react-lite'
-// import { Button, Popover, Whisper } from 'src/rsuite/shims'
+// import { Button, Popover, Whisper } from '../../../../rsuite/shims'
 
 // export const ActionNodeUI = observer(function ActionNodeUI_(p: { node: ActionNode }) {
 //     const node = p.node

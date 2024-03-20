@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 
-import { FormUI } from 'src/controls/FormUI'
-import { useSt } from 'src/state/stateContext'
+import { FormUI } from '../../controls/FormUI'
+import { useSt } from '../../state/stateContext'
 
 /** This will allow devs to view re-usable forms once the form registering system is implemented */
 export const PlaygroundRegisteredForms = observer(function PlaygroundRequirements_(p: {}) {

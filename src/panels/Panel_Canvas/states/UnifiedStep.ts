@@ -1,7 +1,7 @@
 import type { UnifiedCanvas } from './UnifiedCanvas'
-import type { MediaImageL } from 'src/models/MediaImage'
-import type { StepL } from 'src/models/Step'
-import type { STATE } from 'src/state/state'
+import type { MediaImageL } from '../../../models/MediaImage'
+import type { StepL } from '../../../models/Step'
+import type { STATE } from '../../../state/state'
 
 import Konva from 'konva'
 import { Layer } from 'konva/lib/Layer'

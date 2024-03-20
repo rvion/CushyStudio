@@ -2,7 +2,7 @@ import type { LiveInstance } from '../db/LiveInstance'
 import type { ComfyImageInfo, PromptRelated_WsMsg, WsMsgExecuted, WsMsgExecuting, WsMsgExecutionError } from '../types/ComfyWsApi'
 import type { ComfyWorkflowL, ProgressReport } from './ComfyWorkflow'
 import type { StepL } from './Step'
-import type { Runtime } from 'src/runtime/Runtime'
+import type { Runtime } from '../runtime/Runtime'
 
 import { mkdirSync, writeFileSync } from 'fs'
 import { dirname, join } from 'pathe'

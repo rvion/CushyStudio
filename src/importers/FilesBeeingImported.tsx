@@ -1,5 +1,5 @@
-import type { LiteGraphJSON } from 'src/core/LiteGraph'
-import type { ComfyPromptJSON } from 'src/types/ComfyPrompt'
+import type { LiteGraphJSON } from '../core/LiteGraph'
+import type { ComfyPromptJSON } from '../types/ComfyPrompt'
 
 import { writeFileSync } from 'fs'
 import { keys } from 'mobx'
@@ -12,12 +12,12 @@ import { getPngMetadataFromFile } from '../utils/png/_getPngMetadata'
 import { TypescriptHighlightedCodeUI } from '../widgets/misc/TypescriptHighlightedCodeUI'
 import { PromptToCodeOpts } from './ComfyImporter'
 import { usePromise } from './usePromise'
-import { createMediaImage_fromFileObject } from 'src/models/createMediaImage_fromWebFile'
-import { MessageInfoUI } from 'src/panels/MessageUI'
-import { Panel } from 'src/rsuite/shims'
-import { extractErrorMessage } from 'src/utils/formatters/extractErrorMessage'
-import { toastError } from 'src/utils/misc/toasts'
-import { getWebpMetadata } from 'src/utils/png/_getWebpMetadata'
+import { createMediaImage_fromFileObject } from '../models/createMediaImage_fromWebFile'
+import { MessageInfoUI } from '../panels/MessageUI'
+import { Panel } from '../rsuite/shims'
+import { extractErrorMessage } from '../utils/formatters/extractErrorMessage'
+import { toastError } from '../utils/misc/toasts'
+import { getWebpMetadata } from '../utils/png/_getWebpMetadata'
 
 export interface FileListProps {
     files: File[]

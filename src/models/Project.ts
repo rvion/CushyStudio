@@ -1,7 +1,7 @@
 import type { LiveInstance } from '../db/LiveInstance'
 import type { ComfySchemaL } from './ComfySchema'
 import type { ComfyWorkflowL } from './ComfyWorkflow'
-import type { TABLES } from 'src/db/TYPES.gen'
+import type { TABLES } from '../db/TYPES.gen'
 
 import { LiveRef } from '../db/LiveRef'
 import { DraftL } from './Draft'

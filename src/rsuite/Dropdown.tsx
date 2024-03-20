@@ -3,8 +3,8 @@ import { ReactNode } from 'react'
 
 import { RevealUI } from './reveal/RevealUI'
 import { RSSize } from './RsuiteTypes'
-import { ComboUI } from 'src/app/shortcuts/ComboUI'
-import { CushyShortcut } from 'src/app/shortcuts/ShortcutManager'
+import { ComboUI } from '../app/shortcuts/ComboUI'
+import { CushyShortcut } from '../app/shortcuts/ShortcutManager'
 
 export const Dropdown = (p: { className?: string; startIcon?: Maybe<ReactNode>; title: ReactNode; children: ReactNode }) => (
     <RevealUI

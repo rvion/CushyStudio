@@ -1,8 +1,8 @@
 import { observer } from 'mobx-react-lite'
 
 import { useSt } from '../../state/stateContext'
-import { Dropdown, MenuItem } from 'src/rsuite/Dropdown'
-import { assets } from 'src/utils/assets/assets'
+import { Dropdown, MenuItem } from '../../rsuite/Dropdown'
+import { assets } from '../../utils/assets/assets'
 
 export const MenuHelpUI = observer(function MenuHelpUI_(p: {}) {
     const st = useSt()

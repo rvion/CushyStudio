@@ -64,9 +64,6 @@ export default defineConfig({
             'mime-types': `${installDir}/src/syms/mime-types.js`,
 
             // -----------------------------------------------------------------------
-            src: `${installDir}/src`,
-
-            // -----------------------------------------------------------------------
             // injected node modules
             // 🔶 modifications must be kept in sync between :
             //     | ./src/shell/build.js

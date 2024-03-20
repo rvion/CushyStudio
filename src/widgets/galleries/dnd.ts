@@ -1,5 +1,5 @@
-import type { MediaImageL } from 'src/models/MediaImage'
-import type { STATE } from 'src/state/state'
+import type { MediaImageL } from '../../models/MediaImage'
+import type { STATE } from '../../state/state'
 
 import { CSSProperties } from 'react'
 import { useDrag, useDrop } from 'react-dnd'

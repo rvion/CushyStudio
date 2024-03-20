@@ -1,7 +1,7 @@
 import type { LiveDB } from './LiveDB'
 import type { $BaseInstanceFields, LiveInstance, UpdateOptions } from './LiveInstance'
 import type { CompiledQuery, SelectQueryBuilder } from 'kysely'
-import type { STATE } from 'src/state/state'
+import type { STATE } from '../state/state'
 
 // 2024-03-14 commented serial checks for now
 // import { Value, ValueError } from '@sinclair/typebox/value'

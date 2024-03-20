@@ -1,8 +1,8 @@
 import type { EnumValue } from '../../../models/ComfySchema'
 import type { Form } from '../../Form'
 import type { IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
-import type { IWidget } from 'src/controls/IWidget'
-import type { CleanedEnumResult } from 'src/types/EnumUtils'
+import type { IWidget } from '../../IWidget'
+import type { CleanedEnumResult } from '../../../types/EnumUtils'
 
 import { action, computed, makeAutoObservable, observable, runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -10,7 +10,7 @@ import { nanoid } from 'nanoid'
 import { WidgetDI } from '../WidgetUI.DI'
 import { _extractDefaultValue } from './_extractDefaultValue'
 import { WidgetEnumUI } from './WidgetEnumUI'
-import { applyWidgetMixinV2 } from 'src/controls/Mixins'
+import { applyWidgetMixinV2 } from '../../Mixins'
 
 // CONFIG
 export type Widget_enum_config<O> = WidgetConfigFields<

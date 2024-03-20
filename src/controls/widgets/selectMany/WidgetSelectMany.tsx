@@ -1,14 +1,14 @@
 import type { Widget_group } from '../group/WidgetGroup'
 import type { BaseSelectEntry } from '../selectOne/WidgetSelectOne'
-import type { Form } from 'src/controls/Form'
-import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from 'src/controls/IWidget'
+import type { Form } from '../../Form'
+import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 
 import { WidgetDI } from '../WidgetUI.DI'
 import { WidgetSelectManyUI } from './WidgetSelectManyUI'
-import { applyWidgetMixinV2 } from 'src/controls/Mixins'
+import { applyWidgetMixinV2 } from '../../Mixins'
 
 // CONFIG
 export type Widget_selectMany_config<T extends BaseSelectEntry> = WidgetConfigFields<

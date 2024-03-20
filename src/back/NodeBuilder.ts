@@ -1,4 +1,4 @@
-import type { ComfyWorkflowL } from 'src/models/ComfyWorkflow'
+import type { ComfyWorkflowL } from '../models/ComfyWorkflow'
 
 import { observable, toJS } from 'mobx'
 

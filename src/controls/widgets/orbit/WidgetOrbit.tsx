@@ -1,6 +1,6 @@
 import type { Form } from '../../Form'
 import type { IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
-import type { IWidget } from 'src/controls/IWidget'
+import type { IWidget } from '../../IWidget'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -8,7 +8,7 @@ import { nanoid } from 'nanoid'
 import { WidgetDI } from '../WidgetUI.DI'
 import { clampMod, mkEnglishSummary } from './_orbitUtils'
 import { WidgetOrbitUI } from './WidgetOrbitUI'
-import { applyWidgetMixinV2 } from 'src/controls/Mixins'
+import { applyWidgetMixinV2 } from '../../Mixins'
 
 export type OrbitData = {
     azimuth: number

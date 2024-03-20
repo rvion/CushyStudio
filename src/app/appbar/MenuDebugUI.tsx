@@ -2,9 +2,9 @@ import { observer } from 'mobx-react-lite'
 
 import { useSt } from '../../state/stateContext'
 import { KEYS } from '../shortcuts/shorcutKeys'
-import { getDBStats } from 'src/db/getDBStats'
-import { quickBench } from 'src/db/quickBench'
-import { Dropdown, MenuItem } from 'src/rsuite/Dropdown'
+import { getDBStats } from '../../db/getDBStats'
+import { quickBench } from '../../db/quickBench'
+import { Dropdown, MenuItem } from '../../rsuite/Dropdown'
 
 export const MenuDebugUI = observer(function MenuDebugUI_(p: {}) {
     const st = useSt()

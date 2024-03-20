@@ -13,7 +13,7 @@ import { lightTheme } from '@uiw/react-json-view/light'
 // import { TriangleSolidArrow } from '@uiw/react-json-view/triangle-solid-arrow'
 import { observer } from 'mobx-react-lite'
 
-import { useSt } from 'src/state/stateContext'
+import { useSt } from '../../state/stateContext'
 
 export const JsonViewUI = observer(function JsonViewUI_(p: { value?: Maybe<object> }) {
     const st = useSt()

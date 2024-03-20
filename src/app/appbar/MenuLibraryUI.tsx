@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 
 import { useSt } from '../../state/stateContext'
-import { Dropdown, MenuItem } from 'src/rsuite/Dropdown'
+import { Dropdown, MenuItem } from '../../rsuite/Dropdown'
 
 export const MenuConfigUI = observer(function MenuConfigUI_(p: {}) {
     const st = useSt()

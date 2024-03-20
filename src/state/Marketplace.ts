@@ -1,6 +1,6 @@
 import type { STATE } from './state'
 import type { PostgrestSingleResponse } from '@supabase/supabase-js'
-import type { Database } from 'src/supa/database.types'
+import type { Database } from '../supa/database.types'
 
 import { makeAutoObservable } from 'mobx'
 

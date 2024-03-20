@@ -1,11 +1,11 @@
 import type { GlobalCtx } from './_ctx3'
 import type { AsyncRuntimeStorage } from './asyncRuntimeStorage'
-import type { IFormBuilder } from 'src/controls/Form'
+import type { IFormBuilder } from '../controls/Form'
 /**
  * 🔶 THIS MODULE MUST NOT IMPORT ANYTHING (only types allowed).
  * 🔶 IT WILL BE INCLUDED IN MOST PREFABS.
  */
-import type { Runtime } from 'src/runtime/Runtime'
+import type { Runtime } from '../runtime/Runtime'
 
 const getGlobalCtx = () => {
     const _ = (globalThis as any).globalCtx as GlobalCtx

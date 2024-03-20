@@ -7,10 +7,10 @@ import { PlaygroundGraphUI } from './PlaygroundGraphUI'
 import { PlaygroundRegisteredForms } from './PlaygroundRegisteredForms'
 import { PlaygroundRequirements, PlaygroundRequirementsHeader } from './PlaygroundRequirements'
 import { PlaygroundWidgetDisplay } from './PlaygroundWidgetDisplay'
-import { CushyFormManager } from 'src/controls/FormBuilder'
-import { FormUI } from 'src/controls/FormUI'
-import { readJSON, writeJSON } from 'src/state/jsonUtils'
-import { useSt } from 'src/state/stateContext'
+import { CushyFormManager } from '../../controls/FormBuilder'
+import { FormUI } from '../../controls/FormUI'
+import { readJSON, writeJSON } from '../../state/jsonUtils'
+import { useSt } from '../../state/stateContext'
 
 const Header_Playground = CushyFormManager.form(
     (ui) => ({

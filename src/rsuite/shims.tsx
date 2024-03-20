@@ -3,7 +3,7 @@ import { ReactNode } from 'react'
 
 import { RevealUI } from './reveal/RevealUI'
 import { RSAppearance, RSSize } from './RsuiteTypes'
-import { exhaust } from 'src/utils/misc/ComfyUtils'
+import { exhaust } from '../utils/misc/ComfyUtils'
 
 // form
 export const FormHelpText = (p: any) => <div {...p}></div>

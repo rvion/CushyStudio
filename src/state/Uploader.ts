@@ -1,5 +1,5 @@
 import type { STATE } from './state'
-import type { ComfyUploadImageResult } from 'src/types/ComfyWsApi'
+import type { ComfyUploadImageResult } from '../types/ComfyWsApi'
 
 // import { readFileSync } from 'fs'
 // import { lookup } from 'mime-types'

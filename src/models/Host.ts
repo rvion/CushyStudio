@@ -1,9 +1,9 @@
 import type { ComfySchemaL, EmbeddingName } from './ComfySchema'
-import type { Requirements } from 'src/controls/IWidget'
-import type { LiveInstance } from 'src/db/LiveInstance'
-import type { PluginInfo } from 'src/manager/custom-node-list/custom-node-list-types'
-import type { KnownCustomNode_File } from 'src/manager/custom-node-list/KnownCustomNode_File'
-import type { KnownCustomNode_Title } from 'src/manager/custom-node-list/KnownCustomNode_Title'
+import type { Requirements } from '../controls/IWidget'
+import type { LiveInstance } from '../db/LiveInstance'
+import type { PluginInfo } from '../manager/custom-node-list/custom-node-list-types'
+import type { KnownCustomNode_File } from '../manager/custom-node-list/KnownCustomNode_File'
+import type { KnownCustomNode_Title } from '../manager/custom-node-list/KnownCustomNode_Title'
 
 import { copyFileSync, existsSync, mkdirSync, writeFileSync } from 'fs'
 

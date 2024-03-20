@@ -1,11 +1,11 @@
-import type { MediaImageL } from 'src/models/MediaImage'
+import type { MediaImageL } from '../models/MediaImage'
 
 import { observer } from 'mobx-react-lite'
 
-import { openExternal, showItemInFolder } from 'src/app/layout/openExternal'
-import { DraftIllustrationUI } from 'src/cards/fancycard/DraftIllustration'
-import { Dropdown, MenuItem } from 'src/rsuite/Dropdown'
-import { useSt } from 'src/state/stateContext'
+import { openExternal, showItemInFolder } from '../app/layout/openExternal'
+import { DraftIllustrationUI } from '../cards/fancycard/DraftIllustration'
+import { Dropdown, MenuItem } from '../rsuite/Dropdown'
+import { useSt } from '../state/stateContext'
 
 export const ImageDropdownUI = observer(function ImageDropdownUI_(p: { img: MediaImageL }) {
     const img = p.img

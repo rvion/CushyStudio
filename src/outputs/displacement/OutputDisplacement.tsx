@@ -1,4 +1,4 @@
-import type { STATE } from 'src/state/state'
+import type { STATE } from '../../state/state'
 
 import { mkdirSync, writeFileSync } from 'fs'
 import { observer } from 'mobx-react-lite'
@@ -9,21 +9,21 @@ import { useMemo, useRef } from 'react'
 import { OutputPreviewWrapperUI } from '../OutputPreviewWrapperUI'
 import { DisplacementState } from './DisplacementState'
 import { DisplacementUI } from './DisplacementUI'
-import { FormUI } from 'src/controls/FormUI'
-import { SpacerUI } from 'src/controls/widgets/spacer/SpacerUI'
+import { FormUI } from '../../controls/FormUI'
+import { SpacerUI } from '../../controls/widgets/spacer/SpacerUI'
 import {
     createMediaImage_fromBlobObject,
     createMediaImage_fromDataURI,
     createMediaImage_fromPath,
-} from 'src/models/createMediaImage_fromWebFile'
-import { Media3dDisplacementL } from 'src/models/Media3dDisplacement'
-import { StepL } from 'src/models/Step'
-import { PanelHeaderUI } from 'src/panels/PanelHeader'
-import { RevealUI } from 'src/rsuite/reveal/RevealUI'
-import { useSt } from 'src/state/stateContext'
-import { asRelativePath } from 'src/utils/fs/pathUtils'
-import { bang } from 'src/utils/misc/bang'
-import { toastError } from 'src/utils/misc/toasts'
+} from '../../models/createMediaImage_fromWebFile'
+import { Media3dDisplacementL } from '../../models/Media3dDisplacement'
+import { StepL } from '../../models/Step'
+import { PanelHeaderUI } from '../../panels/PanelHeader'
+import { RevealUI } from '../../rsuite/reveal/RevealUI'
+import { useSt } from '../../state/stateContext'
+import { asRelativePath } from '../../utils/fs/pathUtils'
+import { bang } from '../../utils/misc/bang'
+import { toastError } from '../../utils/misc/toasts'
 
 export const OutputDisplacementPreviewUI = observer(function OutputImagePreviewUI_(p: {
     step?: Maybe<StepL>

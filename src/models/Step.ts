@@ -1,7 +1,7 @@
 import type { LiveInstance } from '../db/LiveInstance'
 import type { ComfyPromptL } from './ComfyPrompt'
 import type { ComfyWorkflowL } from './ComfyWorkflow'
-import type { StepOutput } from 'src/types/StepOutput'
+import type { StepOutput } from '../types/StepOutput'
 
 import { Status } from '../back/Status'
 import { LiveRef } from '../db/LiveRef'

@@ -1,7 +1,7 @@
 import type { RectSimple } from '../types/RectSimple'
 import type { UnifiedCanvas } from './UnifiedCanvas'
 import type { Shape } from 'konva/lib/Shape'
-import type { STATE } from 'src/state/state'
+import type { STATE } from '../../../state/state'
 
 import Konva from 'konva'
 import { Layer } from 'konva/lib/Layer'

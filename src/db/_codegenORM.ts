@@ -2,9 +2,9 @@ import BetterSqlite3 from 'better-sqlite3'
 import { writeFileSync } from 'fs'
 import JSON5 from 'json5'
 
+import { bang } from '../utils/misc/bang'
 import { _getAllColumnsForTable } from './_getAllColumnsForTable'
 import { _getAllForeignKeysForTable } from './_getAllForeignKeysForTable'
-import { bang } from '../utils/misc/bang'
 
 export const _codegenORM = (store: {
     //
@@ -22,7 +22,7 @@ export const _codegenORM = (store: {
     const tableSortedAlphabetically = tables.slice().sort((a, b) => a.name.localeCompare(b.name))
     for (const table of tableSortedAlphabetically) {
         const jsName = convertTableNameToJSName(table.name)
-        out1 += `import type { ${jsName}L } from 'src/models/${jsName}'\n`
+        out1 += `import type { ${jsName}L } from '../../models/${jsName}'\n`
     }
     out1 += `\n`
     out1 += `import { Type } from '@sinclair/typebox'\n`
