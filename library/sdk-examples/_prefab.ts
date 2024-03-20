@@ -2,7 +2,7 @@
 // this behaviour will be changed once the manifest is ready, but you can use this
 // trick for now.
 
-import { FormBuilder } from '../../src'
+import { FormBuilder } from '../../src/CUSHY'
 
 // 📝 Ideally, modular UI kits only import types with `import type {...}`
 // and do not import anything else

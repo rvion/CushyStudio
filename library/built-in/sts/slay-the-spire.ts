@@ -4,10 +4,7 @@
  */
 
 import { bang } from '../../../src/utils/misc/bang'
-import {
-    run_ipadapter_standalone,
-    ui_ipadapter_standalone,
-} from '../_prefabs/ControlNet/ipAdapter/prefab_ipAdapter_base_standalone'
+import { run_ipadapter_standalone, ui_ipadapter_standalone } from '../_ipAdapter/prefab_ipAdapter_base_standalone'
 import { run_model, ui_model } from '../_prefabs/prefab_model'
 import { run_prompt } from '../_prefabs/prefab_prompt'
 import { stsAssets } from './_stsAssets'

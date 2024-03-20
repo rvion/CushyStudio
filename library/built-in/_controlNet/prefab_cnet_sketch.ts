@@ -1,4 +1,4 @@
-import { OutputFor } from '../_prefabs'
+import { OutputFor } from '../_prefabs/_prefabs'
 import { cnet_ui_common } from './cnet_ui_common'
 
 // 🅿️ Sketch FORM ===================================================

@@ -1,4 +1,4 @@
-import type { FormBuilder } from '../../../../../src'
+import type { FormBuilder } from '../../../src/CUSHY'
 
 import { ipAdapter_faceID_ClipModelList } from './_ipAdapterModelList'
 

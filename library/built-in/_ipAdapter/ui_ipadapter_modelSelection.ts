@@ -1,4 +1,4 @@
-import type { FormBuilder, KnownModel_Name } from '../../../../../src'
+import type { FormBuilder, KnownModel_Name } from '../../../src/CUSHY'
 
 //🅿️ IPAdapter Model Selection ===================================================
 

@@ -1,5 +1,5 @@
-import type { ImageAndMask } from '../../src'
 import type { FormBuilder } from '../../src/controls/FormBuilder'
+import type { ImageAndMask } from '../../src/CUSHY'
 
 import { toJS } from 'mobx'
 
