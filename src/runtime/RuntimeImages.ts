@@ -9,7 +9,7 @@ import {
     createMediaImage_fromBlobObject,
     createMediaImage_fromDataURI,
     createMediaImage_fromPath,
-} from 'src/models/createMediaImage_fromWebFile'
+} from '../models/createMediaImage_fromWebFile'
 
 /** namespace for all image-related utils */
 export class RuntimeImages {

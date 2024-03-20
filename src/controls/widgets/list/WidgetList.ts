@@ -8,9 +8,9 @@ import { nanoid } from 'nanoid'
 
 import { WidgetDI } from '../WidgetUI.DI'
 import { WidgetList_BodyUI, WidgetList_LineUI } from './WidgetListUI'
-import { applyWidgetMixinV2 } from 'src/controls/Mixins'
-import { runWithGlobalForm } from 'src/models/_ctx2'
-import { bang } from 'src/utils/misc/bang'
+import { applyWidgetMixinV2 } from '../../Mixins'
+import { runWithGlobalForm } from '../../../models/_ctx2'
+import { bang } from '../../../utils/misc/bang'
 
 // CONFIG
 export type Widget_list_config<T extends Spec> = WidgetConfigFields<

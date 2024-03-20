@@ -8,8 +8,8 @@ import { normalizeJSIdentifier } from '../core/normalizeJSIdentifier'
 import { ComfyPrimitiveMapping, ComfyPrimitives } from '../core/Primitives'
 import { CodeBuffer } from '../utils/codegen/CodeBuffer'
 import { escapeJSKey } from '../utils/codegen/escapeJSKey'
-import { LiveInstance } from 'src/db/LiveInstance'
-import { LiveRef } from 'src/db/LiveRef'
+import { LiveInstance } from '../db/LiveInstance'
+import { LiveRef } from '../db/LiveRef'
 
 export type EnumHash = string
 export type EnumName = string

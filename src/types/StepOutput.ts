@@ -7,7 +7,7 @@ import type { MediaVideoL } from 'src/models/MediaVideo'
 import type { RuntimeErrorL } from 'src/models/RuntimeError'
 import type { StepL } from 'src/models/Step'
 
-import { MediaSplatL } from 'src/models/MediaSplat'
+import { MediaSplatL } from '../models/MediaSplat'
 
 // prettier-ignore
 export type StepOutput =

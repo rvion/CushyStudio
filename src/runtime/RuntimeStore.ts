@@ -6,9 +6,9 @@ import type { CustomDataL } from 'src/models/CustomData'
 
 import { makeAutoObservable } from 'mobx'
 
-import { ImageStore } from 'src/back/ImageStore'
-import { bang } from 'src/utils/misc/bang'
-import { exhaust } from 'src/utils/misc/ComfyUtils'
+import { ImageStore } from '../back/ImageStore'
+import { bang } from '../utils/misc/bang'
+import { exhaust } from '../utils/misc/ComfyUtils'
 
 export type StoreScope = 'global' | 'app' | 'draft' | 'run'
 

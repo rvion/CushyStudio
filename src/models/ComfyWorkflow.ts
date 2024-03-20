@@ -22,11 +22,11 @@ import { ComfyNode } from '../core/ComfyNode'
 import { convertFlowToLiteGraphJSON, LiteGraphJSON } from '../core/LiteGraph'
 import { asHTMLContent, asMDContent } from '../types/markdown'
 import { asAbsolutePath } from '../utils/fs/pathUtils'
-import { InvalidPromptError } from 'src/back/RuntimeError'
-import { LiveRefOpt } from 'src/db/LiveRefOpt'
-import { bang } from 'src/utils/misc/bang'
-import { deepCopyNaive } from 'src/utils/misc/ComfyUtils'
-import { type TEdge, toposort } from 'src/utils/misc/toposort'
+import { InvalidPromptError } from '../back/RuntimeError'
+import { LiveRefOpt } from '../db/LiveRefOpt'
+import { bang } from '../utils/misc/bang'
+import { deepCopyNaive } from '../utils/misc/ComfyUtils'
+import { type TEdge, toposort } from '../utils/misc/toposort'
 
 export type ProgressReport = {
     percent: number

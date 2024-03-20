@@ -4,7 +4,7 @@ import type { AppMetadata } from 'src/cards/AppManifest'
 
 import { basename } from 'pathe'
 
-import { asCushyAppID } from 'src/db/TYPES.gen'
+import { asCushyAppID } from '../db/TYPES.gen'
 
 export class Executable {
     constructor(

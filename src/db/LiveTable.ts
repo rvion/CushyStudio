@@ -11,9 +11,9 @@ import { nanoid } from 'nanoid'
 import { DEPENDS_ON, MERGE_PROTOTYPES } from './LiveHelpers'
 import { quickBench } from './quickBench'
 import { SqlFindOptions } from './SQLWhere'
-import { kysely } from 'src/DB'
-import { type KyselyTables, type LiveDBSubKeys, schemas } from 'src/db/TYPES.gen'
-import { TableInfo } from 'src/db/TYPES_json'
+import { kysely } from '../DB'
+import { type KyselyTables, type LiveDBSubKeys, schemas } from './TYPES.gen'
+import { TableInfo } from './TYPES_json'
 
 export interface LiveEntityClass<TABLE extends TableInfo> {
     new (...args: any[]): TABLE['$L']

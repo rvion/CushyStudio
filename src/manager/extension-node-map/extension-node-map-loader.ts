@@ -7,7 +7,7 @@ import { readFileSync, writeFileSync } from 'fs'
 
 import { KnownCustomNode_File } from '../custom-node-list/KnownCustomNode_File'
 import { ENMInfos, ENMInfos_Schema, ExtensionNodeMapFile } from './extension-node-map-types'
-import { normalizeJSIdentifier } from 'src/core/normalizeJSIdentifier'
+import { normalizeJSIdentifier } from '../../core/normalizeJSIdentifier'
 
 export const _getCustomNodeRegistry = (DB: ComfyManagerRepository): void => {
     let totalCustomNodeSeen = 0

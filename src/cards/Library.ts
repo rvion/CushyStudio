@@ -6,8 +6,8 @@ import Watcher from 'watcher'
 
 import { LibraryFile } from './LibraryFile'
 import { shouldSkip_duringWatch } from './shouldSkip'
-import { CushyAppL } from 'src/models/CushyApp'
-import { asAbsolutePath, asRelativePath } from 'src/utils/fs/pathUtils'
+import { CushyAppL } from '../models/CushyApp'
+import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 
 export class Library {
     query = ''

@@ -9,11 +9,11 @@ import type { TABLES } from 'src/db/TYPES.gen'
 
 import { reaction } from 'mobx'
 
-import { Status } from 'src/back/Status'
-import { CushyFormManager, type FormBuilder } from 'src/controls/FormBuilder'
-import { LiveRef } from 'src/db/LiveRef'
-import { SQLITE_false, SQLITE_true } from 'src/db/SQLITE_boolean'
-import { toastError } from 'src/utils/misc/toasts'
+import { Status } from '../back/Status'
+import { CushyFormManager, type FormBuilder } from '../controls/FormBuilder'
+import { LiveRef } from '../db/LiveRef'
+import { SQLITE_false, SQLITE_true } from '../db/SQLITE_boolean'
+import { toastError } from '../utils/misc/toasts'
 
 export type FormPath = (string | number)[]
 

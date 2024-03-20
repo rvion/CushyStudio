@@ -5,8 +5,8 @@ import type { OpenRouterResponse } from 'src/llm/OpenRouter_Response'
 
 import { makeAutoObservable } from 'mobx'
 
-import { OpenRouter_ask } from 'src/llm/OpenRouter_ask'
-import { openRouterInfos } from 'src/llm/OpenRouter_infos'
+import { OpenRouter_ask } from '../llm/OpenRouter_ask'
+import { openRouterInfos } from '../llm/OpenRouter_infos'
 
 /** namespace for all store-related utils */
 export class RuntimeLLM {

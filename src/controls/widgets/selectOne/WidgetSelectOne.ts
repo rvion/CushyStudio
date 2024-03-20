@@ -7,7 +7,7 @@ import { nanoid } from 'nanoid'
 
 import { WidgetDI } from '../WidgetUI.DI'
 import { WidgetSelectOneUI } from './WidgetSelectOneUI'
-import { applyWidgetMixinV2 } from 'src/controls/Mixins'
+import { applyWidgetMixinV2 } from '../../Mixins'
 
 export type BaseSelectEntry<T = string> = { id: T; label?: string }
 

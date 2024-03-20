@@ -34,7 +34,7 @@ import { Widget_shared } from './widgets/shared/WidgetShared'
 import { Widget_size, type Widget_size_config } from './widgets/size/WidgetSize'
 import { Widget_spacer, Widget_spacer_config } from './widgets/spacer/WidgetSpacer'
 import { Widget_string, type Widget_string_config } from './widgets/string/WidgetString'
-import { openRouterInfos } from 'src/llm/OpenRouter_infos'
+import { openRouterInfos } from '../llm/OpenRouter_infos'
 
 // prettier-ignore
 export class FormBuilder implements IFormBuilder {

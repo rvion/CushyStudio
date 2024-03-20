@@ -7,7 +7,7 @@ import { nanoid } from 'nanoid'
 
 import { WidgetDI } from '../WidgetUI.DI'
 import { WidgetInlineRunUI } from './WidgetButtonUI'
-import { applyWidgetMixinV2 } from 'src/controls/Mixins'
+import { applyWidgetMixinV2 } from '../../Mixins'
 
 export type Widget_button_context = {
     draft: DraftL

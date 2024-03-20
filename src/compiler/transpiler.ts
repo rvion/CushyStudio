@@ -1,6 +1,6 @@
 import * as path from 'pathe'
 
-// import { Package } from 'src/cards/Pkg'
+// import { Package } from '../cards/Pkg'
 import { CushyTextBanner } from '../back/CushyTextBanner'
 
 export async function createEsbuildContextFor(p: { entrypoints: AbsolutePath[]; root: AbsolutePath }) {

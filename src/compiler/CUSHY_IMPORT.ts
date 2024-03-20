@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite'
 import __react from 'react'
 
 // @ts-ignore
-import { jsx, jsxs } from 'src/utils/custom-jsx/jsx-runtime'
+import { jsx, jsxs } from '../utils/custom-jsx/jsx-runtime'
 
 export const CUSHY_IMPORT = (mod: string) => {
     console.log('🔴 mod', mod)

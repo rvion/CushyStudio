@@ -3,7 +3,7 @@ import type { ComfyWorkflowL } from 'src/models/ComfyWorkflow'
 import { observable, toJS } from 'mobx'
 
 import { ComfyNode } from '../core/ComfyNode'
-import { ComfyNodeMetadata } from 'src/types/ComfyNodeID'
+import { ComfyNodeMetadata } from '../types/ComfyNodeID'
 
 export interface ComfyWorkflowBuilder extends ComfySetup {}
 

@@ -3,7 +3,7 @@
 
 // import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs'
 // import { makeAutoObservable } from 'mobx'
-// import { asRelativePath } from 'src/utils/fs/pathUtils'
+// import { asRelativePath } from '../utils/fs/pathUtils'
 // import { GithubUser } from './GithubUser'
 // --------------------------------------------------------------------------------
 // export type GithubRepoData = {

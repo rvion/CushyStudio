@@ -8,9 +8,9 @@ import { imageMeta } from 'image-meta'
 import { dirname } from 'pathe'
 
 import { MediaImageL } from './MediaImage'
-import { hashArrayBuffer } from 'src/state/hashArrayBuffer'
-import { bang } from 'src/utils/misc/bang'
-import { extractExtensionFromContentType } from 'src/widgets/misc/extractExtensionFromContentType'
+import { hashArrayBuffer } from '../state/hashArrayBuffer'
+import { bang } from '../utils/misc/bang'
+import { extractExtensionFromContentType } from '../widgets/misc/extractExtensionFromContentType'
 
 export type ImageCreationOpts = {
     promptID?: PromptID

@@ -10,7 +10,7 @@ import type { HostL } from 'src/models/Host'
 
 import { makeAutoObservable, observable } from 'mobx'
 
-import { toastError, toastSuccess } from 'src/utils/misc/toasts'
+import { toastError, toastSuccess } from '../utils/misc/toasts'
 
 type HostPluginList = {
     custom_nodes: {

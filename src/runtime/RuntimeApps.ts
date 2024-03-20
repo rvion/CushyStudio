@@ -4,7 +4,7 @@ import type { CushyAppL } from 'src/models/CushyApp'
 
 import { makeAutoObservable } from 'mobx'
 
-import { $ExtractFormValueType, AppRef } from 'src/cards/App'
+import { $ExtractFormValueType, AppRef } from '../cards/App'
 
 /** namespace for all Apps-related utils */
 export class RuntimeApps {

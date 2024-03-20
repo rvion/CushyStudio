@@ -4,7 +4,7 @@ import { appendFileSync, existsSync, mkdirSync, readFileSync, renameSync, statfs
 import { join, relative } from 'pathe'
 import { promisify } from 'util'
 
-import { hashArrayBuffer } from 'src/state/hashArrayBuffer'
+import { hashArrayBuffer } from '../state/hashArrayBuffer'
 
 const exec = promisify(X.exec)
 

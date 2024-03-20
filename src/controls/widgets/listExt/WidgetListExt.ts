@@ -11,8 +11,8 @@ import { ResolutionState } from '../size/ResolutionState'
 import { WidgetDI } from '../WidgetUI.DI'
 import { boardDefaultItemShape } from './WidgetListExtTypes'
 import { WidgetListExtUI } from './WidgetListExtUI'
-import { applyWidgetMixinV2 } from 'src/controls/Mixins'
-import { runWithGlobalForm } from 'src/models/_ctx2'
+import { applyWidgetMixinV2 } from '../../Mixins'
+import { runWithGlobalForm } from '../../../models/_ctx2'
 
 // CONFIG
 export type Widget_listExt_config<T extends Spec> = WidgetConfigFields<

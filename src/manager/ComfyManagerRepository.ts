@@ -8,7 +8,7 @@ import type { NodeNameInComfy, NodeNameInCushy } from 'src/models/ComfySchema'
 
 import { _getKnownPlugins } from './custom-node-list/custom-node-list-loader'
 import { _getKnownModels } from './model-list/model-list-loader'
-import { _getCustomNodeRegistry } from 'src/manager/extension-node-map/extension-node-map-loader'
+import { _getCustomNodeRegistry } from './extension-node-map/extension-node-map-loader'
 
 export class ComfyManagerRepository {
     plugins_byTitle = new Map<KnownCustomNode_Title, PluginInfo>()

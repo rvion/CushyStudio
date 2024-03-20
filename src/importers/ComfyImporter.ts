@@ -9,7 +9,7 @@ import { asJSAccessor, escapeJSKey } from '../utils/codegen/escapeJSKey'
 import { jsEscapeStr } from '../utils/codegen/jsEscapeStr'
 import { TEdge, toposort } from '../utils/misc/toposort'
 import { Namer } from './Namer'
-import { bang } from 'src/utils/misc/bang'
+import { bang } from '../utils/misc/bang'
 
 /** Converts Comfy JSON prompts to ComfyScript code */
 type RuleInput = {

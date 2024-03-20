@@ -11,7 +11,7 @@ import { auto_ } from './autoValue'
 import { comfyColors } from './Colors'
 import { NodeStatusEmojiUI } from './NodeStatusEmojiUI'
 import { ComfyNodeOutput } from './Slot'
-import { nodeLineHeight, NodeSlotSize, NodeSlotVSep, NodeTitleHeight } from 'src/widgets/graph/NodeSlotSize'
+import { nodeLineHeight, NodeSlotSize, NodeSlotVSep, NodeTitleHeight } from '../widgets/graph/NodeSlotSize'
 
 configure({ enforceActions: 'never' })
 // configure({ enforceActions: 'always' })

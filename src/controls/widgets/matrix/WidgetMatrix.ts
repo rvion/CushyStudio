@@ -7,8 +7,8 @@ import { nanoid } from 'nanoid'
 
 import { WidgetDI } from '../WidgetUI.DI'
 import { WidgetMatrixUI } from './WidgetMatrixUI'
-import { applyWidgetMixinV2 } from 'src/controls/Mixins'
-import { bang } from 'src/utils/misc/bang'
+import { applyWidgetMixinV2 } from '../../Mixins'
+import { bang } from '../../../utils/misc/bang'
 
 export type Widget_matrix_cell = {
     x: number

@@ -10,14 +10,14 @@ import { CUSHY_IMPORT } from '../compiler/CUSHY_IMPORT'
 import { getCurrentForm_IMPL, getCurrentRun_IMPL } from './_ctx2'
 import { CushyAppL } from './CushyApp'
 import { Executable } from './Executable'
-import { replaceImportsWithSyncImport } from 'src/back/ImportStructure'
-import { App, AppRef } from 'src/cards/App'
-import { SQLITE_false, SQLITE_true } from 'src/db/SQLITE_boolean'
-import { asCushyAppID, type TABLES } from 'src/db/TYPES.gen'
-import { extractErrorMessage } from 'src/utils/formatters/extractErrorMessage'
-import { asRelativePath } from 'src/utils/fs/pathUtils'
+import { replaceImportsWithSyncImport } from '../back/ImportStructure'
+import { App, AppRef } from '../cards/App'
+import { SQLITE_false, SQLITE_true } from '../db/SQLITE_boolean'
+import { asCushyAppID, type TABLES } from '../db/TYPES.gen'
+import { extractErrorMessage } from '../utils/formatters/extractErrorMessage'
+import { asRelativePath } from '../utils/fs/pathUtils'
 
-// import { LazyValue } from 'src/db/LazyValue'
+// import { LazyValue } from '../db/LazyValue'
 
 export interface CushyScriptL extends LiveInstance<TABLES['cushy_script']> {}
 export class CushyScriptL {

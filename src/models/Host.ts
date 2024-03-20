@@ -7,14 +7,14 @@ import type { KnownCustomNode_Title } from 'src/manager/custom-node-list/KnownCu
 
 import { copyFileSync, existsSync, mkdirSync, writeFileSync } from 'fs'
 
-import { ResilientWebSocketClient } from 'src/back/ResilientWebsocket'
-import { asComfySchemaID, type TABLES } from 'src/db/TYPES.gen'
-import { ComfyManager } from 'src/manager/ComfyManager'
-import { extractErrorMessage } from 'src/utils/formatters/extractErrorMessage'
-import { readableStringify } from 'src/utils/formatters/stringifyReadable'
-import { downloadFile } from 'src/utils/fs/downloadFile'
-import { asRelativePath } from 'src/utils/fs/pathUtils'
-import { toastError, toastSuccess } from 'src/utils/misc/toasts'
+import { ResilientWebSocketClient } from '../back/ResilientWebsocket'
+import { asComfySchemaID, type TABLES } from '../db/TYPES.gen'
+import { ComfyManager } from '../manager/ComfyManager'
+import { extractErrorMessage } from '../utils/formatters/extractErrorMessage'
+import { readableStringify } from '../utils/formatters/stringifyReadable'
+import { downloadFile } from '../utils/fs/downloadFile'
+import { asRelativePath } from '../utils/fs/pathUtils'
+import { toastError, toastSuccess } from '../utils/misc/toasts'
 
 export interface HostL extends LiveInstance<TABLES['host']> {}
 

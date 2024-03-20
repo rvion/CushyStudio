@@ -14,11 +14,11 @@ import { Media3dDisplacementL } from './Media3dDisplacement'
 import { MediaImageL } from './MediaImage'
 import { MediaTextL } from './MediaText'
 import { MediaVideoL } from './MediaVideo'
-import { Widget_group } from 'src/controls/widgets/group/WidgetGroup'
-import { LiveRefOpt } from 'src/db/LiveRefOpt'
-import { SQLITE_false, SQLITE_true } from 'src/db/SQLITE_boolean'
-import { type TABLES } from 'src/db/TYPES.gen'
-import { ManualPromise } from 'src/utils/misc/ManualPromise'
+import { Widget_group } from '../controls/widgets/group/WidgetGroup'
+import { LiveRefOpt } from '../db/LiveRefOpt'
+import { SQLITE_false, SQLITE_true } from '../db/SQLITE_boolean'
+import { type TABLES } from '../db/TYPES.gen'
+import { ManualPromise } from '../utils/misc/ManualPromise'
 
 export type FormPath = (string | number)[]
 /** a thin wrapper around an app execution */

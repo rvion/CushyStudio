@@ -6,7 +6,7 @@ import { makeAutoObservable } from 'mobx'
 import { isAbsolute, resolve } from 'pathe'
 
 import { createHTMLImage_fromURL } from '../state/createHTMLImage_fromURL'
-import { MediaImageL } from 'src/models/MediaImage'
+import { MediaImageL } from '../models/MediaImage'
 
 /**
  * provide both raw-access to the underling KonvaJS library

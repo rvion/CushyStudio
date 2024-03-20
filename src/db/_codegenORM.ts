@@ -4,7 +4,7 @@ import JSON5 from 'json5'
 
 import { _getAllColumnsForTable } from './_getAllColumnsForTable'
 import { _getAllForeignKeysForTable } from './_getAllForeignKeysForTable'
-import { bang } from 'src/utils/misc/bang'
+import { bang } from '../utils/misc/bang'
 
 export const _codegenORM = (store: {
     //

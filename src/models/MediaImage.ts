@@ -18,14 +18,14 @@ import sharp from 'sharp'
 
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { getCurrentRun_IMPL } from './_ctx2'
-import { hasMod } from 'src/app/shortcuts/META_NAME'
-import { LiveRefOpt } from 'src/db/LiveRefOpt'
-import { SafetyResult } from 'src/safety/Safety'
-import { createHTMLImage_fromURL } from 'src/state/createHTMLImage_fromURL'
-import { asSTRING_orCrash } from 'src/utils/misc/bang'
-import { ManualPromise } from 'src/utils/misc/ManualPromise'
-import { toastError, toastInfo } from 'src/utils/misc/toasts'
-import { transparentImgURL } from 'src/widgets/galleries/transparentImg'
+import { hasMod } from '../app/shortcuts/META_NAME'
+import { LiveRefOpt } from '../db/LiveRefOpt'
+import { SafetyResult } from '../safety/Safety'
+import { createHTMLImage_fromURL } from '../state/createHTMLImage_fromURL'
+import { asSTRING_orCrash } from '../utils/misc/bang'
+import { ManualPromise } from '../utils/misc/ManualPromise'
+import { toastError, toastInfo } from '../utils/misc/toasts'
+import { transparentImgURL } from '../widgets/galleries/transparentImg'
 
 export interface MediaImageL extends LiveInstance<TABLES['media_image']> {}
 export class MediaImageL {

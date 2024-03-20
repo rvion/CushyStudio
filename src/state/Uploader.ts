@@ -5,10 +5,10 @@ import type { ComfyUploadImageResult } from 'src/types/ComfyWsApi'
 // import { lookup } from 'mime-types'
 // import path from 'pathe'
 // import { hashBlob } from './hashBlob'
-import { MediaImageL } from 'src/models/MediaImage'
+import { MediaImageL } from '../models/MediaImage'
 
-// import { asAbsolutePath } from 'src/utils/fs/pathUtils'
-// import { asSTRING_orCrash } from 'src/utils/misc/bang'
+// import { asAbsolutePath } from '../utils/fs/pathUtils'
+// import { asSTRING_orCrash } from '../utils/misc/bang'
 
 /** all those functions are kinda legacy */
 export class Uploader {

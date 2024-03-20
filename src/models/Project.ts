@@ -5,8 +5,8 @@ import type { TABLES } from 'src/db/TYPES.gen'
 
 import { LiveRef } from '../db/LiveRef'
 import { DraftL } from './Draft'
-import { LiveRefOpt } from 'src/db/LiveRefOpt'
-import { SQLITE_false, SQLITE_true } from 'src/db/SQLITE_boolean'
+import { LiveRefOpt } from '../db/LiveRefOpt'
+import { SQLITE_false, SQLITE_true } from '../db/SQLITE_boolean'
 
 export type ProjectID = Branded<string, { ProjectID: true }>
 export const asProjectID = (s: string): ProjectID => s as any
