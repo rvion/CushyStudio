@@ -57,7 +57,11 @@ export class Widget_orbit implements IWidget<Widget_orbit_types> {
 
     /** practical to add to your textual prompt */
     get englishSummary() {
-        return mkEnglishSummary(this.serial.value.azimuth, this.serial.value.elevation)
+        return mkEnglishSummary(
+            //
+            this.serial.value.azimuth,
+            this.serial.value.elevation,
+        )
     }
 
     get euler() {
@@ -91,6 +95,11 @@ export class Widget_orbit implements IWidget<Widget_orbit_types> {
             },
             id: this.id,
         }
+
+        /* 💊 BACKWARD COMPAT */
+        /* 💊 */ const serialAny = this.serial as any
+        /* 💊 */ if (serialAny.val && serialAny.value == null) serialAny.value = serialAny.val
+
         applyWidgetMixinV2(this)
         makeAutoObservable(this)
     }
