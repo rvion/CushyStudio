@@ -121,14 +121,15 @@ app({
             : await run_latent_v3({ opts: ui.latent, vae })
 
         // MASK --------------------------------------------------------------------------------
-        let mask: Maybe<_MASK>
         // if (imgCtx) {
         //     /* 🔴 */ mask = await imgCtx.loadInWorkflowAsMask('alpha')
         //     /* 🔴 */ latent = graph.SetLatentNoiseMask({ mask, samples: latent })
         // } else
+        let mask: Maybe<_MASK>
         if (ui.mask.mask) {
-            mask = await ui.mask.mask.image.loadInWorkflowAsMask('alpha')
-            latent = graph.SetLatentNoiseMask({ mask, samples: latent })
+            mask = await ui.mask.mask.image.loadInWorkflowAsMask(ui.mask.mask.mode)
+            if (ui.mask.mask.invert) mask = graph.InvertMask({ mask: mask })
+            latent = graph.SetLatentNoiseMask({ mask: mask, samples: latent })
         }
 
         // CNETS -------------------------------------------------------------------------------
