@@ -1,9 +1,9 @@
+import type { Runtime, RuntimeExecutionResult } from './Runtime'
 import type { SchemaDict } from 'src/controls/Spec'
 import type { CushyAppL } from 'src/models/CushyApp'
 
 import { makeAutoObservable } from 'mobx'
 
-import { Runtime, RuntimeExecutionResult } from './Runtime'
 import { $ExtractFormValueType, AppRef } from 'src/cards/App'
 
 /** namespace for all Apps-related utils */

@@ -1,3 +1,5 @@
+import type { PropsOf } from './Layout'
+
 import { Panel_Draft } from '../draft/Panel_Draft'
 import { Panel_Canvas } from '../Panel_Canvas/Panel_Canvas'
 import { Panel_Civitai } from '../Panel_Civitai'
@@ -25,7 +27,6 @@ import { Panel_TreeExplorer } from '../Panel_TreeExplorer'
 import { Panel_TypeDoc } from '../Panel_TypeDoc'
 import { Panel_ViewImage } from '../Panel_ViewImage'
 import { Panel_Welcome } from '../Panel_Welcome'
-import { PropsOf } from './Layout'
 import { assets } from 'src/utils/assets/assets'
 
 // prettier-ignore

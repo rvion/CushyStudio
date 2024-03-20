@@ -1,3 +1,24 @@
+/*
+NOTES:
+
+1 💬 we don't want to silence errors like this at build time:
+1 | ✘ [ERROR] Could not resolve "fs"
+1 |
+1 |     src/models/createMediaImage_fromWebFile.ts:6:55:
+1 |       6 │ import { mkdirSync, readFileSync, writeFileSync } from 'fs'
+1 |         ╵                                                        ~~~~
+1 |
+1 |   The package "fs" wasn't found on the file system but is built into node. Are you trying to bundle
+1 |   for node? You can use "platform: 'node'" to do that, which will remove this error.
+1 |
+1 | ✘ [ERROR] Could not resolve "crypto"
+1 |
+1 |     src/state/hashBlob.ts:1:19:
+1 |       1 │ import crypto from 'crypto'
+1 |         ╵                    ~~~~~~~~
+1 |
+
+*/
 const fs = require('fs')
 const path = require('path')
 const { promisify } = require('util')
@@ -12,6 +33,7 @@ const { resolve } = require('path')
 
 const args = process.argv.slice(2)
 
+console.log(`[🤠] AAA`)
 build()
 
 async function build() {
@@ -23,13 +45,15 @@ async function build() {
         await buildTailwind()
     }
     // show size of all assets in the release folder
-    const files = fs.readdirSync('release')
+    const files = fs.readdirSync('release-forms')
     for (const f of files) {
-        const size = fs.statSync(path.join('release', f)).size
+        const size = fs.statSync(path.join('release-forms', f)).size
         console.log(`${f}: ${size} bytes`)
     }
     process.exit(0)
 }
+
+fs.mkdirSync('release-forms', { recursive: true })
 
 process.env.NODE_ENV = 'production'
 async function buildJS() {
@@ -45,6 +69,16 @@ async function buildJS() {
         },
         // entryPoints: ['src/app/main.tsx'],
         entryPoints: ['src/controls/FormBuilder.loco.ts'],
+        plugins: [
+            {
+                name: 'debug all stuff',
+                setup(build) {
+                    build.onResolve({ filter: /.*/ }, (args) => {
+                        console.log(`[🤠] args`, args.importer + ' >> ' + args.path)
+                    })
+                },
+            },
+        ],
         bundle: true,
         minify: shouldMinify,
         // minifyIdentifiers: shouldMinify,
@@ -74,19 +108,28 @@ async function buildJS() {
         },
         external: [
             'react',
-            //     'assert',
-            //     'url',
-            //     'buffer',
-            //     'child_process',
-            //     'cluster',
-            //     'fs',
-            //     'os',
-            //     'path',
-            //     'process',
-            //     'stream',
-            //     'util',
-            //     'zlib',
-            //     'events',
+            'react-dom',
+            'marked',
+            'react-dnd',
+            'image-meta',
+            'react-mobx-lite',
+            '@uiw/react-json-view',
+            'mobx',
+            //
+            'crypto',
+            'assert',
+            'url',
+            'buffer',
+            'child_process',
+            'cluster',
+            'fs',
+            'os',
+            'path',
+            'process',
+            'stream',
+            'util',
+            'zlib',
+            'events',
         ],
         // packages: 'external',
         // handle css and svg files
@@ -106,8 +149,8 @@ async function buildTailwind() {
 
     try {
         // Define file paths
-        const inputFilePath = path.join('release', 'main.css')
-        const outputFilePath = path.join('release', 'output.css')
+        const inputFilePath = path.join('release-forms', 'main.css')
+        const outputFilePath = path.join('release-forms', 'output.css')
 
         // Read the CSS file
         const css = await readFile(inputFilePath, 'utf8')

@@ -38,6 +38,7 @@ export default defineConfig({
         port: 8788,
         watch: {
             ignored: [
+                '**/src/shell/*.js',
                 //
                 '**/library/**/*.ts',
                 '**/library/**/*.tsx',

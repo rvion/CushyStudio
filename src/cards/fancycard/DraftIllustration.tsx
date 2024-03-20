@@ -1,8 +1,8 @@
+import type { DraftL } from 'src/models/Draft'
+
 import { observer } from 'mobx-react-lite'
 
 import { AppIllustrationUI } from './AppIllustrationUI'
-import { CushyAppL } from 'src/models/CushyApp'
-import { DraftL } from 'src/models/Draft'
 import { useSt } from 'src/state/stateContext'
 import { useImageDrop } from 'src/widgets/galleries/dnd'
 

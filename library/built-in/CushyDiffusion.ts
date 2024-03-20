@@ -1,8 +1,12 @@
 import { run_advancedPrompt, ui_advancedPrompt } from 'library/built-in/_prefabs/prefab_promptsWithButtons'
 
 import { ui_highresfix } from './_prefabs/_prefabs'
+import {
+    run_ipadapter_standalone,
+    ui_ipadapter_standalone,
+} from './_prefabs/ControlNet/ipAdapter/prefab_ipAdapter_base_standalone'
+import { Cnet_args, Cnet_return, run_cnet, ui_cnet } from './_prefabs/ControlNet/prefab_cnet'
 import { run_Dispacement1, run_Dispacement2, ui_3dDisplacement } from './_prefabs/prefab_3dDisplacement'
-import { Cnet_args, Cnet_return, run_cnet, ui_cnet } from './_prefabs/prefab_cnet'
 import { run_refiners_fromImage, ui_refiners } from './_prefabs/prefab_detailer'
 import { run_latent_v3, ui_latent_v3 } from './_prefabs/prefab_latent_v3'
 import { output_demo_summary } from './_prefabs/prefab_markdown'
@@ -41,6 +45,7 @@ app({
             default: 'bad quality, blurry, low resolution, pixelated, noisy',
         }),
         model: ui_model(),
+        ipadapter: ui_ipadapter_standalone().optional(),
         latent: ui_latent_v3(),
         mask: ui_mask(),
         sampler: ui_sampler(),
@@ -75,6 +80,10 @@ app({
         const graph = run.nodes
         // MODEL, clip skip, vae, etc. ---------------------------------------------------------------
         let { ckpt, vae, clip } = run_model(ui.model)
+
+        if (ui.ipadapter) {
+            ckpt = (await run_ipadapter_standalone(ui.ipadapter, ckpt)).ip_adapted_model
+        }
 
         // RICH PROMPT ENGINE -------- ---------------------------------------------------------------
         let positiveText = ui.positive.text

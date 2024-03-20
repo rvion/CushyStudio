@@ -8,7 +8,7 @@ import { imageMeta } from 'image-meta'
 import { dirname } from 'pathe'
 
 import { MediaImageL } from './MediaImage'
-import { hashArrayBuffer } from 'src/state/hashBlob'
+import { hashArrayBuffer } from 'src/state/hashArrayBuffer'
 import { bang } from 'src/utils/misc/bang'
 import { extractExtensionFromContentType } from 'src/widgets/misc/extractExtensionFromContentType'
 

@@ -12,7 +12,7 @@ import { LiveInstance } from 'src/db/LiveInstance'
 import { LiveRef } from 'src/db/LiveRef'
 import { SQLITE_false, SQLITE_true } from 'src/db/SQLITE_boolean'
 import { VirtualHierarchy } from 'src/panels/libraryUI/VirtualHierarchy'
-import { hashArrayBuffer } from 'src/state/hashBlob'
+import { hashArrayBuffer } from 'src/state/hashArrayBuffer'
 import { toastError, toastSuccess } from 'src/utils/misc/toasts'
 
 export interface CushyAppL extends LiveInstance<TABLES['cushy_app']> {}

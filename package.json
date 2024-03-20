@@ -57,8 +57,20 @@
         "diff-with-master-all": "git diff master                   > tmp/diff-with-master-all.diff && code tmp/diff-with-master-all.diff",
         "diff-with-master-add": "git diff master | grep -Ev '^\\-' > tmp/diff-with-master.diff     && code tmp/diff-with-master.diff",
         "diff-local": "cd library/local && git diff master > doc.diff && code doc.diff",
-        "📌 UTILS": "----------------------------------------------------------------------",
-        "pics": "bun --watch src/tools/autoupload-screenshots.ts"
+        "📌 UTILS": "------------------------------------------------------------------------",
+        "pics": "bun --watch src/tools/autoupload-screenshots.ts",
+        "cycles:madge": "madge --circular src/**/*.tsx src/**/*.ts",
+        "cycles:skott": "skott -nit -m raw -s",
+        "📌 FORM": "-------------------------------------------------------------------------",
+        "form:ls": "madge lib/controls/FormBuilder.loco.js",
+        "form:deps": "./src/scripts/show-file-deps.sh src/controls/FormBuilder.loco.ts",
+        "form:deps:npm": "madge lib/controls/FormBuilder.loco.js --include-npm -i tmp/depedencies.png && code tmp/depedencies.png",
+        "form:deps-svg": "madge lib/controls/FormBuilder.loco.js -i tmp/depedencies.svg && code tmp/depedencies.svg",
+        "form:deps-svg:npm": "madge lib/controls/FormBuilder.loco.js --include-npm -i tmp/depedencies.svg && code tmp/depedencies.svg",
+        "form:-----:": "",
+        "form:transpile": "tsc -p tsconfig.doc.json",
+        "form:build": "./node_modules/.bin/electron -i src/scripts/build-formlib.js js css",
+        "form:bundle-dts": "'/Users/loco/dev/CushyStudio/src/scripts/node_modules/.bin/rollup' -c '/Users/loco/dev/CushyStudio/src/scripts/form.rollup.config.mjs'"
     },
     "dependencies": {
         "@codemirror/autocomplete": "^6.13.0",

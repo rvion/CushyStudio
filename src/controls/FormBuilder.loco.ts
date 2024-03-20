@@ -13,7 +13,6 @@ import { Widget_color, type Widget_color_config } from './widgets/color/WidgetCo
 import { Widget_custom, type Widget_custom_config } from './widgets/custom/WidgetCustom'
 import { Widget_enum } from './widgets/enum/WidgetEnum'
 import { Widget_group, type Widget_group_config } from './widgets/group/WidgetGroup'
-import { Widget_image, type Widget_image_config } from './widgets/image/WidgetImage'
 import { Widget_list, type Widget_list_config } from './widgets/list/WidgetList'
 import { Widget_markdown, Widget_markdown_config } from './widgets/markdown/WidgetMarkdown'
 import { Widget_matrix, type Widget_matrix_config } from './widgets/matrix/WidgetMatrix'
@@ -60,7 +59,7 @@ export class FormBuilder_Loco implements IFormBuilder {
     markdown    = (config: Widget_markdown_config | string)                                                  => new Spec<Widget_markdown                    >('markdown'  , typeof config === 'string' ? { markdown: config } : config)
     /** [markdown variant]: inline=true, label=false */
     header      = (config: Widget_markdown_config | string)                                                  => new Spec<Widget_markdown                    >('markdown'  , typeof config === 'string' ? { markdown: config, inHeader: true, label: false } : { inHeader: true, label: false, alignLabel: false, ...config })
-    image       = (config: Widget_image_config = {})                                                         => new Spec<Widget_image                       >('image'     , config)
+    // image       = (config: Widget_image_config = {})                                                         => new Spec<Widget_image                       >('image'     , config)
     int         = (config: Omit<Widget_number_config, 'mode'> = {})                                          => new Spec<Widget_number                      >('number'    , { mode: 'int', ...config })
     /** [number variant] precent = mode=int, default=100, step=10, min=1, max=100, suffix='%', */
     percent     = (config: Omit<Widget_number_config, 'mode'> = {})                                          => new Spec<Widget_number                      >('number'    , { mode: 'int', default: 100, step: 10, min: 1, max: 100, suffix: '%', ...config })
@@ -213,7 +212,6 @@ export class FormBuilder_Loco implements IFormBuilder {
         if (type === 'button'    ) return new Widget_button    (this.form, parent, config, serial)
         if (type === 'seed'      ) return new Widget_seed      (this.form, parent, config, serial)
         if (type === 'matrix'    ) return new Widget_matrix    (this.form, parent, config, serial)
-        if (type === 'image'     ) return new Widget_image     (this.form, parent, config, serial)
         if (type === 'selectOne' ) return new Widget_selectOne (this.form, parent, config, serial)
         if (type === 'selectMany') return new Widget_selectMany(this.form, parent, config, serial)
         if (type === 'size'      ) return new Widget_size      (this.form, parent, config, serial)

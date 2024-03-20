@@ -1,5 +1,6 @@
-import { OutputFor } from '../../_prefabs'
-import { Cnet_args } from '../../prefab_cnet'
+import type { OutputFor } from '../../_prefabs'
+import type { Cnet_args } from '../prefab_cnet'
+
 import { ipAdapterDoc } from './_ipAdapterDoc'
 import { ipAdapterModelList } from './_ipAdapterModelList'
 import { ui_ipadapter_CLIPSelection, ui_subform_IPAdapter_common } from './_ipAdapterUtils'

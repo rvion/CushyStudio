@@ -1,5 +1,5 @@
-import { cnet_ui_common } from '../prefab_cnet'
 import { OutputFor } from '../_prefabs'
+import { cnet_ui_common } from './cnet_ui_common'
 
 // 🅿️ Sketch FORM ===================================================
 export const ui_subform_Sketch = () => {

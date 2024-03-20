@@ -1,5 +1,5 @@
 import type { OutputFor } from '../../_prefabs'
-import type { Cnet_args } from '../../prefab_cnet'
+import type { Cnet_args } from '../prefab_cnet'
 
 import { ipAdapterDoc } from './_ipAdapterDoc'
 import { ipAdapterModelList } from './_ipAdapterModelList'
@@ -11,7 +11,13 @@ export const ui_ipadapter_standalone = () => {
     const form = getCurrentForm()
     return form.group({
         label: 'IPAdapter',
-        requirements: [{ type: 'customNodesByTitle', title: 'ComfyUI_IPAdapter_plus' }],
+        requirements: [
+            //
+            { type: 'customNodesByTitle', title: 'ComfyUI_IPAdapter_plus' },
+            { type: 'modelInManager', modelName: 'ip-adapter_sdxl_vit-h.safetensors' },
+            { type: 'modelInManager', modelName: 'ip-adapter-plus_sdxl_vit-h.safetensors' },
+            { type: 'modelInManager', modelName: 'ViT-H SAM model' },
+        ],
         items: () => ({
             help: form.markdown({ startCollapsed: true, markdown: ipAdapterDoc }),
             image: form.image({ label: 'Image' }),
