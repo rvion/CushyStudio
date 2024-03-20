@@ -3,6 +3,7 @@
  * For the slay-the-spire game
  */
 
+import { bang } from '../../../src/utils/misc/bang'
 import {
     run_ipadapter_standalone,
     ui_ipadapter_standalone,
@@ -13,7 +14,6 @@ import { stsAssets } from './_stsAssets'
 import { allCards } from './_stsCards'
 import { drawCard } from './_stsDrawCard'
 import { convertColors, convertKind, convertRarity } from './_stsHelpers'
-import { bang } from 'src/utils/misc/bang'
 
 app({
     metadata: {

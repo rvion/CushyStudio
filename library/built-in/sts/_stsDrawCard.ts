@@ -1,6 +1,6 @@
+import type { MediaImageL } from '../../../src/models/MediaImage'
 import type { SimpleColor, SimpleKind, SimpleRarity } from './_stsAssets'
 import type { TextConfig } from 'konva/lib/shapes/Text'
-import type { MediaImageL } from 'src/models/MediaImage'
 
 import { stsAssets } from './_stsAssets'
 

@@ -1,5 +1,4 @@
-import type { FormBuilder } from 'src'
-import type { KnownModel_Name } from 'src/manager/model-list/KnownModel_Name'
+import type { FormBuilder, KnownModel_Name } from '../../../../../src'
 
 //🅿️ IPAdapter Model Selection ===================================================
 

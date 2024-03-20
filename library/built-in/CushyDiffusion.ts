@@ -1,5 +1,3 @@
-import { run_advancedPrompt, ui_advancedPrompt } from 'library/built-in/_prefabs/prefab_promptsWithButtons'
-
 import { ui_highresfix } from './_prefabs/_prefabs'
 import {
     run_ipadapter_standalone,
@@ -13,6 +11,7 @@ import { output_demo_summary } from './_prefabs/prefab_markdown'
 import { ui_mask } from './_prefabs/prefab_mask'
 import { run_model, ui_model } from './_prefabs/prefab_model'
 import { run_prompt } from './_prefabs/prefab_prompt'
+import { run_advancedPrompt, ui_advancedPrompt } from './_prefabs/prefab_promptsWithButtons'
 import { ui_recursive } from './_prefabs/prefab_recursive'
 import { run_regionalPrompting_v1, ui_regionalPrompting_v1 } from './_prefabs/prefab_regionalPrompting_v1'
 import { run_rembg_v1, ui_rembg_v1 } from './_prefabs/prefab_rembg'

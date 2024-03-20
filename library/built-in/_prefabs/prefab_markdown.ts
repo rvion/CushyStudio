@@ -1,4 +1,4 @@
-import type { Runtime } from 'src'
+import type { Runtime } from '../../../src'
 
 export const output_demo_summary = (run: Runtime) => {
     run.output_HTML({

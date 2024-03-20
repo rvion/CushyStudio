@@ -19,19 +19,19 @@
         "resolveJsonModule": true,
         "isolatedModules": true,
         "jsx": "react-jsx",
-        "baseUrl": ".",
+        // "baseUrl": ".",
         "typeRoots": ["src/typings"],
         "types": [],
         "paths": {
             // overrides
-            "nsfwjs": ["src/typings/nsfwjs.d.ts"],
+            "nsfwjs": ["./src/typings/nsfwjs.d.ts"],
 
             // emptied
-            "typescript": ["src/typings/empty-types.d.ts"],
-            "webgl2": ["src/typings/empty-types.d.ts"],
-            "@tensorflow/tfjs": ["src/typings/empty-types.d.ts"],
-            "@types/webgl": ["src/typings/empty-types.d.ts"],
-            "@types/webgl-ext": ["src/typings/empty-types.d.ts"]
+            "typescript": ["./src/typings/empty-types.d.ts"],
+            "webgl2": ["./src/typings/empty-types.d.ts"],
+            "@tensorflow/tfjs": ["./src/typings/empty-types.d.ts"],
+            "@types/webgl": ["./src/typings/empty-types.d.ts"],
+            "@types/webgl-ext": ["./src/typings/empty-types.d.ts"]
         },
         // -------------// -------------
         /* specific to base */ "tsBuildInfoFile": ".tsbuildinfo",

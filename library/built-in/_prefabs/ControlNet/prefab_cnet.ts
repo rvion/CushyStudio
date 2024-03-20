@@ -1,6 +1,7 @@
 import type { FormBuilder } from '../../../../src/controls/FormBuilder'
 import type { OutputFor } from '../_prefabs'
 
+import { bang } from '../../../../src/utils/misc/bang'
 import { run_cnet_IPAdapter, ui_subform_IPAdapter } from './ipAdapter/prefab_ipAdapter_base'
 import { run_cnet_IPAdapterFaceID, ui_IPAdapterFaceID } from './ipAdapter/prefab_ipAdapter_face'
 import { run_cnet_canny, ui_subform_Canny } from './prefab_cnet_canny'
@@ -12,7 +13,6 @@ import { run_cnet_Scribble, ui_subform_Scribble } from './prefab_cnet_scribble'
 import { run_cnet_Sketch, ui_subform_Sketch } from './prefab_cnet_sketch'
 import { run_cnet_SoftEdge, ui_subform_SoftEdge } from './prefab_cnet_softEdge'
 import { run_cnet_Tile, ui_subform_Tile } from './prefab_cnet_tile'
-import { bang } from 'src/utils/misc/bang'
 
 // 🅿️ CNET UI -----------------------------------------------------------
 export const ui_cnet = () => {

@@ -1,5 +1,5 @@
+import type { FormBuilder } from '../../../../src'
 import type { OutputFor } from '../_prefabs'
-import type { FormBuilder } from 'src'
 
 import { cnet_preprocessor_ui_common, cnet_ui_common } from './cnet_ui_common'
 

@@ -1,6 +1,7 @@
-☐ add back the live update of string values
-    ☐ current system forbid usage as dynamic search
-    ☐ annoying when we expect the string to update live at different areas
+☐ investigate https://stackoverflow.com/questions/52579681/typescript-prevent-imports-from-certain-directory-in-project
+✔ add back the live update of string values @done(24-03-20 15:21)
+    ✔ current system forbid usage as dynamic search @done(24-03-20 15:21)
+    ✔ annoying when we expect the string to update live at different areas @done(24-03-20 15:21)
 ☐ tab between widget int does not work properly (extra jump somewhere in the middle, have to press tab more than once)
     ☐ int do not work properly
     ☐ https://cushy.fra1.cdn.digitaloceanspaces.com/rvion/76a67a6a40edffde772bfd345703fc62c0146963.jpg
@@ -10,7 +11,7 @@
 
 ✔ fix codegen with new template @done(24-03-05 23:30)
 ☐ recent Apps
-☐ recentDrafts
+✔ recentDrafts @done(24-03-20 15:22)
 ☐ proper Tab
 ☐ lastRunAt
 ☐ https://github.com/WiseLibs/better-sqlite3/issues/262
