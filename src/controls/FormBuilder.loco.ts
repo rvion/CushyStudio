@@ -1,9 +1,10 @@
+import type { OpenRouter_Models } from '../llm/OpenRouter_models'
 import type { Form, IFormBuilder } from './Form'
 import type { IWidget, Requirements } from './IWidget'
-import type { OpenRouter_Models } from '../llm/OpenRouter_models'
 
 import { makeAutoObservable } from 'mobx'
 
+import { openRouterInfos } from '../llm/OpenRouter_infos'
 import { _FIX_INDENTATION } from '../utils/misc/_FIX_INDENTATION'
 import { type ISpec, type SchemaDict, Spec } from './Spec'
 import { Widget_bool, type Widget_bool_config } from './widgets/bool/WidgetBool'
@@ -25,7 +26,6 @@ import { Widget_shared } from './widgets/shared/WidgetShared'
 import { Widget_size, type Widget_size_config } from './widgets/size/WidgetSize'
 import { Widget_spacer, Widget_spacer_config } from './widgets/spacer/WidgetSpacer'
 import { Widget_string, type Widget_string_config } from './widgets/string/WidgetString'
-import { openRouterInfos } from '../llm/OpenRouter_infos'
 
 // prettier-ignore
 export class FormBuilder_Loco implements IFormBuilder {

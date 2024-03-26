@@ -1,23 +1,23 @@
+import type { LiteGraphJSON } from '../core/LiteGraph'
+import type { STATE } from '../state/state'
 import type { ComfyPromptJSON } from '../types/ComfyPrompt'
 import type { Library } from './Library'
 import type { Metafile, OutputFile } from 'esbuild'
-import type { LiteGraphJSON } from '../core/LiteGraph'
-import type { STATE } from '../state/state'
 
 import { readFileSync } from 'fs'
 import { makeAutoObservable } from 'mobx'
 import path, { basename, dirname } from 'pathe'
 
-import { convertLiteGraphToPrompt } from '../core/litegraphToPrompt'
-import { exhaust } from '../utils/misc/ComfyUtils'
-import { getPngMetadataFromUint8Array } from '../utils/png/_getPngMetadata'
-import { AppMetadata } from './AppManifest'
 import { createEsbuildContextFor } from '../compiler/transpiler'
+import { convertLiteGraphToPrompt } from '../core/litegraphToPrompt'
 import { asCushyScriptID } from '../db/TYPES.gen'
 import { CushyScriptL } from '../models/CushyScript'
 import { asAbsolutePath } from '../utils/fs/pathUtils'
+import { exhaust } from '../utils/misc/ComfyUtils'
 import { ManualPromise } from '../utils/misc/ManualPromise'
 import { toastError } from '../utils/misc/toasts'
+import { getPngMetadataFromUint8Array } from '../utils/png/_getPngMetadata'
+import { AppMetadata } from './AppManifest'
 
 // prettier-ignore
 export type LoadStrategy =
@@ -121,7 +121,7 @@ export class LibraryFile {
             return res
         }
         const script = res.script
-        script.evaluateAndUpdateApps()
+        script.evaluateAndUpdateAppsAndViews()
         return res
     }
 

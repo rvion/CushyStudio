@@ -1,15 +1,13 @@
+import type { MediaImageL } from '../models/MediaImage'
+import type { StepL } from '../models/Step'
+
 import { observer } from 'mobx-react-lite'
 
-import { OutputPreviewWrapperUI } from './OutputPreviewWrapperUI'
-import { StepL } from '../models/Step'
 import { Panel_ViewImage } from '../panels/Panel_ViewImage'
-import { StepOutput_Image } from '../types/StepOutput'
 import { ImageUI } from '../widgets/galleries/ImageUI'
+import { OutputPreviewWrapperUI } from './OutputPreviewWrapperUI'
 
-export const OutputImagePreviewUI = observer(function OutputImagePreviewUI_(p: {
-    step?: Maybe<StepL>
-    output: StepOutput_Image
-}) {
+export const OutputImagePreviewUI = observer(function OutputImagePreviewUI_(p: { step?: Maybe<StepL>; output: MediaImageL }) {
     const image = p.output
     return (
         <OutputPreviewWrapperUI output={p.output}>
@@ -29,6 +27,6 @@ export const OutputImagePreviewUI = observer(function OutputImagePreviewUI_(p: {
     )
 })
 
-export const OutputImageUI = observer(function OutputImageUI_(p: { step?: Maybe<StepL>; output: StepOutput_Image }) {
+export const OutputImageUI = observer(function OutputImageUI_(p: { step?: Maybe<StepL>; output: MediaImageL }) {
     return <Panel_ViewImage imageID={p.output.id} />
 })

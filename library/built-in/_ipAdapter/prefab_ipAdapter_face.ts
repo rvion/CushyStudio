@@ -84,38 +84,31 @@ export const run_cnet_IPAdapterFaceID = (
     })
 
     const ip_clip_name = graph.CLIPVisionLoader({ clip_name: ip.models.clip_name })
-
-    const faceIDnode = graph.IPAdapterApplyFaceID({
+    const faceIDnode = graph.IPAdapterFaceID({
         ipadapter: graph.IPAdapterModelLoader({ ipadapter_file: ip.models.cnet_model_name }),
         clip_vision: ip_clip_name,
-        insightface: graph.InsightFaceLoader({ provider: 'CPU' }),
+        insightface: (t) => t.IPAdapterInsightFaceLoader({ provider: 'CUDA' }),
         image: image,
+        combine_embeds: 'average',
         model: ckpt,
         weight: ip.strength,
-        weight_v2: ip.strength,
-        faceid_v2: true,
-        noise: ip.settings.noise,
-        weight_type: 'original',
+        weight_faceidv2: ip.strength,
+        weight_type: 'linear',
         start_at: ip.settings.startAtStepPercent,
         end_at: ip.settings.endAtStepPercent,
-        unfold_batch: ip.settings?.unfold_batch,
     })
 
     ckpt = faceIDnode._MODEL
 
     if (ip.reinforce) {
         const ip_model = graph.IPAdapterModelLoader({ ipadapter_file: ip.reinforce.cnet_model_name })
-        const ip_adapted_model = graph.IPAdapterApply({
+        const ip_adapted_model = graph.IPAdapter({
             ipadapter: ip_model,
-            clip_vision: ip_clip_name,
             image: image,
             model: ckpt,
             weight: ip.reinforce.strength,
-            noise: ip.reinforce.settings.noise,
-            weight_type: 'original',
             start_at: ip.reinforce.settings.startAtStepPercent,
             end_at: ip.reinforce.settings.endAtStepPercent,
-            unfold_batch: ip.reinforce.settings.unfold_batch,
         })._MODEL
         ckpt = ip_adapted_model
     }

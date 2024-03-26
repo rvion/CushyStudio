@@ -16,8 +16,8 @@ class QuickBench {
     }
 
     health = (val: number, max: number) => {
-        if (val > max) return `🔴 ${val.toFixed(2)}`
-        if (val > max * 0.5) return `🟠 ${val.toFixed(2)}`
+        if (val > max) return `🛑 ${val.toFixed(2)}`
+        if (val > max * 0.5) return `🔶 ${val.toFixed(2)}`
         return val.toFixed(2)
     }
 
@@ -51,7 +51,9 @@ class QuickBench {
         for (const key in this.entries) {
             stats.push(this.getStatLine(key))
         }
+        console.groupCollapsed(`[📊] QuickBench Stats`)
         console.table(stats)
+        console.groupEnd()
     }
 }
 

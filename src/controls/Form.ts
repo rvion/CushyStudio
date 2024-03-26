@@ -6,9 +6,11 @@ import type { Widget_optional, Widget_optional_config } from './widgets/optional
 import type { Widget_shared } from './widgets/shared/WidgetShared'
 
 import { action, isObservable, makeAutoObservable, observable } from 'mobx'
+import { createElement, type ReactNode } from 'react'
 
-import { Spec } from './Spec'
 import { debounce } from '../utils/misc/debounce'
+import { FormUI } from './FormUI'
+import { Spec } from './Spec'
 
 export interface IFormBuilder {
     //
@@ -31,6 +33,16 @@ export class Form<
     const out MyFormBuilder extends IFormBuilder = IFormBuilder,
 > {
     error: Maybe<string> = null
+
+    /** shortcut to access the <FormUI /> component without having to import it first */
+    FormUI = FormUI
+
+    /**
+     * allow to quickly render the form in a react component
+     * without having to import any component; usage:
+     * | <div>{x.render()}</div>
+     */
+    render = (): ReactNode => createElement(FormUI, { form: this })
 
     at = <K extends keyof FIELDS>(key: K): FIELDS[K]['$Widget'] => {
         return this.root.at(key)

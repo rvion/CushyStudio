@@ -5,10 +5,10 @@ import type { ActionTagMethodList } from '../cards/App'
 import type { MediaImageL } from '../models/MediaImage'
 import type { TreeNode } from '../panels/libraryUI/tree/xxx/TreeNode'
 import type { RevealState } from '../rsuite/reveal/RevealState'
-import type { ComfyStatus, PromptID, PromptRelated_WsMsg, WsMsg } from '../types/ComfyWsApi'
 import type { CSCriticalError } from '../widgets/CSCriticalError'
 import type { Wildcards } from '../widgets/prompter/nodes/wildcards/wildcards'
 
+import { Value } from '@sinclair/typebox/value'
 import { SupabaseClient } from '@supabase/supabase-js'
 import { closest } from 'fastest-levenshtein'
 import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'fs'
@@ -16,6 +16,7 @@ import { makeAutoObservable, observable, toJS } from 'mobx'
 import { nanoid } from 'nanoid'
 import { join } from 'pathe'
 import { createRef } from 'react'
+import { fromZodError } from 'zod-validation-error'
 
 import { ShortcutWatcher } from '../app/shortcuts/ShortcutManager'
 import { allCommands } from '../app/shortcuts/shortcuts'
@@ -58,6 +59,7 @@ import { CushyLayoutManager } from '../panels/router/Layout'
 import { SafetyChecker } from '../safety/Safety'
 import { Database } from '../supa/database.types'
 import { ThemeManager } from '../theme/ThemeManager'
+import { type ComfyStatus, type PromptID, type PromptRelated_WsMsg, type WsMsg, WsMsg$Schema } from '../types/ComfyWsApi'
 import { CleanedEnumResult } from '../types/EnumUtils'
 import { StepOutput } from '../types/StepOutput'
 import { GitManagedFolder } from '../updater/updater'
@@ -113,6 +115,7 @@ export class STATE {
     auth: AuthState
     managerRepository = new ComfyManagerRepository({ check: false, genTypes: false })
     search: SearchManager = new SearchManager(this)
+    forms = CushyFormManager
 
     _updateTime = () => {
         const now = Date.now()
@@ -160,7 +163,7 @@ export class STATE {
     hasWildcard = (name: string): boolean => (this.wildcards as { [k: string]: any })[name] != null
     get wildcards(): Wildcards {
         const wcdsPath = this.resolveFromRoot(asRelativePath('src/widgets/prompter/nodes/wildcards/wildcards.json'))
-        const wcds = this.readJSON<Wildcards>(wcdsPath)
+        const wcds = this.readJSON_<Wildcards>(wcdsPath)
         Object.defineProperty(this, 'wildcards', { value: wcds })
         return wcds
     }
@@ -756,6 +759,16 @@ export class STATE {
         // 🔴 console.info(`[👢] WEBSOCKET: received ${e.data}`)
         const msg: WsMsg = JSON.parse(e.data as any)
 
+        const shouldCheckPAYLOADS = true
+        if (shouldCheckPAYLOADS) {
+            const match = WsMsg$Schema.safeParse(msg)
+            if (!match.success) {
+                console.log(`[🔴] /!\\ Websocket payload does not match schema.`)
+                console.log('🔴 payload', msg)
+                console.log('🔴error: ❌', fromZodError(match.error))
+            }
+        }
+
         if (msg.type === 'status') {
             if (msg.data.sid) this.comfySessionId = msg.data.sid
             this.status = msg.data.status
@@ -876,8 +889,10 @@ export class STATE {
         writeFileSync(absPath, content)
     }
 
+    readJSON = readJSON
+    writeJSON = writeJSON
     /** read text file, optionally provide a default */
-    readJSON = <T extends any>(absPath: AbsolutePath, def?: T): T => {
+    readJSON_ = <T extends any>(absPath: AbsolutePath, def?: T): T => {
         console.log(absPath)
         const exists = existsSync(absPath)
         if (!exists) {

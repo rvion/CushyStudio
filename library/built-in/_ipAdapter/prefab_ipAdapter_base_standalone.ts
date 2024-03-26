@@ -1,4 +1,3 @@
-import type { Cnet_args } from '../_controlNet/prefab_cnet'
 import type { OutputFor } from '../_prefabs/_prefabs'
 
 import { ipAdapterDoc } from './_ipAdapterDoc'
@@ -37,30 +36,48 @@ export const run_ipadapter_standalone = async (
     const run = getCurrentRun()
     const graph = run.nodes
 
-    let image: _IMAGE = await run.loadImageAnswer(ui.image)
-    image = graph.PrepImageForClipVision({ image, interpolation: 'LANCZOS', crop_position: 'center', sharpening: 0 })
-    for (const ex of ui.extra) {
-        let image2 = graph.PrepImageForClipVision({
-            image: await run.loadImageAnswer(ex),
-            interpolation: 'LANCZOS',
-            crop_position: 'center',
-            sharpening: 0,
-        })
-        image = graph.ImageBatch({ image1: image, image2 })
-    }
     const ip_model = graph.IPAdapterModelLoader({ ipadapter_file: ui.cnet_model_name })
+
+    let image: _IMAGE = await run.loadImageAnswer(ui.image)
+    let image_ = graph.IPAdapterEncoder({ ipadapter: ip_model, image }).outputs
+    let pos_embed: _EMBEDS = image_.pos_embed
+    let neg_embed: _EMBEDS = image_.neg_embed
+
+    for (const ex of ui.extra) {
+        const extraImage = graph.IPAdapterEncoder({
+            image: await run.loadImageAnswer(ex),
+            ipadapter: ip_model,
+        })
+        // merge pos
+        const combinedPos = graph.IPAdapterCombineEmbeds({
+            embed1: pos_embed,
+            embed2: extraImage.outputs.pos_embed,
+            method: 'average',
+        })
+        pos_embed = combinedPos.outputs.EMBEDS
+        // merge neg
+        const combinedNeg = graph.IPAdapterCombineEmbeds({
+            embed1: pos_embed,
+            embed2: extraImage.outputs.neg_embed,
+            method: 'average',
+        })
+        neg_embed = combinedNeg.outputs.EMBEDS
+    }
     const ip_clip_name = graph.CLIPVisionLoader({ clip_name: ui.clip_name })
-    const ip_adapted_model = graph.IPAdapterApply({
+    const ip_adapted_model = graph.IPAdapterEmbeds({
         ipadapter: ip_model,
         clip_vision: ip_clip_name,
-        image: image,
+        pos_embed,
+        neg_embed,
+        // image: image,
         model: ckpt,
-        weight_type: 'original',
+        weight_type: 'linear',
+        // weight_type: 'original',
         weight: ui.strength,
-        noise: ui.settings.noise,
+        // noise: ui.settings.noise,
         start_at: ui.settings.startAtStepPercent,
         end_at: ui.settings.endAtStepPercent,
-        unfold_batch: ui.settings.unfold_batch,
+        // unfold_batch: ui.settings.unfold_batch,
     })._MODEL
 
     return { ip_adapted_model }

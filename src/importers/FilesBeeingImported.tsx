@@ -7,17 +7,17 @@ import { observer, useLocalObservable } from 'mobx-react-lite'
 import { useState } from 'react'
 
 import { convertLiteGraphToPrompt } from '../core/litegraphToPrompt'
-import { useSt } from '../state/stateContext'
-import { getPngMetadataFromFile } from '../utils/png/_getPngMetadata'
-import { TypescriptHighlightedCodeUI } from '../widgets/misc/TypescriptHighlightedCodeUI'
-import { PromptToCodeOpts } from './ComfyImporter'
-import { usePromise } from './usePromise'
 import { createMediaImage_fromFileObject } from '../models/createMediaImage_fromWebFile'
 import { MessageInfoUI } from '../panels/MessageUI'
 import { Panel } from '../rsuite/shims'
+import { useSt } from '../state/stateContext'
 import { extractErrorMessage } from '../utils/formatters/extractErrorMessage'
 import { toastError } from '../utils/misc/toasts'
+import { getPngMetadataFromFile } from '../utils/png/_getPngMetadata'
 import { getWebpMetadata } from '../utils/png/_getWebpMetadata'
+import { TypescriptHighlightedCodeUI } from '../widgets/misc/TypescriptHighlightedCodeUI'
+import { PromptToCodeOpts } from './ComfyImporter'
+import { usePromise } from './usePromise'
 
 export interface FileListProps {
     files: File[]
@@ -145,7 +145,7 @@ export const ImportedFileUI = observer(function ImportedFileUI_(p: {
                             const res = await file.extractScriptFromFile()
                             if (res.type === 'failed') return toastError('failed to extract script')
                             const script = res.script
-                            script.evaluateAndUpdateApps()
+                            script.evaluateAndUpdateAppsAndViews()
                             const apps = script._apps_viaScript
                             if (apps == null) return toastError('no app found (apps is null)')
                             if (apps.length === 0) return toastError('no app found (apps.length === 0)')

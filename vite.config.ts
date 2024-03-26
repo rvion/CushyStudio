@@ -57,7 +57,6 @@ export default defineConfig({
     resolve: {
         alias: {
             // -----------------------------------------------------------------------
-            three: `${installDir}/src/syms/three.js`,
             mobx: `${installDir}/src/syms/mobx.js`,
             nsfwjs: `${installDir}/src/syms/nsfwjs.js`,
             '@tensorflow/tfjs': `${installDir}/src/syms/tfjs.js`,

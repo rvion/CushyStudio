@@ -1,7 +1,3 @@
-import type { SqlColDef } from './_getAllColumnsForTable'
-import type { BaseInstanceFields } from './LiveInstance'
-import type { KyselyTables } from './TYPES.gen'
-import type { Metafile } from 'esbuild'
 import type { Status } from '../back/Status'
 import type { Widget_group_serial } from '../controls/widgets/group/WidgetGroup'
 import type { EmbeddingName } from '../models/ComfySchema'
@@ -10,6 +6,10 @@ import type { ComfyNodeID, ComfyNodeMetadata } from '../types/ComfyNodeID'
 import type { ComfyPromptJSON } from '../types/ComfyPrompt'
 import type { ComfySchemaJSON } from '../types/ComfySchemaJSON'
 import type { WsMsgExecutionError } from '../types/ComfyWsApi'
+import type { SqlColDef } from './_getAllColumnsForTable'
+import type { BaseInstanceFields } from './LiveInstance'
+import type { KyselyTables } from './TYPES.gen'
+import type { Metafile } from 'esbuild'
 
 import { TObject, TSchema, Type } from '@sinclair/typebox'
 
@@ -24,11 +24,18 @@ export type CushyScript_metafile = Metafile
 // }
 export const CushyScript_metafile_Schema = Type.Record(Type.String(), Type.Any())
 
+export type MediaCustom_params = Record<string, any>
+export const MediaCustom_params_Schema = Type.Record(Type.String(), Type.Any())
+
 export type ComfyWorkflow_metadata = { [key: ComfyNodeID]: ComfyNodeMetadata }
 export const ComfyWorkflow_metadata_Schema = Type.Record(Type.String(), Type.Any())
 
 export type ComfyWorkflow_comfyPromptJSON = ComfyPromptJSON
 export const ComfyWorkflow_comfyPromptJSON_Schema = Type.Record(Type.String(), Type.Any())
+
+/** media scenes can store any short metadata needed to reconstruct the scene */
+export type Media3dScene_params = Record<string, any>
+export const Media3dScene_params_Schema = Type.Record(Type.String(), Type.Any())
 
 export type Draft_formSerial = Widget_group_serial<any>
 export const Draft_formSerial_Schema = Type.Record(Type.String(), Type.Any())

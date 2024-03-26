@@ -7,12 +7,12 @@ import { observer } from 'mobx-react-lite'
 import { nanoid } from 'nanoid'
 import { createElement, createRef, FC } from 'react'
 
+import { Trigger } from '../../app/shortcuts/Trigger'
+import { Message } from '../../rsuite/shims'
+import { Panel_FullScreenLibrary } from '../Panel_FullScreenLibrary'
 import { hashJSONObject } from './hash'
 import { PanelNames, panels, Panels } from './PANELS'
 import { RenderPanelUI } from './RenderPanelUI'
-import { Trigger } from '../../app/shortcuts/Trigger'
-import { Panel_FullScreenLibrary } from '../Panel_FullScreenLibrary'
-import { Message } from '../../rsuite/shims'
 
 export type PropsOf<T> = T extends FC<infer Props> ? Props : '❌'
 
@@ -270,7 +270,7 @@ export class CushyLayoutManager {
         const tabID = `/${panelName}/${hashJSONObject(panelProps ?? {})}`
         let prevTab: FL.TabNode | undefined
         prevTab = this.model.getNodeById(tabID) as FL.TabNode // 🔴 UNSAFE ?
-        console.log(`🦊 prevTab for ${tabID}:`, prevTab)
+        // console.log(`🦊 prevTab for ${tabID}:`, prevTab)
 
         // 3. create tab if not prev type
         const { icon, title } = panels[panelName].header(panelProps as any)

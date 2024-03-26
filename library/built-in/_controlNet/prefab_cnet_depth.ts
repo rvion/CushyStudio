@@ -5,8 +5,8 @@ import { cnet_preprocessor_ui_common, cnet_ui_common } from './cnet_ui_common'
 
 // 🅿️ Depth FORM ===================================================
 export const ui_subform_Depth = () => {
-    const form: FormBuilder = getCurrentForm()
-    return form.group({
+    const ui: FormBuilder = getCurrentForm()
+    return ui.group({
         label: 'Depth',
         requirements: [
             //
@@ -18,9 +18,9 @@ export const ui_subform_Depth = () => {
             { type: 'modelInManager', modelName: 'controlnet-SargeZT/controlnet-sd-xl-1.0-depth-16bit-zoe' },
         ],
         items: () => ({
-            ...cnet_ui_common(form),
+            ...cnet_ui_common(ui),
             preprocessor: ui_subform_Depth_Preprocessor(),
-            cnet_model_name: form.enum.Enum_ControlNetLoader_control_net_name({
+            cnet_model_name: ui.enum.Enum_ControlNetLoader_control_net_name({
                 label: 'Model',
                 // @ts-ignore
                 default: 't2iadapter_depth_sd14v1.pth',

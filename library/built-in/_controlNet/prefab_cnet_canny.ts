@@ -5,8 +5,8 @@ import { cnet_preprocessor_ui_common, cnet_ui_common } from './cnet_ui_common'
 
 // 🅿️ Canny FORM ===================================================
 export const ui_subform_Canny = () => {
-    const form: FormBuilder = getCurrentForm()
-    return form.group({
+    const ui: FormBuilder = getCurrentForm()
+    return ui.group({
         label: 'Canny',
         requirements: [
             { type: 'customNodesByTitle', title: 'ComfyUI-Advanced-ControlNet' },
@@ -17,13 +17,13 @@ export const ui_subform_Canny = () => {
             { type: 'modelInManager', modelName: 'kohya-ss/ControlNet-LLLite: SDXL Canny Anime' },
         ],
         items: () => ({
-            ...cnet_ui_common(form),
-            preprocessor: ui_subform_Canny_Preprocessor(form),
-            models: form.group({
+            ...cnet_ui_common(ui),
+            preprocessor: ui_subform_Canny_Preprocessor(ui),
+            models: ui.group({
                 label: 'Select or Download Models',
                 // startCollapsed: true,
                 items: () => ({
-                    cnet_model_name: form.enum.Enum_ControlNetLoader_control_net_name({
+                    cnet_model_name: ui.enum.Enum_ControlNetLoader_control_net_name({
                         label: 'Model',
                         default: 't2iadapter_canny_sd14v1.pth',
                         filter: (name) => name.toString().includes('canny'),

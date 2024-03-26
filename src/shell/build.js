@@ -63,7 +63,6 @@ async function buildJS() {
         jsxImportSource: 'src/utils/custom-jsx',
         alias: {
             // -----------------------------------------------------------------------
-            three: './src/syms/three.js',
             mobx: './src/syms/mobx.js',
             nsfwjs: './src/syms/nsfwjs.js',
             '@tensorflow/tfjs': './src/syms/tfjs.js',

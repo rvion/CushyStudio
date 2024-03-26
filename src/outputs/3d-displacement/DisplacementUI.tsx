@@ -5,8 +5,8 @@ import { CameraControls, OrbitControls, useTexture } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
 import { observer } from 'mobx-react-lite'
 
-import { Ground3D } from './Ground3d'
-import { SkyBox3D } from './SkyBox3D'
+import { Ground3D } from '../3d-utils/Ground3d'
+import { SkyBox3D } from '../3d-utils/SkyBox3D'
 
 export const DisplacementUI = observer(function DisplacementUI_(p: { uist: DisplacementState }) {
     return (

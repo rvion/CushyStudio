@@ -1,14 +1,14 @@
-import type { TreeNode } from '../xxx/TreeNode'
 import type { STATE } from '../../../../state/state'
+import type { TreeNode } from '../xxx/TreeNode'
 
 import { makeAutoObservable } from 'mobx'
 import { basename } from 'pathe'
 import { cwd } from 'process'
 
-import { ITreeElement, ITreeEntry, TreeEntryAction } from '../TreeEntry'
-import { TreeApp } from './TreeApp'
 import { LibraryFile } from '../../../../cards/LibraryFile'
 import { assets } from '../../../../utils/assets/assets'
+import { ITreeElement, ITreeEntry, TreeEntryAction } from '../TreeEntry'
+import { TreeApp } from './TreeApp'
 
 export class TreeFile implements ITreeEntry {
     file: LibraryFile
@@ -70,7 +70,7 @@ export class TreeFile implements ITreeEntry {
         this.file.extractScriptFromFile()
         if (!n.isOpen) {
             n.open()
-            this.script?.evaluateAndUpdateApps()
+            this.script?.evaluateAndUpdateAppsAndViews()
         } else {
             n.close()
         }

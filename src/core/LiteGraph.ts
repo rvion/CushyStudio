@@ -5,6 +5,10 @@ import { toJS } from 'mobx'
 
 import { bang } from '../utils/misc/bang'
 
+/** comfy workflows are simply LiteGraphs workflows */
+export type ComfyWorkflowJSON = LiteGraphJSON
+
+/** litegraph workflow are stored... in a very unpractical format */
 export type LiteGraphJSON = {
     last_node_id: number
     last_link_id: number

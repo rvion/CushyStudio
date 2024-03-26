@@ -1,13 +1,13 @@
 import { existsSync, writeFileSync } from 'fs'
 import { observer, useLocalObservable } from 'mobx-react-lite'
 
-import { MessageErrorUI, MessageInfoUI } from '../MessageUI'
-import { convertToValidCrossPlatformFileName } from './convertToValidCrossPlatformFileName'
 import { openExternal } from '../../app/layout/openExternal'
 import { RevealUI } from '../../rsuite/reveal/RevealUI'
 import { useSt } from '../../state/stateContext'
 import { toastError } from '../../utils/misc/toasts'
 import { TypescriptHighlightedCodeUI } from '../../widgets/misc/TypescriptHighlightedCodeUI'
+import { MessageErrorUI, MessageInfoUI } from '../MessageUI'
+import { convertToValidCrossPlatformFileName } from './convertToValidCrossPlatformFileName'
 
 export const CreateAppBtnUI = observer(function CreateAppBtnUI_(p: {}) {
     return (
@@ -89,7 +89,7 @@ export const CreateAppPopupUI = observer(function CreateAppPopupUI_(p: {}) {
                         const res = await file.extractScriptFromFile()
                         if (res.type === 'failed') return toastError('failed to extract script')
                         const script = res.script
-                        await script.evaluateAndUpdateApps()
+                        await script.evaluateAndUpdateAppsAndViews()
                         const apps = script._apps_viaScript
                         if (apps == null) return toastError('no app found (apps is null)')
                         if (apps.length === 0) return toastError('no app found (apps.length === 0)')

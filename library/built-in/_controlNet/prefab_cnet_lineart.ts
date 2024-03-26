@@ -5,8 +5,8 @@ import { cnet_preprocessor_ui_common, cnet_ui_common } from './cnet_ui_common'
 
 // 🅿️ Lineart FORM ===================================================
 export const ui_subform_Lineart = () => {
-    const form: FormBuilder = getCurrentForm()
-    return form.group({
+    const ui: FormBuilder = getCurrentForm()
+    return ui.group({
         label: 'Lineart',
         requirements: [
             //
@@ -14,13 +14,13 @@ export const ui_subform_Lineart = () => {
             { type: 'modelInManager', modelName: 'ControlNet-v1-1 (lineart; fp16)' },
         ],
         items: () => ({
-            ...cnet_ui_common(form),
+            ...cnet_ui_common(ui),
             preprocessor: ui_subform_Lineart_Preprocessor(),
-            models: form.group({
+            models: ui.group({
                 label: 'Select or Download Models',
                 // startCollapsed: true,
                 items: () => ({
-                    cnet_model_name: form.enum.Enum_ControlNetLoader_control_net_name({
+                    cnet_model_name: ui.enum.Enum_ControlNetLoader_control_net_name({
                         label: 'Model',
                         filter: (name) => name.toString().includes('lineart'),
                         // @ts-ignore

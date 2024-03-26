@@ -1,3 +1,4 @@
+import { CustomView3dCan } from './3d/3d-app-2/_can3/Can3'
 import { Cnet_args, Cnet_return, run_cnet, ui_cnet } from './_controlNet/prefab_cnet'
 import { run_ipadapter_standalone, ui_ipadapter_standalone } from './_ipAdapter/prefab_ipAdapter_base_standalone'
 import { ui_highresfix } from './_prefabs/_prefabs'
@@ -45,29 +46,28 @@ app({
         latent: ui_latent_v3(),
         mask: ui_mask(),
         sampler: ui_sampler(),
-        refine: ui_refiners(),
         highResFix: ui_highresfix({ activeByDefault: true }),
         upscale: ui_upscaleWithModel(),
         customSave: ui_customSave(),
         removeBG: ui_rembg_v1(),
         show3d: ui_3dDisplacement().optional(),
         controlnets: ui_cnet(),
-        recursiveImgToImg: ui_recursive(),
-        loop: form.groupOpt({
-            items: () => ({
-                batchCount: form.int({ default: 1 }),
-                delayBetween: form.int({ tooltip: 'in ms', default: 0 }),
-            }),
-        }),
-        testStuff: form.choices({
+        extra: form.choices({
             appearance: 'tab',
             items: {
                 regionalPrompt: ui_regionalPrompting_v1(),
+                refine: ui_refiners(),
                 reversePositiveAndNegative: form.group({ label: 'swap +/-' }),
                 makeAVideo: form.group(),
                 summary: form.group(),
                 gaussianSplat: form.group(),
                 promtPlus: ui_advancedPrompt(),
+                displayAsBeerCan: form.group({}),
+                recursiveImgToImg: ui_recursive(),
+                loop: form.fields({
+                    batchCount: form.int({ default: 1 }),
+                    delayBetween: form.int({ tooltip: 'in ms', default: 0 }),
+                }),
             },
         }),
     }),
@@ -83,7 +83,7 @@ app({
 
         // RICH PROMPT ENGINE -------- ---------------------------------------------------------------
         let positiveText = ui.positive.text
-        if (ui.testStuff.promtPlus) positiveText += run_advancedPrompt(ui.testStuff.promtPlus)
+        if (ui.extra.promtPlus) positiveText += run_advancedPrompt(ui.extra.promtPlus)
 
         const posPrompt = run_prompt({
             prompt: ui.positive,
@@ -96,8 +96,8 @@ app({
         // let finalText = posPrompt.promptIncludingBreaks
         let positive: _CONDITIONING = posPrompt.conditioning // graph.CLIPTextEncode({ clip: clipPos, text: finalText })
 
-        if (ui.testStuff.regionalPrompt) {
-            positive = run_regionalPrompting_v1(ui.testStuff.regionalPrompt, { conditionning: positive, clip })
+        if (ui.extra.regionalPrompt) {
+            positive = run_regionalPrompting_v1(ui.extra.regionalPrompt, { conditionning: positive, clip })
         }
         // let negative = x.conditionningNeg
 
@@ -155,15 +155,16 @@ app({
         latent = run_sampler(run, ui.sampler, ctx_sampler).latent
 
         // RECURSIVE PASS ----------------------------------------------------------------------------
-        if (ui.recursiveImgToImg) {
-            for (let i = 0; i < ui.recursiveImgToImg.loops; i++) {
+        const extra = ui.extra
+        if (extra.recursiveImgToImg) {
+            for (let i = 0; i < extra.recursiveImgToImg.loops; i++) {
                 latent = run_sampler(
                     run,
                     {
                         seed: ui.sampler.seed + i,
-                        cfg: ui.recursiveImgToImg.cfg,
-                        steps: ui.recursiveImgToImg.steps,
-                        denoise: ui.recursiveImgToImg.denoise,
+                        cfg: extra.recursiveImgToImg.cfg,
+                        steps: extra.recursiveImgToImg.steps,
+                        denoise: extra.recursiveImgToImg.denoise,
                         sampler_name: 'ddim',
                         scheduler: 'ddim_uniform',
                     },
@@ -229,8 +230,8 @@ app({
         let finalImage: _IMAGE = graph.VAEDecode({ samples: latent, vae })
 
         // REFINE PASS AFTER ---------------------------------------------------------------------
-        if (ui.refine) {
-            finalImage = run_refiners_fromImage(ui.refine, finalImage)
+        if (extra.refine) {
+            finalImage = run_refiners_fromImage(extra.refine, finalImage)
             // latent = graph.VAEEncode({ pixels: image, vae })
         }
 
@@ -251,20 +252,27 @@ app({
         const saveFormat = run_customSave(ui.customSave)
         await run.PROMPT({ saveFormat })
 
-        if (ui.testStuff?.gaussianSplat) run.output_GaussianSplat({ url: '' })
-        if (ui.testStuff?.summary) output_demo_summary(run)
+        if (ui.extra?.gaussianSplat) run.output_GaussianSplat({ url: '' })
+        if (ui.extra?.summary) output_demo_summary(run)
         if (show3d) run_Dispacement2('base')
 
+        if (ui.extra.displayAsBeerCan) {
+            run.output_custom({
+                view: CustomView3dCan,
+                params: { imageID: run.lastImage?.id },
+            })
+        }
+
         // LOOP IF NEED BE -----------------------------------------------------------------------
-        const loop = ui.loop
+        const loop = ui.extra.loop
         if (loop) {
-            const ixes = new Array(ui.loop.batchCount).fill(0).map((_, i) => i)
+            const ixes = new Array(ui.extra.loop.batchCount).fill(0).map((_, i) => i)
             for (const i of ixes) {
                 await new Promise((r) => setTimeout(r, loop.delayBetween))
                 await run.PROMPT({ saveFormat })
             }
         }
 
-        if (ui.testStuff?.makeAVideo) await run.Videos.output_video_ffmpegGeneratedImagesTogether(undefined, 2)
+        if (ui.extra?.makeAVideo) await run.Videos.output_video_ffmpegGeneratedImagesTogether(undefined, 2)
     },
 })

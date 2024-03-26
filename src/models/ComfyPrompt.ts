@@ -1,25 +1,25 @@
 import type { LiveInstance } from '../db/LiveInstance'
+import type { Runtime } from '../runtime/Runtime'
 import type { ComfyImageInfo, PromptRelated_WsMsg, WsMsgExecuted, WsMsgExecuting, WsMsgExecutionError } from '../types/ComfyWsApi'
 import type { ComfyWorkflowL, ProgressReport } from './ComfyWorkflow'
 import type { StepL } from './Step'
-import type { Runtime } from '../runtime/Runtime'
 
 import { mkdirSync, writeFileSync } from 'fs'
 import { dirname, join } from 'pathe'
 
 import { Status } from '../back/Status'
 import { LiveRef } from '../db/LiveRef'
+import { SQLITE_true } from '../db/SQLITE_boolean'
+import { ComfyPromptT, type ComfyPromptUpdate, type TABLES } from '../db/TYPES.gen'
+import { createHTMLImage_fromURL } from '../state/createHTMLImage_fromURL'
+import { ComfyNodeID } from '../types/ComfyNodeID'
+import { asRelativePath } from '../utils/fs/pathUtils'
 import { exhaust } from '../utils/misc/ComfyUtils'
 import {
     _createMediaImage_fromLocalyAvailableImage,
     createMediaImage_fromPath,
     ImageCreationOpts,
 } from './createMediaImage_fromWebFile'
-import { SQLITE_true } from '../db/SQLITE_boolean'
-import { ComfyPromptT, type ComfyPromptUpdate, type TABLES } from '../db/TYPES.gen'
-import { createHTMLImage_fromURL } from '../state/createHTMLImage_fromURL'
-import { ComfyNodeID } from '../types/ComfyNodeID'
-import { asRelativePath } from '../utils/fs/pathUtils'
 
 export interface ComfyPromptL extends LiveInstance<TABLES['comfy_prompt']> {}
 export class ComfyPromptL {
@@ -126,8 +126,15 @@ export class ComfyPromptL {
     /** update execution list */
     private onExecuted = (msg: WsMsgExecuted) => {
         const promptNodeID = msg.data.node
-        for (const img of msg.data.output.images) {
-            this.pendingPromises.push(this.retrieveImage(img, promptNodeID))
+        // if (!Array.isArray(msg.data.output.images)) {
+        //     console.error(`❌ invariant violation: msg.data.output.images is not an array`, msg.data)
+        //     return
+        // }
+        const images = msg.data.output?.images
+        if (images) {
+            for (const img of images) {
+                this.pendingPromises.push(this.retrieveImage(img, promptNodeID))
+            }
         }
     }
     private pendingPromises: Promise<void>[] = []

@@ -53,8 +53,9 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
         k instanceof KLS.Widget_group && //
         Object.keys(k.fields).length === 0 &&
         k.config.requirements == null
-    )
+    ) {
         return
+    }
     // ------------------------------------------------------------
 
     // ⏸️ const onLabelClick = () => {
@@ -79,7 +80,11 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
 
     const LABEL = (
         // <span onClick={onLabelClick} style={{ lineHeight: '1rem' }}>
-        <span className='COLLAPSE-PASSTHROUGH' style={{ lineHeight: '1rem' }}>
+        <span
+            tw={[isCollapsed || isCollapsible ? 'cursor-pointer' : null]}
+            className='COLLAPSE-PASSTHROUGH'
+            style={{ lineHeight: '1rem' }}
+        >
             {labelText}
             {widget.config.showID ? <span tw='opacity-50 italic text-sm'>#{widget.id.slice(0, 3)}</span> : null}
         </span>
@@ -156,7 +161,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                     <span
                         tw={[
                             'flex justify-end gap-0.5 flex-none items-center shrink-0',
-                            p.isTopLevel && !isDisabled ? 'font-bold' : 'text-base',
+                            // p.isTopLevel && !isDisabled ? 'font-bold' : 'text-base',
                             isDisabled ? undefined : 'text-primary',
                         ]}
                         style={
@@ -172,7 +177,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                     >
                         {/* COLLAPSE */}
                         {(isCollapsed || isCollapsible) && (
-                            <span className='WIDGET-COLLAPSE-BTN COLLAPSE-PASSTHROUGH material-symbols-outlined opacity-70 hover:opacity-100'>
+                            <span className='WIDGET-COLLAPSE-BTN COLLAPSE-PASSTHROUGH material-symbols-outlined opacity-70 hover:opacity-100 cursor-pointer'>
                                 {isCollapsed ? 'chevron_right' : 'expand_more'}
                             </span>
                         )}

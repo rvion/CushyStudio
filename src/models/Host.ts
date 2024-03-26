@@ -1,9 +1,9 @@
-import type { ComfySchemaL, EmbeddingName } from './ComfySchema'
 import type { Requirements } from '../controls/IWidget'
 import type { LiveInstance } from '../db/LiveInstance'
 import type { PluginInfo } from '../manager/custom-node-list/custom-node-list-types'
 import type { KnownCustomNode_File } from '../manager/custom-node-list/KnownCustomNode_File'
 import type { KnownCustomNode_Title } from '../manager/custom-node-list/KnownCustomNode_Title'
+import type { ComfySchemaL, EmbeddingName } from './ComfySchema'
 
 import { copyFileSync, existsSync, mkdirSync, writeFileSync } from 'fs'
 
@@ -274,8 +274,8 @@ export class HostL {
     schemaUpdateResult: Maybe<{ type: 'success' } | { type: 'error'; error: any }> = null
 
     private updateSchemaFromFileCache = () => {
-        const object_info_json = this.st.readJSON<any>(this.comfyJSONPath)
-        const embeddings_json = this.st.readJSON<any>(this.embeddingsPath)
+        const object_info_json = this.st.readJSON_<any>(this.comfyJSONPath)
+        const embeddings_json = this.st.readJSON_<any>(this.embeddingsPath)
 
         // update schema
         this.schema.update({ spec: object_info_json, embeddings: embeddings_json })

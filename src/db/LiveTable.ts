@@ -1,17 +1,17 @@
+import type { STATE } from '../state/state'
 import type { LiveDB } from './LiveDB'
 import type { $BaseInstanceFields, LiveInstance, UpdateOptions } from './LiveInstance'
 import type { CompiledQuery, SelectQueryBuilder } from 'kysely'
-import type { STATE } from '../state/state'
 
 // 2024-03-14 commented serial checks for now
 // import { Value, ValueError } from '@sinclair/typebox/value'
-import { action, type AnnotationMapEntry, makeAutoObservable, runInAction, toJS } from 'mobx'
+import { action, type AnnotationMapEntry, makeAutoObservable, observable, runInAction, toJS } from 'mobx'
 import { nanoid } from 'nanoid'
 
+import { kysely } from '../DB'
 import { DEPENDS_ON, MERGE_PROTOTYPES } from './LiveHelpers'
 import { quickBench } from './quickBench'
 import { SqlFindOptions } from './SQLWhere'
-import { kysely } from '../DB'
 import { type KyselyTables, type LiveDBSubKeys, schemas } from './TYPES.gen'
 import { TableInfo } from './TYPES_json'
 
@@ -302,6 +302,16 @@ export class LiveTable<TABLE extends TableInfo<keyof KyselyTables>> {
                 this.st = table.db.st
                 this.table = table
                 this.data = data
+
+                // prettier-ignore
+                /* 🔶 PERF HACK */ if (this.tableName === 'comfy_schema') {
+                /* 🔶 PERF HACK */     ;(data as any as { spec: { a: 1 } }).spec = observable(
+                /* 🔶 PERF HACK */         (data as any as { spec: { a: 1 } }).spec,
+                /* 🔶 PERF HACK */         {},
+                /* 🔶 PERF HACK */         { deep: false },
+                /* 🔶 PERF HACK */     )
+                /* 🔶 PERF HACK */ }
+
                 this.onHydrate?.(/* data */)
                 this.onUpdate?.(undefined, data)
                 makeAutoObservable(this, this.observabilityConfig as any)

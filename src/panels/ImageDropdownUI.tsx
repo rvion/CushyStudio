@@ -10,9 +10,11 @@ import { useSt } from '../state/stateContext'
 export const ImageDropdownUI = observer(function ImageDropdownUI_(p: { img: MediaImageL }) {
     const img = p.img
     return (
-        <Dropdown title='Actions' startIcon={<span className='material-symbols-outlined'>menu</span>}>
-            <ImageDropdownMenuUI img={img} />
-        </Dropdown>
+        <Dropdown
+            title='Actions'
+            startIcon={<span className='material-symbols-outlined'>menu</span>}
+            content={() => <ImageDropdownMenuUI img={img} />}
+        />
     )
 })
 
@@ -24,6 +26,12 @@ export const ImageDropdownMenuUI = observer(function ImageDropdownMenuUI_(p: { i
             <div className='divider divider-start my-1'>Send to</div>
             <MenuItem icon={<span className='material-symbols-outlined'>content_copy</span>} onClick={img.copyToClipboard}>
                 Clipboard
+            </MenuItem>
+            <MenuItem
+                icon={<span className='material-symbols-outlined'>content_copy</span>}
+                onClick={img.copyToClipboardAsBase64}
+            >
+                Copy Base64
             </MenuItem>
             <MenuItem
                 icon={<span className='material-symbols-outlined'>settings_overscan</span>}

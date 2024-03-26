@@ -1,21 +1,14 @@
 import type { STATE } from '../../state/state'
 
-import { mkdirSync, writeFileSync } from 'fs'
+import { mkdirSync } from 'fs'
 import { observer } from 'mobx-react-lite'
 import { nanoid } from 'nanoid'
 import path, { dirname } from 'pathe'
-import { useMemo, useRef } from 'react'
+import { useMemo } from 'react'
 
-import { OutputPreviewWrapperUI } from '../OutputPreviewWrapperUI'
-import { DisplacementState } from './DisplacementState'
-import { DisplacementUI } from './DisplacementUI'
 import { FormUI } from '../../controls/FormUI'
 import { SpacerUI } from '../../controls/widgets/spacer/SpacerUI'
-import {
-    createMediaImage_fromBlobObject,
-    createMediaImage_fromDataURI,
-    createMediaImage_fromPath,
-} from '../../models/createMediaImage_fromWebFile'
+import { createMediaImage_fromBlobObject, createMediaImage_fromDataURI } from '../../models/createMediaImage_fromWebFile'
 import { Media3dDisplacementL } from '../../models/Media3dDisplacement'
 import { StepL } from '../../models/Step'
 import { PanelHeaderUI } from '../../panels/PanelHeader'
@@ -24,6 +17,9 @@ import { useSt } from '../../state/stateContext'
 import { asRelativePath } from '../../utils/fs/pathUtils'
 import { bang } from '../../utils/misc/bang'
 import { toastError } from '../../utils/misc/toasts'
+import { OutputPreviewWrapperUI } from '../OutputPreviewWrapperUI'
+import { DisplacementState } from './DisplacementState'
+import { DisplacementUI } from './DisplacementUI'
 
 export const OutputDisplacementPreviewUI = observer(function OutputImagePreviewUI_(p: {
     step?: Maybe<StepL>
@@ -53,8 +49,6 @@ export type Panel_DisplacementProps = {
     height: number
 }
 
-// React component
-// export const Panel_3dScene = observer(function SceneViewer_(p: Panel_DisplacementProps) {
 export const OutputDisplacementUI = observer(function OutputDisplacementUI_(p: {
     step?: Maybe<StepL>
     output: Media3dDisplacementL
@@ -62,11 +56,11 @@ export const OutputDisplacementUI = observer(function OutputDisplacementUI_(p: {
     const uist = useMemo(
         () =>
             new DisplacementState({
-                image: bang(p.output.data.image),
-                depthMap: bang(p.output.data.depthMap),
-                normalMap: bang(p.output.data.normalMap),
-                width: bang(p.output.data.width),
-                height: bang(p.output.data.height),
+                image: bang(p.output.data.image, '❌ Displacement: missing image'),
+                depthMap: bang(p.output.data.depthMap, '❌ Displacement: missing depthMap'),
+                normalMap: bang(p.output.data.normalMap, '❌ Displacement: missing normalMap'),
+                width: bang(p.output.data.width, '❌ Displacement: missing width'),
+                height: bang(p.output.data.height, '❌ Displacement: missing height'),
             }),
         [JSON.stringify(p)],
     )
