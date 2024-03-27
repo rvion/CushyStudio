@@ -18,7 +18,7 @@ export const Panel_Gallery = observer(function VerticalGalleryUI_(p: {}) {
         >
             <PanelHeaderUI>
                 <GallerySearchControlsUI />
-                {/* <SpacerUI /> */}
+                <SpacerUI />
                 <GalleryPreferences />
             </PanelHeaderUI>
             <GalleryImageGridUI />
