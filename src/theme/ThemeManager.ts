@@ -14,10 +14,6 @@ export type ThemeName =
     | 'wireframe'
     | 'forest'
     | 'dracula'
-//  | 'aqua'
-//  | 'sunset'
-//  | 'luxury'
-//  | 'business'
 
 export class ThemeManager {
     themes: ThemeName[] = [
@@ -33,10 +29,6 @@ export class ThemeManager {
         'cupcake',
         'valentine',
         'wireframe',
-        // 'aqua',
-        // 'sunset',
-        // 'luxury',
-        // 'business',
     ]
     toggle() {
         this.theme = this.theme === 'dark' ? 'light' : 'dark'

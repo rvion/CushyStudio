@@ -3,9 +3,12 @@ import 'react-toastify/dist/ReactToastify.css'
 import 'highlight.js/styles/stackoverflow-dark.css'
 import '../theme/flexlayout.css'
 import '../theme/index.css'
-import '../theme/theme.css'
+import '../theme/daisy-tweaks.css'
+import '../theme/codemirror.css'
+import '../theme/form.css'
 import '../theme/markdown.css'
 import '../theme/Tree.css'
+import '../theme/theme.css'
 
 import ReactDOM from 'react-dom/client'
 

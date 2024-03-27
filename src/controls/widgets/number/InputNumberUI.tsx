@@ -1,3 +1,5 @@
+import './InputNumberUI.css'
+
 import { makeAutoObservable, runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import React, { useEffect, useMemo } from 'react'

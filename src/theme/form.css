@@ -1,0 +1,85 @@
+/* ------------------------------------------------------------------------------------------------------- */
+.FIELD:hover {
+    border-left: 2px groove oklch(var(--s)/0.5);
+}
+.FIELDSimple._isTopLevel,
+.FIELD._isTopLevel {
+    margin-left: 0;
+    border: none;
+    padding-left: 0;
+    transform: none;
+    /* border-left: 2px groove oklch(var(--p)/0.5); */
+    /* border-top-left-radius: .8rem; */
+}
+
+.FIELD,
+.FIELDSimple {
+    margin-left: .5rem;
+    padding-left: .5rem;
+    border-left: 2px groove oklch(var(--p)/0.5);
+}
+
+.FIELD {
+    position: relative;
+    padding-left: .5rem;
+}
+
+.WIDGET-FIELD {
+    height: var(--input-height);
+    min-height: var(--input-height);
+}
+
+.WIDGET-FIELD *::selection {
+    background-color: oklch(var(--pc));
+}
+
+.WIDGET-GROUP-BORDERED {
+    border-radius: .3rem;
+    border-top: 1px solid oklch(var(--p)/.4);
+    border-left: 1px solid oklch(var(--p)/.4);
+    border-right: 1px solid oklch(var(--p)/.2);
+    border-bottom: 1px solid oklch(var(--p)/.2);
+}
+
+.COLLAPSE-PASSTHROUGH:hover .WIDGET-COLLAPSE-BTN {
+    opacity: 100% !important;
+}
+
+.SUB-FIELD {
+    flex: 1;
+}
+
+.WIDGET-BLOCK {
+    margin-left: .6rem;
+    margin-right: .4rem;
+    margin-top: .1rem;
+    /* padding: .4rem; */
+}
+
+/* ------------------------------------------------------------------------------------------- */
+.input {
+    background-color: oklch(var( --pn)/.15) !important;
+}
+
+/* //InputNumberUI */
+/* Form Utils ------------------------------------------------------------------------------------- */
+/* Text Shading - These are defined in theme.css*/
+.text-shadow {
+    text-shadow: 0px 1px 1px var(--text-shadow-color), 1px 1px 1px var(--text-shadow-color), -1px 1px 1px var(--text-shadow-color);
+}
+
+.text-shadow-inv {
+    text-shadow: 0px 1px 1px var(--text-shadow-color-inv), 1px 1px 1px var(--text-shadow-color-inv), -1px 1px 1px var(--text-shadow-color-inv);
+}
+
+/* Select Utils ------------------------------------------------------------------------------------- */
+._SelectPopupUI,
+._RevealUI {
+    box-shadow:
+        0 2px 5px -2px oklch(var(--pc));
+        /* 0 0 10px 1px oklch(var(--b3)); */
+}
+
+.rsx-field-error {
+    border: 1px solid red !important;
+}

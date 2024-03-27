@@ -2,13 +2,14 @@ import type { Metafile } from 'esbuild'
 
 import chalk from 'chalk'
 import { execSync } from 'child_process'
-import { cpSync, mkdirSync, renameSync, statSync, writeFileSync } from 'fs'
+import { cpSync, mkdirSync, renameSync, statSync, unlinkSync, writeFileSync } from 'fs'
 import { readJSONSync } from 'fs-extra'
-import { join, resolve } from 'path'
+import { dirname, join, resolve } from 'path'
 
 import { formatSize } from './db/getDBStats'
 import { wrapBox } from './manager/_utils/_wrapBox'
 import { buildJS } from './scripts/build-form-JS'
+import { bang } from './utils/misc/bang'
 
 // TYPE UTILS ------------------------------------------------
 type PATH = Tagged<string, 'PATH'>
@@ -25,11 +26,12 @@ const DIST_RELPATH = 'release-forms'
 const DIST_ABSPATH = resolve('release-forms')
 
 section(`0. preparing`)
-explainTool('custom')
-console.log(`- create ${DIST_RELPATH} folder`)
+objective(`ensure dist folder is present, with the bare minimum stuff inside`)
+explainTool('bun script')
+console.log(`- create ${chalk.underline(`./${DIST_RELPATH}/`)} folder`)
 mkdirSync(DIST_RELPATH, { recursive: true })
-console.log(`- (re)generating package.json`)
-writeFileSync(resolve(DIST_ABSPATH, 'package.json'), mkPKGJSON('form'))
+console.log(`- (re)generating ${chalk.underline(`./${DIST_RELPATH}/package.json`)}`)
+writeFileSync(resolve(DIST_ABSPATH, 'package.json'), mkPKGJSON('cushy-forms'))
 console.log(`- ensure custom jsx-runtime will be found`)
 mkdirSync('lib/utils/custom-jsx', { recursive: true })
 cpSync('src/utils/custom-jsx/jsx-runtime.js', 'lib/utils/custom-jsx/jsx-runtime.js')
@@ -40,6 +42,7 @@ cpSync('src/utils/custom-jsx/jsx-dev-runtime.js', 'lib/utils/custom-jsx/jsx-dev-
 // use esbuild, start from typescript files, do not use lib file
 // should take ~ 1 sec
 section(`1. first build with esbuild`)
+objective(`know the list of all transitive JS files that need to be included`)
 explainTool('esbuild')
 const { metaFilePath } = await buildJS({
     shouldMinify: false,
@@ -67,11 +70,27 @@ for (const [e, v] of esbuildInputFiles) {
 }
 
 // LIST ALL REAL JS FILES ----------------------------------------------
+section(`2. COPY ALL TS Files`)
+objective(`create a subset of the codebase that only includes the files that are actually used`)
+explainTool('bun script')
+let total = 0
+for (const srcRelPath of allFilesWithExt) {
+    // const
+    const libRelPath = DIST_RELPATH + '/' + srcRelPath // srcRelPath.replace(/^src\//, '../')
+    const dir = dirname(libRelPath)
+    mkdirSync(dir, { recursive: true })
+    cpSync(srcRelPath, libRelPath)
+    if (total++ < 3) console.log(`    - ${srcRelPath} -> ${chalk.underline(libRelPath)}`)
+    if (total++ === 3) console.log(`    - ... ${allFilesWithExt.length - 3} more`)
+}
+
+// LIST ALL REAL JS FILES ----------------------------------------------
 section(`2. REEXPORT all ${allowed.size} files from single module`)
-explainTool('custom')
+explainTool('bun script')
 let libEntrypointCode = ''
 for (const srcRelPath of allFilesNoExt) {
     // const
+    if (srcRelPath === 'src/utils/custom-jsx/jsx-runtime') continue
     const libRelPath = srcRelPath.replace(/^src\//, '../')
     libEntrypointCode += `export * from '${libRelPath}'\n`
 }
@@ -80,7 +99,7 @@ const SRC_ENTRYPOINT_RELPATH = ENTRYPOINT.replace(/\.tsx?$/, '.LIBRARY.ts')
 writeFileSync(SRC_ENTRYPOINT_RELPATH, libEntrypointCode)
 console.log(`writing new entrypoint here: ${chalk.underline(SRC_ENTRYPOINT_RELPATH)}`)
 const LIB_ENTRYPOINT_DTS_RELPATH = SRC_ENTRYPOINT_RELPATH.replace(/\.tsx?$/, '.d.ts').replace(/^src\//, 'lib/')
-const LIB_ENTRYPOINT_DTA_ABSPATH = resolve(LIB_ENTRYPOINT_DTS_RELPATH)
+const LIB_ENTRYPOINT_DTS_ABSPATH = resolve(LIB_ENTRYPOINT_DTS_RELPATH)
 console.log(`corresponding lib entrypoint: ${chalk.underline(LIB_ENTRYPOINT_DTS_RELPATH)}`)
 
 // BUNDLE the js (from TS) ----------------------------------------------
@@ -96,8 +115,12 @@ execSync('yarn form:transpile', { stdio: 'inherit' })
 await waitConfirm()
 
 // --------------------------------------------------------------------
+console.log(`removing ➖ ${chalk.underline(SRC_ENTRYPOINT_RELPATH)}`)
+unlinkSync(SRC_ENTRYPOINT_RELPATH)
+
+// --------------------------------------------------------------------
 section(`5. writing new form.rollup.config.mjs`)
-explainTool('custom')
+explainTool('bun script')
 // const ROLLUP_CONFIG_RELPATH = ENTRYPOINT.replace(/\.tsx?$/, '.rollup.config.mjs')
 const ROLLUP_CONFIG_RELPATH = DIST_RELPATH + '/' + 'rollup.config.mjs' //`${cwd()}/${ROLLUP_CONFIG_RELPATH}`
 const ROLLUP_CONFIG_ABSPATH = resolve(ROLLUP_CONFIG_RELPATH)
@@ -113,7 +136,7 @@ const root = cwd()
 const config = [
     {
         // input: 'lib/controls/FormBuilder.loco.d.ts',
-        input: '${LIB_ENTRYPOINT_DTA_ABSPATH}',
+        input: '${LIB_ENTRYPOINT_DTS_ABSPATH}',
         output: [{ file: '${DIST_ABSPATH}/main.d.ts', format: 'es' }],
         plugins: [dts(), visualizer({ template: 'raw-data' })],
     },
@@ -265,6 +288,10 @@ function explainTool(x: string) {
     console.log(`tool: ${chalk.yellowBright(x)}`)
 }
 
+function objective(x: string) {
+    console.log(chalk.gray.italic(`objective: ${x}`))
+}
+
 function section(x: string) {
     console.log('\n' + wrapBox(x, 1, chalk.bold.cyan))
     // console.log(`\n${chalk.bold.blue(x)} -----------------------------------------`)
@@ -283,6 +310,7 @@ function mkPKGJSON(name: string) {
     return `\
 {
     "name": "${name}",
+    "version": "0.0.${Date.now()}",
     "author": {
         "name": "rvion",
         "url": "https://github.com/rvion/CushyStudio",
