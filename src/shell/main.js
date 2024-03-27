@@ -1,4 +1,5 @@
 const { mkdirSync } = require('fs')
+const { cwd } = require('process')
 
 START()
 
@@ -25,14 +26,15 @@ async function START() {
             const app = express()
             const path = require('path')
 
+            app.get('/', (req, res) => {
+                res.sendFile(path.join(cwd() + '/release/index.html'))
+            })
             // Directory paths for the two public folders
             app.use(express.static('release'))
-            app.use(express.static('library'))
-            app.use(express.static('public'))
+            // app.use(express.static('library'))
+            // app.use(express.static('public'))
+            app.use(express.static(cwd()))
             // Define a simple route for the home page
-            app.get('/', (req, res) => {
-                res.sendFile(path.join('release/index.html'))
-            })
             // Start the server on port ${PORT}
             app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`))
         }

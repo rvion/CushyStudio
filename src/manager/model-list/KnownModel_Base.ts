@@ -1,6 +1,6 @@
 // prettier-ignore
 export type KnownModel_Base =
-    | "SDXL"               // x  37
+    | "SDXL"               // x  38
     | "SD1.x"              // x  25
     | "upscale"            // x  10
     | "inswapper"          // x  12
@@ -34,9 +34,11 @@ export type KnownModel_Base =
     | "blip_model"         // x   1
     | "DINO"               // x   2
     | "DynamiCrafter"      // x   2
+    | "Depth-FM"           // x   2
+    | "SUPIR"              // x   2
 
 export const knownModel_Base: KnownModel_Base[] = [
-    "SDXL"              ,  // x  37
+    "SDXL"              ,  // x  38
     "SD1.x"             ,  // x  25
     "upscale"           ,  // x  10
     "inswapper"         ,  // x  12
@@ -70,5 +72,7 @@ export const knownModel_Base: KnownModel_Base[] = [
     "blip_model"        ,  // x   1
     "DINO"              ,  // x   2
     "DynamiCrafter"     ,  // x   2
+    "Depth-FM"          ,  // x   2
+    "SUPIR"             ,  // x   2
 ]
 

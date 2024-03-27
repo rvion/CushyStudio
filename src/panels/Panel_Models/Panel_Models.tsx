@@ -5,12 +5,12 @@ import { useSt } from '../../state/stateContext'
 import { PanelHeaderUI } from '../PanelHeader'
 import { CivitaiUI } from './CivitaiBrowserUI'
 import { Civitai } from './CivitaiSpec'
-import { FormUI } from 'src/controls/FormUI'
-import { SpacerUI } from 'src/controls/widgets/spacer/SpacerUI'
-import { RevealUI } from 'src/rsuite/reveal/RevealUI'
-import { FormHelpText } from 'src/rsuite/shims'
-import { assets } from 'src/utils/assets/assets'
-import { SectionTitleUI } from 'src/widgets/workspace/SectionTitle'
+import { FormUI } from '../../controls/FormUI'
+import { SpacerUI } from '../../controls/widgets/spacer/SpacerUI'
+import { RevealUI } from '../../rsuite/reveal/RevealUI'
+import { FormHelpText } from '../../rsuite/shims'
+import { assets } from '../../utils/assets/assets'
+import { SectionTitleUI } from '../../widgets/workspace/SectionTitle'
 
 export const Panel_Models = observer(function Panel_Models_() {
     const st = useSt()

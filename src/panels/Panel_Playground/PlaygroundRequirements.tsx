@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 
-import { InstallRequirementsBtnUI, Panel_InstallRequirementsUI } from 'src/controls/REQUIREMENTS/Panel_InstallRequirementsUI'
+import { InstallRequirementsBtnUI, Panel_InstallRequirementsUI } from '../../controls/REQUIREMENTS/Panel_InstallRequirementsUI'
 
 export const PlaygroundRequirementsHeader = observer(function PlaygroundRequirements_(p: {}) {
     return (

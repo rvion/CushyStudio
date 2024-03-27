@@ -1,7 +1,7 @@
 // prettier-ignore
 export type KnownModel_SavePath =
     | "vae_approx"                                       // x   4
-    | "default"                                          // x  81
+    | "default"                                          // x  82
     | "upscale_models/ldsr"                              // x   1
     | "checkpoints/upscale"                              // x   1
     | "insightface"                                      // x   2
@@ -53,11 +53,13 @@ export type KnownModel_SavePath =
     | "blip"                                             // x   1
     | "groundingdino"                                    // x   2
     | "checkpoints/dynamicrafter"                        // x   2
+    | "checkpoints/depthfm"                              // x   2
+    | "checkpoints/SUPIR"                                // x   2
     | "custom_nodes/ComfyUI-BRIA_AI-RMBG/RMBG-1.4"       // x   1
 
 export const knownModel_SavePath: KnownModel_SavePath[] = [
     "vae_approx"                                      ,  // x   4
-    "default"                                         ,  // x  81
+    "default"                                         ,  // x  82
     "upscale_models/ldsr"                             ,  // x   1
     "checkpoints/upscale"                             ,  // x   1
     "insightface"                                     ,  // x   2
@@ -109,6 +111,8 @@ export const knownModel_SavePath: KnownModel_SavePath[] = [
     "blip"                                            ,  // x   1
     "groundingdino"                                   ,  // x   2
     "checkpoints/dynamicrafter"                       ,  // x   2
+    "checkpoints/depthfm"                             ,  // x   2
+    "checkpoints/SUPIR"                               ,  // x   2
     "custom_nodes/ComfyUI-BRIA_AI-RMBG/RMBG-1.4"      ,  // x   1
 ]
 

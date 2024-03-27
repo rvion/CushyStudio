@@ -2,10 +2,10 @@ import { observer } from 'mobx-react-lite'
 import { useEffect } from 'react'
 
 import { PanelHeaderUI } from '../PanelHeader'
-import { FormUI } from 'src/controls/FormUI'
-import { SpacerUI } from 'src/controls/widgets/spacer/SpacerUI'
-import { RevealUI } from 'src/rsuite/reveal/RevealUI'
-import { DrawWorkflowUI } from 'src/widgets/graph/DrawWorkflowUI'
+import { FormUI } from '../../controls/FormUI'
+import { SpacerUI } from '../../controls/widgets/spacer/SpacerUI'
+import { RevealUI } from '../../rsuite/reveal/RevealUI'
+import { DrawWorkflowUI } from '../../widgets/graph/DrawWorkflowUI'
 
 export const PlaygroundGraphUI = observer(function PlaygroundGraphUI_(p: {}) {
     const workflow = cushy.db.comfy_workflow.last()!

@@ -1,6 +1,6 @@
 import type { ITreeElement, ITreeEntry } from '../TreeEntry'
-import type { DraftL } from 'src/models/Draft'
-import type { STATE } from 'src/state/state'
+import type { DraftL } from '../../../../models/Draft'
+import type { STATE } from '../../../../state/state'
 
 import { VirtualFolder } from '../../VirtualHierarchy'
 import { TreeNode } from '../xxx/TreeNode'
@@ -8,7 +8,7 @@ import { TreeApp } from './TreeApp'
 import { TreeAppFolder } from './TreeAppFolders'
 import { TreeDraft } from './TreeDraft'
 import { TreeDraftFolder } from './TreeDraftFolders'
-import { CushyAppL } from 'src/models/CushyApp'
+import { CushyAppL } from '../../../../models/CushyApp'
 
 export class TreeFavoriteApps implements ITreeEntry {
     isFolder = true

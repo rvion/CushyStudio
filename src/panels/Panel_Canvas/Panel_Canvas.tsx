@@ -8,7 +8,7 @@ import { UnifiedCanvasMenuUI } from './menu/UnifiedCanvasMenuUI'
 import { UnifiedCanvas } from './states/UnifiedCanvas'
 import { UnifiedCanvasCtx } from './UnifiedCanvasCtx'
 import { useSize } from './useSize'
-import { useImageDrop } from 'src/widgets/galleries/dnd'
+import { useImageDrop } from '../../widgets/galleries/dnd'
 
 // https://github.com/devforth/painterro
 export const Panel_Canvas = observer(function Panel_Canvas_(p: {

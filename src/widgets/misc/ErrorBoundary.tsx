@@ -1,6 +1,8 @@
 import { FallbackProps } from 'react-error-boundary'
 
-export function ErrorBoundaryFallback(p: FallbackProps) {
+import { JsonViewUI } from '../workspace/JsonViewUI'
+
+export const ErrorBoundaryFallback = (p: FallbackProps) => {
     // { error, resetErrorBoundary }: any
     // Call resetErrorBoundary() to reset the error boundary and retry the render.
 
@@ -13,6 +15,15 @@ export function ErrorBoundaryFallback(p: FallbackProps) {
                 Something went wrong:
             </p>
             <pre style={{ color: 'red' }}>{p.error?.message}</pre>
+
+            {p.error.extraJSON && <JsonViewUI value={p.error.extraJSON}></JsonViewUI>}
+            {p.error?.stack && typeof p.error.stack === 'string' && (
+                <pre tw='text-sm'>
+                    {p.error.stack.split('\n').map((line: string, i: number) => (
+                        <div key={i}>{line}</div>
+                    ))}
+                </pre>
+            )}
         </div>
     )
 }

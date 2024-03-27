@@ -1,8 +1,8 @@
 import type { UnifiedCanvasViewInfos } from '../types/RectSimple'
 import type { KonvaEventObject } from 'konva/lib/Node'
-import type { DraftL } from 'src/models/Draft'
-import type { MediaImageL } from 'src/models/MediaImage'
-import type { STATE } from 'src/state/state'
+import type { DraftL } from '../../../models/Draft'
+import type { MediaImageL } from '../../../models/MediaImage'
+import type { STATE } from '../../../state/state'
 
 import Konva from 'konva'
 import { makeAutoObservable } from 'mobx'
@@ -17,7 +17,7 @@ import { UnifiedImage } from './UnifiedImage'
 import { UnifiedMask } from './UnifiedMask'
 import { UnifiedSelection } from './UnifiedSelection'
 import { UnifiedStep } from './UnifiedStep'
-import { toastError } from 'src/utils/misc/toasts'
+import { toastError } from '../../../utils/misc/toasts'
 
 export class UnifiedCanvas {
     snapToGrid = true

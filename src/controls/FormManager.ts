@@ -43,4 +43,20 @@ export class FormManager<MyFormBuilder extends IFormBuilder> {
             return form
         }, deps)
     }
+
+    /**
+     * copy pasted from useForm, with a better name
+     * intented to be used as `cushy.forms.use(...)`
+     */
+    use = <FIELDS extends SchemaDict>(
+        //
+        ui: (form: MyFormBuilder) => FIELDS,
+        formProperties: FormProperties<FIELDS> = { name: 'unnamed' },
+        deps: DependencyList = [],
+    ): Form<FIELDS, MyFormBuilder> => {
+        return useMemo(() => {
+            const form = new Form<FIELDS, MyFormBuilder>(this, ui as any /* 🔴 */, formProperties)
+            return form
+        }, deps)
+    }
 }

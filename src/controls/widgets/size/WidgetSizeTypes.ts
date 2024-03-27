@@ -1,3 +1,5 @@
+// ALLOWED_IN: [Cushy, FORMS]
+
 // prettier-ignore
 export type SDModelType =
     | 'SD1.5 512'

@@ -3,7 +3,7 @@ import type { SearchResult_IPCPayload } from './ElectronUtils'
 
 import { makeAutoObservable } from 'mobx'
 
-import { Debounced } from 'src/utils/misc/Debounced'
+import { Debounced } from '../misc/Debounced'
 
 type SearchOptions = {
     findNext: boolean // true

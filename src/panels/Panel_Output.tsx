@@ -1,12 +1,12 @@
 import { observer } from 'mobx-react-lite'
 
 import { useSt } from '../state/stateContext'
-import { Status } from 'src/back/Status'
-import { InputNumberUI } from 'src/controls/widgets/number/InputNumberUI'
-import { OutputPreviewUI, OutputUI } from 'src/outputs/OutputUI'
-import { StepOutputsHeaderV2UI } from 'src/outputs/StepOutputsV2UI'
-import { RevealUI } from 'src/rsuite/reveal/RevealUI'
-import { FieldAndLabelUI } from 'src/widgets/misc/FieldAndLabelUI'
+import { Status } from '../back/Status'
+import { InputNumberUI } from '../controls/widgets/number/InputNumberUI'
+import { OutputPreviewUI, OutputUI } from '../outputs/OutputUI'
+import { StepOutputsHeaderV2UI } from '../outputs/StepOutputsV2UI'
+import { RevealUI } from '../rsuite/reveal/RevealUI'
+import { FieldAndLabelUI } from '../widgets/misc/FieldAndLabelUI'
 
 // const mode: 'H' | 'V' = 1 - 1 == 0 ? 'V' : 'H'
 // const dir = mode === 'H' ? 'flex-col' : 'flex-row'

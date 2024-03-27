@@ -1,8 +1,8 @@
 import { makeAutoObservable } from 'mobx'
 
-import { MediaImageT } from 'src/db/TYPES.gen'
-import { CustomDataL } from 'src/models/CustomData'
-import { MediaImageL } from 'src/models/MediaImage'
+import { MediaImageT } from '../db/TYPES.gen'
+import { CustomDataL } from '../models/CustomData'
+import { MediaImageL } from '../models/MediaImage'
 
 export type ImageStoreT = {
     imageID?: Maybe<MediaImageID>

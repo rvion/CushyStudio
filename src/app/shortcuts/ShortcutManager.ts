@@ -1,5 +1,5 @@
 import type { KeyboardEvent } from 'react'
-import type { STATE } from 'src/state/state'
+import type { STATE } from '../../state/state'
 
 import { META_NAME, MOD_KEY } from './META_NAME'
 import { Trigger } from './Trigger'

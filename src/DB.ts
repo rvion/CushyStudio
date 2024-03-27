@@ -3,8 +3,6 @@ import type { KyselyTables } from './db/TYPES.gen'
 import SQLite from 'better-sqlite3'
 import { Kysely, SqliteDialect } from 'kysely'
 
-import { DB_RELATIVE_PATH } from './db/DB_CONFIG'
-
 // ---------------------------------------------------------------
 const dialect = new SqliteDialect({
     // database: SQLite(DB_RELATIVE_PATH, { nativeBinding: 'node_modules/better-sqlite3/build/Release/better_sqlite3.node' }),

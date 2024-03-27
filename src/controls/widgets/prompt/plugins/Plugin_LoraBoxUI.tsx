@@ -1,12 +1,12 @@
 import { observer } from 'mobx-react-lite'
 
-import { openExternal } from 'src/app/layout/openExternal'
-import { InputNumberUI } from 'src/controls/widgets/number/InputNumberUI'
-import { Prompt_Lora, Prompt_WeightedExpression } from 'src/controls/widgets/prompt/grammar/grammar.practical'
-import { WidgetPromptUISt } from 'src/controls/widgets/prompt/WidgetPromptUISt'
-import { MessageErrorUI } from 'src/panels/MessageUI'
-import { Button, Input } from 'src/rsuite/shims'
-import { useSt } from 'src/state/stateContext'
+import { openExternal } from '../../../../app/layout/openExternal'
+import { InputNumberUI } from '../../number/InputNumberUI'
+import { Prompt_Lora, Prompt_WeightedExpression } from '../grammar/grammar.practical'
+import { WidgetPromptUISt } from '../WidgetPromptUISt'
+import { MessageErrorUI } from '../../../../panels/MessageUI'
+import { Button, Input } from '../../../../rsuite/shims'
+import { useSt } from '../../../../state/stateContext'
 
 // TODO: Once it is possible to get the modifier key's states, holding shift when pressing the trash button should not trim whitespace/commas
 

@@ -1,6 +1,6 @@
-import type { STATE } from 'src/state/state'
+import type { STATE } from '../../state/state'
 
-import { toastError, toastSuccess } from 'src/utils/misc/toasts'
+import { toastError, toastSuccess } from '../../utils/misc/toasts'
 
 export const _duplicateCurrentDraft = (st: STATE) => {
     const DraftPanelProps = st.layout.currentTabIs('Draft')

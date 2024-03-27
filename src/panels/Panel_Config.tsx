@@ -1,13 +1,13 @@
 import { observer } from 'mobx-react-lite'
 
 import { useSt } from '../state/stateContext'
-import { ComboUI } from 'src/app/shortcuts/ComboUI'
-import { KEYS } from 'src/app/shortcuts/shorcutKeys'
-import { InputNumberUI } from 'src/controls/widgets/number/InputNumberUI'
-import { FormControl, FormHelpText, Toggle } from 'src/rsuite/shims'
-import { openInVSCode } from 'src/utils/electron/openInVsCode'
-import { parseFloatNoRoundingErr } from 'src/utils/misc/parseFloatNoRoundingErr'
-import { SectionTitleUI } from 'src/widgets/workspace/SectionTitle'
+import { ComboUI } from '../app/shortcuts/ComboUI'
+import { KEYS } from '../app/shortcuts/shorcutKeys'
+import { InputNumberUI } from '../controls/widgets/number/InputNumberUI'
+import { FormControl, FormHelpText, Toggle } from '../rsuite/shims'
+import { openInVSCode } from '../utils/electron/openInVsCode'
+import { parseFloatNoRoundingErr } from '../utils/misc/parseFloatNoRoundingErr'
+import { SectionTitleUI } from '../widgets/workspace/SectionTitle'
 
 export const Panel_Config = observer(function Panel_Config_() {
     const st = useSt()

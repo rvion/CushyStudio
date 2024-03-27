@@ -1,17 +1,17 @@
 import type { CivitaiDownloadableFile, CivitaiModelVersion, CivitaiSearchResultItem } from './CivitaiSpec'
-import type { ModelInfo } from 'src/manager/model-list/model-list-loader-types'
+import type { ModelInfo } from '../../manager/model-list/model-list-loader-types'
 
 import { observer, useLocalObservable } from 'mobx-react-lite'
 
 import { MessageWarningUI } from '../MessageUI'
 import { CivitaiWarningAPIKeyMissingUI } from './CivitaiWarningAPIKeyMissingUI'
-import { formatSize } from 'src/db/getDBStats'
-import { knownModel_Base, type KnownModel_Base } from 'src/manager/model-list/KnownModel_Base'
-import { knownModel_SavePath, type KnownModel_SavePath } from 'src/manager/model-list/KnownModel_SavePath'
-import { knownModel_Type, type KnownModel_Type } from 'src/manager/model-list/KnownModel_Type'
-import { RevealUI } from 'src/rsuite/reveal/RevealUI'
-import { SelectUI } from 'src/rsuite/SelectUI'
-import { JsonViewUI } from 'src/widgets/workspace/JsonViewUI'
+import { formatSize } from '../../db/getDBStats'
+import { knownModel_Base, type KnownModel_Base } from '../../manager/model-list/KnownModel_Base'
+import { knownModel_SavePath, type KnownModel_SavePath } from '../../manager/model-list/KnownModel_SavePath'
+import { knownModel_Type, type KnownModel_Type } from '../../manager/model-list/KnownModel_Type'
+import { RevealUI } from '../../rsuite/reveal/RevealUI'
+import { SelectUI } from '../../rsuite/SelectUI'
+import { JsonViewUI } from '../../widgets/workspace/JsonViewUI'
 
 const detectBase = ({ version }: CivitaiDownloadableFileProps): Maybe<KnownModel_Base> => {
     // 🔴 TODO: support all knowns Civitai input types

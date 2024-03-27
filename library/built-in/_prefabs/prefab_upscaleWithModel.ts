@@ -1,6 +1,6 @@
+import type { ComfyWorkflowBuilder } from '../../../src/back/NodeBuilder'
+import type { FormBuilder } from '../../../src/controls/FormBuilder'
 import type { OutputFor } from './_prefabs'
-import type { ComfyWorkflowBuilder } from 'src/back/NodeBuilder'
-import type { FormBuilder } from 'src/controls/FormBuilder'
 
 export const ui_upscaleWithModel = () => {
     const ui: FormBuilder = getCurrentForm()

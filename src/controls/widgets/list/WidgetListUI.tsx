@@ -1,16 +1,16 @@
 import type { Widget_listExt } from '../listExt/WidgetListExt'
 import type { Widget_list } from './WidgetList'
-import type { IWidget } from 'src/controls/IWidget'
-import type { Spec } from 'src/controls/Spec'
+import type { IWidget } from '../../IWidget'
+import type { Spec } from '../../Spec'
 
 import { observer } from 'mobx-react-lite'
 import { forwardRef } from 'react'
 import SortableList, { SortableItem, SortableKnob } from 'react-easy-sort'
 import { ErrorBoundary } from 'react-error-boundary'
 
-import { getBorderStatusForWidget } from 'src/controls/shared/getBorderStatusForWidget'
-import { ListControlsUI } from 'src/controls/widgets/list/ListControlsUI'
-import { ErrorBoundaryFallback } from 'src/widgets/misc/ErrorBoundary'
+import { getBorderStatusForWidget } from '../../shared/getBorderStatusForWidget'
+import { ListControlsUI } from './ListControlsUI'
+import { ErrorBoundaryFallback } from '../../../widgets/misc/ErrorBoundary'
 
 export const WidgetList_LineUI = observer(function WidgetList_LineUI_<T extends Spec>(p: {
     widget: Widget_list<T> | Widget_listExt<T>

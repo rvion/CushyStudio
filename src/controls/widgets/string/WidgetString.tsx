@@ -1,13 +1,12 @@
-import type { IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
-import type { Form } from 'src/controls/Form'
-import type { IWidget } from 'src/controls/IWidget'
+import type { Form } from '../../Form'
+import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 
 import { makeAutoObservable, runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { WidgetDI } from '../WidgetUI.DI'
+import { applyWidgetMixinV2 } from '../../Mixins'
+import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetString_HeaderUI, WidgetString_TextareaBodyUI, WidgetString_TextareaHeaderUI } from './WidgetStringUI'
-import { applyWidgetMixinV2 } from 'src/controls/Mixins'
 
 // CONFIG
 export type Widget_string_config = WidgetConfigFields<
@@ -93,4 +92,4 @@ export class Widget_string implements IWidget<Widget_string_types> {
 }
 
 // DI
-WidgetDI.Widget_string = Widget_string
+registerWidgetClass('str', Widget_string)

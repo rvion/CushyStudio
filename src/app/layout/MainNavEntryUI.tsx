@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 import React, { ReactNode } from 'react'
 
-import { MenuItem } from 'src/rsuite/Dropdown'
+import { MenuItem } from '../../rsuite/Dropdown'
 
 export const MainNavEntryUI = observer(function UI_(p: {
     onClick: (ev: React.MouseEvent<HTMLElement, MouseEvent>) => void

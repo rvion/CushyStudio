@@ -1,24 +1,25 @@
 import type { LiveInstance } from '../db/LiveInstance'
+import type { StepOutput } from '../types/StepOutput'
 import type { ComfyPromptL } from './ComfyPrompt'
 import type { ComfyWorkflowL } from './ComfyWorkflow'
-import type { StepOutput } from 'src/types/StepOutput'
 
 import { Status } from '../back/Status'
+import { Widget_group } from '../controls/widgets/group/WidgetGroup'
 import { LiveRef } from '../db/LiveRef'
+import { LiveRefOpt } from '../db/LiveRefOpt'
+import { SQLITE_false, SQLITE_true } from '../db/SQLITE_boolean'
+import { type TABLES } from '../db/TYPES.gen'
 import { Runtime, RuntimeExecutionResult } from '../runtime/Runtime'
-import { getGlobalRuntimeCtx } from './_ctx2'
+import { ManualPromise } from '../utils/misc/ManualPromise'
 import { CushyAppL } from './CushyApp'
 import { DraftL } from './Draft'
 import { Executable } from './Executable'
+import { getGlobalRuntimeCtx } from './getGlobalRuntimeCtx'
 import { Media3dDisplacementL } from './Media3dDisplacement'
+import { MediaCustomL } from './MediaCustom'
 import { MediaImageL } from './MediaImage'
 import { MediaTextL } from './MediaText'
 import { MediaVideoL } from './MediaVideo'
-import { Widget_group } from 'src/controls/widgets/group/WidgetGroup'
-import { LiveRefOpt } from 'src/db/LiveRefOpt'
-import { SQLITE_false, SQLITE_true } from 'src/db/SQLITE_boolean'
-import { type TABLES } from 'src/db/TYPES.gen'
-import { ManualPromise } from 'src/utils/misc/ManualPromise'
 
 export type FormPath = (string | number)[]
 /** a thin wrapper around an app execution */
@@ -107,14 +108,15 @@ export class StepL {
 
     outputWorkflow = new LiveRef<this, ComfyWorkflowL>(this, 'outputGraphID', 'comfy_workflow')
 
-    get texts()           { return this.db.media_text           .select(q => q.where('stepID', '=', this.id),['media_text.stepID']) } // prettier-ignore
-    get images()          { return this.db.media_image          .select(q => q.where('stepID', '=', this.id),['media_image.stepID']) } // prettier-ignore
-    get videos()          { return this.db.media_video          .select(q => q.where('stepID', '=', this.id),['media_video.stepID']) } // prettier-ignore
-    get displacements()   { return this.db.media_3d_displacement.select(q => q.where('stepID', '=', this.id),['media_3d_displacement.stepID']) } // prettier-ignore
-    get splats()          { return this.db.media_splat          .select(q => q.where('stepID', '=', this.id),['media_splat.stepID']) } // prettier-ignore
-    get comfy_workflows() { return this.db.comfy_workflow       .select(q => q.where('stepID', '=', this.id),['comfy_workflow.stepID']) } // prettier-ignore
-    get comfy_prompts()   { return this.db.comfy_prompt         .select(q => q.where('stepID', '=', this.id),['comfy_prompt.stepID']) } // prettier-ignore
-    get runtimeErrors()   { return this.db.runtime_error        .select(q => q.where('stepID', '=', this.id),['runtime_error.stepID']) } // prettier-ignore
+    get texts()           { return this.db.media_text           .select(q => q.where('stepID', '=', this.id), ['media_text.stepID']           )} // prettier-ignore
+    get images()          { return this.db.media_image          .select(q => q.where('stepID', '=', this.id), ['media_image.stepID']          )} // prettier-ignore
+    get videos()          { return this.db.media_video          .select(q => q.where('stepID', '=', this.id), ['media_video.stepID']          )} // prettier-ignore
+    get displacements()   { return this.db.media_3d_displacement.select(q => q.where('stepID', '=', this.id), ['media_3d_displacement.stepID'])} // prettier-ignore
+    get customOutputs()   { return this.db.media_custom         .select(q => q.where('stepID', '=', this.id), ['media_custom.stepID']         )} // prettier-ignore
+    get splats()          { return this.db.media_splat          .select(q => q.where('stepID', '=', this.id), ['media_splat.stepID']          )} // prettier-ignore
+    get comfy_workflows() { return this.db.comfy_workflow       .select(q => q.where('stepID', '=', this.id), ['comfy_workflow.stepID']       )} // prettier-ignore
+    get comfy_prompts()   { return this.db.comfy_prompt         .select(q => q.where('stepID', '=', this.id), ['comfy_prompt.stepID']         )} // prettier-ignore
+    get runtimeErrors()   { return this.db.runtime_error        .select(q => q.where('stepID', '=', this.id), ['runtime_error.stepID']        )} // prettier-ignore
 
     // private _CACHE_INVARIANT = null // () => this.data.status !== Status.Running
     // = new LiveCollection<TABLES['media_text']>           ({table: () => this.db.media_text,           where: () => ({stepID:this.id}), cache: this._CACHE_INVARIANT}) // prettier-ignore
@@ -136,6 +138,7 @@ export class StepL {
             last instanceof MediaImageL || //
             last instanceof MediaVideoL ||
             last instanceof Media3dDisplacementL ||
+            last instanceof MediaCustomL ||
             last instanceof MediaTextL ||
             last instanceof MediaImageL
         )
@@ -155,6 +158,7 @@ export class StepL {
             ...this.videos,
             ...this.splats,
             ...this.displacements,
+            ...this.customOutputs,
             ...this.comfy_workflows,
             ...this.comfy_prompts,
             ...this.runtimeErrors,

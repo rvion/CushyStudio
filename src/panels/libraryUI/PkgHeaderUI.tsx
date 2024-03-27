@@ -1,10 +1,10 @@
 // import type { Package } from '../../cards/Pkg'
 
 // import { observer } from 'mobx-react-lite'
-// import { stringifyUnknown } from 'src/utils/formatters/stringifyUnknown'
+// import { stringifyUnknown } from '../../utils/formatters/stringifyUnknown'
 // import { ManifestError } from '../../cards/DeckManifest'
-// import { RevealUI } from 'src/rsuite/RevealUI'
-// import { exhaust } from 'src/utils/misc/ComfyUtils'
+// import { RevealUI } from '../../rsuite/RevealUI'
+// import { exhaust } from '../../utils/misc/ComfyUtils'
 // // import { ActionPackStatusUI } from '../../cards/DeckStatusUI'
 // import { PkgHeaderStyle } from './AppListStyles'
 

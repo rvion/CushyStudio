@@ -1,4 +1,4 @@
-import type { NodeInputExt } from 'src/models/ComfySchema'
+import type { NodeInputExt } from '../models/ComfySchema'
 
 export const ComfyPrimitiveMapping: { [key: string]: string } = {
     // BACK

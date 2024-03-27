@@ -1,8 +1,8 @@
-import type { ReleaseChannels } from 'src/config/ConfigFile'
+import type { ReleaseChannels } from '../../config/ConfigFile'
 
 import { observer } from 'mobx-react-lite'
 
-import { useSt } from 'src/state/stateContext'
+import { useSt } from '../../state/stateContext'
 
 export const ReleaseChannelUI = observer(function ReleaseChannelUI_(p: {
     //

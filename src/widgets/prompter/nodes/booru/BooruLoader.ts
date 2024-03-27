@@ -1,4 +1,4 @@
-import type { STATE } from 'src/state/state'
+import type { STATE } from '../../../../state/state'
 
 import * as csv from '@fast-csv/parse'
 import { createReadStream } from 'fs'

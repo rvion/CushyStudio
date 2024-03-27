@@ -1,8 +1,8 @@
 import type { VirtualFolder } from '../../VirtualHierarchy'
 import type { ITreeElement, ITreeEntry } from '../TreeEntry'
 import type { TreeNode } from '../xxx/TreeNode'
-import type { CushyAppL } from 'src/models/CushyApp'
-import type { STATE } from 'src/state/state'
+import type { CushyAppL } from '../../../../models/CushyApp'
+import type { STATE } from '../../../../state/state'
 
 import { basename } from 'pathe'
 

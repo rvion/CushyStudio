@@ -1,14 +1,14 @@
-import type { ComfyNodeSchema } from 'src/models/ComfySchema'
-import type { ProjectL } from 'src/models/Project'
+import type { ComfyNodeSchema } from '../models/ComfySchema'
+import type { ProjectL } from '../models/Project'
 
 import { makeAutoObservable } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { useMemo } from 'react'
 
-import { getColorForInputNameInComfy, getColorForOutputNameInCushy } from 'src/core/Colors'
-import { Input } from 'src/rsuite/shims'
-import { useSt } from 'src/state/stateContext'
-import { searchMatches } from 'src/utils/misc/searchMatches'
+import { getColorForInputNameInComfy, getColorForOutputNameInCushy } from '../core/Colors'
+import { Input } from '../rsuite/shims'
+import { useSt } from '../state/stateContext'
+import { searchMatches } from '../utils/misc/searchMatches'
 
 class ComfyNodeExplorerState {
     // globalSearch = ''

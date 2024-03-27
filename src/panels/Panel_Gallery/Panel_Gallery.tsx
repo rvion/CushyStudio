@@ -4,9 +4,9 @@ import { useSt } from '../../state/stateContext'
 import { PanelHeaderUI } from '../PanelHeader'
 import { GalleryImageGridUI } from './GalleryImageGridUI'
 import { GallerySearchControlsUI } from './GallerySearchControlsUI'
-import { FormUI } from 'src/controls/FormUI'
-import { SpacerUI } from 'src/controls/widgets/spacer/SpacerUI'
-import { RevealUI } from 'src/rsuite/reveal/RevealUI'
+import { FormUI } from '../../controls/FormUI'
+import { SpacerUI } from '../../controls/widgets/spacer/SpacerUI'
+import { RevealUI } from '../../rsuite/reveal/RevealUI'
 
 export const Panel_Gallery = observer(function VerticalGalleryUI_(p: {}) {
     const st = useSt()

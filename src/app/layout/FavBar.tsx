@@ -1,18 +1,18 @@
-import type { CushyAppL } from 'src/models/CushyApp'
+import type { CushyAppL } from '../../models/CushyApp'
 
 import { runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { ReactNode, useState } from 'react'
 
-import { AppIllustrationUI } from 'src/cards/fancycard/AppIllustrationUI'
-import { DraftIllustrationUI } from 'src/cards/fancycard/DraftIllustration'
-import { FormUI } from 'src/controls/FormUI'
-import { SpacerUI } from 'src/controls/widgets/spacer/SpacerUI'
-import { TreeUI } from 'src/panels/libraryUI/tree/xxx/TreeUI'
-import { CreateAppPopupUI } from 'src/panels/Panel_Welcome/CreateAppBtnUI'
-import { PanelHeaderUI } from 'src/panels/PanelHeader'
-import { RevealUI } from 'src/rsuite/reveal/RevealUI'
-import { useSt } from 'src/state/stateContext'
+import { AppIllustrationUI } from '../../cards/fancycard/AppIllustrationUI'
+import { DraftIllustrationUI } from '../../cards/fancycard/DraftIllustration'
+import { FormUI } from '../../controls/FormUI'
+import { SpacerUI } from '../../controls/widgets/spacer/SpacerUI'
+import { TreeUI } from '../../panels/libraryUI/tree/xxx/TreeUI'
+import { CreateAppPopupUI } from '../../panels/Panel_Welcome/CreateAppBtnUI'
+import { PanelHeaderUI } from '../../panels/PanelHeader'
+import { RevealUI } from '../../rsuite/reveal/RevealUI'
+import { useSt } from '../../state/stateContext'
 
 // Could give this an option be collapsible in the future?
 /** Re-usable container to keep a consistent style around groups of buttons */

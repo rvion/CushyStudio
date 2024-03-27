@@ -1,6 +1,6 @@
+import type { FormBuilder } from '../../../src/controls/FormBuilder'
+import type { Runtime } from '../../../src/runtime/Runtime'
 import type { OutputFor } from './_prefabs'
-import type { FormBuilder } from 'src/controls/FormBuilder'
-import type { Runtime } from 'src/runtime/Runtime'
 
 // UI -----------------------------------------------------------
 export const ui_sampler = () => {

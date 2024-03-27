@@ -13,7 +13,7 @@ declare global {
         | Object.defineProperty(window, 'CushyObservableCache' { value: observable({ st: this }) })
         | Object.defineProperty(window, 'cushy', { get() { return (window as any).st } }) // prettier-ignore
     */
-    const cushy: import('src/state/state').STATE
+    const cushy: import('../../../src/state/state').STATE
 }
 
 declare module 'react' {
@@ -24,10 +24,6 @@ declare module 'react' {
 
 // -----------------
 declare module '*.css' {}
-
-// -----------------
-// docusaurus
-declare module '@docusaurus/tsconfig' {}
 
 // -----------------
 // https://github.com/pmndrs/react-three-fiber/issues/2501#issuecomment-1250058445

@@ -1,18 +1,20 @@
-import type { MediaImageL } from 'src/models/MediaImage'
+import type { MediaImageL } from '../models/MediaImage'
 
 import { observer } from 'mobx-react-lite'
 
-import { openExternal, showItemInFolder } from 'src/app/layout/openExternal'
-import { DraftIllustrationUI } from 'src/cards/fancycard/DraftIllustration'
-import { Dropdown, MenuItem } from 'src/rsuite/Dropdown'
-import { useSt } from 'src/state/stateContext'
+import { openExternal, showItemInFolder } from '../app/layout/openExternal'
+import { DraftIllustrationUI } from '../cards/fancycard/DraftIllustration'
+import { Dropdown, MenuItem } from '../rsuite/Dropdown'
+import { useSt } from '../state/stateContext'
 
 export const ImageDropdownUI = observer(function ImageDropdownUI_(p: { img: MediaImageL }) {
     const img = p.img
     return (
-        <Dropdown title='Actions' startIcon={<span className='material-symbols-outlined'>menu</span>}>
-            <ImageDropdownMenuUI img={img} />
-        </Dropdown>
+        <Dropdown
+            title='Actions'
+            startIcon={<span className='material-symbols-outlined'>menu</span>}
+            content={() => <ImageDropdownMenuUI img={img} />}
+        />
     )
 })
 
@@ -24,6 +26,12 @@ export const ImageDropdownMenuUI = observer(function ImageDropdownMenuUI_(p: { i
             <div className='divider divider-start my-1'>Send to</div>
             <MenuItem icon={<span className='material-symbols-outlined'>content_copy</span>} onClick={img.copyToClipboard}>
                 Clipboard
+            </MenuItem>
+            <MenuItem
+                icon={<span className='material-symbols-outlined'>content_copy</span>}
+                onClick={img.copyToClipboardAsBase64}
+            >
+                Copy Base64
             </MenuItem>
             <MenuItem
                 icon={<span className='material-symbols-outlined'>settings_overscan</span>}

@@ -1,7 +1,7 @@
 import { makeAutoObservable } from 'mobx'
 
 import { Debounced } from '../../utils/misc/Debounced'
-import { Kwery } from 'src/utils/misc/Kwery'
+import { Kwery } from '../../utils/misc/Kwery'
 
 // civitai wrapper
 export class Civitai {

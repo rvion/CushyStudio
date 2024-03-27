@@ -1,4 +1,4 @@
-import type { STATE } from 'src/state/state'
+import type { STATE } from '../state/state'
 
 import { normalizeJSIdentifier } from '../core/normalizeJSIdentifier'
 import { ComfyPrimitiveMapping } from '../core/Primitives'
@@ -7,9 +7,9 @@ import { ComfyPromptJSON } from '../types/ComfyPrompt'
 import { CodeBuffer } from '../utils/codegen/CodeBuffer'
 import { asJSAccessor, escapeJSKey } from '../utils/codegen/escapeJSKey'
 import { jsEscapeStr } from '../utils/codegen/jsEscapeStr'
+import { bang } from '../utils/misc/bang'
 import { TEdge, toposort } from '../utils/misc/toposort'
 import { Namer } from './Namer'
-import { bang } from 'src/utils/misc/bang'
 
 /** Converts Comfy JSON prompts to ComfyScript code */
 type RuleInput = {
@@ -26,6 +26,8 @@ export type PromptToCodeOpts = {
     preserveId: boolean
     autoUI: boolean
 }
+
+const formVarInUIFn = 'form'
 
 export class ComfyImporter {
     constructor(public st: STATE) {}
@@ -58,6 +60,9 @@ export class ComfyImporter {
     }
     // -----------------------------------------------------------------------------
 
+    resetCache = () => {
+        this.nameDedupeCache = {}
+    }
     nameDedupeCache: { [key: string]: number } = {}
 
     /** handles hygenic naming  */
@@ -68,6 +73,14 @@ export class ComfyImporter {
         nameOfInputsItsPluggedInto: string[],
     ): string => {
         if (nodeType === 'CheckpointLoaderSimple') return this.finalizeName('ckpt')
+        if (nodeType === 'InvertMask') return this.finalizeName('mask')
+        // remove some ugly prefixes:
+        const uglyPrefixes = [`$$5BComfy3D$$5D_`]
+        for (const prefix of uglyPrefixes) {
+            if (nodeType.startsWith(prefix)) return this.finalizeName(nodeType.slice(prefix.length))
+        }
+        // nice hack to make code readable; if this node is used to feed a single other node,
+        // then we can use the name of the input of the node it feeds
         if (nameOfInputsItsPluggedInto.length === 1) {
             return this.finalizeName(bang(nameOfInputsItsPluggedInto[0]))
         }
@@ -75,12 +88,12 @@ export class ComfyImporter {
     }
 
     private finalizeName = (rawName: string) => {
-        const final = this.smartTrim(this.smartDownCase(rawName))
+        const final = this.smartDownCase(this.smartTrim(this.smartDownCase(rawName)))
         if (this.nameDedupeCache[final] == null) {
             this.nameDedupeCache[final] = 1
             return final
         } else {
-            return `${final}_${this.nameDedupeCache[final]++}`
+            return `${final}${this.nameDedupeCache[final]++}`
         }
     }
 
@@ -93,11 +106,14 @@ export class ComfyImporter {
     /** trim useless suffixes, like _name */
     private smartTrim = (x: string) => {
         if (x !== 'Loader' && x.endsWith('Loader')) return x.slice(0, -6)
-        if (x !== 'Image' && x.endsWith('Image')) return x.slice(0, -5)
+        if (x.startsWith('load_')) return x.slice(5)
+        if (x.startsWith('load') && x[4] && /[A-Z]/.test(x[4])) return x.slice(4)
+        // if (x !== 'Image' && x.endsWith('Image')) return x.slice(0, -5)
         return x
     }
 
     convertPromptToCode = (flow: ComfyPromptJSON, opts: PromptToCodeOpts): string => {
+        this.resetCache()
         const flowNodes = Object.entries(flow)
         const ids = Object.keys(flow)
         const edges: TEdge[] = []
@@ -137,7 +153,7 @@ export class ComfyImporter {
         p   (`    },`) // prettier-ignore
         pRun(`    run: async (run, ui) => {`)
         pRun(`        const graph = run.nodes`)
-        pUI (`    ui: (form) => ({`) // prettier-ignore
+        pUI (`    ui: (${formVarInUIFn}) => ({`) // prettier-ignore
         // p(`import { Comfy } from '../core/dsl'\n`)
         // p(`export const demo = new Comfy()`)
 
@@ -165,16 +181,18 @@ export class ComfyImporter {
             let outoutIx = 0
             for (const o of schema.outputs ?? []) {
                 const isValid1234 = /^[a-zA-Z_$][a-zA-Z_$0-9]*$/.test(o.nameInCushy)
-                availableSignals.set(
-                    `${nodeID}-${outoutIx++}`,
-                    isValid1234 //
-                        ? `${varName}.outputs.${o.nameInCushy}`
-                        : `${varName}.outputs["${o.nameInCushy}"]`,
-                )
+                const isSingleOutputOfThisType = schema.outputs.filter((t) => t.typeName === o.typeName).length === 1
+                const cleanestPossibleLink = isSingleOutputOfThisType //
+                    ? varName
+                    : isValid1234 //
+                    ? `${varName}.outputs.${o.nameInCushy}`
+                    : `${varName}.outputs["${o.nameInCushy}"]`
+
+                availableSignals.set(`${nodeID}-${outoutIx++}`, cleanestPossibleLink)
             }
 
             if (node == null) throw new Error('node not found')
-            piRun(`        const ${varName} = graph.${classType}({`)
+            piRun(`        const ${varName} = graph.${classType}({ `)
 
             // name of the group of fields where primitive input for this node
             // will be added to the form
@@ -227,11 +245,11 @@ export class ComfyImporter {
             }
 
             if (uiStuff.length === 1) {
-                piUI(`        ${inputGroupName}: form.group({`)
+                piUI(`        ${inputGroupName}: ${formVarInUIFn}.group({`)
                 piUI(` items:() => ({ ${uiStuff[0]} })`)
                 piUI(`}),\n`)
             } else if (uiStuff.length > 0) {
-                pUI(`        ${inputGroupName}: form.group({`)
+                pUI(`        ${inputGroupName}: ${formVarInUIFn}.group({`)
                 pUI(`           items:() => ({`)
                 for (const x of uiStuff) {
                     pUI(`                ` + x)
@@ -257,8 +275,6 @@ export class ComfyImporter {
         }
 
         function renderUIForInput(x: UIVal) {
-            const formVarInUIFn = 'form'
-
             const s = x.schema
             // no schema, let's try to infer the type from the value
             if (s == null) return `${formVarInUIFn}.${x.typeofValue}({default: ${jsEscapeStr(x.default)}})`

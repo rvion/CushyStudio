@@ -3,8 +3,8 @@ import { useEffect } from 'react'
 
 import { ForceUpdateAllAppsBtnUI, IndexAllAppsBtnUI } from './libraryUI/LibraryHeaderUI'
 import { CreateAppBtnUI } from './Panel_Welcome/CreateAppBtnUI'
-import { AppCardUI } from 'src/cards/fancycard/AppCardUI'
-import { useSt } from 'src/state/stateContext'
+import { AppCardUI } from '../cards/fancycard/AppCardUI'
+import { useSt } from '../state/stateContext'
 
 export const Panel_Welcome = observer(function Panel_Welcome_(p: {}) {
     const st = useSt()

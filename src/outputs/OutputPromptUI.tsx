@@ -2,11 +2,11 @@ import { observer } from 'mobx-react-lite'
 
 import { GraphSummaryUI } from '../widgets/workspace/GraphSummaryUI'
 import { OutputPreviewWrapperUI } from './OutputPreviewWrapperUI'
-import { ComfyPromptL } from 'src/models/ComfyPrompt'
-import { ProgressReport } from 'src/models/ComfyWorkflow'
-import { StepL } from 'src/models/Step'
-import { useSt } from 'src/state/stateContext'
-import { parseFloatNoRoundingErr } from 'src/utils/misc/parseFloatNoRoundingErr'
+import { ComfyPromptL } from '../models/ComfyPrompt'
+import { ProgressReport } from '../models/ComfyWorkflow'
+import { StepL } from '../models/Step'
+import { useSt } from '../state/stateContext'
+import { parseFloatNoRoundingErr } from '../utils/misc/parseFloatNoRoundingErr'
 
 export const OutputPromptPreviewUI = observer(function OutputPromptPreviewUI_(p: { step?: Maybe<StepL>; output: ComfyPromptL }) {
     const st = useSt()

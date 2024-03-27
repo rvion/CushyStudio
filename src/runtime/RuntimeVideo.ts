@@ -1,11 +1,11 @@
 import type { Runtime } from './Runtime'
-import type { MediaImageL } from 'src/models/MediaImage'
+import type { MediaImageL } from '../models/MediaImage'
 
 import { makeAutoObservable } from 'mobx'
 import path from 'pathe'
 
-import { createMP4FromImages } from 'src/utils/ffmpeg/ffmpegScripts'
-import { asAbsolutePath } from 'src/utils/fs/pathUtils'
+import { createMP4FromImages } from '../utils/ffmpeg/ffmpegScripts'
+import { asAbsolutePath } from '../utils/fs/pathUtils'
 
 /** namespace for all video-related utils */
 export class RuntimeVideos {

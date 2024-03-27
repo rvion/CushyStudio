@@ -1,10 +1,10 @@
 // import { observer } from 'mobx-react-lite'
 // import { useMemo } from 'react'
-// import { Button } from 'src/rsuite/shims'
-// import { useSt } from 'src/state/stateContext'
+// import { Button } from '../../rsuite/shims'
+// import { useSt } from '../../state/stateContext'
 // import { CreateDeckModalState } from './CreateDeckModalUI'
 // import { GithubUsernameInputUI } from './GithubUsernameInputUI'
-// import { PackageRelPath } from 'src/cards/Pkg'
+// import { PackageRelPath } from '../../cards/Pkg'
 
 // export const CreateDeckBtnUI = observer(function CreateDeckBtnUI_(p: {}) {
 //     const st = useSt()

@@ -1,7 +1,4 @@
-import {
-    run_ipadapter_standalone,
-    ui_ipadapter_standalone,
-} from '../_prefabs/ControlNet/ipAdapter/prefab_ipAdapter_base_standalone'
+import { run_ipadapter_standalone, ui_ipadapter_standalone } from '../_ipAdapter/prefab_ipAdapter_base_standalone'
 import { run_prompt } from '../_prefabs/prefab_prompt'
 
 app({

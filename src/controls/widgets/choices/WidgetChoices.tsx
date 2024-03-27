@@ -1,16 +1,15 @@
 import type { Form } from '../../Form'
-import type { IWidgetMixins, SharedWidgetSerial, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
-import type { IWidget } from 'src/controls/IWidget'
-import type { SchemaDict } from 'src/controls/Spec'
+import type { IWidget, IWidgetMixins, SharedWidgetSerial, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { SchemaDict } from '../../Spec'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { WidgetDI } from '../WidgetUI.DI'
+import { makeLabelFromFieldName } from '../../../utils/misc/makeLabelFromFieldName'
+import { toastError } from '../../../utils/misc/toasts'
+import { applyWidgetMixinV2 } from '../../Mixins'
+import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetChoices_BodyUI, WidgetChoices_HeaderUI } from './WidgetChoicesUI'
-import { applyWidgetMixinV2 } from 'src/controls/Mixins'
-import { makeLabelFromFieldName } from 'src/utils/misc/makeLabelFromFieldName'
-import { toastError } from 'src/utils/misc/toasts'
 
 export type TabPositionConfig = 'start' | 'center' | 'end'
 
@@ -55,6 +54,7 @@ export interface Widget_choices<T extends SchemaDict = SchemaDict> extends Widge
 export class Widget_choices<T extends SchemaDict = SchemaDict> implements IWidget<Widget_choices_types<T>> {
     DefaultHeaderUI = WidgetChoices_HeaderUI
     DefaultBodyUI = WidgetChoices_BodyUI
+    /* override */ background = true
     readonly id: string
     readonly type: 'choices' = 'choices'
     readonly expand: boolean = this.config.expand ?? false
@@ -223,4 +223,4 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> implements IWidge
 }
 
 // DI
-WidgetDI.Widget_choices = Widget_choices
+registerWidgetClass('choices', Widget_choices)

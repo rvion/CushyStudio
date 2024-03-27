@@ -15,7 +15,7 @@ import { MenuPanelsUI } from './MenuPanelsUI'
 import { MenuSettingsUI } from './MenuSettingsUI'
 import { MenuThemeUI } from './MenuThemeUI'
 import { MenuUtilsUI } from './MenuUtilsUI'
-import { assets } from 'src/utils/assets/assets'
+import { assets } from '../../utils/assets/assets'
 
 export const AppBarUI = observer(function AppBarUI_(p: {}) {
     const st = useSt()

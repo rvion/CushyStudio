@@ -10,7 +10,7 @@ import { STATE } from '../../state/state'
 import { stContext } from '../../state/stateContext'
 import { asAbsolutePath } from '../../utils/fs/pathUtils'
 import { useGlobalDropHook } from './useGlobalDropHook'
-import { TargetBox } from 'src/importers/TargetBox'
+import { TargetBox } from '../../importers/TargetBox'
 
 const path = asAbsolutePath(process.cwd())
 

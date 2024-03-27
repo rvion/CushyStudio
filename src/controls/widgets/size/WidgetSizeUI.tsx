@@ -4,8 +4,8 @@ import type { AspectRatio, ModelType } from './WidgetSizeTypes'
 
 import { observer } from 'mobx-react-lite'
 
-import { InputNumberUI } from 'src/controls/widgets/number/InputNumberUI'
-import { Joined } from 'src/rsuite/shims'
+import { InputNumberUI } from '../number/InputNumberUI'
+import { Joined } from '../../../rsuite/shims'
 
 export const WigetSize_BlockUI = observer(function WigetSize_BlockUI_(p: { widget: Widget_size }) {
     return <WigetSizeXUI sizeHelper={p.widget.sizeHelper} bounds={p.widget.config} />

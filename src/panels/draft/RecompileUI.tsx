@@ -1,15 +1,19 @@
-import type { CushyAppL } from 'src/models/CushyApp'
+import type { CushyAppL } from '../../models/CushyApp'
 
 import { observer } from 'mobx-react-lite'
 
+import { _formatAsRelativeDateTime } from '../../updater/_getRelativeTimeString'
 import { MessageWarningUI } from '../MessageUI'
-import { _formatAsRelativeDateTime } from 'src/updater/_getRelativeTimeString'
 
-export const RecompileUI = observer(function RecompileUI_(p: { app: CushyAppL }) {
+export const RecompileUI = observer(function RecompileUI_(p: {
+    //
+    app: CushyAppL
+    always?: boolean
+}) {
     const app = p.app
     const script = app.script
     const status = script.isOutOfDate
-    if (!status.needRecompile) return null
+    if (!p.always && !status.needRecompile) return null
     return (
         <MessageWarningUI>
             need recompile: {status.reason}

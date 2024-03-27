@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 
-import { MarkdownUI } from 'src/rsuite/MarkdownUI'
+import { MarkdownUI } from '../rsuite/MarkdownUI'
 
 export const MessageInfoUI = observer(function MessageInfoUI_(p: {
     title?: string

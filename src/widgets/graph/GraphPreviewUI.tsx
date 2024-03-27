@@ -6,9 +6,9 @@ import { createPortal } from 'react-dom'
 
 import { DrawWorkflowUI } from './DrawWorkflowUI'
 import { useCursorLockMove } from './useCursorLockMove'
-import { ComfyWorkflowL } from 'src/models/ComfyWorkflow'
+import { ComfyWorkflowL } from '../../models/ComfyWorkflow'
 
-// import { renderMinimap } from 'src/widgets/minimap/Minimap'
+// import { renderMinimap } from '../minimap/Minimap'
 
 export const useObservableRef = <T extends any>() => useMemo(() => observable({ current: null } as MutableRefObject<T>), [])
 

@@ -1,11 +1,11 @@
-import type { MediaImageL } from 'src/models/MediaImage'
+import type { MediaImageL } from '../../models/MediaImage'
 
 import { observer } from 'mobx-react-lite'
 
 import { useSt } from '../../state/stateContext'
 import { useImageDrag } from './dnd'
-import { ImageDropdownMenuUI } from 'src/panels/ImageDropdownUI'
-import { RevealUI } from 'src/rsuite/reveal/RevealUI'
+import { ImageDropdownMenuUI } from '../../panels/ImageDropdownUI'
+import { RevealUI } from '../../rsuite/reveal/RevealUI'
 
 type NumberStr = '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '0'
 type SmolNum = NumberStr | `${NumberStr}${NumberStr}`

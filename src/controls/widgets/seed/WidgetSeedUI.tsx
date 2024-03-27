@@ -3,7 +3,7 @@ import type { Widget_seed } from './WidgetSeed'
 import { observer } from 'mobx-react-lite'
 
 import { InputNumberUI } from '../number/InputNumberUI'
-import { Button } from 'src/rsuite/shims'
+import { Button } from '../../../rsuite/shims'
 
 let isDragging = false
 

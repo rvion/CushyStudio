@@ -1,7 +1,19 @@
 import { observer } from 'mobx-react-lite'
 
-import { exhaust } from '../utils/misc/ComfyUtils'
-import { OutputDisplacementPreviewUI, OutputDisplacementUI } from './displacement/OutputDisplacement'
+import { ComfyPromptL } from '../models/ComfyPrompt'
+import { ComfyWorkflowL } from '../models/ComfyWorkflow'
+import { Media3dDisplacementL } from '../models/Media3dDisplacement'
+import { MediaCustomL } from '../models/MediaCustom'
+import { MediaImageL } from '../models/MediaImage'
+import { MediaSplatL } from '../models/MediaSplat'
+import { MediaTextL } from '../models/MediaText'
+import { MediaVideoL } from '../models/MediaVideo'
+import { RuntimeErrorL } from '../models/RuntimeError'
+import { StepL } from '../models/Step'
+import { StepOutput } from '../types/StepOutput'
+import { exhaust } from '../utils/misc/exhaust'
+import { OutputDisplacementPreviewUI, OutputDisplacementUI } from './3d-displacement/OutputDisplacement'
+import { Output3dScenePreviewUI, Output3dSceneUI2 } from './3d-scene/Output3dScene'
 import { OutputImagePreviewUI, OutputImageUI } from './OutputImageUI'
 import { OutputPromptPreviewUI, OutputPromptUI } from './OutputPromptUI'
 import { OutputRuntimeErrorPreviewUI, OutputRuntimeErrorUI } from './OutputRuntimeErrorUI'
@@ -9,16 +21,6 @@ import { OutputSplatPreviewUI, OutputSplatUI } from './OutputSplat'
 import { OutputTextPreviewUI, OutputTextUI } from './OutputTextUI'
 import { OutputVideoPreviewUI, OutputVideoUI } from './OutputVideo'
 import { OutputWorkflowPreviewUI, OutputWorkflowUI } from './OutputWorkflowUI'
-import { ComfyPromptL } from 'src/models/ComfyPrompt'
-import { ComfyWorkflowL } from 'src/models/ComfyWorkflow'
-import { Media3dDisplacementL } from 'src/models/Media3dDisplacement'
-import { MediaImageL } from 'src/models/MediaImage'
-import { MediaSplatL } from 'src/models/MediaSplat'
-import { MediaTextL } from 'src/models/MediaText'
-import { MediaVideoL } from 'src/models/MediaVideo'
-import { RuntimeErrorL } from 'src/models/RuntimeError'
-import { StepL } from 'src/models/Step'
-import { StepOutput } from 'src/types/StepOutput'
 
 // PREVIEW -----------------------------------------------------------------------------
 // prettier-ignore
@@ -33,7 +35,8 @@ export const OutputPreviewUI = observer(function StepOutputUI_(p: { step?: Maybe
 
     if (output instanceof ComfyPromptL)          return <OutputPromptPreviewUI       step={p.step} output={output} />
     if (output instanceof ComfyWorkflowL)        return <OutputWorkflowPreviewUI     step={p.step} output={output} />
-    if (output instanceof StepL)                 return <>🔴</>
+    if (output instanceof StepL)                 return <>🔴 StepL not yet supported</>
+    if (output instanceof MediaCustomL)          return <Output3dScenePreviewUI      step={p.step} output={output} />
 
     if (output instanceof RuntimeErrorL)         return <OutputRuntimeErrorPreviewUI step={p.step} output={output} />
 
@@ -56,6 +59,7 @@ export const OutputUI = observer(function StepOutputUI_(p: { step?: Maybe<StepL>
     if (output instanceof ComfyPromptL)          return <OutputPromptUI              step={p.step} output={output} />
     if (output instanceof ComfyWorkflowL)        return <OutputWorkflowUI            step={p.step} output={output} />
     if (output instanceof StepL)                 return <>🔴</>
+    if (output instanceof MediaCustomL)          return <Output3dSceneUI2            step={p.step} output={output} />
 
     if (output instanceof RuntimeErrorL)         return <OutputRuntimeErrorUI        step={p.step} output={output} />
 

@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 
-import { CushyAppL } from 'src/models/CushyApp'
+import { CushyAppL } from '../../models/CushyApp'
 
 export const AppIllustrationUI = observer(function AppIllustrationUI_(p: {
     className?: string

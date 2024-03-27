@@ -1,4 +1,4 @@
-import type { LiteGraphJSON } from 'src/core/LiteGraph'
+import type { LiteGraphJSON } from '../core/LiteGraph'
 
 import { toJS } from 'mobx'
 import { observer } from 'mobx-react-lite'

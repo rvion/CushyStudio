@@ -1,4 +1,4 @@
-import type { Database } from 'src/supa/database.types'
+import type { Database } from '../supa/database.types'
 
 // https://supabase.com/dashboard/project/hcbawdmupnlvqtyaubvt/api
 import { createClient, SupabaseClient } from '@supabase/supabase-js'

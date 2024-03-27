@@ -49,7 +49,7 @@ export const TreeEntryUI = observer(function TreeEntryUI_(p: { depth?: number; n
 
             {hasChildren && n.isOpen ? ( //
                 <div
-                    tw='borderLeft'
+                    tw='cushy-borderLeft'
                     style={{
                         // marginLeft: '.5rem',
                         marginLeft: '.5rem',

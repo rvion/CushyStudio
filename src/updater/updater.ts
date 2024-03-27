@@ -10,9 +10,9 @@ import { FolderGitStatus } from '../cards/FolderGitStatus'
 import { deleteDirectoryRecursive } from '../utils/fs/deleteDirectoryRecursive'
 import { _formatAsRelativeDateTime } from './_getRelativeTimeString'
 import { LogFifo } from './LogFIFO'
-import { GithubRepoName } from 'src/cards/githubRepo'
-import { GithubUserName } from 'src/cards/GithubUser'
-import { asRelativePath } from 'src/utils/fs/pathUtils'
+import { GithubRepoName } from '../cards/githubRepo'
+import { GithubUserName } from '../cards/GithubUser'
+import { asRelativePath } from '../utils/fs/pathUtils'
 
 type ManagedFolderConfig = {
     /** current working directory */

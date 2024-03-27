@@ -4,8 +4,8 @@ import * as path from 'pathe'
 import { join } from 'pathe'
 import { cwd } from 'process'
 
-// import { getRepoRoot } from 'src/back/reusable/getRepoFilePath'
-// import { variableNameify } from 'src/back/reusable/variableNameify'
+// import { getRepoRoot } from '../../back/reusable/getRepoFilePath'
+// import { variableNameify } from '../../back/reusable/variableNameify'
 
 export const variableNameify = (name: string) => name.replaceAll(/[*\-+~.()'"!:@/]/g, '_').replace(/^\_/, '')
 

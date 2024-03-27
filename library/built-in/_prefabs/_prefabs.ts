@@ -10,8 +10,8 @@
  * 🟢 import type {...} from '...'
  * ❌ import {...} from '...'`
  * */
-import type { FormBuilder } from 'src/controls/FormBuilder'
-import type { GetWidgetResult } from 'src/controls/IWidget'
+import type { FormBuilder } from '../../../src/controls/FormBuilder'
+import type { GetWidgetResult } from '../../../src/controls/IWidget'
 
 // this should be a default
 export type OutputFor<UIFn extends (form: FormBuilder) => any> = GetWidgetResult<ReturnType<UIFn>>

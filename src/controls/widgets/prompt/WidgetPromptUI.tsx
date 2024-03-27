@@ -11,9 +11,9 @@ import { Plugin_ReorderTopLevelStuffUI } from './plugins/Plugin_ReorderTopLevelS
 import { Plugin_ShortcutsUI } from './plugins/Plugin_ShortcutsUI'
 import { PromptPlugin } from './plugins/PromptPlugin'
 import { WidgetPromptUISt } from './WidgetPromptUISt'
-import { Plugin_LoraControlsUI } from 'src/controls/widgets/prompt/plugins/Plugin_LoraBoxUI'
-import { RevealUI } from 'src/rsuite/reveal/RevealUI'
-import { useSt } from 'src/state/stateContext'
+import { Plugin_LoraControlsUI } from './plugins/Plugin_LoraBoxUI'
+import { RevealUI } from '../../../rsuite/reveal/RevealUI'
+import { useSt } from '../../../state/stateContext'
 
 export const WidgetPrompt_LineUI = observer(function WidgetPrompt_LineUI_(p: { widget: Widget_prompt }) {
     const st = useSt()

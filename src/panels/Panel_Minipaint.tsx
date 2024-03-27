@@ -1,5 +1,5 @@
 import type { STATE } from '../state/state'
-import type { MediaImageL } from 'src/models/MediaImage'
+import type { MediaImageL } from '../models/MediaImage'
 
 import { action, makeObservable, observable, runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
@@ -7,9 +7,9 @@ import { nanoid } from 'nanoid'
 import { useLayoutEffect, useMemo } from 'react'
 
 import { useSt } from '../state/stateContext'
-import { createMediaImage_fromBlobObject } from 'src/models/createMediaImage_fromWebFile'
-import { Button } from 'src/rsuite/shims'
-import { CUSHY_PORT } from 'src/state/PORT'
+import { createMediaImage_fromBlobObject } from '../models/createMediaImage_fromWebFile'
+import { Button } from '../rsuite/shims'
+import { CUSHY_PORT } from '../state/PORT'
 
 const getLayers = (): any => {
     // console.log('🟢', (document as any).getElementById('miniPaint').contentWindow.Layers)

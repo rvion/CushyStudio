@@ -1,16 +1,16 @@
-// import type { LibraryFile } from 'src/cards/LibraryFile'
+// import type { LibraryFile } from '../../cards/LibraryFile'
 // import type { Package } from '../../cards/Pkg'
 
 import { observer } from 'mobx-react-lite'
 
-// import { FoldIconUI } from 'src/cards/FoldIconUI'
-import { SQLITE_false, SQLITE_true } from 'src/db/SQLITE_boolean'
+// import { FoldIconUI } from '../../cards/FoldIconUI'
+import { SQLITE_false, SQLITE_true } from '../../db/SQLITE_boolean'
 // import { AppIllustrationUI } from '../../cards/fancycard/AppIllustrationUI'
 // import { useSt } from '../../state/stateContext'
 // import { AppEntryStyle } from './AppListStyles'
 // import { DraftEntryUI } from './DraftEntryUI'
-import { CushyAppL } from 'src/models/CushyApp'
-import { DraftL } from 'src/models/Draft'
+import { CushyAppL } from '../../models/CushyApp'
+import { DraftL } from '../../models/Draft'
 
 // import { PkgHeaderUI } from './PkgHeaderUI'
 

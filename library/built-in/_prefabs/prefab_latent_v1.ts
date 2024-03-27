@@ -1,5 +1,5 @@
+import type { FormBuilder } from '../../../src/controls/FormBuilder'
 import type { OutputFor } from './_prefabs'
-import type { FormBuilder } from 'src/controls/FormBuilder'
 
 export const ui_latent_v1 = () => {
     const form: FormBuilder = getCurrentForm()

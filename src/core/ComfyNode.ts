@@ -5,13 +5,14 @@ import type { NodeProgress } from '../types/ComfyWsApi'
 import { configure, extendObservable, makeAutoObservable } from 'mobx'
 import { createElement, ReactNode } from 'react'
 
+import { ComfyDefaultNodeWhenUnknown_Name } from '../models/ComfyDefaultNodeWhenUnknown'
 import { ComfyNodeSchema, NodeInputExt, NodeOutputExt } from '../models/ComfySchema'
 import { ComfyNodeID, ComfyNodeMetadata } from '../types/ComfyNodeID'
+import { nodeLineHeight, NodeSlotSize, NodeSlotVSep, NodeTitleHeight } from '../widgets/graph/NodeSlotSize'
 import { auto_ } from './autoValue'
 import { comfyColors } from './Colors'
 import { NodeStatusEmojiUI } from './NodeStatusEmojiUI'
 import { ComfyNodeOutput } from './Slot'
-import { nodeLineHeight, NodeSlotSize, NodeSlotVSep, NodeTitleHeight } from 'src/widgets/graph/NodeSlotSize'
 
 configure({ enforceActions: 'never' })
 // configure({ enforceActions: 'always' })
@@ -121,7 +122,10 @@ export class ComfyNode<
         // console.log('CONSTRUCTING', xxx.class_type, uid)
 
         // this.uidNumber = parseInt(uid) // 🔴 ugly
-        this.$schema = graph.schema.nodesByNameInComfy[jsonExt.class_type]!
+        this.$schema =
+            graph.schema.nodesByNameInComfy[jsonExt.class_type]! ??
+            graph.schema.nodesByNameInComfy[ComfyDefaultNodeWhenUnknown_Name] // 🔴 ? do we want to do that ?
+
         if (this.$schema == null) {
             console.log(`❌ available nodes:`, Object.keys(graph.schema.nodesByNameInComfy).join(','))
             throw new Error(`❌ no schema found for node "${jsonExt.class_type}"`)

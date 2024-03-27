@@ -1,18 +1,27 @@
-☐ add back the live update of string values
-    ☐ current system forbid usage as dynamic search
-    ☐ annoying when we expect the string to update live at different areas
-☐ tab between widget int does not work properly (extra jump somewhere in the middle, have to press tab more than once)
-    ☐ int do not work properly
-    ☐ https://cushy.fra1.cdn.digitaloceanspaces.com/rvion/76a67a6a40edffde772bfd345703fc62c0146963.jpg
-☐ missing focus around text and input
-    ☐ tabbing between widgets is hard to do becase we don't have any visual clues anymore
-    ☐ https://cushy.fra1.cdn.digitaloceanspaces.com/rvion/76a67a6a40edffde772bfd345703fc62c0146963.jpg
+✔ make all files accesible @done(24-03-26 15:38)
+✔ output custom @done(24-03-26 15:38)
+    ✔ 3 options @done(24-03-26 15:38)
+        ✔ simple function ? => force d'inliner tout, empèche la moindre reutilisation @done(24-03-26 15:38)
+        ✔ faire dres trucs magique pour compiler une fontion avec toutes ses dépendences @done(24-03-26 15:38)
+        ✔ définir un output type dans l'app, qui en plus se hot reload => prob mieux @done(24-03-26 15:38)
+            ✔ plus résilient et moins résilient à la fois. @done(24-03-26 15:38)
+✔ add back threejs into build @done(24-03-26 15:38)
+☐ investigate https://stackoverflow.com/questions/52579681/typescript-prevent-imports-from-certain-directory-in-project
+✔ add back the live update of string values @done(24-03-20 15:21)
+    ✔ current system forbid usage as dynamic search @done(24-03-20 15:21)
+    ✔ annoying when we expect the string to update live at different areas @done(24-03-20 15:21)
+✔ tab between widget int does not work properly (extra jump somewhere in the middle, have to press tab more than once) @done(24-03-26 15:38)
+    ✔ int do not work properly @done(24-03-26 15:38)
+    ✔ https://cushy.fra1.cdn.digitaloceanspaces.com/rvion/76a67a6a40edffde772bfd345703fc62c0146963.jpg @done(24-03-26 15:38)
+✔ missing focus around text and input @done(24-03-26 15:38)
+    ✔ tabbing between widgets is hard to do becase we don't have any visual clues anymore @done(24-03-26 15:38)
+    ✔ https://cushy.fra1.cdn.digitaloceanspaces.com/rvion/76a67a6a40edffde772bfd345703fc62c0146963.jpg @done(24-03-26 15:38)
 
 ✔ fix codegen with new template @done(24-03-05 23:30)
-☐ recent Apps
-☐ recentDrafts
+✔ recent Apps @done(24-03-26 15:38)
+✔ recentDrafts @done(24-03-20 15:22)
 ☐ proper Tab
-☐ lastRunAt
+✔ lastRunAt @done(24-03-26 15:39)
 ☐ https://github.com/WiseLibs/better-sqlite3/issues/262
 ☐ lastUpdateAt on forms.
 ☐ fold button when no label.
@@ -22,8 +31,8 @@
     ☐ reusing the draft
     ☐ picking subdraft when optional instead of X
 
-☐ header (instead of line)
-☐ body (instead of block)
+✔ header (instead of line) @done(24-03-26 15:39)
+✔ body (instead of block) @done(24-03-26 15:39)
 
 // ?
 ☐ unified canvas

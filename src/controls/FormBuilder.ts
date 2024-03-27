@@ -1,11 +1,15 @@
+import type { OpenRouter_Models } from '../llm/OpenRouter_models'
+import type { DraftL } from '../models/Draft'
 import type { IFormBuilder } from './Form'
-import type { IWidget, Requirements } from './IWidget'
+import type { IWidget } from './IWidget'
+import type { Requirements } from './Requirements'
 import type { ISpec, SchemaDict } from './Spec'
-import type { OpenRouter_Models } from 'src/llm/OpenRouter_models'
 
 import { makeAutoObservable, runInAction } from 'mobx'
 
+import { openRouterInfos } from '../llm/OpenRouter_infos'
 import { _FIX_INDENTATION } from '../utils/misc/_FIX_INDENTATION'
+import { useDraft } from '../widgets/misc/useDraft'
 import { mkFormAutoBuilder } from './builder/AutoBuilder'
 import { EnumBuilder, EnumBuilderOpt } from './builder/EnumBuilder'
 import { Form } from './Form'
@@ -34,7 +38,6 @@ import { Widget_shared } from './widgets/shared/WidgetShared'
 import { Widget_size, type Widget_size_config } from './widgets/size/WidgetSize'
 import { Widget_spacer, Widget_spacer_config } from './widgets/spacer/WidgetSpacer'
 import { Widget_string, type Widget_string_config } from './widgets/string/WidgetString'
-import { openRouterInfos } from 'src/llm/OpenRouter_infos'
 
 // prettier-ignore
 export class FormBuilder implements IFormBuilder {
@@ -68,7 +71,7 @@ export class FormBuilder implements IFormBuilder {
     color       = (config: Widget_color_config  = {})                                                        => new Spec<Widget_color                       >('color'     , config)
     colorV2     = (config: Widget_string_config = {})                                                        => new Spec<Widget_string                      >('str'       , { inputType: 'color', ...config })
     matrix      = (config: Widget_matrix_config)                                                             => new Spec<Widget_matrix                      >('matrix'    , config)
-    button      = (config: Widget_button_config = {})                                                        => new Spec<Widget_button                      >('button'    , config)
+    button      = <K>(config: Widget_button_config<K>)                                                       => new Spec<Widget_button<K>                   >('button'    , config)
     /** variants: `header` */
     markdown    = (config: Widget_markdown_config | string)                                                  => new Spec<Widget_markdown                    >('markdown'  , typeof config === 'string' ? { markdown: config } : config)
     /** [markdown variant]: inline=true, label=false */
@@ -110,17 +113,19 @@ export class FormBuilder implements IFormBuilder {
     )}
 
     /** @deprecated ; if you need this widget, you should copy paste that into a prefab */
-    inlineRun   = (config: Widget_button_config = {})                                                        => new Spec<Widget_button                   >('button' , {
+    inlineRun   = (config: Widget_button_config = {})                                                        => new Spec<Widget_button<DraftL>                   >('button' , {
+        useContext: useDraft,
         onClick: (p) => runInAction(() => {
             if (p.widget.value === true) return
+            const draft = p.context
             p.widget.value = true
-            p.draft.setAutostart(false)
-            p.draft.start({})
+            draft.setAutostart(false)
+            draft.start({})
             setTimeout(() => p.widget.value = false, 100) // Reset value back to false for future runs
             p.widget.bumpValue()
         }),
         icon: (p) => {
-            if (p.draft.shouldAutoStart) return 'pause'
+            if (p.context.shouldAutoStart) return 'pause'
             return 'play_arrow'
         },
         ...config

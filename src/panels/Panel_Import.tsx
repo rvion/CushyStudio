@@ -1,9 +1,9 @@
 import { observer } from 'mobx-react-lite'
 
+import { SpacerUI } from '../controls/widgets/spacer/SpacerUI'
+import { ImportAsImageUI, ImportedFileUI } from '../importers/FilesBeeingImported'
+import { TargetBox } from '../importers/TargetBox'
 import { useSt } from '../state/stateContext'
-import { ImportAsImageUI, ImportedFileUI } from 'src/importers/FilesBeeingImported'
-import { TargetBox } from 'src/importers/TargetBox'
-import { SpacerUI } from 'src/controls/widgets/spacer/SpacerUI'
 import { PanelHeaderUI } from './PanelHeader'
 
 export const Panel_Import = observer(function Panel_Import_(p: {}) {
@@ -26,7 +26,7 @@ export const Panel_Import = observer(function Panel_Import_(p: {}) {
             </PanelHeaderUI>
             <div tw='flex flex-col gap-3 m-3'>
                 {st.droppedFiles.map((file, ix) => (
-                    <div key={file.name} tw='card card-bordered p-2 bg-base-200'>
+                    <div key={`${file.name}+${ix}`} tw='card card-bordered p-2 bg-base-200'>
                         <div tw='card-title'>Imported file</div>
                         <div tw='italic text-sm'>"{file.name}"</div>
                         <ul>

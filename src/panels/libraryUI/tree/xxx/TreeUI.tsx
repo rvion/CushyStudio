@@ -4,10 +4,10 @@ import { observer } from 'mobx-react-lite'
 
 import { TreeViewCtx } from './TreeCtx'
 import { TreeEntryUI } from './TreeEntryUI'
-import { ComboUI } from 'src/app/shortcuts/ComboUI'
-import { KEYS } from 'src/app/shortcuts/shorcutKeys'
-import { RevealUI } from 'src/rsuite/reveal/RevealUI'
-import { useSt } from 'src/state/stateContext'
+import { ComboUI } from '../../../../app/shortcuts/ComboUI'
+import { KEYS } from '../../../../app/shortcuts/shorcutKeys'
+import { RevealUI } from '../../../../rsuite/reveal/RevealUI'
+import { useSt } from '../../../../state/stateContext'
 
 export const TreeUI = observer(function TreeEditorUI_(p: {
     //

@@ -2,7 +2,7 @@
 export const bang = <T>(x: Maybe<T>, msg: string = ''): T => {
     if (x == null) {
         console.error(`[🔴] BANG FAILED`, msg)
-        throw new Error('bang')
+        throw new Error('bang: ' + (msg ?? 'no message'))
     }
     return x
 }

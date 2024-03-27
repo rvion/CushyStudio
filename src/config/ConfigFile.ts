@@ -1,5 +1,5 @@
 import type { IJsonModel } from 'flexlayout-react'
-import type { ThemeName } from 'src/theme/ThemeManager'
+import type { ThemeName } from '../theme/ThemeManager'
 
 // import { ComfyHostID } from './ComfyHostDef'
 

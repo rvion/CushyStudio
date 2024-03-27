@@ -1,6 +1,6 @@
 // import { observer } from 'mobx-react-lite'
 // import { useState } from 'react'
-// import { ComfyPromptJSON } from 'src/types/ComfyPrompt'
+// import { ComfyPromptJSON } from '../../types/ComfyPrompt'
 // import { useSt } from '../../state/stateContext'
 // import { TypescriptHighlightedCodeUI } from '../misc/TypescriptHighlightedCodeUI'
 // import { SectionTitleUI } from './SectionTitle'

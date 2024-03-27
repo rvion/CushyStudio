@@ -1,6 +1,6 @@
 import type { STATE } from '../../state/state'
 
-import { createMediaImage_fromPath } from 'src/models/createMediaImage_fromWebFile'
+import { createMediaImage_fromPath } from '../../models/createMediaImage_fromWebFile'
 
 export type FileDownloaded_IPCPayload = {
     originalFilename: string

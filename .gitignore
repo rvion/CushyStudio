@@ -58,6 +58,7 @@ src/theme/theme-rvion.css
 site/_site
 site/site
 lib
+lib.old
 
 .cushy/store
 
@@ -66,6 +67,10 @@ docs/ex
 logs/
 *.log
 
+# release folder for forms
+release-forms/*
+
+# release folder for cushy
 release/main.css
 release/meta.json
 release/output.css

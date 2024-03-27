@@ -1,4 +1,4 @@
-import { asHostID } from 'src/db/TYPES.gen'
+import { asHostID } from '../db/TYPES.gen'
 
 export const vIRTUAL_HOST_ID__BASE: HostID = asHostID('virtual-base')
 export const vIRTUAL_HOST_ID__FULL: HostID = asHostID('virtual-full')
