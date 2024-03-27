@@ -71,7 +71,55 @@ class AutoCompleteSelectState<T> {
         })
     }
 
-    /** currently selected value */
+    /**
+     * function to compare value or options,
+     * using the provided equality check  if provided.
+     *
+     * '===' check if the object is exactly the same.
+     * It work in some cases like those:
+     * case 1: 🟢
+     *   | const myvar = {a:1}
+     *   | <SelectUI options={[myvar, {a:2}]}, value={myvar} />
+     * case 2: 🟢
+     *   | <SelectUI options={[1,2]}, value={1} />
+     *   (because primitve type are always compared by value)
+     *
+     * but not here
+     *
+     * case 3: ❌
+     *   | <SelectUI options={[{a:1}, {a:2}]}, value={{a:1}} />
+     *                          👆   is NOT '===' to  👆 (not the same instance object)
+     *                                but is "equal" according to human logic
+     *
+     */
+    isEqual = (a: T, b: T): boolean => {
+        if (this.p.equalityCheck) return this.p.equalityCheck(a, b)
+        return a === b
+    }
+
+    /**
+     * return the index of the first selected Item amongst options;
+     * just in case the name wasn't clear enough.
+     * TODO: rename this funciton, and remove this comment about the function name.
+     */
+    get indexOfFirstSelectedItemAmongstOptions(): Maybe<number> {
+        const firstSelection = this.firstValue
+        if (firstSelection == null) return null
+        return this.options.findIndex((o) => this.isEqual(o, firstSelection))
+    }
+
+    /** return the first selected value */
+    get firstValue(): Maybe<T> {
+        const v = this.value
+        if (v == null) return null
+        if (Array.isArray(v)) {
+            if (v.length === 0) return null
+            return v[0]
+        }
+        return v
+    }
+
+    /** currently selected value or values */
     get value(): Maybe<T | T[]> {
         return this.p.value?.()
     }
@@ -445,11 +493,7 @@ export const SelectPopupUI = observer(function SelectPopupUI_<T>(p: { s: AutoCom
 
                 {/* Entries */}
                 {s.filteredOptions.map((option, index) => {
-                    const isSelected =
-                        s.values.find((v) => {
-                            if (s.p.equalityCheck != null) return s.p.equalityCheck(v, option)
-                            return v === option
-                        }) != null
+                    const isSelected = s.values.find((v) => s.isEqual(v, option)) != null
                     return (
                         <li // Fake gaps by padding <li> to make sure you can't click inbetween visual gaps
                             key={index}
