@@ -1,58 +1,18 @@
 import JsonView from '@uiw/react-json-view'
-// import JsonViewEditor from '@uiw/react-json-view/editor'
-import { lightTheme } from '@uiw/react-json-view/light'
-// import { darkTheme } from '@uiw/react-json-view/dark'
-// import { nordTheme } from '@uiw/react-json-view/esm/theme/nord'
-// import { githubLightTheme } from '@uiw/react-json-view/esm/theme/github.light'
-// import { githubDarkTheme } from '@uiw/react-json-view/esm/theme/github.dark'
-// import { vscodeTheme } from '@uiw/react-json-view/esm/theme/vscode'
-// import { gruvboxTheme } from '@uiw/react-json-view/esm/theme/gruvbox'
-// import { monokaiTheme } from '@uiw/react-json-view/esm/theme/monokai'
-// import { basicTheme } from '@uiw/react-json-view/esm/theme/basic'
-// import { TriangleArrow } from '@uiw/react-json-view/triangle-arrow'
-// import { TriangleSolidArrow } from '@uiw/react-json-view/triangle-solid-arrow'
 import { observer } from 'mobx-react-lite'
 
-import { useSt } from '../../state/stateContext'
-
 export const JsonViewUI = observer(function JsonViewUI_(p: { value?: Maybe<object> }) {
-    const st = useSt()
+    // mobx hack to make the widget react to any change in the value
     JSON.stringify(p.value)
     return (
         <JsonView
             shortenTextAfterLength={100}
-            style={st.themeMgr.theme === 'light' ? lightTheme : (_githubDarkTheme as any)}
+            style={_githubDarkTheme as any}
             value={p.value ?? {}} //example}
             enableClipboard={false}
         />
     )
 })
-
-const avatar = 'https://i.imgur.com/MK3eW3As.jpg'
-const longArray = new Array(1000).fill(1)
-const example = {
-    avatar,
-    string: 'Lorem ipsum dolor sit amet',
-    integer: 42,
-    float: 114.514,
-    bigint: 10086n,
-    null: null,
-    undefined,
-    timer: 0,
-    date: new Date('Tue Sep 13 2022 14:07:44 GMT-0500 (Central Daylight Time)'),
-    array: [19, 100.86, 'test', NaN, Infinity],
-    nestedArray: [
-        [1, 2],
-        [3, 4],
-    ],
-    object: {
-        'first-child': true,
-        'second-child': false,
-        'last-child': null,
-    },
-    longArray,
-    string_number: '1234',
-}
 
 const _githubDarkTheme = {
     '--w-rjv-font-family': 'monospace',
