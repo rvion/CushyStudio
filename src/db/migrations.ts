@@ -646,4 +646,48 @@ export const migrations: {
             `CREATE INDEX idx__runtime_error__stepID ON runtime_error(stepID);`,
         ],
     },
+    {
+        id: 'mUIqGBGrSF88',
+        name: 'fix img hashes',
+        up: [`update media_image set thumbnail = null`],
+    },
+    // {
+    //     id: 'mUIqGBGrSF88',
+    //     name: 'fix img hashes',
+    //     up: _createTable('lora_infos', [`name text, civitai json`]),    },
+    {
+        id: '6dxu2Zxwev',
+        name: 'initial 3d scene table',
+        up: _createTable('media_3d_scene', [`code text, params json`]),
+    },
+    {
+        id: 'tyFxAIuo0x',
+        name: 'initial 3d scene table',
+        up: [`alter table media_3d_scene add column stepID text references step(id)`],
+    },
+    {
+        id: 'ccm_Kn5Vkm',
+        name: 'initial 3d scene table',
+        up: [
+            `alter table media_3d_scene rename to media_custom`,
+            `alter table media_custom drop column code`,
+            `alter table media_custom add column viewID text`,
+            `alter table media_custom add column relPath text`,
+        ],
+    },
+    {
+        id: 'fZys9QWSar',
+        name: 'initial 3d scene table',
+        up: [`alter table media_custom drop column relPath`],
+    },
+    {
+        id: '-EYwRHM93N',
+        name: 'initial 3d scene table',
+        up: [
+            //
+            `alter table media_custom drop column viewID`,
+            `delete from media_custom`,
+            `alter table media_custom add column viewID text not null`,
+        ],
+    },
 ]

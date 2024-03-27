@@ -1,6 +1,6 @@
-import type { Runtime } from 'src/runtime/Runtime'
-import type { FormBuilder } from 'src/controls/FormBuilder'
-import type { ComfyNodeOutput } from 'src/core/Slot'
+import type { FormBuilder } from '../../../src/controls/FormBuilder'
+import type { ComfyNodeOutput } from '../../../src/core/Slot'
+import type { Runtime } from '../../../src/runtime/Runtime'
 import type { OutputFor } from './_prefabs'
 
 export const ui_latent_v2 = (form: FormBuilder) => {

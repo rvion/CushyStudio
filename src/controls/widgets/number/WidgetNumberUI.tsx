@@ -2,7 +2,7 @@ import type { Widget_number } from './WidgetNumber'
 
 import { observer } from 'mobx-react-lite'
 
-import { InputNumberUI } from 'src/controls/widgets/number/InputNumberUI'
+import { InputNumberUI } from './InputNumberUI'
 
 export const WidgetNumberUI = observer(function WidgetNumberUI_(p: { widget: Widget_number }) {
     const widget = p.widget
@@ -24,7 +24,7 @@ export const WidgetNumberUI = observer(function WidgetNumberUI_(p: { widget: Wid
                 step={step}
                 suffix={widget.config.suffix}
                 text={widget.config.text}
-                onValueChange={(next) => (widget.serial.val = next)}
+                onValueChange={(next) => (widget.value = next)}
                 forceSnap={widget.config.forceSnap}
             />
             <div

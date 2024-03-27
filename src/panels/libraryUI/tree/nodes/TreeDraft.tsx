@@ -1,6 +1,6 @@
 import type { ITreeEntry, TreeEntryAction } from '../TreeEntry'
-import type { DraftL } from 'src/models/Draft'
-import type { STATE } from 'src/state/state'
+import type { DraftL } from '../../../../models/Draft'
+import type { STATE } from '../../../../state/state'
 
 import { DraftFavoriteBtnUI } from '../../CardPicker2UI'
 

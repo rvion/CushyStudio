@@ -1,31 +1,34 @@
 import { observer } from 'mobx-react-lite'
 
+import { AppIllustrationUI } from '../../cards/fancycard/AppIllustrationUI'
+import { DraftIllustrationUI } from '../../cards/fancycard/DraftIllustration'
+import { Dropdown, MenuItem } from '../../rsuite/Dropdown'
 import { useSt } from '../../state/stateContext'
+import { _formatAsRelativeDateTime } from '../../updater/_getRelativeTimeString'
 import { KEYS } from '../shortcuts/shorcutKeys'
-import { AppIllustrationUI } from 'src/cards/fancycard/AppIllustrationUI'
-import { DraftIllustrationUI } from 'src/cards/fancycard/DraftIllustration'
-import { Dropdown, MenuItem } from 'src/rsuite/Dropdown'
-import { _formatAsRelativeDateTime } from 'src/updater/_getRelativeTimeString'
 
 export const MenuAppsUI = observer(function MenuAppsUI_(p: {}) {
     const st = useSt()
     return (
-        <Dropdown //
+        <Dropdown
             startIcon={<span className='material-symbols-outlined text-green-400'>apps</span>}
             title='Apps'
-        >
-            <MenuItem
-                onClick={() => st.layout.FOCUS_OR_CREATE('Marketplace', {}, 'RIGHT_PANE_TABSET')}
-                icon={<span className='material-symbols-outlined'>cloud_download</span>}
-                shortcut={KEYS.openPage_Marketplace}
-                label='Civitai'
-            />
-            <hr />
-            <div className='divider'>10 last ran Drafts</div>
-            <RecentDrafMenuEntriesUI />
-            <div className='divider'>5 last ran Apps</div>
-            <RecentAppMenuEntriesUI />
-        </Dropdown>
+            content={() => (
+                <>
+                    <MenuItem
+                        onClick={() => st.layout.FOCUS_OR_CREATE('Marketplace', {}, 'RIGHT_PANE_TABSET')}
+                        icon={<span className='material-symbols-outlined'>cloud_download</span>}
+                        shortcut={KEYS.openPage_Marketplace}
+                        label='Civitai'
+                    />
+                    <hr />
+                    <div className='divider'>10 last ran Drafts</div>
+                    <RecentDrafMenuEntriesUI />
+                    <div className='divider'>5 last ran Apps</div>
+                    <RecentAppMenuEntriesUI />
+                </>
+            )}
+        />
     )
 })
 export const RecentDrafMenuEntriesUI = observer(function RecentDrafMenuEntriesUI_(p: {}) {

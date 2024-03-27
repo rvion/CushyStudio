@@ -1,13 +1,13 @@
 import type { Form } from '../../Form'
+import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 import type { Widget_group } from '../group/WidgetGroup'
-import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from 'src/controls/IWidget'
 
-import { computed, makeAutoObservable } from 'mobx'
+import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { WidgetDI } from '../WidgetUI.DI'
+import { applyWidgetMixinV2 } from '../../Mixins'
+import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetMardownUI } from './WidgetMarkdownUI'
-import { applyWidgetMixinV2 } from 'src/controls/Mixins'
 
 // CONFIG
 export type Widget_markdown_config = WidgetConfigFields<
@@ -24,15 +24,15 @@ export type Widget_markdown_serial = WidgetSerialFields<{
     active: true
 }>
 
-// OUT
-export type Widget_markdown_output = { type: 'markdown' }
+// VALUE
+export type Widget_markdown_value = { type: 'markdown' }
 
 // TYPES
 export type Widget_markdown_types = {
     $Type: 'markdown'
-    $Input: Widget_markdown_config
+    $Config: Widget_markdown_config
     $Serial: Widget_markdown_serial
-    $Output: Widget_markdown_output
+    $Value: Widget_markdown_value
     $Widget: Widget_markdown
 }
 
@@ -54,27 +54,29 @@ export class Widget_markdown implements IWidget<Widget_markdown_types> {
     readonly type: 'markdown' = 'markdown'
     readonly serial: Widget_markdown_serial
 
-    get serialHash(): string {
-        return this.id
-    }
-
     get markdown(): string {
         const md = this.config.markdown
         if (typeof md === 'string') return md
         return md(this.form._ROOT)
     }
 
-    constructor(public form: Form<any>, public config: Widget_markdown_config, serial?: Widget_markdown_serial) {
+    constructor(
+        //
+        public readonly form: Form,
+        public readonly parent: IWidget | null,
+        public config: Widget_markdown_config,
+        serial?: Widget_markdown_serial,
+    ) {
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? { type: 'markdown', collapsed: config.startCollapsed, active: true, id: this.id }
         applyWidgetMixinV2(this)
         makeAutoObservable(this)
     }
 
-    get value(): Widget_markdown_output {
+    get value(): Widget_markdown_value {
         return this.serial
     }
 }
 
 // DI
-WidgetDI.Widget_markdown = Widget_markdown
+registerWidgetClass('markdown', Widget_markdown)

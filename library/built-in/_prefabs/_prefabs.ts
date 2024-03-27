@@ -10,8 +10,8 @@
  * 🟢 import type {...} from '...'
  * ❌ import {...} from '...'`
  * */
-import type { FormBuilder } from 'src/controls/FormBuilder'
-import type { GetWidgetResult } from 'src/controls/IWidget'
+import type { FormBuilder } from '../../../src/controls/FormBuilder'
+import type { GetWidgetResult } from '../../../src/controls/IWidget'
 
 // this should be a default
 export type OutputFor<UIFn extends (form: FormBuilder) => any> = GetWidgetResult<ReturnType<UIFn>>
@@ -72,10 +72,8 @@ export const ui_themes = (form: FormBuilder) =>
 // --------------------------------------------------------
 export const util_expandBrances = (str: string): string[] => {
     const matches = str.match(/{([^{}]+)}/)
-    if (!matches) {
-        return [str]
-    }
-    const parts = matches[1].split(',')
+    if (!matches) return [str]
+    const parts = matches[1]!.split(',')
     const result: Set<string> = new Set()
     for (const part of parts) {
         const expanded = util_expandBrances(str.replace(matches[0], part))

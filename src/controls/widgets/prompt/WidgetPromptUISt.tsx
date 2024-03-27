@@ -17,7 +17,7 @@ export class WidgetPromptUISt {
 
     replaceTextBy = (nextText: string) => {
         this.editorView?.dispatch({
-            changes: { from: 0, to: this.text.length, insert: nextText },
+            changes: { from: 0, to: this.editorView.state.doc.length, insert: nextText },
         })
     }
     constructor(public widget: Widget_prompt) {
@@ -48,8 +48,11 @@ export class WidgetPromptUISt {
         })
     }
 
+    // get/set
     get text() { return this.widget.serial.val ?? ''; } // prettier-ignore
-    set text(val: string) { this.widget.serial.val = val; } // prettier-ignore
+    set text(val: string) { this.widget.setText_INTERNAL(val); } // prettier-ignore
+
+    // computed
     get ast(): PromptAST { return new PromptAST(this.text, this.editorView) } // prettier-ignore
     get loras(): Prompt_Lora[] { return this.ast.findAll('Lora') } // prettier-ignore
     get debugView() { return this.ast.toString() } // prettier-ignore

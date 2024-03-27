@@ -3,9 +3,9 @@ import { observer } from 'mobx-react-lite'
 import { ReactNode } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 
-import { useSt } from 'src/state/stateContext'
-import { StepOutput } from 'src/types/StepOutput'
-import { ErrorBoundaryFallback } from 'src/widgets/misc/ErrorBoundary'
+import { useSt } from '../state/stateContext'
+import { StepOutput } from '../types/StepOutput'
+import { ErrorBoundaryFallback } from '../widgets/misc/ErrorBoundary'
 
 export const OutputPreviewWrapperUI = observer(function OutputPreviewWrapperUI_(p: {
     /** 3/4 letters max if possible */

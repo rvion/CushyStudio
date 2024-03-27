@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite'
 import { nanoid } from 'nanoid'
 import { createRef } from 'react'
 
-import { useSt } from 'src/state/stateContext'
+import { useSt } from '../../state/stateContext'
 
 export class CreateDeckModalState {
     constructor(public id = nanoid()) {

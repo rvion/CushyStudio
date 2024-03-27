@@ -38,6 +38,7 @@ export default defineConfig({
         port: 8788,
         watch: {
             ignored: [
+                '**/src/shell/*.js',
                 //
                 '**/library/**/*.ts',
                 '**/library/**/*.tsx',
@@ -56,13 +57,10 @@ export default defineConfig({
     resolve: {
         alias: {
             // -----------------------------------------------------------------------
-            three: `${installDir}/src/syms/three.js`,
-            elkjs: `${installDir}/src/syms/elkjs.js`,
             mobx: `${installDir}/src/syms/mobx.js`,
-            '@tensorflow/tfjs': './src/syms/tfjs.js',
-
-            // -----------------------------------------------------------------------
-            src: `${installDir}/src`,
+            nsfwjs: `${installDir}/src/syms/nsfwjs.js`,
+            '@tensorflow/tfjs': `${installDir}/src/syms/tfjs.js`,
+            'mime-types': `${installDir}/src/syms/mime-types.js`,
 
             // -----------------------------------------------------------------------
             // injected node modules

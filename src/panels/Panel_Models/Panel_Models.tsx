@@ -5,27 +5,41 @@ import { useSt } from '../../state/stateContext'
 import { PanelHeaderUI } from '../PanelHeader'
 import { CivitaiUI } from './CivitaiBrowserUI'
 import { Civitai } from './CivitaiSpec'
-import { FormUI } from 'src/controls/FormUI'
-import { FormHelpText } from 'src/rsuite/shims'
-import { SectionTitleUI } from 'src/widgets/workspace/SectionTitle'
-import { RevealUI } from 'src/rsuite/reveal/RevealUI'
-import { SpacerUI } from 'src/controls/widgets/spacer/SpacerUI'
+import { FormUI } from '../../controls/FormUI'
+import { SpacerUI } from '../../controls/widgets/spacer/SpacerUI'
+import { RevealUI } from '../../rsuite/reveal/RevealUI'
+import { FormHelpText } from '../../rsuite/shims'
+import { assets } from '../../utils/assets/assets'
+import { SectionTitleUI } from '../../widgets/workspace/SectionTitle'
 
 export const Panel_Models = observer(function Panel_Models_() {
     const st = useSt()
     const civitai = useMemo(() => new Civitai(), [])
     return (
         <div className='flex flex-col gap-2 h-full w-full'>
-            <SectionTitleUI label='CIVITAI' className='block'>
+            <SectionTitleUI
+                label={
+                    <div tw='flex'>
+                        <img tw='h-8 w-8' src={assets.CivitaiLogo_png} alt='Civitai logo' />
+                        CIVITAI
+                    </div>
+                }
+                className='block'
+            >
                 <PanelHeaderUI>
                     <SpacerUI />
-                    <RevealUI tw='WIDGET-FIELD' title='CIVITAI Options'>
+                    <RevealUI
+                        tw='WIDGET-FIELD'
+                        title='CIVITAI Options'
+                        content={() => (
+                            <div tw='p-1'>
+                                <FormUI form={st.civitaiConf} />
+                            </div>
+                        )}
+                    >
                         <div tw='flex px-1 cursor-default bg-base-200 rounded w-full h-full items-center justify-center hover:brightness-125 border border-base-100'>
                             <span className='material-symbols-outlined'>settings</span>
                             <span className='material-symbols-outlined'>expand_more</span>
-                        </div>
-                        <div tw='p-1'>
-                            <FormUI form={st.civitaiConf} />
                         </div>
                     </RevealUI>
                 </PanelHeaderUI>

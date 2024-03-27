@@ -1,4 +1,4 @@
-import type { ComfyWorkflowL } from 'src/models/ComfyWorkflow'
+import type { ComfyWorkflowL } from '../../models/ComfyWorkflow'
 
 import { observer } from 'mobx-react-lite'
 
@@ -6,8 +6,8 @@ import { NodeRefUI } from '../misc/NodeRefUI'
 import { JSONHighlightedCodeUI } from '../misc/TypescriptHighlightedCodeUI'
 import { ButtonDownloadFilesUI } from './ButtonDownloadFilesUI'
 import { ButtonOpenInComfyUI } from './ButtonOpenInComfyUI'
-import { RevealUI } from 'src/rsuite/reveal/RevealUI'
-import { Panel, Popover, ProgressLine, Whisper } from 'src/rsuite/shims'
+import { RevealUI } from '../../rsuite/reveal/RevealUI'
+import { Panel, Popover, ProgressLine, Whisper } from '../../rsuite/shims'
 
 export const GraphSummaryUI = observer(function GraphSummaryUI_(p: { graph: ComfyWorkflowL }) {
     const graph = p.graph
@@ -26,9 +26,9 @@ export const GraphSummaryUI = observer(function GraphSummaryUI_(p: { graph: Comf
                 {graph.nodesByUpdatedAt.map((n, ix) => (
                     <div key={n.uid} className='flex items-center gap-0.5'>
                         {/* {n.status ?? '❓'} */}
-                        <RevealUI>
+                        <RevealUI content={() => <JSONHighlightedCodeUI code={JSON.stringify(n.json, null, 3)} />}>
                             <span>{n.statusEmoji}</span>
-                            <JSONHighlightedCodeUI code={JSON.stringify(n.json, null, 3)} />
+
                             {/* <span className='material-symbols-outlined'>info</span> */}
                         </RevealUI>
                         <NodeRefUI size={1.1} label={ix.toString()} node={n} />

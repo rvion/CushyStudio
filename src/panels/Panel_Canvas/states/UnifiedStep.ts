@@ -1,7 +1,7 @@
 import type { UnifiedCanvas } from './UnifiedCanvas'
-import type { MediaImageL } from 'src/models/MediaImage'
-import type { StepL } from 'src/models/Step'
-import type { STATE } from 'src/state/state'
+import type { MediaImageL } from '../../../models/MediaImage'
+import type { StepL } from '../../../models/Step'
+import type { STATE } from '../../../state/state'
 
 import Konva from 'konva'
 import { Layer } from 'konva/lib/Layer'
@@ -9,7 +9,7 @@ import { Image } from 'konva/lib/shapes/Image'
 import { Stage } from 'konva/lib/Stage'
 import { autorun, makeAutoObservable } from 'mobx'
 
-import { createHTMLImage_fromURLNoAwait } from 'src/state/createHTMLImage_fromURL'
+import { createHTMLImage_fromURLNoAwait } from '../../../state/createHTMLImage_fromURL'
 
 export class UnifiedStep {
     hide = () => this.layer.hide()

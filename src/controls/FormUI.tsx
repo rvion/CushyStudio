@@ -3,12 +3,12 @@ import type { Form } from './Form'
 import { observer } from 'mobx-react-lite'
 
 import { WidgetGroup_BlockUI } from './widgets/group/WidgetGroupUI'
-import { MessageErrorUI } from 'src/panels/MessageUI'
+import { MessageErrorUI } from '../panels/MessageUI'
 
 export const FormUI = observer(function FormUI_(p: {
     //
     className?: string
-    form: Maybe<Form<any>>
+    form: Maybe<Form<any, any>>
 }) {
     const form = p.form
     if (form == null) return <MessageErrorUI markdown={`form is not yet initialized`} />

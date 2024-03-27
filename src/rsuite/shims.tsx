@@ -1,9 +1,9 @@
 import { observer } from 'mobx-react-lite'
 import { ReactNode } from 'react'
 
+import { exhaust } from '../utils/misc/exhaust'
 import { RevealUI } from './reveal/RevealUI'
 import { RSAppearance, RSSize } from './RsuiteTypes'
-import { exhaust } from 'src/utils/misc/ComfyUtils'
 
 // form
 export const FormHelpText = (p: any) => <div {...p}></div>
@@ -156,12 +156,8 @@ export const Whisper = (p: {
     placement?: string
     speaker: ReactNode
     children: ReactNode
-}) => (
-    <RevealUI>
-        {p.children}
-        {p.speaker}
-    </RevealUI>
-)
+}) => <RevealUI content={() => p.speaker}>{p.children}</RevealUI>
+
 export const Speaker = (p: any) => <span {...p}></span>
 export const Popover = (p: any) => <span {...p}></span>
 export const Tooltip = (p: any) => <span {...p}></span>

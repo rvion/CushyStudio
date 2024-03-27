@@ -1,14 +1,13 @@
-import type { StepL } from 'src/models/Step'
+import type { StepL } from '../models/Step'
 
 import { observer } from 'mobx-react-lite'
 
 import { _formatPreviewDate } from '../utils/formatters/_formatPreviewDate'
 import { OutputPreviewUI } from './OutputUI'
 import { StepOutputsHeaderV2UI } from './StepOutputsV2UI'
-import { useSt } from 'src/state/stateContext'
 
 export const StepOutputsV1UI = observer(function StepOutputsV1UI_(p: { step: StepL }) {
-    const st = useSt()
+    const st = cushy
     const step = p.step
     const showSingle = st.__TEMPT__maxStepsToShow == 1
     const isExpanded = step.expanded || showSingle

@@ -53,7 +53,7 @@ function toposortAlgo(nodes: TNode[], edges: TEdge[]) {
     }
 }
 
-function BONG<T>(x: T): T {
+function BONG<T>(x: T): NonNullable<T> {
     if (x == null) throw new Error('BONG')
     return x
 }

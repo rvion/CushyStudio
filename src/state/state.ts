@@ -1,13 +1,12 @@
-import 'src/models/_ctx3'
-import 'src/models/asyncRuntimeStorage'
+// VERY IMPORTANT: Dependency Injection for runtime
+import '../models/asyncRuntimeStorage'
 
+import type { ActionTagMethodList } from '../cards/App'
 import type { MediaImageL } from '../models/MediaImage'
-import type { ComfyStatus, PromptID, PromptRelated_WsMsg, WsMsg } from '../types/ComfyWsApi'
+import type { TreeNode } from '../panels/libraryUI/tree/xxx/TreeNode'
+import type { RevealState } from '../rsuite/reveal/RevealState'
 import type { CSCriticalError } from '../widgets/CSCriticalError'
-import type { ActionTagMethodList } from 'src/cards/App'
-import type { TreeNode } from 'src/panels/libraryUI/tree/xxx/TreeNode'
-import type { RevealState } from 'src/rsuite/reveal/RevealState'
-import type { Wildcards } from 'src/widgets/prompter/nodes/wildcards/wildcards'
+import type { Wildcards } from '../widgets/prompter/nodes/wildcards/wildcards'
 
 import { SupabaseClient } from '@supabase/supabase-js'
 import { closest } from 'fastest-levenshtein'
@@ -16,64 +15,65 @@ import { makeAutoObservable, observable, toJS } from 'mobx'
 import { nanoid } from 'nanoid'
 import { join } from 'pathe'
 import { createRef } from 'react'
+import { fromZodError } from 'zod-validation-error'
 
+import { ShortcutWatcher } from '../app/shortcuts/ShortcutManager'
+import { allCommands } from '../app/shortcuts/shortcuts'
+import { createRandomGenerator } from '../back/random'
+import { asAppPath } from '../cards/asAppPath'
+import { GithubRepoName } from '../cards/githubRepo'
+import { GithubUserName } from '../cards/GithubUser'
+import { Library } from '../cards/Library'
+import { recursivelyFindAppsInFolder } from '../cards/walkLib'
+import { STANDARD_HOST_ID, vIRTUAL_HOST_ID__BASE, vIRTUAL_HOST_ID__FULL } from '../config/ComfyHostDef'
+import { type ConfigFile, PreferedFormLayout } from '../config/ConfigFile'
+import { mkConfigFile } from '../config/mkConfigFile'
+import { CushyFormManager } from '../controls/FormBuilder'
 import { JsonFile } from '../core/JsonFile'
 import { LiveDB } from '../db/LiveDB'
+import { quickBench } from '../db/quickBench'
+import { SQLITE_false, SQLITE_true } from '../db/SQLITE_boolean'
+import { asHostID } from '../db/TYPES.gen'
 import { ComfyImporter } from '../importers/ComfyImporter'
+import { ComfyManagerRepository } from '../manager/ComfyManagerRepository'
 import { ComfySchemaL, EnumValue } from '../models/ComfySchema'
 import { ComfyWorkflowL } from '../models/ComfyWorkflow'
+import { createMediaImage_fromPath } from '../models/createMediaImage_fromWebFile'
+import { CushyAppL } from '../models/CushyApp'
+import { DraftL } from '../models/Draft'
+import { HostL } from '../models/Host'
+import { ProjectL } from '../models/Project'
+import { StepL } from '../models/Step'
+import { TreeApp } from '../panels/libraryUI/tree/nodes/TreeApp'
+import { TreeDraft } from '../panels/libraryUI/tree/nodes/TreeDraft'
+import { TreeAllApps, TreeAllDrafts, TreeFavoriteApps, TreeFavoriteDrafts } from '../panels/libraryUI/tree/nodes/TreeFavorites'
+import { TreeFolder } from '../panels/libraryUI/tree/nodes/TreeFolder'
+import { treeElement } from '../panels/libraryUI/tree/TreeEntry'
+import { Tree } from '../panels/libraryUI/tree/xxx/Tree'
+import { TreeView } from '../panels/libraryUI/tree/xxx/TreeView'
+import { VirtualHierarchy } from '../panels/libraryUI/VirtualHierarchy'
 import { CushyLayoutManager } from '../panels/router/Layout'
+// import { Header_Playground } from '../panels/Panel_Playground/Panel_Playground'
+import { SafetyChecker } from '../safety/Safety'
+import { Database } from '../supa/database.types'
+import { ThemeManager } from '../theme/ThemeManager'
+import { type ComfyStatus, type PromptID, type PromptRelated_WsMsg, type WsMsg, WsMsg$Schema } from '../types/ComfyWsApi'
+import { CleanedEnumResult } from '../types/EnumUtils'
+import { StepOutput } from '../types/StepOutput'
 import { GitManagedFolder } from '../updater/updater'
 import { ElectronUtils } from '../utils/electron/ElectronUtils'
 import { SearchManager } from '../utils/electron/findInPage'
+import { openInVSCode } from '../utils/electron/openInVsCode'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
-import { exhaust } from '../utils/misc/ComfyUtils'
+import { exhaust } from '../utils/misc/exhaust'
 import { DanbooruTags } from '../widgets/prompter/nodes/booru/BooruLoader'
+import { UserTags } from '../widgets/prompter/nodes/usertags/UserLoader'
 import { mandatoryTSConfigIncludes, mkTypescriptConfig, type TsConfigCustom } from '../widgets/TsConfigCustom'
 import { AuthState } from './AuthState'
 import { readJSON, writeJSON } from './jsonUtils'
 import { Marketplace } from './Marketplace'
 import { mkSupa } from './supa'
 import { Uploader } from './Uploader'
-import { ShortcutWatcher } from 'src/app/shortcuts/ShortcutManager'
-import { allCommands } from 'src/app/shortcuts/shortcuts'
-import { createRandomGenerator } from 'src/back/random'
-import { asAppPath } from 'src/cards/asAppPath'
-import { GithubRepoName } from 'src/cards/githubRepo'
-import { GithubUserName } from 'src/cards/GithubUser'
-import { Library } from 'src/cards/Library'
-import { recursivelyFindAppsInFolder } from 'src/cards/walkLib'
-import { STANDARD_HOST_ID, vIRTUAL_HOST_ID__BASE, vIRTUAL_HOST_ID__FULL } from 'src/config/ComfyHostDef'
-import { type ConfigFile, PreferedFormLayout } from 'src/config/ConfigFile'
-import { mkConfigFile } from 'src/config/mkConfigFile'
-import { Form } from 'src/controls/Form'
-import { quickBench } from 'src/db/quickBench'
-import { SQLITE_false, SQLITE_true } from 'src/db/SQLITE_boolean'
-import { asHostID, type TABLES } from 'src/db/TYPES.gen'
-import { ComfyManagerRepository } from 'src/manager/ComfyManagerRepository'
-import { createMediaImage_fromPath } from 'src/models/createMediaImage_fromWebFile'
-import { CushyAppL } from 'src/models/CushyApp'
-import { DraftL } from 'src/models/Draft'
-import { HostL } from 'src/models/Host'
-import { ProjectL } from 'src/models/Project'
-import { StepL } from 'src/models/Step'
-import { TreeApp } from 'src/panels/libraryUI/tree/nodes/TreeApp'
-import { TreeDraft } from 'src/panels/libraryUI/tree/nodes/TreeDraft'
-import { TreeAllApps, TreeAllDrafts, TreeFavoriteApps, TreeFavoriteDrafts } from 'src/panels/libraryUI/tree/nodes/TreeFavorites'
-import { TreeFolder } from 'src/panels/libraryUI/tree/nodes/TreeFolder'
-import { treeElement } from 'src/panels/libraryUI/tree/TreeEntry'
-import { Tree } from 'src/panels/libraryUI/tree/xxx/Tree'
-import { TreeView } from 'src/panels/libraryUI/tree/xxx/TreeView'
-import { VirtualHierarchy } from 'src/panels/libraryUI/VirtualHierarchy'
-import { FORM_PlaygroundWidgetDisplay } from 'src/panels/Panel_Playground/FORM_PlaygroundWidgetDisplay'
-// import { Header_Playground } from 'src/panels/Panel_Playground/Panel_Playground'
-import { SafetyChecker } from 'src/safety/Safety'
-import { Database } from 'src/supa/database.types'
-import { ThemeManager } from 'src/theme/ThemeManager'
-import { CleanedEnumResult } from 'src/types/EnumUtils'
-import { StepOutput } from 'src/types/StepOutput'
-import { openInVSCode } from 'src/utils/electron/openInVsCode'
-import { UserTags } from 'src/widgets/prompter/nodes/usertags/UserLoader'
 
 export class STATE {
     // LEAVE THIS AT THE TOP OF THIS CLASS
@@ -113,6 +113,7 @@ export class STATE {
     auth: AuthState
     managerRepository = new ComfyManagerRepository({ check: false, genTypes: false })
     search: SearchManager = new SearchManager(this)
+    forms = CushyFormManager
 
     _updateTime = () => {
         const now = Date.now()
@@ -160,7 +161,7 @@ export class STATE {
     hasWildcard = (name: string): boolean => (this.wildcards as { [k: string]: any })[name] != null
     get wildcards(): Wildcards {
         const wcdsPath = this.resolveFromRoot(asRelativePath('src/widgets/prompter/nodes/wildcards/wildcards.json'))
-        const wcds = this.readJSON<Wildcards>(wcdsPath)
+        const wcds = this.readJSON_<Wildcards>(wcdsPath)
         Object.defineProperty(this, 'wildcards', { value: wcds })
         return wcds
     }
@@ -224,7 +225,7 @@ export class STATE {
 
     /** helper to chose radomly any item from a list */
     chooseRandomly = <T>(key: string, seed: number, arr: T[]): T => {
-        return createRandomGenerator(`${key}:${seed}`).randomItem(arr)
+        return createRandomGenerator(`${key}:${seed}`).randomItem(arr)!
     }
 
     libraryFolderPathAbs: AbsolutePath
@@ -409,7 +410,23 @@ export class STATE {
         })
     }
 
-    civitaiConf = new Form(
+    get autolayoutOpts() {
+        const fv = this.graphConf.value
+        return { node_hsep: fv.hsep, node_vsep: fv.vsep }
+    }
+    graphConf = CushyFormManager.form(
+        (ui) => ({
+            spline: ui.float({ min: 0.5, max: 4, default: 2 }),
+            vsep: ui.int({ min: 0, max: 100, default: 20 }),
+            hsep: ui.int({ min: 0, max: 100, default: 20 }),
+        }),
+        {
+            name: 'Graph Visualisation',
+            initialValue: () => readJSON('settings/graph-visualization.json'),
+            onSerialChange: (form) => writeJSON('settings/graph-visualization.json', form.serial),
+        },
+    )
+    civitaiConf = CushyFormManager.form(
         (ui) => ({
             imgSize1: ui.int({ min: 64, max: 1024, step: 64, default: 512 }),
             imgSize2: ui.int({ min: 64, max: 1024, step: 64, default: 128 }),
@@ -420,10 +437,10 @@ export class STATE {
         {
             name: 'Civitai Conf',
             initialValue: () => readJSON('settings/civitai.json'),
-            onChange: (form) => writeJSON('settings/civitai.json', form.serial),
+            onSerialChange: (form) => writeJSON('settings/civitai.json', form.serial),
         },
     )
-    sideBarConf = new Form(
+    sideBarConf = CushyFormManager.form(
         (f) => ({
             size: f.int({ label: false, alignLabel: false, text: 'Size', min: 24, max: 128, default: 48, suffix: 'px', step: 4 }),
             appIcons: f
@@ -444,7 +461,7 @@ export class STATE {
         {
             name: 'SideBar Conf',
             initialValue: () => readJSON('settings/sidebar.json'),
-            onChange: (form) => writeJSON('settings/sidebar.json', form.serial),
+            onSerialChange: (form) => writeJSON('settings/sidebar.json', form.serial),
         },
     )
 
@@ -452,7 +469,7 @@ export class STATE {
     // playgroundHeader = Header_Playground
     // playgroundWidgetDisplay = FORM_PlaygroundWidgetDisplay
 
-    displacementConf = new Form(
+    displacementConf = CushyFormManager.form(
         (form) => ({
             camera: form.choice({
                 appearance: 'tab',
@@ -478,12 +495,15 @@ export class STATE {
         {
             name: 'Displacement Conf',
             initialValue: () => readJSON('settings/displacement.json'),
-            onChange: (form) => writeJSON('settings/displacement.json', form.serial),
+            onSerialChange: (form) => writeJSON('settings/displacement.json', form.serial),
         },
     )
 
-    galleryConf = new Form(
+    galleryConf = CushyFormManager.form(
         (f) => ({
+            defaultSort: f.selectOneV2(['createdAt', 'updatedAt'] as const, {
+                default: { id: 'createdAt', label: 'Created At' },
+            }),
             gallerySize: f.int({ label: 'Preview Size', default: 48, min: 24, step: 8, softMax: 512, max: 1024, tooltip: 'Size of the preview images in px', unit: 'px' }), // prettier-ignore
             galleryMaxImages: f.int({ label: 'Number of items', min: 10, softMax: 300, default: 50, tooltip: 'Maximum number of images to display', }), // prettier-ignore
             galleryBgColor: f.color({ label: 'background' }),
@@ -500,7 +520,7 @@ export class STATE {
         }),
         {
             name: 'Gallery Conf',
-            onChange: (form) => writeJSON('settings/gallery.json', form.serial),
+            onSerialChange: (form) => writeJSON('settings/gallery.json', form.serial),
             initialValue: () => readJSON('settings/gallery.json'),
         },
     )
@@ -706,7 +726,7 @@ export class STATE {
         blob: Blob
         url: string
     }> = null
-    onMessage = (e: MessageEvent) => {
+    onMessage = (e: MessageEvent, host: HostL) => {
         if (e.data instanceof ArrayBuffer) {
             // 🔴 console.log('[👢] WEBSOCKET: received ArrayBuffer', e.data)
             const view = new DataView(e.data)
@@ -737,6 +757,16 @@ export class STATE {
         // 🔴 console.info(`[👢] WEBSOCKET: received ${e.data}`)
         const msg: WsMsg = JSON.parse(e.data as any)
 
+        const shouldCheckPAYLOADS = true
+        if (shouldCheckPAYLOADS) {
+            const match = WsMsg$Schema.safeParse(msg)
+            if (!match.success) {
+                console.log(`[🔴] /!\\ Websocket payload does not match schema.`)
+                console.log('🔴 payload', msg)
+                console.log('🔴error: ❌', fromZodError(match.error))
+            }
+        }
+
         if (msg.type === 'status') {
             if (msg.data.sid) this.comfySessionId = msg.data.sid
             this.status = msg.data.status
@@ -764,6 +794,10 @@ export class STATE {
             return
         }
 
+        if (msg.type === 'manager-terminal-feedback') {
+            host.addLog(msg.data.data)
+            return
+        }
         exhaust(msg)
         console.log('❌', 'Unknown message:', msg)
         throw new Error('Unknown message type: ' + JSON.stringify(msg))
@@ -820,12 +854,15 @@ export class STATE {
     galleryFilterTag: Maybe<string> = null
     galleryFilterAppName: Maybe<{ id: CushyAppID; name?: Maybe<string> }> = null
     get imageToDisplay() {
+        const conf = this.galleryConf.value
         return this.db.media_image.select(
             (query) => {
-                let x = query
-                    .orderBy('media_image.updatedAt', 'desc')
-                    .limit(this.galleryConf.value.galleryMaxImages ?? 20)
-                    .select('media_image.id')
+                let x =
+                    conf.defaultSort.id === 'createdAt'
+                        ? query.orderBy('media_image.createdAt', 'desc')
+                        : query.orderBy('media_image.updatedAt', 'desc')
+
+                x = x.limit(this.galleryConf.value.galleryMaxImages ?? 20).select('media_image.id')
 
                 if (this.galleryFilterPath) x = x.where('media_image.path', 'like', '%' + this.galleryFilterPath + '%')
                 if (this.galleryFilterTag) x = x.where('media_image.tags', 'like', '%' + this.galleryFilterTag + '%')
@@ -850,8 +887,10 @@ export class STATE {
         writeFileSync(absPath, content)
     }
 
+    readJSON = readJSON
+    writeJSON = writeJSON
     /** read text file, optionally provide a default */
-    readJSON = <T extends any>(absPath: AbsolutePath, def?: T): T => {
+    readJSON_ = <T extends any>(absPath: AbsolutePath, def?: T): T => {
         console.log(absPath)
         const exists = existsSync(absPath)
         if (!exists) {

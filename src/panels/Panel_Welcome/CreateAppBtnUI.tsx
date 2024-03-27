@@ -1,22 +1,21 @@
 import { existsSync, writeFileSync } from 'fs'
 import { observer, useLocalObservable } from 'mobx-react-lite'
 
+import { openExternal } from '../../app/layout/openExternal'
+import { RevealUI } from '../../rsuite/reveal/RevealUI'
+import { useSt } from '../../state/stateContext'
+import { toastError } from '../../utils/misc/toasts'
+import { TypescriptHighlightedCodeUI } from '../../widgets/misc/TypescriptHighlightedCodeUI'
 import { MessageErrorUI, MessageInfoUI } from '../MessageUI'
 import { convertToValidCrossPlatformFileName } from './convertToValidCrossPlatformFileName'
-import { openExternal } from 'src/app/layout/openExternal'
-import { RevealUI } from 'src/rsuite/reveal/RevealUI'
-import { useSt } from 'src/state/stateContext'
-import { toastError } from 'src/utils/misc/toasts'
-import { TypescriptHighlightedCodeUI } from 'src/widgets/misc/TypescriptHighlightedCodeUI'
 
 export const CreateAppBtnUI = observer(function CreateAppBtnUI_(p: {}) {
     return (
-        <RevealUI placement='popup-lg' title='Create an app'>
+        <RevealUI placement='popup-lg' title='Create an app' content={() => <CreateAppPopupUI />}>
             <div tw='btn btn-sm btn-accent'>
                 Create My App
                 <span className='material-symbols-outlined'>open_in_new</span>
             </div>
-            <CreateAppPopupUI />
         </RevealUI>
     )
 })
@@ -90,7 +89,7 @@ export const CreateAppPopupUI = observer(function CreateAppPopupUI_(p: {}) {
                         const res = await file.extractScriptFromFile()
                         if (res.type === 'failed') return toastError('failed to extract script')
                         const script = res.script
-                        await script.evaluateAndUpdateApps()
+                        await script.evaluateAndUpdateAppsAndViews()
                         const apps = script._apps_viaScript
                         if (apps == null) return toastError('no app found (apps is null)')
                         if (apps.length === 0) return toastError('no app found (apps.length === 0)')

@@ -1,4 +1,4 @@
-import type { FormBuilder } from 'src/controls/FormBuilder'
+import type { FormBuilder } from '../../../src/controls/FormBuilder'
 
 export const ui_mask = () => {
     const form: FormBuilder = getCurrentForm()

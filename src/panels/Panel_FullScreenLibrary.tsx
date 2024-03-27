@@ -1,11 +1,11 @@
 import { observer } from 'mobx-react-lite'
 import { useEffect } from 'react'
 
-import { AppCardUI } from 'src/cards/fancycard/AppCardUI'
-import { Addon, Joined, Slider, Toggle } from 'src/rsuite/shims'
-import { useSt } from 'src/state/stateContext'
-import { FieldAndLabelUI } from 'src/widgets/misc/FieldAndLabelUI'
-import { ScrollablePaneUI } from 'src/widgets/misc/scrollableArea'
+import { AppCardUI } from '../cards/fancycard/AppCardUI'
+import { Addon, Joined, Slider, Toggle } from '../rsuite/shims'
+import { useSt } from '../state/stateContext'
+import { FieldAndLabelUI } from '../widgets/misc/FieldAndLabelUI'
+import { ScrollablePaneUI } from '../widgets/misc/scrollableArea'
 
 export const Panel_FullScreenLibrary = observer(function Panel_CardPicker3UI_(p: {}) {
     const st = useSt()

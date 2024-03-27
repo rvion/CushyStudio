@@ -1,15 +1,13 @@
 import type { Form } from '../../Form'
-import type { IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
-import type { IWidget } from 'src/controls/IWidget'
+import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
-import { hash } from 'ohash'
 
-import { WidgetDI } from '../WidgetUI.DI'
+import { bang } from '../../../utils/misc/bang'
+import { applyWidgetMixinV2 } from '../../Mixins'
+import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetMatrixUI } from './WidgetMatrixUI'
-import { applyWidgetMixinV2 } from 'src/controls/Mixins'
-import { bang } from 'src/utils/misc/bang'
 
 export type Widget_matrix_cell = {
     x: number
@@ -32,15 +30,15 @@ export type Widget_matrix_config = WidgetConfigFields<
 // SERIAL
 export type Widget_matrix_serial = WidgetSerialFields<{ type: 'matrix'; active: true; selected: Widget_matrix_cell[] }>
 
-// OUT
-export type Widget_matrix_output = Widget_matrix_cell[]
+// VALUE
+export type Widget_matrix_value = Widget_matrix_cell[]
 
 // TYPES
 export type Widget_matrix_types = {
     $Type: 'matrix'
-    $Input: Widget_matrix_config
+    $Config: Widget_matrix_config
     $Serial: Widget_matrix_serial
-    $Output: Widget_matrix_output
+    $Value: Widget_matrix_value
     $Widget: Widget_matrix
 }
 
@@ -49,9 +47,6 @@ export interface Widget_matrix extends Widget_matrix_types, IWidgetMixins {}
 export class Widget_matrix implements IWidget<Widget_matrix_types> {
     DefaultHeaderUI = WidgetMatrixUI
     DefaultBodyUI = undefined
-    get serialHash(): string {
-        return hash(this.value)
-    }
     readonly id: string
     readonly type: 'matrix' = 'matrix'
     readonly serial: Widget_matrix_serial
@@ -59,9 +54,12 @@ export class Widget_matrix implements IWidget<Widget_matrix_types> {
     rows: string[]
     cols: string[]
 
+    alignLabel = false
+
     constructor(
         //
-        public form: Form<any>,
+        public readonly form: Form,
+        public readonly parent: IWidget | null,
         public config: Widget_matrix_config,
         serial?: Widget_matrix_serial,
     ) {
@@ -81,7 +79,7 @@ export class Widget_matrix implements IWidget<Widget_matrix_types> {
         const values = this.serial.selected
         if (values)
             for (const v of values) {
-                this.store.set(this.key(rows[v.x], cols[v.y]), v)
+                this.store.set(this.key(rows[v.x]!, cols[v.y]!), v)
             }
         this.rows = config.rows
         this.cols = config.cols
@@ -89,7 +87,7 @@ export class Widget_matrix implements IWidget<Widget_matrix_types> {
         applyWidgetMixinV2(this)
         makeAutoObservable(this)
     }
-    get value(): Widget_matrix_output {
+    get value(): Widget_matrix_value {
         // if (!this.state.active) return undefined
         return this.serial.selected
     }
@@ -98,7 +96,11 @@ export class Widget_matrix implements IWidget<Widget_matrix_types> {
     private store = new Map<string, Widget_matrix_cell>()
     private key = (row: string, col: string) => `${row}${this.sep}${col}`
     get allCells() { return Array.from(this.store.values()); } // prettier-ignore
-    UPDATE = () => (this.serial.selected = this.RESULT)
+
+    UPDATE = () => {
+        this.serial.selected = this.RESULT
+        this.bumpValue() // only place to call bumpValue
+    }
     get RESULT() {
         return this.allCells.filter((v) => v.value)
     }
@@ -141,4 +143,4 @@ export class Widget_matrix implements IWidget<Widget_matrix_types> {
 }
 
 // DI
-WidgetDI.Widget_matrix = Widget_matrix
+registerWidgetClass('matrix', Widget_matrix)

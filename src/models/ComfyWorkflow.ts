@@ -1,32 +1,32 @@
+import type { IDNaminScheemeInPromptSentToComfyUI } from '../back/IDNaminScheemeInPromptSentToComfyUI'
+import type { ComfyNodeOutput } from '../core/Slot'
+import type { LiveInstance } from '../db/LiveInstance'
+import type { ComfyWorkflowT, TABLES } from '../db/TYPES.gen'
 import type { ComfyNodeID, ComfyNodeMetadata } from '../types/ComfyNodeID'
 import type { ComfyPromptJSON } from '../types/ComfyPrompt'
 import type { ApiPromptInput, PromptInfo, WsMsgExecuting, WsMsgExecutionCached, WsMsgProgress } from '../types/ComfyWsApi'
+import type { HTMLContent, MDContent } from '../types/markdown'
 import type { VisEdges, VisNodes } from '../widgets/misc/VisUI'
 import type { ComfyPromptL } from './ComfyPrompt'
 import type { ComfyNodeSchema, ComfySchemaL } from './ComfySchema'
 import type { StepL } from './Step'
-import type { ElkNode } from 'elkjs'
 import type { MouseEvent } from 'react'
-import type { IDNaminScheemeInPromptSentToComfyUI } from 'src/back/IDNaminScheemeInPromptSentToComfyUI'
-import type { LiveInstance } from 'src/db/LiveInstance'
-import type { ComfyWorkflowT, TABLES } from 'src/db/TYPES.gen'
-import type { HTMLContent, MDContent } from 'src/types/markdown'
 
 import { existsSync, mkdirSync, writeFileSync } from 'fs'
 import { marked } from 'marked'
 import { join } from 'pathe'
 
 import { ComfyWorkflowBuilder } from '../back/NodeBuilder'
-import { runAutolayout } from '../core/AutolayoutV2'
+import { InvalidPromptError } from '../back/RuntimeError'
 import { comfyColors } from '../core/Colors'
 import { ComfyNode } from '../core/ComfyNode'
 import { convertFlowToLiteGraphJSON, LiteGraphJSON } from '../core/LiteGraph'
+import { LiveRefOpt } from '../db/LiveRefOpt'
 import { asHTMLContent, asMDContent } from '../types/markdown'
 import { asAbsolutePath } from '../utils/fs/pathUtils'
-import { InvalidPromptError } from 'src/back/RuntimeError'
-import { LiveRefOpt } from 'src/db/LiveRefOpt'
-import { bang } from 'src/utils/misc/bang'
-import { deepCopyNaive } from 'src/utils/misc/ComfyUtils'
+import { bang } from '../utils/misc/bang'
+import { deepCopyNaive } from '../utils/misc/deepCopyNaive'
+import { type TEdge, toposort } from '../utils/misc/toposort'
 
 export type ProgressReport = {
     percent: number
@@ -42,7 +42,6 @@ export type PromptSettings = {
 /**
  * ComfyWorkflowL
  * - holds the nodes
- * - holds the cyto graph
  * - can be instanciated in both extension and webview
  *   - so no link to workspace or run
  */
@@ -169,8 +168,6 @@ export class ComfyWorkflowL {
         this.data.metadata[node.uid] = node.meta
         this.nodesIndex.set(node.uid, node)
         this.nodes.push(node)
-        // this.cyto?.trackNode(node)
-        // this.graph.run.cyto.addNode(this)
     }
 
     /** proxy to this.db.schema */
@@ -183,6 +180,7 @@ export class ComfyWorkflowL {
     get pendingNodes() {
         return this.nodes.filter((n) => n.status == null || n.status === 'waiting')
     }
+
     get nodesByUpdatedAt() {
         return this.nodes //
             .filter((n) => n.status != null && n.status !== 'waiting')
@@ -222,43 +220,8 @@ export class ComfyWorkflowL {
         return out
     }
 
-    get json_cyto(): Promise<ElkNode> {
-        const cytoJSON = runAutolayout(this)
-        return cytoJSON
-    }
-
-    get json_cyto_small(): Promise<ElkNode> {
-        const PX = 15
-        const cytoJSON = runAutolayout(this, {
-            width: (node) => {
-                const max = 20
-                // ⏸️ console.log(`[👙] `, node.$schema.nameInComfy, node.$schema.nameInComfy.length)
-                let len = node.$schema.nameInComfy.length
-                const prims = node._primitives()
-                for (const p of prims) {
-                    const x = p.inputName.length + (p.value?.length ?? 0)
-                    // ⏸️ console.log(`[👙] x`, x)
-                    if (x > max) {
-                        // ⏸️ console.log(`[👙] MAX`, x)
-                        return max * PX
-                    }
-                    if (x > len) len = x
-                }
-                // ⏸️ console.log(`[👙] OUT`, len)
-                return len * PX
-            },
-            height: (node) => {
-                // return PX * (node._primitives().length + 2)
-                return PX * (node.$schema.inputs.length + 2)
-            },
-        })
-        return cytoJSON
-    }
-
     json_workflow = async (): Promise<LiteGraphJSON> => {
-        const cytoJSON = await this.json_cyto
-        const liteGraphJSON = convertFlowToLiteGraphJSON(this, cytoJSON)
-        return liteGraphJSON
+        return convertFlowToLiteGraphJSON(this)
         // this.st.writeTextFile(workflowJSONPath, JSON.stringify(liteGraphJSON, null, 4))
     }
     /** return the coresponding comfy prompt  */
@@ -295,12 +258,9 @@ export class ComfyWorkflowL {
     currentExecutingNode: ComfyNode<any> | null = null
 
     get progressCurrentNode(): Maybe<ProgressReport> {
-        const node = this.currentExecutingNode
-        if (node == null) return null
-        const percent = node.status === 'done' ? 100 : node.progressRatio * 100
-        const isDone = node.status === 'done'
-        return { percent, isDone, countDone: node.progressRatio * 100, countTotal: 100 }
+        return this.currentExecutingNode?.progressReport
     }
+
     get progressGlobal(): ProgressReport {
         const totalNode = this.nodes.length
         const doneNodes = this.nodes.filter((n) => n.status === 'done' || n.status === 'cached').length
@@ -410,7 +370,7 @@ export class ComfyWorkflowL {
         const edges: VisEdges[] = []
         if (json == null) return { nodes: [], edges: [] }
         for (const [uid, node] of Object.entries(json)) {
-            const schema: ComfyNodeSchema = schemas.nodesByNameInComfy[node.class_type]
+            const schema: ComfyNodeSchema = bang(schemas.nodesByNameInComfy[node.class_type], `unknown node ${node.class_type}`)
             const color = comfyColors[schema.category]
             nodes.push({ id: uid, label: node.class_type, color, font: { color: 'white' }, shape: 'box' })
             for (const [name, val] of Object.entries(node.inputs)) {
@@ -434,6 +394,56 @@ export class ComfyWorkflowL {
         return this.stepRef.item
     }
 
+    RUNLAYOUT = (p: {
+        /** default: 20 */
+        node_vsep?: number
+        /** default: 20 */
+        node_hsep?: number
+    }) => {
+        const nodes = toposort(
+            this.nodes.map((n) => n.uid),
+            this.nodes.flatMap((n) => n._incomingNodes().map((from) => [from, n.uid] as TEdge)),
+        )
+
+        const cols: ComfyNode<any>[][] = new Array(nodes.length)
+        for (const nodeId of nodes) {
+            const node = this.getNode(nodeId)!
+            node.col = Math.max(...node.parents.map((p) => p.col), 0) + 1
+            // console.log(
+            //     `[🤠] node ${node.$schema.nameInComfy}`,
+            //     node.col,
+            //     node.parents.map((p) => [p.col, p.$schema.nameInComfy]),
+            // )
+            if (cols[node.col]) cols[node.col]!.push(node)
+            else cols[node.col] = [node]
+        }
+
+        const HSEP = p.node_hsep ?? 20
+        const VSEP = p.node_vsep ?? 20
+        // cols.reverse()
+        let colX = 0
+        let maxY = 0
+        for (const col of cols) {
+            if (col == null) continue
+            let colWidth = 0
+            let currNodeY = 32
+            const nodesSorted = col.toSorted((a, b) => b.height - a.height)
+            for (const node of nodesSorted) {
+                colWidth = Math.max(colWidth, node.width)
+                node.x = colX
+                node.y = currNodeY
+                currNodeY += node.height + VSEP /* V SEP */
+            }
+            maxY = Math.max(maxY, currNodeY)
+            colX += colWidth + HSEP /* H SEP */
+        }
+
+        this.height = maxY
+        this.width = colX
+    }
+    width = 100
+    height = 100
+
     sendPromptAndWaitUntilDone = async (p: PromptSettings = {}) => {
         const prompt = await this.sendPrompt(p)
         await prompt.finished
@@ -442,9 +452,8 @@ export class ComfyWorkflowL {
 
     sendPrompt = async (p: PromptSettings = {}): Promise<ComfyPromptL> => {
         const step = this.step
-        const liveGraph = this
-        const currentJSON = deepCopyNaive(liveGraph.json_forPrompt(p.idMode ?? 'use_stringified_numbers_only'))
-        const debugWorkflow = liveGraph.json_workflow()
+        const currentJSON = deepCopyNaive(this.json_forPrompt(p.idMode ?? 'use_stringified_numbers_only'))
+        const debugWorkflow = this.json_workflow()
         console.info('checkpoint:' + JSON.stringify(currentJSON))
 
         const out: ApiPromptInput = {
@@ -479,6 +488,7 @@ export class ComfyWorkflowL {
             metadata: this.data.metadata,
             stepID: step?.id,
         })
+        graph.RUNLAYOUT(cushy.autolayoutOpts)
         const res = await fetch(promptEndpoint, {
             method: 'POST',
             body: JSON.stringify(out),

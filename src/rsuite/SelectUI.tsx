@@ -1,13 +1,10 @@
-import type { STATE } from 'src/state/state'
-
 import { makeAutoObservable } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import React, { ReactNode, useMemo } from 'react'
 import { createPortal } from 'react-dom'
 
-import { InputBoolUI } from 'src/controls/widgets/bool/InputBoolUI'
-import { useSt } from 'src/state/stateContext'
-import { searchMatches } from 'src/utils/misc/searchMatches'
+import { InputBoolUI } from '../controls/widgets/bool/InputBoolUI'
+import { searchMatches } from '../utils/misc/searchMatches'
 
 interface ToolTipPosition {
     top: number | undefined
@@ -50,7 +47,7 @@ type SelectProps<T> = {
 }
 
 class AutoCompleteSelectState<T> {
-    constructor(public st: STATE, public p: SelectProps<T>) {
+    constructor(public p: SelectProps<T>) {
         makeAutoObservable(this, {
             popupRef: false,
             anchorRef: false,
@@ -74,7 +71,55 @@ class AutoCompleteSelectState<T> {
         })
     }
 
-    /** currently selected value */
+    /**
+     * function to compare value or options,
+     * using the provided equality check  if provided.
+     *
+     * '===' check if the object is exactly the same.
+     * It work in some cases like those:
+     * case 1: 🟢
+     *   | const myvar = {a:1}
+     *   | <SelectUI options={[myvar, {a:2}]}, value={myvar} />
+     * case 2: 🟢
+     *   | <SelectUI options={[1,2]}, value={1} />
+     *   (because primitve type are always compared by value)
+     *
+     * but not here
+     *
+     * case 3: ❌
+     *   | <SelectUI options={[{a:1}, {a:2}]}, value={{a:1}} />
+     *                          👆   is NOT '===' to  👆 (not the same instance object)
+     *                                but is "equal" according to human logic
+     *
+     */
+    isEqual = (a: T, b: T): boolean => {
+        if (this.p.equalityCheck) return this.p.equalityCheck(a, b)
+        return a === b
+    }
+
+    /**
+     * return the index of the first selected Item amongst options;
+     * just in case the name wasn't clear enough.
+     * TODO: rename this funciton, and remove this comment about the function name.
+     */
+    get indexOfFirstSelectedItemAmongstOptions(): Maybe<number> {
+        const firstSelection = this.firstValue
+        if (firstSelection == null) return null
+        return this.options.findIndex((o) => this.isEqual(o, firstSelection))
+    }
+
+    /** return the first selected value */
+    get firstValue(): Maybe<T> {
+        const v = this.value
+        if (v == null) return null
+        if (Array.isArray(v)) {
+            if (v.length === 0) return null
+            return v[0]
+        }
+        return v
+    }
+
+    /** currently selected value or values */
     get value(): Maybe<T | T[]> {
         return this.p.value?.()
     }
@@ -252,7 +297,7 @@ class AutoCompleteSelectState<T> {
     }
 
     // Close pop-up if too far outside
-    // 2024-02-29 rvion:
+    // 💬 2024-02-29 rvion:
     // | this code was a good idea; but it's really
     // | not pleasant when working mostly with keyboard and using tab to open selects.
     // | as soon as the moouse move just one pixel, popup close.
@@ -318,8 +363,8 @@ class AutoCompleteSelectState<T> {
 }
 
 export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
-    const st = useSt()
-    const s = useMemo(() => new AutoCompleteSelectState(st, p), [])
+    // const st = useSt()
+    const s = useMemo(() => new AutoCompleteSelectState(/* st, */ p), [])
     return (
         <div /* Container/Root */
             tabIndex={-1}
@@ -372,7 +417,7 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
                     )}
                 </div>
                 <div tw='absolute top-0 left-0 right-0 z-50 h-full'>
-                    {/* it's important for the input to be here so tabulation flow normally */}
+                    {/* it's important for the input to be here so tabulation flow normally */}
                     {/* <div tw='btn btn-square btn-xs bg-transparent border-0'>
                         <span className='material-symbols-outlined'>search</span>
                     </div> */}
@@ -448,11 +493,7 @@ export const SelectPopupUI = observer(function SelectPopupUI_<T>(p: { s: AutoCom
 
                 {/* Entries */}
                 {s.filteredOptions.map((option, index) => {
-                    const isSelected =
-                        s.values.find((v) => {
-                            if (s.p.equalityCheck != null) return s.p.equalityCheck(v, option)
-                            return v === option
-                        }) != null
+                    const isSelected = s.values.find((v) => s.isEqual(v, option)) != null
                     return (
                         <li // Fake gaps by padding <li> to make sure you can't click inbetween visual gaps
                             key={index}

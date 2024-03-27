@@ -1,10 +1,10 @@
-import type { CushyAppL } from 'src/models/CushyApp'
-import type { DraftL } from 'src/models/Draft'
+import type { CushyAppL } from '../../models/CushyApp'
+import type { DraftL } from '../../models/Draft'
 
 import { observer } from 'mobx-react-lite'
 
-import { Dropdown, MenuItem } from 'src/rsuite/Dropdown'
-import { _formatAsRelativeDateTime } from 'src/updater/_getRelativeTimeString'
+import { Dropdown, MenuItem } from '../../rsuite/Dropdown'
+import { _formatAsRelativeDateTime } from '../../updater/_getRelativeTimeString'
 
 export const DraftMenuJumpUI = observer(function DraftMenuJumpUI_(p: {
     //
@@ -18,9 +18,8 @@ export const DraftMenuJumpUI = observer(function DraftMenuJumpUI_(p: {
             className={p.className}
             startIcon={<span className='material-symbols-outlined'>menu</span>}
             title={'Drafts'} //`${layout}`}
-        >
-            <DraftListUI app={p.draft.app} />
-        </Dropdown>
+            content={() => <DraftListUI app={p.draft.app} />}
+        />
     )
 })
 

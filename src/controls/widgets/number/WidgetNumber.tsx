@@ -1,14 +1,12 @@
 import type { Form } from '../../Form'
-import type { IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
-import type { IWidget } from 'src/controls/IWidget'
+import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 
-import { computed, makeObservable, observable } from 'mobx'
+import { computed, makeObservable, observable, runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
-import { hash } from 'ohash'
 
-import { WidgetDI } from '../WidgetUI.DI'
+import { applyWidgetMixinV2 } from '../../Mixins'
+import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetNumberUI } from './WidgetNumberUI'
-import { applyWidgetMixinV2 } from 'src/controls/Mixins'
 
 // CONFIG
 export type Widget_number_config = WidgetConfigFields<
@@ -33,15 +31,15 @@ export type Widget_number_config = WidgetConfigFields<
 // SERIAL
 export type Widget_number_serial = WidgetSerialFields<{ type: 'number'; val: number }>
 
-// OUT
-export type Widget_number_output = number
+// VALUE
+export type Widget_number_value = number
 
 // TYPES
 export type Widget_number_types = {
     $Type: 'number'
-    $Input: Widget_number_config
+    $Config: Widget_number_config
     $Serial: Widget_number_serial
-    $Output: Widget_number_output
+    $Value: Widget_number_value
     $Widget: Widget_number
 }
 
@@ -50,7 +48,6 @@ export interface Widget_number extends Widget_number_types, IWidgetMixins {}
 export class Widget_number implements IWidget<Widget_number_types> {
     DefaultHeaderUI = WidgetNumberUI
     DefaultBodyUI = undefined
-    get serialHash () { return hash(this.value) } // prettier-ignore
     readonly id: string
     readonly type: 'number' = 'number'
     readonly forceSnap: boolean = false
@@ -58,11 +55,15 @@ export class Widget_number implements IWidget<Widget_number_types> {
     serial: Widget_number_serial
     readonly defaultValue: number = this.config.default ?? 0
     get isChanged() { return this.serial.val !== this.defaultValue } // prettier-ignore
-    reset = () => { this.serial.val = this.defaultValue } // prettier-ignore
+    reset = () => {
+        if (this.serial.val === this.defaultValue) return
+        this.value = this.defaultValue
+    }
 
     constructor(
         //
-        public readonly form: Form<any>,
+        public readonly form: Form,
+        public readonly parent: IWidget | null,
         public readonly config: Widget_number_config,
         serial?: Widget_number_serial,
     ) {
@@ -81,13 +82,17 @@ export class Widget_number implements IWidget<Widget_number_types> {
         })
     }
 
-    set value(val: Widget_number_output) {
-        this.serial.val = val
+    set value(next: Widget_number_value) {
+        if (this.serial.val === next) return
+        runInAction(() => {
+            this.serial.val = next
+            this.bumpValue()
+        })
     }
-    get value(): Widget_number_output {
+    get value(): Widget_number_value {
         return this.serial.val
     }
 }
 
 // DI
-WidgetDI.Widget_number = Widget_number
+registerWidgetClass('number', Widget_number)

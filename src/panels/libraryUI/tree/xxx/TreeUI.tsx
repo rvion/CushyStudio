@@ -4,10 +4,10 @@ import { observer } from 'mobx-react-lite'
 
 import { TreeViewCtx } from './TreeCtx'
 import { TreeEntryUI } from './TreeEntryUI'
-import { ComboUI } from 'src/app/shortcuts/ComboUI'
-import { KEYS } from 'src/app/shortcuts/shorcutKeys'
-import { RevealUI } from 'src/rsuite/reveal/RevealUI'
-import { useSt } from 'src/state/stateContext'
+import { ComboUI } from '../../../../app/shortcuts/ComboUI'
+import { KEYS } from '../../../../app/shortcuts/shorcutKeys'
+import { RevealUI } from '../../../../rsuite/reveal/RevealUI'
+import { useSt } from '../../../../state/stateContext'
 
 export const TreeUI = observer(function TreeEditorUI_(p: {
     //
@@ -41,15 +41,19 @@ export const TreeUI = observer(function TreeEditorUI_(p: {
                         {p.title && <div tw='text-sm'>{p.title}</div>}
                     </div>
                     {p.shortcut && <ComboUI primary size='xs' combo={p.shortcut} />}
-                    <RevealUI trigger={'hover'}>
+                    <RevealUI
+                        trigger={'hover'}
+                        content={() => (
+                            <div tw='flex gap-1 whitespace-nowrap p-2'>
+                                collapse tree: <ComboUI combo={KEYS.collapseAllTree} />
+                            </div>
+                        )}
+                    >
                         <div
                             tw='btn btn-square btn-ghost btn-xs shrink-0'
                             onClick={() => st.db.tree_entry.updateAll({ isExpanded: null })}
                         >
                             <span className='material-symbols-outlined'>unfold_less</span>
-                        </div>
-                        <div tw='flex gap-1 whitespace-nowrap p-2'>
-                            collapse tree: <ComboUI combo={KEYS.collapseAllTree} />
                         </div>
                     </RevealUI>
                     {/* {FoldBtn} */}

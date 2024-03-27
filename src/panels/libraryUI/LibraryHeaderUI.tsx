@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 
 import { useSt } from '../../state/stateContext'
-import { recursivelyFindAppsInFolder } from 'src/cards/walkLib'
+import { recursivelyFindAppsInFolder } from '../../cards/walkLib'
 
 export const LibraryHeaderUI = observer(function LibraryHeaderUI_(p: {}) {
     const st = useSt()

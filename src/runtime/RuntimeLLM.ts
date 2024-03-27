@@ -1,12 +1,12 @@
 import type { Runtime } from './Runtime'
-import type { OpenRouter_Models } from 'src/llm/OpenRouter_models'
-import type { OpenRouterRequest } from 'src/llm/OpenRouter_Request'
-import type { OpenRouterResponse } from 'src/llm/OpenRouter_Response'
+import type { OpenRouter_Models } from '../llm/OpenRouter_models'
+import type { OpenRouterRequest } from '../llm/OpenRouter_Request'
+import type { OpenRouterResponse } from '../llm/OpenRouter_Response'
 
 import { makeAutoObservable } from 'mobx'
 
-import { OpenRouter_ask } from 'src/llm/OpenRouter_ask'
-import { openRouterInfos } from 'src/llm/OpenRouter_infos'
+import { OpenRouter_ask } from '../llm/OpenRouter_ask'
+import { openRouterInfos } from '../llm/OpenRouter_infos'
 
 /** namespace for all store-related utils */
 export class RuntimeLLM {
@@ -110,7 +110,7 @@ export class RuntimeLLM {
             ],
         })
         if (res.choices.length === 0) throw new Error('no choices in response')
-        const msg0 = res.choices[0].message
+        const msg0 = res.choices[0]!.message
         if (msg0 == null) throw new Error('choice 0 is null')
         if (typeof msg0 === 'string') throw new Error('choice 0 seems to be an error')
         return {

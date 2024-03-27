@@ -7,7 +7,7 @@ import type { TreeFolder } from './nodes/TreeFolder'
 import type { TreeNode } from './xxx/TreeNode'
 // import type { TreeRoot } from './nodes/TreeRoot'
 import type { ReactNode } from 'react'
-import type { STATE } from 'src/state/state'
+import type { STATE } from '../../../state/state'
 
 export type TreeItemID = string
 

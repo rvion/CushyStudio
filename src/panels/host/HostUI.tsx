@@ -2,12 +2,12 @@ import { runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 
 import { LabelUI } from '../LabelUI'
-import { SQLITE_false, SQLITE_true } from 'src/db/SQLITE_boolean'
-import { HostL } from 'src/models/Host'
-import { HostSchemaIndicatorUI } from 'src/panels/host/HostSchemaIndicatorUI'
-import { HostWebsocketIndicatorUI } from 'src/panels/host/HostWebsocketIndicatorUI'
-import { Joined, Toggle } from 'src/rsuite/shims'
-import { useSt } from 'src/state/stateContext'
+import { SQLITE_false, SQLITE_true } from '../../db/SQLITE_boolean'
+import { HostL } from '../../models/Host'
+import { HostSchemaIndicatorUI } from './HostSchemaIndicatorUI'
+import { HostWebsocketIndicatorUI } from './HostWebsocketIndicatorUI'
+import { Joined, Toggle } from '../../rsuite/shims'
+import { useSt } from '../../state/stateContext'
 
 export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
     const st = useSt()
@@ -156,6 +156,15 @@ export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
                 {/* ID */}
                 <div tw='flex'>
                     <div tw='italic text-xs text-opacity-50'>id: {host.id}</div>
+                </div>
+                <div
+                    className='btn'
+                    onClick={async () => {
+                        const res = await host.manager.configureLogging(true)
+                        console.log(`[🤠] res=`, res)
+                    }}
+                >
+                    test
                 </div>
             </div>
             {/* <div tw='divider m-1'></div> */}

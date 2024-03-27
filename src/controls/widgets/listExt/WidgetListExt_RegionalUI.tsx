@@ -1,13 +1,13 @@
 import type { Widget_listExt } from './WidgetListExt'
 import type { BoardPosition } from './WidgetListExtTypes'
 import type { Shape } from 'konva/lib/Shape'
-import type { Spec } from 'src/controls/Spec'
+import type { Spec } from '../../Spec'
 
 import { observer, useLocalObservable } from 'mobx-react-lite'
 import * as React from 'react'
 import { Layer, Rect, Stage, Transformer } from 'react-konva'
 
-import { InputNumberUI } from 'src/controls/widgets/number/InputNumberUI'
+import { InputNumberUI } from '../number/InputNumberUI'
 
 export const WidgetListExt_RegionalUI = observer(function WidgetListExt_RegionalUI_<T extends Spec>(p: {
     widget: Widget_listExt<T>
@@ -52,7 +52,10 @@ export const WidgetListExt_RegionalUI = observer(function WidgetListExt_Regional
                         {entries.map(({ shape, widget }) => (
                             <RectangleUI
                                 key={`rect-${widget.id}`}
-                                onChange={(p) => Object.assign(shape, p)}
+                                onChange={(p) => {
+                                    Object.assign(shape, p)
+                                    widget.bumpValue()
+                                }}
                                 isSelected={shape.isSelected}
                                 shape={shape}
                             />

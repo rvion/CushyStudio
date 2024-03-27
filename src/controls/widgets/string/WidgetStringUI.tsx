@@ -1,8 +1,9 @@
+import type { ClassLike } from '../../../utils/custom-jsx/global'
+
 import { observer } from 'mobx-react-lite'
-import { ReactElement, useState } from 'react'
+import { ReactElement } from 'react'
 
 import { Widget_string } from './WidgetString'
-import { ClassLike } from 'src/utils/custom-jsx/global'
 
 let startValue = ''
 let cancelled = false
@@ -38,6 +39,7 @@ export const WidgetString_TextareaBodyUI = observer(function WidgetString_Textar
 export const WidgetString_HeaderUI = observer(function WidgetStringUI_(p: { widget: Widget_string }) {
     const widget = p.widget
     const val = widget.value
+    const { inputValue, setInputValue, isEditing, setEditing } = widget
 
     let inputTailwind: string | ClassLike[] | undefined
     let visualHelper: ReactElement<any, any> | undefined
@@ -92,7 +94,6 @@ export const WidgetString_HeaderUI = observer(function WidgetStringUI_(p: { widg
                     }}
                     onFocus={(ev) => {
                         let textInput = ev.currentTarget
-
                         textInput.select()
                         startValue = val
                     }}

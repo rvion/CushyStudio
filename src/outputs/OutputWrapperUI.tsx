@@ -3,7 +3,7 @@ import { ReactNode } from 'react'
 
 export const OutputWrapperUI = observer(function OutputWrapperUI_(p: { label: string; children: ReactNode }) {
     return (
-        <div className='flex flex-row col-info virtualBorder'>
+        <div style={{ background: '#3d5282' }} className='flex flex-row virtualBorder'>
             {p.label ? (
                 <div className='flex items-baseline'>
                     <div className='font-bold'>{p.label}</div>

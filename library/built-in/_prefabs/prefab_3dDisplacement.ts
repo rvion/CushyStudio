@@ -1,7 +1,7 @@
+import type { MediaImageL } from '../../../src/models/MediaImage'
 import type { OutputFor } from './_prefabs'
-import type { MediaImageL } from 'src/models/MediaImage'
 
-import { exhaust } from 'src/utils/misc/ComfyUtils'
+import { exhaust } from '../../../src/utils/misc/exhaust'
 
 export const ui_3dDisplacement = () => {
     const form = getCurrentForm()

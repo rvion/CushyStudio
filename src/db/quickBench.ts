@@ -12,17 +12,18 @@ class QuickBench {
 
     addStats = (key: string, value: number) => {
         if (this.entries[key] == null) this.entries[key] = []
-        this.entries[key].push(value)
+        this.entries[key]!.push(value)
     }
 
     health = (val: number, max: number) => {
-        if (val > max) return `🔴 ${val.toFixed(2)}`
-        if (val > max * 0.5) return `🟠 ${val.toFixed(2)}`
+        if (val > max) return `🛑 ${val.toFixed(2)}`
+        if (val > max * 0.5) return `🔶 ${val.toFixed(2)}`
         return val.toFixed(2)
     }
 
     getStatLine = (key: string): StatLine => {
         const arr = this.entries[key]
+        if (arr == null) return { key, sum: 0, count: 0, avg: 0, min: 0, max: 0 }
         const sum = arr.reduce((a, b) => a + b, 0)
         const avg = sum / arr.length
         const min = Math.min(...arr)
@@ -50,7 +51,9 @@ class QuickBench {
         for (const key in this.entries) {
             stats.push(this.getStatLine(key))
         }
+        console.groupCollapsed(`[📊] QuickBench Stats`)
         console.table(stats)
+        console.groupEnd()
     }
 }
 

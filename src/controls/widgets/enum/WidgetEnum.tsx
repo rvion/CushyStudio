@@ -1,17 +1,15 @@
 import type { EnumValue } from '../../../models/ComfySchema'
+import type { CleanedEnumResult } from '../../../types/EnumUtils'
 import type { Form } from '../../Form'
-import type { IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
-import type { IWidget } from 'src/controls/IWidget'
-import type { CleanedEnumResult } from 'src/types/EnumUtils'
+import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 
-import { action, computed, makeAutoObservable, observable } from 'mobx'
+import { makeAutoObservable, runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
-import { hash } from 'ohash'
 
-import { WidgetDI } from '../WidgetUI.DI'
+import { applyWidgetMixinV2 } from '../../Mixins'
+import { registerWidgetClass } from '../WidgetUI.DI'
 import { _extractDefaultValue } from './_extractDefaultValue'
 import { WidgetEnumUI } from './WidgetEnumUI'
-import { applyWidgetMixinV2 } from 'src/controls/Mixins'
 
 // CONFIG
 export type Widget_enum_config<O> = WidgetConfigFields<
@@ -25,17 +23,21 @@ export type Widget_enum_config<O> = WidgetConfigFields<
 >
 
 // SERIAL
-export type Widget_enum_serial<O> = WidgetSerialFields<{ type: 'enum'; active: true; val: O }>
+export type Widget_enum_serial<O> = WidgetSerialFields<{
+    type: 'enum'
+    active: true
+    val: O
+}>
 
-// OUT
-export type Widget_enum_output<O> = O // Requirable[T]
+// VALUE
+export type Widget_enum_value<O> = O // Requirable[T]
 
 // TYPES
 export type Widget_enum_types<O> = {
     $Type: 'enum'
-    $Input: Widget_enum_config<O>
+    $Config: Widget_enum_config<O>
     $Serial: Widget_enum_serial<O>
-    $Output: Widget_enum_output<O>
+    $Value: Widget_enum_value<O>
     $Widget: Widget_enum<O>
 }
 
@@ -48,15 +50,20 @@ export class Widget_enum<O> implements IWidget<Widget_enum_types<O>> {
     readonly type: 'enum' = 'enum'
 
     get isChanged() { return this.serial.val !== this.config.default } // prettier-ignore
-    reset = () => { this.serial.val = this.defaultValue } // prettier-ignore
-    get serialHash () { return hash(this.value) } // prettier-ignore
+    reset = () => { this.value = this.defaultValue } // prettier-ignore
     get possibleValues(): EnumValue[] {
         return cushy.schema.knownEnumsByName.get(this.config.enumName as any)?.values ?? []
     }
 
     serial: Widget_enum_serial<O>
     get defaultValue() { return this.config.default ?? this.possibleValues[0] as any } // prettier-ignore
-    constructor(public form: Form<any>, public config: Widget_enum_config<O>, serial?: Widget_enum_serial<O>) {
+    constructor(
+        //
+        public readonly form: Form,
+        public readonly parent: IWidget | null,
+        public config: Widget_enum_config<O>,
+        serial?: Widget_enum_serial<O>,
+    ) {
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? {
             type: 'enum',
@@ -70,10 +77,17 @@ export class Widget_enum<O> implements IWidget<Widget_enum_types<O>> {
     get status(): CleanedEnumResult<any> {
         return cushy.fixEnumValue(this.serial.val as any, this.config.enumName)
     }
-    get value(): Widget_enum_output<O> {
+    get value(): Widget_enum_value<O> {
         return this.status.finalValue
+    }
+    set value(next: Widget_enum_value<O>) {
+        if (this.serial.val === next) return
+        runInAction(() => {
+            this.serial.val = next
+            this.bumpValue()
+        })
     }
 }
 
 // DI
-WidgetDI.Widget_enum = Widget_enum
+registerWidgetClass('enum', Widget_enum)

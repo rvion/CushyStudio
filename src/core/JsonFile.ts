@@ -6,6 +6,7 @@ import { basename, dirname, join } from 'pathe'
 import { readableStringify } from '../utils/formatters/stringifyReadable'
 import { asAbsolutePath } from '../utils/fs/pathUtils'
 import { bang } from '../utils/misc/bang'
+import { debounce } from '../utils/misc/debounce'
 
 // import { ZodSchema } from 'zod'
 
@@ -63,8 +64,9 @@ export class JsonFile<T extends object> {
     get value() { return bang(this._value); } // prettier-ignore
 
     /** save the file */
-    save = (): true => {
-        console.info(`[💾] CONFIGsaving [${this.fileName}] to ${this._path}`)
+
+    _save = (): true => {
+        console.info(`[💾] CONFIG saving [${this.fileName}] to ${this._path}`)
         const maxLevel = this.p.maxLevel
         const content =
             maxLevel == null //
@@ -75,14 +77,16 @@ export class JsonFile<T extends object> {
         return true
     }
 
+    save = debounce(this._save, 200, 2000)
+
     /** update config then save it */
-    update = (configChanges: Partial<T> | ((data: T) => void)): true => {
+    update = (configChanges: Partial<T> | ((data: T) => void)): void => {
         if (typeof configChanges === 'function') {
             configChanges(this.value)
         } else {
             Object.assign(this.value, configChanges)
         }
-        return this.save()
+        this.save()
     }
 
     init = (p: PersistedJSONInfo<T>): T => {

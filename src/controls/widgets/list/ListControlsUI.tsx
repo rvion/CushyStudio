@@ -1,9 +1,19 @@
-import type { Widget_listExt } from '../listExt/WidgetListExt'
-import type { Widget_list } from './WidgetList'
-
 import { observer } from 'mobx-react-lite'
 
-export const ListControlsUI = observer(function ListControlsUI_(p: { widget: Widget_listExt<any> | Widget_list<any> }) {
+export const ListControlsUI = observer(function ListControlsUI_(p: {
+    //
+    widget: {
+        addItem(): void
+        removeAllItems(): void
+        expandAllItems(): void
+        collapseAllItems(): void
+        items: unknown[]
+        config: {
+            max?: number
+            min?: number
+        }
+    } //Widget_listExt<any> | Widget_list<any>
+}) {
     const widget = p.widget
     const max = widget.config.max
     const min = widget.config.min
@@ -32,7 +42,7 @@ export const ListControlsUI = observer(function ListControlsUI_(p: { widget: Wid
                 onClick={(ev) => {
                     if (!canClear) return
                     ev.stopPropagation()
-                    widget.removemAllItems()
+                    widget.removeAllItems()
                 }}
             >
                 <span className='material-symbols-outlined'>delete_forever</span>

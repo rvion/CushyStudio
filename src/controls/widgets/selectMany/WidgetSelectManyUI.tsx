@@ -4,8 +4,8 @@ import type { Widget_selectMany } from './WidgetSelectMany'
 import { observer } from 'mobx-react-lite'
 
 import { InputBoolUI } from '../bool/InputBoolUI'
-import { MessageErrorUI } from 'src/panels/MessageUI'
-import { SelectUI } from 'src/rsuite/SelectUI'
+import { MessageErrorUI } from '../../../panels/MessageUI'
+import { SelectUI } from '../../../rsuite/SelectUI'
 
 export const WidgetSelectManyUI = observer(function WidgetSelectManyUI_<T extends BaseSelectEntry>(p: {
     widget: Widget_selectMany<T>

@@ -1,4 +1,10 @@
-import type { ComfyNodeID } from './ComfyNodeID'
+import { z } from 'zod'
+
+import { type ComfyNodeID, ComfyNodeID$Schema } from './ComfyNodeID'
+
+// PromptID ------------------------------------------------------
+export type PromptID = ComfyPromptID // Branded<UUID, { ComfyPromptID: true }>
+export const PromptID$Schema = z.string({ description: 'PromptID' })
 
 // REQUEST PAYLOADS ------------------------------------------------
 export type ApiPromptInput = {
@@ -7,38 +13,126 @@ export type ApiPromptInput = {
     prompt: any
 }
 
-// LIVE UPDATES -----------------------------------------------------
-export type WsMsg =
-    | WsMsgStatus
-    | WsMsgExecutionStart
-    | WsMsgProgress
-    | WsMsgExecuting
-    | WsMsgExecuted
-    | WsMsgExecutionCached
-    | WsMsgExecutionError
+// MISC -------------------------------------------------------------
+export type NodeProgress = { value: number; max: number }
+export const NodeProgress$Schema = z.object({
+    value: z.number(),
+    max: z.number(),
+})
 
-export type WsMsgStatus = { type: 'status'; data: { sid?: string; status: ComfyStatus } }
-
-// prompt-execution related
-export type PromptRelated_WsMsg =
-    | WsMsgExecutionStart
-    | WsMsgExecutionCached
-    | WsMsgExecuting
-    | WsMsgProgress
-    | WsMsgExecuted
-    | WsMsgExecutionError
+// LIVE UPDATES ----------------------------------------------------
+export type WsMsgStatus = {
+    type: 'status'
+    data: {
+        sid?: string
+        status: ComfyStatus
+    }
+}
+export const WsMsgStatus$Schema = z.object({
+    type: z.literal('status'),
+    data: z.object({
+        sid: z.string().nullish(),
+        status: z.object({
+            exec_info: z.object({ queue_remaining: z.number() }),
+            sid: z.string().nullish(),
+        }),
+    }),
+})
 
 export type WsMsgExecutionStart = { type: 'execution_start'; data: _WsMsgExecutionStartData }
+export const WsMsgExecutionStart$Schema = z.object({
+    type: z.literal('execution_start'),
+    data: z.object({ prompt_id: PromptID$Schema }),
+})
+
 export type WsMsgExecutionCached = { type: 'execution_cached'; data: _WsMsgExecutionCachedData }
+export const WsMsgExecutionCached$Schema = z.object({
+    type: z.literal('execution_cached'),
+    data: z.object({
+        prompt_id: PromptID$Schema,
+        nodes: z.array(ComfyNodeID$Schema),
+    }),
+})
+
+export type _WSMsgExecutingData = {
+    prompt_id: PromptID
+    node?: Maybe<ComfyNodeID>
+}
+export const _WSMsgExecutingData$Schema = z.object({
+    prompt_id: PromptID$Schema,
+    node: ComfyNodeID$Schema.nullish(),
+})
+
 export type WsMsgExecuting = { type: 'executing'; data: _WSMsgExecutingData }
+export const WsMsgExecuting$Schema = z.object({
+    type: z.literal('executing'),
+    data: _WSMsgExecutingData$Schema,
+})
+
 export type WsMsgProgress = { type: 'progress'; data: NodeProgress } // 🔶 this one lacks a prompt_id
+export const WsMsgProgress$Schema = z.object({
+    type: z.literal('progress'),
+    data: NodeProgress$Schema,
+})
+
 export type WsMsgExecuted = { type: 'executed'; data: _WsMsgExecutedData }
+export const WsMsgExecuted$Schema = z.object({
+    type: z.literal('executed'),
+    data: z.lazy(() => _WsMsgExecutedData$Schema),
+})
+
 export type WsMsgExecutionError = { type: 'execution_error'; data: _WsMsgExecutionErrorData }
+export const WsMsgExecutionError$Schema = z.object({
+    type: z.literal('execution_error'),
+    data: z.lazy(() => _WsMsgExecutionErrorData$Schema),
+})
+
+// added on 2024-03-19:
+// comfy manager inject a custom node called "Terminal Log (Manager)"
+// https://cushy.fra1.cdn.digitaloceanspaces.com/rvion/085b8c1fcf33d4d4a9d970163acd6d53201b2a89.jpg
+// this node allow to dislay logs without having to connect to the remote instance
+// as of 2024-03-19, payload looks like this:
+// {"type": "manager-terminal-feedback", "data": {"data": "#read_workflow_json_files_all"}}
+export type WSMsgManagerFeedback = { type: 'manager-terminal-feedback'; data: { data: string } }
+export const WSMsgManagerFeedback$Schema = z.object({
+    type: z.literal('manager-terminal-feedback'),
+    data: z.object({ data: z.string() }),
+})
 
 export type _WsMsgExecutionStartData = { prompt_id: PromptID }
+export const _WsMsgExecutionStartData$Schema = z.object({
+    prompt_id: PromptID$Schema,
+})
+
 export type _WsMsgExecutionCachedData = { nodes: ComfyNodeID[]; prompt_id: PromptID }
-export type _WSMsgExecutingData = { prompt_id: PromptID; node: ComfyNodeID }
-export type _WsMsgExecutedData = { node: ComfyNodeID; output: { images: ComfyImageInfo[] }; prompt_id: PromptID }
+export const _WsMsgExecutionCachedData$Schema = z.object({
+    nodes: z.array(ComfyNodeID$Schema),
+    prompt_id: PromptID$Schema,
+})
+
+export type ComfyImageInfo = { filename: string; subfolder: string; type: string }
+export const ComfyImageInfo$Schema = z.object({
+    filename: z.string(),
+    subfolder: z.string(),
+    type: z.string(),
+})
+
+export type _WsMsgExecutedData = {
+    node: ComfyNodeID
+    output: {
+        previews?: { filepath: string }[]
+        images?: ComfyImageInfo[]
+    }
+    prompt_id: PromptID
+}
+export const _WsMsgExecutedData$Schema = z.object({
+    node: ComfyNodeID$Schema,
+    output: z.object({
+        images: z.array(ComfyImageInfo$Schema).nullish(),
+        previews: z.array(z.object({ filepath: z.string() })).nullish(),
+    }),
+    prompt_id: PromptID$Schema,
+})
 
 // helper types
 export type ComfyUploadImageResult = {
@@ -46,13 +140,9 @@ export type ComfyUploadImageResult = {
     subfolder: string
     type: string
 }
-export type ComfyImageInfo = { filename: string; subfolder: string; type: string }
-export type NodeProgress = { value: number; max: number }
+
 export type ComfyStatus = { exec_info: { queue_remaining: number }; sid: string }
 
-/** payload send back when triggering a promp */
-export type UUID = Tagged<string, 'UUID'>
-export type PromptID = Branded<UUID, { ComfyPromptID: true }>
 export type PromptInfo = {
     prompt_id: PromptID /** uuid */
 }
@@ -94,3 +184,58 @@ export type _WsMsgExecutionErrorData = {
     //     ]
     // }
 }
+export const _WsMsgExecutionErrorData$Schema = z.object({
+    prompt_id: PromptID$Schema,
+    node_id: ComfyNodeID$Schema,
+    node_type: z.string(),
+    executed: z.array(ComfyNodeID$Schema),
+    exception_message: z.string(),
+    exception_type: z.string(),
+    traceback: z.array(z.string()),
+    current_inputs: z.record(z.any()),
+    current_outputs: z.record(z.any()),
+})
+
+// UNION TYPES ----------------------------------------------------
+// prompt-execution related
+export type PromptRelated_WsMsg =
+    | WsMsgExecutionStart
+    | WsMsgExecutionCached
+    | WsMsgExecuting
+    | WsMsgProgress
+    | WsMsgExecuted
+    | WsMsgExecutionError
+
+export const ProptRelated_WsMsg_Schema = () =>
+    z.discriminatedUnion('type', [
+        WsMsgExecutionStart$Schema,
+        WsMsgExecutionCached$Schema,
+        WsMsgExecuting$Schema,
+        WsMsgProgress$Schema,
+        WsMsgExecuted$Schema,
+        WsMsgExecutionError$Schema,
+    ])
+
+// LIVE UPDATES ----------------------------------------------------
+export type WsMsg =
+    | WsMsgStatus
+    | WSMsgManagerFeedback
+    //
+    | WsMsgExecutionStart
+    | WsMsgExecutionCached
+    | WsMsgExecuting
+    | WsMsgProgress
+    | WsMsgExecuted
+    | WsMsgExecutionError
+
+export const WsMsg$Schema = z.discriminatedUnion('type', [
+    WsMsgStatus$Schema,
+    WSMsgManagerFeedback$Schema,
+    //
+    WsMsgExecutionStart$Schema,
+    WsMsgExecutionCached$Schema,
+    WsMsgExecuting$Schema,
+    WsMsgProgress$Schema,
+    WsMsgExecuted$Schema,
+    WsMsgExecutionError$Schema,
+])

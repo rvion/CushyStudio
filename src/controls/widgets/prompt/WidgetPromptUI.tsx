@@ -11,9 +11,9 @@ import { Plugin_ReorderTopLevelStuffUI } from './plugins/Plugin_ReorderTopLevelS
 import { Plugin_ShortcutsUI } from './plugins/Plugin_ShortcutsUI'
 import { PromptPlugin } from './plugins/PromptPlugin'
 import { WidgetPromptUISt } from './WidgetPromptUISt'
-import { Plugin_LoraControlsUI } from 'src/controls/widgets/prompt/plugins/Plugin_LoraBoxUI'
-import { RevealUI } from 'src/rsuite/reveal/RevealUI'
-import { useSt } from 'src/state/stateContext'
+import { Plugin_LoraControlsUI } from './plugins/Plugin_LoraBoxUI'
+import { RevealUI } from '../../../rsuite/reveal/RevealUI'
+import { useSt } from '../../../state/stateContext'
 
 export const WidgetPrompt_LineUI = observer(function WidgetPrompt_LineUI_(p: { widget: Widget_prompt }) {
     const st = useSt()
@@ -35,7 +35,17 @@ export const WidgetPrompt_LineUI = observer(function WidgetPrompt_LineUI_(p: { w
                 {plugins.map((plugin) => {
                     const active = st.configFile.get(plugin.configKey) ?? false
                     return (
-                        <RevealUI key={plugin.key} trigger='hover' placement='topEnd'>
+                        <RevealUI
+                            key={plugin.key}
+                            trigger='hover'
+                            placement='topEnd'
+                            content={() => (
+                                <div tw='p-2'>
+                                    <div tw='whitespace-nowrap font-bold'>{plugin.title}</div>
+                                    <div tw='whitespace-nowrap'>{plugin.description}</div>
+                                </div>
+                            )}
+                        >
                             <div
                                 onClick={() => st.configFile.set(plugin.configKey, !active)}
                                 tw={[
@@ -44,10 +54,6 @@ export const WidgetPrompt_LineUI = observer(function WidgetPrompt_LineUI_(p: { w
                                 ]}
                             >
                                 <span className='material-symbols-outlined'>{plugin.icon}</span>
-                            </div>
-                            <div tw='p-2'>
-                                <div tw='whitespace-nowrap font-bold'>{plugin.title}</div>
-                                <div tw='whitespace-nowrap'>{plugin.description}</div>
                             </div>
                         </RevealUI>
                     )

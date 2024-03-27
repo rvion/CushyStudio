@@ -1,52 +1,47 @@
 import type { Form } from '../../Form'
-import type { IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
-import type { IWidget } from 'src/controls/IWidget'
+import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 
 import { makeObservable, observable } from 'mobx'
 import { nanoid } from 'nanoid'
-import { hash } from 'ohash'
 
-import { WidgetDI } from '../WidgetUI.DI'
+import { applyWidgetMixinV2 } from '../../Mixins'
+import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetSpacerUI } from './WidgetSpacerUI'
-import { applyWidgetMixinV2 } from 'src/controls/Mixins'
 
 /**
  * Bool Config
  * @property {string} label2 - test
  */
-export type Widget_spacer_config = WidgetConfigFields<{}, Widget_shared_types>
+export type Widget_spacer_config = WidgetConfigFields<{}, Widget_spacer_types>
 
 // SERIAL
 export type Widget_spacer_serial = WidgetSerialFields<{ type: 'spacer' }>
 
-// OUT
-export type Widget_spacer_output = boolean
+// VALUE
+export type Widget_spacer_value = boolean
 
 // TYPES
-export type Widget_shared_types = {
+export type Widget_spacer_types = {
     $Type: 'spacer'
-    $Input: Widget_spacer_config
+    $Config: Widget_spacer_config
     $Serial: Widget_spacer_serial
-    $Output: Widget_spacer_output
+    $Value: Widget_spacer_value
     $Widget: Widget_spacer
 }
 
 // STATE
-export interface Widget_spacer extends Widget_shared_types, IWidgetMixins {}
-export class Widget_spacer implements IWidget<Widget_shared_types> {
+export interface Widget_spacer extends Widget_spacer_types, IWidgetMixins {}
+export class Widget_spacer implements IWidget<Widget_spacer_types> {
     DefaultHeaderUI = WidgetSpacerUI
     DefaultBodyUI = undefined
     readonly id: string
     readonly type: 'spacer' = 'spacer'
     serial: Widget_spacer_serial
 
-    get serialHash(): string {
-        return hash(-1)
-    }
-
     constructor(
         //
-        public form: Form<any>,
+        public readonly form: Form,
+        public readonly parent: IWidget | null,
         public config: Widget_spacer_config,
         serial?: Widget_spacer_serial,
     ) {
@@ -68,4 +63,4 @@ export class Widget_spacer implements IWidget<Widget_shared_types> {
 }
 
 // DI
-WidgetDI.Widget_spacer = Widget_spacer
+registerWidgetClass('spacer', Widget_spacer)

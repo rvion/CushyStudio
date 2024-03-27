@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 
 import { useImageDrag } from './dnd'
-import { useSt } from 'src/state/stateContext'
+import { useSt } from '../../state/stateContext'
 
 export const SamplerPreviewImageUI = observer(function SamplerPreviewImageUI_(p: {}) {
     const st = useSt()
