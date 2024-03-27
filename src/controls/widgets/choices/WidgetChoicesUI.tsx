@@ -1,12 +1,12 @@
 import type { Widget_choices } from './WidgetChoices'
-import type { SchemaDict } from 'src/controls/Spec'
+import type { SchemaDict } from '../../Spec'
 
 import { observer } from 'mobx-react-lite'
 
 import { WidgetWithLabelUI } from '../../shared/WidgetWithLabelUI'
 import { AnimatedSizeUI } from '../../utils/AnimatedSizeUI'
 import { InputBoolUI } from '../bool/InputBoolUI'
-import { SelectUI } from 'src/rsuite/SelectUI'
+import { SelectUI } from '../../../rsuite/SelectUI'
 
 // UI
 export const WidgetChoices_HeaderUI = observer(function WidgetChoices_LineUI_<T extends SchemaDict>(p: {

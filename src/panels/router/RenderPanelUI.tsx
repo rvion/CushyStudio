@@ -5,8 +5,8 @@ import { useState } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 
 import { PanelNames, panels } from './PANELS'
-import { Message } from 'src/rsuite/shims'
-import { ErrorBoundaryFallback } from 'src/widgets/misc/ErrorBoundary'
+import { Message } from '../../rsuite/shims'
+import { ErrorBoundaryFallback } from '../../widgets/misc/ErrorBoundary'
 
 export const RenderPanelUI = observer(function RenderPanelUI_(p: {
     //

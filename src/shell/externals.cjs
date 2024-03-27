@@ -24,7 +24,6 @@ const modulesToCache /*: [name:string, path:string][]*/ = [
     ['crypto'           , 'crypto'          ],
 
     // misc heavy libs ----------------
-    ['three'            , 'three'           ],
     ['mobx'             , 'mobx'            ],
     ['nsfwjs'           , 'nsfwjs'          ],
     ['@tensorflow/tfjs' , 'tfjs'            ],

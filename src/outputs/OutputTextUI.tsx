@@ -1,18 +1,18 @@
-import { marked } from 'marked'
+import type { MediaTextL } from '../models/MediaText'
+
 import { observer } from 'mobx-react-lite'
 
+import { TabUI } from '../app/layout/TabUI'
+import { StepL } from '../models/Step'
+import { MarkdownUI } from '../rsuite/MarkdownUI'
+import { Panel } from '../rsuite/shims'
+import { useSt } from '../state/stateContext'
 import { OutputPreviewWrapperUI } from './OutputPreviewWrapperUI'
-import { TabUI } from 'src/app/layout/TabUI'
-import { StepL } from 'src/models/Step'
-import { MarkdownUI } from 'src/rsuite/MarkdownUI'
-import { Panel } from 'src/rsuite/shims'
-import { useSt } from 'src/state/stateContext'
-import { StepOutput_Text } from 'src/types/StepOutput'
 
 export const OutputTextPreviewUI = observer(function OutputTextPreviewUI_(p: {
     //
     step?: Maybe<StepL>
-    output: StepOutput_Text
+    output: MediaTextL
 }) {
     const st = useSt()
     const output = p.output
@@ -50,7 +50,7 @@ export const OutputTextPreviewUI = observer(function OutputTextPreviewUI_(p: {
     return <OutputPreviewWrapperUI output={p.output}>{message}</OutputPreviewWrapperUI>
 })
 
-export const OutputTextUI = observer(function OutputTextUI_(p: { step?: Maybe<StepL>; output: StepOutput_Text }) {
+export const OutputTextUI = observer(function OutputTextUI_(p: { step?: Maybe<StepL>; output: MediaTextL }) {
     // 🔴 handle markdown / html / text
     if (p.output.data.kind === 'markdown')
         return (

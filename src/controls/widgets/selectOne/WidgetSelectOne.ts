@@ -1,13 +1,13 @@
+import type { Form } from '../../Form'
+import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 import type { Widget_group } from '../group/WidgetGroup'
-import type { Form } from 'src/controls/Form'
-import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from 'src/controls/IWidget'
 
 import { makeAutoObservable, runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { WidgetDI } from '../WidgetUI.DI'
+import { applyWidgetMixinV2 } from '../../Mixins'
+import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetSelectOneUI } from './WidgetSelectOneUI'
-import { applyWidgetMixinV2 } from 'src/controls/Mixins'
 
 export type BaseSelectEntry<T = string> = { id: T; label?: string }
 
@@ -101,4 +101,4 @@ export class Widget_selectOne<T extends BaseSelectEntry> implements IWidget<Widg
 }
 
 // DI
-WidgetDI.Widget_selectOne = Widget_selectOne
+registerWidgetClass('selectOne', Widget_selectOne)

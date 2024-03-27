@@ -1,12 +1,13 @@
+import type { FormBuilder } from '../controls/FormBuilder'
+import type { SchemaDict } from '../controls/Spec'
+import type { MediaImageL } from '../models/MediaImage'
+import type { Runtime } from '../runtime/Runtime'
 import type { AppMetadata } from './AppManifest'
-import type { CSSProperties } from 'react'
-import type { FormBuilder } from 'src/controls/FormBuilder'
-import type { ISpec, SchemaDict } from 'src/controls/Spec'
-import type { MediaImageL } from 'src/models/MediaImage'
-import type { Runtime } from 'src/runtime/Runtime'
+import type { CSSProperties, ReactNode } from 'react'
 
 // export const action = <const F extends WidgetDict>(name: string, t: Omit<Action<F>, 'name'>): Action<F> => ({ name, ...t })
 /* 🛋️ */ export type GlobalFunctionToDefineAnApp = <const F extends SchemaDict>(t: App<F>) => AppRef<F>
+/* 🛋️ */ export type GlobalFunctionToDefineAView = <const P extends { [key: string]: any }>(t: CustomView<P>) => CustomViewRef<P>
 /* 🛋️ */ export type GlobalGetCurrentRun = () => Runtime
 
 /* shared */ export type GlobalGetCurrentForm = () => FormBuilder
@@ -23,7 +24,19 @@ export type AppRef<FIELDS> = {
     id: CushyAppID
 }
 
+export type CustomViewRef<PARAMS> = {
+    /** this is a virtual property; only here so view refs can carry the type-level view params. */
+    $PARAMS: PARAMS
+    /** app ID */
+    id: CushyViewID
+}
+
 export type $ExtractFormValueType<FIELDS extends SchemaDict> = { [k in keyof FIELDS]: FIELDS[k]['$Value'] }
+
+export type CustomView<T = any> = {
+    preview: (t: T) => ReactNode
+    render: (t: T) => ReactNode
+}
 
 export type App<FIELDS extends SchemaDict> = {
     /** app interface (GUI) */

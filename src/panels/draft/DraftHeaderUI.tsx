@@ -1,13 +1,13 @@
-import type { DraftL } from 'src/models/Draft'
+import type { DraftL } from '../../models/Draft'
 
 import { observer } from 'mobx-react-lite'
 
+import { DraftIllustrationUI } from '../../cards/fancycard/DraftIllustration'
 import { DraftMenuActionsUI } from './DraftMenuActionsUI'
 import { DraftMenuJumpUI } from './DraftMenuJump'
 import { DraftMenuLooksUI } from './DraftMenuLooksUI'
 import { PublishAppBtnUI } from './PublishAppBtnUI'
 import { RunOrAutorunUI } from './RunOrAutorunUI'
-import { DraftIllustrationUI } from 'src/cards/fancycard/DraftIllustration'
 
 export const DraftHeaderUI = observer(function DraftHeaderUI_(p: {
     //
@@ -18,16 +18,22 @@ export const DraftHeaderUI = observer(function DraftHeaderUI_(p: {
     const app = draft.appRef.item
     return (
         <div
-            style={{ zIndex: 99 /*boxShadow: '0 0 0.5rem oklch(var(--p)/.3)'*/ }}
+            style={{
+                background: 'linear-gradient(45deg, #3b3b3b, transparent)',
+                zIndex: 99 /*boxShadow: '0 0 0.5rem oklch(var(--p)/.3)'*/,
+            }}
             className={p.className}
-            tw='_DraftHeaderUI flex bg-base-300 border-b border-b-base-300 sticky top-0 z-50'
+            tw='_DraftHeaderUI flex border-b border-b-base-300 sticky top-0 z-50'
         >
             <div tw='flex gap-1 mt-1 flex-grow relative text-base-content'>
-                <DraftIllustrationUI revealAppIllustrationOnHover draft={draft} size='6rem' />
+                <DraftIllustrationUI revealAppIllustrationOnHover draft={draft} size='7.3rem' />
                 <div tw='flex flex-col gap-1 flex-grow'>
-                    <div style={{ height: '2rem' }} className='flex items-center gap-2 justify-between text-sm'>
+                    <div tw='flex text-sm gap-1'>
+                        App <span tw='text-primary font-bold'>{app.name}</span>
+                    </div>
+                    <div className='flex items-center gap-2 justify-between text-sm'>
                         <input
-                            tw='input input-bordered input-sm flex-grow'
+                            tw='input input-bordered input-xs flex-grow'
                             onChange={(ev) => draft.update({ title: ev.target.value })}
                             // tw='w-full'
                             value={draft.data.title ?? 'no title'}

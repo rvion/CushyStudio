@@ -2,18 +2,18 @@ import type { LiveInstance } from '../db/LiveInstance'
 import type { CushyAppL } from './CushyApp'
 import type { MediaImageL } from './MediaImage'
 import type { StepL } from './Step'
-import type { LibraryFile } from 'src/cards/LibraryFile'
-import type { Widget_group } from 'src/controls/widgets/group/WidgetGroup'
-import type { TABLES } from 'src/db/TYPES.gen'
+import type { LibraryFile } from '../cards/LibraryFile'
+import type { Form } from '../controls/Form'
+import type { Widget_group } from '../controls/widgets/group/WidgetGroup'
+import type { TABLES } from '../db/TYPES.gen'
 
 import { reaction } from 'mobx'
 
-import { Status } from 'src/back/Status'
-import { Form } from 'src/controls/Form'
-import { CushyFormManager, type FormBuilder } from 'src/controls/FormBuilder'
-import { LiveRef } from 'src/db/LiveRef'
-import { SQLITE_false, SQLITE_true } from 'src/db/SQLITE_boolean'
-import { toastError } from 'src/utils/misc/toasts'
+import { Status } from '../back/Status'
+import { CushyFormManager, type FormBuilder } from '../controls/FormBuilder'
+import { LiveRef } from '../db/LiveRef'
+import { SQLITE_false, SQLITE_true } from '../db/SQLITE_boolean'
+import { toastError } from '../utils/misc/toasts'
 
 export type FormPath = (string | number)[]
 

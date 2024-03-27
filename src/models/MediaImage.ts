@@ -1,4 +1,7 @@
 import type { LiveInstance } from '../db/LiveInstance'
+import type { TABLES } from '../db/TYPES.gen'
+import type { ComfyNodeMetadata } from '../types/ComfyNodeID'
+import type { ComfyNodeJSON } from '../types/ComfyPrompt'
 import type { ComfyPromptL } from './ComfyPrompt'
 import type { ComfyWorkflowL } from './ComfyWorkflow'
 import type { CushyAppL } from './CushyApp'
@@ -6,26 +9,23 @@ import type { CushyScriptL } from './CushyScript'
 import type { DraftL } from './Draft'
 import type { StepL } from './Step'
 import type { MouseEvent } from 'react'
-import type { TABLES } from 'src/db/TYPES.gen'
-import type { ComfyNodeMetadata } from 'src/types/ComfyNodeID'
-import type { ComfyNodeJSON } from 'src/types/ComfyPrompt'
 
-import { existsSync, mkdirSync, readFileSync } from 'fs'
+import { existsSync, mkdirSync, readFileSync, renameSync } from 'fs'
 import { lookup } from 'mime-types'
 import { runInAction } from 'mobx'
 import { basename, resolve } from 'pathe'
 import sharp from 'sharp'
 
+import { hasMod } from '../app/shortcuts/META_NAME'
+import { LiveRefOpt } from '../db/LiveRefOpt'
+import { SafetyResult } from '../safety/Safety'
+import { createHTMLImage_fromURL } from '../state/createHTMLImage_fromURL'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
-import { getCurrentRun_IMPL } from './_ctx2'
-import { hasMod } from 'src/app/shortcuts/META_NAME'
-import { LiveRefOpt } from 'src/db/LiveRefOpt'
-import { SafetyResult } from 'src/safety/Safety'
-import { createHTMLImage_fromURL } from 'src/state/createHTMLImage_fromURL'
-import { asSTRING_orCrash } from 'src/utils/misc/bang'
-import { ManualPromise } from 'src/utils/misc/ManualPromise'
-import { toastError, toastInfo } from 'src/utils/misc/toasts'
-import { transparentImgURL } from 'src/widgets/galleries/transparentImg'
+import { asSTRING_orCrash } from '../utils/misc/bang'
+import { ManualPromise } from '../utils/misc/ManualPromise'
+import { toastError, toastInfo } from '../utils/misc/toasts'
+import { transparentImgURL } from '../widgets/galleries/transparentImg'
+import { getCurrentRun_IMPL } from './getGlobalRuntimeCtx'
 
 export interface MediaImageL extends LiveInstance<TABLES['media_image']> {}
 export class MediaImageL {
@@ -51,6 +51,15 @@ export class MediaImageL {
     get draft(): Maybe<DraftL> { return this.step?.draft } // prettier-ignore
     get app(): Maybe<CushyAppL> {return this.draft?.app} // prettier-ignore
     get script(): Maybe<CushyScriptL> {return this.app?.script } // prettier-ignore
+
+    /** flip image */
+    // 👀 👉 https://github.com/lovell/sharp/issues/28#issuecomment-679193628
+    // ⏸️ flip = async () => {
+    // ⏸️     await sharp(this.absPath)
+    // ⏸️         // .flip()
+    // ⏸️         .toFile(this.absPath + '2')
+    // ⏸️     renameSync(this.absPath + '2', this.absPath)
+    // ⏸️ }
 
     /* XXX: This should only be a stop-gap for a custom solution that isn't hampered by the browser's security capabilities */
     /** Uses browser clipboard API to copy the image to clipboard, will only copy as a PNG and will not include metadata. */
@@ -90,6 +99,12 @@ export class MediaImageL {
             })
     }
 
+    copyToClipboardAsBase64 = () => {
+        navigator.clipboard.writeText(this.getBase64Url()).then(() => {
+            toastInfo('Image copied to clipboard!')
+        })
+    }
+
     useAsDraftIllustration = (draft_?: DraftL) => {
         const draft = draft_ ?? this.draft
         if (draft == null) return toastError(`no related draft found`)
@@ -98,6 +113,10 @@ export class MediaImageL {
 
     get relPath() {
         return asRelativePath(this.data.path)
+    }
+
+    get relPathAsAbsPath(): string {
+        return `/` + this.data.path
     }
 
     get baseName() {

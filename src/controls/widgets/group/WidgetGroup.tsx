@@ -1,19 +1,18 @@
 import type { Form } from '../../Form'
-import type { GetWidgetResult, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
-import type { IWidget } from 'src/controls/IWidget'
-import type { SchemaDict } from 'src/controls/Spec'
+import type { GetWidgetResult, IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { SchemaDict } from '../../Spec'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { WidgetDI } from '../WidgetUI.DI'
+import { bang } from '../../../utils/misc/bang'
+import { applyWidgetMixinV2 } from '../../Mixins'
+import { getActualWidgetToDisplay } from '../../shared/getActualWidgetToDisplay'
+import { getIfWidgetIsCollapsible } from '../../shared/getIfWidgetIsCollapsible'
+import { runWithGlobalForm } from '../../shared/runWithGlobalForm'
+import { Spec } from '../../Spec'
+import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetGroup_BlockUI, WidgetGroup_LineUI } from './WidgetGroupUI'
-import { applyWidgetMixinV2 } from 'src/controls/Mixins'
-import { getActualWidgetToDisplay } from 'src/controls/shared/getActualWidgetToDisplay'
-import { getIfWidgetIsCollapsible } from 'src/controls/shared/getIfWidgetIsCollapsible'
-import { Spec } from 'src/controls/Spec'
-import { runWithGlobalForm } from 'src/models/_ctx2'
-import { bang } from 'src/utils/misc/bang'
 
 // CONFIG
 export type Widget_group_config<T extends SchemaDict> = WidgetConfigFields<
@@ -88,6 +87,7 @@ export class Widget_group<T extends SchemaDict> implements IWidget<Widget_group_
     /** the dict of all child widgets */
     fields: { [k in keyof T]: T[k]['$Widget'] } = {} as any // will be filled during constructor
     serial: Widget_group_serial<T> = {} as any
+    /* override */ background = true
 
     private _defaultSerial = (): Widget_group_serial<T> => {
         return {
@@ -175,4 +175,4 @@ export class Widget_group<T extends SchemaDict> implements IWidget<Widget_group_
 }
 
 // DI
-WidgetDI.Widget_group = Widget_group
+registerWidgetClass('group', Widget_group)

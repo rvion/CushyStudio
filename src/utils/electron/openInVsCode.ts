@@ -1,4 +1,4 @@
-import type { STATE } from 'src/state/state'
+import type { STATE } from '../../state/state'
 
 import { exec } from 'child_process'
 import { existsSync } from 'fs'

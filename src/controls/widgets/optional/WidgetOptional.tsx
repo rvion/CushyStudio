@@ -1,13 +1,12 @@
 import type { Form } from '../../Form'
-import type { IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
-import type { IWidget } from 'src/controls/IWidget'
-import type { Spec } from 'src/controls/Spec'
+import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { Spec } from '../../Spec'
 
 import { computed, makeObservable, observable } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { WidgetDI } from '../WidgetUI.DI'
-import { applyWidgetMixinV2 } from 'src/controls/Mixins'
+import { applyWidgetMixinV2 } from '../../Mixins'
+import { registerWidgetClass } from '../WidgetUI.DI'
 
 // CONFIG
 export type Widget_optional_config<T extends Spec = Spec> = WidgetConfigFields<
@@ -112,4 +111,4 @@ export class Widget_optional<T extends Spec = Spec> implements IWidget<Widget_op
 }
 
 // DI
-WidgetDI.Widget_optional = Widget_optional
+registerWidgetClass('optional', Widget_optional)

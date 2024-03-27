@@ -1,13 +1,12 @@
 import type { Form } from '../../Form'
-import type { IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
-import type { IWidget } from 'src/controls/IWidget'
+import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 
 import { computed, makeObservable, observable, runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { WidgetDI } from '../WidgetUI.DI'
+import { applyWidgetMixinV2 } from '../../Mixins'
+import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetNumberUI } from './WidgetNumberUI'
-import { applyWidgetMixinV2 } from 'src/controls/Mixins'
 
 // CONFIG
 export type Widget_number_config = WidgetConfigFields<
@@ -96,4 +95,4 @@ export class Widget_number implements IWidget<Widget_number_types> {
 }
 
 // DI
-WidgetDI.Widget_number = Widget_number
+registerWidgetClass('number', Widget_number)

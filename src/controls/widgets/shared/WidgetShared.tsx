@@ -1,13 +1,12 @@
 import type { Form } from '../../Form'
-import type { IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 import type { Spec } from '../../Spec'
-import type { IWidget } from 'src/controls/IWidget'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { WidgetDI } from '../WidgetUI.DI'
-import { applyWidgetMixinV2 } from 'src/controls/Mixins'
+import { applyWidgetMixinV2 } from '../../Mixins'
+import { registerWidgetClass } from '../WidgetUI.DI'
 
 // CONFIG
 export type Widget_shared_config<T extends Spec = Spec> = WidgetConfigFields<
@@ -74,4 +73,4 @@ export class Widget_shared<T extends Spec = Spec> implements IWidget<Widget_shar
 }
 
 // DI
-WidgetDI.Widget_shared = Widget_shared
+registerWidgetClass('shared', Widget_shared)

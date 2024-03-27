@@ -2,9 +2,9 @@ import BetterSqlite3 from 'better-sqlite3'
 import { writeFileSync } from 'fs'
 import JSON5 from 'json5'
 
+import { bang } from '../utils/misc/bang'
 import { _getAllColumnsForTable } from './_getAllColumnsForTable'
 import { _getAllForeignKeysForTable } from './_getAllForeignKeysForTable'
-import { bang } from 'src/utils/misc/bang'
 
 export const _codegenORM = (store: {
     //
@@ -22,7 +22,7 @@ export const _codegenORM = (store: {
     const tableSortedAlphabetically = tables.slice().sort((a, b) => a.name.localeCompare(b.name))
     for (const table of tableSortedAlphabetically) {
         const jsName = convertTableNameToJSName(table.name)
-        out1 += `import type { ${jsName}L } from 'src/models/${jsName}'\n`
+        out1 += `import type { ${jsName}L } from '../models/${jsName}'\n`
     }
     out1 += `\n`
     out1 += `import { Type } from '@sinclair/typebox'\n`
@@ -69,6 +69,7 @@ export const _codegenORM = (store: {
     const LiveDBSubKeys: string[] = []
     for (const table of tables) {
         const jsTableName = convertTableNameToJSName(table.name)
+        LiveDBSubKeys.push(`'${table.name}'`)
         const fks = _getAllForeignKeysForTable(db, table.name)
         const cols = _getAllColumnsForTable(db, table.name)
 
@@ -100,7 +101,7 @@ export const _codegenORM = (store: {
         // let typeDeclCreate: string = '\n'
         let schemaDecl: string = `\n`
         let fieldsDef: string = `\n`
-        out2 += `declare type ${jsTableName}ID = Branded<string, { ${jsTableName}ID: true }>\n`
+        out2 += `declare type ${jsTableName}ID = Tagged<string, { ${jsTableName}ID: true }>\n`
         typeDecl += `export const as${jsTableName}ID = (s: string): ${jsTableName}ID => s as any\n`
         schemaDecl = `export const ${jsTableName}Schema = Type.Object(\n    {\n`
         typeDecl += `export type ${jsTableName}Table = {\n`

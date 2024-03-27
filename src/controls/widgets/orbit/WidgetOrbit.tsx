@@ -1,14 +1,13 @@
 import type { Form } from '../../Form'
-import type { IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
-import type { IWidget } from 'src/controls/IWidget'
+import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { WidgetDI } from '../WidgetUI.DI'
+import { applyWidgetMixinV2 } from '../../Mixins'
+import { registerWidgetClass } from '../WidgetUI.DI'
 import { clampMod, mkEnglishSummary } from './_orbitUtils'
 import { WidgetOrbitUI } from './WidgetOrbitUI'
-import { applyWidgetMixinV2 } from 'src/controls/Mixins'
 
 export type OrbitData = {
     azimuth: number
@@ -57,7 +56,11 @@ export class Widget_orbit implements IWidget<Widget_orbit_types> {
 
     /** practical to add to your textual prompt */
     get englishSummary() {
-        return mkEnglishSummary(this.serial.value.azimuth, this.serial.value.elevation)
+        return mkEnglishSummary(
+            //
+            this.serial.value.azimuth,
+            this.serial.value.elevation,
+        )
     }
 
     get euler() {
@@ -91,6 +94,11 @@ export class Widget_orbit implements IWidget<Widget_orbit_types> {
             },
             id: this.id,
         }
+
+        /* 💊 BACKWARD COMPAT */
+        /* 💊 */ const serialAny = this.serial as any
+        /* 💊 */ if (serialAny.val && serialAny.value == null) serialAny.value = serialAny.val
+
         applyWidgetMixinV2(this)
         makeAutoObservable(this)
     }
@@ -111,4 +119,4 @@ export class Widget_orbit implements IWidget<Widget_orbit_types> {
 }
 
 // DI
-WidgetDI.Widget_orbit = Widget_orbit
+registerWidgetClass<Widget_orbit>('orbit', Widget_orbit)

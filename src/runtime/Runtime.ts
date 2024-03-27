@@ -1,10 +1,11 @@
+import type { CustomViewRef } from '../cards/App'
+import type { SchemaDict } from '../controls/Spec'
 import type { Printable } from '../core/Printable'
 import type { ComfyPromptL } from '../models/ComfyPrompt'
 import type { ComfyWorkflowL, PromptSettings } from '../models/ComfyWorkflow'
 import type { MediaImageL } from '../models/MediaImage'
 import type { StepL } from '../models/Step'
-import type { SchemaDict } from 'src/controls/Spec'
-import type { STATE } from 'src/state/state'
+import type { STATE } from '../state/state'
 
 import child_process, { execSync } from 'child_process'
 import { createHash } from 'crypto'
@@ -12,9 +13,16 @@ import fs, { writeFileSync } from 'fs'
 import * as path from 'pathe'
 
 import { ComfyWorkflowBuilder } from '../back/NodeBuilder'
+import { createRandomGenerator } from '../back/random'
+import { Widget_group } from '../controls/widgets/group/WidgetGroup'
+import { compilePrompt } from '../controls/widgets/prompt/_compile'
 import { auto } from '../core/autoValue'
 import { ComfyNodeOutput } from '../core/Slot'
+import { checkIfComfyImageExists } from '../models/ImageInfos_ComfyGenerated'
+import { _formatAsRelativeDateTime } from '../updater/_getRelativeTimeString'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
+import { braceExpansion } from '../utils/misc/expansion'
+import { Wildcards } from '../widgets/prompter/nodes/wildcards/wildcards'
 import { RuntimeApps } from './RuntimeApps'
 import { RuntimeCanvas } from './RuntimeCanvas'
 import { RuntimeColors } from './RuntimeColors'
@@ -27,14 +35,8 @@ import { RuntimeLLM } from './RuntimeLLM'
 import { RuntimeSharp } from './RuntimeSharp'
 import { RuntimeStore } from './RuntimeStore'
 import { RuntimeVideos } from './RuntimeVideo'
-import { createRandomGenerator } from 'src/back/random'
-import { Widget_group } from 'src/controls/widgets/group/WidgetGroup'
-import { compilePrompt } from 'src/controls/widgets/prompt/_compile'
-import { checkIfComfyImageExists } from 'src/models/ImageInfos_ComfyGenerated'
-import { _formatAsRelativeDateTime } from 'src/updater/_getRelativeTimeString'
-import { braceExpansion } from 'src/utils/misc/expansion'
-import { Wildcards } from 'src/widgets/prompter/nodes/wildcards/wildcards'
 
+export type ImageStoreName = Tagged<string, 'ImageStoreName'>
 export type ImageAndMask = HasSingle_IMAGE & HasSingle_MASK
 
 // prettier-ignore
@@ -457,11 +459,11 @@ export class Runtime<FIELDS extends SchemaDict = any> {
     /** output a 3d scene from an image and its displacement and depth maps */
     output_3dImage = (p: {
         //
-        image: string | MediaImageL
-        depth: string | MediaImageL
-        normal: string | MediaImageL
+        image: ImageStoreName | MediaImageL
+        depth: ImageStoreName | MediaImageL
+        normal: ImageStoreName | MediaImageL
     }) => {
-        const getImg = (i: string | MediaImageL): MediaImageL => {
+        const getImg = (i: ImageStoreName | MediaImageL): MediaImageL => {
             if (typeof i === 'string') {
                 const img = this.Store.getImageStore(i).image
                 if (img == null) {
@@ -486,6 +488,17 @@ export class Runtime<FIELDS extends SchemaDict = any> {
             depthMap: depth.url,
             normalMap: normal.url,
             stepID: this.step.id,
+        })
+    }
+    output_custom = <P extends Record<string, any>>(p: {
+        //
+        params: P
+        view: CustomViewRef<P>
+    }) => {
+        this.Cushy.db.media_custom.create({
+            stepID: this.step.id,
+            params: p.params,
+            viewID: p.view.id,
         })
     }
 
@@ -651,7 +664,7 @@ export class Runtime<FIELDS extends SchemaDict = any> {
 
     // INTERRACTIONS ------------------------------------------------------------------------------------------
     async PROMPT(p?: PromptSettings): Promise<ComfyPromptL> {
-        console.info('prompt requested')
+        // console.info('prompt requested')
         const prompt = await this.workflow.sendPrompt(p)
         await prompt.finished
         return prompt

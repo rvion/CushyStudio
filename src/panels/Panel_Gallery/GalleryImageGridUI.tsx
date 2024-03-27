@@ -2,7 +2,7 @@ import { observer } from 'mobx-react-lite'
 import { FixedSizeGrid } from 'react-window'
 
 import { ImageUI } from '../../widgets/galleries/ImageUI'
-import { useSizeOf } from 'src/controls/utils/useSizeOf'
+import { useSizeOf } from '../../controls/utils/useSizeOf'
 
 export const GalleryImageGridUI = observer(function GalleryImageGridUI_(p: {}) {
     const { refFn, size } = useSizeOf()

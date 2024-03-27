@@ -1,32 +1,32 @@
+import type { IDNaminScheemeInPromptSentToComfyUI } from '../back/IDNaminScheemeInPromptSentToComfyUI'
+import type { ComfyNodeOutput } from '../core/Slot'
+import type { LiveInstance } from '../db/LiveInstance'
+import type { ComfyWorkflowT, TABLES } from '../db/TYPES.gen'
 import type { ComfyNodeID, ComfyNodeMetadata } from '../types/ComfyNodeID'
 import type { ComfyPromptJSON } from '../types/ComfyPrompt'
 import type { ApiPromptInput, PromptInfo, WsMsgExecuting, WsMsgExecutionCached, WsMsgProgress } from '../types/ComfyWsApi'
+import type { HTMLContent, MDContent } from '../types/markdown'
 import type { VisEdges, VisNodes } from '../widgets/misc/VisUI'
 import type { ComfyPromptL } from './ComfyPrompt'
 import type { ComfyNodeSchema, ComfySchemaL } from './ComfySchema'
 import type { StepL } from './Step'
 import type { MouseEvent } from 'react'
-import type { IDNaminScheemeInPromptSentToComfyUI } from 'src/back/IDNaminScheemeInPromptSentToComfyUI'
-import type { ComfyNodeOutput } from 'src/core/Slot'
-import type { LiveInstance } from 'src/db/LiveInstance'
-import type { ComfyWorkflowT, TABLES } from 'src/db/TYPES.gen'
-import type { HTMLContent, MDContent } from 'src/types/markdown'
 
 import { existsSync, mkdirSync, writeFileSync } from 'fs'
 import { marked } from 'marked'
 import { join } from 'pathe'
 
 import { ComfyWorkflowBuilder } from '../back/NodeBuilder'
+import { InvalidPromptError } from '../back/RuntimeError'
 import { comfyColors } from '../core/Colors'
 import { ComfyNode } from '../core/ComfyNode'
 import { convertFlowToLiteGraphJSON, LiteGraphJSON } from '../core/LiteGraph'
+import { LiveRefOpt } from '../db/LiveRefOpt'
 import { asHTMLContent, asMDContent } from '../types/markdown'
 import { asAbsolutePath } from '../utils/fs/pathUtils'
-import { InvalidPromptError } from 'src/back/RuntimeError'
-import { LiveRefOpt } from 'src/db/LiveRefOpt'
-import { bang } from 'src/utils/misc/bang'
-import { deepCopyNaive } from 'src/utils/misc/ComfyUtils'
-import { type TEdge, toposort } from 'src/utils/misc/toposort'
+import { bang } from '../utils/misc/bang'
+import { deepCopyNaive } from '../utils/misc/deepCopyNaive'
+import { type TEdge, toposort } from '../utils/misc/toposort'
 
 export type ProgressReport = {
     percent: number
@@ -409,11 +409,11 @@ export class ComfyWorkflowL {
         for (const nodeId of nodes) {
             const node = this.getNode(nodeId)!
             node.col = Math.max(...node.parents.map((p) => p.col), 0) + 1
-            console.log(
-                `[🤠] node ${node.$schema.nameInComfy}`,
-                node.col,
-                node.parents.map((p) => [p.col, p.$schema.nameInComfy]),
-            )
+            // console.log(
+            //     `[🤠] node ${node.$schema.nameInComfy}`,
+            //     node.col,
+            //     node.parents.map((p) => [p.col, p.$schema.nameInComfy]),
+            // )
             if (cols[node.col]) cols[node.col]!.push(node)
             else cols[node.col] = [node]
         }

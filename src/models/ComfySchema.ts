@@ -1,15 +1,16 @@
+import type { TABLES } from '../db/TYPES.gen'
 import type { ComfyEnumDef, ComfyInputOpts, ComfyNodeSchemaJSON } from '../types/ComfySchemaJSON'
 import type { HostL } from './Host'
-import type { TABLES } from 'src/db/TYPES.gen'
 
 import { observable, toJS } from 'mobx'
 
 import { normalizeJSIdentifier } from '../core/normalizeJSIdentifier'
 import { ComfyPrimitiveMapping, ComfyPrimitives } from '../core/Primitives'
+import { LiveInstance } from '../db/LiveInstance'
+import { LiveRef } from '../db/LiveRef'
 import { CodeBuffer } from '../utils/codegen/CodeBuffer'
 import { escapeJSKey } from '../utils/codegen/escapeJSKey'
-import { LiveInstance } from 'src/db/LiveInstance'
-import { LiveRef } from 'src/db/LiveRef'
+import { ComfyDefaultNodeWhenUnknown_Name, ComfyDefaultNodeWhenUnknown_Schema } from './ComfyDefaultNodeWhenUnknown'
 
 export type EnumHash = string
 export type EnumName = string
@@ -140,6 +141,7 @@ export class ComfySchemaL {
 
         // compile spec
         const entries: [string, ComfyNodeSchemaJSON][] = Object.entries(this.data.spec)
+        entries.push([ComfyDefaultNodeWhenUnknown_Name, ComfyDefaultNodeWhenUnknown_Schema])
         for (const __x of entries) {
             const nodeNameInComfy = __x[0]
             const nodeDef = __x[1]
@@ -254,14 +256,21 @@ export class ComfySchemaL {
                 /** name of the type in cushy */
                 let inputTypeNameInCushy: string | undefined
 
-                if (typeof slotType === 'string') {
+                if (slotType == null) {
+                    const uniqueEnumName = `INVALID_null`
+                    inputTypeNameInCushy = this.processEnumNameOrValue({ candidateName: uniqueEnumName, comfyEnumDef: ['❌'] })
+                } else if (typeof slotType === 'string') {
                     inputTypeNameInCushy = normalizeJSIdentifier(slotType, '_')
                     this.knownSlotTypes.add(inputTypeNameInCushy)
                 } else if (Array.isArray(slotType)) {
                     const uniqueEnumName = `Enum_${nodeNameInCushy}_${inputNameInCushy}`
                     inputTypeNameInCushy = this.processEnumNameOrValue({ candidateName: uniqueEnumName, comfyEnumDef: slotType })
                 } else {
-                    throw new Error(`invalid input "${ipt.name}" in node "${nodeNameInComfy}"`)
+                    throw new Error(
+                        `invalid schema (${JSON.stringify(slotType)}) for input "${
+                            ipt.name
+                        }" in node "${nodeNameInComfy}" (type: ${typeof slotType}; expected: Array | string)`,
+                    )
                 }
 
                 if (inputTypeNameInCushy) {
@@ -357,7 +366,7 @@ export class ComfySchemaL {
         p(`import type { ComfyNodeSchemaJSON } from '${prefix}types/ComfySchemaJSON'`)
         p('')
         // p(`import type { GlobalFunctionToDefineAnApp } from '${prefix}cards/App'`)
-        p(`import type { GlobalFunctionToDefineAnApp, GlobalGetCurrentForm, GlobalGetCurrentRun } from '${prefix}cards/App'`)
+        p(`import type { GlobalFunctionToDefineAnApp, GlobalFunctionToDefineAView, GlobalGetCurrentForm, GlobalGetCurrentRun } from '${prefix}cards/App'`) // prettier-ignore
         p('')
         p(`// CONTENT IN THIS FILE:`)
         p('//')
@@ -381,12 +390,14 @@ export class ComfySchemaL {
         // p(`const card: GlobalFunctionToDefineAnApp`)
         // p(``)
         p(`const app: GlobalFunctionToDefineAnApp`)
+        p(`const view: GlobalFunctionToDefineAView`)
         p(`const getCurrentForm: GlobalGetCurrentForm`)
         p(`const getCurrentRun: GlobalGetCurrentRun`)
         p(``)
         // p(`const actionTags: ActionTags`)
         p(``)
         p(`\n// 0. Entrypoint --------------------------`)
+        // p(`export type _INVALID_null = any {`)
         p(`export interface ComfySetup {`)
         // prettier-ignore
         for (const n of this.nodes) {
@@ -448,6 +459,7 @@ export class ComfySchemaL {
         // ⏸️ }
 
         p(`\n// 5. ACCEPTABLE INPUTS -------------------------------`)
+        p(`export type _INVALID_null = any`)
         for (const t of slotTypes) {
             // const tsType = this.toTSType(t)
             p(

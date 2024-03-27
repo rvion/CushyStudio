@@ -1,14 +1,13 @@
 import type { Form } from '../../Form'
-import type { IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
-import type { IWidget } from 'src/controls/IWidget'
+import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { WidgetDI } from '../WidgetUI.DI'
+import { bang } from '../../../utils/misc/bang'
+import { applyWidgetMixinV2 } from '../../Mixins'
+import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetMatrixUI } from './WidgetMatrixUI'
-import { applyWidgetMixinV2 } from 'src/controls/Mixins'
-import { bang } from 'src/utils/misc/bang'
 
 export type Widget_matrix_cell = {
     x: number
@@ -144,4 +143,4 @@ export class Widget_matrix implements IWidget<Widget_matrix_types> {
 }
 
 // DI
-WidgetDI.Widget_matrix = Widget_matrix
+registerWidgetClass('matrix', Widget_matrix)

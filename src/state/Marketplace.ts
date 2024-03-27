@@ -1,11 +1,11 @@
 import type { STATE } from './state'
 import type { PostgrestSingleResponse } from '@supabase/supabase-js'
-import type { Database } from 'src/supa/database.types'
+import type { Database } from '../supa/database.types'
 
 import { makeAutoObservable } from 'mobx'
 
-import { Debounced } from 'src/utils/misc/Debounced'
-import { Kwery } from 'src/utils/misc/Kwery'
+import { Debounced } from '../utils/misc/Debounced'
+import { Kwery } from '../utils/misc/Kwery'
 
 type SupaPublishedApp = Database['public']['Tables']['published_apps']['Row']
 // type SupaUser = Database['auth']['Tables']['users']['Row']

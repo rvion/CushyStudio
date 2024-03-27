@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 
-import { SelectUI } from 'src/rsuite/SelectUI'
+import { SelectUI } from '../../rsuite/SelectUI'
 
 export const GallerySearchControlsUI = observer(function GallerySearchControlsUI_(p: {}) {
     return (

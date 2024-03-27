@@ -3,8 +3,8 @@ import type { BaseSelectEntry, Widget_selectOne } from './WidgetSelectOne'
 import { observer } from 'mobx-react-lite'
 
 import { InputBoolUI } from '../bool/InputBoolUI'
-import { SelectUI } from 'src/rsuite/SelectUI'
-import { makeLabelFromFieldName } from 'src/utils/misc/makeLabelFromFieldName'
+import { SelectUI } from '../../../rsuite/SelectUI'
+import { makeLabelFromFieldName } from '../../../utils/misc/makeLabelFromFieldName'
 
 export const WidgetSelectOneUI = observer(function WidgetSelectOneUI_<T extends BaseSelectEntry>(p: {
     widget: Widget_selectOne<T>

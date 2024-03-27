@@ -1,4 +1,4 @@
-import type { STATE } from 'src/state/state'
+import type { STATE } from '../state/state'
 
 import * as fs from 'fs'
 import * as path from 'pathe'

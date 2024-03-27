@@ -2,7 +2,7 @@ import type { AspectRatio, ModelType } from './WidgetSizeTypes'
 
 import { makeAutoObservable } from 'mobx'
 
-import { parseFloatNoRoundingErr } from 'src/utils/misc/parseFloatNoRoundingErr'
+import { parseFloatNoRoundingErr } from '../../../utils/misc/parseFloatNoRoundingErr'
 
 // ugly hack so I can both
 // - share the widget with non form components

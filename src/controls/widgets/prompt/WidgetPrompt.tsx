@@ -1,17 +1,16 @@
-import type { IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { Timestamp } from '../../../cards/Timestamp'
+import type { Form } from '../../Form'
+import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 import type { Tree } from '@lezer/common'
-import type { Timestamp } from 'src/cards/Timestamp'
-import type { Form } from 'src/controls/Form'
-import type { IWidget } from 'src/controls/IWidget'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { WidgetDI } from '../WidgetUI.DI'
+import { applyWidgetMixinV2 } from '../../Mixins'
+import { registerWidgetClass } from '../WidgetUI.DI'
 import { compilePrompt } from './_compile'
 import { parser } from './grammar/grammar.parser'
 import { WidgetPrompt_LineUI, WidgetPromptUI } from './WidgetPromptUI'
-import { applyWidgetMixinV2 } from 'src/controls/Mixins'
 
 export type CompiledPrompt = {
     /** e.g. "score_9 score_8 BREAK foo bar baz" */
@@ -78,6 +77,7 @@ export class Widget_prompt implements IWidget<Widget_prompt_types> {
         applyWidgetMixinV2(this)
         makeAutoObservable(this)
     }
+    /* override */ background = true
 
     // sentinel value so we know when to trigger update effect in the UI to update
     // codemirror uncontrolled component
@@ -134,4 +134,4 @@ export class Widget_prompt implements IWidget<Widget_prompt_types> {
 }
 
 // DI
-WidgetDI.Widget_prompt = Widget_prompt
+registerWidgetClass('prompt', Widget_prompt)

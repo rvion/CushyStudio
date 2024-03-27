@@ -1,12 +1,12 @@
 import type { EnumName, EnumValue } from '../../../models/ComfySchema'
 import type { Widget_enum } from './WidgetEnum'
-import type { CleanedEnumResult } from 'src/types/EnumUtils'
+import type { CleanedEnumResult } from '../../../types/EnumUtils'
 
 import { observer } from 'mobx-react-lite'
 
-import { SelectUI } from 'src/rsuite/SelectUI'
-import { Popover, Whisper } from 'src/rsuite/shims'
-import { useSt } from 'src/state/stateContext'
+import { SelectUI } from '../../../rsuite/SelectUI'
+import { Popover, Whisper } from '../../../rsuite/shims'
+import { useSt } from '../../../state/stateContext'
 
 // UI
 

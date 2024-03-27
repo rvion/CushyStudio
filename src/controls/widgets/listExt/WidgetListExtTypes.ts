@@ -1,4 +1,4 @@
-import type { IWidget } from 'src/controls/IWidget'
+import type { IWidget } from '../../IWidget'
 
 export type BoardSize = {
     width: number

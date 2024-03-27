@@ -1,5 +1,5 @@
 import { ActionExtensions, hasValidActionExtension } from '../back/ActionExtensions'
-import { pathe } from 'src/utils/fs/pathUtils'
+import { pathe } from '../utils/fs/pathUtils'
 
 export const isAppPath = (path: string): path is RelativePath => {
     if (pathe.isAbsolute(path)) return false

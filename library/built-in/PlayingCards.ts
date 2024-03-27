@@ -1,7 +1,7 @@
-import type { FormBuilder } from 'src/controls/FormBuilder'
+import type { FormBuilder } from '../../src/controls/FormBuilder'
+import type { ImageAndMask } from '../../src/CUSHY'
 
 import { toJS } from 'mobx'
-import { ImageAndMask } from 'src'
 
 import { CardSuit, CardValue } from './_PlayingCards/_cardLayouts'
 import { _drawCard } from './_PlayingCards/_drawCard'

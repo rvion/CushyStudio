@@ -1,12 +1,12 @@
-import type { Form } from 'src/controls/Form'
-import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from 'src/controls/IWidget'
+import type { Form } from '../../Form'
+import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { WidgetDI } from '../WidgetUI.DI'
+import { applyWidgetMixinV2 } from '../../Mixins'
+import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetSeedUI } from './WidgetSeedUI'
-import { applyWidgetMixinV2 } from 'src/controls/Mixins'
 
 // CONFIG
 export type Widget_seed_config = WidgetConfigFields<
@@ -89,4 +89,4 @@ export class Widget_seed implements IWidget<Widget_seed_types> {
     }
 }
 
-WidgetDI.Widget_seed = Widget_seed
+registerWidgetClass('seed', Widget_seed)
