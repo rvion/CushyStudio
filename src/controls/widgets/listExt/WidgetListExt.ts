@@ -1,18 +1,18 @@
 import type { Form } from '../../Form'
-import type { BoardPosition } from './WidgetListExtTypes'
 import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 import type { Spec } from '../../Spec'
+import type { BoardPosition } from './WidgetListExtTypes'
 
 import { makeAutoObservable, runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
+import { applyWidgetMixinV2 } from '../../Mixins'
+import { runWithGlobalForm } from '../../shared/runWithGlobalForm'
 import { WidgetList_LineUI } from '../list/WidgetListUI'
 import { ResolutionState } from '../size/ResolutionState'
-import { WidgetDI } from '../WidgetUI.DI'
+import { registerWidgetClass } from '../WidgetUI.DI'
 import { boardDefaultItemShape } from './WidgetListExtTypes'
 import { WidgetListExtUI } from './WidgetListExtUI'
-import { applyWidgetMixinV2 } from '../../Mixins'
-import { runWithGlobalForm } from '../../../models/_ctx2'
 
 // CONFIG
 export type Widget_listExt_config<T extends Spec> = WidgetConfigFields<
@@ -213,4 +213,4 @@ export class Widget_listExt<T extends Spec> implements IWidget<Widget_listExt_ty
 }
 
 // DI
-WidgetDI.Widget_listExt = Widget_listExt
+registerWidgetClass('listExt', Widget_listExt)

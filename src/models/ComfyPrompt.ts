@@ -14,7 +14,7 @@ import { ComfyPromptT, type ComfyPromptUpdate, type TABLES } from '../db/TYPES.g
 import { createHTMLImage_fromURL } from '../state/createHTMLImage_fromURL'
 import { ComfyNodeID } from '../types/ComfyNodeID'
 import { asRelativePath } from '../utils/fs/pathUtils'
-import { exhaust } from '../utils/misc/ComfyUtils'
+import { exhaust } from '../utils/misc/exhaust'
 import {
     _createMediaImage_fromLocalyAvailableImage,
     createMediaImage_fromPath,

@@ -8,13 +8,14 @@ import { basename } from 'pathe'
 
 import { App, AppRef, type CustomView, type CustomViewRef } from '../cards/App'
 import { CUSHY_IMPORT, replaceImportsWithSyncImport } from '../compiler/transpiler'
+import { getCurrentForm_IMPL } from '../controls/shared/runWithGlobalForm'
 import { SQLITE_false, SQLITE_true } from '../db/SQLITE_boolean'
 import { asCushyAppID, type TABLES } from '../db/TYPES.gen'
 import { extractErrorMessage } from '../utils/formatters/extractErrorMessage'
 import { asRelativePath } from '../utils/fs/pathUtils'
-import { getCurrentForm_IMPL, getCurrentRun_IMPL } from './_ctx2'
 import { CushyAppL } from './CushyApp'
 import { Executable, LoadedCustomView } from './Executable'
+import { getCurrentRun_IMPL } from './getGlobalRuntimeCtx'
 
 // import { LazyValue } from '../db/LazyValue'
 

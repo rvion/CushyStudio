@@ -1,16 +1,15 @@
 import type { Form } from '../../Form'
-import type { IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
-import type { IWidget } from '../../IWidget'
+import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 import type { Spec } from '../../Spec'
 
 import { makeAutoObservable, observable } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { WidgetDI } from '../WidgetUI.DI'
-import { WidgetList_BodyUI, WidgetList_LineUI } from './WidgetListUI'
-import { applyWidgetMixinV2 } from '../../Mixins'
-import { runWithGlobalForm } from '../../../models/_ctx2'
 import { bang } from '../../../utils/misc/bang'
+import { applyWidgetMixinV2 } from '../../Mixins'
+import { runWithGlobalForm } from '../../shared/runWithGlobalForm'
+import { registerWidgetClass } from '../WidgetUI.DI'
+import { WidgetList_BodyUI, WidgetList_LineUI } from './WidgetListUI'
 
 // CONFIG
 export type Widget_list_config<T extends Spec> = WidgetConfigFields<
@@ -55,6 +54,7 @@ export class Widget_list<T extends Spec> implements IWidget<Widget_list_types<T>
     get length() { return this.items.length } // prettier-ignore
     items: T['$Widget'][]
     serial: Widget_list_serial<T>
+    /* override */ background = true
 
     findItemIndexContaining = (widget: IWidget): number | null => {
         let at = widget as IWidget | null
@@ -209,7 +209,7 @@ export class Widget_list<T extends Spec> implements IWidget<Widget_list_types<T>
 }
 
 // DI
-WidgetDI.Widget_list = Widget_list
+registerWidgetClass('list', Widget_list)
 
 // UTILS
 const clamp = (v: number, min: number, max: number) => Math.min(Math.max(v, min), max)

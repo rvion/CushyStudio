@@ -25,7 +25,7 @@ import { asSTRING_orCrash } from '../utils/misc/bang'
 import { ManualPromise } from '../utils/misc/ManualPromise'
 import { toastError, toastInfo } from '../utils/misc/toasts'
 import { transparentImgURL } from '../widgets/galleries/transparentImg'
-import { getCurrentRun_IMPL } from './_ctx2'
+import { getCurrentRun_IMPL } from './getGlobalRuntimeCtx'
 
 export interface MediaImageL extends LiveInstance<TABLES['media_image']> {}
 export class MediaImageL {

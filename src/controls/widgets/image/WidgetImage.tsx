@@ -1,17 +1,16 @@
-import type { Form } from '../../Form'
-import type { IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
-import type { IWidget } from '../../IWidget'
 import type { SQLWhere } from '../../../db/SQLWhere'
 import type { MediaImageT } from '../../../db/TYPES.gen'
 import type { MediaImageL } from '../../../models/MediaImage'
+import type { Form } from '../../Form'
+import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 
 import { makeAutoObservable, runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { WidgetDI } from '../WidgetUI.DI'
-import { WidgetSelectImageUI } from './WidgetImageUI'
 import { applyWidgetMixinV2 } from '../../Mixins'
 import { Spec } from '../../Spec'
+import { registerWidgetClass } from '../WidgetUI.DI'
+import { WidgetSelectImageUI } from './WidgetImageUI'
 
 // CONFIG
 export type Widget_image_config = WidgetConfigFields<
@@ -81,4 +80,4 @@ export class Widget_image implements IWidget<Widget_image_types> {
 }
 
 // DI
-WidgetDI.Widget_image = Widget_image
+registerWidgetClass('image', Widget_image)

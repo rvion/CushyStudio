@@ -1,14 +1,14 @@
-import type { Requirements } from '../IWidget'
 import type { PluginInfo } from '../../manager/custom-node-list/custom-node-list-types'
+import type { Requirements } from '../Requirements'
 
 import { observer } from 'mobx-react-lite'
 
-import { Button_InstallCustomNodeUI } from './Button_InstallCustomNodeUI'
-import { Button_InstalModelViaManagerUI } from './Button_InstalModelViaManagerUI'
 import { MessageErrorUI, MessageWarningUI } from '../../panels/MessageUI'
 import { RevealUI } from '../../rsuite/reveal/RevealUI'
 import { useSt } from '../../state/stateContext'
-import { exhaust } from '../../utils/misc/ComfyUtils'
+import { exhaust } from '../../utils/misc/exhaust'
+import { Button_InstallCustomNodeUI } from './Button_InstallCustomNodeUI'
+import { Button_InstalModelViaManagerUI } from './Button_InstalModelViaManagerUI'
 
 export const InstallRequirementsBtnUI = observer(function InstallRequirementsBtnUI_(p: {
     active: boolean

@@ -1,11 +1,6 @@
 import type { Form } from './Form'
+import type { Requirements } from './Requirements'
 import type { FC } from 'react'
-import type { KnownCustomNode_File } from '../manager/custom-node-list/KnownCustomNode_File'
-import type { KnownCustomNode_Title } from '../manager/custom-node-list/KnownCustomNode_Title'
-import type { KnownCustomNode_CushyName } from '../manager/extension-node-map/KnownCustomNode_CushyName'
-import type { KnownModel_Base } from '../manager/model-list/KnownModel_Base'
-import type { KnownModel_Name } from '../manager/model-list/KnownModel_Name'
-import type { ModelInfo } from '../manager/model-list/model-list-loader-types'
 
 /**
  * base widget type; default type-level param when we work with unknown widget
@@ -48,11 +43,16 @@ export interface IWidget<K extends $WidgetTypes = $WidgetTypes> extends IWidgetM
     /** parent widget of this widget, if any */
     readonly parent: IWidget | null
 
-    /** if specified by the widget, override the default algorithm to decide if the widget shouldhave borders */
+    /** if specified, override the default algorithm to decide if the widget should have borders */
     border?: boolean
 
-    /** if specified, override the default algorithm to decide if we should have label aligned */
+    /** if specified, override the default algorithm to decide if the widget should have label aligned */
     alignLabel?: boolean
+
+    // 2024-03-27 rvion: not really a fan of those options
+    /** if specified, override the default algorithm to decide if the widget container should have a background of base-100 */
+    background?: boolean
+
 
     /** default header UI */
     readonly DefaultHeaderUI: FC<{ widget: K['$Widget'] }> | undefined
@@ -177,19 +177,3 @@ export type SharedWidgetConfig<T extends $WidgetTypes> = {
     /** unused internally, here so you can add whatever you want inside */
     custom?: any
 }
-
-/**
- * cushy-specific types to allow
- * 2024-03-13 rvion: TODO: split outside of this file, add a new type-level config for
- * project-specific FormNode metadata
- */
-export type Requirements =
-    // models
-    | { type: 'modelInCivitai'; civitaiURL: string; optional?: true; base: KnownModel_Base }
-    | { type: 'modelInManager'; modelName: KnownModel_Name; optional?: true }
-    | { type: 'modelCustom'; infos: ModelInfo; optional?: true }
-
-    // custom nodes
-    | { type: 'customNodesByTitle'; title: KnownCustomNode_Title; optional?: true }
-    | { type: 'customNodesByURI'; uri: KnownCustomNode_File; optional?: true }
-    | { type: 'customNodesByNameInCushy'; nodeName: KnownCustomNode_CushyName; optional?: true }

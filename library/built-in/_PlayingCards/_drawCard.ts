@@ -3,7 +3,7 @@ import type { NodeConfig } from 'konva/lib/Node'
 
 import { TextConfig } from 'konva/lib/shapes/Text'
 
-import { exhaust } from '../../../src/utils/misc/ComfyUtils'
+import { exhaust } from '../../../src/utils/misc/exhaust'
 import { CardSuit, CardSuitPosition, CardValue, getCardLayout } from './_cardLayouts'
 
 export async function _drawCard(

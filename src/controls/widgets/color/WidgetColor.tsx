@@ -1,13 +1,12 @@
 import type { Form } from '../../Form'
-import type { IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
-import type { IWidget } from '../../IWidget'
+import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 
 import { makeAutoObservable, runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { WidgetDI } from '../WidgetUI.DI'
-import { WidgetColorUI } from './WidgetColorUI'
 import { applyWidgetMixinV2 } from '../../Mixins'
+import { registerWidgetClass } from '../WidgetUI.DI'
+import { WidgetColorUI } from './WidgetColorUI'
 
 // CONFIG
 export type Widget_color_config = WidgetConfigFields<{ default?: string }, Widget_color_types>
@@ -76,4 +75,4 @@ export class Widget_color implements IWidget<Widget_color_types> {
 }
 
 // DI
-WidgetDI.Widget_color = Widget_color
+registerWidgetClass('color', Widget_color)

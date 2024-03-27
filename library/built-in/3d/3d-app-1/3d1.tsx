@@ -67,11 +67,7 @@ app({
         run.output_Markdown(`Download the mtl: ${url3}`)
 
         run.output_custom({
-            params: {
-                url1,
-                url2,
-                url3,
-            },
+            params: { url1, url2, url3 },
             view: CustomView_Model,
         })
     },

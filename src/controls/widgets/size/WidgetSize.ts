@@ -6,10 +6,10 @@ import type { AspectRatio, CushySize, CushySizeByRatio, SDModelType } from './Wi
 import { makeAutoObservable, runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { WidgetDI } from '../WidgetUI.DI'
+import { applyWidgetMixinV2 } from '../../Mixins'
+import { registerWidgetClass } from '../WidgetUI.DI'
 import { ResolutionState } from './ResolutionState'
 import { WigetSize_BlockUI, WigetSize_LineUI } from './WidgetSizeUI'
-import { applyWidgetMixinV2 } from '../../Mixins'
 
 // CONFIG
 export type Widget_size_config = WidgetConfigFields<
@@ -109,4 +109,4 @@ export class Widget_size implements IWidget<Widget_size_types> {
 }
 
 // DI
-WidgetDI.Widget_size = Widget_size
+registerWidgetClass('size', Widget_size)

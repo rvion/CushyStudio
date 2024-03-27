@@ -3,7 +3,7 @@ import type { Widget_list, Widget_list_config } from './widgets/list/WidgetList'
 import type { Widget_optional } from './widgets/optional/WidgetOptional'
 import type { Widget_shared } from './widgets/shared/WidgetShared'
 
-import { getCurrentForm_IMPL } from '../models/_ctx2'
+import { getCurrentForm_IMPL } from './shared/runWithGlobalForm'
 
 export type SchemaDict = { [key: string]: ISpec }
 export interface ISpec<W extends IWidget = IWidget> {

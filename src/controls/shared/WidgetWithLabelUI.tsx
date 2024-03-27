@@ -6,17 +6,15 @@ import { ErrorBoundary } from 'react-error-boundary'
 
 import { makeLabelFromFieldName } from '../../utils/misc/makeLabelFromFieldName'
 import { ErrorBoundaryFallback } from '../../widgets/misc/ErrorBoundary'
-import { InstallRequirementsBtnUI } from '../REQUIREMENTS/Panel_InstallRequirementsUI'
+//  🔴🔴🔴 import { InstallRequirementsBtnUI } from '../REQUIREMENTS/Panel_InstallRequirementsUI'
 import { AnimatedSizeUI } from '../utils/AnimatedSizeUI'
-import { isWidgetChoice, isWidgetGroup, isWidgetList, isWidgetOptional, isWidgetPrompt, WidgetDI } from '../widgets/WidgetUI.DI'
+import { isWidgetGroup, isWidgetOptional } from '../widgets/WidgetUI.DI'
 import { getActualWidgetToDisplay } from './getActualWidgetToDisplay'
 import { getBorderStatusForWidget } from './getBorderStatusForWidget'
 import { getIfWidgetIsCollapsible } from './getIfWidgetIsCollapsible'
 import { getIfWidgetNeedAlignedLabel } from './getIfWidgetNeedAlignedLabel'
 import { Widget_ToggleUI } from './Widget_ToggleUI'
 import { WidgetTooltipUI } from './WidgetTooltipUI'
-
-export const KLS = WidgetDI
 
 let isDragging = false
 let wasEnabled = false
@@ -50,7 +48,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     // quick hack to prevent showing emtpy groups when there is literally nothing interesting to show
     const k = widget
     if (
-        k instanceof KLS.Widget_group && //
+        isWidgetGroup(k) && //
         Object.keys(k.fields).length === 0 &&
         k.config.requirements == null
     ) {
@@ -101,19 +99,11 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
         }
     }
 
-    const needsBackground =
-        (isWidgetGroup(k) || //
-            isWidgetChoice(k) ||
-            isWidgetPrompt(k) ||
-            isWidgetList(k)) &&
-        (isCollapsible || showBorder)
-
     return (
         <div
             key={rootKey}
             tw={[
-                //
-                needsBackground && 'bg-base-100',
+                widget.background && (isCollapsible || showBorder) && 'bg-base-100',
                 showBorder && 'WIDGET-GROUP-BORDERED',
                 p.isTopLevel ? 'TOP-LEVEL-FIELD' : 'SUB-FIELD',
                 widget.type,
@@ -184,15 +174,14 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                         {/* TOGGLE BEFORE */}
                         {BodyUI && <Widget_ToggleUI widget={originalWidget} />}
                         {/* REQUIREMENTS  */}
-                        {widget.config.requirements && (
+                        {/* 🔴🔴🔴 {widget.config.requirements && (
                             <InstallRequirementsBtnUI
                                 active={widget instanceof KLS.Widget_optional ? widget.serial.active : true}
                                 requirements={widget.config.requirements}
                             />
-                        )}
+                        )} */}
                         {/* TOOLTIPS  */}
                         {widget.config.tooltip && <WidgetTooltipUI widget={widget} />}
-                        {/* LABEL  */}
                         {LABEL}
                         {/* TOOGLE (after)  */}
                         {!BodyUI && <Widget_ToggleUI widget={originalWidget} />}

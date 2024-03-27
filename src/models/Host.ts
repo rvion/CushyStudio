@@ -1,4 +1,4 @@
-import type { Requirements } from '../controls/IWidget'
+import type { Requirements } from '../controls/Requirements'
 import type { LiveInstance } from '../db/LiveInstance'
 import type { PluginInfo } from '../manager/custom-node-list/custom-node-list-types'
 import type { KnownCustomNode_File } from '../manager/custom-node-list/KnownCustomNode_File'

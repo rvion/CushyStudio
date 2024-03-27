@@ -1,12 +1,9 @@
-import type { STATE } from '../state/state'
-
 import { makeAutoObservable } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import React, { ReactNode, useMemo } from 'react'
 import { createPortal } from 'react-dom'
 
 import { InputBoolUI } from '../controls/widgets/bool/InputBoolUI'
-import { useSt } from '../state/stateContext'
 import { searchMatches } from '../utils/misc/searchMatches'
 
 interface ToolTipPosition {
@@ -50,7 +47,7 @@ type SelectProps<T> = {
 }
 
 class AutoCompleteSelectState<T> {
-    constructor(public st: STATE, public p: SelectProps<T>) {
+    constructor(public p: SelectProps<T>) {
         makeAutoObservable(this, {
             popupRef: false,
             anchorRef: false,
@@ -318,8 +315,8 @@ class AutoCompleteSelectState<T> {
 }
 
 export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
-    const st = useSt()
-    const s = useMemo(() => new AutoCompleteSelectState(st, p), [])
+    // const st = useSt()
+    const s = useMemo(() => new AutoCompleteSelectState(/* st, */ p), [])
     return (
         <div /* Container/Root */
             tabIndex={-1}

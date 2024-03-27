@@ -1,18 +1,18 @@
 import type { OpenRouter_Models } from '../llm/OpenRouter_models'
 import type { Form, IFormBuilder } from './Form'
-import type { IWidget, Requirements } from './IWidget'
+import type { IWidget } from './IWidget'
+import type { Requirements } from './Requirements'
 
 import { makeAutoObservable } from 'mobx'
 
 import { openRouterInfos } from '../llm/OpenRouter_infos'
 import { _FIX_INDENTATION } from '../utils/misc/_FIX_INDENTATION'
+import { FormManager } from './FormManager'
 import { type ISpec, type SchemaDict, Spec } from './Spec'
 import { Widget_bool, type Widget_bool_config } from './widgets/bool/WidgetBool'
 import { Widget_button, type Widget_button_config } from './widgets/button/WidgetButton'
 import { Widget_choices, type Widget_choices_config } from './widgets/choices/WidgetChoices'
 import { Widget_color, type Widget_color_config } from './widgets/color/WidgetColor'
-import { Widget_custom, type Widget_custom_config } from './widgets/custom/WidgetCustom'
-import { Widget_enum } from './widgets/enum/WidgetEnum'
 import { Widget_group, type Widget_group_config } from './widgets/group/WidgetGroup'
 import { Widget_list, type Widget_list_config } from './widgets/list/WidgetList'
 import { Widget_markdown, Widget_markdown_config } from './widgets/markdown/WidgetMarkdown'
@@ -31,10 +31,7 @@ import { Widget_string, type Widget_string_config } from './widgets/string/Widge
 export class FormBuilder_Loco implements IFormBuilder {
     /** (@internal) don't call this yourself */
     constructor(public form: Form<SchemaDict, FormBuilder_Loco>) {
-        makeAutoObservable(this, {
-            // enum: false,
-            // enumOpt: false,
-        })
+        makeAutoObservable(this, {})
     }
 
     time        = (config: Widget_string_config = {})                                                        => new Spec<Widget_string                      >('str'       , { inputType: 'time', ...config })
@@ -54,7 +51,7 @@ export class FormBuilder_Loco implements IFormBuilder {
     color       = (config: Widget_color_config  = {})                                                        => new Spec<Widget_color                       >('color'     , config)
     colorV2     = (config: Widget_string_config = {})                                                        => new Spec<Widget_string                      >('str'       , { inputType: 'color', ...config })
     matrix      = (config: Widget_matrix_config)                                                             => new Spec<Widget_matrix                      >('matrix'    , config)
-    button      = (config: Widget_button_config = {})                                                        => new Spec<Widget_button                      >('button'    , config)
+    button      = <K>(config: Widget_button_config)                                                          => new Spec<Widget_button<K>                   >('button'    , config)
     /** variants: `header` */
     markdown    = (config: Widget_markdown_config | string)                                                  => new Spec<Widget_markdown                    >('markdown'  , typeof config === 'string' ? { markdown: config } : config)
     /** [markdown variant]: inline=true, label=false */
@@ -65,7 +62,6 @@ export class FormBuilder_Loco implements IFormBuilder {
     percent     = (config: Omit<Widget_number_config, 'mode'> = {})                                          => new Spec<Widget_number                      >('number'    , { mode: 'int', default: 100, step: 10, min: 1, max: 100, suffix: '%', ...config })
     float       = (config: Omit<Widget_number_config, 'mode'> = {})                                          => new Spec<Widget_number                      >('number'    , { mode: 'float', ...config })
     number      = (config: Omit<Widget_number_config, 'mode'> = {})                                          => new Spec<Widget_number                      >('number'    , { mode: 'float', ...config })
-    custom      = <TViewState>(config: Widget_custom_config<TViewState>)                                     => new Spec<Widget_custom<TViewState>          >('custom'    , config)
     list        = <const T extends Spec>(config: Widget_list_config<T>)                                      => new Spec<Widget_list<T>                     >('list'      , config)
     selectOneV2 = (p: string[])                                                                              => new Spec<Widget_selectOne<BaseSelectEntry>  >('selectOne' , { choices: p.map((id) => ({ id, label: id })), appearance:'tab' }) // prettier-ignore
     selectOne   = <const T extends BaseSelectEntry>(config: Widget_selectOne_config<T>)                      => new Spec<Widget_selectOne<T>                >('selectOne' , config)
@@ -138,32 +134,6 @@ export class FormBuilder_Loco implements IFormBuilder {
         })
     }
 
-    // --------------------
-
-    // enum = /*<const T extends KnownEnumNames>*/ (config: Widget_enum_config<any, any>) => new Widget_enum(this.form, config)
-    // ❌ get auto() {
-    // ❌     const _ = mkFormAutoBuilder(this) /*<const T extends KnownEnumNames>*/
-    // ❌     Object.defineProperty(this, 'auto', { value: _ })
-    // ❌     return _
-    // ❌ }
-    // ❌ get autoField() {
-    // ❌     const _ = mkFormAutoBuilder(this)
-    // ❌     Object.defineProperty(this, 'autoField', { value: _ })
-    // ❌     return _
-    // ❌ }
-
-    // ⏸️ get enum() {
-    // ⏸️     const _ = new EnumBuilder(this.form) /*<const T extends KnownEnumNames>*/
-    // ⏸️     Object.defineProperty(this, 'enum', { value: _ })
-    // ⏸️     return _
-    // ⏸️ }
-    // ⏸️ get enumOpt() {
-    // ⏸️     const _ = new EnumBuilderOpt(this.form)
-    // ⏸️     Object.defineProperty(this, 'enumOpt', { value: _ })
-    // ⏸️     return _
-    // ⏸️ }
-
-
     _FIX_INDENTATION = _FIX_INDENTATION
 
     /** (@internal); */ _cache: { count: number } = { count: 0 }
@@ -207,7 +177,6 @@ export class FormBuilder_Loco implements IFormBuilder {
         if (type === 'choices'   ) return new Widget_choices   (this.form, parent, config, serial)
         if (type === 'number'    ) return new Widget_number    (this.form, parent, config, serial)
         if (type === 'color'     ) return new Widget_color     (this.form, parent, config, serial)
-        if (type === 'enum'      ) return new Widget_enum      (this.form, parent, config, serial)
         if (type === 'list'      ) return new Widget_list      (this.form, parent, config, serial)
         if (type === 'button'    ) return new Widget_button    (this.form, parent, config, serial)
         if (type === 'seed'      ) return new Widget_seed      (this.form, parent, config, serial)
@@ -217,10 +186,11 @@ export class FormBuilder_Loco implements IFormBuilder {
         if (type === 'size'      ) return new Widget_size      (this.form, parent, config, serial)
         if (type === 'spacer'    ) return new Widget_spacer    (this.form, parent, config, serial)
         if (type === 'markdown'  ) return new Widget_markdown  (this.form, parent, config, serial)
-        if (type === 'custom'    ) return new Widget_custom    (this.form, parent, config, serial)
 
         console.log(`🔴 unknown widget "${type}" in serial.`)
         // exhaust(type)
         return new Widget_markdown(this.form, parent, { markdown: `unknown widget "${type}" in serial.` })
     }
 }
+
+export const LocoFormManager = new FormManager<FormBuilder_Loco>(FormBuilder_Loco)

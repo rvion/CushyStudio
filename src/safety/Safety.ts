@@ -1,8 +1,8 @@
-import type nsfwjs from 'nsfwjs'
 import type { STATE } from '../state/state'
+import type nsfwjs from 'nsfwjs'
 
 import { bang } from '../utils/misc/bang'
-import { exhaust } from '../utils/misc/ComfyUtils'
+import { exhaust } from '../utils/misc/exhaust'
 import { ManualPromise } from '../utils/misc/ManualPromise'
 
 export type SafetyRating = nsfwjs.predictionType

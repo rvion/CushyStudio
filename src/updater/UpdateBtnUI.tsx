@@ -2,15 +2,15 @@ import type { ReactNode } from 'react'
 
 import { observer } from 'mobx-react-lite'
 
-import { _formatAsRelativeDateTime } from './_getRelativeTimeString'
-import { GitInstallUI } from './GitInstallUI'
-import { UpdaterErrorUI } from './UpdaterErrorUI'
 import { FolderGitStatus } from '../cards/FolderGitStatus'
 import { MessageInfoUI } from '../panels/MessageUI'
 import { RevealUI } from '../rsuite/reveal/RevealUI'
 import { Button, Loader, Message } from '../rsuite/shims'
+import { exhaust } from '../utils/misc/exhaust'
+import { _formatAsRelativeDateTime } from './_getRelativeTimeString'
+import { GitInstallUI } from './GitInstallUI'
 import { GitManagedFolder } from './updater'
-import { exhaust } from '../utils/misc/ComfyUtils'
+import { UpdaterErrorUI } from './UpdaterErrorUI'
 
 export const UpdateBtnUI = observer(function UpdateBtnUI_(p: {
     //

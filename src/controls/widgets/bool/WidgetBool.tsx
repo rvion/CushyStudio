@@ -1,13 +1,12 @@
 import type { Form } from '../../Form'
-import type { IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
-import type { IWidget } from '../../IWidget'
+import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 
 import { computed, makeAutoObservable, observable, runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { WidgetDI } from '../WidgetUI.DI'
-import { WidgetBoolUI } from './WidgetBoolUI'
 import { applyWidgetMixinV2 } from '../../Mixins'
+import { registerWidgetClass } from '../WidgetUI.DI'
+import { WidgetBoolUI } from './WidgetBoolUI'
 
 /**
  * Bool Config
@@ -124,4 +123,4 @@ export class Widget_bool implements IWidget<Widget_bool_types> {
 }
 
 // DI
-WidgetDI.Widget_bool = Widget_bool
+registerWidgetClass('bool', Widget_bool)

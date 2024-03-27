@@ -1,4 +1,4 @@
-import { Environment, Grid, Html, OrbitControls, Sparkles, SpotLight, Stage } from '@react-three/drei'
+import { Environment, Grid, Html, OrbitControls, Sparkles, Sphere, SpotLight, Stage } from '@react-three/drei'
 import { Canvas, useLoader } from '@react-three/fiber'
 import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader'
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader'
@@ -25,8 +25,8 @@ const RenderModelUI = (data: { url1: string; url2: string }) => {
     })
     // Load OBJ and apply material --------------------------------------------------------
     return (
-        <Stage environment='warehouse' shadows={{ type: 'accumulative', bias: -0.001, intensity: Math.PI }} adjustCamera={1}>
-            <Environment background blur={0} preset='warehouse' />
+        <Stage environment='forest' shadows={{ type: 'accumulative', bias: -0.001, intensity: Math.PI }} adjustCamera={1}>
+            <Environment background blur={0.1} preset='forest' />
             <Grid //
                 cellColor={'#6f6f6f'}
                 cellSize={1}

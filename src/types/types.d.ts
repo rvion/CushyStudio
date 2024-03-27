@@ -18,5 +18,3 @@ declare type ImageSaveFormat = {
     prefix?: string
     quality?: number
 }
-
-declare type CUSHY = typeof import('../CUSHY')

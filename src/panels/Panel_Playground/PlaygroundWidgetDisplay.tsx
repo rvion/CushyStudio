@@ -151,7 +151,7 @@ export const FORM_PlaygroundWidgetDisplay = CushyFormManager.form(
 
             button: ui.group({
                 startCollapsed: true,
-                items: { button: ui.button() },
+                items: { button: ui.button({}) },
             }),
 
             color: ui.group({

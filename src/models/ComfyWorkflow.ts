@@ -25,7 +25,7 @@ import { LiveRefOpt } from '../db/LiveRefOpt'
 import { asHTMLContent, asMDContent } from '../types/markdown'
 import { asAbsolutePath } from '../utils/fs/pathUtils'
 import { bang } from '../utils/misc/bang'
-import { deepCopyNaive } from '../utils/misc/ComfyUtils'
+import { deepCopyNaive } from '../utils/misc/deepCopyNaive'
 import { type TEdge, toposort } from '../utils/misc/toposort'
 
 export type ProgressReport = {

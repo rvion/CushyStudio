@@ -1,13 +1,13 @@
 import type { Form } from '../../Form'
-import type { Widget_group } from '../group/WidgetGroup'
 import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { Widget_group } from '../group/WidgetGroup'
 
-import { computed, makeAutoObservable } from 'mobx'
+import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { WidgetDI } from '../WidgetUI.DI'
-import { WidgetMardownUI } from './WidgetMarkdownUI'
 import { applyWidgetMixinV2 } from '../../Mixins'
+import { registerWidgetClass } from '../WidgetUI.DI'
+import { WidgetMardownUI } from './WidgetMarkdownUI'
 
 // CONFIG
 export type Widget_markdown_config = WidgetConfigFields<
@@ -79,4 +79,4 @@ export class Widget_markdown implements IWidget<Widget_markdown_types> {
 }
 
 // DI
-WidgetDI.Widget_markdown = Widget_markdown
+registerWidgetClass('markdown', Widget_markdown)
