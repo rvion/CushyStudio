@@ -65,13 +65,14 @@ export const CushyUI = observer(function CushyUI_() {
                 })
             }}
             ref={appRef}
-            tw={['col grow h-full text-base-content']}
+            tw={['col grow h-full text-base-content overflow-clip']}
         >
-            <div id='tooltip-root' tw='pointer-events-none absolute inset-0 w-full h-full'></div>
+            {/* We need to make sure we make popups always be on screen with overflow-clip added. */}
+            <div id='tooltip-root' tw='pointer-events-none absolute inset-0 w-full h-full overflow-clip'></div>
             <GlobalSearchUI />
             <AppBarUI />
             <RenderFullPagePanelUI />
-            <div className='flex flex-grow relative'>
+            <div className='flex flex-grow relative overflow-clip'>
                 <FavBarUI direction='column' />
                 <ProjectUI />
             </div>

@@ -39,7 +39,7 @@ export const AppIllustrationUI = observer(function AppIllustrationUI_(p: {
                 'rounded',
                 p.onClick ? 'cursor-pointer' : null,
             ]}
-            style={{ width: p.size, height: p.size, objectFit: 'contain', imageRendering: 'pixelated' }}
+            style={{ width: p.size, height: p.size, objectFit: 'contain' }}
             src={app.illustrationPathWithFileProtocol}
             alt='card illustration'
             onClick={p.onClick}

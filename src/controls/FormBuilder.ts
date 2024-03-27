@@ -94,6 +94,10 @@ export class FormBuilder implements IFormBuilder {
     selectMany  = <const T extends BaseSelectEntry>(config: Widget_selectMany_config<T>)                     => new Spec<Widget_selectMany<T>               >('selectMany', config)
     /** see also: `fields` for a more practical api */
     group       = <const T extends SchemaDict>(config: Widget_group_config<T>={})                            => new Spec<Widget_group<T>                    >('group'     , config)
+    /** Convenience function for `group({ border: false, label: false, collapsed: false })` */
+    column      = <const T extends SchemaDict>(config: Widget_group_config<T>={})                            => new Spec<Widget_group<T>                    >('group'     , {border: false, label: false, collapsed: false, ...config})
+    /** Convenience function for `group({ border: false, label: false, collapsed: false, layout:'H' })` */
+    row         = <const T extends SchemaDict>(config: Widget_group_config<T>={})                            => new Spec<Widget_group<T>                    >('group'     , {border: false, label: false, collapsed: false, layout:'H', ...config})
     fields      = <const T extends SchemaDict>(fields: T, config: Omit<Widget_group_config<T>,'items'>={})   => new Spec<Widget_group<T>                    >('group'     , { items: fields, ...config })
     choice      = <const T extends { [key: string]: Spec }>(config: Omit<Widget_choices_config<T>, 'multi'>) => new Spec<Widget_choices<T>                  >('choices'   , { multi: false, ...config })
     choiceV2    = <const T extends { [key: string]: Spec }>(items: Widget_choices_config<T>['items'], config: Omit<Widget_choices_config<T>, 'multi' | 'items'>) => new Spec<Widget_choices<T>                  >('choices'   , { multi: false, items, ...config })

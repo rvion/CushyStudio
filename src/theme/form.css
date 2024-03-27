@@ -58,7 +58,7 @@
 
 /* ------------------------------------------------------------------------------------------- */
 .input {
-    background-color: oklch(var( --pn)/.15) !important;
+    background-color: oklch(var( --p)/.15) !important;
 }
 
 /* //InputNumberUI */
