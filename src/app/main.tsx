@@ -4,6 +4,7 @@ import 'highlight.js/styles/stackoverflow-dark.css'
 import '../theme/flexlayout.css'
 import '../theme/index.css'
 import '../theme/theme.css'
+import '../theme/markdown.css'
 import '../theme/Tree.css'
 
 import ReactDOM from 'react-dom/client'
