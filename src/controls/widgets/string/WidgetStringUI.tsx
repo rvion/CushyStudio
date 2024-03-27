@@ -79,7 +79,7 @@ export const WidgetString_HeaderUI = observer(function WidgetStringUI_(p: { widg
                     }
                 }}
             >
-                {visualHelper && visualHelper}
+                {visualHelper}
                 <input
                     tw={inputTailwind}
                     type={widget.config.inputType}
