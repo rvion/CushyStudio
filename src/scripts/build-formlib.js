@@ -58,9 +58,9 @@ fs.mkdirSync('release-forms', { recursive: true })
 process.env.NODE_ENV = 'production'
 
 async function buildTailwind() {
-    console.log(`[BUILD] 2. build css `)
-    console.log(`[🔵] SKIP`)
-    return
+    // console.log(`[BUILD] 2. build css `)
+    // console.log(`[🔵] SKIP`)
+    // return
     try {
         // Define file paths
         const inputFilePath = path.join('release-forms', 'main.css')

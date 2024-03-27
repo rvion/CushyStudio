@@ -2,8 +2,9 @@ import type { Metafile } from 'esbuild'
 
 import chalk from 'chalk'
 import { execSync } from 'child_process'
-import { cpSync, mkdirSync, renameSync, statSync, unlinkSync, writeFileSync } from 'fs'
+import { cpSync, mkdirSync, readFileSync, renameSync, statSync, unlinkSync, writeFile, writeFileSync } from 'fs'
 import { readJSONSync } from 'fs-extra'
+import * as path from 'path'
 import { dirname, join, resolve } from 'path'
 
 import { formatSize } from './db/getDBStats'
@@ -91,6 +92,7 @@ let libEntrypointCode = ''
 for (const srcRelPath of allFilesNoExt) {
     // const
     if (srcRelPath === 'src/utils/custom-jsx/jsx-runtime') continue
+    if (srcRelPath.endsWith('.css')) continue
     const libRelPath = srcRelPath.replace(/^src\//, '../')
     libEntrypointCode += `export * from '${libRelPath}'\n`
 }
@@ -107,6 +109,17 @@ section(`3. REBUILD from the re-exported file`)
 explainTool('esbuild')
 await buildJS({ shouldMinify: false, entryPoints: [SRC_ENTRYPOINT_RELPATH], outfile: 'release-forms/main.js' })
 await showESBUILDOutput({ prefix: 'main' })
+
+// ---------------------------------------------------------------------
+section(`3.2 expand main.css into output.css for tailwind expansion`)
+explainTool('postcss + tailwindcss')
+console.log(`    - copy tailwind.config.js into ${chalk.underline(`${DIST_RELPATH}/tailwind.config.js`)}`)
+cpSync('tailwind.config.js', `${DIST_RELPATH}/tailwind.config.js`)
+const commandToGenOutputCSSTailwind = `../node_modules/.bin/tailwind --content main.js -o output.css`
+console.log(`    - executing ${chalk.yellowBright(`${commandToGenOutputCSSTailwind}`)}`)
+execSync(commandToGenOutputCSSTailwind, { cwd: DIST_RELPATH, stdio: 'inherit' })
+await buildTailwind()
+await waitConfirm()
 
 // --------------------------------------------------------------------
 section(`4. generating DTS and JS`)
@@ -132,12 +145,12 @@ import { cwd } from 'process'
 import { dts } from 'rollup-plugin-dts'
 import { visualizer } from 'rollup-plugin-visualizer'
 
-const root = cwd()
 const config = [
     {
         // input: 'lib/controls/FormBuilder.loco.d.ts',
         input: '${LIB_ENTRYPOINT_DTS_ABSPATH}',
         output: [{ file: '${DIST_ABSPATH}/main.d.ts', format: 'es' }],
+        external: [/\.s?css$/], // ignore .css and .scss file
         plugins: [dts(), visualizer({ template: 'raw-data' })],
     },
 ]
@@ -336,4 +349,31 @@ function mkPKGJSON(name: string) {
     }
 }
 `
+}
+
+async function buildTailwind() {
+    // console.log(`[BUILD] 2. build css `)
+    try {
+        // Define file paths
+        const inputFilePath = path.join('release-forms', 'main.css')
+        const outputFilePath = path.join('release-forms', 'output.css')
+
+        // Read the CSS file
+        const css = readFileSync(inputFilePath, 'utf8')
+
+        // Process the CSS with Tailwind
+        const postcss = require('postcss')
+        const tailwindcss = require('tailwindcss')
+        const result = await postcss([tailwindcss]) //
+            .process(css, { from: inputFilePath, to: outputFilePath })
+
+        // Write the processed CSS to a file
+        writeFileSync(outputFilePath, result.css, 'utf-8')
+
+        if (result.map) writeFileSync(outputFilePath + '.map', result.map, 'utf-8')
+
+        console.log('Tailwind CSS build complete.')
+    } catch (error) {
+        console.error('Error occurred building css:', error)
+    }
 }

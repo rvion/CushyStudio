@@ -1,3 +1,4 @@
+/* THIS FILE SHOULD NOT EXIST */
 :root {
     --roundness: 5px;
     --input-height: 28px;
@@ -92,23 +93,18 @@
     background-image: none;
 }
 
-
-
-
-
 ._MenuItem > div  {
     padding: 0.3em 0.5em;
 }
-
 
 .konvajs-content,
 .virtualBorder {
     border: 1px solid var(--fallback-bc,oklch(var(--bc)/0.2));
 }
+
 .virtualBorder2 {
     border: 1px solid var(--fallback-bc,oklch(var(--bc)/0.5));
 }
-
 
 
 /* COMFY NODES -------------------------------------------------------------------------------------- */
