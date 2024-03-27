@@ -127,3 +127,30 @@
     --comfy-sampl: #634a1b;
     --comfy-image: #7e3a3a;
 }
+
+/* ------- Helpers and Various Fixes ------- */
+
+/*#region*/ /* Hide Scrollbar */
+/* Useful for very narrow places where a scrollbar will take up a ton of space */
+.hide-horizontal-scroll::-webkit-scrollbar, .hide-vertical-scroll::-webkit-scrollbar {
+    height:0px;
+    width: 0px;
+    display: none !important;
+}
+
+.hide-horizontal-scroll {
+    overflow-x: scroll;
+    overflow-y: hidden;
+}
+
+.hide-vertical-scroll {
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+.hide-horizontal-scroll, .hide-vertical-scroll {
+    -ms-overflow-style: none;
+    overflow: -moz-scrollbars-none;
+    scrollbar-width: none;
+}
+/*#endregion*/ /* Hide Scrollbar */

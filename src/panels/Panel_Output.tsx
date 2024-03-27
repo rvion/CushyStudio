@@ -1,11 +1,11 @@
 import { observer } from 'mobx-react-lite'
 
-import { useSt } from '../state/stateContext'
 import { Status } from '../back/Status'
 import { InputNumberUI } from '../controls/widgets/number/InputNumberUI'
 import { OutputPreviewUI, OutputUI } from '../outputs/OutputUI'
 import { StepOutputsHeaderV2UI } from '../outputs/StepOutputsV2UI'
 import { RevealUI } from '../rsuite/reveal/RevealUI'
+import { useSt } from '../state/stateContext'
 import { FieldAndLabelUI } from '../widgets/misc/FieldAndLabelUI'
 
 // const mode: 'H' | 'V' = 1 - 1 == 0 ? 'V' : 'H'
@@ -53,6 +53,7 @@ export const Panel_Output = observer(function Panel_Output_(p: {}) {
                     //
                     'flex flex-col',
                     'flex-grow h-full w-full',
+                    'overflow-clip', // Make sure scrollbar doesn't encompass entire panel, only where it makes sense.
                 ]}
             >
                 <SideOutputListUI />

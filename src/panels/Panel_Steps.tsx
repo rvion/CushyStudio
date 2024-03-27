@@ -1,18 +1,25 @@
 import { observer } from 'mobx-react-lite'
 
-import { StepOutputsBodyV1UI, StepOutputsV1UI } from '../outputs/StepOutputsV1UI'
-import { useSt } from '../state/stateContext'
-import { PanelHeaderUI } from './PanelHeader'
 import { InputNumberUI } from '../controls/widgets/number/InputNumberUI'
 import { SpacerUI } from '../controls/widgets/spacer/SpacerUI'
+import { StepOutputsBodyV1UI, StepOutputsHeaderV1UI, StepOutputsV1UI } from '../outputs/StepOutputsV1UI'
 import { RevealUI } from '../rsuite/reveal/RevealUI'
+import { useSt } from '../state/stateContext'
+import { _formatPreviewDate } from '../utils/formatters/_formatPreviewDate'
+import { PanelHeaderUI } from './PanelHeader'
 
 export const Panel_Steps = observer(function StepListUI_(p: {}) {
     const st = useSt()
     const steps = st.db.step.getLastN(st.__TEMPT__maxStepsToShow)
     return (
-        <div className='flex flex-col overflow-hidden'>
+        <div className='flex flex-col overflow-hidden bg-base-300 h-full'>
             <PanelHeaderUI>
+                {steps.length === 1 && (
+                    <div tw='flex text-sm text-shadow flex-grow px-1'>
+                        <div tw='line-clamp-1'>{steps[0]!.name}</div>
+                        <div tw='flex-grow' /> <div tw='opacity-50'>{_formatPreviewDate(new Date(steps[0]!.createdAt))}</div>
+                    </div>
+                )}
                 <SpacerUI />
                 <RevealUI
                     tw='WIDGET-FIELD'
@@ -38,7 +45,7 @@ export const Panel_Steps = observer(function StepListUI_(p: {}) {
                     </div>
                 </RevealUI>
             </PanelHeaderUI>
-            <div className='flex flex-col flex-grow' style={{ overflow: 'auto' }}>
+            <div className='flex flex-col flex-grow bg-base-300 select-none' style={{ overflow: 'auto' }}>
                 {steps.map((step) => (
                     <StepOutputsV1UI key={step.id} step={step} />
                 ))}
