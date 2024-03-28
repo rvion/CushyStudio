@@ -1,11 +1,10 @@
-import { FallbackProps } from 'react-error-boundary'
-
 import { JsonViewUI } from '../workspace/JsonViewUI'
 
-export const ErrorBoundaryFallback = (p: FallbackProps) => {
-    // { error, resetErrorBoundary }: any
-    // Call resetErrorBoundary() to reset the error boundary and retry the render.
-
+export const ErrorBoundaryFallback = (p: {
+    // 🔴 pretty unsafe
+    error: any
+    resetErrorBoundary: (...args: any[]) => void
+}) => {
     return (
         <div role='alert'>
             <p tw='flex gap-2 items-center'>

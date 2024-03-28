@@ -137,11 +137,16 @@ out += 'INPUT:\n'
 for (const [e, v] of esbuildInputFiles) {
     for (const dep of v.imports) {
         if (dep.external) {
-            peerDeps.add(dep.path)
             if (dep.path.startsWith('./')) {
                 console.log(`🔴 module '${e}' thinks '${dep.path}' is external. What a moron.`)
                 throw new Error('🔴 some fuckery is happening with external deps detection; probably some import type missing')
             }
+            const depName = bang(
+                dep.path.startsWith('@') //
+                    ? dep.path.split('/').slice(0, 2).join('/')
+                    : dep.path.split('/')[0],
+            )
+            peerDeps.add(depName)
         }
     }
     if (!e.startsWith('src/')) {
@@ -320,10 +325,11 @@ function emojiLogic(x: string) {
 
 append(`\n\nTYPES:`)
 const unwanted: string[] = []
-let visited = 0
-for (const [k, fi] of fileInfos.entries()) {
+let visited = 1 // the <...>.LIBRARY
+const entriesSorted = [...fileInfos.entries()].toSorted((a, b) => a[0].localeCompare(b[0]))
+for (const [dtsPath, fi] of entriesSorted) {
     // base
-    const base = mapPathToModule(k)
+    const base = mapPathToModule(dtsPath)
     // console.log(`${allowed.has(base) ? '✅' : '❌'} allowed.has(${base})`)
     console.log(`${emojiLogic(base)} ${base}`)
     // append(`[X] allowed.has(${base}) = ${allowed.has(base)} FROM ${fi.importedBy}`)
@@ -331,14 +337,13 @@ for (const [k, fi] of fileInfos.entries()) {
     //     console.log(`[🤠] 🔴:`, allowed.has(base))
     // }
     if (!allowed.has(base)) {
-        unwanted.push(k)
+        unwanted.push(dtsPath)
         continue
     }
 
     visited++
     const emoji = emojiLogic(base) // allowed.has(base) ? '🟢' : '🔴'
     append(`    [${emoji}]: ${base}       (from ${fi.importedBy} files)`)
-    // imports
     for (const ip of fi.imports) {
         const finalPath = mapPathToModule(ip)
         const emojiDep = emojiLogic(finalPath) //  allowed.has(finalPath) ? '🟢' : '🔴'
@@ -347,15 +352,18 @@ for (const [k, fi] of fileInfos.entries()) {
 }
 
 append(`\n\n❌ POSSIBLY UNWANTED FILES IN DTS:`)
-for (const u of unwanted) {
+const unwantedSorted = unwanted.toSorted()
+for (const u of unwantedSorted) {
     const x = bang(fileInfos.get(u))
     append(`    ❌ ${u}`)
-    for (const ib of x.importedBy) {
+    for (const ib of x.importedBy.toSorted()) {
         append(`        - ${ib}`)
     }
 }
 
 writeFileSync(resolve(DIST_RELPATH, 'SUMMARY.txt'), out)
+execSync(`code ${DIST_RELPATH}/SUMMARY.txt`)
+
 if (visited !== allowed.size) {
     append(`[🔴] some files are not visited (allowed: ${allowed.size}, visited: ${visited})`)
     console.error(`🔴 WARNING: some files are not visited (allowed: ${allowed.size}, visited: ${visited})`)

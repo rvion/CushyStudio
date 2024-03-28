@@ -5,7 +5,6 @@ import '../theme/form.css'
 import type { OpenRouter_Models } from '../llm/OpenRouter_models'
 import type { Form, IFormBuilder } from './Form'
 import type { IWidget } from './IWidget'
-import type { Requirements } from './Requirements'
 
 import { makeAutoObservable } from 'mobx'
 
@@ -118,25 +117,6 @@ export class FormBuilder_Loco implements IFormBuilder {
 
     // --------------------
 
-    private wrapOptional<T extends Spec>(
-        config: {
-            // from SharedWidgetProps
-            label?: string | false
-            requirements?: Requirements[]
-            startCollapsed?: boolean
-            // extra for optionality
-            startActive?: boolean,
-            // ... plus every other config param
-        },
-        widgetFn: (config:T['$Config']) => T) {
-        return this.optional({
-            label: config.label,
-            requirements: config.requirements,
-            startActive: config.startActive,
-            startCollapsed: config.startCollapsed,
-            widget: widgetFn({ ...config, startCollapsed: undefined }),
-        })
-    }
 
     _FIX_INDENTATION = _FIX_INDENTATION
 
