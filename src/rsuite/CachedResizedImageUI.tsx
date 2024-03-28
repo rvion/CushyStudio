@@ -36,7 +36,7 @@ export const CachedResizedImage = observer(function CachedResizedImage_(p: {
                     return <ImageErrorDisplayUI icon='cached' />
                 }
 
-                setCached(`data:image/png;base64, ${buffer.toString('base64')}`)
+                setCached(`data:image/png;base64,${buffer.toString('base64')}`)
             })
         setLastSize(p.size)
     }

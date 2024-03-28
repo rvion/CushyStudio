@@ -8,16 +8,7 @@ import { RevealUI } from '../../rsuite/reveal/RevealUI'
 import { useSt } from '../../state/stateContext'
 import { useImageDrag } from './dnd'
 
-type NumberStr = '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9'
-type NumberStrExcept0 = '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9'
-type SmolNum = NumberStr | `${NumberStrExcept0}${NumberStr}`
-type SmolSize = `${SmolNum}rem` | `${SmolNum}em` | `${SmolNum}px`
-// =======
-// import { hasMod } from 'src/app/shortcuts/META_NAME'
-// import { ImageDropdownMenuUI } from 'src/panels/ImageDropdownUI'
-// import { RevealUI } from 'src/rsuite/reveal/RevealUI'
-// import { PathLike, existsSync } from 'fs'
-// >>>>>>> form-cleanup
+type SmolSize = `${'1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9'}rem`
 
 export const ImageUI = observer(function ImageUI_(p: {
     size?: SmolSize | '100%' | number /* px */
@@ -56,7 +47,6 @@ export const ImageUI = observer(function ImageUI_(p: {
             onMouseEnter={image.onMouseEnter}
             onMouseLeave={image.onMouseLeave}
             onClick={image.onClick}
-            // onAuxClick={image.onAuxClick}
             ref={dragRef}
             loading='lazy'
             style={{ backgroundImage: `url(${image.thumbhashURL})`, width: ImageWidth, height: ImageWidth, opacity }}
@@ -78,33 +68,9 @@ export const ImageUI = observer(function ImageUI_(p: {
             ) : (
                 <div>{IMG}</div>
             )}
-
-            {/* <ul tw='shadow menu dropdown-content z-[1] bg-base-100 rounded-box'>
-                <li className='_MenuItem' onClick={() => image.useAsDraftIllustration()}>
-                    <div className='flex items-center gap-2'>
-                        <span className='material-symbols-outlined'>image</span>
-                        Use as draft illustration
-                    </div>
-                </li>
-                <li className='_MenuItem' onClick={() => st.layout.FOCUS_OR_CREATE('Paint', { imgID: image.id })}>
-                    <div className='flex items-center gap-2'>
-                        <span className='material-symbols-outlined'>edit</span>
-                        Paint
-                    </div>
-                </li>
-            </ul> */}
         </RevealUI>
     )
 })
-
-// onMouseDown={(ev) => {
-//     // Middle Mouse
-//     if (ev.button == 1) {
-//         ev.stopPropagation()
-//         ev.preventDefault()
-//         return st.layout.FOCUS_OR_CREATE('Image', { imageID: image.id })
-//     }
-// }}
 
 export const ImageErrorDisplayUI = observer(function ImageErrorDisplayUI_(p: {
     className?: string
@@ -127,22 +93,5 @@ export const ImageErrorDisplayUI = observer(function ImageErrorDisplayUI_(p: {
                 )}
             </div>
         </div>
-    )
-})
-
-export const PlaceholderImageUI = observer(function PlaceholderImageUI_(p: {}) {
-    const st = useSt()
-    const GalleryImageWidth = st.galleryConf.value.gallerySize
-    return (
-        <div
-            className='scale-in-center'
-            style={{
-                objectFit: 'contain',
-                width: GalleryImageWidth,
-                height: GalleryImageWidth,
-                padding: 0,
-                borderRadius: '.5rem',
-            }}
-        />
     )
 })

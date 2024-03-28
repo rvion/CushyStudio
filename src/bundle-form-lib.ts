@@ -4,7 +4,6 @@ import chalk from 'chalk'
 import { execSync } from 'child_process'
 import { cpSync, existsSync, mkdirSync, readFileSync, renameSync, rmdirSync, statSync, unlinkSync, writeFileSync } from 'fs'
 import { readJSONSync } from 'fs-extra'
-import * as path from 'pathe'
 import { dirname, join, resolve } from 'pathe'
 import { parseArgs } from 'util'
 
