@@ -20,6 +20,6 @@ input::-webkit-inner-spin-button {
     height: 200px !important;
 }
 
-.custom-roundness {
+.input-number-roundness {
     border-radius: var(--roundness);
 }

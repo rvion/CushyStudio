@@ -1,7 +1,8 @@
+import type { RevealProps } from './RevealProps'
+
 import { makeAutoObservable, observable } from 'mobx'
 
 import { computePlacement } from './RevealPlacement'
-import { RevealProps } from './RevealProps'
 
 export const defaultShowDelay = 100
 export const defaultHideDelay = 300

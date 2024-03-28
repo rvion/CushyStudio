@@ -2,10 +2,6 @@ import chalk from 'chalk'
 import esbuild from 'esbuild'
 import { writeFileSync } from 'fs'
 
-// const esbuild = require('esbuild')
-// const { writeFileSync } = require('fs')
-// const { args } = require('./build-formlib')
-
 export async function buildJS(p: {
     //
     shouldMinify: boolean
@@ -50,6 +46,7 @@ export async function buildJS(p: {
         treeShaking: true,
         target: ['esnext'],
         format: 'esm',
+        // format: 'iife',
         // lineLimit: 80,
         // external:
         // external: ['three'],

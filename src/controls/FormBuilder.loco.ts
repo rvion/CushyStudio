@@ -1,3 +1,4 @@
+import '../theme/form.vars.css'
 import '../theme/markdown.css'
 import '../theme/form.css'
 

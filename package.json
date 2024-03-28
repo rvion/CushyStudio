@@ -69,7 +69,7 @@
         "form:deps:npm": "    madge lib/controls/FormBuilder.loco.js --include-npm -i tmp/depedencies.png && code tmp/depedencies.png",
         "form:deps-svg": "    madge lib/controls/FormBuilder.loco.js -i tmp/depedencies.svg && open tmp/depedencies.svg",
         "form:deps-svg:npm": "madge lib/controls/FormBuilder.loco.js --include-npm -i tmp/depedencies.svg && code tmp/depedencies.svg",
-        "form:build": "       ./node_modules/.bin/electron -i src/scripts/build-formlib.js js css",
+        "form:build": "       bun src/bundle-form-lib.ts",
         "form:bundle-dts": "  '/Users/loco/dev/CushyStudio/src/scripts/node_modules/.bin/rollup' -c '/Users/loco/dev/CushyStudio/src/scripts/form.rollup.config.mjs'",
         "form:bundle-dts2": " yarn form:bundle-dts && cp stats.json "
     },
