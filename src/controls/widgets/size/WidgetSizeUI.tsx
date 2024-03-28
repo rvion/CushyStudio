@@ -5,7 +5,6 @@ import type { AspectRatio, ModelType } from './WidgetSizeTypes'
 import { observer } from 'mobx-react-lite'
 
 import { InputNumberUI } from '../number/InputNumberUI'
-import { Joined } from '../../../rsuite/shims'
 
 export const WigetSize_BlockUI = observer(function WigetSize_BlockUI_(p: { widget: Widget_size }) {
     return <WigetSizeXUI sizeHelper={p.widget.sizeHelper} bounds={p.widget.config} />
@@ -154,30 +153,30 @@ export const WigetSizeXUI = observer(function WigetSizeXUI_(p: {
     return (
         <div className='flex flex-col gap-1 mt-0.5 rounded-b'>
             <div tw='flex items-start gap-2'>
-                <Joined>
+                <div tw='join virtualBorder'>
                     {modelBtn('1.5')}
                     {modelBtn('xl')}
-                </Joined>
+                </div>
                 <div tw='btn btn-xs' onClick={() => uist.flip()}>
                     <span className='material-symbols-outlined'>rotate_right</span>
                 </div>
                 <div tw='ml-auto flex items-center gap-1'>
-                    <Joined>{resoBtn('1:1')}</Joined>
+                    <div tw='join virtualBorder'>{resoBtn('1:1')}</div>
                     {/* <div>|</div> */}
-                    <Joined>
+                    <div tw='join virtualBorder'>
                         {resoBtn('16:9')}
                         {resoBtn('9:16')}
-                    </Joined>
+                    </div>
                     {/* <div>|</div> */}
-                    <Joined>
+                    <div tw='join virtualBorder'>
                         {resoBtn('4:3')}
                         {resoBtn('3:4')}
-                    </Joined>
+                    </div>
                     {/* <div>|</div> */}
-                    <Joined>
+                    <div tw='join virtualBorder'>
                         {resoBtn('3:2')}
                         {resoBtn('2:3')}
-                    </Joined>
+                    </div>
                 </div>
             </div>
         </div>

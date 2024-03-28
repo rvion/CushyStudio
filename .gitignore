@@ -90,3 +90,6 @@ tsconfig.tsbuildinfo
 .tsbuildinfo
 
 src/tools/cushy-screenshots-logs.txt
+
+@cushy/*
+@cushy.zip

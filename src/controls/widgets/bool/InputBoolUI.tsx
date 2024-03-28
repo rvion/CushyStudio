@@ -1,3 +1,5 @@
+import type { CSSProperties } from 'react'
+
 import { observer } from 'mobx-react-lite'
 
 let isDragging = false
@@ -10,6 +12,7 @@ export const InputBoolUI = observer(function InputBoolUI_(p: {
     icon?: string
     text?: string
     className?: string
+    style?: CSSProperties
     onValueChange?: (next: boolean) => void
 }) {
     const isActive = p.active ?? false
@@ -28,6 +31,7 @@ export const InputBoolUI = observer(function InputBoolUI_(p: {
     return (
         <div // Container
             className={p.className}
+            style={p.style}
             tw={[
                 'WIDGET-FIELD select-none',
                 'flex items-center',

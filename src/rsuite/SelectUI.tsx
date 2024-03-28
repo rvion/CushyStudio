@@ -200,6 +200,8 @@ class AutoCompleteSelectState<T> {
         /* Make sure pop-up always fits within screen, but isn't too large */
         this.tooltipMaxHeight = (window.innerHeight - rect.bottom) * 0.99
 
+        // 2024-03-28 @rvion: not so sure about that use of `window.getComputedStyle(document.body).getPropertyValue('--input-height'))`
+        // ping 🌶️
         const inputHeight = parseInt(window.getComputedStyle(document.body).getPropertyValue('--input-height'))
         /* Add 1.25 in case of headers, needs to be done properly by getting if there's a title when moving this to RevealUI. */
         const desiredHeight = Math.min(this.options.length * inputHeight * 1.25)

@@ -1,10 +1,10 @@
 import { observer } from 'mobx-react-lite'
 
-import { useSt } from '../state/stateContext'
-import { MessageInfoUI } from './MessageUI'
 import { ComboUI } from '../app/shortcuts/ComboUI'
-import { FormControlLabel, FormHelpText } from '../rsuite/shims'
+import { FormHelpTextUI } from '../rsuite/shims'
+import { useSt } from '../state/stateContext'
 import { SectionTitleUI } from '../widgets/workspace/SectionTitle'
+import { MessageInfoUI } from './MessageUI'
 
 export const Panel_Shortcuts = observer(function Panel_Shortcuts_() {
     const st = useSt()
@@ -58,9 +58,9 @@ export const FieldUI = observer(function FieldUI_(p: {
 }) {
     return (
         <div className='flex gap-2 items-center'>
-            <FormControlLabel>{p.label}</FormControlLabel>
+            <label>{p.label}</label>
             {p.children}
-            {p.required && <FormHelpText tw='join-item'>Required</FormHelpText>}
+            {p.required && <FormHelpTextUI tw='join-item'>Required</FormHelpTextUI>}
         </div>
     )
 })

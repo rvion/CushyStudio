@@ -1,10 +1,11 @@
+import type { RevealProps } from './RevealProps'
+
 import { observable } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { useEffect, useMemo, useRef } from 'react'
 import { createPortal } from 'react-dom'
 
 import { ModalShellUI } from './ModalShell'
-import { RevealProps } from './RevealProps'
 import { RevealState } from './RevealState'
 
 // RevealUI is a bit perf-sensitive,

@@ -4,7 +4,6 @@ import { ReactNode } from 'react'
 import { ComboUI } from '../app/shortcuts/ComboUI'
 import { CushyShortcut } from '../app/shortcuts/ShortcutManager'
 import { RevealUI } from './reveal/RevealUI'
-import { RSSize } from './RsuiteTypes'
 
 export const Dropdown = (p: {
     //
@@ -31,7 +30,7 @@ export const Dropdown = (p: {
 
 export const MenuItem = observer(function DropdownItem_(p: {
     onClick?: (ev: React.MouseEvent<HTMLElement, MouseEvent>) => void
-    size?: RSSize
+    size?: 'sm' | 'xs' | 'md' | 'lg'
     icon?: Maybe<ReactNode>
     disabled?: boolean
     active?: boolean

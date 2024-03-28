@@ -1,8 +1,7 @@
 import { observer } from 'mobx-react-lite'
-import { useEffect } from 'react'
 
 import { AppCardUI } from '../cards/fancycard/AppCardUI'
-import { Addon, Joined, Slider, Toggle } from '../rsuite/shims'
+import { Slider, Toggle } from '../rsuite/shims'
 import { useSt } from '../state/stateContext'
 import { FieldAndLabelUI } from '../widgets/misc/FieldAndLabelUI'
 import { ScrollablePaneUI } from '../widgets/misc/scrollableArea'
@@ -23,10 +22,10 @@ export const Panel_FullScreenLibrary = observer(function Panel_CardPicker3UI_(p:
                     {/* <CreateDeckBtnUI /> */}
                 </div>
                 <div tw='flex gap-1 items-center'>
-                    <Joined>
-                        <Addon>
+                    <div tw='join virtualBorder'>
+                        <div tw='flex items-center px-2 join-item'>
                             <span className='material-symbols-outlined'>search</span>
-                        </Addon>
+                        </div>
                         <input
                             tw='join-item input input-sm'
                             type='string'
@@ -52,7 +51,7 @@ export const Panel_FullScreenLibrary = observer(function Panel_CardPicker3UI_(p:
                             // auto select text on focus
                             onFocus={(e) => e.target.select()}
                         />
-                    </Joined>
+                    </div>
                     <div tw='btn-sm btn btn-primary' onClick={st.startupFileIndexing}>
                         Index All Apps
                     </div>

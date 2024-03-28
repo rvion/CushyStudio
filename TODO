@@ -1,3 +1,7 @@
+☐ <Form theme={...} />
+☐ better bundling ?
+☐ remove all config options
+
 ✔ make all files accesible @done(24-03-26 15:38)
 ✔ output custom @done(24-03-26 15:38)
     ✔ 3 options @done(24-03-26 15:38)

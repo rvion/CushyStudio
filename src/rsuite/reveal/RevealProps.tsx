@@ -1,6 +1,6 @@
 import type { RevealPlacement } from './RevealPlacement'
 
-import React, { type FC } from 'react'
+import React from 'react'
 
 export type RevealProps = {
     // components

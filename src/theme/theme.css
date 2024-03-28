@@ -1,9 +1,3 @@
-/* THIS FILE SHOULD NOT EXIST */
-:root {
-    --roundness: 5px;
-    --input-height: 28px;
-}
-
 /* ---------------------------------------------------------------------------------------------- */
 
 #CushyStudio:focus {
@@ -54,10 +48,15 @@
 
 
 
+/* border stuff ----------------------------------------------------------------------------------- */
 .bd { border: 2px solid oklch(var(--p)) }
 .bd1 { border: 1px solid oklch(var(--p)) }
 .bdl1 { border-left: 1px solid oklch(var(--p)) }
-.bderr { border: 1px solid oklch(var(--er)) }
+.konvajs-content { border: 1px solid var(--fallback-bc,oklch(var(--bc)/0.2)); }
+.virtualBorder { border: 1px solid var(--fallback-bc,oklch(var(--bc)/0.2)); }
+.virtualBorder2 { border: 1px solid var(--fallback-bc,oklch(var(--bc)/0.5)); }
+
+
 .animated {
     transition: height 0.2s cubic-bezier(0.075, 0.82, 0.165, 1);
 }
@@ -97,14 +96,6 @@
     padding: 0.3em 0.5em;
 }
 
-.konvajs-content,
-.virtualBorder {
-    border: 1px solid var(--fallback-bc,oklch(var(--bc)/0.2));
-}
-
-.virtualBorder2 {
-    border: 1px solid var(--fallback-bc,oklch(var(--bc)/0.5));
-}
 
 
 /* COMFY NODES -------------------------------------------------------------------------------------- */

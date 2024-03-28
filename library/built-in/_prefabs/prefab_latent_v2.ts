@@ -7,7 +7,7 @@ export const ui_latent_v2 = (form: FormBuilder) => {
     return form.group({
         label: 'Start from',
         items: () => ({
-            image: form.imageOpt({}),
+            image: form.image({}).optional(),
             size: form.size({}),
             // width: form.int({ default: 512,  step: 128, min: 128, max: 4096 }),
             // height: form.int({ default: 768,  step: 128, min: 128, max: 4096 }),

@@ -24,8 +24,8 @@ app({
             min: 10,
             max: 100,
         }),
-        abcd: form.floatOpt({}),
-        abcd2: form.floatOpt({ startActive: true }),
+        abcd: form.float().optional(),
+        abcd2: form.float().optional(true),
     }),
 
     run: async (flow, form) => {},
