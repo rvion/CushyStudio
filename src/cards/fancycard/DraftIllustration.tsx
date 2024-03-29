@@ -76,7 +76,9 @@ export const DraftIllustrationUI = observer(function DraftIllustrationUI_(p: {
                     onClick={p.onClick}
                 />
             ) : (
-                <div style={{ width: p.size, height: p.size, objectFit: 'contain' }}>{<ImageErrorDisplayUI icon='folder' />}</div>
+                <div style={{ width: p.size, height: p.size, objectFit: 'contain' }}>
+                    <ImageErrorDisplayUI icon='folder' />
+                </div>
             )}
         </div>
     )

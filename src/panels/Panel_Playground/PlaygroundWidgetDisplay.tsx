@@ -118,7 +118,17 @@ export const FORM_PlaygroundWidgetDisplay = CushyFormManager.form(
                     }),
                 },
             }),
-
+            string: ui.group({
+                items: {
+                    aligned: ui.group({
+                        border: false,
+                        items: {
+                            stringLive: ui.string({}),
+                            stringBuffered: ui.string({ buffered: true }),
+                        },
+                    }),
+                },
+            }),
             int: ui.group({
                 startCollapsed: true,
                 items: {

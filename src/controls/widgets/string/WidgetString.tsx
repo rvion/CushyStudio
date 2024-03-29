@@ -15,6 +15,11 @@ export type Widget_string_config = WidgetConfigFields<
         textarea?: boolean
         placeHolder?: string
         inputType?: 'text' | 'password' | 'email' | 'tel' | 'url' | 'time' | 'date' | 'datetime-local' | 'color'
+        /**
+         * if set to true, widget will commit values on enter; not before.
+         * hitting esc will revert to the last committed value
+         * */
+        buffered?: boolean
     },
     Widget_string_types
 >
@@ -50,10 +55,8 @@ export class Widget_string implements IWidget<Widget_string_types> {
     readonly type: 'str' = 'str'
 
     // --------------
-    inputValue: string = ''
-    setInputValue = (next: string) => (this.inputValue = next)
-    isEditing: boolean = false
-    setEditing = (next: boolean) => (this.isEditing = next)
+    temporaryValue: string | null = null
+    setTemporaryValue = (next: string | null) => (this.temporaryValue = next)
     // --------------
 
     serial: Widget_string_serial

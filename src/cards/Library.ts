@@ -10,6 +10,24 @@ import { LibraryFile } from './LibraryFile'
 import { shouldSkip_duringWatch } from './shouldSkip'
 
 export class Library {
+    // ------------------------------------------------------------------------------------
+    filesKnownToExists = new Map<AbsolutePath, { at: Timestamp; existed: boolean }>()
+
+    // /**
+    //  * returns true if the file exists; cache result 5 minutes
+    //  * all places in the app creating files are expected to call this method ?
+    //  */
+    // doesFileExist = (path: AbsolutePath): boolean => {
+    //     const entry = this.filesKnownToExists.get(path)
+    //     const now = Date.now()
+    //     const fiveMins = 1000 * 60 * 5
+    //     if (entry && now - entry.at < fiveMins) return entry.existed
+    //     const exists = existsSync(path)
+    //     this.filesKnownToExists.set(path, { at: now, existed: true })
+    //     return exists
+    // }
+
+    // ------------------------------------------------------------------------------------
     query = ''
     showDescription = true
     showDrafts = true

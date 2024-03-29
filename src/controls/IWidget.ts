@@ -125,6 +125,9 @@ export type SharedWidgetConfig<T extends $WidgetTypes> = {
     /** allow to specify custom body */
     body?: null | ((p: { widget: T['$Widget'] }) => JSX.Element)
 
+    /** will be called when value changed */
+    onValueChange?: (val: any /* 🔴 T['$Value'] */) => void
+
     /**
      * The label to display.
      * If none provided, the parent key is going to be converted as label.
