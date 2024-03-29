@@ -1,14 +1,15 @@
-import type { LiveInstance } from '../db/LiveInstance'
-import type { CushyAppL } from './CushyApp'
-import type { MediaImageL } from './MediaImage'
-import type { StepL } from './Step'
 import type { LibraryFile } from '../cards/LibraryFile'
 import type { Form } from '../controls/Form'
 import type { Widget_group } from '../controls/widgets/group/WidgetGroup'
+import type { LiveInstance } from '../db/LiveInstance'
 import type { TABLES } from '../db/TYPES.gen'
+import type { CushyAppL } from './CushyApp'
+import type { MediaImageL } from './MediaImage'
+import type { StepL } from './Step'
 
 import { reaction } from 'mobx'
 
+// import { fileURLToPath } from 'url'
 import { Status } from '../back/Status'
 import { CushyFormManager, type FormBuilder } from '../controls/FormBuilder'
 import { LiveRef } from '../db/LiveRef'
@@ -28,6 +29,12 @@ export class DraftL {
 
     /** expand all top-level form entries */
     expandTopLevelFormEntries = () => this.form?.root?.expandAllEntries()
+
+    // TODO: rename
+    // get illustrationFilePathAbs(): AbsolutePath | null {
+    //     if (this.data.illustration == null) return null
+    //     return fileURLToPath(this.data.illustration) as AbsolutePath
+    // }
 
     appRef = new LiveRef<this, CushyAppL>(this, 'appID', 'cushy_app')
 

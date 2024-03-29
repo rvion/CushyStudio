@@ -1,15 +1,14 @@
 import type { MediaImageL } from '../../models/MediaImage'
 
+import { existsSync, type PathLike } from 'fs'
 import { observer } from 'mobx-react-lite'
 
-import { useSt } from '../../state/stateContext'
-import { useImageDrag } from './dnd'
 import { ImageDropdownMenuUI } from '../../panels/ImageDropdownUI'
 import { RevealUI } from '../../rsuite/reveal/RevealUI'
+import { useSt } from '../../state/stateContext'
+import { useImageDrag } from './dnd'
 
-type NumberStr = '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '0'
-type SmolNum = NumberStr | `${NumberStr}${NumberStr}`
-type SmolSize = `${SmolNum}rem` | `${SmolNum}em` | `${SmolNum}px`
+type SmolSize = `${'1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9'}rem`
 
 export const ImageUI = observer(function ImageUI_(p: {
     size?: SmolSize | '100%' | number /* px */
@@ -48,7 +47,6 @@ export const ImageUI = observer(function ImageUI_(p: {
             onMouseEnter={image.onMouseEnter}
             onMouseLeave={image.onMouseLeave}
             onClick={image.onClick}
-            // onAuxClick={image.onAuxClick}
             ref={dragRef}
             loading='lazy'
             style={{ backgroundImage: `url(${image.thumbhashURL})`, width: ImageWidth, height: ImageWidth, opacity }}
@@ -56,39 +54,44 @@ export const ImageUI = observer(function ImageUI_(p: {
     )
     return (
         <RevealUI
+            tw='flex w-full h-full items-center'
             content={() => (
                 <ul tabIndex={0} tw='shadow menu dropdown-content z-[1] bg-base-100 rounded-box'>
                     <ImageDropdownMenuUI img={image} />
                 </ul>
             )}
         >
-            {IMG}
+            {!image ? (
+                <ImageErrorDisplayUI className='hover:border-transparent' icon={'database'} />
+            ) : image.existsLocally && !existsSync(image?.absPath as PathLike) ? (
+                <ImageErrorDisplayUI className='hover:border-transparent' icon={'folder'} />
+            ) : (
+                <div>{IMG}</div>
+            )}
         </RevealUI>
     )
 })
 
-// onMouseDown={(ev) => {
-//     // Middle Mouse
-//     if (ev.button == 1) {
-//         ev.stopPropagation()
-//         ev.preventDefault()
-//         return st.layout.FOCUS_OR_CREATE('Image', { imageID: image.id })
-//     }
-// }}
-
-export const PlaceholderImageUI = observer(function PlaceholderImageUI_(p: {}) {
-    const st = useSt()
-    const GalleryImageWidth = st.galleryConf.value.gallerySize
+export const ImageErrorDisplayUI = observer(function ImageErrorDisplayUI_(p: {
+    className?: string
+    icon: string
+    size?: string
+}) {
     return (
         <div
-            className='scale-in-center'
-            style={{
-                objectFit: 'contain',
-                width: GalleryImageWidth,
-                height: GalleryImageWidth,
-                padding: 0,
-                borderRadius: '.5rem',
-            }}
-        />
+            className={p.className}
+            tw='relative rounded flex flex-col w-full h-full border border-error border-dotted items-center justify-center bg-error/5 text-error select-none pointer-events-none'
+        >
+            <div tw='flex relative text-sm' style={{ fontSize: p.size ?? 'inherit' }}>
+                <span className='material-symbols-outlined'>scan_delete</span>
+            </div>
+            <div tw='absolute top-0 right-0 -translate-x-0.5 translate-y-0.5' style={{ fontSize: '0px' }}>
+                {p.icon && (
+                    <span className='material-symbols-outlined' style={{ fontSize: '12px' }}>
+                        {p.icon}
+                    </span>
+                )}
+            </div>
+        </div>
     )
 })

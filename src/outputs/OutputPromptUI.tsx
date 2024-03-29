@@ -25,13 +25,13 @@ export const OutputPromptPreviewUI = observer(function OutputPromptPreviewUI_(p:
     // const pgr2 = graph.graphProgressCurrentNode
     return (
         <OutputPreviewWrapperUI output={prompt}>
-            <div /*tw='bg-blue-500 '*/>
+            <div tw='flex items-center justify-center p-0 h-full w-full text-shadow text-sm'>
                 <div
                     className='radial-progress'
                     style={{
                         // @ts-ignore
                         '--value': pgr1.percent,
-                        '--size': size,
+                        '--size': `${parseInt(size) * 0.9}px`,
                     }}
                     role='progressbar'
                 >

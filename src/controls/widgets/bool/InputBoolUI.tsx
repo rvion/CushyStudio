@@ -81,7 +81,7 @@ export const InputBoolUI = observer(function InputBoolUI_(p: {
                             {icon}
                         </span>
                     )}
-                    {label && <div tw={[icon ? 'pl-1' : 'pl-1.5']}>{label}</div>}
+                    {label && <div tw={['line-clamp-1', icon ? 'pl-1' : 'pl-1.5']}>{label}</div>}
                 </>
             ) : (
                 <>
@@ -94,7 +94,9 @@ export const InputBoolUI = observer(function InputBoolUI_(p: {
                             isActive && 'bg-primary text-primary-content text-shadow-inv',
                             icon && 'pl-1.5',
                             expand && 'w-full justify-center',
+                            'grid gap-0',
                         ]}
+                        style={icon ? { gridTemplateColumns: '24px 1fr' } : {}}
                     >
                         {icon && (
                             <span tw='flex-shrink-0 h-full pr-1.5 shadow-inherit' className='material-symbols-outlined'>
