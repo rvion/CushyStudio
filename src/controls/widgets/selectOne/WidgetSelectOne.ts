@@ -1,5 +1,6 @@
 import type { Form } from '../../Form'
 import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { ISpec } from '../../Spec'
 import type { Widget_group } from '../group/WidgetGroup'
 
 import { makeAutoObservable, runInAction } from 'mobx'
@@ -47,6 +48,7 @@ export class Widget_selectOne<T extends BaseSelectEntry> implements IWidget<Widg
     DefaultBodyUI = undefined
 
     readonly id: string
+    get config() { return this.spec.config } // prettier-ignore
     readonly type: 'selectOne' = 'selectOne'
     readonly serial: Widget_selectOne_serial<T>
 
@@ -71,9 +73,10 @@ export class Widget_selectOne<T extends BaseSelectEntry> implements IWidget<Widg
         //
         public readonly form: Form,
         public readonly parent: IWidget | null,
-        public config: Widget_selectOne_config<T>,
+        public readonly spec: ISpec<Widget_selectOne<T>>,
         serial?: Widget_selectOne_serial<T>,
     ) {
+        const config = spec.config
         this.id = serial?.id ?? nanoid()
         const choices = this.choices
         this.serial = serial ?? {

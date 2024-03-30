@@ -1,6 +1,6 @@
 import type { Form } from '../../Form'
 import type { IWidget, IWidgetMixins, SharedWidgetSerial, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
-import type { SchemaDict } from '../../Spec'
+import type { ISpec, SchemaDict } from '../../Spec'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -56,6 +56,7 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> implements IWidge
     DefaultBodyUI = WidgetChoices_BodyUI
     /* override */ background = true
     readonly id: string
+    get config() { return this.spec.config } // prettier-ignore
     readonly type: 'choices' = 'choices'
     readonly expand: boolean = this.config.expand ?? false
 
@@ -104,9 +105,10 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> implements IWidge
         //
         public readonly form: Form,
         public readonly parent: IWidget | null,
-        public readonly config: Widget_choices_config<T>,
+        public readonly spec: ISpec<Widget_choices<T>>,
         serial?: Widget_choices_serial<T>,
     ) {
+        const config = spec.config
         // ensure ID
         this.id = serial?.id ?? nanoid()
         // TODO: investigate why this contructor is called so many times (5 times ???)

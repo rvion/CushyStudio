@@ -1,5 +1,6 @@
 import type { Form } from '../../Form'
 import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { ISpec } from '../../Spec'
 import type { Widget_group } from '../group/WidgetGroup'
 
 import { makeAutoObservable } from 'mobx'
@@ -51,6 +52,7 @@ export class Widget_markdown implements IWidget<Widget_markdown_types> {
         if (this.config.inHeader) return false
     }
     readonly id: string
+    get config() { return this.spec.config } // prettier-ignore
     readonly type: 'markdown' = 'markdown'
     readonly serial: Widget_markdown_serial
 
@@ -64,9 +66,10 @@ export class Widget_markdown implements IWidget<Widget_markdown_types> {
         //
         public readonly form: Form,
         public readonly parent: IWidget | null,
-        public config: Widget_markdown_config,
+        public readonly spec: ISpec<Widget_markdown>,
         serial?: Widget_markdown_serial,
     ) {
+        const config = spec.config
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? { type: 'markdown', collapsed: config.startCollapsed, active: true, id: this.id }
         applyWidgetMixinV2(this)

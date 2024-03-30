@@ -13,7 +13,12 @@ import { FormUI } from './FormUI'
 export interface IFormBuilder {
     //
     _cache: { count: number }
-    _HYDRATE: <T extends ISpec>(self: IWidget | null, unmounted: T, serial: any | null) => T['$Widget']
+    _HYDRATE: <T extends ISpec<any>>(
+        //
+        self: IWidget | null,
+        spec: T,
+        serial: any | null,
+    ) => T['$Widget']
     // optional: <const T extends ISpec<IWidget<$WidgetTypes>>>(p: Widget_optional_config<T>) => ISpec<Widget_optional<T>>
     shared: <W extends ISpec<any>>(key: string, spec: W) => Widget_shared<W>
     SpecCtor: { new <T extends IWidget>(type: T['$Type'], config: T['$Config']): ISpec<T> }
@@ -157,7 +162,8 @@ export class Form<
         const formBuilder = this.builder
         const rootDef = { topLevel: true, items: () => this.ui?.(formBuilder) ?? {} }
         const ktor = formBuilder.SpecCtor
-        const spec = new ktor<Widget_group<FIELDS>>('group', rootDef)
+        const spec: ISpec<Widget_group<FIELDS>> = new ktor<Widget_group<FIELDS>>('group', rootDef)
+
         try {
             let initialValue = this.formConfig.initialValue?.()
             if (initialValue && !isObservable(initialValue)) initialValue = observable(initialValue)

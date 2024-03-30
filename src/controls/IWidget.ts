@@ -1,5 +1,5 @@
 import type { Form } from './Form'
-import type { Requirements } from './Requirements'
+import type { ISpec } from './Spec'
 import type { FC } from 'react'
 
 /**
@@ -24,6 +24,9 @@ export interface IWidget<K extends $WidgetTypes = $WidgetTypes> extends IWidgetM
 
     /** unique ID; each node in the form tree has one; persisted in serial */
     readonly id: string
+
+    /** spec used to instanciate this widget */
+    readonly spec: ISpec<any>
 
     /** widget type; can be used instead of `instanceof` to known which wiget it is */
     readonly type: K['$Type']

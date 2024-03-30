@@ -39,6 +39,7 @@ export type Widget_shared_types<T extends ISpec = ISpec> = {
 export interface Widget_shared<T extends ISpec = ISpec> extends Widget_shared_types<T>, IWidgetMixins {}
 export class Widget_shared<T extends ISpec = ISpec> implements IWidget<Widget_shared_types<T>> {
     readonly id: string
+    get config():Widget_shared_config<T> { return this.spec.config } // prettier-ignore
     readonly type: 'shared' = 'shared'
     readonly DefaultHeaderUI = undefined
     readonly DefaultBodyUI = undefined
@@ -52,15 +53,21 @@ export class Widget_shared<T extends ISpec = ISpec> implements IWidget<Widget_sh
     }
 
     // 🔴
-    hidden = () => new Widget_shared<T>(this.form, null, { ...this.config, hidden: true }, this.serial)
+    hidden = () => {
+        const ctor = this.form.builder.SpecCtor
+        const config: Widget_shared_config<T> = { ...this.spec.config, hidden: true }
+        const spec2: ISpec<Widget_shared<T>> = new ctor('shared', config)
+        new Widget_shared<T>(this.form, null, spec2, this.serial)
+    }
 
     constructor(
         //
         public readonly form: Form,
         public readonly parent: IWidget | null,
-        public config: Widget_shared_config<T>,
+        public readonly spec: ISpec<Widget_shared<T>>,
         serial?: Widget_shared_serial,
     ) {
+        const config = spec.config
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? { id: this.id, type: 'shared', collapsed: config.startCollapsed }
         applyWidgetMixinV2(this)

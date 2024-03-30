@@ -3,6 +3,7 @@ import type { MediaImageT } from '../../../db/TYPES.gen'
 import type { MediaImageL } from '../../../models/MediaImage'
 import type { Form } from '../../Form'
 import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { ISpec } from '../../Spec'
 
 import { makeAutoObservable, runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -46,6 +47,7 @@ export class Widget_image implements IWidget<Widget_image_types> {
     DefaultHeaderUI = WidgetSelectImageUI
     DefaultBodyUI = undefined
     readonly id: string
+    get config() { return this.spec.config } // prettier-ignore
     readonly type: 'image' = 'image'
     readonly serial: Widget_image_serial
 
@@ -53,7 +55,7 @@ export class Widget_image implements IWidget<Widget_image_types> {
         //
         public readonly form: Form,
         public readonly parent: IWidget | null,
-        public config: Widget_image_config,
+        public readonly spec: ISpec<Widget_image>,
         serial?: Widget_image_serial,
     ) {
         this.id = serial?.id ?? nanoid()

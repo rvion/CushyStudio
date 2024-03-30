@@ -1,5 +1,6 @@
 import type { Form } from '../../Form'
 import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { ISpec } from '../../Spec'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -45,7 +46,8 @@ export interface Widget_orbit extends Widget_orbit_types, IWidgetMixins {}
 export class Widget_orbit implements IWidget<Widget_orbit_types> {
     DefaultHeaderUI = WidgetOrbitUI
     DefaultBodyUI = undefined
-    id: string
+    readonly id: string
+    get config() { return this.spec.config } // prettier-ignore
     type: 'orbit' = 'orbit'
 
     /** reset azimuth and elevation */
@@ -80,9 +82,10 @@ export class Widget_orbit implements IWidget<Widget_orbit_types> {
         //
         public readonly form: Form,
         public readonly parent: IWidget | null,
-        public config: Widget_orbit_config,
+        public readonly spec: ISpec<Widget_orbit>,
         serial?: Widget_orbit_serial,
     ) {
+        const config = spec.config
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? {
             type: 'orbit',

@@ -1,5 +1,6 @@
 import type { Form } from '../../Form'
 import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { ISpec } from '../../Spec'
 import type { Widget_group } from '../group/WidgetGroup'
 import type { BaseSelectEntry } from '../selectOne/WidgetSelectOne'
 
@@ -46,6 +47,7 @@ export class Widget_selectMany<T extends BaseSelectEntry> implements IWidget<Wid
     DefaultBodyUI = undefined
 
     readonly id: string
+    get config() { return this.spec.config } // prettier-ignore
     readonly type: 'selectMany' = 'selectMany'
     readonly serial: Widget_selectMany_serial<T>
 
@@ -72,9 +74,10 @@ export class Widget_selectMany<T extends BaseSelectEntry> implements IWidget<Wid
         //
         public readonly form: Form,
         public readonly parent: IWidget | null,
-        public config: Widget_selectMany_config<T>,
+        public readonly spec: ISpec<Widget_selectMany<T>>,
         serial?: Widget_selectMany_serial<T>,
     ) {
+        const config = spec.config
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? {
             type: 'selectMany',

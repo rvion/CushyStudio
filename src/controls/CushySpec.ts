@@ -14,6 +14,8 @@ export class CushySpec<W extends IWidget = IWidget> implements ISpec<W> {
     $Serial!: W['$Serial']
     $Value!: W['$Value']
 
+    LabelExtraUI = () => null
+
     addRequirements = (requirements: Maybe<Requirements | Requirements[]>) => {
         return this
     }
@@ -24,13 +26,7 @@ export class CushySpec<W extends IWidget = IWidget> implements ISpec<W> {
         //
         public readonly type: W['type'],
         public readonly config: W['$Config'],
-    ) {
-        // 💬 2024-03-11 rvion: this was added to properly support "shared" specs;
-        //          | but it turns out we can just live without any shared spec,
-        //          | and only work with instanciated Widget_shared directly
-        // ⏸️ /** if specified, bypass the instanciation completely */
-        // ⏸️ public widget?: W,
-    }
+    ) {}
 
     /** wrap widget spec to list stuff */
     list = (config: Omit<Widget_list_config<any>, 'element'> = {}): CushySpec<Widget_list<this>> =>

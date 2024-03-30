@@ -42,6 +42,7 @@ export class Widget_optional<T extends ISpec = ISpec> implements IWidget<Widget_
     DefaultHeaderUI = undefined
     DefaultBodyUI = undefined
     readonly id: string
+    get config() { return this.spec.config } // prettier-ignore
     readonly type: 'optional' = 'optional'
 
     serial: Widget_optional_serial<T>
@@ -82,9 +83,10 @@ export class Widget_optional<T extends ISpec = ISpec> implements IWidget<Widget_
         //
         public readonly form: Form,
         public readonly parent: IWidget | null,
-        public config: Widget_optional_config<T>,
+        public readonly spec: ISpec<Widget_optional<T>>,
         serial?: Widget_optional_serial<T>,
     ) {
+        const config = spec.config
         this.id = serial?.id ?? nanoid()
         const defaultActive = config.startActive
         this.serial = serial ?? {

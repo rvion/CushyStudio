@@ -39,19 +39,15 @@ export class SimpleSpec<W extends IWidget = IWidget> implements ISpec<W> {
     $Serial!: W['$Serial']
     $Value!: W['$Value']
 
+    LabelExtraUI = (p: {}) => null
+
     Make = <X extends IWidget>(type: X['type'], config: X['$Config']) => new SimpleSpec(type, config)
 
     constructor(
         //
         public readonly type: W['type'],
         public readonly config: W['$Config'],
-    ) {
-        // 💬 2024-03-11 rvion: this was added to properly support "shared" specs;
-        //          | but it turns out we can just live without any shared spec,
-        //          | and only work with instanciated Widget_shared directly
-        // ⏸️ /** if specified, bypass the instanciation completely */
-        // ⏸️ public widget?: W,
-    }
+    ) {}
 
     /** wrap widget spec to list stuff */
     list = (config: Omit<Widget_list_config<any>, 'element'> = {}): SimpleSpec<Widget_list<this>> =>
@@ -78,35 +74,56 @@ export class SimpleSpec<W extends IWidget = IWidget> implements ISpec<W> {
 }
 
 export class FormBuilder_Loco implements IFormBuilder {
+    /** (@internal) DO NOT USE YOURSELF */
     SpecCtor = SimpleSpec
+
     /** (@internal) don't call this yourself */
     constructor(public form: Form<SchemaDict, FormBuilder_Loco>) {
         makeAutoObservable(this, {})
     }
 
     time = (config: Widget_string_config = {}) => new SimpleSpec<Widget_string>('str', { inputType: 'time', ...config })
+
     date = (config: Widget_string_config = {}) => new SimpleSpec<Widget_string>('str', { inputType: 'date', ...config })
+
     datetime = (config: Widget_string_config = {}) =>
         new SimpleSpec<Widget_string>('str', { inputType: 'datetime-local', ...config })
+
     password = (config: Widget_string_config = {}) => new SimpleSpec<Widget_string>('str', { inputType: 'password', ...config })
+
     email = (config: Widget_string_config = {}) => new SimpleSpec<Widget_string>('str', { inputType: 'email', ...config })
+
     url = (config: Widget_string_config = {}) => new SimpleSpec<Widget_string>('str', { inputType: 'url', ...config })
+
     string = (config: Widget_string_config = {}) => new SimpleSpec<Widget_string>('str', config)
+
     text = (config: Widget_string_config = {}) => new SimpleSpec<Widget_string>('str', config)
+
     textarea = (config: Widget_string_config = {}) => new SimpleSpec<Widget_string>('str', { textarea: true, ...config })
+
     boolean = (config: Widget_bool_config = {}) => new SimpleSpec<Widget_bool>('bool', config)
+
     bool = (config: Widget_bool_config = {}) => new SimpleSpec<Widget_bool>('bool', config)
+
     size = (config: Widget_size_config = {}) => new SimpleSpec<Widget_size>('size', config)
+
     spacer = (config: Widget_spacer_config = {}) =>
         new SimpleSpec<Widget_spacer>('spacer', { alignLabel: false, label: false, collapsed: false, border: false })
+
     seed = (config: Widget_seed_config = {}) => new SimpleSpec<Widget_seed>('seed', config)
+
     color = (config: Widget_color_config = {}) => new SimpleSpec<Widget_color>('color', config)
+
     colorV2 = (config: Widget_string_config = {}) => new SimpleSpec<Widget_string>('str', { inputType: 'color', ...config })
+
     matrix = (config: Widget_matrix_config) => new SimpleSpec<Widget_matrix>('matrix', config)
+
     button = <K>(config: Widget_button_config) => new SimpleSpec<Widget_button<K>>('button', config)
+
     /** variants: `header` */
     markdown = (config: Widget_markdown_config | string) =>
         new SimpleSpec<Widget_markdown>('markdown', typeof config === 'string' ? { markdown: config } : config)
+
     /** [markdown variant]: inline=true, label=false */
     header = (config: Widget_markdown_config | string) =>
         new SimpleSpec<Widget_markdown>(
@@ -117,35 +134,50 @@ export class FormBuilder_Loco implements IFormBuilder {
         )
     // image       = (config: Widget_image_config = {})                                                         => new Spec<Widget_image                       >('image'     , config)
     int = (config: Omit<Widget_number_config, 'mode'> = {}) => new SimpleSpec<Widget_number>('number', { mode: 'int', ...config })
+
     /** [number variant] precent = mode=int, default=100, step=10, min=1, max=100, suffix='%', */
     percent = (config: Omit<Widget_number_config, 'mode'> = {}) =>
         new SimpleSpec<Widget_number>('number', { mode: 'int', default: 100, step: 10, min: 1, max: 100, suffix: '%', ...config })
+
     float = (config: Omit<Widget_number_config, 'mode'> = {}) =>
         new SimpleSpec<Widget_number>('number', { mode: 'float', ...config })
+
     number = (config: Omit<Widget_number_config, 'mode'> = {}) =>
         new SimpleSpec<Widget_number>('number', { mode: 'float', ...config })
-    list = <const T extends SimpleSpec>(config: Widget_list_config<T>) => new SimpleSpec<Widget_list<T>>('list', config)
+
+    list = <const T extends ISpec>(config: Widget_list_config<T>) => new SimpleSpec<Widget_list<T>>('list', config)
+
     selectOneV2 = (p: string[])                                                                              => new SimpleSpec<Widget_selectOne<BaseSelectEntry>  >('selectOne' , { choices: p.map((id) => ({ id, label: id })), appearance:'tab' }) // prettier-ignore
+
     selectOne = <const T extends BaseSelectEntry>(config: Widget_selectOne_config<T>) =>
         new SimpleSpec<Widget_selectOne<T>>('selectOne', config)
+
     selectMany = <const T extends BaseSelectEntry>(config: Widget_selectMany_config<T>) =>
         new SimpleSpec<Widget_selectMany<T>>('selectMany', config)
+
     /** see also: `fields` for a more practical api */
     group = <const T extends SchemaDict>(config: Widget_group_config<T> = {}) => new SimpleSpec<Widget_group<T>>('group', config)
+
     fields = <const T extends SchemaDict>(fields: T, config: Omit<Widget_group_config<T>, 'items'> = {}) =>
         new SimpleSpec<Widget_group<T>>('group', { items: fields, ...config })
-    choice = <const T extends { [key: string]: SimpleSpec }>(config: Omit<Widget_choices_config<T>, 'multi'>) =>
+
+    choice = <const T extends { [key: string]: ISpec }>(config: Omit<Widget_choices_config<T>, 'multi'>) =>
         new SimpleSpec<Widget_choices<T>>('choices', { multi: false, ...config })
-    choices = <const T extends { [key: string]: SimpleSpec }>(config: Omit<Widget_choices_config<T>, 'multi'>) =>
+
+    choices = <const T extends { [key: string]: ISpec }>(config: Omit<Widget_choices_config<T>, 'multi'>) =>
         new SimpleSpec<Widget_choices<T>>('choices', { multi: true, ...config })
+
     ok = <const T extends SchemaDict>(config: Widget_group_config<T> = {}) => new SimpleSpec<Widget_group<T>>('group', config)
+
     /** simple choice alternative api */
-    tabs = <const T extends { [key: string]: SimpleSpec }>(
+    tabs = <const T extends { [key: string]: ISpec }>(
         items: Widget_choices_config<T>['items'],
         config: Omit<Widget_choices_config<T>, 'multi' | 'items'> = {},
     ) => new SimpleSpec<Widget_choices<T>>('choices', { items, multi: false, ...config, appearance: 'tab' })
+
     // optional wrappers
-    optional = <const T extends SimpleSpec>(p: Widget_optional_config<T>) => new SimpleSpec<Widget_optional<T>>('optional', p)
+    optional = <const T extends ISpec>(p: Widget_optional_config<T>) => new SimpleSpec<Widget_optional<T>>('optional', p)
+
     llmModel = (p: { default?: OpenRouter_Models } = {}) => {
         const choices = Object.entries(openRouterInfos).map(([id, info]) => ({ id: id as OpenRouter_Models, label: info.name }))
         const def = choices ? choices.find((c) => c.id === p.default) : undefined
@@ -174,7 +206,8 @@ export class FormBuilder_Loco implements IFormBuilder {
             // ❌ this.form._ROOT.bumpValue()
         }
 
-        return new Widget_shared<W>(this.form, null, { rootKey: key, widget }) as any
+        const spec = new SimpleSpec<Widget_shared<W>>('shared', { rootKey: key, widget })
+        return new Widget_shared<W>(this.form, null, spec) as any
     }
 
     // --------------------
@@ -241,7 +274,11 @@ export class FormBuilder_Loco implements IFormBuilder {
 
         console.log(`🔴 unknown widget "${type}" in serial.`)
         // exhaust(type)
-        return new Widget_markdown(this.form, parent, { markdown: `unknown widget "${type}" in serial.` })
+        return new Widget_markdown(
+            this.form,
+            parent,
+            new SimpleSpec<Widget_markdown>('markdown', { markdown: `🔴 unknown widget "${type}" in serial.` }),
+        )
     }
 }
 

@@ -43,6 +43,7 @@ export class Widget_custom<T> implements IWidget<Widget_custom_types<T>> {
     DefaultHeaderUI = WidgetCustom_HeaderUI
     DefaultBodyUI = undefined
     readonly id: string
+    get config() { return this.spec.config } // prettier-ignore
     readonly type: 'custom' = 'custom'
 
     serial: Widget_custom_serial<T>
@@ -53,9 +54,10 @@ export class Widget_custom<T> implements IWidget<Widget_custom_types<T>> {
         //
         public readonly form: Form,
         public readonly parent: IWidget | null,
-        public config: Widget_custom_config<T>,
+        public readonly spec: ISpec<Widget_custom<T>>,
         serial?: Widget_custom_serial<T>,
     ) {
+        const config = spec.config
         this.id = serial?.id ?? nanoid()
         this.Component = config.Component
         this.serial = serial ?? {

@@ -1,6 +1,6 @@
 import type { Form } from '../../Form'
 import type { GetWidgetResult, IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
-import type { SchemaDict } from '../../Spec'
+import type { ISpec, SchemaDict } from '../../Spec'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -57,6 +57,7 @@ export class Widget_group<T extends SchemaDict> implements IWidget<Widget_group_
         // return this.config.summary?.(this.value) ?? Object.keys(this.fields).length + ' fields'
     }
     readonly id: string
+    get config() { return this.spec.config } // prettier-ignore
     readonly type: 'group' = 'group'
 
     collapseAllEntries = () => {
@@ -99,7 +100,7 @@ export class Widget_group<T extends SchemaDict> implements IWidget<Widget_group_
         //
         public readonly form: Form,
         public readonly parent: IWidget | null,
-        public config: Widget_group_config<T>,
+        public readonly spec: ISpec<Widget_group<T>>,
         serial?: Widget_group_serial<T>,
         /** used to register self as the root, before we start instanciating anything */
         preHydrate?: (self: Widget_group<any>) => void,

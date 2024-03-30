@@ -49,6 +49,7 @@ export class Widget_list<T extends ISpec> implements IWidget<Widget_list_types<T
         return WidgetList_BodyUI
     }
     readonly id: string
+    get config() { return this.spec.config } // prettier-ignore
     readonly type: 'list' = 'list'
 
     get length() { return this.items.length } // prettier-ignore
@@ -82,7 +83,7 @@ export class Widget_list<T extends ISpec> implements IWidget<Widget_list_types<T
         //
         public readonly form: Form,
         public readonly parent: IWidget | null,
-        public config: Widget_list_config<T>,
+        public readonly spec: ISpec<Widget_list<T>>,
         serial?: Widget_list_serial<T>,
     ) {
         this.id = serial?.id ?? nanoid()

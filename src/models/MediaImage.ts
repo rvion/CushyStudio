@@ -392,7 +392,7 @@ export class MediaImageL {
         ctx.font = `${p?.fontSize ?? 30}px ${p?.font ?? 'Arial'}`
         ctx.fillStyle = p?.color ?? 'white'
         ctx.fillText(text, p?.x ?? 0, p?.y ?? 0)
-        const newDataURL = canvas.toDataURL()
+        const newDataURL = canvas.toDataURL(p?.format, p?.quality)
         const out = createMediaImage_fromDataURI(this.st, newDataURL, undefined, this._imageCreationOpts)
         return out
     }

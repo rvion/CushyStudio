@@ -1,5 +1,6 @@
 import type { Form } from '../../Form'
 import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { ISpec } from '../../Spec'
 
 import { makeObservable, observable } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -35,6 +36,7 @@ export class Widget_spacer implements IWidget<Widget_spacer_types> {
     DefaultHeaderUI = WidgetSpacerUI
     DefaultBodyUI = undefined
     readonly id: string
+    get config() { return this.spec.config } // prettier-ignore
     readonly type: 'spacer' = 'spacer'
     serial: Widget_spacer_serial
 
@@ -42,7 +44,7 @@ export class Widget_spacer implements IWidget<Widget_spacer_types> {
         //
         public readonly form: Form,
         public readonly parent: IWidget | null,
-        public config: Widget_spacer_config,
+        public readonly spec: ISpec<Widget_spacer>,
         serial?: Widget_spacer_serial,
     ) {
         this.id = serial?.id ?? nanoid()

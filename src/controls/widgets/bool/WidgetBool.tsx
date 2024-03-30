@@ -1,5 +1,6 @@
 import type { Form } from '../../Form'
 import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { ISpec } from '../../Spec'
 
 import { computed, makeAutoObservable, observable, runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -76,6 +77,7 @@ export class Widget_bool implements IWidget<Widget_bool_types> {
     DefaultHeaderUI = WidgetBoolUI
     DefaultBodyUI = undefined
     readonly id: string
+    get config() { return this.spec.config } // prettier-ignore
     readonly type: 'bool' = 'bool'
 
     serial: Widget_bool_serial
@@ -92,15 +94,15 @@ export class Widget_bool implements IWidget<Widget_bool_types> {
         //
         public readonly form: Form,
         public readonly parent: IWidget | null,
-        public config: Widget_bool_config,
+        public readonly spec: ISpec<Widget_bool>,
         serial?: Widget_bool_serial,
     ) {
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? {
             id: this.id,
             type: 'bool',
-            active: config.default ?? false,
-            collapsed: config.startCollapsed,
+            active: this.spec.config.default ?? false,
+            collapsed: this.spec.config.startCollapsed,
         }
 
         applyWidgetMixinV2(this)

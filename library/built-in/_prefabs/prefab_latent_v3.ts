@@ -13,7 +13,7 @@ export const ui_latent_v3 = () => {
             emptyLatent: form.group({
                 collapsed: false,
                 border: false,
-                items: { batchSize, size: form.size({ label: false, collapsed: false, border: false }) },
+                items: { batchSize: batchSize, size: form.size({ label: false, collapsed: false, border: false }) },
             }),
             image: form.group({
                 collapsed: false,

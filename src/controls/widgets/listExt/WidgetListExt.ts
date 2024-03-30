@@ -61,6 +61,7 @@ export class Widget_listExt<T extends ISpec> implements IWidget<Widget_listExt_t
     DefaultBodyUI = WidgetListExtUI
 
     readonly id: string
+    get config() { return this.spec.config } // prettier-ignore
     readonly type: 'listExt' = 'listExt'
 
     get width(): number { return this.serial.width ?? this.config.width ?? 100 } // prettier-ignore
@@ -106,9 +107,10 @@ export class Widget_listExt<T extends ISpec> implements IWidget<Widget_listExt_t
         //
         public readonly form: Form,
         public readonly parent: IWidget | null,
-        public config: Widget_listExt_config<T>,
+        public readonly spec: ISpec<Widget_listExt<T>>,
         serial?: Widget_listExt_serial<T>,
     ) {
+        const config = spec.config
         this.id = serial?.id ?? nanoid()
 
         // serial
