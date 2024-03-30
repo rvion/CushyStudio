@@ -15,6 +15,7 @@ import { run_regionalPrompting_v1, ui_regionalPrompting_v1 } from './_prefabs/pr
 import { run_rembg_v1, ui_rembg_v1 } from './_prefabs/prefab_rembg'
 import { Ctx_sampler, run_sampler, ui_sampler } from './_prefabs/prefab_sampler'
 import { run_upscaleWithModel, ui_upscaleWithModel } from './_prefabs/prefab_upscaleWithModel'
+import { run_watermark_v1, ui_watermark_v1 } from './_prefabs/prefab_watermark'
 import { run_customSave, ui_customSave } from './_prefabs/saveSmall'
 
 app({
@@ -64,6 +65,7 @@ app({
                 promtPlus: ui_advancedPrompt(),
                 displayAsBeerCan: form.group({}),
                 recursiveImgToImg: ui_recursive(),
+                watermark: ui_watermark_v1(),
                 loop: form.fields({
                     batchCount: form.int({ default: 1 }),
                     delayBetween: form.int({ tooltip: 'in ms', default: 0 }),
@@ -255,13 +257,7 @@ app({
         if (ui.extra?.gaussianSplat) run.output_GaussianSplat({ url: '' })
         if (ui.extra?.summary) output_demo_summary(run)
         if (show3d) run_Dispacement2('base')
-
-        if (ui.extra.displayAsBeerCan) {
-            run.output_custom({
-                view: CustomView3dCan,
-                params: { imageID: run.lastImage?.id },
-            })
-        }
+        if (ui.extra.displayAsBeerCan) run.output_custom({ view: CustomView3dCan, params: { imageID: run.lastImage?.id } })
 
         // LOOP IF NEED BE -----------------------------------------------------------------------
         const loop = ui.extra.loop
@@ -271,6 +267,11 @@ app({
                 await new Promise((r) => setTimeout(r, loop.delayBetween))
                 await run.PROMPT({ saveFormat })
             }
+        }
+
+        if (ui.extra.watermark) {
+            const img = run.lastImage
+            run_watermark_v1(ui.extra.watermark, img)
         }
 
         if (ui.extra?.makeAVideo) await run.Videos.output_video_ffmpegGeneratedImagesTogether(undefined, 2)

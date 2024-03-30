@@ -11,6 +11,7 @@ import type { StepL } from './Step'
 import type { MouseEvent } from 'react'
 
 import { existsSync, mkdirSync, readFileSync, renameSync } from 'fs'
+import Konva from 'konva'
 import { lookup } from 'mime-types'
 import { runInAction } from 'mobx'
 import { basename, resolve } from 'pathe'
@@ -25,6 +26,7 @@ import { asSTRING_orCrash } from '../utils/misc/bang'
 import { ManualPromise } from '../utils/misc/ManualPromise'
 import { toastError, toastInfo } from '../utils/misc/toasts'
 import { transparentImgURL } from '../widgets/galleries/transparentImg'
+import { createMediaImage_fromDataURI, type ImageCreationOpts } from './createMediaImage_fromWebFile'
 import { getCurrentRun_IMPL } from './getGlobalRuntimeCtx'
 
 export interface MediaImageL extends LiveInstance<TABLES['media_image']> {}
@@ -379,6 +381,71 @@ export class MediaImageL {
         return `${this.st.rootPath}/${this._thumbnailRelPath}` as AbsolutePath
     }
 
+    addWatermark_withCanvas = async (text: string, p?: WatermarkProps): Promise<MediaImageL> => {
+        const img = await this.asHTMLImageElement_wait()
+        const canvas = document.createElement('canvas')
+        const ctx = canvas.getContext('2d')
+        if (ctx == null) throw new Error('could not get 2d context')
+        canvas.width = img.width
+        canvas.height = img.height
+        ctx.drawImage(img, 0, 0)
+        ctx.font = `${p?.fontSize ?? 30}px ${p?.font ?? 'Arial'}`
+        ctx.fillStyle = p?.color ?? 'white'
+        ctx.fillText(text, p?.x ?? 0, p?.y ?? 0)
+        const newDataURL = canvas.toDataURL()
+        const out = createMediaImage_fromDataURI(this.st, newDataURL, undefined, this._imageCreationOpts)
+        return out
+    }
+
+    addWatermark_withKonva = async (text: string, p?: WatermarkProps): Promise<MediaImageL> => {
+        return await this.processWithKonva(
+            ({ stage, layer }) => {
+                const textNode = new Konva.Text({
+                    x: p?.x ?? 0,
+                    y: p?.y ?? 0,
+                    text,
+                    fontSize: p?.fontSize ?? 30,
+                    fontFamily: p?.font ?? 'Arial',
+                    fill: p?.color ?? 'white',
+                })
+                layer.add(textNode)
+                stage.draw()
+            },
+            { format: p?.format, quality: p?.quality },
+        )
+    }
+
+    processWithKonva = async (
+        fn: (p: { stage: Konva.Stage; layer: Konva.Layer; image: Konva.Image }) => void,
+        imageOpts?: {
+            /** if provieded, final converstion to image will use given format */
+            format?: 'image/jpeg' | 'image/webp' | 'image/png'
+            /** if provided, alongside a loosy format (e.g. webp or jpeg), this will change final image quality */
+            quality?: number
+        },
+    ): Promise<MediaImageL> => {
+        const img = await this.asHTMLImageElement_wait()
+        const headlessKonvaContainer = document.createElement('div')
+        const stage = new Konva.Stage({ width: img.width, height: img.height, container: headlessKonvaContainer })
+        const layer = new Konva.Layer({ width: img.width, height: img.height })
+        const konvaImg = new Konva.Image({ image: img, x: 0, y: 0, width: img.width, height: img.height })
+        layer.add(konvaImg)
+        stage.add(layer)
+        fn({ stage, layer, image: konvaImg })
+        const newDataURL = stage.toCanvas().toDataURL(imageOpts?.format, imageOpts?.quality)
+        const out = createMediaImage_fromDataURI(this.st, newDataURL, undefined, this._imageCreationOpts)
+        return out
+    }
+
+    get _imageCreationOpts(): ImageCreationOpts {
+        return {
+            comfyUIInfos: this.data.comfyUIInfos,
+            promptID: this.data.promptID,
+            promptNodeID: this.data.promptNodeID,
+            stepID: this.data.stepID,
+        }
+    }
+
     _mkThumbnail = async (): Promise<void> => {
         // console.log(`[🤠] creating thumbnail for`)
         // resize image to 100px
@@ -407,4 +474,21 @@ export class MediaImageL {
         void this._mkThumbhash().then((url) => this.update({ thumbnail: url }))
         return ''
     }
+}
+
+export type WatermarkProps = {
+    /** if provieded, final converstion to image will use given format */
+    format?: 'image/jpeg' | 'image/webp' | 'image/png'
+    /** if provided, alongside a loosy format (e.g. webp or jpeg), this will change final image quality */
+    quality?: number
+    /** watermark x placement */
+    x?: number
+    /** watermark y placement */
+    y?: number
+    /** watermark font */
+    font?: string
+    /** watermark font size */
+    fontSize?: number
+    /** watermark text color */
+    color?: string
 }
