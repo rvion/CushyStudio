@@ -66,6 +66,7 @@ export const run_cnet_IPAdapter = (
         // noise: ip.settings.noise,
         start_at: ip.settings.startAtStepPercent,
         end_at: ip.settings.endAtStepPercent,
+        embeds_scaling: 'V only',
         // unfold_batch: ip.settings.unfold_batch,
     })._MODEL
 
