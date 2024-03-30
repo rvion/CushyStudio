@@ -43,10 +43,12 @@ export const run_ipadapter_standalone = async (
     let pos_embed: _EMBEDS = image_.pos_embed
     let neg_embed: _EMBEDS = image_.neg_embed
 
+    const ip_clip_name = graph.CLIPVisionLoader({ clip_name: ui.clip_name })
     for (const ex of ui.extra) {
         const extraImage = graph.IPAdapterEncoder({
             image: await run.loadImageAnswer(ex),
             ipadapter: ip_model,
+            clip_vision: ip_clip_name,
         })
         // merge pos
         const combinedPos = graph.IPAdapterCombineEmbeds({
@@ -63,7 +65,6 @@ export const run_ipadapter_standalone = async (
         })
         neg_embed = combinedNeg.outputs.EMBEDS
     }
-    const ip_clip_name = graph.CLIPVisionLoader({ clip_name: ui.clip_name })
     const ip_adapted_model = graph.IPAdapterEmbeds({
         ipadapter: ip_model,
         clip_vision: ip_clip_name,
@@ -71,7 +72,7 @@ export const run_ipadapter_standalone = async (
         neg_embed,
         // image: image,
         model: ckpt,
-        weight_type: 'linear',
+        weight_type: ui.settings.weight_type,
         // weight_type: 'original',
         weight: ui.strength,
         // noise: ui.settings.noise,
