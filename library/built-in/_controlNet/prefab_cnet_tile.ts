@@ -6,31 +6,32 @@ import { cnet_preprocessor_ui_common, cnet_ui_common } from './cnet_ui_common'
 // 🅿️ Tile FORM ===================================================
 export const ui_subform_Tile = () => {
     const form = getCurrentForm()
-    return form.group({
-        label: 'Tile',
-        requirements: [
+    return form
+        .group({
+            label: 'Tile',
+            items: {
+                ...cnet_ui_common(form),
+                preprocessor: ui_subform_Tile_Preprocessor(),
+                models: form.group({
+                    label: 'Select or Download Models',
+                    // startCollapsed: true,
+                    items: {
+                        cnet_model_name: form.enum.Enum_ControlNetLoader_control_net_name({
+                            label: 'Model',
+                            default: 'control_v11u_sd15_tile_fp16.safetensors',
+                            filter: (name) => name.toString().includes('_tile'),
+                            extraDefaults: ['control_v11f1e_sd15_tile.pth'],
+                        }),
+                    },
+                }),
+            },
+        })
+        .addRequirements([
             //
             { type: 'customNodesByTitle', title: 'ComfyUI-Advanced-ControlNet' },
             { type: 'modelInManager', modelName: 'ControlNet-v1-1 (tile; fp16; v11u)' },
             { type: 'modelInManager', modelName: 'ControlNet-v1-1 (tile; fp16; v11f1e)' },
-        ],
-        items: () => ({
-            ...cnet_ui_common(form),
-            preprocessor: ui_subform_Tile_Preprocessor(),
-            models: form.group({
-                label: 'Select or Download Models',
-                // startCollapsed: true,
-                items: () => ({
-                    cnet_model_name: form.enum.Enum_ControlNetLoader_control_net_name({
-                        label: 'Model',
-                        default: 'control_v11u_sd15_tile_fp16.safetensors',
-                        filter: (name) => name.toString().includes('_tile'),
-                        extraDefaults: ['control_v11f1e_sd15_tile.pth'],
-                    }),
-                }),
-            }),
-        }),
-    })
+        ])
 }
 
 export const ui_subform_Tile_Preprocessor = () => {
@@ -45,10 +46,10 @@ export const ui_subform_Tile_Preprocessor = () => {
             Pyrup: form.group({
                 label: 'Settings',
                 startCollapsed: true,
-                items: () => ({
+                items: {
                     ...cnet_preprocessor_ui_common(form),
                     pyrup: form.int({ default: 3, min: 0 }),
-                }),
+                },
             }),
         },
     })

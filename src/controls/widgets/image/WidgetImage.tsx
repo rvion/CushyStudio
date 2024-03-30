@@ -8,7 +8,6 @@ import { makeAutoObservable, runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
 import { applyWidgetMixinV2 } from '../../Mixins'
-import { Spec } from '../../Spec'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetSelectImageUI } from './WidgetImageUI'
 
@@ -46,7 +45,6 @@ export interface Widget_image extends Widget_image_types, IWidgetMixins {} // pr
 export class Widget_image implements IWidget<Widget_image_types> {
     DefaultHeaderUI = WidgetSelectImageUI
     DefaultBodyUI = undefined
-    static Prop = <T extends Widget_image>(config: Widget_image_config) => new Spec('image', config)
     readonly id: string
     readonly type: 'image' = 'image'
     readonly serial: Widget_image_serial

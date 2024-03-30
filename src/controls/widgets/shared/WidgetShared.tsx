@@ -1,6 +1,6 @@
 import type { Form } from '../../Form'
 import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
-import type { Spec } from '../../Spec'
+import type { ISpec } from '../../Spec'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -9,7 +9,7 @@ import { applyWidgetMixinV2 } from '../../Mixins'
 import { registerWidgetClass } from '../WidgetUI.DI'
 
 // CONFIG
-export type Widget_shared_config<T extends Spec = Spec> = WidgetConfigFields<
+export type Widget_shared_config<T extends ISpec = ISpec> = WidgetConfigFields<
     {
         /** shared widgets must be registered in the form root group */
         rootKey: string
@@ -24,20 +24,20 @@ export type Widget_shared_serial = WidgetSerialFields<{
 }>
 
 // VALUE
-export type Widget_shared_value<T extends Spec = Spec> = T['$Value']
+export type Widget_shared_value<T extends ISpec = ISpec> = T['$Value']
 
 // TYPES
-export type Widget_shared_types<T extends Spec = Spec> = {
+export type Widget_shared_types<T extends ISpec = ISpec> = {
     $Type: 'shared'
     $Config: Widget_shared_config<T>
     $Serial: Widget_shared_serial
     $Value: Widget_shared_value<T>
-    $Widget: Spec['$Widget']
+    $Widget: ISpec['$Widget']
 }
 
 // STATE
-export interface Widget_shared<T extends Spec = Spec> extends Widget_shared_types<T>, IWidgetMixins {}
-export class Widget_shared<T extends Spec = Spec> implements IWidget<Widget_shared_types<T>> {
+export interface Widget_shared<T extends ISpec = ISpec> extends Widget_shared_types<T>, IWidgetMixins {}
+export class Widget_shared<T extends ISpec = ISpec> implements IWidget<Widget_shared_types<T>> {
     readonly id: string
     readonly type: 'shared' = 'shared'
     readonly DefaultHeaderUI = undefined

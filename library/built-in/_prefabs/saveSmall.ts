@@ -5,7 +5,7 @@ export const ui_customSave = () => {
     return form
         .group({
             label: 'Save As...',
-            items: () => ({
+            items: {
                 subfolder: form.string({
                     label: 'Subfolder',
                     tooltip: [
@@ -34,7 +34,7 @@ export const ui_customSave = () => {
                     max: 1,
                     step: 0.1,
                 }),
-            }),
+            },
         })
         .optional(true)
 }

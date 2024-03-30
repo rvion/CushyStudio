@@ -1,6 +1,6 @@
 import type { Form } from '../../Form'
 import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
-import type { Spec } from '../../Spec'
+import type { ISpec } from '../../Spec'
 import type { FC } from 'react'
 
 import { makeAutoObservable, runInAction } from 'mobx'
@@ -16,7 +16,7 @@ export type CustomWidgetProps<T> = { widget: Widget_custom<T>; extra: import('./
 export type Widget_custom_config<T> = WidgetConfigFields<
     {
         defaultValue: () => T
-        subTree?: () => Spec
+        subTree?: () => ISpec
         Component: FC<CustomWidgetProps<T>>
     },
     Widget_custom_types<T>

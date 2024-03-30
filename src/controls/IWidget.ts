@@ -156,8 +156,8 @@ export type SharedWidgetConfig<T extends $WidgetTypes> = {
      */
     showID?: boolean
 
-    /** The widget requirements */
-    requirements?: Requirements[]
+    // ⏸️ /** The widget requirements */
+    // ⏸️ requirements?: Requirements[]
 
     /**
      * override the default `collapsed` status

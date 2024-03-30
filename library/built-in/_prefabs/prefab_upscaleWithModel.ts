@@ -7,22 +7,20 @@ export const ui_upscaleWithModel = () => {
     return ui
         .group({
             label: 'Upscale via Model',
-            items: {
-                model: ui.enum.Enum_UpscaleModelLoader_model_name({ default: '4x-UltraSharp.pth' }),
-            },
-            requirements: [
-                // 2x
-                { type: 'modelInManager', modelName: 'RealESRGAN x2' },
-                // 4x
-                { type: 'modelInManager', modelName: 'RealESRGAN x4' },
-                { type: 'modelInManager', modelName: '4x-UltraSharp' },
-                { type: 'modelInManager', modelName: '4x-AnimeSharp' },
-                { type: 'modelInManager', modelName: '4x_foolhardy_Remacri' },
-                { type: 'modelInManager', modelName: '4x_NMKD-Siax_200k' },
-                // 8x
-                { type: 'modelInManager', modelName: '8x_NMKD-Superscale_150000_G' },
-            ],
+            items: { model: ui.enum.Enum_UpscaleModelLoader_model_name({ default: '4x-UltraSharp.pth' }) },
         })
+        .addRequirements([
+            // 2x
+            { type: 'modelInManager', modelName: 'RealESRGAN x2' },
+            // 4x
+            { type: 'modelInManager', modelName: 'RealESRGAN x4' },
+            { type: 'modelInManager', modelName: '4x-UltraSharp' },
+            { type: 'modelInManager', modelName: '4x-AnimeSharp' },
+            { type: 'modelInManager', modelName: '4x_foolhardy_Remacri' },
+            { type: 'modelInManager', modelName: '4x_NMKD-Siax_200k' },
+            // 8x
+            { type: 'modelInManager', modelName: '8x_NMKD-Superscale_150000_G' },
+        ])
         .optional()
 }
 

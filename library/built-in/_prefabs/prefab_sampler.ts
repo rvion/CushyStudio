@@ -9,14 +9,14 @@ export const ui_sampler = () => {
         summary: (ui) => {
             return `denoise:${ui.denoise} steps:${ui.steps} cfg:${ui.cfg}`
         },
-        items: () => ({
+        items: {
             denoise: form.float({ step: 0.1, min: 0, max: 1, default: 1, label: 'Denoise' }),
             steps: form.int({ step: 10, default: 20, label: 'Steps', min: 0, softMax: 100 }),
             cfg: form.float({ step: 1, label: 'CFG', min: 0, max: 100, softMax: 10, default: 8 }),
             seed: form.seed({}),
             sampler_name: form.enum.Enum_KSampler_sampler_name({ label: 'Sampler', default: 'euler' }),
             scheduler: form.enum.Enum_KSampler_scheduler({ label: 'Scheduler', default: 'karras' }),
-        }),
+        },
     })
 }
 

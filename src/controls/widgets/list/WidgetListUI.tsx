@@ -1,18 +1,18 @@
+import type { IWidget } from '../../IWidget'
+import type { ISpec } from '../../Spec'
 import type { Widget_listExt } from '../listExt/WidgetListExt'
 import type { Widget_list } from './WidgetList'
-import type { IWidget } from '../../IWidget'
-import type { Spec } from '../../Spec'
 
 import { observer } from 'mobx-react-lite'
 import { forwardRef } from 'react'
 import SortableList, { SortableItem, SortableKnob } from 'react-easy-sort'
 import { ErrorBoundary } from 'react-error-boundary'
 
+import { ErrorBoundaryFallback } from '../../../widgets/misc/ErrorBoundary'
 import { getBorderStatusForWidget } from '../../shared/getBorderStatusForWidget'
 import { ListControlsUI } from './ListControlsUI'
-import { ErrorBoundaryFallback } from '../../../widgets/misc/ErrorBoundary'
 
-export const WidgetList_LineUI = observer(function WidgetList_LineUI_<T extends Spec>(p: {
+export const WidgetList_LineUI = observer(function WidgetList_LineUI_<T extends ISpec>(p: {
     widget: Widget_list<T> | Widget_listExt<T>
 }) {
     return (
@@ -25,7 +25,7 @@ export const WidgetList_LineUI = observer(function WidgetList_LineUI_<T extends 
     )
 })
 
-export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends Spec>(p: { widget: Widget_list<T> }) {
+export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends ISpec>(p: { widget: Widget_list<T> }) {
     const widget = p.widget
     const subWidgets = widget.items
     const min = widget.config.min

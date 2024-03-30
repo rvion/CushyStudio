@@ -15,11 +15,10 @@ export const ui_model = () => {
             if (ui.extra.sag) out += ` + SAG(${ui.extra.sag.scale}/${ui.extra.sag.blur_sigma})`
             return out
         },
-        items: () => ({
-            ckpt_name: form.enum.Enum_CheckpointLoaderSimple_ckpt_name({
-                label: 'Checkpoint',
-                requirements: ckpts.map((x) => ({ type: 'modelCustom', infos: x })),
-            }),
+        items: {
+            ckpt_name: form.enum
+                .Enum_CheckpointLoaderSimple_ckpt_name({ label: 'Checkpoint' })
+                .addRequirements(ckpts.map((x) => ({ type: 'modelCustom', infos: x }))),
             checkpointConfig: form.enumOpt.Enum_CheckpointLoader_config_name({ label: 'Config' }),
             extra: form.choices({
                 border: false,
@@ -39,15 +38,16 @@ export const ui_model = () => {
                             blur_sigma: form.float({ default: 2.0, step: 0.1, min: 0, max: 10.0 }),
                         },
                     }),
-                    civitai_ckpt_air: form.string({
-                        requirements: [{ type: 'customNodesByNameInCushy', nodeName: 'CivitAI$_Checkpoint$_Loader' }],
-                        tooltip: 'Civitai checkpoint Air, as found on the civitai Website. It should look like this: 43331@176425', // prettier-ignore
-                        label: 'Civitai Ref',
-                        placeHolder: 'e.g. 43331@176425',
-                    }),
+                    civitai_ckpt_air: form
+                        .string({
+                            tooltip: 'Civitai checkpoint Air, as found on the civitai Website. It should look like this: 43331@176425', // prettier-ignore
+                            label: 'Civitai Ref',
+                            placeHolder: 'e.g. 43331@176425',
+                        })
+                        .addRequirements([{ type: 'customNodesByNameInCushy', nodeName: 'CivitAI$_Checkpoint$_Loader' }]),
                 },
             }),
-        }),
+        },
     })
 }
 

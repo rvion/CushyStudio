@@ -9,22 +9,23 @@ import { ui_ipadapter_modelSelection } from './ui_ipadapter_modelSelection'
 // 🅿️ IPAdapter Basic ===================================================
 export const ui_subform_IPAdapter = () => {
     const form = getCurrentForm()
-    return form.group({
-        label: 'IPAdapter',
-        requirements: [{ type: 'customNodesByTitle', title: 'ComfyUI_IPAdapter_plus' }],
-        items: () => ({
-            help: form.markdown({ startCollapsed: true, markdown: ipAdapterDoc }),
-            ...ui_subform_IPAdapter_common(form),
-            models: form.group({
-                label: 'Select or Download Models',
-                // startCollapsed: true,
-                items: () => ({
-                    ...ui_ipadapter_CLIPSelection(form),
-                    ...ui_ipadapter_modelSelection(form, 'ip-adapter-faceid-plus_sd15.bin' as any, ipAdapterModelList),
+    return form
+        .group({
+            label: 'IPAdapter',
+            items: {
+                help: form.markdown({ startCollapsed: true, markdown: ipAdapterDoc }),
+                ...ui_subform_IPAdapter_common(form),
+                models: form.group({
+                    label: 'Select or Download Models',
+                    // startCollapsed: true,
+                    items: {
+                        ...ui_ipadapter_CLIPSelection(form),
+                        ...ui_ipadapter_modelSelection(form, 'ip-adapter-faceid-plus_sd15.bin' as any, ipAdapterModelList),
+                    },
                 }),
-            }),
-        }),
-    })
+            },
+        })
+        .addRequirements([{ type: 'customNodesByTitle', title: 'ComfyUI_IPAdapter_plus' }])
 }
 
 // 🅿️ IPAdapter RUN ===================================================

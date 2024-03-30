@@ -20,7 +20,7 @@ app({
     },
     ui: (form) => ({
         image: form.image({}),
-        orbit: form.orbit({ requirements: [{ type: 'modelInManager', modelName: 'stabilityai/Stable Zero123' }] }),
+        orbit: form.orbit({}).addRequirements([{ type: 'modelInManager', modelName: 'stabilityai/Stable Zero123' }]),
         sndPass: form.fields({ positive: form.prompt({}) }).optional(),
     }),
     run: async (run, ui) => {

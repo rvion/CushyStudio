@@ -9,59 +9,60 @@ import { ui_ipadapter_modelSelection } from './ui_ipadapter_modelSelection'
 // 🅿️ IPAdapter FaceID ===================================================
 export const ui_IPAdapterFaceID = () => {
     const form = getCurrentForm()
-    return form.group({
-        label: 'FaceID IPAdapter',
-        requirements: [{ type: 'customNodesByTitle', title: 'ComfyUI_IPAdapter_plus' }],
-        items: () => ({
-            help: form.markdown({ startCollapsed: true, markdown: ipAdapterDoc }),
-            models: form.group({
-                label: 'Select or Download Models',
-                // startCollapsed: true,
-                items: () => ({
-                    ...ui_ipadapter_CLIPSelection(form),
-                    ...ui_ipadapter_modelSelection(
-                        form,
-                        // @ts-ignore
-                        'ip-adapter-faceid-plusv2_sd15.bin',
-                        //'ip-adapter-plus-face_sd15.safetensors',
-                        // 'ip-adapter-faceid-plus_sd15.bin',
-                        ipAdapter_faceID_ClipModelList,
-                    ),
-                    lora: form.enum.Enum_LoraLoader_lora_name({
-                        // enumName: 'Enum_AV$_CheckpointModelsToParametersPipe_lora_1_name',
-                        // @ts-ignore
-                        default: 'ip-adapter-faceid-plusv2_sd15_lora.safetensors',
-                        label: 'Face ID Lora',
-                        recommandedModels: {
-                            modelFolderPrefix: 'models/lora',
-                            knownModel: ipAdapter_faceID_LoraList,
-                        },
-                        tooltip:
-                            'Select the same LORA as the model. So for ip-adapter-faceid-plus, select ip-adapter-faceid-plus_sd15_lora',
-                    }),
-                }),
-            }),
-
-            lora_strength: form.float({ default: 0.5, min: 0, max: 2, step: 0.1 }),
-            ...ui_subform_IPAdapter_common(form),
-            reinforce: form
-                .group({
-                    startCollapsed: true,
-                    label: 'Reinforce With Additional IPAdapter',
-                    tooltip:
-                        'Enabling will apply an additional IPAdapter. This usually makes faces more accurate, but pulls along more features from the face image.',
-                    items: () => ({
-                        help: form.markdown({
-                            startCollapsed: true,
-                            markdown: `Recommended to select a model with "face" in it but NOT "faceID". So ip-adapter-plus-face_sd15 for example.\nAlso keep the strength pretty low. Like 0.3 unless you want the image dominated by the face image style.`,
+    return form
+        .group({
+            label: 'FaceID IPAdapter',
+            items: {
+                help: form.markdown({ startCollapsed: true, markdown: ipAdapterDoc }),
+                models: form.group({
+                    label: 'Select or Download Models',
+                    // startCollapsed: true,
+                    items: {
+                        ...ui_ipadapter_CLIPSelection(form),
+                        ...ui_ipadapter_modelSelection(
+                            form,
+                            // @ts-ignore
+                            'ip-adapter-faceid-plusv2_sd15.bin',
+                            //'ip-adapter-plus-face_sd15.safetensors',
+                            // 'ip-adapter-faceid-plus_sd15.bin',
+                            ipAdapter_faceID_ClipModelList,
+                        ),
+                        lora: form.enum.Enum_LoraLoader_lora_name({
+                            // enumName: 'Enum_AV$_CheckpointModelsToParametersPipe_lora_1_name',
+                            // @ts-ignore
+                            default: 'ip-adapter-faceid-plusv2_sd15_lora.safetensors',
+                            label: 'Face ID Lora',
+                            recommandedModels: {
+                                modelFolderPrefix: 'models/lora',
+                                knownModel: ipAdapter_faceID_LoraList,
+                            },
+                            tooltip:
+                                'Select the same LORA as the model. So for ip-adapter-faceid-plus, select ip-adapter-faceid-plus_sd15_lora',
                         }),
-                        ...ui_ipadapter_modelSelection(form, 'ip-adapter-plus-face_sd15.safetensors', ipAdapterModelList),
-                        ...ui_subform_IPAdapter_common(form, 0.3),
-                    }),
-                })
-                .optional(),
-        }),
-    })
+                    },
+                }),
+
+                lora_strength: form.float({ default: 0.5, min: 0, max: 2, step: 0.1 }),
+                ...ui_subform_IPAdapter_common(form),
+                reinforce: form
+                    .group({
+                        startCollapsed: true,
+                        label: 'Reinforce With Additional IPAdapter',
+                        tooltip:
+                            'Enabling will apply an additional IPAdapter. This usually makes faces more accurate, but pulls along more features from the face image.',
+                        items: {
+                            help: form.markdown({
+                                startCollapsed: true,
+                                markdown: `Recommended to select a model with "face" in it but NOT "faceID". So ip-adapter-plus-face_sd15 for example.\nAlso keep the strength pretty low. Like 0.3 unless you want the image dominated by the face image style.`,
+                            }),
+                            ...ui_ipadapter_modelSelection(form, 'ip-adapter-plus-face_sd15.safetensors', ipAdapterModelList),
+                            ...ui_subform_IPAdapter_common(form, 0.3),
+                        },
+                    })
+                    .optional(),
+            },
+        })
+        .addRequirements([{ type: 'customNodesByTitle', title: 'ComfyUI_IPAdapter_plus' }])
 }
 
 // 🅿️ IPAdapter FaceID RUN ===================================================

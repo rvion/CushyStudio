@@ -8,14 +8,14 @@ export const ui_subform_IPAdapter_common = (form: FormBuilder, defaultStrength: 
     settings: form.group({
         label: 'Settings',
         startCollapsed: true,
-        items: () => ({
+        items: {
             crop: form.bool({ default: true }),
             startAtStepPercent: form.float({ default: 0, min: 0, max: 1, step: 0.1 }),
             endAtStepPercent: form.float({ default: 1, min: 0, max: 1, step: 0.1 }),
             weight_type: form.enum.Enum_IPAdapterAdvanced_weight_type({ default: 'linear' }),
             noise: form.float({ default: 0, min: 0, max: 1, step: 0.1 }),
             unfold_batch: form.bool({ default: false }),
-        }),
+        },
     }),
 })
 

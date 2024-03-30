@@ -36,12 +36,12 @@ app({
         logos: ui.group({
             layout: 'H',
             // className: 'flex flex-wrap',
-            items: () => ({
+            items: {
                 spades: ui.image({}).optional(),
                 hearts: ui.image({}).optional(),
                 clubs: ui.image({}).optional(),
                 diamonds: ui.image({}).optional(),
-            }),
+            },
         }),
 
         // _3: form.markdown({ markdown: `### Prompts`, label: false }),
@@ -50,41 +50,41 @@ app({
         illustrations: ui.group({
             layout: 'H',
             // className: 'p-2 bg-red-800',
-            items: () => ({
+            items: {
                 Jack: ui.string({ default: 'gold, Knight' }),
                 Queen: ui.string({ default: 'gold, Queen' }),
                 King: ui.string({ default: 'gold, King' }),
-            }),
+            },
         }),
 
         // [UI] THEME --------------------------------------
         themes: ui.group({
-            items: () => ({
+            items: {
                 spades: ui.string({ default: 'underwater, sea, fish, tentacles, ocean' }),
                 hearts: ui.string({ default: 'volcanic, lava, rock, fire' }),
                 clubs: ui.string({ default: 'forest, nature, branches, trees' }),
                 diamonds: ui.string({ default: 'snow, ice, mountain, transparent winter' }),
-            }),
+            },
         }),
 
         colors: ui.group({
-            items: () => ({
+            items: {
                 spades: ui.string({ default: 'blue' }),
                 hearts: ui.string({ default: 'red' }),
                 clubs: ui.string({ default: 'green' }),
                 diamonds: ui.string({ default: 'white' }),
-            }),
+            },
         }),
 
         // theme5: form.string({ default: 'winter', }),
 
         // [UI] BORDERS ------------------------------------
         background: ui.group({
-            items: () => ({
+            items: {
                 seed: ui.seed({ default: 0, defaultMode: 'fixed' }),
                 help: ui.markdown({ markdown: `Use \`{color}\` and \`{suit}\` to insert the current color and suit` }),
                 prompt: ui.string({ default: `{color} background pattern` }),
-            }),
+            },
         }),
         margin: ui.int({ default: 40 }).optional(),
         symetry: ui.bool({ default: false }),

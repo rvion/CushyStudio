@@ -11,12 +11,12 @@ import { FormBuilder } from '../../src/CUSHY'
 // 📝 this is a self-contained UI kit you can use in any card you want.
 export const ui_startImage = (form: FormBuilder) =>
     form.group({
-        items: () => ({
+        items: {
             startImage: form.image({}).optional(),
             width: form.int({ default: 512, step: 128, min: 128, max: 4096 }),
             height: form.int({ default: 512, step: 128, min: 128, max: 4096 }),
             batchSize: form.int({ default: 1, min: 1, max: 20 }),
-        }),
+        },
     })
 
 // Example 2 -------------------------------------------------------------------------------------

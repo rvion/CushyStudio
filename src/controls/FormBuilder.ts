@@ -12,9 +12,9 @@ import { _FIX_INDENTATION } from '../utils/misc/_FIX_INDENTATION'
 import { useDraft } from '../widgets/misc/useDraft'
 import { mkFormAutoBuilder } from './builder/AutoBuilder'
 import { EnumBuilder, EnumBuilderOpt } from './builder/EnumBuilder'
+import { CushySpec } from './CushySpec'
 import { Form } from './Form'
 import { FormManager } from './FormManager'
-import { Spec } from './Spec'
 import { Widget_bool, type Widget_bool_config } from './widgets/bool/WidgetBool'
 import { Widget_button, type Widget_button_config } from './widgets/button/WidgetButton'
 import { Widget_choices, type Widget_choices_config } from './widgets/choices/WidgetChoices'
@@ -50,84 +50,87 @@ export class FormBuilder implements IFormBuilder {
         })
     }
 
-    time = (config: Widget_string_config = {}) => new Spec<Widget_string>('str', { inputType: 'time', ...config })
-    date = (config: Widget_string_config = {}) => new Spec<Widget_string>('str', { inputType: 'date', ...config })
-    datetime = (config: Widget_string_config = {}) => new Spec<Widget_string>('str', { inputType: 'datetime-local', ...config })
-    password = (config: Widget_string_config = {}) => new Spec<Widget_string>('str', { inputType: 'password', ...config })
-    email = (config: Widget_string_config = {}) => new Spec<Widget_string>('str', { inputType: 'email', ...config })
-    url = (config: Widget_string_config = {}) => new Spec<Widget_string>('str', { inputType: 'url', ...config })
-    string = (config: Widget_string_config = {}) => new Spec<Widget_string>('str', config)
-    text = (config: Widget_string_config = {}) => new Spec<Widget_string>('str', config)
-    textarea = (config: Widget_string_config = {}) => new Spec<Widget_string>('str', { textarea: true, ...config })
-    boolean = (config: Widget_bool_config = {}) => new Spec<Widget_bool>('bool', config)
-    bool = (config: Widget_bool_config = {}) => new Spec<Widget_bool>('bool', config)
-    size = (config: Widget_size_config = {}) => new Spec<Widget_size>('size', config)
+    time = (config: Widget_string_config = {}) => new CushySpec<Widget_string>('str', { inputType: 'time', ...config })
+    date = (config: Widget_string_config = {}) => new CushySpec<Widget_string>('str', { inputType: 'date', ...config })
+    datetime = (config: Widget_string_config = {}) =>
+        new CushySpec<Widget_string>('str', { inputType: 'datetime-local', ...config })
+    password = (config: Widget_string_config = {}) => new CushySpec<Widget_string>('str', { inputType: 'password', ...config })
+    email = (config: Widget_string_config = {}) => new CushySpec<Widget_string>('str', { inputType: 'email', ...config })
+    url = (config: Widget_string_config = {}) => new CushySpec<Widget_string>('str', { inputType: 'url', ...config })
+    string = (config: Widget_string_config = {}) => new CushySpec<Widget_string>('str', config)
+    text = (config: Widget_string_config = {}) => new CushySpec<Widget_string>('str', config)
+    textarea = (config: Widget_string_config = {}) => new CushySpec<Widget_string>('str', { textarea: true, ...config })
+    boolean = (config: Widget_bool_config = {}) => new CushySpec<Widget_bool>('bool', config)
+    bool = (config: Widget_bool_config = {}) => new CushySpec<Widget_bool>('bool', config)
+    size = (config: Widget_size_config = {}) => new CushySpec<Widget_size>('size', config)
     spacer = (config: Widget_spacer_config = {}) =>
-        new Spec<Widget_spacer>('spacer', { alignLabel: false, label: false, collapsed: false, border: false })
-    orbit = (config: Widget_orbit_config = {}) => new Spec<Widget_orbit>('orbit', config)
-    seed = (config: Widget_seed_config = {}) => new Spec<Widget_seed>('seed', config)
-    color = (config: Widget_color_config = {}) => new Spec<Widget_color>('color', config)
-    colorV2 = (config: Widget_string_config = {}) => new Spec<Widget_string>('str', { inputType: 'color', ...config })
-    matrix = (config: Widget_matrix_config) => new Spec<Widget_matrix>('matrix', config)
-    button = <K>(config: Widget_button_config<K>) => new Spec<Widget_button<K>>('button', config)
+        new CushySpec<Widget_spacer>('spacer', { alignLabel: false, label: false, collapsed: false, border: false })
+    orbit = (config: Widget_orbit_config = {}) => new CushySpec<Widget_orbit>('orbit', config)
+    seed = (config: Widget_seed_config = {}) => new CushySpec<Widget_seed>('seed', config)
+    color = (config: Widget_color_config = {}) => new CushySpec<Widget_color>('color', config)
+    colorV2 = (config: Widget_string_config = {}) => new CushySpec<Widget_string>('str', { inputType: 'color', ...config })
+    matrix = (config: Widget_matrix_config) => new CushySpec<Widget_matrix>('matrix', config)
+    button = <K>(config: Widget_button_config<K>) => new CushySpec<Widget_button<K>>('button', config)
     /** variants: `header` */
     markdown = (config: Widget_markdown_config | string) =>
-        new Spec<Widget_markdown>('markdown', typeof config === 'string' ? { markdown: config } : config)
+        new CushySpec<Widget_markdown>('markdown', typeof config === 'string' ? { markdown: config } : config)
     /** [markdown variant]: inline=true, label=false */
     header = (config: Widget_markdown_config | string) =>
-        new Spec<Widget_markdown>(
+        new CushySpec<Widget_markdown>(
             'markdown',
             typeof config === 'string'
                 ? { markdown: config, inHeader: true, label: false }
                 : { inHeader: true, label: false, alignLabel: false, ...config },
         )
-    image = (config: Widget_image_config = {}) => new Spec<Widget_image>('image', config)
-    prompt = (config: Widget_prompt_config = {}) => new Spec<Widget_prompt>('prompt', config)
-    promptV2 = (config: Widget_prompt_config = {}) => new Spec<Widget_prompt>('prompt', config)
-    int = (config: Omit<Widget_number_config, 'mode'> = {}) => new Spec<Widget_number>('number', { mode: 'int', ...config })
+    image = (config: Widget_image_config = {}) => new CushySpec<Widget_image>('image', config)
+    prompt = (config: Widget_prompt_config = {}) => new CushySpec<Widget_prompt>('prompt', config)
+    promptV2 = (config: Widget_prompt_config = {}) => new CushySpec<Widget_prompt>('prompt', config)
+    int = (config: Omit<Widget_number_config, 'mode'> = {}) => new CushySpec<Widget_number>('number', { mode: 'int', ...config })
     /** [number variant] precent = mode=int, default=100, step=10, min=1, max=100, suffix='%', */
     percent = (config: Omit<Widget_number_config, 'mode'> = {}) =>
-        new Spec<Widget_number>('number', { mode: 'int', default: 100, step: 10, min: 1, max: 100, suffix: '%', ...config })
-    float = (config: Omit<Widget_number_config, 'mode'> = {}) => new Spec<Widget_number>('number', { mode: 'float', ...config })
-    number = (config: Omit<Widget_number_config, 'mode'> = {}) => new Spec<Widget_number>('number', { mode: 'float', ...config })
-    custom = <TViewState>(config: Widget_custom_config<TViewState>) => new Spec<Widget_custom<TViewState>>('custom', config)
-    list = <const T extends Spec>(config: Widget_list_config<T>) => new Spec<Widget_list<T>>('list', config)
-    listExt = <const T extends Spec>(config: Widget_listExt_config<T>) => new Spec<Widget_listExt<T>>('listExt', config)
-    timeline = <const T extends Spec>(config: Widget_listExt_config<T>) =>
-        new Spec<Widget_listExt<T>>('listExt', { mode: 'timeline', ...config })
-    regional = <const T extends Spec>(config: Widget_listExt_config<T>) =>
-        new Spec<Widget_listExt<T>>('listExt', { mode: 'regional', ...config })
-    selectOneV2 = <const T extends string>(p: T[], config: Omit<Widget_selectOne_config<BaseSelectEntry<T>>,'choices'>={})                                    => new Spec<Widget_selectOne<BaseSelectEntry<T>>>('selectOne', { choices: p.map((id) => ({ id, label: id })), appearance:'tab', ...config }) // prettier-ignore
+        new CushySpec<Widget_number>('number', { mode: 'int', default: 100, step: 10, min: 1, max: 100, suffix: '%', ...config })
+    float = (config: Omit<Widget_number_config, 'mode'> = {}) =>
+        new CushySpec<Widget_number>('number', { mode: 'float', ...config })
+    number = (config: Omit<Widget_number_config, 'mode'> = {}) =>
+        new CushySpec<Widget_number>('number', { mode: 'float', ...config })
+    custom = <TViewState>(config: Widget_custom_config<TViewState>) => new CushySpec<Widget_custom<TViewState>>('custom', config)
+    list = <const T extends CushySpec>(config: Widget_list_config<T>) => new CushySpec<Widget_list<T>>('list', config)
+    listExt = <const T extends CushySpec>(config: Widget_listExt_config<T>) => new CushySpec<Widget_listExt<T>>('listExt', config)
+    timeline = <const T extends CushySpec>(config: Widget_listExt_config<T>) =>
+        new CushySpec<Widget_listExt<T>>('listExt', { mode: 'timeline', ...config })
+    regional = <const T extends CushySpec>(config: Widget_listExt_config<T>) =>
+        new CushySpec<Widget_listExt<T>>('listExt', { mode: 'regional', ...config })
+    selectOneV2 = <const T extends string>(p: T[], config: Omit<Widget_selectOne_config<BaseSelectEntry<T>>,'choices'>={})                                    => new CushySpec<Widget_selectOne<BaseSelectEntry<T>>>('selectOne', { choices: p.map((id) => ({ id, label: id })), appearance:'tab', ...config }) // prettier-ignore
     selectOne = <const T extends BaseSelectEntry>(config: Widget_selectOne_config<T>) =>
-        new Spec<Widget_selectOne<T>>('selectOne', config)
+        new CushySpec<Widget_selectOne<T>>('selectOne', config)
     selectMany = <const T extends BaseSelectEntry>(config: Widget_selectMany_config<T>) =>
-        new Spec<Widget_selectMany<T>>('selectMany', config)
+        new CushySpec<Widget_selectMany<T>>('selectMany', config)
     /** see also: `fields` for a more practical api */
-    group = <const T extends SchemaDict>(config: Widget_group_config<T> = {}) => new Spec<Widget_group<T>>('group', config)
+    group = <const T extends SchemaDict>(config: Widget_group_config<T> = {}) => new CushySpec<Widget_group<T>>('group', config)
     /** Convenience function for `group({ border: false, label: false, collapsed: false })` */
     column = <const T extends SchemaDict>(config: Widget_group_config<T> = {}) =>
-        new Spec<Widget_group<T>>('group', { border: false, label: false, collapsed: false, ...config })
+        new CushySpec<Widget_group<T>>('group', { border: false, label: false, collapsed: false, ...config })
     /** Convenience function for `group({ border: false, label: false, collapsed: false, layout:'H' })` */
     row = <const T extends SchemaDict>(config: Widget_group_config<T> = {}) =>
-        new Spec<Widget_group<T>>('group', { border: false, label: false, collapsed: false, layout: 'H', ...config })
+        new CushySpec<Widget_group<T>>('group', { border: false, label: false, collapsed: false, layout: 'H', ...config })
     fields = <const T extends SchemaDict>(fields: T, config: Omit<Widget_group_config<T>, 'items'> = {}) =>
-        new Spec<Widget_group<T>>('group', { items: fields, ...config })
-    choice = <const T extends { [key: string]: Spec }>(config: Omit<Widget_choices_config<T>, 'multi'>) =>
-        new Spec<Widget_choices<T>>('choices', { multi: false, ...config })
-    choiceV2 = <const T extends { [key: string]: Spec }>(
+        new CushySpec<Widget_group<T>>('group', { items: fields, ...config })
+    choice = <const T extends { [key: string]: CushySpec }>(config: Omit<Widget_choices_config<T>, 'multi'>) =>
+        new CushySpec<Widget_choices<T>>('choices', { multi: false, ...config })
+    choiceV2 = <const T extends { [key: string]: CushySpec }>(
         items: Widget_choices_config<T>['items'],
         config: Omit<Widget_choices_config<T>, 'multi' | 'items'>,
-    ) => new Spec<Widget_choices<T>>('choices', { multi: false, items, ...config })
-    choices = <const T extends { [key: string]: Spec }>(config: Omit<Widget_choices_config<T>, 'multi'>) =>
-        new Spec<Widget_choices<T>>('choices', { multi: true, ...config })
-    ok = <const T extends SchemaDict>(config: Widget_group_config<T> = {}) => new Spec<Widget_group<T>>('group', config)
+    ) => new CushySpec<Widget_choices<T>>('choices', { multi: false, items, ...config })
+    choices = <const T extends { [key: string]: CushySpec }>(config: Omit<Widget_choices_config<T>, 'multi'>) =>
+        new CushySpec<Widget_choices<T>>('choices', { multi: true, ...config })
+    ok = <const T extends SchemaDict>(config: Widget_group_config<T> = {}) => new CushySpec<Widget_group<T>>('group', config)
     /** simple choice alternative api */
-    tabs = <const T extends { [key: string]: Spec }>(
+    tabs = <const T extends { [key: string]: CushySpec }>(
         items: Widget_choices_config<T>['items'],
         config: Omit<Widget_choices_config<T>, 'multi' | 'items'> = {},
-    ) => new Spec<Widget_choices<T>>('choices', { items, multi: false, ...config, appearance: 'tab' })
+    ) => new CushySpec<Widget_choices<T>>('choices', { items, multi: false, ...config, appearance: 'tab' })
     // optional wrappers
-    optional = <const T extends Spec>(p: Widget_optional_config<T>) => new Spec<Widget_optional<T>>('optional', p)
+    optional = <const T extends CushySpec>(p: Widget_optional_config<T>) => new CushySpec<Widget_optional<T>>('optional', p)
     llmModel = (p: { default?: OpenRouter_Models } = {}) => {
         const choices = Object.entries(openRouterInfos).map(([id, info]) => ({ id: id as OpenRouter_Models, label: info.name }))
         const def = choices ? choices.find((c) => c.id === p.default) : undefined
@@ -136,7 +139,7 @@ export class FormBuilder implements IFormBuilder {
 
     /** @deprecated ; if you need this widget, you should copy paste that into a prefab */
     inlineRun = (config: Widget_button_config = {}) =>
-        new Spec<Widget_button<DraftL>>('button', {
+        new CushySpec<Widget_button<DraftL>>('button', {
             useContext: useDraft,
             onClick: (p) =>
                 runInAction(() => {
@@ -163,7 +166,7 @@ export class FormBuilder implements IFormBuilder {
      *  - recursive forms
      *  - dynamic widgets depending on other widgets values
      * */
-    shared = <W extends Spec>(key: string, unmounted: W): Widget_shared<W> => {
+    shared = <W extends ISpec>(key: string, unmounted: W): Widget_shared<W> => {
         const name = `__${key}__`
         const prevSerial = this.form._ROOT.serial.values_[name]
         let widget
@@ -222,7 +225,7 @@ export class FormBuilder implements IFormBuilder {
             // return unmounted.shared
         }
 
-        if (!(unmounted instanceof Spec)) {
+        if (!(unmounted instanceof CushySpec)) {
             console.log(`[❌] _HYDRATE received an invalid unmounted widget. This is probably a bug.`)
         }
 

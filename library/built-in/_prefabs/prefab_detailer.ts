@@ -2,44 +2,43 @@ import type { OutputFor } from './_prefabs'
 
 export const ui_refiners = () => {
     const form = getCurrentForm()
-    return form.choices({
-        appearance: 'tab',
-        requirements: [
+    return form
+        .choices({
+            appearance: 'tab',
+            items: {
+                faces: form.group({
+                    items: {
+                        prompt: form.string({}),
+                        detector: form.enum
+                            .Enum_UltralyticsDetectorProvider_model_name({ default: 'bbox/face_yolov8m.pt' })
+                            .addRequirements([
+                                { type: 'customNodesByTitle', title: 'ComfyUI Impact Pack' },
+                                { type: 'modelInManager', modelName: 'face_yolov8m (bbox)', optional: true },
+                                { type: 'modelInManager', modelName: 'face_yolov8n (bbox)', optional: true },
+                                { type: 'modelInManager', modelName: 'face_yolov8s (bbox)', optional: true },
+                                { type: 'modelInManager', modelName: 'face_yolov8n_v2 (bbox)', optional: true },
+                            ]),
+                    },
+                }),
+                hands: form.group({
+                    items: {
+                        prompt: form.string({}),
+                        detector: form.enum
+                            .Enum_UltralyticsDetectorProvider_model_name({ default: 'bbox/hand_yolov8s.pt' })
+                            .addRequirements([
+                                { type: 'customNodesByTitle', title: 'ComfyUI Impact Pack' },
+                                { type: 'modelInManager', modelName: 'hand_yolov8n (bbox)' },
+                                { type: 'modelInManager', modelName: 'hand_yolov8s (bbox)' },
+                            ]),
+                    },
+                }),
+                eyes: form.enumOpt.Enum_UltralyticsDetectorProvider_model_name({}),
+            },
+        })
+        .addRequirements([
             //
             { type: 'customNodesByTitle', title: 'ComfyUI Impact Pack' },
-        ],
-        items: {
-            faces: form.group({
-                items: () => ({
-                    prompt: form.string({}),
-                    detector: form.enum.Enum_UltralyticsDetectorProvider_model_name({
-                        default: 'bbox/face_yolov8m.pt',
-                        requirements: [
-                            { type: 'customNodesByTitle', title: 'ComfyUI Impact Pack' },
-                            { type: 'modelInManager', modelName: 'face_yolov8m (bbox)', optional: true },
-                            { type: 'modelInManager', modelName: 'face_yolov8n (bbox)', optional: true },
-                            { type: 'modelInManager', modelName: 'face_yolov8s (bbox)', optional: true },
-                            { type: 'modelInManager', modelName: 'face_yolov8n_v2 (bbox)', optional: true },
-                        ],
-                    }),
-                }),
-            }),
-            hands: form.group({
-                items: () => ({
-                    prompt: form.string({}),
-                    detector: form.enum.Enum_UltralyticsDetectorProvider_model_name({
-                        default: 'bbox/hand_yolov8s.pt',
-                        requirements: [
-                            { type: 'customNodesByTitle', title: 'ComfyUI Impact Pack' },
-                            { type: 'modelInManager', modelName: 'hand_yolov8n (bbox)' },
-                            { type: 'modelInManager', modelName: 'hand_yolov8s (bbox)' },
-                        ],
-                    }),
-                }),
-            }),
-            eyes: form.enumOpt.Enum_UltralyticsDetectorProvider_model_name({}),
-        },
-    })
+        ])
 }
 
 export const run_refiners_fromLatent = (

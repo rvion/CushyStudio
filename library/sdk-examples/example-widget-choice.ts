@@ -8,11 +8,11 @@ app({
                 image: form.image({}),
                 list: form.list({ element: () => form.int({}) }),
                 group: form.group({
-                    items: () => ({
+                    items: {
                         x: form.markdown({ markdown: '## Hello world' }),
                         c: form.int({}),
                         d: form.string({}),
-                    }),
+                    },
                 }),
             },
         }),
@@ -22,11 +22,11 @@ app({
                 image: form.image({}),
                 list: form.list({ element: () => form.int({}) }),
                 group: form.group({
-                    items: () => ({
+                    items: {
                         x: form.markdown({ markdown: '## Hello world' }),
                         c: form.int({ max: 50 }),
                         d: form.string({}),
-                    }),
+                    },
                 }),
             },
         }),

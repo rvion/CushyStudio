@@ -11,12 +11,12 @@ export const ui_mask = () => {
             mask: form.group({
                 collapsed: false,
                 label: false,
-                items: () => ({
+                items: {
                     image: form.image({}),
                     mode: form.enum.Enum_LoadImageMask_channel({}),
                     invert: form.bool({}),
                     // interrogate: form.bool({}),
-                }),
+                },
             }),
         },
     })

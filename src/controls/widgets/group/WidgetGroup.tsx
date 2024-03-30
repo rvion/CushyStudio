@@ -10,14 +10,13 @@ import { applyWidgetMixinV2 } from '../../Mixins'
 import { getActualWidgetToDisplay } from '../../shared/getActualWidgetToDisplay'
 import { getIfWidgetIsCollapsible } from '../../shared/getIfWidgetIsCollapsible'
 import { runWithGlobalForm } from '../../shared/runWithGlobalForm'
-import { Spec } from '../../Spec'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetGroup_BlockUI, WidgetGroup_LineUI } from './WidgetGroupUI'
 
 // CONFIG
 export type Widget_group_config<T extends SchemaDict> = WidgetConfigFields<
     {
-        items?: (() => T) | T
+        items?: T | (() => T)
         topLevel?: boolean
         summary?: (items: { [k in keyof T]: GetWidgetResult<T[k]> }) => string
     },
@@ -52,7 +51,6 @@ export class Widget_group<T extends SchemaDict> implements IWidget<Widget_group_
         if (Object.keys(this.fields).length === 0) return
         return WidgetGroup_BlockUI
     }
-    static Prop = <T extends SchemaDict>(config: Widget_group_config<T>) => new Spec('group', config)
 
     get summary(): string {
         return this.config.summary?.(this.value) ?? ''

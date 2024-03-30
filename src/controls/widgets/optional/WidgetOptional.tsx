@@ -1,6 +1,6 @@
 import type { Form } from '../../Form'
 import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
-import type { Spec } from '../../Spec'
+import type { ISpec } from '../../Spec'
 
 import { computed, makeObservable, observable } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -9,7 +9,7 @@ import { applyWidgetMixinV2 } from '../../Mixins'
 import { registerWidgetClass } from '../WidgetUI.DI'
 
 // CONFIG
-export type Widget_optional_config<T extends Spec = Spec> = WidgetConfigFields<
+export type Widget_optional_config<T extends ISpec = ISpec> = WidgetConfigFields<
     {
         startActive?: boolean
         widget: T
@@ -18,17 +18,17 @@ export type Widget_optional_config<T extends Spec = Spec> = WidgetConfigFields<
 >
 
 // SERIAL
-export type Widget_optional_serial<T extends Spec = Spec> = WidgetSerialFields<{
+export type Widget_optional_serial<T extends ISpec = ISpec> = WidgetSerialFields<{
     type: 'optional'
     child?: Maybe<T['$Serial']>
     active: boolean
 }>
 
 // VALUE
-export type Widget_optional_value<T extends Spec = Spec> = Maybe<T['$Value']>
+export type Widget_optional_value<T extends ISpec = ISpec> = Maybe<T['$Value']>
 
 // TYPES
-export type Widget_optional_types<T extends Spec = Spec> = {
+export type Widget_optional_types<T extends ISpec = ISpec> = {
     $Type: 'optional'
     $Config: Widget_optional_config<T>
     $Serial: Widget_optional_serial<T>
@@ -37,8 +37,8 @@ export type Widget_optional_types<T extends Spec = Spec> = {
 }
 
 // STATE
-export interface Widget_optional<T extends Spec = Spec> extends Widget_optional_types<T>, IWidgetMixins {}
-export class Widget_optional<T extends Spec = Spec> implements IWidget<Widget_optional_types<T>> {
+export interface Widget_optional<T extends ISpec = ISpec> extends Widget_optional_types<T>, IWidgetMixins {}
+export class Widget_optional<T extends ISpec = ISpec> implements IWidget<Widget_optional_types<T>> {
     DefaultHeaderUI = undefined
     DefaultBodyUI = undefined
     readonly id: string

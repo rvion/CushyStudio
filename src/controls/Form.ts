@@ -2,22 +2,22 @@ import type { FormManager } from './FormManager'
 import type { $WidgetTypes, IWidget } from './IWidget'
 import type { ISpec, SchemaDict } from './Spec'
 import type { Widget_group, Widget_group_serial, Widget_group_value } from './widgets/group/WidgetGroup'
-import type { Widget_optional, Widget_optional_config } from './widgets/optional/WidgetOptional'
 import type { Widget_shared } from './widgets/shared/WidgetShared'
 
 import { action, isObservable, makeAutoObservable, observable } from 'mobx'
 import { createElement, type ReactNode } from 'react'
 
 import { debounce } from '../utils/misc/debounce'
+import { CushySpec } from './CushySpec'
 import { FormUI } from './FormUI'
-import { Spec } from './Spec'
+import { runWithGlobalForm } from './shared/runWithGlobalForm'
 
 export interface IFormBuilder {
     //
     _cache: { count: number }
     _HYDRATE: <T extends ISpec>(self: IWidget | null, unmounted: T, serial: any | null) => T['$Widget']
-    optional: <const T extends Spec<IWidget<$WidgetTypes>>>(p: Widget_optional_config<T>) => Spec<Widget_optional<T>>
-    shared: <W extends Spec<IWidget<$WidgetTypes>>>(key: string, unmounted: W) => Widget_shared<W>
+    // optional: <const T extends ISpec<IWidget<$WidgetTypes>>>(p: Widget_optional_config<T>) => ISpec<Widget_optional<T>>
+    shared: <W extends ISpec<any>>(key: string, spec: W) => Widget_shared<W>
 }
 
 export type FormProperties<FIELDS extends SchemaDict> = {
@@ -157,11 +157,11 @@ export class Form<
         console.log(`[🥐] Building form ${this.formConfig.name}`)
         const formBuilder = this.builder
         const rootDef = { topLevel: true, items: () => this.ui?.(formBuilder) ?? {} }
-        const unmounted = new Spec<Widget_group<FIELDS>>('group', rootDef)
+        const spec = new CushySpec<Widget_group<FIELDS>>('group', rootDef)
         try {
             let initialValue = this.formConfig.initialValue?.()
             if (initialValue && !isObservable(initialValue)) initialValue = observable(initialValue)
-            const rootWidget: Widget_group<FIELDS> = formBuilder._HYDRATE(null, unmounted, initialValue)
+            const rootWidget: Widget_group<FIELDS> = formBuilder._HYDRATE(null, spec, initialValue)
             this.ready = true
             this.error = null
             // this.startMonitoring(rootWidget)
@@ -170,7 +170,7 @@ export class Form<
             console.error(`[👙🔴] Building form ${this.formConfig.name} FAILED`, this)
             console.error(e)
             this.error = 'invalid form definition'
-            return formBuilder._HYDRATE(null, unmounted, null)
+            return formBuilder._HYDRATE(null, spec, null)
         }
     }
 }

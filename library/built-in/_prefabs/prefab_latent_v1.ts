@@ -5,11 +5,11 @@ export const ui_latent_v1 = () => {
     const form: FormBuilder = getCurrentForm()
     return form.group({
         label: 'Start from',
-        items: () => ({
+        items: {
             image: form.image({}).optional(),
             batchSize: form.int({ default: 1, min: 1, max: 8 }),
             size: form.size({}),
-        }),
+        },
     })
 }
 

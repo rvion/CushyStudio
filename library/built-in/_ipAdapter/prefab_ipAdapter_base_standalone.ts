@@ -8,24 +8,25 @@ import { ui_ipadapter_modelSelection } from './ui_ipadapter_modelSelection'
 // 🅿️ IPAdapter Basic ===================================================
 export const ui_ipadapter_standalone = () => {
     const form = getCurrentForm()
-    return form.group({
-        label: 'IPAdapter',
-        requirements: [
+    return form
+        .group({
+            label: 'IPAdapter',
+            items: {
+                help: form.markdown({ startCollapsed: true, markdown: ipAdapterDoc }),
+                image: form.image({ label: 'Image' }),
+                extra: form.list({ label: 'Extra', element: form.image({ label: 'Image' }) }),
+                ...ui_ipadapter_CLIPSelection(form),
+                ...ui_ipadapter_modelSelection(form, 'ip-adapter-plus_sd15.safetensors', ipAdapterModelList),
+                ...ui_subform_IPAdapter_common(form),
+            },
+        })
+        .addRequirements([
             //
             { type: 'customNodesByTitle', title: 'ComfyUI_IPAdapter_plus' },
             { type: 'modelInManager', modelName: 'ip-adapter_sdxl_vit-h.safetensors' },
             { type: 'modelInManager', modelName: 'ip-adapter-plus_sdxl_vit-h.safetensors' },
             { type: 'modelInManager', modelName: 'ViT-H SAM model' },
-        ],
-        items: () => ({
-            help: form.markdown({ startCollapsed: true, markdown: ipAdapterDoc }),
-            image: form.image({ label: 'Image' }),
-            extra: form.list({ label: 'Extra', element: form.image({ label: 'Image' }) }),
-            ...ui_ipadapter_CLIPSelection(form),
-            ...ui_ipadapter_modelSelection(form, 'ip-adapter-plus_sd15.safetensors', ipAdapterModelList),
-            ...ui_subform_IPAdapter_common(form),
-        }),
-    })
+        ])
 }
 
 // 🅿️ IPAdapter RUN ===================================================

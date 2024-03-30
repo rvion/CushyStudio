@@ -6,22 +6,23 @@ import { cnet_preprocessor_ui_common, cnet_ui_common } from './cnet_ui_common'
 // 🅿️ SoftEdge FORM ===================================================
 export const ui_subform_SoftEdge = () => {
     const form: FormBuilder = getCurrentForm()
-    return form.group({
-        label: 'SoftEdge',
-        requirements: [
+    return form
+        .group({
+            label: 'SoftEdge',
+            items: {
+                ...cnet_ui_common(form),
+                preprocessor: ui_subform_SoftEdge_Preprocessor(),
+                cnet_model_name: form.enum.Enum_ControlNetLoader_control_net_name({
+                    label: 'Model',
+                    default: 'control_v11p_sd15_softedge.pth' as any,
+                    extraDefaults: ['control_v11p_sd15_softedge.pth'],
+                }),
+            },
+        })
+        .addRequirements([
             { type: 'modelInManager', modelName: 'ControlNet-v1-1 (softedge; fp16)' },
             { type: 'modelInManager', modelName: 'controlnet-SargeZT/controlnet-sd-xl-1.0-softedge-dexined' },
-        ],
-        items: () => ({
-            ...cnet_ui_common(form),
-            preprocessor: ui_subform_SoftEdge_Preprocessor(),
-            cnet_model_name: form.enum.Enum_ControlNetLoader_control_net_name({
-                label: 'Model',
-                default: 'control_v11p_sd15_softedge.pth' as any,
-                extraDefaults: ['control_v11p_sd15_softedge.pth'],
-            }),
-        }),
-    })
+        ])
 }
 
 export const ui_subform_SoftEdge_Preprocessor = () => {
@@ -43,10 +44,10 @@ export const ui_subform_SoftEdge_Preprocessor_Options = (form: FormBuilder) => {
     return form.group({
         label: 'Settings',
         startCollapsed: true,
-        items: () => ({
+        items: {
             ...cnet_preprocessor_ui_common(form),
             safe: form.bool({ default: false }),
-        }),
+        },
     })
 }
 

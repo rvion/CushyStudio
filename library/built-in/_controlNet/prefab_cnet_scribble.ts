@@ -6,24 +6,24 @@ import { cnet_preprocessor_ui_common, cnet_ui_common } from './cnet_ui_common'
 // 🅿️ Scribble FORM ===================================================
 export const ui_subform_Scribble = () => {
     const form: FormBuilder = getCurrentForm()
-    return form.group({
-        label: 'Scribble',
-        requirements: [
-            //
+    return form
+        .group({
+            label: 'Scribble',
+            items: {
+                ...cnet_ui_common(form),
+                preprocessor: ui_subform_Scribble_Preprocessor(),
+                cnet_model_name: form.enum.Enum_ControlNetLoader_control_net_name({
+                    label: 'Model',
+                    default: 'control_scribble-fp16.safetensors',
+                    extraDefaults: ['control_v11p_sd15_scribble.pth'],
+                    filter: (name) => name.toString().includes('scribble'),
+                }),
+            },
+        })
+        .addRequirements([
             { type: 'customNodesByTitle', title: 'ComfyUI-Advanced-ControlNet' },
             { type: 'modelInManager', modelName: 'ControlNet-v1-1 (scribble; fp16)' },
-        ],
-        items: () => ({
-            ...cnet_ui_common(form),
-            preprocessor: ui_subform_Scribble_Preprocessor(),
-            cnet_model_name: form.enum.Enum_ControlNetLoader_control_net_name({
-                label: 'Model',
-                default: 'control_scribble-fp16.safetensors',
-                extraDefaults: ['control_v11p_sd15_scribble.pth'],
-                filter: (name) => name.toString().includes('scribble'),
-            }),
-        }),
-    })
+        ])
 }
 
 export const ui_subform_Scribble_Preprocessor = () => {
@@ -47,7 +47,7 @@ export const ui_subform_Scribble_Lines = () => {
     return form.group({
         label: 'Scribble Lines',
         // startCollapsed: true,
-        items: () => cnet_preprocessor_ui_common(form),
+        items: cnet_preprocessor_ui_common(form),
     })
 }
 
@@ -56,10 +56,10 @@ export const ui_subform_Fake_Scribble_Lines = () => {
     return form.group({
         label: 'Fake Scribble',
         // startCollapsed: true,
-        items: () => ({
+        items: {
             ...cnet_preprocessor_ui_common(form),
             safe: form.bool({ default: true }),
-        }),
+        },
     })
 }
 
@@ -68,10 +68,10 @@ export const ui_subform_Scribble_XDoG_Lines = () => {
     return form.group({
         label: 'Scribble_XDoG_Lines',
         // startCollapsed: true,
-        items: () => ({
+        items: {
             ...cnet_preprocessor_ui_common(form),
             threshold: form.int({ default: 32, min: 0, max: 64 }),
-        }),
+        },
     })
 }
 

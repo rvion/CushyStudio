@@ -7,7 +7,7 @@ app({
             items: {
                 testInt: form.int(),
                 testString: form.string(),
-                testGroup: form.group({ items: () => ({ c1: form.string(), c2: form.string() }) }),
+                testGroup: form.group({ items: { c1: form.string(), c2: form.string() } }),
                 testList: form.list({ element: () => form.string() }),
             },
         }),
@@ -16,7 +16,7 @@ app({
             items: {
                 testInt: form.int(),
                 testString: form.string(),
-                testGroup: form.group({ items: () => ({ c1: form.string(), c2: form.string() }) }),
+                testGroup: form.group({ items: { c1: form.string(), c2: form.string() } }),
                 testList: form.list({ element: () => form.string() }),
                 xxx: form.list({ element: () => form.list({ element: form.string({ default: 'coucou' }) }) }),
             },

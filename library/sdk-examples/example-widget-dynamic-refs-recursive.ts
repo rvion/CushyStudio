@@ -1,4 +1,4 @@
-import type { Spec } from '../../src/controls/Spec'
+import type { CushySpec } from '../../src/controls/CushySpec'
 import type { Widget_choices } from '../../src/controls/widgets/choices/WidgetChoices'
 import type { Widget_group } from '../../src/controls/widgets/group/WidgetGroup'
 import type { Widget_image } from '../../src/controls/widgets/image/WidgetImage'
@@ -27,11 +27,11 @@ app({
                                 // so to make sure code is correct, we need to cast it to the correct type
                                 // (and yes, types are slighly verbose for now)
                                 const steps = formRoot.fields.samplerUI as Widget_list<
-                                    Spec<
+                                    CushySpec<
                                         Widget_choices<{
-                                            sampler_output_abc_asdf: Spec<Widget_selectOne<any>>
-                                            empty_latent: Spec<Widget_group<any>>
-                                            pick_image: Spec<Widget_image>
+                                            sampler_output_abc_asdf: CushySpec<Widget_selectOne<any>>
+                                            empty_latent: CushySpec<Widget_group<any>>
+                                            pick_image: CushySpec<Widget_image>
                                         }>
                                     >
                                 >
@@ -58,11 +58,11 @@ app({
                         empty_latent: form.group({
                             layout: 'H',
                             // topLevel: true,
-                            items: () => ({
+                            items: {
                                 width: form.int({ default: 512, max: 1512, step: 32, hideSlider: true }),
                                 height: form.int({ default: 512, max: 1512, step: 32, hideSlider: true }),
                                 batch: form.int({ default: 1, min: 1, max: 32, hideSlider: true }),
-                            }),
+                            },
                         }),
                         pick_image: form.image(),
                     },
