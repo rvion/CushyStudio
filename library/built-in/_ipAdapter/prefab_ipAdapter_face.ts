@@ -44,20 +44,22 @@ export const ui_IPAdapterFaceID = () => {
 
             lora_strength: form.float({ default: 0.5, min: 0, max: 2, step: 0.1 }),
             ...ui_subform_IPAdapter_common(form),
-            reinforce: form.groupOpt({
-                startCollapsed: true,
-                label: 'Reinforce With Additional IPAdapter',
-                tooltip:
-                    'Enabling will apply an additional IPAdapter. This usually makes faces more accurate, but pulls along more features from the face image.',
-                items: () => ({
-                    help: form.markdown({
-                        startCollapsed: true,
-                        markdown: `Recommended to select a model with "face" in it but NOT "faceID". So ip-adapter-plus-face_sd15 for example.\nAlso keep the strength pretty low. Like 0.3 unless you want the image dominated by the face image style.`,
+            reinforce: form
+                .group({
+                    startCollapsed: true,
+                    label: 'Reinforce With Additional IPAdapter',
+                    tooltip:
+                        'Enabling will apply an additional IPAdapter. This usually makes faces more accurate, but pulls along more features from the face image.',
+                    items: () => ({
+                        help: form.markdown({
+                            startCollapsed: true,
+                            markdown: `Recommended to select a model with "face" in it but NOT "faceID". So ip-adapter-plus-face_sd15 for example.\nAlso keep the strength pretty low. Like 0.3 unless you want the image dominated by the face image style.`,
+                        }),
+                        ...ui_ipadapter_modelSelection(form, 'ip-adapter-plus-face_sd15.safetensors', ipAdapterModelList),
+                        ...ui_subform_IPAdapter_common(form, 0.3),
                     }),
-                    ...ui_ipadapter_modelSelection(form, 'ip-adapter-plus-face_sd15.safetensors', ipAdapterModelList),
-                    ...ui_subform_IPAdapter_common(form, 0.3),
-                }),
-            }),
+                })
+                .optional(),
         }),
     })
 }

@@ -35,18 +35,18 @@ export const ui_subform_Canny = () => {
 }
 
 export const ui_subform_Canny_Preprocessor = (form: FormBuilder) => {
-    return form.groupOpt({
-        label: 'Canny Edge Preprocessor',
-        startActive: true,
-        startCollapsed: true,
-        items: () => ({
-            ...cnet_preprocessor_ui_common(form),
-            lowThreshold: form.int({ default: 100, min: 0, max: 200, step: 10 }),
-            highThreshold: form.int({ default: 200, min: 0, max: 400, step: 10 }),
-            // TODO: Add support for auto-modifying the resolution based on other form selections
-            // TODO: Add support for auto-cropping
-        }),
-    })
+    return form
+        .group({
+            label: 'Canny Edge Preprocessor',
+            items: () => ({
+                ...cnet_preprocessor_ui_common(form),
+                lowThreshold: form.int({ default: 100, min: 0, max: 200, step: 10 }),
+                highThreshold: form.int({ default: 200, min: 0, max: 400, step: 10 }),
+                // TODO: Add support for auto-modifying the resolution based on other form selections
+                // TODO: Add support for auto-cropping
+            }),
+        })
+        .optional(true)
 }
 
 // 🅿️ Canny RUN ===================================================

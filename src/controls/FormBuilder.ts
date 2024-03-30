@@ -135,9 +135,6 @@ export class FormBuilder implements IFormBuilder {
         ...config
     })
 
-    /** @deprecated : use `.group(...).optional` instead */
-    groupOpt    = <const T extends SchemaDict>(config: Widget_group_config<T>   & { startActive?: boolean } = {}) => this.wrapOptional<Spec<Widget_group<T>>  >(config, this.group)
-
     /**
      * Calling this function will mount and instanciate the subform right away
      * Subform will be register in the root form `group`, using `__${key}__` as the key
@@ -163,28 +160,6 @@ export class FormBuilder implements IFormBuilder {
         // 💬 2024-03-12 rvion: do we store the widget, or the widgetshared instead 2 lines below ? not sure yet.
         this.form.knownShared.set(key, widget)
         return new Widget_shared<W>(this.form, null, { rootKey: key, widget }) as any
-    }
-
-    // --------------------
-
-    private wrapOptional<T extends Spec>(
-        config: {
-            // from SharedWidgetProps
-            label?: string | false
-            requirements?: Requirements[]
-            startCollapsed?: boolean
-            // extra for optionality
-            startActive?: boolean,
-            // ... plus every other config param
-        },
-        widgetFn: (config:T['$Config']) => T) {
-        return this.optional({
-            label: config.label,
-            requirements: config.requirements,
-            startActive: config.startActive,
-            startCollapsed: config.startCollapsed,
-            widget: widgetFn({ ...config, startCollapsed: undefined }),
-        })
     }
 
     // --------------------

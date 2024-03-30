@@ -23,29 +23,30 @@ export type OutputFor<UIFn extends (form: FormBuilder) => any> = GetWidgetResult
 
 export const ui_highresfix = (p: { activeByDefault?: true } = {}) => {
     const form = getCurrentForm()
-    return form.groupOpt({
-        startActive: p.activeByDefault,
-        label: 'Upscale Pass (High Res Fix)',
-        items: () => ({
-            // NNLatentUpscale: form.bool({
-            //     default: false,
-            //     label: 'NN Latent Upscale?',
-            // }),
-            upscaleMethod: form.selectOne({
-                appearance: 'tab',
-                choices: [{ id: 'regular' }, { id: 'Neural 1.5' }, { id: 'Neural XL' }],
-                requirements: [{ type: 'customNodesByURI', uri: 'https://github.com/Ttl/ComfyUi_NNLatentUpscale' }],
-                tooltip:
-                    'regular upscale add more noise, depend your objective. for a second pass to refine stuff, I think adding noise is better',
-            }),
+    return form
+        .group({
+            label: 'Upscale Pass (High Res Fix)',
+            items: () => ({
+                // NNLatentUpscale: form.bool({
+                //     default: false,
+                //     label: 'NN Latent Upscale?',
+                // }),
+                upscaleMethod: form.selectOne({
+                    appearance: 'tab',
+                    choices: [{ id: 'regular' }, { id: 'Neural 1.5' }, { id: 'Neural XL' }],
+                    requirements: [{ type: 'customNodesByURI', uri: 'https://github.com/Ttl/ComfyUi_NNLatentUpscale' }],
+                    tooltip:
+                        'regular upscale add more noise, depend your objective. for a second pass to refine stuff, I think adding noise is better',
+                }),
 
-            scaleFactor: form.float({ default: 1.5, min: 0.5, max: 8, step: 1 }),
-            steps: form.int({ default: 15, min: 0, softMax: 100, step: 10 }),
-            denoise: form.float({ min: 0, default: 0.6, max: 1, step: 0.1 }),
-            saveIntermediaryImage: form.bool({ default: true }),
-            useMainSampler: form.bool({ default: true }),
-        }),
-    })
+                scaleFactor: form.float({ default: 1.5, min: 0.5, max: 8, step: 1 }),
+                steps: form.int({ default: 15, min: 0, softMax: 100, step: 10 }),
+                denoise: form.float({ min: 0, default: 0.6, max: 1, step: 0.1 }),
+                saveIntermediaryImage: form.bool({ default: true }),
+                useMainSampler: form.bool({ default: true }),
+            }),
+        })
+        .optional(p.activeByDefault)
 }
 
 // ---------------------------------------------------------
