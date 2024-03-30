@@ -143,6 +143,7 @@ class AutoCompleteSelectState<T> {
                 ? placeHolderStr
                 : value.map((i) => {
                       const label = this.p.getLabelText(i)
+                      if (!this.p.multiple) return label
                       return (
                           <div
                               tw='badge badge-primary text-shadow-inv cursor-not-allowed line-clamp-1'
