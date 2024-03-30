@@ -87,13 +87,13 @@ export const run_cnet_IPAdapterFaceID = (
     const faceIDnode = graph.IPAdapterFaceID({
         ipadapter: graph.IPAdapterModelLoader({ ipadapter_file: ip.models.cnet_model_name }),
         clip_vision: ip_clip_name,
-        insightface: (t) => t.IPAdapterInsightFaceLoader({ provider: 'CUDA' }),
+        insightface: (t) => t.IPAdapterInsightFaceLoader({ provider: 'CPU' }),
         image: image,
         combine_embeds: 'average',
         model: ckpt,
         weight: ip.strength,
         weight_faceidv2: ip.strength,
-        weight_type: 'linear',
+        weight_type: ip.settings.weight_type,
         start_at: ip.settings.startAtStepPercent,
         end_at: ip.settings.endAtStepPercent,
     })
@@ -102,13 +102,16 @@ export const run_cnet_IPAdapterFaceID = (
 
     if (ip.reinforce) {
         const ip_model = graph.IPAdapterModelLoader({ ipadapter_file: ip.reinforce.cnet_model_name })
-        const ip_adapted_model = graph.IPAdapter({
+        const ip_adapted_model = graph.IPAdapterAdvanced({
             ipadapter: ip_model,
             image: image,
             model: ckpt,
             weight: ip.reinforce.strength,
             start_at: ip.reinforce.settings.startAtStepPercent,
             end_at: ip.reinforce.settings.endAtStepPercent,
+            combine_embeds: 'average',
+            weight_type: ip.reinforce.settings.weight_type,
+            clip_vision: ip_clip_name,
         })._MODEL
         ckpt = ip_adapted_model
     }

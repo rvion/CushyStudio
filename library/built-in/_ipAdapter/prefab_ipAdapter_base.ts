@@ -47,12 +47,12 @@ export const run_cnet_IPAdapter = (
         sharpening: 0,
     })._IMAGE
     const ip_model = graph.IPAdapterModelLoader({ ipadapter_file: ip.models.cnet_model_name })
+    const ip_clip_name = graph.CLIPVisionLoader({ clip_name: ip.models.clip_name })
 
-    let image_ = graph.IPAdapterEncoder({ ipadapter: ip_model, image }).outputs
+    let image_ = graph.IPAdapterEncoder({ ipadapter: ip_model, image, clip_vision: ip_clip_name }).outputs
     let pos_embed: _EMBEDS = image_.pos_embed
     let neg_embed: _EMBEDS = image_.neg_embed
 
-    const ip_clip_name = graph.CLIPVisionLoader({ clip_name: ip.models.clip_name })
     const ip_adapted_model = graph.IPAdapterEmbeds({
         ipadapter: ip_model,
         clip_vision: ip_clip_name,
@@ -60,7 +60,7 @@ export const run_cnet_IPAdapter = (
         neg_embed,
         // image: image,
         model: cnet_args.ckptPos,
-        weight_type: 'linear',
+        weight_type: ip.settings.weight_type,
         // weight_type: 'original',
         weight: ip.strength,
         // noise: ip.settings.noise,
