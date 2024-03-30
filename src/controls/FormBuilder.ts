@@ -1,7 +1,7 @@
 import type { OpenRouter_Models } from '../llm/OpenRouter_models'
 import type { DraftL } from '../models/Draft'
 import type { IFormBuilder } from './Form'
-import type { IWidget } from './IWidget'
+import type { $WidgetTypes, IWidget } from './IWidget'
 import type { Requirements } from './Requirements'
 import type { ISpec, SchemaDict } from './Spec'
 
@@ -40,6 +40,7 @@ import { Widget_spacer, Widget_spacer_config } from './widgets/spacer/WidgetSpac
 import { Widget_string, type Widget_string_config } from './widgets/string/WidgetString'
 
 export class FormBuilder implements IFormBuilder {
+    SpecCtor = CushySpec
     /** (@internal) don't call this yourself */
     constructor(public form: Form<SchemaDict, FormBuilder>) {
         makeAutoObservable(this, {
@@ -47,6 +48,7 @@ export class FormBuilder implements IFormBuilder {
             autoField: false,
             enum: false,
             enumOpt: false,
+            SpecCtor: false,
         })
     }
 

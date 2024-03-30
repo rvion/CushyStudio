@@ -1,11 +1,11 @@
 import type { IWidget } from './IWidget'
 import type { Requirements } from './Requirements'
+import type { ISpec } from './Spec'
 import type { Widget_list, Widget_list_config } from './widgets/list/WidgetList'
 import type { Widget_optional } from './widgets/optional/WidgetOptional'
 import type { Widget_shared } from './widgets/shared/WidgetShared'
 
 import { getCurrentForm_IMPL } from './shared/runWithGlobalForm'
-import { ISpec } from './Spec'
 
 export class CushySpec<W extends IWidget = IWidget> implements ISpec<W> {
     $Widget!: W

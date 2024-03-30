@@ -1,5 +1,5 @@
 import type { FormManager } from './FormManager'
-import type { $WidgetTypes, IWidget } from './IWidget'
+import type { IWidget } from './IWidget'
 import type { ISpec, SchemaDict } from './Spec'
 import type { Widget_group, Widget_group_serial, Widget_group_value } from './widgets/group/WidgetGroup'
 import type { Widget_shared } from './widgets/shared/WidgetShared'
@@ -8,9 +8,7 @@ import { action, isObservable, makeAutoObservable, observable } from 'mobx'
 import { createElement, type ReactNode } from 'react'
 
 import { debounce } from '../utils/misc/debounce'
-import { CushySpec } from './CushySpec'
 import { FormUI } from './FormUI'
-import { runWithGlobalForm } from './shared/runWithGlobalForm'
 
 export interface IFormBuilder {
     //
@@ -18,6 +16,7 @@ export interface IFormBuilder {
     _HYDRATE: <T extends ISpec>(self: IWidget | null, unmounted: T, serial: any | null) => T['$Widget']
     // optional: <const T extends ISpec<IWidget<$WidgetTypes>>>(p: Widget_optional_config<T>) => ISpec<Widget_optional<T>>
     shared: <W extends ISpec<any>>(key: string, spec: W) => Widget_shared<W>
+    SpecCtor: { new <T extends IWidget>(type: T['$Type'], config: T['$Config']): ISpec<T> }
 }
 
 export type FormProperties<FIELDS extends SchemaDict> = {
@@ -157,7 +156,8 @@ export class Form<
         console.log(`[🥐] Building form ${this.formConfig.name}`)
         const formBuilder = this.builder
         const rootDef = { topLevel: true, items: () => this.ui?.(formBuilder) ?? {} }
-        const spec = new CushySpec<Widget_group<FIELDS>>('group', rootDef)
+        const ktor = formBuilder.SpecCtor
+        const spec = new ktor<Widget_group<FIELDS>>('group', rootDef)
         try {
             let initialValue = this.formConfig.initialValue?.()
             if (initialValue && !isObservable(initialValue)) initialValue = observable(initialValue)

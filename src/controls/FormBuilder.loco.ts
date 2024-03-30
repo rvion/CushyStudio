@@ -5,6 +5,7 @@ import '../theme/form.css'
 import type { OpenRouter_Models } from '../llm/OpenRouter_models'
 import type { Form, IFormBuilder } from './Form'
 import type { IWidget } from './IWidget'
+import type { ISpec, SchemaDict } from './Spec'
 
 import { makeAutoObservable } from 'mobx'
 
@@ -12,7 +13,6 @@ import { openRouterInfos } from '../llm/OpenRouter_infos'
 import { _FIX_INDENTATION } from '../utils/misc/_FIX_INDENTATION'
 import { FormManager } from './FormManager'
 import { getCurrentForm_IMPL } from './shared/runWithGlobalForm'
-import { type ISpec, type SchemaDict } from './Spec'
 import { Widget_bool, type Widget_bool_config } from './widgets/bool/WidgetBool'
 import { Widget_button, type Widget_button_config } from './widgets/button/WidgetButton'
 import { Widget_choices, type Widget_choices_config } from './widgets/choices/WidgetChoices'
@@ -78,6 +78,7 @@ export class SimpleSpec<W extends IWidget = IWidget> implements ISpec<W> {
 }
 
 export class FormBuilder_Loco implements IFormBuilder {
+    SpecCtor = SimpleSpec
     /** (@internal) don't call this yourself */
     constructor(public form: Form<SchemaDict, FormBuilder_Loco>) {
         makeAutoObservable(this, {})

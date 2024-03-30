@@ -308,6 +308,7 @@ const whitelist: string[] = [
     // need fixing
     'src/controls/IWidget',
     //
+    'src/controls/Spec', // type only, only IWidget
     'src/rsuite/RsuiteTypes', // no direct deps
     'src/rsuite/reveal/RevealProps', // no direct deps
     'src/controls/widgets/listExt/WidgetListExt',
