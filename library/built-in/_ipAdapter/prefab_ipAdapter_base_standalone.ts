@@ -72,6 +72,7 @@ export const run_ipadapter_standalone = async (
         pos_embed,
         neg_embed,
         // image: image,
+        embeds_scaling: 'V only',
         model: ckpt,
         weight_type: ui.settings.weight_type,
         // weight_type: 'original',
