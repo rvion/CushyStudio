@@ -1,4 +1,5 @@
 import type { RevealProps } from './RevealProps'
+import type { ReactNode } from 'react'
 
 import { makeAutoObservable, observable } from 'mobx'
 
@@ -12,7 +13,17 @@ export class RevealState {
     static shared: { current: Maybe<RevealState> } = observable({ current: null }, { current: observable.ref })
     uid = RevealState.nextUID++
 
+    /**
+     * manuall assigned here on init so it can be made observable
+     * on its own, without the need to make the entire props observable
+     * so we can then hot-reload it nicely and have a nicer dev experience
+     */
+    contentFn: () => ReactNode
+
     constructor(public p: RevealProps) {
+        // see comment above
+        this.contentFn = p.content
+
         // 💬 2024-03-06 YIKES !!
         // | Reveal UI was causing
         // |

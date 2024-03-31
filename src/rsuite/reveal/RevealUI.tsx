@@ -11,35 +11,38 @@ import { RevealState } from './RevealState'
 // RevealUI is a bit perf-sensitive,
 // so we use a lazy memo to avoid creating the state object
 // until it's absolutely needed
-export const useMemoLazy = <T extends any>(fn: () => T): { uist: T | null; uist2(): T } =>
+export const useMemoLazy = <T extends any>(fn: () => T): { uistOrNull: T | null; getUist(): T } =>
     useMemo(() => {
         let x = observable({
-            uist: null as T | null,
-            uist2: () => {
-                if (x.uist) return x.uist
+            uistOrNull: null as T | null,
+            getUist: () => {
+                if (x.uistOrNull) return x.uistOrNull
                 console.log(`[💙] init RevealUI`)
-                x.uist = fn()
-                return x.uist
+                x.uistOrNull = fn()
+                return x.uistOrNull
             },
         })
         return x
     }, [])
 
 export const RevealUI = observer(function RevealUI_(p: RevealProps) {
-    const { uist, uist2 } = useMemoLazy(() => new RevealState(p))
+    const { uistOrNull, getUist: uist2 } = useMemoLazy(() => new RevealState(p))
     const ref = useRef<HTMLDivElement>(null)
-
     useEffect(() => {
-        if (uist?.visible && ref.current) {
+        if (uistOrNull == null) return
+        if (p.content !== uistOrNull.p.content) uistOrNull.contentFn = p.content
+    }, [p.content])
+    useEffect(() => {
+        if (uistOrNull?.visible && ref.current) {
             const rect = ref.current.getBoundingClientRect()
-            uist.setPosition(rect)
+            uistOrNull.setPosition(rect)
         }
-    }, [uist?.visible])
+    }, [uistOrNull?.visible])
     const content = p.children
-    const tooltip = mkTooltip(uist)
+    const tooltip = mkTooltip(uistOrNull)
     return (
         <span //
-            tw={uist?.defaultCursor}
+            tw={uistOrNull?.defaultCursor}
             className={p.className}
             ref={ref}
             style={p.style}
@@ -79,7 +82,7 @@ const mkTooltip = (uist: RevealState | null) => {
     const pos = uist.tooltipPosition
     const p = uist.p
 
-    const hiddenContent = p.content()
+    const hiddenContent = uist.contentFn()
 
     const revealedContent = uist.placement.startsWith('#') ? (
         <div
