@@ -99,6 +99,7 @@ export const run_cnet_IPAdapterFaceID = (
         weight_type: ip.settings.weight_type,
         start_at: ip.settings.startAtStepPercent,
         end_at: ip.settings.endAtStepPercent,
+        embeds_scaling: 'V only',
     })
 
     ckpt = faceIDnode._MODEL
@@ -115,6 +116,7 @@ export const run_cnet_IPAdapterFaceID = (
             combine_embeds: 'average',
             weight_type: ip.reinforce.settings.weight_type,
             clip_vision: ip_clip_name,
+            embeds_scaling: 'V only',
         })._MODEL
         ckpt = ip_adapted_model
     }
