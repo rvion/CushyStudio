@@ -2,10 +2,6 @@ import { useState } from 'react'
 
 import { useSizeOf } from '../../../src/controls/utils/useSizeOf'
 
-/** this custom view  */
-const minAngle = -25
-const maxAngle = +25
-
 export const View_DeckOfCards = view<{
     images: MediaImageID[]
 }>({

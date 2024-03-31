@@ -27,7 +27,7 @@
 ☐ proper Tab
 ✔ lastRunAt @done(24-03-26 15:39)
 ☐ https://github.com/WiseLibs/better-sqlite3/issues/262
-☐ lastUpdateAt on forms.
+✔ lastUpdateAt on forms. @done(24-03-31 19:33)
 ☐ fold button when no label.
 ☐ filter enum values: highlight + sort
 ☐ auto-ui
