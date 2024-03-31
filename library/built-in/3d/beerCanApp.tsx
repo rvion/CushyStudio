@@ -1,9 +1,9 @@
-import { CustomView3dCan } from './_can3/Can3'
+import { CustomView3dCan } from '../_views/View_3d_TinCan'
 
 app({
     metadata: {
         name: 'Beer Can App',
-        description: 'Beer Can App',
+        description: 'diplay a 3d TinCan with provided image as Label texture',
     },
     ui: (ui) => ({
         image: ui.image({ label: 'Image' }),

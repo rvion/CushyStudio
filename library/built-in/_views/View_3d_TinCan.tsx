@@ -1,6 +1,6 @@
 import type { GroupProps } from '@react-three/fiber'
 
-import { Environment, Grid, Html, Image, OrbitControls, Sparkles, Stage, useGLTF } from '@react-three/drei'
+import { Environment, Html, Image, OrbitControls, Sparkles, Stage, useGLTF } from '@react-three/drei'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { observer, useLocalObservable } from 'mobx-react-lite'
 import { useMemo, useRef } from 'react'
@@ -64,7 +64,7 @@ const useGLTFProxy = (url: string) => {}
 const Can3 = observer(
     function Can3_(props: GroupProps & { _textureURL?: string }) {
         // writeFileSync('src/outputs/3d-scene/can3/test/can3.gltf,')
-        const gltf = useGLTF(`/library/built-in/3d/3d-app-2/_can3/can3.gltf`)
+        const gltf = useGLTF(`/library/built-in/_views/_can3/can3.gltf`)
         const { nodes, materials } = gltf
         const uist = useLocalObservable(() => ({ hover: false }))
         const ref = useRef<THREE.Group>(null!)
