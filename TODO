@@ -1,3 +1,21 @@
+UC take 2:
+    ✔ selection should be hidden when not in generate mode @done(24-03-31 20:49)
+    ☐ selection should appear above unnacepted patches
+    ☐ unnacepted patches should have button so we can accept them
+    ☐ unnacepted patches should have arrow buttons to navigate between suggestions
+    ☐ new Draft.UCCategory : Maybe<tool> string
+    ☐ create a bunch of apps / default drafts in  `library/UnifiedCanvas`
+        ☐ add text
+        ☐ ....
+        ☐ ad a few custom
+        ☐ mozaic
+    ☐ default-drafts section in apps.
+    ☐ better API to communicate with the UC
+    ☐ persist UC state in a form tree
+
+-------------
+
+
 ☐ <Form theme={...} />
 ☐ better bundling ?
 ☐ remove all config options
