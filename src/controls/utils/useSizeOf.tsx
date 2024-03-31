@@ -10,7 +10,7 @@ type DynamicSize = {
     observer: ResizeObserver
 }
 
-export const useSizeOf = (): { refFn: RefFn; size: DynamicSize } => {
+export const useSizeOf = (): { ref: RefFn; size: DynamicSize } => {
     const size = useLocalObservable(
         (): DynamicSize => ({
             observer: new ResizeObserver((e, obs) => {
@@ -31,5 +31,5 @@ export const useSizeOf = (): { refFn: RefFn; size: DynamicSize } => {
         if (e == null) return ro.disconnect()
         ro.observe(e)
     }
-    return { refFn, size }
+    return { ref: refFn, size }
 }
