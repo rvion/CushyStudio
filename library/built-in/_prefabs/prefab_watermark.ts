@@ -38,3 +38,24 @@ export const run_watermark_v1 = (
         image.addWatermark_withKonva(ui.content, params)
     }
 }
+
+export const run_addFancyWatermarkToAllImage = () => {
+    const run = getCurrentRun()
+    for (const img of run.generatedImages)
+        img.processImage((ctx: CanvasRenderingContext2D) => {
+            // params
+            const ratio = img.width / 1000
+            const X = img.width - 250 * ratio
+            ctx.fillStyle = 'white'
+            ctx.strokeStyle = 'black'
+
+            // draw big text saying AI
+            ctx.font = `bold ${200 * ratio}px Arial`
+            ctx.fillText('AI', X, img.height - 90 * ratio)
+            ctx.strokeText('AI', X, img.height - 90 * ratio)
+
+            // draw small text saying CushyStudio
+            ctx.font = `${40 * ratio}px Arial`
+            ctx.fillText('CushyStudio', X, img.height - 40 * ratio)
+        })
+}

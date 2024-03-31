@@ -10,10 +10,9 @@ import type { DraftL } from './Draft'
 import type { StepL } from './Step'
 import type { MouseEvent } from 'react'
 
-import { existsSync, mkdirSync, readFileSync, renameSync } from 'fs'
+import { existsSync, mkdirSync, readFileSync } from 'fs'
 import Konva from 'konva'
 import { lookup } from 'mime-types'
-import { runInAction } from 'mobx'
 import { basename, resolve } from 'pathe'
 import sharp from 'sharp'
 
@@ -379,6 +378,23 @@ export class MediaImageL {
     get _thumbnailAbsPath(): AbsolutePath {
         // 2024-03-14 👉 not using join cause it's slow (trying to fix gallery perf problems)
         return `${this.st.rootPath}/${this._thumbnailRelPath}` as AbsolutePath
+    }
+
+    processImage = async (
+        p: (ctx: CanvasRenderingContext2D) => void,
+        conf?: { quality?: number; format?: 'image/jpeg' | 'image/webp' | 'image/png' },
+    ): Promise<MediaImageL> => {
+        const img = await this.asHTMLImageElement_wait()
+        const canvas = document.createElement('canvas')
+        const ctx = canvas.getContext('2d')
+        if (ctx == null) throw new Error('could not get 2d context')
+        canvas.width = img.width
+        canvas.height = img.height
+        ctx.drawImage(img, 0, 0)
+        p(ctx)
+        const newDataURL = canvas.toDataURL(conf?.format, conf?.quality)
+        const out = createMediaImage_fromDataURI(this.st, newDataURL, undefined, this._imageCreationOpts)
+        return out
     }
 
     addWatermark_withCanvas = async (text: string, p?: WatermarkProps): Promise<MediaImageL> => {
