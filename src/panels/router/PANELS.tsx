@@ -1,3 +1,5 @@
+import type { PropsOf } from './Layout'
+
 import { Panel_Draft } from '../draft/Panel_Draft'
 import { Panel_Canvas } from '../Panel_Canvas/Panel_Canvas'
 import { Panel_Civitai } from '../Panel_Civitai'
@@ -8,7 +10,7 @@ import { Panel_Config } from '../Panel_Config'
 import { Panel_DraftJsonResult } from '../Panel_DraftJsonResult'
 import { Panel_DraftJsonSerial } from '../Panel_DraftJsonSerial'
 import { Panel_FullScreenLibrary } from '../Panel_FullScreenLibrary'
-import { Panel_Gallery } from '../Panel_Gallery'
+import { Panel_Gallery } from '../Panel_Gallery/Panel_Gallery'
 import { Panel_Iframe } from '../Panel_IFrame'
 import { Panel_Import } from '../Panel_Import'
 import { Panel_LastGraph } from '../Panel_LastGraph'
@@ -25,8 +27,7 @@ import { Panel_TreeExplorer } from '../Panel_TreeExplorer'
 import { Panel_TypeDoc } from '../Panel_TypeDoc'
 import { Panel_ViewImage } from '../Panel_ViewImage'
 import { Panel_Welcome } from '../Panel_Welcome'
-import { PropsOf } from './Layout'
-import { assets } from 'src/utils/assets/assets'
+import { assets } from '../../utils/assets/assets'
 
 // prettier-ignore
 export const panels = {

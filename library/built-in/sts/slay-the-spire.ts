@@ -3,19 +3,14 @@
  * For the slay-the-spire game
  */
 
-import type { OpenRouter_Models } from 'src/llm/OpenRouter_models'
-
-import {
-    run_ipadapter_standalone,
-    ui_ipadapter_standalone,
-} from '../_prefabs/ControlNet/ipAdapter/prefab_ipAdapter_base_standalone'
+import { bang } from '../../../src/utils/misc/bang'
+import { run_ipadapter_standalone, ui_ipadapter_standalone } from '../_ipAdapter/prefab_ipAdapter_base_standalone'
 import { run_model, ui_model } from '../_prefabs/prefab_model'
 import { run_prompt } from '../_prefabs/prefab_prompt'
 import { stsAssets } from './_stsAssets'
 import { allCards } from './_stsCards'
 import { drawCard } from './_stsDrawCard'
 import { convertColors, convertKind, convertRarity } from './_stsHelpers'
-import { bang } from 'src/utils/misc/bang'
 
 app({
     metadata: {
@@ -74,7 +69,6 @@ app({
 
         let startingSeed = ui.seed
         for (const x of allCards) {
-            let latent: _LATENT = graph.EmptyLatentImage({ height, width })
             if (AFTERGENERATION.length >= ui.max) break
             // if cards are manually specified, only use those
             if (ui.cards.length > 0) {
@@ -120,6 +114,7 @@ app({
             const positiveCond = graph.CLIPTextEncode({ clip, text: prompt })
             const negativeCond = graph.CLIPTextEncode({ clip, text: negativeText })
             const seed = startingSeed++
+            let latent: _LATENT = graph.EmptyLatentImage({ height, width })
             latent = graph.KSampler({
                 seed,
                 latent_image: latent,

@@ -5,9 +5,9 @@ import { makeAutoObservable } from 'mobx'
 import { ITreeElement, ITreeEntry } from '../TreeEntry'
 // import { buildTreeItem } from '../nodes/buildTreeItem'
 import { FAIL } from './utils'
-import { SQLITE_false, SQLITE_true } from 'src/db/SQLITE_boolean'
-import { asTreeEntryID } from 'src/db/TYPES.gen'
-import { TreeEntryL } from 'src/models/TreeEntry'
+import { SQLITE_false, SQLITE_true } from '../../../../db/SQLITE_boolean'
+import { asTreeEntryID } from '../../../../db/TYPES.gen'
+import { TreeEntryL } from '../../../../models/TreeEntry'
 
 export type NodeId = string
 export type NodeKey = string
@@ -116,8 +116,9 @@ export class TreeNode {
         for (const childElem of childElements) {
             const childKey = childElem.key
             // const path = this.id + '/' + childID
-            if (this._children_[childKey]) {
-                out.push(this._children_[childKey])
+            const child = this._children_[childKey]
+            if (child) {
+                out.push(child!)
             } else {
                 // const childEntry = childElem.ctor(childElem.props)
                 const node = new TreeNode(this.tree, childElem, this)

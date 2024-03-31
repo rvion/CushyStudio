@@ -1,65 +1,62 @@
+import type { DraftL } from '../../../models/Draft'
 import type { Form } from '../../Form'
-import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from 'src/controls/IWidget'
-import type { DraftL } from 'src/models/Draft'
+import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 
-import { makeAutoObservable } from 'mobx'
+import { makeAutoObservable, runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
-import { hash } from 'ohash'
 
-import { WidgetDI } from '../WidgetUI.DI'
+import { applyWidgetMixinV2 } from '../../Mixins'
+import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetInlineRunUI } from './WidgetButtonUI'
-import { applyWidgetMixinV2 } from 'src/controls/Mixins'
 
-export type Widget_button_context = {
-    draft: DraftL
-    widget: Widget_button
+export type Widget_button_context<K> = {
+    context: K
+    widget: Widget_button<K>
 }
 
 // CONFIG
-export type Widget_button_config = WidgetConfigFields<
+export type Widget_button_config<K = any> = WidgetConfigFields<
     {
         text?: string
         kind?: `primary` | `special` | `warning`
-        icon?: (ctx: Widget_button_context) => string
-        onClick?: (ctx: Widget_button_context) => void
+        useContext?: () => K
+        icon?: (ctx: Widget_button_context<K>) => string
+        onClick?: (ctx: Widget_button_context<K>) => void
     },
-    Widget_button_types
+    Widget_button_types<K>
 >
 
 // SERIAL
 export type Widget_button_serial = WidgetSerialFields<{
     type: 'button'
-    active: true
     val: boolean
 }>
 
-// OUT
-export type Widget_button_output = boolean
+// VALUE
+export type Widget_button_value = boolean
 
 // TYPES
-export type Widget_button_types = {
+export type Widget_button_types<K> = {
     $Type: 'button'
-    $Input: Widget_button_config
+    $Config: Widget_button_config<K>
     $Serial: Widget_button_serial
-    $Output: Widget_button_output
-    $Widget: Widget_button
+    $Value: Widget_button_value
+    $Widget: Widget_button<K>
 }
 
 // STATE
-export interface Widget_button extends Widget_button_types, IWidgetMixins {}
-export class Widget_button implements IWidget<Widget_button_types> {
+export interface Widget_button<K> extends Widget_button_types<K>, IWidgetMixins {}
+export class Widget_button<K> implements IWidget<Widget_button_types<K>> {
     DefaultHeaderUI = WidgetInlineRunUI
     DefaultBodyUI = undefined
-    get serialHash(): string {
-        return hash(this.value)
-    }
     readonly id: string
     readonly type: 'button' = 'button'
     readonly serial: Widget_button_serial
     constructor(
         //
-        public form: Form<any>,
-        public config: Widget_button_config,
+        public readonly form: Form,
+        public readonly parent: IWidget | null,
+        public config: Widget_button_config<K>,
         serial?: Widget_button_serial,
     ) {
         if (config.text) {
@@ -71,16 +68,23 @@ export class Widget_button implements IWidget<Widget_button_types> {
             type: 'button',
             collapsed: config.startCollapsed,
             id: this.id,
-            active: true,
             val: false,
         }
         applyWidgetMixinV2(this)
         makeAutoObservable(this)
     }
 
-    get value(): Widget_button_output {
-        return this.serial.active ? this.serial.val : false
+    get value(): Widget_button_value {
+        return this.serial.val
+    }
+    set value(next: boolean) {
+        if (this.serial.val === next) return
+        runInAction(() => {
+            this.serial.val = next
+            this.bumpValue()
+        })
     }
 }
 
-WidgetDI.Widget_button = Widget_button
+// DI
+registerWidgetClass('button', Widget_button)

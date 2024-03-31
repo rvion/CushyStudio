@@ -1,18 +1,20 @@
+import type { LibraryFile } from '../cards/LibraryFile'
+import type { Form } from '../controls/Form'
+import type { Widget_group } from '../controls/widgets/group/WidgetGroup'
 import type { LiveInstance } from '../db/LiveInstance'
+import type { TABLES } from '../db/TYPES.gen'
 import type { CushyAppL } from './CushyApp'
 import type { MediaImageL } from './MediaImage'
 import type { StepL } from './Step'
-import type { LibraryFile } from 'src/cards/LibraryFile'
-import type { Widget_group } from 'src/controls/widgets/group/WidgetGroup'
-import type { TABLES } from 'src/db/TYPES.gen'
 
 import { reaction } from 'mobx'
 
-import { Status } from 'src/back/Status'
-import { Form } from 'src/controls/Form'
-import { LiveRef } from 'src/db/LiveRef'
-import { SQLITE_false, SQLITE_true } from 'src/db/SQLITE_boolean'
-import { toastError } from 'src/utils/misc/toasts'
+// import { fileURLToPath } from 'url'
+import { Status } from '../back/Status'
+import { CushyFormManager, type FormBuilder } from '../controls/FormBuilder'
+import { LiveRef } from '../db/LiveRef'
+import { SQLITE_false, SQLITE_true } from '../db/SQLITE_boolean'
+import { toastError } from '../utils/misc/toasts'
 
 export type FormPath = (string | number)[]
 
@@ -27,6 +29,12 @@ export class DraftL {
 
     /** expand all top-level form entries */
     expandTopLevelFormEntries = () => this.form?.root?.expandAllEntries()
+
+    // TODO: rename
+    // get illustrationFilePathAbs(): AbsolutePath | null {
+    //     if (this.data.illustration == null) return null
+    //     return fileURLToPath(this.data.illustration) as AbsolutePath
+    // }
 
     appRef = new LiveRef<this, CushyAppL>(this, 'appID', 'cushy_app')
 
@@ -148,7 +156,7 @@ export class DraftL {
         this.app.update({ lastRunAt: Date.now() })
 
         if (p.focusOutput ?? true) {
-            // 2024-01-21 should this be here ?
+            // 💬 2024-01-21 should this be here ?
             this.st.layout.FOCUS_OR_CREATE('Output', {})
         }
 
@@ -207,7 +215,7 @@ export class DraftL {
         return step
     }
 
-    form: Maybe<Form<any>> = null
+    form: Maybe<Form<any, FormBuilder>> = null
 
     get file(): LibraryFile {
         return this.st.library.getFile(this.appRef.item.relPath)
@@ -224,12 +232,14 @@ export class DraftL {
             (action) => {
                 console.log(`[🦊] form: awakening app ${this.data.appID}`)
                 if (action == null) return
-                if (this.form) this.form.cleanup?.()
+                // 💬 2024-03-13 hopefully this is not needed anymore now that
+                // | we're no longer using reactions
+                // if (this.form) this.form.cleanup?.()
 
-                this.form = new Form(action.ui, {
+                this.form = CushyFormManager.form(action.ui, {
                     name: this.name,
                     initialValue: () => this.data.formSerial,
-                    onChange: (root) => {
+                    onSerialChange: (root) => {
                         this.update({ formSerial: root.serial })
                         console.log(`[👙] UPDATING draft(${this.id}) SERIAL`)
                         this.isDirty = true
@@ -264,7 +274,7 @@ export class DraftL {
             _1()
             // _2()
             this.isInitialized = false
-            this.form?.cleanup?.()
+            // this.form?.cleanup?.() // 🔶
             this.form = null //  __FAIL('not loaded yet')
         }
     }

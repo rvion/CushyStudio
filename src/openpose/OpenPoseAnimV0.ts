@@ -1,4 +1,4 @@
-import type { STATE } from 'src/state/state'
+import type { STATE } from '../state/state'
 
 import * as fs from 'fs'
 import * as path from 'pathe'
@@ -87,6 +87,6 @@ export class OpenPoseAnimV0 {
     draw = async () => {
         if (this.ctx == null) return
         this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height)
-        drawOpenPoseBones(this.poses[this.ix++ % this.poses.length], this.ctx)
+        drawOpenPoseBones(this.poses[this.ix++ % this.poses.length]!, this.ctx)
     }
 }

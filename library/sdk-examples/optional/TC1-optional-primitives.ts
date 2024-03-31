@@ -1,13 +1,15 @@
 app({
     ui: (ui) => ({
         a: ui.int().optional(),
-        b: ui.intOpt(),
-        c: ui.groupOpt({
-            items: {
-                foo: ui.intOpt(),
-                bar: ui.intOpt(),
-            },
-        }),
+        b: ui.int().optional(),
+        c: ui
+            .group({
+                items: {
+                    foo: ui.int().optional(),
+                    bar: ui.int().optional(),
+                },
+            })
+            .optional(),
         _: ui.markdown(`
 
 2024-02-25 10:28:

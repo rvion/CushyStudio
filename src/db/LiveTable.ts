@@ -1,18 +1,19 @@
+import type { STATE } from '../state/state'
 import type { LiveDB } from './LiveDB'
 import type { $BaseInstanceFields, LiveInstance, UpdateOptions } from './LiveInstance'
 import type { CompiledQuery, SelectQueryBuilder } from 'kysely'
-import type { STATE } from 'src/state/state'
 
-import { Value, ValueError } from '@sinclair/typebox/value'
-import { action, type AnnotationMapEntry, makeAutoObservable, runInAction, toJS } from 'mobx'
+// 2024-03-14 commented serial checks for now
+// import { Value, ValueError } from '@sinclair/typebox/value'
+import { action, type AnnotationMapEntry, makeAutoObservable, observable, runInAction, toJS } from 'mobx'
 import { nanoid } from 'nanoid'
 
+import { kysely } from '../DB'
 import { DEPENDS_ON, MERGE_PROTOTYPES } from './LiveHelpers'
 import { quickBench } from './quickBench'
 import { SqlFindOptions } from './SQLWhere'
-import { kysely } from 'src/DB'
-import { type KyselyTables, type LiveDBSubKeys, schemas } from 'src/db/TYPES.gen'
-import { TableInfo } from 'src/db/TYPES_json'
+import { type KyselyTables, type LiveDBSubKeys, schemas } from './TYPES.gen'
+import { TableInfo } from './TYPES_json'
 
 export interface LiveEntityClass<TABLE extends TableInfo> {
     new (...args: any[]): TABLE['$L']
@@ -301,6 +302,16 @@ export class LiveTable<TABLE extends TableInfo<keyof KyselyTables>> {
                 this.st = table.db.st
                 this.table = table
                 this.data = data
+
+                // prettier-ignore
+                /* 🔶 PERF HACK */ if (this.tableName === 'comfy_schema') {
+                /* 🔶 PERF HACK */     ;(data as any as { spec: { a: 1 } }).spec = observable(
+                /* 🔶 PERF HACK */         (data as any as { spec: { a: 1 } }).spec,
+                /* 🔶 PERF HACK */         {},
+                /* 🔶 PERF HACK */         { deep: false },
+                /* 🔶 PERF HACK */     )
+                /* 🔶 PERF HACK */ }
+
                 this.onHydrate?.(/* data */)
                 this.onUpdate?.(undefined, data)
                 makeAutoObservable(this, this.observabilityConfig as any)
@@ -585,14 +596,14 @@ export class LiveTable<TABLE extends TableInfo<keyof KyselyTables>> {
     _createInstance = (data: TABLE['$T']): TABLE['$L'] => {
         const instance = new this.Ktor()
         // TYPE CHECKING --------------------
-        const schema = this.schema.schema
-        const valid = Value.Check(schema, data)
-        if (!valid) {
-            const errors: ValueError[] = [...Value.Errors(schema, data)]
-            console.log('❌', this.name)
-            for (const i of errors) console.log(`❌`, JSON.stringify(i))
-            // debugger
-        }
+        // /* ⏸️ */ const schema = this.schema.schema
+        // /* ⏸️ */ const valid = Value.Check(schema, data)
+        // /* ⏸️ */ if (!valid) {
+        // /* ⏸️ */     const errors: ValueError[] = [...Value.Errors(schema, data)]
+        // /* ⏸️ */     console.log('❌', this.name)
+        // /* ⏸️ */     for (const i of errors) console.log(`❌`, JSON.stringify(i))
+        // /* ⏸️ */     // debugger
+        // /* ⏸️ */ }
         // --------------------
         instance.init(this, data)
         this.liveEntities.set(data.id, instance)

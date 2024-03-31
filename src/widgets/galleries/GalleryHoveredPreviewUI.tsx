@@ -2,7 +2,7 @@ import { observer } from 'mobx-react-lite'
 import { useDragLayer } from 'react-dnd'
 
 import { useSt } from '../../state/stateContext'
-import { OutputUI } from 'src/outputs/OutputUI'
+import { OutputUI } from '../../outputs/OutputUI'
 
 export const GalleryHoveredPreviewUI = observer(function GalleryHoveredPreviewUI_(p: {}) {
     const st = useSt()

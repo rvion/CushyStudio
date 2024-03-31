@@ -1,8 +1,8 @@
 import { ReactNode } from 'react'
 
-import { exhaust } from '../utils/misc/ComfyUtils'
+import { Loader } from '../rsuite/shims'
+import { exhaust } from '../utils/misc/exhaust'
 import { Status } from './Status'
-import { Loader } from 'src/rsuite/shims'
 
 export const statusUI = (status: Status): ReactNode => {
     if (status === Status.New) return '🆕'

@@ -1,15 +1,33 @@
-import type { STATE } from 'src/state/state'
+import type { STATE } from '../state/state'
 
 import { action, makeAutoObservable } from 'mobx'
 import path from 'pathe'
 import Watcher from 'watcher'
 
+import { CushyAppL } from '../models/CushyApp'
+import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { LibraryFile } from './LibraryFile'
 import { shouldSkip_duringWatch } from './shouldSkip'
-import { CushyAppL } from 'src/models/CushyApp'
-import { asAbsolutePath, asRelativePath } from 'src/utils/fs/pathUtils'
 
 export class Library {
+    // ------------------------------------------------------------------------------------
+    filesKnownToExists = new Map<AbsolutePath, { at: Timestamp; existed: boolean }>()
+
+    // /**
+    //  * returns true if the file exists; cache result 5 minutes
+    //  * all places in the app creating files are expected to call this method ?
+    //  */
+    // doesFileExist = (path: AbsolutePath): boolean => {
+    //     const entry = this.filesKnownToExists.get(path)
+    //     const now = Date.now()
+    //     const fiveMins = 1000 * 60 * 5
+    //     if (entry && now - entry.at < fiveMins) return entry.existed
+    //     const exists = existsSync(path)
+    //     this.filesKnownToExists.set(path, { at: now, existed: true })
+    //     return exists
+    // }
+
+    // ------------------------------------------------------------------------------------
     query = ''
     showDescription = true
     showDrafts = true
@@ -149,7 +167,7 @@ export class Library {
                 for (const app of apps) {
                     const res = app.file.extractScriptFromFile({ force: true }).then((x) => {
                         if (x.type === 'newScript') {
-                            x.script.evaluateAndUpdateApps()
+                            x.script.evaluateAndUpdateAppsAndViews()
                         }
                     })
                 }

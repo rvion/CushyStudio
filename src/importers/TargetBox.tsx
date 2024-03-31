@@ -5,7 +5,7 @@ import { type CSSProperties, type FC, ReactNode, useCallback } from 'react'
 import { useDrop } from 'react-dnd'
 import { NativeTypes } from 'react-dnd-html5-backend'
 
-import { useSt } from 'src/state/stateContext'
+import { useSt } from '../state/stateContext'
 
 export const TargetBox = observer((p: { children?: ReactNode }) => {
     const st = useSt()

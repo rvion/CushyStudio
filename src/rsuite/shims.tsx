@@ -1,21 +1,13 @@
+import type { RSAppearance, RSSize } from './RsuiteTypes'
+
 import { observer } from 'mobx-react-lite'
 import { ReactNode } from 'react'
 
+import { exhaust } from '../utils/misc/exhaust'
 import { RevealUI } from './reveal/RevealUI'
-import { RSAppearance, RSSize } from './RsuiteTypes'
-import { exhaust } from 'src/utils/misc/ComfyUtils'
 
 // form
-export const FormHelpText = (p: any) => <div {...p}></div>
-export const FormControlLabel = (p: JSX.IntrinsicElements['label']) => <label {...p}></label>
-export const FormControl = (p: JSX.IntrinsicElements['input']) => <input tw='input input-bordered input-sm' {...p}></input>
-export const Joined = (p: { className?: string; children?: ReactNode }) => (
-    <div tw={[p.className, 'join virtualBorder']}>{p.children}</div>
-)
-
-export const Addon = observer(function Addon_(p: any) {
-    return <div tw='flex items-center px-2 join-item' {...p}></div>
-})
+export const FormHelpTextUI = (p: any) => <div {...p}></div>
 
 // inputs
 export const Button = (
@@ -156,12 +148,8 @@ export const Whisper = (p: {
     placement?: string
     speaker: ReactNode
     children: ReactNode
-}) => (
-    <RevealUI>
-        {p.children}
-        {p.speaker}
-    </RevealUI>
-)
+}) => <RevealUI content={() => p.speaker}>{p.children}</RevealUI>
+
 export const Speaker = (p: any) => <span {...p}></span>
 export const Popover = (p: any) => <span {...p}></span>
 export const Tooltip = (p: any) => <span {...p}></span>

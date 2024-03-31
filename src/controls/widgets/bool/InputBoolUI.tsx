@@ -1,7 +1,6 @@
-import { runInAction } from 'mobx'
-import { observer } from 'mobx-react-lite'
+import type { CSSProperties } from 'react'
 
-const clamp = (x: number, min: number, max: number) => Math.max(min, Math.min(max, x))
+import { observer } from 'mobx-react-lite'
 
 let isDragging = false
 let wasEnabled = false
@@ -13,6 +12,7 @@ export const InputBoolUI = observer(function InputBoolUI_(p: {
     icon?: string
     text?: string
     className?: string
+    style?: CSSProperties
     onValueChange?: (next: boolean) => void
 }) {
     const isActive = p.active ?? false
@@ -31,6 +31,7 @@ export const InputBoolUI = observer(function InputBoolUI_(p: {
     return (
         <div // Container
             className={p.className}
+            style={p.style}
             tw={[
                 'WIDGET-FIELD select-none',
                 'flex items-center',

@@ -1,17 +1,17 @@
-import type { MediaImageL } from 'src/models/MediaImage'
+import type { MediaImageL } from '../models/MediaImage'
 
 import { observer } from 'mobx-react-lite'
 import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch'
 
 import { ImageDropdownUI } from './ImageDropdownUI'
 import { PanelHeaderUI } from './PanelHeader'
-import { SpacerUI } from 'src/controls/widgets/spacer/SpacerUI'
-import { formatSize } from 'src/db/getDBStats'
-import { RevealUI } from 'src/rsuite/reveal/RevealUI'
-import { Rate } from 'src/rsuite/shims'
-import { useSt } from 'src/state/stateContext'
-import { assets } from 'src/utils/assets/assets'
-import { JsonViewUI } from 'src/widgets/workspace/JsonViewUI'
+import { SpacerUI } from '../controls/widgets/spacer/SpacerUI'
+import { formatSize } from '../db/getDBStats'
+import { RevealUI } from '../rsuite/reveal/RevealUI'
+import { Rate } from '../rsuite/shims'
+import { useSt } from '../state/stateContext'
+import { assets } from '../utils/assets/assets'
+import { JsonViewUI } from '../widgets/workspace/JsonViewUI'
 
 export const Panel_ViewImage = observer(function Panel_ViewImage_(p: {
     //
@@ -128,7 +128,19 @@ export const ImageActionBarUI = observer(function ImageActionBarUI_(p: { img?: M
             <SpacerUI />
 
             {/* Image Info Button */}
-            <RevealUI tw='bg-base-200 hover:brightness-125 rounded text-shadow'>
+            <RevealUI
+                tw='bg-base-200 hover:brightness-125 rounded text-shadow'
+                content={() => (
+                    <div>
+                        <div>Data</div>
+                        <JsonViewUI value={img?.data}></JsonViewUI>
+                        <div>meta</div>
+                        <JsonViewUI value={img?.ComfyNodeMetadta ?? undefined}></JsonViewUI>
+                        <div>node</div>
+                        <JsonViewUI value={img?.ComfyNode ?? undefined}></JsonViewUI>
+                    </div>
+                )}
+            >
                 <div tw='WIDGET-FIELD flex px-2 cursor-default rounded items-center justify-center border border-base-100 text-sm'>
                     <span className='material-symbols-outlined'>info</span>
 
@@ -152,14 +164,6 @@ export const ImageActionBarUI = observer(function ImageActionBarUI_(p: { img?: M
                             #{t}
                         </div>
                     ))}
-                </div>
-                <div>
-                    <div>Data</div>
-                    <JsonViewUI value={img?.data}></JsonViewUI>
-                    <div>meta</div>
-                    <JsonViewUI value={img?.ComfyNodeMetadta ?? undefined}></JsonViewUI>
-                    <div>node</div>
-                    <JsonViewUI value={img?.ComfyNode ?? undefined}></JsonViewUI>
                 </div>
             </RevealUI>
 

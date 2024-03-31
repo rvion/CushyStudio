@@ -1,28 +1,31 @@
 import type { LiveInstance } from '../db/LiveInstance'
+import type { TABLES } from '../db/TYPES.gen'
+import type { ComfyNodeMetadata } from '../types/ComfyNodeID'
+import type { ComfyNodeJSON } from '../types/ComfyPrompt'
 import type { ComfyPromptL } from './ComfyPrompt'
 import type { ComfyWorkflowL } from './ComfyWorkflow'
 import type { CushyAppL } from './CushyApp'
 import type { CushyScriptL } from './CushyScript'
 import type { DraftL } from './Draft'
 import type { StepL } from './Step'
-import type { TABLES } from 'src/db/TYPES.gen'
-import type { ComfyNodeMetadata } from 'src/types/ComfyNodeID'
-import type { ComfyNodeJSON } from 'src/types/ComfyPrompt'
+import type { MouseEvent } from 'react'
 
-import { readFileSync } from 'fs'
+import { existsSync, mkdirSync, readFileSync, renameSync } from 'fs'
 import { lookup } from 'mime-types'
+import { runInAction } from 'mobx'
 import { basename, resolve } from 'pathe'
 import sharp from 'sharp'
-import { rgbaToThumbHash, thumbHashToDataURL } from 'thumbhash'
 
+import { hasMod } from '../app/shortcuts/META_NAME'
+import { LiveRefOpt } from '../db/LiveRefOpt'
+import { SafetyResult } from '../safety/Safety'
+import { createHTMLImage_fromURL } from '../state/createHTMLImage_fromURL'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
-import { getCurrentRun_IMPL } from './_ctx2'
-import { LiveRefOpt } from 'src/db/LiveRefOpt'
-import { SafetyResult } from 'src/safety/Safety'
-import { createHTMLImage_fromURL } from 'src/state/createHTMLImage_fromURL'
-import { asSTRING_orCrash } from 'src/utils/misc/bang'
-import { ManualPromise } from 'src/utils/misc/ManualPromise'
-import { toastError, toastInfo } from 'src/utils/misc/toasts'
+import { asSTRING_orCrash } from '../utils/misc/bang'
+import { ManualPromise } from '../utils/misc/ManualPromise'
+import { toastError, toastInfo } from '../utils/misc/toasts'
+import { transparentImgURL } from '../widgets/galleries/transparentImg'
+import { getCurrentRun_IMPL } from './getGlobalRuntimeCtx'
 
 export interface MediaImageL extends LiveInstance<TABLES['media_image']> {}
 export class MediaImageL {
@@ -48,6 +51,15 @@ export class MediaImageL {
     get draft(): Maybe<DraftL> { return this.step?.draft } // prettier-ignore
     get app(): Maybe<CushyAppL> {return this.draft?.app} // prettier-ignore
     get script(): Maybe<CushyScriptL> {return this.app?.script } // prettier-ignore
+
+    /** flip image */
+    // 👀 👉 https://github.com/lovell/sharp/issues/28#issuecomment-679193628
+    // ⏸️ flip = async () => {
+    // ⏸️     await sharp(this.absPath)
+    // ⏸️         // .flip()
+    // ⏸️         .toFile(this.absPath + '2')
+    // ⏸️     renameSync(this.absPath + '2', this.absPath)
+    // ⏸️ }
 
     /* XXX: This should only be a stop-gap for a custom solution that isn't hampered by the browser's security capabilities */
     /** Uses browser clipboard API to copy the image to clipboard, will only copy as a PNG and will not include metadata. */
@@ -87,6 +99,12 @@ export class MediaImageL {
             })
     }
 
+    copyToClipboardAsBase64 = () => {
+        navigator.clipboard.writeText(this.getBase64Url()).then(() => {
+            toastInfo('Image copied to clipboard!')
+        })
+    }
+
     useAsDraftIllustration = (draft_?: DraftL) => {
         const draft = draft_ ?? this.draft
         if (draft == null) return toastError(`no related draft found`)
@@ -95,6 +113,10 @@ export class MediaImageL {
 
     get relPath() {
         return asRelativePath(this.data.path)
+    }
+
+    get relPathAsAbsPath(): string {
+        return `/` + this.data.path
     }
 
     get baseName() {
@@ -110,6 +132,32 @@ export class MediaImageL {
     get extension() {
         const fname = this.baseName
         return fname.slice(((fname.lastIndexOf('.') - 1) >>> 0) + 1)
+    }
+
+    onMouseEnter = (ev: MouseEvent): void => {
+        cushy.hovered = this
+    }
+    onMouseLeave = (ev: MouseEvent): void => {
+        if (cushy.hovered === this) cushy.hovered = null
+    }
+    onClick = (ev: MouseEvent): void => {
+        if (hasMod(ev)) {
+            ev.stopPropagation()
+            ev.preventDefault()
+            return void cushy.layout.FOCUS_OR_CREATE('Image', { imageID: this.id })
+        }
+        if (ev.shiftKey) {
+            ev.stopPropagation()
+            ev.preventDefault()
+            return void cushy.layout.FOCUS_OR_CREATE('Canvas', { imgID: this.id })
+        }
+        if (ev.altKey) {
+            ev.stopPropagation()
+            ev.preventDefault()
+            return void cushy.layout.FOCUS_OR_CREATE('Paint', { imgID: this.id })
+        }
+
+        return
     }
 
     /** get the expected enum name */
@@ -294,53 +342,69 @@ export class MediaImageL {
         return this.absPath != null
     }
 
-    // https://evanw.github.io/thumbhash/
-    _mkThumbnail = async (): Promise</* { binary: Uint8Array; url: string } */ string> => {
-        const image = sharp(this.absPath).resize(100, 100, { fit: 'inside' })
-        const { data, info } = await image.ensureAlpha().raw().toBuffer({ resolveWithObject: true })
-        const binaryThumbHash = rgbaToThumbHash(info.width, info.height, data)
-        // console.log('binaryThumbHash:', Buffer.from(binaryThumbHash))
-        const placeholderURL = thumbHashToDataURL(binaryThumbHash)
-        // console.log('placeholderURL:', placeholderURL)
-        // return { binary: binaryThumbHash, url: placeholderURL }
-        return placeholderURL
+    // THUMBNAIL ------------------------------------------------------------------------------------------
+
+    /** allow to pick the best source to preserve CPU and MEMORY */
+    urlForSize = (size: number): string => {
+        // 32 x 32 mini-thumb
+        const forceThumb = this.st.galleryConf.fields.onlyShowBlurryThumbnails.value
+        if (forceThumb) return this.thumbhashURL
+        if (size < 32) return this.thumbhashURL
+
+        // 100 x 100 thumb
+        if (size < 256) return this.thumbnailURL
+
+        // full image
+        return this.url
     }
 
-    get thumbnail(): string {
-        if (this.data.thumbnail && this.data.thumbnail.startsWith('data:')) return this.data.thumbnail
-        void this._mkThumbnail().then((url) => this.update({ thumbnail: url }))
+    // THUMBNAIL ------------------------------------------------------------------------------------------
+    _thumbnailReady: boolean = false
+    get thumbnailURL() {
+        // ⏸️ if (this._efficientlyCachedTumbnailBufferURL) return this._efficientlyCachedTumbnailBufferURL
+        // no need to add hash suffix, cause path already uses hash
+        if (this._thumbnailReady || existsSync(this._thumbnailAbsPath)) return `file://${this._thumbnailAbsPath}`
+        this._mkThumbnail()
+        return transparentImgURL
+    }
+
+    /** relative path to the thumbnail */
+    get _thumbnailRelPath(): RelativePath {
+        return `outputs/.thumbnails/${this.data.hash}.jpg` as RelativePath
+    }
+
+    /** absolute path to the thumbnail */
+    get _thumbnailAbsPath(): AbsolutePath {
+        // 2024-03-14 👉 not using join cause it's slow (trying to fix gallery perf problems)
+        return `${this.st.rootPath}/${this._thumbnailRelPath}` as AbsolutePath
+    }
+
+    _mkThumbnail = async (): Promise<void> => {
+        // console.log(`[🤠] creating thumbnail for`)
+        // resize image to 100px
+        const img = sharp(this.absPath).rotate().resize(100).jpeg({ mozjpeg: true })
+        // then save file to disk for later use (when app restart, let's not re-compute the thumbnail)
+        mkdirSync(resolve(this.st.rootPath, 'outputs/.thumbnails'), { recursive: true })
+        await img.toFile(this._thumbnailRelPath)
+        // then refresh the thumbnail
+        this._thumbnailReady = true
+    }
+
+    // THUMBHASH ------------------------------------------------------------------------------------------
+    // ❌ https://evanw.github.io/thumbhash/
+    _mkThumbhash = async (): Promise</* { binary: Uint8Array; url: string } */ string> => {
+        const image2 = await sharp(this.absPath).resize(32, 32, { fit: 'inside' }).webp({ quality: 1 }).toBuffer()
+        const x = image2.toString('base64')
+        // console.log(`[🤠] this.data.thumbnail 🟢 =`, x.length)
+        return x
+    }
+
+    get thumbhashURL(): string {
+        if (this.data.thumbnail && !this.data.thumbnail.startsWith('data:')) {
+            // console.log(`[🤠] this.data.thumbnail 🔴 =`, this.data.thumbnail.length)
+            return `data:image/webp;base64,${this.data.thumbnail}`
+        }
+        void this._mkThumbhash().then((url) => this.update({ thumbnail: url }))
         return ''
     }
-
-    // turns this into some clean abstraction
-    // _resolve!: (value: this) => void
-    // _rejects!: (reason: any) => void
-    // finished: Promise<this> = new Promise((resolve, rejects) => {
-    //     this._resolve = resolve
-    //     this._rejects = rejects
-    // })
 }
-
-// ⏸️ getSize = async (): Promise<ImageMeta> => {
-// ⏸️     if (this.data.width && this.data.height)
-// ⏸️         return {
-// ⏸️             width: this.data.width,
-// ⏸️             height: this.data.height,
-// ⏸️         }
-// ⏸️     return this.updateImageMeta()
-// ⏸️ }
-
-// ⏸️ private updateImageMeta = async (buffer?: ArrayBuffer): Promise<ImageMeta> => {
-// ⏸️     const buff = buffer ?? (await this.getArrayBuffer())
-// ⏸️     const uint8arr = new Uint8Array(buff)
-// ⏸️     const size = imageMeta(uint8arr)
-// ⏸️     const hash = hashArrayBuffer(uint8arr)
-// ⏸️     console.log(`[🏞️]`, { size, hash })
-// ⏸️     this.update({
-// ⏸️         width: size?.width,
-// ⏸️         height: size?.height,
-// ⏸️         fileSize: uint8arr.byteLength,
-// ⏸️         hash: hash,
-// ⏸️     })
-// ⏸️     return size
-// ⏸️ }

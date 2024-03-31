@@ -1,8 +1,9 @@
+import type { STATE } from '../state/state'
 import type nsfwjs from 'nsfwjs'
-import type { STATE } from 'src/state/state'
 
-import { exhaust } from 'src/utils/misc/ComfyUtils'
-import { ManualPromise } from 'src/utils/misc/ManualPromise'
+import { bang } from '../utils/misc/bang'
+import { exhaust } from '../utils/misc/exhaust'
+import { ManualPromise } from '../utils/misc/ManualPromise'
 
 export type SafetyRating = nsfwjs.predictionType
 export type SafetyResult = {
@@ -41,7 +42,7 @@ export class SafetyChecker {
             console.log(`[🙈] image loaded`)
             // 2. classify
             const result: SafetyRating[] = await model.classify(img)
-            const prediction: SafetyRating = result[0]
+            const prediction: SafetyRating = bang(result[0])
             console.log(`[🙈] prediction done`, result)
 
             // 3. return result

@@ -1,37 +1,38 @@
+import type { Timestamp } from '../cards/Timestamp'
 import type { STATE } from '../state/state'
-import type { Timestamp } from 'src/cards/Timestamp'
-import type * as T from 'src/db/TYPES.gen'
-import type { TableInfo } from 'src/db/TYPES_json'
+import type * as T from './TYPES.gen'
+import type { TableInfo } from './TYPES_json'
 
 import BetterSqlite3, { default as SQL } from 'better-sqlite3'
 import { rmSync } from 'fs'
 import { makeAutoObservable } from 'mobx'
 
+import { AuthL } from '../models/Auth'
 import { ComfyPromptL } from '../models/ComfyPrompt'
 import { ComfySchemaL } from '../models/ComfySchema'
 import { ComfyWorkflowL } from '../models/ComfyWorkflow'
+import { CushyAppL } from '../models/CushyApp'
+import { CushyScriptL } from '../models/CushyScript'
+import { CustomDataL } from '../models/CustomData'
 import { DraftL } from '../models/Draft'
+import { HostL } from '../models/Host'
+import { Media3dDisplacementL } from '../models/Media3dDisplacement'
+import { MediaCustomL } from '../models/MediaCustom'
 import { MediaImageL } from '../models/MediaImage'
+import { MediaSplatL } from '../models/MediaSplat'
+import { MediaTextL } from '../models/MediaText'
+import { MediaVideoL } from '../models/MediaVideo'
 import { ProjectL } from '../models/Project'
+import { RuntimeErrorL } from '../models/RuntimeError'
 import { StepL } from '../models/Step'
+import { TreeEntryL } from '../models/TreeEntry'
+import { _applyAllMigrations } from './_applyAllMigrations'
+import { _codegenORM } from './_codegenORM'
+import { _setupMigrationEngine } from './_setupMigrationEngine'
 import { DB_RELATIVE_PATH } from './DB_CONFIG'
 import { LiveTable } from './LiveTable'
-import { _applyAllMigrations } from 'src/db/_applyAllMigrations'
-import { _codegenORM } from 'src/db/_codegenORM'
-import { _setupMigrationEngine } from 'src/db/_setupMigrationEngine'
-import { _checkAllMigrationsHaveDifferentIds } from 'src/db/migrations'
-import { liveDBSubKeys } from 'src/db/TYPES.gen'
-import { AuthL } from 'src/models/Auth'
-import { CushyAppL } from 'src/models/CushyApp'
-import { CushyScriptL } from 'src/models/CushyScript'
-import { CustomDataL } from 'src/models/CustomData'
-import { HostL } from 'src/models/Host'
-import { Media3dDisplacementL } from 'src/models/Media3dDisplacement'
-import { MediaSplatL } from 'src/models/MediaSplat'
-import { MediaTextL } from 'src/models/MediaText'
-import { MediaVideoL } from 'src/models/MediaVideo'
-import { RuntimeErrorL } from 'src/models/RuntimeError'
-import { TreeEntryL } from 'src/models/TreeEntry'
+import { _checkAllMigrationsHaveDifferentIds } from './migrations'
+import { liveDBSubKeys } from './TYPES.gen'
 
 export type Indexed<T> = { [id: string]: T }
 
@@ -74,6 +75,7 @@ export class LiveDB {
     media_video:           LiveTable<T.TABLES['media_video']          > // prettier-ignore
     media_splat:           LiveTable<T.TABLES['media_splat']          > // prettier-ignore
     media_3d_displacement: LiveTable<T.TABLES['media_3d_displacement']> // prettier-ignore
+    media_custom:        LiveTable<T.TABLES['media_custom']       > // prettier-ignore
     tree_entry:            LiveTable<T.TABLES['tree_entry']           > // prettier-ignore
     runtime_error:         LiveTable<T.TABLES['runtime_error']        > // prettier-ignore
     draft:                 LiveTable<T.TABLES['draft']                > // prettier-ignore
@@ -104,24 +106,25 @@ export class LiveDB {
             makeAutoObservable(this)
 
             // 3. create tables (after the store has benn made already observable)
-            this.project =              new LiveTable<T.TABLES['project']              >(this, 'project'              , '🤠', ProjectL, { singleton: true })
-            this.custom_data =          new LiveTable<T.TABLES['custom_data']          >(this, 'custom_data'          , '🎁', CustomDataL)
-            this.comfy_schema =         new LiveTable<T.TABLES['comfy_schema']         >(this, 'comfy_schema'         , '📑', ComfySchemaL)
-            this.host =                 new LiveTable<T.TABLES['host']                 >(this, 'host'                 , '📑', HostL)
-            this.comfy_prompt =         new LiveTable<T.TABLES['comfy_prompt']         >(this, 'comfy_prompt'         , '❓', ComfyPromptL)
-            this.cushy_script =         new LiveTable<T.TABLES['cushy_script']         >(this, 'cushy_script'         , '⭐️', CushyScriptL)
-            this.cushy_app =            new LiveTable<T.TABLES['cushy_app']            >(this, 'cushy_app'            , '🌟', CushyAppL)
-            this.media_text =           new LiveTable<T.TABLES['media_text']           >(this, 'media_text'           , '💬', MediaTextL)
-            this.media_image =          new LiveTable<T.TABLES['media_image']          >(this, 'media_image'          , '🖼️', MediaImageL)
-            this.media_video =          new LiveTable<T.TABLES['media_video']          >(this, 'media_video'          , '🖼️', MediaVideoL)
-            this.media_splat =          new LiveTable<T.TABLES['media_splat']          >(this, 'media_splat'          , '🖼️', MediaSplatL)
+            this.project =               new LiveTable<T.TABLES['project']              >(this, 'project'              , '🤠', ProjectL, { singleton: true })
+            this.custom_data =           new LiveTable<T.TABLES['custom_data']          >(this, 'custom_data'          , '🎁', CustomDataL)
+            this.comfy_schema =          new LiveTable<T.TABLES['comfy_schema']         >(this, 'comfy_schema'         , '📑', ComfySchemaL)
+            this.host =                  new LiveTable<T.TABLES['host']                 >(this, 'host'                 , '📑', HostL)
+            this.comfy_prompt =          new LiveTable<T.TABLES['comfy_prompt']         >(this, 'comfy_prompt'         , '❓', ComfyPromptL)
+            this.cushy_script =          new LiveTable<T.TABLES['cushy_script']         >(this, 'cushy_script'         , '⭐️', CushyScriptL)
+            this.cushy_app =             new LiveTable<T.TABLES['cushy_app']            >(this, 'cushy_app'            , '🌟', CushyAppL)
+            this.media_text =            new LiveTable<T.TABLES['media_text']           >(this, 'media_text'           , '💬', MediaTextL)
+            this.media_image =           new LiveTable<T.TABLES['media_image']          >(this, 'media_image'          , '🖼️', MediaImageL)
+            this.media_video =           new LiveTable<T.TABLES['media_video']          >(this, 'media_video'          , '🖼️', MediaVideoL)
+            this.media_splat =           new LiveTable<T.TABLES['media_splat']          >(this, 'media_splat'          , '🖼️', MediaSplatL)
             this.media_3d_displacement = new LiveTable<T.TABLES['media_3d_displacement']>(this, 'media_3d_displacement', '🖼️', Media3dDisplacementL)
-            this.tree_entry =          new LiveTable<T.TABLES['tree_entry']           >(this, 'tree_entry'           , '🖼️', TreeEntryL)
+            this.media_custom =          new LiveTable<T.TABLES['media_custom']         >(this, 'media_custom'         , '🖼️', MediaCustomL)
+            this.tree_entry =            new LiveTable<T.TABLES['tree_entry']           >(this, 'tree_entry'           , '🖼️', TreeEntryL)
             this.runtime_error =         new LiveTable<T.TABLES['runtime_error']        >(this, 'runtime_error'        , '❌', RuntimeErrorL)
-            this.draft =                new LiveTable<T.TABLES['draft']                >(this, 'draft'                , '📝', DraftL)
+            this.draft =                 new LiveTable<T.TABLES['draft']                >(this, 'draft'                , '📝', DraftL)
             this.comfy_workflow =        new LiveTable<T.TABLES['comfy_workflow']       >(this, 'comfy_workflow'       , '📊', ComfyWorkflowL)
-            this.step =                 new LiveTable<T.TABLES['step']                 >(this, 'step'                 , '🚶‍♂️', StepL)
-            this.auth =                 new LiveTable<T.TABLES['auth']                 >(this, 'auth'                 , '🚶‍♂️', AuthL)
+            this.step =                  new LiveTable<T.TABLES['step']                 >(this, 'step'                 , '🚶‍♂️', StepL)
+            this.auth =                  new LiveTable<T.TABLES['auth']                 >(this, 'auth'                 , '🚶‍♂️', AuthL)
 
             // console.log('🟢 TABLE INITIALIZED')
         }

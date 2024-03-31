@@ -1,4 +1,4 @@
-import type { MediaImageL } from 'src/models/MediaImage'
+import type { MediaImageL } from '../../models/MediaImage'
 
 import { observer } from 'mobx-react-lite'
 

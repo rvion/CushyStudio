@@ -1,15 +1,16 @@
 import type { ImageInfos_ComfyGenerated } from './ImageInfos_ComfyGenerated'
-import type { STATE } from 'src/state/state'
-import type { ComfyNodeID } from 'src/types/ComfyNodeID'
-import type { PromptID } from 'src/types/ComfyWsApi'
+import type { STATE } from '../state/state'
+import type { ComfyNodeID } from '../types/ComfyNodeID'
+import type { PromptID } from '../types/ComfyWsApi'
 
 import { mkdirSync, readFileSync, writeFileSync } from 'fs'
 import { imageMeta } from 'image-meta'
 import { dirname } from 'pathe'
 
 import { MediaImageL } from './MediaImage'
-import { hashArrayBuffer } from 'src/state/hashBlob'
-import { extractExtensionFromContentType } from 'src/widgets/misc/extractExtensionFromContentType'
+import { hashArrayBuffer } from '../state/hashArrayBuffer'
+import { bang } from '../utils/misc/bang'
+import { extractExtensionFromContentType } from '../widgets/misc/extractExtensionFromContentType'
 
 export type ImageCreationOpts = {
     promptID?: PromptID
@@ -48,7 +49,7 @@ export const createMediaImage_fromDataURI = (
 ): MediaImageL => {
     mkdirSync(`outputs/${subFolder}/`, { recursive: true })
     // type: 'data:image/png;base64,' => 'png
-    const contentType = dataURI.split(';')[0].split(':')[1]
+    const contentType = bang(dataURI.split(';')[0]).split(':')[1]
     if (contentType == null) throw new Error(`❌ dataURI mediaType is null`)
     if (contentType.length === 0) throw new Error(`❌ dataURI mediaType is empty`)
     if (contentType === 'text/plain') throw new Error(`❌ dataURI mediaType is text/plain`)

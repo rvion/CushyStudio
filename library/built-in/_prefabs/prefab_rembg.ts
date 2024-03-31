@@ -3,6 +3,7 @@ import type { OutputFor } from './_prefabs'
 export const ui_rembg_v1 = () => {
     const form = getCurrentForm()
     return form.choices({
+        appearance: 'tab',
         expand: true,
         requirements: [
             { type: 'customNodesByTitle', title: 'TEMP_ComfyUI-BRIA_AI-RMBG' },
@@ -31,7 +32,6 @@ export const run_rembg_v1 = (ui: OutputFor<typeof ui_rembg_v1>, image: _IMAGE): 
         graph.PreviewImage({ images: img }).tag(tag)
         OUT.push(img)
     }
-    console.log(`[👙] `, ui)
     if (ui.RemBG)            addImg('RemBG',           graph.Image_Remove_Background_$1rembg$2({ image })) // prettier-ignore
     if (ui.ABG)              addImg('ABG',             graph.Remove_Image_Background_$1abg$2  ({ image }) ) // prettier-ignore
     if (ui.isnetAnime)       addImg('isnetAnime',      graph.Image_Rembg_$1Remove_Background$2({ images: image, model: 'isnet-anime',       background_color: 'none', }), ) // prettier-ignore

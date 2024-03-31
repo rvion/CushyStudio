@@ -1,4 +1,5 @@
 {
+    "$schema": "http://json.schemastore.org/tsconfig",
     "compilerOptions": {
         "target": "ESNext",
         "useDefineForClassFields": false,
@@ -6,32 +7,35 @@
         "allowJs": false,
         "skipLibCheck": false,
         "incremental": true,
-        "tsBuildInfoFile": ".tsbuildinfo",
         "noImplicitAny": true,
         "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
         "strict": true,
         "forceConsistentCasingInFileNames": true,
+        "strictNullChecks": true,
+        "noUncheckedIndexedAccess": true,
         "module": "ESNext",
-        "moduleResolution": "node",
+        "moduleResolution": "Node",
         "resolveJsonModule": true,
         "isolatedModules": true,
-        "noEmit": true,
         "jsx": "react-jsx",
-        "baseUrl": ".",
+        // "baseUrl": ".",
         "typeRoots": ["src/typings"],
         "types": [],
         "paths": {
             // overrides
-            "nsfwjs": ["src/typings/nsfwjs.d.ts"],
+            "nsfwjs": ["./src/typings/nsfwjs.d.ts"],
 
             // emptied
-            "typescript": ["src/typings/empty-types.d.ts"],
-            "webgl2": ["src/typings/empty-types.d.ts"],
-            "@tensorflow/tfjs": ["src/typings/empty-types.d.ts"],
-            "@types/webgl": ["src/typings/empty-types.d.ts"],
-            "@types/webgl-ext": ["src/typings/empty-types.d.ts"]
-        }
+            "typescript": ["./src/typings/empty-types.d.ts"],
+            "webgl2": ["./src/typings/empty-types.d.ts"],
+            "@tensorflow/tfjs": ["./src/typings/empty-types.d.ts"],
+            "@types/webgl": ["./src/typings/empty-types.d.ts"],
+            "@types/webgl-ext": ["./src/typings/empty-types.d.ts"]
+        },
+        // -------------// -------------
+        /* specific to base */ "tsBuildInfoFile": ".tsbuildinfo",
+        /* specific to base */ "noEmit": true
     },
 
     // this file will be created by CushyStudio itself

@@ -1,4 +1,4 @@
-import type { FormBuilder } from 'src/controls/FormBuilder'
+import type { FormBuilder } from '../../../src/controls/FormBuilder'
 import type { OutputFor } from './_prefabs'
 
 export const ui_latent_v1 = () => {
@@ -6,7 +6,7 @@ export const ui_latent_v1 = () => {
     return form.group({
         label: 'Start from',
         items: () => ({
-            image: form.imageOpt({}),
+            image: form.image({}).optional(),
             batchSize: form.int({ default: 1, min: 1, max: 8 }),
             size: form.size({}),
         }),

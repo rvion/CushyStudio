@@ -1,9 +1,9 @@
-// import type { RelativePath } from 'src/utils/fs/BrandedPaths'
+// import type { RelativePath } from '../utils/fs/BrandedPaths'
 // import type { STATE } from '../state/state'
 
 // import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs'
 // import { makeAutoObservable } from 'mobx'
-// import { asRelativePath } from 'src/utils/fs/pathUtils'
+// import { asRelativePath } from '../utils/fs/pathUtils'
 // import { GithubUser } from './GithubUser'
 // --------------------------------------------------------------------------------
 // export type GithubRepoData = {

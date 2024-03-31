@@ -2,16 +2,16 @@ import { runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { useEffect, useRef } from 'react'
 
+import { AppIllustrationUI } from '../../cards/fancycard/AppIllustrationUI'
+import { DraftIllustrationUI } from '../../cards/fancycard/DraftIllustration'
+import { RenderFullPagePanelUI } from '../../panels/router/RenderFullPagePanelUI'
+import { RevealState } from '../../rsuite/reveal/RevealState'
+import { useSt } from '../../state/stateContext'
+import { GlobalSearchUI } from '../../utils/electron/globalSearchUI'
 import { AppBarUI } from '../appbar/AppBarUI'
 import { Trigger } from '../shortcuts/Trigger'
 import { FavBarUI } from './FavBar'
 import { ProjectUI } from './ProjectUI'
-import { AppIllustrationUI } from 'src/cards/fancycard/AppIllustrationUI'
-import { DraftIllustrationUI } from 'src/cards/fancycard/DraftIllustration'
-import { RenderFullPagePanelUI } from 'src/panels/router/RenderFullPagePanelUI'
-import { RevealState } from 'src/rsuite/reveal/RevealState'
-import { useSt } from 'src/state/stateContext'
-import { GlobalSearchUI } from 'src/utils/electron/globalSearchUI'
 
 export const CushyUI = observer(function CushyUI_() {
     const st = useSt()
@@ -68,10 +68,10 @@ export const CushyUI = observer(function CushyUI_() {
                 })
             }}
             ref={appRef}
-            tw={['col grow h100 text-base-content']}
+            tw={['col grow h-full text-base-content overflow-clip']}
         >
             <div id='input-blocker' tw='absolute w-full h-full hidden bg-red-400/35 overflow-clip' />
-            <div id='tooltip-root' tw='pointer-events-none absolute inset-0 w-full h-full'></div>
+            <div id='tooltip-root' tw='pointer-events-none absolute inset-0 w-full h-full overflow-clip'></div>
             <GlobalSearchUI />
             <AppBarUI />
             <RenderFullPagePanelUI />

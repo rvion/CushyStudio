@@ -1,15 +1,13 @@
 import type { Form } from '../../Form'
-import type { IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
-import type { IWidget } from 'src/controls/IWidget'
+import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
-import { hash } from 'ohash'
 
-import { WidgetDI } from '../WidgetUI.DI'
-import { mkEnglishSummary } from './_orbitUtils'
+import { applyWidgetMixinV2 } from '../../Mixins'
+import { registerWidgetClass } from '../WidgetUI.DI'
+import { clampMod, mkEnglishSummary } from './_orbitUtils'
 import { WidgetOrbitUI } from './WidgetOrbitUI'
-import { applyWidgetMixinV2 } from 'src/controls/Mixins'
 
 export type OrbitData = {
     azimuth: number
@@ -23,11 +21,11 @@ export type Widget_orbit_config = WidgetConfigFields<{ default?: Partial<OrbitDa
 export type Widget_orbit_serial = WidgetSerialFields<{
     type: 'orbit'
     active: true
-    val: OrbitData
+    value: OrbitData
 }>
 
-// OUT
-export type Widget_orbit_output = {
+// VALUE
+export type Widget_orbit_value = {
     azimuth: number
     elevation: number
     englishSummary: string
@@ -36,9 +34,9 @@ export type Widget_orbit_output = {
 // TYPES
 export type Widget_orbit_types = {
     $Type: 'orbit'
-    $Input: Widget_orbit_config
+    $Config: Widget_orbit_config
     $Serial: Widget_orbit_serial
-    $Output: Widget_orbit_output
+    $Value: Widget_orbit_value
     $Widget: Widget_orbit
 }
 
@@ -47,25 +45,28 @@ export interface Widget_orbit extends Widget_orbit_types, IWidgetMixins {}
 export class Widget_orbit implements IWidget<Widget_orbit_types> {
     DefaultHeaderUI = WidgetOrbitUI
     DefaultBodyUI = undefined
-    get serialHash () { return hash(this.value) } // prettier-ignore
     id: string
     type: 'orbit' = 'orbit'
 
     /** reset azimuth and elevation */
     reset = () => {
-        this.serial.val.azimuth = this.config.default?.azimuth ?? 0
-        this.serial.val.elevation = this.config.default?.elevation ?? 0
+        this.serial.value.azimuth = this.config.default?.azimuth ?? 0
+        this.serial.value.elevation = this.config.default?.elevation ?? 0
     }
 
     /** practical to add to your textual prompt */
     get englishSummary() {
-        return mkEnglishSummary(this.serial.val.azimuth, this.serial.val.elevation)
+        return mkEnglishSummary(
+            //
+            this.serial.value.azimuth,
+            this.serial.value.elevation,
+        )
     }
 
     get euler() {
         const radius = 5
-        const azimuthRad = this.serial.val.azimuth * (Math.PI / 180)
-        const elevationRad = this.serial.val.elevation * (Math.PI / 180)
+        const azimuthRad = this.serial.value.azimuth * (Math.PI / 180)
+        const elevationRad = this.serial.value.elevation * (Math.PI / 180)
         const x = radius * Math.cos(elevationRad) * Math.sin(azimuthRad)
         const y = radius * Math.cos(elevationRad) * Math.cos(azimuthRad)
         const z = radius * Math.sin(elevationRad)
@@ -77,7 +78,8 @@ export class Widget_orbit implements IWidget<Widget_orbit_types> {
 
     constructor(
         //
-        public form: Form<any>,
+        public readonly form: Form,
+        public readonly parent: IWidget | null,
         public config: Widget_orbit_config,
         serial?: Widget_orbit_serial,
     ) {
@@ -86,23 +88,35 @@ export class Widget_orbit implements IWidget<Widget_orbit_types> {
             type: 'orbit',
             collapsed: config.startCollapsed,
             active: true,
-            val: {
+            value: {
                 azimuth: config.default?.azimuth ?? 0,
                 elevation: config.default?.elevation ?? 0,
             },
             id: this.id,
         }
+
+        /* 💊 BACKWARD COMPAT */
+        /* 💊 */ const serialAny = this.serial as any
+        /* 💊 */ if (serialAny.val && serialAny.value == null) serialAny.value = serialAny.val
+
         applyWidgetMixinV2(this)
         makeAutoObservable(this)
     }
-    get value(): Widget_orbit_output {
+
+    // x: Partial<number> = 0
+    setForZero123 = (p: { azimuth_rad: number; elevation_rad: number }) => {
+        this.serial.value.azimuth = clampMod(-90 + p.azimuth_rad * (180 / Math.PI), -180, 180)
+        this.serial.value.elevation = clampMod(90 - p.elevation_rad * (180 / Math.PI), -180, 180) // (Math.PI / 4 - curr.getPolarAngle()) * (180 / Math.PI)
+    }
+
+    get value(): Widget_orbit_value {
         return {
-            azimuth: this.serial.val.azimuth,
-            elevation: this.serial.val.elevation,
+            azimuth: this.serial.value.azimuth,
+            elevation: this.serial.value.elevation,
             englishSummary: this.englishSummary,
         }
     }
 }
 
 // DI
-WidgetDI.Widget_orbit = Widget_orbit
+registerWidgetClass<Widget_orbit>('orbit', Widget_orbit)

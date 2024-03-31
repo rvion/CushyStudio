@@ -3,8 +3,8 @@ import type { BaseSelectEntry, Widget_selectOne } from './WidgetSelectOne'
 import { observer } from 'mobx-react-lite'
 
 import { InputBoolUI } from '../bool/InputBoolUI'
-import { SelectUI } from 'src/rsuite/SelectUI'
-import { makeLabelFromFieldName } from 'src/utils/misc/makeLabelFromFieldName'
+import { SelectUI } from '../../../rsuite/SelectUI'
+import { makeLabelFromFieldName } from '../../../utils/misc/makeLabelFromFieldName'
 
 export const WidgetSelectOneUI = observer(function WidgetSelectOneUI_<T extends BaseSelectEntry>(p: {
     widget: Widget_selectOne<T>
@@ -31,11 +31,10 @@ export const WidgetSelectOne_TabUI = observer(function WidgetSelectOne_TabUI_<T 
                             display='button'
                             text={c.label ?? c.id}
                             onValueChange={(value) => {
-                                if (value != isSelected) {
-                                    widget.serial.val = c
-                                }
+                                if (value === isSelected) return
+                                widget.value = c
                             }}
-                        ></InputBoolUI>
+                        />
                     )
                 })}
             </div>
@@ -64,7 +63,7 @@ export const WidgetSelectOne_SelectUI = observer(function WidgetSelectOne_Select
                 value={() => widget.serial.val}
                 onChange={(selectOption) => {
                     if (selectOption == null) {
-                        // TODO: hook into it's parent if parent is an option block ?
+                        // TODO?: hook into it's parent if parent is an option block ?
                         // ⏸️ if (!widget.isOptional) return
                         // ⏸️ widget.state.active = false
                         return
@@ -74,7 +73,7 @@ export const WidgetSelectOne_SelectUI = observer(function WidgetSelectOne_Select
                         console.log(`❌ WidgetSelectOneUI: could not find choice for ${JSON.stringify(selectOption)}`)
                         return
                     }
-                    widget.serial.val = next
+                    widget.value = next
                 }}
             />
             {widget.errors && (

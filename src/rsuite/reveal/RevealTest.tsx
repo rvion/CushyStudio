@@ -8,82 +8,68 @@ export const RevealTestUI = observer(function RevealTestUI_(p: {}) {
             {/*  */}
             🟢
             <div tw='virtualBorder relative' style={{ height: '800px' }}>
-                <RevealUI placement='auto' tw='absolute top-8 left-8'>
+                <RevealUI placement='auto' tw='absolute top-8 left-8' content={() => <div tw='w-96 h-48 bg-blue-500'>ok</div>}>
                     <div tw='bg-red-300'>ok</div>
-                    <div tw='w-96 h-48 bg-blue-500'>ok</div>
                 </RevealUI>
-                <RevealUI placement='auto' tw='absolute top-8 right-8'>
+                <RevealUI placement='auto' tw='absolute top-8 right-8' content={() => <div tw='w-96 h-48 bg-blue-500'>ok</div>}>
                     <div tw='bg-red-300'>ok</div>
-                    <div tw='w-96 h-48 bg-blue-500'>ok</div>
                 </RevealUI>
             </div>
             <div tw='grid grid-cols-5 gap-2'>
                 {/* top ---------------------------------------------- */}
                 <div></div>
-                <RevealUI placement='topStart'>
+                <RevealUI placement='topStart' content={() => <div tw='w-96 h-48 bg-blue-500'>ok</div>}>
                     <div tw='bg-red-300'>ok</div>
-                    <div tw='w-96 h-48 bg-blue-500'>ok</div>
                 </RevealUI>
-                <RevealUI placement='top'>
+                <RevealUI placement='top' content={() => <div tw='w-96 h-48 bg-blue-500'>ok</div>}>
                     <div tw='bg-red-300'>ok</div>
-                    <div tw='w-96 h-48 bg-blue-500'>ok</div>
                 </RevealUI>
-                <RevealUI placement='topEnd'>
+                <RevealUI placement='topEnd' content={() => <div tw='w-96 h-48 bg-blue-500'>ok</div>}>
                     <div tw='bg-red-300'>ok</div>
-                    <div tw='w-96 h-48 bg-blue-500'>ok</div>
                 </RevealUI>
                 <div></div>
 
                 {/* ---------------------------------------------- */}
-                <RevealUI placement='leftStart'>
+                <RevealUI placement='leftStart' content={() => <div tw='w-96 h-48 bg-blue-500'>ok</div>}>
                     <div tw='bg-red-300'>ok</div>
-                    <div tw='w-96 h-48 bg-blue-500'>ok</div>
                 </RevealUI>
                 <div></div>
                 <div></div>
                 <div></div>
-                <RevealUI placement='rightStart'>
+                <RevealUI placement='rightStart' content={() => <div tw='w-96 h-48 bg-blue-500'>ok</div>}>
                     <div tw='bg-red-300'>ok</div>
-                    <div tw='w-96 h-48 bg-blue-500'>ok</div>
                 </RevealUI>
                 {/* ---------------------------------------------- */}
-                <RevealUI placement='left'>
+                <RevealUI placement='left' content={() => <div tw='w-96 h-48 bg-blue-500'>ok</div>}>
                     <div tw='bg-red-300'>ok</div>
-                    <div tw='w-96 h-48 bg-blue-500'>ok</div>
                 </RevealUI>
                 <div></div>
                 <div></div>
                 <div></div>
-                <RevealUI placement='right'>
+                <RevealUI placement='right' content={() => <div tw='w-96 h-48 bg-blue-500'>ok</div>}>
                     <div tw='bg-red-300'>ok</div>
-                    <div tw='w-96 h-48 bg-blue-500'>ok</div>
                 </RevealUI>
                 {/* ---------------------------------------------- */}
-                <RevealUI placement='leftEnd'>
+                <RevealUI placement='leftEnd' content={() => <div tw='w-96 h-48 bg-blue-500'>ok</div>}>
                     <div tw='bg-red-300'>ok</div>
-                    <div tw='w-96 h-48 bg-blue-500'>ok</div>
                 </RevealUI>
                 <div></div>
                 <div></div>
                 <div></div>
-                <RevealUI placement='rightEnd'>
+                <RevealUI placement='rightEnd' content={() => <div tw='w-96 h-48 bg-blue-500'>ok</div>}>
                     <div tw='bg-red-300'>ok</div>
-                    <div tw='w-96 h-48 bg-blue-500'>ok</div>
                 </RevealUI>
                 {/* ---------------------------------------------- */}
                 {/* bottom */}
                 <div></div>
-                <RevealUI placement='bottomStart'>
+                <RevealUI placement='bottomStart' content={() => <div tw='w-96 h-48 bg-blue-500'>ok</div>}>
                     <div tw='bg-red-300'>ok</div>
-                    <div tw='w-96 h-48 bg-blue-500'>ok</div>
                 </RevealUI>
-                <RevealUI placement='bottom'>
+                <RevealUI placement='bottom' content={() => <div tw='w-96 h-48 bg-blue-500'>ok</div>}>
                     <div tw='bg-red-300'>ok</div>
-                    <div tw='w-96 h-48 bg-blue-500'>ok</div>
                 </RevealUI>
-                <RevealUI placement='bottomEnd'>
+                <RevealUI placement='bottomEnd' content={() => <div tw='w-96 h-48 bg-blue-500'>ok</div>}>
                     <div tw='bg-red-300'>ok</div>
-                    <div tw='w-96 h-48 bg-blue-500'>ok</div>
                 </RevealUI>
                 <div></div>
             </div>

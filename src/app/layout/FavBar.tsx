@@ -1,20 +1,20 @@
-import type { CushyAppL } from 'src/models/CushyApp'
+import type { CushyAppL } from '../../models/CushyApp'
 
 import { runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { ReactNode, useState } from 'react'
-
-import { AppIllustrationUI } from 'src/cards/fancycard/AppIllustrationUI'
-import { DraftIllustrationUI } from 'src/cards/fancycard/DraftIllustration'
-import { FormUI } from 'src/controls/FormUI'
-import { SpacerUI } from 'src/controls/widgets/spacer/SpacerUI'
-import { TreeUI } from 'src/panels/libraryUI/tree/xxx/TreeUI'
-import { CreateAppPopupUI } from 'src/panels/Panel_Welcome/CreateAppBtnUI'
-import { PanelHeaderUI } from 'src/panels/PanelHeader'
-import { RevealUI } from 'src/rsuite/reveal/RevealUI'
-import { useSt } from 'src/state/stateContext'
-import { CachedResizedImage } from 'src/rsuite/CachedResizedImageUI'
 import { fileURLToPath } from 'url'
+
+import { AppIllustrationUI } from '../../cards/fancycard/AppIllustrationUI'
+import { DraftIllustrationUI } from '../../cards/fancycard/DraftIllustration'
+import { FormUI } from '../../controls/FormUI'
+import { SpacerUI } from '../../controls/widgets/spacer/SpacerUI'
+import { TreeUI } from '../../panels/libraryUI/tree/xxx/TreeUI'
+import { CreateAppPopupUI } from '../../panels/Panel_Welcome/CreateAppBtnUI'
+import { PanelHeaderUI } from '../../panels/PanelHeader'
+import { CachedResizedImage } from '../../rsuite/CachedResizedImageUI'
+import { RevealUI } from '../../rsuite/reveal/RevealUI'
+import { useSt } from '../../state/stateContext'
 
 // Could give this an option be collapsible in the future?
 /** Re-usable container to keep a consistent style around groups of buttons */
@@ -45,32 +45,35 @@ export const FavBarUI = observer(function FavBarUI_(p: {
     return (
         <>
             <div
-                tw='relative flex flex-col border-primary/10 border-r box-content'
+                tw='relative flex flex-col border-primary/10 border-r box-content overflow-hidden'
                 style={{ flexDirection: p.direction, width: `${size + 18}px`, scrollBehavior: 'inherit' }}
             >
-                <div tw='flex flex-col inset-0 bg-base-300 flex-1 select-none overflow-clip'>
+                <div tw='flex flex-col inset-0 bg-base-300 flex-1 select-none overflow-hidden'>
                     <PanelHeaderUI>
                         <SpacerUI />
-                        <RevealUI tw='WIDGET-FIELD w-full' title='Favorite Bar Options' style={{ width: `${size + 8}px` }}>
+                        <RevealUI
+                            content={() => (
+                                <div tw='p-2 w-72'>
+                                    <FormUI form={conf} />
+                                </div>
+                            )}
+                            tw='WIDGET-FIELD w-full'
+                            title='Favorite Bar Options'
+                            style={{ width: `${size + 8}px` }}
+                        >
                             <div tw='WIDGET-FIELD cursor-default rounded w-full hover:brightness-125 bg-base-200 border border-base-100 items-center justify-center flex text-shadow'>
                                 <span className='material-symbols-outlined'>settings</span>
                                 <span className='material-symbols-outlined'>expand_more</span>
-                            </div>
-                            <div tw='p-2 w-72'>
-                                <FormUI form={conf} />
                             </div>
                         </RevealUI>
                         <SpacerUI />
                     </PanelHeaderUI>
                     {/* Lot of divs, but it makes it so the scrolling container is rounded on the inside. */}
-                    <div tw='hide-vertical-scroll w-full h-full flex flex-col items-center rounded overflow-clip pb-1'>
-                        <div
-                            tw='hide-vertical-scroll rounded items-center justify-center overflow-clip'
-                            style={{ scrollBehavior: 'inherit' }}
-                        >
-                            <div tw='h-full items-center flex flex-col gap-1'>
+                    <div tw='w-full flex flex-col items-center rounded pb-1 overflow-hidden'>
+                        <div tw='rounded items-center justify-center overflow-hidden'>
+                            <div tw='hide-vertical-scroll h-full items-center flex flex-col gap-1 overflow-scroll'>
                                 <FavBarContainer>
-                                    <RevealUI tw='hover:brightness-125' placement='popup-lg'>
+                                    <RevealUI tw='hover:brightness-125' placement='popup-lg' content={() => <CreateAppPopupUI />}>
                                         <span
                                             tw='cursor-default flex'
                                             style={{ fontSize: sizeStr }}
@@ -78,8 +81,6 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                                         >
                                             add
                                         </span>
-                                        {/* </div> */}
-                                        <CreateAppPopupUI />
                                     </RevealUI>
                                     <div
                                         tw='my-0.5 bg-neutral-content rounded-full'
@@ -127,9 +128,13 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                                                 key={app.id}
                                                 style={{ width: sizeStr, height: sizeStr }}
                                             >
-                                                <RevealUI showDelay={0} trigger='hover' placement='right'>
+                                                <RevealUI
+                                                    showDelay={0}
+                                                    trigger='hover'
+                                                    placement='right'
+                                                    content={() => <AppDraftsQuickListUI app={app} />}
+                                                >
                                                     <AppIllustrationUI className={'!rounded-none'} size={sizeStr} app={app} />
-                                                    <AppDraftsQuickListUI app={app} />
                                                 </RevealUI>
                                             </div>
                                         ))}
@@ -139,7 +144,35 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                                     <FavBarContainer icon='history_edu'>
                                         {st.favoriteDrafts.map((draft) => (
                                             <div tw='rounded border border-base-300 overflow-clip' key={draft.id}>
-                                                <RevealUI className='' trigger='hover' placement='right'>
+                                                <RevealUI
+                                                    className=''
+                                                    trigger='hover'
+                                                    placement='right'
+                                                    content={() => (
+                                                        <div className='MENU-ROOT'>
+                                                            <div className='MENU-HEADER'>
+                                                                <div //Container
+                                                                    tw='flex bg-base-200 p-1 rounded w-full'
+                                                                >
+                                                                    <AppIllustrationUI size='2rem' app={draft.app} />
+                                                                    <div tw='flex-1 text-xs text-center self-center p-2'>
+                                                                        {draft.app.name}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div className='MENU-CONTENT'>
+                                                                <div //Container
+                                                                    tw='flex-column bg-base-300 p-1 rounded text-center items-center'
+                                                                >
+                                                                    <div tw='text-xs'>{draft.data.title}</div>
+                                                                    <div tw='flex self-center text-center justify-center p-1'>
+                                                                        <DraftIllustrationUI size='12rem' draft={draft} />
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    )}
+                                                >
                                                     <div
                                                         tw='relative cursor-default hover:brightness-125'
                                                         onClick={() => draft.openOrFocusTab()}
@@ -167,28 +200,6 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                                                                 />
                                                             </div>
                                                         )}
-                                                    </div>
-                                                    <div className='MENU-ROOT'>
-                                                        <div className='MENU-HEADER'>
-                                                            <div //Container
-                                                                tw='flex bg-base-200 p-1 rounded w-full'
-                                                            >
-                                                                <AppIllustrationUI size='2rem' app={draft.app} />
-                                                                <div tw='flex-1 text-xs text-center self-center p-2'>
-                                                                    {draft.app.name}
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div className='MENU-CONTENT'>
-                                                            <div //Container
-                                                                tw='flex-column bg-base-300 p-1 rounded text-center items-center'
-                                                            >
-                                                                <div tw='text-xs'>{draft.data.title}</div>
-                                                                <div tw='flex self-center text-center justify-center p-1'>
-                                                                    <DraftIllustrationUI size='12rem' draft={draft} />
-                                                                </div>
-                                                            </div>
-                                                        </div>
                                                     </div>
                                                 </RevealUI>
                                             </div>

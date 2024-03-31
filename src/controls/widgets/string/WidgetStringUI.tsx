@@ -1,11 +1,9 @@
+import type { ClassLike } from '../../../utils/custom-jsx/global'
+
 import { observer } from 'mobx-react-lite'
-import { ReactElement, useState } from 'react'
+import { ReactElement } from 'react'
 
 import { Widget_string } from './WidgetString'
-import { ClassLike } from 'src/utils/custom-jsx/global'
-
-let startValue = ''
-let cancelled = false
 
 // Textarea HEADER
 export const WidgetString_TextareaHeaderUI = observer(function WidgetString_TextareaHeaderUI_(p: { widget: Widget_string }) {
@@ -77,39 +75,40 @@ export const WidgetString_HeaderUI = observer(function WidgetStringUI_(p: { widg
                     }
                 }}
             >
-                {visualHelper && visualHelper}
+                {visualHelper}
                 <input
                     tw={inputTailwind}
                     type={widget.config.inputType}
                     placeholder={widget.config.placeHolder}
-                    value={val}
+                    value={
+                        widget.config.buffered //
+                            ? widget.temporaryValue ?? val
+                            : val
+                    }
                     onChange={(ev) => {
-                        p.widget.value = ev.currentTarget.value
+                        if (widget.config.buffered) {
+                            widget.setTemporaryValue(ev.target.value)
+                        } else {
+                            widget.value = ev.currentTarget.value
+                        }
                     }}
                     /* Prevents drag n drop of selected text, so selecting is easier. */
-                    onDragStart={(ev) => {
-                        ev.preventDefault()
-                    }}
+                    onDragStart={(ev) => ev.preventDefault()}
                     onFocus={(ev) => {
-                        let textInput = ev.currentTarget
-
-                        textInput.select()
-                        startValue = val
+                        widget.setTemporaryValue(widget.value ?? '')
+                        ev.currentTarget.select()
                     }}
-                    onBlur={(ev) => {
-                        if (cancelled) {
-                            cancelled = false
-                            p.widget.value = startValue
-                            return
+                    onBlur={() => {
+                        if (widget.config.buffered && widget.temporaryValue != null) {
+                            widget.value = widget.temporaryValue
                         }
-
-                        p.widget.value = ev.currentTarget.value
                     }}
                     onKeyDown={(ev) => {
                         if (ev.key === 'Enter') {
                             ev.currentTarget.blur()
                         } else if (ev.key === 'Escape') {
-                            cancelled = true
+                            if (!widget.config.buffered && widget.temporaryValue) widget.value = widget.temporaryValue
+                            widget.setTemporaryValue(null)
                             ev.currentTarget.blur()
                         }
                     }}
@@ -125,3 +124,13 @@ export const WidgetString_HeaderUI = observer(function WidgetStringUI_(p: { widg
         </>
     )
 })
+// 1-a 2-a
+// 1-b 2-a
+
+// behaviours
+// 1. updateValueOn:
+//      - a keystroke
+//      - b enter
+// 2. onEscape or tab or click away:
+//      - a revert to last committed value
+//      - b do nothing

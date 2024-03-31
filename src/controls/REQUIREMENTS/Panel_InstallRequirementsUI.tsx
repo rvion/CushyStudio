@@ -1,14 +1,14 @@
-import type { Requirements } from '../IWidget'
-import type { PluginInfo } from 'src/manager/custom-node-list/custom-node-list-types'
+import type { PluginInfo } from '../../manager/custom-node-list/custom-node-list-types'
+import type { Requirements } from '../Requirements'
 
 import { observer } from 'mobx-react-lite'
 
+import { MessageErrorUI, MessageWarningUI } from '../../panels/MessageUI'
+import { RevealUI } from '../../rsuite/reveal/RevealUI'
+import { useSt } from '../../state/stateContext'
+import { exhaust } from '../../utils/misc/exhaust'
 import { Button_InstallCustomNodeUI } from './Button_InstallCustomNodeUI'
 import { Button_InstalModelViaManagerUI } from './Button_InstalModelViaManagerUI'
-import { MessageErrorUI, MessageWarningUI } from 'src/panels/MessageUI'
-import { RevealUI } from 'src/rsuite/reveal/RevealUI'
-import { useSt } from 'src/state/stateContext'
-import { exhaust } from 'src/utils/misc/ComfyUtils'
 
 export const InstallRequirementsBtnUI = observer(function InstallRequirementsBtnUI_(p: {
     active: boolean
@@ -19,7 +19,13 @@ export const InstallRequirementsBtnUI = observer(function InstallRequirementsBtn
     if (p.requirements.length == 0) return null
     const rr = p.requirements
     return (
-        <RevealUI>
+        <RevealUI
+            content={() => (
+                <div tw='[max-width:500px]'>
+                    <Panel_InstallRequirementsUI requirements={rr} />
+                </div>
+            )}
+        >
             <div
                 tw={[
                     p.active && !st.mainHost.matchRequirements(rr) //
@@ -30,9 +36,6 @@ export const InstallRequirementsBtnUI = observer(function InstallRequirementsBtn
             >
                 <span className='material-symbols-outlined'>scatter_plot</span>
                 {p.label}
-            </div>
-            <div tw='[max-width:500px]'>
-                <Panel_InstallRequirementsUI requirements={rr} />
             </div>
         </RevealUI>
     )
@@ -53,20 +56,23 @@ export const Panel_InstallRequirementsUI = observer(function Panel_InstallRequir
                     Install All
                 </div>
                 */}
-                <RevealUI>
+                <RevealUI
+                    content={() => (
+                        <div tw='max-h-96 overflow-auto'>
+                            {(() => {
+                                if (manager.pluginList == null) return <div tw='loading loading-spinner'></div>
+                                return (
+                                    <div tw='flex flex-col'>
+                                        {manager.titlesOfAllInstalledPlugins.map((name) => (
+                                            <div key={name}>{name}</div>
+                                        ))}
+                                    </div>
+                                )
+                            })()}
+                        </div>
+                    )}
+                >
                     <div tw='btn btn-sm'>See Installed</div>
-                    <div tw='max-h-96 overflow-auto'>
-                        {(() => {
-                            if (manager.pluginList == null) return <div tw='loading loading-spinner'></div>
-                            return (
-                                <div tw='flex flex-col'>
-                                    {manager.titlesOfAllInstalledPlugins.map((name) => (
-                                        <div key={name}>{name}</div>
-                                    ))}
-                                </div>
-                            )
-                        })()}
-                    </div>
                 </RevealUI>
                 <div
                     tw='btn btn-sm'
@@ -89,7 +95,7 @@ export const Panel_InstallRequirementsUI = observer(function Panel_InstallRequir
                         const plugins: PluginInfo[] = repo.plugins_byNodeNameInCushy.get(req.nodeName) ?? []
                         if (plugins.length == 0) return <MessageErrorUI markdown={`node plugin **${req.nodeName}** not found`} />
                         if (plugins.length === 1)
-                            return <Button_InstallCustomNodeUI optional={req.optional ?? false} plugin={plugins[0]} />
+                            return <Button_InstallCustomNodeUI optional={req.optional ?? false} plugin={plugins[0]!} />
                         return (
                             <div tw='bd'>
                                 <MessageErrorUI>

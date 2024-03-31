@@ -1,4 +1,4 @@
-import type { ConfigFile } from 'src/config/ConfigFile'
+import type { ConfigFile } from '../../../../config/ConfigFile'
 
 import { type FC } from 'react'
 

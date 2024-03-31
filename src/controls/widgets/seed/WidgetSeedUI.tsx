@@ -2,8 +2,8 @@ import type { Widget_seed } from './WidgetSeed'
 
 import { observer } from 'mobx-react-lite'
 
-import { Button } from 'src/rsuite/shims'
 import { InputNumberUI } from '../number/InputNumberUI'
+import { Button } from '../../../rsuite/shims'
 
 let isDragging = false
 
@@ -41,17 +41,13 @@ export const WidgetSeedUI = observer(function WidgetSeedUI_(p: { widget: Widget_
                     ]}
                     onMouseDown={(ev) => {
                         if (ev.button == 0) {
-                            widget.serial.mode = 'randomize'
-                            widget.serial.active = true
+                            widget.setToRandomize()
                             isDragging = true
                             window.addEventListener('mouseup', isDraggingListener, true)
                         }
                     }}
-                    onMouseEnter={(ev) => {
-                        if (isDragging) {
-                            widget.serial.mode = 'randomize'
-                            widget.serial.active = true
-                        }
+                    onMouseEnter={(_ev) => {
+                        if (isDragging) widget.setToRandomize()
                     }}
                 >
                     <span className='material-symbols-outlined'>shuffle</span>
@@ -67,17 +63,13 @@ export const WidgetSeedUI = observer(function WidgetSeedUI_(p: { widget: Widget_
                     ]}
                     onMouseDown={(ev) => {
                         if (ev.button == 0) {
-                            widget.serial.mode = 'fixed'
-                            widget.serial.active = true
+                            widget.setToFixed()
                             isDragging = true
                             window.addEventListener('mouseup', isDraggingListener, true)
                         }
                     }}
                     onMouseEnter={(ev) => {
-                        if (isDragging) {
-                            widget.serial.mode = 'fixed'
-                            widget.serial.active = true
-                        }
+                        if (isDragging) widget.setToFixed()
                     }}
                 >
                     <span className='material-symbols-outlined'>input</span>
@@ -91,20 +83,14 @@ export const WidgetSeedUI = observer(function WidgetSeedUI_(p: { widget: Widget_
                         step={1}
                         value={val}
                         mode='int'
-                        onValueChange={(value) => {
-                            widget.serial.val = value
-                        }}
+                        onValueChange={(value) => widget.setValue(value)}
                     />
                 </div>
                 <Button
                     tw={'flex w-7 !outline-none'}
                     size='sm'
                     appearance='subtle'
-                    onClick={() => {
-                        widget.serial.mode = 'fixed'
-                        widget.serial.active = true
-                        widget.serial.val = Math.floor(Math.random() * 1000000)
-                    }}
+                    onClick={() => widget.setToFixed(Math.floor(Math.random() * 1000000))}
                     icon={
                         <span tw='flex-1 pt-0.5' className='material-symbols-outlined'>
                             autorenew

@@ -1,8 +1,10 @@
+import './InputNumberUI.css'
+
 import { makeAutoObservable, runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import React, { useEffect, useMemo } from 'react'
 
-import { parseFloatNoRoundingErr } from 'src/utils/misc/parseFloatNoRoundingErr'
+import { parseFloatNoRoundingErr } from '../../../utils/misc/parseFloatNoRoundingErr'
 
 const clamp = (x: number, min: number, max: number) => Math.max(min, Math.min(max, x))
 
@@ -214,7 +216,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
             className={p.className}
             tw={[
                 'WIDGET-FIELD relative',
-                'input-number-ui custom-roundness',
+                'input-number-ui input-number-roundness',
                 'flex-1 select-none min-w-16 cursor-ew-resize overflow-clip',
                 'bg-primary/30 border border-base-100 border-b-2 border-b-base-200',
                 !isEditing && 'hover:border-base-200 hover:border-b-base-300 hover:bg-primary/40',
@@ -348,7 +350,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
                                     uist.decrement()
                                     ev.preventDefault()
                                 } else {
-                                    // 2024-03-11 rvion: we just stop propagation here,
+                                    // 💬 2024-03-11 rvion: we just stop propagation here,
                                     // | just in case parents (e.g. unified canvas) have
                                     // | dedicated shortcuts for single letter or singler digit key
                                     ev.stopPropagation()

@@ -1,8 +1,9 @@
 import { observer } from 'mobx-react-lite'
 import { CSSProperties, useState } from 'react'
 import sharp from 'sharp'
-import { ClassLike } from 'src/utils/custom-jsx/global'
-import { ImageErrorDisplayUI } from 'src/widgets/galleries/ImageUI'
+
+import { ClassLike } from '../utils/custom-jsx/global'
+import { ImageErrorDisplayUI } from '../widgets/galleries/ImageUI'
 
 /* XXX: Should only be temporary until a better system is made. */
 
@@ -35,7 +36,7 @@ export const CachedResizedImage = observer(function CachedResizedImage_(p: {
                     return <ImageErrorDisplayUI icon='cached' />
                 }
 
-                setCached(`data:image/png;base64, ${buffer.toString('base64')}`)
+                setCached(`data:image/png;base64,${buffer.toString('base64')}`)
             })
         setLastSize(p.size)
     }

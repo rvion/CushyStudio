@@ -6,7 +6,7 @@ export function readableStringify(obj: any, maxLevel = 3, level = 0) {
     let result = '{\n'
     const keys = Object.keys(obj)
     for (let i = 0; i < keys.length; i++) {
-        const key = keys[i]
+        const key = keys[i]!
         const value = (obj as any)[key]
         if (value === undefined) continue
         const valueType = typeof value

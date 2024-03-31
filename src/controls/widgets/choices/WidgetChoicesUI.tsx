@@ -1,12 +1,12 @@
 import type { Widget_choices } from './WidgetChoices'
-import type { SchemaDict } from 'src/cards/App'
+import type { SchemaDict } from '../../Spec'
 
 import { observer } from 'mobx-react-lite'
 
 import { WidgetWithLabelUI } from '../../shared/WidgetWithLabelUI'
+import { AnimatedSizeUI } from '../../utils/AnimatedSizeUI'
 import { InputBoolUI } from '../bool/InputBoolUI'
-import { AnimatedSizeUI } from './AnimatedSizeUI'
-import { SelectUI } from 'src/rsuite/SelectUI'
+import { SelectUI } from '../../../rsuite/SelectUI'
 
 // UI
 export const WidgetChoices_HeaderUI = observer(function WidgetChoices_LineUI_<T extends SchemaDict>(p: {
@@ -63,6 +63,8 @@ const WidgetChoices_TabHeaderUI = observer(function WidgetChoicesTab_LineUI_<T e
                         ? 'flex-start'
                         : widget.config.tabPosition === 'center'
                         ? 'center'
+                        : widget.config.tabPosition === 'end'
+                        ? 'flex-end'
                         : 'flex-end',
             }}
             tw='rounded select-none flex flex-1 flex-wrap gap-x-0.5 gap-y-0'
@@ -91,9 +93,8 @@ export const WidgetChoices_SelectHeaderUI = observer(function WidgetChoices_Sele
     widget: Widget_choices<T>
 }) {
     const widget = p.widget
-    type Entry = { key: string; value?: Maybe<boolean> }
-    const choicesStr: string[] = widget.choices
-    const choices: Entry[] = choicesStr.map((v) => ({ key: v }))
+    type Entry = { key: string; label: string }
+    const choices: Entry[] = widget.choicesWithLabels
     return (
         <div
             tw={[
@@ -111,14 +112,14 @@ export const WidgetChoices_SelectHeaderUI = observer(function WidgetChoices_Sele
                 placeholder={p.widget.config.placeholder}
                 value={() =>
                     Object.entries(widget.serial.branches)
-                        .map(([key, value]) => ({ key, value }))
-                        .filter((x) => x.value)
+                        .filter(([_, value]) => value)
+                        .map(([key, _]) => ({ key, label: choices.find((v) => v.key === key)?.label ?? key }))
                 }
                 options={() => choices}
-                getLabelText={(v) => v.key}
+                getLabelText={(v) => v.label}
                 getLabelUI={(v) => (
                     <div tw='flex flex-1 justify-between'>
-                        <div tw='flex-1'>{v.key}</div>
+                        <div tw='flex-1'>{v.label}</div>
                         {/* 👇 TODO: clean this */}
                         {/* {v.key in widget.serial.values_ && (
                             <div

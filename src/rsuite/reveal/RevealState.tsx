@@ -1,7 +1,8 @@
+import type { RevealProps } from './RevealProps'
+
 import { makeAutoObservable, observable } from 'mobx'
 
 import { computePlacement } from './RevealPlacement'
-import { RevealProps } from './RevealProps'
 
 export const defaultShowDelay = 100
 export const defaultHideDelay = 300
@@ -12,7 +13,7 @@ export class RevealState {
     uid = RevealState.nextUID++
 
     constructor(public p: RevealProps) {
-        // 2024-03-06 YIKES !!
+        // 💬 2024-03-06 YIKES !!
         // | Reveal UI was causing
         // |
         // | 📈 const stop = spy((ev) => {

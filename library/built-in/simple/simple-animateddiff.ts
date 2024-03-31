@@ -9,7 +9,7 @@ app({
         preText: form.string({
             default: ' (Masterpiece, best quality:1.2), closeup, close-up, a girl in a forest',
         }),
-        seed: form.intOpt({}),
+        seed: form.int({}).optional(),
         timeline: form.timeline({
             width: TOTAL_DURATION,
             height: 2,

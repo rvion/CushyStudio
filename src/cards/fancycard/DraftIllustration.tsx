@@ -1,13 +1,21 @@
-import { observer } from 'mobx-react-lite'
+import type { DraftL } from '../../models/Draft'
 
-import { AppIllustrationUI } from './AppIllustrationUI'
-import { CushyAppL } from 'src/models/CushyApp'
-import { DraftL } from 'src/models/Draft'
-import { useSt } from 'src/state/stateContext'
-import { useImageDrop } from 'src/widgets/galleries/dnd'
 import { existsSync } from 'fs'
+import { observer } from 'mobx-react-lite'
 import { fileURLToPath } from 'url'
-import { ImageErrorDisplayUI } from 'src/widgets/galleries/ImageUI'
+
+import { useSt } from '../../state/stateContext'
+import { useImageDrop } from '../../widgets/galleries/dnd'
+import { ImageErrorDisplayUI } from '../../widgets/galleries/ImageUI'
+import { AppIllustrationUI } from './AppIllustrationUI'
+
+// import { CushyAppL } from 'src/models/CushyApp'
+// import { DraftL } from 'src/models/Draft'
+// import { useSt } from 'src/state/stateContext'
+// import { useImageDrop } from 'src/widgets/galleries/dnd'
+// import { existsSync } from 'fs'
+// import { fileURLToPath } from 'url'
+// import { ImageErrorDisplayUI } from 'src/widgets/galleries/ImageUI'
 
 export const DraftIllustrationUI = observer(function DraftIllustrationUI_(p: {
     className?: string
@@ -68,7 +76,9 @@ export const DraftIllustrationUI = observer(function DraftIllustrationUI_(p: {
                     onClick={p.onClick}
                 />
             ) : (
-                <div style={{ width: p.size, height: p.size, objectFit: 'contain' }}>{<ImageErrorDisplayUI icon='folder' />}</div>
+                <div style={{ width: p.size, height: p.size, objectFit: 'contain' }}>
+                    <ImageErrorDisplayUI icon='folder' />
+                </div>
             )}
         </div>
     )

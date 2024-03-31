@@ -1,6 +1,6 @@
 import type { UnifiedCanvas } from './UnifiedCanvas'
-import type { MediaImageL } from 'src/models/MediaImage'
-import type { STATE } from 'src/state/state'
+import type { MediaImageL } from '../../../models/MediaImage'
+import type { STATE } from '../../../state/state'
 
 import Konva from 'konva'
 import { Layer } from 'konva/lib/Layer'
@@ -9,9 +9,8 @@ import { Stage } from 'konva/lib/Stage'
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { createMediaImage_fromDataURI } from 'src/models/createMediaImage_fromWebFile'
-
-const randomColor = () => '#' + Math.floor(Math.random() * 16777215).toString(16)
+import { randomColor } from './randomColor'
+import { createMediaImage_fromDataURI } from '../../../models/createMediaImage_fromWebFile'
 
 export class UnifiedMask {
     hide = () => this.layer.hide()

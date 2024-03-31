@@ -1,7 +1,6 @@
 import type { CompiledPrompt } from './WidgetPrompt'
-import type { STATE } from 'src/state/state'
+import type { STATE } from '../../../state/state'
 
-import { parser } from './grammar/grammar.parser'
 import { Prompt_Node, PromptAST } from './grammar/grammar.practical'
 
 export const compilePrompt = (p: {
@@ -43,7 +42,7 @@ export const compilePrompt = (p: {
         // enter
         (node: Prompt_Node) => {
             const toktype = node.$kind
-            const weights = weightStack[weightStack.length - 1]
+            const weights = weightStack[weightStack.length - 1]!
             const set = (txt: string) => {
                 const lastChar =
                     //  ⏸️ weights < 0

@@ -1,13 +1,13 @@
 import { observer } from 'mobx-react-lite'
 
+import { ComboUI } from '../app/shortcuts/ComboUI'
+import { KEYS } from '../app/shortcuts/shorcutKeys'
+import { InputNumberUI } from '../controls/widgets/number/InputNumberUI'
+import { FormHelpTextUI, Toggle } from '../rsuite/shims'
 import { useSt } from '../state/stateContext'
-import { ComboUI } from 'src/app/shortcuts/ComboUI'
-import { KEYS } from 'src/app/shortcuts/shorcutKeys'
-import { InputNumberUI } from 'src/controls/widgets/number/InputNumberUI'
-import { FormControl, FormHelpText, Toggle } from 'src/rsuite/shims'
-import { openInVSCode } from 'src/utils/electron/openInVsCode'
-import { parseFloatNoRoundingErr } from 'src/utils/misc/parseFloatNoRoundingErr'
-import { SectionTitleUI } from 'src/widgets/workspace/SectionTitle'
+import { openInVSCode } from '../utils/electron/openInVsCode'
+import { parseFloatNoRoundingErr } from '../utils/misc/parseFloatNoRoundingErr'
+import { SectionTitleUI } from '../widgets/workspace/SectionTitle'
 
 export const Panel_Config = observer(function Panel_Config_() {
     const st = useSt()
@@ -94,7 +94,8 @@ export const Panel_Config = observer(function Panel_Config_() {
                     ></Toggle>
                 </FieldUI>
                 <FieldUI label='Check update every X minutes'>
-                    <FormControl //
+                    <input //
+                        tw='input input-bordered input-sm'
                         type='number'
                         placeholder='48'
                         name='galleryImageSize'
@@ -146,7 +147,7 @@ export const FieldUI = observer(function FieldUI_(p: {
         <div className={p.className} tw='flex gap-2 items-center'>
             <label tw='whitespace-nowrap'>{p.label}</label>
             {p.children}
-            {p.required && <FormHelpText tw='join-item'>Required</FormHelpText>}
+            {p.required && <FormHelpTextUI tw='join-item'>Required</FormHelpTextUI>}
         </div>
     )
 })

@@ -1,13 +1,12 @@
 import type { Form } from '../../Form'
-import type { IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
-import type { IWidget } from 'src/controls/IWidget'
-import type { Spec } from 'src/controls/Spec'
+import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { Spec } from '../../Spec'
 
 import { computed, makeObservable, observable } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { WidgetDI } from '../WidgetUI.DI'
-import { applyWidgetMixinV2 } from 'src/controls/Mixins'
+import { applyWidgetMixinV2 } from '../../Mixins'
+import { registerWidgetClass } from '../WidgetUI.DI'
 
 // CONFIG
 export type Widget_optional_config<T extends Spec = Spec> = WidgetConfigFields<
@@ -25,16 +24,16 @@ export type Widget_optional_serial<T extends Spec = Spec> = WidgetSerialFields<{
     active: boolean
 }>
 
-// OUT
-export type Widget_optional_output<T extends Spec = Spec> = Maybe<T['$Output']>
+// VALUE
+export type Widget_optional_value<T extends Spec = Spec> = Maybe<T['$Value']>
 
 // TYPES
 export type Widget_optional_types<T extends Spec = Spec> = {
     $Type: 'optional'
-    $Input: Widget_optional_config<T>
+    $Config: Widget_optional_config<T>
     $Serial: Widget_optional_serial<T>
-    $Output: Widget_optional_output<T>
-    $Widget: Widget_optional_output<T>
+    $Value: Widget_optional_value<T>
+    $Widget: Widget_optional_value<T>
 }
 
 // STATE
@@ -42,10 +41,6 @@ export interface Widget_optional<T extends Spec = Spec> extends Widget_optional_
 export class Widget_optional<T extends Spec = Spec> implements IWidget<Widget_optional_types<T>> {
     DefaultHeaderUI = undefined
     DefaultBodyUI = undefined
-    get serialHash(): string {
-        if (this.serial.active) return this.childOrThrow.serialHash
-        return 'x'
-    }
     readonly id: string
     readonly type: 'optional' = 'optional'
 
@@ -57,54 +52,36 @@ export class Widget_optional<T extends Spec = Spec> implements IWidget<Widget_op
         return this.child
     }
 
+    setActive = (value: boolean) => {
+        if (this.serial.active === value) return
+        this.serial.active = value
+        this.bumpValue()
+
+        // update child collapsed state if need be
+        if (value) this.child.setCollapsed(false)
+        else this.child.setCollapsed(true)
+    }
+
     /**
-     * if LAZY:
-     *  - child subtree will only be instanciated when checkbox turned on
-     *  - child subtree will be destroyed when checkbox is turned off
-     *   👉 makes IMPOSSIBLE to display the grayed out widgets
-     *
-     * if EAGER:
-     *  - child subtree will be always be instanciated
-     *   👉 makes POSSIBLE to display the grayed out widgets
-     * */
-    // ⏸️ INIT_MODE: 'LAZY' | 'EAGER' = 'EAGER'
-
-    UpdateChildCollapsedState = () => {
-        if (this.child) {
-            if (this.serial.active) this.child.serial.collapsed = false
-            else this.child.serial.collapsed = true
-        }
-    }
-    toggle = () => {
-        if (this.serial.active) this.setOff()
-        else this.setOn()
-    }
-
-    setOn = () => {
-        this.serial.active = true
-        this._ensureChildIsHydrated()
-    }
-
-    setOff = () => {
-        this.serial.active = false
-        // ⏸️ if (this.INIT_MODE === 'LAZY') this.child = undefined
-    }
-
+     * as of 2024-03-14, this is only called in the constructor
+     * TODO: inline ?
+     */
     private _ensureChildIsHydrated = () => {
         if (this.child) return
         const spec = this.config.widget
         const prevSerial = this.serial.child
         if (prevSerial && spec.type === prevSerial.type) {
-            this.child = this.form.builder._HYDRATE(spec, prevSerial)
+            this.child = this.form.builder._HYDRATE(this, spec, prevSerial)
         } else {
-            this.child = this.form.builder._HYDRATE(spec, null)
+            this.child = this.form.builder._HYDRATE(this, spec, null)
             this.serial.child = this.child.serial
         }
     }
 
     constructor(
         //
-        public form: Form<any>,
+        public readonly form: Form,
+        public readonly parent: IWidget | null,
         public config: Widget_optional_config<T>,
         serial?: Widget_optional_serial<T>,
     ) {
@@ -116,22 +93,22 @@ export class Widget_optional<T extends Spec = Spec> implements IWidget<Widget_op
             active: defaultActive ?? false,
             collapsed: config.startCollapsed,
         }
+
+        // meh
         const isActive = serial?.active ?? defaultActive
-        if (isActive) this.setOn()
+        if (isActive) this.serial.active = true
+
         // ⏸️ if (this.INIT_MODE === 'EAGER') this._ensureChildIsHydrated()
         this._ensureChildIsHydrated()
         applyWidgetMixinV2(this)
-        makeObservable(this, {
-            serial: observable,
-            value: computed,
-        })
+        makeObservable(this, { serial: observable, value: computed })
     }
 
-    get value(): Widget_optional_output<T> {
+    get value(): Widget_optional_value<T> {
         if (!this.serial.active) return null
         return this.childOrThrow.value
     }
 }
 
 // DI
-WidgetDI.Widget_optional = Widget_optional
+registerWidgetClass('optional', Widget_optional)
