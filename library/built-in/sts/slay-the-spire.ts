@@ -3,10 +3,13 @@
  * For the slay-the-spire game
  */
 
+import type { MediaImageL } from '../../../src/models/MediaImage'
+
 import { bang } from '../../../src/utils/misc/bang'
 import { run_ipadapter_standalone, ui_ipadapter_standalone } from '../_ipAdapter/prefab_ipAdapter_base_standalone'
 import { run_model, ui_model } from '../_prefabs/prefab_model'
 import { run_prompt } from '../_prefabs/prefab_prompt'
+import { View_DeckOfCards } from '../_views/View_DeckOfCards'
 import { stsAssets } from './_stsAssets'
 import { allCards } from './_stsCards'
 import { drawCard } from './_stsDrawCard'
@@ -59,7 +62,7 @@ app({
         const charX = run_prompt({ prompt: ui.character, ckpt })
 
         // list of stuff to run once the generation is done
-        const AFTERGENERATION: (() => void)[] = []
+        const AFTERGENERATION: (() => Promise<MediaImageL>)[] = []
 
         const store = run.Store.getOrCreate<Record<string, string>>({
             key: 'card-descriptions-7',
@@ -145,7 +148,7 @@ app({
             graph.PreviewImage({ images: image }).storeAs(uid)
             // ----------------------------
 
-            AFTERGENERATION.push(async () => {
+            AFTERGENERATION.push(async (): Promise<MediaImageL> => {
                 const illustration = run.Store.getImageStore(uid).imageOrCrash
                 const finalCard = await drawCard({
                     color,
@@ -157,10 +160,13 @@ app({
                     illustration,
                 })
                 finalCard.addTag('sts-card', 'card', color, kind, rarity)
+                return finalCard
             })
         }
 
         await workflow.sendPromptAndWaitUntilDone()
-        await Promise.all(AFTERGENERATION.map((x) => x()))
+        const cards = await Promise.all(AFTERGENERATION.map((x) => x()))
+        const cardIds = cards.map((x) => x.imageID)
+        run.output_custom({ view: View_DeckOfCards, params: { images: cardIds } })
     },
 })
