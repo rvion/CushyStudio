@@ -1,3 +1,4 @@
+
 declare type TableNameInDB =
     | 'comfy_workflow'
     | 'draft'
@@ -19,6 +20,7 @@ declare type TableNameInDB =
     | 'host'
     | 'media_custom'
 
+declare type CushyViewID = Tagged<string, { CushyViewID: true }>
 declare type ComfyWorkflowID = Tagged<string, { ComfyWorkflowID: true }>
 declare type DraftID = Tagged<string, { DraftID: true }>
 declare type ProjectID = Tagged<string, { ProjectID: true }>
@@ -34,7 +36,6 @@ declare type MediaSplatID = Tagged<string, { MediaSplatID: true }>
 declare type CustomDataID = Tagged<string, { CustomDataID: true }>
 declare type CushyScriptID = Tagged<string, { CushyScriptID: true }>
 declare type CushyAppID = Tagged<string, { CushyAppID: true }>
-declare type CushyViewID = Tagged<string, { CushyViewID: true }>
 declare type AuthID = Tagged<string, { AuthID: true }>
 declare type TreeEntryID = Tagged<string, { TreeEntryID: true }>
 declare type HostID = Tagged<string, { HostID: true }>

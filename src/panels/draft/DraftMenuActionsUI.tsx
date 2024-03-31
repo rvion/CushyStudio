@@ -26,9 +26,8 @@ export const DraftMenuActionsUI = observer(function DraftMenuActionsUI_(p: {
             title={'Actions'} //`${layout}`}
             content={() => (
                 <>
-                    <div tw='divider my-0'></div>
+                    {/* <div tw='divider my-0'></div> */}
                     <MenuItem
-                        // active={app.isFavorite}
                         onClick={() => app.setFavorite(!app.isFavorite)}
                         icon={
                             <span tw={[app.isFavorite ? 'text-yellow-500' : null]} className='material-symbols-outlined'>
@@ -49,6 +48,14 @@ export const DraftMenuActionsUI = observer(function DraftMenuActionsUI_(p: {
                     >
                         Favorite Draft
                     </MenuItem>
+                    <div tw='divider my-0'></div>
+                    <input
+                        onChange={(ev) => draft.update({ canvasToolCategory: ev.target.value ? ev.target.value : null })}
+                        value={draft.data.canvasToolCategory ?? ''}
+                        placeholder='unified-canvas category (blank=none)'
+                        type='text'
+                        tw='input input-sm'
+                    />
                     <div tw='divider my-0'></div>
                     <MenuItem
                         shortcut={KEYS.duplicateCurrentDraft}

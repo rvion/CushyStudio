@@ -141,6 +141,7 @@ export class DraftL {
         //
         formValueOverride?: Maybe<any>
         imageToStartFrom?: MediaImageL
+        httpPayload?: any
         focusOutput?: boolean
     }): StepL => {
         if (this.form == null) {

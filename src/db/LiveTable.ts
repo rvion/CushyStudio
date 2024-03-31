@@ -9,6 +9,7 @@ import { action, type AnnotationMapEntry, makeAutoObservable, observable, runInA
 import { nanoid } from 'nanoid'
 
 import { kysely } from '../DB'
+import { sqlbench } from '../utils/microbench'
 import { DEPENDS_ON, MERGE_PROTOTYPES } from './LiveHelpers'
 import { quickBench } from './quickBench'
 import { SqlFindOptions } from './SQLWhere'
@@ -31,11 +32,7 @@ export class LiveTable<TABLE extends TableInfo<keyof KyselyTables>> {
         if (stmt == null) return []
         cushy.db.subscribeToKeys([this.schema.sql_name])
         if (subscriptions) cushy.db.subscribeToKeys(subscriptions) // make sure this getter will re-run when any of the deps change
-        const A = process.hrtime.bigint() // TIMER start
-        const x = stmt.all(query.parameters) // execute the statement
-        const B = process.hrtime.bigint() // TIMER end
-        const ms = Number(B - A) / 1_000_000
-        console.log(`[🚧] SQL [${ms.toFixed(3)}ms]`, query.sql, query.parameters) // debug
+        const x = sqlbench(query, () => stmt.all(query.parameters)) // execute the statement
         const hydrated = x.map((data) => this.schema.hydrateJSONFields_crashOnMissingData(data)) // hydrate results
         const instances = hydrated.map((d) => this.getOrCreateInstanceForExistingData(d)) // create instances
         return instances
@@ -49,11 +46,7 @@ export class LiveTable<TABLE extends TableInfo<keyof KyselyTables>> {
         const stmt = cushy.db.db.prepare(query.sql) // prepare the statement
         if (stmt == null) return []
         if (subscriptions) cushy.db.subscribeToKeys(subscriptions) // make sure this getter will re-run when any of the deps change
-        const A = process.hrtime.bigint() // TIMER start
-        const x = stmt.all(query.parameters) // execute the statement
-        const B = process.hrtime.bigint() // TIMER end
-        const ms = Number(B - A) / 1_000_000
-        console.log(`[🚧] SQL [${ms.toFixed(3)}ms]`, query.sql, query.parameters) // debug
+        const x = sqlbench(query, () => stmt.all(query.parameters)) // execute the statement
         return x as any[] // return the result
     }
 
@@ -254,7 +247,8 @@ export class LiveTable<TABLE extends TableInfo<keyof KyselyTables>> {
                         stmt.get(updatePayload) as any as TABLE['$T']
                         const B = process.hrtime.bigint() // TIMER end
                         const ms = Number(B - A) / 1_000_000
-                        console.log(`[🚧] SQL [${ms.toFixed(3)}ms]`, updateSQL, { updatePayload }) // debug
+                        const emoji = ms > 4 ? '🔴' : ms > 1 ? '🔶' : ''
+                        console.log(`[🚧] SQL [${ms.toFixed(3)}ms]`, emoji, updateSQL, { updatePayload }) // debug
 
                         // assign the changes
                         // 2023-12-02 rvion: for now, I'm not re-assigning from the returned values

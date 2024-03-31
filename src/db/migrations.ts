@@ -690,4 +690,14 @@ export const migrations: {
             `alter table media_custom add column viewID text not null`,
         ],
     },
+    {
+        id: 'JEIXsfrgbJ',
+        name: 'allow to organize tools into categories / panels',
+        up: [`alter table draft add column canvasToolCategory text`],
+    },
+    {
+        id: 'mNDq6De-sm',
+        name: 'misc indexes',
+        up: [`CREATE INDEX idx__media_image__path ON media_image(path);`],
+    },
 ]

@@ -278,6 +278,16 @@ export class STATE {
     // ---------------------------------------------------
     get favoriteApps(): CushyAppL[] { return this.db.cushy_app.select((q) => q.where('isFavorite', '=', SQLITE_true), ['cushy_app.isFavorite']) } // prettier-ignore
     get favoriteDrafts(): DraftL[] { return this.db.draft.select((q) => q.where('isFavorite', '=', SQLITE_true), ['draft.isFavorite']) } // prettier-ignore
+    get canvasTools(): DraftL[] { return this.db.draft.select((q) => q.where('canvasToolCategory', '!=', 'null'), ['draft.canvasToolCategory']) } // prettier-ignore
+    getCanvasToolsInCategory = (category: string) =>
+        this.db.draft.select((q) => q.where('canvasToolCategory', '=', category), ['draft.canvasToolCategory'])
+    /** list of all unified canvas tool categories */
+    get canvasCategories(): string[] {
+        return this.db.draft
+            .selectRaw((q) => q.select('canvasToolCategory').distinct(), ['draft.canvasToolCategory'])
+            .map((x) => x.canvasToolCategory!)
+            .filter(Boolean)
+    }
     get allDrafts(): DraftL[] { return this.db.draft.select() } // prettier-ignore
     get allApps(): CushyAppL[] { return this.db.cushy_app.select() } // prettier-ignore
     get allImageApps(): CushyAppL[] { return this.db.cushy_app.select(q => q.where('canStartFromImage','=', SQLITE_true)) } // prettier-ignore
@@ -722,10 +732,12 @@ export class STATE {
     }
 
     latentPreview: Maybe<{
+        promtID: Maybe<PromptID>
         receivedAt: Timestamp
         blob: Blob
         url: string
     }> = null
+
     onMessage = (e: MessageEvent, host: HostL) => {
         if (e.data instanceof ArrayBuffer) {
             // 🔴 console.log('[👢] WEBSOCKET: received ArrayBuffer', e.data)
@@ -747,7 +759,12 @@ export class STATE {
                     }
                     const imageBlob = new Blob([buffer.slice(4)], { type: imageMime })
                     const imagePreview = URL.createObjectURL(imageBlob)
-                    this.latentPreview = { blob: imageBlob, url: imagePreview, receivedAt: Date.now() }
+                    this.latentPreview = {
+                        blob: imageBlob,
+                        url: imagePreview,
+                        receivedAt: Date.now(),
+                        promtID: this.activePromptID,
+                    }
                     break
                 default:
                     throw new Error(`Unknown binary websocket message of type ${eventType}`)
