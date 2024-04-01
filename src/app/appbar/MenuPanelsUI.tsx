@@ -52,6 +52,11 @@ export const MenuPanelsUI = observer(function MenuPanelsUI_(p: {}) {
                         label='Gallery'
                     />
                     <MenuItem
+                        onClick={() => st.layout.FOCUS_OR_CREATE('Gallery', { uid: `${Math.random()}` })}
+                        icon={<span className='material-symbols-outlined text-red-400'>image_search</span>}
+                        label='Gallery'
+                    />
+                    <MenuItem
                         onClick={() => st.layout.FOCUS_OR_CREATE('LastImage', {})}
                         icon={<span className='material-symbols-outlined text-red-400'>history</span>}
                         label='Last IMAGE'
