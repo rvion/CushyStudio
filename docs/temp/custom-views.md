@@ -1,6 +1,6 @@
 # Custom Views
 
-ou can now define your own custom "outputs",
+You can now define your own custom "outputs",
 Cushy have built-in outputs types like `image`, `text`, `markdown`, `html`, `video`, `displacement`, `gaussian spats`
 
 but you can extend add many more, tailored to your specific project!
