@@ -122,16 +122,27 @@ type Command_<Ctx = any, Props = any> = {
     label: string
     description: string
     $property: Props
-    when: (p: Props, event: Event) => Ctx | RET
+    when: (p: Props /* event: Event */) => Ctx | RET.UNMATCHED
     run: (t: Ctx, p: Props) => RET | Promise<RET>
 }
-interface Command<T = any, P = any> extends Command_<T, P> {}
-class Command<T = any, P = any> {
+interface Command<Ctx = any, Props = any> extends Command_<Ctx, Props> {}
+class Command<Ctx = any, Props = any> {
     type: 'command' = 'command'
-    constructor(private _p: Command_) {
+    constructor(private _p: Command_<Ctx, Props>) {
         Object.assign(this, _p)
     }
-    withProps = (props: P): CommandWithProps<T, P> => new CommandWithProps(this, props)
+
+    /**
+     * method to programmatically call a command,
+     * using when to both extract context and check if command can run
+     * */
+    call = (p: Props) => {
+        const canRun = this._p.when(p)
+        if (canRun === RET.UNMATCHED) return RET.UNMATCHED
+        const res = this._p.run(canRun, p)
+        return res
+    }
+    withProps = (props: Props): CommandWithProps<Ctx, Props> => new CommandWithProps(this, props)
 }
 const command = <T, P>(t: Omit<Command_<T, P>, 'type' | '$property'>): Command<T, P> => {
     const cmd = new Command(t as any)
@@ -140,6 +151,7 @@ const command = <T, P>(t: Omit<Command_<T, P>, 'type' | '$property'>): Command<T
 }
 
 export type Check<T> = T | RET.UNMATCHED
+
 // ========================================================================================================================
 // ========================================================================================================================
 // ========================================================================================================================
@@ -205,8 +217,6 @@ const menu_copyImageAs: Menu<MediaImageL> = menu((image: MediaImageL) => [
     cmd_copyImage.withProps({ image, format: 'JPG' }),
     form_foo.fields.quality,
 ])
-
-// TODO: example of custom contxt and computed and stuff though this with class
 
 // --------------------------------------------------------------------------------------------------------------
 // const Stack = StackItem[]
