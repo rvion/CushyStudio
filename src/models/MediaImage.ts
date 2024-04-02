@@ -18,6 +18,7 @@ import sharp from 'sharp'
 
 import { hasMod } from '../app/shortcuts/META_NAME'
 import { LiveRefOpt } from '../db/LiveRefOpt'
+import { RET } from '../operators/RET'
 import { SafetyResult } from '../safety/Safety'
 import { createHTMLImage_fromURL } from '../state/createHTMLImage_fromURL'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
@@ -64,12 +65,18 @@ export class MediaImageL {
 
     /* XXX: This should only be a stop-gap for a custom solution that isn't hampered by the browser's security capabilities */
     /** Uses browser clipboard API to copy the image to clipboard, will only copy as a PNG and will not include metadata. */
-    copyToClipboard = () => {
-        createHTMLImage_fromURL(URL.createObjectURL(this.getAsBlob()))
-            .then((img) => {
+    copyToClipboard = async (
+        /** NOT TAKEN INTO ACCOUNT FOR NOW */
+        p?: {
+            //
+            format?: any /* 🔴 */
+            quality?: any /* 🔴 */
+        },
+    ): Promise<RET> => {
+        try {
+            await createHTMLImage_fromURL(URL.createObjectURL(this.getAsBlob())).then((img) => {
                 const canvas = document.createElement('canvas')
                 const ctx = canvas.getContext('2d')
-
                 canvas.width = img.width
                 canvas.height = img.height
                 ctx?.drawImage(img, 0, 0)
@@ -94,10 +101,12 @@ export class MediaImageL {
                         })
                 })
             })
-            .catch((error) => {
-                toastError(`Could not copy image to clipboard: ${error}`)
-                console.error('Error loading image:', error)
-            })
+            return RET.DONE
+        } catch (error) {
+            toastError(`Could not copy image to clipboard: ${error}`)
+            console.error('Error loading image:', error)
+            return RET.FAILED
+        }
     }
 
     copyToClipboardAsBase64 = () => {

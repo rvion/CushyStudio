@@ -738,6 +738,13 @@ export class STATE {
         url: string
     }> = null
 
+    // prettier-ignore
+    /* 🔴 */ mouse = {
+    /* 🔴 */     isOver(p: string) {
+    /* 🔴 */         return true
+    /* 🔴 */     },
+    /* 🔴 */ }
+
     onMessage = (e: MessageEvent, host: HostL) => {
         if (e.data instanceof ArrayBuffer) {
             // 🔴 console.log('[👢] WEBSOCKET: received ArrayBuffer', e.data)
