@@ -75,6 +75,8 @@ import { Marketplace } from './Marketplace'
 import { mkSupa } from './supa'
 import { Uploader } from './Uploader'
 import { OperatorManager } from '../app/operators/OperatorManager'
+import { KeymapManager } from '../app/keymap/keymapManager'
+import { PanelArea } from '../panels/router/PANELS'
 
 export class STATE {
     // LEAVE THIS AT THE TOP OF THIS CLASS
@@ -109,6 +111,7 @@ export class STATE {
     uid = nanoid() // front uid to fix hot reload
     db: LiveDB // core data
     operators: OperatorManager
+    keymaps: KeymapManager
     shortcuts: ShortcutWatcher
     uploader: Uploader
     supabase: SupabaseClient<Database>
@@ -116,6 +119,7 @@ export class STATE {
     managerRepository = new ComfyManagerRepository({ check: false, genTypes: false })
     search: SearchManager = new SearchManager(this)
     forms = CushyFormManager
+    hoveredRegion?: PanelArea
 
     _updateTime = () => {
         const now = Date.now()
@@ -554,6 +558,7 @@ export class STATE {
         this.electronUtils = new ElectronUtils(this)
         this.shortcuts = new ShortcutWatcher(allCommands, this, { name: nanoid() })
         this.operators = new OperatorManager()
+        this.keymaps = new KeymapManager()
         console.log(`[🛋️] ${this.shortcuts.shortcuts.length} shortcuts loaded`)
         this.uploader = new Uploader(this)
         this.layout = new CushyLayoutManager(this)
@@ -617,6 +622,8 @@ export class STATE {
         })
         this.startupFileIndexing()
         setTimeout(() => quickBench.printAllStats(), 1000)
+
+        this.keymaps.registerDefaults(this)
     }
 
     get mainComfyHostID(): HostID {

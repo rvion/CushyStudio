@@ -1,5 +1,5 @@
 import { RefObject, useEffect } from 'react'
-import { STATE } from 'src/state/state'
+import { STATE } from '../../state/state'
 
 type Ctx = STATE
 
@@ -44,6 +44,18 @@ export class OperatorManager {
         this.registerTestOperator()
     }
     readonly operators: { [id: string]: Operator } = {}
+
+    getCopy = (id: string | Operator): Operator | undefined => {
+        let op: Operator | undefined
+
+        if (typeof id === 'string') {
+            op = this.operators[id]
+        } else {
+            op = id
+        }
+
+        return op
+    }
     /* Stack of modal operators currently running */
     stack: Operator[] = []
 
@@ -76,8 +88,9 @@ export class OperatorManager {
 
     /** Runs through the stack of modals, starting from the most recently pushed. */
     runModals = (ctx: Ctx, event: Event) => {
-        document.getElementById('input-blocker')?.classList.remove('input-blocker-active')
         const stack = this.stack.toReversed()
+
+        console.log('[🧬] - Stack Len: ', stack.length)
 
         for (let op of stack) {
             if (!op.modal) {
@@ -123,6 +136,10 @@ export class OperatorManager {
         }
 
         const op = this.operators[id]
+        if (!op) {
+            return 'UNKNOWN'
+        }
+
         if (op.invoke) {
             const returnType = op.invoke(op, ctx, event)
             if (returnType in ['CANCELLED', 'FINISHED', 'MODAL']) {
@@ -156,7 +173,7 @@ export class OperatorManager {
             return 'CANCELLED'
         }
 
-        console.warn(`Operator ${op.id} has no exec function. Skipping...`)
+        console.warn(`Operator ${id} has no exec function. Skipping...`)
         return 'CANCELLED'
     }
 
@@ -167,55 +184,6 @@ export class OperatorManager {
 
     unregisterTestOperator = () => {
         this.unregister(TEST_OT_test)
-    }
-
-    useEffect = (st: STATE, appRef: RefObject<HTMLDivElement>) => {
-        document.getElementById('input-blocker')?.classList.remove('input-blocker-active')
-
-        function onEvent(event: Event) {
-            st.operators.runModals(st, event)
-
-            /* Keymapping/shortcut system should replace this */
-            if (!event.defaultPrevented && event instanceof KeyboardEvent) {
-                if (event.key == 's') {
-                    st.operators.invoke('TEST_OT_test', st, event)
-                }
-            }
-        }
-        useEffect(() => {
-            window.addEventListener('click', onEvent)
-            window.addEventListener('dblclick', onEvent)
-            window.addEventListener('mousedown', onEvent)
-            window.addEventListener('mouseup', onEvent)
-            window.addEventListener('mouseenter', onEvent)
-            window.addEventListener('mouseleave', onEvent)
-            window.addEventListener('mousemove', onEvent)
-            window.addEventListener('keydown', onEvent)
-            window.addEventListener('keyup', onEvent)
-            window.addEventListener('focus', onEvent)
-            window.addEventListener('blur', onEvent)
-            window.addEventListener('input', onEvent)
-            window.addEventListener('change', onEvent)
-            window.addEventListener('scroll', onEvent)
-            window.addEventListener('resize', onEvent)
-            return () => {
-                window.removeEventListener('click', onEvent)
-                window.removeEventListener('dblclick', onEvent)
-                window.removeEventListener('mousedown', onEvent)
-                window.removeEventListener('mouseup', onEvent)
-                window.removeEventListener('mouseenter', onEvent)
-                window.removeEventListener('mouseleave', onEvent)
-                window.removeEventListener('mousemove', onEvent)
-                window.removeEventListener('keydown', onEvent)
-                window.removeEventListener('keyup', onEvent)
-                window.removeEventListener('focus', onEvent)
-                window.removeEventListener('blur', onEvent)
-                window.removeEventListener('input', onEvent)
-                window.removeEventListener('change', onEvent)
-                window.removeEventListener('scroll', onEvent)
-                window.removeEventListener('resize', onEvent)
-            }
-        }, [appRef.current, st])
     }
 }
 
@@ -231,9 +199,9 @@ const TEST_OT_test = {
     },
     modal: (self: Operator, ctx: Ctx, event: Event) => {
         if (event instanceof KeyboardEvent) {
-            console.log('[🧬] - Hello MODAL: ', event.key)
+            // console.log('[🧬] - Hello MODAL: ', event.key)
             if (event.key == 'Escape') {
-                console.log('[🧬] - Cancelling Modal!!')
+                // console.log('[🧬] - Cancelling Modal!!')
                 return 'CANCELLED'
             }
         }

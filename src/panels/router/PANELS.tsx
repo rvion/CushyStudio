@@ -80,3 +80,7 @@ export const panels = {
 
 export type Panels = typeof panels
 export type PanelNames = keyof Panels
+export type PanelArea = {
+    id?: string
+    type?: string
+}

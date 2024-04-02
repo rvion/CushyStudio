@@ -17,7 +17,50 @@ export const CushyUI = observer(function CushyUI_() {
     const st = useSt()
     const appRef = useRef<HTMLDivElement>(null)
 
-    st.operators.useEffect(st, appRef)
+    /* Updates certain things based on mouse info, used to make keymap polling easier. (Like setting a hovered region on the state that poll function can use to determine if they should be ran or not) */
+    useEffect(() => {
+        function handleMouseEvent(event: MouseEvent) {
+            const t = event.target
+            let e: HTMLElement | null = event.target as HTMLElement
+            let hoveredRegion = undefined
+
+            // console.log('[🧬] - classList: ', e.classList)
+            while (hoveredRegion == null && e && !Array.from(e.classList).some((className) => className.includes('panel-'))) {
+                e = e.parentElement
+                if (e) {
+                    let test = Array.from(e.classList).find((className) => className.includes('panel-'))
+                    if (test) {
+                        hoveredRegion = test.split('-')
+                    }
+                }
+            }
+            if (hoveredRegion) {
+                st.hoveredRegion = { id: hoveredRegion[2], type: hoveredRegion[1] }
+            } else {
+                st.hoveredRegion = undefined
+            }
+        }
+
+        window.addEventListener('mousedown', handleMouseEvent)
+        window.addEventListener('mouseenter', handleMouseEvent)
+        window.addEventListener('mouseleave', handleMouseEvent)
+        window.addEventListener('mousemove', handleMouseEvent)
+        window.addEventListener('mouseout', handleMouseEvent)
+        window.addEventListener('mouseover', handleMouseEvent)
+        window.addEventListener('mouseup', handleMouseEvent)
+        return () => {
+            window.removeEventListener('mousedown', handleMouseEvent)
+            window.removeEventListener('mouseenter', handleMouseEvent)
+            window.removeEventListener('mouseleave', handleMouseEvent)
+            window.removeEventListener('mousemove', handleMouseEvent)
+            window.removeEventListener('mouseout', handleMouseEvent)
+            window.removeEventListener('mouseover', handleMouseEvent)
+            window.removeEventListener('mouseup', handleMouseEvent)
+        }
+    }, [appRef.current, st])
+
+    // st.operators.useEffect(st, appRef)
+    st.keymaps.init(st, appRef)
 
     useEffect(() => {
         const current = appRef.current
