@@ -15,7 +15,6 @@ import * as three from 'three'
 import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader.js'
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js'
 
-// @ts-ignore
 import { jsx, jsxs } from '../utils/custom-jsx/jsx-runtime'
 
 // REWRITE LOGIC ------------------------------------------------------------------------
@@ -27,7 +26,6 @@ export const CUSHY_IMPORT = (mod: string) => {
     if (mod === 'mobx-react-lite') return { observer: observer, useLocalObservable }
     if (mod === 'react/jsx-runtime') return { jsx, jsxs, Fragment }
     //  added on 2024-03-25
-    if (mod === 'three') return
     if (mod === '@react-three/drei') return drei
     if (mod === '@react-three/fiber') return fiber
     if (mod === 'three') return three
@@ -35,7 +33,7 @@ export const CUSHY_IMPORT = (mod: string) => {
     if (mod === 'three/examples/jsm/loaders/OBJLoader.js') return { OBJLoader }
     if (mod === 'three/examples/jsm/loaders/MTLLoader') return { MTLLoader }
     if (mod === 'three/examples/jsm/loaders/OBJLoader') return { OBJLoader }
-
+    //
     throw new Error('🔴 unsupported import: ' + mod)
 }
 
