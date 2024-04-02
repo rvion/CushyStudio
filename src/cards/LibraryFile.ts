@@ -229,13 +229,10 @@ export class LibraryFile {
             // await this.pkg.rebuild()
             // console.log('-- a', { eps: this.relPath })
             const ctx = await this._esbuildContext
-            // console.log('-- b')
             const res = await ctx.rebuild()
             // console.log(`[👙] res`, Object.keys(res.metafile.inputs))
             const outFile: OutputFile = res.outputFiles[0]!
-            // console.log(`[👙] res`, outFile.text)
             if (outFile.text == null) throw new Error('compilation failed')
-            // console.log('-- c')
 
             // const distPathWrongExt = path.join(this.folderAbs, 'dist', this.deckRelativeFilePath)
             // const ext = path.extname(distPathWrongExt)
