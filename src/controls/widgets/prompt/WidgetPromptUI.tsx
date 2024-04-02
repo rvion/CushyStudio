@@ -83,14 +83,14 @@ export const WidgetPromptUI = observer(function WidgetPromptUI_(p: { widget: Wid
     return (
         <div
             tw='flex flex-col'
-            onKeyDownCapture={(ev) => {
-                // Prevent new-line when using the run shortcut
-                // XXX: This should be removed once running a draft is implemented using the proper shortcut method.
-                if (ev.ctrlKey && ev.key == 'Enter') {
-                    ev.preventDefault()
-                    ev.stopPropagation()
-                }
-            }}
+            // onKeyDownCapture={(ev) => {
+            //     // Prevent new-line when using the run shortcut
+            //     // XXX: This should be removed once running a draft is implemented using the proper shortcut method.
+            //     if (ev.ctrlKey && ev.key == 'Enter') {
+            //         ev.preventDefault()
+            //         ev.stopPropagation()
+            //     }
+            // }}
         >
             <div ref={uist.mountRef}></div>
 

@@ -77,6 +77,7 @@ import { Uploader } from './Uploader'
 import { OperatorManager } from '../app/operators/OperatorManager'
 import { KeymapManager } from '../app/keymap/keymapManager'
 import { PanelArea } from '../panels/router/PANELS'
+import { registerGlobalOperators } from '../app/operators/GlobalOperators'
 
 export class STATE {
     // LEAVE THIS AT THE TOP OF THIS CLASS
@@ -119,7 +120,13 @@ export class STATE {
     managerRepository = new ComfyManagerRepository({ check: false, genTypes: false })
     search: SearchManager = new SearchManager(this)
     forms = CushyFormManager
+
     hoveredRegion?: PanelArea
+    modifiers: {
+        ctrl: boolean
+        alt: boolean
+        shift: boolean
+    }
 
     _updateTime = () => {
         const now = Date.now()
@@ -557,7 +564,6 @@ export class STATE {
         this.marketplace = new Marketplace(this)
         this.electronUtils = new ElectronUtils(this)
         this.shortcuts = new ShortcutWatcher(allCommands, this, { name: nanoid() })
-        this.operators = new OperatorManager()
         this.keymaps = new KeymapManager()
         console.log(`[🛋️] ${this.shortcuts.shortcuts.length} shortcuts loaded`)
         this.uploader = new Uploader(this)
@@ -577,11 +583,11 @@ export class STATE {
         this.project = this.getProject()
         this.auth = new AuthState(this)
         this.danbooru = DanbooruTags.build(this)
-
+        
         this.virtualHostBase // ensure getters are called at least once so we upsert the two core virtual hosts
         this.virtualHostFull // ensure getters are called at least once so we upsert the two core virtual hosts
         this.standardHost // ensure getters are called at least once so we upsert the two core virtual hosts
-
+        
         this.mainHost.CONNECT()
         this.tree1 = new Tree(this, [
             //
@@ -598,7 +604,7 @@ export class STATE {
                 if (node.data instanceof TreeApp) return node.data.app?.revealInFileExplorer()
                 if (node.data instanceof TreeDraft) return node.data.draft.revealInFileExplorer()
                 return
-            },
+        },
         })
         this.tree2 = new Tree(this, [
             // treeElement({ key: 'library', ctor: TreeFolder, props: asRelativePath('library') }),
@@ -622,8 +628,16 @@ export class STATE {
         })
         this.startupFileIndexing()
         setTimeout(() => quickBench.printAllStats(), 1000)
+        
+        this.operators = new OperatorManager()
+        registerGlobalOperators(this)
 
         this.keymaps.registerDefaults(this)
+        this.modifiers = {
+            ctrl: false,
+            shift: false,
+            alt: false,
+        }
     }
 
     get mainComfyHostID(): HostID {

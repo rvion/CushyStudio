@@ -1,5 +1,6 @@
 import { RefObject, useEffect } from 'react'
 import { STATE } from '../../state/state'
+import { registerGlobalOperators } from './GlobalOperators'
 
 type Ctx = STATE
 
@@ -30,7 +31,7 @@ export type Operator = {
     /** When a modal is on stack it will be passed an event */
     modal?: (self: Operator, ctx: Ctx, ev: Event) => OperatorReturnType
     /** Whether or not to run when the shortcut conditions are met */
-    poll?: (self: Operator, ctx: Ctx, ev: Event) => OperatorReturnType
+    poll?: (self: Operator, ctx: Ctx, ev: Event) => boolean
     /** Used for when called from a button click, it does not need an event and should be able to run without one.
      *  Passing "MODAL" or "PASSTHROUGH" here does nothing.
      */
@@ -45,6 +46,7 @@ export class OperatorManager {
     }
     readonly operators: { [id: string]: Operator } = {}
 
+    /** Returns a deep copy of an operator */
     getCopy = (id: string | Operator): Operator | undefined => {
         let op: Operator | undefined
 
@@ -89,8 +91,6 @@ export class OperatorManager {
     /** Runs through the stack of modals, starting from the most recently pushed. */
     runModals = (ctx: Ctx, event: Event) => {
         const stack = this.stack.toReversed()
-
-        console.log('[🧬] - Stack Len: ', stack.length)
 
         for (let op of stack) {
             if (!op.modal) {
@@ -198,9 +198,10 @@ const TEST_OT_test = {
         return 'MODAL'
     },
     modal: (self: Operator, ctx: Ctx, event: Event) => {
+        console.log('[🧬] - event.type: ', event.type)
         if (event instanceof KeyboardEvent) {
             // console.log('[🧬] - Hello MODAL: ', event.key)
-            if (event.key == 'Escape') {
+            if (event.type == 'keyup' && event.key == 'Escape') {
                 // console.log('[🧬] - Cancelling Modal!!')
                 return 'CANCELLED'
             }

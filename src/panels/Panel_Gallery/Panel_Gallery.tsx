@@ -46,7 +46,7 @@ export const GalleryPreferences = observer(function FooUI_(p: {}) {
     )
 })
 
-export function PanelGalery_RegisterKeymaps(st: STATE) {
+export function PanelGallery_RegisterKeymaps(st: STATE) {
     st.keymaps.new('Gallery', {
         // Is inside region, should be a utility function somewhere. Somewhere re-usable
         poll: (ctx: STATE, ev: Event): boolean => {
@@ -56,6 +56,17 @@ export function PanelGalery_RegisterKeymaps(st: STATE) {
 
             return false
         },
-        items: [{ event: { type: 'keydown', value: 's', alt: true }, operator: 'TEST_OT_test', properties: {} }],
+        items: [
+            {
+                event: { type: 'keydown', value: 's', alt: false, shift: false, ctrl: true },
+                operator: 'TEST_OT_test',
+                properties: {},
+            },
+            {
+                event: { type: 'keydown', value: 'c', alt: false, shift: false, ctrl: true },
+                operator: 'GALLERY_OT_copy_hovered',
+                properties: {},
+            },
+        ],
     })
 }

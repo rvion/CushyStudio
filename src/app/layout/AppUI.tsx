@@ -41,6 +41,13 @@ export const CushyUI = observer(function CushyUI_() {
             }
         }
 
+        /* Update our modifiers to make keymap stuff easier, also can use anywhere now instead of just events. */
+        function handleKeyEvent(event: KeyboardEvent) {
+            st.modifiers.ctrl = event.ctrlKey
+            st.modifiers.shift = event.shiftKey
+            st.modifiers.alt = event.altKey
+        }
+
         window.addEventListener('mousedown', handleMouseEvent)
         window.addEventListener('mouseenter', handleMouseEvent)
         window.addEventListener('mouseleave', handleMouseEvent)
@@ -48,6 +55,10 @@ export const CushyUI = observer(function CushyUI_() {
         window.addEventListener('mouseout', handleMouseEvent)
         window.addEventListener('mouseover', handleMouseEvent)
         window.addEventListener('mouseup', handleMouseEvent)
+
+        window.addEventListener('keydown', handleKeyEvent)
+        window.addEventListener('keyup', handleKeyEvent)
+        window.addEventListener('keypress', handleKeyEvent)
         return () => {
             window.removeEventListener('mousedown', handleMouseEvent)
             window.removeEventListener('mouseenter', handleMouseEvent)
@@ -56,6 +67,10 @@ export const CushyUI = observer(function CushyUI_() {
             window.removeEventListener('mouseout', handleMouseEvent)
             window.removeEventListener('mouseover', handleMouseEvent)
             window.removeEventListener('mouseup', handleMouseEvent)
+
+            window.removeEventListener('keydown', handleKeyEvent)
+            window.removeEventListener('keyup', handleKeyEvent)
+            window.removeEventListener('keypress', handleKeyEvent)
         }
     }, [appRef.current, st])
 

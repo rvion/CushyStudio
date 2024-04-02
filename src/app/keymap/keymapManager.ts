@@ -7,21 +7,24 @@
 - (registered to the region?)
 - (using poll()?)
 
+- Add support for timers. It should just create a setTimeout when the keymap entry is registered that calls the operator.
+
  */
 
 import { RefObject, useEffect } from 'react'
 import { STATE } from '../../state/state'
 import { Operator } from '../operators/OperatorManager'
-import { PanelGalery_RegisterKeymaps } from '../../panels/Panel_Gallery/Panel_Gallery'
+import { PanelGallery_RegisterKeymaps } from '../../panels/Panel_Gallery/Panel_Gallery'
 
 type Ctx = STATE
 
 type KeymapEvent = {
     type: EventType
+    /** Requires a string for keyboard inputs and a number for mouse inputs */
     value?: string | number
-    ctrl?: boolean
-    alt?: boolean
-    shift?: boolean
+    ctrl: boolean
+    alt: boolean
+    shift: boolean
 }
 
 export type KeymapItem = {
@@ -40,17 +43,13 @@ export class Keymap {
         this.id = id
         this.items = []
 
-        if (id === 'Gallery') {
-            this.register({
-                event: { type: 'keydown', value: 's' },
-                operator: 'TEST_OT_test',
-                properties: {},
-            })
-        }
-
         if (options) {
             if (options.poll) {
                 this.poll = options.poll
+            }
+
+            if (options.items) {
+                this.items = options.items
             }
         }
     }
@@ -59,6 +58,7 @@ export class Keymap {
 
     public register(keymapItem: KeymapItem) {
         this.items.push(keymapItem)
+        console.warn('[🧬] keymapManager - Registered:', keymapItem)
     }
 }
 
@@ -77,7 +77,7 @@ export class KeymapManager {
     public registerDefaults(st: STATE) {
         this.new('Global')
 
-        PanelGalery_RegisterKeymaps(st)
+        PanelGallery_RegisterKeymaps(st)
     }
 
     new(id: string, options?: KeymapManagerOptions) {
@@ -103,14 +103,31 @@ export class KeymapManager {
             if (keymap.poll && !keymap?.poll(st, event)) {
                 continue
             }
-            console.log(`[🧬] - Keymap '${keymap.id}' was allowed`)
+            // console.log(`[🧬] - Keymap '${keymap.id}' was allowed`)
             for (let item of keymap.items) {
+                // console.warn('[🧬] iterating!', item)
                 if (item.event.type == event.type) {
+                    // console.log('[🧬] Trying stuff!', item.event, event)
+                    if (st.modifiers.alt !== item.event.alt) {
+                        console.warn('[🧬] failed alt!', st.modifiers.alt, item.event.alt)
+                        continue
+                    }
+
+                    if (st.modifiers.shift !== item.event.shift) {
+                        console.warn('[🧬] failed shift!', st.modifiers.shift, item.event.shift)
+                        continue
+                    }
+
+                    if (st.modifiers.ctrl !== item.event.ctrl) {
+                        console.warn('[🧬] failed ctrl!', st.modifiers.ctrl, item.event.ctrl)
+                        continue
+                    }
+
                     if (type === 'keyboard') {
                         console.log('[🧬] keyboard!')
                         let e: KeyboardEvent = event as KeyboardEvent
                         console.log(e)
-                        if (item.event.value == e.key) {
+                        if (item.event.value == e.key.toLowerCase()) {
                             console.log('[🧬] - FOUND MATCH!!!')
                             return st.operators.operators[item.operator]
                         }
@@ -123,7 +140,8 @@ export class KeymapManager {
                             return st.operators.operators[item.operator]
                         }
                     }
-                    // st.operators.invoke(item.operator, st, event)
+
+                    //TODO: Handle other event cases if we add them to keymap?
                 }
             }
         }
