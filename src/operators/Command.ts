@@ -1,3 +1,4 @@
+import { BoundCommandSym } from './_isBoundCommand'
 import { RET } from './RET'
 
 // ------------------------------------------------------------------------------------------
@@ -67,6 +68,8 @@ export const command = <T, P>(t: Omit<Command_<T, P>, 'type' | '$property'>): Co
 // A bound command; ready to be executed
 export type BoundCommandOpts = { label?: string }
 export class BoundCommand<Ctx = any, Props = any> {
+    $SYM = BoundCommandSym
+
     get label() {
         return this.ui?.label ?? this.command.label
     }

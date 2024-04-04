@@ -23,8 +23,8 @@ html, body, #root {
 .pointer { cursor: pointer; }
 
 
-.grid-visible > * {border: 1px solid #3d3d3d;}
-.grid-visible { grid-gap: 1; }
+.grid-visible > * { border: 1px solid #3d3d3d; padding:.3rem; border-radius: .5rem; }
+.grid-visible { gap: .5rem;}
 
 /* Property Panel ---------------------------------------- */
 .prop {border-top: 1px solid #3d3d3d; line-height: 1rem}

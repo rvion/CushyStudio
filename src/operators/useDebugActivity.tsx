@@ -13,10 +13,18 @@ export const useDebugActivity = () =>
                 return (
                     <div tw='flex items-center justify-center h-full bg-neutral' onClick={(ev) => ev.stopPropagation()}>
                         <div tw='grid grid-cols-3 grid-visible'>
-                            <div tw='btn' onClick={() => menu_imageActions.open(img)}>
-                                open
+                            {/*  */}
+                            <div>
+                                <h3 tw='italic text-gray-500'>Open as as standalone Activity</h3>
+                                <div tw='btn btn-primary' onClick={() => menu_imageActions.open(img)}>
+                                    Open
+                                </div>
                             </div>
-                            <menu_imageActions.UI props={img} />
+
+                            <div>
+                                <h3 tw='italic text-gray-500'>menu mounted as widget</h3>
+                                <menu_imageActions.UI props={img} />
+                            </div>
                             <RevealExample_NestedMenuUI />
                         </div>
                     </div>

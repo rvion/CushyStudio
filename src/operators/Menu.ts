@@ -1,9 +1,9 @@
 import type { IWidget } from '../controls/IWidget'
 
 import { nanoid } from 'nanoid'
-import { createElement, type FC, type ReactNode, useMemo } from 'react'
+import { createElement, type FC, useMemo } from 'react'
 
-import { RevealUI } from '../rsuite/reveal/RevealUI'
+import { BoundMenuSym } from './_isBoundMenu'
 import { Activity, activityManger } from './Activity'
 import { BoundCommand } from './Command'
 import { MenuUI } from './MenuUI'
@@ -121,6 +121,7 @@ export const menu = <P>(def: MenuDef<P>): Menu<P> => new Menu(def)
 // great abstraction to handle nested sub-menus and more
 export type BoundMenuOpts = { title?: string }
 export class BoundMenu<Ctx = any, Props = any> {
+    $SYM = BoundMenuSym
     get title() {
         return this.ui?.title ?? this.menu.title
     }

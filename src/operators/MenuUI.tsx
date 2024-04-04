@@ -1,24 +1,29 @@
+import type { MenuInstance } from './Menu'
+
 import { observer } from 'mobx-react-lite'
+import { createElement } from 'react'
 import { Fragment } from 'react/jsx-runtime'
 
 import { isWidget } from '../controls/IWidget'
 import { MenuItem } from '../rsuite/Dropdown'
 import { RevealUI } from '../rsuite/reveal/RevealUI'
-import { BoundCommand } from './Command'
-import { BoundMenu, type MenuInstance } from './Menu'
+import { isBoundCommand } from './_isBoundCommand'
+import { isBoundMenu } from './_isBoundMenu'
 
 export const MenuUI = observer(function MenuUI_(p: { menu: MenuInstance<any> }) {
     return (
         <div>
             <ul tw='dropdown menu bg-neutral'>
-                {p.menu.entriesWithKb.map(({ entry: Entry, char, charIx }, ix) => {
-                    if (Entry instanceof BoundCommand) {
-                        const label = Entry.label
+                {p.menu.entriesWithKb.map(({ entry, char, charIx }, ix) => {
+                    if (isBoundCommand(entry)) {
+                        const label = entry.label
                         return (
                             <MenuItem //
+                                tw='min-w-60'
+                                key={ix}
                                 shortcut={char}
                                 onClick={() => {
-                                    Entry.command.call(Entry.props)
+                                    entry.command.call(entry.props)
                                     p.menu.onStop()
                                 }}
                                 label={
@@ -34,13 +39,19 @@ export const MenuUI = observer(function MenuUI_(p: { menu: MenuInstance<any> }) 
                                 }
                             />
                         )
-                    } else if (Entry instanceof BoundMenu) {
-                        const label = Entry.title
+                    } else if (isBoundMenu(entry)) {
+                        const label = entry.title
                         return (
-                            <RevealUI trigger='hover' placement='rightStart' content={() => <MenuUI menu={Entry.init()} />}>
+                            <RevealUI //
+                                trigger='hover'
+                                tw='min-w-60'
+                                placement='rightStart'
+                                content={() => <MenuUI menu={entry.init()} />}
+                            >
                                 <MenuItem //
+                                    key={ix}
                                     shortcut={char}
-                                    onClick={() => Entry.open()}
+                                    onClick={() => entry.open()}
                                     label={
                                         <>
                                             {charIx != null ? (
@@ -58,8 +69,11 @@ export const MenuUI = observer(function MenuUI_(p: { menu: MenuInstance<any> }) 
                                 />
                             </RevealUI>
                         )
-                    } else if (isWidget(Entry)) return Entry.ui()
-                    else return <Fragment key={ix}>{<Entry />}</Fragment>
+                    } else if (isWidget(entry)) {
+                        return entry.ui()
+                    } else {
+                        return <Fragment key={ix}>{createElement(entry)}</Fragment>
+                    }
                 })}
             </ul>
         </div>

@@ -51,7 +51,7 @@ const mixin: IWidgetMixins = {
 
     // UI ----------------------------------------------------
     ui(this: IWidget): JSX.Element {
-        return <WidgetWithLabelUI widget={this} rootKey='_' />
+        return <WidgetWithLabelUI key={this.id} widget={this} rootKey='_' />
     },
 
     defaultHeader(this: IWidget): JSX.Element | undefined {
