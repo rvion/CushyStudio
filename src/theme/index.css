@@ -23,6 +23,9 @@ html, body, #root {
 .pointer { cursor: pointer; }
 
 
+.grid-visible > * {border: 1px solid #3d3d3d;}
+.grid-visible { grid-gap: 1; }
+
 /* Property Panel ---------------------------------------- */
 .prop {border-top: 1px solid #3d3d3d; line-height: 1rem}
 .prop:nth-child(1) { border:none;}
