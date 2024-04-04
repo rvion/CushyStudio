@@ -2,8 +2,7 @@ import { runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { useEffect, useRef } from 'react'
 
-import { AppIllustrationUI } from '../../cards/fancycard/AppIllustrationUI'
-import { DraftIllustrationUI } from '../../cards/fancycard/DraftIllustration'
+import { ActivityUI } from '../../operators/ActivityUI'
 import { RenderFullPagePanelUI } from '../../panels/router/RenderFullPagePanelUI'
 import { RevealState } from '../../rsuite/reveal/RevealState'
 import { useSt } from '../../state/stateContext'
@@ -52,7 +51,7 @@ export const CushyUI = observer(function CushyUI_() {
 
     return (
         <div
-            //
+        //
             data-theme={st.themeMgr.theme}
             id='CushyStudio'
             tabIndex={-1}
@@ -65,11 +64,16 @@ export const CushyUI = observer(function CushyUI_() {
                 })
             }}
             ref={appRef}
-            tw={['col grow h-full text-base-content overflow-clip']}
+            tw='col grow h-full text-base-content overflow-clip'
         >
-            {/* We need to make sure we make popups always be on screen with overflow-clip added. */}
-            <div id='tooltip-root' tw='pointer-events-none absolute inset-0 w-full h-full overflow-clip'></div>
-            <GlobalSearchUI />
+            <div // Global Popup/Reveal/Tooltip container always be on screen with overflow-clip added.
+                id='tooltip-root'
+                tw='absolute inset-0 w-full h-full overflow-clip'
+            >
+                <ActivityUI />
+            </div>
+
+            <GlobalSearchUI {/* Ctrl or Cmd + F: does not work natively on electron; implemented here */}/>
             <AppBarUI />
             <RenderFullPagePanelUI />
             <div className='flex flex-grow relative overflow-clip'>
