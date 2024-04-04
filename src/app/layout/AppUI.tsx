@@ -51,7 +51,7 @@ export const CushyUI = observer(function CushyUI_() {
 
     return (
         <div
-        //
+            //
             data-theme={st.themeMgr.theme}
             id='CushyStudio'
             tabIndex={-1}
@@ -73,7 +73,7 @@ export const CushyUI = observer(function CushyUI_() {
                 <ActivityUI />
             </div>
 
-            <GlobalSearchUI {/* Ctrl or Cmd + F: does not work natively on electron; implemented here */}/>
+            <GlobalSearchUI /* Ctrl or Cmd + F: does not work natively on electron; implemented here */ />
             <AppBarUI />
             <RenderFullPagePanelUI />
             <div className='flex flex-grow relative overflow-clip'>
