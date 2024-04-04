@@ -1,8 +1,8 @@
-import type { IWidget, IWidgetMixins } from './IWidget'
 import type { FC } from 'react'
 
 import { observer } from 'mobx-react-lite'
 
+import { $WidgetSym, type IWidget, type IWidgetMixins } from './IWidget'
 import { WidgetWithLabelUI } from './shared/WidgetWithLabelUI'
 
 /** make sure the user-provided function will properly react to any mobx changes */
@@ -22,6 +22,8 @@ const ensureObserver = <T extends null | undefined | FC<any>>(fn: T): T => {
  *
  */
 const mixin: IWidgetMixins = {
+    $WidgetSym: $WidgetSym,
+
     // BUMP ----------------------------------------------------
     bumpSerial(this: IWidget) {
         this.form.serialChanged(this)

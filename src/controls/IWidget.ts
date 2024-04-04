@@ -14,6 +14,15 @@ export type $WidgetTypes = {
     $Widget: any
 }
 
+export const isWidget = (x: any): x is IWidget => {
+    return (
+        x != null && //
+        typeof x === 'object' &&
+        '$WidgetSym' in x &&
+        x.$WidgetSym === $WidgetSym
+    )
+}
+
 // prettier-ignore
 export interface IWidget<K extends $WidgetTypes = $WidgetTypes> extends IWidgetMixins {
     $Type  : K['$Type']   /** type only properties; do not use directly; used to make typings good and fast */
@@ -64,6 +73,8 @@ export interface IWidget<K extends $WidgetTypes = $WidgetTypes> extends IWidgetM
     readonly DefaultBodyUI: FC<{ widget: K['$Widget'] }> | undefined
 }
 
+export const $WidgetSym = Symbol('Widget')
+
 /**
  * those properties will be dynamically injected in every widget
  * by calling `applyWidgetMixinV2(this)` in the constructor,
@@ -71,6 +82,8 @@ export interface IWidget<K extends $WidgetTypes = $WidgetTypes> extends IWidgetM
  * base widget, you're expected to do that too.
  */
 export type IWidgetMixins = {
+    $WidgetSym: typeof $WidgetSym
+
     // UI ------------------------------------------------------
     // value stuff
     ui(): JSX.Element
