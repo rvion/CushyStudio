@@ -12,7 +12,7 @@ import { isBoundMenu } from './_isBoundMenu'
 
 export const MenuUI = observer(function MenuUI_(p: { menu: MenuInstance<any> }) {
     return (
-        <div>
+        <div tw='w-fit'>
             <ul tw='dropdown menu bg-neutral'>
                 {p.menu.entriesWithKb.map(({ entry, char, charIx }, ix) => {
                     if (isBoundCommand(entry)) {
@@ -46,12 +46,12 @@ export const MenuUI = observer(function MenuUI_(p: { menu: MenuInstance<any> }) 
                                 trigger='hover'
                                 tw='min-w-60'
                                 placement='rightStart'
-                                content={() => <MenuUI menu={entry.init()} />}
+                                content={() => <MenuUI menu={entry.init(p.menu.allocatedKeys)} />}
                             >
                                 <MenuItem //
                                     key={ix}
                                     shortcut={char}
-                                    onClick={() => entry.open()}
+                                    // onClick={() => entry.open()}
                                     label={
                                         <>
                                             {charIx != null ? (

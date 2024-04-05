@@ -44,3 +44,23 @@ export const RevealExample_NestedMenuUI = observer(function RevealExample_Nested
         </div>
     )
 })
+
+export const RevealExample_InfiniteMenuUI = observer(function RevealExample_NestedMenuUI_(p: { prefix: string }) {
+    return (
+        <div>
+            <RevealUI
+                trigger='hover'
+                placement='autoHorizontalStart'
+                showDelay={0}
+                children={<div tw='btn'>{p.prefix}</div>}
+                content={() => (
+                    <>
+                        {[1, 2, 3, 4, 5, 6, 7].map((i) => (
+                            <RevealExample_InfiniteMenuUI prefix={`${p.prefix}-${i}`} />
+                        ))}
+                    </>
+                )}
+            />
+        </div>
+    )
+})

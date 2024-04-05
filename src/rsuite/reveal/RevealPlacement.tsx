@@ -34,11 +34,24 @@ export const computePlacement = (
     left: number
     transform?: string
 } => {
-    if (placement == 'popup-xs') return { top: 0, left: 0 }
-    if (placement == 'popup-sm') return { top: 0, left: 0 }
-    if (placement == 'popup-lg') return { top: 0, left: 0 }
+    if (placement === 'popup-xs') return { top: 0, left: 0 }
+    if (placement === 'popup-sm') return { top: 0, left: 0 }
+    if (placement === 'popup-lg') return { top: 0, left: 0 }
 
-    if (placement == 'auto') {
+    if (placement === 'autoHorizontalStart') {
+        placement = rect.left + rect.width / 2 < window.innerWidth / 2 ? 'rightStart' : 'leftStart'
+    }
+    if (placement === 'autoHorizontalEnd') {
+        placement = rect.left + rect.width / 2 < window.innerWidth / 2 ? 'rightEnd' : 'leftEnd'
+    }
+    if (placement === 'autoVerticalStart') {
+        placement = rect.top + rect.height / 2 < window.innerHeight / 2 ? 'bottomStart' : 'topStart'
+    }
+    if (placement === 'autoVerticalEnd') {
+        placement = rect.top + rect.height / 2 < window.innerHeight / 2 ? 'bottomEnd' : 'topEnd'
+    }
+
+    if (placement === 'auto') {
         placement = ((): RevealPlacement => {
             const top = rect.top
             const bottom = window.innerHeight - rect.bottom

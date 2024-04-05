@@ -73,6 +73,7 @@ export class MenuInstance<Props> implements Activity {
         //
         public menu: Menu<Props>,
         public props: Props,
+        public keysTaken: Set<string> = new Set(),
     ) {}
 
     get entries(): MenuEntry[] {
@@ -80,7 +81,15 @@ export class MenuInstance<Props> implements Activity {
     }
 
     get entriesWithKb(): MenuEntryWithKey[] {
-        const allocatedKeys = new Set<string>()
+        return this.acceleratedEntries.out
+    }
+
+    get allocatedKeys(): Set<string> {
+        return this.acceleratedEntries.allocatedKeys
+    }
+
+    private get acceleratedEntries() {
+        const allocatedKeys = new Set<string>([...this.keysTaken])
         const out: MenuEntryWithKey[] = []
         for (const entry of this.entries) {
             if (entry instanceof BoundCommand) {
@@ -95,7 +104,7 @@ export class MenuInstance<Props> implements Activity {
                 out.push({ entry })
             }
         }
-        return out
+        return { out, allocatedKeys }
     }
 
     findSuitableKeys = (
@@ -132,5 +141,5 @@ export class BoundMenu<Ctx = any, Props = any> {
         public ui?: BoundMenuOpts,
     ) {}
     open = () => this.menu.open(this.props)
-    init = () => new MenuInstance(this.menu, this.props)
+    init = (keysTaken?: Set<string>) => new MenuInstance(this.menu, this.props, keysTaken)
 }

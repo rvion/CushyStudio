@@ -55,9 +55,9 @@ export const menu_imageActions = menu({
 export const menu_copyImageAs: Menu<MediaImageL> = menu({
     title: 'Save image as',
     entries: (image: MediaImageL) => [
-        cmd_copyImage.bind({ image, format: 'PNG' }, { label: 'Copy as PNG' }),
-        cmd_copyImage.bind({ image, format: 'WEBP' }, { label: 'Copy as PNG' }),
-        cmd_copyImage.bind({ image, format: 'JPG' }, { label: 'Copy as PNG' }),
+        cmd_copyImage.bind({ image, format: 'PNG' }, { label: 'Copy as Png' }),
+        cmd_copyImage.bind({ image, format: 'WEBP' }, { label: 'Copy as WebP' }),
+        cmd_copyImage.bind({ image, format: 'JPG' }, { label: 'Copy as Jpeg' }),
         form_foo.fields.quality,
     ],
 })
