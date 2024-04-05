@@ -23,7 +23,7 @@ import { createHTMLImage_fromURL } from '../state/createHTMLImage_fromURL'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { asSTRING_orCrash } from '../utils/misc/bang'
 import { ManualPromise } from '../utils/misc/ManualPromise'
-import { toastError, toastInfo } from '../utils/misc/toasts'
+import { toastError, toastImage, toastInfo } from '../utils/misc/toasts'
 import { transparentImgURL } from '../widgets/galleries/transparentImg'
 import { getCurrentRun_IMPL } from './getGlobalRuntimeCtx'
 
@@ -61,41 +61,18 @@ export class MediaImageL {
     // ⏸️     renameSync(this.absPath + '2', this.absPath)
     // ⏸️ }
 
-    /* XXX: This should only be a stop-gap for a custom solution that isn't hampered by the browser's security capabilities */
-    /** Uses browser clipboard API to copy the image to clipboard, will only copy as a PNG and will not include metadata. */
+    /** Uses electron clipboard API to copy the image to clipboard, will only copy as PNG. */
     copyToClipboard = () => {
-        createHTMLImage_fromURL(URL.createObjectURL(this.getAsBlob()))
-            .then((img) => {
-                const canvas = document.createElement('canvas')
-                const ctx = canvas.getContext('2d')
-
-                canvas.width = img.width
-                canvas.height = img.height
-                ctx?.drawImage(img, 0, 0)
-
-                canvas.toBlob((blob) => {
-                    if (blob == null) {
-                        toastError(`Could not copy image to clipboard: ${blob}`)
-                        return
-                    }
-                    navigator.clipboard
-                        .write([
-                            new ClipboardItem({
-                                [blob.type]: blob,
-                            }),
-                        ])
-                        .then(() => {
-                            toastInfo('Image copied to clipboard!')
-                        })
-                        .catch((error) => {
-                            toastError(`Could not copy image to clipboard: ${error}`)
-                            console.error('Error copying image to clipboard:', error)
-                        })
-                })
+        this.st.electronUtils
+            .copyImageToClipboard({
+                format: this.extension.split('.').pop(),
+                buffer: this.getArrayBuffer(),
             })
-            .catch((error) => {
-                toastError(`Could not copy image to clipboard: ${error}`)
-                console.error('Error loading image:', error)
+            .then((img) => {
+                toastImage(this.getBase64Url(), `Image copied to clipboard!`)
+            })
+            .catch((err) => {
+                toastError(`Could not copy to clipboard: ${err}`)
             })
     }
 
