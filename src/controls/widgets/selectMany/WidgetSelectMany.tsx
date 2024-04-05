@@ -28,15 +28,24 @@ export type Widget_selectMany_serial<T extends BaseSelectEntry> = WidgetSerialFi
     values: T[]
 }>
 
+// SERIAL FROM VALUE
+export const Widget_selectMany_fromValue = <T extends BaseSelectEntry>(
+    values: Widget_selectMany_value<T>,
+): Widget_selectMany_serial<T> => ({
+    type: 'selectMany',
+    query: '',
+    values,
+})
+
 // VALUE
-export type Widget_selectMany_output<T extends BaseSelectEntry> = T[]
+export type Widget_selectMany_value<T extends BaseSelectEntry> = T[]
 
 // TYPES
 export type Widget_selectMany_types<T extends BaseSelectEntry> = {
     $Type: 'selectMany'
     $Config: Widget_selectMany_config<T>
     $Serial: Widget_selectMany_serial<T>
-    $Value: Widget_selectMany_output<T>
+    $Value: Widget_selectMany_value<T>
     $Widget: Widget_selectMany<T>
 }
 
@@ -125,7 +134,7 @@ export class Widget_selectMany<T extends BaseSelectEntry> implements IWidget<Wid
         }
     }
 
-    get value(): Widget_selectMany_output<T> {
+    get value(): Widget_selectMany_value<T> {
         return this.serial.values
     }
 }

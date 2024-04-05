@@ -1,3 +1,16 @@
+
+Loco:
+    ☐ remove `cushy.` usage in all forms
+    ☐ tree widget (no more st) usage
+    ☐ default values
+    icons:
+        ☐ @mdi/react
+        ☐ @mdi/js
+        ☐ list icons
+        ☐ more icons for other key types
+    ☐ misc forms
+        ☐ color transparency ?
+
 UC take 2:
     ✔ selection should be hidden when not in generate mode @done(24-03-31 20:49)
     ☐ selection should appear above unnacepted patches

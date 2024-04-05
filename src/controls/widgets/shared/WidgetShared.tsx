@@ -23,6 +23,11 @@ export type Widget_shared_serial = WidgetSerialFields<{
     type: 'shared'
 }>
 
+// SERIAL FROM VALUE
+export const Widget_shared_fromValue = (val: Widget_shared_value): Widget_shared_serial => ({
+    type: 'shared',
+})
+
 // VALUE
 export type Widget_shared_value<T extends ISpec = ISpec> = T['$Value']
 

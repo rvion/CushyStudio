@@ -33,6 +33,12 @@ export type Widget_prompt_config = WidgetConfigFields<
     Widget_prompt_types
 >
 
+// SERIAL FROM VALUE
+export const Widget_prompt_fromValue = (val: Widget_prompt_value): Widget_prompt_serial => ({
+    type: 'prompt',
+    val: val.text,
+})
+
 // SERIAL
 export type Widget_prompt_serial = WidgetSerialFields<{
     type: 'prompt'

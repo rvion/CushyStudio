@@ -22,6 +22,15 @@ export type Widget_selectOne_config<T extends BaseSelectEntry> = WidgetConfigFie
     Widget_selectOne_types<T>
 >
 
+// SERIAL FROM VALUE
+export const Widget_selectOne_fromValue = <T extends BaseSelectEntry>(
+    val: Widget_selectOne_value<T>,
+): Widget_selectOne_serial<T> => ({
+    type: 'selectOne',
+    query: '',
+    val,
+})
+
 // SERIAL
 export type Widget_selectOne_serial<T extends BaseSelectEntry> = WidgetSerialFields<{
     type: 'selectOne'
@@ -30,14 +39,14 @@ export type Widget_selectOne_serial<T extends BaseSelectEntry> = WidgetSerialFie
 }>
 
 // VALUE
-export type Widget_selectOne_output<T extends BaseSelectEntry> = T
+export type Widget_selectOne_value<T extends BaseSelectEntry> = T
 
 // TYPES
 export type Widget_selectOne_types<T extends BaseSelectEntry> = {
     $Type: 'selectOne'
     $Config: Widget_selectOne_config<T>
     $Serial: Widget_selectOne_serial<T>
-    $Value: Widget_selectOne_output<T>
+    $Value: Widget_selectOne_value<T>
     $Widget: Widget_selectOne<T>
 }
 
@@ -91,14 +100,14 @@ export class Widget_selectOne<T extends BaseSelectEntry> implements IWidget<Widg
         makeAutoObservable(this)
     }
 
-    set value(next: Widget_selectOne_output<T>) {
+    set value(next: Widget_selectOne_value<T>) {
         if (this.serial.val === next) return
         runInAction(() => {
             this.serial.val = next
             this.bumpValue()
         })
     }
-    get value(): Widget_selectOne_output<T> {
+    get value(): Widget_selectOne_value<T> {
         return this.serial.val
     }
 }

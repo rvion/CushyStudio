@@ -101,40 +101,8 @@ export class Form<
         this._onSerialChange?.(this.root)
     }
 
-    valueUpdatedAt?: Timestamp
-    formUpdatedAt?: Timestamp
-
-    // 💬 2024-03-13 rvion:
-    // | change tracking used to be done though autorun + tracking the transitive serialHash
-    // | (see below) but this approaches has performances problems; so now, we're letting
-    // | widgets manually "ping" the root form
-    // |
-    // | ```ts
-    // | cleanup?: () => void
-    // | private startMonitoring = (root: Widget_group<FIELDS>) => {
-    // |     this.cleanup = autorun(
-    // |         () => {
-    // |             // const count = formValue.form._cache.count // manual mobx invalidation
-    // |             const _ = root.serialHash
-    // |             for (const shared of this.knownShared.values()) shared.serialHash
-    // |             runInAction(() => {
-    // |                 console.log(`[🦊] form: updating`)
-    // |                 this.formConfig.onSerialChange?.(root)
-    // |             })
-    // |         },
-    // |         { delay: 100 },
-    // |     )
-    // | }
-    // | ```
-
-    // ---------------------------------------------------
-
+    /** from builder, offering simple API for your project specifc widgets  */
     builder: MyFormBuilder
-    // get builder(): Builder {
-    //     const value = new FormBuilder(this)
-    //     Object.defineProperty(this, 'builder', { value })
-    //     return value
-    // }
 
     /** (@internal) will be set at builer creation, to allow for dyanmic recursive forms */
     _ROOT!: Widget_group<FIELDS>

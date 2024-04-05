@@ -26,6 +26,11 @@ export type Widget_size_config = WidgetConfigFields<
 // SERIAL
 export type Widget_size_serial = WidgetSerialFields<CushySize>
 
+// SERIAL FROM VALUE
+export const Widget_size_fromValue = (val: Widget_size_value): Widget_size_serial => ({
+    ...val,
+})
+
 // VALUE
 export type Widget_size_value = CushySize // prettier-ignore
 

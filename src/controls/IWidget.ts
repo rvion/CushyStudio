@@ -65,7 +65,6 @@ export interface IWidget<K extends $WidgetTypes = $WidgetTypes> extends IWidgetM
     /** if specified, override the default algorithm to decide if the widget container should have a background of base-100 */
     background?: boolean
 
-
     /** default header UI */
     readonly DefaultHeaderUI: FC<{ widget: K['$Widget'] }> | undefined
 
@@ -125,8 +124,11 @@ export type GetWidgetState<Widget> = Widget extends { $Serial: infer Serial } ? 
 /** common properties we expect to see in a widget serial */
 export type SharedWidgetSerial = {
     id?: string
+    /** name of the widget, so we can later re-instanciate a widget from this */
     type: string
+    /** if true, widget should be displayed folded when it make sense in given context */
     collapsed?: boolean
+    /** timestap this widget was last updated */
     lastUpdatedAt?: number
     /** unused internally, here so you can add whatever you want inside */
     custom?: any

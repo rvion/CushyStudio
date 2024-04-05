@@ -18,6 +18,11 @@ export type Widget_spacer_config = WidgetConfigFields<{}, Widget_spacer_types>
 // SERIAL
 export type Widget_spacer_serial = WidgetSerialFields<{ type: 'spacer' }>
 
+// SERIAL FROM VALUE
+export const Widget_spacer_fromValue = (val: Widget_spacer_value): Widget_spacer_serial => ({
+    type: 'spacer',
+})
+
 // VALUE
 export type Widget_spacer_value = boolean
 

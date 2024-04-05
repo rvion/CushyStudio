@@ -28,6 +28,12 @@ export type Widget_string_config = WidgetConfigFields<
 // SERIAL
 export type Widget_string_serial = WidgetSerialFields<{ type: 'str'; val?: string }>
 
+// SERIAL FROM VALUE
+export const Widget_string_fromValue = (val: string): Widget_string_serial => ({
+    type: 'str',
+    val,
+})
+
 // VALUE
 export type Widget_string_value = string
 

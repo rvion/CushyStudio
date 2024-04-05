@@ -38,7 +38,7 @@ export type Widget_listExt_serial<T extends ISpec> = WidgetSerialFields<{
 }>
 
 // VALUE
-export type Widget_listExt_output<T extends ISpec> = {
+export type Widget_listExt_value<T extends ISpec> = {
     items: { value: T['$Value']; position: BoardPosition }[]
     // -----------------------
     width: number
@@ -50,7 +50,7 @@ export type Widget_listExt_types<T extends ISpec> = {
     $Type: 'listExt'
     $Config: Widget_listExt_config<T>
     $Serial: Widget_listExt_serial<T>
-    $Value: Widget_listExt_output<T>
+    $Value: Widget_listExt_value<T>
     $Widget: Widget_listExt<T>
 }
 
@@ -200,7 +200,7 @@ export class Widget_listExt<T extends ISpec> implements IWidget<Widget_listExt_t
         this.bumpValue()
     }
 
-    get value(): Widget_listExt_output<T> {
+    get value(): Widget_listExt_value<T> {
         const items = this.entries.map((i) => ({
             position: i.shape,
             value: i.widget.value,

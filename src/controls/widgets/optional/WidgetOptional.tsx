@@ -24,6 +24,16 @@ export type Widget_optional_serial<T extends ISpec = ISpec> = WidgetSerialFields
     active: boolean
 }>
 
+// // SERIAL FROM VALUE
+// export const Widget_optional_fromValue = <T extends ISpec = ISpec>(
+//     config/* 🔴 */: Widget_optional_config<T>,
+//     value: Widget_optional_value<T>,
+// ): Widget_optional_serial<T> => ({
+//     type: 'optional',
+//     active: value != null,
+//     child: config.widget,
+// })
+
 // VALUE
 export type Widget_optional_value<T extends ISpec = ISpec> = Maybe<T['$Value']>
 

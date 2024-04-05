@@ -27,6 +27,13 @@ export type Widget_seed_serial = WidgetSerialFields<{
     mode: 'randomize' | 'fixed' | 'last'
 }>
 
+// SERIAL FROM VALUE
+export const Widget_seed_fromValue = (value: Widget_seed_value): Widget_seed_serial => ({
+    type: 'seed',
+    mode: 'fixed',
+    val: value,
+})
+
 // VALUE
 export type Widget_seed_value = number
 

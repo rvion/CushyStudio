@@ -21,9 +21,17 @@ export type Widget_orbit_config = WidgetConfigFields<{ default?: Partial<OrbitDa
 // SERIAL
 export type Widget_orbit_serial = WidgetSerialFields<{
     type: 'orbit'
-    active: true
     value: OrbitData
 }>
+
+// SERIAL FROM VALUE
+export const Widget_orbit_fromValue = (value: Widget_orbit_value): Widget_orbit_serial => ({
+    type: 'orbit',
+    value: {
+        azimuth: value.azimuth,
+        elevation: value.elevation,
+    },
+})
 
 // VALUE
 export type Widget_orbit_value = {
@@ -90,7 +98,6 @@ export class Widget_orbit implements IWidget<Widget_orbit_types> {
         this.serial = serial ?? {
             type: 'orbit',
             collapsed: config.startCollapsed,
-            active: true,
             value: {
                 azimuth: config.default?.azimuth ?? 0,
                 elevation: config.default?.elevation ?? 0,

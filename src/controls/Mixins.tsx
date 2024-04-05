@@ -34,6 +34,7 @@ const mixin: IWidgetMixins = {
     bumpValue(this: IWidget) {
         this.serial.lastUpdatedAt = Date.now() as Timestamp
         this.form.valueChanged(this)
+        /** in case the widget config contains a custom callback, call this one too */
         this.config.onValueChange?.(this.value)
     },
 
