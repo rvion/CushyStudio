@@ -124,7 +124,7 @@ export type GetWidgetState<Widget> = Widget extends { $Serial: infer Serial } ? 
 
 /** common properties we expect to see in a widget serial */
 export type SharedWidgetSerial = {
-    id: string
+    id?: string
     type: string
     collapsed?: boolean
     lastUpdatedAt?: number
