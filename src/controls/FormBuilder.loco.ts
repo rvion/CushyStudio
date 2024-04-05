@@ -78,8 +78,10 @@ export class FormBuilder_Loco implements IFormBuilder {
     SpecCtor = SimpleSpec
 
     /** (@internal) don't call this yourself */
-    constructor(public form: Form<any /* SchemaDict */, FormBuilder_Loco>) {
-        makeAutoObservable(this, {})
+    constructor(public form: Form<any, FormBuilder_Loco>) {
+        makeAutoObservable(this, {
+            SpecCtor: false,
+        })
     }
 
     time = (config: Widget_string_config = {}) => new SimpleSpec<Widget_string>('str', { inputType: 'time', ...config })
@@ -215,30 +217,32 @@ export class FormBuilder_Loco implements IFormBuilder {
 
     /** (@internal); */ _cache: { count: number } = { count: 0 }
     /** (@internal) advanced way to restore form state. used internally */
-    _HYDRATE = <T extends ISpec>(parent: IWidget | null, unmounted: T, serial: any | null): T['$Widget'] => {
+    _HYDRATE = <T extends ISpec>(parent: IWidget | null, spec: T, serial: any | null): T['$Widget'] => {
         // ensure the serial is compatible
-        if (serial != null && serial.type !== unmounted.type) {
-            console.log(`[🔶] INVALID SERIAL (expected: ${unmounted.type}, got: ${serial.type})`)
+        if (serial != null && serial.type !== spec.type) {
+            console.log(`[🔶] INVALID SERIAL (expected: ${spec.type}, got: ${serial.type})`)
             serial = null
         }
 
-        if (unmounted instanceof Widget_shared) {
-            return unmounted
+        if (spec instanceof Widget_shared) {
+            return spec
             // return new Unmounted(unmounted.type, unmounted.config) as any
             // return unmounted.shared
         }
 
-        if (!(unmounted instanceof SimpleSpec)) {
+        if (!(spec instanceof SimpleSpec)) {
             console.log(`[❌] _HYDRATE received an invalid unmounted widget. This is probably a bug.`)
         }
 
-        const type = unmounted.type
-        const config = unmounted.config as any /* impossible to propagate union specification in the switch below */
+        const type = spec.type
+        const config = spec.config as any /* impossible to propagate union specification in the switch below */
+        const spec2 = spec as any
+
         if (type === 'group')
             return new Widget_group(
                 this.form,
                 parent,
-                config,
+                spec2,
                 serial,
                 this.form._ROOT
                     ? undefined
@@ -255,21 +259,21 @@ export class FormBuilder_Loco implements IFormBuilder {
             // option 2:
             // ⏸️ return config.widget
         }
-        if (type === 'optional') return new Widget_optional(this.form, parent, config, serial)
-        if (type === 'bool') return new Widget_bool(this.form, parent, config, serial)
-        if (type === 'str') return new Widget_string(this.form, parent, config, serial)
-        if (type === 'choices') return new Widget_choices(this.form, parent, config, serial)
-        if (type === 'number') return new Widget_number(this.form, parent, config, serial)
-        if (type === 'color') return new Widget_color(this.form, parent, config, serial)
-        if (type === 'list') return new Widget_list(this.form, parent, config, serial)
-        if (type === 'button') return new Widget_button(this.form, parent, config, serial)
-        if (type === 'seed') return new Widget_seed(this.form, parent, config, serial)
-        if (type === 'matrix') return new Widget_matrix(this.form, parent, config, serial)
-        if (type === 'selectOne') return new Widget_selectOne(this.form, parent, config, serial)
-        if (type === 'selectMany') return new Widget_selectMany(this.form, parent, config, serial)
-        if (type === 'size') return new Widget_size(this.form, parent, config, serial)
-        if (type === 'spacer') return new Widget_spacer(this.form, parent, config, serial)
-        if (type === 'markdown') return new Widget_markdown(this.form, parent, config, serial)
+        if (type === 'optional') return new Widget_optional(this.form, parent, spec2, serial)
+        if (type === 'bool') return new Widget_bool(this.form, parent, spec2, serial)
+        if (type === 'str') return new Widget_string(this.form, parent, spec2, serial)
+        if (type === 'choices') return new Widget_choices(this.form, parent, spec2, serial)
+        if (type === 'number') return new Widget_number(this.form, parent, spec2, serial)
+        if (type === 'color') return new Widget_color(this.form, parent, spec2, serial)
+        if (type === 'list') return new Widget_list(this.form, parent, spec2, serial)
+        if (type === 'button') return new Widget_button(this.form, parent, spec2, serial)
+        if (type === 'seed') return new Widget_seed(this.form, parent, spec2, serial)
+        if (type === 'matrix') return new Widget_matrix(this.form, parent, spec2, serial)
+        if (type === 'selectOne') return new Widget_selectOne(this.form, parent, spec2, serial)
+        if (type === 'selectMany') return new Widget_selectMany(this.form, parent, spec2, serial)
+        if (type === 'size') return new Widget_size(this.form, parent, spec2, serial)
+        if (type === 'spacer') return new Widget_spacer(this.form, parent, spec2, serial)
+        if (type === 'markdown') return new Widget_markdown(this.form, parent, spec2, serial)
 
         console.log(`🔴 unknown widget "${type}" in serial.`)
         // exhaust(type)
