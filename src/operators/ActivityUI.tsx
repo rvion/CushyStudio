@@ -3,9 +3,10 @@ import { Fragment } from 'react/jsx-runtime'
 
 import { activityManger } from './Activity'
 import { InputBlockerUI } from './InputBlocker'
+import { useDebugActivity } from './useDebugActivity'
 
 export const ActivityUI = observer(function ActivityUI_(p: {}) {
-    // useDebugActivity()
+    useDebugActivity()
     return (
         <Fragment>
             {activityManger.stack.map((activity, ix) => (

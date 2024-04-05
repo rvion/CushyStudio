@@ -27,7 +27,7 @@ export const FormUI = observer(function FormUI_(p: {
             className={p.className}
             style={p.style}
         >
-            <WidgetGroup_BlockUI widget={form.root} />
+            {form.root.ui()}
         </div>
     )
 })

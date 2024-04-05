@@ -15,20 +15,21 @@ export const CustomView3dCan = view<{
 
 const CanUI = observer(function CanUI_(p: { imageID: MediaImageID | null }) {
     const image = cushy.db.media_image.get(p.imageID)
-    const x = cushy.forms.use(
-        (ui) => ({
-            spotlightAngle: ui.float({ default: 0.15, max: 1 }),
-            ambiantLight: ui.int({ default: 3, max: 100, min: 0, step: 5 }),
-        }),
+    const form = cushy.forms.use(
+        (ui) =>
+            ui.fields({
+                spotlightAngle: ui.float({ default: 0.15, max: 1 }),
+                ambiantLight: ui.int({ default: 3, max: 100, min: 0, step: 5 }),
+            }),
         {
             name: 'Playground Widget Showcase',
-            initialValue: () => cushy.readJSON('settings/beer.json'),
+            initialSerial: () => cushy.readJSON('settings/beer.json'),
             onSerialChange: (form) => cushy.writeJSON('settings/beer.json', form.serial),
         },
     )
     return (
         <>
-            <div tw='w-96 absolute'>{x.render()}</div>
+            <div tw='w-96 absolute'>{form.render()}</div>
             <Canvas tw='flex-1'>
                 <axesHelper args={[]} />
                 <OrbitControls target={[0, 0, 0]} enableDamping={true} dampingFactor={0.25} enableZoom={true} />

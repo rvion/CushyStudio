@@ -3,8 +3,6 @@ import type { MediaImageL } from '../models/MediaImage'
 import { observer } from 'mobx-react-lite'
 import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch'
 
-import { ImageDropdownUI } from './ImageDropdownUI'
-import { PanelHeaderUI } from './PanelHeader'
 import { SpacerUI } from '../controls/widgets/spacer/SpacerUI'
 import { formatSize } from '../db/getDBStats'
 import { RevealUI } from '../rsuite/reveal/RevealUI'
@@ -12,6 +10,8 @@ import { Rate } from '../rsuite/shims'
 import { useSt } from '../state/stateContext'
 import { assets } from '../utils/assets/assets'
 import { JsonViewUI } from '../widgets/workspace/JsonViewUI'
+import { ImageDropdownUI } from './ImageDropdownUI'
+import { PanelHeaderUI } from './PanelHeader'
 
 export const Panel_ViewImage = observer(function Panel_ViewImage_(p: {
     //
@@ -23,7 +23,7 @@ export const Panel_ViewImage = observer(function Panel_ViewImage_(p: {
         ? st.db.media_image.get(p.imageID)
         : st.db.media_image.last()
     const url = img?.url
-    const background = st.galleryConf.get('galleryBgColor')
+    const background = st.galleryConf.root.get('galleryBgColor')
 
     const shouldFilter = st.project.filterNSFW
     const safety =
