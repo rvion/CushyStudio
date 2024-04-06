@@ -23,12 +23,11 @@ export const isWidget = (x: any): x is IWidget => {
     )
 }
 
-// prettier-ignore
 export interface IWidget<K extends $WidgetTypes = $WidgetTypes> extends IWidgetMixins {
-    $Type  : K['$Type']   /** type only properties; do not use directly; used to make typings good and fast */
+    $Type: K['$Type'] /** type only properties; do not use directly; used to make typings good and fast */
     $Config: K['$Config'] /** type only properties; do not use directly; used to make typings good and fast */
     $Serial: K['$Serial'] /** type only properties; do not use directly; used to make typings good and fast */
-    $Value : K['$Value']  /** type only properties; do not use directly; used to make typings good and fast */
+    $Value: K['$Value'] /** type only properties; do not use directly; used to make typings good and fast */
     $Widget: K['$Widget'] /** type only properties; do not use directly; used to make typings good and fast */
 
     /** unique ID; each node in the form tree has one; persisted in serial */
@@ -145,6 +144,9 @@ export type SharedWidgetConfig<T extends $WidgetTypes> = {
 
     /** will be called when value changed */
     onValueChange?: (val: any /* 🔴 T['$Value'] */) => void
+
+    /** custom type checking */
+    check?: (val: any /* 🔴 T['$Value'] */) => Maybe<string | boolean>
 
     /**
      * The label to display.

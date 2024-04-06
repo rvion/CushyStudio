@@ -6,15 +6,17 @@ import type { StepL } from './Step'
 
 import { mkdirSync, writeFileSync } from 'fs'
 import { dirname, join } from 'pathe'
+import sharp, { type FormatEnum } from 'sharp'
 
+import { openFolderInOS } from '../app/layout/openExternal'
 import { Status } from '../back/Status'
 import { LiveRef } from '../db/LiveRef'
 import { SQLITE_true } from '../db/SQLITE_boolean'
 import { ComfyPromptT, type ComfyPromptUpdate, type TABLES } from '../db/TYPES.gen'
-import { createHTMLImage_fromURL } from '../state/createHTMLImage_fromURL'
 import { ComfyNodeID } from '../types/ComfyNodeID'
 import { asRelativePath } from '../utils/fs/pathUtils'
 import { exhaust } from '../utils/misc/exhaust'
+import { getPngMetadataFromUint8Array } from '../utils/png/_getPngMetadata'
 import {
     _createMediaImage_fromLocalyAvailableImage,
     createMediaImage_fromPath,
@@ -184,22 +186,64 @@ export class ComfyPromptL {
 
         // RE-ENCODE (COMPRESSED)
         if (sf && sf.format !== 'raw') {
-            const canvas = document.createElement('canvas')
-            let ctx = canvas.getContext('2d')
-            const imgHtml = await createHTMLImage_fromURL(imgUrl)
-            const width = imgHtml.width
-            const height = imgHtml.height
-            // resize the canvas accordingly
-            canvas.width = width
-            canvas.height = height
-            // paste html image onto your canvas
-            ctx!.drawImage(imgHtml, 0, 0, width, height)
-            let dataUrl = canvas.toDataURL(sf.format, sf.quality)
-            const prefixToSlice = `data:${sf.format};base64,`
-            if (!dataUrl.startsWith(prefixToSlice))
-                throw new Error(`❌ dataUrl doesn't start with the expected "${prefixToSlice}"`)
-            let base64Data = dataUrl.slice(prefixToSlice.length)
-            writeFileSync(outputRelPath, base64Data, 'base64')
+            const response = await fetch(imgUrl, { headers: { 'Content-Type': 'image/png' }, method: 'GET' })
+
+            const buff = await response.arrayBuffer()
+            let textChunk = {}
+            try {
+                const res = getPngMetadataFromUint8Array(new Uint8Array(buff))
+                if (res.success) textChunk = res.value
+            } catch (error) {
+                //
+            }
+
+            console.log(`[🟢🔴❓] `, textChunk)
+
+            // await sharp(buff)
+            //     .withMetadata()
+            //     .withExifMerge(textChunk)
+            //     .toFile(outputRelPath + '.png')
+
+            // const exifBuff = (await sharp(buff).keepExif().keepMetadata().metadata()).exif
+            // if (exifBuff != null) {
+            //     console.log(`[🟢] A`, exif(exifBuff!))
+            // } else {
+            //     console.log(`[🔴] A NO EXIF`)
+            // }
+
+            const format = ((): keyof FormatEnum => {
+                if (sf.format === 'image/jpeg') return 'jpeg'
+                if (sf.format === 'image/png') return 'png'
+                if (sf.format === 'image/webp') return 'webp'
+                return 'png'
+            })()
+
+            await sharp(buff)
+                .withMetadata()
+                .withExif({ IFD0: textChunk })
+                // sharp expect quality between 1 and 100
+                .toFormat(format, sf.quality ? { quality: Math.round(sf.quality * 100) } : undefined)
+                .toFile(outputRelPath)
+            // .webp({ quality: 80 })
+            openFolderInOS(dirname(outputRelPath) as AbsolutePath)
+
+            // console.log(`[FUCK 2 🔴] `, await sharp(outputRelPath).metadata())
+            // const canvas = document.createElement('canvas')
+            // let ctx = canvas.getContext('2d')
+            // const imgHtml = await createHTMLImage_fromURL(imgUrl)
+            // const width = imgHtml.width
+            // const height = imgHtml.height
+            // // resize the canvas accordingly
+            // canvas.width = width
+            // canvas.height = height
+            // // paste html image onto your canvas
+            // ctx!.drawImage(imgHtml, 0, 0, width, height)
+            // let dataUrl = canvas.toDataURL(sf.format, sf.quality)
+            // const prefixToSlice = `data:${sf.format};base64,`
+            // if (!dataUrl.startsWith(prefixToSlice))
+            //     throw new Error(`❌ dataUrl doesn't start with the expected "${prefixToSlice}"`)
+            // let base64Data = dataUrl.slice(prefixToSlice.length)
+            // writeFileSync(outputRelPath, base64Data, 'base64')
             imgL = createMediaImage_fromPath(this.st, outputRelPath, imgCreationOpts)
         }
         // SAVE RAW ------------------------------------------------------------------------------------------

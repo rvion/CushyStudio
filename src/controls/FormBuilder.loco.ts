@@ -3,7 +3,8 @@ import '../theme/markdown.css'
 import '../theme/form.css'
 
 import type { OpenRouter_Models } from '../llm/OpenRouter_models'
-import type { Form, IFormBuilder } from './Form'
+import type { Form } from './Form'
+import type { IFormBuilder } from './IFormBuilder'
 import type { IWidget } from './IWidget'
 import type { ISpec, SchemaDict } from './Spec'
 
@@ -31,7 +32,6 @@ import { Widget_size, type Widget_size_config } from './widgets/size/WidgetSize'
 import { Widget_spacer, Widget_spacer_config } from './widgets/spacer/WidgetSpacer'
 import { Widget_string, type Widget_string_config } from './widgets/string/WidgetString'
 
-// export class LocoSpec extends Spec {}
 export class SimpleSpec<W extends IWidget = IWidget> implements ISpec<W> {
     $Widget!: W
     $Type!: W['type']
@@ -78,7 +78,7 @@ export class FormBuilder_Loco implements IFormBuilder {
     SpecCtor = SimpleSpec
 
     /** (@internal) don't call this yourself */
-    constructor(public form: Form<SchemaDict, FormBuilder_Loco>) {
+    constructor(public form: Form<any /* SchemaDict */, FormBuilder_Loco>) {
         makeAutoObservable(this, {})
     }
 
@@ -192,22 +192,21 @@ export class FormBuilder_Loco implements IFormBuilder {
      *  - recursive forms
      *  - dynamic widgets depending on other widgets values
      * */
-    shared = <W extends ISpec>(key: string, unmounted: W): Widget_shared<W> => {
-        const name = `__${key}__`
-        const prevSerial = this.form._ROOT.serial.values_[name]
+    shared = <W extends ISpec>(key: string, spec: W): Widget_shared<W> => {
+        const prevSerial = this.form.shared[key]
         let widget
-        if (prevSerial && prevSerial.type === unmounted.type) {
-            widget = this._HYDRATE(null, unmounted, prevSerial)
+        if (prevSerial && prevSerial.type === spec.type) {
+            widget = this._HYDRATE(null, spec, prevSerial)
         } else {
-            widget = this._HYDRATE(null, unmounted, null)
-            this.form._ROOT.serial.values_[name] = widget.serial
-            // 💬 2024-03-15 rvion: no bump needed here, because this is done
+            widget = this._HYDRATE(null, spec, null)
+            this.form.shared[key] = widget.serial
+            // 💬 2024-03-15 rvion: no bumpValue() needed here, because this is done
             // at creation time; not during regular runtime
-            // ❌ this.form._ROOT.bumpValue()
         }
-
-        const spec = new SimpleSpec<Widget_shared<W>>('shared', { rootKey: key, widget })
-        return new Widget_shared<W>(this.form, null, spec) as any
+        // 💬 2024-03-12 rvion: do we store the widget, or the widgetshared instead 2 lines below ? not sure yet.
+        // ⏸️ this.form.knownShared.set(key, widget)
+        const sharedSpec = new SimpleSpec<Widget_shared<W>>('shared', { rootKey: key, widget })
+        return new Widget_shared<W>(this.form, null, sharedSpec) as any
     }
 
     // --------------------

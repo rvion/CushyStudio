@@ -2,6 +2,7 @@
 import '../models/asyncRuntimeStorage'
 
 import type { ActionTagMethodList } from '../cards/App'
+import type { FormSerial } from '../controls/FormSerial'
 import type { MediaImageL } from '../models/MediaImage'
 import type { TreeNode } from '../panels/libraryUI/tree/xxx/TreeNode'
 import type { RevealState } from '../rsuite/reveal/RevealState'
@@ -257,7 +258,7 @@ export class STATE {
     // gallery size
     get gallerySizeStr() { return `${this.gallerySize}px` } // prettier-ignore
     set gallerySize(v: number) { this.galleryConf.fields.gallerySize.value =  v } // prettier-ignore
-    get gallerySize() { return this.galleryConf.get(`gallerySize`) ?? 48 } // prettier-ignore
+    get gallerySize() { return this.galleryConf.root.get(`gallerySize`) ?? 48 } // prettier-ignore
 
     get preferedFormLayout() { return this.configFile.value.preferedFormLayout ?? 'auto' } // prettier-ignore
     set preferedFormLayout(v: PreferedFormLayout) { this.configFile.update({ preferedFormLayout: v }) } // prettier-ignore
@@ -432,7 +433,7 @@ export class STATE {
         }),
         {
             name: 'Graph Visualisation',
-            initialValue: () => readJSON('settings/graph-visualization.json'),
+            initialSerial: () => readJSON('settings/graph-visualization.json'),
             onSerialChange: (form) => writeJSON('settings/graph-visualization.json', form.serial),
         },
     )
@@ -446,7 +447,7 @@ export class STATE {
         }),
         {
             name: 'Civitai Conf',
-            initialValue: () => readJSON('settings/civitai.json'),
+            initialSerial: () => readJSON('settings/civitai.json'),
             onSerialChange: (form) => writeJSON('settings/civitai.json', form.serial),
         },
     )
@@ -470,7 +471,7 @@ export class STATE {
         }),
         {
             name: 'SideBar Conf',
-            initialValue: () => readJSON('settings/sidebar.json'),
+            initialSerial: () => readJSON('settings/sidebar.json'),
             onSerialChange: (form) => writeJSON('settings/sidebar.json', form.serial),
         },
     )
@@ -504,7 +505,7 @@ export class STATE {
         }),
         {
             name: 'Displacement Conf',
-            initialValue: () => readJSON('settings/displacement.json'),
+            initialSerial: () => readJSON<FormSerial>('settings/displacement.json'),
             onSerialChange: (form) => writeJSON('settings/displacement.json', form.serial),
         },
     )
@@ -531,7 +532,7 @@ export class STATE {
         {
             name: 'Gallery Conf',
             onSerialChange: (form) => writeJSON('settings/gallery.json', form.serial),
-            initialValue: () => readJSON('settings/gallery.json'),
+            initialSerial: () => readJSON('settings/gallery.json'),
         },
     )
 

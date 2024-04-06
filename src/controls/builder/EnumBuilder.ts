@@ -5,19 +5,19 @@
 import type { Form } from '../Form'
 import type { FormBuilder } from '../FormBuilder'
 
-import { CushySpec } from '../CushySpec'
+import { Spec } from '../CushySpec'
 import { Widget_enum, Widget_enum_config } from '../widgets/enum/WidgetEnum'
 
 export type IEnumBuilder = {
     [K in keyof Requirable]: (
         config?: Omit<Widget_enum_config<Requirable[K]['$Value']>, 'enumName'>,
-    ) => CushySpec<Widget_enum<Requirable[K]['$Value']>>
+    ) => Spec<Widget_enum<Requirable[K]['$Value']>>
 }
 
 export type IEnumBuilderOpt = {
     [K in keyof Requirable]: (
         config?: Omit<Widget_enum_config<Requirable[K]['$Value']>, 'enumName'> & { startActive?: boolean },
-    ) => CushySpec<Widget_enum<Requirable[K]['$Value']>>
+    ) => Spec<Widget_enum<Requirable[K]['$Value']>>
 }
 
 export interface EnumBuilder extends IEnumBuilder {}
@@ -43,7 +43,7 @@ export class EnumBuilder {
                 if (enumSchema == null) { throw new Error(`unknown enum: ${enumName}`) } // prettier-ignore
 
                 // return the builder
-                return (config: any = {}) => new CushySpec('enum', /* form, */ { ...config, enumName })
+                return (config: any = {}) => new Spec('enum', /* form, */ { ...config, enumName })
             },
         })
     }
@@ -76,7 +76,7 @@ export class EnumBuilderOpt {
                     form.builder.optional({
                         label: config.label,
                         startActive: config.startActive,
-                        widget: new CushySpec('enum', /* form, */ { ...config, enumName }),
+                        widget: new Spec('enum', /* form, */ { ...config, enumName }),
                     })
             },
         })

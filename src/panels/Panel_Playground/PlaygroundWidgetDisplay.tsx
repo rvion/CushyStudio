@@ -259,7 +259,7 @@ export const FORM_PlaygroundWidgetDisplay = CushyFormManager.form(
     },
     {
         name: 'Playground Widget Showcase',
-        initialValue: () => readJSON('settings/playground_form_display.json'),
+        initialSerial: () => readJSON('settings/playground_form_display.json'),
         onSerialChange: (form) => writeJSON('settings/playground_form_display.json', form.serial),
     },
 )

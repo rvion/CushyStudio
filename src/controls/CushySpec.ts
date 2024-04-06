@@ -7,7 +7,7 @@ import type { Widget_shared } from './widgets/shared/WidgetShared'
 
 import { getCurrentForm_IMPL } from './shared/runWithGlobalForm'
 
-export class CushySpec<W extends IWidget = IWidget> implements ISpec<W> {
+export class Spec<W extends IWidget = IWidget> implements ISpec<W> {
     $Widget!: W
     $Type!: W['type']
     $Config!: W['$Config']
@@ -20,7 +20,7 @@ export class CushySpec<W extends IWidget = IWidget> implements ISpec<W> {
         return this
     }
 
-    Make = <X extends IWidget>(type: X['type'], config: X['$Config']) => new CushySpec(type, config)
+    Make = <X extends IWidget>(type: X['type'], config: X['$Config']) => new Spec(type, config)
 
     constructor(
         //
@@ -29,14 +29,14 @@ export class CushySpec<W extends IWidget = IWidget> implements ISpec<W> {
     ) {}
 
     /** wrap widget spec to list stuff */
-    list = (config: Omit<Widget_list_config<any>, 'element'> = {}): CushySpec<Widget_list<this>> =>
-        new CushySpec<Widget_list<this>>('list', {
+    list = (config: Omit<Widget_list_config<any>, 'element'> = {}): Spec<Widget_list<this>> =>
+        new Spec<Widget_list<this>>('list', {
             ...config,
             element: this,
         })
 
-    optional = <const T extends CushySpec>(startActive: boolean = false) =>
-        new CushySpec<Widget_optional<this>>('optional', {
+    optional = <const T extends Spec>(startActive: boolean = false) =>
+        new Spec<Widget_optional<this>>('optional', {
             widget: this,
             startActive: startActive,
             label: this.config.label,
@@ -49,5 +49,5 @@ export class CushySpec<W extends IWidget = IWidget> implements ISpec<W> {
     shared = (key: string): Widget_shared<this> => getCurrentForm_IMPL().shared(key, this)
 
     /** clone the spec, and patch the cloned config to make it hidden */
-    hidden = () => new CushySpec(this.type, { ...this.config, hidden: true })
+    hidden = () => new Spec(this.type, { ...this.config, hidden: true })
 }

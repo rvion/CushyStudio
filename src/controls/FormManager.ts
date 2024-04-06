@@ -1,8 +1,11 @@
-import type { SchemaDict } from './Spec'
+import type { ISpec, SchemaDict } from './Spec'
 
 import { type DependencyList, useMemo } from 'react'
 
-import { Form, FormProperties, IFormBuilder } from './Form'
+import { Form, FormProperties } from './Form'
+import { IFormBuilder } from './IFormBuilder'
+import { runWithGlobalForm } from './shared/runWithGlobalForm'
+import { Widget_group } from './widgets/group/WidgetGroup'
 
 /**
  * you need one per project;
@@ -10,15 +13,15 @@ import { Form, FormProperties, IFormBuilder } from './Form'
  * allow to inject the proper form config for your specific project.
  * to avoid problem with hot-reload, export an instance from a module directly and use it from there.
  */
-export class FormManager<MyFormBuilder extends IFormBuilder> {
+export class FormManager<BUILDER extends IFormBuilder> {
     constructor(
         //
-        public builderCtor: { new (form: Form<SchemaDict, MyFormBuilder>): MyFormBuilder },
+        public builderCtor: { new (form: Form<any /* SchemaDict */, BUILDER>): BUILDER },
     ) {}
 
-    _builders = new WeakMap<Form, MyFormBuilder>()
+    _builders = new WeakMap<Form, BUILDER>()
 
-    getBuilder = (form: Form<any, any>): MyFormBuilder => {
+    getBuilder = (form: Form<any, any>): BUILDER => {
         const prev = this._builders.get(form)
         if (prev) return prev
         const builder = new this.builderCtor(form)
@@ -26,39 +29,26 @@ export class FormManager<MyFormBuilder extends IFormBuilder> {
         return builder
     }
 
+    /** LEGACY API; TYPES ARE COMPLICATED DUE TO MAINTAINING BACKWARD COMPAT */
     form = <FIELDS extends SchemaDict>(
-        //
-        ui: (form: MyFormBuilder) => FIELDS,
-        formProperties: FormProperties<FIELDS> = { name: 'unnamed' },
-    ): Form<FIELDS, MyFormBuilder> => {
-        const form = new Form<FIELDS, MyFormBuilder>(this, ui as any /* 🔴 */, formProperties)
+        ui: (form: BUILDER) => FIELDS,
+        formProperties: FormProperties<ISpec<Widget_group<FIELDS>>> = { name: 'unnamed' },
+    ): Form<ISpec<Widget_group<FIELDS>>, BUILDER> => {
+        const FN = (builder: BUILDER): ISpec<Widget_group<FIELDS>> => {
+            return runWithGlobalForm(builder, () => builder.group({ items: ui(builder as BUILDER) }))
+        }
+        const form = new Form<ISpec<Widget_group<FIELDS>>, BUILDER>(this, FN, formProperties)
         return form
     }
 
-    useForm = <FIELDS extends SchemaDict>(
-        //
-        ui: (form: MyFormBuilder) => FIELDS,
-        formProperties: FormProperties<FIELDS> = { name: 'unnamed' },
+    /** simple way to defined forms and in react components */
+    use = <ROOT extends ISpec>(
+        ui: (form: BUILDER) => ROOT,
+        formProperties: FormProperties<ROOT> = { name: 'unnamed' },
         deps: DependencyList = [],
-    ): Form<FIELDS, MyFormBuilder> => {
+    ): Form<ROOT, BUILDER> => {
         return useMemo(() => {
-            const form = new Form<FIELDS, MyFormBuilder>(this, ui as any /* 🔴 */, formProperties)
-            return form
-        }, deps)
-    }
-
-    /**
-     * copy pasted from useForm, with a better name
-     * intented to be used as `cushy.forms.use(...)`
-     */
-    use = <FIELDS extends SchemaDict>(
-        //
-        ui: (form: MyFormBuilder) => FIELDS,
-        formProperties: FormProperties<FIELDS> = { name: 'unnamed' },
-        deps: DependencyList = [],
-    ): Form<FIELDS, MyFormBuilder> => {
-        return useMemo(() => {
-            const form = new Form<FIELDS, MyFormBuilder>(this, ui as any /* 🔴 */, formProperties)
+            const form = new Form<ROOT, BUILDER>(this, ui, formProperties)
             return form
         }, deps)
     }

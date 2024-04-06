@@ -26,7 +26,7 @@ type CopyImageParams = { image: MediaImageL; format?: AvailableImageCopyFormats 
 export const cmd_copyImage = command({
     id: 'gallery.copyImage',
     label: 'Copy Image',
-    run: (p: CopyImageParams) => p.image.copyToClipboard({ format: p.format, quality: form_foo.fields.quality.value }),
+    run: (p: CopyImageParams) => p.image.copyToClipboard({ format: p.format, quality: form_foo.root.fields.quality.value }),
     // when: (p: CopyImageParams) => true,
 })
 
@@ -58,7 +58,7 @@ export const menu_copyImageAs: Menu<MediaImageL> = menu({
         cmd_copyImage.bind({ image, format: 'PNG' }, { label: 'Copy as Png' }),
         cmd_copyImage.bind({ image, format: 'WEBP' }, { label: 'Copy as WebP' }),
         cmd_copyImage.bind({ image, format: 'JPG' }, { label: 'Copy as Jpeg' }),
-        form_foo.fields.quality,
+        form_foo.root.fields.quality,
     ],
 })
 

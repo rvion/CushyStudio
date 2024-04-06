@@ -2,6 +2,8 @@ import { observer } from 'mobx-react-lite'
 
 import { getDBStats } from '../../db/getDBStats'
 import { quickBench } from '../../db/quickBench'
+import { activityManger } from '../../operators/Activity'
+import { DEMO_ACTIVITY } from '../../operators/useDebugActivity'
 import { Dropdown, MenuItem } from '../../rsuite/Dropdown'
 import { useSt } from '../../state/stateContext'
 import { KEYS } from '../shortcuts/shorcutKeys'
@@ -36,6 +38,11 @@ export const MenuDebugUI = observer(function MenuDebugUI_(p: {}) {
                         icon={<span className='material-symbols-outlined text-green-500'>bug_report</span>}
                         onClick={st.electronUtils.toggleDevTools}
                         label='console'
+                    />
+                    <MenuItem //
+                        icon={<span className='material-symbols-outlined text-green-500'>bug_report</span>}
+                        onClick={() => activityManger.push(DEMO_ACTIVITY)}
+                        label='Start debug activity'
                     />
                     <MenuItem
                         icon={<span className='material-symbols-outlined text-orange-500'>sync</span>}

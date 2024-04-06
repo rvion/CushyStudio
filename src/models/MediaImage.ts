@@ -357,7 +357,7 @@ export class MediaImageL {
     /** allow to pick the best source to preserve CPU and MEMORY */
     urlForSize = (size: number): string => {
         // 32 x 32 mini-thumb
-        const forceThumb = this.st.galleryConf.fields.onlyShowBlurryThumbnails.value
+        const forceThumb = this.st.galleryConf.root.fields.onlyShowBlurryThumbnails.value
         if (forceThumb) return this.thumbhashURL
         if (size < 32) return this.thumbhashURL
 

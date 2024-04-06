@@ -1,4 +1,5 @@
-import type { CushySpec } from '../../src/controls/CushySpec'
+import type { Spec } from '../../src/controls/CushySpec'
+import type { Form } from '../../src/controls/Form'
 import type { Widget_choices } from '../../src/controls/widgets/choices/WidgetChoices'
 import type { Widget_group } from '../../src/controls/widgets/group/WidgetGroup'
 import type { Widget_image } from '../../src/controls/widgets/image/WidgetImage'
@@ -19,7 +20,8 @@ app({
                         sampler_output_abc_asdf: form.selectOne({
                             // showID: true,
                             // if choices is a function, the form root is injected as first parameter
-                            choices: (formRoot: Widget_group<any>) => {
+                            choices: (form: Form<Spec<Widget_group<any>>>) => {
+                                const formRoot: Widget_group<any> = form.root
                                 // 🔶 null when the form is not yet fully initialized
                                 if (formRoot.fields.samplerUI == null) return []
 
@@ -27,11 +29,11 @@ app({
                                 // so to make sure code is correct, we need to cast it to the correct type
                                 // (and yes, types are slighly verbose for now)
                                 const steps = formRoot.fields.samplerUI as Widget_list<
-                                    CushySpec<
+                                    Spec<
                                         Widget_choices<{
-                                            sampler_output_abc_asdf: CushySpec<Widget_selectOne<any>>
-                                            empty_latent: CushySpec<Widget_group<any>>
-                                            pick_image: CushySpec<Widget_image>
+                                            sampler_output_abc_asdf: Spec<Widget_selectOne<any>>
+                                            empty_latent: Spec<Widget_group<any>>
+                                            pick_image: Spec<Widget_image>
                                         }>
                                     >
                                 >

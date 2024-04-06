@@ -26,7 +26,7 @@ export const DisplacementUI2 = observer(function DisplacementUI2_(p: { uist: Dis
         uist.p.image,
     ])
 
-    const conf = st.displacementConf.fields
+    const conf = st.displacementConf.root.fields
     return (
         <>
             <ambientLight color={conf.ambientLightColor.value} intensity={conf.ambientLightIntensity.value} />

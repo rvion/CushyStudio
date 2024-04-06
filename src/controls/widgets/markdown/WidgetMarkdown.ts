@@ -1,7 +1,6 @@
 import type { Form } from '../../Form'
 import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 import type { ISpec } from '../../Spec'
-import type { Widget_group } from '../group/WidgetGroup'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -13,7 +12,7 @@ import { WidgetMardownUI } from './WidgetMarkdownUI'
 // CONFIG
 export type Widget_markdown_config = WidgetConfigFields<
     {
-        markdown: string | ((formRoot: Widget_group<any>) => string)
+        markdown: string | ((form: Form) => string)
         inHeader?: boolean
     },
     Widget_markdown_types
@@ -59,7 +58,7 @@ export class Widget_markdown implements IWidget<Widget_markdown_types> {
     get markdown(): string {
         const md = this.config.markdown
         if (typeof md === 'string') return md
-        return md(this.form._ROOT)
+        return md(this.form)
     }
 
     constructor(

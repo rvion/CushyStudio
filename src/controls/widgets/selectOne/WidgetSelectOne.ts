@@ -1,7 +1,6 @@
 import type { Form } from '../../Form'
 import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 import type { ISpec } from '../../Spec'
-import type { Widget_group } from '../group/WidgetGroup'
 
 import { makeAutoObservable, runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -16,7 +15,7 @@ export type BaseSelectEntry<T = string> = { id: T; label?: string }
 export type Widget_selectOne_config<T extends BaseSelectEntry> = WidgetConfigFields<
     {
         default?: T
-        choices: T[] | ((formRoot: Widget_group<any>, self: Widget_selectOne<T>) => T[])
+        choices: T[] | ((form: Form, self: Widget_selectOne<T>) => T[])
         appearance?: 'select' | 'tab'
     },
     Widget_selectOne_types<T>
@@ -73,7 +72,7 @@ export class Widget_selectOne<T extends BaseSelectEntry> implements IWidget<Widg
         if (typeof _choices === 'function') {
             if (!this.form.ready) return []
             if (this.form._ROOT == null) throw new Error('❌ IMPOSSIBLE: this.form._ROOT is null')
-            return _choices(this.form._ROOT, this)
+            return _choices(this.form, this)
         }
         return _choices
     }

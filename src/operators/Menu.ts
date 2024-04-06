@@ -43,7 +43,7 @@ export class Menu<Props> {
         this.id = def.id ?? nanoid()
         menuManager.registerMenu(this)
     }
-    UI = (p: { props: Props }) => {
+    UI = (p: { props: Props }): JSX.Element => {
         const instance = useMemo(() => new MenuInstance(this, p.props), [])
         return createElement(MenuUI, { menu: instance })
     }

@@ -5,7 +5,7 @@ import { activityManger } from './Activity'
 import { InputBlockerUI } from './InputBlocker'
 
 export const ActivityUI = observer(function ActivityUI_(p: {}) {
-    // useDebugActivity()
+    // useDemoActivity()
     return (
         <Fragment>
             {activityManger.stack.map((activity, ix) => (

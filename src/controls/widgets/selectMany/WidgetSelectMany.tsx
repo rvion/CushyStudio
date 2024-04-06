@@ -15,7 +15,7 @@ import { WidgetSelectManyUI } from './WidgetSelectManyUI'
 export type Widget_selectMany_config<T extends BaseSelectEntry> = WidgetConfigFields<
     {
         default?: T[]
-        choices: T[] | ((formRoot: Maybe<Widget_group<any>>) => T[])
+        choices: T[] | ((formRoot: Maybe<IWidget>) => T[])
         appearance?: 'select' | 'tab'
     },
     Widget_selectMany_types<T>
