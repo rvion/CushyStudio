@@ -26,6 +26,35 @@ export const ui_ipadapter_CLIPSelectionV2 = (form: FormBuilder) => ({
     }),
 })
 
+export const ui_ipadapter_advancedSettings = (
+    form: FormBuilder,
+    start: number = 0,
+    end: number = 1,
+    weight_type: Enum_IPAdapterAdvanced_weight_type = 'linear',
+) => {
+    return form.fields(
+        {
+            startAtStepPercent: form.float({ default: start, min: 0, max: 1, step: 0.1 }),
+            endAtStepPercent: form.float({ default: end, min: 0, max: 1, step: 0.1 }),
+            adapterAttentionMask: form
+                .image({
+                    label: 'Attention Mask',
+                    tooltip: 'This defines the region of the generated image the IPAdapter will apply to',
+                })
+                .optional(),
+            weight_type: form.enum.Enum_IPAdapterAdvanced_weight_type({ default: weight_type }),
+            embedding_scaling: form.enum.Enum_IPAdapterAdvanced_embeds_scaling({ default: 'V only' }),
+            noise: form.float({ default: 0, min: 0, max: 1, step: 0.1 }),
+            unfold_batch: form.bool({ default: false }),
+        },
+        {
+            summary: (ui) => {
+                return `${ui.weight_type} | from:${ui.startAtStepPercent}=>${ui.endAtStepPercent}`
+            },
+        },
+    )
+}
+
 export const ui_IPAdapterImageInput = (form: FormBuilder) => {
     return form.fields(
         {
@@ -46,7 +75,7 @@ export const ui_IPAdapterImageInput = (form: FormBuilder) => {
                     startCollapsed: true,
                     label: 'Image Settings',
                     summary: (ui) => {
-                        return `weight:${ui.imageWeight}|combo:${ui.embedding_combination}|mask:${
+                        return `weight:${ui.imageWeight} | combo:${ui.embedding_combination} | mask:${
                             ui.imageAttentionMask ? 'yes' : 'no'
                         }`
                     },
@@ -56,7 +85,7 @@ export const ui_IPAdapterImageInput = (form: FormBuilder) => {
         },
         {
             summary: (ui) => {
-                return `weight:${ui.advanced.imageWeight}|combo:${ui.advanced.embedding_combination}|mask:${
+                return `weight:${ui.advanced.imageWeight} | combo:${ui.advanced.embedding_combination} | mask:${
                     ui.advanced.imageAttentionMask ? 'yes' : 'no'
                 }`
             },
@@ -88,33 +117,13 @@ export const ui_IPAdapterV2 = () => {
                         label: 'Extra Images',
                         element: ui_IPAdapterImageInput(form),
                     }),
-                    advancedSettings: form.fields(
-                        {
-                            startAtStepPercent: form.float({ default: 0, min: 0, max: 1, step: 0.1 }),
-                            endAtStepPercent: form.float({ default: 1, min: 0, max: 1, step: 0.1 }),
-                            adapterAttentionMask: form
-                                .image({
-                                    label: 'Attention Mask',
-                                    tooltip: 'This defines the region of the generated image the IPAdapter will apply to',
-                                })
-                                .optional(),
-                            weight_type: form.enum.Enum_IPAdapterAdvanced_weight_type({ default: 'linear' }),
-                            embedding_scaling: form.enum.Enum_IPAdapterAdvanced_embeds_scaling({ default: 'V only' }),
-                            noise: form.float({ default: 0, min: 0, max: 1, step: 0.1 }),
-                            unfold_batch: form.bool({ default: false }),
-                        },
-                        {
-                            summary: (ui) => {
-                                return `${ui.weight_type}|from:${ui.startAtStepPercent}=>${ui.endAtStepPercent}`
-                            },
-                        },
-                    ),
+                    advancedSettings: ui_ipadapter_advancedSettings(form),
                 },
                 {
                     label: 'IP Adapter Settings',
                     startCollapsed: true,
                     summary: (ui) => {
-                        return `extra images:${ui.extra.length}|strength:${ui.adapterStrength}|model:${ui.models.type}|`
+                        return `extra images:${ui.extra.length} | strength:${ui.adapterStrength} | model:${ui.models.type}|`
                     },
                 },
             ),
@@ -122,8 +131,9 @@ export const ui_IPAdapterV2 = () => {
         },
         {
             label: 'IPAdapter',
+            requirements: [{ type: 'customNodesByTitle', title: 'ComfyUI_IPAdapter_plus' }],
             summary: (ui) => {
-                return `images:${1 + ui.settings.extra.length}|strength:${ui.settings.adapterStrength}|model:${
+                return `images:${1 + ui.settings.extra.length} | strength:${ui.settings.adapterStrength} | model:${
                     ui.settings.models.type
                 }`
             },
