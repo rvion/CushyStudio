@@ -1,4 +1,3 @@
-import { DeforumVideoSaveNode } from '../../../schema/global'
 import { type OutputFor } from './_prefabs'
 import { ui_sampler } from './prefab_sampler'
 
