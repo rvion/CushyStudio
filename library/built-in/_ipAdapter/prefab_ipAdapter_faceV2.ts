@@ -2,11 +2,9 @@ import type { FormBuilder } from '../../../src/CUSHY'
 import type { OutputFor } from '../_prefabs/_prefabs'
 
 import { ipAdapterDoc } from './_ipAdapterDoc'
-import { ipAdapterModelList } from './_ipAdapterModelList'
 import { ui_ipadapter_advancedSettings } from './prefab_ipAdapter_baseV2'
-import { ui_ipadapter_modelSelection } from './ui_ipadapter_modelSelection'
 
-export const ui_IPAdapterImageInput = (form: FormBuilder) => {
+export const ui_FaceIDImageInput = (form: FormBuilder) => {
     return form.fields(
         {
             image: form.image({ label: 'Image' }),
@@ -38,7 +36,7 @@ export const ui_IPAdapterFaceIDV2 = () => {
     const form = getCurrentForm()
     return form.fields(
         {
-            baseImage: ui_IPAdapterImageInput(form),
+            baseImage: ui_FaceIDImageInput(form),
             settings: form.fields(
                 {
                     weight: form.float({ default: 0.8, min: -1, max: 3, step: 0.1 }),
@@ -56,7 +54,7 @@ export const ui_IPAdapterFaceIDV2 = () => {
                     ),
                     extra: form.list({
                         label: 'Extra Images',
-                        element: ui_IPAdapterImageInput(form),
+                        element: ui_FaceIDImageInput(form),
                     }),
                     advancedSettings: form.fields(
                         {
@@ -122,7 +120,7 @@ export const ui_IPAdapterFaceIDV2 = () => {
     )
 }
 
-// 🅿️ IPAdapter RUN ===================================================
+// 🅿️ FaceID RUN ===================================================
 export const run_FaceIDV2 = async (
     ui: OutputFor<typeof ui_IPAdapterFaceIDV2>,
     ckpt: _MODEL,

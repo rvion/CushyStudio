@@ -2,29 +2,6 @@ import type { FormBuilder } from '../../../src/CUSHY'
 import type { OutputFor } from '../_prefabs/_prefabs'
 
 import { ipAdapterDoc } from './_ipAdapterDoc'
-import { ipAdapterModelList } from './_ipAdapterModelList'
-import { ui_ipadapter_modelSelection } from './ui_ipadapter_modelSelection'
-
-// 🅿️ IPAdapter Common FORM ===================================================
-export const ui_subform_IPAdapter_commonV2 = (form: FormBuilder, defaultStrength: number = 1) => ({})
-
-export type Cnet_argsV2 = {
-    positive: _CONDITIONING
-    negative: _CONDITIONING
-    width: number
-    height: number
-    ckptPos: _MODEL
-}
-
-//🅿️ IPAdapter CLIP Selection ===================================================
-export const ui_ipadapter_CLIPSelectionV2 = (form: FormBuilder) => ({
-    clip_name: form.enum.Enum_CLIPVisionLoader_clip_name({
-        // @ts-ignore
-        default: 'CLIP-ViT-H-14-laion2B-s32B-b79K.safetensors',
-        requirements: [{ type: 'modelInManager', modelName: 'CLIPVision model (IP-Adapter) CLIP-ViT-H-14-laion2B-s32B-b79K' }],
-        label: 'CLIP Vision Model',
-    }),
-})
 
 export const ui_ipadapter_advancedSettings = (
     form: FormBuilder,
@@ -81,7 +58,6 @@ export const ui_IPAdapterImageInput = (form: FormBuilder) => {
                     },
                 },
             ),
-            // crop: form.bool({ default: true }),
         },
         {
             summary: (ui) => {
