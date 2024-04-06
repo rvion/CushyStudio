@@ -1,6 +1,8 @@
 import { CustomView3dCan } from './3d/3d-app-2/_can3/Can3'
 import { Cnet_args, Cnet_return, run_cnet, ui_cnet } from './_controlNet/prefab_cnet'
 import { run_ipadapter_standalone, ui_ipadapter_standalone } from './_ipAdapter/prefab_ipAdapter_base_standalone'
+import { run_IPAdapterV2, ui_IPAdapterV2 } from './_ipAdapter/prefab_ipAdapter_baseV2'
+import { run_FaceIDV2, ui_IPAdapterFaceIDV2 } from './_ipAdapter/prefab_ipAdapter_faceV2'
 import { ui_highresfix } from './_prefabs/_prefabs'
 import { run_Dispacement1, run_Dispacement2, ui_3dDisplacement } from './_prefabs/prefab_3dDisplacement'
 import { run_refiners_fromImage, ui_refiners } from './_prefabs/prefab_detailer'
@@ -42,7 +44,6 @@ app({
             default: 'bad quality, blurry, low resolution, pixelated, noisy',
         }),
         model: ui_model(),
-        ipadapter: ui_ipadapter_standalone().optional(),
         latent: ui_latent_v3(),
         mask: ui_mask(),
         sampler: ui_sampler(),
@@ -52,6 +53,8 @@ app({
         removeBG: ui_rembg_v1(),
         show3d: ui_3dDisplacement().optional(),
         controlnets: ui_cnet(),
+        ipAdapter: ui_IPAdapterV2().optional(),
+        faceID: ui_IPAdapterFaceIDV2().optional(),
         extra: form.choices({
             appearance: 'tab',
             items: {
@@ -140,6 +143,18 @@ app({
             positive = cnet_out.cnet_positive
             negative = cnet_out.cnet_negative
             ckptPos = cnet_out.ckpt_return //only used for ipAdapter, otherwise it will just be a passthrough
+        }
+
+        let ip_adapter: _IPADAPTER | undefined
+        if (ui.ipAdapter) {
+            const ipAdapter_out = await run_IPAdapterV2(ui.ipAdapter, ckptPos, ip_adapter)
+            ckptPos = ipAdapter_out.ip_adapted_model
+            ip_adapter = ipAdapter_out.ip_adapter
+        }
+        if (ui.faceID) {
+            const faceID_out = await run_FaceIDV2(ui.faceID, ckptPos, ip_adapter)
+            ckptPos = faceID_out.ip_adapted_model
+            ip_adapter = faceID_out.ip_adapter
         }
 
         // FIRST PASS --------------------------------------------------------------------------------
