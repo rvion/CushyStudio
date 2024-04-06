@@ -11,6 +11,8 @@
         "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
         "strict": true,
+        /** makes stuff bivariant / easier to type; paradoxically catches more errors since I can stop using any in weirdly hard to type scenarios */
+        "strictFunctionTypes": false,
         "forceConsistentCasingInFileNames": true,
         "strictNullChecks": true,
         "noUncheckedIndexedAccess": true,
