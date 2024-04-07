@@ -15,7 +15,7 @@ export const cmd_copyGalleryHoveredImage = command({
         return RET.UNMATCHED
     },
     run: async (p: { format: AvailableImageCopyFormats }, image: MediaImageL) => {
-        return await image.copyToClipboard(p)
+        return await image.copyToClipboard_viaCanvas(p) // 🔴
     },
 })
 
@@ -26,7 +26,8 @@ type CopyImageParams = { image: MediaImageL; format?: AvailableImageCopyFormats 
 export const cmd_copyImage = command({
     id: 'gallery.copyImage',
     label: 'Copy Image',
-    run: (p: CopyImageParams) => p.image.copyToClipboard({ format: p.format, quality: form_foo.root.fields.quality.value }),
+    run: (p: CopyImageParams) =>
+        p.image.copyToClipboard_viaCanvas({ format: p.format, quality: form_foo.root.fields.quality.value }),
     // when: (p: CopyImageParams) => true,
 })
 

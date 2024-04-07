@@ -11,7 +11,7 @@ export type $WidgetTypes = {
     $Config: SharedWidgetConfig<any>
     $Serial: SharedWidgetSerial
     $Value: any
-    $Widget: any
+    $Widget: IWidget<any>
 }
 
 export const isWidget = (x: any): x is IWidget => {

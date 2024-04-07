@@ -59,7 +59,6 @@ app({
                         }),
                         empty_latent: form.group({
                             layout: 'H',
-                            // topLevel: true,
                             items: {
                                 width: form.int({ default: 512, max: 1512, step: 32, hideSlider: true }),
                                 height: form.int({ default: 512, max: 1512, step: 32, hideSlider: true }),

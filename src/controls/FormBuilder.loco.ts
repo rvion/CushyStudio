@@ -78,7 +78,7 @@ export class FormBuilder_Loco implements IFormBuilder {
     SpecCtor = SimpleSpec
 
     /** (@internal) don't call this yourself */
-    constructor(public form: Form<any, FormBuilder_Loco>) {
+    constructor(public form: Form<IWidget, FormBuilder_Loco>) {
         makeAutoObservable(this, {
             SpecCtor: false,
         })

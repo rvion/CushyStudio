@@ -96,18 +96,16 @@ export class MediaImageL {
         }
     }
     /** Uses electron clipboard API to copy the image to clipboard, will only copy as PNG. */
-    copyToClipboard = () => {
-        this.st.electronUtils
-            .copyImageToClipboard({
+    copyToClipboard = async () => {
+        try {
+            await this.st.electronUtils.copyImageToClipboard({
                 format: this.extension.split('.').pop(),
                 buffer: this.getArrayBuffer(),
             })
-            .then((img) => {
-                toastImage(this.getBase64Url(), `Image copied to clipboard!`)
-            })
-            .catch((err) => {
-                toastError(`Could not copy to clipboard: ${err}`)
-            })
+            toastImage(this.getBase64Url(), `Image copied to clipboard!`)
+        } catch (err) {
+            toastError(`Could not copy to clipboard: ${err}`)
+        }
     }
 
     copyToClipboardAsBase64 = () => {

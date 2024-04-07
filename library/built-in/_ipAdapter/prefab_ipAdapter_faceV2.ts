@@ -34,90 +34,91 @@ export const ui_FaceIDImageInput = (form: FormBuilder) => {
 // 🅿️ IPAdapter Basic ===================================================
 export const ui_IPAdapterFaceIDV2 = () => {
     const form = getCurrentForm()
-    return form.fields(
-        {
-            baseImage: ui_FaceIDImageInput(form),
-            settings: form.fields(
-                {
-                    weight: form.float({ default: 0.8, min: -1, max: 3, step: 0.1 }),
-                    weight_faceidv2: form.float({ default: 0.8, min: -1, max: 3, step: 0.1 }),
-                    models: form.fields(
-                        {
-                            type: form.enum.Enum_IPAdapterUnifiedLoaderFaceID_preset({ default: 'FACEID PLUS V2' }),
-                        },
-                        {
-                            startCollapsed: true,
-                            summary: (ui) => {
-                                return `model:${ui.type}`
+    return form
+        .fields(
+            {
+                baseImage: ui_FaceIDImageInput(form),
+                settings: form.fields(
+                    {
+                        weight: form.float({ default: 0.8, min: -1, max: 3, step: 0.1 }),
+                        weight_faceidv2: form.float({ default: 0.8, min: -1, max: 3, step: 0.1 }),
+                        models: form.fields(
+                            {
+                                type: form.enum.Enum_IPAdapterUnifiedLoaderFaceID_preset({ default: 'FACEID PLUS V2' }),
                             },
-                        },
-                    ),
-                    extra: form.list({
-                        label: 'Extra Images',
-                        element: ui_FaceIDImageInput(form),
-                    }),
-                    advancedSettings: form.fields(
-                        {
-                            extraIPAdapter: form
-                                .fields(
-                                    {
-                                        weight: form.float({ default: 0.4, min: -1, max: 3, step: 0.1 }),
-                                        embedding_combination: form.enum.Enum_IPAdapterAdvanced_combine_embeds({
-                                            default: 'average',
-                                        }),
-                                        ipAdapterSettings: ui_ipadapter_advancedSettings(form, 0.25, 1, 'ease in'),
-                                    },
-                                    {
-                                        summary: (ui) => {
-                                            return `weight:${ui.weight} | ${ui.ipAdapterSettings.weight_type} | combo:${ui.embedding_combination} | from:${ui.ipAdapterSettings.startAtStepPercent}=>${ui.ipAdapterSettings.endAtStepPercent}`
+                            {
+                                startCollapsed: true,
+                                summary: (ui) => {
+                                    return `model:${ui.type}`
+                                },
+                            },
+                        ),
+                        extra: form.list({
+                            label: 'Extra Images',
+                            element: ui_FaceIDImageInput(form),
+                        }),
+                        advancedSettings: form.fields(
+                            {
+                                extraIPAdapter: form
+                                    .fields(
+                                        {
+                                            weight: form.float({ default: 0.4, min: -1, max: 3, step: 0.1 }),
+                                            embedding_combination: form.enum.Enum_IPAdapterAdvanced_combine_embeds({
+                                                default: 'average',
+                                            }),
+                                            ipAdapterSettings: ui_ipadapter_advancedSettings(form, 0.25, 1, 'ease in'),
                                         },
-                                    },
-                                )
-                                .optional(),
-                            startAtStepPercent: form.float({ default: 0, min: 0, max: 1, step: 0.1 }),
-                            endAtStepPercent: form.float({ default: 1, min: 0, max: 1, step: 0.05 }),
-                            lora_strength: form.float({ default: 0.6, min: 0, max: 1, step: 0.1 }),
-                            embedding_combination: form.enum.Enum_IPAdapterAdvanced_combine_embeds({ default: 'average' }),
-                            weight_type: form.enum.Enum_IPAdapterAdvanced_weight_type({ default: 'linear' }),
-                            embedding_scaling: form.enum.Enum_IPAdapterAdvanced_embeds_scaling({ default: 'V only' }),
-                            noise: form.float({ default: 0, min: 0, max: 1, step: 0.1 }),
-                            unfold_batch: form.bool({ default: false }),
-                            adapterAttentionMask: form
-                                .image({
-                                    label: 'Attention Mask',
-                                    tooltip: 'This defines the region of the generated image the IPAdapter will apply to',
-                                })
-                                .optional(),
-                        },
-                        {
-                            summary: (ui) => {
-                                return `${ui.weight_type} | combo:${ui.embedding_combination} | from:${ui.startAtStepPercent}=>${
-                                    ui.endAtStepPercent
-                                } | reinforced:${ui.extraIPAdapter ? 'yes' : 'no'}`
+                                        {
+                                            summary: (ui) => {
+                                                return `weight:${ui.weight} | ${ui.ipAdapterSettings.weight_type} | combo:${ui.embedding_combination} | from:${ui.ipAdapterSettings.startAtStepPercent}=>${ui.ipAdapterSettings.endAtStepPercent}`
+                                            },
+                                        },
+                                    )
+                                    .optional(),
+                                startAtStepPercent: form.float({ default: 0, min: 0, max: 1, step: 0.1 }),
+                                endAtStepPercent: form.float({ default: 1, min: 0, max: 1, step: 0.05 }),
+                                lora_strength: form.float({ default: 0.6, min: 0, max: 1, step: 0.1 }),
+                                embedding_combination: form.enum.Enum_IPAdapterAdvanced_combine_embeds({ default: 'average' }),
+                                weight_type: form.enum.Enum_IPAdapterAdvanced_weight_type({ default: 'linear' }),
+                                embedding_scaling: form.enum.Enum_IPAdapterAdvanced_embeds_scaling({ default: 'V only' }),
+                                noise: form.float({ default: 0, min: 0, max: 1, step: 0.1 }),
+                                unfold_batch: form.bool({ default: false }),
+                                adapterAttentionMask: form
+                                    .image({
+                                        label: 'Attention Mask',
+                                        tooltip: 'This defines the region of the generated image the IPAdapter will apply to',
+                                    })
+                                    .optional(),
                             },
-                        },
-                    ),
-                },
-                {
-                    label: 'IP Adapter Settings',
-                    startCollapsed: true,
-                    summary: (ui) => {
-                        return `extra images:${ui.extra.length} | weight:${ui.weight} | weightV2:${ui.weight_faceidv2} | model:${ui.models.type}|`
+                            {
+                                summary: (ui) => {
+                                    return `${ui.weight_type} | combo:${ui.embedding_combination} | from:${
+                                        ui.startAtStepPercent
+                                    }=>${ui.endAtStepPercent} | reinforced:${ui.extraIPAdapter ? 'yes' : 'no'}`
+                                },
+                            },
+                        ),
                     },
-                },
-            ),
-            help: form.markdown({ startCollapsed: true, markdown: ipAdapterDoc }),
-        },
-        {
-            label: 'FaceID',
-            requirements: [{ type: 'customNodesByTitle', title: 'ComfyUI_IPAdapter_plus' }],
-            summary: (ui) => {
-                return `images:${1 + ui.settings.extra.length} | weight:${ui.settings.weight} | weightV2:${
-                    ui.settings.weight_faceidv2
-                } | model:${ui.settings.models.type}`
+                    {
+                        label: 'IP Adapter Settings',
+                        startCollapsed: true,
+                        summary: (ui) => {
+                            return `extra images:${ui.extra.length} | weight:${ui.weight} | weightV2:${ui.weight_faceidv2} | model:${ui.models.type}|`
+                        },
+                    },
+                ),
+                help: form.markdown({ startCollapsed: true, markdown: ipAdapterDoc }),
             },
-        },
-    )
+            {
+                label: 'FaceID',
+                summary: (ui) => {
+                    return `images:${1 + ui.settings.extra.length} | weight:${ui.settings.weight} | weightV2:${
+                        ui.settings.weight_faceidv2
+                    } | model:${ui.settings.models.type}`
+                },
+            },
+        )
+        .addRequirements([{ type: 'customNodesByTitle', title: 'ComfyUI_IPAdapter_plus' }])
 }
 
 // 🅿️ FaceID RUN ===================================================

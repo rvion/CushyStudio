@@ -35,7 +35,14 @@ export class FormManager<BUILDER extends IFormBuilder> {
         formProperties: FormProperties<ISpec<Widget_group<FIELDS>>> = { name: 'unnamed' },
     ): Form<ISpec<Widget_group<FIELDS>>, BUILDER> => {
         const FN = (builder: BUILDER): ISpec<Widget_group<FIELDS>> => {
-            return runWithGlobalForm(builder, () => builder.group({ items: ui(builder as BUILDER) }))
+            return runWithGlobalForm(builder, () =>
+                builder.group({
+                    label: false,
+                    items: ui(builder as BUILDER),
+                    topLevel: true,
+                    collapsed: false,
+                }),
+            )
         }
         const form = new Form<ISpec<Widget_group<FIELDS>>, BUILDER>(this, FN, formProperties)
         return form

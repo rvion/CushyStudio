@@ -4,11 +4,10 @@ import type { CSSProperties } from 'react'
 import { observer } from 'mobx-react-lite'
 
 import { MessageErrorUI } from '../panels/MessageUI'
-import { WidgetGroup_BlockUI } from './widgets/group/WidgetGroupUI'
 
 export const FormUI = observer(function FormUI_(p: {
     // form -----------------------------------
-    form: Maybe<Form<any, any>>
+    form: Maybe<Form>
     // look and feel --------------------------
     /** from your daisy-ui config */
     theme?: string

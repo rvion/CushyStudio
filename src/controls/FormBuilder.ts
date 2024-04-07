@@ -38,10 +38,12 @@ import { Widget_size, type Widget_size_config } from './widgets/size/WidgetSize'
 import { Widget_spacer, Widget_spacer_config } from './widgets/spacer/WidgetSpacer'
 import { Widget_string, type Widget_string_config } from './widgets/string/WidgetString'
 
+export type AnyFormGroupSpec = ISpec<Widget_group<any>>
 export class FormBuilder implements IFormBuilder {
     SpecCtor = Spec
+
     /** (@internal) don't call this yourself */
-    constructor(public form: Form<any /* SchemaDict */, FormBuilder>) {
+    constructor(public form: Form<IWidget, FormBuilder>) {
         makeAutoObservable(this, {
             auto: false,
             autoField: false,

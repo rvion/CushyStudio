@@ -43,7 +43,7 @@ export type Widget_optional_types<T extends ISpec = ISpec> = {
     $Config: Widget_optional_config<T>
     $Serial: Widget_optional_serial<T>
     $Value: Widget_optional_value<T>
-    $Widget: Widget_optional_value<T>
+    $Widget: Widget_optional<T>
 }
 
 // STATE
