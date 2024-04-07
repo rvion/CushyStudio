@@ -1,4 +1,3 @@
-import { CustomView3dCan } from './3d/3d-app-2/_can3/Can3'
 import { Cnet_args, Cnet_return, run_cnet, ui_cnet } from './_controlNet/prefab_cnet'
 import { run_ipadapter_standalone, ui_ipadapter_standalone } from './_ipAdapter/prefab_ipAdapter_base_standalone'
 import { run_IPAdapterV2, ui_IPAdapterV2 } from './_ipAdapter/prefab_ipAdapter_baseV2'
@@ -17,7 +16,9 @@ import { run_regionalPrompting_v1, ui_regionalPrompting_v1 } from './_prefabs/pr
 import { run_rembg_v1, ui_rembg_v1 } from './_prefabs/prefab_rembg'
 import { Ctx_sampler, run_sampler, ui_sampler } from './_prefabs/prefab_sampler'
 import { run_upscaleWithModel, ui_upscaleWithModel } from './_prefabs/prefab_upscaleWithModel'
+import { run_addFancyWatermarkToAllImage, run_watermark_v1, ui_watermark_v1 } from './_prefabs/prefab_watermark'
 import { run_customSave, ui_customSave } from './_prefabs/saveSmall'
+import { CustomView3dCan } from './_views/View_3d_TinCan'
 
 app({
     metadata: {
@@ -67,6 +68,8 @@ app({
                 promtPlus: ui_advancedPrompt(),
                 displayAsBeerCan: form.group({}),
                 recursiveImgToImg: ui_recursive(),
+                watermark: ui_watermark_v1(),
+                fancyWatermark: form.group(),
                 loop: form.fields({
                     batchCount: form.int({ default: 1 }),
                     delayBetween: form.int({ tooltip: 'in ms', default: 0 }),
@@ -270,13 +273,7 @@ app({
         if (ui.extra?.gaussianSplat) run.output_GaussianSplat({ url: '' })
         if (ui.extra?.summary) output_demo_summary(run)
         if (show3d) run_Dispacement2('base')
-
-        if (ui.extra.displayAsBeerCan) {
-            run.output_custom({
-                view: CustomView3dCan,
-                params: { imageID: run.lastImage?.id },
-            })
-        }
+        if (ui.extra.displayAsBeerCan) run.output_custom({ view: CustomView3dCan, params: { imageID: run.lastImage?.id } })
 
         // LOOP IF NEED BE -----------------------------------------------------------------------
         const loop = ui.extra.loop
@@ -287,6 +284,9 @@ app({
                 await run.PROMPT({ saveFormat })
             }
         }
+
+        if (ui.extra.watermark) run_watermark_v1(ui.extra.watermark, run.lastImage)
+        if (ui.extra.fancyWatermark) run_addFancyWatermarkToAllImage()
 
         if (ui.extra?.makeAVideo) await run.Videos.output_video_ffmpegGeneratedImagesTogether(undefined, 2)
     },

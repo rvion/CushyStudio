@@ -1,5 +1,5 @@
+import type { ISpec } from '../../Spec'
 import type { Widget_listExt } from './WidgetListExt'
-import type { Spec } from '../../Spec'
 
 import { observer } from 'mobx-react-lite'
 
@@ -8,7 +8,7 @@ import { WidgetListExt_RegionalUI } from './WidgetListExt_RegionalUI'
 import { WidgetListExt_TimelineUI } from './WidgetListExt_TimelineUI'
 import { WidgetListExt_ValuesUI } from './WidgetListExt_ValuesUI'
 
-export const WidgetListExtUI = observer(function WidgetListExtUI_<T extends Spec>(p: { widget: Widget_listExt<T> }) {
+export const WidgetListExtUI = observer(function WidgetListExtUI_<T extends ISpec>(p: { widget: Widget_listExt<T> }) {
     const widget = p.widget
     return (
         <div className='_WidgetListExtUI' tw='flex-grow w-full'>

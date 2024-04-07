@@ -2,7 +2,7 @@ import type { UnifiedCanvas } from './UnifiedCanvas'
 
 import Konva from 'konva'
 
-export class KonvaGrid1 {
+export class KonvaGrid {
     hide = () => this.image.hide()
     show = () => this.image.show()
     image: Konva.Image

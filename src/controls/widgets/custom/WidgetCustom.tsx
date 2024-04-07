@@ -1,6 +1,6 @@
 import type { Form } from '../../Form'
 import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
-import type { Spec } from '../../Spec'
+import type { ISpec } from '../../Spec'
 import type { FC } from 'react'
 
 import { makeAutoObservable, runInAction } from 'mobx'
@@ -16,7 +16,7 @@ export type CustomWidgetProps<T> = { widget: Widget_custom<T>; extra: import('./
 export type Widget_custom_config<T> = WidgetConfigFields<
     {
         defaultValue: () => T
-        subTree?: () => Spec
+        subTree?: () => ISpec
         Component: FC<CustomWidgetProps<T>>
     },
     Widget_custom_types<T>
@@ -43,6 +43,7 @@ export class Widget_custom<T> implements IWidget<Widget_custom_types<T>> {
     DefaultHeaderUI = WidgetCustom_HeaderUI
     DefaultBodyUI = undefined
     readonly id: string
+    get config() { return this.spec.config } // prettier-ignore
     readonly type: 'custom' = 'custom'
 
     serial: Widget_custom_serial<T>
@@ -53,9 +54,10 @@ export class Widget_custom<T> implements IWidget<Widget_custom_types<T>> {
         //
         public readonly form: Form,
         public readonly parent: IWidget | null,
-        public config: Widget_custom_config<T>,
+        public readonly spec: ISpec<Widget_custom<T>>,
         serial?: Widget_custom_serial<T>,
     ) {
+        const config = spec.config
         this.id = serial?.id ?? nanoid()
         this.Component = config.Component
         this.serial = serial ?? {

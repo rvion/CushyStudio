@@ -6,34 +6,29 @@ import { cnet_preprocessor_ui_common, cnet_ui_common } from './cnet_ui_common'
 // 🅿️ OPEN POSE FORM ===================================================
 export const ui_subform_OpenPose = () => {
     const form: FormBuilder = getCurrentForm()
-    return form.group({
-        label: 'Pose',
-        requirements: [{ type: 'customNodesByTitle', title: 'ComfyUI-Advanced-ControlNet' }],
-        items: () => ({
-            ...cnet_ui_common(form),
-            preprocessor: ui_subform_OpenPose_Preprocessor(),
-            models: form.group({
-                label: 'Select or Download Models',
-                // startCollapsed: true,
-                items: () => ({
-                    cnet_model_name: form.enum.Enum_ControlNetLoader_control_net_name({
-                        label: 'Model',
-                        // @ts-ignore
-                        default: 't2iadapter_openpose_sd14v1.pth',
-                        filter: (name) => name.toString().includes('pose'),
-                        extraDefaults: ['t2iadapter_openpose_sd14v1.pth', 'control_v11p_sd15_openpose.pth'],
-                        recommandedModels: {
-                            knownModel: [
-                                'T2I-Adapter (openpose)',
-                                'ControlNet-v1-1 (openpose; fp16)',
-                                'SDXL-controlnet: OpenPose (v2)',
-                            ],
-                        },
-                    }),
+    return form
+        .fields(
+            {
+                ...cnet_ui_common(form),
+                preprocessor: ui_subform_OpenPose_Preprocessor(),
+                cnet_model_name: form.enum.Enum_ControlNetLoader_control_net_name({
+                    label: 'Model',
+                    // @ts-ignore
+                    default: 't2iadapter_openpose_sd14v1.pth',
+                    filter: (name) => name.toString().includes('pose'),
+                    extraDefaults: ['t2iadapter_openpose_sd14v1.pth', 'control_v11p_sd15_openpose.pth'],
+                    recommandedModels: {
+                        knownModel: [
+                            'T2I-Adapter (openpose)',
+                            'ControlNet-v1-1 (openpose; fp16)',
+                            'SDXL-controlnet: OpenPose (v2)',
+                        ],
+                    },
                 }),
-            }),
-        }),
-    })
+            },
+            { label: 'Pose' },
+        )
+        .addRequirements([{ type: 'customNodesByTitle', title: 'ComfyUI-Advanced-ControlNet' }])
 }
 
 export const ui_subform_OpenPose_Preprocessor = () => {
@@ -47,7 +42,7 @@ export const ui_subform_OpenPose_Preprocessor = () => {
             DWPose: form.group({
                 label: 'Settings',
                 startCollapsed: true,
-                items: () => ({
+                items: {
                     ...cnet_preprocessor_ui_common(form),
                     detect_body: form.bool({ default: true }),
                     detect_face: form.bool({ default: true }),
@@ -60,17 +55,17 @@ export const ui_subform_OpenPose_Preprocessor = () => {
                         label: 'Model',
                         default: 'dw-ll_ucoco_384.onnx',
                     }),
-                }),
+                },
             }),
             OpenPose: form.group({
                 label: 'Settings',
                 startCollapsed: true,
-                items: () => ({
+                items: {
                     ...cnet_preprocessor_ui_common(form),
                     detect_body: form.bool({ default: true }),
                     detect_face: form.bool({ default: true }),
                     detect_hand: form.bool({ default: true }),
-                }),
+                },
             }),
             // TODO: Add support for auto-modifying the resolution based on other form selections
             // TODO: Add support for auto-cropping
@@ -89,7 +84,7 @@ export const run_cnet_openPose = (
 } => {
     const run = getCurrentRun()
     const graph = run.nodes
-    const cnet_name = openPose.models.cnet_model_name
+    const cnet_name = openPose.cnet_model_name
 
     let returnImage = image
     //crop the image to the right size

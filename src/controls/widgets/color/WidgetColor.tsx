@@ -1,5 +1,6 @@
 import type { Form } from '../../Form'
 import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { ISpec } from '../../Spec'
 
 import { makeAutoObservable, runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -36,6 +37,7 @@ export class Widget_color implements IWidget<Widget_color_types> {
     DefaultHeaderUI = WidgetColorUI
     DefaultBodyUI = undefined
     readonly id: string
+    get config() { return this.spec.config } // prettier-ignore
     readonly type: 'color' = 'color'
 
     readonly defaultValue: string = this.config.default ?? '#000000'
@@ -48,9 +50,10 @@ export class Widget_color implements IWidget<Widget_color_types> {
         //
         public readonly form: Form,
         public readonly parent: IWidget | null,
-        public readonly config: Widget_color_config,
+        public readonly spec: ISpec<Widget_color>,
         serial?: Widget_color_serial,
     ) {
+        const config = spec.config
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? {
             type: 'color',

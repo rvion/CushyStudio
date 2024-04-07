@@ -2,6 +2,7 @@ import type { EnumValue } from '../../../models/ComfySchema'
 import type { CleanedEnumResult } from '../../../types/EnumUtils'
 import type { Form } from '../../Form'
 import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { ISpec } from '../../Spec'
 
 import { makeAutoObservable, runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -47,6 +48,7 @@ export class Widget_enum<O> implements IWidget<Widget_enum_types<O>> {
     DefaultHeaderUI = WidgetEnumUI
     DefaultBodyUI = undefined
     readonly id: string
+    get config() { return this.spec.config } // prettier-ignore
     readonly type: 'enum' = 'enum'
 
     get isChanged() { return this.serial.val !== this.config.default } // prettier-ignore
@@ -61,9 +63,10 @@ export class Widget_enum<O> implements IWidget<Widget_enum_types<O>> {
         //
         public readonly form: Form,
         public readonly parent: IWidget | null,
-        public config: Widget_enum_config<O>,
+        public readonly spec: ISpec<Widget_enum<O>>,
         serial?: Widget_enum_serial<O>,
     ) {
+        const config = spec.config
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? {
             type: 'enum',

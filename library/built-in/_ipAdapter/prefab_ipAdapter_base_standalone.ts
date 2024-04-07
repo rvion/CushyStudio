@@ -8,25 +8,26 @@ import { ui_ipadapter_modelSelection } from './ui_ipadapter_modelSelection'
 // 🅿️ IPAdapter Basic ===================================================
 export const ui_ipadapter_standalone = () => {
     const form = getCurrentForm()
-    return form.group({
-        label: 'IPAdapter',
-        requirements: [
+    return form
+        .group({
+            label: 'IPAdapter',
+            items: {
+                help: form.markdown({ startCollapsed: true, markdown: ipAdapterDoc }),
+                image: form.image({ label: 'Image' }),
+                extra: form.list({ label: 'Extra', element: form.image({ label: 'Image' }) }),
+                embedding_scaling: form.enum.Enum_IPAdapterAdvanced_embeds_scaling({ default: 'V only' }),
+                ...ui_ipadapter_CLIPSelection(form),
+                ...ui_ipadapter_modelSelection(form, 'ip-adapter-plus_sd15.safetensors', ipAdapterModelList),
+                ...ui_subform_IPAdapter_common(form),
+            },
+        })
+        .addRequirements([
             //
             { type: 'customNodesByTitle', title: 'ComfyUI_IPAdapter_plus' },
             { type: 'modelInManager', modelName: 'ip-adapter_sdxl_vit-h.safetensors' },
             { type: 'modelInManager', modelName: 'ip-adapter-plus_sdxl_vit-h.safetensors' },
             { type: 'modelInManager', modelName: 'ViT-H SAM model' },
-        ],
-        items: () => ({
-            help: form.markdown({ startCollapsed: true, markdown: ipAdapterDoc }),
-            image: form.image({ label: 'Image' }),
-            extra: form.list({ label: 'Extra', element: form.image({ label: 'Image' }) }),
-            embedding_scaling: form.enum.Enum_IPAdapterAdvanced_embeds_scaling({ default: 'V only' }),
-            ...ui_ipadapter_CLIPSelection(form),
-            ...ui_ipadapter_modelSelection(form, 'ip-adapter-plus_sd15.safetensors', ipAdapterModelList),
-            ...ui_subform_IPAdapter_common(form),
-        }),
-    })
+        ])
 }
 
 // 🅿️ IPAdapter RUN ===================================================
@@ -79,7 +80,6 @@ export const run_ipadapter_standalone = async (
         // noise: ui.settings.noise,
         start_at: ui.settings.startAtStepPercent,
         end_at: ui.settings.endAtStepPercent,
-        embeds_scaling: 'V only',
         // unfold_batch: ui.settings.unfold_batch,
         embeds_scaling: ui.embedding_scaling,
     })._MODEL

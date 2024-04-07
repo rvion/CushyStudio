@@ -1,18 +1,59 @@
 import type { RevealProps } from './RevealProps'
+import type { CSSProperties, ReactNode } from 'react'
 
 import { makeAutoObservable, observable } from 'mobx'
 
 import { computePlacement } from './RevealPlacement'
 
-export const defaultShowDelay = 100
-export const defaultHideDelay = 300
+export const defaultShowDelay_whenRoot = 100
+export const defaultHideDelay_whenRoot = 300
+
+export const defaultShowDelay_whenNested = 0
+export const defaultHideDelay_whenNested = 0
+
+const DEBUG_REVEAL = false
+
+/**
+ * state wrapper that laziy initializes the actual state when actually required
+ * it's important to keep that class lighweight.
+ */
+export class RevealStateLazy {
+    constructor(
+        //
+        public p: RevealProps,
+        public parents: RevealState[],
+    ) {
+        makeAutoObservable(this, { p: false })
+    }
+    uistOrNull: RevealState | null = null
+    getUist = (): RevealState => {
+        if (this.uistOrNull) return this.uistOrNull
+        if (DEBUG_REVEAL) console.log(`[💙] init RevealUI`)
+        this.uistOrNull = new RevealState({ ...this.p }, this.parents)
+        return this.uistOrNull!
+    }
+}
 
 export class RevealState {
     static nextUID = 1
     static shared: { current: Maybe<RevealState> } = observable({ current: null }, { current: observable.ref })
     uid = RevealState.nextUID++
 
-    constructor(public p: RevealProps) {
+    /**
+     * manuall assigned here on init so it can be made observable
+     * on its own, without the need to make the entire props observable
+     * so we can then hot-reload it nicely and have a nicer dev experience
+     */
+    contentFn: () => ReactNode
+
+    constructor(
+        //
+        public p: RevealProps,
+        public parents: RevealState[],
+    ) {
+        // see comment above
+        this.contentFn = p.content
+
         // 💬 2024-03-06 YIKES !!
         // | Reveal UI was causing
         // |
@@ -26,11 +67,23 @@ export class RevealState {
     // ------------------------------------------------
     inAnchor = false
     inTooltip = false
+    inChildren = new Set<number>()
+
+    /** how deep in the reveal stack we are */
+    get ix() { return this.parents.length } // prettier-ignore
+
+    get debugColor(): CSSProperties {
+        return {
+            borderLeft: this.inAnchor ? `3px solid red` : undefined,
+            borderTop: this.inTooltip ? `3px solid cyan` : undefined,
+            borderBottom: this.inChildren.size > 0 ? `3px solid orange` : undefined,
+        }
+    }
 
     /** toolip is visible if either inAnchor or inTooltip */
     get visible() {
         if (this._lock) return true
-        return this.inAnchor || this.inTooltip
+        return this.inAnchor || this.inTooltip || this.inChildren.size > 0
     }
 
     close() {
@@ -38,6 +91,7 @@ export class RevealState {
         this._resetAllTooltipTimouts()
         this.inAnchor = false
         this.inTooltip = false
+        this.inChildren.clear()
     }
 
     get triggerOnClick() {
@@ -53,8 +107,13 @@ export class RevealState {
             this.p.trigger == 'clickAndHover'
         )
     }
-    get showDelay() { return this.p.showDelay ?? defaultShowDelay } // prettier-ignore
-    get hideDelay() { return this.p.hideDelay ?? defaultHideDelay } // prettier-ignore
+
+    get showDelay() {
+        return this.p.showDelay ?? (this.ix ? defaultShowDelay_whenNested : defaultShowDelay_whenRoot)
+    }
+    get hideDelay() {
+        return this.p.hideDelay ?? (this.ix ? defaultHideDelay_whenNested : defaultHideDelay_whenRoot)
+    }
     get placement() { return this.p.placement ?? 'auto' } // prettier-ignore
 
     // position --------------------------------------------
@@ -93,13 +152,16 @@ export class RevealState {
 
     // ---
     enterAnchor = () => {
-        /* 🔥 🔴 */ if (RevealState.shared.current != this) RevealState.shared.current?.close()
+        if (DEBUG_REVEAL) console.log(`[🤠] ENTERING anchor ${this.ix}`)
+        /* 🔥 🔴 */ if (RevealState.shared.current != this && !this.parents.includes(RevealState.shared.current!))
+            RevealState.shared.current?.close()
         /* 🔥 */ RevealState.shared.current = this
         this._resetAllAnchorTimouts()
         this.inAnchor = true
     }
 
     leaveAnchor = () => {
+        if (DEBUG_REVEAL) console.log(`[🤠] LEAVING anchor  ${this.ix}`)
         /* 🔥 */ if (RevealState.shared.current == this) RevealState.shared.current = null
         this._resetAllAnchorTimouts()
         this.inAnchor = false
@@ -133,7 +195,6 @@ export class RevealState {
     }
     onMouseLeaveTooltip = () => {
         if (this.placement.startsWith('popup')) return
-        // cancer enter
         this._resetAllTooltipTimouts()
         this.leaveTooltipTimeoutId = setTimeout(this.leaveTooltip, this.hideDelay)
     }
@@ -141,11 +202,15 @@ export class RevealState {
     // ---
     enterTooltip = () => {
         this._resetAllTooltipTimouts()
+        for (const [ix, p] of this.parents.entries()) p.enterChildren(ix)
+        if (DEBUG_REVEAL) console.log(`[🤠] enter tooltip of ${this.ix}`)
         this.inTooltip = true
     }
 
     leaveTooltip = () => {
         this._resetAllTooltipTimouts()
+        for (const [ix, p] of this.parents.entries()) p.leaveChildren(ix)
+        if (DEBUG_REVEAL) console.log(`[🤠] leaving tooltip of ${this.ix}`)
         this.inTooltip = false
     }
 
@@ -165,5 +230,18 @@ export class RevealState {
             clearTimeout(this.leaveTooltipTimeoutId)
             this.leaveTooltipTimeoutId = null
         }
+    }
+    // --------------------
+
+    enterChildren = (depth: number) => {
+        // this._resetAllChildrenTimouts()
+        if (DEBUG_REVEAL) console.log(`[🤠] entering children (of ${this.ix}) ${depth}`)
+        this.inChildren.add(depth)
+    }
+
+    leaveChildren = (depth: number) => {
+        if (DEBUG_REVEAL) console.log(`[🤠] leaving children (of ${this.ix}) ${depth}`)
+        // this._resetAllChildrenTimouts()
+        this.inChildren.delete(depth)
     }
 }

@@ -1,6 +1,6 @@
 import type { Form } from '../../Form'
 import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
-import type { Spec } from '../../Spec'
+import type { ISpec } from '../../Spec'
 
 import { makeAutoObservable, observable } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -12,7 +12,7 @@ import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetList_BodyUI, WidgetList_LineUI } from './WidgetListUI'
 
 // CONFIG
-export type Widget_list_config<T extends Spec> = WidgetConfigFields<
+export type Widget_list_config<T extends ISpec> = WidgetConfigFields<
     {
         element: ((ix: number) => T) | T
         min?: number
@@ -23,16 +23,16 @@ export type Widget_list_config<T extends Spec> = WidgetConfigFields<
 >
 
 // SERIAL
-export type Widget_list_serial<T extends Spec> = WidgetSerialFields<{
+export type Widget_list_serial<T extends ISpec> = WidgetSerialFields<{
     type: 'list'
     items_: T['$Serial'][]
 }>
 
 // VALUE
-export type Widget_list_value<T extends Spec> = T['$Value'][]
+export type Widget_list_value<T extends ISpec> = T['$Value'][]
 
 // TYPES
-export type Widget_list_types<T extends Spec> = {
+export type Widget_list_types<T extends ISpec> = {
     $Type: 'list'
     $Config: Widget_list_config<T>
     $Serial: Widget_list_serial<T>
@@ -41,14 +41,15 @@ export type Widget_list_types<T extends Spec> = {
 }
 
 // STATE
-export interface Widget_list<T extends Spec> extends Widget_list_types<T>, IWidgetMixins {}
-export class Widget_list<T extends Spec> implements IWidget<Widget_list_types<T>> {
+export interface Widget_list<T extends ISpec> extends Widget_list_types<T>, IWidgetMixins {}
+export class Widget_list<T extends ISpec> implements IWidget<Widget_list_types<T>> {
     DefaultHeaderUI = WidgetList_LineUI
     get DefaultBodyUI() {
         // if (this.items.length === 0) return
         return WidgetList_BodyUI
     }
     readonly id: string
+    get config() { return this.spec.config } // prettier-ignore
     readonly type: 'list' = 'list'
 
     get length() { return this.items.length } // prettier-ignore
@@ -82,7 +83,7 @@ export class Widget_list<T extends Spec> implements IWidget<Widget_list_types<T>
         //
         public readonly form: Form,
         public readonly parent: IWidget | null,
-        public config: Widget_list_config<T>,
+        public readonly spec: ISpec<Widget_list<T>>,
         serial?: Widget_list_serial<T>,
     ) {
         this.id = serial?.id ?? nanoid()

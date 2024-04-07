@@ -1,5 +1,5 @@
 import type { Form } from './Form'
-import type { Requirements } from './Requirements'
+import type { ISpec } from './Spec'
 import type { FC } from 'react'
 
 /**
@@ -14,16 +14,27 @@ export type $WidgetTypes = {
     $Widget: any
 }
 
-// prettier-ignore
+export const isWidget = (x: any): x is IWidget => {
+    return (
+        x != null && //
+        typeof x === 'object' &&
+        '$WidgetSym' in x &&
+        x.$WidgetSym === $WidgetSym
+    )
+}
+
 export interface IWidget<K extends $WidgetTypes = $WidgetTypes> extends IWidgetMixins {
-    $Type  : K['$Type']   /** type only properties; do not use directly; used to make typings good and fast */
+    $Type: K['$Type'] /** type only properties; do not use directly; used to make typings good and fast */
     $Config: K['$Config'] /** type only properties; do not use directly; used to make typings good and fast */
     $Serial: K['$Serial'] /** type only properties; do not use directly; used to make typings good and fast */
-    $Value : K['$Value']  /** type only properties; do not use directly; used to make typings good and fast */
+    $Value: K['$Value'] /** type only properties; do not use directly; used to make typings good and fast */
     $Widget: K['$Widget'] /** type only properties; do not use directly; used to make typings good and fast */
 
     /** unique ID; each node in the form tree has one; persisted in serial */
     readonly id: string
+
+    /** spec used to instanciate this widget */
+    readonly spec: ISpec<any>
 
     /** widget type; can be used instead of `instanceof` to known which wiget it is */
     readonly type: K['$Type']
@@ -53,13 +64,14 @@ export interface IWidget<K extends $WidgetTypes = $WidgetTypes> extends IWidgetM
     /** if specified, override the default algorithm to decide if the widget container should have a background of base-100 */
     background?: boolean
 
-
     /** default header UI */
     readonly DefaultHeaderUI: FC<{ widget: K['$Widget'] }> | undefined
 
     /** default body UI */
     readonly DefaultBodyUI: FC<{ widget: K['$Widget'] }> | undefined
 }
+
+export const $WidgetSym = Symbol('Widget')
 
 /**
  * those properties will be dynamically injected in every widget
@@ -68,6 +80,8 @@ export interface IWidget<K extends $WidgetTypes = $WidgetTypes> extends IWidgetM
  * base widget, you're expected to do that too.
  */
 export type IWidgetMixins = {
+    $WidgetSym: typeof $WidgetSym
+
     // UI ------------------------------------------------------
     // value stuff
     ui(): JSX.Element
@@ -108,9 +122,12 @@ export type GetWidgetState<Widget> = Widget extends { $Serial: infer Serial } ? 
 
 /** common properties we expect to see in a widget serial */
 export type SharedWidgetSerial = {
-    id: string
+    id?: string
+    /** name of the widget, so we can later re-instanciate a widget from this */
     type: string
+    /** if true, widget should be displayed folded when it make sense in given context */
     collapsed?: boolean
+    /** timestap this widget was last updated */
     lastUpdatedAt?: number
     /** unused internally, here so you can add whatever you want inside */
     custom?: any
@@ -127,6 +144,9 @@ export type SharedWidgetConfig<T extends $WidgetTypes> = {
 
     /** will be called when value changed */
     onValueChange?: (val: any /* 🔴 T['$Value'] */) => void
+
+    /** custom type checking */
+    check?: (val: any /* 🔴 T['$Value'] */) => Maybe<string | boolean>
 
     /**
      * The label to display.
@@ -156,8 +176,8 @@ export type SharedWidgetConfig<T extends $WidgetTypes> = {
      */
     showID?: boolean
 
-    /** The widget requirements */
-    requirements?: Requirements[]
+    // ⏸️ /** The widget requirements */
+    // ⏸️ requirements?: Requirements[]
 
     /**
      * override the default `collapsed` status

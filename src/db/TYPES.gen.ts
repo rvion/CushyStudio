@@ -53,21 +53,23 @@ export const ComfyWorkflowSchema = Type.Object(
     { additionalProperties: false },
 )
 
-export const ComfyWorkflowRefs = [{ fromTable: 'comfy_workflow', fromField: 'stepID', toTable: 'step', tofield: 'id' }]
+export const ComfyWorkflowRefs = [
+    {fromTable:'comfy_workflow',fromField:'stepID',toTable:'step',tofield:'id'}
+]
 export const ComfyWorkflowBackRefs = [
-    { fromTable: 'project', fromField: 'rootGraphID', toTable: 'comfy_workflow', tofield: 'id' },
-    { fromTable: 'step', fromField: 'outputGraphID', toTable: 'comfy_workflow', tofield: 'id' },
-    { fromTable: 'comfy_prompt', fromField: 'graphID', toTable: 'comfy_workflow', tofield: 'id' },
-    { fromTable: 'runtime_error', fromField: 'graphID', toTable: 'comfy_workflow', tofield: 'id' },
+    {fromTable:'project',fromField:'rootGraphID',toTable:'comfy_workflow',tofield:'id'},
+    {fromTable:'step',fromField:'outputGraphID',toTable:'comfy_workflow',tofield:'id'},
+    {fromTable:'comfy_prompt',fromField:'graphID',toTable:'comfy_workflow',tofield:'id'},
+    {fromTable:'runtime_error',fromField:'graphID',toTable:'comfy_workflow',tofield:'id'}
 ]
 
 export const ComfyWorkflowFields = {
-    id: { cid: 0, name: 'id', type: 'string', notnull: 1, dflt_value: 'hex(randomblob(16))', pk: 1 },
-    createdAt: { cid: 1, name: 'createdAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
-    updatedAt: { cid: 2, name: 'updatedAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
-    comfyPromptJSON: { cid: 3, name: 'comfyPromptJSON', type: 'json', notnull: 1, dflt_value: null, pk: 0 },
-    stepID: { cid: 4, name: 'stepID', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
-    metadata: { cid: 5, name: 'metadata', type: 'json', notnull: 1, dflt_value: "'{}'", pk: 0 },
+    id: {cid:0,name:'id',type:'string',notnull:1,dflt_value:'hex(randomblob(16))',pk:1},
+    createdAt: {cid:1,name:'createdAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
+    updatedAt: {cid:2,name:'updatedAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
+    comfyPromptJSON: {cid:3,name:'comfyPromptJSON',type:'json',notnull:1,dflt_value:null,pk:0},
+    stepID: {cid:4,name:'stepID',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    metadata: {cid:5,name:'metadata',type:'json',notnull:1,dflt_value:"'{}'",pk:0},
 }
 
 export const asDraftID = (s: string): DraftID => s as any
@@ -90,6 +92,8 @@ export type DraftTable = {
     isFavorite: Generated<number>
     /** @default: null, sqlType: INT */
     lastRunAt?: Maybe<number>
+    /** @default: null, sqlType: TEXT */
+    canvasToolCategory?: Maybe<string>
 }
 export type NewDraft = Insertable<DraftTable>
 export type DraftUpdate = Updateable<DraftTable>
@@ -105,26 +109,30 @@ export const DraftSchema = Type.Object(
         illustration: Type.Optional(T.Nullable(Type.String())),
         isFavorite: Type.Number(),
         lastRunAt: Type.Optional(T.Nullable(Type.Number())),
+        canvasToolCategory: Type.Optional(T.Nullable(Type.String())),
     },
     { additionalProperties: false },
 )
 
-export const DraftRefs = [{ fromTable: 'draft', fromField: 'appID', toTable: 'cushy_app', tofield: 'id' }]
+export const DraftRefs = [
+    {fromTable:'draft',fromField:'appID',toTable:'cushy_app',tofield:'id'}
+]
 export const DraftBackRefs = [
-    { fromTable: 'project', fromField: 'currentDraftID', toTable: 'draft', tofield: 'id' },
-    { fromTable: 'step', fromField: 'draftID', toTable: 'draft', tofield: 'id' },
+    {fromTable:'project',fromField:'currentDraftID',toTable:'draft',tofield:'id'},
+    {fromTable:'step',fromField:'draftID',toTable:'draft',tofield:'id'}
 ]
 
 export const DraftFields = {
-    id: { cid: 0, name: 'id', type: 'string', notnull: 1, dflt_value: 'hex(randomblob(16))', pk: 1 },
-    createdAt: { cid: 1, name: 'createdAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
-    updatedAt: { cid: 2, name: 'updatedAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
-    title: { cid: 3, name: 'title', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
-    formSerial: { cid: 4, name: 'formSerial', type: 'json', notnull: 1, dflt_value: null, pk: 0 },
-    appID: { cid: 5, name: 'appID', type: 'TEXT', notnull: 1, dflt_value: null, pk: 0 },
-    illustration: { cid: 6, name: 'illustration', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
-    isFavorite: { cid: 7, name: 'isFavorite', type: 'INT', notnull: 1, dflt_value: '0', pk: 0 },
-    lastRunAt: { cid: 8, name: 'lastRunAt', type: 'INT', notnull: 0, dflt_value: null, pk: 0 },
+    id: {cid:0,name:'id',type:'string',notnull:1,dflt_value:'hex(randomblob(16))',pk:1},
+    createdAt: {cid:1,name:'createdAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
+    updatedAt: {cid:2,name:'updatedAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
+    title: {cid:3,name:'title',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    formSerial: {cid:4,name:'formSerial',type:'json',notnull:1,dflt_value:null,pk:0},
+    appID: {cid:5,name:'appID',type:'TEXT',notnull:1,dflt_value:null,pk:0},
+    illustration: {cid:6,name:'illustration',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    isFavorite: {cid:7,name:'isFavorite',type:'INT',notnull:1,dflt_value:'0',pk:0},
+    lastRunAt: {cid:8,name:'lastRunAt',type:'INT',notnull:0,dflt_value:null,pk:0},
+    canvasToolCategory: {cid:9,name:'canvasToolCategory',type:'TEXT',notnull:0,dflt_value:null,pk:0},
 }
 
 export const asProjectID = (s: string): ProjectID => s as any
@@ -170,22 +178,22 @@ export const ProjectSchema = Type.Object(
 )
 
 export const ProjectRefs = [
-    { fromTable: 'project', fromField: 'currentDraftID', toTable: 'draft', tofield: 'id' },
-    { fromTable: 'project', fromField: 'rootGraphID', toTable: 'comfy_workflow', tofield: 'id' },
+    {fromTable:'project',fromField:'currentDraftID',toTable:'draft',tofield:'id'},
+    {fromTable:'project',fromField:'rootGraphID',toTable:'comfy_workflow',tofield:'id'}
 ]
 export const ProjectBackRefs = []
 
 export const ProjectFields = {
-    id: { cid: 0, name: 'id', type: 'string', notnull: 1, dflt_value: 'hex(randomblob(16))', pk: 1 },
-    createdAt: { cid: 1, name: 'createdAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
-    updatedAt: { cid: 2, name: 'updatedAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
-    name: { cid: 3, name: 'name', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
-    rootGraphID: { cid: 4, name: 'rootGraphID', type: 'TEXT', notnull: 1, dflt_value: null, pk: 0 },
-    currentApp: { cid: 5, name: 'currentApp', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
-    currentDraftID: { cid: 6, name: 'currentDraftID', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
-    filterNSFW: { cid: 7, name: 'filterNSFW', type: 'INT', notnull: 1, dflt_value: '0', pk: 0 },
-    autostartDelay: { cid: 8, name: 'autostartDelay', type: 'INT', notnull: 1, dflt_value: '0', pk: 0 },
-    autostartMaxDelay: { cid: 9, name: 'autostartMaxDelay', type: 'INT', notnull: 1, dflt_value: '100', pk: 0 },
+    id: {cid:0,name:'id',type:'string',notnull:1,dflt_value:'hex(randomblob(16))',pk:1},
+    createdAt: {cid:1,name:'createdAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
+    updatedAt: {cid:2,name:'updatedAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
+    name: {cid:3,name:'name',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    rootGraphID: {cid:4,name:'rootGraphID',type:'TEXT',notnull:1,dflt_value:null,pk:0},
+    currentApp: {cid:5,name:'currentApp',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    currentDraftID: {cid:6,name:'currentDraftID',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    filterNSFW: {cid:7,name:'filterNSFW',type:'INT',notnull:1,dflt_value:'0',pk:0},
+    autostartDelay: {cid:8,name:'autostartDelay',type:'INT',notnull:1,dflt_value:'0',pk:0},
+    autostartMaxDelay: {cid:9,name:'autostartMaxDelay',type:'INT',notnull:1,dflt_value:'100',pk:0},
 }
 
 export const asStepID = (s: string): StepID => s as any
@@ -231,33 +239,33 @@ export const StepSchema = Type.Object(
 )
 
 export const StepRefs = [
-    { fromTable: 'step', fromField: 'draftID', toTable: 'draft', tofield: 'id' },
-    { fromTable: 'step', fromField: 'appID', toTable: 'cushy_app', tofield: 'id' },
-    { fromTable: 'step', fromField: 'outputGraphID', toTable: 'comfy_workflow', tofield: 'id' },
+    {fromTable:'step',fromField:'draftID',toTable:'draft',tofield:'id'},
+    {fromTable:'step',fromField:'appID',toTable:'cushy_app',tofield:'id'},
+    {fromTable:'step',fromField:'outputGraphID',toTable:'comfy_workflow',tofield:'id'}
 ]
 export const StepBackRefs = [
-    { fromTable: 'comfy_workflow', fromField: 'stepID', toTable: 'step', tofield: 'id' },
-    { fromTable: 'comfy_prompt', fromField: 'stepID', toTable: 'step', tofield: 'id' },
-    { fromTable: 'media_text', fromField: 'stepID', toTable: 'step', tofield: 'id' },
-    { fromTable: 'media_video', fromField: 'stepID', toTable: 'step', tofield: 'id' },
-    { fromTable: 'media_image', fromField: 'stepID', toTable: 'step', tofield: 'id' },
-    { fromTable: 'media_3d_displacement', fromField: 'stepID', toTable: 'step', tofield: 'id' },
-    { fromTable: 'runtime_error', fromField: 'stepID', toTable: 'step', tofield: 'id' },
-    { fromTable: 'media_splat', fromField: 'stepID', toTable: 'step', tofield: 'id' },
-    { fromTable: 'media_custom', fromField: 'stepID', toTable: 'step', tofield: 'id' },
+    {fromTable:'comfy_workflow',fromField:'stepID',toTable:'step',tofield:'id'},
+    {fromTable:'comfy_prompt',fromField:'stepID',toTable:'step',tofield:'id'},
+    {fromTable:'media_text',fromField:'stepID',toTable:'step',tofield:'id'},
+    {fromTable:'media_video',fromField:'stepID',toTable:'step',tofield:'id'},
+    {fromTable:'media_image',fromField:'stepID',toTable:'step',tofield:'id'},
+    {fromTable:'media_3d_displacement',fromField:'stepID',toTable:'step',tofield:'id'},
+    {fromTable:'runtime_error',fromField:'stepID',toTable:'step',tofield:'id'},
+    {fromTable:'media_splat',fromField:'stepID',toTable:'step',tofield:'id'},
+    {fromTable:'media_custom',fromField:'stepID',toTable:'step',tofield:'id'}
 ]
 
 export const StepFields = {
-    id: { cid: 0, name: 'id', type: 'string', notnull: 1, dflt_value: 'hex(randomblob(16))', pk: 1 },
-    createdAt: { cid: 1, name: 'createdAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
-    updatedAt: { cid: 2, name: 'updatedAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
-    name: { cid: 3, name: 'name', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
-    formSerial: { cid: 4, name: 'formSerial', type: 'json', notnull: 1, dflt_value: null, pk: 0 },
-    outputGraphID: { cid: 5, name: 'outputGraphID', type: 'TEXT', notnull: 1, dflt_value: null, pk: 0 },
-    status: { cid: 6, name: 'status', type: 'TEXT', notnull: 1, dflt_value: null, pk: 0 },
-    isExpanded: { cid: 7, name: 'isExpanded', type: 'INT', notnull: 1, dflt_value: '1', pk: 0 },
-    appID: { cid: 8, name: 'appID', type: 'TEXT', notnull: 1, dflt_value: null, pk: 0 },
-    draftID: { cid: 9, name: 'draftID', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
+    id: {cid:0,name:'id',type:'string',notnull:1,dflt_value:'hex(randomblob(16))',pk:1},
+    createdAt: {cid:1,name:'createdAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
+    updatedAt: {cid:2,name:'updatedAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
+    name: {cid:3,name:'name',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    formSerial: {cid:4,name:'formSerial',type:'json',notnull:1,dflt_value:null,pk:0},
+    outputGraphID: {cid:5,name:'outputGraphID',type:'TEXT',notnull:1,dflt_value:null,pk:0},
+    status: {cid:6,name:'status',type:'TEXT',notnull:1,dflt_value:null,pk:0},
+    isExpanded: {cid:7,name:'isExpanded',type:'INT',notnull:1,dflt_value:'1',pk:0},
+    appID: {cid:8,name:'appID',type:'TEXT',notnull:1,dflt_value:null,pk:0},
+    draftID: {cid:9,name:'draftID',type:'TEXT',notnull:0,dflt_value:null,pk:0},
 }
 
 export const asComfyPromptID = (s: string): ComfyPromptID => s as any
@@ -297,25 +305,25 @@ export const ComfyPromptSchema = Type.Object(
 )
 
 export const ComfyPromptRefs = [
-    { fromTable: 'comfy_prompt', fromField: 'graphID', toTable: 'comfy_workflow', tofield: 'id' },
-    { fromTable: 'comfy_prompt', fromField: 'stepID', toTable: 'step', tofield: 'id' },
+    {fromTable:'comfy_prompt',fromField:'graphID',toTable:'comfy_workflow',tofield:'id'},
+    {fromTable:'comfy_prompt',fromField:'stepID',toTable:'step',tofield:'id'}
 ]
 export const ComfyPromptBackRefs = [
-    { fromTable: 'media_video', fromField: 'promptID', toTable: 'comfy_prompt', tofield: 'id' },
-    { fromTable: 'media_image', fromField: 'promptID', toTable: 'comfy_prompt', tofield: 'id' },
-    { fromTable: 'media_3d_displacement', fromField: 'promptID', toTable: 'comfy_prompt', tofield: 'id' },
-    { fromTable: 'runtime_error', fromField: 'promptID', toTable: 'comfy_prompt', tofield: 'id' },
+    {fromTable:'media_video',fromField:'promptID',toTable:'comfy_prompt',tofield:'id'},
+    {fromTable:'media_image',fromField:'promptID',toTable:'comfy_prompt',tofield:'id'},
+    {fromTable:'media_3d_displacement',fromField:'promptID',toTable:'comfy_prompt',tofield:'id'},
+    {fromTable:'runtime_error',fromField:'promptID',toTable:'comfy_prompt',tofield:'id'}
 ]
 
 export const ComfyPromptFields = {
-    id: { cid: 0, name: 'id', type: 'string', notnull: 1, dflt_value: 'hex(randomblob(16))', pk: 1 },
-    createdAt: { cid: 1, name: 'createdAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
-    updatedAt: { cid: 2, name: 'updatedAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
-    stepID: { cid: 3, name: 'stepID', type: 'TEXT', notnull: 1, dflt_value: null, pk: 0 },
-    graphID: { cid: 4, name: 'graphID', type: 'TEXT', notnull: 1, dflt_value: null, pk: 0 },
-    executed: { cid: 5, name: 'executed', type: 'INT', notnull: 1, dflt_value: '0', pk: 0 },
-    error: { cid: 6, name: 'error', type: 'json', notnull: 0, dflt_value: null, pk: 0 },
-    status: { cid: 7, name: 'status', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
+    id: {cid:0,name:'id',type:'string',notnull:1,dflt_value:'hex(randomblob(16))',pk:1},
+    createdAt: {cid:1,name:'createdAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
+    updatedAt: {cid:2,name:'updatedAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
+    stepID: {cid:3,name:'stepID',type:'TEXT',notnull:1,dflt_value:null,pk:0},
+    graphID: {cid:4,name:'graphID',type:'TEXT',notnull:1,dflt_value:null,pk:0},
+    executed: {cid:5,name:'executed',type:'INT',notnull:1,dflt_value:'0',pk:0},
+    error: {cid:6,name:'error',type:'json',notnull:0,dflt_value:null,pk:0},
+    status: {cid:7,name:'status',type:'TEXT',notnull:0,dflt_value:null,pk:0},
 }
 
 export const asComfySchemaID = (s: string): ComfySchemaID => s as any
@@ -348,16 +356,18 @@ export const ComfySchemaSchema = Type.Object(
     { additionalProperties: false },
 )
 
-export const ComfySchemaRefs = [{ fromTable: 'comfy_schema', fromField: 'hostID', toTable: 'host', tofield: 'id' }]
+export const ComfySchemaRefs = [
+    {fromTable:'comfy_schema',fromField:'hostID',toTable:'host',tofield:'id'}
+]
 export const ComfySchemaBackRefs = []
 
 export const ComfySchemaFields = {
-    id: { cid: 0, name: 'id', type: 'string', notnull: 1, dflt_value: 'hex(randomblob(16))', pk: 1 },
-    createdAt: { cid: 1, name: 'createdAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
-    updatedAt: { cid: 2, name: 'updatedAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
-    spec: { cid: 3, name: 'spec', type: 'json', notnull: 1, dflt_value: null, pk: 0 },
-    embeddings: { cid: 4, name: 'embeddings', type: 'json', notnull: 1, dflt_value: null, pk: 0 },
-    hostID: { cid: 5, name: 'hostID', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
+    id: {cid:0,name:'id',type:'string',notnull:1,dflt_value:'hex(randomblob(16))',pk:1},
+    createdAt: {cid:1,name:'createdAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
+    updatedAt: {cid:2,name:'updatedAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
+    spec: {cid:3,name:'spec',type:'json',notnull:1,dflt_value:null,pk:0},
+    embeddings: {cid:4,name:'embeddings',type:'json',notnull:1,dflt_value:null,pk:0},
+    hostID: {cid:5,name:'hostID',type:'TEXT',notnull:0,dflt_value:null,pk:0},
 }
 
 export const asMediaTextID = (s: string): MediaTextID => s as any
@@ -393,17 +403,19 @@ export const MediaTextSchema = Type.Object(
     { additionalProperties: false },
 )
 
-export const MediaTextRefs = [{ fromTable: 'media_text', fromField: 'stepID', toTable: 'step', tofield: 'id' }]
+export const MediaTextRefs = [
+    {fromTable:'media_text',fromField:'stepID',toTable:'step',tofield:'id'}
+]
 export const MediaTextBackRefs = []
 
 export const MediaTextFields = {
-    id: { cid: 0, name: 'id', type: 'string', notnull: 1, dflt_value: 'hex(randomblob(16))', pk: 1 },
-    createdAt: { cid: 1, name: 'createdAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
-    updatedAt: { cid: 2, name: 'updatedAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
-    kind: { cid: 3, name: 'kind', type: 'TEXT', notnull: 1, dflt_value: null, pk: 0 },
-    content: { cid: 4, name: 'content', type: 'TEXT', notnull: 1, dflt_value: null, pk: 0 },
-    stepID: { cid: 5, name: 'stepID', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
-    title: { cid: 6, name: 'title', type: 'TEXT', notnull: 1, dflt_value: "''", pk: 0 },
+    id: {cid:0,name:'id',type:'string',notnull:1,dflt_value:'hex(randomblob(16))',pk:1},
+    createdAt: {cid:1,name:'createdAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
+    updatedAt: {cid:2,name:'updatedAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
+    kind: {cid:3,name:'kind',type:'TEXT',notnull:1,dflt_value:null,pk:0},
+    content: {cid:4,name:'content',type:'TEXT',notnull:1,dflt_value:null,pk:0},
+    stepID: {cid:5,name:'stepID',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    title: {cid:6,name:'title',type:'TEXT',notnull:1,dflt_value:"''",pk:0},
 }
 
 export const asMediaVideoID = (s: string): MediaVideoID => s as any
@@ -443,20 +455,20 @@ export const MediaVideoSchema = Type.Object(
 )
 
 export const MediaVideoRefs = [
-    { fromTable: 'media_video', fromField: 'promptID', toTable: 'comfy_prompt', tofield: 'id' },
-    { fromTable: 'media_video', fromField: 'stepID', toTable: 'step', tofield: 'id' },
+    {fromTable:'media_video',fromField:'promptID',toTable:'comfy_prompt',tofield:'id'},
+    {fromTable:'media_video',fromField:'stepID',toTable:'step',tofield:'id'}
 ]
 export const MediaVideoBackRefs = []
 
 export const MediaVideoFields = {
-    id: { cid: 0, name: 'id', type: 'string', notnull: 1, dflt_value: 'hex(randomblob(16))', pk: 1 },
-    createdAt: { cid: 1, name: 'createdAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
-    updatedAt: { cid: 2, name: 'updatedAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
-    absPath: { cid: 3, name: 'absPath', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
-    stepID: { cid: 4, name: 'stepID', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
-    promptID: { cid: 5, name: 'promptID', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
-    filePath: { cid: 6, name: 'filePath', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
-    url: { cid: 7, name: 'url', type: 'TEXT', notnull: 1, dflt_value: null, pk: 0 },
+    id: {cid:0,name:'id',type:'string',notnull:1,dflt_value:'hex(randomblob(16))',pk:1},
+    createdAt: {cid:1,name:'createdAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
+    updatedAt: {cid:2,name:'updatedAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
+    absPath: {cid:3,name:'absPath',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    stepID: {cid:4,name:'stepID',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    promptID: {cid:5,name:'promptID',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    filePath: {cid:6,name:'filePath',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    url: {cid:7,name:'url',type:'TEXT',notnull:1,dflt_value:null,pk:0},
 }
 
 export const asMediaImageID = (s: string): MediaImageID => s as any
@@ -523,29 +535,29 @@ export const MediaImageSchema = Type.Object(
 )
 
 export const MediaImageRefs = [
-    { fromTable: 'media_image', fromField: 'stepID', toTable: 'step', tofield: 'id' },
-    { fromTable: 'media_image', fromField: 'promptID', toTable: 'comfy_prompt', tofield: 'id' },
+    {fromTable:'media_image',fromField:'stepID',toTable:'step',tofield:'id'},
+    {fromTable:'media_image',fromField:'promptID',toTable:'comfy_prompt',tofield:'id'}
 ]
 export const MediaImageBackRefs = []
 
 export const MediaImageFields = {
-    id: { cid: 0, name: 'id', type: 'string', notnull: 1, dflt_value: 'hex(randomblob(16))', pk: 1 },
-    createdAt: { cid: 1, name: 'createdAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
-    updatedAt: { cid: 2, name: 'updatedAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
-    star: { cid: 3, name: 'star', type: 'INT', notnull: 0, dflt_value: null, pk: 0 },
-    promptID: { cid: 4, name: 'promptID', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
-    stepID: { cid: 5, name: 'stepID', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
-    promptNodeID: { cid: 6, name: 'promptNodeID', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
-    width: { cid: 7, name: 'width', type: 'INT', notnull: 1, dflt_value: null, pk: 0 },
-    height: { cid: 8, name: 'height', type: 'INT', notnull: 1, dflt_value: null, pk: 0 },
-    fileSize: { cid: 9, name: 'fileSize', type: 'INT', notnull: 1, dflt_value: null, pk: 0 },
-    hash: { cid: 10, name: 'hash', type: 'TEXT', notnull: 1, dflt_value: null, pk: 0 },
-    path: { cid: 11, name: 'path', type: 'TEXT', notnull: 1, dflt_value: null, pk: 0 },
-    comfyUIInfos: { cid: 12, name: 'comfyUIInfos', type: 'json', notnull: 0, dflt_value: null, pk: 0 },
-    type: { cid: 13, name: 'type', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
-    orientation: { cid: 14, name: 'orientation', type: 'INT', notnull: 0, dflt_value: null, pk: 0 },
-    tags: { cid: 15, name: 'tags', type: 'string', notnull: 0, dflt_value: null, pk: 0 },
-    thumbnail: { cid: 16, name: 'thumbnail', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
+    id: {cid:0,name:'id',type:'string',notnull:1,dflt_value:'hex(randomblob(16))',pk:1},
+    createdAt: {cid:1,name:'createdAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
+    updatedAt: {cid:2,name:'updatedAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
+    star: {cid:3,name:'star',type:'INT',notnull:0,dflt_value:null,pk:0},
+    promptID: {cid:4,name:'promptID',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    stepID: {cid:5,name:'stepID',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    promptNodeID: {cid:6,name:'promptNodeID',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    width: {cid:7,name:'width',type:'INT',notnull:1,dflt_value:null,pk:0},
+    height: {cid:8,name:'height',type:'INT',notnull:1,dflt_value:null,pk:0},
+    fileSize: {cid:9,name:'fileSize',type:'INT',notnull:1,dflt_value:null,pk:0},
+    hash: {cid:10,name:'hash',type:'TEXT',notnull:1,dflt_value:null,pk:0},
+    path: {cid:11,name:'path',type:'TEXT',notnull:1,dflt_value:null,pk:0},
+    comfyUIInfos: {cid:12,name:'comfyUIInfos',type:'json',notnull:0,dflt_value:null,pk:0},
+    type: {cid:13,name:'type',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    orientation: {cid:14,name:'orientation',type:'INT',notnull:0,dflt_value:null,pk:0},
+    tags: {cid:15,name:'tags',type:'string',notnull:0,dflt_value:null,pk:0},
+    thumbnail: {cid:16,name:'thumbnail',type:'TEXT',notnull:0,dflt_value:null,pk:0},
 }
 
 export const asMedia3dDisplacementID = (s: string): Media3dDisplacementID => s as any
@@ -591,22 +603,22 @@ export const Media3dDisplacementSchema = Type.Object(
 )
 
 export const Media3dDisplacementRefs = [
-    { fromTable: 'media_3d_displacement', fromField: 'promptID', toTable: 'comfy_prompt', tofield: 'id' },
-    { fromTable: 'media_3d_displacement', fromField: 'stepID', toTable: 'step', tofield: 'id' },
+    {fromTable:'media_3d_displacement',fromField:'promptID',toTable:'comfy_prompt',tofield:'id'},
+    {fromTable:'media_3d_displacement',fromField:'stepID',toTable:'step',tofield:'id'}
 ]
 export const Media3dDisplacementBackRefs = []
 
 export const Media3dDisplacementFields = {
-    id: { cid: 0, name: 'id', type: 'string', notnull: 1, dflt_value: 'hex(randomblob(16))', pk: 1 },
-    createdAt: { cid: 1, name: 'createdAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
-    updatedAt: { cid: 2, name: 'updatedAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
-    width: { cid: 3, name: 'width', type: 'INT', notnull: 0, dflt_value: null, pk: 0 },
-    height: { cid: 4, name: 'height', type: 'INT', notnull: 0, dflt_value: null, pk: 0 },
-    image: { cid: 5, name: 'image', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
-    depthMap: { cid: 6, name: 'depthMap', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
-    normalMap: { cid: 7, name: 'normalMap', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
-    stepID: { cid: 8, name: 'stepID', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
-    promptID: { cid: 9, name: 'promptID', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
+    id: {cid:0,name:'id',type:'string',notnull:1,dflt_value:'hex(randomblob(16))',pk:1},
+    createdAt: {cid:1,name:'createdAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
+    updatedAt: {cid:2,name:'updatedAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
+    width: {cid:3,name:'width',type:'INT',notnull:0,dflt_value:null,pk:0},
+    height: {cid:4,name:'height',type:'INT',notnull:0,dflt_value:null,pk:0},
+    image: {cid:5,name:'image',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    depthMap: {cid:6,name:'depthMap',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    normalMap: {cid:7,name:'normalMap',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    stepID: {cid:8,name:'stepID',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    promptID: {cid:9,name:'promptID',type:'TEXT',notnull:0,dflt_value:null,pk:0},
 }
 
 export const asRuntimeErrorID = (s: string): RuntimeErrorID => s as any
@@ -646,21 +658,21 @@ export const RuntimeErrorSchema = Type.Object(
 )
 
 export const RuntimeErrorRefs = [
-    { fromTable: 'runtime_error', fromField: 'stepID', toTable: 'step', tofield: 'id' },
-    { fromTable: 'runtime_error', fromField: 'graphID', toTable: 'comfy_workflow', tofield: 'id' },
-    { fromTable: 'runtime_error', fromField: 'promptID', toTable: 'comfy_prompt', tofield: 'id' },
+    {fromTable:'runtime_error',fromField:'stepID',toTable:'step',tofield:'id'},
+    {fromTable:'runtime_error',fromField:'graphID',toTable:'comfy_workflow',tofield:'id'},
+    {fromTable:'runtime_error',fromField:'promptID',toTable:'comfy_prompt',tofield:'id'}
 ]
 export const RuntimeErrorBackRefs = []
 
 export const RuntimeErrorFields = {
-    id: { cid: 0, name: 'id', type: 'string', notnull: 1, dflt_value: 'hex(randomblob(16))', pk: 1 },
-    createdAt: { cid: 1, name: 'createdAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
-    updatedAt: { cid: 2, name: 'updatedAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
-    message: { cid: 3, name: 'message', type: 'TEXT', notnull: 1, dflt_value: null, pk: 0 },
-    infos: { cid: 4, name: 'infos', type: 'json', notnull: 1, dflt_value: null, pk: 0 },
-    promptID: { cid: 5, name: 'promptID', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
-    graphID: { cid: 6, name: 'graphID', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
-    stepID: { cid: 7, name: 'stepID', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
+    id: {cid:0,name:'id',type:'string',notnull:1,dflt_value:'hex(randomblob(16))',pk:1},
+    createdAt: {cid:1,name:'createdAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
+    updatedAt: {cid:2,name:'updatedAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
+    message: {cid:3,name:'message',type:'TEXT',notnull:1,dflt_value:null,pk:0},
+    infos: {cid:4,name:'infos',type:'json',notnull:1,dflt_value:null,pk:0},
+    promptID: {cid:5,name:'promptID',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    graphID: {cid:6,name:'graphID',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    stepID: {cid:7,name:'stepID',type:'TEXT',notnull:0,dflt_value:null,pk:0},
 }
 
 export const asMediaSplatID = (s: string): MediaSplatID => s as any
@@ -690,15 +702,17 @@ export const MediaSplatSchema = Type.Object(
     { additionalProperties: false },
 )
 
-export const MediaSplatRefs = [{ fromTable: 'media_splat', fromField: 'stepID', toTable: 'step', tofield: 'id' }]
+export const MediaSplatRefs = [
+    {fromTable:'media_splat',fromField:'stepID',toTable:'step',tofield:'id'}
+]
 export const MediaSplatBackRefs = []
 
 export const MediaSplatFields = {
-    id: { cid: 0, name: 'id', type: 'string', notnull: 1, dflt_value: 'hex(randomblob(16))', pk: 1 },
-    createdAt: { cid: 1, name: 'createdAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
-    updatedAt: { cid: 2, name: 'updatedAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
-    stepID: { cid: 3, name: 'stepID', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
-    url: { cid: 4, name: 'url', type: 'TEXT', notnull: 1, dflt_value: null, pk: 0 },
+    id: {cid:0,name:'id',type:'string',notnull:1,dflt_value:'hex(randomblob(16))',pk:1},
+    createdAt: {cid:1,name:'createdAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
+    updatedAt: {cid:2,name:'updatedAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
+    stepID: {cid:3,name:'stepID',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    url: {cid:4,name:'url',type:'TEXT',notnull:1,dflt_value:null,pk:0},
 }
 
 export const asCustomDataID = (s: string): CustomDataID => s as any
@@ -729,10 +743,10 @@ export const CustomDataRefs = []
 export const CustomDataBackRefs = []
 
 export const CustomDataFields = {
-    id: { cid: 0, name: 'id', type: 'string', notnull: 1, dflt_value: 'hex(randomblob(16))', pk: 1 },
-    createdAt: { cid: 1, name: 'createdAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
-    updatedAt: { cid: 2, name: 'updatedAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
-    json: { cid: 3, name: 'json', type: 'json', notnull: 1, dflt_value: "'{}'", pk: 0 },
+    id: {cid:0,name:'id',type:'string',notnull:1,dflt_value:'hex(randomblob(16))',pk:1},
+    createdAt: {cid:1,name:'createdAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
+    updatedAt: {cid:2,name:'updatedAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
+    json: {cid:3,name:'json',type:'json',notnull:1,dflt_value:"'{}'",pk:0},
 }
 
 export const asCushyScriptID = (s: string): CushyScriptID => s as any
@@ -775,18 +789,20 @@ export const CushyScriptSchema = Type.Object(
 )
 
 export const CushyScriptRefs = []
-export const CushyScriptBackRefs = [{ fromTable: 'cushy_app', fromField: 'scriptID', toTable: 'cushy_script', tofield: 'id' }]
+export const CushyScriptBackRefs = [
+    {fromTable:'cushy_app',fromField:'scriptID',toTable:'cushy_script',tofield:'id'}
+]
 
 export const CushyScriptFields = {
-    id: { cid: 0, name: 'id', type: 'string', notnull: 1, dflt_value: 'hex(randomblob(16))', pk: 1 },
-    createdAt: { cid: 1, name: 'createdAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
-    updatedAt: { cid: 2, name: 'updatedAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
-    path: { cid: 3, name: 'path', type: 'TEXT', notnull: 1, dflt_value: null, pk: 0 },
-    code: { cid: 4, name: 'code', type: 'TEXT', notnull: 1, dflt_value: null, pk: 0 },
-    lastEvaluatedAt: { cid: 5, name: 'lastEvaluatedAt', type: 'INT', notnull: 0, dflt_value: null, pk: 0 },
-    lastSuccessfulEvaluationAt: { cid: 6, name: 'lastSuccessfulEvaluationAt', type: 'INT', notnull: 0, dflt_value: null, pk: 0 },
-    metafile: { cid: 7, name: 'metafile', type: 'json', notnull: 0, dflt_value: null, pk: 0 },
-    lastExtractedAt: { cid: 8, name: 'lastExtractedAt', type: 'INT', notnull: 0, dflt_value: null, pk: 0 },
+    id: {cid:0,name:'id',type:'string',notnull:1,dflt_value:'hex(randomblob(16))',pk:1},
+    createdAt: {cid:1,name:'createdAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
+    updatedAt: {cid:2,name:'updatedAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
+    path: {cid:3,name:'path',type:'TEXT',notnull:1,dflt_value:null,pk:0},
+    code: {cid:4,name:'code',type:'TEXT',notnull:1,dflt_value:null,pk:0},
+    lastEvaluatedAt: {cid:5,name:'lastEvaluatedAt',type:'INT',notnull:0,dflt_value:null,pk:0},
+    lastSuccessfulEvaluationAt: {cid:6,name:'lastSuccessfulEvaluationAt',type:'INT',notnull:0,dflt_value:null,pk:0},
+    metafile: {cid:7,name:'metafile',type:'json',notnull:0,dflt_value:null,pk:0},
+    lastExtractedAt: {cid:8,name:'lastExtractedAt',type:'INT',notnull:0,dflt_value:null,pk:0},
 }
 
 export const asCushyAppID = (s: string): CushyAppID => s as any
@@ -843,27 +859,29 @@ export const CushyAppSchema = Type.Object(
     { additionalProperties: false },
 )
 
-export const CushyAppRefs = [{ fromTable: 'cushy_app', fromField: 'scriptID', toTable: 'cushy_script', tofield: 'id' }]
+export const CushyAppRefs = [
+    {fromTable:'cushy_app',fromField:'scriptID',toTable:'cushy_script',tofield:'id'}
+]
 export const CushyAppBackRefs = [
-    { fromTable: 'draft', fromField: 'appID', toTable: 'cushy_app', tofield: 'id' },
-    { fromTable: 'step', fromField: 'appID', toTable: 'cushy_app', tofield: 'id' },
+    {fromTable:'draft',fromField:'appID',toTable:'cushy_app',tofield:'id'},
+    {fromTable:'step',fromField:'appID',toTable:'cushy_app',tofield:'id'}
 ]
 
 export const CushyAppFields = {
-    id: { cid: 0, name: 'id', type: 'string', notnull: 1, dflt_value: 'hex(randomblob(16))', pk: 1 },
-    createdAt: { cid: 1, name: 'createdAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
-    updatedAt: { cid: 2, name: 'updatedAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
-    guid: { cid: 3, name: 'guid', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
-    scriptID: { cid: 4, name: 'scriptID', type: 'TEXT', notnull: 1, dflt_value: null, pk: 0 },
-    name: { cid: 5, name: 'name', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
-    illustration: { cid: 6, name: 'illustration', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
-    description: { cid: 7, name: 'description', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
-    tags: { cid: 8, name: 'tags', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
-    publishedAsUserID: { cid: 9, name: 'publishedAsUserID', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
-    publishedAt: { cid: 10, name: 'publishedAt', type: 'INT', notnull: 0, dflt_value: null, pk: 0 },
-    isFavorite: { cid: 11, name: 'isFavorite', type: 'INT', notnull: 1, dflt_value: '0', pk: 0 },
-    canStartFromImage: { cid: 12, name: 'canStartFromImage', type: 'INT', notnull: 0, dflt_value: null, pk: 0 },
-    lastRunAt: { cid: 13, name: 'lastRunAt', type: 'INT', notnull: 0, dflt_value: null, pk: 0 },
+    id: {cid:0,name:'id',type:'string',notnull:1,dflt_value:'hex(randomblob(16))',pk:1},
+    createdAt: {cid:1,name:'createdAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
+    updatedAt: {cid:2,name:'updatedAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
+    guid: {cid:3,name:'guid',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    scriptID: {cid:4,name:'scriptID',type:'TEXT',notnull:1,dflt_value:null,pk:0},
+    name: {cid:5,name:'name',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    illustration: {cid:6,name:'illustration',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    description: {cid:7,name:'description',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    tags: {cid:8,name:'tags',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    publishedAsUserID: {cid:9,name:'publishedAsUserID',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    publishedAt: {cid:10,name:'publishedAt',type:'INT',notnull:0,dflt_value:null,pk:0},
+    isFavorite: {cid:11,name:'isFavorite',type:'INT',notnull:1,dflt_value:'0',pk:0},
+    canStartFromImage: {cid:12,name:'canStartFromImage',type:'INT',notnull:0,dflt_value:null,pk:0},
+    lastRunAt: {cid:13,name:'lastRunAt',type:'INT',notnull:0,dflt_value:null,pk:0},
 }
 
 export const asAuthID = (s: string): AuthID => s as any
@@ -912,16 +930,16 @@ export const AuthRefs = []
 export const AuthBackRefs = []
 
 export const AuthFields = {
-    id: { cid: 0, name: 'id', type: 'string', notnull: 1, dflt_value: 'hex(randomblob(16))', pk: 1 },
-    createdAt: { cid: 1, name: 'createdAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
-    updatedAt: { cid: 2, name: 'updatedAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
-    provider_token: { cid: 3, name: 'provider_token', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
-    refresh_token: { cid: 4, name: 'refresh_token', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
-    token_type: { cid: 5, name: 'token_type', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
-    access_token: { cid: 6, name: 'access_token', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
-    provider_refresh_token: { cid: 7, name: 'provider_refresh_token', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
-    expires_at: { cid: 8, name: 'expires_at', type: 'INT', notnull: 0, dflt_value: null, pk: 0 },
-    expires_in: { cid: 9, name: 'expires_in', type: 'INT', notnull: 0, dflt_value: null, pk: 0 },
+    id: {cid:0,name:'id',type:'string',notnull:1,dflt_value:'hex(randomblob(16))',pk:1},
+    createdAt: {cid:1,name:'createdAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
+    updatedAt: {cid:2,name:'updatedAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
+    provider_token: {cid:3,name:'provider_token',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    refresh_token: {cid:4,name:'refresh_token',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    token_type: {cid:5,name:'token_type',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    access_token: {cid:6,name:'access_token',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    provider_refresh_token: {cid:7,name:'provider_refresh_token',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    expires_at: {cid:8,name:'expires_at',type:'INT',notnull:0,dflt_value:null,pk:0},
+    expires_in: {cid:9,name:'expires_in',type:'INT',notnull:0,dflt_value:null,pk:0},
 }
 
 export const asTreeEntryID = (s: string): TreeEntryID => s as any
@@ -952,10 +970,10 @@ export const TreeEntryRefs = []
 export const TreeEntryBackRefs = []
 
 export const TreeEntryFields = {
-    id: { cid: 0, name: 'id', type: 'string', notnull: 1, dflt_value: 'hex(randomblob(16))', pk: 1 },
-    createdAt: { cid: 1, name: 'createdAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
-    updatedAt: { cid: 2, name: 'updatedAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
-    isExpanded: { cid: 3, name: 'isExpanded', type: 'INT', notnull: 0, dflt_value: null, pk: 0 },
+    id: {cid:0,name:'id',type:'string',notnull:1,dflt_value:'hex(randomblob(16))',pk:1},
+    createdAt: {cid:1,name:'createdAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
+    updatedAt: {cid:2,name:'updatedAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
+    isExpanded: {cid:3,name:'isExpanded',type:'INT',notnull:0,dflt_value:null,pk:0},
 }
 
 export const asHostID = (s: string): HostID => s as any
@@ -1007,28 +1025,23 @@ export const HostSchema = Type.Object(
 )
 
 export const HostRefs = []
-export const HostBackRefs = [{ fromTable: 'comfy_schema', fromField: 'hostID', toTable: 'host', tofield: 'id' }]
+export const HostBackRefs = [
+    {fromTable:'comfy_schema',fromField:'hostID',toTable:'host',tofield:'id'}
+]
 
 export const HostFields = {
-    id: { cid: 0, name: 'id', type: 'string', notnull: 1, dflt_value: 'hex(randomblob(16))', pk: 1 },
-    createdAt: { cid: 1, name: 'createdAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
-    updatedAt: { cid: 2, name: 'updatedAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
-    name: { cid: 3, name: 'name', type: 'TEXT', notnull: 1, dflt_value: 'hex(randomblob(16))', pk: 0 },
-    hostname: { cid: 4, name: 'hostname', type: 'TEXT', notnull: 1, dflt_value: '"localhost"', pk: 0 },
-    port: { cid: 5, name: 'port', type: 'INT', notnull: 1, dflt_value: '8188', pk: 0 },
-    useHttps: { cid: 6, name: 'useHttps', type: 'INT', notnull: 1, dflt_value: '0', pk: 0 },
-    isLocal: { cid: 7, name: 'isLocal', type: 'INT', notnull: 1, dflt_value: '0', pk: 0 },
-    absolutePathToComfyUI: { cid: 8, name: 'absolutePathToComfyUI', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
-    absolutPathToDownloadModelsTo: {
-        cid: 9,
-        name: 'absolutPathToDownloadModelsTo',
-        type: 'TEXT',
-        notnull: 0,
-        dflt_value: null,
-        pk: 0,
-    },
-    isVirtual: { cid: 10, name: 'isVirtual', type: 'INT', notnull: 1, dflt_value: '0', pk: 0 },
-    isReadonly: { cid: 11, name: 'isReadonly', type: 'INT', notnull: 1, dflt_value: '0', pk: 0 },
+    id: {cid:0,name:'id',type:'string',notnull:1,dflt_value:'hex(randomblob(16))',pk:1},
+    createdAt: {cid:1,name:'createdAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
+    updatedAt: {cid:2,name:'updatedAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
+    name: {cid:3,name:'name',type:'TEXT',notnull:1,dflt_value:'hex(randomblob(16))',pk:0},
+    hostname: {cid:4,name:'hostname',type:'TEXT',notnull:1,dflt_value:'"localhost"',pk:0},
+    port: {cid:5,name:'port',type:'INT',notnull:1,dflt_value:'8188',pk:0},
+    useHttps: {cid:6,name:'useHttps',type:'INT',notnull:1,dflt_value:'0',pk:0},
+    isLocal: {cid:7,name:'isLocal',type:'INT',notnull:1,dflt_value:'0',pk:0},
+    absolutePathToComfyUI: {cid:8,name:'absolutePathToComfyUI',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    absolutPathToDownloadModelsTo: {cid:9,name:'absolutPathToDownloadModelsTo',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    isVirtual: {cid:10,name:'isVirtual',type:'INT',notnull:1,dflt_value:'0',pk:0},
+    isReadonly: {cid:11,name:'isReadonly',type:'INT',notnull:1,dflt_value:'0',pk:0},
 }
 
 export const asMediaCustomID = (s: string): MediaCustomID => s as any
@@ -1061,16 +1074,18 @@ export const MediaCustomSchema = Type.Object(
     { additionalProperties: false },
 )
 
-export const MediaCustomRefs = [{ fromTable: 'media_custom', fromField: 'stepID', toTable: 'step', tofield: 'id' }]
+export const MediaCustomRefs = [
+    {fromTable:'media_custom',fromField:'stepID',toTable:'step',tofield:'id'}
+]
 export const MediaCustomBackRefs = []
 
 export const MediaCustomFields = {
-    id: { cid: 0, name: 'id', type: 'string', notnull: 1, dflt_value: 'hex(randomblob(16))', pk: 1 },
-    createdAt: { cid: 1, name: 'createdAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
-    updatedAt: { cid: 2, name: 'updatedAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
-    params: { cid: 3, name: 'params', type: 'json', notnull: 0, dflt_value: null, pk: 0 },
-    stepID: { cid: 4, name: 'stepID', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
-    viewID: { cid: 5, name: 'viewID', type: 'TEXT', notnull: 1, dflt_value: null, pk: 0 },
+    id: {cid:0,name:'id',type:'string',notnull:1,dflt_value:'hex(randomblob(16))',pk:1},
+    createdAt: {cid:1,name:'createdAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
+    updatedAt: {cid:2,name:'updatedAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
+    params: {cid:3,name:'params',type:'json',notnull:0,dflt_value:null,pk:0},
+    stepID: {cid:4,name:'stepID',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    viewID: {cid:5,name:'viewID',type:'TEXT',notnull:1,dflt_value:null,pk:0},
 }
 
 // prettier-ignore
@@ -1269,7 +1284,6 @@ export const schemas = {
     host                 : TABLE_host,
     media_custom         : TABLE_media_custom,
 }
-
 export type TableName = keyof typeof schemas
 
 export type KyselyTables = {
@@ -1293,7 +1307,7 @@ export type KyselyTables = {
     host: HostTable
     media_custom: MediaCustomTable
 }
-export type LiveDBSubKeys =
+export type LiveDBSubKeys = 
     | 'comfy_workflow'
     | 'comfy_workflow.id'
     | 'comfy_workflow.createdAt'
@@ -1311,6 +1325,7 @@ export type LiveDBSubKeys =
     | 'draft.illustration'
     | 'draft.isFavorite'
     | 'draft.lastRunAt'
+    | 'draft.canvasToolCategory'
     | 'project'
     | 'project.id'
     | 'project.createdAt'
@@ -1476,4 +1491,188 @@ export type LiveDBSubKeys =
     | 'media_custom.params'
     | 'media_custom.stepID'
     | 'media_custom.viewID'
-export const liveDBSubKeys = new Set(['comfy_workflow', 'comfy_workflow.id', 'comfy_workflow.createdAt', 'comfy_workflow.updatedAt', 'comfy_workflow.comfyPromptJSON', 'comfy_workflow.stepID', 'comfy_workflow.metadata', 'draft', 'draft.id', 'draft.createdAt', 'draft.updatedAt', 'draft.title', 'draft.formSerial', 'draft.appID', 'draft.illustration', 'draft.isFavorite', 'draft.lastRunAt', 'project', 'project.id', 'project.createdAt', 'project.updatedAt', 'project.name', 'project.rootGraphID', 'project.currentApp', 'project.currentDraftID', 'project.filterNSFW', 'project.autostartDelay', 'project.autostartMaxDelay', 'step', 'step.id', 'step.createdAt', 'step.updatedAt', 'step.name', 'step.formSerial', 'step.outputGraphID', 'step.status', 'step.isExpanded', 'step.appID', 'step.draftID', 'comfy_prompt', 'comfy_prompt.id', 'comfy_prompt.createdAt', 'comfy_prompt.updatedAt', 'comfy_prompt.stepID', 'comfy_prompt.graphID', 'comfy_prompt.executed', 'comfy_prompt.error', 'comfy_prompt.status', 'comfy_schema', 'comfy_schema.id', 'comfy_schema.createdAt', 'comfy_schema.updatedAt', 'comfy_schema.spec', 'comfy_schema.embeddings', 'comfy_schema.hostID', 'media_text', 'media_text.id', 'media_text.createdAt', 'media_text.updatedAt', 'media_text.kind', 'media_text.content', 'media_text.stepID', 'media_text.title', 'media_video', 'media_video.id', 'media_video.createdAt', 'media_video.updatedAt', 'media_video.absPath', 'media_video.stepID', 'media_video.promptID', 'media_video.filePath', 'media_video.url', 'media_image', 'media_image.id', 'media_image.createdAt', 'media_image.updatedAt', 'media_image.star', 'media_image.promptID', 'media_image.stepID', 'media_image.promptNodeID', 'media_image.width', 'media_image.height', 'media_image.fileSize', 'media_image.hash', 'media_image.path', 'media_image.comfyUIInfos', 'media_image.type', 'media_image.orientation', 'media_image.tags', 'media_image.thumbnail', 'media_3d_displacement', 'media_3d_displacement.id', 'media_3d_displacement.createdAt', 'media_3d_displacement.updatedAt', 'media_3d_displacement.width', 'media_3d_displacement.height', 'media_3d_displacement.image', 'media_3d_displacement.depthMap', 'media_3d_displacement.normalMap', 'media_3d_displacement.stepID', 'media_3d_displacement.promptID', 'runtime_error', 'runtime_error.id', 'runtime_error.createdAt', 'runtime_error.updatedAt', 'runtime_error.message', 'runtime_error.infos', 'runtime_error.promptID', 'runtime_error.graphID', 'runtime_error.stepID', 'media_splat', 'media_splat.id', 'media_splat.createdAt', 'media_splat.updatedAt', 'media_splat.stepID', 'media_splat.url', 'custom_data', 'custom_data.id', 'custom_data.createdAt', 'custom_data.updatedAt', 'custom_data.json', 'cushy_script', 'cushy_script.id', 'cushy_script.createdAt', 'cushy_script.updatedAt', 'cushy_script.path', 'cushy_script.code', 'cushy_script.lastEvaluatedAt', 'cushy_script.lastSuccessfulEvaluationAt', 'cushy_script.metafile', 'cushy_script.lastExtractedAt', 'cushy_app', 'cushy_app.id', 'cushy_app.createdAt', 'cushy_app.updatedAt', 'cushy_app.guid', 'cushy_app.scriptID', 'cushy_app.name', 'cushy_app.illustration', 'cushy_app.description', 'cushy_app.tags', 'cushy_app.publishedAsUserID', 'cushy_app.publishedAt', 'cushy_app.isFavorite', 'cushy_app.canStartFromImage', 'cushy_app.lastRunAt', 'auth', 'auth.id', 'auth.createdAt', 'auth.updatedAt', 'auth.provider_token', 'auth.refresh_token', 'auth.token_type', 'auth.access_token', 'auth.provider_refresh_token', 'auth.expires_at', 'auth.expires_in', 'tree_entry', 'tree_entry.id', 'tree_entry.createdAt', 'tree_entry.updatedAt', 'tree_entry.isExpanded', 'host', 'host.id', 'host.createdAt', 'host.updatedAt', 'host.name', 'host.hostname', 'host.port', 'host.useHttps', 'host.isLocal', 'host.absolutePathToComfyUI', 'host.absolutPathToDownloadModelsTo', 'host.isVirtual', 'host.isReadonly', 'media_custom', 'media_custom.id', 'media_custom.createdAt', 'media_custom.updatedAt', 'media_custom.params', 'media_custom.stepID', 'media_custom.viewID']) // prettier-ignore
+export const liveDBSubKeys = new Set([
+    'comfy_workflow',
+    'comfy_workflow.id',
+    'comfy_workflow.createdAt',
+    'comfy_workflow.updatedAt',
+    'comfy_workflow.comfyPromptJSON',
+    'comfy_workflow.stepID',
+    'comfy_workflow.metadata',
+    'draft',
+    'draft.id',
+    'draft.createdAt',
+    'draft.updatedAt',
+    'draft.title',
+    'draft.formSerial',
+    'draft.appID',
+    'draft.illustration',
+    'draft.isFavorite',
+    'draft.lastRunAt',
+    'draft.canvasToolCategory',
+    'project',
+    'project.id',
+    'project.createdAt',
+    'project.updatedAt',
+    'project.name',
+    'project.rootGraphID',
+    'project.currentApp',
+    'project.currentDraftID',
+    'project.filterNSFW',
+    'project.autostartDelay',
+    'project.autostartMaxDelay',
+    'step',
+    'step.id',
+    'step.createdAt',
+    'step.updatedAt',
+    'step.name',
+    'step.formSerial',
+    'step.outputGraphID',
+    'step.status',
+    'step.isExpanded',
+    'step.appID',
+    'step.draftID',
+    'comfy_prompt',
+    'comfy_prompt.id',
+    'comfy_prompt.createdAt',
+    'comfy_prompt.updatedAt',
+    'comfy_prompt.stepID',
+    'comfy_prompt.graphID',
+    'comfy_prompt.executed',
+    'comfy_prompt.error',
+    'comfy_prompt.status',
+    'comfy_schema',
+    'comfy_schema.id',
+    'comfy_schema.createdAt',
+    'comfy_schema.updatedAt',
+    'comfy_schema.spec',
+    'comfy_schema.embeddings',
+    'comfy_schema.hostID',
+    'media_text',
+    'media_text.id',
+    'media_text.createdAt',
+    'media_text.updatedAt',
+    'media_text.kind',
+    'media_text.content',
+    'media_text.stepID',
+    'media_text.title',
+    'media_video',
+    'media_video.id',
+    'media_video.createdAt',
+    'media_video.updatedAt',
+    'media_video.absPath',
+    'media_video.stepID',
+    'media_video.promptID',
+    'media_video.filePath',
+    'media_video.url',
+    'media_image',
+    'media_image.id',
+    'media_image.createdAt',
+    'media_image.updatedAt',
+    'media_image.star',
+    'media_image.promptID',
+    'media_image.stepID',
+    'media_image.promptNodeID',
+    'media_image.width',
+    'media_image.height',
+    'media_image.fileSize',
+    'media_image.hash',
+    'media_image.path',
+    'media_image.comfyUIInfos',
+    'media_image.type',
+    'media_image.orientation',
+    'media_image.tags',
+    'media_image.thumbnail',
+    'media_3d_displacement',
+    'media_3d_displacement.id',
+    'media_3d_displacement.createdAt',
+    'media_3d_displacement.updatedAt',
+    'media_3d_displacement.width',
+    'media_3d_displacement.height',
+    'media_3d_displacement.image',
+    'media_3d_displacement.depthMap',
+    'media_3d_displacement.normalMap',
+    'media_3d_displacement.stepID',
+    'media_3d_displacement.promptID',
+    'runtime_error',
+    'runtime_error.id',
+    'runtime_error.createdAt',
+    'runtime_error.updatedAt',
+    'runtime_error.message',
+    'runtime_error.infos',
+    'runtime_error.promptID',
+    'runtime_error.graphID',
+    'runtime_error.stepID',
+    'media_splat',
+    'media_splat.id',
+    'media_splat.createdAt',
+    'media_splat.updatedAt',
+    'media_splat.stepID',
+    'media_splat.url',
+    'custom_data',
+    'custom_data.id',
+    'custom_data.createdAt',
+    'custom_data.updatedAt',
+    'custom_data.json',
+    'cushy_script',
+    'cushy_script.id',
+    'cushy_script.createdAt',
+    'cushy_script.updatedAt',
+    'cushy_script.path',
+    'cushy_script.code',
+    'cushy_script.lastEvaluatedAt',
+    'cushy_script.lastSuccessfulEvaluationAt',
+    'cushy_script.metafile',
+    'cushy_script.lastExtractedAt',
+    'cushy_app',
+    'cushy_app.id',
+    'cushy_app.createdAt',
+    'cushy_app.updatedAt',
+    'cushy_app.guid',
+    'cushy_app.scriptID',
+    'cushy_app.name',
+    'cushy_app.illustration',
+    'cushy_app.description',
+    'cushy_app.tags',
+    'cushy_app.publishedAsUserID',
+    'cushy_app.publishedAt',
+    'cushy_app.isFavorite',
+    'cushy_app.canStartFromImage',
+    'cushy_app.lastRunAt',
+    'auth',
+    'auth.id',
+    'auth.createdAt',
+    'auth.updatedAt',
+    'auth.provider_token',
+    'auth.refresh_token',
+    'auth.token_type',
+    'auth.access_token',
+    'auth.provider_refresh_token',
+    'auth.expires_at',
+    'auth.expires_in',
+    'tree_entry',
+    'tree_entry.id',
+    'tree_entry.createdAt',
+    'tree_entry.updatedAt',
+    'tree_entry.isExpanded',
+    'host',
+    'host.id',
+    'host.createdAt',
+    'host.updatedAt',
+    'host.name',
+    'host.hostname',
+    'host.port',
+    'host.useHttps',
+    'host.isLocal',
+    'host.absolutePathToComfyUI',
+    'host.absolutPathToDownloadModelsTo',
+    'host.isVirtual',
+    'host.isReadonly',
+    'media_custom',
+    'media_custom.id',
+    'media_custom.createdAt',
+    'media_custom.updatedAt',
+    'media_custom.params',
+    'media_custom.stepID',
+    'media_custom.viewID',
+])

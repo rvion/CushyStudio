@@ -1,6 +1,7 @@
 // 🔴 WIP BROKEN TODO: bump
 import type { Form } from '../../Form'
 import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { ISpec } from '../../Spec'
 import type { AspectRatio, CushySize, CushySizeByRatio, SDModelType } from './WidgetSizeTypes'
 
 import { makeAutoObservable, runInAction } from 'mobx'
@@ -24,6 +25,11 @@ export type Widget_size_config = WidgetConfigFields<
 
 // SERIAL
 export type Widget_size_serial = WidgetSerialFields<CushySize>
+
+// SERIAL FROM VALUE
+export const Widget_size_fromValue = (val: Widget_size_value): Widget_size_serial => ({
+    ...val,
+})
 
 // VALUE
 export type Widget_size_value = CushySize // prettier-ignore
@@ -73,6 +79,7 @@ export class Widget_size implements IWidget<Widget_size_types> {
     // ⏸️ }
 
     readonly id: string
+    get config() { return this.spec.config } // prettier-ignore
     readonly type: 'size' = 'size'
     readonly serial: Widget_size_serial
 
@@ -80,9 +87,10 @@ export class Widget_size implements IWidget<Widget_size_types> {
         //
         public readonly form: Form,
         public readonly parent: IWidget | null,
-        public config: Widget_size_config,
+        public readonly spec: ISpec<Widget_size>,
         serial?: Widget_size_serial,
     ) {
+        const config = spec.config
         this.id = serial?.id ?? nanoid()
         if (serial) {
             this.serial = serial

@@ -621,13 +621,13 @@ export class Runtime<FIELDS extends SchemaDict = any> {
         return seed
     }
 
-    loadImageAnswerAsEnum = (ia: MediaImageL): Promise<Enum_LoadImage_image> => {
-        const img = this.Cushy.db.media_image.getOrThrow(ia.imageID)
+    loadImageAnswerAsEnum = (img: MediaImageL): Promise<Enum_LoadImage_image> => {
         return img.uploadAndReturnEnumName()
     }
 
-    loadImageAnswer2 = (ia: MediaImageL): MediaImageL => {
-        return this.Cushy.db.media_image.getOrThrow(ia.imageID)
+    /** @deprecated */
+    loadImageAnswer2 = (img: MediaImageL): MediaImageL => {
+        return img
     }
 
     loadImage = (imageID: MediaImageID): MediaImageL => {
@@ -635,7 +635,7 @@ export class Runtime<FIELDS extends SchemaDict = any> {
     }
 
     loadImageAnswer = async (ia: MediaImageL): Promise<ImageAndMask> => {
-        const img = this.Cushy.db.media_image.getOrThrow(ia.imageID)
+        const img = this.Cushy.db.media_image.getOrThrow(ia.id)
         return await img.loadInWorkflow(this.workflow)
     }
 

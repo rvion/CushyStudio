@@ -1,6 +1,6 @@
 import type { Form } from '../../Form'
 import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
-import type { Widget_group } from '../group/WidgetGroup'
+import type { ISpec } from '../../Spec'
 
 import { makeAutoObservable, runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -15,11 +15,20 @@ export type BaseSelectEntry<T = string> = { id: T; label?: string }
 export type Widget_selectOne_config<T extends BaseSelectEntry> = WidgetConfigFields<
     {
         default?: T
-        choices: T[] | ((formRoot: Widget_group<any>, self: Widget_selectOne<T>) => T[])
+        choices: T[] | ((form: Form, self: Widget_selectOne<T>) => T[])
         appearance?: 'select' | 'tab'
     },
     Widget_selectOne_types<T>
 >
+
+// SERIAL FROM VALUE
+export const Widget_selectOne_fromValue = <T extends BaseSelectEntry>(
+    val: Widget_selectOne_value<T>,
+): Widget_selectOne_serial<T> => ({
+    type: 'selectOne',
+    query: '',
+    val,
+})
 
 // SERIAL
 export type Widget_selectOne_serial<T extends BaseSelectEntry> = WidgetSerialFields<{
@@ -29,14 +38,14 @@ export type Widget_selectOne_serial<T extends BaseSelectEntry> = WidgetSerialFie
 }>
 
 // VALUE
-export type Widget_selectOne_output<T extends BaseSelectEntry> = T
+export type Widget_selectOne_value<T extends BaseSelectEntry> = T
 
 // TYPES
 export type Widget_selectOne_types<T extends BaseSelectEntry> = {
     $Type: 'selectOne'
     $Config: Widget_selectOne_config<T>
     $Serial: Widget_selectOne_serial<T>
-    $Value: Widget_selectOne_output<T>
+    $Value: Widget_selectOne_value<T>
     $Widget: Widget_selectOne<T>
 }
 
@@ -47,6 +56,7 @@ export class Widget_selectOne<T extends BaseSelectEntry> implements IWidget<Widg
     DefaultBodyUI = undefined
 
     readonly id: string
+    get config() { return this.spec.config } // prettier-ignore
     readonly type: 'selectOne' = 'selectOne'
     readonly serial: Widget_selectOne_serial<T>
 
@@ -62,7 +72,7 @@ export class Widget_selectOne<T extends BaseSelectEntry> implements IWidget<Widg
         if (typeof _choices === 'function') {
             if (!this.form.ready) return []
             if (this.form._ROOT == null) throw new Error('❌ IMPOSSIBLE: this.form._ROOT is null')
-            return _choices(this.form._ROOT, this)
+            return _choices(this.form, this)
         }
         return _choices
     }
@@ -71,9 +81,10 @@ export class Widget_selectOne<T extends BaseSelectEntry> implements IWidget<Widg
         //
         public readonly form: Form,
         public readonly parent: IWidget | null,
-        public config: Widget_selectOne_config<T>,
+        public readonly spec: ISpec<Widget_selectOne<T>>,
         serial?: Widget_selectOne_serial<T>,
     ) {
+        const config = spec.config
         this.id = serial?.id ?? nanoid()
         const choices = this.choices
         this.serial = serial ?? {
@@ -88,14 +99,14 @@ export class Widget_selectOne<T extends BaseSelectEntry> implements IWidget<Widg
         makeAutoObservable(this)
     }
 
-    set value(next: Widget_selectOne_output<T>) {
+    set value(next: Widget_selectOne_value<T>) {
         if (this.serial.val === next) return
         runInAction(() => {
             this.serial.val = next
             this.bumpValue()
         })
     }
-    get value(): Widget_selectOne_output<T> {
+    get value(): Widget_selectOne_value<T> {
         return this.serial.val
     }
 }

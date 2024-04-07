@@ -24,7 +24,10 @@ export const ImageDropdownMenuUI = observer(function ImageDropdownMenuUI_(p: { i
     return (
         <>
             <div className='divider divider-start my-1'>Send to</div>
-            <MenuItem icon={<span className='material-symbols-outlined'>content_copy</span>} onClick={img.copyToClipboard}>
+            <MenuItem
+                icon={<span className='material-symbols-outlined'>content_copy</span>}
+                onClick={(e) => img.copyToClipboard()}
+            >
                 Clipboard
             </MenuItem>
             <MenuItem

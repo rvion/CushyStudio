@@ -1,6 +1,6 @@
 import type { Form } from '../../Form'
 import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
-import type { Spec } from '../../Spec'
+import type { ISpec } from '../../Spec'
 import type { BoardPosition } from './WidgetListExtTypes'
 
 import { makeAutoObservable, runInAction } from 'mobx'
@@ -15,7 +15,7 @@ import { boardDefaultItemShape } from './WidgetListExtTypes'
 import { WidgetListExtUI } from './WidgetListExtUI'
 
 // CONFIG
-export type Widget_listExt_config<T extends Spec> = WidgetConfigFields<
+export type Widget_listExt_config<T extends ISpec> = WidgetConfigFields<
     {
         element: T | ((p: { ix: number; width: number; height: number }) => T)
         min?: number
@@ -30,7 +30,7 @@ export type Widget_listExt_config<T extends Spec> = WidgetConfigFields<
 >
 
 // SERIAL
-export type Widget_listExt_serial<T extends Spec> = WidgetSerialFields<{
+export type Widget_listExt_serial<T extends ISpec> = WidgetSerialFields<{
     type: 'listExt'
     entries: { serial: T['$Serial']; shape: BoardPosition }[]
     width: number
@@ -38,7 +38,7 @@ export type Widget_listExt_serial<T extends Spec> = WidgetSerialFields<{
 }>
 
 // VALUE
-export type Widget_listExt_output<T extends Spec> = {
+export type Widget_listExt_value<T extends ISpec> = {
     items: { value: T['$Value']; position: BoardPosition }[]
     // -----------------------
     width: number
@@ -46,21 +46,22 @@ export type Widget_listExt_output<T extends Spec> = {
 }
 
 // TYPES
-export type Widget_listExt_types<T extends Spec> = {
+export type Widget_listExt_types<T extends ISpec> = {
     $Type: 'listExt'
     $Config: Widget_listExt_config<T>
     $Serial: Widget_listExt_serial<T>
-    $Value: Widget_listExt_output<T>
+    $Value: Widget_listExt_value<T>
     $Widget: Widget_listExt<T>
 }
 
 // STATE
-export interface Widget_listExt<T extends Spec> extends Widget_listExt_types<T>, IWidgetMixins {}
-export class Widget_listExt<T extends Spec> implements IWidget<Widget_listExt_types<T>> {
+export interface Widget_listExt<T extends ISpec> extends Widget_listExt_types<T>, IWidgetMixins {}
+export class Widget_listExt<T extends ISpec> implements IWidget<Widget_listExt_types<T>> {
     DefaultHeaderUI = WidgetList_LineUI
     DefaultBodyUI = WidgetListExtUI
 
     readonly id: string
+    get config() { return this.spec.config } // prettier-ignore
     readonly type: 'listExt' = 'listExt'
 
     get width(): number { return this.serial.width ?? this.config.width ?? 100 } // prettier-ignore
@@ -106,9 +107,10 @@ export class Widget_listExt<T extends Spec> implements IWidget<Widget_listExt_ty
         //
         public readonly form: Form,
         public readonly parent: IWidget | null,
-        public config: Widget_listExt_config<T>,
+        public readonly spec: ISpec<Widget_listExt<T>>,
         serial?: Widget_listExt_serial<T>,
     ) {
+        const config = spec.config
         this.id = serial?.id ?? nanoid()
 
         // serial
@@ -198,7 +200,7 @@ export class Widget_listExt<T extends Spec> implements IWidget<Widget_listExt_ty
         this.bumpValue()
     }
 
-    get value(): Widget_listExt_output<T> {
+    get value(): Widget_listExt_value<T> {
         const items = this.entries.map((i) => ({
             position: i.shape,
             value: i.widget.value,

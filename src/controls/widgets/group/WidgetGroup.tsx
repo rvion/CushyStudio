@@ -1,6 +1,6 @@
 import type { Form } from '../../Form'
 import type { GetWidgetResult, IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
-import type { SchemaDict } from '../../Spec'
+import type { ISpec, SchemaDict } from '../../Spec'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -10,14 +10,13 @@ import { applyWidgetMixinV2 } from '../../Mixins'
 import { getActualWidgetToDisplay } from '../../shared/getActualWidgetToDisplay'
 import { getIfWidgetIsCollapsible } from '../../shared/getIfWidgetIsCollapsible'
 import { runWithGlobalForm } from '../../shared/runWithGlobalForm'
-import { Spec } from '../../Spec'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetGroup_BlockUI, WidgetGroup_LineUI } from './WidgetGroupUI'
 
 // CONFIG
 export type Widget_group_config<T extends SchemaDict> = WidgetConfigFields<
     {
-        items?: (() => T) | T
+        items?: T | (() => T)
         topLevel?: boolean
         summary?: (items: { [k in keyof T]: GetWidgetResult<T[k]> }) => string
     },
@@ -52,13 +51,13 @@ export class Widget_group<T extends SchemaDict> implements IWidget<Widget_group_
         if (Object.keys(this.fields).length === 0) return
         return WidgetGroup_BlockUI
     }
-    static Prop = <T extends SchemaDict>(config: Widget_group_config<T>) => new Spec('group', config)
 
     get summary(): string {
         return this.config.summary?.(this.value) ?? ''
         // return this.config.summary?.(this.value) ?? Object.keys(this.fields).length + ' fields'
     }
     readonly id: string
+    get config() { return this.spec.config } // prettier-ignore
     readonly type: 'group' = 'group'
 
     collapseAllEntries = () => {
@@ -101,7 +100,7 @@ export class Widget_group<T extends SchemaDict> implements IWidget<Widget_group_
         //
         public readonly form: Form,
         public readonly parent: IWidget | null,
-        public config: Widget_group_config<T>,
+        public readonly spec: ISpec<Widget_group<T>>,
         serial?: Widget_group_serial<T>,
         /** used to register self as the root, before we start instanciating anything */
         preHydrate?: (self: Widget_group<any>) => void,

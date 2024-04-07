@@ -23,14 +23,14 @@ app({
                 defaultLength: 1,
                 element: ui.selectOne({
                     label: 'dynamic-test',
-                    choices: (x) => listOfStuff.shared.items.map((item, ix) => ({ id: item.serial.id, label: item.value })),
+                    choices: (x) => listOfStuff.shared.items.map((item, ix) => ({ id: item.id, label: item.value })),
                 }),
             }),
             listOfRefs2: ui.list({
                 defaultLength: 1,
                 element: ui.selectMany({
                     label: 'dynamic-test',
-                    choices: (x) => listOfStuff.shared.items.map((item, ix) => ({ id: item.serial.id, label: item.value })),
+                    choices: (x) => listOfStuff.shared.items.map((item, ix) => ({ id: item.id, label: item.value })),
                 }),
             }),
             _3: ui.header({ markdown: `#### Reference values (tabs):`, label: false, border: false }),
@@ -39,7 +39,7 @@ app({
                 element: ui.selectOne({
                     label: 'dynamic-test',
                     appearance: 'tab',
-                    choices: (x) => listOfStuff.shared.items.map((item, ix) => ({ id: item.serial.id, label: item.value })),
+                    choices: (x) => listOfStuff.shared.items.map((item, ix) => ({ id: item.id, label: item.value })),
                 }),
             }),
             refs5: ui.list({
@@ -47,7 +47,7 @@ app({
                 element: ui.selectMany({
                     label: 'dynamic-test',
                     appearance: 'tab',
-                    choices: (x) => listOfStuff.shared.items.map((item, ix) => ({ id: item.serial.id, label: item.value })),
+                    choices: (x) => listOfStuff.shared.items.map((item, ix) => ({ id: item.id, label: item.value })),
                 }),
             }),
         }

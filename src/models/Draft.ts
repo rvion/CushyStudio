@@ -141,6 +141,7 @@ export class DraftL {
         //
         formValueOverride?: Maybe<any>
         imageToStartFrom?: MediaImageL
+        httpPayload?: any
         focusOutput?: boolean
     }): StepL => {
         if (this.form == null) {
@@ -238,9 +239,9 @@ export class DraftL {
 
                 this.form = CushyFormManager.form(action.ui, {
                     name: this.name,
-                    initialValue: () => this.data.formSerial,
-                    onSerialChange: (root) => {
-                        this.update({ formSerial: root.serial })
+                    initialSerial: () => this.data.formSerial,
+                    onSerialChange: (form) => {
+                        this.update({ formSerial: form.serial })
                         console.log(`[👙] UPDATING draft(${this.id}) SERIAL`)
                         this.isDirty = true
                         this.checkIfShouldRestart()

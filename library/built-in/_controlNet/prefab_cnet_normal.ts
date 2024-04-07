@@ -6,30 +6,30 @@ import { cnet_preprocessor_ui_common, cnet_ui_common } from './cnet_ui_common'
 // 🅿️ Normal FORM ===================================================
 export const ui_subform_Normal = () => {
     const form = getCurrentForm()
-    return form.group({
-        label: 'Normal',
-        requirements: [
-            //
+    return form
+        .group({
+            label: 'Normal',
+            items: {
+                ...cnet_ui_common(form),
+                preprocessor: ui_subform_Normal_Preprocessor(),
+                models: form.group({
+                    label: 'Select or Download Models',
+                    // startCollapsed: true,
+                    items: {
+                        cnet_model_name: form.enum.Enum_ControlNetLoader_control_net_name({
+                            label: 'Model',
+                            default: 'control_v11p_sd15_normalbae.pth' as any,
+                            filter: (x) => x.toString().includes('normal'),
+                            extraDefaults: ['control_v11p_sd15_normalbae.pth'],
+                        }),
+                    },
+                }),
+            },
+        })
+        .addRequirements([
             { type: 'customNodesByTitle', title: 'ComfyUI-Advanced-ControlNet' },
             { type: 'modelInManager', modelName: 'ControlNet-v1-1 (normalbae; fp16)' },
-        ],
-        items: () => ({
-            ...cnet_ui_common(form),
-            preprocessor: ui_subform_Normal_Preprocessor(),
-            models: form.group({
-                label: 'Select or Download Models',
-                // startCollapsed: true,
-                items: () => ({
-                    cnet_model_name: form.enum.Enum_ControlNetLoader_control_net_name({
-                        label: 'Model',
-                        default: 'control_v11p_sd15_normalbae.pth' as any,
-                        filter: (x) => x.toString().includes('normal'),
-                        extraDefaults: ['control_v11p_sd15_normalbae.pth'],
-                    }),
-                }),
-            }),
-        }),
-    })
+        ])
 }
 
 export const ui_subform_Normal_Preprocessor = () => {
@@ -54,11 +54,11 @@ export const ui_subform_Normal_Midas = () => {
     return form.group({
         label: 'Settings',
         startCollapsed: true,
-        items: () => ({
+        items: {
             ...cnet_preprocessor_ui_common(form),
             a_value: form.float({ default: 6.28, min: 0, max: 12.48 }),
             bg_threshold: form.float({ default: 0.1, min: 0, max: 0.2 }),
-        }),
+        },
     })
 }
 
@@ -67,9 +67,9 @@ export const ui_subform_Normal_bae = () => {
     return form.group({
         label: 'Settings',
         startCollapsed: true,
-        items: () => ({
+        items: {
             ...cnet_preprocessor_ui_common(form),
-        }),
+        },
     })
 }
 

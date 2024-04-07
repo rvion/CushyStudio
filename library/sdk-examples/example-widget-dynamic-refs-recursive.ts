@@ -1,4 +1,5 @@
-import type { Spec } from '../../src/controls/Spec'
+import type { Spec } from '../../src/controls/CushySpec'
+import type { Form } from '../../src/controls/Form'
 import type { Widget_choices } from '../../src/controls/widgets/choices/WidgetChoices'
 import type { Widget_group } from '../../src/controls/widgets/group/WidgetGroup'
 import type { Widget_image } from '../../src/controls/widgets/image/WidgetImage'
@@ -19,7 +20,8 @@ app({
                         sampler_output_abc_asdf: form.selectOne({
                             // showID: true,
                             // if choices is a function, the form root is injected as first parameter
-                            choices: (formRoot: Widget_group<any>) => {
+                            choices: (form: Form<Spec<Widget_group<any>>>) => {
+                                const formRoot: Widget_group<any> = form.root
                                 // 🔶 null when the form is not yet fully initialized
                                 if (formRoot.fields.samplerUI == null) return []
 
@@ -58,11 +60,11 @@ app({
                         empty_latent: form.group({
                             layout: 'H',
                             // topLevel: true,
-                            items: () => ({
+                            items: {
                                 width: form.int({ default: 512, max: 1512, step: 32, hideSlider: true }),
                                 height: form.int({ default: 512, max: 1512, step: 32, hideSlider: true }),
                                 batch: form.int({ default: 1, min: 1, max: 32, hideSlider: true }),
-                            }),
+                            },
                         }),
                         pick_image: form.image(),
                     },

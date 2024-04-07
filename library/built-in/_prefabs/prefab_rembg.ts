@@ -2,16 +2,13 @@ import type { OutputFor } from './_prefabs'
 
 export const ui_rembg_v1 = () => {
     const form = getCurrentForm()
-    return form.choices({
-        appearance: 'tab',
-        expand: true,
-        requirements: [
-            { type: 'customNodesByTitle', title: 'TEMP_ComfyUI-BRIA_AI-RMBG' },
-            { type: 'modelInManager', modelName: 'TEMP_briaai_RMBG-1.4' },
-        ],
-        // appearance: 'tab',
-        // prettier-ignore
-        items: {
+    return form
+        .choices({
+            appearance: 'tab',
+            expand: true,
+            // appearance: 'tab',
+            // prettier-ignore
+            items: {
             RemBG:           form.group(),
             ABG:             form.group(),
             isnetAnime:      form.group(),
@@ -22,7 +19,11 @@ export const ui_rembg_v1 = () => {
             u2netp:          form.group(),
             RemBGV1_4:       form.group(),
         },
-    })
+        })
+        .addRequirements([
+            { type: 'customNodesByTitle', title: 'TEMP_ComfyUI-BRIA_AI-RMBG' },
+            { type: 'modelInManager', modelName: 'TEMP_briaai_RMBG-1.4' },
+        ])
 }
 
 export const run_rembg_v1 = (ui: OutputFor<typeof ui_rembg_v1>, image: _IMAGE): _IMAGE[] => {

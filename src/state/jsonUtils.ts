@@ -1,7 +1,7 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs'
 import { dirname } from 'pathe'
 
-export const readJSON = (absPath: string): Maybe<object> => {
+export const readJSON = <T extends object = object>(absPath: string): Maybe<T> => {
     console.log(absPath)
     const exists = existsSync(absPath)
     if (!exists) return null

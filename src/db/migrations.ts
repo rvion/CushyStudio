@@ -1,19 +1,24 @@
+import type { MigrationContext } from './_applyAllMigrations'
+
 import { _createTable } from './_createTable'
 
 export const _checkAllMigrationsHaveDifferentIds = () => {
     // check all migrations have different IDS
     const ids = new Set()
     for (const migration of migrations) {
+        if (migration.skip) continue
         if (ids.has(migration.id)) throw new Error(`duplicate migration id: ${migration.id}`)
         ids.add(migration.id)
     }
 }
 
 // ------------------------------------------------------------------------------------
+type MigrationPart = string | ((ctx: MigrationContext) => void)
 export const migrations: {
+    skip?: boolean
     id: string
     name: string
-    up: string | string[] // | (() => void)
+    up: MigrationPart | MigrationPart[]
 }[] = [
     {
         id: '1b5eb947',
@@ -690,4 +695,31 @@ export const migrations: {
             `alter table media_custom add column viewID text not null`,
         ],
     },
+    {
+        id: 'JEIXsfrgbJ',
+        name: 'allow to organize tools into categories / panels',
+        up: [`alter table draft add column canvasToolCategory text`],
+    },
+    {
+        id: 'mNDq6De-sm',
+        name: 'misc indexes',
+        up: [`CREATE INDEX idx__media_image__path ON media_image(path);`],
+    },
+    // ⏸️ {
+    // ⏸️     skip: true,
+    // ⏸️     id: 'mNDq6De-sm',
+    // ⏸️     name: 'misc indexes',
+    // ⏸️     up: [
+    // ⏸️         _createTable('tag', [`label string not null unique`, `color string`]),
+    // ⏸️         _createTable('media_image_tags', [
+    // ⏸️             //
+    // ⏸️             `imageID references media_image(id) not null`,
+    // ⏸️             `tagID references tag(id) not null`,
+    // ⏸️         ]),
+    // ⏸️         (ctx: MigrationContext) => {
+    // ⏸️             //
+    // ⏸️             ctx.db.prepare(`insert into tags (label, color) values ('test', '#ff0000')`).run()
+    // ⏸️         },
+    // ⏸️     ],
+    // ⏸️ },
 ]

@@ -11,10 +11,11 @@
  * ❌ import {...} from '...'`
  * */
 import type { FormBuilder } from '../../../src/controls/FormBuilder'
+import type { IFormBuilder } from '../../../src/controls/IFormBuilder'
 import type { GetWidgetResult } from '../../../src/controls/IWidget'
 
 // this should be a default
-export type OutputFor<UIFn extends (form: FormBuilder) => any> = GetWidgetResult<ReturnType<UIFn>>
+export type OutputFor<UIFn extends (...args: any[]) => any> = GetWidgetResult<ReturnType<UIFn>>
 
 // const form = getGlobalFormBuilder()
 // const flow = getGlobalRuntime()
@@ -26,25 +27,26 @@ export const ui_highresfix = (p: { activeByDefault?: true } = {}) => {
     return form
         .group({
             label: 'Upscale Pass (High Res Fix)',
-            items: () => ({
+            items: {
                 // NNLatentUpscale: form.bool({
                 //     default: false,
                 //     label: 'NN Latent Upscale?',
                 // }),
-                upscaleMethod: form.selectOne({
-                    appearance: 'tab',
-                    choices: [{ id: 'regular' }, { id: 'Neural 1.5' }, { id: 'Neural XL' }],
-                    requirements: [{ type: 'customNodesByURI', uri: 'https://github.com/Ttl/ComfyUi_NNLatentUpscale' }],
-                    tooltip:
-                        'regular upscale add more noise, depend your objective. for a second pass to refine stuff, I think adding noise is better',
-                }),
+                upscaleMethod: form
+                    .selectOne({
+                        appearance: 'tab',
+                        choices: [{ id: 'regular' }, { id: 'Neural 1.5' }, { id: 'Neural XL' }],
+                        tooltip:
+                            'regular upscale add more noise, depend your objective. for a second pass to refine stuff, I think adding noise is better',
+                    })
+                    .addRequirements([{ type: 'customNodesByURI', uri: 'https://github.com/Ttl/ComfyUi_NNLatentUpscale' }]),
 
                 scaleFactor: form.float({ default: 1.5, min: 0.5, max: 8, step: 1 }),
                 steps: form.int({ default: 15, min: 0, softMax: 100, step: 10 }),
                 denoise: form.float({ min: 0, default: 0.6, max: 1, step: 0.1 }),
                 saveIntermediaryImage: form.bool({ default: true }),
                 useMainSampler: form.bool({ default: true }),
-            }),
+            },
         })
         .optional(p.activeByDefault)
 }
@@ -55,18 +57,18 @@ export const ui_themes = (form: FormBuilder) =>
         element: () =>
             form.group({
                 layout: 'H',
-                items: () => ({
+                items: {
                     text: form.string({ label: 'Main', textarea: true }), //textarea: true
                     theme: form.list({
                         element: () =>
                             form.group({
                                 layout: 'V',
-                                items: () => ({
+                                items: {
                                     text: form.string({ label: 'Theme', textarea: true }), //textarea: true
-                                }),
+                                },
                             }),
                     }),
-                }),
+                },
             }),
     })
 

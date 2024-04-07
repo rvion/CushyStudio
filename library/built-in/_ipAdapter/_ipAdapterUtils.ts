@@ -1,14 +1,12 @@
 import type { FormBuilder } from '../../../src/CUSHY'
 
-import { ipAdapter_faceID_ClipModelList } from './_ipAdapterModelList'
-
 // 🅿️ IPAdapter Common FORM ===================================================
 export const ui_subform_IPAdapter_common = (form: FormBuilder, defaultStrength: number = 1) => ({
     strength: form.float({ default: defaultStrength, min: 0, max: 2, step: 0.1 }),
     settings: form.group({
         label: 'Settings',
         startCollapsed: true,
-        items: () => ({
+        items: {
             extra: form.list({ label: 'Extra', element: form.image({ label: 'Image' }) }),
             crop: form.bool({ default: true }),
             startAtStepPercent: form.float({ default: 0, min: 0, max: 1, step: 0.1 }),
@@ -17,7 +15,7 @@ export const ui_subform_IPAdapter_common = (form: FormBuilder, defaultStrength: 
             embedding_scaling: form.enum.Enum_IPAdapterAdvanced_embeds_scaling({ default: 'V only' }),
             noise: form.float({ default: 0, min: 0, max: 1, step: 0.1 }),
             unfold_batch: form.bool({ default: false }),
-        }),
+        },
     }),
 })
 

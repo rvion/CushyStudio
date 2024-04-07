@@ -1,37 +1,49 @@
 import type { FormManager } from './FormManager'
-import type { $WidgetTypes, IWidget } from './IWidget'
-import type { ISpec, SchemaDict } from './Spec'
-import type { Widget_group, Widget_group_serial, Widget_group_value } from './widgets/group/WidgetGroup'
-import type { Widget_optional, Widget_optional_config } from './widgets/optional/WidgetOptional'
-import type { Widget_shared } from './widgets/shared/WidgetShared'
+import type { FormSerial } from './FormSerial'
+import type { IWidget } from './IWidget'
+import type { ISpec } from './Spec'
+import type { Widget_group, Widget_group_serial } from './widgets/group/WidgetGroup'
 
 import { action, isObservable, makeAutoObservable, observable } from 'mobx'
 import { createElement, type ReactNode } from 'react'
 
 import { debounce } from '../utils/misc/debounce'
 import { FormUI } from './FormUI'
-import { Spec } from './Spec'
+import { IFormBuilder } from './IFormBuilder'
+import { isWidgetGroup } from './widgets/WidgetUI.DI'
 
-export interface IFormBuilder {
+export type FormProperties<
     //
-    _cache: { count: number }
-    _HYDRATE: <T extends ISpec>(self: IWidget | null, unmounted: T, serial: any | null) => T['$Widget']
-    optional: <const T extends Spec<IWidget<$WidgetTypes>>>(p: Widget_optional_config<T>) => Spec<Widget_optional<T>>
-    shared: <W extends Spec<IWidget<$WidgetTypes>>>(key: string, unmounted: W) => Widget_shared<W>
-}
-
-export type FormProperties<FIELDS extends SchemaDict> = {
+    ROOT extends ISpec<any> = ISpec,
+    BUILDER extends IFormBuilder = IFormBuilder,
+> = {
     name: string
-    onSerialChange?: (form: Widget_group<FIELDS>) => void
-    onValueChange?: (form: Widget_group<FIELDS>) => void
-    initialValue?: () => Maybe<object>
+    onSerialChange?: (root: Form<ROOT, BUILDER>) => void
+    onValueChange?: (root: Form<ROOT, BUILDER>) => void
+    initialSerial?: () => Maybe<FormSerial>
 }
 
 export class Form<
-    //
-    const FIELDS extends SchemaDict = SchemaDict,
-    const out MyFormBuilder extends IFormBuilder = IFormBuilder,
+    /** shape of the form, to preserve type safety down to nested children */
+    ROOT extends ISpec<any> = ISpec,
+    /** project-specific builder, allowing to have modular form setups with different widgets */
+    BUILDER extends IFormBuilder = IFormBuilder,
 > {
+    constructor(
+        public manager: FormManager<BUILDER>,
+        public ui: (form: BUILDER) => ROOT,
+        public formConfig: FormProperties<ROOT>,
+    ) {
+        this.builder = manager.getBuilder(this)
+        makeAutoObservable(this, {
+            //
+            // builder: false,
+            root: false,
+            init: action,
+        })
+    }
+
+    /** loading error  */
     error: Maybe<string> = null
 
     /** shortcut to access the <FormUI /> component without having to import it first */
@@ -44,36 +56,49 @@ export class Form<
      */
     render = (): ReactNode => createElement(FormUI, { form: this })
 
-    at = <K extends keyof FIELDS>(key: K): FIELDS[K]['$Widget'] => {
-        return this.root.at(key)
-    }
-
-    get = <K extends keyof FIELDS>(key: K): FIELDS[K]['$Value'] => {
-        return this.root.get(key)
-    }
-
-    get value(): Widget_group_value<FIELDS> {
+    get value(): ROOT['$Value'] {
         return this.root.value
     }
 
-    get serial(): Widget_group_serial<FIELDS> {
-        return this.root.serial
+    // get rootSerial(): ROOT['$Serial'] {
+    //     return this.root.serial
+    // }
+    get serial(): FormSerial {
+        return {
+            type: 'FormSerial',
+            name: this.formConfig.name,
+            root: this.root.serial,
+            shared: this.shared,
+            serialLastUpdatedAt: this.serialLastUpdatedAt,
+            valueLastUpdatedAt: this.valueLastUpdatedAt,
+        }
     }
 
-    get fields(): { [k in keyof FIELDS]: FIELDS[k]['$Widget'] } {
-        return this.root.fields
+    /** @deprecated ; only work when root is a Widget_group */
+    get fields(): ROOT extends ISpec<Widget_group<infer FIELDS>> ? { [k in keyof FIELDS]: FIELDS[k]['$Widget'] } : never {
+        if (isWidgetGroup(this.root)) return this.root.fields as any
+        throw new Error('🔴 root is not a group')
     }
 
     // 🔴 👇 remove that
-    get root(): Widget_group<FIELDS> {
+    get root(): ROOT['$Widget'] {
         const root = this.init()
         Object.defineProperty(this, 'root', { value: root })
         return root
     }
 
+    /** Out of Tree unmounted serials  */
+    shared: {
+        [key: string]: any
+    } = {}
+
     // Change tracking ------------------------------------
-    private valueLastUpdatedAt: Timestamp = 0
-    private serialLastUpdatedAt: Timestamp = 0
+
+    /** timestamp at which form value was last updated, or 0 when form still pristine */
+    valueLastUpdatedAt: Timestamp = 0
+
+    /** timestamp at which form serial was last updated, or 0 when form still pristine */
+    serialLastUpdatedAt: Timestamp = 0
 
     private _onSerialChange = this.formConfig.onSerialChange //
         ? debounce(this.formConfig.onSerialChange, 200)
@@ -88,80 +113,63 @@ export class Form<
         this.valueLastUpdatedAt = Date.now()
         this.serialChanged(widget)
         console.log(`[🦊] value changed`)
-        this._onValueChange?.(this.root)
+        this._onValueChange?.(this)
     }
 
     /** every widget node must call this function once it's serial changed */
     serialChanged = (_widget: IWidget) => {
         this.serialLastUpdatedAt = Date.now()
-        this._onSerialChange?.(this.root)
+        this._onSerialChange?.(this)
     }
 
-    valueUpdatedAt?: Timestamp
-    formUpdatedAt?: Timestamp
-
-    // 💬 2024-03-13 rvion:
-    // | change tracking used to be done though autorun + tracking the transitive serialHash
-    // | (see below) but this approaches has performances problems; so now, we're letting
-    // | widgets manually "ping" the root form
-    // |
-    // | ```ts
-    // | cleanup?: () => void
-    // | private startMonitoring = (root: Widget_group<FIELDS>) => {
-    // |     this.cleanup = autorun(
-    // |         () => {
-    // |             // const count = formValue.form._cache.count // manual mobx invalidation
-    // |             const _ = root.serialHash
-    // |             for (const shared of this.knownShared.values()) shared.serialHash
-    // |             runInAction(() => {
-    // |                 console.log(`[🦊] form: updating`)
-    // |                 this.formConfig.onSerialChange?.(root)
-    // |             })
-    // |         },
-    // |         { delay: 100 },
-    // |     )
-    // | }
-    // | ```
-
-    // ---------------------------------------------------
-
-    builder: MyFormBuilder
-    // get builder(): Builder {
-    //     const value = new FormBuilder(this)
-    //     Object.defineProperty(this, 'builder', { value })
-    //     return value
-    // }
+    /** from builder, offering simple API for your project specifc widgets  */
+    builder: BUILDER
 
     /** (@internal) will be set at builer creation, to allow for dyanmic recursive forms */
-    _ROOT!: Widget_group<FIELDS>
-
-    knownShared = new Map<string /* rootKey */, IWidget>()
-
-    constructor(
-        // public builderFn: (self: Form<FIELDS, Builder>) => Builder,
-        public manager: FormManager<any>,
-        public ui: (form: IFormBuilder) => FIELDS,
-        public formConfig: FormProperties<FIELDS>,
-    ) {
-        this.builder = manager.getBuilder(this)
-        makeAutoObservable(this, {
-            //
-            // builder: false,
-            root: false,
-            init: action,
-        })
-    }
+    _ROOT!: ROOT['$Widget']
 
     ready = false
-    init = (): Widget_group<FIELDS> => {
+    init = (): ROOT => {
         console.log(`[🥐] Building form ${this.formConfig.name}`)
         const formBuilder = this.builder
-        const rootDef = { topLevel: true, items: () => this.ui?.(formBuilder) ?? {} }
-        const unmounted = new Spec<Widget_group<FIELDS>>('group', rootDef)
+        const spec: ROOT = this.ui?.(formBuilder)
         try {
-            let initialValue = this.formConfig.initialValue?.()
-            if (initialValue && !isObservable(initialValue)) initialValue = observable(initialValue)
-            const rootWidget: Widget_group<FIELDS> = formBuilder._HYDRATE(null, unmounted, initialValue)
+            let formSerial = this.formConfig.initialSerial?.()
+            // ensure form serial is observable, so we avoid working with soon to expire refs
+            if (formSerial && !isObservable(formSerial)) formSerial = observable(formSerial)
+
+            // BACKWARD COMPAT -----------------------------------------------------------------
+            if (formSerial != null && formSerial.type !== 'FormSerial') {
+                const oldSerial: Widget_group_serial<any> = formSerial as any
+                const oldsharedSerial: { [key: string]: any } = {}
+                for (const [k, v] of Object.entries(oldSerial.values_)) {
+                    if (k.startsWith('__')) {
+                        oldsharedSerial[k.slice(2, -2)] = v
+                        delete oldSerial.values_[k]
+                    }
+                }
+                formSerial = {
+                    name: this.formConfig.name,
+                    type: 'FormSerial',
+                    root: formSerial,
+                    shared: oldsharedSerial,
+                    serialLastUpdatedAt: 0,
+                    valueLastUpdatedAt: 0,
+                }
+                console.log(`[🔴] MIGRATED formSerial:`, JSON.stringify(formSerial, null, 3).slice(0, 800))
+            }
+
+            // ---------------------------------------------------------------------------------
+            // at this point, we expect the form serial to be fully valid
+            if (formSerial != null && formSerial.type !== 'FormSerial') {
+                throw new Error('❌ INVALID form serial')
+            }
+
+            // restore shared serials
+            this.shared = formSerial?.shared || {}
+            // instanciate the root widget
+            const rootWidget: ROOT = formBuilder._HYDRATE(null, spec, formSerial?.root)
+
             this.ready = true
             this.error = null
             // this.startMonitoring(rootWidget)
@@ -170,7 +178,7 @@ export class Form<
             console.error(`[👙🔴] Building form ${this.formConfig.name} FAILED`, this)
             console.error(e)
             this.error = 'invalid form definition'
-            return formBuilder._HYDRATE(null, unmounted, null)
+            return formBuilder._HYDRATE(null, spec, null)
         }
     }
 }

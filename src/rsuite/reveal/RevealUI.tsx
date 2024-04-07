@@ -1,48 +1,52 @@
 import type { RevealProps } from './RevealProps'
 
-import { observable } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { useEffect, useMemo, useRef } from 'react'
 import { createPortal } from 'react-dom'
 
 import { ModalShellUI } from './ModalShell'
-import { RevealState } from './RevealState'
-
-// RevealUI is a bit perf-sensitive,
-// so we use a lazy memo to avoid creating the state object
-// until it's absolutely needed
-export const useMemoLazy = <T extends any>(fn: () => T): { uist: T | null; uist2(): T } =>
-    useMemo(() => {
-        let x = observable({
-            uist: null as T | null,
-            uist2: () => {
-                if (x.uist) return x.uist
-                console.log(`[💙] init RevealUI`)
-                x.uist = fn()
-                return x.uist
-            },
-        })
-        return x
-    }, [])
+import { RevealCtx, useRevealOrNull } from './RevealCtx'
+import { RevealState, RevealStateLazy } from './RevealState'
 
 export const RevealUI = observer(function RevealUI_(p: RevealProps) {
-    const { uist, uist2 } = useMemoLazy(() => new RevealState(p))
     const ref = useRef<HTMLDivElement>(null)
+    const parents: RevealStateLazy[] = useRevealOrNull()?.tower ?? []
 
+    // Eagerly retreiving parents is OK here cause as a children, we expects our parents to exist.
+    const self = useMemo(() => new RevealStateLazy(p, parents.map((p) => p.getUist())), []) // prettier-ignore
+    const { uistOrNull, getUist: uist2 } = self
+    const nextTower = useMemo(() => ({ tower: [...parents, self] }), [])
+
+    // once updated, make sure to keep props in sync so hot reload work well enough.
     useEffect(() => {
-        if (uist?.visible && ref.current) {
+        const x = uistOrNull
+        if (x == null) return
+        if (p.content !== x.p.content) x.contentFn = p.content
+        if (p.trigger !== x.p.trigger) x.p.trigger = p.trigger
+        if (p.placement !== x.p.placement) x.p.placement = p.placement
+        if (p.showDelay !== x.p.showDelay) x.p.showDelay = p.showDelay
+        if (p.hideDelay !== x.p.hideDelay) x.p.hideDelay = p.hideDelay
+    }, [p.content, p.trigger, p.placement, p.showDelay, p.hideDelay])
+
+    // update position in case something moved or scrolled
+    useEffect(() => {
+        if (uistOrNull?.visible && ref.current) {
             const rect = ref.current.getBoundingClientRect()
-            uist.setPosition(rect)
+            uistOrNull.setPosition(rect)
         }
-    }, [uist?.visible])
+    }, [uistOrNull?.visible])
+
     const content = p.children
-    const tooltip = mkTooltip(uist)
-    return (
+    const tooltip = mkTooltip(uistOrNull)
+
+    // this span could be bypassed by cloning the child element and injecting props, assuming the child will mount them
+    const anchor = (
         <span //
-            tw={uist?.defaultCursor}
+            tw={['inline-block ui-reveal-anchor', uistOrNull?.defaultCursor]}
             className={p.className}
             ref={ref}
             style={p.style}
+            // style={{ ...p.style, ...uistOrNull?.debugColor }}
             onContextMenu={() => uist2().toggleLock()}
             onMouseEnter={() => uist2().onMouseEnterAnchor()}
             onMouseLeave={() => uist2().onMouseLeaveAnchor()}
@@ -60,6 +64,7 @@ export const RevealUI = observer(function RevealUI_(p: RevealProps) {
             {tooltip}
         </span>
     )
+    return <RevealCtx.Provider value={nextTower}>{anchor}</RevealCtx.Provider>
 })
 
 const mkTooltip = (uist: RevealState | null) => {
@@ -79,7 +84,7 @@ const mkTooltip = (uist: RevealState | null) => {
     const pos = uist.tooltipPosition
     const p = uist.p
 
-    const hiddenContent = p.content()
+    const hiddenContent = uist.contentFn()
 
     const revealedContent = uist.placement.startsWith('#') ? (
         <div
@@ -179,3 +184,11 @@ const mkTooltip = (uist: RevealState | null) => {
     )
     return createPortal(revealedContent, element)
 }
+
+// -----------------------------------------------------------------------------
+// 🔵 TODO: add some global way to force-open any reveal by UID
+// const knownReveals = new WeakMap<string>(...)
+// export const triggerReveal_UNSAFE = (p: RevealID) => {
+// ...
+// }
+// -----------------------------------------------------------------------------

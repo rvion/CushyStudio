@@ -1,5 +1,6 @@
 import type { Form } from '../../Form'
 import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { ISpec } from '../../Spec'
 
 import { makeAutoObservable, runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -27,6 +28,12 @@ export type Widget_string_config = WidgetConfigFields<
 // SERIAL
 export type Widget_string_serial = WidgetSerialFields<{ type: 'str'; val?: string }>
 
+// SERIAL FROM VALUE
+export const Widget_string_fromValue = (val: string): Widget_string_serial => ({
+    type: 'str',
+    val,
+})
+
 // VALUE
 export type Widget_string_value = string
 
@@ -52,6 +59,7 @@ export class Widget_string implements IWidget<Widget_string_types> {
     }
     readonly border = false
     readonly id: string
+    get config() { return this.spec.config } // prettier-ignore
     readonly type: 'str' = 'str'
 
     // --------------
@@ -68,9 +76,10 @@ export class Widget_string implements IWidget<Widget_string_types> {
         //
         public readonly form: Form,
         public readonly parent: IWidget | null,
-        public readonly config: Widget_string_config,
+        public readonly spec: ISpec<Widget_string>,
         serial?: Widget_string_serial,
     ) {
+        const config = spec.config
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? {
             type: 'str',

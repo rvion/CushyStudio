@@ -11,17 +11,19 @@ export const ui_ipadapter_modelSelection = (
         | undefined,
 ) => {
     return {
-        cnet_model_name: form.enum.Enum_IPAdapterModelLoader_ipadapter_file({
-            default: defaultModel,
-            requirements:
+        cnet_model_name: form.enum
+            .Enum_IPAdapterModelLoader_ipadapter_file({
+                default: defaultModel,
+                // default: 'ip-adapter_sd15.safetensors'
+                label: 'IP Adapter Model',
+            })
+            .addRequirements(
                 knownModels == null
                     ? undefined
                     : (Array.isArray(knownModels) ? knownModels : [knownModels]).map((knownModel) => ({
                           type: 'modelInManager',
                           modelName: knownModel,
                       })),
-            // default: 'ip-adapter_sd15.safetensors'
-            label: 'IP Adapter Model',
-        }),
+            ),
     }
 }

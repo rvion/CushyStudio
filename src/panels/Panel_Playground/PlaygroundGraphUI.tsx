@@ -1,11 +1,11 @@
 import { observer } from 'mobx-react-lite'
 import { useEffect } from 'react'
 
-import { PanelHeaderUI } from '../PanelHeader'
 import { FormUI } from '../../controls/FormUI'
 import { SpacerUI } from '../../controls/widgets/spacer/SpacerUI'
 import { RevealUI } from '../../rsuite/reveal/RevealUI'
 import { DrawWorkflowUI } from '../../widgets/graph/DrawWorkflowUI'
+import { PanelHeaderUI } from '../PanelHeader'
 
 export const PlaygroundGraphUI = observer(function PlaygroundGraphUI_(p: {}) {
     const workflow = cushy.db.comfy_workflow.last()!
@@ -16,7 +16,7 @@ export const PlaygroundGraphUI = observer(function PlaygroundGraphUI_(p: {}) {
     // }))
     const form = cushy.graphConf
     // const fv = form.value
-    const update = () => workflow.RUNLAYOUT(cushy.autolayoutOpts)
+    const update = () => void workflow.RUNLAYOUT(cushy.autolayoutOpts)
     useEffect(update, [JSON.stringify(cushy.autolayoutOpts), workflow.id])
 
     return (

@@ -1,6 +1,6 @@
 import type { Form } from '../../Form'
 import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
-import type { Spec } from '../../Spec'
+import type { ISpec } from '../../Spec'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -9,7 +9,7 @@ import { applyWidgetMixinV2 } from '../../Mixins'
 import { registerWidgetClass } from '../WidgetUI.DI'
 
 // CONFIG
-export type Widget_shared_config<T extends Spec = Spec> = WidgetConfigFields<
+export type Widget_shared_config<T extends ISpec = ISpec> = WidgetConfigFields<
     {
         /** shared widgets must be registered in the form root group */
         rootKey: string
@@ -23,22 +23,28 @@ export type Widget_shared_serial = WidgetSerialFields<{
     type: 'shared'
 }>
 
+// SERIAL FROM VALUE
+export const Widget_shared_fromValue = (val: Widget_shared_value): Widget_shared_serial => ({
+    type: 'shared',
+})
+
 // VALUE
-export type Widget_shared_value<T extends Spec = Spec> = T['$Value']
+export type Widget_shared_value<T extends ISpec = ISpec> = T['$Value']
 
 // TYPES
-export type Widget_shared_types<T extends Spec = Spec> = {
+export type Widget_shared_types<T extends ISpec = ISpec> = {
     $Type: 'shared'
     $Config: Widget_shared_config<T>
     $Serial: Widget_shared_serial
     $Value: Widget_shared_value<T>
-    $Widget: Spec['$Widget']
+    $Widget: ISpec['$Widget']
 }
 
 // STATE
-export interface Widget_shared<T extends Spec = Spec> extends Widget_shared_types<T>, IWidgetMixins {}
-export class Widget_shared<T extends Spec = Spec> implements IWidget<Widget_shared_types<T>> {
+export interface Widget_shared<T extends ISpec = ISpec> extends Widget_shared_types<T>, IWidgetMixins {}
+export class Widget_shared<T extends ISpec = ISpec> implements IWidget<Widget_shared_types<T>> {
     readonly id: string
+    get config():Widget_shared_config<T> { return this.spec.config } // prettier-ignore
     readonly type: 'shared' = 'shared'
     readonly DefaultHeaderUI = undefined
     readonly DefaultBodyUI = undefined
@@ -52,15 +58,21 @@ export class Widget_shared<T extends Spec = Spec> implements IWidget<Widget_shar
     }
 
     // 🔴
-    hidden = () => new Widget_shared<T>(this.form, null, { ...this.config, hidden: true }, this.serial)
+    hidden = () => {
+        const ctor = this.form.builder.SpecCtor
+        const config: Widget_shared_config<T> = { ...this.spec.config, hidden: true }
+        const spec2: ISpec<Widget_shared<T>> = new ctor('shared', config)
+        new Widget_shared<T>(this.form, null, spec2, this.serial)
+    }
 
     constructor(
         //
         public readonly form: Form,
         public readonly parent: IWidget | null,
-        public config: Widget_shared_config<T>,
+        public readonly spec: ISpec<Widget_shared<T>>,
         serial?: Widget_shared_serial,
     ) {
+        const config = spec.config
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? { id: this.id, type: 'shared', collapsed: config.startCollapsed }
         applyWidgetMixinV2(this)

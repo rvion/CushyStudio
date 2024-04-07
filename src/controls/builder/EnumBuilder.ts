@@ -2,10 +2,10 @@
  * this module is here to allow performant type-level apis for enums.
  * TODO: document the unique challenges this appraoch is solving
  */
-import type { Form, IFormBuilder } from '../Form'
+import type { Form } from '../Form'
 import type { FormBuilder } from '../FormBuilder'
 
-import { Spec } from '../Spec'
+import { Spec } from '../CushySpec'
 import { Widget_enum, Widget_enum_config } from '../widgets/enum/WidgetEnum'
 
 export type IEnumBuilder = {

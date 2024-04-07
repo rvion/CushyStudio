@@ -1,11 +1,11 @@
 import { observer } from 'mobx-react-lite'
 import { FixedSizeGrid } from 'react-window'
 
-import { ImageUI } from '../../widgets/galleries/ImageUI'
 import { useSizeOf } from '../../controls/utils/useSizeOf'
+import { ImageUI } from '../../widgets/galleries/ImageUI'
 
 export const GalleryImageGridUI = observer(function GalleryImageGridUI_(p: {}) {
-    const { refFn, size } = useSizeOf()
+    const { ref: refFn, size } = useSizeOf()
     const st = cushy
     const ALLIMAGES = st.imageToDisplay
     const total = ALLIMAGES.length

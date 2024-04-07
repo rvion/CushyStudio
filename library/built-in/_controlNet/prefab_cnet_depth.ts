@@ -6,9 +6,21 @@ import { cnet_preprocessor_ui_common, cnet_ui_common } from './cnet_ui_common'
 // 🅿️ Depth FORM ===================================================
 export const ui_subform_Depth = () => {
     const ui: FormBuilder = getCurrentForm()
-    return ui.group({
-        label: 'Depth',
-        requirements: [
+    return ui
+        .group({
+            label: 'Depth',
+            items: {
+                ...cnet_ui_common(ui),
+                preprocessor: ui_subform_Depth_Preprocessor(),
+                cnet_model_name: ui.enum.Enum_ControlNetLoader_control_net_name({
+                    label: 'Model',
+                    // @ts-ignore
+                    default: 't2iadapter_depth_sd14v1.pth',
+                    filter: (name) => name.toString().includes('depth'),
+                }),
+            },
+        })
+        .addRequirements([
             //
             { type: 'customNodesByTitle', title: 'ComfyUI-Advanced-ControlNet' },
             { type: 'modelInManager', modelName: 'T2I-Adapter (depth)' },
@@ -16,18 +28,7 @@ export const ui_subform_Depth = () => {
             { type: 'modelInManager', modelName: 'stabilityai/control-lora-depth-rank128.safetensors' },
             { type: 'modelInManager', modelName: 'stabilityai/control-lora-depth-rank256.safetensors' },
             { type: 'modelInManager', modelName: 'controlnet-SargeZT/controlnet-sd-xl-1.0-depth-16bit-zoe' },
-        ],
-        items: () => ({
-            ...cnet_ui_common(ui),
-            preprocessor: ui_subform_Depth_Preprocessor(),
-            cnet_model_name: ui.enum.Enum_ControlNetLoader_control_net_name({
-                label: 'Model',
-                // @ts-ignore
-                default: 't2iadapter_depth_sd14v1.pth',
-                filter: (name) => name.toString().includes('depth'),
-            }),
-        }),
-    })
+        ])
 }
 
 export const ui_subform_Depth_Preprocessor = () => {
@@ -55,11 +56,11 @@ export const ui_subform_Depth_Midas = () => {
         header: null,
         collapsed: false,
         border: false,
-        items: () => ({
+        items: {
             ...cnet_preprocessor_ui_common(form),
             a_value: form.float({ default: 6.28, min: 0, max: 12.48 }),
             bg_threshold: form.float({ default: 0.1, min: 0, max: 0.2 }),
-        }),
+        },
     })
 }
 
@@ -68,12 +69,12 @@ export const ui_subform_Depth_LeReS = () => {
     return form.group({
         label: 'LeReS',
         // startCollapsed: true,
-        items: () => ({
+        items: {
             ...cnet_preprocessor_ui_common(form),
             rm_nearest: form.float({ default: 0.0 }),
             rm_background: form.float({ default: 0.0 }),
             boost: form.bool({ default: false }),
-        }),
+        },
     })
 }
 
@@ -82,9 +83,9 @@ export const ui_subform_Depth_Zoe = () => {
     return form.group({
         label: 'Zoe',
         // startCollapsed: true,
-        items: () => ({
+        items: {
             ...cnet_preprocessor_ui_common(form),
-        }),
+        },
     })
 }
 

@@ -19,7 +19,7 @@ export const DraftHeaderUI = observer(function DraftHeaderUI_(p: {
     return (
         <div
             style={{
-                background: 'linear-gradient(45deg, #3b3b3b, transparent)',
+                background: 'linear-gradient(45deg, #3b3b3b, oklch(var(--b1)))',
                 zIndex: 99 /*boxShadow: '0 0 0.5rem oklch(var(--p)/.3)'*/,
             }}
             className={p.className}

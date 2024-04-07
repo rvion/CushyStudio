@@ -12,72 +12,63 @@ export const ui_refiners = () => {
     const form = getCurrentForm()
     return form.fields(
         {
-            refinerType: form.choices({
-                appearance: 'tab',
-                requirements: [
-                    //
-                    { type: 'customNodesByTitle', title: 'ComfyUI Impact Pack' },
-                ],
-                items: {
-                    faces: form.fields(
-                        {
-                            prompt: form.string({ default: facePositiveDefault }),
-                            detector: form.enum.Enum_UltralyticsDetectorProvider_model_name({
-                                default: 'bbox/face_yolov8m.pt',
-                                requirements: [
-                                    { type: 'customNodesByTitle', title: 'ComfyUI Impact Pack' },
-                                    { type: 'modelInManager', modelName: 'face_yolov8m (bbox)', optional: true },
-                                    { type: 'modelInManager', modelName: 'face_yolov8n (bbox)', optional: true },
-                                    { type: 'modelInManager', modelName: 'face_yolov8s (bbox)', optional: true },
-                                    { type: 'modelInManager', modelName: 'face_yolov8n_v2 (bbox)', optional: true },
-                                ],
-                            }),
-                        },
-                        {
-                            startCollapsed: true,
-                            summary: (ui) => {
-                                return `prompt:${ui.prompt} detector:${ui.detector}`
-                            },
-                        },
-                    ),
-                    hands: form.fields(
-                        {
-                            prompt: form.string({ default: handPositiveDefault }),
-                            detector: form.enum.Enum_UltralyticsDetectorProvider_model_name({
-                                default: 'bbox/hand_yolov8s.pt',
-                                requirements: [
-                                    { type: 'customNodesByTitle', title: 'ComfyUI Impact Pack' },
-                                    { type: 'modelInManager', modelName: 'hand_yolov8n (bbox)' },
-                                    { type: 'modelInManager', modelName: 'hand_yolov8s (bbox)' },
-                                ],
-                            }),
-                        },
-                        {
-                            startCollapsed: true,
-                            summary: (ui) => {
-                                return `prompt:${ui.prompt} detector:${ui.detector}`
-                            },
-                        },
-                    ),
-                    eyes: form.fields(
-                        {
-                            prompt: form.string({
-                                default: eyePositiveDefault,
-                            }),
-                        },
-                        {
-                            startCollapsed: true,
-                            summary: (ui) => {
-                                return `prompt:${ui.prompt}`
-                            },
-                            requirements: [
+            refinerType: form
+                .choices({
+                    appearance: 'tab',
+                    items: {
+                        // FACES -------------------------------------------------------
+                        faces: form
+                            .fields(
+                                {
+                                    prompt: form.string({ default: facePositiveDefault }),
+                                    detector: form.enum.Enum_UltralyticsDetectorProvider_model_name({
+                                        default: 'bbox/face_yolov8m.pt',
+                                    }),
+                                },
+                                {
+                                    startCollapsed: true,
+                                    summary: (ui) => `prompt:${ui.prompt} detector:${ui.detector}`,
+                                },
+                            )
+                            .addRequirements([
+                                { type: 'customNodesByTitle', title: 'ComfyUI Impact Pack' },
+                                { type: 'modelInManager', modelName: 'face_yolov8m (bbox)', optional: true },
+                                { type: 'modelInManager', modelName: 'face_yolov8n (bbox)', optional: true },
+                                { type: 'modelInManager', modelName: 'face_yolov8s (bbox)', optional: true },
+                                { type: 'modelInManager', modelName: 'face_yolov8n_v2 (bbox)', optional: true },
+                            ]),
+                        // HANDS -------------------------------------------------------
+                        hands: form
+                            .fields(
+                                {
+                                    prompt: form.string({ default: handPositiveDefault }),
+                                    detector: form.enum.Enum_UltralyticsDetectorProvider_model_name({
+                                        default: 'bbox/hand_yolov8s.pt',
+                                    }),
+                                },
+                                {
+                                    startCollapsed: true,
+                                    summary: (ui) => `prompt:${ui.prompt} detector:${ui.detector}`,
+                                },
+                            )
+                            .addRequirements([
+                                { type: 'customNodesByTitle', title: 'ComfyUI Impact Pack' },
+                                { type: 'modelInManager', modelName: 'hand_yolov8n (bbox)' },
+                                { type: 'modelInManager', modelName: 'hand_yolov8s (bbox)' },
+                            ]),
+                        // EYES -------------------------------------------------------
+                        eyes: form
+                            .fields(
+                                { prompt: form.string({ default: eyePositiveDefault }) },
+                                { startCollapsed: true, summary: (ui) => `prompt:${ui.prompt}` },
+                            )
+                            .addRequirements([
                                 { type: 'customNodesByTitle', title: 'ComfyUI Impact Pack' },
                                 { type: 'customNodesByTitle', title: 'CLIPSeg' },
-                            ],
-                        },
-                    ),
-                },
-            }),
+                            ]),
+                    },
+                })
+                .addRequirements([{ type: 'customNodesByTitle', title: 'ComfyUI Impact Pack' }]),
             settings: form.fields(
                 {
                     sampler: ui_sampler({ denoise: 0.6, steps: 20, cfg: 7, sampler_name: 'euler' }),

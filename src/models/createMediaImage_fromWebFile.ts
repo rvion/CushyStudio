@@ -1,22 +1,22 @@
-import type { ImageInfos_ComfyGenerated } from './ImageInfos_ComfyGenerated'
 import type { STATE } from '../state/state'
 import type { ComfyNodeID } from '../types/ComfyNodeID'
 import type { PromptID } from '../types/ComfyWsApi'
+import type { ImageInfos_ComfyGenerated } from './ImageInfos_ComfyGenerated'
+import type { MediaImageL } from './MediaImage'
 
 import { mkdirSync, readFileSync, writeFileSync } from 'fs'
 import { imageMeta } from 'image-meta'
 import { dirname } from 'pathe'
 
-import { MediaImageL } from './MediaImage'
 import { hashArrayBuffer } from '../state/hashArrayBuffer'
 import { bang } from '../utils/misc/bang'
 import { extractExtensionFromContentType } from '../widgets/misc/extractExtensionFromContentType'
 
 export type ImageCreationOpts = {
-    promptID?: PromptID
-    stepID?: StepID
-    comfyUIInfos?: ImageInfos_ComfyGenerated
-    promptNodeID?: ComfyNodeID
+    promptID?: Maybe<PromptID>
+    stepID?: Maybe<StepID>
+    comfyUIInfos?: Maybe<ImageInfos_ComfyGenerated>
+    promptNodeID?: Maybe<ComfyNodeID>
 }
 
 export const createMediaImage_fromFileObject = async (st: STATE, file: File, subFolder?: string): Promise<MediaImageL> => {

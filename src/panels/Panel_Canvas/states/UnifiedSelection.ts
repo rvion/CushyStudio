@@ -1,7 +1,7 @@
+import type { STATE } from '../../../state/state'
 import type { RectSimple } from '../types/RectSimple'
 import type { UnifiedCanvas } from './UnifiedCanvas'
 import type { Shape } from 'konva/lib/Shape'
-import type { STATE } from '../../../state/state'
 
 import Konva from 'konva'
 import { Layer } from 'konva/lib/Layer'
@@ -9,7 +9,7 @@ import { KonvaEventObject } from 'konva/lib/Node'
 import { Rect } from 'konva/lib/shapes/Rect'
 import { Transformer } from 'konva/lib/shapes/Transformer'
 import { Stage } from 'konva/lib/Stage'
-import { makeAutoObservable, reaction } from 'mobx'
+import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { toast } from 'react-toastify'
 
@@ -95,21 +95,17 @@ export class UnifiedSelection {
             nodes: [this.live],
         })
         this.layer.add(this.stable, this.live, this.transform)
-
         this.st = canvas.st
-        makeAutoObservable(this)
+        makeAutoObservable(this, { layer: false, stable: false, live: false, transform: false })
     }
 
     show = (): void => {
-        this.live.visible(true)
-        this.stable.visible(true)
-        this.transform.visible(true)
+        this.layer.show()
     }
 
     hide = (): void => {
-        this.live.visible(false)
-        this.stable.visible(false)
-        this.transform.visible(false)
+        console.log(`[UC] hiding selection ${this.id}`)
+        this.layer.hide()
     }
 
     saveImage = (): Maybe<{ image: MediaImageL; mask: MediaImageL }> => {

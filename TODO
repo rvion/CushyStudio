@@ -1,3 +1,34 @@
+
+Loco:
+    ☐ remove `cushy.` usage in all forms
+    ☐ tree widget (no more st) usage
+    ☐ default values
+    icons:
+        ☐ @mdi/react
+        ☐ @mdi/js
+        ☐ list icons
+        ☐ more icons for other key types
+    ☐ misc forms
+        ☐ color transparency ?
+
+UC take 2:
+    ✔ selection should be hidden when not in generate mode @done(24-03-31 20:49)
+    ☐ selection should appear above unnacepted patches
+    ☐ unnacepted patches should have button so we can accept them
+    ☐ unnacepted patches should have arrow buttons to navigate between suggestions
+    ☐ new Draft.UCCategory : Maybe<tool> string
+    ☐ create a bunch of apps / default drafts in  `library/UnifiedCanvas`
+        ☐ add text
+        ☐ ....
+        ☐ ad a few custom
+        ☐ mozaic
+    ☐ default-drafts section in apps.
+    ☐ better API to communicate with the UC
+    ☐ persist UC state in a form tree
+
+-------------
+
+
 ☐ <Form theme={...} />
 ☐ better bundling ?
 ☐ remove all config options
@@ -27,7 +58,7 @@
 ☐ proper Tab
 ✔ lastRunAt @done(24-03-26 15:39)
 ☐ https://github.com/WiseLibs/better-sqlite3/issues/262
-☐ lastUpdateAt on forms.
+✔ lastUpdateAt on forms. @done(24-03-31 19:33)
 ☐ fold button when no label.
 ☐ filter enum values: highlight + sort
 ☐ auto-ui

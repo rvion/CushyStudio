@@ -26,12 +26,39 @@ export type Clipboard_ImagePayload = {
 export class ElectronUtils {
     constructor(public st: STATE) {
         const ipcRenderer = window.require('electron').ipcRenderer
+        ipcRenderer.removeAllListeners('execute')
+        ipcRenderer.on('execute', async function (event, data) {
+            const uid: number = data.uid
+            const draftID: string = data.payload?.query?.draftID
+            if (typeof draftID === 'number') {
+                console.log(`[API] ❌ ERROR RETRIEVING `, event, data)
+                ipcRenderer.send('executed', { uid, success: false, result: 698008 })
+            } else {
+                console.log(`[API] 🟢 must call draft(id=${draftID}) with payload:`, data.payload)
+                const draft = cushy.db.draft.getOrThrow(draftID)
+                draft.AWAKE()
+                const step = draft.start({ httpPayload: data.payload })
+                const res = await step.finished
+                // 🔴 ugly API; will get refined later
+                ipcRenderer.send('executed', {
+                    uid,
+                    success: true,
+                    result: res,
+                    imageURLs: step.generatedImages.map((img) => img.url),
+                    imageDataURL: step.generatedImages.map((img) => img.getBase64Url()),
+                    // result: 69.1337,
+                })
+            }
+            // alert('execute') // this never gets called :(
+        })
 
+        ipcRenderer.removeAllListeners('filedownloaded')
         ipcRenderer.on('filedownloaded', (_ev, json: FileDownloaded_IPCPayload) => {
             createMediaImage_fromPath(st, json.relativePath, {})
             // console.log(`[👙] `, { json })
         })
 
+        ipcRenderer.removeAllListeners('search-result')
         ipcRenderer.on('search-result', (_ev, json: SearchResult_IPCPayload) => {
             cushy.search.results = json
             // console.log(`[🔎] search-result =`, { json })

@@ -1,4 +1,4 @@
-import type { IFormBuilder } from '../Form'
+import type { IFormBuilder } from '../IFormBuilder'
 
 import { nanoid } from 'nanoid'
 

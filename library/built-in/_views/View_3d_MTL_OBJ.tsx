@@ -3,6 +3,19 @@ import { Canvas, useLoader } from '@react-three/fiber'
 import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader'
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader'
 
+export const CustomView_Model = view<{
+    url1: string
+    url2: string
+    url3: string
+}>({
+    preview: (p) => <div>3d</div>,
+    render: (p) => (
+        <Canvas tw='flex-1' shadows>
+            <RenderModelUI {...p} />
+        </Canvas>
+    ),
+})
+
 const RenderModelUI = (data: { url1: string; url2: string }) => {
     // fake MTL file --------------------------------------------------------
     const XX = [
@@ -49,16 +62,3 @@ const RenderModelUI = (data: { url1: string; url2: string }) => {
         </Stage>
     )
 }
-
-export const CustomView_Model = view<{
-    url1: string
-    url2: string
-    url3: string
-}>({
-    preview: (p) => <div>3d</div>,
-    render: (p) => (
-        <Canvas tw='flex-1' shadows>
-            <RenderModelUI {...p} />
-        </Canvas>
-    ),
-})

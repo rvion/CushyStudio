@@ -1,8 +1,8 @@
-import type { IWidget, IWidgetMixins } from './IWidget'
 import type { FC } from 'react'
 
 import { observer } from 'mobx-react-lite'
 
+import { $WidgetSym, type IWidget, type IWidgetMixins } from './IWidget'
 import { WidgetWithLabelUI } from './shared/WidgetWithLabelUI'
 
 /** make sure the user-provided function will properly react to any mobx changes */
@@ -22,6 +22,8 @@ const ensureObserver = <T extends null | undefined | FC<any>>(fn: T): T => {
  *
  */
 const mixin: IWidgetMixins = {
+    $WidgetSym: $WidgetSym,
+
     // BUMP ----------------------------------------------------
     bumpSerial(this: IWidget) {
         this.form.serialChanged(this)
@@ -32,6 +34,7 @@ const mixin: IWidgetMixins = {
     bumpValue(this: IWidget) {
         this.serial.lastUpdatedAt = Date.now() as Timestamp
         this.form.valueChanged(this)
+        /** in case the widget config contains a custom callback, call this one too */
         this.config.onValueChange?.(this.value)
     },
 
@@ -49,7 +52,7 @@ const mixin: IWidgetMixins = {
 
     // UI ----------------------------------------------------
     ui(this: IWidget): JSX.Element {
-        return <WidgetWithLabelUI widget={this} rootKey='_' />
+        return <WidgetWithLabelUI key={this.id} widget={this} rootKey='_' />
     },
 
     defaultHeader(this: IWidget): JSX.Element | undefined {

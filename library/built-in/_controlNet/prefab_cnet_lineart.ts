@@ -6,30 +6,31 @@ import { cnet_preprocessor_ui_common, cnet_ui_common } from './cnet_ui_common'
 // 🅿️ Lineart FORM ===================================================
 export const ui_subform_Lineart = () => {
     const ui: FormBuilder = getCurrentForm()
-    return ui.group({
-        label: 'Lineart',
-        requirements: [
+    return ui
+        .group({
+            label: 'Lineart',
+            items: {
+                ...cnet_ui_common(ui),
+                preprocessor: ui_subform_Lineart_Preprocessor(),
+                models: ui.group({
+                    label: 'Select or Download Models',
+                    // startCollapsed: true,
+                    items: {
+                        cnet_model_name: ui.enum.Enum_ControlNetLoader_control_net_name({
+                            label: 'Model',
+                            filter: (name) => name.toString().includes('lineart'),
+                            // @ts-ignore
+                            default: 'control_v11p_sd15_lineart.pth',
+                        }),
+                    },
+                }),
+            },
+        })
+        .addRequirements([
             //
             { type: 'customNodesByTitle', title: 'ComfyUI-Advanced-ControlNet' },
             { type: 'modelInManager', modelName: 'ControlNet-v1-1 (lineart; fp16)' },
-        ],
-        items: () => ({
-            ...cnet_ui_common(ui),
-            preprocessor: ui_subform_Lineart_Preprocessor(),
-            models: ui.group({
-                label: 'Select or Download Models',
-                // startCollapsed: true,
-                items: () => ({
-                    cnet_model_name: ui.enum.Enum_ControlNetLoader_control_net_name({
-                        label: 'Model',
-                        filter: (name) => name.toString().includes('lineart'),
-                        // @ts-ignore
-                        default: 'control_v11p_sd15_lineart.pth',
-                    }),
-                }),
-            }),
-        }),
-    })
+        ])
 }
 
 export const ui_subform_Lineart_Preprocessor = () => {
@@ -53,10 +54,10 @@ export const ui_subform_Lineart_realistic = () => {
     return form.group({
         // label: 'Settings',
         // startCollapsed: true,
-        items: () => ({
+        items: {
             ...cnet_preprocessor_ui_common(form),
             coarse: form.bool({ default: false }),
-        }),
+        },
     })
 }
 
@@ -65,9 +66,9 @@ export const ui_subform_Lineart_Anime = () => {
     return form.group({
         // label: 'Settings',
         // startCollapsed: true,
-        items: () => ({
+        items: {
             ...cnet_preprocessor_ui_common(form),
-        }),
+        },
     })
 }
 
@@ -76,9 +77,9 @@ export const ui_subform_Lineart_Manga = () => {
     return form.group({
         // label: 'Settings',
         // startCollapsed: true,
-        items: () => ({
+        items: {
             ...cnet_preprocessor_ui_common(form),
-        }),
+        },
     })
 }
 

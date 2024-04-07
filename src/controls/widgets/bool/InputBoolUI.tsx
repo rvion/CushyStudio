@@ -33,7 +33,7 @@ export const InputBoolUI = observer(function InputBoolUI_(p: {
             className={p.className}
             style={p.style}
             tw={[
-                'WIDGET-FIELD select-none',
+                'WIDGET-FIELD select-none cursor-pointer',
                 'flex items-center',
                 '!outline-none',
                 'hover:brightness-110',

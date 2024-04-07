@@ -1,5 +1,4 @@
 import type { IDNaminScheemeInPromptSentToComfyUI } from '../back/IDNaminScheemeInPromptSentToComfyUI'
-import type { ComfyNodeOutput } from '../core/Slot'
 import type { LiveInstance } from '../db/LiveInstance'
 import type { ComfyWorkflowT, TABLES } from '../db/TYPES.gen'
 import type { ComfyNodeID, ComfyNodeMetadata } from '../types/ComfyNodeID'
@@ -394,12 +393,12 @@ export class ComfyWorkflowL {
         return this.stepRef.item
     }
 
-    RUNLAYOUT = (p: {
+    RUNLAYOUT = (p?: {
         /** default: 20 */
         node_vsep?: number
         /** default: 20 */
         node_hsep?: number
-    }) => {
+    }): this => {
         const nodes = toposort(
             this.nodes.map((n) => n.uid),
             this.nodes.flatMap((n) => n._incomingNodes().map((from) => [from, n.uid] as TEdge)),
@@ -418,8 +417,8 @@ export class ComfyWorkflowL {
             else cols[node.col] = [node]
         }
 
-        const HSEP = p.node_hsep ?? 20
-        const VSEP = p.node_vsep ?? 20
+        const HSEP = p?.node_hsep ?? 20
+        const VSEP = p?.node_vsep ?? 20
         // cols.reverse()
         let colX = 0
         let maxY = 0
@@ -440,6 +439,7 @@ export class ComfyWorkflowL {
 
         this.height = maxY
         this.width = colX
+        return this
     }
     width = 100
     height = 100
@@ -453,7 +453,7 @@ export class ComfyWorkflowL {
     sendPrompt = async (p: PromptSettings = {}): Promise<ComfyPromptL> => {
         const step = this.step
         const currentJSON = deepCopyNaive(this.json_forPrompt(p.idMode ?? 'use_stringified_numbers_only'))
-        const debugWorkflow = this.json_workflow()
+        const litegraphWorkflow = await this.RUNLAYOUT().json_workflow()
         console.info('checkpoint:' + JSON.stringify(currentJSON))
 
         const out: ApiPromptInput = {
@@ -461,7 +461,7 @@ export class ComfyWorkflowL {
             extra_data: {
                 extra_pnginfo: {
                     // regular ComfyUI metadat
-                    workflow: debugWorkflow,
+                    workflow: litegraphWorkflow,
 
                     // Cushy metadata
                     cushy_app_id: this.step?.data.appID,

@@ -1,6 +1,7 @@
 import type { Timestamp } from '../../../cards/Timestamp'
 import type { Form } from '../../Form'
 import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { ISpec } from '../../Spec'
 import type { Tree } from '@lezer/common'
 
 import { makeAutoObservable } from 'mobx'
@@ -32,6 +33,12 @@ export type Widget_prompt_config = WidgetConfigFields<
     Widget_prompt_types
 >
 
+// SERIAL FROM VALUE
+export const Widget_prompt_fromValue = (val: Widget_prompt_value): Widget_prompt_serial => ({
+    type: 'prompt',
+    val: val.text,
+})
+
 // SERIAL
 export type Widget_prompt_serial = WidgetSerialFields<{
     type: 'prompt'
@@ -56,6 +63,7 @@ export class Widget_prompt implements IWidget<Widget_prompt_types> {
     DefaultHeaderUI = WidgetPrompt_LineUI
     DefaultBodyUI = WidgetPromptUI
     readonly id: string
+    get config() { return this.spec.config } // prettier-ignore
     readonly type: 'prompt' = 'prompt'
 
     serial: Widget_prompt_serial
@@ -64,9 +72,10 @@ export class Widget_prompt implements IWidget<Widget_prompt_types> {
         //
         public readonly form: Form,
         public readonly parent: IWidget | null,
-        public readonly config: Widget_prompt_config,
+        public readonly spec: ISpec<Widget_prompt>,
         serial?: Widget_prompt_serial,
     ) {
+        const config = spec.config
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? {
             type: 'prompt',

@@ -1,5 +1,6 @@
 import type { Form } from '../../Form'
 import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { ISpec } from '../../Spec'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -48,6 +49,7 @@ export class Widget_matrix implements IWidget<Widget_matrix_types> {
     DefaultHeaderUI = WidgetMatrixUI
     DefaultBodyUI = undefined
     readonly id: string
+    get config() { return this.spec.config } // prettier-ignore
     readonly type: 'matrix' = 'matrix'
     readonly serial: Widget_matrix_serial
 
@@ -60,9 +62,10 @@ export class Widget_matrix implements IWidget<Widget_matrix_types> {
         //
         public readonly form: Form,
         public readonly parent: IWidget | null,
-        public config: Widget_matrix_config,
+        public readonly spec: ISpec<Widget_matrix>,
         serial?: Widget_matrix_serial,
     ) {
+        const config = spec.config
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? { type: 'matrix', collapsed: config.startCollapsed, id: this.id, active: true, selected: [] }
 

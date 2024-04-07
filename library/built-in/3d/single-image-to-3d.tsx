@@ -1,8 +1,7 @@
-import { CustomView_Model } from './_CustomView_Model'
+import { CustomView_Model } from '../_views/View_3d_MTL_OBJ'
 
 app({
     metadata: {
-        illustration: 'https://comfy.moe/assets/illustrations/3d-model-from-single-image.svg',
         name: '3d model from single image',
     },
     ui: (ui) => ({

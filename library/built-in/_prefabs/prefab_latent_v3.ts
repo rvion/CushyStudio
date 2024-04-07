@@ -13,7 +13,7 @@ export const ui_latent_v3 = () => {
             emptyLatent: form.group({
                 collapsed: false,
                 border: false,
-                items: { batchSize, size: form.size({ label: false, collapsed: false, border: false }) },
+                items: { batchSize: batchSize, size: form.size({ label: false, collapsed: false, border: false }) },
             }),
             image: form.group({
                 collapsed: false,
@@ -37,7 +37,7 @@ export const run_latent_v3 = async (p: { opts: OutputFor<typeof ui_latent_v3>; v
 
     // case 1. start form image
     if (opts.image) {
-        const _img = run.loadImage(opts.image.image.imageID)
+        const _img = run.loadImage(opts.image.image.id)
         const image = await _img.loadInWorkflow()
         latent = graph.VAEEncode({ pixels: image, vae: p.vae })
         width = _img.width

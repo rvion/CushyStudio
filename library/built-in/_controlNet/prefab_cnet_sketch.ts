@@ -4,23 +4,23 @@ import { cnet_ui_common } from './cnet_ui_common'
 // 🅿️ Sketch FORM ===================================================
 export const ui_subform_Sketch = () => {
     const form = getCurrentForm()
-    return form.group({
-        label: 'Sketch',
-        requirements: [
-            //
+    return form
+        .group({
+            label: 'Sketch',
+            items: {
+                cnet_model_name: form.enum.Enum_ControlNetLoader_control_net_name({
+                    label: 'Model',
+                    default: 't2iadapter_sketch_sd14v1.pth',
+                }),
+                ...cnet_ui_common(form),
+            },
+        })
+        .addRequirements([
             { type: 'customNodesByTitle', title: 'ComfyUI-Advanced-ControlNet' },
             { type: 'modelInManager', modelName: 'T2I-Adapter (sketch)' },
             { type: 'modelInManager', modelName: 'stabilityai/control-lora-sketch-rank128-metadata.safetensors' },
             { type: 'modelInManager', modelName: 'stabilityai/control-lora-sketch-rank256.safetensors' },
-        ],
-        items: () => ({
-            cnet_model_name: form.enum.Enum_ControlNetLoader_control_net_name({
-                label: 'Model',
-                default: 't2iadapter_sketch_sd14v1.pth',
-            }),
-            ...cnet_ui_common(form),
-        }),
-    })
+        ])
 }
 
 // 🅿️ Sketch RUN ===================================================

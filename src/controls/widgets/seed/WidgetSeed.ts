@@ -1,5 +1,6 @@
 import type { Form } from '../../Form'
 import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { ISpec } from '../../Spec'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -26,6 +27,13 @@ export type Widget_seed_serial = WidgetSerialFields<{
     mode: 'randomize' | 'fixed' | 'last'
 }>
 
+// SERIAL FROM VALUE
+export const Widget_seed_fromValue = (value: Widget_seed_value): Widget_seed_serial => ({
+    type: 'seed',
+    mode: 'fixed',
+    val: value,
+})
+
 // VALUE
 export type Widget_seed_value = number
 
@@ -44,6 +52,7 @@ export class Widget_seed implements IWidget<Widget_seed_types> {
     DefaultHeaderUI = WidgetSeedUI
     DefaultBodyUI = undefined
     readonly id: string
+    get config() { return this.spec.config } // prettier-ignore
     readonly type: 'seed' = 'seed'
     readonly serial: Widget_seed_serial
 
@@ -69,9 +78,10 @@ export class Widget_seed implements IWidget<Widget_seed_types> {
         //
         public readonly form: Form,
         public readonly parent: IWidget | null,
-        public config: Widget_seed_config,
+        public readonly spec: ISpec<Widget_seed>,
         serial?: Widget_seed_serial,
     ) {
+        const config = spec.config
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? {
             type: 'seed',

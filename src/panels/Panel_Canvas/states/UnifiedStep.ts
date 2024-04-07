@@ -1,7 +1,7 @@
-import type { UnifiedCanvas } from './UnifiedCanvas'
 import type { MediaImageL } from '../../../models/MediaImage'
 import type { StepL } from '../../../models/Step'
 import type { STATE } from '../../../state/state'
+import type { UnifiedCanvas } from './UnifiedCanvas'
 
 import Konva from 'konva'
 import { Layer } from 'konva/lib/Layer'
@@ -17,8 +17,30 @@ export class UnifiedStep {
     st: STATE
     layer: Layer
     image: Image
-    area: Konva.Rect
+    placeholder: Konva.Rect
 
+    /** remove self from parent canvas.steps */
+    delete = () => {
+        this.layer.destroy()
+        this.canvas.steps = this.canvas.steps.filter((s) => s !== this)
+    }
+
+    accept = () => {
+        if (this.imageL == null) return
+        this.canvas.addImage(this.imageL, {
+            x: this.image.x(),
+            y: this.image.y(),
+        })
+        this.delete()
+    }
+
+    get imageL(): Maybe<MediaImageL> {
+        const images = this.step.images
+        const stepImage = images[this.index % images.length]
+        return stepImage
+    }
+    // moveNext =
+    index = 0
     constructor(
         //
         public canvas: UnifiedCanvas,
@@ -31,16 +53,19 @@ export class UnifiedStep {
         this.layer = new Konva.Layer()
         stage.add(this.layer)
         const sel = canvas.activeSelection
-        this.area = new Konva.Rect({
+        this.placeholder = new Konva.Rect({
             x: sel.x,
             y: sel.y,
             width: sel.width,
             height: sel.height,
-            fill: 'transparent',
+            fill: 'gray',
             opacity: 0.5,
             stroke: 'red',
+            visible: false,
         })
+
         const img = createHTMLImage_fromURLNoAwait(this.st.latentPreview!.url)
+
         // igm.href canvas.st.latentPreview!.url
         this.image = new Konva.Image({
             draggable: true,
@@ -53,13 +78,32 @@ export class UnifiedStep {
         })
 
         autorun(() => {
-            const x = step.lastImageOutput
-            img.src = x?.url ?? this.st.latentPreview!.url
-            this.image.visible(true)
-            this.image._requestDraw()
+            this.placeholder.visible(false)
+            // if step image, use that
+            const images = this.step.images
+
+            const stepImage = images[this.index % images.length]
+            if (stepImage) {
+                img.src = stepImage.url
+                this.placeholder.visible(false)
+                this.image.visible(true)
+                this.image._requestDraw()
+                return
+            }
+            // else, find a matching preview
+            const previewLatent = this.step.comfy_prompts.find((p) => p.data.id === this.st.latentPreview?.promtID)
+            if (previewLatent) {
+                img.src = this.st.latentPreview!.url
+                this.placeholder.visible(false)
+                this.image.visible(true)
+                this.image._requestDraw()
+                return null
+            }
+
+            this.placeholder.visible(true)
+            this.image.visible(false)
         })
-        // this.image.zIndex(-999)
-        // this.layer.zIndex(-999)
-        this.layer.add(this.image, this.area)
+
+        this.layer.add(this.image, this.placeholder)
     }
 }

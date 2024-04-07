@@ -67,6 +67,7 @@ export const _codegenORM = (store: {
     }
 
     const LiveDBSubKeys: string[] = []
+    out2 += `declare type CushyViewID = Tagged<string, { CushyViewID: true }>\n`
     for (const table of tables) {
         const jsTableName = convertTableNameToJSName(table.name)
         LiveDBSubKeys.push(`'${table.name}'`)
@@ -209,6 +210,7 @@ export const _codegenORM = (store: {
     }
     out1 += '}'
 
+    out1 += `\nexport type TableName = keyof typeof schemas\n`
     out1 += '\nexport type KyselyTables = {\n'
     for (const table of tables) {
         const jsName = convertTableNameToJSName(table.name)
@@ -216,8 +218,8 @@ export const _codegenORM = (store: {
     }
     out1 += '}\n'
 
-    out1 += `export type LiveDBSubKeys = ${LiveDBSubKeys.join(' | ')}\n`
-    out1 += `export const liveDBSubKeys = new Set([${LiveDBSubKeys.join(', ')}]) // prettier-ignore \n`
+    out1 += `export type LiveDBSubKeys = \n    | ${LiveDBSubKeys.join('\n    | ')}\n`
+    out1 += `export const liveDBSubKeys = new Set([\n    ${LiveDBSubKeys.join(',\n    ')},\n])\n`
 
     // console.log(out1)
     writeFileSync('src/db/TYPES.gen.ts', out1)

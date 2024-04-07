@@ -26,46 +26,47 @@ export const ui_cnet = () => {
         })
         .shared('applyDuringUpscale')
 
-    const cnetList = form.list({
-        label: 'ControlNets',
-        tooltip: `Instructional resources:\nhttps://github.com/lllyasviel/ControlNet\nhttps://stable-diffusion-art.com/controlnet/`,
-        requirements: [{ type: 'customNodesByTitle', title: `ComfyUI's ControlNet Auxiliary Preprocessors` }],
-        // label: false,
-        element: () =>
-            form.group({
-                label: 'Controlnet Image',
-                items: () => ({
-                    image: form.image({}),
-                    resize: form.bool({ default: true }),
-                    applyDuringUpscale: applyDuringUpscale,
-                    cnets: form.choices({
-                        // label: false, //'Pick Cnets=>',
-                        label: false,
-                        border: false,
-                        appearance: 'tab',
-                        // justify: 'left',
-                        placeholder: 'ControlNets...',
-                        items: {
-                            IPAdapter: ui_subform_IPAdapter(),
-                            FaceID: ui_IPAdapterFaceID(),
-                            Pose: ui_subform_OpenPose(),
-                            Canny: ui_subform_Canny(),
-                            Depth: ui_subform_Depth(),
-                            Normal: ui_subform_Normal(),
-                            Tile: ui_subform_Tile(),
-                            Scribble: ui_subform_Scribble(),
-                            Lineart: ui_subform_Lineart(),
-                            SoftEdge: ui_subform_SoftEdge(),
-                            Sketch: ui_subform_Sketch(),
-                        },
-                    }),
+    const cnetList = form
+        .list({
+            label: 'ControlNets',
+            tooltip: `Instructional resources:\nhttps://github.com/lllyasviel/ControlNet\nhttps://stable-diffusion-art.com/controlnet/`,
+            // label: false,
+            element: () =>
+                form.group({
+                    label: 'Controlnet Image',
+                    items: {
+                        image: form.image({}),
+                        resize: form.bool({ default: true }),
+                        applyDuringUpscale: applyDuringUpscale,
+                        cnets: form.choices({
+                            // label: false, //'Pick Cnets=>',
+                            label: false,
+                            border: false,
+                            appearance: 'tab',
+                            // justify: 'left',
+                            placeholder: 'ControlNets...',
+                            items: {
+                                IPAdapter: ui_subform_IPAdapter(),
+                                FaceID: ui_IPAdapterFaceID(),
+                                Pose: ui_subform_OpenPose(),
+                                Canny: ui_subform_Canny(),
+                                Depth: ui_subform_Depth(),
+                                Normal: ui_subform_Normal(),
+                                Tile: ui_subform_Tile(),
+                                Scribble: ui_subform_Scribble(),
+                                Lineart: ui_subform_Lineart(),
+                                SoftEdge: ui_subform_SoftEdge(),
+                                Sketch: ui_subform_Sketch(),
+                            },
+                        }),
+                    },
                 }),
-            }),
-    })
+        })
+        .addRequirements([{ type: 'customNodesByTitle', title: `ComfyUI's ControlNet Auxiliary Preprocessors` }])
     return cnetList
     // return form.groupOpt({
 
-    //     items: () => ({
+    //     items: ({
     //         applyDuringUpscale: applyDuringUpscale.hidden(), // so value is accessible at runtime
     //         controlNetList: cnetList,
     //     }),
