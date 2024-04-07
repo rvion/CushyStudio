@@ -1,5 +1,5 @@
 import { Cnet_args, Cnet_return, run_cnet, ui_cnet } from './_controlNet/prefab_cnet'
-import { run_ipadapter_standalone, ui_ipadapter_standalone } from './_ipAdapter/prefab_ipAdapter_base_standalone'
+import { run_ipadapter_standalone } from './_ipAdapter/prefab_ipAdapter_base_standalone'
 import { run_IPAdapterV2, ui_IPAdapterV2 } from './_ipAdapter/prefab_ipAdapter_baseV2'
 import { run_FaceIDV2, ui_IPAdapterFaceIDV2 } from './_ipAdapter/prefab_ipAdapter_faceV2'
 import { ui_highresfix } from './_prefabs/_prefabs'
@@ -82,10 +82,6 @@ app({
         const graph = run.nodes
         // MODEL, clip skip, vae, etc. ---------------------------------------------------------------
         let { ckpt, vae, clip } = run_model(ui.model)
-
-        if (ui.ipadapter) {
-            ckpt = (await run_ipadapter_standalone(ui.ipadapter, ckpt)).ip_adapted_model
-        }
 
         // RICH PROMPT ENGINE -------- ---------------------------------------------------------------
         let positiveText = ui.positive.text

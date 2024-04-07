@@ -72,49 +72,50 @@ export const ui_IPAdapterImageInput = (form: FormBuilder) => {
 // 🅿️ IPAdapter Basic ===================================================
 export const ui_IPAdapterV2 = () => {
     const form = getCurrentForm()
-    return form.fields(
-        {
-            baseImage: ui_IPAdapterImageInput(form),
-            settings: form.fields(
-                {
-                    adapterStrength: form.float({ default: 0.8, min: 0, max: 2, step: 0.1 }),
-                    models: form.fields(
-                        {
-                            type: form.enum.Enum_IPAdapterUnifiedLoader_preset({ default: 'STANDARD (medium strength)' }),
-                        },
-                        {
-                            startCollapsed: true,
-                            summary: (ui) => {
-                                return `model:${ui.type}`
+    return form
+        .fields(
+            {
+                baseImage: ui_IPAdapterImageInput(form),
+                settings: form.fields(
+                    {
+                        adapterStrength: form.float({ default: 0.8, min: 0, max: 2, step: 0.1 }),
+                        models: form.fields(
+                            {
+                                type: form.enum.Enum_IPAdapterUnifiedLoader_preset({ default: 'STANDARD (medium strength)' }),
                             },
-                        },
-                    ),
-                    extra: form.list({
-                        label: 'Extra Images',
-                        element: ui_IPAdapterImageInput(form),
-                    }),
-                    advancedSettings: ui_ipadapter_advancedSettings(form),
-                },
-                {
-                    label: 'IP Adapter Settings',
-                    startCollapsed: true,
-                    summary: (ui) => {
-                        return `extra images:${ui.extra.length} | strength:${ui.adapterStrength} | model:${ui.models.type}|`
+                            {
+                                startCollapsed: true,
+                                summary: (ui) => {
+                                    return `model:${ui.type}`
+                                },
+                            },
+                        ),
+                        extra: form.list({
+                            label: 'Extra Images',
+                            element: ui_IPAdapterImageInput(form),
+                        }),
+                        advancedSettings: ui_ipadapter_advancedSettings(form),
                     },
-                },
-            ),
-            help: form.markdown({ startCollapsed: true, markdown: ipAdapterDoc }),
-        },
-        {
-            label: 'IPAdapter',
-            requirements: [{ type: 'customNodesByTitle', title: 'ComfyUI_IPAdapter_plus' }],
-            summary: (ui) => {
-                return `images:${1 + ui.settings.extra.length} | strength:${ui.settings.adapterStrength} | model:${
-                    ui.settings.models.type
-                }`
+                    {
+                        label: 'IP Adapter Settings',
+                        startCollapsed: true,
+                        summary: (ui) => {
+                            return `extra images:${ui.extra.length} | strength:${ui.adapterStrength} | model:${ui.models.type}|`
+                        },
+                    },
+                ),
+                help: form.markdown({ startCollapsed: true, markdown: ipAdapterDoc }),
             },
-        },
-    )
+            {
+                label: 'IPAdapter',
+                summary: (ui) => {
+                    return `images:${1 + ui.settings.extra.length} | strength:${ui.settings.adapterStrength} | model:${
+                        ui.settings.models.type
+                    }`
+                },
+            },
+        )
+        .addRequirements([{ type: 'customNodesByTitle', title: 'ComfyUI_IPAdapter_plus' }])
 }
 
 // 🅿️ IPAdapter RUN ===================================================
