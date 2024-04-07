@@ -68,7 +68,7 @@ export const CushyUI = observer(function CushyUI_() {
         >
             <div // Global Popup/Reveal/Tooltip container always be on screen with overflow-clip added.
                 id='tooltip-root'
-                tw='absolute inset-0 w-full h-full overflow-clip'
+                tw='absolute inset-0 w-full h-full overflow-clip pointer-events-none'
             >
                 <ActivityUI />
             </div>

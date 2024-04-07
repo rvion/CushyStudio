@@ -42,7 +42,7 @@ export const RevealUI = observer(function RevealUI_(p: RevealProps) {
     // this span could be bypassed by cloning the child element and injecting props, assuming the child will mount them
     const anchor = (
         <span //
-            tw={['inline-block ui-reveal-anchor', uistOrNull?.defaultCursor]}
+            tw={['inline-block ui-reveal-anchor', uistOrNull?.defaultCursor ?? 'cursor-pointer']}
             className={p.className}
             ref={ref}
             style={p.style}

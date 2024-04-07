@@ -12,7 +12,7 @@ export const InputBlockerUI = observer(function InputBlockerUI_(p: {
     return (
         <div
             tabIndex={-1}
-            tw='absolute inset-0 h-full w-full'
+            tw='absolute inset-0 h-full w-full pointer-events-auto'
             onClick={() => {
                 console.log('activity backref clicked')
                 p.stop?.()
