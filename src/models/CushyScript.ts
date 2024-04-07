@@ -1,5 +1,5 @@
 import type { LibraryFile } from '../cards/LibraryFile'
-import type { SchemaDict } from '../controls/Spec'
+import type { SchemaDict } from '../controls/ISpec'
 import type { LiveInstance } from '../db/LiveInstance'
 
 import { statSync } from 'fs'

@@ -1,7 +1,7 @@
 // 🔴 WIP BROKEN TODO: bump
 import type { Form } from '../../Form'
+import type { ISpec } from '../../ISpec'
 import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
-import type { ISpec } from '../../Spec'
 import type { AspectRatio, CushySize, CushySizeByRatio, SDModelType } from './WidgetSizeTypes'
 
 import { makeAutoObservable, runInAction } from 'mobx'

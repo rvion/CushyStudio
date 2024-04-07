@@ -1,7 +1,7 @@
 import type { FormManager } from './FormManager'
 import type { FormSerial } from './FormSerial'
+import type { ISpec } from './ISpec'
 import type { IWidget } from './IWidget'
-import type { ISpec } from './Spec'
 import type { Widget_group, Widget_group_serial } from './widgets/group/WidgetGroup'
 
 import { action, isObservable, makeAutoObservable, observable } from 'mobx'

@@ -1,5 +1,5 @@
 import type { FormBuilder } from '../controls/FormBuilder'
-import type { SchemaDict } from '../controls/Spec'
+import type { SchemaDict } from '../controls/ISpec'
 import type { MediaImageL } from '../models/MediaImage'
 import type { Runtime } from '../runtime/Runtime'
 import type { AppMetadata } from './AppManifest'

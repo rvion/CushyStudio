@@ -1,4 +1,4 @@
-import type { ISpec, SchemaDict } from './Spec'
+import type { ISpec, SchemaDict } from './ISpec'
 
 import { type DependencyList, useMemo } from 'react'
 

@@ -1,8 +1,8 @@
 import type { EnumValue } from '../../../models/ComfySchema'
 import type { CleanedEnumResult } from '../../../types/EnumUtils'
 import type { Form } from '../../Form'
+import type { ISpec } from '../../ISpec'
 import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
-import type { ISpec } from '../../Spec'
 
 import { makeAutoObservable, runInAction } from 'mobx'
 import { nanoid } from 'nanoid'

@@ -1,5 +1,5 @@
+import type { ISpec } from '../../ISpec'
 import type { IWidget } from '../../IWidget'
-import type { ISpec } from '../../Spec'
 import type { Widget_listExt } from '../listExt/WidgetListExt'
 import type { Widget_list } from './WidgetList'
 

@@ -1,4 +1,4 @@
-import type { ISpec } from '../../Spec'
+import type { ISpec } from '../../ISpec'
 import type { Widget_listExt } from './WidgetListExt'
 import type { BoardPosition } from './WidgetListExtTypes'
 import type { Shape } from 'konva/lib/Shape'

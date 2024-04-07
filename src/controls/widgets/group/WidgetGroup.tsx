@@ -1,6 +1,6 @@
 import type { Form } from '../../Form'
+import type { ISpec, SchemaDict } from '../../ISpec'
 import type { GetWidgetResult, IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
-import type { ISpec, SchemaDict } from '../../Spec'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'

@@ -1,8 +1,8 @@
 import type { OpenRouter_Models } from '../llm/OpenRouter_models'
 import type { DraftL } from '../models/Draft'
 import type { IFormBuilder } from './IFormBuilder'
+import type { ISpec, SchemaDict } from './ISpec'
 import type { IWidget } from './IWidget'
-import type { ISpec, SchemaDict } from './Spec'
 
 import { makeAutoObservable, runInAction } from 'mobx'
 

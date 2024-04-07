@@ -1,6 +1,6 @@
 import type { Form } from './Form'
+import type { ISpec } from './ISpec'
 import type { IWidget } from './IWidget'
-import type { ISpec } from './Spec'
 import type { Widget_group, Widget_group_config } from './widgets/group/WidgetGroup'
 import type { Widget_shared } from './widgets/shared/WidgetShared'
 

@@ -1,22 +1,35 @@
+import type { ISpec } from './ISpec'
 import type { IWidget } from './IWidget'
 import type { Requirements } from './Requirements'
-import type { ISpec } from './Spec'
 import type { Widget_list, Widget_list_config } from './widgets/list/WidgetList'
 import type { Widget_optional } from './widgets/optional/WidgetOptional'
 import type { Widget_shared } from './widgets/shared/WidgetShared'
 
+import { createElement } from 'react'
+
+import { InstallRequirementsBtnUI } from './REQUIREMENTS/Panel_InstallRequirementsUI'
 import { getCurrentForm_IMPL } from './shared/runWithGlobalForm'
+import { isWidgetOptional } from './widgets/WidgetUI.DI'
 
-export class Spec<W extends IWidget = IWidget> implements ISpec<W> {
-    $Widget!: W
-    $Type!: W['type']
-    $Config!: W['$Config']
-    $Serial!: W['$Serial']
-    $Value!: W['$Value']
+export class Spec<Widget extends IWidget = IWidget> implements ISpec<Widget> {
+    $Widget!: Widget
+    $Type!: Widget['type']
+    $Config!: Widget['$Config']
+    $Serial!: Widget['$Serial']
+    $Value!: Widget['$Value']
 
-    LabelExtraUI = () => null
+    LabelExtraUI = (p: { widget: Widget }) =>
+        createElement(InstallRequirementsBtnUI, {
+            active: isWidgetOptional(p.widget) ? p.widget.serial.active : true,
+            requirements: this.requirements,
+        })
+
+    readonly requirements: Requirements[] = []
 
     addRequirements = (requirements: Maybe<Requirements | Requirements[]>) => {
+        if (requirements == null) return this
+        if (Array.isArray(requirements)) this.requirements.push(...requirements)
+        else this.requirements.push(requirements)
         return this
     }
 
@@ -24,8 +37,8 @@ export class Spec<W extends IWidget = IWidget> implements ISpec<W> {
 
     constructor(
         //
-        public readonly type: W['type'],
-        public readonly config: W['$Config'],
+        public readonly type: Widget['type'],
+        public readonly config: Widget['$Config'],
     ) {}
 
     /** wrap widget spec to list stuff */

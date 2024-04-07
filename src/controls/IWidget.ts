@@ -1,5 +1,5 @@
 import type { Form } from './Form'
-import type { ISpec } from './Spec'
+import type { ISpec } from './ISpec'
 import type { FC } from 'react'
 
 /**

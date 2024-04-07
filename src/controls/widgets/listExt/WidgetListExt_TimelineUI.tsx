@@ -1,4 +1,4 @@
-import type { ISpec } from '../../Spec'
+import type { ISpec } from '../../ISpec'
 import type { Widget_listExt } from './WidgetListExt'
 
 import { observer, useLocalObservable } from 'mobx-react-lite'

@@ -1,7 +1,7 @@
 import type { Timestamp } from '../../../cards/Timestamp'
 import type { Form } from '../../Form'
+import type { ISpec } from '../../ISpec'
 import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
-import type { ISpec } from '../../Spec'
 import type { Tree } from '@lezer/common'
 
 import { makeAutoObservable } from 'mobx'

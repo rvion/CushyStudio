@@ -180,6 +180,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                                 requirements={widget.config.requirements}
                             />
                         )} */}
+                        {widget.spec.LabelExtraUI && <widget.spec.LabelExtraUI widget={widget} />}
                         {/* TOOLTIPS  */}
                         {widget.config.tooltip && <WidgetTooltipUI widget={widget} />}
                         {LABEL}
