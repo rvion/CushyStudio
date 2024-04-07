@@ -15,6 +15,7 @@ export const ui_ipadapter_standalone = () => {
                 help: form.markdown({ startCollapsed: true, markdown: ipAdapterDoc }),
                 image: form.image({ label: 'Image' }),
                 extra: form.list({ label: 'Extra', element: form.image({ label: 'Image' }) }),
+                embedding_scaling: form.enum.Enum_IPAdapterAdvanced_embeds_scaling({ default: 'V only' }),
                 ...ui_ipadapter_CLIPSelection(form),
                 ...ui_ipadapter_modelSelection(form, 'ip-adapter-plus_sd15.safetensors', ipAdapterModelList),
                 ...ui_subform_IPAdapter_common(form),
@@ -72,7 +73,6 @@ export const run_ipadapter_standalone = async (
         pos_embed,
         neg_embed,
         // image: image,
-        embeds_scaling: 'V only',
         model: ckpt,
         weight_type: ui.settings.weight_type,
         // weight_type: 'original',
@@ -81,6 +81,7 @@ export const run_ipadapter_standalone = async (
         start_at: ui.settings.startAtStepPercent,
         end_at: ui.settings.endAtStepPercent,
         // unfold_batch: ui.settings.unfold_batch,
+        embeds_scaling: ui.embedding_scaling,
     })._MODEL
 
     return { ip_adapted_model }

@@ -24,7 +24,7 @@ import { createHTMLImage_fromURL } from '../state/createHTMLImage_fromURL'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { asSTRING_orCrash } from '../utils/misc/bang'
 import { ManualPromise } from '../utils/misc/ManualPromise'
-import { toastError, toastInfo } from '../utils/misc/toasts'
+import { toastError, toastImage, toastInfo } from '../utils/misc/toasts'
 import { transparentImgURL } from '../widgets/galleries/transparentImg'
 import { createMediaImage_fromDataURI, type ImageCreationOpts } from './createMediaImage_fromWebFile'
 import { getCurrentRun_IMPL } from './getGlobalRuntimeCtx'
@@ -52,7 +52,7 @@ export class MediaImageL {
 
     /* XXX: This should only be a stop-gap for a custom solution that isn't hampered by the browser's security capabilities */
     /** Uses browser clipboard API to copy the image to clipboard, will only copy as a PNG and will not include metadata. */
-    copyToClipboard = async (
+    copyToClipboard_viaCanvas = async (
         /** NOT TAKEN INTO ACCOUNT FOR NOW */
         p?: {
             //
@@ -94,6 +94,20 @@ export class MediaImageL {
             console.error('Error loading image:', error)
             return RET.FAILED
         }
+    }
+    /** Uses electron clipboard API to copy the image to clipboard, will only copy as PNG. */
+    copyToClipboard = () => {
+        this.st.electronUtils
+            .copyImageToClipboard({
+                format: this.extension.split('.').pop(),
+                buffer: this.getArrayBuffer(),
+            })
+            .then((img) => {
+                toastImage(this.getBase64Url(), `Image copied to clipboard!`)
+            })
+            .catch((err) => {
+                toastError(`Could not copy to clipboard: ${err}`)
+            })
     }
 
     copyToClipboardAsBase64 = () => {

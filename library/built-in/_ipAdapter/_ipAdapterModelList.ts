@@ -26,3 +26,8 @@ export const ipAdapter_faceID_LoraList: KnownModel_Name[] = [
     'ip-adapter-faceid-plusv2_sd15_lora.safetensors',
     'ip-adapter-faceid-plusv2_sdxl_lora.safetensors',
 ]
+
+export const ipAdapter_ClipVisionModelList: KnownModel_Name[] = [
+    'CLIPVision model (IP-Adapter) CLIP-ViT-H-14-laion2B-s32B-b79K',
+    'CLIPVision model (IP-Adapter) CLIP-ViT-bigG-14-laion2B-39B-b160k',
+]

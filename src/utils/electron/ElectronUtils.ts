@@ -18,6 +18,11 @@ export type SearchResult_IPCPayload = {
     finalUpdate: boolean // true
 }
 
+export type Clipboard_ImagePayload = {
+    format?: string // 'png' | 'webp' | 'raw' | 'jpeg'
+    buffer: Buffer
+}
+
 export class ElectronUtils {
     constructor(public st: STATE) {
         const ipcRenderer = window.require('electron').ipcRenderer
@@ -90,5 +95,20 @@ export class ElectronUtils {
         } catch (error) {
             console.error('❌ failed to close DevTools', error)
         }
+    }
+
+    copyImageToClipboard = (payload: Clipboard_ImagePayload) => {
+        return new Promise((resolve, reject) => {
+            const format = payload.format ?? 'png'
+            const ipcRenderer = window.require('electron').ipcRenderer
+            ipcRenderer.once('image-copied', (event, response) => {
+                response.result === true ? resolve(response.data) : reject(response.data)
+            })
+
+            ipcRenderer.send('copy-image-to-clipboard', {
+                format,
+                buffer: payload.buffer,
+            })
+        })
     }
 }
