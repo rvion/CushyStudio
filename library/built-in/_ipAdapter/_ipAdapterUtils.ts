@@ -9,10 +9,12 @@ export const ui_subform_IPAdapter_common = (form: FormBuilder, defaultStrength: 
         label: 'Settings',
         startCollapsed: true,
         items: () => ({
+            extra: form.list({ label: 'Extra', element: form.image({ label: 'Image' }) }),
             crop: form.bool({ default: true }),
             startAtStepPercent: form.float({ default: 0, min: 0, max: 1, step: 0.1 }),
             endAtStepPercent: form.float({ default: 1, min: 0, max: 1, step: 0.1 }),
             weight_type: form.enum.Enum_IPAdapterAdvanced_weight_type({ default: 'linear' }),
+            embedding_scaling: form.enum.Enum_IPAdapterAdvanced_embeds_scaling({ default: 'V only' }),
             noise: form.float({ default: 0, min: 0, max: 1, step: 0.1 }),
             unfold_batch: form.bool({ default: false }),
         }),
@@ -24,11 +26,7 @@ export const ui_ipadapter_CLIPSelection = (form: FormBuilder) => ({
     clip_name: form.enum.Enum_CLIPVisionLoader_clip_name({
         // @ts-ignore
         default: 'CLIP-ViT-H-14-laion2B-s32B-b79K.safetensors',
-        recommandedModels: {
-            modelFolderPrefix: 'models/clip_vision',
-            knownModel: ipAdapter_faceID_ClipModelList,
-        },
-        // default: 'ip-adapter_sd15.safetensors'
+        requirements: [{ type: 'modelInManager', modelName: 'CLIPVision model (IP-Adapter) CLIP-ViT-H-14-laion2B-s32B-b79K' }],
         label: 'CLIP Vision Model',
     }),
 })
