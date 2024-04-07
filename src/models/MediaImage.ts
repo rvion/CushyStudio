@@ -31,22 +31,9 @@ import { getCurrentRun_IMPL } from './getGlobalRuntimeCtx'
 
 export interface MediaImageL extends LiveInstance<TABLES['media_image']> {}
 export class MediaImageL {
-    get imageID() {
-        return this.id
-    }
-
     /** return the image filename */
     get filename() {
         return basename(this.data.path)
-        // const infos = this.data.comfyUIInfos
-        // if (infos == null) return 'null'
-        // if (infos.type === 'image-local') return basename(infos.absPath)
-        // if (infos.type === 'image-base64') return this.id
-        // if (infos.type === 'image-generated-by-comfy') return basename(infos.comfyImageInfo.filename)
-        // // if (infos.type === 'image-uploaded-to-comfy') return basename(infos.comfyUploadImageResult.name)
-        // // if (infos.type === 'video-local-ffmpeg') return basename(infos.absPath)
-        // exhaust(infos)
-        // return 'unknown'
     }
 
     get step(): Maybe<StepL> { return this.prompt?.step } // prettier-ignore

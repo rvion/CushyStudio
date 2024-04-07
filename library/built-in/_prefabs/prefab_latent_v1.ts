@@ -26,7 +26,7 @@ export const run_latent_v1 = async (p: { opts: OutputFor<typeof ui_latent_v1>; v
 
     // case 1. start form image
     if (opts.image) {
-        const _img = run.loadImage(opts.image.imageID)
+        const _img = run.loadImage(opts.image.id)
         const image = await _img.loadInWorkflow()
         latent = graph.VAEEncode({ pixels: image, vae: p.vae })
         width = _img.width
