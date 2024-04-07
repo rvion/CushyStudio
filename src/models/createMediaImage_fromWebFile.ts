@@ -2,6 +2,7 @@ import type { STATE } from '../state/state'
 import type { ComfyNodeID } from '../types/ComfyNodeID'
 import type { PromptID } from '../types/ComfyWsApi'
 import type { ImageInfos_ComfyGenerated } from './ImageInfos_ComfyGenerated'
+import type { MediaImageL } from './MediaImage'
 
 import { mkdirSync, readFileSync, writeFileSync } from 'fs'
 import { imageMeta } from 'image-meta'
@@ -10,7 +11,6 @@ import { dirname } from 'pathe'
 import { hashArrayBuffer } from '../state/hashArrayBuffer'
 import { bang } from '../utils/misc/bang'
 import { extractExtensionFromContentType } from '../widgets/misc/extractExtensionFromContentType'
-import { MediaImageL } from './MediaImage'
 
 export type ImageCreationOpts = {
     promptID?: Maybe<PromptID>

@@ -6,7 +6,7 @@ import { fileURLToPath } from 'url'
 
 import { useSt } from '../../state/stateContext'
 import { useImageDrop } from '../../widgets/galleries/dnd'
-import { ImageErrorDisplayUI } from '../../widgets/galleries/ImageUI'
+import { ImageErrorDisplayUI } from '../../widgets/galleries/ImageErrorDisplayUI'
 import { AppIllustrationUI } from './AppIllustrationUI'
 
 // import { CushyAppL } from 'src/models/CushyApp'
