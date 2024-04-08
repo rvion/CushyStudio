@@ -9,7 +9,8 @@ export const MenuUtilsUI = observer(function MenuUtilsUI_(p: {}) {
     const st = useSt()
     return (
         <Dropdown
-            startIcon={<span className='material-symbols-outlined text-green-400'>code</span>}
+            // startIcon={<span className='material-symbols-outlined text-green-400'>code</span>}
+            // startIcon={<span className='material-symbols-outlined'>code</span>}
             title='Utils'
             content={() => (
                 <>

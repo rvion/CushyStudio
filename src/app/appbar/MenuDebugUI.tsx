@@ -12,7 +12,7 @@ export const MenuDebugUI = observer(function MenuDebugUI_(p: {}) {
     const st = useSt()
     return (
         <Dropdown
-            startIcon={<span className='material-symbols-outlined text-orange-500'>sync</span>}
+            // startIcon={<span className='material-symbols-outlined'>sync</span>}
             title='Debug'
             content={() => (
                 <>
