@@ -1,5 +1,5 @@
 import { Cnet_args, Cnet_return, run_cnet, ui_cnet } from './_controlNet/prefab_cnet'
-import { run_ipadapter_standalone } from './_ipAdapter/prefab_ipAdapter_base_standalone'
+// import { run_ipadapter_standalone } from './_ipAdapter/prefab_ipAdapter_base_standalone' ❓
 import { run_IPAdapterV2, ui_IPAdapterV2 } from './_ipAdapter/prefab_ipAdapter_baseV2'
 import { run_FaceIDV2, ui_IPAdapterFaceIDV2 } from './_ipAdapter/prefab_ipAdapter_faceV2'
 import { ui_highresfix } from './_prefabs/_prefabs'
@@ -70,10 +70,6 @@ app({
                 recursiveImgToImg: ui_recursive(),
                 watermark: ui_watermark_v1(),
                 fancyWatermark: form.group(),
-                loop: form.fields({
-                    batchCount: form.int({ default: 1 }),
-                    delayBetween: form.int({ tooltip: 'in ms', default: 0 }),
-                }),
             },
         }),
     }),
@@ -272,18 +268,8 @@ app({
         if (ui.extra.displayAsBeerCan) run.output_custom({ view: CustomView3dCan, params: { imageID: run.lastImage?.id } })
 
         // LOOP IF NEED BE -----------------------------------------------------------------------
-        const loop = ui.extra.loop
-        if (loop) {
-            const ixes = new Array(ui.extra.loop.batchCount).fill(0).map((_, i) => i)
-            for (const i of ixes) {
-                await new Promise((r) => setTimeout(r, loop.delayBetween))
-                await run.PROMPT({ saveFormat })
-            }
-        }
-
         if (ui.extra.watermark) run_watermark_v1(ui.extra.watermark, run.lastImage)
         if (ui.extra.fancyWatermark) run_addFancyWatermarkToAllImage()
-
         if (ui.extra?.makeAVideo) await run.Videos.output_video_ffmpegGeneratedImagesTogether(undefined, 2)
     },
 })
