@@ -57,6 +57,9 @@ export interface IWidget<K extends $WidgetTypes = $WidgetTypes> extends IWidgetM
     /** if specified, override the default algorithm to decide if the widget should have borders */
     border?: boolean
 
+    /** if specified, override the default algorithm to decide if the widget should have borders */
+    collapsible?: boolean
+
     /** if specified, override the default algorithm to decide if the widget should have label aligned */
     alignLabel?: boolean
 
