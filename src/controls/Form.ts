@@ -18,8 +18,8 @@ export type FormProperties<
     BUILDER extends IFormBuilder = IFormBuilder,
 > = {
     name: string
-    onSerialChange?: (root: Form<ROOT, BUILDER>) => void
-    onValueChange?: (root: Form<ROOT, BUILDER>) => void
+    onSerialChange?: (form: Form<ROOT, BUILDER>) => void
+    onValueChange?: (form: Form<ROOT, BUILDER>) => void
     initialSerial?: () => Maybe<FormSerial>
 }
 
