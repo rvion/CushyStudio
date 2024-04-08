@@ -143,10 +143,10 @@ export type SharedWidgetConfig<T extends $WidgetTypes> = {
     body?: null | ((p: { widget: T['$Widget'] }) => JSX.Element)
 
     /** will be called when value changed */
-    onValueChange?: (val: any /* 🔴 T['$Value'] */) => void
+    onValueChange?: (val: T['$Value']) => void
 
     /** custom type checking */
-    check?: (val: any /* 🔴 T['$Value'] */) => Maybe<string | boolean>
+    check?: (val: T['$Value']) => Maybe<string | boolean>
 
     /**
      * The label to display.
