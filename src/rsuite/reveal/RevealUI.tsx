@@ -132,7 +132,14 @@ const mkTooltip = (uist: RevealState | null) => {
             style={{ zIndex: 99999999, backgroundColor: '#0000003d' }}
             tw='pointer-events-auto absolute w-full h-full flex items-center justify-center z-50'
         >
-            <ModalShellUI title={p.title}>{hiddenContent}</ModalShellUI>
+            <ModalShellUI
+                close={() => {
+                    uist.close()
+                }}
+                title={p.title}
+            >
+                {hiddenContent}
+            </ModalShellUI>
         </div>
     ) : (
         <div
