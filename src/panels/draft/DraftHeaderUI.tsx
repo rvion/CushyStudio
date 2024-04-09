@@ -19,11 +19,12 @@ export const DraftHeaderUI = observer(function DraftHeaderUI_(p: {
     return (
         <div
             style={{
-                background: 'linear-gradient(45deg, #3b3b3b, oklch(var(--b1)))',
+                // background: 'linear-gradient(45deg, #3b3b3b, oklch(var(--b1)))',
+                background: 'bg-',
                 zIndex: 99 /*boxShadow: '0 0 0.5rem oklch(var(--p)/.3)'*/,
             }}
             className={p.className}
-            tw='_DraftHeaderUI flex border-b border-b-base-300 sticky top-0 z-50'
+            tw='_DraftHeaderUI bg-base-300 flex border-b border-b-base-300 sticky top-0 z-50'
         >
             <div tw='flex gap-1 mt-1 flex-grow relative text-base-content'>
                 <DraftIllustrationUI revealAppIllustrationOnHover draft={draft} size='7.3rem' />

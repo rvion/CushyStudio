@@ -4,6 +4,15 @@ html, body, #root {
 }
 
 
+.flexlayout__tab{
+    border: 1px solid transparent;
+}
+.flexlayout__tab:hover {
+    border: 1px solid oklch(var(--p));
+}
+*:focus {
+    outline: olivedrab solid 2px !important;
+}
 .scroll { overflow:auto; }
 .gap { gap: .7rem }
 .gap1 { gap: .3rem }

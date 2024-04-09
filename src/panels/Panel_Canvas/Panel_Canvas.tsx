@@ -3,6 +3,7 @@ import { observer } from 'mobx-react-lite'
 import * as React from 'react'
 import { useMemo } from 'react'
 
+import { RegionUI } from '../../operators/RegionUI'
 import { useSt } from '../../state/stateContext'
 import { useImageDrop } from '../../widgets/galleries/dnd'
 import { UnifiedCanvasMenuUI } from './menu/UnifiedCanvasMenuUI'
@@ -59,7 +60,7 @@ export const Panel_Canvas = observer(function Panel_Canvas_(p: {
             ref={containerRef}
             className='flex flex-1 w-full h-full overflow-hidden'
         >
-            <UnifiedCanvasCtx.Provider value={canvas}>
+            <RegionUI name='UnifiedCanvas2' ctx={UnifiedCanvasCtx} value={canvas}>
                 <UnifiedCanvasMenuUI />
                 {/* <CanvasToolbarUI /> */}
                 <div
@@ -98,7 +99,7 @@ export const Panel_Canvas = observer(function Panel_Canvas_(p: {
                     })}
                     <div id={canvas.uid} ref={canvas.rootRef} tw='flex-1'></div>
                 </div>
-            </UnifiedCanvasCtx.Provider>
+            </RegionUI>
         </div>
     )
 })

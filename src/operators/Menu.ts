@@ -1,12 +1,13 @@
 import type { IWidget } from '../controls/IWidget'
+import type { NO_PROPS } from './NO_PROPS'
 
 import { nanoid } from 'nanoid'
 import { createElement, type FC, useMemo } from 'react'
 
-import { BoundMenuSym } from './_isBoundMenu'
 import { Activity, activityManger } from './Activity'
-import { BoundCommand } from './Command'
-import { MenuUI } from './MenuUI'
+import { type BoundCommand, Command } from './Command'
+import { BoundMenuSym } from './introspect/_isBoundMenu'
+import { MenuRootUI, MenuUI } from './MenuUI'
 import { RET } from './RET'
 
 // ------------------------------------------------------------------------------------------
@@ -21,7 +22,8 @@ const menuManager = new MenuManager()
 // ------------------------------------------------------------------------------------------
 // ACTIVITY STACK
 export type MenuEntryWithKey = { entry: MenuEntry; char?: string; charIx?: number }
-export type MenuEntry = IWidget | FC<{}> | BoundCommand | BoundMenu
+
+export type MenuEntry = IWidget | FC<{}> | Command | BoundCommand | BoundMenu
 
 /** supplied menu definition */
 export type MenuDef<Props> = {
@@ -43,16 +45,35 @@ export class Menu<Props> {
         this.id = def.id ?? nanoid()
         menuManager.registerMenu(this)
     }
-    UI = (p: { props: Props }): JSX.Element => {
-        const instance = useMemo(() => new MenuInstance(this, p.props), [])
-        return createElement(MenuUI, { menu: instance })
-    }
+    UI = (p: { props: Props }): JSX.Element => createElement(MenuUI, { menu: useMemo(() => new MenuInstance(this, p.props), []) })
+    UI2 = (p: { props: Props }): JSX.Element => createElement(MenuRootUI, { menu: useMemo(() => new MenuInstance(this, p.props), []) }) // prettier-ignore
+
     /** bind a menu to give props */
     bind = (props: Props, ui?: BoundMenuOpts): BoundMenu => new BoundMenu(this, props, ui)
 
     /** push the menu to current activity */
     open(props: Props): RET | Promise<RET> {
         const instance = new MenuInstance(this, props)
+        return activityManger.push(instance)
+    }
+}
+
+export class MenuWithoutProps {
+    id: MenuID
+    get title() { return this.def.title } // prettier-ignore
+    constructor(public def: MenuDef<NO_PROPS>) {
+        this.id = def.id ?? nanoid()
+        menuManager.registerMenu(this)
+    }
+    UI = (p: {}): JSX.Element => createElement(MenuRootUI, { menu: useMemo(() => new MenuInstance(this, {}), []) })
+    UI2 = (): JSX.Element => createElement(MenuRootUI, { menu: useMemo(() => new MenuInstance(this, {}), []) })
+
+    /** bind a menu to give props */
+    bind = (ui?: BoundMenuOpts): BoundMenu => new BoundMenu(this, {}, ui)
+
+    /** push the menu to current activity */
+    open(): RET | Promise<RET> {
+        const instance = new MenuInstance(this, {})
         return activityManger.push(instance)
     }
 }
@@ -92,8 +113,8 @@ export class MenuInstance<Props> implements Activity {
         const allocatedKeys = new Set<string>([...this.keysTaken])
         const out: MenuEntryWithKey[] = []
         for (const entry of this.entries) {
-            if (entry instanceof BoundCommand) {
-                const res = this.findSuitableKeys(entry.command.label, allocatedKeys)
+            if (entry instanceof Command) {
+                const res = this.findSuitableKeys(entry.label, allocatedKeys)
                 if (res == null) continue
                 out.push({ entry, char: res.char, charIx: res.pos })
             } else if (entry instanceof BoundMenu) {
@@ -124,6 +145,7 @@ export class MenuInstance<Props> implements Activity {
     }
 }
 export const menu = <P>(def: MenuDef<P>): Menu<P> => new Menu(def)
+export const menuWithoutProps = (def: MenuDef<NO_PROPS>): MenuWithoutProps => new MenuWithoutProps(def)
 
 // ------------------------------------------------------------------------------------------
 // A bound menu; ready to be opened without further params

@@ -12,7 +12,7 @@ export const getComfyURLFromImageInfos = (infos: ImageInfos_ComfyGenerated) => {
 export const checkIfComfyImageExists = async (
     comfyHostHttpURL: string,
     imageInfo: { type: `input` | `ouput`; subfolder: string; filename: string },
-) => {
+): Promise<boolean> => {
     try {
         const url = getComfyURLFromImageInfos({ comfyHostHttpURL, comfyImageInfo: imageInfo })
         console.log(`checkIfComfyImageExists`, { url })

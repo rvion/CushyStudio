@@ -7,15 +7,27 @@ import { Fragment } from 'react/jsx-runtime'
 import { isWidget } from '../controls/IWidget'
 import { MenuItem } from '../rsuite/Dropdown'
 import { RevealUI } from '../rsuite/reveal/RevealUI'
-import { isBoundCommand } from './_isBoundCommand'
-import { isBoundMenu } from './_isBoundMenu'
+import { isBoundCommand } from './introspect/_isBoundCommand'
+import { isBoundMenu } from './introspect/_isBoundMenu'
+import { isCommand } from './introspect/_isCommand'
+
+export const MenuRootUI = observer(function MenuRootUI_(p: { menu: MenuInstance<any> }) {
+    return (
+        <RevealUI className='dropdown' placement='bottomStart' content={() => <p.menu.UI />}>
+            <label tabIndex={0} tw={[`flex-nowrap btn btn-ghost btn-sm py-0 px-1.5`]}>
+                {/* <span tw='hidden lg:inline-block'>{p.startIcon}</span> */}
+                {p.menu.menu.title}
+            </label>
+        </RevealUI>
+    )
+})
 
 export const MenuUI = observer(function MenuUI_(p: { menu: MenuInstance<any> }) {
     return (
         <div tw='w-fit'>
             <ul tw='dropdown menu bg-neutral'>
                 {p.menu.entriesWithKb.map(({ entry, char, charIx }, ix) => {
-                    if (isBoundCommand(entry)) {
+                    if (isBoundCommand(entry) || isCommand(entry)) {
                         const label = entry.label
                         return (
                             <MenuItem //
@@ -23,7 +35,7 @@ export const MenuUI = observer(function MenuUI_(p: { menu: MenuInstance<any> }) 
                                 key={ix}
                                 shortcut={char}
                                 onClick={() => {
-                                    entry.command.call(entry.props)
+                                    entry.execute()
                                     p.menu.onStop()
                                 }}
                                 label={

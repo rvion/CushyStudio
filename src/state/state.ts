@@ -18,8 +18,7 @@ import { join } from 'pathe'
 import { createRef } from 'react'
 import { fromZodError } from 'zod-validation-error'
 
-import { ShortcutWatcher } from '../app/shortcuts/ShortcutManager'
-import { allCommands } from '../app/shortcuts/shortcuts'
+import { commandManager, type CommandManager } from '../app/shortcuts/CommandManager'
 import { createRandomGenerator } from '../back/random'
 import { asAppPath } from '../cards/asAppPath'
 import { GithubRepoName } from '../cards/githubRepo'
@@ -45,6 +44,7 @@ import { DraftL } from '../models/Draft'
 import { HostL } from '../models/Host'
 import { ProjectL } from '../models/Project'
 import { StepL } from '../models/Step'
+import { regionMonitor, RegionMonitor } from '../operators/RegionMonitor'
 import { TreeApp } from '../panels/libraryUI/tree/nodes/TreeApp'
 import { TreeDraft } from '../panels/libraryUI/tree/nodes/TreeDraft'
 import { TreeAllApps, TreeAllDrafts, TreeFavoriteApps, TreeFavoriteDrafts } from '../panels/libraryUI/tree/nodes/TreeFavorites'
@@ -108,13 +108,21 @@ export class STATE {
     layout: CushyLayoutManager
     uid = nanoid() // front uid to fix hot reload
     db: LiveDB // core data
-    shortcuts: ShortcutWatcher
+    // shortcuts: CommandManager
     uploader: Uploader
     supabase: SupabaseClient<Database>
     auth: AuthState
     managerRepository = new ComfyManagerRepository({ check: false, genTypes: false })
     search: SearchManager = new SearchManager(this)
-    forms = CushyFormManager
+    forms: CushyFormManager = CushyFormManager
+    commands: CommandManager = commandManager
+    mouse: RegionMonitor = regionMonitor
+    // prettier-ignore
+    // /* 🔴 */ mouse = {
+    // /* 🔴 */     isOver(p: string) {
+    // /* 🔴 */         return true
+    // /* 🔴 */     },
+    // /* 🔴 */ }
 
     _updateTime = () => {
         const now = Date.now()
@@ -451,9 +459,11 @@ export class STATE {
             onSerialChange: (form) => writeJSON('settings/civitai.json', form.serial),
         },
     )
-    sideBarConf = CushyFormManager.form(
+    favbar = CushyFormManager.form(
         (f) => ({
             size: f.int({ label: false, alignLabel: false, text: 'Size', min: 24, max: 128, default: 48, suffix: 'px', step: 4 }),
+            visible: f.bool(),
+            grayscale: f.boolean({ label: 'Grayscale' }),
             appIcons: f
                 .int({
                     label: false,
@@ -466,8 +476,6 @@ export class STATE {
                     suffix: '%',
                 })
                 .optional(true),
-            tree: f.bool({ label: false, alignLabel: false, text: 'File Tree', display: 'button', expand: true, icon: 'folder' }),
-            apps: f.bool({ label: false, alignLabel: false, text: 'App Tree', display: 'button', expand: true, icon: 'apps' }),
         }),
         {
             name: 'SideBar Conf',
@@ -561,8 +569,8 @@ export class STATE {
         this.supabase = mkSupa()
         this.marketplace = new Marketplace(this)
         this.electronUtils = new ElectronUtils(this)
-        this.shortcuts = new ShortcutWatcher(allCommands, this, { name: nanoid() })
-        console.log(`[🛋️] ${this.shortcuts.shortcuts.length} shortcuts loaded`)
+        // this.shortcuts = new CommandManager(allCommands, this, { name: nanoid() })
+        // console.log(`[🛋️] ${this.shortcuts.shortcuts.length} shortcuts loaded`)
         this.uploader = new Uploader(this)
         this.layout = new CushyLayoutManager(this)
         this.themeMgr = new ThemeManager(this)
@@ -738,13 +746,6 @@ export class STATE {
         blob: Blob
         url: string
     }> = null
-
-    // prettier-ignore
-    /* 🔴 */ mouse = {
-    /* 🔴 */     isOver(p: string) {
-    /* 🔴 */         return true
-    /* 🔴 */     },
-    /* 🔴 */ }
 
     onMessage = (e: MessageEvent, host: HostL) => {
         if (e.data instanceof ArrayBuffer) {

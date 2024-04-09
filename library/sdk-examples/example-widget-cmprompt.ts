@@ -1,6 +1,6 @@
 app({
     ui: (form) => ({
-        promptV2: form.promptV2({}),
+        promptV2: form.prompt({}),
         // basicList: form.list({
         //     element: () => form.int({}),
         // }),

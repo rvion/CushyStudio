@@ -3,7 +3,7 @@ import type { DraftL } from '../../models/Draft'
 
 import { toJS } from 'mobx'
 import { observer } from 'mobx-react-lite'
-import { useEffect, useLayoutEffect } from 'react'
+import { useLayoutEffect } from 'react'
 
 import { FormUI } from '../../controls/FormUI'
 import { InstallRequirementsBtnUI } from '../../controls/REQUIREMENTS/Panel_InstallRequirementsUI'
@@ -30,7 +30,7 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
     const st = useSt()
     const draft = p.draft
 
-    useEffect(() => draft?.AWAKE(), [draft?.id])
+    // useEffect(() => draft?.AWAKE(), [draft?.id])
 
     // ensure
     useLayoutEffect(() => {
@@ -123,7 +123,7 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                         </div>
                     )}
                 >
-                    <div tw='text-sm italic'>{Object.keys(app.script.data.metafile?.inputs ?? {}).length} files</div>
+                    <div tw='subtle'>{Object.keys(app.script.data.metafile?.inputs ?? {}).length} files</div>
                 </RevealUI>
             </div>
         </draftContext.Provider>

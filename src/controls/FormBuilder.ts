@@ -62,8 +62,6 @@ export type XSpacer = Spec<Widget_spacer>
 export type XMarkdown = Spec<Widget_markdown>
 export type XCustom<T> = Spec<Widget_custom<T>>
 
-// --------------------------------------------------------
-export type AnyFormGroupSpec = ISpec<Widget_group<any>>
 export class FormBuilder implements IFormBuilder {
     SpecCtor = Spec
 
@@ -78,79 +76,157 @@ export class FormBuilder implements IFormBuilder {
         })
     }
 
-    time = (config: Widget_string_config = {}) => new Spec<Widget_string>('str', { inputType: 'time', ...config })
-    date = (config: Widget_string_config = {}) => new Spec<Widget_string>('str', { inputType: 'date', ...config })
-    datetime = (config: Widget_string_config = {}) => new Spec<Widget_string>('str', { inputType: 'datetime-local', ...config })
-    password = (config: Widget_string_config = {}) => new Spec<Widget_string>('str', { inputType: 'password', ...config })
-    email = (config: Widget_string_config = {}) => new Spec<Widget_string>('str', { inputType: 'email', ...config })
-    url = (config: Widget_string_config = {}) => new Spec<Widget_string>('str', { inputType: 'url', ...config })
-    string = (config: Widget_string_config = {}) => new Spec<Widget_string>('str', config)
-    text = (config: Widget_string_config = {}) => new Spec<Widget_string>('str', config)
-    textarea = (config: Widget_string_config = {}) => new Spec<Widget_string>('str', { textarea: true, ...config })
-    boolean = (config: Widget_bool_config = {}) => new Spec<Widget_bool>('bool', config)
-    bool = (config: Widget_bool_config = {}) => new Spec<Widget_bool>('bool', config)
-    size = (config: Widget_size_config = {}) => new Spec<Widget_size>('size', config)
-    spacer = (config: Widget_spacer_config = {}) =>
-        new Spec<Widget_spacer>('spacer', { alignLabel: false, label: false, collapsed: false, border: false })
-    orbit = (config: Widget_orbit_config = {}) => new Spec<Widget_orbit>('orbit', config)
-    seed = (config: Widget_seed_config = {}) => new Spec<Widget_seed>('seed', config)
-    color = (config: Widget_color_config = {}) => new Spec<Widget_color>('color', config)
-    colorV2 = (config: Widget_string_config = {}) => new Spec<Widget_string>('str', { inputType: 'color', ...config })
-    matrix = (config: Widget_matrix_config) => new Spec<Widget_matrix>('matrix', config)
-    button = <K>(config: Widget_button_config<K>) => new Spec<Widget_button<K>>('button', config)
+    time = (config: Widget_string_config = {}): XString => {
+        return new Spec<Widget_string>('str', { inputType: 'time', ...config })
+    }
+    date = (config: Widget_string_config = {}): XString => {
+        return new Spec<Widget_string>('str', { inputType: 'date', ...config })
+    }
+    datetime = (config: Widget_string_config = {}): XString => {
+        return new Spec<Widget_string>('str', { inputType: 'datetime-local', ...config })
+    }
+    password = (config: Widget_string_config = {}): XString => {
+        return new Spec<Widget_string>('str', { inputType: 'password', ...config })
+    }
+    email = (config: Widget_string_config = {}): XString => {
+        return new Spec<Widget_string>('str', { inputType: 'email', ...config })
+    }
+    url = (config: Widget_string_config = {}): XString => {
+        return new Spec<Widget_string>('str', { inputType: 'url', ...config })
+    }
+    string = (config: Widget_string_config = {}): XString => {
+        return new Spec<Widget_string>('str', config)
+    }
+    text = (config: Widget_string_config = {}): XString => {
+        return new Spec<Widget_string>('str', config)
+    }
+    textarea = (config: Widget_string_config = {}): XString => {
+        return new Spec<Widget_string>('str', { textarea: true, ...config })
+    }
+    boolean = (config: Widget_bool_config = {}): XBool => {
+        return new Spec<Widget_bool>('bool', config)
+    }
+    bool = (config: Widget_bool_config = {}): XBool => {
+        return new Spec<Widget_bool>('bool', config)
+    }
+    size = (config: Widget_size_config = {}): XSize => {
+        return new Spec<Widget_size>('size', config)
+    }
+    spacer = (config: Widget_spacer_config = {}): XSpacer => {
+        return new Spec<Widget_spacer>('spacer', { alignLabel: false, label: false, collapsed: false, border: false })
+    }
+    orbit = (config: Widget_orbit_config = {}): XOrbit => {
+        return new Spec<Widget_orbit>('orbit', config)
+    }
+    seed = (config: Widget_seed_config = {}): XSeed => {
+        return new Spec<Widget_seed>('seed', config)
+    }
+    color = (config: Widget_color_config = {}): XColor => {
+        return new Spec<Widget_color>('color', config)
+    }
+    colorV2 = (config: Widget_string_config = {}): XString => {
+        return new Spec<Widget_string>('str', { inputType: 'color', ...config })
+    }
+    matrix = (config: Widget_matrix_config): XMatrix => {
+        return new Spec<Widget_matrix>('matrix', config)
+    }
+    button = <K>(config: Widget_button_config<K>): XButton<K> => {
+        return new Spec<Widget_button<K>>('button', config)
+    }
     /** variants: `header` */
-    markdown = (config: Widget_markdown_config | string) =>
-        new Spec<Widget_markdown>('markdown', typeof config === 'string' ? { markdown: config } : config)
+    markdown = (config: Widget_markdown_config | string): XMarkdown => {
+        return new Spec<Widget_markdown>('markdown', typeof config === 'string' ? { markdown: config } : config)
+    }
     /** [markdown variant]: inline=true, label=false */
-    header = (config: Widget_markdown_config | string) =>
-        new Spec<Widget_markdown>(
-            'markdown',
+    header = (config: Widget_markdown_config | string): XMarkdown => {
+        const config_: Widget_markdown_config =
             typeof config === 'string'
                 ? { markdown: config, inHeader: true, label: false }
-                : { inHeader: true, label: false, alignLabel: false, ...config },
-        )
-    image = (config: Widget_image_config = {}): XImage => new Spec<Widget_image>('image', config)
-    prompt = (config: Widget_prompt_config = {}) => new Spec<Widget_prompt>('prompt', config)
-    promptV2 = (config: Widget_prompt_config = {}) => new Spec<Widget_prompt>('prompt', config)
-    int = (config: Omit<Widget_number_config, 'mode'> = {}): XNumber =>
-        new Spec<Widget_number>('number', { mode: 'int', ...config })
+                : { inHeader: true, label: false, alignLabel: false, ...config }
+        return new Spec<Widget_markdown>('markdown', config_)
+    }
+    image = (config: Widget_image_config = {}): XImage => {
+        return new Spec<Widget_image>('image', config)
+    }
+    prompt = (config: Widget_prompt_config = {}): XPrompt => {
+        return new Spec<Widget_prompt>('prompt', config)
+    }
+    int = (config: Omit<Widget_number_config, 'mode'> = {}): XNumber => {
+        return new Spec<Widget_number>('number', { mode: 'int', ...config })
+    }
     /** [number variant] precent = mode=int, default=100, step=10, min=1, max=100, suffix='%', */
-    percent = (config: Omit<Widget_number_config, 'mode'> = {}) =>
-        new Spec<Widget_number>('number', { mode: 'int', default: 100, step: 10, min: 1, max: 100, suffix: '%', ...config })
-    float = (config: Omit<Widget_number_config, 'mode'> = {}): XNumber =>
-        new Spec<Widget_number>('number', { mode: 'float', ...config })
-    number = (config: Omit<Widget_number_config, 'mode'> = {}) => new Spec<Widget_number>('number', { mode: 'float', ...config })
-    custom = <TViewState>(config: Widget_custom_config<TViewState>) => new Spec<Widget_custom<TViewState>>('custom', config)
-    list = <T extends ISpec>(config: Widget_list_config<T>) => new Spec<Widget_list<T>>('list', config)
-    listExt = <T extends ISpec>(config: Widget_listExt_config<T>) => new Spec<Widget_listExt<T>>('listExt', config)
-    timeline = <T extends ISpec>(config: Widget_listExt_config<T>) =>
-        new Spec<Widget_listExt<T>>('listExt', { mode: 'timeline', ...config })
-    regional = <T extends ISpec>(config: Widget_listExt_config<T>) =>
-        new Spec<Widget_listExt<T>>('listExt', { mode: 'regional', ...config })
-    selectOneV2 = < T extends string>(p: T[], config: Omit<Widget_selectOne_config<BaseSelectEntry<T>>,'choices'>={})                                    => new Spec<Widget_selectOne<BaseSelectEntry<T>>>('selectOne', { choices: p.map((id) => ({ id, label: id })), appearance:'tab', ...config }) // prettier-ignore
-    selectOne = <const T extends BaseSelectEntry>(config: Widget_selectOne_config<T>) =>
-        new Spec<Widget_selectOne<T>>('selectOne', config)
-    selectMany = <const T extends BaseSelectEntry>(config: Widget_selectMany_config<T>) =>
-        new Spec<Widget_selectMany<T>>('selectMany', config)
+    percent = (config: Omit<Widget_number_config, 'mode'> = {}): XNumber => {
+        return new Spec<Widget_number>('number', {
+            mode: 'int',
+            default: 100,
+            step: 10,
+            min: 0,
+            max: 100,
+            suffix: '%',
+            ...config,
+        })
+    }
+    float = (config: Omit<Widget_number_config, 'mode'> = {}): XNumber => {
+        return new Spec<Widget_number>('number', { mode: 'float', ...config })
+    }
+    number = (config: Omit<Widget_number_config, 'mode'> = {}): XNumber => {
+        return new Spec<Widget_number>('number', { mode: 'float', ...config })
+    }
+    custom = <T>(config: Widget_custom_config<T>): XCustom<T> => {
+        return new Spec<Widget_custom<T>>('custom', config)
+    }
+    list = <T extends ISpec>(config: Widget_list_config<T>): XList<T> => {
+        return new Spec<Widget_list<T>>('list', config)
+    }
+    listExt = <T extends ISpec>(config: Widget_listExt_config<T>): XListExt<T> => {
+        return new Spec<Widget_listExt<T>>('listExt', config)
+    }
+    timeline = <T extends ISpec>(config: Widget_listExt_config<T>) => {
+        return new Spec<Widget_listExt<T>>('listExt', { mode: 'timeline', ...config })
+    }
+    regional = <T extends ISpec>(config: Widget_listExt_config<T>) => {
+        return new Spec<Widget_listExt<T>>('listExt', { mode: 'regional', ...config })
+    }
+    selectOneV2 = <T extends string>(p: T[], config: Omit<Widget_selectOne_config<BaseSelectEntry<T>>, 'choices'> = {}) => {
+        return new Spec<Widget_selectOne<BaseSelectEntry<T>>>('selectOne', { choices: p.map((id) => ({ id, label: id })), appearance:'tab', ...config }) // prettier-ignore
+    }
+    selectOne = <const T extends BaseSelectEntry>(config: Widget_selectOne_config<T>) => {
+        return new Spec<Widget_selectOne<T>>('selectOne', config)
+    }
+    selectMany = <const T extends BaseSelectEntry>(config: Widget_selectMany_config<T>) => {
+        return new Spec<Widget_selectMany<T>>('selectMany', config)
+    }
     /** see also: `fields` for a more practical api */
-    group = <T extends SchemaDict>(config: Widget_group_config<T> = {}) => new Spec<Widget_group<T>>('group', config)
+    group = <T extends SchemaDict>(config: Widget_group_config<T> = {}) => {
+        return new Spec<Widget_group<T>>('group', config)
+    }
     /** Convenience function for `group({ border: false, label: false, collapsed: false })` */
-    column = <T extends SchemaDict>(config: Widget_group_config<T> = {}) =>
-        new Spec<Widget_group<T>>('group', { border: false, label: false, collapsed: false, ...config })
+    column = <T extends SchemaDict>(config: Widget_group_config<T> = {}) => {
+        return new Spec<Widget_group<T>>('group', { border: false, label: false, collapsed: false, ...config })
+    }
     /** Convenience function for `group({ border: false, label: false, collapsed: false, layout:'H' })` */
-    row = <T extends SchemaDict>(config: Widget_group_config<T> = {}) =>
-        new Spec<Widget_group<T>>('group', { border: false, label: false, collapsed: false, layout: 'H', ...config })
-    fields = <T extends SchemaDict>(fields: T, config: Omit<Widget_group_config<T>, 'items'> = {}): XGroup<T> =>
-        new Spec<Widget_group<T>>('group', { items: fields, ...config })
-    choice = <T extends { [key: string]: ISpec }>(config: Omit<Widget_choices_config<T>, 'multi'>) =>
-        new Spec<Widget_choices<T>>('choices', { multi: false, ...config })
+    row = <T extends SchemaDict>(config: Widget_group_config<T> = {}) => {
+        return new Spec<Widget_group<T>>('group', { border: false, label: false, collapsed: false, layout: 'H', ...config })
+    }
+    /** simpler way to create `group` */
+    fields = <T extends SchemaDict>(fields: T, config: Omit<Widget_group_config<T>, 'items'> = {}): XGroup<T> => {
+        return new Spec<Widget_group<T>>('group', { items: fields, ...config })
+    }
+    choice = <T extends { [key: string]: ISpec }>(config: Omit<Widget_choices_config<T>, 'multi'>) => {
+        return new Spec<Widget_choices<T>>('choices', { multi: false, ...config })
+    }
     choiceV2 = <T extends { [key: string]: ISpec }>(
         items: Widget_choices_config<T>['items'],
         config: Omit<Widget_choices_config<T>, 'multi' | 'items'>,
-    ) => new Spec<Widget_choices<T>>('choices', { multi: false, items, ...config })
-    choices = <T extends { [key: string]: ISpec }>(config: Omit<Widget_choices_config<T>, 'multi'>) =>
-        new Spec<Widget_choices<T>>('choices', { multi: true, ...config })
-    ok = <T extends SchemaDict>(config: Widget_group_config<T> = {}) => new Spec<Widget_group<T>>('group', config)
+    ) => {
+        return new Spec<Widget_choices<T>>('choices', { multi: false, items, ...config })
+    }
+    choices = <T extends { [key: string]: ISpec }>(config: Omit<Widget_choices_config<T>, 'multi'>) => {
+        return new Spec<Widget_choices<T>>('choices', { multi: true, ...config })
+    }
+    ok = <T extends SchemaDict>(config: Widget_group_config<T> = {}) => {
+        return new Spec<Widget_group<T>>('group', config)
+    }
     /** simple choice alternative api */
     tabs = <T extends { [key: string]: Spec }>(
         items: Widget_choices_config<T>['items'],
@@ -305,4 +381,5 @@ export class FormBuilder implements IFormBuilder {
     }
 }
 
-export const CushyFormManager: FormManager<FormBuilder> = new FormManager<FormBuilder>(FormBuilder)
+export type CushyFormManager = FormManager<FormBuilder>
+export const CushyFormManager: CushyFormManager = new FormManager<FormBuilder>(FormBuilder)

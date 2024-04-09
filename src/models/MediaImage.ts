@@ -88,7 +88,7 @@ export class MediaImageL {
                         })
                 })
             })
-            return RET.DONE
+            return RET.SUCCESS
         } catch (error) {
             toastError(`Could not copy image to clipboard: ${error}`)
             console.error('Error loading image:', error)

@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 import { Fragment } from 'react'
 
-import { CushyShortcut, parseShortcutToInputSequence } from './ShortcutManager'
+import { CushyShortcut, parseShortcutToInputSequence } from './CommandManager'
 
 export const ComboUI = observer(function ComboUI_(p: {
     //

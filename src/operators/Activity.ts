@@ -15,7 +15,7 @@ class ActivityManager {
     push = (activity: Activity) => {
         this.stack.push(activity)
         activity.onStart?.()
-        return RET.DONE
+        return RET.SUCCESS
     }
     pop = () => {
         const activity = this.stack.pop()

@@ -7,7 +7,8 @@ import { observer } from 'mobx-react-lite'
 import { nanoid } from 'nanoid'
 import { createElement, createRef, FC } from 'react'
 
-import { Trigger } from '../../app/shortcuts/Trigger'
+import { regionMonitor } from '../../operators/RegionMonitor'
+import { RET } from '../../operators/RET'
 import { Message } from '../../rsuite/shims'
 import { Panel_FullScreenLibrary } from '../Panel_FullScreenLibrary'
 import { hashJSONObject } from './hash'
@@ -156,17 +157,17 @@ export class CushyLayoutManager {
         this.model.doAction(Actions.renameTab(tabID, newName))
     }
 
-    closeCurrentTab = () => {
+    closeCurrentTab = (): RET => {
         if (this.fullPageComp != null) {
             this.fullPageComp = null
-            return Trigger.Success
+            return RET.SUCCESS
         }
         // 1. find tabset
         const tabset = this.model.getActiveTabset()
-        if (tabset == null) return Trigger.UNMATCHED_CONDITIONS
+        if (tabset == null) return RET.UNMATCHED
         // 2. find active tab
         const tab = tabset.getSelectedNode()
-        if (tab == null) return Trigger.UNMATCHED_CONDITIONS
+        if (tab == null) return RET.UNMATCHED
         // 3. close tab
         const tabID = tab.getId()
         this.model.doAction(Actions.deleteTab(tabID))
@@ -174,13 +175,13 @@ export class CushyLayoutManager {
         const prevTab = tabset.getSelectedNode()
         if (prevTab != null) this.model.doAction(Actions.selectTab(prevTab.getId()))
         // 5. mark action as success
-        return Trigger.Success
+        return RET.SUCCESS
     }
 
     closeTab = (tabID: string) => {
         const shouldRefocusAfter = this.currentTabID === tabID
         this.model.doAction(Actions.deleteTab(tabID))
-        return Trigger.Success
+        return RET.SUCCESS
     }
 
     TOGGLE_FULL = <const K extends PanelNames>(component: K, props: PropsOf<Panels[K]['widget']>) => {
@@ -192,6 +193,10 @@ export class CushyLayoutManager {
         } else {
             this.fullPageComp = null
         }
+    }
+
+    currentHoveredTabIs = <K extends PanelNames>(component: K) => {
+        return regionMonitor.hoveredRegion?.type === component
     }
 
     currentTabIs = <K extends PanelNames>(component: K): Maybe<PropsOf<Panels[K]['widget']>> => {

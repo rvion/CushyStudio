@@ -1,6 +1,6 @@
 export type DomId = string
 export enum RET {
     UNMATCHED = 'UNMATCHED',
-    DONE = 'DONE',
+    SUCCESS = 'SUCCESS',
     FAILED = 'DONE',
 }
