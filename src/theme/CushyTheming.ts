@@ -182,8 +182,6 @@ export class CushyThemeManager {
                     border.manual.chroma
                 } ${border.manual.hue})`,
             })
-            // this.addOrModifyCSSRule('.theme-number-field', 'background', `oklch(${bg.lightness} ${bg.chroma} ${bg.hue})`)
-            // this.addOrModifyCSSRule(style.id, '', `oklch(${bg.lightness} ${bg.chroma} ${bg.hue})`)
         }
 
         if (border.auto) {
@@ -193,22 +191,6 @@ export class CushyThemeManager {
                 property: 'border',
                 value: `1px solid oklch(${calculated} ${bg?.chroma * border.auto.accentBleed} ${bg?.hue + border.auto.hueShift})`,
             })
-            // if (border.auto.dark) {
-            //     const calculated = bg?.lightness - 0.5
-            //     this.addOrModifyCSSRule({
-            //         rule: rule,
-            //         property: 'border',
-            //         value: `1px solid oklch(${calculated} ${bg?.chroma} ${bg?.hue})`,
-            //     })
-            // }
-            // if (border.auto.dark) {
-            //     const calculated = bg?.lightness - 0.5
-            //     this.addOrModifyCSSRule({
-            //         rule: rule,
-            //         property: 'border',
-            //         value: `1px solid oklch(${calculated} ${bg?.chroma} ${bg?.hue})`,
-            //     })
-            // }
         }
 
         rule = this.ensureRule('.theme-number-field .th-text')
@@ -236,9 +218,6 @@ export class CushyThemeManager {
                 this.addOrModifyCSSRule({
                     rule: rule,
                     property: 'text-shadow',
-                    // value: `0px 1px 1px var(--text-shadow-color),
-                    // 1px 1px 1px var(--text-shadow-color),
-                    // -1px 1px 1px var(--text-shadow-color);`,
                     value: `0px 1px 1px var(--text-shadow-color),
                     1px 1px 1px var(--text-shadow-color),
                     -1px 1px 1px var(--text-shadow-color)`,
