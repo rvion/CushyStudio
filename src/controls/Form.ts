@@ -105,7 +105,7 @@ export class Form<
         : null
 
     private _onValueChange = this.formConfig.onValueChange //
-        ? debounce(this.formConfig.onValueChange, 200)
+        ? debounce(this.formConfig.onValueChange, 5)
         : null
 
     /** every widget node must call this function once it's value change */

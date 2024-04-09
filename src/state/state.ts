@@ -75,6 +75,7 @@ import { readJSON, writeJSON } from './jsonUtils'
 import { Marketplace } from './Marketplace'
 import { mkSupa } from './supa'
 import { Uploader } from './Uploader'
+import { CushyThemeManager } from '../theme/CushyTheming'
 
 export class STATE {
     // LEAVE THIS AT THE TOP OF THIS CLASS
@@ -247,6 +248,7 @@ export class STATE {
     actionTags: ActionTagMethodList = []
     importer: ComfyImporter
     typecheckingConfig: JsonFile<TsConfigCustom>
+    themeManager: CushyThemeManager
 
     // showPreviewInFullScreen
     // get showPreviewInFullScreen() { return this.configFile.value.showPreviewInFullScreen ?? false } // prettier-ignore
@@ -625,6 +627,8 @@ export class STATE {
         })
         this.startupFileIndexing()
         setTimeout(() => quickBench.printAllStats(), 1000)
+
+        this.themeManager = new CushyThemeManager()
     }
 
     get mainComfyHostID(): HostID {

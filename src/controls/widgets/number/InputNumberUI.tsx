@@ -216,9 +216,11 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
             className={p.className}
             tw={[
                 'WIDGET-FIELD relative',
+                'theme-number-field',
+                // '!shadow-md !shadow-white',
                 'input-number-ui input-number-roundness',
                 'flex-1 select-none min-w-16 cursor-ew-resize overflow-clip',
-                'bg-primary/30 border border-base-100 border-b-2 border-b-base-200',
+                // 'bg-primary/30 border border-base-100 border-b-2 border-b-base-200',
                 !isEditing && 'hover:border-base-200 hover:border-b-base-300 hover:bg-primary/40',
             ]}
             onWheel={(ev) => {
@@ -259,7 +261,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
                 <div /* Text Container */
                     tw={[
                         //
-                        `flex px-1 items-center justify-center text-sm text-shadow truncate z-20`,
+                        `flex px-1 items-center justify-center text-sm th-text truncate z-20`,
                     ]}
                     onMouseDown={(ev) => {
                         if (isEditing || ev.button != 0) return
