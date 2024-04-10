@@ -7,7 +7,8 @@ import { observer } from 'mobx-react-lite'
 import { nanoid } from 'nanoid'
 import { createElement, createRef, FC } from 'react'
 
-import { Trigger } from '../../app/shortcuts/Trigger'
+import { regionMonitor } from '../../operators/RegionMonitor'
+import { Trigger } from '../../operators/RET'
 import { Message } from '../../rsuite/shims'
 import { Panel_FullScreenLibrary } from '../Panel_FullScreenLibrary'
 import { hashJSONObject } from './hash'
@@ -156,17 +157,17 @@ export class CushyLayoutManager {
         this.model.doAction(Actions.renameTab(tabID, newName))
     }
 
-    closeCurrentTab = () => {
+    closeCurrentTab = (): Trigger => {
         if (this.fullPageComp != null) {
             this.fullPageComp = null
             return Trigger.Success
         }
         // 1. find tabset
         const tabset = this.model.getActiveTabset()
-        if (tabset == null) return Trigger.UNMATCHED_CONDITIONS
+        if (tabset == null) return Trigger.UNMATCHED
         // 2. find active tab
         const tab = tabset.getSelectedNode()
-        if (tab == null) return Trigger.UNMATCHED_CONDITIONS
+        if (tab == null) return Trigger.UNMATCHED
         // 3. close tab
         const tabID = tab.getId()
         this.model.doAction(Actions.deleteTab(tabID))
@@ -192,6 +193,10 @@ export class CushyLayoutManager {
         } else {
             this.fullPageComp = null
         }
+    }
+
+    currentHoveredTabIs = <K extends PanelNames>(component: K) => {
+        return regionMonitor.hoveredRegion?.type === component
     }
 
     currentTabIs = <K extends PanelNames>(component: K): Maybe<PropsOf<Panels[K]['widget']>> => {

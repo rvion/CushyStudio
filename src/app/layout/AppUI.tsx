@@ -1,25 +1,30 @@
+import '../../ALL_CMDS'
+
 import { runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { useEffect, useRef } from 'react'
 
 import { ActivityUI } from '../../operators/ActivityUI'
+import { useRegionMonitor } from '../../operators/RegionMonitor'
+import { Trigger } from '../../operators/RET'
 import { RenderFullPagePanelUI } from '../../panels/router/RenderFullPagePanelUI'
 import { RevealState } from '../../rsuite/reveal/RevealState'
 import { useSt } from '../../state/stateContext'
 import { GlobalSearchUI } from '../../utils/electron/globalSearchUI'
 import { AppBarUI } from '../appbar/AppBarUI'
-import { Trigger } from '../shortcuts/Trigger'
+import { commandManager } from '../shortcuts/CommandManager'
 import { FavBarUI } from './FavBar'
 import { ProjectUI } from './ProjectUI'
 
 export const CushyUI = observer(function CushyUI_() {
     const st = useSt()
     const appRef = useRef<HTMLDivElement>(null)
+    useRegionMonitor()
     useEffect(() => {
         const current = appRef.current
         if (current == null) return
         function handleKeyDown(event: KeyboardEvent) {
-            const x = st.shortcuts.processKeyDownEvent(event as any)
+            const x = commandManager.processKeyDownEvent(event as any)
 
             if (x === Trigger.Success) {
                 event.preventDefault()
@@ -36,7 +41,7 @@ export const CushyUI = observer(function CushyUI_() {
 
             // prevent accidental tab closing when pressing ctrl+w one too-many times
             if (
-                x === Trigger.UNMATCHED_CONDITIONS && //
+                x === Trigger.UNMATCHED && //
                 event.key === 'w' &&
                 (event.ctrlKey || event.metaKey)
             ) {
@@ -77,7 +82,7 @@ export const CushyUI = observer(function CushyUI_() {
             <AppBarUI />
             <RenderFullPagePanelUI />
             <div className='flex flex-grow relative overflow-clip'>
-                <FavBarUI direction='column' />
+                <FavBarUI direction='row' />
                 <ProjectUI />
             </div>
         </div>

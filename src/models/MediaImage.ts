@@ -18,7 +18,7 @@ import sharp from 'sharp'
 
 import { hasMod } from '../app/shortcuts/META_NAME'
 import { LiveRefOpt } from '../db/LiveRefOpt'
-import { RET } from '../operators/RET'
+import { Trigger } from '../operators/RET'
 import { SafetyResult } from '../safety/Safety'
 import { createHTMLImage_fromURL } from '../state/createHTMLImage_fromURL'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
@@ -59,7 +59,7 @@ export class MediaImageL {
             format?: any /* 🔴 */
             quality?: any /* 🔴 */
         },
-    ): Promise<RET> => {
+    ): Promise<Trigger> => {
         try {
             await createHTMLImage_fromURL(URL.createObjectURL(this.getAsBlob())).then((img) => {
                 const canvas = document.createElement('canvas')
@@ -88,11 +88,11 @@ export class MediaImageL {
                         })
                 })
             })
-            return RET.DONE
+            return Trigger.Success
         } catch (error) {
             toastError(`Could not copy image to clipboard: ${error}`)
             console.error('Error loading image:', error)
-            return RET.FAILED
+            return Trigger.FAILED
         }
     }
     /** Uses electron clipboard API to copy the image to clipboard, will only copy as PNG. */

@@ -1,4 +1,5 @@
-import type { FormBuilder } from '../controls/FormBuilder'
+import type { Form } from '../controls/Form'
+import type { FormBuilder, XGroup } from '../controls/FormBuilder'
 import type { SchemaDict } from '../controls/ISpec'
 import type { MediaImageL } from '../models/MediaImage'
 import type { Runtime } from '../runtime/Runtime'
@@ -39,6 +40,9 @@ export type CustomView<T = any> = {
 }
 
 export type App<FIELDS extends SchemaDict> = {
+    /** so you cana have fancy buttons to switch between a few things */
+    presets?: Record<string, (form: Form<XGroup<FIELDS>>) => void>
+
     /** app interface (GUI) */
     ui: (form: FormBuilder) => FIELDS
 

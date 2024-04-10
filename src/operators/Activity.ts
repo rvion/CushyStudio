@@ -2,7 +2,7 @@ import type { FC } from 'react'
 
 import { makeAutoObservable } from 'mobx'
 
-import { type DomId, RET } from './RET'
+import { type DomId, Trigger } from './RET'
 
 // ACTIVITY = global app state machine state you can be in;
 // consume all events, and react to them
@@ -15,7 +15,7 @@ class ActivityManager {
     push = (activity: Activity) => {
         this.stack.push(activity)
         activity.onStart?.()
-        return RET.DONE
+        return Trigger.Success
     }
     pop = () => {
         const activity = this.stack.pop()
@@ -36,7 +36,7 @@ export interface Activity {
     /** if given, the activity is bound the the given ID */
     bound?: DomId | null
     onStart?: () => void
-    onEvent?: (event: Event) => RET | null
+    onEvent?: (event: Event) => Trigger | null
     onStop?: () => void
     UI: FC<{}>
 }

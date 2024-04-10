@@ -2,7 +2,7 @@ import { observer } from 'mobx-react-lite'
 import { ReactNode } from 'react'
 
 import { ComboUI } from '../app/shortcuts/ComboUI'
-import { CushyShortcut } from '../app/shortcuts/ShortcutManager'
+import { CushyShortcut } from '../app/shortcuts/CommandManager'
 import { RevealUI } from './reveal/RevealUI'
 
 export const Dropdown = (p: {
@@ -21,8 +21,8 @@ export const Dropdown = (p: {
             </ul>
         )}
     >
-        <label tabIndex={0} tw={[`flex-nowrap btn btn-ghost btn-sm py-0 px-1.5`]}>
-            <span tw='hidden lg:inline-block'>{p.startIcon}</span>
+        <label tabIndex={0} tw={[`flex-nowrap btn btn-ghost btn-sm gap-1 py-0 px-1.5`]}>
+            {p.startIcon && <span tw='hidden lg:inline-block'>{p.startIcon}</span>}
             {p.title}
         </label>
     </RevealUI>
