@@ -1,5 +1,6 @@
 import type { FormManager } from './FormManager'
 import type { FormSerial } from './FormSerial'
+import type { IFormBuilder } from './IFormBuilder'
 import type { ISpec } from './ISpec'
 import type { IWidget } from './IWidget'
 import type { Widget_group, Widget_group_serial } from './widgets/group/WidgetGroup'
@@ -9,7 +10,6 @@ import { createElement, type ReactNode } from 'react'
 
 import { debounce } from '../utils/misc/debounce'
 import { FormUI } from './FormUI'
-import { IFormBuilder } from './IFormBuilder'
 import { isWidgetGroup } from './widgets/WidgetUI.DI'
 
 export type FormProperties<

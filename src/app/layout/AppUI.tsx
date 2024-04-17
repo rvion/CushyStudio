@@ -4,6 +4,7 @@ import { runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { useEffect, useRef } from 'react'
 
+import { CushyKitCtx } from '../../controls/shared/CushyKitCtx'
 import { ActivityUI } from '../../operators/ActivityUI'
 import { useRegionMonitor } from '../../operators/RegionMonitor'
 import { Trigger } from '../../operators/RET'
@@ -55,37 +56,39 @@ export const CushyUI = observer(function CushyUI_() {
     }, [appRef.current, st])
 
     return (
-        <div
-            //
-            data-theme={st.themeMgr.theme}
-            id='CushyStudio'
-            tabIndex={-1}
-            onClick={(ev) => {
-                // if a click has bubbled outwards up to the body, then we want to close various things
-                // such as contet menus, tooltips, Revals, etc.
-                runInAction(() => {
-                    RevealState.shared.current?.close()
-                    RevealState.shared.current = null
-                })
-            }}
-            ref={appRef}
-            tw='col grow h-full text-base-content overflow-clip'
-        >
-            <div // Global Popup/Reveal/Tooltip container always be on screen with overflow-clip added.
-                id='tooltip-root'
-                tw='absolute inset-0 w-full h-full overflow-clip pointer-events-none'
+        <CushyKitCtx.Provider value={st}>
+            <div
+                //
+                data-theme={st.themeMgr.theme}
+                id='CushyStudio'
+                tabIndex={-1}
+                onClick={(ev) => {
+                    // if a click has bubbled outwards up to the body, then we want to close various things
+                    // such as contet menus, tooltips, Revals, etc.
+                    runInAction(() => {
+                        RevealState.shared.current?.close()
+                        RevealState.shared.current = null
+                    })
+                }}
+                ref={appRef}
+                tw='col grow h-full text-base-content overflow-clip'
             >
-                <ActivityUI />
-            </div>
+                <div // Global Popup/Reveal/Tooltip container always be on screen with overflow-clip added.
+                    id='tooltip-root'
+                    tw='absolute inset-0 w-full h-full overflow-clip pointer-events-none'
+                >
+                    <ActivityUI />
+                </div>
 
-            <GlobalSearchUI /* Ctrl or Cmd + F: does not work natively on electron; implemented here */ />
-            <AppBarUI />
-            <RenderFullPagePanelUI />
-            <div className='flex flex-grow relative overflow-clip'>
-                <FavBarUI direction='row' />
-                <ProjectUI />
+                <GlobalSearchUI /* Ctrl or Cmd + F: does not work natively on electron; implemented here */ />
+                <AppBarUI />
+                <RenderFullPagePanelUI />
+                <div className='flex flex-grow relative overflow-clip'>
+                    <FavBarUI direction='row' />
+                    <ProjectUI />
+                </div>
             </div>
-        </div>
+        </CushyKitCtx.Provider>
     )
 })
 

@@ -136,8 +136,9 @@ export class STATE {
     tree2: Tree
     tree2View: TreeView
 
-    /** @internal */
-    _popups: RevealState[] = []
+    get clickAndSlideMultiplicator(): number {
+        return cushy.configFile.get('numberSliderSpeed') ?? 1
+    }
 
     startupFileIndexing = async () => {
         const allFiles = recursivelyFindAppsInFolder(this.library, this.libraryFolderPathAbs)

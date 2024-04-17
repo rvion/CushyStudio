@@ -6,6 +6,7 @@ import { runInAction } from 'mobx'
 import { command, type Command } from '../../operators/Command'
 import { ctx_global } from '../../operators/contexts/ctx_global'
 import { Trigger } from '../../operators/RET'
+import { global_RevealStack } from '../../rsuite/reveal/RevealStack'
 import { _duplicateCurrentDraft } from './cmd_duplicateCurrentDraft'
 import { CushyShortcut } from './CommandManager'
 import { KEYS } from './shorcutKeys'
@@ -157,8 +158,8 @@ export const allCommandsV1: Command<null>[] = [
         label: 'Close Dialog, Popups, or Full-Screen Panels',
         validInInput: true,
         action: () => {
-            if (cushy._popups.length > 0) {
-                const item = cushy._popups.pop()!
+            if (global_RevealStack.length > 0) {
+                const item = global_RevealStack.pop()!
                 item.close()
                 return Trigger.Success
             }

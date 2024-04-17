@@ -1,10 +1,13 @@
 import './InputNumberUI.css'
 
+import type { CushyKit } from '../../shared/CushyKit'
+
 import { makeAutoObservable, runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import React, { useEffect, useMemo } from 'react'
 
 import { parseFloatNoRoundingErr } from '../../../utils/misc/parseFloatNoRoundingErr'
+import { useCushyKitOrNull } from '../../shared/CushyKitCtx'
 
 const clamp = (x: number, min: number, max: number) => Math.max(min, Math.min(max, x))
 
@@ -39,21 +42,51 @@ type InputNumberProps = {
 
 /** this class will be instanciated ONCE in every InputNumberUI, (local the the InputNumberUI) */
 class InputNumberStableState {
-    constructor(public props: InputNumberProps) {
+    constructor(
+        //
+        public props: InputNumberProps,
+        public kit: Maybe<CushyKit>,
+    ) {
         // this `makeAutoObservable` will make all getters defined below be `computed` properties
         // they will update their value when props change so all functions always work with up-to-date values
         makeAutoObservable(this)
     }
 
-    get value() { return this.props.value ?? clamp(1, this.props.min ?? -Infinity, this.props.max ?? Infinity) } // prettier-ignore
-    get mode() { return this.props.mode } // prettier-ignore
-    get step() { return this.props.step ?? (this.mode === 'int' ? 1 : 0.1) } // prettier-ignore
-    get rounding() { return Math.ceil(-Math.log10(this.step * 0.01)) } // prettier-ignore
-    get forceSnap() { return this.props.forceSnap ?? false } // prettier-ignore
-    get rangeMin() { return this.props.softMin ?? this.props.min ?? -Infinity } // prettier-ignore
-    get rangeMax() { return this.props.softMax ?? this.props.max ?? Infinity } // prettier-ignore
-    get numberSliderSpeed() { return cushy.configFile.get('numberSliderSpeed') ?? 1 } // prettier-ignore
-    get isInteger() { return this.mode === 'int' } // prettier-ignore
+    get value() {
+        return this.props.value ?? clamp(1, this.props.min ?? -Infinity, this.props.max ?? Infinity)
+    }
+
+    get mode() {
+        return this.props.mode
+    }
+
+    get step() {
+        return this.props.step ?? (this.mode === 'int' ? 1 : 0.1)
+    }
+
+    get rounding() {
+        return Math.ceil(-Math.log10(this.step * 0.01))
+    }
+
+    get forceSnap() {
+        return this.props.forceSnap ?? false
+    }
+
+    get rangeMin() {
+        return this.props.softMin ?? this.props.min ?? -Infinity
+    }
+
+    get rangeMax() {
+        return this.props.softMax ?? this.props.max ?? Infinity
+    }
+
+    get numberSliderSpeed() {
+        return this.kit?.clickAndSlideMultiplicator ?? 1
+    }
+
+    get isInteger() {
+        return this.mode === 'int'
+    }
 
     /* Used for making sure you can type whatever you want in to the value, but it gets validated when pressing Enter. */
     inputValue: string = this.value.toString()
@@ -197,7 +230,8 @@ class InputNumberStableState {
 
 export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProps) {
     // create stable state, that we can programmatically mutate witout caring about stale references
-    const uist = useMemo(() => new InputNumberStableState(p), [])
+    const kit = useCushyKitOrNull()
+    const uist = useMemo(() => new InputNumberStableState(p, kit), [])
 
     // ensure new properties that could change during lifetime of the component stays up-to-date in the stable state.
     runInAction(() => Object.assign(uist.props, p))

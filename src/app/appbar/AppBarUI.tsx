@@ -31,6 +31,7 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
                 <MenuPanelsUI />
                 <MenuComfyUI />
                 <MenuUtilsUI />
+                {/* <menu_utils.DropDownUI /> */}
                 <MenuAppsUI />
                 <cmd_fav_toggleFavBar.NavBarBtnUI label='Favs' />
                 <MenuSettingsUI />

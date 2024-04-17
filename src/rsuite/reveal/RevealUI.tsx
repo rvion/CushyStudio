@@ -6,6 +6,7 @@ import { createPortal } from 'react-dom'
 
 import { ModalShellUI } from './ModalShell'
 import { RevealCtx, useRevealOrNull } from './RevealCtx'
+import { global_RevealStack } from './RevealStack'
 import { RevealState, RevealStateLazy } from './RevealState'
 
 export const RevealUI = observer(function RevealUI_(p: RevealProps) {
@@ -89,8 +90,8 @@ const mkTooltip = (uist: RevealState | null) => {
     const revealedContent = uist.placement.startsWith('#') ? (
         <div
             ref={(e) => {
-                if (e == null) return cushy._popups.filter((p) => p !== uist)
-                cushy._popups.push(uist)
+                if (e == null) return global_RevealStack.filter((p) => p !== uist)
+                global_RevealStack.push(uist)
             }}
             onKeyUp={(ev) => {
                 if (ev.key === 'Escape') {
@@ -113,8 +114,8 @@ const mkTooltip = (uist: RevealState | null) => {
     ) : uist.placement.startsWith('popup') ? (
         <div
             ref={(e) => {
-                if (e == null) return cushy._popups.filter((p) => p !== uist)
-                cushy._popups.push(uist)
+                if (e == null) return global_RevealStack.filter((p) => p !== uist)
+                global_RevealStack.push(uist)
             }}
             onKeyUp={(ev) => {
                 if (ev.key === 'Escape') {

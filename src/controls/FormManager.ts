@@ -1,11 +1,11 @@
+import type { IFormBuilder } from './IFormBuilder'
 import type { ISpec, SchemaDict } from './ISpec'
+import type { Widget_group } from './widgets/group/WidgetGroup'
 
 import { type DependencyList, useMemo } from 'react'
 
 import { Form, FormProperties } from './Form'
-import { IFormBuilder } from './IFormBuilder'
 import { runWithGlobalForm } from './shared/runWithGlobalForm'
-import { Widget_group } from './widgets/group/WidgetGroup'
 
 /**
  * you need one per project;

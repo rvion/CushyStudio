@@ -106,6 +106,7 @@ await microbench('took', async () => {
     remove('rollup.config.mjs')
     // remove('types.d.ts')
 })
+
 // process.exit(0)
 // BUNDLE the js (from TS) ----------------------------------------------
 section(`1. first build with esbuild`)
@@ -123,10 +124,10 @@ await microbench('took', async () => {
     metaFilePath = res.metaFilePath
     await showESBUILDOutput({ prefix: 'pre/initial' })
 })
+
 // LIST ALL REAL JS FILES ----------------------------------------------
 let allFilesWithExt: string[] = []
 let allFilesNoExt: string[] = []
-// let allEdges: [string, string][] = []
 const allowed = new Set()
 const esbuildMetafile: Metafile = readJSONSync(metaFilePath)
 const esbuildMetafileInput = esbuildMetafile.inputs
@@ -136,10 +137,12 @@ out += 'INPUT:\n'
 for (const [e, v] of esbuildInputFiles) {
     for (const dep of v.imports) {
         if (dep.external) {
+            // 1. guard agains esbuild BUG
             if (dep.path.startsWith('./')) {
                 console.log(`🔴 module '${e}' thinks '${dep.path}' is external. What a moron.`)
                 throw new Error('🔴 some fuckery is happening with external deps detection; probably some import type missing')
             }
+            // 2. track external dependencies
             const depName = bang(
                 dep.path.startsWith('@') //
                     ? dep.path.split('/').slice(0, 2).join('/')
@@ -148,6 +151,7 @@ for (const [e, v] of esbuildInputFiles) {
             peerDeps.add(depName)
         }
     }
+    // 3. safety net
     if (!e.startsWith('src/')) {
         console.log(`🔴 ERROR: input does not starting with src/: `, e)
         continue

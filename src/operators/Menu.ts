@@ -46,7 +46,7 @@ export class Menu<Props> {
         menuManager.registerMenu(this)
     }
     UI = (p: { props: Props }): JSX.Element => createElement(MenuUI, { menu: useMemo(() => new MenuInstance(this, p.props), []) })
-    UI2 = (p: { props: Props }): JSX.Element => createElement(MenuRootUI, { menu: useMemo(() => new MenuInstance(this, p.props), []) }) // prettier-ignore
+    DropDownUI = (p: { props: Props }): JSX.Element => createElement(MenuRootUI, { menu: useMemo(() => new MenuInstance(this, p.props), []) }) // prettier-ignore
 
     /** bind a menu to give props */
     bind = (props: Props, ui?: BoundMenuOpts): BoundMenu => new BoundMenu(this, props, ui)
@@ -65,8 +65,9 @@ export class MenuWithoutProps {
         this.id = def.id ?? nanoid()
         menuManager.registerMenu(this)
     }
-    UI = (p: {}): JSX.Element => createElement(MenuRootUI, { menu: useMemo(() => new MenuInstance(this, {}), []) })
-    UI2 = (): JSX.Element => createElement(MenuRootUI, { menu: useMemo(() => new MenuInstance(this, {}), []) })
+    // 🔴
+    UI = (): JSX.Element => createElement(MenuRootUI, { menu: useMemo(() => new MenuInstance(this, {}), []) })
+    DropDownUI = (): JSX.Element => createElement(MenuRootUI, { menu: useMemo(() => new MenuInstance(this, {}), []) })
 
     /** bind a menu to give props */
     bind = (ui?: BoundMenuOpts): BoundMenu => new BoundMenu(this, {}, ui)

@@ -22,7 +22,7 @@ const cmd_nav_openGallery = (ix?: number) => {
         id: `nav.openGallery${ix ?? ''}`,
         label: `Open Gallery ${ix ?? ''}`,
         ctx: ctx_global,
-        combos: ['mod+g mod+g mod+' + ix ?? 1],
+        combos: ['mod+g mod+g mod+' + (ix ?? 1)],
         action: (p) => {
             cushy.layout.FOCUS_OR_CREATE('Gallery', { uid: ix })
             return Trigger.Success
