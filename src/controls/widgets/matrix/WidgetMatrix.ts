@@ -1,6 +1,7 @@
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
 import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { Problem_Ext } from '../../Validation'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -52,6 +53,9 @@ export class Widget_matrix implements IWidget<Widget_matrix_types> {
     get config() { return this.spec.config } // prettier-ignore
     readonly type: 'matrix' = 'matrix'
     readonly serial: Widget_matrix_serial
+    get baseErrors(): Problem_Ext {
+        return null
+    }
 
     rows: string[]
     cols: string[]

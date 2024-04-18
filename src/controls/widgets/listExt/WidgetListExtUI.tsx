@@ -3,6 +3,7 @@ import type { Widget_listExt } from './WidgetListExt'
 
 import { observer } from 'mobx-react-lite'
 
+import { ListControlsUI } from '../list/ListControlsUI'
 import { WidgetSizeX_LineUI, WigetSizeXUI } from '../size/WidgetSizeUI'
 import { WidgetListExt_RegionalUI } from './WidgetListExt_RegionalUI'
 import { WidgetListExt_TimelineUI } from './WidgetListExt_TimelineUI'
@@ -25,6 +26,17 @@ export const WidgetListExtUI = observer(function WidgetListExtUI_<T extends ISpe
                 <div tw='whitespace-pre-wrap w-96'>{JSON.stringify(e)}</div>
             ))} */}
             <WidgetListExt_ValuesUI widget={widget} />
+        </div>
+    )
+})
+
+export const WidgetListExt_LineUI = observer(function WidgetList_LineUI_(p: { widget: Widget_listExt<any> }) {
+    return (
+        <div tw='flex flex-1 items-center'>
+            <div tw='text-sm text-gray-500 italic'>{p.widget.length} items</div>
+            <div tw='ml-auto'>
+                <ListControlsUI widget={p.widget} />
+            </div>
         </div>
     )
 })

@@ -1,6 +1,7 @@
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
 import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { Problem_Ext } from '../../Validation'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -57,7 +58,9 @@ export class Widget_orbit implements IWidget<Widget_orbit_types> {
     readonly id: string
     get config() { return this.spec.config } // prettier-ignore
     type: 'orbit' = 'orbit'
-
+    get baseErrors(): Problem_Ext {
+        return null
+    }
     /** reset azimuth and elevation */
     reset = () => {
         this.serial.value.azimuth = this.config.default?.azimuth ?? 0

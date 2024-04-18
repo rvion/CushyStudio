@@ -62,6 +62,12 @@ export class Widget_number implements IWidget<Widget_number_types> {
         this.value = this.defaultValue
     }
 
+    get baseErrors() {
+        if (this.config.min !== undefined && this.value < this.config.min) return `Value is less than ${this.config.min}`
+        if (this.config.max !== undefined && this.value > this.config.max) return `Value is greater than ${this.config.max}`
+        return null
+    }
+
     constructor(
         //
         public readonly form: Form,

@@ -2,10 +2,12 @@ import type { Timestamp } from '../../../cards/Timestamp'
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
 import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { Problem_Ext } from '../../Validation'
 import type { Tree } from '@lezer/common'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
+import { createElement } from 'react'
 
 import { applyWidgetMixinV2 } from '../../Mixins'
 import { registerWidgetClass } from '../WidgetUI.DI'
@@ -60,11 +62,17 @@ export type Widget_prompt_types = {
 // STATE
 export interface Widget_prompt extends Widget_prompt_types, IWidgetMixins {}
 export class Widget_prompt implements IWidget<Widget_prompt_types> {
+    // DefaultHeaderUI = () => createElement(WidgetPrompt_LineUI, { widget: this })
+    // DefaultBodyUI = () => createElement(WidgetPromptUI, { widget: this })
     DefaultHeaderUI = WidgetPrompt_LineUI
     DefaultBodyUI = WidgetPromptUI
     readonly id: string
     get config() { return this.spec.config } // prettier-ignore
     readonly type: 'prompt' = 'prompt'
+
+    get baseErrors(): Problem_Ext {
+        return null
+    }
 
     serial: Widget_prompt_serial
 
@@ -84,7 +92,7 @@ export class Widget_prompt implements IWidget<Widget_prompt_types> {
             id: this.id,
         }
         applyWidgetMixinV2(this)
-        makeAutoObservable(this)
+        makeAutoObservable(this, { DefaultBodyUI: false, DefaultHeaderUI: false })
     }
     /* override */ background = true
 

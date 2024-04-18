@@ -241,7 +241,7 @@ export class DraftL {
                 // | we're no longer using reactions
                 // if (this.form) this.form.cleanup?.()
 
-                this._form = CushyFormManager.form(action.ui, {
+                this._form = CushyFormManager.fields(action.ui, {
                     name: this.name,
                     initialSerial: () => this.data.formSerial,
                     onSerialChange: (form) => {

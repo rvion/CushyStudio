@@ -2,6 +2,7 @@ import type { DraftL } from '../../../models/Draft'
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
 import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { Problem_Ext } from '../../Validation'
 
 import { makeAutoObservable, runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -54,6 +55,11 @@ export class Widget_button<K> implements IWidget<Widget_button_types<K>> {
     get config() { return this.spec.config } // prettier-ignore
     readonly type: 'button' = 'button'
     readonly serial: Widget_button_serial
+
+    get baseErrors(): Problem_Ext {
+        return null
+    }
+
     constructor(
         //
         public readonly form: Form,
@@ -74,7 +80,7 @@ export class Widget_button<K> implements IWidget<Widget_button_types<K>> {
             val: false,
         }
         applyWidgetMixinV2(this)
-        makeAutoObservable(this)
+        makeAutoObservable(this, { DefaultHeaderUI: false, DefaultBodyUI: false })
     }
 
     get value(): Widget_button_value {

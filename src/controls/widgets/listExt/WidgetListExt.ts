@@ -1,6 +1,7 @@
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
 import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { Problem_Ext } from '../../Validation'
 import type { BoardPosition } from './WidgetListExtTypes'
 
 import { makeAutoObservable, runInAction } from 'mobx'
@@ -12,7 +13,7 @@ import { WidgetList_LineUI } from '../list/WidgetListUI'
 import { ResolutionState } from '../size/ResolutionState'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { boardDefaultItemShape } from './WidgetListExtTypes'
-import { WidgetListExtUI } from './WidgetListExtUI'
+import { WidgetListExt_LineUI, WidgetListExtUI } from './WidgetListExtUI'
 
 // CONFIG
 export type Widget_listExt_config<T extends ISpec> = WidgetConfigFields<
@@ -57,12 +58,15 @@ export type Widget_listExt_types<T extends ISpec> = {
 // STATE
 export interface Widget_listExt<T extends ISpec> extends Widget_listExt_types<T>, IWidgetMixins {}
 export class Widget_listExt<T extends ISpec> implements IWidget<Widget_listExt_types<T>> {
-    DefaultHeaderUI = WidgetList_LineUI
+    DefaultHeaderUI = WidgetListExt_LineUI
     DefaultBodyUI = WidgetListExtUI
 
     readonly id: string
     get config() { return this.spec.config } // prettier-ignore
     readonly type: 'listExt' = 'listExt'
+    get baseErrors(): Problem_Ext {
+        return null
+    }
 
     get width(): number { return this.serial.width ?? this.config.width ?? 100 } // prettier-ignore
     get height(): number { return this.serial.height ?? this.config.height ?? 100 } // prettier-ignore

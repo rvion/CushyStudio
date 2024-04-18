@@ -4,6 +4,7 @@ import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } f
 
 import { makeAutoObservable, runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
+import { createElement } from 'react'
 
 import { applyWidgetMixinV2 } from '../../Mixins'
 import { registerWidgetClass } from '../WidgetUI.DI'
@@ -60,7 +61,7 @@ export class Widget_selectOne<T extends BaseSelectEntry> implements IWidget<Widg
     readonly type: 'selectOne' = 'selectOne'
     readonly serial: Widget_selectOne_serial<T>
 
-    get errors(): Maybe<string> {
+    get baseErrors(): Maybe<string> {
         if (this.serial.val == null) return 'no value selected'
         const selected = this.choices.find((c) => c.id === this.serial.val.id)
         if (selected == null) return 'selected value not in choices'

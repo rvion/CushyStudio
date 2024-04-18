@@ -4,6 +4,7 @@ import { observer } from 'mobx-react-lite'
 
 import { $WidgetSym, type IWidget, type IWidgetMixins } from './IWidget'
 import { WidgetWithLabelUI } from './shared/WidgetWithLabelUI'
+import { normalizeProblem, type Problem } from './Validation'
 
 /** make sure the user-provided function will properly react to any mobx changes */
 const ensureObserver = <T extends null | undefined | FC<any>>(fn: T): T => {
@@ -23,6 +24,30 @@ const ensureObserver = <T extends null | undefined | FC<any>>(fn: T): T => {
  */
 const mixin: IWidgetMixins = {
     $WidgetSym: $WidgetSym,
+
+    /** true if errors.length > 0 */
+    get hasErrors(): boolean {
+        const errors = this.errors
+        return errors.length > 0
+    },
+
+    /** all errors: base (built-in widget) + custom (user-defined in config) */
+    get errors(): Problem[] {
+        const self = this as any as IWidget
+        const baseErrors = normalizeProblem(self.baseErrors)
+        return [...baseErrors, ...this.customErrors]
+    },
+
+    get customErrors(): Problem[] {
+        const self = this as any as IWidget
+        if (self.config.check == null)
+            return [
+                /* { message: 'No check function provided' } */
+            ]
+        const res = self.config.check(this)
+        return normalizeProblem(res)
+        // return [...normalizeProblem(res), { message: 'foo' }]
+    },
 
     // BUMP ----------------------------------------------------
     bumpSerial(this: IWidget) {

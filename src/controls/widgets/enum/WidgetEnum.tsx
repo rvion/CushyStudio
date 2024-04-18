@@ -3,6 +3,7 @@ import type { CleanedEnumResult } from '../../../types/EnumUtils'
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
 import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { Problem_Ext } from '../../Validation'
 
 import { makeAutoObservable, runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -55,6 +56,10 @@ export class Widget_enum<O> implements IWidget<Widget_enum_types<O>> {
     reset = () => { this.value = this.defaultValue } // prettier-ignore
     get possibleValues(): EnumValue[] {
         return cushy.schema.knownEnumsByName.get(this.config.enumName as any)?.values ?? []
+    }
+
+    get baseErrors(): Problem_Ext {
+        return null
     }
 
     serial: Widget_enum_serial<O>

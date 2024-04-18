@@ -1,6 +1,7 @@
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
 import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { Problem_Ext } from '../../Validation'
 
 import { makeAutoObservable, runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -56,6 +57,9 @@ export class Widget_string implements IWidget<Widget_string_types> {
     get DefaultBodyUI() {
         if (this.config.textarea) return WidgetString_TextareaBodyUI
         return undefined
+    }
+    get baseErrors(): Problem_Ext {
+        return null
     }
     readonly border = false
     readonly id: string

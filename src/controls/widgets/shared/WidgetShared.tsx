@@ -1,6 +1,7 @@
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
 import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { Problem_Ext } from '../../Validation'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -57,6 +58,9 @@ export class Widget_shared<T extends ISpec = ISpec> implements IWidget<Widget_sh
         return this.config.widget
     }
 
+    get baseErrors(): Problem_Ext {
+        return null
+    }
     // 🔴
     hidden = () => {
         const ctor = this.form.builder.SpecCtor

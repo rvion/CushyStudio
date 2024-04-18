@@ -1,6 +1,7 @@
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
 import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { Problem_Ext } from '../../Validation'
 
 import { makeObservable, observable } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -40,6 +41,9 @@ export interface Widget_spacer extends Widget_spacer_types, IWidgetMixins {}
 export class Widget_spacer implements IWidget<Widget_spacer_types> {
     DefaultHeaderUI = WidgetSpacerUI
     DefaultBodyUI = undefined
+    get baseErrors(): Problem_Ext {
+        return null
+    }
     readonly id: string
     get config() { return this.spec.config } // prettier-ignore
     readonly type: 'spacer' = 'spacer'

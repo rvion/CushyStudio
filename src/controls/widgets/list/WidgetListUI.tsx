@@ -12,9 +12,7 @@ import { ErrorBoundaryFallback } from '../../../widgets/misc/ErrorBoundary'
 import { getBorderStatusForWidget } from '../../shared/getBorderStatusForWidget'
 import { ListControlsUI } from './ListControlsUI'
 
-export const WidgetList_LineUI = observer(function WidgetList_LineUI_<T extends ISpec>(p: {
-    widget: Widget_list<T> | Widget_listExt<T>
-}) {
+export const WidgetList_LineUI = observer(function WidgetList_LineUI_(p: { widget: Widget_list<any> }) {
     return (
         <div tw='flex flex-1 items-center'>
             <div tw='text-sm text-gray-500 italic'>{p.widget.length} items</div>

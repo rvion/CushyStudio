@@ -40,7 +40,7 @@ export const cmd_open_copyImageAs_menu: Command<MediaImageL> = command({
     action: (image: MediaImageL) => menu_copyImageAs.open(image),
 })
 
-const form_foo = CushyFormManager.form((ui) => ({
+const form_foo = CushyFormManager.fields((ui) => ({
     quality: ui.float({ min: 0, softMin: 0.3, max: 1, step: 0.01, alignLabel: false, label: 'test' }),
 }))
 

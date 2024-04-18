@@ -1,9 +1,11 @@
 import type { Form } from '../../Form'
 import type { ISpec, SchemaDict } from '../../ISpec'
 import type { IWidget, IWidgetMixins, SharedWidgetSerial, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { Problem_Ext } from '../../Validation'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
+import { createElement } from 'react'
 
 import { makeLabelFromFieldName } from '../../../utils/misc/makeLabelFromFieldName'
 import { toastError } from '../../../utils/misc/toasts'
@@ -60,13 +62,20 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> implements IWidge
     readonly type: 'choices' = 'choices'
     readonly expand: boolean = this.config.expand ?? false
 
+    get baseErrors(): Problem_Ext {
+        return null
+    }
+
     get isMulti(): boolean {
         return this.config.multi
     }
+
     get isSingle(): boolean {
         return !this.config.multi
     }
+
     children: { [k in keyof T]?: T[k]['$Widget'] } = {}
+
     serial: Widget_choices_serial<T>
 
     get firstChoice(): (keyof T & string) | undefined {
@@ -161,7 +170,7 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> implements IWidge
         }
 
         applyWidgetMixinV2(this)
-        makeAutoObservable(this)
+        makeAutoObservable(this, { DefaultHeaderUI: false, DefaultBodyUI: false })
     }
 
     toggleBranch(branch: keyof T & string) {

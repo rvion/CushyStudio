@@ -1,4 +1,8 @@
 /* ------------------------------------------------------------------------------------------------------- */
+.widget-error-ui {
+    border: 1px solid red;
+    color:red;
+}
 .FIELD:hover {
     border-left: 2px groove oklch(var(--s)/0.5);
 }

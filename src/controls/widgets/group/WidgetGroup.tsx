@@ -1,6 +1,7 @@
 import type { Form } from '../../Form'
 import type { ISpec, SchemaDict } from '../../ISpec'
 import type { GetWidgetResult, IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { Problem_Ext } from '../../Validation'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -50,6 +51,10 @@ export class Widget_group<T extends SchemaDict> implements IWidget<Widget_group_
     get DefaultBodyUI() {
         if (Object.keys(this.fields).length === 0) return
         return WidgetGroup_BlockUI
+    }
+
+    get baseErrors(): Problem_Ext {
+        return null
     }
 
     get summary(): string {

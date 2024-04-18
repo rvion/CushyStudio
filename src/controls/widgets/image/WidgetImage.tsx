@@ -4,9 +4,11 @@ import type { MediaImageL } from '../../../models/MediaImage'
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
 import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { Problem_Ext } from '../../Validation'
 
 import { makeAutoObservable, runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
+import { createElement } from 'react'
 
 import { applyWidgetMixinV2 } from '../../Mixins'
 import { registerWidgetClass } from '../WidgetUI.DI'
@@ -50,6 +52,9 @@ export class Widget_image implements IWidget<Widget_image_types> {
     get config() { return this.spec.config } // prettier-ignore
     readonly type: 'image' = 'image'
     readonly serial: Widget_image_serial
+    get baseErrors(): Problem_Ext {
+        return null
+    }
 
     constructor(
         //

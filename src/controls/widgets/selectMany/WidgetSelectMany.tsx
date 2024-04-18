@@ -1,6 +1,7 @@
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
 import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { Problem_Ext } from '../../Validation'
 import type { Widget_group } from '../group/WidgetGroup'
 import type { BaseSelectEntry } from '../selectOne/WidgetSelectOne'
 
@@ -67,7 +68,7 @@ export class Widget_selectMany<T extends BaseSelectEntry> implements IWidget<Wid
             : _choices
     }
 
-    get errors(): Maybe<string[]> {
+    get baseErrors(): Maybe<string[]> {
         if (this.serial.values == null) return null
         let errors: string[] = []
         for (const value of this.serial.values) {

@@ -1,6 +1,7 @@
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
 import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { Problem_Ext } from '../../Validation'
 
 import { makeAutoObservable, runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -40,6 +41,10 @@ export class Widget_color implements IWidget<Widget_color_types> {
     get config() { return this.spec.config } // prettier-ignore
     readonly type: 'color' = 'color'
 
+    get baseErrors(): Problem_Ext {
+        return null
+    }
+
     readonly defaultValue: string = this.config.default ?? '#000000'
     get isChanged() { return this.value !== this.defaultValue } // prettier-ignore
     reset = () => (this.value = this.defaultValue)
@@ -62,7 +67,7 @@ export class Widget_color implements IWidget<Widget_color_types> {
             value: config.default ?? '#000000',
         }
         applyWidgetMixinV2(this)
-        makeAutoObservable(this)
+        makeAutoObservable(this, { DefaultHeaderUI: false, DefaultBodyUI: false })
     }
 
     get value(): Widget_color_value {

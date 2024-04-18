@@ -427,7 +427,7 @@ export class STATE {
         const fv = this.graphConf.value
         return { node_hsep: fv.hsep, node_vsep: fv.vsep }
     }
-    graphConf = CushyFormManager.form(
+    graphConf = CushyFormManager.fields(
         (ui) => ({
             spline: ui.float({ min: 0.5, max: 4, default: 2 }),
             vsep: ui.int({ min: 0, max: 100, default: 20 }),
@@ -439,7 +439,7 @@ export class STATE {
             onSerialChange: (form) => writeJSON('settings/graph-visualization.json', form.serial),
         },
     )
-    civitaiConf = CushyFormManager.form(
+    civitaiConf = CushyFormManager.fields(
         (ui) => ({
             imgSize1: ui.int({ min: 64, max: 1024, step: 64, default: 512 }),
             imgSize2: ui.int({ min: 64, max: 1024, step: 64, default: 128 }),
@@ -453,7 +453,7 @@ export class STATE {
             onSerialChange: (form) => writeJSON('settings/civitai.json', form.serial),
         },
     )
-    favbar = CushyFormManager.form(
+    favbar = CushyFormManager.fields(
         (f) => ({
             size: f.int({ label: false, alignLabel: false, text: 'Size', min: 24, max: 128, default: 48, suffix: 'px', step: 4 }),
             visible: f.bool(),
@@ -482,7 +482,7 @@ export class STATE {
     // playgroundHeader = Header_Playground
     // playgroundWidgetDisplay = FORM_PlaygroundWidgetDisplay
 
-    displacementConf = CushyFormManager.form(
+    displacementConf = CushyFormManager.fields(
         (form) => ({
             camera: form.choice({
                 appearance: 'tab',
@@ -512,7 +512,7 @@ export class STATE {
         },
     )
 
-    galleryConf = CushyFormManager.form(
+    galleryConf = CushyFormManager.fields(
         (f) => ({
             defaultSort: f.selectOneV2(['createdAt', 'updatedAt'] as const, {
                 default: { id: 'createdAt', label: 'Created At' },

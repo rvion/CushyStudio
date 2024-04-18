@@ -1,6 +1,7 @@
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
 import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { Problem_Ext } from '../../Validation'
 
 import { computed, makeObservable, observable } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -54,7 +55,9 @@ export class Widget_optional<T extends ISpec = ISpec> implements IWidget<Widget_
     readonly id: string
     get config() { return this.spec.config } // prettier-ignore
     readonly type: 'optional' = 'optional'
-
+    get baseErrors(): Problem_Ext {
+        return null
+    }
     serial: Widget_optional_serial<T>
     child!: T['$Widget']
 

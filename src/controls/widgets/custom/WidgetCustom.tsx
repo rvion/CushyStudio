@@ -1,6 +1,7 @@
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
 import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { Problem_Ext } from '../../Validation'
 import type { FC } from 'react'
 
 import { makeAutoObservable, runInAction } from 'mobx'
@@ -45,6 +46,10 @@ export class Widget_custom<T> implements IWidget<Widget_custom_types<T>> {
     readonly id: string
     get config() { return this.spec.config } // prettier-ignore
     readonly type: 'custom' = 'custom'
+
+    get baseErrors(): Problem_Ext {
+        return null
+    }
 
     serial: Widget_custom_serial<T>
     Component: Widget_custom_config<T>['Component']

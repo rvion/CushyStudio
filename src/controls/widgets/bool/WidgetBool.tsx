@@ -1,6 +1,7 @@
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
 import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { Problem_Ext } from '../../Validation'
 
 import { computed, makeAutoObservable, observable, runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -80,6 +81,10 @@ export class Widget_bool implements IWidget<Widget_bool_types> {
     get config() { return this.spec.config } // prettier-ignore
     readonly type: 'bool' = 'bool'
 
+    get baseErrors(): Problem_Ext {
+        return null
+    }
+
     serial: Widget_bool_serial
 
     setOn = () => (this.value = true)
@@ -109,6 +114,8 @@ export class Widget_bool implements IWidget<Widget_bool_types> {
         makeAutoObservable(this, {
             serial: observable,
             value: computed,
+            DefaultHeaderUI: false,
+            DefaultBodyUI: false,
         })
     }
 

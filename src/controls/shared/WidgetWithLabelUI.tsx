@@ -204,6 +204,17 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                         </div>
                     </ErrorBoundary>
                 )}
+                {/* ERRORS */}
+                {widget.hasErrors && (
+                    <div tw='widget-error-ui'>
+                        {widget.errors.map((e, i) => (
+                            <div key={i} tw='flex items-center gap-1'>
+                                <span className='material-symbols-outlined'>error</span>
+                                {e.message}
+                            </div>
+                        ))}
+                    </div>
+                )}
             </AnimatedSizeUI>
         </div>
     )

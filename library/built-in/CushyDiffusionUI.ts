@@ -24,6 +24,11 @@ export const CushyDiffusionUI = (form: FormBuilder) => ({
     //     choices: [{ id: 'SD 1.5' }, { id: 'SDXL' }],
     // }),
     positive: form.prompt({
+        // check: (v) => [
+        //     //
+        //     v.text.length > 10 || 'too short',
+        //     v.text.length < 20 || 'too long',
+        // ],
         default: [
             //
             'masterpiece, tree',

@@ -1,6 +1,7 @@
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
 import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { Problem_Ext } from '../../Validation'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -43,12 +44,18 @@ export class Widget_markdown implements IWidget<Widget_markdown_types> {
         if (this.config.inHeader) return WidgetMardownUI
         return undefined
     }
+
     get DefaultBodyUI() {
         if (this.config.inHeader) return undefined
         return WidgetMardownUI
     }
+
     get alignLabel() {
         if (this.config.inHeader) return false
+    }
+
+    get baseErrors(): Problem_Ext {
+        return null
     }
     readonly id: string
     get config() { return this.spec.config } // prettier-ignore

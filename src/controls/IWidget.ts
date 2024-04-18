@@ -1,5 +1,6 @@
 import type { Form } from './Form'
 import type { ISpec } from './ISpec'
+import type { Problem, Problem_Ext } from './Validation'
 import type { FC } from 'react'
 
 /**
@@ -29,6 +30,8 @@ export interface IWidget<K extends $WidgetTypes = $WidgetTypes> extends IWidgetM
     $Serial: K['$Serial'] /** type only properties; do not use directly; used to make typings good and fast */
     $Value: K['$Value'] /** type only properties; do not use directly; used to make typings good and fast */
     $Widget: K['$Widget'] /** type only properties; do not use directly; used to make typings good and fast */
+
+    readonly baseErrors: Problem_Ext
 
     /** unique ID; each node in the form tree has one; persisted in serial */
     readonly id: string
@@ -68,10 +71,10 @@ export interface IWidget<K extends $WidgetTypes = $WidgetTypes> extends IWidgetM
     background?: boolean
 
     /** default header UI */
-    readonly DefaultHeaderUI: FC<{ widget: K['$Widget'] }> | undefined
+    readonly DefaultHeaderUI: FC<{ widget: any /* K['$Widget'] */ }> | undefined
 
     /** default body UI */
-    readonly DefaultBodyUI: FC<{ widget: K['$Widget'] }> | undefined
+    readonly DefaultBodyUI: FC<{ widget: any /* K['$Widget'] */ }> | undefined
 }
 
 export const $WidgetSym = Symbol('Widget')
@@ -115,6 +118,10 @@ export type IWidgetMixins = {
      * 👉 every widget must call this when non-value serial has been updated
      * */
     bumpSerial(): void
+
+    readonly hasErrors: boolean
+    readonly customErrors: Problem[]
+    readonly errors: Problem[]
 }
 
 /** 🔶 2024-03-13 rvion: TODO: remove that function; use ['$Value'] instead */
@@ -148,8 +155,16 @@ export type SharedWidgetConfig<T extends $WidgetTypes> = {
     /** will be called when value changed */
     onValueChange?: (val: T['$Value']) => void
 
-    /** custom type checking */
-    check?: (val: T['$Value']) => Maybe<string | boolean>
+    /** custom type checking;
+     * valid:
+     *  - true,
+     *  - [],
+     * invalid:
+     *  - false,
+     *  - ["errMsg", ...]
+     *  - "errMsg"
+     * */
+    check?: (val: T['$Widget']) => Problem_Ext
 
     /**
      * The label to display.

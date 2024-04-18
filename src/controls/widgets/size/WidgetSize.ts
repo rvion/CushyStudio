@@ -2,10 +2,12 @@
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
 import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { Problem_Ext } from '../../Validation'
 import type { AspectRatio, CushySize, CushySizeByRatio, SDModelType } from './WidgetSizeTypes'
 
 import { makeAutoObservable, runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
+import { createElement } from 'react'
 
 import { applyWidgetMixinV2 } from '../../Mixins'
 import { registerWidgetClass } from '../WidgetUI.DI'
@@ -48,6 +50,9 @@ export interface Widget_size extends Widget_size_types, IWidgetMixins {} // pret
 export class Widget_size implements IWidget<Widget_size_types> {
     DefaultHeaderUI = WigetSize_LineUI
     DefaultBodyUI = WigetSize_BlockUI
+    get baseErrors(): Problem_Ext {
+        return null
+    }
 
     get width() { return this.serial.width } // prettier-ignore
     get height() { return this.serial.height } // prettier-ignore

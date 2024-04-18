@@ -30,7 +30,7 @@ export class FormManager<BUILDER extends IFormBuilder> {
     }
 
     /** LEGACY API; TYPES ARE COMPLICATED DUE TO MAINTAINING BACKWARD COMPAT */
-    form = <FIELDS extends SchemaDict>(
+    fields = <FIELDS extends SchemaDict>(
         ui: (form: BUILDER) => FIELDS,
         formProperties: FormProperties<ISpec<Widget_group<FIELDS>>> = { name: 'unnamed' },
     ): Form<ISpec<Widget_group<FIELDS>>, BUILDER> => {
@@ -48,6 +48,14 @@ export class FormManager<BUILDER extends IFormBuilder> {
         return form
     }
 
+    /** simple alias to create a new Form */
+    form = <ROOT extends ISpec>(
+        ui: (form: BUILDER) => ROOT,
+        formProperties: FormProperties<ROOT> = { name: 'unnamed' },
+    ): Form<ROOT, BUILDER> => {
+        return new Form<ROOT, BUILDER>(this, ui, formProperties)
+    }
+
     /** simple way to defined forms and in react components */
     use = <ROOT extends ISpec>(
         ui: (form: BUILDER) => ROOT,
@@ -55,8 +63,7 @@ export class FormManager<BUILDER extends IFormBuilder> {
         deps: DependencyList = [],
     ): Form<ROOT, BUILDER> => {
         return useMemo(() => {
-            const form = new Form<ROOT, BUILDER>(this, ui, formProperties)
-            return form
+            return new Form<ROOT, BUILDER>(this, ui, formProperties)
         }, deps)
     }
 }

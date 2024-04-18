@@ -50,10 +50,10 @@ export const WidgetSelectMany_TabUI = observer(function WidgetSelectMany_TabUI_<
                         />
                     ))}
             </div>
-            {widget.errors && (
+            {widget.baseErrors && (
                 <MessageErrorUI>
                     <ul>
-                        {widget.errors.map((e, ix) => (
+                        {widget.baseErrors.map((e, ix) => (
                             <li key={ix}>{e}</li>
                         ))}
                     </ul>
@@ -71,7 +71,7 @@ export const WidgetSelectMany_SelectUI = observer(function WidgetSelectMany_Sele
         <div tw='flex-1'>
             <SelectUI<T>
                 multiple
-                tw={[widget.errors && 'rsx-field-error']}
+                tw={[widget.baseErrors && 'rsx-field-error']}
                 getLabelText={(t) => t.label ?? t.id}
                 getLabelUI={(t) => t.label ?? t.id}
                 options={() => widget.choices}
@@ -79,10 +79,10 @@ export const WidgetSelectMany_SelectUI = observer(function WidgetSelectMany_Sele
                 equalityCheck={(a, b) => a.id === b.id}
                 onChange={(selectOption) => widget.toggleItem(selectOption)}
             />
-            {widget.errors && (
+            {widget.baseErrors && (
                 <div tw='text-red-500 flex items-center gap-1'>
                     <span className='material-symbols-outlined'>error</span>
-                    {widget.errors}
+                    {widget.baseErrors}
                 </div>
             )}
         </div>

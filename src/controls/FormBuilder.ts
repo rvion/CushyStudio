@@ -40,11 +40,11 @@ import { Widget_string, type Widget_string_config } from './widgets/string/Widge
 
 // attempt to make type safety better --------------------------------------------------------
 export type XGroup<T extends SchemaDict> = Spec<Widget_group<T>>
-export type XOptional = Spec<Widget_optional>
+export type XOptional<T extends ISpec> = Spec<Widget_optional<T>>
 export type XBool = Spec<Widget_bool>
 export type XString = Spec<Widget_string>
 export type XPrompt = Spec<Widget_prompt>
-export type XChoices = Spec<Widget_choices>
+export type XChoices<T extends SchemaDict = SchemaDict> = Spec<Widget_choices<T>>
 export type XNumber = Spec<Widget_number>
 export type XColor = Spec<Widget_color>
 export type XEnum<T> = Spec<Widget_enum<T>>
@@ -57,6 +57,8 @@ export type XMatrix = Spec<Widget_matrix>
 export type XImage = Spec<Widget_image>
 export type XSelectOne<T extends BaseSelectEntry> = Spec<Widget_selectOne<T>>
 export type XSelectMany<T extends BaseSelectEntry> = Spec<Widget_selectMany<T>>
+export type XSelectOne_<T extends string> = Spec<Widget_selectOne<BaseSelectEntry<T>>> // variant that may be shorter to read
+export type XSelectMany_<T extends string> = Spec<Widget_selectMany<BaseSelectEntry<T>>> // variant that may be shorter to read
 export type XSize = Spec<Widget_size>
 export type XSpacer = Spec<Widget_spacer>
 export type XMarkdown = Spec<Widget_markdown>
@@ -187,7 +189,10 @@ export class FormBuilder implements IFormBuilder {
     regional = <T extends ISpec>(config: Widget_listExt_config<T>) => {
         return new Spec<Widget_listExt<T>>('listExt', { mode: 'regional', ...config })
     }
-    selectOneV2 = <T extends string>(p: T[], config: Omit<Widget_selectOne_config<BaseSelectEntry<T>>, 'choices'> = {}) => {
+    selectOneV2 = <T extends string>(
+        p: T[],
+        config: Omit<Widget_selectOne_config<BaseSelectEntry<T>>, 'choices'> = {},
+    ): XSelectOne<BaseSelectEntry<T>> => {
         return new Spec<Widget_selectOne<BaseSelectEntry<T>>>('selectOne', { choices: p.map((id) => ({ id, label: id })), appearance:'tab', ...config }) // prettier-ignore
     }
     selectOne = <const T extends BaseSelectEntry>(config: Widget_selectOne_config<T>) => {

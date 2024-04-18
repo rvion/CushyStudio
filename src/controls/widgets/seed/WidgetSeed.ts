@@ -1,9 +1,11 @@
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
 import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { Problem_Ext } from '../../Validation'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
+import { createElement } from 'react'
 
 import { applyWidgetMixinV2 } from '../../Mixins'
 import { registerWidgetClass } from '../WidgetUI.DI'
@@ -52,6 +54,10 @@ export class Widget_seed implements IWidget<Widget_seed_types> {
     DefaultHeaderUI = WidgetSeedUI
     DefaultBodyUI = undefined
     readonly id: string
+    get baseErrors(): Problem_Ext {
+        return null
+    }
+
     get config() { return this.spec.config } // prettier-ignore
     readonly type: 'seed' = 'seed'
     readonly serial: Widget_seed_serial
