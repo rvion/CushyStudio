@@ -1,3 +1,4 @@
+import type { FormBuilder } from '../../../src/CUSHY'
 import type { OutputFor } from './_prefabs'
 
 // UI -----------------------------------------------------------
@@ -33,92 +34,9 @@ export const ui_model = () => {
                     clipSkip: form.int({ label: 'Clip Skip', default: 1, min: 1, max: 5 }),
                     freeU: form.group(),
                     freeUv2: form.group(),
-                    pag: form.fields(
-                        {
-                            include: form.choices({
-                                items: { base: form.fields({}), hiRes: form.fields({}) },
-                                appearance: 'tab',
-
-                                default: { base: true, hiRes: false },
-                            }),
-                            scale: form.float({
-                                default: 3,
-                                min: 0,
-                                softMax: 6,
-                                max: 100,
-                                step: 0.1,
-                                tooltip:
-                                    'PAG scale, has some resemblance to CFG scale - higher values can both increase structural coherence of the image and oversaturate/fry it entirely. Note: Default for standard models is 3, but that fries lightning and turbo models, so lower it accordingly. Try 0.9 ish for turbo.',
-                            }),
-                            adaptiveScale: form.float({
-                                default: 0,
-                                min: 0,
-                                max: 1,
-                                step: 0.1,
-                                tooltip:
-                                    'PAG dampening factor, it penalizes PAG during late denoising stages, resulting in overall speedup: 0.0 means no penalty and 1.0 completely removes PAG.',
-                            }),
-                        },
-                        {
-                            startCollapsed: true,
-                            tooltip: 'Perturbed Attention Guidance - can improve attention at the cost of performance',
-                            summary: (ui) => {
-                                return `scale:${ui.scale}`
-                            },
-                        },
-                    ),
-                    sag: form.fields(
-                        {
-                            include: form.choices({
-                                items: { base: form.fields({}), hiRes: form.fields({}) },
-                                appearance: 'tab',
-                                default: { base: true, hiRes: true },
-                            }),
-                            scale: form.float({ default: 0.5, step: 0.1, min: -2.0, max: 5.0 }),
-                            blur_sigma: form.float({ default: 2.0, step: 0.1, min: 0, max: 10.0 }),
-                        },
-                        { startCollapsed: true, tooltip: 'Self Attention Guidance can improve image quality but runs slower' },
-                    ),
-                    KohyaDeepShrink: form.fields(
-                        {
-                            include: form.choices({
-                                items: { base: form.fields({}), hiRes: form.fields({}) },
-                                appearance: 'tab',
-                                default: { base: false, hiRes: true },
-                            }),
-                            advancedSettings: form.fields(
-                                {
-                                    downscaleFactor: form.float({
-                                        default: 2,
-                                        min: 0.1,
-                                        max: 9,
-                                        softMax: 4,
-                                        step: 0.25,
-                                        tooltip: 'only applies to shrink on base model. hires will use hires scale factor.',
-                                    }),
-                                    block_number: form.int({ default: 3, max: 32, min: 1 }),
-                                    startPercent: form.float({ default: 0, min: 0, max: 1, step: 0.05 }),
-                                    endPercent: form.float({ default: 0.35, min: 0, max: 1, step: 0.05 }),
-                                    downscaleAfterSkip: form.bool({ default: false }),
-                                    downscaleMethod: form.enum.Enum_PatchModelAddDownscale_downscale_method({
-                                        default: 'bislerp',
-                                    }),
-                                    upscaleMethod: form.enum.Enum_PatchModelAddDownscale_upscale_method({ default: 'bislerp' }),
-                                },
-                                { startCollapsed: true },
-                            ),
-                        },
-                        {
-                            startCollapsed: true,
-                            tooltip:
-                                'Shrinks and patches the model. Can be used to generate resolutions higher than the model training and helps with hires fix.',
-                            summary: (ui) => {
-                                return `${ui.include.base ? '🟢Base ' : ''}${ui.include.hiRes ? '🟢HiRes ' : ''}(${
-                                    ui.advancedSettings.downscaleFactor
-                                })`
-                            },
-                        },
-                    ),
+                    pag: ui_pag(form),
+                    sag: ui_sag(form),
+                    KohyaDeepShrink: ui_kohyaDeepShrink(form),
                     civitai_ckpt_air: form
                         .string({
                             tooltip: 'Civitai checkpoint Air, as found on the civitai Website. It should look like this: 43331@176425', // prettier-ignore
@@ -132,6 +50,112 @@ export const ui_model = () => {
     })
 }
 
+const ui_pag = (form: FormBuilder) => {
+    return form.fields(
+        {
+            include: form.choices({
+                items: { base: form.fields({}), hiRes: form.fields({}) },
+                appearance: 'tab',
+                default: { base: true, hiRes: false },
+            }),
+            scale: form.float({
+                default: 3,
+                min: 0,
+                softMax: 6,
+                max: 100,
+                step: 0.1,
+                tooltip:
+                    'PAG scale, has some resemblance to CFG scale - higher values can both increase structural coherence of the image and oversaturate/fry it entirely. Note: Default for standard models is 3, but that fries lightning and turbo models, so lower it accordingly. Try 0.9 ish for turbo.',
+            }),
+            adaptiveScale: form.float({
+                default: 0,
+                min: 0,
+                max: 1,
+                step: 0.1,
+                tooltip:
+                    'PAG dampening factor, it penalizes PAG during late denoising stages, resulting in overall speedup: 0.0 means no penalty and 1.0 completely removes PAG.',
+            }),
+        },
+        {
+            startCollapsed: true,
+            tooltip: 'Perturbed Attention Guidance - can improve attention at the cost of performance',
+            summary: (ui) => {
+                return `scale:${ui.include.base ? '🟢Base ' : ''}${ui.include.hiRes ? '🟢HiRes ' : ''} scale:${
+                    ui.scale
+                } dampening:${ui.adaptiveScale}`
+            },
+        },
+    )
+}
+
+const ui_sag = (form: FormBuilder) => {
+    return form.fields(
+        {
+            include: form.choices({
+                items: { base: form.fields({}), hiRes: form.fields({}) },
+                appearance: 'tab',
+                default: { base: true, hiRes: true },
+            }),
+            scale: form.float({ default: 0.5, step: 0.1, min: -2.0, max: 5.0 }),
+            blur_sigma: form.float({ default: 2.0, step: 0.1, min: 0, max: 10.0 }),
+        },
+        {
+            startCollapsed: true,
+            tooltip: 'Self Attention Guidance can improve image quality but runs slower',
+            summary: (ui) => {
+                return `${ui.include.base ? '🟢Base ' : ''}${ui.include.hiRes ? '🟢HiRes ' : ''}`
+            },
+        },
+    )
+}
+
+const ui_kohyaDeepShrink = (form: FormBuilder) => {
+    return form.fields(
+        {
+            include: form.choices({
+                items: { base: form.fields({}), hiRes: form.fields({}) },
+                appearance: 'tab',
+                default: { base: false, hiRes: true },
+            }),
+            advancedSettings: form.fields(
+                {
+                    downscaleFactor: form.float({
+                        default: 2,
+                        min: 0.1,
+                        max: 9,
+                        softMax: 4,
+                        step: 0.25,
+                        tooltip: 'only applies to shrink on base model. hires will use hires scale factor.',
+                    }),
+                    block_number: form.int({ default: 3, max: 32, min: 1 }),
+                    startPercent: form.float({ default: 0, min: 0, max: 1, step: 0.05 }),
+                    endPercent: form.float({ default: 0.35, min: 0, max: 1, step: 0.05 }),
+                    downscaleAfterSkip: form.bool({ default: false }),
+                    downscaleMethod: form.enum.Enum_PatchModelAddDownscale_downscale_method({
+                        default: 'bislerp',
+                    }),
+                    upscaleMethod: form.enum.Enum_PatchModelAddDownscale_upscale_method({ default: 'bicubic' }),
+                },
+                {
+                    startCollapsed: true,
+                    summary: (ui) => {
+                        return `scale:${ui.downscaleFactor} end:${ui.endPercent} afterSkip:${ui.downscaleAfterSkip} downMethod:${ui.downscaleMethod}`
+                    },
+                },
+            ),
+        },
+        {
+            startCollapsed: true,
+            tooltip:
+                'Shrinks and patches the model. Can be used to generate resolutions higher than the model training and helps with hires fix.',
+            summary: (ui) => {
+                return `${ui.include.base ? '🟢Base (' + ui.advancedSettings.downscaleFactor + ')' : ''}${
+                    ui.include.hiRes ? '🟢HiRes ' : ''
+                } end:${ui.advancedSettings.endPercent}`
+            },
+        },
+    )
+}
 // RUN -----------------------------------------------------------
 export const run_model = (
     ui: OutputFor<typeof ui_model>,
