@@ -58,6 +58,8 @@ export const WidgetSelectOne_SelectUI = observer(function WidgetSelectOne_Select
                 key={widget.id}
                 tw={[widget.baseErrors && 'rsx-field-error']}
                 getLabelText={(t) => t.label ?? makeLabelFromFieldName(t.id)}
+                getSearchQuery={() => widget.serial.query ?? ''}
+                setSearchQuery={(query) => (widget.serial.query = query)}
                 options={() => widget.choices}
                 equalityCheck={(a, b) => a.id === b.id}
                 value={() => widget.serial.val}

@@ -18,7 +18,7 @@ type SelectProps<T> = {
     /** callback when a new option is added */
     onChange: null | ((next: T, self: AutoCompleteSelectState<T>) => void)
     /** list of all options */
-    options?: () => T[]
+    options?: (query: string) => T[]
     /** if provided, is used to compare options with selected values */
     equalityCheck?: (a: T, b: T) => boolean
     /** used to search/filter & for UI if no getLabelUI provided */
@@ -44,6 +44,9 @@ type SelectProps<T> = {
      * (previous default before 2024-02-29: false if multi-select, true if single select)
      */
     resetQueryOnPick?: boolean
+    /** hooks required to plug search query from/into some other system */
+    getSearchQuery?: () => string
+    setSearchQuery?: (val: string) => void
 }
 
 class AutoCompleteSelectState<T> {
@@ -58,10 +61,17 @@ class AutoCompleteSelectState<T> {
     isMultiSelect = this.p.multiple ?? false
 
     get options(): T[] {
-        return this.p.options?.() ?? [] // replace with actual options logic
+        return this.p.options?.(this.searchQuery) ?? [] // replace with actual options logic
     }
 
-    searchQuery = ''
+    private _searchQuery = ''
+    get searchQuery() {
+        return this.p.getSearchQuery?.() ?? this._searchQuery
+    }
+    set searchQuery(value: string) {
+        if (this.p.setSearchQuery) this.p.setSearchQuery(value)
+        else this._searchQuery = value
+    }
 
     get filteredOptions() {
         if (this.searchQuery === '') return this.options

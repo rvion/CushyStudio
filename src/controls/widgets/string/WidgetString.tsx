@@ -16,6 +16,7 @@ export type Widget_string_config = WidgetConfigFields<
         default?: string
         textarea?: boolean
         placeHolder?: string
+        pattern?: string
         inputType?: 'text' | 'password' | 'email' | 'tel' | 'url' | 'time' | 'date' | 'datetime-local' | 'color'
         /**
          * if set to true, widget will commit values on enter; not before.

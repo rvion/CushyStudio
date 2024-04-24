@@ -78,6 +78,7 @@ export const WidgetString_HeaderUI = observer(function WidgetStringUI_(p: { widg
                 <input
                     tw={inputTailwind}
                     type={widget.config.inputType}
+                    pattern={widget.config.pattern}
                     placeholder={widget.config.placeHolder}
                     value={
                         widget.config.buffered //

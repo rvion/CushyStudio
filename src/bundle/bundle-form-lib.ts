@@ -42,7 +42,7 @@ type UID = Tagged<string, 'UID'>
 let out = ''
 const append = (x: string) => (out += x + '\n')
 
-const ENTRYPOINT = 'src/controls/FormBuilder.loco.ts'
+const ENTRYPOINT = 'src/controls/SimpleForm.ts'
 const PACKAGE_NAME = '@cushy/forms'
 const DIST_RELPATH = PACKAGE_NAME
 const DIST_ABSPATH = resolve(PACKAGE_NAME)
@@ -261,7 +261,6 @@ import { visualizer } from 'rollup-plugin-visualizer'
 
 const config = [
     {
-        // input: 'lib/controls/FormBuilder.loco.d.ts',
         input: '${LIB_ENTRYPOINT_DTS_ABSPATH}',
         output: [{ file: '${DIST_ABSPATH}/main.d.ts', format: 'es' }],
         external: [/\.s?css$/], // ignore .css and .scss file
