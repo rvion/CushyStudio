@@ -56,7 +56,7 @@ export const RevealUI = observer(function RevealUI_(p: RevealProps) {
                 const toc = uist.triggerOnClick
                 if (!toc) return
                 ev.stopPropagation()
-                ev.preventDefault()
+                // ev.preventDefault()
                 if (uist.visible) uist.leaveAnchor()
                 else uist.enterAnchor()
             }}
@@ -128,7 +128,7 @@ const mkTooltip = (uist: RevealState | null) => {
                 p.onClick?.(ev)
                 uist.close()
                 ev.stopPropagation()
-                ev.preventDefault()
+                // ev.preventDefault()
             }}
             style={{ zIndex: 99999999, backgroundColor: '#0000003d' }}
             tw='pointer-events-auto absolute w-full h-full flex items-center justify-center z-50'
@@ -155,7 +155,7 @@ const mkTooltip = (uist: RevealState | null) => {
             // ⏸️   }}
             onClick={(ev) => {
                 ev.stopPropagation()
-                ev.preventDefault()
+                // ev.preventDefault()
             }}
             onMouseEnter={uist.onMouseEnterTooltip}
             onMouseLeave={uist.onMouseLeaveTooltip}

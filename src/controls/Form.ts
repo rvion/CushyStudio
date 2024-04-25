@@ -6,6 +6,7 @@ import type { IWidget } from './IWidget'
 import type { Widget_group, Widget_group_serial } from './widgets/group/WidgetGroup'
 
 import { action, isObservable, makeAutoObservable, observable } from 'mobx'
+import { nanoid } from 'nanoid'
 import { createElement, type ReactNode } from 'react'
 
 import { debounce } from '../utils/misc/debounce'
@@ -29,6 +30,7 @@ export class Form<
     /** project-specific builder, allowing to have modular form setups with different widgets */
     BUILDER extends IFormBuilder = IFormBuilder,
 > {
+    uid = nanoid()
     constructor(
         public manager: FormManager<BUILDER>,
         public ui: (form: BUILDER) => ROOT,
@@ -116,6 +118,8 @@ export class Form<
         this._onValueChange?.(this)
     }
 
+    knownShared: Map<string, IWidget> = new Map()
+
     /** every widget node must call this function once it's serial changed */
     serialChanged = (_widget: IWidget) => {
         this.serialLastUpdatedAt = Date.now()
@@ -132,7 +136,7 @@ export class Form<
     init = (): ROOT => {
         console.log(`[🥐] Building form ${this.formConfig.name}`)
         const formBuilder = this.builder
-        const spec: ROOT = this.ui?.(formBuilder)
+
         try {
             let formSerial = this.formConfig.initialSerial?.()
             // ensure form serial is observable, so we avoid working with soon to expire refs
@@ -167,7 +171,9 @@ export class Form<
 
             // restore shared serials
             this.shared = formSerial?.shared || {}
+
             // instanciate the root widget
+            const spec: ROOT = this.ui?.(formBuilder)
             const rootWidget: ROOT = formBuilder._HYDRATE(null, spec, formSerial?.root)
 
             this.ready = true
@@ -178,6 +184,7 @@ export class Form<
             console.error(`[👙🔴] Building form ${this.formConfig.name} FAILED`, this)
             console.error(e)
             this.error = 'invalid form definition'
+            const spec: ROOT = this.ui?.(formBuilder)
             return formBuilder._HYDRATE(null, spec, null)
         }
     }

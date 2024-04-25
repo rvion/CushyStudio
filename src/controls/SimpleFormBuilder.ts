@@ -226,12 +226,9 @@ export class SimpleFormBuilder implements IFormBuilder {
             widget = this._HYDRATE(null, spec, prevSerial)
         } else {
             widget = this._HYDRATE(null, spec, null)
-            this.form.shared[key] = widget.serial
-            // 💬 2024-03-15 rvion: no bumpValue() needed here, because this is done
-            // at creation time; not during regular runtime
         }
-        // 💬 2024-03-12 rvion: do we store the widget, or the widgetshared instead 2 lines below ? not sure yet.
-        // ⏸️ this.form.knownShared.set(key, widget)
+        this.form.shared[key] = widget.serial
+        this.form.knownShared.set(key, widget)
         const sharedSpec = new SimpleSpec<Widget_shared<W>>('shared', { rootKey: key, widget })
         return new Widget_shared<W>(this.form, null, sharedSpec) as any
     }

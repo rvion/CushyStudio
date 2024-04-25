@@ -52,7 +52,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
         Object.keys(k.fields).length === 0 /* &&
         k.config.requirements == null */
     ) {
-        return
+        return null
     }
     // ------------------------------------------------------------
 
