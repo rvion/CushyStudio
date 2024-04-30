@@ -8,7 +8,7 @@ import { run_refiners_fromImage, ui_refiners } from './_prefabs/prefab_detailer'
 import { run_latent_v3, ui_latent_v3 } from './_prefabs/prefab_latent_v3'
 import { output_demo_summary } from './_prefabs/prefab_markdown'
 import { ui_mask } from './_prefabs/prefab_mask'
-import { run_model, ui_model } from './_prefabs/prefab_model'
+import { run_model, run_model_modifiers, ui_model } from './_prefabs/prefab_model'
 import { run_prompt } from './_prefabs/prefab_prompt'
 import { run_advancedPrompt, ui_advancedPrompt } from './_prefabs/prefab_promptsWithButtons'
 import { ui_recursive } from './_prefabs/prefab_recursive'
@@ -158,7 +158,7 @@ app({
 
         // FIRST PASS --------------------------------------------------------------------------------
         const ctx_sampler: Ctx_sampler = {
-            ckpt: ckptPos,
+            ckpt: run_model_modifiers(ui.model, ckptPos, false),
             clip: clipPos,
             vae,
             latent,
@@ -197,7 +197,7 @@ app({
         const HRF = ui.highResFix
         if (HRF) {
             const ctx_sampler_fix: Ctx_sampler = {
-                ckpt: ckptPos,
+                ckpt: run_model_modifiers(ui.model, ckptPos, true, ui.highResFix.scaleFactor),
                 clip: clipPos,
                 vae,
                 latent,
@@ -230,8 +230,8 @@ app({
                     cfg: ui.sampler.cfg,
                     steps: HRF.steps,
                     denoise: HRF.denoise,
-                    sampler_name: 'ddim',
-                    scheduler: 'ddim_uniform',
+                    sampler_name: ui.highResFix.useMainSampler ? ui.sampler.sampler_name : 'ddim',
+                    scheduler: ui.highResFix.useMainSampler ? ui.sampler.scheduler : 'ddim_uniform',
                 },
                 { ...ctx_sampler_fix, latent, preview: false },
             ).latent
