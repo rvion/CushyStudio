@@ -1,3 +1,4 @@
+import type { CovariantFn } from './BivariantHack'
 import type { FormManager } from './FormManager'
 import type { FormSerial } from './FormSerial'
 import type { IFormBuilder } from './IFormBuilder'
@@ -15,8 +16,8 @@ import { isWidgetGroup } from './widgets/WidgetUI.DI'
 
 export type FormProperties<
     //
-    ROOT extends ISpec<any> = ISpec,
-    BUILDER extends IFormBuilder = IFormBuilder,
+    ROOT extends ISpec<any>,
+    BUILDER extends IFormBuilder,
 > = {
     name: string
     onSerialChange?: (form: Form<ROOT, BUILDER>) => void
@@ -26,15 +27,19 @@ export type FormProperties<
 
 export class Form<
     /** shape of the form, to preserve type safety down to nested children */
-    ROOT extends ISpec<any> = ISpec,
-    /** project-specific builder, allowing to have modular form setups with different widgets */
+    ROOT extends ISpec<any> = ISpec<any>,
+    /**
+     * project-specific builder, allowing to have modular form setups with different widgets
+     * Cushy BUILDER is `FormBuilder` in `src/controls/FormBuilder.ts`
+     * */
     BUILDER extends IFormBuilder = IFormBuilder,
 > {
     uid = nanoid()
+
     constructor(
         public manager: FormManager<BUILDER>,
-        public ui: (form: BUILDER) => ROOT,
-        public formConfig: FormProperties<ROOT>,
+        public ui: CovariantFn<BUILDER, ROOT>,
+        public formConfig: FormProperties<ROOT, BUILDER>,
     ) {
         this.builder = manager.getBuilder(this)
         makeAutoObservable(this, {
@@ -102,11 +107,11 @@ export class Form<
     /** timestamp at which form serial was last updated, or 0 when form still pristine */
     serialLastUpdatedAt: Timestamp = 0
 
-    private _onSerialChange = this.formConfig.onSerialChange //
+    private _onSerialChange: ((form: Form<ROOT, any>) => void) | null = this.formConfig.onSerialChange //
         ? debounce(this.formConfig.onSerialChange, 200)
         : null
 
-    private _onValueChange = this.formConfig.onValueChange //
+    private _onValueChange: ((form: Form<ROOT, any>) => void) | null = this.formConfig.onValueChange //
         ? debounce(this.formConfig.onValueChange, 200)
         : null
 

@@ -5,7 +5,6 @@ import type { Problem_Ext } from '../../Validation'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
-import { createElement } from 'react'
 
 import { makeLabelFromFieldName } from '../../../utils/misc/makeLabelFromFieldName'
 import { toastError } from '../../../utils/misc/toasts'

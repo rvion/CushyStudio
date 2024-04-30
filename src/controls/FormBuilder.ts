@@ -64,6 +64,7 @@ export type XSpacer = Spec<Widget_spacer>
 export type XMarkdown = Spec<Widget_markdown>
 export type XCustom<T> = Spec<Widget_custom<T>>
 
+/** cushy studio form builder */
 export class FormBuilder implements IFormBuilder {
     SpecCtor = Spec
 

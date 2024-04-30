@@ -4,6 +4,7 @@
  */
 import type { Form } from '../Form'
 import type { FormBuilder } from '../FormBuilder'
+import type { IWidget } from '../IWidget'
 
 import { Spec } from '../CushySpec'
 import { Widget_enum, Widget_enum_config } from '../widgets/enum/WidgetEnum'
@@ -22,7 +23,7 @@ export type IEnumBuilderOpt = {
 
 export interface EnumBuilder extends IEnumBuilder {}
 export class EnumBuilder {
-    constructor(public form: Form) {
+    constructor(public form: Form<IWidget, FormBuilder>) {
         return new Proxy(this, {
             get(target, prop) {
                 // skip symbols

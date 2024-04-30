@@ -6,7 +6,6 @@ import { ErrorBoundary } from 'react-error-boundary'
 
 import { makeLabelFromFieldName } from '../../utils/misc/makeLabelFromFieldName'
 import { ErrorBoundaryFallback } from '../../widgets/misc/ErrorBoundary'
-//  🔴🔴🔴 import { InstallRequirementsBtnUI } from '../REQUIREMENTS/Panel_InstallRequirementsUI'
 import { AnimatedSizeUI } from '../utils/AnimatedSizeUI'
 import { isWidgetGroup, isWidgetOptional } from '../widgets/WidgetUI.DI'
 import { getActualWidgetToDisplay } from './getActualWidgetToDisplay'
@@ -173,13 +172,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                         )}
                         {/* TOGGLE BEFORE */}
                         {BodyUI && <Widget_ToggleUI widget={originalWidget} />}
-                        {/* REQUIREMENTS  */}
-                        {/* 🔴🔴🔴 {widget.config.requirements && (
-                            <InstallRequirementsBtnUI
-                                active={widget instanceof KLS.Widget_optional ? widget.serial.active : true}
-                                requirements={widget.config.requirements}
-                            />
-                        )} */}
+                        {/* REQUIREMENTS (in cushy) OR OTHER CUSTOM LABEL STUFF */}
                         {widget.spec.LabelExtraUI && <widget.spec.LabelExtraUI widget={widget} />}
                         {/* TOOLTIPS  */}
                         {widget.config.tooltip && <WidgetTooltipUI widget={widget} />}

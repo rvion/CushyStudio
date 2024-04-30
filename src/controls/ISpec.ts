@@ -1,3 +1,5 @@
+import type { CovariantFn } from './BivariantHack'
+import type { CovariantFC } from './CovariantFC'
 import type { IWidget } from './IWidget'
 
 export type SchemaDict = { [key: string]: ISpec }
@@ -14,6 +16,6 @@ export interface ISpec<W extends IWidget = IWidget> {
     $Serial: W['$Serial']
     $Value: W['$Value']
 
-    LabelExtraUI?: (p: { widget: W }) => JSX.Element | null
+    LabelExtraUI?: CovariantFC<{ widget: W }> /* 🧮 */
     // Make<X extends IWidget>(type: X['type'], config: X['$Config']): ISpec<X>
 }
