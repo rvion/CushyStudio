@@ -12,6 +12,8 @@ type Command_<Ctx = any> = {
     description?: string
     ctx: CommandContext<Ctx>
     action: (t: Ctx) => Trigger | Promise<Trigger>
+    /** placeholder; unused for now */
+    undo?: (t: Ctx) => Trigger | Promise<Trigger>
     // keymap
     validInInput?: boolean
     continueAfterSuccess?: boolean
@@ -28,13 +30,16 @@ export class Command<Ctx = any> {
         Object.assign(this, conf)
     }
 
-    bind = (ctx: Ctx): BoundCommand<Ctx> => new BoundCommand(this, ctx)
+    /** bind a command to a static context, bypassing its context provider */
+    bind(ctx: Ctx): BoundCommand<Ctx> {
+        return new BoundCommand(this, ctx)
+    }
 
     /**
      * method to programmatically call a command,
      * using when to both extract context and check if command can run
      * */
-    execute = () => {
+    execute() {
         console.warn(`[CMD] ☣️ TRYING TO RUN... ${this.label}`)
         const context = this.conf.ctx.check()
         if (context === Trigger.UNMATCHED) {
@@ -45,7 +50,9 @@ export class Command<Ctx = any> {
         return res
     }
 
-    NavBarBtnUI = (p: { label?: string }) => <div onClick={this.execute}>{p.label ?? this.label}</div>
+    NavBarBtnUI(p: { label?: string }) {
+        return <div onClick={() => this.execute()}>{p.label ?? this.label}</div>
+    }
 }
 
 // ------------------------------------------------------------------------------------------
@@ -82,7 +89,7 @@ export class BoundCommand<Ctx = any> {
     }
 
     NavBarBtnUI = (p: { label?: string }) => {
-        return <div onClick={this.execute}>{p.label ?? this.label}</div>
+        return <div onClick={() => this.execute()}>{p.label ?? this.label}</div>
     }
 
     get label() {

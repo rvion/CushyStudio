@@ -3,7 +3,7 @@ import type { ISpec, SchemaDict } from '../../ISpec'
 import type { GetWidgetResult, IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 import type { Problem_Ext } from '../../Validation'
 
-import { makeAutoObservable } from 'mobx'
+import { makeAutoObservable, runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
 import { bang } from '../../../utils/misc/bang'
@@ -167,11 +167,24 @@ export class Widget_group<T extends SchemaDict> implements IWidget<Widget_group_
     }
 
     setValue(val: Widget_group_value<T>) {
-        for (const key in val) {
-            this.fields[key].setValue(val[key])
-        }
+        this.value = val
     }
-    value: { [k in keyof T]: GetWidgetResult<T[k]> } = new Proxy({} as any, {
+
+    set value(val: Widget_group_value<T>) {
+        runInAction(() => {
+            for (const key in val) {
+                this.fields[key].setValue(val[key])
+            }
+            this.bumpValue()
+        })
+    }
+    get value() {
+        return this.valueLazy
+    }
+    valueLazy: { [k in keyof T]: GetWidgetResult<T[k]> } = new Proxy({} as any, {
+        ownKeys: (target) => {
+            return Object.keys(this.fields)
+        },
         get: (target, prop) => {
             if (typeof prop !== 'string') return
             const subWidget: IWidget = this.fields[prop]!

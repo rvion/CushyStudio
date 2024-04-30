@@ -4,6 +4,7 @@ import type { CSSProperties } from 'react'
 import { observer } from 'mobx-react-lite'
 import { ErrorBoundary } from 'react-error-boundary'
 
+import { RevealUI } from '../../rsuite/reveal/RevealUI'
 import { makeLabelFromFieldName } from '../../utils/misc/makeLabelFromFieldName'
 import { ErrorBoundaryFallback } from '../../widgets/misc/ErrorBoundary'
 import { AnimatedSizeUI } from '../utils/AnimatedSizeUI'
@@ -13,6 +14,7 @@ import { getBorderStatusForWidget } from './getBorderStatusForWidget'
 import { getIfWidgetIsCollapsible } from './getIfWidgetIsCollapsible'
 import { getIfWidgetNeedAlignedLabel } from './getIfWidgetNeedAlignedLabel'
 import { Widget_ToggleUI } from './Widget_ToggleUI'
+import { menu_widgetActions } from './WidgetMenu'
 import { WidgetTooltipUI } from './WidgetTooltipUI'
 
 let isDragging = false
@@ -186,6 +188,13 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                                 {HeaderUI}
                             </ErrorBoundary>
                         </div>
+                    )}
+                    {widget.config.presets && (
+                        <RevealUI //
+                            content={() => <menu_widgetActions.UI props={widget} />}
+                        >
+                            <span className='material-symbols-outlined'>book</span>
+                        </RevealUI>
                     )}
                 </div>
 

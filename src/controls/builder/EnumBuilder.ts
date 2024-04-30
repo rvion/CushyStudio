@@ -3,7 +3,7 @@
  * TODO: document the unique challenges this appraoch is solving
  */
 import type { Form } from '../Form'
-import type { FormBuilder } from '../FormBuilder'
+import type { FormBuilder, XEnum, XOptional } from '../FormBuilder'
 import type { IWidget } from '../IWidget'
 
 import { Spec } from '../CushySpec'
@@ -12,13 +12,13 @@ import { Widget_enum, Widget_enum_config } from '../widgets/enum/WidgetEnum'
 export type IEnumBuilder = {
     [K in keyof Requirable]: (
         config?: Omit<Widget_enum_config<Requirable[K]['$Value']>, 'enumName'>,
-    ) => Spec<Widget_enum<Requirable[K]['$Value']>>
+    ) => XEnum<Requirable[K]['$Value']>
 }
 
 export type IEnumBuilderOpt = {
     [K in keyof Requirable]: (
         config?: Omit<Widget_enum_config<Requirable[K]['$Value']>, 'enumName'> & { startActive?: boolean },
-    ) => Spec<Widget_enum<Requirable[K]['$Value']>>
+    ) => XOptional<XEnum<Requirable[K]['$Value']>>
 }
 
 export interface EnumBuilder extends IEnumBuilder {}

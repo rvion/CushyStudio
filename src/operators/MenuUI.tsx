@@ -10,6 +10,7 @@ import { RevealUI } from '../rsuite/reveal/RevealUI'
 import { isBoundCommand } from './introspect/_isBoundCommand'
 import { isBoundMenu } from './introspect/_isBoundMenu'
 import { isCommand } from './introspect/_isCommand'
+import { SimpleMenuEntry } from './menuSystem/SimpleMenuEntry'
 
 export const MenuRootUI = observer(function MenuRootUI_(p: { menu: MenuInstance<any> }) {
     return (
@@ -27,6 +28,20 @@ export const MenuUI = observer(function MenuUI_(p: { menu: MenuInstance<any> }) 
         <div tw='w-fit'>
             <ul tw='dropdown menu bg-neutral'>
                 {p.menu.entriesWithKb.map(({ entry, char, charIx }, ix) => {
+                    if (entry instanceof SimpleMenuEntry) {
+                        return (
+                            <MenuItem //
+                                tw='min-w-60'
+                                key={ix}
+                                shortcut={char}
+                                label={entry.label}
+                                onClick={() => {
+                                    entry.onPick()
+                                    p.menu.onStop()
+                                }}
+                            />
+                        )
+                    }
                     if (isBoundCommand(entry) || isCommand(entry)) {
                         const label = entry.label
                         return (

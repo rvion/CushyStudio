@@ -163,6 +163,8 @@ export type SharedWidgetConfig<T extends $WidgetTypes> = {
     /** will be called when value changed */
     onValueChange?: (val: T['$Value']) => void
 
+    presets?: Record<string, (form: T['$Widget']) => void>
+
     /** custom type checking;
      * valid:
      *  - true,

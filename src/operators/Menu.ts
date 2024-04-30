@@ -7,6 +7,7 @@ import { createElement, type FC, useMemo } from 'react'
 import { Activity, activityManger } from './Activity'
 import { type BoundCommand, Command } from './Command'
 import { BoundMenuSym } from './introspect/_isBoundMenu'
+import { SimpleMenuEntry } from './menuSystem/SimpleMenuEntry'
 import { MenuRootUI, MenuUI } from './MenuUI'
 import { Trigger } from './RET'
 
@@ -23,7 +24,18 @@ const menuManager = new MenuManager()
 // ACTIVITY STACK
 export type MenuEntryWithKey = { entry: MenuEntry; char?: string; charIx?: number }
 
-export type MenuEntry = IWidget | FC<{}> | Command | BoundCommand | BoundMenu
+// prettier-ignore
+export type MenuEntry =
+    /** inline subform  */
+    | IWidget
+    /** custom component  */
+    | FC<{}>
+    /** a command */
+    | Command /* command may be passed unbound: in that case, they retrieve their context from their provider */
+    | BoundCommand
+    | BoundMenu
+    /** simple MenuEntry */
+    | SimpleMenuEntry
 
 /** supplied menu definition */
 export type MenuDef<Props> = {
@@ -114,7 +126,11 @@ export class MenuInstance<Props> implements Activity {
         const allocatedKeys = new Set<string>([...this.keysTaken])
         const out: MenuEntryWithKey[] = []
         for (const entry of this.entries) {
-            if (entry instanceof Command) {
+            if (entry instanceof SimpleMenuEntry) {
+                const res = this.findSuitableKeys(entry.label, allocatedKeys)
+                if (res == null) continue
+                out.push({ entry, char: res.char, charIx: res.pos })
+            } else if (entry instanceof Command) {
                 const res = this.findSuitableKeys(entry.label, allocatedKeys)
                 if (res == null) continue
                 out.push({ entry, char: res.char, charIx: res.pos })
