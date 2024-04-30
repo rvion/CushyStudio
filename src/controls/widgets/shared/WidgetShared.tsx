@@ -82,7 +82,12 @@ export class Widget_shared<T extends ISpec = ISpec> implements IWidget<Widget_sh
         applyWidgetMixinV2(this)
         makeAutoObservable(this)
     }
-
+    setValue(val: Widget_shared_value<T>) {
+        this.value = val
+    }
+    set value(val: Widget_shared_value<T>) {
+        this.config.widget.setValue(val)
+    }
     get value(): Widget_shared_value<T> {
         return this.config.widget.value
     }

@@ -116,6 +116,25 @@ export class Widget_size implements IWidget<Widget_size_types> {
         applyWidgetMixinV2(this)
         makeAutoObservable(this, { sizeHelper: false })
     }
+
+    setValue(val: Widget_size_value) {
+        this.value = val
+    }
+
+    set value(val: Widget_size_value) {
+        // ugly code;
+        if (
+            val.width === this.serial.width && //
+            val.height === this.serial.height &&
+            val.aspectRatio === this.serial.aspectRatio
+        ) {
+            return
+        }
+        runInAction(() => {
+            Object.assign(this.serial, val)
+            this.bumpValue()
+        })
+    }
     get value(): Widget_size_value {
         return this.serial
     }

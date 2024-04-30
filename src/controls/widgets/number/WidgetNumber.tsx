@@ -91,6 +91,9 @@ export class Widget_number implements IWidget<Widget_number_types> {
         })
     }
 
+    setValue(val: Widget_number_value) {
+        this.value = val
+    }
     set value(next: Widget_number_value) {
         if (this.serial.val === next) return
         runInAction(() => {

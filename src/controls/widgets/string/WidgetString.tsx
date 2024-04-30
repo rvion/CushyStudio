@@ -95,7 +95,9 @@ export class Widget_string implements IWidget<Widget_string_types> {
         applyWidgetMixinV2(this)
         makeAutoObservable(this)
     }
-
+    setValue(val: Widget_string_value) {
+        this.value = val
+    }
     set value(next: Widget_string_value) {
         if (this.serial.val === next) return
         runInAction(() => {

@@ -166,6 +166,11 @@ export class Widget_group<T extends SchemaDict> implements IWidget<Widget_group_
         makeAutoObservable(this, { value: false })
     }
 
+    setValue(val: Widget_group_value<T>) {
+        for (const key in val) {
+            this.fields[key].setValue(val[key])
+        }
+    }
     value: { [k in keyof T]: GetWidgetResult<T[k]> } = new Proxy({} as any, {
         get: (target, prop) => {
             if (typeof prop !== 'string') return

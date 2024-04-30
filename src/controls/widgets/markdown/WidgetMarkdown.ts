@@ -82,6 +82,12 @@ export class Widget_markdown implements IWidget<Widget_markdown_types> {
         makeAutoObservable(this)
     }
 
+    setValue(val: Widget_markdown_value) {
+        this.value = val
+    }
+    set value(val: Widget_markdown_value) {
+        // do nothing; markdown have no real value; only config
+    }
     get value(): Widget_markdown_value {
         return this.serial
     }

@@ -73,6 +73,9 @@ export class Widget_color implements IWidget<Widget_color_types> {
     get value(): Widget_color_value {
         return this.serial.value
     }
+    setValue(val: Widget_color_value) {
+        this.value = val
+    }
     set value(next: Widget_color_value) {
         if (this.serial.value === next) return
         runInAction(() => {

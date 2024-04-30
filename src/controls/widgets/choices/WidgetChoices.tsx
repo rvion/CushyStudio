@@ -221,6 +221,17 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> implements IWidge
         if (!p?.skipBump) this.bumpValue()
     }
 
+    setValue(val: Widget_choices_value<T>) {
+        for (const branch in val) {
+            if (val[branch] == null) this.disableBranch(branch)
+            else {
+                // enable branch
+                this.enableBranch(branch)
+                // patch branchv value to given value
+                this.children[branch]!.setValue(val[branch]!)
+            }
+        }
+    }
     /** results, but only for active branches */
     get value(): Widget_choices_value<T> {
         const out: { [key: string]: any } = {}

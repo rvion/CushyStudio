@@ -88,6 +88,9 @@ export class Widget_enum<O> implements IWidget<Widget_enum_types<O>> {
     get value(): Widget_enum_value<O> {
         return this.status.finalValue
     }
+    setValue(val: Widget_enum_value<O>) {
+        this.value = val
+    }
     set value(next: Widget_enum_value<O>) {
         if (this.serial.val === next) return
         runInAction(() => {

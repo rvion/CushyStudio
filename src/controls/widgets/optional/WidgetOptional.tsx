@@ -119,6 +119,18 @@ export class Widget_optional<T extends ISpec = ISpec> implements IWidget<Widget_
         makeObservable(this, { serial: observable, value: computed })
     }
 
+    setValue(val: Widget_optional_value<T>) {
+        this.value = val
+    }
+    set value(next: Widget_optional_value<T>) {
+        if (next == null) {
+            this.setActive(false)
+            return
+        } else {
+            this.setActive(true)
+            this.child.setValue(next)
+        }
+    }
     get value(): Widget_optional_value<T> {
         if (!this.serial.active) return null
         return this.childOrThrow.value

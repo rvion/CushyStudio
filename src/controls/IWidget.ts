@@ -2,7 +2,6 @@ import type { CovariantFC } from './CovariantFC'
 import type { Form } from './Form'
 import type { ISpec } from './ISpec'
 import type { Problem, Problem_Ext } from './Validation'
-import type { FC } from 'react'
 
 /**
  * base widget type; default type-level param when we work with unknown widget
@@ -26,14 +25,14 @@ export const isWidget = (x: any): x is IWidget => {
 }
 
 export interface IWidget<K extends $WidgetTypes = $WidgetTypes> extends IWidgetMixins {
+    // ---------------------------------------------------------------------------------------------------
     $Type: K['$Type'] /** type only properties; do not use directly; used to make typings good and fast */
     $Config: K['$Config'] /** type only properties; do not use directly; used to make typings good and fast */
     $Serial: K['$Serial'] /** type only properties; do not use directly; used to make typings good and fast */
     $Value: K['$Value'] /** type only properties; do not use directly; used to make typings good and fast */
     $Widget: K['$Widget'] /** type only properties; do not use directly; used to make typings good and fast */
 
-    readonly baseErrors: Problem_Ext
-
+    // ---------------------------------------------------------------------------------------------------
     /** unique ID; each node in the form tree has one; persisted in serial */
     readonly id: string
 
@@ -58,6 +57,13 @@ export interface IWidget<K extends $WidgetTypes = $WidgetTypes> extends IWidgetM
     /** parent widget of this widget, if any */
     readonly parent: IWidget | null
 
+    /** base validation errors specific to this widget; */
+    readonly baseErrors: Problem_Ext
+
+    /** unified api to allow setting serial from value */
+    setValue(val: K['$Value']): void
+
+    // ---------------------------------------------------------------------------------------------------
     /** if specified, override the default algorithm to decide if the widget should have borders */
     border?: boolean
 
@@ -71,6 +77,7 @@ export interface IWidget<K extends $WidgetTypes = $WidgetTypes> extends IWidgetM
     /** if specified, override the default algorithm to decide if the widget container should have a background of base-100 */
     background?: boolean
 
+    // ---------------------------------------------------------------------------------------------------
     /** default header UI */
     readonly DefaultHeaderUI: CovariantFC<{ widget: K['$Widget'] }> | undefined
 

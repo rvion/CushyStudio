@@ -125,6 +125,13 @@ export class Widget_prompt implements IWidget<Widget_prompt_types> {
     get ast(): Tree {
         return parser.parse(this.serial.val ?? '')
     }
+    setValue(val: Widget_prompt_value) {
+        this.value = val
+    }
+    set value(next: Widget_prompt_value) {
+        if (next !== this) throw new Error('not implemented')
+        // do nothing, value it the instance itself
+    }
     get value(): Widget_prompt_value {
         return this
         // return {

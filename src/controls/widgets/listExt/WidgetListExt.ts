@@ -204,6 +204,21 @@ export class Widget_listExt<T extends ISpec> implements IWidget<Widget_listExt_t
         this.bumpValue()
     }
 
+    setValue(xx: Widget_listExt_value<T>) {
+        const val = xx.items
+        this.width = xx.width
+        this.height = xx.height
+        for (let i = 0; i < val.length; i++) {
+            if (i < this.items.length) {
+                this.entries[i]!.widget.setValue(val[i]!.value)
+                this.entries[i]!.shape = val[i]!.position
+            } else {
+                this.addItem({ skipBump: true })
+                this.entries[i]!.widget.setValue(val[i]!.value)
+                this.entries[i]!.shape = val[i]!.position
+            }
+        }
+    }
     get value(): Widget_listExt_value<T> {
         const items = this.entries.map((i) => ({
             position: i.shape,

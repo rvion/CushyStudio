@@ -72,8 +72,11 @@ export class Widget_image implements IWidget<Widget_image_types> {
         applyWidgetMixinV2(this)
         makeAutoObservable(this)
     }
-    get value(): Widget_image_value {
+    get value(): MediaImageL {
         return cushy.db.media_image.get(this.serial.imageID)!
+    }
+    setValue(val: MediaImageL) {
+        this.value = val
     }
     set value(next: MediaImageL) {
         if (this.serial.imageID === next.id) return

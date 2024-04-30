@@ -122,6 +122,14 @@ export class Widget_orbit implements IWidget<Widget_orbit_types> {
         this.serial.value.elevation = clampMod(90 - p.elevation_rad * (180 / Math.PI), -180, 180) // (Math.PI / 4 - curr.getPolarAngle()) * (180 / Math.PI)
     }
 
+    setValue(val: Widget_orbit_value) {
+        this.value = val
+    }
+
+    set value(val: Widget_orbit_value) {
+        this.serial.value.azimuth = val.azimuth
+        this.serial.value.elevation = val.elevation
+    }
     get value(): Widget_orbit_value {
         return {
             azimuth: this.serial.value.azimuth,

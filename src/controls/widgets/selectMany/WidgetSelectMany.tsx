@@ -5,7 +5,7 @@ import type { Problem_Ext } from '../../Validation'
 import type { Widget_group } from '../group/WidgetGroup'
 import type { BaseSelectEntry } from '../selectOne/WidgetSelectOne'
 
-import { makeAutoObservable } from 'mobx'
+import { makeAutoObservable, runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
 import { applyWidgetMixinV2 } from '../../Mixins'
@@ -133,6 +133,18 @@ export class Widget_selectMany<T extends BaseSelectEntry> implements IWidget<Wid
             this.serial.values = this.serial.values.filter((v) => v.id !== item.id) // filter just in case of duplicate
             this.bumpValue()
         }
+    }
+
+    setValue(val: Widget_selectMany_value<T>) {
+        this.value = val
+    }
+
+    set value(next: Widget_selectMany_value<T>) {
+        if (this.serial.values === next) return
+        runInAction(() => {
+            this.serial.values = next
+            this.bumpValue()
+        })
     }
 
     get value(): Widget_selectMany_value<T> {

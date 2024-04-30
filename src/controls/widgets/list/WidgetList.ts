@@ -1,12 +1,9 @@
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
 import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
-import type { Problem_Ext } from '../../Validation'
-import type { IWidgetListLike } from './ListControlsUI'
 
 import { makeAutoObservable, observable } from 'mobx'
 import { nanoid } from 'nanoid'
-import { createElement } from 'react'
 
 import { bang } from '../../../utils/misc/bang'
 import { applyWidgetMixinV2 } from '../../Mixins'
@@ -128,6 +125,16 @@ export class Widget_list<T extends ISpec> implements IWidget<Widget_list_types<T
         makeAutoObservable(this)
     }
 
+    setValue(val: Widget_list_value<T>) {
+        for (let i = 0; i < val.length; i++) {
+            if (i < this.items.length) {
+                this.items[i]!.setValue(val[i])
+            } else {
+                this.addItem({ skipBump: true })
+                this.items[i]!.setValue(val[i])
+            }
+        }
+    }
     get value(): Widget_list_value<T> {
         return this.items.map((i) => i.value)
     }

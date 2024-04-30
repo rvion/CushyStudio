@@ -3,7 +3,7 @@ import type { ISpec } from '../../ISpec'
 import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 import type { Problem_Ext } from '../../Validation'
 
-import { makeAutoObservable } from 'mobx'
+import { makeAutoObservable, runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
 import { bang } from '../../../utils/misc/bang'
@@ -94,6 +94,27 @@ export class Widget_matrix implements IWidget<Widget_matrix_types> {
         applyWidgetMixinV2(this)
         makeAutoObservable(this)
     }
+
+    setValue(val: Widget_matrix_value) {
+        this.value = val
+    }
+
+    /** 🔶 this is inneficient */
+    set value(val: Widget_matrix_value) {
+        runInAction(() => {
+            // 1. reset all cells to false
+            for (const c of this.allCells) {
+                c.value = false
+            }
+            // 2. apply all values from list
+            for (const v of val) {
+                this.store.set(this.key(v.row, v.col), v)
+            }
+            // 3. update
+            this.UPDATE()
+        })
+    }
+
     get value(): Widget_matrix_value {
         // if (!this.state.active) return undefined
         return this.serial.selected
@@ -108,11 +129,14 @@ export class Widget_matrix implements IWidget<Widget_matrix_types> {
         this.serial.selected = this.RESULT
         this.bumpValue() // only place to call bumpValue
     }
-    get RESULT() {
+
+    /** list of all cells that are ON */
+    get RESULT(): Widget_matrix_cell[] {
         return this.allCells.filter((v) => v.value)
     }
 
-    get firstValue() {
+    /** whether the first grid cell is ON */
+    get firstValue(): boolean {
         return this.allCells[0]?.value ?? false
     }
 
@@ -124,7 +148,7 @@ export class Widget_matrix implements IWidget<Widget_matrix_types> {
 
     setRow = (row: string, val: boolean) => {
         for (const v of this.cols) {
-            const cell = this.get(row, v)
+            const cell = this.getCell(row, v)
             cell.value = val
         }
         this.UPDATE()
@@ -132,18 +156,20 @@ export class Widget_matrix implements IWidget<Widget_matrix_types> {
 
     setCol = (col: string, val: boolean) => {
         for (const r of this.rows) {
-            const cell = this.get(r, col)
+            const cell = this.getCell(r, col)
             cell.value = val
         }
         this.UPDATE()
     }
 
-    get = (row: string, col: string): Widget_matrix_cell => {
+    /** get cell at {rol x col} */
+    getCell = (row: string, col: string): Widget_matrix_cell => {
         return bang(this.store.get(this.key(row, col)))
     }
 
-    set = (row: string, col: string, value: boolean) => {
-        const cell = this.get(row, col)
+    /** set cell at {rol x col} to given value */
+    setCell = (row: string, col: string, value: boolean) => {
+        const cell = this.getCell(row, col)
         cell.value = value
         this.UPDATE()
     }

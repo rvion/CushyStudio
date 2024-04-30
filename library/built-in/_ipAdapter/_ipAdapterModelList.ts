@@ -2,7 +2,7 @@ import type { KnownModel_Name } from '../../../src/manager/model-list/KnownModel
 
 export const ipAdapterModelList: KnownModel_Name[] = [
     'ip-adapter_sd15.safetensors',
-    'ip-adapter_sd15_light.safetensors',
+    'ip-adapter_sd15_light.safetensors [DEPRECATED]',
     'ip-adapter_sd15_vit-G.safetensors',
     'ip-adapter-plus_sd15.safetensors',
     'ip-adapter-plus-face_sd15.safetensors',

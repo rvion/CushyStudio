@@ -100,6 +100,9 @@ export class Widget_selectOne<T extends BaseSelectEntry> implements IWidget<Widg
         makeAutoObservable(this)
     }
 
+    setValue(val: Widget_selectOne_value<T>) {
+        this.value = val
+    }
     set value(next: Widget_selectOne_value<T>) {
         if (this.serial.val === next) return
         runInAction(() => {

@@ -70,6 +70,7 @@ export class Widget_spacer implements IWidget<Widget_spacer_types> {
     get value() {
         return false
     }
+    setValue(val: boolean) {}
     set value(val) {}
 }
 
