@@ -1,4 +1,5 @@
 import type { GroupProps } from '@react-three/fiber'
+import type { Group } from 'three'
 
 import { Environment, Html, Image, OrbitControls, Sparkles, Stage, useGLTF } from '@react-three/drei'
 import { Canvas, useFrame } from '@react-three/fiber'
@@ -73,7 +74,7 @@ const Can3 = observer(
         const gltf = useGLTF(`/library/built-in/_views/_can3/can3.gltf`)
         const { nodes, materials } = gltf
         const uist = useLocalObservable(() => ({ hover: false }))
-        const ref = useRef<THREE.Group>(null!)
+        const ref = useRef<Group>(null!)
         const cache = useMemo(() => ({ total: 0 }), [])
         useFrame((state, delta) => {
             ref.current.rotation.y += 0.03

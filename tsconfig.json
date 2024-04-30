@@ -32,7 +32,8 @@
             "webgl2": ["./src/typings/empty-types.d.ts"],
             "@tensorflow/tfjs": ["./src/typings/empty-types.d.ts"],
             "@types/webgl": ["./src/typings/empty-types.d.ts"],
-            "@types/webgl-ext": ["./src/typings/empty-types.d.ts"]
+            "@types/webgl-ext": ["./src/typings/empty-types.d.ts"],
+            "@use-gesture/react": ["./src/typings/empty-types.d.ts"]
         },
         // -------------// -------------
         /* specific to base */ "tsBuildInfoFile": ".tsbuildinfo",

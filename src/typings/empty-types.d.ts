@@ -14,3 +14,6 @@ declare module '@types/webgl' {
 declare module '@types/webgl-ext' {
     //
 }
+declare module '@use-gesture/react' {
+    //
+}

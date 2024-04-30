@@ -8,7 +8,7 @@ export type KnownModel_SavePath =
     | "deepbump"                                         // x   1
     | "face_restore"                                     // x   3
     | "checkpoints/SVD"                                  // x   2
-    | "checkpoints/zero123"                              // x   1
+    | "checkpoints/zero123"                              // x   5
     | "checkpoints/Stable-Cascade"                       // x   2
     | "vae/Stable-Cascade"                               // x   2
     | "unet/Stable-Cascade"                              // x   8
@@ -35,7 +35,7 @@ export type KnownModel_SavePath =
     | "controlnet/SD1.5/animatediff"                     // x   2
     | "loras/SD1.5/animatediff"                          // x   1
     | "checkpoints/motionctrl"                           // x   1
-    | "ipadapter"                                        // x  16
+    | "ipadapter"                                        // x  22
     | "loras/ipadapter"                                  // x   5
     | "custom_nodes/pfg-ComfyUI/models"                  // x   3
     | "facerestore_models"                               // x   4
@@ -54,7 +54,8 @@ export type KnownModel_SavePath =
     | "groundingdino"                                    // x   2
     | "checkpoints/dynamicrafter"                        // x   2
     | "checkpoints/depthfm"                              // x   2
-    | "checkpoints/SUPIR"                                // x   2
+    | "checkpoints/SUPIR"                                // x   4
+    | "rams"                                             // x   3
     | "custom_nodes/ComfyUI-BRIA_AI-RMBG/RMBG-1.4"       // x   1
 
 export const knownModel_SavePath: KnownModel_SavePath[] = [
@@ -66,7 +67,7 @@ export const knownModel_SavePath: KnownModel_SavePath[] = [
     "deepbump"                                        ,  // x   1
     "face_restore"                                    ,  // x   3
     "checkpoints/SVD"                                 ,  // x   2
-    "checkpoints/zero123"                             ,  // x   1
+    "checkpoints/zero123"                             ,  // x   5
     "checkpoints/Stable-Cascade"                      ,  // x   2
     "vae/Stable-Cascade"                              ,  // x   2
     "unet/Stable-Cascade"                             ,  // x   8
@@ -93,7 +94,7 @@ export const knownModel_SavePath: KnownModel_SavePath[] = [
     "controlnet/SD1.5/animatediff"                    ,  // x   2
     "loras/SD1.5/animatediff"                         ,  // x   1
     "checkpoints/motionctrl"                          ,  // x   1
-    "ipadapter"                                       ,  // x  16
+    "ipadapter"                                       ,  // x  22
     "loras/ipadapter"                                 ,  // x   5
     "custom_nodes/pfg-ComfyUI/models"                 ,  // x   3
     "facerestore_models"                              ,  // x   4
@@ -112,7 +113,8 @@ export const knownModel_SavePath: KnownModel_SavePath[] = [
     "groundingdino"                                   ,  // x   2
     "checkpoints/dynamicrafter"                       ,  // x   2
     "checkpoints/depthfm"                             ,  // x   2
-    "checkpoints/SUPIR"                               ,  // x   2
+    "checkpoints/SUPIR"                               ,  // x   4
+    "rams"                                            ,  // x   3
     "custom_nodes/ComfyUI-BRIA_AI-RMBG/RMBG-1.4"      ,  // x   1
 ]
 
