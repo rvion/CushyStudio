@@ -128,7 +128,7 @@ class InputNumberStableState {
     mouseMoveListener = (e: MouseEvent) => {
         // reset origin if change shift or control key while drag (to let already applied changes remain)
         if (dragged && (lastShiftState !== e.shiftKey || lastControlState !== e.ctrlKey)) {
-            startValue = lastValue
+            lastValue = this.value
             cumulativeOffset = 0
         }
 
@@ -138,7 +138,7 @@ class InputNumberStableState {
         let precision = (e.shiftKey ? 0.001 : 0.01) * this.step
         let offset = this.numberSliderSpeed * cumulativeOffset * precision
 
-        const next = startValue + offset
+        const next = lastValue + offset
         // Parse value
         let num =
             typeof next === 'string' //
@@ -155,7 +155,7 @@ class InputNumberStableState {
 
         lastShiftState = e.shiftKey
         lastControlState = e.ctrlKey
-        lastValue = num
+
         this.syncValues(num, { soft: true, roundingModifier: e.shiftKey ? 0.01 : 1 })
     }
 
@@ -259,14 +259,14 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
                 <div /* Text Container */
                     tw={[
                         //
-                        `flex px-1 items-center justify-center text-sm text-shadow truncate z-20`,
+                        `flex px-1 items-center justify-center text-sm text-shadow truncate z-20 h-full`,
                     ]}
                     onMouseDown={(ev) => {
                         if (isEditing || ev.button != 0) return
 
                         /* Begin slider drag */
                         activeSlider = ev.currentTarget
-                        startValue = val
+                        lastValue = startValue = val
                         cumulativeOffset = 0
                         dragged = false
 
