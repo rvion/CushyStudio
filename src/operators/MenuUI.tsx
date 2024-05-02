@@ -25,7 +25,25 @@ export const MenuRootUI = observer(function MenuRootUI_(p: { menu: MenuInstance<
 
 export const MenuUI = observer(function MenuUI_(p: { menu: MenuInstance<any> }) {
     return (
-        <div tw='w-fit'>
+        <div
+            tabIndex={-1}
+            autoFocus
+            tw='w-fit active:bg-red-300 hover:bg-blue-300'
+            onKeyDown={(ev) => {
+                const key = ev.key
+                for (const entry of p.menu.entriesWithKb) {
+                    if (entry.char === key) {
+                        if (entry.entry instanceof SimpleMenuEntry) entry.entry.onPick()
+                        else if (isBoundCommand(entry.entry)) entry.entry.execute()
+                        else if (isCommand(entry.entry)) entry.entry.execute()
+                        p.menu.onStop()
+                        ev.stopPropagation()
+                        ev.preventDefault()
+                        return
+                    }
+                }
+            }}
+        >
             <ul tw='dropdown menu bg-neutral'>
                 {p.menu.entriesWithKb.map(({ entry, char, charIx }, ix) => {
                     if (entry instanceof SimpleMenuEntry) {

@@ -193,7 +193,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                         <RevealUI //
                             content={() => <menu_widgetActions.UI props={widget} />}
                         >
-                            <span className='material-symbols-outlined'>book</span>
+                            <span className='material-symbols-outlined'>more_vert</span>
                         </RevealUI>
                     )}
                 </div>

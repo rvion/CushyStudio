@@ -148,8 +148,8 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> implements IWidge
                     (typeof def === 'string' //
                         ? branch === def
                         : typeof def === 'object'
-                        ? def?.[branch] ?? false
-                        : null)
+                          ? def?.[branch] ?? false
+                          : null)
 
                 if (isActive) this.enableBranch(branch, { skipBump: true })
             }
@@ -160,10 +160,10 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> implements IWidge
                 (def == null
                     ? allBranches[0]
                     : typeof def === 'string' //
-                    ? def
-                    : typeof def === 'object'
-                    ? Object.entries(def).find(([, v]) => v)?.[0] ?? allBranches[0]
-                    : allBranches[0])
+                      ? def
+                      : typeof def === 'object'
+                        ? Object.entries(def).find(([, v]) => v)?.[0] ?? allBranches[0]
+                        : allBranches[0])
             if (activeBranch == null) toastError(`❌ No active branch found for single choice widget "${this.config.label}"`)
             else this.enableBranch(activeBranch, { skipBump: true })
         }
@@ -180,6 +180,7 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> implements IWidge
         } else this.enableBranch(branch)
     }
 
+    isBranchDisabled = (branch: keyof T & string): boolean => !this.serial.branches[branch]
     disableBranch(branch: keyof T & string, p?: { skipBump?: boolean }) {
         // ensure branch to disable is active
         if (!this.children[branch]) throw new Error(`❌ Branch "${branch}" not enabled`)
@@ -222,13 +223,19 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> implements IWidge
     }
 
     setValue(val: Widget_choices_value<T>) {
-        for (const branch in val) {
-            if (val[branch] == null) this.disableBranch(branch)
-            else {
-                // enable branch
-                this.enableBranch(branch)
-                // patch branchv value to given value
-                this.children[branch]!.setValue(val[branch]!)
+        for (const branch of this.choices) {
+            // 🐛 console.log(`[🤠] >> ${branch}:`, Boolean(val[branch]), `(is: ${this.isBranchDisabled(branch)})`)
+            if (val[branch] == null) {
+                if (!this.isBranchDisabled(branch)) {
+                    this.disableBranch(branch)
+                }
+            } else {
+                if (this.isBranchDisabled(branch)) {
+                    // enable branch
+                    this.enableBranch(branch)
+                    // patch branchv value to given value
+                    this.children[branch]!.setValue(val[branch]!)
+                }
             }
         }
     }
