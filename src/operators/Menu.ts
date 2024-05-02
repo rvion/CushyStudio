@@ -1,5 +1,6 @@
 import type { IWidget } from '../controls/IWidget'
 import type { NO_PROPS } from './NO_PROPS'
+import type { Trigger } from './RET'
 
 import { nanoid } from 'nanoid'
 import { createElement, type FC, useMemo } from 'react'
@@ -9,7 +10,6 @@ import { type BoundCommand, Command } from './Command'
 import { BoundMenuSym } from './introspect/_isBoundMenu'
 import { SimpleMenuEntry } from './menuSystem/SimpleMenuEntry'
 import { MenuRootUI, MenuUI } from './MenuUI'
-import { Trigger } from './RET'
 
 // ------------------------------------------------------------------------------------------
 // COMMAND MANAGER Centralize every single command

@@ -140,7 +140,7 @@ for (const [e, v] of esbuildInputFiles) {
     for (const dep of v.imports) {
         if (dep.external) {
             // 1. guard agains esbuild BUG
-            if (dep.path.startsWith('./')) {
+            if (dep.path.startsWith('./') || dep.path.startsWith('..')) {
                 console.log(`🔴 module '${e}' thinks '${dep.path}' is external. What a moron.`)
                 throw new Error('🔴 some fuckery is happening with external deps detection; probably some import type missing')
             }
@@ -197,16 +197,19 @@ for (const srcRelPath of allFilesWithExt) {
 section(`2. REEXPORT all ${jsModuleInBundle.size} files from single module`)
 sectionTool('bun script')
 let libEntrypointCode = ''
+let mainReexportTSCode = '' // code at the root of the package that re-export everything
 for (const srcRelPath of allFilesNoExt) {
     // const
     if (srcRelPath === 'src/utils/custom-jsx/jsx-runtime') continue
     if (srcRelPath.endsWith('.css')) continue
     const libRelPath = srcRelPath.replace(/^src\//, '../')
     libEntrypointCode += `export * from '${libRelPath}'\n`
+    mainReexportTSCode += `export * from './${srcRelPath}'\n`
 }
 const SRC_ENTRYPOINT_RELPATH = ENTRYPOINT.replace(/\.tsx?$/, '.LIBRARY.ts')
 // const SRC_ENTRYPOINT_ABSPATH = resolve(SRC_ENTRYPOINT_RELPATH)
 writeFileSync(SRC_ENTRYPOINT_RELPATH, libEntrypointCode)
+writeFileSync(`${PACKAGE_NAME}/main.ts`, mainReexportTSCode)
 console.log(`writing new entrypoint here: ${chalk.underline(SRC_ENTRYPOINT_RELPATH)}`)
 const LIB_ENTRYPOINT_DTS_RELPATH = SRC_ENTRYPOINT_RELPATH.replace(/\.tsx?$/, '.d.ts').replace(/^src\//, 'lib/')
 const LIB_ENTRYPOINT_DTS_ABSPATH = resolve(LIB_ENTRYPOINT_DTS_RELPATH)
@@ -218,7 +221,7 @@ sectionTool('esbuild')
 await buildJS({
     shouldMinify: false,
     entryPoints: [SRC_ENTRYPOINT_RELPATH],
-    outfile: '@cushy/forms/main.js',
+    outfile: `${PACKAGE_NAME}/main.js`,
 })
 await _showESBUILDOutput({ prefix: 'main' })
 

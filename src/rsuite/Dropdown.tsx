@@ -1,8 +1,9 @@
+import type { CushyShortcut } from '../app/shortcuts/CommandManager'
+
 import { observer } from 'mobx-react-lite'
 import { ReactNode } from 'react'
 
 import { ComboUI } from '../app/shortcuts/ComboUI'
-import { CushyShortcut } from '../app/shortcuts/CommandManager'
 import { RevealUI } from './reveal/RevealUI'
 
 export const Dropdown = (p: {

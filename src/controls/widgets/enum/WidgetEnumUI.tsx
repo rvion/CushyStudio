@@ -1,11 +1,11 @@
 import type { EnumName, EnumValue } from '../../../models/ComfySchema'
-import type { Widget_enum } from './WidgetEnum'
 import type { CleanedEnumResult } from '../../../types/EnumUtils'
+import type { Widget_enum } from './WidgetEnum'
 
 import { observer } from 'mobx-react-lite'
 
+import { RevealUI } from '../../../rsuite/reveal/RevealUI'
 import { SelectUI } from '../../../rsuite/SelectUI'
-import { Popover, Whisper } from '../../../rsuite/shims'
 import { useSt } from '../../../state/stateContext'
 
 // UI
@@ -72,25 +72,24 @@ export const EnumSelectorUI = observer(function EnumSelectorUI_(p: {
             />
             <div tw='flex flex-wrap gap-2'>
                 {value.isSubstitute ? ( //
-                    <Whisper
-                        enterable
+                    <RevealUI
                         placement='bottom'
-                        speaker={
-                            <Popover>
+                        content={() => (
+                            <div>
                                 <span>
                                     <span tw='bord'>{value.candidateValue}</span> is not in your ComfyUI install folder
                                 </span>
                                 <div>
                                     <span tw='bord'>{value.finalValue}</span> used instead
                                 </div>
-                            </Popover>
-                        }
+                            </div>
+                        )}
                     >
                         <div className='text-orange-500 flex items-center'>
                             <span className='material-symbols-outlined'>info</span>
                             <span>{value.finalValue}</span>
                         </div>
-                    </Whisper>
+                    </RevealUI>
                 ) : null}
                 {value.ENUM_HAS_NO_VALUES ? <div tw='text-red-500'>NO VALUE FOR {p.enumName}</div> : null}
             </div>
