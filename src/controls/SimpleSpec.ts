@@ -26,7 +26,7 @@ export class SimpleSpec<W extends IWidget = IWidget> implements ISpec<W> {
     ) {}
 
     /** wrap widget spec to list stuff */
-    list = (config: Omit<Widget_list_config<any>, 'element'> = {}): SimpleSpec<Widget_list<this>> =>
+    list = (config: Omit<Widget_list_config<this>, 'element'> = {}): SimpleSpec<Widget_list<this>> =>
         new SimpleSpec<Widget_list<this>>('list', {
             ...config,
             element: this,
