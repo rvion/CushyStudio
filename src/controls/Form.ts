@@ -6,7 +6,7 @@ import type { ISpec } from './ISpec'
 import type { IWidget } from './IWidget'
 import type { Widget_group, Widget_group_serial } from './widgets/group/WidgetGroup'
 
-import { action, isObservable, makeAutoObservable, observable } from 'mobx'
+import { action, isObservable, makeAutoObservable, observable, toJS } from 'mobx'
 import { nanoid } from 'nanoid'
 import { createElement, type ReactNode } from 'react'
 
@@ -147,8 +147,19 @@ export class Form<
             // ensure form serial is observable, so we avoid working with soon to expire refs
             if (formSerial && !isObservable(formSerial)) formSerial = observable(formSerial)
 
+            // empty object case ---------------------------------------------------------------
+            // if and empty object `{}` is used instead of a real serial, let's pretend it's null
+            if (formSerial != null && Object.keys(formSerial).length === 0) {
+                formSerial = null
+            }
+
             // BACKWARD COMPAT -----------------------------------------------------------------
-            if (formSerial != null && formSerial.type !== 'FormSerial') {
+            if (
+                formSerial != null && //
+                formSerial.type !== 'FormSerial' &&
+                'values_' in formSerial
+            ) {
+                console.log(`[🔴🔴🔴🔴🔴🔴🔴] `, toJS(formSerial))
                 const oldSerial: Widget_group_serial<any> = formSerial as any
                 const oldsharedSerial: { [key: string]: any } = {}
                 for (const [k, v] of Object.entries(oldSerial.values_)) {
@@ -180,7 +191,6 @@ export class Form<
             // instanciate the root widget
             const spec: ROOT = this.ui?.(formBuilder)
             const rootWidget: ROOT = formBuilder._HYDRATE(null, spec, formSerial?.root)
-
             this.ready = true
             this.error = null
             // this.startMonitoring(rootWidget)
