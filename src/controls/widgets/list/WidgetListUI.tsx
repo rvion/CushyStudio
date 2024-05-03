@@ -1,6 +1,5 @@
 import type { ISpec } from '../../ISpec'
 import type { IWidget } from '../../IWidget'
-import type { Widget_listExt } from '../listExt/WidgetListExt'
 import type { Widget_list } from './WidgetList'
 
 import { observer } from 'mobx-react-lite'
@@ -65,16 +64,16 @@ export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends 
                                         <div
                                             tw={[
                                                 'btn btn-sm btn-narrower btn-ghost opacity-50',
-                                                min && widget.items.length <= min ? 'btn-disabled' : null,
+                                                min != null && widget.items.length <= min ? 'btn-disabled' : null,
                                             ]}
                                             onClick={() => widget.removeItem(subWidget)}
                                         >
                                             <span className='material-symbols-outlined'>delete</span>
                                         </div>
                                         {/* collapse indicator */}
-                                        <ListItemCollapseBtnUI widget={subWidget} />
+                                        {subWidget.collapsible && <ListItemCollapseBtnUI widget={subWidget} />}
                                     </div>
-                                    {widgetBody && !collapsed && subWidget && (
+                                    {widgetBody && !collapsed && subWidget != null && (
                                         <ErrorBoundary FallbackComponent={ErrorBoundaryFallback} onReset={(details) => {}}>
                                             <div tw='ml-2 pl-2'>
                                                 {/* <WidgetBodyUI widget={subWidget} /> */}

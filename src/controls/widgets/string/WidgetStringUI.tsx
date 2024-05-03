@@ -69,7 +69,7 @@ export const WidgetString_HeaderUI = observer(function WidgetStringUI_(p: { widg
                 ]}
                 onMouseDown={(ev) => {
                     if (ev.button == 1) {
-                        let textInput = ev.currentTarget.querySelector('input[type="text"') as HTMLInputElement
+                        const textInput = ev.currentTarget.querySelector('input[type="text"') as HTMLInputElement
                         textInput.focus()
                     }
                 }}

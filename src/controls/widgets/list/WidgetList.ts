@@ -151,7 +151,7 @@ export class Widget_list<T extends ISpec> implements IWidget<Widget_list_types<T
 
     // ERRORS --------------------------------------------------------
     get baseErrors(): string[] {
-        let out: string[] = []
+        const out: string[] = []
         if (this.config.min != null && this.length < this.config.min) {
             out.push(`List is too short`)
         }

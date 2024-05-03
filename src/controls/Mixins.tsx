@@ -33,18 +33,18 @@ const mixin: IWidgetMixins = {
 
     /** all errors: base (built-in widget) + custom (user-defined in config) */
     get errors(): Problem[] {
-        const self = this as any as IWidget
-        const baseErrors = normalizeProblem(self.baseErrors)
+        const SELF = this as any as IWidget
+        const baseErrors = normalizeProblem(SELF.baseErrors)
         return [...baseErrors, ...this.customErrors]
     },
 
     get customErrors(): Problem[] {
-        const self = this as any as IWidget
-        if (self.config.check == null)
+        const SELF = this as any as IWidget
+        if (SELF.config.check == null)
             return [
                 /* { message: 'No check function provided' } */
             ]
-        const res = self.config.check(this)
+        const res = SELF.config.check(this)
         return normalizeProblem(res)
         // return [...normalizeProblem(res), { message: 'foo' }]
     },

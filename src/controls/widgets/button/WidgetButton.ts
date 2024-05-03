@@ -1,4 +1,3 @@
-import type { DraftL } from '../../../models/Draft'
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
 import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'

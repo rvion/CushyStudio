@@ -72,7 +72,6 @@ export class Widget_size implements IWidget<Widget_size_types> {
     }
     get sizeHelper(): ResolutionState {
         // should only be executed once
-        const self = this
         const state = new ResolutionState(this)
         Object.defineProperty(this, 'sizeHelper', { value: state })
         return state
