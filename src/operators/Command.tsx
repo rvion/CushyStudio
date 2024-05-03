@@ -39,7 +39,7 @@ export class Command<Ctx = any> {
      * method to programmatically call a command,
      * using when to both extract context and check if command can run
      * */
-    execute() {
+    execute = () => {
         console.warn(`[CMD] ☣️ TRYING TO RUN... ${this.label}`)
         const context = this.conf.ctx.check()
         if (context === Trigger.UNMATCHED) {
@@ -50,7 +50,7 @@ export class Command<Ctx = any> {
         return res
     }
 
-    NavBarBtnUI(p: { label?: string }) {
+    NavBarBtnUI = (p: { label?: string }) => {
         return <div onClick={() => this.execute()}>{p.label ?? this.label}</div>
     }
 }
