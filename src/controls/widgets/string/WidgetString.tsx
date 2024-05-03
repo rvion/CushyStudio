@@ -10,6 +10,9 @@ import { applyWidgetMixinV2 } from '../../Mixins'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetString_HeaderUI, WidgetString_TextareaBodyUI, WidgetString_TextareaHeaderUI } from './WidgetStringUI'
 
+type CssProprtyGlobals = "-moz-initial" | "inherit" | "initial" | "revert" | "unset"
+type CssProprtyResize = CssProprtyGlobals | "block" | "both" | "horizontal" | "inline" | "none" | "vertical"
+
 // CONFIG
 export type Widget_string_config = WidgetConfigFields<
     {
@@ -18,6 +21,7 @@ export type Widget_string_config = WidgetConfigFields<
         placeHolder?: string
         pattern?: string
         inputType?: 'text' | 'password' | 'email' | 'tel' | 'url' | 'time' | 'date' | 'datetime-local' | 'color'
+        resize?: CssProprtyResize
         /**
          * if set to true, widget will commit values on enter; not before.
          * hitting esc will revert to the last committed value

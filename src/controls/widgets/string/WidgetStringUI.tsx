@@ -19,7 +19,7 @@ export const WidgetString_TextareaBodyUI = observer(function WidgetString_Textar
     const val = widget.value
     return (
         <textarea
-            style={{ lineHeight: '1.3rem' }}
+            style={{ /* ...p.widget.config.style, */ lineHeight: '1.3rem', resize: p.widget.config.resize }}
             tw='textarea textarea-bordered textarea-sm w-full '
             placeholder={widget.config.placeHolder}
             rows={3}
