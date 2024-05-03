@@ -199,7 +199,9 @@ export class Widget_group<T extends SchemaDict> implements IWidget<Widget_group_
             return {
                 enumerable: true,
                 configurable: true,
-                value: subWidget.value,
+                get() {
+                    return subWidget.value
+                },
             }
         },
     })
