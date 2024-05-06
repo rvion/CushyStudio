@@ -233,9 +233,9 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> implements IWidge
                 if (this.isBranchDisabled(branch)) {
                     // enable branch
                     this.enableBranch(branch)
-                    // patch branchv value to given value
-                    this.children[branch]!.setValue(val[branch]!)
                 }
+                // patch branchv value to given value
+                this.children[branch]!.setValue(val[branch]!)
             }
         }
     }
