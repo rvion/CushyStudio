@@ -3,17 +3,17 @@ import type { Widget_prompt } from './WidgetPrompt'
 import { observer } from 'mobx-react-lite'
 import { useEffect, useLayoutEffect, useMemo } from 'react'
 
+import { RevealUI } from '../../../rsuite/reveal/RevealUI'
+import { useSt } from '../../../state/stateContext'
 import { PluginWrapperUI } from './plugins/_PluginWrapperUI'
 import { Plugin_AdjustWeightsUI } from './plugins/Plugin_AdjustWeights'
 import { Plugin_DebugAST } from './plugins/Plugin_DebugAST'
+import { Plugin_LoraControlsUI } from './plugins/Plugin_LoraBoxUI'
 import { Plugin_PreviewPromptUI } from './plugins/Plugin_PreviewUI'
 import { Plugin_ReorderTopLevelStuffUI } from './plugins/Plugin_ReorderTopLevelStuffUI'
 import { Plugin_ShortcutsUI } from './plugins/Plugin_ShortcutsUI'
 import { PromptPlugin } from './plugins/PromptPlugin'
 import { WidgetPromptUISt } from './WidgetPromptUISt'
-import { Plugin_LoraControlsUI } from './plugins/Plugin_LoraBoxUI'
-import { RevealUI } from '../../../rsuite/reveal/RevealUI'
-import { useSt } from '../../../state/stateContext'
 
 export const WidgetPrompt_LineUI = observer(function WidgetPrompt_LineUI_(p: { widget: Widget_prompt }) {
     const st = useSt()

@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 
-import { GitManagedFolder } from './updater'
 import { Button } from '../rsuite/shims'
+import { GitManagedFolder } from './updater'
 
 export const UninstallUI = observer(function UninstallUI_(p: { updater: GitManagedFolder }) {
     const updater = p.updater

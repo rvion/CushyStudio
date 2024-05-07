@@ -2,13 +2,13 @@ import type { StepL } from '../models/Step'
 
 import { observer } from 'mobx-react-lite'
 
-import { OutputPreviewWrapperUI } from './OutputPreviewWrapperUI'
 import { ComfyWorkflowL } from '../models/ComfyWorkflow'
 import { MenuItem } from '../rsuite/Dropdown'
 import { RevealUI } from '../rsuite/reveal/RevealUI'
 import { useSt } from '../state/stateContext'
 import { GraphPreviewUI } from '../widgets/graph/GraphPreviewUI'
 import { ButtonOpenInComfyUI } from '../widgets/workspace/ButtonOpenInComfyUI'
+import { OutputPreviewWrapperUI } from './OutputPreviewWrapperUI'
 
 export const OutputWorkflowPreviewUI = observer(function OutputWorkflowUI_(p: { step?: Maybe<StepL>; output: ComfyWorkflowL }) {
     const st = useSt()

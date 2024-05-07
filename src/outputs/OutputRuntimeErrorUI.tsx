@@ -1,10 +1,10 @@
 import { observer } from 'mobx-react-lite'
 
-import { JsonViewUI } from '../widgets/workspace/JsonViewUI'
-import { OutputPreviewWrapperUI } from './OutputPreviewWrapperUI'
 import { RuntimeErrorL } from '../models/RuntimeError'
 import { StepL } from '../models/Step'
 import { Panel } from '../rsuite/shims'
+import { JsonViewUI } from '../widgets/workspace/JsonViewUI'
+import { OutputPreviewWrapperUI } from './OutputPreviewWrapperUI'
 
 export const OutputRuntimeErrorPreviewUI = observer(function OutputRuntimeErrorPreviewUI_(p: {
     step?: Maybe<StepL>

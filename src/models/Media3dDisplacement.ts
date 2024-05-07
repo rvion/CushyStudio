@@ -1,6 +1,6 @@
 import type { LiveInstance } from '../db/LiveInstance'
-import type { StepL } from './Step'
 import type { TABLES } from '../db/TYPES.gen'
+import type { StepL } from './Step'
 
 import { LiveRefOpt } from '../db/LiveRefOpt'
 

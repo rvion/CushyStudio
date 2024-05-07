@@ -2,8 +2,8 @@ import type { ModelInfo } from '../../manager/model-list/model-list-loader-types
 
 import { observer } from 'mobx-react-lite'
 
-import { renderStatus } from './renderStatus'
 import { useSt } from '../../state/stateContext'
+import { renderStatus } from './renderStatus'
 
 export const Button_InstalModelViaManagerUI = observer(function Button_InstalModelViaManagerUI_(p: {
     //

@@ -1,12 +1,12 @@
+import type { LiveTable } from '../db/LiveTable'
 import type { STATE } from './state'
 import type { Session, User } from '@supabase/supabase-js'
 import type { SupabaseAuthClient } from '@supabase/supabase-js/dist/module/lib/SupabaseAuthClient'
-import type { LiveTable } from '../db/LiveTable'
 
 import { makeAutoObservable, runInAction } from 'mobx'
 
-import { logger } from './logfile'
 import { asAuthID, type NewAuth, type TABLES } from '../db/TYPES.gen'
+import { logger } from './logfile'
 
 export class AuthState {
     cleanup: Maybe<() => void> = null

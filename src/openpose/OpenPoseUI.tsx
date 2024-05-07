@@ -1,9 +1,9 @@
 import { observer } from 'mobx-react-lite'
 import { useMemo } from 'react'
 
-import { OpenPoseAnimV0 } from './OpenPoseAnimV0'
 import { Button } from '../rsuite/shims'
 import { useSt } from '../state/stateContext'
+import { OpenPoseAnimV0 } from './OpenPoseAnimV0'
 
 const CANVAS_WIDTH = 640
 const CANVAS_HEIGHT = 480

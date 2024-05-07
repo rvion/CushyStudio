@@ -1,3 +1,4 @@
+import type { STATE } from '../../../state/state'
 import type { TreeApp } from './nodes/TreeApp'
 import type { TreeDraft } from './nodes/TreeDraft'
 import type { TreeError } from './nodes/TreeError'
@@ -7,7 +8,6 @@ import type { TreeFolder } from './nodes/TreeFolder'
 import type { TreeNode } from './xxx/TreeNode'
 // import type { TreeRoot } from './nodes/TreeRoot'
 import type { ReactNode } from 'react'
-import type { STATE } from '../../../state/state'
 
 export type TreeItemID = string
 
