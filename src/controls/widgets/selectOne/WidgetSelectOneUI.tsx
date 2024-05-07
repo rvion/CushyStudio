@@ -79,12 +79,12 @@ export const WidgetSelectOne_SelectUI = observer(function WidgetSelectOne_Select
                     widget.value = next
                 }}
             />
-            {widget.baseErrors && (
+            {/* {widget.baseErrors && (
                 <div tw='text-red-500 flex items-center gap-1'>
                     <span className='material-symbols-outlined'>error</span>
                     {widget.baseErrors}
                 </div>
-            )}
+            )} */}
         </div>
     )
 })
