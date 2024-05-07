@@ -1,10 +1,10 @@
 import type { ISpec } from './ISpec'
 import type { IWidget } from './IWidget'
-import type { BoundKontext, Kontext } from './Kontext'
 import type { Widget_list, Widget_list_config } from './widgets/list/WidgetList'
 import type { Widget_optional } from './widgets/optional/WidgetOptional'
 import type { Widget_shared } from './widgets/shared/WidgetShared'
 
+import { $EmptyChannel, Channel, type ChannelId, type Producer } from './Channel'
 import { getCurrentForm_IMPL } from './shared/runWithGlobalForm'
 
 // Simple Spec --------------------------------------------------------
@@ -18,15 +18,33 @@ export class SimpleSpec<W extends IWidget = IWidget> implements ISpec<W> {
 
     LabelExtraUI = (p: {}) => null
 
-    // Kontexts -----------------------------------------------------
-    _withKontext = new Set<Kontext<any>>()
-    withKontext = (ck: Kontext<any>): this => {
-        this._withKontext.add(ck)
+    // PubSub -----------------------------------------------------
+    producers: Producer<any, W['$Widget']>[] = []
+    publish<T>(chan: Channel<T> | ChannelId, produce: (self: W['$Widget']) => T): this {
+        this.producers.push({ chan, produce })
         return this
     }
-    _feedKontext: Maybe<BoundKontext<W['$Widget'], any>> = null
-    feedKontext = <T>(_feedKontext: BoundKontext<W['$Widget'], T>): this => {
-        this._feedKontext = _feedKontext
+
+    subscribe<T>(chan: Channel<T> | ChannelId, effect: (arg: T, self: W['$Widget']) => void): this {
+        return this.addReaction(
+            (self) => self.consume(chan),
+            (arg, self) => {
+                if (arg == null) return
+                effect(arg, self)
+            },
+        )
+    }
+
+    reactions: {
+        expr: (self: W['$Widget']) => any
+        effect: (arg: any, self: W['$Widget']) => void
+    }[] = []
+    addReaction<T>(
+        //
+        expr: (self: W['$Widget']) => T,
+        effect: (arg: T, self: W['$Widget']) => void,
+    ): this {
+        this.reactions.push({ expr, effect })
         return this
     }
 
