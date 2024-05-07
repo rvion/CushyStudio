@@ -100,8 +100,8 @@ export const ui_refiners = () => {
         },
         {
             summary: (ui) => {
-                return `${ui.refinerType.faces ? 'FACE' : ''} ${ui.refinerType.hands ? 'HANDS' : ''} ${
-                    ui.refinerType.hands ? 'EYES' : ''
+                return `Refiners ${ui.refinerType.faces ? 'FACE' : ''} ${ui.refinerType.hands ? 'HANDS' : ''} ${
+                    ui.refinerType.eyes ? 'EYES' : ''
                 }`
             },
         },
@@ -123,6 +123,10 @@ export const run_refiners_fromImage = (
     //
     ui: OutputFor<typeof ui_refiners>,
     finalImage: _IMAGE = getCurrentRun().AUTO,
+    ckpt?: _MODEL,
+    maxRes?: number,
+    face_prompt_override?: Maybe<string>,
+    eye_prompt_override?: Maybe<string>,
 ): _IMAGE => {
     const run = getCurrentRun()
     const graph = run.nodes
@@ -143,7 +147,7 @@ export const run_refiners_fromImage = (
                 bbox_detector: provider._BBOX_DETECTOR,
                 sam_model_opt: samLoader?._SAM_MODEL,
                 seed: ui.settings.sampler?.seed ?? run.randomSeed(),
-                model: run.AUTO,
+                model: ckpt ?? run.AUTO,
                 clip: run.AUTO,
                 vae: run.AUTO,
                 denoise: ui.settings.sampler.denoise,
@@ -151,7 +155,7 @@ export const run_refiners_fromImage = (
                 sampler_name: ui.settings.sampler.sampler_name,
                 scheduler: ui.settings.sampler.scheduler,
                 cfg: ui.settings.sampler.cfg,
-                positive: graph.CLIPTextEncode({ clip: run.AUTO, text: facePrompt }),
+                positive: graph.CLIPTextEncode({ clip: run.AUTO, text: face_prompt_override ?? facePrompt }),
                 negative: graph.CLIPTextEncode({ clip: run.AUTO, text: faceNegativeDefault }),
                 sam_detection_hint: 'center-1', // ❓
                 sam_mask_hint_use_negative: 'False',
@@ -223,7 +227,7 @@ export const run_refiners_fromImage = (
                 scheduler: ui.settings.sampler.scheduler,
                 cfg: ui.settings.sampler.cfg,
                 guide_size: 128,
-                positive: graph.CLIPTextEncode({ clip: run.AUTO, text: eyesPrompt }),
+                positive: graph.CLIPTextEncode({ clip: run.AUTO, text: eye_prompt_override ?? eyesPrompt }),
                 negative: graph.CLIPTextEncode({ clip: run.AUTO, text: 'bad eyes, bad anatomy, bad details' }),
                 wildcard: '',
             })
