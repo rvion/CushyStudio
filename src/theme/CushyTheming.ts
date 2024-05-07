@@ -1,8 +1,178 @@
 import { Form } from '../controls/Form'
-import { ThemeForm } from '../panels/Panel_Playground/PlaygroundScratchPad'
+import { CushyFormManager, FormBuilder } from '../controls/FormBuilder'
+import { readJSON, writeJSON } from '../state/jsonUtils'
+
+function templateContrast(p: { id: string; label?: string; f: FormBuilder }) {
+    const f = p.f
+    return f.shared(
+        p.id + '-contrast',
+        f
+            .group({
+                items: {
+                    contrast: f.float({ step: 0.1, min: -1.0, max: 1.0, default: -1.0 }),
+                    chromaBleed: f.float({ step: 0.1, min: 0.0, max: 1.0, default: 1.0 }),
+                    hueOffset: f.int({ step: 20, min: -180, max: 180, default: 180 }),
+                    opacity: f.float({ step: 0.1, min: 0, max: 1, default: 0.2 }),
+                },
+            })
+            .optional(true),
+    )
+}
+
+export const ThemeForm = CushyFormManager.form(
+    (f) => {
+        const commonWidget = (id: string) => {
+            return f.group({
+                label: 'Number Field',
+                items: {
+                    display: f.group({
+                        label: '".theme-number-field"',
+                        collapsed: false,
+                        items: {
+                            display: f.float({ default: 0.5, min: 0, max: 1 }),
+                            displayAlt: f.float({
+                                label: false,
+                                text: 'Display Alt.',
+                                alignLabel: false,
+                                default: 0.5,
+                                min: 0,
+                                max: 1,
+                            }),
+                        },
+                    }),
+                    background: f.group({
+                        label: 'Background',
+                        border: false,
+                        items: {
+                            lightness: f.float({ step: 0.1, min: 0, max: 1 }),
+                            chroma: f.float({ step: 0.01, softMax: 0.2, min: 0, max: 1 }),
+                            hue: f.int({ step: 20, min: 0, max: 360 }),
+                        },
+                    }),
+                    // .optional(true),
+                    text: f.choice({
+                        label: 'Text',
+                        border: false,
+                        appearance: 'tab',
+                        default: 'auto',
+                        layout: 'H',
+                        items: {
+                            manual: f.column({
+                                items: {
+                                    lightness: f.float({ step: 0.1, min: 0, max: 1 }),
+                                    chroma: f.float({ step: 0.01, softMax: 0.2, min: 0, max: 1 }),
+                                    hue: f.int({ step: 20, min: 0, max: 360 }),
+                                    shadow: templateContrast({ id, label: 'Shadow', f }),
+                                },
+                            }),
+                            auto: f.column({
+                                border: false,
+                                collapsed: false,
+                                items: {
+                                    inputNumberContrast: f.float({
+                                        label: 'Contrast',
+                                        step: 0.1,
+                                        min: -1,
+                                        max: 1,
+                                        default: 0.5,
+                                    }),
+                                    accentBleed: f.float({ min: 0, max: 1 }),
+                                    hueShift: f.int({ step: 20, min: -180, max: 180 }),
+                                    shadow: templateContrast({ id, label: 'Shadow', f: f }),
+                                },
+                            }),
+                        },
+                    }),
+                    border: f.choice({
+                        label: 'Border',
+                        border: false,
+                        appearance: 'tab',
+                        default: 'auto',
+                        items: {
+                            none: f.column({}),
+                            manual: f.column({
+                                items: {
+                                    lightness: f.float({ step: 0.1, min: 0, max: 1 }),
+                                    chroma: f.float({ step: 0.01, softMax: 0.2, min: 0, max: 1 }),
+                                    hue: f.int({ step: 20, min: 0, max: 360 }),
+                                },
+                            }),
+                            auto: f.column({
+                                border: false,
+                                collapsed: false,
+                                items: {
+                                    inputNumberContrast: f.float({
+                                        label: 'Contrast',
+                                        step: 0.1,
+                                        min: -1.0,
+                                        max: 1.0,
+                                        default: -0.3,
+                                    }),
+                                    accentBleed: f.float({ min: 0, max: 1 }),
+                                    hueShift: f.int({ step: 20, min: -180, max: 180 }),
+                                },
+                            }),
+                        },
+                    }),
+                },
+            })
+        }
+        // const oklchProps: PropDef[] = [{ id: 'lightness', type: 'float', options: { label: 'Lightness' } }]
+        // const widgetCommonProp: PropDef[] = [{ id: 'background', type: 'group', items: oklchProps, options: {} }]
+
+        // const props: PropDef[] = [
+        //     {
+        //         id: 'numberField',
+        //         type: 'group',
+        //         items: widgetCommonProp,
+        //         options: { label: 'Number Field' },
+        //     },
+        //     {
+        //         id: 'test_id',
+        //         type: 'float',
+        //         items: widgetCommonProp,
+        //         options: { label: (process.memoryUsage().heapTotal / 1000 / 1000).toString() },
+        //     },
+        // ]
+
+        // return {
+        //     test: f.fields(registerProps(props, f), {
+        //         collapsed: false,
+        //         // header(({widget}) => {
+        //         // }),
+        //         header: (p) => {
+        //             // return visualizeProp(p)
+        //             return visualizeWidget(p.widget)
+        //             // return <div className='COLLAPSE-PASSTHROUGH'>{p.widget.defaultBody()}</div>
+        //         },
+        //     }),
+        //     controls: f.group({
+        //         items: {
+        //             label: f.row({ label: 'Theme Name' }),
+        //             test: f.button({ onClick: () => {} }),
+        //         },
+        //     }),
+        //     // inputNumber: templateWidget(f, 'Number Input', floatDisplay.header()),
+        //     // boolTheme: templateWidget(f, 'Bool (CheckBox)'),
+        // }
+
+        return {
+            widgets: f.group({ label: 'Widget', items: { numberField: commonWidget('numberField') } }),
+        }
+    },
+    {
+        name: 'Theme Settings',
+        initialSerial: () => readJSON('settings/active_theme.json'),
+        onValueChange: () => {
+            cushy.themeManager.updateCSSFromForm()
+        },
+        onSerialChange: (form) => {
+            writeJSON('settings/active_theme.json', form.serial)
+        },
+    },
+)
 
 /** okclh parameters [lightness, chroma, hue, alpha] */
-type ThemeColor = [number, number, number, number]
 type oklchColor = [number, number, number, number]
 
 type StyleShadowProps = {
@@ -149,6 +319,8 @@ export class CushyThemeManager {
         }
     }
 
+    updateWidget = () => {}
+
     updateCSSFromForm = () => {
         /* Currently this will rebuild all CSS classes from scratch.
          * In the future we modify per CSS class name instead since we want real-time updating. */
@@ -157,10 +329,8 @@ export class CushyThemeManager {
 
         this.ensureStyleSheet()
 
-        const numberField = ThemeForm.value.inputNumber
-
+        const numberField = ThemeForm.value.widgets.numberField
         console.log('[🪥] - Updating from form!')
-
         const bg = numberField.background
         let rule = this.ensureRule('.theme-number-field')
         this.addOrModifyCSSRule({
