@@ -180,6 +180,11 @@ export abstract class BaseWidget {
      * */
     _boundKontexts: Record<string, any> = {}
 
+    get _withKontext(){return this.spec._withKontext} // prettier-ignore
+    get withKontext(){return this.spec.withKontext} // prettier-ignore
+    get _feedKontext(){return this.spec._feedKontext} // prettier-ignore
+    get feedKontext(){return this.spec.feedKontext} // prettier-ignore
+
     constructor() {}
 
     /**

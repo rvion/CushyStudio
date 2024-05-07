@@ -2,13 +2,14 @@ import type { EnumValue } from '../../../models/ComfySchema'
 import type { CleanedEnumResult } from '../../../types/EnumUtils'
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
-import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 import type { Problem_Ext } from '../../Validation'
 
-import { makeAutoObservable, runInAction } from 'mobx'
+import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { applyWidgetMixinV2 } from '../../Mixins'
+import { makeAutoObservableInheritance } from '../../../utils/mobx-store-inheritance'
+import { BaseWidget } from '../../Mixins'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { _extractDefaultValue } from './_extractDefaultValue'
 import { WidgetEnumUI } from './WidgetEnumUI'
@@ -44,8 +45,8 @@ export type Widget_enum_types<O> = {
 }
 
 // STATE
-export interface Widget_enum<O> extends Widget_enum_types<O>, IWidgetMixins {}
-export class Widget_enum<O> implements IWidget<Widget_enum_types<O>> {
+export interface Widget_enum<O> extends Widget_enum_types<O> {}
+export class Widget_enum<O> extends BaseWidget implements IWidget<Widget_enum_types<O>> {
     DefaultHeaderUI = WidgetEnumUI
     DefaultBodyUI = undefined
     readonly id: string
@@ -71,6 +72,7 @@ export class Widget_enum<O> implements IWidget<Widget_enum_types<O>> {
         public readonly spec: ISpec<Widget_enum<O>>,
         serial?: Widget_enum_serial<O>,
     ) {
+        super()
         const config = spec.config
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? {
@@ -79,8 +81,7 @@ export class Widget_enum<O> implements IWidget<Widget_enum_types<O>> {
             active: true,
             val: _extractDefaultValue(config) ?? (this.possibleValues[0] as any),
         }
-        applyWidgetMixinV2(this)
-        makeAutoObservable(this)
+        makeAutoObservableInheritance(this)
     }
     get status(): CleanedEnumResult<any> {
         return cushy.fixEnumValue(this.serial.val as any, this.config.enumName)

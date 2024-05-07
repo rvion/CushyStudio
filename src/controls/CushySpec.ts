@@ -1,5 +1,6 @@
 import type { ISpec } from './ISpec'
 import type { IWidget } from './IWidget'
+import type { BoundKontext, Kontext } from './Kontext'
 import type { Requirements } from './Requirements'
 import type { Widget_list, Widget_list_config } from './widgets/list/WidgetList'
 import type { Widget_optional } from './widgets/optional/WidgetOptional'
@@ -24,6 +25,19 @@ export class Spec<Widget extends IWidget = IWidget> implements ISpec<Widget> {
             requirements: this.requirements,
         })
 
+    // Kontexts -----------------------------------------------------
+    _withKontext = new Set<Kontext<any>>()
+    withKontext = (ck: Kontext<any>): this => {
+        this._withKontext.add(ck)
+        return this
+    }
+    _feedKontext: Maybe<BoundKontext<Widget['$Widget'], any>> = null
+    feedKontext = <T>(_feedKontext: BoundKontext<Widget['$Widget'], T>): this => {
+        this._feedKontext = _feedKontext
+        return this
+    }
+
+    // Requirements (CushySpecifc)
     readonly requirements: Requirements[] = []
 
     addRequirements = (requirements: Maybe<Requirements | Requirements[]>) => {

@@ -69,7 +69,7 @@ export class FormBuilder implements IFormBuilder {
     SpecCtor = Spec
 
     /** (@internal) don't call this yourself */
-    constructor(public form: Form<IWidget, FormBuilder>) {
+    constructor(public form: Form<ISpec, FormBuilder>) {
         makeAutoObservable(this, {
             auto: false,
             autoField: false,

@@ -1,12 +1,12 @@
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
-import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 import type { Problem_Ext } from '../../Validation'
 
-import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { applyWidgetMixinV2 } from '../../Mixins'
+import { makeAutoObservableInheritance } from '../../../utils/mobx-store-inheritance'
+import { BaseWidget } from '../../Mixins'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { clampMod, mkEnglishSummary } from './_orbitUtils'
 import { WidgetOrbitUI } from './WidgetOrbitUI'
@@ -51,8 +51,8 @@ export type Widget_orbit_types = {
 }
 
 // STATE
-export interface Widget_orbit extends Widget_orbit_types, IWidgetMixins {}
-export class Widget_orbit implements IWidget<Widget_orbit_types> {
+export interface Widget_orbit extends Widget_orbit_types {}
+export class Widget_orbit extends BaseWidget implements IWidget<Widget_orbit_types> {
     DefaultHeaderUI = WidgetOrbitUI
     DefaultBodyUI = undefined
     readonly id: string
@@ -96,6 +96,7 @@ export class Widget_orbit implements IWidget<Widget_orbit_types> {
         public readonly spec: ISpec<Widget_orbit>,
         serial?: Widget_orbit_serial,
     ) {
+        super()
         const config = spec.config
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? {
@@ -112,8 +113,7 @@ export class Widget_orbit implements IWidget<Widget_orbit_types> {
         /* 💊 */ const serialAny = this.serial as any
         /* 💊 */ if (serialAny.val && serialAny.value == null) serialAny.value = serialAny.val
 
-        applyWidgetMixinV2(this)
-        makeAutoObservable(this)
+        makeAutoObservableInheritance(this)
     }
 
     // x: Partial<number> = 0

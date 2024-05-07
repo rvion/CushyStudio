@@ -1,15 +1,15 @@
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
-import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 import type { Problem_Ext } from '../../Validation'
 import type { BoardPosition } from './WidgetListExtTypes'
 
-import { makeAutoObservable, runInAction } from 'mobx'
+import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { applyWidgetMixinV2 } from '../../Mixins'
+import { makeAutoObservableInheritance } from '../../../utils/mobx-store-inheritance'
+import { BaseWidget } from '../../Mixins'
 import { runWithGlobalForm } from '../../shared/runWithGlobalForm'
-import { WidgetList_LineUI } from '../list/WidgetListUI'
 import { ResolutionState } from '../size/ResolutionState'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { boardDefaultItemShape } from './WidgetListExtTypes'
@@ -56,8 +56,8 @@ export type Widget_listExt_types<T extends ISpec> = {
 }
 
 // STATE
-export interface Widget_listExt<T extends ISpec> extends Widget_listExt_types<T>, IWidgetMixins {}
-export class Widget_listExt<T extends ISpec> implements IWidget<Widget_listExt_types<T>> {
+export interface Widget_listExt<T extends ISpec> extends Widget_listExt_types<T> {}
+export class Widget_listExt<T extends ISpec> extends BaseWidget implements IWidget<Widget_listExt_types<T>> {
     DefaultHeaderUI = WidgetListExt_LineUI
     DefaultBodyUI = WidgetListExtUI
 
@@ -114,6 +114,7 @@ export class Widget_listExt<T extends ISpec> implements IWidget<Widget_listExt_t
         public readonly spec: ISpec<Widget_listExt<T>>,
         serial?: Widget_listExt_serial<T>,
     ) {
+        super()
         const config = spec.config
         this.id = serial?.id ?? nanoid()
 
@@ -145,8 +146,7 @@ export class Widget_listExt<T extends ISpec> implements IWidget<Widget_listExt_t
         const missingItems = (this.config.min ?? 0) - this.entries.length
         for (let i = 0; i < missingItems; i++) this.addItem({ skipBump: true })
 
-        applyWidgetMixinV2(this)
-        makeAutoObservable(this, { sizeHelper: false })
+        makeAutoObservableInheritance(this, { sizeHelper: false })
     }
 
     schemaAt = (ix: number): T => {
