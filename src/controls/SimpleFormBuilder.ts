@@ -37,7 +37,7 @@ export class SimpleFormBuilder implements IFormBuilder {
     SpecCtor = SimpleSpec
 
     /** (@internal) don't call this yourself */
-    constructor(public form: Form<IWidget, SimpleFormBuilder>) {
+    constructor(public form: Form<ISpec, SimpleFormBuilder>) {
         makeAutoObservable(this, {
             SpecCtor: false,
         })
