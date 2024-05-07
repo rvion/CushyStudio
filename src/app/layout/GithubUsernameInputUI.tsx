@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 import { ReactNode } from 'react'
 
-import { Popover, Tag, Whisper } from '../../rsuite/shims'
+import { Tag, Whisper } from '../../rsuite/shims'
 import { useSt } from '../../state/stateContext'
 import { assets } from '../../utils/assets/assets'
 
@@ -21,13 +21,13 @@ export const GithubUsernameInputUI = observer(function GithubUsernameInputUI_(p:
                     enterable
                     placement='bottomStart'
                     speaker={
-                        <Popover>
+                        <div>
                             <div>
                                 Only folders in
                                 <Tag>library/{githubUsername}/</Tag>
                                 will have type-checking in your vscode
                             </div>
-                        </Popover>
+                        </div>
                     }
                 >
                     <div>your github:</div>

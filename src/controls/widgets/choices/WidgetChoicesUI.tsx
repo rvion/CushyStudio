@@ -9,9 +9,7 @@ import { AnimatedSizeUI } from '../../utils/AnimatedSizeUI'
 import { InputBoolUI } from '../bool/InputBoolUI'
 
 // UI
-export const WidgetChoices_HeaderUI = observer(function WidgetChoices_LineUI_<T extends SchemaDict>(p: {
-    widget: Widget_choices<T>
-}) {
+export const WidgetChoices_HeaderUI = observer(function WidgetChoices_LineUI_(p: { widget: Widget_choices<any> }) {
     if (p.widget.config.appearance === 'tab') return <WidgetChoices_TabHeaderUI widget={p.widget} />
     else return <WidgetChoices_SelectHeaderUI widget={p.widget} />
 })

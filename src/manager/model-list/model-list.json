@@ -1778,7 +1778,17 @@
       "url": "https://huggingface.co/h94/IP-Adapter/resolve/main/models/ip-adapter_sd15.safetensors"
     },
     {
-      "name": "ip-adapter_sd15_light.safetensors",
+      "name": "ip-adapter_sd15_light_v11.bin",
+      "type": "IP-Adapter",
+      "base": "SD1.5",
+      "save_path": "ipadapter",
+      "description": "You can use this model in the [a/ComfyUI IPAdapter plus](https://github.com/cubiq/ComfyUI_IPAdapter_plus) extension.",
+      "reference": "https://huggingface.co/h94/IP-Adapter",
+      "filename": "ip-adapter_sd15_light_v11.bin",
+      "url": "https://huggingface.co/h94/IP-Adapter/resolve/main/models/ip-adapter_sd15_light_v11.bin"
+    },
+    {
+      "name": "ip-adapter_sd15_light.safetensors [DEPRECATED]",
       "type": "IP-Adapter",
       "base": "SD1.5",
       "save_path": "ipadapter",
@@ -1786,16 +1796,6 @@
       "reference": "https://huggingface.co/h94/IP-Adapter",
       "filename": "ip-adapter_sd15_light.safetensors",
       "url": "https://huggingface.co/h94/IP-Adapter/resolve/main/models/ip-adapter_sd15_light.safetensors"
-    },
-    {
-      "name": "ip-adapter_sd15_vit-G.safetensors",
-      "type": "IP-Adapter",
-      "base": "SD1.5",
-      "save_path": "ipadapter",
-      "description": "You can use this model in the [a/ComfyUI IPAdapter plus](https://github.com/cubiq/ComfyUI_IPAdapter_plus) extension.",
-      "reference": "https://huggingface.co/h94/IP-Adapter",
-      "filename": "ip-adapter_sd15_vit-G.safetensors",
-      "url": "https://huggingface.co/h94/IP-Adapter/resolve/main/models/ip-adapter_sd15_vit-G.safetensors"
     },
     {
       "name": "ip-adapter-plus_sd15.safetensors",
@@ -1828,6 +1828,16 @@
       "url": "https://huggingface.co/h94/IP-Adapter/resolve/main/models/ip-adapter-full-face_sd15.safetensors"
     },
     {
+      "name": "ip-adapter_sd15_vit-G.safetensors",
+      "type": "IP-Adapter",
+      "base": "SD1.5",
+      "save_path": "ipadapter",
+      "description": "You can use this model in the [a/ComfyUI IPAdapter plus](https://github.com/cubiq/ComfyUI_IPAdapter_plus) extension.",
+      "reference": "https://huggingface.co/h94/IP-Adapter",
+      "filename": "ip-adapter_sd15_vit-G.safetensors",
+      "url": "https://huggingface.co/h94/IP-Adapter/resolve/main/models/ip-adapter_sd15_vit-G.safetensors"
+    },
+    {
       "name": "ip-adapter-faceid_sd15.bin",
       "type": "IP-Adapter",
       "base": "SD1.5",
@@ -1838,7 +1848,17 @@
       "url": "https://huggingface.co/h94/IP-Adapter-FaceID/resolve/main/ip-adapter-faceid_sd15.bin"
     },
     {
-      "name": "ip-adapter-faceid-plus_sd15.bin",
+      "name": "ip-adapter-faceid-plusv2_sd15.bin",
+      "type": "IP-Adapter",
+      "base": "SD1.5",
+      "save_path": "ipadapter",
+      "description": "IP-Adapter-FaceID Plus V2 Model (SD1.5) [ipadapter]",
+      "reference": "https://huggingface.co/h94/IP-Adapter-FaceID",
+      "filename": "ip-adapter-faceid-plusv2_sd15.bin",
+      "url": "https://huggingface.co/h94/IP-Adapter-FaceID/resolve/main/ip-adapter-faceid-plusv2_sd15.bin"
+    },
+    {
+      "name": "ip-adapter-faceid-plus_sd15.bin [DEPRECATED]",
       "type": "IP-Adapter",
       "base": "SD1.5",
       "save_path": "ipadapter",
@@ -1848,7 +1868,17 @@
       "url": "https://huggingface.co/h94/IP-Adapter-FaceID/resolve/main/ip-adapter-faceid-plus_sd15.bin"
     },
     {
-      "name": "ip-adapter-faceid-portrait_sd15.bin",
+      "name": "ip-adapter-faceid-portrait-v11_sd15.bin",
+      "type": "IP-Adapter",
+      "base": "SD1.5",
+      "save_path": "ipadapter",
+      "description": "IP-Adapter-FaceID Portrait V11 Model (SD1.5) [ipadapter]",
+      "reference": "https://huggingface.co/h94/IP-Adapter-FaceID",
+      "filename": "ip-adapter-faceid-portrait-v11_sd15.bin",
+      "url": "https://huggingface.co/h94/IP-Adapter-FaceID/resolve/main/ip-adapter-faceid-portrait-v11_sd15.bin"
+    },
+    {
+      "name": "ip-adapter-faceid-portrait_sd15.bin [DEPRECATED]",
       "type": "IP-Adapter",
       "base": "SD1.5",
       "save_path": "ipadapter",
@@ -1878,6 +1908,26 @@
       "url": "https://huggingface.co/h94/IP-Adapter-FaceID/resolve/main/ip-adapter-faceid-plusv2_sdxl.bin"
     },
     {
+      "name": "ip-adapter-faceid-portrait_sdxl.bin",
+      "type": "IP-Adapter",
+      "base": "SDXL",
+      "save_path": "ipadapter",
+      "description": "IP-Adapter-FaceID Portrait Model (SDXL) [ipadapter]",
+      "reference": "https://huggingface.co/h94/IP-Adapter-FaceID",
+      "filename": "ip-adapter-faceid-portrait_sdxl.bin",
+      "url": "https://huggingface.co/h94/IP-Adapter-FaceID/resolve/main/ip-adapter-faceid-portrait_sdxl.bin"
+    },
+    {
+      "name": "ip-adapter-faceid-portrait_sdxl_unnorm.bin",
+      "type": "IP-Adapter",
+      "base": "SDXL",
+      "save_path": "ipadapter",
+      "description": "IP-Adapter-FaceID Portrait Model (SDXL/unnorm) [ipadapter]",
+      "reference": "https://huggingface.co/h94/IP-Adapter-FaceID",
+      "filename": "ip-adapter-faceid-portrait_sdxl_unnorm.bin",
+      "url": "https://huggingface.co/h94/IP-Adapter-FaceID/resolve/main/ip-adapter-faceid-portrait_sdxl_unnorm.bin"
+    },
+    {
       "name": "ip-adapter-faceid_sd15_lora.safetensors",
       "type": "lora",
       "base": "SD1.5",
@@ -1888,7 +1938,7 @@
       "url": "https://huggingface.co/h94/IP-Adapter-FaceID/resolve/main/ip-adapter-faceid_sd15_lora.safetensors"
     },
     {
-      "name": "ip-adapter-faceid-plus_sd15_lora.safetensors",
+      "name": "ip-adapter-faceid-plus_sd15_lora.safetensors [DEPRECATED]",
       "type": "lora",
       "base": "SD1.5",
       "save_path": "loras/ipadapter",
@@ -1896,16 +1946,6 @@
       "reference": "https://huggingface.co/h94/IP-Adapter-FaceID",
       "filename": "ip-adapter-faceid-plus_sd15_lora.safetensors",
       "url": "https://huggingface.co/h94/IP-Adapter-FaceID/resolve/main/ip-adapter-faceid-plus_sd15_lora.safetensors"
-    },
-    {
-      "name": "ip-adapter-faceid-plusv2_sd15.bin",
-      "type": "IP-Adapter",
-      "base": "SD1.5",
-      "save_path": "ipadapter",
-      "description": "IP-Adapter-FaceID-Plus V2 Model (SD1.5) [ipadapter]",
-      "reference": "https://huggingface.co/h94/IP-Adapter-FaceID",
-      "filename": "ip-adapter-faceid-plusv2_sd15.bin",
-      "url": "https://huggingface.co/h94/IP-Adapter-FaceID/resolve/main/ip-adapter-faceid-plusv2_sd15.bin"
     },
     {
       "name": "ip-adapter-faceid-plusv2_sd15_lora.safetensors",
@@ -1937,6 +1977,7 @@
       "filename": "ip-adapter-faceid-plusv2_sdxl_lora.safetensors",
       "url": "https://huggingface.co/h94/IP-Adapter-FaceID/resolve/main/ip-adapter-faceid-plusv2_sdxl_lora.safetensors"
     },
+    
     {
       "name": "ip-adapter_sdxl.safetensors",
       "type": "IP-Adapter",
@@ -1976,6 +2017,27 @@
       "reference": "https://huggingface.co/h94/IP-Adapter",
       "filename": "ip-adapter-plus-face_sdxl_vit-h.safetensors",
       "url": "https://huggingface.co/h94/IP-Adapter/resolve/main/sdxl_models/ip-adapter-plus-face_sdxl_vit-h.safetensors"
+    },
+
+    {
+      "name": "ip_plus_composition_sd15.safetensors",
+      "type": "IP-Adapter",
+      "base": "SD1.5",
+      "save_path": "ipadapter",
+      "description": "You can use this model in the [a/ComfyUI IPAdapter plus](https://github.com/cubiq/ComfyUI_IPAdapter_plus) extension.",
+      "reference": "https://huggingface.co/ostris/ip-composition-adapter",
+      "filename": "ip_plus_composition_sd15.safetensors",
+      "url": "https://huggingface.co/ostris/ip-composition-adapter/resolve/main/ip_plus_composition_sd15.safetensors"
+    },
+    {
+      "name": "ip_plus_composition_sdxl.safetensors",
+      "type": "IP-Adapter",
+      "base": "SDXL",
+      "save_path": "ipadapter",
+      "description": "You can use this model in the [a/ComfyUI IPAdapter plus](https://github.com/cubiq/ComfyUI_IPAdapter_plus) extension.",
+      "reference": "https://huggingface.co/ostris/ip-composition-adapter",
+      "filename": "ip_plus_composition_sdxl.safetensors",
+      "url": "https://huggingface.co/ostris/ip-composition-adapter/resolve/main/ip_plus_composition_sdxl.safetensors"
     },
 
     {
@@ -2399,6 +2461,96 @@
       "reference": "https://huggingface.co/camenduru/SUPIR/tree/main",
       "filename": "SUPIR-v0Q.ckpt",
       "url": "https://huggingface.co/camenduru/SUPIR/resolve/main/SUPIR-v0Q.ckpt"
+    },
+    {
+      "name": "Kijai/SUPIR-v0F_fp16.safetensors (pruned)",
+      "type": "checkpoints",
+      "base": "SUPIR",
+      "save_path": "checkpoints/SUPIR",
+      "description": "SUPIR checkpoint model",
+      "reference": "https://huggingface.co/Kijai/SUPIR_pruned/tree/main",
+      "filename": "SUPIR-v0F_fp16.safetensors",
+      "url": "https://huggingface.co/Kijai/SUPIR_pruned/resolve/main/SUPIR-v0F_fp16.safetensors"
+    },
+    {
+      "name": "Kijai/SUPIR-v0Q_fp16.safetensors (pruned)",
+      "type": "checkpoints",
+      "base": "SUPIR",
+      "save_path": "checkpoints/SUPIR",
+      "description": "SUPIR checkpoint model",
+      "reference": "https://huggingface.co/Kijai/SUPIR_pruned/tree/main",
+      "filename": "SUPIR-v0Q_fp16.safetensors",
+      "url": "https://huggingface.co/Kijai/SUPIR_pruned/resolve/main/SUPIR-v0Q_fp16.safetensors"
+    },
+    {
+      "name": "RAM",
+      "type": "RAM",
+      "base": "RAM",
+      "save_path": "rams",
+      "description": "RAM Recognize Anything Model",
+      "reference": "https://huggingface.co/xinyu1205/recognize_anything_model",
+      "filename": "ram_swin_large_14m.pth",
+      "url": "https://huggingface.co/xinyu1205/recognize_anything_model/resolve/main/ram_swin_large_14m.pth"
+    },
+    {
+      "name": "RAM++",
+      "type": "RAM",
+      "base": "RAM",
+      "save_path": "rams",
+      "description": "RAM++ Recognize Anything Model",
+      "reference": "https://huggingface.co/xinyu1205/recognize-anything-plus-model",
+      "filename": "ram_plus_swin_large_14m.pth",
+      "url": "https://huggingface.co/xinyu1205/recognize-anything-plus-model/resolve/main/ram_plus_swin_large_14m.pth"
+    },
+    {
+      "name": "tag2text",
+      "type": "RAM",
+      "base": "RAM",
+      "save_path": "rams",
+      "description": "tag2text Recognize Anything Model",
+      "reference": "https://huggingface.co/xinyu1205/recognize_anything_model",
+      "filename": "tag2text_swin_14m.pth",
+      "url": "https://huggingface.co/xinyu1205/recognize_anything_model/resolve/main/tag2text_swin_14m.pth"
+    },
+    {
+      "name": "Zero123 3D object Model",
+      "type": "Zero123",
+      "base": "Zero123",
+      "save_path": "checkpoints/zero123",
+      "description": "model that been trained on 10M+ 3D objects from Objaverse-XL, used for generated rotated CamView",
+      "reference": "https://objaverse.allenai.org/docs/zero123-xl/",
+      "filename": "zero123-xl.ckpt",
+      "url": "https://huggingface.co/kealiu/zero123-xl/resolve/main/zero123-xl.ckpt"
+    },
+    {
+      "name": "Zero123 3D object Model",
+      "type": "Zero123",
+      "base": "Zero123",
+      "save_path": "checkpoints/zero123",
+      "description": "Stable Zero123 is a model for view-conditioned image generation based on [a/Zero123](https://github.com/cvlab-columbia/zero123).",
+      "reference": "https://huggingface.co/stabilityai/stable-zero123",
+      "filename": "stable_zero123.ckpt",
+      "url": "https://huggingface.co/stabilityai/stable-zero123/resolve/main/stable_zero123.ckpt"
+    },
+    {
+      "name": "Zero123 3D object Model",
+      "type": "Zero123",
+      "base": "Zero123",
+      "save_path": "checkpoints/zero123",
+      "description": "Zero123 original checkpoints in 105000 steps.",
+      "reference": "https://huggingface.co/cvlab/zero123-weights",
+      "filename": "zero123-105000.ckpt",
+      "url": "https://huggingface.co/cvlab/zero123-weights/resolve/main/105000.ckpt"
+    },
+    {
+      "name": "Zero123 3D object Model",
+      "type": "Zero123",
+      "base": "Zero123",
+      "save_path": "checkpoints/zero123",
+      "description": "Zero123 original checkpoints in 165000 steps.",
+      "reference": "https://huggingface.co/cvlab/zero123-weights",
+      "filename": "zero123-165000.ckpt",
+      "url": "https://huggingface.co/cvlab/zero123-weights/resolve/main/165000.ckpt"
     }
   ]
 }

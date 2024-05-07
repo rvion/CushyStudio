@@ -11,6 +11,7 @@ export type PluginInfo = {
     "reference": string;             // "https://github.com/ltdrdata/ComfyUI-Manager",
     "install_type": string;          // "git-clone",
     "description": string;           // "ComfyUI-Manager itself is also a custom node."
+    preemptions?: string[];          // ❓
 
     // optional
     pip?: string[];                  // [ "ultralytics" ],
@@ -27,6 +28,7 @@ export const CustomNodesInfo_Schema = Type.Object(
         files: Type.Array(Type.String()) as any,
         install_type: Type.String(),
         description: Type.String(),
+        preemptions: Type.Optional(Type.Array(Type.String())),
         //
         pip: Type.Optional(Type.Array(Type.String())),
         nodename_pattern: Type.Optional(Type.String()),

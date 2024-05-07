@@ -12,24 +12,24 @@ type RUNNING = typeof running
 const error = Symbol('error')
 type ERROR = typeof error
 
-export class Kwery<T = any> implements PromiseLike<T> {
-    private static _CACHE = new Map<string, Kwery<any>>()
+export class Promize<T = any> implements PromiseLike<T> {
+    private static _CACHE = new Map<string, Promize<any>>()
     static get<T = any>(
         //
         key: string,
         params: object = {},
         set: Promise<T> | (() => Promise<T>),
-    ): Kwery<T> {
+    ): Promize<T> {
         const _key = stableStringify({ key, params })
-        if (!Kwery._CACHE.has(_key)) {
+        if (!Promize._CACHE.has(_key)) {
             console.log(`[🤠] CACHE MISS FOR KEY ${_key}`)
-            const kwery = new Kwery<T>()
-            Kwery._CACHE.set(_key, kwery)
+            const kwery = new Promize<T>()
+            Promize._CACHE.set(_key, kwery)
             if (typeof set === 'function') kwery.set(set())
             else kwery.set(set)
             return kwery
         } else {
-            return Kwery._CACHE.get(_key) as Kwery<T>
+            return Promize._CACHE.get(_key) as Promize<T>
         }
     }
 

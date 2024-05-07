@@ -83,8 +83,8 @@
     // "editor.semanticHighlighting.enabled": false,
 
     // debug
-    // "typescript.tsserver.log": "off",
-    // "typescript.tsserver.enableTracing": false,
+    // "typescript.tsserver.log": "normal",
+    // "typescript.tsserver.enableTracing": true
 
     // misc
     // "typescript.tsdk": "node_modules/typescript/lib",

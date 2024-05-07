@@ -19,14 +19,3 @@
 
 .bg-success-1 { background-color: oklch(var(--su)/.1); }
 .bg-success-2 { background-color: oklch(var(--su)/.2); }
-
-
-/* DaisyUI Btn Utils ------------------------------------------------------------------------------------- */
-.btn-narrow {
-    padding-left: 0.2em;
-    padding-right: 0.2em;
-}
-.btn-narrower {
-    padding-left: 0.1em;
-    padding-right: 0.1em;
-}

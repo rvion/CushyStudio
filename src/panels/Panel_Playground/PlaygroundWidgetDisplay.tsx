@@ -14,7 +14,7 @@ export const PlaygroundWidgetDisplay = observer(function PlaygroundRequirements_
     )
 })
 
-export const FORM_PlaygroundWidgetDisplay = CushyFormManager.form(
+export const FORM_PlaygroundWidgetDisplay = CushyFormManager.fields(
     (ui) => {
         const booleanForm = {
             check: ui.bool({}),

@@ -3,12 +3,14 @@ import type { MediaImageT } from '../../../db/TYPES.gen'
 import type { MediaImageL } from '../../../models/MediaImage'
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
-import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { Problem_Ext } from '../../Validation'
 
-import { makeAutoObservable, runInAction } from 'mobx'
+import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { applyWidgetMixinV2 } from '../../Mixins'
+import { makeAutoObservableInheritance } from '../../../utils/mobx-store-inheritance'
+import { BaseWidget } from '../../Mixins'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetSelectImageUI } from './WidgetImageUI'
 
@@ -42,14 +44,17 @@ export type Widget_image_types = {
 }
 
 // STATE
-export interface Widget_image extends Widget_image_types, IWidgetMixins {} // prettier-ignore
-export class Widget_image implements IWidget<Widget_image_types> {
+export interface Widget_image extends Widget_image_types {} // prettier-ignore
+export class Widget_image extends BaseWidget implements IWidget<Widget_image_types> {
     DefaultHeaderUI = WidgetSelectImageUI
     DefaultBodyUI = undefined
     readonly id: string
     get config() { return this.spec.config } // prettier-ignore
     readonly type: 'image' = 'image'
     readonly serial: Widget_image_serial
+    get baseErrors(): Problem_Ext {
+        return null
+    }
 
     constructor(
         //
@@ -58,17 +63,20 @@ export class Widget_image implements IWidget<Widget_image_types> {
         public readonly spec: ISpec<Widget_image>,
         serial?: Widget_image_serial,
     ) {
+        super()
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? {
             type: 'image',
             id: this.id,
             imageID: cushy.defaultImage.id,
         }
-        applyWidgetMixinV2(this)
-        makeAutoObservable(this)
+        makeAutoObservableInheritance(this)
     }
-    get value(): Widget_image_value {
+    get value(): MediaImageL {
         return cushy.db.media_image.get(this.serial.imageID)!
+    }
+    setValue(val: MediaImageL) {
+        this.value = val
     }
     set value(next: MediaImageL) {
         if (this.serial.imageID === next.id) return

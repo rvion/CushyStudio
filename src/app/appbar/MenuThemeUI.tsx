@@ -8,7 +8,7 @@ export const MenuThemeUI = observer(function MenuThemeUI_(p: {}) {
     const st = useSt()
     return (
         <Dropdown
-            startIcon={<span className='material-symbols-outlined text-primary'>color_lens</span>}
+            // startIcon={<span className='material-symbols-outlined'>color_lens</span>}
             title='Theme'
             content={() => (
                 <>

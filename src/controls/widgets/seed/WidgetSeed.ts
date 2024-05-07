@@ -1,11 +1,12 @@
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
-import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { Problem_Ext } from '../../Validation'
 
-import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { applyWidgetMixinV2 } from '../../Mixins'
+import { makeAutoObservableInheritance } from '../../../utils/mobx-store-inheritance'
+import { BaseWidget } from '../../Mixins'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetSeedUI } from './WidgetSeedUI'
 
@@ -47,11 +48,15 @@ export type Widget_seed_types = {
 }
 
 // STATE
-export interface Widget_seed extends Widget_seed_types, IWidgetMixins {}
-export class Widget_seed implements IWidget<Widget_seed_types> {
+export interface Widget_seed extends Widget_seed_types {}
+export class Widget_seed extends BaseWidget implements IWidget<Widget_seed_types> {
     DefaultHeaderUI = WidgetSeedUI
     DefaultBodyUI = undefined
     readonly id: string
+    get baseErrors(): Problem_Ext {
+        return null
+    }
+
     get config() { return this.spec.config } // prettier-ignore
     readonly type: 'seed' = 'seed'
     readonly serial: Widget_seed_serial
@@ -81,6 +86,7 @@ export class Widget_seed implements IWidget<Widget_seed_types> {
         public readonly spec: ISpec<Widget_seed>,
         serial?: Widget_seed_serial,
     ) {
+        super()
         const config = spec.config
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? {
@@ -89,8 +95,7 @@ export class Widget_seed implements IWidget<Widget_seed_types> {
             val: config.default ?? 0,
             mode: config.defaultMode ?? 'randomize',
         }
-        applyWidgetMixinV2(this)
-        makeAutoObservable(this)
+        makeAutoObservableInheritance(this)
     }
 
     get value(): Widget_seed_value {

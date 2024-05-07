@@ -1,11 +1,12 @@
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
-import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { Problem_Ext } from '../../Validation'
 
-import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { applyWidgetMixinV2 } from '../../Mixins'
+import { makeAutoObservableInheritance } from '../../../utils/mobx-store-inheritance'
+import { BaseWidget } from '../../Mixins'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetMardownUI } from './WidgetMarkdownUI'
 
@@ -37,18 +38,24 @@ export type Widget_markdown_types = {
 }
 
 // STATE
-export interface Widget_markdown extends Widget_markdown_types, IWidgetMixins {}
-export class Widget_markdown implements IWidget<Widget_markdown_types> {
+export interface Widget_markdown extends Widget_markdown_types {}
+export class Widget_markdown extends BaseWidget implements IWidget<Widget_markdown_types> {
     get DefaultHeaderUI() {
         if (this.config.inHeader) return WidgetMardownUI
         return undefined
     }
+
     get DefaultBodyUI() {
         if (this.config.inHeader) return undefined
         return WidgetMardownUI
     }
+
     get alignLabel() {
         if (this.config.inHeader) return false
+    }
+
+    get baseErrors(): Problem_Ext {
+        return null
     }
     readonly id: string
     get config() { return this.spec.config } // prettier-ignore
@@ -68,13 +75,19 @@ export class Widget_markdown implements IWidget<Widget_markdown_types> {
         public readonly spec: ISpec<Widget_markdown>,
         serial?: Widget_markdown_serial,
     ) {
+        super()
         const config = spec.config
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? { type: 'markdown', collapsed: config.startCollapsed, active: true, id: this.id }
-        applyWidgetMixinV2(this)
-        makeAutoObservable(this)
+        makeAutoObservableInheritance(this)
     }
 
+    setValue(val: Widget_markdown_value) {
+        this.value = val
+    }
+    set value(val: Widget_markdown_value) {
+        // do nothing; markdown have no real value; only config
+    }
     get value(): Widget_markdown_value {
         return this.serial
     }

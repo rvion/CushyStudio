@@ -14,7 +14,7 @@ import { PlaygroundRequirements, PlaygroundRequirementsHeader } from './Playgrou
 import { PlaygroundScratchPad } from './PlaygroundScratchPad'
 import { PlaygroundWidgetDisplay } from './PlaygroundWidgetDisplay'
 
-const Header_Playground = CushyFormManager.form(
+const Header_Playground = CushyFormManager.fields(
     (ui) => ({
         mode: ui.choice({
             appearance: 'tab',

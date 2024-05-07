@@ -12,7 +12,8 @@
         "curly": "off",
         "eqeqeq": "off",
         "no-throw-literal": "warn",
-        "semi": "off"
+        "semi": "off",
+        "@typescript-eslint/prefer-as-const": "off"
     },
     "ignorePatterns": ["out", "dist", "**/*.d.ts"]
 }

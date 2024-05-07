@@ -1,5 +1,6 @@
 import type { CustomViewRef } from '../cards/App'
 import type { SchemaDict } from '../controls/ISpec'
+import type { CompiledPrompt } from '../controls/widgets/prompt/WidgetPrompt'
 import type { Printable } from '../core/Printable'
 import type { ComfyPromptL } from '../models/ComfyPrompt'
 import type { ComfyWorkflowL, PromptSettings } from '../models/ComfyWorkflow'
@@ -146,13 +147,13 @@ export class Runtime<FIELDS extends SchemaDict = any> {
      * your app can do IO.
      * with great power comes great responsibility.
      */
-    Filesystem = fs
+    Filesystem: typeof import('fs') = fs
 
     /**
      * path manifulation library;
      * avoid concateing paths yourself if you want your app
      */
-    Path = path
+    Path: typeof import('pathe') = path
 
     isCurrentDraftAutoStartEnabled = (): Maybe<boolean> => {
         return this.step.draft?.shouldAutoStart
@@ -178,7 +179,7 @@ export class Runtime<FIELDS extends SchemaDict = any> {
         ) => void
         /** @default true */
         printWildcards?: boolean
-    }) =>
+    }): CompiledPrompt =>
         compilePrompt({
             text: p.text,
             st: this.Cushy,
@@ -270,7 +271,7 @@ export class Runtime<FIELDS extends SchemaDict = any> {
 
     /** a built-in prefab to quickly
      * add PreviewImage & JoinImageWithAlpha node to your ComfyUI graph */
-    add_previewImageWithAlpha = (image: HasSingle_IMAGE & HasSingle_MASK) => {
+    add_previewImageWithAlpha = (image: HasSingle_IMAGE & HasSingle_MASK): PreviewImage => {
         return this.nodes.PreviewImage({
             images: this.nodes.JoinImageWithAlpha({
                 image: image,
@@ -281,19 +282,19 @@ export class Runtime<FIELDS extends SchemaDict = any> {
 
     /** a built-in prefab to quickly
      * add a PreviewImage node to your ComfyUI graph */
-    add_previewImage = (image: _IMAGE) => {
+    add_previewImage = (image: _IMAGE): PreviewImage => {
         return this.nodes.PreviewImage({ images: image })
     }
 
     /** a built-in prefab to quickly
      * add a PreviewImage node to your ComfyUI graph */
-    add_PreviewMask = (mask: _MASK) => {
+    add_PreviewMask = (mask: _MASK): PreviewImage => {
         return this.nodes.PreviewImage({ images: this.nodes.MaskToImage({ mask: mask }) })
     }
 
     /** a built-in prefab to quickly
      * add a PreviewImage node to your ComfyUI graph */
-    add_saveImage = (image: _IMAGE, prefix?: string) => {
+    add_saveImage = (image: _IMAGE, prefix?: string): SaveImage => {
         return this.nodes.SaveImage({ images: image, filename_prefix: prefix })
     }
 
@@ -417,7 +418,11 @@ export class Runtime<FIELDS extends SchemaDict = any> {
         return this.generatedImages.find((i) => i.filename.startsWith(prefix))
     }
 
-    doesComfyImageExist = async (imageInfo: { type: `input` | `ouput`; subfolder: string; filename: string }) => {
+    doesComfyImageExist = async (imageInfo: {
+        type: `input` | `ouput`
+        subfolder: string
+        filename: string
+    }): Promise<boolean> => {
         return await checkIfComfyImageExists(this.Cushy.getServerHostHTTP(), imageInfo)
     }
 
@@ -438,7 +443,7 @@ export class Runtime<FIELDS extends SchemaDict = any> {
     folder: AbsolutePath
 
     /** quick helper to make your card sleep for a given number fo milisecond */
-    sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms))
+    sleep = (ms: number) => new Promise<void>((r: () => void) => setTimeout(r, ms))
 
     // High level API--------------------
 

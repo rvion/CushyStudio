@@ -35,7 +35,7 @@ export const WidgetMatrixUI = observer(function WidgetStrUI_(p: { widget: Widget
                                 //
                                 className='bg-base-200 virtualBorder'
                                 key={ix}
-                                onClick={() => widget.setCol(col, !widget.get(rows[0]!, col).value)}
+                                onClick={() => widget.setCol(col, !widget.getCell(rows[0]!, col).value)}
                             >
                                 {col}
                             </th>
@@ -47,18 +47,18 @@ export const WidgetMatrixUI = observer(function WidgetStrUI_(p: { widget: Widget
                         <tr key={rowIx} className='p-0 m-0'>
                             <td
                                 //
-                                onClick={() => widget.setRow(row, !widget.get(row, cols[0]!).value)}
+                                onClick={() => widget.setRow(row, !widget.getCell(row, cols[0]!).value)}
                                 className='bg-base-302 virtualBorder cursor-pointer'
                             >
                                 {row}
                             </td>
                             {cols.map((col, colIx: number) => {
-                                const checked = widget.get(row, col).value
+                                const checked = widget.getCell(row, col).value
                                 return (
                                     <td
                                         key={colIx}
                                         className='hover:bg-gray-400 cursor-pointer virtualBorder'
-                                        onClick={() => widget.set(row, col, !checked)}
+                                        onClick={() => widget.setCell(row, col, !checked)}
                                         tw={[checked ? undefined : 'bg-base-200']}
                                         style={{
                                             background: checked ? 'oklch(var(--p)/.5)' : undefined,

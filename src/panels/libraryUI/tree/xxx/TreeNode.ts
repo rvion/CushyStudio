@@ -2,12 +2,12 @@ import type { Tree } from './Tree'
 
 import { makeAutoObservable } from 'mobx'
 
-import { ITreeElement, ITreeEntry } from '../TreeEntry'
-// import { buildTreeItem } from '../nodes/buildTreeItem'
-import { FAIL } from './utils'
 import { SQLITE_false, SQLITE_true } from '../../../../db/SQLITE_boolean'
 import { asTreeEntryID } from '../../../../db/TYPES.gen'
 import { TreeEntryL } from '../../../../models/TreeEntry'
+import { ITreeElement, ITreeEntry } from '../TreeEntry'
+// import { buildTreeItem } from '../nodes/buildTreeItem'
+import { FAIL } from './utils'
 
 export type NodeId = string
 export type NodeKey = string
@@ -163,11 +163,11 @@ export class TreeNode {
 
     get prevSibling(): TreeNode | undefined {
         let siblings = this.siblingsIncludingSelf
-        let self = this
+        let SELF = this
         if (siblings.length === 0) FAIL('IMPOSSIBLE 2')
-        if (siblings[0] === self) return // first of the fratry
+        if (siblings[0] === SELF) return // first of the fratry
         for (let i = siblings.length - 1; i > 0; i--) {
-            if (siblings[i] === self) return siblings[i - 1]
+            if (siblings[i] === SELF) return siblings[i - 1]
         }
         return
     }

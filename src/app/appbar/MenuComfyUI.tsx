@@ -12,7 +12,7 @@ export const MenuComfyUI = observer(function MenuComfyUI_(p: {}) {
     return (
         <Dropdown
             tw={[isConnected ? null : 'text-error-content bg-error']}
-            startIcon={<span className='material-symbols-outlined text-blue-400'>account_tree</span>}
+            // startIcon={<span /* tw='text-blue-400' */ className='material-symbols-outlined'>account_tree</span>}
             title='ComfyUI'
             content={() => (
                 <>

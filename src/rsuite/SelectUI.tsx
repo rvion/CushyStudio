@@ -7,10 +7,10 @@ import { InputBoolUI } from '../controls/widgets/bool/InputBoolUI'
 import { searchMatches } from '../utils/misc/searchMatches'
 
 interface ToolTipPosition {
-    top: number | undefined
-    bottom: number | undefined
-    left: number | undefined
-    right: number | undefined
+    top?: number | undefined
+    bottom?: number | undefined
+    left?: number | undefined
+    right?: number | undefined
 }
 
 type SelectProps<T> = {
@@ -18,7 +18,7 @@ type SelectProps<T> = {
     /** callback when a new option is added */
     onChange: null | ((next: T, self: AutoCompleteSelectState<T>) => void)
     /** list of all options */
-    options?: () => T[]
+    options?: (query: string) => T[]
     /** if provided, is used to compare options with selected values */
     equalityCheck?: (a: T, b: T) => boolean
     /** used to search/filter & for UI if no getLabelUI provided */
@@ -44,6 +44,9 @@ type SelectProps<T> = {
      * (previous default before 2024-02-29: false if multi-select, true if single select)
      */
     resetQueryOnPick?: boolean
+    /** hooks required to plug search query from/into some other system */
+    getSearchQuery?: () => string
+    setSearchQuery?: (val: string) => void
 }
 
 class AutoCompleteSelectState<T> {
@@ -58,12 +61,19 @@ class AutoCompleteSelectState<T> {
     isMultiSelect = this.p.multiple ?? false
 
     get options(): T[] {
-        return this.p.options?.() ?? [] // replace with actual options logic
+        return this.p.options?.(this.searchQuery) ?? [] // replace with actual options logic
     }
 
-    searchQuery = ''
+    private _searchQuery = ''
+    get searchQuery() {
+        return this.p.getSearchQuery?.() ?? this._searchQuery
+    }
+    set searchQuery(value: string) {
+        if (this.p.setSearchQuery) this.p.setSearchQuery(value)
+        else this._searchQuery = value
+    }
 
-    get filteredOptions() {
+    get filteredOptions(): T[] {
         if (this.searchQuery === '') return this.options
         return this.options.filter((p) => {
             const label = this.p.getLabelText(p)
@@ -271,7 +281,7 @@ class AutoCompleteSelectState<T> {
 
     selectOption(index: number) {
         const selectedOption = this.filteredOptions[index]
-        if (selectedOption) {
+        if (selectedOption != null) {
             this.p.onChange?.(selectedOption, this)
             const shouldResetQuery = this.p.resetQueryOnPick ?? false // !this.isMultiSelect
             const shouldCloseMenu = this.p.closeOnPick ?? !this.isMultiSelect
@@ -306,8 +316,8 @@ class AutoCompleteSelectState<T> {
     // | as soon as the moouse move just one pixel, popup close.
     // |  =>  commenting it out until we find a solution confortable in all cases
     MouseMoveTooFar = (event: MouseEvent) => {
-        let popup = this.popupRef?.current
-        let anchor = this.anchorRef?.current
+        const popup = this.popupRef?.current
+        const anchor = this.anchorRef?.current
 
         if (!popup || !anchor || !this.hasMouseEntered) {
             return
@@ -459,18 +469,19 @@ export const SelectPopupUI = observer(function SelectPopupUI_<T>(p: { s: AutoCom
             tw={[
                 'MENU-ROOT _SelectPopupUI bg-base-100 flex',
                 'border-l border-r border-base-300 overflow-auto',
-                s.tooltipPosition.bottom ? 'rounded-t border-t' : 'rounded-b border-b',
+                s.tooltipPosition.bottom != null ? 'rounded-t border-t' : 'rounded-b border-b',
             ]}
             style={{
                 minWidth: s.anchorRef.current?.clientWidth ?? '100%',
-                maxWidth: window.innerWidth - (s.tooltipPosition.left ? s.tooltipPosition.left : s.tooltipPosition.right ?? 0),
+                maxWidth:
+                    window.innerWidth - (s.tooltipPosition.left != null ? s.tooltipPosition.left : s.tooltipPosition.right ?? 0),
                 pointerEvents: 'initial',
                 position: 'absolute',
                 zIndex: 99999999,
-                top: s.tooltipPosition.top ? `${s.tooltipPosition.top}px` : 'unset',
-                bottom: s.tooltipPosition.bottom ? `${s.tooltipPosition.bottom}px` : 'unset',
-                left: s.tooltipPosition.left ? `${s.tooltipPosition.left}px` : 'unset',
-                right: s.tooltipPosition.right ? `${s.tooltipPosition.right}px` : 'unset',
+                top: s.tooltipPosition.top != null ? `${s.tooltipPosition.top}px` : 'unset',
+                bottom: s.tooltipPosition.bottom != null ? `${s.tooltipPosition.bottom}px` : 'unset',
+                left: s.tooltipPosition.left != null ? `${s.tooltipPosition.left}px` : 'unset',
+                right: s.tooltipPosition.right != null ? `${s.tooltipPosition.right}px` : 'unset',
                 maxHeight: `${s.tooltipMaxHeight}px`,
 
                 // Adjust positioning as needed
@@ -528,7 +539,7 @@ export const SelectPopupUI = observer(function SelectPopupUI_<T>(p: { s: AutoCom
                             >
                                 {/* {s.isMultiSelect ? <InputBoolUI active={isSelected} expand={false}></InputBoolUI> : <></>} */}
                                 <InputBoolUI active={isSelected} expand={false}></InputBoolUI>
-                                <div tw='pl-0.5 flex h-full items-center truncate'>
+                                <div tw='pl-0.5 flex w-full h-full items-center truncate'>
                                     {s.p.getLabelUI //
                                         ? s.p.getLabelUI(option)
                                         : s.p.getLabelText(option)}

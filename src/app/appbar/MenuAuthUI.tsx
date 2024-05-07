@@ -8,7 +8,7 @@ export const MenuAuthUI = observer(function MenuAuthUI_(p: {}) {
     const st = useSt()
     const username = st.auth.isConnected ? <div tw='flex items-center'>{st.auth.username}</div> : 'Login'
     const avatar = st.auth.avatar ? (
-        <img tw='rounded' style={{ width: '1.2rem', height: '1.2rem' }} src={st.auth.avatar} alt='user avatar' />
+        <img tw='rounded' style={{ width: '1rem', height: '1rem' }} src={st.auth.avatar} alt='user avatar' />
     ) : (
         <span className='material-symbols-outlined'>person</span>
     )

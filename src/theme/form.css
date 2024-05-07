@@ -1,4 +1,18 @@
+/* Btn Utils ------------------------------------------------------------------------------------- */
+.btn-narrow {
+    padding-left: 0.2em;
+    padding-right: 0.2em;
+}
+.btn-narrower {
+    padding-left: 0.1em;
+    padding-right: 0.1em;
+}
+
 /* ------------------------------------------------------------------------------------------------------- */
+.widget-error-ui {
+    border: 1px solid red;
+    color:red;
+}
 .FIELD:hover {
     border-left: 2px groove oklch(var(--s)/0.5);
 }

@@ -11,8 +11,7 @@
         "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
         "strict": true,
-        /** makes stuff bivariant / easier to type; paradoxically catches more errors since I can stop using any in weirdly hard to type scenarios */
-        "strictFunctionTypes": false,
+        "strictFunctionTypes": true,
         "forceConsistentCasingInFileNames": true,
         "strictNullChecks": true,
         "noUncheckedIndexedAccess": true,
@@ -33,7 +32,8 @@
             "webgl2": ["./src/typings/empty-types.d.ts"],
             "@tensorflow/tfjs": ["./src/typings/empty-types.d.ts"],
             "@types/webgl": ["./src/typings/empty-types.d.ts"],
-            "@types/webgl-ext": ["./src/typings/empty-types.d.ts"]
+            "@types/webgl-ext": ["./src/typings/empty-types.d.ts"],
+            "@use-gesture/react": ["./src/typings/empty-types.d.ts"]
         },
         // -------------// -------------
         /* specific to base */ "tsBuildInfoFile": ".tsbuildinfo",

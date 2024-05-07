@@ -4,9 +4,9 @@ import type { CSSProperties } from 'react'
 import { observer } from 'mobx-react-lite'
 import { ErrorBoundary } from 'react-error-boundary'
 
+import { RevealUI } from '../../rsuite/reveal/RevealUI'
 import { makeLabelFromFieldName } from '../../utils/misc/makeLabelFromFieldName'
 import { ErrorBoundaryFallback } from '../../widgets/misc/ErrorBoundary'
-//  🔴🔴🔴 import { InstallRequirementsBtnUI } from '../REQUIREMENTS/Panel_InstallRequirementsUI'
 import { AnimatedSizeUI } from '../utils/AnimatedSizeUI'
 import { isWidgetGroup, isWidgetOptional } from '../widgets/WidgetUI.DI'
 import { getActualWidgetToDisplay } from './getActualWidgetToDisplay'
@@ -14,6 +14,7 @@ import { getBorderStatusForWidget } from './getBorderStatusForWidget'
 import { getIfWidgetIsCollapsible } from './getIfWidgetIsCollapsible'
 import { getIfWidgetNeedAlignedLabel } from './getIfWidgetNeedAlignedLabel'
 import { Widget_ToggleUI } from './Widget_ToggleUI'
+import { menu_widgetActions } from './WidgetMenu'
 import { WidgetTooltipUI } from './WidgetTooltipUI'
 
 let isDragging = false
@@ -52,7 +53,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
         Object.keys(k.fields).length === 0 /* &&
         k.config.requirements == null */
     ) {
-        return
+        return null
     }
     // ------------------------------------------------------------
 
@@ -173,13 +174,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                         )}
                         {/* TOGGLE BEFORE */}
                         {BodyUI && <Widget_ToggleUI widget={originalWidget} />}
-                        {/* REQUIREMENTS  */}
-                        {/* 🔴🔴🔴 {widget.config.requirements && (
-                            <InstallRequirementsBtnUI
-                                active={widget instanceof KLS.Widget_optional ? widget.serial.active : true}
-                                requirements={widget.config.requirements}
-                            />
-                        )} */}
+                        {/* REQUIREMENTS (in cushy) OR OTHER CUSTOM LABEL STUFF */}
                         {widget.spec.LabelExtraUI && <widget.spec.LabelExtraUI widget={widget} />}
                         {/* TOOLTIPS  */}
                         {widget.config.tooltip && <WidgetTooltipUI widget={widget} />}
@@ -194,6 +189,13 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                             </ErrorBoundary>
                         </div>
                     )}
+                    {widget.config.presets && (
+                        <RevealUI //
+                            content={() => <menu_widgetActions.UI props={widget} />}
+                        >
+                            <span className='material-symbols-outlined'>more_vert</span>
+                        </RevealUI>
+                    )}
                 </div>
 
                 {/* BLOCK */}
@@ -203,6 +205,17 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                             {BodyUI}
                         </div>
                     </ErrorBoundary>
+                )}
+                {/* ERRORS */}
+                {widget.hasErrors && (
+                    <div tw='widget-error-ui'>
+                        {widget.errors.map((e, i) => (
+                            <div key={i} tw='flex items-center gap-1'>
+                                <span className='material-symbols-outlined'>error</span>
+                                {e.message}
+                            </div>
+                        ))}
+                    </div>
                 )}
             </AnimatedSizeUI>
         </div>

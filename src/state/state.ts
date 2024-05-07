@@ -18,8 +18,7 @@ import { join } from 'pathe'
 import { createRef } from 'react'
 import { fromZodError } from 'zod-validation-error'
 
-import { ShortcutWatcher } from '../app/shortcuts/ShortcutManager'
-import { allCommands } from '../app/shortcuts/shortcuts'
+import { commandManager, type CommandManager } from '../app/shortcuts/CommandManager'
 import { createRandomGenerator } from '../back/random'
 import { asAppPath } from '../cards/asAppPath'
 import { GithubRepoName } from '../cards/githubRepo'
@@ -45,6 +44,7 @@ import { DraftL } from '../models/Draft'
 import { HostL } from '../models/Host'
 import { ProjectL } from '../models/Project'
 import { StepL } from '../models/Step'
+import { regionMonitor, RegionMonitor } from '../operators/RegionMonitor'
 import { TreeApp } from '../panels/libraryUI/tree/nodes/TreeApp'
 import { TreeDraft } from '../panels/libraryUI/tree/nodes/TreeDraft'
 import { TreeAllApps, TreeAllDrafts, TreeFavoriteApps, TreeFavoriteDrafts } from '../panels/libraryUI/tree/nodes/TreeFavorites'
@@ -108,13 +108,14 @@ export class STATE {
     layout: CushyLayoutManager
     uid = nanoid() // front uid to fix hot reload
     db: LiveDB // core data
-    shortcuts: ShortcutWatcher
     uploader: Uploader
     supabase: SupabaseClient<Database>
     auth: AuthState
     managerRepository = new ComfyManagerRepository({ check: false, genTypes: false })
     search: SearchManager = new SearchManager(this)
-    forms = CushyFormManager
+    forms: CushyFormManager = CushyFormManager
+    commands: CommandManager = commandManager
+    region: RegionMonitor = regionMonitor
 
     _updateTime = () => {
         const now = Date.now()
@@ -135,8 +136,9 @@ export class STATE {
     tree2: Tree
     tree2View: TreeView
 
-    /** @internal */
-    _popups: RevealState[] = []
+    get clickAndSlideMultiplicator(): number {
+        return cushy.configFile.get('numberSliderSpeed') ?? 1
+    }
 
     startupFileIndexing = async () => {
         const allFiles = recursivelyFindAppsInFolder(this.library, this.libraryFolderPathAbs)
@@ -425,7 +427,7 @@ export class STATE {
         const fv = this.graphConf.value
         return { node_hsep: fv.hsep, node_vsep: fv.vsep }
     }
-    graphConf = CushyFormManager.form(
+    graphConf = CushyFormManager.fields(
         (ui) => ({
             spline: ui.float({ min: 0.5, max: 4, default: 2 }),
             vsep: ui.int({ min: 0, max: 100, default: 20 }),
@@ -437,7 +439,7 @@ export class STATE {
             onSerialChange: (form) => writeJSON('settings/graph-visualization.json', form.serial),
         },
     )
-    civitaiConf = CushyFormManager.form(
+    civitaiConf = CushyFormManager.fields(
         (ui) => ({
             imgSize1: ui.int({ min: 64, max: 1024, step: 64, default: 512 }),
             imgSize2: ui.int({ min: 64, max: 1024, step: 64, default: 128 }),
@@ -451,9 +453,11 @@ export class STATE {
             onSerialChange: (form) => writeJSON('settings/civitai.json', form.serial),
         },
     )
-    sideBarConf = CushyFormManager.form(
+    favbar = CushyFormManager.fields(
         (f) => ({
             size: f.int({ label: false, alignLabel: false, text: 'Size', min: 24, max: 128, default: 48, suffix: 'px', step: 4 }),
+            visible: f.bool(),
+            grayscale: f.boolean({ label: 'Grayscale' }),
             appIcons: f
                 .int({
                     label: false,
@@ -466,8 +470,6 @@ export class STATE {
                     suffix: '%',
                 })
                 .optional(true),
-            tree: f.bool({ label: false, alignLabel: false, text: 'File Tree', display: 'button', expand: true, icon: 'folder' }),
-            apps: f.bool({ label: false, alignLabel: false, text: 'App Tree', display: 'button', expand: true, icon: 'apps' }),
         }),
         {
             name: 'SideBar Conf',
@@ -480,7 +482,7 @@ export class STATE {
     // playgroundHeader = Header_Playground
     // playgroundWidgetDisplay = FORM_PlaygroundWidgetDisplay
 
-    displacementConf = CushyFormManager.form(
+    displacementConf = CushyFormManager.fields(
         (form) => ({
             camera: form.choice({
                 appearance: 'tab',
@@ -510,7 +512,7 @@ export class STATE {
         },
     )
 
-    galleryConf = CushyFormManager.form(
+    galleryConf = CushyFormManager.fields(
         (f) => ({
             defaultSort: f.selectOneV2(['createdAt', 'updatedAt'] as const, {
                 default: { id: 'createdAt', label: 'Created At' },
@@ -561,8 +563,8 @@ export class STATE {
         this.supabase = mkSupa()
         this.marketplace = new Marketplace(this)
         this.electronUtils = new ElectronUtils(this)
-        this.shortcuts = new ShortcutWatcher(allCommands, this, { name: nanoid() })
-        console.log(`[🛋️] ${this.shortcuts.shortcuts.length} shortcuts loaded`)
+        // this.shortcuts = new CommandManager(allCommands, this, { name: nanoid() })
+        // console.log(`[🛋️] ${this.shortcuts.shortcuts.length} shortcuts loaded`)
         this.uploader = new Uploader(this)
         this.layout = new CushyLayoutManager(this)
         this.themeMgr = new ThemeManager(this)
@@ -738,13 +740,6 @@ export class STATE {
         blob: Blob
         url: string
     }> = null
-
-    // prettier-ignore
-    /* 🔴 */ mouse = {
-    /* 🔴 */     isOver(p: string) {
-    /* 🔴 */         return true
-    /* 🔴 */     },
-    /* 🔴 */ }
 
     onMessage = (e: MessageEvent, host: HostL) => {
         if (e.data instanceof ArrayBuffer) {

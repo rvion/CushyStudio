@@ -1,13 +1,13 @@
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
-import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
-import type { Widget_group } from '../group/WidgetGroup'
+import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 import type { BaseSelectEntry } from '../selectOne/WidgetSelectOne'
 
-import { makeAutoObservable } from 'mobx'
+import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { applyWidgetMixinV2 } from '../../Mixins'
+import { makeAutoObservableInheritance } from '../../../utils/mobx-store-inheritance'
+import { BaseWidget } from '../../Mixins'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetSelectManyUI } from './WidgetSelectManyUI'
 
@@ -50,8 +50,8 @@ export type Widget_selectMany_types<T extends BaseSelectEntry> = {
 }
 
 // STATE
-export interface Widget_selectMany<T extends BaseSelectEntry> extends Widget_selectMany_types<T>, IWidgetMixins {}
-export class Widget_selectMany<T extends BaseSelectEntry> implements IWidget<Widget_selectMany_types<T>> {
+export interface Widget_selectMany<T extends BaseSelectEntry> extends Widget_selectMany_types<T> {}
+export class Widget_selectMany<T extends BaseSelectEntry> extends BaseWidget implements IWidget<Widget_selectMany_types<T>> {
     DefaultHeaderUI = WidgetSelectManyUI
     DefaultBodyUI = undefined
 
@@ -67,9 +67,9 @@ export class Widget_selectMany<T extends BaseSelectEntry> implements IWidget<Wid
             : _choices
     }
 
-    get errors(): Maybe<string[]> {
+    get baseErrors(): Maybe<string[]> {
         if (this.serial.values == null) return null
-        let errors: string[] = []
+        const errors: string[] = []
         for (const value of this.serial.values) {
             if (!this.choices.find((choice) => choice.id === value.id)) {
                 errors.push(`value ${value.id} (label: ${value.label}) not in choices`)
@@ -86,6 +86,7 @@ export class Widget_selectMany<T extends BaseSelectEntry> implements IWidget<Wid
         public readonly spec: ISpec<Widget_selectMany<T>>,
         serial?: Widget_selectMany_serial<T>,
     ) {
+        super()
         const config = spec.config
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? {
@@ -96,8 +97,7 @@ export class Widget_selectMany<T extends BaseSelectEntry> implements IWidget<Wid
             values: config.default ?? [],
         }
         /* 💊 */ if (this.serial.values == null) this.serial.values = []
-        applyWidgetMixinV2(this)
-        makeAutoObservable(this)
+        makeAutoObservableInheritance(this)
     }
 
     /** un-select given item */
@@ -132,6 +132,18 @@ export class Widget_selectMany<T extends BaseSelectEntry> implements IWidget<Wid
             this.serial.values = this.serial.values.filter((v) => v.id !== item.id) // filter just in case of duplicate
             this.bumpValue()
         }
+    }
+
+    setValue(val: Widget_selectMany_value<T>) {
+        this.value = val
+    }
+
+    set value(next: Widget_selectMany_value<T>) {
+        if (this.serial.values === next) return
+        runInAction(() => {
+            this.serial.values = next
+            this.bumpValue()
+        })
     }
 
     get value(): Widget_selectMany_value<T> {

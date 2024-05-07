@@ -1,6 +1,5 @@
 import type { ISpec } from '../../ISpec'
 import type { IWidget } from '../../IWidget'
-import type { Widget_listExt } from '../listExt/WidgetListExt'
 import type { Widget_list } from './WidgetList'
 
 import { observer } from 'mobx-react-lite'
@@ -12,15 +11,13 @@ import { ErrorBoundaryFallback } from '../../../widgets/misc/ErrorBoundary'
 import { getBorderStatusForWidget } from '../../shared/getBorderStatusForWidget'
 import { ListControlsUI } from './ListControlsUI'
 
-export const WidgetList_LineUI = observer(function WidgetList_LineUI_<T extends ISpec>(p: {
-    widget: Widget_list<T> | Widget_listExt<T>
-}) {
+export const WidgetList_LineUI = observer(function WidgetList_LineUI_(p: { widget: Widget_list<any> }) {
     return (
         <div tw='flex flex-1 items-center'>
             <div tw='text-sm text-gray-500 italic'>{p.widget.length} items</div>
-            <div tw='ml-auto'>
+            {p.widget.isAuto ? null : <div tw='ml-auto'>
                 <ListControlsUI widget={p.widget} />
-            </div>
+            </div>}
         </div>
     )
 })
@@ -64,19 +61,19 @@ export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends 
                                             </ErrorBoundary>
                                         )}
                                         {/* delete btn */}
-                                        <div
+                                        {p.widget.isAuto ? null : <div
                                             tw={[
                                                 'btn btn-sm btn-narrower btn-ghost opacity-50',
-                                                min && widget.items.length <= min ? 'btn-disabled' : null,
+                                                min != null && widget.items.length <= min ? 'btn-disabled' : null,
                                             ]}
                                             onClick={() => widget.removeItem(subWidget)}
                                         >
                                             <span className='material-symbols-outlined'>delete</span>
-                                        </div>
+                                        </div>}
                                         {/* collapse indicator */}
-                                        <ListItemCollapseBtnUI widget={subWidget} />
+                                        {subWidget.collapsible && <ListItemCollapseBtnUI widget={subWidget} />}
                                     </div>
-                                    {widgetBody && !collapsed && subWidget && (
+                                    {widgetBody && !collapsed && subWidget != null && (
                                         <ErrorBoundary FallbackComponent={ErrorBoundaryFallback} onReset={(details) => {}}>
                                             <div tw='ml-2 pl-2'>
                                                 {/* <WidgetBodyUI widget={subWidget} /> */}

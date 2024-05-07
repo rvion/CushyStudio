@@ -1,7 +1,7 @@
 import { makeAutoObservable } from 'mobx'
 
 import { Debounced } from '../../utils/misc/Debounced'
-import { Kwery } from '../../utils/misc/Kwery'
+import { Promize } from '../../utils/misc/Promize'
 
 // civitai wrapper
 export class Civitai {
@@ -9,7 +9,7 @@ export class Civitai {
     query = new Debounced(cushy.civitaiConf.fields.defaultQuery.value ?? '', 300)
     selectedResult: Maybe<CivitaiSearchResultItem> = null
 
-    get results(): Maybe<Kwery<CivitaiSearchResult>> {
+    get results(): Maybe<Promize<CivitaiSearchResult>> {
         if (!this.query.debouncedValue) return null
         return this.search({ query: this.query.debouncedValue })
     }
@@ -26,8 +26,8 @@ export class Civitai {
         query?: string
         tag?: string
         username?: string
-    }): Kwery<CivitaiSearchResult> => {
-        return Kwery.get('civitai-search', p, async (): Promise<CivitaiSearchResult> => {
+    }): Promize<CivitaiSearchResult> => {
+        return Promize.get('civitai-search', p, async (): Promise<CivitaiSearchResult> => {
             console.log('[CIVITAI] search:', 'https://civitai.com/api/v1/models', p)
             const res = await fetch('https://civitai.com/api/v1/models?' + new URLSearchParams(p as any), {
                 method: 'GET',

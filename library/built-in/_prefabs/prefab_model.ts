@@ -6,6 +6,22 @@ export const ui_model = () => {
     const form = getCurrentForm()
     const ckpts = cushy.managerRepository.getKnownCheckpoints()
     return form.group({
+        presets: {
+            test1: (w) => {
+                w.value = {
+                    checkpointConfig: undefined,
+                    ckpt_name: 'albedobaseXL_v21.safetensors',
+                    extra: { clipSkip: 2 },
+                }
+            },
+            test2: (w) => {
+                w.setValue({
+                    checkpointConfig: undefined,
+                    ckpt_name: 'revAnimated_v122.safetensors',
+                    extra: {},
+                })
+            },
+        },
         label: 'AI Model',
         summary: (ui) => {
             let out: string = ui.ckpt_name

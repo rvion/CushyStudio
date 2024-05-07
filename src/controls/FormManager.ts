@@ -1,11 +1,11 @@
+import type { IFormBuilder } from './IFormBuilder'
 import type { ISpec, SchemaDict } from './ISpec'
+import type { Widget_group } from './widgets/group/WidgetGroup'
 
 import { type DependencyList, useMemo } from 'react'
 
 import { Form, FormProperties } from './Form'
-import { IFormBuilder } from './IFormBuilder'
 import { runWithGlobalForm } from './shared/runWithGlobalForm'
-import { Widget_group } from './widgets/group/WidgetGroup'
 
 /**
  * you need one per project;
@@ -21,7 +21,7 @@ export class FormManager<BUILDER extends IFormBuilder> {
 
     _builders = new WeakMap<Form, BUILDER>()
 
-    getBuilder = (form: Form<any, any>): BUILDER => {
+    getBuilder = (form: Form<any, BUILDER>): BUILDER => {
         const prev = this._builders.get(form)
         if (prev) return prev
         const builder = new this.builderCtor(form)
@@ -30,9 +30,9 @@ export class FormManager<BUILDER extends IFormBuilder> {
     }
 
     /** LEGACY API; TYPES ARE COMPLICATED DUE TO MAINTAINING BACKWARD COMPAT */
-    form = <FIELDS extends SchemaDict>(
+    fields = <FIELDS extends SchemaDict>(
         ui: (form: BUILDER) => FIELDS,
-        formProperties: FormProperties<ISpec<Widget_group<FIELDS>>> = { name: 'unnamed' },
+        formProperties: FormProperties<ISpec<Widget_group<FIELDS>>, BUILDER> = { name: 'unnamed' },
     ): Form<ISpec<Widget_group<FIELDS>>, BUILDER> => {
         const FN = (builder: BUILDER): ISpec<Widget_group<FIELDS>> => {
             return runWithGlobalForm(builder, () =>
@@ -48,15 +48,22 @@ export class FormManager<BUILDER extends IFormBuilder> {
         return form
     }
 
+    /** simple alias to create a new Form */
+    form = <ROOT extends ISpec>(
+        ui: (form: BUILDER) => ROOT,
+        formProperties: FormProperties<ROOT, BUILDER> = { name: 'unnamed' },
+    ): Form<ROOT, BUILDER> => {
+        return new Form<ROOT, BUILDER>(this, ui, formProperties)
+    }
+
     /** simple way to defined forms and in react components */
     use = <ROOT extends ISpec>(
         ui: (form: BUILDER) => ROOT,
-        formProperties: FormProperties<ROOT> = { name: 'unnamed' },
+        formProperties: FormProperties<ROOT, BUILDER> = { name: 'unnamed' },
         deps: DependencyList = [],
     ): Form<ROOT, BUILDER> => {
         return useMemo(() => {
-            const form = new Form<ROOT, BUILDER>(this, ui, formProperties)
-            return form
+            return new Form<ROOT, BUILDER>(this, ui, formProperties)
         }, deps)
     }
 }

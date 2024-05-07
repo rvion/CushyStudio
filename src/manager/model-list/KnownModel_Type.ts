@@ -2,7 +2,7 @@
 export type KnownModel_Type =
     | "TAESD"              // x   4
     | "upscale"            // x   9
-    | "checkpoints"        // x  26
+    | "checkpoints"        // x  28
     | "insightface"        // x  12
     | "deepbump"           // x   1
     | "face_restore"       // x   3
@@ -23,7 +23,7 @@ export type KnownModel_Type =
     | "Ultralytics"        // x  16
     | "animatediff"        // x  13
     | "motion lora"        // x   8
-    | "IP-Adapter"         // x  16
+    | "IP-Adapter"         // x  22
     | "PFG"                // x   3
     | "GFPGAN"             // x   1
     | "CodeFormer"         // x   1
@@ -36,11 +36,13 @@ export type KnownModel_Type =
     | "InstanceDiffusion"  // x   3
     | "BLIP_MODEL"         // x   1
     | "GroundingDINO"      // x   2
+    | "RAM"                // x   3
+    | "Zero123"            // x   4
 
 export const knownModel_Type: KnownModel_Type[] = [
     "TAESD"             ,  // x   4
     "upscale"           ,  // x   9
-    "checkpoints"       ,  // x  26
+    "checkpoints"       ,  // x  28
     "insightface"       ,  // x  12
     "deepbump"          ,  // x   1
     "face_restore"      ,  // x   3
@@ -61,7 +63,7 @@ export const knownModel_Type: KnownModel_Type[] = [
     "Ultralytics"       ,  // x  16
     "animatediff"       ,  // x  13
     "motion lora"       ,  // x   8
-    "IP-Adapter"        ,  // x  16
+    "IP-Adapter"        ,  // x  22
     "PFG"               ,  // x   3
     "GFPGAN"            ,  // x   1
     "CodeFormer"        ,  // x   1
@@ -74,5 +76,7 @@ export const knownModel_Type: KnownModel_Type[] = [
     "InstanceDiffusion" ,  // x   3
     "BLIP_MODEL"        ,  // x   1
     "GroundingDINO"     ,  // x   2
+    "RAM"               ,  // x   3
+    "Zero123"           ,  // x   4
 ]
 
