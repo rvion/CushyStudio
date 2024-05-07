@@ -244,21 +244,19 @@ export abstract class BaseWidget {
 
     feedValue(this: IWidget) {
         // UGLY, should probably be a reaction rather than this
-        /* 🔴 */ const fdktx = this.spec._feedKontext
-        /* 🔴 */ if (fdktx == null) return console.log(`[🔴] feeding aborted v1 `)
-        /* 🔴 */ let at = this as any as IWidget | null
-        /* 🔴 */ while (at != null) {
-            /* 🔴 */ const spec: ISpec<any> = at.spec
-            /* 🔴 */ if (spec._withKontext.has(fdktx.ktx)) {
+        const fdktx = this.spec._feedKontext
+        if (fdktx == null) return console.log(`[🔴] feeding aborted v1 `)
+        let at = this as any as IWidget | null
+        while (at != null) {
+            const spec: ISpec<any> = at.spec
+            if (spec._withKontext.has(fdktx.ktx)) {
                 /*  */ console.log(`[🤠] `, at)
-                /* 🔴 */ at._boundKontexts[fdktx.ktx.uid] = fdktx.fn(this)
-                /* 🔴 */ return console.log(`[🟢] feeding ok at`, at.spec.type)
-                /* 🔴 */
+                at._boundKontexts[fdktx.ktx.uid] = fdktx.fn(this)
+                return console.log(`[🟢] feeding ok at`, at.spec.type)
             } else {
-                /* 🔴 */ console.log(`[🔴] - feeding at ?`, at.spec.type, 'NO ❌')
+                console.log(`[🔴] - feeding at ?`, at.spec.type, 'NO ❌')
             }
-            /* 🔴 */ at = at.parent
-            /* 🔴 */
+            at = at.parent
         }
         console.log(`[🔴] feeding aborted v2 `)
     }

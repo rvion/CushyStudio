@@ -10,13 +10,29 @@ import { BaseWidget } from '../../Mixins'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetSelectOneUI } from './WidgetSelectOneUI'
 
-export type BaseSelectEntry<T = string> = { id: T; label?: string }
+export type BaseSelectEntry<T = string> = { id: T; label?: string, }
 
 // CONFIG
 export type Widget_selectOne_config<T extends BaseSelectEntry> = WidgetConfigFields<
     {
         default?: T
-        choices: T[] | ((form: Form, self: Widget_selectOne<T>) => T[])
+        /**
+         * list of all choices
+         * 👉 you can use a lambda if you want the option to to dynamic
+         *    the lambda will receive the widget instance as argument, from
+         *    which you can access variosu stuff like
+         *      - `self.serial.query`: the current filtering text
+         *      - `self.form`: the form instance
+         *      - `self.form.root`: the root of the widget
+         *      - `self.parent...`: natigate the widget tree
+         *      - `self.useKontext('...')`: any named dynamic chanel for cross-widget communication
+         * 👉 If the list of options is generated from the query directly,
+         *    you should also set `disableLocalFiltering: true`, to avoid
+         *    filtering the options twice.
+         */
+        choices: T[] | (( self: Widget_selectOne<T>) => T[])
+        /** set this to true if your choices are dynamically generated from the query directly, to disable local filtering */
+        disableLocalFiltering?: boolean
         getLabelUI?: (t: T) => React.ReactNode
         appearance?: 'select' | 'tab'
     },
@@ -74,7 +90,7 @@ export class Widget_selectOne<T extends BaseSelectEntry> extends BaseWidget impl
         if (typeof _choices === 'function') {
             if (!this.form.ready) return []
             if (this.form._ROOT == null) throw new Error('❌ IMPOSSIBLE: this.form._ROOT is null')
-            return _choices(this.form, this)
+            return _choices(this)
         }
         return _choices
     }

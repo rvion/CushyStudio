@@ -73,7 +73,10 @@ export const WidgetSelectMany_SelectUI = observer(function WidgetSelectMany_Sele
                 multiple
                 tw={[widget.baseErrors && 'rsx-field-error']}
                 getLabelText={(t) => t.label ?? t.id}
-                getLabelUI={(t) => t.label ?? t.id}
+                getLabelUI={widget.config.getLabelUI}
+                getSearchQuery={() => widget.serial.query ?? ''}
+                setSearchQuery={(query) => (widget.serial.query = query)}
+                disableLocalFiltering={widget.config.disableLocalFiltering}
                 options={() => widget.choices}
                 value={() => widget.serial.values}
                 equalityCheck={(a, b) => a.id === b.id}
