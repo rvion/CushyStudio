@@ -129,8 +129,12 @@ export const convertLiteGraphToPrompt = (
                 if (isPrimitive) continue
 
                 // not a primitive => we assume it's a link
-                if (ipt.link == null) throw new Error(`no link found for ${node.id}.${ipt.name}`)
-
+                if (ipt.link == null) {
+                    console.log(
+                        `[❌] WARNING: no parent found for ${node.type}.${ipt.name} this could be an error if the input is not optional`,
+                    ) //throw new Error(`no link found for ${node.id}.${ipt.name}`)
+                    continue
+                }
                 // retrieve the parent
                 let parent: Maybe<ParentInfo> = getParentNode(ipt.link)
 
