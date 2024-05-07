@@ -169,7 +169,7 @@ export type SharedWidgetConfig<T extends $WidgetTypes> = {
     body?: null | ((p: { widget: T['$Widget'] }) => JSX.Element)
 
     /** will be called when value changed */
-    onValueChange?: (val: T['$Value']) => void
+    onValueChange?: (val: T['$Value'], self: T['$Widget']) => void
 
     presets?: Record<string, (form: T['$Widget']) => void>
 
