@@ -1,8 +1,9 @@
-import type { ClassLike } from '../../../utils/custom-jsx/global'
 import type { Widget_string } from './WidgetString'
 
 import { observer } from 'mobx-react-lite'
 import { ReactElement } from 'react'
+
+type ClassLike = string | { [cls: string]: any } | null | undefined | boolean
 
 // Textarea HEADER
 export const WidgetString_TextareaHeaderUI = observer(function WidgetString_TextareaHeaderUI_(p: { widget: Widget_string }) {
