@@ -149,8 +149,8 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> extends BaseWidge
                     (typeof def === 'string' //
                         ? branch === def
                         : typeof def === 'object'
-                        ? def?.[branch] ?? false
-                        : null)
+                          ? def?.[branch] ?? false
+                          : null)
 
                 if (isActive) this.enableBranch(branch, { skipBump: true })
             }
@@ -161,10 +161,10 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> extends BaseWidge
                 (def == null
                     ? allBranches[0]
                     : typeof def === 'string' //
-                    ? def
-                    : typeof def === 'object'
-                    ? Object.entries(def).find(([, v]) => v)?.[0] ?? allBranches[0]
-                    : allBranches[0])
+                      ? def
+                      : typeof def === 'object'
+                        ? Object.entries(def).find(([, v]) => v)?.[0] ?? allBranches[0]
+                        : allBranches[0])
             if (activeBranch == null) toastError(`❌ No active branch found for single choice widget "${this.config.label}"`)
             else this.enableBranch(activeBranch, { skipBump: true })
         }
@@ -238,6 +238,7 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> extends BaseWidge
                 this.children[branch]!.setValue(val[branch]!)
             }
         }
+        this.bumpValue()
     }
     /** results, but only for active branches */
     get value(): Widget_choices_value<T> {

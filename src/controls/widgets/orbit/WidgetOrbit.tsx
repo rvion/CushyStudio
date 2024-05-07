@@ -129,6 +129,7 @@ export class Widget_orbit extends BaseWidget implements IWidget<Widget_orbit_typ
     set value(val: Widget_orbit_value) {
         this.serial.value.azimuth = val.azimuth
         this.serial.value.elevation = val.elevation
+        this.bumpValue()
     }
     get value(): Widget_orbit_value {
         return {
