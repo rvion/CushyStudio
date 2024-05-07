@@ -1,22 +1,25 @@
-import { Cnet_args, Cnet_return, run_cnet } from './_controlNet/prefab_cnet'
-// import { run_ipadapter_standalone } from './_ipAdapter/prefab_ipAdapter_base_standalone' ❓
-import { run_IPAdapterV2 } from './_ipAdapter/prefab_ipAdapter_baseV2'
-import { run_FaceIDV2 } from './_ipAdapter/prefab_ipAdapter_faceV2'
-import { run_Dispacement1, run_Dispacement2 } from './_prefabs/prefab_3dDisplacement'
-import { run_refiners_fromImage } from './_prefabs/prefab_detailer'
-import { run_latent_v3 } from './_prefabs/prefab_latent_v3'
+import type { FormBuilder } from '../../src/CUSHY'
+
+import { Cnet_args, Cnet_return, run_cnet, ui_cnet } from './_controlNet/prefab_cnet'
+import { run_IPAdapterV2, ui_IPAdapterV2 } from './_ipAdapter/prefab_ipAdapter_baseV2'
+import { run_FaceIDV2, ui_IPAdapterFaceIDV2 } from './_ipAdapter/prefab_ipAdapter_faceV2'
+import { ui_highresfix } from './_prefabs/_prefabs'
+import { run_Dispacement1, run_Dispacement2, ui_3dDisplacement } from './_prefabs/prefab_3dDisplacement'
+import { run_refiners_fromImage, ui_refiners } from './_prefabs/prefab_detailer'
+import { run_latent_v3, ui_latent_v3 } from './_prefabs/prefab_latent_v3'
 import { output_demo_summary } from './_prefabs/prefab_markdown'
-import { run_model } from './_prefabs/prefab_model'
+import { ui_mask } from './_prefabs/prefab_mask'
+import { run_model, ui_model } from './_prefabs/prefab_model'
 import { run_prompt } from './_prefabs/prefab_prompt'
-import { run_advancedPrompt } from './_prefabs/prefab_promptsWithButtons'
-import { run_regionalPrompting_v1 } from './_prefabs/prefab_regionalPrompting_v1'
-import { run_rembg_v1 } from './_prefabs/prefab_rembg'
-import { Ctx_sampler, run_sampler } from './_prefabs/prefab_sampler'
-import { run_upscaleWithModel } from './_prefabs/prefab_upscaleWithModel'
-import { run_addFancyWatermarkToAllImage, run_watermark_v1 } from './_prefabs/prefab_watermark'
-import { run_customSave } from './_prefabs/saveSmall'
+import { run_advancedPrompt, ui_advancedPrompt } from './_prefabs/prefab_promptsWithButtons'
+import { ui_recursive } from './_prefabs/prefab_recursive'
+import { run_regionalPrompting_v1, ui_regionalPrompting_v1 } from './_prefabs/prefab_regionalPrompting_v1'
+import { run_rembg_v1, ui_rembg_v1 } from './_prefabs/prefab_rembg'
+import { Ctx_sampler, run_sampler, ui_sampler } from './_prefabs/prefab_sampler'
+import { run_upscaleWithModel, ui_upscaleWithModel } from './_prefabs/prefab_upscaleWithModel'
+import { run_addFancyWatermarkToAllImage, run_watermark_v1, ui_watermark_v1 } from './_prefabs/prefab_watermark'
+import { run_customSave, ui_customSave } from './_prefabs/saveSmall'
 import { CustomView3dCan } from './_views/View_3d_TinCan'
-import { CushyDiffusionUI } from './CushyDiffusionUI'
 
 app({
     metadata: {
@@ -30,7 +33,57 @@ app({
     // ⏸️         f.root.fields.positive
     // ⏸️     },
     // ⏸️ },
-    ui: CushyDiffusionUI,
+    ui: (form: FormBuilder) => ({
+        // modelType: form.selectOne({
+        //     appearance: 'tab',
+        //     choices: [{ id: 'SD 1.5' }, { id: 'SDXL' }],
+        // }),
+        positive: form.prompt({
+            // check: (v) => [
+            //     //
+            //     v.text.length > 10 || 'too short',
+            //     v.text.length < 20 || 'too long',
+            // ],
+            default: [
+                //
+                'masterpiece, tree',
+                '?color, ?3d_term, ?adj_beauty, ?adj_general',
+                '(nature)*0.9, (intricate_details)*1.1',
+            ].join('\n'),
+        }),
+        negative: form.prompt({
+            startCollapsed: true,
+            default: 'bad quality, blurry, low resolution, pixelated, noisy',
+        }),
+        model: ui_model(),
+        latent: ui_latent_v3(),
+        mask: ui_mask(),
+        sampler: ui_sampler(),
+        highResFix: ui_highresfix().optional(true),
+        upscale: ui_upscaleWithModel(),
+        customSave: ui_customSave(),
+        removeBG: ui_rembg_v1(),
+        show3d: ui_3dDisplacement().optional(),
+        controlnets: ui_cnet(),
+        ipAdapter: ui_IPAdapterV2().optional(),
+        faceID: ui_IPAdapterFaceIDV2().optional(),
+        extra: form.choices({
+            appearance: 'tab',
+            items: {
+                regionalPrompt: ui_regionalPrompting_v1(),
+                refine: ui_refiners(),
+                reversePositiveAndNegative: form.group({ label: 'swap +/-' }),
+                makeAVideo: form.group(),
+                summary: form.group(),
+                gaussianSplat: form.group(),
+                promtPlus: ui_advancedPrompt(),
+                displayAsBeerCan: form.group({}),
+                recursiveImgToImg: ui_recursive(),
+                watermark: ui_watermark_v1(),
+                fancyWatermark: form.group(),
+            },
+        }),
+    }),
     run: async (run, ui, imgCtx) => {
         const graph = run.nodes
         // MODEL, clip skip, vae, etc. ---------------------------------------------------------------
