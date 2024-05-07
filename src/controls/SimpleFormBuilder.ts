@@ -302,7 +302,14 @@ export class SimpleFormBuilder implements IFormBuilder {
     _HYDRATE = <T extends ISpec>(parent: IWidget | null, spec: T, serial: any | null): T['$Widget'] => {
         const w = this.__HYDRATE(parent, spec, serial)
         w.publishValue()
-        for (const { expr, effect } of spec.reactions) reaction(expr, effect) // 🔴 Need to dispose later
+        for (const { expr, effect } of spec.reactions) {
+            // 🔴 Need to dispose later
+            reaction(
+                () => expr(w),
+                (arg) => effect(arg, w),
+                { fireImmediately: true },
+            )
+        }
         return w
     }
 }
