@@ -19,7 +19,7 @@ export type ENMInfos = {
     description?: string // "Webcams, GLSL shader, Media Streaming, Tick animation, Image manipulation,",
     nodename_pattern?: string // " \\(jov\\)$",
     title?: string // "Jovimetrix",
-    preemptions?: string[]; // ❓
+    preemptions?: string[] // ❓
 }
 
 // SCHEMA ------------------------------------------------------------------------
