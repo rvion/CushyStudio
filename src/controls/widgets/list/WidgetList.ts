@@ -200,6 +200,9 @@ export class Widget_list<T extends ISpec> extends BaseWidget implements IWidget<
                 this.items[i]!.setValue(val[i])
             }
         }
+        this.serial.items_.splice(val.length)
+        this.items.splice(val.length)
+        this.bumpValue()
     }
     get value(): Widget_list_value<T> {
         return this.items.map((i) => i.value)
