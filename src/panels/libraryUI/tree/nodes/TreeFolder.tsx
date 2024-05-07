@@ -11,7 +11,10 @@ import { TreeNode } from '../xxx/TreeNode'
 import { TreeFile } from './TreeFile'
 
 export class TreeFolder implements ITreeEntry<RelativePath> {
-    constructor(public st: STATE, public path: RelativePath) {
+    constructor(
+        public st: STATE,
+        public path: RelativePath,
+    ) {
         makeAutoObservable(this)
     }
     get id(){return `path#${this.path}`} //prettier-ignore

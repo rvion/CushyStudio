@@ -13,9 +13,7 @@ export const StepOutputsV2UI = observer(function StepOutputsV2UI_(p: { step: Ste
     return (
         <div tw='flex flex-wrap'>
             <StepOutputsHeaderV2UI step={step} />
-            {step.outputs?.map((output, ix) => (
-                <OutputPreviewUI key={ix} step={step} output={output} />
-            ))}
+            {step.outputs?.map((output, ix) => <OutputPreviewUI key={ix} step={step} output={output} />)}
         </div>
     )
 })

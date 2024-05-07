@@ -126,9 +126,7 @@ export const SideOutputListUI = observer(function SideOutputListUI_(p: {}) {
                 </div>
             )}
             {step && <StepOutputsHeaderV2UI step={step} />}
-            {step?.outputs?.map((output, ix) => (
-                <OutputPreviewUI key={ix} step={step} output={output} />
-            ))}
+            {step?.outputs?.map((output, ix) => <OutputPreviewUI key={ix} step={step} output={output} />)}
         </div>
     )
 })

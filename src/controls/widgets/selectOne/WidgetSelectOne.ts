@@ -10,7 +10,7 @@ import { BaseWidget } from '../../Mixins'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetSelectOneUI } from './WidgetSelectOneUI'
 
-export type BaseSelectEntry<T = string> = { id: T; label?: string, }
+export type BaseSelectEntry<T = string> = { id: T; label?: string }
 
 // CONFIG
 export type Widget_selectOne_config<T extends BaseSelectEntry> = WidgetConfigFields<
@@ -30,7 +30,7 @@ export type Widget_selectOne_config<T extends BaseSelectEntry> = WidgetConfigFie
          *    you should also set `disableLocalFiltering: true`, to avoid
          *    filtering the options twice.
          */
-        choices: T[] | (( self: Widget_selectOne<T>) => T[])
+        choices: T[] | ((self: Widget_selectOne<T>) => T[])
         /** set this to true if your choices are dynamically generated from the query directly, to disable local filtering */
         disableLocalFiltering?: boolean
         getLabelUI?: (t: T) => React.ReactNode
