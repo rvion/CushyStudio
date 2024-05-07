@@ -1,12 +1,13 @@
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
-import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 import type { Problem_Ext } from '../../Validation'
 
-import { makeAutoObservable, runInAction } from 'mobx'
+import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { applyWidgetMixinV2 } from '../../Mixins'
+import { makeAutoObservableInheritance } from '../../../utils/mobx-store-inheritance'
+import { BaseWidget } from '../../Mixins'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetInlineRunUI } from './WidgetButtonUI'
 
@@ -46,8 +47,8 @@ export type Widget_button_types<K> = {
 }
 
 // STATE
-export interface Widget_button<K> extends Widget_button_types<K>, IWidgetMixins {}
-export class Widget_button<K> implements IWidget<Widget_button_types<K>> {
+export interface Widget_button<K> extends Widget_button_types<K> {}
+export class Widget_button<K> extends BaseWidget implements IWidget<Widget_button_types<K>> {
     DefaultHeaderUI = WidgetInlineRunUI
     DefaultBodyUI = undefined
     readonly id: string
@@ -66,6 +67,7 @@ export class Widget_button<K> implements IWidget<Widget_button_types<K>> {
         public readonly spec: ISpec<Widget_button<K>>,
         serial?: Widget_button_serial,
     ) {
+        super()
         const config = spec.config
         if (config.text) {
             config.label = config.label ?? ` `
@@ -78,8 +80,8 @@ export class Widget_button<K> implements IWidget<Widget_button_types<K>> {
             id: this.id,
             val: false,
         }
-        applyWidgetMixinV2(this)
-        makeAutoObservable(this, { DefaultHeaderUI: false, DefaultBodyUI: false })
+
+        makeAutoObservableInheritance(this, { DefaultHeaderUI: false, DefaultBodyUI: false })
     }
 
     get value(): Widget_button_value {

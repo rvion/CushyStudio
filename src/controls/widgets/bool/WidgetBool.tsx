@@ -1,12 +1,13 @@
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
-import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 import type { Problem_Ext } from '../../Validation'
 
-import { computed, makeAutoObservable, observable, runInAction } from 'mobx'
+import { computed, observable, runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { applyWidgetMixinV2 } from '../../Mixins'
+import { makeAutoObservableInheritance } from '../../../utils/mobx-store-inheritance'
+import { BaseWidget } from '../../Mixins'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetBoolUI } from './WidgetBoolUI'
 
@@ -73,8 +74,8 @@ export type Widget_bool_types = {
 }
 
 // STATE
-export interface Widget_bool extends Widget_bool_types, IWidgetMixins {}
-export class Widget_bool implements IWidget<Widget_bool_types> {
+export interface Widget_bool extends Widget_bool_types {}
+export class Widget_bool extends BaseWidget implements IWidget<Widget_bool_types> {
     DefaultHeaderUI = WidgetBoolUI
     DefaultBodyUI = undefined
     readonly id: string
@@ -102,6 +103,7 @@ export class Widget_bool implements IWidget<Widget_bool_types> {
         public readonly spec: ISpec<Widget_bool>,
         serial?: Widget_bool_serial,
     ) {
+        super()
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? {
             id: this.id,
@@ -110,8 +112,7 @@ export class Widget_bool implements IWidget<Widget_bool_types> {
             collapsed: this.spec.config.startCollapsed,
         }
 
-        applyWidgetMixinV2(this)
-        makeAutoObservable(this, {
+        makeAutoObservableInheritance(this, {
             serial: observable,
             value: computed,
             DefaultHeaderUI: false,

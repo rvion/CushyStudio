@@ -1,13 +1,14 @@
 import type { Form } from '../../Form'
 import type { ISpec, SchemaDict } from '../../ISpec'
-import type { GetWidgetResult, IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { GetWidgetResult, IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 import type { Problem_Ext } from '../../Validation'
 
-import { makeAutoObservable, runInAction } from 'mobx'
+import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
 import { bang } from '../../../utils/misc/bang'
-import { applyWidgetMixinV2 } from '../../Mixins'
+import { makeAutoObservableInheritance } from '../../../utils/mobx-store-inheritance'
+import { BaseWidget } from '../../Mixins'
 import { getActualWidgetToDisplay } from '../../shared/getActualWidgetToDisplay'
 import { getIfWidgetIsCollapsible } from '../../shared/getIfWidgetIsCollapsible'
 import { runWithGlobalForm } from '../../shared/runWithGlobalForm'
@@ -45,8 +46,8 @@ export type Widget_group_types<T extends SchemaDict> = {
 }
 
 // STATE
-export interface Widget_group<T extends SchemaDict> extends Widget_group_types<T>, IWidgetMixins {}
-export class Widget_group<T extends SchemaDict> implements IWidget<Widget_group_types<T>> {
+export interface Widget_group<T extends SchemaDict> extends Widget_group_types<T> {}
+export class Widget_group<T extends SchemaDict> extends BaseWidget implements IWidget<Widget_group_types<T>> {
     DefaultHeaderUI = WidgetGroup_LineUI
     get DefaultBodyUI() {
         if (Object.keys(this.fields).length === 0) return
@@ -110,6 +111,8 @@ export class Widget_group<T extends SchemaDict> implements IWidget<Widget_group_
         /** used to register self as the root, before we start instanciating anything */
         preHydrate?: (self: Widget_group<any>) => void,
     ) {
+        super()
+
         // persist id
         this.id = serial?.id ?? nanoid()
 
@@ -162,8 +165,7 @@ export class Widget_group<T extends SchemaDict> implements IWidget<Widget_group_
         // we keep the old values in case those are just temporarilly removed, or in case
         // those will be lazily added later though global usage
 
-        applyWidgetMixinV2(this)
-        makeAutoObservable(this, { value: false })
+        makeAutoObservableInheritance(this, { value: false })
     }
 
     setValue(val: Widget_group_value<T>) {

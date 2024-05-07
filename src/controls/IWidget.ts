@@ -1,7 +1,8 @@
 import type { CovariantFC } from './CovariantFC'
 import type { Form } from './Form'
 import type { ISpec } from './ISpec'
-import type { Problem, Problem_Ext } from './Validation'
+import type { BaseWidget } from './Mixins'
+import type { Problem_Ext } from './Validation'
 
 /**
  * base widget type; default type-level param when we work with unknown widget
@@ -24,7 +25,7 @@ export const isWidget = (x: any): x is IWidget => {
     )
 }
 
-export interface IWidget<K extends $WidgetTypes = $WidgetTypes> extends IWidgetMixins {
+export interface IWidget<K extends $WidgetTypes = $WidgetTypes> extends BaseWidget {
     // ---------------------------------------------------------------------------------------------------
     $Type: K['$Type'] /** type only properties; do not use directly; used to make typings good and fast */
     $Config: K['$Config'] /** type only properties; do not use directly; used to make typings good and fast */
@@ -93,44 +94,51 @@ export const $WidgetSym = Symbol('Widget')
  * Before the makeAutoObservable(this) call. If you're adding a new
  * base widget, you're expected to do that too.
  */
-export type IWidgetMixins = {
-    $WidgetSym: typeof $WidgetSym
+// export type IWidgetMixins = {
+//     $WidgetSym:  typeof $WidgetSym
 
-    // UI ------------------------------------------------------
-    // value stuff
-    ui(): JSX.Element
-    body(): JSX.Element | undefined
-    header(): JSX.Element | undefined
-    defaultBody(): JSX.Element | undefined
-    defaultHeader(): JSX.Element | undefined
+//     // KONTEXTS
+//     useKontext<T extends any>(ktx:Kontext<T>): Maybe<T>
+//     _boundKontexts: Record<string, any>
 
-    // FOLD ----------------------------------------------------
-    setCollapsed(
-        /** true: collapse; false: expanded */
-        val: boolean | undefined,
-    ): void
+//     // UI ------------------------------------------------------
+//     // value stuff
+//     ui(): JSX.Element
+//     body(): JSX.Element | undefined
+//     header(): JSX.Element | undefined
+//     defaultBody(): JSX.Element | undefined
+//     defaultHeader(): JSX.Element | undefined
 
-    /** toggle widget fold <-> unfolded */
-    toggleCollapsed(): void
+//     // FOLD ----------------------------------------------------
+//     setCollapsed(
+//         /** true: collapse; false: expanded */
+//         val: boolean | undefined,
+//     ): void
 
-    // BUMP ----------------------------------------------------
-    /**
-     * Notify form that the value has been udpated
-     * (and bump serial.lastUpdatedAt to Date.now())
-     * 👉 Every widget must call this when value has been updated
-     * */
-    bumpValue(): void
+//     /** toggle widget fold <-> unfolded */
+//     toggleCollapsed(): void
 
-    /**
-     * Notify form that a non-value serial has been udpated
-     * 👉 every widget must call this when non-value serial has been updated
-     * */
-    bumpSerial(): void
+//     // BUMP ----------------------------------------------------
+//     /**
+//      * Notify form that the value has been udpated
+//      * (and bump serial.lastUpdatedAt to Date.now())
+//      * 👉 Every widget must call this when value has been updated
+//      * */
+//     bumpValue(): void
 
-    readonly hasErrors: boolean
-    readonly customErrors: Problem[]
-    readonly errors: Problem[]
-}
+//     /** feed value if need to */
+//     feedValue(): void
+
+//     /**
+//      * Notify form that a non-value serial has been udpated
+//      * 👉 every widget must call this when non-value serial has been updated
+//      * */
+//     bumpSerial(): void
+
+//     readonly hasErrors: boolean
+//     readonly customErrors: Problem[]
+//     readonly errors: Problem[]
+// }
 
 /** 🔶 2024-03-13 rvion: TODO: remove that function; use ['$Value'] instead */
 export type GetWidgetResult<Widget> = Widget extends { $Value: infer Value } ? Value : never

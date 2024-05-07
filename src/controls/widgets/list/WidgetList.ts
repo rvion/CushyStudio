@@ -1,12 +1,13 @@
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
-import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 
-import { makeAutoObservable, observable, reaction } from 'mobx'
+import { observable, reaction } from 'mobx'
 import { nanoid } from 'nanoid'
 
 import { bang } from '../../../utils/misc/bang'
-import { applyWidgetMixinV2 } from '../../Mixins'
+import { makeAutoObservableInheritance } from '../../../utils/mobx-store-inheritance'
+import { BaseWidget } from '../../Mixins'
 import { runWithGlobalForm } from '../../shared/runWithGlobalForm'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetList_BodyUI, WidgetList_LineUI } from './WidgetListUI'
@@ -14,10 +15,10 @@ import { WidgetList_BodyUI, WidgetList_LineUI } from './WidgetListUI'
 /** */
 type AutoBehaviour<T extends ISpec> = {
     /** list of keys that must be present */
-    keys: () => string[] // ['foo', 'bar', 'baz']
+    keys: (self: T['$Widget']) => string[] // ['foo', 'bar', 'baz']
 
     /** for every item given by the list above */
-    getKey: (widget: T['$Widget'], ix: number) => string
+    getKey: (self: T['$Widget'], ix: number) => string
 
     /** once an item if  */
     init: (key: string /* foo */) => T['$Value']
@@ -75,8 +76,8 @@ export type Widget_list_types<T extends ISpec> = {
 }
 
 // STATE
-export interface Widget_list<T extends ISpec> extends Widget_list_types<T>, IWidgetMixins {}
-export class Widget_list<T extends ISpec> implements IWidget<Widget_list_types<T>> {
+export interface Widget_list<T extends ISpec> extends Widget_list_types<T> {}
+export class Widget_list<T extends ISpec> extends BaseWidget implements IWidget<Widget_list_types<T>> {
     DefaultHeaderUI = WidgetList_LineUI
     get DefaultBodyUI() {
         // if (this.items.length === 0) return
@@ -121,7 +122,7 @@ export class Widget_list<T extends ISpec> implements IWidget<Widget_list_types<T
         const auto = this.config.auto
         if (auto == null) return
         reaction(
-            () => auto.keys(),
+            () => auto.keys(this),
             (keys: string[]) => {
                 const currentKeys = this.items.map((i, ix) => auto.getKey(i, ix))
                 const missingKeys = keys.filter((k) => !currentKeys.includes(k))
@@ -150,6 +151,7 @@ export class Widget_list<T extends ISpec> implements IWidget<Widget_list_types<T
         public readonly spec: ISpec<Widget_list<T>>,
         serial?: Widget_list_serial<T>,
     ) {
+        super()
         this.id = serial?.id ?? nanoid()
 
         // serial
@@ -185,8 +187,7 @@ export class Widget_list<T extends ISpec> implements IWidget<Widget_list_types<T
         const missingItems = (this.config.min ?? 0) - this.items.length
         for (let i = 0; i < missingItems; i++) this.addItem({ skipBump: true })
 
-        applyWidgetMixinV2(this)
-        makeAutoObservable(this)
+        makeAutoObservableInheritance(this)
         this.startAutoBehaviour()
     }
 

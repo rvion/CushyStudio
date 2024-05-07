@@ -1,17 +1,18 @@
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
-import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 import type { Problem_Ext } from '../../Validation'
 
-import { makeAutoObservable, runInAction } from 'mobx'
+import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { applyWidgetMixinV2 } from '../../Mixins'
+import { makeAutoObservableInheritance } from '../../../utils/mobx-store-inheritance'
+import { BaseWidget } from '../../Mixins'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetString_HeaderUI, WidgetString_TextareaBodyUI, WidgetString_TextareaHeaderUI } from './WidgetStringUI'
 
-type CssProprtyGlobals = "-moz-initial" | "inherit" | "initial" | "revert" | "unset"
-type CssProprtyResize = CssProprtyGlobals | "block" | "both" | "horizontal" | "inline" | "none" | "vertical"
+type CssProprtyGlobals = '-moz-initial' | 'inherit' | 'initial' | 'revert' | 'unset'
+type CssProprtyResize = CssProprtyGlobals | 'block' | 'both' | 'horizontal' | 'inline' | 'none' | 'vertical'
 
 // CONFIG
 export type Widget_string_config = WidgetConfigFields<
@@ -53,8 +54,8 @@ export type Widget_string_types = {
 }
 
 // STATE
-export interface Widget_string extends Widget_string_types, IWidgetMixins {}
-export class Widget_string implements IWidget<Widget_string_types> {
+export interface Widget_string extends Widget_string_types {}
+export class Widget_string extends BaseWidget implements IWidget<Widget_string_types> {
     get DefaultHeaderUI() {
         if (this.config.textarea) return WidgetString_TextareaHeaderUI
         else return WidgetString_HeaderUI
@@ -88,6 +89,7 @@ export class Widget_string implements IWidget<Widget_string_types> {
         public readonly spec: ISpec<Widget_string>,
         serial?: Widget_string_serial,
     ) {
+        super()
         const config = spec.config
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? {
@@ -96,8 +98,7 @@ export class Widget_string implements IWidget<Widget_string_types> {
             collapsed: config.startCollapsed,
             id: this.id,
         }
-        applyWidgetMixinV2(this)
-        makeAutoObservable(this)
+        makeAutoObservableInheritance(this)
     }
     setValue(val: Widget_string_value) {
         this.value = val

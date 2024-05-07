@@ -1,12 +1,13 @@
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
-import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 import type { Problem_Ext } from '../../Validation'
 
-import { makeObservable, observable } from 'mobx'
+import { observable } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { applyWidgetMixinV2 } from '../../Mixins'
+import { makeAutoObservableInheritance } from '../../../utils/mobx-store-inheritance'
+import { BaseWidget } from '../../Mixins'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetSpacerUI } from './WidgetSpacerUI'
 
@@ -37,8 +38,8 @@ export type Widget_spacer_types = {
 }
 
 // STATE
-export interface Widget_spacer extends Widget_spacer_types, IWidgetMixins {}
-export class Widget_spacer implements IWidget<Widget_spacer_types> {
+export interface Widget_spacer extends Widget_spacer_types {}
+export class Widget_spacer extends BaseWidget implements IWidget<Widget_spacer_types> {
     DefaultHeaderUI = WidgetSpacerUI
     DefaultBodyUI = undefined
     get baseErrors(): Problem_Ext {
@@ -56,6 +57,7 @@ export class Widget_spacer implements IWidget<Widget_spacer_types> {
         public readonly spec: ISpec<Widget_spacer>,
         serial?: Widget_spacer_serial,
     ) {
+        super()
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? {
             id: this.id,
@@ -63,8 +65,7 @@ export class Widget_spacer implements IWidget<Widget_spacer_types> {
             collapsed: false,
         }
 
-        applyWidgetMixinV2(this)
-        makeObservable(this, { serial: observable })
+        makeAutoObservableInheritance(this, { serial: observable })
     }
 
     get value() {

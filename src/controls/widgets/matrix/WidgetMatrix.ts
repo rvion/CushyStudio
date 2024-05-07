@@ -1,13 +1,14 @@
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
-import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 import type { Problem_Ext } from '../../Validation'
 
-import { makeAutoObservable, runInAction } from 'mobx'
+import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
 import { bang } from '../../../utils/misc/bang'
-import { applyWidgetMixinV2 } from '../../Mixins'
+import { makeAutoObservableInheritance } from '../../../utils/mobx-store-inheritance'
+import { BaseWidget } from '../../Mixins'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetMatrixUI } from './WidgetMatrixUI'
 
@@ -45,8 +46,8 @@ export type Widget_matrix_types = {
 }
 
 // STATE
-export interface Widget_matrix extends Widget_matrix_types, IWidgetMixins {}
-export class Widget_matrix implements IWidget<Widget_matrix_types> {
+export interface Widget_matrix extends Widget_matrix_types {}
+export class Widget_matrix extends BaseWidget implements IWidget<Widget_matrix_types> {
     DefaultHeaderUI = WidgetMatrixUI
     DefaultBodyUI = undefined
     readonly id: string
@@ -69,6 +70,7 @@ export class Widget_matrix implements IWidget<Widget_matrix_types> {
         public readonly spec: ISpec<Widget_matrix>,
         serial?: Widget_matrix_serial,
     ) {
+        super()
         const config = spec.config
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? { type: 'matrix', collapsed: config.startCollapsed, id: this.id, active: true, selected: [] }
@@ -91,8 +93,7 @@ export class Widget_matrix implements IWidget<Widget_matrix_types> {
         this.rows = config.rows
         this.cols = config.cols
         // make observable
-        applyWidgetMixinV2(this)
-        makeAutoObservable(this)
+        makeAutoObservableInheritance(this)
     }
 
     setValue(val: Widget_matrix_value) {
@@ -123,7 +124,7 @@ export class Widget_matrix implements IWidget<Widget_matrix_types> {
     private sep = ' &&& '
     private store = new Map<string, Widget_matrix_cell>()
     private key = (row: string, col: string) => `${row}${this.sep}${col}`
-    get allCells() { return Array.from(this.store.values()); } // prettier-ignore
+    get allCells() { return Array.from(this.store.values()) } // prettier-ignore
 
     UPDATE = () => {
         this.serial.selected = this.RESULT

@@ -1,12 +1,13 @@
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
-import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 import type { Problem_Ext } from '../../Validation'
 
-import { computed, makeObservable, observable } from 'mobx'
+import { computed, observable } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { applyWidgetMixinV2 } from '../../Mixins'
+import { makeAutoObservableInheritance } from '../../../utils/mobx-store-inheritance'
+import { BaseWidget } from '../../Mixins'
 import { registerWidgetClass } from '../WidgetUI.DI'
 
 // CONFIG
@@ -48,8 +49,8 @@ export type Widget_optional_types<T extends ISpec = ISpec> = {
 }
 
 // STATE
-export interface Widget_optional<T extends ISpec = ISpec> extends Widget_optional_types<T>, IWidgetMixins {}
-export class Widget_optional<T extends ISpec = ISpec> implements IWidget<Widget_optional_types<T>> {
+export interface Widget_optional<T extends ISpec = ISpec> extends Widget_optional_types<T> {}
+export class Widget_optional<T extends ISpec = ISpec> extends BaseWidget implements IWidget<Widget_optional_types<T>> {
     DefaultHeaderUI = undefined
     DefaultBodyUI = undefined
     readonly id: string
@@ -99,6 +100,7 @@ export class Widget_optional<T extends ISpec = ISpec> implements IWidget<Widget_
         public readonly spec: ISpec<Widget_optional<T>>,
         serial?: Widget_optional_serial<T>,
     ) {
+        super()
         const config = spec.config
         this.id = serial?.id ?? nanoid()
         const defaultActive = config.startActive
@@ -115,8 +117,7 @@ export class Widget_optional<T extends ISpec = ISpec> implements IWidget<Widget_
 
         // ⏸️ if (this.INIT_MODE === 'EAGER') this._ensureChildIsHydrated()
         this._ensureChildIsHydrated()
-        applyWidgetMixinV2(this)
-        makeObservable(this, { serial: observable, value: computed })
+        makeAutoObservableInheritance(this, { serial: observable, value: computed })
     }
 
     setValue(val: Widget_optional_value<T>) {

@@ -1,12 +1,12 @@
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
-import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 import type { Problem_Ext } from '../../Validation'
 
-import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { applyWidgetMixinV2 } from '../../Mixins'
+import { makeAutoObservableInheritance } from '../../../utils/mobx-store-inheritance'
+import { BaseWidget } from '../../Mixins'
 import { registerWidgetClass } from '../WidgetUI.DI'
 
 // CONFIG
@@ -42,8 +42,8 @@ export type Widget_shared_types<T extends ISpec = ISpec> = {
 }
 
 // STATE
-export interface Widget_shared<T extends ISpec = ISpec> extends Widget_shared_types<T>, IWidgetMixins {}
-export class Widget_shared<T extends ISpec = ISpec> implements IWidget<Widget_shared_types<T>> {
+export interface Widget_shared<T extends ISpec = ISpec> extends Widget_shared_types<T> {}
+export class Widget_shared<T extends ISpec = ISpec> extends BaseWidget implements IWidget<Widget_shared_types<T>> {
     readonly id: string
     get config():Widget_shared_config<T> { return this.spec.config } // prettier-ignore
     readonly type: 'shared' = 'shared'
@@ -76,11 +76,11 @@ export class Widget_shared<T extends ISpec = ISpec> implements IWidget<Widget_sh
         public readonly spec: ISpec<Widget_shared<T>>,
         serial?: Widget_shared_serial,
     ) {
+        super()
         const config = spec.config
         this.id = serial?.id ?? nanoid()
         this.serial = serial ?? { id: this.id, type: 'shared', collapsed: config.startCollapsed }
-        applyWidgetMixinV2(this)
-        makeAutoObservable(this)
+        makeAutoObservableInheritance(this)
     }
     setValue(val: Widget_shared_value<T>) {
         this.value = val
