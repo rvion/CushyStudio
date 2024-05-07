@@ -4,7 +4,6 @@ import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } f
 
 import { makeAutoObservable, runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
-import { createElement } from 'react'
 
 import { applyWidgetMixinV2 } from '../../Mixins'
 import { registerWidgetClass } from '../WidgetUI.DI'
@@ -17,6 +16,7 @@ export type Widget_selectOne_config<T extends BaseSelectEntry> = WidgetConfigFie
     {
         default?: T
         choices: T[] | ((form: Form, self: Widget_selectOne<T>) => T[])
+        getLabelUI?: (t: T) => React.ReactNode
         appearance?: 'select' | 'tab'
     },
     Widget_selectOne_types<T>
