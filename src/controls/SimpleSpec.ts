@@ -1,5 +1,6 @@
 import type { ISpec } from './ISpec'
 import type { IWidget } from './IWidget'
+import type { BoundKontext, Kontext } from './Kontext'
 import type { Widget_list, Widget_list_config } from './widgets/list/WidgetList'
 import type { Widget_optional } from './widgets/optional/WidgetOptional'
 import type { Widget_shared } from './widgets/shared/WidgetShared'
@@ -17,6 +18,19 @@ export class SimpleSpec<W extends IWidget = IWidget> implements ISpec<W> {
 
     LabelExtraUI = (p: {}) => null
 
+    // Kontexts -----------------------------------------------------
+    _withKontext = new Set<Kontext<any>>()
+    withKontext = (ck: Kontext<any>): this => {
+        this._withKontext.add(ck)
+        return this
+    }
+    _feedKontext: Maybe<BoundKontext<W['$Widget'], any>> = null
+    feedKontext = <T>(_feedKontext: BoundKontext<W['$Widget'], T>): this => {
+        this._feedKontext = _feedKontext
+        return this
+    }
+
+    // -----------------------------------------------------
     Make = <X extends IWidget>(type: X['type'], config: X['$Config']) => new SimpleSpec(type, config)
 
     constructor(
