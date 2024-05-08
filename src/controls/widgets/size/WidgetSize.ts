@@ -1,13 +1,15 @@
 // 🔴 WIP BROKEN TODO: bump
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
-import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { Problem_Ext } from '../../Validation'
 import type { AspectRatio, CushySize, CushySizeByRatio, SDModelType } from './WidgetSizeTypes'
 
-import { makeAutoObservable, runInAction } from 'mobx'
+import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { applyWidgetMixinV2 } from '../../Mixins'
+import { makeAutoObservableInheritance } from '../../../utils/mobx-store-inheritance'
+import { BaseWidget } from '../../Mixins'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { ResolutionState } from './ResolutionState'
 import { WigetSize_BlockUI, WigetSize_LineUI } from './WidgetSizeUI'
@@ -44,10 +46,13 @@ export type Widget_size_types = {
 }
 
 // STATE
-export interface Widget_size extends Widget_size_types, IWidgetMixins {} // prettier-ignore
-export class Widget_size implements IWidget<Widget_size_types> {
+export interface Widget_size extends Widget_size_types {}
+export class Widget_size extends BaseWidget implements IWidget<Widget_size_types> {
     DefaultHeaderUI = WigetSize_LineUI
     DefaultBodyUI = WigetSize_BlockUI
+    get baseErrors(): Problem_Ext {
+        return null
+    }
 
     get width() { return this.serial.width } // prettier-ignore
     get height() { return this.serial.height } // prettier-ignore
@@ -67,7 +72,6 @@ export class Widget_size implements IWidget<Widget_size_types> {
     }
     get sizeHelper(): ResolutionState {
         // should only be executed once
-        const self = this
         const state = new ResolutionState(this)
         Object.defineProperty(this, 'sizeHelper', { value: state })
         return state
@@ -90,6 +94,7 @@ export class Widget_size implements IWidget<Widget_size_types> {
         public readonly spec: ISpec<Widget_size>,
         serial?: Widget_size_serial,
     ) {
+        super()
         const config = spec.config
         this.id = serial?.id ?? nanoid()
         if (serial) {
@@ -108,8 +113,27 @@ export class Widget_size implements IWidget<Widget_size_types> {
                 width,
             }
         }
-        applyWidgetMixinV2(this)
-        makeAutoObservable(this, { sizeHelper: false })
+
+        makeAutoObservableInheritance(this, { sizeHelper: false })
+    }
+
+    setValue(val: Widget_size_value) {
+        this.value = val
+    }
+
+    set value(val: Widget_size_value) {
+        // ugly code;
+        if (
+            val.width === this.serial.width && //
+            val.height === this.serial.height &&
+            val.aspectRatio === this.serial.aspectRatio
+        ) {
+            return
+        }
+        runInAction(() => {
+            Object.assign(this.serial, val)
+            this.bumpValue()
+        })
     }
     get value(): Widget_size_value {
         return this.serial

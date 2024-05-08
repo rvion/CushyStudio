@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import { RevealExample_InfiniteMenuUI, RevealExample_NestedMenuUI } from '../rsuite/reveal/RevealExamples'
 import { RevealUI } from '../rsuite/reveal/RevealUI'
 import { activityManger } from './Activity'
-import { menu_imageActions } from './examples'
+import { menu_imageActions } from './commands/cmd_copyImage'
 
 export const useDemoActivity = () =>
     useEffect(() => {
@@ -15,7 +15,7 @@ export const DEMO_ACTIVITY = {
     UI: () => {
         const img = cushy.db.media_image.lastOrCrash()
         return (
-            <div tw='flex items-center justify-center h-full bg-neutral' onClick={(ev) => ev.stopPropagation()}>
+            <div tw='flex items-center justify-center h-full bg-base-300' onClick={(ev) => ev.stopPropagation()}>
                 <div tw='grid grid-cols-4 grid-visible'>
                     {/* A */}
                     <div>

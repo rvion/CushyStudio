@@ -1,6 +1,6 @@
 import { useSt } from '../state/stateContext'
-import { asGithubUserName, GithubUser, GithubUserName } from './GithubUser'
 import { assets } from '../utils/assets/assets'
+import { asGithubUserName, GithubUser, GithubUserName } from './GithubUser'
 
 export function GithubUserUI(p: {
     //

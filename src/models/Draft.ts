@@ -216,7 +216,11 @@ export class DraftL {
         return step
     }
 
-    form: Maybe<Form<any, FormBuilder>> = null
+    get form() {
+        this.AWAKE()
+        return this._form
+    }
+    _form: Maybe<Form<any, FormBuilder>> = null
 
     get file(): LibraryFile {
         return this.st.library.getFile(this.appRef.item.relPath)
@@ -237,7 +241,7 @@ export class DraftL {
                 // | we're no longer using reactions
                 // if (this.form) this.form.cleanup?.()
 
-                this.form = CushyFormManager.form(action.ui, {
+                this._form = CushyFormManager.fields(action.ui, {
                     name: this.name,
                     initialSerial: () => this.data.formSerial,
                     onSerialChange: (form) => {
@@ -252,31 +256,13 @@ export class DraftL {
             { fireImmediately: true },
         )
 
-        // 🔴 dangerous
-        // const _2 = autorun(
-        //     () => {
-        //         const rootWidget = this.form.value
-        //         if (rootWidget == null) return null
-        //         // const count = formValue.form._cache.count // manual mobx invalidation
-        //         const _ = rootWidget.serialHash
-        //         runInAction(() => {
-        //             console.log(`[🦊] form: updating`)
-        //             this.update({ formSerial: rootWidget.serial })
-        //             this.isDirty = true
-        //             this.checkIfShouldRestart()
-        //         })
-        //     },
-        //     { delay: 100 },
-        // )
-
         this.isInitialized = true
-        // this.isInitializing = false
         return () => {
             _1()
             // _2()
             this.isInitialized = false
             // this.form?.cleanup?.() // 🔶
-            this.form = null //  __FAIL('not loaded yet')
+            this._form = null //  __FAIL('not loaded yet')
         }
     }
 }

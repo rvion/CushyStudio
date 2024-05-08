@@ -1,6 +1,6 @@
 export type DomId = string
-export enum RET {
+export enum Trigger {
     UNMATCHED = 'UNMATCHED',
-    DONE = 'DONE',
+    Success = 'SUCCESS',
     FAILED = 'DONE',
 }

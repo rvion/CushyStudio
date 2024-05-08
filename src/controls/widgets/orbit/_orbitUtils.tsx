@@ -32,7 +32,8 @@ export const mkEnglishSummary = (
         else if (inRange(azimuth, 135, 180, margin)) words.push('back')
         else if (inRange(azimuth, -45, 45, margin)) words.push('front')
         else {
-            if (inRange(azimuth, -135, -45, margin)) words.push('righ-side') // 'right')
+            if (inRange(azimuth, -135, -45, margin))
+                words.push('righ-side') // 'right')
             else if (inRange(azimuth, 45, 135, margin)) words.push('left-side') // left')
         }
     }

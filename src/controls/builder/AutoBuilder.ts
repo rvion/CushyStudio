@@ -12,14 +12,14 @@ type AutoWidget<T> = T extends { kind: any; type: infer X }
     ? T['kind'] extends 'number'
         ? Spec<Widget_number>
         : T['kind'] extends 'string'
-        ? Spec<Widget_string>
-        : T['kind'] extends 'boolean'
-        ? Spec<Widget_bool>
-        : T['kind'] extends 'prompt'
-        ? Spec<Widget_prompt>
-        : T['kind'] extends 'enum'
-        ? Spec<Widget_enum<X>>
-        : any
+          ? Spec<Widget_string>
+          : T['kind'] extends 'boolean'
+            ? Spec<Widget_bool>
+            : T['kind'] extends 'prompt'
+              ? Spec<Widget_prompt>
+              : T['kind'] extends 'enum'
+                ? Spec<Widget_enum<X>>
+                : any
     : any
 
 export type IAutoBuilder = {

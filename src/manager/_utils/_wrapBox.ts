@@ -16,3 +16,8 @@ export const wrapBox = (
         `\n╚${'═'.repeat(maxLen + 2)}╝`
     return box
 }
+
+export const withGutter = (code: string) => {
+    const lines = code.split('\n')
+    return lines.map((line, i) => `${(i + 1).toString().padStart(lines.length.toString().length)} | ${line}`).join('\n')
+}

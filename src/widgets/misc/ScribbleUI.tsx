@@ -2,9 +2,9 @@
 import debounce from 'lodash.debounce'
 import React, { CSSProperties, useEffect, useMemo, useRef, useState } from 'react'
 
-import { FieldAndLabelUI } from './FieldAndLabelUI'
 import { Button, Input, Slider } from '../../rsuite/shims'
 import { parseFloatNoRoundingErr } from '../../utils/misc/parseFloatNoRoundingErr'
+import { FieldAndLabelUI } from './FieldAndLabelUI'
 
 export const ScribbleCanvas = (p: {
     fillStyle: string

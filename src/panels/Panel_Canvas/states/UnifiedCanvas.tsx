@@ -170,7 +170,10 @@ export class UnifiedCanvas {
     /** used as container id for potential Portals to display html overlays */
     uid = nanoid()
 
-    constructor(public st: STATE, baseImage: MediaImageL) {
+    constructor(
+        public st: STATE,
+        baseImage: MediaImageL,
+    ) {
         // core layers
         this.stage = new Konva.Stage({ container: this.containerDiv, width: 512, height: 512 })
         this.gridLayer = new Konva.Layer({ imageSmoothingEnabled: false })

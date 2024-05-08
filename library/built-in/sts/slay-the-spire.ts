@@ -163,7 +163,6 @@ app({
                 return finalCard
             })
         }
-
         await workflow.sendPromptAndWaitUntilDone()
         const cards = await Promise.all(AFTERGENERATION.map((x) => x()))
         const cardIds = cards.map((image) => image.id)

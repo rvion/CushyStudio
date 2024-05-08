@@ -46,8 +46,8 @@ export const CivitaiResultCardUI = observer(function CivitaiResultCardUI_(p: {
                                 item.type === 'Checkpoint'
                                     ? 'bg-yellow-600'
                                     : item.type === 'LORA'
-                                    ? 'bg-blue-500'
-                                    : 'bg-green-400',
+                                      ? 'bg-blue-500'
+                                      : 'bg-green-400',
                             ]}
                         >
                             {item.type}

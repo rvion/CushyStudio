@@ -8,7 +8,7 @@ import { PanelHeaderUI } from '../PanelHeader'
 import { GalleryImageGridUI } from './GalleryImageGridUI'
 import { GallerySearchControlsUI } from './GallerySearchControlsUI'
 
-export const Panel_Gallery = observer(function VerticalGalleryUI_(p: {}) {
+export const Panel_Gallery = observer(function VerticalGalleryUI_(p: { uid?: number }) {
     const st = useSt()
 
     return (

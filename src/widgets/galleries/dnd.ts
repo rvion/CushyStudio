@@ -5,8 +5,8 @@ import { CSSProperties } from 'react'
 import { useDrag, useDrop } from 'react-dnd'
 import { NativeTypes } from 'react-dnd-html5-backend'
 
-import { ItemTypes } from './DnDItemTypes'
 import { createMediaImage_fromFileObject } from '../../models/createMediaImage_fromWebFile'
+import { ItemTypes } from './DnDItemTypes'
 
 export const useImageDrag = (image: MediaImageL) =>
     useDrag(

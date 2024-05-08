@@ -20,8 +20,8 @@ app({
                         sampler_output_abc_asdf: form.selectOne({
                             // showID: true,
                             // if choices is a function, the form root is injected as first parameter
-                            choices: (form: Form<Spec<Widget_group<any>>>) => {
-                                const formRoot: Widget_group<any> = form.root
+                            choices: (self) => {
+                                const formRoot: Widget_group<any> = self.form.root
                                 // 🔶 null when the form is not yet fully initialized
                                 if (formRoot.fields.samplerUI == null) return []
 

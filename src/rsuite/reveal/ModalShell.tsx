@@ -5,6 +5,7 @@ export const ModalShellUI = observer(function ModalShellUI_(p: {
     title?: React.ReactNode
     children?: React.ReactNode
     footer?: React.ReactNode
+    close: () => void
 }) {
     return (
         <div
@@ -17,7 +18,14 @@ export const ModalShellUI = observer(function ModalShellUI_(p: {
             <div tw='flex'>
                 <div tw='text-xl'>{p.title}</div>
                 <div tw='flex-1'></div>
-                <div tw='btn btn-sm btn-square'>
+                <div
+                    tw='btn btn-sm btn-square'
+                    onClick={(ev) => {
+                        ev.stopPropagation()
+                        ev.preventDefault()
+                        p.close()
+                    }}
+                >
                     <span className='material-symbols-outlined'>close</span>
                 </div>
             </div>

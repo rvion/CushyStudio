@@ -54,9 +54,7 @@ export const StepOutputsBodyV1UI = observer(function StepBodyUI_(p: { step: Step
     return (
         <div className='flex flex-wrap bg-base-300'>
             {step && <StepOutputsHeaderV2UI step={step} />}
-            {step.outputs?.map((output, ix) => (
-                <OutputPreviewUI key={ix} step={step} output={output} />
-            ))}
+            {step.outputs?.map((output, ix) => <OutputPreviewUI key={ix} step={step} output={output} />)}
         </div>
     )
 })

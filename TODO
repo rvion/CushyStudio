@@ -1,6 +1,10 @@
+☐ bundle
+    ☐ improve chain leading to type import to easilly remove wrong links
+    ☐ make sure all TS and JS are all present
+    ☐ move all stuff in one unique folder
 
 Loco:
-    ☐ remove `cushy.` usage in all forms
+    ✔ remove `cushy.` usage in all forms @done(24-05-07 14:31)
     ☐ tree widget (no more st) usage
     ☐ default values
     icons:
@@ -29,9 +33,9 @@ UC take 2:
 -------------
 
 
-☐ <Form theme={...} />
-☐ better bundling ?
-☐ remove all config options
+✔ <Form theme={...} /> @done(24-05-07 14:31)
+✔ better bundling ? @done(24-05-07 14:31)
+✔ remove all config options @done(24-05-07 14:31)
 
 ✔ make all files accesible @done(24-03-26 15:38)
 ✔ output custom @done(24-03-26 15:38)
@@ -55,7 +59,7 @@ UC take 2:
 ✔ fix codegen with new template @done(24-03-05 23:30)
 ✔ recent Apps @done(24-03-26 15:38)
 ✔ recentDrafts @done(24-03-20 15:22)
-☐ proper Tab
+✔ proper Tab @done(24-05-07 14:31)
 ✔ lastRunAt @done(24-03-26 15:39)
 ☐ https://github.com/WiseLibs/better-sqlite3/issues/262
 ✔ lastUpdateAt on forms. @done(24-03-31 19:33)

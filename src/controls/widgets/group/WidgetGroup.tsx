@@ -1,12 +1,14 @@
 import type { Form } from '../../Form'
 import type { ISpec, SchemaDict } from '../../ISpec'
-import type { GetWidgetResult, IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { GetWidgetResult, IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { Problem_Ext } from '../../Validation'
 
-import { makeAutoObservable } from 'mobx'
+import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
 import { bang } from '../../../utils/misc/bang'
-import { applyWidgetMixinV2 } from '../../Mixins'
+import { makeAutoObservableInheritance } from '../../../utils/mobx-store-inheritance'
+import { BaseWidget } from '../../Mixins'
 import { getActualWidgetToDisplay } from '../../shared/getActualWidgetToDisplay'
 import { getIfWidgetIsCollapsible } from '../../shared/getIfWidgetIsCollapsible'
 import { runWithGlobalForm } from '../../shared/runWithGlobalForm'
@@ -44,12 +46,16 @@ export type Widget_group_types<T extends SchemaDict> = {
 }
 
 // STATE
-export interface Widget_group<T extends SchemaDict> extends Widget_group_types<T>, IWidgetMixins {}
-export class Widget_group<T extends SchemaDict> implements IWidget<Widget_group_types<T>> {
+export interface Widget_group<T extends SchemaDict> extends Widget_group_types<T> {}
+export class Widget_group<T extends SchemaDict> extends BaseWidget implements IWidget<Widget_group_types<T>> {
     DefaultHeaderUI = WidgetGroup_LineUI
     get DefaultBodyUI() {
         if (Object.keys(this.fields).length === 0) return
         return WidgetGroup_BlockUI
+    }
+
+    get baseErrors(): Problem_Ext {
+        return null
     }
 
     get summary(): string {
@@ -105,6 +111,8 @@ export class Widget_group<T extends SchemaDict> implements IWidget<Widget_group_
         /** used to register self as the root, before we start instanciating anything */
         preHydrate?: (self: Widget_group<any>) => void,
     ) {
+        super()
+
         // persist id
         this.id = serial?.id ?? nanoid()
 
@@ -157,16 +165,46 @@ export class Widget_group<T extends SchemaDict> implements IWidget<Widget_group_
         // we keep the old values in case those are just temporarilly removed, or in case
         // those will be lazily added later though global usage
 
-        applyWidgetMixinV2(this)
-        makeAutoObservable(this, { value: false })
+        makeAutoObservableInheritance(this, { value: false })
     }
 
-    value: { [k in keyof T]: GetWidgetResult<T[k]> } = new Proxy({} as any, {
+    setValue(val: Widget_group_value<T>) {
+        this.value = val
+    }
+
+    set value(val: Widget_group_value<T>) {
+        runInAction(() => {
+            for (const key in val) {
+                // console.log(`[🤠] (key=A) B.setValue(C)`, key, this.fields[key], val[key])
+                this.fields[key].setValue(val[key])
+            }
+            this.bumpValue()
+        })
+    }
+    get value() {
+        return this.valueLazy
+    }
+    private valueLazy: { [k in keyof T]: GetWidgetResult<T[k]> } = new Proxy({} as any, {
+        ownKeys: (target) => {
+            return Object.keys(this.fields)
+        },
         get: (target, prop) => {
             if (typeof prop !== 'string') return
             const subWidget: IWidget = this.fields[prop]!
             if (subWidget == null) return
             return subWidget.value
+        },
+        getOwnPropertyDescriptor: (target, prop) => {
+            if (typeof prop !== 'string') return
+            const subWidget: IWidget = this.fields[prop]!
+            if (subWidget == null) return
+            return {
+                enumerable: true,
+                configurable: true,
+                get() {
+                    return subWidget.value
+                },
+            }
         },
     })
 
@@ -175,3 +213,37 @@ export class Widget_group<T extends SchemaDict> implements IWidget<Widget_group_
 
 // DI
 registerWidgetClass('group', Widget_group)
+
+/* --------------------------------------------------------------------------------
+// to make a proxy look the way you want:
+// 1. Define ownKeys handler: This will define which keys the proxy pretends to own, similar to what you have already.
+// 2. Define get handler: This will return the value for each property, which you are currently setting to return the property name.
+// 3. Define getOwnPropertyDescriptor handler: This is necessary because when you stringify an object or otherwise try to serialize or iterate over its properties, JavaScript checks if the properties actually exist and are enumerable. By providing a descriptor with enumerable: true, you enable this behavior.
+
+// tip: practical way to dive into js & proxies inner workings: `bun -w <path.ts>`
+
+
+const x = new Proxy(
+    {},
+    {
+        ownKeys: (target) => {
+            return ['a', 'b']
+        },
+        get: (target, prop) => {
+            if (typeof prop !== 'string') return
+            return prop
+        },
+        getOwnPropertyDescriptor: (target, prop) => {
+            return {
+                enumerable: true,
+                configurable: true,
+                value: prop,
+            }
+        },
+
+    },
+)
+
+console.log(`[🤠] `, JSON.stringify(x))
+
+-------------------------------------------------------------------------------- */

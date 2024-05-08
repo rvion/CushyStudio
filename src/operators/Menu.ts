@@ -1,13 +1,15 @@
 import type { IWidget } from '../controls/IWidget'
+import type { NO_PROPS } from './NO_PROPS'
+import type { Trigger } from './RET'
 
 import { nanoid } from 'nanoid'
 import { createElement, type FC, useMemo } from 'react'
 
-import { BoundMenuSym } from './_isBoundMenu'
 import { Activity, activityManger } from './Activity'
-import { BoundCommand } from './Command'
-import { MenuUI } from './MenuUI'
-import { RET } from './RET'
+import { type BoundCommand, Command } from './Command'
+import { BoundMenuSym } from './introspect/_isBoundMenu'
+import { SimpleMenuEntry } from './menuSystem/SimpleMenuEntry'
+import { MenuRootUI, MenuUI } from './MenuUI'
 
 // ------------------------------------------------------------------------------------------
 // COMMAND MANAGER Centralize every single command
@@ -21,7 +23,19 @@ const menuManager = new MenuManager()
 // ------------------------------------------------------------------------------------------
 // ACTIVITY STACK
 export type MenuEntryWithKey = { entry: MenuEntry; char?: string; charIx?: number }
-export type MenuEntry = IWidget | FC<{}> | BoundCommand | BoundMenu
+
+// prettier-ignore
+export type MenuEntry =
+    /** inline subform  */
+    | IWidget
+    /** custom component  */
+    | FC<{}>
+    /** a command */
+    | Command /* command may be passed unbound: in that case, they retrieve their context from their provider */
+    | BoundCommand
+    | BoundMenu
+    /** simple MenuEntry */
+    | SimpleMenuEntry
 
 /** supplied menu definition */
 export type MenuDef<Props> = {
@@ -43,16 +57,36 @@ export class Menu<Props> {
         this.id = def.id ?? nanoid()
         menuManager.registerMenu(this)
     }
-    UI = (p: { props: Props }): JSX.Element => {
-        const instance = useMemo(() => new MenuInstance(this, p.props), [])
-        return createElement(MenuUI, { menu: instance })
-    }
+    UI = (p: { props: Props }): JSX.Element => createElement(MenuUI, { menu: useMemo(() => new MenuInstance(this, p.props), []) })
+    DropDownUI = (p: { props: Props }): JSX.Element => createElement(MenuRootUI, { menu: useMemo(() => new MenuInstance(this, p.props), []) }) // prettier-ignore
+
     /** bind a menu to give props */
     bind = (props: Props, ui?: BoundMenuOpts): BoundMenu => new BoundMenu(this, props, ui)
 
     /** push the menu to current activity */
-    open(props: Props): RET | Promise<RET> {
+    open(props: Props): Trigger | Promise<Trigger> {
         const instance = new MenuInstance(this, props)
+        return activityManger.push(instance)
+    }
+}
+
+export class MenuWithoutProps {
+    id: MenuID
+    get title() { return this.def.title } // prettier-ignore
+    constructor(public def: MenuDef<NO_PROPS>) {
+        this.id = def.id ?? nanoid()
+        menuManager.registerMenu(this)
+    }
+    // 🔴
+    UI = (): JSX.Element => createElement(MenuRootUI, { menu: useMemo(() => new MenuInstance(this, {}), []) })
+    DropDownUI = (): JSX.Element => createElement(MenuRootUI, { menu: useMemo(() => new MenuInstance(this, {}), []) })
+
+    /** bind a menu to give props */
+    bind = (ui?: BoundMenuOpts): BoundMenu => new BoundMenu(this, {}, ui)
+
+    /** push the menu to current activity */
+    open(): Trigger | Promise<Trigger> {
+        const instance = new MenuInstance(this, {})
         return activityManger.push(instance)
     }
 }
@@ -61,7 +95,7 @@ export class MenuInstance<Props> implements Activity {
     onStart = (): void => {}
 
     UI = () => createElement(MenuUI, { menu: this })
-    onEvent = (event: Event): RET | null => {
+    onEvent = (event: Event): Trigger | null => {
         event.stopImmediatePropagation()
         event.stopPropagation()
         event.preventDefault()
@@ -92,8 +126,12 @@ export class MenuInstance<Props> implements Activity {
         const allocatedKeys = new Set<string>([...this.keysTaken])
         const out: MenuEntryWithKey[] = []
         for (const entry of this.entries) {
-            if (entry instanceof BoundCommand) {
-                const res = this.findSuitableKeys(entry.command.label, allocatedKeys)
+            if (entry instanceof SimpleMenuEntry) {
+                const res = this.findSuitableKeys(entry.label, allocatedKeys)
+                if (res == null) continue
+                out.push({ entry, char: res.char, charIx: res.pos })
+            } else if (entry instanceof Command) {
+                const res = this.findSuitableKeys(entry.label, allocatedKeys)
                 if (res == null) continue
                 out.push({ entry, char: res.char, charIx: res.pos })
             } else if (entry instanceof BoundMenu) {
@@ -124,6 +162,7 @@ export class MenuInstance<Props> implements Activity {
     }
 }
 export const menu = <P>(def: MenuDef<P>): Menu<P> => new Menu(def)
+export const menuWithoutProps = (def: MenuDef<NO_PROPS>): MenuWithoutProps => new MenuWithoutProps(def)
 
 // ------------------------------------------------------------------------------------------
 // A bound menu; ready to be opened without further params

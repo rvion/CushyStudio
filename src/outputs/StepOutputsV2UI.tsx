@@ -2,20 +2,18 @@ import type { StepL } from '../models/Step'
 
 import { observer } from 'mobx-react-lite'
 
-import { _formatPreviewDate } from '../utils/formatters/_formatPreviewDate'
-import { OutputPreviewUI } from './OutputUI'
 import { statusUI } from '../back/statusUI'
 import { AppIllustrationUI } from '../cards/fancycard/AppIllustrationUI'
 import { useSt } from '../state/stateContext'
+import { _formatPreviewDate } from '../utils/formatters/_formatPreviewDate'
+import { OutputPreviewUI } from './OutputUI'
 
 export const StepOutputsV2UI = observer(function StepOutputsV2UI_(p: { step: StepL }) {
     const step = p.step
     return (
         <div tw='flex flex-wrap'>
             <StepOutputsHeaderV2UI step={step} />
-            {step.outputs?.map((output, ix) => (
-                <OutputPreviewUI key={ix} step={step} output={output} />
-            ))}
+            {step.outputs?.map((output, ix) => <OutputPreviewUI key={ix} step={step} output={output} />)}
         </div>
     )
 })

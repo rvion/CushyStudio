@@ -22,7 +22,7 @@ export const ui_advancedPrompt = () => {
             form.choice({
                 appearance: 'tab',
                 items: {
-                    prompt: form.promptV2({ default: ' \n' }),
+                    prompt: form.prompt({ default: ' \n' }),
                     characters: form.choice({
                         appearance: 'tab',
                         items: Object.fromEntries(

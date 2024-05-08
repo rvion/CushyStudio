@@ -1,6 +1,8 @@
+import type { CovariantFC } from './CovariantFC'
 import type { Form } from './Form'
 import type { ISpec } from './ISpec'
-import type { FC } from 'react'
+import type { BaseWidget } from './Mixins'
+import type { Problem_Ext } from './Validation'
 
 /**
  * base widget type; default type-level param when we work with unknown widget
@@ -11,7 +13,7 @@ export type $WidgetTypes = {
     $Config: SharedWidgetConfig<any>
     $Serial: SharedWidgetSerial
     $Value: any
-    $Widget: IWidget<any>
+    $Widget: IWidget<$WidgetTypes>
 }
 
 export const isWidget = (x: any): x is IWidget => {
@@ -23,13 +25,15 @@ export const isWidget = (x: any): x is IWidget => {
     )
 }
 
-export interface IWidget<K extends $WidgetTypes = $WidgetTypes> extends IWidgetMixins {
+export interface IWidget<K extends $WidgetTypes = $WidgetTypes> extends BaseWidget {
+    // ---------------------------------------------------------------------------------------------------
     $Type: K['$Type'] /** type only properties; do not use directly; used to make typings good and fast */
     $Config: K['$Config'] /** type only properties; do not use directly; used to make typings good and fast */
     $Serial: K['$Serial'] /** type only properties; do not use directly; used to make typings good and fast */
     $Value: K['$Value'] /** type only properties; do not use directly; used to make typings good and fast */
     $Widget: K['$Widget'] /** type only properties; do not use directly; used to make typings good and fast */
 
+    // ---------------------------------------------------------------------------------------------------
     /** unique ID; each node in the form tree has one; persisted in serial */
     readonly id: string
 
@@ -54,8 +58,18 @@ export interface IWidget<K extends $WidgetTypes = $WidgetTypes> extends IWidgetM
     /** parent widget of this widget, if any */
     readonly parent: IWidget | null
 
+    /** base validation errors specific to this widget; */
+    readonly baseErrors: Problem_Ext
+
+    /** unified api to allow setting serial from value */
+    setValue(val: K['$Value']): void
+
+    // ---------------------------------------------------------------------------------------------------
     /** if specified, override the default algorithm to decide if the widget should have borders */
     border?: boolean
+
+    /** if specified, override the default algorithm to decide if the widget should have borders */
+    collapsible?: boolean
 
     /** if specified, override the default algorithm to decide if the widget should have label aligned */
     alignLabel?: boolean
@@ -64,11 +78,12 @@ export interface IWidget<K extends $WidgetTypes = $WidgetTypes> extends IWidgetM
     /** if specified, override the default algorithm to decide if the widget container should have a background of base-100 */
     background?: boolean
 
+    // ---------------------------------------------------------------------------------------------------
     /** default header UI */
-    readonly DefaultHeaderUI: FC<{ widget: K['$Widget'] }> | undefined
+    readonly DefaultHeaderUI: CovariantFC<{ widget: K['$Widget'] }> | undefined
 
     /** default body UI */
-    readonly DefaultBodyUI: FC<{ widget: K['$Widget'] }> | undefined
+    readonly DefaultBodyUI: CovariantFC<{ widget: K['$Widget'] }> | undefined
 }
 
 export const $WidgetSym = Symbol('Widget')
@@ -79,40 +94,51 @@ export const $WidgetSym = Symbol('Widget')
  * Before the makeAutoObservable(this) call. If you're adding a new
  * base widget, you're expected to do that too.
  */
-export type IWidgetMixins = {
-    $WidgetSym: typeof $WidgetSym
+// export type IWidgetMixins = {
+//     $WidgetSym:  typeof $WidgetSym
 
-    // UI ------------------------------------------------------
-    // value stuff
-    ui(): JSX.Element
-    body(): JSX.Element | undefined
-    header(): JSX.Element | undefined
-    defaultBody(): JSX.Element | undefined
-    defaultHeader(): JSX.Element | undefined
+//     // KONTEXTS
+//     useKontext<T extends any>(ktx:Kontext<T>): Maybe<T>
+//     _boundKontexts: Record<string, any>
 
-    // FOLD ----------------------------------------------------
-    setCollapsed(
-        /** true: collapse; false: expanded */
-        val: boolean | undefined,
-    ): void
+//     // UI ------------------------------------------------------
+//     // value stuff
+//     ui(): JSX.Element
+//     body(): JSX.Element | undefined
+//     header(): JSX.Element | undefined
+//     defaultBody(): JSX.Element | undefined
+//     defaultHeader(): JSX.Element | undefined
 
-    /** toggle widget fold <-> unfolded */
-    toggleCollapsed(): void
+//     // FOLD ----------------------------------------------------
+//     setCollapsed(
+//         /** true: collapse; false: expanded */
+//         val: boolean | undefined,
+//     ): void
 
-    // BUMP ----------------------------------------------------
-    /**
-     * Notify form that the value has been udpated
-     * (and bump serial.lastUpdatedAt to Date.now())
-     * 👉 Every widget must call this when value has been updated
-     * */
-    bumpValue(): void
+//     /** toggle widget fold <-> unfolded */
+//     toggleCollapsed(): void
 
-    /**
-     * Notify form that a non-value serial has been udpated
-     * 👉 every widget must call this when non-value serial has been updated
-     * */
-    bumpSerial(): void
-}
+//     // BUMP ----------------------------------------------------
+//     /**
+//      * Notify form that the value has been udpated
+//      * (and bump serial.lastUpdatedAt to Date.now())
+//      * 👉 Every widget must call this when value has been updated
+//      * */
+//     bumpValue(): void
+
+//     /** feed value if need to */
+//     feedValue(): void
+
+//     /**
+//      * Notify form that a non-value serial has been udpated
+//      * 👉 every widget must call this when non-value serial has been updated
+//      * */
+//     bumpSerial(): void
+
+//     readonly hasErrors: boolean
+//     readonly customErrors: Problem[]
+//     readonly errors: Problem[]
+// }
 
 /** 🔶 2024-03-13 rvion: TODO: remove that function; use ['$Value'] instead */
 export type GetWidgetResult<Widget> = Widget extends { $Value: infer Value } ? Value : never
@@ -143,10 +169,20 @@ export type SharedWidgetConfig<T extends $WidgetTypes> = {
     body?: null | ((p: { widget: T['$Widget'] }) => JSX.Element)
 
     /** will be called when value changed */
-    onValueChange?: (val: any /* 🔴 T['$Value'] */) => void
+    onValueChange?: (val: T['$Value'], self: T['$Widget']) => void
 
-    /** custom type checking */
-    check?: (val: any /* 🔴 T['$Value'] */) => Maybe<string | boolean>
+    presets?: Record<string, (form: T['$Widget']) => void>
+
+    /** custom type checking;
+     * valid:
+     *  - true,
+     *  - [],
+     * invalid:
+     *  - false,
+     *  - ["errMsg", ...]
+     *  - "errMsg"
+     * */
+    check?: (val: T['$Widget']) => Problem_Ext
 
     /**
      * The label to display.

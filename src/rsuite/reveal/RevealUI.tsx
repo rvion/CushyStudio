@@ -6,6 +6,7 @@ import { createPortal } from 'react-dom'
 
 import { ModalShellUI } from './ModalShell'
 import { RevealCtx, useRevealOrNull } from './RevealCtx'
+import { global_RevealStack } from './RevealStack'
 import { RevealState, RevealStateLazy } from './RevealState'
 
 export const RevealUI = observer(function RevealUI_(p: RevealProps) {
@@ -55,7 +56,7 @@ export const RevealUI = observer(function RevealUI_(p: RevealProps) {
                 const toc = uist.triggerOnClick
                 if (!toc) return
                 ev.stopPropagation()
-                ev.preventDefault()
+                // ev.preventDefault()
                 if (uist.visible) uist.leaveAnchor()
                 else uist.enterAnchor()
             }}
@@ -89,8 +90,8 @@ const mkTooltip = (uist: RevealState | null) => {
     const revealedContent = uist.placement.startsWith('#') ? (
         <div
             ref={(e) => {
-                if (e == null) return cushy._popups.filter((p) => p !== uist)
-                cushy._popups.push(uist)
+                if (e == null) return global_RevealStack.filter((p) => p !== uist)
+                global_RevealStack.push(uist)
             }}
             onKeyUp={(ev) => {
                 if (ev.key === 'Escape') {
@@ -113,8 +114,8 @@ const mkTooltip = (uist: RevealState | null) => {
     ) : uist.placement.startsWith('popup') ? (
         <div
             ref={(e) => {
-                if (e == null) return cushy._popups.filter((p) => p !== uist)
-                cushy._popups.push(uist)
+                if (e == null) return global_RevealStack.filter((p) => p !== uist)
+                global_RevealStack.push(uist)
             }}
             onKeyUp={(ev) => {
                 if (ev.key === 'Escape') {
@@ -127,12 +128,19 @@ const mkTooltip = (uist: RevealState | null) => {
                 p.onClick?.(ev)
                 uist.close()
                 ev.stopPropagation()
-                ev.preventDefault()
+                // ev.preventDefault()
             }}
             style={{ zIndex: 99999999, backgroundColor: '#0000003d' }}
             tw='pointer-events-auto absolute w-full h-full flex items-center justify-center z-50'
         >
-            <ModalShellUI title={p.title}>{hiddenContent}</ModalShellUI>
+            <ModalShellUI
+                close={() => {
+                    uist.close()
+                }}
+                title={p.title}
+            >
+                {hiddenContent}
+            </ModalShellUI>
         </div>
     ) : (
         <div
@@ -147,7 +155,7 @@ const mkTooltip = (uist: RevealState | null) => {
             // ⏸️   }}
             onClick={(ev) => {
                 ev.stopPropagation()
-                ev.preventDefault()
+                // ev.preventDefault()
             }}
             onMouseEnter={uist.onMouseEnterTooltip}
             onMouseLeave={uist.onMouseLeaveTooltip}

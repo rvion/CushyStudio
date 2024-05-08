@@ -18,3 +18,12 @@ declare type ImageSaveFormat = {
     prefix?: string
     quality?: number
 }
+
+// --------------
+// because `{}` is something else entirely
+declare type EmptyObject = Record<string, never>
+
+// because react types are more complex by default
+// let's live in a simplified world
+declare type SimpleFC<P> = (props: P) => JSX.Element
+// declare type ProplessFC = () => JSX.Element | null

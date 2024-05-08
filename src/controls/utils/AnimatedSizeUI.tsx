@@ -4,6 +4,7 @@ import { ReactNode } from 'react'
 import { useSizeOf } from './useSizeOf'
 
 export const AnimatedSizeUI = observer(function AnimatedSizeUI_(p: { className?: string; children?: ReactNode }) {
+    // return p.children
     const { ref: refFn, size } = useSizeOf()
 
     return (

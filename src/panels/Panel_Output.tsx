@@ -88,7 +88,7 @@ export const SideOutputListUI = observer(function SideOutputListUI_(p: {}) {
     const step = st.focusedStepL
     const size = st.historySizeStr
     return (
-        <div tw={'flex flex-wrap gap-0.5 p-1 overflow-auto flex-shrink-0 bg-base-300 items-center max-h-[50%]'}>
+        <div tw={'flex flex-wrap gap-0.5 p-1 overflow-auto flex-shrink-0 bg-base-100 items-center max-h-[50%]'}>
             <RevealUI
                 tw='self-start'
                 content={() => (
@@ -126,9 +126,7 @@ export const SideOutputListUI = observer(function SideOutputListUI_(p: {}) {
                 </div>
             )}
             {step && <StepOutputsHeaderV2UI step={step} />}
-            {step?.outputs?.map((output, ix) => (
-                <OutputPreviewUI key={ix} step={step} output={output} />
-            ))}
+            {step?.outputs?.map((output, ix) => <OutputPreviewUI key={ix} step={step} output={output} />)}
         </div>
     )
 })

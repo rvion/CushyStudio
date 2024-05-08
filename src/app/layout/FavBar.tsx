@@ -38,7 +38,8 @@ export const FavBarUI = observer(function FavBarUI_(p: {
     direction?: 'row' | 'column'
 }) {
     const st = useSt()
-    const conf = st.sideBarConf
+    const conf = st.favbar
+    if (!conf.value.visible) return null
     const size = conf.fields.size.value
     const appIcons = conf.fields.appIcons
     const sizeStr = size + 'px'
@@ -86,7 +87,7 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                                         tw='my-0.5 bg-neutral-content rounded-full'
                                         style={{ width: sizeStr, height: '3px' }}
                                     ></div>
-                                    <div
+                                    {/* <div
                                         tw={[
                                             'flex rounded hover:brightness-125',
                                             conf.fields.tree.value && 'bg-primary text-primary-content text-shadow-inv',
@@ -101,8 +102,8 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                                         <span style={{ fontSize: sizeStr }} className='material-symbols-outlined'>
                                             {conf.fields.tree.value ? 'folder_open' : 'folder'}
                                         </span>
-                                    </div>
-                                    <div
+                                    </div> */}
+                                    {/* <div
                                         tw={[
                                             'rounded hover:brightness-125',
                                             conf.fields.apps.value && 'bg-primary text-primary-content text-shadow-inv',
@@ -118,7 +119,7 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                                         <span style={{ fontSize: sizeStr }} className='material-symbols-outlined'>
                                             apps
                                         </span>
-                                    </div>
+                                    </div> */}
                                 </FavBarContainer>
                                 {st.favoriteApps.length > 0 && (
                                     <FavBarContainer icon='apps'>
@@ -211,7 +212,7 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                     </div>
                 </div>
             </div>
-            {conf.fields.tree.value && (
+            {/* {conf.fields.tree.value && (
                 <div tw='relative w-96 flex flex-col overflow-auto'>
                     <div tw='absolute insert-0 w-96'>
                         <TreeUI autofocus shortcut='mod+2' title='File Explorer' tw='overflow-auto' treeView={st.tree2View} />
@@ -224,7 +225,7 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                         <TreeUI autofocus shortcut='mod+1' title='Apps and Drafts' tw='overflow-auto' treeView={st.tree1View} />
                     </div>
                 </div>
-            )}
+            )} */}
         </>
     )
 })

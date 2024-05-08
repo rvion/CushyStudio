@@ -1,13 +1,14 @@
 import type { Form } from '../../Form'
 import type { ISpec, SchemaDict } from '../../ISpec'
-import type { IWidget, IWidgetMixins, SharedWidgetSerial, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { IWidget, SharedWidgetSerial, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { Problem_Ext } from '../../Validation'
 
-import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 
 import { makeLabelFromFieldName } from '../../../utils/misc/makeLabelFromFieldName'
 import { toastError } from '../../../utils/misc/toasts'
-import { applyWidgetMixinV2 } from '../../Mixins'
+import { makeAutoObservableInheritance } from '../../../utils/mobx-store-inheritance'
+import { BaseWidget } from '../../Mixins'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetChoices_BodyUI, WidgetChoices_HeaderUI } from './WidgetChoicesUI'
 
@@ -50,8 +51,8 @@ export type Widget_choices_types<T extends SchemaDict = SchemaDict> = {
 }
 
 // STATE
-export interface Widget_choices<T extends SchemaDict = SchemaDict> extends Widget_choices_types<T>, IWidgetMixins {}
-export class Widget_choices<T extends SchemaDict = SchemaDict> implements IWidget<Widget_choices_types<T>> {
+export interface Widget_choices<T extends SchemaDict = SchemaDict> extends Widget_choices_types<T> {}
+export class Widget_choices<T extends SchemaDict = SchemaDict> extends BaseWidget implements IWidget<Widget_choices_types<T>> {
     DefaultHeaderUI = WidgetChoices_HeaderUI
     DefaultBodyUI = WidgetChoices_BodyUI
     /* override */ background = true
@@ -60,13 +61,20 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> implements IWidge
     readonly type: 'choices' = 'choices'
     readonly expand: boolean = this.config.expand ?? false
 
+    get baseErrors(): Problem_Ext {
+        return null
+    }
+
     get isMulti(): boolean {
         return this.config.multi
     }
+
     get isSingle(): boolean {
         return !this.config.multi
     }
+
     children: { [k in keyof T]?: T[k]['$Widget'] } = {}
+
     serial: Widget_choices_serial<T>
 
     get firstChoice(): (keyof T & string) | undefined {
@@ -108,6 +116,7 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> implements IWidge
         public readonly spec: ISpec<Widget_choices<T>>,
         serial?: Widget_choices_serial<T>,
     ) {
+        super()
         const config = spec.config
         // ensure ID
         this.id = serial?.id ?? nanoid()
@@ -140,8 +149,8 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> implements IWidge
                     (typeof def === 'string' //
                         ? branch === def
                         : typeof def === 'object'
-                        ? def?.[branch] ?? false
-                        : null)
+                          ? def?.[branch] ?? false
+                          : null)
 
                 if (isActive) this.enableBranch(branch, { skipBump: true })
             }
@@ -152,16 +161,15 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> implements IWidge
                 (def == null
                     ? allBranches[0]
                     : typeof def === 'string' //
-                    ? def
-                    : typeof def === 'object'
-                    ? Object.entries(def).find(([, v]) => v)?.[0] ?? allBranches[0]
-                    : allBranches[0])
+                      ? def
+                      : typeof def === 'object'
+                        ? Object.entries(def).find(([, v]) => v)?.[0] ?? allBranches[0]
+                        : allBranches[0])
             if (activeBranch == null) toastError(`❌ No active branch found for single choice widget "${this.config.label}"`)
             else this.enableBranch(activeBranch, { skipBump: true })
         }
 
-        applyWidgetMixinV2(this)
-        makeAutoObservable(this)
+        makeAutoObservableInheritance(this, { DefaultHeaderUI: false, DefaultBodyUI: false })
     }
 
     toggleBranch(branch: keyof T & string) {
@@ -172,6 +180,7 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> implements IWidge
         } else this.enableBranch(branch)
     }
 
+    isBranchDisabled = (branch: keyof T & string): boolean => !this.serial.branches[branch]
     disableBranch(branch: keyof T & string, p?: { skipBump?: boolean }) {
         // ensure branch to disable is active
         if (!this.children[branch]) throw new Error(`❌ Branch "${branch}" not enabled`)
@@ -213,6 +222,24 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> implements IWidge
         if (!p?.skipBump) this.bumpValue()
     }
 
+    setValue(val: Widget_choices_value<T>) {
+        for (const branch of this.choices) {
+            // 🐛 console.log(`[🤠] >> ${branch}:`, Boolean(val[branch]), `(is: ${this.isBranchDisabled(branch)})`)
+            if (val[branch] == null) {
+                if (!this.isBranchDisabled(branch)) {
+                    this.disableBranch(branch)
+                }
+            } else {
+                if (this.isBranchDisabled(branch)) {
+                    // enable branch
+                    this.enableBranch(branch)
+                }
+                // patch branch value to given value
+                this.children[branch]!.setValue(val[branch]!)
+            }
+        }
+        this.bumpValue()
+    }
     /** results, but only for active branches */
     get value(): Widget_choices_value<T> {
         const out: { [key: string]: any } = {}

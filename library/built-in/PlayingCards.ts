@@ -31,7 +31,7 @@ app({
         // [UI] MODEL --------------------------------------
         model: ui_model(),
         sampler: ui_sampler(),
-        highResFix: ui_highresfix({ activeByDefault: true }),
+        highResFix: ui_highresfix().optional(true),
         globalNegative: ui.prompt({}),
         logos: ui.group({
             layout: 'H',

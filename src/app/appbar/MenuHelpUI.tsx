@@ -6,7 +6,7 @@ import { assets } from '../../utils/assets/assets'
 export const MenuHelpUI = observer(function MenuHelpUI_(p: {}) {
     return (
         <Dropdown
-            startIcon={<span className='material-symbols-outlined text-purple-500'>help_center</span>}
+            // startIcon={<span className='material-symbols-outlined'>help_center</span>}
             title='Help'
             content={() => (
                 <>

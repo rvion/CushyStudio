@@ -1,8 +1,9 @@
-import type { ClassLike } from '../../../utils/custom-jsx/global'
 import type { Widget_string } from './WidgetString'
 
 import { observer } from 'mobx-react-lite'
 import { ReactElement } from 'react'
+
+type ClassLike = string | { [cls: string]: any } | null | undefined | boolean
 
 // Textarea HEADER
 export const WidgetString_TextareaHeaderUI = observer(function WidgetString_TextareaHeaderUI_(p: { widget: Widget_string }) {
@@ -19,7 +20,7 @@ export const WidgetString_TextareaBodyUI = observer(function WidgetString_Textar
     const val = widget.value
     return (
         <textarea
-            style={{ lineHeight: '1.3rem' }}
+            style={{ /* ...p.widget.config.style, */ lineHeight: '1.3rem', resize: p.widget.config.resize ?? 'both' }}
             tw='textarea textarea-bordered textarea-sm w-full '
             placeholder={widget.config.placeHolder}
             rows={3}
@@ -69,7 +70,7 @@ export const WidgetString_HeaderUI = observer(function WidgetStringUI_(p: { widg
                 ]}
                 onMouseDown={(ev) => {
                     if (ev.button == 1) {
-                        let textInput = ev.currentTarget.querySelector('input[type="text"') as HTMLInputElement
+                        const textInput = ev.currentTarget.querySelector('input[type="text"') as HTMLInputElement
                         textInput.focus()
                     }
                 }}
@@ -78,6 +79,7 @@ export const WidgetString_HeaderUI = observer(function WidgetStringUI_(p: { widg
                 <input
                     tw={inputTailwind}
                     type={widget.config.inputType}
+                    pattern={widget.config.pattern}
                     placeholder={widget.config.placeHolder}
                     value={
                         widget.config.buffered //

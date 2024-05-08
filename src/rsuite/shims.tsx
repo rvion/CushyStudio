@@ -150,22 +150,6 @@ export const Whisper = (p: {
     children: ReactNode
 }) => <RevealUI content={() => p.speaker}>{p.children}</RevealUI>
 
-export const Speaker = (p: any) => <span {...p}></span>
-export const Popover = (p: any) => <span {...p}></span>
-export const Tooltip = (p: any) => <span {...p}></span>
-// modals
-export const Modal = (p: any) => <div {...p}></div>
-export const ModalHeader = (p: any) => <div {...p}></div>
-export const ModalTitle = (p: any) => <div {...p}></div>
-export const ModalBody = (p: any) => <div {...p}></div>
-export const ModalFooter = (p: any) => <div {...p}></div>
-// navs
-export const NavItem = (p: any) => <div {...p}></div>
-// menus
-export const Menu = (p: any) => <div {...p}></div>
-export const MenuBar = (p: any) => <div {...p} />
-export const DropdownMenu = (p: any) => <div {...p}></div>
-
 // misc
 export const Panel = (p: {
     //
@@ -227,8 +211,8 @@ export const Message = observer(function Message_(p: {
                 p.type === 'error' //
                     ? 'bg-error text-error-content'
                     : p.type === 'warning'
-                    ? 'bg-warning text-warning-content'
-                    : 'bg-base text-base-content',
+                      ? 'bg-warning text-warning-content'
+                      : 'bg-base text-base-content',
             ]}
             {...rest}
         >
@@ -252,6 +236,3 @@ export const Loader = observer((p: { size?: RSSize; className?: string }) => (
         tw={[`loading loading-spinner loading-${p.size ?? 'sm'}`]}
     ></span>
 ))
-
-// misc 2
-export const RadioTile = (p: any) => <div {...p}></div>

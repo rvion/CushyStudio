@@ -1,22 +1,57 @@
 import type { Form } from '../../Form'
 import type { ISpec } from '../../ISpec'
-import type { IWidget, IWidgetMixins, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
+import type { IWidget, WidgetConfigFields, WidgetSerialFields } from '../../IWidget'
 
-import { makeAutoObservable, observable } from 'mobx'
+import { observable, reaction } from 'mobx'
 import { nanoid } from 'nanoid'
 
 import { bang } from '../../../utils/misc/bang'
-import { applyWidgetMixinV2 } from '../../Mixins'
+import { makeAutoObservableInheritance } from '../../../utils/mobx-store-inheritance'
+import { BaseWidget } from '../../Mixins'
 import { runWithGlobalForm } from '../../shared/runWithGlobalForm'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetList_BodyUI, WidgetList_LineUI } from './WidgetListUI'
+
+/** */
+type AutoBehaviour<T extends ISpec> = {
+    /** list of keys that must be present */
+    keys: (self: T['$Widget']) => string[] // ['foo', 'bar', 'baz']
+
+    /** for every item given by the list above */
+    getKey: (self: T['$Widget'], ix: number) => string
+
+    /** once an item if  */
+    init: (key: string /* foo */) => T['$Value']
+}
 
 // CONFIG
 export type Widget_list_config<T extends ISpec> = WidgetConfigFields<
     {
         element: ((ix: number) => T) | T
+        /**
+         * when specified, the list will work in some AUTOMATIC mode
+         *  - disable the "add" button
+         *  - disable the "remove" button
+         *  - disable the "clear" button
+         *  - automatically add or remove missing items when reaction
+         *  - subscribe via mobx to anything you want
+         */
+        auto?: AutoBehaviour<T>
+
+        /** @default: true */
+        sortable?: boolean
+
+        /**
+         * mininum length;
+         * if min > 0, list will be populated on creation
+         * if length < min, list will be populated with empty items
+         * if length <= min, list will not be clearable
+         * */
         min?: number
+
+        /** max length */
         max?: number
+
         defaultLength?: number
     },
     Widget_list_types<T>
@@ -41,8 +76,8 @@ export type Widget_list_types<T extends ISpec> = {
 }
 
 // STATE
-export interface Widget_list<T extends ISpec> extends Widget_list_types<T>, IWidgetMixins {}
-export class Widget_list<T extends ISpec> implements IWidget<Widget_list_types<T>> {
+export interface Widget_list<T extends ISpec> extends Widget_list_types<T> {}
+export class Widget_list<T extends ISpec> extends BaseWidget implements IWidget<Widget_list_types<T>> {
     DefaultHeaderUI = WidgetList_LineUI
     get DefaultBodyUI() {
         // if (this.items.length === 0) return
@@ -79,6 +114,36 @@ export class Widget_list<T extends ISpec> implements IWidget<Widget_list_types<T
         return schema
     }
 
+    get isAuto(): boolean {
+        return this.config.auto != null
+    }
+    // probably slow and clunky; TODO: rewrite this piece of crap
+    startAutoBehaviour = () => {
+        const auto = this.config.auto
+        if (auto == null) return
+        reaction(
+            () => auto.keys(this),
+            (keys: string[]) => {
+                const currentKeys = this.items.map((i, ix) => auto.getKey(i, ix))
+                const missingKeys = keys.filter((k) => !currentKeys.includes(k))
+                let needBump = false
+                for (const k of missingKeys) {
+                    this.addItem({ value: auto.init(k), skipBump: true })
+                    needBump = true
+                }
+                let ix = 0
+                for (const item of this.items.slice()) {
+                    const isExtra = !keys.includes(auto.getKey(item, ix++))
+                    if (!isExtra) continue
+                    this.removeItem(item)
+                    needBump = true
+                }
+                if (needBump) this.bumpValue()
+            },
+            { fireImmediately: true },
+        )
+    }
+
     constructor(
         //
         public readonly form: Form,
@@ -86,6 +151,7 @@ export class Widget_list<T extends ISpec> implements IWidget<Widget_list_types<T
         public readonly spec: ISpec<Widget_list<T>>,
         serial?: Widget_list_serial<T>,
     ) {
+        super()
         this.id = serial?.id ?? nanoid()
 
         // serial
@@ -121,10 +187,23 @@ export class Widget_list<T extends ISpec> implements IWidget<Widget_list_types<T
         const missingItems = (this.config.min ?? 0) - this.items.length
         for (let i = 0; i < missingItems; i++) this.addItem({ skipBump: true })
 
-        applyWidgetMixinV2(this)
-        makeAutoObservable(this)
+        makeAutoObservableInheritance(this)
+        this.startAutoBehaviour()
     }
 
+    setValue(val: Widget_list_value<T>) {
+        for (let i = 0; i < val.length; i++) {
+            if (i < this.items.length) {
+                this.items[i]!.setValue(val[i])
+            } else {
+                this.addItem({ skipBump: true })
+                this.items[i]!.setValue(val[i])
+            }
+        }
+        this.serial.items_.splice(val.length)
+        this.items.splice(val.length)
+        this.bumpValue()
+    }
     get value(): Widget_list_value<T> {
         return this.items.map((i) => i.value)
     }
@@ -140,8 +219,8 @@ export class Widget_list<T extends ISpec> implements IWidget<Widget_list_types<T
     }
 
     // ERRORS --------------------------------------------------------
-    get errors(): string[] {
-        let out: string[] = []
+    get baseErrors(): string[] {
+        const out: string[] = []
         if (this.config.min != null && this.length < this.config.min) {
             out.push(`List is too short`)
         }
@@ -152,16 +231,32 @@ export class Widget_list<T extends ISpec> implements IWidget<Widget_list_types<T
     }
 
     // ADDING ITEMS -------------------------------------------------
-    addItem(p?: { skipBump?: true } /* 🔴 Annoying special case in the list's ctor */) {
+    addItem(p: { skipBump?: true; at?: number; value?: T['$Value'] } = {} /* 🔴 Annoying special case in the list's ctor */) {
         // ensure list is not at max len already
         if (this.config.max != null && this.items.length >= this.config.max)
             return console.log(`[🔶] list.addItem: list is already at max length`)
+
+        // ensure index we're adding this at is valid
+        if (p.at != null && p.at < 0) return console.log(`[🔶] list.addItem: at is negative`)
+        if (p.at != null && p.at > this.items.length) return console.log(`[🔶] list.addItem: at is out of bounds`)
+
         // create new item
-        const schema = this.schemaAt(this.serial.items_.length) // TODO: evaluate schema in the form loop
+        const schema = this.schemaAt(p.at ?? this.serial.items_.length) // TODO: evaluate schema in the form loop
         const element = this.form.builder._HYDRATE(this, schema, null)
+
+        // set initial value
+        if (p.value) {
+            element.setValue(p.value)
+        }
+
         // insert item
-        this.items.push(element)
-        this.serial.items_.push(element.serial)
+        if (p.at == null) {
+            this.items.push(element)
+            this.serial.items_.push(element.serial)
+        } else {
+            this.items.splice(p.at, 0, element)
+            this.serial.items_.splice(p.at, 0, element.serial)
+        }
         if (!p?.skipBump) this.bumpValue()
     }
 

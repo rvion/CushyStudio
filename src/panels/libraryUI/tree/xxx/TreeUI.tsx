@@ -2,12 +2,12 @@ import type { TreeView } from './TreeView'
 
 import { observer } from 'mobx-react-lite'
 
-import { TreeViewCtx } from './TreeCtx'
-import { TreeEntryUI } from './TreeEntryUI'
 import { ComboUI } from '../../../../app/shortcuts/ComboUI'
 import { KEYS } from '../../../../app/shortcuts/shorcutKeys'
 import { RevealUI } from '../../../../rsuite/reveal/RevealUI'
 import { useSt } from '../../../../state/stateContext'
+import { TreeViewCtx } from './TreeCtx'
+import { TreeEntryUI } from './TreeEntryUI'
 
 export const TreeUI = observer(function TreeEditorUI_(p: {
     //

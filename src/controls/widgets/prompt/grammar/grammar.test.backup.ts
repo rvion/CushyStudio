@@ -18,8 +18,8 @@ parse1.iterate({
             nodeType.name === 'Number' //
                 ? '🔢'
                 : nodeType.name === 'Lora'
-                ? '🔵'
-                : '  '
+                  ? '🔵'
+                  : '  '
         console.log(`[${icon}] `, new Array(indent).fill('   ').join('') + nodeType.name, nodeType.from, nodeType.to)
         // if () {
         //     console.log(`Error at position ${start}-${end}`)
