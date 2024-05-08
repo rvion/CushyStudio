@@ -19,7 +19,7 @@ function templateContrast(p: { id: string; label?: string; f: FormBuilder }) {
     )
 }
 
-export const ThemeForm = CushyFormManager.form(
+export const ThemeForm = CushyFormManager.fields(
     (f) => {
         const commonWidget = (id: string) => {
             return f.group({
