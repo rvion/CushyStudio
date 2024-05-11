@@ -203,15 +203,15 @@ export class FormBuilder implements IFormBuilder {
         return new Spec<Widget_selectMany<T>>('selectMany', config)
     }
     /** see also: `fields` for a more practical api */
-    group = <T extends SchemaDict>(config: Widget_group_config<T> = {}) => {
+    group = <T extends SchemaDict>(config: Widget_group_config<T> = {}): XGroup<T> => {
         return new Spec<Widget_group<T>>('group', config)
     }
     /** Convenience function for `group({ border: false, label: false, collapsed: false })` */
-    column = <T extends SchemaDict>(config: Widget_group_config<T> = {}) => {
+    column = <T extends SchemaDict>(config: Widget_group_config<T> = {}): XGroup<T> => {
         return new Spec<Widget_group<T>>('group', { border: false, label: false, collapsed: false, ...config })
     }
     /** Convenience function for `group({ border: false, label: false, collapsed: false, layout:'H' })` */
-    row = <T extends SchemaDict>(config: Widget_group_config<T> = {}) => {
+    row = <T extends SchemaDict>(config: Widget_group_config<T> = {}): XGroup<T> => {
         return new Spec<Widget_group<T>>('group', { border: false, label: false, collapsed: false, layout: 'H', ...config })
     }
     /** simpler way to create `group` */
