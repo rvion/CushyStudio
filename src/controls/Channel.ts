@@ -18,4 +18,4 @@ export interface Producer<T, W> {
     produce: CovariantFn<W, T>
 }
 
-export const $EmptyChannel = Symbol('EmptyChannel')
+// export const $EmptyChannel = Symbol('EmptyChannel')

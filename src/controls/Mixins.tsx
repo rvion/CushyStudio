@@ -3,7 +3,7 @@ import type { FC } from 'react'
 
 import { observer } from 'mobx-react-lite'
 
-import { $EmptyChannel, Channel, ChannelId } from './Channel'
+import { Channel, ChannelId } from './Channel'
 import { $WidgetSym, type IWidget } from './IWidget'
 import { WidgetWithLabelUI } from './shared/WidgetWithLabelUI'
 import { normalizeProblem, type Problem } from './Validation'

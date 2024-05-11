@@ -7,7 +7,7 @@ import type { Widget_shared } from './widgets/shared/WidgetShared'
 
 import { createElement } from 'react'
 
-import { $EmptyChannel, Channel, type ChannelId, Producer } from './Channel'
+import { Channel, type ChannelId, Producer } from './Channel'
 import { InstallRequirementsBtnUI } from './REQUIREMENTS/Panel_InstallRequirementsUI'
 import { getCurrentForm_IMPL } from './shared/runWithGlobalForm'
 import { isWidgetOptional } from './widgets/WidgetUI.DI'
