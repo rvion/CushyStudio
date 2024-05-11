@@ -4,7 +4,7 @@ import type { IFormBuilder } from './IFormBuilder'
 import type { ISpec, SchemaDict } from './ISpec'
 import type { IWidget } from './IWidget'
 
-import { makeAutoObservable, runInAction } from 'mobx'
+import { makeAutoObservable, reaction, runInAction } from 'mobx'
 
 import { openRouterInfos } from '../llm/OpenRouter_infos'
 import { _FIX_INDENTATION } from '../utils/misc/_FIX_INDENTATION'
@@ -317,7 +317,7 @@ export class FormBuilder implements IFormBuilder {
 
     /** (@internal); */ _cache: { count: number } = { count: 0 }
     /** (@internal) advanced way to restore form state. used internally */
-    _HYDRATE = <T extends ISpec>( //
+    private __HYDRATE = <T extends ISpec>( //
         parent: IWidget | null,
         spec: T,
         serial: any | null,
@@ -381,6 +381,24 @@ export class FormBuilder implements IFormBuilder {
             parent,
             new Spec<Widget_markdown>('markdown', { markdown: `🔴 unknown widget "${type}" in serial.` }),
         )
+    }
+
+    _HYDRATE = <T extends ISpec>( //
+        parent: IWidget | null,
+        spec: T,
+        serial: any | null,
+    ): T['$Widget'] => {
+        const w = this.__HYDRATE(parent, spec, serial)
+        w.publishValue()
+        for (const { expr, effect } of spec.reactions) {
+            // 🔴 Need to dispose later
+            reaction(
+                () => expr(w),
+                (arg) => effect(arg, w),
+                { fireImmediately: true },
+            )
+        }
+        return w
     }
 }
 

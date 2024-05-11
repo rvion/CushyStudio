@@ -1,9 +1,9 @@
 import type { ISpec } from './ISpec'
-import type { Kontext } from './Kontext'
 import type { FC } from 'react'
 
 import { observer } from 'mobx-react-lite'
 
+import { $EmptyChannel, Channel, ChannelId } from './Channel'
 import { $WidgetSym, type IWidget } from './IWidget'
 import { WidgetWithLabelUI } from './shared/WidgetWithLabelUI'
 import { normalizeProblem, type Problem } from './Validation'
@@ -173,34 +173,25 @@ export abstract class BaseWidget {
 
     $WidgetSym: typeof $WidgetSym = $WidgetSym
 
-    /** if the widget declare some Kontext,
-     * its child witht the feedKontext will fill the value here
-     * so any other of its children will be able to find the value
-     * by walking upwards
-     * */
-    _boundKontexts: Record<string, any> = {}
-
-    get _withKontext(){return this.spec._withKontext} // prettier-ignore
-    get withKontext(){return this.spec.withKontext} // prettier-ignore
-    get _feedKontext(){return this.spec._feedKontext} // prettier-ignore
-    get feedKontext(){return this.spec.feedKontext} // prettier-ignore
-
-    constructor() {}
+    /**
+     * when this widget or one of its descendant publishes a value,
+     * it will be stored here and possibly consumed by other descendants
+     */
+    _advertisedValues: Record<ChannelId, any> = {}
 
     /**
-     * when retrieving a kontext value, walk upward the parent chain, and look for
-     * a value stored in _boundKontexts[ktx.uid]
-     * (/!\ ktx.uid is not stable; and ktx is not to be preserved for now CAN CHANGE; TO BE THOUGH MORE)
+     * when consuming an advertised value, walk upward the parent chain, and look for
+     * a value stored in the advsertised values
      */
-    useKontext<T extends any>(ktx: Kontext<T>): Maybe<T> {
+    // 🚴🏠 -> consume / pull / receive / fetch / ... ?
+    consume<T extends any>(chan: Channel<T> | ChannelId): Maybe<T> /* 🔸: T | $EmptyChannel */ {
+        const channelId = typeof chan === 'string' ? chan : chan.id
         let at = this as any as IWidget | null
         while (at != null) {
-            if (ktx.uid in at._boundKontexts) {
-                return at._boundKontexts[ktx.uid]
-            }
+            if (channelId in at._advertisedValues) return at._advertisedValues[channelId]
             at = at.parent
         }
-        return null
+        return null // $EmptyChannel
     }
 
     /** true if errors.length > 0 */
@@ -239,26 +230,25 @@ export abstract class BaseWidget {
         this.form.valueChanged(this)
         /** in case the widget config contains a custom callback, call this one too */
         this.config.onValueChange?.(this.value, this)
-        this.feedValue()
+        this.publishValue() // 🔴  should probably be a reaction rather than this
     }
 
-    feedValue(this: IWidget) {
-        // UGLY, should probably be a reaction rather than this
-        const fdktx = this.spec._feedKontext
-        if (fdktx == null) return console.log(`[🔴] feeding aborted v1 `)
+    publishValue(this: IWidget) {
+        const producers = this.spec.producers
+        if (producers.length === 0) return
+
+        // Create and store values for every producer
+        const producedValues: Record<ChannelId, any> = {}
+        for (const producer of producers) {
+            const channelId = typeof producer.chan === 'string' ? producer.chan : producer.chan.id
+            producedValues[channelId] = producer.produce(this)
+        }
+        // Assign values to every parent widget in the hierarchy
         let at = this as any as IWidget | null
         while (at != null) {
-            const spec: ISpec<any> = at.spec
-            if (spec._withKontext.has(fdktx.ktx)) {
-                /*  */ console.log(`[🤠] `, at)
-                at._boundKontexts[fdktx.ktx.uid] = fdktx.fn(this)
-                return console.log(`[🟢] feeding ok at`, at.spec.type)
-            } else {
-                console.log(`[🔴] - feeding at ?`, at.spec.type, 'NO ❌')
-            }
+            Object.assign(at._advertisedValues, producedValues)
             at = at.parent
         }
-        console.log(`[🔴] feeding aborted v2 `)
     }
 
     // FOLD ----------------------------------------------------
