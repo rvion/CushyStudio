@@ -1,3 +1,4 @@
+import type { XList, XOptional } from './FormBuilder'
 import type { ISpec } from './ISpec'
 import type { IWidget } from './IWidget'
 import type { Requirements } from './Requirements'
@@ -73,13 +74,13 @@ export class Spec<Widget extends IWidget = IWidget> implements ISpec<Widget> {
     ) {}
 
     /** wrap widget spec to list stuff */
-    list = (config: Omit<Widget_list_config<any>, 'element'> = {}): Spec<Widget_list<this>> =>
+    list = (config: Omit<Widget_list_config<any>, 'element'> = {}): XList<this> =>
         new Spec<Widget_list<this>>('list', {
             ...config,
             element: this,
         })
 
-    optional = <const T extends Spec>(startActive: boolean = false) =>
+    optional = (startActive: boolean = false): XOptional<this> =>
         new Spec<Widget_optional<this>>('optional', {
             widget: this,
             startActive: startActive,

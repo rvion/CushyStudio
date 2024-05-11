@@ -1,5 +1,6 @@
 import type { ISpec } from './ISpec'
 import type { IWidget } from './IWidget'
+import type { SList, SOptional } from './SimpleSpecAliases'
 import type { Widget_list, Widget_list_config } from './widgets/list/WidgetList'
 import type { Widget_optional } from './widgets/optional/WidgetOptional'
 import type { Widget_shared } from './widgets/shared/WidgetShared'
@@ -58,13 +59,13 @@ export class SimpleSpec<W extends IWidget = IWidget> implements ISpec<W> {
     ) {}
 
     /** wrap widget spec to list stuff */
-    list = (config: Omit<Widget_list_config<this>, 'element'> = {}): SimpleSpec<Widget_list<this>> =>
+    list = (config: Omit<Widget_list_config<this>, 'element'> = {}): SList<this> =>
         new SimpleSpec<Widget_list<this>>('list', {
             ...config,
             element: this,
         })
 
-    optional = <const T extends SimpleSpec>(startActive: boolean = false) =>
+    optional = (startActive: boolean = false): SOptional<this> =>
         new SimpleSpec<Widget_optional<this>>('optional', {
             widget: this,
             startActive: startActive,
@@ -78,5 +79,5 @@ export class SimpleSpec<W extends IWidget = IWidget> implements ISpec<W> {
     shared = (key: string): Widget_shared<this> => getCurrentForm_IMPL().shared(key, this)
 
     /** clone the spec, and patch the cloned config to make it hidden */
-    hidden = () => new SimpleSpec(this.type, { ...this.config, hidden: true })
+    hidden = (): SimpleSpec<W> => new SimpleSpec<W>(this.type, { ...this.config, hidden: true })
 }
