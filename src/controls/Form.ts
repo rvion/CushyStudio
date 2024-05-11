@@ -10,6 +10,7 @@ import { action, isObservable, makeAutoObservable, observable, toJS } from 'mobx
 import { nanoid } from 'nanoid'
 import { createElement, type ReactNode } from 'react'
 
+import { FormAsDropdownConfigUI } from '../panels/Panel_Gallery/FormAsDropdownConfigUI'
 import { debounce } from '../utils/misc/debounce'
 import { FormUI } from './FormUI'
 import { isWidgetGroup } from './widgets/WidgetUI.DI'
@@ -62,6 +63,10 @@ export class Form<
      * | <div>{x.render()}</div>
      */
     render = (): ReactNode => createElement(FormUI, { form: this })
+    renderAsConfigBtn = (): ReactNode =>
+        createElement(FormAsDropdownConfigUI, {
+            form: this,
+        })
 
     get value(): ROOT['$Value'] {
         return this.root.value
