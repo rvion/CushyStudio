@@ -16,9 +16,9 @@ export const Panel_Gallery = observer(function VerticalGalleryUI_(p: { uid?: num
             style={{ background: st.galleryConf.value.galleryBgColor }}
         >
             <PanelHeaderUI>
+                <GalleryPreferencesUI />
                 <GallerySearchControlsUI />
                 <SpacerUI />
-                <GalleryPreferences />
             </PanelHeaderUI>
             <GalleryImageGridUI />
         </div>
