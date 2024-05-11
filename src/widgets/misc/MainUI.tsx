@@ -6,11 +6,11 @@ import { HTML5Backend } from 'react-dnd-html5-backend'
 import { ToastContainer } from 'react-toastify'
 
 import { CushyUI } from '../../app/layout/AppUI'
+import { TargetBox } from '../../importers/TargetBox'
 import { STATE } from '../../state/state'
 import { stContext } from '../../state/stateContext'
 import { asAbsolutePath } from '../../utils/fs/pathUtils'
 import { useGlobalDropHook } from './useGlobalDropHook'
-import { TargetBox } from '../../importers/TargetBox'
 
 const path = asAbsolutePath(process.cwd())
 

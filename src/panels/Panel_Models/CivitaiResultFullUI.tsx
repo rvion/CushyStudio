@@ -3,9 +3,9 @@ import type { Civitai, CivitaiModelVersion, CivitaiSearchResultItem, ModelImage 
 import { observer, useLocalObservable } from 'mobx-react-lite'
 import { useEffect } from 'react'
 
-import { CivitaiResultVersionUI } from './CivitaiResultVersionUI'
 import { RevealUI } from '../../rsuite/reveal/RevealUI'
 import { JsonViewUI } from '../../widgets/workspace/JsonViewUI'
+import { CivitaiResultVersionUI } from './CivitaiResultVersionUI'
 
 export const CivitaiResultFullUI = observer(function CivitaiResultFullUI_(p: {
     //

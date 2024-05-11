@@ -14,8 +14,8 @@ export const WidgetInlineRunUI = observer(function WidgetInlineRunUI_<K extends 
                 p.widget.config.kind === `special`
                     ? `btn-secondary`
                     : p.widget.config.kind === `warning`
-                    ? `btn-warning`
-                    : `btn-primary`,
+                      ? `btn-warning`
+                      : `btn-primary`,
             ]}
             className='self-start'
             onClick={() => runInAction(() => p.widget.config.onClick?.(context))}

@@ -43,11 +43,14 @@ export const _getKnownModels = (
     if (DB.opts.genTypes) {
         // type ---------------------------
         let out1 = ''
-        const uniqCategories: { [key: string]: number } = knownModelList.reduce((acc, cur) => {
-            if (acc[cur.type] != null) acc[cur.type] += 1
-            else acc[cur.type] = 1
-            return acc
-        }, {} as { [key: string]: number })
+        const uniqCategories: { [key: string]: number } = knownModelList.reduce(
+            (acc, cur) => {
+                if (acc[cur.type] != null) acc[cur.type] += 1
+                else acc[cur.type] = 1
+                return acc
+            },
+            {} as { [key: string]: number },
+        )
         out1 += `// prettier-ignore\n`
         out1 += 'export type KnownModel_Type =\n'
         for (const [cat, count] of Object.entries(uniqCategories))
@@ -61,11 +64,14 @@ export const _getKnownModels = (
 
         // savepath ---------------------------
         let out4 = ''
-        const uniqSavePath: { [key: string]: number } = knownModelList.reduce((acc, cur) => {
-            if (acc[cur.save_path] != null) acc[cur.save_path] += 1
-            else acc[cur.save_path] = 1
-            return acc
-        }, {} as { [key: string]: number })
+        const uniqSavePath: { [key: string]: number } = knownModelList.reduce(
+            (acc, cur) => {
+                if (acc[cur.save_path] != null) acc[cur.save_path] += 1
+                else acc[cur.save_path] = 1
+                return acc
+            },
+            {} as { [key: string]: number },
+        )
         out4 += `// prettier-ignore\n`
         out4 += 'export type KnownModel_SavePath =\n'
         for (const [cat, count] of Object.entries(uniqSavePath))
@@ -79,11 +85,14 @@ export const _getKnownModels = (
 
         // base ---------------------------
         let out2 = ''
-        const uniqBases: { [key: string]: number } = knownModelList.reduce((acc, cur) => {
-            if (acc[cur.base] != null) acc[cur.base] += 1
-            else acc[cur.base] = 1
-            return acc
-        }, {} as { [key: string]: number })
+        const uniqBases: { [key: string]: number } = knownModelList.reduce(
+            (acc, cur) => {
+                if (acc[cur.base] != null) acc[cur.base] += 1
+                else acc[cur.base] = 1
+                return acc
+            },
+            {} as { [key: string]: number },
+        )
         out2 += `// prettier-ignore\n`
         out2 += 'export type KnownModel_Base =\n'
         for (const [cat, count] of Object.entries(uniqBases))

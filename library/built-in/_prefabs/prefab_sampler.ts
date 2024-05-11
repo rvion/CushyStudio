@@ -9,13 +9,11 @@ export const ui_sampler = (p?: {
     cfg?: number
     sampler_name?: Enum_KSampler_sampler_name
     scheduler?: Enum_KSampler_scheduler
+    startCollapsed?: boolean
 }) => {
     const form: FormBuilder = getCurrentForm()
-    return form.group({
-        summary: (ui) => {
-            return `denoise:${ui.denoise} steps:${ui.steps} cfg:${ui.cfg} sampler:${ui.sampler_name}/${ui.scheduler}`
-        },
-        items: {
+    return form.fields(
+        {
             denoise: form.float({ step: 0.1, min: 0, max: 1, default: p?.denoise ?? 1, label: 'Denoise' }),
             steps: form.int({ step: 10, default: p?.steps ?? 20, label: 'Steps', min: 0, softMax: 100 }),
             cfg: form.float({ step: 1, label: 'CFG', min: 0, max: 100, softMax: 10, default: p?.cfg ?? 7 }),
@@ -23,7 +21,13 @@ export const ui_sampler = (p?: {
             sampler_name: form.enum.Enum_KSampler_sampler_name({ label: 'Sampler', default: p?.sampler_name ?? 'euler' }),
             scheduler: form.enum.Enum_KSampler_scheduler({ label: 'Scheduler', default: p?.scheduler ?? 'karras' }),
         },
-    })
+        {
+            summary: (ui) => {
+                return `denoise:${ui.denoise} steps:${ui.steps} cfg:${ui.cfg} sampler:${ui.sampler_name}/${ui.scheduler}`
+            },
+            startCollapsed: p?.startCollapsed ?? false,
+        },
+    )
 }
 
 // CTX -----------------------------------------------------------

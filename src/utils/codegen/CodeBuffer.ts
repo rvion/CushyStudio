@@ -1,6 +1,9 @@
 /** this class is used to buffer text and then write it to a file */
 export class CodeBuffer {
-    constructor(private _indent: number = 0, lines: string[] = []) {
+    constructor(
+        private _indent: number = 0,
+        lines: string[] = [],
+    ) {
         for (const line of lines) this.writeLine(line)
     }
     public tab = '   '

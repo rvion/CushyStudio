@@ -2,9 +2,9 @@ import type { CivitaiModelVersion, CivitaiSearchResultItem } from './CivitaiSpec
 
 import { observer, useLocalObservable } from 'mobx-react-lite'
 
-import { CivitaiDownloadableFileUI } from './CivitaiDownloadableFileUI'
 import { RevealUI } from '../../rsuite/reveal/RevealUI'
 import { JsonViewUI } from '../../widgets/workspace/JsonViewUI'
+import { CivitaiDownloadableFileUI } from './CivitaiDownloadableFileUI'
 
 export const CivitaiResultVersionUI = observer(function CivitaiResultVersionUI_(p: {
     //

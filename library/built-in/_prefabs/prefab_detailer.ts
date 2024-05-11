@@ -20,7 +20,7 @@ export const ui_refiners = () => {
                         faces: form
                             .fields(
                                 {
-                                    prompt: form.string({ default: facePositiveDefault }),
+                                    prompt: form.string({ default: facePositiveDefault, textarea: true }),
                                     detector: form.enum.Enum_UltralyticsDetectorProvider_model_name({
                                         default: 'bbox/face_yolov8m.pt',
                                     }),
@@ -41,7 +41,7 @@ export const ui_refiners = () => {
                         hands: form
                             .fields(
                                 {
-                                    prompt: form.string({ default: handPositiveDefault }),
+                                    prompt: form.string({ default: handPositiveDefault, textarea: true }),
                                     detector: form.enum.Enum_UltralyticsDetectorProvider_model_name({
                                         default: 'bbox/hand_yolov8s.pt',
                                     }),
@@ -59,7 +59,7 @@ export const ui_refiners = () => {
                         // EYES -------------------------------------------------------
                         eyes: form
                             .fields(
-                                { prompt: form.string({ default: eyePositiveDefault }) },
+                                { prompt: form.string({ default: eyePositiveDefault, textarea: true }) },
                                 { startCollapsed: true, summary: (ui) => `prompt:${ui.prompt}` },
                             )
                             .addRequirements([
@@ -100,8 +100,8 @@ export const ui_refiners = () => {
         },
         {
             summary: (ui) => {
-                return `${ui.refinerType.faces ? 'FACE' : ''} ${ui.refinerType.hands ? 'HANDS' : ''} ${
-                    ui.refinerType.hands ? 'EYES' : ''
+                return `Refiners ${ui.refinerType.faces ? 'FACE' : ''} ${ui.refinerType.hands ? 'HANDS' : ''} ${
+                    ui.refinerType.eyes ? 'EYES' : ''
                 }`
             },
         },
@@ -123,6 +123,10 @@ export const run_refiners_fromImage = (
     //
     ui: OutputFor<typeof ui_refiners>,
     finalImage: _IMAGE = getCurrentRun().AUTO,
+    ckpt?: _MODEL,
+    maxRes?: number,
+    face_prompt_override?: Maybe<string>,
+    eye_prompt_override?: Maybe<string>,
 ): _IMAGE => {
     const run = getCurrentRun()
     const graph = run.nodes
@@ -143,7 +147,7 @@ export const run_refiners_fromImage = (
                 bbox_detector: provider._BBOX_DETECTOR,
                 sam_model_opt: samLoader?._SAM_MODEL,
                 seed: ui.settings.sampler?.seed ?? run.randomSeed(),
-                model: run.AUTO,
+                model: ckpt ?? run.AUTO,
                 clip: run.AUTO,
                 vae: run.AUTO,
                 denoise: ui.settings.sampler.denoise,
@@ -151,7 +155,7 @@ export const run_refiners_fromImage = (
                 sampler_name: ui.settings.sampler.sampler_name,
                 scheduler: ui.settings.sampler.scheduler,
                 cfg: ui.settings.sampler.cfg,
-                positive: graph.CLIPTextEncode({ clip: run.AUTO, text: facePrompt }),
+                positive: graph.CLIPTextEncode({ clip: run.AUTO, text: face_prompt_override ?? facePrompt }),
                 negative: graph.CLIPTextEncode({ clip: run.AUTO, text: faceNegativeDefault }),
                 sam_detection_hint: 'center-1', // ❓
                 sam_mask_hint_use_negative: 'False',
@@ -192,17 +196,16 @@ export const run_refiners_fromImage = (
             // run.add_saveImage(x.outputs.image)
             image = x.outputs.image
         }
-        //might work, but needs
         if (eyes) {
-            const eyesPrompt = eyes.prompt
-            const mask = graph.CLIPSeg({
-                image: image,
-                text: 'eyes',
-                blur: 5,
-                threshold: 0.01,
-                dilation_factor: 5,
-            })
-            //const preview = graph.PreviewImage({ images: mask.outputs.Heatmap$_Mask })
+            const eyesPrompt = eyes.prompt || 'eyes, perfect eyes, perfect anatomy, hightly detailed, sharp details'
+
+            const faceMesh = graph.MediaPipe$7FaceMeshPreprocessor({ image, max_faces: 10, min_confidence: 0.5, resolution: 512 })
+            const meshPreview = graph.PreviewImage({ images: faceMesh._IMAGE })
+            const segs = graph.MediaPipeFaceMeshToSEGS({ image: faceMesh._IMAGE, left_eye: true, right_eye: true, face: false })
+            const mask = graph.SegsToCombinedMask({ segs: segs._SEGS })
+            const combinedSegs = graph.MaskToSEGS({ mask: mask._MASK, combined: true })
+
+            const preview = graph.PreviewImage({ images: graph.Convert_Masks_to_Images({ masks: mask._MASK }) })
 
             const detailer = graph.DetailerForEachDebug({
                 image,
@@ -217,20 +220,20 @@ export const run_refiners_fromImage = (
                 model: run.AUTO,
                 clip: run.AUTO,
                 vae: run.AUTO,
+                seed: ui.settings.sampler.seed,
                 denoise: ui.settings.sampler.denoise,
                 steps: ui.settings.sampler.steps,
                 sampler_name: ui.settings.sampler.sampler_name,
                 scheduler: ui.settings.sampler.scheduler,
                 cfg: ui.settings.sampler.cfg,
                 guide_size: 128,
-                positive: graph.CLIPTextEncode({ clip: run.AUTO, text: eyesPrompt }),
-                negative: graph.CLIPTextEncode({ clip: run.AUTO, text: eyeNegativeDefault }),
+                positive: graph.CLIPTextEncode({ clip: run.AUTO, text: eye_prompt_override ?? eyesPrompt }),
+                negative: graph.CLIPTextEncode({ clip: run.AUTO, text: 'bad eyes, bad anatomy, bad details' }),
                 wildcard: '',
             })
             image = detailer.outputs.image
         }
     }
-
     // run.add_saveImage(x.outputs.cropped_refined)
     // run.add_saveImage(x.outputs.cropped_enhanced_alpha)
     // run.add_PreviewMask(x._MASK)

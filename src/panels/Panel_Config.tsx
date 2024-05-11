@@ -108,8 +108,8 @@ export const Panel_Config = observer(function Panel_Config_() {
                                     typeof next === 'string' //
                                         ? parseFloatNoRoundingErr(next, 2)
                                         : typeof next === 'number'
-                                        ? next
-                                        : 5,
+                                          ? next
+                                          : 5,
                             })
                         }}
                     />

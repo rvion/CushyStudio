@@ -1,8 +1,8 @@
+import type { STATE } from '../state/state'
 import type { LiveDB } from './LiveDB'
 import type { LiveTable } from './LiveTable'
 import type { TableInfo } from './TYPES_json'
 import type { AnnotationMapEntry } from 'mobx'
-import type { STATE } from '../state/state'
 
 export type $OptionalFieldsForUpsert = 'createdAt' | 'updatedAt'
 

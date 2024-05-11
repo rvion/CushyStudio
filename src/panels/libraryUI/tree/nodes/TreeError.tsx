@@ -7,5 +7,8 @@ export class TreeError implements ITreeEntry {
     get name() { return `❌ ${this.title}` } // prettier-ignore
     isFolder = false
     icon = (<span className='material-symbols-outlined'>Error</span>)
-    constructor(public title: string, public uid = nanoid()) {}
+    constructor(
+        public title: string,
+        public uid = nanoid(),
+    ) {}
 }

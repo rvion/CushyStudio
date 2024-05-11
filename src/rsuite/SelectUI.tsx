@@ -17,8 +17,15 @@ type SelectProps<T> = {
     label?: string
     /** callback when a new option is added */
     onChange: null | ((next: T, self: AutoCompleteSelectState<T>) => void)
-    /** list of all options */
+    /**
+     * list of all choices
+     * 👉 If the list of options is generated from the query directly,
+     *    you should also set `disableLocalFiltering: true`, to avoid
+     *    filtering the options twice.
+     */
     options?: (query: string) => T[]
+    /** set this to true if your choices */
+    disableLocalFiltering?: boolean
     /** if provided, is used to compare options with selected values */
     equalityCheck?: (a: T, b: T) => boolean
     /** used to search/filter & for UI if no getLabelUI provided */
@@ -75,6 +82,7 @@ class AutoCompleteSelectState<T> {
 
     get filteredOptions(): T[] {
         if (this.searchQuery === '') return this.options
+        if (this.p.disableLocalFiltering) return this.options
         return this.options.filter((p) => {
             const label = this.p.getLabelText(p)
             return searchMatches(label, this.searchQuery)

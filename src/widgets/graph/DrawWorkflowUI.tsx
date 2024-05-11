@@ -3,11 +3,11 @@ import type { NodePort } from '../../core/ComfyNode'
 import { observer } from 'mobx-react-lite'
 import { Fragment, useEffect, useRef } from 'react'
 
-import { NodeSlotSize } from './NodeSlotSize'
 import { ComfyWorkflowL } from '../../models/ComfyWorkflow'
 import { randomColorHSLNice, randomNiceColor } from '../../panels/Panel_Canvas/states/randomColor'
 import { ProgressLine } from '../../rsuite/shims'
 import { bang } from '../../utils/misc/bang'
+import { NodeSlotSize } from './NodeSlotSize'
 
 export const DrawWorkflowUI = observer(function DrawWorkflowUI_(p: {
     //

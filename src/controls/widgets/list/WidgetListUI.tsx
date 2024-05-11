@@ -15,9 +15,11 @@ export const WidgetList_LineUI = observer(function WidgetList_LineUI_(p: { widge
     return (
         <div tw='flex flex-1 items-center'>
             <div tw='text-sm text-gray-500 italic'>{p.widget.length} items</div>
-            {p.widget.isAuto ? null : <div tw='ml-auto'>
-                <ListControlsUI widget={p.widget} />
-            </div>}
+            {p.widget.isAuto ? null : (
+                <div tw='ml-auto'>
+                    <ListControlsUI widget={p.widget} />
+                </div>
+            )}
         </div>
     )
 })
@@ -61,15 +63,17 @@ export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends 
                                             </ErrorBoundary>
                                         )}
                                         {/* delete btn */}
-                                        {p.widget.isAuto ? null : <div
-                                            tw={[
-                                                'btn btn-sm btn-narrower btn-ghost opacity-50',
-                                                min != null && widget.items.length <= min ? 'btn-disabled' : null,
-                                            ]}
-                                            onClick={() => widget.removeItem(subWidget)}
-                                        >
-                                            <span className='material-symbols-outlined'>delete</span>
-                                        </div>}
+                                        {p.widget.isAuto ? null : (
+                                            <div
+                                                tw={[
+                                                    'btn btn-sm btn-narrower btn-ghost opacity-50',
+                                                    min != null && widget.items.length <= min ? 'btn-disabled' : null,
+                                                ]}
+                                                onClick={() => widget.removeItem(subWidget)}
+                                            >
+                                                <span className='material-symbols-outlined'>delete</span>
+                                            </div>
+                                        )}
                                         {/* collapse indicator */}
                                         {subWidget.collapsible && <ListItemCollapseBtnUI widget={subWidget} />}
                                     </div>

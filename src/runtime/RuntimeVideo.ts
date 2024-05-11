@@ -64,7 +64,12 @@ export class RuntimeVideos {
         // 4. create video
         console.info(`🎥 this.folder.path: ${this.folder}`)
         console.info(`🎥 cwd: ${cwd}`)
-        const allAbsPaths = images.map((i) => i.absPath).filter((p) => p != null) as AbsolutePath[]
+        const allAbsPaths = images
+            .map((i) => i.absPath)
+            .filter((p) => p != null)
+            .sort()
+            .map((p) => p as AbsolutePath)
+
         const ffmpegComandInfos = await createMP4FromImages(allAbsPaths, targetVideoAbsPath, inputFPS, cwd, opts)
         if (ffmpegComandInfos) {
             this.st.db.media_text.create({

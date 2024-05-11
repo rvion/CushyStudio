@@ -4,9 +4,9 @@ import { observer } from 'mobx-react-lite'
 import { MutableRefObject, useEffect, useMemo } from 'react'
 import { createPortal } from 'react-dom'
 
+import { ComfyWorkflowL } from '../../models/ComfyWorkflow'
 import { DrawWorkflowUI } from './DrawWorkflowUI'
 import { useCursorLockMove } from './useCursorLockMove'
-import { ComfyWorkflowL } from '../../models/ComfyWorkflow'
 
 // import { renderMinimap } from '../minimap/Minimap'
 

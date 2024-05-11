@@ -61,6 +61,7 @@ export const WidgetSelectOne_SelectUI = observer(function WidgetSelectOne_Select
                 getLabelUI={widget.config.getLabelUI}
                 getSearchQuery={() => widget.serial.query ?? ''}
                 setSearchQuery={(query) => (widget.serial.query = query)}
+                disableLocalFiltering={widget.config.disableLocalFiltering}
                 options={() => widget.choices}
                 equalityCheck={(a, b) => a.id === b.id}
                 value={() => widget.serial.val}

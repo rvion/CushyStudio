@@ -15,8 +15,25 @@ import { WidgetSelectManyUI } from './WidgetSelectManyUI'
 export type Widget_selectMany_config<T extends BaseSelectEntry> = WidgetConfigFields<
     {
         default?: T[]
-        choices: T[] | ((formRoot: Maybe<IWidget>) => T[])
+        /**
+         * list of all choices
+         * 👉 you can use a lambda if you want the option to to dynamic
+         *    the lambda will receive the widget instance as argument, from
+         *    which you can access variosu stuff like
+         *      - `self.serial.query`: the current filtering text
+         *      - `self.form`: the form instance
+         *      - `self.form.root`: the root of the widget
+         *      - `self.parent...`: natigate the widget tree
+         *      - `self.useKontext('...')`: any named dynamic chanel for cross-widget communication
+         * 👉 If the list of options is generated from the query directly,
+         *    you should also set `disableLocalFiltering: true`, to avoid
+         *    filtering the options twice.
+         */
+        choices: T[] | ((self: Widget_selectMany<T>) => T[])
+        /** set this to true if your choices are dynamically generated from the query directly, to disable local filtering */
+        disableLocalFiltering?: boolean
         appearance?: 'select' | 'tab'
+        getLabelUI?: (t: T) => React.ReactNode
     },
     Widget_selectMany_types<T>
 >
@@ -63,7 +80,7 @@ export class Widget_selectMany<T extends BaseSelectEntry> extends BaseWidget imp
     get choices(): T[] {
         const _choices = this.config.choices
         return typeof _choices === 'function' //
-            ? _choices(this.form._ROOT)
+            ? _choices(this)
             : _choices
     }
 

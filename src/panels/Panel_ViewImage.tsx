@@ -46,10 +46,10 @@ export const Panel_ViewImage = observer(function Panel_ViewImage_(p: {
                                 filter: !st.project.filterNSFW
                                     ? undefined
                                     : safety?.value == null //
-                                    ? 'blur(50px)'
-                                    : safety.value.isSafe
-                                    ? undefined
-                                    : 'blur(50px)',
+                                      ? 'blur(50px)'
+                                      : safety.value.isSafe
+                                        ? undefined
+                                        : 'blur(50px)',
                                 width: '100%',
                                 height: '100%',
                                 objectFit: 'contain',

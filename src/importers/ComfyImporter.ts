@@ -185,8 +185,8 @@ export class ComfyImporter {
                 const cleanestPossibleLink = isSingleOutputOfThisType //
                     ? varName
                     : isValid1234 //
-                    ? `${varName}.outputs.${o.nameInCushy}`
-                    : `${varName}.outputs["${o.nameInCushy}"]`
+                      ? `${varName}.outputs.${o.nameInCushy}`
+                      : `${varName}.outputs["${o.nameInCushy}"]`
 
                 availableSignals.set(`${nodeID}-${outoutIx++}`, cleanestPossibleLink)
             }

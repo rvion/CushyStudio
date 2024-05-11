@@ -1390,6 +1390,16 @@
             "description": "The Fast and Simple 'roop-like' Face Swap Extension Node for ComfyUI, based on ReActor (ex Roop-GE) SD-WebUI Face Swap Extension"
         },
         {
+            "author": "Gourieff",
+            "title": "ComfyUI-FutureWarningIgnore",
+            "reference": "https://github.com/Gourieff/ComfyUI-FutureWarningIgnore",
+            "files": [
+                "https://github.com/Gourieff/ComfyUI-FutureWarningIgnore/raw/main/0_FutureWarningIgnore.py"
+            ],
+            "install_type": "copy",
+            "description": "This extension collapses 'future warning'"
+        },
+        {
             "author": "imb101",
             "title": "FaceSwap",
             "reference": "https://github.com/imb101/ComfyUI-FaceSwap",
@@ -2591,14 +2601,14 @@
             "description": "Nodes: LamaaModelLoad, LamaApply, YamlConfigLoader. a costumer node is realized to remove anything/inpainting anything from a picture by mask inpainting.[w/WARN:This extension includes the entire model, which can result in a very long initial installation time, and there may be some compatibility issues with older dependencies and ComfyUI.]"
         },
         {
-            "author": "thedyze",
+            "author": "audioscavenger",
             "title": "Save Image Extended for ComfyUI",
-            "reference": "https://github.com/thedyze/save-image-extended-comfyui",
+            "reference": "https://github.com/audioscavenger/save-image-extended-comfyui",
             "files": [
-                "https://github.com/thedyze/save-image-extended-comfyui"
+                "https://github.com/audioscavenger/save-image-extended-comfyui"
             ],
             "install_type": "git-clone",
-            "description": "Customize the information saved in file- and folder names. Use the values of sampler parameters as part of file or folder names. Save your positive & negative prompt as entries in a JSON (text) file, in each folder."
+            "description": "Upgrade the Save File node: customize subfolders, file names with checkpoint names, or any sampler attribute your want! [w/NOTE: This node is a fork from @thedyze, since the [a/original repository](https://github.com/thedyze/save-image-extended-comfyui) is no longer maintained. Simply *uninstall* the original version and **REINSTALL** this one.]"
         },
         {
             "author": "SOELexicon",
@@ -3791,7 +3801,7 @@
                 "https://github.com/subtleGradient/TinkerBot-tech-for-ComfyUI-Touchpad"
             ],
             "install_type": "git-clone",
-            "description": "Two-finger scrolling (vertical and horizontal) to pan the canvas. Two-finger pinch to zoom in and out. Command-scroll up and down to zoom in and out. Fixes [comfyanonymous/ComfyUI#2059](https://github.com/comfyanonymous/ComfyUI/issues/2059)."
+            "description": "Two-finger scrolling (vertical and horizontal) to pan the canvas. Two-finger pinch to zoom in and out. Command-scroll up and down to zoom in and out. Fixes [a/comfyanonymous/ComfyUI#2059](https://github.com/comfyanonymous/ComfyUI/issues/2059)."
         },
         {
             "author": "zcfrank1st",
@@ -4063,7 +4073,17 @@
                 "https://github.com/AI2lab/comfyUI-tool-2lab"
             ],
             "install_type": "git-clone",
-            "description": "Integrate non-painting capabilities into comfyUI, including data, algorithms, video processing, large models, etc., to facilitate the construction of more powerful workflows."
+            "description": "simple tool set for developing workflow and publish to web api server"
+        },
+        {
+            "author": "AI2lab",
+            "title": "comfyUI-DeepSeek-2lab",
+            "reference": "https://github.com/AI2lab/comfyUI-DeepSeek-2lab",
+            "files": [
+                "https://github.com/AI2lab/comfyUI-DeepSeek-2lab"
+            ],
+            "install_type": "git-clone",
+            "description": "Unofficial implementation of DeepSeek for ComfyUI"
         },
         {
             "author": "SpaceKendo",
@@ -4899,6 +4919,16 @@
             "description": "Nodes:SimDATrain, SimDALoader, SimDARun, VHS_FILENAMES_STRING_SimDA"
         },
         {
+            "author": "chaojie",
+            "title": "ComfyUI-Video-Editing-X-Attention",
+            "reference": "https://github.com/chaojie/ComfyUI-Video-Editing-X-Attention",
+            "files": [
+                "https://github.com/chaojie/ComfyUI-Video-Editing-X-Attention"
+            ],
+            "install_type": "git-clone",
+            "description": "Investigating the Effectiveness of Cross Attention to Unlock Zero-Shot Editing of Text-to-Video Diffusion Models"
+        },
+        {
             "author": "alexopus",
             "title": "ComfyUI Image Saver",
             "reference": "https://github.com/alexopus/ComfyUI-Image-Saver",
@@ -5291,6 +5321,17 @@
             "description": "ComfyUI reference implementation for [a/PhotoMaker](https://github.com/TencentARC/PhotoMaker) models. [w/WARN:The repository name has been changed. For those who have previously installed it, please delete custom_nodes/ComfyUI-PhotoMaker from disk and reinstall this.]"
         },
         {
+            "author": "yytdfc",
+            "title": "Amazon Bedrock nodes for ComfyUI",
+            "reference": "https://github.com/aws-samples/comfyui-llm-node-for-amazon-bedrock",
+            "files": [
+                "https://github.com/aws-samples/comfyui-llm-node-for-amazon-bedrock"
+            ],
+            "pip": ["boto3"],
+            "install_type": "git-clone",
+            "description": "Amazon Bedrock is a fully managed service that offers a choice of high-performing foundation models (FMs) from leading AI companies. This repo is the ComfyUI nodes for Bedrock service. You could invoke the foundation model in your ComfyUI pipeline."
+        },
+        {
             "author": "Qais Malkawi",
             "title": "ComfyUI-Qais-Helper",
             "reference": "https://github.com/QaisMalkawi/ComfyUI-QaisHelper",
@@ -5509,6 +5550,16 @@
             ],
             "install_type": "git-clone",
             "description": "Convert Text-to-Speech inside ComfyUI using [a/Piper](https://github.com/rhasspy/piper)"
+        },
+        {
+            "author": "yuvraj108c",
+            "title": "ComfyUI Upscaler TensorRT",
+            "reference": "https://github.com/yuvraj108c/ComfyUI-Upscaler-Tensorrt",
+            "files": [
+                "https://github.com/yuvraj108c/ComfyUI-Upscaler-Tensorrt"
+            ],
+            "install_type": "git-clone",
+            "description": "This project provides a Tensorrt implementation for fast image upscaling inside ComfyUI (3-4x faster)"
         },
         {
             "author": "blepping",
@@ -5732,13 +5783,13 @@
         },
         {
             "author": "davask",
-            "title": "🐰 MarasIT Nodes",
-            "reference": "https://github.com/davask/ComfyUI-MarasIT-Nodes",
+            "title": "🐰 MaraScott Nodes",
+            "reference": "https://github.com/davask/ComfyUI_MaraScott_Nodes",
             "files": [
-                "https://github.com/davask/ComfyUI-MarasIT-Nodes"
+                "https://github.com/davask/ComfyUI_MaraScott_Nodes"
             ],
             "install_type": "git-clone",
-            "description": "AnyBus Node (AKA UniversalBus or UniBus) is an attempt to provide a Universal Bus Node (as some might say) which is based on AnyType Input/Output.\n[i/INFO:Inspired by :Was Node Suite from WASasquatch, Get/Set nodes from KJNodes, Highway node from Trung0246]"
+            "description": "A set of community node including a universal bus and a large Upscaler/Refiner\n[w/ComfyUI-MarasIT-Nodes has been changed to ComfyUI_MaraScott_Nodes. If you have previously installed ComfyUI-MarasIT-Nodes, Please uninstall the previous one and reinstall this.]"
         },
         {
             "author": "yffyhk",
@@ -5929,16 +5980,6 @@
             ],
             "install_type": "git-clone",
             "description": "Nodes:Cascade Resolutions"
-        },
-        {
-            "author": "yytdfc",
-            "title": "Amazon Bedrock nodes for for ComfyUI",
-            "reference": "https://github.com/yytdfc/ComfyUI-Bedrock",
-            "files": [
-                "https://github.com/yytdfc/ComfyUI-Bedrock"
-            ],
-            "install_type": "git-clone",
-            "description": "This extension provides fundation models nodes from Amazon Bedrock, including Claude (v1, v2.0, v2.1), SDXL."
         },
         {
             "author": "mirabarukaso",
@@ -7778,7 +7819,7 @@
                 "https://github.com/chrisfreilich/virtuoso-nodes"
             ],
             "install_type": "git-clone",
-            "description": "Photoshop type functions: 30 blend modes, Selective Color, Blend If, Color Balance, Solid Color Images, and RGB Splitting and Merging."
+            "description": "Photoshop type functions and adjustment layers: 30 blend modes, Selective Color, Blend If, Color Balance, Solid Color Images, Black and White, Hue/Saturation, Levels, and RGB Splitting and Merging."
         },
         {
             "author": "Shinsplat",
@@ -7880,7 +7921,96 @@
             "install_type": "git-clone",
             "description": "This is a node for using cohere (Command R+) from ComfyUI. You need to edit the startup .bat file of ComfyUI and describe the API key obtained from Cohere as follows."
         },
-        
+        {
+            "author": "alessandrozonta",
+            "title": "Bounding Box Crop Node for ComfyUI",
+            "reference": "https://github.com/alessandrozonta/ComfyUI-CenterNode",
+            "files": [
+                "https://github.com/alessandrozonta/ComfyUI-CenterNode"
+            ],
+            "install_type": "git-clone",
+            "description": "This extension contains a custom node for ComfyUI. The node, called 'Bounding Box Crop', is designed to compute the top-left coordinates of a cropped bounding box based on input coordinates and dimensions of the final cropped image. It does so computing the center of the cropping area and then computing where the top-left coordinates would be."
+        },
+        {
+            "author": "curiousjp",
+            "title": "ComfyUI-MaskBatchPermutations",
+            "reference": "https://github.com/curiousjp/ComfyUI-MaskBatchPermutations",
+            "files": [
+                "https://github.com/curiousjp/ComfyUI-MaskBatchPermutations"
+            ],
+            "install_type": "git-clone",
+            "description": "Permutes a mask batch to present possible additive combinations. Passing a mask batch (e.g. out of [a/SEGS to Mask Batch](https://github.com/ltdrdata/ComfyUI-Impact-Pack)) will return a new mask batch representing all the possible combinations of the included masks. So, a mask batch with two mask sections, 'A' and 'B', will return a batch containing an empty mask, an empty mask & A, an empty mask & B, and an empty mask & A & B."
+        },
+        {
+            "author": "BAIS1C",
+            "title": "ComfyUI_RSS_Feed_Reader",
+            "reference": "https://github.com/BAIS1C/ComfyUI_RSS_Feed_Reader",
+            "files": [
+                "https://github.com/BAIS1C/ComfyUI_RSS_Feed_Reader"
+            ],
+            "install_type": "git-clone",
+            "description": "A Simple Python RSS Feed Reader to create Prompts in Comfy UI"
+        },
+        {
+            "author": "runtime44",
+            "title": "Runtime44 ComfyUI Nodes",
+            "reference": "https://github.com/runtime44/comfyui_r44_nodes",
+            "files": [
+                "https://github.com/runtime44/comfyui_r44_nodes"
+            ],
+            "install_type": "git-clone",
+            "description": "Nodes: Runtime44Upscaler, Runtime44ColorMatch, Runtime44DynamicKSampler, Runtime44ImageOverlay, Runtime44ImageResizer, Runtime44ImageToNoise, Runtime44MaskSampler, Runtime44TiledMaskSampler, Runtime44IterativeUpscaleFactor, Runtime44ImageEnhance"
+        },
+        {
+            "author": "osiworx",
+            "title": "ComfyUI_Prompt-Quill",
+            "reference": "https://github.com/osi1880vr/prompt_quill_comfyui",
+            "files": [
+                "https://github.com/osi1880vr/prompt_quill_comfyui"
+            ],
+            "install_type": "git-clone",
+            "description": "Nodes:Use Prompt Quill in Comfyui"
+        },
+        {
+            "author": "AIFSH",
+            "title": "ComfyUI-FishSpeech",
+            "reference": "https://github.com/AIFSH/ComfyUI-FishSpeech",
+            "files": [
+                "https://github.com/AIFSH/ComfyUI-FishSpeech"
+            ],
+            "install_type": "git-clone",
+            "description": "a custom comfyui node for [a/fish-speech](https://github.com/fishaudio/fish-speech.git)"
+        },
+        {
+            "author": "philz1337x",
+            "title": "✨ Clarity AI - Creative Image Upscaler and Enhancer for ComfyUI",
+            "reference": "https://github.com/philz1337x/ComfyUI-ClarityAI",
+            "files": [
+                "https://github.com/philz1337x/ComfyUI-ClarityAI"
+            ],
+            "install_type": "git-clone",
+            "description": "[a/Clarity AI](https://clarityai.cc) is a creative image enhancer and is able to upscale to high resolution. [w/NOTE: This is a Magnific AI alternative for ComfyUI.] \nCreate an API key on [a/ClarityAI.cc/api](https://clarityai.cc/api) and add to environment variable 'CAI_API_KEY'\nAlternatively you can write your API key to file 'cai_platform_key.txt'\nYou can also use and/or override the above by entering your API key in the 'api_key_override' field of the node."
+        },
+        {
+            "author": "KoreTeknology",
+            "title": "ComfyUI Universal Styler",
+            "reference": "https://github.com/KoreTeknology/ComfyUI-Universal-Styler",
+            "files": [
+                "https://github.com/KoreTeknology/ComfyUI-Universal-Styler"
+            ],
+            "install_type": "git-clone",
+            "description": "A research Node based project on Artificial Intelligence using ComfyUI visual editor with Stable diffusion Local processing focus in mind. This custom node is intended to serve the purpose to offer a large palette of prompting scenrarios, based on Public Checkpoint Models OR/AND Private custom Models and LoRas. It includes an integrated learning machine process as well as a set of workflows."
+        },
+        {
+            "author": "ZeDarkAdam",
+            "title": "ComfyUI-Embeddings-Tools",
+            "reference": "https://github.com/ZeDarkAdam/ComfyUI-Embeddings-Tools",
+            "files": [
+                "https://github.com/ZeDarkAdam/ComfyUI-Embeddings-Tools"
+            ],
+            "install_type": "git-clone",
+            "description": "EmbeddingsNameLoader, EmbendingList"
+        },
         
         
         
