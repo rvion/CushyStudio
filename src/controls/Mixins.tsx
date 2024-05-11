@@ -144,4 +144,29 @@ export abstract class BaseWidget {
         if (BodyUI == null) return
         return <BodyUI widget={this} />
     }
+
+    // --------------------------------------------------------------------------------
+    // 🔶 the 5 getters bellow are temporary hacks to make shared keep working
+    // until every shared usage has been migrated
+
+    /** getter that resolve to `this.spec.producers` */
+    get producers() {
+        return this.spec.producers
+    }
+    /** getter that resolve to `this.spec.publish` */
+    get publish() {
+        return this.spec.publish
+    }
+    /** getter that resolve to `this.spec.subscribe` */
+    get subscribe() {
+        return this.spec.subscribe
+    }
+    /** getter that resolve to `this.spec.reactions` */
+    get reactions() {
+        return this.spec.reactions
+    }
+    /** getter that resolve to `this.spec.addReaction` */
+    get addReaction() {
+        return this.spec.addReaction
+    }
 }
