@@ -14,3 +14,5 @@ export const Ikon: {
         return (target[key] = (p: any) => <Icon path={(icons as any)[key]} size={1} {...p} />)
     },
 }) as any
+
+export const getAllIcons = () => Object.keys(icons) as (keyof typeof icons)[]
