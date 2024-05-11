@@ -1,7 +1,8 @@
 import { mdiGithub, mdiPost } from '@mdi/js'
-import Icon from '@mdi/react'
+import { Icon } from '@mdi/react'
 import { observer } from 'mobx-react-lite'
 
+import { Ikon } from '../../icons/iconHelpers'
 import { Dropdown, MenuItem } from '../../rsuite/Dropdown'
 
 export const MenuHelpUI = observer(function MenuHelpUI_(p: {}) {
@@ -20,7 +21,7 @@ export const MenuHelpUI = observer(function MenuHelpUI_(p: {}) {
                         onClick={() => {
                             window.require('electron').shell.openExternal('https://github.com/rvion/CushyStudio#readme')
                         }}
-                        icon={<Icon path={mdiGithub} size={1} />}
+                        icon={<Ikon.mdiGithub />}
                         label='Open Github'
                     />
                     <MenuItem

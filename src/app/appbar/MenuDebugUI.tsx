@@ -2,6 +2,7 @@ import { observer } from 'mobx-react-lite'
 
 import { getDBStats } from '../../db/getDBStats'
 import { quickBench } from '../../db/quickBench'
+import { Ikon } from '../../icons/iconHelpers'
 import { activityManger } from '../../operators/Activity'
 import { DEMO_ACTIVITY } from '../../operators/useDebugActivity'
 import { Dropdown, MenuItem } from '../../rsuite/Dropdown'
@@ -17,7 +18,7 @@ export const MenuDebugUI = observer(function MenuDebugUI_(p: {}) {
             content={() => (
                 <>
                     <MenuItem
-                        icon={<span className='material-symbols-outlined text-green-500'>panorama_horizontal</span>}
+                        icon={<Ikon.mdiAutoFix className='text-green-500' />}
                         onClick={st.layout.resetCurrent}
                         shortcut={KEYS.resetLayout}
                         label='Fix Layout'
