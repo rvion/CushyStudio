@@ -92,6 +92,8 @@
         "@lezer/generator": "^1.7.0",
         "@lezer/highlight": "^1.2.0",
         "@lezer/lr": "^1.4.0",
+        "@mdi/js": "^7.4.47",
+        "@mdi/react": "^1.6.1",
         "@react-hook/resize-observer": "^1.2.6",
         "@react-three/drei": "^9.105.5",
         "@react-three/fiber": "^8.16.2",
