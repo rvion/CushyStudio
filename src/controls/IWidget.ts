@@ -1,7 +1,7 @@
+import type { BaseWidget } from './BaseWidget'
 import type { CovariantFC } from './CovariantFC'
 import type { Form } from './Form'
 import type { ISpec } from './ISpec'
-import type { BaseWidget } from './Mixins'
 import type { Problem_Ext } from './Validation'
 
 /**

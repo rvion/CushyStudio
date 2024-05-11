@@ -8,7 +8,7 @@ import { nanoid } from 'nanoid'
 import { makeLabelFromFieldName } from '../../../utils/misc/makeLabelFromFieldName'
 import { toastError } from '../../../utils/misc/toasts'
 import { makeAutoObservableInheritance } from '../../../utils/mobx-store-inheritance'
-import { BaseWidget } from '../../Mixins'
+import { BaseWidget } from '../../BaseWidget'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { WidgetChoices_BodyUI, WidgetChoices_HeaderUI } from './WidgetChoicesUI'
 

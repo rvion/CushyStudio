@@ -8,7 +8,7 @@ import type { Tree } from '@lezer/common'
 import { nanoid } from 'nanoid'
 
 import { makeAutoObservableInheritance } from '../../../utils/mobx-store-inheritance'
-import { BaseWidget } from '../../Mixins'
+import { BaseWidget } from '../../BaseWidget'
 import { registerWidgetClass } from '../WidgetUI.DI'
 import { compilePrompt } from './_compile'
 import { parser } from './grammar/grammar.parser'

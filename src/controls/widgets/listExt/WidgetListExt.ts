@@ -8,7 +8,7 @@ import { runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
 import { makeAutoObservableInheritance } from '../../../utils/mobx-store-inheritance'
-import { BaseWidget } from '../../Mixins'
+import { BaseWidget } from '../../BaseWidget'
 import { runWithGlobalForm } from '../../shared/runWithGlobalForm'
 import { ResolutionState } from '../size/ResolutionState'
 import { registerWidgetClass } from '../WidgetUI.DI'

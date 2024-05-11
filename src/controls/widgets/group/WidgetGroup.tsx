@@ -8,7 +8,7 @@ import { nanoid } from 'nanoid'
 
 import { bang } from '../../../utils/misc/bang'
 import { makeAutoObservableInheritance } from '../../../utils/mobx-store-inheritance'
-import { BaseWidget } from '../../Mixins'
+import { BaseWidget } from '../../BaseWidget'
 import { getActualWidgetToDisplay } from '../../shared/getActualWidgetToDisplay'
 import { getIfWidgetIsCollapsible } from '../../shared/getIfWidgetIsCollapsible'
 import { runWithGlobalForm } from '../../shared/runWithGlobalForm'
