@@ -29,6 +29,9 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: { w
                         <div tw='whitespace-nowrap'>
                             {image?.width} x {image?.height}
                         </div>
+                        <div onClick={() => (widget.value = cushy.defaultImage)} tw='btn btn-xs'>
+                            reset
+                        </div>
                     </div>
                     {suggestedAsset && (
                         <div tw='bd1'>
