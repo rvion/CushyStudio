@@ -2,6 +2,7 @@ import type { Widget_image } from './WidgetImage'
 
 import { observer } from 'mobx-react-lite'
 
+import { createMediaImage_fromPath } from '../../../models/createMediaImage_fromWebFile'
 import { useSt } from '../../../state/stateContext'
 import { useImageDrop } from '../../../widgets/galleries/dnd'
 import { ImageUI } from '../../../widgets/galleries/ImageUI'
@@ -13,6 +14,7 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: { w
         widget.value = imageL
     })
     const image = widget.value
+    const suggestedAsset = p.widget.config.assetSuggested
     return (
         <div
             style={dropStyle}
@@ -28,6 +30,17 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: { w
                             {image?.width} x {image?.height}
                         </div>
                     </div>
+                    {suggestedAsset && (
+                        <div tw='bd1'>
+                            <div tw='text-xs text-gray-500'>suggested</div>
+                            <img
+                                tw='w-16 h-16 object-cover cursor-pointer'
+                                onClick={() => (widget.value = createMediaImage_fromPath(st, suggestedAsset))}
+                                src={suggestedAsset}
+                                alt='suggested asset'
+                            />
+                        </div>
+                    )}
                     {/* {widget instanceof Widget_imageOpt ? (
                         <Button size='sm' onClick={() => (widget.state.active = false)}>
                             X
