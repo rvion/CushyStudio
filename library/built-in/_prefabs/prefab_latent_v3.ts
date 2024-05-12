@@ -18,7 +18,11 @@ export const ui_latent_v3 = () => {
             image: form.group({
                 collapsed: false,
                 border: false,
-                items: { batchSize, image: form.image() },
+                items: {
+                    batchSize,
+                    image: form.image(),
+                    resize: form.auto.Image_Resize().optional(),
+                },
             }),
         },
     })
@@ -38,10 +42,22 @@ export const run_latent_v3 = async (p: { opts: OutputFor<typeof ui_latent_v3>; v
     // case 1. start form image
     if (opts.image) {
         const _img = run.loadImage(opts.image.image.id)
-        const image = await _img.loadInWorkflow()
+        let image: _IMAGE = await _img.loadInWorkflow()
+        if (opts.image.resize) {
+            image = graph.Image_Resize({ image, ...opts.image.resize })
+            if (opts.image.resize.mode === 'rescale') {
+                width = _img.width * opts.image.resize.rescale_factor
+                height = _img.height * opts.image.resize.rescale_factor
+            } else {
+                width = opts.image.resize.resize_width
+                height = opts.image.resize.resize_height
+            }
+        } else {
+            width = _img.width
+            height = _img.height
+        }
+
         latent = graph.VAEEncode({ pixels: image, vae: p.vae })
-        width = _img.width
-        height = _img.height
 
         if (opts.image.batchSize > 1) {
             latent = graph.RepeatLatentBatch({
