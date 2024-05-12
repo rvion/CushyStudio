@@ -19,7 +19,7 @@ export type Widget_image_config = WidgetConfigFields<
     {
         defaultActive?: boolean
         suggestionWhere?: SQLWhere<MediaImageT>
-        assetSuggested?: RelativePath
+        assetSuggested?: RelativePath | RelativePath[]
     },
     Widget_image_types
 >

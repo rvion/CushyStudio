@@ -14,7 +14,9 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: { w
         widget.value = imageL
     })
     const image = widget.value
-    const suggestedAsset = p.widget.config.assetSuggested
+    const suggestionsRaw = p.widget.config.assetSuggested
+    const suggestions: RelativePath[] =
+        suggestionsRaw == null ? [] : Array.isArray(suggestionsRaw) ? suggestionsRaw : [suggestionsRaw]
     return (
         <div
             style={dropStyle}
@@ -33,15 +35,18 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: { w
                             reset
                         </div>
                     </div>
-                    {suggestedAsset && (
+                    {suggestions.length > 0 && (
                         <div tw='bd1'>
                             <div tw='text-xs text-gray-500'>suggested</div>
-                            <img
-                                tw='w-16 h-16 object-cover cursor-pointer'
-                                onClick={() => (widget.value = createMediaImage_fromPath(st, suggestedAsset))}
-                                src={suggestedAsset}
-                                alt='suggested asset'
-                            />
+                            {suggestions.map((relPath) => (
+                                <img
+                                    key={relPath}
+                                    tw='w-16 h-16 object-cover cursor-pointer'
+                                    onClick={() => (widget.value = createMediaImage_fromPath(st, relPath))}
+                                    src={relPath}
+                                    alt='suggested asset'
+                                />
+                            ))}
                         </div>
                     )}
                     {/* {widget instanceof Widget_imageOpt ? (
