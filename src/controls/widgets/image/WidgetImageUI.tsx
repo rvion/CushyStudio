@@ -24,8 +24,9 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: { w
                 <div tw='flex items-start gap-1'>
                     <ImageUI tw='virtualBorder' size={'5rem'} img={image} />
                     <div tw='text-sm italic text-gray-500'>
-                        <div>width: {image?.width}</div>
-                        <div>height: {image?.height}</div>
+                        <div tw='whitespace-nowrap'>
+                            {image?.width} x {image?.height}
+                        </div>
                     </div>
                     {/* {widget instanceof Widget_imageOpt ? (
                         <Button size='sm' onClick={() => (widget.state.active = false)}>
