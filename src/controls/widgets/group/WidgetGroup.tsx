@@ -176,12 +176,16 @@ export class Widget_group<T extends SchemaDict> extends BaseWidget implements IW
         this.value = val
     }
 
+    setPartialValue(val: Partial<Widget_group_value<T>>) {
+        runInAction(() => {
+            for (const key in val) this.fields[key].setValue(val[key])
+            this.bumpValue()
+        })
+    }
+
     set value(val: Widget_group_value<T>) {
         runInAction(() => {
-            for (const key in val) {
-                // console.log(`[🤠] (key=A) B.setValue(C)`, key, this.fields[key], val[key])
-                this.fields[key].setValue(val[key])
-            }
+            for (const key in val) this.fields[key].setValue(val[key])
             this.bumpValue()
         })
     }
