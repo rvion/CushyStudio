@@ -167,6 +167,7 @@ export class Widget_group<T extends SchemaDict> extends BaseWidget implements IW
 
         makeAutoObservableInheritance(this, {
             value: false,
+            __value: false,
             DefaultHeaderUI: false,
         })
     }
@@ -185,9 +186,11 @@ export class Widget_group<T extends SchemaDict> extends BaseWidget implements IW
         })
     }
     get value() {
-        return this.valueLazy
+        return this.__value
     }
-    private valueLazy: { [k in keyof T]: GetWidgetResult<T[k]> } = new Proxy({} as any, {
+
+    // @internal
+    __value: { [k in keyof T]: GetWidgetResult<T[k]> } = new Proxy({} as any, {
         ownKeys: (target) => {
             return Object.keys(this.fields)
         },
