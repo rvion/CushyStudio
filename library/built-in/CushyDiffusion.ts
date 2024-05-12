@@ -8,7 +8,7 @@ import { run_Dispacement1, run_Dispacement2, ui_3dDisplacement } from './_prefab
 import { run_refiners_fromImage, ui_refiners } from './_prefabs/prefab_detailer'
 import { run_latent_v3, ui_latent_v3 } from './_prefabs/prefab_latent_v3'
 import { output_demo_summary } from './_prefabs/prefab_markdown'
-import { ui_mask } from './_prefabs/prefab_mask'
+import { run_mask, ui_mask } from './_prefabs/prefab_mask'
 import { run_model, run_model_modifiers, ui_model } from './_prefabs/prefab_model'
 import { run_prompt } from './_prefabs/prefab_prompt'
 import { run_advancedPrompt, ui_advancedPrompt } from './_prefabs/prefab_promptsWithButtons'
@@ -133,12 +133,8 @@ app({
         //     /* 🔴 */ mask = await imgCtx.loadInWorkflowAsMask('alpha')
         //     /* 🔴 */ latent = graph.SetLatentNoiseMask({ mask, samples: latent })
         // } else
-        let mask: Maybe<_MASK>
-        if (ui.mask.mask) {
-            mask = await ui.mask.mask.image.loadInWorkflowAsMask(ui.mask.mask.mode)
-            if (ui.mask.mask.invert) mask = graph.InvertMask({ mask: mask })
-            latent = graph.SetLatentNoiseMask({ mask: mask, samples: latent })
-        }
+        let mask: Maybe<_MASK> = await run_mask(ui.mask)
+        if (mask) latent = graph.SetLatentNoiseMask({ mask, samples: latent })
 
         // CNETS -------------------------------------------------------------------------------
         let cnet_out: Cnet_return | undefined
