@@ -1,12 +1,10 @@
 import type { GroupProps } from '@react-three/fiber'
 import type { Group } from 'three'
 
-import { Environment, Html, Image, OrbitControls, Sparkles, Stage, useGLTF } from '@react-three/drei'
-import { Canvas, useFrame } from '@react-three/fiber'
+import { Html, Image, useGLTF } from '@react-three/drei'
+import { useFrame } from '@react-three/fiber'
 import { observer, useLocalObservable } from 'mobx-react-lite'
 import { useEffect, useMemo, useRef } from 'react'
-
-import { FormSerial } from '../../../src/controls/FormSerial'
 
 /** this custom view  */
 export const CustomViewSpriteSheet = view<{
@@ -173,33 +171,3 @@ const Can3 = observer(
     },
     { forwardRef: true },
 )
-
-// useGLTF.preload('/can3.glb')
-
-// const [depthMap] = useTexture([p.texture])
-// const n = 6
-// // return null
-/*     const k = Kwery.get('coke-texture', { a: p.texture }, async () => {
-        try {
-            // save image
-            const img = await fetch(p.texture)
-            const blob = await img.blob()
-            writeFileSync('/Users/loco/dev/CushyStudio/public/can/img-custom.png', new Uint8Array(await blob.arrayBuffer()))
-            // save modified gltf
-            const res = await fetch('/public/can/scene.gltf?foo=1')
-            const out = await res.json()
-            ;(out as any).images[0].uri = 'img-custom.png' //p.texture
-            writeFileSync('/Users/loco/dev/CushyStudio/public/can/scene-custom.gltf', JSON.stringify(out))
-            // be happy
-            console.log(`[🔴 2] `, out)
-            return out
-        } catch (e) {
-            console.log(`[🔴 3] `, e)
-        }
-    }) */
-// if (k.value === null) return null
-// console.log(`[🔴] 3`, k.value)
-// console.log(`[🔴] 4`, k.value)
-// const fakeURL1 = URL.createObjectURL(new Blob([JSON.stringify(k.value)], { type: 'application/json' }))
-// const fakeURL2 = new URL(fakeURL1, 'http://localhost:8788/public/can/').toString()
-// console.log(`[🔴 5] `, fakeURL2)

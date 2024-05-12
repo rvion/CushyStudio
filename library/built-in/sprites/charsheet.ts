@@ -5,7 +5,11 @@ app({
     },
     ui: (ui) => ({
         baseImage: ui.image({
-            assetSuggested: 'library/built-in/sprites/charsheet.png' as RelativePath,
+            assetSuggested: [
+                //
+                'library/built-in/sprites/charsheet.png',
+                'library/built-in/sprites/run-1.png',
+            ] as RelativePath[],
         }),
     }),
     run: async (run, ui) => {},
