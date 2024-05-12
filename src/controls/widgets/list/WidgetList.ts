@@ -79,10 +79,8 @@ export type Widget_list_types<T extends ISpec> = {
 export interface Widget_list<T extends ISpec> extends Widget_list_types<T> {}
 export class Widget_list<T extends ISpec> extends BaseWidget implements IWidget<Widget_list_types<T>> {
     DefaultHeaderUI = WidgetList_LineUI
-    get DefaultBodyUI() {
-        // if (this.items.length === 0) return
-        return WidgetList_BodyUI
-    }
+    DefaultBodyUI = WidgetList_BodyUI
+
     readonly id: string
     get config() { return this.spec.config } // prettier-ignore
     readonly type: 'list' = 'list'
@@ -187,7 +185,10 @@ export class Widget_list<T extends ISpec> extends BaseWidget implements IWidget<
         const missingItems = (this.config.min ?? 0) - this.items.length
         for (let i = 0; i < missingItems; i++) this.addItem({ skipBump: true })
 
-        makeAutoObservableInheritance(this)
+        makeAutoObservableInheritance(this, {
+            DefaultHeaderUI: false,
+            DefaultBodyUI: false,
+        })
         this.startAutoBehaviour()
     }
 

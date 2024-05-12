@@ -165,7 +165,10 @@ export class Widget_group<T extends SchemaDict> extends BaseWidget implements IW
         // we keep the old values in case those are just temporarilly removed, or in case
         // those will be lazily added later though global usage
 
-        makeAutoObservableInheritance(this, { value: false })
+        makeAutoObservableInheritance(this, {
+            value: false,
+            DefaultHeaderUI: false,
+        })
     }
 
     setValue(val: Widget_group_value<T>) {

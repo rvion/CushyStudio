@@ -70,7 +70,10 @@ export class Widget_image extends BaseWidget implements IWidget<Widget_image_typ
             id: this.id,
             imageID: cushy.defaultImage.id,
         }
-        makeAutoObservableInheritance(this)
+        makeAutoObservableInheritance(this, {
+            DefaultHeaderUI: false,
+            DefaultBodyUI: false,
+        })
     }
     get value(): MediaImageL {
         return cushy.db.media_image.get(this.serial.imageID)!
