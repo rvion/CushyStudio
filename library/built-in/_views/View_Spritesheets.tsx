@@ -22,14 +22,20 @@ const SpriteSheet = observer(function CanUI_(p: { imageID: MediaImageID | null }
         (ui) =>
             ui.fields(
                 {
-                    row: ui.int({ default: 4 }),
-                    col: ui.int({ default: 4 }),
+                    row: ui.int({ min: 1, default: /* 4 */ 1 }),
+                    col: ui.int({ min: 1, default: /* 4 */ 6 }),
                     border: ui.int({ default: 0 }),
                     padding: ui.int({ default: 0 }),
                     fps: ui.int({ default: 8, min: 1 }),
-                    imagePerAnim: ui.int({ default: 4 }),
+                    imagePerAnim: ui.int({ default: 6 }),
                 },
-                { label: 'controls' },
+                {
+                    label: 'controls',
+                    presets: {
+                        '4 dirs': (f) => f.setPartialValue({ row: 4, col: 4, imagePerAnim: 4 }),
+                        'run 1x6': (f) => f.setPartialValue({ row: 1, col: 6, imagePerAnim: 6 }),
+                    },
+                },
             ),
         {
             name: 'Spritesheet Showcase',
