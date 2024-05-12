@@ -20,6 +20,7 @@ import { run_upscaleWithModel, ui_upscaleWithModel } from './_prefabs/prefab_ups
 import { run_addFancyWatermarkToAllImage, run_watermark_v1, ui_watermark_v1 } from './_prefabs/prefab_watermark'
 import { run_customSave, ui_customSave } from './_prefabs/saveSmall'
 import { CustomView3dCan } from './_views/View_3d_TinCan'
+import { CustomViewSpriteSheet } from './_views/View_Spritesheets'
 
 app({
     metadata: {
@@ -78,6 +79,7 @@ app({
                 gaussianSplat: form.group(),
                 promtPlus: ui_advancedPrompt(),
                 displayAsBeerCan: form.group({}),
+                displayAsSpriteSheet: form.group({}),
                 recursiveImgToImg: ui_recursive(),
                 watermark: ui_watermark_v1(),
                 fancyWatermark: form.group(),
@@ -272,6 +274,8 @@ app({
         if (ui.extra?.summary) output_demo_summary(run)
         if (show3d) run_Dispacement2('base')
         if (ui.extra.displayAsBeerCan) run.output_custom({ view: CustomView3dCan, params: { imageID: run.lastImage?.id } })
+        if (ui.extra.displayAsSpriteSheet)
+            run.output_custom({ view: CustomViewSpriteSheet, params: { imageID: run.lastImage?.id } })
 
         // LOOP IF NEED BE -----------------------------------------------------------------------
         if (ui.extra.watermark) run_watermark_v1(ui.extra.watermark, run.lastImage)
