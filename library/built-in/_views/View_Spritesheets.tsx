@@ -56,12 +56,12 @@ const SpriteSheet = observer(function CanUI_(p: { imageID: MediaImageID | null }
                     const nth = v.imagePerAnim
                     let startIx = i * v.imagePerAnim + (uist.step % v.imagePerAnim)
                     let nthCol = startIx % v.col
-                    let nthRow = Math.floor(startIx / v.row)
+                    let nthRow = Math.floor(startIx / v.col)
                     let startX = nthCol * cellWidth
                     let startY = nthRow * cellHeight
                     return (
                         <div key={i} tw='bd'>
-                            {/* {startIx} */}
+                            ({startX}, {startY}){/* {startIx} */}
                             <img
                                 src={image?.url}
                                 style={{
