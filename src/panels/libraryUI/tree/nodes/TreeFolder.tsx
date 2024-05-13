@@ -1,4 +1,3 @@
-import type { STATE } from '../../../../state/state'
 import type { ITreeElement, ITreeEntry, TreeEntryAction } from '../TreeEntry'
 
 import { readdirSync, statSync } from 'fs'
@@ -11,10 +10,7 @@ import { TreeNode } from '../xxx/TreeNode'
 import { TreeFile } from './TreeFile'
 
 export class TreeFolder implements ITreeEntry<RelativePath> {
-    constructor(
-        public st: STATE,
-        public path: RelativePath,
-    ) {
+    constructor(public path: RelativePath) {
         makeAutoObservable(this)
     }
     get id(){return `path#${this.path}`} //prettier-ignore

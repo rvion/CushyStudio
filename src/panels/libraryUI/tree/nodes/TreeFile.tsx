@@ -1,4 +1,3 @@
-import type { STATE } from '../../../../state/state'
 import type { TreeNode } from '../xxx/TreeNode'
 
 import { makeAutoObservable } from 'mobx'
@@ -17,12 +16,8 @@ export class TreeFile implements ITreeEntry {
         await this.file.extractScriptFromFileAndUpdateApps()
     }
 
-    constructor(
-        //
-        public st: STATE,
-        public path: RelativePath,
-    ) {
-        this.file = st.library.getFile(path)
+    constructor(public path: RelativePath) {
+        this.file = cushy.library.getFile(path)
         makeAutoObservable(this)
     }
 

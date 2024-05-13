@@ -1,6 +1,5 @@
 import type { CushyAppL } from '../../../../models/CushyApp'
 import type { DraftL } from '../../../../models/Draft'
-import type { STATE } from '../../../../state/state'
 import type { VirtualFolder } from '../../VirtualHierarchy'
 import type { ITreeElement, ITreeEntry, TreeEntryAction } from '../TreeEntry'
 import type { TreeNode } from '../xxx/TreeNode'
@@ -14,12 +13,11 @@ import { TreeDraftFolder } from './TreeDraftFolders'
 
 export class TreeApp implements ITreeEntry {
     app?: Maybe<CushyAppL>
+    get st() { return cushy } // prettier-ignore
     constructor(
-        //
-        public st: STATE,
         public appID: CushyAppID, // public app: CushyAppL,
     ) {
-        this.app = st.db.cushy_app.get(appID)
+        this.app = cushy.db.cushy_app.get(appID)
         makeAutoObservable(this)
     }
 

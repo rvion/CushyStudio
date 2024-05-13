@@ -15,7 +15,7 @@ export const treeElement = <P>(e: ITreeElement<P>): ITreeElement<P> => e
 
 export type ITreeElement<P = any> = {
     key: string
-    ctor: { new (st: STATE, p: P): ITreeEntry } | ((st: STATE, p: P) => ITreeEntry)
+    ctor: { new (p: P): ITreeEntry } | ((p: P) => ITreeEntry)
     props: P
 }
 
