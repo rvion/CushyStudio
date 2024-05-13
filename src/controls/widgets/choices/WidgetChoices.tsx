@@ -175,6 +175,14 @@ export class Widget_choices<T extends SchemaDict = SchemaDict> extends BaseWidge
         })
     }
 
+    get subWidgets() {
+        return Object.values(this.children)
+    }
+
+    get subWidgetsWithKeys() {
+        return Object.entries(this.children).map(([key, widget]) => ({ key, widget }))
+    }
+
     toggleBranch(branch: keyof T & string) {
         // 💬 2024-03-15 rvion: no need to bumpValue in this function;
         // | it's handled by enableBranch and disableBranch themselves.

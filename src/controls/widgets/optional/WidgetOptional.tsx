@@ -123,6 +123,15 @@ export class Widget_optional<T extends ISpec = ISpec> extends BaseWidget impleme
     setValue(val: Widget_optional_value<T>) {
         this.value = val
     }
+
+    get subWidgets() {
+        return this.serial.active ? [this.child] : []
+    }
+
+    get subWidgetsWithKeys() {
+        return this.serial.active ? [{ key: 'child', widget: this.child }] : []
+    }
+
     set value(next: Widget_optional_value<T>) {
         if (next == null) {
             this.setActive(false)

@@ -145,6 +145,15 @@ export abstract class BaseWidget {
         return <BodyUI widget={this} />
     }
 
+    /** list of all subwidgets, without named keys */
+    get subWidgets(): IWidget[] {
+        return []
+    }
+    /** list of all subwidgets, without named keys */
+    get subWidgetsWithKeys(): { key: string; widget: IWidget }[] {
+        return []
+    }
+
     // --------------------------------------------------------------------------------
     // 🔶 the 5 getters bellow are temporary hacks to make shared keep working
     // until every shared usage has been migrated

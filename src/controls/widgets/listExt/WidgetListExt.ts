@@ -149,6 +149,14 @@ export class Widget_listExt<T extends ISpec> extends BaseWidget implements IWidg
         makeAutoObservableInheritance(this, { sizeHelper: false })
     }
 
+    get subWidgets() {
+        return this.items
+    }
+
+    get subWidgetsWithKeys() {
+        return this.items.map((widget, ix) => ({ key: ix.toString(), widget }))
+    }
+
     schemaAt = (ix: number): T => {
         const _schema = this.config.element
         const schema: T =

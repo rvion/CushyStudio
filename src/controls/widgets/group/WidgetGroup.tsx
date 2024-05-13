@@ -183,6 +183,14 @@ export class Widget_group<T extends SchemaDict> extends BaseWidget implements IW
         })
     }
 
+    get subWidgets() {
+        return Object.values(this.fields)
+    }
+
+    get subWidgetsWithKeys() {
+        return Object.entries(this.fields).map(([key, widget]) => ({ key, widget }))
+    }
+
     set value(val: Widget_group_value<T>) {
         runInAction(() => {
             for (const key in val) this.fields[key].setValue(val[key])
