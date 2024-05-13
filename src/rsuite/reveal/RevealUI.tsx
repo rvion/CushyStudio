@@ -48,7 +48,11 @@ export const RevealUI = observer(function RevealUI_(p: RevealProps) {
             ref={ref}
             style={p.style}
             // style={{ ...p.style, ...uistOrNull?.debugColor }}
-            onContextMenu={() => uist2().toggleLock()}
+            onContextMenu={(ev) => {
+                uist2().toggleLock()
+                ev.preventDefault() //  = prevent window on non-electron apps
+                ev.stopPropagation() // = right click is consumed
+            }}
             onMouseEnter={() => uist2().onMouseEnterAnchor()}
             onMouseLeave={() => uist2().onMouseLeaveAnchor()}
             onClick={(ev) => {
