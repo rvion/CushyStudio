@@ -1,25 +1,7 @@
-import type { STATE } from '../../../state/state'
-import type { TreeApp } from './nodes/TreeApp'
-import type { TreeDraft } from './nodes/TreeDraft'
-import type { TreeError } from './nodes/TreeError'
-import type { TreeFavoriteApps } from './nodes/TreeFavorites'
-import type { TreeFile } from './nodes/TreeFile'
-import type { TreeFolder } from './nodes/TreeFolder'
 import type { TreeNode } from './xxx/TreeNode'
-// import type { TreeRoot } from './nodes/TreeRoot'
 import type { ReactNode } from 'react'
 
 export type TreeItemID = string
-
-// prettier-ignore
-export type TreeEntry =
-    | TreeFolder
-    | TreeFile
-    | TreeDraft
-    | TreeApp
-    // | TreeRoot
-    | TreeFavoriteApps
-    | TreeError
 
 export type TreeEntryAction = {
     name: string
