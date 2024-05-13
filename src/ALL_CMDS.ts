@@ -3,7 +3,7 @@
 import './operators/commands/cmd_copyImage'
 import './operators/commands/cmd_favorites'
 import './operators/commands/cmd_goTo'
-import './panels/Panel_Canvas/states/cmd_unifiedCanvas'
+import './panels/Panel_Canvas/commands/cmd_unifiedCanvas'
 
 import { allCommandsV1 } from './app/shortcuts/cmd_mix'
 import {
@@ -23,7 +23,7 @@ import {
 import {
     cmd_unifiedCanvas_activateGenerateTool,
     cmd_unifiedCanvas_activateMaskTOol,
-} from './panels/Panel_Canvas/states/cmd_unifiedCanvas'
+} from './panels/Panel_Canvas/commands/cmd_unifiedCanvas'
 
 export const allCommands = [
     //

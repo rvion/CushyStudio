@@ -6,6 +6,8 @@ import SortableList, { SortableItem } from 'react-easy-sort'
 import { ComboUI } from '../../../app/shortcuts/ComboUI'
 import { DraftIllustrationUI } from '../../../cards/fancycard/DraftIllustration'
 import { InputNumberUI } from '../../../controls/widgets/number/InputNumberUI'
+import { Ikon } from '../../../icons/iconHelpers'
+import { RevealUI } from '../../../rsuite/reveal/RevealUI'
 import { useSt } from '../../../state/stateContext'
 import { useImageDrop } from '../../../widgets/galleries/dnd'
 import { useUnifiedCanvas } from '../UnifiedCanvasCtx'
@@ -16,9 +18,6 @@ export const UnifiedCanvasMenuUI = observer(function UnifiedCanvasMenuUI_(p: {})
     const [dropStyle2, dropRef2] = useImageDrop(st, (img) => canvas.addMask(img))
     return (
         <>
-            <div tw='absolute z-50'>
-                <CanvasToolbarUI />
-            </div>
             <div tw='flex flex-col gap-1 bg-base-200 w-80 absolute right-2 top-2 z-50'>
                 <div>
                     <div onClick={() => canvas.undo()} className='btn btn-sm btn-outline'>
@@ -271,31 +270,56 @@ export const CanvasToolbarUI = observer(function CanvasToolbarUI_(p: {}) {
     const canvas = useUnifiedCanvas()
     return (
         <div /* tw='absolute top-0 z-50 [left:50%]' */>
-            <div tw='flex items-center'>
-                <div onClick={() => canvas.enable_generate()} tw={['btn btn-xs', canvas.tool === 'none' ? 'btn-primary' : null]}>
+            <div tw='flex flex-col p-2 gap-1'>
+                <div // NONE ----------------------------------------------------------------
+                    onClick={() => canvas.enable_none()}
+                    tw={['btn btn-xs', canvas.tool === 'none' ? 'btn-primary' : null]}
+                >
                     none
+                    <Ikon.mdiSetNone />
                     <ComboUI combo='0' />
                 </div>
-                <div
-                    onClick={() => canvas.enable_generate()}
-                    tw={['btn btn-xs', canvas.tool === 'generate' ? 'btn-primary' : null]}
+
+                <RevealUI // GENERATE -------------------------------------------------------
+                    trigger='hover'
+                    placement='right'
+                    content={() => (
+                        <div tw='flex gap-1'>
+                            Generate <ComboUI combo='1' />
+                        </div>
+                    )}
                 >
-                    Generate
-                    <ComboUI combo='1' />
-                </div>
-                <div onClick={() => canvas.enable_mask()} tw={['btn btn-xs', canvas.tool === 'mask' ? 'btn-primary' : null]}>
+                    <div
+                        onClick={() => canvas.enable_generate()}
+                        tw={['btn btn-square', canvas.tool === 'generate' ? 'btn-primary' : null]}
+                    >
+                        <Ikon.mdiPlay />
+                    </div>
+                </RevealUI>
+                <div // MASK --------------------------------
+                    onClick={() => canvas.enable_mask()}
+                    tw={['btn btn-square', canvas.tool === 'mask' ? 'btn-primary' : null]}
+                >
                     Mask
+                    <Ikon.mdiTransitionMasked />
                     <ComboUI combo='2' />
                 </div>
-                <div onClick={() => canvas.enable_paint()} tw={['btn btn-xs', canvas.tool === 'paint' ? 'btn-primary' : null]}>
+                <div
+                    onClick={() => canvas.enable_paint()}
+                    tw={['btn btn-square', canvas.tool === 'paint' ? 'btn-primary' : null]}
+                >
                     Paint
                     <ComboUI combo='2' />
                 </div>
-                <div onClick={() => canvas.enable_move()} tw={['btn btn-xs', canvas.tool === 'move' ? 'btn-primary' : null]}>
+                <div
+                    onClick={() => canvas.enable_move()}
+                    tw={['btn btn-lg btn-square', canvas.tool === 'move' ? 'btn-primary' : null]}
+                >
                     Move
                     <ComboUI combo='4' />
                 </div>
             </div>
+            <hr />
             <CanvasToolCategoriesUI />
             {/* <CanvasToolsUI /> */}
         </div>

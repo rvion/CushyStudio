@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite'
 import { Fragment, useEffect, useRef } from 'react'
 
 import { ComfyWorkflowL } from '../../models/ComfyWorkflow'
-import { randomColorHSLNice, randomNiceColor } from '../../panels/Panel_Canvas/states/randomColor'
+import { randomColorHSLNice, randomNiceColor } from '../../panels/Panel_Canvas/utils/randomColor'
 import { ProgressLine } from '../../rsuite/shims'
 import { bang } from '../../utils/misc/bang'
 import { NodeSlotSize } from './NodeSlotSize'
