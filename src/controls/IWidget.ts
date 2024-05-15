@@ -1,4 +1,5 @@
 import type { BaseWidget } from './BaseWidget'
+import type { CovariantFn } from './BivariantHack'
 import type { CovariantFC } from './CovariantFC'
 import type { Form } from './Form'
 import type { ISpec } from './ISpec'
@@ -87,58 +88,6 @@ export interface IWidget<K extends $WidgetTypes = $WidgetTypes> extends BaseWidg
 }
 
 export const $WidgetSym = Symbol('Widget')
-
-/**
- * those properties will be dynamically injected in every widget
- * by calling `applyWidgetMixinV2(this)` in the constructor,
- * Before the makeAutoObservable(this) call. If you're adding a new
- * base widget, you're expected to do that too.
- */
-// export type IWidgetMixins = {
-//     $WidgetSym:  typeof $WidgetSym
-
-//     // KONTEXTS
-//     useKontext<T extends any>(ktx:Kontext<T>): Maybe<T>
-//     _boundKontexts: Record<string, any>
-
-//     // UI ------------------------------------------------------
-//     // value stuff
-//     ui(): JSX.Element
-//     body(): JSX.Element | undefined
-//     header(): JSX.Element | undefined
-//     defaultBody(): JSX.Element | undefined
-//     defaultHeader(): JSX.Element | undefined
-
-//     // FOLD ----------------------------------------------------
-//     setCollapsed(
-//         /** true: collapse; false: expanded */
-//         val: boolean | undefined,
-//     ): void
-
-//     /** toggle widget fold <-> unfolded */
-//     toggleCollapsed(): void
-
-//     // BUMP ----------------------------------------------------
-//     /**
-//      * Notify form that the value has been udpated
-//      * (and bump serial.lastUpdatedAt to Date.now())
-//      * 👉 Every widget must call this when value has been updated
-//      * */
-//     bumpValue(): void
-
-//     /** feed value if need to */
-//     feedValue(): void
-
-//     /**
-//      * Notify form that a non-value serial has been udpated
-//      * 👉 every widget must call this when non-value serial has been updated
-//      * */
-//     bumpSerial(): void
-
-//     readonly hasErrors: boolean
-//     readonly customErrors: Problem[]
-//     readonly errors: Problem[]
-// }
 
 /** 🔶 2024-03-13 rvion: TODO: remove that function; use ['$Value'] instead */
 export type GetWidgetResult<Widget> = Widget extends { $Value: infer Value } ? Value : never
