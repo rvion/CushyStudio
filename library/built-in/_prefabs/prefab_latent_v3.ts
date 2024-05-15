@@ -1,6 +1,8 @@
 import type { FormBuilder } from '../../../src/controls/FormBuilder'
 import type { OutputFor } from './_prefabs'
 
+import { run_LatentShapeGenerator, ui_LatentShapeGenerator } from '../shapes/prefab_shapes'
+
 export const ui_latent_v3 = () => {
     const form: FormBuilder = getCurrentForm()
     const batchSize = form.shared('batchSize', form.int({ step: 1, default: 1, min: 1, max: 8 }))
@@ -24,11 +26,16 @@ export const ui_latent_v3 = () => {
                     resize: form.auto.Image_Resize().optional(),
                 },
             }),
+            random: ui_LatentShapeGenerator(batchSize),
         },
     })
 }
 
-export const run_latent_v3 = async (p: { opts: OutputFor<typeof ui_latent_v3>; vae: _VAE }) => {
+export const run_latent_v3 = async (p: {
+    //
+    opts: OutputFor<typeof ui_latent_v3>
+    vae: _VAE
+}) => {
     // init stuff
     const run = getCurrentRun()
     const graph = run.nodes
@@ -37,7 +44,7 @@ export const run_latent_v3 = async (p: { opts: OutputFor<typeof ui_latent_v3>; v
     // misc calculatiosn
     let width: number
     let height: number
-    let latent: HasSingle_LATENT
+    let latent: _LATENT
 
     // case 1. start form image
     if (opts.image) {
@@ -78,7 +85,15 @@ export const run_latent_v3 = async (p: { opts: OutputFor<typeof ui_latent_v3>; v
         })
     }
 
-    // default case
+    // case 3. start from random
+    else if (opts.random) {
+        const result = await run_LatentShapeGenerator(opts.random, p.vae)
+        latent = result.latent
+        width = result.width
+        height = result.height
+    }
+
+    // default ca
     else {
         throw new Error('no latent')
     }
