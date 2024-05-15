@@ -19,8 +19,21 @@ import { WidgetGroup_BlockUI, WidgetGroup_LineUI } from './WidgetGroupUI'
 // CONFIG
 export type Widget_group_config<T extends SchemaDict> = WidgetConfigFields<
     {
+        /**
+         * lambda function is deprecated, prefer passing the items as an object
+         * directly
+         */
         items?: T | (() => T)
+
+        /**
+         * legacy property, will be removed soon
+         * you can alreay check if you're a top-level property
+         * by checking if this.parent is null
+         * @deprecated
+         */
         topLevel?: boolean
+
+        /** if provided, will be used in the header when fields are folded */
         summary?: (items: { [k in keyof T]: GetWidgetResult<T[k]> }) => string
     },
     Widget_group_types<T>
@@ -113,12 +126,8 @@ export class Widget_group<T extends SchemaDict> extends BaseWidget implements IW
         preHydrate?: (self: Widget_group<any>) => void,
     ) {
         super()
-
-        // persist id
         this.id = serial?.id ?? nanoid()
 
-        // console.log(`[🤠] ASSSIGN SERIAL to ${this.id} 🔴`)
-        // serial
         this.serial =
             serial && serial.type === 'group' //
                 ? serial
