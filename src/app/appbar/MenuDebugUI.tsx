@@ -42,7 +42,7 @@ export const MenuDebugUI = observer(function MenuDebugUI_(p: {}) {
                     />
                     <MenuItem //
                         icon={<span className='material-symbols-outlined text-green-500'>bug_report</span>}
-                        onClick={() => activityManger.push(DEMO_ACTIVITY)}
+                        onClick={() => activityManger.startActivity(DEMO_ACTIVITY)}
                         label='Start debug activity'
                     />
                     <MenuItem

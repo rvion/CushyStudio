@@ -5,12 +5,16 @@ import { createElement } from 'react'
 import { Fragment } from 'react/jsx-runtime'
 
 import { isWidget } from '../controls/IWidget'
+import { TreeUI } from '../panels/libraryUI/tree/xxx/TreeUI'
 import { MenuItem } from '../rsuite/Dropdown'
+import { ModalShellUI } from '../rsuite/reveal/ModalShell'
 import { RevealUI } from '../rsuite/reveal/RevealUI'
+import { activityManger } from './Activity'
 import { isBoundCommand } from './introspect/_isBoundCommand'
 import { isBoundMenu } from './introspect/_isBoundMenu'
 import { isCommand } from './introspect/_isCommand'
-import { SimpleMenuEntry } from './menuSystem/SimpleMenuEntry'
+import { SimpleMenuAction } from './menuSystem/SimpleMenuAction'
+import { SimpleMenuModal } from './menuSystem/SimpleMenuModal'
 
 export const MenuRootUI = observer(function MenuRootUI_(p: { menu: MenuInstance<any> }) {
     return (
@@ -33,7 +37,8 @@ export const MenuUI = observer(function MenuUI_(p: { menu: MenuInstance<any> }) 
                 const key = ev.key
                 for (const entry of p.menu.entriesWithKb) {
                     if (entry.char === key) {
-                        if (entry.entry instanceof SimpleMenuEntry) entry.entry.onPick()
+                        if (entry.entry instanceof SimpleMenuAction) entry.entry.onPick()
+                        // if (entry.entry instanceof SimpleMenuEntryPopup) entry.entry.onPick()
                         else if (isBoundCommand(entry.entry)) entry.entry.execute()
                         else if (isCommand(entry.entry)) entry.entry.execute()
                         p.menu.onStop()
@@ -44,9 +49,9 @@ export const MenuUI = observer(function MenuUI_(p: { menu: MenuInstance<any> }) 
                 }
             }}
         >
-            <ul tw='dropdown menu bg-neutral'>
+            <ul>
                 {p.menu.entriesWithKb.map(({ entry, char, charIx }, ix) => {
-                    if (entry instanceof SimpleMenuEntry) {
+                    if (entry instanceof SimpleMenuAction) {
                         return (
                             <MenuItem //
                                 tw='min-w-60'
@@ -56,6 +61,30 @@ export const MenuUI = observer(function MenuUI_(p: { menu: MenuInstance<any> }) 
                                 onClick={() => {
                                     entry.onPick()
                                     p.menu.onStop()
+                                }}
+                            />
+                        )
+                    }
+                    if (entry instanceof SimpleMenuModal) {
+                        return (
+                            <MenuItem //
+                                tw='min-w-60'
+                                key={ix}
+                                shortcut={char}
+                                label={entry.p.label}
+                                onClick={() => {
+                                    activityManger.startActivity({
+                                        uid: 'createPreset',
+                                        UI: (p) => (
+                                            <ModalShellUI close={() => p.stop()} title={entry.p.label}>
+                                                <entry.p.UI //
+                                                    close={() => p.stop()}
+                                                    submit={entry.p.submit}
+                                                    submitLabel={entry.p.submitLabel}
+                                                />
+                                            </ModalShellUI>
+                                        ),
+                                    })
                                 }}
                             />
                         )

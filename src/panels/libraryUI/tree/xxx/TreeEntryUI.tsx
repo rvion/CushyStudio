@@ -34,8 +34,7 @@ export const TreeEntryUI = observer(function TreeEntryUI_(p: {
                     },
                 ]}
             >
-                {/* {tv.id}
-                {tv.at?.id} */}
+                {/* Item Caret */}
                 {hasChildren ? (
                     <label onClick={() => n.toggle()} className='swap swap-rotate opacity-50'>
                         {n.isOpen ? <Ikon.mdiChevronDown /> : <Ikon.mdiChevronRight />}
@@ -43,7 +42,11 @@ export const TreeEntryUI = observer(function TreeEntryUI_(p: {
                 ) : (
                     <div tw='[width:1.3rem]'>&nbsp;</div>
                 )}
+
+                {/* Item Selection Checkbox */}
                 {tv.conf.selectable && <input checked type='checkbox' tw='checkbox' />}
+
+                {/* Tree title */}
                 <RenderItemTitleUI node={n} />
             </div>
 

@@ -3,25 +3,21 @@ import type { ReactNode } from 'react'
 
 export type TreeItemID = string
 
-export type TreeEntryAction = {
-    name: string
-    mode: 'small' | 'full'
-    icon: string
-    onClick: (node: TreeNode) => void
-    className?: string
-}
-
+// LEVEL 1
+// tree root are Tree Element (free structures; simple way to add laziness)
 export const treeElement = <P>(e: ITreeElement<P>): ITreeElement<P> => e
-
 export type ITreeElement<P = any> = {
     key: string
     ctor: { new (p: P): ITreeEntry } | ((p: P) => ITreeEntry)
     props: P
 }
 
+// LEVEL 2
+// Tree Element => Tree Entry
+// entries are lazilly loaded when needed
 export interface ITreeEntry<P = any> {
     // id: string
-    children?: () => ITreeElement[]
+    children?: () => ITreeElement[] // children are element themselves
     //
     name: string
     icon?: Maybe<string | ReactNode>
@@ -43,4 +39,11 @@ export interface ITreeEntry<P = any> {
 
     actions?: TreeEntryAction[]
     extra?: () => ReactNode
+}
+export type TreeEntryAction = {
+    name: string
+    mode: 'small' | 'full'
+    icon: string
+    onClick: (node: TreeNode) => void
+    className?: string
 }
