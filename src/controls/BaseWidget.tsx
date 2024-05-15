@@ -1,9 +1,12 @@
+import type { ITreeElement } from '../panels/libraryUI/tree/TreeEntry'
 import type { Channel, ChannelId } from './Channel'
 import type { ISpec } from './ISpec'
 import type { FC } from 'react'
 
 import { observer } from 'mobx-react-lite'
 
+import { TreeWidget } from '../panels/libraryUI/tree/xxx/TreeWidget'
+import { makeAutoObservableInheritance } from '../utils/mobx-store-inheritance'
 import { $WidgetSym, type IWidget } from './IWidget'
 import { WidgetWithLabelUI } from './shared/WidgetWithLabelUI'
 import { normalizeProblem, type Problem } from './Validation'
@@ -19,6 +22,15 @@ const ensureObserver = <T extends null | undefined | FC<any>>(fn: T): T => {
 // v3 (experimental) ---------------------------------------
 export abstract class BaseWidget {
     abstract spec: ISpec
+
+    // abstract readonly id: string
+    asTreeElement(key: string): ITreeElement<{ widget: IWidget; key: string }> {
+        return {
+            key: (this as any).id,
+            ctor: TreeWidget as any,
+            props: { key, widget: this as any },
+        }
+    }
 
     $WidgetSym: typeof $WidgetSym = $WidgetSym
 
@@ -82,6 +94,13 @@ export abstract class BaseWidget {
         this.publishValue() // 🔴  should probably be a reaction rather than this
     }
 
+    /**
+     * this method can be heavilly optimized
+     * todo:
+     *  - by storing the published value locally
+     *  - by defining a getter on the _advertisedValues object of all parents
+     *  - by only setting this getter up once.
+     * */
     publishValue(this: IWidget) {
         const producers = this.spec.producers
         if (producers.length === 0) return

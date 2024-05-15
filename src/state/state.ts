@@ -597,7 +597,7 @@ export class STATE {
             // '#apps',
         ])
         this.tree1View = new TreeView(this.tree1, {
-            onSelectionChange: (node?: TreeNode) => {
+            onFocusChange: (node?: TreeNode) => {
                 if (node == null) return
                 console.log(`[🌲] TreeView 1 selection changed to:`, node.path_v2)
                 if (node.data instanceof TreeApp) return node.data.app?.revealInFileExplorer()
@@ -618,7 +618,7 @@ export class STATE {
             // 'path#library/sdk-examples',
         ])
         this.tree2View = new TreeView(this.tree2, {
-            onSelectionChange: (node) => console.log(`[🌲] TreeView 2 selection changed to:`, node?.path_v2),
+            onFocusChange: (node) => console.log(`[🌲] TreeView 2 selection changed to:`, node?.path_v2),
         })
 
         makeAutoObservable(this, {

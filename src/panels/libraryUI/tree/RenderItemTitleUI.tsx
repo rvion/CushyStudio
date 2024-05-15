@@ -11,7 +11,6 @@ export const RenderItemTitleUI = observer(function RenderItemTitleUI_(p: { node:
         : item.icon ?? item.iconExpanded
     if (typeof icon === 'string') {
         icon = <img src={icon} style={{ width: '1.3rem', height: '1.3rem' }} />
-        // icon = <span className='material-icons-outlined'>{icon}</span>
     }
 
     return (
